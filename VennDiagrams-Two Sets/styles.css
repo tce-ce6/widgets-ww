@@ -1,0 +1,211 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.question-container {
+    text-align: center;
+}
+
+.diagram-section {
+    margin: 20px auto;
+    position: relative;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: fit-content;
+}
+
+.venn-diagram {
+    margin: 0 auto;
+    position: relative;
+}
+
+.venn-diagram.solution {
+    margin-top: 20px;
+    pointer-events: none;
+}
+
+#checkButton {
+        position: absolute;
+        top: -1px;
+        right: -170px;
+        padding: 8px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #5a5ef1;
+        color: hsl(0, 0%, 100%);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+
+#checkButton:disabled {
+    background-color: #5a5ff16e;
+    cursor: not-allowed;
+}
+
+#checkButton:hover:not(:disabled) {
+    background-color: #5a5ef1;
+
+}
+
+.controls-section {
+    margin: 20px auto;
+    text-align: center;
+}
+
+#feedback-area {
+    margin: 15px auto;
+    max-width: 600px;
+}
+
+.hint-section {
+    margin-top: 10px;
+}
+
+.hint {
+    color: #666;
+    font-style: italic;
+    margin: 0;
+}
+
+#solution-section {
+    margin-top: 20px;
+}
+
+#solution-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.set {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: fill 0.3s ease;
+}
+
+.universal-set {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+    cursor: pointer;
+}
+
+.universal-set.selected {
+    fill: #a29bfe;
+}
+
+.set-a, .set-b {
+    pointer-events: none;
+    opacity: 0.2;
+}
+
+.region-a, .region-b {
+    fill: white;
+    stroke: none;
+    cursor: pointer;
+}
+
+.intersection {
+    fill: white;
+    stroke: none;
+    cursor: pointer;
+}
+
+.region-a.selected, .region-b.selected, .intersection.selected {
+    fill: #4287f5;
+}
+
+.solution .region-a.selected, 
+.solution .region-b.selected, 
+.solution .intersection.selected {
+    fill: #4287f5;
+    opacity: 0.7;
+}
+
+.set:hover:not(.set-a):not(.set-b), 
+.region-a:hover, 
+.region-b:hover, 
+.intersection:hover {
+    opacity: 0.9;
+}
+
+text {
+    font-size: 20px;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none;
+}
+
+.feedback-section {
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+#feedback {
+    font-size: 18px;
+    margin: 10px 0;
+    min-height: 27px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.progress-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.progress-text {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.next-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.next-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.next-button:hover:not(:disabled) {
+    background-color: #5b4bc4;
+}
+
+.correct {
+    color: #4CAF50;
+}
+
+.incorrect {
+    color: #f44336;
+}

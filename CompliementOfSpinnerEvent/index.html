@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner Probability Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="app.js"></script>
+    <!-- MathJax CDN for rendering fractions -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>Determining the Complement of a Spinner Event</h1>
+    <p>Discover the complement of an event. Change the probability of an event on a spinner and observe the effect.</p>
+    
+    <div class="container">
+        <div class="spinner-container">
+            <canvas id="spinner"></canvas>
+        </div>
+        
+        <div class="controls">
+            <div class="probability-display">
+                <div>
+                    <span class="symbol star">★</span>
+                    <span id="probability-label">The probability of landing on a star is</span>
+                    <span id="star-probability" class="formula">2/6 or 1/3</span>
+                </div>
+                
+                <div class="complement">
+                    <span class="symbol star">★</span>
+                    <span id="complement-label">The probability of <strong>not</strong> landing on a star (or the <strong>complement</strong> of the event) is</span>
+                    <span id="star-complement" class="formula">4/6 or 2/3</span>
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <label for="sectors-slider">Number of sectors: <span id="sectors-value">6</span></label>
+                <input type="range" id="sectors-slider" min="4" max="12" value="6">
+            </div>
+            
+            <div class="buttons">
+                <button id="new-statement" class="button">NEW STATEMENT</button>
+                <button id="new-spinner" class="button">NEW SPINNER</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
