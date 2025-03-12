@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .container {
+      display: flex;
+      width: 100%;
+      gap: 20px;
+    }
+    
+    .graph-container {
+      width: 60%;
+      position: relative;
+    }
+    
+    .info-container {
+      width: 35%;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+    
+    canvas {
+      border: 1px solid #ddd;
+      background-color: #fff;
+    }
+    
+    h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 18px;
+    }
+    
+    .formula {
+      background-color: #f0f0ff;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    
+    .formula p {
+      margin: 8px 0;
+    }
+    
+    .blank-box {
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      border: 2px dashed #6c63ff;
+      margin: 0 5px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 24px;
+      border-radius: 3px;
+    }
+    
+    .draggable {
+      display: inline-block;
+      background-color: #f0f0ff;
+      border: 1px solid #6c63ff;
+      border-radius: 3px;
+      padding: 3px 8px;
+      margin: 5px;
+      cursor: move;
+      user-select: none;
+    }
+    
+    .btn {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    .btn:hover {
+      background-color: #5a52d5;
+    }
+    
+    .drag-instruction {
+      color: #6c63ff;
+      font-style: italic;
+      margin: 15px 0;
+    }
+    
+    .point {
+      font-weight: bold;
+    }
+    
+    .point-a {
+      color: #d63384;
+    }
+    
+    .point-b {
+      color: #d63384;
+    }
+    
+    .point-c {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="graph-container">
+      <h2>Select two points on the graph to find the distance between them.</h2>
+      <canvas id="graphCanvas" width="500" height="500"></canvas>
+    </div>
+    
+    <div class="info-container">
+      <div id="pointsInfo">
+        <h2>Click on two points to start</h2>
+      </div>
+      
+      <div id="formula" class="formula" style="display: none;">
+        <p>d : Distance between <span class="point point-a">A(x₁, y₁)</span> and <span class="point point-b">B(x₂, y₂)</span></p>
+        <p>Using Pythagorean Theorem:</p>
+        <p><span class="blank-box" id="blank1"></span>² = <span class="blank-box" id="blank2"></span>² + <span class="blank-box" id="blank3"></span>²</p>
+        
+        <p class="drag-instruction">Drag into the blanks:</p>
+        <div id="draggables">
+          <span class="draggable" draggable="true" data-formula="d">d</span>
+          <span class="draggable" draggable="true" data-formula="x2-x1">(x₂ - x₁)</span>
+          <span class="draggable" draggable="true" data-formula="y2-y1">(y₂ - y₁)</span>
+        </div>
+      </div>
+      
+      <button id="resetBtn" class="btn" style="display: none;">TRY OTHER POINTS</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('graphCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Canvas dimensions and scaling
+    const width = canvas.width;
+    const height = canvas.height;
+    const gridSize = 40;
+    const originX = width / 2;
+    const originY = height / 2;
+    
+    // Points and state variables
+    let preDefinedPoints = [];
+    let selectedPoints = [];
+    let pointA = null;
+    let pointB = null;
+    let pointC = null;
+    
+    // Initialize graph
+    function drawGrid() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // Draw grid lines
+      ctx.strokeStyle = '#ddd';
+      ctx.lineWidth = 1;
+      
+      // Vertical lines
+      for (let x = originX % gridSize; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      // Horizontal lines
+      for (let y = originY % gridSize; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      
+      // Draw axes
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      
+      // x-axis
+      ctx.beginPath();
+      ctx.moveTo(0, originY);
+      ctx.lineTo(width, originY);
+      ctx.stroke();
+      
+      // y-axis
+      ctx.beginPath();
+      ctx.moveTo(originX, 0);
+      ctx.lineTo(originX, height);
+      ctx.stroke();
+      
+      // Draw arrows on axes
+      // X-axis arrow
+      ctx.beginPath();
+      ctx.moveTo(width, originY);
+      ctx.lineTo(width - 10, originY - 5);
+      ctx.lineTo(width - 10, originY + 5);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Y-axis arrow
+      ctx.beginPath();
+      ctx.moveTo(originX, 0);
+      ctx.lineTo(originX - 5, 10);
+      ctx.lineTo(originX + 5, 10);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Label axes
+      ctx.font = '16px Arial';
+      ctx.fillText('x', width - 15, originY - 10);
+      ctx.fillText('y', originX + 10, 15);
+    }
+    
+    // Create predefined points
+    function createPredefinedPoints() {
+      preDefinedPoints = [
+        { gridX: -2, gridY: 3 },
+        { gridX: 3, gridY: 1 },
+        { gridX: -2, gridY: -3 },
+        { gridX: 4, gridY: -2 }
+      ];
+      
+      // Draw each point
+      preDefinedPoints.forEach((point) => {
+        drawPoint(point.gridX, point.gridY, '#6c63ff');
+      });
+    }
+    
+    // Draw a point on the graph
+    function drawPoint(x, y, color = '#6c63ff', label = '') {
+      const canvasX = originX + x * gridSize;
+      const canvasY = originY - y * gridSize;
+      
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(canvasX, canvasY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      if (label) {
+        ctx.fillStyle = '#000';
+        ctx.font = '14px Arial';
+        ctx.fillText(label, canvasX + 10, canvasY - 10);
+      }
+      
+      return { canvasX, canvasY, gridX: x, gridY: y };
+    }
+    
+    // Draw the right triangle and distance visualization
+    function drawTriangle() {
+      if (pointA && pointB) {
+        // Draw point C at the right angle
+        pointC = { 
+          gridX: pointB.gridX, 
+          gridY: pointA.gridY,
+          canvasX: originX + pointB.gridX * gridSize,
+          canvasY: originY - pointA.gridY * gridSize
+        };
+        
+        // Draw point C
+        ctx.fillStyle = '#666';
+        ctx.beginPath();
+        ctx.arc(pointC.canvasX, pointC.canvasY, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillText('C(x₂, y₁)', pointC.canvasX + 10, pointC.canvasY - 10);
+        
+        // Draw lines of the triangle
+        // A to C (horizontal line - blue)
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(pointA.canvasX, pointA.canvasY);
+        ctx.lineTo(pointC.canvasX, pointC.canvasY);
+        ctx.stroke();
+        
+        // B to C (vertical line - blue)
+        ctx.beginPath();
+        ctx.moveTo(pointB.canvasX, pointB.canvasY);
+        ctx.lineTo(pointC.canvasX, pointC.canvasY);
+        ctx.stroke();
+        
+        // A to B (hypotenuse - red)
+        ctx.strokeStyle = '#d63384';
+        ctx.beginPath();
+        ctx.moveTo(pointA.canvasX, pointA.canvasY);
+        ctx.lineTo(pointB.canvasX, pointB.canvasY);
+        ctx.stroke();
+        
+        // Label the distances
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#000';
+        
+        // Label horizontal distance
+        const xMid = (pointA.canvasX + pointC.canvasX) / 2;
+        ctx.fillText('x₂ - x₁', xMid, pointA.canvasY + 20);
+        
+        // Label vertical distance
+        const yMid = (pointB.canvasY + pointC.canvasY) / 2;
+        ctx.fillText('y₂ - y₁', pointB.canvasX - 40, yMid);
+        
+        // Label hypotenuse
+        const dMid = (pointA.canvasX + pointB.canvasX) / 2;
+        const dMidY = (pointA.canvasY + pointB.canvasY) / 2;
+        ctx.fillStyle = '#d63384';
+        ctx.fillText('d', dMid + 10, dMidY - 10);
+        
+        // Update the display
+        document.getElementById('formula').style.display = 'block';
+        document.getElementById('resetBtn').style.display = 'block';
+      }
+    }
+    
+    // Setup drag and drop functionality
+    function setupDragAndDrop() {
+      const draggables = document.querySelectorAll('.draggable');
+      const dropTargets = document.querySelectorAll('.blank-box');
+      
+      let draggedElement = null;
+      
+      draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', function(e) {
+          draggedElement = this;
+          e.dataTransfer.setData('text/plain', this.dataset.formula);
+          setTimeout(() => {
+            this.style.opacity = '0.4';
+          }, 0);
+        });
+        
+        draggable.addEventListener('dragend', function() {
+          this.style.opacity = '1';
+        });
+      });
+      
+      dropTargets.forEach(target => {
+        target.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          this.style.backgroundColor = '#e6e6ff';
+        });
+        
+        target.addEventListener('dragleave', function() {
+          this.style.backgroundColor = '';
+        });
+        
+        target.addEventListener('drop', function(e) {
+          e.preventDefault();
+          this.style.backgroundColor = '';
+          
+          if (draggedElement) {
+            this.textContent = draggedElement.textContent;
+            this.dataset.formula = draggedElement.dataset.formula;
+          }
+        });
+      });
+    }
+    
+    // Canvas click event handler
+    canvas.addEventListener('click', function(event) {
+      if (selectedPoints.length >= 2) return;
+      
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+      
+      // Check if click is near any predefined point
+      for (const point of preDefinedPoints) {
+        const canvasX = originX + point.gridX * gridSize;
+        const canvasY = originY - point.gridY * gridSize;
+        
+        const distance = Math.sqrt(
+          Math.pow(mouseX - canvasX, 2) + 
+          Math.pow(mouseY - canvasY, 2)
+        );
+        
+        if (distance <= 15) {
+          // Avoid selecting the same point twice
+          if (selectedPoints.length > 0 && 
+              selectedPoints[0].gridX === point.gridX && 
+              selectedPoints[0].gridY === point.gridY) {
+            continue;
+          }
+          
+          // Draw selected point with highlight
+          const isFirstPoint = selectedPoints.length === 0;
+          const selectedPoint = drawPoint(
+            point.gridX, 
+            point.gridY, 
+            isFirstPoint ? '#d63384' : '#d63384', 
+            isFirstPoint ? 'A(x₁, y₁)' : 'B(x₂, y₂)'
+          );
+          
+          if (isFirstPoint) {
+            pointA = selectedPoint;
+            document.getElementById('pointsInfo').innerHTML = '<h2>Point A selected. Select another point.</h2>';
+          } else {
+            pointB = selectedPoint;
+            document.getElementById('pointsInfo').innerHTML = '<h2>Distance between A and B</h2>';
+            drawTriangle();
+          }
+          
+          selectedPoints.push(selectedPoint);
+          break;
+        }
+      }
+    });
+    
+    // Reset button
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      pointA = null;
+      pointB = null;
+      pointC = null;
+      selectedPoints = [];
+      document.getElementById('formula').style.display = 'none';
+      document.getElementById('resetBtn').style.display = 'none';
+      document.getElementById('pointsInfo').innerHTML = '<h2>Click on two points to start</h2>';
+      
+      // Clear the formula boxes
+      document.querySelectorAll('.blank-box').forEach(box => {
+        box.textContent = '';
+        box.dataset.formula = '';
+      });
+      
+      // Redraw
+      drawGrid();
+      createPredefinedPoints();
+    });
+    
+    // Initialize
+    drawGrid();
+    createPredefinedPoints();
+    setupDragAndDrop();
+  </script>
+</body>
+</html>
