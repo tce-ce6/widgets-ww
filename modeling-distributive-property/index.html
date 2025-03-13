@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributive Property Visualization</title>
+    
+    <style>
+            * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.info {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.visualization-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* margin-bottom: 40px; */
+    padding-top: 0px;
+    min-height: 300px; /* Fixed minimum height */
+}
+
+.visualization {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+}
+
+.controls-section {
+    width: 100%;
+    /* padding: 20px 0; */
+    position: relative;
+    border-top: 1px solid #ddd;
+}
+
+.area-model-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Max width based on 10+10 units at 30px each */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-bottom: 30px; */
+}
+
+.area-model {
+    position: relative;
+    margin-bottom: 0px;
+    background: white;
+    box-sizing: border-box;
+    max-height: 200px; /* Max height based on 10 units at 30px each */
+    max-width: 400px; /* Max width based on 10+10 units at 30px each */
+    min-height: 30px;
+    min-width: 60px; /* Minimum height for visual clarity */
+    transition: height 0.3s ease, width 0.3s ease; /* Add smooth transition */
+    width: 100%; /* Will be scaled by JS */
+}
+
+/* Left vertical line (fixed) */
+.area-model::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #ff6b6b;
+}
+
+/* Right vertical line (moves with C slider) */
+.area-model::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #ff6b6b;
+    transition: right 0.3s ease;
+}
+
+#leftArea {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    border-right: 2px solid #ff6b6b;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+#rightArea {
+    position: absolute;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease, width 0.3s ease;
+    overflow: hidden;
+}
+
+/* Left box horizontal lines (blue) */
+#leftArea::before, #leftArea::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #4834d4;
+    z-index: 1;
+}
+
+#leftArea::before {
+    top: 0;
+}
+
+#leftArea::after {
+    bottom: 0;
+}
+
+/* Right box horizontal lines (green) */
+#rightArea::before, #rightArea::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #2ecc71;
+    z-index: 1;
+}
+
+#rightArea::before {
+    top: 0;
+}
+
+#rightArea::after {
+    bottom: 0;
+}
+
+#leftValue, #rightValue {
+    font-size: 1.4em;
+    color: #666;
+}
+
+#leftEquation, #rightEquation {
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
+    padding: 5px;
+    z-index: 2;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.2;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dimension-label {
+    position: absolute;
+    color: #333;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.height-label {
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff6b6b; /* Change to red to match the vertical line */
+}
+
+.width-label-b {
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4834d4; /* Blue color for left section */
+}
+
+.width-label-c {
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #2ecc71; /* Green color for right section */
+}
+
+.equations {
+    /* margin-bottom: 30px; */
+    text-align: center;
+}
+
+.equation {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.equation.permanent {
+    color: #666;
+}
+
+.equation.dynamic {
+    color: #333;
+    font-weight: bold;
+}
+
+#showNumbers {
+    padding: 8px 16px;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.sliders {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 10px;
+    padding: 0 20px;
+}
+
+.slider-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-label {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Colored slider labels to match their sections */
+#sliderLabelA {
+    color: #ff6b6b; /* Red for a (height) */
+}
+
+#sliderLabelB {
+    color: #4834d4; /* Blue for b (left width) */
+}
+
+#sliderLabelC {
+    color: #2ecc71; /* Green for c (right width) */
+}
+
+.slider {
+    width: 100%;
+    height: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 10px 0;
+}
+
+.a-slider {
+    background: #ff6b6b; /* Match the vertical line color */
+}
+
+.b-slider {
+    background: #4834d4;
+}
+
+.c-slider {
+    background: #2ecc71;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    background: #333;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    background: #333;
+}
+
+label {
+    font-size: 1.2em;
+    color: #333;
+}
+/* Bottom indicators */
+.bottom-indicators {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    margin-top: 5px;
+}
+
+.bottom-indicator {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    top: 0;
+}
+
+.left-indicator {
+    left: 0;
+    color: #4834d4; /* Blue color for left section */
+}
+
+.right-indicator {
+    color: #2ecc71; /* Green color for right section */
+}
+
+#bottomLabelB, #bottomLabelC {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+
+
+
+        .area-model {
+            border: 1px solid black;
+        }
+        #leftArea {
+            border-right: 1px solid black;
+        }
+        #rightArea {
+            border-left: 1px solid black;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modeling Distributive Property</h1>
+        <p class="info">Explore the distributive property by changing the dimensions of an area model.</p>
+        
+        <div class="equations">
+            <div class="equation permanent">a(b + c) = a × b + a × c</div>
+            <div class="equation dynamic" id="equation">5(9 + 10) = 5 × 9 + 5 × 10 = 95</div>
+            <button id="showNumbers">SHOW LETTERS</button>
+        </div>
+
+        <div class="visualization-container">
+            <div class="visualization">
+                <div class="area-model-container">
+                    <div class="area-model">
+                        <span class="dimension-label height-label" id="heightLabel">5</span>
+                        <div id="leftArea">
+                            <span id="leftEquation">5×9</span>
+                            <span class="dimension-label width-label-b" id="widthLabelB">9</span>
+                        </div>
+                        <div id="rightArea">
+                            <span id="rightEquation">5×10</span>
+                            <span class="dimension-label width-label-c" id="widthLabelC">10</span>
+                        </div>
+                    </div>
+                    <div class="bottom-indicators">
+                        <div class="bottom-indicator left-indicator">
+                            <span id="bottomLabelB">b</span>
+                        </div>
+                        <div class="bottom-indicator right-indicator">
+                            <span id="bottomLabelC">c</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="sliders">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span id="sliderLabelA">a = 5</span>
+                    </div>
+                    <input type="range" id="sliderA" min="1" max="10" value="5" class="slider a-slider">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span id="sliderLabelB">b = 9</span>
+                    </div>
+                    <input type="range" id="sliderB" min="1" max="10" value="9" class="slider b-slider">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span id="sliderLabelC">c = 10</span>
+                    </div>
+                    <input type="range" id="sliderC" min="1" max="10" value="10" class="slider c-slider">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script >
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const model = new Model();
+    const view = new View();
+    const controller = new Controller(model, view);
+});
+
+class View {
+    constructor() {
+        // Get equations
+        this.dynamicEquation = document.getElementById('equation');
+        this.leftEquation = document.getElementById('leftEquation');
+        this.rightEquation = document.getElementById('rightEquation');
+        
+        // Get area model elements
+        this.areaModel = document.querySelector('.area-model');
+        this.leftArea = document.getElementById('leftArea');
+        this.rightArea = document.getElementById('rightArea');
+        
+        // Get sliders and labels
+        this.sliderA = document.getElementById('sliderA');
+        this.sliderB = document.getElementById('sliderB');
+        this.sliderC = document.getElementById('sliderC');
+        this.sliderLabelA = document.getElementById('sliderLabelA');
+        this.sliderLabelB = document.getElementById('sliderLabelB');
+        this.sliderLabelC = document.getElementById('sliderLabelC');
+        
+        // Get dimension labels
+        this.heightLabel = document.getElementById('heightLabel');
+        this.widthLabelB = document.getElementById('widthLabelB');
+        this.widthLabelC = document.getElementById('widthLabelC');
+        
+        // Get bottom indicators
+        this.bottomLabelB = document.getElementById('bottomLabelB');
+        this.bottomLabelC = document.getElementById('bottomLabelC');
+        
+        // Get show numbers button
+        this.showNumbersBtn = document.getElementById('showNumbers');
+
+        // Set constants
+        this.UNIT_SIZE = 30; // pixels per unit
+        this.MAX_A = 10; // Maximum value for a
+        this.MAX_B = 10; // Maximum value for b
+        this.MAX_C = 10; // Maximum value for c
+    }
+
+    update(model) {
+        // Update dynamic equation
+        const sum = model.b + model.c;
+        
+        if (model.showNumbers) {
+            this.dynamicEquation.textContent = `${model.a}(${model.b}+${model.c})=${model.a}×${model.b}+${model.a}×${model.c}`;
+            this.leftEquation.textContent = `${model.a}×${model.b}`;
+            this.rightEquation.textContent = `${model.a}×${model.c}`;
+            this.heightLabel.textContent = model.a;
+            this.widthLabelB.textContent = model.b;
+            this.widthLabelC.textContent = model.c;
+            this.bottomLabelB.textContent = model.b;
+            this.bottomLabelC.textContent = model.c;
+            this.sliderLabelA.textContent = `a=${model.a}`;
+            this.sliderLabelB.textContent = `b=${model.b}`;
+            this.sliderLabelC.textContent = `c=${model.c}`;
+            this.showNumbersBtn.textContent = 'SHOW LETTERS';
+        } else {
+            this.dynamicEquation.textContent = 'a(b+c)=a×b+a×c';
+            this.leftEquation.textContent = 'a×b';
+            this.rightEquation.textContent = 'a×c';
+            this.heightLabel.textContent = 'a';
+            this.widthLabelB.textContent = 'b';
+            this.widthLabelC.textContent = 'c';
+            this.bottomLabelB.textContent = 'b';
+            this.bottomLabelC.textContent = 'c';
+            this.sliderLabelA.textContent = 'a';
+            this.sliderLabelB.textContent = 'b';
+            this.sliderLabelC.textContent = 'c';
+            this.showNumbersBtn.textContent = 'SHOW NUMBERS';
+        }
+
+        // Calculate height in pixels (directly proportional to a)
+        const maxHeight = 200; // Max height in pixels (same as the CSS max-height)
+        const heightPixels = Math.max(30, (model.a / this.MAX_A) * maxHeight); // Ensure minimum height
+        
+        // Calculate width proportions as percentages
+        const totalWidthPercentage = ((model.b + model.c) / (this.MAX_B + this.MAX_C)) * 100;
+        const leftWidthPercentage = (model.b / (model.b + model.c)) * 100;
+        const rightWidthPercentage = (model.c / (model.b + model.c)) * 100;
+        
+        // Update area model dimensions
+        this.areaModel.style.height = `${heightPixels}px`;
+        this.areaModel.style.width = `${totalWidthPercentage}%`;
+        
+        // Update left area width as percentage of the total area model width
+        this.leftArea.style.width = `${leftWidthPercentage}%`;
+        
+        // Update right area width and position as percentage
+        this.rightArea.style.width = `${rightWidthPercentage}%`;
+        this.rightArea.style.left = `${leftWidthPercentage}%`;
+
+        // Update bottom indicators to align with the model sections
+        const bottomIndicators = document.querySelector('.bottom-indicators');
+        bottomIndicators.style.width = `${totalWidthPercentage}%`;
+        
+        const leftIndicator = document.querySelector('.left-indicator');
+        const rightIndicator = document.querySelector('.right-indicator');
+        
+        // Set width and position to perfectly align with sections above
+        leftIndicator.style.width = `${leftWidthPercentage}%`;
+        rightIndicator.style.width = `${rightWidthPercentage}%`;
+        rightIndicator.style.left = `${leftWidthPercentage}%`;
+        
+        // Update slider values
+        this.sliderA.value = model.a;
+        this.sliderB.value = model.b;
+        this.sliderC.value = model.c;
+    }
+
+    bindSliderA(handler) {
+        this.sliderA.addEventListener('input', event => handler(parseInt(event.target.value)));
+    }
+
+    bindSliderB(handler) {
+        this.sliderB.addEventListener('input', event => handler(parseInt(event.target.value)));
+    }
+
+    bindSliderC(handler) {
+        this.sliderC.addEventListener('input', event => handler(parseInt(event.target.value)));
+    }
+
+    bindShowNumbers(handler) {
+        this.showNumbersBtn.addEventListener('click', handler);
+    }
+}
+
+class Model {
+    constructor() {
+        this.a = 5;
+        this.b = 5;
+        this.c = 5;
+        this.showNumbers = false;
+        this.observers = [];
+    }
+
+    addObserver(observer) {
+        this.observers.push(observer);
+    }
+
+    notifyObservers() {
+        this.observers.forEach(observer => observer.update(this));
+    }
+
+    setA(value) {
+        this.a = parseInt(value);
+        this.notifyObservers();
+    }
+
+    setB(value) {
+        this.b = parseInt(value);
+        this.notifyObservers();
+    }
+
+    setC(value) {
+        this.c = parseInt(value);
+        this.notifyObservers();
+    }
+
+    toggleShowNumbers() {
+        this.showNumbers = !this.showNumbers;
+        this.notifyObservers();
+    }
+
+    getEquation() {
+        if (this.showNumbers) {
+            return `${this.a}(${this.b} + ${this.c}) = ${this.a * this.b} + ${this.a * this.c}`;
+        }
+        return 'a(b + c) = a × b + a × c';
+    }
+}
+
+
+class Controller {
+    constructor(model, view) {
+        this.model = model;
+        this.view = view;
+
+        // Bind event handlers
+        this.view.bindSliderA(this.handleSliderA.bind(this));
+        this.view.bindSliderB(this.handleSliderB.bind(this));
+        this.view.bindSliderC(this.handleSliderC.bind(this));
+        this.view.bindShowNumbers(this.handleShowNumbers.bind(this));
+
+        // Initial render
+        this.model.addObserver(this.view);
+        this.model.notifyObservers();
+    }
+
+    handleSliderA(value) {
+        this.model.setA(value);
+    }
+
+    handleSliderB(value) {
+        this.model.setB(value);
+    }
+
+    handleSliderC(value) {
+        this.model.setC(value);
+    }
+
+    handleShowNumbers() {
+        this.model.toggleShowNumbers();
+    }
+}
+
+    </script>
+</body>
+</html>
