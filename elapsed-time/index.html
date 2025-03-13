@@ -188,6 +188,7 @@ class TimeController {
         const newQuestionBtn = document.getElementById('newQuestionBtn');
         newQuestionBtn.addEventListener('click', () => {
             if (newQuestionBtn.classList.contains('available')) {
+                this.view.onCorrectAnswer = false
                 this.view.clearArcAnimations();
                 this.initializeQuestion();
             }
@@ -232,6 +233,7 @@ class TimeController {
     //     }
     // }
     updatePosition(position, checkAnswer) {
+
         // Update the view
         this.view.updateSliderPosition(position);
         
@@ -428,7 +430,7 @@ class TimeView {
         this.durationSpan = document.getElementById('duration');
         this.startTimeSpan = document.getElementById('startTime');
         this.newQuestionBtn = document.getElementById('newQuestionBtn');
-        
+        this.onCorrectAnswer = false;
         // Hide the original time bubble above the slider
         this.timeBubble.style.display = 'none';
         
@@ -629,8 +631,8 @@ class TimeView {
         };
 
         const handleDrag = (e) => {
-            currentPosition = getPosition(e);
-            onDrag(currentPosition);
+                currentPosition = getPosition(e);
+                onDrag(currentPosition);    
         };
 
         const handleDrop = () => {
@@ -641,13 +643,16 @@ class TimeView {
             }
         };
 
-        this.sliderHandle.addEventListener('mousedown', () => {
-            isDragging = true;
-            document.body.style.cursor = 'grabbing';
+        this.sliderHandle.addEventListener('mousedown', (e) => {
+            if(!this.onCorrectAnswer){
+                isDragging = true;
+                document.body.style.cursor = 'grabbing';
+            }
         });
 
         document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
+            
+            if (isDragging && !this.onCorrectAnswer) {
                 handleDrag(e);
                 e.preventDefault();
             }
@@ -655,12 +660,15 @@ class TimeView {
 
         document.addEventListener('mouseup', handleDrop);
 
-        // Allow clicking on timeline
+        
         this.timeline.addEventListener('click', (e) => {
+            if(!this.onCorrectAnswer){
             currentPosition = getPosition(e);
             onDrag(currentPosition);
             onDrop(currentPosition);
+        }
         });
+    
     }
 
 
@@ -721,6 +729,7 @@ class TimeView {
     }
     // Add this method to TimeView
     triggerArcAnimationIfCorrect(startMinutes, endMinutes, isCorrect) {
+        this.onCorrectAnswer = true;
         console.log("Trigger arc animation called:", startMinutes, endMinutes, isCorrect);
         
         if (!isCorrect) return;
