@@ -117,7 +117,85 @@ createP5Sketch() {
             p.noFill();
             p.triangle(x1, y1, x2, y2, x3, y3);
             
-            // Right angle marker code removed as requested
+            // Draw right angle marker if enabled
+           // Draw right angle marker if enabled
+if (showRightAngle && rightAnglePosition > 0) {
+    console.log("Drawing right angle marker at position", rightAnglePosition);
+    
+    // Create a traditional right angle square marker
+    p.stroke('#20c997'); // Teal color
+    p.strokeWeight(2); // Thinner lines for the symbol
+    p.noFill(); // No fill for cleaner look
+    // Draw right angle marker based on position
+    
+    
+    // Size for the right angle marker (proportional to triangle size)
+    const minSide = Math.min(abLength, acLength, bcLength);
+    const size = Math.max(minSide * 0.15, 15); 
+   // At least 15px, max 15% of smallest side
+    rightAnglePosition = 1;
+    // Calculate unit vectors along each side of the triangle at the right angle
+    if (rightAnglePosition === 1) { // Right angle at vertex A (bottom left)
+        // Calculate unit vectors from A to B and A to C
+        const abUnitVec = {
+            x: (x2 - x1) / abLength,
+            y: (y2 - y1) / abLength
+        };
+        const acUnitVec = {
+            x: (x3 - x1) / acLength,
+            y: (y3 - y1) / acLength
+        };
+        
+        // Draw the right angle square marker INSIDE the triangle
+        p.beginShape();
+        p.vertex(x1, y1); // Start at vertex A
+        p.vertex(x1 + abUnitVec.x * size, y1 + abUnitVec.y * size); // Move along AB
+        p.vertex(x1 + abUnitVec.x * size + acUnitVec.x * size, 
+                y1 + abUnitVec.y * size + acUnitVec.y * size); // Move parallel to AC
+        p.vertex(x1 + acUnitVec.x * size, y1 + acUnitVec.y * size); // Move along AC
+        p.endShape(p.CLOSE);
+    } 
+    else if (rightAnglePosition === 2) { // Right angle at vertex B (bottom right)
+        // Calculate unit vectors from B to A and B to C
+        const baUnitVec = {
+            x: (x1 - x2) / abLength,
+            y: (y1 - y2) / abLength
+        };
+        const bcUnitVec = {
+            x: (x3 - x2) / bcLength,
+            y: (y3 - y2) / bcLength
+        };
+        
+        // Draw the right angle square marker INSIDE the triangle
+        p.beginShape();
+        p.vertex(x2, y2); // Start at vertex B
+        p.vertex(x2 + baUnitVec.x * size, y2 + baUnitVec.y * size); // Move along BA
+        p.vertex(x2 + baUnitVec.x * size + bcUnitVec.x * size, 
+                y2 + baUnitVec.y * size + bcUnitVec.y * size); // Move parallel to BC
+        p.vertex(x2 + bcUnitVec.x * size, y2 + bcUnitVec.y * size); // Move along BC
+        p.endShape(p.CLOSE);
+    } 
+    else if (rightAnglePosition === 3) { // Right angle at vertex C (top)
+        // Calculate unit vectors from C to A and C to B
+        const caUnitVec = {
+            x: (x1 - x3) / acLength,
+            y: (y1 - y3) / acLength
+        };
+        const cbUnitVec = {
+            x: (x2 - x3) / bcLength,
+            y: (y2 - y3) / bcLength
+        };
+        
+        // Draw the right angle square marker INSIDE the triangle
+        p.beginShape();
+        p.vertex(x3, y3); // Start at vertex C
+        p.vertex(x3 + caUnitVec.x * size, y3 + caUnitVec.y * size); // Move along CA
+        p.vertex(x3 + caUnitVec.x * size + cbUnitVec.x * size, 
+                y3 + caUnitVec.y * size + cbUnitVec.y * size); // Move parallel to CB
+        p.vertex(x3 + cbUnitVec.x * size, y3 + cbUnitVec.y * size); // Move along CB
+        p.endShape(p.CLOSE);
+    }
+}
         };
         
         // Method to calculate triangle vertices based on side lengths
@@ -250,16 +328,22 @@ createP5Sketch() {
             };
         }
         
-        // Method to show right angle marker (disabled as requested)
-        that.showRightAngle = function() {
-            console.log("Right angle marker display disabled");
-            // Code disabled as requested
+        // Define these functions directly on the p5sketch object instead
+        p.showRightAngleMarker = function() {
+            console.log("P5 Sketch: Showing right angle marker, position:", rightAnglePosition);
+            showRightAngle = true;
+            
+            // Log triangle info for debugging
+            console.log("Triangle vertices:", {x1, y1, x2, y2, x3, y3});
+            console.log("Triangle side lengths:", {abLength, acLength, bcLength});
+            
+            p.redraw(); // Force redraw to show marker immediately
         };
         
-        // Method to hide right angle marker (disabled as requested)
-        that.hideRightAngle = function() {
-            console.log("Right angle marker hiding disabled");
-            // Code disabled as requested
+        p.hideRightAngleMarker = function() {
+            console.log("P5 Sketch: Hiding right angle marker");
+            showRightAngle = false;
+            p.redraw(); // Force redraw to hide marker immediately
         };
     });
 }
@@ -985,15 +1069,21 @@ hideEquationIndicator() {
 
 // Method to show right angle marker when correct
 showRightAngleMarker() {
-    if (this.p5sketch && this.p5sketch.showRightAngle) {
-        this.p5sketch.showRightAngle();
+    console.log("View: Showing right angle marker");
+    if (this.p5sketch && this.p5sketch.showRightAngleMarker) {
+        this.p5sketch.showRightAngleMarker();
+    } else {
+        console.error("p5sketch or showRightAngleMarker method not available:", this.p5sketch);
     }
 }
 
 // Method to hide right angle marker
 hideRightAngleMarker() {
-    if (this.p5sketch && this.p5sketch.hideRightAngle) {
-        this.p5sketch.hideRightAngle();
+    console.log("View: Hiding right angle marker");
+    if (this.p5sketch && this.p5sketch.hideRightAngleMarker) {
+        this.p5sketch.hideRightAngleMarker();
+    } else {
+        console.error("p5sketch or hideRightAngleMarker method not available:", this.p5sketch);
     }
 }
 }
@@ -1356,10 +1446,14 @@ handleCheck() {
         this.view.hintText.textContent = "The two legs go on the left side. The longest length goes on the right side.";
         this.view.clearFeedback();
         this.view.hideEquationIndicator(); // Hide indicator when placement is wrong
+        this.view.hideRightAngleMarker(); // Hide right angle marker when placement is wrong
         return;
     }
     
     const isCorrect = this.model.isRightTriangle === true;
+    
+    // Always hide the marker first to ensure clean state
+    this.view.hideRightAngleMarker();
     
     this.view.showFeedback(isCorrect, isCorrect ? 
         "Correct! This is a right triangle." : 
@@ -1369,12 +1463,28 @@ handleCheck() {
     if (isCorrect) {
         this.view.showEquationCorrect();
         
+        // Show right angle marker for correct identification of right triangle
+        console.log("Controller: Showing right angle marker in handleCheck");
+        
+        // Add a small delay to ensure UI updates properly
+        setTimeout(() => {
+            this.view.showRightAngleMarker();
+        }, 100);
+        
         const newCount = this.model.incrementCorrectCount();
         this.view.updateCorrectCount(newCount);
         this.view.enableNewProblemButton();
         this.view.hideHint(); // Hide any existing hints when correct
     } else {
         this.view.showEquationIncorrect();
+        // For incorrectly identified right triangles, show the right angle marker
+        console.log("Controller: Showing right angle marker in handleCheck");
+        
+        // Add a small delay to ensure UI updates properly
+        setTimeout(() => {
+            this.view.showRightAngleMarker();
+        }, 100);
+        
         // Show hint about Pythagorean theorem when wrong answer is chosen
         this.model.useHint();
         this.view.showHint(this.model.getTriesLeft());
@@ -1397,10 +1507,15 @@ handleNotRight() {
         this.view.hintText.textContent = "The two legs go on the left side. The longest length goes on the right side.";
         this.view.clearFeedback();
         this.view.hideEquationIndicator(); // Hide indicator when placement is wrong
+        this.view.hideRightAngleMarker(); // Hide right angle marker when placement is wrong
         return;
     }
     
     const isCorrect = this.model.isRightTriangle === false;
+    
+    // Always hide the marker first to ensure clean state
+    this.view.hideRightAngleMarker();
+    
     this.view.showFeedback(isCorrect, isCorrect ? 
         "Correct! This is not a right triangle." : 
         "Incorrect. This is actually a right triangle.");
@@ -1408,12 +1523,23 @@ handleNotRight() {
     // Show appropriate indicator
     if (isCorrect) {
         this.view.showEquationCorrect();
+        // For non-right triangles, don't show the right angle marker
+        this.view.hideRightAngleMarker();
+        
         const newCount = this.model.incrementCorrectCount();
         this.view.updateCorrectCount(newCount);
         this.view.enableNewProblemButton();
         this.view.hideHint(); // Hide any existing hints when correct
     } else {
         this.view.showEquationIncorrect();
+        // For incorrectly identified right triangles, show the right angle marker
+        console.log("Controller: Showing right angle marker in handleNotRight");
+        
+        // Add a small delay to ensure UI updates properly
+        setTimeout(() => {
+            this.view.showRightAngleMarker();
+        }, 100);
+        
         // Show hint about Pythagorean theorem when wrong answer is chosen
         this.model.useHint();
         this.view.showHint(this.model.getTriesLeft());
