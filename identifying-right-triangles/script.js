@@ -1,3 +1,11 @@
+// Utility function to check if a number is odd or even
+function checkOddEven(number) {
+    if (typeof number !== 'number' || !Number.isInteger(number)) {
+        throw new Error('Input must be an integer');
+    }
+    return number % 2 === 0 ? 'Even' : 'Odd';
+}
+
 // <!-- view.js -->
 class PythagoreanView {
 constructor() {
@@ -125,7 +133,8 @@ if (showRightAngle && rightAnglePosition > 0) {
     // Create a traditional right angle square marker
     p.stroke('#20c997'); // Teal color
     p.strokeWeight(2); // Thinner lines for the symbol
-    p.noFill(); // No fill for cleaner look
+    p.noFill();
+    // p.fill('rgba(32, 201, 151, 0.3)'); // No fill for cleaner look
     // Draw right angle marker based on position
     
     
@@ -143,17 +152,19 @@ if (showRightAngle && rightAnglePosition > 0) {
         };
         const acUnitVec = {
             x: (x3 - x1) / acLength,
-            y: (y3 - y1) / acLength
+            y: (y3 - y1) / acLength 
         };
         
         // Draw the right angle square marker INSIDE the triangle
         p.beginShape();
-        p.vertex(x1, y1); // Start at vertex A
-        p.vertex(x1 + abUnitVec.x * size, y1 + abUnitVec.y * size); // Move along AB
-        p.vertex(x1 + abUnitVec.x * size + acUnitVec.x * size, 
-                y1 + abUnitVec.y * size + acUnitVec.y * size); // Move parallel to AC
-        p.vertex(x1 + acUnitVec.x * size, y1 + acUnitVec.y * size); // Move along AC
-        p.endShape(p.CLOSE);
+        // Start at the point along AC vector
+        p.vertex(x1 + acUnitVec.x * size, y1 + acUnitVec.y * size);
+        // Draw to the corner point
+        p.vertex(x1 + acUnitVec.x * size + abUnitVec.x * size, 
+                 y1 + acUnitVec.y * size + abUnitVec.y * size);
+        // Draw to the point along AB vector
+        p.vertex(x1 + abUnitVec.x * size, y1 + abUnitVec.y * size);
+    p.endShape(); 
     } 
     else if (rightAnglePosition === 2) { // Right angle at vertex B (bottom right)
         // Calculate unit vectors from B to A and B to C
@@ -1547,7 +1558,3 @@ handleNotRight() {
     }
 }
 }
-
-
-// <!-- CHECK FOR ONE INDEX FILE -->
-
