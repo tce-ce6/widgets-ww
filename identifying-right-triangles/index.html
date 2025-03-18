@@ -43,14 +43,16 @@
         </div>
         
         <!-- Hint section -->
+         <div class="hint-container-wrapper">
         <div id="hint-container" class="hint-container">
-            <h3 class="hint-title">Hint</h3>
+            <h6 class="hint-title">Hint</h6>
             <p id="hint-text">The two legs go on the left side. The longest length goes on the right side.</p>
             <!-- <p>It is a right triangle if and only if the sum of the squares of the legs are equal to the square of the longest side.</p> -->
             <div id="try-again" class="try-again">
                 <span class="try-again-icon">✕</span> Try again (<span id="tries-left">1</span> try left)
             </div>
         </div>
+    </div>
         
         <div class="button-container">
             <button id="check-button" class="btn">RIGHT TRIANGLE</button>
@@ -59,9 +61,9 @@
         
         <div id="feedback" class="feedback"></div>
         <div class="counter">Number correct: <span id="correct-count">0</span></div>
-        <button id="new-problem-button" class="btn new-problem-btn">NEW PROBLEM</button>
+        <span><button id="new-problem-button" class="btn new-problem-btn">NEW PROBLEM</button></span>
     </div>
-    <div style="bottom: 10px; position: absolute; left: 10px; font-size: 10px; width: 200px; height: auto; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+    <div style="bottom: 10px; position: absolute; right: 10px; font-size: 10px; width: 200px; height: auto; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
     <ol>
         <li><strike>Random triangle and side lable generation in p5</strike></li>
         <li><strike>Drag the side labels to input different length values from the triangle sides.</strike></li>

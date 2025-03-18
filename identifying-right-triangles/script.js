@@ -1018,6 +1018,11 @@ resetUI() {
         box.removeAttribute('data-filled');
         box.removeAttribute('data-source-id');
         box.removeAttribute('data-value');
+        
+        // Ensure drop boxes are draggable and interactive
+        box.setAttribute('draggable', 'true');
+        box.style.cursor = 'move';
+        box.style.pointerEvents = 'auto';
     });
     
     // Reset triangle sides to be draggable if they exist
@@ -1030,8 +1035,17 @@ resetUI() {
             side.classList.remove('used');
             side.style.backgroundColor = '#e9ecef';
             side.style.borderColor = '#ced4da';
+            side.style.pointerEvents = 'auto';
         }
     });
+    
+    // Re-enable answer buttons
+    this.checkButton.disabled = false;
+    this.notRightButton.disabled = false;
+    this.checkButton.style.opacity = '1';
+    this.notRightButton.style.opacity = '1';
+    this.checkButton.style.cursor = 'pointer';
+    this.notRightButton.style.cursor = 'pointer';
     
     // Clear feedback and calculation
     this.clearFeedback();
@@ -1096,6 +1110,36 @@ hideRightAngleMarker() {
     } else {
         console.error("p5sketch or hideRightAngleMarker method not available:", this.p5sketch);
     }
+}
+
+// Method to disable dragging of triangle side labels
+disableDragging() {
+    const triangleSides = [this.sideALabel, this.sideBLabel, this.sideCLabel];
+    triangleSides.forEach(side => {
+        if (side) {
+            side.setAttribute('draggable', 'false');
+            side.style.cursor = 'default';
+            side.style.pointerEvents = 'none'; // Prevent all interactions
+        }
+    });
+    
+    // Also disable drop zones
+    const dropBoxes = [this.dropBoxA, this.dropBoxB, this.dropBoxC];
+    dropBoxes.forEach(box => {
+        box.setAttribute('draggable', 'false');
+        box.style.cursor = 'default';
+        box.style.pointerEvents = 'none'; // Prevent all interactions
+    });
+}
+
+// Method to disable answer buttons
+disableAnswerButtons() {
+    this.checkButton.disabled = true;
+    this.notRightButton.disabled = true;
+    this.checkButton.style.opacity = '0.5';
+    this.notRightButton.style.opacity = '0.5';
+    this.checkButton.style.cursor = 'not-allowed';
+    this.notRightButton.style.cursor = 'not-allowed';
 }
 }
 
@@ -1386,6 +1430,9 @@ startNewProblem() {
     
     // Hide right angle marker for new problem
     this.view.hideRightAngleMarker();
+    
+    // Re-enable dragging functionality
+    this.enableDraggingAndButtons();
 }
 
 handleDrop(position, value) {
@@ -1476,25 +1523,23 @@ handleCheck() {
         
         // Show right angle marker for correct identification of right triangle
         console.log("Controller: Showing right angle marker in handleCheck");
-        
-        // Add a small delay to ensure UI updates properly
-        setTimeout(() => {
-            this.view.showRightAngleMarker();
-        }, 100);
+        this.view.showRightAngleMarker();
         
         const newCount = this.model.incrementCorrectCount();
         this.view.updateCorrectCount(newCount);
         this.view.enableNewProblemButton();
         this.view.hideHint(); // Hide any existing hints when correct
+        
+        // Disable dragging and answer buttons after correct answer
+        this.view.disableDragging();
+        this.view.disableAnswerButtons();
     } else {
         this.view.showEquationIncorrect();
-        // For incorrectly identified right triangles, show the right angle marker
-        console.log("Controller: Showing right angle marker in handleCheck");
-        
-        // Add a small delay to ensure UI updates properly
-        setTimeout(() => {
-            this.view.showRightAngleMarker();
-        }, 100);
+        // DO NOT show right angle marker here either
+        // Remove this code that was showing the marker incorrectly:
+        // setTimeout(() => {
+        //     this.view.showRightAngleMarker();
+        // }, 100);
         
         // Show hint about Pythagorean theorem when wrong answer is chosen
         this.model.useHint();
@@ -1541,20 +1586,51 @@ handleNotRight() {
         this.view.updateCorrectCount(newCount);
         this.view.enableNewProblemButton();
         this.view.hideHint(); // Hide any existing hints when correct
+        
+        // Disable dragging and answer buttons after correct answer
+        this.view.disableDragging();
+        this.view.disableAnswerButtons();
     } else {
         this.view.showEquationIncorrect();
-        // For incorrectly identified right triangles, show the right angle marker
-        console.log("Controller: Showing right angle marker in handleNotRight");
-        
-        // Add a small delay to ensure UI updates properly
-        setTimeout(() => {
-            this.view.showRightAngleMarker();
-        }, 100);
+        // DO NOT show right angle marker here either
+        // Remove this code that was showing the marker incorrectly:
+        // setTimeout(() => {
+        //     this.view.showRightAngleMarker();
+        // }, 100);
         
         // Show hint about Pythagorean theorem when wrong answer is chosen
         this.model.useHint();
         this.view.showHint(this.model.getTriesLeft());
         this.view.hintText.textContent = "It is a right triangle if and only if the sum of the squares of the legs are equal to the square of the longest side.";
     }
+}
+
+// Add this new method to the PythagoreanController class
+enableDraggingAndButtons() {
+    // Re-enable drag and drop interactions
+    const triangleSides = [this.view.sideALabel, this.view.sideBLabel, this.view.sideCLabel];
+    triangleSides.forEach(side => {
+        if (side) {
+            side.setAttribute('draggable', 'true');
+            side.style.cursor = 'grab';
+            side.style.pointerEvents = 'auto';
+        }
+    });
+    
+    // Re-enable drop zones
+    const dropBoxes = [this.view.dropBoxA, this.view.dropBoxB, this.view.dropBoxC];
+    dropBoxes.forEach(box => {
+        box.setAttribute('draggable', 'true');
+        box.style.cursor = 'move';
+        box.style.pointerEvents = 'auto';
+    });
+    
+    // Re-enable answer buttons
+    this.view.checkButton.disabled = false;
+    this.view.notRightButton.disabled = false;
+    this.view.checkButton.style.opacity = '1';
+    this.view.notRightButton.style.opacity = '1';
+    this.view.checkButton.style.cursor = 'pointer';
+    this.view.notRightButton.style.cursor = 'pointer';
 }
 }
