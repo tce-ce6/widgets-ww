@@ -1,0 +1,226 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f8f8;
+    padding: 2%;
+}
+
+.container {
+    max-height: 600px;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2%;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 2%;
+}
+
+.equation-item {
+    margin-left: 80px;
+}
+
+.exponent-color {
+    color: #457b9d;
+}
+
+.arrow {
+    display: inline-block;
+    transform: rotate(90deg);
+}
+
+.info {
+    color: #666;
+    margin-bottom: 2%;
+    padding-left: 25px;
+    position: relative;
+}
+
+.info::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #2a9d8f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    padding: 2%;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.3rem;
+}
+
+.left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1%;
+    min-width: 250px;
+}
+
+.right-section {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
+    margin-bottom: 5%;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    margin-bottom: 3%;
+}
+
+.slider-container label {
+    width: 25%;
+}
+
+.slider-container input {
+    flex: 1;
+}
+
+#canvas-container {
+    width: 100%;
+    position: relative;
+    padding-top: 66.67%; /* 9:6 aspect ratio (600/900 = 66.67%) */
+    overflow: hidden;
+}
+
+#canvas-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.equation-container {
+    align-self: flex-start;
+    margin-top: auto;
+    text-align: left;
+    width: 100%;
+}
+
+.equation {
+    margin-bottom: 2%;
+    font-size: 1.2em;
+}
+
+.result {
+    font-size: 1.2em;
+}
+
+.base-color {
+    color: #e63946;
+}
+
+sup {
+    color: #457b9d;
+}
+
+#calculation-result {
+    font-weight: bold;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .left-section,
+    .right-section {
+        width: 100%;
+    }
+    
+    .left-section {
+        flex-direction: column;
+        gap: 5%;
+    }
+    
+    .controls {
+        order: 1;
+        width: 100%;
+        margin-bottom: 5%;
+    }
+    
+    .right-section {
+        order: 2;
+        margin: 5% 0;
+    }
+    
+    .equation-container {
+        order: 3;
+        margin-top: 5%;
+        width: 100%;
+    }
+    
+    #canvas-container {
+        padding-top: 66.67%; /* Maintain aspect ratio on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1%;
+    }
+    
+    .container {
+        padding: 3%;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .info {
+        font-size: 0.9em;
+    }
+  
+    .slider-container label {
+        width: 20%;
+        font-size: 0.9em;
+    }
+    
+    .equation,
+    .result {
+        font-size: 1em;
+    }
+    
+    #canvas-container {
+        padding-top: 66.67%; /* Maintain same 9:6 aspect ratio on all screens */
+    }
+} 
