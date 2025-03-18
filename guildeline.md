@@ -1,6 +1,6 @@
 # Simulation Guidelines
 
-## 📂 Folder Structure
+## Folder Structure
 - **Folder Name:** Use lowercase with hyphens, e.g., `simulation-project`.
 - **Required Files:** Include the following files:
 ```
@@ -12,12 +12,12 @@
         └── dependency-version.min.js # Local dependency files
 ```
 
-## 🎨 Canvas Specifications
+## Canvas Specifications
 - **Aspect Ratio:** Maintain a fixed aspect ratio of `9:6` (e.g., 900x600 or 1200x800).
 - **Responsive Design:** The canvas should dynamically adjust its size to fit the screen while maintaining the aspect ratio.
 - **No Scrolling:** Ensure that the canvas and content do not introduce scrolling.
 
-## 📄 HTML Guidelines
+## HTML Guidelines
 - **Layout:** Create a **single-page layout** that includes a canvas and a to-do list.
 - **To-Do List:** 
   - Include a to-do list within `index.html` to track the simulation progress.
