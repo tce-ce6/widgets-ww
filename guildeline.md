@@ -3,12 +3,14 @@
 ## 📂 Folder Structure
 - **Folder Name:** Use lowercase with hyphens, e.g., `simulation-project`.
 - **Required Files:** Include the following files:
+```
     /project-name 
         ├── styles.css # Custom project-specific styles 
         ├── global.css # Global theme and reset styles 
         ├── script.js # Custom JavaScript for the simulation 
         ├── index.html # Main HTML file with simulation and to-do list  
         └── dependency-version.min.js # Local dependency files
+```
 
 ## 🎨 Canvas Specifications
 - **Aspect Ratio:** Maintain a fixed aspect ratio of `9:6` (e.g., 900x600 or 1200x800).
