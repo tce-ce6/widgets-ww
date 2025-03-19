@@ -610,7 +610,7 @@ class TimeView {
         
         // Create each arc with its own animation
         let currentStartMinutes = startMinutes;
-        const totalMinutesInTimeline = 10 * 60; // 12 hours
+        const totalMinutesInTimeline = 13 * 60; // 12 hours
         
         segments.forEach((segment, index) => {
             const segmentEndMinutes = currentStartMinutes + segment;
