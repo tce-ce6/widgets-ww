@@ -901,14 +901,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Make this box draggable now that it has content
                 this.setAttribute('draggable', 'true');
                 
-                // Check if all boxes now have content - if so, show the reset button
-                const allBoxesFilled = Array.from(document.querySelectorAll('.blank-box')).every(box => box.textContent !== '');
-                // if (allBoxesFilled) {
-                //     // document.getElementById('resetBtn').style.display = 'block';
-                // } else {
-                //     document.getElementById('resetBtn').style.display = 'none';
-                // }
-                
                 // Check solution after each drop
                 checkSolution();
             });
@@ -986,10 +978,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const blank2 = document.getElementById('blank2');
         const blank3 = document.getElementById('blank3');
         const fullSolution = document.getElementById('fullSolution');
-        console.log(fullSolution.innerHTML,"fullSolution")
+        
         // Clear any existing content in the solution div
         fullSolution.innerHTML = '';
-        fullSolution.innerText = ''
+        fullSolution.innerText = '';
+        
+        // Hide the solution container until we know it's correct
+        fullSolution.style.display = 'none';
+        
         // Check if all blanks are filled
         if (blank1.textContent && blank2.textContent && blank3.textContent) {
             // Check if d is in the first position
@@ -1002,7 +998,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Solution is correct if d is in first position and x2-x1 and y2-y1 are in other positions
             if (dInFirstPosition && xDiffAndYDiffInRemainingPositions) {
-                console.log('Application: Solution is correct, showing animation');
+                console.log('Application: Solution is correct, showing solution');
                 
                 // Show the full solution container
                 fullSolution.style.display = 'block';
@@ -1011,34 +1007,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 const firstTerm = blank2.dataset.formula === "x2-x1" ? "(x₂ - x₁)" : "(y₂ - y₁)";
                 const secondTerm = blank2.dataset.formula === "x2-x1" ? "(y₂ - y₁)" : "(x₂ - x₁)";
                 
-                // Create equation elements with dynamic order
+                // Create equations with MathJax
                 const equations = [
-                    { text: `d² = ${firstTerm}² + ${secondTerm}²`, color: '#d63384' },
-                    { text: `√d² = √(${firstTerm}² + ${secondTerm}²)`, color: '#000' },
-                    { text: `d = √(${firstTerm}² + ${secondTerm}²)`, color: '#d63384' }
+                    { tex: `d^2 = ${firstTerm}^2 + ${secondTerm}^2`, color: '#000' },
+                    { tex: `\\sqrt{d^2} = \\sqrt{${firstTerm}^2 + ${secondTerm}^2}`, color: '#000' },
+                    { tex: `d = \\sqrt{${firstTerm}^2 + ${secondTerm}^2}`, color: '#000' }
                 ];
-                console.log(equations,"equations")
-                // Add equations with animation
-                const paragraphs = fullSolution.querySelectorAll('p');
-                paragraphs.forEach(p => p.remove());
-                document.querySelectorAll('.equation-p').forEach(p => p.remove());
-                equations.forEach((eq, index) => {
+                
+                // Add equations
+                equations.forEach((eq) => {
+                    const p = document.createElement('p');
+                    p.classList.add('equation-p');
+                    p.style.color = eq.color;
                     
-                      console.log(eq,index,"Eq and index")
-                         // Remove any existing p tags
-                        const p = document.createElement('p');
-                        p.textContent = eq.text;
-                        p.style.color = eq.color;
-                        p.classList.add('equation-p'); // Add a class to easily select p tags
-                        p.style.opacity = '1';
-                        p.style.transform = 'translateY(20px)';
-                        p.style.transition = 'all 0.5s ease';
-                        console.log(p,"p tag in equations",fullSolution);
-                        fullSolution.appendChild(p);
-                        
-                        // Trigger animation
-                        ; // 100ms delay between each equation
+                    // Fix MathJax implementation
+                    const mathSpan = document.createElement('span');
+                    mathSpan.className = 'math';
+                    mathSpan.innerHTML = '\\(' + eq.tex + '\\)';
+                    p.appendChild(mathSpan);
+                    
+                    fullSolution.appendChild(p);
                 });
+                
+                // Render the equations with MathJax
+                if (window.MathJax) {
+                    MathJax.typesetPromise && MathJax.typesetPromise();
+                    MathJax.typeset && MathJax.typeset();
+                }
                 
                 // Add success styling to all boxes
                 blank1.classList.add('valid');
@@ -1048,10 +1043,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 blank3.classList.add('valid');
                 blank3.classList.remove('invalid');
                 
-                // Show the reset button after correct solution
-                setTimeout(() => {
-                    document.getElementById('resetBtn').style.display = 'block';
-                }, equations.length * 100);
+                // Show the reset button
+                document.getElementById('resetBtn').style.display = 'block';
             } else {
                 // Hide solution if it was previously shown but is now incorrect
                 fullSolution.style.display = 'none';

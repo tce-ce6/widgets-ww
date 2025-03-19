@@ -24,6 +24,11 @@ body {
     flex-wrap: wrap;
 }
 
+
+#fullSolution{
+    width: 100%;
+}
+
 .graph-container {
     flex: 1;
     min-width: 300px;
@@ -146,7 +151,7 @@ h2 {
 
 .triangle-side {
     background-color: #e9ecef;
-    border: 1px solid #ced4da;
+    /* border: 1px solid #ced4da; */
     border-radius: 3px;
     padding: 2px 5px;
     cursor: grab;
@@ -338,4 +343,16 @@ h2 {
         padding: 10px;
         min-width: 200px;
     }
-} 
+}
+
+.equation-p {
+  margin: 15px 0;
+  font-size: 15px;
+  /* text-align: center; */
+}
+
+/* Add some spacing to MathJax containers */
+.MathJax {
+  margin: 5px 0;
+}
+
