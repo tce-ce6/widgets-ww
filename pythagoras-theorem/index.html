@@ -17,16 +17,24 @@
     }
     
     .graph-container {
-      width: 60%;
+      width: 50%;
       position: relative;
-    }
+      float: right;
+      width: 40%;
+    position: relative;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  
     
-    .info-container {
-      width: 35%;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-    }
+  .info-container {
+    width: 35%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-right: auto;
+}
+
     
     canvas {
       border: 1px solid #ddd;
@@ -52,7 +60,7 @@
     
     .blank-box {
       display: inline-block;
-      width: 50px;
+      width: 70px;
       height: 24px;
       border: 2px dashed #6c63ff;
       margin: 0 5px;
@@ -60,6 +68,43 @@
       vertical-align: middle;
       line-height: 24px;
       border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .blank-box.highlight {
+      background-color: #e6e6ff;
+    }
+    
+    .blank-box.invalid {
+      background-color: #ffeeee;
+      border-color: #ff6b6b;
+    }
+    
+    .blank-box.valid {
+      background-color: #eeffee;
+      border-color: #28a745;
+    }
+    
+    /* Styling for the draggable elements */
+    .triangle-side {
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+      border-radius: 3px;
+      padding: 2px 5px;
+      cursor: grab;
+      transition: all 0.2s ease;
+    }
+    
+    .triangle-side.dragging {
+      opacity: 0.4;
+    }
+    
+    .triangle-side.used {
+      opacity: 0.5;
+      background-color: transparent;
+      border-color: transparent;
+      cursor: default;
     }
     
     .draggable {
@@ -115,7 +160,7 @@
   <div class="container">
     <div class="graph-container">
       <h2>Select two points on the graph to find the distance between them.</h2>
-      <canvas id="graphCanvas" width="500" height="500"></canvas>
+      <canvas id="graphCanvas" width="400" height="400"></canvas>
     </div>
     
     <div class="info-container">
@@ -128,16 +173,21 @@
         <p>Using Pythagorean Theorem:</p>
         <p><span class="blank-box" id="blank1"></span>² = <span class="blank-box" id="blank2"></span>² + <span class="blank-box" id="blank3"></span>²</p>
         
-        <p class="drag-instruction">Drag into the blanks:</p>
-        <div id="draggables">
-          <span class="draggable" draggable="true" data-formula="d">d</span>
-          <span class="draggable" draggable="true" data-formula="x2-x1">(x₂ - x₁)</span>
-          <span class="draggable" draggable="true" data-formula="y2-y1">(y₂ - y₁)</span>
+        <p class="drag-instruction">Drag sides from the triangle into the blanks</p>
+        
+        <div id="fullSolution" style="display: none; margin-top: 20px;">
+          <!-- <p style="color: #d63384;"><span style="border: 2px dashed #6c63ff; padding: 0 5px;">d</span>² = <span style="border: 2px dashed #6c63ff; padding: 0 5px;">(x₂ - x₁)</span>² + <span style="border: 2px dashed #6c63ff; padding: 0 5px;">(y₂ - y₁)</span>²</p> -->
+          <p style="color: #d63384;">d² = (x₂ - x₁)² + (y₂ - y₁)²</p>
+          <p>√d² = √(x₂ - x₁)² + (y₂ - y₁)²</p>
+          <p style="color: #d63384;">d = √(x₂ - x₁)² + (y₂ - y₁)²</p>
         </div>
       </div>
       
       <button id="resetBtn" class="btn" style="display: none;">TRY OTHER POINTS</button>
     </div>
+  </div>
+  <div id >
+
   </div>
 
   <script>
@@ -157,6 +207,12 @@
     let pointA = null;
     let pointB = null;
     let pointC = null;
+    
+    // Enable dragging of the side defined by (x2-x1) and (y2-y1)
+    let isDraggingSide = false;
+    let dragStartX, dragStartY;
+    let currentDraggedFormula = null;
+    let isDraggingFromCanvas = false;
     
     // Initialize graph
     function drawGrid() {
@@ -221,19 +277,69 @@
       ctx.fillText('y', originX + 10, 15);
     }
     
-    // Create predefined points
-    function createPredefinedPoints() {
-      preDefinedPoints = [
-        { gridX: -2, gridY: 3 },
-        { gridX: 3, gridY: 1 },
-        { gridX: -2, gridY: -3 },
-        { gridX: 4, gridY: -2 }
-      ];
+    // Create predefined points with unique coordinates
+    function createRandomPoints() {
+      preDefinedPoints = [];
+      const usedX = new Set();
+      const usedY = new Set();
+      const minDistance = 2; // Minimum distance between points
+      
+      // Create 4 random points with unique coordinates
+      for (let i = 0; i < 4; i++) {
+        let randomX, randomY;
+        let validPoint = false;
+        
+        while (!validPoint) {
+          // Generate unique X coordinate (avoiding x=0 axis)
+          do {
+            randomX = Math.floor(Math.random() * 9) - 4; // Between -4 and 4
+          } while (usedX.has(randomX) || randomX === 0);
+          
+          // Generate unique Y coordinate (avoiding y=0 axis)
+          do {
+            randomY = Math.floor(Math.random() * 9) - 4; // Between -4 and 4
+          } while (usedY.has(randomY) || randomY === 0);
+          
+          // Check if the new point would form a line with any two existing points
+          validPoint = true;
+          
+          // Check if this point would create a line with any two existing points
+          if (preDefinedPoints.length >= 2) {
+            for (let j = 0; j < preDefinedPoints.length - 1; j++) {
+              for (let k = j + 1; k < preDefinedPoints.length; k++) {
+                if (areCollinear(
+                    preDefinedPoints[j].gridX, preDefinedPoints[j].gridY,
+                    preDefinedPoints[k].gridX, preDefinedPoints[k].gridY,
+                    randomX, randomY)) {
+                  validPoint = false;
+                  break;
+                }
+              }
+              if (!validPoint) break;
+            }
+          }
+        }
+        
+        // Track used coordinates
+        usedX.add(randomX);
+        usedY.add(randomY);
+        
+        // Add to points array
+        preDefinedPoints.push({ gridX: randomX, gridY: randomY });
+      }
       
       // Draw each point
       preDefinedPoints.forEach((point) => {
         drawPoint(point.gridX, point.gridY, '#6c63ff');
       });
+    }
+    
+    // Helper function to check if three points are collinear
+    function areCollinear(x1, y1, x2, y2, x3, y3) {
+      // Calculate the area of the triangle formed by three points
+      // If area is zero, points are collinear
+      const area = Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
+      return area < 0.0001; // Using a small threshold for floating-point comparison
     }
     
     // Draw a point on the graph
@@ -295,68 +401,314 @@
         ctx.lineTo(pointB.canvasX, pointB.canvasY);
         ctx.stroke();
         
-        // Label the distances
-        ctx.font = '14px Arial';
-        ctx.fillStyle = '#000';
-        
-        // Label horizontal distance
-        const xMid = (pointA.canvasX + pointC.canvasX) / 2;
-        ctx.fillText('x₂ - x₁', xMid, pointA.canvasY + 20);
-        
-        // Label vertical distance
-        const yMid = (pointB.canvasY + pointC.canvasY) / 2;
-        ctx.fillText('y₂ - y₁', pointB.canvasX - 40, yMid);
-        
-        // Label hypotenuse
-        const dMid = (pointA.canvasX + pointB.canvasX) / 2;
-        const dMidY = (pointA.canvasY + pointB.canvasY) / 2;
-        ctx.fillStyle = '#d63384';
-        ctx.fillText('d', dMid + 10, dMidY - 10);
+        // Label the distances with DIV overlays for dragging
+        createDraggableLabels();
         
         // Update the display
         document.getElementById('formula').style.display = 'block';
-        document.getElementById('resetBtn').style.display = 'block';
+        // Don't display reset button at start
+        document.getElementById('resetBtn').style.display = 'none';
       }
     }
     
-    // Setup drag and drop functionality
-    function setupDragAndDrop() {
-      const draggables = document.querySelectorAll('.draggable');
+    // Create draggable labels for the triangle sides
+    function createDraggableLabels() {
+      // Create container for draggable labels if it doesn't exist
+      if (!document.getElementById('triangle-labels')) {
+        const container = document.createElement('div');
+        container.id = 'triangle-labels';
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.pointerEvents = 'none';
+        document.querySelector('.graph-container').appendChild(container);
+      }
+      
+      const container = document.getElementById('triangle-labels');
+      container.innerHTML = ''; // Clear previous labels
+      
+      // Get triangle positions
+      const xA = pointA.canvasX;
+      const yA = pointA.canvasY;
+      const xB = pointB.canvasX;
+      const yB = pointB.canvasY;
+      const xC = pointC.canvasX;
+      const yC = pointC.canvasY;
+      
+      // Exact positioning based on reference image
+      
+      // Create hypotenuse label (d) - centered on hypotenuse
+      const dLabel = document.createElement('div');
+      dLabel.id = 'd-side-label';
+      dLabel.className = 'triangle-side';
+      dLabel.textContent = 'd';
+      dLabel.dataset.formula = 'd';
+      dLabel.style.position = 'absolute';
+      
+      // Position the 'd' label exactly in the middle of the hypotenuse
+      const xHypMid = (xA + xB) / 2;
+      const yHypMid = (yA + yB) / 2;
+      
+      // Calculate a slight offset perpendicular to the hypotenuse
+      const hypAngle = Math.atan2(yB - yA, xB - xA);
+      const perpAngle = hypAngle + Math.PI / 2; // perpendicular angle
+      const offsetX = Math.cos(perpAngle) * 12;
+      const offsetY = Math.sin(perpAngle) * 12;
+      
+      dLabel.style.left = (xHypMid + offsetX - 5) + 'px';
+      dLabel.style.top = (yHypMid + offsetY - 10) + 'px';
+      dLabel.style.color = '#d63384';
+      dLabel.style.textAlign = 'center';
+      dLabel.style.width = '20px';
+      dLabel.style.pointerEvents = 'auto';
+      dLabel.setAttribute('draggable', 'true');
+      container.appendChild(dLabel);
+      
+      // Create horizontal side label (x₂ - x₁)
+      const xLabel = document.createElement('div');
+      xLabel.id = 'x-side-label';
+      xLabel.className = 'triangle-side';
+      xLabel.textContent = '(x₂ - x₁)';
+      xLabel.dataset.formula = 'x2-x1';
+      xLabel.style.position = 'absolute';
+      
+      // Position below the horizontal line
+      const xMid = (xA + xC) / 2;
+      xLabel.style.left = (xMid - 30) + 'px';
+      xLabel.style.top = (yA + 15) + 'px';
+      xLabel.style.color = '#3b82f6';
+      xLabel.style.textAlign = 'center';
+      xLabel.style.width = '60px';
+      xLabel.style.pointerEvents = 'auto';
+      xLabel.setAttribute('draggable', 'true');
+      container.appendChild(xLabel);
+      
+      // Create vertical side label (y₂ - y₁)
+      const yLabel = document.createElement('div');
+      yLabel.style.color = '#3b82f6';
+      yLabel.style.textAlign = 'center';
+      yLabel.style.width = '60px';
+      yLabel.style.pointerEvents = 'auto';
+      yLabel.setAttribute('draggable', 'true');
+      container.appendChild(yLabel);
+      
+      // Add event listeners to the labels
+      setupDragForLabels();
+    }
+    
+    // Set up drag events for the triangle side labels
+    function setupDragForLabels() {
+      const labels = document.querySelectorAll('.triangle-side');
       const dropTargets = document.querySelectorAll('.blank-box');
       
-      let draggedElement = null;
-      
-      draggables.forEach(draggable => {
-        draggable.addEventListener('dragstart', function(e) {
-          draggedElement = this;
-          e.dataTransfer.setData('text/plain', this.dataset.formula);
-          setTimeout(() => {
-            this.style.opacity = '0.4';
-          }, 0);
+      labels.forEach(label => {
+        label.addEventListener('dragstart', function(e) {
+          e.dataTransfer.setData('text/plain', this.textContent);
+          e.dataTransfer.setData('formula', this.dataset.formula);
+          e.dataTransfer.setData('source-id', this.id);
+          this.classList.add('dragging');
+          
+          // Show the reset button when dragging starts
+          document.getElementById('resetBtn').style.display = 'block';
         });
         
-        draggable.addEventListener('dragend', function() {
-          this.style.opacity = '1';
+        label.addEventListener('dragend', function() {
+          this.classList.remove('dragging');
         });
       });
       
-      dropTargets.forEach(target => {
-        target.addEventListener('dragover', function(e) {
-          e.preventDefault();
-          this.style.backgroundColor = '#e6e6ff';
-        });
-        
-        target.addEventListener('dragleave', function() {
-          this.style.backgroundColor = '';
-        });
-        
-        target.addEventListener('drop', function(e) {
-          e.preventDefault();
-          this.style.backgroundColor = '';
+      // Set up drop targets (formula boxes)
+      dropTargets.forEach((box, index) => {
+        box.addEventListener('dragover', function(e) {
+          const formula = e.dataTransfer.types.includes('formula') ? 
+                         e.dataTransfer.getData('formula') : '';
           
-          if (draggedElement) {
-            this.textContent = draggedElement.textContent;
-            this.dataset.formula = draggedElement.dataset.formula;
+          // Only allow d in the first box
+          if (formula === 'd' && index !== 0) {
+            // Don't allow d in boxes other than the first
+            this.classList.add('invalid');
+            this.classList.remove('highlight');
+            e.preventDefault();
+            return;
+          }
+                         
+          // Check if this would be the correct position
+          let isCorrectPosition = false;
+          
+          // "d" belongs in first box
+          if (index === 0 && formula === 'd') {
+            isCorrectPosition = true;
+          } 
+          // "x2-x1" belongs in second box
+          else if (index === 1 && formula === 'x2-x1') {
+            isCorrectPosition = true;
+          }
+          // "y2-y1" belongs in third box
+          else if (index === 2 && formula === 'y2-y1') {
+            isCorrectPosition = true;
+          }
+          
+          // Always allow drop but with different visual feedback
+          e.preventDefault();
+          if (isCorrectPosition) {
+            this.classList.add('highlight');
+            this.classList.remove('invalid');
+          } else {
+            // Show that this isn't the ideal position but still allow drop
+            this.classList.add('invalid');
+            this.classList.remove('highlight');
+          }
+          
+          // Disable the reset button when dragging over a box
+          document.getElementById('resetBtn').disabled = false;
+          document.getElementById('resetBtn').style.opacity = '0.5';
+          document.getElementById('resetBtn').style.cursor = 'not-allowed';
+        });
+        
+        box.addEventListener('dragleave', function() {
+          this.classList.remove('highlight');
+          this.classList.remove('invalid');
+        });
+        
+        box.addEventListener('drop', function(e) {
+          e.preventDefault();
+          this.classList.remove('highlight');
+          this.classList.remove('invalid');
+          
+          const data = e.dataTransfer.getData('text/plain');
+          const formula = e.dataTransfer.getData('formula');
+          const sourceId = e.dataTransfer.getData('source-id');
+          const source = document.getElementById(sourceId);
+          
+          // Do not allow 'd' in any box other than the first one
+          if (formula === 'd' && index !== 0) {
+            // Show rejection feedback
+            this.classList.add('invalid');
+            setTimeout(() => {
+              this.classList.remove('invalid');
+            }, 800);
+            return;
+          }
+          
+          // Check if this is the correct position
+          let isCorrectPosition = false;
+          
+          // "d" belongs in first box
+          if (index === 0 && formula === 'd') {
+            isCorrectPosition = true;
+          } 
+          // "x2-x1" belongs in second box
+          else if (index === 1 && formula === 'x2-x1') {
+            isCorrectPosition = true;
+          }
+          // "y2-y1" belongs in third box
+          else if (index === 2 && formula === 'y2-y1') {
+            isCorrectPosition = true;
+          }
+          
+          // If there was already content in this box, free it up
+          if (this.textContent) {
+            const previousSourceId = this.dataset.sourceId;
+            if (previousSourceId) {
+              const previousSource = document.getElementById(previousSourceId);
+              if (previousSource) {
+                previousSource.classList.remove('used');
+              }
+            }
+          }
+          
+          // Always accept the drop, but with different styling
+          this.textContent = data;
+          this.dataset.formula = formula;
+          this.dataset.sourceId = sourceId;
+          
+          if (isCorrectPosition) {
+            this.classList.add('valid');
+            this.classList.remove('invalid');
+          } else {
+            // Indicate this is in the wrong position but still allow it
+            this.classList.add('invalid');
+            this.classList.remove('valid');
+          }
+          
+          // Update the source label
+          if (source) {
+            source.classList.add('used');
+          }
+          
+          // Make this box draggable now that it has content
+          this.setAttribute('draggable', 'true');
+          
+          // Make the reset button clickable after a value has been dropped
+          document.getElementById('resetBtn').disabled = false;
+          document.getElementById('resetBtn').style.opacity = '1';
+          document.getElementById('resetBtn').style.cursor = 'pointer';
+          
+          // Check if solution is complete
+          checkSolution();
+        });
+        
+        // Make the boxes themselves draggable when they have content
+        box.addEventListener('dragstart', function(e) {
+          if (!this.textContent) {
+            e.preventDefault();
+            return;
+          }
+          
+          e.dataTransfer.setData('text/plain', this.textContent);
+          e.dataTransfer.setData('formula', this.dataset.formula);
+          e.dataTransfer.setData('source-id', this.dataset.sourceId);
+          e.dataTransfer.setData('from-box', 'true');
+          e.dataTransfer.setData('box-id', this.id);
+          
+          this.classList.add('dragging');
+        });
+        
+        box.addEventListener('dragend', function() {
+          this.classList.remove('dragging');
+          
+          // If this was moved to another box, clear this one
+          const boxId = this.id;
+          const allBoxesWithSameSourceId = document.querySelectorAll(`.blank-box[data-source-id="${this.dataset.sourceId}"]`);
+          
+          // If there's more than one box with the same source ID, clear this one
+          if (allBoxesWithSameSourceId.length > 1) {
+            for (const otherBox of allBoxesWithSameSourceId) {
+              if (otherBox.id !== boxId) {
+                // Another box now has this value, so clear this one
+                this.textContent = '';
+                this.dataset.formula = '';
+                this.dataset.sourceId = '';
+                this.classList.remove('valid');
+                this.classList.remove('invalid');
+                this.setAttribute('draggable', 'false');
+                break;
+              }
+            }
+          }
+        });
+        
+        // Double-click to clear box
+        box.addEventListener('dblclick', function() {
+          if (this.textContent) {
+            const sourceId = this.dataset.sourceId;
+            const source = document.getElementById(sourceId);
+            
+            // Clear the box
+            this.textContent = '';
+            this.dataset.formula = '';
+            this.dataset.sourceId = '';
+            this.classList.remove('valid');
+            this.classList.remove('invalid');
+            this.setAttribute('draggable', 'false');
+            
+            // Reset the source label
+            if (source) {
+              source.classList.remove('used');
+            }
+            
+            // Check solution again in case it was previously complete
+            checkSolution();
           }
         });
       });
@@ -426,17 +778,116 @@
       document.querySelectorAll('.blank-box').forEach(box => {
         box.textContent = '';
         box.dataset.formula = '';
+        box.dataset.sourceId = '';
+        box.classList.remove('valid');
+        box.classList.remove('invalid');
       });
+      
+      // Remove triangle labels
+      const labelContainer = document.getElementById('triangle-labels');
+      if (labelContainer) {
+        labelContainer.innerHTML = '';
+      }
+      
+      // Hide the full solution
+      document.getElementById('fullSolution').style.display = 'none';
       
       // Redraw
       drawGrid();
-      createPredefinedPoints();
+      createRandomPoints();
     });
+    
+    // Function to check if the solution is correct
+    function checkSolution() {
+      const blank1 = document.getElementById('blank1');
+      const blank2 = document.getElementById('blank2');
+      const blank3 = document.getElementById('blank3');
+      
+      // Check if all blanks are filled
+      if (blank1.textContent && blank2.textContent && blank3.textContent) {
+        // Check if solution is correct (d² = (x₂-x₁)² + (y₂-y₁)²)
+        if (blank1.dataset.formula === "d" && 
+            blank2.dataset.formula === "x2-x1" && 
+            blank3.dataset.formula === "y2-y1") {
+          // Show the full solution
+          document.getElementById('fullSolution').style.display = 'block';
+          
+          // Add success styling to all boxes
+          blank1.classList.add('valid');
+          blank1.classList.remove('invalid');
+          blank2.classList.add('valid');
+          blank2.classList.remove('invalid');
+          blank3.classList.add('valid');
+          blank3.classList.remove('invalid');
+        } else {
+          // Hide solution if it was previously shown but is now incorrect
+          document.getElementById('fullSolution').style.display = 'none';
+          
+          // Update validation styling for each box
+          if (blank1.dataset.formula === "d") {
+            blank1.classList.add('valid');
+            blank1.classList.remove('invalid');
+          } else {
+            blank1.classList.add('invalid');
+            blank1.classList.remove('valid');
+          }
+          
+          if (blank2.dataset.formula === "x2-x1") {
+            blank2.classList.add('valid');
+            blank2.classList.remove('invalid');
+          } else {
+            blank2.classList.add('invalid');
+            blank2.classList.remove('valid');
+          }
+          
+          if (blank3.dataset.formula === "y2-y1") {
+            blank3.classList.add('valid');
+            blank3.classList.remove('invalid');
+          } else {
+            blank3.classList.add('invalid');
+            blank3.classList.remove('valid');
+          }
+        }
+      } else {
+        // Hide the solution if not all boxes are filled
+        document.getElementById('fullSolution').style.display = 'none';
+        
+        // Update validation for partially filled boxes
+        if (blank1.textContent) {
+          if (blank1.dataset.formula === "d") {
+            blank1.classList.add('valid');
+            blank1.classList.remove('invalid');
+          } else {
+            blank1.classList.add('invalid');
+            blank1.classList.remove('valid');
+          }
+        }
+        
+        if (blank2.textContent) {
+          if (blank2.dataset.formula === "x2-x1") {
+            blank2.classList.add('valid');
+            blank2.classList.remove('invalid');
+          } else {
+            blank2.classList.add('invalid');
+            blank2.classList.remove('valid');
+          }
+        }
+        
+        if (blank3.textContent) {
+          if (blank3.dataset.formula === "y2-y1") {
+            blank3.classList.add('valid');
+            blank3.classList.remove('invalid');
+          } else {
+            blank3.classList.add('invalid');
+            blank3.classList.remove('valid');
+          }
+        }
+      }
+    }
     
     // Initialize
     drawGrid();
-    createPredefinedPoints();
-    setupDragAndDrop();
+    createRandomPoints();
   </script>
 </body>
 </html>
