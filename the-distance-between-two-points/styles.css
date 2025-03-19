@@ -12,30 +12,43 @@ body {
     justify-content: space-between;
     background-color: #ffffff;
 }
+#blank1{
+    width: 20px;
+    }
 
 .container {
     display: flex;
-    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     gap: 20px;
+    flex-wrap: wrap;
+}
+
+
+#fullSolution{
+    width: 100%;
 }
 
 .graph-container {
-    width: 40%;
+    flex: 1;
+    min-width: 300px;
+    max-height: 600px;
     position: relative;
-    margin-left: auto;
-    margin-right: 0;
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
 .info-container {
     width: 35%;
+    min-width: 300px;
+    max-height: 600px;
+    overflow-y: auto;
     padding: 20px;
     background-color: hwb(0 100% 0%);
     border-radius: 8px;
-    margin-right: auto;
 }
 
 #graph {
@@ -138,7 +151,7 @@ h2 {
 
 .triangle-side {
     background-color: #e9ecef;
-    border: 1px solid #ced4da;
+    /* border: 1px solid #ced4da; */
     border-radius: 3px;
     padding: 2px 5px;
     cursor: grab;
@@ -237,8 +250,8 @@ h2 {
 }
 
 .jxgbox {
-    width: 100%;
-    height: 500px;
+    width: 100% !important;
+    height: 450px !important;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 20px;
@@ -289,4 +302,57 @@ h2 {
     font-family: Arial, sans-serif;
     font-size: 12px;
     user-select: none;
-} 
+}
+
+@media screen and (max-width: 900px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .graph-container,
+    .info-container {
+        width: 100%;
+        margin: 0;
+        max-height: none;
+        min-width: 250px;
+    }
+    
+    .graph-container {
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+    
+    .jxgbox {
+        height: 350px !important;
+        min-width: 250px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .jxgbox {
+        height: 300px !important;
+    }
+    
+    .graph-container,
+    .info-container {
+        padding: 10px;
+        min-width: 200px;
+    }
+}
+
+.equation-p {
+  margin: 15px 0;
+  font-size: 15px;
+  /* text-align: center; */
+}
+
+/* Add some spacing to MathJax containers */
+.MathJax {
+  margin: 5px 0;
+}
+

@@ -135,7 +135,7 @@ class TimeModel {
             minDuration: 30,
             maxDuration: 180,
             minuteStep: 5, // 5-minute increments
-            hoursInTimeline: 10,
+            hoursInTimeline: 13,
             minutesPerHour: 60,
             timelineStartHour: 1 // Timeline always starts at 1 PM
         };
@@ -256,7 +256,7 @@ class TimeModel {
 
         if (hours >= 12) {
             if (hours > 12) adjustedHours = hours - 12;
-            if (hours >= 24) {
+            if (hours >= 12) {
                 period = 'AM';
                 if (adjustedHours > 12) adjustedHours -= 12;
             }
@@ -610,7 +610,7 @@ class TimeView {
         
         // Create each arc with its own animation
         let currentStartMinutes = startMinutes;
-        const totalMinutesInTimeline = 10 * 60; // 12 hours
+        const totalMinutesInTimeline = 13 * 60; // 12 hours
         
         segments.forEach((segment, index) => {
             const segmentEndMinutes = currentStartMinutes + segment;
