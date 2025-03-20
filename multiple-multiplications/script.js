@@ -233,36 +233,196 @@ class ExponentView {
                 pattern.push({ x: 1, y: 1 });    // Bottom right
                 return pattern;
             }
-            
+
+
+            if (exponent === 2) {
+                // Exponent 2 - Balanced triangle
+                pattern.push({ x: 0, y: 0 }); // Top
+        
+                pattern.push({ x: -1, y: 1 });
+                pattern.push({ x: 1, y: 1 });
+        
+                pattern.push({ x: -2, y: 3 });
+                pattern.push({ x: -3, y: 4});
+                pattern.push({ x: -1, y:4 });
+        
+                pattern.push({ x: 2, y: 3 });
+                pattern.push({ x: 3, y: 4});
+                pattern.push({ x: 1, y: 4});
+        
+                return pattern;
+            }
+
+
+            if (exponent === 3) {
+                // Exponent 2 - Balanced triangle
+                pattern.push({ x: 0, y: 0 }); // Top
+        
+                pattern.push({ x: -1, y: 1 });
+                pattern.push({ x: 1, y: 1 });
+        
+                pattern.push({ x: -2, y: 3 });
+                pattern.push({ x: -3, y: 4});
+                pattern.push({ x: -1, y:4 });
+        
+                pattern.push({ x: 2, y: 3 });
+                pattern.push({ x: 3, y: 4});
+                pattern.push({ x: 1, y: 4});
+
+
+                pattern.push({ x: -4, y: 6 }); // Top
+        
+                pattern.push({ x: -5, y: 7 });
+                pattern.push({ x: -3, y: 7 });
+        
+                pattern.push({ x: -6, y: 9 });
+                pattern.push({ x: -7, y: 10});
+                pattern.push({ x: -5, y:10 });
+        
+                pattern.push({ x: -2, y: 9 });
+                pattern.push({ x: -3, y: 10});
+                pattern.push({ x: -1, y:10 });
+
+
+                pattern.push({ x: 4, y: 6 }); // Top
+        
+                pattern.push({ x: 5, y: 7 });
+                pattern.push({ x: 3, y: 7 });
+
+                pattern.push({ x: 2, y: 9 });
+                pattern.push({ x: 3, y: 10});
+                pattern.push({ x: 1, y:10 });
+        
+                pattern.push({ x: 6, y: 9 });
+                pattern.push({ x: 7, y: 10});
+                pattern.push({ x: 5, y:10 });
+        
+                
+        
+                return pattern;
+            }
+            if (exponent === 4) {
+                // Pattern #1 - Top of the large triangle
+                pattern.push({ x: 0, y: 0 }); // Top
+                pattern.push({ x: -1, y: 1 }); pattern.push({ x: 1, y: 1 });
+                pattern.push({ x: -2, y: 3 }); pattern.push({ x: -3, y: 4}); pattern.push({ x: -1, y:4 });
+                pattern.push({ x: 2, y: 3 }); pattern.push({ x: 3, y: 4}); pattern.push({ x: 1, y: 4});
+                pattern.push({ x: -4, y: 6 }); // Top
+                pattern.push({ x: -5, y: 7 }); pattern.push({ x: -3, y: 7 });
+                pattern.push({ x: -6, y: 9 }); pattern.push({ x: -7, y: 10}); pattern.push({ x: -5, y:10 });
+                pattern.push({ x: -2, y: 9 }); pattern.push({ x: -3, y: 10}); pattern.push({ x: -1, y:10 });
+                pattern.push({ x: 4, y: 6 }); // Top
+                pattern.push({ x: 5, y: 7 }); pattern.push({ x: 3, y: 7 });
+                pattern.push({ x: 2, y: 9 }); pattern.push({ x: 3, y: 10}); pattern.push({ x: 1, y:10 });
+                pattern.push({ x: 6, y: 9 }); pattern.push({ x: 7, y: 10}); pattern.push({ x: 5, y:10 });
+                
+                // Pattern #2 - Bottom left of the large triangle (shifted down and left)
+                const offsetX = -8;
+                const offsetY = 13;
+                
+                pattern.push({ x: 0 + offsetX, y: 0 + offsetY }); // Top
+                pattern.push({ x: -1 + offsetX, y: 1 + offsetY }); pattern.push({ x: 1 + offsetX, y: 1 + offsetY });
+                pattern.push({ x: -2 + offsetX, y: 3 + offsetY }); pattern.push({ x: -3 + offsetX, y: 4 + offsetY}); pattern.push({ x: -1 + offsetX, y: 4 + offsetY });
+                pattern.push({ x: 2 + offsetX, y: 3 + offsetY }); pattern.push({ x: 3 + offsetX, y: 4 + offsetY}); pattern.push({ x: 1 + offsetX, y: 4 + offsetY});
+                pattern.push({ x: -4 + offsetX, y: 6 + offsetY }); // Top
+                pattern.push({ x: -5 + offsetX, y: 7 + offsetY }); pattern.push({ x: -3 + offsetX, y: 7 + offsetY });
+                pattern.push({ x: -6 + offsetX, y: 9 + offsetY }); pattern.push({ x: -7 + offsetX, y: 10 + offsetY}); pattern.push({ x: -5 + offsetX, y: 10 + offsetY });
+                pattern.push({ x: -2 + offsetX, y: 9 + offsetY }); pattern.push({ x: -3 + offsetX, y: 10 + offsetY}); pattern.push({ x: -1 + offsetX, y: 10 + offsetY });
+                pattern.push({ x: 4 + offsetX, y: 6 + offsetY }); // Top
+                pattern.push({ x: 5 + offsetX, y: 7 + offsetY }); pattern.push({ x: 3 + offsetX, y: 7 + offsetY });
+                pattern.push({ x: 2 + offsetX, y: 9 + offsetY }); pattern.push({ x: 3 + offsetX, y: 10 + offsetY}); pattern.push({ x: 1 + offsetX, y: 10 + offsetY });
+                pattern.push({ x: 6 + offsetX, y: 9 + offsetY }); pattern.push({ x: 7 + offsetX, y: 10 + offsetY}); pattern.push({ x: 5 + offsetX, y: 10 + offsetY });
+                
+                // Pattern #3 - Bottom right of the large triangle (shifted down and right)
+                const offsetX2 = 8;
+                const offsetY2 = 13;
+                
+                pattern.push({ x: 0 + offsetX2, y: 0 + offsetY2 }); // Top
+                pattern.push({ x: -1 + offsetX2, y: 1 + offsetY2 }); pattern.push({ x: 1 + offsetX2, y: 1 + offsetY2 });
+                pattern.push({ x: -2 + offsetX2, y: 3 + offsetY2 }); pattern.push({ x: -3 + offsetX2, y: 4 + offsetY2}); pattern.push({ x: -1 + offsetX2, y: 4 + offsetY2 });
+                pattern.push({ x: 2 + offsetX2, y: 3 + offsetY2 }); pattern.push({ x: 3 + offsetX2, y: 4 + offsetY2}); pattern.push({ x: 1 + offsetX2, y: 4 + offsetY2});
+                pattern.push({ x: -4 + offsetX2, y: 6 + offsetY2 }); // Top
+                pattern.push({ x: -5 + offsetX2, y: 7 + offsetY2 }); pattern.push({ x: -3 + offsetX2, y: 7 + offsetY2 });
+                pattern.push({ x: -6 + offsetX2, y: 9 + offsetY2 }); pattern.push({ x: -7 + offsetX2, y: 10 + offsetY2}); pattern.push({ x: -5 + offsetX2, y: 10 + offsetY2 });
+                pattern.push({ x: -2 + offsetX2, y: 9 + offsetY2 }); pattern.push({ x: -3 + offsetX2, y: 10 + offsetY2}); pattern.push({ x: -1 + offsetX2, y: 10 + offsetY2 });
+                pattern.push({ x: 4 + offsetX2, y: 6 + offsetY2 }); // Top
+                pattern.push({ x: 5 + offsetX2, y: 7 + offsetY2 }); pattern.push({ x: 3 + offsetX2, y: 7 + offsetY2 });
+                pattern.push({ x: 2 + offsetX2, y: 9 + offsetY2 }); pattern.push({ x: 3 + offsetX2, y: 10 + offsetY2}); pattern.push({ x: 1 + offsetX2, y: 10 + offsetY2 });
+                pattern.push({ x: 6 + offsetX2, y: 9 + offsetY2 }); pattern.push({ x: 7 + offsetX2, y: 10 + offsetY2}); pattern.push({ x: 5 + offsetX2, y: 10 + offsetY2 });
+                
+                return pattern;
+            }
+            if (exponent === 5) {
+                const basePattern = [
+                    { x: 0, y: 0 },
+                    { x: -1, y: 1 }, { x: 1, y: 1 },
+                    { x: -2, y: 3 }, { x: -3, y: 4 }, { x: -1, y: 4 },
+                    { x: 2, y: 3 }, { x: 3, y: 4 }, { x: 1, y: 4 },
+                    { x: -4, y: 6 },
+                    { x: -5, y: 7 }, { x: -3, y: 7 },
+                    { x: -6, y: 9 }, { x: -7, y: 10 }, { x: -5, y: 10 },
+                    { x: -2, y: 9 }, { x: -3, y: 10 }, { x: -1, y: 10 },
+                    { x: 4, y: 6 },
+                    { x: 5, y: 7 }, { x: 3, y: 7 },
+                    { x: 2, y: 9 }, { x: 3, y: 10 }, { x: 1, y: 10 },
+                    { x: 6, y: 9 }, { x: 7, y: 10 }, { x: 5, y: 10 }
+                ];
+
+                const mainOffsets = [
+                    { x: 0, y: 0 },              // Top position
+                    { x: -20, y: 30 },           // Bottom left of large triangle
+                    { x: 20, y: 30 }             // Bottom right of large triangle
+                ];
+        
+                // Sub-pattern offsets within each main offset
+                const subOffsets = [
+                    { x: 0, y: 0 },              // Center sub-pattern
+                    { x: -10, y: 15 },           // Bottom left sub-pattern
+                    { x: 10, y: 15 }             // Bottom right sub-pattern
+                ];
+        
+                mainOffsets.forEach(mainOffset => {
+                    subOffsets.forEach(subOffset => {
+                        basePattern.forEach(point => {
+                            pattern.push({
+                                x: point.x + mainOffset.x + subOffset.x,
+                                y: point.y + mainOffset.y + subOffset.y
+                            });
+                        });
+                    });
+                });
+                
+            return pattern;
+            }
             // Create a recursive Sierpinski triangle pattern
-            const createSierpinskiTriangle = (x, y, size, level) => {
-                if (level === 1) {
-                    // Base case: Draw a triangle with 3 points
-                    pattern.push({ x, y });                        // Top
-                    pattern.push({ x: x - size, y: y + size });    // Bottom left
-                    pattern.push({ x: x + size, y: y + size });    // Bottom right
-                    return;
-                }
+            // const createSierpinskiTriangle = (x, y, size, level) => {
+            //     if (level === 1) {
+            //         // Base case: Draw a triangle with 3 points
+            //         pattern.push({ x, y });                        // Top
+            //         pattern.push({ x: x - size, y: y + size });    // Bottom left
+            //         pattern.push({ x: x + size, y: y + size });    // Bottom right
+            //         return;           
+            //     }
                 
-                // Recursive case: Create 3 smaller triangles
-                const newSize = size / 2;
+            //     // Recursive case: Create 3 smaller triangles
+            //     const newSize = size / 2;
                 
-                // Top triangle
-                createSierpinskiTriangle(x, y, newSize, level - 1);
+            //     // Top triangle
+            //     createSierpinskiTriangle(x, y, newSize, level - 1);
                 
-                // Bottom left triangle
-                createSierpinskiTriangle(x - newSize, y + newSize, newSize, level - 1);
+            //     // Bottom left triangle
+            //     createSierpinskiTriangle(x - newSize, y + newSize, newSize, level - 1);
                 
-                // Bottom right triangle
-                createSierpinskiTriangle(x + newSize, y + newSize, newSize, level - 1);
-            };
+            //     // Bottom right triangle
+            //     createSierpinskiTriangle(x + newSize, y + newSize, newSize, level - 1);
+            // };
             
-            // Start the Sierpinski triangle with appropriate size
-            const startSize = Math.pow(2, exponent - 1);
-            createSierpinskiTriangle(0, 0, startSize, exponent);
+            // // Start the Sierpinski triangle with appropriate size
+            // const startSize = Math.pow(2, exponent - 1);
+            // createSierpinskiTriangle(0, 0, startSize, exponent);
             
-            // Ensure we have exactly the right number of diamonds
-            return pattern.slice(0, totalDiamonds);
+            // // Ensure we have exactly the right number of diamonds
+            // return pattern.slice(0, totalDiamonds);
         };
 
         // Square pattern for base 4 - creates a grid-like pattern
@@ -278,6 +438,178 @@ class ExponentView {
                 return pattern;
             }
             
+
+            if(exponent === 2){
+                const squareSize = 2; // 2x2 square
+
+                // Define the position of each square (top-left, top-right, bottom-left, bottom-right)
+                const offsets = [
+                    { x: -3, y: -3 }, // Top left
+                    { x: 1, y: -3 },  // Top right
+                    { x: -3, y: 1 },  // Bottom left
+                    { x: 1, y: 1 }    // Bottom right
+                ];
+            
+                // Create four 2x2 squares at the defined offsets
+                offsets.forEach(offset => {
+                    for (let y = 0; y < squareSize; y++) {
+                        for (let x = 0; x < squareSize; x++) {
+                            pattern.push({
+                                x: x + offset.x,
+                                y: y + offset.y
+                            });
+                        }
+                    }
+                });
+                        return pattern
+            }
+                
+            if(exponent === 3){
+                const smallSquareSize = 2; // 2x2 points per smaller square
+                const gapBetweenSmallSquares = 1;
+                const largeSquareSize = (smallSquareSize * 2) + gapBetweenSmallSquares; // Larger square size
+                console.log(largeSquareSize,    'largesquare')
+                const gapBetweenLargeSquares = largeSquareSize -1; // Gap between larger squares
+        
+                // Define the position of each larger square (top-left, top-right, bottom-left, bottom-right)
+                const offsets = [
+                    { x: -gapBetweenLargeSquares, y: -gapBetweenLargeSquares }, // Top left
+                    { x: gapBetweenLargeSquares, y: -gapBetweenLargeSquares },  // Top right
+                    { x: -gapBetweenLargeSquares, y: gapBetweenLargeSquares },  // Bottom left
+                    { x: gapBetweenLargeSquares, y: gapBetweenLargeSquares }    // Bottom right
+                ];
+        
+                // Generate 4 larger squares
+                offsets.forEach(offset => {
+                    for (let row = 0; row < 2; row++) {
+                        for (let col = 0; col < 2; col++) {
+                            // Position of smaller square inside larger square
+                            let offsetX = offset.x + col * (smallSquareSize + gapBetweenSmallSquares);
+                            let offsetY = offset.y + row * (smallSquareSize + gapBetweenSmallSquares);
+        
+                            // Generate 2×2 points for smaller square
+                            for (let y = 0; y < smallSquareSize; y++) {
+                                for (let x = 0; x < smallSquareSize; x++) {
+                                    pattern.push({
+                                        x: offsetX + x,
+                                        y: offsetY + y
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+        return pattern
+            }
+
+
+            if(exponent === 4){
+                const smallSquareSize = 2;
+        const gapBetweenSmallSquares = 1;
+        const largeSquareSize = (smallSquareSize * 2) + gapBetweenSmallSquares;
+        const gapBetweenLargeSquares = largeSquareSize - 1;
+        const wholeSquareSize = (largeSquareSize * 2) + gapBetweenLargeSquares;
+        const gapBetweenWholeSquares = wholeSquareSize - 5;
+
+        // Define the position of each whole square (forming a bigger square)
+        const wholeSquareOffsets = [
+            { x: -gapBetweenWholeSquares, y: -gapBetweenWholeSquares }, // Top left
+            { x: gapBetweenWholeSquares, y: -gapBetweenWholeSquares },  // Top right
+            { x: -gapBetweenWholeSquares, y: gapBetweenWholeSquares },  // Bottom left
+            { x: gapBetweenWholeSquares, y: gapBetweenWholeSquares }    // Bottom right
+        ];
+
+        wholeSquareOffsets.forEach(wholeOffset => {
+            // Define the position of each larger square (inside the whole square)
+            const largeSquareOffsets = [
+                { x: -gapBetweenLargeSquares, y: -gapBetweenLargeSquares }, // Top left
+                { x: gapBetweenLargeSquares, y: -gapBetweenLargeSquares },  // Top right
+                { x: -gapBetweenLargeSquares, y: gapBetweenLargeSquares },  // Bottom left
+                { x: gapBetweenLargeSquares, y: gapBetweenLargeSquares }    // Bottom right
+            ];
+
+            largeSquareOffsets.forEach(largeOffset => {
+                for (let row = 0; row < 2; row++) {
+                    for (let col = 0; col < 2; col++) {
+                        let offsetX = wholeOffset.x + largeOffset.x + col * (smallSquareSize + gapBetweenSmallSquares);
+                        let offsetY = wholeOffset.y + largeOffset.y + row * (smallSquareSize + gapBetweenSmallSquares);
+
+                        // Generate 2×2 points for smaller square
+                        for (let y = 0; y < smallSquareSize; y++) {
+                            for (let x = 0; x < smallSquareSize; x++) {
+                                pattern.push({
+                                    x: offsetX + x,
+                                    y: offsetY + y
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        return pattern
+            }
+
+
+            if(exponent === 5){
+                const smallSquareSize = 2;
+        const gapBetweenSmallSquares = 1;
+        const largeSquareSize = (smallSquareSize * 2) + gapBetweenSmallSquares;
+        const gapBetweenLargeSquares = largeSquareSize - 1;
+        const wholeSquareSize = (largeSquareSize * 2) + gapBetweenLargeSquares;
+        const gapBetweenWholeSquares = wholeSquareSize - 5;
+        const biggerSquareSize = (wholeSquareSize * 2) + gapBetweenWholeSquares;
+        const gapBetweenBiggerSquares = biggerSquareSize - 17;
+        const superSquareSize = (biggerSquareSize * 2) + gapBetweenBiggerSquares;
+
+        // Define the position of each bigger square (forming a super square)
+        const superSquareOffsets = [
+            { x: -gapBetweenBiggerSquares, y: -gapBetweenBiggerSquares }, // Top left
+            { x: gapBetweenBiggerSquares, y: -gapBetweenBiggerSquares },  // Top right
+            { x: -gapBetweenBiggerSquares, y: gapBetweenBiggerSquares },  // Bottom left
+            { x: gapBetweenBiggerSquares, y: gapBetweenBiggerSquares }    // Bottom right
+        ];
+
+        superSquareOffsets.forEach(superOffset => {
+            // Define the position of each whole square (inside the bigger square)
+            const biggerSquareOffsets = [
+                { x: -gapBetweenWholeSquares, y: -gapBetweenWholeSquares },
+                { x: gapBetweenWholeSquares, y: -gapBetweenWholeSquares },
+                { x: -gapBetweenWholeSquares, y: gapBetweenWholeSquares },
+                { x: gapBetweenWholeSquares, y: gapBetweenWholeSquares }
+            ];
+
+            biggerSquareOffsets.forEach(biggerOffset => {
+                // Define the position of each larger square (inside the whole square)
+                const wholeSquareOffsets = [
+                    { x: -gapBetweenLargeSquares, y: -gapBetweenLargeSquares },
+                    { x: gapBetweenLargeSquares, y: -gapBetweenLargeSquares },
+                    { x: -gapBetweenLargeSquares, y: gapBetweenLargeSquares },
+                    { x: gapBetweenLargeSquares, y: gapBetweenLargeSquares }
+                ];
+
+                wholeSquareOffsets.forEach(wholeOffset => {
+                    for (let row = 0; row < 2; row++) {
+                        for (let col = 0; col < 2; col++) {
+                            let offsetX = superOffset.x + biggerOffset.x + wholeOffset.x + col * (smallSquareSize + gapBetweenSmallSquares);
+                            let offsetY = superOffset.y + biggerOffset.y + wholeOffset.y + row * (smallSquareSize + gapBetweenSmallSquares);
+
+                            // Generate 2×2 points for smaller square
+                            for (let y = 0; y < smallSquareSize; y++) {
+                                for (let x = 0; x < smallSquareSize; x++) {
+                                    pattern.push({
+                                        x: offsetX + x,
+                                        y: offsetY + y
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        });
+        return pattern
+            }
             // Create a grid pattern
             const gridSize = Math.ceil(Math.sqrt(totalDiamonds));
             for (let i = 0; i < gridSize; i++) {
