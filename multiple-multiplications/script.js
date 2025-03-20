@@ -3,8 +3,8 @@
 // Model - Manages data and business logic
 class ExponentModel {
     constructor() {
-        this.base = 2;  // Default to 3 to show triangle pattern
-        this.exponent = 0; // Default to show a nice pattern
+        this.base = 2;  // Default to 2
+        this.exponent = 0; // Default to 0
         this.observers = [];
     }
 
@@ -211,21 +211,11 @@ class ExponentView {
         // Linear pattern for base 2 - creates groups of 2 in a linear arrangement
         p.createLinePattern = function(base, exponent, totalDiamonds) {
             const pattern = [];
-            const pairGap = 1.5; // Gap between pairs
-            const groupGap = 3;  // Larger gap between groups of pairs
             let xOffset = 0;
             
-            for (let i = 0; i < totalDiamonds; i += 4) {
-                // First pair
+            for (let i = 0; i < totalDiamonds; i++) {
                 pattern.push({ x: xOffset, y: 0 });
-                pattern.push({ x: xOffset + 1, y: 0 });
-                
-                // Second pair with a gap
-                pattern.push({ x: xOffset + pairGap + 2, y: 0 });
-                pattern.push({ x: xOffset + pairGap + 3, y: 0 });
-                
-                // Move to the next group with a larger gap
-                xOffset += 4 + groupGap;
+                xOffset += 1.5; // Adjust gap between diamonds
             }
             
             // Ensure we have exactly the right number of diamonds
@@ -268,13 +258,13 @@ class ExponentView {
             };
             
             // Start the Sierpinski triangle with appropriate size
-            const startSize = Math.pow(3, Math.floor(exponent / 2));
-            createSierpinskiTriangle(startSize, 0, startSize, exponent);
+            const startSize = Math.pow(2, exponent - 1);
+            createSierpinskiTriangle(0, 0, startSize, exponent);
             
             // Ensure we have exactly the right number of diamonds
             return pattern.slice(0, totalDiamonds);
         };
-        
+
         // Square pattern for base 4 - creates a grid-like pattern
         p.createSquarePattern = function(base, exponent, totalDiamonds) {
             const pattern = [];
@@ -282,42 +272,21 @@ class ExponentView {
             // For exponent 1, just show 4 points in a square
             if (exponent === 1) {
                 pattern.push({ x: 0, y: 0 });    // Top left
-                pattern.push({ x: 2, y: 0 });    // Top right
-                pattern.push({ x: 0, y: 2 });    // Bottom left
-                pattern.push({ x: 2, y: 2 });    // Bottom right
+                pattern.push({ x: 1, y: 0 });    // Top right
+                pattern.push({ x: 0, y: 1 });    // Bottom left
+                pattern.push({ x: 1, y: 1 });    // Bottom right
                 return pattern;
             }
             
-            // Create a recursive square grid pattern
-            const createQuadTreeGrid = (x, y, size, level) => {
-                if (level === 1) {
-                    // Base case: Draw a square with 4 points
-                    pattern.push({ x, y });                        // Top left
-                    pattern.push({ x: x + size, y });              // Top right
-                    pattern.push({ x, y: y + size });              // Bottom left
-                    pattern.push({ x: x + size, y: y + size });    // Bottom right
-                    return;
+            // Create a grid pattern
+            const gridSize = Math.ceil(Math.sqrt(totalDiamonds));
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    if (pattern.length < totalDiamonds) {
+                        pattern.push({ x: i, y: j });
+                    }
                 }
-                
-                // Recursive case: Create 4 smaller squares
-                const newSize = size / 2;
-                
-                // Top left
-                createQuadTreeGrid(x, y, newSize, level - 1);
-                
-                // Top right
-                createQuadTreeGrid(x + newSize, y, newSize, level - 1);
-                
-                // Bottom left
-                createQuadTreeGrid(x, y + newSize, newSize, level - 1);
-                
-                // Bottom right
-                createQuadTreeGrid(x + newSize, y + newSize, newSize, level - 1);
-            };
-            
-            // Start the quad tree with appropriate size
-            const startSize = Math.pow(2, exponent - 1);
-            createQuadTreeGrid(0, 0, startSize, exponent);
+            }
             
             // Ensure we have exactly the right number of diamonds
             return pattern.slice(0, totalDiamonds);
@@ -526,4 +495,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         view.handleResize();
     });
-}); 
+});
