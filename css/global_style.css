@@ -68,6 +68,23 @@ button:hover{
     background-color: #01296e;
 }
 
+button:disabled{
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bte-secondary{
+    background-color: #f7f7f7;
+    color: #1e6bef;
+    border: 1px solid #1e6bef;
+}
+.bte-secondary:hover{
+    background-color: #f7f7f7;
+    color: #01296e;
+    border: 1px solid #01296e;
+}
+
 .container {
     max-width: 900px;
     margin: 0 auto;

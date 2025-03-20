@@ -409,11 +409,11 @@ class TimeView {
         // Update the start time bubble position and content
         const startPosition = model.getStartPosition();
         const percentage = startPosition * 100;
-        this.startTimeBubble.style.left = `${percentage}%`;
+        this.startTimeBubble.style.left = `calc(${percentage}% + 10px)`;
         this.startTimeBubble.textContent = startTime;
         
         // Update the connection line for start time
-        this.startTimeConnector.style.left = `${percentage}%`;
+        this.startTimeConnector.style.left = `calc(${percentage}% + 10px)`;
         this.startTimeConnector.style.height = '80px'; // Match bubble top position
         this.startTimeConnector.style.top = '0px';
         
@@ -423,7 +423,7 @@ class TimeView {
 
     updateSliderPosition(position) {
         const percentage = position * 100;
-        this.sliderHandle.style.left = `${percentage}%`;
+        this.sliderHandle.style.left = `calc(${percentage}% + 10px)`;
     }
 
     // Modified to update the elapsed time bubble and its connector
@@ -445,11 +445,11 @@ class TimeView {
         
         // Position the elapsed time bubble below the slider
         const percentage = position * 100;
-        this.elapsedTimeBubble.style.left = `${percentage}%`;
+        this.elapsedTimeBubble.style.left = `calc(${percentage}% + 10px)`;
         this.elapsedTimeBubble.textContent = elapsedTimeText;
         
         // Update the connection line for elapsed time
-        this.elapsedTimeConnector.style.left = `${percentage}%`;
+        this.elapsedTimeConnector.style.left = `calc(${percentage}% + 10px)`;
         this.elapsedTimeConnector.style.height = '60px'; // Match bubble top position
         this.elapsedTimeConnector.style.top = '0px';   
     }
@@ -610,7 +610,7 @@ class TimeView {
         
         // Create each arc with its own animation
         let currentStartMinutes = startMinutes;
-        const totalMinutesInTimeline = 13 * 60; // 12 hours
+        const totalMinutesInTimeline = 10 * 60; // 12 hours
         
         segments.forEach((segment, index) => {
             const segmentEndMinutes = currentStartMinutes + segment;
