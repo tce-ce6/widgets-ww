@@ -640,7 +640,155 @@ class ExponentView {
                 }
                 return pattern;
             }
+
+
+            if(exponent ===2 ){
+                
+                
+                const largeRadius = 3;
+                const smallPentagonRadius = 1;
+                const pointCount = 5;
+
+                // Pre-calculate constants used in the loop
+                const angleStep = (2 * Math.PI) / pointCount;
+                const startAngle = -Math.PI/2;
+
+                // Generate centers for small pentagons in one loop
+                for (let i = 0; i < pointCount; i++) {
+                    const centerAngle = startAngle + (i * angleStep);
+                    const centerX = largeRadius + Math.cos(centerAngle) * largeRadius;
+                    const centerY = largeRadius + Math.sin(centerAngle) * largeRadius;
+
+                    // Generate small pentagon points in another loop
+                    for (let j = 0; j < pointCount; j++) {
+                        const pointAngle = startAngle + (j * angleStep);
+                        pattern.push({ 
+                            x: centerX + Math.cos(pointAngle) * smallPentagonRadius,
+                            y: centerY + Math.sin(pointAngle) * smallPentagonRadius
+                        });
+                    }
+                }
+
+                return pattern;
+            }
+
+            if(exponent === 3){
+                const pointCount = 5;
+                const angleStep = (2 * Math.PI) / pointCount;
+                const startAngle = -Math.PI/2;
+
+                // Radii for each level
+                const radius1 = 8; // Huge pentagon radius
+                const radius2 = 3;  // Large pentagon radius  
+                const radius3 = 1;  // Small pentagon radius
+
+                // Recursive function to generate the pattern
+                function generatePattern(level, x, y) {
+                    // Base case: when we reach the deepest level, add the point
+                    if (level === 3) {
+                        pattern.push({ x, y });
+                        return;
+                    }
+
+                    // Get the appropriate radius for this level
+                    const radius = level === 0 ? radius1 : (level === 1 ? radius2 : radius3);
+
+                    // Generate the next level of points
+                    for (let i = 0; i < pointCount; i++) {
+                        const angle = startAngle + (i * angleStep);
+                        const nextX = x + Math.cos(angle) * radius;
+                        const nextY = y + Math.sin(angle) * radius;
+
+                        generatePattern(level + 1, nextX, nextY);
+                    }
+                }
+
+                // Start the recursion at level 0 from the center point
+                generatePattern(0, radius1, radius1);
+
+                return pattern;
+            }
+if (exponent === 4) {
+    
+
+            const pointCount = 5;
+    const angleStep = (2 * Math.PI) / pointCount;
+    const startAngle = -Math.PI/2;
+    
+    // Store radii in an array for easier access
+    const radii = [21, 8, 3, 1];
+    
+    // Maximum nesting depth (0-indexed)
+    const maxDepth = radii.length;
+    
+    // Optimize by pre-calculating angle positions for each level
+    const angles = [];
+    for (let i = 0; i < pointCount; i++) {
+        angles.push(startAngle + (i * angleStep));
+    }
+    
+    // More efficient point generation with memoization for positions
+    function generatePoints(depth, x, y) {
+        if (depth === maxDepth) {
+            pattern.push({ x, y });
+            return;
+        }
+        
+        const radius = radii[depth];
+        for (let i = 0; i < pointCount; i++) {
+            const angle = angles[i];
+            const nextX = x + Math.cos(angle) * radius;
+            const nextY = y + Math.sin(angle) * radius;
             
+            generatePoints(depth + 1, nextX, nextY);
+        }
+    }
+    
+    // Initialize the recursion from a centered position
+    generatePoints(0, radii[0], radii[0]);
+    
+    return pattern;
+}
+if (exponent === 5) {
+    const pointCount = 5;
+    const angleStep = (2 * Math.PI) / pointCount;
+    const startAngle = -Math.PI/2;
+    
+    // Store radii in an array for easier access
+    // Added a new smallest radius for the 5th level (exponent 5)
+    const radii = [55, 21, 8, 3, 1];
+    
+    // Maximum nesting depth (0-indexed)
+    const maxDepth = radii.length;
+    
+    // Optimize by pre-calculating angle positions for each level
+    const angles = [];
+    for (let i = 0; i < pointCount; i++) {
+        angles.push(startAngle + (i * angleStep));
+    }
+    
+    // More efficient point generation with memoization for positions
+    function generatePoints(depth, x, y) {
+        if (depth === maxDepth) {
+            pattern.push({ x, y });
+            return;
+        }
+        
+        const radius = radii[depth];
+        for (let i = 0; i < pointCount; i++) {
+            const angle = angles[i];
+            const nextX = x + Math.cos(angle) * radius;
+            const nextY = y + Math.sin(angle) * radius;
+            
+            generatePoints(depth + 1, nextX, nextY);
+        }
+    }
+    
+    // Initialize the recursion from a centered position
+    generatePoints(0, radii[0], radii[0]);
+    
+    return pattern;
+}   
             // For higher exponents, create a recursive pattern with pentagonal symmetry
             
             // Helper function to create a pentagon of points
