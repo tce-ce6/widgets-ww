@@ -136,7 +136,7 @@ class TimeModel {
             minDuration: 30,
             maxDuration: 180,
             minuteStep: 5, // 5-minute increments
-            hoursInTimeline: 13,
+            hoursInTimeline: 12,
             minutesPerHour: 60,
             timelineStartHour: 1 // Timeline always starts at 1 PM
         };
@@ -615,7 +615,7 @@ class TimeView {
         let currentStartMinutes = startMinutes;
         
         // Fix: Use the correct total timeline minutes (13 hours * 60 minutes)
-        const totalMinutesInTimeline = 13 * 60;
+        const totalMinutesInTimeline = 12 * 60;
         
         segments.forEach((segment, index) => {
             const segmentEndMinutes = currentStartMinutes + segment;
