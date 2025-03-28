@@ -15,11 +15,12 @@
     <div class="container">
         <h1>Determining the Complement of a Spinner Event</h1>
         <p>Discover the complement of an event. Change the probability of an event on a spinner and observe the effect.</p>
-        <div class="spinner-container">
-            <canvas id="spinner"></canvas>
-        </div>
+       
         
-        <div class="controls">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-container">
+                <canvas id="spinner"></canvas>
+            </div>
             <div class="probability-display">
                 <div>
                     <span class="symbol star">★</span>
@@ -33,7 +34,8 @@
                     <span id="star-complement" class="formula">4/6 or 2/3</span>
                 </div>
             </div>
-            
+        </div>
+        <div class="button-controls m-t-16 d-flex justify-content-center align-items-center " >
             <div class="slider-container">
                 <label for="sectors-slider">Number of sectors: <span id="sectors-value">6</span></label>
                 <input type="range" id="sectors-slider" min="4" max="12" value="6">
@@ -43,6 +45,7 @@
                 <button id="new-statement" class="">NEW STATEMENT</button>
                 <button id="new-spinner" class="bte-secondary">NEW SPINNER</button>
             </div>
+
         </div>
     </div>
 
