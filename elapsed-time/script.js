@@ -58,8 +58,9 @@ class TimeController {
     }
 
     initializeQuestion() {
-        const question = this.model.generateNewQuestion();
+        const question = this.model.generateNewQuestion('initialize question');
         this.view.updateQuestion(question.startTime, question.duration, this.model);
+        console.log(this.model.getStartPosition(),'getStartPosition');
         this.updatePosition(this.model.getStartPosition(), false);
     }
 
@@ -135,14 +136,15 @@ class TimeModel {
             minDuration: 30,
             maxDuration: 180,
             minuteStep: 5, // 5-minute increments
-            hoursInTimeline: 13,
+            hoursInTimeline: 12,
             minutesPerHour: 60,
             timelineStartHour: 1 // Timeline always starts at 1 PM
         };
-        this.generateNewQuestion();
+        // this.generateNewQuestion('constructor');
     }
 
-    generateNewQuestion() {
+    generateNewQuestion(type) {
+console.log(type,"Check function call")
         // Generate random start time between minStartHour and maxStartHour PM
         const startHour = Math.floor(Math.random() * 
             (this.timeConfig.maxStartHour - this.timeConfig.minStartHour + 1)) + 
@@ -163,13 +165,17 @@ class TimeModel {
         // Convert start time to minutes since timeline start (1 PM)
         const [time, period] = this.startTime.split(' ');
         const [hours, minutes] = time.split(':').map(Number);
-        this.startTimeMinutes = (hours - this.timeConfig.timelineStartHour) * this.timeConfig.minutesPerHour + minutes;
+
         
-        // Calculate end time in minutes
-        this.endTimeMinutes = this.startTimeMinutes + this.durationMinutes;
+            this.startTimeMinutes = (hours - this.timeConfig.timelineStartHour) * this.timeConfig.minutesPerHour + minutes;
+            console.log(this.startTimeMinutes,'startTimeMinutes');
+            this.endTimeMinutes = this.startTimeMinutes + this.durationMinutes;
         
         // Calculate the exact end time for display
         this.exactEndTime = this.calculateExactEndTime();
+        
+        // Calculate end time in minutes
+        
         
         return {
             startTime: this.startTime,
@@ -306,7 +312,7 @@ class TimeView {
         timelineContainer.appendChild(this.startTimeConnector);
         timelineContainer.appendChild(this.elapsedTimeConnector);
         
-        // Add the CSS for these new elements
+        // Add the SVG container and custom styles
         this.addSvgContainer();
         this.addCustomStyles();
     }
@@ -316,12 +322,12 @@ class TimeView {
         styleElement.textContent = `
             .start-time-bubble {
                 position: absolute;
-                background-color:rgb(236, 74, 46);
+                background-color: rgb(236, 74, 46);
                 color: white;
                 padding: 5px 10px;
                 border-radius: 15px;
                 transform: translateX(-50%);
-                top: 80px;  /* Changed from 50px to 20px */
+                top: 80px;
                 font-size: 14px;
                 white-space: nowrap;
                 z-index: 10;
@@ -329,12 +335,12 @@ class TimeView {
             
             .elapsed-time-bubble {
                 position: absolute;
-                background-color:rgb(63, 241, 101);
+                background-color: rgb(63, 241, 101);
                 color: black;
                 padding: 3px 8px;
                 border-radius: 12px;
                 transform: translateX(-50%);
-                top: 60px;  /* This is already at 10px */
+                top: 60px;
                 font-size: 12px;
                 white-space: nowrap;
                 z-index: 10;
@@ -409,12 +415,14 @@ class TimeView {
         // Update the start time bubble position and content
         const startPosition = model.getStartPosition();
         const percentage = startPosition * 100;
-        this.startTimeBubble.style.left = `calc(${percentage}% + 10px)`;
+        
+        // Correction: Remove the offset that was causing misalignment
+        this.startTimeBubble.style.left = `${percentage}%`;
         this.startTimeBubble.textContent = startTime;
         
-        // Update the connection line for start time
-        this.startTimeConnector.style.left = `calc(${percentage}% + 10px)`;
-        this.startTimeConnector.style.height = '80px'; // Match bubble top position
+        // Update the connection line for start time (matching position exactly)
+        this.startTimeConnector.style.left = `${percentage}%`;
+        this.startTimeConnector.style.height = '80px';
         this.startTimeConnector.style.top = '0px';
         
         // Initialize elapsed time bubble at the start position
@@ -423,10 +431,11 @@ class TimeView {
 
     updateSliderPosition(position) {
         const percentage = position * 100;
-        this.sliderHandle.style.left = `calc(${percentage}% + 10px)`;
+        // Correction: Remove the offset that was causing misalignment
+        this.sliderHandle.style.left = `${percentage}%`;
     }
 
-    // Modified to update the elapsed time bubble and its connector
+    // Updated to correctly position the elapsed time bubble and its connector
     updateElapsedTime(position, model) {
         // Calculate elapsed minutes based on position
         const startPosition = model.getStartPosition();
@@ -443,14 +452,14 @@ class TimeView {
         // Format elapsed time - minutes only
         const elapsedTimeText = `+${elapsedMinutes}m`;
         
-        // Position the elapsed time bubble below the slider
+        // Position the elapsed time bubble below the slider (correction: remove offset)
         const percentage = position * 100;
-        this.elapsedTimeBubble.style.left = `calc(${percentage}% + 10px)`;
+        this.elapsedTimeBubble.style.left = `${percentage}%`;
         this.elapsedTimeBubble.textContent = elapsedTimeText;
         
-        // Update the connection line for elapsed time
-        this.elapsedTimeConnector.style.left = `calc(${percentage}% + 10px)`;
-        this.elapsedTimeConnector.style.height = '60px'; // Match bubble top position
+        // Update the connection line for elapsed time (matching position exactly)
+        this.elapsedTimeConnector.style.left = `${percentage}%`;
+        this.elapsedTimeConnector.style.height = '60px';
         this.elapsedTimeConnector.style.top = '0px';   
     }
 
@@ -478,8 +487,8 @@ class TimeView {
         };
 
         const handleDrag = (e) => {
-                currentPosition = getPosition(e);
-                onDrag(currentPosition);    
+            currentPosition = getPosition(e);
+            onDrag(currentPosition);    
         };
 
         const handleDrop = () => {
@@ -498,7 +507,6 @@ class TimeView {
         });
 
         document.addEventListener('mousemove', (e) => {
-            
             if (isDragging && !this.onCorrectAnswer) {
                 handleDrag(e);
                 e.preventDefault();
@@ -507,17 +515,14 @@ class TimeView {
 
         document.addEventListener('mouseup', handleDrop);
 
-        
         this.timeline.addEventListener('click', (e) => {
             if(!this.onCorrectAnswer){
-            currentPosition = getPosition(e);
-            onDrag(currentPosition);
-            onDrop(currentPosition);
-        }
+                currentPosition = getPosition(e);
+                onDrag(currentPosition);
+                onDrop(currentPosition);
+            }
         });
-    
     }
-
 
     addSvgContainer() {
         // Create SVG container for arcs
@@ -574,10 +579,10 @@ class TimeView {
         `;
         document.head.appendChild(styleElement);
     }
-    // Add this method to TimeView
+    
+    // Fixed arc animation method with corrected positioning
     triggerArcAnimationIfCorrect(startMinutes, endMinutes, isCorrect) {
         this.onCorrectAnswer = true;
-        console.log("Trigger arc animation called:", startMinutes, endMinutes, isCorrect);
         
         if (!isCorrect) return;
         
@@ -586,7 +591,6 @@ class TimeView {
         
         // Calculate total duration in minutes
         const totalDuration = endMinutes - startMinutes;
-        console.log("Total duration:", totalDuration);
         
         // Create a container for the animation if it doesn't exist
         const container = document.querySelector('.timeline-container');
@@ -606,20 +610,21 @@ class TimeView {
         
         // Break down the duration into segments
         const segments = this.calculateTimeSegments(totalDuration);
-        console.log("Time segments:", segments);
         
         // Create each arc with its own animation
         let currentStartMinutes = startMinutes;
-        const totalMinutesInTimeline = 10 * 60; // 12 hours
+        
+        // Fix: Use the correct total timeline minutes (13 hours * 60 minutes)
+        const totalMinutesInTimeline = 12 * 60;
         
         segments.forEach((segment, index) => {
             const segmentEndMinutes = currentStartMinutes + segment;
             
-            // Calculate positions
-            const startPos = (currentStartMinutes / totalMinutesInTimeline) * 100; // as percentage
-            const endPos = (segmentEndMinutes / totalMinutesInTimeline) * 100; // as percentage
+            // Calculate positions as percentages of the timeline
+            const startPos = (currentStartMinutes / totalMinutesInTimeline) * 100;
+            const endPos = (segmentEndMinutes / totalMinutesInTimeline) * 100;
             
-            // Create the arc
+            // Create the arc with a delay
             setTimeout(() => {
                 this.createArc(animationContainer, startPos, endPos, segment, index);
             }, index * 500); // Stagger the animations
@@ -628,12 +633,11 @@ class TimeView {
         });
     }
 
-
     showEndTimeInBubble(endTime) {
         // Update the elapsed time bubble to show the end time instead of elapsed minutes
         this.elapsedTimeBubble.textContent = endTime;
         // Optionally change the style to highlight that it's the end time
-        this.elapsedTimeBubble.style.backgroundColor = rgb(63, 241, 101); // A slightly different green
+        this.elapsedTimeBubble.style.backgroundColor = 'rgb(63, 241, 101)'; // Fixed rgb syntax
         this.elapsedTimeBubble.style.fontWeight = 'bold';
     }
     
@@ -721,7 +725,7 @@ class TimeView {
         return segments;
     }
     
-    // Create a single arc
+    // Fixed createArc method with proper positioning calculations
     createArc(container, startPercent, endPercent, durationMinutes, index) {
         // Get timeline width for calculations
         const timelineWidth = document.querySelector('.timeline').offsetWidth;
@@ -739,7 +743,7 @@ class TimeView {
         const arc = document.createElement('div');
         arc.className = 'time-arc';
         
-        // Set arc position and size
+        // Set arc position and size, ensuring proper positioning
         arc.style.left = `${startX}px`;
         arc.style.width = `${width}px`;
         arc.style.height = `${arcHeight * 2}px`;
