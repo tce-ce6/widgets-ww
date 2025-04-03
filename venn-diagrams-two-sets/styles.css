@@ -17,17 +17,14 @@ html, body {
     text-align: center;
 }
 
-.diagram-section {
-    /* margin: 10px auto; */
-    position: relative;
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 700px;
-    margin-right: auto;
-    margin-left: 20px;
+.diagrams-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 20px;
 }
+
 
 /* Container for both diagrams */
 .diagrams-container {
@@ -64,9 +61,6 @@ html, body {
 
 /* Default CHECK button positioning */
 #checkButton {
-    /* position: absolute;
-    top: -530px;
-    right: -220px; */
     padding: 8px 24px;
     font-size: 16px;
     cursor: pointer;
