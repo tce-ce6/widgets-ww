@@ -46,6 +46,9 @@ h1, h2, h3, h4, h5, p{
 .justify-content-center{
     justify-content: center;
 }
+.justify-content-between{
+    justify-content: space-between;
+}
 .align-items-center{
     align-items: center;
 }
@@ -124,4 +127,24 @@ button:disabled{
     padding: 16px;
     background: #fff;
     padding: 16px;
+}
+
+
+.btn-outline-success{
+    border: 1px solid #28a745;
+    background-color: #fff;
+    color: #28a745;
+}
+.btn-outline-danger{
+    border: 1px solid #dc3545;
+    background-color: #fff;
+    color: #dc3545;
+}
+.btn-outline-success:hover{
+    background-color: #28a745;
+    color: #fff;
+}
+.btn-outline-danger:hover{
+    background-color: #dc3545;
+    color: #fff;
 }
