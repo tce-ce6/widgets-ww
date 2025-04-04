@@ -327,7 +327,7 @@ class TimeView {
                 padding: 5px 10px;
                 border-radius: 15px;
                 transform: translateX(-50%);
-                top: 80px;
+                top: 100px;
                 font-size: 14px;
                 white-space: nowrap;
                 z-index: 10;
@@ -422,7 +422,7 @@ class TimeView {
         
         // Update the connection line for start time (matching position exactly)
         this.startTimeConnector.style.left = `${percentage}%`;
-        this.startTimeConnector.style.height = '80px';
+        this.startTimeConnector.style.height = '100px';
         this.startTimeConnector.style.top = '0px';
         
         // Initialize elapsed time bubble at the start position
