@@ -1,52 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spinner Probability Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="../css/global_style.css">
-   
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../css/global_style.css" />
+
     <script id="MathJax-script" async src="tex-mml-chtml-v3.js"></script>
-</head>
-<body>
-    
-    
+  </head>
+  <body>
     <div class="container">
-        <h1>Determining the Complement of a Spinner Event</h1>
-        <p>Discover the complement of an event. Change the probability of an event on a spinner and observe the effect.</p>
+      <h1>Determining the Complement of a Spinner Event</h1>
+      <p>
+        Discover the complement of an event. Change the probability of an event
+        on a spinner and observe the effect.
+      </p>
+      <div class="w-100 d-flex justify-content-center align-items-center flex-wrap g-16">
         <div class="spinner-container">
-            <canvas id="spinner"></canvas>
+          <canvas id="spinner"></canvas>
         </div>
-        
+
         <div class="controls">
-            <div class="probability-display">
-                <div>
-                    <span class="symbol star">★</span>
-                    <span id="probability-label">The probability of landing on a star is</span>
-                    <span id="star-probability" class="formula">2/6 or 1/3</span>
-                </div>
-                
-                <div class="complement">
-                    <span class="symbol star">★</span>
-                    <span id="complement-label">The probability of <strong>not</strong> landing on a star (or the <strong>complement</strong> of the event) is</span>
-                    <span id="star-complement" class="formula">4/6 or 2/3</span>
-                </div>
+          <div class="probability-display">
+            <div>
+              <span class="symbol star">★</span>
+              <span id="probability-label"
+                >The probability of landing on a star is</span
+              >
+              <span id="star-probability" class="formula">2/6 or 1/3</span>
             </div>
-            
-            <div class="slider-container">
-                <label for="sectors-slider">Number of sectors: <span id="sectors-value">6</span></label>
-                <input type="range" id="sectors-slider" min="4" max="12" value="6">
+
+            <div class="complement">
+              <span class="symbol star">★</span>
+              <span id="complement-label"
+                >The probability of <strong>not</strong> landing on a star (or
+                the <strong>complement</strong> of the event) is</span
+              >
+              <span id="star-complement" class="formula">4/6 or 2/3</span>
             </div>
-            
-            <div class="buttons">
-                <button id="new-statement" class="">NEW STATEMENT</button>
-                <button id="new-spinner" class="bte-secondary">NEW SPINNER</button>
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="button-controls d-flex justify-content-between align-items-center w-100 m-t-16">
+        <div class="slider-container">
+          <label for="sectors-slider"
+            >Number of sectors: <span id="sectors-value">6</span></label
+          >
+          <input type="range" id="sectors-slider" min="4" max="12" value="6" />
+        </div>
+
+        <div class="buttons g-16 d-flex">
+          <button id="new-statement" class="">NEW STATEMENT</button>
+          <button id="new-spinner" class="bte-secondary">NEW SPINNER</button>
+        </div>
+      </div>
     </div>
 
-
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
