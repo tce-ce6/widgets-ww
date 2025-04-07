@@ -46,8 +46,26 @@ h1, h2, h3, h4, h5, p{
 .justify-content-center{
     justify-content: center;
 }
+.justify-content-between{
+    justify-content: space-between;
+}
 .align-items-center{
     align-items: center;
+}
+.flex-wrap{
+    flex-wrap: wrap;
+}
+.flex-column{
+    flex-direction: column;
+}
+.flex-row{
+    flex-direction: row;
+}
+.g-16{
+    gap: 16px;
+}
+.g-8{
+    gap: 8px;
 }
 
 .m-16{
@@ -79,6 +97,18 @@ h1, h2, h3, h4, h5, p{
 }
 .m-b-8{
     margin-bottom: 8px;
+}
+.w-100{
+    width: 100%;
+}
+.w-50{
+    width: 50%;
+}
+.w-25{
+    width: 25%;
+}
+.w-75{
+    width: 75%;
 }   
 .button-controls{
     padding: 12px;
@@ -86,6 +116,12 @@ h1, h2, h3, h4, h5, p{
     border-top: 1px solid #ddd;
     background: #f7f7f7;
     border-radius: 10px;
+    flex-wrap: wrap;
+    @media screen and (max-width: 800px) {
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
 button{
@@ -94,6 +130,7 @@ button{
     color: white;
     border: none;
     border-radius: 12px;
+    /* Ensures the slider thumb is interactive and indicates it can be dragged */
     cursor: pointer;
     font-size: 14px;
 }
@@ -124,4 +161,67 @@ button:disabled{
     padding: 16px;
     background: #fff;
     padding: 16px;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+
+.btn-outline-success{
+    border: 1px solid #28a745;
+    background-color: #fff;
+    color: #28a745;
+}
+.btn-outline-danger{
+    border: 1px solid #dc3545;
+    background-color: #fff;
+    color: #dc3545;
+}
+.btn-outline-success:hover{
+    background-color: #28a745;
+    color: #fff;
+}
+.btn-outline-danger:hover{
+    background-color: #dc3545;
+    color: #fff;
+}
+
+
+
+#sectors-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #ddd;
+    outline: none;
+    transition: background 0.3s;
+  }
+  
+  #sectors-slider:hover {
+    background: #ccc;
+  }
+  
+  #sectors-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #4a90e2;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+  }
+  
+  #sectors-slider::-webkit-slider-thumb:hover {
+    background: #357ab7;
+  }
+  
+  #sectors-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #4a90e2;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }

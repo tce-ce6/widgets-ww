@@ -24,6 +24,7 @@ constructor() {
     
     // Get result and feedback elements
     this.calculationResult = document.getElementById('calculation-result');
+    this.calculationResult.style.display = 'none'; // Hide initially
     this.feedbackElement = document.getElementById('feedback');
     this.correctCountElement = document.getElementById('correct-count');
     
@@ -944,6 +945,7 @@ setOnCheckComplete(callback) {
 
 // Show calculation steps
 showCalculation(steps) {
+    this.calculationResult.style.display = 'block';
     this.calculationResult.innerHTML = '';
     steps.forEach(step => {
         const stepElement = document.createElement('div');
@@ -983,6 +985,7 @@ clearFeedback() {
 // Clear calculation
 clearCalculation() {
     this.calculationResult.innerHTML = '';
+    this.calculationResult.style.display = 'none';
 }
 
 // Update correct count
