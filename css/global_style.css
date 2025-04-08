@@ -187,7 +187,7 @@ button:disabled{
 
 
 
-#sectors-slider {
+.sectors-slider {
     width: 100%;
     -webkit-appearance: none;
     height: 8px;
@@ -195,33 +195,33 @@ button:disabled{
     background: #ddd;
     outline: none;
     transition: background 0.3s;
-  }
-  
-  #sectors-slider:hover {
-    background: #ccc;
-  }
-  
-  #sectors-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    background: #4a90e2;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s;
-  }
-  
-  #sectors-slider::-webkit-slider-thumb:hover {
-    background: #357ab7;
-  }
-  
-  #sectors-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    background: #4a90e2;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-  }
+
+    &:hover {
+        background: #ccc;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        background: #4a90e2;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        transition: background 0.3s;
+
+        &:hover {
+            background: #357ab7;
+        }
+    }
+
+    &::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        background: #4a90e2;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}

@@ -502,7 +502,7 @@ initDragAndDrop() {
         this.equationIndicator.className = 'equation-indicator';
         this.equationIndicator.style.position = 'absolute';
         this.equationIndicator.style.left = '5%';
-        this.equationIndicator.style.top = '34%';
+        this.equationIndicator.style.bottom = '2%';
         this.equationIndicator.style.transform = 'translateY(-50%)';
         this.equationIndicator.style.fontSize = '220%';
         this.equationIndicator.style.fontWeight = 'bold';
