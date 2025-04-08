@@ -63,10 +63,43 @@ class NumberLineView {
     }
 
     setup() {
-        createCanvas(800, 600).parent('canvas-container');
+        createCanvas(800, 400).parent('canvas-container');
         this.lineY = height / 2;
         this.exactLineY = this.lineY - 150;
         this.approximateLineY = this.lineY - 50;
+        
+        // Set up button event listeners
+        document.getElementById('secondNumberBtn').addEventListener('click', () => {
+            this.model.currentPhase = 'second';
+            this.model.currentColor = 'green';
+            this.model.dragPoint.x = 0.75; // Reset drag point for second number
+            this.updateButtonVisibility();
+        });
+        
+        document.getElementById('tryAnotherBtn').addEventListener('click', () => {
+            this.model.reset();
+            this.model.dragPoint.x = 0.75; // Set initial drag point position
+            this.updateButtonVisibility();
+        });
+        
+        // Initialize button visibility
+        this.updateButtonVisibility();
+    }
+
+    updateButtonVisibility() {
+        const secondNumberBtn = document.getElementById('secondNumberBtn');
+        const tryAnotherBtn = document.getElementById('tryAnotherBtn');
+        
+        if (this.model.firstNumber !== null && this.model.currentPhase === 'first') {
+            secondNumberBtn.style.display = 'block';
+            tryAnotherBtn.style.display = 'none';
+        } else if (this.model.currentPhase === 'complete' || this.model.secondNumber !== null) {
+            secondNumberBtn.style.display = 'none';
+            tryAnotherBtn.style.display = 'block';
+        } else {
+            secondNumberBtn.style.display = 'none';
+            tryAnotherBtn.style.display = 'none';
+        }
     }
 
     draw() {
@@ -76,7 +109,7 @@ class NumberLineView {
         this.drawConnectors();
         this.drawPoints();
         this.drawValues();
-        this.drawButtons();
+        // Removed drawButtons() since using HTML buttons instead
     }
 
     drawNumberLines() {
@@ -486,25 +519,10 @@ class NumberLineView {
         fill(0);
         noStroke();
         textSize(13);
-        text("Approximate the sum of two numbers.", 50, 30);
+        // text("Approximate the sum of two numbers.", 50, 30);
     }
 
-    drawButtons() {
-        if (this.model.firstNumber !== null && this.model.currentPhase === 'first') {
-            this.drawButton("SECOND NUMBER", 650, 550);
-        } else if (this.model.currentPhase === 'complete' || this.model.secondNumber !== null) {
-            this.drawButton("TRY ANOTHER", 650, 550);
-        }
-    }
-
-    drawButton(buttonText, x, y) {
-        fill(76, 175, 80);
-        rect(x, y, 120, 40, 5);
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(13); // Added smaller text size
-        text(buttonText, x + 60, y + 20);
-    }
+    // Removed drawButtons() method since we're using HTML buttons
 }
 
 // Controller
@@ -518,37 +536,27 @@ class NumberLineController {
     setupEventListeners() {
         const p5Canvas = document.querySelector('#defaultCanvas0');
         if (p5Canvas) {
-            p5Canvas.addEventListener('mousedown', () => this.handleMousePressed());
-            p5Canvas.addEventListener('mousemove', () => this.handleMouseDragged());
-            p5Canvas.addEventListener('mouseup', () => this.handleMouseReleased());
+            p5Canvas.addEventListener('mousedown', (e) => this.handleMousePressed(e));
+            p5Canvas.addEventListener('mousemove', (e) => this.handleMouseDragged(e));
+            p5Canvas.addEventListener('mouseup', (e) => this.handleMouseReleased(e));
         }
     }
 
-    handleMousePressed() {
-        let x = map(mouseX, 50, 450, 0, 1);
-        if(mouseX > 650 && mouseX < 770 && mouseY > 550 && mouseY < 590) {
-            if(this.model.currentPhase === 'first') {
-                this.model.currentPhase = 'second';
-                this.model.currentColor = 'green';
-                this.model.dragPoint.x = 0.75; // Reset drag point for second number
-            } else if(this.model.currentPhase === 'complete') {
-                // Use model's reset function instead of reloading the page
-                this.model.reset();
-                this.model.dragPoint.x = 0.75; // Set initial drag point position
-            }
-        } else if(dist(mouseX, mouseY, map(this.model.dragPoint.x, 0, 1, 50, 450), this.view.exactLineY) < 10) {
+    handleMousePressed(e) {
+        if(dist(mouseX, mouseY, map(this.model.dragPoint.x, 0, 1, 50, 450), this.view.exactLineY) < 10) {
             this.model.isDragging = true;
         }
+        // Removed button click handling as it's now in HTML
     }
 
-    handleMouseDragged() {
+    handleMouseDragged(e) {
         if(this.model.isDragging) {
             let x = constrain(map(mouseX, 50, 450, 0, 1), 0, 1);
             this.model.dragPoint.x = x;
         }
     }
 
-    handleMouseReleased() {
+    handleMouseReleased(e) {
         if(this.model.isDragging) {
             this.model.isDragging = false;
             let exactValue = this.model.dragPoint.x;
@@ -559,6 +567,8 @@ class NumberLineController {
                 this.model.isFirstArrowAnimating = true;
                 this.model.firstArrowProgress = 0;
                 this.model.firstLineProgress = 0;
+                // Update button visibility after setting first number
+                this.view.updateButtonVisibility();
             } else if(this.model.currentPhase === 'second') {
                 this.model.secondNumber = exactValue;
                 // Start second number animation
@@ -570,6 +580,8 @@ class NumberLineController {
                 this.model.exactSum = this.model.firstNumber + exactValue;
                 this.model.approximateSum = this.model.calculateApproximateValue(this.model.exactSum);
                 this.model.currentPhase = 'complete';
+                // Update button visibility after completing
+                this.view.updateButtonVisibility();
             }
         }
     }
@@ -586,4 +598,11 @@ function setup() {
 
 function draw() {
     view.draw();
+}
+
+// Added this function to be accessible globally
+function updateButtonVisibility() {
+    if (view) {
+        view.updateButtonVisibility();
+    }
 }

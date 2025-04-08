@@ -9,8 +9,6 @@ class Model {
     this.selectedElements = [];
     this.attempt = 0;
     this.generateProblem();
-    this.newbuttoncheck = document.getElementById('new-check');
-    this.newproblembutton = document.getElementById('new-problem');
   }
 
   generateRandomSet(size = 6) {
@@ -191,11 +189,9 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    document.getElementById("new-check").addEventListener("click", this.handleClick('value'));
   }
- 
-  handleClick(value) {
-    console.log('Function hit')
+
+  handleClick() {
     let clickedValue = null;
 
     // Check if user clicked a value in Set A
@@ -239,18 +235,7 @@ class Controller {
     if (mouseX > 140 && mouseX < 300 && mouseY > 340 && mouseY < 380 && (this.model.attempt >= 3 || this.model.checkAnswer())) {
       this.model.generateProblem();
     }
-
-    if(value == checkAnswer){
-      if(!correct){
-        this.model.attempt++;
-      }else{
-        this.model.attempt =3;
-      }
-    }
-
-    
   }
-  
 
   toggleSelection(value) {
     const selectedIndex = this.model.selectedElements.indexOf(value);
