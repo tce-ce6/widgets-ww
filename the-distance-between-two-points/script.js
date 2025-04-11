@@ -796,7 +796,125 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Application: Setting up drag for labels');
         const labels = document.querySelectorAll('.triangle-side');
         const dropTargets = document.querySelectorAll('.blank-box');
-        
+        // Touch support for labels
+labels.forEach(label => {
+    label.addEventListener('touchstart', function(e) {
+        if (label.classList.contains('used')) return;
+    
+        const touch = e.touches[0];
+    
+        // Prevent scrolling unless user is near screen edge (for back gesture)
+        const edgeMargin = 30; // px from edge where we allow back gesture
+        const isNearLeftEdge = touch.clientX < edgeMargin;
+        const isNearRightEdge = touch.clientX > window.innerWidth - edgeMargin;
+    
+        if (!isNearLeftEdge && !isNearRightEdge) {
+            e.preventDefault(); // Only block scrolling if not near edges
+        }
+    
+        const ghost = label.cloneNode(true);
+        ghost.style.position = 'absolute';
+        ghost.style.pointerEvents = 'none';
+        ghost.style.opacity = '0.8';
+        ghost.style.zIndex = '1000';
+        ghost.classList.add('dragging');
+        ghost.id = 'ghost-drag';
+        document.body.appendChild(ghost);
+    
+        label.dataset.touchDragging = 'true';
+        label.dataset.ghostId = ghost.id;
+    
+        ghost.style.left = `${touch.clientX}px`;
+        ghost.style.top = `${touch.clientY}px`;
+    
+        function moveAt(touch) {
+            // console.log(touch.clientX,"This is ghost widht at moveAt", );
+            ghost.style.left = `${touch.clientX - ghost.offsetWidth/2}px`;
+            ghost.style.top = `${touch.clientY - ghost.offsetHeight/2}px`;
+        }
+    
+        function onTouchMove(ev) {
+            ev.preventDefault(); // block scroll while dragging
+            const moveTouch = ev.touches[0];
+            moveAt(moveTouch);
+        }
+    
+        function onTouchEnd(ev) {
+            document.removeEventListener('touchmove', onTouchMove, { passive: false });
+            document.removeEventListener('touchend', onTouchEnd);
+    
+            const ghostEl = document.getElementById(label.dataset.ghostId);
+            if (ghostEl) ghostEl.remove();
+    
+            label.dataset.touchDragging = 'false';
+    
+            const endTouch = ev.changedTouches[0];
+            const dropTarget = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
+    
+            if (dropTarget && dropTarget.classList.contains('blank-box')) {
+                const formula = label.dataset.formula;
+                const index = [...dropTargets].indexOf(dropTarget);
+    
+                if (formula === 'd' && index !== 0) {
+                    dropTarget.classList.add('invalid');
+                    setTimeout(() => dropTarget.classList.remove('invalid'), 800);
+                    return;
+                }
+    
+                if (dropTarget.textContent) {
+                    const previousSourceId = dropTarget.dataset.sourceId;
+                    if (previousSourceId) {
+                        const previousSource = document.getElementById(previousSourceId);
+                        if (previousSource) previousSource.classList.remove('used');
+                    }
+                }
+    
+                dropTarget.textContent = label.textContent;
+                dropTarget.dataset.formula = formula;
+                dropTarget.dataset.sourceId = label.id;
+                dropTarget.setAttribute('draggable', 'true');
+    
+                label.classList.add('used');
+                checkSolution();
+            }
+        }
+    
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+        document.addEventListener('touchend', onTouchEnd);
+    });
+    
+});
+
+// Touch support for drop targets (double-tap to clear)
+dropTargets.forEach((box) => {
+    let lastTap = 0;
+    box.addEventListener('touchend', function(e) {
+        const now = new Date().getTime();
+        const tapLength = now - lastTap;
+        if (tapLength < 300 && tapLength > 0) {
+            // Double-tap detected
+            if (this.textContent) {
+                const sourceId = this.dataset.sourceId;
+                const source = document.getElementById(sourceId);
+
+                this.textContent = '';
+                this.dataset.formula = '';
+                this.dataset.sourceId = '';
+                this.classList.remove('valid');
+                this.classList.remove('invalid');
+                this.setAttribute('draggable', 'false');
+
+                if (source) {
+                    source.classList.remove('used');
+                }
+
+                checkSolution();
+            }
+        }
+        lastTap = now;
+    });
+});
+
         labels.forEach(label => {
             label.addEventListener('dragstart', function(e) {
                 e.dataTransfer.setData('text/plain', this.textContent);

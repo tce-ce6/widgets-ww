@@ -496,6 +496,16 @@ initDragAndDrop() {
     const draggableElements = [this.sideALabel, this.sideBLabel, this.sideCLabel].filter(el => el !== null);
     const dropTargets = [this.dropBoxA, this.dropBoxB, this.dropBoxC];
     
+    // Track touch dragging state
+    let touchDragElement = null;
+    let touchDragData = null;
+    let touchDragSourceId = null;
+    let touchDragSourceType = null;
+    let touchDragOriginalTriangleId = null;
+    
+    // Touch ghost element
+    let ghostElement = null;
+    
     // Create indicator for correct/incorrect equation
     if (!this.equationIndicator) {
         this.equationIndicator = document.createElement('div');
@@ -515,32 +525,113 @@ initDragAndDrop() {
         }
     }
     
-    // Make all triangle sides draggable with visual effects
-    draggableElements.forEach(element => {
-        // Make it more obvious these are draggable
-        element.style.cursor = 'grab';
+    // Create and position ghost element for touch dragging
+    const createGhostElement = (element, x, y) => {
+        // Remove any existing ghost
+        removeGhostElement();
         
-        element.addEventListener('dragstart', (e) => {
-            // Store data about the dragged element
-            e.dataTransfer.setData('text/plain', element.textContent);
-            e.dataTransfer.setData('source-id', element.id);
-            e.dataTransfer.setData('source-type', 'triangle');
-            element.classList.add('dragging');
-            
-            // Show dragging effect and remove background
-            setTimeout(() => {
-                element.style.opacity = '0.4';
-                element.style.backgroundColor = 'transparent'; // Remove background
-                element.style.borderColor = 'transparent'; // Make border transparent as well
-            }, 0);
-        });
+        // Create ghost element
+        ghostElement = document.createElement('div');
+        ghostElement.className = 'drag-ghost';
+        ghostElement.textContent = element.textContent;
         
-        element.addEventListener('dragend', () => {
-            element.classList.remove('dragging');
-            element.style.opacity = '1';
+        // Copy relevant styles from the original element
+        const computedStyle = window.getComputedStyle(element);
+        ghostElement.style.backgroundColor = computedStyle.backgroundColor;
+        ghostElement.style.color = computedStyle.color;
+        ghostElement.style.padding = computedStyle.padding;
+        ghostElement.style.border = computedStyle.border;
+        ghostElement.style.borderRadius = computedStyle.borderRadius;
+        ghostElement.style.fontSize = computedStyle.fontSize;
+        ghostElement.style.fontWeight = computedStyle.fontWeight;
+        ghostElement.style.width = element.offsetWidth + 'px';
+        ghostElement.style.textAlign = 'center';
+        
+        // Position absolutely with fixed styles
+        ghostElement.style.position = 'fixed';
+        ghostElement.style.zIndex = '9999';
+        ghostElement.style.pointerEvents = 'none'; // Don't interfere with touch events
+        ghostElement.style.opacity = '0.8';
+        ghostElement.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+        
+        // Position at touch point with offset so finger doesn't obscure it
+        updateGhostPosition(x, y);
+        
+        // Add to document body
+        document.body.appendChild(ghostElement);
+    };
+    
+    // Update ghost element position
+    const updateGhostPosition = (x, y) => {
+        if (!ghostElement) return;
+        
+        // Position above the finger by default
+        ghostElement.style.left = (x - 30) + 'px';
+        ghostElement.style.top = (y - 20) + 'px'; // Position above finger
+    };
+    
+    // Remove ghost element
+    const removeGhostElement = () => {
+        if (ghostElement && ghostElement.parentNode) {
+            ghostElement.parentNode.removeChild(ghostElement);
+            ghostElement = null;
+        }
+    };
+    
+    // Helper function to handle start of drag (mouse or touch)
+    const handleDragStart = (element, dataTransfer = null, isTouchEvent = false, touchX = 0, touchY = 0) => {
+        // Store data about the dragged element
+        const data = element.textContent;
+        const sourceId = element.id;
+        const sourceType = element.classList.contains('drop-box') ? 'box' : 'triangle';
+        
+        if (dataTransfer) {
+            // For mouse events with dataTransfer
+            dataTransfer.setData('text/plain', data);
+            dataTransfer.setData('source-id', sourceId);
+            dataTransfer.setData('source-type', sourceType);
             
+            // For box-to-box drags, track original triangle ID
+            if (sourceType === 'box') {
+                const originalTriangleId = element.getAttribute('data-source-id');
+                if (originalTriangleId) {
+                    dataTransfer.setData('original-triangle-id', originalTriangleId);
+                }
+            }
+        } else if (isTouchEvent) {
+            // For touch events, store in global variables
+            touchDragData = data;
+            touchDragSourceId = sourceId;
+            touchDragSourceType = sourceType;
+            touchDragElement = element;
+            
+            if (sourceType === 'box') {
+                touchDragOriginalTriangleId = element.getAttribute('data-source-id');
+            }
+            
+            // Create ghost element for touch dragging
+            createGhostElement(element, touchX, touchY);
+        }
+        
+        element.classList.add('dragging');
+        
+        // Show dragging effect and remove background
+        setTimeout(() => {
+            element.style.opacity = '0.4';
+            if (sourceType === 'triangle') {
+                element.style.backgroundColor = 'transparent';
+                element.style.borderColor = 'transparent';
+            }
+        }, 0);
+    };
+    
+    // Helper function to handle end of drag (mouse or touch)
+    const handleDragEnd = (element, sourceType) => {
+        element.classList.remove('dragging');
+        element.style.opacity = '1';
+        
+        if (sourceType === 'triangle') {
             // Only reapply background if it wasn't dropped in a drop box
-            // We'll handle the case when it's dropped back from a drop box separately
             const dropBoxElements = Array.from(document.querySelectorAll('.drop-box'));
             const wasDropped = dropBoxElements.some(box => 
                 box.getAttribute('data-source-id') === element.id && 
@@ -548,9 +639,288 @@ initDragAndDrop() {
             
             if (!wasDropped) {
                 // Reapply background if not dropped in a drop box
-                element.style.backgroundColor = '#e9ecef'; // Reapply background
-                element.style.borderColor = '#ced4da'; // Reapply border
+                element.style.backgroundColor = '#e9ecef';
+                element.style.borderColor = '#ced4da';
             }
+        }
+        
+        // Remove ghost element
+        removeGhostElement();
+        
+        // Reset touch dragging state
+        touchDragElement = null;
+        touchDragData = null;
+        touchDragSourceId = null;
+        touchDragSourceType = null;
+        touchDragOriginalTriangleId = null;
+    };
+    
+    // Helper function to handle drop
+    const handleDrop = (dropTarget, data, sourceId, sourceType, originalTriangleId = null) => {
+        // If this is a box-to-box drag and the target is already filled
+        if (sourceType === 'box' && 
+            sourceId !== dropTarget.id && 
+            dropTarget.getAttribute('data-filled') === 'true') {
+            
+            console.log("Box-to-box replacement scenario");
+            
+            // Get the source box
+            const sourceBox = document.getElementById(sourceId);
+            if (!sourceBox) {
+                console.error("Source box not found");
+                return;
+            }
+            
+            // Get information about the target box's current value
+            const targetValue = dropTarget.textContent;
+            const targetOriginalTriangleId = dropTarget.getAttribute('data-source-id');
+            
+            // Get information about the source box
+            const originalSourceTriangleId = sourceBox.getAttribute('data-source-id') || originalTriangleId;
+            
+            // Return the displaced value to its original triangle side
+            if (targetOriginalTriangleId) {
+                const triangleSide = document.getElementById(targetOriginalTriangleId);
+                if (triangleSide) {
+                    // Restore the triangle side
+                    triangleSide.setAttribute('draggable', 'true');
+                    triangleSide.style.cursor = 'grab';
+                    triangleSide.style.opacity = '1';
+                    triangleSide.classList.remove('used');
+                    triangleSide.style.backgroundColor = '#e9ecef';
+                    triangleSide.style.borderColor = '#ced4da';
+                    
+                    // Visual confirmation of return
+                    triangleSide.classList.add('pulse');
+                    setTimeout(() => {
+                        triangleSide.classList.remove('pulse');
+                    }, 800);
+                }
+            }
+            
+            // Clear the source box
+            sourceBox.textContent = '';
+            sourceBox.classList.remove('filled');
+            sourceBox.removeAttribute('data-filled');
+            sourceBox.removeAttribute('data-source-id');
+            sourceBox.removeAttribute('data-value');
+            
+            // Notify controller about clearing the source
+            if (this.onClear) {
+                const sourcePosition = sourceId.replace('drop-', '');
+                this.onClear(sourcePosition);
+            }
+            
+            // Fill the target box with the dragged value
+            dropTarget.textContent = data;
+            dropTarget.setAttribute('data-value', data);
+            dropTarget.setAttribute('data-filled', 'true');
+            
+            // Use the original triangle side ID from the source box
+            if (originalSourceTriangleId) {
+                dropTarget.setAttribute('data-source-id', originalSourceTriangleId);
+            }
+            
+            // Notify controller about the target box update
+            if (this.onDrop) {
+                const targetPosition = dropTarget.id.replace('drop-', '');
+                const isComplete = this.onDrop(targetPosition, data);
+                
+                // If all boxes are filled, check if the user wants to show hint
+                if (isComplete && this.onCheckComplete) {
+                    this.onCheckComplete();
+                }
+            }
+            
+            // Visual feedback for successful move
+            dropTarget.classList.add('pulse');
+            setTimeout(() => {
+                dropTarget.classList.remove('pulse');
+            }, 800);
+            
+            return;
+        }
+        
+        // Don't allow dropping if already filled with a different value
+        if (dropTarget.getAttribute('data-filled') === 'true' && 
+            dropTarget.getAttribute('data-source-id') !== sourceId) {
+            console.log("Target already filled with different value - drop rejected");
+            return;
+        }
+
+        // If the source is another drop box, clear the source box
+        if (sourceType === 'box' && sourceId !== dropTarget.id) {
+            const sourceBox = document.getElementById(sourceId);
+            if (sourceBox) {
+                // Get original source triangle ID before clearing
+                const originalSourceTriangleId = sourceBox.getAttribute('data-source-id') || originalTriangleId;
+                
+                // Clear the source drop box
+                sourceBox.textContent = '';
+                sourceBox.classList.remove('filled');
+                sourceBox.removeAttribute('data-filled');
+                sourceBox.removeAttribute('data-source-id');
+                sourceBox.removeAttribute('data-value');
+                
+                // Notify controller about clearing the source
+                if (this.onClear) {
+                    const sourcePosition = sourceId.replace('drop-', '');
+                    this.onClear(sourcePosition);
+                }
+                
+                // Use the original triangle side ID when filling the target
+                if (originalSourceTriangleId) {
+                    dropTarget.setAttribute('data-source-id', originalSourceTriangleId);
+                }
+            }
+        } else {
+            // If coming directly from triangle, use the source ID from the triangle
+            dropTarget.setAttribute('data-source-id', sourceId);
+        }
+        
+        // Fill the drop target
+        dropTarget.textContent = data;
+        dropTarget.classList.add('filled');
+        dropTarget.setAttribute('data-filled', 'true');
+        dropTarget.setAttribute('data-value', data);
+        
+        // If dropped from a triangle side, make the triangle side non-draggable
+        if (sourceType === 'triangle') {
+            const originalTriangle = document.getElementById(sourceId);
+            if (originalTriangle) {
+                originalTriangle.setAttribute('draggable', 'false');
+                originalTriangle.style.cursor = 'default';
+                originalTriangle.style.opacity = '0.5';
+                originalTriangle.classList.add('used');
+            }
+        }
+        
+        // Trigger the controller event
+        if (this.onDrop) {
+            const isComplete = this.onDrop(dropTarget.id.replace('drop-', ''), data);
+            
+            // If all boxes are filled, check if the user wants to show hint
+            if (isComplete && this.onCheckComplete) {
+                this.onCheckComplete();
+            }
+        }
+        
+        // Visual feedback for successful drop
+        dropTarget.classList.add('pulse');
+        setTimeout(() => {
+            dropTarget.classList.remove('pulse');
+        }, 800);
+    };
+    
+    // Helper function to handle returning a value to its triangle
+    const handleReturnToTriangle = (triangleLabel, dropBoxId) => {
+        const dropBox = document.getElementById(dropBoxId);
+        if (dropBox) {
+            // Clear the drop box
+            dropBox.textContent = '';
+            dropBox.classList.remove('filled');
+            dropBox.removeAttribute('data-filled');
+            dropBox.removeAttribute('data-source-id');
+            dropBox.removeAttribute('data-value');
+            
+            // Notify controller
+            const position = dropBoxId.replace('drop-', '');
+            if (this.onClear) {
+                this.onClear(position);
+            }
+            
+            // Reapply background when dropped back to triangle
+            triangleLabel.style.backgroundColor = '#e9ecef';
+            triangleLabel.style.borderColor = '#ced4da';
+            
+            // Make triangle side draggable again
+            triangleLabel.setAttribute('draggable', 'true');
+            triangleLabel.style.cursor = 'grab';
+            triangleLabel.style.opacity = '1';
+            triangleLabel.classList.remove('used');
+            
+            // Visual confirmation that the value returned
+            triangleLabel.classList.add('pulse');
+            setTimeout(() => {
+                triangleLabel.classList.remove('pulse');
+            }, 800);
+        }
+    };
+    
+    // Make all triangle sides draggable with visual effects
+    draggableElements.forEach(element => {
+        // Make it more obvious these are draggable
+        element.style.cursor = 'grab';
+        
+        // Mouse events
+        element.addEventListener('dragstart', (e) => {
+            handleDragStart(element, e.dataTransfer);
+        });
+        
+        element.addEventListener('dragend', () => {
+            handleDragEnd(element, 'triangle');
+        });
+        
+        // Touch events
+        element.addEventListener('touchstart', (e) => {
+            if (element.getAttribute('draggable') === 'false') return;
+            
+            const touch = e.touches[0];
+            handleDragStart(element, null, true, touch.clientX, touch.clientY);
+            e.preventDefault(); // Prevent default only for touchstart
+        }, { passive: false });
+        
+        element.addEventListener('touchmove', (e) => {
+            if (!touchDragElement) return;
+            e.preventDefault(); // Prevent scrolling during drag
+            
+            const touch = e.touches[0];
+            // Update ghost element position
+            updateGhostPosition(touch.clientX, touch.clientY);
+            
+            const elementsAtPoint = document.elementsFromPoint(touch.clientX, touch.clientY);
+            
+            // Highlight drop targets under finger
+            dropTargets.forEach(target => {
+                if (elementsAtPoint.includes(target)) {
+                    target.classList.add('highlight');
+                } else {
+                    target.classList.remove('highlight');
+                }
+            });
+            
+            // Highlight triangle labels for returning values
+            if (touchDragSourceType === 'box') {
+                draggableElements.forEach(triangleLabel => {
+                    if (elementsAtPoint.includes(triangleLabel) && 
+                        triangleLabel.id === touchDragOriginalTriangleId) {
+                        triangleLabel.classList.add('highlight');
+                    } else {
+                        triangleLabel.classList.remove('highlight');
+                    }
+                });
+            }
+        }, { passive: false });
+        
+        element.addEventListener('touchend', (e) => {
+            if (!touchDragElement) return;
+            
+            const touch = e.changedTouches[0];
+            const elementsAtPoint = document.elementsFromPoint(touch.clientX, touch.clientY);
+            
+            // Check if we're over any drop target
+            for (const target of dropTargets) {
+                if (elementsAtPoint.includes(target)) {
+                    // Similar to drop event
+                    handleDrop(target, touchDragData, touchDragSourceId, touchDragSourceType, touchDragOriginalTriangleId);
+                    break;
+                }
+            }
+            
+            // Remove all highlights
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            
+            handleDragEnd(element, 'triangle');
         });
         
         // Add hover effects
@@ -567,6 +937,7 @@ initDragAndDrop() {
     dropTargets.forEach(dropTarget => {
         dropTarget.setAttribute('draggable', 'true');
         
+        // Mouse events
         dropTarget.addEventListener('dragstart', (e) => {
             // Only allow dragging if the box has a value
             if (dropTarget.getAttribute('data-filled') !== 'true') {
@@ -574,31 +945,90 @@ initDragAndDrop() {
                 return;
             }
             
-            // Store the data needed for bidirectional dragging
-            e.dataTransfer.setData('text/plain', dropTarget.textContent);
-            e.dataTransfer.setData('source-id', dropTarget.id);
-            e.dataTransfer.setData('source-type', 'box');
-            
-            // Store the original triangle side ID - this is crucial for proper tracking
-            const originalSideId = dropTarget.getAttribute('data-source-id');
-            if (originalSideId) {
-                e.dataTransfer.setData('original-triangle-id', originalSideId);
-                console.log("Set original triangle ID for drag:", originalSideId);
-            } else {
-                console.log("Warning: No data-source-id found on box", dropTarget.id);
-            }
-            
-            dropTarget.classList.add('dragging');
-            
-            // Show dragging effect
-            setTimeout(() => {
-                dropTarget.style.opacity = '0.4';
-            }, 0);
+            handleDragStart(dropTarget, e.dataTransfer);
         });
         
         dropTarget.addEventListener('dragend', () => {
-            dropTarget.classList.remove('dragging');
-            dropTarget.style.opacity = '1';
+            handleDragEnd(dropTarget, 'box');
+        });
+        
+        // Touch events
+        dropTarget.addEventListener('touchstart', (e) => {
+            // Only allow dragging if the box has a value
+            if (dropTarget.getAttribute('data-filled') !== 'true') {
+                return;
+            }
+            
+            const touch = e.touches[0];
+            handleDragStart(dropTarget, null, true, touch.clientX, touch.clientY);
+            e.preventDefault(); // Prevent scrolling when starting drag
+        }, { passive: false });
+        
+        dropTarget.addEventListener('touchmove', (e) => {
+            if (!touchDragElement) return;
+            e.preventDefault(); // Prevent scrolling during drag
+            
+            const touch = e.touches[0];
+            // Update ghost element position
+            updateGhostPosition(touch.clientX, touch.clientY);
+            
+            const elementsAtPoint = document.elementsFromPoint(touch.clientX, touch.clientY);
+            
+            // Highlight drop targets under finger
+            dropTargets.forEach(target => {
+                if (elementsAtPoint.includes(target)) {
+                    target.classList.add('highlight');
+                } else {
+                    target.classList.remove('highlight');
+                }
+            });
+            
+            // Highlight triangle labels for returning values
+            if (touchDragSourceType === 'box') {
+                draggableElements.forEach(triangleLabel => {
+                    if (elementsAtPoint.includes(triangleLabel) && 
+                        triangleLabel.id === touchDragOriginalTriangleId) {
+                        triangleLabel.classList.add('highlight');
+                    } else {
+                        triangleLabel.classList.remove('highlight');
+                    }
+                });
+            }
+        }, { passive: false });
+        
+        dropTarget.addEventListener('touchend', (e) => {
+            if (!touchDragElement) return;
+            
+            const touch = e.changedTouches[0];
+            const elementsAtPoint = document.elementsFromPoint(touch.clientX, touch.clientY);
+            
+            // Check if touch ended over another drop target
+            let droppedOnTarget = false;
+            for (const target of dropTargets) {
+                if (elementsAtPoint.includes(target) && target !== touchDragElement) {
+                    // Similar to drop event
+                    handleDrop(target, touchDragData, touchDragSourceId, touchDragSourceType, touchDragOriginalTriangleId);
+                    droppedOnTarget = true;
+                    break;
+                }
+            }
+            
+            // Check if we're returning to original triangle side
+            if (!droppedOnTarget && touchDragSourceType === 'box') {
+                for (const triangle of draggableElements) {
+                    if (elementsAtPoint.includes(triangle) && 
+                        triangle.id === touchDragOriginalTriangleId) {
+                        // Similar to drop on triangle
+                        handleReturnToTriangle(triangle, touchDragSourceId);
+                        break;
+                    }
+                }
+            }
+            
+            // Remove all highlights
+            document.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+            
+            handleDragEnd(dropTarget, 'box');
         });
         
         // Add hover effects for filled boxes
@@ -612,10 +1042,59 @@ initDragAndDrop() {
         dropTarget.addEventListener('mouseout', () => {
             dropTarget.style.boxShadow = 'none';
         });
+        
+        // Double tap detection for touch devices
+        let lastTap = 0;
+        dropTarget.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 500 && tapLength > 0) {
+                // Double tap detected
+                if (dropTarget.getAttribute('data-filled') === 'true') {
+                    const originalTriangleId = dropTarget.getAttribute('data-source-id');
+                    
+                    // Find the original triangle element
+                    const originalTriangle = document.getElementById(originalTriangleId);
+                    
+                    // Clear the drop box
+                    dropTarget.textContent = '';
+                    dropTarget.classList.remove('filled');
+                    dropTarget.removeAttribute('data-filled');
+                    dropTarget.removeAttribute('data-source-id');
+                    dropTarget.removeAttribute('data-value');
+                    
+                    // Highlight the original triangle element and reapply background
+                    if (originalTriangle) {
+                        originalTriangle.style.backgroundColor = '#e9ecef';
+                        originalTriangle.style.borderColor = '#ced4da';
+                        
+                        // Make triangle side draggable again
+                        originalTriangle.setAttribute('draggable', 'true');
+                        originalTriangle.style.cursor = 'grab';
+                        originalTriangle.style.opacity = '1';
+                        originalTriangle.classList.remove('used');
+                        
+                        originalTriangle.classList.add('pulse');
+                        setTimeout(() => {
+                            originalTriangle.classList.remove('pulse');
+                        }, 800);
+                    }
+                    
+                    // Notify controller
+                    if (this.onClear) {
+                        this.onClear(dropTarget.id.replace('drop-', ''));
+                    }
+                }
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        });
     });
     
     // Configure triangle labels as drop targets (for returning from boxes)
     draggableElements.forEach(triangleLabel => {
+        // Mouse events
         triangleLabel.addEventListener('dragover', (e) => {
             // We can't use getData during dragover, so we check if the right type is being transferred
             if (e.dataTransfer.types.includes('original-triangle-id')) {
@@ -638,45 +1117,14 @@ initDragAndDrop() {
             
             // Only allow drops if this is the original triangle side
             if (sourceType === 'box' && originalTriangleId === triangleLabel.id) {
-                // Find the drop box element and clear it
-                const dropBox = document.getElementById(sourceId);
-                
-                if (dropBox) {
-                    // Clear the drop box
-                    dropBox.textContent = '';
-                    dropBox.classList.remove('filled');
-                    dropBox.removeAttribute('data-filled');
-                    dropBox.removeAttribute('data-source-id');
-                    dropBox.removeAttribute('data-value');
-                    
-                    // Notify controller
-                    const position = sourceId.replace('drop-', '');
-                    if (this.onClear) {
-                        this.onClear(position);
-                    }
-                    
-                    // Reapply background when dropped back to triangle
-                    triangleLabel.style.backgroundColor = '#e9ecef';
-                    triangleLabel.style.borderColor = '#ced4da';
-                    
-                    // Make triangle side draggable again
-                    triangleLabel.setAttribute('draggable', 'true');
-                    triangleLabel.style.cursor = 'grab';
-                    triangleLabel.style.opacity = '1';
-                    triangleLabel.classList.remove('used');
-                    
-                    // Visual confirmation that the value returned
-                    triangleLabel.classList.add('pulse');
-                    setTimeout(() => {
-                        triangleLabel.classList.remove('pulse');
-                    }, 800);
-                }
+                handleReturnToTriangle(triangleLabel, sourceId);
             }
         });
     });
     
     // Configure drop boxes as targets for triangle sides
     dropTargets.forEach(dropTarget => {
+        // Mouse events
         dropTarget.addEventListener('dragover', (e) => {
             e.preventDefault();  // Allow the drop
             dropTarget.classList.add('highlight');
@@ -693,180 +1141,9 @@ initDragAndDrop() {
             const data = e.dataTransfer.getData('text/plain');
             const sourceId = e.dataTransfer.getData('source-id');
             const sourceType = e.dataTransfer.getData('source-type');
+            const originalTriangleId = e.dataTransfer.getData('original-triangle-id') || null;
             
-            console.log("Drop event on", dropTarget.id, "from", sourceId, "type:", sourceType);
-            console.log("Data being dropped:", data);
-            
-            // If this is a box-to-box drag and the target is already filled
-            if (sourceType === 'box' && 
-                sourceId !== dropTarget.id && 
-                dropTarget.getAttribute('data-filled') === 'true') {
-                
-                console.log("Box-to-box replacement scenario");
-                
-                // Get the source box
-                const sourceBox = document.getElementById(sourceId);
-                if (!sourceBox) {
-                    console.error("Source box not found");
-                    return;
-                }
-                
-                // Get information about the target box's current value
-                const targetValue = dropTarget.textContent;
-                const targetOriginalTriangleId = dropTarget.getAttribute('data-source-id');
-                
-                console.log("Target box current value:", targetValue);
-                console.log("Target box original triangle ID:", targetOriginalTriangleId);
-                
-                // Get information about the source box
-                const originalSourceTriangleId = sourceBox.getAttribute('data-source-id');
-                console.log("Source box original triangle ID:", originalSourceTriangleId);
-                
-                // Return the displaced value to its original triangle side
-                if (targetOriginalTriangleId) {
-                    const triangleSide = document.getElementById(targetOriginalTriangleId);
-                    if (triangleSide) {
-                        console.log("Returning value", targetValue, "to triangle side", triangleSide.id);
-                        
-                        // Restore the triangle side
-                        triangleSide.setAttribute('draggable', 'true');
-                        triangleSide.style.cursor = 'grab';
-                        triangleSide.style.opacity = '1';
-                        triangleSide.classList.remove('used');
-                        triangleSide.style.backgroundColor = '#e9ecef';
-                        triangleSide.style.borderColor = '#ced4da';
-                        
-                        // Visual confirmation of return
-                        triangleSide.classList.add('pulse');
-                        setTimeout(() => {
-                            triangleSide.classList.remove('pulse');
-                        }, 800);
-                    } else {
-                        console.error("Triangle side not found:", targetOriginalTriangleId);
-                    }
-                } else {
-                    console.warn("No original triangle ID found for target box");
-                }
-                
-                // Clear the source box
-                sourceBox.textContent = '';
-                sourceBox.classList.remove('filled');
-                sourceBox.removeAttribute('data-filled');
-                sourceBox.removeAttribute('data-source-id');
-                sourceBox.removeAttribute('data-value');
-                
-                // Notify controller about clearing the source
-                if (this.onClear) {
-                    const sourcePosition = sourceId.replace('drop-', '');
-                    this.onClear(sourcePosition);
-                }
-                
-                // Fill the target box with the dragged value
-                dropTarget.textContent = data;
-                dropTarget.setAttribute('data-value', data);
-                dropTarget.setAttribute('data-filled', 'true');
-                
-                // Use the original triangle side ID from the source box
-                if (originalSourceTriangleId) {
-                    dropTarget.setAttribute('data-source-id', originalSourceTriangleId);
-                    console.log("Set target box data-source-id to:", originalSourceTriangleId);
-                } else {
-                    console.warn("No original triangle ID to set on target box");
-                }
-                
-                // Notify controller about the target box update
-                if (this.onDrop) {
-                    const targetPosition = dropTarget.id.replace('drop-', '');
-                    const isComplete = this.onDrop(targetPosition, data);
-                    
-                    // If all boxes are filled, check if the user wants to show hint
-                    if (isComplete && this.onCheckComplete) {
-                        this.onCheckComplete();
-                    }
-                }
-                
-                // Visual feedback for successful move
-                dropTarget.classList.add('pulse');
-                setTimeout(() => {
-                    dropTarget.classList.remove('pulse');
-                }, 800);
-                
-                return;
-            }
-            
-            // If not a box-to-box replacement, continue with original logic...
-            
-            // Don't allow dropping if already filled with a different value
-            if (dropTarget.getAttribute('data-filled') === 'true' && 
-                dropTarget.getAttribute('data-source-id') !== sourceId) {
-                console.log("Target already filled with different value - drop rejected");
-                return;
-            }
-
-            // If the source is another drop box, clear the source box
-            if (sourceType === 'box' && sourceId !== dropTarget.id) {
-                const sourceBox = document.getElementById(sourceId);
-                if (sourceBox) {
-                    // Get original source triangle ID before clearing
-                    const originalSourceTriangleId = sourceBox.getAttribute('data-source-id');
-                    console.log("Moving from box to box, original triangle ID:", originalSourceTriangleId);
-                    
-                    // Clear the source drop box
-                    sourceBox.textContent = '';
-                    sourceBox.classList.remove('filled');
-                    sourceBox.removeAttribute('data-filled');
-                    sourceBox.removeAttribute('data-source-id');
-                    sourceBox.removeAttribute('data-value');
-                    
-                    // Notify controller about clearing the source
-                    if (this.onClear) {
-                        const sourcePosition = sourceId.replace('drop-', '');
-                        this.onClear(sourcePosition);
-                    }
-                    
-                    // Use the original triangle side ID when filling the target
-                    if (originalSourceTriangleId) {
-                        dropTarget.setAttribute('data-source-id', originalSourceTriangleId);
-                    }
-                }
-            } else {
-                // If coming directly from triangle, use the source ID from the triangle
-                dropTarget.setAttribute('data-source-id', sourceId);
-            }
-            
-            // Fill the drop target
-            dropTarget.textContent = data;
-            dropTarget.classList.add('filled');
-            dropTarget.setAttribute('data-filled', 'true');
-            dropTarget.setAttribute('data-value', data);
-            
-            // If dropped from a triangle side, make the triangle side non-draggable
-            if (sourceType === 'triangle') {
-                const originalTriangle = document.getElementById(sourceId);
-                if (originalTriangle) {
-                    console.log("Making triangle side non-draggable:", sourceId);
-                    originalTriangle.setAttribute('draggable', 'false');
-                    originalTriangle.style.cursor = 'default';
-                    originalTriangle.style.opacity = '0.5';
-                    originalTriangle.classList.add('used');
-                }
-            }
-            
-            // Trigger the controller event
-            if (this.onDrop) {
-                const isComplete = this.onDrop(dropTarget.id.replace('drop-', ''), data);
-                
-                // If all boxes are filled, check if the user wants to show hint
-                if (isComplete && this.onCheckComplete) {
-                    this.onCheckComplete();
-                }
-            }
-            
-            // Visual feedback for successful drop
-            dropTarget.classList.add('pulse');
-            setTimeout(() => {
-                dropTarget.classList.remove('pulse');
-            }, 800);
+            handleDrop(dropTarget, data, sourceId, sourceType, originalTriangleId);
         });
         
         // Double-click to return value to triangle
@@ -908,6 +1185,51 @@ initDragAndDrop() {
             }
         });
     });
+    
+    // Add touch-specific CSS for better touch UX
+    const style = document.createElement('style');
+    style.textContent = `
+        @media (pointer: coarse) {
+            .drop-box, [draggable=true] {
+                -webkit-tap-highlight-color: rgba(0, 123, 255, 0.2);
+            }
+            .dragging {
+                transform: scale(1.1);
+                transition: transform 0.2s;
+            }
+        }
+        
+        .drag-ghost {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: all 0.1s ease;
+            animation: ghost-pulse 1.5s infinite;
+        }
+        
+        @keyframes ghost-pulse {
+            0% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+            50% { box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+            100% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+        }
+        
+        .highlight {
+            outline: 2px solid #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+        }
+        
+        .pulse {
+            animation: pulse-animation 0.8s ease-in-out;
+        }
+        
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // Set up callback for drag and drop events

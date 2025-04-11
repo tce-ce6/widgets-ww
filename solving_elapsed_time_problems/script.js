@@ -478,19 +478,20 @@ class TimeView {
     addDragEventListeners(onDrag, onDrop) {
         let isDragging = false;
         let currentPosition = 0;
-        
+    
         const getPosition = (e) => {
             const rect = this.timeline.getBoundingClientRect();
-            let position = (e.clientX - rect.left) / rect.width;
-            position = Math.max(0, Math.min(1, position));
-            return position;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let position = (clientX - rect.left) / rect.width;
+            return Math.max(0, Math.min(1, position));
         };
-
+    
         const handleDrag = (e) => {
+            e.preventDefault(); // Prevent scrolling on touch devices
             currentPosition = getPosition(e);
-            onDrag(currentPosition);    
+            onDrag(currentPosition);
         };
-
+    
         const handleDrop = () => {
             if (isDragging) {
                 isDragging = false;
@@ -498,31 +499,61 @@ class TimeView {
                 onDrop(currentPosition);
             }
         };
-
+    
+        const handleTouchEnd = () => {
+            if (isDragging) {
+                isDragging = false;
+                document.body.style.cursor = 'default';
+                onDrop(currentPosition);
+            }
+        };
+    
         this.sliderHandle.addEventListener('mousedown', (e) => {
-            if(!this.onCorrectAnswer){
+            if (!this.onCorrectAnswer) {
                 isDragging = true;
                 document.body.style.cursor = 'grabbing';
             }
         });
-
+    
+        this.sliderHandle.addEventListener('touchstart', (e) => {
+            if (!this.onCorrectAnswer) {
+                isDragging = true;
+                document.body.style.cursor = 'grabbing';
+            }
+        }, { passive: false });
+    
         document.addEventListener('mousemove', (e) => {
             if (isDragging && !this.onCorrectAnswer) {
                 handleDrag(e);
-                e.preventDefault();
             }
         });
-
+    
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging && !this.onCorrectAnswer) {
+                handleDrag(e);
+            }
+        }, { passive: false });
+    
         document.addEventListener('mouseup', handleDrop);
-
+        document.addEventListener('touchend', handleTouchEnd);
+    
         this.timeline.addEventListener('click', (e) => {
-            if(!this.onCorrectAnswer){
+            if (!this.onCorrectAnswer) {
                 currentPosition = getPosition(e);
                 onDrag(currentPosition);
                 onDrop(currentPosition);
             }
         });
+    
+        this.timeline.addEventListener('touchstart', (e) => {
+            if (!this.onCorrectAnswer) {
+                currentPosition = getPosition(e);
+                onDrag(currentPosition);
+                onDrop(currentPosition);
+            }
+        }, { passive: false });
     }
+    
 
     addSvgContainer() {
         // Create SVG container for arcs

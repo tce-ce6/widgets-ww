@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build the Equation</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script> -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="p5.js"></script>
+    <style>
+        /* Additional inline styles for equation display */
+        .step-equation {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="equation-container">
+            <h3>Build the equation</h3>
+            <div id="steps-container" style="display: none;">
+                <p>The solution to the equation:</p>
+                <div id="step1" class="step" style="display: none;">
+                    <p>Step 1: Subtract <span class="constant"></span> from both sides of the equation:</p>
+                    <div class="step-equation"></div>  
+                </div>
+                <div id="step2" class="step" style="display: none;">
+                    <p>Step 2: Divide both sides of the equation by <span class="coefficient"></span>:</p>
+                    <div class="step-equation"></div>
+                </div>
+            </div>
+        </div>
+        <div id="canvas-container"></div>
+        <div id="controls-container">
+            <div id="slider-controls" class="controls">
+                <div class="slider-group">
+                    <label id="leftLabel1"></label>
+                    <input type="range" id="leftSlider1" min="0" max="6" value="0" step="1">
+                   
+                </div>
+                 <div class="slider-sign"><h2>+</h2></div>
+                <div class="slider-group">
+                    <label id="leftLabel2" ></label>
+                    <input type="range" id="leftSlider2" min="0" max="15" value="0" step="1">
+                    
+                </div>
+                <div class="slider-group">
+                    <label id="rightLabel">0</label>
+                    <input type="range" id="rightSlider" min="0" max="150" value="0" step="1" style="width: 400px;">
+                   
+                </div>
+
+            </div>
+            <div id="solution-controls" class="controls" style="display: none;">
+                <button id="prevStep" class="nav-button">←</button>
+                <button id="nextStep" class="nav-button">→</button>
+                <button id="newProblem" class="action-button">NEW PROBLEM</button>
+            </div>
+            <button id="solveButton" class="action-button" style="display: none;">SOLVE</button>
+        </div>
+    </div>
+    <script src="sketch.js"></script>
+</body>
+</html>
