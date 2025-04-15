@@ -225,3 +225,23 @@ button:disabled{
         cursor: pointer;
     }
 }
+
+.wdgetTitle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    left: 0;
+    top: 0;
+  }
+  .wdgetTitle h2 {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    background: #1e6bef;
+    padding: 5px 20px;
+    color: #fff;
+    border-radius: 0 20px 20px 0;
+    background: #099eed;
+    background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
+  }
