@@ -407,23 +407,26 @@ class NumberLineView {
                            this.model.calculateApproximateValue(this.model.secondNumber);
             
             // Display exact equation above exact line
+            textSize(16);
             text(`Exact: ${this.model.firstNumber.toFixed(2)} + ${this.model.secondNumber.toFixed(2)} = ${exactSum.toFixed(2)}`, 50, startY - 30);
             
             // --- EXACT MEASUREMENT LINES ---
             // First number in red
             stroke(255, 0, 0);
-            let firstExactX = map(this.model.firstNumber, 0, 1, 50, 350);
+            let firstExactX = map(this.model.firstNumber, 0, 1, 50, 450);
+            console.log("🚀 ~ NumberLineView ~ drawMeasurementLinesForTwo ~ firstExactX:", firstExactX)
+            
             line(50, startY, firstExactX, startY);
             noStroke();
             fill(255, 0, 0);
             text(this.model.firstNumber.toFixed(2), (50 + firstExactX)/2, startY - 10);
             
             // Second number in green - continuous from first
-            stroke(0, 255, 0);
-            let secondExactEndX = firstExactX + map(this.model.secondNumber, 0, 1, 0, 350);
+            stroke(0, 128, 0);
+            let secondExactEndX = firstExactX + map(this.model.secondNumber, 0, 1, 0, 450);
             line(firstExactX, startY, secondExactEndX, startY);
             noStroke();
-            fill(0, 255, 0);
+            fill(0, 128, 0);
             text(this.model.secondNumber.toFixed(2), (firstExactX + secondExactEndX)/2, startY - 10);
             
             // Vertical marks for exact
@@ -436,22 +439,23 @@ class NumberLineView {
             // Display approximate equation
             noStroke();
             fill(0);
+            textSize(16);
             text(`Approximate: ${this.model.calculateApproximateValue(this.model.firstNumber).toFixed(2)} + ${this.model.calculateApproximateValue(this.model.secondNumber).toFixed(2)} = ${approxSum.toFixed(2)}`, 50, startY + gap - 10);
             
             // First approximate in red
             stroke(255, 0, 0);
-            let firstApproxX = map(this.model.calculateApproximateValue(this.model.firstNumber), 0, 1, 50, 350);
+            let firstApproxX = map(this.model.calculateApproximateValue(this.model.firstNumber), 0, 1, 50, 450);
             line(50, startY + gap + 20, firstApproxX, startY + gap + 20);
             noStroke();
             fill(255, 0, 0);
             text(this.model.calculateApproximateValue(this.model.firstNumber).toFixed(2), (50 + firstApproxX)/2, startY + gap + 10);
             
             // Second approximate in green - continuous from first
-            stroke(0, 255, 0);
-            let secondApproxEndX = firstApproxX + map(this.model.calculateApproximateValue(this.model.secondNumber), 0, 1, 0, 350);
+            stroke(0, 128, 0);
+            let secondApproxEndX = firstApproxX + map(this.model.calculateApproximateValue(this.model.secondNumber), 0, 1, 0, 450);
             line(firstApproxX, startY + gap  + 20, secondApproxEndX, startY + gap + 20);
             noStroke();
-            fill(0, 255, 0);
+            fill(0, 128, 0);
             text(this.model.calculateApproximateValue(this.model.secondNumber).toFixed(2), (firstApproxX + secondApproxEndX)/2, startY + gap + 10);
             
             // Vertical marks for approximate
@@ -462,8 +466,11 @@ class NumberLineView {
             
             // Display final equation at bottom
             noStroke();
-            fill(0);
-            text(`${this.model.firstNumber.toFixed(2)} + ${this.model.secondNumber.toFixed(2)} = ${exactSum.toFixed(2)}`, 50, startY + 120);
+            fill(0, 128, 0);
+
+            textSize(25);
+            text(`${this.model.firstNumber.toFixed(2)} + ${this.model.secondNumber.toFixed(2)} ≈ ${approxSum.toFixed(2)}`, 50, startY + 120);
+
         }
     }
 
@@ -475,10 +482,11 @@ class NumberLineView {
         noStroke();
         fill(0);
         textAlign(LEFT);
+        textSize(16);
         text(`Exact: ${exactValue.toFixed(2)} `, 50, startY - 30);
         
         // Draw exact measurement
-        let exactX = map(exactValue, 0, 1, 50, 350);
+        let exactX = map(exactValue, 0, 1, 50, 450);
         stroke(255, 0, 0);
         line(50, startY, exactX, startY);
         
@@ -495,10 +503,11 @@ class NumberLineView {
         // Display approximate equation above approximate line
         noStroke();
         fill(0);
+        textSize(16);
         text(`Approximate: ${approxValue.toFixed(2)}`, 50, startY + gap - 10);
         
         // Draw approximate measurement
-        let approxX = map(approxValue, 0, 1, 50, 350);
+        let approxX = map(approxValue, 0, 1, 50, 450);
         stroke(255, 0, 0);
         line(50, startY + gap + 20, approxX, startY + gap + 20);
         
@@ -539,8 +548,61 @@ class NumberLineController {
             p5Canvas.addEventListener('mousedown', (e) => this.handleMousePressed(e));
             p5Canvas.addEventListener('mousemove', (e) => this.handleMouseDragged(e));
             p5Canvas.addEventListener('mouseup', (e) => this.handleMouseReleased(e));
+            p5Canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+            p5Canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+            p5Canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
         }
     }
+
+
+    handleTouchStart(e) {
+        e.preventDefault(); // Prevent scrolling
+        const touch = e.touches[0];
+        const canvasRect = e.target.getBoundingClientRect();
+        const touchX = touch.clientX - canvasRect.left;
+        const touchY = touch.clientY - canvasRect.top;
+        const dragX = map(this.model.dragPoint.x, 0, 1, 50, 450);
+    
+        if (dist(touchX, touchY, dragX, this.view.exactLineY) < 10) {
+            this.model.isDragging = true;
+        }
+    }
+    
+    handleTouchMove(e) {
+        e.preventDefault();
+        if (this.model.isDragging) {
+            const touch = e.touches[0];
+            const canvasRect = e.target.getBoundingClientRect();
+            const touchX = touch.clientX - canvasRect.left;
+            let x = constrain(map(touchX, 50, 450, 0, 1), 0, 1);
+            this.model.dragPoint.x = x;
+        }
+    }
+    
+    handleTouchEnd(e) {
+        if (this.model.isDragging) {
+            this.model.isDragging = false;
+            let exactValue = this.model.dragPoint.x;
+    
+            if (this.model.currentPhase === 'first') {
+                this.model.firstNumber = exactValue;
+                this.model.isFirstArrowAnimating = true;
+                this.model.firstArrowProgress = 0;
+                this.model.firstLineProgress = 0;
+                this.view.updateButtonVisibility();
+            } else if (this.model.currentPhase === 'second') {
+                this.model.secondNumber = exactValue;
+                this.model.isSecondArrowAnimating = true;
+                this.model.secondArrowProgress = 0;
+                this.model.secondLineProgress = 0;
+                this.model.exactSum = this.model.firstNumber + exactValue;
+                this.model.approximateSum = this.model.calculateApproximateValue(this.model.exactSum);
+                this.model.currentPhase = 'complete';
+                this.view.updateButtonVisibility();
+            }
+        }
+    }
+    
 
     handleMousePressed(e) {
         if(dist(mouseX, mouseY, map(this.model.dragPoint.x, 0, 1, 50, 450), this.view.exactLineY) < 10) {

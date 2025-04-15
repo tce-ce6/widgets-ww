@@ -57,7 +57,11 @@ class Model {
 
 class View {
   constructor() {
-    createCanvas(900, 500).parent('canvas-container');
+    createCanvas(900, 300).parent('canvas-container');
+    this.newProblemButton = document.querySelector('.new-problem-button');
+    if (this.newProblemButton) {
+      this.newProblemButton.style.display = 'none';
+    }
   }
 
   draw(model) {
@@ -67,56 +71,54 @@ class View {
     textAlign(LEFT);
     stroke(0);
     textSize(15);
-    text(`Set Operation Interactive Tool`, 230 ,10)
+    // text(`Set Operation Interactive Tool`, 230 ,50);
     noStroke();
-    text(`Question: Select elements for ${model.question}`, 20, 40);
+    text(`Question: Select elements for ${model.question}`, 20, 80);
 
     // Draw Set A
-    text('A = {', 20, 70);
+    text('A = {', 20, 110);
     model.setA.forEach((val, i) => {
-      fill(model.selectedElements.includes(val) ? '#dcdcdc' : '#ff5c8a'); // Pink background
-      rect(65 + i * 40, 55, 30, 25, 5);
-      noStroke();
-      fill(0);
-      text(val, 70 + i * 40, 70);
-    });
-    text('}', 70 + model.setA.length * 40, 70);
-    // Draw Set B
-    text('B = {', 20, 110);
-    model.setB.forEach((val, i) => {
-      fill(model.selectedElements.includes(val) ? '#dcdcdc' : '#ff5c8a'); // Pink background
+      fill(model.selectedElements.includes(val) ? '#dcdcdc' : '#ff5c8a');
       rect(65 + i * 40, 95, 30, 25, 5);
       noStroke();
       fill(0);
       text(val, 70 + i * 40, 110);
     });
-    text('}', 70 + model.setB.length * 40, 110);
+    text('}', 70 + model.setA.length * 40, 110);
+
+    // Draw Set B
+    text('B = {', 20, 150);
+    model.setB.forEach((val, i) => {
+      fill(model.selectedElements.includes(val) ? '#dcdcdc' : '#ff5c8a');
+      rect(65 + i * 40, 135, 30, 25, 5);
+      noStroke();
+      fill(0);
+      text(val, 70 + i * 40, 150);
+    });
+    text('}', 70 + model.setB.length * 40, 150);
 
     // Draw Selected Elements Box
-    text(`${model.question}: {`, 90, 150);
+    text(`${model.question}: {`, 90, 190);
     model.selectedElements.forEach((val, i) => {
-    noStroke();
-    fill('#ff5c8a'); // Draw pink background for selected values
-    rect(155 + i * 40, 135, 30, 25, 5); 
-    fill(0);// Draw the text over the pink background
-    text(val, 160 + i * 40, 150);
+      noStroke();
+      fill('#ff5c8a');
+      rect(155 + i * 40, 175, 30, 25, 5); 
+      fill(0);
+      text(val, 160 + i * 40, 190);
     });
-    text('}',160 + model.selectedElements.length * 40, 150);
-
+    text('}',160 + model.selectedElements.length * 40, 190);
 
     // Check Button
     fill('#4a4be7');
-    rect(20, 340, 100, 40, 10);
+    rect(20, 390, 100, 40, 10);
     fill(255);
     textAlign(CENTER, CENTER);
-    text('CHECK', 70, 360);
+    text('CHECK', 70, 410);
 
     // Display Hint or Solution
     if (model.attempt === 1) {
-      
       fill('red');
       text('❌ Try again!', 100, 250);
-
     } else if (model.attempt === 2) {
       fill('red');
       text(model.getHint(), 150, 250);
@@ -128,10 +130,16 @@ class View {
 
     // New Problem Button
     if (model.attempt >= 3 || model.checkAnswer()) {
+
+      if (this.newProblemButton) {
+        this.newProblemButton.style.display = 'block';
+      }
+
+
       fill('#4a4be7');
-      rect(140, 340, 160, 40, 10);
+      rect(140, 390, 160, 40, 10);
       fill(255);
-      text('NEW PROBLEM', 220, 360);
+      text('NEW PROBLEM', 220, 410);
     }
   }
   drawVennDiagram(model) {
@@ -146,25 +154,25 @@ class View {
     noStroke(2, 15, 4);
     fill('#6ded80'); // Green background for correct answer region
     if (model.question === 'A ∪ B') {
-        ellipse(650, 180, 150, 150); // Union (both circles covered)
-        ellipse(750, 180, 150, 150);
+        ellipse(600, 180, 150, 150); // Union (both circles covered)
+        ellipse(700, 180, 150, 150);
     } else if (model.question === 'A - B') {
-        ellipse(650, 180, 150, 150); // A only
+        ellipse(600, 180, 150, 150); // A only
     } else if (model.question === 'B - A') {
-        ellipse(750, 180, 150, 150); // B only
+        ellipse(700, 180, 150, 150); // B only
     } else if (model.question === 'A ∩ B') {
-        ellipse(700, 180, 60, 100); // Intersection only
+        ellipse(650, 180, 60, 100); // Intersection only
     }
     noStroke();
     // Draw actual Venn circles
     fill(255, 150); // Semi-transparent white to differentiate
     stroke(0);
-    ellipse(650, 180, 150, 150); // A
-    ellipse(750, 180, 150, 150); // B
+    ellipse(600, 180, 150, 150); // A
+    ellipse(700, 180, 150, 150); // B
     // Place values in correct locations
-    this.drawValuesInCircle(650, 180, 60, Aonly, 'black'); // A only
-    this.drawValuesInCircle(750, 180, 60, Bonly, 'black'); // B only
-    this.drawValuesInCircle(700, 180, 40, intersection, 'red'); // Intersection
+    this.drawValuesInCircle(580, 180, 60, Aonly, 'black'); // A only
+    this.drawValuesInCircle(730, 180, 60, Bonly, 'black'); // B only
+    this.drawValuesInCircle(640, 180, 40, intersection, 'red'); // Intersection
 }
 drawValuesInCircle(cx, cy, radius, values, color) {
   textAlign(CENTER, CENTER);
@@ -189,50 +197,77 @@ class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+    this.setupEventListeners();
+    
   }
+
+   setupEventListeners() {
+ 
+      const checkButton = document.querySelector('.check-button');
+      const newProblemButton = document.querySelector('.new-problem-button');
+
+      if (newProblemButton) {
+        newProblemButton.addEventListener('click', () => {
+          this.model.generateProblem();
+          newProblemButton.style.display = 'none';
+        });
+      }
+
+
+      if (checkButton) {
+       
+        checkButton.addEventListener('click', () => {
+          if(!this.model.checkAnswer()){
+            this.model.attempt++;
+    
+          }else{
+            this.model.attempt = 3; // Correct → show solution
+    
+          }
+          
+        });
+      }
+    }
+      
 
   handleClick() {
     let clickedValue = null;
 
-    // Check if user clicked a value in Set A
-    if (mouseY > 60 && mouseY < 80) {
+    if (mouseY > 100 && mouseY < 120) {
       const index = Math.floor((mouseX - 70) / 40);
       if (index >= 0 && index < this.model.setA.length) {
         clickedValue = this.model.setA[index];
       }
     }
-    // Check if user clicked a value in Set B
-    else if (mouseY > 100 && mouseY < 120) {
+    else if (mouseY > 140 && mouseY < 160) {
       const index = Math.floor((mouseX - 70) / 40);
       if (index >= 0 && index < this.model.setB.length) {
         clickedValue = this.model.setB[index];
       }
     }
-    // Check if user clicked a value in the Answer Set
-    else if (mouseY > 140 && mouseY < 160) {
+    else if (mouseY > 180 && mouseY < 200) {
       const index = Math.floor((mouseX - 140) / 40);
       if (index >= 0 && index < this.model.selectedElements.length) {
         clickedValue = this.model.selectedElements[index];
       }
     }
 
-    // If a value was clicked, move it between sets and answer set
     if (clickedValue !== null) {
       this.toggleSelection(clickedValue);
     }
 
-    // Check button functionality
-    if (mouseX > 20 && mouseX < 120 && mouseY > 340 && mouseY < 380) {
+    
+
+    if (mouseX > 20 && mouseX < 120 && mouseY > 390 && mouseY < 430) {
       const correct = this.model.checkAnswer();
       if (!correct) {
         this.model.attempt++;
       } else {
-        this.model.attempt = 3; // If correct, show solution immediately
+        this.model.attempt = 3;
       }
     }
 
-    // New Problem Button
-    if (mouseX > 140 && mouseX < 300 && mouseY > 340 && mouseY < 380 && (this.model.attempt >= 3 || this.model.checkAnswer())) {
+    if (mouseX > 140 && mouseX < 300 && mouseY > 390 && mouseY < 430 && (this.model.attempt >= 3 || this.model.checkAnswer())) {
       this.model.generateProblem();
     }
   }
@@ -255,6 +290,7 @@ function setup() {
   view = new View();
   controller = new Controller(model, view);
 }
+
 function draw() {
   view.draw(model);
 }
