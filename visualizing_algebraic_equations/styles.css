@@ -81,7 +81,6 @@ h3 {
 }
 
 #controls-container {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,18 +173,18 @@ label {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
+/* 
 #solveButton {
     background-color: #673ab7;
-}
+} */
 
 .action-button:hover {
     background-color: #3367d6;
 }
 
-#solveButton:hover {
+/* #solveButton:hover {
     background-color: #5e35b1;
-} 
+}  */
 #leftLabel1 {
     font-size: 30px; /* or any size you want */
     font-weight: normal; /* optional for stronger appearance */
