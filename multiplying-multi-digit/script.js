@@ -24,6 +24,13 @@ class SimulationView {
         this.p5Instance = null;
         this.graph = null;
         this.initP5();
+        
+        this.tryAnotherButton = document.querySelector(".try-another-button");
+        this.btnControls = document.querySelector(".button-controls")
+        this.btnControls.style.display = "none";
+        console.log("🚀 ~ SimulationView ~ constructor ~ tryAnotherButton:", this.tryAnotherButton.style)
+        
+        
     }
 
     // View class update - only showing relevant parts
@@ -43,10 +50,11 @@ class SimulationView {
                     const x = 150;
                     const buttonX = x + 500;
                     const fixedButtonY = 500;  // Match the fixed position
-                    
-                    if (p.mouseX > buttonX && p.mouseX < buttonX + 150 &&
-                        p.mouseY > fixedButtonY && p.mouseY < fixedButtonY + 45) {
-                        // Reset state and generate new problem...
+
+
+                    this.tryAnotherButton.addEventListener("click", () => {
+                        // Reset state
+                        
                         selectedBoxes = [];
                         calculatedBoxes.clear();
                         lastSelectedBox = null;
@@ -61,8 +69,33 @@ class SimulationView {
                         p.noFill();
                         p.rect(0,0,900,600);
                         p.draw();
-                        return;
-                    }
+                        
+            
+                        // Hide button
+                        this.btnControls.style.display = "none";
+                    });
+
+
+                    
+                    // if (p.mouseX > buttonX && p.mouseX < buttonX + 150 &&
+                    //     p.mouseY > fixedButtonY && p.mouseY < fixedButtonY + 45) {
+                    //     // Reset state and generate new problem...
+                    //     selectedBoxes = [];
+                    //     calculatedBoxes.clear();
+                    //     lastSelectedBox = null;
+                        
+                    //     // Generate new problem
+                    //     this.model.generateNewProblem();
+                        
+                    //     // Redraw only what's needed
+                    //     p.clear();
+                    //     p.stroke("#f5f5f5");
+                    //     p.strokeWeight(3);
+                    //     p.noFill();
+                    //     p.rect(0,0,900,600);
+                    //     p.draw();
+                    //     return;
+                    // }
                 }
 
                 // Existing box selection code
@@ -70,8 +103,8 @@ class SimulationView {
                 const boxWidth = 100;
                 const boxHeight = 100;
                 const x = 470;
-                const y = 150;
-
+                const y =  270
+                    //150 + 120;
                 for(let i = 0; i < digits; i++) {
                     if (p.mouseX > x + (i * boxWidth) && 
                         p.mouseX < x + ((i + 1) * boxWidth) && 
@@ -100,7 +133,7 @@ class SimulationView {
 
             // Add fullscreen button in setup
             p.setup = () => {
-                p.createCanvas(900, 600);
+                p.createCanvas(900, 540);
                 p.background("#ffffff");
                 p.stroke("#f5f5f5");
                 p.strokeWeight(3);
@@ -212,6 +245,10 @@ class SimulationView {
                     
                     // Display total and button only if all boxes are selected
                     if (selectedBoxes.length === digits) {
+
+                        // let tryAnotherButton = document.querySelector("try-another-button")
+                        this.btnControls.style.display = "block"
+
                         calculationY += 35;
                         p.noStroke();
                         p.textAlign(p.RIGHT);
@@ -224,14 +261,14 @@ class SimulationView {
                         p.text('Add the partial products', x + 30, calculationY);
 
                         // Add "Try Another" button at fixed position
-                        const fixedButtonY = 520; // Increased from 500 to 520
-                        p.textAlign(p.CENTER);
-                        p.textSize(14);
-                        p.fill('#6B4EE6');
-                        p.noStroke();
-                        p.rect(x + 500, fixedButtonY, 150, 40, 4);
-                        p.fill('#FFFFFF');
-                        p.text('TRY ANOTHER', x + 575, fixedButtonY+15);
+                        // const fixedButtonY = 520; // Increased from 500 to 520
+                        // p.textAlign(p.CENTER);
+                        // p.textSize(14);
+                        // p.fill('#6B4EE6');
+                        // p.noStroke();
+                        // p.rect(x + 500, fixedButtonY, 150, 40, 4);
+                        // p.fill('#FFFFFF');
+                        // p.text('TRY ANOTHER', x + 575, fixedButtonY+15);
                     }
                 }
 
@@ -264,7 +301,7 @@ class SimulationView {
                     if (selectedBoxes.includes(i)) {
                         // Use pink for last selected box, light purple for others
                         p.fill(i === lastSelectedBox ? '#ffb6c1' : '#e6e6fa');
-                        p.rect(x + (i * boxWidth), y, boxWidth, boxHeight);
+                        p.rect(x + (i * boxWidth), y + 120, boxWidth, boxHeight);
                         
                         // Calculate product for selected box
                         const singleDigit = this.model?.data.singleDigitNumber || 0;
@@ -275,10 +312,10 @@ class SimulationView {
                         p.fill('#374350');
                         p.textSize(20);  // Changed from 24
                         p.textAlign(p.CENTER);
-                        p.text(`${product}`, x + (i * boxWidth) + boxWidth/2, y + boxHeight-60);
+                        p.text(`${product}`, x + (i * boxWidth) + boxWidth/2, y + boxHeight-60 + 120);
                     } else {
                         p.noFill();
-                        p.rect(x + (i * boxWidth), y, boxWidth, boxHeight);
+                        p.rect(x + (i * boxWidth), y + 120, boxWidth, boxHeight);
                     }
                     
                     // Add place value text above each box
@@ -286,7 +323,7 @@ class SimulationView {
                     p.fill('#374350');
                     p.textSize(20);
                     p.textAlign(p.CENTER);
-                    p.text(placeValues[i], x + (i * boxWidth) + boxWidth/2, y - 30);
+                    p.text(placeValues[i], x + (i * boxWidth)  + boxWidth/2, y - 30 + 120);
                 }
 
                 // Add multiplication sign and single digit number
@@ -294,9 +331,9 @@ class SimulationView {
                 p.fill('#374350');
                 p.textSize(20);
                 p.textAlign(p.CENTER);
-                p.text('×', x-10, y-20);
+                p.text('×', x-10, y-20 + 120);
                 p.textAlign(p.LEFT);
-                p.text(this.model?.data.singleDigitNumber || '', x-20, y+40);
+                p.text(this.model?.data.singleDigitNumber || '', x-20, y+40 + 120);
             };
         }, 'canvas-container');
     }
