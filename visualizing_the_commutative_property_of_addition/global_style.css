@@ -9,6 +9,9 @@ body{
     margin: auto;
 
 }
+.d-none{
+    display: none;
+}
 
 h1{
     font-size: 28px;
