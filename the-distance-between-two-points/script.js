@@ -1337,7 +1337,7 @@ dropTargets.forEach((box) => {
         });
         
         // Reset info
-        document.getElementById('pointsInfo').innerHTML = '<h2>Click on two points to start</h2>';
+        document.getElementById('pointsInfo').innerHTML = '<h5>Click on two points to start</h5>';
         
         // Generate new points
         createRandomPoints();

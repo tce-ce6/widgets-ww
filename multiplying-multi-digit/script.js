@@ -73,7 +73,9 @@ class SimulationView {
                         
             
                         // Hide button
-                        this.btnControls.style.display = "none";
+                        this.tryAnotherButton.style.disable = true;
+                            
+                        // this.btnControls.style.display = "none";
                     });
 
 
@@ -248,7 +250,9 @@ class SimulationView {
                     if (selectedBoxes.length === digits) {
 
                         // let tryAnotherButton = document.querySelector("try-another-button")
-                        this.btnControls.style.display = "block"
+                         this.tryAnotherButton.style.disable = false;
+                        // this.tryAnotherButton.
+                        // this.btnControls.style.display = "block"
 
                         calculationY += 35;
                         p.noStroke();
