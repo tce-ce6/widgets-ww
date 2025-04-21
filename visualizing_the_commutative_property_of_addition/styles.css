@@ -22,11 +22,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
 }
 
 #canvas-container canvas {
-    border: 1px solid #cccccc;
+        max-width: 100%;
+        height: auto !important;
+    
 }
 
 .title {

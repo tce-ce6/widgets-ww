@@ -110,6 +110,9 @@ h1, h2, h3, h4, h5, p{
 .w-75{
     width: 75%;
 }   
+.m-0{
+    margin: 0;
+}
 .button-controls{
     padding: 12px;
     position: relative;
