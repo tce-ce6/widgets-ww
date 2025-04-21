@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // triangleLabels.push(coordB);
             
             // Clear detailed coordinates from header
-            document.getElementById('pointsInfo').innerHTML = '<h2>Distance between points A and B</h2>';
+            document.getElementById('pointsInfo').innerHTML = '<h5>Distance between points A and B</h5>';
             createTriangle();
         }
     }

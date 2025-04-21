@@ -21,20 +21,24 @@
         <div class="wdgetTitle">
             <h2>Build the Equation</h2>
         </div>
-        <div id="equation-container">
-            <div id="steps-container" style="display: none;">
-                <p>The solution to the equation:</p>
-                <div id="step1" class="step" style="display: none;">
-                    <p>Step 1: Subtract <span class="constant"></span> from both sides of the equation:</p>
-                    <div class="step-equation"></div>  
-                </div>
-                <div id="step2" class="step" style="display: none;">
-                    <p>Step 2: Divide both sides of the equation by <span class="coefficient"></span>:</p>
-                    <div class="step-equation"></div>
+        <div class="equation-wrapper">
+
+            <div id="canvas-container"></div>
+            <div id="equation-container">
+                <div id="steps-container" style="display: none;">
+                    <p>The solution to the equation:</p>
+                    <div id="step1" class="step" style="display: none;">
+                        <p>Step 1: Subtract <span class="constant"></span> from both sides of the equation:</p>
+                        <div class="step-equation"></div>  
+                    </div>
+                    <div id="step2" class="step" style="display: none;">
+                        <p>Step 2: Divide both sides of the equation by <span class="coefficient"></span>:</p>
+                        <div class="step-equation"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="canvas-container"></div>
+        
         <div id="controls-container" class="button-controls">
             <div id="slider-controls" class="controls">
                 <div class="slider-group">

@@ -118,7 +118,7 @@ html, body {
 
 #feedback {
     font-size: 18px;
-    margin: 10px 0;
+    margin: -30px 0 0;
     min-height: 27px;
     font-weight: bold;
 }

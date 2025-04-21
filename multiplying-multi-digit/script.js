@@ -27,7 +27,8 @@ class SimulationView {
         
         this.tryAnotherButton = document.querySelector(".try-another-button");
         this.btnControls = document.querySelector(".button-controls")
-        this.btnControls.style.display = "none";
+        this.tryAnotherButton.style.disable = true;
+        // this.btnControls.style.display = "none";
         console.log("🚀 ~ SimulationView ~ constructor ~ tryAnotherButton:", this.tryAnotherButton.style)
         
         

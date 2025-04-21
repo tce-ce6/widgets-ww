@@ -217,7 +217,7 @@ class VennView {
             // Set canvas size based on container width with a minimum size
             // Solution view is smaller than main view
             const sizeFactor = this.isSolutionView ? 0.8 : 1;
-            this.width = Math.max(400, Math.min(500, containerWidth - 40)) * sizeFactor;
+            this.width = Math.max(350, Math.min(500, containerWidth - 40)) * sizeFactor;
             this.height = this.width; // Keep it square
             
             // Adjust circle radius based on canvas size
@@ -345,9 +345,9 @@ class VennView {
                 this.p5.textSize(Math.max(12, this.width / 30));
                 this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
                 this.p5.fill(this.colors.text);
-                this.p5.text("Visualize statements about two sets of data", 20, 20);  
-                this.p5.text("written in mathematical notation with a", 20, 40);  
-                this.p5.text("Venn diagram.", 20, 60);
+                // this.p5.text("Visualize statements about two sets of data", 20, 20);  
+                // this.p5.text("written in mathematical notation with a", 20, 40);  
+                // this.p5.text("Venn diagram.", 20, 60);
             } 
             else {
                 // Original drawing for larger screens
@@ -355,9 +355,9 @@ class VennView {
                 this.p5.textSize(16);
                 this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
                 this.p5.fill(this.colors.text);
-                this.p5.text("Visualize statements about two sets of data", 20, 20);  
-                this.p5.text("written in mathematical notation with a", 20, 40);  
-                this.p5.text("Venn diagram.", 20, 60);
+                // this.p5.text("Visualize statements about two sets of data", 20, 20);  
+                // this.p5.text("written in mathematical notation with a", 20, 40);  
+                // this.p5.text("Venn diagram.", 20, 60);
             }
         }
         
