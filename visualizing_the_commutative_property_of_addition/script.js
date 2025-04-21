@@ -779,6 +779,52 @@ class Controller {
         
         //     redraw();
         // });
+        document.getElementById("play-btn").addEventListener("click", () => {
+            // 1. Set random values for slider1 and slider2 (1 to 15)
+            const randomSlider1 = Math.floor(Math.random() * 15) + 1;
+            const randomSlider2 = Math.floor(Math.random() * 15) + 1;
+        
+            this.model.data.slider1.value = randomSlider1;
+            this.model.data.slider2.value = randomSlider2;
+        
+            // Reset animation
+            this.model.data.slider3.value = 1;
+            document.getElementById('slider3').value = 1;
+            this.model.animatedBalls = [];
+            this.model.currentPhase = 0;
+        
+            // Initialize new balls
+            setTimeout(() => {
+                
+                this.model.initializeAnimatedBalls();
+            }, 400);
+        
+            // 2. Animate slider3 from 1 to 440
+            let current = 1;
+            const max = 440;
+            const step = 1;
+            const interval = 10; // ms between each step
+        
+            const animate = () => {
+                if (current <= max) {
+                    this.model.data.slider3.value = current;
+                    document.getElementById("slider3").value = current;
+        
+                    if (current <= 110) this.model.currentPhase = 1;
+                    else if (current <= 220) this.model.currentPhase = 2;
+                    else if (current <= 330) this.model.currentPhase = 3;
+                    else this.model.currentPhase = 4;
+        
+                    this.handlePhaseTransitions(current - 1, current);
+                    current++;
+                    redraw();
+                    requestAnimationFrame(animate);
+                }
+            };
+        
+            requestAnimationFrame(animate);
+        });
+        
 
         htmlSlider.addEventListener('mousedown', function (e) {
             const thumbWidth = 20; // Approximate thumb width (can vary by browser)

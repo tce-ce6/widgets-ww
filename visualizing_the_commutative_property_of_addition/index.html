@@ -17,14 +17,22 @@
         <!-- <h1 class="title">Visualizing the Commutative Property of Addition</h1>
         <div>Explore the commutative property of addition. Arrange marbles into jars to visualize and model an addition equation.</div> -->
         <div id="canvas-container"></div>
-        <div class="button-controls">
+        <div class="button-controls d-flex justify-content-between">
             
              
-
+<div class="w-75">
             <label for="sectors-slider"
             >Slide to animate </label
           >
                 <input type="range" id="slider3" min="1" max="440" value="1" class="sectors-slider">
+            </div>
+            <div>
+
+                <button class="btn-play" id="play-btn" aria-label="Play">
+                    <span class="icon-play"></span>
+                  </button>
+                  
+            </div>
     </div>
     </div>
     <script src="script.js"></script>
