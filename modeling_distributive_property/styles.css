@@ -225,21 +225,19 @@ font-weight: bold;
 display: flex;
 justify-content: space-between;
 gap: 40px;
-margin-top: 10px;
 padding: 0 20px;
 }
 
 .slider-container {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .slider-label {
 font-size: 1.2em;
 color: #333;
-margin-bottom: 10px;
 font-weight: bold;
 }
 

@@ -25,6 +25,12 @@ body {
 }
 
 
+.selected-label {
+    outline: 2px dashed #888;
+    background-color: #f0f8ff;
+}
+
+
 #fullSolution{
     width: 100%;
     overflow: auto;

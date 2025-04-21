@@ -505,6 +505,115 @@ initDragAndDrop() {
     
     // Touch ghost element
     let ghostElement = null;
+
+
+
+    // Track selected side label
+    let selectedLabel = null;
+    const highlightDropTargets = () => {
+        dropTargets.forEach(target => {
+            target.classList.add('select-highlight');
+        });
+    };
+    const removeHighlightDropTargets = () => {
+        dropTargets.forEach(target => {
+            target.classList.remove('select-highlight');
+        });
+    };
+    
+
+// Enable click-to-select on triangle side labels
+// draggableElements.forEach(label => {
+//     label.addEventListener('click', () => {
+//         // Only allow selection if not already used
+//         if (label.getAttribute('draggable') === 'true') {
+//             // Deselect previous
+//             if (selectedLabel && selectedLabel !== label) {
+//                 selectedLabel.classList.remove('selected-label');
+//             }
+
+//             // Toggle selection
+//             if (selectedLabel === label) {
+//                 selectedLabel.classList.remove('selected-label');
+//                 selectedLabel = null;
+//             } else {
+//                 label.classList.add('selected-label');
+//                 selectedLabel = label;
+//             }
+//         }
+//     });
+// });
+
+// // Handle clicking a drop target to place the selected label
+// dropTargets.forEach(dropTarget => {
+//     dropTarget.addEventListener('click', () => {
+//         if (selectedLabel) {
+//             const data = selectedLabel.textContent;
+//             const sourceId = selectedLabel.id;
+//             const sourceType = 'triangle';
+
+//             handleDrop(dropTarget, data, sourceId, sourceType);
+
+//             // Clear selection
+//             selectedLabel.classList.remove('selected-label');
+//             selectedLabel = null;
+//         }
+//     });
+// });
+
+// Enable click or tap-to-select on triangle side labels
+draggableElements.forEach(label => {
+    const selectLabel = () => {
+        if (label.getAttribute('draggable') === 'true') {
+            if (selectedLabel && selectedLabel !== label) {
+                selectedLabel.classList.remove('selected-label');
+            }
+
+            // Toggle selection
+            if (selectedLabel === label) {
+                selectedLabel.classList.remove('selected-label');
+                selectedLabel = null;
+                removeHighlightDropTargets();
+            } else {
+                label.classList.add('selected-label');
+                selectedLabel = label;
+                highlightDropTargets();
+            }
+        }
+    };
+
+    label.addEventListener('click', selectLabel);
+    label.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        selectLabel();
+    });
+});
+
+// Handle click or tap to place selected value into a drop box
+dropTargets.forEach(dropTarget => {
+    const placeSelectedLabel = () => {
+        if (selectedLabel) {
+            const data = selectedLabel.textContent;
+            const sourceId = selectedLabel.id;
+            const sourceType = 'triangle';
+
+            handleDrop(dropTarget, data, sourceId, sourceType);
+
+            selectedLabel.classList.remove('selected-label');
+            selectedLabel = null;
+            removeHighlightDropTargets();
+        }
+    };
+
+    dropTarget.addEventListener('click', placeSelectedLabel);
+    dropTarget.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        placeSelectedLabel();
+    });
+});
+
+
+
     
     // Create indicator for correct/incorrect equation
     if (!this.equationIndicator) {
@@ -559,6 +668,14 @@ initDragAndDrop() {
         
         // Add to document body
         document.body.appendChild(ghostElement);
+
+
+
+
+
+
+
+
     };
     
     // Update ghost element position

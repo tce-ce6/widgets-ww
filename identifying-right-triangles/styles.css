@@ -16,6 +16,26 @@ margin: 0 auto;
 padding: 20px;
 }
 
+
+.formula-box sup {
+    position: relative;
+    top: -0.8em; /* Adjust this value to move it higher */
+    right: -0.2em; /* Adjust this value to move it to the right */
+    font-size: 1em; /* Optional: make it slightly smaller */
+  }
+
+
+
+.selected-label {
+    outline: 2px dashed #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.select-highlight {
+    border: 3px dashed #007bff !important;
+}
+
+
 h1 {
 text-align: center;
 margin-bottom: 10px;
@@ -94,8 +114,8 @@ gap: 10px;
 }
 
 .formula-text {
-font-size: 20px;
-margin-bottom: 20px;
+font-size: 16px;
+margin-bottom: 10px;
 }
 
 .formula-boxes {
@@ -182,7 +202,6 @@ border: 1px solid #ced4da;
 }
 /* Hint container styling */
 .hint-container {
-max-width: 600px;
 margin: 0 auto 10px;
 padding: 10px 10px;
 background-color: #fff3e0;

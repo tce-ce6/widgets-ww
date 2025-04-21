@@ -600,12 +600,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create draggable labels
         createDraggableLabels();
-        
+        setupClickToAssign();
+
         // Show the formula section
         document.getElementById('formula').style.display = 'block';
         document.getElementById('resetBtn').style.display = 'none';
     }
     
+
+
+
+
+
     // Clear the triangle
     function clearTriangle() {
         console.log('Application: Clearing triangle');
@@ -1088,6 +1094,81 @@ dropTargets.forEach((box) => {
             });
         });
     }
+
+
+    function setupClickToAssign() {
+        console.log('Application: Setting up click-to-assign (mouse + touch)');
+    
+        const labels = document.querySelectorAll('.triangle-side');
+        const dropTargets = document.querySelectorAll('.blank-box');
+        let selectedLabel = null;
+    
+        function selectLabel(label) {
+            if (label.classList.contains('used')) return;
+    
+            if (selectedLabel && selectedLabel !== label) {
+                selectedLabel.classList.remove('selected-label');
+            }
+    
+            if (selectedLabel === label) {
+                label.classList.remove('selected-label');
+                selectedLabel = null;
+            } else {
+                label.classList.add('selected-label');
+                selectedLabel = label;
+            }
+        }
+    
+        function assignLabelToBox(box, index) {
+            if (!selectedLabel || selectedLabel.classList.contains('used')) return;
+    
+            const formula = selectedLabel.dataset.formula;
+    
+            if (formula === 'd' && index !== 0) {
+                box.classList.add('invalid');
+                setTimeout(() => box.classList.remove('invalid'), 800);
+                return;
+            }
+    
+            // Clear previous source if any
+            if (box.textContent) {
+                const prevSourceId = box.dataset.sourceId;
+                const prevSource = document.getElementById(prevSourceId);
+                if (prevSource) prevSource.classList.remove('used');
+            }
+    
+            box.textContent = selectedLabel.textContent;
+            box.dataset.formula = selectedLabel.dataset.formula;
+            box.dataset.sourceId = selectedLabel.id;
+            box.setAttribute('draggable', 'true');
+    
+            selectedLabel.classList.add('used');
+            selectedLabel.classList.remove('selected-label');
+            selectedLabel = null;
+    
+            checkSolution();
+        }
+    
+        // Handle label selection (click + touch)
+        labels.forEach(label => {
+            label.addEventListener('click', () => selectLabel(label));
+            label.addEventListener('touchend', (e) => {
+                e.preventDefault();  // Prevents double-trigger on mobile
+                selectLabel(label);
+            });
+        });
+    
+        // Handle assigning on box click/tap
+        dropTargets.forEach((box, index) => {
+            box.addEventListener('click', () => assignLabelToBox(box, index));
+            box.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                assignLabelToBox(box, index);
+            });
+        });
+    }
+    
+    
     
     // Function to check if the solution is correct
     function checkSolution() {
