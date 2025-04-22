@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Division Animation MVC</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="global_style.css">
+
+</head>
+<body>
+  <div class="container">
+    <!-- The canvas will be created by p5.js -->
+    <div id="sketch-container"></div>
+    <div class="controls button-controls">
+     
+      <label for="slider"></label>
+      <span>Slide to animate </span><input type="range" id="slider" class="sectors-slider" min="0" max="100" value="0" /> 
+      <button id="newProblemBtn1">New Problem</button>
+    </div>
+  </div>
+
+  <!-- Include p5.js -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script> -->
+  <script src="p5.js"></script>
+
+
+  <!-- Your MVC script -->
+  <script src="script.js"></script>
+</body>
+</html>
