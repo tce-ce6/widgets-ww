@@ -14,9 +14,10 @@ body {
 }
 
 #sketch-container canvas {
-  background: white;
-  border: 1px solid #ccc;
-  /* margin-bottom: 20px; */
+  max-width: 100%;
+  height: auto !important;
+  max-height: calc(100vh - 200px) !important;
+  width: auto !important;
 }
 
 .controls {
@@ -30,7 +31,6 @@ body {
 
 canvas {
   background: white;
-  border: 1px solid #ccc;
    /* margin-bottom: 20px; Add space between canvas and controls */
   order: 1;
 }
@@ -49,9 +49,6 @@ input[type=range]::-moz-range-thumb {
 }
 
 
-#slider {
-  width: 600px;
-}
 
 
 /* we want to shift the button at the down side */
