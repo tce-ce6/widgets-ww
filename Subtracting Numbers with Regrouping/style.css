@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  /* background-color: #f5f5f5; */
+  font-family: Arial, sans-serif;
+}
+
+/* .container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+} */
+
+/* .button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #7B68EE;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+} */
+
+.button:hover {
+  background-color: #6A5ACD;
+}
+
+.reset-button {
+  position: absolute;
+  padding: 10px 15px;
+  background-color: #7B68EE;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.reset-button:hover {
+  background-color: #6A5ACD;
+}
+
+
+canvas {
+  max-width: 100%;
+  height: auto !important;
+  max-height: calc(100vh - 200px) !important;
+  width: auto !important;
+}
+/* The positions will be set dynamically in JavaScript */

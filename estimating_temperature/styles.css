@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    padding: 20px;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+canvas {
+    max-width: 100%;
+    height: auto !important;
+    max-height: calc(100vh - 200px) !important;
+    width: auto !important;
+  }
