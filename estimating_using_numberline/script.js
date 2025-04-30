@@ -101,42 +101,156 @@ class FractionView {
         
         // Create a new p5 instance with just a basic canvas
         this.sketch = new p5((p) => {
-            // Add a div for MathJax equation
-            let equationDiv;
-            
             p.setup = () => {
-                // Create canvas with dimensions 900x400
+                // Create canvas with dimensions 900x500
                 const canvas = p.createCanvas(900, 500);
                 canvas.parent(numberLineContainer);
-                
-                // Create a div for the equation at the top of the canvas
-                equationDiv = p.createDiv('');
-                equationDiv.position(220, 130); // Position at the top
-                equationDiv.style('font-size', '15px');
-                equationDiv.style('width', '900px'); // Match canvas width
-                equationDiv.style('text-align', 'center');
-                equationDiv.style('position', 'absolute'); // Use absolute positioning
-                equationDiv.style('z-index', '10'); // Ensure it's above the canvas
-                equationDiv.parent(numberLineContainer);
-                
-                // Set the equation using MathJax
-                this.updateEquation(model, equationDiv);
             };
             
             p.draw = () => {
                 // Basic white background
                 p.background(255);
-                
+    
                 // Draw a border to visualize the canvas
                 p.stroke(0);
                 p.strokeWeight(2);
                 p.noFill();
                 p.rect(0, 0, p.width, p.height);
                 
+                // Draw text instructions directly on canvas
+                this.drawInstructions(p, model);
+                
                 // Draw number line and other elements
                 this.drawNumberLine(p, model);
             };
         });
+    }
+
+    // New method to draw text instructions directly on canvas
+    drawInstructions(p, model) {
+        p.push();
+        p.textAlign(p.LEFT, p.TOP);
+        p.textSize(16);
+        p.fill(0);
+        p.noStroke(); // Remove the parameter
+        
+        // Create an off-screen container for MathJax if it doesn't exist
+        if (!this.mathJaxContainer) {
+            this.mathJaxContainer = document.createElement('div');
+            this.mathJaxContainer.style.position = 'absolute';
+            this.mathJaxContainer.style.visibility = 'hidden'; // Hide it
+            this.mathJaxContainer.style.pointerEvents = 'none'; // Prevent interaction
+            document.body.appendChild(this.mathJaxContainer);
+            
+            // Create a method to render math and draw it on canvas
+            this.renderMathToCanvas = (p, mathString, x, y, color = 'black') => {
+                // Set the math content
+                this.mathJaxContainer.innerHTML = `<span style="color:${color}">\\(${mathString}\\)</span>`;
+                
+                // Typeset with MathJax
+                if (window.MathJax) {
+                    MathJax.typesetPromise([this.mathJaxContainer]).then(() => {
+                        // Draw the rendered math on canvas in the next frame
+                        p.drawMath = true;
+                    }).catch(err => console.log(err));
+                }
+            };
+            
+            // Create a method to draw mixed fractions directly on canvas
+            this.drawMixedFraction = (p, fraction, x, y, color) => {
+                const fontSize = p.textSize();
+                const fractionSize = fontSize * 0.8; // Slightly smaller for fraction
+                const lineY = y + fontSize/2;
+                
+                let currentX = x;
+                p.fill(color);
+                
+                // If there's a whole number part
+                if (fraction.whole > 0) {
+                    p.textSize(fontSize);
+                    p.text(fraction.whole, currentX, y);
+                    currentX += p.textWidth(fraction.whole.toString()) + 5;
+                }
+                
+                // Draw the fraction part
+                p.textSize(fractionSize);
+                
+                // Calculate widths
+                const numWidth = p.textWidth(fraction.numerator.toString());
+                const denomWidth = p.textWidth(fraction.denominator.toString());
+                const fractionWidth = Math.max(numWidth, denomWidth) + 10;
+                
+                // Draw numerator
+                p.textAlign(p.CENTER, p.BOTTOM);
+                p.text(fraction.numerator, currentX + fractionWidth/2, lineY - 2);
+                
+                // Draw fraction line
+                p.stroke(color);
+                p.strokeWeight(1.5);
+                p.line(currentX, lineY, currentX + fractionWidth, lineY);
+                
+                // Draw denominator
+                p.noStroke();
+                p.textAlign(p.CENTER, p.TOP);
+                p.text(fraction.denominator, currentX + fractionWidth/2, lineY + 2);
+                
+                // Reset text size and alignment
+                p.textSize(fontSize);
+                p.textAlign(p.LEFT, p.TOP);
+                
+                // Return the new x position
+                return currentX + fractionWidth;
+            };
+        }
+        
+        // Draw the main problem statement
+        let xPos = 300;
+        p.text("Estimate", xPos-270, 20);
+        xPos += p.textWidth("Estimate ") + 10;
+        
+        // Draw the first fraction in purple
+        xPos = this.drawMixedFraction(p, model.fraction1, xPos-280, 20, '#8080FF');
+        
+        // Draw the plus sign in black
+        p.fill(0);
+        p.text("+", xPos + 10, 20);
+        xPos += p.textWidth("+") + 20;
+        
+        // Draw the second fraction in pink
+        xPos = this.drawMixedFraction(p, model.fraction2, xPos-5, 20, '#FF80B0');
+        
+        // Continue with black text
+        p.fill(0);
+        p.text("by dragging the bars.", xPos-7 + 20, 20);
+        
+        // Draw Step 1
+        xPos = 300;
+        p.fill(0);
+        p.text("Step 1: Estimate", xPos-270, 80);
+        xPos += p.textWidth("Step 1: Estimate ") + 10;
+        
+        // Draw first fraction in purple
+        this.drawMixedFraction(p, model.fraction1, xPos-275, 80, '#8080FF');
+        
+        // Draw Step 2 if visible
+        if (this.showStep2) {
+            xPos = 300;
+            p.fill(0);
+            p.text("Step 2: Estimate", xPos-275, 220);
+            xPos += p.textWidth("Step 2: Estimate ") + 10;
+            
+            // Draw first fraction in gray
+            xPos = this.drawMixedFraction(p, model.fraction1, xPos-280, 220, '#808080');
+            
+            // Draw plus sign in black
+            p.fill(0);
+            p.text("+", xPos + 10, 220);
+            xPos += p.textWidth("+") + 20;
+            
+            // Draw second fraction in pink
+            this.drawMixedFraction(p, model.fraction2, xPos, 220, '#FF80B0');
+        }
+        p.pop();
     }
 
     // Add a method to handle the expandable box
@@ -186,17 +300,12 @@ class FractionView {
                 
                 // Show Step 2 after the box is placed
                 this.showStep2 = true;
+            }
+            else if (this.pinkBox.isDragging) {
+                this.pinkBox.isDragging = false;
                 
-                // Update the equation display to show Step 2
-                const equationDiv = document.querySelector('#number-line-container > div');
-                if (equationDiv) {
-                    this.updateEquation(model, { html: (content) => { equationDiv.innerHTML = content; } });
-                    
-                    // Typeset the equation with MathJax
-                    if (window.MathJax) {
-                        MathJax.typesetPromise([equationDiv]).catch((err) => console.log(err));
-                    }
-                }
+                // Show the compare button after the pink box is dragged
+                this.showCompareButton = true;
             }
         };
         
@@ -208,38 +317,7 @@ class FractionView {
         p.rect(this.purpleBox.startX, this.purpleBox.y, boxWidth, this.purpleBox.height);
     }
 
-    updateEquation(model, equationDiv) {
-        // Get the LaTeX formatted problem string
-        const problemString = model.getProblemString();
-        const firstFractionString = model.getFirstFractionString();
-        const secondFractionString = model.getSecondFractionString();
-        
-        // Set the HTML content with MathJax formatting
-        let htmlContent = '<div style="display: flex; align-items: center; gap: 10px; position: relative; ">' +
-                         '<span>Estimate</span>' +
-                         '<span>$$' + problemString + '$$</span>' +
-                         '<span>by dragging the bars.</span>' +
-                         '</div>' +
-                         '<div style="display: flex; justify-content: center; align-items: center; gap: 10px; position: relative;">' +
-                         '<span>Step 1: Estimate</span>' +
-                         '<span>$$' + firstFractionString + '$$</span>' +
-                         '</div>';
-        
-        // Only show Step 2 if the box has been placed
-        if (this.showStep2) {
-            htmlContent += '<div style="display: flex; justify-content: center; align-items: center; gap: 10px; position: relative; ">' +
-                         '<span>Step 2: Estimate</span>' +
-                         '<span>$$\\color{gray}{' + model.getFractionString(model.fraction1).replace('\\color{#8080FF}', '') + '} \\color{black}{+} ' + secondFractionString + '$$</span>' +
-                         '</div>';
-        }
-        
-        equationDiv.html(htmlContent);
-        
-        // Typeset the equation with MathJax
-        if (window.MathJax) {
-            MathJax.typesetPromise([equationDiv.elt]).catch((err) => console.log(err));
-        }
-    }
+  
     
     drawNumberLine(p, model) {
         // Set up number line parameters
@@ -440,17 +518,6 @@ class FractionView {
                 
                 // Show Step 2 after the box is placed
                 this.showStep2 = true;
-                
-                // Update the equation display to show Step 2
-                const equationDiv = document.querySelector('#number-line-container > div');
-                if (equationDiv) {
-                    this.updateEquation(model, { html: (content) => { equationDiv.innerHTML = content; } });
-                    
-                    // Typeset the equation with MathJax
-                    if (window.MathJax) {
-                        MathJax.typesetPromise([equationDiv]).catch((err) => console.log(err));
-                    }
-                }
             }
             else if (this.pinkBox.isDragging) {
                 this.pinkBox.isDragging = false;
@@ -565,39 +632,49 @@ class FractionView {
         // Connect the end of second green box to the end of pink box
         this.drawDottedLine(p, fraction2EndX, thirdLineY - 30, this.pinkBox.endX, lineY);
         
-        // Create a div for the exact solution using MathJax
-        if (!this.exactSolutionDiv) {
-            this.exactSolutionDiv = p.createDiv('');
-            this.exactSolutionDiv.position(startX + 150, thirdLineY + 150);
-            this.exactSolutionDiv.style('font-size', '12px');
-            this.exactSolutionDiv.style('width', '500px');
-            this.exactSolutionDiv.style('text-align', 'center');
-            this.exactSolutionDiv.parent(document.getElementById('number-line-container'));
-            
-            // Calculate the sum in mixed number format
-            const sumWhole = Math.floor(model.exactSum);
-            const sumFrac = model.exactSum - sumWhole;
-            const sumDenom = model.fraction2.denominator;
-            const sumNum = Math.round(sumFrac * sumDenom);
-            
-            // Get the fractions without color formatting
-            const firstFraction = model.getFractionString(model.fraction1).replace('\\color{#8080FF}', '');
-            const secondFraction = model.getFractionString(model.fraction2).replace('\\color{#FF80B0}', '');
-            
-            // Format the sum without color
-            const sumString = `${sumWhole}\\frac{${sumNum}}{${sumDenom}}`;
-            
-            // Format the LaTeX string with all text in black
-            const exactSolutionLatex = `\\text{Exact solution: } ${firstFraction} + ${secondFraction} = ${sumString}`;
-            
-            // Set the HTML content with MathJax formatting - ensure proper delimiters with smaller font size
-            this.exactSolutionDiv.html(`<div style="font-size: 14px;">$$${exactSolutionLatex}$$</div>`);
-            
-            // Typeset the equation with MathJax
-            if (window.MathJax) {
-                MathJax.typesetPromise([this.exactSolutionDiv.elt]).catch((err) => console.log(err));
-            }
-        }
+        // Draw the exact solution text directly on canvas
+        p.fill(0);
+        p.noStroke();
+        p.textSize(16);
+        p.textAlign(p.LEFT, p.TOP);
+        
+        // Calculate the sum in mixed number format
+        const sumWhole = Math.floor(model.exactSum);
+        const sumFrac = model.exactSum - sumWhole;
+        const sumDenom = model.fraction2.denominator;
+        const sumNum = Math.round(sumFrac * sumDenom);
+        
+        // Draw the exact solution text
+        let textX = startX + 50;
+        const textY = thirdLineY + 50;
+        
+        p.text("Exact solution:", textX-70, textY+10);
+        textX += p.textWidth("Exact solution: ") + 10;
+        
+        // Draw first fraction
+        textX = this.drawMixedFraction(p, model.fraction1, textX-80, textY+10, 0);
+        
+        // Draw plus sign
+        p.fill(0);
+        p.text(" + ", textX, textY+10);
+        textX += p.textWidth(" + ");
+        
+        // Draw second fraction
+        textX = this.drawMixedFraction(p, model.fraction2, textX, textY+10, 0);
+        
+        // Draw equals sign
+        p.fill(0);
+        p.text(" = ", textX, textY+10);
+        textX += p.textWidth(" = ");
+        
+        // Draw sum as mixed fraction
+        const sumFraction = {
+            whole: sumWhole,
+            numerator: sumNum,
+            denominator: sumDenom,
+            value: model.exactSum
+        };
+        this.drawMixedFraction(p, sumFraction, textX, textY+10, 0);
     }
     
     // Helper method to format mixed fractions as strings
