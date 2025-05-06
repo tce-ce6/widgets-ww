@@ -88,11 +88,12 @@ class FractionView {
         
         // Initialize the purple box properties
         this.purpleBox = {
-            startX: 50, // Will be updated in drawNumberLine
-            endX: 50, // Will be updated in drawNumberLine
-            y: 140, // Position above the number line
+            startX: 50,
+            endX: 50,
+            y: 140,
             height: 30,
-            isDragging: false
+            isDragging: false,
+            touchId: null // Add touchId for touch events
         };
         
         // Initialize button and solution visibility flags
@@ -102,9 +103,14 @@ class FractionView {
         // Create a new p5 instance with just a basic canvas
         this.sketch = new p5((p) => {
             p.setup = () => {
-                // Create canvas with dimensions 900x500
                 const canvas = p.createCanvas(900, 500);
                 canvas.parent(numberLineContainer);
+                
+                // Add touch event listeners to canvas
+                const canvasElement = canvas.elt;
+                canvasElement.addEventListener('touchstart', (e) => this.handleTouchStart(e, p), { passive: false });
+                canvasElement.addEventListener('touchmove', (e) => this.handleTouchMove(e, p), { passive: false });
+                canvasElement.addEventListener('touchend', (e) => this.handleTouchEnd(e, p), { passive: false });
             };
             
             p.draw = () => {
@@ -421,7 +427,8 @@ class FractionView {
                 endX: greyBoxEndX + unitWidth/2,
                 y: secondLineY - 30,
                 height: 30,
-                isDragging: false
+                isDragging: false,
+                touchId: null // Add touchId for touch events
             };
         } else {
             // Update the startX to match the end of the grey box
@@ -448,6 +455,18 @@ class FractionView {
     
     // Add a method to handle dragging the pink box
     handlePinkBoxDragging(p, startX, unitWidth, model, lineY) {
+        // Initialize pink box with touch properties if not already done
+        if (!this.pinkBox) {
+            this.pinkBox = {
+                startX: this.purpleBox.endX,
+                endX: this.purpleBox.endX + unitWidth/2,
+                y: lineY - 30,
+                height: 30,
+                isDragging: false,
+                touchId: null // Add touchId for touch events
+            };
+        }
+        
         // Check if mouse is pressed on the right edge of the pink box
         p.mousePressed = () => {
             // Only allow dragging if exact solution is not shown
@@ -706,6 +725,103 @@ class FractionView {
                 const x = p.lerp(x1, x2, i / horizontalSteps);
                 p.point(x, y2);
             }
+        }
+    }
+
+    // Add new touch event handlers
+    handleTouchStart(e, p) {
+        e.preventDefault(); // Prevent scrolling
+        const touch = e.touches[0];
+        const rect = e.target.getBoundingClientRect();
+        const touchX = touch.clientX - rect.left;
+        const touchY = touch.clientY - rect.top;
+
+        // Check if touch is near the right edge of the purple box
+        if (!this.showExactSolution && 
+            Math.abs(touchX - this.purpleBox.endX) < 20 && 
+            touchY > this.purpleBox.y && 
+            touchY < this.purpleBox.y + this.purpleBox.height) {
+            this.purpleBox.isDragging = true;
+            this.purpleBox.touchId = touch.identifier;
+        }
+        // Check if touch is near the right edge of the pink box
+        else if (this.pinkBox && !this.showExactSolution &&
+                 Math.abs(touchX - this.pinkBox.endX) < 20 && 
+                 touchY > this.pinkBox.y && 
+                 touchY < this.pinkBox.y + this.pinkBox.height) {
+            this.pinkBox.isDragging = true;
+            this.pinkBox.touchId = touch.identifier;
+        }
+        // Check if compare button is touched
+        else if (this.compareButton && 
+                 touchX > this.compareButton.x && 
+                 touchX < this.compareButton.x + this.compareButton.width &&
+                 touchY > this.compareButton.y && 
+                 touchY < this.compareButton.y + this.compareButton.height) {
+            this.showExactSolution = true;
+        }
+    }
+
+    handleTouchMove(e, p) {
+        e.preventDefault(); // Prevent scrolling
+        
+        // Find the active touch
+        let activeTouch = null;
+        for (let i = 0; i < e.touches.length; i++) {
+            if (this.purpleBox.isDragging && e.touches[i].identifier === this.purpleBox.touchId) {
+                activeTouch = e.touches[i];
+                break;
+            }
+            if (this.pinkBox && this.pinkBox.isDragging && e.touches[i].identifier === this.pinkBox.touchId) {
+                activeTouch = e.touches[i];
+                break;
+            }
+        }
+
+        if (!activeTouch) return;
+
+        const rect = e.target.getBoundingClientRect();
+        const touchX = activeTouch.clientX - rect.left;
+        const unitWidth = (850 - 50) / 10; // Calculate unitWidth based on line length
+
+        if (this.purpleBox.isDragging) {
+            // Update purple box position
+            this.purpleBox.endX = touchX;
+            
+            // Apply constraints
+            if (this.purpleBox.endX < this.purpleBox.startX + unitWidth/2) {
+                this.purpleBox.endX = this.purpleBox.startX + unitWidth/2;
+            }
+            if (this.purpleBox.endX > 50 + unitWidth * 5) {
+                this.purpleBox.endX = 50 + unitWidth * 5;
+            }
+        }
+        else if (this.pinkBox && this.pinkBox.isDragging) {
+            // Update pink box position
+            this.pinkBox.endX = touchX;
+            
+            // Apply constraints
+            if (this.pinkBox.endX < this.pinkBox.startX + unitWidth/2) {
+                this.pinkBox.endX = this.pinkBox.startX + unitWidth/2;
+            }
+            if (this.pinkBox.endX > this.pinkBox.startX + unitWidth * 5) {
+                this.pinkBox.endX = this.pinkBox.startX + unitWidth * 5;
+            }
+        }
+    }
+
+    handleTouchEnd(e, p) {
+        e.preventDefault();
+        
+        if (this.purpleBox.isDragging) {
+            this.purpleBox.isDragging = false;
+            this.purpleBox.touchId = null;
+            this.showStep2 = true;
+        }
+        else if (this.pinkBox && this.pinkBox.isDragging) {
+            this.pinkBox.isDragging = false;
+            this.pinkBox.touchId = null;
+            this.showCompareButton = true;
         }
     }
 }
