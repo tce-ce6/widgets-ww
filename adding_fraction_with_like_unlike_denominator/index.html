@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraction Addition Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+</head>
+<body>
+  <div id="container">
+  
+    <div id="problem"></div>
+    <div id="hint"></div>
+    <div style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center; position: relative;">
+      <div id="canvas-holder"></div>
+      <div id="solutionDiv" style="margin-left: 30px; min-width: 180px; text-align: left;"></div>
+    </div>
+    <div style="position: absolute ; width: 600px; margin: 0 auto;">
+      <div style="position: absolute; left: 0; bottom: 20;">
+        <label for="denominatorSlider">Common Denominator:</label>
+        <input type="range" id="denominatorSlider" min="0" max="15" value="0">
+        <span id="denominatorValue">0</span>
+      </div>
+      <div style="position: absolute; right: 0; bottom: 10;">
+        <button id="checkBtn">Check</button>
+        <button id="nextBtn" style="display:none;">New Problem</button>
+      </div>
+    </div>
+    <div style="margin-top: 20px; position:absolute; left: 30; bottom: 20;">
+      <label for="animationSlider">Animation Step:</label>
+      <input type="range" id="animationSlider" min="0" max="10" value="0">
+      <span id="animationValue">1</span>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
