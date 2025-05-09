@@ -5,7 +5,9 @@
     background: #f0f7ff;
     border-radius: 10px;
     padding: 10px 0;
-    margin-bottom: 10px;
+    width: 80%;
+    margin: auto;
+    max-width: 1000px;
 }
 
 h1 {

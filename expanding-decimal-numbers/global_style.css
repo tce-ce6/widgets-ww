@@ -157,7 +157,7 @@ button:disabled{
 }
 
 .container {
-    max-width: 900px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 16px;
     background: #fff;
@@ -245,6 +245,7 @@ button:disabled{
     border-radius: 0 20px 20px 0;
     background: #099eed;
     background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
+    margin: 16px 0px;
   }
 
   .p5Canvas {

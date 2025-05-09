@@ -12,73 +12,77 @@
     <script src="p5.js"></script>
   </head>
   <body>
-    <div class="container">
+    <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Pythagorean Theorem Checker</h2>
-      </div>
-      <h4 class="m-0 text-center">Is this triangle a right triangle?</h4>
-      <p class="instruction">
-        Drag the numbers into the Pythagorean Theorem to check!
-      </p>
-
-      <div class="content-wrapper">
-        <div class="triangle-container">
-          <div id="triangle-display">
-            <!-- Triangle will be drawn using p5.js -->
-          </div>
-          <!-- Removing the separate triangle values section as requested -->
         </div>
-
-        <div class="equation-container">
-          
-          <div class="formula">
-            <div id="calculation-result" class="calculation-result"></div>
-            <div class="formula-text">
-              a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
-            </div>
-            <div class="formula-boxes">
-              <div class="formula-box">
-                <div class="drop-box" id="drop-a"></div>
-                <sup>2</sup>
-              </div>
-              +
-              <div class="formula-box">
-                <div class="drop-box" id="drop-b"></div>
-                <sup>2</sup>
-              </div>
-              =
-              <div class="formula-box">
-                <div class="drop-box" id="drop-c"></div>
-                <sup>2</sup>
-              </div>
-            </div>
+        <div class="mainContainer">
+          <div class="container">
             
+            <h4 class="m-0 text-center">Is this triangle a right triangle?</h4>
+            <p class="instruction">
+              Drag the numbers into the Pythagorean Theorem to check!
+            </p>
+
+            <div class="content-wrapper">
+              <div class="triangle-container">
+                <div id="triangle-display">
+                  <!-- Triangle will be drawn using p5.js -->
+                </div>
+                <!-- Removing the separate triangle values section as requested -->
+              </div>
+
+              <div class="equation-container">
+                
+                <div class="formula">
+                  <div id="calculation-result" class="calculation-result"></div>
+                  <div class="formula-text">
+                    a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
+                  </div>
+                  <div class="formula-boxes">
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-a"></div>
+                      <sup>2</sup>
+                    </div>
+                    +
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-b"></div>
+                      <sup>2</sup>
+                    </div>
+                    =
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-c"></div>
+                      <sup>2</sup>
+                    </div>
+                  </div>
+                  
+                </div>
+            
+                <div id="feedback" class="feedback"></div>
+              </div>
+            </div>
+
+            <!-- Hint section -->
+            <div class="hint-container-wrapper">
+              <div id="hint-container" class="hint-container">
+                <h6 class="hint-title">Hint</h6>
+                <p id="hint-text">
+                  The two legs go on the left side. The longest length goes on the
+                  right side.
+                </p>
+                <!-- <p>It is a right triangle if and only if the sum of the squares of the legs are equal to the square of the longest side.</p> -->
+                <div id="try-again" class="try-again">
+                  <span class="try-again-icon">✕</span> Try again (<span
+                    id="tries-left"
+                    >1</span
+                  >
+                  try left)
+                </div>
+              </div>
+            </div>
+
           </div>
-       
-          <div id="feedback" class="feedback"></div>
         </div>
-      </div>
-
-      <!-- Hint section -->
-      <div class="hint-container-wrapper">
-        <div id="hint-container" class="hint-container">
-          <h6 class="hint-title">Hint</h6>
-          <p id="hint-text">
-            The two legs go on the left side. The longest length goes on the
-            right side.
-          </p>
-          <!-- <p>It is a right triangle if and only if the sum of the squares of the legs are equal to the square of the longest side.</p> -->
-          <div id="try-again" class="try-again">
-            <span class="try-again-icon">✕</span> Try again (<span
-              id="tries-left"
-              >1</span
-            >
-            try left)
-          </div>
-        </div>
-      </div>
-
-
     <div class="button-controls d-flex justify-content-between align-items-center" >
         <div class="counter">
             Number correct: <span id="correct-count">0</span>
@@ -98,7 +102,6 @@
       
       
         
-    </div>
     <!-- <div style="bottom: 10px; position: absolute; right: 10px; font-size: 10px; width: 200px; height: auto; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
     <ol>
         <li><strike>Random triangle and side lable generation in p5</strike></li>

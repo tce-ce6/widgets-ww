@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // });
             
             // triangleLabels.push(coordA);
-            document.getElementById('pointsInfo').innerHTML = '<h2>Point A selected. Select another point.</h2>';
+            document.getElementById('pointsInfo').innerHTML = '<h5>Point A selected. Select another point.</h5>';
         } else {
             // Second point selected
             pointB = point;

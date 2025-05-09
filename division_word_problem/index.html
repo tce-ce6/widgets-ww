@@ -9,19 +9,27 @@
 
 </head>
 <body>
-  <div class="container">
+
+  <div class="mainContainerOuter">
     <div class="wdgetTitle">
       <h2>Division Word Problems</h2>
     </div>
-    <!-- The canvas will be created by p5.js -->
-    <div id="sketch-container"></div>
+    <div class="mainContainer">
+      <div class="container">
+   
+        <!-- The canvas will be created by p5.js -->
+        <div id="sketch-container"></div>
+       
+      </div>
+    </div>
     <div class="controls button-controls">
-     
-      <label for="slider"></label>
-      <span>Slide to animate </span><input type="range" id="slider" class="sectors-slider" min="0" max="100" value="0" /> 
+       <div class="">
+
+          <label for="slider"></label>
+          <span>Slide to animate </span><input type="range" id="slider" class="sectors-slider" min="0" max="100" value="0" /> 
+        </div>
       <button id="newProblemBtn1">New Problem</button>
     </div>
-  </div>
 
   <!-- Include p5.js -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script> -->

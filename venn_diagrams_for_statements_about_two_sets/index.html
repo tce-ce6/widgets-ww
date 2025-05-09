@@ -10,57 +10,59 @@
     <script src="p5.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="wdgetTitle">
+    <div class="mainContainerOuter">
+         <div class="wdgetTitle">
             <h2>Venn Diagrams for Statements about Two Sets</h2>
         </div>
-        <div class="question-container">
-            <h2 id="question">Select the part of Venn diagram that make set A</h2>
-            <p>
-               Visualize statements about two sets of data written in mathematical notation with a Venn diagram.
-            </p>
+        <div class="mainContainer">
+            <div class="container">
+            
+                <div class="question-container">
+                    <h2 id="question">Select the part of Venn diagram that make set A</h2>
+                    <p>
+                    Visualize statements about two sets of data written in mathematical notation with a Venn diagram.
+                    </p>
 
-            <div class="diagram-section">
-                <div class="diagrams-container">
-                    <div id="venn-diagram"></div>
-                    <div class="button-solution-changes">
-                        <div id="button-solution-container" style="width: 50%; margin-left: 50px;">
-                            <div id="check-container" >
-                              
-                                <div class="hint-section">
-                                    <p id="hint" class="hint"></p>
+                    <div class="diagram-section">
+                        <div class="diagrams-container">
+                            <div id="venn-diagram"></div>
+                            <div class="button-solution-changes">
+                                <div id="button-solution-container" style="width: 50%; margin-left: 50px;">
+                                    <div id="check-container" >
+                                    
+                                        <div class="hint-section">
+                                            <p id="hint" class="hint"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="solution-section" class="hidden">
+                                    <h3>Correct Solution:</h3>
+                                    <div id="solution-diagram"></div>
                                 </div>
                             </div>
+                            
                         </div>
-                        <div id="solution-section" class="hidden">
-                            <h3>Correct Solution:</h3>
-                            <div id="solution-diagram"></div>
-                        </div>
+                        
                     </div>
-                    
-                </div>
-                
-            </div>
-            <div class="controls-section">
-                <div id="feedback-area">
-                    <p id="feedback"></p>
-                </div>
-                <div class="progress-section">
-                   
-                    
+                    <div class="controls-section">
+                        <div id="feedback-area">
+                            <p id="feedback"></p>
+                        </div>
+                        <div class="progress-section">
+                        
+                            
+                        </div>
+                    </div>                    
                 </div>
             </div>
-
-            <div class="button-controls d-flex justify-content-between align-items-center" >
-                <div class="progress-text">Number correct: <span id="progress">0 of 8</span></div>
-                <div class="button-container d-flex g-16">
-                    <button id="checkButton" class=" bte-secondary">CHECK (1)</button>
-                    <button id="nextButton" class="next-button" disabled>NEXT PROBLEM</button>
-                </div>
-               
+        </div>
+        <div class="button-controls d-flex justify-content-between align-items-center" >
+            <div class="progress-text">Number correct: <span id="progress">0 of 8</span></div>
+            <div class="button-container d-flex g-16">
+                <button id="checkButton" class=" bte-secondary">CHECK (1)</button>
+                <button id="nextButton" class="next-button" disabled>NEXT PROBLEM</button>
             </div>
-
-            
+        
         </div>
     </div>
 

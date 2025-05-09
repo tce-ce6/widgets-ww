@@ -17,10 +17,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="mainContainerOuter">
         <div class="wdgetTitle">
             <h2>Build the Equation</h2>
         </div>
+        <div class="mainContainer">
+    <div class="container">
+        
         <div class="equation-wrapper">
 
             <div id="canvas-container"></div>
@@ -38,35 +41,37 @@
                 </div>
             </div>
         </div>
-        
-        <div id="controls-container" class="button-controls">
-            <div id="slider-controls" class="controls">
-                <div class="slider-group">
-                    <label id="leftLabel1"></label>
-                    <input type="range" id="leftSlider1" min="0" max="6" value="0" step="1">
-                   
-                </div>
-                 <div class="slider-sign "><h2 class="m-0">+</h2></div>
-                <div class="slider-group">
-                    <label id="leftLabel2" ></label>
-                    <input type="range" id="leftSlider2" min="0" max="15" value="0" step="1">
-                    
-                </div>
-                <div class="slider-group">
-                    <label id="rightLabel">0</label>
-                    <input type="range" id="rightSlider" min="0" max="150" value="0" step="1">
-                   
-                </div>
-
-            </div>
-            <div id="solution-controls" class="controls" style="display: none;">
-                <button id="prevStep" class="bte-secondary">←</button>
-                <button id="nextStep" class="bte-secondary">→</button>
-                <button id="newProblem" class="action-button">NEW PROBLEM</button>
-            </div>
-            <button id="solveButton" class="" style="display: none;">SOLVE</button>
-        </div>
+       
     </div>
+</div>
+<div id="controls-container" class="button-controls">
+    <div id="slider-controls" class="controls">
+        <div class="slider-group">
+            <label id="leftLabel1"></label>
+            <input type="range" id="leftSlider1" min="0" max="6" value="0" step="1">
+           
+        </div>
+         <div class="slider-sign "><h2 class="m-0">+</h2></div>
+        <div class="slider-group">
+            <label id="leftLabel2" ></label>
+            <input type="range" id="leftSlider2" min="0" max="15" value="0" step="1">
+            
+        </div>
+        <div class="slider-group">
+            <label id="rightLabel">0</label>
+            <input type="range" id="rightSlider" min="0" max="150" value="0" step="1">
+           
+        </div>
+
+    </div>
+    <div id="solution-controls" class="controls" style="display: none;">
+        <button id="prevStep" class="bte-secondary">←</button>
+        <button id="nextStep" class="bte-secondary">→</button>
+        <button id="newProblem" class="action-button">NEW PROBLEM</button>
+    </div>
+    <button id="solveButton" class="" style="display: none;">SOLVE</button>
+</div>
+</div>
     <script src="sketch.js"></script>
 </body>
 </html>

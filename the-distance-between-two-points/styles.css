@@ -18,7 +18,7 @@ body {
 
 .container {
     display: flex;
-    max-width: 900px;
+    max-width: 100%;
     margin: 0 auto;
     gap: 20px;
     flex-wrap: wrap;
@@ -39,7 +39,7 @@ body {
 .graph-container {
     flex: 1;
     min-width: 300px;
-    max-height: 600px;
+    /* max-height: 600px; */
     position: relative;
     background: white;
     padding: 10px;
@@ -51,7 +51,7 @@ body {
 .info-container {
     width: 35%;
     min-width: 300px;
-    max-height: 600px;
+    /* max-height: 600px; */
     overflow-y: auto;
     padding: 10px;
     background-color: #eef4ff;
