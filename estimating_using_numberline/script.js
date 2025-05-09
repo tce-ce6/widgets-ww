@@ -119,7 +119,7 @@ class FractionView {
     
                 // Draw a border to visualize the canvas
                 p.stroke(0);
-                p.strokeWeight(2);
+                p.strokeWeight(0);
                 p.noFill();
                 p.rect(0, 0, p.width, p.height);
                 

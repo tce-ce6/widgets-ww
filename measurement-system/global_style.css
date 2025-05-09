@@ -37,6 +37,12 @@ h1, h2, h3, h4, h5, p{
     margin:0px;
     margin-bottom: 10px;
 }
+.m-0{
+    margin: 0px;
+}
+.text-center{
+    text-align: center;
+}
 .d-flex{
     display: flex;
 } 
@@ -117,10 +123,11 @@ h1, h2, h3, h4, h5, p{
     background: #f7f7f7;
     border-radius: 10px;
     flex-wrap: wrap;
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 650px) {
         justify-content: center;
         flex-direction: column;
         gap: 10px;
+align-items:center;
     }
 }
 
@@ -156,13 +163,11 @@ button:disabled{
 }
 
 .container {
-    max-width: 100%;
-    margin: 0 auto;
-    background: #fff;
-    padding: 16px;
-    border-radius: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    gap: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 
 
@@ -226,6 +231,27 @@ button:disabled{
     }
 }
 
+.mainContainerOuter{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #ffffff;
+    width: 100%;
+    
+  }
+
+  .mainContainer{
+    display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        flex-grow: 1;
+        min-height: calc(100vh - 175px);
+        margin: auto;
+  }
+
 
 .wdgetTitle {
     width: 100%;
@@ -247,3 +273,14 @@ button:disabled{
     background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
     margin: 16px 0px;
   }
+
+  /* .p5Canvas{
+    max-width: 100%;
+    height: auto !important;
+    max-height: calc(100vh - 350px) !important;
+    width: auto !important;
+} */
+
+.d-none{
+    display: none;
+}

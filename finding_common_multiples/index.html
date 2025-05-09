@@ -10,19 +10,23 @@
     <script src="p5.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="mainContainerOuter">
         <div class="wdgetTitle">
             <h2>Finding Common Multiples </h2>
           </div>
+        <div class="mainContainer">
+    <div class="container">
+       
         <div id="messageArea"></div>
         <div id="canvas-container"></div>
-        <div id="controls" class="button-controls">
-           
-            <button id="check-btn" disabled>CHECK (<span id="tries">3</span>)</button>
-            <button id="new-btn" style="display: none;">NEW NUMBER</button>
-        </div>
-        
     </div>
+    </div>
+    <div id="controls" class="button-controls">
+           
+        <button id="check-btn" disabled>CHECK (<span id="tries">3</span>)</button>
+        <button id="new-btn" style="display: none;">NEW NUMBER</button>
+    </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>

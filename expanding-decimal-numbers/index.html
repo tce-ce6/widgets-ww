@@ -13,7 +13,6 @@
             align-items: center;
             /* width: 100%; */
             /* justify-content: center; */
-            margin-top: 10px;
         }
         .slider-instruction {
             margin-right: 15px;
@@ -49,31 +48,32 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="mainContainerOuter">
         <div class="wdgetTitle">
             <h2>Expanding Decimal Numbers</h2>
         </div> 
-        <div class="instruction">
-            <p>Explore how numbers up to the thousandths place can be written in expanded form</p>
-        </div>
-        <div id="canvas-container"></div>
-        
-        <!-- HTML Slider (initially hidden) -->
-        
-        
-        <div class="button-controls controls d-flex justify-content-between">
-            <div>
-                
-
-
-            <button id="new-number-btn">NEW NUMBER</button>
-        </div>
-            <div class="slider-container hidden" id="slider-container">
-                <span class="slider-instruction">Slide to see different representations</span>
-                <input type="range" min="0" max="100" value="0" class="slider" id="representation-slider">
+        <div class="mainContainer">
+        <div class="container">
+           
+            <div class="instruction">
+                <p>Explore how numbers up to the thousandths place can be written in expanded form</p>
             </div>
+            <div id="canvas-container"></div>
+            
+            <!-- HTML Slider (initially hidden) -->
+
         </div>
     </div>
+    <div class="button-controls controls d-flex justify-content-between">
+        <div>
+        <button id="new-number-btn">NEW NUMBER</button>
+    </div>
+        <div class="slider-container hidden" id="slider-container">
+            <span class="slider-instruction">Slide to see different representations</span>
+            <input type="range" min="0" max="100" value="0" class="slider" id="representation-slider">
+        </div>
+    </div>
+        </div>
 
     <script src="script.js"></script>
 </body>
