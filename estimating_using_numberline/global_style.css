@@ -274,13 +274,18 @@ button:disabled{
     margin: 16px 0px;
   }
 
-  /* .p5Canvas{
+  .p5Canvas{
     max-width: 100%;
     height: auto !important;
-    max-height: calc(100vh - 350px) !important;
+    max-height: calc(100vh - 230px) !important;
     width: auto !important;
-} */
+}
 
 .d-none{
     display: none;
+}
+
+.instruction
+    p{
+        font-size: 28px;
 }
