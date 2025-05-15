@@ -738,17 +738,17 @@ class FractionView {
 
         // Check if touch is near the right edge of the purple box
         if (!this.showExactSolution && 
-            Math.abs(touchX - this.purpleBox.endX) < 20 && 
+            Math.abs(touchX - this.purpleBox.endX) < 40 && 
             touchY > this.purpleBox.y && 
-            touchY < this.purpleBox.y + this.purpleBox.height) {
+            touchY - 30 < this.purpleBox.y + this.purpleBox.height) {
             this.purpleBox.isDragging = true;
             this.purpleBox.touchId = touch.identifier;
         }
         // Check if touch is near the right edge of the pink box
         else if (this.pinkBox && !this.showExactSolution &&
-                 Math.abs(touchX - this.pinkBox.endX) < 20 && 
+                 Math.abs(touchX - this.pinkBox.endX) < 40 && 
                  touchY > this.pinkBox.y && 
-                 touchY < this.pinkBox.y + this.pinkBox.height) {
+                 touchY - 30 < this.pinkBox.y + this.pinkBox.height) {
             this.pinkBox.isDragging = true;
             this.pinkBox.touchId = touch.identifier;
         }

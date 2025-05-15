@@ -727,7 +727,7 @@ class View {
         if (this.inputContainer) {
             if (!this.inputPositionSet) {
                 this.inputContainer.style.position = 'absolute';
-                this.inputContainer.style.left = `${this.answerInputX}px`;
+                this.inputContainer.style.left = `${this.answerInputX}px + 10px`;
                 this.inputContainer.style.top = `${this.answerInputY - 15}px`;
                 this.inputContainer.style.display = 'block';
                 this.inputPositionSet = true;
@@ -741,13 +741,15 @@ class View {
     createAnswerInput() {
         const inputContainer = document.createElement('div');
         inputContainer.style.position = 'absolute';
-        inputContainer.style.left = `${this.answerInputX}px`;
-        inputContainer.style.top = `${this.answerInputY - 30}px`;
+        inputContainer.style.left = `25%`;
+        inputContainer.style.top = `0`;
         inputContainer.style.display = 'flex';
         inputContainer.style.flexDirection = 'column';
-        inputContainer.style.alignItems = 'center';
-        inputContainer.style.minHeight = '100px';
+        inputContainer.style.alignItems = 'flex-start';
+        inputContainer.style.minHeight = '30.1%';
         inputContainer.style.minWidth = '200px';
+        inputContainer.style.justifyContent = 'center';
+
         
         this.numeratorInput = document.createElement('input');
         this.numeratorInput.type = 'text';
@@ -756,19 +758,15 @@ class View {
         this.numeratorInput.style.border = '1px solid #888';
         this.numeratorInput.style.borderRadius = '3px';
         this.numeratorInput.style.padding = '2px';
-        this.numeratorInput.style.marginBottom = '5px';
-        this.numeratorInput.style.position = 'absolute';
         this.numeratorInput.style.top = '0px';
         this.numeratorInput.style.left = '0px';
 
         const fractionLine = document.createElement('div');
-        fractionLine.style.width = '60px';
+        fractionLine.style.width = '56px';
         fractionLine.style.height = '2px';
         fractionLine.style.backgroundColor = 'black';
-        fractionLine.style.margin = '2px 0';
-        fractionLine.style.position = 'absolute';
-        fractionLine.style.top = '25px';
-        fractionLine.style.left = '-2px';
+        fractionLine.style.margin = '10px 0';
+       
         
         this.denominatorInput = document.createElement('input');
         this.denominatorInput.type = 'text';
@@ -777,8 +775,6 @@ class View {
         this.denominatorInput.style.border = '1px solid #888';
         this.denominatorInput.style.borderRadius = '3px';
         this.denominatorInput.style.padding = '2px';
-        this.denominatorInput.style.marginTop = '5px';
-        this.denominatorInput.style.position = 'absolute';
         this.denominatorInput.style.top = '30px';
         this.denominatorInput.style.left = '0px';
         

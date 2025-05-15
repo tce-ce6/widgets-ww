@@ -24,9 +24,6 @@ h1, h2 {
 }
 
 #canvas-container {
-    width: 900px;
-    height: 400px;
-    margin: 0 auto;
+ 
     position: relative;
-    border: 1px solid #888;
 }
