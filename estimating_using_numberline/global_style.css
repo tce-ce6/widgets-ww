@@ -289,3 +289,10 @@ button:disabled{
     p{
         font-size: 28px;
 }
+
+.versionText{position: absolute;
+  right: 20px;
+  top: 20px;
+    font-size: 12px;
+    color: #ccc;
+  }
