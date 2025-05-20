@@ -41,3 +41,21 @@
     border-bottom: 8px solid transparent;
     margin-left: 2px;
   }
+
+  #problemButtons {
+    display: flex;
+    gap: 10px;
+    margin: 10px;
+    flex-wrap: wrap;
+  }
+
+  #problemButtons button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #problemButtons button.active {
+    background-color: #007BFF;
+    color: white;
+  }

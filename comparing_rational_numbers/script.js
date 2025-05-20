@@ -38,11 +38,11 @@ class Model {
             decimalLabel.className = 'slider-label';
             
             const properLabel = document.createElement('div');
-            properLabel.innerHTML = 'Proper<br>fraction';
+            properLabel.innerHTML = 'Proper fraction';
             properLabel.className = 'slider-label';
             
             const improperLabel = document.createElement('div');
-            improperLabel.innerHTML = 'Improper<br>fraction';
+            improperLabel.innerHTML = 'Improper fraction';
             improperLabel.className = 'slider-label';
             
             // Add labels to container
