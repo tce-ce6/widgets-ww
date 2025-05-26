@@ -6,6 +6,7 @@ class NumberModel {
         this.digits = Array(7).fill(null); // [thousands, hundreds, tens, ones, tenths, hundredths, thousandths]
         this.selectedDigits = 0;
         this.generateRandomNumber();
+        this.digitClicked = false;
     }
     
     generateRandomNumber() {
@@ -17,6 +18,7 @@ class NumberModel {
             this.digits[3] = Math.floor(Math.random() * 9) + 1;
         }
         this.selectedDigits = 0;
+        this.showInstruction = true;
     }
     
     getNumberString() {
@@ -24,6 +26,7 @@ class NumberModel {
     }
     
     selectDigit(index) {
+          this.digitClicked = true; 
         if (index >= 0 && index < this.digits.length) {
             this.selectedDigits |= (1 << index);
             return true;
@@ -62,6 +65,7 @@ class NumberController {
         slider.addEventListener('input', () => {
             this.handleSliderChange(slider.value);
         });
+
     }
     
     handleMousePressed(x, y) {
@@ -174,9 +178,8 @@ class NumberView {
         this.equationPositions = [];
         this.completedAnimations = new Set(); // Track completed animations
         this.sliderChecked = false; // Flag to prevent multiple slider checks
-        
         this.colors = ['#e74c3c', '#9b59b6', '#3498db', '#2ecc71', '#1abc9c', '#f1c40f', '#e67e22'];
-        
+        this.model.showInstruction = true;
         // Add slider properties (still needed for calculations)
         this.sliderX = 300; // Starting position
         this.sliderMin = 300;
@@ -184,7 +187,9 @@ class NumberView {
         this.sliderY = 420; // Bottom of canvas
         this.currentStep = 1; // Start with step 1
         this.displayedDigits = 0; // Track which digits to display
-        
+        this.instructionVelocity = -8;
+this.instructionBaseY = 470;  // original Y offset
+this.bouncing = true;         // control flag
         this.calculatePositions();
     }
     
@@ -292,6 +297,9 @@ class NumberView {
         fill(0);
         textSize(16);
         text("Select each digit and observe how to write the number in expanded form.", 275, 25);
+        
+
+        
     }
     
     renderDigits() {
@@ -315,6 +323,13 @@ class NumberView {
                 textSize(20);
             }
         }
+         
+        if(!this.model.digitClicked){
+            fill('#3e29d6');
+            textSize(20);
+            text(" ← Select a digit", 330, 60);
+        }
+
     }
     
     renderExpandedForm() {
@@ -540,4 +555,6 @@ class NumberView {
         }
         return total.toFixed(3).replace(/\.?0+$/, ''); // Remove trailing zeros
     }
+
+
 }

@@ -580,6 +580,8 @@ draggableElements.forEach(label => {
                 highlightDropTargets();
             }
         }
+
+    
     };
 
     label.addEventListener('click', selectLabel);
@@ -1370,6 +1372,8 @@ setOnNotRight(callback) {
 
 setOnNewProblem(callback) {
     this.newProblemButton.addEventListener('click', callback);
+
+    
 }
 
 // Set up callback for try again button
@@ -1444,6 +1448,7 @@ hideHint() {
 }
 
 // Reset UI for a new problem
+// Reset UI for a new problem
 resetUI() {
     console.log("Resetting UI for new problem");
     
@@ -1496,6 +1501,7 @@ resetUI() {
     // Hide hint
     this.hideHint();
 }
+
 
 // Enable the New Problem button
 enableNewProblemButton() {
@@ -1583,6 +1589,747 @@ disableAnswerButtons() {
     this.checkButton.style.cursor = 'not-allowed';
     this.notRightButton.style.cursor = 'not-allowed';
 }
+
+
+// Add this method to the PythagoreanView class
+createInstructionalHeadings() {
+    // Create heading for triangle side labels
+    const triangleHeading = document.createElement('div');
+    triangleHeading.className = 'instruction-heading triangle-instruction';
+    triangleHeading.innerHTML = '← Drag to place';
+    triangleHeading.style.position = 'absolute';
+    triangleHeading.style.fontSize = '16px';
+    triangleHeading.style.color = '#6f42c1'; // Purple color to match triangle
+    triangleHeading.style.fontWeight = '500';
+    triangleHeading.style.pointerEvents = 'none';
+    triangleHeading.style.zIndex = '10';
+    triangleHeading.style.whiteSpace = 'nowrap'; // Prevent text wrapping
+    
+    // Position it near the triangle (will be adjusted after triangle is drawn)
+    triangleHeading.style.left = '60%';
+    triangleHeading.style.top = '40%';
+    
+    // Add to triangle display container
+    this.triangleDisplay.appendChild(triangleHeading);
+    this.triangleInstruction = triangleHeading;
+    
+    
+}
+
+// Update createSideLabels method to position the triangle instruction better
+createSideLabels(sideA, sideB, sideC) {
+    // Wait until triangle coordinates are available
+    if (!this.triangleCoords) {
+        setTimeout(() => this.createSideLabels(sideA, sideB, sideC), 50);
+        return;
+    }
+    
+    // Create containers for the side labels (to make them draggable)
+    const { x1, y1, x2, y2, x3, y3, canvasWidth, canvasHeight } = this.triangleCoords;
+    
+    // Remove previous labels if they exist
+    if (this.sideALabel) this.sideALabel.remove();
+    if (this.sideBLabel) this.sideBLabel.remove();
+    if (this.sideCLabel) this.sideCLabel.remove();
+    
+    // Calculate vectors for sides
+    const vectorAB = { x: x2 - x1, y: y2 - y1 };
+    const vectorAC = { x: x3 - x1, y: y3 - y1 };
+    const vectorBC = { x: x3 - x2, y: y3 - y2 };
+    
+    // Calculate side lengths (in pixels) for proportional offset
+    const abLength = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
+    const acLength = Math.sqrt(vectorAC.x * vectorAC.x + vectorAC.y * vectorAC.y);
+    const bcLength = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+    
+    // Calculate normalized perpendicular vectors (unit vectors)
+    const abPerp = { x: -vectorAB.y / abLength, y: vectorAB.x / abLength };
+    const acPerp = { x: -vectorAC.y / acLength, y: vectorAC.x / acLength };
+    const bcPerp = { x: vectorBC.y / bcLength, y: -vectorBC.x / bcLength };
+    
+    // Distance to offset labels away from the sides (proportional to triangle size)
+    const triangleSize = Math.min(abLength, acLength, bcLength);
+    const offsetDistance = triangleSize * 0.6; // Increased from 0.4 to 0.6
+    const minOffset = 70; // Increased from 50 to 70 pixels
+    const offset = Math.max(offsetDistance, minOffset);
+    
+    // Analyze triangle orientation for better label placement
+    const isBottomFlat = Math.abs(y1 - y2) < 10; // If bottom side is relatively flat
+    const isLeftSideVertical = Math.abs(x1 - x3) < 10; // If left side is relatively vertical
+    const isRightSideVertical = Math.abs(x2 - x3) < 10; // If right side is relatively vertical
+    
+    // Bottom side (AB/C) midpoint with smart offset
+    let midAB = { 
+        x: (x1 + x2) / 2,
+        y: (y1 + y2) / 2 + offset * 1.1 // Always push bottom label down more
+    };
+    
+    // Make sure bottom label is below the triangle
+    if (midAB.y < Math.max(y1, y2, y3)) {
+        midAB.y = Math.max(y1, y2, y3) + offset * 0.6;
+    }
+    
+    // Left side (AC/B) midpoint with smart offset
+    let midAC = {
+        x: (x1 + x3) / 2 - offset * 0.9, // Push left label more to the left
+        y: (y1 + y3) / 2
+    };
+    
+    // Make sure left label is to the left of the triangle
+    if (midAC.x > Math.min(x1, x2, x3)) {
+        midAC.x = Math.min(x1, x2, x3) - offset * 0.6;
+    }
+    
+    // Right side (BC/A) midpoint with smart offset
+    let midBC = {
+        x: (x2 + x3) / 2 + offset * 0.9, // Push right label more to the right
+        y: (y2 + y3) / 2
+    };
+    
+    // Make sure right label is to the right of the triangle
+    if (midBC.x < Math.max(x1, x2, x3)) {
+        midBC.x = Math.max(x1, x2, x3) + offset * 0.6;
+    }
+    
+    // Adjust vertical positions to avoid label overlap
+    // If the triangle is nearly equilateral, adjust the vertical positions
+    const avgHeight = (midAC.y + midBC.y) / 2;
+    if (Math.abs(midAC.y - midBC.y) < 30) {
+        midAC.y = avgHeight - 30;
+        midBC.y = avgHeight + 30;
+    }
+    
+    // Bottom side (sideC)
+    const bottomLabel = document.createElement('div');
+    bottomLabel.className = 'side-label';
+    bottomLabel.classList.add('value-box');
+    bottomLabel.setAttribute('draggable', 'true');
+    bottomLabel.setAttribute('id', 'side-c');
+    bottomLabel.style.position = 'absolute';
+    bottomLabel.style.left = `${midAB.x}px`;
+    bottomLabel.style.top = `${midAB.y - 30}px`;
+    bottomLabel.style.transform = 'translate(-50%, -50%)';
+    bottomLabel.textContent = sideC;
+    
+    // Left side (sideA)
+    const leftLabel = document.createElement('div');
+    leftLabel.className = 'side-label';
+    leftLabel.classList.add('value-box');
+    leftLabel.setAttribute('draggable', 'true');
+    leftLabel.setAttribute('id', 'side-a');
+    leftLabel.style.position = 'absolute';
+    leftLabel.style.left = `${midAC.x + 20}px`;
+    leftLabel.style.top = `${midAC.y}px`;
+    leftLabel.style.transform = 'translate(-50%, -50%)';
+    leftLabel.textContent = sideA;
+    
+    // Right side (sideB)
+    const rightLabel = document.createElement('div');
+    rightLabel.className = 'side-label';
+    rightLabel.classList.add('value-box');
+    rightLabel.setAttribute('draggable', 'true');
+    rightLabel.setAttribute('id', 'side-b');
+    rightLabel.style.position = 'absolute';
+    rightLabel.style.left = `${midBC.x}px`;
+    rightLabel.style.top = `${midBC.y - 30}px`;
+    rightLabel.style.transform = 'translate(-50%, -50%)';
+    rightLabel.textContent = sideB;
+    
+    // Add labels to the display
+    this.triangleDisplay.appendChild(bottomLabel);
+    this.triangleDisplay.appendChild(leftLabel);
+    this.triangleDisplay.appendChild(rightLabel);
+    
+    // Store references to the labels
+    this.sideALabel = leftLabel;
+    this.sideBLabel = rightLabel;
+    this.sideCLabel = bottomLabel;
+    
+    // Position the triangle instruction near the rightmost label
+if (this.triangleInstruction && this.sideCLabel) {
+  const rect = this.sideCLabel.getBoundingClientRect();
+  const containerRect = this.triangleDisplay.getBoundingClientRect();
+
+  const offsetX = rect.left - containerRect.left;
+  const offsetY = rect.top - containerRect.top;
+
+  this.triangleInstruction.style.position = 'absolute';
+  this.triangleInstruction.style.left = `${offsetX + 60}px`;  // Right side of sideC label
+  this.triangleInstruction.style.top = `${offsetY}px`;         // Aligned vertically
+  this.triangleInstruction.style.transform = 'translate(-50%, -50%)';
+  this.triangleInstruction.setAttribute('id', 'triangle-instruction');
+}
+
+// After triangle and labels are drawn:
+this.positionTriangleInstruction();
+
+// Reposition on window resize
+window.addEventListener('resize', () => {
+  this.positionTriangleInstruction();
+});
+
+    
+    // Initialize drag-and-drop functionality
+    this.initDragAndDrop();
+}
+positionTriangleInstruction() {
+  if (this.triangleInstruction && this.sideCLabel && this.triangleDisplay) {
+    const rect = this.sideCLabel.getBoundingClientRect();
+    const containerRect = this.triangleDisplay.getBoundingClientRect();
+
+    const offsetX = rect.left - containerRect.left;
+    const offsetY = rect.top - containerRect.top;
+
+    this.triangleInstruction.style.position = 'absolute';
+    this.triangleInstruction.style.left = `${offsetX + 60}px`;  // Right of sideC
+    this.triangleInstruction.style.top = `${offsetY}px`;
+    this.triangleInstruction.style.transform = 'translate(-50%, -50%)';
+    this.triangleInstruction.setAttribute('id', 'triangle-instruction');
+  }
+}
+
+
+
+// Update createSideLabels method to position the triangle instruction better
+// createSideLabels(sideA, sideB, sideC) {
+//     // Wait until triangle coordinates are available
+//     if (!this.triangleCoords) {
+//         setTimeout(() => this.createSideLabels(sideA, sideB, sideC), 50);
+//         return;
+//     }
+    
+//     // Create containers for the side labels (to make them draggable)
+//     const { x1, y1, x2, y2, x3, y3, canvasWidth, canvasHeight } = this.triangleCoords;
+    
+//     // Remove previous labels if they exist
+//     if (this.sideALabel) this.sideALabel.remove();
+//     if (this.sideBLabel) this.sideBLabel.remove();
+//     if (this.sideCLabel) this.sideCLabel.remove();
+    
+//     // Calculate vectors for sides
+//     const vectorAB = { x: x2 - x1, y: y2 - y1 };
+//     const vectorAC = { x: x3 - x1, y: y3 - y1 };
+//     const vectorBC = { x: x3 - x2, y: y3 - y2 };
+    
+//     // Calculate side lengths (in pixels) for proportional offset
+//     const abLength = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
+//     const acLength = Math.sqrt(vectorAC.x * vectorAC.x + vectorAC.y * vectorAC.y);
+//     const bcLength = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+    
+//     // Calculate normalized perpendicular vectors (unit vectors)
+//     const abPerp = { x: -vectorAB.y / abLength, y: vectorAB.x / abLength };
+//     const acPerp = { x: -vectorAC.y / acLength, y: vectorAC.x / acLength };
+//     const bcPerp = { x: vectorBC.y / bcLength, y: -vectorBC.x / bcLength };
+    
+//     // Distance to offset labels away from the sides (proportional to triangle size)
+//     const triangleSize = Math.min(abLength, acLength, bcLength);
+//     const offsetDistance = triangleSize * 0.6; // Increased from 0.4 to 0.6
+//     const minOffset = 70; // Increased from 50 to 70 pixels
+//     const offset = Math.max(offsetDistance, minOffset);
+    
+//     // Analyze triangle orientation for better label placement
+//     const isBottomFlat = Math.abs(y1 - y2) < 10; // If bottom side is relatively flat
+//     const isLeftSideVertical = Math.abs(x1 - x3) < 10; // If left side is relatively vertical
+//     const isRightSideVertical = Math.abs(x2 - x3) < 10; // If right side is relatively vertical
+    
+//     // Bottom side (AB/C) midpoint with smart offset
+//     let midAB = { 
+//         x: (x1 + x2) / 2,
+//         y: (y1 + y2) / 2 + offset * 1.1 // Always push bottom label down more
+//     };
+    
+//     // Make sure bottom label is below the triangle
+//     if (midAB.y < Math.max(y1, y2, y3)) {
+//         midAB.y = Math.max(y1, y2, y3) + offset * 0.6;
+//     }
+    
+//     // Left side (AC/B) midpoint with smart offset
+//     let midAC = {
+//         x: (x1 + x3) / 2 - offset * 0.9, // Push left label more to the left
+//         y: (y1 + y3) / 2
+//     };
+    
+//     // Make sure left label is to the left of the triangle
+//     if (midAC.x > Math.min(x1, x2, x3)) {
+//         midAC.x = Math.min(x1, x2, x3) - offset * 0.6;
+//     }
+    
+//     // Right side (BC/A) midpoint with smart offset
+//     let midBC = {
+//         x: (x2 + x3) / 2 + offset * 0.9, // Push right label more to the right
+//         y: (y2 + y3) / 2
+//     };
+    
+//     // Make sure right label is to the right of the triangle
+//     if (midBC.x < Math.max(x1, x2, x3)) {
+//         midBC.x = Math.max(x1, x2, x3) + offset * 0.6;
+//     }
+    
+//     // Adjust vertical positions to avoid label overlap
+//     // If the triangle is nearly equilateral, adjust the vertical positions
+//     const avgHeight = (midAC.y + midBC.y) / 2;
+//     if (Math.abs(midAC.y - midBC.y) < 30) {
+//         midAC.y = avgHeight - 30;
+//         midBC.y = avgHeight + 30;
+//     }
+    
+//     // Bottom side (sideC)
+//     const bottomLabel = document.createElement('div');
+//     bottomLabel.className = 'side-label';
+//     bottomLabel.classList.add('value-box');
+//     bottomLabel.setAttribute('draggable', 'true');
+//     bottomLabel.setAttribute('id', 'side-c');
+//     bottomLabel.style.position = 'absolute';
+//     bottomLabel.style.left = `${midAB.x}px`;
+//     bottomLabel.style.top = `${midAB.y - 30}px`;
+//     bottomLabel.style.transform = 'translate(-50%, -50%)';
+//     bottomLabel.textContent = sideC;
+    
+//     // Left side (sideA)
+//     const leftLabel = document.createElement('div');
+//     leftLabel.className = 'side-label';
+//     leftLabel.classList.add('value-box');
+//     leftLabel.setAttribute('draggable', 'true');
+//     leftLabel.setAttribute('id', 'side-a');
+//     leftLabel.style.position = 'absolute';
+//     leftLabel.style.left = `${midAC.x + 20}px`;
+//     leftLabel.style.top = `${midAC.y}px`;
+//     leftLabel.style.transform = 'translate(-50%, -50%)';
+//     leftLabel.textContent = sideA;
+    
+//     // Right side (sideB)
+//     const rightLabel = document.createElement('div');
+//     rightLabel.className = 'side-label';
+//     rightLabel.classList.add('value-box');
+//     rightLabel.setAttribute('draggable', 'true');
+//     rightLabel.setAttribute('id', 'side-b');
+//     rightLabel.style.position = 'absolute';
+//     rightLabel.style.left = `${midBC.x}px`;
+//     rightLabel.style.top = `${midBC.y - 30}px`;
+//     rightLabel.style.transform = 'translate(-50%, -50%)';
+//     rightLabel.textContent = sideB;
+    
+//     // Add labels to the display
+//     this.triangleDisplay.appendChild(bottomLabel);
+//     this.triangleDisplay.appendChild(leftLabel);
+//     this.triangleDisplay.appendChild(rightLabel);
+    
+//     // Store references to the labels
+//     this.sideALabel = leftLabel;
+//     this.sideBLabel = rightLabel;
+//     this.sideCLabel = bottomLabel;
+    
+//     // Position the triangle instruction near the rightmost label
+//     if (this.triangleInstruction) {
+//         const rightmostX = Math.max(midAC.x, midBC.x, midAB.x);
+//         this.triangleInstruction.style.left = `${rightmostX + 60}px`;
+//         this.triangleInstruction.style.top = `${Math.min(midAC.y, midBC.y, midAB.y)}px`;
+//     }
+    
+//     // Initialize drag-and-drop functionality
+//     this.initDragAndDrop();
+// }
+
+createSideLabels(sideA, sideB, sideC) {
+    // Wait until triangle coordinates are available
+    if (!this.triangleCoords) {
+        setTimeout(() => this.createSideLabels(sideA, sideB, sideC), 50);
+        return;
+    }
+    
+    // Create containers for the side labels (to make them draggable)
+    const { x1, y1, x2, y2, x3, y3, canvasWidth, canvasHeight } = this.triangleCoords;
+    
+    // Remove previous labels if they exist
+    if (this.sideALabel) this.sideALabel.remove();
+    if (this.sideBLabel) this.sideBLabel.remove();
+    if (this.sideCLabel) this.sideCLabel.remove();
+    
+    // Calculate vectors for sides
+    const vectorAB = { x: x2 - x1, y: y2 - y1 };
+    const vectorAC = { x: x3 - x1, y: y3 - y1 };
+    const vectorBC = { x: x3 - x2, y: y3 - y2 };
+    
+    // Calculate side lengths (in pixels) for proportional offset
+    const abLength = Math.sqrt(vectorAB.x * vectorAB.x + vectorAB.y * vectorAB.y);
+    const acLength = Math.sqrt(vectorAC.x * vectorAC.x + vectorAC.y * vectorAC.y);
+    const bcLength = Math.sqrt(vectorBC.x * vectorBC.x + vectorBC.y * vectorBC.y);
+    
+    // Calculate normalized perpendicular vectors (unit vectors)
+    const abPerp = { x: -vectorAB.y / abLength, y: vectorAB.x / abLength };
+    const acPerp = { x: -vectorAC.y / acLength, y: vectorAC.x / acLength };
+    const bcPerp = { x: vectorBC.y / bcLength, y: -vectorBC.x / bcLength };
+    
+    // Distance to offset labels away from the sides (proportional to triangle size)
+    const triangleSize = Math.min(abLength, acLength, bcLength);
+    const offsetDistance = triangleSize * 0.6; // Increased from 0.4 to 0.6
+    const minOffset = 70; // Increased from 50 to 70 pixels
+    const offset = Math.max(offsetDistance, minOffset);
+    
+    // Analyze triangle orientation for better label placement
+    const isBottomFlat = Math.abs(y1 - y2) < 10; // If bottom side is relatively flat
+    const isLeftSideVertical = Math.abs(x1 - x3) < 10; // If left side is relatively vertical
+    const isRightSideVertical = Math.abs(x2 - x3) < 10; // If right side is relatively vertical
+    
+    // Bottom side (AB/C) midpoint with smart offset
+    let midAB = { 
+        x: (x1 + x2) / 2,
+        y: (y1 + y2) / 2 + offset * 1.1 // Always push bottom label down more
+    };
+    
+    // Make sure bottom label is below the triangle
+    if (midAB.y < Math.max(y1, y2, y3)) {
+        midAB.y = Math.max(y1, y2, y3) + offset * 0.6;
+    }
+    
+    // Left side (AC/B) midpoint with smart offset
+    let midAC = {
+        x: (x1 + x3) / 2 - offset * 0.9, // Push left label more to the left
+        y: (y1 + y3) / 2
+    };
+    
+    // Make sure left label is to the left of the triangle
+    if (midAC.x > Math.min(x1, x2, x3)) {
+        midAC.x = Math.min(x1, x2, x3) - offset * 0.6;
+    }
+    
+    // Right side (BC/A) midpoint with smart offset
+    let midBC = {
+        x: (x2 + x3) / 2 + offset * 0.9, // Push right label more to the right
+        y: (y2 + y3) / 2
+    };
+    
+    // Make sure right label is to the right of the triangle
+    if (midBC.x < Math.max(x1, x2, x3)) {
+        midBC.x = Math.max(x1, x2, x3) + offset * 0.6;
+    }
+    
+    // Adjust vertical positions to avoid label overlap
+    // If the triangle is nearly equilateral, adjust the vertical positions
+    const avgHeight = (midAC.y + midBC.y) / 2;
+    if (Math.abs(midAC.y - midBC.y) < 30) {
+        midAC.y = avgHeight - 30;
+        midBC.y = avgHeight + 30;
+    }
+    
+    // Bottom side (sideC)
+    const bottomLabel = document.createElement('div');
+    bottomLabel.className = 'side-label';
+    bottomLabel.classList.add('value-box');
+    bottomLabel.setAttribute('draggable', 'true');
+    bottomLabel.setAttribute('id', 'side-c');
+    bottomLabel.style.position = 'absolute';
+    bottomLabel.style.left = `${midAB.x}px`;
+    bottomLabel.style.top = `${midAB.y - 30}px`;
+    bottomLabel.style.transform = 'translate(-50%, -50%)';
+    bottomLabel.textContent = sideC;
+    
+    // Left side (sideA)
+    const leftLabel = document.createElement('div');
+    leftLabel.className = 'side-label';
+    leftLabel.classList.add('value-box');
+    leftLabel.setAttribute('draggable', 'true');
+    leftLabel.setAttribute('id', 'side-a');
+    leftLabel.style.position = 'absolute';
+    leftLabel.style.left = `${midAC.x + 20}px`;
+    leftLabel.style.top = `${midAC.y}px`;
+    leftLabel.style.transform = 'translate(-50%, -50%)';
+    leftLabel.textContent = sideA;
+    
+    // Right side (sideB)
+    const rightLabel = document.createElement('div');
+    rightLabel.className = 'side-label';
+    rightLabel.classList.add('value-box');
+    rightLabel.setAttribute('draggable', 'true');
+    rightLabel.setAttribute('id', 'side-b');
+    rightLabel.style.position = 'absolute';
+    rightLabel.style.left = `${midBC.x}px`;
+    rightLabel.style.top = `${midBC.y - 30}px`;
+    rightLabel.style.transform = 'translate(-50%, -50%)';
+    rightLabel.textContent = sideB;
+    
+    // Add labels to the display
+    this.triangleDisplay.appendChild(bottomLabel);
+    this.triangleDisplay.appendChild(leftLabel);
+    this.triangleDisplay.appendChild(rightLabel);
+    
+    // Store references to the labels
+    this.sideALabel = leftLabel;
+    this.sideBLabel = rightLabel;
+    this.sideCLabel = bottomLabel;
+    
+    // Position the triangle instruction near the rightmost label
+    if (this.triangleInstruction) {
+        const rightmostX = Math.max(midAC.x, midBC.x, midAB.x);
+        this.triangleInstruction.style.left = `${rightmostX + 60}px`;
+        this.triangleInstruction.style.top = `${Math.min(midAC.y, midBC.y, midAB.y)}px`;
+    }
+    
+    // Initialize drag-and-drop functionality
+    this.initDragAndDrop();
+}
+
+
+// Update drawTriangle method to create instructional headings
+// drawTriangle(sideA, sideB, sideC) {
+//     // Clear previous triangle
+//     this.triangleDisplay.innerHTML = '';
+    
+//     // Store sides for p5 sketch to use
+//     this.currentSideA = sideA;
+//     this.currentSideB = sideB;
+//     this.currentSideC = sideC;
+    
+//     // Parse numeric values for calculations
+//     this.numericSideA = this.parseNumericValue(sideA);
+//     this.numericSideB = this.parseNumericValue(sideB);
+//     this.numericSideC = this.parseNumericValue(sideC);
+    
+//     // Create instructional headings
+//     this.createInstructionalHeadings();
+    
+//     // Create a p5.js sketch
+//     this.createP5Sketch();
+    
+//     // We'll create and position the labels after the p5 sketch initializes
+//     // This is done via callback now to ensure coordinates are available
+// }
+
+/*************  ✨ Windsurf Command 🌟  *************/
+drawTriangle(sideA, sideB, sideC) {
+    // Clear previous triangle
+    this.triangleDisplay.innerHTML = '';
+    
+    // Store sides for p5 sketch to use
+    this.currentSideA = sideA;
+    this.currentSideB = sideB;
+    this.currentSideC = sideC;
+    
+    // Parse numeric values for calculations
+    this.numericSideA = this.parseNumericValue(sideA);
+    this.numericSideB = this.parseNumericValue(sideB);
+    this.numericSideC = this.parseNumericValue(sideC);
+    
+    // Create instructional headings
+    this.createInstructionalHeadings();
+    
+    // Disable instructional headings when drag starts
+    document.addEventListener('dragstart', function() {
+        if (this.triangleInstruction) {
+            this.triangleInstruction.style.display = 'none';
+        }
+    }.bind(this));
+
+    // click touch select triangle side the triangleinstruction hide
+    document.addEventListener('click', function() {
+        if (this.triangleInstruction) {
+            this.triangleInstruction.style.display = 'none';
+        }
+    }.bind(this));
+
+    document.addEventListener('touchstart', function() {
+        if (this.triangleInstruction) {
+            this.triangleInstruction.style.display = 'none';
+        }
+    }.bind(this));
+
+    // newproblem button the triangleinstruction show
+    // document.getElementById('').addEventListener('click', function() {
+    //     if (this.triangleInstruction) {
+    //         this.triangleInstruction.style.display = 'none';
+    //     }
+    // }.bind(this));
+    
+
+    
+
+   
+    
+    // Create a p5.js sketch
+    this.createP5Sketch();
+    
+    // We'll create and position the labels after the p5 sketch initializes
+    // This is done via callback now to ensure coordinates are available
+}
+/*******  d6746877-88cd-489c-9b22-164db247aa68  *******/
+
+// Update resetUI method to handle instruction headings
+// resetUI() {
+//     console.log("Resetting UI for new problem");
+    
+//     // Hide right angle marker
+//     this.hideRightAngleMarker();
+    
+//     // Hide equation indicator
+//     this.hideEquationIndicator();
+    
+//     // Show instruction headings again for new problem
+//     if (this.triangleInstruction) {
+//         this.triangleInstruction.style.display = 'block';
+//     }
+//     if (this.dropBoxInstruction) {
+//         this.dropBoxInstruction.style.display = 'block';
+//     }
+    
+//     // Clear drop boxes
+//     [this.dropBoxA, this.dropBoxB, this.dropBoxC].forEach(box => {
+//         box.textContent = '';
+//         box.classList.remove('filled');
+//         box.removeAttribute('data-filled');
+//         box.removeAttribute('data-source-id');
+//         box.removeAttribute('data-value');
+        
+//         // Ensure drop boxes are draggable and interactive
+//         box.setAttribute('draggable', 'true');
+//         box.style.cursor = 'move';
+//         box.style.pointerEvents = 'auto';
+//     });
+    
+//     // Reset triangle sides to be draggable if they exist
+//     const triangleSides = [this.sideALabel, this.sideBLabel, this.sideCLabel];
+//     triangleSides.forEach(side => {
+//         if (side) {
+//             side.setAttribute('draggable', 'true');
+//             side.style.cursor = 'grab';
+//             side.style.opacity = '1';
+//             side.classList.remove('used');
+//             side.style.backgroundColor = '#e9ecef';
+//             side.style.borderColor = '#ced4da';
+//             side.style.pointerEvents = 'auto';
+//         }
+//     });
+    
+//     // Re-enable answer buttons
+//     this.checkButton.disabled = false;
+//     this.notRightButton.disabled = false;
+//     this.checkButton.style.opacity = '1';
+//     this.notRightButton.style.opacity = '1';
+//     this.checkButton.style.cursor = 'pointer';
+//     this.notRightButton.style.cursor = 'pointer';
+    
+//     // Clear feedback and calculation
+//     this.clearFeedback();
+//     this.clearCalculation();
+    
+//     // Hide hint
+//     this.hideHint();
+// }
+
+resetUI() {
+    console.log("Resetting UI for new problem");
+    
+    // Hide right angle marker
+    this.hideRightAngleMarker();
+    
+    // Hide equation indicator
+    this.hideEquationIndicator();
+    
+    // Show instruction headings again for new problem
+    if (this.triangleInstruction) {
+        this.triangleInstruction.style.display = 'block';
+    }
+   
+    
+    // Clear drop boxes
+    [this.dropBoxA, this.dropBoxB, this.dropBoxC].forEach(box => {
+        box.textContent = '';
+        box.classList.remove('filled');
+        box.removeAttribute('data-filled');
+        box.removeAttribute('data-source-id');
+        box.removeAttribute('data-value');
+        
+        // Ensure drop boxes are draggable and interactive
+        box.setAttribute('draggable', 'true');
+        box.style.cursor = 'move';
+        box.style.pointerEvents = 'auto';
+    });
+    
+    // Reset triangle sides to be draggable if they exist
+    const triangleSides = [this.sideALabel, this.sideBLabel, this.sideCLabel];
+    triangleSides.forEach(side => {
+        if (side) {
+            side.setAttribute('draggable', 'true');
+            side.style.cursor = 'grab';
+            side.style.opacity = '1';
+            side.classList.remove('used');
+            side.style.backgroundColor = '#e9ecef';
+            side.style.borderColor = '#ced4da';
+            side.style.pointerEvents = 'auto';
+        }
+    });
+    
+  
+
+
+    // Re-enable answer buttons
+    this.checkButton.disabled = false;
+    this.notRightButton.disabled = false;
+    this.checkButton.style.opacity = '1';
+    this.notRightButton.style.opacity = '1';
+    this.checkButton.style.cursor = 'pointer';
+    this.notRightButton.style.cursor = 'pointer';
+    
+    // Clear feedback and calculation
+    this.clearFeedback();
+    this.clearCalculation();
+    
+    // Hide hint
+    this.hideHint();
+}
+
+// Update disableDragging method to hide instructions when dragging is disabled
+// disableDragging() {
+//     const triangleSides = [this.sideALabel, this.sideBLabel, this.sideCLabel];
+//     triangleSides.forEach(side => {
+//         if (side) {
+//             side.setAttribute('draggable', 'false');
+//             side.style.cursor = 'default';
+//             side.style.pointerEvents = 'none'; // Prevent all interactions
+//         }
+//     });
+    
+//     // Also disable drop zones
+//     const dropBoxes = [this.dropBoxA, this.dropBoxB, this.dropBoxC];
+//     dropBoxes.forEach(box => {
+//         box.setAttribute('draggable', 'false');
+//         box.style.cursor = 'default';
+//         box.style.pointerEvents = 'none'; // Prevent all interactions
+//     });
+    
+//     // Hide instruction headings when dragging is disabled
+//     if (this.triangleInstruction) {
+//         this.triangleInstruction.style.display = 'none';
+//     }
+//     if (this.dropBoxInstruction) {
+//         this.dropBoxInstruction.style.display = 'none';
+//     }
+// }
+
+disableDragging() {
+    const triangleSides = [this.sideALabel, this.sideBLabel, this.sideCLabel];
+    triangleSides.forEach(side => {
+        if (side) {
+            side.setAttribute('draggable', 'false');
+            side.style.cursor = 'default';
+            side.style.pointerEvents = 'none'; // Prevent all interactions
+        }
+    });
+    
+    // Also disable drop zones
+    const dropBoxes = [this.dropBoxA, this.dropBoxB, this.dropBoxC];
+    dropBoxes.forEach(box => {
+        box.setAttribute('draggable', 'false');
+        box.style.cursor = 'default';
+        box.style.pointerEvents = 'none'; // Prevent all interactions
+    });
+    
+    // Hide instruction headings when dragging is disabled
+    if (this.triangleInstruction) {
+        this.triangleInstruction.style.display = 'block';
+    }
+   
+}
+
 }
 
 

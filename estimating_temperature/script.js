@@ -50,12 +50,21 @@ class TemperatureView {
         this.currentAdd = 32;      // Default addition value for Celsius to Fahrenheit
         this.firstButtonActive = null;
         this.secondButtonActive = null;
+        this.showInstruction = true;
+        this.instructionY = 0;
+this.instructionVelocity = -8;
+this.instructionBaseY = 470;  // original Y offset
+this.bouncing = true;         // control flag
+
+
         // Initialize p5.js sketch
         new p5(this.sketch.bind(this), 'canvas-container');
 
         this.setupEventListerners()
+
     }
 
+   
     
     sketch(p) {
         const self = this;
@@ -84,11 +93,15 @@ class TemperatureView {
     setupEventListerners() {
         let tryAnotherButton = document.getElementById('try-another');
 
+
+        
         tryAnotherButton.addEventListener('click', () => {
             console.log("Try Another button clicked!"); 
             this.resetState();
             this.model = new TemperatureModel();
-        })
+            
+        });
+
 
     }
     // Add method to check for button clicks
@@ -105,6 +118,10 @@ class TemperatureView {
             p.mouseX > x && p.mouseX < x + buttonSize && 
             p.mouseY > y && p.mouseY < y + buttonSize) {
             
+
+
+                // hide headuing
+                this.showInstruction = false;
             if (!this.model.isCelsius) {
                 this.showRoundedCalculation = true;
                 this.showBlueMarking = true;
@@ -128,6 +145,8 @@ class TemperatureView {
             p.mouseY > y + buttonSize + buttonSpacing + 30 && 
             p.mouseY < y + buttonSize + buttonSpacing + 30 + buttonSize) {
             
+                //hide heading
+                this.showInstruction = false;
             if (!this.model.isCelsius) {
                 this.showRoundedCalculation = true;
                 this.showBlueMarking = true;
@@ -151,6 +170,9 @@ class TemperatureView {
             p.mouseX < x + buttonSize + buttonSpacing + buttonSize && 
             p.mouseY > y && p.mouseY < y + buttonSize) {
             
+
+                // hide heading 
+                this.showInstruction = false;
             if (!this.model.isCelsius) {
                 this.showRoundedCalculation = true;
                 this.showBlueMarking = true;
@@ -175,6 +197,9 @@ class TemperatureView {
             p.mouseY > y + buttonSize + buttonSpacing + 30 && 
             p.mouseY < y + buttonSize + buttonSpacing + 30 + buttonSize) {
             
+
+                 // hide heading 
+                this.showInstruction = false;
             if (!this.model.isCelsius) {
                 this.showRoundedCalculation = true;
                 this.showBlueMarking = true;
@@ -239,6 +264,7 @@ class TemperatureView {
         this.currentAdd = 32;
         this.firstButtonActive = null;
         this.secondButtonActive = null;
+        this.showInstruction = true;
     }
     drawThermometer(p) {
         // Set up dimensions and positions
@@ -390,6 +416,35 @@ class TemperatureView {
             p.text("× 9/5) + 32 ", rightSideX+195, textY + 200)
             // Add up and down arrow buttons in purple
             this.drawArrowButtons(p, rightSideX + 200, textY + 250);
+            
+          if (this.showInstruction) {
+    // Animate bounce
+    if (this.bouncing) {
+        this.instructionVelocity += 0.5; // gravity
+        this.instructionY += this.instructionVelocity;
+
+        if (this.instructionY >= 0) {
+            this.instructionY = 0;
+            this.instructionVelocity *= -0.6; // bounce and dampen
+            if (Math.abs(this.instructionVelocity) < 1) {
+                this.bouncing = false; // stop bouncing when almost settled
+            }
+        }
+    }
+
+    p.fill('#604deb'); // Purple
+    p.textSize(22);
+    p.textStyle(p.BOLD);
+    p.text(
+        "Use the arrow button to round constant values up or down",
+        rightSideX + 250,
+        textY + this.instructionBaseY + this.instructionY
+    );
+}
+
+            
+
+          
         } else {
             p.textStyle(p.BOLD);
         //    p.text("Estimating Temperature Conversion Between Celsius and Fahrenheit.", rightSideX-35, textY-60);
@@ -413,6 +468,33 @@ class TemperatureView {
             
             // Add up and down arrow buttons in purple
             this.drawArrowButtons(p, rightSideX + 200, textY + 250);
+        // Only show "hello world" if showHelloWorld is true
+          if (this.showInstruction) {
+    // Animate bounce
+    if (this.bouncing) {
+        this.instructionVelocity += 0.5; // gravity
+        this.instructionY += this.instructionVelocity;
+
+        if (this.instructionY >= 0) {
+            this.instructionY = 0;
+            this.instructionVelocity *= -0.6; // bounce and dampen
+            if (Math.abs(this.instructionVelocity) < 1) {
+                this.bouncing = false; // stop bouncing when almost settled
+            }
+        }
+    }
+
+    p.fill('#604deb'); // Purple
+    p.textSize(22);
+    p.textStyle(p.BOLD);
+    p.text(
+        "Use the arrow button to round constant values up or down",
+        rightSideX + 250,
+        textY + this.instructionBaseY + this.instructionY
+    );
+}
+
+          
         }
     }
     

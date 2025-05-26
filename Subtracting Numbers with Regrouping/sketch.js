@@ -38,7 +38,7 @@ class SubtractionModel {
     
     // Progression tracking
     this.currentStep = 0;
-    this.maxStep = 6;
+    this.maxStep = 5;
   }
   
   generateNewProblem() {
@@ -663,7 +663,7 @@ class SubtractionView {
     const resultY = y + 100;
   
     // Show results based on steps with consistent positions
-    if (m.currentStep >= 6) {
+    if (m.currentStep >= 5) {
       // Show all digits
       fill(0, 128, 0);  // Green for hundreds
       text(m.result[0], hundredsResultX, resultY);

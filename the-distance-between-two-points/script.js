@@ -139,7 +139,7 @@ class GraphView {
         console.log('GraphView: Updating coordinates', { pointA, pointB });
         if (pointA && pointB) {
             document.getElementById('pointA').textContent = `(${pointA[0]}, ${pointA[1]})`;
-            document.getElementById('pointB').textContent = `(${pointB[0]}, ${pointB[1]})`;
+            document.getElementById('pointB').textContent = `(${pointA[0]}, ${pointA[1]})`;
             const distance = Math.sqrt(
                 Math.pow(pointB[0] - pointA[0], 2) + 
                 Math.pow(pointB[1] - pointA[1], 2)
@@ -258,6 +258,186 @@ document.addEventListener('DOMContentLoaded', function() {
     let triangleObjects = [];
     let triangleLabels = [];
 
+    // Set the initial heading
+    document.getElementById('pointsInfo').innerHTML = '<h5>Select two points on the graph to find the distance between them.</h5>';
+
+    // Function to create the "Select this point" heading with an arrow
+//     function createPointPromptHeading(targetPoint) {
+//         console.log('Application: Creating point prompt heading');
+//         // Remove any existing prompt heading
+//         const existingPrompt = document.getElementById('point-prompt-heading');
+//         if (existingPrompt) {
+//             existingPrompt.remove();
+//         }
+
+//         // Create the container for the heading and arrow
+//         const promptContainer = document.createElement('div');
+//         promptContainer.id = 'point-prompt-heading';
+//         promptContainer.style.position = 'absolute';
+//         promptContainer.style.pointerEvents = 'none';
+//         promptContainer.style.zIndex = '100';
+
+//         // Create the text
+//         const promptText = document.createElement('div');
+//         promptText.className = 'prompt-text';
+//         promptText.textContent = ' ↓ Select two points';
+//         promptText.style.color = '#7b88e8';
+//         promptText.style.fontSize = '14px';
+//         promptText.style.fontWeight = 'bold';
+//         promptText.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+//         promptText.style.padding = '2px 8px';
+//         promptText.style.borderRadius = '3px';
+//         promptContainer.appendChild(promptText);
+
+//         // Create the arrow (using a CSS triangle)
+//         const arrow = document.createElement('div');
+//         arrow.style.width = '0';
+//         arrow.style.height = '0';
+//         arrow.style.borderLeft = '8px solid transparent';
+//         arrow.style.borderRight = '8px solid transparent';
+//         arrow.style.borderTop = '8px solid rgba(255, 255, 255, 0.8)';
+//         arrow.style.position = 'absolute';
+//         arrow.style.left = '50%';
+//         arrow.style.transform = 'translateX(-50%)';
+//         promptContainer.appendChild(arrow);
+
+//         // Position the heading near the target point
+//         const boardWidth = board.canvasWidth;
+//         const boardHeight = board.canvasHeight;
+//         const boardBound = board.getBoundingBox();
+
+//         function toPixelX(x) {
+//             return (x - boardBound[0]) * boardWidth / (boardBound[2] - boardBound[0]);
+//         }
+
+//         function toPixelY(y) {
+//             return (boardBound[1] - y) * boardHeight / (boardBound[1] - boardBound[3]);
+//         }
+
+//         const x = targetPoint.X();
+//         const y = targetPoint.Y();
+//         const pixelX = toPixelX(x);
+//         const pixelY = toPixelY(y);
+
+//         // Position the container above the point
+//         // promptContainer.style.left = `${pixelX + 10}px`;
+//         // promptContainer.style.top = `${pixelY - 30}px`; // Adjust above the point
+//         // promptText.style.position = 'relative';
+//         // promptText.style.left = '-50%'; // Center the text
+//         // arrow.style.top = '100%'; // Place arrow below the text
+// promptContainer.style.left = `${pixelX + 10}px`; // Move slightly right
+// promptContainer.style.top = `${pixelY + 10}px`;  // Move below the point
+
+// promptText.style.position = 'relative';
+// promptText.style.left = '0'; // No offset, align to left
+
+// arrow.style.top = '-8px'; // Move arrow above the text
+// arrow.style.transform = 'translateX(0) rotate(180deg)'; // Flip arrow to point upward
+
+
+
+//         // Append to the graph container
+//         const graphContainer = document.querySelector('.graph-container');
+//         if (graphContainer) {
+//             graphContainer.appendChild(promptContainer);
+//         } else {
+//             console.warn('Application: .graph-container not found, appending prompt heading to body');
+//             document.body.appendChild(promptContainer);
+//         }
+
+//         // Update position on window resize
+//         window.addEventListener('resize', () => {
+//             const newPixelX = toPixelX(targetPoint.X());
+//             const newPixelY = toPixelY(targetPoint.Y());
+//             promptContainer.style.left = `${newPixelX}px`;
+//             promptContainer.style.top = `${newPixelY - 30}px`;
+//         });
+//     }
+
+
+function createPointPromptHeading(targetPoint) {
+    console.log('Application: Creating point prompt heading');
+
+    // Remove any existing prompt heading
+    const existingPrompt = document.getElementById('point-prompt-heading');
+    if (existingPrompt) {
+        existingPrompt.remove();
+    }
+
+    // Create the container for the heading and arrow
+    const promptContainer = document.createElement('div');
+    promptContainer.id = 'point-prompt-heading';
+    promptContainer.style.position = 'absolute';
+    promptContainer.style.pointerEvents = 'none';
+    promptContainer.style.zIndex = '100';
+    promptContainer.style.display = 'flex';
+    promptContainer.style.flexDirection = 'column';
+    promptContainer.style.alignItems = 'center';
+
+    // Create the arrow (CSS triangle) pointing up
+    const arrow = document.createElement('div');
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderLeft = '8px solid transparent';
+    arrow.style.borderRight = '8px solid transparent';
+    arrow.style.borderBottom = '8px solid rgba(255, 255, 255, 0.8)';
+    arrow.style.marginBottom = '4px'; // spacing between arrow and text
+
+    // Create the text
+    const promptText = document.createElement('div');
+    promptText.className = 'prompt-text';
+    promptText.textContent = '↓ Select two points';
+    promptText.style.color = '#7b88e8';
+    promptText.style.fontSize = '14px';
+    promptText.style.fontWeight = 'bold';
+    promptText.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+    promptText.style.padding = '2px 8px';
+    promptText.style.borderRadius = '3px';
+
+    // Add arrow and text to container
+    promptContainer.appendChild(arrow);
+    promptContainer.appendChild(promptText);
+
+    // Position calculation functions
+    const boardWidth = board.canvasWidth;
+    const boardHeight = board.canvasHeight;
+    const boardBound = board.getBoundingBox();
+
+    function toPixelX(x) {
+        return (x - boardBound[0]) * boardWidth / (boardBound[2] - boardBound[0]);
+    }
+
+    function toPixelY(y) {
+        return (boardBound[1] - y) * boardHeight / (boardBound[1] - boardBound[3]);
+    }
+
+    function updatePosition() {
+        const x = targetPoint.X();
+        const y = targetPoint.Y();
+        const pixelX = toPixelX(x);
+        const pixelY = toPixelY(y);
+
+        promptContainer.style.left = `${pixelX}px`;
+        promptContainer.style.top = `${pixelY -20}px`; // BELOW the point
+        promptContainer.style.transform = 'translateX(-50%)';
+    }
+
+    updatePosition(); // Initial call
+
+    // Append to container
+    const graphContainer = document.querySelector('.graph-container');
+    if (graphContainer) {
+        graphContainer.appendChild(promptContainer);
+    } else {
+        console.warn('Application: .graph-container not found, appending to body');
+        document.body.appendChild(promptContainer);
+    }
+
+    // Update on window resize
+    window.addEventListener('resize', updatePosition);
+}
+
+
     // Generate random points not on axes and not collinear
     function createRandomPoints() {
         console.log('Application: Creating random points');
@@ -349,6 +529,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return createRandomPoints();
         }
         
+        // Ensure the initial heading is set after points are generated
+        document.getElementById('pointsInfo').innerHTML = '<h5>Select two points on the graph to find the distance between them.</h5>';
+        
+        // Create the "Select this point" heading pointing to the first point
+        if (pointObjects.length > 0) {
+            createPointPromptHeading(pointObjects[0]);
+        }
+        
         console.log('Application: Generated points with minimum distance:', minDistance);
     }
     
@@ -435,6 +623,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return createRandomPointsWithSmallDistance();
         }
         
+        // Ensure the initial heading is set after points are generated
+        document.getElementById('pointsInfo').innerHTML = '<h5>Select two points on the graph to find the distance between them.</h5>';
+        
+        // Create the "Select this point" heading pointing to the first point
+        if (pointObjects.length > 0) {
+            createPointPromptHeading(pointObjects[0]);
+        }
+        
         console.log('Application: Generated points with fallback minimum distance:', minDistance);
     }
     
@@ -448,6 +644,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             pointObjects = [];
         }
+        
+        // Remove the point prompt heading
+        const promptHeading = document.getElementById('point-prompt-heading');
+        if (promptHeading) {
+            promptHeading.remove();
+        }
+
+
+        // the dragheas
         
         clearTriangle();
     }
@@ -512,19 +717,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 fixed: true // Keep it fixed
             });
             
-            // Add coordinate label
-            // const coordA = board.create('text', [
-            //     function() { return pointA.X() + 0.3; },
-            //     function() { return pointA.Y(); },
-            //     '(x₁,y₁)'
-            // ], {
-            //     fontSize: 12,
-            //     color: '#d63384',
-            //     // cssClass: 'JXGtext'
-            // });
+            // Update heading to prompt for second point
+            document.getElementById('pointsInfo').innerHTML = '<h5>Select another point</h5>';
             
-            // triangleLabels.push(coordA);
-            document.getElementById('pointsInfo').innerHTML = '<h5>Point A selected. Select another point.</h5>';
+            // Hide the "Select this point" heading
+            const promptHeading = document.getElementById('point-prompt-heading');
+            if (promptHeading) {
+                promptHeading.style.display = 'none';
+            }
         } else {
             // Second point selected
             pointB = point;
@@ -537,24 +737,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 fixed: true // Keep it fixed
             });
             
-            // Add coordinate label
-            // const coordB = board.create('text', [
-            //     function() { return pointB.X() + 0.3; },
-            //     function() { return pointB.Y(); },
-            //     '(x₂,y₂)'
-            // ], {
-            //     fontSize: 12,
-            //     color: '#d63384',
-            //     cssClass: 'JXGtext'
-            // });
-            
-            // triangleLabels.push(coordB);
-            
-            // Clear detailed coordinates from header
+            // Update heading to show distance calculation
             document.getElementById('pointsInfo').innerHTML = '<h5>Distance between points A and B</h5>';
             createTriangle();
         }
     }
+    
     let isPointAHigher = false;
     // Create the triangle
     function createTriangle() {
@@ -607,11 +795,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('resetBtn').style.display = 'none';
     }
     
-
-
-
-
-
     // Clear the triangle
     function clearTriangle() {
         console.log('Application: Clearing triangle');
@@ -631,9 +814,16 @@ document.addEventListener('DOMContentLoaded', function() {
             triangleLabels = [];
         }
         
-        // Remove DOM elements for draggable labels
+        // Remove DOM elements for draggable labels and headings
         const existingLabels = document.querySelectorAll('.triangle-side');
         existingLabels.forEach(el => el.remove());
+        const existingHeadings = document.querySelectorAll('.drag-heading');
+        existingHeadings.forEach(el => el.remove());
+
+        const dragHeading = document.getElementById('point-prompt-heading');
+        if (existingLabels.length === 0 && existingHeadings.length === 0 && dragHeading) {
+            dragHeading.style.display = 'block';
+        }
     }
     
     // Create draggable labels
@@ -686,14 +876,17 @@ document.addEventListener('DOMContentLoaded', function() {
         dLabel.textContent = 'd';
         dLabel.dataset.formula = 'd';
         dLabel.style.position = 'absolute';
-        console.log(isPointAHigher,"isPointAHigher");
-        if(isPointAHigher) {
-            dLabel.style.left = `${toPixelX((xA + xB) / 2) + 40}px`;
-            dLabel.style.top = `${toPixelY((yA + yB) / 2) + 50}px`;
+        console.log(isPointAHigher, "isPointAHigher");
+        let dLabelLeft, dLabelTop;
+        if (isPointAHigher) {
+            dLabelLeft = toPixelX((xA + xB) / 2) + 40;
+            dLabelTop = toPixelY((yA + yB) / 2) + 50;
         } else {
-            dLabel.style.left = `${toPixelX((xA + xB) / 2) - 10}px`;
-            dLabel.style.top = `${toPixelY((yA + yB) / 2) + 40}px`;
+            dLabelLeft = toPixelX((xA + xB) / 2) - 10;
+            dLabelTop = toPixelY((yA + yB) / 2) + 40;
         }
+        dLabel.style.left = `${dLabelLeft}px`;
+        dLabel.style.top = `${dLabelTop}px`;
         dLabel.style.color = '#d63384';
         dLabel.style.width = '20px';
         dLabel.style.textAlign = 'center';
@@ -703,6 +896,22 @@ document.addEventListener('DOMContentLoaded', function() {
         dLabel.setAttribute('draggable', 'true');
         container.appendChild(dLabel);
         
+        // Add "Drag into the blanks" heading above d label
+        const dragHeading = document.createElement('div');
+        dragHeading.className = 'drag-heading';
+        dragHeading.textContent = ' ↓ Drag into the blanks';
+        dragHeading.style.position = 'absolute';
+         dragHeading.style.fontWeight = 'bold';
+        dragHeading.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        dragHeading.style.left = `${dLabelLeft - 40}px`; // Adjust left to center above d label
+        dragHeading.style.top = `${dLabelTop - 25}px`; // Position 20px above d label
+        dragHeading.style.color = '#ae6fed';
+        dragHeading.style.fontSize = '14px';
+        dragHeading.style.fontWeight = 'bold';
+        dragHeading.style.pointerEvents = 'none';
+        dragHeading.style.zIndex = '101';
+        container.appendChild(dragHeading);
+        
         // Horizontal side label (x₂-x₁)
         const xLabel = document.createElement('div');
         xLabel.id = 'x-side-label';
@@ -710,7 +919,7 @@ document.addEventListener('DOMContentLoaded', function() {
         xLabel.textContent = 'x₂-x₁';
         xLabel.dataset.formula = 'x2-x1';
         xLabel.style.position = 'absolute';
-        if(isPointAHigher) {
+        if (isPointAHigher) {
             xLabel.style.left = `${toPixelX((xA + xC) / 2) - 2}px`;
             xLabel.style.top = `${toPixelY(yA) + 50}px`;
         } else {
@@ -733,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function() {
         yLabel.textContent = 'y₂-y₁';
         yLabel.dataset.formula = 'y2-y1';
         yLabel.style.position = 'absolute';
-        if(isPointAHigher) {
+        if (isPointAHigher) {
             yLabel.style.left = `${toPixelX(xC) - 35}px`;
             yLabel.style.top = `${toPixelY((yC + yB) / 2) + 70}px`;
         } else {
@@ -751,6 +960,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Setup drag events for the labels
         setupDragForLabels();
+        
+        // Add click event to hide the "Drag into the blanks" heading when any label is clicked
+        const labels = [dLabel, xLabel, yLabel];
+        labels.forEach(label => {
+            label.addEventListener('click', () => {
+                dragHeading.style.display = 'none';
+            });
+        });
         
         // Add a resize event listener to update positions when the window changes size
         window.addEventListener('resize', updateLabelPositions);
@@ -776,8 +993,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const dLabel = document.getElementById('d-side-label');
         const xLabel = document.getElementById('x-side-label');
         const yLabel = document.getElementById('y-side-label');
+        const dragHeading = document.querySelector('.drag-heading');
         
-        if (dLabel && xLabel && yLabel) {
+        if (dLabel && xLabel && yLabel && dragHeading) {
             const xA = pointA.X();
             const yA = pointA.Y();
             const xB = pointB.X();
@@ -786,14 +1004,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const yC = pointC.Y();
             
             // Update positions
-            dLabel.style.left = `${toPixelX((xA + xB) / 2) - 10}px`;
-            dLabel.style.top = `${toPixelY((yA + yB) / 2) - 10}px`;
+            let dLabelLeft, dLabelTop;
+            if (isPointAHigher) {
+                dLabelLeft = toPixelX((xA + xB) / 2) + 40;
+                dLabelTop = toPixelY((yA + yB) / 2) + 50;
+            } else {
+                dLabelLeft = toPixelX((xA + xB) / 2) - 10;
+                dLabelTop = toPixelY((yA + yB) / 2) + 40;
+            }
+            dLabel.style.left = `${dLabelLeft}px`;
+            dLabel.style.top = `${dLabelTop}px`;
             
-            xLabel.style.left = `${toPixelX((xA + xC) / 2) - 25}px`;
-            xLabel.style.top = `${toPixelY(yA) + 5}px`;
+            // Update "Drag into the blanks" heading position (only if it's still visible)
+            if (dragHeading.style.display !== 'none') {
+                dragHeading.style.left = `${dLabelLeft - 40}px`;
+                dragHeading.style.top = `${dLabelTop - 20}px`;
+            }
             
-            yLabel.style.left = `${toPixelX(xC) + 5}px`;
-            yLabel.style.top = `${toPixelY((yC + yB) / 2) - 10}px`;
+            if (isPointAHigher) {
+                xLabel.style.left = `${toPixelX((xA + xC) / 2) - 2}px`;
+                xLabel.style.top = `${toPixelY(yA) + 50}px`;
+            } else {
+                xLabel.style.left = `${toPixelX((xA + xC) / 2) - 2}px`;
+                xLabel.style.top = `${toPixelY(yA) + 90}px`;
+            }
+            
+            if (isPointAHigher) {
+                yLabel.style.left = `${toPixelX(xC) - 35}px`;
+                yLabel.style.top = `${toPixelY((yC + yB) / 2) + 70}px`;
+            } else {
+                yLabel.style.left = `${toPixelX(xC) + 25}px`;
+                yLabel.style.top = `${toPixelY((yC + yB) / 2) + 70}px`;
+            }
         }
     }
 
@@ -803,123 +1045,121 @@ document.addEventListener('DOMContentLoaded', function() {
         const labels = document.querySelectorAll('.triangle-side');
         const dropTargets = document.querySelectorAll('.blank-box');
         // Touch support for labels
-labels.forEach(label => {
-    label.addEventListener('touchstart', function(e) {
-        if (label.classList.contains('used')) return;
-    
-        const touch = e.touches[0];
-    
-        // Prevent scrolling unless user is near screen edge (for back gesture)
-        const edgeMargin = 30; // px from edge where we allow back gesture
-        const isNearLeftEdge = touch.clientX < edgeMargin;
-        const isNearRightEdge = touch.clientX > window.innerWidth - edgeMargin;
-    
-        if (!isNearLeftEdge && !isNearRightEdge) {
-            e.preventDefault(); // Only block scrolling if not near edges
-        }
-    
-        const ghost = label.cloneNode(true);
-        ghost.style.position = 'absolute';
-        ghost.style.pointerEvents = 'none';
-        ghost.style.opacity = '0.8';
-        ghost.style.zIndex = '1000';
-        ghost.classList.add('dragging');
-        ghost.id = 'ghost-drag';
-        document.body.appendChild(ghost);
-    
-        label.dataset.touchDragging = 'true';
-        label.dataset.ghostId = ghost.id;
-    
-        ghost.style.left = `${touch.clientX}px`;
-        ghost.style.top = `${touch.clientY}px`;
-    
-        function moveAt(touch) {
-            // console.log(touch.clientX,"This is ghost widht at moveAt", );
-            ghost.style.left = `${touch.clientX - ghost.offsetWidth/2}px`;
-            ghost.style.top = `${touch.clientY - ghost.offsetHeight/2}px`;
-        }
-    
-        function onTouchMove(ev) {
-            ev.preventDefault(); // block scroll while dragging
-            const moveTouch = ev.touches[0];
-            moveAt(moveTouch);
-        }
-    
-        function onTouchEnd(ev) {
-            document.removeEventListener('touchmove', onTouchMove, { passive: false });
-            document.removeEventListener('touchend', onTouchEnd);
-    
-            const ghostEl = document.getElementById(label.dataset.ghostId);
-            if (ghostEl) ghostEl.remove();
-    
-            label.dataset.touchDragging = 'false';
-    
-            const endTouch = ev.changedTouches[0];
-            const dropTarget = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
-    
-            if (dropTarget && dropTarget.classList.contains('blank-box')) {
-                const formula = label.dataset.formula;
-                const index = [...dropTargets].indexOf(dropTarget);
-    
-                if (formula === 'd' && index !== 0) {
-                    dropTarget.classList.add('invalid');
-                    setTimeout(() => dropTarget.classList.remove('invalid'), 800);
-                    return;
+        labels.forEach(label => {
+            label.addEventListener('touchstart', function(e) {
+                if (label.classList.contains('used')) return;
+            
+                const touch = e.touches[0];
+            
+                // Prevent scrolling unless user is near screen edge (for back gesture)
+                const edgeMargin = 30; // px from edge where we allow back gesture
+                const isNearLeftEdge = touch.clientX < edgeMargin;
+                const isNearRightEdge = touch.clientX > window.innerWidth - edgeMargin;
+            
+                if (!isNearLeftEdge && !isNearRightEdge) {
+                    e.preventDefault(); // Only block scrolling if not near edges
                 }
-    
-                if (dropTarget.textContent) {
-                    const previousSourceId = dropTarget.dataset.sourceId;
-                    if (previousSourceId) {
-                        const previousSource = document.getElementById(previousSourceId);
-                        if (previousSource) previousSource.classList.remove('used');
+            
+                const ghost = label.cloneNode(true);
+                ghost.style.position = 'absolute';
+                ghost.style.pointerEvents = 'none';
+                ghost.style.opacity = '0.8';
+                ghost.style.zIndex = '1000';
+                ghost.classList.add('dragging');
+                ghost.id = 'ghost-drag';
+                document.body.appendChild(ghost);
+            
+                label.dataset.touchDragging = 'true';
+                label.dataset.ghostId = ghost.id;
+            
+                ghost.style.left = `${touch.clientX}px`;
+                ghost.style.top = `${touch.clientY}px`;
+            
+                function moveAt(touch) {
+                    ghost.style.left = `${touch.clientX - ghost.offsetWidth/2}px`;
+                    ghost.style.top = `${touch.clientY - ghost.offsetHeight/2}px`;
+                }
+            
+                function onTouchMove(ev) {
+                    ev.preventDefault(); // block scroll while dragging
+                    const moveTouch = ev.touches[0];
+                    moveAt(moveTouch);
+                }
+            
+                function onTouchEnd(ev) {
+                    document.removeEventListener('touchmove', onTouchMove, { passive: false });
+                    document.removeEventListener('touchend', onTouchEnd);
+            
+                    const ghostEl = document.getElementById(label.dataset.ghostId);
+                    if (ghostEl) ghostEl.remove();
+            
+                    label.dataset.touchDragging = 'false';
+            
+                    const endTouch = ev.changedTouches[0];
+                    const dropTarget = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
+            
+                    if (dropTarget && dropTarget.classList.contains('blank-box')) {
+                        const formula = label.dataset.formula;
+                        const index = [...dropTargets].indexOf(dropTarget);
+            
+                        if (formula === 'd' && index !== 0) {
+                            dropTarget.classList.add('invalid');
+                            setTimeout(() => dropTarget.classList.remove('invalid'), 800);
+                            return;
+                        }
+            
+                        if (dropTarget.textContent) {
+                            const previousSourceId = dropTarget.dataset.sourceId;
+                            if (previousSourceId) {
+                                const previousSource = document.getElementById(previousSourceId);
+                                if (previousSource) previousSource.classList.remove('used');
+                            }
+                        }
+            
+                        dropTarget.textContent = label.textContent;
+                        dropTarget.dataset.formula = formula;
+                        dropTarget.dataset.sourceId = label.id;
+                        dropTarget.setAttribute('draggable', 'true');
+            
+                        label.classList.add('used');
+                        checkSolution();
                     }
                 }
-    
-                dropTarget.textContent = label.textContent;
-                dropTarget.dataset.formula = formula;
-                dropTarget.dataset.sourceId = label.id;
-                dropTarget.setAttribute('draggable', 'true');
-    
-                label.classList.add('used');
-                checkSolution();
-            }
-        }
-    
-        document.addEventListener('touchmove', onTouchMove, { passive: false });
-        document.addEventListener('touchend', onTouchEnd);
-    });
-    
-});
+            
+                document.addEventListener('touchmove', onTouchMove, { passive: false });
+                document.addEventListener('touchend', onTouchEnd);
+            });
+        });
 
-// Touch support for drop targets (double-tap to clear)
-dropTargets.forEach((box) => {
-    let lastTap = 0;
-    box.addEventListener('touchend', function(e) {
-        const now = new Date().getTime();
-        const tapLength = now - lastTap;
-        if (tapLength < 300 && tapLength > 0) {
-            // Double-tap detected
-            if (this.textContent) {
-                const sourceId = this.dataset.sourceId;
-                const source = document.getElementById(sourceId);
+        // Touch support for drop targets (double-tap to clear)
+        dropTargets.forEach((box) => {
+            let lastTap = 0;
+            box.addEventListener('touchend', function(e) {
+                const now = new Date().getTime();
+                const tapLength = now - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    // Double-tap detected
+                    if (this.textContent) {
+                        const sourceId = this.dataset.sourceId;
+                        const source = document.getElementById(sourceId);
 
-                this.textContent = '';
-                this.dataset.formula = '';
-                this.dataset.sourceId = '';
-                this.classList.remove('valid');
-                this.classList.remove('invalid');
-                this.setAttribute('draggable', 'false');
+                        this.textContent = '';
+                        this.dataset.formula = '';
+                        this.dataset.sourceId = '';
+                        this.classList.remove('valid');
+                        this.classList.remove('invalid');
+                        this.setAttribute('draggable', 'false');
 
-                if (source) {
-                    source.classList.remove('used');
+                        if (source) {
+                            source.classList.remove('used');
+                        }
+
+                        checkSolution();
+                    }
                 }
-
-                checkSolution();
-            }
-        }
-        lastTap = now;
-    });
-});
+                lastTap = now;
+            });
+        });
 
         labels.forEach(label => {
             label.addEventListener('dragstart', function(e) {
@@ -1095,7 +1335,6 @@ dropTargets.forEach((box) => {
         });
     }
 
-
     function setupClickToAssign() {
         console.log('Application: Setting up click-to-assign (mouse + touch)');
     
@@ -1167,8 +1406,6 @@ dropTargets.forEach((box) => {
             });
         });
     }
-    
-    
     
     // Function to check if the solution is correct
     function checkSolution() {
@@ -1336,8 +1573,8 @@ dropTargets.forEach((box) => {
             box.classList.remove('invalid');
         });
         
-        // Reset info
-        document.getElementById('pointsInfo').innerHTML = '<h5>Click on two points to start</h5>';
+        // Reset info to initial heading
+        document.getElementById('pointsInfo').innerHTML = '<h5>Select two points on the graph to find the distance between them.</h5>';
         
         // Generate new points
         createRandomPoints();
@@ -1347,4 +1584,4 @@ dropTargets.forEach((box) => {
     console.log('Application: Starting initialization');
     createRandomPoints();
     console.log('Application: Initialization complete');
-}); 
+});

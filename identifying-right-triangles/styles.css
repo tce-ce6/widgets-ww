@@ -17,6 +17,7 @@ padding: 20px;
 }
 
 
+
 .formula-box sup {
     position: relative;
     top: -0.8em; /* Adjust this value to move it higher */
@@ -345,3 +346,117 @@ transform: scale(1.05);
 font-size: 24px;
 }
 
+/* Instruction headings styles */
+.instruction-heading {
+    font-family: Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.triangle-instruction {
+    animation: fadeInBounce 1s ease-out;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 600px) {
+  #triangle-instruction {
+    font-size: 0.9em;
+    max-width: 140px;
+    left: auto !important;
+    right: 10px;
+    top: auto !important;
+    bottom: 10px;
+    transform: none !important;
+  }
+}
+
+
+
+
+/* Animation for triangle instruction */
+@keyframes fadeInBounce {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation for drop box instruction */
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+    .triangle-instruction {
+         max-width: 140px;
+        font-size: 14px !important;
+        left: 50% !important;
+        top: 10% !important;
+        transform: translateX(10%, -50%);
+    }
+    
+    
+}
+
+/* Hide instructions when dragging is disabled */
+.instruction-heading[style*="display: none"] {
+    display: none !important;
+}
+@media (pointer: coarse) {
+            .drop-box, [draggable=true] {
+                -webkit-tap-highlight-color: rgba(0, 123, 255, 0.2);
+            }
+            .dragging {
+                transform: scale(1.1);
+                transition: transform 0.2s;
+            }
+        }
+        
+        .drag-ghost {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: all 0.1s ease;
+            animation: ghost-pulse 1.5s infinite;
+        }
+        
+        @keyframes ghost-pulse {
+            0% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+            50% { box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+            100% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+        }
+        
+        .highlight {
+            outline: 2px solid #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+        }
+        
+        .pulse {
+            animation: pulse-animation 0.8s ease-in-out;
+        }
+        
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    

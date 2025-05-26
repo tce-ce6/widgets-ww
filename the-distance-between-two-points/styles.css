@@ -366,3 +366,41 @@ h2 {
   margin: 5px 0;
 }
 
+.drag-heading{
+    animation: fadeInBounce 1s ease-out;
+     font-family: Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+@keyframes fadeInBounce {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation for drop box instruction */
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prompt-text{
+    animation: fadeInBounce 0.8s ease-out;
+}

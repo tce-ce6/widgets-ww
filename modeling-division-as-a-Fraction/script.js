@@ -194,61 +194,123 @@ class DivisionView {
     }
   }
 
-  drawEquation(x, y) {
-    const numerator = this.model.getNumerator(); // e.g., 5
-    const denominator = this.model.getDenominator(); // e.g., 2
+  // drawEquation(x, y) {
+  //   const numerator = this.model.getNumerator(); // e.g., 5
+  //   const denominator = this.model.getDenominator(); // e.g., 2
 
-    this.p.fill(0);
-    this.p.noStroke();
-    this.p.textSize(24);
-    this.p.textAlign(this.p.LEFT, this.p.CENTER);
+  //   this.p.fill(0);
+  //   this.p.noStroke();
+  //   this.p.textSize(24);
+  //   this.p.textAlign(this.p.LEFT, this.p.CENTER);
 
-    // Draw initial part: "5 ÷ 2 = 5 ×"
-    const part1 = `${numerator} ÷ ${denominator} = ${numerator} ×`;
-    this.p.text(part1, x, y);
-    let offsetX = x + this.p.textWidth(part1) + 10;
+  //   // Draw initial part: "5 ÷ 2 = 5 ×"
+  //   const part1 = `${numerator} ÷ ${denominator} = ${numerator} ×`;
+  //   this.p.text(part1, x, y);
+  //   let offsetX = x + this.p.textWidth(part1) + 10;
 
-    // ----- Fraction: 1 / denominator -----
-    const num1 = "1";
-    const denom1 = denominator.toString();
-    const numWidth1 = this.p.textWidth(num1);
-    const denomWidth1 = this.p.textWidth(denom1);
-    const fracWidth1 = Math.max(numWidth1, denomWidth1) + 10;
+  //   // ----- Fraction: 1 / denominator -----
+  //   const num1 = "1";
+  //   const denom1 = denominator.toString();
+  //   const numWidth1 = this.p.textWidth(num1);
+  //   const denomWidth1 = this.p.textWidth(denom1);
+  //   const fracWidth1 = Math.max(numWidth1, denomWidth1) + 10;
+  //   const centerX1 = offsetX + fracWidth1 / 2;
+  //   this.p.textAlign(this.p.CENTER, this.p.CENTER);
+  //   this.p.text(num1, centerX1, y - 20); // numerator
+  //   this.p.stroke(0);
+  //   this.p.line(centerX1 - fracWidth1 / 2, y, centerX1 + fracWidth1 / 2, y); // fraction bar
+  //   this.p.noStroke();
+  //   this.p.text(denom1, centerX1, y + 20); // denominator
 
-    const centerX1 = offsetX + fracWidth1 / 2;
+  //   // ----- Equal sign -----
+  //   offsetX += fracWidth1 + 20;
+  //   this.p.textAlign(this.p.LEFT, this.p.CENTER);
+  //   this.p.text("=", offsetX, y);
+  //   offsetX += this.p.textWidth("=") + 10;
 
-    this.p.textAlign(this.p.CENTER, this.p.CENTER);
-    this.p.text(num1, centerX1, y - 20); // numerator
-    this.p.stroke(0);
-    this.p.line(centerX1 - fracWidth1 / 2, y, centerX1 + fracWidth1 / 2, y); // fraction bar
-    this.p.noStroke();
-    this.p.text(denom1, centerX1, y + 20); // denominator
+  //   // ----- Fraction: numerator / denominator -----
+  //   const num2 = numerator.toString();
+  //   const denom2 = denominator.toString();
+  //   const numWidth2 = this.p.textWidth(num2);
+  //   const denomWidth2 = this.p.textWidth(denom2);
+  //   const fracWidth2 = Math.max(numWidth2, denomWidth2) + 10;
 
-    // ----- Equal sign -----
-    offsetX += fracWidth1 + 20;
-    this.p.textAlign(this.p.LEFT, this.p.CENTER);
-    this.p.text("=", offsetX, y);
-    offsetX += this.p.textWidth("=") + 10;
+  //   const centerX2 = offsetX + fracWidth2 / 2;
+  //   this.p.textAlign(this.p.CENTER, this.p.CENTER);
+  //   this.p.text(num2, centerX2, y - 20); // numerator
+  //   this.p.stroke(0);
+  //   this.p.line(centerX2 - fracWidth2 / 2, y, centerX2 + fracWidth2 / 2, y); // fraction bar
+  //   this.p.noStroke();
+  //   this.p.text(denom2, centerX2, y + 20); // denominator
 
-    // ----- Fraction: numerator / denominator -----
-    const num2 = numerator.toString();
-    const denom2 = denominator.toString();
-    const numWidth2 = this.p.textWidth(num2);
-    const denomWidth2 = this.p.textWidth(denom2);
-    const fracWidth2 = Math.max(numWidth2, denomWidth2) + 10;
+  //   // Reset alignment
+  //   this.p.textAlign(this.p.LEFT, this.p.CENTER);
+  // }
+drawEquation(x, y) {
+  const numerator = this.model.getNumerator();     // e.g., 5
+  const denominator = this.model.getDenominator(); // e.g., 2
 
-    const centerX2 = offsetX + fracWidth2 / 2;
+  this.p.noStroke();
+  this.p.textSize(24);
+  this.p.textAlign(this.p.LEFT, this.p.CENTER);
 
-    this.p.textAlign(this.p.CENTER, this.p.CENTER);
-    this.p.text(num2, centerX2, y - 20); // numerator
-    this.p.stroke(0);
-    this.p.line(centerX2 - fracWidth2 / 2, y, centerX2 + fracWidth2 / 2, y); // fraction bar
-    this.p.noStroke();
-    this.p.text(denom2, centerX2, y + 20); // denominator
+  // Draw "5 ÷ 2"
+  this.p.fill(0);
+  const leftExpr = `${numerator} ÷ ${denominator}`;
+  this.p.text(leftExpr, x, y);
+  let offsetX = x + this.p.textWidth(leftExpr) + 10;
 
-    // Reset alignment
-    this.p.textAlign(this.p.LEFT, this.p.CENTER);
-  }
+  // Draw green "="
+  this.p.fill(0,200,0); // Green color
+  this.p.text("=", offsetX, y);
+  offsetX += this.p.textWidth("=") + 10;
+
+  // Draw "5 ×"
+  this.p.fill(0); // Reset to black
+  const multPart = `${numerator} ×`;
+  this.p.text(multPart, offsetX, y);
+  offsetX += this.p.textWidth(multPart) + 10;
+
+  // ----- Fraction: 1 / denominator -----
+  const num1 = "1";
+  const denom1 = denominator.toString();
+  const numWidth1 = this.p.textWidth(num1);
+  const denomWidth1 = this.p.textWidth(denom1);
+  const fracWidth1 = Math.max(numWidth1, denomWidth1) + 10;
+  const centerX1 = offsetX + fracWidth1 / 2;
+
+  this.p.textAlign(this.p.CENTER, this.p.CENTER);
+  this.p.text(num1, centerX1, y - 20);
+  this.p.stroke(0);
+  this.p.line(centerX1 - fracWidth1 / 2, y, centerX1 + fracWidth1 / 2, y);
+  this.p.noStroke();
+  this.p.text(denom1, centerX1, y + 20);
+
+  // ----- Equal sign again -----
+  offsetX += fracWidth1 + 20;
+  this.p.textAlign(this.p.LEFT, this.p.CENTER);
+  this.p.fill(0,200,0); // Green color again
+  this.p.text("=", offsetX, y);
+  offsetX += this.p.textWidth("=") + 10;
+
+  // ----- Fraction: numerator / denominator -----
+  this.p.fill(0); // Reset to black
+  const num2 = numerator.toString();
+  const denom2 = denominator.toString();
+  const numWidth2 = this.p.textWidth(num2);
+  const denomWidth2 = this.p.textWidth(denom2);
+  const fracWidth2 = Math.max(numWidth2, denomWidth2) + 10;
+
+  const centerX2 = offsetX + fracWidth2 / 2;
+  this.p.textAlign(this.p.CENTER, this.p.CENTER);
+  this.p.text(num2, centerX2, y - 20);
+  this.p.stroke(0);
+  this.p.line(centerX2 - fracWidth2 / 2, y, centerX2 + fracWidth2 / 2, y);
+  this.p.noStroke();
+  this.p.text(denom2, centerX2, y + 20);
+
+  this.p.textAlign(this.p.LEFT, this.p.CENTER); // Reset alignment
+}
 
   render() {
     this.p.background(255);
