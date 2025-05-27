@@ -134,7 +134,28 @@ class View {
                 }
                 return true;
             };
-            
+            p.touchStarted = function () {
+    const data = view.model?.data;
+    if (!data) return;
+
+    const margin = 50;
+    const lineLength = p.width - 2 * margin;
+    const range = data.maxValue - data.minValue;
+    const pixelsPerUnit = lineLength / range;
+    const x = margin + (data.userValue - data.minValue) * pixelsPerUnit;
+
+    const d = p.dist(p.mouseX, p.mouseY, x, 100); // 100 is the Y of the line
+    if (d < 15) {
+        data.isDragging = true;
+        return false; // prevent default
+    }
+};
+
+p.touchEnded = function () {
+    const data = view.model?.data;
+    if (data) data.isDragging = false;
+    return false; // prevent scroll
+};          
             p.draw = function() {
                 p.clear(); // Clear without setting background color
                 drawNumberLine(p, view.model.data);
@@ -581,11 +602,21 @@ class Controller {
     
         this.generateUserPoint();
         this.generateQuestion();
+
+        
         this.view.exampleButton.addEventListener('click', () => {
             this.generateQuestion();
             // Also generate a new random purple point when the button is clicked
             this.generateUserPoint();
         });
+        // touch start
+        this.view.exampleButton.addEventListener('touchstart', () => {
+            this.generateQuestion();
+            // Also generate a new random purple point when the button is clicked
+            this.generateUserPoint();
+        });
+       
+
         
         // Add slider change event listener
         this.view.slider.addEventListener('input', (e) => {
