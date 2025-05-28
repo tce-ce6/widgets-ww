@@ -26,6 +26,6 @@ h1 {
 canvas {
     max-width: 100%;
     height: auto !important;
-    max-height: calc(100vh - 200px) !important;
+    max-height: calc(100% - 200px) !important;
     width: auto !important;
   }

@@ -43,7 +43,7 @@ h3 {
 .p5Canvas{
     max-width: 100%;
     height: auto !important;
-    max-height: calc(100vh - 350px) !important;
+    max-height: calc(100% - 350px) !important;
     width: auto !important;
 }
 .step p {
