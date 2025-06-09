@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Between Points</title>
+    <!-- JSXGraph CSS -->
+    <link rel="stylesheet" type="text/css" href="jsx-graph.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="tex-mml-chtml-v3.js"></script>
+</head>
+<body>
+  <div class="mainContainerOuter">
+  <div class="wdgetTitle">
+    <h2>Distance Between Two Points</h2>
+    <span id="versionId" class="versionText">"2505191"</span>
+  </div>
+  <div class="mainContainer">
+  <div class="container">
+    
+    <div class="graph-container">
+      <h5>Select two points on the graph to find the distance between them.</h5>
+      <!-- JSXGraph board container -->
+      <div id="jxgbox" class="jxgbox"></div>
+    </div>
+    
+    <div class="info-container">  
+      <div id="pointsInfo">
+        <h5>Click on two points to start</h5>
+      </div>
+      
+      <div id="formula" class="formula" style="display: none;">
+        <div id="fullSolution" style="display: none; margin-top: 20px;">
+          <!-- <p style="color: #d63384;">d² = (x₂ - x₁)² + (y₂ - y₁)²</p>
+          <p>√d² = √(x₂ - x₁)² + (y₂ - y₁)²</p>
+          <p style="color: #d63384;">d = √(x₂ - x₁)² + (y₂ - y₁)²</p> -->
+        </div>
+        <p>d : Distance between <span class="point point-a">A(x₁, y₁)</span> and <span class="point point-b">B(x₂, y₂)</span></p>
+        <p>Using Pythagorean Theorem:</p>
+        <p><span class="blank-box" id="blank1"></span>² = <span class="blank-box" id="blank2"></span>² + <span class="blank-box" id="blank3"></span>²</p>
+        
+        <p class="drag-instruction">Drag sides from the triangle into the blanks</p>
+        
+        
+      </div>
+      
+      <button id="resetBtn" class="btn" style="display: none;">TRY OTHER POINTS</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+  <!-- JSXGraph JavaScript -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> 

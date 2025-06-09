@@ -1,0 +1,25 @@
+
+#canvas-container {
+  position: relative;
+  
+}
+canvas {
+  max-width: 100%;
+  height: auto !important;
+  max-height: calc(100% - 200px) !important;
+  width: auto !important;
+}
+
+/* button {
+  padding: 50px 50px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: rgb(163, 62, 222);
+  border: none;
+  border-radius: 5px;
+} */
+/* 
+button:hover {
+  background-color: #ad71ee;
+}  */

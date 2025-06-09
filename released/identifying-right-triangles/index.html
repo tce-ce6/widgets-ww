@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pythagorean Theorem Checker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="global_style.css" />
+
+    <!-- Add p5.js library -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script> -->
+    <script src="p5.js"></script>
+  </head>
+  <body>
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Pythagorean Theorem Checker</h2>
+        <span id="versionId" class="versionText">"2505191"</span>
+        </div>
+        <div class="mainContainer">
+          <div class="container">
+            
+            <h4 class="m-0 text-center">Is this triangle a right triangle?</h4>
+            <p class="instruction">
+              Drag the numbers into the Pythagorean Theorem to check!
+            </p>
+
+            <div class="content-wrapper">
+              <div class="triangle-container">
+                <div id="triangle-display">
+                  <!-- Triangle will be drawn using p5.js -->
+                </div>
+                <!-- Removing the separate triangle values section as requested -->
+              </div>
+
+              <div class="equation-container">
+                
+                <div class="formula">
+                  <div id="calculation-result" class="calculation-result"></div>
+                  <div class="formula-text">
+                    a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>
+                  </div>
+                  <div class="formula-boxes">
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-a"></div>
+                      <sup>2</sup>
+                    </div>
+                    +
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-b"></div>
+                      <sup>2</sup>
+                    </div>
+                    =
+                    <div class="formula-box">
+                      <div class="drop-box" id="drop-c"></div>
+                      <sup>2</sup>
+                    </div>
+                  </div>
+                  
+                </div>
+            
+                <div id="feedback" class="feedback"></div>
+              </div>
+            </div>
+
+            <!-- Hint section -->
+            <div class="hint-container-wrapper">
+              <div id="hint-container" class="hint-container">
+                <h6 class="hint-title">Hint</h6>
+                <p id="hint-text">
+                  The two legs go on the left side. The longest length goes on the
+                  right side.
+                </p>
+                <!-- <p>It is a right triangle if and only if the sum of the squares of the legs are equal to the square of the longest side.</p> -->
+                <div id="try-again" class="try-again">
+                  <span class="try-again-icon">✕</span> Try again (<span
+                    id="tries-left"
+                    >1</span
+                  >
+                  try left)
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    <div class="button-controls d-flex justify-content-between align-items-center" >
+        <div class="counter">
+            Number correct: <span id="correct-count">0</span>
+        </div>
+        <div class="button-container">
+            <button id="check-button" class="bte-secondary btn-outline-success">RIGHT TRIANGLE</button>
+            <button id="not-right-button" class="bte-secondary btn-outline-danger">NOT A RIGHT TRIANGLE</button>
+          </div>
+          <button id="new-problem-button" class="btn new-problem-btn">
+            NEW PROBLEM
+          </button>
+    </div>
+
+      
+
+      
+      
+      
+        
+    <!-- <div style="bottom: 10px; position: absolute; right: 10px; font-size: 10px; width: 200px; height: auto; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+    <ol>
+        <li><strike>Random triangle and side lable generation in p5</strike></li>
+        <li><strike>Drag the side labels to input different length values from the triangle sides.</strike></li>
+        <li><strike>Dragging conditions - fix multiple instance creation while dragging side lable </strike></li>
+        <li><strike>Equation generation when all inputs are filled </strike></li>
+        <li><strike>Check if the equation a² + b² = c² is satisfied with your current values.</strike></li>
+        <li><strike>Check for right angle and not right angle conditions</strike></li>
+        <li><strike>Correct and incorrect marker when checking the answer</strike></li>
+        <li><strike>Hint to show for incorrect positioning of the bigger side lable</strike></li>
+        <li><strike>Hint to show for incorrect Answer</strike></li>
+        <li><strike>New Problem button enable and disable on condtitions</strike></li>
+        <li><strike>Right angle marker inside triangle when the triangle is right angle and correct answer is clicked </strike></li>
+        <li><strike>Counter for correct answer clicked </strike></li>
+        <li><strike>Message to show when correct answer is clicked </strike></li>
+        <li><strike>Responsiveness</strike></li>
+
+        
+        
+    </ol>
+</div> -->
+    <!-- <script src="js/model.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/app.js"></script> -->
+
+    <!-- CHECK FOR ONE INDEX FILE -->
+
+    <script src="script.js"></script>
+  </body>
+</html>

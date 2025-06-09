@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Multiple Multiplications</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script> -->
+    <script src='p5.js'></script>
+</head>
+<body>
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Multiple Multiplications</h2>
+            <span id="versionId" class="versionText">"2505191"</span>
+        </div>
+        <div class="mainContainer">
+    <div class="container">
+   
+        <p class="info">Explore exponential notation as repeated multiplication by creating fractals.</p>
+        
+        <div class="app-container">
+            <div class="left-section">
+               
+                
+                <div class="equation-container">
+                    <div class="equation">
+                        <div class="equation-item"><span class="exponent-color">exponent</span></div>
+                        
+                        <div class="equation-item"><span class="arrow">→</span></div>
+                        <span class="base-color">base</span> → <span id="base-display">3</span><sup><span id="exponent-display">3</span></sup>
+                    </div>
+                    <div class="result">
+                        <span id="base-result">3</span><sup><span id="exponent-result">3</span></sup> = <span id="calculation-result">3 × 3 × 3 = 27</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-section">
+                <div id="canvas-container"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    <div class="button-controls d-flex justify-content-center align-items-center w-100 m-t-16 g-16">
+
+        <div class="slider-container">
+            <label for="base-slider">Base</label>
+            <div class="d-flex justify-content-center align-items-center g-16 ">
+                <input class="sectors-slider" type="range" id="base-slider" min="2" max="5" value="2" step="1">
+                <span id="base-value">2</span>
+            </div>
+        </div>
+        
+        <div class="slider-container">
+            <label for="exponent-slider">Exponent</label>
+            <div class="d-flex justify-content-center align-items-center g-16">
+                <input class="sectors-slider" type="range" id="exponent-slider" min="0" max="5" value="0" step="1">
+                <span id="exponent-value">0</span>
+            </div>
+        </div>
+  </div>
+</div>
+    <div style="bottom:10px;position: absolute;right: 10px; width: 200px; text-align: center; font-size: 10px; background-color: #f0f0f0; padding: 10px; border-radius: 5px; display: none;">
+        <ol>
+            <li><strike> Create slider for base and exponent, base value set to 2 and 3 respectively</strike></li>
+            <li><strike> Create a slider for the exponent, with a min of 0 and max of 5</strike></li>
+            <li><strike> Create a fractal pattern that represents the exponential notation</strike></li>
+            <li><strike> Show base and exponent values formation based on the slider values</strike></li>
+            <li><strike> Show the equation and result of the exponential notation</strike></li>
+            <li><strike> Make the widget responsive  </strike></li>
+        </ol>
+
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

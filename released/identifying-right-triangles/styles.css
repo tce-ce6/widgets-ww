@@ -1,0 +1,462 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+}
+
+body {
+background-color: #f8f9fa;
+color: #333;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+}
+
+
+
+.formula-box sup {
+    position: relative;
+    top: -0.8em; /* Adjust this value to move it higher */
+    right: -0.2em; /* Adjust this value to move it to the right */
+    font-size: 1em; /* Optional: make it slightly smaller */
+  }
+
+
+
+.selected-label {
+    outline: 2px dashed #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.select-highlight {
+    border: 3px dashed #007bff !important;
+}
+
+
+h1 {
+text-align: center;
+margin-bottom: 10px;
+color: #333;
+}
+
+.instruction {
+text-align: center;
+margin-bottom: 10px;
+color: #555;
+}
+
+.content-wrapper {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+align-items: end;
+margin-bottom: 10px;
+}
+
+.triangle-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+/* margin-bottom: 20px; */
+}
+
+#triangle-display {
+width: 350px;
+height: 280px;
+position: relative;
+/* margin-bottom: 20px; */
+}
+
+/* Style the p5.js canvas to ensure it displays correctly */
+#triangle-display canvas {
+display: block;
+margin: 0 auto;
+}
+
+.triangle-values {
+display: flex;
+justify-content: space-around;
+width: 100%;
+}
+
+.value-box {
+width: 60px;
+height: 40px;
+background-color: #e9ecef;
+border-radius: 4px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-weight: bold;
+margin: 0 5px;
+cursor: move;
+user-select: none;
+border: 1px solid #ced4da;
+}
+
+.value-box:hover {
+background-color: #dee2e6;
+}
+
+.equation-container {
+width: 100%;
+max-width: 400px;
+}
+
+.formula {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+}
+
+.formula-text {
+font-size: 16px;
+margin-bottom: 10px;
+}
+
+.formula-boxes {
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+margin-bottom: 15px;
+}
+
+.formula-box {
+display: flex;
+align-items: flex-start;
+margin: 0 10px;
+}
+
+.drop-box {
+width: 60px;
+height: 40px;
+border: 2px dashed #6c757d;
+border-radius: 4px;
+display: flex;
+justify-content: center;
+align-items: center;
+font-weight: bold;
+background-color: #f8f9fa;
+cursor: move; /* Added cursor move for bi-directional dragging */
+transition: all 0.2s ease;
+}
+
+.drop-box.highlight {
+border-color: #007bff;
+background-color: #e7f5ff;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+transform: scale(1.05);
+}
+
+.drop-box.filled {
+border-style: solid;
+border-color: #6c757d;
+background-color: #e9ecef;
+position: relative;
+}
+
+.drop-box.filled:hover {
+background-color: #d8dfe5;
+border-color: #495057;
+}
+
+.drop-box.filled:before {
+content: '';
+position: absolute;
+top: -8px;
+right: -8px;
+width: 16px;
+height: 16px;
+background-color: #fff;
+border-radius: 50%;
+opacity: 0;
+transition: opacity 0.2s ease;
+}
+
+.drop-box.filled:hover:before {
+opacity: 1;
+background-color: #f8f9fa;
+border: 1px solid #ced4da;
+}
+
+.feedback {
+    padding: 10px;
+}
+
+.calculation-result {
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(231 243 255 / 70%);
+}
+.hint-container-wrapper {
+    min-height: 95px;
+}
+/* Hint container styling */
+.hint-container {
+margin: 0 auto 10px;
+padding: 10px 10px;
+background-color: #fff3e0;
+border-left: 4px solid #ff9800;
+border-radius: 4px;
+font-size: small;
+display: none; /* Hidden by default */
+}
+
+.hint-container.visible {
+display: block;
+}
+
+.hint-title {
+color: #e65100;
+margin-bottom: 2px;
+font-size: 1.2rem;
+}
+
+.hint-container p {
+color: #555;
+margin-bottom: 2px;
+line-height: 1;
+}
+
+.try-again {
+color: #c62828;
+font-weight: bold;
+display: flex;
+align-items: center;
+/* margin-top: 10px; */
+}
+
+.try-again-icon {
+margin-right: 8px;
+font-size: 1.2em;
+}
+
+.button-container {
+display: flex;
+justify-content: center;
+gap: 16px;
+flex-wrap: wrap;
+}
+
+/* .btn {
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.3s;
+} */
+/* 
+#check-button, #not-right-button {
+background-color: #ffffff;
+color: #666666;
+border: 1px solid #cccccc;
+}
+
+#check-button:hover, #not-right-button:hover {
+background-color: #f0f0f0;
+} */
+
+#check-button.correct, #not-right-button.correct {
+background-color: #d3f9d8;
+color: #2b8a3e;
+border-color: #2b8a3e;
+}
+/* 
+.new-problem-btn {
+display: block;
+margin: 0 auto;
+background-color: #6f42c1;
+color: white;
+padding: 10px 25px;
+} */
+/* 
+.new-problem-btn:hover {
+background-color: #5a32a3;
+} */
+
+.side-label {
+position: absolute;
+background-color: #e9ecef;
+border-radius: 4px;
+padding: 5px 10px;
+font-weight: bold;
+user-select: none;
+transition: all 0.2s ease;
+border: 1px solid #ced4da;
+z-index: 10; /* Ensure they appear above the canvas */
+box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Add subtle shadow for better visibility */
+}
+
+.side-label:hover {
+background-color: #dee2e6;
+transform: scale(1.05);
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+z-index: 20;
+}
+
+.side-label.highlight, .drop-box.highlight {
+background-color: #e7f5ff;
+border-color: #007bff;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+}
+
+/* Make sure the side labels appear above the canvas */
+.side-label.used {
+opacity: 0.5;
+}
+
+/* Add a pulse animation for visual feedback */
+@keyframes pulse {
+0% {
+transform: scale(1);
+box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+}
+50% {
+transform: scale(1.05);
+box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+}
+100% {
+transform: scale(1);
+box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+}
+}
+
+.pulse {
+animation: pulse 0.8s ease-in-out;
+}
+
+.dragging {
+opacity: 0.5;
+transform: scale(1.05);
+}
+
+/* Equation indicator */
+.equation-indicator {
+font-size: 24px;
+}
+
+/* Instruction headings styles */
+.instruction-heading {
+    font-family: Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.triangle-instruction {
+    animation: fadeInBounce 1s ease-out;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 600px) {
+  #triangle-instruction {
+    font-size: 0.9em;
+    max-width: 140px;
+    left: auto !important;
+    right: 10px;
+    top: auto !important;
+    bottom: 10px;
+    transform: none !important;
+  }
+}
+
+
+
+
+/* Animation for triangle instruction */
+@keyframes fadeInBounce {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation for drop box instruction */
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+    .triangle-instruction {
+         max-width: 140px;
+        font-size: 14px !important;
+        left: 50% !important;
+        top: 10% !important;
+        transform: translateX(10%, -50%);
+    }
+    
+    
+}
+
+/* Hide instructions when dragging is disabled */
+.instruction-heading[style*="display: none"] {
+    display: none !important;
+}
+@media (pointer: coarse) {
+            .drop-box, [draggable=true] {
+                -webkit-tap-highlight-color: rgba(0, 123, 255, 0.2);
+            }
+            .dragging {
+                transform: scale(1.1);
+                transition: transform 0.2s;
+            }
+        }
+        
+        .drag-ghost {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: all 0.1s ease;
+            animation: ghost-pulse 1.5s infinite;
+        }
+        
+        @keyframes ghost-pulse {
+            0% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+            50% { box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); }
+            100% { box-shadow: 0 0 0 rgba(0, 123, 255, 0.4); }
+        }
+        
+        .highlight {
+            outline: 2px solid #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
+        }
+        
+        .pulse {
+            animation: pulse-animation 0.8s ease-in-out;
+        }
+        
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    

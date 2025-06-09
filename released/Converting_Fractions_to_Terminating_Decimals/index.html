@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Digit Placement Puzzle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            touch-action: none;
+            overflow: hidden;
+        }
+        #canvas-container {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #6751cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #5242a9;
+        }
+    </style>
+    <link rel="stylesheet" href="global_style.css" />
+</head>
+<body>
+     <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Converting Fractions to Terminating Decimals</h2>
+            <span id="versionId" class="versionText">"2505281"</span>
+        </div>
+        <div class="mainContainer">
+            <div id="canvas-container" style="touch-action: none;"></div>
+        </div>
+        <div class="controls button-controls d-flex justify-content-end">
+            <button id="reset-button" style="touch-action: manipulation;">START OVER</button>
+        </div>
+    </div>
+ <script src="script.js"></script>
+</body>
+</html>
