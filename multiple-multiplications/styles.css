@@ -50,9 +50,10 @@ h1 {
     display: flex;
     flex-direction: row;
     gap: 2%;
-    padding: 2% 2% 0;
+    padding: 0 2% 0;
     border-radius: 0.3rem;
     width: 100%;
+        height: calc(100% - 30px);
 }
 
 .left-section {
@@ -91,18 +92,18 @@ h1 {
 
 #canvas-container {
     width: 100%;
-    position: relative;
-    padding-top: 60%; /* 9:6 aspect ratio (600/900 = 66.67%) */
     overflow: hidden;
+    height: calc(100% - 10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #canvas-container canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+   max-width: 100%;
+    height: auto !important;
+    max-height: 100% !important;
+    width: auto !important;
 }
 
 .equation-container {
@@ -134,71 +135,3 @@ sup {
 }
 
 /* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-    .app-container {
-        flex-direction: column;
-    }
-    
-    .left-section,
-    .right-section {
-        width: 100%;
-    }
-    
-    .left-section {
-        flex-direction: column;
-        gap: 5%;
-    }
-    
-    .controls {
-        order: 1;
-        width: 100%;
-        margin-bottom: 5%;
-    }
-    
-    .right-section {
-        order: 2;
-        margin: 5% 0;
-    }
-    
-    .equation-container {
-        order: 3;
-        margin-top: 5%;
-        width: 100%;
-    }
-    
-    #canvas-container {
-        padding-top: 66.67%; /* Maintain aspect ratio on smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 1%;
-    }
-    
-    .container {
-        padding: 3%;
-    }
-    
-    h1 {
-        font-size: 1.5em;
-    }
-    
-    .info {
-        font-size: 0.9em;
-    }
-  
-    .slider-container label {
-        width: 20%;
-        font-size: 0.9em;
-    }
-    
-    .equation,
-    .result {
-        font-size: 1em;
-    }
-    
-    #canvas-container {
-        padding-top: 66.67%; /* Maintain same 9:6 aspect ratio on all screens */
-    }
-} 

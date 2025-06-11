@@ -20,6 +20,7 @@ body {
     /* border: 1px solid #ccc; */
     background-color: white; 
     margin-bottom: 1px;
+    max-height: 100%;
 
 }
 #messageArea {
@@ -94,6 +95,6 @@ button:disabled {
 .p5Canvas {
     max-width: 100%;
     height: auto !important;
-    max-height: calc(100vh - 200px) !important;
+    max-height: 100% !important;
     width: auto !important;
   }
