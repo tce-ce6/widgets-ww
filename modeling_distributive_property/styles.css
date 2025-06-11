@@ -13,16 +13,17 @@ margin-bottom: 10px;
 
 .info {
 color: #666;
-margin: 10px;
+margin: 5px 10px;
 }
 
 .visualization-container {
-width: 100%;
+width: 50%;
 display: flex;
 justify-content: center;
+align-items: flex-start;
 /* margin-bottom: 40px; */
 padding-top: 0px;
-min-height: 300px; /* Fixed minimum height */
+height: 100%;
 }
 
 .visualization {
@@ -32,6 +33,7 @@ align-items: center;
 position: relative;
 flex-direction: column;
 width: 100%;
+    height: calc(100% - 40px);
 }
 
 .controls-section {
@@ -46,11 +48,12 @@ border-radius: 10px;
 .area-model-container {
 position: relative;
 width: 100%;
-max-width: 80%; /* Max width based on 10+10 units at 30px each */
+max-width: 95%; /* Max width based on 10+10 units at 30px each */
 display: flex;
 flex-direction: column;
 align-items: center;
 /* margin-bottom: 30px; */
+    max-height: 100%;
 }
 
 .area-model {
@@ -58,7 +61,7 @@ position: relative;
 margin-bottom: 0px;
 background: white;
 box-sizing: border-box;
-max-height: 200px; /* Max height based on 10 units at 30px each */
+max-height: 100%; /* Max height based on 10 units at 30px each */
 max-width: 100%; /* Max width based on 10+10 units at 30px each */
 min-height: 30px;
 min-width: 60px; /* Minimum height for visual clarity */

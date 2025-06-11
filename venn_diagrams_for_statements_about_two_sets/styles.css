@@ -8,37 +8,57 @@ html, body {
 
 .container {
     margin: 0 auto;
-    padding: 20px;
     font-family: Arial, sans-serif;
 }
 
 .question-container {
     text-align: center;
+    width: 100%;
 }
 
+.question-container h2{
+        font-size: 14px;
+    margin: 0;
+    line-height: 24px;
+}
+.question-container p{
+        font-size: 12px;
+        line-height: 24px;
+}
 .diagram-section {
     /* margin: 10px auto; */
     position: relative;
+    height: calc(100% - 140px);
 }
 
 /* Container for both diagrams */
 .diagrams-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
+    height: 100%;
 }
 
 #venn-diagram {
     margin: 0;
     position: relative;
     text-align: left;
+    height: 100%;
 }
+#venn-diagram canvas{
+     max-width: 100%;
+  height: auto !important;
+  max-height: 100% !important;
+  width: auto !important;
+}
+
 
 #solution-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 #solution-section h3 {
@@ -50,6 +70,13 @@ html, body {
 #solution-diagram {
     margin: 0;
     pointer-events: none;
+    height: calc(100% - 70px);
+}
+#solution-diagram canvas {
+  max-width: 100%;
+  height: auto !important;
+  max-height: 100% !important;
+  width: auto !important;
 }
 
 /* Default CHECK button positioning */
@@ -186,121 +213,7 @@ canvas {
 }
 .button-solution-changes{
     width: 400px;
+    height: 100%;
+
 }
-
-/* Media query for screens below 800x940px */
-@media screen and (max-width: 800px){
-    .container {
-        width: 100%;
-        max-width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-    }
-    
-    .question-container {
-        width: 100%;
-    }
-    
-    .diagram-section {
-        margin-left: auto;
-        margin-right: auto;
-        padding: 15px;
-        width: 90%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Stack diagrams vertically on small screens */
-    .diagrams-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    #venn-diagram, #solution-diagram {
-        max-width: 100%;
-        overflow: visible;
-    }
-    
-    /* Reposition CHECK button below canvas */
-    #checkButton {
-        position: static;
-        display: block;
-        width: 90%;
-        max-width: 300px;
-        z-index: 10;
-    }
-    
-    /* Style for button containers */
-    #button-solution-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-    
-    #check-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-    }
-    
-    /* Reposition NEXT button */
-    .progress-section {
-        flex-direction: column;
-        margin-top: 5px;
-    }
-    
-    .next-button {
-        position: static;
-        display: block;
-        margin: 10px auto;
-        width: 90%;
-        max-width: 300px;
-    }
-    
-    .progress-text {
-        margin: 10px 0;
-        text-align: center;
-        width: 100%;
-    }
-    
-    /* Responsive canvas */
-    canvas {
-        max-width: 100%;
-        height: auto !important;
-    }
-    .button-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-    }
-}
-
-/* Media query for very small screens */
-@media screen and (max-width: 480px) {
-    .diagram-section {
-        padding: 10px;
-        margin: 10px auto;
-    }
-    
-    #question {
-        font-size: 1em;
-        margin: 10px 0;
-    }
-    
-    .hint, #feedback {
-        font-size: 0.9em;
-    }
-    
-    #checkButton, .next-button {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-} 
-
 

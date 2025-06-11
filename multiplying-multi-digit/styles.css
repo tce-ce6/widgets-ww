@@ -23,14 +23,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
-#canvas-container{
-    canvas {
+#canvas-container canvas {
       max-width: 100%;
       height: auto !important;
-      max-height: calc(100% - 200px) !important;
+      max-height: 100% !important;
       width: auto !important;
-    }
+    
   }
 .simulation-title {
     text-align: center;
