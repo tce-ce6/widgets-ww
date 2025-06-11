@@ -236,14 +236,12 @@ button:disabled{
 }
 
 .mainContainerOuter{
-height: 100%;
     min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     background: #ffffff;
     width: 100%;
-    height:100%;
     
   }
 
@@ -256,10 +254,6 @@ height: 100%;
         flex-grow: 1;
         min-height: calc(100% - 175px);
         margin: auto;
-        height: 100%;
-  }
-  #canvas-container{
-    max-height: 100%;
   }
 
 

@@ -203,7 +203,7 @@ class PuzzleView {
         this.lastClickTime = 0;
         this.lastClickX = 0;
         this.lastClickY = 0;
-       // this.doubleClickThreshold = 300;
+        this.doubleClickThreshold = 300;
         
         model.puzzle.emptyBoxes[0].x = 250;
         model.puzzle.emptyBoxes[0].y = this.equationY - 60;
@@ -224,21 +224,7 @@ class PuzzleView {
         const that = this;
         this.sketch = new p5(function(p) {
             p.setup = function() {
-                // Responsive canvas sizing based on container and aspect ratio
-                const o = p.select(`defaultCanvas0`);
-                const a = 0.5;
-                // Fallback width if container not found
-                const containerWidth = o && o.width ? o.width : window.innerWidth;
-                const w = p.int((containerWidth > (window.innerHeight - 160) / a) ? (window.innerHeight - 160) / a : containerWidth);
-                const h = p.int(w * a);
-                const canvas = p.createCanvas(w, h);
-                p.windowResized = function() {
-                    const newContainerWidth = o && o.width ? o.width : window.innerWidth;
-                    const newW = p.int((newContainerWidth > (window.innerHeight - 160) / a) ? (window.innerHeight - 160) / a : newContainerWidth);
-                    const newH = p.int(newW * a);
-                    p.resizeCanvas(newW, newH);
-                    
-                };
+                const canvas = p.createCanvas(700, 400);
                 canvas.parent('canvas-container');
             };
             
@@ -346,7 +332,7 @@ class PuzzleView {
         p.fill(50);
         p.textSize(20);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text("How many ways can you place the digits to make a true statement?", 200,30);
+        p.text("How many ways can you place the digits to make a true statement?", p.width/2, 30);
     }
     
     drawInstructions(p) {
