@@ -571,16 +571,34 @@
                     clientY = e.clientY;
                 }
                 
+                let xValue = (clientX - rect.left) * scaleX;
+               
                 return {
-                    x: (clientX - rect.left) * scaleX,
+                    x: xValue,
                     y: (clientY - rect.top) * scaleY
                 };
             }
 
             checkIfPointHit(pos) {
+                const rect = canvas.getBoundingClientRect();
+                    console.log(pos,"To check rect",rect)
+
+                     pos.x = pos.x / 2;
+                    pos.y = pos.y / 2
+                if(rect.width > 800 && rect.width <= 1600) {
+                    console.log("To check")
+                  
+
+                }else if(rect.width > 1600 && rect.width <= 2400) {
+                    pos.x = pos.x / 4;
+                    pos.y = pos.y / 4;  
+                }
+
+
                 const dragX = map(this.model.dragPoint.x, 0, 1, 50, 450);
                 const dragY = this.view.exactLineY;
                 const distance = Math.sqrt(Math.pow(pos.x - dragX, 2) + Math.pow(pos.y - dragY, 2));
+                console.log(distance,dragX,dragY,"Drag points",pos.x,pos.y)
                 return distance < 20; // Increased hit area for touch
             }
 
@@ -595,9 +613,19 @@
             
             handleTouchMove(e) {
                 e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
                 
                 if (this.model.isDragging) {
                     const pos = this.getEventPosition(e);
+                    if(rect.width > 800 && rect.width <= 1600) {
+                    console.log("To check touch move")
+                    pos.x = pos.x / 2;
+                     }
+                    if (rect.width > 1600 && rect.width <= 2400) {
+                        pos.x = pos.x / 4; // Adjust for larger canvas scaling
+                        // pos.x = pos.x / 2; // Adjust for canvas scaling 
+                    }
+
                     let x = constrain(map(pos.x, 50, 450, 0, 1), 0, 1);
                     this.model.dragPoint.x = x;
                 }
@@ -613,22 +641,28 @@
 
             handleMousePressed(e) {
                 const pos = this.getEventPosition(e);
-                
                 if (this.checkIfPointHit(pos)) {
+                    console.log('handleMousePressed')
                     this.model.isDragging = true;
                 }
             }
 
             handleMouseDragged(e) {
+
                 if (this.model.isDragging) {
                     const pos = this.getEventPosition(e);
+                    console.log('handleMouseDragged')
+                    pos.x = pos.x / 2; // Adjust for canvas scaling
                     let x = constrain(map(pos.x, 50, 450, 0, 1), 0, 1);
                     this.model.dragPoint.x = x;
                 }
             }
 
             handleMouseReleased(e) {
+                
+
                 if (this.model.isDragging) {
+                    console.log('handleMouseReleased')
                     this.completePointPlacement();
                 }
             }
