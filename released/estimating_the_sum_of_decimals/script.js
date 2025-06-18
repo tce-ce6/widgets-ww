@@ -64,6 +64,7 @@
             }
 
             setup() {
+                 pixelDensity(2); 
                 createCanvas(800, 400).parent('canvas-container');
                 this.lineY = height / 2;
                 this.exactLineY = this.lineY - 150;
