@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fraction Addition</title>
+  <script src="p5.js"></script>
+   <script src="math.js"></script> 
+  <!-- <script src="lib/p5.min.js"></script>
+<script src="lib/math.min.js"></script> -->
+  <link rel="stylesheet" href="global_style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Estimating Sums of Fractions and Mixed Numbers</h2>
+            <span id="versionId" class="versionText">"2505191"</span>
+        </div>
+    <div class="mainContainer">
+        <div class="container">
+           <div id="canvas-holder"></div>
+  
+        <div class="button-controls controls d-flex justify-content-between">
+
+      <div class="buttons g-16 d-flex">
+        <div id="denominatorSliderDiv">
+    <label style="font-size: 18px;">Common Denominator: </label>
+    <input type="range" id="denominatorSlider" min="1" max="15" value="2">
+    <span id="denominatorValue">2</span>
+    </div>
+    <button id="checkBtn" disabled>Check</button>
+    <button id="nextBtn">New Problem</button> 
+     
+      </div>  
+
+ <div id="hint"></div>
+  <div id="solutionDiv"></div>
+    </div>
+  </div>
+  </div>
+        </div>
+
+
+  
+ 
+    
+      </div>
+
+ 
+
+</div>
+  <script src="main.js"></script>
+</body>
+</html>

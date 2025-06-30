@@ -1,0 +1,57 @@
+#sliders-container {
+    display: flex;
+    flex-direction: row !important; 
+    flex-wrap: nowrap; 
+    max-width: 600px;
+    pointer-events: none; 
+}
+
+.slider-group {
+    min-width: 120px;
+}
+
+.slider-group label {
+    font-size: 14px;
+    color: #333;
+}
+
+.slider-group .slider-value {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #333;
+}
+
+/* First numerator slider (green) */
+#slider-num1::-webkit-slider-thumb {
+    background: #25913e;
+}
+
+#slider-num1::-moz-range-thumb {
+    background: #2a8b41;
+}
+
+/* Second numerator slider (purple) */
+#slider-num2::-webkit-slider-thumb {
+    background: #7945da;
+}
+
+#slider-num2::-moz-range-thumb {
+    background: #6f42c1;
+}
+
+/* Denominator slider (orange) */
+#slider-den::-webkit-slider-thumb {
+    background: #e78738;
+}
+
+#slider-den::-moz-range-thumb {
+    background: #fd7e14;
+}
+
+#solution-text .numerator {
+    color: #6f42c1; /* Purple for numerators in solution text */
+}
+
+#solution-text .denominator {
+    color: #fd7e14; /* Orange for denominators in solution text */
+}

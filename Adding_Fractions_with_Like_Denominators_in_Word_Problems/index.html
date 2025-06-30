@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraction Addition Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <link rel="stylesheet" href="global_style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="mainContainerOuter">
+        <div class="mainContainer">
+            <div class="container">
+                <div class="wdgetTitle">
+                    <h2>Fraction Addition Game</h2>
+                </div>
+                <div id="sketch-container" class="p5Canvas"></div>
+                <div class="button-controls d-flex justify-content-center g-8">
+                    <div id="sliders-container" class="d-flex g-16 justify-content-center flex-wrap">
+                    <div class="slider-group">
+                        <label id="slider-label-1">Numerator 1</label>
+                        <input type="range" id="slider-num1" class="sectors-slider" min="1" max="12" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <label id="slider-label-2">Numerator 2</label>
+                        <input type="range" id="slider-num2" class="sectors-slider" min="1" max="12" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <label id="slider-label-3">Denominator</label>
+                        <input type="range" id="slider-den" class="sectors-slider" min="3" max="12" value="3">
+                    </div>
+                </div>
+                    <button id="try-another-button" class="btn-outline-success">Try Another</button>
+                </div>
+            </div>
+        </div>
+        <div class="versionText">Version 1.0</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
