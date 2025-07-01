@@ -250,6 +250,7 @@ updateStepsHistory() {
             }
 
             setupBoxAnimations() {
+                console.log("🚀 ~ MixedNumberView ~ setupBoxAnimations ~ this.model.currentCellIndex:", this.setupBoxAnimations)
                 this.allBoxes = [];
                 this.crossOutBoxes = [];
                 if (this.model.currentCellIndex >= 1) {
@@ -317,7 +318,7 @@ updateStepsHistory() {
             }
   
   
-setupFractionAnimations(destX, startY) {
+setupFractionAnimations(destX , startY) {
     const srcY = 80;
    const firstFractionSrcX = 50 + (this.model.equivalentFractions.firstEquiv.whole * (this.boxSize + this.boxSpacing));
 const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + (this.model.equivalentFractions.secondEquiv.whole * (this.boxSize + this.boxSpacing));
@@ -609,8 +610,6 @@ drawCrossOnBox(x, y, width, height) {
     // this.p.strokeWeight(2);
 }
 
-
-
 drawCrossOutBoxes() {
     if (this.model.operation === 'subtraction' && this.model.currentCellIndex >= this.model.totalCellsToAnimate) {
         // Only draw cross-out on blue boxes after all animation is complete
@@ -634,8 +633,6 @@ drawCrossOutBoxes() {
         // this.p.strokeWeight(2);
     }
 }
-          
-
 drawProblem() {
                 const step = this.model.steps.original;
                 const match = step.match(/^(.+?)\s([\+\-])\s(.+)$/);
@@ -785,20 +782,18 @@ drawBracketContent(content, x, y) {
 
 drawSteps() {
     const steps = this.model.stepsHistory;
-    let y = 50;
+    let y = 60;
     this.p.textSize(20);
     this.p.textFont('normal');
     this.p.textAlign(this.p.LEFT);
-    
     steps.forEach((step, index) => {
-        const x = this.p.width - 230;
+        const x = this.p.width - 280;
         let currentX = x;
         
         // Check if this is the final step (index 3) and skip it
         if (index === 3) {
             return;
         }
-        
         // Parse the step to handle operators and brackets properly
         const match = step.match(/^(.+?)\s([\+\-])\s(.+)$/);
         if (match) {
@@ -840,29 +835,29 @@ drawSteps() {
             }
 
             drawOriginalFractions() {
-                const y = 80;
+                const y = 30;
                 let x = 50;
                 const first = this.model.problem.first;
                 x = this.drawMixedNumber(first, x, y, this.p.color(77, 166, 255), 'blue');
                 this.p.fill(0);
-                this.p.textSize(24);
+                this.p.textSize(30);
                 const operatorSymbol = this.model.operation === 'addition' ? '+' : '-';
-                this.p.text(operatorSymbol, x + 20, y + 30);
-                x += 60;
+                this.p.text(operatorSymbol, x - 20, y + 40);
+                x += 20;
                 const second = this.model.problem.second;
                 this.drawMixedNumber(second, x, y, this.p.color(255, 77, 166), 'pink');
             }
 
             drawEquivalentFractions() {
-                const y = 80;
+                const y = 30;
                 let x = 50;
                 const { firstEquiv, secondEquiv } = this.model.equivalentFractions;
                 x = this.drawMixedNumberLCM(firstEquiv, x, y, this.p.color(77, 166, 255), true);
                 this.p.fill(0);
-                this.p.textSize(24);
+                this.p.textSize(30);
                 const operatorSymbol = this.model.operation === 'addition' ? '+' : '-';
-                this.p.text(operatorSymbol, x + 20, y + 30);
-                x += 60;
+                this.p.text(operatorSymbol, x - 20, y + 30);
+                x += 20;
                 this.drawMixedNumberLCM(secondEquiv, x, y, this.p.color(255, 77, 166), false);
             }
 

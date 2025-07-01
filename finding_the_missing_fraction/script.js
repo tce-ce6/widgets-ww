@@ -820,6 +820,7 @@ this.updateNewFractionButtonVisibility();
         
         // Display the fraction on the left side of the circle
         const leftFractionX = centerX - radius - 20;
+        console.log("leftFractionX", leftFractionX);
         const fractionY = centerY;
         this.drawFraction(p, leftFractionX, fractionY, sectionsToFill, divisions, 24);
         
@@ -870,7 +871,7 @@ this.updateNewFractionButtonVisibility();
         this.drawPermanentOverlapSections(p);
         
         // Draw fraction for second circle
-        const rightFractionX = secondCircleX + radius + 20;
+        const rightFractionX = secondCircleX + radius + 20 +20;
         
         if (this.clickedSections && this.clickedSections.length > 0) {
             p.fill(128, 0, 128);
@@ -879,14 +880,14 @@ this.updateNewFractionButtonVisibility();
             p.textSize(24);
             p.textStyle(p.BOLD);
             
-            p.text(this.clickedSections.length, rightFractionX, fractionY - 12);
+            p.text(this.clickedSections.length, rightFractionX -5, fractionY - 12);
             
             p.stroke(128, 0, 128);    
             p.strokeWeight(1);
             p.line(rightFractionX - 25, fractionY, rightFractionX, fractionY);
             
             p.noStroke();
-            p.text(divisions, rightFractionX, fractionY + 12);
+            p.text(divisions, rightFractionX -5, fractionY+5 + 12 );
         }
         
         // Add question text
@@ -899,6 +900,7 @@ this.updateNewFractionButtonVisibility();
         p.textStyle(p.NORMAL);
         p.text("What fraction do you need to add to make", centerX-12, questionY);
         this.drawFraction(p, centerX + 190, questionY, sectionsToFill, divisions, 18);
+        console.log("sectionsToFill", sectionsToFill);
         
         p.textSize(18);
         p.fill(0);
@@ -922,14 +924,16 @@ this.updateNewFractionButtonVisibility();
         p.textSize(fontSize);
         p.textStyle(p.BOLD);
         
-        p.text(numerator, x, y - fontSize/2);
+        p.text(numerator, x -5, y - fontSize/2 -5 );
+        console.log("numerator", numerator);
+        console.log("denominator", denominator);
         
         p.stroke(0, 128, 0);    
         p.strokeWeight(1);
         p.line(x - 25, y, x, y);
         
         p.noStroke();
-        p.text(denominator, x, y + fontSize/2);
+        p.text(denominator, x -5, y + fontSize/2 +5);
     }
     // Control visibility of the new fraction button
 updateNewFractionButtonVisibility() {

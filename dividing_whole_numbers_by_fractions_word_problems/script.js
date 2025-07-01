@@ -192,7 +192,7 @@
 
           const boxDisplayRect = this.boxDisplay.getBoundingClientRect();
           this.canvasWidth = boxDisplayRect.width;
-          this.canvasHeight = 600;
+          this.canvasHeight = 500;
 
           this.p5Canvas = new p5((sketch) => {
             sketch.setup = () => {
@@ -365,20 +365,23 @@ sketch.mousePressed = () => {
             //     }
             //   }
             // };
-            sketch.keyPressed = () => {
-      if (this.inputBoxActive && !this.currentProblem.isAnswerSubmitted) {
-        if (sketch.keyCode === 8) { // Backspace key
-          if (this.onBackspaceKey) {
-            this.onBackspaceKey();
-          }
-        } else if (/^[0-9]$/.test(sketch.key)) {
-          if (this.onKeyPress) {
-            this.onKeyPress(sketch.key);
-          }
-        }
+sketch.keyPressed = () => {
+  if (this.inputBoxActive && !this.currentProblem.isAnswerSubmitted) {
+    // Handle backspace key
+    if (sketch.keyCode === 8 || sketch.key === 'Backspace') { // Support both keyCode and key for virtual keyboard
+      if (this.onBackspaceKey) {
+        this.onBackspaceKey();
       }
-      return false; // Prevent default browser behavior
-    };
+    } 
+    // Handle numeric keys (0-9)
+    else if (/^[0-9]$/.test(sketch.key)) {
+      if (this.onKeyPress) {
+        this.onKeyPress(sketch.key);
+      }
+    }
+  }
+  return false; // Prevent default browser behavior
+};
 
             sketch.drawBoxesAndMarbles = (problem) => {
               this.currentProblem = problem;
@@ -401,23 +404,7 @@ sketch.mousePressed = () => {
           }, this.boxDisplay);
         }
 
-        drawQuestion(p5, marbleCount, numerator, denominator, wholeNumber) {
-          p5.fill(0);
-          p5.noStroke();
-          p5.textSize(20);
-          p5.textAlign(p5.CENTER, p5.TOP);
-
-          const fractionText =
-            wholeNumber > 0
-              ? `${wholeNumber} ${numerator}/${denominator}`
-              : `${numerator}/${denominator}`;
-          const boxText = wholeNumber > 0 || numerator > 1 ? "boxes" : "box";
-          p5.text(
-            `If ${marbleCount} marbles fill ${fractionText} ${boxText}, how many marbles would fill 1 box?`,
-            p5.width / 2,
-            20
-          );
-        }
+        
 
         // drawBoxes(
         //   p5,
@@ -582,8 +569,52 @@ sketch.mousePressed = () => {
         //     // p5.text(`${partialMarbles} marbles`, partialLabelX, labelY);
         //   }
         // }
+drawQuestion(p5, marbleCount, numerator, denominator, wholeNumber) {
+  p5.fill(0);
+  p5.noStroke();
+  p5.textSize(20);
+  p5.textAlign(p5.LEFT, p5.TOP);
 
-        drawBoxes(
+  const startX = 50;
+  const startY = 20;
+  let currentX = startX;
+
+  // Draw: "If 12 marbles fill"
+  const introText = `If ${marbleCount} marbles fill `;
+  p5.text(introText, currentX, startY);
+  currentX += p5.textWidth(introText);
+
+  // If there's a whole number before the fraction
+  if (wholeNumber > 0) {
+    const wholeStr = `${wholeNumber} `;
+    p5.text(wholeStr, currentX, startY);
+    currentX += p5.textWidth(wholeStr);
+  }
+
+  // Draw vertical fraction inline
+  const fracCenterX = currentX + 10;
+  const fracCenterY = startY + 10;
+
+  p5.textAlign(p5.CENTER, p5.BOTTOM);
+  p5.text(numerator, fracCenterX, fracCenterY - 5); // numerator
+
+  p5.stroke(0);
+  p5.strokeWeight(1);
+  p5.line(fracCenterX - 10, fracCenterY, fracCenterX + 10, fracCenterY); // fraction line
+
+  p5.noStroke();
+  p5.textAlign(p5.CENTER, p5.TOP);
+  p5.text(denominator, fracCenterX, fracCenterY + 2); // denominator
+
+  currentX += 30; // Move past fraction
+
+  // Draw: "boxes, how many marbles would fill 1 box?"
+  p5.textAlign(p5.LEFT, p5.TOP);
+  const boxText = (wholeNumber > 0 || numerator > 1) ? " boxes, how many marbles would fill 1 box?" : " box, how many marbles would fill 1 box?";
+  p5.text(boxText, currentX, startY);
+}
+
+drawBoxes(
   p5,
   x,
   y,
@@ -710,6 +741,82 @@ sketch.mousePressed = () => {
     // Uncomment if you want to show marble labels
     // p5.text(`${partialMarbles} marbles`, labelX, labelYPos);
   }
+// Draw horizontal bracket and fraction below the solid filled part
+if (numerator && denominator) {
+  const filledBoxWidth = boxWidth * (numerator / denominator);
+  const fullBoxX = x + (completeBoxes % boxesPerRow) * (boxWidth + spacing);
+  const fullBoxY = y + (Math.floor(completeBoxes / boxesPerRow)) * (height + 20);
+
+  const bracketY = fullBoxY + height + 10;
+  const bracketStartX = fullBoxX;
+  const bracketEndX = fullBoxX + filledBoxWidth;
+
+  // Draw horizontal line with ticks at ends
+  p5.stroke(0);
+  p5.strokeWeight(2);
+
+  // Horizontal line
+  p5.line(bracketStartX, bracketY, bracketEndX, bracketY);
+
+  // Left tick
+  p5.line(bracketStartX, bracketY - 5, bracketStartX, bracketY + 5);
+
+  // Right tick
+  p5.line(bracketEndX, bracketY - 5, bracketEndX, bracketY + 5);
+
+  // Draw fraction (centered below the bracket)
+  const centerX = (bracketStartX + bracketEndX) / 2;
+  const textY = bracketY + 5;
+
+  p5.noStroke();
+  p5.textAlign(p5.CENTER, p5.BOTTOM);
+  p5.textSize(14);
+  p5.fill(0);
+  p5.text(numerator, centerX, textY +15); // Numerator
+
+  // Fraction line
+  p5.stroke(0);
+  p5.line(centerX - 10, textY+20, centerX + 10, textY+20 );
+
+  // Denominator
+  p5.noStroke();
+  p5.textAlign(p5.CENTER, p5.TOP);
+  p5.text(denominator, centerX, textY + 30);
+
+  // "box" label
+  p5.textAlign(p5.LEFT, p5.CENTER);
+  p5.text("box", centerX + 18, textY+20);
+}
+
+  
+// // Draw the fraction label below the first box
+// if (numerator && denominator) {
+//   const fractionX = x + ((boxWidth + spacing) * totalBoxesToShow) / 2 - spacing;
+//   const fractionY = labelY + 15;
+//   p5.textAlign(p5.CENTER, p5.BOTTOM);
+//   p5.textSize(14);
+//   p5.fill(0);
+
+//   // Numerator
+//   p5.text(numerator, fractionX, fractionY - 10);
+
+//   // Fraction line
+//   p5.stroke(0);
+//   p5.strokeWeight(1);
+//   p5.line(fractionX - 10, fractionY, fractionX + 10, fractionY);
+
+//   // Denominator
+//   p5.noStroke();
+//   p5.textAlign(p5.CENTER, p5.TOP);
+//   p5.text(denominator, fractionX, fractionY + 3);
+
+//   // Label "box" next to the fraction
+//   p5.textAlign(p5.LEFT, p5.CENTER);
+//   p5.text("box", fractionX + 15, fractionY);
+// }
+
+
+
 }
         drawMarbles(
           p5,
@@ -749,7 +856,7 @@ sketch.mousePressed = () => {
             wholeNumber > 0
               ? `${wholeNumber} ${numerator}/${denominator}`
               : `${numerator}/${denominator}`;
-              p5.text(fractionText + " box", x + (p5.width * 0.6) / 2, y);
+              // p5.text(fractionText + " box", x + (p5.width * 0.6) / 2, y);
         }
 
         drawInputField(p5, inputValue) {
