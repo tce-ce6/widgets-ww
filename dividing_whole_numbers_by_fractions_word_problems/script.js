@@ -324,13 +324,14 @@
 sketch.mousePressed = () => {
     const mouseX = sketch.mouseX;
     const mouseY = sketch.mouseY;
+    const padding = 10; // Increase touch area by padding
 
     // Check if click is within the input field
     const isClickInInputField = 
-        mouseX > this.inputFieldX && 
-        mouseX < this.inputFieldX + this.inputFieldWidth &&
-        mouseY > this.inputFieldY && 
-        mouseY < this.inputFieldY + this.inputFieldHeight;
+        mouseX > this.inputFieldX - padding && 
+        mouseX < this.inputFieldX + this.inputFieldWidth + padding &&
+        mouseY > this.inputFieldY - padding && 
+        mouseY < this.inputFieldY + this.inputFieldHeight + padding + 10;
 
     // Check if click is within the keyboard
     const isClickInKeyboard = this.isClickOnKeyboard(mouseX, mouseY);
