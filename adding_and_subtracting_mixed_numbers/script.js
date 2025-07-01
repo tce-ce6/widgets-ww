@@ -227,27 +227,34 @@ updateStepsHistory() {
                 this.previousCellIndex = -1;
             }
 
-            draw() {
-                this.p.background(255);
-                this.p.stroke(0);
-                // this.p.strokeWeight(2);
-                this.model.updateAnimation();
-                if (this.previousCellIndex !== this.model.currentCellIndex) {
-                    this.setupBoxAnimations();
-                    this.previousCellIndex = this.model.currentCellIndex;
-                }
-                // this.drawProblem();
-                this.drawSteps();
-                if (this.model.currentCellIndex === 0) {
-                    this.drawOriginalFractions();
-                } else {
-                    this.drawEquivalentFractions();
-                    this.drawAnimatedCells();
-                }
-                if (this.model.operation === 'subtraction' && !this.model.animationCompleted) {
-                    this.drawCrossOutBoxes();
-                }
-            }
+          draw() {
+    this.p.background(255);
+    this.p.stroke(0);
+    this.model.updateAnimation();
+    
+    if (this.previousCellIndex !== this.model.currentCellIndex) {
+        this.setupBoxAnimations();
+        this.previousCellIndex = this.model.currentCellIndex;
+    }
+    
+    this.drawSteps();
+    
+    if (this.model.currentCellIndex === 0) {
+        // Always show the current state (original or equivalent based on same denominators)
+        if (this.model.sameDenominators) {
+            this.drawOriginalFractions();
+        } else {
+            this.drawEquivalentFractions(); // This will show original fractions due to the modified drawMixedNumberLCM
+        }
+    } else {
+        this.drawEquivalentFractions();
+        this.drawAnimatedCells();
+    }
+    
+    if (this.model.operation === 'subtraction' && !this.model.animationCompleted) {
+        this.drawCrossOutBoxes();
+    }
+}
 
             setupBoxAnimations() {
                 console.log("🚀 ~ MixedNumberView ~ setupBoxAnimations ~ this.model.currentCellIndex:", this.setupBoxAnimations)
@@ -318,10 +325,10 @@ updateStepsHistory() {
             }
   
   
-setupFractionAnimations(destX , startY) {
+setupFractionAnimations(destX, startY) {
     const srcY = 80;
-   const firstFractionSrcX = 50 + (this.model.equivalentFractions.firstEquiv.whole * (this.boxSize + this.boxSpacing));
-const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + (this.model.equivalentFractions.secondEquiv.whole * (this.boxSize + this.boxSpacing));
+    const firstFractionSrcX = 50 + (this.model.equivalentFractions.firstEquiv.whole * (this.boxSize + this.boxSpacing));
+    const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + (this.model.equivalentFractions.secondEquiv.whole * (this.boxSize + this.boxSpacing));
     let index = this.model.equivalentFractions.firstEquiv.whole + this.model.equivalentFractions.secondEquiv.whole;
 
     if (this.model.sameDenominators) {
@@ -329,10 +336,9 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
         let currentDestX = destX;
 
         // Blue fraction cells
-    
         for (let i = 0; i < this.model.equivalentFractions.firstEquiv.num; i++) {
             this.allBoxes.push({
-                srcX: firstFractionSrcX+ i * cellWidth,
+                srcX: firstFractionSrcX + i * cellWidth,
                 srcY: srcY,
                 destX: currentDestX,
                 destY: startY,
@@ -371,18 +377,18 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
                     height: this.boxSize,
                     phase: 'cancellation',
                     correspondingPinkIndex: index - 1,
-                   disableAfterGreen: true
+                    disableAfterGreen: true
                 });
             }
 
             pinkDestX += cellWidth;
         }
     } else {
-        // Different denominator case
-        const originalFirst = this.model.problem.first.den;
-        const originalSecond = this.model.problem.second.den;
-        const cols = originalFirst;
-        const rows = originalSecond;
+        // Different denominator case - SWAPPED: rows and cols
+        const originalFirst = this.model.problem.first.den;   // This becomes ROWS
+        const originalSecond = this.model.problem.second.den; // This becomes COLS
+        const rows = originalFirst;  // SWAPPED
+        const cols = originalSecond; // SWAPPED
         const srcCellWidth = this.boxSize / cols;
         const srcCellHeight = this.boxSize / rows;
         let currentDestX = destX;
@@ -395,14 +401,14 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
         if (this.model.operation === 'addition') {
             const occupiedCells = new Set();
 
-            // Blue fraction cells
+            // Blue fraction cells - fill column by column, bottom to top
             for (let i = 0; i < this.model.equivalentFractions.firstEquiv.num; i++) {
-                const row = rows - 1 - Math.floor(i / cols);
-                const col = i % cols;
+                const col = Math.floor(i / rows);
+                const row = rows - 1 - (i % rows); // Bottom to top
                 const cellKey = `${col},${row}`;
                 occupiedCells.add(cellKey);
                 this.allBoxes.push({
-                   srcX: firstFractionSrcX + col * srcCellWidth,
+                    srcX: firstFractionSrcX + col * srcCellWidth,
                     srcY: srcY + row * srcCellHeight,
                     destX: currentDestX + col * gridCellWidth,
                     destY: startY + row * gridCellHeight,
@@ -434,27 +440,26 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
                 });
             }
 
-            // Pink fraction cells
+            // Pink fraction cells - fill empty cells row by row, bottom to top
             let redCellsPlaced = 0;
-            const totalCells = cols * rows;
-            for (let i = 0; i < totalCells && redCellsPlaced < redRemainingCells; i++) {
-                const row = rows - 1 - Math.floor(i / cols);
-                const col = i % cols;
-                const cellKey = `${col},${row}`;
-                if (!occupiedCells.has(cellKey)) {
-                    this.allBoxes.push({
-                        srcX: secondFractionSrcX + col * srcCellWidth,
-                        srcY: srcY + row * srcCellHeight,
-                        destX: currentDestX + col * gridCellWidth,
-                        destY: startY + row * gridCellHeight,
-                        width: gridCellWidth,
-                        height: gridCellHeight,
-                        color: this.p.color(255, 77, 166),
-                        animationIndex: index++,
-                        type: 'pink'
-                    });
-                    occupiedCells.add(cellKey);
-                    redCellsPlaced++;
+            for (let rowIdx = rows - 1; rowIdx >= 0 && redCellsPlaced < redRemainingCells; rowIdx--) {
+                for (let colIdx = 0; colIdx < cols && redCellsPlaced < redRemainingCells; colIdx++) {
+                    const cellKey = `${colIdx},${rowIdx}`;
+                    if (!occupiedCells.has(cellKey)) {
+                        this.allBoxes.push({
+                            srcX: secondFractionSrcX + colIdx * srcCellWidth,
+                            srcY: srcY + rowIdx * srcCellHeight,
+                            destX: currentDestX + colIdx * gridCellWidth,
+                            destY: startY + rowIdx * gridCellHeight,
+                            width: gridCellWidth,
+                            height: gridCellHeight,
+                            color: this.p.color(255, 77, 166),
+                            animationIndex: index++,
+                            type: 'pink'
+                        });
+                        occupiedCells.add(cellKey);
+                        redCellsPlaced++;
+                    }
                 }
             }
             currentDestX += gridWidth + this.boxSpacing;
@@ -463,12 +468,12 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
             const totalBlue = this.model.equivalentFractions.firstEquiv.num;
             const totalRed = this.model.equivalentFractions.secondEquiv.num;
 
-            // Blue fraction cells
+            // Blue fraction cells - fill column by column, bottom to top
             for (let i = 0; i < totalBlue; i++) {
-                const row = rows - 1 - Math.floor(i / cols);
-                const col = i % cols;
+                const col = Math.floor(i / rows);
+                const row = rows - 1 - (i % rows); // Bottom to top
                 this.allBoxes.push({
-                    srcX: firstFractionSrcX+ col * srcCellWidth,
+                    srcX: firstFractionSrcX + col * srcCellWidth,
                     srcY: srcY + row * srcCellHeight,
                     destX: currentDestX + col * gridCellWidth,
                     destY: startY + row * gridCellHeight,
@@ -483,7 +488,7 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
             const totalRedFullBoxes = Math.floor(totalRed / (cols * rows));
             const totalRedCells = totalRed % (cols * rows);
 
-            // Pink full fraction boxes (can be offset)
+            // Pink full fraction boxes
             for (let i = 0; i < totalRedFullBoxes; i++) {
                 this.allBoxes.push({
                     srcX: secondFractionSrcX,
@@ -509,15 +514,15 @@ const secondFractionSrcX = firstFractionSrcX + this.boxSize + this.boxSpacing + 
                 });
             }
 
-            // Pink fraction cells (❗️Now overlap blue cells)
+            // Pink fraction cells - overlap blue cells, row by row from bottom
             let redCellsToCancel = Math.min(totalRedCells, totalBlue - (totalRedFullBoxes * cols * rows));
             for (let i = 0; i < redCellsToCancel; i++) {
-                const row = rows - 1 - Math.floor(i / cols);
-                const col = i % cols;
+                const col = Math.floor(i / rows);
+                const row = rows - 1 - (i % rows); // Bottom to top
                 this.allBoxes.push({
                     srcX: secondFractionSrcX + col * srcCellWidth,
                     srcY: srcY + row * srcCellHeight,
-                    destX: currentDestX + col * gridCellWidth, // ✅ Overlap
+                    destX: currentDestX + col * gridCellWidth, // Overlap
                     destY: startY + row * gridCellHeight,
                     width: gridCellWidth,
                     height: gridCellHeight,
@@ -876,20 +881,39 @@ drawSteps() {
                 return x + 50;
             }
 
-            drawMixedNumberLCM(mixedNum, startX, startY, color, isFirstFraction = true) {
-                let x = startX;
-                for (let i = 0; i < mixedNum.whole; i++) {
-                    this.p.fill(color);
-                    this.p.rect(x, startY, this.boxSize, this.boxSize);
-                    x += this.boxSize + this.boxSpacing;
-                }
-                this.drawFractionGrid(x, startY, mixedNum.num, mixedNum.den, color, isFirstFraction);
-                x += this.boxSize + this.boxSpacing;
-                this.p.fill(0);
-                this.p.textSize(16);
-                this.p.text(`${mixedNum.whole} ${mixedNum.num}/${mixedNum.den}`, startX, startY + this.boxSize + 25);
-                return x + 50;
-            }
+          // Modified drawMixedNumberLCM function
+drawMixedNumberLCM(mixedNum, startX, startY, color, isFirstFraction = true) {
+    let x = startX;
+    for (let i = 0; i < mixedNum.whole; i++) {
+        this.p.fill(color);
+        this.p.rect(x, startY, this.boxSize, this.boxSize);
+        x += this.boxSize + this.boxSpacing;
+    }
+    
+    // Show different display based on animation state
+    if (this.model.currentCellIndex === 0 && !this.model.sameDenominators) {
+        // Show original fractions at initial state
+        const originalFraction = isFirstFraction ? this.model.problem.first : this.model.problem.second;
+        this.drawFractionGrid(x, startY, originalFraction.num, originalFraction.den, color, isFirstFraction);
+    } else {
+        // Show equivalent fractions
+        this.drawFractionGrid(x, startY, mixedNum.num, mixedNum.den, color, isFirstFraction);
+    }
+    
+    x += this.boxSize + this.boxSpacing;
+    this.p.fill(0);
+    this.p.textSize(16);
+    
+    // Display text based on current state
+    if (this.model.currentCellIndex === 0 && !this.model.sameDenominators) {
+        const originalFraction = isFirstFraction ? this.model.problem.first : this.model.problem.second;
+        this.p.text(`${originalFraction.whole} ${originalFraction.num}/${originalFraction.den}`, startX, startY + this.boxSize + 25);
+    } else {
+        this.p.text(`${mixedNum.whole} ${mixedNum.num}/${mixedNum.den}`, startX, startY + this.boxSize + 25);
+    }
+    
+    return x + 50;
+}
 
             drawFractionBox(x, y, numerator, denominator, color) {
                 const colWidth = this.boxSize / denominator;
@@ -903,53 +927,82 @@ drawSteps() {
                 }
             }
 
-            drawFractionGrid(x, y, numerator, denominator, color, isFirstFraction = true) {
-                if (this.model.sameDenominators) {
-                    const colWidth = this.boxSize / denominator;
-                    for (let i = 0; i < numerator; i++) {
-                        this.p.fill(color);
-                        this.p.rect(x + i * colWidth, y, colWidth, this.boxSize);
-                    }
-                    for (let j = numerator; j < denominator; j++) {
-                        this.p.fill(255);
-                        this.p.rect(x + j * colWidth, y, colWidth, this.boxSize);
-                    }
-                } else {
-                    const originalFirst = this.model.problem.first.den;
-                    const originalSecond = this.model.problem.second.den;
-                    const cols = originalFirst;
-                    const rows = originalSecond;
-                    const cellWidth = this.boxSize / cols;
-                    const cellHeight = this.boxSize / rows;
-                    if (isFirstFraction) {
-                        for (let i = 0; i < numerator; i++) {
-                            const col = Math.floor(i / rows);
-                            const row = i % rows;
-                            this.p.fill(color);
-                            this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
-                        }
-                        for (let i = numerator; i < denominator; i++) {
-                            const col = Math.floor(i / rows);
-                            const row = i % rows;
-                            this.p.fill(255);
-                            this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
-                        }
-                    } else {
-                        for (let i = 0; i < numerator; i++) {
-                            const row = Math.floor(i / cols);
-                            const col = i % cols;
-                            this.p.fill(color);
-                            this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
-                        }
-                        for (let i = numerator; i < denominator; i++) {
-                            const row = Math.floor(i / cols);
-                            const col = i % cols;
-                            this.p.fill(255);
-                            this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
-                        }
-                    }
+drawFractionGrid(x, y, numerator, denominator, color, isFirstFraction = true) {
+    if (this.model.sameDenominators) {
+        const colWidth = this.boxSize / denominator;
+        for (let i = 0; i < numerator; i++) {
+            this.p.fill(color);
+            this.p.rect(x + i * colWidth, y, colWidth, this.boxSize);
+        }
+        for (let j = numerator; j < denominator; j++) {
+            this.p.fill(255);
+            this.p.rect(x + j * colWidth, y, colWidth, this.boxSize);
+        }
+    } else {
+        if (this.model.currentCellIndex === 0) {
+            if (isFirstFraction) {
+                // First fraction: fill column-wise (vertical strips)
+                const colWidth = this.boxSize / this.model.problem.first.den;
+                for (let i = 0; i < this.model.problem.first.num; i++) {
+                    this.p.fill(color);
+                    this.p.rect(x + i * colWidth, y, colWidth, this.boxSize);
+                }
+                for (let j = this.model.problem.first.num; j < this.model.problem.first.den; j++) {
+                    this.p.fill(255);
+                    this.p.rect(x + j * colWidth, y, colWidth, this.boxSize);
+                }
+            } else {
+                // Second fraction: fill row-wise FROM BOTTOM (horizontal strips from bottom)
+                const rowHeight = this.boxSize / this.model.problem.second.den;
+                for (let i = 0; i < this.model.problem.second.num; i++) {
+                    this.p.fill(color);
+                    // Fill from bottom: y + this.boxSize - (i + 1) * rowHeight
+                    this.p.rect(x, y + this.boxSize - (i + 1) * rowHeight, this.boxSize, rowHeight);
+                }
+                for (let j = this.model.problem.second.num; j < this.model.problem.second.den; j++) {
+                    this.p.fill(255);
+                    this.p.rect(x, y + this.boxSize - (j + 1) * rowHeight, this.boxSize, rowHeight);
                 }
             }
+        } else {
+            // Show equivalent fractions (grid format)
+            const cols = this.model.problem.first.den;  // First denominator = columns
+            const rows = this.model.problem.second.den; // Second denominator = rows
+            const cellWidth = this.boxSize / cols;
+            const cellHeight = this.boxSize / rows;
+            
+            if (isFirstFraction) {
+                // Fill column by column, bottom to top
+                for (let i = 0; i < numerator; i++) {
+                    const col = Math.floor(i / rows);
+                    const row = rows - 1 - (i % rows); // Fill from bottom
+                    this.p.fill(color);
+                    this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
+                }
+                for (let i = numerator; i < denominator; i++) {
+                    const col = Math.floor(i / rows);
+                    const row = rows - 1 - (i % rows);
+                    this.p.fill(255);
+                    this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
+                }
+            } else {
+                // Fill row by row, left to right, starting from bottom row
+                for (let i = 0; i < numerator; i++) {
+                    const row = rows - 1 - Math.floor(i / cols); // Start from bottom row
+                    const col = i % cols;
+                    this.p.fill(color);
+                    this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
+                }
+                for (let i = numerator; i < denominator; i++) {
+                    const row = rows - 1 - Math.floor(i / cols);
+                    const col = i % cols;
+                    this.p.fill(255);
+                    this.p.rect(x + col * cellWidth, y + row * cellHeight, cellWidth, cellHeight);
+                }
+            }
+        }
+    }
+}
         }
 
         class MixedNumberController {

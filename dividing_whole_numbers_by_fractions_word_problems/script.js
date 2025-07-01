@@ -192,7 +192,7 @@
 
           const boxDisplayRect = this.boxDisplay.getBoundingClientRect();
           this.canvasWidth = boxDisplayRect.width;
-          this.canvasHeight = 500;
+          this.canvasHeight = 600;
 
           this.p5Canvas = new p5((sketch) => {
             sketch.setup = () => {
@@ -1200,8 +1200,7 @@ this.view.onKeyPress = (char) => {
                 const moveMarble = setInterval(() => {
                   if (step >= steps) {
                     marble.currentX = targetX;
-                    console.log("🚀 ~ ProblemController ~ moveMarble ~ targetX:", targetX)
-                    console.log("🚀 ~ ProblemController ~ moveMarble ~ currentX:", currentX)
+               
                     marble.currentY = targetY;
                     
                     clearInterval(moveMarble);

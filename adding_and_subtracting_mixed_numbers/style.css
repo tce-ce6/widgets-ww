@@ -24,9 +24,15 @@
        
          .slider-container {
                align-items: center;
-                max-width: 300px;
+                width: 200px;
                 display: flex;
-        }/*
+                
+        }
+        .slider-container input{
+                    width: 100%;
+                }
+        /*
+        
         .slider {
             width: 100%;
             height: 10px;
