@@ -18,6 +18,7 @@ class ProblemModel {
     this.currentMarbleIndex = 0;
     this.lastAnimationTime = 0;
     this.marbleAnimationDelay = 200;
+    this.solutionAnimationReady = false; // New flag for solution animation
   }
   generateRandomProblem() {
     let attempts = 0;
@@ -110,6 +111,7 @@ class ProblemModel {
     this.animating = false;
     this.animationComplete = false;
     this.currentMarbleIndex = 0;
+    this.solutionAnimationReady = false;
 
     return {
       numerator: this.numerator,
@@ -140,6 +142,7 @@ class ProblemModel {
     this.currentMarbleIndex = 0;
     this.lastAnimationTime = 0;
     this.solutionSteps = [];
+    this.solutionAnimationReady = false;
   }
 
   addCharacter(char) {
@@ -161,25 +164,28 @@ class ProblemModel {
 
 // VIEW
 class ProblemView {
-  constructor() {
-    this.fillBoxBtn = document.getElementById("fill-box-btn");
-    this.revertBtn = document.getElementById("revert-btn");
-    this.newBoxesBtn = document.getElementById("new-boxes-btn");
-    this.boxDisplay = document.getElementById("box-display");
-    this.keyboardContainer =
-      document.getElementById("keyboard-container");
+ constructor() {
+  this.fillBoxBtn = document.getElementById("fill-box-btn");
+  this.revertBtn = document.getElementById("revert-btn");
+  this.newBoxesBtn = document.getElementById("new-boxes-btn");
+  this.boxDisplay = document.getElementById("box-display");
+  this.keyboardContainer = document.getElementById("keyboard-container");
 
-    this.p5Canvas = null;
-    this.canvasWidth = 0;
-    this.canvasHeight = 0;
+  this.p5Canvas = null;
+  this.canvasWidth = 0;
+  this.canvasHeight = 0;
 
-    this.inputBoxActive = false;
-    this.inputFieldX = 0;
-    this.inputFieldY = 0;
-    this.inputFieldWidth = 0;
-    this.inputFieldHeight = 0;
-    this.currentItemType = "marbles"; // Default item type
-  }
+  this.inputBoxActive = false;
+  this.inputFieldX = 0;
+  this.inputFieldY = 0;
+  this.inputFieldWidth = 0;
+  this.inputFieldHeight = 0;
+  this.currentItemType = "marbles"; // Default item type
+  this.solutionAnimationProgress = 0; // New property for animation
+  this.keyboardInitialized = false; // New property to track initialization
+  this.isProcessingInput = false; // New property to prevent double processing
+  this.initKeyboard(); // Initialize keyboard event listeners
+}
 
   setupCanvas() {
     if (this.p5Canvas) {
@@ -219,6 +225,7 @@ class ProblemView {
             visibleMarbles,
             animating,
             userInputValue,
+            solutionAnimationReady,
           } = this.currentProblem;
 
           this.drawQuestion(
@@ -303,7 +310,7 @@ class ProblemView {
 
           this.drawInputField(sketch, userInputValue);
 
-          if (isAnswerSubmitted) {
+          if (isAnswerSubmitted && solutionAnimationReady) {
             this.drawSolution(
               sketch,
               marbleCount,
@@ -751,11 +758,23 @@ class ProblemView {
           radius
         );
 
-        // Football brown color variations
-        const baseColor = p5.color(139, 69, 19); // Saddle brown
-        const darkShadow = p5.color(69, 39, 19);
-        const midTone = p5.color(160, 82, 45);
-        const lightTone = p5.color(205, 133, 63);
+        // Use dynamic colors based on user input or filler
+        const baseColor = p5.color(football.color); // Use the color from generateMarbles
+        const darkShadow = p5.color(
+          p5.red(baseColor) * 0.3,
+          p5.green(baseColor) * 0.3,
+          p5.blue(baseColor) * 0.3
+        );
+        const midTone = p5.color(
+          p5.red(baseColor) * 0.7,
+          p5.green(baseColor) * 0.7,
+          p5.blue(baseColor) * 0.7
+        );
+        const lightTone = p5.color(
+          Math.min(255, p5.red(baseColor) * 1.3),
+          Math.min(255, p5.green(baseColor) * 1.3),
+          Math.min(255, p5.blue(baseColor) * 1.3)
+        );
 
         // Create realistic football gradient
         mainGradient.addColorStop(0, 'rgba(245, 222, 179, 0.9)'); // Bright center
@@ -1112,6 +1131,7 @@ class ProblemView {
       wholeNumber > 0
         ? `${wholeNumber} ${numerator}/${denominator}`
         : `${numerator}/${denominator}`;
+    p5.text(fractionText, x + 50, y + 10); // Added basic rendering
   }
 
   drawInputField(p5, inputValue) {
@@ -1173,74 +1193,99 @@ class ProblemView {
 
     const resultX = p5.width * 0.65;
     const resultY = 100;
+    const animationSpeed = 0.02; // Slower animation speed
+    this.solutionAnimationProgress = Math.min(1, this.solutionAnimationProgress + animationSpeed);
 
     p5.noStroke();
-    p5.textSize(16);
+    p5.textSize(28); // Increased text size for bigger text
     p5.textAlign(p5.LEFT);
 
     if (isCorrect) {
-      p5.fill("#27ae60");
-      p5.text(
-        `${marbleCount} ÷ ${fractionText} = ${correctAnswer}, so`,
-        resultX + 70,
-        resultY
-      );
-      p5.text(
-        `${correctAnswer} marbles fit perfectly`,
-        resultX + 70,
-        resultY + 30
-      );
-      p5.text(`in 1 box. Well done!`, resultX + 70, resultY + 60);
-    } else {
-      p5.fill("#e74c3c");
-      p5.text(
-        `${marbleCount} ÷ ${fractionText} ≠ ${userAnswer}, so`,
-        resultX + 70,
-        resultY
-      );
-      if (userAnswer < correctAnswer) {
-        p5.text(
-          `${userAnswer} marbles are not enough`,
-          resultX + 70,
-          resultY + 30
-        );
-        p5.text(`to fill 1 box.`, resultX + 70, resultY + 60);
+      const equation = `${marbleCount} ÷ ${fractionText} = ${correctAnswer}`;
+      const sentence1 = `${correctAnswer} marbles fit perfectly`;
+      const sentence2 = `in 1 box.`;
+      const emoji = "🎉"; // Emoji for correct answer
+
+      // Animate equation
+      let progress = this.solutionAnimationProgress;
+      if (progress < 0.33) {
+        p5.fill("#27ae60");
+        p5.text(equation.substring(0, Math.floor(equation.length * (progress * 3))), resultX + 70, resultY);
+      } else if (progress < 0.66) {
+        p5.fill("#27ae60");
+        p5.text(equation, resultX + 70, resultY);
+        p5.text(sentence1.substring(0, Math.floor(sentence1.length * ((progress - 0.33) * 3))), resultX + 70, resultY + 50);
       } else {
-        p5.text(
-          `${userAnswer} marbles are too many`,
-          resultX + 70,
-          resultY + 30
-        );
-        p5.text(`to fill 1 box.`, resultX + 70, resultY + 60);
+        p5.fill("#27ae60");
+        p5.text(equation, resultX + 70, resultY);
+        p5.text(sentence1, resultX + 70, resultY + 50);
+        p5.text(sentence2.substring(0, Math.floor(sentence2.length * ((progress - 0.66) * 3))), resultX + 70, resultY + 100);
+        p5.textSize(60); // Larger emoji size
+        p5.text(emoji, resultX + 70, resultY + 170); // Larger emoji below
+      }
+    } else {
+      const equation = `${marbleCount} ÷ ${fractionText} ≠ ${userAnswer}`;
+      const sentence1 = userAnswer < correctAnswer ? `${userAnswer} marbles are not enough` : `${userAnswer} marbles are too many`;
+      const sentence2 = `to fill 1 box.`;
+      const emoji = "😕"; // Emoji for incorrect answer
+
+      // Animate equation
+      let progress = this.solutionAnimationProgress;
+      if (progress < 0.33) {
+        p5.fill("#e74c3c");
+        p5.text(equation.substring(0, Math.floor(equation.length * (progress * 3))), resultX + 70, resultY);
+      } else if (progress < 0.66) {
+        p5.fill("#e74c3c");
+        p5.text(equation, resultX + 70, resultY);
+        p5.text(sentence1.substring(0, Math.floor(sentence1.length * ((progress - 0.33) * 3))), resultX + 70, resultY + 50);
+      } else {
+        p5.fill("#e74c3c");
+        p5.text(equation, resultX + 70, resultY);
+        p5.text(sentence1, resultX + 70, resultY + 50);
+        p5.text(sentence2.substring(0, Math.floor(sentence2.length * ((progress - 0.66) * 3))), resultX + 70, resultY + 100);
+        p5.textSize(60); // Larger emoji size
+        p5.text(emoji, resultX + 70, resultY + 170); // Larger emoji below
+        // Add subtle shake effect
+        const shakeOffset = Math.sin(p5.frameCount * 0.2) * 5;
+        p5.textSize(28); // Reset to text size for "Try again!"
+        p5.text("Try again!", resultX + 70 + shakeOffset, resultY + 240);
       }
     }
   }
 
-  initKeyboard() {
-    const keys = this.keyboardContainer.querySelectorAll('.key');
-    keys.forEach(key => {
-      key.addEventListener('click', (event) => {
-        event.stopPropagation();
-        event.preventDefault();
-        const keyContent = key.textContent;
+ initKeyboard() {
+  if (this.keyboardInitialized) return; // Prevent re-initialization
+  const keys = this.keyboardContainer.querySelectorAll('.key');
+  keys.forEach(key => {
+    key.addEventListener('click', (event) => {
+      event.stopPropagation();
+      event.preventDefault();
+      const keyContent = key.textContent.trim();
 
-        if (key.classList.contains('backspace')) {
-          if (this.onBackspaceKey) {
-            this.onBackspaceKey();
-          }
-        } else if (keyContent === '=') {
-          if (this.onSubmit) {
-            this.onSubmit();
-            this.hideKeyboard();
-          }
-        } else if (/^[0-9]$/.test(keyContent)) {
-          if (this.onKeyPress) {
-            this.onKeyPress(keyContent);
-          }
+      if (key.classList.contains('backspace')) {
+        if (this.onBackspaceKey && !this.isProcessingInput) {
+          this.isProcessingInput = true;
+          this.onBackspaceKey();
+          this.isProcessingInput = false;
         }
-      });
-    });
-  }
+      } else if (keyContent === '=') {
+        if (this.onSubmit && !this.isProcessingInput) {
+          this.isProcessingInput = true;
+          this.onSubmit();
+          this.hideKeyboard();
+          this.isProcessingInput = false;
+        }
+      } else if (/^[0-9]$/.test(keyContent)) {
+        if (this.onKeyPress && !this.isProcessingInput) {
+          this.isProcessingInput = true;
+          this.onKeyPress(keyContent);
+          this.isProcessingInput = false;
+        }
+      }
+    }, { once: false }); // Allow multiple clicks but control processing
+  });
+  this.keyboardInitialized = true; // Mark as initialized
+}
 
   showKeyboard() {
     this.keyboardContainer.style.display = "block";
@@ -1361,6 +1406,7 @@ class ProblemController {
         isAnswerCorrect: this.model.isAnswerCorrect,
         solutionSteps: this.model.solutionSteps,
         currentItemType: this.view.currentItemType,
+        solutionAnimationReady: this.model.solutionAnimationReady,
       });
     }
   }
@@ -1375,6 +1421,7 @@ class ProblemController {
     this.view.disableFillButton();
     this.view.disableRevertButton();
     this.view.disableNewBoxesButton();
+    this.view.solutionAnimationProgress = 0; // Reset animation progress
 
     this.view.setupCanvas();
 
@@ -1393,6 +1440,7 @@ class ProblemController {
         isAnswerCorrect: false,
         solutionSteps: this.model.solutionSteps,
         currentItemType: this.view.currentItemType,
+        solutionAnimationReady: false,
       });
     }
   }
@@ -1407,11 +1455,13 @@ class ProblemController {
     this.model.visibleMarbles = [];
     this.model.currentMarbleIndex = 0;
     this.model.lastAnimationTime = Date.now();
+    this.model.solutionAnimationReady = false; // Reset solution animation flag
 
     this.view.disableFillButton();
     this.view.enableRevertButton();
     this.view.hideKeyboard();
     this.view.disableNewBoxesButton();
+    this.view.solutionAnimationProgress = 0; // Reset animation progress for solution
     this.startMarbleAnimation();
   }
 
@@ -1463,6 +1513,7 @@ class ProblemController {
         } else {
           this.model.animating = false;
           this.model.animationComplete = true;
+          this.model.solutionAnimationReady = true; // Trigger solution animation after marbles
           clearInterval(this.animationTimer);
         }
       }
@@ -1479,6 +1530,7 @@ class ProblemController {
     this.view.disableFillButton();
     this.view.disableRevertButton();
     this.view.disableNewBoxesButton();
+    this.view.solutionAnimationProgress = 0; // Reset animation progress
     this.updateUI();
   }
 
@@ -1520,7 +1572,7 @@ class ProblemController {
     for (let row = 0; row < numberOfRows; row++) {
       const rowY = boxY + row * (boxHeight + 20) + boxHeight / 2;
       const rowWidth = marblesPerRow * marbleSize + (marblesPerRow - 1) * spacing;
-      const rowStartX = boxX + (boxWidth - rowWidth) / 2;
+      const rowStartX = boxX + (boxWidth - rowWidth  ) / 2;
 
       for (let col = 0; col < marblesPerRow; col++) {
         const marbleX = rowStartX + col * (marbleSize + spacing) + marbleSize / 2;
