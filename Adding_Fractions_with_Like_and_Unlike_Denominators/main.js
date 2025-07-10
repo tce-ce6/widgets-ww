@@ -27,6 +27,7 @@ class FractionProblem {
     this.userNum = 0;
     this.remainingTries = 3; // Initialize to 3
     this.state = 'chooseDen';
+    console.log(`d1: ${d1}, d2: ${d2}, commonDen: ${this.commonDen}`); // Debug LCM
   }
   getFrac1ToDen(den) {
     const mul = den / this.frac1.d;
@@ -66,13 +67,14 @@ class FractionProblem {
 
 let model = new FractionProblem();
 let dragX, dragging = false, checkBtn, nextBtn, hintDiv, solutionDiv;
-let denominatorSlider, denominatorValue;
+let denominatorSlider = document.getElementById('denominatorSlider');
+let denominatorValue = document.getElementById('denominatorValue');
 let animationValue = 0;
 let animationSliderX = 420;
-let animationSliderY = 230;
+let animationSliderY = 280; // Shifted down from 260 to 280
 let animationSliderW = 200;
 let animationSliderDragging = false;
-const CANVAS_W = 750, CANVAS_H = 400, LINE_Y = 80;
+const CANVAS_W = 750, CANVAS_H = 500, LINE_Y = 100; // Shifted LINE_Y from 80 to 100
 let userInteracted = false;
 let clickStage = 0;
 model.hasTouched = false;
@@ -84,7 +86,7 @@ function setup() {
   denominatorSlider = document.getElementById('denominatorSlider');
   denominatorValue = document.getElementById('denominatorValue');
 
-  model.userDen = 0;
+  model.userDen = 2;
   denominatorSlider.value = 2;
   denominatorValue.textContent = 2;
 
@@ -104,7 +106,6 @@ function setup() {
   solutionDiv.html('');
   userInteracted = false;
   clickStage = 0;
-  checkBtn.attribute('disabled', '');
 
   logCorrectAnswer();
 }
@@ -171,27 +172,76 @@ function draw() {
   }
 }
 
+function drawFraction(x, y, num, den, textSizeVal = 16, align = 'center') {
+  push();
+  textSize(textSizeVal);
+  textAlign(align === 'center' ? CENTER : LEFT, CENTER);
+  fill(0);
+  noStroke();
+  
+  // Draw numerator
+  text(num, x, y - textSizeVal * 0.6);
+  
+  // Draw denominator
+  text(den, x, y + textSizeVal * 0.6);
+  
+  // Draw fraction line
+  let textWidthNum = textWidth(num.toString());
+  let textWidthDen = textWidth(den.toString());
+  let lineWidth = Math.max(textWidthNum, textWidthDen) * 1.2;
+  stroke(0);
+  strokeWeight(1);
+  line(x - (align === 'center' ? lineWidth / 2 : 0), y, x + (align === 'center' ? lineWidth / 2 : lineWidth), y);
+  pop();
+}
+
 function drawProblemText() {
   let f1 = model.frac1, f2 = model.frac2;
   console.log("Drawing problem text:", `${f1.n}/${f1.d} + ${f2.n}/${f2.d}`);
-  fill(0);
-  noStroke();
   textSize(20);
   textAlign(CENTER, TOP);
   textStyle(BOLD);
-  text(` Evalue ${f1.n}/${f1.d} + ${f2.n}/${f2.d}`, CANVAS_W / 2, 30);
+  fill(0);
+  noStroke();
+  text('Evaluate', CANVAS_W / 2 - 60, 0);
+  
+  // Draw first fraction
+  drawFraction(CANVAS_W / 2, 20, f1.n, f1.d, 20);
+  
+  // Draw plus sign
+  text('+', CANVAS_W / 2 + 30, 20);
+  
+  // Draw second fraction
+  drawFraction(CANVAS_W / 2 + 60, 20, f2.n, f2.d, 20);
   textStyle(NORMAL);
 }
 
 function drawSolutionText() {
+  let f1 = model.frac1, f2 = model.frac2;
+  let cd = model.commonDen;
+  let f1cd = model.getFrac1ToDen(cd);
+  let f2cd = model.getFrac2ToDen(cd);
+  let ans = model.getAnswerToDen(cd);
+  
   fill(0);
   noStroke();
   textSize(16);
   textAlign(LEFT, CENTER);
   textStyle(BOLD);
-  text('Solution:', 420, LINE_Y + 80);
+  text('Solution:', 420, LINE_Y + 60);
   textStyle(NORMAL);
-  text(model.getSolutionString(), 420, LINE_Y + 100);
+  
+  // Draw solution fractions
+  let x = 350;
+  drawFraction(x + 20, LINE_Y + 100, f1.n, f1.d, 16, 'left');
+  text('+', x + 60, LINE_Y + 100);
+  drawFraction(x + 100, LINE_Y + 100, f2.n, f2.d, 16, 'left');
+  text('=', x + 140, LINE_Y + 100);
+  drawFraction(x + 180, LINE_Y + 100, f1cd.n, cd, 16, 'left');
+  text('+', x + 220, LINE_Y + 100);
+  drawFraction(x + 260, LINE_Y + 100, f2cd.n, cd, 16, 'left');
+  text('=', x + 300, LINE_Y + 100);
+  drawFraction(x + 340, LINE_Y + 100, ans.n, cd, 16, 'left');
 }
 
 let bounceOffset = 0;
@@ -254,8 +304,14 @@ function drawNumberLine() {
 
   let whole = Math.floor(val);
   let num = model.userNum % model.userDen;
-  let label = whole > 0 && num > 0 ? `${whole} ${num}/${model.userDen}` : whole > 0 && num === 0 ? `${whole}` : `${model.userNum}/${model.userDen}`;
-  text(label, x, LINE_Y - 45);
+  if (whole > 0 && num > 0) {
+    text(whole, x - 20, LINE_Y - 45);
+    drawFraction(x + 20, LINE_Y - 35, num, model.userDen, 16);
+  } else if (whole > 0 && num === 0) {
+    text(whole, x, LINE_Y - 45);
+  } else {
+    drawFraction(x, LINE_Y - 35, model.userNum, model.userDen, 16);
+  }
 }
 
 function drawDragPoint() {
@@ -301,10 +357,16 @@ function drawFractionBoxesForCheck2() {
   let box2X = 280;
   let boxY = LINE_Y + 180;
 
+  let commonDen = model.commonDen; // LCM of d1 and d2
+  let f1 = model.getFrac1ToDen(commonDen);
+  let f2 = model.getFrac2ToDen(commonDen);
+
   if (d1 === d2) {
-    drawFractionBox(box1X, boxY, d1, n1, 'v', '#6c63ff', boxSize);
-    drawFractionBox(box2X, boxY, d2, n2, 'v', '#e75480', boxSize);
+    // Use the common denominator for both boxes
+    drawFractionBox(box1X, boxY, commonDen, f1.n, 'v', '#6c63ff', boxSize);
+    drawFractionBox(box2X, boxY, commonDen, f2.n, 'v', '#e75480', boxSize);
   } else {
+    // Use original denominators for unequal cases
     drawFractionBox(box1X, boxY, d1, n1, 'v', '#6c63ff', boxSize);
     drawFractionBox(box2X, boxY, d2, n2, 'h', '#e75480', boxSize);
   }
@@ -396,8 +458,8 @@ function drawAnimatedFractionBoxes(animValue) {
     if (animValue === 0) {
       drawFractionBoxesForCheck2();
     } else {
-      drawFractionBox(box1X, boxY, cd, 0, 'grid', '#fffff', boxSize, rows, cols);
-      drawFractionBox(box2X, boxY, cd, 0, 'grid', '#fffff', boxSize, rows, cols);
+      drawFractionBox(box1X, boxY, cd, 0, 'grid', '#ffffff', boxSize, rows, cols);
+      drawFractionBox(box2X, boxY, cd, 0, 'grid', '#ffffff', boxSize, rows, cols);
 
       let blueCellsFilled = 0;
       if (d1 === d2) {
@@ -437,9 +499,9 @@ function drawAnimatedFractionBoxes(animValue) {
           pinkCellsFilled++;
         }
       } else {
-        let pinkRowsToFill = Math.ceil(fill2 / cols);
-        for (let row = 0; row < pinkRowsToFill && pinkCellsFilled < fill2; row++) {
-          for (let col = 0; col < cols && pinkCellsFilled < fill2; col++) {
+        let pinkRowsToFill = Math.ceil(f2.n / cols);
+        for (let row = 0; row < pinkRowsToFill && pinkCellsFilled < f2.n; row++) {
+          for (let col = 0; col < cols && pinkCellsFilled < f2.n; col++) {
             let x = box2X - boxSize / 2 + col * cellWidth;
             let y = boxY - boxSize / 2 + row * cellHeight;
             fill('#e75480');
@@ -460,8 +522,8 @@ function drawAnimatedFractionBoxes(animValue) {
   } else {
     let stageProgress = (animValue - 0.5) / 0.5;
 
-    drawFractionBox(box1X, boxY, cd, 0, 'grid', '#fffff', boxSize, rows, cols);
-    drawFractionBox(box2X, boxY, cd, 0, 'grid', '#fffff', boxSize, rows, cols);
+    drawFractionBox(box1X, boxY, cd, 0, 'grid', '#ffffff', boxSize, rows, cols);
+    drawFractionBox(box2X, boxY, cd, 0, 'grid', '#ffffff', boxSize, rows, cols);
 
     fill(0);
     noStroke();
@@ -469,7 +531,7 @@ function drawAnimatedFractionBoxes(animValue) {
     textAlign(CENTER, CENTER);
     text('+', (box1X + box2X) / 2, boxY);
 
-    let targetY = boxY + 110;
+    let targetY = LINE_Y + 290; // Adjusted from LINE_Y + 270 to LINE_Y + 290
     let cellSize = 25;
     let totalWidth = total * (cellSize + 5);
     let startX = CANVAS_W / 2 + 10 - totalWidth / 2 + 10;
@@ -587,7 +649,6 @@ function mouseDragged() {
     dragX = getXForValue(val);
     model.userNum = Math.round(val * model.userDen);
     userInteracted = true;
-    checkBtn.removeAttribute('disabled');
   }
 
   if (animationSliderDragging) {
@@ -611,13 +672,9 @@ function onSliderChange() {
   model.userNum = 0;
   dragX = getXForValue(0);
   hintDiv.html('');
-  userInteracted = true;
-  checkBtn.removeAttribute('disabled');
 }
 
 function onCheck() {
-  if (!userInteracted) return;
-
   if (clickStage === 0) {
     model.state = "check3";
     clickStage = 1;
@@ -653,12 +710,10 @@ function onCheck() {
       model.state = 'correct';
       model.hintText = '';
       nextBtn.show();
-      checkBtn.attribute('disabled', '');
       return;
     }
 
     updateCheckButtonText();
-    checkBtn.attribute('disabled', '');
     showSolution();
   }
 }
@@ -682,7 +737,7 @@ function onNext() {
   model.remainingTries = 3;
   updateCheckButtonText();
   nextBtn.hide();
-  checkBtn.attribute('disabled', '');
+  checkBtn.removeAttribute('disabled');
   hintDiv.html('');
   solutionDiv.html('');
   dragX = getXForValue(0);
