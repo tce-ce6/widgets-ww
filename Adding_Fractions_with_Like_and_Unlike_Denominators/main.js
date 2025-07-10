@@ -302,15 +302,20 @@ function drawNumberLine() {
   textSize(16);
   textAlign(CENTER, TOP);
 
-  let whole = Math.floor(val);
-  let num = model.userNum % model.userDen;
-  if (whole > 0 && num > 0) {
-    text(whole, x - 20, LINE_Y - 45);
-    drawFraction(x + 20, LINE_Y - 35, num, model.userDen, 16);
-  } else if (whole > 0 && num === 0) {
-    text(whole, x, LINE_Y - 45);
+  // Modified section to handle numerator = 0
+  if (model.userNum === 0) {
+    text('0', x, LINE_Y - 45);
   } else {
-    drawFraction(x, LINE_Y - 35, model.userNum, model.userDen, 16);
+    let whole = Math.floor(val);
+    let num = model.userNum % model.userDen;
+    if (whole > 0 && num > 0) {
+      text(whole, x - 20, LINE_Y - 45);
+      drawFraction(x + 20, LINE_Y - 35, num, model.userDen, 16);
+    } else if (whole > 0 && num === 0) {
+      text(whole, x, LINE_Y - 45);
+    } else {
+      drawFraction(x, LINE_Y - 35, model.userNum, model.userDen, 16);
+    }
   }
 }
 
