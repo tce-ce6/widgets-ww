@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rational to Decimal Adventure</title>
+     <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <div id="sketch-holder" class="main-canvas"></div>
+    <div class="cta-container">
+        <input type="text" id="fractionInput" class="cta-input" placeholder="Enter fraction (e.g., 3/4)">
+        <button id="generateRandom" class="cta-button">Generate Random</button>
+        <button id="startDivision" class="cta-button" disabled>Start Division</button>
+        <button id="restartDivision" class="cta-button" disabled>Restart Division</button>
+        <label class="cta-label"><input type="checkbox" id="highlightRepeating" class="cta-checkbox" disabled> Highlight Repeating Part</label>
+        <label class="cta-label">Zoom: <input type="range" id="zoomSlider" class="cta-slider" min="1" max="10" value="1"></label>
+        <button id="challengeMode" class="cta-button">Challenge Mode</button>
+        <select id="prediction" class="cta-input" disabled>
+            <option value="">Predict...</option>
+            <option value="terminating">Terminating</option>
+            <option value="repeating">Repeating</option>
+        </select>
+    </div>
+  <script src="script.js"></script>
+  <script src="p5.js"></script>    
+
+</body>
+</html>

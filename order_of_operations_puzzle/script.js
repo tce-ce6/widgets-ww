@@ -1,64 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathematical Expression Builder</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            touch-action: manipulation; /* Prevent browser touch gestures */
-        }
-        .canvas {
-            width: 900px;
-            height: 500px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
-        }
-        .cta-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .cta-button {
-            background-color: #7c3aed;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            margin: 0 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: background-color 0.3s;
-        }
-        .cta-button:hover {
-            background-color: #6d28d9;
-        }
-        .cta-button.secondary {
-            background-color: #a855f7;
-        }
-        .cta-button.secondary:hover {
-            background-color: #9333ea;
-        }
-    </style>
-</head>
-<body>
-    <div class="canvas" id="canvas"></div>
-    <div class="cta-buttons">
-        <button class="cta-button" id="startOverBtn">START OVER</button>
-        <button class="cta-button secondary" id="newQuestionBtn">NEW QUESTION</button>
-    </div>
-    <script>
+
         // MathExpressionModel class
         class MathExpressionModel {
             constructor() {
@@ -67,7 +7,7 @@
                 this.currentEquation = null;
                 this.usedNumbers = [];
                 this.result = null;
-                this.calculationSteps = '';
+                this.calculationSteps = [];
                 this.isComplete = false;
                 this.equations = [
                     {
@@ -76,10 +16,15 @@
                         calculate: (nums) => (nums[0] + nums[1]) * Math.pow(nums[2], nums[3]),
                         display: (nums) => `(${nums[0]} + ${nums[1]}) × ${nums[2]}^${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const sum = nums[0] + nums[1];
                             const power = Math.pow(nums[2], nums[3]);
                             const result = sum * power;
-                            return `(${nums[0]} + ${nums[1]}) × ${nums[2]}^${nums[3]} = ${sum} × ${power} = ${result}`;
+                            return [
+                                `(${nums[0]} + ${nums[1]}) × ${nums[2]}^${nums[3]}`,
+                                `${format(sum)} × ${format(power)}`,
+                                format(result)
+                            ];
                         }
                     },
                     {
@@ -88,10 +33,15 @@
                         calculate: (nums) => Math.pow(nums[0], nums[1]) + (nums[2] * nums[3]),
                         display: (nums) => `${nums[0]}^${nums[1]} + ${nums[2]} × ${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const power = Math.pow(nums[0], nums[1]);
                             const product = nums[2] * nums[3];
                             const result = power + product;
-                            return `${nums[0]}^${nums[1]} + ${nums[2]} × ${nums[3]} = ${power} + ${product} = ${result}`;
+                            return [
+                                `${nums[0]}^${nums[1]} + ${nums[2]} × ${nums[3]}`,
+                                `${format(power)} + ${format(product)}`,
+                                format(result)
+                            ];
                         }
                     },
                     {
@@ -100,10 +50,15 @@
                         calculate: (nums) => (nums[0] * nums[1]) + Math.pow(nums[2], nums[3]),
                         display: (nums) => `${nums[0]} × ${nums[1]} + ${nums[2]}^${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const product = nums[0] * nums[1];
                             const power = Math.pow(nums[2], nums[3]);
                             const result = product + power;
-                            return `${nums[0]} × ${nums[1]} + ${nums[2]}^${nums[3]} = ${product} + ${power} = ${result}`;
+                            return [
+                                `${nums[0]} × ${nums[1]} + ${nums[2]}^${nums[3]}`,
+                                `${format(product)} + ${format(power)}`,
+                                format(result)
+                            ];
                         }
                     },
                     {
@@ -112,10 +67,16 @@
                         calculate: (nums) => Math.pow(nums[0] * nums[1], nums[2]) + nums[3],
                         display: (nums) => `(${nums[0]} × ${nums[1]})^${nums[2]} + ${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const product = nums[0] * nums[1];
                             const power = Math.pow(product, nums[2]);
                             const result = power + nums[3];
-                            return `(${nums[0]} × ${nums[1]})^${nums[2]} + ${nums[3]} = ${product}^${nums[2]} + ${nums[3]} = ${power} + ${nums[3]} = ${result}`;
+                            return [
+                                `(${nums[0]} × ${nums[1]})^${nums[2]} + ${nums[3]}`,
+                                `${format(product)}^${nums[2]} + ${nums[3]}`,
+                                `${format(power)} + ${nums[3]}`,
+                                format(result)
+                            ];
                         }
                     },
                     {
@@ -124,10 +85,16 @@
                         calculate: (nums) => Math.pow(nums[0], nums[1]) * nums[2] + nums[3],
                         display: (nums) => `${nums[0]}^${nums[1]} × ${nums[2]} + ${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const power = Math.pow(nums[0], nums[1]);
                             const product = power * nums[2];
                             const result = product + nums[3];
-                            return `${nums[0]}^${nums[1]} × ${nums[2]} + ${nums[3]} = ${power} × ${nums[2]} + ${nums[3]} = ${product} + ${nums[3]} = ${result}`;
+                            return [
+                                `${nums[0]}^${nums[1]} × ${nums[2]} + ${nums[3]}`,
+                                `${format(power)} × ${nums[2]} + ${nums[3]}`,
+                                `${format(product)} + ${nums[3]}`,
+                                format(result)
+                            ];
                         }
                     },
                     {
@@ -136,10 +103,86 @@
                         calculate: (nums) => nums[0] + Math.pow(nums[1], nums[2]) * nums[3],
                         display: (nums) => `${nums[0]} + ${nums[1]}^${nums[2]} × ${nums[3]}`,
                         steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
                             const power = Math.pow(nums[1], nums[2]);
                             const product = power * nums[3];
                             const result = nums[0] + product;
-                            return `${nums[0]} + ${nums[1]}^${nums[2]} × ${nums[3]} = ${nums[0]} + ${power} × ${nums[3]} = ${nums[0]} + ${product} = ${result}`;
+                            return [
+                                `${nums[0]} + ${nums[1]}^${nums[2]} × ${nums[3]}`,
+                                `${nums[0]} + ${format(power)} × ${nums[3]}`,
+                                `${nums[0]} + ${format(product)}`,
+                                format(result)
+                            ];
+                        }
+                    },
+                    // New equations with subtraction
+                    {
+                        template: ['(', 0, '-', 1, ')', '×', 2, '^', 3],
+                        positions: [0, 1, 2, 3],
+                        calculate: (nums) => (nums[0] - nums[1]) * Math.pow(nums[2], nums[3]),
+                        display: (nums) => `(${nums[0]} - ${nums[1]}) × ${nums[2]}^${nums[3]}`,
+                        steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+                            const diff = nums[0] - nums[1];
+                            const power = Math.pow(nums[2], nums[3]);
+                            const result = diff * power;
+                            return [
+                                `(${nums[0]} - ${nums[1]}) × ${nums[2]}^${nums[3]}`,
+                                `${format(diff)} × ${format(power)}`,
+                                format(result)
+                            ];
+                        }
+                    },
+                    {
+                        template: [0, '^', 1, '-', 2, '×', 3],
+                        positions: [0, 1, 2, 3],
+                        calculate: (nums) => Math.pow(nums[0], nums[1]) - (nums[2] * nums[3]),
+                        display: (nums) => `${nums[0]}^${nums[1]} - ${nums[2]} × ${nums[3]}`,
+                        steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+                            const power = Math.pow(nums[0], nums[1]);
+                            const product = nums[2] * nums[3];
+                            const result = power - product;
+                            return [
+                                `${nums[0]}^${nums[1]} - ${nums[2]} × ${nums[3]}`,
+                                `${format(power)} - ${format(product)}`,
+                                format(result)
+                            ];
+                        }
+                    },
+                    {
+                        template: [0, '×', 1, '-', 2, '^', 3],
+                        positions: [0, 1, 2, 3],
+                        calculate: (nums) => (nums[0] * nums[1]) - Math.pow(nums[2], nums[3]),
+                        display: (nums) => `${nums[0]} × ${nums[1]} - ${nums[2]}^${nums[3]}`,
+                        steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+                            const product = nums[0] * nums[1];
+                            const power = Math.pow(nums[2], nums[3]);
+                            const result = product - power;
+                            return [
+                                `${nums[0]} × ${nums[1]} - ${nums[2]}^${nums[3]}`,
+                                `${format(product)} - ${format(power)}`,
+                                format(result)
+                            ];
+                        }
+                    },
+                    {
+                        template: ['(', 0, '×', 1, ')', '^', 2, '-', 3],
+                        positions: [0, 1, 2, 3],
+                        calculate: (nums) => Math.pow(nums[0] * nums[1], nums[2]) - nums[3],
+                        display: (nums) => `(${nums[0]} × ${nums[1]})^${nums[2]} - ${nums[3]}`,
+                        steps: (nums) => {
+                            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+                            const product = nums[0] * nums[1];
+                            const power = Math.pow(product, nums[2]);
+                            const result = power - nums[3];
+                            return [
+                                `(${nums[0]} × ${nums[1]})^${nums[2]} - ${nums[3]}`,
+                                `${format(product)}^${nums[2]} - ${nums[3]}`,
+                                `${format(power)} - ${nums[3]}`,
+                                format(result)
+                            ];
                         }
                     }
                 ];
@@ -165,7 +208,7 @@
                 this.expression = [null, null, null, null];
                 this.usedNumbers = [];
                 this.result = null;
-                this.calculationSteps = '';
+                this.calculationSteps = [];
                 this.isComplete = false;
             }
 
@@ -209,7 +252,7 @@
                     }
                     this.isComplete = false;
                     this.result = null;
-                    this.calculationSteps = '';
+                    this.calculationSteps = [];
                 }
             }
 
@@ -227,7 +270,7 @@
                     this.calculationSteps = this.currentEquation.steps(this.expression);
                 } catch (error) {
                     this.result = 'Error';
-                    this.calculationSteps = 'Calculation error';
+                    this.calculationSteps = ['Calculation error'];
                 }
             }
 
@@ -272,7 +315,7 @@
         let draggedValue = null;
         let draggedX, draggedY;
         let selectedValue = null; // Track selected number for click-to-place
-
+        
         function setup() {
             let c = createCanvas(900, 500);
             c.parent('canvas');
@@ -286,9 +329,11 @@
 
         function draw() {
             background(255);
-            textSize(18);
+            textSize(20);
             textAlign(LEFT);
-            fill(55, 65, 81);
+            fill(0);
+            stroke(0);
+            strokeWeight(0.5);
             text("Build an expression with the largest value.", 30, 30);
             renderNumbers();
             renderExpression();
@@ -299,7 +344,7 @@
                 fill(224, 231, 255);
                 stroke(199, 210, 254);
                 rect(draggedX - 27.5, draggedY - 27.5, 55, 55, 8);
-                fill(55, 48, 163);
+                fill(0);
                 textSize(20);
                 textAlign(CENTER, CENTER);
                 text(draggedValue, draggedX, draggedY);
@@ -483,11 +528,20 @@
 
         function renderResult() {
             textAlign(CENTER);
-            textSize(16);
+            textSize(20);
             fill(55, 65, 81);
-            text(model.calculationSteps, width / 2, 320);
-            textSize(18);
-            text("Result = " + model.result, width / 2, 350);
+            strokeWeight(0.7);
+            // Show all calculation steps at once
+            if (model.calculationSteps.length > 0) {
+                for (let i = 0; i < model.calculationSteps.length; i++) {
+                    text(model.calculationSteps[i], width / 2, 300 + i * 25);
+                }
+            }
+            
+            // Show final result
+            textSize(25);
+            const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+            text("Largest value found = " + format(model.result), width /4.7, 400);
         }
 
         function mousePressed() {
@@ -620,6 +674,4 @@
             model.generateRandomNumbers();
             selectedValue = null;
         }
-    </script>
-</body>
-</html>
+  
