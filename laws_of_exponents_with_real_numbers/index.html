@@ -1,0 +1,916 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Exponent Laws Learning Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        #canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .instructions {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #4299e1;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 5px 0;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exponent Laws Interactive Simulator</h1>
+        <p class="subtitle">Master the laws of exponents through interactive exploration and practice</p>
+        
+        <div id="canvas-container"></div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #3B82F6;"></div>
+                <span>Product Rule</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #10B981;"></div>
+                <span>Quotient Rule</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #8B5CF6;"></div>
+                <span>Power Rule</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #F59E0B;"></div>
+                <span>Zero Exponent</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #EF4444;"></div>
+                <span>Negative Exponent</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background-color: #EC4899;"></div>
+                <span>Fractional Exponent</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use the Simulator</h3>
+            <ul>
+                <li><strong>Choose a Law:</strong> Click on any exponent law card to start learning</li>
+                <li><strong>Interactive Tutorial:</strong> Follow step-by-step examples with visual explanations</li>
+                <li><strong>Practice Mode:</strong> Test your knowledge with randomly generated problems</li>
+                <li><strong>Visual Mode:</strong> See animated representations of exponent operations</li>
+                <li><strong>Law Mixer:</strong> Practice complex expressions combining multiple laws</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Exponent Laws Simulator Implementation
+        let gameState;
+        let laws;
+        let buttons = [];
+        
+        const WIDTH = 800;
+        const HEIGHT = 500;
+
+        function setup() {
+            let canvas = createCanvas(WIDTH, HEIGHT);
+            canvas.parent('canvas-container');
+            
+            // Initialize laws
+            laws = [
+                {
+                    id: 'product',
+                    name: 'Product Rule',
+                    formula: 'aᵐ × aⁿ = aᵐ⁺ⁿ',
+                    description: 'When multiplying powers with the same base, add exponents',
+                    color: '#3B82F6',
+                    icon: '×'
+                },
+                {
+                    id: 'quotient',
+                    name: 'Quotient Rule',
+                    formula: 'aᵐ ÷ aⁿ = aᵐ⁻ⁿ',
+                    description: 'When dividing powers with the same base, subtract exponents',
+                    color: '#10B981',
+                    icon: '÷'
+                },
+                {
+                    id: 'power',
+                    name: 'Power Rule',
+                    formula: '(aᵐ)ⁿ = aᵐⁿ',
+                    description: 'When raising a power to a power, multiply exponents',
+                    color: '#8B5CF6',
+                    icon: '^'
+                },
+                {
+                    id: 'zero',
+                    name: 'Zero Exponent',
+                    formula: 'a⁰ = 1',
+                    description: 'Any base to the power of zero equals 1',
+                    color: '#F59E0B',
+                    icon: '⁰'
+                },
+                {
+                    id: 'negative',
+                    name: 'Negative Exponent',
+                    formula: 'a⁻ⁿ = 1/aⁿ',
+                    description: 'Negative exponents create reciprocals',
+                    color: '#EF4444',
+                    icon: '⁻'
+                },
+                {
+                    id: 'fractional',
+                    name: 'Fractional Exponent',
+                    formula: 'a¹/ⁿ = ⁿ√a',
+                    description: 'Fractional exponents represent roots',
+                    color: '#EC4899',
+                    icon: '√'
+                }
+            ];
+
+            // Initialize game state
+            gameState = {
+                currentScreen: 'menu',
+                selectedLaw: null,
+                currentQuestion: null,
+                score: 0,
+                questionIndex: 0,
+                totalQuestions: 5,
+                showAnswer: false,
+                animationProgress: 0,
+                feedback: '',
+                feedbackColor: '#10B981',
+                showSteps: false,
+                stepIndex: 0
+            };
+
+            buttons = [];
+        }
+
+        function draw() {
+            // Gradient background
+            for (let i = 0; i <= HEIGHT; i++) {
+                let inter = map(i, 0, HEIGHT, 0, 1);
+                let c = lerpColor(color(240, 248, 255), color(243, 232, 255), inter);
+                stroke(c);
+                line(0, i, WIDTH, i);
+            }
+
+            // Update animation progress
+            gameState.animationProgress += 0.02;
+            if (gameState.animationProgress > 1) gameState.animationProgress = 0;
+
+            // Draw current screen
+            switch (gameState.currentScreen) {
+                case 'menu':
+                    drawMenu();
+                    break;
+                case 'tutorial':
+                    drawTutorial();
+                    break;
+                case 'practice':
+                    drawPractice();
+                    break;
+                case 'mixer':
+                    drawMixer();
+                    break;
+                case 'visual':
+                    drawVisual();
+                    break;
+            }
+
+            // Draw navigation
+            drawNavigation();
+        }
+
+        function drawMenu() {
+            // Title
+            fill(60, 80, 120);
+            textAlign(CENTER, CENTER);
+            textSize(32);
+            text('Choose an Exponent Law to Explore', WIDTH/2, 60);
+
+            // Law cards
+            const cols = 3;
+            const rows = 2;
+            const cardWidth = 220;
+            const cardHeight = 120;
+            const startX = (WIDTH - cols * cardWidth - (cols - 1) * 20) / 2;
+            const startY = 120;
+
+            buttons = [];
+
+            for (let i = 0; i < laws.length; i++) {
+                const law = laws[i];
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const x = startX + col * (cardWidth + 20);
+                const y = startY + row * (cardHeight + 30);
+
+                // Card hover effect
+                const isHovered = mouseX > x && mouseX < x + cardWidth && 
+                                 mouseY > y && mouseY < y + cardHeight;
+                
+                // Card background
+                fill(255);
+                stroke(law.color);
+                strokeWeight(isHovered ? 3 : 2);
+                
+                // Add subtle shadow
+                fill(0, 0, 0, 20);
+                noStroke();
+                rect(x + 3, y + 3, cardWidth, cardHeight, 10);
+                
+                fill(isHovered ? color(law.color + '20') : 255);
+                stroke(law.color);
+                strokeWeight(isHovered ? 3 : 2);
+                rect(x, y, cardWidth, cardHeight, 10);
+
+                // Icon
+                fill(law.color);
+                noStroke();
+                textSize(32);
+                text(law.icon, x + cardWidth/2, y + 35);
+
+                // Law name
+                fill(60, 80, 120);
+                textSize(16);
+                text(law.name, x + cardWidth/2, y + 65);
+
+                // Formula
+                fill(100, 120, 140);
+                textSize(12);
+                text(law.formula, x + cardWidth/2, y + 85);
+
+                // Store button info
+                buttons.push({
+                    x, y, width: cardWidth, height: cardHeight,
+                    action: () => {
+                        gameState.selectedLaw = law;
+                        gameState.currentScreen = 'tutorial';
+                        generateQuestion();
+                    }
+                });
+            }
+
+            // Mode buttons
+            drawModeButtons();
+        }
+
+        function drawModeButtons() {
+            const buttonY = HEIGHT - 60;
+            const buttonWidth = 120;
+            const buttonHeight = 35;
+            const spacing = 20;
+            const totalWidth = 3 * buttonWidth + 2 * spacing;
+            const startX = (WIDTH - totalWidth) / 2;
+
+            const modes = [
+                { name: 'Visual Mode', screen: 'visual', color: '#8B5CF6' },
+                { name: 'Practice', screen: 'practice', color: '#10B981' },
+                { name: 'Law Mixer', screen: 'mixer', color: '#F59E0B' }
+            ];
+
+            modes.forEach((mode, i) => {
+                const x = startX + i * (buttonWidth + spacing);
+                const isHovered = mouseX > x && mouseX < x + buttonWidth && 
+                                 mouseY > buttonY && mouseY < buttonY + buttonHeight;
+
+                fill(isHovered ? mode.color : 255);
+                stroke(mode.color);
+                strokeWeight(2);
+                rect(x, buttonY, buttonWidth, buttonHeight, 8);
+
+                fill(isHovered ? 255 : mode.color);
+                noStroke();
+                textSize(12);
+                text(mode.name, x + buttonWidth/2, buttonY + buttonHeight/2);
+
+                buttons.push({
+                    x, y: buttonY, width: buttonWidth, height: buttonHeight,
+                    action: () => {
+                        gameState.currentScreen = mode.screen;
+                        if (mode.screen === 'practice') generatePracticeQuestion();
+                    }
+                });
+            });
+        }
+
+        function drawTutorial() {
+            if (!gameState.selectedLaw) return;
+
+            const law = gameState.selectedLaw;
+            
+            // Header
+            fill(law.color);
+            textAlign(CENTER, CENTER);
+            textSize(24);
+            text(law.name, WIDTH/2, 40);
+
+            // Description
+            fill(60, 80, 120);
+            textSize(14);
+            text(law.description, WIDTH/2, 70);
+
+            // Formula box
+            fill(255);
+            stroke(law.color);
+            strokeWeight(2);
+            rect(WIDTH/2 - 150, 90, 300, 50, 10);
+            
+            fill(law.color);
+            noStroke();
+            textSize(20);
+            text(law.formula, WIDTH/2, 115);
+
+            // Interactive example
+            if (gameState.currentQuestion) {
+                drawInteractiveExample();
+            }
+
+            // Navigation buttons
+            drawTutorialButtons();
+        }
+
+        function drawInteractiveExample() {
+            if (!gameState.currentQuestion) return;
+
+            const question = gameState.currentQuestion;
+            const startY = 180;
+
+            // Question
+            fill(60, 80, 120);
+            textAlign(CENTER, CENTER);
+            textSize(18);
+            text('Example: ' + question.expression, WIDTH/2, startY);
+
+            // Steps
+            if (gameState.showSteps) {
+                for (let i = 0; i <= gameState.stepIndex; i++) {
+                    if (i < question.steps.length) {
+                        const stepY = startY + 40 + i * 30;
+                        
+                        // Step background
+                        fill(255, 255, 255, 200);
+                        stroke(gameState.selectedLaw.color);
+                        strokeWeight(1);
+                        rect(WIDTH/2 - 200, stepY - 15, 400, 25, 5);
+                        
+                        fill(80, 100, 120);
+                        noStroke();
+                        textSize(14);
+                        text(`Step ${i + 1}: ${question.steps[i]}`, WIDTH/2, stepY);
+                    }
+                }
+            }
+
+            // Answer
+            if (gameState.showAnswer) {
+                const answerY = startY + 40 + question.steps.length * 30 + 20;
+                
+                // Answer box
+                fill(gameState.selectedLaw.color + '20');
+                stroke(gameState.selectedLaw.color);
+                strokeWeight(2);
+                rect(WIDTH/2 - 100, answerY - 20, 200, 40, 10);
+                
+                fill(gameState.selectedLaw.color);
+                noStroke();
+                textSize(16);
+                text('Answer: ' + question.answer, WIDTH/2, answerY);
+            }
+
+            // Feedback
+            if (gameState.feedback) {
+                fill(gameState.feedbackColor);
+                textSize(14);
+                text(gameState.feedback, WIDTH/2, HEIGHT - 100);
+            }
+        }
+
+        function drawTutorialButtons() {
+            const buttonY = HEIGHT - 60;
+            const buttonWidth = 100;
+            const buttonHeight = 35;
+            const spacing = 20;
+
+            const tutorialButtons = [
+                { 
+                    name: 'Show Steps', 
+                    action: () => {
+                        gameState.showSteps = true;
+                        gameState.stepIndex = 0;
+                        animateSteps();
+                    }
+                },
+                { 
+                    name: 'Show Answer', 
+                    action: () => {
+                        gameState.showAnswer = true;
+                        gameState.feedback = 'Great! Now you understand how this law works.';
+                        gameState.feedbackColor = '#10B981';
+                    }
+                },
+                { 
+                    name: 'New Example', 
+                    action: () => {
+                        generateQuestion();
+                        gameState.showSteps = false;
+                        gameState.showAnswer = false;
+                        gameState.feedback = '';
+                        gameState.stepIndex = 0;
+                    }
+                }
+            ];
+
+            const totalWidth = tutorialButtons.length * buttonWidth + (tutorialButtons.length - 1) * spacing;
+            const startX = (WIDTH - totalWidth) / 2;
+
+            tutorialButtons.forEach((btn, i) => {
+                const x = startX + i * (buttonWidth + spacing);
+                const isHovered = mouseX > x && mouseX < x + buttonWidth && 
+                                 mouseY > buttonY && mouseY < buttonY + buttonHeight;
+
+                fill(isHovered ? gameState.selectedLaw.color : 255);
+                stroke(gameState.selectedLaw.color);
+                strokeWeight(2);
+                rect(x, buttonY, buttonWidth, buttonHeight, 8);
+
+                fill(isHovered ? 255 : gameState.selectedLaw.color);
+                noStroke();
+                textSize(12);
+                text(btn.name, x + buttonWidth/2, buttonY + buttonHeight/2);
+
+                buttons.push({
+                    x, y: buttonY, width: buttonWidth, height: buttonHeight,
+                    action: btn.action
+                });
+            });
+        }
+
+        function drawPractice() {
+            // Practice mode header
+            fill(60, 80, 120);
+            textAlign(CENTER, CENTER);
+            textSize(24);
+            text('Practice Challenge', WIDTH/2, 40);
+
+            // Progress bar
+            drawProgressBar();
+
+            // Score
+            fill(60, 80, 120);
+            textSize(16);
+            text(`Score: ${gameState.score}/${gameState.totalQuestions}`, WIDTH/2, 100);
+
+            // Current question
+            if (gameState.currentQuestion) {
+                textSize(18);
+                text('Simplify: ' + gameState.currentQuestion.expression, WIDTH/2, 150);
+
+                // Multiple choice options or input field
+                drawPracticeOptions();
+            }
+
+            // Feedback
+            if (gameState.feedback) {
+                fill(gameState.feedbackColor);
+                textSize(14);
+                text(gameState.feedback, WIDTH/2, HEIGHT - 80);
+            }
+        }
+
+        function drawProgressBar() {
+            const barWidth = 300;
+            const barHeight = 20;
+            const barX = WIDTH/2 - barWidth/2;
+            const barY = 70;
+            const progress = gameState.questionIndex / gameState.totalQuestions;
+
+            // Background
+            fill(230);
+            noStroke();
+            rect(barX, barY, barWidth, barHeight, 10);
+
+            // Progress
+            fill('#10B981');
+            rect(barX, barY, barWidth * progress, barHeight, 10);
+
+            // Text
+            fill(60, 80, 120);
+            textSize(12);
+            text(`${gameState.questionIndex}/${gameState.totalQuestions}`, WIDTH/2, barY + barHeight/2);
+        }
+
+        function drawPracticeOptions() {
+            // For now, just show the answer and a continue button
+            const answerY = 200;
+            
+            fill(255);
+            stroke(200);
+            strokeWeight(2);
+            rect(WIDTH/2 - 100, answerY - 20, 200, 40, 10);
+            
+            fill(60, 80, 120);
+            noStroke();
+            textSize(16);
+            text('Answer: ' + gameState.currentQuestion.answer, WIDTH/2, answerY);
+
+            // Continue button
+            const continueY = answerY + 60;
+            const buttonWidth = 120;
+            const buttonHeight = 35;
+            const buttonX = WIDTH/2 - buttonWidth/2;
+
+            const isHovered = mouseX > buttonX && mouseX < buttonX + buttonWidth && 
+                             mouseY > continueY && mouseY < continueY + buttonHeight;
+
+            fill(isHovered ? '#10B981' : 255);
+            stroke('#10B981');
+            strokeWeight(2);
+            rect(buttonX, continueY, buttonWidth, buttonHeight, 8);
+
+            fill(isHovered ? 255 : '#10B981');
+            noStroke();
+            textSize(12);
+            text('Continue', WIDTH/2, continueY + buttonHeight/2);
+
+            buttons.push({
+                x: buttonX, y: continueY, width: buttonWidth, height: buttonHeight,
+                action: () => {
+                    gameState.score++;
+                    gameState.questionIndex++;
+                    if (gameState.questionIndex < gameState.totalQuestions) {
+                        generatePracticeQuestion();
+                    } else {
+                        gameState.feedback = `Practice complete! Final score: ${gameState.score}/${gameState.totalQuestions}`;
+                        gameState.feedbackColor = '#10B981';
+                    }
+                }
+            });
+        }
+
+        function drawMixer() {
+            // Law mixer mode
+            fill(60, 80, 120);
+            textAlign(CENTER, CENTER);
+            textSize(24);
+            text('Law Mixer - Combined Expressions', WIDTH/2, 40);
+
+            textSize(14);
+            text('Practice expressions that combine multiple exponent laws', WIDTH/2, 70);
+
+            // Mixed expression example
+            const mixedExpression = '(2³)² × 2⁻¹ ÷ 2⁰';
+            textSize(18);
+            text('Example: ' + mixedExpression, WIDTH/2, 150);
+
+            // Step-by-step breakdown
+            const steps = [
+                'Step 1: Apply Power Rule: (2³)² = 2⁶',
+                'Step 2: Apply Zero Rule: 2⁰ = 1',
+                'Step 3: Rewrite: 2⁶ × 2⁻¹ ÷ 1 = 2⁶ × 2⁻¹',
+                'Step 4: Apply Product Rule: 2⁶ × 2⁻¹ = 2⁵',
+                'Answer: 2⁵ = 32'
+            ];
+
+            steps.forEach((step, i) => {
+                const stepY = 200 + i * 25;
+                fill(80, 100, 120);
+                textSize(12);
+                text(step, WIDTH/2, stepY);
+            });
+        }
+
+        function drawVisual() {
+            // Visual representation mode
+            fill(60, 80, 120);
+            textAlign(CENTER, CENTER);
+            textSize(24);
+            text('Visual Exponent Explorer', WIDTH/2, 40);
+
+            // Draw animated visual representations
+            drawExponentVisual();
+        }
+
+        function drawExponentVisual() {
+            const centerX = WIDTH/2;
+            const centerY = HEIGHT/2;
+            const base = 2;
+            const exponent = Math.floor(gameState.animationProgress * 4) + 1;
+
+            // Show the expression
+            fill(60, 80, 120);
+            textSize(18);
+            text(`${base}^${exponent}`, centerX, centerY - 80);
+
+            // Visual representation using squares
+            const squareSize = 15;
+            const spacing = 3;
+            const result = Math.pow(base, exponent);
+            const cols = Math.min(result, 8);
+            const rows = Math.ceil(result / cols);
+
+            const startX = centerX - (cols * (squareSize + spacing) - spacing) / 2;
+            const startY = centerY - (rows * (squareSize + spacing) - spacing) / 2;
+
+            for (let i = 0; i < result && i < 64; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const x = startX + col * (squareSize + spacing);
+                const y = startY + row * (squareSize + spacing);
+
+                // Animate appearance
+                const progress = (gameState.animationProgress * result - i) * 2;
+                const alpha = Math.max(0, Math.min(1, progress));
+
+                fill(100, 150, 250, alpha * 255);
+                noStroke();
+                rect(x, y, squareSize, squareSize, 3);
+            }
+
+            // Show the result
+            fill(60, 80, 120);
+            textSize(16);
+            text(`= ${result}`, centerX, centerY + 80);
+        }
+
+        function drawNavigation() {
+            // Back button
+            if (gameState.currentScreen !== 'menu') {
+                const backX = 20;
+                const backY = 20;
+                const backSize = 80;
+                const backHeight = 30;
+
+                const isHovered = mouseX > backX && mouseX < backX + backSize && 
+                                 mouseY > backY && mouseY < backY + backHeight;
+
+                fill(isHovered ? '#EF4444' : 255);
+                stroke('#EF4444');
+                strokeWeight(2);
+                rect(backX, backY, backSize, backHeight, 8);
+
+                fill(isHovered ? 255 : '#EF4444');
+                noStroke();
+                textAlign(CENTER, CENTER);
+                textSize(12);
+                text('← Back', backX + backSize/2, backY + backHeight/2);
+
+                buttons.push({
+                    x: backX, y: backY, width: backSize, height: backHeight,
+                    action: () => {
+                        gameState.currentScreen = 'menu';
+                        gameState.selectedLaw = null;
+                        gameState.feedback = '';
+                        gameState.showSteps = false;
+                        gameState.showAnswer = false;
+                    }
+                });
+            }
+        }
+
+        function generateQuestion() {
+            if (!gameState.selectedLaw) return;
+
+            const law = gameState.selectedLaw;
+            let question;
+
+            switch (law.id) {
+                case 'product':
+                    question = generateProductQuestion();
+                    break;
+                case 'quotient':
+                    question = generateQuotientQuestion();
+                    break;
+                case 'power':
+                    question = generatePowerQuestion();
+                    break;
+                case 'zero':
+                    question = generateZeroQuestion();
+                    break;
+                case 'negative':
+                    question = generateNegativeQuestion();
+                    break;
+                case 'fractional':
+                    question = generateFractionalQuestion();
+                    break;
+                default:
+                    question = generateProductQuestion();
+            }
+
+            gameState.currentQuestion = question;
+        }
+
+        function generateProductQuestion() {
+            const base = random([2, 3, 4, 5]);
+            const exp1 = floor(random(2, 5));
+            const exp2 = floor(random(2, 5));
+            const result = exp1 + exp2;
+
+            return {
+                expression: `${base}^${exp1} × ${base}^${exp2}`,
+                steps: [
+                    `Identify the common base: ${base}`,
+                    `Apply product rule: add exponents`,
+                    `${exp1} + ${exp2} = ${result}`,
+                    `Result: ${base}^${result}`
+                ],
+                answer: `${base}^${result}`,
+                explanation: `When multiplying powers with the same base, we add the exponents: ${exp1} + ${exp2} = ${result}`
+            };
+        }
+
+        function generateQuotientQuestion() {
+            const base = random([2, 3, 4, 5]);
+            const exp1 = floor(random(4, 8));
+            const exp2 = floor(random(2, exp1));
+            const result = exp1 - exp2;
+
+            return {
+                expression: `${base}^${exp1} ÷ ${base}^${exp2}`,
+                steps: [
+                    `Identify the common base: ${base}`,
+                    `Apply quotient rule: subtract exponents`,
+                    `${exp1} - ${exp2} = ${result}`,
+                    `Result: ${base}^${result}`
+                ],
+                answer: `${base}^${result}`,
+                explanation: `When dividing powers with the same base, we subtract the exponents: ${exp1} - ${exp2} = ${result}`
+            };
+        }
+
+        function generatePowerQuestion() {
+            const base = random([2, 3, 4, 5]);
+            const exp1 = floor(random(2, 4));
+            const exp2 = floor(random(2, 4));
+            const result = exp1 * exp2;
+
+            return {
+                expression: `(${base}^${exp1})^${exp2}`,
+                steps: [
+                    `Identify the base and exponents: ${base}, ${exp1}, ${exp2}`,
+                    `Apply power rule: multiply exponents`,
+                    `${exp1} × ${exp2} = ${result}`,
+                    `Result: ${base}^${result}`
+                ],
+                answer: `${base}^${result}`,
+                explanation: `When raising a power to a power, we multiply the exponents: ${exp1} × ${exp2} = ${result}`
+            };
+        }
+
+        function generateZeroQuestion() {
+            const base = random([2, 3, 4, 5, 7, 10]);
+
+            return {
+                expression: `${base}^0`,
+                steps: [
+                    `Any base to the power of 0 equals 1`,
+                    `This is a fundamental rule of exponents`,
+                    `${base}^0 = 1`
+                ],
+                answer: '1',
+                explanation: `Any non-zero number raised to the power of 0 equals 1`
+            };
+        }
+
+        function generateNegativeQuestion() {
+            const base = random([2, 3, 4, 5]);
+            const exp = floor(random(2, 4));
+
+            return {
+                expression: `${base}^-${exp}`,
+                steps: [
+                    `Negative exponent means reciprocal`,
+                    `${base}^-${exp} = 1/${base}^${exp}`,
+                    `Calculate ${base}^${exp} = ${Math.pow(base, exp)}`,
+                    `Result: 1/${Math.pow(base, exp)}`
+                ],
+                answer: `1/${Math.pow(base, exp)}`,
+                explanation: `A negative exponent creates a reciprocal: ${base}^-${exp} = 1/${base}^${exp}`
+            };
+        }
+
+        function generateFractionalQuestion() {
+            const base = random([4, 8, 9, 16, 25]);
+            const root = base === 4 || base === 16 ? 2 : base === 8 ? 3 : base === 9 || base === 25 ? 2 : 2;
+            const result = Math.pow(base, 1/root);
+
+            return {
+                expression: `${base}^(1/${root})`,
+                steps: [
+                    `Fractional exponent means root`,
+                    `${base}^(1/${root}) = ${root}√${base}`,
+                    `Calculate the ${root === 2 ? 'square' : 'cube'} root`,
+                    `Result: ${result}`
+                ],
+                answer: `${result}`,
+                explanation: `A fractional exponent 1/n means the nth root: ${base}^(1/${root}) = ${root}√${base} = ${result}`
+            };
+        }
+
+        function generatePracticeQuestion() {
+            const randomLaw = random(laws);
+            gameState.selectedLaw = randomLaw;
+            generateQuestion();
+        }
+
+        function animateSteps() {
+            if (gameState.stepIndex < gameState.currentQuestion.steps.length - 1) {
+                setTimeout(() => {
+                    gameState.stepIndex++;
+                    animateSteps();
+                }, 800);
+            }
+        }
+
+        function mousePressed() {
+            buttons.forEach(button => {
+                if (mouseX > button.x && mouseX < button.x + button.width &&
+                    mouseY > button.y && mouseY < button.y + button.height) {
+                    button.action();
+                }
+            });
+            
+            // Clear buttons after click to prevent multiple triggers
+            buttons = [];
+        }
+    </script>
+</body>
+</html>
