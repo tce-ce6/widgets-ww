@@ -9,7 +9,12 @@
             padding: 25px;
             overflow: hidden;
         }
-        
+        .question-circle.active {
+    border: 3px solid #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
         header {
             text-align: center;
             margin-bottom: 20px;
@@ -133,8 +138,87 @@
             color: #343a40;
         }
         
+          #reflectionModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .questions-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+        }
+
+        .question-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #bbdefb;
+        }
+
+        .question-circle:hover {
+            background: #bbdefb;
+            transform: scale(1.05);
+        }
+
+        #questionDisplay {
+            padding: 20px;
+            background: #f5f9ff;
+            border-radius: 10px;
+            border-left: 4px solid #1e6bef;
+            min-height: 80px;
+            font-size: 18px;
+        }
+
+        /* Responsive design */
         @media (max-width: 768px) {
-            .controls-container {
+            .button-controls {
                 flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .questions-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .d-flex {
+                flex-direction: column;
+                gap: 10px;
             }
         }

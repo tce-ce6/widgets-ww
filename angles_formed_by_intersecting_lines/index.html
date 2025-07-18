@@ -4,55 +4,488 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angles Formed by Intersecting Lines</title>
-    <script src="p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="global_style.css">
 </head>
 <body>
     <div class="mainContainerOuter">
-
-               <div class="wdgetTitle">
-
+        <div class="wdgetTitle">
             <h2>Angles Formed by Intersecting Lines</h2>
-            <p class="subtitle">Drag the blue handles to rotate the lines and observe how the angles change</p>
+            <p class="subtitle">Rotate the lines by dragging the blue handles. Watch how the angles change!</p>
         </div>
         
-                <div class="mainContainer">
-
+        <div class="mainContainer" id="canvas-container">
             <div id="canvas"></div>
-         </div>
-        
-        <div class="button-controls d-flex  justify-content-between">
-            
-                    <div class="control-group">
-                        <input type="checkbox" id="measurements" >
-                        <label for="measurements">Show Angle Measurements</label>
-                    </div>
-                    <div class="control-group">
-                        <input type="checkbox" id="observations" >
-                        <label for="observations">Show Key Observations</label>
-                    </div>
-                    <div class="control-group">
-                        <input type="checkbox" id="angleMeasurements" >
-                        <label for="angleMeasurements">Show Angle Values Panel</label>
-                    </div>
-                    <button id="reset" class="action-button">Reset Position</button>
         </div>
         
-        <!-- <div class="instructions">
-            <h2>How to Use in Class</h2>
-            <p><strong>Pose the Question:</strong> What happens when two lines cross? How many angles do they make?</p>
-            <p><strong>Show the Simulation:</strong> Let students predict first, then drag the lines and count the angles.</p>
-            <p><strong>Ask follow-ups:</strong></p>
-            <ul>
-                <li>Which angles are equal? (Notice A and C have the same color, B and D have the same color)</li>
-                <li>What is the sum of adjacent angles?</li>
-                <li>Can you identify a linear pair?</li>
-            </ul>
-        </div> -->
+        <div class="button-controls d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-10">
+                <button id="reflectBtn" class="action-button">Reflect</button>
+                <div class="control-group">
+                    <input type="checkbox" id="measurements">
+                    <label for="measurements">Show Measurements</label>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-10">
+                <div class="control-group">
+                    <input type="checkbox" id="observations">
+                    <label for="observations">Show Observations</label>
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" id="angleMeasurements">
+                    <label for="angleMeasurements">Show Values</label>
+                </div>
+                <button id="reset" class="action-button">Reset</button>
+            </div>
+        </div>
     </div>
+    
+    <!-- Reflection Modal -->
+    <div id="reflectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Reflection Questions</h3>
+            <div class="questions-container">
+                <div class="question-circle" data-question="1">
+                    💡 Q1
+                </div>
+                <div class="question-circle" data-question="2">
+                    🔍 Q2
+                </div>
+                <div class="question-circle" data-question="3">
+                    🧠 Q3
+                </div>
+            </div>
+            <div id="questionDisplay"></div>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Variables for the lines and points
+        let centerX, centerY;
+        let handle1, handle2;
+        let dragging = false;
+        let currentHandle;
+        let showMeasurements = false;
+        let showObservations = false;
+        let showAngleMeasurements = false;
+        let radius = 180;
+
+        // Angle values
+        let angleA, angleB, angleC, angleD;
+
+        // Colors for opposite angles - Changed red to green
+        const colorAC = [46, 204, 113]; // Green for angles A and C
+        const colorBD = [52, 152, 219]; // Blue for angles B and D
+
+        // Reflection questions
+        const reflectionQuestions = [
+            "Can you find angles that are equal? Why do you think they are equal?",
+            "What happens when you add the adjacent angles? Does the sum change as you rotate the lines?",
+            "Can you spot a linear pair in the diagram? How do you know it's a linear pair?"
+        ];
+
+        function setup() {
+            const container = document.getElementById('canvas-container');
+            const canvas = createCanvas(900, 500);
+            canvas.parent('canvas');
+            centerX = width * 0.65;
+            centerY = height / 2;
+            
+            // Create draggable handles
+            handle1 = createVector(centerX + radius, centerY);
+            handle2 = createVector(centerX, centerY - radius);
+            
+            // Calculate initial angles
+            calculateAngles();
+            
+            // Set up event listeners
+            document.getElementById('measurements').addEventListener('change', function() {
+                showMeasurements = this.checked;
+            });
+            
+            document.getElementById('observations').addEventListener('change', function() {
+                showObservations = this.checked;
+            });
+            
+            document.getElementById('angleMeasurements').addEventListener('change', function() {
+                showAngleMeasurements = this.checked;
+            });
+            
+            document.getElementById('reset').addEventListener('click', function() {
+                resetLines();
+            });
+            
+            // Reflection modal
+            document.getElementById('reflectBtn').addEventListener('click', function() {
+                document.getElementById('reflectionModal').style.display = 'flex';
+            });
+            
+            document.querySelector('.close').addEventListener('click', function() {
+                document.getElementById('reflectionModal').style.display = 'none';
+                document.getElementById('questionDisplay').textContent = '';
+            });
+            
+            const circles = document.querySelectorAll('.question-circle');
+            circles.forEach(circle => {
+                circle.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.question) - 1;
+                    document.getElementById('questionDisplay').textContent = reflectionQuestions[index];
+                });
+            });
+        }
+
+        function draw() {
+            background(255);
+            drawGrid();
+            
+            // Draw the lines
+            stroke(50);
+            strokeWeight(2.5);
+            line(centerX - (handle1.x - centerX), centerY - (handle1.y - centerY), handle1.x, handle1.y);
+            line(centerX - (handle2.x - centerX), centerY - (handle2.y - centerY), handle2.x, handle2.y);
+            
+            // Draw the intersection point
+            fill(0);
+            noStroke();
+            ellipse(centerX, centerY, 10, 10);
+            
+            // Draw the draggable handles
+            fill(30, 144, 255);
+            stroke(255);
+            strokeWeight(2);
+            ellipse(handle1.x, handle1.y, 24, 24);
+            ellipse(handle2.x, handle2.y, 24, 24);
+            
+            // Draw angle arcs and labels
+            drawAngleArcs();
+            
+            // Draw canvas UI elements
+            if (showObservations) {
+                drawKeyObservations();
+            }
+            
+            if (showAngleMeasurements) {
+                drawAngleMeasurements();
+            }
+        }
+
+        function drawGrid() {
+            // Draw a subtle grid for reference
+            stroke(240);
+            strokeWeight(1);
+            for (let x = 0; x <= width; x += 40) {
+                line(x, 0, x, height);
+            }
+            for (let y = 0; y <= height; y += 40) {
+                line(0, y, width, y);
+            }
+            
+            // Draw center lines
+            stroke(200);
+            strokeWeight(1.5);
+            line(centerX, 0, centerX, height);
+            line(0, centerY, width, centerY);
+        }
+
+        function drawKeyObservations() {
+            // Draw background panel for key observations
+            fill(232, 244, 252, 230);
+            stroke(52, 152, 219);
+            strokeWeight(2);
+            rect(20, 200, 280, 160, 10);
+            
+            // Title
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(LEFT, TOP);
+            textSize(18);
+            textStyle(BOLD);
+            text('Key Observations', 35, 220);
+            
+            // Observations list
+            textSize(14);
+            textStyle(NORMAL);
+            fill(52, 58, 64);
+            
+            text('• Opposite angles are equal:', 35, 245);
+            text('  ∠A = ∠C, ∠B = ∠D', 35, 262);
+            
+            text('• Adjacent angles are supplementary:', 35, 282);
+            text('  ∠A + ∠B = 180°, ∠B + ∠C = 180°', 35, 299);
+            text('  ∠C + ∠D = 180°, ∠D + ∠A = 180°', 35, 316);
+            
+            text('• All four angles sum to 360°.', 35, 336);
+        }
+
+        function drawAngleMeasurements() {
+            // Draw background panel for angle measurements
+            fill(248, 249, 250, 230);
+            stroke(52, 152, 219);
+            strokeWeight(1);
+            rect(20, 20, 280, 160, 10);
+            
+            // Title
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(LEFT, TOP);
+            textSize(18);
+            textStyle(BOLD);
+            text('Angle Measurements', 35, 40);
+            
+            // Angle boxes
+            const boxWidth = 120;
+            const boxHeight = 30;
+            const startX = 35;
+            const startY = 65;
+            
+            // Draw angle A
+            fill(255, 255, 255);
+            stroke(200);
+            strokeWeight(1);
+            rect(startX, startY, boxWidth, boxHeight, 5);
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(12);
+            textStyle(BOLD);
+            text('∠A', startX + boxWidth/2, startY + boxHeight/2 - 5);
+            fill(colorAC[0], colorAC[1], colorAC[2]);
+            textSize(14);
+            text(angleA.toFixed(1) + '°', startX + boxWidth/2, startY + boxHeight/2 + 8);
+            
+            // Draw angle B
+            fill(255, 255, 255);
+            stroke(200);
+            strokeWeight(1);
+            rect(startX + boxWidth + 10, startY, boxWidth, boxHeight, 5);
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(12);
+            textStyle(BOLD);
+            text('∠B', startX + boxWidth + 10 + boxWidth/2, startY + boxHeight/2 - 5);
+            fill(colorBD[0], colorBD[1], colorBD[2]);
+            textSize(14);
+            text(angleB.toFixed(1) + '°', startX + boxWidth + 10 + boxWidth/2, startY + boxHeight/2 + 8);
+            
+            // Draw angle C
+            fill(255, 255, 255);
+            stroke(200);
+            strokeWeight(1);
+            rect(startX, startY + boxHeight + 10, boxWidth, boxHeight, 5);
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(12);
+            textStyle(BOLD);
+            text('∠C', startX + boxWidth/2, startY + boxHeight + 10 + boxHeight/2 - 5);
+            fill(colorAC[0], colorAC[1], colorAC[2]);
+            textSize(14);
+            text(angleC.toFixed(1) + '°', startX + boxWidth/2, startY + boxHeight + 10 + boxHeight/2 + 8);
+            
+            // Draw angle D
+            fill(255, 255, 255);
+            stroke(200);
+            strokeWeight(1);
+            rect(startX + boxWidth + 10, startY + boxHeight + 10, boxWidth, boxHeight, 5);
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(12);
+            textStyle(BOLD);
+            text('∠D', startX + boxWidth + 10 + boxWidth/2, startY + boxHeight + 10 + boxHeight/2 - 5);
+            fill(colorBD[0], colorBD[1], colorBD[2]);
+            textSize(14);
+            text(angleD.toFixed(1) + '°', startX + boxWidth + 10 + boxWidth/2, startY + boxHeight + 10 + boxHeight/2 + 8);
+            
+            // Sum display
+            fill(232, 244, 252);
+            stroke(52, 152, 219);
+            strokeWeight(1);
+            rect(startX, startY + 80, boxWidth * 2 + 10, 25, 5);
+            fill(44, 62, 80);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(12);
+            textStyle(BOLD);
+            text('Total Sum: ' + (angleA + angleB + angleC + angleD).toFixed(1) + '°', 
+                 startX + (boxWidth * 2 + 10) / 2, startY + 80 + 12.5);
+        }
+
+        function drawAngleArcs() {
+            // Calculate vectors from center to handles
+            const v1 = createVector(handle1.x - centerX, handle1.y - centerY);
+            const v2 = createVector(handle2.x - centerX, handle2.y - centerY);
+            
+            // Calculate angles
+            const angle1 = v1.heading();
+            const angle2 = v2.heading();
+            
+            // Draw angle arcs
+            const arcRadius = 50;
+            
+            // Calculate arc angles
+            const startA = angle1 < angle2 ? angle1 : angle2;
+            const stopA = angle1 < angle2 ? angle2 : angle1;
+            const startB = stopA;
+            const stopB = startA + PI;
+            const angleDiff = stopA - startA;
+            
+            // Draw arcs with colors for opposite angles
+            noFill();
+            strokeWeight(4);
+            
+            // Draw angle A and C with same color (green)
+            stroke(colorAC[0], colorAC[1], colorAC[2]);
+            arc(centerX, centerY, arcRadius, arcRadius, startA, stopA);
+            arc(centerX, centerY, arcRadius, arcRadius, stopB, stopB + angleDiff);
+            
+            // Draw angle B and D with same color (blue)
+            stroke(colorBD[0], colorBD[1], colorBD[2]);
+            arc(centerX, centerY, arcRadius, arcRadius, startB, stopB);
+            arc(centerX, centerY, arcRadius, arcRadius, stopB + angleDiff, startA + TWO_PI);
+            
+            // Draw angle labels
+            strokeWeight(1);
+            textSize(20);
+            textStyle(NORMAL);
+            textAlign(CENTER, CENTER);
+            
+            // Calculate label positions
+            const labelRadius = 70;
+            const labelA = createVector(
+                centerX + labelRadius * cos((startA + stopA) / 2),
+                centerY + labelRadius * sin((startA + stopA) / 2)
+            );
+            
+            const labelB = createVector(
+                centerX + labelRadius * 1.1 * cos((startB + stopB) / 2),
+                centerY + labelRadius * 1.1 * sin((startB + stopB) / 2)
+            );
+            
+            const labelC = createVector(
+                centerX + labelRadius * cos((stopB + stopB + angleDiff) / 2),
+                centerY + labelRadius * sin((stopB + stopB + angleDiff) / 2)
+            );
+            
+            const labelD = createVector(
+                centerX + labelRadius * 1.1 * cos((stopB + angleDiff + startA + TWO_PI) / 2),
+                centerY + labelRadius * 1.1 * sin((stopB + angleDiff + startA + TWO_PI) / 2)
+            );
+            
+            // Draw labels with matching colors
+            fill(colorAC[0], colorAC[1], colorAC[2]);
+            text('A', labelA.x, labelA.y);
+            text('C', labelC.x, labelC.y);
+            
+            fill(colorBD[0], colorBD[1], colorBD[2]);
+            text('B', labelB.x, labelB.y);
+            text('D', labelD.x, labelD.y);
+            
+            // Draw angle measurements if enabled
+            if (showMeasurements) {
+                textSize(16);
+                
+                // Angle A measurement (green)
+                fill(colorAC[0], colorAC[1], colorAC[2]);
+                text(angleA.toFixed(1) + '°', labelA.x + 25, labelA.y - 25);
+                
+                // Angle B measurement (blue)
+                fill(colorBD[0], colorBD[1], colorBD[2]);
+                text(angleB.toFixed(1) + '°', labelB.x - 25, labelB.y - 25);
+                
+                // Angle C measurement (green)
+                fill(colorAC[0], colorAC[1], colorAC[2]);
+                text(angleC.toFixed(1) + '°', labelC.x - 25, labelC.y + 25);
+                
+                // Angle D measurement (blue)
+                fill(colorBD[0], colorBD[1], colorBD[2]);
+                text(angleD.toFixed(1) + '°', labelD.x + 25, labelD.y + 25);
+            }
+        }
+
+        function calculateAngles() {
+            // Calculate vectors from center to handles
+            const v1 = createVector(handle1.x - centerX, handle1.y - centerY);
+            const v2 = createVector(handle2.x - centerX, handle2.y - centerY);
+            
+            // Calculate angle between vectors
+            let angleBetween = abs(v1.angleBetween(v2));
+            if (angleBetween > PI) {
+                angleBetween = TWO_PI - angleBetween;
+            }
+            
+            // Convert to degrees
+            angleBetween = degrees(angleBetween);
+            
+            // Set the four angles
+            angleA = angleBetween;
+            angleB = 180 - angleBetween;
+            angleC = angleBetween;
+            angleD = 180 - angleBetween;
+        }
+
+        function resetLines() {
+            handle1.set(centerX + radius, centerY);
+            handle2.set(centerX, centerY - radius);
+            calculateAngles();
+        }
+
+        function mousePressed() {
+            // Check if mouse is over handle1
+            if (dist(mouseX, mouseY, handle1.x, handle1.y) < 15) {
+                dragging = true;
+                currentHandle = handle1;
+                return;
+            }
+            
+            // Check if mouse is over handle2
+            if (dist(mouseX, mouseY, handle2.x, handle2.y) < 15) {
+                dragging = true;
+                currentHandle = handle2;
+            }
+        }
+
+        function mouseDragged() {
+            if (dragging) {
+                // Calculate vector from center to mouse
+                const v = createVector(mouseX - centerX, mouseY - centerY);
+                
+                // Constrain to circle and ensure handles stay within canvas bounds
+                v.normalize();
+                v.mult(radius);
+                
+                // Check bounds to prevent handles from going outside canvas
+                const newX = centerX + v.x;
+                const newY = centerY + v.y;
+                
+                if (newX >= 15 && newX <= width - 15 && newY >= 15 && newY <= height - 15) {
+                    currentHandle.set(newX, newY);
+                    calculateAngles();
+                }
+            }
+        }
+
+        function mouseReleased() {
+            dragging = false;
+            currentHandle = null;
+        }
+
+        function windowResized() {
+            const container = document.getElementById('canvas-container');
+            resizeCanvas(container.clientWidth, container.clientHeight);
+            centerX = width * 0.65;
+            centerY = height / 2;
+            // Recalculate positions
+            handle1.set(centerX + radius, centerY);
+            handle2.set(centerX, centerY - radius);
+        }
+
+        // Make canvas responsive
+        window.addEventListener('resize', windowResized);
+    </script>
 </body>
 </html>

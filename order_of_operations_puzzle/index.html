@@ -10,26 +10,33 @@
 </head>
 <body>
 <div class="mainContainerOuter">
-    <div class="wdgetTitle">
-        <h2 >Order of Operations Puzzle</h2>
-        <span id="versionId" class="versionText">"1"</span>
+        <div class="mainContainer">
+            <div class="container">
+                <span class="versionText">"1"</span>
+                <div id="canvas-container">
+                    <div id="canvas"></div>
+                </div>
+                <div class="button-controls">
+                    <button id="startOverBtn">START OVER</button>
+                    <button id="newQuestionBtn">NEW QUESTION</button>
+                    <button id="showAnswerBtn">SHOW ANSWER</button>
+                    <button id="reflectBtn">REFLECT</button>
+                </div>
+                <div id="reflectOverlay" class="d-none">
+                    <div class="overlay-content">
+                        <h2>Reflect on Your Strategy</h2>
+                        <div class="question-circles">
+                            <div class="circle" id="question1">1</div>
+                            <div class="circle" id="question2">2</div>
+                            <div class="circle" id="question3">3</div>
+                        </div>
+                        <div id="questionText" class="m-t-16"></div>
+                        <button id="closeOverlayBtn" class="bte-secondary m-t-16">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    <div class="mainContainer">
-
-    <div class="canvas container" id="canvas"></div>
-        </div>
-
-    <div class="button-controls d-flex justify-content-center g-8">
-        <div>
-        <button class="action-button" id="startOverBtn">START OVER</button>
-         </div>
-        <div>
-
-        <button class="bte-secondary" id="newQuestionBtn">NEW QUESTION</button>
-         </div>    
     </div>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
