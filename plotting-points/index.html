@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="jsxgraph.css">
+  <script src="jsxgraph.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body>
+  <div class="mainContainerOuter">
+    <div class="wdgetTitle">
+      <h2>Plotting Point</h2>
+      <span id="versionId" class="versionText">v_2507151</span>
+    </div>
+    <div class="mainContainer" id="mainCanvas">
+      <div class="questionContainer">
+        Trace the coordinates <span id="point"></span>
+      </div>
+      <div class="graph-wrapper">
+        <div id="verticalSlider" class="custom-vertical-slider">
+          <div id="verticalThumb" class="custom-thumb"></div>
+        </div>
+        <div id="jxgbox"></div>
+      </div>
+      <input type="range" id="horizontalSlider" min="0" max="10" value="0" />
+    </div>
+    <div class="flexContainer button-controls">
+      <button class="btn" id="tryAnother">TRY ANOTHER</button>
+    </div>
+  </div>
+
+  <script>
+    let targetX = 0, targetY = 0;
+    let currentY = 0;
+
+    const xSlider = document.getElementById("horizontalSlider");
+    const verticalSlider = document.getElementById("verticalSlider");
+    const verticalThumb = document.getElementById("verticalThumb");
+    const pointText = document.getElementById("point");
+
+    const board = JXG.JSXGraph.initBoard("jxgbox", {
+      boundingbox: [-1, 11, 11, -1],
+      axis: true,
+      zoom: { enabled: false },
+      pan: { enabled: false },
+      showNavigation: false,
+      showCopyright: false,
+    });
+
+    function syncSliderHeight() {
+      const boxHeight = document.getElementById("jxgbox").clientHeight;
+    }
+
+    function handleDrag(clientY) {
+      const sliderHeight = verticalSlider.clientHeight;
+      const rect = verticalSlider.getBoundingClientRect();
+      let offset = rect.bottom - clientY;
+      offset = Math.max(0, Math.min(offset, sliderHeight));
+      const percent = (offset / sliderHeight) * 100;
+      verticalThumb.style.height = `${percent}%`;
+      currentY = Math.round((offset / sliderHeight) * 10);
+      board.update();
+    }
+
+    // CLICK on slider background to move thumb
+    verticalSlider.addEventListener("click", (e) => {
+      if (e.target !== verticalThumb) {
+        handleDrag(e.clientY);
+      }
+    });
+
+    let dragging = false;
+
+    verticalThumb.addEventListener("mousedown", () => {
+      dragging = true;
+      document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+      dragging = false;
+      document.body.style.userSelect = "auto";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (dragging) handleDrag(e.clientY);
+    });
+
+    verticalThumb.addEventListener("touchstart", (e) => {
+      dragging = true;
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("touchend", () => {
+      dragging = false;
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (dragging) {
+        const touch = e.touches[0];
+        handleDrag(touch.clientY);
+      }
+    }, { passive: false });
+
+    const p = board.create("point",
+      [
+        () => parseInt(xSlider.value),
+        () => currentY
+      ],
+      { name: "P", size: 3 }
+    );
+
+    board.create("text",
+      [
+        () => p.X() - 0.3,
+        () => p.Y() + 1.2,
+        () => (p.X() === targetX && p.Y() === targetY ? "Well done!" : "")
+      ],
+      {
+        fontSize: 14,
+        anchorX: "left",
+        strokeColor: "green",   // ✅ Sets the text color
+        fontWeight: "bold"      // ✅ Makes the font bold
+        
+      }
+
+    );
+
+    xSlider.addEventListener("input", () => board.update());
+
+    function generateRandomTarget() {
+      targetX = Math.floor(Math.random() * 11);
+      targetY = Math.floor(Math.random() * 10);
+      pointText.textContent = `(${targetX}, ${targetY})`;
+    }
+
+    function resetSliders() {
+      xSlider.value = 0;
+      currentY = 0;
+      verticalThumb.style.height = "0%";
+      board.update();
+    }
+
+    document.getElementById("tryAnother").addEventListener("click", () => {
+      generateRandomTarget();
+      resetSliders();
+    });
+
+    window.addEventListener("load", () => {
+      syncSliderHeight();
+      generateRandomTarget();
+      resetSliders();
+    });
+
+    window.addEventListener("resize", syncSliderHeight);
+  </script>
+</body>
+
+</html>

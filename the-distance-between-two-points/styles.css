@@ -17,11 +17,10 @@ body {
     }
 
 .container {
-    display: flex;
+        display: flex;
     max-width: 100%;
     margin: 0 auto;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 10px;
     height: 100%;
 }
 
@@ -38,31 +37,26 @@ body {
 }
 
 .graph-container {
-    flex: 1;
-    /* min-width: 300px; */
-    /* max-height: 600px; */
+    width: 62%;
     position: relative;
     background: white;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     max-height: calc(100% - 10px);
     
 }
 
 .info-container {
-    width: 35%;
-    min-width: 300px;
-    /* max-height: 600px; */
+          width: 35%;
     overflow-y: auto;
     padding: 10px;
     background-color: #eef4ff;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-        height: 100%;
+    height: 98%;
     }
 
 #graph {
@@ -134,7 +128,11 @@ h2 {
 }
 
 .formula p {
-    margin: 8px 0;
+        margin: 8px 0;
+        margin: clamp(4px, 1.5vh, 8px) 0;
+    font-size: 16px;
+    font-size: clamp(12px, 2vw, 16px);
+    line-height: normal;
 }
 
 .blank-box {
@@ -320,7 +318,7 @@ h2 {
     user-select: none;
 }
 
-@media screen and (max-width: 900px) {
+/* @media screen and (max-width: 900px) {
     body {
         padding: 10px;
     }
@@ -364,8 +362,8 @@ h2 {
 .equation-p {
   margin: 15px 0;
   font-size: 15px;
-  /* text-align: center; */
-}
+}  /* text-align: center; */
+
 
 /* Add some spacing to MathJax containers */
 .MathJax {

@@ -11,8 +11,10 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    height: calc(100% - 40px);
+    max-height: calc(100% - 40px);
+    
 } 
+
 
 body {
     margin: 0;

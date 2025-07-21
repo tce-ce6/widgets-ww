@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraction Multiplication Visualization</title>
+    <script src="lib/p5.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+        }
+
+        .wdgetTitle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .wdgetTitle h2 {
+            color: #333;
+            margin: 0;
+        }
+
+        #sliderContainer {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .flexContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        input[type="range"] {
+            width: 80%;
+            margin: 10px 0;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wdgetTitle">
+            <h2>Multiplication-Fraction</h2>
+            <span id="versionId" class="versionText">"2505191"</span>
+        </div>
+        <div id="canvas-container"></div>
+        <div class="flexContainer">
+            <div class="flexItem">
+                <span class="label">Slide to explore &nbsp;</span>
+                <input type="range" min="0" max="100" value="0" class="slider" id="progressSlider">
+            </div>
+            <button class="btn btn-primary" id="newProblemButton">New Fraction</button>
+        </div>
+    </div>
+
+    <script>
+        let progress = 0;
+        let num1 = 2, den1 = 3;  // First fraction
+        let num2 = 3, den2 = 4;  // Second fraction
+        let gridSize = 200;
+        let padding = 40;
+        let totalWidth;
+        let symbolTextSize;
+
+        const colors = {
+            firstFraction: '#4CAF50',   // Green
+            secondFraction: '#2196F3',  // Blue
+            overlap: '#9C27B0',         // Purple
+            grid: '#666666'             // Dark gray
+        };
+
+        function setup() {
+            totalWidth = 3 * gridSize + 2 * padding;
+            symbolTextSize = 24;
+            // Increase canvas height further to ensure numerator visibility
+            const canvas = createCanvas(totalWidth + 2 * padding, gridSize + 4 * padding);
+            canvas.parent('canvas-container');
+
+            const slider = document.getElementById('progressSlider');
+            slider.addEventListener('input', function () {
+                progress = this.value / 100;
+            });
+        }
+
+        function drawGridLines(showNumbers = false) {
+            const lineWeight = max(1, 2 * (totalWidth / 1200));
+            stroke(colors.grid);
+            strokeWeight(lineWeight);
+            noFill();
+
+            // Draw outer square
+            rect(0, 0, gridSize, gridSize);
+
+            // Draw vertical lines and numbers if needed
+            const cellWidth = gridSize / den2;
+            if (showNumbers) {
+                textSize(12);
+                textAlign(CENTER, TOP);
+                noStroke();
+                fill(colors.grid);
+                textStyle(BOLD);
+                for (let i = 1; i <= den2; i++) {
+                    // Move grid numbers down a bit
+                    text(i, (i - 1) * cellWidth + cellWidth / 2, -25);
+                }
+                // Draw horizontal numbers
+                textAlign(RIGHT, CENTER);
+                const cellHeight = gridSize / den1;
+                for (let i = 1; i <= den1; i++) {
+                    text(i, -5, (i - 1) * cellHeight + cellHeight / 2);
+                }
+                textStyle(NORMAL);
+                stroke(colors.grid);
+            }
+
+            // Draw vertical lines
+            for (let i = 1; i < den2; i++) {
+                line(i * cellWidth, 0, i * cellWidth, gridSize);
+            }
+
+            // Draw horizontal lines
+            const cellHeight = gridSize / den1;
+            for (let i = 1; i < den1; i++) {
+                line(0, i * cellHeight, gridSize, i * cellHeight);
+            }
+        }
+
+        function drawFilledCells(num, den, isHorizontal, fillColor) {
+            noStroke();
+            fill(fillColor);
+
+            if (isHorizontal) {
+                // Fill horizontal cells from bottom
+                const cellHeight = gridSize / den;
+                for (let i = 0; i < num; i++) {
+                    rect(0, gridSize - (i + 1) * cellHeight, gridSize, cellHeight);
+                }
+            } else {
+                // Fill vertical cells from left
+                const cellWidth = gridSize / den;
+                for (let i = 0; i < num; i++) {
+                    rect(i * cellWidth, 0, cellWidth, gridSize);
+                }
+            }
+
+            // Draw grid lines on top
+            drawGridLines(false);
+        }
+
+        function drawResultGrid(showNumbers = false, showFinalColor = false) {
+            // Calculate the combined denominators
+            const totalRows = den1;
+            const totalCols = den2;
+            const cellWidth = gridSize / totalCols;
+            const cellHeight = gridSize / totalRows;
+
+            // Draw filled cells for overlapping areas
+            noStroke();
+            // Keep first fraction color until final state
+            const fillColor = showFinalColor ? colors.overlap : colors.firstFraction;
+            fill(fillColor);
+
+            // Get overlapping cells and store their positions from top to bottom
+            let filledCells = [];
+            for (let row = num1 - 1; row >= 0; row--) {  // Start from top row
+                for (let col = 0; col < num2; col++) {
+                    filledCells.push({
+                        x: col * cellWidth,
+                        y: gridSize - (row + 1) * cellHeight,
+                        width: cellWidth,
+                        height: cellHeight
+                    });
+                }
+            }
+
+            // Draw cells and numbers if showing final state
+            filledCells.forEach((cell, index) => {
+                fill(fillColor);
+                rect(cell.x, cell.y, cell.width, cell.height);
+
+                if (showNumbers) {
+                    // Show sequential numbers in filled cells
+                    fill(255); // White text
+                    textSize(12);
+                    textAlign(CENTER, CENTER);
+                    textStyle(BOLD);
+                    text(index + 1,
+                        cell.x + cell.width / 2,
+                        cell.y + cell.height / 2
+                    );
+                    textStyle(NORMAL);
+                }
+            });
+
+            // Draw grid lines with numbers only in final state
+            drawGridLines(showNumbers);
+        }
+
+        function drawFraction(numerator, denominator, x, y) {
+            push();
+            translate(x, y);
+            // Increase background height and adjust position
+            noStroke();
+            fill(220);  // Match background color
+            rect(-15, -30, 30, 60);  // Made taller and adjusted y position
+
+            textSize(16);
+            textAlign(CENTER, CENTER);
+            textStyle(BOLD);
+            fill(0);  // Black text
+
+            // Draw numerator
+            text(numerator, 0, -15);
+
+            // Draw fraction line
+            stroke(0);
+            strokeWeight(2);
+            line(-10, 0, 10, 0);
+
+            // Draw denominator
+            noStroke();
+            text(denominator, 0, 15);
+            pop();
+        }
+
+        function draw() {
+            background(220);
+            push();
+            // Move everything down more to ensure numerator visibility
+            translate(padding, padding + 40);
+
+            // Draw first fraction
+            push();
+            translate(0, 0);
+            drawFilledCells(num1, den1, true, colors.firstFraction);
+            // Draw fraction text
+            drawFraction(num1, den1, gridSize / 2, -45);
+            pop();
+
+            // Draw multiplication sign in center
+            push();
+            translate(gridSize + padding / 2, gridSize / 2);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            textStyle(BOLD);
+            text('×', 0, 0);
+            pop();
+
+            // Draw second fraction
+            push();
+            translate(gridSize + padding, 0);
+            drawFilledCells(num2, den2, false, colors.secondFraction);
+            // Draw fraction text
+            drawFraction(num2, den2, gridSize / 2, -45);
+            pop();
+
+            // Draw equals sign
+            push();
+            translate(2 * gridSize + 1.5 * padding, gridSize / 2);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            textStyle(BOLD);
+            text('=', 0, 0);
+            pop();
+
+            if (progress <= 0.5) {  // First fraction moves until middle of slider
+                // First phase: Move copy of first grid to result position
+                const moveProgress = progress / 0.5;  // Complete movement by middle of slider
+                push();
+                translate(lerp(0, 2 * (gridSize + padding), moveProgress), 0);
+                const copyColor = color(red(colors.firstFraction), green(colors.firstFraction), blue(colors.firstFraction), 150);
+                drawFilledCells(num1, den1, true, copyColor);
+                pop();
+
+            } else if (progress <= 1.0) {  // Second fraction moves from middle to end
+                // Second phase: First grid at result, move second grid
+                push();
+                translate(2 * (gridSize + padding), 0);
+                drawFilledCells(num1, den1, true, colors.firstFraction);
+                pop();
+
+                // Moving second grid
+                const moveProgress = (progress - 0.5) / 0.5;  // Start from middle to end
+                push();
+                translate(lerp(gridSize + padding, 2 * (gridSize + padding), moveProgress), 0);
+                const copyColor = color(red(colors.secondFraction), green(colors.secondFraction), blue(colors.secondFraction), 150);
+                drawFilledCells(num2, den2, false, copyColor);
+                pop();
+
+                if (progress >= 0.98) {  // Show final state only when second fraction fully aligns
+                    push();
+                    translate(2 * (gridSize + padding), 0);
+                    drawResultGrid(true, true); // Show numbers and final color
+                    pop();
+                } else {
+                    // Show intermediate state without numbers and final color
+                    push();
+                    translate(2 * (gridSize + padding), 0);
+                    drawResultGrid(false, false);
+                    pop();
+                }
+            }
+
+            // Draw result fraction text when fully merged
+            if (progress >= 0.98) {
+                push();
+                translate(2 * (gridSize + padding), 0);
+                drawFraction(num1 * num2, den1 * den2, gridSize / 2, -45);
+                pop();
+            }
+
+            pop();
+        }
+
+        // Add event listener for new fraction button
+        document.getElementById('newProblemButton').addEventListener('click', function () {
+            generateNewFractions();
+        });
+
+        function generateNewFractions() {
+            // Generate random denominator first (2-9)
+            den1 = Math.floor(Math.random() * 8) + 2;
+            den2 = Math.floor(Math.random() * 8) + 2;
+
+            // Generate random numerator that's less than denominator
+            num1 = Math.floor(Math.random() * (den1 - 1)) + 1;
+            num2 = Math.floor(Math.random() * (den2 - 1)) + 1;
+
+            // Reset progress
+            progress = 0;
+            document.getElementById('progressSlider').value = 0;
+        }
+
+        // Initialize with random fractions when page loads
+        generateNewFractions();
+    </script>
+</body>
+
+</html>

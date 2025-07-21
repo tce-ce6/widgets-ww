@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive widget for learning and practicing graphic inequalities">
+    <title>Graphic Inequalities</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="global_style.css" />
+    <link rel="stylesheet" href="style.css">
+    <!-- Dependencies -->
+    <script src="libs/p5.js"></script>
+</head>
+
+<body>
+    <div class="mainContainerOuter">
+        <header class="wdgetTitle">
+            <h2>Inequality</h2>
+            <span id="versionId" class="versionText">v_2506161</span>
+        </header>
+
+        <!-- Canvas Container -->
+        <section class="mainContainer" id="mainCanvas" aria-label="Interactive inequality graph">
+        </section>
+
+        <!-- Controls -->
+        <section class="controls">
+            <div class="flexContainer button-controls">
+                <button class="btn btn-primary" id="checkAnswerButton" aria-label="Check your answer">
+                    Check
+                </button>    
+                <button class="btn bte-secondary btn-primary" id="newProblemButton" aria-label="Generate new problem">
+                        New Problem
+                </button>
+                    <button class="btn" id="showAnswerButton" aria-label="Show the correct answer">
+                        Show Answer
+                    </button>
+                    </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Configuration constants
+        const APP_CONFIG = {
+            CANVAS: {
+                WIDTH: 1000,
+                HEIGHT: 400
+            },
+            COLORS: {
+                PRIMARY: '#1e6bef',
+                DISABLED: '#ddd',
+                HINT: [144, 3, 252]
+            },
+            TEXT: {
+                SIZES: {
+                    LARGE: 20,
+                    MEDIUM: 16
+                }
+            }
+        };
+
+        // Application components
+        let model;
+        let view;
+        let controller;
+
+        // UI Elements
+        let checkAnswerButton;
+        let newProblemButton;
+        let showAnswerButton;
+
+        // Application state
+        const state = {
+            feedbackMessage: "",
+            lastCheckedPointX: null,
+            lastLeftToggleState: null,
+            lastRightToggleState: null,
+            showCorrectAnswer: false,
+            hintMessage: "",
+            isMousePressed: false,
+            dragged: false,
+            assets: {
+                leftArrow: null,
+                rightArrow: null
+            },
+            selectValue: null
+        };
+
+        /**
+         * Initializes the application
+         */
+        function setup() {
+            initializeCanvas();
+            initializeComponents();
+            initializeButtons();
+            initializeState();
+        }
+
+        /**
+         * Creates and positions the canvas
+         */
+        function initializeCanvas() {
+            const canvas = createCanvas(APP_CONFIG.CANVAS.WIDTH, APP_CONFIG.CANVAS.HEIGHT);
+            canvas.parent("mainCanvas");
+        }
+
+        /**
+         * Initializes model, view, and controller
+         */
+        function initializeComponents() {
+            model = new GraphicModel();
+            view = new GraphicView(model);
+            controller = new GraphicController(model, view);
+        }
+
+        /**
+         * Initializes button event listeners
+         */
+        function initializeButtons() {
+            initializeNewProblemButton();
+            initializeCheckAnswerButton();
+            initializeShowAnswerButton();
+        }
+
+        /**
+         * Sets up the New Problem button
+         */
+        function initializeNewProblemButton() {
+            newProblemButton = document.getElementById("newProblemButton");
+            newProblemButton.addEventListener('click', resetToDefault);
+        }
+
+        /**
+         * Sets up the Check Answer button
+         */
+        function initializeCheckAnswerButton() {
+            checkAnswerButton = document.getElementById("checkAnswerButton");
+            checkAnswerButton.addEventListener('click', handleAnswerCheck);
+        }
+
+        /**
+         * Sets up the Show Answer button
+         */
+        function initializeShowAnswerButton() {
+            showAnswerButton = document.getElementById("showAnswerButton");
+            showAnswerButton.addEventListener('click', handleShowAnswer);
+        }
+
+        /**
+         * Initializes application state
+         */
+        function initializeState() {
+            state.lastCheckedPointX = model.pointX;
+            state.lastLeftToggleState = view.leftToggleState;
+            state.lastRightToggleState = view.rightToggleState;
+        }
+
+        /**
+         * Handles the check answer button click
+         */
+        function handleAnswerCheck() {
+            const hasChanged = model.pointX !== state.lastCheckedPointX ||
+                view.leftToggleState !== state.lastLeftToggleState ||
+                view.rightToggleState !== state.lastRightToggleState;
+
+            if (hasChanged) {
+                const result = model.checkAnswer(view.leftToggleState, view.rightToggleState);
+                updateStateAfterCheck();
+
+                if (result) {
+                    handleCorrectAnswer();
+                } else {
+                    handleIncorrectAnswer();
+                }
+            }
+        }
+
+        /**
+         * Updates state after checking an answer
+         */
+        function updateStateAfterCheck() {
+            state.lastCheckedPointX = model.pointX;
+            state.lastLeftToggleState = view.leftToggleState;
+            state.lastRightToggleState = view.rightToggleState;
+        }
+
+        /**
+         * Handles a correct answer
+         */
+        function handleCorrectAnswer() {
+            state.feedbackMessage = 'Correct ✅';
+            state.showCorrectAnswer = true;
+            updateButtonState(checkAnswerButton, 'Correct ✔', true);
+        }
+
+        /**
+         * Handles an incorrect answer
+         */
+        function handleIncorrectAnswer() {
+            model.attempts--;
+            state.feedbackMessage = 'Incorrect❌ Try Again.';
+            updateButtonState(checkAnswerButton, 'Check Again', false);
+        }
+
+        /**
+         * Handles show answer button click
+         */
+        function handleShowAnswer() {
+            state.showCorrectAnswer = true;
+            state.feedbackMessage = 'Correct answer displayed above.';
+
+            updateButtonState(checkAnswerButton, 'Check', true);
+            updateButtonState(showAnswerButton, undefined, true);
+        }
+
+
+        /**
+         * Preloads required assets
+         */
+        function preload() {
+            state.assets.leftArrow = loadImage('images/left-arrow.png');
+            state.assets.rightArrow = loadImage('images/right-arrow.png');
+        }
+
+        /**
+         * Updates a button's state
+         * @param {HTMLButtonElement} button - The button to update
+         * @param {string} text - New button text
+         * @param {boolean} disabled - Whether to disable the button
+         */
+        function updateButtonState(button, text, disabled) {
+            if (text) button.innerHTML = text;
+            if (disabled) {
+                button.setAttribute('disabled', true);
+                button.style.backgroundColor = APP_CONFIG.COLORS.DISABLED;
+            } else {
+                button.removeAttribute('disabled');
+                button.style.backgroundColor = APP_CONFIG.COLORS.PRIMARY;
+            }
+        }
+
+        /**
+         * Resets the application to its default state
+         */
+        function resetToDefault() {
+            // Reset model
+            model.generateQuestions();
+            model.attempts = 3;
+            model.pointX = model.mapValueToPixel(0);
+            model.initialPointX = model.mapValueToPixel(0);
+
+            // Reset view
+            view.leftToggleState = true;
+            view.rightToggleState = true;
+
+            // Reset state
+            state.feedbackMessage = "";
+            state.hintMessage = 'Drag to change value';
+            state.showCorrectAnswer = false;
+            state.lastCheckedPointX = model.mapValueToPixel(0);
+            state.lastLeftToggleState = true;
+            state.lastRightToggleState = true;
+
+            // Reset buttons
+            updateButtonState(checkAnswerButton, 'Check', false);
+            updateButtonState(showAnswerButton, undefined, false);
+        }
+
+        /**
+         * Main draw loop
+         */
+        function draw() {
+            background(255);
+            controller.updateAndDraw();
+            drawFeedback();
+            drawHint();
+            handleMouseInteraction();
+        }
+
+        /**
+         * Draws feedback message
+         */
+        function drawFeedback() {
+            fill(0);
+            textSize(APP_CONFIG.TEXT.SIZES.LARGE);
+            textAlign(CENTER, CENTER);
+            text(state.feedbackMessage, model.start + 450, model.pointY + 100);
+        }
+
+        /**
+         * Draws hint message based on current state
+         */
+        function drawHint() {
+            if (!state.showCorrectAnswer) {
+                const currentValue = model.mapPixelToValue(model.pointX);
+
+                if (model.pointX === model.initialPointX) {
+                    drawHintMessage('Drag to change value', model.initialPointX);
+                } else if (model.randomOperator === ">=" || model.randomOperator === "<=") {
+                    drawHintMessage(`Include ${currentValue}`, model.pointX);
+                } else if (model.randomOperator === ">" || model.randomOperator === "<" ||
+                    model.randomOperator === "!=") {
+                    drawHintMessage(`Exclude ${currentValue}`, model.pointX);
+                }
+            }
+        }
+
+        /**
+         * Draws a hint message at the specified position
+         */
+        function drawHintMessage(message, x) {
+            fill(...APP_CONFIG.COLORS.HINT);
+            textSize(APP_CONFIG.TEXT.SIZES.MEDIUM);
+            textAlign(CENTER, CENTER);
+            text(message, x, model.pointY - 70);
+        }
+
+        /**
+         * Handles mouse interaction
+         */
+        function handleMouseInteraction() {
+            if (mouseIsPressed && !state.isMousePressed) {
+                controller.handleMousePressed(mouseX, mouseY);
+                state.isMousePressed = true;
+            }
+            if (!mouseIsPressed && state.isMousePressed) {
+                state.isMousePressed = false;
+            }
+        }
+
+
+        // function mousePressed(evt) {
+        //     console.log("🚀 ~ mousePressed ~ evt:", evt)
+        //     controller.handleMousePressed(mouseX, mouseY,"controller mouse pressed called");
+        // }
+
+        /**
+         * mouseDargged function for dragging point on line
+         * @param {*} callee 
+         */
+        function mouseDragged(callee) {
+            controller.handleMouseDragged(mouseX)
+        }
+
+        function mouseReleased() {
+            state.dragged = false;
+        }
+
+        class GraphicModel {
+
+            constructor() {
+                this.range = 15;
+                this.start = 50;
+                this.end = 950;
+                this.pointX = this.mapValueToPixel(0);
+                this.initialPointX = this.pointX;
+                this.pointY = 250;
+                this.snappingRange = 30;
+                this.question = "";
+                this.correctValue = 0;
+                this.correctDirection = "";
+                this.attempts = 3;
+                this.randomNumber = 0;
+                this.randomOperator = 0;
+                this.generateQuestions();
+            }
+
+            /**
+             * mapping value to pixel using p5.js map function
+             * @param {*} value 
+             * @returns 
+             */
+            mapValueToPixel(value) {
+                return map(value, -this.range, this.range, this.start, this.end);
+            }
+
+            /**
+             * mapping pixel to value using p5.js map function
+             * @param {*} pixel 
+             * @returns 
+             */
+            mapPixelToValue(pixel) {
+                return map(pixel, this.start, this.end, -this.range, this.range);
+            }
+
+            /**
+             * Generating random questions based on operator and value range 
+             * @param {*} callee 
+             */
+            generateQuestions(callee) {
+                const operators = ['<', '>', '<=', '>=', '!=', '='];
+                this.randomOperator = operators[Math.floor(Math.random() * operators.length)];
+                // this.randomNumber;
+
+                do {
+                    this.randomNumber = Math.floor(Math.random() * 29) - 14;
+                } while (this.randomNumber === 0);
+
+                this.question = `x ${this.randomOperator} ${this.randomNumber}`;
+                this.correctValue = this.randomNumber;
+                this.correctDirection = this.getDirection(this.randomOperator);
+            }
+
+            /**
+             * Function to get the direction based on input operator
+             * @param {*} operator 
+             * @returns 
+             */
+            getDirection(operator) {
+
+                if (operator === "<" || operator === "<=") {
+                    return "left";
+                }
+                if (operator === ">" || operator === ">=") {
+                    return "right";
+                }
+                if (operator === "!=") {
+                    return "both"; // Both directions for != and =
+                }
+                if (operator === "=") {
+                    return "null";
+                }
+                return "";
+            }
+
+            // getQuestion() {
+            //     let index = Math.floor(Math.random() * this.questionBank.length);
+            //     return this.question = this.questionBank[index];
+            // }
+
+            /**
+             * function to get closest value of draggable point
+             * @param {*} pixel 
+             * @returns 
+             */
+            getClosesetTick(pixel) {
+                let value = this.mapPixelToValue(pixel);
+                let snappingValue = Math.round(value);
+                return this.mapValueToPixel(snappingValue);
+            }
+
+            /**
+             * function to check the answer is correct or not
+             * @param {*} leftToggle 
+             * @param {*} rightToggle 
+             * @returns 
+             */
+
+            checkAnswer(leftToggle, rightToggle) {
+
+                state.selectValue = this.mapPixelToValue(this.pointX);
+
+                if (state.selectValue === this.correctValue) {
+                    if (this.correctDirection === "left") {
+                        if (leftToggle && !rightToggle) {
+                            return true;
+                        }
+                    } else if (this.correctDirection === "right") {
+                        if (rightToggle && !leftToggle) {
+                            return true;
+                        }
+                    } else if (this.correctDirection === "both") {
+                        if (leftToggle && rightToggle) {
+                            return true;
+                        }
+                    } else if (this.correctDirection === "null") {
+                        if (!leftToggle && !rightToggle) {
+                            return true;
+                        }
+                    }
+                }
+
+                console.log("Selected " + state.selectValue + " &  Correct " + this.correctValue);
+                return false;
+
+            }
+
+            getCorrectPointX() {
+                const [_, operator, num] = this.question.split(' ');
+                return this.mapValueToPixel(Number(num));
+            }
+
+        }
+
+
+        class GraphicView {
+
+            constructor(model) {
+                this.model = model;
+                this.leftToggleState = true;
+                this.rightToggleState = true;
+            }
+
+            /**
+             * Dispaying the random generating question above the line
+             * @param {*} callee 
+             */
+            displayQuestions(callee) {
+                fill(0);
+                stroke(0);
+                strokeWeight(0.2);
+                textSize(20);
+                textAlign(LEFT, CENTER);
+                if (this.model.question) {
+                    text(`Graph the inequality ${this.model.question}`, this.model.start, 50);
+                }
+                else {
+                    text('Press the New Problem Button to get started!', this.model.start, 50);
+                }
+            }
+
+            handleViewMousePress(mouseX, mouseY, callee) {
+                let d1 = dist(mouseX, mouseY, this.model.start - 25, this.model.pointY - 20);
+                // console.log("🚀 ~ GraphicView ~ handleMousePressed ~ callee:", callee)
+
+                if (d1 < 20) {
+                    this.leftToggleState = !this.leftToggleState;
+                }
+
+                let d2 = dist(mouseX, mouseY, this.model.end + 25, this.model.pointY - 20);
+                // console.log(d2);
+
+                if (d2 < 20) {
+                    this.rightToggleState = !this.rightToggleState;
+                }
+            }
+
+            /**
+             * Displaying scale from range -14 to 14
+             * @param {*} start 
+             * @param {*} pointY 
+             * @param {*} end 
+             * @param {*} range 
+             */
+            displayLine(start, pointY, end, range) {
+                // fill(0);
+                stroke(0);
+                strokeWeight(2);
+                line(start - 10, pointY, end + 10, pointY);
+
+                for (let i = -range; i <= range; i++) {
+                    const x = this.model.mapValueToPixel(i);
+                    stroke(0);
+                    strokeWeight(2);
+                    line(x, pointY - 5, x, pointY + 5);
+                    if (i % 2 === 0) {
+                        fill(0);
+                        noStroke();
+                        textSize(12);
+                        textAlign(CENTER, CENTER);
+                        text(i, x, pointY + 15);
+                    }
+
+                }
+
+                //Arrow left side
+                stroke(0);
+                line(start - 10, pointY, start - 5, pointY - 5);
+                line(start - 10, pointY, start - 5, pointY + 5);
+
+                //Arrow right side
+                line(end + 10, pointY, end + 5, pointY - 5);
+                line(end + 10, pointY, end + 5, pointY + 5);
+            }
+
+            /**
+             * function to draw and display point on the line above scale line
+             * @param {*} pointX 
+             * @param {*} pointY 
+             * @param {*} size 
+             * @param {*} c 
+             */
+            drawPoint(pointX, pointY, size, c) {
+                noStroke();
+                if (this.model.randomOperator === '<' || this.model.randomOperator === '>' || this.model.randomOperator === '!=') {
+                    //console.log(this.model.randomNumber+ " "+this.model.mapValueToPixel(pointX)+ " "+pointX);
+                    //console.log(this.model.randomOperator === '<' || this.model.randomOperator === '>'|| this.model.randomOperator === '!=' && this.model.randomNumber === this.model.mapPixelToValue(pointX))
+                    fill(255);
+                    stroke(c);
+                    strokeWeight(3);
+                }
+                else {
+                    fill(c);
+                }
+                ellipse(pointX, pointY - 25, 15);
+
+
+                if (state.dragged) {
+                    fill(144, 3, 252, 127);
+                    stroke(c);
+                    strokeWeight(0.1);
+                    ellipse(pointX, pointY - 25, size + 15);
+                }
+            }
+
+            /**
+             * function to draw and display line above scale line
+             * @param {*} start 
+             * @param {*} pointY 
+             * @param {*} pointX 
+             * @param {*} end 
+             */
+            drawDraggingLine(start, pointY, pointX, end) {
+                stroke(144, 3, 252);
+                strokeWeight(3);
+
+                if (this.leftToggleState) {
+                    line(start - 10, pointY - 25, pointX - 7.5, pointY - 25);
+                    //Arrow left side
+                    line(start - 10, pointY - 25, start - 5, pointY - 30);
+                    line(start - 10, pointY - 25, start - 5, pointY - 20);
+
+                }
+                if (this.rightToggleState) {
+                    line(pointX + 7.5, pointY - 25, end + 10, pointY - 25);
+
+                    //Arrow right side
+                    line(end + 10, pointY - 25, end + 5, pointY - 30);
+                    line(end + 10, pointY - 25, end + 5, pointY - 20);
+
+                }
+
+                // else {
+                //     line(this.model.start - 10, this.model.pointY - 25, this.model.end + 10, this.model.pointY - 25);
+                //     //Arrow left side
+                //     line(this.model.start - 10, this.model.pointY - 25, this.model.start - 5, this.model.pointY - 30);
+                //     line(this.model.start - 10, this.model.pointY - 25, this.model.start - 5, this.model.pointY - 20);
+
+                //     //Arrow right side
+                //     line(this.model.end + 10, this.model.pointY - 25, this.model.end + 5, this.model.pointY - 30);
+                //     line(this.model.end + 10, this.model.pointY - 25, this.model.end + 5, this.model.pointY - 20);
+                // }
+
+            }
+
+            /**
+             * Dragging line for solution display
+             * @param {*} start 
+             * @param {*} pointY 
+             * @param {*} pointX 
+             * @param {*} end 
+             * @param {*} correctDirection 
+             */
+            resultDraggingLine(start, pointY, pointX, end, correctDirection) {
+                stroke(46, 139, 87);
+                strokeWeight(3);
+
+                if (correctDirection == 'left' || correctDirection == 'both') {
+                    line(start - 10, pointY - 25, pointX - 7.5, pointY - 25);
+                    //Arrow left side
+                    line(start - 10, pointY - 25, start - 5, pointY - 30);
+                    line(start - 10, pointY - 25, start - 5, pointY - 20);
+
+                }
+                if (correctDirection == 'right' || correctDirection == 'both') {
+                    line(pointX + 7.5, pointY - 25, end + 10, pointY - 25);
+
+                    //Arrow right side
+                    line(end + 10, pointY - 25, end + 5, pointY - 30);
+                    line(end + 10, pointY - 25, end + 5, pointY - 20);
+
+                }
+            }
+
+
+            drawToggle(callee) {
+
+                let width = 25;
+                let height = 25;
+
+                fill(this.leftToggleState ? color(185, 153, 255) : color(200, 200, 200));
+                stroke(0);
+                strokeWeight(2);
+                rect(this.model.start - 40, this.model.pointY - 38, width, height, 0.5);
+
+                image(state.assets.leftArrow, this.model.start - 38, this.model.pointY - 35, 20, 20);
+
+
+                // push();
+                // fill(0);
+                // stroke(0);
+                // textSize(18);
+                // text('⬅', this.model.start - 26, this.model.pointY - 25);
+                // pop();
+
+                fill(this.rightToggleState ? color(185, 153, 255) : color(200, 200, 200));
+                stroke(0);
+                strokeWeight(2);
+                rect(this.model.end + 15, this.model.pointY - 38, width, height, 0.5);
+
+                image(state.assets.rightArrow, this.model.end + 18, this.model.pointY - 35, 20, 20);
+
+
+                // push();
+                // fill(0);
+                // stroke(0);
+                // textSize(18);
+                // text('➡', this.model.end + 26, this.model.pointY - 25);
+                // pop();
+            }
+        }
+
+        class GraphicController {
+
+            constructor(model, view) {
+                this.model = model;
+                this.view = view;
+                state.dragged = false;
+            }
+
+            /**
+             * function to handle whenever mouse is pressed
+             * @param {*} mouseX 
+             * @param {*} mouseY 
+             * @returns 
+             */
+            handleMousePressed(mouseX, mouseY) {
+                // if (this.model.attempts <= 0) return;
+                state.feedbackMessage = "";
+                // console.log("🚀 ~ GraphicView ~ handleMousePressed ~ callee:", callee);
+                let d = dist(mouseX, mouseY, this.model.pointX, this.model.pointY);
+                if (d < this.model.snappingRange) {
+                    state.dragged = true;
+                }
+                this.view.handleViewMousePress(mouseX, mouseY, "handle View MousePressed called");
+                // console.log(model.pointX);
+            }
+
+            handleMouseDragged(mouseX) {
+                //  if (this.model.attempts <= 0) return;
+                this.model.initialPointX = null;
+                if (state.dragged) {
+                    let constrainedX = constrain(mouseX, this.model.start + this.model.snappingRange, this.model.end - this.model.snappingRange);
+                    this.model.pointX = this.model.getClosesetTick(constrainedX);
+                }
+            }
+
+            /**
+             * function to call all compenent of UI from view controller
+             * @param {*} callee 
+             */
+            updateAndDraw(callee) {
+                const correctPointX = model.getCorrectPointX();
+
+                this.view.displayLine(this.model.start, this.model.pointY, this.model.end, this.model.range);
+                if (state.showCorrectAnswer) {
+                    this.view.drawPoint(correctPointX, this.model.pointY, 15, color(46, 139, 87));
+                    this.view.resultDraggingLine(this.model.start, this.model.pointY, correctPointX, this.model.end, this.model.correctDirection);
+                    this.view.drawToggle();
+                    this.view.displayQuestions();
+                }
+                else {
+                    this.view.drawPoint(this.model.pointX, this.model.pointY, 15, color(144, 3, 252));
+                    this.view.drawDraggingLine(this.model.start, this.model.pointY, this.model.pointX, this.model.end);
+                    this.view.drawToggle();
+                    this.view.displayQuestions();
+                }
+            }
+
+        }
+
+
+    </script>
+
+</html>

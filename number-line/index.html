@@ -1,0 +1,82 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>numberLine</title>
+    <script src="./lib/p5.js"></script>
+    <script src="controller.js"></script>
+    <script src="view.js"></script>
+    <script src="model.js"></script>
+    <!-- <script src="test.js"></script> -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="global_style.css" />
+    
+    <script defer>
+      //setup and draw canvas 
+
+      let model;
+      let view;
+      let controller;
+      let checkBoxAdd;
+      let checkBoxSub;
+
+      function setup() {
+        let canvas = createCanvas(800, 500);
+        canvas.parent("mainCanvas");
+
+        //Initialization & constructor call from the setup
+        model = new NumberLineModel(10, 30, width, height);
+        view = new NumberLineView(model);
+        controller = new NumberLineController(model, view);
+        //runTestCases(testCases, view);
+
+        //eventListener for reset button
+        const resetButton = document.getElementById("resetButton");
+        resetButton.addEventListener("click", () => controller.handleReset());
+      }
+
+      function draw() {
+        controller.updateAndDraw();
+      }
+
+      function mousePressed() {
+        controller.handleMousePressed(mouseX, mouseY);
+      }
+
+      function mouseDragged() {
+        controller.handleMouseDragged(mouseX);
+      }
+
+      function mouseReleased() {
+        controller.handleMouseReleased();
+      }
+    </script>
+  </head>
+  <body>
+    
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Number Line</h2>
+        <span id="versionId" class="versionText">v_2506161</span>
+        <!-- <span id="versionId" class="versionText">{{versionAndTime}}</span> -->
+    </div>
+      <div class="mainContainer" id="mainCanvas">
+
+      </div>
+    <div class="flexContainer button-controls">
+      <div class="flexItem">        
+        <input type="checkbox" id="pendulum" checked>
+        <label id="pendulum-chalkA" for="pendulum">Addition</label> 
+      </div>
+
+      <div class="flexItem">        
+        <input type="checkbox" id="pendulum2" checked>
+        <label id="pendulum-chalkB" for="pendulum2">Subtraction</label> 
+      </div>
+      
+      <button id="resetButton" class="btn btn-reset">Reset to 0</button>
+    </div>
+</div>
+
+  </body>
+</html>

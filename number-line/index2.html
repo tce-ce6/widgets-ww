@@ -1,0 +1,356 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>numberLine</title>
+    <script src="./lib/p5.js"></script>
+    <script src="controller.js"></script>
+    <script src="view.js"></script>
+    <script src="model.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Number Line</h2>
+            <!-- <span id="versionId" class="versionText">{{versionAndTime}}</span> -->
+             <span id="versionId" class="versionText">"2505191"</span>
+        </div>
+        <div class="mainContainer" id="mainCanvas">
+
+        </div>
+        <div class="flexContainer">
+            <div class="flexItem">
+                <input type="checkbox" id="pendulum" checked>
+                <label id="pendulum-chalkA" for="pendulum">Addition</label>
+            </div>
+
+            <div class="flexItem">
+                <input type="checkbox" id="pendulum2" checked>
+                <label id="pendulum-chalkB" for="pendulum2">Subtraction</label>
+            </div>
+
+            <button id="resetButton" class="btn btn-reset">Reset to 0</button>
+        </div>
+    </div>
+
+    <script defer>
+        //setup and draw canvas 
+    
+        let model;
+        let view;
+        let controller;
+        let checkBoxAdd;
+        let checkBoxSub;
+    
+        function setup() {
+            let canvas = createCanvas(800, 500);
+            canvas.parent("mainCanvas");
+    
+            //Initialization & constructor call from the setup
+            model = new NumberLineModel(10, 30, width, height);
+            view = new NumberLineView(model);
+            controller = new NumberLineController(model, view);
+    
+            //eventListener for reset button
+            const resetButton = document.getElementById("resetButton");
+            resetButton.addEventListener("click", () => controller.handleReset());
+    
+            //drawing checkBox
+            //  checkBoxAdd = createCheckbox("Addition", true);
+            //  checkBoxAdd.position(250, 380);
+    
+    
+            // checkBoxSub = createCheckbox("Subtraction", true);
+            // checkBoxSub.position(250, 480);
+        }
+    
+        function draw() {
+            controller.updateAndDraw();
+        }
+    
+        function mousePressed() {
+            controller.handleMousePressed(mouseX, mouseY);
+        }
+    
+        function mouseDragged() {
+            controller.handleMouseDragged(mouseX);
+        }
+    
+        function mouseReleased() {
+            controller.handleMouseReleased();
+        }
+    
+    
+    
+        //model
+        class NumberLineModel {
+            constructor(range, snappingRange) {
+                this.range = range;
+                this.snappingRange = snappingRange;
+                this.start = 100;
+                this.end = 700 // width - start;
+                this.pointY = 200;
+                this.pointX = this.mapValueToPixel(0);
+            }
+    
+            mapValueToPixel(value) {
+                return map(value, -this.range, this.range, this.start, this.end);
+            }
+    
+            mapPixelToValue(value) {
+                return map(value, this.start, this.end, -this.range, this.range);
+            }
+    
+            snapToNearest() {
+                const nearestValue = round(this.mapPixelToValue(this.pointX));
+                this.pointX = this.mapValueToPixel(nearestValue);
+                return nearestValue;
+    
+            }
+        }
+    
+    
+    
+    
+        //view
+        class NumberLineView {
+    
+            constructor(model) {
+                this.model = model;
+                this.pointX = this.model.pointX;
+                this.arrowX = this.model.pointX;
+                this.animationSpeed = 0.05;
+            }
+    
+            drawNumberLine() {
+    
+                //straight line on X & Y co-ordinate
+                stroke(0);
+                strokeWeight(1);
+                line(this.model.start, this.model.pointY, this.model.end, this.model.pointY);
+    
+                //vertical line on x & y co-ordinate
+                stroke(0);
+                strokeWeight(1);
+                line(width / 2, this.model.pointY, width / 2, 0);
+                triangle(width / 2, 0, width / 2 - 5, 5, width / 2 + 5, 5);
+    
+                //tick lines and number lable
+                for (let i = -this.model.range; i <= this.model.range; i++) {
+                    const x = this.model.mapValueToPixel(i);
+                    line(x, this.model.pointY - 10, x, this.model.pointY + 10);
+                    fill(0);
+                    textAlign(CENTER, CENTER);
+                    text(i, x, this.model.pointY + 20);
+                }
+    
+            }
+    
+            drawPoint() {
+                this.pointX = lerp(this.pointX, this.arrowX, 0.5);
+                fill(255, 0, 0);
+                noStroke();
+                ellipse(this.pointX, this.model.pointY, 15);
+            }
+    
+    
+            drawArrow() {
+                const centerValue = this.model.snapToNearest();
+                const additionValue = centerValue + 6;
+                const subtractionValue = centerValue - 6;
+    
+                const additionPixel = this.model.mapValueToPixel(additionValue);
+                const subtractionPixel = this.model.mapValueToPixel(subtractionValue);
+                const centerPixel = this.model.mapValueToPixel(centerValue);
+    
+                //for animating line
+                this.arrowX = lerp(this.arrowX, centerPixel, this.animationSpeed);
+    
+                const checkBoxAdd = document.getElementById("pendulum");
+                const checkBoxSub = document.getElementById("pendulum2");
+    
+                if (checkBoxAdd.checked) {
+                    //draw addition line and arrow
+                    stroke(0, 200, 0);
+                    strokeWeight(2);
+    
+                    if (additionValue > this.model.range) {
+                        line(this.arrowX, this.model.pointY, this.model.end, this.model.pointY);
+                        fill(0, 200, 0);
+    
+                        triangle(this.model.end, this.model.pointY, this.model.end - 10, this.model.pointY - 5, this.model.end - 10, this.model.pointY + 5);
+    
+    
+                    }
+                    else {
+                        line(this.arrowX, this.model.pointY, additionPixel, this.model.pointY);
+                        fill(0, 200, 0);
+                        triangle(additionPixel, this.model.pointY, additionPixel - 10, this.model.pointY - 5, additionPixel - 10, this.model.pointY + 5);
+    
+                    }
+    
+                    //dislying the addition 
+    
+                    //ADDITION
+                    fill(221, 255, 221)
+                    stroke(0);
+                    rect(120, this.model.pointY + 70, 250, 80);
+    
+                    fill(0);
+                    noStroke();
+                    textSize(16);
+                    textAlign(LEFT, CENTER);
+                    text(`Addition : ${centerValue} + 6 = ${additionValue}`, 130, this.model.pointY + 110);
+    
+                }
+    
+                //draw subtraction line and arrow
+                if (checkBoxSub.checked) {
+                    stroke(200, 0, 0);
+                    strokeWeight(2);
+                    if (subtractionValue < -this.model.range) {
+                        line(this.arrowX, this.model.pointY, this.model.start, this.model.pointY);
+                        fill(200, 0, 0);
+                        triangle(this.model.start, this.model.pointY, this.model.start + 10, this.model.pointY + 5, this.model.start + 10, this.model.pointY - 5);
+    
+                    }
+                    else {
+                        line(this.arrowX, this.model.pointY, subtractionPixel, this.model.pointY);
+                        fill(200, 0, 0);
+                        triangle(subtractionPixel, this.model.pointY, subtractionPixel + 10, this.model.pointY + 5, subtractionPixel + 10, this.model.pointY - 5);
+    
+                    }
+    
+                    //DISPLAY subtraction value
+                    //Subtraction
+                    fill(255, 221, 221)
+                    stroke(0)
+                    rect(120, this.model.pointY + 170, 250, 80);
+    
+                    fill(0);
+                    noStroke();
+                    textSize(16);
+                    textAlign(LEFT, CENTER);
+                    text(`Subtraction : ${centerValue} - 6 = ${subtractionValue}`, 130, this.model.pointY + 210);
+                }
+    
+            }
+    
+    
+    
+            displayNearestValue(nearestValue) {
+    
+                //Value of addition a
+                fill(0, 0, 255);
+                noStroke();
+                ellipse(map(this.model.pointX, this.model.start, this.model.end, width / 2 + 100, this.model.end), this.model.pointY + 110, 15);
+                stroke(0, 0, 255);
+                strokeWeight(2);
+                line(width / 2 + 100, this.model.pointY + 110, this.model.end, this.model.pointY + 110);
+    
+                noFill();
+                stroke(0);
+                strokeWeight(1);
+                rect(this.model.end + 5, this.model.pointY + 90, 20, 20);
+    
+                fill(0);
+                noStroke();
+                textSize(16);
+                textAlign(CENTER, CENTER);
+                text(`${nearestValue}`, this.model.end + 15, this.model.pointY + 100);
+    
+                fill(0);
+                noStroke();
+                textSize(16);
+                textAlign(CENTER, CENTER);
+                text(`a = ${nearestValue}`, width / 2 + 200, this.model.pointY + 70);
+                //console.log(nearestValue);
+    
+    
+                //value of subtraction b
+                fill(255, 0, 0);
+                noStroke();
+                ellipse(width / 2 + 200, this.model.pointY + 210, 15);
+                stroke(255, 0, 0);
+                strokeWeight(2);
+                line(width / 2 + 100, this.model.pointY + 210, this.model.end, this.model.pointY + 210);
+    
+                noFill();
+                stroke(0);
+                strokeWeight(1);
+                rect(this.model.end + 5, this.model.pointY + 190, 20, 20);
+    
+                fill(0);
+                noStroke();
+                textSize(16);
+                textAlign(CENTER, CENTER);
+                text(`${6}`, this.model.end + 15, this.model.pointY + 200);
+    
+                fill(0);
+                noStroke();
+                textSize(16);
+                textAlign(CENTER, CENTER);
+                text(`b = ${6}`, width / 2 + 200, this.model.pointY + 170);
+            }
+        }
+    
+        //controller
+    
+        class NumberLineController {
+    
+            constructor(model, view) {
+                this.model = model;
+                this.view = view;
+                this.dragged = false;
+            }
+    
+            handleMousePressed(mouseX, mouseY) {
+                const d = dist(mouseX, mouseY, this.model.pointX, this.model.pointY);
+                if (d < this.model.snappingRange) {
+                    this.dragged = true;
+                }
+    
+                //on clicking the point
+                for (let i = -this.model.range; i <= this.model.range; i++) {
+                    const clickNumber = this.model.mapValueToPixel(i);
+                    const d = dist(mouseX, mouseY, clickNumber, this.model.pointY);
+                    if (d < this.model.snappingRange)
+                        this.model.pointX = clickNumber;
+                }
+            }
+    
+            handleMouseDragged(mouseX) {
+                if (this.dragged) {
+                    this.model.pointX = constrain(mouseX, this.model.start, this.model.end);
+                }
+            }
+    
+            handleMouseReleased() {
+                this.dragged = false;
+            }
+    
+            //handle reset button to reset to 0
+            handleReset() {
+                this.model.pointX = this.model.mapValueToPixel(0);
+            }
+    
+            updateAndDraw() {
+                background(255);
+                this.view.drawNumberLine();
+                this.view.drawPoint();
+                this.view.drawArrow();
+                const nearestValue = this.model.snapToNearest();
+                this.view.displayNearestValue(nearestValue);
+            }
+        }
+    
+    
+    </script>
+</body>
+
+
+</html>

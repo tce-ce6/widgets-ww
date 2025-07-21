@@ -121,18 +121,13 @@ h1, h2, h3, h4, h5, p{
     width: 75%;
 }   
 .button-controls{
-    padding: 12px;
+    padding: 25px 70px;
     position: relative;
     border-top: 1px solid #ddd;
     background: #f7f7f7;
     border-radius: 10px;
     flex-wrap: wrap;
-    @media screen and (max-width: 650px) {
-        justify-content: center;
-        flex-direction: column;
-        gap: 10px;
-align-items:center;
-    }
+
 }
 
 button{

@@ -43,6 +43,32 @@ function mouseReleased() {
     controller.mouseReleased();
 }
 
+function touchStarted() {
+    // Only handle touch if it's on the drag box
+    if (controller.isTouchOnDragBox()) {
+        controller.mousePressed();
+        return false; // Prevent default only for drag box
+    }
+    // Return true to allow normal touch behavior for other elements
+    return true;
+}
+
+function touchMoved() {
+    if (controller.isDragging) {
+        controller.mouseDragged();
+        return false; // Prevent default only when dragging
+    }
+    return true;
+}
+
+function touchEnded() {
+    if (controller.isDragging) {
+        controller.mouseReleased();
+        return false; // Prevent default only when dragging
+    }
+    return true;
+}
+
 // Model - Handles data and business logic
 class Model {
     constructor() {
@@ -372,8 +398,10 @@ class Controller {
     }
     
     mousePressed() {
-        const dx = mouseX - model.dragBox.x;
-        const dy = mouseY - model.dragBox.y;
+  const x = touches.length > 0 ? touches[0].x : mouseX;
+const y = touches.length > 0 ? touches[0].y : mouseY;
+const dx = x - model.dragBox.x;
+const dy = y - model.dragBox.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         if (distance < model.dragBox.width / 2) {
@@ -384,8 +412,8 @@ class Controller {
     mouseDragged() {
         if (this.isDragging) {
             // Constrain horizontal movement to the boxes' horizontal line
-            model.dragBox.x = constrain(mouseX, model.boxes[0].x, model.boxes[6].x);
-            
+const x = touches.length > 0 ? touches[0].x : mouseX;
+model.dragBox.x = constrain(x, model.boxes[0].x, model.boxes[6].x);            
             // Find the closest box and update display value in real-time during drag
             let closestIndex = 0;
             let minDistance = Infinity;
@@ -413,6 +441,17 @@ class Controller {
             model.snapDragBox();
         }
     }
+    isTouchOnDragBox() {
+    if (touches.length === 0) return false;
+    
+    const x = touches[0].x;
+    const y = touches[0].y;
+    const dx = x - model.dragBox.x;
+    const dy = y - model.dragBox.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    return distance < model.dragBox.width / 2;
+}
 }
 
 // Initialize P5.js

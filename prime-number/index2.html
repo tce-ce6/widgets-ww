@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identifying Prime Numbers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f5f6fa;
+        }
+
+        .main-container {
+            width: 66%;
+            min-width: 600px;
+            max-width: 800px;
+            padding: 30px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .question {
+            font-size: 20px;
+            margin: 30px 0;
+        }
+
+        .buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 15px 60px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        button.correct {
+            background-color: #38a169 !important;
+        }
+        
+        button.incorrect {
+            background-color: #e53e3e !important;
+        }
+
+        button:disabled {
+            opacity: 1;
+        }
+
+        button:disabled {
+            background-color: #d1d1d1;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #5b4bc4;
+        }
+
+        .visualization {
+            margin: 30px 0;
+            width: 100%;
+            height: 200px;
+            /* Fixed height for visualization */
+            overflow-y: auto;
+            /* Add scroll if rows exceed height */
+        }
+
+        .visualization {
+            margin: 20px 0;
+            /* Reduced margin */
+            width: 100%;
+            height: 150px;
+            /* Reduced height to fit 5 rows */
+            overflow-y: hidden;
+            /* Ensure no scrolling */
+        }
+
+        .slider-container {
+            margin: 10px 0;
+            /* Reduced margin */
+            padding: 5px 0;
+            /* Reduced padding */
+            width: 100%;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .row {
+            display: flex;
+            margin: 5px 0;
+            flex-wrap: wrap;
+        }
+
+        .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 2px;
+            background-color: #e67e22;
+            flex-shrink: 0;
+        }
+
+        .circle.purple {
+            background-color: #6c5ce7;
+        }
+
+        .multiplication {
+            color: #333;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        /* .slider-container {
+            margin: 30px 0;
+            width: 100%;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 10px 0;
+            z-index: 1;
+        } */
+
+        .slider-label {
+            color: #6c5ce7;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #ddd;
+            outline: none;
+            border-radius: 2px;
+            background: linear-gradient(to right, #6c5ce7 0%, #6c5ce7 50%, #ddd 50%, #ddd 100%);
+            transition: background 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #6c5ce7;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 5px rgba(108, 92, 231, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #6c5ce7;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            box-shadow: 0 0 5px rgba(108, 92, 231, 0.3);
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+        }
+
+        .slider::-moz-range-progress {
+            background-color: #6c5ce7;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .score {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .solution {
+            color: #2c7a7b;
+            font-size: 18px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .result {
+            color: #e53e3e;
+            font-size: 18px;
+            margin-left: 20px;
+            display: none;
+        }
+
+        .new-problem {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>Identifying Prime Numbers</h1>
+
+        <div class="question">
+            Is the number <span id="currentNumber"></span> prime?
+            <span class="result" id="result">✕ INCORRECT</span>
+        </div>
+
+        <div class="buttons">
+            <button onclick="checkAnswer(true)" id="yesBtn">YES</button>
+            <button onclick="checkAnswer(false)" id="noBtn">NO</button>
+        </div>
+
+        <div class="solution" id="solution">
+            SOLUTION:<br>
+            <span id="solutionText"></span>
+        </div>
+
+        <div class="multiplication" id="multiplication"></div>
+        <div class="visualization" id="visualization"></div>
+
+        <div class="slider-container">
+            <div class="slider-label">
+                Number of circles per row: <span id="sliderValue"></span>
+            </div>
+            <input type="range" min="1" step="1" class="slider" id="rowSlider">
+        </div>
+
+        <div class="score">
+            Number correct: <span id="score">0</span>
+        </div>
+
+        <button class="new-problem" onclick="startNewProblem()" id="newProblemBtn">NEW PROBLEM</button>
+    </div>
+
+    <script>
+        let currentNumber;
+        let score = 0;
+
+        const slider = document.getElementById('rowSlider');
+        const sliderValue = document.getElementById('sliderValue');
+        const visualization = document.getElementById('visualization');
+        const multiplication = document.getElementById('multiplication');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const solution = document.getElementById('solution');
+        const solutionText = document.getElementById('solutionText');
+        const result = document.getElementById('result');
+        const newProblemBtn = document.getElementById('newProblemBtn');
+
+        function updateSliderBackground() {
+            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, #6c5ce7 0%, #6c5ce7 ${value}%, #ddd ${value}%, #ddd 100%)`;
+        }
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function updateSlider() {
+            slider.max = currentNumber;
+            slider.value = currentNumber;
+            sliderValue.textContent = currentNumber;
+            updateSliderBackground();
+            updateVisualization();
+        }
+
+        function updateVisualization() {
+            const circlesInFirstRow = parseInt(slider.value);
+            visualization.innerHTML = '';
+            const totalCircles = currentNumber;
+            let remainingCircles = totalCircles;
+            let rows = 0;
+
+            const containerWidth = visualization.offsetWidth;
+            const containerHeight = visualization.offsetHeight;
+            const circleMargin = 2;
+            const maxVisibleRows = 5;
+
+            // Calculate maximum possible circle size based on container dimensions
+            const maxWidthBasedSize = (containerWidth / circlesInFirstRow) - (2 * circleMargin);
+            const maxHeightBasedSize = (containerHeight / maxVisibleRows) - (2 * circleMargin);
+            const circleSize = Math.min(20, Math.max(3, Math.min(maxWidthBasedSize, maxHeightBasedSize)));
+
+            // Adjust slider minimum dynamically
+            const minCirclesPerRow = Math.ceil(totalCircles / maxVisibleRows);
+            slider.min = Math.min(minCirclesPerRow, currentNumber);
+
+            while (remainingCircles > 0 && rows < maxVisibleRows) {
+                rows++;
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.style.height = `${circleSize + (circleMargin * 2)}px`;
+
+                const circlesInThisRow = rows === 1 ? circlesInFirstRow :
+                    Math.min(circlesInFirstRow, remainingCircles);
+
+                for (let j = 0; j < circlesInThisRow; j++) {
+                    const circle = document.createElement('div');
+                    circle.className = 'circle';
+                    circle.style.width = circleSize + 'px';
+                    circle.style.height = circleSize + 'px';
+                    circle.style.margin = `${circleMargin}px`;
+                    row.appendChild(circle);
+                }
+
+                visualization.appendChild(row);
+                remainingCircles -= circlesInThisRow;
+            }
+
+            // Check if all rows have equal circles (even distribution)
+            const isEvenlyDistributed = (totalCircles % rows === 0) &&
+                (circlesInFirstRow === Math.floor(totalCircles / rows));
+
+            // Color circles based on distribution
+            const allRows = visualization.querySelectorAll('.row');
+            allRows.forEach((row, index) => {
+                const circles = row.querySelectorAll('.circle');
+                circles.forEach(circle => {
+                    if (isEvenlyDistributed) {
+                        circle.style.backgroundColor = '#38a169'; // Green for even
+                    } else if (index === 0) {
+                        circle.classList.add('purple'); // First row purple
+                    } else {
+                        circle.style.backgroundColor = '#e67e22'; // Other rows orange
+                    }
+                });
+            });
+
+            multiplication.textContent = `${circlesInFirstRow} × ${rows} = ${totalCircles}`;
+
+
+            // Force slider update if we exceed row limits
+            if (rows >= maxVisibleRows && remainingCircles > 0) {
+                slider.value = Math.max(slider.min, Math.ceil(totalCircles / maxVisibleRows));
+                sliderValue.textContent = slider.value;
+                updateVisualization(); // Recursive call with corrected value
+                return;
+            }
+        }
+
+        slider.addEventListener('input', () => {
+            const totalCircles = currentNumber;
+            const requestedRows = Math.ceil(totalCircles / slider.value);
+
+            if (requestedRows > 5) {
+                const newValue = Math.ceil(totalCircles / 5);
+                slider.value = newValue;
+                sliderValue.textContent = newValue;
+            }
+
+            updateVisualization();
+        });
+
+        slider.addEventListener('input', () => {
+            const totalCircles = currentNumber;
+            const maxVisibleRows = 5;
+            const requestedRows = Math.ceil(totalCircles / slider.value);
+
+            if (requestedRows > maxVisibleRows) {
+                const newValue = Math.ceil(totalCircles / maxVisibleRows);
+                slider.value = newValue;
+                sliderValue.textContent = newValue;
+            }
+
+            updateVisualization();
+        });
+
+        // Keep the rest of the functions unchanged
+        function isPrime(num) {
+            if (num < 2) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        function showSolution(isCorrect) {
+            yesBtn.disabled = true;
+            noBtn.disabled = true;
+            slider.value = currentNumber;
+            sliderValue.textContent = currentNumber;
+            updateVisualization();
+            updateSliderBackground();
+
+            const isPrimeNumber = isPrime(currentNumber);
+            if (isPrimeNumber) {
+                solutionText.textContent = `${currentNumber} is a prime number.\nIts only factors are ${currentNumber} and 1.`;
+            } else {
+                const factors = [];
+                for (let i = 1; i <= currentNumber; i++) {
+                    if (currentNumber % i === 0) factors.push(i);
+                }
+                solutionText.textContent = `${currentNumber} is not a prime number.\nIts factors are: ${factors.join(', ')}.`;
+            }
+
+            solution.style.display = 'block';
+            result.style.display = 'inline';
+            result.textContent = isCorrect ? '✓ CORRECT' : '✕ INCORRECT';
+            result.style.color = isCorrect ? '#38a169' : '#e53e3e';
+        }
+
+        // function checkAnswer(answer) {
+        //     const correct = isPrime(currentNumber) === answer;
+        //     if (correct) score++;
+        //     document.getElementById('score').textContent = score;
+        //     showSolution(correct);
+        // }
+
+        // function startNewProblem() {
+        //     yesBtn.disabled = false;
+        //     noBtn.disabled = false;
+        //     solution.style.display = 'none';
+        //     result.style.display = 'none';
+        //     currentNumber = getRandomNumber(2, 99);
+        //     document.getElementById('currentNumber').textContent = currentNumber;
+        //     updateSlider();
+        // }
+
+          // Modified checkAnswer function
+          function checkAnswer(answer) {
+            const correct = isPrime(currentNumber) === answer;
+            const correctAnswer = isPrime(currentNumber);
+
+            // Reset button styles
+            yesBtn.classList.remove('correct', 'incorrect');
+            noBtn.classList.remove('correct', 'incorrect');
+
+            // Set correct answer button
+            if (correctAnswer === correct) {
+                yesBtn.classList.add('correct');
+            } else {
+                noBtn.classList.add('correct');
+            }
+
+            // Set incorrect answer if wrong
+            if (!correct) {
+                if (answer) {
+                    yesBtn.classList.add('incorrect');
+                } else {
+                    noBtn.classList.add('incorrect');
+                }
+            }
+
+            // Disable buttons
+            yesBtn.disabled = true;
+            noBtn.disabled = true;
+
+            if (correct) score++;
+            document.getElementById('score').textContent = score;
+            showSolution(correct);
+        }
+
+        // Modified startNewProblem function
+        function startNewProblem() {
+            yesBtn.disabled = false;
+            noBtn.disabled = false;
+            yesBtn.classList.remove('correct', 'incorrect');
+            noBtn.classList.remove('correct', 'incorrect');
+            solution.style.display = 'none';
+            result.style.display = 'none';
+            currentNumber = getRandomNumber(2, 99);
+            document.getElementById('currentNumber').textContent = currentNumber;
+            updateSlider();
+        }
+
+        slider.oninput = function () {
+            sliderValue.textContent = this.value;
+            updateSliderBackground();
+            updateVisualization();
+        }
+
+        startNewProblem();
+    </script>
+</body>
+
+</html>

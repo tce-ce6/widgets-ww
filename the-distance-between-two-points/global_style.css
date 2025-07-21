@@ -28,6 +28,8 @@ h4{
 }
 h5{
     font-size: 16px;
+    font-size: clamp(12px, 2vw, 16px);
+    line-height: normal;
 }
 p{
     font-size: 16px;
@@ -137,13 +139,15 @@ align-items:center;
 
 button{
     padding: 12px 18px;
+    padding: clamp(12px, 2vw, 16px) clamp(12px, 2vw, 16px);
     background-color: #1e6bef;
     color: white;
     border: none;
     border-radius: 12px;
     /* Ensures the slider thumb is interactive and indicates it can be dragged */
     cursor: pointer;
-    font-size: 14px;
+     font-size: 14px;
+    font-size: clamp(10px, 1.5vw, 14px);
 }
 button:hover{
     background-color: #01296e;
@@ -167,7 +171,7 @@ button:disabled{
 }
 
 .container {
-    width: calc(100% - 60px);
+    width: calc(100% - 20px);
     
 }
 

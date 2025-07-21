@@ -1,0 +1,415 @@
+body {
+
+  margin: 0;
+  background-color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* .mainContainerOuter {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  width: 100%;
+  overflow: hidden;
+}
+
+.mainContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-grow: 1;
+  min-height: calc(100vh - 140px);
+} */
+
+/* .d-flex {
+display: flex;
+} */
+
+.right-col {
+  padding: 20px;
+  background-color: #fff;
+  height: auto !important;
+  overflow: auto;
+  flex-basis: 300px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.right-col ::ng-deep table {
+  margin: 0 auto;
+}
+
+.right-col ::ng-deep table td,
+.right-col ::ng-deep table th {
+  padding: 5px 15px;
+  border: 1px solid #000 34;
+}
+
+/* Flex Container */
+.flexContainer,
+.controlsSec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-color: #fafafa;
+  width: 100%;
+  margin: 0 auto;
+  gap: 20px;
+  background: #e7e7e7;
+  background: linear-gradient(0deg, #e7e7e7 0%, white 100%);
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.radioOptions ::ng-deep div {
+  display: flex;
+  gap: 20px;
+}
+
+.radioOptions ::ng-deep input[type="radio"] {
+  margin-right: 12px;
+  accent-color: #6200ee;
+  transform: scale(1.5);
+}
+
+/* Flex Item */
+.flexItem {
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  border-radius: 25px;
+  align-items: center;
+}
+
+.flexItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+  margin-right: 12px;
+  accent-color: #6200ee;
+  transform: scale(1.5);
+}
+
+/* Label Styling */
+label {
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Select Dropdown Styling */
+.selectOptions ::ng-deep select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  appearance: none;
+  margin: -8px;
+}
+
+.selectOptions select:focus {
+  border-color: #6200ee;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Select Dropdown Icon */
+.selectOptions select::-ms-expand {
+  display: none;
+  /* Hide default dropdown arrow in IE */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+
+  .controlsSec,
+  .flexContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .flexItem {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+.label ::ng-deep span {
+  border-radius: 5px;
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+
+
+
+.btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn.btn-reset {
+  background: #ff2c68;
+  color: #fff;
+}
+
+.btn.btn-reset:focus {
+  outline-color: #ff2c68;
+}
+.btn-warning {
+  background-color: #d12f58;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #bf2a4f;
+}
+
+/* 
+.main-container {
+
+  width: 1000px;
+} */
+
+h1 {
+  color: #333;
+  font-size: 24px;
+  padding: 0;
+  margin: 0;
+}
+
+.question {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 7px 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  border-radius: 25px;
+}
+
+button.correct {
+  background-color: #38a169 !important;
+}
+
+button.incorrect {
+  background-color: #e53e3e !important;
+}
+
+button:disabled {
+  opacity: 1;
+}
+
+button:disabled {
+  background-color: #d1d1d1;
+  cursor: not-allowed;
+}
+
+/* Add this to your existing CSS */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.result {
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #5b4bc4;
+}
+
+.visualization {
+  margin: 10px 0;
+  width: 100%;
+  height: 200px;
+  /* Fixed height for visualization */
+  overflow-y: auto;
+  /* Add scroll if rows exceed height */
+}
+
+.visualization {
+  margin: 10px 0;
+  /* Reduced margin */
+  width: 100%;
+  height: 150px;
+  /* Reduced height to fit 5 rows */
+  overflow-y: hidden;
+  /* Ensure no scrolling */
+}
+
+.slider-container {
+  margin: 0 0 10px;
+  /* Reduced margin */
+  padding: 5px 0;
+  /* Reduced padding */
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  z-index: 1;
+}
+
+.row {
+  display: flex;
+  margin: 5px 0;
+  flex-wrap: wrap;
+}
+
+.circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 2px;
+  background-color: #e67e22;
+  flex-shrink: 0;
+}
+
+.circle.purple {
+  background-color: #6c5ce7;
+}
+
+.multiplication {
+  color: #333;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+/* .slider-container {
+    margin: 30px 0;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px 0;
+    z-index: 1;
+} */
+
+.slider-label {
+  color: #6c5ce7;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  outline: none;
+  border-radius: 2px;
+  background: linear-gradient(to right, #6c5ce7 0%, #6c5ce7 50%, #ddd 50%, #ddd 100%);
+  transition: background 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #6c5ce7;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 5px rgba(108, 92, 231, 0.3);
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #6c5ce7;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0 5px rgba(108, 92, 231, 0.3);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+}
+
+.slider::-moz-range-progress {
+  background-color: #6c5ce7;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.score {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.solution {
+  color: #37A269;
+  font-size: 17px;
+  margin: 10px 0;
+  display: none;
+  font-weight: bold;
+}
+
+.result {
+  color: #e53e3e;
+  font-size: 18px;
+  margin-left: 20px;
+  display: none;
+}
+
+.new-problem {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+  display: inline-block;
+}
+.main-container{
+  width: 90%;
+
+}

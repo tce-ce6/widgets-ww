@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Treasure Hunt Game</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script> -->
+    <script src="p5.js"></script>
+    <link href="./style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="global_style.css" />
+</head>
+<body>
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Treasure</h2>
+            <span id="versionId" class="versionText">v_2507141</span>
+        </div>
+        <div class="mainContainer">
+            <div id="canvas-container"></div>
+            <div id="message"></div>
+            <div class="attempts-badge" id="attempts">Attempts left: 3</div>
+        </div>
+        <div class="button-controls d-flex justify-content-center align-items-center g-16">
+        <div class="input-group">
+            X: <input type="number" id="xInput" min="-10" max="10" placeholder="-10 to 10">
+            Y: <input type="number" id="yInput" min="-10" max="10" placeholder="-10 to 10">
+            
+        </div>
+        <button onclick="checkGuess()">CHECK</button>
+        <button id="resetButton" class="btn bte-secondary " onclick="newProblem()">NEW PROBLEM</button>
+        </div>
+        
+    </div>
+
+<script>
+let treasureX, treasureY;
+let attempts = 3;
+let found = false;
+let coins = [];
+
+function setup() {
+    const canvas = createCanvas(400, 400);
+    canvas.parent('canvas-container');
+    treasureX = Math.floor(Math.random() * 21) - 10; // -10 to 10
+    treasureY = Math.floor(Math.random() * 21) - 10;
+}
+
+function draw() {
+    drawGrid();
+    drawTreasure();
+
+    if (found) {
+       // drawTreasure();
+        // Animate coins
+        for (let i = coins.length - 1; i >= 0; i--) {
+            coins[i].update();
+            coins[i].show();
+            if (coins[i].opacity <= 0) {
+                coins.splice(i, 1);
+            }
+        }
+    }
+}
+
+function drawGrid() {
+    background(255);
+    stroke(200);
+    
+    // Draw grid lines for every unit
+    for (let i = -11; i <= 11; i++) {
+        let x = map(i, -11, 11, 0, width);
+        let y = map(i, -11, 11, 0, height);
+        line(x, 0, x, height);
+        line(0, y, width, y);
+    }
+    
+    // Draw axes
+    stroke(0);
+    strokeWeight(2);
+    line(width/2, 0, width/2, height);
+    line(0, height/2, width, height/2);
+    
+    // Draw labels every 2 units
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    noStroke();
+    for (let i = -10; i <= 10; i += 1) {
+        if (i !== 0 && i%2 === 0) {
+            text(i, map(i, -11, 11, 0, width), height/2 + 20);
+            text(i, width/2 + 20, map(i, -11, 11, height, 0));
+        }
+    }
+}
+
+function drawTreasure() {
+    const x = map(treasureX, -11, 11, 0, width);
+    const y = map(treasureY, -11, 11, height, 0);
+    
+    // Draw treasure chest
+    fill(139, 69, 19, 200); // Brown color
+    stroke(101, 67, 33, 200);
+    strokeWeight(2);
+    rectMode(CENTER);
+    rect(x, y, 40, 25); // Main chest
+    rect(x, y - 12, 35, 6); // Lid
+    fill(255, 215, 0); // Gold
+    noStroke();
+    ellipse(x, y - 15, 12, 6); // Decoration
+}
+
+class Coin {
+    constructor(x, y) {
+        this.pos = createVector(x, y);
+        this.vel = p5.Vector.random2D().mult(random(1, 3));
+        this.opacity = 255;
+    }
+
+    update() {
+        this.pos.add(this.vel);
+        this.opacity -= 5;
+    }
+
+    show() {
+        fill(255, 204, 0, this.opacity);
+        noStroke();
+        ellipse(this.pos.x, this.pos.y, 10, 10);
+    }
+}
+
+function newProblem(){
+    treasureX = Math.floor(Math.random() * 21) - 10;
+    treasureY = Math.floor(Math.random() * 21) - 10;
+    attempts = 3;
+    found = false;
+    coins = [];
+    
+    // Clear inputs and messages
+    document.getElementById('xInput').value = '';
+    document.getElementById('yInput').value = '';
+    document.getElementById('message').innerHTML = '';
+    document.getElementById('attempts').innerHTML = 'Attempts left: 3';
+    document.getElementById('message').style.color = "inherit";
+    
+    // Redraw clean grid
+    drawGrid();
+
+}
+
+function checkGuess() {
+    if (found || attempts <= 0) return;
+
+    const guessX = parseInt(document.getElementById('xInput').value);
+    const guessY = parseInt(document.getElementById('yInput').value);
+    
+    if (isNaN(guessX) || isNaN(guessY) || 
+        guessX < -10 || guessX > 10 || 
+        guessY < -10 || guessY > 10) {
+        document.getElementById('message').innerHTML = "⚠️ Please enter valid integers between -10 and 10";
+        document.getElementById('message').style.color = "orange";
+        return;
+    }
+
+    if (guessX === treasureX && guessY === treasureY) {
+        found = true;
+        document.getElementById('message').innerHTML = "🎉 Treasure Found! 🎉";
+        document.getElementById('message').style.color = "green";
+        
+        // Create coins animation
+        for (let i = 0; i < 50; i++) {
+            coins.push(new Coin(
+                map(treasureX, -10, 10, 0, width),
+                map(treasureY, -10, 10, height, 0)
+            ));
+        }
+    } else {
+        attempts--;
+        document.getElementById('attempts').innerHTML = `Attempts left: ${attempts}`;
+        document.getElementById('message').innerHTML = "❌ Wrong coordinates! Try again.";
+        document.getElementById('message').style.color = "red";
+        
+        if (attempts <= 0) {
+            document.getElementById('message').innerHTML = 
+                `💀 Game Over! Treasure was at (${treasureX}, ${treasureY})`;
+            document.getElementById('message').style.color = "darkred";
+        }
+    }
+}
+</script>
+</body>
+</html>

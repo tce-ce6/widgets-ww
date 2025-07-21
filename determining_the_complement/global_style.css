@@ -128,7 +128,6 @@ h1, h2, h3, h4, h5, p{
     border-radius: 10px;
    /* .. flex-wrap: wrap; */
     display: flex;
-    justify-content: space-between;
     align-items: center;
     /* @media screen and (max-width: 650px) {
         justify-content: center;
@@ -136,6 +135,9 @@ h1, h2, h3, h4, h5, p{
         gap: 10px;
 align-items:center;
     } */
+}
+.gap-8{
+    gap: 8px;
 }
 
 button{

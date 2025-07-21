@@ -1,0 +1,422 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>multiple</title>
+    <script src="libs/p5.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+    <script src="sketch.js"></script>
+    <script src="controller.js"></script>
+    <script src="model.js"></script>
+    <script src="view.js"></script>
+</head>
+
+<body>
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Multiple</h2>
+            <span id="versionId" class="versionText">v_2506161</span>
+        </div>
+        <div class="mainContainer" id="mainCanvas">
+
+        </div>
+        <div class=" button-controls d-flex flex-row  align-items-center">
+           
+            <div class="flexItem  g-16">
+                <button class=" btn bte-secondary btn-outline-success " id="yesButton">Yes</button>
+                <button class="btn bte-secondary btn-outline-danger" id="noButton">No</button>
+                <button class="btn btn-primary " id="showAnswerButton">Show Answer</button>
+            </div>
+            <div class="flexItem g-16">
+                
+               
+                <button class="btn  bte-secondary " id="newProblemButton">New Problem</button>
+            </div>
+           
+        </div>
+    </div>
+</body>
+<script>
+
+
+
+let model;
+let view;
+let controller;
+let correctAnswer = null;
+let btnNewProblem;
+let btnYes;
+let btnNo;
+let btnShowAnswer;
+let randomMultiple;
+let randomNumber;
+let showAnswer = false;
+
+function setup() {
+    //createCanvas(900, 500);
+    let canvas = createCanvas(900, 500);
+    canvas.parent("mainCanvas");
+
+    generateNumber();
+
+    model = new Model(randomMultiple, randomNumber)
+    view = new View(model);
+    controller = new Controller(model, view);
+
+    btnYes = document.getElementById("yesButton");
+    btnYes.addEventListener('click', () => {
+        correctAnswer = (model.randomNumber % model.randomMultiple === 0);
+        showAnswer = true;
+        btnYes.setAttribute('disabled', true);
+        btnNo.setAttribute('disabled', true);
+    })
+
+    btnNo = document.getElementById("noButton");
+    btnNo.addEventListener('click', () => {
+        correctAnswer = (model.randomNumber % model.randomMultiple !== 0);
+        showAnswer = true;
+        btnYes.setAttribute('disabled', true);
+        btnNo.setAttribute('disabled', true);
+    });
+
+    btnNewProblem = document.getElementById("newProblemButton");
+    btnNewProblem.addEventListener('click', () => {
+        generateNumber();
+        resetToDefault();
+        model = new Model(randomMultiple, randomNumber)
+        view = new View(model);
+        controller = new Controller(model, view);
+        showAnswer = false;
+        correctAnswer = null;
+    });
+
+    btnShowAnswer = document.getElementById("showAnswerButton");
+    btnShowAnswer.addEventListener('click', () => {
+        showAnswer = true;
+        btnShowAnswer.setAttribute('disabled', true);
+        btnYes.setAttribute('disabled', true);
+        btnNo.setAttribute('disabled', true);
+    });
+}
+
+function mousePressed() {
+    controller.handleMousePressed(mouseX, mouseY);
+}
+
+
+function mouseDragged() {
+    controller.handleMouseDragged(mouseX);
+}
+
+function mouseReleased() {
+    controller.handleMouseReleased();
+}
+
+function draw() {
+    background(255);
+    controller.updateDraw();
+    controller.pointDragged();
+}
+
+function generateNumber() {
+    randomNumber = Math.floor(random(10, 99));
+    randomMultiple = Math.floor(random(2, 9));
+}
+
+function resetToDefault() {
+    btnShowAnswer.removeAttribute('disabled');
+    btnYes.removeAttribute('disabled');
+    btnNo.removeAttribute('disabled');
+}
+
+    
+
+class Model {
+    constructor(randomMultiple, randomNumber) {
+        this.start = 50;
+        this.end = 850;
+        this.randomNumber = randomNumber;
+        this.randomMultiple = randomMultiple;
+        this.rectWidth = 20;
+        this.rectHeight = 50;
+        //    this.pointX = floor((100 / this.randomNumber) + 5);
+        this.pointX = this.randomMultiple * 2;
+        this.pointY = 250;
+        this.maxPointX = this.pointX * 9;
+        this.fixRectSize = this.pointX * this.randomMultiple;
+        this.initialLowerPointX = this.randomMultiple * 2;
+        this.lowerPointX = this.initialLowerPointX;
+        this.initialPointX = this.pointX;
+        this.multipleText = 1;
+        this.randomBuffer = Math.floor(random(1, 5));
+        this.partitionCount = ceil(this.randomNumber / this.randomMultiple) + this.randomBuffer;
+        this.partitionWidth = (this.end - this.start) / this.partitionCount;
+        this.lowerPartitionText = 1;
+    }
+
+    updatePartitionCount() {
+        this.partitionCount = ceil(this.randomNumber / max(1, this.multipleText)) + this.randomBuffer;
+        this.partitionWidth = (this.end - this.start) / this.partitionCount;
+    }
+
+    /**
+     * function to calculate included number in each partition
+     */
+    // updateLowerPartitionText() {
+
+    //     let partitionIndex = floor(this.lowerPointX / this.partitionWidth);
+    //     let stepIndex = round((this.lowerPointX % this.partitionWidth) / (this.partitionWidth / this.randomMultiple));
+
+    //     console.log((this.lowerPointX % this.partitionWidth));
+    //     console.log((this.partitionWidth / this.randomMultiple));
+
+    //     if (this.lowerPointX === 0) {
+    //         this.lowerPartitionText = 0;  // Initial position is 0
+    //     } else {
+    //         this.lowerPartitionText = partitionIndex * this.randomMultiple + stepIndex;
+    //     }
+    //     //this.lowerPartitionText = partitionIndex * this.randomMultiple + stepIndex + 1;
+    //     console.log(this.partitionWidth);
+    //     console.log(partitionIndex + " " + stepIndex + " " + this.lowerPartitionText);
+
+    // }
+
+
+}
+
+
+
+
+
+class View {
+    constructor(model) {
+        this.model = model;
+    }
+
+
+    displayQuestion() {
+        textSize(20);
+        textAlign(LEFT, CENTER);
+        text(`Is ${this.model.randomNumber} multiple of ${this.model.randomMultiple} ?`, 50, 50);
+        text('You can explore multiples with the rectangles below.', 50, 150);
+    }
+
+    displayUpperRect() {
+        push()
+        fill(100, 100, 255);
+        stroke(100, 100, 255);
+        strokeWeight(2);
+
+        //  this.model.multipleText = floor(map(this.model.pointX, this.model.initialPointX, this.model.maxPointX, 1, 9));
+        this.model.multipleText = floor(map(this.model.fixRectSize, this.model.initialPointX, this.model.maxPointX, 1, 9));
+
+
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text(`${this.model.multipleText}`, (this.model.start + this.model.fixRectSize + 50) / 2, this.model.pointY - 50);
+
+        stroke(0);
+        strokeWeight(2);
+        // rect(this.model.start, this.model.pointY - 30, this.model.pointX, this.model.rectHeight);
+        rect(this.model.start, this.model.pointY - 30, this.model.fixRectSize, this.model.rectHeight);
+
+        pop();
+
+        // push();
+        // fill(100, 100, 255);
+        // stroke(0);
+        // strokeWeight(2);
+        // ellipse(this.model.pointX + this.model.start, this.model.pointY + 20, 15);
+        // pop();
+    }
+
+    displayLowerRect() {
+
+        this.model.updatePartitionCount();
+        let partitionWidth = ((this.model.end - this.model.start) / this.model.partitionCount);
+        for (let i = 0; i < this.model.partitionCount; i++) {
+            push();
+            noFill();
+            stroke(0);
+            strokeWeight(2);
+            rect(this.model.start + i * partitionWidth, this.model.pointY + 100, partitionWidth, this.model.rectHeight);
+            if (this.model.lowerPointX >= (i + 1) * partitionWidth) {
+                if (this.model.randomNumber == this.model.lowerPartitionText) {
+                    fill(128, 210, 128);
+                    rect(this.model.start + i * partitionWidth, this.model.pointY + 100, partitionWidth, this.model.rectHeight);
+                }
+                else {
+                    fill(255, 150, 0);
+                    rect(this.model.start + i * partitionWidth, this.model.pointY + 100, partitionWidth, this.model.rectHeight);
+                }
+            }
+            pop();
+        }
+        push();
+        fill(255, 150, 0);
+        stroke(255, 150, 0);
+        strokeWeight(2);
+
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text(this.model.lowerPartitionText, this.model.start + this.model.lowerPointX, this.model.pointY + 80);
+
+        drawingContext.setLineDash([5, 5]);
+        line(this.model.start + this.model.lowerPointX, this.model.pointY + 150,
+            this.model.start + this.model.lowerPointX, this.model.pointY + 100
+        );
+        drawingContext.setLineDash([]);
+        ellipse(this.model.start + this.model.lowerPointX, this.model.pointY + 150, 15);
+        pop();
+    }
+
+    displayLowerRectResult() {
+
+        let lowerPointX = (this.model.partitionWidth / this.model.randomMultiple) * this.model.randomNumber;
+        this.model.updatePartitionCount();
+        let partitionWidth = ((this.model.end - this.model.start) / this.model.partitionCount);
+        for (let i = 0; i < this.model.partitionCount; i++) {
+            push();
+            noFill();
+            stroke(0);
+            strokeWeight(2);
+            rect(this.model.start + i * partitionWidth, this.model.pointY + 100, partitionWidth, this.model.rectHeight);
+
+            if (lowerPointX >= (i + 1) * partitionWidth) {
+                fill(128, 210, 128);
+                rect(this.model.start + i * partitionWidth, this.model.pointY + 100, partitionWidth, this.model.rectHeight);
+            }
+            pop();
+        }
+        push();
+        fill(128, 210, 128);
+        stroke(128, 210, 128);
+        strokeWeight(2);
+
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text(this.model.randomNumber, this.model.start + lowerPointX, this.model.pointY + 80);
+
+        drawingContext.setLineDash([5, 5]);
+        line(this.model.start + lowerPointX, this.model.pointY + 150,
+            this.model.start + lowerPointX, this.model.pointY + 100
+        );
+        drawingContext.setLineDash([]);
+        ellipse(this.model.start + lowerPointX, this.model.pointY + 150, 15);
+        pop();
+    }
+
+    displayAnswer() {
+
+        if (showAnswer) {
+            let correct = (model.randomNumber % model.randomMultiple === 0);
+            push();
+            textSize(20);
+            stroke( correct? 'green' : 'red');
+            strokeWeight(1);
+            fill(correct? 'green' : 'red');
+            text(correct ?
+                `${model.randomNumber} is multiple of ${model.randomMultiple}` :
+                `${model.randomNumber} is not multiple of ${model.randomMultiple}`,
+                380, this.model.pointY + 50);
+            pop();
+        }
+
+        if (correctAnswer !== null) {
+            push();
+            textSize(18);
+            fill(correctAnswer ? 'green' : 'red');
+            text(correctAnswer ? 'Correct ✔ Well Done' : '✖ May be next time', 380, this.model.pointY + 200);
+            pop();
+        }
+    }
+
+}
+
+
+
+
+
+class Controller {
+
+constructor(model, view) {
+    this.model = model;
+    this.view = view;
+    this.upperDragged = false;
+    this.lowerDragged = false;
+}
+
+handleMousePressed(mouseX, mouseY) {
+    let dUpper = dist(mouseX, mouseY, this.model.start + this.model.pointX, this.model.pointY);
+    let dLower = dist(mouseX, mouseY, this.model.start + this.model.lowerPointX, this.model.pointY + 130)
+    if (dUpper < 30) {
+        this.upperDragged = true;
+    }
+    if (dLower < 30) {
+        this.lowerDragged = true;
+    }
+}
+
+handleMouseDragged(mouseX) {
+    if (this.upperDragged) {
+        let step = this.model.randomMultiple;
+        let newX = round((mouseX - this.model.start) / step) * step;
+        this.model.pointX = floor(constrain(newX, this.model.initialPointX, this.model.maxPointX));
+        this.model.updatePartitionCount();
+    }
+    if (this.lowerDragged) {
+        let step = this.model.partitionWidth / this.model.randomMultiple;
+        let newX = round((mouseX - this.model.start) / step) * step;
+        this.model.lowerPointX = (constrain(newX, 0, this.model.end - this.model.start));
+        if(mouseX >= 50 && mouseX <= 850){
+        this.model.lowerPartitionText = round(newX / (this.model.partitionWidth / this.model.randomMultiple));
+        }
+        // this.model.updateLowerPartitionText();
+    }
+}
+
+handleMouseReleased() {
+    this.upperDragged = false;
+    this.lowerDragged = false;
+}
+
+pointDragged() {
+    if (this.upperDragged) {
+        push();
+        noFill();
+        stroke(100, 100, 255);
+        strokeWeight(2);
+        ellipse(this.model.pointX + 50, this.model.pointY + 20, 25);
+        pop();
+    }
+    if (this.lowerDragged) {
+        push();
+        noFill();
+        stroke(255, 150, 0);
+        strokeWeight(2);
+        ellipse(this.model.start + this.model.lowerPointX, this.model.pointY + 150, 25);
+        pop();
+    }
+}
+
+updateDraw() {
+    this.view.displayQuestion();
+    this.view.displayUpperRect();
+    if(!showAnswer){
+        this.view.displayLowerRect();
+    }
+    else {
+        this.view.displayLowerRectResult();
+    }
+    this.view.displayAnswer();
+}
+}
+
+
+
+
+</script>
+
+</html>

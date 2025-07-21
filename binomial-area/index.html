@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Area Model</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body>
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Binomial Area</h2>
+            <span id="versionId" class="versionText">v_2507152</span>
+        </div>
+        <div class="mainContainer">
+            <div class="mainContainerinner">
+                <div class="info-box">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-content">
+                        <p>Build monomials and binomials and explore their product using an area model.</p>
+                    </div>
+                    <button id="toggleHints">Show hints</button>
+
+                </div>
+
+                <div class="activity-container">
+                    <div class="activity-area">
+                        <!-- Horizontal sliders -->
+                        <div class="horizontal-sliders">
+                            <div class="slider-group">
+                                <input type="range" id="firstTermCoefficient" min="1" max="10" value="5">
+                                <div class="slider-value"><span id="firstTermCoefficientValue">5</span>x</div>
+                            </div>
+                            <div class="slider-group">
+                                <input type="range" id="firstTermConstant" min="1" max="10" value="5">
+                                <div class="slider-value"><span id="firstTermConstantValue">5</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Area model with vertical sliders -->
+                        <div class="area-model-container">
+                            <div class="vertical-sliders">
+                                <div class="slider-group h-50">
+                                    <input type="range" id="secondTermCoefficient" min="1" max="10" value="3" class="vertical">
+                                    <div class="slider-value"><span id="secondTermCoefficientValue">3</span>x</div>
+                                </div>
+                                <div class="slider-group h-50">
+                                    <input type="range" id="secondTermConstant" min="1" max="10" value="3" class="vertical">
+                                    <div class="slider-value"><span id="secondTermConstantValue">3</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Area model grid -->
+                            <div class="area-grid-outer">
+                                <div class="area-grid">
+                                <div class="grid-column" id="leftColumn">
+                                    <div id="topLeft" class="grid-cell pink">
+                                        <div class="cell-content">
+                                            <div class="term"></div>
+                                            <div class="hint"></div>
+                                        </div>
+                                    </div>
+                                    <div id="bottomLeft" class="grid-cell green">
+                                        <div class="cell-content">
+                                            <div class="term"></div>
+                                            <div class="hint"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid-column" id="rightColumn">
+                                    <div id="topRight" class="grid-cell indigo">
+                                        <div class="cell-content">
+                                            <div class="term"></div>
+                                            <div class="hint"></div>
+                                        </div>
+                                    </div>
+                                    <div id="bottomRight" class="grid-cell yellow">
+                                        <div class="cell-content">
+                                            <div class="term"></div>
+                                            <div class="hint"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" button-controls d-flex justify-content-start gap-8 align-items-center">
+            <div class="d-flex gap-10">
+                <button id="resetButton" class="btn btn-secondary">Reset</button>
+                <!-- <button id="calculateButton" class="btn btn-primary">Calculate</button> -->
+                <button id="showSteps" class="btn btn-primary ">Show Steps</button>
+
+            </div>
+        
+        <!-- Bottom band -->
+       
+            
+        <div class="flexItem">
+                <p id="totalProduct"></p>
+            </div>
+           
+            <button id="fullscreenToggle" class="fullscreen-button">⛶</button>
+
+       
+    </div>
+     <!-- Steps container -->
+        <div id="stepsContainer" class="steps-container hidden">
+            <h2>Steps</h2>
+            <div class="steps-content">
+                <div class="step">
+                    <h3>1. Understanding</h3>
+                    <p>Multiplying binomials:</p>
+                    <p id="step1Explanation"></p>
+                </div>
+                <div class="step">
+                    <h3>2. Areas</h3>
+                    <div id="step2Areas"></div>
+                </div>
+                <div class="step">
+                    <h3>3. Like Terms</h3>
+                    <p id="step3Explanation"></p>
+                </div>
+                <div class="step">
+                    <h3>4. Result</h3>
+                    <p id="step4Final"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
