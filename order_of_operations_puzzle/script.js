@@ -326,13 +326,14 @@ let draggedValue = null;
 let draggedX, draggedY;
 let selectedValue = null;
 let showAnswerOverlay = false;
+let showReflectOverlayState = false;
+let currentQuestion = 0;
 
 function setup() {
     let c = createCanvas(900, 500);
     c.parent('canvas');
     model = new MathExpressionModel();
     model.generateRandomNumbers();
-    document.getElementById('reflectOverlay').classList.add('d-none');
     let startOverBtn = select('#startOverBtn');
     startOverBtn.mousePressed(startOver);
     let newQuestionBtn = select('#newQuestionBtn');
@@ -341,21 +342,7 @@ function setup() {
     showAnswerBtn.mousePressed(showAnswer);
     let reflectBtn = select('#reflectBtn');
     reflectBtn.mousePressed(showReflectOverlay);
-    let question1 = select('#question1');
-    question1.mousePressed(() => showQuestion(1));
-    let question2 = select('#question2');
-    question2.mousePressed(() => showQuestion(2));
-    let question3 = select('#question3');
-    question3.mousePressed(() => showQuestion(3));
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('closeOverlayBtn').addEventListener('click', closeReflectOverlay);
-    document.getElementById('showAnswerBtn').addEventListener('click', () => {
-        console.log('Show Answer button clicked');
-        showAnswer();
-    });
-});
 
 function draw() {
     background(255);
@@ -387,8 +374,10 @@ function draw() {
         text("Correct! 🎉", width - 30, height - 220);
     }
     if (showAnswerOverlay) {
-        console.log('Rendering answer overlay');
         renderAnswerOverlay();
+    }
+    if (showReflectOverlayState) {
+        renderReflectOverlay();
     }
 }
 
@@ -422,9 +411,6 @@ function renderNumbers() {
         text(number, x + numWidth / 2, y + numWidth / 2);
     });
 }
-
-// ... existing code ...
-// ... existing code ...
 
 function renderExpression() {
     dropZones = [];
@@ -500,7 +486,6 @@ function renderExpression() {
         } else if (item === '^') {
             hasExponent = true;
             if (i + 1 < template.length && typeof template[i+1] === 'number') {
-                // Position exponent at the end of base expression
                 let expX = baseEndX - 10;
                 let expY = y - 20;
                 
@@ -569,77 +554,64 @@ function renderExpression() {
 }
 
 function renderResult() {
-  // ---------- constants ----------
-  const yStart     = 300;        // first row baseline
-  const rowGap     = 25;         // vertical distance between rows
-  const baseFont   = 20;         // default textSize for bases & operators
-  const expFont    = 16;         // textSize for exponents
-  const minFont    = 12;         // smallest we will ever down-scale to
-  const gap        = 12;         // horizontal gap between tokens
-  const margin     = 60;         // keep 30 px padding on each side
+    const yStart = 300;
+    const rowGap = 25;
+    const baseFont = 20;
+    const expFont = 16;
+    const minFont = 12;
+    const gap = 12;
+    const margin = 60;
 
-  // ---------- early exit ----------
-  if (model.calculationSteps.length === 0) return;
+    if (model.calculationSteps.length === 0) return;
 
-  fill(55, 65, 81);
-  textAlign(LEFT, CENTER);
-  strokeWeight(0.7);
+    fill(55, 65, 81);
+    textAlign(LEFT, CENTER);
+    strokeWeight(0.7);
 
-  /* ------------------------------------------------------------------
-   * For each row: measure, maybe shrink, then draw token by token
-   * ------------------------------------------------------------------ */
-  model.calculationSteps.forEach((raw, row) => {
+    model.calculationSteps.forEach((raw, row) => {
+        const tokens = [];
+        raw.split(' ').forEach(tok => {
+            if (tok.includes('^')) {
+                const [b, e] = tok.split('^');
+                tokens.push({type: 'base', txt: b});
+                tokens.push({type: 'exp', txt: e});
+            } else {
+                tokens.push({type: 'base', txt: tok});
+            }
+        });
 
-    // 1. split into tokens but keep “base^exp” together
-    const tokens = [];
-    raw.split(' ').forEach(tok => {
-      if (tok.includes('^')) {
-        const [b, e] = tok.split('^');
-        tokens.push({type: 'base', txt: b});
-        tokens.push({type: 'exp',  txt: e});
-      } else {
-        tokens.push({type: 'base', txt: tok});
-      }
+        textSize(baseFont);
+        let total = 0;
+        tokens.forEach(t => {
+            textSize(t.type === 'exp' ? expFont : baseFont);
+            total += textWidth(t.txt) + gap;
+        });
+        total -= gap;
+
+        const avail = width - margin * 2;
+        let scale = 1;
+        if (total > avail) {
+            scale = Math.max(avail / total, minFont / baseFont);
+        }
+        const fBase = baseFont * scale;
+        const fExp = expFont * scale;
+        const y = yStart + row * rowGap;
+
+        let x = (width - total * scale) / 2;
+        tokens.forEach(t => {
+            const sz = t.type === 'exp' ? fExp : fBase;
+            textSize(sz);
+            const yOffset = t.type === 'exp' ? -0.35 * fBase : 0;
+            text(t.txt, x, y + yOffset);
+            x += textWidth(t.txt) + gap * scale;
+        });
     });
 
-    // 2. first pass – measure total width with default sizes
-    textSize(baseFont);
-    let total = 0;
-    tokens.forEach(t => {
-      textSize(t.type === 'exp' ? expFont : baseFont);
-      total += textWidth(t.txt) + gap;
-    });
-    total -= gap;                       // remove last gap
-
-    // 3. if too wide, scale both base & exponent fonts proportionally
-    const avail = width - margin * 2;
-    let scale = 1;
-    if (total > avail) {
-      scale = Math.max(avail / total, minFont / baseFont);
-    }
-    const fBase = baseFont * scale;
-    const fExp  = expFont  * scale;
-    const y     = yStart + row * rowGap;
-
-    // 4. second pass – actually draw everything
-    let x = (width - total * scale) / 2;   // centre entire row
-    tokens.forEach(t => {
-      const sz = t.type === 'exp' ? fExp : fBase;
-      textSize(sz);
-      const yOffset = t.type === 'exp' ? -0.35 * fBase : 0; // lift superscript
-      text(t.txt, x, y + yOffset);
-      x += textWidth(t.txt) + gap * scale;
-    });
-  });
-
-  // ---------- summary line ----------
-  textSize(baseFont * 1.25);
-  const fmt = n => Number.isInteger(n) ? n : n.toFixed(2);
-  textSize(baseFont * 1.25);
-  text(`Largest value found = ${fmt(model.result)}`,
-       width - margin - textWidth(`Largest value found = ${fmt(model.result)}`), height - margin);
+    textSize(baseFont * 1.25);
+    const fmt = n => Number.isInteger(n) ? n : n.toFixed(2);
+    text(`Largest value found = ${fmt(model.result)}`, width - margin - textWidth(`Largest value found = ${fmt(model.result)}`), height - margin);
 }
-// ... existing code ...
+
 function renderAttempts() {
     textAlign(LEFT);
     textSize(16);
@@ -655,140 +627,187 @@ function renderAttempts() {
     }
 }
 
-/**
- * Draws the “best answer” overlay with proper superscript formatting.
- * All layout (rectangles, overlay sizes, etc.) is untouched – only
- * the text-rendering part is rewritten.
- */
 function renderAnswerOverlay() {
-  /* ---------- STATIC BACKDROP (unchanged) ---------- */
-  fill(0, 0, 0, 200);
-  rect(0, 0, width, height);
-  fill(255);
-  stroke(0);
-  strokeWeight(1);
-  rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
+    fill(0, 0, 0, 200);
+    rect(0, 0, width, height);
+    fill(255);
+    stroke(0);
+    strokeWeight(1);
+    rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
 
-  /* ---------- HELPER ---------- */
-  const fmt = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+    const fmt = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+    const best = model.bestExpression;
+    const rawEqn = model.currentEquation.display(best);
+    const clean = rawEqn.replace(/−/g, '−');
 
-  /* ---------- PREPARE STRINGS ---------- */
-  const best     = model.bestExpression;                  // e.g. [5,6,4,3]
-  const rawEqn   = model.currentEquation.display(best);   // e.g. "5^6 × 4 + 3"
-  const clean    = rawEqn.replace(/−/g, '−');             // keep minus sign consistent
+    const caret = clean.indexOf('^');
+    let baseStr = clean;
+    let expStr = '';
+    let tailStr = '';
 
-  /* ----- 1. SPLIT INTO base | exponent | tail ----- */
-  const caret = clean.indexOf('^');
-  let baseStr = clean;     // default when no caret
-  let expStr  = '';
-  let tailStr = '';
-
-  if (caret !== -1) {
-    baseStr = clean.slice(0, caret);               // everything before ^
-    let i   = caret + 1;
-
-    // Skip leading spaces
-    while (i < clean.length && clean[i] === ' ') i++;
-
-    // Capture exponent token
-    if (clean[i] === '(') {
-      // bracketed exponent: grab until matching ')'
-      let depth = 1;
-      let j = i + 1;
-      while (j < clean.length && depth) {
-        if (clean[j] === '(') depth++;
-        else if (clean[j] === ')') depth--;
-        j++;
-      }
-      expStr  = clean.slice(i, j);     // "(…)"
-      tailStr = clean.slice(j);        // rest of the string
-    } else {
-      // non-bracketed: read until first space or operator
-      const stop = /[ ×+−*/]/;
-      let j = i;
-      while (j < clean.length && !stop.test(clean[j])) j++;
-      expStr  = clean.slice(i, j);     // e.g. "5"
-      tailStr = clean.slice(j);        // " × 4 + 2"
+    if (caret !== -1) {
+        baseStr = clean.slice(0, caret);
+        let i = caret + 1;
+        while (i < clean.length && clean[i] === ' ') i++;
+        if (clean[i] === '(') {
+            let depth = 1;
+            let j = i + 1;
+            while (j < clean.length && depth) {
+                if (clean[j] === '(') depth++;
+                else if (clean[j] === ')') depth--;
+                j++;
+            }
+            expStr = clean.slice(i, j);
+            tailStr = clean.slice(j);
+        } else {
+            const stop = /[ ×+−*/]/;
+            let j = i;
+            while (j < clean.length && !stop.test(clean[j])) j++;
+            expStr = clean.slice(i, j);
+            tailStr = clean.slice(j);
+        }
     }
-  }
 
-  /* ---------- CENTRE WHOLE EXPRESSION ---------- */
-  textAlign(CENTER);
-  textSize(20);
-  fill(55, 65, 81);
+    textAlign(CENTER);
+    textSize(20);
+    fill(55, 65, 81);
 
-  const yMid   = height / 2 - 20;
-  const wBase  = textWidth(baseStr);
-  const wExp   = expStr ? textWidth(expStr) * 0.8 : 0;  // 80 % size for superscript
-  const wTail  = textWidth(tailStr);
-  const totalW = wBase + wExp + wTail;
+    const yMid = height / 2 - 20;
+    const wBase = textWidth(baseStr);
+    const wExp = expStr ? textWidth(expStr) * 0.8 : 0;
+    const wTail = textWidth(tailStr);
+    const totalW = wBase + wExp + wTail;
 
-  let x = width / 2 - totalW / 2;       // leftmost anchor
+    let x = width / 2 - totalW / 2;
 
-  /* ---------- TITLE LINE ---------- */
-  text(`Best combination: [${best.join(', ')}]`, width / 2, height / 2 - 60);
+    text(`Best combination: [${best.join(', ')}]`, width / 2, height / 2 - 60);
 
-  /* ----------  BASE ---------- */
-  text(baseStr, x + wBase / 2, yMid);
-  x += wBase;
+    text(baseStr, x + wBase / 2, yMid);
+    x += wBase;
 
-  /* ----------  SUPERSCRIPT ---------- */
-  if (expStr) {
-    push();
-    textSize(16);                       // smaller font
+    if (expStr) {
+        push();
+        textSize(16);
+        textAlign(LEFT, CENTER);
+        text(expStr, x, yMid - 7);
+        pop();
+        x += textWidth(expStr) * 0.8;
+    }
+
     textAlign(LEFT, CENTER);
-    text(expStr, x, yMid - 7);          // raise 7 px
-    pop();
-    x += textWidth(expStr) * 0.8;       // advance by reduced width
-  }
+    textSize(20);
+    text(tailStr, x, yMid);
 
-  /* ----------  TAIL ---------- */
-  textAlign(LEFT, CENTER);
-  textSize(20);
-  text(tailStr, x, yMid);               // remainder at baseline
-
-  /* ---------- FOOTER ---------- */
-  textAlign(CENTER);
-  text(`Highest value: ${fmt(model.largestValue)}`, width / 2, height / 2 + 20);
-  textSize(16);
-  text("Click anywhere to close", width / 2, height / 2 + 60);
+    textAlign(CENTER);
+    text(`Highest value: ${fmt(model.largestValue)}`, width / 2, height / 2 + 20);
+    textSize(16);
+    text("Click anywhere to close", width / 2, height / 2 + 60);
 }
 
+function renderReflectOverlay() {
+    fill(0, 0, 0, 200);
+    rect(0, 0, width, height);
+    fill(255);
+    stroke(0);
+    strokeWeight(1);
+    rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
 
-function showAnswer() {
-    console.log('Show Answer button clicked');
-    showAnswerOverlay = true;
-}
+    const boxX = width / 4 + 10;
+    const boxY = height / 4 - 70;
+    const boxW = width / 2 - 20;
+    const boxH = height / 2 + 70;
 
-function showReflectOverlay() {
-    document.getElementById('reflectOverlay').classList.remove('d-none');
-    document.getElementById('questionText').innerHTML = '';
-}
+    textAlign(CENTER);
+    fill(55, 65, 81);
+    textSize(24);
+    text("Reflect on Your Strategy", width / 2, height / 3 - 60);
 
-function closeReflectOverlay() {
-    document.getElementById('reflectOverlay').classList.add('d-none');
-}
-
-function showQuestion(index) {
     const questions = [
         "Among the operations used, which one has the highest impact on the result?",
         "If you were to maximize the value, where should the largest number go? Why?",
         "Which number is the least useful in this expression? Why might you leave it out?"
     ];
-    document.getElementById('questionText').innerHTML = questions[index - 1];
+
+    if (currentQuestion > 0) {
+        textSize(20);
+    strokeWeight(1);
+
+        text(questions[currentQuestion - 1], boxX, boxY -40, boxW, boxH);
+        // text(questions[currentQuestion - 1], width / 2, height / 2 - 20);
+    } else {
+        textSize(20);
+    strokeWeight(1);
+
+        text("Click on a number to see the reflection question.", boxX, boxY-40, boxW, boxH);
+        // text("Click on a number to see the reflection question.", width / 2, height / 2 - 20);
+    }
+
+    const buttonWidth = 40;
+    const buttonHeight = 40;
+    const gap = 20;
+    const totalWidth = 3 * buttonWidth + 2 * gap;
+    const startX = (width - totalWidth) / 2;
+    const y = height / 2 + 20;
+
+    for (let i = 1; i <= 3; i++) {
+        let x = startX + (i - 1) * (buttonWidth + gap);
+        fill(224, 231, 255);
+        stroke(124, 58, 237);
+        rect(x, y, buttonWidth, buttonHeight, 8);
+        fill(55, 48, 163);
+        textSize(20);
+        text(i, x + buttonWidth / 2, y + buttonHeight / 2);
+    }
+
+    textSize(16);
+    text("Click anywhere to close", width / 2, height / 2 + 80);
+}
+
+function showAnswer() {
+    showAnswerOverlay = true;
+    showReflectOverlayState = false;
+    currentQuestion = 0;
+}
+
+function showReflectOverlay() {
+    showReflectOverlayState = true;
+    showAnswerOverlay = false;
+    currentQuestion = 0;
+}
+
+function showQuestion(index) {
+    currentQuestion = index;
 }
 
 function mousePressed() {
     let canvas = select('#canvas').elt;
     let mouseOverCanvas = mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
-    if (!mouseOverCanvas || document.getElementById('reflectOverlay').classList.contains('d-none') === false) {
-        return;
-    }
-    if (showAnswerOverlay) {
-        console.log('Closing answer overlay');
+    if (!mouseOverCanvas) return;
+
+    if (showAnswerOverlay || showReflectOverlayState) {
+        const buttonWidth = 40;
+        const buttonHeight = 40;
+        const gap = 20;
+        const totalWidth = 3 * buttonWidth + 2 * gap;
+        const startX = (width - totalWidth) / 2;
+        const y = height / 2 + 20;
+
+        if (showReflectOverlayState) {
+            for (let i = 1; i <= 3; i++) {
+                let x = startX + (i - 1) * (buttonWidth + gap);
+                if (mouseX > x && mouseX < x + buttonWidth && mouseY > y && mouseY < y + buttonHeight) {
+                    showQuestion(i);
+                    return;
+                }
+            }
+        }
+
         showAnswerOverlay = false;
+        showReflectOverlayState = false;
+        currentQuestion = 0;
         return;
     }
+
     let canvasClicked = false;
     for (let box of numberBoxes) {
         if (!box.isUsed && mouseX > box.x && mouseX < box.x + box.w &&
@@ -833,9 +852,8 @@ function mousePressed() {
 
 function mouseDragged() {
     let mouseOverCanvas = mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
-    if (!mouseOverCanvas || document.getElementById('reflectOverlay').classList.contains('d-none') === false) {
-        return;
-    }
+    if (!mouseOverCanvas) return;
+
     if (!isDragging) {
         for (let box of numberBoxes) {
             if (!box.isUsed && mouseX > box.x && mouseX < box.x + box.w &&
@@ -857,9 +875,8 @@ function mouseDragged() {
 
 function mouseReleased() {
     let mouseOverCanvas = mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
-    if (!mouseOverCanvas || document.getElementById('reflectOverlay').classList.contains('d-none') === false) {
-        return;
-    }
+    if (!mouseOverCanvas) return;
+
     if (isDragging) {
         isDragging = false;
         for (let zone of dropZones) {
@@ -904,11 +921,14 @@ function startOver() {
     model.reset();
     selectedValue = null;
     showAnswerOverlay = false;
+    showReflectOverlayState = false;
+    currentQuestion = 0;
 }
 
 function newQuestion() {
     model.generateRandomNumbers();
     selectedValue = null;
     showAnswerOverlay = false;
-    document.getElementById('reflectOverlay').classList.add('d-none');
+    showReflectOverlayState = false;
+    currentQuestion = 0;
 }
