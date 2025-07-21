@@ -13,7 +13,7 @@ height: 100%;
     margin: auto;
 
 }
-A
+
 h1{
     font-size: 28px;
 }
@@ -171,6 +171,9 @@ button:disabled{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    position: relative; 
+    height: calc(100% - 60px);
 
 }
 
@@ -272,3 +275,5 @@ button:disabled{
  .gap-8{
     gap: 8px;
  } 
+
+ 
