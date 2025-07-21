@@ -612,6 +612,7 @@ function renderResult() {
     text(`Largest value found = ${fmt(model.result)}`, width - margin - textWidth(`Largest value found = ${fmt(model.result)}`), height - margin);
 }
 
+// Replace the existing renderAttempts function with this updated version
 function renderAttempts() {
     textAlign(LEFT);
     textSize(16);
@@ -621,11 +622,67 @@ function renderAttempts() {
     for (let i = 0; i < model.attempts.length; i++) {
         const attempt = model.attempts[i];
         const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
-        const expr = model.currentEquation.display(attempt.expression).replace(/\^/g, '').replace(/−/g, '−').replace(/×/g, '×');
-        text(`Attempt ${i + 1}: ${expr} = ${format(attempt.result)}`, 30, y);
+        const expr = model.currentEquation.display(attempt.expression);
+        const result = format(attempt.result);
+        
+        // Draw prefix
+        let prefix = `Attempt ${i + 1}: `;
+        text(prefix, 30, y);
+        let x = 30 + textWidth(prefix);
+        
+        // Tokenize the expression to handle exponents properly
+        let tokens = [];
+        let current = '';
+        let inExponent = false;
+        
+        // Parse the expression to identify base and exponent parts
+        for (let char of expr) {
+            if (char === '^') {
+                if (current) tokens.push({type: 'base', text: current});
+                tokens.push({type: 'caret'});
+                current = '';
+                inExponent = true;
+            } else if (inExponent && (char === ' ' || char === '+' || char === '−' || char === '×')) {
+                if (current) tokens.push({type: 'exp', text: current});
+                tokens.push({type: 'base', text: char});
+                current = '';
+                inExponent = false;
+            } else if (!inExponent && (char === '(' || char === ')')) {
+                if (current) tokens.push({type: 'base', text: current});
+                tokens.push({type: 'paren', text: char});
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        // Push any remaining text
+        if (current) {
+            tokens.push({type: inExponent ? 'exp' : 'base', text: current});
+        }
+
+        // Draw each token with proper formatting
+        tokens.forEach(token => {
+            if (token.type === 'base' || token.type === 'paren') {
+                text(token.text, x, y);
+                x += textWidth(token.text);
+            } else if (token.type === 'caret') {
+                // Skip drawing the caret (we'll use superscript instead)
+            } else if (token.type === 'exp') {
+                push();
+                textSize(12);
+                text(token.text, x, y - 5);
+                x += textWidth(token.text);
+                pop();
+            }
+        });
+        
+        // Draw result
+        text(` = ${result}`, x, y);
         y += 20;
     }
 }
+
 
 function renderAnswerOverlay() {
     fill(0, 0, 0, 200);
