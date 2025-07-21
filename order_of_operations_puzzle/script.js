@@ -423,6 +423,9 @@ function renderNumbers() {
     });
 }
 
+// ... existing code ...
+// ... existing code ...
+
 function renderExpression() {
     dropZones = [];
     exponentZones = [];
@@ -434,6 +437,12 @@ function renderExpression() {
     let operatorWidth = 30;
     let parenthesesWidth = 20;
     let totalWidth = 0;
+    let baseStartX = 0;
+    let baseEndX = 0;
+    let inBase = false;
+    let hasExponent = false;
+
+    // First pass: calculate total width
     template.forEach(item => {
         if (typeof item === 'number') {
             totalWidth += dropZoneWidth;
@@ -445,11 +454,12 @@ function renderExpression() {
             totalWidth += operatorWidth;
         }
     });
+
     let startX = (width - totalWidth) / 2;
     let y = 180;
     let currentX = startX;
     let dropZoneIndex = 0;
-    let lastBaseX = 0;
+
     for (let i = 0; i < template.length; i++) {
         let item = template[i];
         if (typeof item === 'number') {
@@ -457,6 +467,7 @@ function renderExpression() {
             let w = dropZoneWidth;
             let h = dropZoneWidth;
             dropZones.push({x, y, w, h, index: dropZoneIndex});
+            
             let filled = model.expression[dropZoneIndex] !== null;
             if (filled) {
                 fill(224, 231, 255);
@@ -468,21 +479,31 @@ function renderExpression() {
                 drawingContext.setLineDash([5, 5]);
             }
             rect(x, y, w, h, 8);
+            
             if (filled) {
                 fill(55, 48, 163);
                 textSize(20);
                 textAlign(CENTER, CENTER);
                 text(model.expression[dropZoneIndex], x + w / 2, y + h / 2);
             }
+            
             strokeWeight(1);
             drawingContext.setLineDash([]);
-            lastBaseX = x + w;
             currentX += w;
+            
+            if (!inBase) {
+                baseStartX = x;
+                inBase = true;
+            }
+            baseEndX = x + w;
             dropZoneIndex++;
         } else if (item === '^') {
+            hasExponent = true;
             if (i + 1 < template.length && typeof template[i+1] === 'number') {
-                let expX = lastBaseX + 10 - exponentWidth/2;
-                let expY = y - exponentHeight; // Adjusted from -10 to -5 to move exponent down by 5 units
+                // Position exponent at the end of base expression
+                let expX = baseEndX - 10;
+                let expY = y - 20;
+                
                 exponentZones.push({
                     x: expX,
                     y: expY,
@@ -490,6 +511,7 @@ function renderExpression() {
                     h: exponentHeight,
                     index: dropZoneIndex
                 });
+                
                 let filled = model.expression[dropZoneIndex] !== null;
                 if (filled) {
                     fill(224, 231, 255);
@@ -500,25 +522,39 @@ function renderExpression() {
                     strokeWeight(3);
                     drawingContext.setLineDash([5, 5]);
                 }
+                
                 rect(expX, expY, exponentWidth, exponentHeight, 6);
+                
                 if (filled) {
                     fill(55, 48, 163);
                     textSize(16);
                     textAlign(CENTER, CENTER);
                     text(model.expression[dropZoneIndex], expX + exponentWidth/2, expY + exponentHeight/2);
                 }
+                
                 strokeWeight(1);
                 drawingContext.setLineDash([]);
+                
                 i++;
                 dropZoneIndex++;
             }
             currentX += operatorWidth;
-        } else if (item === '(' || item === ')') {
+        } else if (item === '(') {
             fill(55, 65, 81);
             textSize(32);
             textAlign(CENTER, CENTER);
-            text(item, currentX + parenthesesWidth/2, y + dropZoneWidth/2);
+            text('(', currentX + parenthesesWidth/2, y + dropZoneWidth/2);
             currentX += parenthesesWidth;
+            inBase = true;
+            baseStartX = currentX;
+        } else if (item === ')') {
+            fill(55, 65, 81);
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            text(')', currentX + parenthesesWidth/2, y + dropZoneWidth/2);
+            currentX += parenthesesWidth;
+            baseEndX = currentX;
+            inBase = false;
         } else {
             fill(55, 65, 81);
             textSize(28);
@@ -526,6 +562,8 @@ function renderExpression() {
             let symbol = item === '−' ? '−' : item === '×' ? '×' : item;
             text(symbol, currentX + operatorWidth/2, y + dropZoneWidth/2);
             currentX += operatorWidth;
+            inBase = false;
+            hasExponent = false;
         }
     }
 }
@@ -535,16 +573,52 @@ function renderResult() {
     textSize(20);
     fill(55, 65, 81);
     strokeWeight(0.7);
+    
     if (model.calculationSteps.length > 0) {
         for (let i = 0; i < model.calculationSteps.length; i++) {
-            text(model.calculationSteps[i], width / 2, 300 + i * 25);
+            let step = model.calculationSteps[i];
+            let yPos = 300 + i * 25;
+            
+            // Split step into tokens by space
+            let tokens = step.split(' ');
+            let currentX = width / 2;
+            let totalWidth = 0;
+            
+            // Calculate total width for centering
+            tokens.forEach(token => {
+                totalWidth += textWidth(token + ' ');
+            });
+            
+            let startX = width / 2 - totalWidth / 2;
+            
+            // Render each token
+            tokens.forEach(token => {
+                if (token.includes('^')) {
+                    let [base, exp] = token.split('^');
+                    // Draw base
+                    text(base, startX, yPos);
+                    startX += textWidth(base);
+                    
+                    // Draw exponent
+                    let savedSize = textSize();
+                    textSize(16);
+                    text(exp, startX, yPos - 7);
+                    startX += textWidth(exp);
+                    textSize(savedSize);
+                } else {
+                    text(token, startX, yPos);
+                    startX += textWidth(token + ' ');
+                }
+            });
         }
     }
+    
     textSize(25);
     const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
     text("Largest value found = " + format(model.result), width / 4.7, 400);
 }
 
+// ... existing code ...
 function renderAttempts() {
     textAlign(LEFT);
     textSize(16);
@@ -560,25 +634,105 @@ function renderAttempts() {
     }
 }
 
+/**
+ * Draws the “best answer” overlay with proper superscript formatting.
+ * All layout (rectangles, overlay sizes, etc.) is untouched – only
+ * the text-rendering part is rewritten.
+ */
 function renderAnswerOverlay() {
-    fill(0, 0, 0, 200);
-    rect(0, 0, width, height);
-    fill(255);
-    stroke(0);
-    strokeWeight(2);
-    rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
-    fill(55, 65, 81);
-    strokeWeight(0);
-    textSize(20);
-    textAlign(CENTER);
-    const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
-    const expr = model.currentEquation.display(model.bestExpression).replace(/\^/g, '').replace(/−/g, '−').replace(/×/g, '×');
-    text(`Best combination: [${model.bestExpression.join(', ')}]`, width / 2, height / 2 - 60);
-    text(`Expression: ${expr}`, width / 2, height / 2 - 20);
-    text(`Highest value: ${format(model.largestValue)}`, width / 2, height / 2 + 20);
-    textSize(16);
-    text("Click anywhere to close", width / 2, height / 2 + 60);
+  /* ---------- STATIC BACKDROP (unchanged) ---------- */
+  fill(0, 0, 0, 200);
+  rect(0, 0, width, height);
+  fill(255);
+  stroke(0);
+  strokeWeight(1);
+  rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
+
+  /* ---------- HELPER ---------- */
+  const fmt = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
+
+  /* ---------- PREPARE STRINGS ---------- */
+  const best     = model.bestExpression;                  // e.g. [5,6,4,3]
+  const rawEqn   = model.currentEquation.display(best);   // e.g. "5^6 × 4 + 3"
+  const clean    = rawEqn.replace(/−/g, '−');             // keep minus sign consistent
+
+  /* ----- 1. SPLIT INTO base | exponent | tail ----- */
+  const caret = clean.indexOf('^');
+  let baseStr = clean;     // default when no caret
+  let expStr  = '';
+  let tailStr = '';
+
+  if (caret !== -1) {
+    baseStr = clean.slice(0, caret);               // everything before ^
+    let i   = caret + 1;
+
+    // Skip leading spaces
+    while (i < clean.length && clean[i] === ' ') i++;
+
+    // Capture exponent token
+    if (clean[i] === '(') {
+      // bracketed exponent: grab until matching ')'
+      let depth = 1;
+      let j = i + 1;
+      while (j < clean.length && depth) {
+        if (clean[j] === '(') depth++;
+        else if (clean[j] === ')') depth--;
+        j++;
+      }
+      expStr  = clean.slice(i, j);     // "(…)"
+      tailStr = clean.slice(j);        // rest of the string
+    } else {
+      // non-bracketed: read until first space or operator
+      const stop = /[ ×+−*/]/;
+      let j = i;
+      while (j < clean.length && !stop.test(clean[j])) j++;
+      expStr  = clean.slice(i, j);     // e.g. "5"
+      tailStr = clean.slice(j);        // " × 4 + 2"
+    }
+  }
+
+  /* ---------- CENTRE WHOLE EXPRESSION ---------- */
+  textAlign(CENTER);
+  textSize(20);
+  fill(55, 65, 81);
+
+  const yMid   = height / 2 - 20;
+  const wBase  = textWidth(baseStr);
+  const wExp   = expStr ? textWidth(expStr) * 0.8 : 0;  // 80 % size for superscript
+  const wTail  = textWidth(tailStr);
+  const totalW = wBase + wExp + wTail;
+
+  let x = width / 2 - totalW / 2;       // leftmost anchor
+
+  /* ---------- TITLE LINE ---------- */
+  text(`Best combination: [${best.join(', ')}]`, width / 2, height / 2 - 60);
+
+  /* ----------  BASE ---------- */
+  text(baseStr, x + wBase / 2, yMid);
+  x += wBase;
+
+  /* ----------  SUPERSCRIPT ---------- */
+  if (expStr) {
+    push();
+    textSize(16);                       // smaller font
+    textAlign(LEFT, CENTER);
+    text(expStr, x, yMid - 7);          // raise 7 px
+    pop();
+    x += textWidth(expStr) * 0.8;       // advance by reduced width
+  }
+
+  /* ----------  TAIL ---------- */
+  textAlign(LEFT, CENTER);
+  textSize(20);
+  text(tailStr, x, yMid);               // remainder at baseline
+
+  /* ---------- FOOTER ---------- */
+  textAlign(CENTER);
+  text(`Highest value: ${fmt(model.largestValue)}`, width / 2, height / 2 + 20);
+  textSize(16);
+  text("Click anywhere to close", width / 2, height / 2 + 60);
 }
+
 
 function showAnswer() {
     console.log('Show Answer button clicked');

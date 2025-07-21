@@ -3,38 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mathematical Expression Builder</title>
+    <title>Math Expression Game</title>
     <script src="p5.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="global_style.css">
 </head>
 <body>
-<div class="mainContainerOuter">
-        <div class="mainContainer">
-            <div class="container">
-                <span class="versionText">"1"</span>
-                <div id="canvas-container">
-                    <div id="canvas"></div>
-                </div>
-                <div class="button-controls">
-                    <button id="startOverBtn">START OVER</button>
-                    <button id="newQuestionBtn">NEW QUESTION</button>
-                    <button id="showAnswerBtn">SHOW ANSWER</button>
-                    <button id="reflectBtn">REFLECT</button>
-                </div>
-                <div id="reflectOverlay" class="d-none">
-                    <div class="overlay-content">
-                        <h2>Reflect on Your Strategy</h2>
-                        <div class="question-circles">
-                            <div class="circle" id="question1">1</div>
-                            <div class="circle" id="question2">2</div>
-                            <div class="circle" id="question3">3</div>
-                        </div>
-                        <div id="questionText" class="m-t-16"></div>
-                        <button id="closeOverlayBtn" class="bte-secondary m-t-16">Close</button>
-                    </div>
-                </div>
+    <div class="canvas" id="canvas"></div>
+    <div class="button-controls">
+        <button class="" id="startOverBtn">START OVER</button>
+        <button class="" id="newQuestionBtn">NEW QUESTION</button>
+        <button class=" secondary" id="showAnswerBtn">SHOW ANSWER</button>
+        <button class=" secondary" id="reflectBtn">REFLECT</button>
+    </div>
+    <div class="reflect-overlay d-none" id="reflectOverlay">
+        <div class="reflect-content">
+            <h3>Reflect on Your Strategy</h3>
+            <p>Click on a number to see the reflection question.</p>
+            <div id="questionText"></div>
+            <div class="reflect-buttons">
+                <button class="reflect-option" id="question1">1</button>
+                <button class="reflect-option" id="question2">2</button>
+                <button class="reflect-option" id="question3">3</button>
             </div>
+            <button class="cta-button" id="closeOverlayBtn">Close</button>
         </div>
     </div>
     <script src="script.js"></script>
