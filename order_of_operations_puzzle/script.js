@@ -569,55 +569,76 @@ function renderExpression() {
 }
 
 function renderResult() {
-    textAlign(CENTER);
-    textSize(20);
-    fill(55, 65, 81);
-    strokeWeight(0.7);
-    
-    if (model.calculationSteps.length > 0) {
-        for (let i = 0; i < model.calculationSteps.length; i++) {
-            let step = model.calculationSteps[i];
-            let yPos = 300 + i * 25;
-            
-            // Split step into tokens by space
-            let tokens = step.split(' ');
-            let currentX = width / 2;
-            let totalWidth = 0;
-            
-            // Calculate total width for centering
-            tokens.forEach(token => {
-                totalWidth += textWidth(token + ' ');
-            });
-            
-            let startX = width / 2 - totalWidth / 2;
-            
-            // Render each token
-            tokens.forEach(token => {
-                if (token.includes('^')) {
-                    let [base, exp] = token.split('^');
-                    // Draw base
-                    text(base, startX, yPos);
-                    startX += textWidth(base);
-                    
-                    // Draw exponent
-                    let savedSize = textSize();
-                    textSize(16);
-                    text(exp, startX, yPos - 7);
-                    startX += textWidth(exp);
-                    textSize(savedSize);
-                } else {
-                    text(token, startX, yPos);
-                    startX += textWidth(token + ' ');
-                }
-            });
-        }
-    }
-    
-    textSize(25);
-    const format = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
-    text("Largest value found = " + format(model.result), width / 4.7, 400);
-}
+  // ---------- constants ----------
+  const yStart     = 300;        // first row baseline
+  const rowGap     = 25;         // vertical distance between rows
+  const baseFont   = 20;         // default textSize for bases & operators
+  const expFont    = 16;         // textSize for exponents
+  const minFont    = 12;         // smallest we will ever down-scale to
+  const gap        = 12;         // horizontal gap between tokens
+  const margin     = 60;         // keep 30 px padding on each side
 
+  // ---------- early exit ----------
+  if (model.calculationSteps.length === 0) return;
+
+  fill(55, 65, 81);
+  textAlign(LEFT, CENTER);
+  strokeWeight(0.7);
+
+  /* ------------------------------------------------------------------
+   * For each row: measure, maybe shrink, then draw token by token
+   * ------------------------------------------------------------------ */
+  model.calculationSteps.forEach((raw, row) => {
+
+    // 1. split into tokens but keep “base^exp” together
+    const tokens = [];
+    raw.split(' ').forEach(tok => {
+      if (tok.includes('^')) {
+        const [b, e] = tok.split('^');
+        tokens.push({type: 'base', txt: b});
+        tokens.push({type: 'exp',  txt: e});
+      } else {
+        tokens.push({type: 'base', txt: tok});
+      }
+    });
+
+    // 2. first pass – measure total width with default sizes
+    textSize(baseFont);
+    let total = 0;
+    tokens.forEach(t => {
+      textSize(t.type === 'exp' ? expFont : baseFont);
+      total += textWidth(t.txt) + gap;
+    });
+    total -= gap;                       // remove last gap
+
+    // 3. if too wide, scale both base & exponent fonts proportionally
+    const avail = width - margin * 2;
+    let scale = 1;
+    if (total > avail) {
+      scale = Math.max(avail / total, minFont / baseFont);
+    }
+    const fBase = baseFont * scale;
+    const fExp  = expFont  * scale;
+    const y     = yStart + row * rowGap;
+
+    // 4. second pass – actually draw everything
+    let x = (width - total * scale) / 2;   // centre entire row
+    tokens.forEach(t => {
+      const sz = t.type === 'exp' ? fExp : fBase;
+      textSize(sz);
+      const yOffset = t.type === 'exp' ? -0.35 * fBase : 0; // lift superscript
+      text(t.txt, x, y + yOffset);
+      x += textWidth(t.txt) + gap * scale;
+    });
+  });
+
+  // ---------- summary line ----------
+  textSize(baseFont * 1.25);
+  const fmt = n => Number.isInteger(n) ? n : n.toFixed(2);
+  textSize(baseFont * 1.25);
+  text(`Largest value found = ${fmt(model.result)}`,
+       width - margin - textWidth(`Largest value found = ${fmt(model.result)}`), height - margin);
+}
 // ... existing code ...
 function renderAttempts() {
     textAlign(LEFT);
