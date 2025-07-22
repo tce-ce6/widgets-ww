@@ -127,6 +127,8 @@ h1, h2, h3, h4, h5, p{
     background: #f7f7f7;
     border-radius: 10px;
     flex-wrap: wrap;
+        font-size: clamp(8px, 2vw, 16px);
+    font-weight: 500;
     /* @media screen and (max-width: 650px) {
         justify-content: center;
         flex-direction: column;
@@ -197,6 +199,11 @@ button:disabled{
     color: #fff;
 }
 
+input[type="checkbox"] {
+ 
+  accent-color: #6200ee;
+  transform: scale(1.5);
+}
 
 
 .sectors-slider {
