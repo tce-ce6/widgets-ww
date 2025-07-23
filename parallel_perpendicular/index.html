@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Paper Folding</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>    
+    <div class="container">
+        <h1 class="title">Interactive Paper Folding</h1>
+        <p class="subtitle">Fold the paper horizontally or vertically</p>
+
+        <div class="controls">
+            <button id="h-fold-btn" class="btn" onclick="performHorizontalFold()">Horizontal Fold</button>
+            <button id="v-fold-btn" class="btn" onclick="performVerticalFold()">Vertical Fold</button>
+            <button id="unfold-btn" class="btn" onclick="performUnfold()">Unfold</button>
+            <button id="reset-btn" class="btn btn-reset" onclick="resetPaper()">Reset</button>
+        </div>
+
+        <!-- Checkbox for labels -->
+        <div class="controls">
+            <div class="checkbox-container">
+                <input type="checkbox" id="showLabels" onchange="toggleLabels()">
+                <label for="showLabels">Show Labels & Angles</label>
+            </div>
+        </div>
+
+        <div id="canvas-container"></div>
+
+        <div class="info">
+            <strong>Instructions:</strong> Use the buttons to fold the paper. Unfold reverses the last action, creating a crease.
+        </div>
+    </div>
+    
+    <script src="p5.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

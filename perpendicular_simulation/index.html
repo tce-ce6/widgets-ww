@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Construction Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Geometric Construction Simulation</h1>
+        <div class="controls">
+            <button id="segmentTool" class="tool-btn active">Segment Tool</button>
+            <button id="perpendicularTool" class="tool-btn">Perpendicular Line</button>
+            <button id="parallelTool" class="tool-btn">Parallel Line</button>
+            <button id="clearAll" class="clear-btn">Clear All</button>
+            <label class="toggle">
+                <input type="checkbox" id="showAngles"> Show Angles
+            </label>
+                  <div class="info-icon">
+                ℹ️
+                <div class="info-tooltip">
+                    <strong>Instructions:</strong><br>
+                    • <strong>Segment Tool:</strong> Click and drag to draw line segments<br>
+                    • <strong>Perpendicular Tool:</strong> Click on a line to create a perpendicular at that point<br>
+                    • <strong>Parallel Tool:</strong> Click on a line, then click elsewhere to create a parallel line<br>
+                    • Drag points to adjust lines and see angle changes in real-time
+                </div>
+            </div>                         
+        </div>
+     
+        <div id="sketch-container"></div>
+    </div>
+    <script src="script.js"></script>
+    <script src="p5.js"></script>
+</body>
+</html>
