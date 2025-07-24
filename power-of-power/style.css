@@ -1,0 +1,206 @@
+.mainContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#mainCanvas canvas {
+  max-width: 100%;
+  height: auto !important;
+  max-height: calc(100vh - 200px) !important;
+  width: auto !important;
+}
+
+.question{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-flex {
+  display: flex;
+  }
+  .right-col {
+    padding: 20px;
+    background-color: #e4e5ea;
+    height: auto !important;
+    overflow: auto;
+    flex-basis: 300px;
+    font-size: 12px;
+    text-align: center;
+  }
+  .right-col table {
+    margin: 0 auto;
+  }
+  .right-col table td, .right-col table th {
+    padding: 5px 15px;
+    border: 1px solid #000 34;
+  }
+  /* Flex Container */
+  .flexContainer, .controlsSec {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+  .radioOptions div {
+    display: flex;
+    gap: 20px;
+  }
+  .radioOptions input[type="radio"] {
+    margin-right: 12px;
+    accent-color: #1e6bef;
+    transform: scale(1.5);
+  }
+  /* Flex Item */
+  .flexItem {
+    padding: 8px;
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+  }
+  .gap-20 {
+    gap: 20px;
+  }
+  
+/* Step Buttons */
+.steps-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.step-btn {
+  position: relative;
+  padding: 15px 20px;
+  background: #f0f0f0;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 90px;
+  text-align: center;
+  clip-path: polygon(85% 0, 100% 50%, 85% 100%, 0% 100%, 15% 50%, 0% 0%);
+  margin-right: -12px;
+}
+
+.step-btn:hover {
+  background: #e0e0e0;
+}
+
+.step-btn.active {
+  background: #0095ff;
+  color: white;
+  z-index: 1;
+}
+
+.step-btn:first-child {
+  clip-path: polygon(85% 0, 100% 50%, 85% 100%, 0% 100%, 0% 0%);
+}
+
+.step-btn:last-child {
+  clip-path: polygon(100% 0, 100% 100%, 0% 100%, 15% 50%, 0% 0%);
+  margin-right: 0;
+}
+
+.step-btn:disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* New Problem Button */
+.btn {
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  background-color: #0095ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0077cc;
+}
+
+/* Audio Controls */
+.audio-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.audio-controls button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.audio-controls button:hover {
+  background: #f0f0f0;
+}
+
+#toggleAudio {
+  width: 40px;
+  height: 40px;
+}
+
+#repeatStep {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .step-buttons {
+    /* flex-direction: column; */
+    gap: 10px;
+  }
+  
+  .step-btn {
+    clip-path: none !important;
+    margin-right: 0;
+    width: 100%;
+    border-radius: 5px;
+  }
+}
+
+.power-btn {
+  height: 36px;
+  width: 36px;
+  font-size: 22px;
+  border-radius: 50%;
+  margin: 0 2px;
+  padding: 0;
+  min-width: 0;
+  background-color: #0095ff;
+  color: white;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.power-btn:hover {
+  background-color: #0077cc;
+}

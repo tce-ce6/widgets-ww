@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Screen Widget Slider</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        .slider-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+            height: 100%;
+        }
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .slide iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 10;
+        }
+        .slider-arrow.left {
+            left: 20px;
+        }
+        .slider-arrow.right {
+            right: 20px;
+        }
+        .slider-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <!-- Left Arrow -->
+        <button class="slider-arrow left" onclick="slide(-1)">&#10094;</button>
+
+        <!-- Slider -->
+        <div class="slider" id="slider">
+            <!-- Widget 01 -->
+            <div class="slide">
+                <iframe src="power-of-power"></iframe>
+            </div>
+            <!-- Widget 02 -->
+            <div class="slide">
+                <iframe src="power-of-same-base"></iframe>
+            </div>
+            <!-- Widget 03 -->
+            <div class="slide">
+                <iframe src="power-of-different-base"></iframe>
+            </div>
+            <!-- Widget 04 -->
+            <div class="slide">
+                <iframe src="median/"></iframe>
+            </div>
+            <!-- Widget 05 -->
+            <div class="slide">
+                <iframe src="mean-balancer/"></iframe>
+            </div>
+             <!-- Widget 06 -->
+             <div class="slide">
+                <iframe src="similarity-of-triangles/"></iframe>
+            </div>
+        </div>
+
+    </div>
+        <!-- Right Arrow -->
+        <button class="slider-arrow right" onclick="slide(1)">&#10095;</button>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slider = document.getElementById('slider');
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function slide(direction) {
+            currentIndex += direction;
+
+            // Handle edge cases
+            if (currentIndex < 0) {
+                currentIndex = totalSlides - 1; // Loop to the last slide
+            } else if (currentIndex >= totalSlides) {
+                currentIndex = 0; // Loop to the first slide
+            }
+
+            // Move the slider
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // Optional: Add keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                slide(-1); // Move to the previous slide
+            } else if (event.key === 'ArrowRight') {
+                slide(1); // Move to the next slide
+            }
+        });
+    </script>
+</body>
+</html>

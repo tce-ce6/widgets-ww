@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>mean-balancer</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.js"></script> -->
+    <script src="lib/p5.js"></script>
+    <script src="sketch.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Mean</h2>
+                <span id="versionId" class="versionText">v_2507211</span>
+            </div>
+            <div class="question">The data shows the math grades of&nbsp; <span id="point-count-label">10</span>&nbsp;Students. Plot
+                the points and then balance
+                them to find the mean.</div>
+
+            <div class="mainContainer" id="mainCanvas">
+            </div>
+            <div class="flexContainer button-controls">
+                <div class="flexItem flexItemFirst">
+                    <div class="greenrange1"><span class="label label3">Number of data points &nbsp;</span>
+                        <input type="range" class="height" id="pointSlider" min="3" max="15" value="10" step="1">
+                        <span id="point-count">10</span>
+                    </div>
+                    <!-- 
+                    <button class="btn btn-primary" id="newProblemButton">New Fraction</button> -->
+                    <button class="btn btn-secondary" id="reset-btn">Reset</button>
+                    <button class="btn btn-primary" id="hint-btn">Hint</button>
+                    <button class="btn btn-primary" id="plot-btn">Plot Points</button>
+
+                </div>
+            </div>
+            <!-- Hint Popup Modal -->
+            <div id="hint-modal"
+                style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
+                <div
+                    style="background: white; padding: 20px 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 16px; text-align: left; position: relative;">
+                    <button id="close-hint"
+                        style="position: absolute;top: 8px;right: 10px;background: #80808033;border: none;font-size: 20px;cursor: pointer;border-radius: 50%;padding: 7px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;">×</button>
+                    <h3 style="margin-top: 0; color: #4a40b4;">How is the Mean Calculated?</h3>
+                    <ol>
+                        <li><strong>Add all the numbers together.</strong>
+                            <ul>This gives you the sum of the values.</ul>
+                        </li>
+                        <li><strong>Count how many numbers there are.</strong>
+                            <ul>This gives you the number of values.</ul>
+                        </li>
+                        <li><strong>Divide the sum by the number of values.</strong>
+                            <ul>This gives you the mean.</ul>
+                        </li>
+                    </ol>
+                    <h3 style="margin-top: 0; color: #4a40b4;">Formula:</h3>
+                    <strong>
+                        <p>Mean = (Sum of all values) / (Number of values)</p>
+                    </strong>
+
+                    <p>You can drag the balancer horizontally to check the values and observe how the mean updates
+                        dynamically.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
