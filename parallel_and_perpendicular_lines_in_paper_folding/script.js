@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Paper Folding</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <link rel="stylesheet" href="
-    global_style.css">
-</head>
-<body>
-    <div class="mainContainerOuter">
-        <div class="wdgetTitle">
-            <h2>Interactive Paper Folding</h2>
-        </div>
-        
-        <div class="mainContainer">
-            <div class="container" id="canvas"></div>
-        </div>    
-        <div class="button-controls gap-8">
-            <button class="" id="h-fold-btn" onclick="performHorizontalFold()">Horizontal Fold</button>
-            <button class="" id="v-fold-btn" onclick="performVerticalFold()">Vertical Fold</button>
-            <button class="" id="unfold-btn" onclick="performUnfold()">Unfold</button>
-            <button class="btn-outline-success" id="reset-btn" onclick="resetPaper()">Reset</button>
-            <div class="checkbox-container">
-                <input type="checkbox" id="showLabels" onchange="toggleLabels()">
-                <label for="showLabels">Show Markings</label>
-            </div>
-            <button id="questions-btn" onclick="toggleQuestions()">Reflect</button>
-        </div>
-    </div>
-    
-    <script>
+
         // Global variables
         let paper;
         let allFolds = []; // Stores all visible crease lines
@@ -837,6 +805,4 @@
         function easeInOut(t) {
             return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
-    </script>
-</body>
-</html>
+   
