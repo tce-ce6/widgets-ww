@@ -22,11 +22,64 @@
         margin-top: 15px;
         border-radius: 0 4px 4px 0;
       }
+      #app {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+      }
+      #controls button {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      #controls button:hover {
+        background-color: #e0e0e0;
+      }
+      .content-container {
+        display: flex;
+        gap: 20px;
+      }
+      .panel {
+        flex: 1;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+      .status-item {
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
     <div id="app">
       <h1>Between Lines - Transversal Geometry</h1>
+      
+      <div class="status-bar">
+        <div class="status-item" id="parallelStatus">Lines are NOT PARALLEL</div>
+        <div class="status-item" id="highlightStatus">Highlight Mode: NONE</div>
+      </div>
+      
       <div id="controls">
         <button id="parallelToggle">Make Lines Parallel</button>
         <button id="highlightCorresponding">Corresponding Angles</button>
@@ -34,28 +87,33 @@
         <button id="highlightCoInterior">Co-Interior Angles</button>
         <button id="clearHighlight">Clear Highlight</button>
       </div>
+      
       <div id="p5-container"></div>
-      <div id="info-panel">
-        <p><strong>Angle Relationships:</strong></p>
-        <ul>
-          <li><strong>Corresponding Angles:</strong> Equal when lines are parallel</li>
-          <li><strong>Alternate Interior Angles:</strong> Equal when lines are parallel</li>
-          <li><strong>Co-Interior Angles:</strong> Sum to 180° when lines are parallel</li>
-        </ul>
-      </div>
-      <div id="instructions">
-        <p><strong>Instructions:</strong></p>
-        <ul>
-          <li>Drag the endpoints of lines to change their slope and position</li>
-          <li>Drag anywhere on the transversal to move it</li>
-          <li>Use buttons to highlight different angle relationships</li>
-          <li>Toggle between parallel and non-parallel lines</li>
-          <li>Observe how angle relationships change</li>
-        </ul>
+      
+      <div class="content-container">
+        <div class="panel" id="instructions">
+          <p><strong>Instructions:</strong></p>
+          <ul>
+            <li>Drag the endpoints of lines to change their slope and position</li>
+            <li>Drag anywhere on the transversal to move it</li>
+            <li>Use buttons to highlight different angle relationships</li>
+            <li>Toggle between parallel and non-parallel lines</li>
+            <li>Observe how angle relationships change</li>
+          </ul>
+        </div>
+        
+        <div class="panel" id="info-panel">
+          <p><strong>Angle Relationships:</strong></p>
+          <ul>
+            <li><strong>Corresponding Angles:</strong> Equal when lines are parallel (e.g., ∠A = ∠E)</li>
+            <li><strong>Alternate Interior Angles:</strong> Equal when lines are parallel (e.g., ∠C = ∠F)</li>
+            <li><strong>Co-Interior Angles:</strong> Sum to 180° when lines are parallel (e.g., ∠C + ∠E = 180°)</li>
+          </ul>
+        </div>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-    <script> 
+    <script>
 // Utility Classes
 class MathUtils {
   static lineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -227,6 +285,20 @@ class GeometryModel {
       const midAngle = MathUtils.normalizeAngle(startRay.angle + angleMeasure / 2);
       const position = this.getAnglePosition(midAngle, intersection, intersectionId);
       
+      // Assign letters based on position and intersection
+      let letter;
+      if (intersectionId === 1) {
+        if (position === 'top-left') letter = 'A';
+        else if (position === 'top-right') letter = 'B';
+        else if (position === 'bottom-right') letter = 'C';
+        else if (position === 'bottom-left') letter = 'D';
+      } else {
+        if (position === 'top-left') letter = 'E';
+        else if (position === 'top-right') letter = 'F';
+        else if (position === 'bottom-right') letter = 'G';
+        else if (position === 'bottom-left') letter = 'H';
+      }
+      
       angles.push({
         startAngle: startRay.angle,
         endAngle: endRay.angle,
@@ -237,7 +309,8 @@ class GeometryModel {
         position: position,
         globalId: `${intersectionId}-${i}`,
         startRay: startRay.name,
-        endRay: endRay.name
+        endRay: endRay.name,
+        letter: letter
       });
     }
     
@@ -327,8 +400,8 @@ class GeometryModel {
         [findAngleByPosition(int1Angles, 'bottom-left'), findAngleByPosition(int2Angles, 'top-right')]
       ],
       cointerior: [
-        [findAngleByPosition(int1Angles, 'top-left'), findAngleByPosition(int2Angles, 'bottom-right')],
-        [findAngleByPosition(int1Angles, 'bottom-right'), findAngleByPosition(int2Angles, 'top-left')]
+        [findAngleByPosition(int1Angles, 'top-left'), findAngleByPosition(int2Angles, 'top-right')],
+        [findAngleByPosition(int1Angles, 'bottom-right'), findAngleByPosition(int2Angles, 'bottom-left')]
       ]
     };
   }
@@ -361,7 +434,6 @@ class GeometryView {
     this.drawIntersections();
     this.drawAngles();
     this.drawDragPoints();
-    this.drawInfo();
   }
   
   drawGrid() {
@@ -552,20 +624,20 @@ class GeometryView {
         const labelX = angle.x + cos(normalizedMid) * labelRadius;
         const labelY = angle.y + sin(normalizedMid) * labelRadius;
         
-        fill(isHighlighted ? [255, 255, 255] : this.colors.text);
+        fill(isHighlighted ? [0, 0, 0] : this.colors.text); // black for better visibility on highlight
         noStroke();
         textAlign(CENTER, CENTER);
         textSize(10);
-        text(`${Math.round(angle.degrees)}°`, labelX, labelY);
+        text(`∠${angle.letter}: ${Math.round(angle.degrees)}°`, labelX, labelY);
       } else {
         const labelX = angle.x + cos(labelAngle) * labelRadius;
         const labelY = angle.y + sin(labelAngle) * labelRadius;
         
-        fill(isHighlighted ? [255, 255, 255] : this.colors.text);
+        fill(isHighlighted ? [0, 0, 0] : this.colors.text); // black for better visibility on highlight
         noStroke();
         textAlign(CENTER, CENTER);
         textSize(10);
-        text(`${Math.round(angle.degrees)}°`, labelX, labelY);
+        text(`∠${angle.letter}: ${Math.round(angle.degrees)}°`, labelX, labelY);
       }
     });
   }
@@ -616,92 +688,6 @@ class GeometryView {
     const midX = (this.model.transversal.x1 + this.model.transversal.x2) / 2;
     const midY = (this.model.transversal.y1 + this.model.transversal.y2) / 2;
     circle(midX, midY, 12);
-  }
-  
-  drawInfo() {
-    fill(0);
-    noStroke();
-    textAlign(LEFT);
-    textSize(14);
-    
-    let y = 20;
-    text(`Lines are ${this.model.areParallel ? 'PARALLEL' : 'NOT PARALLEL'}`, 20, y);
-    
-    y += 20;
-    text(`Highlight Mode: ${this.model.highlightMode.toUpperCase()}`, 20, y);
-    
-    // Only show relationship rules when we have valid pairs
-    const relationships = this.model.getAngleRelationships();
-    const currentRelations = relationships[this.model.highlightMode] || [];
-    const validPairs = currentRelations.filter(pair => pair && pair[0] && pair[1]);
-    
-    if (this.model.highlightMode !== 'none' && validPairs.length > 0) {
-      y += 20;
-      
-      // Display the rule based on the mode and parallel state
-      if (this.model.areParallel) {
-        switch(this.model.highlightMode) {
-          case 'corresponding':
-            text('Corresponding angles are EQUAL when lines are parallel', 20, y);
-            break;
-          case 'alternate':
-            text('Alternate interior angles are EQUAL when lines are parallel', 20, y);
-            break;
-          case 'cointerior':
-            text('Co-interior angles SUM TO 180° when lines are parallel', 20, y);
-            break;
-        }
-      } else {
-        switch(this.model.highlightMode) {
-          case 'corresponding':
-            text('Corresponding angles are NOT equal (lines not parallel)', 20, y);
-            break;
-          case 'alternate':
-            text('Alternate interior angles are NOT equal (lines not parallel)', 20, y);
-            break;
-          case 'cointerior':
-            text('Co-interior angles do NOT sum to 180° (lines not parallel)', 20, y);
-            break;
-        }
-      }
-      
-      y += 40;
-      const modeNames = {
-        'corresponding': 'Corresponding Angles',
-        'alternate': 'Alternate Interior Angles', 
-        'cointerior': 'Co-Interior Angles'
-      };
-      text(`${modeNames[this.model.highlightMode]}:`, 20, y);
-      
-      validPairs.forEach((pair, index) => {
-        y += 20;
-        const angle1 = Math.round(pair[0].degrees);
-        const angle2 = Math.round(pair[1].degrees);
-        
-        if (this.model.highlightMode === 'cointerior') {
-          const sum = angle1 + angle2;
-          const isSum180 = Math.abs(sum - 180) < 2; // tolerance of 2 degrees
-          let equalitySymbol = isSum180 ? "=" : "≠";
-          let note = "";
-          
-          if (isSum180 && !this.model.areParallel) {
-            note = " (coincidental)";
-          }
-          
-          text(`Pair ${index + 1}: ${angle1}° + ${angle2}° ${equalitySymbol} 180°${note}`, 30, y);
-        } else {
-          const equal = Math.abs(angle1 - angle2) < 2; // tolerance of 2 degrees
-          const equalitySymbol = equal ? "=" : "≠";
-          let note = "";
-          
-          if (equal && !this.model.areParallel) {
-            note = " (coincidental)";
-          }
-          
-          text(`Pair ${index + 1}: ${angle1}° ${equalitySymbol} ${angle2}°${note}`, 30, y);
-        }
-      });
-    }
   }
   
   getDragPoint(x, y) {
@@ -804,6 +790,10 @@ class GeometryController {
     this.model.updateIntersections();
     this.model.updateAngles();
     
+    // Update status displays
+    document.getElementById('parallelStatus').textContent = 
+      `Lines are ${this.model.areParallel ? 'PARALLEL' : 'NOT PARALLEL'}`;
+    
     this.dragState.lastMouseX = x;
     this.dragState.lastMouseY = y;
   }
@@ -815,10 +805,15 @@ class GeometryController {
   
   toggleParallel() {
     this.model.toggleParallel();
+    document.getElementById('parallelStatus').textContent = 
+      `Lines are ${this.model.areParallel ? 'PARALLEL' : 'NOT PARALLEL'}`;
   }
   
   setHighlightMode(mode) {
     this.model.setHighlightMode(mode);
+    document.getElementById('highlightStatus').textContent = 
+      `Highlight Mode: ${this.model.highlightMode.toUpperCase()}`;
+    updateHighlightButtons(mode);
   }
 }
 
@@ -843,6 +838,9 @@ window.setup = function() {
 window.draw = function() {
   background(250);
   view.render();
+  
+  // Draw angle relationship explanations at top-right
+  drawAngleExplanations();
 };
 
 window.mousePressed = function() {
@@ -879,22 +877,18 @@ function setupUIControls() {
   
   highlightCorresponding.addEventListener('click', () => {
     controller.setHighlightMode('corresponding');
-    updateHighlightButtons('corresponding');
   });
   
   highlightAlternate.addEventListener('click', () => {
     controller.setHighlightMode('alternate');
-    updateHighlightButtons('alternate');
   });
   
   highlightCoInterior.addEventListener('click', () => {
     controller.setHighlightMode('cointerior');
-    updateHighlightButtons('cointerior');
   });
   
   clearHighlight.addEventListener('click', () => {
     controller.setHighlightMode('none');
-    updateHighlightButtons('none');
   });
 }
 
@@ -906,6 +900,90 @@ function updateHighlightButtons(activeMode) {
     const button = document.getElementById(buttonId);
     button.classList.toggle('active', modes[index] === activeMode);
   });
+}
+
+// Draw angle explanations at top-right
+function drawAngleExplanations() {
+  const relationships = model.getAngleRelationships();
+  const currentRelations = relationships[model.highlightMode] || [];
+  const validPairs = currentRelations.filter(pair => pair && pair[0] && pair[1]);
+
+  if (model.highlightMode !== 'none' && validPairs.length > 0) {
+    fill(0);
+    noStroke();
+    textAlign(RIGHT);
+    textSize(14);
+    
+    let y = 30;  // Start below the status bar
+    const rightMargin = width - 20;
+
+    // Display the rule based on the mode and parallel state
+    if (model.areParallel) {
+      switch(model.highlightMode) {
+        case 'corresponding':
+          text('Corresponding angles are EQUAL (parallel lines)', rightMargin, y);
+          break;
+        case 'alternate':
+          text('Alternate interior angles are EQUAL (parallel lines)', rightMargin, y);
+          break;
+        case 'cointerior':
+          text('Co-interior angles SUM TO 180° (parallel lines)', rightMargin, y);
+          break;
+      }
+    } else {
+      switch(model.highlightMode) {
+        case 'corresponding':
+          text('Corresponding angles are NOT equal (lines not parallel)', rightMargin, y);
+          break;
+        case 'alternate':
+          text('Alternate interior angles are NOT equal (lines not parallel)', rightMargin, y);
+          break;
+        case 'cointerior':
+          text('Co-interior angles do NOT sum to 180° (lines not parallel)', rightMargin, y);
+          break;
+      }
+    }
+    y += 25;
+
+    const modeNames = {
+      'corresponding': 'Corresponding Angles',
+      'alternate': 'Alternate Interior Angles', 
+      'cointerior': 'Co-Interior Angles'
+    };
+    text(`${modeNames[model.highlightMode]}:`, rightMargin, y);
+    y += 25;
+
+    validPairs.forEach((pair, index) => {
+      const angle1 = pair[0];
+      const angle2 = pair[1];
+      const angle1Deg = Math.round(angle1.degrees);
+      const angle2Deg = Math.round(angle2.degrees);
+      
+      if (model.highlightMode === 'cointerior') {
+        const sum = angle1Deg + angle2Deg;
+        const isSum180 = Math.abs(sum - 180) < 2;
+        let equalitySymbol = isSum180 ? "=" : "≠";
+        let note = "";
+        
+        if (isSum180 && !model.areParallel) {
+          note = " (coincidental)";
+        }
+        
+        text(`∠${angle1.letter} + ∠${angle2.letter}: ${angle1Deg}° + ${angle2Deg}° = ${sum}° ${equalitySymbol} 180°${note}`, rightMargin, y);
+      } else {
+        const equal = Math.abs(angle1Deg - angle2Deg) < 2;
+        const equalitySymbol = equal ? "=" : "≠";
+        let note = "";
+        
+        if (equal && !model.areParallel) {
+          note = " (coincidental)";
+        }
+        
+        text(`∠${angle1.letter} and ∠${angle2.letter}: ${angle1Deg}° ${equalitySymbol} ${angle2Deg}°${note}`, rightMargin, y);
+      }
+      y += 25;
+    });
+  }
 }
 
 // Vector helper functions for GeometryModel
