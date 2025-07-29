@@ -266,7 +266,7 @@ class MathExpressionModel {
                     result: this.result,
                     steps: [...this.calculationSteps]
                 });
-                this.isCorrect = this.expression.every((num, i) => num === this.bestExpression[i]);
+                this.isCorrect = (this.result === this.largestValue);
             }
         }
     }
@@ -369,7 +369,9 @@ function draw() {
     }
     if (model.isComplete && model.isCorrect) {
         fill(0, 128, 0);
-        textSize(40);
+        // Heartbeat animation - oscillates between 40 and 50 pixels
+        let heartbeatSize = 40 + 1 * sin(millis() * 0.01);
+        textSize(heartbeatSize);
         textAlign(RIGHT);
         text("Correct! 🎉", width - 30, height - 220);
     }
