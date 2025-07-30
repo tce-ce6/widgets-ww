@@ -21,6 +21,10 @@ body {
     max-width: 900px;
     width: 100%;
 }
+.tool-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 h1 {
     text-align: center;

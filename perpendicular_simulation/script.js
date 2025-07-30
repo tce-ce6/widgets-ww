@@ -19,6 +19,7 @@ class Point {
         this.radius = 6;
         this.color = '#007bff';
         this.isDragging = false;
+        this.id = Date.now() + Math.random(); // Unique ID for each point
     }
 
     draw() {
@@ -46,6 +47,7 @@ class Line {
         this.type = type;
         this.color = color;
         this.thickness = 2;
+        this.id = Date.now() + Math.random(); // Unique ID for each line
     }
 
     draw() {
@@ -131,10 +133,34 @@ class Line {
         return Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
     }
 
-    getSlope() {
+    // New method to get the direction vector (normalized)
+    getDirection() {
         let dx = this.p2.x - this.p1.x;
         let dy = this.p2.y - this.p1.y;
-        return dx === 0 ? Infinity : dy / dx;
+        let length = Math.sqrt(dx * dx + dy * dy);
+        if (length === 0) return { x: 1, y: 0 };
+        return { x: dx / length, y: dy / length };
+    }
+}
+
+// Function to update button states based on available lines
+function updateButtonStates() {
+    const hasLines = lines.length > 0;
+    const perpendicularBtn = document.getElementById('perpendicularTool');
+    const parallelBtn = document.getElementById('parallelTool');
+    
+    if (perpendicularBtn) {
+        perpendicularBtn.disabled = !hasLines;
+        if (!hasLines && currentTool === 'perpendicular') {
+            setTool('segment');
+        }
+    }
+    
+    if (parallelBtn) {
+        parallelBtn.disabled = !hasLines;
+        if (!hasLines && currentTool === 'parallel') {
+            setTool('segment');
+        }
     }
 }
 
@@ -149,6 +175,17 @@ function setup() {
     document.getElementById('clearAll').addEventListener('click', clearAll);
     document.getElementById('showAngles').addEventListener('change', (e) => {
         showAngles = e.target.checked;
+    });
+    
+    // Set initial button states
+    updateButtonStates();
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 's' || e.key === 'S') setTool('segment');
+        else if ((e.key === 'p' || e.key === 'P') && lines.length > 0) setTool('perpendicular');
+        else if ((e.key === 'l' || e.key === 'L') && lines.length > 0) setTool('parallel');
+        else if (e.key === 'c' || e.key === 'C') clearAll();
     });
 }
 
@@ -196,85 +233,83 @@ function drawDotPaper() {
 }
 
 function drawAngles() {
-    // Draw angles between intersecting lines
+    // Store all intersection points to avoid duplicates
+    let processedIntersections = new Set();
+    
+    // Draw angles between lines
     for (let i = 0; i < lines.length; i++) {
         for (let j = i + 1; j < lines.length; j++) {
             let intersection = getLineIntersection(lines[i], lines[j]);
             if (intersection) {
+                // Create a unique key for this intersection point
+                let intersectionKey = `${intersection.x},${intersection.y}`;
+                
+                // Skip if we've already processed this intersection
+                if (processedIntersections.has(intersectionKey)) continue;
+                processedIntersections.add(intersectionKey);
+                
+                let angle = getAngleBetweenLines(lines[i], lines[j]);
+                let angleDeg = Math.abs(angle * 180 / Math.PI);
+                
+                // Only show angles that are not straight lines (close to 0 or 180)
+                if (angleDeg < 5 || angleDeg > 175) continue;
+                
+                let radius = 30;
                 let angle1 = lines[i].getAngle();
                 let angle2 = lines[j].getAngle();
                 
-                // Calculate the acute angle between the lines
-                let angleDiff = Math.abs(angle1 - angle2);
-                if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
-                if (angleDiff > Math.PI / 2) angleDiff = Math.PI - angleDiff;
+                // Calculate the smaller angle between the two lines
+                let angleDiff = angle2 - angle1;
                 
-                let angleDeg = angleDiff * 180 / Math.PI;
+                // Normalize the angle difference to [-π, π]
+                while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+                while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
                 
-                // Draw angle arc
-                stroke(255, 100, 100);
-                strokeWeight(2);
-                noFill();
-                
-                let radius = 30;
-                
-                // Normalize angles to [0, 2π]
-                let normalizedAngle1 = angle1 < 0 ? angle1 + 2 * Math.PI : angle1;
-                let normalizedAngle2 = angle2 < 0 ? angle2 + 2 * Math.PI : angle2;
-                
-                // Determine the smaller arc
-                let startAngle = Math.min(normalizedAngle1, normalizedAngle2);
-                let endAngle = Math.max(normalizedAngle1, normalizedAngle2);
-                
-                // If the arc spans more than π, use the smaller arc
-                if (endAngle - startAngle > Math.PI) {
-                    let temp = startAngle;
-                    startAngle = endAngle;
-                    endAngle = temp + 2 * Math.PI;
+                // Determine the start and end angles for the arc
+                let startAngle, endAngle;
+                if (angleDiff > 0) {
+                    startAngle = angle1;
+                    endAngle = angle1 + Math.min(angleDiff, Math.PI - angleDiff);
+                } else {
+                    startAngle = angle2;
+                    endAngle = angle2 + Math.min(-angleDiff, Math.PI + angleDiff);
                 }
                 
-                arc(intersection.x, intersection.y, radius * 2, radius * 2, startAngle, endAngle);
-                
-                // Draw angle text
-                fill(255, 100, 100);
-                noStroke();
-                textAlign(CENTER, CENTER);
-                textSize(12);
-                
-                // Position text at the middle of the arc
-                let midAngle = (startAngle + endAngle) / 2;
-                let textRadius = radius + 15;
-                let textX = intersection.x + Math.cos(midAngle) * textRadius;
-                let textY = intersection.y + Math.sin(midAngle) * textRadius;
-                
-                text(Math.round(angleDeg) + '°', textX, textY);
-                
-                // Highlight 90-degree angles
-                if (Math.abs(angleDeg - 90) < 2) {
-                    stroke(0, 255, 0);
+                // Check if angle is approximately 90 degrees
+                if (Math.abs(angleDeg - 90) < 5) {
+                    // Draw green arc and text for 90-degree angles
+                    stroke(0, 200, 0);
                     strokeWeight(3);
                     noFill();
-                    arc(intersection.x, intersection.y, radius * 2, radius * 2, startAngle, endAngle);
+                    arc(intersection.x, intersection.y, radius * 2, radius * 2, 
+                        startAngle, endAngle);
                     
-                    // Draw a small square to indicate 90 degrees
-                    let squareSize = 15;
-                    let squareX = intersection.x + Math.cos(midAngle) * (radius * 0.7);
-                    let squareY = intersection.y + Math.sin(midAngle) * (radius * 0.7);
+                    fill(0, 200, 0);
+                    noStroke();
+                    textAlign(CENTER, CENTER);
+                    textSize(12);
                     
-                    stroke(0, 255, 0);
+                    // Position text away from the intersection
+                    let textX = intersection.x + Math.cos((startAngle + endAngle) / 2) * 40;
+                    let textY = intersection.y + Math.sin((startAngle + endAngle) / 2) * 40;
+                    text('90° ✓', textX, textY);
+                } else {
+                    // Draw red arc and text for non-90-degree angles
+                    stroke(255, 100, 100);
                     strokeWeight(2);
                     noFill();
-                    rectMode(CENTER);
-                    push();
-                    translate(squareX, squareY);
-                    rotate(midAngle);
-                    rect(0, 0, squareSize, squareSize);
-                    pop();
-                    rectMode(CORNER);
+                    arc(intersection.x, intersection.y, radius * 2, radius * 2, 
+                        startAngle, endAngle);
                     
-                    fill(0, 255, 0);
+                    fill(255, 100, 100);
                     noStroke();
-                    text('90° ✓', textX, textY);
+                    textAlign(CENTER, CENTER);
+                    textSize(12);
+                    
+                    // Position text away from the intersection
+                    let textX = intersection.x + Math.cos((startAngle + endAngle) / 2) * 40;
+                    let textY = intersection.y + Math.sin((startAngle + endAngle) / 2) * 40;
+                    text(Math.round(angleDeg) + '°', textX, textY);
                 }
             }
         }
@@ -299,10 +334,11 @@ function drawToolOverlay() {
             instruction = 'Click and drag to draw line segments';
             break;
         case 'perpendicular':
-            instruction = 'Click on a line to create perpendicular';
+            instruction = lines.length === 0 ? 'Draw a line first!' : 'Click on a line or point to create perpendicular';
             break;
         case 'parallel':
-            instruction = parallelSourceLine ? 'Click where you want the parallel line' : 'Click on a line first';
+            instruction = lines.length === 0 ? 'Draw a line first!' : 
+                         parallelSourceLine ? 'Click where you want the parallel line' : 'Click on a line first';
             break;
     }
     
@@ -329,10 +365,14 @@ function mousePressed() {
             startDrawingSegment();
             break;
         case 'perpendicular':
-            createPerpendicular();
+            if (lines.length > 0) {
+                createPerpendicular();
+            }
             break;
         case 'parallel':
-            createParallel();
+            if (lines.length > 0) {
+                createParallel();
+            }
             break;
     }
 }
@@ -375,29 +415,11 @@ function finishDrawingSegment() {
         let endPoint = new Point(mouseX, mouseY);
         // Avoid adding a line if start and end points are the same
         if (startPoint.x !== endPoint.x || startPoint.y !== endPoint.y) {
-            // Remove existing segment lines and their points
-            let segmentPoints = new Set();
-            lines = lines.filter(line => {
-                if (line.type === 'segment') {
-                    segmentPoints.add(line.p1);
-                    segmentPoints.add(line.p2);
-                    return false;
-                }
-                return true;
-            });
-            // Remove points that are only used by segment lines
-            points = points.filter(point => {
-                for (let line of lines) {
-                    if (line.p1 === point || line.p2 === point) {
-                        return true;
-                    }
-                }
-                return !segmentPoints.has(point);
-            });
-            
             // Add new segment line and its points
             points.push(endPoint);
             lines.push(new Line(startPoint, endPoint, 'segment'));
+            // Update button states since we now have lines
+            updateButtonStates();
         }
         startPoint = null;
         tempLine = null;
@@ -406,44 +428,55 @@ function finishDrawingSegment() {
 }
 
 function createPerpendicular() {
+    // First, check if the click is on an existing point
+    let clickedPoint = null;
+    for (let point of points) {
+        if (point.contains(mouseX, mouseY)) {
+            clickedPoint = point;
+            break;
+        }
+    }
+
     let closestLine = null;
     let minDistance = Infinity;
-    
-    // Find the closest line to the mouse
+
+    // Find the closest line to the mouse or clicked point
     for (let line of lines) {
-        let distance = line.distanceToPoint(mouseX, mouseY);
+        let distance = clickedPoint 
+            ? line.distanceToPoint(clickedPoint.x, clickedPoint.y)
+            : line.distanceToPoint(mouseX, mouseY);
         if (distance < minDistance && distance < 20) {
             minDistance = distance;
             closestLine = line;
         }
     }
-    
+
     if (closestLine) {
-        // Snap the point on the line to the nearest grid point
-        let pointOnLine = closestLine.getPointOnLine(mouseX, mouseY);
-        points.push(pointOnLine);
-        
-        // Create perpendicular line relative to the clicked line
+        let pointOnLine;
+        if (clickedPoint) {
+            // Use the existing point if clicked
+            pointOnLine = clickedPoint;
+        } else {
+            // Otherwise, snap to the closest point on the line
+            pointOnLine = closestLine.getPointOnLine(mouseX, mouseY);
+            points.push(pointOnLine);
+        }
+
+        // Create perpendicular line
         let originalAngle = closestLine.getAngle();
         let perpAngle = originalAngle + Math.PI / 2;
-        
-        // Create perpendicular line extending in both directions from the point
-        let length = 60;
-        
-        // First point (one direction)
-        let endX1 = pointOnLine.x + Math.cos(perpAngle) * length;
-        let endY1 = pointOnLine.y + Math.sin(perpAngle) * length;
-        let endPoint1 = new Point(endX1, endY1);
-        
-        // Second point (opposite direction)
-        let endX2 = pointOnLine.x - Math.cos(perpAngle) * length;
-        let endY2 = pointOnLine.y - Math.sin(perpAngle) * length;
-        let endPoint2 = new Point(endX2, endY2);
-        
-        points.push(endPoint1);
-        points.push(endPoint2);
-        
-        let perpLine = new Line(endPoint2, endPoint1, 'perpendicular', '#ff6b6b');
+
+        // Use a length that aligns with the grid (multiple of grid spacing)
+        let gridSpacing = 20;
+        let length = gridSpacing * 2; // Ensure end point falls on grid
+        let endX = pointOnLine.x + Math.cos(perpAngle) * length;
+        let endY = pointOnLine.y + Math.sin(perpAngle) * length;
+
+        // Snap the end point to the grid
+        let endPoint = new Point(endX, endY);
+        points.push(endPoint);
+
+        let perpLine = new Line(pointOnLine, endPoint, 'perpendicular', '#ff6b6b');
         lines.push(perpLine);
     }
 }
@@ -468,19 +501,21 @@ function createParallel() {
         }
     } else {
         // Second click - create parallel line
-        let sourceAngle = parallelSourceLine.getAngle();
-        let length = 100;
+        let direction = parallelSourceLine.getDirection();
         
         // Snap the start point to the grid
         let startX = Math.round(mouseX / 20) * 20;
         let startY = Math.round(mouseY / 20) * 20;
         let startPoint = new Point(startX, startY);
         
-        // Calculate end point and snap to grid
-        let endX = startX + Math.cos(sourceAngle) * length;
-        let endY = startY + Math.sin(sourceAngle) * length;
+        // Calculate end point using the same direction as the source line
+        // Use a reasonable length that ensures the line is visible
+        let length = 100;
+        let endX = startX + direction.x * length;
+        let endY = startY + direction.y * length;
         let endPoint = new Point(endX, endY);
         
+        // Ensure the parallel line has the same slope by using exact direction
         points.push(startPoint);
         points.push(endPoint);
         
@@ -488,57 +523,77 @@ function createParallel() {
         lines.push(parallelLine);
         
         // Reset
-        parallelSourceLine.color = '#333';
+        parallelSourceLine.color = getOriginalLineColor(parallelSourceLine);
         parallelSourceLine = null;
     }
 }
 
+function getOriginalLineColor(line) {
+    switch(line.type) {
+        case 'segment': return '#333';
+        case 'perpendicular': return '#ff6b6b';
+        case 'parallel': return '#4ecdc4';
+        default: return '#333';
+    }
+}
+
 function getLineIntersection(line1, line2) {
-    // Extend lines for intersection calculation
-    let extension = 1000;
+    // Get extended line coordinates for proper intersection calculation
+    let { x1: x1a, y1: y1a, x2: x2a, y2: y2a } = getExtendedLineCoords(line1);
+    let { x1: x1b, y1: y1b, x2: x2b, y2: y2b } = getExtendedLineCoords(line2);
     
-    // Line 1 extended
-    let dx1 = line1.p2.x - line1.p1.x;
-    let dy1 = line1.p2.y - line1.p1.y;
-    let len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-    if (len1 === 0) return null;
-    dx1 /= len1;
-    dy1 /= len1;
-    
-    let x1 = line1.p1.x - dx1 * extension;
-    let y1 = line1.p1.y - dy1 * extension;
-    let x2 = line1.p2.x + dx1 * extension;
-    let y2 = line1.p2.y + dy1 * extension;
-    
-    // Line 2 extended
-    let dx2 = line2.p2.x - line2.p1.x;
-    let dy2 = line2.p2.y - line2.p1.y;
-    let len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-    if (len2 === 0) return null;
-    dx2 /= len2;
-    dy2 /= len2;
-    
-    let x3 = line2.p1.x - dx2 * extension;
-    let y3 = line2.p1.y - dy2 * extension;
-    let x4 = line2.p2.x + dx2 * extension;
-    let y4 = line2.p2.y + dy2 * extension;
-    
-    let denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    let denom = (x1a - x2a) * (y1b - y2b) - (y1a - y2a) * (x1b - x2b);
     
     if (Math.abs(denom) < 1e-10) return null; // Lines are parallel
     
-    let t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+    let t = ((x1a - x1b) * (y1b - y2b) - (y1a - y1b) * (x1b - x2b)) / denom;
     
-    let intersectionX = x1 + t * (x2 - x1);
-    let intersectionY = y1 + t * (y2 - y1);
+    let intersectionX = x1a + t * (x2a - x1a);
+    let intersectionY = y1a + t * (y2a - y1a);
     
-    // Check if intersection is within canvas bounds
-    if (intersectionX >= 0 && intersectionX <= width && 
-        intersectionY >= 0 && intersectionY <= height) {
+    // Only return intersection if it's within the canvas bounds
+    if (intersectionX >= -100 && intersectionX <= width + 100 && 
+        intersectionY >= -100 && intersectionY <= height + 100) {
         return new Point(intersectionX, intersectionY);
     }
     
     return null;
+}
+
+function getExtendedLineCoords(line) {
+    if (line.type === 'segment') {
+        return {
+            x1: line.p1.x,
+            y1: line.p1.y,
+            x2: line.p2.x,
+            y2: line.p2.y
+        };
+    } else {
+        // For perpendicular and parallel lines, use extended coordinates
+        let dx = line.p2.x - line.p1.x;
+        let dy = line.p2.y - line.p1.y;
+        let len = Math.sqrt(dx * dx + dy * dy);
+        let extension = 1000; // Large extension for intersection calculation
+        
+        if (len > 0) {
+            dx /= len;
+            dy /= len;
+            
+            return {
+                x1: line.p1.x - dx * extension,
+                y1: line.p1.y - dy * extension,
+                x2: line.p2.x + dx * extension,
+                y2: line.p2.y + dy * extension
+            };
+        }
+    }
+    
+    return {
+        x1: line.p1.x,
+        y1: line.p1.y,
+        x2: line.p2.x,
+        y2: line.p2.y
+    };
 }
 
 function getAngleBetweenLines(line1, line2) {
@@ -549,19 +604,40 @@ function getAngleBetweenLines(line1, line2) {
 }
 
 function setTool(tool) {
+    // Don't allow switching to perpendicular or parallel if no lines exist
+    if ((tool === 'perpendicular' || tool === 'parallel') && lines.length === 0) {
+        return;
+    }
+    
     currentTool = tool;
     parallelSourceLine = null;
     
     // Reset line colors
     for (let line of lines) {
-        if (line.type === 'segment') line.color = '#333';
-        else if (line.type === 'perpendicular') line.color = '#ff6b6b';
-        else if (line.type === 'parallel') line.color = '#4ecdc4';
+        line.color = getOriginalLineColor(line);
     }
     
     // Update button states
     document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(tool + 'Tool').classList.add('active');
+    
+    // Update status display if elements exist
+    const currentToolElement = document.querySelector('.current-tool');
+    const instructionElement = document.querySelector('.instruction'); 
+    
+    if (currentToolElement) {
+        currentToolElement.textContent = `Current Tool: ${tool.charAt(0).toUpperCase() + tool.slice(1)}`;
+    }
+    
+    if (instructionElement) {
+        let instruction = '';
+        switch(tool) {
+            case 'segment': instruction = 'Click and drag to draw line segments'; break;
+            case 'perpendicular': instruction = 'Click on a line or point to create perpendicular'; break;
+            case 'parallel': instruction = 'Click on a line first to create parallel'; break;
+        }
+        instructionElement.textContent = instruction;
+    }
 }
 
 function clearAll() {
@@ -572,4 +648,22 @@ function clearAll() {
     isDrawing = false;
     draggedPoint = null;
     parallelSourceLine = null;
+    
+    // Update button states
+    updateButtonStates();
+    
+    // Reset to segment tool
+    setTool('segment');
+    
+    // Update status if elements exist
+    const currentToolElement = document.querySelector('.current-tool');
+    const instructionElement = document.querySelector('.instruction');
+    
+    if (currentToolElement) {
+        currentToolElement.textContent = 'Current Tool: Segment';
+    }
+    
+    if (instructionElement) {
+        instructionElement.textContent = 'Click and drag to draw line segments';
+    }
 }
