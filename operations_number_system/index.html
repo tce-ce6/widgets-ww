@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Numbers Operations Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+<body>
+    <div class="mainContainerOuter ">
+        <div class="wdgetTitle">
+            <h2>Real Numbers Operations</h2>
+            <p>CBSE Grade 9 - Interactive Math Simulation</p>
+        </div>
+        <div class="mainContainer">
+        <div id="sketch-container" class="container"></div>
+        </div>
+        <div id="keyboard-container" class="keyboard-container">
+            <div class="keyboard-row">
+                <button class="key">7</button>
+                <button class="key">8</button>
+                <button class="key">9</button>
+                <button class="key special">/</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key">4</button>
+                <button class="key">5</button>
+                <button class="key">6</button>
+                <button class="key special">-</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key">1</button>
+                <button class="key">2</button>
+                <button class="key">3</button>
+                <button class="key special">.</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key special" data-action="clear">C</button>
+                <button class="key">0</button>
+                <button class="key special">√</button>
+                <button class="key special" data-action="backspace">←</button>
+            </div>
+        </div>
+    </div>
+    <script src="p5.js"></script>
+    <script src="sketch.js"></script>
+</body>
+</html>

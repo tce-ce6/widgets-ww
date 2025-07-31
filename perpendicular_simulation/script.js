@@ -10,6 +10,11 @@ let startPoint = null;
 let tempLine = null;
 let draggedPoint = null;
 let parallelSourceLine = null;
+let lineLabelIndex = 0;
+let transversalLabelIndex = 1;
+const lineLabels = 'abcdefghijklmnopqrstuvwxyz';
+// Replace parallelProofs with a new structure to track steps
+let transversalSteps = []; // [{transversal, steps: [..], parallel: [a, b] or null}]
 
 class Point {
     constructor(x, y) {
@@ -41,13 +46,14 @@ class Point {
 }
 
 class Line {
-    constructor(p1, p2, type = 'segment', color = '#333') {
+    constructor(p1, p2, type = 'segment', color = '#333', label = null) {
         this.p1 = p1;
         this.p2 = p2;
         this.type = type;
         this.color = color;
         this.thickness = 2;
         this.id = Date.now() + Math.random(); // Unique ID for each line
+        this.label = label;
     }
 
     draw() {
@@ -74,6 +80,31 @@ class Line {
                 
                 line(x1, y1, x2, y2);
             }
+        }
+        // Draw label at midpoint
+        let mx, my;
+        if (this.type === 'segment') {
+            mx = (this.p1.x + this.p2.x) / 2;
+            my = (this.p1.y + this.p2.y) / 2;
+        } else {
+            let dx = this.p2.x - this.p1.x;
+            let dy = this.p2.y - this.p1.y;
+            let len = Math.sqrt(dx * dx + dy * dy);
+            if (len > 0) {
+                dx /= len;
+                dy /= len;
+                mx = (this.p1.x + this.p2.x) / 2;
+                my = (this.p1.y + this.p2.y) / 2;
+            }
+        }
+        if (this.label && mx !== undefined && my !== undefined) {
+            push();
+            fill(0);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(18);
+            text(this.label, mx, my - 15);
+            pop();
         }
     }
 
@@ -217,6 +248,7 @@ function draw() {
     
     // Draw tool-specific overlays
     drawToolOverlay();
+    drawParallelProofs();
 }
 
 function drawDotPaper() {
@@ -411,14 +443,12 @@ function updateTempLine() {
 
 function finishDrawingSegment() {
     if (startPoint && tempLine) {
-        // Snap end point to grid
         let endPoint = new Point(mouseX, mouseY);
-        // Avoid adding a line if start and end points are the same
         if (startPoint.x !== endPoint.x || startPoint.y !== endPoint.y) {
-            // Add new segment line and its points
             points.push(endPoint);
-            lines.push(new Line(startPoint, endPoint, 'segment'));
-            // Update button states since we now have lines
+            let label = lineLabels[lineLabelIndex % lineLabels.length];
+            lineLabelIndex++;
+            lines.push(new Line(startPoint, endPoint, 'segment', '#333', label));
             updateButtonStates();
         }
         startPoint = null;
@@ -428,7 +458,6 @@ function finishDrawingSegment() {
 }
 
 function createPerpendicular() {
-    // First, check if the click is on an existing point
     let clickedPoint = null;
     for (let point of points) {
         if (point.contains(mouseX, mouseY)) {
@@ -436,11 +465,8 @@ function createPerpendicular() {
             break;
         }
     }
-
     let closestLine = null;
     let minDistance = Infinity;
-
-    // Find the closest line to the mouse or clicked point
     for (let line of lines) {
         let distance = clickedPoint 
             ? line.distanceToPoint(clickedPoint.x, clickedPoint.y)
@@ -450,41 +476,56 @@ function createPerpendicular() {
             closestLine = line;
         }
     }
-
     if (closestLine) {
         let pointOnLine;
         if (clickedPoint) {
-            // Use the existing point if clicked
             pointOnLine = clickedPoint;
         } else {
-            // Otherwise, snap to the closest point on the line
             pointOnLine = closestLine.getPointOnLine(mouseX, mouseY);
             points.push(pointOnLine);
         }
-
         let dx = closestLine.p2.x - closestLine.p1.x;
         let dy = closestLine.p2.y - closestLine.p1.y;
-
-        // Generate candidate endpoints using exact perpendicular vectors
         let candidate1 = new Point(pointOnLine.x - dy, pointOnLine.y + dx);
         let candidate2 = new Point(pointOnLine.x + dy, pointOnLine.y - dx);
-
-        // Choose candidate closest to mouse
         let d1 = dist(candidate1.x, candidate1.y, mouseX, mouseY);
         let d2 = dist(candidate2.x, candidate2.y, mouseX, mouseY);
         let endPoint = d1 < d2 ? candidate1 : candidate2;
-
-        // Check for existing point or add new
         let existingPoint = points.find(p => p.x === endPoint.x && p.y === endPoint.y);
         if (existingPoint) {
             endPoint = existingPoint;
         } else {
             points.push(endPoint);
         }
-
-        // Create perpendicular line
-        let perpLine = new Line(pointOnLine, endPoint, 'perpendicular', '#ff6b6b');
+        // Assign transversal label
+        let tLabel = 't';
+        if (transversalLabelIndex > 1) tLabel = 't' + transversalLabelIndex;
+        transversalLabelIndex++;
+        let perpLine = new Line(pointOnLine, endPoint, 'perpendicular', '#ff6b6b', tLabel);
         lines.push(perpLine);
+        // Track steps for this transversal
+        let stepObj = transversalSteps.find(t => t.transversal === tLabel);
+        if (!stepObj) {
+            stepObj = { transversal: tLabel, steps: [], perpendiculars: [], parallel: null };
+            transversalSteps.push(stepObj);
+        }
+        // Record this perpendicular relationship
+        stepObj.perpendiculars.push(closestLine.label);
+        stepObj.steps.push(`${tLabel} ⟂ ${closestLine.label}`);
+        
+        // If this transversal is now perpendicular to two different lines, record parallel
+        let uniqueLines = [...new Set(stepObj.perpendiculars)];
+        if (uniqueLines.length >= 2 && !stepObj.parallel) {
+            stepObj.parallel = [uniqueLines[0], uniqueLines[1]];
+            // Create formatted proof steps
+            stepObj.steps = [
+                `Let lines ${uniqueLines[0]} and ${uniqueLines[1]} be intersected by line ${tLabel}, such that:`,
+                `${tLabel} ⟂ ${uniqueLines[0]} and ${tLabel} ⟂ ${uniqueLines[1]}`,
+                `Since ${tLabel} is perpendicular to both ${uniqueLines[0]} and ${uniqueLines[1]}, it forms equal corresponding angles:`,
+                `∠(${tLabel}∩${uniqueLines[0]}) = ∠(${tLabel}∩${uniqueLines[1]}) = 90°`,
+                `By the Converse of the Corresponding Angles Postulate: ${uniqueLines[0]} ∥ ${uniqueLines[1]}`
+            ];
+        }
     }
 }
 
@@ -555,6 +596,14 @@ function createParallel() {
         // Create parallel line
         let parallelLine = new Line(startPoint, endPoint, 'parallel', '#4ecdc4');
         lines.push(parallelLine);
+
+        // Add proof step for parallel construction
+        transversalSteps.push({
+            transversal: null,
+            steps: [`${parallelLine.label} ∥ ${parallelSourceLine.label} (by construction)`],
+            perpendiculars: [],
+            parallel: [parallelLine.label, parallelSourceLine.label]
+        });
 
         // Reset
         parallelSourceLine.color = getOriginalLineColor(parallelSourceLine);
@@ -697,6 +746,9 @@ function clearAll() {
     isDrawing = false;
     draggedPoint = null;
     parallelSourceLine = null;
+    lineLabelIndex = 0;
+    transversalLabelIndex = 1;
+    transversalSteps = [];
     
     // Update button states
     updateButtonStates();
@@ -715,4 +767,52 @@ function clearAll() {
     if (instructionElement) {
         instructionElement.textContent = 'Click and drag to draw line segments';
     }
+}
+
+// In drawParallelProofs, always draw the rectangle, and show a message if no proofs
+function drawParallelProofs() {
+    let totalSteps = transversalSteps.reduce((sum, t) => sum + t.steps.length, 0);
+    let w = 200, h = 70 + 28 * Math.max(1, totalSteps);
+    let x = width - w - 20, y = 20;
+    
+    push();
+    fill(255, 255, 255, 240); // white color
+    stroke(0);
+    strokeWeight(2);
+    rect(x, y, w, h -20 , 12);
+    fill(0);
+    noStroke();
+    textAlign(LEFT, TOP);
+    textSize(16);
+    text('Parallel Proof Steps:', x + 15, y + 10);
+    textSize(14);
+    
+    if (transversalSteps.length === 0) {
+        fill(100, 0, 0);
+        text('No steps yet', x + 15, y + 45);
+    } else {
+        let stepY = y + 45;
+        for (let t of transversalSteps) {
+            // Only display if we have a complete proof (2 perpendiculars)
+            if (t.parallel) {
+                for (let s of t.steps) {
+                    text(s, x + 15, stepY);
+                    stepY += 24;
+                }
+            } else if (t.steps.length > 0) {
+                // Show initial perpendicular steps
+                text(t.steps[0], x + 15, stepY);
+                stepY += 24;
+            }
+        }
+    }
+    pop();
+}
+
+// Helper to check if two lines are perpendicular (by direction)
+function isPerpendicular(l1, l2) {
+    let d1 = l1.getDirection();
+    let d2 = l2.getDirection();
+    let dot = d1.x * d2.x + d1.y * d2.y;
+    return Math.abs(dot) < 0.01;
 }
