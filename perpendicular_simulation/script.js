@@ -498,7 +498,7 @@ function createPerpendicular() {
             points.push(endPoint);
         }
         // Assign transversal label
-        let tLabel = 't';
+         let tLabel = 't';
         if (transversalLabelIndex > 1) tLabel = 't' + transversalLabelIndex;
         transversalLabelIndex++;
         let perpLine = new Line(pointOnLine, endPoint, 'perpendicular', '#ff6b6b', tLabel);
@@ -592,17 +592,19 @@ function createParallel() {
         } else {
             points.push(endPoint);
         }
-
+        let label = lineLabels[lineLabelIndex % lineLabels.length];
+        lineLabelIndex++;
         // Create parallel line
         let parallelLine = new Line(startPoint, endPoint, 'parallel', '#4ecdc4');
+        
         lines.push(parallelLine);
 
         // Add proof step for parallel construction
         transversalSteps.push({
             transversal: null,
-            steps: [`${parallelLine.label} ∥ ${parallelSourceLine.label} (by construction)`],
+            steps: [`${label} ∥ ${parallelSourceLine.label} (by construction)`],
             perpendiculars: [],
-            parallel: [parallelLine.label, parallelSourceLine.label]
+            parallel: [label, parallelSourceLine.label]
         });
 
         // Reset
