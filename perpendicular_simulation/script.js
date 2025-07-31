@@ -462,20 +462,27 @@ function createPerpendicular() {
             points.push(pointOnLine);
         }
 
+        let dx = closestLine.p2.x - closestLine.p1.x;
+        let dy = closestLine.p2.y - closestLine.p1.y;
+
+        // Generate candidate endpoints using exact perpendicular vectors
+        let candidate1 = new Point(pointOnLine.x - dy, pointOnLine.y + dx);
+        let candidate2 = new Point(pointOnLine.x + dy, pointOnLine.y - dx);
+
+        // Choose candidate closest to mouse
+        let d1 = dist(candidate1.x, candidate1.y, mouseX, mouseY);
+        let d2 = dist(candidate2.x, candidate2.y, mouseX, mouseY);
+        let endPoint = d1 < d2 ? candidate1 : candidate2;
+
+        // Check for existing point or add new
+        let existingPoint = points.find(p => p.x === endPoint.x && p.y === endPoint.y);
+        if (existingPoint) {
+            endPoint = existingPoint;
+        } else {
+            points.push(endPoint);
+        }
+
         // Create perpendicular line
-        let originalAngle = closestLine.getAngle();
-        let perpAngle = originalAngle + Math.PI / 2;
-
-        // Use a length that aligns with the grid (multiple of grid spacing)
-        let gridSpacing = 20;
-        let length = gridSpacing * 2; // Ensure end point falls on grid
-        let endX = pointOnLine.x + Math.cos(perpAngle) * length;
-        let endY = pointOnLine.y + Math.sin(perpAngle) * length;
-
-        // Snap the end point to the grid
-        let endPoint = new Point(endX, endY);
-        points.push(endPoint);
-
         let perpLine = new Line(pointOnLine, endPoint, 'perpendicular', '#ff6b6b');
         lines.push(perpLine);
     }
@@ -500,28 +507,55 @@ function createParallel() {
             parallelSourceLine.color = '#4ecdc4'; // Highlight selected line
         }
     } else {
-        // Second click - create parallel line
-        let direction = parallelSourceLine.getDirection();
-        
-        // Snap the start point to the grid
-        let startX = Math.round(mouseX / 20) * 20;
-        let startY = Math.round(mouseY / 20) * 20;
-        let startPoint = new Point(startX, startY);
-        
-        // Calculate end point using the same direction as the source line
-        // Use a reasonable length that ensures the line is visible
-        let length = 100;
-        let endX = startX + direction.x * length;
-        let endY = startY + direction.y * length;
-        let endPoint = new Point(endX, endY);
-        
-        // Ensure the parallel line has the same slope by using exact direction
+       let startPoint = new Point(mouseX, mouseY);
         points.push(startPoint);
-        points.push(endPoint);
-        
+
+        let dx = parallelSourceLine.p2.x - parallelSourceLine.p1.x;
+        let dy = parallelSourceLine.p2.y - parallelSourceLine.p1.y;
+
+        // Simplify vector using GCD
+        let a = dx / 20;
+        let b = dy / 20;
+        let g = gcd(Math.abs(a), Math.abs(b)) || 1;
+        a = a / g;
+        b = b / g;
+
+        // Generate candidate endpoints
+        let candidates = [];
+        for (let k = 1; k <= 3; k++) {
+            candidates.push(new Point(
+                startPoint.x + k*a*20, 
+                startPoint.y + k*b*20
+            ));
+            candidates.push(new Point(
+                startPoint.x - k*a*20, 
+                startPoint.y - k*b*20
+            ));
+        }
+
+        // Select candidate closest to mouse
+        let minDist = Infinity;
+        let endPoint = null;
+        for (let candidate of candidates) {
+            let d = dist(candidate.x, candidate.y, mouseX, mouseY);
+            if (d < minDist) {
+                minDist = d;
+                endPoint = candidate;
+            }
+        }
+
+        // Check for existing point or add new
+        let existingPoint = points.find(p => p.x === endPoint.x && p.y === endPoint.y);
+        if (existingPoint) {
+            endPoint = existingPoint;
+        } else {
+            points.push(endPoint);
+        }
+
+        // Create parallel line
         let parallelLine = new Line(startPoint, endPoint, 'parallel', '#4ecdc4');
         lines.push(parallelLine);
-        
+
         // Reset
         parallelSourceLine.color = getOriginalLineColor(parallelSourceLine);
         parallelSourceLine = null;
@@ -639,6 +673,21 @@ function setTool(tool) {
         instructionElement.textContent = instruction;
     }
 }
+
+
+
+
+function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+        let t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
 
 function clearAll() {
     lines = [];
