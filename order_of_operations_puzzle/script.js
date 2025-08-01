@@ -600,11 +600,12 @@ function renderResult() {
         const y = yStart + row * rowGap;
 
         let x = (width - total * scale) / 2;
+        x = 392
         tokens.forEach(t => {
             const sz = t.type === 'exp' ? fExp : fBase;
             textSize(sz);
             const yOffset = t.type === 'exp' ? -0.35 * fBase : 0;
-            text(t.txt, x, y + yOffset);
+            text(t.txt, x , y + yOffset);
             x += textWidth(t.txt) + gap * scale;
         });
     });
@@ -766,7 +767,7 @@ function renderAnswerOverlay() {
 function renderReflectOverlay() {
  fill(255, 255, 255, 0);
     rect(0, 0, width, height);
-    fill(255, 255, 255, 250);
+    fill(253, 241, 218, 240);
     stroke(124, 58, 237);
     strokeWeight(2);
     rect(width / 6 + 370, height / 6 - 80, width / 2 - 80  , height / 2 -80 , 10);
@@ -933,6 +934,7 @@ function touchStarted(event) {
 
         for (let i = 1; i <= 3; i++) {
             let x = startX + (i - 1) * (buttonWidth + gap);
+            console.log("🚀 ~ renderResult ~ x:", x)
             if (touchX > x && touchX < x + buttonWidth && 
                 touchY > y && touchY < y + buttonHeight) {
                 showQuestion(i);
