@@ -374,6 +374,7 @@ function draw() {
         textSize(heartbeatSize);
         textAlign(RIGHT);
         text("Correct! 🎉", width - 30, height - 220);
+        document.getElementById('startOverBtn').disabled = true;
     }
     if (showAnswerOverlay) {
         renderAnswerOverlay();
@@ -1024,6 +1025,8 @@ function startOver() {
 }
 
 function newQuestion() {
+    document.getElementById('startOverBtn').disabled = false;
+
     model.generateRandomNumbers();
     selectedValue = null;
     showAnswerOverlay = false;
