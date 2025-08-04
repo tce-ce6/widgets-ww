@@ -276,7 +276,7 @@
                 stroke(200, 0, 0, 200);
                 strokeWeight(1.5);
                 noFill();
-                rect(legendX + padding + 12, yPos - 6 + 15, 8, 8);
+                arc(legendX + padding + 15, yPos + 10, 16, 16, 0, HALF_PI); // Arc for 90°
                 // Draw text
                 noStroke();
                 fill(0);
@@ -746,10 +746,14 @@
                             
                             push();
                             stroke(200, 0, 0, 200);
-                            strokeWeight(1.5);
+                            strokeWeight(2);
                             noFill();
-                            
-                            rect(intersectionX + 2, intersectionY + 2, 8, 8);
+                            arc(intersectionX + 2, intersectionY + 2, 16, 16, 0, HALF_PI);
+                            fill(200, 0, 0);
+                            noStroke();
+                            textSize(12);
+                            textAlign(CENTER, CENTER);
+                            // text("90°", intersectionX + 15, intersectionY + 15);
                             pop();
                         }
                     }
