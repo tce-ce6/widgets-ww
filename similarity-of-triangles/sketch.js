@@ -6,8 +6,8 @@ let D, E, F;
 let targetF = null;
 let draggingF = false;
 let offsetF = { x: 0, y: 0 };
-let leftOrigin = { x: 150, y: 220 };
-let rightOrigin = { x: 550, y: 220 };
+let leftOrigin = { x: 150, y: 240 };
+let rightOrigin = { x: 550, y: 240 };
 let PIXEL_SCALE = 7;
 let checkResult = null;
 let errorMessage = null;
@@ -17,7 +17,7 @@ let targetDF = 0;
 let currentDE = 0;
 let displayAnswer = false;
 
-const ERROR_TOLERANCE = 0.15;
+const ERROR_TOLERANCE = 0.01;
 const MIN_TRIANGLE_SIDE = 8;
 const MAX_TRIANGLE_SIDE = 30;
 
@@ -26,6 +26,10 @@ function setup() {
     canvas.parent("mainCanvas");
     textFont('Georgia');
     resetToNew();
+
+    document.getElementById("similarity-info").style.display = "none";
+    document.getElementById("hint-modal").style.display = "none";
+
 
     document.getElementById("hint-btn").addEventListener("click", () => {
         document.getElementById("hint-modal").style.display = "flex";
@@ -47,6 +51,9 @@ function resetToNew() {
     displayAnswer = false;
     const maxAttempts = 200;
     document.getElementById('similarity-info').innerHTML = '';
+    document.getElementById("similarity-info").style.display = "none";
+    document.getElementById("check-btn").disabled = false;
+    document.getElementById("show-btn").disabled = false;
     while (attempts < maxAttempts) {
         if (generateValidTrianglePair()) {
             checkResult = null;
@@ -61,50 +68,50 @@ function resetToNew() {
 function generateValidTrianglePair() {
     // Step 1: Generate random triangle ABC with integer sides
     const maxAttempts = 100;
-    
+
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         // Generate random integer sides for triangle ABC
         mathA = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         mathB = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         mathC = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        
+
         // Check if it forms a valid triangle
         if (!isValidTriangle(mathA, mathB, mathC)) continue;
-        
+
         // Calculate triangle ABC coordinates
         if (!calculateTriangleABC(mathA, mathB, mathC)) continue;
-        
+
         // Step 2: Find a valid DE that creates integer EF and DF
         const validRatios = [2, 3, 4, 5, 0.5, 0.333, 0.25, 0.2]; // Including fractions
-        
+
         for (let ratioAttempt = 0; ratioAttempt < 50; ratioAttempt++) {
             // Try different DE values
             currentDE = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-            
+
             // Ensure DEF is different in shape from ABC
             if (currentDE === mathC) continue;
-            
+
             // Calculate potential ratio
             let ratio = currentDE / mathC;
-            
+
             // Check if this ratio would give integer sides
             let potentialEF = mathA * ratio;
             let potentialDF = mathB * ratio;
-            
+
             // Check if EF and DF would be integers (within small tolerance)
             if (Math.abs(potentialEF - Math.round(potentialEF)) < 0.001 &&
                 Math.abs(potentialDF - Math.round(potentialDF)) < 0.001) {
-                
+
                 targetEF = Math.round(potentialEF);
                 targetDF = Math.round(potentialDF);
-                
+
                 // Ensure the target triangle is valid and within bounds
                 if (isValidTriangle(currentDE, targetEF, targetDF) &&
                     targetEF >= MIN_TRIANGLE_SIDE && targetEF <= MAX_TRIANGLE_SIDE &&
                     targetDF >= MIN_TRIANGLE_SIDE && targetDF <= MAX_TRIANGLE_SIDE) {
-                    
+
                     targetRatio = ratio;
-                    
+
                     // Generate initial DEF triangle (not similar to start)
                     if (generateInitialDEF()) {
                         calculateTargetF();
@@ -114,37 +121,37 @@ function generateValidTrianglePair() {
             }
         }
     }
-    
+
     return false;
 }
 
 function generateInitialDEF() {
     // Generate a random triangle DEF that's different from the target
     const maxAttempts = 50;
-    
+
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         let randomEF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         let randomDF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        
+
         // Ensure it's not the target triangle
         if (Math.abs(randomEF - targetEF) < 2 && Math.abs(randomDF - targetDF) < 2) {
             continue;
         }
-        
+
         // Check if it forms a valid triangle with current DE
         if (isValidTriangle(currentDE, randomEF, randomDF)) {
             return calculateTriangleDEF(currentDE, randomEF, randomDF);
         }
     }
-    
+
     // Fallback: use a simple valid triangle
     let fallbackEF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 3);
     let fallbackDF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 2);
-    
+
     if (isValidTriangle(currentDE, fallbackEF, fallbackDF)) {
         return calculateTriangleDEF(currentDE, fallbackEF, fallbackDF);
     }
-    
+
     return false;
 }
 
@@ -178,11 +185,11 @@ function calculateTriangleDEF(de, ef, df) {
         x: D.x + df * PIXEL_SCALE * Math.cos(angleD),
         y: D.y - Math.abs(df * PIXEL_SCALE * Math.sin(angleD))
     };
-    
+
     // Constrain F to canvas bounds with proper margins
     F.x = constrain(F.x, 50, width - 50);
     F.y = constrain(F.y, 50, height - 50);
-    
+
     return true;
 }
 
@@ -197,29 +204,29 @@ function calculateTargetF() {
 
 function draw() {
     background(255);
-    
+
     // Draw triangles
     drawTriangle(A, B, C, true, [mathC, mathA, mathB], ['AB', 'BC', 'CA']);
-    
+
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-    
+
     drawTriangle(D, E, F, false, [de, ef, df], ['DE', 'EF', 'DF']);
     drawDraggableF();
-    
+
     if (displayAnswer) {
         drawTargetGuide();
         displaySimilarityInfo();
     }
-    
+
     displayCheckResult();
     displayErrorMessage();
 }
 
 function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
     stroke(80);
-    strokeWeight(2);
+    strokeWeight(3);
     fill(isLeft ? 'rgba(0,200,0,0.1)' : 'rgba(0,0,200,0.1)');
     triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
 
@@ -308,7 +315,7 @@ function mouseReleased() {
 //     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
 //     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
 //     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-    
+
 //     push();
 //     fill(0);
 //     textSize(14);
@@ -351,7 +358,7 @@ function displaySimilarityInfo() {
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target EF: <strong>${targetEF}</strong> | Target DF: <strong>${targetDF}</strong></p>
+        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDF}</strong> | Target EF: <strong>${targetEF}</strong></p>
     `;
 
     document.getElementById('similarity-info').innerHTML = infoHTML;
@@ -362,11 +369,11 @@ function areTrianglesSimilar() {
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-    
+
     let ratio1 = mathC / de;    // AB/DE
     let ratio2 = mathA / ef;    // BC/EF  
     let ratio3 = mathB / df;    // CA/DF
-    
+
     return Math.abs(ratio1 - ratio2) < ERROR_TOLERANCE &&
         Math.abs(ratio2 - ratio3) < ERROR_TOLERANCE &&
         Math.abs(ratio1 - ratio3) < ERROR_TOLERANCE;
@@ -377,7 +384,7 @@ function displayCheckResult() {
     fill(checkResult ? 'green' : 'red');
     textSize(24);
     textAlign(CENTER, TOP);
-    text(checkResult ? '✓ △ABC ~ △DEF' : '✗ Triangles NOT similar', width/2, 20);
+    text(checkResult ? '✓ △ABC ~ △DEF' : '✗ Triangles NOT similar', width / 2, 20);
 }
 
 function displayErrorMessage() {
@@ -395,6 +402,9 @@ function checkSimilarity() {
 
 function showAnswer() {
     displayAnswer = true;
+    document.getElementById("similarity-info").style.display = "block";
+    document.getElementById("check-btn").disabled = false;
+    document.getElementById("show-btn").disabled = true;
 }
 
 // p5.js helper functions
