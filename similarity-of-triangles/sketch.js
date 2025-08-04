@@ -46,6 +46,7 @@ function resetToNew() {
     let attempts = 0;
     displayAnswer = false;
     const maxAttempts = 200;
+    document.getElementById('similarity-info').innerHTML = '';
     while (attempts < maxAttempts) {
         if (generateValidTrianglePair()) {
             checkResult = null;
@@ -274,7 +275,7 @@ function drawTargetGuide() {
         strokeWeight(3);
         fill(0, 200, 0, 40);
         ellipse(targetF.x, targetF.y, 25);
-        fill(255);
+        fill(0);
         noStroke();
         textAlign(CENTER, CENTER);
         textSize(12);
@@ -303,20 +304,59 @@ function mouseReleased() {
     draggingF = false;
 }
 
+// function displaySimilarityInfo() {
+//     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
+//     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
+//     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
+    
+//     push();
+//     fill(0);
+//     textSize(14);
+//     textAlign(CENTER);
+//     text(`AB/DE = ${(mathC / de).toFixed(2)}, BC/EF = ${(mathA / ef).toFixed(2)}, CA/DF = ${(mathB / df).toFixed(2)}`, width/2, 300);
+//     text(`Target ratio = ${targetRatio.toFixed(2)}`, width/2, 320);
+//     text(`Target: EF = ${targetEF}, DF = ${targetDF}`, width/2, 340);
+//     pop();
+// }
+
 function displaySimilarityInfo() {
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-    
-    push();
-    fill(0);
-    textSize(14);
-    textAlign(CENTER);
-    text(`AB/DE = ${(mathC / de).toFixed(2)}, BC/EF = ${(mathA / ef).toFixed(2)}, CA/DF = ${(mathB / df).toFixed(2)}`, width/2, 300);
-    text(`Target ratio = ${targetRatio.toFixed(2)}`, width/2, 320);
-    text(`Target: EF = ${targetEF}, DF = ${targetDF}`, width/2, 340);
-    pop();
+
+    let ratioAB_DE = (mathC / de).toFixed(2);
+    let ratioBC_EF = (mathA / ef).toFixed(2);
+    let ratioCA_DF = (mathB / df).toFixed(2);
+
+    let infoHTML = `
+        <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
+            <div style="text-align: center; line-height: 1;">
+                <div>AB</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
+                <div>DE</div>
+            </div>
+            <div>= ${ratioAB_DE}</div>
+            <div style="text-align: center; line-height: 1;">
+                <div>BC</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
+                <div>EF</div>
+            </div>
+            <div>= ${ratioBC_EF}</div>
+            <div style="text-align: center; line-height: 1;">
+                <div>CA</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
+                <div>DF</div>
+            </div>
+            <div>= ${ratioCA_DF}</div>
+        </div>
+
+        <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
+        <p>🎯 Target EF: <strong>${targetEF}</strong> | Target DF: <strong>${targetDF}</strong></p>
+    `;
+
+    document.getElementById('similarity-info').innerHTML = infoHTML;
 }
+
 
 function areTrianglesSimilar() {
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
