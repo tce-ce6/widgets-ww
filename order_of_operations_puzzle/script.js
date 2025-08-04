@@ -326,7 +326,7 @@ let draggedValue = null;
 let draggedX, draggedY;
 let selectedValue = null;
 let showAnswerOverlay = false;
-let showReflectOverlayState = true;
+let showReflectOverlayState = false;
 let currentQuestion = 0;
 
 function setup() {
