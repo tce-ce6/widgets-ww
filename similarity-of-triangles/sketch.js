@@ -342,7 +342,7 @@ function displaySimilarityInfo() {
                 <div>EF</div>
             </div>
             <div>= ${ratioBC_EF}</div>
-            <div style="text-align: center; line-height: 1;">
+            <div style="text-align: center; line-height: 1; ">
                 <div>CA</div>
                 <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
                 <div>DF</div>
@@ -351,7 +351,7 @@ function displaySimilarityInfo() {
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p>🎯 Target EF: <strong>${targetEF}</strong> | Target DF: <strong>${targetDF}</strong></p>
+        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target EF: <strong>${targetEF}</strong> | Target DF: <strong>${targetDF}</strong></p>
     `;
 
     document.getElementById('similarity-info').innerHTML = infoHTML;
