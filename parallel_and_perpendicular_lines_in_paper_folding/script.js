@@ -15,7 +15,7 @@
         let animationType = null; // Tracks the type of animation: 'h-fold', 'v-fold', 'unfold'
 
         const MIN_DIMENSION = 10;
-        const MAX_VERTICAL_FOLDS = 1;
+        const MAX_VERTICAL_FOLDS = 2;
         const MAX_HORIZONTAL_FOLDS = 2;
         let showQuestions = false;
         const questions = [
