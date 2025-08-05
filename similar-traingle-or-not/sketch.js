@@ -39,6 +39,15 @@ let isActuallySimilar = true; // Track if the current triangles are actually sim
 function setup() {
     let canvas = createCanvas(900, 400);
     canvas.parent("mainCanvas");
+
+
+    document.getElementById("hint-btn").addEventListener("click", () => {
+        document.getElementById("hint-modal").style.display = "flex";
+    });
+    
+    document.getElementById("close-hint").addEventListener("click", () => {
+        document.getElementById("hint-modal").style.display = "none";
+    });
 }
 
 
