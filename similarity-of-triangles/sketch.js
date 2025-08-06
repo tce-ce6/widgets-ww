@@ -17,6 +17,10 @@ let targetDF = 0;
 let currentDE = 0;
 let displayAnswer = false;
 
+// --- GRID CONFIG ---
+let GRID_LINES = 60;
+let GRID_SPACING = 900 / GRID_LINES; // canvas width / number of lines
+
 const ERROR_TOLERANCE = 0.01;
 const MIN_TRIANGLE_SIDE = 8;
 const MAX_TRIANGLE_SIDE = 30;
@@ -65,15 +69,33 @@ function resetToNew() {
     errorMessage = "Failed to generate valid triangle pair.";
 }
 
-function generateValidTrianglePair() {
-    // Step 1: Generate random triangle ABC with integer sides
-    const maxAttempts = 100;
+// Helper to get a random integer multiple of grid blocks
+function randomGridBlocks(minBlocks, maxBlocks) {
+    // minBlocks and maxBlocks are in grid blocks, not pixels
+    return Math.floor(random(minBlocks, maxBlocks + 1));
+}
 
+function areTrianglesRoughlySimilar(a1, b1, c1, a2, b2, c2) {
+    // Check if all three side ratios are (almost) equal
+    let ratios = [a1 / a2, b1 / b2, c1 / c2];
+    let tol = 0.01;
+    return Math.abs(ratios[0] - ratios[1]) < tol && Math.abs(ratios[1] - ratios[2]) < tol;
+}
+
+function generateValidTrianglePair() {
+    // Step 1: Generate random triangle ABC with integer sides (in grid blocks)
+    const maxAttempts = 100;
+    let blocksPerUnit = GRID_SPACING / PIXEL_SCALE;
+    let minBlocks = Math.ceil(MIN_TRIANGLE_SIDE / blocksPerUnit);
+    let maxBlocks = Math.floor(MAX_TRIANGLE_SIDE / blocksPerUnit);
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Generate random integer sides for triangle ABC
-        mathA = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        mathB = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        mathC = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
+        // Generate random integer sides for triangle ABC (in grid blocks)
+        let aBlocks = randomGridBlocks(minBlocks, maxBlocks);
+        let bBlocks = randomGridBlocks(minBlocks, maxBlocks);
+        let cBlocks = randomGridBlocks(minBlocks, maxBlocks);
+        mathA = aBlocks * blocksPerUnit;
+        mathB = bBlocks * blocksPerUnit;
+        mathC = cBlocks * blocksPerUnit;
 
         // Check if it forms a valid triangle
         if (!isValidTriangle(mathA, mathB, mathC)) continue;
@@ -86,7 +108,8 @@ function generateValidTrianglePair() {
 
         for (let ratioAttempt = 0; ratioAttempt < 50; ratioAttempt++) {
             // Try different DE values
-            currentDE = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
+            let deBlocks = randomGridBlocks(minBlocks, maxBlocks);
+            currentDE = deBlocks * blocksPerUnit;
 
             // Ensure DEF is different in shape from ABC
             if (currentDE === mathC) continue;
@@ -98,12 +121,14 @@ function generateValidTrianglePair() {
             let potentialEF = mathA * ratio;
             let potentialDF = mathB * ratio;
 
-            // Check if EF and DF would be integers (within small tolerance)
-            if (Math.abs(potentialEF - Math.round(potentialEF)) < 0.001 &&
-                Math.abs(potentialDF - Math.round(potentialDF)) < 0.001) {
+            // Snap to grid blocks (force integer multiples)
+            let efBlocks = Math.round(potentialEF / blocksPerUnit);
+            let dfBlocks = Math.round(potentialDF / blocksPerUnit);
+            targetEF = efBlocks * blocksPerUnit;
+            targetDF = dfBlocks * blocksPerUnit;
 
-                targetEF = Math.round(potentialEF);
-                targetDF = Math.round(potentialDF);
+            // Only allow if these are integer multiples of grid blocks
+            if (Math.abs(targetEF - potentialEF) < 0.001 && Math.abs(targetDF - potentialDF) < 0.001) {
 
                 // Ensure the target triangle is valid and within bounds
                 if (isValidTriangle(currentDE, targetEF, targetDF) &&
@@ -112,10 +137,33 @@ function generateValidTrianglePair() {
 
                     targetRatio = ratio;
 
-                    // Generate initial DEF triangle (not similar to start)
-                    if (generateInitialDEF()) {
-                        calculateTargetF();
-                        return true;
+                    // All sides are now integer multiples of grid blocks
+                    // Now calculate triangle positions so that all corners are on grid intersections
+                    if (calculateTriangleABC(mathA, mathB, mathC) && calculateTriangleDEF(currentDE, targetEF, targetDF)) {
+                        // Snap all corners to grid
+                        A = snapToGrid(A.x, A.y);
+                        B = snapToGrid(B.x, B.y);
+                        C = snapToGrid(C.x, C.y);
+                        D = snapToGrid(D.x, D.y);
+                        E = snapToGrid(E.x, E.y);
+                        F = snapToGrid(F.x, F.y);
+                        // Snap targetF as well
+                        setTargetF(F.x, F.y);
+                        // Now generate a random DEF triangle that is NOT similar to ABC
+                        for (let defTry = 0; defTry < 50; defTry++) {
+                            if (generateInitialDEF()) {
+                                // Check similarity between ABC and DEF
+                                let ab = dist(A.x, A.y, B.x, B.y) / PIXEL_SCALE;
+                                let bc = dist(B.x, B.y, C.x, C.y) / PIXEL_SCALE;
+                                let ca = dist(C.x, C.y, A.x, A.y) / PIXEL_SCALE;
+                                let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
+                                let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
+                                let fd = dist(F.x, F.y, D.x, D.y) / PIXEL_SCALE;
+                                if (!areTrianglesRoughlySimilar(ab, bc, ca, de, ef, fd)) {
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -128,30 +176,39 @@ function generateValidTrianglePair() {
 function generateInitialDEF() {
     // Generate a random triangle DEF that's different from the target
     const maxAttempts = 50;
-
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         let randomEF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         let randomDF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-
+        // Snap to grid
+        randomEF = Math.round(randomEF * GRID_SPACING / PIXEL_SCALE) * PIXEL_SCALE / GRID_SPACING;
+        randomDF = Math.round(randomDF * GRID_SPACING / PIXEL_SCALE) * PIXEL_SCALE / GRID_SPACING;
         // Ensure it's not the target triangle
         if (Math.abs(randomEF - targetEF) < 2 && Math.abs(randomDF - targetDF) < 2) {
             continue;
         }
-
         // Check if it forms a valid triangle with current DE
         if (isValidTriangle(currentDE, randomEF, randomDF)) {
-            return calculateTriangleDEF(currentDE, randomEF, randomDF);
+            if (calculateTriangleDEF(currentDE, randomEF, randomDF)) {
+                // Make sure F is not at the answer
+                if (!targetF || F.x !== targetF.x || F.y !== targetF.y) {
+                    return true;
+                }
+            }
         }
     }
-
     // Fallback: use a simple valid triangle
     let fallbackEF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 3);
     let fallbackDF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 2);
-
+    // Snap to grid
+    fallbackEF = Math.round(fallbackEF * GRID_SPACING / PIXEL_SCALE) * PIXEL_SCALE / GRID_SPACING;
+    fallbackDF = Math.round(fallbackDF * GRID_SPACING / PIXEL_SCALE) * PIXEL_SCALE / GRID_SPACING;
     if (isValidTriangle(currentDE, fallbackEF, fallbackDF)) {
-        return calculateTriangleDEF(currentDE, fallbackEF, fallbackDF);
+        if (calculateTriangleDEF(currentDE, fallbackEF, fallbackDF)) {
+            if (!targetF || F.x !== targetF.x || F.y !== targetF.y) {
+                return true;
+            }
+        }
     }
-
     return false;
 }
 
@@ -181,29 +238,32 @@ function calculateTriangleDEF(de, ef, df) {
     let cosD = (df * df + de * de - ef * ef) / (2 * df * de);
     if (cosD < -1 || cosD > 1) return false;
     let angleD = Math.acos(cosD);
-    F = {
+    let rawF = {
         x: D.x + df * PIXEL_SCALE * Math.cos(angleD),
         y: D.y - Math.abs(df * PIXEL_SCALE * Math.sin(angleD))
     };
-
-    // Constrain F to canvas bounds with proper margins
-    F.x = constrain(F.x, 50, width - 50);
-    F.y = constrain(F.y, 50, height - 50);
-
+    // Snap F to grid
+    let snappedF = snapToGrid(rawF.x, rawF.y);
+    F = { x: snappedF.x, y: snappedF.y };
+    // Do NOT set targetF here
     return true;
 }
 
 function calculateTargetF() {
     let cosD = (targetDF * targetDF + currentDE * currentDE - targetEF * targetEF) / (2 * targetDF * currentDE);
     let angleD = Math.acos(constrain(cosD, -1, 1));
-    targetF = {
+    let rawTargetF = {
         x: D.x + targetDF * PIXEL_SCALE * Math.cos(angleD),
         y: D.y - Math.abs(targetDF * PIXEL_SCALE * Math.sin(angleD))
     };
+    // Snap targetF to grid
+    let snappedTargetF = snapToGrid(rawTargetF.x, rawTargetF.y);
+    setTargetF(snappedTargetF.x, snappedTargetF.y);
 }
 
 function draw() {
-    background(255);
+    background(220);
+    drawGrid(); // Draw the grid first
 
     // Draw triangles
     drawTriangle(A, B, C, true, [mathC, mathA, mathB], ['AB', 'BC', 'CA']);
@@ -222,6 +282,28 @@ function draw() {
 
     displayCheckResult();
     displayErrorMessage();
+}
+
+function drawGrid() {
+    stroke(200);
+    strokeWeight(1);
+    // Vertical lines
+    for (let i = 0; i <= GRID_LINES; i++) {
+        let x = i * GRID_SPACING;
+        line(x, 0, x, height);
+    }
+    // Horizontal lines
+    for (let j = 0; j <= Math.floor(height / GRID_SPACING); j++) {
+        let y = j * GRID_SPACING;
+        line(0, y, width, y);
+    }
+}
+
+function snapToGrid(x, y) {
+    return {
+        x: Math.round(x / GRID_SPACING) * GRID_SPACING,
+        y: Math.round(y / GRID_SPACING) * GRID_SPACING
+    };
 }
 
 function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
@@ -246,14 +328,16 @@ function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
         noStroke();
         textAlign(CENTER, CENTER);
         textSize(18);
+        // Calculate side length in grid blocks (always integer)
+        let blockLength = Math.round(mathSides[i] / (GRID_SPACING / PIXEL_SCALE));
         if (i == 0) {
-            text(`${labels[i]}: ${mathSides[i].toFixed(1)}`, midpoints[i].x, midpoints[i].y + 20);
+            text(`${labels[i]}: ${blockLength}`, midpoints[i].x, midpoints[i].y + 20);
         }
         else if (i == 1) {
-            text(`${labels[i]}: ${mathSides[i].toFixed(1)}`, midpoints[i].x + 50, midpoints[i].y - 5);
+            text(`${labels[i]}: ${blockLength}`, midpoints[i].x + 50, midpoints[i].y - 5);
         }
         else {
-            text(`${labels[i]}: ${mathSides[i].toFixed(1)}`, midpoints[i].x - 50, midpoints[i].y - 5);
+            text(`${labels[i]}: ${blockLength}`, midpoints[i].x - 50, midpoints[i].y - 5);
         }
     }
 
@@ -302,8 +386,11 @@ function mousePressed() {
 function mouseDragged() {
     if (draggingF) {
         // Constrain F movement to canvas bounds
-        F.x = constrain(mouseX + offsetF.x, 50, width - 50);
-        F.y = constrain(mouseY + offsetF.y, 50, height - 50);
+        let newX = constrain(mouseX + offsetF.x, 50, width - 50);
+        let newY = constrain(mouseY + offsetF.y, 50, height - 50);
+        let snapped = snapToGrid(newX, newY);
+        F.x = snapped.x;
+        F.y = snapped.y;
     }
 }
 
@@ -366,17 +453,22 @@ function displaySimilarityInfo() {
 
 
 function areTrianglesSimilar() {
+    // Get side lengths for ABC
+    let ab = dist(A.x, A.y, B.x, B.y) / PIXEL_SCALE;
+    let bc = dist(B.x, B.y, C.x, C.y) / PIXEL_SCALE;
+    let ca = dist(C.x, C.y, A.x, A.y) / PIXEL_SCALE;
+    // Get side lengths for DEF
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
-    let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-
-    let ratio1 = mathC / de;    // AB/DE
-    let ratio2 = mathA / ef;    // BC/EF  
-    let ratio3 = mathB / df;    // CA/DF
-
+    let fd = dist(F.x, F.y, D.x, D.y) / PIXEL_SCALE;
+    // Calculate ratios for corresponding sides
+    let ratio1 = ab / de;
+    let ratio2 = bc / ef;
+    let ratio3 = ca / fd;
+    // Check if all three ratios are approximately equal
     return Math.abs(ratio1 - ratio2) < ERROR_TOLERANCE &&
-        Math.abs(ratio2 - ratio3) < ERROR_TOLERANCE &&
-        Math.abs(ratio1 - ratio3) < ERROR_TOLERANCE;
+           Math.abs(ratio2 - ratio3) < ERROR_TOLERANCE &&
+           Math.abs(ratio1 - ratio3) < ERROR_TOLERANCE;
 }
 
 function displayCheckResult() {
@@ -422,4 +514,10 @@ function dist(x1, y1, x2, y2) {
 
 function constrain(n, low, high) {
     return Math.max(Math.min(n, high), low);
+}
+
+// Whenever targetF is set or updated, snap it to the grid
+function setTargetF(x, y) {
+    let snapped = snapToGrid(x, y);
+    targetF = { x: snapped.x, y: snapped.y };
 }
