@@ -325,7 +325,7 @@ let isDragging = false;
 let draggedValue = null;
 let draggedX, draggedY;
 let selectedValue = null;
-let showAnswerOverlay = false;
+let showAnswerOverlay = true;
 let showReflectOverlayState = false;
 let currentQuestion = 0;
 
@@ -689,12 +689,19 @@ function renderAttempts() {
 
 
 function renderAnswerOverlay() {
-    fill(0, 0, 0, 200);
+    fill(255, 255, 255, 0);
+
     rect(0, 0, width, height);
-    fill(255);
-    stroke(0);
+    fill(253, 241, 218, 240);
+    stroke(124, 58, 237);
+    // stroke(0);
+    strokeWeight(2);
+    const boxX = width /  6 + 490;
+    const boxY = height / 4 - 120;
+    const boxW = width / 2 - 200;
+    const boxH = height / 2 + 70;
+    rect(boxX, boxY, boxW, boxH - 140, 10);
     strokeWeight(1);
-    rect(width / 4, height / 4 - 80, width / 2, height / 2 + 80, 10);
 
     const fmt = n => Number.isInteger(n) ? n.toString() : n.toFixed(2);
     const best = model.bestExpression;
@@ -730,39 +737,48 @@ function renderAnswerOverlay() {
     }
 
     textAlign(CENTER);
-    textSize(20);
+    textSize(16);
     fill(55, 65, 81);
 
-    const yMid = height / 2 - 20;
+    const yMid = boxY + boxH / 2 - 20;
     const wBase = textWidth(baseStr);
     const wExp = expStr ? textWidth(expStr) * 0.8 : 0;
     const wTail = textWidth(tailStr);
     const totalW = wBase + wExp + wTail;
 
-    let x = width / 2 - totalW / 2;
+    let x = boxX + boxW / 2 - totalW / 2;
+    text(`Correct Answer`, boxX + boxW / 2, boxY +20);
+    line(boxX,40, boxX + boxW, 40);
 
-    text(`Best combination: [${best.join(', ')}]`, width / 2, height / 2 - 60);
-
-    text(baseStr, x + wBase / 2, yMid);
+    text(`Best combination: [${best.join(', ')}]`, boxX + boxW / 2, boxY +60);
+    const y = yMid - 40;
+    text(baseStr, x + wBase / 2, y );
     x += wBase;
 
     if (expStr) {
         push();
         textSize(16);
         textAlign(LEFT, CENTER);
-        text(expStr, x, yMid - 7);
+        text(expStr, x,y - 7 );
         pop();
         x += textWidth(expStr) * 0.8;
     }
 
     textAlign(LEFT, CENTER);
-    textSize(20);
-    text(tailStr, x, yMid);
+    textSize(16);
+    text(tailStr, x, y);
 
     textAlign(CENTER);
-    text(`Highest value: ${fmt(model.largestValue)}`, width / 2, height / 2 + 20);
-    textSize(16);
-    text("Click anywhere to close", width / 2, height / 2 + 60);
+    text(`Highest value: ${fmt(model.largestValue)}`, boxX + boxW / 2, y + 30);
+    const crossButtonSize = 10;
+const crossButtonX = width - crossButtonSize - 10;
+const crossButtonY = 10;
+stroke(55, 65, 81);
+strokeWeight(2);
+textSize(16);
+textAlign(CENTER, CENTER);
+    text('✕', crossButtonX + crossButtonSize / 2 -20, crossButtonY + crossButtonSize / 2 + 10); 
+
 }
 
 function renderReflectOverlay() {
@@ -771,7 +787,7 @@ function renderReflectOverlay() {
     fill(253, 241, 218, 240);
     stroke(124, 58, 237);
     strokeWeight(2);
-    rect(width / 6 + 370, height / 6 - 80, width / 2 - 80  , height / 2 -80 , 10);
+    rect(width / 6 +400, height / 6 - 80, width / 2 - 110  , height / 2 -40 , 30);
 
     const boxX = width /  6 + 350;
     const boxY = height / 4 - 100;
@@ -785,6 +801,20 @@ function renderReflectOverlay() {
     strokeWeight(0.5);
 
     text("Reflect on Your Strategy", width / 7 + 580, height / 6 - 50);
+    fill(55, 65, 81);
+    stroke(0);
+    strokeWeight(1);
+    line(550,50, 888, 50);
+
+    // Create a cross button
+    const crossButtonSize = 18;
+const crossButtonX = width - crossButtonSize - 10;
+const crossButtonY = 10;
+stroke(55, 65, 81);
+strokeWeight(2);
+textSize(16);
+textAlign(CENTER, CENTER);
+    text('✕', crossButtonX + crossButtonSize / 2 -20, crossButtonY + crossButtonSize / 2 + 10); 
 
     const questions = [
         "Among the operations used, which one has the highest impact on the result?",
@@ -792,29 +822,35 @@ function renderReflectOverlay() {
         "Which number is the least useful in this expression? Why might you leave it out?"
     ];
 
-    if (currentQuestion > 0) {
-        textSize(16);
+    // if (currentQuestion > 0) {
+        
+    questions.forEach((q,i)=>{
+        textSize(14);
     strokeWeight(0.5);
+    const boxYOffset = i * (boxH / questions.length - 60);
+    const boxHeight = boxH / questions.length;
+        text(questions[i], boxX + 105, boxY + boxYOffset -100, boxW - 150, boxH);
 
-        text(questions[currentQuestion - 1], boxX + 30, boxY -40, boxW -70, boxH);
+    })
         // text(questions[currentQuestion - 1], width / 2, height / 2 - 20);
-    } else {
-        textSize(16);
-    strokeWeight(0.5);
+    // } else {
+    //     textSize(16);
+    // strokeWeight(0.5);
 
-        text("Click on a number to see the reflection question.", boxX, boxY-40, boxW, boxH);
-        // text("Click on a number to see the reflection question.", width / 2, height / 2 - 20);
-    }
+    //     text("Click on a number to see the reflection question.", boxX, boxY-40, boxW, boxH);
+    //     // text("Click on a number to see the reflection question.", width / 2, height / 2 - 20);
+    // }
 
     const buttonWidth = 40;
     const buttonHeight = 40;
-    const gap = 20;
+    const gap = 10;
     const totalWidth = 3 * buttonWidth + 2 * gap;
-    const startX = (width - totalWidth) / 2 + 260;
-    const y = height / 2 - 200;
+    const startX = (width - totalWidth) / 2 + 180;
+    let y = height / 2- 240;
 
     for (let i = 1; i <= 3; i++) {
-        let x = startX + (i - 1) * (buttonWidth + gap);
+        let x = startX 
+        y = y + (buttonHeight + gap);
         fill(224, 231, 255);
         stroke(124, 58, 237);
         rect(x, y, buttonWidth, buttonHeight, 8);
@@ -823,8 +859,8 @@ function renderReflectOverlay() {
         text(i, x + buttonWidth / 2, y + buttonHeight / 2);
     }
 
-    textSize(16);
-    text("Click anywhere to close", width / 2 + 250, height / 2 - 140);
+    // textSize(16);
+    // text("Click anywhere to close", width / 2 + 250, height / 2 - 140);
 }
 
 function showAnswer() {
@@ -869,8 +905,33 @@ function mousePressed() {
             }
         }
 
-        showAnswerOverlay = false;
-        showReflectOverlayState = false;
+        
+        const crossButtonSize = 18;
+        const crossButtonRect = {
+            x: width - crossButtonSize - 30,
+            y: -10,
+            w: crossButtonSize + 40,
+            h: crossButtonSize + 40
+        };
+        if (mouseX > crossButtonRect.x && mouseX < crossButtonRect.x + crossButtonRect.w &&
+            mouseY > crossButtonRect.y && mouseY < crossButtonRect.y + crossButtonRect.h) {
+            showReflectOverlayState = false;
+        }
+        const crossButtonSizeAnswer = 10;
+        const crossButtonRectAnswer = {
+            x: width - crossButtonSizeAnswer - 30,
+            y: -10,
+            w: crossButtonSizeAnswer + 40,
+            h: crossButtonSizeAnswer + 40
+        };
+        if (mouseX > crossButtonRectAnswer.x && mouseX < crossButtonRectAnswer.x + crossButtonRectAnswer.w &&
+            mouseY > crossButtonRectAnswer.y && mouseY < crossButtonRectAnswer.y + crossButtonRectAnswer.h) {
+            showAnswerOverlay = false;
+        }
+
+
+
+
         currentQuestion = 0;
         return;
     }
