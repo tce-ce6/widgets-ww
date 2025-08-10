@@ -422,6 +422,11 @@ function displaySimilarityInfo() {
     let ratioBC_EF = (mathA / ef).toFixed(2);
     let ratioCA_DF = (mathB / df).toFixed(2);
 
+    // Convert target values from pixel units to grid block units for display
+    let blocksPerUnit = GRID_SPACING / PIXEL_SCALE;
+    let targetDFBlocks = Math.round(targetDF / blocksPerUnit);
+    let targetEFBlocks = Math.round(targetEF / blocksPerUnit);
+
     let infoHTML = `
         <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
             <div style="text-align: center; line-height: 1;">
@@ -445,7 +450,7 @@ function displaySimilarityInfo() {
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDF}</strong> | Target EF: <strong>${targetEF}</strong></p>
+        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDFBlocks}</strong> | Target EF: <strong>${targetEFBlocks}</strong></p>
     `;
 
     document.getElementById('similarity-info').innerHTML = infoHTML;
@@ -453,31 +458,58 @@ function displaySimilarityInfo() {
 
 
 function areTrianglesSimilar() {
-    // Get side lengths for ABC
-    let ab = dist(A.x, A.y, B.x, B.y) / PIXEL_SCALE;
-    let bc = dist(B.x, B.y, C.x, C.y) / PIXEL_SCALE;
-    let ca = dist(C.x, C.y, A.x, A.y) / PIXEL_SCALE;
-    // Get side lengths for DEF
-    let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
-    let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
-    let fd = dist(F.x, F.y, D.x, D.y) / PIXEL_SCALE;
-    // Calculate ratios for corresponding sides
-    let ratio1 = ab / de;
-    let ratio2 = bc / ef;
-    let ratio3 = ca / fd;
-    // Check if all three ratios are approximately equal
-    return Math.abs(ratio1 - ratio2) < ERROR_TOLERANCE &&
-           Math.abs(ratio2 - ratio3) < ERROR_TOLERANCE &&
-           Math.abs(ratio1 - ratio3) < ERROR_TOLERANCE;
+    // Check if current F position is close enough to target F position
+    if (!targetF) return false;
+    
+    // Calculate distance between current F and target F
+    let distanceToTarget = dist(F.x, F.y, targetF.x, targetF.y);
+    
+    // If F is close enough to target position, triangles are similar
+    // Use a tolerance based on grid spacing
+    let tolerance = GRID_SPACING * 0.5; // Half a grid unit
+    
+    return distanceToTarget <= tolerance;
 }
+
+// function displayCheckResult() {
+//     if (checkResult === null) return;
+//     fill(checkResult ? 'green' : 'red');
+//     textSize(24);
+//     textAlign(CENTER, TOP);
+//     text(checkResult ? '✓ △ABC ~ △DEF' : '✗ Triangles NOT similar', width / 2, 20);
+// }
+
+
+let resultShownTime = 0;
 
 function displayCheckResult() {
     if (checkResult === null) return;
+
+    // Hide "false" result after 5 seconds
+    if (!checkResult && millis() - resultShownTime > 5000) {
+        checkResult = null;
+        return;
+    }
+
     fill(checkResult ? 'green' : 'red');
     textSize(24);
     textAlign(CENTER, TOP);
     text(checkResult ? '✓ △ABC ~ △DEF' : '✗ Triangles NOT similar', width / 2, 20);
 }
+
+// Call this when you set the result
+function setCheckResult(result) {
+    checkResult = result;
+    resultShownTime = millis(); // store the time
+
+    if(checkResult) {
+        document.getElementById("check-btn").innerHTML = "Check";
+        document.getElementById("check-btn").disabled = true;
+    } else {
+        document.getElementById("check-btn").innerHTML = "Try Again";
+    }
+}
+
 
 function displayErrorMessage() {
     if (errorMessage) {
@@ -490,6 +522,7 @@ function displayErrorMessage() {
 
 function checkSimilarity() {
     checkResult = areTrianglesSimilar();
+    setCheckResult(checkResult);
 }
 
 function showAnswer() {
