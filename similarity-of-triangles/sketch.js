@@ -16,6 +16,8 @@ let targetEF = 0;
 let targetDF = 0;
 let currentDE = 0;
 let displayAnswer = false;
+let targetDFBlocks;
+let targetEFBlocks;
 
 // --- GRID CONFIG ---
 let GRID_LINES = 60;
@@ -262,7 +264,7 @@ function calculateTargetF() {
 }
 
 function draw() {
-    background(220);
+    background('#ECECEC');
     drawGrid(); // Draw the grid first
 
     // Draw triangles
@@ -351,7 +353,7 @@ function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
 
 function drawDraggableF() {
     fill(100, 100, 255, 200);
-    stroke(0, 0, 200);
+    stroke(targetF.x === F.x && targetF.y === F.y ? color(0, 200, 0) : color(0, 0, 200));
     ellipse(F.x, F.y, 20);
     fill(255);
     noStroke();
@@ -370,7 +372,7 @@ function drawTargetGuide() {
         noStroke();
         textAlign(CENTER, CENTER);
         textSize(12);
-        text("TARGET", targetF.x, targetF.y);
+        text(`(${targetDFBlocks} , ${targetEFBlocks})`, targetF.x, targetF.y);
         pop();
     }
 }
@@ -424,8 +426,8 @@ function displaySimilarityInfo() {
 
     // Convert target values from pixel units to grid block units for display
     let blocksPerUnit = GRID_SPACING / PIXEL_SCALE;
-    let targetDFBlocks = Math.round(targetDF / blocksPerUnit);
-    let targetEFBlocks = Math.round(targetEF / blocksPerUnit);
+     targetDFBlocks = Math.round(targetDF / blocksPerUnit);
+     targetEFBlocks = Math.round(targetEF / blocksPerUnit);
 
     let infoHTML = `
         <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
