@@ -235,8 +235,13 @@ function calculateTriangleABC(a, b, c) {
 }
 
 function calculateTriangleDEF(de, ef, df) {
-    D = { x: rightOrigin.x, y: rightOrigin.y };
-    E = { x: D.x + de * PIXEL_SCALE, y: D.y };
+    // Anchor D on a grid intersection to ensure DE lies on grid intersections
+    const snappedRight = snapToGrid(rightOrigin.x, rightOrigin.y);
+    D = { x: snappedRight.x, y: snappedRight.y };
+    // Place E using the exact base length from snapped D, then snap for safety
+    const eRaw = { x: D.x + de * PIXEL_SCALE, y: D.y };
+    const eSnapped = snapToGrid(eRaw.x, eRaw.y);
+    E = { x: eSnapped.x, y: eSnapped.y };
     let cosD = (df * df + de * de - ef * ef) / (2 * df * de);
     if (cosD < -1 || cosD > 1) return false;
     let angleD = Math.acos(cosD);
@@ -265,7 +270,7 @@ function calculateTargetF() {
 
 function draw() {
     background('#ECECEC');
-    drawGrid(); // Draw the grid first
+   // drawGrid(); // Draw the grid first
 
     // Draw triangles
     drawTriangle(A, B, C, true, [mathC, mathA, mathB], ['AB', 'BC', 'CA']);
@@ -388,8 +393,9 @@ function mousePressed() {
 function mouseDragged() {
     if (draggingF) {
         // Constrain F movement to canvas bounds
-        let newX = constrain(mouseX + offsetF.x, 50, width - 50);
-        let newY = constrain(mouseY + offsetF.y, 50, height - 50);
+        const canvasMarginPx = 10; // allow reaching near edges so long sides are possible
+        let newX = constrain(mouseX + offsetF.x, canvasMarginPx, width - canvasMarginPx);
+        let newY = constrain(mouseY + offsetF.y, canvasMarginPx, height - canvasMarginPx);
         let snapped = snapToGrid(newX, newY);
         F.x = snapped.x;
         F.y = snapped.y;
