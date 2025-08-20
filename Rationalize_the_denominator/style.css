@@ -1,0 +1,137 @@
+/* body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+} */
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    /* Make container accommodate keyboard */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-style: italic;
+    font-size: 16px;
+}
+#p5-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+} */
+
+/* --- MODIFICATION: New Keyboard Styles --- */
+/* The keyboard container is styled to be a floating element. */
+#keyboard-container {
+    /* --- MODIFICATION START --- */
+    position: fixed; /* Makes the keyboard float above other content */
+    bottom: 20px; /* Positions it 20px from the bottom of the window */
+    left: 50%; /* Aligns its left edge to the center of the window */
+    transform: translateX(-50%); /* Shifts it left by 50% of its own width to perfectly center it */
+    z-index: 1000; /* Ensures the keyboard stays on top of all other elements */
+    display: none; /* The keyboard is now hidden by default */
+    /* --- MODIFICATION END --- */
+    
+    padding: 12px; /* Padding inside the keyboard container */
+    background-color: #e5e7eb; /* Light grey background from the image */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    flex-direction: column;
+    gap: 12px; /* Vertical space between rows */
+    width: auto;
+    box-sizing: border-box;
+}
+
+
+/* Rows in the keyboard */
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* Horizontal space between keys */
+}
+
+/* Individual keyboard buttons */
+.key-btn {
+    height: 60px; /* Increased height for a better look */
+    width: 60px;  /* Square buttons */
+    font-size: 24px; /* Larger font for clarity */
+    font-weight: 400; /* Lighter font weight */
+    border-radius: 8px; /* Slightly rounded corners */
+    border: none; /* Remove default border */
+    border-bottom: 2px solid #b0b4b8; /* Subtle bottom border for depth */
+    background-color: #ffffff; /* White background for number keys */
+    color: #374151; /* Dark grey text color */
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.key-btn:hover {
+    background-color: #f9fafb; /* Slightly off-white on hover */
+}
+
+/* "Press down" effect on click */
+.key-btn:active {
+    transform: translateY(1px); /* Move button down slightly */
+    border-bottom-width: 1px; /* Reduce bottom border to enhance effect */
+    background-color: #f3f4f6;
+}
+
+/* New class for the grey-colored special keys */
+.key-btn.key-btn-special {
+    background-color: #d1d5db; /* Grey background for special keys */
+    border-bottom-color: #9ca3af; /* Darker border for grey keys */
+    color: #1f2937;
+}
+
+.key-btn.key-btn-special:hover {
+    background-color: #c4c9d1;
+}
+
+.key-btn.key-btn-special:active {
+    background-color: #b8bcc4;
+}
+/* --- END MODIFICATION --- */
+/* --- MODIFICATION START: Styles for the keyboard close button --- */
+.keyboard-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #6b7280; /* A medium grey color */
+    cursor: pointer;
+    line-height: 25px;
+    text-align: center;
+    padding: 0;
+}
+
+.keyboard-close-btn:hover {
+    color: #1f2937; /* A darker grey for hover effect */
+}
+/* --- MODIFICATION END --- */
