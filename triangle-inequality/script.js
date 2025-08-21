@@ -2,7 +2,7 @@
 // Uses p5.js
 
 let segmentLengths = [5, 8, 6]; // AB, BC, AC
-let minLen = 2, maxLen = 10;
+let minLen = 1, maxLen = 10;
 let canMakeTriangle = false;
 let showTriangle = false;
 let showShuffle = false;
@@ -29,18 +29,27 @@ function draw() {
 function setupButtons() {
     const makeBtn = document.getElementById('make-triangle-btn');
     const shuffleBtn = document.getElementById('shuffle-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    resetBtn.onclick = () => {
+        resetTriangle();
+        showTriangle = false;
+        showShuffle = false;
+        shuffleBtn.style.display = 'none';
+        redraw();
+    }
 
     makeBtn.onclick = () => {
         canMakeTriangle = checkTriangleInequality();
         showTriangle = true;
-       // showShuffle = canMakeTriangle;
+        // showShuffle = canMakeTriangle;
         showShuffle = true;
         shuffleBtn.style.display = showShuffle ? 'inline-block' : 'none';
         redraw();
     };
 
     shuffleBtn.onclick = () => {
-        shuffleTriangle();
+        shuffleSegments();
         showTriangle = false;
         showShuffle = false;
         shuffleBtn.style.display = 'none';
@@ -147,12 +156,14 @@ function drawInequalityChecks() {
         text(`${segmentLengths[a]} + ${segmentLengths[b]} > ${segmentLengths[c]}`, x + 180, y + i * gap);
 
         textSize(36);
-        if (valid) {
-            fill('#388e3c');
-            text('✔', x + 300, y + i * gap);
-        } else {
-            fill('#d32f2f');
-            text('✗', x + 300, y + i * gap);
+        if (showTriangle) {
+            if (valid) {
+                fill('#388e3c');
+                text('✔', x + 300, y + i * gap);
+            } else {
+                fill('#d32f2f');
+                text('✗', x + 300, y + i * gap);
+            }
         }
     }
 
@@ -202,7 +213,7 @@ function drawTriangle() {
     text('C', Cx, Cy - 18);
 }
 
-function shuffleTriangle() {
+function resetTriangle() {
     let tries = 0;
     do {
         segmentLengths[0] = int(random(minLen, maxLen + 1));
@@ -210,5 +221,14 @@ function shuffleTriangle() {
         segmentLengths[2] = int(random(minLen, maxLen + 1));
         tries++;
     } while (!checkTriangleInequality() && tries < 200);
+    redraw();
+}
+
+function shuffleSegments() {
+    // Fisher-Yates shuffle
+    for (let i = segmentLengths.length - 1; i > 0; i--) {
+        let j = int(random(i + 1));  // pick random index
+        [segmentLengths[i], segmentLengths[j]] = [segmentLengths[j], segmentLengths[i]];
+    }
     redraw();
 }
