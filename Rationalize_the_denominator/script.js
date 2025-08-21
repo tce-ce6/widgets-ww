@@ -50,6 +50,7 @@
     let redDotTimer = 0;
     let showConjugateHint = false; // MODIFICATION: Controls instructional text visibility
     let isKeyboardVisible = false; // --- ADD THIS LINE ---
+    let isDraggingKeyboard = false; // MODIFICATION: Flag to track keyboard drag state
 
     // Expression types and templates
     const simpleExpressions = [
@@ -208,6 +209,8 @@
       function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
+        e.stopPropagation(); // MODIFICATION: Prevent click-through to canvas
+        isDraggingKeyboard = true; // MODIFICATION: Set drag flag
         // get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
@@ -224,17 +227,30 @@
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-        // set the element's new position:
-        // Also ensure the keyboard doesn't go off-screen
-        let newTop = Math.max(0, Math.min(window.innerHeight - elmnt.offsetHeight, elmnt.offsetTop - pos2));
+        
+        // MODIFICATION: Calculate new position using 'bottom' property
+        // First, calculate the new theoretical top position to maintain existing logic for Y-axis movement
+        let currentTop = elmnt.offsetTop;
+        let newTop = currentTop - pos2;
+
+        // Constrain the element to stay within the viewport
+        newTop = Math.max(0, Math.min(window.innerHeight - elmnt.offsetHeight, newTop));
+        
+        // Convert the valid 'top' position to a 'bottom' position
+        const newBottom = window.innerHeight - newTop - elmnt.offsetHeight;
+
+        // Horizontal dragging logic remains the same
         let newLeft = Math.max(0, Math.min(window.innerWidth - elmnt.offsetWidth, elmnt.offsetLeft - pos1));
         
-        elmnt.style.top = newTop + "px";
+        // Set the element's new position using bottom and left
+        elmnt.style.top = ''; // Unset the top property to ensure 'bottom' is used
+        elmnt.style.bottom = newBottom + 'px';
         elmnt.style.left = newLeft + "px";
-        elmnt.style.transform = 'none'; // Remove transform to use top/left positioning
+        elmnt.style.transform = 'none'; // Remove transform to use left/bottom positioning
       }
 
       function closeDragElement() {
+        isDraggingKeyboard = false; // MODIFICATION: Reset drag flag
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
@@ -664,24 +680,28 @@
           drawPracticeMode();
           break;
       }
-      buttons.forEach((btn) => btn.update());
-      if (currentMode === "practice") {
-        if (numeratorInput) numeratorInput.update();
-        if (denominatorInput) denominatorInput.update();
-      } else if (["simple", "binomial", "mixed"].includes(currentMode)) {
-        if (opNumeratorInput) opNumeratorInput.update();
-        if (opDenominatorInput) opDenominatorInput.update();
-        if (opNumeratorInput2) opNumeratorInput2.update();
-        if (opDenominatorInput2) opDenominatorInput2.update();
-        if (answerNumeratorInput) answerNumeratorInput.update();
-        if (answerDenominatorInput) answerDenominatorInput.update();
-      } else if (activeTab === 'explore' && currentMode === 'menu') {
-        if (exploreQNumInput) exploreQNumInput.update();
-        if (exploreQDenInput) exploreQDenInput.update();
-        if (exploreCNumInput) exploreCNumInput.update();
-        if (exploreCDenInput) exploreCDenInput.update();
-        if (exploreANumInput) exploreANumInput.update();
-        if (exploreADenInput) exploreADenInput.update();
+      
+      // MODIFICATION: Only update canvas elements if not dragging the keyboard
+      if (!isDraggingKeyboard) {
+          buttons.forEach((btn) => btn.update());
+          if (currentMode === "practice") {
+            if (numeratorInput) numeratorInput.update();
+            if (denominatorInput) denominatorInput.update();
+          } else if (["simple", "binomial", "mixed"].includes(currentMode)) {
+            if (opNumeratorInput) opNumeratorInput.update();
+            if (opDenominatorInput) opDenominatorInput.update();
+            if (opNumeratorInput2) opNumeratorInput2.update();
+            if (opDenominatorInput2) opDenominatorInput2.update();
+            if (answerNumeratorInput) answerNumeratorInput.update();
+            if (answerDenominatorInput) answerDenominatorInput.update();
+          } else if (activeTab === 'explore' && currentMode === 'menu') {
+            if (exploreQNumInput) exploreQNumInput.update();
+            if (exploreQDenInput) exploreQDenInput.update();
+            if (exploreCNumInput) exploreCNumInput.update();
+            if (exploreCDenInput) exploreCDenInput.update();
+            if (exploreANumInput) exploreANumInput.update();
+            if (exploreADenInput) exploreADenInput.update();
+          }
       }
 
       drawToast();

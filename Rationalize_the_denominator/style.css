@@ -1,7 +1,7 @@
- .container {
+.container {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            /* padding: 30px; */
             /* Make container accommodate keyboard */
             display: flex;
             flex-direction: column;
@@ -29,6 +29,7 @@
         /* --- MODIFICATION: New Keyboard Styles --- */
         #keyboard-container {
             position: fixed;
+            bottom: 20px; /* MODIFICATION: Set default position from the bottom */
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;

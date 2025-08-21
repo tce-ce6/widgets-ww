@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Math Widget (Pure p5.js)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        main {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <main id="canvas-container"></main>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        const shapeData = {
+          cylinder: { name: "Cylinder", title: "Water Tank Construction", scenario: "Mr. Sharma is constructing a water tank for his farmhouse. The tank consists of a cylinder (radius = 1.5m, height = 4m) with a hemispherical dome on top. He wants to paint the outer surface excluding the base. Cost of painting = ₹75 per m²", parameters: { radius: 1.5, height: 4 }, formulas: ["CSA = 2πrh", "Hemisphere CSA = 2πr²", "Total CSA = 2πrh + 2πr²"], questions: [ { id: "cyl_1", question: "What is the Curved Surface Area (CSA) of the cylindrical part?", options: ["37.71 m²", "28.27 m²", "45.24 m²", "33.51 m²"], correctAnswer: "37.71 m²", explanation: "Using CSA of cylinder = 2πrh where r = 1.5m and h = 4m", formula: "CSA = 2πrh = 2 × π × 1.5 × 4", calculation: "= 2 × 3.14159 × 1.5 × 4 ≈ 37.71 m²" }, { id: "cyl_2", question: "What is the Curved Surface Area of the hemispherical dome?", options: ["14.14 m²", "18.85 m²", "28.27 m²", "12.57 m²"], correctAnswer: "14.14 m²", explanation: "Using CSA of hemisphere = 2πr² where r = 1.5m", formula: "CSA = 2πr² = 2 × π × (1.5)²", calculation: "= 2 × 3.14159 × 2.25 ≈ 14.14 m²" }, { id: "cyl_3", question: "What is the total painting cost?", options: ["₹3,888.75", "₹2,830.50", "₹4,125.00", "₹3,456.25"], correctAnswer: "₹3,888.75", explanation: "Total surface area = 37.71 + 14.14 = 51.85 m². Cost = 51.85 × ₹75", formula: "Total Cost = Total Area × Rate per m²", calculation: "= 51.85 × 75 ≈ ₹3,888.75" } ] },
+          cone: { name: "Cone", title: "Ice Cream Cone Design", scenario: "A local ice cream factory is designing wafer cones. Each cone has radius = 3.5cm, height = 12cm. They want to calculate the area for chocolate coating and volume of ice cream. Chocolate coating rate = ₹0.50 per cm²", parameters: { radius: 3.5, height: 12 }, formulas: ["Slant height l = √(r² + h²)", "CSA = πrl", "Volume = ⅓πr²h"], questions: [ { id: "cone_1", question: "What is the slant height of the cone?", options: ["12.5 cm", "13.2 cm", "11.8 cm", "14.1 cm"], correctAnswer: "12.5 cm", explanation: "Using l = √(r² + h²) where r = 3.5cm and h = 12cm", formula: "l = √(r² + h²) = √(3.5² + 12²)", calculation: "= √(12.25 + 144) = √156.25 = 12.5 cm" }, { id: "cone_2", question: "What is the curved surface area to be coated?", options: ["137.5 cm²", "125.4 cm²", "148.2 cm²", "162.8 cm²"], correctAnswer: "137.5 cm²", explanation: "Using CSA = πrl where r = 3.5cm and l = 12.5cm", formula: "CSA = πrl = π × 3.5 × 12.5", calculation: "= 3.14159 × 3.5 × 12.5 ≈ 137.5 cm²" }, { id: "cone_3", question: "What is the cost of chocolate coating per cone?", options: ["₹68.75", "₹62.50", "₹74.10", "₹81.40"], correctAnswer: "₹68.75", explanation: "Cost = CSA × Rate = 137.5 × ₹0.50", formula: "Cost = Area × Rate per cm²", calculation: "= 137.5 × 0.50 = ₹68.75" } ] },
+          cube: { name: "Cube", title: "Birthday Gift Box", scenario: "Diya is making a cube-shaped sweet box (side = 10cm) with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²", parameters: { side: 10 }, formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"], questions: [ { id: "cube_1", question: "What is the surface area to be painted?", options: ["500 cm²", "400 cm²", "600 cm²", "450 cm²"], correctAnswer: "500 cm²", explanation: "5 faces to be painted (excluding bottom): 5 × 10²", formula: "Surface area = 5 × a² = 5 × 10²", calculation: "= 5 × 100 = 500 cm²" }, { id: "cube_2", question: "What is the total painting cost?", options: ["₹1000", "₹800", "₹1200", "₹900"], correctAnswer: "₹1000", explanation: "Cost = 500 cm² × ₹2 per cm²", formula: "Cost = Area × Rate", calculation: "= 500 × 2 = ₹1000" }, { id: "cube_3", question: "How many chocolates can fit (90% volume)?", options: ["900 chocolates", "800 chocolates", "1000 chocolates", "950 chocolates"], correctAnswer: "900 chocolates", explanation: "Volume = 10³ = 1000 cm³. 90% = 900 cm³. Each chocolate = 1 cm³", formula: "90% of volume = 0.9 × 1000", calculation: "= 900 chocolates" } ] },
+          sphere: { name: "Sphere", title: "Football Manufacturing", scenario: "A sports company manufactures spherical footballs with radius = 10.5cm. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.", parameters: { radius: 10.5 }, formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"], questions: [ { id: "sphere_1", question: "What is the surface area of the football?", options: ["1386 cm²", "1250 cm²", "1500 cm²", "1100 cm²"], correctAnswer: "1386 cm²", explanation: "Using surface area = 4πr² where r = 10.5cm", formula: "Surface area = 4πr² = 4 × π × (10.5)²", calculation: "= 4 × 3.14159 × 110.25 ≈ 1386 cm²" }, { id: "sphere_2", question: "What is the cost of leather for one football?", options: ["₹1663.20", "₹1500.00", "₹1800.00", "₹1200.00"], correctAnswer: "₹1663.20", explanation: "Cost = Surface area × Rate = 1386 × ₹1.20", formula: "Cost = Area × Rate per cm²", calculation: "= 1386 × 1.20 ≈ ₹1663.20" }, { id: "sphere_3", question: "What is the volume of air inside?", options: ["4851 cm³", "4200 cm³", "5100 cm³", "3900 cm³"], correctAnswer: "4851 cm³", explanation: "Using volume = ⁴⁄₃πr³ where r = 10.5cm", formula: "Volume = ⁴⁄₃πr³ = ⁴⁄₃ × π × (10.5)³", calculation: "= (4/3) × 3.14159 × 1157.625 ≈ 4851 cm³" } ] },
+          hemisphere: { name: "Hemisphere", title: "Steel Serving Bowls", scenario: "A factory manufactures hemispherical steel bowls with radius = 7cm, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²", parameters: { radius: 7 }, formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"], questions: [ { id: "hemi_1", question: "What is the inner curved surface area to be polished?", options: ["308 cm²", "280 cm²", "350 cm²", "260 cm²"], correctAnswer: "308 cm²", explanation: "Using CSA = 2πr² where r = 7cm", formula: "CSA = 2πr² = 2 × π × 7²", calculation: "= 2 × 3.14159 × 49 ≈ 308 cm²" }, { id: "hemi_2", question: "What is the polishing cost per bowl?", options: ["₹246.40", "₹224.00", "₹280.00", "₹208.00"], correctAnswer: "₹246.40", explanation: "Cost = CSA × Rate = 308 × ₹0.80", formula: "Cost = Area × Rate per cm²", calculation: "= 308 × 0.80 = ₹246.40" }, { id: "hemi_3", question: "What volume can the bowl hold?", options: ["718.67 cm³", "650.2 cm³", "800.5 cm³", "590.8 cm³"], correctAnswer: "718.67 cm³", explanation: "Using volume = ²⁄₃πr³ where r = 7cm", formula: "Volume = ²⁄₃πr³ = ²⁄₃ × π × 7³", calculation: "= (2/3) × 3.14159 × 343 ≈ 718.67 cm³" } ] },
+          frustum: { name: "Frustum", title: "Water Bucket Design", scenario: "A company designs frustum-shaped buckets with top radius R = 14cm, bottom radius r = 7cm, height = 24cm. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²", parameters: { topRadius: 14, bottomRadius: 7, height: 24 }, formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"], questions: [ { id: "frus_1", question: "What is the slant height of the bucket?", options: ["25 cm", "28 cm", "22 cm", "30 cm"], correctAnswer: "25 cm", explanation: "Using l = √((R-r)² + h²) where R=14, r=7, h=24", formula: "l = √((14-7)² + 24²) = √(7² + 24²)", calculation: "= √(49 + 576) = √625 = 25 cm" }, { id: "frus_2", question: "What is the inner curved surface area?", options: ["1650 cm²", "1500 cm²", "1800 cm²", "1400 cm²"], correctAnswer: "1650 cm²", explanation: "Using CSA = π(R+r)l where R=14, r=7, l=25", formula: "CSA = π(R+r)l = π(14+7) × 25", calculation: "= 3.14159 × 21 × 25 ≈ 1650 cm²" }, { id: "frus_3", question: "What is the base area?", options: ["154 cm²", "140 cm²", "168 cm²", "130 cm²"], correctAnswer: "154 cm²", explanation: "Using base area = πr² where r = 7cm", formula: "Base area = πr² = π × 7²", calculation: "= 3.14159 × 49 ≈ 154 cm²" } ] },
+          compound: { name: "Compound", title: "Miniature Tent Model", scenario: "Students create a tent model: cylinder (radius=14cm, height=40cm) with conical top (height=21cm). Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²", parameters: { radius: 14, cylinderHeight: 40, coneHeight: 21 }, formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"], questions: [ { id: "comp_1", question: "What is the curved surface area of the cylindrical part?", options: ["3520 cm²", "3200 cm²", "3800 cm²", "3000 cm²"], correctAnswer: "3520 cm²", explanation: "Using CSA = 2πrh where r=14cm, h=40cm", formula: "CSA = 2πrh = 2 × π × 14 × 40", calculation: "= 2 × 3.14159 × 14 × 40 ≈ 3520 cm²" }, { id: "comp_2", question: "What is the slant height of the conical part?", options: ["25.24 cm", "28 cm", "22 cm", "30 cm"], correctAnswer: "25.24 cm", explanation: "Using l = √(r² + h²) where r=14cm, h=21cm", formula: "l = √(14² + 21²) = √(196 + 441)", calculation: "= √637 ≈ 25.24 cm" }, { id: "comp_3", question: "What is the total cloth cost?", options: ["₹9261", "₹7500", "₹8800", "₹7200"], correctAnswer: "₹9261", explanation: "Cone CSA = π*14*25.24 ≈ 1110.56. Total CSA = 3520 + 1110.56 = 4630.56. Cost = 4630.56 × ₹2", formula: "Total cost = (Cyl CSA + Cone CSA) × Rate", calculation: "= (3520 + 1110.56) * 2 ≈ ₹9261" } ] }
+        };
+
+        // --- GLOBAL STATE & UI DEFINITIONS ---
+        let currentShapeKey = 'cylinder';
+        let currentQuestionIndex = 0;
+        let selectedAnswer = null; // { option: "...", isCorrect: false }
+        let ui = {};
+        let pg; // Graphics buffer for 3D
+        let rotationX = -0.3;
+        let rotationY = 0;
+        let autoRotationY = 0;
+
+        // --- P5.JS SETUP ---
+        function setup() {
+            createCanvas(900, 600).parent('canvas-container');
+            pg = createGraphics(420, 420, WEBGL);
+            textFont('Arial');
+
+            // Define UI element geometries
+            ui.tabs = [];
+            const shapeKeys = Object.keys(shapeData);
+            const tabWidth = 80;
+            const tabSpacing = 10;
+            const totalTabsWidth = shapeKeys.length * (tabWidth + tabSpacing) - tabSpacing;
+            const tabsStartX = (width - totalTabsWidth) / 2;
+
+            shapeKeys.forEach((key, i) => {
+                ui.tabs.push({
+                    key: key,
+                    x: tabsStartX + i * (tabWidth + tabSpacing),
+                    y: 20,
+                    w: tabWidth,
+                    h: 40
+                });
+            });
+            
+            ui.mainPanel = { x: 20, y: 80, w: width - 40, h: height - 100 };
+            ui.leftPanel = { x: 40, y: 100, w: 400, h: 460 };
+            ui.rightPanel = { x: 460, y: 100, w: 420, h: 460 };
+        }
+
+        // --- P5.JS DRAW LOOP ---
+        function draw() {
+            background('#f8f9fa');
+            
+            // Draw main container
+            noStroke();
+            fill('#ffffff');
+            rect(ui.mainPanel.x, ui.mainPanel.y, ui.mainPanel.w, ui.mainPanel.h, 10);
+            stroke('#dee2e6');
+            noFill();
+            rect(ui.mainPanel.x, ui.mainPanel.y, ui.mainPanel.w, ui.mainPanel.h, 10);
+
+            drawTabs();
+            drawLeftPanel();
+            drawRightPanel();
+        }
+
+        // --- UI DRAWING FUNCTIONS ---
+
+        function drawTabs() {
+            ui.tabs.forEach(tab => {
+                const isActive = (tab.key === currentShapeKey);
+                
+                stroke(isActive ? '#007bff' : '#ced4da');
+                fill(isActive ? '#007bff' : '#f8f9fa');
+                rect(tab.x, tab.y, tab.w, tab.h, 20);
+
+                noStroke();
+                fill(isActive ? '#ffffff' : '#495057');
+                textAlign(CENTER, CENTER);
+                textSize(14);
+                text(shapeData[tab.key].name, tab.x + tab.w / 2, tab.y + tab.h / 2);
+            });
+        }
+
+        function drawLeftPanel() {
+            const shape = shapeData[currentShapeKey];
+            const question = shape.questions[currentQuestionIndex];
+            const panel = ui.leftPanel;
+            let yPos = panel.y + 15;
+
+            // Draw Scenario Block
+            fill('#e7f5ff');
+            stroke('#bde0fe');
+            rect(panel.x, yPos, panel.w, 110, 8);
+            
+            noStroke();
+            fill('#0c63e4');
+            textAlign(LEFT, TOP);
+            textSize(16);
+            textStyle(BOLD);
+            text(shape.title, panel.x + 15, yPos + 15);
+            
+            fill('#555');
+            textSize(13);
+            textStyle(NORMAL);
+            text(shape.scenario, panel.x + 15, yPos + 40, panel.w - 30);
+            
+            yPos += 125;
+
+            // Draw Question Block
+            fill('#ffffff');
+            stroke('#dee2e6');
+            const explanationHeight = selectedAnswer ? 120 : 0;
+            const questionBlockHeight = 150 + question.options.length * 45 + explanationHeight;
+            rect(panel.x, yPos, panel.w, questionBlockHeight, 8);
+
+            // Question Header
+            noStroke();
+            fill('#212529');
+            textAlign(LEFT, TOP);
+            textSize(15);
+            textStyle(BOLD);
+            text(`Question ${currentQuestionIndex + 1}/${shape.questions.length}`, panel.x + 15, yPos + 15);
+            
+            // Question Nav Dots
+            ui.qNavDots = [];
+            for (let i = 0; i < shape.questions.length; i++) {
+                const dotX = panel.x + panel.w - (shape.questions.length - i) * 30 - 10;
+                const dotY = yPos + 10;
+                ui.qNavDots.push({ x: dotX, y: dotY, w: 24, h: 24 });
+                
+                fill(i === currentQuestionIndex ? '#007bff' : '#e9ecef');
+                ellipse(dotX + 12, dotY + 12, 24, 24);
+                fill(i === currentQuestionIndex ? '#ffffff' : '#495057');
+                textAlign(CENTER, CENTER);
+                textSize(12);
+                text(i + 1, dotX + 12, dotY + 12);
+            }
+
+            // Question Text
+            fill('#212529');
+            textAlign(LEFT, TOP);
+            textStyle(NORMAL);
+            textSize(14);
+            text(question.question, panel.x + 15, yPos + 50, panel.w - 30);
+
+            // Options
+            let optY = yPos + 100;
+            ui.options = [];
+            question.options.forEach((option, index) => {
+                const optBox = { x: panel.x + 15, y: optY, w: panel.w - 30, h: 35 };
+                ui.options.push({ ...optBox, text: option });
+                
+                let bgColor = '#f8f9fa';
+                let strokeColor = '#ced4da';
+                if (selectedAnswer && selectedAnswer.option === option) {
+                    bgColor = selectedAnswer.isCorrect ? '#d1e7dd' : '#f8d7da';
+                    strokeColor = selectedAnswer.isCorrect ? '#a3cfbb' : '#f5c2c7';
+                }
+                
+                stroke(strokeColor);
+                fill(bgColor);
+                rect(optBox.x, optBox.y, optBox.w, optBox.h, 5);
+                
+                noStroke();
+                fill('#212529');
+                textAlign(LEFT, CENTER);
+                text(option, optBox.x + 15, optBox.y + optBox.h / 2);
+                
+                optY += 45;
+            });
+
+            // Explanation
+            if (selectedAnswer) {
+                const expBoxY = optY + 10;
+                fill('#fff3cd');
+                stroke('#ffe69c');
+                rect(panel.x + 15, expBoxY, panel.w - 30, 110, 5);
+                
+                noStroke();
+                fill('#664d03');
+                textAlign(LEFT, TOP);
+                textStyle(BOLD);
+                text(selectedAnswer.isCorrect ? "Correct!" : "Incorrect", panel.x + 25, expBoxY + 10);
+                
+                textStyle(NORMAL);
+                textSize(11);
+                text(question.explanation, panel.x + 25, expBoxY + 30, panel.w - 50);
+                
+                fill('#fff');
+                rect(panel.x + 25, expBoxY + 55, panel.w - 50, 45, 3);
+                fill('#6c757d');
+                textFont('monospace');
+                text(`${question.formula}\n${question.calculation}`, panel.x + 30, expBoxY + 62, panel.w - 60);
+                textFont('Arial');
+            }
+        }
+
+        function drawRightPanel() {
+            const panel = ui.rightPanel;
+            const shape = shapeData[currentShapeKey];
+            
+            // Auto-rotation update
+            autoRotationY += 0.01;
+
+            // 3D Scene
+            pg.background(250, 252, 255);
+            pg.ambientLight(150);
+            pg.directionalLight(255, 255, 255, -1, 1, -1);
+            pg.pointLight(200, 200, 255, 100, -100, 100);
+            
+            pg.push();
+            pg.rotateX(rotationX);
+            pg.rotateY(rotationY + autoRotationY);
+            
+            pg.fill(52, 152, 219, 200);
+            pg.stroke(41, 128, 185);
+            pg.strokeWeight(1);
+
+            drawShape(pg, currentShapeKey, shape.parameters);
+            drawParameters(pg, currentShapeKey, shape.parameters);
+            pg.pop();
+            
+            image(pg, panel.x, panel.y, panel.w, panel.h);
+        }
+
+        // --- INTERACTION ---
+        function mousePressed() {
+            // Check Tab clicks
+            for (const tab of ui.tabs) {
+                if (mouseX > tab.x && mouseX < tab.x + tab.w && mouseY > tab.y && mouseY < tab.y + tab.h) {
+                    currentShapeKey = tab.key;
+                    currentQuestionIndex = 0;
+                    selectedAnswer = null;
+                    return;
+                }
+            }
+
+            // Check Question Nav Dot clicks
+            if (ui.qNavDots) {
+                for (let i = 0; i < ui.qNavDots.length; i++) {
+                    const dot = ui.qNavDots[i];
+                    if (dist(mouseX, mouseY, dot.x + dot.w/2, dot.y + dot.h/2) < dot.w/2) {
+                        currentQuestionIndex = i;
+                        selectedAnswer = null;
+                        return;
+                    }
+                }
+            }
+
+            // Check Option clicks (only if an answer hasn't been selected yet)
+            if (!selectedAnswer && ui.options) {
+                for (const opt of ui.options) {
+                    if (mouseX > opt.x && mouseX < opt.x + opt.w && mouseY > opt.y && mouseY < opt.y + opt.h) {
+                        const question = shapeData[currentShapeKey].questions[currentQuestionIndex];
+                        selectedAnswer = {
+                            option: opt.text,
+                            isCorrect: (opt.text === question.correctAnswer)
+                        };
+                        return;
+                    }
+                }
+            }
+        }
+        
+        function mouseDragged() {
+            if (mouseX > ui.rightPanel.x && mouseX < ui.rightPanel.x + ui.rightPanel.w &&
+                mouseY > ui.rightPanel.y && mouseY < ui.rightPanel.y + ui.rightPanel.h) {
+                rotationX -= (pmouseY - mouseY) * 0.01;
+                rotationY -= (pmouseX - mouseX) * 0.01;
+            }
+        }
+
+        // --- 3D DRAWING LOGIC ---
+        function drawShape(p, shapeType, params) {
+            const scale = 8;
+            p.noStroke();
+            switch (shapeType) {
+                case 'cylinder': p.push(); p.translate(0, (params.height * scale) / 4, 0); p.fill(52, 152, 219); p.cylinder(params.radius * scale, params.height * scale, 24); p.translate(0, -(params.height * scale) / 2, 0); p.fill(26, 188, 156); p.sphere(params.radius * scale, 24, 12); p.pop(); break;
+                case 'cone': p.cone(params.radius * scale * 2, params.height * scale, 24); break;
+                case 'cube': p.box(params.side * scale); p.push(); p.fill(250, 252, 255, 200); p.translate(0, -(params.side * scale) / 2 - 1, 0); p.rotateX(p.PI / 2); p.plane(params.side * scale, params.side * scale); p.pop(); break;
+                case 'sphere': p.sphere(params.radius * scale); break;
+                case 'hemisphere': p.sphere(params.radius * scale, 24, 12); break;
+                case 'frustum': const h = params.height * scale; const r1 = params.topRadius * scale; const r2 = params.bottomRadius * scale; const segments = 24; p.beginShape(p.TRIANGLE_STRIP); for (let i = 0; i <= segments; i++) { const angle = (i * p.TWO_PI) / segments; const x1 = r1 * p.cos(angle); const z1 = r1 * p.sin(angle); p.vertex(x1, -h / 2, z1); const x2 = r2 * p.cos(angle); const z2 = r2 * p.sin(angle); p.vertex(x2, h / 2, z2); } p.endShape(); break;
+                case 'compound': p.push(); p.translate(0, (params.coneHeight * scale) / 2, 0); p.fill(52, 152, 219); p.cylinder(params.radius * scale, params.cylinderHeight * scale, 24); p.translate(0, -(params.cylinderHeight * scale) / 2, 0); p.fill(26, 188, 156); p.cone(params.radius * scale, params.coneHeight * scale, 24); p.pop(); break;
+                default: p.box(50);
+            }
+        }
+
+        function drawParameters(p, shapeType, params) {
+            p.push();
+            p.fill(30);
+            p.textAlign(p.LEFT, p.TOP);
+            p.textSize(12);
+            p.camera();
+            let yOffset = -p.height / 2 + 20;
+            const lines = [];
+            switch (shapeType) {
+                case 'cylinder': lines.push(`Radius: ${params.radius}m`, `Height: ${params.height}m`); break;
+                case 'cone': lines.push(`Radius: ${params.radius}cm`, `Height: ${params.height}cm`); break;
+                case 'cube': lines.push(`Side: ${params.side}cm`); break;
+                case 'sphere': lines.push(`Radius: ${params.radius}cm`); break;
+                case 'hemisphere': lines.push(`Radius: ${params.radius}cm`); break;
+                case 'frustum': lines.push(`Top R: ${params.topRadius}cm`, `Bottom R: ${params.bottomRadius}cm`, `Height: ${params.height}cm`); break;
+                case 'compound': lines.push(`Radius: ${params.radius}cm`, `Cyl. H: ${params.cylinderHeight}cm`, `Cone H: ${params.coneHeight}cm`); break;
+            }
+            lines.forEach((line, index) => {
+                p.text(line, -p.width / 2 + 20, yOffset + (index * 16));
+            });
+            p.fill(100);
+            p.textSize(10);
+            p.text("Drag to rotate", -p.width / 2 + 20, p.height / 2 - 30);
+            p.pop();
+        }
+    </script>
+</body>
+</html>
