@@ -1,5 +1,5 @@
 // --- NEW: Texture Variables ---
-let metalTexture, waffleTexture, icecreamTexture, giftTexture, footballTexture, metalBowlTexture, plasticTexture, canvasTexture;
+let metalTexture, waffleTexture, icecreamTexture, giftTexture, footballTexture, metalBowlTexture, plasticTexture, canvasTexture,chocolateTexture;
 
 function randomFloat(min, max, decimals = 1) {
     return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
@@ -212,61 +212,61 @@ function initializeShapeData() {
                 "What is the cost of chocolate coating per cone?"
             ]
         },
-        cube: {
-            name: "Cube",
-            title: "Birthday Gift Box",
-            scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²",
-            formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"],
-            questionTemplates: [
-                "What is the surface area to be painted?",
-                "What is the total painting cost?",
-                "How many chocolates can fit (90% volume)?"
-            ]
-        },
-        sphere: {
-            name: "Sphere",
-            title: "Football Manufacturing",
-            scenario: "A sports company manufactures spherical footballs. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.",
-            formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"],
-            questionTemplates: [
-                "What is the surface area of the football?",
-                "What is the cost of leather for one football?",
-                "What is the volume of air inside?"
-            ]
-        },
-        hemisphere: {
-            name: "Hemisphere",
-            title: "Steel Serving Bowls",
-            scenario: "A factory manufactures hemispherical steel bowls, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²",
-            formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"],
-            questionTemplates: [
-                "What is the inner curved surface area to be polished?",
-                "What is the polishing cost per bowl?",
-                "What volume can the bowl hold?"
-            ]
-        },
-        frustum: {
-            name: "Frustum",
-            title: "Water Bucket Design",
-            scenario: "A company designs frustum-shaped buckets. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²",
-            formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"],
-            questionTemplates: [
-                "What is the slant height of the bucket?",
-                "What is the inner curved surface area?",
-                "What is the base area?"
-            ]
-        },
-        compound: {
-            name: "Compound",
-            title: "Miniature Tent Model",
-            scenario: "Students create a tent model: cylinder with conical top. Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²",
-            formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"],
-            questionTemplates: [
-                "What is the curved surface area of the cylindrical part?",
-                "What is the slant height of the conical part?",
-                "What is the total cloth cost?"
-            ]
-        }
+        // cube: {
+        //     name: "Cube",
+        //     title: "Birthday Gift Box",
+        //     scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²",
+        //     formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"],
+        //     questionTemplates: [
+        //         "What is the surface area to be painted?",
+        //         "What is the total painting cost?",
+        //         "How many chocolates can fit (90% volume)?"
+        //     ]
+        // },
+        // sphere: {
+        //     name: "Sphere",
+        //     title: "Football Manufacturing",
+        //     scenario: "A sports company manufactures spherical footballs. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.",
+        //     formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"],
+        //     questionTemplates: [
+        //         "What is the surface area of the football?",
+        //         "What is the cost of leather for one football?",
+        //         "What is the volume of air inside?"
+        //     ]
+        // },
+        // hemisphere: {
+        //     name: "Hemisphere",
+        //     title: "Steel Serving Bowls",
+        //     scenario: "A factory manufactures hemispherical steel bowls, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²",
+        //     formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"],
+        //     questionTemplates: [
+        //         "What is the inner curved surface area to be polished?",
+        //         "What is the polishing cost per bowl?",
+        //         "What volume can the bowl hold?"
+        //     ]
+        // },
+        // frustum: {
+        //     name: "Frustum",
+        //     title: "Water Bucket Design",
+        //     scenario: "A company designs frustum-shaped buckets. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²",
+        //     formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"],
+        //     questionTemplates: [
+        //         "What is the slant height of the bucket?",
+        //         "What is the inner curved surface area?",
+        //         "What is the base area?"
+        //     ]
+        // },
+        // compound: {
+        //     name: "Compound",
+        //     title: "Miniature Tent Model",
+        //     scenario: "Students create a tent model: cylinder with conical top. Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²",
+        //     formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"],
+        //     questionTemplates: [
+        //         "What is the curved surface area of the cylindrical part?",
+        //         "What is the slant height of the conical part?",
+        //         "What is the total cloth cost?"
+        //     ]
+        // }
     };
 
     // Generate random parameters and questions for each shape
@@ -325,6 +325,7 @@ function preload() {
         metalBowlTexture = loadImage('assets/brushed_metal.png');
         plasticTexture = loadImage('assets/metal_texture.png');
         canvasTexture = loadImage('assets/canvas_texture.png');
+        chocolateTexture = loadImage('assets/chocolate_texture.jpg');
     } catch (e) {
         console.error("Error loading textures. Make sure you have an 'assets' folder with all the required images.", e);
     }
@@ -761,6 +762,11 @@ function drawShape(p, shapeType, params) {
             // Cone (Wafer)
             p.specularMaterial(150);
             p.shininess(5);
+            // if (currentQuestionIndex > 1) {
+            //     p.texture(chocolateTexture);
+            // } else {
+            //     p.texture(waffleTexture);
+            // }
             p.texture(waffleTexture);
             p.cone(r, h);
             
