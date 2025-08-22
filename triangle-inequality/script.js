@@ -22,7 +22,8 @@ function draw() {
     drawSegments();
     drawInequalityChecks();
     if (showTriangle) {
-        drawTriangle(); // always draw, even if invalid
+      //  drawTriangle(); // always draw, even if invalid
+        drawTriangleOrOpenShape();
     }
 }
 
@@ -69,17 +70,32 @@ function drawSegments() {
 
         stroke(colors[i]);
         strokeWeight(6);
-        line(x, y, x, y - segmentLengths[i] * 15);
+        line(x, y, x, y - segmentLengths[i] * 25);
 
+        if(i == 0){
+            noStroke();
+            fill(colors[i]);
+            textSize(20);
+            text(labels[i][0], x - 5, y - segmentLengths[i] * 25 - 15);
+            text(labels[i][1], x - 5, y + 25);
+            
+    
+            fill(0);
+            textSize(22);
+            text(segmentLengths[i], x - 5, y - segmentLengths[i] * 12.5 + 5);
+        }
+        else {
         noStroke();
         fill(colors[i]);
         textSize(20);
-        text(labels[i][0], x - 10, y - segmentLengths[i] * 15 - 10);
-        text(labels[i][1], x - 10, y + 20);
+        text(labels[i][0], x, y - segmentLengths[i] * 25 - 15);
+        text(labels[i][1], x, y + 25);
+        
 
         fill(0);
         textSize(22);
-        text(segmentLengths[i], x - 10, y - segmentLengths[i] * 7.5);
+        text(segmentLengths[i], x, y - segmentLengths[i] * 12.5);
+        }
 
         drawButton(x, y + 60, '+');
         drawButton(x, y + 120, '-');
@@ -130,7 +146,7 @@ function changeSegment(idx, delta) {
 }
 
 function drawInequalityChecks() {
-    const x = 800, y = 350, gap = 90;
+    const x = 900, y = 220, gap = 90;
     const checks = [
         { a: 0, b: 1, c: 2, label: 'AB + BC > AC' },
         { a: 0, b: 2, c: 1, label: 'AB + AC > BC' },
@@ -153,16 +169,16 @@ function drawInequalityChecks() {
 
         fill('#222');
         textSize(22);
-        text(`${segmentLengths[a]} + ${segmentLengths[b]} > ${segmentLengths[c]}`, x + 180, y + i * gap);
+        text(`${segmentLengths[a]} + ${segmentLengths[b]} > ${segmentLengths[c]}`, x, y + i * gap + 30);
 
         textSize(36);
         if (showTriangle) {
             if (valid) {
                 fill('#388e3c');
-                text('✔', x + 300, y + i * gap);
+                text('✔', x + 200, y + i * gap);
             } else {
                 fill('#d32f2f');
-                text('✗', x + 300, y + i * gap);
+                text('✗', x + 200, y + i * gap);
             }
         }
     }
@@ -175,43 +191,106 @@ function checkTriangleInequality() {
     return (a + b > c) && (a + c > b) && (b + c > a);
 }
 
-function drawTriangle() {
-    const [a, b, c] = segmentLengths;
-    const scale = 35;
+function drawTriangleOrOpenShape() {
+    const [a, b, c] = segmentLengths; 
+    const scale = 25;
 
+    // Base points A, B
     const Ax = width / 2 - (a * scale) / 2;
-    const Ay = 300;
+    const Ay = 400;
     const Bx = Ax + a * scale;
     const By = Ay;
 
-    // Always compute C, even if invalid
-    let xFromA = (c * c + a * a - b * b) / (2 * a);
-    let yFromBaseSq = c * c - xFromA * xFromA;
-    // If invalid triangle, force y=0 (collinear line)
-    if (yFromBaseSq < 0) yFromBaseSq = 0;
-    const yFromBase = Math.sqrt(yFromBaseSq);
-
-    const Cx = Ax + xFromA * scale;
-    const Cy = Ay - yFromBase * scale;
-
     strokeWeight(6);
     stroke('#ff8800');
-    line(Ax, Ay, Bx, By);
-    stroke('#228B22');
-    line(Bx, By, Cx, Cy);
-    stroke('#0099ff');
-    line(Cx, Cy, Ax, Ay);
+    line(Ax, Ay, Bx, By); // base AB
 
-    noStroke();
-    textSize(22);
-    textAlign(CENTER, CENTER);
-    fill('#ff8800');
-    text('A', Ax - 18, Ay);
-    fill('#228B22');
-    text('B', Bx + 18, By);
-    fill('#0099ff');
-    text('C', Cx, Cy - 18);
+    // Check triangle inequality
+    if (checkTriangleInequality()) {
+        // ✅ Valid triangle
+        let xFromA = (c * c + a * a - b * b) / (2 * a);
+        let yFromBaseSq = c * c - xFromA * xFromA;
+        if (yFromBaseSq < 0) yFromBaseSq = 0;
+        let yFromBase = Math.sqrt(yFromBaseSq);
+
+        const Cx = Ax + xFromA * scale;
+        const Cy = Ay - yFromBase * scale;
+
+        stroke('#228B22'); line(Bx, By, Cx, Cy);
+        stroke('#0099ff'); line(Cx, Cy, Ax, Ay);
+
+        noStroke();
+        textSize(22);
+        textAlign(CENTER, CENTER);
+        fill('#ff8800'); text('A', Ax - 18, Ay);
+        fill('#228B22'); text('B', Bx + 18, By);
+        fill('#0099ff'); text('C', Cx, Cy - 18);
+
+    } else {
+        // ❌ Invalid triangle → force arms to tilt upwards
+        let tiltAngle = radians(60); // you can adjust (60° tilt from base)
+
+        // Arm from A (length b, tilted up)
+        const CxA = Ax + b * scale * Math.cos(tiltAngle);
+        const CyA = Ay - b * scale * Math.sin(tiltAngle);
+        stroke('#0099ff');
+        line(Ax, Ay, CxA, CyA);
+
+        // Arm from B (length c, tilted up in opposite direction)
+        const CxB = Bx - c * scale * Math.cos(tiltAngle);
+        const CyB = By - c * scale * Math.sin(tiltAngle);
+        stroke('#228B22');
+        line(Bx, By, CxB, CyB);
+
+        // Labels
+        noStroke();
+        textSize(22);
+        textAlign(CENTER, CENTER);
+        fill('#ff8800'); text('A', Ax - 18, Ay);
+        fill('#228B22'); text('B', Bx + 18, By);
+        fill('#0099ff'); text('C', CxA, CyA - 18);
+        fill('#228B22'); text('C', CxB, CyB - 18);
+    }
 }
+
+
+// function drawTriangle() {
+//     const [a, b, c] = segmentLengths;
+//     const scale = 25;
+
+//     const Ax = width / 2 - (a * scale) / 2;
+//     const Ay = 400;
+//     const Bx = Ax + a * scale;
+//     const By = Ay;
+
+//     // Always compute C, even if invalid
+//     let xFromA = (c * c + a * a - b * b) / (2 * a);
+//     let yFromBaseSq = c * c - xFromA * xFromA;
+//     // If invalid triangle, force y=0 (collinear line)
+//     if (yFromBaseSq < 0) yFromBaseSq = 0;
+//     const yFromBase = Math.sqrt(yFromBaseSq);
+
+//     const Cx = Ax + xFromA * scale;
+//     const Cy = Ay - yFromBase * scale;
+
+//     strokeWeight(6);
+//     stroke('#ff8800');
+//     line(Ax, Ay, Bx, By);
+//     stroke('#228B22');
+//     line(Bx, By, Cx, Cy);
+//     stroke('#0099ff');
+//     line(Cx, Cy, Ax, Ay);
+
+//     noStroke();
+//     textSize(22);
+//     textAlign(CENTER, CENTER);
+//     fill('#ff8800');
+//     text('A', Ax - 18, Ay);
+//     fill('#228B22');
+//     text('B', Bx + 18, By);
+//     fill('#0099ff');
+//     text('C', Cx, Cy - 18);
+// }
 
 function resetTriangle() {
     let tries = 0;
