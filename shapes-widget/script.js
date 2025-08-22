@@ -212,61 +212,61 @@ function initializeShapeData() {
                 "What is the cost of chocolate coating per cone?"
             ]
         },
-        // cube: {
-        //     name: "Cube",
-        //     title: "Birthday Gift Box",
-        //     scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²",
-        //     formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"],
-        //     questionTemplates: [
-        //         "What is the surface area to be painted?",
-        //         "What is the total painting cost?",
-        //         "How many chocolates can fit (90% volume)?"
-        //     ]
-        // },
-        // sphere: {
-        //     name: "Sphere",
-        //     title: "Football Manufacturing",
-        //     scenario: "A sports company manufactures spherical footballs. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.",
-        //     formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"],
-        //     questionTemplates: [
-        //         "What is the surface area of the football?",
-        //         "What is the cost of leather for one football?",
-        //         "What is the volume of air inside?"
-        //     ]
-        // },
-        // hemisphere: {
-        //     name: "Hemisphere",
-        //     title: "Steel Serving Bowls",
-        //     scenario: "A factory manufactures hemispherical steel bowls, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²",
-        //     formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"],
-        //     questionTemplates: [
-        //         "What is the inner curved surface area to be polished?",
-        //         "What is the polishing cost per bowl?",
-        //         "What volume can the bowl hold?"
-        //     ]
-        // },
-        // frustum: {
-        //     name: "Frustum",
-        //     title: "Water Bucket Design",
-        //     scenario: "A company designs frustum-shaped buckets. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²",
-        //     formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"],
-        //     questionTemplates: [
-        //         "What is the slant height of the bucket?",
-        //         "What is the inner curved surface area?",
-        //         "What is the base area?"
-        //     ]
-        // },
-        // compound: {
-        //     name: "Compound",
-        //     title: "Miniature Tent Model",
-        //     scenario: "Students create a tent model: cylinder with conical top. Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²",
-        //     formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"],
-        //     questionTemplates: [
-        //         "What is the curved surface area of the cylindrical part?",
-        //         "What is the slant height of the conical part?",
-        //         "What is the total cloth cost?"
-        //     ]
-        // }
+        cube: {
+            name: "Cube",
+            title: "Birthday Gift Box",
+            scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²",
+            formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"],
+            questionTemplates: [
+                "What is the surface area to be painted?",
+                "What is the total painting cost?",
+                "How many chocolates can fit (90% volume)?"
+            ]
+        },
+        sphere: {
+            name: "Sphere",
+            title: "Football Manufacturing",
+            scenario: "A sports company manufactures spherical footballs. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.",
+            formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"],
+            questionTemplates: [
+                "What is the surface area of the football?",
+                "What is the cost of leather for one football?",
+                "What is the volume of air inside?"
+            ]
+        },
+        hemisphere: {
+            name: "Hemisphere",
+            title: "Steel Serving Bowls",
+            scenario: "A factory manufactures hemispherical steel bowls, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²",
+            formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"],
+            questionTemplates: [
+                "What is the inner curved surface area to be polished?",
+                "What is the polishing cost per bowl?",
+                "What volume can the bowl hold?"
+            ]
+        },
+        frustum: {
+            name: "Frustum",
+            title: "Water Bucket Design",
+            scenario: "A company designs frustum-shaped buckets. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²",
+            formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"],
+            questionTemplates: [
+                "What is the slant height of the bucket?",
+                "What is the inner curved surface area?",
+                "What is the base area?"
+            ]
+        },
+        compound: {
+            name: "Compound",
+            title: "Miniature Tent Model",
+            scenario: "Students create a tent model: cylinder with conical top. Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²",
+            formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"],
+            questionTemplates: [
+                "What is the curved surface area of the cylindrical part?",
+                "What is the slant height of the conical part?",
+                "What is the total cloth cost?"
+            ]
+        }
     };
 
     // Generate random parameters and questions for each shape
@@ -323,7 +323,7 @@ function preload() {
         giftTexture = loadImage('assets/wrapping_paper.png');
         footballTexture = loadImage('assets/football_texture.png');
         metalBowlTexture = loadImage('assets/brushed_metal.png');
-        plasticTexture = loadImage('assets/metal_texture.png');
+        plasticTexture = loadImage('assets/plastic_texture.png');
         canvasTexture = loadImage('assets/canvas_texture.png');
         chocolateTexture = loadImage('assets/chocolate_texture.jpg');
     } catch (e) {
@@ -832,72 +832,91 @@ function drawShape(p, shapeType, params) {
             p.pop();
             break;
         }
-        case 'frustum': { // Water Bucket
+   case 'frustum': { // Water Bucket
             const h = 12 * scale * 0.5;
-            const r1 = 12 * scale * 0.5;
-            const r2 = 6 * scale * 0.5;
+            const r1 = 12 * scale * 0.5; // Top radius
+            const r2 = 6 * scale * 0.5; // Bottom radius
 
-            p.specularMaterial(255);
-            p.shininess(60);
-            p.texture(plasticTexture);
+            p.push();
+            // p.specularMaterial(255); // Removed to avoid over-whitening
+            // p.shininess(60); // Keep shininess for a glossy look
+            p.texture(plasticTexture); // Apply the texture here once
 
             const segments = 32;
+
+            // --- IMPROVED TEXTURING FOR FRUSTUM ---
+            // Main frustum body (curved surface)
             p.beginShape(p.TRIANGLE_STRIP);
             for (let i = 0; i <= segments; i++) {
                 const angle = (i * TWO_PI) / segments;
-                const u = i / segments;
+                const u = i / segments; // Horizontal texture coordinate
+                p.normal(cos(angle), 0, sin(angle)); // Correct normals for lighting
                 p.vertex(r1 * cos(angle), -h / 2, r1 * sin(angle), u, 0);
                 p.vertex(r2 * cos(angle), h / 2, r2 * sin(angle), u, 1);
             }
             p.endShape();
 
-            // Base
+            // Base (bottom disk)
+            // Need a separate beginShape/endShape for the base to texture it correctly
             p.beginShape(p.TRIANGLE_FAN);
-            p.vertex(0, h/2, 0, 0.5, 0.5);
+            p.vertex(0, h / 2, 0, 0.5, 0.5); // Center vertex for the fan
             for (let i = 0; i <= segments; i++) {
                 const angle = (i * TWO_PI) / segments;
                 const u = 0.5 + 0.5 * cos(angle);
                 const v = 0.5 + 0.5 * sin(angle);
+                p.normal(0, 1, 0); // Normal pointing up for the flat base
                 p.vertex(r2 * cos(angle), h / 2, r2 * sin(angle), u, v);
             }
             p.endShape();
+            
+            p.pop();
 
-            // Metal Handle
+            // Metal Handle (drawn after the textured parts)
+            p.push();
             p.noFill();
             p.stroke(100);
             p.strokeWeight(5);
             p.beginShape();
-            for(let i = 0; i <= 180; i++) {
+            for (let i = 0; i <= 180; i++) {
                 const angle = radians(i);
                 const x = r1 * cos(angle);
-                const y = -h/2 - r1 * sin(angle) * 0.8;
+                const y = -h / 2 - r1 * sin(angle) * 0.8;
                 p.vertex(x, y, 0);
             }
             p.endShape();
-            
-            break;
-        }
-        case 'compound': { // Tent Model
-            const r = 4 * scale;
-            const cH = 7 * scale;
-            const coneH = 6 * scale;
-            p.push();
-            p.translate(0, coneH / 2, 0);
-
-            p.specularMaterial(100);
-            p.shininess(5);
-            p.texture(canvasTexture);
-
-            // Cylindrical walls
-            p.cylinder(r, cH, 24);
-            
-            // Conical roof
-            p.translate(0, -cH / 2, 0);
-            p.cone(r, coneH, 24);
-            
             p.pop();
+            
             break;
         }
+
+     case 'compound': { // Tent Model
+    const r = 5 * scale;
+    const cH = 5 * scale;
+    const coneH = 5 * scale;
+
+    p.push();
+    
+    // Rotate the entire model 180 degrees around the X-axis
+    // This flips it upside down.
+    p.rotateX(PI);
+
+    p.specularMaterial(100);
+    p.shininess(60);
+    p.texture(canvasTexture);
+
+    // Position the cylinder first. It will be drawn with its center at the origin.
+    p.translate(0, coneH / 2 -80, 0);
+    p.cylinder(r, cH, 100);
+
+    // Now, translate upwards to place the cone on top of the cylinder.
+    // The cylinder is 'cH' tall, so we move up by half its height to get to the top.
+    // We then move up by half the cone's height so its center is at the top of the cylinder.
+    p.translate(0, cH / 2 + coneH / 2, 0);
+    p.cone(r, coneH, 100);
+
+    p.pop();
+    break;
+}
         default:
             p.fill(100);
             p.box(50);
