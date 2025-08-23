@@ -22,7 +22,7 @@ function draw() {
     drawSegments();
     drawInequalityChecks();
     if (showTriangle) {
-      //  drawTriangle(); // always draw, even if invalid
+        //  drawTriangle(); // always draw, even if invalid
         drawTriangleOrOpenShape();
     }
 }
@@ -72,29 +72,29 @@ function drawSegments() {
         strokeWeight(6);
         line(x, y, x, y - segmentLengths[i] * 25);
 
-        if(i == 0){
+        if (i == 0) {
             noStroke();
             fill(colors[i]);
             textSize(20);
             text(labels[i][0], x - 5, y - segmentLengths[i] * 25 - 15);
             text(labels[i][1], x - 5, y + 25);
-            
-    
+
+
             fill(0);
             textSize(22);
             text(segmentLengths[i], x - 5, y - segmentLengths[i] * 12.5 + 5);
         }
         else {
-        noStroke();
-        fill(colors[i]);
-        textSize(20);
-        text(labels[i][0], x, y - segmentLengths[i] * 25 - 15);
-        text(labels[i][1], x, y + 25);
-        
+            noStroke();
+            fill(colors[i]);
+            textSize(20);
+            text(labels[i][0], x, y - segmentLengths[i] * 25 - 15);
+            text(labels[i][1], x, y + 25);
 
-        fill(0);
-        textSize(22);
-        text(segmentLengths[i], x, y - segmentLengths[i] * 12.5);
+
+            fill(0);
+            textSize(22);
+            text(segmentLengths[i], x, y - segmentLengths[i] * 12.5);
         }
 
         drawButton(x, y + 60, '+');
@@ -192,7 +192,7 @@ function checkTriangleInequality() {
 }
 
 function drawTriangleOrOpenShape() {
-    const [a, b, c] = segmentLengths; 
+    const [a, b, c] = segmentLengths;
     const scale = 25;
 
     // Base points A, B
@@ -227,18 +227,17 @@ function drawTriangleOrOpenShape() {
         fill('#0099ff'); text('C', Cx, Cy - 18);
 
     } else {
-        // ❌ Invalid triangle → force arms to tilt upwards
-        let tiltAngle = radians(60); // you can adjust (60° tilt from base)
+        let tiltAngle = radians(60);
 
-        // Arm from A (length b, tilted up)
-        const CxA = Ax + b * scale * Math.cos(tiltAngle);
-        const CyA = Ay - b * scale * Math.sin(tiltAngle);
+        // Arm from A → should use AC (c)
+        const CxA = Ax + c * scale * Math.cos(tiltAngle);
+        const CyA = Ay - c * scale * Math.sin(tiltAngle);
         stroke('#0099ff');
         line(Ax, Ay, CxA, CyA);
 
-        // Arm from B (length c, tilted up in opposite direction)
-        const CxB = Bx - c * scale * Math.cos(tiltAngle);
-        const CyB = By - c * scale * Math.sin(tiltAngle);
+        // Arm from B → should use BC (b)
+        const CxB = Bx - b * scale * Math.cos(tiltAngle);
+        const CyB = By - b * scale * Math.sin(tiltAngle);
         stroke('#228B22');
         line(Bx, By, CxB, CyB);
 
@@ -251,6 +250,7 @@ function drawTriangleOrOpenShape() {
         fill('#0099ff'); text('C', CxA, CyA - 18);
         fill('#228B22'); text('C', CxB, CyB - 18);
     }
+
 }
 
 
