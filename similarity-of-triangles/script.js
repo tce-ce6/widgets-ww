@@ -57,13 +57,13 @@ function resetToNew() {
     document.getElementById("similarity-info").style.display = "none";
     document.getElementById("check-btn").disabled = false;
     document.getElementById("show-btn").disabled = false;
-    
+
     // Cycle through similarity methods
     cycleSimilarityMethod();
-    
+
     // Update the reset button to show current method
     updateResetButtonText();
-    
+
     while (attempts < maxAttempts) {
         if (generateValidTrianglePair()) {
             checkResult = null;
@@ -239,7 +239,7 @@ function generateAATrianglePair() {
         let cosA = (mathB * mathB + mathC * mathC - mathA * mathA) / (2 * mathB * mathC);
         let cosB = (mathA * mathA + mathC * mathC - mathB * mathB) / (2 * mathA * mathC);
         let cosC = (mathA * mathA + mathB * mathB - mathC * mathC) / (2 * mathA * mathB);
-        
+
         if (cosA > 0.9 || cosB > 0.9 || cosC > 0.9) continue; // Avoid very small angles
 
         // Find valid ratio for AA
@@ -283,7 +283,7 @@ function generateInitialDEF() {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         let randomEF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         let randomDF = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        
+
         // Ensure it's not the target triangle
         if (Math.abs(randomEF - targetEF) < 2 && Math.abs(randomDF - targetDF) < 2) {
             continue;
@@ -301,7 +301,7 @@ function generateInitialDEF() {
     // Fallback: use a simple valid triangle
     let fallbackEF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 3);
     let fallbackDF = Math.max(MIN_TRIANGLE_SIDE, currentDE - 2);
-    
+
     if (isValidTriangle(currentDE, fallbackEF, fallbackDF)) {
         if (calculateTriangleDEF(currentDE, fallbackEF, fallbackDF)) {
             if (!targetF || F.x !== targetF.x || F.y !== targetF.y) {
@@ -337,7 +337,7 @@ function calculateTriangleDEF(de, ef, df) {
     D = { x: rightOrigin.x, y: rightOrigin.y };
     // Place E using the exact base length from D
     E = { x: D.x + de * PIXEL_SCALE, y: D.y };
-    
+
     let cosD = (df * df + de * de - ef * ef) / (2 * df * de);
     if (cosD < -1 || cosD > 1) return false;
     let angleD = Math.acos(cosD);
@@ -354,21 +354,21 @@ function calculateTargetF() {
         console.error('Invalid target values:', { targetDF, targetEF, currentDE });
         return;
     }
-    
+
     let cosD = (targetDF * targetDF + currentDE * currentDE - targetEF * targetEF) / (2 * targetDF * currentDE);
-    
+
     // Check if the cosine value is valid
     if (cosD < -1 || cosD > 1) {
         console.error('Invalid cosine value:', cosD);
         return;
     }
-    
+
     let angleD = Math.acos(cosD);
     targetF = {
         x: D.x + targetDF * PIXEL_SCALE * Math.cos(angleD),
         y: D.y - Math.abs(targetDF * PIXEL_SCALE * Math.sin(angleD))
     };
-    
+
     console.log('Target F calculated:', { targetDF, targetEF, currentDE, targetF });
 }
 
@@ -378,7 +378,7 @@ function draw() {
 
     // Draw triangles
     drawTriangle(A, B, C, true, [mathC, mathA, mathB], ['AB', 'BC', 'CA']);
-    
+
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
@@ -393,11 +393,11 @@ function draw() {
 
     // Always display current angles for real-time feedback
     displayCurrentAngles();
-    
+
     displayCheckResult();
     displayErrorMessage();
     displayCurrentMethod();
-    
+
     // If dragging, continuously update the similarity info to show real-time values
     if (draggingF && displayAnswer) {
         displaySimilarityInfo();
@@ -470,6 +470,26 @@ function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
             displayTriangleAngles(p1, p2, p3, isLeft, true); // true = SAS mode
             break;
         case 'AA':
+
+            // Show side values + included angle for SAS
+            for (let i = 0; i < 3; i++) {
+                stroke(colors[i]);
+                line(points[i].x, points[i].y, nextPoints[i].x, nextPoints[i].y);
+                fill(colors[i]);
+                noStroke();
+                textAlign(CENTER, CENTER);
+                textSize(18);
+                let sideLength = Math.round(mathSides[i]);
+                // if (i == 0) {
+                //     text(`${labels[i]}: ${sideLength}`, midpoints[i].x, midpoints[i].y + 20);
+                // }
+                // else if (i == 1) {
+                //     text(`${labels[i]}: ${sideLength}`, midpoints[i].x + 50, midpoints[i].y - 5);
+                // }
+                // else {
+                //     text(`${labels[i]}: ${sideLength}`, midpoints[i].x - 50, midpoints[i].y - 5);
+                // }
+            }
             // Show only angles for AA
             displayTriangleAngles(p1, p2, p3, isLeft, false); // false = not SAS
             break;
@@ -492,7 +512,7 @@ function drawTriangle(p1, p2, p3, isLeft, mathSides, labels) {
     text(isLeft ? 'A' : 'D', p1.x - 15, p1.y - 10);
     text(isLeft ? 'B' : 'E', p2.x + 15, p2.y + 10);
     text(isLeft ? 'C' : 'F', p3.x, p3.y - 15);
-    
+
     // Add method-specific visual indicators
     if (isLeft) {
         drawMethodIndicators(p1, p2, p3);
@@ -515,11 +535,11 @@ function displayTriangleAngles(p1, p2, p3, isLeft, sasMode = false) {
     let angleB = Math.acos(cosB) * (180 / Math.PI);
     let angleC = Math.acos(cosC) * (180 / Math.PI);
     push();
-    textSize(16);
+    textSize(12);
     textAlign(CENTER, CENTER);
     strokeWeight(0);
     // Offset for angle text
-    let offset = 38;
+    let offset = 30;
     let outline = 4;
     if (sasMode) {
         // Only show included angle (B/E)
@@ -574,30 +594,60 @@ function displayCurrentAngles() {
     let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
     let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
     let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-    
+
     let cosD = (ef * ef + de * de - df * df) / (2 * ef * de);
     let cosE = (df * df + de * de - ef * ef) / (2 * df * de);
     let cosF = (df * df + ef * ef - de * de) / (2 * df * ef);
-    
+
     // Ensure cosine values are within valid range
     cosD = constrain(cosD, -1, 1);
     cosE = constrain(cosE, -1, 1);
     cosF = constrain(cosF, -1, 1);
-    
+
     let angleD = Math.acos(cosD) * (180 / Math.PI);
     let angleE = Math.acos(cosE) * (180 / Math.PI);
     let angleF = Math.acos(cosF) * (180 / Math.PI);
-    
-    // Display current angles in top-right corner
-    push();
-    fill(0);
-    textSize(14);
-    textAlign(LEFT, TOP);
-    text(`Current DEF Angles:`, width - 200, 10);
-    text(`∠D: ${angleD.toFixed(1)}°`, width - 200, 30);
-    text(`∠E: ${angleE.toFixed(1)}°`, width - 200, 50);
-    text(`∠F: ${angleF.toFixed(1)}°`, width - 200, 70);
-    pop();
+
+    switch (currentSimilarityMethod) {
+        case 'AA':
+            // Display current angles in top-right corner
+            push();
+            fill(0);
+            textSize(14);
+            textAlign(LEFT, TOP);
+            text(`Current DEF Angles:`, width - 200, 10);
+            text(`∠D: ${angleE.toFixed(1)}°`, width - 200, 30);
+            text(`∠E: ${angleD.toFixed(1)}°`, width - 200, 50);
+            text(`∠F: ${angleF.toFixed(1)}°`, width - 200, 70);
+            pop();
+            break;
+
+        case 'SAS':
+            // Display current angles in top-right corner
+            push();
+            fill(0);
+            textSize(14);
+            textAlign(LEFT, TOP);
+            text(`Current DEF Angles:`, width - 200, 10);
+            text(`∠D: ${angleE.toFixed(1)}°`, width - 200, 30);
+            text(`∠E: ${angleD.toFixed(1)}°`, width - 200, 50);
+            text(`∠F: ${angleF.toFixed(1)}°`, width - 200, 70);
+            pop();
+            break;
+
+            case 'SSS':
+                // Display current angles in top-right corner
+                push();
+                fill(0);
+                textSize(14);
+                textAlign(LEFT, TOP);
+                text(`Current DEF Angles:`, width - 200, 10);
+                text(`∠D: ${angleE.toFixed(1)}°`, width - 200, 30);
+                text(`∠E: ${angleD.toFixed(1)}°`, width - 200, 50);
+                text(`∠F: ${angleF.toFixed(1)}°`, width - 200, 70);
+                pop();
+                break;
+    }
 }
 
 function drawMethodIndicators(p1, p2, p3) {
@@ -605,7 +655,7 @@ function drawMethodIndicators(p1, p2, p3) {
     strokeWeight(2);
     textSize(14);
     textAlign(CENTER, CENTER);
-    
+
     switch (currentSimilarityMethod) {
         case 'SSS':
             // Highlight all sides for SSS
@@ -615,7 +665,7 @@ function drawMethodIndicators(p1, p2, p3) {
             ellipse(p2.x, p2.y, 8);
             ellipse(p3.x, p3.y, 8);
             break;
-            
+
         case 'SAS':
             // Highlight sides AB and BC, and angle at B for SAS
             stroke(255, 165, 0, 150);
@@ -630,7 +680,7 @@ function drawMethodIndicators(p1, p2, p3) {
             let arcRadius = 25;
             arc(p2.x, p2.y, arcRadius, arcRadius, Math.atan2(p1.y - p2.y, p1.x - p2.x), Math.atan2(p3.y - p2.y, p3.x - p2.x));
             break;
-            
+
         case 'AA':
             // Highlight all angles for AA
             stroke(128, 0, 128, 150);
@@ -650,7 +700,7 @@ function drawMethodIndicators(p1, p2, p3) {
             if (angleC < 0) angleC += 2 * Math.PI;
             arc(p3.x, p3.y, aaArcRadius, aaArcRadius, Math.atan2(p2.y - p3.y, p2.x - p3.x), Math.atan2(p1.y - p3.y, p1.x - p3.x));
             break;
-            
+
 
     }
     pop();
@@ -696,11 +746,11 @@ function mouseDragged() {
         const canvasMarginPx = 10; // allow reaching near edges so long sides are possible
         let newX = constrain(mouseX + offsetF.x, canvasMarginPx, width - canvasMarginPx);
         let newY = constrain(mouseY + offsetF.y, canvasMarginPx, height - canvasMarginPx);
-        
+
         // Force value change on every drag by using exact mouse position
         F.x = newX;
         F.y = newY;
-        
+
         // Force redraw to show updated values immediately
         redraw();
     }
@@ -720,18 +770,18 @@ function displaySimilarityInfo() {
     targetEFBlocks = Math.round(targetEF);
 
     // Debug logging
-    console.log('Display values:', { 
-        de: Math.round(de), 
-        ef: Math.round(ef), 
+    console.log('Display values:', {
+        de: Math.round(de),
+        ef: Math.round(ef),
         df: Math.round(df),
-        targetEF, 
+        targetEF,
         targetDF,
         targetEFBlocks,
         targetDFBlocks
     });
 
     let infoHTML = '';
-    
+
     switch (currentSimilarityMethod) {
         case 'SSS':
             infoHTML = displaySSSInfo(de, ef, df);
@@ -756,6 +806,8 @@ function displaySSSInfo(de, ef, df) {
     let ratioCA_DF = (mathB / df).toFixed(2);
 
     return `
+            <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - All sides proportional</p>
+
         <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
             <div style="text-align: center; line-height: 1;">
                 <div>AB</div>
@@ -769,7 +821,9 @@ function displaySSSInfo(de, ef, df) {
                     <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
                     <div>EF</div>
                 </div>
-                <div style="font-size: 12px; color: #666;">Current: ${Math.round(ef)}</div>
+                ${/* 
+                 <div style="font-size: 12px; color: #666;">Current: ${Math.round(ef)}</div>
+                */''}
             </div>
             <div>= ${ratioBC_EF}</div>
             <div style="display: flex; flex-direction: column; align-items: center;">
@@ -778,34 +832,36 @@ function displaySSSInfo(de, ef, df) {
                     <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
                     <div>DF</div>
                 </div>
-                <div style="font-size: 12px; color: #666;">Current: ${Math.round(df)}</div>
+                ${/*
+                 <div style="font-size: 12px; color: #666;">Current: ${Math.round(df)}</div>
+                */''}
             </div>
             <div>= ${ratioCA_DF}</div>
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - All sides proportional</p>
         <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDFBlocks}</strong> | Target EF: <strong>${targetEFBlocks}</strong></p>
-        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p>
+        ${/*<p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p> */''}
     `;
 }
 
 function displaySASInfo(de, ef, df) {
     let ratioAB_DE = (mathC / de).toFixed(2);
     let ratioBC_EF = (mathA / ef).toFixed(2);
-    
+
     // Calculate the included angle at B for SAS
     let cosB = (mathA * mathA + mathC * mathC - mathB * mathB) / (2 * mathA * mathC);
     let angleB = Math.acos(cosB) * (180 / Math.PI);
-    
+
     // Calculate current angle at E
     let cosE = (ef * ef + de * de - df * df) / (2 * ef * de);
     let angleE = Math.acos(cosE) * (180 / Math.PI);
-    
+
     // Calculate target angle at E (should match angleB)
     let targetAngleE = angleB;
 
     return `
+            <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - Two sides and included angle</p>
         <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
             <div style="text-align: center; line-height: 1;">
                 <div>AB</div>
@@ -819,7 +875,7 @@ function displaySASInfo(de, ef, df) {
                     <hr style="margin: 2px 0; border: none; border-top: 1px solid #000;">
                     <div>EF</div>
                 </div>
-                <div style="font-size: 12px; color: #666;">Current: ${Math.round(ef)}</div>
+               ${/* <div style="font-size: 12px; color: #666;">Current: ${Math.round(ef)}</div> */''}
             </div>
             <div>= ${ratioBC_EF}</div>
         </div>
@@ -830,9 +886,8 @@ function displaySASInfo(de, ef, df) {
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - Two sides and included angle</p>
         <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDFBlocks}</strong> | Target EF: <strong>${targetEFBlocks}</strong></p>
-        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p>
+       ${/*<p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p> */''}
     `;
 }
 
@@ -857,6 +912,8 @@ function displayAAInfo(de, ef, df) {
     let match = Math.abs(angleA - angleD) < 0.5 && Math.abs(angleB - angleE) < 0.5 && Math.abs(angleC - angleF) < 0.5;
 
     return `
+            <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - All angles equal</p>
+
         <div style="text-align: center; margin: 10px 0;">
             <div style="font-size: 14px; color: #333; margin-bottom: 10px;">
                 <strong>Triangle ABC Angles:</strong><br>
@@ -864,83 +921,82 @@ function displayAAInfo(de, ef, df) {
             </div>
             <div style="font-size: 12px; color: #0066cc; margin-top: 10px;">
                 <strong>Target Angles for DEF:</strong><br>
-                ∠D = ${angleD.toFixed(1)}° | ∠E = ${angleE.toFixed(1)}° | ∠F = ${angleF.toFixed(1)}°
+                ∠D = ${angleE.toFixed(1)}° | ∠E = ${angleD.toFixed(1)}° | ∠F = ${angleF.toFixed(1)}°
             </div>
             ${match ? '<div style="color:green;font-weight:bold;">✓ Angles match!</div>' : ''}
         </div>
 
         <p>🎯 Target Ratio: <strong>${targetRatio.toFixed(2)}</strong></p>
-        <p>🔧 Method: <strong>${currentSimilarityMethod}</strong> - All angles equal</p>
         <p style="margin:0 !important; padding:0 !important; line-height: 1 !important;">🎯 Target DF: <strong>${targetDFBlocks}</strong> | Target EF: <strong>${targetEFBlocks}</strong></p>
-        <p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p>
+       ${/* <p style="margin:0 !important; padding:0 !important; line-height: 1 !important; font-size: 12px; color: #666;">Current EF: ${Math.round(ef)} | Current DF: ${Math.round(df)}</p> */''}
     `;
 }
 
 function areTrianglesSimilar() {
     // Check if current F position is close enough to target F position
     if (!targetF) return false;
-    
+
     // Calculate distance between current F and target F
     let distanceToTarget = dist(F.x, F.y, targetF.x, targetF.y);
-    
+
     // If F is close enough to target position, triangles are similar
     // Use a tolerance based on pixel distance for smooth interaction
     let tolerance = 15; // 15 pixels tolerance for smooth snapping
-    
+
     // For method-specific similarity checks, also verify the relevant properties
     let basicSimilarity = distanceToTarget <= tolerance;
-    
+
     if (!basicSimilarity) return false;
-    
+
     // Additional method-specific checks
     switch (currentSimilarityMethod) {
         case 'SSS':
             // SSS is already handled by position similarity
             return true;
-            
+
         case 'SAS':
             // Check if the included angle is also similar
             let cosB = (mathA * mathA + mathC * mathC - mathB * mathB) / (2 * mathA * mathC);
             let angleB = Math.acos(cosB) * (180 / Math.PI);
-            
+
             let de = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
             let ef = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
             let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
             let cosE = (ef * ef + de * de - df * df) / (2 * ef * de);
             let angleE = Math.acos(cosE) * (180 / Math.PI);
-            
+
             // Check if angles are within 2 degrees
             return Math.abs(angleB - angleE) <= 2;
-            
+
         case 'AA':
             // Check if all angles are similar
             let cosA = (mathB * mathB + mathC * mathC - mathA * mathA) / (2 * mathB * mathC);
             let cosB2 = (mathA * mathA + mathC * mathC - mathB * mathB) / (2 * mathA * mathC);
             let cosC = (mathA * mathA + mathB * mathB - mathC * mathC) / (2 * mathA * mathB);
-            
+
             let angleA = Math.acos(cosA) * (180 / Math.PI);
             let angleB2 = Math.acos(cosB2) * (180 / Math.PI);
             let angleC = Math.acos(cosC) * (180 / Math.PI);
-            
+
             let de2 = dist(D.x, D.y, E.x, E.y) / PIXEL_SCALE;
             let ef2 = dist(E.x, E.y, F.x, F.y) / PIXEL_SCALE;
             let df2 = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
-            
+
             let cosD = (ef2 * ef2 + de2 * de2 - df2 * df2) / (2 * ef2 * de2);
             let cosE2 = (df2 * df2 + de2 * de2 - ef2 * ef2) / (2 * df2 * de2);
             let cosF = (df2 * df2 + ef2 * ef2 - de2 * de2) / (2 * df2 * ef2);
-            
+
             let angleD = Math.acos(cosD) * (180 / Math.PI);
             let angleE2 = Math.acos(cosE2) * (180 / Math.PI);
             let angleF = Math.acos(cosF) * (180 / Math.PI);
-            
-            // Check if all angles are within 2 degrees
-            return Math.abs(angleA - angleD) <= 2 && 
-                   Math.abs(angleB2 - angleE2) <= 2 && 
-                   Math.abs(angleC - angleF) <= 2;
-                   
 
-                   
+            // Check if all angles are within 2 degrees
+            return Math.abs(angleA - angleD) <= 2 &&
+                Math.abs(angleB2 - angleE2) <= 2 &&
+                Math.abs(angleC - angleF) <= 2;
+
+
+
         default:
             return true;
     }
@@ -968,7 +1024,7 @@ function setCheckResult(result) {
     checkResult = result;
     resultShownTime = millis(); // store the time
 
-    if(checkResult) {
+    if (checkResult) {
         document.getElementById("check-btn").innerHTML = "Check";
         document.getElementById("check-btn").disabled = true;
     } else {
@@ -1002,7 +1058,7 @@ function showAnswer() {
     document.getElementById("similarity-info").style.display = "block";
     document.getElementById("check-btn").disabled = false;
     document.getElementById("show-btn").disabled = true;
-    
+
     // Move point F to the target position
     if (targetF) {
         F.x = targetF.x;
