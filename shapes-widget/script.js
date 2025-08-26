@@ -51,7 +51,7 @@ function generateRandomParams(shapeType) {
     }
 }
 
-// Calculate solutions based on random parameters
+// --- MODIFIED: Calculate solutions with detailed steps ---
 function calculateSolutions(shapeType, params) {
     const PI = Math.PI;
     let solutions = [];
@@ -65,9 +65,33 @@ function calculateSolutions(shapeType, params) {
             const cost = totalArea * 75;
 
             solutions = [
-                { answer: cylCSA.toFixed(2) + " m²", calculation: `2π × ${r} × ${h} = ${cylCSA.toFixed(2)} m²` },
-                { answer: hemiCSA.toFixed(2) + " m²", calculation: `2π × ${r}² = ${hemiCSA.toFixed(2)} m²` },
-                { answer: "₹" + cost.toFixed(2), calculation: `${totalArea.toFixed(2)} × 75 = ₹${cost.toFixed(2)}` }
+                {
+                    answer: cylCSA.toFixed(2) + " m²",
+                    calculation: `2π × ${r} × ${h} = ${cylCSA.toFixed(2)} m²`,
+                    steps: [
+                        { text: "Use the formula for the Curved Surface Area (CSA) of a cylinder.", content: "CSA = 2πrh" },
+                        { text: "Substitute the given values for radius (r) and height (h).", content: `CSA = 2 × π × ${r} × ${h}` },
+                        { text: "Calculate the result.", content: `CSA = ${cylCSA.toFixed(2)} m²` }
+                    ]
+                },
+                {
+                    answer: hemiCSA.toFixed(2) + " m²",
+                    calculation: `2π × ${r}² = ${hemiCSA.toFixed(2)} m²`,
+                    steps: [
+                        { text: "Use the formula for the CSA of a hemisphere.", content: "CSA = 2πr²" },
+                        { text: "Substitute the given value for radius (r).", content: `CSA = 2 × π × ${r}²` },
+                        { text: "Calculate the result.", content: `CSA = ${hemiCSA.toFixed(2)} m²` }
+                    ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${totalArea.toFixed(2)} × 75 = ₹${cost.toFixed(2)}`,
+                    steps: [
+                        { text: "First, find the total area by adding the two surface areas.", content: `Total Area = ${cylCSA.toFixed(2)} + ${hemiCSA.toFixed(2)} = ${totalArea.toFixed(2)} m²` },
+                        { text: "Multiply the total area by the cost per m².", content: "Cost = Total Area × Rate" },
+                        { text: "Calculate the final cost.", content: `Cost = ${totalArea.toFixed(2)} × 75 = ₹${cost.toFixed(2)}` }
+                    ]
+                }
             ];
             break;
         }
@@ -78,9 +102,33 @@ function calculateSolutions(shapeType, params) {
             const cost = csa * 0.50;
 
             solutions = [
-                { answer: slantHeight.toFixed(2) + " cm", calculation: `√(${r}² + ${h}²) = ${slantHeight.toFixed(2)} cm` },
-                { answer: csa.toFixed(2) + " cm²", calculation: `π × ${r} × ${slantHeight.toFixed(2)} = ${csa.toFixed(2)} cm²` },
-                { answer: "₹" + cost.toFixed(2), calculation: `${csa.toFixed(2)} × 0.50 = ₹${cost.toFixed(2)}` }
+                 {
+                    answer: slantHeight.toFixed(2) + " cm",
+                    calculation: `√(${r}² + ${h}²) = ${slantHeight.toFixed(2)} cm`,
+                    steps: [
+                        { text: "The slant height (l) is found using the Pythagorean theorem.", content: "l = √(r² + h²)" },
+                        { text: "Substitute the values for radius (r) and height (h).", content: `l = √(${r}² + ${h}²)` },
+                        { text: "Calculate the result for the slant height.", content: `l = ${slantHeight.toFixed(2)} cm` }
+                    ]
+                },
+                {
+                    answer: csa.toFixed(2) + " cm²",
+                    calculation: `π × ${r} × ${slantHeight.toFixed(2)} = ${csa.toFixed(2)} cm²`,
+                    steps: [
+                        { text: "Use the formula for the Curved Surface Area (CSA) of a cone.", content: "CSA = πrl" },
+                        { text: "Substitute the values for radius (r) and slant height (l).", content: `CSA = π × ${r} × ${slantHeight.toFixed(2)}` },
+                        { text: "Calculate the final area.", content: `CSA = ${csa.toFixed(2)} cm²` }
+                    ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${csa.toFixed(2)} × 0.50 = ₹${cost.toFixed(2)}`,
+                    steps: [
+                        { text: "To find the cost, multiply the surface area by the coating rate.", content: "Cost = Area × Rate" },
+                        { text: "Substitute the calculated area and the given rate.", content: `Cost = ${csa.toFixed(2)} × 0.50` },
+                        { text: "Calculate the final cost.", content: `Cost = ₹${cost.toFixed(2)}` }
+                    ]
+                }
             ];
             break;
         }
@@ -92,9 +140,33 @@ function calculateSolutions(shapeType, params) {
             const chocolates = Math.floor(volume * 0.9);
 
             solutions = [
-                { answer: area + " cm²", calculation: `5 × ${a}² = ${area} cm²` },
-                { answer: "₹" + cost, calculation: `${area} × 2 = ₹${cost}` },
-                { answer: chocolates + " chocolates", calculation: `90% of ${volume} = ${chocolates} chocolates` }
+                {
+                    answer: area + " cm²",
+                    calculation: `5 × ${a}² = ${area} cm²`,
+                    steps: [
+                        { text: "A cube has 6 faces. Since it has no lid and the bottom is not painted, we paint 5 faces.", content: "Area = 5 × (side)²" },
+                        { text: "Substitute the value for the side (a).", content: `Area = 5 × ${a}²` },
+                        { text: "Calculate the total area to be painted.", content: `Area = ${area} cm²` }
+                    ]
+                },
+                {
+                    answer: "₹" + cost,
+                    calculation: `${area} × 2 = ₹${cost}`,
+                    steps: [
+                        { text: "Multiply the painted area by the cost per cm².", content: "Cost = Area × Rate" },
+                        { text: "Substitute the area and the given rate.", content: `Cost = ${area} × 2` },
+                        { text: "Calculate the total cost.", content: `Cost = ₹${cost}` }
+                    ]
+                },
+                {
+                    answer: chocolates + " chocolates",
+                    calculation: `90% of ${volume} = ${chocolates} chocolates`,
+                    steps: [
+                        { text: "First, find the total volume of the cube.", content: "Volume = a³ = " + a + "³ = " + volume + " cm³" },
+                        { text: "The box is filled to 90% of its capacity.", content: "Capacity = 0.90 × Volume" },
+                        { text: "Calculate the number of chocolates.", content: `Chocolates = 0.90 × ${volume} = ${chocolates}` }
+                    ]
+                }
             ];
             break;
         }
@@ -105,9 +177,33 @@ function calculateSolutions(shapeType, params) {
             const volume = (4/3) * PI * r * r * r;
 
             solutions = [
-                { answer: area.toFixed(0) + " cm²", calculation: `4π × ${r}² = ${area.toFixed(0)} cm²` },
-                { answer: "₹" + cost.toFixed(2), calculation: `${area.toFixed(0)} × 1.20 = ₹${cost.toFixed(2)}` },
-                { answer: volume.toFixed(0) + " cm³", calculation: `(4/3)π × ${r}³ = ${volume.toFixed(0)} cm³` }
+                {
+                    answer: area.toFixed(0) + " cm²",
+                    calculation: `4π × ${r}² = ${area.toFixed(0)} cm²`,
+                    steps: [
+                        { text: "Use the formula for the surface area of a sphere.", content: "Area = 4πr²" },
+                        { text: "Substitute the value for the radius (r).", content: `Area = 4 × π × ${r}²` },
+                        { text: "Calculate the result.", content: `Area = ${area.toFixed(0)} cm²` }
+                    ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${area.toFixed(0)} × 1.20 = ₹${cost.toFixed(2)}`,
+                    steps: [
+                        { text: "Multiply the surface area by the cost of leather per cm².", content: "Cost = Area × Rate" },
+                        { text: "Substitute the area and the given rate.", content: `Cost = ${area.toFixed(0)} × 1.20` },
+                        { text: "Calculate the total cost.", content: `Cost = ₹${cost.toFixed(2)}` }
+                    ]
+                },
+                {
+                    answer: volume.toFixed(0) + " cm³",
+                    calculation: `(4/3)π × ${r}³ = ${volume.toFixed(0)} cm³`,
+                    steps: [
+                        { text: "Use the formula for the volume of a sphere.", content: "Volume = (4/3)πr³" },
+                        { text: "Substitute the value for the radius (r).", content: `Volume = (4/3) × π × ${r}³` },
+                        { text: "Calculate the volume.", content: `Volume = ${volume.toFixed(0)} cm³` }
+                    ]
+                }
             ];
             break;
         }
@@ -118,9 +214,33 @@ function calculateSolutions(shapeType, params) {
             const volume = (2/3) * PI * r * r * r;
 
             solutions = [
-                { answer: csa.toFixed(0) + " cm²", calculation: `2π × ${r}² = ${csa.toFixed(0)} cm²` },
-                { answer: "₹" + cost.toFixed(2), calculation: `${csa.toFixed(0)} × 0.80 = ₹${cost.toFixed(2)}` },
-                { answer: volume.toFixed(2) + " cm³", calculation: `(2/3)π × ${r}³ = ${volume.toFixed(2)} cm³` }
+                {
+                    answer: csa.toFixed(0) + " cm²",
+                    calculation: `2π × ${r}² = ${csa.toFixed(0)} cm²`,
+                    steps: [
+                        { text: "Use the formula for the Curved Surface Area (CSA) of a hemisphere.", content: "CSA = 2πr²" },
+                        { text: "Substitute the value for the radius (r).", content: `CSA = 2 × π × ${r}²` },
+                        { text: "Calculate the area.", content: `CSA = ${csa.toFixed(0)} cm²` }
+                    ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${csa.toFixed(0)} × 0.80 = ₹${cost.toFixed(2)}`,
+                    steps: [
+                        { text: "Multiply the inner surface area by the polishing cost per cm².", content: "Cost = Area × Rate" },
+                        { text: "Substitute the area and the given rate.", content: `Cost = ${csa.toFixed(0)} × 0.80` },
+                        { text: "Calculate the total cost.", content: `Cost = ₹${cost.toFixed(2)}` }
+                    ]
+                },
+                {
+                    answer: volume.toFixed(2) + " cm³",
+                    calculation: `(2/3)π × ${r}³ = ${volume.toFixed(2)} cm³`,
+                    steps: [
+                        { text: "Use the formula for the volume of a hemisphere.", content: "Volume = (2/3)πr³" },
+                        { text: "Substitute the value for the radius (r).", content: `Volume = (2/3) × π × ${r}³` },
+                        { text: "Calculate the volume.", content: `Volume = ${volume.toFixed(2)} cm³` }
+                    ]
+                }
             ];
             break;
         }
@@ -131,9 +251,33 @@ function calculateSolutions(shapeType, params) {
             const baseArea = PI * r * r;
 
             solutions = [
-                { answer: slantHeight.toFixed(0) + " cm", calculation: `√((${R}-${r})² + ${h}²) = ${slantHeight.toFixed(0)} cm` },
-                { answer: csa.toFixed(0) + " cm²", calculation: `π(${R}+${r}) × ${slantHeight.toFixed(0)} = ${csa.toFixed(0)} cm²` },
-                { answer: baseArea.toFixed(0) + " cm²", calculation: `π × ${r}² = ${baseArea.toFixed(0)} cm²` }
+                {
+                    answer: slantHeight.toFixed(0) + " cm",
+                    calculation: `√((${R}-${r})² + ${h}²) = ${slantHeight.toFixed(0)} cm`,
+                    steps: [
+                        { text: "The formula for the slant height (l) of a frustum is:", content: "l = √((R-r)² + h²)" },
+                        { text: "Substitute the values for R, r, and h.", content: `l = √((${R}-${r})² + ${h}²)` },
+                        { text: "Calculate the result.", content: `l = ${slantHeight.toFixed(0)} cm` }
+                    ]
+                },
+                {
+                    answer: csa.toFixed(0) + " cm²",
+                    calculation: `π(${R}+${r}) × ${slantHeight.toFixed(0)} = ${csa.toFixed(0)} cm²`,
+                    steps: [
+                        { text: "Use the formula for the Curved Surface Area (CSA) of a frustum.", content: "CSA = π(R+r)l" },
+                        { text: "Substitute the values for R, r, and l.", content: `CSA = π(${R}+${r}) × ${slantHeight.toFixed(0)}` },
+                        { text: "Calculate the area.", content: `CSA = ${csa.toFixed(0)} cm²` }
+                    ]
+                },
+                {
+                    answer: baseArea.toFixed(0) + " cm²",
+                    calculation: `π × ${r}² = ${baseArea.toFixed(0)} cm²`,
+                    steps: [
+                        { text: "The base is a circle. Use the formula for the area of a circle.", content: "Area = πr²" },
+                        { text: "Substitute the value for the bottom radius (r).", content: `Area = π × ${r}²` },
+                        { text: "Calculate the base area.", content: `Area = ${baseArea.toFixed(0)} cm²` }
+                    ]
+                }
             ];
             break;
         }
@@ -145,15 +289,40 @@ function calculateSolutions(shapeType, params) {
             const totalCost = (cylCSA + coneCSA) * 2;
 
             solutions = [
-                { answer: cylCSA.toFixed(0) + " cm²", calculation: `2π × ${r} × ${ch} = ${cylCSA.toFixed(0)} cm²` },
-                { answer: coneSlantHeight.toFixed(2) + " cm", calculation: `√(${r}² + ${conh}²) = ${coneSlantHeight.toFixed(2)} cm` },
-                { answer: "₹" + totalCost.toFixed(0), calculation: `(${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}) × 2 = ₹${totalCost.toFixed(0)}` }
+                {
+                    answer: cylCSA.toFixed(0) + " cm²",
+                    calculation: `2π × ${r} × ${ch} = ${cylCSA.toFixed(0)} cm²`,
+                    steps: [
+                        { text: "Use the formula for the Curved Surface Area (CSA) of a cylinder.", content: "CSA = 2πrh" },
+                        { text: "Substitute the values for radius (r) and cylinder height (ch).", content: `CSA = 2 × π × ${r} × ${ch}` },
+                        { text: "Calculate the area.", content: `CSA = ${cylCSA.toFixed(0)} cm²` }
+                    ]
+                },
+                {
+                    answer: coneSlantHeight.toFixed(2) + " cm",
+                    calculation: `√(${r}² + ${conh}²) = ${coneSlantHeight.toFixed(2)} cm`,
+                    steps: [
+                        { text: "Find the slant height (l) of the conical part using Pythagorean theorem.", content: "l = √(r² + h²)" },
+                        { text: "Substitute the values for radius (r) and cone height (conh).", content: `l = √(${r}² + ${conh}²)` },
+                        { text: "Calculate the slant height.", content: `l = ${coneSlantHeight.toFixed(2)} cm` }
+                    ]
+                },
+                {
+                    answer: "₹" + totalCost.toFixed(0),
+                    calculation: `(${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}) × 2 = ₹${totalCost.toFixed(0)}`,
+                    steps: [
+                        { text: "First, find the CSA of the conical part: πrl", content: `Cone CSA = π × ${r} × ${coneSlantHeight.toFixed(2)} = ${coneCSA.toFixed(0)} cm²` },
+                        { text: "Find the total area by adding the cylinder and cone CSAs.", content: `Total Area = ${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}` },
+                        { text: "Multiply the total area by the cloth cost per cm².", content: `Cost = (${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}) × 2 = ₹${totalCost.toFixed(0)}` }
+                    ]
+                }
             ];
             break;
         }
     }
     return solutions;
 }
+
 
 // Generate wrong options for multiple choice
 function generateOptions(correctAnswer, type = 'numeric') {
@@ -292,7 +461,8 @@ function initializeShapeData() {
                     correctAnswer: correctAnswer,
                     explanation: `Using the formula: ${solutions[index].calculation}`,
                     formula: shape.formulas[index] || "",
-                    calculation: solutions[index].calculation
+                    calculation: solutions[index].calculation,
+                    steps: solutions[index].steps // --- NEW ---
                 };
             })
         };
@@ -311,6 +481,10 @@ let pg; // Graphics buffer for 3D
 let rotationX = -0.3;
 let rotationY = 0;
 let autoRotationY = 0;
+// --- NEW: State for help overlay ---
+let helpModeActive = false;
+let currentHelpStep = 0;
+
 
 // --- NEW: P5.JS PRELOAD FUNCTION ---
 function preload() {
@@ -377,9 +551,11 @@ function draw() {
     drawLeftPanel();
     drawRightPanel();
     
-    // --- MODIFICATION: Draw feedback overlay if an answer is selected ---
+    // --- MODIFIED: Draw overlays based on state ---
     if (selectedAnswer) {
         drawFeedbackOverlay();
+    } else if (helpModeActive) {
+        drawHelpOverlay();
     }
 }
 
@@ -458,8 +634,8 @@ function drawLeftPanel() {
     // Draw Question Block
     fill('#ffffff');
     stroke('#dee2e6');
-    // --- MODIFICATION: Removed dynamic height calculation for explanation ---
-    const questionBlockHeight = 150 + question.options.length * 45; 
+    // --- MODIFIED: Adjusted height to make space for the new button ---
+    const questionBlockHeight = 160 + question.options.length * 45 + 45; 
     rect(panel.x, yPos, panel.w, questionBlockHeight, 8);
 
     // Question Header
@@ -499,7 +675,6 @@ function drawLeftPanel() {
         const optBox = { x: panel.x + 15, y: optY, w: panel.w - 30, h: 35 };
         ui.options.push({ ...optBox, text: option });
 
-        // --- MODIFICATION: Simplified styling as feedback is now in overlay ---
         let bgColor = '#f8f9fa';
         let strokeColor = '#ced4da';
         if (selectedAnswer && selectedAnswer.option === option) {
@@ -519,8 +694,25 @@ function drawLeftPanel() {
         optY += 45;
     });
 
-    // --- MODIFICATION: The entire explanation block drawing logic is REMOVED from here ---
+    // --- NEW: Draw "Help Me Solve This" Button ---
+    const btnX = panel.x + 15;
+    const btnY = optY; 
+    const btnW = panel.w - 30;
+    const btnH = 40;
+    ui.helpButton = {x: btnX, y: btnY, w: btnW, h: btnH};
+
+    stroke('#007bff');
+    fill('#e0f7fa');
+    rect(btnX, btnY, btnW, btnH, 5);
+    
+    noStroke();
+    fill('#0056b3');
+    textAlign(CENTER, CENTER);
+    textSize(16);
+    textStyle(NORMAL);
+    text("Help Me Solve This", btnX + btnW / 2, btnY + btnH / 2);
 }
+
 
 function drawRightPanel() {
     const panel = ui.rightPanel;
@@ -624,14 +816,146 @@ function drawFeedbackOverlay() {
     text("Next Question", btnX + btnW / 2, btnY + btnH / 2);
 }
 
+// --- NEW FUNCTION: To draw the interactive help overlay ---
+function drawHelpOverlay() {
+    const question = shapeData[currentShapeKey].questions[currentQuestionIndex];
+    const steps = question.steps;
 
-// --- INTERACTION ---
+    // 1. Draw semi-transparent background
+    fill(0, 0, 0, 180);
+    noStroke();
+    rect(0, 0, width, height);
+
+    // 2. Define overlay box dimensions
+    const boxW = 550;
+    const boxH = 400;
+    const boxX = (width - boxW) / 2;
+    const boxY = (height - boxH) / 2;
+
+    // 3. Draw main overlay box
+    fill('#ffffff');
+    stroke('#dee2e6');
+    rect(boxX, boxY, boxW, boxH, 12);
+
+    // 4. Draw Header
+    const headerH = 60;
+    fill('#e7f5ff');
+    noStroke();
+    rect(boxX, boxY, boxW, headerH, 12, 12, 0, 0);
+    fill('#0c63e4');
+    textSize(20);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text("Let's Solve This Step-by-Step", boxX + boxW / 2, boxY + headerH / 2);
+
+    // 5. Draw Question
+    textAlign(LEFT, TOP);
+    textStyle(NORMAL);
+    fill('#6c757d');
+    textSize(14);
+    text(question.question, boxX + 20, boxY + headerH + 15, boxW - 40);
+
+    // 6. Draw Revealed Steps
+    let yPos = boxY + headerH + 50;
+    for (let i = 0; i <= currentHelpStep && i < steps.length; i++) {
+        const step = steps[i];
+        
+        // Step number circle
+        fill('#007bff');
+        noStroke();
+        ellipse(boxX + 30, yPos + 10, 20, 20);
+        fill('#ffffff');
+        textAlign(CENTER, CENTER);
+        text(i + 1, boxX + 30, yPos + 10);
+
+        // Step text
+        textAlign(LEFT, TOP);
+        fill('#212529');
+        textSize(14);
+        text(step.text, boxX + 50, yPos, boxW - 70);
+        yPos += 30; // space for text
+
+        // Step content/calculation box
+        fill('#f8f9fa');
+        stroke('#e9ecef');
+        rect(boxX + 50, yPos, boxW - 70, 40, 5);
+
+        fill('#d63384'); // Highlight color for formulas/calcs
+        textFont('monospace');
+        textAlign(CENTER, CENTER);
+        text(step.content, boxX + 50 + (boxW - 70) / 2, yPos + 20);
+        textFont('Arial');
+        yPos += 55; // space for box + padding
+    }
+
+    // 7. Draw Buttons
+    const isLastStep = (currentHelpStep >= steps.length - 1);
+    
+    // "Close" or "Got It!" Button
+    const closeBtnW = 120;
+    const closeBtnH = 40;
+    const closeBtnX = boxX + boxW - closeBtnW - 20;
+    const closeBtnY = boxY + boxH - closeBtnH - 20;
+    ui.helpCloseButton = { x: closeBtnX, y: closeBtnY, w: closeBtnW, h: closeBtnH };
+    
+    fill(isLastStep ? '#0d6efd' : '#6c757d'); // Blue if last step, grey otherwise
+    noStroke();
+    rect(closeBtnX, closeBtnY, closeBtnW, closeBtnH, 5);
+    fill('#ffffff');
+    textSize(16);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(isLastStep ? "Got It!" : "Close", closeBtnX + closeBtnW / 2, closeBtnY + closeBtnH / 2);
+
+    // "Next Step" Button (only if not on the last step)
+    if (!isLastStep) {
+        const nextBtnW = 120;
+        const nextBtnH = 40;
+        const nextBtnX = closeBtnX - nextBtnW - 10;
+        const nextBtnY = closeBtnY;
+        ui.helpNextButton = { x: nextBtnX, y: nextBtnY, w: nextBtnW, h: nextBtnH };
+        
+        fill('#198754'); // Green
+        noStroke();
+        rect(nextBtnX, nextBtnY, nextBtnW, nextBtnH, 5);
+        fill('#ffffff');
+        text("Next Step", nextBtnX + nextBtnW / 2, nextBtnY + nextBtnH / 2);
+    } else {
+        ui.helpNextButton = null; // No next button on the last step
+    }
+}
+
+
+
+// --- MODIFIED: Interaction logic updated for overlays ---
 function mousePressed() {
-    // --- MODIFICATION: If overlay is active, only check for Next Button click ---
+    // --- NEW: If help overlay is active, only check its buttons ---
+    if (helpModeActive) {
+        const question = shapeData[currentShapeKey].questions[currentQuestionIndex];
+        const btnNext = ui.helpNextButton;
+        const btnClose = ui.helpCloseButton;
+        
+        // Check "Next Step" button click
+        if (btnNext && mouseX > btnNext.x && mouseX < btnNext.x + btnNext.w && mouseY > btnNext.y && mouseY < btnNext.y + btnNext.h) {
+            if (currentHelpStep < question.steps.length - 1) {
+                currentHelpStep++;
+            }
+            return;
+        }
+        
+        // Check "Close" button click
+        if (btnClose && mouseX > btnClose.x && mouseX < btnClose.x + btnClose.w && mouseY > btnClose.y && mouseY < btnClose.y + btnClose.h) {
+            helpModeActive = false;
+            currentHelpStep = 0;
+            return;
+        }
+        return; // Ignore all other clicks when help is active
+    }
+    
+    // If feedback overlay is active, only check for Next Button click
     if (selectedAnswer) {
         const btn = ui.nextButton;
         if (btn && mouseX > btn.x && mouseX < btn.x + btn.w && mouseY > btn.y && mouseY < btn.y + btn.h) {
-            // Move to the next question
             const numQuestions = shapeData[currentShapeKey].questions.length;
             currentQuestionIndex = (currentQuestionIndex + 1) % numQuestions;
             selectedAnswer = null; // Hide the overlay
@@ -668,7 +992,8 @@ function mousePressed() {
                 correctAnswer: correctAnswer,
                 explanation: `Using the formula: ${newSolutions[index].calculation}`,
                 formula: shapeData[currentShapeKey].formulas[index] || "",
-                calculation: newSolutions[index].calculation
+                calculation: newSolutions[index].calculation,
+                steps: newSolutions[index].steps
             };
         });
         
@@ -676,6 +1001,15 @@ function mousePressed() {
         selectedAnswer = null;
         return;
     }
+    
+    // --- NEW: Check "Help Me Solve This" button ---
+    const helpBtn = ui.helpButton;
+    if (helpBtn && mouseX > helpBtn.x && mouseX < helpBtn.x + helpBtn.w && mouseY > helpBtn.y && mouseY < helpBtn.y + helpBtn.h) {
+        helpModeActive = true;
+        currentHelpStep = 0;
+        return;
+    }
+
 
     // Check Tab clicks
     for (const tab of ui.tabs) {
@@ -683,6 +1017,7 @@ function mousePressed() {
             currentShapeKey = tab.key;
             currentQuestionIndex = 0;
             selectedAnswer = null;
+            helpModeActive = false; // Reset help mode on tab switch
             return;
         }
     }
@@ -694,6 +1029,7 @@ function mousePressed() {
             if (dist(mouseX, mouseY, dot.x + dot.w / 2, dot.y + dot.h / 2) < dot.w / 2) {
                 currentQuestionIndex = i;
                 selectedAnswer = null;
+                helpModeActive = false; // Reset help mode
                 return;
             }
         }
@@ -715,14 +1051,14 @@ function mousePressed() {
 }
 
 function mouseDragged() {
+    // --- MODIFIED: Disable dragging when any overlay is active ---
+    if (selectedAnswer || helpModeActive) return;
+
     if (mouseX > ui.rightPanel.x && mouseX < ui.rightPanel.x + ui.rightPanel.w &&
         mouseY > ui.rightPanel.y && mouseY < ui.rightPanel.y + ui.rightPanel.h) {
-        // Prevent dragging the 3D model when the overlay is active
-        if (!selectedAnswer) {
-            rotationX -= (pmouseY - mouseY) * 0.01;
-            rotationY -= (pmouseX - mouseX) * 0.01;
-            rotationX = constrain(rotationX, -PI/2, PI/2); // Limit vertical rotation
-        }
+        rotationX -= (pmouseY - mouseY) * 0.01;
+        rotationY -= (pmouseX - mouseX) * 0.01;
+        rotationX = constrain(rotationX, -PI/2, PI/2); // Limit vertical rotation
     }
 }
 
@@ -819,19 +1155,67 @@ function drawShape(p, shapeType, params) {
             p.pop();
             break;
         }
-        case 'hemisphere': { // Steel Bowl
-            const r = 4 * scale * 1.5;
-            p.push();
-            p.rotateX(PI); // Open at top
+      case 'hemisphere': { // Steel Bowl
+    const r = 4 * scale * 1.5;
+    const detail = 32;
+    
+    p.push();
+    p.rotateX(PI); // Open at top
+    
+    // Use fill() with texture instead of specularMaterial
+    p.fill(255); // White base color to show texture properly
+    p.texture(metalBowlTexture);
+    p.shininess(90); // Keep shininess for reflective effect
+    
+    // Create hemisphere using custom geometry
+    p.beginShape(p.TRIANGLES);
+    
+    for (let i = 0; i < detail; i++) {
+        for (let j = 0; j < detail / 2; j++) {
+            const u1 = i / detail;
+            const u2 = (i + 1) / detail;
+            const v1 = j / (detail / 2);
+            const v2 = (j + 1) / (detail / 2);
             
-            p.specularMaterial(220); // Highly reflective
-            p.shininess(90);
-            p.texture(metalBowlTexture);
-            p.sphere(r, 32, 16);
+            const theta1 = u1 * TWO_PI;
+            const theta2 = u2 * TWO_PI;
+            const phi1 = PI/2 + v1 * PI / 2;
+            const phi2 = PI/2 + v2 * PI / 2;
             
-            p.pop();
-            break;
+            // Calculate vertices with UV coordinates
+            const x1 = r * sin(phi1) * cos(theta1);
+            const y1 = r * cos(phi1);
+            const z1 = r * sin(phi1) * sin(theta1);
+            
+            const x2 = r * sin(phi1) * cos(theta2);
+            const y2 = r * cos(phi1);
+            const z2 = r * sin(phi1) * sin(theta2);
+            
+            const x3 = r * sin(phi2) * cos(theta1);
+            const y3 = r * cos(phi2);
+            const z3 = r * sin(phi2) * sin(theta1);
+            
+            const x4 = r * sin(phi2) * cos(theta2);
+            const y4 = r * cos(phi2);
+            const z4 = r * sin(phi2) * sin(theta2);
+            
+            // Add UV coordinates for proper texture mapping
+            // First triangle
+            p.vertex(x1, y1, z1, u1 * metalBowlTexture.width, v1 * metalBowlTexture.height);
+            p.vertex(x2, y2, z2, u2 * metalBowlTexture.width, v1 * metalBowlTexture.height);
+            p.vertex(x3, y3, z3, u1 * metalBowlTexture.width, v2 * metalBowlTexture.height);
+            
+            // Second triangle
+            p.vertex(x2, y2, z2, u2 * metalBowlTexture.width, v1 * metalBowlTexture.height);
+            p.vertex(x4, y4, z4, u2 * metalBowlTexture.width, v2 * metalBowlTexture.height);
+            p.vertex(x3, y3, z3, u1 * metalBowlTexture.width, v2 * metalBowlTexture.height);
         }
+    }
+    
+    p.endShape();
+    p.pop();
+    break;
+}
    case 'frustum': { // Water Bucket
             const h = 12 * scale * 0.5;
             const r1 = 12 * scale * 0.5; // Top radius
@@ -998,6 +1382,9 @@ function drawParameters(p, shapeType, params) {
 
 // Add keyboard shortcuts
 function keyPressed() {
+    // --- MODIFIED: Disable shortcuts when any overlay is active ---
+    if (selectedAnswer || helpModeActive) return;
+
     if (key === 'r' || key === 'R') {
         // Regenerate current shape
         const newParams = generateRandomParams(currentShapeKey);
@@ -1018,7 +1405,8 @@ function keyPressed() {
                 correctAnswer: correctAnswer,
                 explanation: `Using the formula: ${newSolutions[index].calculation}`,
                 formula: shapeData[currentShapeKey].formulas[index] || "",
-                calculation: newSolutions[index].calculation
+                calculation: newSolutions[index].calculation,
+                steps: newSolutions[index].steps
             };
         });
         
