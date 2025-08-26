@@ -317,14 +317,14 @@ function preload() {
     // Load textures from the 'assets' folder
     // Make sure you have an 'assets' folder with these images
     try {
-        metalTexture = loadImage('assets/metal_texture.png');
+        metalTexture = loadImage('assets/metal_texture.jpg');
         waffleTexture = loadImage('assets/waffle_texture.png');
-        icecreamTexture = loadImage('assets/icecream_texture.png');
-        giftTexture = loadImage('assets/wrapping_paper.png');
+        icecreamTexture = loadImage('assets/icecream_texture.jpg');
+        giftTexture = loadImage('assets/wrapping_paper.jpg');
         footballTexture = loadImage('assets/football_texture.png');
-        metalBowlTexture = loadImage('assets/brushed_metal.png');
-        plasticTexture = loadImage('assets/plastic_texture.png');
-        canvasTexture = loadImage('assets/canvas_texture.png');
+        metalBowlTexture = loadImage('assets/brushed_metal.jpg');
+        plasticTexture = loadImage('assets/plastic_texture.jpg');
+        canvasTexture = loadImage('assets/canvas_texture.jpg');
         chocolateTexture = loadImage('assets/chocolate_texture.jpg');
     } catch (e) {
         console.error("Error loading textures. Make sure you have an 'assets' folder with all the required images.", e);
