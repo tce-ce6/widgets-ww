@@ -79,10 +79,18 @@ function drawSegments() {
             text(labels[i][0], x - 5, y - segmentLengths[i] * 25 - 15);
             text(labels[i][1], x - 5, y + 25);
 
+            ellipse(x, y - segmentLengths[i] * 12.5, 25);
 
-            fill(0);
-            textSize(22);
-            text(segmentLengths[i], x - 5, y - segmentLengths[i] * 12.5 + 5);
+            if (segmentLengths[i] < 10) {
+                fill(0);
+                textSize(22);
+                text(segmentLengths[i], x - 5, y - segmentLengths[i] * 12.5 + 5);
+            }
+            else {
+                fill(0);
+                textSize(22);
+                text(segmentLengths[i], x - 10, y - segmentLengths[i] * 12.5 + 5);
+            }
         }
         else {
             noStroke();
@@ -91,6 +99,7 @@ function drawSegments() {
             text(labels[i][0], x, y - segmentLengths[i] * 25 - 15);
             text(labels[i][1], x, y + 25);
 
+            ellipse(x, y - segmentLengths[i] * 12.5, 25);
 
             fill(0);
             textSize(22);
@@ -148,9 +157,9 @@ function changeSegment(idx, delta) {
 function drawInequalityChecks() {
     const x = 900, y = 220, gap = 90;
     const checks = [
-        { a: 0, b: 1, c: 2, label: 'AB + BC > AC' },
-        { a: 0, b: 2, c: 1, label: 'AB + AC > BC' },
-        { a: 1, b: 2, c: 0, label: 'BC + AC > AB' }
+        { a: 0, b: 1, c: 2, label: '"Is AB + BC > AC?"' },
+        { a: 0, b: 2, c: 1, label: '"Is AB + AC > BC?"' },
+        { a: 1, b: 2, c: 0, label: '"Is BC + AC > AB?"' }
     ];
     const colors = ['#ff8800', '#228B22', '#0099ff'];
     const results = [];
@@ -169,7 +178,7 @@ function drawInequalityChecks() {
 
         fill('#222');
         textSize(22);
-        text(`${segmentLengths[a]} + ${segmentLengths[b]} > ${segmentLengths[c]}`, x, y + i * gap + 30);
+        text(`${segmentLengths[a]} + ${segmentLengths[b]} > ${segmentLengths[c]}`, x + 8, y + i * gap + 30);
 
         textSize(36);
         if (showTriangle) {
