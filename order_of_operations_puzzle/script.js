@@ -325,7 +325,7 @@ let isDragging = false;
 let draggedValue = null;
 let draggedX, draggedY;
 let selectedValue = null;
-let showAnswerOverlay = true;
+let showAnswerOverlay = false;
 let showReflectOverlayState = false;
 let currentQuestion = 0;
 

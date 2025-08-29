@@ -722,7 +722,7 @@ function drawShape(p, shapeType, params) {
 
 function drawParameters(p, shapeType, params) {
     p.push();
-    p.fill(255, 255, 255, 220); p.stroke(200, 200, 200); p.strokeWeight(1); p.rect(ui.rightPanel.x + 10, ui.rightPanel.y + 10, 180, 150, 8);
+    p.fill(255, 255, 255, 220); p.stroke(200, 200, 200); p.strokeWeight(1); p.rect(ui.rightPanel.x + 10, ui.rightPanel.y + 10, 180, 100, 8);
     p.fill(30, 30, 30); p.noStroke(); p.textAlign(p.LEFT, p.TOP); p.textSize(14); p.textStyle(p.BOLD); p.text("Dimensions:", ui.rightPanel.x + 20, ui.rightPanel.y + 25);
     p.textStyle(p.NORMAL); p.textSize(12);
     let yOffset = ui.rightPanel.y + 45, xOffset = ui.rightPanel.x + 25;
