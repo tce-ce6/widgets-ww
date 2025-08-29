@@ -64,11 +64,12 @@ function setup() {
     setupKeyboardListeners();
 }
 
+// --- MODIFICATION: Redesigned the main navigation UI to be full-width ---
 function setupMainUI() {
-    let navX = 200;
-    let navY = 10;
-    let navW = 400;
-    let navH = 35;
+    let navX = 0; // Start from the left edge
+    let navY = 0;
+    let navW = width; // Take full canvas width
+    let navH = 40; // Slightly taller for better look
     let segmentW = navW / 3;
 
     mainNavButtons = [
@@ -117,7 +118,7 @@ function setupOperationsUI() {
     ];
 
     const inputBoxWidth = 150;
-    const inputGap = 40;
+    const inputGap = 60; 
     const totalInputsWidth = (inputBoxWidth * 2) + inputGap;
     const firstInputX = (width - totalInputsWidth) / 2;
     const inputsY = 170;
@@ -164,6 +165,7 @@ function setupExploreUI() {
         challenge: {
             question: null,
             feedback: "",
+
             answered: false,
             askedQuestionIndices: new Set(),
             questionBank: [
@@ -233,16 +235,14 @@ function setupExploreUI() {
     generateChallengeQuestion();
 }
 
-// --- MODIFICATION: Updated Venn Diagram layout ---
 function setupVennUI() {
     vennLayout = {};
     const canvasPadding = 20;
-    const topMargin = 70; // Adjusted top margin for the universal set label
+    const topMargin = 70; 
     const standingRectWidth = 80;
     const gap = 15;
     const bottomMarginForButton = 50;
 
-    // Unchanged standing rectangles on the sides
     vennLayout.leftRect = {
         x: canvasPadding,
         y: topMargin + 20,
@@ -256,7 +256,6 @@ function setupVennUI() {
         h: height - topMargin - canvasPadding * 2 - bottomMarginForButton,
     };
 
-    // Universal "Real Numbers" set containing the two subsets
     const universalSetX = vennLayout.leftRect.x + standingRectWidth + gap;
     const universalSetWidth = width - universalSetX - (width - vennLayout.rightRect.x) - gap;
     const universalSetHeight = height - topMargin - canvasPadding - bottomMarginForButton;
@@ -268,7 +267,6 @@ function setupVennUI() {
         h: universalSetHeight,
     };
 
-    // Position subsets inside the universal set with padding
     const innerPadding = 10;
     const subsetY = vennLayout.universalSet.y + innerPadding + 20;
     const subsetH = vennLayout.universalSet.h - innerPadding * 2 - 20;
@@ -297,7 +295,6 @@ function setupVennUI() {
     vennLayout.vennNumbers = [];
     vennLayout.placedNumbers = [];
 
-    // Placement spots remain relative to the inner subset rectangles
     const rationalSpots = [];
     const ratX = vennLayout.rationalSection.x;
     const ratY = vennLayout.rationalSection.y;
@@ -340,7 +337,6 @@ function draw() {
     background(248, 249, 250);
     mainSliderX = lerp(mainSliderX, targetMainSliderX, 0.2);
 
-    // Show keyboard only when analyzer input is active
     if (currentView === 'explore' && explore.mode === 'analyzer' && explore.analyzer.isActive) {
         keyboardContainer.addClass('visible');
     } else {
@@ -361,17 +357,23 @@ function draw() {
     }
 }
 
+// --- MODIFICATION: Updated drawing logic for the full-width nav bar ---
 function drawMainNavigation() {
     let navProps = mainNavButtons[0];
     let totalWidth = mainNavButtons.length * navProps.w;
-    let cornerRadius = 18;
+    let cornerRadius = 0; // Radius for the slider
+
     noStroke();
     fill(primaryUIColor);
-    rect(navProps.x, navProps.y, totalWidth, navProps.h, cornerRadius);
+    // Draw a non-rounded background rect for a flush look
+    rect(navProps.x, navProps.y, totalWidth, navProps.h);
+
+    // Keep the slider rounded
     fill(255);
     rect(mainSliderX, navProps.y, navProps.w, navProps.h, cornerRadius);
+
     textAlign(CENTER, CENTER);
-    textSize(14);
+    textSize(16); // Slightly larger text
     for (let btn of mainNavButtons) {
         fill(currentView === btn.view ? primaryUIColor : 255);
         text(btn.label, btn.x + btn.w / 2, btn.y + btn.h / 2);
@@ -384,7 +386,6 @@ function drawOperationsView() {
     drawRandomNumberButton();
     drawNumberPresets();
     drawCalculationArea();
-    // drawPropertiesSection();
 }
 
 function drawPlaceholderView(title, description) {
@@ -541,36 +542,31 @@ function drawChallengeUI() {
     }
 }
 
-// --- MODIFICATION: Updated drawing function for the Venn Diagram ---
 function drawVennView() {
     const layout = vennLayout;
 
-    // Draw side rectangles for number pools
     noStroke();
     fill(235);
     rect(layout.leftRect.x, layout.leftRect.y, layout.leftRect.w, layout.leftRect.h, 5);
     rect(layout.rightRect.x, layout.rightRect.y, layout.rightRect.w, layout.rightRect.h, 5);
 
-    // Draw the universal "Real Numbers" set
     stroke(150);
     strokeWeight(2);
     noFill();
     rect(layout.universalSet.x, layout.universalSet.y, layout.universalSet.w, layout.universalSet.h, 5);
 
-    // Draw the "Real Numbers" label on the border
     const labelText = "Real Numbers";
     textSize(16);
     const labelWidth = textWidth(labelText) + 10;
     const labelX = layout.universalSet.x + (layout.universalSet.w - labelWidth) / 2;
     const labelY = layout.universalSet.y - 10;
-    fill(248, 249, 250); // Match canvas background
+    fill(248, 249, 250);
     noStroke();
-    rect(labelX, labelY, labelWidth, 20); // Erase border behind text
+    rect(labelX, labelY, labelWidth, 20);
     fill(51);
     textAlign(CENTER, CENTER);
     text(labelText, labelX + labelWidth / 2, labelY + 10);
 
-    // Draw the inner subset rectangles
     stroke(180);
     strokeWeight(1.5);
     fill(245);
@@ -578,7 +574,6 @@ function drawVennView() {
     fill(240);
     rect(layout.irrationalSection.x, layout.irrationalSection.y, layout.irrationalSection.w, layout.irrationalSection.h);
 
-    // Draw subset labels
     noStroke();
     fill(51);
     textSize(18);
@@ -586,7 +581,6 @@ function drawVennView() {
     text("Rational Numbers", layout.rationalSection.x + layout.rationalSection.w / 2, layout.rationalSection.y + 10);
     text("Irrational Numbers", layout.irrationalSection.x + layout.irrationalSection.w / 2, layout.irrationalSection.y + 10);
 
-    // Draw draggable numbers from the pools
     for (const num of layout.vennNumbers) {
         const isHovered = mouseX > num.x && mouseX < num.x + num.w && mouseY > num.y && mouseY < num.y + num.h;
         fill(isHovered ? highlightColor : 255);
@@ -599,7 +593,6 @@ function drawVennView() {
         text(num.display, num.x + num.w / 2, num.y + num.h / 2);
     }
 
-    // Draw numbers placed inside the diagram
     for (const num of layout.placedNumbers) {
         const boxWidth = textWidth(num.display) + 10;
         const boxHeight = 22;
@@ -614,7 +607,6 @@ function drawVennView() {
         text(num.display, num.x, num.y);
     }
 
-    // Draw the reset button with corrected text alignment
     rectMode(CORNER);
     const btn = layout.resetButton;
     const isHovered = mouseX > btn.x && mouseX < btn.x + btn.w && mouseY > btn.y && mouseY < btn.y + btn.h;
@@ -625,7 +617,7 @@ function drawVennView() {
     noStroke();
     fill(255);
     textSize(14);
-    textAlign(CENTER, CENTER); // Fix: Ensure text is centered
+    textAlign(CENTER, CENTER); 
     text(btn.label, btn.x + btn.w / 2, btn.y + btn.h / 2);
 }
 
@@ -648,6 +640,7 @@ function drawOperationSelectors() {
     }
 }
 
+// --- MODIFICATION: Added operation symbol between input boxes ---
 function drawInputSection() {
     textAlign(LEFT, CENTER);
     textSize(12);
@@ -674,6 +667,18 @@ function drawInputSection() {
         textAlign(LEFT, CENTER);
         text(i === 0 ? firstNumber : secondNumber, box.x + 5, box.y + box.h / 2);
     }
+    
+    // This entire block is needed to draw the symbol
+    let box1 = inputBoxes[0];
+    let box2 = inputBoxes[1];
+    let symbolX = box1.x + box1.w + (box2.x - (box1.x + box1.w)) / 2;
+    let symbolY = box1.y + box1.h / 2;
+
+    fill(51); 
+    textSize(24);
+    textAlign(CENTER, CENTER);
+    noStroke();
+    text(currentOperation, symbolX, symbolY);
 }
 
 function drawRandomNumberButton() {
@@ -715,7 +720,8 @@ function drawCalculationArea() {
     let boxHeight = 140;
     let lastElement = presetNumbers[presetNumbers.length - 1];
     let startY = lastElement.y + lastElement.h + 20;
-
+    let startX = 250
+    let resultX = 370
     fill(245, 245, 245);
     stroke(200);
     strokeWeight(1);
@@ -724,35 +730,35 @@ function drawCalculationArea() {
     textAlign(LEFT, TOP);
     fill(51);
     textSize(14);
-    text("Calculation & Result:", 60, startY + 10);
+    text("Calculation & Result:", startX, startY + 10);
 
     let yPos = startY + 45;
     const ySpacing = 25;
 
     fill(51);
-    text("Exact Form:", 60, yPos);
-    text(result.exact, 150, yPos);
+    text("Exact Form:", startX, yPos);
+    text(result.exact, resultX, yPos);
     yPos += ySpacing;
 
-    text("Conversion:", 60, yPos);
-    text(result.conversion, 150, yPos);
+    text("Conversion:", startX, yPos);
+    text(result.conversion, resultX, yPos);
     yPos += ySpacing;
 
     let decimalString = result.isApproximate ? `≈ ${result.decimal}` : `${result.decimal}`;
-    text("Decimal Form:", 60, yPos);
-    text(` ${decimalString}`, 150, yPos);
+    text("Decimal Form:", startX, yPos);
+    text(` ${decimalString}`, resultX, yPos);
     yPos += ySpacing;
 
     if (result.type === "rational") {
         fill(rationalColor);
-        text("Result:", 60, yPos);
+        text("Result:", startX, yPos);
         fill(rationalColor);
-        text("RATIONAL", 150, yPos);
+        text("RATIONAL", resultX, yPos);
     } else if (result.type === "irrational") {
         fill(irrationalColor);
-        text("Result:", 60, yPos);
+        text("Result:", startX, yPos);
         fill(irrationalColor);
-        text("IRRATIONAL", 150, yPos);
+        text("IRRATIONAL", resultX, yPos);
     }
 }
 
@@ -926,7 +932,6 @@ function checkChallengeAnswer(answer) {
     explore.challenge.answered = true;
 }
 
-// --- MODIFICATION: Added more irrational numbers for variety ---
 function generateNumberForType(type, usedValues) {
     let attempts = 0;
     while (attempts < 50) {
@@ -1014,14 +1019,12 @@ function generateVennNumbers() {
 }
 
 function classifyNumber(num) {
-    // Expanded check for new irrationals
     if ([Math.PI, Math.E, Math.PI / 2, Math.sqrt(2), Math.sqrt(3), Math.sqrt(5)].includes(num)) return "irrational";
     if (Number.isInteger(num)) {
         if (num > 0) return "natural";
         if (num === 0) return "whole";
         return "integer";
     }
-    // Check if it's a non-perfect square root result
     if (num > 0 && !Number.isInteger(Math.sqrt(num)) && num.toString().includes('.')) {
         let sqrtTest = Math.sqrt(num);
         if (sqrtTest % 1 !== 0) return "irrational";
@@ -1172,7 +1175,6 @@ function mousePressed() {
             if (currentView !== btn.view) {
                 currentView = btn.view;
                 targetMainSliderX = btn.x;
-                // Deactivate analyzer input when switching views
                 if (currentView !== "explore" || explore.mode !== "analyzer") {
                     explore.analyzer.isActive = false;
                 }
@@ -1268,12 +1270,10 @@ function mousePressed() {
             mouseY > inputBox.y && mouseY < inputBox.y + inputBox.h) {
             explore.analyzer.isActive = true;
             return;
-        } else if (!isClickInKeyboard) {  // Only hide if clicking outside keyboard
+        } else if (!isClickInKeyboard) {
             explore.analyzer.isActive = false;
             return;
         }
-           
-            
            
         } else {
 

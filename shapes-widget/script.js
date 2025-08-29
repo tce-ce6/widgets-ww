@@ -101,7 +101,7 @@ function calculateSolutions(shapeType, params, caseKey = null) {
                     calculation: `A = 2π × ${r.toFixed(1)} × ${length} = ${csa.toFixed(2)} m²`,
                     steps: [
                         { text: "The area covered in one revolution is the roller's CSA.", content: "A = 2πr × length" },
-                        { text: `Convert diameter ${diameter}m to radius ${r.toFixed(1)}m.`, content: `r = ${diameter} / 2` },
+                        { text: `Convert diameter ${diameter} m to radius ${r.toFixed(1)} m.`, content: `r = ${diameter} / 2` },
                         { text: "Substitute radius (r) and length.", content: `A = 2π × ${r.toFixed(1)} × ${length}` },
                         { text: "Compute the area.", content: `A ≈ ${csa.toFixed(2)} m²` }
                     ]
@@ -465,17 +465,17 @@ function drawLeftPanel() {
     const params = shape.parameters;
     switch (currentShapeKey) {
         case 'cylinder':
-            if (currentCylinderCaseIndex === 0) updatedScenario = `Mr. Sharma is constructing a water tank with a cylinder (radius = ${params.radius}m, height = ${params.height}m) and a hemispherical dome. Cost of painting = ₹75 per m²`;
-            else if (currentCylinderCaseIndex === 1) updatedScenario = `A decorative candle is a cylinder with radius = ${params.radius}cm and height = ${params.height}cm. You need to calculate its properties.`;
-            else if (currentCylinderCaseIndex === 2) updatedScenario = `A hall has ${params.pillarCount} cylindrical pillars, each of height ${params.height}m and diameter ${params.diameter}cm. Calculations are required for painting and recasting.`;
-            else updatedScenario = `A road roller with a ${params.diameter}m diameter and ${params.length}m length is used to level a road. Calculate the area covered and construction costs.`;
+            if (currentCylinderCaseIndex === 0) updatedScenario = `Mr. Sharma is constructing a water tank with a cylinder (radius = ${params.radius} m, height = ${params.height} m) and a hemispherical dome. Cost of painting = ₹75 per m²`;
+            else if (currentCylinderCaseIndex === 1) updatedScenario = `A decorative candle is a cylinder with radius = ${params.radius} cm and height = ${params.height} cm. You need to calculate its properties.`;
+            else if (currentCylinderCaseIndex === 2) updatedScenario = `A hall has ${params.pillarCount} cylindrical pillars, each of height ${params.height} m and diameter ${params.diameter} cm. Calculations are required for painting and recasting.`;
+            else updatedScenario = `A road roller with a ${params.diameter} m diameter and ${params.length} m length is used to level a road. Calculate the area covered and construction costs.`;
             break;
-        case 'cone': updatedScenario = `An ice cream cone has radius = ${params.radius}cm, height = ${params.height}cm. Chocolate coating rate = ₹0.50 per cm²`; break;
-        case 'cube': updatedScenario = `A cube-shaped gift box (side = ${params.side}cm) with no lid is painted (except bottom) and filled 90% with chocolates. Painting cost = ₹2 per cm²`; break;
-        case 'sphere': updatedScenario = `A spherical football (radius = ${params.radius}cm) is made of leather costing ₹1.20 per cm².`; break;
-        case 'hemisphere': updatedScenario = `A hemispherical steel bowl (radius = ${params.radius}cm) needs polishing on its inner surface. Polishing cost = ₹0.80 per cm²`; break;
-        case 'frustum': updatedScenario = `A frustum-shaped bucket (R=${params.topRadius}cm, r=${params.bottomRadius}cm, h=${params.height}cm) is painted inside. Painting cost = ₹1.50 per cm²`; break;
-        case 'compound': updatedScenario = `A tent model is a cylinder (r=${params.radius}cm, h=${params.cylinderHeight}cm) with a conical top (h=${params.coneHeight}cm). Cloth cost = ₹2 per cm²`; break;
+        case 'cone': updatedScenario = `An ice cream cone has radius = ${params.radius} cm, height = ${params.height} cm. Chocolate coating rate = ₹0.50 per cm²`; break;
+        case 'cube': updatedScenario = `A cube-shaped gift box (side = ${params.side} cm) with no lid is painted (except bottom) and filled 90% with chocolates. Painting cost = ₹2 per cm²`; break;
+        case 'sphere': updatedScenario = `A spherical football (radius = ${params.radius} cm) is made of leather costing ₹1.20 per cm².`; break;
+        case 'hemisphere': updatedScenario = `A hemispherical steel bowl (radius = ${params.radius} cm) needs polishing on its inner surface. Polishing cost = ₹0.80 per cm²`; break;
+        case 'frustum': updatedScenario = `A frustum-shaped bucket (R=${params.topRadius} cm, r=${params.bottomRadius} cm, h=${params.height} cm) is painted inside. Painting cost = ₹1.50 per cm²`; break;
+        case 'compound': updatedScenario = `A tent model is a cylinder (r=${params.radius} cm, h=${params.cylinderHeight} cm) with a conical top (h=${params.coneHeight} cm). Cloth cost = ₹2 per cm²`; break;
     }
     fill('#e7f5ff'); stroke('#bde0fe'); rect(panel.x, yPos, panel.w, 110, 8);
     noStroke(); fill('#0c63e4'); textAlign(LEFT, TOP); textSize(16); textStyle(BOLD); text(currentCase.title, panel.x + 15, yPos + 15);
@@ -729,17 +729,17 @@ function drawParameters(p, shapeType, params) {
     const lines = [];
     switch (shapeType) {
         case 'cylinder':
-            if (currentCylinderCaseIndex === 0) lines.push(`Radius: ${params.radius}m`, `Height: ${params.height}m`); 
-            else if (currentCylinderCaseIndex === 1) lines.push(`Radius: ${params.radius}cm`, `Height: ${params.height}cm`);
-            else if (currentCylinderCaseIndex === 2) lines.push(`Pillars: ${params.pillarCount}`, `Height: ${params.height}m`, `Diameter: ${params.diameter}cm`);
-            else lines.push(`Diameter: ${params.diameter}m`, `Length: ${params.length}m`);
+            if (currentCylinderCaseIndex === 0) lines.push(`Radius: ${params.radius} m`, `Height: ${params.height} m`); 
+            else if (currentCylinderCaseIndex === 1) lines.push(`Radius: ${params.radius} cm`, `Height: ${params.height} cm`);
+            else if (currentCylinderCaseIndex === 2) lines.push(`Pillars: ${params.pillarCount}`, `Height: ${params.height} m`, `Diameter: ${params.diameter} cm`);
+            else lines.push(`Diameter: ${params.diameter} m`, `Length: ${params.length} m`);
             break;
-        case 'cone': lines.push(`Radius: ${params.radius}cm`, `Height: ${params.height}cm`); break;
-        case 'cube': lines.push(`Side: ${params.side}cm`); break;
-        case 'sphere': lines.push(`Radius: ${params.radius}cm`); break;
-        case 'hemisphere': lines.push(`Radius: ${params.radius}cm`); break;
-        case 'frustum': lines.push(`Top Radius: ${params.topRadius}cm`, `Bottom Radius: ${params.bottomRadius}cm`, `Height: ${params.height}cm`); break;
-        case 'compound': lines.push(`Radius: ${params.radius}cm`, `Cylinder Height: ${params.cylinderHeight}cm`, `Cone Height: ${params.coneHeight}cm`); break;
+        case 'cone': lines.push(`Radius: ${params.radius} cm`, `Height: ${params.height} cm`); break;
+        case 'cube': lines.push(`Side: ${params.side} cm`); break;
+        case 'sphere': lines.push(`Radius: ${params.radius} cm`); break;
+        case 'hemisphere': lines.push(`Radius: ${params.radius} cm`); break;
+        case 'frustum': lines.push(`Top Radius: ${params.topRadius} cm`, `Bottom Radius: ${params.bottomRadius} cm`, `Height: ${params.height} cm`); break;
+        case 'compound': lines.push(`Radius: ${params.radius} cm`, `Cylinder Height: ${params.cylinderHeight} cm`, `Cone Height: ${params.coneHeight} cm`); break;
     }
     lines.forEach((line, index) => { p.text(line, xOffset, yOffset + (index * 18)); });
 
