@@ -587,7 +587,6 @@ function regenerateCurrentValues() {
 function mousePressed() {
     if(helpModeActive){ const question=shapeData[currentShapeKey].questions[currentQuestionIndex]; const btnNext=ui.helpNextButton,btnClose=ui.helpCloseButton; if(btnNext&&mouseX>btnNext.x&&mouseX<btnNext.x+btnNext.w&&mouseY>btnNext.y&&mouseY<btnNext.y+btnNext.h){if(currentHelpStep<question.steps.length-1)currentHelpStep++;return;} if(btnClose&&mouseX>btnClose.x&&mouseX<btnClose.x+btnClose.w&&mouseY>btnClose.y&&mouseY<btnClose.y+btnClose.h){helpModeActive=false;currentHelpStep=0;return;} return;}
     if(selectedAnswer){ const btn=ui.nextButton; if(btn&&mouseX>btn.x&&mouseX<btn.x+btn.w&&mouseY>btn.y&&mouseY<btn.y+btn.h){currentQuestionIndex=(currentQuestionIndex+1)%shapeData[currentShapeKey].questions.length;selectedAnswer=null;} return;}
-    const changeValuesButton=ui.changeValuesButton; if(changeValuesButton&&mouseX>changeValuesButton.x&&mouseX<changeValuesButton.x+changeValuesButton.w&&mouseY>changeValuesButton.y&&mouseY<changeValuesButton.y+changeValuesButton.h){regenerateCurrentValues();return;}
     const regenButton=ui.regenButton; if(regenButton&&mouseX>regenButton.x&&mouseX<regenButton.x+regenButton.w&&mouseY>regenButton.y&&mouseY<regenButton.y+regenButton.h){if(currentShapeKey==='cylinder')currentCylinderCaseIndex=(currentCylinderCaseIndex+1)%shapeData.cylinder.cases.length;regenerateCurrentValues();return;}
     const helpBtn=ui.helpButton; if(helpBtn&&mouseX>helpBtn.x&&mouseX<helpBtn.x+helpBtn.w&&mouseY>helpBtn.y&&mouseY<helpBtn.y+helpBtn.h){helpModeActive=true;currentHelpStep=0;return;}
     for(const tab of ui.tabs){if(mouseX>tab.x&&mouseX<tab.x+tab.w&&mouseY>tab.y&&mouseY<tab.y+tab.h){currentShapeKey=tab.key;currentQuestionIndex=0;currentCylinderCaseIndex=0;regenerateCurrentValues();selectedAnswer=null;helpModeActive=false;return;}}
@@ -744,10 +743,10 @@ function drawParameters(p, shapeType, params) {
     }
     lines.forEach((line, index) => { p.text(line, xOffset, yOffset + (index * 18)); });
 
-    const changeValuesButton = { x: ui.rightPanel.x + 20, y: ui.rightPanel.y + ui.rightPanel.h - 125, w: 160, h: 35 };
-    ui.changeValuesButton = changeValuesButton;
-    p.fill(23, 162, 184); p.stroke(20, 130, 150); p.strokeWeight(2); p.rect(changeValuesButton.x, changeValuesButton.y, changeValuesButton.w, changeValuesButton.h, 5);
-    p.fill(255); p.noStroke(); p.textAlign(p.CENTER, p.CENTER); p.textSize(12); p.textStyle(p.BOLD); p.text("Change Values", changeValuesButton.x + changeValuesButton.w / 2, changeValuesButton.y + changeValuesButton.h / 2);
+    // const changeValuesButton = { x: ui.rightPanel.x + 20, y: ui.rightPanel.y + ui.rightPanel.h - 125, w: 160, h: 35 };
+    // ui.changeValuesButton = changeValuesButton;
+    // p.fill(23, 162, 184); p.stroke(20, 130, 150); p.strokeWeight(2); p.rect(changeValuesButton.x, changeValuesButton.y, changeValuesButton.w, changeValuesButton.h, 5);
+    // p.fill(255); p.noStroke(); p.textAlign(p.CENTER, p.CENTER); p.textSize(12); p.textStyle(p.BOLD); p.text("Change Values", changeValuesButton.x + changeValuesButton.w / 2, changeValuesButton.y + changeValuesButton.h / 2);
 
     const regenButton = { x: ui.rightPanel.x + 20, y: ui.rightPanel.y + ui.rightPanel.h - 80, w: 160, h: 35 };
     ui.regenButton = regenButton;
