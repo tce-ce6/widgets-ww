@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Number Arranger Simulation</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="simulation-container">
+        <h1>🔢 Rational Number Arranger</h1>
+        
+        <div class="controls">
+            <label>Enter 2-5 fractions : </label>
+            <input type="text" id="fractionInput" placeholder="e.g: -9/10, 7/-8, -3/4">
+            <button onclick="startSimulation()">Start Simulation</button>
+            <button class="reset-btn" onclick="resetSimulation()">Reset</button>
+            <button onclick="generateRandom()">Random Example</button>
+        </div>
+        
+        <div id="canvas-container"></div>
+    </div>
+    
+    <script src="p5.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
