@@ -193,9 +193,9 @@ class RationalNumberSimulation {
             const y = 60;
 
             if (i + 1 <= this.step) {
-                fill(76, 175, 80);
+                fill('#16A085'); // Medium Teal
             } else {
-                fill(200);
+                fill('#E6D4F0'); // Light Purple
             }
             circle(x, y, 30);
 
@@ -205,12 +205,12 @@ class RationalNumberSimulation {
             textStyle(BOLD);
             text(i + 1, x, y);
 
-            fill(50);
+            fill('#4A235A'); // Dark Purple
             textSize(10);
             text(steps[i], x, y + 25);
 
             if (i < steps.length - 1) {
-                stroke(200);
+                stroke('#E6D4F0'); // Light Purple
                 line(x + 15, y, x + stepWidth - 15, y);
                 noStroke();
             }
@@ -218,7 +218,7 @@ class RationalNumberSimulation {
     }
 
     drawInputStep() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 1: Input Rational Numbers", width / 2, 120);
@@ -232,7 +232,7 @@ class RationalNumberSimulation {
             const progress = this.stepAnimations.normalization;
             const alpha = 255 * progress;
 
-            fill(70, 130, 180, alpha);
+            fill(142, 68, 173, alpha); // Medium Purple with alpha
             rect(x - 50, startY, 100, 60, 10);
 
             fill(255, alpha);
@@ -243,7 +243,7 @@ class RationalNumberSimulation {
     }
 
     drawNormalizationStep() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 2: Normalize Fractions", width / 2, 120);
@@ -258,24 +258,22 @@ class RationalNumberSimulation {
             const x = width / 2 + (i - (this.fractions.length - 1) / 2) * 150;
 
             // Original fraction (from raw input)
-            fill(200, 100, 100);
+            fill('#E6D4F0'); // Light Purple
             rect(x - 35, startY, 70, 50, 8);
-            fill(255);
+            fill('#4A235A'); // Dark Purple text for contrast
             textAlign(CENTER, CENTER);
             textSize(14);
             text(this.rawFractions[i].toString(), x, startY + 25);
 
             // Arrow with animation
             if (progress > 0) {
-                // Curved arrow
-                const arrowX = x - 50; // Position arrow to the left of the boxes
+                const arrowX = x - 50;
                 const arrowStartY = startY + 25;
                 const arrowEndY = startY + 80 + 25;
 
                 noFill();
-                stroke(100);
+                stroke('#4A235A'); // Dark Purple
                 strokeWeight(1.5);
-                // Draw a bezier curve for the arrow's body
                 bezier(
                     arrowX, arrowStartY,      // Anchor point 1
                     arrowX - 40, arrowStartY + 20, // Control point 1
@@ -283,12 +281,10 @@ class RationalNumberSimulation {
                     arrowX, arrowEndY        // Anchor point 2
                 );
 
-                // Draw the arrowhead
                 push();
                 translate(arrowX, arrowEndY);
-                fill(100);
+                fill('#4A235A'); // Dark Purple
                 noStroke();
-                // Arrowhead shape
                 triangle(0, 0, -8, -5, -8, 5);
                 pop();
             }
@@ -297,19 +293,18 @@ class RationalNumberSimulation {
             if (progress > 0.5) {
                 const normalizedY = startY + 80;
                 const alpha = (progress - 0.5) * 2 * 255;
-                fill(100, 180, 100, alpha);
+                fill(22, 160, 133, alpha); // Medium Teal with alpha
                 rect(x - 35, normalizedY, 70, 50, 8);
                 fill(255, alpha);
                 text(this.normalizedFractions[i].toString(), x, normalizedY + 25);
             }
         }
-        // Reset drawing styles
         noStroke();
     }
 
 
     drawLCMStep() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 3: Find LCM of Denominators", width / 2, 120);
@@ -319,12 +314,9 @@ class RationalNumberSimulation {
         text("Denominators: " + denominators.join(", "), width / 2, 160);
 
         const progress = this.stepAnimations.lcmCalculation;
-        if (progress > 0.3) {
-            // text("Calculating LCM...", width / 2, 190);
-        }
 
         if (progress > 0.6) {
-            fill(180, 50, 50);
+            fill('#0B4F44'); // Dark Teal
             textSize(18);
             text(`LCM = ${this.lcm}`, width / 2, 220);
         }
@@ -344,7 +336,7 @@ class RationalNumberSimulation {
             const den = denominators[i];
             const y = startY + i * 40;
 
-            fill(100);
+            fill('#4A235A'); // Dark Purple
             textAlign(RIGHT, CENTER);
             textSize(12);
             text(`${den}: `, startX - 20, y);
@@ -357,14 +349,14 @@ class RationalNumberSimulation {
                     const x = startX + (j - 1) * spacing;
 
                     if (multiple === this.lcm) {
-                        fill(255, 100, 100);
+                        fill('#16A085'); // Medium Teal
                     } else {
-                        fill(200);
+                        fill('#E6D4F0'); // Light Purple
                     }
                     noStroke();
                     circle(x, y, 25);
 
-                    fill(0);
+                    fill('#4A235A'); // Dark Purple
                     textAlign(CENTER, CENTER);
                     textSize(10);
                     text(multiple, x, y);
@@ -373,28 +365,28 @@ class RationalNumberSimulation {
                 for (let j = 1; j <= 7; j++) {
                     const multiple = den * j;
                     const x = startX + (j - 1) * spacing;
-                    fill(200);
+                    fill('#E6D4F0'); // Light Purple
                     noStroke();
                     circle(x, y, 25);
 
-                    fill(0);
+                    fill('#4A235A'); // Dark Purple
                     textAlign(CENTER, CENTER);
                     textSize(10);
                     text(multiple, x, y);
                 }
 
                 const dotsX = startX + 7 * spacing;
-                fill(150);
+                fill('#4A235A'); // Dark Purple
                 textAlign(LEFT, CENTER);
                 textSize(16);
                 text('. . . . .', dotsX, y);
 
                 const finalCircleX = dotsX + 60;
-                fill(255, 100, 100);
+                fill('#16A085'); // Medium Teal
                 noStroke();
                 circle(finalCircleX, y, 25);
 
-                fill(0);
+                fill('#4A235A'); // Dark Purple
                 textAlign(CENTER, CENTER);
                 textSize(10);
                 text(this.lcm, finalCircleX, y);
@@ -403,7 +395,7 @@ class RationalNumberSimulation {
     }
 
     drawConversionStep() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 4: Convert to Equivalent Fractions", width / 2, 120);
@@ -418,8 +410,8 @@ class RationalNumberSimulation {
             const x = width / 2 + (i - (this.normalizedFractions.length - 1) / 2) * 160;
             let currentY = startY;
 
-            // Blue box (Normalized)
-            fill(100, 150, 200);
+            // Purple box (Normalized)
+            fill('#8E44AD'); // Medium Purple
             rect(x - 40, currentY, 80, 50, 8);
             fill(255);
             textAlign(CENTER, CENTER);
@@ -431,7 +423,7 @@ class RationalNumberSimulation {
             if (progress > 0.2) {
                 currentY += 25;
                 const factor = this.lcm / this.normalizedFractions[i].denominator;
-                fill(150);
+                fill('#4A235A'); // Dark Purple
                 textSize(14);
                 text(`× ${factor}/${factor}`, x, currentY);
                 currentY += 25;
@@ -440,16 +432,16 @@ class RationalNumberSimulation {
             // Arrow
             if (progress > 0.4) {
                 currentY += 10;
-                fill(100);
+                fill('#4A235A'); // Dark Purple
                 noStroke();
                 triangle(x, currentY + 10, x - 5, currentY, x + 5, currentY); // Downward arrow
                 currentY += 20;
             }
 
-            // Green box (Equivalent)
+            // Teal box (Equivalent)
             if (progress > 0.6) {
                 const alpha = map(progress, 0.6, 1, 0, 255);
-                fill(50, 150, 50, alpha);
+                fill(22, 160, 133, alpha); // Medium Teal with alpha
                 rect(x - 50, currentY, 100, 50, 8);
                 fill(255, alpha);
                 textSize(16);
@@ -461,7 +453,7 @@ class RationalNumberSimulation {
 
 
     drawArrangementStep() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 5: Arrange the Fractions", width / 2, 120);
@@ -479,12 +471,12 @@ class RationalNumberSimulation {
         const lineStart = 100;
         const lineEnd = 700;
 
-        stroke(100);
+        stroke('#4A235A'); // Dark Purple
         strokeWeight(3);
         line(lineStart, lineY, lineEnd, lineY);
 
         noStroke();
-        fill(100);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(10);
 
@@ -496,7 +488,7 @@ class RationalNumberSimulation {
             const x = lineStart + (lineEnd - lineStart) * i / 10;
             const val = minVal + range * i / 10;
 
-            stroke(150);
+            stroke('#8E44AD'); // Medium Purple
             line(x, lineY - 5, x, lineY + 5);
             noStroke();
             text(val.toFixed(2), x, lineY + 10);
@@ -515,42 +507,49 @@ class RationalNumberSimulation {
             if (this.draggedIndex === i) {
                 x = mouseX + this.dragOffset.x;
                 y = mouseY + this.dragOffset.y;
-            }
-
-            fill(70, 130, 180);
-            if (this.draggedIndex === i) {
-                fill(100, 160, 210);
+                fill('#E6D4F0'); // Light Purple for dragged item
+            } else {
+                fill('#8E44AD'); // Medium Purple for normal items
             }
             rect(x - 40, y - 25, 80, 50, 10);
 
-            fill(255);
+            // Set text color based on dragged state for contrast
+            if (this.draggedIndex === i) {
+                fill('#4A235A'); // Dark Purple text on light purple background
+            } else {
+                fill(255); // White text on medium purple background
+            }
             textAlign(CENTER, CENTER);
             textSize(14);
             text(this.rawFractions[i].toString(), x, y - 5);
 
+            if (this.draggedIndex === i) {
+                fill('#8E44AD'); // Medium Purple sub-text
+            } else {
+                fill('#E6D4F0'); // Light Purple sub-text
+            }
             textSize(10);
-            fill(200);
             text(this.equivalentFractions[i].toString(), x, y + 15);
         }
     }
 
     drawArrangementFeedback() {
-        fill(76, 175, 80);
+        fill('#16A085'); // Medium Teal
         rect(width / 2 - 50, 380, 100, 40, 10);
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(14);
         text("Check Order", width / 2, 400);
 
-        fill(255, 152, 0);
+        fill('#8E44AD'); // Medium Purple
         rect(width / 2 - 160, 380, 80, 40, 10);
         fill(255);
         text("Hint", width / 2 - 120, 400);
 
         if (this.showHint) {
-            fill(255, 255, 200, 200);
+            fill(207, 245, 240, 200); // Light Teal with alpha
             rect(50, 430, width - 100, 50, 10);
-            fill(100);
+            fill('#4A235A'); // Dark Purple
             textAlign(CENTER, CENTER);
             textSize(12);
             text("Remember: Negative numbers are smaller. Compare numerators when denominators are equal!", width / 2, 455);
@@ -558,18 +557,18 @@ class RationalNumberSimulation {
     }
 
     drawFinalAnswer() {
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
         text("Step 6: Final Answer", width / 2, 120);
 
         textSize(16);
-        fill(76, 175, 80);
+        fill('#16A085'); // Medium Teal
         text("Congratulations! Here's the complete solution:", width / 2, 160);
 
         const startY = 200;
 
-        fill(50);
+        fill('#4A235A'); // Dark Purple
         textSize(14);
         textAlign(LEFT, TOP);
         text("Original fractions:", 100, startY);
@@ -590,7 +589,7 @@ class RationalNumberSimulation {
         const lineStart = 100;
         const lineEnd = 700;
 
-        stroke(100);
+        stroke('#4A235A'); // Dark Purple
         strokeWeight(3);
         line(lineStart, lineY, lineEnd, lineY);
         noStroke();
@@ -604,7 +603,7 @@ class RationalNumberSimulation {
             const val = fraction.toDecimal();
             const x = lineStart + (lineEnd - lineStart) * (val - minVal) / range;
 
-            fill(76, 175, 80);
+            fill('#16A085'); // Medium Teal
             rect(x - 30, lineY - 40, 60, 35, 5);
 
             fill(255);
@@ -612,11 +611,11 @@ class RationalNumberSimulation {
             textSize(12);
             text(this.rawFractions[i].toString(), x, lineY - 22);
 
-            stroke(150);
+            stroke('#8E44AD'); // Medium Purple
             line(x, lineY - 5, x, lineY + 5);
             noStroke();
 
-            fill(100);
+            fill('#4A235A'); // Dark Purple
             textSize(10);
             text(val.toFixed(2), x, lineY + 15);
         }
@@ -624,7 +623,7 @@ class RationalNumberSimulation {
 
     drawNavigationButtons() {
         if (this.step < 6) {
-            fill(76, 175, 80);
+            fill('#16A085'); // Medium Teal
             rect(width - 120, height - 50, 100, 35, 8);
             fill(255);
             textAlign(CENTER, CENTER);
@@ -633,14 +632,14 @@ class RationalNumberSimulation {
         }
 
         if (this.step > 1) {
-            fill(150);
+            fill('#8E44AD'); // Medium Purple
             rect(20, height - 50, 100, 35, 8);
             fill(255);
             text("Previous", 70, height - 32);
         }
 
         if (this.step === 6) {
-            fill(255, 152, 0);
+            fill('#0B4F44'); // Dark Teal
             rect(width / 2 - 80, height - 50, 160, 35, 8);
             fill(255);
             text("Try New Set", width / 2, height - 32);
