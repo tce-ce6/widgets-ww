@@ -255,7 +255,7 @@ button:disabled{
     justify-content: center;
         padding: 0;
         flex-grow: 1;
-        min-height: calc(100% - 200px);
+        min-height: calc(100% - 300px);
         margin: auto;
         height: 100%;
   }

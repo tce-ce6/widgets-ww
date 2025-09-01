@@ -6,8 +6,8 @@ let D, E, F;
 let targetF = null;
 let draggingF = false;
 let offsetF = { x: 0, y: 0 };
-let leftOrigin = { x: 150, y: 240 };
-let rightOrigin = { x: 550, y: 240 };
+let leftOrigin = { x: 150, y: 280 };
+let rightOrigin = { x: 550, y: 280 };
 let PIXEL_SCALE = 7;
 let checkResult = null;
 let errorMessage = null;
@@ -559,10 +559,10 @@ function displayTriangleAngles(p1, p2, p3, isLeft, sasMode = false) {
         stroke(255);
         strokeWeight(outline);
         fill(0);
-        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by);
+        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx + 15, by - 25);
         noStroke();
         fill(0);
-        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by);
+        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx + 15, by - 25);
     } else {
         // Show all angles (AA mode)
         // A/D
@@ -571,30 +571,30 @@ function displayTriangleAngles(p1, p2, p3, isLeft, sasMode = false) {
         stroke(255);
         strokeWeight(outline);
         fill(0);
-        text(`∠${isLeft ? 'A' : 'D'}: ${angleA.toFixed(1)}°`, ax, ay);
+        text(`∠${isLeft ? 'A' : 'D'}: ${angleA.toFixed(1)}°`, ax + 20, ay + 40);
         noStroke();
         fill(0);
-        text(`∠${isLeft ? 'A' : 'D'}: ${angleA.toFixed(1)}°`, ax, ay);
+        text(`∠${isLeft ? 'A' : 'D'}: ${angleA.toFixed(1)}°`, ax + 20, ay + 40);
         // B/E
         let bx = p2.x + offset;
         let by = p2.y + offset;
         stroke(255);
         strokeWeight(outline);
         fill(0);
-        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by);
+        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by - 35);
         noStroke();
         fill(0);
-        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by);
+        text(`∠${isLeft ? 'B' : 'E'}: ${angleB.toFixed(1)}°`, bx, by - 35);
         // C/F
         let cx = p3.x;
         let cy = p3.y - offset - 10;
         stroke(255);
         strokeWeight(outline);
         fill(0);
-        text(`∠${isLeft ? 'C' : 'F'}: ${angleC.toFixed(1)}°`, cx, cy);
+        text(`∠${isLeft ? 'C' : 'F'}: ${angleC.toFixed(1)}°`, cx + 35, cy + 25);
         noStroke();
         fill(0);
-        text(`∠${isLeft ? 'C' : 'F'}: ${angleC.toFixed(1)}°`, cx, cy);
+        text(`∠${isLeft ? 'C' : 'F'}: ${angleC.toFixed(1)}°`, cx + 35, cy + 25);
     }
     pop();
 }
