@@ -232,29 +232,91 @@ function calculateSolutions(shapeType, params, caseKey = null) {
                         steps: [{ text: "Use the formula for the CSA of a hemisphere.", content: "CSA = 2πr²" }, { text: "Substitute the given value for radius (r).", content: `CSA = 2 × π × ${r}²` }, { text: "Calculate the result.", content: `CSA = ${hemiCSA.toFixed(2)} m²` }]
                     },
                     {
+                        answer: totalArea.toFixed(2) + " m²",
+                        calculation: `${cylCSA.toFixed(2)} + ${hemiCSA.toFixed(2)} = ${totalArea.toFixed(2)} m²`,
+                        steps: [
+                            { text: "The total area is the sum of the cylinder's CSA and the dome's CSA.", content: "Total Area = CSA_cyl + CSA_hemi" },
+                            { text: "Substitute the calculated areas.", content: `Total Area = ${cylCSA.toFixed(2)} + ${hemiCSA.toFixed(2)}` },
+                            { text: "Calculate the total surface area.", content: `Total Area = ${totalArea.toFixed(2)} m²` }
+                        ]
+                    },
+                    {
                         answer: "₹" + cost.toFixed(2),
                         calculation: `${totalArea.toFixed(2)} × 75 = ₹${cost.toFixed(2)}`,
-                        steps: [{ text: "First, find the total area by adding the two surface areas.", content: `Total Area = ${cylCSA.toFixed(2)} + ${hemiCSA.toFixed(2)} = ${totalArea.toFixed(2)} m²` }, { text: "Multiply the total area by the cost per m².", content: "Cost = Total Area × Rate" }, { text: "Calculate the final cost.", content: `Cost = ${totalArea.toFixed(2)} × 75 = ₹${cost.toFixed(2)}` }]
+                        steps: [
+                            { text: "Multiply the total painted area by the cost per m².", content: "Cost = Total Area × Rate" },
+                            { text: "Substitute the total area and the given rate.", content: `Cost = ${totalArea.toFixed(2)} × 75` },
+                            { text: "Calculate the final painting cost.", content: `Cost = ₹${cost.toFixed(2)}` }
+                        ]
                     }
                 ];
             }
             break;
         }
+        // ##################################################
+        // ### MODIFICATIONS START: CONE CASE ###
+        // ##################################################
         case 'cone': {
             const { radius: r, height: h } = params;
             const slantHeight = Math.sqrt(r * r + h * h);
             const csa = PI * r * slantHeight;
+            const volume = (1/3) * PI * r * r * h;
             const cost = csa * 0.50;
-            solutions = [ { answer: slantHeight.toFixed(2) + " cm", calculation: `√(${r}² + ${h}²) = ${slantHeight.toFixed(2)} cm`, steps: [ { text: "The slant height (l) is found using the Pythagorean theorem.", content: "l = √(r² + h²)" }, { text: "Substitute the values for radius (r) and height (h).", content: `l = √(${r}² + ${h}²)` }, { text: "Calculate the result for the slant height.", content: `l = ${slantHeight.toFixed(2)} cm` } ] }, { answer: csa.toFixed(2) + " cm²", calculation: `π × ${r} × ${slantHeight.toFixed(2)} = ${csa.toFixed(2)} cm²`, steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a cone.", content: "CSA = πrl" }, { text: "Substitute the values for radius (r) and slant height (l).", content: `CSA = π × ${r} × ${slantHeight.toFixed(2)}` }, { text: "Calculate the final area.", content: `CSA = ${csa.toFixed(2)} cm²` } ] }, { answer: "₹" + cost.toFixed(2), calculation: `${csa.toFixed(2)} × 0.50 = ₹${cost.toFixed(2)}`, steps: [ { text: "To find the cost, multiply the surface area by the coating rate.", content: "Cost = Area × Rate" }, { text: "Substitute the calculated area and the given rate.", content: `Cost = ${csa.toFixed(2)} × 0.50` }, { text: "Calculate the final cost.", content: `Cost = ₹${cost.toFixed(2)}` } ] } ];
+            solutions = [
+                {
+                    answer: slantHeight.toFixed(2) + " cm",
+                    calculation: `√(${r}² + ${h}²) = ${slantHeight.toFixed(2)} cm`,
+                    steps: [ { text: "The slant height (l) is found using the Pythagorean theorem.", content: "l = √(r² + h²)" }, { text: "Substitute the values for radius (r) and height (h).", content: `l = √(${r}² + ${h}²)` }, { text: "Calculate the result for the slant height.", content: `l = ${slantHeight.toFixed(2)} cm` } ]
+                },
+                {
+                    answer: csa.toFixed(2) + " cm²",
+                    calculation: `π × ${r} × ${slantHeight.toFixed(2)} = ${csa.toFixed(2)} cm²`,
+                    steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a cone.", content: "CSA = πrl" }, { text: "Substitute the values for radius (r) and slant height (l).", content: `CSA = π × ${r} × ${slantHeight.toFixed(2)}` }, { text: "Calculate the final area.", content: `CSA = ${csa.toFixed(2)} cm²` } ]
+                },
+                {
+                    answer: volume.toFixed(2) + " cm³",
+                    calculation: `(1/3)π × ${r}² × ${h} = ${volume.toFixed(2)} cm³`,
+                    steps: [ { text: "Use the formula for the volume of a cone.", content: "V = (1/3)πr²h" }, { text: "Substitute the values for radius (r) and height (h).", content: `V = (1/3)π × ${r}² × ${h}` }, { text: "Calculate the volume.", content: `V ≈ ${volume.toFixed(2)} cm³` } ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${csa.toFixed(2)} × 0.50 = ₹${cost.toFixed(2)}`,
+                    steps: [ { text: "To find the cost, multiply the surface area by the coating rate.", content: "Cost = Area × Rate" }, { text: "Substitute the calculated area and the given rate.", content: `Cost = ${csa.toFixed(2)} × 0.50` }, { text: "Calculate the final cost.", content: `Cost = ₹${cost.toFixed(2)}` } ]
+                }
+            ];
             break;
         }
+        // ##################################################
+        // ### MODIFICATIONS START: CUBE CASE ###
+        // ##################################################
         case 'cube': {
             const { side: a } = params;
             const area = 5 * a * a;
             const cost = area * 2;
             const volume = a * a * a;
             const chocolates = Math.floor(volume * 0.9);
-            solutions = [ { answer: area + " cm²", calculation: `5 × ${a}² = ${area} cm²`, steps: [ { text: "A cube has 6 faces. Since it has no lid and the bottom is not painted, we paint 5 faces.", content: "Area = 5 × (side)²" }, { text: "Substitute the value for the side (a).", content: `Area = 5 × ${a}²` }, { text: "Calculate the total area to be painted.", content: `Area = ${area} cm²` } ] }, { answer: "₹" + cost, calculation: `${area} × 2 = ₹${cost}`, steps: [ { text: "Multiply the painted area by the cost per cm².", content: "Cost = Area × Rate" }, { text: "Substitute the area and the given rate.", content: `Cost = ${area} × 2` }, { text: "Calculate the total cost.", content: `Cost = ₹${cost}` } ] }, { answer: chocolates + " chocolates", calculation: `90% of ${volume} = ${chocolates} chocolates`, steps: [ { text: "First, find the total volume of the cube.", content: "Volume = a³ = " + a + "³ = " + volume + " cm³" }, { text: "The box is filled to 90% of its capacity.", content: "Capacity = 0.90 × Volume" }, { text: "Calculate the number of chocolates.", content: `Chocolates = 0.90 × ${volume} = ${chocolates}` } ] } ];
+            solutions = [
+                {
+                    answer: area + " cm²",
+                    calculation: `5 × ${a}² = ${area} cm²`,
+                    steps: [ { text: "A cube has 6 faces. Since it's open at the top, we paint 5 faces.", content: "Area = 5 × (side)²" }, { text: "Substitute the value for the side (a).", content: `Area = 5 × ${a}²` }, { text: "Calculate the total area to be painted.", content: `Area = ${area} cm²` } ]
+                },
+                {
+                    answer: "₹" + cost,
+                    calculation: `${area} × 2 = ₹${cost}`,
+                    steps: [ { text: "Multiply the painted area by the cost per cm².", content: "Cost = Area × Rate" }, { text: "Substitute the area and the given rate.", content: `Cost = ${area} × 2` }, { text: "Calculate the total cost.", content: `Cost = ₹${cost}` } ]
+                },
+                {
+                    answer: volume + " cm³",
+                    calculation: `${a}³ = ${volume} cm³`,
+                    steps: [ { text: "Use the formula for the volume of a cube.", content: "Volume = a³" }, { text: "Substitute the value for the side (a).", content: `Volume = ${a}³` }, { text: "Calculate the total volume of the box.", content: `Volume = ${volume} cm³` } ]
+                },
+                {
+                    answer: chocolates + " chocolates",
+                    calculation: `90% of ${volume} = ${chocolates}`,
+                    steps: [ { text: "The box is filled to 90% of its capacity.", content: "Capacity = 0.90 × Volume" }, { text: "Substitute the calculated volume.", content: `Chocolates = 0.90 × ${volume}` }, { text: "Calculate the number of chocolates that can fit.", content: `≈ ${chocolates}` } ]
+                }
+            ];
             break;
         }
         case 'sphere': {
@@ -273,21 +335,96 @@ function calculateSolutions(shapeType, params, caseKey = null) {
             solutions = [ { answer: csa.toFixed(0) + " cm²", calculation: `2π × ${r}² = ${csa.toFixed(0)} cm²`, steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a hemisphere.", content: "CSA = 2πr²" }, { text: "Substitute the value for the radius (r).", content: `CSA = 2 × π × ${r}²` }, { text: "Calculate the area.", content: `CSA = ${csa.toFixed(0)} cm²` } ] }, { answer: "₹" + cost.toFixed(2), calculation: `${csa.toFixed(0)} × 0.80 = ₹${cost.toFixed(2)}`, steps: [ { text: "Multiply the inner surface area by the polishing cost per cm².", content: "Cost = Area × Rate" }, { text: "Substitute the area and the given rate.", content: `Cost = ${csa.toFixed(0)} × 0.80` }, { text: "Calculate the total cost.", content: `Cost = ₹${cost.toFixed(2)}` } ] }, { answer: volume.toFixed(2) + " cm³", calculation: `(2/3)π × ${r}³ = ${volume.toFixed(2)} cm³`, steps: [ { text: "Use the formula for the volume of a hemisphere.", content: "Volume = (2/3)πr³" }, { text: "Substitute the value for the radius (r).", content: `Volume = (2/3) × π × ${r}³` }, { text: "Calculate the volume.", content: `Volume = ${volume.toFixed(2)} cm³` } ] } ];
             break;
         }
+        // ##################################################
+        // ### MODIFICATIONS START: FRUSTUM CASE ###
+        // ##################################################
         case 'frustum': {
             const { topRadius: R, bottomRadius: r, height: h } = params;
             const slantHeight = Math.sqrt((R - r) * (R - r) + h * h);
             const csa = PI * (R + r) * slantHeight;
             const baseArea = PI * r * r;
-            solutions = [ { answer: slantHeight.toFixed(0) + " cm", calculation: `√((${R}-${r})² + ${h}²) = ${slantHeight.toFixed(0)} cm`, steps: [ { text: "The formula for the slant height (l) of a frustum is:", content: "l = √((R-r)² + h²)" }, { text: "Substitute the values for R, r, and h.", content: `l = √((${R}-${r})² + ${h}²)` }, { text: "Calculate the result.", content: `l = ${slantHeight.toFixed(0)} cm` } ] }, { answer: csa.toFixed(0) + " cm²", calculation: `π(${R}+${r}) × ${slantHeight.toFixed(0)} = ${csa.toFixed(0)} cm²`, steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a frustum.", content: "CSA = π(R+r)l" }, { text: "Substitute the values for R, r, and l.", content: `CSA = π(${R}+${r}) × ${slantHeight.toFixed(0)}` }, { text: "Calculate the area.", content: `CSA = ${csa.toFixed(0)} cm²` } ] }, { answer: baseArea.toFixed(0) + " cm²", calculation: `π × ${r}² = ${baseArea.toFixed(0)} cm²`, steps: [ { text: "The base is a circle. Use the formula for the area of a circle.", content: "Area = πr²" }, { text: "Substitute the value for the bottom radius (r).", content: `Area = π × ${r}²` }, { text: "Calculate the base area.", content: `Area = ${baseArea.toFixed(0)} cm²` } ] } ];
+            const totalPaintedArea = csa + baseArea;
+            const cost = totalPaintedArea * 1.50;
+            const volume = (1/3) * PI * h * (R*R + R*r + r*r);
+            solutions = [
+                {
+                    answer: slantHeight.toFixed(0) + " cm",
+                    calculation: `√((${R}-${r})² + ${h}²) = ${slantHeight.toFixed(0)} cm`,
+                    steps: [ { text: "The formula for the slant height (l) of a frustum is:", content: "l = √((R-r)² + h²)" }, { text: "Substitute the values for R, r, and h.", content: `l = √((${R}-${r})² + ${h}²)` }, { text: "Calculate the result.", content: `l = ${slantHeight.toFixed(0)} cm` } ]
+                },
+                {
+                    answer: csa.toFixed(0) + " cm²",
+                    calculation: `π(${R}+${r}) × ${slantHeight.toFixed(0)} = ${csa.toFixed(0)} cm²`,
+                    steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a frustum.", content: "CSA = π(R+r)l" }, { text: "Substitute the values for R, r, and l.", content: `CSA = π(${R}+${r}) × ${slantHeight.toFixed(0)}` }, { text: "Calculate the area.", content: `CSA = ${csa.toFixed(0)} cm²` } ]
+                },
+                {
+                    answer: baseArea.toFixed(0) + " cm²",
+                    calculation: `π × ${r}² = ${baseArea.toFixed(0)} cm²`,
+                    steps: [ { text: "The base is a circle. Use the formula for the area of a circle.", content: "Area = πr²" }, { text: "Substitute the value for the bottom radius (r).", content: `Area = π × ${r}²` }, { text: "Calculate the base area.", content: `Area = ${baseArea.toFixed(0)} cm²` } ]
+                },
+                {
+                    answer: totalPaintedArea.toFixed(0) + " cm²",
+                    calculation: `${csa.toFixed(0)} + ${baseArea.toFixed(0)} = ${totalPaintedArea.toFixed(0)} cm²`,
+                    steps: [ { text: "Add the curved surface area and the base area.", content: "Total Area = CSA + Base Area" }, { text: "Substitute the calculated values.", content: `Area = ${csa.toFixed(0)} + ${baseArea.toFixed(0)}` }, { text: "Calculate the total painted area.", content: `Area = ${totalPaintedArea.toFixed(0)} cm²` } ]
+                },
+                {
+                    answer: "₹" + cost.toFixed(2),
+                    calculation: `${totalPaintedArea.toFixed(0)} × 1.50 = ₹${cost.toFixed(2)}`,
+                    steps: [ { text: "Multiply the total painted area by the cost per cm².", content: "Cost = Total Area × Rate" }, { text: "Substitute the area and rate.", content: `Cost = ${totalPaintedArea.toFixed(0)} × 1.50` }, { text: "Calculate the total cost.", content: `Cost = ₹${cost.toFixed(2)}` } ]
+                },
+                {
+                    answer: volume.toFixed(0) + " cm³",
+                    calculation: `(1/3)π × ${h} × (${R}² + ${R}×${r} + ${r}²) = ${volume.toFixed(0)} cm³`,
+                    steps: [ { text: "Use the formula for the volume of a frustum.", content: "V = (1/3)πh(R² + Rr + r²)" }, { text: "Substitute all the given values.", content: `V = (1/3)π × ${h} × (${R}² + ...)` }, { text: "Calculate the final volume.", content: `V ≈ ${volume.toFixed(0)} cm³` } ]
+                }
+            ];
             break;
         }
+        // ##################################################
+        // ### MODIFICATIONS START: COMPOUND CASE ###
+        // ##################################################
         case 'compound': {
             const { radius: r, cylinderHeight: ch, coneHeight: conh } = params;
             const cylCSA = 2 * PI * r * ch;
             const coneSlantHeight = Math.sqrt(r * r + conh * conh);
             const coneCSA = PI * r * coneSlantHeight;
-            const totalCost = (cylCSA + coneCSA) * 2;
-            solutions = [ { answer: cylCSA.toFixed(0) + " cm²", calculation: `2π × ${r} × ${ch} = ${cylCSA.toFixed(0)} cm²`, steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a cylinder.", content: "CSA = 2πrh" }, { text: "Substitute the values for radius (r) and cylinder height (ch).", content: `CSA = 2 × π × ${r} × ${ch}` }, { text: "Calculate the area.", content: `CSA = ${cylCSA.toFixed(0)} cm²` } ] }, { answer: coneSlantHeight.toFixed(2) + " cm", calculation: `√(${r}² + ${conh}²) = ${coneSlantHeight.toFixed(2)} cm`, steps: [ { text: "Find the slant height (l) of the conical part using Pythagorean theorem.", content: "l = √(r² + h²)" }, { text: "Substitute the values for radius (r) and cone height (conh).", content: `l = √(${r}² + ${conh}²)` }, { text: "Calculate the slant height.", content: `l = ${coneSlantHeight.toFixed(2)} cm` } ] }, { answer: "₹" + totalCost.toFixed(0), calculation: `(${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}) × 2 = ₹${totalCost.toFixed(0)}`, steps: [ { text: "First, find the CSA of the conical part: πrl", content: `Cone CSA = π × ${r} × ${coneSlantHeight.toFixed(2)} = ${coneCSA.toFixed(0)} cm²` }, { text: "Find the total area by adding the cylinder and cone CSAs.", content: `Total Area = ${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}` }, { text: "Multiply the total area by the cloth cost per cm².", content: `Cost = (${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}) × 2 = ₹${totalCost.toFixed(0)}` } ] } ];
+            const totalArea = cylCSA + coneCSA;
+            const totalCost = totalArea * 2;
+            const cylVolume = PI * r * r * ch;
+            const coneVolume = (1/3) * PI * r * r * conh;
+            const totalVolume = cylVolume + coneVolume;
+            solutions = [
+                {
+                    answer: cylCSA.toFixed(0) + " cm²",
+                    calculation: `2π × ${r} × ${ch} = ${cylCSA.toFixed(0)} cm²`,
+                    steps: [ { text: "Use the formula for the Curved Surface Area (CSA) of a cylinder.", content: "CSA = 2πrh" }, { text: "Substitute values for radius (r) and cylinder height (ch).", content: `CSA = 2π × ${r} × ${ch}` }, { text: "Calculate the area.", content: `CSA ≈ ${cylCSA.toFixed(0)} cm²` } ]
+                },
+                {
+                    answer: coneSlantHeight.toFixed(2) + " cm",
+                    calculation: `√(${r}² + ${conh}²) = ${coneSlantHeight.toFixed(2)} cm`,
+                    steps: [ { text: "Find the slant height (l) of the cone using Pythagorean theorem.", content: "l = √(r² + h²)" }, { text: "Substitute values for radius (r) and cone height (conh).", content: `l = √(${r}² + ${conh}²)` }, { text: "Calculate the slant height.", content: `l ≈ ${coneSlantHeight.toFixed(2)} cm` } ]
+                },
+                {
+                    answer: coneCSA.toFixed(0) + " cm²",
+                    calculation: `π × ${r} × ${coneSlantHeight.toFixed(2)} = ${coneCSA.toFixed(0)} cm²`,
+                    steps: [ { text: "Use the formula for the CSA of a cone.", content: "CSA = πrl" }, { text: "Substitute values for radius (r) and slant height (l).", content: `CSA = π × ${r} × ${coneSlantHeight.toFixed(2)}` }, { text: "Calculate the area.", content: `CSA ≈ ${coneCSA.toFixed(0)} cm²` } ]
+                },
+                 {
+                    answer: totalArea.toFixed(0) + " cm²",
+                    calculation: `${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)} = ${totalArea.toFixed(0)} cm²`,
+                    steps: [ { text: "Add the CSAs of the cylinder and cone.", content: "Total Area = CSA_cyl + CSA_cone" }, { text: "Substitute the calculated values.", content: `Area = ${cylCSA.toFixed(0)} + ${coneCSA.toFixed(0)}` }, { text: "Calculate the total cloth area.", content: `Area ≈ ${totalArea.toFixed(0)} cm²` } ]
+                },
+                {
+                    answer: "₹" + totalCost.toFixed(0),
+                    calculation: `${totalArea.toFixed(0)} × 2 = ₹${totalCost.toFixed(0)}`,
+                    steps: [ { text: "Multiply the total area by the cloth cost per cm².", content: "Cost = Total Area × Rate" }, { text: "Substitute the total area and rate.", content: `Cost = ${totalArea.toFixed(0)} × 2` }, { text: "Calculate the total cost.", content: `Cost ≈ ₹${totalCost.toFixed(0)}` } ]
+                },
+                {
+                    answer: totalVolume.toFixed(0) + " cm³",
+                    calculation: `${cylVolume.toFixed(0)} + ${coneVolume.toFixed(0)} = ${totalVolume.toFixed(0)} cm³`,
+                    steps: [ { text: "Calculate cylinder volume (πr²h).", content: `V_cyl ≈ ${cylVolume.toFixed(0)} cm³` }, { text: "Calculate cone volume (⅓πr²h).", content: `V_cone ≈ ${coneVolume.toFixed(0)} cm³` }, { text: "Add both volumes for the total.", content: `Total = ${cylVolume.toFixed(0)} + ${coneVolume.toFixed(0)} ≈ ${totalVolume.toFixed(0)} cm³` } ]
+                }
+            ];
             break;
         }
     }
@@ -334,8 +471,13 @@ function initializeShapeData() {
                     key: 'waterTank',
                     title: "Water Tank Construction",
                     scenario: "Mr. Sharma is constructing a water tank for his farmhouse. The tank consists of a cylinder with a hemispherical dome on top. He wants to paint the outer surface excluding the base. Cost of painting = ₹75 per m²",
-                    formulas: ["CSA = 2πrh", "Hemisphere CSA = 2πr²", "Total CSA = 2πrh + 2πr²"],
-                    questionTemplates: [ "What is the Curved Surface Area (CSA) of the cylindrical part?", "What is the Curved Surface Area of the hemispherical dome?", "What is the total painting cost?" ]
+                    formulas: ["CSA = 2πrh", "Hemisphere CSA = 2πr²", "Total Area = CSA_cyl + CSA_hemi", "Total Cost = Total Area × Rate"],
+                    questionTemplates: [
+                        "What is the Curved Surface Area (CSA) of the cylindrical part?",
+                        "What is the Curved Surface Area of the hemispherical dome?",
+                        "What is the Total Surface Area to be Painted?",
+                        "What is the total painting cost?"
+                    ]
                 },
                 {
                     key: 'candle',
@@ -365,12 +507,72 @@ function initializeShapeData() {
                 }
             ]
         },
-        cone: { name: "Cone", title: "Ice Cream Cone Design", scenario: "A local ice cream factory is designing wafer cones. They want to calculate the area for chocolate coating and volume of ice cream. Chocolate coating rate = ₹0.50 per cm²", formulas: ["Slant height l = √(r² + h²)", "CSA = πrl", "Volume = ⅓πr²h"], questionTemplates: [ "What is the slant height of the cone?", "What is the curved surface area to be coated?", "What is the cost of chocolate coating per cone?" ] },
-        cube: { name: "Cube", title: "Birthday Gift Box", scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface (except bottom) and fill 90% with chocolates. Painting cost = ₹2 per cm²", formulas: ["Surface area of 5 faces = 5a²", "Volume = a³", "90% volume for chocolates"], questionTemplates: [ "What is the surface area to be painted?", "What is the total painting cost?", "How many chocolates can fit (90% volume)?" ] },
+        // ##################################################
+        // ### MODIFICATIONS START: CONE CASE ###
+        // ##################################################
+        cone: {
+            name: "Cone",
+            title: "Ice Cream Cone Design",
+            scenario: "A local ice cream factory is designing wafer cones. They want to calculate the area for a chocolate coating and the volume of ice cream. The coating rate is ₹0.50 per cm².",
+            formulas: ["Slant height l = √(r² + h²)", "CSA = πrl", "Volume = ⅓πr²h", "Cost = Area × Rate"],
+            questionTemplates: [
+                "What is the slant height of the cone?",
+                "What is the curved surface area to be coated with chocolate?",
+                "What is the volume of ice cream the cone can hold?",
+                "What is the cost of chocolate coating per cone?"
+            ]
+        },
+        // ##################################################
+        // ### MODIFICATIONS START: CUBE CASE ###
+        // ##################################################
+        cube: {
+            name: "Cube",
+            title: "Birthday Gift Box",
+            scenario: "Diya is making a cube-shaped sweet box with no lid for her friend's birthday. She will paint the outer surface and fill 90% with chocolates. Painting cost = ₹2 per cm²",
+            formulas: ["Surface area of 5 faces = 5a²", "Cost = Area × Rate", "Volume = a³", "90% volume for chocolates"],
+            questionTemplates: [
+                "What is the surface area to be painted?",
+                "What is the total painting cost?",
+                "What is the volume of the box?",
+                "How many chocolates can fit (if each takes 1 cm³ and the box is 90% full)?"
+            ]
+        },
         sphere: { name: "Sphere", title: "Football Manufacturing", scenario: "A sports company manufactures spherical footballs. The surface is synthetic leather costing ₹1.20 per cm². They need to calculate leather cost and air volume.", formulas: ["Surface area = 4πr²", "Volume = ⁴⁄₃πr³"], questionTemplates: [ "What is the surface area of the football?", "What is the cost of leather for one football?", "What is the volume of air inside?" ] },
         hemisphere: { name: "Hemisphere", title: "Steel Serving Bowls", scenario: "A factory manufactures hemispherical steel bowls, open at top. They need polishing on inner curved surface. Polishing cost = ₹0.80 per cm²", formulas: ["Curved surface area = 2πr²", "Volume = ²⁄₃πr³"], questionTemplates: [ "What is the inner curved surface area to be polished?", "What is the polishing cost per bowl?", "What volume can the bowl hold?" ] },
-        frustum: { name: "Frustum", title: "Water Bucket Design", scenario: "A company designs frustum-shaped buckets. They paint inner curved surface and base. Painting cost = ₹1.50 per cm²", formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²"], questionTemplates: [ "What is the slant height of the bucket?", "What is the inner curved surface area?", "What is the base area?" ] },
-        compound: { name: "Compound", title: "Miniature Tent Model", scenario: "Students create a tent model: cylinder with conical top. Made of cloth covering curved surfaces only. Cloth cost = ₹2 per cm²", formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl"], questionTemplates: [ "What is the curved surface area of the cylindrical part?", "What is the slant height of the conical part?", "What is the total cloth cost?" ] }
+        // ##################################################
+        // ### MODIFICATIONS START: FRUSTUM CASE ###
+        // ##################################################
+        frustum: {
+            name: "Frustum",
+            title: "Water Bucket Design",
+            scenario: "A company designs frustum-shaped buckets. They paint the inner curved surface and the base. The painting cost is ₹1.50 per cm².",
+            formulas: ["Slant height l = √((R-r)² + h²)", "CSA = π(R+r)l", "Base area = πr²", "Total Area = CSA + Base", "Cost = Area × Rate", "Volume = ⅓πh(R²+Rr+r²)"],
+            questionTemplates: [
+                "What is the slant height of the bucket?",
+                "What is the inner curved surface area?",
+                "What is the base area?",
+                "What is the total inner area to be painted?",
+                "What is the cost of painting one bucket?",
+                "What is the volume of the bucket (water capacity)?"
+            ]
+        },
+        // ##################################################
+        // ### MODIFICATIONS START: COMPOUND CASE ###
+        // ##################################################
+        compound: {
+            name: "Compound",
+            title: "Miniature Tent Model",
+            scenario: "Students create a tent model: a cylinder with a conical top. It is made of cloth covering the curved surfaces only. The cloth cost is ₹2 per cm².",
+            formulas: ["Cylinder CSA = 2πrh", "Cone slant height = √(r² + h²)", "Cone CSA = πrl", "Total Area = CSA_cyl + CSA_cone", "Cost = Area × Rate", "Volume = V_cyl + V_cone"],
+            questionTemplates: [
+                "What is the curved surface area of the cylindrical part?",
+                "What is the slant height of the conical part?",
+                "What is the curved surface area of the conical part?",
+                "What is the total cloth area required?",
+                "What is the total cost for the cloth?",
+                "What is the total volume inside the tent?"
+            ]
+        }
     };
 
     const shapeData = {};
@@ -471,7 +673,7 @@ function drawLeftPanel() {
             else updatedScenario = `A road roller with a ${params.diameter} m diameter and ${params.length} m length is used to level a road. Calculate the area covered and construction costs.`;
             break;
         case 'cone': updatedScenario = `An ice cream cone has radius = ${params.radius} cm, height = ${params.height} cm. Chocolate coating rate = ₹0.50 per cm²`; break;
-        case 'cube': updatedScenario = `A cube-shaped gift box (side = ${params.side} cm) with no lid is painted (except bottom) and filled 90% with chocolates. Painting cost = ₹2 per cm²`; break;
+        case 'cube': updatedScenario = `A cube-shaped gift box (side = ${params.side} cm) with no lid is painted and filled 90% with chocolates. Painting cost = ₹2 per cm²`; break;
         case 'sphere': updatedScenario = `A spherical football (radius = ${params.radius} cm) is made of leather costing ₹1.20 per cm².`; break;
         case 'hemisphere': updatedScenario = `A hemispherical steel bowl (radius = ${params.radius} cm) needs polishing on its inner surface. Polishing cost = ₹0.80 per cm²`; break;
         case 'frustum': updatedScenario = `A frustum-shaped bucket (R=${params.topRadius} cm, r=${params.bottomRadius} cm, h=${params.height} cm) is painted inside. Painting cost = ₹1.50 per cm²`; break;
