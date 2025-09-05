@@ -1,0 +1,575 @@
+      /**
+       * Interactive Angle Explorer v10.0 (Explanation Panel & Dropdown UI)
+       *
+       * - Replaced tabs with a styled dropdown menu.
+       * - Added a dedicated explanation panel that appears on success.
+       * - Each angle type has a unique, pre-written explanation.
+       * - Refined UI layout and styling.
+       */
+
+      // --- CONFIGURATION ---
+      const CANVAS_WIDTH = 900;
+      const CANVAS_HEIGHT = 500;
+      
+      // Colors
+      const ROAD_OUTER_COLOR = '#6c757d';
+      const ROAD_INNER_COLOR = '#adb5bd';
+      const ROAD_DASH_COLOR = '#ffffff';
+      const INTERSECTION_BG_COLOR = [204, 193, 221, 100];
+      const ANGLE_HOVER_COLOR = [135, 114, 169, 200];
+      const ANGLE_SELECTED_COLOR = [108, 83, 148];
+      const ADJACENT_DRAG_COLOR = [227, 63, 95, 200]; // Red for adjacent
+      const ANGLE_PRIMED_COLOR = [108, 83, 148, 220]; 
+      const ANGLE_DRAG_COLOR = [108, 83, 148, 180];
+      const ANGLE_SNAP_COLOR = [42, 157, 143];
+      const ANGLE_DISABLED_COLOR = [200, 200, 200, 100];
+      const PRIMARY_TEXT_COLOR = [52, 58, 64];
+      const DROPDOWN_BG_COLOR = [255, 255, 255];
+      const DROPDOWN_BORDER_COLOR = [222, 226, 230];
+      const DROPDOWN_HOVER_COLOR = [248, 249, 250];
+      const DROPDOWN_TEXT_COLOR = [73, 80, 87];
+      const EXPLAIN_BORDER_COLOR = [108, 83, 148];
+
+      // --- STATE VARIABLES ---
+      let parallel1, parallel2, transversal;
+      let intersection1, intersection2;
+      let allAngles = [];
+      let scenery = [];
+      
+      let selectedAngle = null;
+      let draggedAngle = null;
+      let primedState = null;
+      let isDragging = false;
+      let dragPhase = '';
+      let snapCorrect = false;
+      let snappedTargetId = -1;
+
+      let currentMode = 'VERTICAL';
+      let angleModes = [];
+      let dropdown;
+      let isDropdownOpen = false;
+      let explanations;
+
+      function setup() {
+        createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        angleMode(RADIANS);
+        
+        angleModes = [
+            { label: 'Vertically Opposite', mode: 'VERTICAL' },
+            { label: 'Corresponding', mode: 'CORRESPONDING' },
+            { label: 'Alternate Interior', mode: 'ALTERNATE_INTERIOR' },
+            { label: 'Alternate Exterior', mode: 'ALTERNATE_EXTERIOR' },
+            { label: 'Supplementary', mode: 'SUPPLEMENTARY' }
+        ];
+
+        explanations = {
+            'VERTICAL': 'When two lines cross, the angles directly opposite each other are called vertically opposite angles. They are always equal.',
+            'CORRESPONDING': 'Corresponding angles are in the same position at each intersection. When the lines are parallel, these angles are always equal.',
+            'ALTERNATE_INTERIOR': 'Alternate interior angles are on opposite sides of the transversal and are *between* the two parallel lines. They are always equal.',
+            'ALTERNATE_EXTERIOR': 'Alternate exterior angles are on opposite sides of the transversal and are *outside* the two parallel lines. They are always equal.',
+            'SUPPLEMENTARY': 'Angles that form a straight line (180°) are supplementary. Here, moving the adjacent angle shows that consecutive interior angles are supplementary.'
+        };
+
+        dropdown = { x: 30, y: 60, w: 220, h: 40 };
+        
+        setupGeometryAndAngles();
+        setupScenery();
+      }
+
+      function draw() {
+        background('#f8f9fa');
+        updateCursor();
+
+        drawScenery();
+        drawRoad(parallel1);
+        drawRoad(parallel2);
+        drawRoad(transversal);
+        
+        drawIntersection(intersection1);
+        drawIntersection(intersection2);
+        
+        if (draggedAngle && isDragging) {
+           const color = (dragPhase === 'SLIDE_SUPPLEMENTARY') ? ADJACENT_DRAG_COLOR : ANGLE_DRAG_COLOR;
+           drawAngle(draggedAngle, color);
+        } else if (primedState && currentMode.includes('ALTERNATE')) {
+           drawAngle(primedState.rotatedCopy, ANGLE_PRIMED_COLOR);
+        } else if (snapCorrect) {
+            if (currentMode === 'SUPPLEMENTARY' && selectedAngle) {
+                const snappedAngle = allAngles.find(a => a.id === snappedTargetId);
+                drawAngle(selectedAngle, ANGLE_SELECTED_COLOR);
+                let finalPartner = { ...draggedAngle, pos: snappedAngle.pos };
+                drawAngle(finalPartner, ANGLE_SNAP_COLOR);
+            } else if (selectedAngle) {
+                const finalAngle = allAngles.find(a => a.id === snappedTargetId);
+                drawAngle(selectedAngle, ANGLE_SELECTED_COLOR);
+                let displayAngle = { ...finalAngle };
+                if (currentMode.includes('ALTERNATE')) {
+                    const original = allAngles.find(a => a.id === selectedAngle.id);
+                    displayAngle = {...original, pos: finalAngle.pos, rotation: PI };
+                }
+                drawAngle(displayAngle, ANGLE_SNAP_COLOR);
+            }
+        }
+        
+        drawInstructions();
+        drawDropdown();
+        if (snapCorrect) {
+          drawExplanationBox();
+        }
+      }
+      
+      function setupScenery() {
+          scenery.push({type: 'tree', x: 350, y: 100});
+          scenery.push({type: 'tree', x: 830, y: 450});
+          scenery.push({type: 'bush', x: 800, y: 120});
+          scenery.push({type: 'tree', x: 400, y: 450});
+      }
+
+      function setupGeometryAndAngles() {
+        allAngles = [];
+        const diagram = { x: 300, w: 580, angleRadius: 70 };
+        
+        parallel1 = { x1: diagram.x, y1: 170, x2: diagram.x + diagram.w, y2: 170 };
+        parallel2 = { x1: diagram.x, y1: 330, x2: diagram.x + diagram.w, y2: 330 };
+        transversal = { x1: random(diagram.x + 100, diagram.x + 250), y1: 40, x2: random(diagram.x + 300, diagram.x + 450), y2: 460 };
+
+        intersection1 = lineLineIntersection(parallel1, transversal);
+        intersection2 = lineLineIntersection(parallel2, transversal);
+
+        if (!intersection1 || !intersection2) { setupGeometryAndAngles(); return; }
+
+        let transAngle = atan2(transversal.y2 - transversal.y1, transversal.x2 - transversal.x1);
+
+        [intersection1, intersection2].forEach((intersection, i) => {
+          let anglesData = [
+            { start: PI, end: PI + transAngle }, { start: PI + transAngle, end: TWO_PI },
+            { start: 0, end: transAngle }, { start: transAngle, end: PI }
+          ];
+          anglesData.forEach((data, j) => {
+            const id = i * 4 + j;
+            let otherI = (i === 0) ? 1 : 0;
+
+            let alternateInteriorTarget = -1;
+            if (i === 0 && j === 2) alternateInteriorTarget = 5;
+            if (i === 0 && j === 3) alternateInteriorTarget = 4;
+            if (i === 1 && j === 0) alternateInteriorTarget = 3;
+            if (i === 1 && j === 1) alternateInteriorTarget = 2;
+
+            let alternateExteriorTarget = -1;
+            if (i === 0 && j === 0) alternateExteriorTarget = 7;
+            if (i === 0 && j === 1) alternateExteriorTarget = 6;
+            if (i === 1 && j === 2) alternateExteriorTarget = 1;
+            if (i === 1 && j === 3) alternateExteriorTarget = 0;
+
+            allAngles.push({
+              id: id, pos: intersection, start: data.start, end: data.end, radius: diagram.angleRadius, rotation: 0,
+              isOppositeOf: i * 4 + ((j + 2) % 4),
+              isCorrespondingTo: otherI * 4 + j,
+              isAlternateInteriorTo: alternateInteriorTarget,
+              isAlternateExteriorTo: alternateExteriorTarget,
+              isSupplementaryTo: i * 4 + ((j + 1) % 4),
+            });
+          });
+        });
+      }
+
+      // --- DRAWING HELPERS ---
+      
+      function drawScenery() {
+          scenery.forEach(item => {
+              if(item.type === 'tree') drawTree(item.x, item.y);
+              if(item.type === 'bush') drawBush(item.x, item.y);
+          });
+      }
+
+      function drawTree(x, y) {
+        noStroke();
+        fill(87, 58, 46); rect(x-5, y, 10, 25);
+        fill(34, 139, 34, 200);
+        circle(x, y-10, 40); circle(x-12, y-5, 30); circle(x+12, y-5, 30);
+      }
+      
+      function drawBush(x, y) {
+        noStroke();
+        fill(34, 139, 34, 180);
+        circle(x, y, 30); circle(x-10, y+5, 25); circle(x+10, y+5, 25);
+      }
+
+      function drawRoad(lineDef) {
+        stroke(ROAD_OUTER_COLOR); strokeWeight(20); line(lineDef.x1, lineDef.y1, lineDef.x2, lineDef.y2);
+        stroke(ROAD_INNER_COLOR); strokeWeight(15); line(lineDef.x1, lineDef.y1, lineDef.x2, lineDef.y2);
+        stroke(ROAD_DASH_COLOR); strokeWeight(2); drawingContext.setLineDash([10, 15]);
+        line(lineDef.x1, lineDef.y1, lineDef.x2, lineDef.y2);
+        drawingContext.setLineDash([]);
+      }
+      
+      function drawIntersection(pos) {
+          fill(INTERSECTION_BG_COLOR); noStroke();
+          if (allAngles.length > 0) circle(pos.x, pos.y, allAngles[0].radius * 2);
+
+          let anglesInIntersection = allAngles.filter(a => a.pos === pos);
+          anglesInIntersection.forEach(angle => {
+              let isDisabled =
+                  (currentMode === 'ALTERNATE_INTERIOR' && angle.isAlternateInteriorTo === -1) ||
+                  (currentMode === 'ALTERNATE_EXTERIOR' && angle.isAlternateExteriorTo === -1);
+
+              if (isDisabled) {
+                  drawAngle(angle, ANGLE_DISABLED_COLOR);
+                  return;
+              }
+              
+              if (snapCorrect && selectedAngle && (angle.id === selectedAngle.id || angle.id === snappedTargetId)) {
+                  return;
+              }
+
+              let colorToDraw = null;
+              if (primedState && currentMode === 'SUPPLEMENTARY') {
+                  if(angle.id === primedState.selectedAngle.id) colorToDraw = ANGLE_SELECTED_COLOR;
+                  else if (angle.id === primedState.partnerAngle.id) colorToDraw = ADJACENT_DRAG_COLOR;
+              } else if (primedState && currentMode.includes('ALTERNATE')) {
+                  if(angle.id === primedState.original.id) {
+                      colorToDraw = ANGLE_SELECTED_COLOR;
+                  }
+              } else if (isMouseInAngle(angle) && !isDragging && !primedState) {
+                  colorToDraw = ANGLE_HOVER_COLOR;
+              } else if (selectedAngle && !primedState && angle.id === selectedAngle.id) {
+                   colorToDraw = ANGLE_SELECTED_COLOR;
+              }
+              
+              if (colorToDraw) {
+                  drawAngle(angle, colorToDraw);
+              }
+          });
+      }
+
+      function drawAngle(angle, color) {
+        push();
+        translate(angle.pos.x, angle.pos.y);
+        rotate(angle.rotation);
+        
+        drawingContext.shadowBlur = 10;
+        drawingContext.shadowColor = 'rgba(0, 0, 0, 0.2)';
+        fill(color);
+        noStroke();
+        arc(0, 0, angle.radius * 2, angle.radius * 2, angle.start, angle.end);
+        
+        drawingContext.shadowBlur = 0;
+        pop();
+      }
+      
+      function drawDropdown() {
+          const d = dropdown;
+          // Main box
+          fill(DROPDOWN_BG_COLOR);
+          stroke(isDropdownOpen ? EXPLAIN_BORDER_COLOR : DROPDOWN_BORDER_COLOR);
+          strokeWeight(isDropdownOpen ? 2 : 1);
+          rect(d.x, d.y, d.w, d.h, 8);
+
+          // Current selection text
+          const current = angleModes.find(m => m.mode === currentMode);
+          noStroke();
+          fill(DROPDOWN_TEXT_COLOR);
+          textAlign(LEFT, CENTER);
+          textSize(14);
+          text(current.label, d.x + 15, d.y + d.h / 2);
+
+          // Arrow icon
+          fill(DROPDOWN_TEXT_COLOR);
+          triangle(d.x + d.w - 20, d.y + 15, d.x + d.w - 10, d.y + 15, d.x + d.w - 15, d.y + 25);
+
+          // Options list
+          if(isDropdownOpen) {
+              for (let i = 0; i < angleModes.length; i++) {
+                  const itemY = d.y + d.h + i * d.h;
+                  if (mouseX > d.x && mouseX < d.x + d.w && mouseY > itemY && mouseY < itemY + d.h) {
+                      fill(DROPDOWN_HOVER_COLOR);
+                  } else {
+                      fill(DROPDOWN_BG_COLOR);
+                  }
+                  stroke(DROPDOWN_BORDER_COLOR);
+                  strokeWeight(1);
+                  rect(d.x, itemY, d.w, d.h, (i === angleModes.length - 1) ? 8 : 0);
+                  
+                  noStroke();
+                  fill(DROPDOWN_TEXT_COLOR);
+                  text(angleModes[i].label, d.x + 15, itemY + d.h / 2);
+              }
+          }
+      }
+
+      function drawInstructions() {
+        let title = "Angle Explorer";
+        noStroke(); textAlign(LEFT, TOP); fill(PRIMARY_TEXT_COLOR);
+        textSize(24); textStyle(BOLD); text(title, 30, 20);
+        
+        let instruction = "Select an angle type below, then choose an angle to explore.";
+        if (primedState) {
+            if (currentMode === 'SUPPLEMENTARY') {
+                instruction = "Now click the red adjacent angle to drag it.";
+            } else {
+                instruction = "Now click the glowing angle and drag it.";
+            }
+        } else if (isDragging) {
+            if(currentMode === 'VERTICAL') instruction = "Rotate the angle to its opposite position.";
+            if(currentMode === 'CORRESPONDING') instruction = "Drag the angle along the line.";
+            if(currentMode.includes('ALTERNATE')) instruction = "Step 1: Rotate the angle 180 degrees.";
+            if(currentMode === 'SUPPLEMENTARY') instruction = "Drag the red angle to its corresponding spot on the other line.";
+        }
+        if (snapCorrect) {
+          instruction = `Correct! Click anywhere to reset.`;
+        }
+        
+        fill(108, 117, 125); textSize(14); textStyle(NORMAL);
+        text(instruction, 30, 120, 220);
+      }
+      
+      function drawExplanationBox() {
+          const msgBox = { x: 30, y: 170, w: 220, h: 200 };
+          fill(255);
+          stroke(EXPLAIN_BORDER_COLOR);
+          strokeWeight(2);
+          rect(msgBox.x, msgBox.y, msgBox.w, msgBox.h, 8);
+
+          // Title
+          const title = "Explanation";
+          noStroke();
+          fill(EXPLAIN_BORDER_COLOR);
+          textAlign(LEFT, TOP);
+          textStyle(BOLD);
+          textSize(16);
+          text(title, msgBox.x + 15, msgBox.y + 15);
+
+          // Body text
+          fill(PRIMARY_TEXT_COLOR);
+          textSize(14);
+          textStyle(NORMAL);
+          text(explanations[currentMode], msgBox.x + 15, msgBox.y + 45, msgBox.w - 30);
+      }
+
+      // --- INTERACTIVITY & LOGIC ---
+
+      function isMouseInAngle(angle) {
+        if (!angle) return false;
+        
+        let mouseVec = createVector(mouseX - angle.pos.x, mouseY - angle.pos.y);
+        mouseVec.rotate(-angle.rotation);
+        const d = mouseVec.mag();
+
+        if (d > angle.radius) return false;
+
+        let mouseAngle = atan2(mouseVec.y, mouseVec.x);
+        if (mouseAngle < 0) mouseAngle += TWO_PI;
+        
+        let start = angle.start % TWO_PI; 
+        let end = angle.end % TWO_PI;
+
+        if (start < end) return mouseAngle >= start && mouseAngle <= end;
+        else return mouseAngle >= start || mouseAngle <= end;
+      }
+      
+      function isHovering(element) {
+        if(!element) return false;
+        return mouseX > element.x && mouseX < element.x + element.w && mouseY > element.y && mouseY < element.y + element.h;
+      }
+
+      function updateCursor() {
+        if (snapCorrect) { cursor(HAND); return; }
+        if (isHovering(dropdown)) { cursor(HAND); return; }
+        if (isDropdownOpen) {
+            for (let i = 0; i < angleModes.length; i++) {
+                const itemY = dropdown.y + dropdown.h + i * dropdown.h;
+                if (mouseX > dropdown.x && mouseX < dropdown.x + dropdown.w && mouseY > itemY && mouseY < itemY + dropdown.h) {
+                    cursor(HAND);
+                    return;
+                }
+            }
+        }
+        
+        if (primedState) {
+            if(currentMode === 'SUPPLEMENTARY' && isMouseInAngle(primedState.partnerAngle)) { cursor(HAND); return; }
+            if(currentMode.includes('ALTERNATE') && isMouseInAngle(primedState.rotatedCopy)) { cursor(HAND); return; }
+        }
+        
+        let isDisabled = false;
+        for (const angle of allAngles) {
+            if (isMouseInAngle(angle)) {
+                isDisabled = 
+                    (currentMode === 'ALTERNATE_INTERIOR' && angle.isAlternateInteriorTo === -1) ||
+                    (currentMode === 'ALTERNATE_EXTERIOR' && angle.isAlternateExteriorTo === -1);
+                if (!primedState && !isDisabled) {
+                    cursor(HAND); 
+                    return;
+                }
+            }
+        }
+        cursor(ARROW);
+      }
+
+      function mousePressed() {
+        if (snapCorrect) { fullReset(); return; }
+        
+        // Dropdown logic
+        if (isHovering(dropdown)) {
+            isDropdownOpen = !isDropdownOpen;
+            return;
+        }
+
+        if (isDropdownOpen) {
+            for (let i = 0; i < angleModes.length; i++) {
+                const itemY = dropdown.y + dropdown.h + i * dropdown.h;
+                if (mouseX > dropdown.x && mouseX < dropdown.x + dropdown.w && mouseY > itemY && mouseY < itemY + dropdown.h) {
+                    if (currentMode !== angleModes[i].mode) {
+                        currentMode = angleModes[i].mode;
+                        fullReset();
+                    }
+                    isDropdownOpen = false;
+                    return;
+                }
+            }
+        }
+        if (isDropdownOpen) {
+            isDropdownOpen = false;
+            return;
+        }
+
+        if (primedState) {
+            if (currentMode === 'SUPPLEMENTARY' && isMouseInAngle(primedState.partnerAngle)) {
+                isDragging = true;
+                dragPhase = 'SLIDE_SUPPLEMENTARY';
+                selectedAngle = primedState.selectedAngle;
+                draggedAngle = { ...primedState.partnerAngle };
+                primedState = null;
+            } else if (currentMode.includes('ALTERNATE') && isMouseInAngle(primedState.rotatedCopy)) {
+                isDragging = true;
+                dragPhase = 'SLIDE_ALTERNATE';
+                draggedAngle = { ...primedState.rotatedCopy };
+                primedState = null;
+            }
+            return;
+        }
+
+        if (!isDragging) {
+          for (const angle of allAngles) {
+            if (isMouseInAngle(angle)) {
+              let isDisabled = 
+                  (currentMode === 'ALTERNATE_INTERIOR' && angle.isAlternateInteriorTo === -1) ||
+                  (currentMode === 'ALTERNATE_EXTERIOR' && angle.isAlternateExteriorTo === -1);
+              if(isDisabled) continue;
+              
+              if (currentMode === 'SUPPLEMENTARY') {
+                  const partner = allAngles.find(a => a.id === angle.isSupplementaryTo);
+                  primedState = { selectedAngle: angle, partnerAngle: partner };
+                  selectedAngle = angle;
+              } else {
+                  isDragging = true;
+                  selectedAngle = angle;
+                  draggedAngle = { ...angle };
+                  if (currentMode.includes('ALTERNATE') || currentMode === 'VERTICAL') {
+                      dragPhase = 'ROTATE';
+                  } else if (currentMode === 'CORRESPONDING') {
+                      dragPhase = 'SLIDE_CORRESPONDING';
+                  }
+              }
+              break;
+            }
+          }
+        }
+      }
+
+      function mouseDragged() {
+        if (!isDragging || !draggedAngle) return;
+
+        if (dragPhase === 'ROTATE') {
+          let mouseAngle = atan2(mouseY - selectedAngle.pos.y, mouseX - selectedAngle.pos.x);
+          let initialAngle = (draggedAngle.start + draggedAngle.end) / 2;
+          draggedAngle.rotation = mouseAngle - initialAngle;
+        } else if (dragPhase.includes('SLIDE')) {
+          let lineStart = createVector(transversal.x1, transversal.y1);
+          let lineEnd = createVector(transversal.x2, transversal.y2);
+          let mousePos = createVector(mouseX, mouseY);
+          let lineVec = p5.Vector.sub(lineEnd, lineStart);
+          let pointVec = p5.Vector.sub(mousePos, lineStart);
+          
+          lineVec.normalize();
+          let projectionLength = pointVec.dot(lineVec);
+          let totalLineLength = dist(lineStart.x, lineStart.y, lineEnd.x, lineEnd.y);
+          projectionLength = constrain(projectionLength, 0, totalLineLength);
+          let newPos = p5.Vector.add(lineStart, lineVec.mult(projectionLength));
+          draggedAngle.pos = newPos;
+        }
+      }
+
+      function mouseReleased() {
+        if (!isDragging || !draggedAngle) { isDragging = false; return; }
+        
+        const rotationTolerance = 0.2;
+        const targetRotation = PI;
+        let snapDistance = 30;
+
+        if (dragPhase === 'ROTATE') {
+            if (abs(abs(draggedAngle.rotation) - targetRotation) < rotationTolerance) {
+                if (currentMode.includes('ALTERNATE')) {
+                    primedState = { original: selectedAngle, rotatedCopy: { ...selectedAngle, rotation: PI } };
+                } else {
+                    snapCorrect = true; snappedTargetId = selectedAngle.isOppositeOf;
+                }
+            } else { softReset(); }
+        } else if (dragPhase === 'SLIDE_CORRESPONDING') {
+            const targetAngle = allAngles.find(a => a.id === selectedAngle.isCorrespondingTo);
+            if (targetAngle && dist(draggedAngle.pos.x, draggedAngle.pos.y, targetAngle.pos.x, targetAngle.pos.y) < snapDistance) {
+                snapCorrect = true; snappedTargetId = selectedAngle.isCorrespondingTo;
+            } else { softReset(); }
+        } else if (dragPhase === 'SLIDE_ALTERNATE') {
+            let targetId = (currentMode === 'ALTERNATE_INTERIOR') ? selectedAngle.isAlternateInteriorTo : selectedAngle.isAlternateExteriorTo;
+            const targetAngle = allAngles.find(a => a.id === targetId);
+            if (targetAngle && dist(draggedAngle.pos.x, draggedAngle.pos.y, targetAngle.pos.x, targetAngle.pos.y) < snapDistance) {
+                snapCorrect = true; snappedTargetId = targetId;
+            } else {
+                primedState = { original: selectedAngle, rotatedCopy: { ...selectedAngle, rotation: PI } };
+            }
+        } else if (dragPhase === 'SLIDE_SUPPLEMENTARY') {
+            const originalDraggedAngle = allAngles.find(a => a.id === draggedAngle.id);
+            const targetAngle = allAngles.find(a => a.id === originalDraggedAngle.isCorrespondingTo);
+            
+            if (targetAngle && dist(draggedAngle.pos.x, draggedAngle.pos.y, targetAngle.pos.x, targetAngle.pos.y) < snapDistance) {
+                snapCorrect = true;
+                snappedTargetId = targetAngle.id;
+            } else {
+                softReset();
+            }
+        }
+        
+        isDragging = false;
+        if (!primedState && !snapCorrect) {
+            draggedAngle = null;
+        }
+      }
+      
+      function fullReset() {
+        snapCorrect = false;
+        selectedAngle = null;
+        snappedTargetId = -1;
+        primedState = null;
+        draggedAngle = null;
+        isDragging = false;
+        dragPhase = '';
+        setupGeometryAndAngles();
+      }
+
+      function softReset() {
+        draggedAngle = null;
+        isDragging = false;
+        dragPhase = '';
+        selectedAngle = null;
+        primedState = null;
+      }
+
+      function lineLineIntersection(line1, line2) {
+        const den = (line1.x1 - line1.x2) * (line2.y1 - line2.y2) - (line1.y1 - line1.y2) * (line2.x1 - line2.x2);
+        if (den === 0) return null;
+        const t = ((line1.x1 - line2.x1) * (line2.y1 - line2.y2) - (line1.y1 - line2.y1) * (line2.x1 - line2.x2)) / den;
+        const u = -((line1.x1 - line1.x2) * (line1.y1 - line2.y1) - (line1.y1 - line1.y2) * (line1.x1 - line2.x1)) / den;
+        if (t > 0 && t < 1 && u > 0) return createVector(line1.x1 + t * (line1.x2 - line1.x1), line1.y1 + t * (line1.y2 - line1.y1));
+        return null;
+      }
+ 
