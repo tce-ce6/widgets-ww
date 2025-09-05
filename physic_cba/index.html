@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Simulation</title>
+    
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    
+    <script>
+    // --- GLOBAL STATE & UI DEFINITIONS ---
+    let simulationData;
+    let translations;
+    let currentGrade = '9';
+    let currentChapterKey = 'Motion';
+    let currentCaseKey = 'A1';
+    let currentQuestionIndex = 0;
+    let currentLanguage = 'en';
+
+    let uiState = {
+        gradeDropdownOpen: false,
+        caseDropdownOpen: false,
+        langDropdownOpen: false, // NEW: State for language dropdown
+        selectedAnswer: null,
+        feedbackActive: false,
+        isCorrect: false,
+        helpActive: false,
+        helpStepIndex: 0,
+    };
+
+    let uiElements = {};
+
+    // --- 3D & ANIMATION VARIABLES ---
+    let pg; // 3D graphics buffer
+    let cam;
+    let cycleImage, homeImage, schoolImage, carImage, personImage;
+    let cyclistPos, carPos, carVel, trolleyPos, waterParticles, elevatorPos, elevatorAccel;
+    let animPhase = 'initial';
+    let animTimer = 0;
+    let bottleCapOn = true;
+    let labelData = {};
+
+    // --- PRELOAD FUNCTION ---
+    function preload() {
+        cycleImage = loadImage('assets/cycle.png');
+        homeImage = loadImage('assets/home.png');
+        schoolImage = loadImage('assets/school.png');
+        carImage = loadImage('assets/car.png');
+        personImage = loadImage('assets/person.png');
+    }
+
+    // --- P5.JS SETUP ---
+    function setup() {
+        createCanvas(900, 500);
+        pg = createGraphics(440, 380, WEBGL);
+        cam = pg.createCamera();
+        pg.perspective(PI / 6, pg.width / pg.height, 0.1, 1500);
+        textFont('Arial');
+        initializeData();
+        initializeTranslations();
+        resetAnimationState();
+    }
+
+    // --- P5.JS DRAW LOOP ---
+    function draw() {
+        background('#e9ecef');
+        noStroke();
+        fill('#f8f9fa');
+        rect(10, 70, 450, 420, 8); // Left panel
+        rect(470, 70, 420, 420, 8); // Right panel
+
+        drawLeftPanel();
+        drawRightPanel();
+
+        drawHeader();
+        if (uiState.helpActive) {
+            drawHelpOverlay();
+        } else if (uiState.feedbackActive) {
+            drawFeedbackOverlay();
+        }
+    }
+
+    // ===================================================================
+    // DATA & TRANSLATIONS
+    // ===================================================================
+    function initializeData() {
+        // This object only contains non-translatable data like physics parameters and answer indices.
+        simulationData = { '9': { 'Motion': { 'A1': { params: { dist1: 4.0, time1: 20, dist2: 4.0, time2: 40 }, ans: [1, 0, 1, 3] }, 'A2': { params: { v_final: 25.0, t1: 10.0, t2: 5.0 }, ans: [2, 1, 2, 0] } }, 'Force and Laws of Motion': { 'B1': { params: { mass: 20.0, F_pull: 50.0, F_friction: 10.0 }, ans: [3, 1] }, 'B2': { params: { mass: 70.0, g: 9.8 }, ans: [1, 0, 2] } }, 'Gravitation': { 'C1': { params: { h_water: 0.30, h_hole: 0.02 }, ans: [2, 1, 1] } } }, '10': { 'Electricity': { 'D1': {} } } };
+    }
+
+    function initializeTranslations() {
+        translations = {
+            'en': {
+                nativeName: "English",
+                grade: "Grade",
+                helpButton: "Help Me Solve This",
+                correct: "Correct!",
+                incorrect: "Incorrect!",
+                solution: "Solution",
+                nextQuestion: "Next Question",
+                helpTitle: "Let's Solve This Step-by-Step",
+                gotIt: "Got It!",
+                close: "Close",
+                nextStep: "Next Step",
+                labels: { speed: "Speed", distance: "Distance", accel: "Accel", netForce: "Net Force", apparentWeight: "Apparent Weight", pressure: "Pressure", effluxSpeed: "Efflux Speed" },
+                caseData: {
+                    'A1': { title: 'Morning Commute', scenario: 'A student cycles 4.00 km from home to school in 20 min and returns by the same route (4.00 km) in 40 min.', questions: [ { q: 'Find the average speed to school (km/h).', opts: ['10 km/h', '12 km/h', '15 km/h', '20 km/h'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 km/h', steps: [ { text: "Convert time from minutes to hours.", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "Use the formula for speed: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "Calculate the final speed.", content: "v = 12.00 km/h" } ] }, { q: 'Find the average speed returning home (km/h).', opts: ['6 km/h', '8 km/h', '9 km/h', '10 km/h'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 km/h', steps: [ { text: "Convert time from minutes to hours.", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "Use the formula for speed: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "Calculate the final speed.", content: "v = 6.00 km/h" } ] }, { q: 'Find the average speed for the round trip.', opts: ['10.0 km/h', '8.0 km/h', '9.0 km/h', '9.6 km/h'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 km/h', steps: [ { text: "Calculate total distance.", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "Calculate total time in hours.", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "Use the average speed formula.", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "Calculate the final average speed.", content: "Avg v = 8.00 km/h" } ] }, { q: 'What is the total displacement for the entire trip?', opts: ['10 km', '4 km', '8 km', '0 km'], sol: 'Displacement is zero as the start and end points are the same.', steps: [ { text: "Recall the definition of displacement.", content: "Displacement is the net change in position from start to end." }, { text: "Identify the start and end points.", content: "The student starts at home and ends at home." }, { text: "Determine the net change.", content: "Since the final position is the same as the initial position, the change is 0." } ] } ] },
+                }
+            },
+            'hi': {
+                nativeName: "हिन्दी",
+                grade: "कक्षा",
+                helpButton: "हल करने में मेरी मदद करें",
+                correct: "सही!",
+                incorrect: "गलत!",
+                solution: "हल",
+                nextQuestion: "अगला प्रश्न",
+                helpTitle: "आइए इसे चरण-दर-चरण हल करें",
+                gotIt: "समझ गया!",
+                close: "बंद करें",
+                nextStep: "अगला चरण",
+                labels: { speed: "गति", distance: "दूरी", accel: "त्वरण", netForce: "नेट बल", apparentWeight: "आभासी वजन", pressure: "दबाव", effluxSpeed: "बहाव की गति" },
+                caseData: {
+                    'A1': { title: 'सुबह की यात्रा', scenario: 'एक छात्र साइकिल से 4.00 किमी दूर स्कूल जाने में 20 मिनट और उसी रास्ते से लौटने में 40 मिनट का समय लेता है।', questions: [ { q: 'स्कूल जाने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['10 किमी/घंटा', '12 किमी/घंटा', '15 किमी/घंटा', '20 किमी/घंटा'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 12.00 km/h" } ] }, { q: 'घर लौटने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['6 किमी/घंटा', '8 किमी/घंटा', '9 किमी/घंटा', '10 किमी/घंटा'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 6.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए औसत गति ज्ञात कीजिए।', opts: ['10.0 किमी/घंटा', '8.0 किमी/घंटा', '9.0 किमी/घंटा', '9.6 किमी/घंटा'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 किमी/घंटा', steps: [ { text: "कुल दूरी की गणना करें।", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "कुल समय को घंटों में गणना करें।", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "औसत गति के सूत्र का उपयोग करें।", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम औसत गति की गणना करें।", content: "Avg v = 8.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए कुल विस्थापन क्या है?', opts: ['10 किमी', '4 किमी', '8 किमी', '0 किमी'], sol: 'विस्थापन शून्य है क्योंकि आरंभ और अंतिम बिंदु समान हैं।', steps: [ { text: "विस्थापन की परिभाषा याद करें।", content: "विस्थापन आरंभ से अंत तक स्थिति में शुद्ध परिवर्तन है।" }, { text: "आरंभ और अंतिम बिंदुओं को पहचानें।", content: "छात्र घर से शुरू होता है और घर पर समाप्त होता है।" }, { text: "शुद्ध परिवर्तन निर्धारित करें।", content: "चूंकि अंतिम स्थिति प्रारंभिक स्थिति के समान है, इसलिए परिवर्तन 0 है।" } ] } ] },
+                }
+            },
+            'mr': { // NEW: Marathi translations
+                nativeName: "मराठी",
+                grade: "इयत्ता",
+                helpButton: "हे सोडवण्यासाठी मला मदत करा",
+                correct: "बरोबर!",
+                incorrect: "चूक!",
+                solution: "उत्तर",
+                nextQuestion: "पुढील प्रश्न",
+                helpTitle: "चला हे टप्प्याटप्प्याने सोडवूया",
+                gotIt: "समजले!",
+                close: "बंद करा",
+                nextStep: "पुढील टप्पा",
+                labels: { speed: "वेग", distance: "अंतर", accel: "त्वरण", netForce: "एकूण बल", apparentWeight: "आभासी वजन", pressure: "दाब", effluxSpeed: "प्रवाहाचा वेग" },
+                caseData: {
+                    'A1': { title: 'सकाळचा प्रवास', scenario: 'एक विद्यार्थी सायकलने ४.०० किमी अंतरावरील शाळेत जाण्यासाठी २० मिनिटे घेतो आणि त्याच मार्गाने परत येण्यासाठी ४० मिनिटे घेतो.', questions: [ { q: 'शाळेत जाण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['१० किमी/तास', '१२ किमी/तास', '१५ किमी/तास', '२० किमी/तास'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 12.00 km/h" } ] }, { q: 'घरी परतण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['६ किमी/तास', '८ किमी/तास', '९ किमी/तास', '१० किमी/तास'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 6.00 km/h" } ] }, { q: 'संपूर्ण प्रवासाचा सरासरी वेग काढा.', opts: ['१०.० किमी/तास', '८.० किमी/तास', '९.० किमी/तास', '९.६ किमी/तास'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 किमी/तास', steps: [ { text: "एकूण अंतराची गणना करा.", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "एकूण वेळेची तासांमध्ये गणना करा.", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "सरासरी वेगाचे सूत्र वापरा.", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम सरासरी वेगाची गणना करा.", content: "Avg v = 8.00 km/h" } ] }, { q: 'संपूर्ण प्रवासासाठी एकूण विस्थापन किती आहे?', opts: ['१० किमी', '४ किमी', '८ किमी', '० किमी'], sol: 'विस्थापन शून्य आहे कारण सुरुवातीचे आणि शेवटचे ठिकाण समान आहे.', steps: [ { text: "विस्थापनाची व्याख्या आठवा.", content: "विस्थापन म्हणजे सुरुवातीपासून शेवटपर्यंतच्या स्थितीत झालेला निव्वळ बदल." }, { text: "सुरुवातीचे आणि शेवटचे ठिकाण ओळखा.", content: "विद्यार्थी घरापासून सुरुवात करतो आणि घरीच प्रवास संपवतो." }, { text: "निव्वळ बदल निश्चित करा.", content: "अंतिम स्थान आणि सुरुवातीचे स्थान समान असल्यामुळे, बदल ० आहे." } ] } ] },
+                }
+            }
+        };
+    }
+    
+    // --- (Most core logic is unchanged, it just reads from the new data structure)
+
+    function resetAnimationState() { animPhase = 'initial'; animTimer = 0; labelData = {}; if (currentCaseKey === 'A1') { animPhase = 'toSchool'; cyclistPos = createVector(-200, 0, 0); } else if (currentCaseKey === 'A2') { animPhase = 'accelerating'; carPos = createVector(-220, 0, 0); carVel = 0; } else if (currentCaseKey === 'B1') { trolleyPos = createVector(-150, 0, 0); } else if (currentCaseKey === 'B2') { elevatorPos = createVector(0, 0, 0); elevatorAccel = 0; } else if (currentCaseKey === 'C1') { waterParticles = []; bottleCapOn = true; } }
+    
+    function drawHeader() {
+        const t = translations[currentLanguage];
+        const gradeLabel = `${t.grade} ${currentGrade}`;
+        drawDropdown(20, 20, 120, 35, gradeLabel, Object.keys(simulationData), 'grade');
+        
+        const caseData = (t.caseData || {})[currentCaseKey] || {title: "Coming Soon"};
+        const caseLabel = caseData.title;
+        const caseOptions = Object.entries(simulationData[currentGrade]).flatMap(([chapter, cases]) => 
+            Object.keys(cases).map(caseKey => ({ display: `${caseKey}: ${((t.caseData || {})[caseKey] || {title: "Coming Soon"}).title}`, chapter: chapter, key: caseKey }))
+        );
+        drawDropdown(160, 20, 280, 35, caseLabel, caseOptions, 'case');
+
+        // MODIFIED: Language Switcher is now a dropdown
+        const langLabel = t.nativeName;
+        const langOptions = Object.values(translations).map(lang => lang.nativeName);
+        drawDropdown(width - 110, 20, 100, 35, langLabel, langOptions, 'lang');
+    }
+
+    function drawLeftPanel() { pg.push(); pg.background('#ffffff'); updateSimulation(); draw3DScene(); pg.pop(); image(pg, 15, 80); drawSimulationLabels(); }
+
+    function drawRightPanel() {
+        const t = translations[currentLanguage];
+        const caseContent = (t.caseData || {})[currentCaseKey];
+        const questionContent = caseContent ? caseContent.questions[currentQuestionIndex] : null;
+        let yPos = 90;
+
+        fill('#031d44'); textAlign(LEFT, TOP); textSize(16); textStyle(BOLD);
+        text(caseContent ? caseContent.title : "Coming Soon", 485, yPos);
+        yPos += 30;
+        fill('#343a40'); textSize(13); textStyle(NORMAL);
+        text(caseContent ? caseContent.scenario : "", 485, yPos, 400);
+        yPos += 70;
+
+        if (questionContent) {
+            fill('#212529'); textSize(14); textStyle(BOLD);
+            text(`Q${currentQuestionIndex + 1}: ${questionContent.q}`, 485, yPos, 400);
+            yPos += 45;
+
+            uiElements.options = [];
+            questionContent.opts.forEach((opt, index) => {
+                const optBox = { x: 485, y: yPos, w: 400, h: 35 };
+                uiElements.options.push(optBox);
+                if (uiState.selectedAnswer === index) { stroke('#007bff'); fill('#e7f5ff'); } 
+                else { stroke('#ced4da'); fill('#f8f9fa'); }
+                rect(optBox.x, optBox.y, optBox.w, optBox.h, 5);
+                noStroke(); fill('#212529'); textAlign(LEFT, CENTER);
+                text(opt, optBox.x + 15, optBox.y + optBox.h / 2);
+                yPos += 42;
+            });
+            yPos += 10;
+            const btn = { x: 485, y: yPos, w: 400, h: 40 };
+            uiElements.helpButton = btn;
+            stroke('#17a2b8'); fill('#e0f7fa'); rect(btn.x, btn.y, btn.w, btn.h, 5);
+            noStroke(); fill('#0c5460'); textAlign(CENTER, CENTER); textSize(16);
+            text(t.helpButton, btn.x + btn.w / 2, btn.y + btn.h / 2);
+
+        } else {
+             text("This case is under construction!", 485, yPos);
+        }
+    }
+    
+    function drawDropdown(x, y, w, h, label, options, type) {
+        const isOpen = (type === 'grade' && uiState.gradeDropdownOpen) || (type === 'case' && uiState.caseDropdownOpen) || (type === 'lang' && uiState.langDropdownOpen);
+        uiElements[`${type}Dropdown`] = { x, y, w, h };
+        stroke('#adb5bd'); fill('#fff'); rect(x, y, w, h, 5);
+        fill('#212529'); noStroke(); textAlign(LEFT, CENTER); textSize(14);
+        text(label, x + 10, y + h / 2);
+        fill('#212529'); triangle(x + w - 20, y + 14, x + w - 10, y + 14, x + w - 15, y + 21);
+
+        if (isOpen) {
+            uiElements[`${type}Options`] = [];
+            let optY = y + h;
+            options.forEach((opt) => {
+                const optBox = { x: x, y: optY, w: w, h: h };
+                uiElements[`${type}Options`].push(optBox);
+                stroke('#ced4da'); fill('#f8f9fa'); rect(optBox.x, optBox.y, optBox.w, optBox.h);
+                noStroke(); fill('#212529');
+                let display_text = opt;
+                if (type === 'grade') display_text = `${translations[currentLanguage].grade} ${opt}`;
+                if (type === 'case') display_text = opt.display;
+                text(display_text, x + 10, optY + h / 2);
+                optY += h;
+            });
+        }
+    }
+
+    function drawFeedbackOverlay() {
+        const t = translations[currentLanguage];
+        const boxW = 400, boxH = 200, boxX = (width - boxW) / 2, boxY = (height - boxH) / 2;
+        fill(0, 0, 0, 150); rect(0, 0, width, height);
+        fill('#fff'); stroke('#dee2e6'); rect(boxX, boxY, boxW, boxH, 12);
+        const headerColor = uiState.isCorrect ? '#d1e7dd' : '#f8d7da';
+        const textColor = uiState.isCorrect ? '#0f5132' : '#842029';
+        const headerText = uiState.isCorrect ? t.correct : t.incorrect;
+        fill(headerColor); noStroke(); rect(boxX, boxY, boxW, 50, 12, 12, 0, 0);
+        fill(textColor); textSize(22); textAlign(CENTER, CENTER);
+        text(headerText, boxX + boxW / 2, boxY + 25);
+        
+        const question = (t.caseData[currentCaseKey] || {questions:[]}).questions[currentQuestionIndex];
+        if (question) {
+            fill('#212529'); textAlign(CENTER, TOP); textSize(14);
+            text(`${t.solution}: ${question.sol}`, boxX + 20, boxY + 70, boxW - 40);
+        }
+        
+        const btnW = 150, btnH = 40, btnX = boxX + (boxW - btnW) / 2, btnY = boxY + boxH - 55;
+        uiElements.feedbackButton = { x: btnX, y: btnY, w: btnW, h: btnH };
+        fill('#007bff'); noStroke(); rect(btnX, btnY, btnW, btnH, 5);
+        fill('#fff'); textSize(16); textAlign(CENTER, CENTER);
+        text(t.nextQuestion, btnX + btnW / 2, btnY + btnH / 2);
+    }
+    
+    function drawHelpOverlay() {
+        const t = translations[currentLanguage];
+        const question = (t.caseData[currentCaseKey] || {questions:[]}).questions[currentQuestionIndex];
+        if (!question) return; // Exit if no question data
+        const steps = question.steps || [];
+        const isLastStep = uiState.helpStepIndex >= steps.length - 1;
+        const boxW = 500, boxH = 350, boxX = (width - boxW) / 2, boxY = (height - boxH) / 2;
+
+        fill(0, 0, 0, 180); rect(0, 0, width, height);
+        fill('#fff'); stroke('#dee2e6'); rect(boxX, boxY, boxW, boxH, 12);
+
+        fill('#e7f5ff'); noStroke(); rect(boxX, boxY, boxW, 50, 12, 12, 0, 0);
+        fill('#0c63e4'); textSize(20); textStyle(BOLD); textAlign(CENTER, CENTER);
+        text(t.helpTitle, boxX + boxW / 2, boxY + 25);
+
+        let yPos = boxY + 70;
+        textAlign(LEFT, TOP);
+        for (let i = 0; i <= uiState.helpStepIndex && i < steps.length; i++) {
+            const step = steps[i];
+            fill('#007bff'); noStroke(); ellipse(boxX + 30, yPos + 10, 20, 20);
+            fill('#fff'); textAlign(CENTER, CENTER); text(i + 1, boxX + 30, yPos + 10);
+            textAlign(LEFT, TOP); fill('#212529'); textSize(14);
+            text(step.text, boxX + 55, yPos);
+            yPos += 30;
+            fill('#f8f9fa'); stroke('#e9ecef'); rect(boxX + 55, yPos, boxW - 80, 40, 5);
+            fill('#d63384'); textFont('monospace'); textAlign(CENTER, CENTER);
+            text(step.content, boxX + 55 + (boxW - 80) / 2, yPos + 20);
+            textFont('Arial');
+            yPos += 55;
+        }
+
+        const closeBtn = { x: boxX + boxW - 140, y: boxY + boxH - 50, w: 120, h: 35 };
+        uiElements.helpCloseButton = closeBtn;
+        fill(isLastStep ? '#0d6efd' : '#6c757d'); noStroke(); rect(closeBtn.x, closeBtn.y, closeBtn.w, closeBtn.h, 5);
+        fill('#fff'); textSize(16); textAlign(CENTER, CENTER);
+        text(isLastStep ? t.gotIt : t.close, closeBtn.x + closeBtn.w / 2, closeBtn.y + closeBtn.h / 2);
+
+        if (!isLastStep) {
+            const nextBtn = { x: closeBtn.x - 130, y: closeBtn.y, w: 120, h: 35 };
+            uiElements.helpNextButton = nextBtn;
+            fill('#198754'); noStroke(); rect(nextBtn.x, nextBtn.y, nextBtn.w, nextBtn.h, 5);
+            fill('#fff'); text(t.nextStep, nextBtn.x + nextBtn.w / 2, nextBtn.y + nextBtn.h / 2);
+        } else {
+            uiElements.helpNextButton = null;
+        }
+    }
+
+    // --- SIMULATION UPDATE & DRAWING ---
+    function updateSimulation() {
+        let dt = deltaTime / 1000;
+        animTimer += dt;
+        
+        switch (currentCaseKey) {
+            case 'A1': { const p = simulationData['9']['Motion']['A1'].params; const speedToSchool = p.dist1 / (p.time1 / 60); const speedReturn = p.dist2 / (p.time2 / 60); const animSpeedToSchool = speedToSchool * 3.5; const animSpeedReturn = speedReturn * 3.5; if (animPhase === 'toSchool') { cyclistPos.x += animSpeedToSchool * dt; labelData.speed = `${speedToSchool.toFixed(1)} km/h`; labelData.distance = `${map(cyclistPos.x, -200, 200, 0, p.dist1).toFixed(2)} km`; if (cyclistPos.x > 200) animPhase = 'returning'; } else if (animPhase === 'returning') { cyclistPos.x -= animSpeedReturn * dt; labelData.speed = `${speedReturn.toFixed(1)} km/h`; labelData.distance = `${(p.dist1 + map(cyclistPos.x, 200, -200, 0, p.dist2)).toFixed(2)} km`; if (cyclistPos.x < -200) animPhase = 'toSchool'; } break; }
+            case 'A2': { const p = simulationData['9']['Motion']['A2'].params; const accel = p.v_final / p.t1; const decel = -p.v_final / p.t2; if (animPhase === 'accelerating') { carPos.x += carVel * dt * 4; carVel += accel * dt; labelData = { speed: `${carVel.toFixed(1)} m/s`, accel: `${accel.toFixed(1)} m/s²`, dist: `${map(carPos.x, -220, 0, 0, 125).toFixed(1)} m`}; if (animTimer > p.t1) { animTimer = 0; animPhase = 'braking'; } } else if (animPhase === 'braking') { carPos.x += carVel * dt * 4; carVel += decel * dt; if (carVel < 0) carVel = 0; labelData = { speed: `${carVel.toFixed(1)} m/s`, accel: `${decel.toFixed(1)} m/s²`, dist: `${(125 + map(carPos.x, 0, 120, 0, 62.5)).toFixed(1)} m` }; } break; }
+            case 'B1': { const p = simulationData['9']['Force and Laws of Motion']['B1'].params; const F_net = p.F_pull - p.F_friction; const accel = F_net / p.mass; trolleyPos.x += 0.5 * accel * (animTimer * animTimer) * 5; if (trolleyPos.x > 150) trolleyPos.x = 150; labelData = { netForce: `${F_net.toFixed(1)} N`, accel: `${accel.toFixed(2)} m/s²` }; break; }
+            case 'B2': { const p = simulationData['9']['Force and Laws of Motion']['B2'].params; elevatorPos.y += elevatorAccel * dt * 20; elevatorPos.y = constrain(elevatorPos.y, -80, 80); labelData = { accel: `${-elevatorAccel.toFixed(2)} m/s²`, apparentWeight: `${(p.mass * (p.g - elevatorAccel)).toFixed(1)} N`}; break; }
+            case 'C1': { const p = simulationData['9']['Gravitation']['C1'].params; const h_prime = p.h_water - p.h_hole; const pressure = 1000 * 9.8 * h_prime; const speed = sqrt(2 * 9.8 * h_prime); labelData = { pressure: `${pressure.toFixed(0)} Pa`, speed: `${speed.toFixed(2)} m/s` }; if (!bottleCapOn) { if (frameCount % 5 === 0) { waterParticles.push({ x: 45, y: -40, vx: speed * 20, vy: 0 }); } for (let i = waterParticles.length - 1; i >= 0; i--) { let p = waterParticles[i]; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 9.8 * 5 * dt; if (p.y > 150) waterParticles.splice(i, 1); } } break; }
+        }
+    }
+
+    function draw3DScene() {
+        cam.setPosition(300, -250, 300); cam.lookAt(0, 0, 0); pg.orbitControl(1, 1, 0.1); pg.ambientLight(150); pg.directionalLight(255, 255, 255, -1, -1, -1);
+        switch (currentCaseKey) {
+            case 'A1': drawCommuteScene(); break;
+            case 'A2': drawCarScene(); break;
+            case 'B1': drawTrolleyScene(); break;
+            case 'B2': drawElevatorScene(); break;
+            case 'C1': drawBottleScene(); break;
+            default: pg.fill(100); pg.textAlign(CENTER, CENTER); pg.text("Simulation coming soon!", 0, 0); break;
+        }
+    }
+
+    function drawCommuteScene() { pg.push(); pg.noStroke(); pg.fill('#a9d6a9'); pg.translate(0, 20, 0); pg.rotateX(PI / 2); pg.plane(500, 300); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#6c757d'); pg.translate(0, 21, 0); pg.rotateX(PI / 2); pg.plane(500, 50); pg.pop(); pg.push(); pg.translate(-220, -20, 0); pg.noStroke(); pg.texture(homeImage); pg.plane(100, 100); pg.pop(); pg.push(); pg.translate(220, -30, 0); pg.noStroke(); pg.texture(schoolImage); pg.plane(120, 120); pg.pop(); pg.push(); pg.translate(cyclistPos.x, 5, 0); if (animPhase === 'returning') { pg.scale(-1, 1, 1); } pg.noStroke(); pg.texture(cycleImage); pg.plane(80, 55); pg.pop(); }
+    function drawCarScene() { pg.push(); pg.noStroke(); pg.fill('#a9d6a9'); pg.translate(0, 20, 0); pg.rotateX(PI / 2); pg.plane(500, 300); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#6c757d'); pg.translate(0, 21, 0); pg.rotateX(PI / 2); pg.plane(500, 50); pg.pop(); pg.push(); pg.translate(carPos.x, -5, carPos.z); pg.noStroke(); pg.texture(carImage); pg.plane(100, 50); pg.pop(); }
+    function drawArrow(base, vec, col) { pg.push(); pg.stroke(col); pg.strokeWeight(3); pg.fill(col); pg.translate(base.x, base.y, base.z); pg.line(0, 0, 0, vec.x, vec.y, vec.z); pg.translate(vec.x, vec.y, vec.z); pg.noStroke(); let angle = atan2(vec.y, vec.x); pg.rotateZ(angle); pg.cone(5, 15); pg.pop(); }
+    function drawTrolleyScene() { pg.push(); pg.noStroke(); pg.fill('#f0ad4e'); pg.translate(0, 21, 0); pg.rotateX(PI / 2); pg.plane(400, 200); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#0275d8'); pg.translate(trolleyPos.x, -5, trolleyPos.z); pg.box(80, 30, 50); pg.pop(); const center = createVector(trolleyPos.x, -5, trolleyPos.z); drawArrow(center, createVector(80, 0, 0), color(0, 200, 0)); drawArrow(createVector(trolleyPos.x, 10, 0), createVector(-40, 0, 0), color(200, 0, 0)); }
+    function drawBottleScene() { pg.push(); pg.stroke(150); pg.fill(173, 216, 230, 100); pg.cylinder(40, 150); pg.pop(); pg.push(); pg.noStroke(); pg.fill(100, 150, 255); pg.translate(0, 25, 0); pg.cylinder(39, 100); pg.pop(); if (bottleCapOn) { pg.push(); pg.noStroke(); pg.fill(50); pg.translate(0, -75, 0); pg.cylinder(20, 10); pg.pop(); } pg.noStroke(); pg.fill(100, 150, 255); for(let p of waterParticles) { pg.push(); pg.translate(p.x, p.y, 0); pg.sphere(3); pg.pop(); } }
+    function drawElevatorScene() { pg.push(); pg.stroke(150); pg.noFill(); pg.translate(elevatorPos.x, elevatorPos.y, elevatorPos.z); pg.box(100, 180, 100); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#6c757d'); pg.translate(elevatorPos.x, elevatorPos.y + 85, elevatorPos.z); pg.box(50, 10, 50); pg.pop(); pg.push(); pg.translate(elevatorPos.x, elevatorPos.y + 35, elevatorPos.z); pg.noStroke(); pg.texture(personImage); pg.plane(60, 90); pg.pop(); }
+    function drawSimulationLabels() { let x = 25, y = 90, h = 20; const t = translations[currentLanguage].labels; fill(0, 0, 0, 120); noStroke(); let labelContent = []; switch (currentCaseKey) { case 'A1': labelContent = [`${t.speed}: ${labelData.speed || '0.0 km/h'}`, `${t.distance}: ${labelData.distance || '0.00 km'}`]; break; case 'A2': labelContent = [`${t.speed}: ${labelData.speed || '0.0 m/s'}`, `${t.accel}: ${labelData.accel || '0.0 m/s²'}`, `${t.distance}: ${labelData.dist || '0.0 m'}`]; break; case 'B1': labelContent = [`${t.netForce}: ${labelData.netForce || '40.0 N'}`, `${t.accel}: ${labelData.accel || '2.00 m/s²'}`]; break; case 'B2': labelContent = [`${t.accel}: ${labelData.accel || '0.00 m/s²'}`, `${t.apparentWeight}: ${labelData.apparentWeight || '686.0 N'}`]; break; case 'C1': if (!bottleCapOn) { labelContent = [`${t.pressure}: ${labelData.pressure || '0 Pa'}`, `${t.effluxSpeed}: ${labelData.speed || '0.00 m/s'}`]; } break; } if (labelContent.length > 0) { rect(x-5, y-5, 180, labelContent.length * h + 10, 5); fill(255); textSize(12); textAlign(LEFT, TOP); for(let i=0; i < labelContent.length; i++) { text(labelContent[i], x, y + i * h); } } }
+
+    // --- MOUSE INTERACTIVITY ---
+    function isMouseIn(box) { if (!box) return false; return mouseX > box.x && mouseX < box.x + box.w && mouseY > box.y && mouseY < box.y + box.h; }
+    function mousePressed() {
+        if (uiState.helpActive) {
+            if (uiElements.helpNextButton && isMouseIn(uiElements.helpNextButton)) {
+                uiState.helpStepIndex++;
+            } else if (isMouseIn(uiElements.helpCloseButton)) {
+                uiState.helpActive = false;
+            }
+            return;
+        }
+        if (uiState.feedbackActive) {
+            if (isMouseIn(uiElements.feedbackButton)) {
+                uiState.feedbackActive = false;
+                const caseData = translations[currentLanguage].caseData[currentCaseKey] || {questions: []};
+                const qList = caseData.questions;
+                if(qList && qList.length > 0) currentQuestionIndex = (currentQuestionIndex + 1) % qList.length;
+                uiState.selectedAnswer = null;
+            }
+            return;
+        }
+        
+        // Close other dropdowns when one is opened
+        if (isMouseIn(uiElements.gradeDropdown)) { uiState.gradeDropdownOpen = !uiState.gradeDropdownOpen; uiState.caseDropdownOpen = false; uiState.langDropdownOpen = false; return; }
+        if (isMouseIn(uiElements.caseDropdown)) { uiState.caseDropdownOpen = !uiState.caseDropdownOpen; uiState.gradeDropdownOpen = false; uiState.langDropdownOpen = false; return; }
+        if (isMouseIn(uiElements.langDropdown)) { uiState.langDropdownOpen = !uiState.langDropdownOpen; uiState.gradeDropdownOpen = false; uiState.caseDropdownOpen = false; return; }
+
+        let dropdownClicked = false;
+        if (uiState.gradeDropdownOpen) {
+            dropdownClicked = true;
+            uiElements.gradeOptions.forEach((box, i) => {
+                if (isMouseIn(box)) {
+                    currentGrade = Object.keys(simulationData)[i];
+                    currentChapterKey = Object.keys(simulationData[currentGrade])[0];
+                    currentCaseKey = Object.keys(simulationData[currentGrade][currentChapterKey])[0];
+                    currentQuestionIndex = 0; uiState.selectedAnswer = null; resetAnimationState();
+                }
+            });
+        }
+        if (uiState.caseDropdownOpen) {
+            dropdownClicked = true;
+            const t = translations[currentLanguage];
+            const caseOptions = Object.entries(simulationData[currentGrade]).flatMap(([chapter, cases]) => 
+                Object.keys(cases).map(caseKey => ({ chapter: chapter, key: caseKey }))
+            );
+            uiElements.caseOptions.forEach((box, i) => {
+                if (isMouseIn(box)) {
+                    const sel = caseOptions[i];
+                    currentChapterKey = sel.chapter; currentCaseKey = sel.key;
+                    currentQuestionIndex = 0; uiState.selectedAnswer = null; resetAnimationState();
+                }
+            });
+        }
+        if (uiState.langDropdownOpen) {
+            dropdownClicked = true;
+            const langCodes = Object.keys(translations);
+            uiElements.langOptions.forEach((box, i) => {
+                if (isMouseIn(box)) {
+                    currentLanguage = langCodes[i];
+                }
+            });
+        }
+        
+        // Close all dropdowns after a selection or click outside
+        uiState.gradeDropdownOpen = false;
+        uiState.caseDropdownOpen = false;
+        uiState.langDropdownOpen = false;
+        if(dropdownClicked) return;
+
+        if (uiElements.options) {
+            uiElements.options.forEach((box, i) => {
+                if (isMouseIn(box)) {
+                    uiState.selectedAnswer = i;
+                    const ansIndex = simulationData[currentGrade][currentChapterKey][currentCaseKey].ans[currentQuestionIndex];
+                    uiState.isCorrect = (i === ansIndex);
+                    uiState.feedbackActive = true;
+                }
+            });
+        }
+        if (uiElements.helpButton && isMouseIn(uiElements.helpButton)) {
+            uiState.helpActive = true;
+            uiState.helpStepIndex = 0;
+        }
+        
+        if (currentCaseKey === 'B2' && isMouseIn({x:10, y:70, w:450, h:420})) {
+             if (elevatorAccel === 0) elevatorAccel = -1.5;
+             else if (elevatorAccel === -1.5) elevatorAccel = 1.5;
+             else elevatorAccel = 0;
+        }
+        if (currentCaseKey === 'C1' && isMouseIn({x:10, y:70, w:450, h:420})) {
+            bottleCapOn = !bottleCapOn;
+            if (bottleCapOn) waterParticles = [];
+        }
+    }
+    </script>
+</body>
+</html>
