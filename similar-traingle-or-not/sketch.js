@@ -3,8 +3,6 @@
 let A, B, C;
 let mathA, mathB, mathC;
 let D, E, F;
-let targetF = null;
-let draggingF = false;
 let offsetF = { x: 0, y: 0 };
 let leftOrigin = { x: 150, y: 220 };
 let rightOrigin = { x: 550, y: 220 };
@@ -23,7 +21,7 @@ let similarityTypes = ["SSS", "SAS", "AA"];
 let similarityTypeDisplay = {
     SSS: "SSS (Side-Side-Side)",
     SAS: "SAS (Side-Angle-Side)",
-    AA:  "AA (Angle-Angle)"
+    AA: "AA (Angle-Angle)"
 };
 
 // Add state for user answer and explanation
@@ -44,7 +42,7 @@ function setup() {
     document.getElementById("hint-btn").addEventListener("click", () => {
         document.getElementById("hint-modal").style.display = "flex";
     });
-    
+
     document.getElementById("close-hint").addEventListener("click", () => {
         document.getElementById("hint-modal").style.display = "none";
     });
@@ -54,55 +52,55 @@ function setup() {
 function generateValidTrianglePair() {
     // Step 1: Generate random triangle ABC with integer sides
     const maxAttempts = 100;
-    
+
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         // Generate random integer sides for triangle ABC
         mathA = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         mathB = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
         mathC = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-        
+
         // Check if it forms a valid triangle
         if (!isValidTriangle(mathA, mathB, mathC)) continue;
-        
+
         // Calculate triangle ABC coordinates
         if (!calculateTriangleABC(mathA, mathB, mathC)) continue;
-        
+
         // Step 2: Find a valid DE that creates integer EF and DF
         const validRatios = [2, 3, 4, 5, 0.5, 0.333, 0.25, 0.2]; // Including fractions
-        
+
         for (let ratioAttempt = 0; ratioAttempt < 50; ratioAttempt++) {
             // Try different DE values
             currentDE = Math.floor(random(MIN_TRIANGLE_SIDE, MAX_TRIANGLE_SIDE + 1));
-            
+
             // Ensure DEF is different in shape from ABC
             if (currentDE === mathC) continue;
-            
+
             // Calculate potential ratio
             let ratio = currentDE / mathC;
-            
+
             // Check if this ratio would give integer sides
             let potentialEF = mathA * ratio;
             let potentialDF = mathB * ratio;
-            
+
             // Check if EF and DF would be integers (within small tolerance)
             if (Math.abs(potentialEF - Math.round(potentialEF)) < 0.001 &&
                 Math.abs(potentialDF - Math.round(potentialDF)) < 0.001) {
-                
+
                 targetEF = Math.round(potentialEF);
                 targetDF = Math.round(potentialDF);
-                
+
                 // Ensure the target triangle is valid and within bounds
                 if (isValidTriangle(currentDE, targetEF, targetDF) &&
                     targetEF >= MIN_TRIANGLE_SIDE && targetEF <= MAX_TRIANGLE_SIDE &&
                     targetDF >= MIN_TRIANGLE_SIDE && targetDF <= MAX_TRIANGLE_SIDE) {
-                    
+
                     targetRatio = ratio;
-                    
+
                 }
             }
         }
     }
-    
+
     return false;
 }
 
@@ -137,11 +135,11 @@ function calculateTriangleDEF(de, ef, df) {
         x: D.x + df * PIXEL_SCALE * Math.cos(angleD),
         y: D.y - Math.abs(df * PIXEL_SCALE * Math.sin(angleD))
     };
-    
+
     // Constrain F to canvas bounds with proper margins
     F.x = constrain(F.x, 50, width - 50);
     F.y = constrain(F.y, 50, height - 50);
-    
+
     return true;
 }
 
@@ -164,7 +162,7 @@ function getRandomRatio() {
 }
 
 // --- RESET LOGIC ---
-window.resetToNew = function() {
+function resetToNew() {
     // Randomly pick a similarity type
     similarityType = similarityTypes[Math.floor(Math.random() * similarityTypes.length)];
     // Randomly decide if triangles should be similar or not
@@ -282,7 +280,7 @@ function generateAATriangles(similar) {
 }
 
 // --- SIMILARITY CHECK LOGIC ---
-window.checkSimilarity = function(isSimilar) {
+function checkSimilarity(isSimilar) {
     // Prevent further clicks
     if (simBtn) simBtn.disabled = true;
     if (notSimBtn) notSimBtn.disabled = true;
@@ -329,19 +327,19 @@ window.checkSimilarity = function(isSimilar) {
 };
 
 // --- BUTTON HOOKS ---
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     // Attach to buttons
     simBtn = document.getElementById('check-btn');
     notSimBtn = document.querySelectorAll('#hint-btn')[0]; // first Not Similar button
-    if (simBtn) simBtn.onclick = function() { window.checkSimilarity(true); };
-    if (notSimBtn) notSimBtn.onclick = function() { window.checkSimilarity(false); };
+    if (simBtn) simBtn.onclick = function () { window.checkSimilarity(true); };
+    if (notSimBtn) notSimBtn.onclick = function () { window.checkSimilarity(false); };
 });
 
 
 function draw() {
     background(220);
     // Show current theorem type
-    fill(40,40,120);
+    fill(40, 40, 120);
     textSize(20);
     textAlign(LEFT, TOP);
     text("Similarity Theorem: " + similarityTypeDisplay[similarityType], 20, 10);
@@ -360,8 +358,8 @@ function draw() {
         let df = dist(D.x, D.y, F.x, F.y) / PIXEL_SCALE;
         drawTriangle(D, E, F, false, [currentDE, targetEF, 60], ['DE', 'EF', '∠E'], 'SAS');
     } else {
-        drawTriangle(A, B, C, true, [45, 60, mathC], ['∠A', '∠B', ''], 'AA');
-        drawTriangle(D, E, F, false, [45, 60, currentDE], ['∠D', '∠E', ''], 'AA');
+        drawTriangle(A, B, C, true, [45, 60, mathC], ['∠A', '∠B', '∠C'], 'AA');
+        drawTriangle(D, E, F, false, [45, 60, currentDE], ['∠D', '∠E', '∠F'], 'AA');
     }
 
     // Show result message below triangles
@@ -369,10 +367,10 @@ function draw() {
         fill(userResult.correct ? 'green' : 'red');
         textSize(22);
         textAlign(CENTER, TOP);
-        text(userResult.message, width/2, 320);
+        text(userResult.message, width / 2, 320);
         fill(40);
         textSize(16);
-        text(userResult.explanation, width/2, 350, 700, 60);
+        text(userResult.explanation, width / 2, 350, 700, 60);
     }
 }
 
@@ -400,9 +398,9 @@ function drawTriangle(p1, p2, p3, isLeft, mathSides, labels, mode) {
         textAlign(CENTER, CENTER);
         textSize(18);
         if (mode === 'SSS') {
-            text(`${labels[i]}: ${mathSides[i].toFixed(1)}`, midpoints[i].x, midpoints[i].y + 20);
+            text(`${labels[i]}: ${mathSides[i].toFixed(0)}`, midpoints[i].x, midpoints[i].y + 20);
         } else if (mode === 'SAS') {
-            if (i < 2) text(`${labels[i]}: ${mathSides[i].toFixed(1)}`, midpoints[i].x, midpoints[i].y + 20);
+            if (i < 2) text(`${labels[i]}: ${mathSides[i].toFixed(0)}`, midpoints[i].x, midpoints[i].y + 20);
             if (i === 2) text(`${labels[i]}: ${mathSides[i]}`, midpoints[i].x, midpoints[i].y - 20);
         } else if (mode === 'AA') {
             if (i < 2) text(`${labels[i]}: ${mathSides[i]}°`, midpoints[i].x, midpoints[i].y + 20);

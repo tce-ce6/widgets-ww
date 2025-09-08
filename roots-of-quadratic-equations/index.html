@@ -56,7 +56,7 @@
         }
 
         #sliders {
-            width: 300px;
+            width: 100%;
             /* same width as graph */
         }
 
@@ -109,6 +109,8 @@
 
         .right-section {
             padding: 40px 10px 10px;
+            display: flex;
+            flex-wrap: wrap;
         }
 
         .input-wrapper {
@@ -124,7 +126,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Roots of Quadratic Equations</h2>
-                <span id="versionId" class="versionText">v_25082802</span>
+                <span id="versionId" class="versionText">v_25090201</span>
             </div>
 
 
@@ -136,7 +138,7 @@
                         <!-- Graph -->
                         <div>
                             <div class="question">
-                                <h2 style="text-align:center; font-weight: 500;font-size: 22px;">Quadratic Equation: y =
+                                <h2 style="text-align:center; font-weight: 500;font-size: 22px; font-style: italic;">Quadratic Equation: y =
                                     ax² + bx + c</h2>
                             </div>
                             <div id="jxgbox"></div>
@@ -144,29 +146,30 @@
 
                         <!-- Right panel (a,b,c values + Show/Hide) -->
                         <div class="right-section">
+                            <span style="display: block; margin-right: 5px;">Is</span>
                             <div id="rightPanel">
-                                <span>Is b² − 4ac ≥ 0?</span>
+                                <span>b² − 4ac ≥ 0?</span>
                             </div>
                             <div id="sliders">
                                 <div class="slider-container">
                                     <div class="slider-labels">
-                                        <span>-4</span><span>4</span>
+                                        <span>-6</span><span>6</span>
                                     </div>
                                     <div class="value-bubble" id="aBubble">1</div>
                                     <div class="input-wrapper">
                                         <span>a</span>
-                                        <input type="range" id="aSlider" min="-4" max="4" step="1" value="1" />
+                                        <input type="range" id="aSlider" min="-6" max="6" step="1" value="1" />
                                     </div>
                                 </div>
 
                                 <div class="slider-container">
                                     <div class="slider-labels">
-                                        <span>-4</span><span>4</span>
+                                        <span>-6</span><span>6</span>
                                     </div>
                                     <div class="value-bubble" id="bBubble">0</div>
                                     <div class="input-wrapper">
                                         <span>b</span>
-                                        <input type="range" id="bSlider" min="-4" max="4" step="1" value="0" />
+                                        <input type="range" id="bSlider" min="-6" max="6" step="1" value="0" />
                                     </div>
                                 </div>
 

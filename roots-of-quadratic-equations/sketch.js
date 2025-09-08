@@ -47,7 +47,7 @@ function updateOutput() {
 
     const D = b * b - 4 * a * c;
 
-    let msg = `Is b² − 4ac ≥ 0?<br>${b}² − 4(${a})(${c}) = ${D}`;
+    let msg = `b² − 4ac ≥ 0?<br>${b}² − 4(${a})(${c}) = ${D}`;
     if (D > 0) {
         msg += `<br><span style="color:#d60000;">${D} &gt; 0</span><br><b>Two distinct real roots</b>`;
     } else if (D === 0) {
@@ -67,7 +67,7 @@ toggleBtn.addEventListener('click', () => {
         rightPanel.style.display = 'block';
         toggleBtn.textContent = 'Hide';
     } else {
-        rightPanel.innerText = 'Is b² − 4ac ≥ 0?';
+        rightPanel.innerText = 'b² − 4ac ≥ 0?';
         toggleBtn.textContent = 'Show';
     }
 });
@@ -82,7 +82,7 @@ function updateGraphFor(slider, bubble) {
 
     // Auto-hide the explanation
     isShown = false;
-    rightPanel.innerText = 'Is b² − 4ac ≥ 0?';
+    rightPanel.innerText = 'b² − 4ac ≥ 0?';
     toggleBtn.textContent = 'Show';
 
     // Update right-panel values

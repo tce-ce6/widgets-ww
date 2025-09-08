@@ -36,7 +36,7 @@ function setupButtons() {
         resetTriangle();
         showTriangle = false;
         showShuffle = false;
-        shuffleBtn.style.display = 'none';
+        // shuffleBtn.style.display = 'none';
         redraw();
     }
 
@@ -45,17 +45,17 @@ function setupButtons() {
         showTriangle = true;
         // showShuffle = canMakeTriangle;
         showShuffle = true;
-        shuffleBtn.style.display = showShuffle ? 'inline-block' : 'none';
+        // shuffleBtn.style.display = showShuffle ? 'inline-block' : 'none';
         redraw();
     };
 
-    shuffleBtn.onclick = () => {
-        shuffleSegments();
-        showTriangle = false;
-        showShuffle = false;
-        shuffleBtn.style.display = 'none';
-        redraw();
-    };
+    // shuffleBtn.onclick = () => {
+    //     shuffleSegments();
+    //     showTriangle = false;
+    //     showShuffle = false;
+    //     shuffleBtn.style.display = 'none';
+    //     redraw();
+    // };
 }
 
 function drawSegments() {
@@ -157,9 +157,9 @@ function changeSegment(idx, delta) {
 function drawInequalityChecks() {
     const x = 900, y = 220, gap = 90;
     const checks = [
-        { a: 0, b: 1, c: 2, label: '"Is AB + BC > AC?"' },
+        { a: 1, b: 2, c: 0, label: '"Is BC + AC > AB?"' },
         { a: 0, b: 2, c: 1, label: '"Is AB + AC > BC?"' },
-        { a: 1, b: 2, c: 0, label: '"Is BC + AC > AB?"' }
+        { a: 0, b: 1, c: 2, label: '"Is AB + BC > AC?"' }        
     ];
     const colors = ['#ff8800', '#228B22', '#0099ff'];
     const results = [];
@@ -191,7 +191,7 @@ function drawInequalityChecks() {
             }
         }
     }
-
+``
     canMakeTriangle = results.every(Boolean);
 }
 
