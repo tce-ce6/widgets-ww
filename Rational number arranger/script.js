@@ -72,6 +72,7 @@ class RationalNumberSimulation {
         this.userOrder = [];
         this.correctOrder = [];
         this.showHint = false;
+        this.feedback = { message: '', type: 'none' }; // To show in-canvas feedback
         this.stepAnimations = {
             normalization: 0,
             lcmCalculation: 0,
@@ -88,6 +89,8 @@ class RationalNumberSimulation {
         this.userOrder = [];
         this.step = 1; // Ensure it resets to step 1
         this.animationProgress = 0;
+        this.feedback = { message: '', type: 'none' }; // Reset feedback
+        this.resetStepAnimations();
 
         // Parse input fractions
         for (let str of fractionStrings) {
@@ -103,7 +106,7 @@ class RationalNumberSimulation {
         }
 
         if (this.fractions.length < 2 || this.fractions.length > 5) {
-            alert("Please enter 2-5 valid fractions!");
+            console.error("Invalid fraction data generated.");
             return false;
         }
 
@@ -144,6 +147,7 @@ class RationalNumberSimulation {
         if (this.step < 6) {
             this.step++;
             this.animationProgress = 0;
+            this.feedback = { message: '', type: 'none' };
             this.resetStepAnimations();
         }
     }
@@ -167,9 +171,6 @@ class RationalNumberSimulation {
     draw() {
         background(255, 255, 255);
 
-        // Step indicator
-        this.drawStepIndicator();
-
         // Main content based on current step
         switch (this.step) {
             case 1: this.drawInputStep(); break;
@@ -180,22 +181,22 @@ class RationalNumberSimulation {
             case 6: this.drawFinalAnswer(); break;
         }
 
-        // Navigation buttons
-        this.drawNavigationButtons();
+        // Step indicator is now at the bottom
+        this.drawStepIndicator();
     }
 
     drawStepIndicator() {
         const steps = ["Input", "Normalize", "Find LCM", "Convert", "Arrange", "Final"];
         const stepWidth = width / steps.length;
+        const y = height - 40; // Positioned near the bottom of the canvas
 
         for (let i = 0; i < steps.length; i++) {
             const x = i * stepWidth + stepWidth / 2;
-            const y = 60;
 
-            if (i + 1 <= this.step) {
-                fill('#16A085'); // Medium Teal
+            if (i + 1 === this.step) {
+                fill('#16A085'); // Medium Teal for current step
             } else {
-                fill('#E6D4F0'); // Light Purple
+                fill('#E6D4F0'); // Light Purple for other steps
             }
             circle(x, y, 30);
 
@@ -221,12 +222,12 @@ class RationalNumberSimulation {
         fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 1: Input Rational Numbers", width / 2, 120);
+        text("Step 1: Input Rational Numbers", width / 2, 80);
 
         textSize(14);
-        text("Here are your input fractions:", width / 2, 160);
+        text("Here are your input fractions:", width / 2, 120);
 
-        const startY = 200;
+        const startY = 180;
         for (let i = 0; i < this.rawFractions.length; i++) {
             const x = width / 2 + (i - (this.rawFractions.length - 1) / 2) * 120;
             const progress = this.stepAnimations.normalization;
@@ -238,7 +239,7 @@ class RationalNumberSimulation {
             fill(255, alpha);
             textAlign(CENTER, CENTER);
             textSize(18);
-            text(this.rawFractions[i].toString(), x, startY + 30); // Use raw fraction
+            text(this.rawFractions[i].toString(), x, startY + 30);
         }
     }
 
@@ -246,21 +247,21 @@ class RationalNumberSimulation {
         fill('#4A235A'); // Dark Purple
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 2: Normalize Fractions", width / 2, 120);
+        text("Step 2: Normalize Fractions", width / 2, 80);
 
         textSize(14);
-        text("Standardizing negative signs and simplifying fractions", width / 2, 160);
+        text("Standardizing negative signs and simplifying fractions", width / 2, 120);
 
-        const startY = 200;
+        const startY = 180;
         const progress = this.stepAnimations.normalization;
 
         for (let i = 0; i < this.fractions.length; i++) {
             const x = width / 2 + (i - (this.fractions.length - 1) / 2) * 150;
 
             // Original fraction (from raw input)
-            fill('#E6D4F0'); // Light Purple
+            fill('#E6D4F0');
             rect(x - 35, startY, 70, 50, 8);
-            fill('#4A235A'); // Dark Purple text for contrast
+            fill('#4A235A');
             textAlign(CENTER, CENTER);
             textSize(14);
             text(this.rawFractions[i].toString(), x, startY + 25);
@@ -272,18 +273,12 @@ class RationalNumberSimulation {
                 const arrowEndY = startY + 80 + 25;
 
                 noFill();
-                stroke('#4A235A'); // Dark Purple
+                stroke('#4A235A');
                 strokeWeight(1.5);
-                bezier(
-                    arrowX, arrowStartY,      // Anchor point 1
-                    arrowX - 40, arrowStartY + 20, // Control point 1
-                    arrowX - 40, arrowEndY - 20,   // Control point 2
-                    arrowX, arrowEndY        // Anchor point 2
-                );
-
+                bezier(arrowX, arrowStartY, arrowX - 40, arrowStartY + 20, arrowX - 40, arrowEndY - 20, arrowX, arrowEndY);
                 push();
                 translate(arrowX, arrowEndY);
-                fill('#4A235A'); // Dark Purple
+                fill('#4A235A');
                 noStroke();
                 triangle(0, 0, -8, -5, -8, 5);
                 pop();
@@ -293,7 +288,7 @@ class RationalNumberSimulation {
             if (progress > 0.5) {
                 const normalizedY = startY + 80;
                 const alpha = (progress - 0.5) * 2 * 255;
-                fill(22, 160, 133, alpha); // Medium Teal with alpha
+                fill(22, 160, 133, alpha);
                 rect(x - 35, normalizedY, 70, 50, 8);
                 fill(255, alpha);
                 text(this.normalizedFractions[i].toString(), x, normalizedY + 25);
@@ -304,21 +299,21 @@ class RationalNumberSimulation {
 
 
     drawLCMStep() {
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 3: Find LCM of Denominators", width / 2, 120);
+        text("Step 3: Find LCM of Denominators", width / 2, 80);
 
         const denominators = this.normalizedFractions.map(f => f.denominator);
         textSize(14);
-        text("Denominators: " + denominators.join(", "), width / 2, 160);
+        text("Denominators: " + denominators.join(", "), width / 2, 120);
 
         const progress = this.stepAnimations.lcmCalculation;
 
         if (progress > 0.6) {
-            fill('#0B4F44'); // Dark Teal
+            fill('#0B4F44');
             textSize(18);
-            text(`LCM = ${this.lcm}`, width / 2, 220);
+            text(`LCM = ${this.lcm}`, width / 2, 180);
         }
 
         if (progress > 0.8) {
@@ -327,7 +322,7 @@ class RationalNumberSimulation {
     }
 
     drawLCMVisualization() {
-        const startY = 280;
+        const startY = 240;
         const denominators = [...new Set(this.normalizedFractions.map(f => f.denominator))];
         const spacing = 45;
         const startX = 250;
@@ -336,7 +331,7 @@ class RationalNumberSimulation {
             const den = denominators[i];
             const y = startY + i * 40;
 
-            fill('#4A235A'); // Dark Purple
+            fill('#4A235A');
             textAlign(RIGHT, CENTER);
             textSize(12);
             text(`${den}: `, startX - 20, y);
@@ -347,16 +342,10 @@ class RationalNumberSimulation {
                 for (let j = 1; j <= lcmMultipleCount; j++) {
                     const multiple = den * j;
                     const x = startX + (j - 1) * spacing;
-
-                    if (multiple === this.lcm) {
-                        fill('#16A085'); // Medium Teal
-                    } else {
-                        fill('#E6D4F0'); // Light Purple
-                    }
+                    fill(multiple === this.lcm ? '#16A085' : '#E6D4F0');
                     noStroke();
                     circle(x, y, 25);
-
-                    fill('#4A235A'); // Dark Purple
+                    fill('#4A235A');
                     textAlign(CENTER, CENTER);
                     textSize(10);
                     text(multiple, x, y);
@@ -365,28 +354,24 @@ class RationalNumberSimulation {
                 for (let j = 1; j <= 7; j++) {
                     const multiple = den * j;
                     const x = startX + (j - 1) * spacing;
-                    fill('#E6D4F0'); // Light Purple
+                    fill('#E6D4F0');
                     noStroke();
                     circle(x, y, 25);
-
-                    fill('#4A235A'); // Dark Purple
+                    fill('#4A235A');
                     textAlign(CENTER, CENTER);
                     textSize(10);
                     text(multiple, x, y);
                 }
-
                 const dotsX = startX + 7 * spacing;
-                fill('#4A235A'); // Dark Purple
+                fill('#4A235A');
                 textAlign(LEFT, CENTER);
                 textSize(16);
                 text('. . . . .', dotsX, y);
-
                 const finalCircleX = dotsX + 60;
-                fill('#16A085'); // Medium Teal
+                fill('#16A085');
                 noStroke();
                 circle(finalCircleX, y, 25);
-
-                fill('#4A235A'); // Dark Purple
+                fill('#4A235A');
                 textAlign(CENTER, CENTER);
                 textSize(10);
                 text(this.lcm, finalCircleX, y);
@@ -395,23 +380,21 @@ class RationalNumberSimulation {
     }
 
     drawConversionStep() {
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 4: Convert to Equivalent Fractions", width / 2, 120);
-
+        text("Step 4: Convert to Equivalent Fractions", width / 2, 80);
         textSize(14);
-        text(`Converting all fractions to have denominator ${this.lcm}`, width / 2, 160);
+        text(`Converting all fractions to have denominator ${this.lcm}`, width / 2, 120);
 
-        const startY = 200;
+        const startY = 160;
         const progress = this.stepAnimations.conversion;
 
         for (let i = 0; i < this.normalizedFractions.length; i++) {
             const x = width / 2 + (i - (this.normalizedFractions.length - 1) / 2) * 160;
             let currentY = startY;
 
-            // Purple box (Normalized)
-            fill('#8E44AD'); // Medium Purple
+            fill('#8E44AD');
             rect(x - 40, currentY, 80, 50, 8);
             fill(255);
             textAlign(CENTER, CENTER);
@@ -419,29 +402,26 @@ class RationalNumberSimulation {
             text(this.normalizedFractions[i].toString(), x, currentY + 25);
             currentY += 50;
 
-            // Multiplier text
             if (progress > 0.2) {
                 currentY += 25;
                 const factor = this.lcm / this.normalizedFractions[i].denominator;
-                fill('#4A235A'); // Dark Purple
+                fill('#4A235A');
                 textSize(14);
                 text(`× ${factor}/${factor}`, x, currentY);
                 currentY += 25;
             }
 
-            // Arrow
             if (progress > 0.4) {
                 currentY += 10;
-                fill('#4A235A'); // Dark Purple
+                fill('#4A235A');
                 noStroke();
-                triangle(x, currentY + 10, x - 5, currentY, x + 5, currentY); // Downward arrow
+                triangle(x, currentY + 10, x - 5, currentY, x + 5, currentY);
                 currentY += 20;
             }
 
-            // Teal box (Equivalent)
             if (progress > 0.6) {
                 const alpha = map(progress, 0.6, 1, 0, 255);
-                fill(22, 160, 133, alpha); // Medium Teal with alpha
+                fill(22, 160, 133, alpha);
                 rect(x - 50, currentY, 100, 50, 8);
                 fill(255, alpha);
                 textSize(16);
@@ -451,15 +431,32 @@ class RationalNumberSimulation {
         noStroke();
     }
 
+    // NEW function to draw feedback
+    drawFeedbackMessage() {
+        if (this.feedback.type === 'none') return;
+
+        const y = 140; // Positioned below the main instruction text
+        
+        // Use green for correct, red for incorrect
+        fill(this.feedback.type === 'correct' ? '#16A085' : '#C0392B');
+        
+        textAlign(CENTER, TOP);
+        textSize(16);
+        textStyle(BOLD);
+        text(this.feedback.message, width / 2, y);
+        textStyle(NORMAL); // Reset for other text
+    }
 
     drawArrangementStep() {
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 5: Arrange the Fractions", width / 2, 120);
+        text("Step 5: Arrange the Fractions", width / 2, 80);
 
         textSize(14);
-        text("Drag the fractions to arrange them from least to greatest", width / 2, 150);
+        text("Drag the fractions to arrange them from least to greatest", width / 2, 110);
+
+        this.drawFeedbackMessage(); // Draw the feedback message here
 
         this.drawNumberLine();
         this.drawDraggableFractions();
@@ -467,16 +464,15 @@ class RationalNumberSimulation {
     }
 
     drawNumberLine() {
-        const lineY = 250;
+        const lineY = 200;
         const lineStart = 100;
         const lineEnd = 700;
 
-        stroke('#4A235A'); // Dark Purple
+        stroke('#4A235A');
         strokeWeight(3);
         line(lineStart, lineY, lineEnd, lineY);
-
         noStroke();
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textAlign(CENTER, TOP);
         textSize(10);
 
@@ -487,8 +483,7 @@ class RationalNumberSimulation {
         for (let i = 0; i <= 10; i++) {
             const x = lineStart + (lineEnd - lineStart) * i / 10;
             const val = minVal + range * i / 10;
-
-            stroke('#8E44AD'); // Medium Purple
+            stroke('#8E44AD');
             line(x, lineY - 5, x, lineY + 5);
             noStroke();
             text(val.toFixed(2), x, lineY + 10);
@@ -496,7 +491,7 @@ class RationalNumberSimulation {
     }
 
     drawDraggableFractions() {
-        const baseY = 300;
+        const baseY = 280;
         const spacing = (width - 200) / this.fractions.length;
 
         for (let i = 0; i < this.fractions.length; i++) {
@@ -507,68 +502,61 @@ class RationalNumberSimulation {
             if (this.draggedIndex === i) {
                 x = mouseX + this.dragOffset.x;
                 y = mouseY + this.dragOffset.y;
-                fill('#E6D4F0'); // Light Purple for dragged item
+                fill('#E6D4F0');
             } else {
-                fill('#8E44AD'); // Medium Purple for normal items
+                fill('#8E44AD');
             }
             rect(x - 40, y - 25, 80, 50, 10);
 
-            // Set text color based on dragged state for contrast
-            if (this.draggedIndex === i) {
-                fill('#4A235A'); // Dark Purple text on light purple background
-            } else {
-                fill(255); // White text on medium purple background
-            }
+            fill(this.draggedIndex === i ? '#4A235A' : 255);
             textAlign(CENTER, CENTER);
             textSize(14);
             text(this.rawFractions[i].toString(), x, y - 5);
 
-            if (this.draggedIndex === i) {
-                fill('#8E44AD'); // Medium Purple sub-text
-            } else {
-                fill('#E6D4F0'); // Light Purple sub-text
-            }
+            fill(this.draggedIndex === i ? '#8E44AD' : '#E6D4F0');
             textSize(10);
             text(this.equivalentFractions[i].toString(), x, y + 15);
         }
     }
 
     drawArrangementFeedback() {
-        fill('#16A085'); // Medium Teal
-        rect(width / 2 - 50, 380, 100, 40, 10);
+        // Position buttons lower to not interfere with stepper
+        const buttonY = 360;
+        fill('#16A085');
+        rect(width / 2 - 50, buttonY, 100, 40, 10);
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(14);
-        text("Check Order", width / 2, 400);
+        text("Check Order", width / 2, buttonY + 20);
 
-        fill('#8E44AD'); // Medium Purple
-        rect(width / 2 - 160, 380, 80, 40, 10);
+        fill('#8E44AD');
+        rect(width / 2 - 160, buttonY, 80, 40, 10);
         fill(255);
-        text("Hint", width / 2 - 120, 400);
+        text("Hint", width / 2 - 120, buttonY + 20);
 
         if (this.showHint) {
-            fill(207, 245, 240, 200); // Light Teal with alpha
-            rect(50, 430, width - 100, 50, 10);
-            fill('#4A235A'); // Dark Purple
+            fill(207, 245, 240, 200);
+            rect(50, buttonY + 50, width - 100, 50, 10);
+            fill('#4A235A');
             textAlign(CENTER, CENTER);
             textSize(12);
-            text("Remember: Negative numbers are smaller. Compare numerators when denominators are equal!", width / 2, 455);
+            text("Remember: Negative numbers are smaller. Compare numerators when denominators are equal!", width / 2, buttonY + 75);
         }
     }
 
     drawFinalAnswer() {
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textAlign(CENTER, TOP);
         textSize(20);
-        text("Step 6: Final Answer", width / 2, 120);
+        text("Step 6: Final Answer", width / 2, 80);
 
         textSize(16);
-        fill('#16A085'); // Medium Teal
-        text("Congratulations! Here's the complete solution:", width / 2, 160);
+        fill('#16A085');
+        text("Congratulations! Here's the complete solution:", width / 2, 120);
 
-        const startY = 200;
+        const startY = 180;
 
-        fill('#4A235A'); // Dark Purple
+        fill('#4A235A');
         textSize(14);
         textAlign(LEFT, TOP);
         text("Original fractions:", 100, startY);
@@ -585,117 +573,90 @@ class RationalNumberSimulation {
     }
 
     drawFinalNumberLine() {
-        const lineY = 350;
+        const lineY = 320;
         const lineStart = 100;
         const lineEnd = 700;
 
-        stroke('#4A235A'); // Dark Purple
+        stroke('#4A235A');
         strokeWeight(3);
         line(lineStart, lineY, lineEnd, lineY);
         noStroke();
 
-        const minVal = Math.min(...this.equivalentFractions.map(f => f.toDecimal()));
-        const maxVal = Math.max(...this.equivalentFractions.map(f => f.toDecimal()));
-        const range = maxVal - minVal;
+        const allDecimals = this.equivalentFractions.map(f => f.toDecimal());
+        const minVal = Math.min(...allDecimals);
+        const maxVal = Math.max(...allDecimals);
+        const range = maxVal - minVal === 0 ? 1 : maxVal - minVal;
 
         for (let i of this.correctOrder) {
             const fraction = this.equivalentFractions[i];
             const val = fraction.toDecimal();
             const x = lineStart + (lineEnd - lineStart) * (val - minVal) / range;
 
-            fill('#16A085'); // Medium Teal
+            fill('#16A085');
             rect(x - 30, lineY - 40, 60, 35, 5);
-
             fill(255);
             textAlign(CENTER, CENTER);
             textSize(12);
             text(this.rawFractions[i].toString(), x, lineY - 22);
 
-            stroke('#8E44AD'); // Medium Purple
+            stroke('#8E44AD');
             line(x, lineY - 5, x, lineY + 5);
             noStroke();
 
-            fill('#4A235A'); // Dark Purple
+            fill('#4A235A');
             textSize(10);
             text(val.toFixed(2), x, lineY + 15);
         }
     }
-
-    drawNavigationButtons() {
-        if (this.step < 6) {
-            fill('#16A085'); // Medium Teal
-            rect(width - 120, height - 50, 100, 35, 8);
-            fill(255);
-            textAlign(CENTER, CENTER);
-            textSize(14);
-            text("Next Step", width - 70, height - 32);
-        }
-
-        if (this.step > 1) {
-            fill('#8E44AD'); // Medium Purple
-            rect(20, height - 50, 100, 35, 8);
-            fill(255);
-            text("Previous", 70, height - 32);
-        }
-
-        if (this.step === 6) {
-            fill('#0B4F44'); // Dark Teal
-            rect(width / 2 - 80, height - 50, 160, 35, 8);
-            fill(255);
-            text("Try New Set", width / 2, height - 32);
-        }
-    }
-
+    
     mousePressed() {
-        if (this.step < 6 && mouseX > width - 120 && mouseX < width - 20 &&
-            mouseY > height - 50 && mouseY < height - 15) {
-            this.nextStep();
-            return;
-        }
+        // Stepper navigation logic
+        const steps = ["Input", "Normalize", "Find LCM", "Convert", "Arrange", "Final"];
+        const stepWidth = width / steps.length;
+        const y = height - 40;
+        const circleRadius = 15;
 
-        if (this.step > 1 && mouseX > 20 && mouseX < 120 &&
-            mouseY > height - 50 && mouseY < height - 15) {
-            this.step--;
-            this.animationProgress = 0;
-            this.resetStepAnimations();
-            return;
+        for (let i = 0; i < steps.length; i++) {
+            const x = i * stepWidth + stepWidth / 2;
+            if (dist(mouseX, mouseY, x, y) < circleRadius) {
+                this.step = i + 1;
+                this.animationProgress = 0;
+                this.resetStepAnimations();
+                this.feedback = { message: '', type: 'none' }; // Reset feedback
+                return;
+            }
         }
 
         if (this.step === 5) {
-            const baseY = 300;
+            const baseY = 280;
             const spacing = (width - 200) / this.fractions.length;
+            const buttonY = 360;
 
             for (let i = 0; i < this.fractions.length; i++) {
                 const orderIndex = this.userOrder[i];
                 const x = 100 + orderIndex * spacing + spacing / 2;
                 const y = baseY;
 
-                if (mouseX > x - 40 && mouseX < x + 40 &&
-                    mouseY > y - 25 && mouseY < y + 25) {
+                if (mouseX > x - 40 && mouseX < x + 40 && mouseY > y - 25 && mouseY < y + 25) {
                     this.draggedIndex = i;
                     this.dragOffset.x = x - mouseX;
                     this.dragOffset.y = y - mouseY;
+                    this.feedback = { message: '', type: 'none' }; // Reset on drag
                     return;
                 }
             }
-
-            if (mouseX > width / 2 - 50 && mouseX < width / 2 + 50 &&
-                mouseY > 380 && mouseY < 420) {
+            
+            // Check Order button
+            if (mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > buttonY && mouseY < buttonY + 40) {
                 this.checkAnswer();
                 return;
             }
-
-            if (mouseX > width / 2 - 160 && mouseX < width / 2 - 80 &&
-                mouseY > 380 && mouseY < 420) {
+            
+            // Hint button
+            if (mouseX > width / 2 - 160 && mouseX < width / 2 - 80 && mouseY > buttonY && mouseY < buttonY + 40) {
                 this.showHint = !this.showHint;
                 return;
             }
-        }
-
-        if (this.step === 6 && mouseX > width / 2 - 80 && mouseX < width / 2 + 80 &&
-            mouseY > height - 50 && mouseY < height - 15) {
-            generateRandom();
-            return;
         }
     }
 
@@ -714,12 +675,13 @@ class RationalNumberSimulation {
                 }
             }
 
-            const draggedOrder = this.userOrder[this.draggedIndex];
-            const targetOrder = this.userOrder.findIndex(order => order === closestIndex);
+            const draggedFromPosition = this.userOrder[this.draggedIndex];
+            const targetItemIndex = this.userOrder.findIndex(order => order === closestIndex);
 
-            if (targetOrder !== -1) {
+            if (targetItemIndex !== -1) {
+                // Swap the positions
+                this.userOrder[targetItemIndex] = draggedFromPosition;
                 this.userOrder[this.draggedIndex] = closestIndex;
-                this.userOrder[targetOrder] = draggedOrder;
             }
 
             this.draggedIndex = -1;
@@ -727,13 +689,26 @@ class RationalNumberSimulation {
     }
 
     checkAnswer() {
-        const isCorrect = JSON.stringify(this.userOrder) === JSON.stringify(this.correctOrder);
+        // Create an array from the user's order that matches the format of the correctOrder array.
+        // correctOrder format: [fractionIndex_at_pos0, fractionIndex_at_pos1, ...]
+        // We need to convert userOrder to this format for a correct comparison.
+        const userArrangementByPosition = new Array(this.userOrder.length);
+        this.userOrder.forEach((position, fractionIndex) => {
+            userArrangementByPosition[position] = fractionIndex;
+        });
+
+        const isCorrect = JSON.stringify(userArrangementByPosition) === JSON.stringify(this.correctOrder);
 
         if (isCorrect) {
-            alert("Correct! Well done! 🎉");
-            this.nextStep();
+            this.feedback = { message: 'Correct! Well done! 🎉', type: 'correct' };
+            // Wait 1.5 seconds before moving to the next step
+            setTimeout(() => {
+                if(this.step === 5) { // Ensure we are still on step 5
+                    this.nextStep();
+                }
+            }, 1500);
         } else {
-            alert("Not quite right. Try again! 💪");
+            this.feedback = { message: 'Not quite right. Try again! 💪', type: 'incorrect' };
         }
     }
 }
@@ -742,58 +717,29 @@ function setup() {
     const canvas = createCanvas(800, 500);
     canvas.parent('canvas-container');
     simulation = new RationalNumberSimulation();
+    generateNewExample(); // Load the first example on startup
 }
 
 function draw() {
-    simulation.update();
-    simulation.draw();
+    if (simulation) {
+        simulation.update();
+        simulation.draw();
+    }
 }
 
 function mousePressed() {
-    simulation.mousePressed();
+    if (simulation) {
+        simulation.mousePressed();
+    }
 }
 
 function mouseReleased() {
-    simulation.mouseReleased();
-}
-
-function startSimulation() {
-    const input = document.getElementById('fractionInput').value;
-    let fractionStrings = input.split(',').map(s => s.trim()).filter(s => s.length > 0);
-    
-    if (fractionStrings.length === 0) {
-        const placeholderText = document.getElementById('fractionInput').placeholder;
-        const defaultFractions = placeholderText.replace('e.g: ', '');
-        fractionStrings = defaultFractions.split(',').map(s => s.trim());
-    }
-
-    if (fractionStrings.length < 2 || fractionStrings.length > 5) {
-        alert("Please enter 2-5 fractions separated by commas!");
-        return;
-    }
-
-    if (simulation.startWithFractions(fractionStrings)) {
-        simulation.step = 1;
+    if (simulation) {
+        simulation.mouseReleased();
     }
 }
 
-
-function initializeDefaultSimulation() {
-    const placeholderText = document.getElementById('fractionInput').placeholder;
-    const defaultFractions = placeholderText.replace('e.g: ', '');
-    const fractionStrings = defaultFractions.split(',').map(s => s.trim()).filter(s => s.length > 0);
-    if (simulation.startWithFractions(fractionStrings)) {
-        simulation.step = 1;
-    }
-}
-
-function resetSimulation() {
-    simulation = new RationalNumberSimulation();
-    document.getElementById('fractionInput').value = '';
-    initializeDefaultSimulation();
-}
-
-function generateRandom() {
+function generateNewExample() {
     const examples = [
         "-9/10, 7/-8, -3/4",
         "1/2, -3/4, 2/3, -1/6",
@@ -803,10 +749,9 @@ function generateRandom() {
     ];
 
     const randomExample = examples[Math.floor(Math.random() * examples.length)];
-    document.getElementById('fractionInput').value = randomExample;
-    startSimulation();
-}
+    const fractionStrings = randomExample.split(',').map(s => s.trim());
 
-window.addEventListener('load', () => {
-    initializeDefaultSimulation();
-});
+    if (simulation.startWithFractions(fractionStrings)) {
+        simulation.step = 1;
+    }
+}

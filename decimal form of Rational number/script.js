@@ -1,6 +1,6 @@
 //
 //
-// script.js
+// script.js - Updated with canvas-based input fields
 //
 //
 let canvas;
@@ -22,10 +22,28 @@ let showingResult = false;
 let factors = [];
 let longDivisionResult = null; // Object to hold detailed division results
 
+// Canvas input field variables
+let numeratorInput = "";
+let denominatorInput = "";
+let activeInput = null; // 'numerator' or 'denominator' or null
+let inputFieldWidth = 50;
+let inputFieldHeight = 25;
+let convertButtonWidth = 80;
+let convertButtonHeight = 35;
+// --- MODIFICATION: Shifted input fields to the left ---
+let inputStartX = 600; 
+let inputStartY = 10;
+
 function setup() {
     canvas = createCanvas(800, 500);
     canvas.parent('sketch-container');
     background(255);
+    
+    // Initialize input values
+    numeratorInput = "1";
+    denominatorInput = "3";
+    numerator = 1;
+    denominator = 3;
 }
 
 function draw() {
@@ -44,6 +62,9 @@ function draw() {
     }
     pop();
     
+    // Draw canvas input fields and convert button
+    drawCanvasInputs();
+    
     if (longDivisionResult) {
         drawAnalysisAndLabels();
         drawStepsDiagram();
@@ -58,8 +79,6 @@ function draw() {
                 
                 if (currentStep >= divisionSteps.length) {
                     showingResult = true;
-                    // This function no longer draws, just sets up initial text for the external div
-                    // The actual result box is now drawn on the canvas
                     displayResult();
                 }
             }
@@ -70,6 +89,188 @@ function draw() {
     
     if (challengeMode && userGuess === null) {
         drawChallengeMode();
+    }
+}
+
+
+// --- REVISED FUNCTION: Layout logic updated for the button position ---
+function drawCanvasInputs() {
+    push();
+    
+    // Vertical layout for the fraction
+    let numInputY = inputStartY;
+    let fractionLineY = numInputY + inputFieldHeight + 5;
+    let denInputY = fractionLineY + 5;
+
+    // --- MODIFICATION: New button position logic ---
+    // Position button to the right of the input fields
+    let buttonX = inputStartX + inputFieldWidth + 15;
+    // Vertically center the button with the entire fraction display
+    let fractionBlockHeight = (denInputY + inputFieldHeight) - numInputY;
+    let convertButtonY = numInputY + (fractionBlockHeight / 2) - (convertButtonHeight / 2);
+
+
+    // Draw numerator input field
+    let numHover = mouseX >= inputStartX && mouseX <= inputStartX + inputFieldWidth && 
+                   mouseY >= numInputY && mouseY <= numInputY + inputFieldHeight;
+    let numActive = activeInput === 'numerator';
+    
+    fill(numActive ? color(240, 248, 255) : (numHover ? color(248, 248, 248) : 255));
+    stroke(numActive ? color(0, 100, 200) : (numHover ? color(150, 150, 150) : color(200, 200, 200)));
+    strokeWeight(numActive ? 2 : 1);
+    rect(inputStartX, numInputY, inputFieldWidth, inputFieldHeight, 4);
+    
+    // Draw numerator text
+    fill(50);
+    textAlign(CENTER, CENTER);
+    textSize(14);
+    let numText = numeratorInput || "1";
+    text(numText, inputStartX + inputFieldWidth/2, numInputY + inputFieldHeight/2);
+    
+    // Draw cursor for active numerator input
+    if (numActive && frameCount % 60 < 30) {
+        let textW = textWidth(numText);
+        stroke(0, 100, 200);
+        strokeWeight(1);
+        line(inputStartX + inputFieldWidth/2 + textW/2 + 2, numInputY + 6, 
+             inputStartX + inputFieldWidth/2 + textW/2 + 2, numInputY + inputFieldHeight - 6);
+    }
+    
+    // Draw fraction line
+    stroke(80);
+    strokeWeight(2);
+    line(inputStartX - 5, fractionLineY, inputStartX + inputFieldWidth + 5, fractionLineY);
+    
+    // Draw denominator input
+    let denHover = mouseX >= inputStartX && mouseX <= inputStartX + inputFieldWidth && 
+                   mouseY >= denInputY && mouseY <= denInputY + inputFieldHeight;
+    let denActive = activeInput === 'denominator';
+    
+    fill(denActive ? color(240, 248, 255) : (denHover ? color(248, 248, 248) : 255));
+    stroke(denActive ? color(0, 100, 200) : (denHover ? color(150, 150, 150) : color(200, 200, 200)));
+    strokeWeight(denActive ? 2 : 1);
+    rect(inputStartX, denInputY, inputFieldWidth, inputFieldHeight, 4);
+    
+    // Draw denominator text
+    fill(50);
+    textAlign(CENTER, CENTER);
+    textSize(14);
+    let denText = denominatorInput || "3";
+    text(denText, inputStartX + inputFieldWidth/2, denInputY + inputFieldHeight/2);
+    
+    // Draw cursor for active denominator input
+    if (denActive && frameCount % 60 < 30) {
+        let textW = textWidth(denText);
+        stroke(0, 100, 200);
+        strokeWeight(1);
+        line(inputStartX + inputFieldWidth/2 + textW/2 + 2, denInputY + 6, 
+             inputStartX + inputFieldWidth/2 + textW/2 + 2, denInputY + inputFieldHeight - 6);
+    }
+    
+    // Draw convert button
+    let buttonHover = mouseX >= buttonX && mouseX <= buttonX + convertButtonWidth && 
+                     mouseY >= convertButtonY && mouseY <= convertButtonY + convertButtonHeight;
+    
+    fill(buttonHover ? color(45, 85, 180) : color(60, 120, 220));
+    stroke(buttonHover ? color(35, 75, 160) : color(50, 100, 180));
+    strokeWeight(1);
+    rect(buttonX, convertButtonY, convertButtonWidth, convertButtonHeight, 6);
+    
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    textStyle(BOLD);
+    text("Convert", buttonX + convertButtonWidth/2, convertButtonY + convertButtonHeight/2);
+    textStyle(NORMAL);
+    
+    pop();
+}
+
+// --- REVISED FUNCTION: Click detection updated to match the new button position ---
+function mousePressed() {
+    // Define layout variables consistent with drawCanvasInputs
+    let numInputY = inputStartY;
+    let fractionLineY = numInputY + inputFieldHeight + 5;
+    let denInputY = fractionLineY + 5;
+
+    // --- MODIFICATION: New button position logic for click detection ---
+    let buttonX = inputStartX + inputFieldWidth + 15;
+    let fractionBlockHeight = (denInputY + inputFieldHeight) - numInputY;
+    let convertButtonY = numInputY + (fractionBlockHeight / 2) - (convertButtonHeight / 2);
+    
+    // Check numerator input click
+    if (mouseX >= inputStartX && mouseX <= inputStartX + inputFieldWidth && 
+        mouseY >= numInputY && mouseY <= numInputY + inputFieldHeight) {
+        activeInput = 'numerator';
+        return;
+    }
+    
+    // Check denominator input click
+    if (mouseX >= inputStartX && mouseX <= inputStartX + inputFieldWidth && 
+        mouseY >= denInputY && mouseY <= denInputY + inputFieldHeight) {
+        activeInput = 'denominator';
+        return;
+    }
+    
+    // Check convert button click
+    if (mouseX >= buttonX && mouseX <= buttonX + convertButtonWidth && 
+        mouseY >= convertButtonY && mouseY <= convertButtonY + convertButtonHeight) {
+        startDivision();
+        activeInput = null;
+        return;
+    }
+    
+    // Click outside inputs - deactivate
+    if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+        activeInput = null;
+    }
+    
+    // Challenge mode interactions
+    if (challengeMode && userGuess === null) {
+        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+            if (mouseX >= 250 && mouseX <= 370 && mouseY >= 230 && mouseY <= 270) {
+                userGuess = 'terminating';
+            } else if (mouseX >= 430 && mouseX <= 550 && mouseY >= 230 && mouseY <= 270) {
+                userGuess = 'repeating';
+            }
+        }
+    }
+}
+
+function keyPressed() {
+    if (activeInput === null) return;
+    
+    if (key === 'Enter') {
+        startDivision();
+        activeInput = null;
+        return;
+    }
+    
+    if (key === 'Tab') {
+        if (activeInput === 'numerator') {
+            activeInput = 'denominator';
+        } else {
+            activeInput = 'numerator';
+        }
+        return false; // Prevent default tab behavior
+    }
+    
+    let currentInput = activeInput === 'numerator' ? numeratorInput : denominatorInput;
+    
+    if (key === 'Backspace') {
+        currentInput = currentInput.slice(0, -1);
+    } else if (key >= '0' && key <= '9') {
+        if (currentInput.length < 6) { // Limit input length
+            currentInput += key;
+        }
+    } else if (key === '-' && currentInput.length === 0) {
+        currentInput += key;
+    }
+    
+    if (activeInput === 'numerator') {
+        numeratorInput = currentInput;
+    } else {
+        denominatorInput = currentInput;
     }
 }
 
@@ -152,7 +353,6 @@ function drawAnalysisAndLabels() {
 
 function drawStepsDiagram() {
     drawStyledBox(540, 80, 220, 250, color(250, 250, 255));
-    // MODIFICATION: Increased x-coordinate by 12 to shift the diagram right.
     drawLongDivisionDiagram(572, 100);
 }
 
@@ -165,7 +365,6 @@ function drawLongDivisionDiagram(x, y) {
     textFont('ui-monospace, "Roboto Mono", Menlo, Monaco, monospace');
     textSize(12);
     
-    // Positioning constants for layout adjustment.
     const LEFT_GUTTER = 18;
     const QUOTIENT_TO_BRACKET_GAP = 6;
     
@@ -179,7 +378,6 @@ function drawLongDivisionDiagram(x, y) {
     textAlign(LEFT, TOP);
     text("Steps:", 0, 0);
 
-    // Nudge the diagram to the right.
     translate(LEFT_GUTTER, 0);
 
     let fullQuotientStr = `${sign}${integerPart}.${decimalDigits.join('')}`;
@@ -202,7 +400,6 @@ function drawLongDivisionDiagram(x, y) {
     textAlign(LEFT, TOP);
     text(dividendStr, dividendStartX, 30);
     textAlign(RIGHT, TOP);
-    // Adjust quotient Y position to add a gap.
     text(diagramQuotientDisplay, diagramEndX, 30 - vStep - 2 - QUOTIENT_TO_BRACKET_GAP);
 
     line(diagramStartX + divisorStr.length * charW + 5, 30 - vStep / 2, diagramEndX, 30 - vStep / 2);
@@ -352,7 +549,7 @@ function drawResultInsideAnalysis(x, y) {
         let decimalPart = quotient.split('.')[1] || '';
         let nonRepeating = decimalPart.substring(0, repeatingStart);
         let repeating = decimalPart.substring(repeatingStart, repeatingStart + repeatingLength);
-        badgeText = `🔁 Non-Terminating Repeating Decimal`;
+        badgeText = `🔄 Non-Terminating Repeating Decimal`;
         resultString = `Result: ${quotient.split('.')[0]}.${nonRepeating}`;
         resultStringRepeatingPart = repeating;
         bgColor = color('#f8f9fa');
@@ -375,12 +572,6 @@ function drawResultInsideAnalysis(x, y) {
     const boxHeight = guessString ? 80 : 55;
     const padding = 10;
     
-    // The drawing commands for the outer box have been disabled.
-    // fill(bgColor);
-    // stroke(borderColor);
-    // strokeWeight(0.5);
-    // rect(0, 0, boxWidth, boxHeight, 8);
-    
     const badgeHeight = 22;
     fill(badgeColor);
     noStroke();
@@ -394,7 +585,6 @@ function drawResultInsideAnalysis(x, y) {
     const badgeTextY = padding + badgeHeight / 2 + 1;
     text(badgeText, padding + 8, badgeTextY);
 
-    // MODIFICATION: Logic to draw the result text inline with the badge.
     textStyle(NORMAL);
     textAlign(LEFT, CENTER);
     const resultX = padding + badgeWidth + 10;
@@ -506,19 +696,20 @@ function drawChallengeMode() {
 }
 
 function startDivision() {
-    numerator = parseInt(document.getElementById('numerator').value) || 1;
-    denominator = parseInt(document.getElementById('denominator').value) || 3;
-    if (challengeMode && userGuess === null) {
-        // The pop-up is already showing via the draw loop, so no need for an alert here.
+    numerator = parseInt(numeratorInput) || 1;
+    denominator = parseInt(denominatorInput) || 3;
+    
+    if (denominator === 0) {
+        alert("Denominator cannot be zero!");
         return;
     }
-    // FIX 1: Pass `true` to keep the user's guess during the reset.
+    
+    if (challengeMode && userGuess === null) {
+        return;
+    }
     resetSimulation(true); 
     calculateDivision();
     analyzeFactors();
-    // The infoPanel is not used for results anymore, so this line can be removed or commented out.
-    // document.getElementById('infoPanel').innerHTML =
-    //   '<strong>Watch the division process:</strong> Each step shows how we divide to get the next decimal digit.';
 }
 
 function computeLongDivisionSteps(numer, denom) {
@@ -613,9 +804,6 @@ function analyzeFactors() {
 }
 
 function displayResult() {
-    // The external div is no longer updated with the final result.
-    // This logic is now handled by drawResultInsideAnalysis() which draws directly
-    // onto the p5.js canvas.
     let resultText = "";
     if (isTerminating) {
         resultText += `<strong>Result:</strong> ${quotient}`;
@@ -630,43 +818,36 @@ function displayResult() {
                      (userGuess === 'repeating' && !isTerminating);
         resultText += `<br><br><strong>Your guess:</strong> ${userGuess} - ${correct ? '🎉 Correct!' : '❌ Try again!'}`;
     }
-    // document.getElementById('infoPanel').innerHTML = resultText;
 }
 
 function generateRandom() {
     numerator = Math.floor(Math.random() * 9) + 1;
     denominator = Math.floor(Math.random() * 9) + 1;
-    document.getElementById('numerator').value = numerator;
-    document.getElementById('denominator').value = denominator;
+    
+    numeratorInput = numerator.toString();
+    denominatorInput = denominator.toString();
+    
     resetSimulation();
 }
 
-// FIX 2: Replace the entire toggleChallenge function with this improved version.
 function toggleChallenge() {
     challengeMode = !challengeMode;
-    resetSimulation(); // This resets the guess, which is correct for a mode change.
+    resetSimulation(); 
 
     if (challengeMode) {
-        const numInput = document.getElementById('numerator');
-        const denInput = document.getElementById('denominator');
-
-        // If inputs are empty or invalid, generate a new random fraction.
-        if (!numInput.value || !denInput.value || parseInt(denInput.value) === 0) {
-            generateRandom(); // This sets new numbers and updates internal state.
+        if (!numeratorInput || !denominatorInput || parseInt(denominatorInput) === 0) {
+            generateRandom(); 
         } else {
-            // Otherwise, sync the internal variables with the current input values.
-            numerator = parseInt(numInput.value);
-            denominator = parseInt(denInput.value);
+            numerator = parseInt(numeratorInput);
+            denominator = parseInt(denominatorInput);
         }
         
-        // This element appears to be commented out in the HTML, but if it existed, this would be the update.
         const infoPanel = document.getElementById('infoPanel');
         if (infoPanel) {
             infoPanel.innerHTML = 
                 '<div class="challenge-mode"><strong>🎯 Challenge Mode Active!</strong> Guess if the fraction will create a terminating or repeating decimal before converting!</div>';
         }
     } else {
-        // Logic for turning challenge mode off
         const infoPanel = document.getElementById('infoPanel');
         if (infoPanel) {
             infoPanel.innerHTML = 
@@ -675,7 +856,6 @@ function toggleChallenge() {
     }
 }
 
-// FIX 3: Modify the resetSimulation function to conditionally reset the user's guess.
 function resetSimulation(keepGuess = false) {
     currentStep = 0;
     divisionSteps = [];
@@ -692,29 +872,6 @@ function resetSimulation(keepGuess = false) {
     }
     factors = [];
     longDivisionResult = null;
-}
-
-function mousePressed() {
-    if (challengeMode && userGuess === null) {
-        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-            if (mouseX >= 250 && mouseX <= 370 && mouseY >= 230 && mouseY <= 270) {
-                userGuess = 'terminating';
-                // This element is commented out in HTML, so these updates won't be visible.
-                // const infoPanel = document.getElementById('infoPanel');
-                // if (infoPanel) {
-                //     infoPanel.innerHTML = 
-                //         '<div class="challenge-mode"><strong>You guessed: Terminating!</strong> Now click "Convert to Decimal" to see if you\'re right!</div>';
-                // }
-            } else if (mouseX >= 430 && mouseX <= 550 && mouseY >= 230 && mouseY <= 270) {
-                userGuess = 'repeating';
-                // const infoPanel = document.getElementById('infoPanel');
-                // if (infoPanel) {
-                //     infoPanel.innerHTML = 
-                //         '<div class="challenge-mode"><strong>You guessed: Repeating!</strong> Now click "Convert to Decimal" to see if you\'re right!</div>';
-                // }
-            }
-        }
-    }
 }
 
 window.onload = function() {

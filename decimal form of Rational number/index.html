@@ -5,25 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Decimal Forms of Rational Numbers</title>
 <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+
 </head>
 <body>
-<div class="container">
-<h1>🔢 Decimal Forms of Rational Numbers</h1>
-
-    <div class="controls">
-        <div class="fraction-input">
-            <input type="number" id="numerator" value="" placeholder="Num" max="100">
-            <span>/</span>
-            <input type="number" id="denominator" value="" placeholder="Den" min="1" max="100">
+<div class="mainContainerOuter">
+          <div class="wdgetTitle">
+            <h2> Decimal Forms of Rational Numbers</h2>
+            
         </div>
-        <button onclick="startDivision()">Convert to Decimal</button>
+
+    <div class="mainContainer" >
+        <p class="subtitle"></p>
+        <div class="container" id="sketch-container"></div>
+     
+      </div>
+    
+    <div class="button-controls d-flex justify-content-start gap-8">
+        
         <button onclick="generateRandom()">Random Fraction</button>
         <button onclick="toggleChallenge()">Challenge Mode</button>
         <button onclick="resetSimulation(true)">Reset</button>
     </div>
-    
-    <div id="sketch-container"></div>
-    
     <!-- <div class="info-panel" id="infoPanel">
         <strong>Instructions:</strong> Enter a fraction and click "Convert to Decimal" to see the long division process animated step by step!
     </div> -->
