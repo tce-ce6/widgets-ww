@@ -36,26 +36,26 @@ function setupButtons() {
         resetTriangle();
         showTriangle = false;
         showShuffle = false;
-        // shuffleBtn.style.display = 'none';
+         shuffleBtn.style.display = 'none';
         redraw();
     }
 
     makeBtn.onclick = () => {
         canMakeTriangle = checkTriangleInequality();
         showTriangle = true;
-        // showShuffle = canMakeTriangle;
+        showShuffle = canMakeTriangle;
         showShuffle = true;
-        // shuffleBtn.style.display = showShuffle ? 'inline-block' : 'none';
+         shuffleBtn.style.display = showShuffle ? 'inline-block' : 'none';
         redraw();
     };
 
-    // shuffleBtn.onclick = () => {
-    //     shuffleSegments();
-    //     showTriangle = false;
-    //     showShuffle = false;
-    //     shuffleBtn.style.display = 'none';
-    //     redraw();
-    // };
+    shuffleBtn.onclick = () => {
+        shuffleSegments();
+        showTriangle = false;
+        showShuffle = false;
+        shuffleBtn.style.display = 'none';
+        redraw();
+    };
 }
 
 function drawSegments() {
