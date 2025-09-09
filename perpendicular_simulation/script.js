@@ -248,74 +248,106 @@ function drawDotPaper() {
 }
 
 function drawAngles() {
+    if (lines.length < 2) return;
+
     let processedIntersections = new Set();
-    
+
     for (let i = 0; i < lines.length; i++) {
         for (let j = i + 1; j < lines.length; j++) {
-            let intersection = getLineIntersection(lines[i], lines[j]);
+            const lineA = lines[i];
+            const lineB = lines[j];
+            const intersection = getLineIntersection(lineA, lineB);
+
             if (intersection) {
-                let intersectionKey = `${intersection.x},${intersection.y}`;
-                
+                const intersectionKey = `${intersection.x.toFixed(2)},${intersection.y.toFixed(2)}`;
                 if (processedIntersections.has(intersectionKey)) continue;
                 processedIntersections.add(intersectionKey);
-                
-                let angle = getAngleBetweenLines(lines[i], lines[j]);
-                let angleDeg = Math.abs(angle * 180 / Math.PI);
-                
-                if (angleDeg < 5 || angleDeg > 175) continue;
-                
-                let radius = 30;
-                let angle1 = lines[i].getAngle();
-                let angle2 = lines[j].getAngle();
-                
-                let angleDiff = angle2 - angle1;
-                
-                while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
-                while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
-                
-                let startAngle, endAngle;
-                if (angleDiff > 0) {
-                    startAngle = angle1;
-                    endAngle = angle1 + Math.min(angleDiff, Math.PI - angleDiff);
-                } else {
-                    startAngle = angle2;
-                    endAngle = angle2 + Math.min(-angleDiff, Math.PI + angleDiff);
+
+                const angle1 = lineA.getAngle();
+                const angle2 = lineB.getAngle();
+                const radius = 30;
+
+                // Find the smallest angle between the lines
+                const acuteAngleRad = getAngleBetweenLines(lineA, lineB);
+                const angleValue = round(degrees(acuteAngleRad));
+
+                // Determine the correct start and stop angles for the acute angle arc
+                let sweep = angle2 - angle1;
+                while (sweep <= -PI) sweep += TWO_PI;
+                while (sweep > PI) sweep -= TWO_PI;
+
+                let start, stop;
+                // Check if the direct sweep between angle1 and angle2 is the acute one
+                if (abs(abs(sweep) - acuteAngleRad) < 0.01) {
+                    start = sweep > 0 ? angle1 : angle2;
+                    stop = sweep > 0 ? angle2 : angle1;
+                } else { // Otherwise, the acute angle is in the adjacent sector
+                    start = sweep > 0 ? angle2 : angle1 + PI;
+                    stop = sweep > 0 ? angle1 + PI : angle2;
                 }
                 
-                if (Math.abs(angleDeg - 90) < 5) {
-                    stroke(0, 200, 0);
-                    strokeWeight(3);
-                    noFill();
-                    arc(intersection.x, intersection.y, radius * 2, radius * 2, 
-                        startAngle, endAngle);
-                    
-                    fill(0, 200, 0);
-                    noStroke();
-                    textAlign(CENTER, CENTER);
-                    textSize(12);
-                    
-                    let textX = intersection.x + Math.cos((startAngle + endAngle) / 2) * 40;
-                    let textY = intersection.y + Math.sin((startAngle + endAngle) / 2) * 40;
-                    text('90° ✓', textX, textY);
-                } else {
-                    stroke(255, 100, 100);
+                // Case 1: Draw a square for a 90-degree angle
+                if (abs(angleValue - 90) < 1.5) {
+                    stroke(0, 180, 0);
                     strokeWeight(2);
                     noFill();
-                    arc(intersection.x, intersection.y, radius * 2, radius * 2, 
-                        startAngle, endAngle);
-                    
-                    fill(255, 100, 100);
+                    const squareSize = 15;
+
+                    // Use vectors to draw the square in the correct corner
+                    const vStart = p5.Vector.fromAngle(start).mult(squareSize);
+                    const vStop = p5.Vector.fromAngle(stop).mult(squareSize);
+
+                    push();
+                    translate(intersection.x, intersection.y);
+                    beginShape();
+                    vertex(vStart.x, vStart.y);
+                    vertex(vStart.x + vStop.x, vStart.y + vStop.y);
+                    vertex(vStop.x, vStop.y);
+                    endShape();
+                    pop();
+
+                    // Position the '90°' text
+                    const midAngle = start + (stop - start) / 2;
+                    const textX = intersection.x + cos(midAngle) * 30;
+                    const textY = intersection.y + sin(midAngle) * 30;
+                    fill(0, 180, 0);
                     noStroke();
+                    textSize(14);
                     textAlign(CENTER, CENTER);
-                    textSize(12);
-                    
-                    let textX = intersection.x + Math.cos((startAngle + endAngle) / 2) * 40;
-                    let textY = intersection.y + Math.sin((startAngle + endAngle) / 2) * 40;
-                    text(Math.round(angleDeg) + '°', textX, textY);
+                    text('90°', textX, textY);
+                
+                // Case 2: Draw an arc for other angles
+                } else {
+                    drawAngleArc(intersection, start, stop, radius, angleValue, '#007bff');
                 }
             }
         }
     }
+}
+function drawAngleArc(center, startAngle, stopAngle, radius, label, color) {
+    // Normalize angles to handle wrapping (e.g., from 350deg to 10deg)
+    if (stopAngle < startAngle) {
+        stopAngle += TWO_PI;
+    }
+    
+    // Draw the arc
+    stroke(color);
+    strokeWeight(2);
+    noFill();
+    arc(center.x, center.y, radius * 2, radius * 2, startAngle, stopAngle);
+
+    // Calculate position for the text label inside the arc
+    const midAngle = startAngle + (stopAngle - startAngle) / 2;
+    const textRadius = radius * 0.7;
+    const textX = center.x + cos(midAngle) * textRadius;
+    const textY = center.y + sin(midAngle) * textRadius;
+
+    // Draw the text
+    fill(color);
+    noStroke();
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    text(label + '°', textX, textY);
 }
 
 function drawToolOverlay() {
