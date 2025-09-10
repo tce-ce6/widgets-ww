@@ -55,7 +55,10 @@ let wordPairs = [
 let currentIndex = 0;
 let showSentence = false;
 
-function preload() {
+function svgBgColor(){
+
+    let colors = ["#647FBC", '#F5CBCB',"#93DA97", "#FFF9BD", '#4DFFBE', '#A2AADB', '#8CCDEB'];
+    let bgColor = random(colors); // p5.js random()
     // Encode the SVG string into a data URI
     let svgCode = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 666.06 412.3">
   <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
@@ -68,7 +71,7 @@ function preload() {
       }
 
       .st1 {
-        fill: #ffffc6;
+        fill: ${bgColor};
       }
     </style>
   </defs>
@@ -82,6 +85,10 @@ function preload() {
     let encoded =
         "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgCode);
     svgBg = loadImage(encoded);
+}
+
+function preload() {
+    svgBgColor();
 }
 
 
@@ -100,11 +107,13 @@ function setup() {
     document.getElementById("next-btn").addEventListener("click", () => {
         currentIndex = (currentIndex + 1) % wordPairs.length;
         showSentence = false;
+        svgBgColor();
     });
 
     document.getElementById("prev-btn").addEventListener("click", () => {
         currentIndex = (currentIndex - 1 + wordPairs.length) % wordPairs.length;
         showSentence = false;
+        svgBgColor();
     });
 }
 
@@ -152,26 +161,26 @@ function draw() {
         fill(255);
         noStroke();
         rect(70, 200, 480, 50, 10);
-    
+
         push();
         textSize(12);
         textAlign(LEFT, TOP); // keep LEFT for manual positioning
-    
+
         let rectX = 70;
         let rectY = 200;
         let rectW = 480;
         let rectH = 50;
-    
+
         let padding = 10;
         let maxWidth = rectW - 2 * padding;
         let lineHeight = 18;
-    
+
         // Split sentence into words
         let words = pair.sentence.split(" ");
         let lines = [];
         let currentLine = "";
         let testLine = "";
-    
+
         // Build lines that fit within maxWidth
         for (let i = 0; i < words.length; i++) {
             testLine = currentLine === "" ? words[i] : currentLine + " " + words[i];
@@ -183,34 +192,34 @@ function draw() {
             }
         }
         if (currentLine !== "") lines.push(currentLine);
-    
+
         // Vertical centering: compute total text height
         let totalTextHeight = lines.length * lineHeight;
         let startY = rectY + (rectH - totalTextHeight) / 2;
-    
+
         // Draw line by line, centered horizontally
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].split(" ");
             let lineWidth = textWidth(lines[i]);
             let x = rectX + (rectW - lineWidth) / 2; // center this line
             let y = startY + i * lineHeight;
-    
+
             for (let w of line) {
                 let clean = w.replace(/[^\w]/g, "");
                 let wordWidth = textWidth(w + " ");
-    
+
                 if (pair.words.includes(clean)) {
                     fill("green");
                 } else {
                     fill(0);
                 }
-    
+
                 text(w, x, y);
                 x += wordWidth;
             }
         }
-    
+
         pop();
     }
-    
+
 }

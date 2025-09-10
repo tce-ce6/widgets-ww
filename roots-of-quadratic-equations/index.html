@@ -75,7 +75,6 @@
         .value-bubble {
             position: absolute;
             top: 0px;
-            background: #007bff;
             color: #fff;
             padding: 5px;
             border-radius: 4px;
@@ -118,6 +117,49 @@
             align-items: center;
             gap: 5px;
         }
+
+        /* slider css  */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        /* Track: webkit browsers */
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 15px;
+            background: #ccc;
+            border-radius: 16px;
+        }
+
+        /* Track: Mozilla Firefox */
+        input[type="range"]::-moz-range-track {
+            height: 15px;
+            background: #ccc;
+            border-radius: 16px;
+        }
+
+        /* Thumb: webkit */
+
+        #aSlider::-webkit-slider-thumb {
+         border: 2px solid #ff8800;
+
+            box-shadow: -407px 0 0 400px #ff8800;
+        }
+        #bSlider::-webkit-slider-thumb {
+            border: 2px solid #228B22;
+            box-shadow: -407px 0 0 400px #228B22;
+        }
+        #cSlider::-webkit-slider-thumb {
+            border: 2px solid #0099ff;
+            box-shadow: -407px 0 0 400px #0099ff;
+        }
+
+
     </style>
 </head>
 
@@ -126,19 +168,20 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Roots of Quadratic Equations</h2>
-                <span id="versionId" class="versionText">v_25090201</span>
+                <span id="versionId" class="versionText">v_25091001</span>
             </div>
 
 
 
             <!-- Your original main container kept as-is; quadratic app goes inside -->
-            <div class="mainContainer" id="mainCanvas">
+            <div class="mainContainer" id="mainCanvas" style="align-items: center;">
                 <div id="quadraticApp">
                     <div id="graphRow">
                         <!-- Graph -->
                         <div>
                             <div class="question">
-                                <h2 style="text-align:center; font-weight: 500;font-size: 22px; font-style: italic;">Quadratic Equation: y =
+                                <h2 style="text-align:center; font-weight: 500;font-size: 22px; font-style: italic;">
+                                    Quadratic Equation: y =
                                     ax² + bx + c</h2>
                             </div>
                             <div id="jxgbox"></div>
@@ -148,16 +191,20 @@
                         <div class="right-section">
                             <span style="display: block; margin-right: 5px;">Is</span>
                             <div id="rightPanel">
-                                <span>b² − 4ac ≥ 0?</span>
+                                <span style="font-size: large;">
+                                    <span style="color:#228B22;">b</span>² − 4
+                                    <span style="color:#ff8800;">a</span>
+                                    <span style="color:#0099ff;">c</span> ≥ 0 ? 9999
+                                  </span>
                             </div>
                             <div id="sliders">
                                 <div class="slider-container">
                                     <div class="slider-labels">
                                         <span>-6</span><span>6</span>
                                     </div>
-                                    <div class="value-bubble" id="aBubble">1</div>
+                                    <div class="value-bubble" id="aBubble" style="background-color: #ff8800;">1</div>
                                     <div class="input-wrapper">
-                                        <span>a</span>
+                                        <span style="color:#ff8800;">a</span>
                                         <input type="range" id="aSlider" min="-6" max="6" step="1" value="1" />
                                     </div>
                                 </div>
@@ -166,9 +213,9 @@
                                     <div class="slider-labels">
                                         <span>-6</span><span>6</span>
                                     </div>
-                                    <div class="value-bubble" id="bBubble">0</div>
+                                    <div class="value-bubble" id="bBubble" style="background-color: #228B22">0</div>
                                     <div class="input-wrapper">
-                                        <span>b</span>
+                                        <span style="color:#228B22;">b</span>
                                         <input type="range" id="bSlider" min="-6" max="6" step="1" value="0" />
                                     </div>
                                 </div>
@@ -177,9 +224,9 @@
                                     <div class="slider-labels">
                                         <span>-20</span><span>20</span>
                                     </div>
-                                    <div class="value-bubble" id="cBubble">0</div>
+                                    <div class="value-bubble" id="cBubble" style="background-color: #0099ff">0</div>
                                     <div class="input-wrapper">
-                                            <span>c</span>
+                                        <span style="color:#0099ff;">c</span>
                                         <input type="range" id="cSlider" min="-20" max="20" step="1" value="0" />
                                     </div>
                                 </div>

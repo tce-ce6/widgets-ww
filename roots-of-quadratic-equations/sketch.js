@@ -23,6 +23,9 @@ const cVal = document.getElementById('cVal');
 const output = document.getElementById('output');
 const toggleBtn = document.getElementById('toggleBtn');
 let isShown = false;
+let msg = `<div style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
+<span style="color:#ff8800; margin-left: -3px">a</span>
+<span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?</div>`;
 
 // Helpers
 const getA = () => parseFloat(aSlider.value);
@@ -38,26 +41,54 @@ let curve = board.create('functiongraph', [
 ]);
 
 // Update discriminant panel
+// function updateOutput() {
+//     const a = getA(), b = getB(), c = getC();
+
+//     aBubble.textContent = a;
+//     bBubble.textContent = b;
+//     cBubble.textContent = c;
+
+//     const D = b * b - 4 * a * c;
+
+//     let msg = `b² − 4ac ≥ 0?<br>${b}² − 4(${a})(${c}) = ${D}`;
+//     if (D > 0) {
+//         msg += `<br><span style="color:#d60000;">${D} &gt; 0</span><br><b>Two distinct real roots</b>`;
+//     } else if (D === 0) {
+//         msg += `<br><span style="color:#0a7a0a;">${D} = 0</span><br><b>One real root (repeated)</b>`;
+//     } else {
+//         msg += `<br><span style="color:#0a3ea0;">${D} &lt; 0</span><br><b>Two Complex roots</b>`;
+//     }
+
+//     rightPanel.innerHTML = msg;
+// }
+
 function updateOutput() {
     const a = getA(), b = getB(), c = getC();
 
-    aBubble.textContent = a;
-    bBubble.textContent = b;
-    cBubble.textContent = c;
+    // aBubble.innerHTML = `<span style="color:green;">${a}</span>`;
+    // bBubble.innerHTML = `<span style="color:red;">${b}</span>`;
+    // cBubble.innerHTML = `<span style="color:blue;">${c}</span>`;
 
     const D = b * b - 4 * a * c;
 
-    let msg = `b² − 4ac ≥ 0?<br>${b}² − 4(${a})(${c}) = ${D}`;
+     msg = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
+        <span style="color:#ff8800; margin-left: -3px">a</span>
+        <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?<br>
+        <span style="color:#228B22;">${b}</span>² − 4(
+        <span style="color:#ff8800; margin-left: -3px">${a}</span>)(
+        <span style="color:#0099ff; margin-left: -3px">${c}</span>) ≥ ${D} </span>`;
+
     if (D > 0) {
-        msg += `<br><span style="color:#d60000;">${D} &gt; 0</span><br><b>Two distinct real roots</b>`;
+        msg += `<br><span style="color:#d60000;font-size: large;">${D} &gt; 0</span><br><b>Two distinct real roots</b>`;
     } else if (D === 0) {
-        msg += `<br><span style="color:#0a7a0a;">${D} = 0</span><br><b>One real root (repeated)</b>`;
+        msg += `<br><span style="color:#0a7a0a; font-size: large;">${D} = 0</span><br><b>One real root (repeated)</b>`;
     } else {
-        msg += `<br><span style="color:#0a3ea0;">${D} &lt; 0</span><br><b>Two Complex roots</b>`;
+        msg += `<br><span style="color:#0a3ea0; font-size: large;">${D} &lt; 0</span><br><b>Two Complex roots</b>`;
     }
 
     rightPanel.innerHTML = msg;
 }
+
 
 // Toggle show/hide
 toggleBtn.addEventListener('click', () => {
@@ -67,7 +98,7 @@ toggleBtn.addEventListener('click', () => {
         rightPanel.style.display = 'block';
         toggleBtn.textContent = 'Hide';
     } else {
-        rightPanel.innerText = 'b² − 4ac ≥ 0?';
+        rightPanel.innerHTML = msg;
         toggleBtn.textContent = 'Show';
     }
 });
@@ -82,7 +113,7 @@ function updateGraphFor(slider, bubble) {
 
     // Auto-hide the explanation
     isShown = false;
-    rightPanel.innerText = 'b² − 4ac ≥ 0?';
+    rightPanel.innerHTML = msg;
     toggleBtn.textContent = 'Show';
 
     // Update right-panel values
