@@ -46,9 +46,7 @@
     // --- 3D & ANIMATION VARIABLES ---
     let pg; // 3D graphics buffer
     let cam;
-    // MODIFIED: Added skyImage and roadImage for the new scene
     let cycleImage, homeImage, schoolImage, carImage, personImage, skyImage, roadImage;
-    // MODIFIED: Replaced cyclistPos with backgroundOffset and totalDistance for the new A1 logic
     let backgroundOffset, totalDistance, carPos, carVel, trolleyPos, waterParticles, elevatorPos, elevatorAccel;
     let animPhase = 'initial';
     let animTimer = 0;
@@ -57,15 +55,16 @@
 
     // --- PRELOAD FUNCTION ---
     function preload() {
-        cycleImage = loadImage('assets/cycle.png');
-        homeImage = loadImage('assets/home.png');
-        schoolImage = loadImage('assets/school.png');
-        carImage = loadImage('assets/car.png');
-        personImage = loadImage('assets/person.png');
-        // NEW: Load images for the new commute scene.
-        // Please ensure you have 'sky.png' and 'road.svg' in your 'assets' folder.
-        skyImage = loadImage('assets/sky.jpg');
-        roadImage = loadImage('assets/road.png');
+        // NOTE: Make sure you have an 'assets' folder with these images.
+        // You can use placeholder images if you don't have them.
+        const placeholder = (w, h, text) => `https://placehold.co/${w}x${h}/eee/ccc?text=${text}`;
+        cycleImage = loadImage(placeholder(120, 82, 'Cycle'), () => {}, () => cycleImage = loadImage('assets/cycle.png'));
+        homeImage = loadImage(placeholder(200, 200, 'Home'), () => {}, () => homeImage = loadImage('assets/home.png'));
+        schoolImage = loadImage(placeholder(240, 240, 'School'), () => {}, () => schoolImage = loadImage('assets/school.png'));
+        carImage = loadImage(placeholder(100, 50, 'Car'), () => {}, () => carImage = loadImage('assets/car.png'));
+        personImage = loadImage(placeholder(60, 90, 'Person'), () => {}, () => personImage = loadImage('assets/person.png'));
+        skyImage = loadImage(placeholder(800, 400, 'Sky'), () => {}, () => skyImage = loadImage('assets/sky.jpg'));
+        roadImage = loadImage(placeholder(500, 500, 'Road'), () => {}, () => roadImage = loadImage('assets/road.png'));
     }
 
     // --- P5.JS SETUP ---
@@ -73,7 +72,7 @@
         createCanvas(900, 500);
         pg = createGraphics(540, 380, WEBGL);
         cam = pg.createCamera();
-        pg.perspective(PI / 6, pg.width / pg.height, 0.1, 2000); // Increased far clipping plane
+        pg.perspective(PI / 6, pg.width / pg.height, 0.1, 2000);
         textFont('Arial');
         initializeData();
         initializeTranslations();
@@ -116,12 +115,12 @@
             'hi': {
                 nativeName: "हिन्दी", grade: "कक्षा", helpButton: "हल करने में मेरी मदद करें", correct: "सही!", incorrect: "गलत!", solution: "हल", nextQuestion: "अगला प्रश्न", helpTitle: "आइए इसे चरण-दर-चरण हल करें", gotIt: "समझ गया!", close: "बंद करें", nextStep: "अगला चरण",
                 labels: { speed: "गति", distance: "दूरी", accel: "त्वरण", netForce: "नेट बल", apparentWeight: "आभासी वजन", pressure: "दबाव", effluxSpeed: "बहाव की गति" },
-                caseData: { 'A1': { title: 'सुबह की यात्रा', scenario: 'एक छात्र साइकिल से 4.00 किमी दूर स्कूल जाने में 20 मिनट और उसी रास्ते से लौटने में 40 मिनट का समय लेता है।', questions: [ { q: 'स्कूल जाने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['10 किमी/घंटा', '12 किमी/घंटा', '15 किमी/घंटा', '20 किमी/घंटा'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 12.00 km/h" } ] }, { q: 'घर लौटने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['6 किमी/घंटा', '8 किमी/घंटा', '9 किमी/घंटा', '10 किमी/घंटा'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 6.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए औसत गति ज्ञात कीजिए।', opts: ['10.0 किमी/घंटा', '8.0 किमी/घंटा', '9.0 किमी/घंटा', '9.6 किमी/घंटा'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 किमी/घंटा', steps: [ { text: "कुल दूरी की गणना करें।", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "कुल समय को घंटों में गणना करें।", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "औसत गति के सूत्र का उपयोग करें।", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम औसत गति की गणना करें।", content: "Avg v = 8.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए कुल विस्थापन क्या है?', opts: ['10 किमी', '4 किमी', '8 किमी', '0 किमी'], sol: 'विस्थापन शून्य है क्योंकि आरंभ और अंतिम बिंदु समान हैं।', steps: [ { text: "विस्थापन की परिभाषा याद करें।", content: "विस्थापन आरंभ से अंत तक स्थिति में शुद्ध परिवर्तन है।" }, { text: "आरंभ और अंतिम बिंदुओं को पहचानें।", content: "छात्र घर से शुरू होता है और घर पर समाप्त होता है।" }, { text: "शुद्ध परिवर्तन निर्धारित करें।", content: "चूंकि अंतिम स्थिति प्रारंभिक स्थिति के समान है, इसलिए परिवर्तन 0 है।" } ] } ] }, }
+                caseData: { 'A1': { title: 'सुबह की यात्रा', scenario: 'एक छात्र साइकिल से 4.00 किमी दूर स्कूल जाने में 20 मिनट और उसी रास्ते से लौटने में 40 मिनट का समय लेता है।', questions: [ { q: 'स्कूल जाने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['10 किमी/घंटा', '12 किमी/घंटा', '15 किमी/घंटा', '20 किमी/घंटा'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 12.00 km/h" } ] }, { q: 'घर लौटने की औसत गति (किमी/घंटा) ज्ञात कीजिए।', opts: ['6 किमी/घंटा', '8 किमी/घंटा', '9 किमी/घंटा', '10 किमी/घंटा'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/घंटा', steps: [ { text: "समय को मिनट से घंटे में बदलें।", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "गति के सूत्र का उपयोग करें: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम गति की गणना करें।", content: "v = 6.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए औसत गति ज्ञात कीजिए।', opts: ['10.0 किमी/घंटा', '8.0 किमी/घंटा', '9.0 किमी/घंटा', '9.6 किमी/घंटा'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 km/h', steps: [ { text: "कुल दूरी की गणना करें।", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "कुल समय को घंटों में गणना करें।", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "औसत गति के सूत्र का उपयोग करें।", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम औसत गति की गणना करें।", content: "Avg v = 8.00 km/h" } ] }, { q: 'पूरी यात्रा के लिए कुल विस्थापन क्या है?', opts: ['10 किमी', '4 किमी', '8 किमी', '0 किमी'], sol: 'विस्थापन शून्य है क्योंकि आरंभ और अंतिम बिंदु समान हैं।', steps: [ { text: "विस्थापन की परिभाषा याद करें।", content: "विस्थापन आरंभ से अंत तक स्थिति में शुद्ध परिवर्तन है।" }, { text: "आरंभ और अंतिम बिंदुओं को पहचानें।", content: "छात्र घर से शुरू होता है और घर पर समाप्त होता है।" }, { text: "शुद्ध परिवर्तन निर्धारित करें।", content: "चूंकि अंतिम स्थिति प्रारंभिक स्थिति के समान है, इसलिए परिवर्तन 0 है।" } ] } ] }, }
             },
             'mr': {
                 nativeName: "मराठी", grade: "इयत्ता", helpButton: "हे सोडवण्यासाठी मला मदत करा", correct: "बरोबर!", incorrect: "चूक!", solution: "उत्तर", nextQuestion: "पुढील प्रश्न", helpTitle: "चला हे टप्प्याटप्प्याने सोडवूया", gotIt: "समजले!", close: "बंद करा", nextStep: "पुढील टप्पा",
                 labels: { speed: "वेग", distance: "अंतर", accel: "त्वरण", netForce: "एकूण बल", apparentWeight: "आभासी वजन", pressure: "दाब", effluxSpeed: "प्रवाहाचा वेग" },
-                caseData: { 'A1': { title: 'सकाळचा प्रवास', scenario: 'एक विद्यार्थी सायकलने ४.०० किमी अंतरावरील शाळेत जाण्यासाठी २० मिनिटे घेतो आणि त्याच मार्गाने परत येण्यासाठी ४० मिनिटे घेतो.', questions: [ { q: 'शाळेत जाण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['१० किमी/तास', '१२ किमी/तास', '१५ किमी/तास', '२० किमी/तास'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 12.00 km/h" } ] }, { q: 'घरी परतण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['६ किमी/तास', '८ किमी/तास', '९ किमी/तास', '१० किमी/तास'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 6.00 km/h" } ] }, { q: 'संपूर्ण प्रवासाचा सरासरी वेग काढा.', opts: ['१०.० किमी/तास', '८.० किमी/तास', '९.० किमी/तास', '९.६ किमी/तास'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 किमी/तास', steps: [ { text: "एकूण अंतराची गणना करा.", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "एकूण वेळेची तासांमध्ये गणना करा.", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "सरासरी वेगाचे सूत्र वापरा.", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम सरासरी वेगाची गणना करा.", content: "Avg v = 8.00 km/h" } ] }, { q: 'संपूर्ण प्रवासासाठी एकूण विस्थापन किती आहे?', opts: ['१० किमी', '४ किमी', '८ किमी', '० किमी'], sol: 'विस्थापन शून्य आहे कारण सुरुवातीचे आणि शेवटचे ठिकाण समान आहे.', steps: [ { text: "विस्थापनाची व्याख्या आठवा.", content: "विस्थापन म्हणजे सुरुवातीपासून शेवटपर्यंतच्या स्थितीत झालेला निव्वळ बदल." }, { text: "सुरुवातीचे आणि शेवटचे ठिकाण ओळखा.", content: "विद्यार्थी घरापासून सुरुवात करतो आणि घरीच प्रवास संपवतो." }, { text: "निव्वळ बदल निश्चित करा.", content: "अंतिम स्थान आणि सुरुवातीचे स्थान समान असल्यामुळे, बदल ० आहे." } ] } ] }, }
+                caseData: { 'A1': { title: 'सकाळचा प्रवास', scenario: 'एक विद्यार्थी सायकलने ४.०० किमी अंतरावरील शाळेत जाण्यासाठी २० मिनिटे घेतो आणि त्याच मार्गाने परत येण्यासाठी ४० मिनिटे घेतो.', questions: [ { q: 'शाळेत जाण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['१० किमी/तास', '१२ किमी/तास', '१५ किमी/तास', '२० किमी/तास'], sol: 'v = s / t = 4.00 / (20/60) = 12.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 20 min = 20/60 h = 1/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (1/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 12.00 km/h" } ] }, { q: 'घरी परतण्याचा सरासरी वेग (किमी/तास) काढा.', opts: ['६ किमी/तास', '८ किमी/तास', '९ किमी/तास', '१० किमी/तास'], sol: 'v = s / t = 4.00 / (40/60) = 6.00 किमी/तास', steps: [ { text: "वेळेचे मिनिटांतून तासांत रूपांतर करा.", content: "t = 40 min = 40/60 h = 2/3 h" }, { text: "वेगाचे सूत्र वापरा: v = s / t", content: "v = 4.00 km / (2/3) h" }, { text: "अंतिम वेगाची गणना करा.", content: "v = 6.00 km/h" } ] }, { q: 'संपूर्ण प्रवासाचा सरासरी वेग काढा.', opts: ['१०.० किमी/तास', '८.० किमी/तास', '९.० किमी/तास', '९.६ किमी/तास'], sol: 'Avg Speed = (4+4)km / (20+40)/60h = 8.00 km/h', steps: [ { text: "एकूण अंतराची गणना करा.", content: "Total s = 4.00 + 4.00 = 8.00 km" }, { text: "एकूण वेळेची तासांमध्ये गणना करा.", content: "Total t = 20 + 40 = 60 min = 1 h" }, { text: "सरासरी वेगाचे सूत्र वापरा.", content: "Avg v = Total s / Total t = 8.00 km / 1 h" }, { text: "अंतिम सरासरी वेगाची गणना करा.", content: "Avg v = 8.00 km/h" } ] }, { q: 'संपूर्ण प्रवासासाठी एकूण विस्थापन किती आहे?', opts: ['१० किमी', '४ किमी', '८ किमी', '० किमी'], sol: 'विस्थापन शून्य आहे कारण सुरुवातीचे आणि शेवटचे ठिकाण समान आहे.', steps: [ { text: "विस्थापनाची व्याख्या आठवा.", content: "विस्थापन म्हणजे सुरुवातीपासून शेवटपर्यंतच्या स्थितीत झालेला निव्वळ बदल." }, { text: "सुरुवातीचे आणि शेवटचे ठिकाण ओळखा.", content: "विद्यार्थी घरापासून सुरुवात करतो आणि घरीच प्रवास संपवतो." }, { text: "निव्वळ बदल निश्चित करा.", content: "अंतिम स्थान आणि सुरुवातीचे स्थान समान असल्यामुळे, बदल ० आहे." } ] } ] }, }
             }
         };
     }
@@ -130,7 +129,6 @@
         animPhase = 'initial';
         animTimer = 0;
         labelData = {};
-        // MODIFIED: Reset logic for the new A1 animation
         if (currentCaseKey === 'A1') {
             animPhase = 'toSchool';
             backgroundOffset = 0;
@@ -301,34 +299,28 @@
         animTimer += dt;
         
         switch (currentCaseKey) {
-            // REWRITTEN: The entire logic for case A1 is new.
             case 'A1': {
                 const p = simulationData['9']['Motion']['A1'].params;
                 const speedToSchool = p.dist1 / (p.time1 / 60); // km/h
                 const speedReturn = p.dist2 / (p.time2 / 60); // km/h
-
-                // Visual animation speed. These values control how fast the background scrolls.
                 const animSpeedToSchool = 150;
                 const animSpeedReturn = 100;
-
-                const TRIP_ANIM_LENGTH = 5000; // An arbitrary "length" for the animation trip.
+                const TRIP_ANIM_LENGTH = 5000;
 
                 if (animPhase === 'toSchool') {
                     backgroundOffset += animSpeedToSchool * dt;
                     labelData.speed = `${speedToSchool.toFixed(1)} km/h`;
-                    // Map the animation progress to the real physical distance
                     totalDistance = map(backgroundOffset, 0, TRIP_ANIM_LENGTH, 0, p.dist1);
                     if (backgroundOffset >= TRIP_ANIM_LENGTH) {
-                        backgroundOffset = TRIP_ANIM_LENGTH; // Clamp value
+                        backgroundOffset = TRIP_ANIM_LENGTH;
                         animPhase = 'returning';
                     }
                 } else if (animPhase === 'returning') {
                     backgroundOffset -= animSpeedReturn * dt;
                     labelData.speed = `${speedReturn.toFixed(1)} km/h`;
-                    // Map the return animation progress to the second leg of the journey
                     totalDistance = p.dist1 + map(backgroundOffset, TRIP_ANIM_LENGTH, 0, 0, p.dist2);
                      if (backgroundOffset <= 0) {
-                        backgroundOffset = 0; // Clamp value
+                        backgroundOffset = 0;
                         animPhase = 'toSchool';
                     }
                 }
@@ -348,7 +340,7 @@
         cam.setPosition(0, -50, 450); cam.lookAt(0, 0, 0);
         pg.ambientLight(150); pg.directionalLight(255, 255, 255, -1, -1, -1);
         switch (currentCaseKey) {
-            case 'A1': drawNewCommuteScene(); break; // MODIFIED: Calling the new function
+            case 'A1': drawNewCommuteScene(); break;
             case 'A2': pg.orbitControl(1, 1, 0.1); drawCarScene(); break;
             case 'B1': pg.orbitControl(1, 1, 0.1); drawTrolleyScene(); break;
             case 'B2': pg.orbitControl(1, 1, 0.1); drawElevatorScene(); break;
@@ -357,71 +349,88 @@
         }
     }
 
-    // REWRITTEN: This function contains the new drawing logic for case A1.
     function drawNewCommuteScene() {
         const TRIP_ANIM_LENGTH = 5000;
 
         // --- Draw Sky ---
         pg.push();
-        pg.translate(0, -50, -200); // Position sky plane in the background
+        pg.translate(0, -50, -200);
         pg.noStroke();
         pg.texture(skyImage);
-        pg.textureMode(NORMAL); // Use normalized texture coordinates (0 to 1)
+        pg.textureMode(NORMAL);
         pg.textureWrap(REPEAT, CLAMP);
-        let skyTextureOffset = (backgroundOffset / 2000) % 1.0; // Sky moves slower for parallax
+        // This calculation makes the texture scroll LEFT as backgroundOffset increases.
+        let skyTextureOffset = backgroundOffset / 2000;
         pg.beginShape();
-        pg.vertex(-800, -400, 0, 0 - skyTextureOffset, 1);
-        pg.vertex(800, -400, 0, 2 - skyTextureOffset, 1); // Use 2 to tile the texture twice
-        pg.vertex(800, 400, 0, 2 - skyTextureOffset, 0);
-        pg.vertex(-800, 400, 0, 0 - skyTextureOffset, 0);
+        pg.vertex(-800, -400, 0, 0 + skyTextureOffset, 1);
+        pg.vertex(800, -400, 0, 2 + skyTextureOffset, 1);
+        pg.vertex(800, 400, 0, 2 + skyTextureOffset, 0);
+        pg.vertex(-800, 400, 0, 0 + skyTextureOffset, 0);
         pg.endShape();
         pg.pop();
 
         // --- Draw Road ---
         pg.push();
-        pg.translate(0, 60, 0); // Position road plane below cyclist
+        pg.translate(0, 60, 0);
         pg.rotateX(PI / 2);
         pg.noStroke();
         pg.texture(roadImage);
         pg.textureMode(NORMAL);
         pg.textureWrap(REPEAT, CLAMP);
-        let roadTextureOffset = (backgroundOffset / 500) % 1.0; // Road moves faster
+        // This calculation also makes the texture scroll LEFT as backgroundOffset increases.
+        let roadTextureOffset = backgroundOffset / 500;
         pg.beginShape();
-        pg.vertex(-500, -500, 0, 0 - roadTextureOffset, 10);
-        pg.vertex(500, -500, 0, 10 - roadTextureOffset, 10);
-        pg.vertex(500, 500, 0, 10 - roadTextureOffset, 0);
-        pg.vertex(-500, 500, 0, 0 - roadTextureOffset, 0);
+        pg.vertex(-500, -500, 0, 0 + roadTextureOffset, 10);
+        pg.vertex(500, -500, 0, 10 + roadTextureOffset, 10);
+        pg.vertex(500, 500, 0, 10 + roadTextureOffset, 0);
+        pg.vertex(-500, 500, 0, 0 + roadTextureOffset, 0);
         pg.endShape();
         pg.pop();
 
-        // --- Draw Home and School ---
-        // These appear and fade based on the position in the journey.
-        if (backgroundOffset < 500) { // Near the start point
-             pg.push();
-             pg.tint(255, map(backgroundOffset, 0, 500, 255, 0)); // Fade out
-             pg.translate(0, -20, -150);
-             pg.noStroke();
-             pg.texture(homeImage);
-             pg.plane(200, 200);
-             pg.pop();
-        }
-        if (backgroundOffset > TRIP_ANIM_LENGTH - 500) { // Near the end point
-             pg.push();
-             pg.tint(255, map(backgroundOffset, TRIP_ANIM_LENGTH - 500, TRIP_ANIM_LENGTH, 0, 255)); // Fade in
-             pg.translate(0, -30, -150);
-             pg.noStroke();
-             pg.texture(schoolImage);
-             pg.plane(240, 240);
-             pg.pop();
-        }
+        // --- FINAL CORRECTED LOGIC for Home and School ---
+        const parallaxFactor = 0.4;
+        
+        // A negative scroll moves the world to the left.
+        // As backgroundOffset increases (going to school), this value becomes more negative.
+        // As backgroundOffset decreases (returning home), this value becomes less negative (moves right).
+        // This ensures the buildings always move in the same direction as the road and sky textures.
+        const buildingScrollX = -backgroundOffset * parallaxFactor;
+
+        // Define the fixed "world positions" for home and school.
+        const homeWorldX = 0;
+        const schoolWorldX = TRIP_ANIM_LENGTH * parallaxFactor;
+
+        // The final on-screen position is the building's fixed world position plus the scroll amount.
+        const homeScreenX = homeWorldX + buildingScrollX;
+        const schoolScreenX = schoolWorldX + buildingScrollX;
+        
+        // Draw Home
+        pg.push();
+        pg.translate(homeScreenX, -20, -100);
+        pg.noStroke();
+        pg.texture(homeImage);
+        pg.plane(200, 200);
+        pg.pop();
+
+        // Draw School
+        pg.push();
+        pg.translate(schoolScreenX, -30, -100);
+        pg.noStroke();
+        pg.texture(schoolImage);
+        pg.plane(240, 240);
+        pg.pop();
 
         // --- Draw Cyclist ---
         pg.push();
-        pg.translate(0, 25, 50); // Keep cyclist at the center, slightly in front
-        if (animPhase === 'returning') { pg.scale(-1, 1, 1); } // Flip direction when returning
+        pg.translate(0, 25, 50);
+        if (animPhase === 'toSchool') {
+            pg.scale(1, 1, 1); // Facing right
+        } else {
+            pg.scale(-1, 1, 1); // Flipped to face left
+        }
         pg.noStroke();
         pg.texture(cycleImage);
-        pg.plane(120, 82); // A bit larger for better visibility
+        pg.plane(120, 82);
         pg.pop();
     }
 
