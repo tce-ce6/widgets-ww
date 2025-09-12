@@ -29,6 +29,7 @@
     let currentCaseKey = 'A1';
     let currentQuestionIndex = 0;
     let currentLanguage = 'en';
+    let isPaused = false;
 
     let uiState = {
         gradeDropdownOpen: false,
@@ -46,25 +47,24 @@
     // --- 3D & ANIMATION VARIABLES ---
     let pg; // 3D graphics buffer
     let cam;
-    let cycleImage, homeImage, schoolImage, carImage, personImage, skyImage, roadImage;
+    let cycleImage, homeImage, schoolImage, carImage, personImage, skyImage, roadImage, cloudImage;
     let backgroundOffset, totalDistance, carPos, carVel, trolleyPos, waterParticles, elevatorPos, elevatorAccel;
     let animPhase = 'initial';
     let animTimer = 0;
     let bottleCapOn = true;
     let labelData = {};
+    let clouds = [];
 
     // --- PRELOAD FUNCTION ---
     function preload() {
         // NOTE: Make sure you have an 'assets' folder with these images.
-        // You can use placeholder images if you don't have them.
-        const placeholder = (w, h, text) => `https://placehold.co/${w}x${h}/eee/ccc?text=${text}`;
-        cycleImage = loadImage(placeholder(120, 82, 'Cycle'), () => {}, () => cycleImage = loadImage('assets/cycle.png'));
-        homeImage = loadImage(placeholder(200, 200, 'Home'), () => {}, () => homeImage = loadImage('assets/home.png'));
-        schoolImage = loadImage(placeholder(240, 240, 'School'), () => {}, () => schoolImage = loadImage('assets/school.png'));
-        carImage = loadImage(placeholder(100, 50, 'Car'), () => {}, () => carImage = loadImage('assets/car.png'));
-        personImage = loadImage(placeholder(60, 90, 'Person'), () => {}, () => personImage = loadImage('assets/person.png'));
-        skyImage = loadImage(placeholder(800, 400, 'Sky'), () => {}, () => skyImage = loadImage('assets/sky.jpg'));
-        roadImage = loadImage(placeholder(500, 500, 'Road'), () => {}, () => roadImage = loadImage('assets/road.png'));
+        cloudImage = loadImage('assets/cloud.png');
+        cycleImage = loadImage('assets/cycle.png');
+        homeImage = loadImage('assets/home.png');
+        schoolImage = loadImage('assets/school.png');
+        carImage = loadImage('assets/car.png');
+        personImage = loadImage('assets/person.png');
+        roadImage = loadImage('assets/road.png');
     }
 
     // --- P5.JS SETUP ---
@@ -133,6 +133,15 @@
             animPhase = 'toSchool';
             backgroundOffset = 0;
             totalDistance = 0;
+            clouds = [];
+            for (let i = 0; i < 5; i++) {
+                clouds.push({
+                    x: random(-800, 800),
+                    y: random(-180, -100),
+                    z: random(-300, -250),
+                    scale: random(0.8, 1.5)
+                });
+            }
         } else if (currentCaseKey === 'A2') {
             animPhase = 'accelerating';
             carPos = createVector(-220, 0, 0);
@@ -163,7 +172,16 @@
         drawDropdown(width - 110, 20, 100, 35, langLabel, langOptions, 'lang');
     }
 
-    function drawLeftPanel() { pg.push(); pg.background('#ffffff'); updateSimulation(); draw3DScene(); pg.pop(); image(pg, 15, 80); drawSimulationLabels(); }
+    function drawLeftPanel() {
+        pg.push();
+        pg.background('#ffffff');
+        updateSimulation();
+        draw3DScene();
+        pg.pop();
+        image(pg, 15, 80);
+        drawSimulationLabels();
+        drawControlButtons();
+    }
 
     function drawRightPanel() {
         const t = translations[currentLanguage];
@@ -293,18 +311,61 @@
         }
     }
 
+    function drawControlButtons() {
+        // Play/Pause Button
+        const playBtn = { x: 25, y: 455, w: 80, h: 30 };
+        uiElements.playPauseButton = playBtn;
+
+        stroke('#adb5bd');
+        fill('#f8f9fa');
+        rect(playBtn.x, playBtn.y, playBtn.w, playBtn.h, 5);
+
+        noStroke();
+        fill('#212529');
+        textSize(14);
+        textAlign(CENTER, CENTER);
+
+        if (isPaused) {
+            const triX = playBtn.x + playBtn.w / 2 - 2;
+            const triY = playBtn.y + playBtn.h / 2;
+            triangle(triX, triY - 6, triX, triY + 6, triX + 10, triY);
+        } else {
+            const barX1 = playBtn.x + playBtn.w / 2 - 6;
+            const barX2 = playBtn.x + playBtn.w / 2 + 2;
+            const barY = playBtn.y + 7;
+            rect(barX1, barY, 4, 16, 1);
+            rect(barX2, barY, 4, 16, 1);
+        }
+        
+        // Reset Button
+        const resetBtn = { x: 470, y: 455, w: 80, h: 30 };
+        uiElements.resetButton = resetBtn;
+
+        stroke('#adb5bd');
+        fill('#f8f9fa');
+        rect(resetBtn.x, resetBtn.y, resetBtn.w, resetBtn.h, 5);
+        
+        noStroke();
+        fill('#dc3545');
+        textStyle(BOLD);
+        text("Reset", resetBtn.x + resetBtn.w / 2, resetBtn.y + resetBtn.h / 2);
+        textStyle(NORMAL);
+    }
+
     // --- SIMULATION UPDATE & DRAWING ---
     function updateSimulation() {
+        if (isPaused) return;
+
         let dt = deltaTime / 1000;
         animTimer += dt;
         
         switch (currentCaseKey) {
             case 'A1': {
                 const p = simulationData['9']['Motion']['A1'].params;
-                const speedToSchool = p.dist1 / (p.time1 / 60); // km/h
-                const speedReturn = p.dist2 / (p.time2 / 60); // km/h
-                const animSpeedToSchool = 150;
-                const animSpeedReturn = 100;
+                const speedToSchool = p.dist1 / (p.time1 / 60);
+                const speedReturn = p.dist2 / (p.time2 / 60);
+                const animSpeedToSchool = 500;
+                const animSpeedReturn = 300;
                 const TRIP_ANIM_LENGTH = 5000;
 
                 if (animPhase === 'toSchool') {
@@ -327,6 +388,15 @@
                 
                 totalDistance = constrain(totalDistance, 0, p.dist1 + p.dist2);
                 labelData.distance = `${totalDistance.toFixed(2)} km`;
+                
+                let currentTimeInHours = 0;
+                if (animPhase === 'toSchool' && speedToSchool > 0) {
+                    currentTimeInHours = totalDistance / speedToSchool;
+                } else if (animPhase === 'returning' && speedReturn > 0) {
+                    const returnDistance = totalDistance - p.dist1;
+                    currentTimeInHours = (p.time1 / 60) + (returnDistance / speedReturn);
+                }
+                labelData.time = `${(currentTimeInHours * 60).toFixed(1)} min`;
                 break;
             }
             case 'A2': { const p = simulationData['9']['Motion']['A2'].params; const accel = p.v_final / p.t1; const decel = -p.v_final / p.t2; if (animPhase === 'accelerating') { carPos.x += carVel * dt * 4; carVel += accel * dt; labelData = { speed: `${carVel.toFixed(1)} m/s`, accel: `${accel.toFixed(1)} m/s²`, dist: `${map(carPos.x, -220, 0, 0, 125).toFixed(1)} m`}; if (animTimer > p.t1) { animTimer = 0; animPhase = 'braking'; } } else if (animPhase === 'braking') { carPos.x += carVel * dt * 4; carVel += decel * dt; if (carVel < 0) carVel = 0; labelData = { speed: `${carVel.toFixed(1)} m/s`, accel: `${decel.toFixed(1)} m/s²`, dist: `${(125 + map(carPos.x, 0, 120, 0, 62.5)).toFixed(1)} m` }; } break; }
@@ -338,7 +408,16 @@
 
     function draw3DScene() {
         cam.setPosition(0, -50, 450); cam.lookAt(0, 0, 0);
-        pg.ambientLight(150); pg.directionalLight(255, 255, 255, -1, -1, -1);
+        
+        // --- NEW: Conditional lighting for day/night ---
+        if (currentCaseKey === 'A1' && animPhase === 'returning') {
+            pg.ambientLight(80); // Less ambient light for night
+            pg.directionalLight(200, 200, 255, -1, -1, -1); // Cool moonlight
+        } else {
+            pg.ambientLight(150); // Standard day lighting
+            pg.directionalLight(255, 255, 255, -1, -1, -1);
+        }
+
         switch (currentCaseKey) {
             case 'A1': drawNewCommuteScene(); break;
             case 'A2': pg.orbitControl(1, 1, 0.1); drawCarScene(); break;
@@ -352,59 +431,52 @@
     function drawNewCommuteScene() {
         const TRIP_ANIM_LENGTH = 5000;
 
-        // --- Draw Sky ---
-        pg.push();
-        pg.translate(0, -50, -200);
-        pg.noStroke();
-        pg.texture(skyImage);
-        pg.textureMode(NORMAL);
-        pg.textureWrap(REPEAT, CLAMP);
-        // This calculation makes the texture scroll LEFT as backgroundOffset increases.
-        let skyTextureOffset = backgroundOffset / 2000;
-        pg.beginShape();
-        pg.vertex(-800, -400, 0, 0 + skyTextureOffset, 1);
-        pg.vertex(800, -400, 0, 2 + skyTextureOffset, 1);
-        pg.vertex(800, 400, 0, 2 + skyTextureOffset, 0);
-        pg.vertex(-800, 400, 0, 0 + skyTextureOffset, 0);
-        pg.endShape();
-        pg.pop();
+        // --- NEW: Set background color based on time of day ---
+        if (animPhase === 'returning') {
+            pg.background('#3044f2'); // Midnight blue for night
+        } else {
+            pg.background('skyblue'); // Sky blue for day
+        }
 
-        // --- Draw Road ---
+        const cloudScrollX = -backgroundOffset * 0.2;
+        const worldWidth = 1600;
+
+        pg.noStroke();
+        pg.texture(cloudImage);
+        clouds.forEach(cloud => {
+            pg.push();
+            let currentX = (cloud.x + cloudScrollX);
+            currentX = ((currentX + worldWidth/2) % worldWidth) - worldWidth/2;
+            pg.translate(currentX, cloud.y, cloud.z);
+            pg.plane(150 * cloud.scale, 80 * cloud.scale);
+            pg.pop();
+        });
+
+        // --- Draw Road (FIXED position and size) ---
         pg.push();
-        pg.translate(0, 60, 0);
+        pg.translate(0, 85, 0); // Moved down to cover bottom of screen
         pg.rotateX(PI / 2);
         pg.noStroke();
         pg.texture(roadImage);
         pg.textureMode(NORMAL);
         pg.textureWrap(REPEAT, CLAMP);
-        // This calculation also makes the texture scroll LEFT as backgroundOffset increases.
         let roadTextureOffset = backgroundOffset / 500;
         pg.beginShape();
-        pg.vertex(-500, -500, 0, 0 + roadTextureOffset, 10);
-        pg.vertex(500, -500, 0, 10 + roadTextureOffset, 10);
-        pg.vertex(500, 500, 0, 10 + roadTextureOffset, 0);
-        pg.vertex(-500, 500, 0, 0 + roadTextureOffset, 0);
+        // Increased vertex size to prevent gaps on the sides
+        pg.vertex(-600, -600, 0, 0 + roadTextureOffset, 12);
+        pg.vertex(600, -600, 0, 12 + roadTextureOffset, 12);
+        pg.vertex(600, 600, 0, 12 + roadTextureOffset, 0);
+        pg.vertex(-600, 600, 0, 0 + roadTextureOffset, 0);
         pg.endShape();
         pg.pop();
 
-        // --- FINAL CORRECTED LOGIC for Home and School ---
         const parallaxFactor = 0.4;
-        
-        // A negative scroll moves the world to the left.
-        // As backgroundOffset increases (going to school), this value becomes more negative.
-        // As backgroundOffset decreases (returning home), this value becomes less negative (moves right).
-        // This ensures the buildings always move in the same direction as the road and sky textures.
         const buildingScrollX = -backgroundOffset * parallaxFactor;
-
-        // Define the fixed "world positions" for home and school.
         const homeWorldX = 0;
         const schoolWorldX = TRIP_ANIM_LENGTH * parallaxFactor;
-
-        // The final on-screen position is the building's fixed world position plus the scroll amount.
         const homeScreenX = homeWorldX + buildingScrollX;
         const schoolScreenX = schoolWorldX + buildingScrollX;
         
-        // Draw Home
         pg.push();
         pg.translate(homeScreenX, -20, -100);
         pg.noStroke();
@@ -412,7 +484,6 @@
         pg.plane(200, 200);
         pg.pop();
 
-        // Draw School
         pg.push();
         pg.translate(schoolScreenX, -30, -100);
         pg.noStroke();
@@ -420,13 +491,12 @@
         pg.plane(240, 240);
         pg.pop();
 
-        // --- Draw Cyclist ---
         pg.push();
         pg.translate(0, 25, 50);
         if (animPhase === 'toSchool') {
-            pg.scale(1, 1, 1); // Facing right
+            pg.scale(1, 1, 1);
         } else {
-            pg.scale(-1, 1, 1); // Flipped to face left
+            pg.scale(-1, 1, 1);
         }
         pg.noStroke();
         pg.texture(cycleImage);
@@ -439,7 +509,33 @@
     function drawTrolleyScene() { pg.push(); pg.noStroke(); pg.fill('#f0ad4e'); pg.translate(0, 21, 0); pg.rotateX(PI / 2); pg.plane(400, 200); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#0275d8'); pg.translate(trolleyPos.x, -5, trolleyPos.z); pg.box(80, 30, 50); pg.pop(); const center = createVector(trolleyPos.x, -5, trolleyPos.z); drawArrow(center, createVector(80, 0, 0), color(0, 200, 0)); drawArrow(createVector(trolleyPos.x, 10, 0), createVector(-40, 0, 0), color(200, 0, 0)); }
     function drawBottleScene() { pg.push(); pg.stroke(150); pg.fill(173, 216, 230, 100); pg.cylinder(40, 150); pg.pop(); pg.push(); pg.noStroke(); pg.fill(100, 150, 255); pg.translate(0, 25, 0); pg.cylinder(39, 100); pg.pop(); if (bottleCapOn) { pg.push(); pg.noStroke(); pg.fill(50); pg.translate(0, -75, 0); pg.cylinder(20, 10); pg.pop(); } pg.noStroke(); pg.fill(100, 150, 255); for(let p of waterParticles) { pg.push(); pg.translate(p.x, p.y, 0); pg.sphere(3); pg.pop(); } }
     function drawElevatorScene() { pg.push(); pg.stroke(150); pg.noFill(); pg.translate(elevatorPos.x, elevatorPos.y, elevatorPos.z); pg.box(100, 180, 100); pg.pop(); pg.push(); pg.noStroke(); pg.fill('#6c757d'); pg.translate(elevatorPos.x, elevatorPos.y + 85, elevatorPos.z); pg.box(50, 10, 50); pg.pop(); pg.push(); pg.translate(elevatorPos.x, elevatorPos.y + 35, elevatorPos.z); pg.noStroke(); pg.texture(personImage); pg.plane(60, 90); pg.pop(); }
-    function drawSimulationLabels() { let x = 25, y = 90, h = 20; const t = translations[currentLanguage].labels; fill(0, 0, 0, 120); noStroke(); let labelContent = []; switch (currentCaseKey) { case 'A1': labelContent = [`${t.speed}: ${labelData.speed || '0.0 km/h'}`, `${t.distance}: ${labelData.distance || '0.00 km'}`]; break; case 'A2': labelContent = [`${t.speed}: ${labelData.speed || '0.0 m/s'}`, `${t.accel}: ${labelData.accel || '0.0 m/s²'}`, `${t.distance}: ${labelData.dist || '0.0 m'}`]; break; case 'B1': labelContent = [`${t.netForce}: ${labelData.netForce || '40.0 N'}`, `${t.accel}: ${labelData.accel || '2.00 m/s²'}`]; break; case 'B2': labelContent = [`${t.accel}: ${labelData.accel || '0.00 m/s²'}`, `${t.apparentWeight}: ${labelData.apparentWeight || '686.0 N'}`]; break; case 'C1': if (!bottleCapOn) { labelContent = [`${t.pressure}: ${labelData.pressure || '0 Pa'}`, `${t.effluxSpeed}: ${labelData.speed || '0.00 m/s'}`]; } break; } if (labelContent.length > 0) { rect(x-5, y-5, 180, labelContent.length * h + 10, 5); fill(255); textSize(12); textAlign(LEFT, TOP); for(let i=0; i < labelContent.length; i++) { text(labelContent[i], x, y + i * h); } } }
+    
+    function drawSimulationLabels() {
+        let x = 25, y = 90, h = 20;
+        const t = translations[currentLanguage].labels;
+        fill(0, 0, 0, 120); noStroke();
+        let labelContent = [];
+        switch (currentCaseKey) {
+            case 'A1':
+                labelContent = [
+                    `${t.speed}: ${labelData.speed || '0.0 km/h'}`,
+                    `${t.distance}: ${labelData.distance || '0.00 km'}`,
+                    `Time: ${labelData.time || '0.0 min'}`
+                ];
+                break;
+            case 'A2': labelContent = [`${t.speed}: ${labelData.speed || '0.0 m/s'}`, `${t.accel}: ${labelData.accel || '0.0 m/s²'}`, `${t.distance}: ${labelData.dist || '0.0 m'}`]; break;
+            case 'B1': labelContent = [`${t.netForce}: ${labelData.netForce || '40.0 N'}`, `${t.accel}: ${labelData.accel || '2.00 m/s²'}`]; break;
+            case 'B2': labelContent = [`${t.accel}: ${labelData.accel || '0.00 m/s²'}`, `${t.apparentWeight}: ${labelData.apparentWeight || '686.0 N'}`]; break;
+            case 'C1': if (!bottleCapOn) { labelContent = [`${t.pressure}: ${labelData.pressure || '0 Pa'}`, `${t.effluxSpeed}: ${labelData.speed || '0.00 m/s'}`]; } break;
+        }
+        if (labelContent.length > 0) {
+            rect(x-5, y-5, 180, labelContent.length * h + 10, 5);
+            fill(255); textSize(12); textAlign(LEFT, TOP);
+            for(let i=0; i < labelContent.length; i++) {
+                text(labelContent[i], x, y + i * h);
+            }
+        }
+    }
 
     // --- MOUSE INTERACTIVITY ---
     function isMouseIn(box) { if (!box) return false; return mouseX > box.x && mouseX < box.x + box.w && mouseY > box.y && mouseY < box.y + box.h; }
@@ -460,6 +556,17 @@
                 if(qList && qList.length > 0) currentQuestionIndex = (currentQuestionIndex + 1) % qList.length;
                 uiState.selectedAnswer = null;
             }
+            return;
+        }
+        
+        if (isMouseIn(uiElements.playPauseButton)) {
+            isPaused = !isPaused;
+            return;
+        }
+        
+        if (isMouseIn(uiElements.resetButton)) {
+            resetAnimationState();
+            isPaused = false;
             return;
         }
         
