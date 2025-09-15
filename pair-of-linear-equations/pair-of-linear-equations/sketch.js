@@ -54,7 +54,7 @@ function checkCondition() {
     } else {
         text = `${ratio1}, ${ratio2}, ${ratio3} → Unique solution (intersecting)`;
     }
-    document.getElementById("ratioDisplay").innerText = text;
+  //  document.getElementById("ratioDisplay").innerText = text;
 }
 
 function updateValues() {

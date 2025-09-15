@@ -15,76 +15,158 @@
     <link rel="stylesheet" href="jsxgraph.css">
 
     <style>
-        #jxgbox {
-            width: 800px;
-            height: 500px;
-            border: 1px solid gray;
-        }
+         #jxgbox {
+      width: 800px;
+      height: 500px;
+      border: 1px solid gray;
+    }
 
-        input[type=range].vertical {
-            writing-mode: bt-lr;
-            /* IE */
-            -webkit-appearance: slider-vertical;
-            /* Chrome/Safari */
-            width: 8px;
-            height: 120px;
-            margin: 0 12px;
-        }
+    input[type="range"].vertical {
+      transform: rotate(-90deg);
+      position: absolute;
+      top: 38px;
+      width: 100px;
+      background: transparent;
+      overflow: hidden;
+    }
 
-        .slider-group {
-            display: inline-flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 60px;
-        margin-left: -50px;
-        }
+    input[type="range"] {
+      --thumb-height: 1.125em;
+      --track-height: 0.125em;
+      --track-color: rgba(0, 0, 0, 0.2);
+      --brightness-hover: 180%;
+      --brightness-down: 80%;
+      --clip-edges: 0.125em;
+      color: #1e6bef;
+    }
+    .downSlider .slider-group input[type="range"]{
+        color: red !important;
+        border: none !important;
+    }
+    input[type="range"].win10-thumb {
+      color: #2b2d42;
+      --thumb-height: 1.375em;
+      --thumb-width: 0.5em;
+      --clip-edges: 0.0125em;
+    }
 
-        .leftPanel,
-        .jxgbox {
-            width: 50%;
-            text-align: center;
-        }
+    input[type="range"],
+    input[type="range"]::-webkit-slider-runnable-track,
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      transition: all ease 100ms;
+      height: var(--thumb-height);
+    }
 
-        .mainContainer {
-            width: 80%;
-        }
+    input[type="range"]::-webkit-slider-thumb {
+      --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
+      --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+      --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
+      --clip-further: calc(100% + 1px);
+      --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0 100vmax currentColor;
 
-        .upCoefficient, .downCoefficient {
-            display: inline-block;
-            margin: 15px 0 15px -50px;
-        }
+      width: var(--thumb-width, var(--thumb-height));
+      background: linear-gradient(currentColor 0 0) scroll no-repeat left center / 50% calc(var(--track-height) + 1px);
+      background-color: currentColor;
+      box-shadow: var(--box-fill);
+      border-radius: var(--thumb-width, var(--thumb-height));
+      filter: brightness(100%);
+      clip-path: polygon(100% -1px,
+          var(--clip-edges) -1px,
+          0 var(--clip-top),
+          -100vmax var(--clip-top),
+          -100vmax var(--clip-bottom),
+          0 var(--clip-bottom),
+          var(--clip-edges) 100%,
+          var(--clip-further) var(--clip-further));
+          border: 0 !important;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center / 100% calc(var(--track-height) + 1px);
+    }
 
-        .upCoefficient .equation-wrapper,
-        .downCoefficient .equation-wrapper{
-            background-color: #7C4585;
-            padding: 7px 10px;
-            margin: 0 7px;
-        }
+    input[type="range"]:disabled {
+      filter: grayscale(1);
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
 
-        .upEquation #eq1,
-        .downEquation #eq2 {
-            font-size: 26px;
-            letter-spacing: 5px;
-        }
+    input[type="range"]:disabled::-webkit-slider-thumb {
+      cursor: not-allowed;
+    }
 
-        .equation-ratio {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            gap: 15px;
-            font-size:26px;
-            font-weight: 600;
-            margin: 20px 0;
-        }
-        .ratioText{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        .txt-align{
-            line-height: 2.2;
-        }
+    input[type=range].vertical:nth-child(1) {
+      left: -30px;
+    }
+
+    input[type=range].vertical:nth-child(2) {
+      left: 65px;
+    }
+
+    input[type=range].vertical:nth-child(3) {
+      left: 147px;
+    }
+
+    .slider-group {
+      display: inline-flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 60px;
+      height: 100px;
+      position: relative;
+      width: 285px;
+    }
+
+    .leftPanel,
+    .jxgbox {
+      width: 50%;
+      text-align: center;
+    }
+
+    .mainContainer {
+      width: 80%;
+      gap: 15px;
+    }
+
+    .upCoefficient,
+    .downCoefficient {
+      display: inline-block;
+      margin: 15px 0 15px -50px;
+    }
+
+    .upCoefficient .equation-wrapper,
+    .downCoefficient .equation-wrapper {
+      background-color: #7C4585;
+      padding: 7px 10px;
+      margin: 0 7px;
+    }
+
+    .upEquation #eq1,
+    .downEquation #eq2 {
+      font-size: 26px;
+      letter-spacing: 5px;
+    }
+
+    .equation-ratio {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      gap: 15px;
+      font-size: 26px;
+      font-weight: 600;
+      margin: 20px 0;
+    }
+
+    .ratioText {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .txt-align {
+      line-height: 2.2;
+    }
     </style>
 </head>
 
@@ -93,7 +175,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Pair of Linear Equations</h2>
-                <span id="versionId" class="versionText">v_25091101</span>
+                <span id="versionId" class="versionText">v_25091501</span>
             </div>
 
             <!-- Your original main container kept as-is; quadratic app goes inside -->
