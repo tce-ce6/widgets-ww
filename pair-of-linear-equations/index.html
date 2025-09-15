@@ -1,0 +1,184 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pair_of_linear_equations</title>
+
+    <!-- Your existing libs & CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+    <!-- JSXGraph -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"> -->
+    <script src="jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="jsxgraph.css">
+
+    <style>
+        #jxgbox {
+            width: 800px;
+            height: 500px;
+            border: 1px solid gray;
+        }
+
+        input[type=range].vertical {
+            writing-mode: bt-lr;
+            /* IE */
+            -webkit-appearance: slider-vertical;
+            /* Chrome/Safari */
+            width: 8px;
+            height: 120px;
+            margin: 0 12px;
+        }
+
+        .slider-group {
+            display: inline-flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 60px;
+        margin-left: -50px;
+        }
+
+        .leftPanel,
+        .jxgbox {
+            width: 50%;
+            text-align: center;
+        }
+
+        .mainContainer {
+            width: 80%;
+        }
+
+        .upCoefficient, .downCoefficient {
+            display: inline-block;
+            margin: 15px 0 15px -50px;
+        }
+
+        .upCoefficient .equation-wrapper,
+        .downCoefficient .equation-wrapper{
+            background-color: #7C4585;
+            padding: 7px 10px;
+            margin: 0 7px;
+        }
+
+        .upEquation #eq1,
+        .downEquation #eq2 {
+            font-size: 26px;
+            letter-spacing: 5px;
+        }
+
+        .equation-ratio {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            gap: 15px;
+            font-size:26px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .ratioText{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .txt-align{
+            line-height: 2.2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Pair of Linear Equations</h2>
+                <span id="versionId" class="versionText">v_25091101</span>
+            </div>
+
+            <!-- Your original main container kept as-is; quadratic app goes inside -->
+            <div class="mainContainer" id="mainCanvas" style="align-items: center;">
+                <div class="leftPanel">
+                    <!-- First Equation -->
+                    <div class="upSlider">
+                        <div class="slider-group">
+                            <input type="range" min="-20" max="20" value="9" class="coeff-slider vertical" id="a1">
+                            <input type="range" min="-20" max="20" value="10" class="coeff-slider vertical" id="b1">
+                            <input type="range" min="-30" max="30" value="10" class="coeff-slider vertical" id="c1">
+                        </div>
+                        <div class="upEquation">
+                            <span id="eq1">a₁x + b₁y + c₁ = 0</span>
+                        </div>
+                        <div class="upCoefficient">
+                            <span class="equation-wrapper">a₁ = <span id="a1_val">9</span></span>
+                            <span class="equation-wrapper">b₁ = <span id="b1_val">10</span></span>
+                            <span class="equation-wrapper">c₁ = <span id="c1_val">10</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Ratio -->
+                    <div class="ratioText">
+
+                        <div class="equation-ratio">
+                            <div class="txt-align">Is</div>
+                            <div style="line-height: 1;">
+                                <div>a₁</div>
+                                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                                <div>a₂</div>
+                            </div>
+                            <div class="txt-align">=</div>
+                            <div style="line-height: 1;">
+                                <div>b₁</div>
+                                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                                <div>b₂</div>
+                            </div>
+                            <div class="txt-align">=</div>
+                            <div style="line-height: 1;">
+                                <div>c₁</div>
+                                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                                <div>c₂</div>
+                            </div>
+                            <div class="txt-align">?</div>
+                        </div>
+                        <button id="toggleBtn" class="hideRatio">Show</button>
+                    </div>
+
+                    <!-- Second Equation -->
+                    <div class="downSlider">
+                        <div class="slider-group">
+                            <input type="range" min="-20" max="20" value="6" class="coeff-slider vertical" id="a2">
+                            <input type="range" min="-20" max="20" value="1" class="coeff-slider vertical" id="b2">
+                            <input type="range" min="-30" max="30" value="-5" class="coeff-slider vertical" id="c2">
+                        </div>
+                        <div class="downEquation">
+                            <span id="eq2">a₂x + b₂y + c₂ = 0</span>
+                        </div>
+                        <div class="downCoefficient">
+                            <span class="equation-wrapper">a₂ = <span id="a2_val">6</span></span>
+                            <span class="equation-wrapper">b₂ = <span id="b2_val">1</span></span>
+                            <span class="equation-wrapper">c₂ = <span id="c2_val">-5</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph -->
+                <div id="jxgbox" class="jxgbox"></div>
+                <!-- <div>
+                    <button class="plot">Plot</button>
+                </div> -->
+            </div>
+
+            <!-- Your existing buttons kept intact -->
+            <div class="flexContainer button-controls">
+                <div class="flexItem flexItemFirst">
+                    <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
+                    <button id="toggleBtn" class="btn btn-primary plot">Plot</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="sketch.js"></script>
+</body>
+
+</html>
