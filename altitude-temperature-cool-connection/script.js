@@ -42,7 +42,7 @@
 
                 // Atmosphere state
                 airMolecules: [],
-                numMolecules: 2500, // Increased for better density view
+                numMolecules: 2500,
 
                 // Calculated Values
                 altitude: 0,
@@ -54,6 +54,7 @@
                 isInsightsHovered: false,
                 isInsightsVisible: false,
                 bgImage: null,
+                resetButton: null, // Reference to the reset button element
                 
                 // Colors
                 colorRed: null,
@@ -70,34 +71,22 @@
                     model.isDragging = false;
                     model.isInsightsVisible = false;
                     model.insightsButton.alpha = 0;
-                    
-                    // Create air molecules with a stronger density gradient
-                    model.airMolecules = [];
-                    const lowAltitudeParticles = model.numMolecules * 0.8; // 80% of particles
-                    const y_2500m = p.map(2500, 0, model.maxAltitude, 440, 100);
 
-                    // Generate dense, low-altitude particles
-                    for (let i = 0; i < lowAltitudeParticles; i++) {
-                        const yPos = p.random(y_2500m, 440);
-                        model.airMolecules.push({
-                            x: p.random(105, 395),
-                            y: yPos,
-                            initialY: yPos, // Store initial position for localized movement
-                            vx: p.random(-0.25, 0.25),
-                            vy: p.random(-0.25, 0.25)
-                        });
+                    if (model.resetButton) {
+                        model.resetButton.disabled = true;
                     }
-
-                    // Generate sparse, high-altitude particles
-                    for (let i = lowAltitudeParticles; i < model.numMolecules; i++) {
-                        const yPos = p.random(100, y_2500m);
-                        model.airMolecules.push({
-                            x: p.random(105, 395),
-                            y: yPos,
-                            initialY: yPos, // Store initial position for localized movement
-                            vx: p.random(-0.25, 0.25),
-                            vy: p.random(-0.25, 0.25)
-                        });
+                    
+                    if (model.airMolecules.length === 0) {
+                        const lowAltitudeParticles = model.numMolecules * 0.8;
+                        const y_2500m = p.map(2500, 0, model.maxAltitude, 440, 100);
+                        for (let i = 0; i < lowAltitudeParticles; i++) {
+                            const yPos = p.random(y_2500m, 440);
+                            model.airMolecules.push({ x: p.random(105, 395), y: yPos, initialY: yPos, vx: p.random(-0.25, 0.25), vy: p.random(-0.25, 0.25) });
+                        }
+                        for (let i = lowAltitudeParticles; i < model.numMolecules; i++) {
+                            const yPos = p.random(100, y_2500m);
+                            model.airMolecules.push({ x: p.random(105, 395), y: yPos, initialY: yPos, vx: p.random(-0.25, 0.25), vy: p.random(-0.25, 0.25) });
+                        }
                     }
                     this.updateValuesFromY(model.balloon.y);
                 },
@@ -105,55 +94,60 @@
                 updateValuesFromY(balloonY) {
                     const atmosphereBottomY = 440;
                     
-                    // --- START: MODIFIED SECTION ---
-                    // Define the top boundary for calculations based on the balloon's maximum possible height.
                     const finalHeight = model.balloon.baseHeight * 1.3;
                     const logicalTopBoundaryForY = 100 + finalHeight;
                     
-                    // Map the balloon's Y position to the correct altitude range.
                     model.altitude = p.map(balloonY, atmosphereBottomY, logicalTopBoundaryForY, 0, model.maxAltitude);
                     model.altitude = p.constrain(model.altitude, 0, model.maxAltitude);
-                    // --- END: MODIFIED SECTION ---
 
                     model.temperature = model.initialTemp - (model.altitude / 1000) * 6.4;
                     const altitudeInKm = model.altitude / 1000;
                 
                     model.pressure = model.initialPressure * Math.pow(1 - 0.103, altitudeInKm);
                     
-                    // Recalculate size based on the new, correct altitude
                     const sizeMultiplier = p.map(model.altitude, 0, model.maxAltitude, 1.0, 1.3);
                     model.balloon.currentWidth = model.balloon.baseWidth * sizeMultiplier;
                     model.balloon.currentHeight = model.balloon.baseHeight * sizeMultiplier;
                     
-                    // Calculate balloon visibility based on position
                     const atmosphereTopY = 100;
-                    const halfwayY = (atmosphereBottomY + atmosphereTopY) / 2; // = 270
+                    const halfwayY = (atmosphereBottomY + atmosphereTopY) / 2;
 
                     if (balloonY <= halfwayY) {
-                        // In the upper half, perform the cross-fade
                         model.balloon.redBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 255, 0);
                         model.balloon.blueBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 0, 255);
                     } else {
-                        // In the lower half, only the red balloon is visible
                         model.balloon.redBalloonAlpha = 255;
                         model.balloon.blueBalloonAlpha = 0;
                     }
                     model.balloon.redBalloonAlpha = p.constrain(model.balloon.redBalloonAlpha, 0, 255);
                     model.balloon.blueBalloonAlpha = p.constrain(model.balloon.blueBalloonAlpha, 0, 255);
 
-                    // Control insights button visibility
-                    if (model.altitude > 4500) {
-                        model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 10);
-                    } else {
-                        model.insightsButton.alpha = p.max(0, model.insightsButton.alpha - 15);
-                         if(model.altitude < 4000) model.isInsightsVisible = false; // Hide panel if balloon goes down
+                    if (model.resetButton) {
+                       model.resetButton.disabled = model.altitude < model.maxAltitude;
                     }
+
+                    // --- START: MODIFIED SECTION ---
+                    // Control insights button visibility based on max altitude
+                    if (model.altitude >= model.maxAltitude - 1000) {
+                        // Slowly fade in the button when max altitude is reached
+                        model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 15);
+                    } else {
+                        // Slowly fade out the button if not at max altitude
+                        model.insightsButton.alpha = p.max(0, model.insightsButton.alpha - 15);
+                    }
+
+                    // If the button is not visible enough to be clicked, hide the insights panel
+                    if (model.insightsButton.alpha < 200) {
+                        model.isInsightsVisible = false;
+                    }
+                    // --- END: MODIFIED SECTION ---
                 },
                 
                 handleMouseInteraction() {
                     const ib = model.insightsButton;
                     model.isInsightsHovered = false;
-                    if (model.insightsButton.alpha > 200) { // Check if button is mostly visible
+                    // Button is considered hoverable only when it's mostly visible
+                    if (model.insightsButton.alpha > 200) {
                         model.isInsightsHovered = (p.mouseX > ib.x && p.mouseX < ib.x + ib.w && p.mouseY > ib.y && p.mouseY < ib.y + ib.h);
                     }
                     
@@ -179,11 +173,7 @@
                 
                 handleMouseDragged() {
                     if (model.isDragging) {
-                        // --- START: MODIFIED SECTION ---
-                        // Constrain dragging so the TOP of the balloon hits the boundary.
-                        // This uses the balloon's current height for an accurate limit.
                         const topLimit = 100 + model.balloon.currentHeight;
-                        // --- END: MODIFIED SECTION ---
                         const bottomLimit = 440;
                         model.balloon.y = p.constrain(p.mouseY, topLimit, bottomLimit);
                         this.updateValuesFromY(model.balloon.y);
@@ -194,25 +184,36 @@
                     model.isDragging = false;
                 },
 
+                // --- START: MODIFIED SECTION ---
+                // The logic here was updated to account for the particle's radius (1.5px)
+                // to ensure they bounce off the inside edge of the container, not its center.
                 moveMolecules() {
-                    const moveRange = 10; // How far a particle can stray from its initial Y
+                    const moveRange = 10;
+                    const radius = 1.5; // Half of the ellipse diameter (3)
+
                     for (let m of model.airMolecules) {
                         m.x += m.vx;
                         m.y += m.vy;
 
-                        // Horizontal bounce remains the same
-                        if (m.x < 100 || m.x > 400) m.vx *= -1;
+                        // X-axis collision detection, accounting for particle radius
+                        const leftWall = 100 + radius;
+                        const rightWall = 400 - radius;
+                        if (m.x < leftWall || m.x > rightWall) {
+                            m.vx *= -1;
+                            // Immediately constrain position to prevent getting stuck outside the boundary
+                            m.x = p.constrain(m.x, leftWall, rightWall);
+                        }
 
-                        // New vertical bounce logic for localized movement
-                        const topBoundary = Math.max(100, m.initialY - moveRange);
-                        const bottomBoundary = Math.min(440, m.initialY + moveRange);
+                        // Y-axis collision detection, accounting for particle radius
+                        const topBoundary = Math.max(100, m.initialY - moveRange) + radius;
+                        const bottomBoundary = Math.min(440, m.initialY + moveRange) - radius;
                         if (m.y < topBoundary || m.y > bottomBoundary) {
                             m.vy *= -1;
-                            // A small nudge to prevent getting stuck
                             m.y = p.constrain(m.y, topBoundary, bottomBoundary);
                         }
                     }
                 }
+                // --- END: MODIFIED SECTION ---
             };
 
             //===========================================
@@ -228,7 +229,6 @@
                 },
 
                 drawHeaderAndFooter() {
-                    // Title bar
                     p.fill(28, 137, 222);
                     p.noStroke();
                     p.rect(p.width/2 - 250, -15, 500, 60, 20);
@@ -238,7 +238,6 @@
                     p.textStyle(p.NORMAL);
                     p.text("Altitude and Temperature – A Cool Connection", p.width / 2, 20);
 
-                    // I-Text
                     p.fill(0, 0, 139);
                     p.textSize(13);
                     p.textStyle(p.BOLDITALIC);
@@ -246,7 +245,6 @@
                      p.textStyle(p.ITALIC);
                     p.text("What changes do you observe in temperature and atmospheric pressure in relation to altitude?", p.width / 2, 80);
                     
-                    // Disclaimer
                     p.fill(130);
                     p.textSize(10);
                     p.textAlign(p.CENTER, p.BOTTOM);
@@ -254,12 +252,12 @@
                 },
 
                 drawAtmosphereColumn() {
-                    p.fill('#4A90E2'); // Set to requested color
+                    p.fill('#4A90E2');
                     p.noStroke();
                     p.rect(100, 100, 300, 340, 15);
 
                     p.noStroke();
-                    p.fill(255, 255, 255, 120); // White particles for contrast
+                    p.fill(66, 66, 255);
                     for (let m of model.airMolecules) {
                         p.ellipse(m.x, m.y, 3, 3);
                     }
@@ -288,36 +286,20 @@
                     p.push();
                     p.imageMode(p.CENTER);
 
-                    // 1. Draw the draggable RED balloon (baloon2.svg)
-                    // It fades out as it moves into the upper atmosphere.
                     if (model.balloon.redBalloonAlpha > 0 && model.balloonSVG2) {
                         const centerX = model.balloon.x;
                         const centerY = model.balloon.y - model.balloon.currentHeight / 2;
                         
                         p.push();
                         p.tint(255, model.balloon.redBalloonAlpha);
-                        p.image(
-                            model.balloonSVG2,
-                            centerX,
-                            centerY,
-                            model.balloon.currentWidth,
-                            model.balloon.currentHeight
-                        );
+                        p.image(model.balloonSVG2, centerX, centerY, model.balloon.currentWidth, model.balloon.currentHeight);
                         p.pop();
                     }
 
-                    // 2. Draw the static BLUE balloon (baloon1.svg) at the top
-                    // It fades in as the red one approaches.
                     if (model.balloon.blueBalloonAlpha > 0 && model.balloonSVG1) {
                         p.push();
                         p.tint(255, model.balloon.blueBalloonAlpha);
-                        p.image(
-                            model.balloonSVG1,
-                            model.blueBalloon.x,
-                            model.blueBalloon.y,
-                            model.blueBalloon.width,
-                            model.blueBalloon.height
-                        );
+                        p.image(model.balloonSVG1, model.blueBalloon.x, model.blueBalloon.y, model.blueBalloon.width, model.blueBalloon.height);
                         p.pop();
                     }
                     p.pop();
@@ -400,10 +382,12 @@
                 },
                 
                 drawInsightsButton() {
-                 model.insightsButton.alpha = 255
+                    // The line `model.insightsButton.alpha = 255` was removed from here
+                    // to allow the fade-in/out animation to work correctly.
                     if (model.insightsButton.alpha > 0) {
                         const { x, y, w, h, label, alpha } = model.insightsButton;
                         p.push();
+                        // Use the alpha value for all colors to make the entire button fade
                         let buttonColor = model.isInsightsHovered ? p.color(242, 140, 40) : p.color(242, 140, 40);
                         p.fill(buttonColor);
                         p.noStroke();
@@ -431,13 +415,20 @@
             //===========================================
             p.preload = function() {
                 model.bgImage = p.loadImage('assets/Sky_BG_02.jpg');
-                // Load the balloon SVG images
-                model.balloonSVG1 = p.loadImage('assets/baloon1.svg'); // Blue balloon
-                model.balloonSVG2 = p.loadImage('assets/baloon2.svg'); // Red balloon
+                model.balloonSVG1 = p.loadImage('assets/baloon1.svg');
+                model.balloonSVG2 = p.loadImage('assets/baloon2.svg');
             };
 
             p.setup = function() {
                 p.createCanvas(model.canvasWidth, model.canvasHeight).parent('canvas-container');
+                
+                model.resetButton = document.getElementById('resetButton');
+                if (model.resetButton) {
+                    model.resetButton.addEventListener('click', () => {
+                        controller.initialize();
+                    });
+                }
+                
                 controller.initialize();
             };
 
@@ -447,7 +438,7 @@
 
                 view.drawBackground();
                 view.drawAtmosphereColumn();
-                view.drawBalloons(); // Changed from drawBalloon
+                view.drawBalloons();
                 view.drawReadoutPanels();
                 view.drawHeaderAndFooter();
                 view.drawInsightsButton();

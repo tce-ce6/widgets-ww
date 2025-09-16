@@ -1,0 +1,17 @@
+      #resetButton {
+        bottom: 10px;
+        background-color: #F94877;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #resetButton:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
