@@ -7,7 +7,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
     <link rel="stylesheet" href="global_style.css">
     <style>
-      /* --- START: MODIFIED SECTION --- */
       #resetButton {
         bottom: 10px;
         background-color: #F94877;
@@ -25,7 +24,6 @@
         background-color: #cccccc;
         cursor: not-allowed;
       }
-      /* --- END: MODIFIED SECTION --- */
     </style>
 </head>
 <body>
@@ -118,12 +116,9 @@
                     model.isInsightsVisible = false;
                     model.insightsButton.alpha = 0;
 
-                    // --- START: MODIFIED SECTION ---
-                    // Disable the reset button on initialization
                     if (model.resetButton) {
                         model.resetButton.disabled = true;
                     }
-                    // --- END: MODIFIED SECTION ---
                     
                     if (model.airMolecules.length === 0) {
                         const lowAltitudeParticles = model.numMolecules * 0.8;
@@ -171,18 +166,23 @@
                     model.balloon.redBalloonAlpha = p.constrain(model.balloon.redBalloonAlpha, 0, 255);
                     model.balloon.blueBalloonAlpha = p.constrain(model.balloon.blueBalloonAlpha, 0, 255);
 
-                    // --- START: MODIFIED SECTION ---
-                    // Control reset button state based on altitude
                     if (model.resetButton) {
                        model.resetButton.disabled = model.altitude < model.maxAltitude;
                     }
 
-                    // Control insights button visibility
-                    if (model.altitude > 4500) {
-                        model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 10);
+                    // --- START: MODIFIED SECTION ---
+                    // Control insights button visibility based on max altitude
+                    if (model.altitude >= model.maxAltitude - 1000) {
+                        // Slowly fade in the button when max altitude is reached
+                        model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 15);
                     } else {
+                        // Slowly fade out the button if not at max altitude
                         model.insightsButton.alpha = p.max(0, model.insightsButton.alpha - 15);
-                         if(model.altitude < 4000) model.isInsightsVisible = false;
+                    }
+
+                    // If the button is not visible enough to be clicked, hide the insights panel
+                    if (model.insightsButton.alpha < 200) {
+                        model.isInsightsVisible = false;
                     }
                     // --- END: MODIFIED SECTION ---
                 },
@@ -190,6 +190,7 @@
                 handleMouseInteraction() {
                     const ib = model.insightsButton;
                     model.isInsightsHovered = false;
+                    // Button is considered hoverable only when it's mostly visible
                     if (model.insightsButton.alpha > 200) {
                         model.isInsightsHovered = (p.mouseX > ib.x && p.mouseX < ib.x + ib.w && p.mouseY > ib.y && p.mouseY < ib.y + ib.h);
                     }
@@ -227,22 +228,36 @@
                     model.isDragging = false;
                 },
 
+                // --- START: MODIFIED SECTION ---
+                // The logic here was updated to account for the particle's radius (1.5px)
+                // to ensure they bounce off the inside edge of the container, not its center.
                 moveMolecules() {
                     const moveRange = 10;
+                    const radius = 1.5; // Half of the ellipse diameter (3)
+
                     for (let m of model.airMolecules) {
                         m.x += m.vx;
                         m.y += m.vy;
 
-                        if (m.x < 100 || m.x > 400) m.vx *= -1;
+                        // X-axis collision detection, accounting for particle radius
+                        const leftWall = 100 + radius;
+                        const rightWall = 400 - radius;
+                        if (m.x < leftWall || m.x > rightWall) {
+                            m.vx *= -1;
+                            // Immediately constrain position to prevent getting stuck outside the boundary
+                            m.x = p.constrain(m.x, leftWall, rightWall);
+                        }
 
-                        const topBoundary = Math.max(100, m.initialY - moveRange);
-                        const bottomBoundary = Math.min(440, m.initialY + moveRange);
+                        // Y-axis collision detection, accounting for particle radius
+                        const topBoundary = Math.max(100, m.initialY - moveRange) + radius;
+                        const bottomBoundary = Math.min(440, m.initialY + moveRange) - radius;
                         if (m.y < topBoundary || m.y > bottomBoundary) {
                             m.vy *= -1;
                             m.y = p.constrain(m.y, topBoundary, bottomBoundary);
                         }
                     }
                 }
+                // --- END: MODIFIED SECTION ---
             };
 
             //===========================================
@@ -286,7 +301,7 @@
                     p.rect(100, 100, 300, 340, 15);
 
                     p.noStroke();
-                    p.fill(255, 255, 255, 120);
+                    p.fill(66, 66, 255);
                     for (let m of model.airMolecules) {
                         p.ellipse(m.x, m.y, 3, 3);
                     }
@@ -411,10 +426,12 @@
                 },
                 
                 drawInsightsButton() {
-                 model.insightsButton.alpha = 255
+                    // The line `model.insightsButton.alpha = 255` was removed from here
+                    // to allow the fade-in/out animation to work correctly.
                     if (model.insightsButton.alpha > 0) {
                         const { x, y, w, h, label, alpha } = model.insightsButton;
                         p.push();
+                        // Use the alpha value for all colors to make the entire button fade
                         let buttonColor = model.isInsightsHovered ? p.color(242, 140, 40) : p.color(242, 140, 40);
                         p.fill(buttonColor);
                         p.noStroke();
@@ -449,15 +466,12 @@
             p.setup = function() {
                 p.createCanvas(model.canvasWidth, model.canvasHeight).parent('canvas-container');
                 
-                // --- START: MODIFIED SECTION ---
-                // Find the button in the HTML and set up its click event
                 model.resetButton = document.getElementById('resetButton');
                 if (model.resetButton) {
                     model.resetButton.addEventListener('click', () => {
                         controller.initialize();
                     });
                 }
-                // --- END: MODIFIED SECTION ---
                 
                 controller.initialize();
             };
