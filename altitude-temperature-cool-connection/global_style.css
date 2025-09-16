@@ -121,16 +121,14 @@ h1, h2, h3, h4, h5, p{
     width: 75%;
 }   
 .button-controls{
-    padding: 12px;
+   padding: 12px;
     position: relative;
-    border-top: 1px solid #ddd;
-    background: #f7f7f7;
-    border-radius: 10px;
-    flex-wrap: wrap;
-        font-size: clamp(8px, 2vw, 16px);
+    background: #cbe7ff;
+    font-size: clamp(8px, 2vw, 16px);
     font-weight: 500;
-     display: flex;
+    display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     /* @media screen and (max-width: 650px) {
         justify-content: center;
         flex-direction: column;
@@ -255,6 +253,8 @@ max-height: 100%;
 ;
     align-items: center;
     background-color: #8dc8f5;
+    background: linear-gradient(180deg,rgba(162, 206, 245, 1) 0%, rgba(203, 231, 255, 1) 81%);
+
   }
 
 .wdgetTitle {
