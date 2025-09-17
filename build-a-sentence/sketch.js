@@ -12,13 +12,13 @@ let wordPairs = [
     { "words": ["hungry", "bicycle"], "sentence": "The hungry student rode his bicycle to the cafeteria." },
     { "words": ["noise", "peace"], "sentence": "The constant noise made us treasure moments of peace." },
     { "words": ["goat", "slipper"], "sentence": "A goat wandered off with someone’s slipper near the field." },
-    { "words": ["train", "flower"], "sentence": "She bought fresh flowers from the market before catching the morning train to visit her grandmother." },
+    { "words": ["train", "flowers"], "sentence": "She bought fresh flowers from the market before catching the morning train to visit her grandmother." },
     { "words": ["guitar", "window"], "sentence": "Guitar melodies drifted through the window each evening." },
-    { "words": ["night", "dawn"], "sentence": "The longest nights often bring the most glorious dawn." },
+    { "words": ["night", "dawn"], "sentence": "The longest night often bring the most glorious dawn." },
     { "words": ["laughing", "umbrella"], "sentence": "The children were laughing as they shared one umbrella." },
     { "words": ["excited", "library"], "sentence": "The excited researcher spent hours in the quiet library." },
     { "words": ["calm", "thunder"], "sentence": "She remained calm despite the loud thunder outside." },
-    { "words": ["sceptical", "advertisement"], "sentence": "She remained sceptical about the advertisement's claims." },
+    { "words": ["sceptical", "advertisement"], "sentence": "She remained sceptical about the claims in the advertisement." },
     { "words": ["adventurous", "recipe"], "sentence": "The adventurous cook tried a complicated recipe." },
     { "words": ["patient", "technology"], "sentence": "The patient teacher helped students with the new technology." },
     { "words": ["hunger", "feast"], "sentence": "True hunger makes the simplest meal seem like a feast." },
@@ -55,9 +55,9 @@ let wordPairs = [
 let currentIndex = 0;
 let showSentence = false;
 
-function svgBgColor(){
+function svgBgColor() {
 
-    let colors = ["#647FBC", '#F5CBCB',"#93DA97", "#FFF9BD", '#4DFFBE', '#A2AADB', '#8CCDEB'];
+    let colors = ["#F8F7BA", '#77BEF0', "#F5BABB"];
     let bgColor = random(colors); // p5.js random()
     // Encode the SVG string into a data URI
     let svgCode = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 666.06 412.3">
@@ -110,11 +110,11 @@ function setup() {
         svgBgColor();
     });
 
-    document.getElementById("prev-btn").addEventListener("click", () => {
-        currentIndex = (currentIndex - 1 + wordPairs.length) % wordPairs.length;
-        showSentence = false;
-        svgBgColor();
-    });
+    // document.getElementById("prev-btn").addEventListener("click", () => {
+    //     currentIndex = (currentIndex - 1 + wordPairs.length) % wordPairs.length;
+    //     showSentence = false;
+    //     svgBgColor();
+    // });
 }
 
 function drawCard(x, y, w, h, word) {
@@ -122,9 +122,12 @@ function drawCard(x, y, w, h, word) {
     image(svgBg, x, y, w + 20, h + 20);
 
     // overlay text
+    push();
     fill(0);
     textSize(24);
+    textStyle(BOLD);
     text(word, x + w / 2 + 10, y + h / 2 + 10);
+    pop();
 }
 
 // function draw() {
@@ -208,7 +211,14 @@ function draw() {
                 let clean = w.replace(/[^\w]/g, "");
                 let wordWidth = textWidth(w + " ");
 
-                if (pair.words.includes(clean)) {
+                // if (pair.words.includes(clean)) {
+                //     fill("green");
+                // } else {
+                //     fill(0);
+                // }
+
+                // Case-insensitive check
+                if (pair.words.some(word => word.toLowerCase() === clean.toLowerCase())) {
                     fill("green");
                 } else {
                     fill(0);
