@@ -17,6 +17,7 @@
                 minPressure: 538.2,
                 
                 // Balloon State
+                // Balloon State
                 balloon: {
                     x: 250,
                     y: 440,
@@ -24,21 +25,21 @@
                     baseHeight: 45,
                     currentWidth: 40,
                     currentHeight: 65,
-                    redBalloonAlpha: 255, // Opacity for the red balloon
-                    blueBalloonAlpha: 0,  // Opacity for the blue balloon
+                    redBalloonAlpha: 255,   // Opacity for the red balloon
+                    blueBalloonAlpha: 0,    // Opacity for the blue balloon
                 },
                 isDragging: false,
                 balloonSVG1: null, // To hold baloon1.svg (blue)
                 balloonSVG2: null, // To hold baloon2.svg (red)
                 
                 // Static blue balloon for the fade-in effect
-                blueBalloon: {
-                    x: 250,
-                    width: 30 * 1.5,
-                    height: 45 * 1.5,
-                    // Calculated Y position to be perfectly centered at the top
-                    get y() { return 100 + this.height / 2; }
-                },
+                // blueBalloon: {
+                //     x: 250,
+                //     width: 30 * 1.6, // Using 1.6x max size
+                //     height: 45 * 1.6,
+                //     // Calculated Y position to be perfectly centered at the top
+                //     get y() { return 100 + this.height / 2; }
+                // },
 
                 // Atmosphere state
                 airMolecules: [],
@@ -91,10 +92,10 @@
                     this.updateValuesFromY(model.balloon.y);
                 },
 
-                updateValuesFromY(balloonY) {
+               updateValuesFromY(balloonY) {
                     const atmosphereBottomY = 440;
                     
-                    const finalHeight = model.balloon.baseHeight * 1.3;
+                    const finalHeight = model.balloon.baseHeight * 1.6; // Adjusted for new max size
                     const logicalTopBoundaryForY = 100 + finalHeight;
                     
                     model.altitude = p.map(balloonY, atmosphereBottomY, logicalTopBoundaryForY, 0, model.maxAltitude);
@@ -105,20 +106,40 @@
                 
                     model.pressure = model.initialPressure * Math.pow(1 - 0.103, altitudeInKm);
                     
-                    const sizeMultiplier = p.map(model.altitude, 0, model.maxAltitude, 1.0, 1.3);
+                    // --- START: MODIFIED SECTION FOR SIZE INCREASE ---
+                    // This section has been updated to make the balloon's size increase exponentially at the top.
+
+                    // 1. Calculate a normalized altitude (a value from 0 to 1).
+                    const normalizedAltitude = p.map(model.altitude, 0, model.maxAltitude, 0, 1);
+
+                    // 2. Apply a power to the normalized value to create non-linear, accelerating growth.
+                    // A higher exponent (e.g., 3) will make the size increase even more sharply at the top.
+                    const growthFactor = Math.pow(normalizedAltitude, 3); 
+
+                    // 3. Define the start and final size multipliers. The max size is increased to 1.6x.
+                    const startMultiplier = 1.0;
+                    const endMultiplier = 1.6;
+
+                    // 4. Calculate the final size multiplier based on the exponential growth factor.
+                    const sizeMultiplier = startMultiplier + (endMultiplier - startMultiplier) * growthFactor;
+                    
                     model.balloon.currentWidth = model.balloon.baseWidth * sizeMultiplier;
                     model.balloon.currentHeight = model.balloon.baseHeight * sizeMultiplier;
+                    // --- END: MODIFIED SECTION FOR SIZE INCREASE ---
                     
                     const atmosphereTopY = 100;
                     const halfwayY = (atmosphereBottomY + atmosphereTopY) / 2;
 
                     if (balloonY <= halfwayY) {
+                        // In the top half, fade from red to blue
                         model.balloon.redBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 255, 0);
                         model.balloon.blueBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 0, 255);
                     } else {
+                        // In the bottom half, the balloon is only red
                         model.balloon.redBalloonAlpha = 255;
                         model.balloon.blueBalloonAlpha = 0;
                     }
+                    // Ensure alpha values stay within the 0-255 range
                     model.balloon.redBalloonAlpha = p.constrain(model.balloon.redBalloonAlpha, 0, 255);
                     model.balloon.blueBalloonAlpha = p.constrain(model.balloon.blueBalloonAlpha, 0, 255);
 
@@ -126,21 +147,15 @@
                        model.resetButton.disabled = model.altitude < model.maxAltitude;
                     }
 
-                    // --- START: MODIFIED SECTION ---
-                    // Control insights button visibility based on max altitude
-                    if (model.altitude >= model.maxAltitude - 1000) {
-                        // Slowly fade in the button when max altitude is reached
-                        model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 15);
-                    } else {
-                        // Slowly fade out the button if not at max altitude
-                        model.insightsButton.alpha = p.max(0, model.insightsButton.alpha - 15);
-                    }
+                    // if (model.altitude >= model.maxAltitude - 1000) {
+                    //     model.insightsButton.alpha = p.min(255, model.insightsButton.alpha + 15);
+                    // } else {
+                    //     model.insightsButton.alpha = p.max(0, model.insightsButton.alpha - 15);
+                    // }
 
-                    // If the button is not visible enough to be clicked, hide the insights panel
-                    if (model.insightsButton.alpha < 200) {
-                        model.isInsightsVisible = false;
-                    }
-                    // --- END: MODIFIED SECTION ---
+                    // if (model.insightsButton.alpha < 200) {
+                    //     model.isInsightsVisible = false;
+                    // }
                 },
                 
                 handleMouseInteraction() {
@@ -282,26 +297,34 @@
                     p.textStyle(p.NORMAL);
                 },
                 
-                drawBalloons() {
+             drawBalloons() {
                     p.push();
                     p.imageMode(p.CENTER);
 
+                    // Define the current position and size of the single, draggable balloon
+                    const centerX = model.balloon.x;
+                    const centerY = model.balloon.y - model.balloon.currentHeight / 2;
+                    const currentW = model.balloon.currentWidth;
+                    const currentH = model.balloon.currentHeight;
+
+                    // Draw the red balloon layer. It's fully visible at the bottom
+                    // and fades out as the balloon rises.
                     if (model.balloon.redBalloonAlpha > 0 && model.balloonSVG2) {
-                        const centerX = model.balloon.x;
-                        const centerY = model.balloon.y - model.balloon.currentHeight / 2;
-                        
                         p.push();
                         p.tint(255, model.balloon.redBalloonAlpha);
-                        p.image(model.balloonSVG2, centerX, centerY, model.balloon.currentWidth, model.balloon.currentHeight);
+                        p.image(model.balloonSVG2, centerX, centerY, currentW, currentH);
                         p.pop();
                     }
 
+                    // Draw the blue balloon layer at the exact same position. It's invisible
+                    // at the bottom and fades in as the balloon rises, creating the color-change effect.
                     if (model.balloon.blueBalloonAlpha > 0 && model.balloonSVG1) {
                         p.push();
                         p.tint(255, model.balloon.blueBalloonAlpha);
-                        p.image(model.balloonSVG1, model.blueBalloon.x, model.blueBalloon.y, model.blueBalloon.width, model.blueBalloon.height);
+                        p.image(model.balloonSVG1, centerX, centerY, currentW, currentH);
                         p.pop();
                     }
+                    
                     p.pop();
                 },
 
@@ -381,32 +404,31 @@
                     }
                 },
                 
-                drawInsightsButton() {
-                    // The line `model.insightsButton.alpha = 255` was removed from here
-                    // to allow the fade-in/out animation to work correctly.
-                    if (model.insightsButton.alpha > 0) {
-                        const { x, y, w, h, label, alpha } = model.insightsButton;
-                        p.push();
-                        // Use the alpha value for all colors to make the entire button fade
-                        let buttonColor = model.isInsightsHovered ? p.color(242, 140, 40) : p.color(242, 140, 40);
-                        p.fill(buttonColor);
-                        p.noStroke();
-                        p.rect(x, y, w + 10, h, 22.5);
+               drawInsightsButton() {
+                    // Set the alpha to 255 to ensure the button is always fully visible.
+                    model.insightsButton.alpha = 255;
+                    
+                    const { x, y, w, h, label, alpha } = model.insightsButton;
+                    p.push();
+                    
+                    let buttonColor = model.isInsightsHovered ? p.color(242, 140, 40) : p.color(242, 140, 40);
+                    p.fill(buttonColor);
+                    p.noStroke();
+                    p.rect(x, y, w + 10, h, 22.5);
 
-                        p.stroke(0, 0, 0, alpha);
-                        p.strokeWeight(2.5);
-                        p.noFill();
-                        p.ellipse(x + 23, y + 22, 16, 16);
-                        p.line(x + 33, y + 32, x + 38, y + 37);
+                    p.stroke(0, 0, 0, alpha);
+                    p.strokeWeight(2.5);
+                    p.noFill();
+                    p.ellipse(x + 23, y + 22, 16, 16);
+                    p.line(x + 33, y + 32, x + 38, y + 37);
 
-                        p.fill(255, 255, 255, alpha);
-                        p.noStroke();
-                        p.textSize(16);
-                        p.textStyle(p.BOLD);
-                        p.textAlign(p.LEFT, p.CENTER);
-                        p.text(label, x + 45, y + h / 2);
-                        p.pop();
-                    }
+                    p.fill(255, 255, 255, alpha);
+                    p.noStroke();
+                    p.textSize(16);
+                    p.textStyle(p.BOLD);
+                    p.textAlign(p.LEFT, p.CENTER);
+                    p.text(label, x + 45, y + h / 2);
+                    p.pop();
                 },
             };
 
