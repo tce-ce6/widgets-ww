@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
         canvas {
             border: 2px solid #333;
@@ -23,192 +24,1014 @@
 <body>
 <script>
     const puzzleData  = [
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "horizontal": {
-            "question": [
-              { "type": "arc_tr", "x": 5, "y": 4 },
-              { "type": "arc_tr", "x": 4, "y": 3 },
-              { "type": "arc_tl", "x": 3, "y": 3 },
-              { "type": "arc_tl", "x": 2, "y": 4 }
-            ],
-            "solution": [
-              { "type": "arc_br", "x": 5, "y": 5 },
-              { "type": "arc_br", "x": 4, "y": 6 },
-              { "type": "arc_bl", "x": 3, "y": 6 },
-              { "type": "arc_bl", "x": 2, "y": 5 }
-            ]
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 1
           },
-          "vertical": {
-            "question": [
-              { "type": "arc_br", "x": 5, "y": 5 },
-              { "type": "arc_br", "x": 6, "y": 4 },
-              { "type": "arc_tr", "x": 6, "y": 3 },
-              { "type": "arc_tr", "x": 5, "y": 2 }
-            ],
-            "solution": [
-              { "type": "arc_bl", "x": 4, "y": 5 },
-              { "type": "arc_bl", "x": 3, "y": 4 },
-              { "type": "arc_tl", "x": 3, "y": 3 },
-              { "type": "arc_tl", "x": 4, "y": 2 }
-            ]
+          {
+            "type": "arc_tr",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "arc_tr",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "arc_bl",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "arc_bl",
+            "x": 9,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 9,
+            "y": 4
           }
-        },
-        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
-        "id": "puzzle_1758107405803"
+        ],
+        "solution": [
+          {
+            "type": "arc_tl",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "arc_tl",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "arc_tl",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "arc_br",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "arc_br",
+            "x": 0,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 0,
+            "y": 4
+          }
+        ]
       },
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "vertical": {
-            "question": [
-              { "type": "diag_down", "x": 5, "y": 1 },
-              { "type": "diag_down", "x": 6, "y": 2 },
-              { "type": "diag_down", "x": 7, "y": 2 },
-              { "type": "diag_down", "x": 7, "y": 3 },
-              { "type": "diag_down", "x": 8, "y": 4 },
-              { "type": "arc_tl", "x": 8, "y": 5 },
-              { "type": "arc_tl", "x": 7, "y": 6 },
-              { "type": "arc_tl", "x": 6, "y": 7 },
-              { "type": "arc_tr", "x": 5, "y": 7 }
-            ],
-            "solution": [
-              { "type": "diag_up", "x": 4, "y": 1 },
-              { "type": "diag_up", "x": 3, "y": 2 },
-              { "type": "diag_up", "x": 2, "y": 2 },
-              { "type": "diag_up", "x": 2, "y": 3 },
-              { "type": "diag_up", "x": 1, "y": 4 },
-              { "type": "arc_tr", "x": 1, "y": 5 },
-              { "type": "arc_tr", "x": 2, "y": 6 },
-              { "type": "arc_tr", "x": 3, "y": 7 },
-              { "type": "arc_tl", "x": 4, "y": 7 }
-            ]
+      "horizontal": {
+        "question": [
+          {
+            "type": "arc_br",
+            "x": 8,
+            "y": 5
           },
-          "horizontal": {
-            "question": [
-              { "type": "diag_up", "x": 8, "y": 5 },
-              { "type": "diag_up", "x": 7, "y": 6 },
-              { "type": "diag_up", "x": 7, "y": 7 },
-              { "type": "diag_up", "x": 6, "y": 7 },
-              { "type": "diag_up", "x": 5, "y": 8 },
-              { "type": "arc_tr", "x": 4, "y": 8 },
-              { "type": "arc_tr", "x": 3, "y": 7 },
-              { "type": "arc_tr", "x": 2, "y": 6 },
-              { "type": "arc_br", "x": 2, "y": 5 }
-            ],
-            "solution": [
-              { "type": "diag_down", "x": 8, "y": 4 },
-              { "type": "diag_down", "x": 7, "y": 3 },
-              { "type": "diag_down", "x": 7, "y": 2 },
-              { "type": "diag_down", "x": 6, "y": 2 },
-              { "type": "diag_down", "x": 5, "y": 1 },
-              { "type": "arc_br", "x": 4, "y": 1 },
-              { "type": "arc_br", "x": 3, "y": 2 },
-              { "type": "arc_br", "x": 2, "y": 3 },
-              { "type": "arc_tr", "x": 2, "y": 4 }
-            ]
-          }
-        },
-        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
-        "id": "puzzle_1758107428138"
-      },
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "horizontal": {
-            "question": [
-              { "type": "line_h", "x": 3, "y": 5 },
-              { "type": "line_h", "x": 4, "y": 5 },
-              { "type": "line_h", "x": 5, "y": 5 },
-              { "type": "line_h", "x": 7, "y": 5 },
-              { "type": "line_h", "x": 6, "y": 5 },
-              { "type": "line_v", "x": 3, "y": 6 },
-              { "type": "line_v", "x": 3, "y": 7 },
-              { "type": "line_v", "x": 7, "y": 6 },
-              { "type": "line_v", "x": 7, "y": 7 },
-              { "type": "arc_tr", "x": 3, "y": 8 },
-              { "type": "arc_tr", "x": 4, "y": 9 },
-              { "type": "line_h", "x": 5, "y": 9 },
-              { "type": "arc_tl", "x": 6, "y": 9 },
-              { "type": "arc_tl", "x": 7, "y": 8 },
-              { "type": "circle", "x": 5, "y": 8 },
-              { "type": "circle", "x": 5, "y": 7 },
-              { "type": "circle", "x": 5, "y": 6 },
-              { "type": "circle", "x": 6, "y": 6 },
-              { "type": "circle", "x": 4, "y": 6 }
-            ],
-            "solution": [
-              { "type": "line_h", "x": 3, "y": 4 },
-              { "type": "line_h", "x": 4, "y": 4 },
-              { "type": "line_h", "x": 5, "y": 4 },
-              { "type": "line_h", "x": 7, "y": 4 },
-              { "type": "line_h", "x": 6, "y": 4 },
-              { "type": "line_v", "x": 3, "y": 3 },
-              { "type": "line_v", "x": 3, "y": 2 },
-              { "type": "line_v", "x": 7, "y": 3 },
-              { "type": "line_v", "x": 7, "y": 2 },
-              { "type": "arc_br", "x": 3, "y": 1 },
-              { "type": "arc_br", "x": 4, "y": 0 },
-              { "type": "line_h", "x": 5, "y": 0 },
-              { "type": "arc_bl", "x": 6, "y": 0 },
-              { "type": "arc_bl", "x": 7, "y": 1 },
-              { "type": "circle", "x": 5, "y": 1 },
-              { "type": "circle", "x": 5, "y": 2 },
-              { "type": "circle", "x": 5, "y": 3 },
-              { "type": "circle", "x": 6, "y": 3 },
-              { "type": "circle", "x": 4, "y": 3 }
-            ]
+          {
+            "type": "arc_br",
+            "x": 7,
+            "y": 6
           },
-          "vertical": {
-            "question": [
-              { "type": "line_v", "x": 4, "y": 3 },
-              { "type": "line_v", "x": 4, "y": 4 },
-              { "type": "line_v", "x": 4, "y": 5 },
-              { "type": "line_v", "x": 4, "y": 7 },
-              { "type": "line_v", "x": 4, "y": 6 },
-              { "type": "line_h", "x": 3, "y": 3 },
-              { "type": "line_h", "x": 2, "y": 3 },
-              { "type": "line_h", "x": 3, "y": 7 },
-              { "type": "line_h", "x": 2, "y": 7 },
-              { "type": "arc_br", "x": 1, "y": 3 },
-              { "type": "arc_br", "x": 0, "y": 4 },
-              { "type": "line_v", "x": 0, "y": 5 },
-              { "type": "arc_tr", "x": 0, "y": 6 },
-              { "type": "arc_tr", "x": 1, "y": 7 },
-              { "type": "circle", "x": 1, "y": 5 },
-              { "type": "circle", "x": 2, "y": 5 },
-              { "type": "circle", "x": 3, "y": 5 },
-              { "type": "circle", "x": 3, "y": 6 },
-              { "type": "circle", "x": 3, "y": 4 }
-            ],
-            "solution": [
-              { "type": "line_v", "x": 5, "y": 3 },
-              { "type": "line_v", "x": 5, "y": 4 },
-              { "type": "line_v", "x": 5, "y": 5 },
-              { "type": "line_v", "x": 5, "y": 7 },
-              { "type": "line_v", "x": 5, "y": 6 },
-              { "type": "line_h", "x": 6, "y": 3 },
-              { "type": "line_h", "x": 7, "y": 3 },
-              { "type": "line_h", "x": 6, "y": 7 },
-              { "type": "line_h", "x": 7, "y": 7 },
-              { "type": "arc_bl", "x": 8, "y": 3 },
-              { "type": "arc_bl", "x": 9, "y": 4 },
-              { "type": "line_v", "x": 9, "y": 5 },
-              { "type": "arc_tl", "x": 9, "y": 6 },
-              { "type": "arc_tl", "x": 8, "y": 7 },
-              { "type": "circle", "x": 8, "y": 5 },
-              { "type": "circle", "x": 7, "y": 5 },
-              { "type": "circle", "x": 6, "y": 5 },
-              { "type": "circle", "x": 6, "y": 6 },
-              { "type": "circle", "x": 6, "y": 4 }
-            ]
+          {
+            "type": "arc_br",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "arc_tl",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "arc_tl",
+            "x": 4,
+            "y": 9
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 9
           }
-        },
-        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
-        "id": "puzzle_1758107475707"
+        ],
+        "solution": [
+          {
+            "type": "arc_tr",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "arc_tr",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "arc_bl",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "arc_bl",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 0
+          }
+        ]
       }
-    ]
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758110957877"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 9,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 9
+          },
+          {
+            "type": "arc_br",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "arc_br",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "arc_br",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "arc_tr",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "arc_tr",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 0
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 9,
+            "y": 4
+          },
+          {
+            "type": "diag_up",
+            "x": 9,
+            "y": 6
+          },
+          {
+            "type": "diag_up",
+            "x": 8,
+            "y": 7
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 8
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 9
+          }
+        ],
+        "solution": [
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 0,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 9
+          },
+          {
+            "type": "arc_bl",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "arc_bl",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "arc_bl",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "arc_tl",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "type": "arc_tl",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "arc_tl",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "diag_up",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "type": "diag_up",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 1,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 0,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 0,
+            "y": 6
+          },
+          {
+            "type": "diag_down",
+            "x": 1,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 2,
+            "y": 8
+          },
+          {
+            "type": "diag_down",
+            "x": 3,
+            "y": 9
+          }
+        ]
+      },
+      "horizontal": {
+        "question": [
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 9
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 0,
+            "y": 5
+          },
+          {
+            "type": "arc_bl",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "arc_bl",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "arc_bl",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "arc_br",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "arc_br",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "arc_br",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "diag_up",
+            "x": 9,
+            "y": 5
+          },
+          {
+            "type": "diag_up",
+            "x": 8,
+            "y": 6
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 8
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 9
+          },
+          {
+            "type": "diag_down",
+            "x": 3,
+            "y": 9
+          },
+          {
+            "type": "diag_down",
+            "x": 2,
+            "y": 8
+          },
+          {
+            "type": "diag_down",
+            "x": 1,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "solution": [
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 0,
+            "y": 4
+          },
+          {
+            "type": "arc_tl",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "arc_tl",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "arc_tl",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 9,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 0
+          },
+          {
+            "type": "diag_up",
+            "x": 3,
+            "y": 0
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 1
+          },
+          {
+            "type": "diag_up",
+            "x": 1,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 0,
+            "y": 3
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758111012197"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 8,
+            "y": 6
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 5
+          }
+        ],
+        "solution": [
+          {
+            "type": "diag_up",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "diag_up",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "line_h",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 1,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 1,
+            "y": 6
+          },
+          {
+            "type": "line_h",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "diag_down",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 5
+          }
+        ]
+      },
+      "horizontal": {
+        "question": [
+          {
+            "type": "diag_up",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 8
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 8
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "diag_down",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 7
+          }
+        ],
+        "solution": [
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 1
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 2
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758111044237"
+  }
+]
 
     let sketch = function(p) {
         // --- Canvas & Layout Configuration ---
@@ -237,13 +1060,16 @@
         };
 
         function initializeUI() {
+            const palSize = 45;
+            const palGap = 10;
             uiElements = {
                 title: { x: controlsX + 20, y: 40, text: "Complete the picture\nto make it symmetrical"},
                 modeLabel: { x: controlsX + 20, y: 140, text: "Select the line of symmetry"},
                 btnHorizontal: { x: controlsX + 40, y: 170, w: 120, h: 30, label: "Horizontal"},
                 btnVertical: { x: controlsX + 40, y: 210, w: 120, h: 30, label: "Vertical"},
-                btnReset: { x: controlsX + 20, y: 280, w: 90, h: 40, label: "Reset"},
-                btnCheck: { x: controlsX + 130, y: 280, w: 90, h: 40, label: "Check"},
+                btnReset: { x: controlsX + 20, y: 380, w: 90, h: 40, label: "Reset"},
+                btnCheck: { x: controlsX + 130, y: 380, w: 90, h: 40, label: "Check"},
+                btnEraser: { id: 'eraser', x: gridAreaX - 60, y: gridAreaY + gridAreaSize  - 50, size: palSize },
                 palette: [],
                 navLabel: { x: controlsX + 20, y: 560, text: ""},
                 btnPrev: { x: controlsX + 130, y: 545, w: 50, h: 30, label: "< Prev"},
@@ -251,15 +1077,16 @@
                 congratsMsg: { text: "Congratulations!\nYou completed the symmetrical picture"},
             };
 
-            const paletteParts = puzzleData[currentPuzzleIndex].availableParts.concat('eraser');
-            let palX = gridAreaX, palY = gridAreaY + gridAreaSize + 20, palSize = 45, palGap = 10;
+            const paletteParts = puzzleData[currentPuzzleIndex].availableParts;
+            let palX = gridAreaX + palSize + palGap - 60;
+            let palY = gridAreaY + gridAreaSize + 20;
             paletteParts.forEach(partId => {
                 uiElements.palette.push({ id: partId, x: palX, y: palY, size: palSize });
                 palX += palSize + palGap;
-                if (palX + palSize > canvasWidth) {
-                    palX = gridAreaX;
-                    palY += palSize + palGap;
-                }
+                // if (palX + palSize > canvasWidth) {
+                //     palX = gridAreaX;
+                //     palY += palSize + palGap;
+                // }
             });
         }
 
@@ -287,8 +1114,10 @@
             p.text(uiElements.title.text, uiElements.title.x, uiElements.title.y);
             p.textSize(14);
             p.text(uiElements.modeLabel.text, uiElements.modeLabel.x, uiElements.modeLabel.y);
-            drawButton(uiElements.btnHorizontal, symmetryMode === 'horizontal');
-            drawButton(uiElements.btnVertical, symmetryMode === 'vertical');
+            
+            drawRadioButton(uiElements.btnHorizontal, symmetryMode === 'horizontal');
+            drawRadioButton(uiElements.btnVertical, symmetryMode === 'vertical');
+
             drawButton(uiElements.btnReset);
             drawButton(uiElements.btnCheck);
             p.fill(100); p.textSize(14);
@@ -315,14 +1144,25 @@
             else p.line(0, gridAreaSize / 2, gridAreaSize, gridAreaSize / 2);
             drawHoverPreview(cellSize, gridSize);
             p.pop();
+            
+            // Draw eraser button
+            const eraserBtn = uiElements.btnEraser;
+            p.push();
+            if (eraserBtn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
+            else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
+            p.rect(eraserBtn.x, eraserBtn.y, eraserBtn.size, eraserBtn.size, 5);
+            p.translate(eraserBtn.x + eraserBtn.size / 2, eraserBtn.y + eraserBtn.size / 2);
+            drawEraserIcon(0, 0, eraserBtn.size * 0.8);
+            p.pop();
+            
+            // Draw shape palette
             uiElements.palette.forEach(btn => {
                 p.push();
                 if (btn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
                 else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
                 p.rect(btn.x, btn.y, btn.size, btn.size, 5);
                 p.translate(btn.x + btn.size / 2, btn.y + btn.size / 2);
-                if (btn.id === 'eraser') drawEraserIcon(0,0, btn.size * 0.6);
-                else { p.stroke(50); p.strokeWeight(3); p.noFill(); drawPart(btn.id, 0, 0, btn.size * 0.8); }
+                p.stroke(50); p.strokeWeight(3); p.noFill(); drawPart(btn.id, 0, 0, btn.size * 0.8);
                 p.pop();
             });
         }
@@ -376,6 +1216,11 @@
             if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); return; }
             if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); return; }
             
+            if (isMouseIn(uiElements.btnEraser)) {
+                selectedPart = (selectedPart === uiElements.btnEraser.id) ? null : uiElements.btnEraser.id;
+                return;
+            }
+
             for(const btn of uiElements.palette) {
                 if (isMouseIn(btn)) {
                     selectedPart = (selectedPart === btn.id) ? null : btn.id;
@@ -400,23 +1245,16 @@
             }
         };
 
-        // ADDED: touchStarted function to handle touch events
         p.touchStarted = function() {
-            // By calling mousePressed, we reuse all the existing button and grid logic
             p.mousePressed();
-            // Prevent default browser actions like scrolling or zooming
             return false;
         }
         
-        // CHANGED: This function now correctly checks if a cell is valid to draw on.
-        // A cell is an "answer cell" if it's within the grid AND not already part of the question.
         function isAnswerCell(x, y, gridSize) {
             if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return false;
-
             const isQuestionCell = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].question.some(
                 shape => shape.x === x && shape.y === y
             );
-            
             return !isQuestionCell;
         }
         
@@ -453,6 +1291,32 @@
             loadPuzzle();
         }
 
+        function drawRadioButton(btn, isSelected) {
+            p.push();
+            const radioRadius = 10;
+            const radioY = btn.y + btn.h / 2;
+            const radioX = btn.x + radioRadius + 5; 
+            const textX = radioX + radioRadius + 10;
+            p.strokeWeight(2);
+            p.stroke(120);
+            p.noFill();
+            if (isSelected) {
+                p.stroke(0, 110, 255);
+            }
+            p.ellipse(radioX, radioY, radioRadius * 2, radioRadius * 2);
+            if (isSelected) {
+                p.noStroke();
+                p.fill(0, 110, 255);
+                p.ellipse(radioX, radioY, radioRadius, radioRadius);
+            }
+            p.fill(50);
+            p.noStroke();
+            p.textSize(16);
+            p.textAlign(p.LEFT, p.CENTER);
+            p.text(btn.label, textX, radioY);
+            p.pop();
+        }
+
         function drawButton(btn, isSelected = false) {
             p.push();
             if (isSelected) { p.fill(180, 220, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
@@ -471,7 +1335,31 @@
         }
 
         const drawPart = (partId,x,y,s) => { const h=s/2; switch(partId){case'diag_up':p.line(x-h,y+h,x+h,y-h);break;case'diag_down':p.line(x-h,y-h,x+h,y+h);break;case'arc_tl':p.arc(x-h,y-h,s*2,s*2,0,p.HALF_PI);break;case'arc_tr':p.arc(x+h,y-h,s*2,s*2,p.HALF_PI,p.PI);break;case'arc_bl':p.arc(x-h,y+h,s*2,s*2,p.PI+p.HALF_PI,p.TWO_PI);break;case'arc_br':p.arc(x+h,y+h,s*2,s*2,p.PI,p.PI+p.HALF_PI);break;case'line_v':p.line(x,y-h,x,y+h);break;case'line_h':p.line(x-h,y,x+h,y);break;case'circle':p.ellipse(x,y,s*0.8);break;} };
-        const drawEraserIcon = (x,y,s) => { p.noStroke();p.fill(150);p.rectMode(p.CENTER);p.rect(x,y,s,s*0.4,3);p.fill(220,53,69);p.rect(x,y,s*1.1,s*0.2,3);p.rectMode(p.CORNER); };
+        
+        const drawEraserIcon = (x, y, s) => {
+            p.push();
+            p.stroke(50);
+            p.strokeWeight(2.5);
+            p.noFill();
+            p.translate(x, y);
+
+            // Draw the line at the bottom first
+            p.line(-s * 0.6, s * 0.5, s * 0.4, s * 0.5);
+
+            // Translate and rotate for the eraser body
+            p.translate(0, -s * 0.1);
+            p.rotate(p.radians(-35));
+
+            const w = s;
+            const h = s * 0.6;
+
+            // Draw the main rectangle body
+            p.rect(-w / 2, -h / 2, w, h, 4);
+
+            // Draw the line for the metal part
+            p.line(w / 2 * 0.4, -h / 2, w / 2 * 0.4, h / 2);
+            p.pop();
+        };
     };
 
     new p5(sketch);
