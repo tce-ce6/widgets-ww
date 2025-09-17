@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symmetry Puzzle Widget</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+<script>
+    const puzzleData  = [
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "horizontal": {
+            "question": [
+              { "type": "arc_tr", "x": 5, "y": 4 },
+              { "type": "arc_tr", "x": 4, "y": 3 },
+              { "type": "arc_tl", "x": 3, "y": 3 },
+              { "type": "arc_tl", "x": 2, "y": 4 }
+            ],
+            "solution": [
+              { "type": "arc_br", "x": 5, "y": 5 },
+              { "type": "arc_br", "x": 4, "y": 6 },
+              { "type": "arc_bl", "x": 3, "y": 6 },
+              { "type": "arc_bl", "x": 2, "y": 5 }
+            ]
+          },
+          "vertical": {
+            "question": [
+              { "type": "arc_br", "x": 5, "y": 5 },
+              { "type": "arc_br", "x": 6, "y": 4 },
+              { "type": "arc_tr", "x": 6, "y": 3 },
+              { "type": "arc_tr", "x": 5, "y": 2 }
+            ],
+            "solution": [
+              { "type": "arc_bl", "x": 4, "y": 5 },
+              { "type": "arc_bl", "x": 3, "y": 4 },
+              { "type": "arc_tl", "x": 3, "y": 3 },
+              { "type": "arc_tl", "x": 4, "y": 2 }
+            ]
+          }
+        },
+        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
+        "id": "puzzle_1758107405803"
+      },
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "vertical": {
+            "question": [
+              { "type": "diag_down", "x": 5, "y": 1 },
+              { "type": "diag_down", "x": 6, "y": 2 },
+              { "type": "diag_down", "x": 7, "y": 2 },
+              { "type": "diag_down", "x": 7, "y": 3 },
+              { "type": "diag_down", "x": 8, "y": 4 },
+              { "type": "arc_tl", "x": 8, "y": 5 },
+              { "type": "arc_tl", "x": 7, "y": 6 },
+              { "type": "arc_tl", "x": 6, "y": 7 },
+              { "type": "arc_tr", "x": 5, "y": 7 }
+            ],
+            "solution": [
+              { "type": "diag_up", "x": 4, "y": 1 },
+              { "type": "diag_up", "x": 3, "y": 2 },
+              { "type": "diag_up", "x": 2, "y": 2 },
+              { "type": "diag_up", "x": 2, "y": 3 },
+              { "type": "diag_up", "x": 1, "y": 4 },
+              { "type": "arc_tr", "x": 1, "y": 5 },
+              { "type": "arc_tr", "x": 2, "y": 6 },
+              { "type": "arc_tr", "x": 3, "y": 7 },
+              { "type": "arc_tl", "x": 4, "y": 7 }
+            ]
+          },
+          "horizontal": {
+            "question": [
+              { "type": "diag_up", "x": 8, "y": 5 },
+              { "type": "diag_up", "x": 7, "y": 6 },
+              { "type": "diag_up", "x": 7, "y": 7 },
+              { "type": "diag_up", "x": 6, "y": 7 },
+              { "type": "diag_up", "x": 5, "y": 8 },
+              { "type": "arc_tr", "x": 4, "y": 8 },
+              { "type": "arc_tr", "x": 3, "y": 7 },
+              { "type": "arc_tr", "x": 2, "y": 6 },
+              { "type": "arc_br", "x": 2, "y": 5 }
+            ],
+            "solution": [
+              { "type": "diag_down", "x": 8, "y": 4 },
+              { "type": "diag_down", "x": 7, "y": 3 },
+              { "type": "diag_down", "x": 7, "y": 2 },
+              { "type": "diag_down", "x": 6, "y": 2 },
+              { "type": "diag_down", "x": 5, "y": 1 },
+              { "type": "arc_br", "x": 4, "y": 1 },
+              { "type": "arc_br", "x": 3, "y": 2 },
+              { "type": "arc_br", "x": 2, "y": 3 },
+              { "type": "arc_tr", "x": 2, "y": 4 }
+            ]
+          }
+        },
+        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
+        "id": "puzzle_1758107428138"
+      },
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "horizontal": {
+            "question": [
+              { "type": "line_h", "x": 3, "y": 5 },
+              { "type": "line_h", "x": 4, "y": 5 },
+              { "type": "line_h", "x": 5, "y": 5 },
+              { "type": "line_h", "x": 7, "y": 5 },
+              { "type": "line_h", "x": 6, "y": 5 },
+              { "type": "line_v", "x": 3, "y": 6 },
+              { "type": "line_v", "x": 3, "y": 7 },
+              { "type": "line_v", "x": 7, "y": 6 },
+              { "type": "line_v", "x": 7, "y": 7 },
+              { "type": "arc_tr", "x": 3, "y": 8 },
+              { "type": "arc_tr", "x": 4, "y": 9 },
+              { "type": "line_h", "x": 5, "y": 9 },
+              { "type": "arc_tl", "x": 6, "y": 9 },
+              { "type": "arc_tl", "x": 7, "y": 8 },
+              { "type": "circle", "x": 5, "y": 8 },
+              { "type": "circle", "x": 5, "y": 7 },
+              { "type": "circle", "x": 5, "y": 6 },
+              { "type": "circle", "x": 6, "y": 6 },
+              { "type": "circle", "x": 4, "y": 6 }
+            ],
+            "solution": [
+              { "type": "line_h", "x": 3, "y": 4 },
+              { "type": "line_h", "x": 4, "y": 4 },
+              { "type": "line_h", "x": 5, "y": 4 },
+              { "type": "line_h", "x": 7, "y": 4 },
+              { "type": "line_h", "x": 6, "y": 4 },
+              { "type": "line_v", "x": 3, "y": 3 },
+              { "type": "line_v", "x": 3, "y": 2 },
+              { "type": "line_v", "x": 7, "y": 3 },
+              { "type": "line_v", "x": 7, "y": 2 },
+              { "type": "arc_br", "x": 3, "y": 1 },
+              { "type": "arc_br", "x": 4, "y": 0 },
+              { "type": "line_h", "x": 5, "y": 0 },
+              { "type": "arc_bl", "x": 6, "y": 0 },
+              { "type": "arc_bl", "x": 7, "y": 1 },
+              { "type": "circle", "x": 5, "y": 1 },
+              { "type": "circle", "x": 5, "y": 2 },
+              { "type": "circle", "x": 5, "y": 3 },
+              { "type": "circle", "x": 6, "y": 3 },
+              { "type": "circle", "x": 4, "y": 3 }
+            ]
+          },
+          "vertical": {
+            "question": [
+              { "type": "line_v", "x": 4, "y": 3 },
+              { "type": "line_v", "x": 4, "y": 4 },
+              { "type": "line_v", "x": 4, "y": 5 },
+              { "type": "line_v", "x": 4, "y": 7 },
+              { "type": "line_v", "x": 4, "y": 6 },
+              { "type": "line_h", "x": 3, "y": 3 },
+              { "type": "line_h", "x": 2, "y": 3 },
+              { "type": "line_h", "x": 3, "y": 7 },
+              { "type": "line_h", "x": 2, "y": 7 },
+              { "type": "arc_br", "x": 1, "y": 3 },
+              { "type": "arc_br", "x": 0, "y": 4 },
+              { "type": "line_v", "x": 0, "y": 5 },
+              { "type": "arc_tr", "x": 0, "y": 6 },
+              { "type": "arc_tr", "x": 1, "y": 7 },
+              { "type": "circle", "x": 1, "y": 5 },
+              { "type": "circle", "x": 2, "y": 5 },
+              { "type": "circle", "x": 3, "y": 5 },
+              { "type": "circle", "x": 3, "y": 6 },
+              { "type": "circle", "x": 3, "y": 4 }
+            ],
+            "solution": [
+              { "type": "line_v", "x": 5, "y": 3 },
+              { "type": "line_v", "x": 5, "y": 4 },
+              { "type": "line_v", "x": 5, "y": 5 },
+              { "type": "line_v", "x": 5, "y": 7 },
+              { "type": "line_v", "x": 5, "y": 6 },
+              { "type": "line_h", "x": 6, "y": 3 },
+              { "type": "line_h", "x": 7, "y": 3 },
+              { "type": "line_h", "x": 6, "y": 7 },
+              { "type": "line_h", "x": 7, "y": 7 },
+              { "type": "arc_bl", "x": 8, "y": 3 },
+              { "type": "arc_bl", "x": 9, "y": 4 },
+              { "type": "line_v", "x": 9, "y": 5 },
+              { "type": "arc_tl", "x": 9, "y": 6 },
+              { "type": "arc_tl", "x": 8, "y": 7 },
+              { "type": "circle", "x": 8, "y": 5 },
+              { "type": "circle", "x": 7, "y": 5 },
+              { "type": "circle", "x": 6, "y": 5 },
+              { "type": "circle", "x": 6, "y": 6 },
+              { "type": "circle", "x": 6, "y": 4 }
+            ]
+          }
+        },
+        "availableParts": ["diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle"],
+        "id": "puzzle_1758107475707"
+      }
+    ]
+
+    let sketch = function(p) {
+        // --- Canvas & Layout Configuration ---
+        const canvasWidth = 800;
+        const canvasHeight = 600;
+        const controlsX = 0, controlsY = 0, controlsW = 250, controlsH = canvasHeight;
+        const gridAreaX = 280, gridAreaY = 20, gridAreaSize = 480;
+
+        // --- State Variables ---
+        let currentPuzzleIndex = 0;
+        let symmetryMode = 'horizontal';
+        let userShapes = [];
+        let selectedPart = null;
+        let puzzleCompleted = false;
+        let feedbackMessage = null;
+        let feedbackTimer = 0;
+
+        // --- UI Element Definitions ---
+        let uiElements = {};
+
+        p.setup = function() {
+            p.createCanvas(canvasWidth, canvasHeight);
+            p.textFont('Arial');
+            initializeUI();
+            loadPuzzle();
+        };
+
+        function initializeUI() {
+            uiElements = {
+                title: { x: controlsX + 20, y: 40, text: "Complete the picture\nto make it symmetrical"},
+                modeLabel: { x: controlsX + 20, y: 140, text: "Select the line of symmetry"},
+                btnHorizontal: { x: controlsX + 40, y: 170, w: 120, h: 30, label: "Horizontal"},
+                btnVertical: { x: controlsX + 40, y: 210, w: 120, h: 30, label: "Vertical"},
+                btnReset: { x: controlsX + 20, y: 280, w: 90, h: 40, label: "Reset"},
+                btnCheck: { x: controlsX + 130, y: 280, w: 90, h: 40, label: "Check"},
+                palette: [],
+                navLabel: { x: controlsX + 20, y: 560, text: ""},
+                btnPrev: { x: controlsX + 130, y: 545, w: 50, h: 30, label: "< Prev"},
+                btnNext: { x: controlsX + 190, y: 545, w: 50, h: 30, label: "Next >"},
+                congratsMsg: { text: "Congratulations!\nYou completed the symmetrical picture"},
+            };
+
+            const paletteParts = puzzleData[currentPuzzleIndex].availableParts.concat('eraser');
+            let palX = gridAreaX, palY = gridAreaY + gridAreaSize + 20, palSize = 45, palGap = 10;
+            paletteParts.forEach(partId => {
+                uiElements.palette.push({ id: partId, x: palX, y: palY, size: palSize });
+                palX += palSize + palGap;
+                if (palX + palSize > canvasWidth) {
+                    palX = gridAreaX;
+                    palY += palSize + palGap;
+                }
+            });
+        }
+
+        function loadPuzzle() {
+            userShapes = [];
+            selectedPart = null;
+            puzzleCompleted = false;
+            feedbackMessage = null;
+            uiElements.navLabel.text = `Puzzle ${currentPuzzleIndex + 1} of ${puzzleData.length}`;
+        }
+
+        p.draw = function() {
+            p.background(240);
+            drawControls();
+            drawGridAndPalette();
+            drawFeedback();
+            if (puzzleCompleted) {
+                drawCongrats();
+            }
+        };
+        
+        function drawControls() {
+            p.noStroke(); p.fill(50);
+            p.textSize(20); p.textAlign(p.LEFT, p.TOP);
+            p.text(uiElements.title.text, uiElements.title.x, uiElements.title.y);
+            p.textSize(14);
+            p.text(uiElements.modeLabel.text, uiElements.modeLabel.x, uiElements.modeLabel.y);
+            drawButton(uiElements.btnHorizontal, symmetryMode === 'horizontal');
+            drawButton(uiElements.btnVertical, symmetryMode === 'vertical');
+            drawButton(uiElements.btnReset);
+            drawButton(uiElements.btnCheck);
+            p.fill(100); p.textSize(14);
+            p.text(uiElements.navLabel.text, uiElements.navLabel.x, uiElements.navLabel.y);
+            drawButton(uiElements.btnPrev);
+            drawButton(uiElements.btnNext);
+        }
+        
+        function drawGridAndPalette() {
+            p.push();
+            p.translate(gridAreaX, gridAreaY);
+            const gridSize = puzzleData[currentPuzzleIndex].gridSize;
+            const cellSize = gridAreaSize / gridSize;
+            const currentPuzzle = puzzleData[currentPuzzleIndex].puzzles[symmetryMode];
+            p.stroke(200); p.strokeWeight(1);
+            for (let i = 0; i <= gridSize; i++) {
+                p.line(i * cellSize, 0, i * cellSize, gridAreaSize);
+                p.line(0, i * cellSize, gridAreaSize, i * cellSize);
+            }
+            currentPuzzle.question.forEach(shape => drawShapeOnGrid(shape, p.color(0, 110, 255, 150), cellSize));
+            userShapes.forEach(shape => drawShapeOnGrid(shape, p.color(0, 110, 255), cellSize));
+            p.stroke(255, 0, 0); p.strokeWeight(4);
+            if (symmetryMode === 'vertical') p.line(gridAreaSize / 2, 0, gridAreaSize / 2, gridAreaSize);
+            else p.line(0, gridAreaSize / 2, gridAreaSize, gridAreaSize / 2);
+            drawHoverPreview(cellSize, gridSize);
+            p.pop();
+            uiElements.palette.forEach(btn => {
+                p.push();
+                if (btn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
+                else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
+                p.rect(btn.x, btn.y, btn.size, btn.size, 5);
+                p.translate(btn.x + btn.size / 2, btn.y + btn.size / 2);
+                if (btn.id === 'eraser') drawEraserIcon(0,0, btn.size * 0.6);
+                else { p.stroke(50); p.strokeWeight(3); p.noFill(); drawPart(btn.id, 0, 0, btn.size * 0.8); }
+                p.pop();
+            });
+        }
+
+        function drawFeedback() {
+            if (feedbackMessage && p.millis() < feedbackTimer) {
+                p.fill(220, 53, 69); p.noStroke();
+                p.textSize(18); p.textAlign(p.CENTER, p.TOP);
+                p.text(feedbackMessage, gridAreaX + gridAreaSize / 2, gridAreaY + gridAreaSize + 5);
+            }
+        }
+        
+        function drawShapeOnGrid(shape, color, cellSize) {
+            const centerX = (shape.x + 0.5) * cellSize;
+            const centerY = (shape.y + 0.5) * cellSize;
+            p.push(); p.translate(centerX, centerY); p.stroke(color); p.strokeWeight(4);
+            p.noFill(); drawPart(shape.type, 0, 0, cellSize * 0.9); p.pop();
+        }
+        
+        function drawHoverPreview(cellSize, gridSize) {
+            if (!selectedPart || puzzleCompleted) return;
+            const gridX = p.floor((p.mouseX - gridAreaX) / cellSize);
+            const gridY = p.floor((p.mouseY - gridAreaY) / cellSize);
+            if (isAnswerCell(gridX, gridY, gridSize)) {
+                const centerX = (gridX + 0.5) * cellSize;
+                const centerY = (gridY + 0.5) * cellSize;
+                p.push(); p.translate(centerX, centerY); p.stroke(0, 150, 255, 100); p.strokeWeight(4);
+                p.noFill(); drawPart(selectedPart, 0, 0, cellSize * 0.9); p.pop();
+            }
+        }
+
+        function drawCongrats() {
+            p.fill(0, 0, 0, 150);
+            p.rect(gridAreaX, gridAreaY, gridAreaSize, gridAreaSize);
+            p.fill(255); p.stroke(0, 200, 0); p.strokeWeight(3);
+            p.rect(gridAreaX + 50, gridAreaY + 150, gridAreaSize - 100, 200, 10);
+            p.noStroke(); p.fill(0, 100, 0); p.textSize(24); p.textAlign(p.CENTER, p.CENTER);
+            p.text(uiElements.congratsMsg.text, gridAreaX + gridAreaSize/2, gridAreaY + gridAreaSize/2);
+        }
+
+        p.mousePressed = function() {
+            if (puzzleCompleted) {
+                 if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); }
+                 if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); }
+                 return;
+            }
+            if (isMouseIn(uiElements.btnHorizontal)) { symmetryMode = 'horizontal'; loadPuzzle(); return; }
+            if (isMouseIn(uiElements.btnVertical)) { symmetryMode = 'vertical'; loadPuzzle(); return; }
+            if (isMouseIn(uiElements.btnReset)) { loadPuzzle(); return; }
+            if (isMouseIn(uiElements.btnCheck)) { checkSolution(); return; }
+            if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); return; }
+            if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); return; }
+            
+            for(const btn of uiElements.palette) {
+                if (isMouseIn(btn)) {
+                    selectedPart = (selectedPart === btn.id) ? null : btn.id;
+                    return;
+                }
+            }
+            
+            const gridSize = puzzleData[currentPuzzleIndex].gridSize;
+            const cellSize = gridAreaSize / gridSize;
+            const gridX = p.floor((p.mouseX - gridAreaX) / cellSize);
+            const gridY = p.floor((p.mouseY - gridAreaY) / cellSize);
+
+            if (isAnswerCell(gridX, gridY, gridSize)) {
+                const existingShapeIndex = userShapes.findIndex(s => s.x === gridX && s.y === gridY);
+                if (selectedPart === 'eraser') {
+                    if (existingShapeIndex !== -1) userShapes.splice(existingShapeIndex, 1);
+                } else if (selectedPart) {
+                    if (existingShapeIndex !== -1) userShapes[existingShapeIndex].type = selectedPart;
+                    else userShapes.push({ type: selectedPart, x: gridX, y: gridY });
+                }
+                feedbackMessage = null;
+            }
+        };
+
+        // ADDED: touchStarted function to handle touch events
+        p.touchStarted = function() {
+            // By calling mousePressed, we reuse all the existing button and grid logic
+            p.mousePressed();
+            // Prevent default browser actions like scrolling or zooming
+            return false;
+        }
+        
+        // CHANGED: This function now correctly checks if a cell is valid to draw on.
+        // A cell is an "answer cell" if it's within the grid AND not already part of the question.
+        function isAnswerCell(x, y, gridSize) {
+            if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return false;
+
+            const isQuestionCell = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].question.some(
+                shape => shape.x === x && shape.y === y
+            );
+            
+            return !isQuestionCell;
+        }
+        
+        function checkSolution() {
+            const solution = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].solution;
+            if (userShapes.length !== solution.length) {
+                feedbackMessage = "Not quite, try again!";
+                feedbackTimer = p.millis() + 2000;
+                puzzleCompleted = false;
+                return;
+            }
+            const sortedUserShapes = [...userShapes].sort((a,b) => a.x - b.x || a.y - b.y);
+            const sortedSolution = [...solution].sort((a,b) => a.x - b.x || a.y - b.y);
+            for (let i = 0; i < sortedSolution.length; i++) {
+                if (sortedUserShapes[i].x !== sortedSolution[i].x ||
+                    sortedUserShapes[i].y !== sortedSolution[i].y ||
+                    sortedUserShapes[i].type !== sortedSolution[i].type) {
+                    feedbackMessage = "Not quite, try again!";
+                    feedbackTimer = p.millis() + 2000;
+                    puzzleCompleted = false;
+                    return;
+                }
+            }
+            feedbackMessage = null;
+            puzzleCompleted = true;
+        }
+        
+        function nextPuzzle() {
+            currentPuzzleIndex = (currentPuzzleIndex + 1) % puzzleData.length;
+            loadPuzzle();
+        }
+        function prevPuzzle() {
+            currentPuzzleIndex = (currentPuzzleIndex - 1 + puzzleData.length) % puzzleData.length;
+            loadPuzzle();
+        }
+
+        function drawButton(btn, isSelected = false) {
+            p.push();
+            if (isSelected) { p.fill(180, 220, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
+            else if (isMouseIn(btn)) { p.fill(220); p.stroke(150); p.strokeWeight(1); }
+            else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
+            p.rect(btn.x, btn.y, btn.w, btn.h, 5);
+            p.fill(50); p.noStroke(); p.textSize(14); p.textAlign(p.CENTER, p.CENTER);
+            p.text(btn.label, btn.x + btn.w / 2, btn.y + btn.h / 2);
+            p.pop();
+        }
+
+        function isMouseIn(btn) {
+            const btnW = btn.w || btn.size;
+            const btnH = btn.h || btn.size;
+            return p.mouseX > btn.x && p.mouseX < btn.x + btnW && p.mouseY > btn.y && p.mouseY < btn.y + btnH;
+        }
+
+        const drawPart = (partId,x,y,s) => { const h=s/2; switch(partId){case'diag_up':p.line(x-h,y+h,x+h,y-h);break;case'diag_down':p.line(x-h,y-h,x+h,y+h);break;case'arc_tl':p.arc(x-h,y-h,s*2,s*2,0,p.HALF_PI);break;case'arc_tr':p.arc(x+h,y-h,s*2,s*2,p.HALF_PI,p.PI);break;case'arc_bl':p.arc(x-h,y+h,s*2,s*2,p.PI+p.HALF_PI,p.TWO_PI);break;case'arc_br':p.arc(x+h,y+h,s*2,s*2,p.PI,p.PI+p.HALF_PI);break;case'line_v':p.line(x,y-h,x,y+h);break;case'line_h':p.line(x-h,y,x+h,y);break;case'circle':p.ellipse(x,y,s*0.8);break;} };
+        const drawEraserIcon = (x,y,s) => { p.noStroke();p.fill(150);p.rectMode(p.CENTER);p.rect(x,y,s,s*0.4,3);p.fill(220,53,69);p.rect(x,y,s*1.1,s*0.2,3);p.rectMode(p.CORNER); };
+    };
+
+    new p5(sketch);
+</script>
+</body>
+</html>
