@@ -175,7 +175,7 @@ function draw() {
         let rectH = 50;
 
         let padding = 10;
-        let maxWidth = rectW - 2 * padding;
+        let maxWidth = rectW - 2 * padding; // 460
         let lineHeight = 18;
 
         // Split sentence into words
@@ -209,24 +209,22 @@ function draw() {
 
             for (let w of line) {
                 let clean = w.replace(/[^\w]/g, "");
-                let wordWidth = textWidth(w + " ");
-
-                // if (pair.words.includes(clean)) {
-                //     fill("green");
-                // } else {
-                //     fill(0);
-                // }
-
-                // Case-insensitive check
+            
                 if (pair.words.some(word => word.toLowerCase() === clean.toLowerCase())) {
-                    fill("green");
+                    fill("#4caf50");
+                    textStyle(BOLD);  // use textStyle instead of textFont(BOLD)
                 } else {
                     fill(0);
+                    textStyle(NORMAL);
                 }
-
+            
+                // measure width *after* style is applied
+                let wordWidth = textWidth(w + " ");
+            
                 text(w, x, y);
                 x += wordWidth;
             }
+            
         }
 
         pop();

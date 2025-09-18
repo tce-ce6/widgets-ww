@@ -18,7 +18,7 @@ function initBoard() {
 function getLabelOffset(a, b) {
     // small automatic offset depending on slope so text doesn't overlap the line
     if (b === 0) return 0.5;
-    let slope = -a / b;
+    let slope = a / b;
     return slope >= 0 ? 1.5 : -1.5;
 }
 
@@ -84,6 +84,10 @@ function resetRatioPlaceholders() {
     document.getElementById("ratio_a2_val").innerText = "a₂";
     document.getElementById("ratio_b2_val").innerText = "b₂";
     document.getElementById("ratio_c2_val").innerText = "c₂";
+
+    // Update = or ≠ dynamically
+    document.getElementById("eqSign1").innerText = "=";
+    document.getElementById("eqSign2").innerText = "=";
 }
 
 function updateValues() {
