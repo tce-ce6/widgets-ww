@@ -14,7 +14,7 @@ let wordPairs = [
     { "words": ["goat", "slipper"], "sentence": "A goat wandered off with someone’s slipper near the field." },
     { "words": ["train", "flowers"], "sentence": "She bought fresh flowers from the market before catching the morning train to visit her grandmother." },
     { "words": ["guitar", "window"], "sentence": "Guitar melodies drifted through the window each evening." },
-    { "words": ["night", "dawn"], "sentence": "The longest night often bring the most glorious dawn." },
+    { "words": ["night", "dawn"], "sentence": "The long night finally gave way to the first light of dawn." },
     { "words": ["laughing", "umbrella"], "sentence": "The children were laughing as they shared one umbrella." },
     { "words": ["excited", "library"], "sentence": "The excited researcher spent hours in the quiet library." },
     { "words": ["calm", "thunder"], "sentence": "She remained calm despite the loud thunder outside." },
@@ -57,7 +57,7 @@ let showSentence = false;
 
 function svgBgColor() {
 
-    let colors = ["#F8F7BA", '#77BEF0', "#F5BABB"];
+    let colors = ["#DBFFC6", "#FFC6FD", "#FFFFC6"];
     let bgColor = random(colors); // p5.js random()
     // Encode the SVG string into a data URI
     let svgCode = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 666.06 412.3">
@@ -124,7 +124,7 @@ function drawCard(x, y, w, h, word) {
     // overlay text
     push();
     fill(0);
-    textSize(24);
+    textSize(28);
     textStyle(BOLD);
     text(word, x + w / 2 + 10, y + h / 2 + 10);
     pop();
@@ -155,79 +155,76 @@ function draw() {
     clear();
 
     let pair = wordPairs[currentIndex];
-    drawCard(70, 40, 180, 100, pair.words[0]);
-    drawCard(350, 40, 180, 100, pair.words[1]);
+    drawCard(70, 30, 200, 120, pair.words[0]);
+    drawCard(350, 30, 200, 120, pair.words[1]);
 
 
     if (showSentence) {
-        // White background rect for sentence
-        fill(255);
-        noStroke();
-        rect(70, 200, 480, 50, 10);
-
         push();
-        textSize(12);
-        textAlign(LEFT, TOP); // keep LEFT for manual positioning
-
+        textSize(15);               
+        textAlign(LEFT, TOP);
+      
         let rectX = 70;
-        let rectY = 200;
-        let rectW = 480;
-        let rectH = 50;
-
+        let rectW = 500;      // ✅ fixed width
         let padding = 10;
-        let maxWidth = rectW - 2 * padding; // 460
-        let lineHeight = 18;
-
-        // Split sentence into words
+        let maxWidth = rectW - 2 * padding;
+        let lineHeight = 25;
+      
+        // Split sentence into lines
         let words = pair.sentence.split(" ");
         let lines = [];
         let currentLine = "";
-        let testLine = "";
-
-        // Build lines that fit within maxWidth
+      
         for (let i = 0; i < words.length; i++) {
-            testLine = currentLine === "" ? words[i] : currentLine + " " + words[i];
-            if (textWidth(testLine) > maxWidth && currentLine !== "") {
-                lines.push(currentLine);
-                currentLine = words[i];
-            } else {
-                currentLine = testLine;
-            }
+          let testLine = currentLine === "" ? words[i] : currentLine + " " + words[i];
+          if (textWidth(testLine) > maxWidth && currentLine !== "") {
+            lines.push(currentLine);
+            currentLine = words[i];
+          } else {
+            currentLine = testLine;
+          }
         }
         if (currentLine !== "") lines.push(currentLine);
-
-        // Vertical centering: compute total text height
-        let totalTextHeight = lines.length * lineHeight;
-        let startY = rectY + (rectH - totalTextHeight) / 2;
-
-        // Draw line by line, centered horizontally
+      
+        // ✅ Dynamic height only
+        let totalTextHeight = lines.length * lineHeight + padding * 2;
+        let rectH = totalTextHeight;
+      
+        // Keep rect vertically centered around Y = 200
+        let rectY = 220 - rectH / 2;
+      
+        // Draw background rect (fixed width, dynamic height)
+        fill(255);
+        noStroke();
+        rect(rectX, rectY, rectW, rectH, 10);
+      
+        // Text positioning
+        let startY = rectY + (rectH - lines.length * lineHeight) / 2;
+      
         for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].split(" ");
-            let lineWidth = textWidth(lines[i]);
-            let x = rectX + (rectW - lineWidth) / 2; // center this line
-            let y = startY + i * lineHeight;
-
-            for (let w of line) {
-                let clean = w.replace(/[^\w]/g, "");
-            
-                if (pair.words.some(word => word.toLowerCase() === clean.toLowerCase())) {
-                    fill("#4caf50");
-                    textStyle(BOLD);  // use textStyle instead of textFont(BOLD)
-                } else {
-                    fill(0);
-                    textStyle(NORMAL);
-                }
-            
-                // measure width *after* style is applied
-                let wordWidth = textWidth(w + " ");
-            
-                text(w, x, y);
-                x += wordWidth;
+          let line = lines[i].split(" ");
+          let lineWidth = textWidth(lines[i]);
+          let x = rectX + (rectW - lineWidth) / 2; // center line horizontally
+          let y = startY + i * lineHeight;
+      
+          for (let w of line) {
+            let clean = w.replace(/[^\w]/g, "");
+      
+            if (pair.words.some(word => word.toLowerCase() === clean.toLowerCase())) {
+              fill("#4caf50");
+              textStyle(BOLD);
+            } else {
+              fill(0);
+              textStyle(NORMAL);
             }
-            
+      
+            let wordWidth = textWidth(w + " ");
+            text(w, x, y + 5);
+            x += wordWidth;
+          }
         }
-
+      
         pop();
-    }
-
+      }
+      
 }
