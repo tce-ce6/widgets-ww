@@ -24,1014 +24,144 @@
 <body>
 <script>
     const puzzleData  = [
-  {
-    "gridSize": 10,
-    "puzzles": {
-      "vertical": {
-        "question": [
-          {
-            "type": "arc_tr",
-            "x": 5,
-            "y": 1
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "vertical": {
+            "question": [
+              { "type": "arc_tr", "x": 5, "y": 1 }, { "type": "arc_tr", "x": 6, "y": 2 },
+              { "type": "arc_tr", "x": 7, "y": 3 }, { "type": "arc_bl", "x": 8, "y": 4 },
+              { "type": "arc_bl", "x": 9, "y": 5 }, { "type": "circle", "x": 8, "y": 5 },
+              { "type": "circle", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 3 },
+              { "type": "diag_up", "x": 9, "y": 4 }
+            ],
+            "solution": [
+              { "type": "arc_tl", "x": 4, "y": 1 }, { "type": "arc_tl", "x": 3, "y": 2 },
+              { "type": "arc_tl", "x": 2, "y": 3 }, { "type": "arc_br", "x": 1, "y": 4 },
+              { "type": "arc_br", "x": 0, "y": 5 }, { "type": "circle", "x": 1, "y": 5 },
+              { "type": "circle", "x": 2, "y": 2 }, { "type": "diag_down", "x": 3, "y": 3 },
+              { "type": "diag_down", "x": 0, "y": 4 }
+            ]
           },
-          {
-            "type": "arc_tr",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "arc_tr",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "arc_bl",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "arc_bl",
-            "x": 9,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 8,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 2
-          },
-          {
-            "type": "diag_up",
-            "x": 6,
-            "y": 3
-          },
-          {
-            "type": "diag_up",
-            "x": 9,
-            "y": 4
+          "horizontal": {
+            "question": [
+              { "type": "arc_br", "x": 8, "y": 5 }, { "type": "arc_br", "x": 7, "y": 6 },
+              { "type": "arc_br", "x": 6, "y": 7 }, { "type": "arc_tl", "x": 5, "y": 8 },
+              { "type": "arc_tl", "x": 4, "y": 9 }, { "type": "circle", "x": 4, "y": 8 },
+              { "type": "circle", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 6 },
+              { "type": "diag_down", "x": 5, "y": 9 }
+            ],
+            "solution": [
+              { "type": "arc_tr", "x": 8, "y": 4 }, { "type": "arc_tr", "x": 7, "y": 3 },
+              { "type": "arc_tr", "x": 6, "y": 2 }, { "type": "arc_bl", "x": 5, "y": 1 },
+              { "type": "arc_bl", "x": 4, "y": 0 }, { "type": "circle", "x": 4, "y": 1 },
+              { "type": "circle", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 3 },
+              { "type": "diag_up", "x": 5, "y": 0 }
+            ]
           }
-        ],
-        "solution": [
-          {
-            "type": "arc_tl",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "arc_tl",
-            "x": 3,
-            "y": 2
-          },
-          {
-            "type": "arc_tl",
-            "x": 2,
-            "y": 3
-          },
-          {
-            "type": "arc_br",
-            "x": 1,
-            "y": 4
-          },
-          {
-            "type": "arc_br",
-            "x": 0,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 1,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 2
-          },
-          {
-            "type": "diag_down",
-            "x": 3,
-            "y": 3
-          },
-          {
-            "type": "diag_down",
-            "x": 0,
-            "y": 4
-          }
-        ]
+        },
+        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
+        "id": "puzzle_1758110957877"
       },
-      "horizontal": {
-        "question": [
-          {
-            "type": "arc_br",
-            "x": 8,
-            "y": 5
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "vertical": {
+            "question": [
+              { "type": "circle", "x": 5, "y": 1 }, { "type": "circle", "x": 6, "y": 2 }, { "type": "circle", "x": 7, "y": 3 },
+              { "type": "circle", "x": 8, "y": 4 }, { "type": "circle", "x": 9, "y": 5 }, { "type": "circle", "x": 8, "y": 6 },
+              { "type": "circle", "x": 7, "y": 7 }, { "type": "circle", "x": 6, "y": 8 }, { "type": "circle", "x": 5, "y": 9 },
+              { "type": "arc_br", "x": 7, "y": 6 }, { "type": "arc_br", "x": 6, "y": 7 }, { "type": "arc_br", "x": 5, "y": 8 },
+              { "type": "arc_tr", "x": 5, "y": 2 }, { "type": "arc_tr", "x": 6, "y": 3 }, { "type": "arc_tr", "x": 7, "y": 4 },
+              { "type": "line_v", "x": 8, "y": 5 }, { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 },
+              { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 9, "y": 4 },
+              { "type": "diag_up", "x": 9, "y": 6 }, { "type": "diag_up", "x": 8, "y": 7 }, { "type": "diag_up", "x": 7, "y": 8 },
+              { "type": "diag_up", "x": 6, "y": 9 }
+            ],
+            "solution": [
+              { "type": "circle", "x": 4, "y": 1 }, { "type": "circle", "x": 3, "y": 2 }, { "type": "circle", "x": 2, "y": 3 },
+              { "type": "circle", "x": 1, "y": 4 }, { "type": "circle", "x": 0, "y": 5 }, { "type": "circle", "x": 1, "y": 6 },
+              { "type": "circle", "x": 2, "y": 7 }, { "type": "circle", "x": 3, "y": 8 }, { "type": "circle", "x": 4, "y": 9 },
+              { "type": "arc_bl", "x": 2, "y": 6 }, { "type": "arc_bl", "x": 3, "y": 7 }, { "type": "arc_bl", "x": 4, "y": 8 },
+              { "type": "arc_tl", "x": 4, "y": 2 }, { "type": "arc_tl", "x": 3, "y": 3 }, { "type": "arc_tl", "x": 2, "y": 4 },
+              { "type": "line_v", "x": 1, "y": 5 }, { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 },
+              { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_up", "x": 1, "y": 3 }, { "type": "diag_up", "x": 0, "y": 4 },
+              { "type": "diag_down", "x": 0, "y": 6 }, { "type": "diag_down", "x": 1, "y": 7 }, { "type": "diag_down", "x": 2, "y": 8 },
+              { "type": "diag_down", "x": 3, "y": 9 }
+            ]
           },
-          {
-            "type": "arc_br",
-            "x": 7,
-            "y": 6
-          },
-          {
-            "type": "arc_br",
-            "x": 6,
-            "y": 7
-          },
-          {
-            "type": "arc_tl",
-            "x": 5,
-            "y": 8
-          },
-          {
-            "type": "arc_tl",
-            "x": 4,
-            "y": 9
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 7
-          },
-          {
-            "type": "diag_down",
-            "x": 6,
-            "y": 6
-          },
-          {
-            "type": "diag_down",
-            "x": 5,
-            "y": 9
+          "horizontal": {
+            "question": [
+              { "type": "circle", "x": 8, "y": 5 }, { "type": "circle", "x": 7, "y": 6 }, { "type": "circle", "x": 6, "y": 7 },
+              { "type": "circle", "x": 5, "y": 8 }, { "type": "circle", "x": 4, "y": 9 }, { "type": "circle", "x": 3, "y": 8 },
+              { "type": "circle", "x": 2, "y": 7 }, { "type": "circle", "x": 1, "y": 6 }, { "type": "circle", "x": 0, "y": 5 },
+              { "type": "arc_bl", "x": 3, "y": 7 }, { "type": "arc_bl", "x": 2, "y": 6 }, { "type": "arc_bl", "x": 1, "y": 5 },
+              { "type": "arc_br", "x": 7, "y": 5 }, { "type": "arc_br", "x": 6, "y": 6 }, { "type": "arc_br", "x": 5, "y": 7 },
+              { "type": "line_h", "x": 4, "y": 8 }, { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 },
+              { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_up", "x": 6, "y": 8 }, { "type": "diag_up", "x": 5, "y": 9 },
+              { "type": "diag_down", "x": 3, "y": 9 }, { "type": "diag_down", "x": 2, "y": 8 }, { "type": "diag_down", "x": 1, "y": 7 },
+              { "type": "diag_down", "x": 0, "y": 6 }
+            ],
+            "solution": [
+              { "type": "circle", "x": 8, "y": 4 }, { "type": "circle", "x": 7, "y": 3 }, { "type": "circle", "x": 6, "y": 2 },
+              { "type": "circle", "x": 5, "y": 1 }, { "type": "circle", "x": 4, "y": 0 }, { "type": "circle", "x": 3, "y": 1 },
+              { "type": "circle", "x": 2, "y": 2 }, { "type": "circle", "x": 1, "y": 3 }, { "type": "circle", "x": 0, "y": 4 },
+              { "type": "arc_tl", "x": 3, "y": 2 }, { "type": "arc_tl", "x": 2, "y": 3 }, { "type": "arc_tl", "x": 1, "y": 4 },
+              { "type": "arc_tr", "x": 7, "y": 4 }, { "type": "arc_tr", "x": 6, "y": 3 }, { "type": "arc_tr", "x": 5, "y": 2 },
+              { "type": "line_h", "x": 4, "y": 1 }, { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 },
+              { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 5, "y": 0 },
+              { "type": "diag_up", "x": 3, "y": 0 }, { "type": "diag_up", "x": 2, "y": 1 }, { "type": "diag_up", "x": 1, "y": 2 },
+              { "type": "diag_up", "x": 0, "y": 3 }
+            ]
           }
-        ],
-        "solution": [
-          {
-            "type": "arc_tr",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "arc_tr",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "arc_tr",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "arc_bl",
-            "x": 5,
-            "y": 1
-          },
-          {
-            "type": "arc_bl",
-            "x": 4,
-            "y": 0
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 2
-          },
-          {
-            "type": "diag_up",
-            "x": 6,
-            "y": 3
-          },
-          {
-            "type": "diag_up",
-            "x": 5,
-            "y": 0
-          }
-        ]
-      }
-    },
-    "availableParts": [
-      "diag_up",
-      "diag_down",
-      "arc_tl",
-      "arc_tr",
-      "arc_bl",
-      "arc_br",
-      "line_v",
-      "line_h",
-      "circle"
-    ],
-    "id": "puzzle_1758110957877"
-  },
-  {
-    "gridSize": 10,
-    "puzzles": {
-      "vertical": {
-        "question": [
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 1
-          },
-          {
-            "type": "circle",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "circle",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 9,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 8,
-            "y": 6
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 7
-          },
-          {
-            "type": "circle",
-            "x": 6,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 9
-          },
-          {
-            "type": "arc_br",
-            "x": 7,
-            "y": 6
-          },
-          {
-            "type": "arc_br",
-            "x": 6,
-            "y": 7
-          },
-          {
-            "type": "arc_br",
-            "x": 5,
-            "y": 8
-          },
-          {
-            "type": "arc_tr",
-            "x": 5,
-            "y": 2
-          },
-          {
-            "type": "arc_tr",
-            "x": 6,
-            "y": 3
-          },
-          {
-            "type": "arc_tr",
-            "x": 7,
-            "y": 4
-          },
-          {
-            "type": "line_v",
-            "x": 8,
-            "y": 5
-          },
-          {
-            "type": "diag_down",
-            "x": 5,
-            "y": 0
-          },
-          {
-            "type": "diag_down",
-            "x": 6,
-            "y": 1
-          },
-          {
-            "type": "diag_down",
-            "x": 7,
-            "y": 2
-          },
-          {
-            "type": "diag_down",
-            "x": 8,
-            "y": 3
-          },
-          {
-            "type": "diag_down",
-            "x": 9,
-            "y": 4
-          },
-          {
-            "type": "diag_up",
-            "x": 9,
-            "y": 6
-          },
-          {
-            "type": "diag_up",
-            "x": 8,
-            "y": 7
-          },
-          {
-            "type": "diag_up",
-            "x": 7,
-            "y": 8
-          },
-          {
-            "type": "diag_up",
-            "x": 6,
-            "y": 9
-          }
-        ],
-        "solution": [
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "circle",
-            "x": 3,
-            "y": 2
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 3
-          },
-          {
-            "type": "circle",
-            "x": 1,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 0,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 1,
-            "y": 6
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 7
-          },
-          {
-            "type": "circle",
-            "x": 3,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 9
-          },
-          {
-            "type": "arc_bl",
-            "x": 2,
-            "y": 6
-          },
-          {
-            "type": "arc_bl",
-            "x": 3,
-            "y": 7
-          },
-          {
-            "type": "arc_bl",
-            "x": 4,
-            "y": 8
-          },
-          {
-            "type": "arc_tl",
-            "x": 4,
-            "y": 2
-          },
-          {
-            "type": "arc_tl",
-            "x": 3,
-            "y": 3
-          },
-          {
-            "type": "arc_tl",
-            "x": 2,
-            "y": 4
-          },
-          {
-            "type": "line_v",
-            "x": 1,
-            "y": 5
-          },
-          {
-            "type": "diag_up",
-            "x": 4,
-            "y": 0
-          },
-          {
-            "type": "diag_up",
-            "x": 3,
-            "y": 1
-          },
-          {
-            "type": "diag_up",
-            "x": 2,
-            "y": 2
-          },
-          {
-            "type": "diag_up",
-            "x": 1,
-            "y": 3
-          },
-          {
-            "type": "diag_up",
-            "x": 0,
-            "y": 4
-          },
-          {
-            "type": "diag_down",
-            "x": 0,
-            "y": 6
-          },
-          {
-            "type": "diag_down",
-            "x": 1,
-            "y": 7
-          },
-          {
-            "type": "diag_down",
-            "x": 2,
-            "y": 8
-          },
-          {
-            "type": "diag_down",
-            "x": 3,
-            "y": 9
-          }
-        ]
+        },
+        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
+        "id": "puzzle_1758111012197"
       },
-      "horizontal": {
-        "question": [
-          {
-            "type": "circle",
-            "x": 8,
-            "y": 5
+      {
+        "gridSize": 10,
+        "puzzles": {
+          "vertical": {
+            "question": [
+              { "type": "diag_down", "x": 5, "y": 1 }, { "type": "diag_down", "x": 6, "y": 2 },
+              { "type": "line_h", "x": 7, "y": 3 }, { "type": "line_h", "x": 8, "y": 3 },
+              { "type": "line_v", "x": 8, "y": 4 }, { "type": "line_v", "x": 8, "y": 5 },
+              { "type": "line_h", "x": 8, "y": 6 }, { "type": "line_h", "x": 7, "y": 6 },
+              { "type": "diag_up", "x": 6, "y": 7 }, { "type": "diag_up", "x": 5, "y": 8 },
+              { "type": "circle", "x": 7, "y": 4 }, { "type": "circle", "x": 7, "y": 5 }
+            ],
+            "solution": [
+              { "type": "diag_up", "x": 4, "y": 1 }, { "type": "diag_up", "x": 3, "y": 2 },
+              { "type": "line_h", "x": 2, "y": 3 }, { "type": "line_h", "x": 1, "y": 3 },
+              { "type": "line_v", "x": 1, "y": 4 }, { "type": "line_v", "x": 1, "y": 5 },
+              { "type": "line_h", "x": 1, "y": 6 }, { "type": "line_h", "x": 2, "y": 6 },
+              { "type": "diag_down", "x": 3, "y": 7 }, { "type": "diag_down", "x": 4, "y": 8 },
+              { "type": "circle", "x": 2, "y": 4 }, { "type": "circle", "x": 2, "y": 5 }
+            ]
           },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 6
-          },
-          {
-            "type": "circle",
-            "x": 6,
-            "y": 7
-          },
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 9
-          },
-          {
-            "type": "circle",
-            "x": 3,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 7
-          },
-          {
-            "type": "circle",
-            "x": 1,
-            "y": 6
-          },
-          {
-            "type": "circle",
-            "x": 0,
-            "y": 5
-          },
-          {
-            "type": "arc_bl",
-            "x": 3,
-            "y": 7
-          },
-          {
-            "type": "arc_bl",
-            "x": 2,
-            "y": 6
-          },
-          {
-            "type": "arc_bl",
-            "x": 1,
-            "y": 5
-          },
-          {
-            "type": "arc_br",
-            "x": 7,
-            "y": 5
-          },
-          {
-            "type": "arc_br",
-            "x": 6,
-            "y": 6
-          },
-          {
-            "type": "arc_br",
-            "x": 5,
-            "y": 7
-          },
-          {
-            "type": "line_h",
-            "x": 4,
-            "y": 8
-          },
-          {
-            "type": "diag_up",
-            "x": 9,
-            "y": 5
-          },
-          {
-            "type": "diag_up",
-            "x": 8,
-            "y": 6
-          },
-          {
-            "type": "diag_up",
-            "x": 7,
-            "y": 7
-          },
-          {
-            "type": "diag_up",
-            "x": 6,
-            "y": 8
-          },
-          {
-            "type": "diag_up",
-            "x": 5,
-            "y": 9
-          },
-          {
-            "type": "diag_down",
-            "x": 3,
-            "y": 9
-          },
-          {
-            "type": "diag_down",
-            "x": 2,
-            "y": 8
-          },
-          {
-            "type": "diag_down",
-            "x": 1,
-            "y": 7
-          },
-          {
-            "type": "diag_down",
-            "x": 0,
-            "y": 6
+          "horizontal": {
+            "question": [
+              { "type": "diag_up", "x": 8, "y": 5 }, { "type": "diag_up", "x": 7, "y": 6 },
+              { "type": "line_v", "x": 6, "y": 7 }, { "type": "line_v", "x": 6, "y": 8 },
+              { "type": "line_h", "x": 5, "y": 8 }, { "type": "line_h", "x": 4, "y": 8 },
+              { "type": "line_v", "x": 3, "y": 8 }, { "type": "line_v", "x": 3, "y": 7 },
+              { "type": "diag_down", "x": 2, "y": 6 }, { "type": "diag_down", "x": 1, "y": 5 },
+              { "type": "circle", "x": 5, "y": 7 }, { "type": "circle", "x": 4, "y": 7 }
+            ],
+            "solution": [
+              { "type": "diag_down", "x": 8, "y": 4 }, { "type": "diag_down", "x": 7, "y": 3 },
+              { "type": "line_v", "x": 6, "y": 2 }, { "type": "line_v", "x": 6, "y": 1 },
+              { "type": "line_h", "x": 5, "y": 1 }, { "type": "line_h", "x": 4, "y": 1 },
+              { "type": "line_v", "x": 3, "y": 1 }, { "type": "line_v", "x": 3, "y": 2 },
+              { "type": "diag_up", "x": 2, "y": 3 }, { "type": "diag_up", "x": 1, "y": 4 },
+              { "type": "circle", "x": 5, "y": 2 }, { "type": "circle", "x": 4, "y": 2 }
+            ]
           }
-        ],
-        "solution": [
-          {
-            "type": "circle",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "circle",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 1
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 0
-          },
-          {
-            "type": "circle",
-            "x": 3,
-            "y": 1
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 2
-          },
-          {
-            "type": "circle",
-            "x": 1,
-            "y": 3
-          },
-          {
-            "type": "circle",
-            "x": 0,
-            "y": 4
-          },
-          {
-            "type": "arc_tl",
-            "x": 3,
-            "y": 2
-          },
-          {
-            "type": "arc_tl",
-            "x": 2,
-            "y": 3
-          },
-          {
-            "type": "arc_tl",
-            "x": 1,
-            "y": 4
-          },
-          {
-            "type": "arc_tr",
-            "x": 7,
-            "y": 4
-          },
-          {
-            "type": "arc_tr",
-            "x": 6,
-            "y": 3
-          },
-          {
-            "type": "arc_tr",
-            "x": 5,
-            "y": 2
-          },
-          {
-            "type": "line_h",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "diag_down",
-            "x": 9,
-            "y": 4
-          },
-          {
-            "type": "diag_down",
-            "x": 8,
-            "y": 3
-          },
-          {
-            "type": "diag_down",
-            "x": 7,
-            "y": 2
-          },
-          {
-            "type": "diag_down",
-            "x": 6,
-            "y": 1
-          },
-          {
-            "type": "diag_down",
-            "x": 5,
-            "y": 0
-          },
-          {
-            "type": "diag_up",
-            "x": 3,
-            "y": 0
-          },
-          {
-            "type": "diag_up",
-            "x": 2,
-            "y": 1
-          },
-          {
-            "type": "diag_up",
-            "x": 1,
-            "y": 2
-          },
-          {
-            "type": "diag_up",
-            "x": 0,
-            "y": 3
-          }
-        ]
+        },
+        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
+        "id": "puzzle_1758111044237"
       }
-    },
-    "availableParts": [
-      "diag_up",
-      "diag_down",
-      "arc_tl",
-      "arc_tr",
-      "arc_bl",
-      "arc_br",
-      "line_v",
-      "line_h",
-      "circle"
-    ],
-    "id": "puzzle_1758111012197"
-  },
-  {
-    "gridSize": 10,
-    "puzzles": {
-      "vertical": {
-        "question": [
-          {
-            "type": "diag_down",
-            "x": 5,
-            "y": 1
-          },
-          {
-            "type": "diag_down",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "line_h",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "line_h",
-            "x": 8,
-            "y": 3
-          },
-          {
-            "type": "line_v",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "line_v",
-            "x": 8,
-            "y": 5
-          },
-          {
-            "type": "line_h",
-            "x": 8,
-            "y": 6
-          },
-          {
-            "type": "line_h",
-            "x": 7,
-            "y": 6
-          },
-          {
-            "type": "diag_up",
-            "x": 6,
-            "y": 7
-          },
-          {
-            "type": "diag_up",
-            "x": 5,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 7,
-            "y": 5
-          }
-        ],
-        "solution": [
-          {
-            "type": "diag_up",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "diag_up",
-            "x": 3,
-            "y": 2
-          },
-          {
-            "type": "line_h",
-            "x": 2,
-            "y": 3
-          },
-          {
-            "type": "line_h",
-            "x": 1,
-            "y": 3
-          },
-          {
-            "type": "line_v",
-            "x": 1,
-            "y": 4
-          },
-          {
-            "type": "line_v",
-            "x": 1,
-            "y": 5
-          },
-          {
-            "type": "line_h",
-            "x": 1,
-            "y": 6
-          },
-          {
-            "type": "line_h",
-            "x": 2,
-            "y": 6
-          },
-          {
-            "type": "diag_down",
-            "x": 3,
-            "y": 7
-          },
-          {
-            "type": "diag_down",
-            "x": 4,
-            "y": 8
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 2,
-            "y": 5
-          }
-        ]
-      },
-      "horizontal": {
-        "question": [
-          {
-            "type": "diag_up",
-            "x": 8,
-            "y": 5
-          },
-          {
-            "type": "diag_up",
-            "x": 7,
-            "y": 6
-          },
-          {
-            "type": "line_v",
-            "x": 6,
-            "y": 7
-          },
-          {
-            "type": "line_v",
-            "x": 6,
-            "y": 8
-          },
-          {
-            "type": "line_h",
-            "x": 5,
-            "y": 8
-          },
-          {
-            "type": "line_h",
-            "x": 4,
-            "y": 8
-          },
-          {
-            "type": "line_v",
-            "x": 3,
-            "y": 8
-          },
-          {
-            "type": "line_v",
-            "x": 3,
-            "y": 7
-          },
-          {
-            "type": "diag_down",
-            "x": 2,
-            "y": 6
-          },
-          {
-            "type": "diag_down",
-            "x": 1,
-            "y": 5
-          },
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 7
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 7
-          }
-        ],
-        "solution": [
-          {
-            "type": "diag_down",
-            "x": 8,
-            "y": 4
-          },
-          {
-            "type": "diag_down",
-            "x": 7,
-            "y": 3
-          },
-          {
-            "type": "line_v",
-            "x": 6,
-            "y": 2
-          },
-          {
-            "type": "line_v",
-            "x": 6,
-            "y": 1
-          },
-          {
-            "type": "line_h",
-            "x": 5,
-            "y": 1
-          },
-          {
-            "type": "line_h",
-            "x": 4,
-            "y": 1
-          },
-          {
-            "type": "line_v",
-            "x": 3,
-            "y": 1
-          },
-          {
-            "type": "line_v",
-            "x": 3,
-            "y": 2
-          },
-          {
-            "type": "diag_up",
-            "x": 2,
-            "y": 3
-          },
-          {
-            "type": "diag_up",
-            "x": 1,
-            "y": 4
-          },
-          {
-            "type": "circle",
-            "x": 5,
-            "y": 2
-          },
-          {
-            "type": "circle",
-            "x": 4,
-            "y": 2
-          }
-        ]
-      }
-    },
-    "availableParts": [
-      "diag_up",
-      "diag_down",
-      "arc_tl",
-      "arc_tr",
-      "arc_bl",
-      "arc_br",
-      "line_v",
-      "line_h",
-      "circle"
-    ],
-    "id": "puzzle_1758111044237"
-  }
-]
+    ]
 
     let sketch = function(p) {
         // --- Canvas & Layout Configuration ---
@@ -1083,10 +213,6 @@
             paletteParts.forEach(partId => {
                 uiElements.palette.push({ id: partId, x: palX, y: palY, size: palSize });
                 palX += palSize + palGap;
-                // if (palX + palSize > canvasWidth) {
-                //     palX = gridAreaX;
-                //     palY += palSize + palGap;
-                // }
             });
         }
 
@@ -1145,7 +271,6 @@
             drawHoverPreview(cellSize, gridSize);
             p.pop();
             
-            // Draw eraser button
             const eraserBtn = uiElements.btnEraser;
             p.push();
             if (eraserBtn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
@@ -1155,7 +280,6 @@
             drawEraserIcon(0, 0, eraserBtn.size * 0.8);
             p.pop();
             
-            // Draw shape palette
             uiElements.palette.forEach(btn => {
                 p.push();
                 if (btn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
@@ -1186,7 +310,11 @@
             if (!selectedPart || puzzleCompleted) return;
             const gridX = p.floor((p.mouseX - gridAreaX) / cellSize);
             const gridY = p.floor((p.mouseY - gridAreaY) / cellSize);
-            if (isAnswerCell(gridX, gridY, gridSize)) {
+
+            // --- MODIFICATION START ---
+            // Only draw the preview if it's a valid, empty cell in the correct answer area.
+            if (isCoordInAnswerArea(gridX, gridY, gridSize) && isAnswerCell(gridX, gridY, gridSize)) {
+            // --- MODIFICATION END ---
                 const centerX = (gridX + 0.5) * cellSize;
                 const centerY = (gridY + 0.5) * cellSize;
                 p.push(); p.translate(centerX, centerY); p.stroke(0, 150, 255, 100); p.strokeWeight(4);
@@ -1233,7 +361,10 @@
             const gridX = p.floor((p.mouseX - gridAreaX) / cellSize);
             const gridY = p.floor((p.mouseY - gridAreaY) / cellSize);
 
-            if (isAnswerCell(gridX, gridY, gridSize)) {
+            // --- MODIFICATION START ---
+            // Only proceed if the click is in the valid area and on an empty cell.
+            if (isCoordInAnswerArea(gridX, gridY, gridSize) && isAnswerCell(gridX, gridY, gridSize)) {
+            // --- MODIFICATION END ---
                 const existingShapeIndex = userShapes.findIndex(s => s.x === gridX && s.y === gridY);
                 if (selectedPart === 'eraser') {
                     if (existingShapeIndex !== -1) userShapes.splice(existingShapeIndex, 1);
@@ -1249,6 +380,26 @@
             p.mousePressed();
             return false;
         }
+
+        // --- MODIFICATION START ---
+        // New helper function to dynamically determine the valid "answer" area.
+        function isCoordInAnswerArea(x, y, gridSize) {
+            const currentPuzzle = puzzleData[currentPuzzleIndex].puzzles[symmetryMode];
+            if (currentPuzzle.question.length === 0) return true; // If no question, allow drawing anywhere
+
+            const firstQuestionShape = currentPuzzle.question[0];
+
+            if (symmetryMode === 'vertical') {
+                const isQuestionOnRight = firstQuestionShape.x >= gridSize / 2;
+                // If question is on the right, answer area is on the left, and vice versa.
+                return isQuestionOnRight ? (x < gridSize / 2) : (x >= gridSize / 2);
+            } else { // 'horizontal'
+                const isQuestionOnBottom = firstQuestionShape.y >= gridSize / 2;
+                // If question is on the bottom, answer area is on the top, and vice versa.
+                return isQuestionOnBottom ? (y < gridSize / 2) : (y >= gridSize / 2);
+            }
+        }
+        // --- MODIFICATION END ---
         
         function isAnswerCell(x, y, gridSize) {
             if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return false;
@@ -1343,20 +494,16 @@
             p.noFill();
             p.translate(x, y);
 
-            // Draw the line at the bottom first
             p.line(-s * 0.6, s * 0.5, s * 0.4, s * 0.5);
 
-            // Translate and rotate for the eraser body
             p.translate(0, -s * 0.1);
             p.rotate(p.radians(-35));
 
             const w = s;
             const h = s * 0.6;
 
-            // Draw the main rectangle body
             p.rect(-w / 2, -h / 2, w, h, 4);
 
-            // Draw the line for the metal part
             p.line(w / 2 * 0.4, -h / 2, w / 2 * 0.4, h / 2);
             p.pop();
         };
