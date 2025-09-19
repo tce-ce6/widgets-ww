@@ -24,144 +24,454 @@
 <body>
 <script>
     const puzzleData  = [
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "vertical": {
-            "question": [
-              { "type": "arc_tr", "x": 5, "y": 1 }, { "type": "arc_tr", "x": 6, "y": 2 },
-              { "type": "arc_tr", "x": 7, "y": 3 }, { "type": "arc_bl", "x": 8, "y": 4 },
-              { "type": "arc_bl", "x": 9, "y": 5 }, { "type": "circle", "x": 8, "y": 5 },
-              { "type": "circle", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 3 },
-              { "type": "diag_up", "x": 9, "y": 4 }
-            ],
-            "solution": [
-              { "type": "arc_tl", "x": 4, "y": 1 }, { "type": "arc_tl", "x": 3, "y": 2 },
-              { "type": "arc_tl", "x": 2, "y": 3 }, { "type": "arc_br", "x": 1, "y": 4 },
-              { "type": "arc_br", "x": 0, "y": 5 }, { "type": "circle", "x": 1, "y": 5 },
-              { "type": "circle", "x": 2, "y": 2 }, { "type": "diag_down", "x": 3, "y": 3 },
-              { "type": "diag_down", "x": 0, "y": 4 }
-            ]
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 0
           },
-          "horizontal": {
-            "question": [
-              { "type": "arc_br", "x": 8, "y": 5 }, { "type": "arc_br", "x": 7, "y": 6 },
-              { "type": "arc_br", "x": 6, "y": 7 }, { "type": "arc_tl", "x": 5, "y": 8 },
-              { "type": "arc_tl", "x": 4, "y": 9 }, { "type": "circle", "x": 4, "y": 8 },
-              { "type": "circle", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 6 },
-              { "type": "diag_down", "x": 5, "y": 9 }
-            ],
-            "solution": [
-              { "type": "arc_tr", "x": 8, "y": 4 }, { "type": "arc_tr", "x": 7, "y": 3 },
-              { "type": "arc_tr", "x": 6, "y": 2 }, { "type": "arc_bl", "x": 5, "y": 1 },
-              { "type": "arc_bl", "x": 4, "y": 0 }, { "type": "circle", "x": 4, "y": 1 },
-              { "type": "circle", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 3 },
-              { "type": "diag_up", "x": 5, "y": 0 }
-            ]
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 4
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 3
           }
-        },
-        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
-        "id": "puzzle_1758110957877"
+        ],
+        "solution": [
+          {
+            "type": "diag_up",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "type": "diag_up",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 3,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 4,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 3
+          }
+        ]
       },
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "vertical": {
-            "question": [
-              { "type": "circle", "x": 5, "y": 1 }, { "type": "circle", "x": 6, "y": 2 }, { "type": "circle", "x": 7, "y": 3 },
-              { "type": "circle", "x": 8, "y": 4 }, { "type": "circle", "x": 9, "y": 5 }, { "type": "circle", "x": 8, "y": 6 },
-              { "type": "circle", "x": 7, "y": 7 }, { "type": "circle", "x": 6, "y": 8 }, { "type": "circle", "x": 5, "y": 9 },
-              { "type": "arc_br", "x": 7, "y": 6 }, { "type": "arc_br", "x": 6, "y": 7 }, { "type": "arc_br", "x": 5, "y": 8 },
-              { "type": "arc_tr", "x": 5, "y": 2 }, { "type": "arc_tr", "x": 6, "y": 3 }, { "type": "arc_tr", "x": 7, "y": 4 },
-              { "type": "line_v", "x": 8, "y": 5 }, { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 },
-              { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 9, "y": 4 },
-              { "type": "diag_up", "x": 9, "y": 6 }, { "type": "diag_up", "x": 8, "y": 7 }, { "type": "diag_up", "x": 7, "y": 8 },
-              { "type": "diag_up", "x": 6, "y": 9 }
-            ],
-            "solution": [
-              { "type": "circle", "x": 4, "y": 1 }, { "type": "circle", "x": 3, "y": 2 }, { "type": "circle", "x": 2, "y": 3 },
-              { "type": "circle", "x": 1, "y": 4 }, { "type": "circle", "x": 0, "y": 5 }, { "type": "circle", "x": 1, "y": 6 },
-              { "type": "circle", "x": 2, "y": 7 }, { "type": "circle", "x": 3, "y": 8 }, { "type": "circle", "x": 4, "y": 9 },
-              { "type": "arc_bl", "x": 2, "y": 6 }, { "type": "arc_bl", "x": 3, "y": 7 }, { "type": "arc_bl", "x": 4, "y": 8 },
-              { "type": "arc_tl", "x": 4, "y": 2 }, { "type": "arc_tl", "x": 3, "y": 3 }, { "type": "arc_tl", "x": 2, "y": 4 },
-              { "type": "line_v", "x": 1, "y": 5 }, { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 },
-              { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_up", "x": 1, "y": 3 }, { "type": "diag_up", "x": 0, "y": 4 },
-              { "type": "diag_down", "x": 0, "y": 6 }, { "type": "diag_down", "x": 1, "y": 7 }, { "type": "diag_down", "x": 2, "y": 8 },
-              { "type": "diag_down", "x": 3, "y": 9 }
-            ]
+      "horizontal": {
+        "question": [
+          {
+            "type": "diag_up",
+            "x": 9,
+            "y": 5
           },
-          "horizontal": {
-            "question": [
-              { "type": "circle", "x": 8, "y": 5 }, { "type": "circle", "x": 7, "y": 6 }, { "type": "circle", "x": 6, "y": 7 },
-              { "type": "circle", "x": 5, "y": 8 }, { "type": "circle", "x": 4, "y": 9 }, { "type": "circle", "x": 3, "y": 8 },
-              { "type": "circle", "x": 2, "y": 7 }, { "type": "circle", "x": 1, "y": 6 }, { "type": "circle", "x": 0, "y": 5 },
-              { "type": "arc_bl", "x": 3, "y": 7 }, { "type": "arc_bl", "x": 2, "y": 6 }, { "type": "arc_bl", "x": 1, "y": 5 },
-              { "type": "arc_br", "x": 7, "y": 5 }, { "type": "arc_br", "x": 6, "y": 6 }, { "type": "arc_br", "x": 5, "y": 7 },
-              { "type": "line_h", "x": 4, "y": 8 }, { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 },
-              { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_up", "x": 6, "y": 8 }, { "type": "diag_up", "x": 5, "y": 9 },
-              { "type": "diag_down", "x": 3, "y": 9 }, { "type": "diag_down", "x": 2, "y": 8 }, { "type": "diag_down", "x": 1, "y": 7 },
-              { "type": "diag_down", "x": 0, "y": 6 }
-            ],
-            "solution": [
-              { "type": "circle", "x": 8, "y": 4 }, { "type": "circle", "x": 7, "y": 3 }, { "type": "circle", "x": 6, "y": 2 },
-              { "type": "circle", "x": 5, "y": 1 }, { "type": "circle", "x": 4, "y": 0 }, { "type": "circle", "x": 3, "y": 1 },
-              { "type": "circle", "x": 2, "y": 2 }, { "type": "circle", "x": 1, "y": 3 }, { "type": "circle", "x": 0, "y": 4 },
-              { "type": "arc_tl", "x": 3, "y": 2 }, { "type": "arc_tl", "x": 2, "y": 3 }, { "type": "arc_tl", "x": 1, "y": 4 },
-              { "type": "arc_tr", "x": 7, "y": 4 }, { "type": "arc_tr", "x": 6, "y": 3 }, { "type": "arc_tr", "x": 5, "y": 2 },
-              { "type": "line_h", "x": 4, "y": 1 }, { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 },
-              { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 5, "y": 0 },
-              { "type": "diag_up", "x": 3, "y": 0 }, { "type": "diag_up", "x": 2, "y": 1 }, { "type": "diag_up", "x": 1, "y": 2 },
-              { "type": "diag_up", "x": 0, "y": 3 }
-            ]
-          }
-        },
-        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
-        "id": "puzzle_1758111012197"
-      },
-      {
-        "gridSize": 10,
-        "puzzles": {
-          "vertical": {
-            "question": [
-              { "type": "diag_down", "x": 5, "y": 1 }, { "type": "diag_down", "x": 6, "y": 2 },
-              { "type": "line_h", "x": 7, "y": 3 }, { "type": "line_h", "x": 8, "y": 3 },
-              { "type": "line_v", "x": 8, "y": 4 }, { "type": "line_v", "x": 8, "y": 5 },
-              { "type": "line_h", "x": 8, "y": 6 }, { "type": "line_h", "x": 7, "y": 6 },
-              { "type": "diag_up", "x": 6, "y": 7 }, { "type": "diag_up", "x": 5, "y": 8 },
-              { "type": "circle", "x": 7, "y": 4 }, { "type": "circle", "x": 7, "y": 5 }
-            ],
-            "solution": [
-              { "type": "diag_up", "x": 4, "y": 1 }, { "type": "diag_up", "x": 3, "y": 2 },
-              { "type": "line_h", "x": 2, "y": 3 }, { "type": "line_h", "x": 1, "y": 3 },
-              { "type": "line_v", "x": 1, "y": 4 }, { "type": "line_v", "x": 1, "y": 5 },
-              { "type": "line_h", "x": 1, "y": 6 }, { "type": "line_h", "x": 2, "y": 6 },
-              { "type": "diag_down", "x": 3, "y": 7 }, { "type": "diag_down", "x": 4, "y": 8 },
-              { "type": "circle", "x": 2, "y": 4 }, { "type": "circle", "x": 2, "y": 5 }
-            ]
+          {
+            "type": "diag_up",
+            "x": 8,
+            "y": 6
           },
-          "horizontal": {
-            "question": [
-              { "type": "diag_up", "x": 8, "y": 5 }, { "type": "diag_up", "x": 7, "y": 6 },
-              { "type": "line_v", "x": 6, "y": 7 }, { "type": "line_v", "x": 6, "y": 8 },
-              { "type": "line_h", "x": 5, "y": 8 }, { "type": "line_h", "x": 4, "y": 8 },
-              { "type": "line_v", "x": 3, "y": 8 }, { "type": "line_v", "x": 3, "y": 7 },
-              { "type": "diag_down", "x": 2, "y": 6 }, { "type": "diag_down", "x": 1, "y": 5 },
-              { "type": "circle", "x": 5, "y": 7 }, { "type": "circle", "x": 4, "y": 7 }
-            ],
-            "solution": [
-              { "type": "diag_down", "x": 8, "y": 4 }, { "type": "diag_down", "x": 7, "y": 3 },
-              { "type": "line_v", "x": 6, "y": 2 }, { "type": "line_v", "x": 6, "y": 1 },
-              { "type": "line_h", "x": 5, "y": 1 }, { "type": "line_h", "x": 4, "y": 1 },
-              { "type": "line_v", "x": 3, "y": 1 }, { "type": "line_v", "x": 3, "y": 2 },
-              { "type": "diag_up", "x": 2, "y": 3 }, { "type": "diag_up", "x": 1, "y": 4 },
-              { "type": "circle", "x": 5, "y": 2 }, { "type": "circle", "x": 4, "y": 2 }
-            ]
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 6
+          },
+          {
+            "type": "diag_down",
+            "x": 4,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 5
           }
-        },
-        "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
-        "id": "puzzle_1758111044237"
+        ],
+        "solution": [
+          {
+            "type": "diag_down",
+            "x": 9,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 4
+          }
+        ]
       }
-    ]
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758275566460"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "arc_bl",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "arc_bl",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "arc_bl",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "arc_tl",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "arc_tl",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "arc_tl",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 5
+          }
+        ],
+        "solution": [
+          {
+            "type": "arc_br",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "type": "arc_br",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "arc_br",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 2,
+            "y": 5
+          },
+          {
+            "type": "arc_tr",
+            "x": 3,
+            "y": 6
+          },
+          {
+            "type": "arc_tr",
+            "x": 4,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 5
+          }
+        ]
+      },
+      "horizontal": {
+        "question": [
+          {
+            "type": "arc_tl",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "arc_tl",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "arc_tl",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "arc_tr",
+            "x": 4,
+            "y": 7
+          },
+          {
+            "type": "arc_tr",
+            "x": 3,
+            "y": 6
+          },
+          {
+            "type": "arc_tr",
+            "x": 2,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 5
+          }
+        ],
+        "solution": [
+          {
+            "type": "arc_bl",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "arc_bl",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "arc_bl",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "arc_br",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "type": "arc_br",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "arc_br",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 4
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 4
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758275579924"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 4
+          }
+        ],
+        "solution": [
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 4
+          }
+        ]
+      },
+      "horizontal": {
+        "question": [
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 5
+          }
+        ],
+        "solution": [
+          {
+            "type": "line_v",
+            "x": 6,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 4
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758275596628"
+  }
+]
 
     let sketch = function(p) {
         // --- Canvas & Layout Configuration ---
@@ -204,7 +514,7 @@
                 navLabel: { x: controlsX + 20, y: 560, text: ""},
                 btnPrev: { x: controlsX + 130, y: 545, w: 50, h: 30, label: "< Prev"},
                 btnNext: { x: controlsX + 190, y: 545, w: 50, h: 30, label: "Next >"},
-                congratsMsg: { text: "Congratulations!\nYou completed the symmetrical picture"},
+                congratsMsg: { text: "Congratulations!\nYou completed the \nsymmetrical picture"},
             };
 
             const paletteParts = puzzleData[currentPuzzleIndex].availableParts;
@@ -230,7 +540,7 @@
             drawGridAndPalette();
             drawFeedback();
             if (puzzleCompleted) {
-                drawCongrats();
+              drawCongrats();
             }
         };
         
@@ -294,8 +604,8 @@
         function drawFeedback() {
             if (feedbackMessage && p.millis() < feedbackTimer) {
                 p.fill(220, 53, 69); p.noStroke();
-                p.textSize(18); p.textAlign(p.CENTER, p.TOP);
-                p.text(feedbackMessage, gridAreaX + gridAreaSize / 2, gridAreaY + gridAreaSize + 5);
+                p.noStroke();  p.textSize(18); p.textAlign(p.CENTER, p.CENTER);
+                p.text(feedbackMessage, gridAreaX - 150, gridAreaY + 280);
             }
         }
         
@@ -324,13 +634,19 @@
 
         function drawCongrats() {
             p.fill(0, 0, 0, 150);
-            p.rect(gridAreaX, gridAreaY, gridAreaSize, gridAreaSize);
-            p.fill(255); p.stroke(0, 200, 0); p.strokeWeight(3);
-            p.rect(gridAreaX + 50, gridAreaY + 150, gridAreaSize - 100, 200, 10);
-            p.noStroke(); p.fill(0, 100, 0); p.textSize(24); p.textAlign(p.CENTER, p.CENTER);
-            p.text(uiElements.congratsMsg.text, gridAreaX + gridAreaSize/2, gridAreaY + gridAreaSize/2);
+            p.noStroke(); p.fill(255); p.stroke(0, 200, 0); p.strokeWeight(3);
+            p.rect(gridAreaX - 260, gridAreaY + 230, gridAreaSize - 250, 100, 10);
+            p.noStroke(); p.fill(0, 100, 0); p.textSize(18); p.textAlign(p.CENTER, p.CENTER);
+            p.text(uiElements.congratsMsg.text, gridAreaX - 150, gridAreaY + 280);
         }
-
+        
+        function drawError() {
+            // p.fill(0, 0, 0, 150);
+            // p.noStroke(); p.fill(255); p.stroke(0, 200, 0); p.strokeWeight(3);
+            // p.rect(gridAreaX - 260, gridAreaY + 230, gridAreaSize - 250, 100, 10);
+            p.noStroke(); p.fill(0, 100, 0); p.textSize(18); p.textAlign(p.CENTER, p.CENTER);
+            p.text("Not quite, try again!", gridAreaX - 150, gridAreaY + 280);
+        }
         p.mousePressed = function() {
             if (puzzleCompleted) {
                  if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); }

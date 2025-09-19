@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Chain Population Changes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a535c; /* Fallback color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #simulation-container {
+            width: 1000px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        #canvas-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .controls {
+            display: flex;
+            gap: 20px;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 4px solid transparent;
+        }
+        .play-btn {
+            background-color: #2ecc71;
+            border-bottom-color: #27ae60;
+        }
+        .play-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        .reset-btn {
+            background-color: #e74c3c;
+            border-bottom-color: #c0392b;
+        }
+        .reset-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="simulation-container">
+        <div id="canvas-container"></div>
+        <!-- Controls are now drawn inside the canvas -->
+    </div>
+
+    <script>
+        // --- State Management ---
+        let organisms = {};
+        let gameState = {};
+
+        const initialOrganisms = () => ({
+            maize: { population: 6, slider: 0 },
+            grasshoppers: { population: 4, slider: 0 },
+            lizards: { population: 4, slider: 0 }
+        });
+
+        const initialGameState = () => ({
+            phase: 'default', // 'default', 'waiting', 'playing'
+            activeSlider: null,
+            blinkingText: {},
+            instructionText: "Drag any slider to see how it affects other populations."
+        });
+        
+        // --- p5.js Sketch ---
+        function setup() {
+            let canvas = createCanvas(1000, 650);
+            canvas.parent('canvas-container');
+            noStroke();
+            textFont('Poppins');
+
+            handleReset(); // Initialize state
+        }
+
+        function draw() {
+            drawBackground();
+            drawTitle();
+            drawQuestion();
+            
+            drawOrganismSections();
+            drawArrows();
+            drawSliders();
+            
+            drawInstructionText();
+            drawButtons();
+        }
+
+        // --- Drawing Functions ---
+        function drawBackground() {
+            // Create a gradient similar to the image
+            let topColor = color(4, 118, 137);
+            let bottomColor = color(20, 71, 80);
+            for (let i = 0; i < height; i++) {
+                let inter = map(i, 0, height, 0, 1);
+                let c = lerpColor(topColor, bottomColor, inter);
+                stroke(c);
+                line(0, i, width, i);
+            }
+            noStroke();
+
+            // Draw field lines
+            stroke(255, 255, 255, 10);
+            for(let i = height / 2; i < height; i += 15) {
+                let y = i + (i - height/2) * 0.5;
+                line(0, y, width, y);
+            }
+            noStroke();
+        }
+
+        function drawTitle() {
+            fill(29, 131, 236);
+            rect(width/2 - 200, 20, 400, 50, 25);
+            fill(255);
+            textAlign(CENTER, CENTER);
+            textSize(22);
+            textStyle(BOLD);
+            text("Food Chain Population Changes", width/2, 45);
+        }
+
+        function drawQuestion() {
+            if (gameState.phase === 'waiting') {
+                fill(255);
+                textSize(20);
+                textStyle(NORMAL);
+                text("What will happen to the populations of the other organisms?", width/2, 95);
+            }
+        }
+
+        function drawOrganismSections() {
+            drawOrganismSection('maize', 100, 140, 'Maize');
+            drawOrganismSection('grasshoppers', 400, 140, 'Grasshopper');
+            drawOrganismSection('lizards', 700, 140, 'Lizard');
+        }
+
+        function drawOrganismSection(type, x, y, label) {
+            const w = 200;
+            const h = 200;
+            
+            // Main box
+            fill(207, 234, 241, 230);
+            rect(x, y, w, h, 15);
+            
+            // Label box
+            fill(137, 207, 240);
+            rect(x, y + h - 50, w, 50, 0, 0, 15, 15);
+            
+            // Label text
+            fill(10, 50, 80);
+            textSize(18);
+            textStyle(BOLD);
+            text(label, x + w/2, y + h - 25);
+
+            drawOrganismPopulation(type, x, y, w, h - 50);
+
+            // Blinking status text
+            drawBlinkingStatus(type, x + w/2, y + h + 30);
+        }
+        
+        function drawOrganismPopulation(type, x, y, w, h) {
+            const organism = organisms[type];
+            const populationCount = organism.population;
+            let cols, rows;
+
+            if (populationCount <= 2) { cols = 2; rows = 1; } 
+            else if (populationCount <= 4) { cols = 2; rows = 2; }
+            else if (populationCount <= 6) { cols = 3; rows = 2; }
+            else { cols = 3; rows = 3; }
+
+            const cellW = w / cols;
+            const cellH = h / rows;
+
+            for (let i = 0; i < populationCount; i++) {
+                let col = i % cols;
+                let row = floor(i / cols);
+                let animalX = x + col * cellW + cellW / 2;
+                let animalY = y + row * cellH + cellH / 2;
+
+                push();
+                translate(animalX, animalY);
+                if (type === 'maize') drawMaize(0, 0);
+                else if (type === 'grasshoppers') drawGrasshopper(0, 0);
+                else if (type === 'lizards') drawLizard(0, 0);
+                pop();
+            }
+        }
+
+        function drawBlinkingStatus(type, x, y) {
+            if (gameState.blinkingText[type] && (frameCount % 60 < 45 || gameState.phase !== 'playing')) {
+                textSize(20);
+                textStyle(BOLD);
+                if (gameState.blinkingText[type] === 'increase') {
+                    fill(46, 204, 113);
+                    text("Increase", x, y);
+                } else if (gameState.blinkingText[type] === 'decrease') {
+                    fill(243, 156, 18);
+                    text("Decrease", x, y);
+                }
+            }
+        }
+
+        function drawArrows() {
+            fill(255, 255, 255, 200);
+            const y = 240;
+            // Maize -> Grasshopper
+            drawArrow(310, y, 60, 40);
+            // Grasshopper -> Lizard
+            drawArrow(610, y, 60, 40);
+        }
+        
+        function drawArrow(x, y, w, h) {
+            beginShape();
+            vertex(x, y - h/2);
+            vertex(x + w * 0.6, y - h/2);
+            vertex(x + w, y);
+            vertex(x + w * 0.6, y + h/2);
+            vertex(x, y + h/2);
+            vertex(x, y - h/2);
+            endShape(CLOSE);
+        }
+
+        function drawSliders() {
+            drawSlider('maize', 200, 430);
+            drawSlider('grasshoppers', 500, 430);
+            drawSlider('lizards', 800, 430);
+        }
+
+        function drawSlider(type, x, y) {
+            const organism = organisms[type];
+            const sliderValue = organism.slider; // 0, 1, or 2
+
+            // Track
+            stroke(100, 130, 140);
+            strokeWeight(10);
+            line(x - 60, y, x + 60, y);
+            
+            // Markers
+            noStroke();
+            fill(180, 200, 210);
+            circle(x - 60, y, 10);
+            circle(x, y, 10);
+            circle(x + 60, y, 10);
+            
+            // Handle
+            const handleX = x - 60 + sliderValue * 60;
+            stroke(255);
+            strokeWeight(4);
+            fill(46, 204, 113);
+            circle(handleX, y, 30);
+            noStroke();
+        }
+        
+        function drawInstructionText() {
+            fill(255, 255, 0);
+            textAlign(CENTER, CENTER);
+            textSize(16);
+            textStyle(ITALIC);
+            text(gameState.instructionText, width/2, 510);
+        }
+
+        function drawButtons() {
+            const y = 570;
+            // Play Button
+            if(gameState.phase === 'waiting' && frameCount % 60 < 30) {
+                 fill(39, 174, 96);
+            } else {
+                 fill(46, 204, 113);
+            }
+            rect(width/2 - 120, y, 100, 50, 25);
+
+            // Reset Button
+            fill(231, 76, 60);
+            rect(width/2 + 20, y, 100, 50, 25);
+            
+            // Text
+            fill(255);
+            textSize(18);
+            textStyle(BOLD);
+            text("Play", width/2 - 70, y + 25);
+            text("Reset", width/2 + 70, y + 25);
+        }
+
+        // --- Organism Drawing Functions ---
+        function drawMaize(x, y) {
+            scale(1.2);
+            // Husks
+            fill(52, 152, 219, 0); // Transparent fill
+            stroke(46, 204, 113);
+            strokeWeight(3);
+            // Left husk
+            beginShape();
+            vertex(x - 5, y + 15);
+            bezierVertex(x - 25, y, x - 15, y - 20, x, y - 15);
+            endShape();
+            // Right husk
+            beginShape();
+            vertex(x + 5, y + 15);
+            bezierVertex(x + 25, y, x + 15, y - 20, x, y - 15);
+            endShape();
+            noStroke();
+
+            // Cob
+            fill(241, 196, 15);
+            ellipse(x, y, 18, 30);
+
+            // Kernels
+            fill(243, 156, 18);
+            for(let i = -10; i < 12; i+=4) {
+                circle(x-3, y + i, 3);
+                circle(x+3, y + i, 3);
+            }
+        }
+
+        function drawGrasshopper(x, y) {
+            scale(1.4);
+            stroke(39, 174, 96);
+            strokeWeight(2);
+            // Body
+            fill(46, 204, 113);
+            ellipse(x, y, 25, 10);
+            // Head
+            circle(x - 12, y - 2, 8);
+            // Eye
+            fill(0);
+            circle(x - 14, y - 3, 2);
+            
+            // Legs
+            stroke(39, 174, 96);
+            // Back leg
+            line(x+5, y+4, x+15, y+8);
+            line(x+15, y+8, x+12, y+12);
+            // Front legs
+            line(x-5, y+4, x-8, y+8);
+            line(x-8, y+4, x-11, y+8);
+            
+            noStroke();
+        }
+
+        function drawLizard(x, y) {
+            scale(1.5);
+            fill(192, 57, 43);
+            stroke(140, 40, 30);
+            strokeWeight(2);
+
+            // Tail
+            beginShape();
+            vertex(x - 20, y);
+            bezierVertex(x - 5, y + 2, x + 5, y, x + 10, y);
+            endShape();
+
+            // Body
+            ellipse(x, y, 25, 10);
+            
+            // Head
+            circle(x + 12, y - 1, 8);
+
+            // Eye
+            fill(0);
+            noStroke();
+            circle(x + 14, y - 2, 2);
+
+            // Legs
+            stroke(140, 40, 30);
+            strokeWeight(2);
+            line(x - 5, y + 5, x - 8, y + 10);
+            line(x + 5, y + 5, x + 8, y + 10);
+            noStroke();
+        }
+
+        // --- Interaction and Logic ---
+        function mousePressed() {
+            // Slider interaction
+            handleSliderInteraction(200, 430, 'maize');
+            handleSliderInteraction(500, 430, 'grasshoppers');
+            handleSliderInteraction(800, 430, 'lizards');
+            
+            // Button interaction
+            const btnY = 570;
+            // Play button
+            if (mouseX > width/2 - 120 && mouseX < width/2 - 20 && mouseY > btnY && mouseY < btnY + 50) {
+                handlePlay();
+            }
+            // Reset button
+            if (mouseX > width/2 + 20 && mouseX < width/2 + 120 && mouseY > btnY && mouseY < btnY + 50) {
+                handleReset();
+            }
+        }
+
+        function handleSliderInteraction(x, y, type) {
+            if (mouseY > y - 20 && mouseY < y + 20 && mouseX > x - 70 && mouseX < x + 70) {
+                let newValue;
+                if (mouseX < x - 30) newValue = 0;
+                else if (mouseX > x + 30) newValue = 2;
+                else newValue = 1;
+
+                if (organisms[type].slider !== newValue) {
+                    handleSliderChange(type, newValue);
+                }
+            }
+        }
+
+        function handleSliderChange(type, newValue) {
+            if (gameState.phase === 'playing') return;
+
+            handleReset(); // Reset to default before applying new change
+
+            organisms[type].slider = newValue;
+            
+            // Update population immediately based on slider
+            if (newValue > 0) {
+                organisms[type].population += (newValue * 2); // Increase by 2 or 4
+                gameState.blinkingText[type] = 'increase';
+            }
+            
+            gameState.phase = 'waiting';
+            gameState.activeSlider = type;
+            gameState.instructionText = "Click 'Play' to observe the changes.";
+        }
+        
+        function handlePlay() {
+            if (gameState.phase !== 'waiting') return;
+
+            gameState.phase = 'playing';
+            gameState.instructionText = "Drag a slider left or right to see other changes.";
+            
+            applyCascadeEffects();
+        }
+
+        function applyCascadeEffects() {
+            const activeType = gameState.activeSlider;
+            const sliderValue = organisms[activeType].slider;
+
+            let grasshopperChange = 0;
+            let maizeChange = 0;
+            let lizardChange = 0;
+
+            if (activeType === 'maize') {
+                grasshopperChange = sliderValue * 2; // More maize, more grasshoppers
+                lizardChange = sliderValue * 2; // More grasshoppers, more lizards
+            } else if (activeType === 'grasshoppers') {
+                maizeChange = -sliderValue * 2; // More grasshoppers, less maize
+                lizardChange = sliderValue * 2; // More grasshoppers, more lizards
+            } else if (activeType === 'lizards') {
+                grasshopperChange = -sliderValue * 2; // More lizards, less grasshoppers
+                maizeChange = sliderValue * 2; // Less grasshoppers, more maize
+            }
+            
+            // Apply changes with delays
+            setTimeout(() => {
+                if (grasshopperChange !== 0) {
+                     organisms.grasshoppers.population += grasshopperChange;
+                     gameState.blinkingText.grasshoppers = grasshopperChange > 0 ? 'increase' : 'decrease';
+                }
+                 if (maizeChange !== 0) {
+                     organisms.maize.population += maizeChange;
+                     gameState.blinkingText.maize = maizeChange > 0 ? 'increase' : 'decrease';
+                }
+            }, 1000);
+
+             setTimeout(() => {
+                if (lizardChange !== 0) {
+                     organisms.lizards.population += lizardChange;
+                     gameState.blinkingText.lizards = lizardChange > 0 ? 'increase' : 'decrease';
+                }
+                 // If the first change was grasshoppers, the second is maize
+                 if (activeType === 'lizards') {
+                     organisms.maize.population += maizeChange;
+                      gameState.blinkingText.maize = maizeChange > 0 ? 'increase' : 'decrease';
+                 }
+            }, 2000);
+        }
+
+        function handleReset() {
+            organisms = initialOrganisms();
+            gameState = initialGameState();
+        }
+
+    </script>
+</body>
+</html>
+
