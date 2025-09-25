@@ -200,3 +200,15 @@
   opacity: 1;
   visibility: visible;
 }
+#journey-widget #left-show-image img{
+  width: 100%;
+}
+#journey-widget  .primary-color{
+  color: #FFF700;
+}
+#journey-widget  .secondary-color{
+  color: #FFAA00;
+}
+#journey-widget #minus-one{
+  color: #fff;
+}

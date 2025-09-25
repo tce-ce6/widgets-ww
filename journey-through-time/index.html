@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Build a Sentence</title>
-  <script src="lib/p5.js"></script>
+  <title>Journey through time</title>
   <script src="script.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="global_style.css">
@@ -195,8 +194,8 @@
               <foreignObject x="380" y="790" width="400" height="100">
                 <div id="year-formula" xmlns="http://www.w3.org/1999/xhtml"
                   style="color:white; font-family:Roboto; font-size:28px;text-align:center; word-wrap:break-word;">
-                  Formula: <span class="primary-color">[Year1]</span> + <span class="secondary-color">[Year2]</span>
-                  <span class="formula-condition">- 1<span>
+                  Formula: <span id="formula-year1">[Year1]</span> + <span id="formula-year2">[Year2]</span>
+                  <span>- 1<span>
                 </div>
               </foreignObject>
 
@@ -218,7 +217,7 @@
               </g>
 
               <foreignObject x="1120" y="695" width="400" height="60">
-                <div id="result-formula" xmlns="http://www.w3.org/1999/xhtml" style="color:#FFF700; font-family:Roboto, sans-serif; font-size:28px;
+                <div id="result-formula" xmlns="http://www.w3.org/1999/xhtml" style="color:#fff; font-family:Roboto, sans-serif; font-size:28px;
               font-weight:bold; letter-spacing:0em; line-height:1.2;
               white-space:pre;">
                   <span class="primary-color" id="year1">1754</span> <span class="operator">+</span> <span class="secondary-color" id="year2">850</span> <span class="formula-condition" id="minus-one">- 1</span> =

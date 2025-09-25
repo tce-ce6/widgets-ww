@@ -16,6 +16,9 @@ class EventLoader {
     this.rightImageDisplay = document.getElementById("right-show-image");
     this.year1Span = document.getElementById("year1");
     this.year2Span = document.getElementById("year2");
+    this.yearFormula1Span = document.getElementById("formula-year1");
+    this.yearFormula2Span = document.getElementById("formula-year2");
+
     this.operatorSpan = document.querySelector("#result-formula .operator");
     this.minusOneSpan = document.getElementById("minus-one");
     this.totalResultDiv = document.getElementById("total-result");
@@ -92,7 +95,7 @@ class EventLoader {
     this.instructionsDiv.textContent = text;
   }
 
-  updateFormulaText(event1, event2) {
+  updateFormulaText(event1, event2, isBCEOnly, isCEOnly) {
     if (!this.yearFormulaDiv) return;
 
     let textContent;
@@ -100,8 +103,10 @@ class EventLoader {
 
     if (isDifferentEra) {
       textContent = `Formula: <span class="primary-color">[Year1]</span> + <span class="secondary-color">[Year2]</span> - 1`;
+    }else if(isBCEOnly){
+      textContent = `Formula: <span class="primary-color">[Year1]</span> - <span class="primary-color">[Year2]</span>`;
     } else {
-      textContent = `Formula: <span class="primary-color">[Year1]</span> - <span class="secondary-color">[Year2]</span>`;
+      textContent = `Formula: <span class="secondary-color">[Year1]</span> - <span class="secondary-color">[Year2]</span>`;
     }
 
     this.yearFormulaDiv.innerHTML = textContent;
@@ -283,77 +288,101 @@ class EventLoader {
 }
 
   calculateAndDisplayYears() {
-    if (this.selectedEvents.length < 2) return;
+  if (this.selectedEvents.length < 2) return;
 
-    let event1 = this.selectedEvents[0];
-    let event2 = this.selectedEvents[1];
+  let event1 = this.selectedEvents[0];
+  let event2 = this.selectedEvents[1];
 
-    this.updateFormulaText(event1, event2);
+  // Clear existing classes before adding new ones
+  this.year1Span.classList.remove("primary-color", "secondary-color");
+  this.year2Span.classList.remove("primary-color", "secondary-color");
+  this.yearFormula1Span.classList.remove("primary-color", "secondary-color");
+  this.yearFormula2Span.classList.remove("primary-color", "secondary-color");
 
-    let year1 = parseInt(event1.year, 10);
-    let year2 = parseInt(event2.year, 10);
-    let result = 0;
+  
+  let year1 = parseInt(event1.year, 10);
+  let year2 = parseInt(event2.year, 10);
+  let result = 0;
 
-    const isDifferentEra = event1.era !== event2.era;
-    const isBCEOnly = event1.era === "BCE" && event2.era === "BCE";
-    const isCEOnly = event1.era === "CE" && event2.era === "CE";
+  const isDifferentEra = event1.era !== event2.era;
+  const isBCEOnly = event1.era === "BCE" && event2.era === "BCE";
+  const isCEOnly = event1.era === "CE" && event2.era === "CE";
+  this.updateFormulaText(event1, event2 , isBCEOnly , isCEOnly);
 
-    if (this.formulaNote) {
-      if (isDifferentEra) {
+  if (this.formulaNote) {
+    if (isDifferentEra) {
+      this.formulaNote.textContent =
+        "Note: We subtract 1 because there is no year 0 in the BCE/CE system.";
+    } else if (isBCEOnly) {
+      this.formulaNote.textContent =
+        "Note: BCE years count backwards, so the earlier event has the larger number.";
+    } else if (isCEOnly) {
         this.formulaNote.textContent =
-          "Note: We subtract 1 because there is no year 0 in the BCE/CE system.";
-      } else if (isBCEOnly) {
-        this.formulaNote.textContent =
-          "Note: BCE years count backwards, so the earlier event has the larger number.";
-      } else if (isCEOnly) {
-        this.formulaNote.textContent =
-          "Note: Just subtract smaller (earlier) from larger (recent).";
-      }
+            "Note: Just subtract smaller (earlier) from larger (recent).";
     }
+  }
 
-    if (!isDifferentEra) {
-      const sortedEvents = [event1, event2].sort((a, b) => {
+  if (!isDifferentEra) {
+    const sortedEvents = [event1, event2].sort((a, b) => {
         const aYear = a.era === "CE" ? parseInt(a.year) : -parseInt(a.year);
         const bYear = b.era === "CE" ? parseInt(b.year) : -parseInt(b.year);
         return aYear - bYear;
-      });
+    });
 
-      const earlierYear = parseInt(sortedEvents[0].year, 10);
-      const recentYear = parseInt(sortedEvents[1].year, 10);
+    const earlierYear = parseInt(sortedEvents[0].year, 10);
+    const recentYear = parseInt(sortedEvents[1].year, 10);
 
-      if (isBCEOnly) {
+    if (isBCEOnly) {
         this.year1Span.textContent = earlierYear;
         this.year2Span.textContent = recentYear;
-      } else {
-        this.year1Span.textContent = recentYear;
-        this.year2Span.textContent = earlierYear;
-      }
-
-      result = Math.abs(recentYear - earlierYear);
-      this.operatorSpan.textContent = "-";
-      if (this.minusOneSpan) {
+        // Assign colors based on BCE logic
+        this.year1Span.classList.add("primary-color");
+        this.year2Span.classList.add("primary-color");
+        this.yearFormula1Span.classList.add("primary-color");
+        this.yearFormula2Span.classList.add("primary-color");
+    } else if(isCEOnly){
+        // Corrected block for CE only events
+        this.year1Span.textContent = recentYear; // Set recent year as the first operand
+        this.year2Span.textContent = earlierYear; // Set earlier year as the second operand
+        this.year1Span.classList.add("secondary-color");
+        this.year2Span.classList.add("secondary-color");
+        this.yearFormula1Span.classList.add("secondary-color");
+        this.yearFormula2Span.classList.add("secondary-color");
+    }
+    
+    result = Math.abs(recentYear - earlierYear);
+    this.operatorSpan.textContent = "-";
+    if (this.minusOneSpan) {
         this.minusOneSpan.style.display = "none";
-      }
-      if (this.formulaConditionSpan) {
+    }
+    if (this.formulaConditionSpan) {
         this.formulaConditionSpan.style.display = "none";
-      }
-    } else {
-      result = Math.abs(year1 + year2 - 1);
-      this.year1Span.textContent = year1;
-      this.year2Span.textContent = year2;
+    }
+  } else {
+      // Logic for different eras
+      const bceEvent = event1.era === "BCE" ? event1 : event2;
+      const ceEvent = event1.era === "CE" ? event1 : event2;
+
+      this.year1Span.textContent = bceEvent.year;
+      this.year2Span.textContent = ceEvent.year;
+      this.year1Span.classList.add("primary-color");
+      this.year2Span.classList.add("secondary-color");
+      
+      result = Math.abs(parseInt(bceEvent.year) + parseInt(ceEvent.year) - 1);
       this.operatorSpan.textContent = "+";
+      
       if (this.minusOneSpan) {
-        this.minusOneSpan.style.display = "inline";
+          this.minusOneSpan.style.display = "inline";
       }
       if (this.formulaConditionSpan) {
-        this.formulaConditionSpan.style.display = "inline";
+          this.formulaConditionSpan.style.display = "inline";
       }
-    }
-
-    if (this.totalResultDiv) {
-      this.totalResultDiv.textContent = result;
-    }
   }
+
+  if (this.totalResultDiv) {
+    this.totalResultDiv.textContent = result;
+  }
+}
 }
 
 document.addEventListener("DOMContentLoaded", () => {
