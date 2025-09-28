@@ -70,7 +70,7 @@ let sentenceData = [
   ];
 
 function setup() {
-  const canvas = createCanvas(900, 400);
+  const canvas = createCanvas(1000, 400);
   canvas.parent('mainCanvas');
   loadNewSentence();
 }
@@ -225,6 +225,7 @@ function loadNewSentence() {
     });
     buttonX += buttonWidth + slotSpacing;
   }
+  console.log(blanks);
 }
 
 function checkPlacement(wordText, blankIndex) {
