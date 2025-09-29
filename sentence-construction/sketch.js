@@ -78,6 +78,13 @@ let sentenceData = [
     { "words": ["The", "children", "wore", "warm", "clothes", "in", "winter", "."], "blanks": 7 }
 ];
 
+let img;
+
+function preload() {
+  // Load your image (make sure it's in your project folder or give correct path)
+  img = loadImage("Images/BG_Base.svg");
+}
+
 function setup() {
     const canvas = createCanvas(1000, 400);
     canvas.parent('mainCanvas');
@@ -111,7 +118,9 @@ function calculateFixedBlankWidth(numWords) {
 
 // Function to implement transparent background image and fix drawing order
 function draw() {
-    background(255); 
+    background(255, 0.1); 
+
+    image(img, 0, 0, width, height);
     
     // Sentence container (drawn from boundary start/end with padding)
     fill(240);
