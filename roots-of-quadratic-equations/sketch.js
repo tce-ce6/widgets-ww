@@ -3,7 +3,7 @@ const board = JXG.JSXGraph.initBoard('jxgbox', {
     boundingbox: [-12, 35, 12, -35],
     axis: true,
     showCopyright: false,
-    showNavigation : false
+    showNavigation: false
 
 });
 
@@ -71,12 +71,12 @@ function updateOutput() {
 
     const D = b * b - 4 * a * c;
 
-     msg = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
+    msg = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
         <span style="color:#ff8800; margin-left: -3px">a</span>
         <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?<br>
         <span style="color:#228B22;">${b}</span>² − 4(
         <span style="color:#ff8800; margin-left: -3px">${a}</span>)(
-        <span style="color:#0099ff; margin-left: -3px">${c}</span>) ≥ ${D} </span>`;
+        <span style="color:#0099ff; margin-left: -3px">${c}</span>) ≥ 0 ?</span>`;
 
     if (D > 0) {
         msg += `<br><span style="color:#d60000;font-size: large;">${D} &gt; 0</span><br><b>Two distinct real roots</b>`;
@@ -98,8 +98,14 @@ toggleBtn.addEventListener('click', () => {
         rightPanel.style.display = 'block';
         toggleBtn.textContent = 'Hide';
     } else {
-        rightPanel.innerHTML = msg;
+        // rightPanel.innerHTML = msg;
+        // toggleBtn.textContent = 'Show';
+
+        rightPanel.innerHTML = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
+        <span style="color:#ff8800; margin-left: -3px">a</span>
+        <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?</span>`;
         toggleBtn.textContent = 'Show';
+        isShown = false; // reset flag
     }
 });
 
@@ -112,9 +118,11 @@ function updateGraphFor(slider, bubble) {
     board.update();
 
     // Auto-hide the explanation
-    isShown = false;
-    rightPanel.innerHTML = msg;
+    rightPanel.innerHTML = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
+        <span style="color:#ff8800; margin-left: -3px">a</span>
+        <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?</span>`;
     toggleBtn.textContent = 'Show';
+    isShown = false; // reset flag
 
     // Update right-panel values
     aBubble.textContent = getA();

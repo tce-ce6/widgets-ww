@@ -183,7 +183,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Pair of Linear Equations</h2>
-        <span id="versionId" class="versionText">v_25091801</span>
+        <span id="versionId" class="versionText">v_25100201</span>
       </div>
 
       <!-- Your original main container kept as-is; quadratic app goes inside -->
@@ -197,7 +197,7 @@
               <input type="range" min="-30" max="30" value="10" class="coeff-slider vertical" id="c1">
             </div>
             <div class="upEquation">
-              <span id="eq1">a₁x + b₁y + c₁ = 0</span>
+              <span id="eq1"><span style="color: rgb(241, 93, 82);">a₁</span><i>x</i> + <span style="color: rgb(241, 93, 82);">b₁</span><i>y</i> + <span style="color: rgb(241, 93, 82);">c₁</span> = 0</span>
             </div>
             <div class="upCoefficient">
               <span class="equation-wrapper">a₁ = <span id="a1_val">9</span></span>
@@ -209,7 +209,7 @@
           <!-- Ratio -->
           <div class="ratioText">
             <div class="equation-ratio">
-              <div class="txt-align">Is</div>
+              <div class="txt-align" id="isText">Is</div>
               <div style="line-height: 1;">
                 <div id="ratio_a1_val">a₁</div>
                 <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
@@ -227,7 +227,7 @@
                 <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
                 <div id="ratio_c2_val">c₂</div>
               </div>
-              <div class="txt-align">?</div>
+              <div class="txt-align" id="questionMark">?</div>
             </div>
             <button id="toggleBtn" class="hideRatio">Show</button>
           </div>
@@ -241,7 +241,7 @@
               <input type="range" min="-30" max="30" value="-5" class="coeff-slider vertical" id="c2">
             </div>
             <div class="downEquation">
-              <span id="eq2">a₂x + b₂y + c₂ = 0</span>
+              <span id="eq2"><span style="color: rgb(110, 195, 238);">a₂</span><i>x</i> + <span style="color: rgb(110, 195, 238);">b₂</span><i>y</i> + <span style="color: rgb(110, 195, 238);">c₂</span> = 0</span>
             </div>
             <div class="downCoefficient">
               <span class="equation-wrapper">a₂ = <span id="a2_val">6</span></span>

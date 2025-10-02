@@ -30,8 +30,46 @@ function clearBoard() {
     if (intersection) { board.removeObject(intersection); intersection = null; }
 }
 
+function formatCoeff(coeff, variable, isFirst = false) {
+    // Handle zero → show "0x", "0y" etc.
+    if (coeff === 0) {
+        return (isFirst ? `0${variable}` : ` + 0${variable}`);
+    }
+
+    // Handle ±1
+    if (coeff === 1) {
+        return isFirst ? `${variable}` : ` + ${variable}`;
+    }
+    if (coeff === -1) {
+        return isFirst ? `-${variable}` : ` - ${variable}`;
+    }
+
+    // General case
+    return coeff > 0
+        ? (isFirst ? `${coeff}${variable}` : ` + ${coeff}${variable}`)
+        : (isFirst ? `-${Math.abs(coeff)}${variable}` : ` - ${Math.abs(coeff)}${variable}`);
+}
+
+function formatEquation(a, b, c) {
+    let eq = "";
+    eq += formatCoeff(a, "x", true);
+    eq += formatCoeff(b, "y");
+
+    // constant term (always display, even 0)
+    if (c === 0) {
+        eq += " + 0";
+    } else if (c > 0) {
+        eq += ` + ${c}`;
+    } else {
+        eq += ` - ${Math.abs(c)}`;
+    }
+
+    eq += " = 0";
+    return eq;
+}
+
+
 function plotLines() {
-    // create fresh lines/labels
     clearBoard();
 
     // Line 1
@@ -42,10 +80,10 @@ function plotLines() {
         );
 
         label1 = board.create('text', [
-            () => 6, // x-position
+            () => 6,
             () => (-a1 * 6 - c1) / b1 + getLabelOffset(a1, b1),
-            () => `${a1}x + ${b1}y + ${c1} = 0`
-        ], { fontSize: 14, strokeColor: 'red' });
+            () => formatEquation(a1, b1, c1)
+        ], { fontSize: 18, strokeColor: 'red' });
     }
 
     // Line 2
@@ -56,10 +94,10 @@ function plotLines() {
         );
 
         label2 = board.create('text', [
-            () => 8, // x-position
+            () => 8,
             () => (-a2 * 8 - c2) / b2 + getLabelOffset(a2, b2),
-            () => `${a2}x + ${b2}y + ${c2} = 0`
-        ], { fontSize: 14, strokeColor: 'blue' });
+            () => formatEquation(a2, b2, c2)
+        ], { fontSize: 18, strokeColor: 'blue' });
     }
 
     // Intersection
@@ -67,6 +105,8 @@ function plotLines() {
         intersection = board.create('intersection', [line1, line2], { name: 'P', size: 3, color: 'green' });
     }
 }
+
+
 
 function updateRatioPlaceholdersToValues() {
     document.getElementById("ratio_a1_val").innerText = a1;
@@ -161,13 +201,17 @@ function checkCondition() {
         document.getElementById("eqSign2").innerText = ratioBC ? "=" : "≠";
 
         document.getElementById("toggleBtn").innerText = "Hide";
+        document.getElementById("isText").innerText = " ";
+        document.getElementById("questionMark").innerText = " ";
     } else {
         resetRatioPlaceholders();
         // Reset signs to "="
         document.getElementById("eqSign1").innerText = "=";
         document.getElementById("eqSign2").innerText = "=";
-        
+
         document.getElementById("toggleBtn").innerText = "Show";
+        document.getElementById("isText").innerText = "Is";
+        document.getElementById("questionMark").innerText = "?";
     }
 }
 
