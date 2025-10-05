@@ -25,12 +25,9 @@ const sketch = (p) => {
             baseHeight: 45,
             currentWidth: 40,
             currentHeight: 65,
-            redBalloonAlpha: 255,   // Opacity for the red balloon
-            blueBalloonAlpha: 0,    // Opacity for the blue balloon
         },
         isDragging: false,
-        balloonSVG1: null, // To hold baloon1.svg (blue)
-        balloonSVG2: null, // To hold baloon2.svg (red)
+        balloonSVG: null, // To hold baloon2.svg
         insightButtonSVG: null, // To hold btn_Insight.svg
         
         // Atmosphere state
@@ -79,7 +76,8 @@ const sketch = (p) => {
                     { startAlt: 1000, endAlt: 2000, percentage: 0.25 }, // 625 particles
                     { startAlt: 2000, endAlt: 3000, percentage: 0.15 }, // 375 particles
                     { startAlt: 3000, endAlt: 4000, percentage: 0.10 }, // 250 particles
-                    { startAlt: 4000, endAlt: 5000, percentage: 0.05 }  // 125 particles
+                    { startAlt: 4000, endAlt: 5000, percentage: 0.05 },
+                    { startAlt: 5000, endAlt: 6000, percentage: 0.05 },  // 125 particles
                 ];
 
                 const createParticlesInLayer = (count, yMin, yMax) => {
@@ -106,7 +104,7 @@ const sketch = (p) => {
 
        updateValuesFromY(balloonY) {
             const atmosphereBottomY = 440;  // 0m position
-            const atmosphereTopY = 168;     // 5000m position (where label now is)
+            const atmosphereTopY = 168;     // 5000m position
             
             // Calculate altitude based on balloon's bottom position (balloonY)
             model.altitude = p.map(balloonY, atmosphereBottomY, atmosphereTopY, 0, model.maxAltitude);
@@ -117,6 +115,7 @@ const sketch = (p) => {
         
             model.pressure = model.initialPressure * Math.pow(1 - 0.103, altitudeInKm);
             
+            // Calculate balloon size based on altitude
             const normalizedAltitude = p.map(model.altitude, 0, model.maxAltitude, 0, 1);
             const growthFactor = Math.pow(normalizedAltitude, 3); 
             const startMultiplier = 1.0;
@@ -125,18 +124,6 @@ const sketch = (p) => {
             
             model.balloon.currentWidth = model.balloon.baseWidth * sizeMultiplier;
             model.balloon.currentHeight = model.balloon.baseHeight * sizeMultiplier;
-            
-            const halfwayY = (atmosphereBottomY + atmosphereTopY) / 2;
-
-            if (balloonY <= halfwayY) {
-                model.balloon.redBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 255, 0);
-                model.balloon.blueBalloonAlpha = p.map(balloonY, halfwayY, atmosphereTopY, 0, 255);
-            } else {
-                model.balloon.redBalloonAlpha = 255;
-                model.balloon.blueBalloonAlpha = 0;
-            }
-            model.balloon.redBalloonAlpha = p.constrain(model.balloon.redBalloonAlpha, 0, 255);
-            model.balloon.blueBalloonAlpha = p.constrain(model.balloon.blueBalloonAlpha, 0, 255);
 
             if (model.resetButton) {
                model.resetButton.disabled = !(model.altitude > 0);
@@ -172,9 +159,11 @@ const sketch = (p) => {
         
         handleMouseDragged() {
             if (model.isDragging) {
-                // Constrain so balloon's top doesn't go above rectangle top
-                const topLimit = 100 + model.balloon.currentHeight;
+                // The y-coordinate corresponding to the 5000m mark
+                const topLimit = 168; 
                 const bottomLimit = 440;
+                
+                // Constrain the balloon's y-position to the defined limits
                 model.balloon.y = p.constrain(p.mouseY, topLimit, bottomLimit);
                 this.updateValuesFromY(model.balloon.y);
             }
@@ -291,13 +280,12 @@ const sketch = (p) => {
             p.rect(100, 100, 300, 340, 15);
 
             p.noStroke();
-            p.fill(66, 66, 255);
+            p.fill(66, 66, 255,120);
             for (let m of model.airMolecules) {
                 p.ellipse(m.x, m.y, 3, 3);
             }
 
-            // Draw altitude markers with adjusted positions
-            // 0m stays at 440, 5000m moves to 168 (where it should be visually)
+            // Draw altitude markers
             p.stroke(80);
             p.strokeWeight(1);
             p.textAlign(p.LEFT, p.CENTER);
@@ -313,13 +301,12 @@ const sketch = (p) => {
             p.textSize(14);
             p.fill(50);
             p.strokeWeight(0.5);
-            // Position "Thin Air" at the same level as 5000m label
             p.text("Thin Air", 30, 168);
             p.text("Dense Air", 30, 440);
             p.textStyle(p.NORMAL);
         },
         
-     drawBalloons() {
+       drawBalloons() {
             p.push();
             p.imageMode(p.CENTER);
 
@@ -328,18 +315,9 @@ const sketch = (p) => {
             const currentW = model.balloon.currentWidth;
             const currentH = model.balloon.currentHeight;
 
-            if (model.balloon.redBalloonAlpha > 0 && model.balloonSVG2) {
-                p.push();
-                p.tint(255, model.balloon.redBalloonAlpha);
-                p.image(model.balloonSVG2, centerX, centerY, currentW, currentH);
-                p.pop();
-            }
-
-            if (model.balloon.blueBalloonAlpha > 0 && model.balloonSVG1) {
-                p.push();
-                p.tint(255, model.balloon.blueBalloonAlpha);
-                p.image(model.balloonSVG1, centerX, centerY, currentW, currentH);
-                p.pop();
+            // Draw the single balloon if the SVG is loaded
+            if (model.balloonSVG) {
+                p.image(model.balloonSVG, centerX, centerY, currentW, currentH);
             }
             
             p.pop();
@@ -421,7 +399,7 @@ const sketch = (p) => {
             }
         },
         
-       drawInsightsButton() {
+        drawInsightsButton() {
             model.insightsButton.alpha = 255;
             
             const { x, y, w, h } = model.insightsButton;
@@ -440,8 +418,7 @@ const sketch = (p) => {
     //===========================================
     p.preload = function() {
         model.bgImage = p.loadImage('assets/Sky_BG_02.jpg');
-        model.balloonSVG1 = p.loadImage('assets/baloon1.svg');
-        model.balloonSVG2 = p.loadImage('assets/baloon2.svg');
+        model.balloonSVG = p.loadImage('assets/baloon2.svg'); // Only load one balloon
         model.insightButtonSVG = p.loadImage('assets/btn_Insight.svg');
     };
 
