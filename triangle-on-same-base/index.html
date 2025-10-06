@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triangle on Same Base</title>
+
+    <!-- Your existing libs & CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+    <!-- JSXGraph -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"> -->
+    <script src="jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="jsxgraph.css">
+
+    <!-- Local tweaks only for the quadratic widget layout -->
+    <style>
+        /* Layout inside #mainCanvas only */
+        #quadraticApp {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        #graphRow {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 18px;
+            width: 100%;
+        }
+
+        #jxgbox {
+            max-width: 1200px;
+            height: 500px;
+            border: 1px solid #bbb;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body onload="initGeometryBoard()">
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Triangle on Same Base</h2>
+                <span id="versionId" class="versionText">b2_251006</span>
+            </div>
+
+
+
+            <!-- Your original main container kept as-is; quadratic app goes inside -->
+            <div class="mainContainer" id="mainCanvas" style="align-items: center;">
+                <div id="quadraticApp">
+                    <div id="graphRow">
+                        <!-- Graph -->
+                        <div>
+                            <div id="jxgbox"></div>
+                            <span style="font-size: 14px; color: #666; text-align: center; display: block; margin-top: 10px;">Drag points A and D along line l to observe constant area and changing perimeter.</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your existing buttons kept intact -->
+            <div class="flexContainer button-controls">
+                <div class="flexItem flexItemFirst">
+                    <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
+                    <button id="toggleBtn" class="btn btn-primary">Show</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="sketch.js"></script>
+
+</body>
+
+</html>
