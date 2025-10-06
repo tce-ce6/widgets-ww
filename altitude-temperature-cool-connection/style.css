@@ -15,3 +15,21 @@
         background-color: #cccccc;
         cursor: not-allowed;
       }
+
+      .title-container {
+            position: absolute; /* Takes the element out of the normal document flow */
+            top: 0px;          /* Positions it 25px from the top */
+            left: 0;            /* Aligns to the left edge */
+            width: 100%;        /* Makes the container span the full page width */
+            text-align: center; /* Centers the <h1> inside the container */
+            z-index: 10;        /* Ensures the title is on top of the canvas */
+        }
+
+        .title-container h3 {
+            display: inline-block;
+            margin: 0;
+            background-color: #1d83ec;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 0 0  40px 40px;
+        }

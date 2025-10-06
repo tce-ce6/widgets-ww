@@ -6,9 +6,9 @@ const sketch = (p) => {
     // MODEL: Manages the state and data of the widget
     //===========================================
     const model = {
-        // Canvas Dimensions
-        canvasWidth: 900,
-        canvasHeight: 500,
+        // Canvas Dimensions - Updated to higher resolution
+        canvasWidth: 1200,
+        canvasHeight: 700,
 
         // Environment Constants
         maxAltitude: 5000,
@@ -17,14 +17,14 @@ const sketch = (p) => {
         minTemp: -8.4,
         minPressure: 538.2,
         
-        // Balloon State
+        // Balloon State - Scaled positions
         balloon: {
-            x: 250,
-            y: 440,
-            baseWidth: 30,
-            baseHeight: 45,
-            currentWidth: 40,
-            currentHeight: 65,
+            x: 333,  // 250 * 1.333
+            y: 587,  // 440 * 1.333
+            baseWidth: 40,  // 30 * 1.333
+            baseHeight: 60, // 45 * 1.333
+            currentWidth: 53,  // 40 * 1.333
+            currentHeight: 87, // 65 * 1.333
         },
         isDragging: false,
         balloonSVG: null, // To hold baloon2.svg
@@ -39,8 +39,8 @@ const sketch = (p) => {
         temperature: 30,
         pressure: 1013,
 
-        // UI Elements
-        insightsButton: { x: 535, y: 305, w: 130, h: 45, label: 'Insights', alpha: 0 },
+        // UI Elements - Scaled positions
+        insightsButton: { x: 713, y: 407, w: 186, h: 55, label: 'Insights', alpha: 0 }, // 535*1.333, 305*1.333, 130*1.333, 45*1.333
         isInsightsHovered: false,
         isInsightsVisible: false,
         bgImage: null,
@@ -56,8 +56,8 @@ const sketch = (p) => {
     //===========================================
     const controller = {
         initialize() {
-            model.balloon.x = 250;
-            model.balloon.y = 440;
+            model.balloon.x = 333;
+            model.balloon.y = 587;
             model.isDragging = false;
             model.isInsightsVisible = false;
             model.insightsButton.alpha = 0;
@@ -69,7 +69,7 @@ const sketch = (p) => {
             
             if (model.airMolecules.length === 0) {
                 const totalMolecules = model.numMolecules;
-                const altitudeToY = (alt) => p.map(alt, 0, model.maxAltitude, 440, 168);
+                const altitudeToY = (alt) => p.map(alt, 0, model.maxAltitude, 587, 224); // 440*1.333=587, 168*1.333=224
 
                 const layers = [
                     { startAlt: 0,    endAlt: 1000, percentage: 0.45 }, // 1125 particles
@@ -83,7 +83,7 @@ const sketch = (p) => {
                 const createParticlesInLayer = (count, yMin, yMax) => {
                     for (let i = 0; i < count; i++) {
                         const yPos = p.random(yMin, yMax);
-                        const xPos = p.random(105, 395);
+                        const xPos = p.random(140, 527); // 105*1.333=140, 395*1.333=527
                         model.airMolecules.push({
                             x: xPos, y: yPos, initialY: yPos,
                             vx: p.random(-0.15, 0.15), vy: p.random(-0.15, 0.15)
@@ -103,8 +103,8 @@ const sketch = (p) => {
         },
 
        updateValuesFromY(balloonY) {
-            const atmosphereBottomY = 440;  // 0m position
-            const atmosphereTopY = 168;     // 5000m position
+            const atmosphereBottomY = 587;  // 0m position (440 * 1.333)
+            const atmosphereTopY = 224;     // 5000m position (168 * 1.333)
             
             // Calculate altitude based on balloon's bottom position (balloonY)
             model.altitude = p.map(balloonY, atmosphereBottomY, atmosphereTopY, 0, model.maxAltitude);
@@ -120,7 +120,7 @@ const sketch = (p) => {
             const growthFactor = Math.pow(normalizedAltitude, 3); 
             const startMultiplier = 1.0;
             const endMultiplier = 1.6;
-            const sizeMultiplier = startMultiplier + (endMultiplier - startMultiplier) * growthFactor;
+           const sizeMultiplier = p.map(model.altitude, 0, model.maxAltitude, startMultiplier, endMultiplier);
             
             model.balloon.currentWidth = model.balloon.baseWidth * sizeMultiplier;
             model.balloon.currentHeight = model.balloon.baseHeight * sizeMultiplier;
@@ -160,8 +160,8 @@ const sketch = (p) => {
         handleMouseDragged() {
             if (model.isDragging) {
                 // The y-coordinate corresponding to the 5000m mark
-                const topLimit = 168; 
-                const bottomLimit = 440;
+                const topLimit = 224;  // 168 * 1.333
+                const bottomLimit = 587; // 440 * 1.333
                 
                 // Constrain the balloon's y-position to the defined limits
                 model.balloon.y = p.constrain(p.mouseY, topLimit, bottomLimit);
@@ -174,11 +174,11 @@ const sketch = (p) => {
         },
 
         moveMolecules() {
-            const moveRange = 5;
-            const radius = 1.5;
+            const moveRange = 6.67; // 5 * 1.333
+            const radius = 2; // 1.5 * 1.333
 
-            // Container geometry
-            const rectX = 100, rectY = 100, rectW = 300, rectH = 340, cornerRadius = 15;
+            // Container geometry - Scaled
+            const rectX = 133, rectY = 133, rectW = 400, rectH = 453, cornerRadius = 20; // 100*1.333, 100*1.333, 300*1.333, 340*1.333, 15*1.333
 
             // Define boundaries of the inner rectangle and the corner squares
             const leftInner = rectX + cornerRadius;
@@ -244,65 +244,61 @@ const sketch = (p) => {
     //===========================================
     const view = {
         drawBackground() {
-            if (model.bgImage) {
-                p.image(model.bgImage, 0, 0, p.width, p.height);
-            } else {
-                p.background(220, 235, 255);
-            }
+            p.clear();
         },
 
         drawHeaderAndFooter() {
-            p.fill(28, 137, 222);
-            p.noStroke();
-            p.rect(p.width/2 - 250, -15, 500, 60, 20);
-            p.fill(255);
-            p.textSize(18);
-            p.textAlign(p.CENTER, p.CENTER);
-            p.textStyle(p.NORMAL);
-            p.text("Altitude and Temperature – A Cool Connection", p.width / 2, 20);
+            // p.fill(28, 137, 222);
+            // p.noStroke();
+            // p.rect(p.width/2 - 333, -20, 667, 80, 27); // 250*1.333=333, -15*1.333=-20, 500*1.333=667, 60*1.333=80, 20*1.333=27
+            // p.fill(255);
+            // p.textSize(24); // 18 * 1.333
+            // p.textAlign(p.CENTER, p.CENTER);
+            // p.textStyle(p.NORMAL);
+            // p.text("Altitude and Temperature – A Cool Connection", p.width / 2, 27); // 20 * 1.333
 
             p.fill(0, 0, 139);
-            p.textSize(13);
+            p.textSize(17); // 13 * 1.333
             p.textStyle(p.BOLDITALIC);
-            p.text("Drag the balloon up and down.", p.width / 2, 60);
-             p.textStyle(p.ITALIC);
-            p.text("What changes do you observe in temperature and atmospheric pressure in relation to altitude?", p.width / 2, 80);
+            p.text("Drag the balloon up and down.", p.width / 2.6, 80); // 60 * 1.333
+            p.textStyle(p.ITALIC);
+            p.text("What changes do you observe in temperature and atmospheric pressure in relation to altitude?", p.width / 4, 107); // 80 * 1.333
             
             p.fill(130);
-            p.textSize(10);
+            p.textSize(13); // 10 * 1.333
             p.textAlign(p.CENTER, p.BOTTOM);
-            p.text("Disclaimer: These are simplified and approximate values. Real atmospheric conditions require detailed calculations for accuracy.", p.width / 2, p.height - 10);
+            p.text("Disclaimer: These are simplified and approximate values. Real atmospheric conditions require detailed calculations for accuracy.", p.width / 2, p.height - 13); // -10 * 1.333
         },
 
         drawAtmosphereColumn() {
             p.fill('#4A90E2');
             p.noStroke();
-            p.rect(100, 100, 300, 340, 15);
+            p.rect(133, 133, 400, 453, 20); // 100*1.333, 100*1.333, 300*1.333, 340*1.333, 15*1.333
 
             p.noStroke();
-            p.fill(66, 66, 255,120);
+            p.fill(66, 66, 255, 120);
             for (let m of model.airMolecules) {
-                p.ellipse(m.x, m.y, 3, 3);
+                p.ellipse(m.x, m.y, 4, 4); // 3 * 1.333
             }
 
-            // Draw altitude markers
+            // Draw altitude markers - Scaled
             p.stroke(80);
-            p.strokeWeight(1);
+            p.strokeWeight(1.33); // 1 * 1.333
             p.textAlign(p.LEFT, p.CENTER);
-            p.textSize(12);
+            p.textSize(16); // 12 * 1.333
             p.fill(50);
             for (let i = 0; i <= 5; i++) {
-                let yPos = p.map(i * 1000, 0, model.maxAltitude, 440, 168);
-                p.line(405, yPos, 415, yPos);
-                p.text(`${i * 1000} m`, 420, yPos);
+                let yPos = p.map(i * 1000, 0, model.maxAltitude, 587, 224); // 440*1.333=587, 168*1.333=224
+                p.line(540, yPos, 553, yPos); // 405*1.333=540, 415*1.333=553
+                p.text(`${i * 1000} m`, 560, yPos); // 420 * 1.333
             }
             
             p.textStyle(p.BOLD);
-            p.textSize(14);
+            p.textSize(19); // 14 * 1.333
             p.fill(50);
-            p.strokeWeight(0.5);
-            p.text("Thin Air", 30, 168);
-            p.text("Dense Air", 30, 440);
+            p.strokeWeight(0.67); // 0.5 * 1.333
+            p.text("Thin Air", 40, 224); // 30*1.333=40, 168*1.333=224
+            p.text("Dense Air", 40, 587); // 30*1.333=40, 440*1.333=587
             p.textStyle(p.NORMAL);
         },
         
@@ -327,21 +323,21 @@ const sketch = (p) => {
              const drawBox = (y, label, value, unit, valColor, valBorderColor) => {
                 p.fill(255);
                 p.stroke(220);
-                p.strokeWeight(1);
-                p.rect(535, y, 320, 55, 12);
+                p.strokeWeight(1.33); // 1 * 1.333
+                p.rect(713, y, 427, 73, 16); // 535*1.333=713, 320*1.333=427, 55*1.333=73, 12*1.333=16
                 
                 p.fill(50);
                 p.noStroke();
                 p.textAlign(p.LEFT, p.CENTER);
-                p.textSize(15);
+                p.textSize(20); // 15 * 1.333
                 p.textStyle(p.BOLD);
-                p.text(label, 550, y + 28);
+                p.text(label, 733, y + 37); // 550*1.333=733, 28*1.333=37
                 
-                const valBoxX = 680;
-                const valBoxY = y + 10;
-                const valBoxW = 165;
-                const valBoxH = 35;
-                const valBoxR = 8;
+                const valBoxX = 907; // 680 * 1.333
+                const valBoxY = y + 13; // 10 * 1.333
+                const valBoxW = 220; // 165 * 1.333
+                const valBoxH = 47; // 35 * 1.333
+                const valBoxR = 11; // 8 * 1.333
                 
                 p.fill(255, 255, 255, 100);
                 p.noStroke();
@@ -349,8 +345,8 @@ const sketch = (p) => {
                 
                 p.push();
                 p.stroke(valBorderColor);
-                p.strokeWeight(0.5);
-                p.drawingContext.setLineDash([3, 3]);
+                p.strokeWeight(0.67); // 0.5 * 1.333
+                p.drawingContext.setLineDash([4, 4]); // 3*1.333=4
                 p.noFill();
                 p.rect(valBoxX, valBoxY, valBoxW, valBoxH, valBoxR);
                 p.drawingContext.setLineDash([]);
@@ -358,44 +354,44 @@ const sketch = (p) => {
 
                 p.noStroke();
                 p.textAlign(p.RIGHT, p.CENTER);
-                p.textSize(20);
+                p.textSize(27); // 20 * 1.333
                 p.fill(valColor);
-                p.text(value, valBoxX + valBoxW - 70, y + 28);
+                p.text(value, valBoxX + valBoxW - 93, y + 37); // 70*1.333=93, 28*1.333=37
 
                 p.textAlign(p.LEFT, p.CENTER);
-                p.textSize(15);
+                p.textSize(20); // 15 * 1.333
                 p.fill(valColor);
-                p.text(unit, valBoxX + valBoxW - 65, y + 29);
+                p.text(unit, valBoxX + valBoxW - 87, y + 39); // 65*1.333=87, 29*1.333=39
             };
 
-            drawBox(100, "Altitude", model.altitude.toFixed(0), "m", p.color(255, 77, 0), p.color(255, 77, 0));
-            drawBox(170, "Atmospheric\nPressure", model.pressure.toFixed(0), "mbar", p.color(0, 132, 17), p.color(0, 132, 17));
-            drawBox(240, "Temperature", model.temperature.toFixed(1), "°C", p.color(0, 13, 185), p.color(0, 13, 185));
+            drawBox(133, "Altitude", model.altitude.toFixed(0), "m", p.color(255, 77, 0), p.color(255, 77, 0)); // 100*1.333=133
+            drawBox(227, "Atmospheric\nPressure", model.pressure.toFixed(0), "mbar", p.color(0, 132, 17), p.color(0, 132, 17)); // 170*1.333=227
+            drawBox(320, "Temperature", model.temperature.toFixed(1), "°C", p.color(0, 13, 185), p.color(0, 13, 185)); // 240*1.333=320
         },
 
         drawInsights() {
             if (model.isInsightsVisible) {
                 p.fill(255);
                 p.stroke(220);
-                p.strokeWeight(1);
-                p.rect(535, 320, 320, 150, 10);
+                p.strokeWeight(1.33); // 1 * 1.333
+                p.rect(713, 427, 427, 200, 13); // 535*1.333=713, 320*1.333=427, 320*1.333=427, 150*1.333=200, 10*1.333=13
 
                 p.fill(50);
                 p.noStroke();
                 p.textAlign(p.LEFT, p.TOP);
                 p.textStyle(p.BOLD);
-                p.textSize(12);
-                p.text("Impact of Altitude on Temperature and\nAtmospheric Pressure", 545, 370, 300);
+                p.textSize(16); // 12 * 1.333
+                p.text("Impact of Altitude on Temperature and\nAtmospheric Pressure", 727, 493, 400); // 545*1.333=727, 370*1.333=493, 300*1.333=400
                 
                 p.textStyle(p.NORMAL);
-                p.textSize(11);
+                p.textSize(15); // 11 * 1.333
                 p.fill(80);
-                p.text("• With an increase in altitude, air density decreases,\n  resulting in lower temperature and pressure.", 545, 400, 300);
+                p.text("• With an increase in altitude, air density decreases,\n  resulting in lower temperature and pressure.", 727, 533, 400); // 545*1.333=727, 400*1.333=533, 300*1.333=400
                 
                 p.textStyle(p.NORMAL);
-                p.textSize(11);
+                p.textSize(15); // 11 * 1.333
                 p.fill(80);
-                p.text("• With a decrease in altitude, the air density increases, resulting in higher temperature and atmospheric pressure.", 545, 430, 300);
+                p.text("• With a decrease in altitude, the air density increases, resulting in higher temperature and atmospheric pressure.", 727, 573, 400); // 545*1.333=727, 430*1.333=573, 300*1.333=400
             }
         },
         
@@ -407,7 +403,7 @@ const sketch = (p) => {
             if (model.insightButtonSVG) {
                 p.push();
                 p.imageMode(p.CORNER);
-                p.image(model.insightButtonSVG, x, y, w, h);
+                p.image(model.insightButtonSVG, x, y, w, h );
                 p.pop();
             }
         },
@@ -436,10 +432,10 @@ const sketch = (p) => {
     };
 
     p.draw = function() {
+        view.drawBackground();
         controller.moveMolecules();
         controller.handleMouseInteraction();
-
-        view.drawBackground();
+        
         view.drawAtmosphereColumn();
         view.drawBalloons();
         view.drawReadoutPanels();
