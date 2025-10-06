@@ -173,14 +173,15 @@
             drawPotAndEnvironment();
             drawSeeds();
             drawControlPanel();
+            if (showInsights) {
+                drawInsightsModal();
+            }
             drawInsightButton();
             
             if (currentDay === 10) {
                 drawResultsBox();
             }
-            if (showInsights) {
-                drawInsightsModal();
-            }
+            
             
             if (experimentRunning) {
                 updateDay();
@@ -376,26 +377,90 @@
             image(svgAssets.insightBtn, insightButton.x, insightButton.y, insightButton.w, insightButton.h);
         }
 
-        function drawInsightsModal() {
-            fill(0, 0, 0, 180); noStroke(); rect(0, 0, 1500, 700);
-            fill(255); stroke(100); strokeWeight(3); rect(300, 150, 900, 420, 15);
-            fill(80, 180, 100); noStroke(); circle(1180, 170, 40);
-            stroke(255); strokeWeight(4); line(1170, 160, 1190, 180); line(1190, 160, 1170, 180);
-            fill(50); noStroke(); textAlign(LEFT, TOP); textSize(18); textStyle(NORMAL);
-            let insights = [
-                '• Seeds need moderate water to soften the seed coat and activate enzymes.',
-                '• Excess water can cause seeds to rot and prevent proper air circulation.',
-                '• Seeds need air (oxygen) for cellular respiration during germination.',
-                '• Most seeds can germinate in darkness, but need light for growth after sprouting.',
-                '• Optimal conditions (moderate water + air + warmth) produce the best germination rates.',
-                '• Both too little and too much water significantly reduce germination success.'
-            ];
-            let yPos = 220;
-            for (let insight of insights) {
-                text(insight, 340, yPos, 800, 100);
-                yPos += 55;
-            }
-        }
+       function drawInsightButton() {
+    image(svgAssets.insightBtn, insightButton.x, insightButton.y, insightButton.w, insightButton.h);
+}
+
+function drawInsightsModal() {
+    // Dark overlay
+    fill(0, 0, 0, 180); 
+    noStroke(); 
+    rect(0, 0, 1500, 700);
+    
+    // White modal background
+    fill(255); 
+    // stroke(100); 
+    // strokeWeight(3); 
+    rect(170, 150, 850, 460, 15);
+    
+    // Green close button circle
+    fill(80, 180, 100); 
+    noStroke(); 
+    circle(1030, 160, 60);
+    
+    // X mark on close button
+    stroke(255); 
+    strokeWeight(4); 
+    line(1020, 145, 1045, 175); 
+    line(1045, 145, 1020, 175);
+    
+    // Text styling
+    fill(50); 
+    noStroke(); 
+    textAlign(LEFT, TOP); 
+    textSize(18);
+    
+    let yPos = 220;
+    const xPos = 220
+    // Insight 1
+    textStyle(NORMAL);
+    text('• Seeds need ', xPos, yPos);
+    textStyle(BOLD);
+    text('moderate water', xPos + textWidth('• Seeds need '), yPos);
+    textStyle(NORMAL);
+    text(' to soften the seed coat and activate enzymes.', xPos + textWidth('• Seeds need moderate water') + 15, yPos);
+    yPos += 55;
+    
+    // Insight 2
+    textStyle(BOLD);
+    text('• Excess water', xPos, yPos);
+    textStyle(NORMAL);
+    text(' can cause seeds to rot and prevents proper air circulation.', xPos + textWidth('• Excess water')+ 15, yPos);
+    yPos += 55;
+    
+    // Insight 3
+    textStyle(NORMAL);
+    text('• Seeds need ', xPos, yPos);
+    textStyle(BOLD);
+    text('air (oxygen)', xPos + textWidth('• Seeds need '), yPos);
+    textStyle(NORMAL);
+    text(' for cellular respiration during germination.', xPos + textWidth('• Seeds need air (oxygen)') + 15, yPos);
+    yPos += 55;
+    
+    // Insight 4
+    textStyle(NORMAL);
+    text('• Most seeds can germinate in ', xPos, yPos);
+    textStyle(BOLD);
+    text('darkness', xPos + textWidth('• Most seeds can germinate in ') - 15, yPos);
+    textStyle(NORMAL);
+    text(', but need light for growth after sprouting.', xPos + textWidth('• Most seeds can germinate in darkness') + 15, yPos);
+    yPos += 55;
+    
+    // Insight 5
+    textStyle(BOLD);
+    text('• Optimal conditions', xPos, yPos);
+    textStyle(NORMAL);
+    text(' (moderate water + air + warmth) produce the best germination rates.', xPos + textWidth('• Optimal conditions') + 15, yPos);
+    yPos += 55;
+    
+    // Insight 6
+    textStyle(NORMAL);
+    text('• Both ', xPos, yPos);
+    textStyle(BOLD);
+    text('too little and too much water', xPos + textWidth('• Both '), yPos);
+    textStyle(NORMAL);
+    text(' significantly reduce germination success.', xPos + textWidth('• Both too little and too much water')+ 24, yPos);
+}
 
         // --- LOGIC AND INTERACTION ---
 
@@ -455,7 +520,7 @@
                 showInsights = !showInsights; return;
             }
             
-            if (showInsights && dist(mouseX, mouseY, 1180, 170) < 20) {
+            if (showInsights && dist(mouseX, mouseY, 1020, 150) < 20) {
                 showInsights = false; return;
             }
             
