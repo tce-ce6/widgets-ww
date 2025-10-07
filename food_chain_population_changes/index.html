@@ -130,26 +130,34 @@
             drawOrganismSection('lizards', 1010, y, 'Lizard');
         }
 
-        function drawOrganismSection(type, x, y, label) {
-            const w = 320;
-            const h = 333;
-            
-            fill(197, 255, 255);
-            rect(x, y, w, h, 15);
-            
-            fill(136, 239, 255);
-            rect(x, y + h - 50, w, 50, 0, 0, 15, 15);
-            
-            fill(24, 24, 24);
-            textSize(18);
-            textStyle(BOLD);
-            text(label, x + w/2, y + h - 25);
+      function drawOrganismSection(type, x, y, label) {
+    const w = 320;
+    const h = 333;
+    
+    fill(197, 255, 255);
+    rect(x, y, w, h, 15);
+    
+    fill(136, 239, 255);
+    rect(x, y + h - 50, w, 50, 0, 0, 15, 15);
+    
+    fill(24, 24, 24);
+    textSize(18);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(label, x + w/2, y + h - 25);
 
-            drawOrganismPopulation(type, x, y, w, h - 50);
+    drawOrganismPopulation(type, x, y, w, h - 50);
+    drawBlinkingStatus(type, x + w/2, y + h + 30);
 
-            drawBlinkingStatus(type, x + w/2, y + h + 30);
-        }
-        
+    // --- MODIFIED: Blur is now applied only to the top organism area ---
+    if (gameState.phase === 'waiting' && gameState.activeSlider !== type) {
+        fill(255, 255, 255, 130); 
+        noStroke();
+        // The overlay height is reduced, and corner radii are adjusted
+        rect(x, y, w, h - 50, 15, 15, 0, 0); 
+    }
+    // --- End of modification ---
+}
         function drawOrganismPopulation(type, x, y, w, h) {
             const organism = organisms[type];
             const populationCount = organism.population;
@@ -231,19 +239,33 @@
             drawSlider('lizards', 1180, y);
         }
 
-        function drawSlider(type, x, y) {
-            const organism = organisms[type];
-            const sliderValue = organism.slider;
-            const sliderWidth = 240;
-            const sliderHeight = 30;
-            const stopSpacing = 105;
-            const handleSize = 40;
-            image(sliderBaseImage, x, y, sliderWidth, sliderHeight);
-            const handleX = x - stopSpacing + (sliderValue * stopSpacing);
-            fill(46, 204, 113);
-            noStroke();
-            circle(handleX, y, handleSize);
-        }
+     function drawSlider(type, x, y) {
+    const organism = organisms[type];
+    const sliderValue = organism.slider;
+    const sliderWidth = 240;
+    const sliderHeight = 30;
+    const stopSpacing = 105;
+    const handleSize = 40;
+    const handleX = x - stopSpacing + (sliderValue * stopSpacing);
+
+    let fillColor = color(46, 204, 113); // Store the original green color
+
+    if (gameState.phase === 'waiting' && gameState.activeSlider !== type) {
+        tint(255, 100); // Apply tint to the image
+        // --- MODIFIED: Set the fill color with alpha for the shape ---
+        fill(46, 204, 113, 100); 
+    } else {
+        // --- MODIFIED: Use the solid fill color when not disabled ---
+        fill(fillColor);
+    }
+    
+    image(sliderBaseImage, x, y, sliderWidth, sliderHeight);
+
+    noStroke();
+    circle(handleX, y, handleSize); // This circle will now use the fill with alpha
+
+    noTint(); // Reset tint for other images
+}
         
         function drawInstructionText() {
             fill(255, 255, 0);
@@ -254,23 +276,35 @@
         }
 
         function drawButtons() {
-            const y = 620;
-            rectMode(CENTER);
-            if(gameState.phase === 'waiting' && frameCount % 60 < 30) {
-                fill(39, 174, 96);
-            } else {
-                fill(46, 204, 113);
-            }
-            rect(width/2 - 70, y + 25, 100, 50, 25);
-            fill(231, 76, 60);
-            rect(width/2 + 70, y + 25, 100, 50, 25);
-            fill(255);
-            textSize(18);
-            textStyle(BOLD);
-            text("Play", width/2 - 70, y + 25);
-            text("Reset", width/2 + 70, y + 25);
-            rectMode(CORNER);
+    const y = 620;
+    rectMode(CENTER);
+
+    // Set color for the Play button based on game state
+    if (gameState.phase === 'waiting') {
+        // Active state with blinking effect
+        if (frameCount % 60 < 30) {
+            fill(39, 174, 96);
+        } else {
+            fill(46, 204, 113);
         }
+    } else {
+        // Disabled state (gray)
+        fill(150);
+    }
+    rect(width / 2 - 70, y + 25, 100, 50, 25);
+
+    // Draw Reset button
+    fill(231, 76, 60);
+    rect(width / 2 + 70, y + 25, 100, 50, 25);
+
+    // Draw text
+    fill(255);
+    textSize(18);
+    textStyle(BOLD);
+    text("Play", width / 2 - 70, y + 25);
+    text("Reset", width / 2 + 70, y + 25);
+    rectMode(CORNER);
+}
 
         // --- Interaction and Logic ---
 
@@ -303,13 +337,18 @@
         }
 
         function checkSliderPress(x, y, type) {
-            const sliderWidth = 240;
-            const sliderHeight = 30;
-            if (mouseY > y - sliderHeight && mouseY < y + sliderHeight && mouseX > x - sliderWidth/2 && mouseX < x + sliderWidth/2) {
-                gameState.draggedSlider = type;
-                updateSliderValue(type);
-            }
+    const sliderWidth = 240;
+    const sliderHeight = 30;
+    if (mouseY > y - sliderHeight && mouseY < y + sliderHeight && mouseX > x - sliderWidth/2 && mouseX < x + sliderWidth/2) {
+        // This condition blocks interaction with disabled sliders
+        if (gameState.activeSlider !== null && gameState.activeSlider !== type) {
+            return; // Do nothing, this slider is disabled
         }
+        
+        gameState.draggedSlider = type;
+        updateSliderValue(type);
+    }
+}
 
         function updateSliderValue(type) {
             let x;
@@ -331,39 +370,41 @@
                 handleSliderChange(type, newValue);
             }
         }
+function handleSliderChange(type, newValue) {
+    if (gameState.phase === 'playing') return;
 
-        function handleSliderChange(type, newValue) {
-            if (gameState.phase === 'playing') return;
+    // If slider is moved back to 0, reset the whole simulation
+    if (newValue === 0) {
+        handleReset();
+        return;
+    }
 
-            const initialPops = initialOrganisms();
-            organisms.maize.population = initialPops.maize.population;
-            organisms.grasshoppers.population = initialPops.grasshoppers.population;
-            organisms.lizards.population = initialPops.lizards.population;
-            gameState.blinkingText = {};
+    // Reset populations and visuals to handle switching between sliders
+    const initialPops = initialOrganisms();
+    organisms.maize.population = initialPops.maize.population;
+    organisms.grasshoppers.population = initialPops.grasshoppers.population;
+    organisms.lizards.population = initialPops.lizards.population;
+    gameState.blinkingText = {};
+    organisms.maize.slider = 0;
+    organisms.grasshoppers.slider = 0;
+    organisms.lizards.slider = 0;
 
-            organisms.maize.slider = 0;
-            organisms.grasshoppers.slider = 0;
-            organisms.lizards.slider = 0;
+    // Set the new slider value and update the corresponding population
+    organisms[type].slider = newValue;
+    if (type === 'maize') {
+        organisms.maize.population = (newValue === 1) ? 8 : 12;
+    } else if (type === 'grasshoppers') {
+        organisms.grasshoppers.population = (newValue === 1) ? 6 : 8;
+    } else if (type === 'lizards') {
+        organisms.lizards.population = (newValue === 1) ? 4 : 6;
+    }
+    gameState.blinkingText[type] = 'increase';
 
-            organisms[type].slider = newValue;
-            
-            // MODIFIED: Implemented new logic for direct population changes
-            if (newValue > 0) {
-                if (type === 'maize') {
-                    organisms.maize.population = (newValue === 1) ? 8 : 12;
-                } else if (type === 'grasshoppers') {
-                    organisms.grasshoppers.population = (newValue === 1) ? 6 : 8;
-                } else if (type === 'lizards') {
-                    organisms.lizards.population = (newValue === 1) ? 4 : 6;
-                }
-                gameState.blinkingText[type] = 'increase';
-            }
-            
-            gameState.phase = 'waiting';
-            gameState.activeSlider = type;
-            gameState.instructionText = "Click 'Play' to observe the changes.";
-        }
-        
+    // Set the game state to 'waiting' to enable the Play button and blur effects
+    gameState.phase = 'waiting';
+    gameState.activeSlider = type;
+    gameState.instructionText = "Click 'Play' to observe the changes.";
+}
         function handlePlay() {
             if (gameState.phase !== 'waiting' || gameState.activeSlider === null) return;
             gameState.phase = 'playing';
