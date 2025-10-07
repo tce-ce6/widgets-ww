@@ -7,6 +7,7 @@ class FoodChainWidget {
     constructor() {
         this.DEFAULT_CIRCLE_RADIUS = 35; 
         this.ACTIVE_COLOR = '#4CAF50';
+        this.INSTRUCTION_COLOR = '#99FF00';
         
         // --- Tracking Variable ---
         this.lastClickedOrganismGroup = null; 
@@ -16,8 +17,10 @@ class FoodChainWidget {
         this.playButton = document.getElementById('play-btn');
         this.resetButton = document.getElementById('reset-btn');
         this.instructionNote = document.getElementById('instruction-note');
+        // 👇 NEW: Reference to the top-note SVG element
+        this.topNote = document.getElementById('top-note'); 
         // ----------------------------------------------
-        
+
         // --- DEFAULT HIDDEN ELEMENTS (Used only for initial DOM state) ---
         // These are the initial stage graphics that are hidden on load.
         this.defaultHiddenIds = [
@@ -30,7 +33,7 @@ class FoodChainWidget {
         ];
         // -----------------------------------------------------------------
 
-        // --- Stage 1 Configuration ---
+        // --- Stage 1 Configuration (omitted for brevity) ---
         this.stage1Config = {
             'maize-stages': { 
                 show: ['maize-2', 'maize-3', 'maize-6', 'maize-7', 'maize-9', 'maize-11'], 
@@ -52,7 +55,7 @@ class FoodChainWidget {
             }
         };
 
-        // --- Stage 2 Configuration ---
+        // --- Stage 2 Configuration (omitted for brevity) ---
         this.stage2Config = {
             'maize-stages': { 
                 show: ['maize-1', 'maize-4', 'maize-increase'],
@@ -68,7 +71,7 @@ class FoodChainWidget {
             }
         };
 
-        // --- Stage 3 Configuration ---
+        // --- Stage 3 Configuration (omitted for brevity) ---
         this.stage3Config = {
             'maize-stages': {
                 show: ['maize-5', 'maize-8', 'maize-12', 'maize-10', 'maize-increase', 'maize-1' , 'maize-4'],
@@ -102,6 +105,8 @@ class FoodChainWidget {
 
     initializeWidget() {
         this.hideDefaultElements();
+        // 👇 Hide the top-note initially
+        this.hideElement('top-note');
         this.addActiveCirclesToStage1();
         this.disableInitialButtons(); 
         this.setupStageListeners(); 
@@ -110,91 +115,13 @@ class FoodChainWidget {
         this.setGroupInteractionState(null, false); // Enable all stages initially
     }
     
-    // --- Stage Group Interaction Control ---
-
-    /**
-     * Disables interaction on all organism groups except the specified one.
-     * @param {string | null} activeGroupId - The ID of the group to keep enabled, or null to enable all.
-     * @param {boolean} disabledState - true to disable interaction, false to enable.
-     */
-    setGroupInteractionState(activeGroupId, disabledState) {
-        this.organismStages.forEach(group => {
-            const groupElement = document.getElementById(group.id);
-            if (!groupElement) return;
-
-            // Only apply the disabled state if the group is NOT the active group OR if we are enabling all (activeGroupId is null)
-            if (activeGroupId === null || group.id !== activeGroupId) {
-                if (disabledState) {
-                    // Disable: Block pointer events and dim the visuals
-                    groupElement.style.pointerEvents = 'none';
-                    groupElement.style.opacity = '0.5'; 
-                } else {
-                    // Enable: Restore pointer events and opacity
-                    groupElement.style.pointerEvents = ''; // Reset to default
-                    groupElement.style.opacity = '1.0';
-                }
-            } else {
-                // Ensure the active group is always fully enabled
-                groupElement.style.pointerEvents = '';
-                groupElement.style.opacity = '1.0';
-            }
-        });
-    }
-
     // -------------------------------------------
 
     // --- Button and Text Control Methods ---
+    // (setGroupInteractionState, disableInitialButtons, setButtonState, updateInstructionText remain unchanged)
 
-    disableInitialButtons() {
-        // ACTION: Disable both Play (true) and Reset (true) buttons initially
-        this.setButtonState(true, true);
-    }
+    // ... (Your methods for interaction control: setGroupInteractionState, disableInitialButtons, setButtonState, updateInstructionText, setupPlayButtonListener, setupResetButtonListener) ...
     
-    /**
-     * NEW: Takes separate control states for Play and Reset buttons.
-     */
-    setButtonState(disabledPlay, disabledReset) {
-        if (this.playButton) {
-            this.playButton.disabled = disabledPlay;
-            if (this.playButton.tagName.toLowerCase() === 'g') {
-                this.playButton.style.opacity = disabledPlay ? '0.5' : '1.0';
-            }
-        }
-        if (this.resetButton) {
-            this.resetButton.disabled = disabledReset;
-            if (this.resetButton.tagName.toLowerCase() === 'g') {
-                this.resetButton.style.opacity = disabledReset ? '0.5' : '1.0';
-            }
-        }
-    }
-    
-    updateInstructionText(text) {
-        if (this.instructionNote) {
-            this.instructionNote.textContent = text;
-        }
-    }
-
-    // -------------------------------------------
-    
-    setupPlayButtonListener() {
-        if (this.playButton) {
-            this.playButton.addEventListener('click', () => {
-                this.handlePlayButtonClick();
-            });
-        }
-    }
-
-    /**
-     * Sets up the listener for the Reset button.
-     */
-    setupResetButtonListener() {
-        if (this.resetButton) {
-            this.resetButton.addEventListener('click', () => {
-                this.handleResetButtonClick();
-            });
-        }
-    }
-
     /**
      * Resets the entire widget back to its initial state (Stage 1).
      */
@@ -205,6 +132,12 @@ class FoodChainWidget {
         this.applyStageConfig('Grasshopper-stages', 'stage-1', this.stage1Config['Grasshopper-stages']);
         this.applyStageConfig('lizard-stages', 'stage-1', this.stage1Config['lizard-stages']);
         
+        // 👇 Hide top-note on reset
+        this.hideElement('top-note');
+        
+        // Reset population notes visually
+        this.resetPopulationNotes(); 
+
         // 2. Move active circles back to stage-1
         this.organismStages.forEach(group => {
             const stage1Element = document.getElementById(group.id).querySelector('#stage-1');
@@ -222,21 +155,51 @@ class FoodChainWidget {
         // 4. Reset instructions
         this.updateInstructionText("Select any stage for any organism to begin.");
     }
-    
+
     /**
-     * Helper method to apply configuration (show/hide) for a specific stage.
+     * Resets the population instruction notes to a default 'Increase' state (or empty).
      */
-    applyStageConfig(groupId, stageId, config) {
-        // 1. SHOW elements
-        if (config && config.show && Array.isArray(config.show)) {
-            config.show.forEach(id => this.showElement(id));
-        }
-        // 2. HIDE elements
-        if (config && config.hide && Array.isArray(config.hide)) {
-            config.hide.forEach(id => this.hideElement(id));
-        }
+    resetPopulationNotes() {
+        const maizeNote = document.querySelector('#maize-increase #instruction-note');
+        const grasshopperNote = document.querySelector('#grasshopper-increase #instruction-note');
+        const lizardNote = document.querySelector('#lizard-increase #instruction-note');
+
+        // Reset to default text and green color (or transparent)
+        if (maizeNote) { maizeNote.textContent = 'Increase'; maizeNote.style.color = this.INSTRUCTION_COLOR; }
+        if (grasshopperNote) { grasshopperNote.textContent = 'Increase'; grasshopperNote.style.color = this.INSTRUCTION_COLOR; }
+        if (lizardNote) { lizardNote.textContent = 'Increase'; lizardNote.style.color = this.INSTRUCTION_COLOR; }
     }
 
+    /**
+     * NEW METHOD: Applies the specific population changes based on the selected organism.
+     * @param {string} groupId - The ID of the organism group that was selected.
+     */
+    updatePopulationNotes(groupId) {
+        // 1. Always reset all notes first to clear previous state (especially color)
+        this.resetPopulationNotes();
+        
+        const maizeNote = document.querySelector('#maize-increase #instruction-note');
+        const grasshopperNote = document.querySelector('#grasshopper-increase #instruction-note');
+        const lizardNote = document.querySelector('#lizard-increase #instruction-note');
+
+        // 2. Apply new changes based on the clicked group
+        if (groupId === 'Grasshopper-stages') {
+            // Increasing grasshoppers (consumer) -> Maize (food) decreases, Lizards (predator) increase
+            if (maizeNote) { maizeNote.textContent = 'Decrease'; maizeNote.style.color = '#FFB300'; } // Orange/Warning color for decrease
+            if (lizardNote) { lizardNote.textContent = 'Increase'; lizardNote.style.color = this.INSTRUCTION_COLOR; }
+        } 
+        else if (groupId === 'maize-stages') {
+            // Increasing maize (food) -> Grasshoppers (consumer) increase
+            if (grasshopperNote) { grasshopperNote.textContent = 'Increase'; grasshopperNote.style.color = this.INSTRUCTION_COLOR; }
+            // Maize doesn't typically affect lizard directly in this simple chain, but the rule for the other two needs to be established.
+            // Since reset sets them to 'Increase', no specific action needed for them unless they should be explicitly 'No Change'
+        } 
+        else if (groupId === 'lizard-stages') {
+            // Increasing lizards (predator) -> Grasshoppers (food) decrease
+            if (grasshopperNote) { grasshopperNote.textContent = 'Decrease'; grasshopperNote.style.color = '#FFB300'; } // Orange/Warning color for decrease
+        }
+    }
+    
     /**
      * UPDATED: Only disables the Play button, keeping the Reset button enabled.
      */
@@ -245,6 +208,9 @@ class FoodChainWidget {
         this.hideElement('maize-increase');
         this.hideElement('grasshopper-increase');
         this.hideElement('lizard-increase');
+
+        // 👇 Hide top-note when 'Play' is clicked
+        this.hideElement('top-note');
 
         // 2. Determine which organism group was last clicked and show controls
         if (this.lastClickedOrganismGroup) {
@@ -267,7 +233,148 @@ class FoodChainWidget {
         // Update instruction text
         this.updateInstructionText("Drag the slider left or right to see other changes.");
     }
-    // -------------------------------------------
+    
+    // ... (hideDefaultElements, showElement, hideElement, applyStageConfig remain unchanged) ...
+
+    /**
+     * Sets up click listeners on all stages (stage-1, stage-2, stage-3) for all three organisms.
+     */
+    setupStageListeners() {
+        this.organismStages.forEach(group => {
+            const parentGroup = document.getElementById(group.id);
+            if (!parentGroup) return;
+
+            group.stages.forEach(stageId => {   
+                const stageElement = parentGroup.querySelector(`#${stageId}`);
+                if (stageElement) {
+                    // Attach the event listener to the stage group
+                    stageElement.addEventListener('click', (event) => {
+                        
+                        // 1. Reset/Hide ALL 'increase' elements 
+                        this.hideElement('maize-increase');
+                        this.hideElement('grasshopper-increase');
+                        this.hideElement('lizard-increase');
+
+                        // 👇 Show the top-note when any stage is clicked
+                        this.showElement('top-note');
+                        
+                        // 2. Move the active green circle to the clicked stage
+                        this.moveActiveCircle(group.id, stageElement);
+                        
+                        // 3. Track the last clicked organism group
+                        this.lastClickedOrganismGroup = group.id;
+
+                        // 4. Disable all OTHER stage groups (keeps current group enabled)
+                        this.setGroupInteractionState(group.id, true); 
+
+                        // 5. Enable both Play (false) and Reset (false) buttons
+                        this.setButtonState(false, false); 
+
+                        // 6. Update instruction
+                        this.updateInstructionText("Click 'Play' to observe the changes.");
+                        
+                        // 7. Determine and apply show/hide config (omitted for brevity)
+                        let config = null;
+                        if (stageId === 'stage-1') {
+                            config = this.stage1Config[group.id]; 
+                        } else if (stageId === 'stage-2') {
+                            config = this.stage2Config[group.id];
+                        } else if (stageId === 'stage-3') {
+                            config = this.stage3Config[group.id];
+                        }
+                        
+                        if (config) {
+                            if (config.show && Array.isArray(config.show)) {
+                                config.show.forEach(id => this.showElement(id));
+                            }
+                            if (config.hide && Array.isArray(config.hide)) {
+                                config.hide.forEach(id => this.hideElement(id));
+                            }
+                        }
+
+                        // 8. Call the NEW DEDICATED method for population logic
+                        this.updatePopulationNotes(group.id);
+                        
+                    });
+                } else {
+                    console.warn(`Stage element #${stageId} not found in ${group.id}.`);
+                }
+            });
+        });
+    }
+    
+    // ... (getStageCenter, addActiveCirclesToStage1, moveActiveCircle remain unchanged) ...
+
+    // ADDED FOR BREVITY - YOUR ORIGINAL METHODS
+    setGroupInteractionState(activeGroupId, disabledState) {
+        this.organismStages.forEach(group => {
+            const groupElement = document.getElementById(group.id);
+            if (!groupElement) return;
+
+            if (activeGroupId === null || group.id !== activeGroupId) {
+                if (disabledState) {
+                    groupElement.style.pointerEvents = 'none';
+                    groupElement.style.opacity = '0.5'; 
+                } else {
+                    groupElement.style.pointerEvents = '';
+                    groupElement.style.opacity = '1.0';
+                }
+            } else {
+                groupElement.style.pointerEvents = '';
+                groupElement.style.opacity = '1.0';
+            }
+        });
+    }
+
+    disableInitialButtons() {
+        this.setButtonState(true, true);
+    }
+    
+    setButtonState(disabledPlay, disabledReset) {
+        if (this.playButton) {
+            this.playButton.disabled = disabledPlay;
+            if (this.playButton.tagName.toLowerCase() === 'g') {
+                this.playButton.style.opacity = disabledPlay ? '0.5' : '1.0';
+            }
+        }
+        if (this.resetButton) {
+            this.resetButton.disabled = disabledReset;
+            if (this.resetButton.tagName.toLowerCase() === 'g') {
+                this.resetButton.style.opacity = disabledReset ? '0.5' : '1.0';
+            }
+        }
+    }
+    
+    updateInstructionText(text) {
+        if (this.instructionNote) {
+            this.instructionNote.textContent = text;
+        }
+    }
+
+    setupPlayButtonListener() {
+        if (this.playButton) {
+            this.playButton.addEventListener('click', () => {
+                this.handlePlayButtonClick();
+            });
+        }
+    }
+
+    setupResetButtonListener() {
+        if (this.resetButton) {
+            this.resetButton.addEventListener('click', () => {
+                this.handleResetButtonClick();
+            });
+        }
+    }
+    
+    applyStageConfig(groupId, stageId, config) {
+        if (config && config.show && Array.isArray(config.show)) {
+            config.show.forEach(id => this.showElement(id));
+        }
+        if (config && config.hide && Array.isArray(config.hide)) {
+            config.hide.forEach(id => this.hideElement(id));
+        }
+    }
 
     hideDefaultElements() {
         this.defaultHiddenIds.forEach(id => {
@@ -292,9 +399,6 @@ class FoodChainWidget {
         }
     }
 
-    /**
-     * Finds the center coordinates of the main circle path within a stage element.
-     */
     getStageCenter(stageElement) {
         const existingEllipse = stageElement.querySelector('path[id^="Ellipse 7"]');
 
@@ -309,9 +413,6 @@ class FoodChainWidget {
         }
     }
 
-    /**
-     * Adds the initial active green circle to stage-1 and tracks it.
-     */
     addActiveCirclesToStage1() {
         this.organismStages.forEach(group => {
             const parentGroup = document.getElementById(group.id);
@@ -335,91 +436,6 @@ class FoodChainWidget {
         });
     }
 
-    /**
-     * Sets up click listeners on all stages (stage-1, stage-2, stage-3) for all three organisms.
-     */
-    setupStageListeners() {
-    this.organismStages.forEach(group => {
-        const parentGroup = document.getElementById(group.id);
-        if (!parentGroup) return;
-
-        group.stages.forEach(stageId => {
-            const stageElement = parentGroup.querySelector(`#${stageId}`);
-            if (stageElement) {
-                // Attach the event listener to the stage group
-                stageElement.addEventListener('click', (event) => {
-                    
-                    // 1. Reset/Hide ALL 'increase' elements 
-                    this.hideElement('maize-increase');
-                    this.hideElement('grasshopper-increase');
-                    this.hideElement('lizard-increase');
-                    
-                    // 2. Move the active green circle to the clicked stage
-                    this.moveActiveCircle(group.id, stageElement);
-                    
-                    // 3. Track the last clicked organism group
-                    this.lastClickedOrganismGroup = group.id;
-
-                    // 4. Disable all OTHER stage groups (keeps current group enabled)
-                    this.setGroupInteractionState(group.id, true); 
-
-                    // 5. Enable both Play (false) and Reset (false) buttons
-                    this.setButtonState(false, false); 
-
-                    // 6. Update instruction
-                    this.updateInstructionText("Click 'Play' to observe the changes.");
-                    
-                    // 7. Determine which configuration object to use based on clicked stage
-                    let config = null;
-                    if (stageId === 'stage-1') {
-                        config = this.stage1Config[group.id]; 
-                    } else if (stageId === 'stage-2') {
-                        config = this.stage2Config[group.id];
-                    } else if (stageId === 'stage-3') {
-                        config = this.stage3Config[group.id];
-                    }
-                    
-                    // 8. Apply show/hide logic
-                    if (config) {
-                        if (config.show && Array.isArray(config.show)) {
-                            config.show.forEach(id => this.showElement(id));
-                        }
-                        if (config.hide && Array.isArray(config.hide)) {
-                            config.hide.forEach(id => this.hideElement(id));
-                        }
-                    }
-
-                    // --- 9. NEW: Food Chain Population Rule Logic ---
-                    if (group.id === 'Grasshopper-stages') {
-                        // Increasing grasshoppers → Maize decreases, Lizards increase
-                        const maizeNote = document.querySelector('#maize-increase #instruction-note');
-                        const lizardNote = document.querySelector('#lizard-increase #instruction-note');
-                        if (maizeNote) {maizeNote.textContent = 'Decrease'; maizeNote.style.color = '#FFB300';}
-                        if (lizardNote) lizardNote.textContent = 'Increase';
-                    } 
-                    else if (group.id === 'maize-stages') {
-                        // Increasing maize → Grasshoppers increase
-                        const grasshopperNote = document.querySelector('#grasshopper-increase #instruction-note');
-                        if (grasshopperNote) grasshopperNote.textContent = 'Increase';
-                    } 
-                    else if (group.id === 'lizard-stages') {
-                        // Increasing lizards → Grasshoppers decrease
-                        const grasshopperNote = document.querySelector('#grasshopper-increase #instruction-note');
-                        if (grasshopperNote) {grasshopperNote.textContent = 'Decrease'; grasshopperNote.style.color = '#FFB300';}
-                    }
-                    // --- End of Food Chain Logic ---
-                });
-            } else {
-                console.warn(`Stage element #${stageId} not found in ${group.id}.`);
-            }
-        });
-    });
-}
-
-
-    /**
-     * Moves the green circle from its current position to the center of the clicked stage.
-     */
     moveActiveCircle(organismId, targetStageElement) {
         const currentCircle = this.activeCircles[organismId];
         
@@ -441,5 +457,5 @@ class FoodChainWidget {
         targetStageElement.appendChild(currentCircle);
         
     }
+    
 }
-
