@@ -13,7 +13,7 @@ function initGeometryBoard() {
         withLabel: true,
         ticks: {
             drawLabels: true,
-            drawZero: false,        // ✅ do not show "0"
+            drawZero: false,
             distance: 1,
             label: { offset: [0, -15] }
         }
@@ -23,7 +23,7 @@ function initGeometryBoard() {
         withLabel: true,
         ticks: {
             drawLabels: true,
-            drawZero: false,        // ✅ do not show "0"
+            drawZero: false,
             distance: 1,
             label: { offset: [-20, 0] }
         }
@@ -61,16 +61,24 @@ function initGeometryBoard() {
 
     // --- Utility functions ---
     function getArea(p) {
-        try { return p.Area().toFixed(2); } 
-        catch (e) { return '—'; }
+        try {
+            return p.Area().toFixed(2);
+        } catch (e) {
+            return '—';
+        }
     }
 
     function getPerimeter(p) {
         try {
+            if (!p || !p.borders) return '—';
             let per = 0;
-            for (let i = 0; i < 3; i++) per += p.borders[i].Value();
+            for (let i = 0; i < p.borders.length; i++) {
+                per += p.borders[i].L(); // ✅ Corrected: use .L() instead of .Value()
+            }
             return per.toFixed(2);
-        } catch (e) { return '—'; }
+        } catch (e) {
+            return '—';
+        }
     }
 
     // --- Text Labels ---
@@ -103,16 +111,7 @@ function initGeometryBoard() {
         return getPerimeter(polyDBC) + ' units'; 
     }], { fontSize: 12, color: '#10b981', anchorX: 'middle' });
 
-    // // Observation
-    // brd.create('text', [12, -0.5, function() {
-    //     return '<b>Drag points A and D along line l to observe constant area and changing perimeter.</b>';
-    // }], {
-    //     fontSize: 12, color: '#4b5563', anchorX: 'middle'
-    // });
-
     // --- Force full initialization ---
-    brd.fullUpdate();  // ✅ Forces initial computation for function-based texts
-
-    // --- Small trick to ensure visibility before user interaction ---
-    setTimeout(function() { brd.fullUpdate(); }, 100); // ✅ Second update after layout completes
+    brd.fullUpdate();
+    setTimeout(() => brd.fullUpdate(), 100);
 }
