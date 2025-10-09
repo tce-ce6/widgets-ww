@@ -1,0 +1,789 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Root Spiral - Interactive Widget</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a2e;
+            font-family: 'Arial', sans-serif;
+        }
+        main {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main></main>
+    <script>
+        // Square Root Spiral Interactive Widget
+        let segments = [];
+        let currentStep = 1;
+        let maxSteps = 17; // Changed to 17 to match the image
+        let autoMode = false;
+        let showLabels = true;
+        let showNumberLine = true;
+        let showExplanation = false;
+        let spiralColors = [];
+        let selectedColor = 0;
+        let animationProgress = 0;
+        let isAnimating = false;
+        
+        // UI Elements (all canvas-based)
+        let buttons = [];
+        let colorPalette = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
+        
+        // Scale and positioning
+        let scale = 80; // Slightly increased scale for better visibility of the spiral
+        let originX, originY;
+        
+        // Explanation text for each step
+        let explanations = {
+            1: "Starting point: We begin at origin O with a unit segment OP₁ = 1. This is our foundation.",
+            2: "First triangle: Draw a perpendicular unit segment from P₁. By the Pythagorean theorem, OP₂ = √(1² + 1²) = √2. We've created our first irrational number geometrically!",
+            3: "Second triangle: From P₂, draw another perpendicular unit segment. Now OP₃ = √((√2)² + 1²) = √(2 + 1) = √3. The pattern emerges!",
+            4: "Third triangle: Continuing the pattern, OP₄ = √((√3)² + 1²) = √(3 + 1) = √4 = 2. Notice that √4 is a perfect square!",
+            5: "Fifth triangle: Following the spiral pattern, we construct OP₅ = √((√4)² + 1²) = √5. Each hypotenuse represents the square root of its step number.",
+            // Add more explanations if needed for higher steps
+        };
+        
+        function setup() {
+            createCanvas(1500, 700);
+
+            // Center the spiral's origin.
+            originX = 1120 / 2;
+            originY = height / 3;
+            
+            initializeSegments();
+            
+            for (let i = 0; i < maxSteps; i++) {
+                spiralColors.push(colorPalette[i % colorPalette.length]);
+            }
+            
+            createButtons();
+        }
+        
+        function draw() {
+            background(26, 26, 46);
+            
+            drawTitle();
+            drawSpiral();
+            
+            if (showNumberLine) {
+                drawNumberLine();
+            }
+            
+            drawButtons();
+            drawColorPalette();
+            
+            if (showExplanation) {
+                drawExplanationPanel();
+            }
+            
+            drawStepIndicator();
+            
+            if (isAnimating) {
+                animationProgress += 0.02;
+                if (animationProgress >= 1) {
+                    animationProgress = 0;
+                    isAnimating = false;
+                    if (autoMode && currentStep < maxSteps) {
+                        setTimeout(autoBuild, 500); // Short delay for auto-build after animation
+                    }
+                }
+            }
+        }
+        
+        function initializeSegments() {
+            segments = [];
+            let x = 0;
+            let y = 0;
+            let angle = 0;
+            
+            for (let i = 0; i < maxSteps; i++) {
+                let nextX, nextY;
+                if (i === 0) {
+                    nextX = x + 1; // First segment is horizontal
+                    nextY = y;
+                } else {
+                    // For subsequent segments, calculate the end point of the unit leg
+                    // relative to the previous hypotenuse.
+                    // The hypotenuse of the previous triangle is the base of the current.
+                    let prevHypotenuseLength = segments[i-1].hypotenuse;
+                    // The angle for the unit leg is always 90 degrees (PI/2) from the previous hypotenuse.
+                    // We need to calculate the angle of the previous hypotenuse.
+                    let prevHypAngle = atan2(-segments[i-1].y2, segments[i-1].x2); // Angle relative to origin (from its endpoint)
+                    
+                    // The unit leg is perpendicular to the previous hypotenuse.
+                    // If the spiral turns clockwise, angle is prevHypAngle + PI/2
+                    // If the spiral turns counter-clockwise, angle is prevHypAngle - PI/2
+                    // For this spiral, it typically turns in one direction, so let's stick to consistent rotation
+                    
+                    // The crucial part is that the unit segment is always perpendicular to the previous hypotenuse.
+                    // The segments are drawn from the origin outwards (hypotenuse) and then the unit leg.
+                    // Let's re-think the segment generation based on the image provided where the unit leg is drawn
+                    // from P(n-1) to P(n) and is perpendicular to OP(n-1).
+                    // This means the 'segments' array should store the points (P_n-1, P_n) and (O, P_n-1).
+                    
+                    // Let's regenerate this part to correctly represent the geometric construction.
+                    // Each segment is (P_n, P_n+1) where P_n+1 makes a right angle with O_P_n.
+                    // The current (x, y) are the coordinates of P_i. We need to find P_i+1.
+                    
+                    let prevX = segments[i-1].x2;
+                    let prevY = segments[i-1].y2;
+                    
+                    // Angle of the previous hypotenuse (vector OP_i)
+                    let currentHypotenuseAngle = atan2(prevY, prevX);
+                    
+                    // Angle for the new unit segment, 90 degrees "counter-clockwise" from the current hypotenuse
+                    let unitSegmentAngle = currentHypotenuseAngle + PI / 2; 
+
+                    nextX = prevX + cos(unitSegmentAngle);
+                    nextY = prevY + sin(unitSegmentAngle);
+                }
+                
+                segments.push({
+                    x1: x, // Start point of the hypotenuse (previous P point)
+                    y1: y,
+                    x2: nextX, // End point of the current unit segment (current P point)
+                    y2: nextY,
+                    hypotenuse: sqrt(i + 1), // The length from origin to P_i+1
+                    step: i + 1,
+                    // These angles are now less directly used for rendering as the points define the triangle
+                    angle: angle // This angle isn't strictly necessary anymore with the new point-based logic
+                });
+                
+                // Update x, y to be the start of the next hypotenuse (which is the endpoint of the current one)
+                x = nextX;
+                y = nextY;
+
+                // Adjust the origin point for subsequent segments
+                if (i === 0) { // For the first segment, P1 is (1,0). The next hypotenuse starts from there.
+                    x = 1;
+                    y = 0;
+                } else { // For subsequent segments, the base of the triangle (OP_n) is the hypotenuse of the previous.
+                    // The start of the unit segment of the current triangle is the end of the previous hypotenuse.
+                    // This is 'segments[i-1].x2, segments[i-1].y2' in the world coordinates, but relative to the origin for calculation.
+                    x = segments[i].x2;
+                    y = segments[i].y2;
+                }
+            }
+        }
+        
+        function drawTitle() {
+            fill(255);
+            noStroke();
+            textAlign(CENTER);
+            textSize(28);
+            text('Square Root Spiral Constructor', width / 2, 40);
+            textSize(14);
+            fill(200);
+            text('Visualizing the Geometric Representation of Square Roots', width / 2, 65);
+        }
+        
+        function drawSpiral() {
+            push();
+            translate(originX, originY);
+            
+            // Draw origin point
+            fill(255);
+            noStroke();
+            circle(0, 0, 12); // Increased circle size
+            fill(255);
+            textAlign(CENTER);
+            textSize(14);
+            text('O', -15, 5);
+            
+            for (let i = 0; i < currentStep; i++) {
+                let seg = segments[i];
+                let progress = 1;
+                
+                if (i === currentStep - 1 && isAnimating) {
+                    progress = animationProgress;
+                }
+                
+                let pPrevX = (i === 0) ? 0 : segments[i-1].x2 * scale;
+                let pPrevY = (i === 0) ? 0 : -segments[i-1].y2 * scale;
+
+                let pCurrentX = seg.x2 * scale;
+                let pCurrentY = -seg.y2 * scale;
+
+                // For the animation, interpolate the current segment's endpoint
+                let animatedPCurrentX = lerp(pPrevX, pCurrentX, progress);
+                let animatedPCurrentY = lerp(pPrevY, pCurrentY, progress);
+                
+                // Draw the right triangle
+                push();
+                fill(spiralColors[i] + '40');
+                stroke(spiralColors[i]);
+                strokeWeight(1);
+                
+                if (i === 0) { // First triangle (0,0) to (1,0) to (1,1)
+                    triangle(0, 0, seg.x1 * scale, -seg.y1 * scale, animatedPCurrentX, animatedPCurrentY);
+                } else {
+                    triangle(0, 0, pPrevX, pPrevY, animatedPCurrentX, animatedPCurrentY);
+                }
+                pop();
+                
+                // Draw the unit segment (perpendicular leg)
+                stroke(spiralColors[i]);
+                strokeWeight(3);
+                
+                if (i === 0) { // First unit segment from (0,0) to (1,0)
+                    line(seg.x1 * scale, -seg.y1 * scale, animatedPCurrentX, animatedPCurrentY);
+                } else { // Subsequent unit segments Pn to Pn+1
+                    line(pPrevX, pPrevY, animatedPCurrentX, animatedPCurrentY);
+                }
+
+                // Draw hypotenuse (from origin to current point)
+                strokeWeight(2);
+                stroke(255, 200, 100);
+                line(0, 0, animatedPCurrentX, animatedPCurrentY);
+                
+                // Draw right angle indicator
+                // The right angle is always at the "previous P" point for the current triangle.
+                if (i === 0) { // Right angle for the first triangle is at P1 (1,0)
+                     drawRightAngle(segments[0].x1 * scale, -segments[0].y1 * scale, 0, 0, segments[0].x2 * scale, -segments[0].y2 * scale);
+                } else {
+                    drawRightAngle(pPrevX, pPrevY, 0, 0, animatedPCurrentX, animatedPCurrentY);
+                }
+                
+                // Labels
+                if (showLabels && progress > 0.5) {
+                    // Unit segment label ('1')
+                    fill(255);
+                    noStroke();
+                    textSize(12);
+                    textAlign(CENTER);
+                    
+                    let midUnitX, midUnitY;
+                    if (i === 0) {
+                        midUnitX = (seg.x1 * scale + animatedPCurrentX) / 2;
+                        midUnitY = (-seg.y1 * scale + animatedPCurrentY) / 2;
+                    } else {
+                        midUnitX = (pPrevX + animatedPCurrentX) / 2;
+                        midUnitY = (pPrevY + animatedPCurrentY) / 2;
+                    }
+                    
+                    // Adjust label position for unit segment
+                    let unitAngle = atan2(animatedPCurrentY - midUnitY, animatedPCurrentX - midUnitX);
+                    let unitOffset = 15; // Increased offset for clarity
+                    text('1', midUnitX + cos(unitAngle + PI/2) * unitOffset, midUnitY + sin(unitAngle + PI/2) * unitOffset);
+                    
+                    // Hypotenuse label (√N)
+                    let hypMidX = animatedPCurrentX / 2;
+                    let hypMidY = animatedPCurrentY / 2;
+                    fill(255, 220, 120);
+                    
+                    let hypLabelText;
+                    if (seg.hypotenuse === Math.floor(seg.hypotenuse)) {
+                        hypLabelText = Math.floor(seg.hypotenuse);
+                    } else {
+                        hypLabelText = '√' + seg.step;
+                    }
+
+                    // Adjust label position for hypotenuse
+                    let hypAngle = atan2(animatedPCurrentY, animatedPCurrentX);
+                    let hypOffset = 15; // Offset from the hypotenuse line
+                    text(hypLabelText, hypMidX - cos(hypAngle + PI/2) * hypOffset, hypMidY - sin(hypAngle + PI/2) * hypOffset);
+                    
+                    // Point labels (P_n)
+                    fill(255);
+                    text('P' + seg.step, animatedPCurrentX + 15, animatedPCurrentY + 5);
+                }
+            }
+            
+            pop();
+        }
+        
+        function drawRightAngle(cornerX, cornerY, prevLineEndX, prevLineEndY, currentLineEndX, currentLineEndY) {
+            let size = 8;
+            push();
+            translate(cornerX, cornerY);
+            noFill();
+            stroke(255, 150);
+            strokeWeight(1);
+            
+            let v1X = prevLineEndX - cornerX;
+            let v1Y = prevLineEndY - cornerY;
+            let v2X = currentLineEndX - cornerX;
+            let v2Y = currentLineEndY - cornerY;
+
+            let anglePrev = atan2(v1Y, v1X);
+            let angleCurr = atan2(v2Y, v2X);
+
+            // Ensure the angle is correctly oriented for the square.
+            // We need points along the two legs, starting from the corner.
+            let p1x = cos(anglePrev) * size;
+            let p1y = sin(anglePrev) * size;
+            let p2x = cos(angleCurr) * size;
+            let p2y = sin(angleCurr) * size;
+            
+            line(p1x, p1y, p1x + p2x, p1y + p2y); // The corner of the square
+            line(p2x, p2y, p1x + p2x, p1y + p2y); // The corner of the square
+
+            // For the first triangle, the base is on the X-axis.
+            // The unit segment is P1P2. The right angle is at P1(1,0).
+            // The segment OP1 is from (0,0) to (1,0).
+            // The segment P1P2 is from (1,0) to (1,1).
+            // So for the first angle: cornerX=scale, cornerY=0, prevLineEndX=0, prevLineEndY=0, currentLineEndX=scale, currentLineEndY=-scale
+            if (cornerX === scale && cornerY === 0 && prevLineEndX === 0) { // Specific case for the first triangle's right angle
+                 line(0,0,size,0);
+                 line(size,0,size,-size);
+                 line(size,-size,0,-size);
+            }
+            
+            pop();
+        }
+
+        // Overload for drawRightAngle to handle the first segment differently
+        function drawRightAngle(cornerX, cornerY, originSpiralX, originSpiralY, currentP_X, currentP_Y) {
+            let size = 8;
+            push();
+            translate(cornerX, cornerY); // Translate to the right angle corner (e.g., P1 for the first triangle)
+            noFill();
+            stroke(255, 150);
+            strokeWeight(1);
+            
+            // For the first triangle, the angle is at (1,0) (P1)
+            if (abs(cornerX - scale) < 0.1 && abs(cornerY - 0) < 0.1) { // If it's the first triangle's right angle
+                // Draw square at (1,0) formed by segments (0,0)-(1,0) and (1,0)-(1,1)
+                line(0, 0, size, 0);       // Horizontal part from P1
+                line(size, 0, size, -size); // Vertical part upwards
+                line(size, -size, 0, -size); // Horizontal part back towards the segment
+                // The actual point P1 is at (scale, 0)
+            } else {
+                // For subsequent triangles, the corner is P_n, with lines OP_n and P_n P_n+1
+                // The two lines forming the right angle are:
+                // 1. From the origin (O) to the corner (P_n). Vector: (cornerX - 0, cornerY - 0)
+                // 2. From the corner (P_n) to the tip (P_n+1). Vector: (currentP_X - cornerX, currentP_Y - cornerY)
+
+                let vec1_x = -cornerX; // Vector from corner to origin
+                let vec1_y = -cornerY;
+                
+                let vec2_x = currentP_X - cornerX; // Vector from corner to current P point
+                let vec2_y = currentP_Y - cornerY;
+
+                let angle1 = atan2(vec1_y, vec1_x);
+                let angle2 = atan2(vec2_y, vec2_x);
+
+                let p1x = cos(angle1) * size;
+                let p1y = sin(angle1) * size;
+                let p2x = cos(angle2) * size;
+                let p2y = sin(angle2) * size;
+
+                // Draw the square marks.
+                line(p1x, p1y, p1x + p2x, p1y + p2y);
+                line(p2x, p2y, p1x + p2x, p1y + p2y);
+            }
+            pop();
+        }
+        
+        function drawNumberLine() {
+            let lineY = height - 50;
+            let lineStartX = 100;
+            let lineLength = 1300;
+            let numberLineScale = 200;
+            
+            // Number line background
+            fill(20, 20, 35);
+            noStroke();
+            rect(50, lineY - 40, 1400, 80, 10);
+            
+            // Title
+            fill(255);
+            textSize(12);
+            textAlign(LEFT);
+            text('Number Line Representation:', 60, lineY - 20);
+            
+            // Draw line
+            stroke(150);
+            strokeWeight(2);
+            line(lineStartX, lineY, lineStartX + lineLength, lineY);
+            
+            // Draw marks
+            for (let i = 0; i <= currentStep && i <= maxSteps; i++) { // Changed to maxSteps
+                let value = sqrt(i);
+                if (i === 0) value = 0; // sqrt(0) is 0
+                let x = lineStartX + value * numberLineScale;
+                
+                if (x > lineStartX + lineLength) break;
+                
+                // Mark
+                stroke(spiralColors[i - 1] || 150); // Use color for corresponding step
+                strokeWeight(3);
+                line(x, lineY - 10, x, lineY + 10);
+                
+                // Label
+                fill(255);
+                noStroke();
+                textAlign(CENTER);
+                textSize(11);
+                
+                if (i === 0) {
+                    text('0', x, lineY + 25);
+                } else if (value === Math.floor(value)) {
+                    text(Math.floor(value), x, lineY + 25);
+                } else {
+                    text('√' + i, x, lineY + 25);
+                }
+            }
+        }
+        
+        function createButtons() {
+            buttons = [
+                {
+                    x: 1120,
+                    y: 120,
+                    w: 160,
+                    h: 40,
+                    label: 'Next Step',
+                    action: () => {
+                        if (currentStep < maxSteps) {
+                            currentStep++;
+                            isAnimating = true;
+                            animationProgress = 0;
+                            autoMode = false; // Turn off auto-mode on manual step
+                        }
+                    }
+                },
+                {
+                    x: 1300,
+                    y: 120,
+                    w: 160,
+                    h: 40,
+                    label: 'Previous Step',
+                    action: () => {
+                        if (currentStep > 1) {
+                            currentStep--;
+                            autoMode = false; // Turn off auto-mode on manual step
+                        }
+                    }
+                },
+                {
+                    x: 1120,
+                    y: 175,
+                    w: 160,
+                    h: 40,
+                    label: 'Reset',
+                    action: () => {
+                        currentStep = 1;
+                        animationProgress = 0;
+                        isAnimating = false;
+                        autoMode = false; // Turn off auto-mode on reset
+                    }
+                },
+                {
+                    x: 1300,
+                    y: 175,
+                    w: 160,
+                    h: 40,
+                    label: autoMode ? 'Stop Auto' : 'Auto Build', // Updated label
+                    action: () => {
+                        autoMode = !autoMode;
+                        if (autoMode) {
+                            if (currentStep < maxSteps) {
+                                autoBuild();
+                            } else { // If already at max, reset and auto-build
+                                currentStep = 1;
+                                isAnimating = true;
+                                animationProgress = 0;
+                                setTimeout(autoBuild, 500);
+                            }
+                        }
+                    }
+                },
+                {
+                    x: 1120,
+                    y: 230,
+                    w: 160,
+                    h: 40,
+                    label: showLabels ? 'Hide Labels' : 'Show Labels',
+                    action: () => {
+                        showLabels = !showLabels;
+                    }
+                },
+                {
+                    x: 1300,
+                    y: 230,
+                    w: 160,
+                    h: 40,
+                    label: showNumberLine ? 'Hide Number Line' : 'Show Number Line',
+                    action: () => {
+                        showNumberLine = !showNumberLine;
+                    }
+                },
+                {
+                    x: 1120,
+                    y: 285,
+                    w: 340,
+                    h: 40,
+                    label: showExplanation ? 'Hide Explanation' : 'Show Explanation',
+                    action: () => {
+                        showExplanation = !showExplanation;
+                    }
+                }
+            ];
+        }
+        
+        function drawButtons() {
+            for (let btn of buttons) {
+                // Update button labels
+                if (btn.label.includes('Labels')) {
+                    btn.label = showLabels ? 'Hide Labels' : 'Show Labels';
+                }
+                if (btn.label.includes('Number Line')) {
+                    btn.label = showNumberLine ? 'Hide Number Line' : 'Show Number Line';
+                }
+                if (btn.label.includes('Explanation')) {
+                    btn.label = showExplanation ? 'Hide Explanation' : 'Show Explanation';
+                }
+                if (btn.label.includes('Auto Build') || btn.label.includes('Stop Auto')) {
+                    btn.label = autoMode ? 'Stop Auto' : 'Auto Build';
+                }
+                
+                // Check hover
+                let isHover = mouseX > btn.x && mouseX < btn.x + btn.w &&
+                                mouseY > btn.y && mouseY < btn.y + btn.h;
+                
+                // Draw button
+                fill(isHover ? 70 : 50, 70, 90);
+                stroke(isHover ? 100 : 80, 120, 150);
+                strokeWeight(2);
+                rect(btn.x, btn.y, btn.w, btn.h, 8);
+                
+                // Draw label
+                fill(255);
+                noStroke();
+                textAlign(CENTER, CENTER);
+                textSize(13);
+                text(btn.label, btn.x + btn.w / 2, btn.y + btn.h / 2);
+            }
+        }
+        
+        function drawColorPalette() {
+            fill(255);
+            noStroke();
+            textAlign(LEFT);
+            textSize(14);
+            text('Color Palette:', 1120, 360);
+            
+            let x = 1120;
+            let y = 375;
+            let size = 35;
+            let spacing = 45;
+            
+            for (let i = 0; i < colorPalette.length; i++) {
+                let col = colorPalette[i];
+                fill(col);
+                stroke(255);
+                strokeWeight(selectedColor === i ? 3 : 1);
+                rect(x + i % 4 * spacing, y + Math.floor(i / 4) * spacing, size, size, 5);
+            }
+            
+            // Apply to step button
+            fill(60, 80, 100);
+            stroke(100, 140, 170);
+            strokeWeight(2);
+            rect(1120, 475, 340, 40, 8);
+            
+            fill(255);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(13);
+            text('Apply Color to Current Step', 1290, 495);
+        }
+        
+        function drawStepIndicator() {
+            fill(20, 20, 35);
+            noStroke();
+            rect(1120, 540, 340, 120, 10);
+            
+            fill(255);
+            textAlign(LEFT);
+            textSize(16);
+            text('Current Step: ' + currentStep + ' / ' + maxSteps, 1140, 565);
+            
+            textSize(13);
+            fill(200);
+            text('Current Length: ', 1140, 595);
+            
+            if (currentStep > 0) {
+                let hyp = segments[currentStep - 1].hypotenuse;
+                fill(255, 220, 120);
+                if (hyp === Math.floor(hyp)) {
+                    text(hyp.toFixed(0), 1260, 595);
+                } else {
+                    text('√' + currentStep + ' ≈ ' + hyp.toFixed(4), 1260, 595);
+                }
+            }
+            
+            // Progress bar
+            fill(40, 40, 60);
+            rect(1140, 615, 300, 25, 5);
+            fill(100, 150, 255);
+            rect(1140, 615, 300 * (currentStep / maxSteps), 25, 5);
+        }
+        
+        function drawExplanationPanel() {
+            fill(20, 20, 35, 250);
+            stroke(100, 140, 170);
+            strokeWeight(2);
+            rect(50, 100, 1000, 180, 10);
+            
+            fill(100, 200, 255);
+            noStroke();
+            textAlign(LEFT);
+            textSize(16);
+            text('📐 Mathematical Explanation', 70, 130);
+            
+            fill(255);
+            textSize(14);
+            let explanation = getExplanation(currentStep);
+            
+            let lines = splitText(explanation, 80);
+            for (let i = 0; i < lines.length; i++) {
+                text(lines[i], 70, 160 + i * 22);
+            }
+            
+            // Pythagorean theorem
+            fill(255, 220, 120);
+            textSize(13);
+            text('Pythagorean Theorem: a² + b² = c²', 70, 240);
+            
+            if (currentStep > 1) {
+                fill(200);
+                text('(√' + (currentStep - 1) + ')² + 1² = (√' + currentStep + ')²', 70, 260);
+            }
+        }
+        
+        function getExplanation(step) {
+            // Updated explanations for better clarity and match the dynamic nature
+            if (step === 1) {
+                return "Step 1: Start at the origin (O). Draw a horizontal line segment of length 1 unit (OP₁). This is the base of our first triangle.";
+            } else if (step === 2) {
+                return "Step 2: From P₁, draw a segment perpendicular to OP₁ with length 1 unit (P₁P₂). The hypotenuse OP₂ represents √((OP₁)² + (P₁P₂)²). Since OP₁=1 and P₁P₂=1, OP₂ = √(1² + 1²) = √2.";
+            } else if (step === 3) {
+                return "Step 3: From P₂, draw a segment perpendicular to OP₂ with length 1 unit (P₂P₃). The new hypotenuse OP₃ represents √((OP₂)² + (P₂P₃)²). Since OP₂=√2 and P₂P₃=1, OP₃ = √((√2)² + 1²) = √(2 + 1) = √3.";
+            } else if (step === 4) {
+                return "Step 4: Continue the pattern. From P₃, draw a perpendicular unit segment (P₃P₄). The hypotenuse OP₄ is √((OP₃)² + (P₃P₄)²) = √((√3)² + 1²) = √(3 + 1) = √4 = 2. Notice that √4 is a perfect square!";
+            } else {
+                return `Step ${step}: The process repeats. From P${step-1}, a unit segment is drawn perpendicular to OP${step-1}. The hypotenuse OP${step} then has a length of √((OP${step-1})² + 1²) = √((√${step-1})² + 1²) = √(${step-1} + 1) = √${step}. This visually demonstrates the square roots!`;
+            }
+        }
+        
+        function splitText(text, maxLength) {
+            let words = text.split(' ');
+            let lines = [];
+            let currentLine = '';
+            
+            for (let word of words) {
+                if ((currentLine + word).length <= maxLength) {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                } else {
+                    if (currentLine) lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+        
+        function autoBuild() {
+            if (autoMode) {
+                if (currentStep < maxSteps) {
+                    currentStep++;
+                    isAnimating = true;
+                    animationProgress = 0;
+                    // The setTimeout is moved into draw() to ensure animation completes before next step
+                } else {
+                    autoMode = false; // Stop auto-build when max steps are reached
+                    createButtons(); // Update button label
+                }
+            }
+        }
+        
+        function mousePressed() {
+            // Check button clicks
+            for (let btn of buttons) {
+                if (mouseX > btn.x && mouseX < btn.x + btn.w &&
+                    mouseY > btn.y && mouseY < btn.y + btn.h) {
+                    btn.action();
+                    createButtons(); // Refresh buttons
+                    return;
+                }
+            }
+            
+            // Check color palette clicks
+            let x = 1120;
+            let y = 375;
+            let size = 35;
+            let spacing = 45;
+            
+            for (let i = 0; i < colorPalette.length; i++) {
+                let bx = x + i % 4 * spacing;
+                let by = y + Math.floor(i / 4) * spacing;
+                
+                if (mouseX > bx && mouseX < bx + size &&
+                    mouseY > by && mouseY < by + size) {
+                    selectedColor = i;
+                    return;
+                }
+            }
+            
+            // Apply color button
+            if (mouseX > 1120 && mouseX < 1460 &&
+                mouseY > 475 && mouseY < 515) {
+                if (currentStep > 0) {
+                    spiralColors[currentStep - 1] = colorPalette[selectedColor];
+                }
+            }
+        }
+        
+        function keyPressed() {
+            if (keyCode === RIGHT_ARROW) {
+                if (currentStep < maxSteps) {
+                    currentStep++;
+                    isAnimating = true;
+                    animationProgress = 0;
+                    autoMode = false;
+                }
+            } else if (keyCode === LEFT_ARROW) {
+                if (currentStep > 1) {
+                    currentStep--;
+                    autoMode = false;
+                }
+            } else if (key === 'r' || key === 'R') {
+                currentStep = 1;
+                animationProgress = 0;
+                isAnimating = false;
+                autoMode = false;
+            } else if (key === 'e' || key === 'E') {
+                showExplanation = !showExplanation;
+            } else if (key === 'l' || key === 'L') {
+                showLabels = !showLabels;
+            } else if (key === 'a' || key === 'A') { // Added keyboard shortcut for auto-build
+                autoMode = !autoMode;
+                if (autoMode) {
+                    if (currentStep < maxSteps) {
+                        autoBuild();
+                    } else {
+                        currentStep = 1;
+                        isAnimating = true;
+                        animationProgress = 0;
+                        setTimeout(autoBuild, 500);
+                    }
+                }
+                createButtons(); // Update button label
+            }
+        }
+    </script>
+</body>
+</html>

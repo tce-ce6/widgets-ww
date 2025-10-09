@@ -160,14 +160,15 @@
             drawPotAndEnvironment();
             drawSeeds();
             drawControlPanel();
+            if (currentDay === 10) {
+                drawResultsBox();
+            }
             if (showInsights) {
                 drawInsightsModal();
             }
             drawInsightButton();
             
-            if (currentDay === 10) {
-                drawResultsBox();
-            }
+            
             
             
             if (experimentRunning) {
