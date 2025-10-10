@@ -13,6 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Publicly accessible selected object (for debugging/other scripts)
 	window.selectedGovernment = null;
+	// last selected card id (e.g. 'republic')
+	window.selectedGovernmentCardId = null;
+
+	function updateGovernmentImage(cardId) {
+		if (!cardId) return;
+		// element is a <use id="government-img"> inside the SVG
+		const useEl = document.getElementById('government-img') || document.querySelector('use#government-img');
+		if (!useEl) return;
+		const path = `./assets/${cardId}.svg`;
+		try { useEl.setAttribute('href', path); } catch (e) {}
+		// older browsers may use xlink:href
+		try { useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', path); } catch (e) {}
+	}
 
 	// Load data.json once
 	fetch('./data.json')
@@ -47,6 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function selectGovernmentById(cardId) {
+		// remember which card was clicked so we can update the image
+		window.selectedGovernmentCardId = cardId;
+		updateGovernmentImage(cardId);
+		// reset answered blocks and hide action buttons for new selection
+		Object.keys(answeredBlocks).forEach(k => delete answeredBlocks[k]);
+		hideActionButtons();
+		// hide all result groups
+		for (let i = 1; i <= 4; i++) {
+			const rg = getResultGroup(i);
+			if (rg) rg.style.display = 'none';
+		}
 		const govType = idToGovernmentType(cardId);
 		if (!governmentData) {
 			console.warn('governmentData not loaded yet; selection will be attempted again after load');
@@ -105,6 +129,76 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Track which blocks (by 0-based index) have been correctly answered
 	const answeredBlocks = {};
 
+	// Buttons (dynamic)
+	const btn1 = document.getElementById('btn-1');
+	const btn2 = document.getElementById('btn-2');
+
+	function hideActionButtons() {
+		if (btn1) { btn1.style.display = 'none'; btn1.disabled = true; }
+		if (btn2) { btn2.style.display = 'none'; btn2.disabled = true; }
+	}
+
+	function showActionButtons() {
+		// Only show the primary continue button when all blocks are answered
+		if (btn1) { btn1.style.display = 'inline-block'; btn1.disabled = false; btn1.textContent = 'continue'; }
+		if (btn2) { btn2.style.display = 'none'; btn2.disabled = true; }
+	}
+
+	// hide initially
+	hideActionButtons();
+
+	if (btn2) {
+		btn2.addEventListener('click', () => {
+			// simple reset: reload the page to return to initial state
+			window.location.reload();
+		});
+	}
+
+	if (btn1) {
+		btn1.addEventListener('click', () => {
+			// Only act when a government has been selected
+			const gov = window.selectedGovernment;
+			if (!gov) return;
+
+			// Find 'Insight Countries' either at top-level or inside blocks
+			let insights = '';
+			if (gov['Insight Countries']) insights = gov['Insight Countries'];
+			if (!insights && Array.isArray(gov.blocks)) {
+				for (const b of gov.blocks) {
+					if (b && b['Insight Countries']) { insights = b['Insight Countries']; break; }
+				}
+			}
+
+			const wrapper = document.getElementById('insights-wrapper');
+			if (wrapper) wrapper.style.display = 'block';
+			const countriesEl = document.getElementById('insights-countries');
+			if (countriesEl) countriesEl.textContent = insights || '';
+
+			// Hide question and option areas when insights are shown
+			const qWrapper = document.getElementById('question-wrapper');
+			if (qWrapper) qWrapper.style.display = 'none';
+			if (optionWrapper) optionWrapper.style.display = 'none';
+		});
+	}
+
+	// Insight button inside the SVG: show the insight result box when clicked
+	const insightBtn = document.getElementById('insight-btn') || step2.querySelector('#insight-btn');
+	if (insightBtn) {
+		try { insightBtn.style.cursor = 'pointer'; } catch (e) {}
+		insightBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const resultBox = document.getElementById('insight-result-box') || step2.querySelector('#insight-result-box');
+			if (resultBox) resultBox.style.display = 'block';
+			// Hide the small note when result box opens
+			const note = document.getElementById('insights-note') || step2.querySelector('#insights-note');
+			if (note) note.style.display = 'none';
+		});
+	}
+
+	// reset answered blocks and hide action buttons for new selection
+	Object.keys(answeredBlocks).forEach(k => delete answeredBlocks[k]);
+	hideActionButtons();
+
 	function getForeignDiv(el) {
 		if (!el) return null;
 		const fo = el.querySelector('foreignObject');
@@ -119,7 +213,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			opt.style.display = 'none';
 			// reset interactive styles
 			opt.style.pointerEvents = '';
-			opt.style.outline = '';
+			// remove any answer state classes added on previous interaction
+			try {
+				opt.classList.remove('wrong-answer');
+				opt.classList.remove('correct-answer');
+			} catch (e) {}
+			// also clear classes on inner foreignObject div if present
+			try {
+				const inner = getForeignDiv(opt);
+				if (inner && inner.classList) {
+					inner.classList.remove('wrong-answer');
+					inner.classList.remove('correct-answer');
+				}
+			} catch (e) {}
 		});
 	}
 
@@ -140,6 +246,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!blk || !options) return;
 		// If this block was already answered correctly, reveal its result and don't show options
 		if (answeredBlocks[index]) {
+			// show options but disable them
+			const map2 = {
+				1: blk['Option A'] || '',
+				2: blk['Option B'] || '',
+				3: blk['Option C'] || ''
+			};
+			Object.keys(map2).forEach(k => {
+				const optEl = options[k];
+				if (!optEl) return;
+				const div = getForeignDiv(optEl);
+				if (div) div.textContent = map2[k];
+				optEl.style.display = 'inline';
+				optEl.style.pointerEvents = 'none';
+			});
 			setResultText(index + 1, blk['Answer'] || '');
 			return;
 		}
@@ -156,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			// show the option group
 			optEl.style.display = 'inline';
 			optEl.style.pointerEvents = '';
-			optEl.style.outline = '';
 		});
 	}
 
@@ -227,14 +346,36 @@ document.addEventListener('DOMContentLoaded', () => {
 					// Correct selection: reveal the answer in the result box
 					answeredBlocks[activeIndex] = true;
 					setResultText(activeIndex + 1, correctText);
-					optEl.style.outline = '3px solid #4caf50';
-					// hide options for the block (they will be re-enabled when other blocks are opened)
-					clearOptionsDisplay();
+                    optEl.classList.add('correct-answer');
+					// keep options visible but disable interaction for this block
+					Object.values(options).forEach(o => {
+						if (!o) return;
+						o.style.pointerEvents = 'none';
+					});
+					// If all blocks are answered, show the continue button
+					const totalBlocks = (window.selectedGovernment && window.selectedGovernment.blocks) ? window.selectedGovernment.blocks.length : 0;
+					const answeredCount = Object.keys(answeredBlocks).length;
+					if (totalBlocks > 0 && answeredCount >= totalBlocks) {
+						showActionButtons();
+					}
 				} else {
 					// Incorrect selection: mark red briefly, do not reveal result
-					optEl.style.outline = '3px solid #ff5252';
-					// Optionally remove the red outline after a short time
-					setTimeout(() => { try { optEl.style.outline = ''; } catch (e) {} }, 900);
+						optEl.classList.add('wrong-answer');
+						// Also add the class to the inner div if present
+						try {
+							const inner = findOptionDiv(optEl);
+							if (inner && inner.classList) inner.classList.add('wrong-answer');
+						} catch (e) {}
+
+						setTimeout(() => {
+							try {
+								optEl.classList.remove('wrong-answer');
+							} catch (e) {}
+							try {
+								const inner = findOptionDiv(optEl);
+								if (inner && inner.classList) inner.classList.remove('wrong-answer');
+							} catch (e) {}
+						}, 500);
 				}
 			});
 			optEl.addEventListener('keydown', (e) => {
