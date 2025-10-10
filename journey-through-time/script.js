@@ -117,11 +117,11 @@ class EventLoader {
     const isDifferentEra = event1.era !== event2.era;
 
     if (isDifferentEra) {
-      textContent = `Formula: <span>[Year A]</span> + <span>[Year B]</span> - 1`;
+      textContent = `Formula: <span>Year 1</span> + <span>Year 2</span> - 1`;
     } else if (isBCEOnly) {
-      textContent = `Formula: <span>[Year A]</span> - <span>[Year B]</span> <div class="formula-subtxt"><span>(earlier event)</span> <span>(recent event)</span></div>`;
+      textContent = `Formula: <span>Year 1</span> - <span>Year 2</span> <div class="formula-subtxt"><span>(earlier event)</span> <span>(later event)</span></div>`;
     } else {
-      textContent = `Formula: <span>[Year A]</span> - <span>[Year B]</span> <div class="formula-subtxt"><span>(recent event)</span> <span>(earlier event)</span></div>`;
+      textContent = `Formula: <span>Year 1</span> - <span>Year 2</span> <div class="formula-subtxt"><span>(later event)</span> <span>(earlier event)</span></div>`;
     }
 
     this.yearFormulaDiv.innerHTML = textContent;
@@ -186,93 +186,110 @@ class EventLoader {
     }
   }
 
-  addEvent(event, clickedPoint) {
-        if (!event) return;
+// ... (inside EventLoader class)
 
-        // Check if the event is already selected (by its unique content)
-        const isAlreadySelected = this.selectedEvents.some(
-            (e) => e.id === event.id
-        );
-        if (isAlreadySelected) {
-            console.log("Event already selected. Please choose another.");
-            return;
-        }
+addEvent(event, clickedPoint) {
+    if (!event) return;
 
-        // --- 1. Manage Selection State ---
-        const previousLength = this.selectedEvents.length;
+    // Check if the event is already selected (by its unique content)
+    const isAlreadySelected = this.selectedEvents.some(
+        (e) => e.id === event.id
+    );
+    if (isAlreadySelected) {
+        console.log("Event already selected. Please choose another.");
+        return;
+    }
 
-        if (previousLength < 2) {
-            this.selectedEvents.push(event);
-            this.selectedPoints.push(clickedPoint);
-        } else {
-            // If already 2, remove the oldest (the first in the array)
-            this.removeCircle(this.selectedPoints[0]);
-            this.selectedEvents.shift();
-            this.selectedPoints.shift();
-            this.selectedEvents.push(event);
-            this.selectedPoints.push(clickedPoint);
-        }
+    // --- 1. Manage Selection State ---
+    const previousLength = this.selectedEvents.length;
 
-        this.drawCircle(clickedPoint);
-        this.displayImages(); // Display the content
+    if (previousLength < 2) {
+        this.selectedEvents.push(event);
+        this.selectedPoints.push(clickedPoint);
+    } else {
+        // If already 2, remove the oldest (the first in the array)
+        this.removeCircle(this.selectedPoints[0]);
+        this.selectedEvents.shift();
+        this.selectedPoints.shift();
+        this.selectedEvents.push(event);
+        this.selectedPoints.push(clickedPoint);
+    }
 
-        // --- 2. Manage Visual Positioning (The New Logic) ---
-        const currentLength = this.selectedEvents.length;
-        this.leftImageDisplay.className = ''; // Reset classes
-        this.rightImageDisplay.className = ''; // Reset classes
+    this.drawCircle(clickedPoint);
+    this.displayImages(); // Display the content (handles 1 event state)
 
-        if (currentLength === 1) {
-            // STATE 1: First event selected (from any era) -> open both cards in the center
+    // --- 2. Manage Visual Positioning ---
+    const currentLength = this.selectedEvents.length;
+    this.leftImageDisplay.className = ''; // Reset classes
+    this.rightImageDisplay.className = ''; // Reset classes
+
+    if (currentLength === 1) {
+        // STATE 1: First event selected -> open both cards in the center
+        this.leftImageDisplay.classList.add("active", "center");
+        this.rightImageDisplay.classList.add("active", "center");
+    } else if (currentLength === 2) {
+        const ev1 = this.selectedEvents[0];
+        const ev2 = this.selectedEvents[1];
+        const isDifferentEra = ev1.era !== ev2.era;
+        const isBCEOnly = ev1.era === 'BCE' && ev2.era === 'BCE';
+        const isCEOnly = ev1.era === 'CE' && ev2.era === 'CE';
+
+        if (isDifferentEra) {
+            // STATE 2: Different era (BCE and CE) -> cards move to respective sides
+            const bceEvent = ev1.era === 'BCE' ? ev1 : ev2;
+            const ceEvent = ev1.era === 'CE' ? ev1 : ev2;
+
+            this.leftImageDisplay.innerHTML = this.createImageHTML(bceEvent);
+            this.rightImageDisplay.innerHTML = this.createImageHTML(ceEvent);
+
+            this.leftImageDisplay.classList.add("active", "left");
+            this.rightImageDisplay.classList.add("active", "right");
+
+        } else if (isBCEOnly) {
+            // STATE 3: Same era (BCE only) -> sort by year (Greater year = earlier event)
+            const sortedEvents = [ev1, ev2].sort((a, b) => {
+                return parseInt(b.year) - parseInt(a.year); // Sort Descending: Greater year first
+            });
+
+            const greaterYearEvent = sortedEvents[0]; // Earlier BCE event
+            const smallerYearEvent = sortedEvents[1]; // Later BCE event
+
+            // Greater year (Earlier Event) on the LEFT, Smaller year (Later Event) on the RIGHT.
+            this.leftImageDisplay.innerHTML = this.createImageHTML(greaterYearEvent);
+            this.rightImageDisplay.innerHTML = this.createImageHTML(smallerYearEvent);
+
             this.leftImageDisplay.classList.add("active", "center");
             this.rightImageDisplay.classList.add("active", "center");
-        } else if (currentLength === 2) {
-            const ev1 = this.selectedEvents[0];
-            const ev2 = this.selectedEvents[1];
-            const isDifferentEra = ev1.era !== ev2.era;
-            const isSameEra = !isDifferentEra;
 
-            if (isDifferentEra) {
-                // STATE 2: Second event from opposite era -> cards move to respective sides
-                // Left card displays the BCE event, right card displays the CE event.
-                const bceEvent = ev1.era === 'BCE' ? ev1 : ev2;
-                const ceEvent = ev1.era === 'CE' ? ev1 : ev2;
+        } else if (isCEOnly) {
+            // STATE 4: Same era (CE only)
+            const sortedEvents = [ev1, ev2].sort((a, b) => {
+                return parseInt(b.year) - parseInt(a.year); // Sort Descending: Greater year first (e.g., 1947)
+            });
 
-                // Ensure the left image container gets the BCE event
-                this.leftImageDisplay.innerHTML = this.createImageHTML(bceEvent);
-                this.rightImageDisplay.innerHTML = this.createImageHTML(ceEvent);
-                
-                this.leftImageDisplay.classList.add("active", "left");
-                this.rightImageDisplay.classList.add("active", "right");
+            const greaterYearEvent = sortedEvents[0]; // Later CE event (e.g., 1947)
+            const smallerYearEvent = sortedEvents[1]; // Earlier CE event (e.g., 1215)
 
-            } else if (isSameEra) {
-                // STATE 3: Second event from same era -> sort by year
-                const sortedEvents = [ev1, ev2].sort((a, b) => {
-                    return parseInt(b.year) - parseInt(a.year); // Sort Descending: Greater year first
-                });
+            // 🎯 CORRECTION: Swap the assignment to place 1215 CE (smaller/earlier) on LEFT 
+            // and 1947 CE (greater/later) on RIGHT.
+            this.leftImageDisplay.innerHTML = this.createImageHTML(smallerYearEvent); // 1215 CE on LEFT
+            this.rightImageDisplay.innerHTML = this.createImageHTML(greaterYearEvent); // 1947 CE on RIGHT
 
-                const greaterYearEvent = sortedEvents[0]; // This is the earlier BCE year or the later CE year
-                const smallerYearEvent = sortedEvents[1];
-
-                // Greater year on the LEFT, Smaller year on the RIGHT.
-                this.leftImageDisplay.innerHTML = this.createImageHTML(greaterYearEvent);
-                this.rightImageDisplay.innerHTML = this.createImageHTML(smallerYearEvent);
-
-                // For same era, keep them centered for now or determine final position
-                this.leftImageDisplay.classList.add("active", "center");
-                this.rightImageDisplay.classList.add("active", "center");
-            }
-        }
-        
-        // Final state management
-        if (this.resetBtn) {
-            this.resetBtn.disabled = false;
-        }
-
-        if (currentLength === 2) {
-            this.showAnswerBtn.disabled = false;
-            this.updateInstructions("selected");
+            this.leftImageDisplay.classList.add("active", "center");
+            this.rightImageDisplay.classList.add("active", "center");
         }
     }
+    
+    // Final state management
+    if (this.resetBtn) {
+        this.resetBtn.disabled = false;
+    }
+
+    if (currentLength === 2) {
+        this.showAnswerBtn.disabled = false;
+        this.updateInstructions("selected");
+    }
+}
     
     // Helper method to generate image HTML
     createImageHTML(event) {
@@ -412,7 +429,7 @@ class EventLoader {
           "Note: BCE years count backwards, so the earlier event has the larger number.";
       } else if (isCEOnly) {
         this.formulaNote.textContent =
-          "Note: Just subtract smaller (earlier) from larger (recent).";
+          "Note: For two CE events, subtract the smaller number from the larger one.";
       }
     }
 
