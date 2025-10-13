@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecological Interactions Simulation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a472a;
+        }
+        canvas {
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // --- Image Assets ---
+        // This object will hold all the loaded images.
+        let assets = {};
+
+        // --- P5.js Preload Function ---
+        // This function runs before setup() and ensures all assets are loaded
+        // before the simulation starts.
+        function preload() {
+            // Load organism images
+            assets.flower = loadImage('assets/Sunflower.svg');
+            assets.honeybee = loadImage('assets/HoneyBee.svg');
+            assets.dog = loadImage('assets/Dog.svg');
+            assets.tick = loadImage('assets/Tick.svg');
+            assets.plant = loadImage('assets/PlantBranch.svg');
+            assets.orchid = loadImage('assets/Orchid.svg');
+
+            // Load bucket images
+            assets.bucketMutualism = loadImage('assets/Bucket_01.svg');
+            assets.bucketCommensalism = loadImage('assets/Bucket_02.svg');
+            assets.bucketParasitism = loadImage('assets/Bucket_03.svg');
+
+            // Load combined pair (envelope) images
+            assets.comboMutualism = loadImage('assets/07_card_combo_01.svg');
+            assets.comboCommensalism = loadImage('assets/09_card_combo_03.svg');
+            assets.comboParasitism = loadImage('assets/08_card_combo_02.svg');
+        }
+
+
+        // --- Game Objects & State ---
+        let organisms = [];
+        let pairs = [];
+        let buckets = [];
+        let selectedOrganisms = [];
+        let selectedPair = null;
+
+        let gameState = 'pairing'; // 'pairing', 'bucketing', 'finished'
+        let feedback = { text: '', color: [0, 0, 0], alpha: 0 };
+        let instruction = 'Tap on the organisms below to form the interactive pairs.';
+        let showReset = false;
+
+        const cardWidth = 180, cardHeight = 220;
+        const bucketWidth = 350, bucketHeight = 250; // Increased bucket height for image
+        const pairCardWidth = 230, pairCardHeight = 170;
+
+
+        // --- P5.js Setup Function ---
+        function setup() {
+            createCanvas(1500, 700);
+            initializeState();
+        }
+        
+        // --- Initialize or Reset Game State ---
+        function initializeState() {
+            gameState = 'pairing';
+            showReset = false;
+            instruction = 'Tap on the organisms below to form the interactive pairs.';
+            selectedOrganisms = [];
+            selectedPair = null;
+            pairs = [];
+
+            const organismData = [
+                { name: 'Flower', imgKey: 'flower', pair: 'Honey bee', type: 'Mutualism' },
+                { name: 'Honey bee', imgKey: 'honeybee', pair: 'Flower', type: 'Mutualism' },
+                { name: 'Dog', imgKey: 'dog', pair: 'Tick', type: 'Parasitism' },
+                { name: 'Tick', imgKey: 'tick', pair: 'Dog', type: 'Parasitism' },
+                { name: 'Plant branch', imgKey: 'plant', pair: 'Orchid', type: 'Commensalism' },
+                { name: 'Orchid', imgKey: 'orchid', pair: 'Plant branch', type: 'Commensalism' },
+            ];
+
+            // Shuffle the organism data for random placement
+            shuffle(organismData, true);
+
+            organisms = organismData.map((data, i) => ({
+                ...data,
+                x: 200 + i * (cardWidth + 30),
+                y: height - cardHeight - 50,
+                targetX: 200 + i * (cardWidth + 30),
+                targetY: height - cardHeight - 50,
+                color: [255, 255, 255],
+                isPaired: false,
+            }));
+
+            buckets = [
+                { name: 'Mutualism', imgKey: 'bucketMutualism', x: 100, y: height - bucketHeight - 20, color: [144, 238, 144], filled: false },
+                { name: 'Commensalism', imgKey: 'bucketCommensalism', x: 100 + bucketWidth + 100, y: height - bucketHeight - 20, color: [173, 216, 230], filled: false },
+                { name: 'Parasitism', imgKey: 'bucketParasitism', x: 100 + 2 * (bucketWidth + 100), y: height - bucketHeight - 20, color: [255, 182, 193], filled: false },
+            ];
+        }
+
+        // --- P5.js Draw Loop ---
+        function draw() {
+            background('#4a7c59'); // Green background
+            
+            // Draw title and instructions
+            drawHeader();
+            
+            // Update and draw game elements based on state
+            if (gameState === 'pairing') {
+                organisms.forEach(o => {
+                    updateAndDrawOrganism(o);
+                });
+            }
+
+            if (gameState === 'bucketing' || gameState === 'finished') {
+                // Draw buckets first so pairs can go "in" them
+                buckets.forEach(b => {
+                    drawBucket(b);
+                });
+                pairs.forEach(p => {
+                    updateAndDrawPair(p);
+                });
+            }
+
+            // Draw feedback message
+            drawFeedback();
+            
+            // Draw Reset button if applicable
+            if(showReset) drawResetButton();
+        }
+        
+        // --- Drawing Functions ---
+        
+        function drawHeader() {
+            // Title
+            fill(255);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(32);
+            text('Interactions Between Organisms', width / 2, 50);
+
+            // Instructions
+            textSize(22);
+            fill(255, 255, 255, 200);
+            text(instruction, width / 2, 100);
+        }
+
+        function updateAndDrawOrganism(org) {
+            // Animate card movement
+            org.x = lerp(org.x, org.targetX, 0.1);
+            org.y = lerp(org.y, org.targetY, 0.1);
+
+            if (org.isPaired) return; // Don't draw if paired
+
+            // Draw card
+            stroke(org.color[0], org.color[1], org.color[2]);
+            strokeWeight(5);
+            fill(255);
+            rect(org.x, org.y, cardWidth, cardHeight, 15);
+            
+            // Draw organism name
+            noStroke();
+            fill(0);
+            textSize(20);
+            textAlign(CENTER, CENTER);
+            text(org.name, org.x + cardWidth / 2, org.y + 30);
+            
+            // Draw organism image
+            imageMode(CENTER);
+            image(assets[org.imgKey], org.x + cardWidth / 2, org.y + cardHeight / 2 + 20, 120, 120);
+        }
+
+        function updateAndDrawPair(p) {
+             // Animate envelope movement
+            p.x = lerp(p.x, p.targetX, 0.1);
+            p.y = lerp(p.y, p.targetY, 0.1);
+            
+            // Draw envelope image
+            imageMode(CORNER);
+            image(assets[p.comboImgKey], p.x, p.y, pairCardWidth, pairCardHeight);
+
+            // Draw selection highlight
+            if (p.isSelected) {
+                noFill();
+                stroke(0, 150, 255, 200);
+                strokeWeight(8);
+                rect(p.x, p.y, pairCardWidth, pairCardHeight, 15);
+            }
+        }
+
+        function drawBucket(bucket) {
+            // Draw bucket image
+            imageMode(CORNER);
+            image(assets[bucket.imgKey], bucket.x, bucket.y, bucketWidth, bucketHeight);
+            
+            // If the bucket is filled, show info text
+            if(bucket.filled){
+                noStroke();
+                fill(0);
+                textSize(16);
+                textAlign(CENTER, TOP);
+                let infoText = '';
+                if(bucket.name === 'Mutualism') infoText = '• The bee pollinates the flower.\n• The flower gives nectar to the bee.';
+                if(bucket.name === 'Commensalism') infoText = '• The host plant branch provides nutrition to orchid.\n• The orchid does not affect the plant in any way.';
+                if(bucket.name === 'Parasitism') infoText = '• The tick feeds on the dog\'s blood.\n• It causes skin irritation in the dog\'s skin.';
+                text(infoText, bucket.x + bucketWidth/2, bucket.y + 160, bucketWidth - 40);
+            }
+        }
+        
+        function drawFeedback() {
+            if (feedback.alpha > 0) {
+                noStroke();
+                textSize(28);
+                textAlign(CENTER, CENTER);
+                rectMode(CENTER);
+                let textW = textWidth(feedback.text) + 40;
+                // Semi-transparent background for the text
+                fill(0,0,0, feedback.alpha * 0.6)
+                rect(width/2, height/2 + 250, textW, 60, 20);
+                // The actual text
+                fill(feedback.color[0], feedback.color[1], feedback.color[2], feedback.alpha);
+                text(feedback.text, width / 2, height / 2 + 250);
+                rectMode(CORNER);
+                feedback.alpha -= 2; // Fade out effect
+            }
+        }
+        
+        function drawResetButton() {
+            let btnX = width / 2 - 100, btnY = height - 80, btnW = 200, btnH = 50;
+             // Check for hover
+            if(mouseX > btnX && mouseX < btnX + btnW && mouseY > btnY && mouseY < btnY + btnH) {
+                fill(255, 80, 80);
+            } else {
+                fill(255, 50, 50);
+            }
+            noStroke();
+            rect(btnX, btnY, btnW, btnH, 25);
+            fill(255);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            text('Reset', btnX + btnW / 2, btnY + btnH / 2);
+        }
+
+        // --- Mouse Click Handler ---
+        function mousePressed() {
+            if (gameState === 'pairing') {
+                handlePairingClick();
+            } else if (gameState === 'bucketing') {
+                handleBucketingClick();
+            }
+            
+            // Reset button click
+            if(showReset) {
+                let btnX = width / 2 - 100, btnY = height - 80, btnW = 200, btnH = 50;
+                if(mouseX > btnX && mouseX < btnX + btnW && mouseY > btnY && mouseY < btnY + btnH) {
+                    initializeState();
+                }
+            }
+        }
+
+        // --- Game Logic Functions ---
+        function handlePairingClick() {
+            for (let org of organisms) {
+                if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
+                    
+                    if (selectedOrganisms.includes(org)) {
+                         // Deselect if clicked again
+                         selectedOrganisms = selectedOrganisms.filter(o => o !== org);
+                         org.color = [255, 255, 255];
+                    } else if (selectedOrganisms.length < 2) {
+                        // Select organism
+                        selectedOrganisms.push(org);
+                        org.color = [0, 150, 255]; // Blue highlight for selection
+                    }
+                    
+                    // Check for a pair when two are selected
+                    if (selectedOrganisms.length === 2) {
+                        checkPair();
+                    }
+                    return;
+                }
+            }
+        }
+
+        function checkPair() {
+            let [org1, org2] = selectedOrganisms;
+            if (org1.pair === org2.name) {
+                // Correct pair
+                org1.color = [0, 255, 0]; // Green
+                org2.color = [0, 255, 0]; // Green
+                showFeedback('Correct pair formed!', [0, 255, 0]);
+
+                setTimeout(() => {
+                    org1.isPaired = true;
+                    org2.isPaired = true;
+                    
+                    const pairIndex = pairs.length;
+                    const comboKey = 'combo' + org1.type;
+                    
+                    const newPair = {
+                        org1: org1,
+                        org2: org2,
+                        type: org1.type,
+                        comboImgKey: comboKey,
+                        x: width / 2 - pairCardWidth / 2,
+                        y: height / 2,
+                        targetX: width / 2 - (pairCardWidth * 1.5 + 60) + pairIndex * (pairCardWidth + 30),
+                        targetY: 150,
+                        isSelected: false,
+                        isPlaced: false,
+                    };
+                    pairs.push(newPair);
+                    
+                    selectedOrganisms = [];
+                    
+                    // Check if all pairs are formed
+                    if (pairs.length === 3) {
+                         instruction = 'Place the pairs in the correct buckets based on the interactions they share.';
+                         gameState = 'bucketing';
+                    }
+
+                }, 1000);
+
+            } else {
+                // Incorrect pair
+                org1.color = [255, 0, 0]; // Red
+                org2.color = [255, 0, 0]; // Red
+                showFeedback('That is not a correct pair. Try again.', [255, 0, 0]);
+
+                // Reset selection after a delay
+                setTimeout(() => {
+                    org1.color = [255, 255, 255];
+                    org2.color = [255, 255, 255];
+                    selectedOrganisms = [];
+                }, 1000);
+            }
+        }
+
+        function handleBucketingClick() {
+            // First, check if clicking on a pair envelope that hasn't been placed
+            for (let p of pairs) {
+                 if (!p.isPlaced && mouseX > p.x && mouseX < p.x + pairCardWidth && mouseY > p.y && mouseY < p.y + pairCardHeight) {
+                     // Deselect any previously selected pair
+                     if(selectedPair) selectedPair.isSelected = false;
+                     
+                     // Select the new one, and make sure it's not the same one
+                     selectedPair = (selectedPair === p) ? null : p;
+                     if(selectedPair) selectedPair.isSelected = true;
+                     return;
+                 }
+            }
+            
+            // Second, if a pair is selected, check if clicking on a bucket
+            if (selectedPair) {
+                for (let b of buckets) {
+                     if (mouseX > b.x && mouseX < b.x + bucketWidth && mouseY > b.y && mouseY < b.y + bucketHeight) {
+                         placeInBucket(selectedPair, b);
+                         return;
+                     }
+                }
+            }
+        }
+        
+        function placeInBucket(pair, bucket) {
+            if (pair.type === bucket.name) {
+                // Correct placement
+                showFeedback('Correct! Well done.', [0, 255, 0]);
+                pair.targetX = bucket.x + bucketWidth / 2 - pairCardWidth / 2;
+                pair.targetY = bucket.y + 50; // Position inside the bucket image
+                pair.isSelected = false;
+                pair.isPlaced = true;
+                bucket.filled = true;
+                
+                selectedPair = null;
+
+                // Check for game completion
+                if (pairs.every(p => p.isPlaced)) {
+                    gameState = 'finished';
+                    instruction = 'Congratulations! You have sorted all the interactions.';
+                    showReset = true;
+                }
+
+            } else {
+                // Incorrect placement
+                showFeedback('That\'s not the right bucket. Try again.', [255, 0, 0]);
+                pair.isSelected = false;
+                selectedPair = null;
+            }
+        }
+        
+        // --- Utility Functions ---
+        
+        function showFeedback(message, color) {
+            feedback.text = message;
+            feedback.color = color;
+            feedback.alpha = 255;
+        }
+
+    </script>
+</body>
+</html>
+
