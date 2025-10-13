@@ -269,6 +269,7 @@ button:disabled{
     left: 0;
     top: 0;
   }
+  /* comment below for new header start */
   .wdgetTitle h2 {
     font-size: 16px;
     font-weight: 600;
@@ -276,11 +277,13 @@ button:disabled{
     background: #1e6bef;
     padding: 5px 20px;
     color: #fff;
-    border-radius: 0 20px 20px 0;
+    /* border-radius: 0 20px 20px 0;
     background: #099eed;
     background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
-    margin: 16px 0px;
+    margin: 16px 0px; */
   }
+  
+  /* comment below for new header end */
 
   .p5Canvas{
     max-width: 100%;

@@ -262,7 +262,7 @@ input[type="range"]::-moz-range-thumb {
   cursor: not-allowed;
   box-shadow: none;
 }
-
+/* new header css start*/
 .wdgetTitle {
   width: 100%;
   display: flex;
@@ -270,24 +270,28 @@ input[type="range"]::-moz-range-thumb {
   gap: 20px;
   left: 0;
   top: 0;
+  z-index: 1;
 }
 
 .wdgetTitle h2 {
   font-size: 16px;
-  font-weight: 600;
-  text-align: left;
-  background: #1e6bef;
-  padding: 5px 20px;
-  color: #fff;
-  border-radius: 0 20px 20px 0;
-  background: #099eed;
-  background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 20px;
+    color: #fff;
+    border-radius: 0 0px 20px 20px;
+    background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
+    margin: 0px 0px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
-
 .versionText {
   position: absolute;
   right: 20px;
-  top: 20px;
+  top: 10px !important;
   font-size: 12px;
   color: #ccc;
 }
+/* new header css end*/

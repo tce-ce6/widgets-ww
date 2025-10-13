@@ -96,7 +96,7 @@ toggleBtn.addEventListener('click', () => {
     if (isShown) {
         updateOutput();
         rightPanel.style.display = 'block';
-        toggleBtn.textContent = 'Hide';
+        toggleBtn.textContent = 'Hide Answer';
     } else {
         // rightPanel.innerHTML = msg;
         // toggleBtn.textContent = 'Show';
@@ -104,7 +104,7 @@ toggleBtn.addEventListener('click', () => {
         rightPanel.innerHTML = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
         <span style="color:#ff8800; margin-left: -3px">a</span>
         <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?</span>`;
-        toggleBtn.textContent = 'Show';
+        toggleBtn.textContent = 'Show Answer';
         isShown = false; // reset flag
     }
 });
@@ -121,7 +121,7 @@ function updateGraphFor(slider, bubble) {
     rightPanel.innerHTML = `<span style="font-size: large;"><span style="color:#228B22;">b</span>² − 4
         <span style="color:#ff8800; margin-left: -3px">a</span>
         <span style="color:#0099ff; margin-left: -3px">c</span> ≥ 0 ?</span>`;
-    toggleBtn.textContent = 'Show';
+    toggleBtn.textContent = 'Show Answer';
     isShown = false; // reset flag
 
     // Update right-panel values
