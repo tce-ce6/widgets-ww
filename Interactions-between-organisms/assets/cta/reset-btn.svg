@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="232" height="93" viewBox="0 0 232 93">
+  <g id="Group_7" data-name="Group 7" transform="translate(-1234 -967)">
+    <path id="Path_21" data-name="Path 21" d="M51.617,0H180.383C208.89,0,232,20.819,232,46.5S208.89,93,180.383,93H51.617C23.11,93,0,72.181,0,46.5S23.11,0,51.617,0Z" transform="translate(1234 967)" fill="#ff2c68"/>
+    <text id="Reset" transform="translate(1265 991)" fill="#fff" font-size="35" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="40" y="37">Reset</tspan></text>
+  </g>
+</svg>

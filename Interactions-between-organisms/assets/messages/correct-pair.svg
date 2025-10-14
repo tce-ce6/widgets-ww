@@ -1,0 +1,10 @@
+<!-- sample rectangle -->
+<svg xmlns="http://www.w3.org/2000/svg" width="961" height="58" viewBox="0 0 961 58">
+  <g id="Group_780" data-name="Group 780" transform="translate(-383 -495)">
+    <g id="Rectangle_82" data-name="Rectangle 82" transform="translate(383 495)" fill="#b8ffbf" stroke="#707070" stroke-width="1">
+      <rect width="961" height="58" rx="29" stroke="none"/>
+      <rect x="0.5" y="0.5" width="960" height="57" rx="28.5" fill="none"/>
+    </g>
+    <text id="Very_good_You_have_formed_the_correct_interactive_pair." data-name="Very good! You have formed the correct interactive pair." transform="translate(440 503)" fill="#181818" font-size="32" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="0.297" y="34">Very good! You have formed the correct interactive pair.</tspan></text>
+  </g>
+</svg>
