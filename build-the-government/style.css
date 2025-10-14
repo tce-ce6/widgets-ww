@@ -1,4 +1,8 @@
 
+*:focus, 
+*:focus {
+    outline: none !important; /* Removes the standard browser focus ring */
+}
 
 #parlament-widgetbody {
   box-sizing: border-box;
@@ -163,4 +167,21 @@
 
 .wrong-answer > path{
   fill: #FFD5D5;
+}
+
+#parlament-groups .card-wrapper{
+  position: relative;
+}
+
+#parlament-groups .correct-icon{
+  display: none;
+}
+
+#parlament-groups .active .correct-icon{
+  display: block;
+} 
+
+.card-wrapper .active use:nth-child(1){
+  outline: 8px solid #49BA62;
+  border-radius: 16px;
 }
