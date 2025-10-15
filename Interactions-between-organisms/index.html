@@ -25,15 +25,21 @@
             <div id="widget-container"></div>
         </div>
         <div class="button-controls2-hover">
-            <div><button id="resetButton" disabled>
-                <image src="assets/cta/reset-btn.svg" alt="logo" style="height:50px; margin-right: 20px; vertical-align: middle;">
-        </button>
+            <div><button id="resetButton" >
+                <image src="assets/cta/reset-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+            </button>
             </div>
             <div>
-                <button id="continueButton" disabled>Continue</button>
+                <button id="continueButton" >
+                <image src="assets/cta/continue-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+                    
+                </button>
             </div>
             <div>
-                <button id="formNextPair" disabled>Form Next Pair</button>
+                <button id="formNextPair" >
+                    <image src="assets/cta/form-nxt-pair-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+    
+                </button>
             </div>
         </div>
     </div>
@@ -56,6 +62,13 @@
             assets.comboMutualism = loadImage('assets/07_card_combo_01.svg');
             assets.comboCommensalism = loadImage('assets/09_card_combo_03.svg');
             assets.comboParasitism = loadImage('assets/08_card_combo_02.svg');
+
+            assets.message_correct_pair = loadImage('assets/messages/correct-pair.svg');
+            assets.message_incorrect_pair = loadImage('assets/messages/incorrect-pair.svg');
+            assets.border_selected = loadImage('assets/blue-border.svg');
+            
+            // **MODIFIED**: Added your new red border asset
+            assets.border_incorrect = loadImage('assets/red-border.svg');
         }
 
         // --- Game Objects & State ---
@@ -66,7 +79,7 @@
         let selectedPair = null;
 
         let gameState = 'pairing'; // 'pairing', 'bucketing', 'finished'
-        let feedback = { text: '', show: false, isCorrect: false };
+        let feedback = { show: false, isCorrect: false, imgKey: null }; 
         let instruction = 'Tap on the organisms below to form the interactive pairs.';
 
         // --- Button Elements ---
@@ -74,9 +87,10 @@
 
         let colors;
         const scale = 3840 / 1500;
-        const cardWidth = 180 * scale, cardHeight = 220 * scale;
+        const cardWidth = 220 * scale, cardHeight = 280 * scale;
         const bucketWidth = 350 * scale, bucketHeight = 250 * scale;
-        const pairCardWidth = 230 * scale, pairCardHeight = 170 * scale;
+        const pairCardWidth = 450 * scale,pairCardHeight = 280 * scale;
+
 
         // --- P5.js Setup Function ---
         function setup() {
@@ -92,7 +106,7 @@
             continueButton = select('#continueButton');
             formNextPairButton = select('#formNextPair');
             
-            resetButton.mousePressed(initializeState);
+            resetButton.mousePressed(onResetPressed);
             continueButton.mousePressed(onContinuePressed);
             formNextPairButton.mousePressed(onFormNextPairPressed);
 
@@ -107,12 +121,17 @@
             selectedPair = null;
             pairs = [];
             feedback.show = false;
-
-            // Disable all buttons initially
-            resetButton.attribute('disabled', '');
+            feedback.imgKey = null;
+            
+            // Initialize button states
+            resetButton.removeAttribute('disabled');
+            resetButton.style('display', 'block');
             continueButton.attribute('disabled', '');
+            continueButton.style('display', 'block');
             formNextPairButton.attribute('disabled', '');
+            formNextPairButton.style('display', 'none');
 
+            // NO SHUFFLE - Keep organisms in fixed order
             const organismData = [
                 { name: 'Flower', cardImgKey: 'card_flower', pair: 'Honey bee', type: 'Mutualism' },
                 { name: 'Honey bee', cardImgKey: 'card_honeybee', pair: 'Flower', type: 'Mutualism' },
@@ -121,8 +140,6 @@
                 { name: 'Plant branch', cardImgKey: 'card_plant', pair: 'Orchid', type: 'Commensalism' },
                 { name: 'Orchid', cardImgKey: 'card_orchid', pair: 'Plant branch', type: 'Commensalism' },
             ];
-
-            shuffle(organismData, true);
             
             const organismSpacing = 30 * scale;
             const totalOrganismsWidth = organismData.length * cardWidth + (organismData.length - 1) * organismSpacing;
@@ -134,7 +151,9 @@
                 y: height - cardHeight - (100 * scale),
                 targetX: startXOrganisms + i * (cardWidth + organismSpacing),
                 targetY: height - cardHeight - (100 * scale),
-                borderColor: null,
+                originalX: startXOrganisms + i * (cardWidth + organismSpacing),
+                originalY: height - cardHeight - (100 * scale),
+                borderImgKey: null, 
                 isPaired: false,
                 isFadingOut: false,
                 alpha: 255
@@ -154,8 +173,12 @@
         // --- P5.js Draw Loop ---
         function draw() {
             clear();
-            drawHeader();
-            
+            if(pairs.length === 3 && gameState === 'pairing') {
+                drawBottomText('Tap on Continue for the next activity');
+            }else if(pairs.length ===0 && gameState === 'pairing') {
+                drawHeader()
+            }
+
             if (gameState === 'pairing') {
                 organisms.forEach(o => updateAndDrawOrganism(o));
                 pairs.forEach(p => updateAndDrawPair(p));
@@ -181,6 +204,17 @@
             text(instruction, width / 2, 100 * scale);
         }
 
+
+        function drawBottomText(instructionText) {
+            fill(255);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(22 * scale);
+            fill(255, 255, 255, 200);
+            textStyle(ITALIC);
+            text(instructionText, width / 2, height - 150 * scale);
+        }
+
         function updateAndDrawOrganism(org) {
             if (org.alpha <= 5) return;
             org.x = lerp(org.x, org.targetX, 0.1);
@@ -195,55 +229,55 @@
             imageMode(CORNER);
             image(assets[org.cardImgKey], org.x, org.y, cardWidth, cardHeight);
             
-            if (org.borderColor) {
-                noFill();
-                strokeWeight(6 * scale);
-                org.borderColor.setAlpha(org.alpha);
-                stroke(org.borderColor);
-                rect(org.x, org.y, cardWidth, cardHeight, 15 * scale);
+            // Draw border based on state
+            if (org.borderImgKey === 'border_selected') {
+                image(assets[org.borderImgKey], org.x, org.y, cardWidth - 10, cardHeight - 10);
+            } else if (org.borderImgKey === 'border_incorrect') {
+                // **MODIFIED**: Now uses your preloaded red border SVG
+                image(assets[org.borderImgKey], org.x, org.y, cardWidth - 10, cardHeight - 10);
             }
             pop();
         }
 
         function updateAndDrawPair(p) {
             p.x = lerp(p.x, p.targetX, 0.1);
-            p.y = lerp(p.y, p.targetY, 0.1);
+            p.y = lerp(p.y - 25, p.targetY, 0.1);
+            
+            // Handle fade in animation
+            if (p.alpha < 255) {
+                p.alpha = lerp(p.alpha, 255, 0.1);
+            }
+
+            push();
+            tint(255, p.alpha);
             imageMode(CORNER);
             image(assets[p.comboImgKey], p.x, p.y, pairCardWidth, pairCardHeight);
-
+            
             if (p.isSelected) {
                 noFill();
                 stroke(colors.selected);
                 strokeWeight(8 * scale);
-                rect(p.x, p.y, pairCardWidth, pairCardHeight, 15 * scale);
+                rect(p.x, p.y, pairCardWidth, pairCardHeight, 10 * scale);
             }
+            pop();
         }
 
-        function drawBucket(bucket) { /* Unchanged */ }
+        function drawBucket(bucket) {
+            push();
+            imageMode(CORNER);
+            image(assets[bucket.imgKey], bucket.x, bucket.y, bucketWidth, bucketHeight);
+            pop();
+        }
         
-        // --- MODIFIED: Feedback now renders as per the image ---
         function drawFeedback() {
-            if (feedback.show) {
+            if (feedback.show && feedback.imgKey) {
                 push();
-                textAlign(CENTER, CENTER);
-                rectMode(CENTER);
-
-                let feedbackText = feedback.isCorrect ? "Very good! You have formed the correct interactive pair." : "That is not a correct pair. Try again.";
-                let textW = textWidth(feedbackText) + (60 * scale);
-                let textH = 80 * scale;
-
-                // Draw the green rounded rectangle background
-                fill(198, 240, 200); // Light green color
-                stroke(120, 150, 120); // Darker green border
-                strokeWeight(2 * scale);
-                rect(width / 2, height / 2 - 50 * scale, textW, textH, 40 * scale);
-
-                // Draw the text
-                noStroke();
-                fill(0); // Black text
-                textSize(24 * scale);
-                textStyle(NORMAL);
-                text(feedbackText, width / 2, height / 2 - 50 * scale);
+                imageMode(CENTER);
+                let msgImg = assets[feedback.imgKey];
+                console.log('Displaying message:', feedback.imgKey);
+                let msgWidth = msgImg.width * scale * 0.8;
+                let msgHeight = msgImg.height * scale * 0.8;
+                image(msgImg, width / 2, 425 * scale, msgWidth, msgHeight);
                 pop();
             }
         }
@@ -256,109 +290,204 @@
             }
         }
 
-        // --- MODIFIED: Now just handles selection and enables/disables the continue button ---
         function handlePairingClick() {
-            // Do not allow selection if feedback is showing for a correct pair
-            if (feedback.show && feedback.isCorrect) return;
+    // BLOCKING LOGIC - This can stay.
+    if (feedback.show && feedback.isCorrect) return;
 
-            for (let org of organisms) {
-                if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
-                    if (selectedOrganisms.includes(org)) {
-                        selectedOrganisms = selectedOrganisms.filter(o => o !== org);
-                        org.borderColor = null;
-                    } else if (selectedOrganisms.length < 2) {
-                        selectedOrganisms.push(org);
-                        org.borderColor = colors.selected;
+    // --- The problematic reset block has been REMOVED from here. ---
+
+    for (let org of organisms) {
+        if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
+            
+            // *** NEW LOGIC ADDED HERE ***
+            // If incorrect feedback is showing, clear it now that the user is making a new selection.
+            if (feedback.show && !feedback.isCorrect) {
+                feedback.show = false;
+                feedback.imgKey = null;
+                // Find any organism with an incorrect border and reset it.
+                organisms.forEach(o => {
+                    if (o.borderImgKey === 'border_incorrect') {
+                        o.borderImgKey = null;
                     }
-                }
+                });
+                selectedOrganisms = []; // Fully reset the selection.
             }
-
-            // After selection logic, manage the state of the continue button
-            if (selectedOrganisms.length === 2) {
-                continueButton.removeAttribute('disabled');
-            } else {
-                continueButton.attribute('disabled', '');
+            
+            // The rest of the original selection logic continues from here.
+            if (selectedOrganisms.includes(org)) {
+                selectedOrganisms = selectedOrganisms.filter(o => o !== org);
+                org.borderImgKey = null;
+            } else if (selectedOrganisms.length < 2) {
+                selectedOrganisms.push(org);
+                org.borderImgKey = 'border_selected';
             }
         }
+    }
 
-        // --- NEW: This function is called when the "Continue" button is pressed ---
+    // Enable continue button only if 2 cards selected
+    if (selectedOrganisms.length === 2) {
+        continueButton.removeAttribute('disabled');
+    } else {
+        continueButton.attribute('disabled', '');
+    }
+}
+
+        function onResetPressed() {
+            // Deselect all selected cards and remove messages
+            selectedOrganisms.forEach(o => {
+                o.borderImgKey = null;
+            });
+            selectedOrganisms = [];
+            
+            // Clear feedback message
+            feedback.show = false;
+            feedback.imgKey = null;
+            
+            // Disable continue button
+            continueButton.attribute('disabled', '');
+        }
+
         function onContinuePressed() {
             if (selectedOrganisms.length !== 2) return;
             
             let [org1, org2] = selectedOrganisms;
             if (org1.pair === org2.name) {
-                // Correct Pair
+                // Correct Pair - Show message, fade out cards, and create combo card
                 feedback.isCorrect = true;
-                org1.borderColor = colors.correct;
-                org2.borderColor = colors.correct;
-                formNextPairButton.removeAttribute('disabled'); // Enable next step
-            } else {
-                // Incorrect Pair
-                feedback.isCorrect = false;
-                org1.borderColor = colors.incorrect;
-                org2.borderColor = colors.incorrect;
+                feedback.show = true;
+                feedback.imgKey = 'message_correct_pair';
+                
+                // Mark cards for fade out
+                org1.isPaired = true;
+                org2.isPaired = true;
+                org1.isFadingOut = true;
+                org2.isFadingOut = true;
+                org1.borderImgKey = null;
+                org2.borderImgKey = null;
+                
+                // Create the combo pair card immediately
+                const pairIndex = pairs.length;
+                const comboKey = 'combo' + org1.type;
+                
+                const pairSpacing = 30 * scale;
+                const totalPairWidth = 3 * pairCardWidth + 2 * pairSpacing;
+                const startXPairs = (width - totalPairWidth) / 2;
 
-                // Reset after a delay
-                setTimeout(() => {
-                    org1.borderColor = null;
-                    org2.borderColor = null;
-                    selectedOrganisms = [];
-                    feedback.show = false;
-                }, 1500);
+                const newPair = {
+                    org1: org1, 
+                    org2: org2, 
+                    type: org1.type, 
+                    comboImgKey: comboKey,
+                    x: (org1.x + org2.x) / 2, 
+                    y: org1.y,
+                    targetX: startXPairs + pairIndex * (pairCardWidth + pairSpacing),
+                    targetY: 200 * scale, 
+                    isSelected: false, 
+                    isPlaced: false,
+                    alpha: 0 // Start invisible
+                };
+                pairs.push(newPair);
+
+                // Clear the selection array only after a CORRECT pair is processed
+                selectedOrganisms = [];
+                
+                // Check if this is the last pair
+                if (pairs.length === 3) {
+                    // All pairs formed - show continue button only with special instruction
+                    instruction = 'Tap on Continue for the next activity';
+                    resetButton.style('display', 'none');
+                    continueButton.style('display', 'block');
+                    continueButton.removeAttribute('disabled');
+                    formNextPairButton.style('display', 'none');
+                } else {
+                    // Not the last pair - show Form Next Pair button
+                    resetButton.style('display', 'none');
+                    continueButton.style('display', 'none');
+                    formNextPairButton.style('display', 'block');
+                    formNextPairButton.removeAttribute('disabled');
+                }
+                
+            } else {
+                // Incorrect Pair - Show red border and message
+                console.log('Incorrect pair');
+                feedback.isCorrect = false;
+                feedback.imgKey = 'message_incorrect_pair';
+                feedback.show = true;
+                
+                // Add red border to incorrect selections
+                org1.borderImgKey = 'border_incorrect';
+                org2.borderImgKey = 'border_incorrect';
             }
-            feedback.show = true;
-            continueButton.attribute('disabled', ''); // Disable button after click
+            
+            continueButton.attribute('disabled', '');
         }
         
-        // --- NEW: This function is called when "Form Next Pair" is pressed ---
         function onFormNextPairPressed() {
-            let [org1, org2] = selectedOrganisms;
+            // Remove the message
+            feedback.show = false;
+            feedback.imgKey = null;
+            
+            // Hide Form Next Pair button, show Reset and Continue buttons
+            formNextPairButton.style('display', 'none');
+            formNextPairButton.attribute('disabled', '');
+            resetButton.style('display', 'block');
+            continueButton.style('display', 'block');
+            continueButton.attribute('disabled', '');
+        }
 
-            org1.isPaired = true;
-            org2.isPaired = true;
-            org1.isFadingOut = true;
-            org2.isFadingOut = true;
-            
-            const pairIndex = pairs.length;
-            const comboKey = 'combo' + org1.type;
-            
-            const pairSpacing = 30 * scale;
-            const totalPairWidth = 3 * pairCardWidth + 2 * pairSpacing;
-            const startXPairs = (width - totalPairWidth) / 2;
+        // --- BUCKETING LOGIC ---
+        function handleBucketingClick() {
+            for (let pair of pairs) {
+                if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pairCardWidth && mouseY > pair.y && mouseY < pair.y + pairCardHeight) {
+                    pairs.forEach(p => p.isSelected = false);
+                    pair.isSelected = true;
+                    selectedPair = pair;
+                    return;
+                }
+            }
 
-            const newPair = {
-                org1: org1, org2: org2, type: org1.type, comboImgKey: comboKey,
-                x: (org1.x + org2.x) / 2, y: org1.y,
-                targetX: startXPairs + pairIndex * (pairCardWidth + pairSpacing),
-                targetY: 200 * scale, isSelected: false, isPlaced: false,
-            };
-            pairs.push(newPair);
-            
-            // Reposition remaining organisms
-            const remainingOrgs = organisms.filter(o => !o.isPaired);
-            const organismSpacing = 30 * scale;
-            const totalWidth = remainingOrgs.length * cardWidth + (remainingOrgs.length - 1) * organismSpacing;
-            let startX = (width - totalWidth) / 2;
-            remainingOrgs.forEach((org, i) => {
-                org.targetX = startX + i * (cardWidth + organismSpacing);
-            });
-            
-            selectedOrganisms = [];
-            feedback.show = false; // Hide feedback message
-            formNextPairButton.attribute('disabled', ''); // Disable itself
-            
-            if (pairs.length === 3) {
-                setTimeout(() => {
-                    instruction = 'Place the pairs in the correct buckets based on the interactions they share.';
-                    gameState = 'bucketing';
-                    resetButton.removeAttribute('disabled'); // Enable reset now
-                }, 1000);
+            if (selectedPair) {
+                for (let bucket of buckets) {
+                    if (mouseX > bucket.x && mouseX < bucket.x + bucketWidth && mouseY > bucket.y && mouseY < bucket.y + bucketHeight) {
+                        placeInBucket(selectedPair, bucket);
+                        return;
+                    }
+                }
             }
         }
 
-        // --- BUCKETING LOGIC (Mostly Unchanged) ---
-        function handleBucketingClick() { /* Unchanged */ }
-        function placeInBucket(pair, bucket) { /* Unchanged */ }
+        function placeInBucket(pair, bucket) {
+            if (pair.type === bucket.name) {
+                pair.targetX = bucket.x + bucketWidth / 2 - pairCardWidth / 2;
+                pair.targetY = bucket.y + bucketHeight / 2 - pairCardHeight / 2;
+                pair.isPlaced = true;
+                pair.isSelected = false;
+                bucket.filled = true;
+                selectedPair = null;
+
+                if (buckets.every(b => b.filled)) {
+                    setTimeout(() => {
+                        instruction = 'All pairs correctly placed! Well done!';
+                        gameState = 'finished';
+                    }, 500);
+                }
+            }
+        }
+
+        // A simple shuffle function (not used anymore)
+        function shuffle(array, modifyOriginal = false) {
+            let arr = modifyOriginal ? array : [...array];
+            let currentIndex = arr.length, randomIndex;
+
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                [arr[currentIndex], arr[randomIndex]] = [
+                    arr[randomIndex], arr[currentIndex]];
+            }
+            return arr;
+        }
     </script>
 </body>
 </html>
