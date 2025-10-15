@@ -1,0 +1,413 @@
+{
+  "government_types": [
+    {
+      "Government Type": "Direct Democracy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Crowd of raised hands",
+          "Option A": "A king rules alone",
+          "Option B": "All citizens together",
+          "Option C": "Elected president makes laws",
+          "Insight Countries": "Switzerland, Ancient Athens",
+          "Answer": "All citizens together"
+
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Hand with ballot",
+          "Option A": "Selected by military",
+          "Option B": "Hereditary succession",
+          "Option C": "Direct public participation",
+          "Answer": "Direct public participation"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Voting slips/confetti",
+          "Option A": "Parliament votes for everyone",
+          "Option B": "People vote on every major issue",
+          "Option C": "Orders come from one leader",
+          "Answer": "People vote on every major issue"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Diverse group of people",
+          "Option A": "Only property owners",
+          "Option B": "Only government officials",
+          "Option C": "Every adult citizen",
+          "Answer": "Every adult citizen"
+        }
+      ]
+    },
+    {
+      "Government Type": "Representative Democracy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Parliament scene",
+          "Option A": "Monarch",
+          "Option B": "Elected president",
+          "Option C": "Elected representatives",
+          "Insight Countries": "USA, Brazil, France",
+          "Answer": "Elected representatives"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Crowd voting",
+          "Option A": "Military selects leaders",
+          "Option B": "Citizens vote in elections",
+          "Option C": "Leaders chosen by faith",
+          "Answer": "Citizens vote in elections"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Assembly hall",
+          "Option A": "King decrees laws",
+          "Option B": "Lawmakers vote and decide",
+          "Option C": "Military council makes rules",
+          "Answer": "Lawmakers vote and decide"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Crowd of voters",
+          "Option A": "Only government workers",
+          "Option B": "Rich property owners",
+          "Option C": "All adult citizens voting",
+          "Answer": "All adult citizens voting"
+        }
+      ]
+    },
+    {
+      "Government Type": "Parliamentary Democracy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Parliament & PM figure",
+          "Option A": "Prime Minister and Cabinet",
+          "Option B": "Monarch rules by birth",
+          "Option C": "President chosen by army",
+          "Insight Countries": "India, UK, Australia",
+          "Answer": "Prime Minister and Cabinet"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "MPs voting",
+          "Option A": "Parliament selects leaders",
+          "Option B": "Military appointment",
+          "Option C": "Inherited throne",
+          "Answer": "Parliament selects leaders"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Cabinet session",
+          "Option A": "Monarch decrees laws",
+          "Option B": "Cabinet proposes laws, Parliament votes",
+          "Option C": "Army orders laws",
+          "Answer": "Cabinet proposes laws, Parliament votes"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Voters + ballot",
+          "Option A": "Citizens elect parliament",
+          "Option B": "Only aristocrats",
+          "Option C": "Only ruling family",
+          "Answer": "Citizens elect parliament"
+        }
+      ]
+    },
+    {
+      "Government Type": "Presidential Democracy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Podium, medals",
+          "Option A": "Military council",
+          "Option B": "Elected president",
+          "Option C": "Monarch",
+          "Insight Countries": "USA, Brazil, Nigeria",
+          "Answer": "Elected president"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Voting booth",
+          "Option A": "Citizens elect president directly",
+          "Option B": "Parliament votes for leader",
+          "Option C": "Inherited throne",
+          "Answer": "Citizens elect president directly"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "President at desk",
+          "Option A": "President makes executive decisions",
+          "Option B": "King issues all laws",
+          "Option C": "Religious councils",
+          "Answer": "President makes executive decisions"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Ballot box",
+          "Option A": "Citizens elect president and parliament",
+          "Option B": "Only officials",
+          "Option C": "Only landowners",
+          "Answer": "Citizens elect president and parliament"
+        }
+      ]
+    },
+    {
+      "Government Type": "Republic",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Scales, law book",
+          "Option A": "Monarch inherits title",
+          "Option B": "Military council",
+          "Option C": "Leaders chosen by merit/election",
+          "Insight Countries": "France, South Korea, Turkey",
+          "Answer": "Leaders chosen by merit/election"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Voting among people",
+          "Option A": "Hereditary only",
+          "Option B": "Citizen sovereignty, constitution",
+          "Option C": "Divine right",
+          "Answer": "Citizen sovereignty, constitution"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Assembly vote",
+          "Option A": "Monarch’s decree",
+          "Option B": "Elected officials debate and decide",
+          "Option C": "Religious elders decide",
+          "Answer": "Elected officials debate and decide"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Class of citizens",
+          "Option A": "Only priests",
+          "Option B": "Only upper caste",
+          "Option C": "All citizens under the law",
+          "Answer": "All citizens under the law"
+        }
+      ]
+    },
+    {
+      "Government Type": "Absolute Monarchy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Crown & throne",
+          "Option A": "President elected by people",
+          "Option B": "King or queen inherits position",
+          "Option C": "Group of generals",
+          "Insight Countries": "Saudi Arabia, Brunei",
+          "Answer": "King or queen inherits position"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Crown being placed",
+          "Option A": "Born into royal family",
+          "Option B": "Chosen by clergy",
+          "Option C": "Chosen by parliament",
+          "Answer": "Born into royal family"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Royal decree scroll",
+          "Option A": "The ruler decides all laws",
+          "Option B": "People vote on laws",
+          "Option C": "Parliament debates laws",
+          "Answer": "The ruler decides all laws"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Closed gates",
+          "Option A": "Only nobles & royals",
+          "Option B": "Ordinary citizens have no role",
+          "Option C": "All adults vote",
+          "Answer": "Only nobles & royals"
+        }
+      ]
+    },
+    {
+      "Government Type": "Constitutional Monarchy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Crown + law book",
+          "Option A": "King with total power",
+          "Option B": "Monarch with parliament",
+          "Option C": "President only",
+          "Insight Countries": "UK, Japan, Sweden",
+          "Answer": "Monarch with parliament"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Crown and parliament",
+          "Option A": "Hereditary monarchy, constitutional law",
+          "Option B": "Elected by citizens",
+          "Option C": "Chosen by army",
+          "Answer": "Hereditary monarchy, constitutional law"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Monarch & parliament chamber",
+          "Option A": "Monarch decides all alone",
+          "Option B": "Parliament sets all laws",
+          "Option C": "Shared: Parliament and monarch, by constitution",
+          "Answer": "Shared: Parliament and monarch, by constitution"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Parliament crowd",
+          "Option A": "Only royal family",
+          "Option B": "Only parliament",
+          "Option C": "All adult citizens (by constitution)",
+          "Answer": "All adult citizens (by constitution)"
+        }
+      ]
+    },
+    {
+      "Government Type": "Theocracy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Religious book",
+          "Option A": "Business leaders",
+          "Option B": "Monarch",
+          "Option C": "Religious leaders",
+          "Insight Countries": "Iran, Vatican City, Tibet",
+          "Answer": "Religious leaders"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Book and temple",
+          "Option A": "Chosen by religious texts/council",
+          "Option B": "Elected by citizens",
+          "Option C": "Military appointment",
+          "Answer": "Chosen by religious texts/council"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Religious council meeting",
+          "Option A": "Parliament votes",
+          "Option B": "Religious law or council",
+          "Option C": "President sets rules",
+          "Answer": "Religious law or council"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Worshippers in temple",
+          "Option A": "Only clergy",
+          "Option B": "Believers as allowed by law",
+          "Option C": "All adult citizens",
+          "Answer": "Believers as allowed by law"
+        }
+      ]
+    },
+    {
+      "Government Type": "Dictatorship",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Fist, single ruler",
+          "Option A": "One person with absolute power",
+          "Option B": "Elected representatives",
+          "Option C": "Monarch",
+          "Insight Countries": "North Korea, Belarus, Syria",
+          "Answer": "One person with absolute power"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Raised fist, forbidden signs",
+          "Option A": "Popular vote",
+          "Option B": "Hereditary",
+          "Option C": "Force or personal control",
+          "Answer": "Force or personal control"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Single person, many followers",
+          "Option A": "Leader alone decides",
+          "Option B": "Parliament negotiates",
+          "Option C": "Religious law",
+          "Answer": "Leader alone decides"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Closed rally, no ballots",
+          "Option A": "Only those chosen by dictator",
+          "Option B": "All adults freely",
+          "Option C": "Only party members",
+          "Answer": "Only those chosen by dictator"
+        }
+      ]
+    },
+    {
+      "Government Type": "Oligarchy",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Boardroom, handful of people",
+          "Option A": "President alone",
+          "Option B": "Monarch",
+          "Option C": "A small group of the wealthy/powerful",
+          "Insight Countries": "South Africa (apartheid), Historical Venice, Russia (1990s–2000s)",
+          "Answer": "A small group of the wealthy/powerful"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Suitcase of money, handshake",
+          "Option A": "Born into royal family",
+          "Option B": "All adults vote",
+          "Option C": "Selected from among economic or military elite",
+          "Answer": "Selected from among economic or military elite"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Round table of elites",
+          "Option A": "Parliament debates",
+          "Option B": "Elite council makes all decisions",
+          "Option C": "Leader decides alone",
+          "Answer": "Elite council makes all decisions"
+        },
+        {
+          "Block Title": "Who Participates?",
+          "Visual Cue": "Fancy party, few people",
+          "Option A": "Only party members",
+          "Option B": "Only elite group participates",
+          "Option C": "All citizens eligible",
+          "Answer": "Only elite group participates"
+
+        }
+      ]
+    },
+    {
+      "Government Type": "Military Junta",
+      "blocks": [
+        {
+          "Block Title": "Who Leads?",
+          "Visual Cue": "Soldiers' table, medals",
+          "Option A": "Monarch",
+          "Option B": "Committee of military leaders",
+          "Option C": "Elected representatives",
+          "Insight Countries": "Myanmar (1962–2011, 2021–present), Egypt (2011–12, 2013–14), Thailand (2014–19), Sudan (2019–present)"
+        },
+        {
+          "Block Title": "How is Power Gained?",
+          "Visual Cue": "Tanks, coup graphic",
+          "Option A": "Popular vote",
+          "Option B": "By forceful takeover",
+          "Option C": "Hereditary throne"
+        },
+        {
+          "Block Title": "How Are Decisions Made?",
+          "Visual Cue": "Millitary officer pointing",
+          "Option A": "Parliament debates",
+          "Option B": "Orders from military leadership",
+          "Option C": "Only dictator decides"
+        }
+      ]
+    }
+  ]
+}
