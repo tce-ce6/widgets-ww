@@ -11,6 +11,7 @@
         canvas {
             border: 2px solid #fff;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            cursor: default; /* Default cursor for canvas */
         }
     </style>
 </head>
@@ -67,7 +68,6 @@
             assets.message_incorrect_pair = loadImage('assets/messages/incorrect-pair.svg');
             assets.border_selected = loadImage('assets/blue-border.svg');
             
-            // **MODIFIED**: Added your new red border asset
             assets.border_incorrect = loadImage('assets/red-border.svg');
         }
 
@@ -76,7 +76,8 @@
         let pairs = [];
         let buckets = [];
         let selectedOrganisms = [];
-        let selectedPair = null;
+        let draggedPair = null; // Changed from selectedPair for drag logic
+        let dragOffsetX, dragOffsetY; // For smooth dragging
 
         let gameState = 'pairing'; // 'pairing', 'bucketing', 'finished'
         let feedback = { show: false, isCorrect: false, imgKey: null }; 
@@ -102,7 +103,6 @@
                 incorrect: color('#FF3B3B')
             };
             
-            // --- Link HTML buttons to script and add event listeners ---
             resetButton = select('#resetButton');
             continueButton = select('#continueButton');
             formNextPairButton = select('#formNextPair');
@@ -119,12 +119,11 @@
             gameState = 'pairing';
             instruction = 'Tap on the organisms below to form the interactive pairs.';
             selectedOrganisms = [];
-            selectedPair = null;
+            draggedPair = null;
             pairs = [];
             feedback.show = false;
             feedback.imgKey = null;
             
-            // Initialize button states
             resetButton.removeAttribute('disabled');
             resetButton.style('display', 'block');
             continueButton.attribute('disabled', '');
@@ -132,7 +131,6 @@
             formNextPairButton.attribute('disabled', '');
             formNextPairButton.style('display', 'none');
 
-            // NO SHUFFLE - Keep organisms in fixed order
             const organismData = [
                 { name: 'Flower', cardImgKey: 'card_flower', pair: 'Honey bee', type: 'Mutualism' },
                 { name: 'Honey bee', cardImgKey: 'card_honeybee', pair: 'Flower', type: 'Mutualism' },
@@ -165,20 +163,36 @@
             const startXBuckets = (width - totalBucketsWidth) / 2;
 
             buckets = [
-                { name: 'Mutualism', imgKey: 'bucketMutualism', x: startXBuckets, y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
-                { name: 'Commensalism', imgKey: 'bucketCommensalism', x: startXBuckets + bucketWidth + bucketSpacing, y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
-                { name: 'Parasitism', imgKey: 'bucketParasitism', x: startXBuckets + 2 * (bucketWidth + bucketSpacing), y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
+                { name: 'Mutualism', infoText: '• The bee pollinates the flower.\n• The flower gives nectar to the bee.', imgKey: 'bucketMutualism', x: startXBuckets, y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
+                { name: 'Commensalism', infoText: '• The host plant branch provides nutrition to orchid.\n• The orchid does not affect the plant in any way.', imgKey: 'bucketCommensalism', x: startXBuckets + bucketWidth + bucketSpacing, y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
+                { name: 'Parasitism', infoText: "• The tick feeds on the dog's blood.\n• It causes skin irritation in the dog's skin.", imgKey: 'bucketParasitism', x: startXBuckets + 2 * (bucketWidth + bucketSpacing), y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
             ];
         }
 
         // --- P5.js Draw Loop ---
         function draw() {
             clear();
+
+            // Change cursor based on what's under it
+            let onDraggable = false;
+            if (gameState === 'bucketing') {
+                for (let pair of pairs) {
+                    if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > pair.y && mouseY < pair.y + pair.currentHeight) {
+                        onDraggable = true;
+                        break;
+                    }
+                }
+            }
+            cursor(onDraggable ? 'grab' : 'default');
+
+
             if(pairs.length === 3 && gameState === 'pairing') {
                 continueButton.removeAttribute('disabled');
                 drawBottomText('Tap on Continue for the next activity');
-            }else if(pairs.length ===0 && gameState === 'pairing') {
-                drawHeader()
+            } else if(pairs.length === 0 && gameState === 'pairing') {
+                drawHeader();
+            } else if (gameState === 'bucketing' || gameState === 'finished') {
+                drawHeader();
             }
 
             if (gameState === 'pairing') {
@@ -188,13 +202,14 @@
 
             if (gameState === 'bucketing' || gameState === 'finished') {
                 buckets.forEach(b => drawBucketNative(b));
-                pairs.forEach(p => updateAndDrawPair(p));
+                // Draw placed pairs first, then the unplaced ones on top
+                pairs.filter(p => p.isPlaced).forEach(p => updateAndDrawPair(p));
+                buckets.forEach(b => drawBucketInfo(b));
+                pairs.filter(p => !p.isPlaced).forEach(p => updateAndDrawPair(p));
             }
 
             drawFeedback();
         }
-        
-        // --- Drawing Functions ---
         
         function drawHeader() {
             fill(255);
@@ -205,7 +220,6 @@
             textStyle(ITALIC);
             text(instruction, width / 2, 100 * scale);
         }
-
 
         function drawBottomText(instructionText) {
             fill(255);
@@ -231,21 +245,22 @@
             imageMode(CORNER);
             image(assets[org.cardImgKey], org.x, org.y, cardWidth, cardHeight);
             
-            // Draw border based on state
-            if (org.borderImgKey === 'border_selected') {
-                image(assets[org.borderImgKey], org.x, org.y, cardWidth - 10, cardHeight - 10);
-            } else if (org.borderImgKey === 'border_incorrect') {
-                // **MODIFIED**: Now uses your preloaded red border SVG
+            if (org.borderImgKey) {
                 image(assets[org.borderImgKey], org.x, org.y, cardWidth - 10, cardHeight - 10);
             }
             pop();
         }
 
         function updateAndDrawPair(p) {
-            p.x = lerp(p.x, p.targetX, 0.1);
-            p.y = lerp(p.y - 25, p.targetY, 0.1);
+            if (draggedPair !== p) {
+                p.x = lerp(p.x, p.targetX, 0.1);
+                p.y = lerp(p.y - 25, p.targetY, 0.1);
+            }
             
-            // Handle fade in animation
+            // Animate size gradually
+            p.currentWidth = lerp(p.currentWidth, p.targetWidth, 0.1);
+            p.currentHeight = lerp(p.currentHeight, p.targetHeight, 0.1);
+            
             if (p.alpha < 255) {
                 p.alpha = lerp(p.alpha, 255, 0.1);
             }
@@ -253,35 +268,87 @@
             push();
             tint(255, p.alpha);
             imageMode(CORNER);
-            image(assets[p.comboImgKey], p.x, p.y, pairCardWidth, pairCardHeight);
+            image(assets[p.comboImgKey], p.x, p.y, p.currentWidth, p.currentHeight);
             
-            if (p.isSelected) {
-                noFill();
-                stroke(colors.selected);
-                strokeWeight(8 * scale);
-                rect(p.x, p.y, pairCardWidth, pairCardHeight, 10 * scale);
+            // Show a border if the card is being dragged
+            if (p.isSelected && !p.isPlaced) {
+                image(assets['border_selected'], p.x - 5, p.y - 5, p.currentWidth + 10, p.currentHeight + 10);
             }
             pop();
         }
-function drawBucket(bucket) {
-    // Fade in animation
-    if (bucket.alpha < 255) {
-        bucket.alpha = lerp(bucket.alpha, 255, 0.05);
-    }
-    
-    push();
-    tint(255, bucket.alpha);
-    imageMode(CORNER);
-    image(assets[bucket.imgKey], bucket.x, bucket.y, bucketWidth, bucketHeight);
-    pop();
-}
+        
+        function drawBucketNative(bucket) {
+            if (bucket.alpha < 255) {
+                bucket.alpha = lerp(bucket.alpha, 255, 0.05);
+            }
+            push();
+            let bodyWidth = bucketWidth * 0.48; // 521/1080 ratio
+            let bodyHeight = bucketHeight * 0.6; // Proportional height
+            let headerHeight = bucketHeight * 0.09;
+            let headerWidth = bucketWidth * 0.23;
+            
+            // Center the bucket
+            let centerX = bucket.x + bucketWidth / 2;
+            let startY = bucket.y + bucketHeight * 0.3;
+            
+            let bucketColor;
+                bucketColor = color(76, 175, 80); // #4caf50
+            
+            bucketColor.setAlpha(bucket.alpha);
+            fill(bucketColor);
+            // stroke(bucketColor);
+            strokeWeight(4 * scale);
+            rectMode(CENTER);
+            rect(centerX, startY, headerWidth, headerHeight, 12 * scale,  12 * scale,0, 0, 0);
+            rectMode(CORNER);
+            let bodyX = centerX - bodyWidth / 2;
+            let bodyY = startY + headerHeight / 2;
+            fill(76, 175, 80,0);
+            rect(bodyX, bodyY, bodyWidth, bodyHeight, 10 * scale);
+            noFill();
+            stroke(bucketColor);
+            strokeWeight(4 * scale);
+            rect(bodyX, bodyY, bodyWidth, bodyHeight, 10 * scale);
+            fill(24, 24, 24, bucket.alpha); // #181818
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(22 * scale);
+            textStyle(BOLD);
+            text(bucket.name, centerX, startY);
+            
+            pop();
+        }
+
+        function drawBucketInfo(bucket) {
+            if (!bucket.filled) return;
+
+            const placedPair = pairs.find(p => p.type === bucket.name && p.isPlaced);
+            if (!placedPair) return;
+
+            const infoBoxWidth = placedPair.targetWidth * 1.6;
+            const infoBoxHeight = 90 * scale; 
+            const infoBoxX = placedPair.targetX + (placedPair.targetWidth / 2) - (infoBoxWidth / 2);
+            const infoBoxY = placedPair.targetY + (placedPair.targetWidth / 3.5) ;
+
+            push();
+            fill(255);
+            noStroke();
+            rect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 15 * scale);
+
+            fill(50);
+            textAlign(CENTER);
+            textSize(16 * scale);
+            textStyle(BOLD);
+            
+            text(bucket.infoText, infoBoxX + (20 * scale), infoBoxY + (20 * scale), infoBoxWidth - (40 * scale), infoBoxHeight - (40 * scale));
+            pop();
+        }
         
         function drawFeedback() {
             if (feedback.show && feedback.imgKey) {
                 push();
                 imageMode(CENTER);
                 let msgImg = assets[feedback.imgKey];
-                console.log('Displaying message:', feedback.imgKey);
                 let msgWidth = msgImg.width * scale * 0.8;
                 let msgHeight = msgImg.height * scale * 0.8;
                 image(msgImg, width / 2, 425 * scale, msgWidth, msgHeight);
@@ -293,216 +360,191 @@ function drawBucket(bucket) {
             if (gameState === 'pairing') {
                 handlePairingClick();
             } else if (gameState === 'bucketing') {
-                handleBucketingClick();
+                for (let i = pairs.length - 1; i >= 0; i--) {
+                    let pair = pairs[i];
+                    if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > pair.y && mouseY < pair.y + pair.currentHeight) {
+                        draggedPair = pair;
+                        dragOffsetX = mouseX - pair.x;
+                        dragOffsetY = mouseY - pair.y;
+                        draggedPair.isSelected = true; 
+                        cursor('grabbing');
+                        break; 
+                    }
+                }
+            }
+        }
+
+        function mouseDragged() {
+            if (gameState === 'bucketing' && draggedPair) {
+                draggedPair.x = mouseX - dragOffsetX;
+                draggedPair.y = mouseY - dragOffsetY;
+                cursor('grabbing');
+
+                const targetBucket = buckets.find(b => b.name === draggedPair.type);
+                if (targetBucket) {
+                    let bodyWidth = bucketWidth * 0.48;
+                    let bodyHeight = bucketHeight * 0.6;
+                    let centerX = targetBucket.x + bucketWidth / 2;
+                    let startY = targetBucket.y + bucketHeight * 0.3;
+                    let headerHeight = bucketHeight * 0.09;
+                    let bodyY = startY + headerHeight / 2;
+                    const bucketCenterX = centerX;
+                    const bucketCenterY = bodyY + bodyHeight / 2;
+                    
+                    const finalCardWidth = bodyWidth * 0.9;
+                    const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth);
+
+                    const initialDist = dist(draggedPair.originalTargetX, draggedPair.originalTargetY, bucketCenterX, bucketCenterY);
+                    const currentDist = dist(draggedPair.x, draggedPair.y, bucketCenterX, bucketCenterY);
+                    
+                    const newWidth = map(currentDist, initialDist, 0, pairCardWidth, finalCardWidth, true);
+                    const newHeight = newWidth * (pairCardHeight / pairCardWidth);
+                    
+                    draggedPair.currentWidth = newWidth;
+                    draggedPair.currentHeight = newHeight;
+                }
+            }
+        }
+
+        function mouseReleased() {
+            if (gameState === 'bucketing' && draggedPair) {
+                let droppedInBucket = false;
+                for (let bucket of buckets) {
+                    let bodyWidth = bucketWidth * 0.48;
+                    let bodyHeight = bucketHeight * 0.6;
+                    let centerX = bucket.x + bucketWidth / 2;
+                    let startY = bucket.y + bucketHeight * 0.3;
+                    let headerHeight = bucketHeight * 0.09;
+                    let bodyX = centerX - bodyWidth / 2;
+                    let bodyY = startY + headerHeight / 2;
+                    if (mouseX > bodyX && mouseX < bodyX + bodyWidth && mouseY > bodyY && mouseY < bodyY + bodyHeight) {
+                        if (draggedPair.type === bucket.name) {
+                            placeInBucket(draggedPair, bucket);
+                            droppedInBucket = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!droppedInBucket) {
+                    draggedPair.targetX = draggedPair.originalTargetX;
+                    draggedPair.targetY = draggedPair.originalTargetY;
+                    draggedPair.targetWidth = pairCardWidth;
+                    draggedPair.targetHeight = pairCardHeight;
+                }
+                
+                draggedPair.isSelected = false;
+                draggedPair = null;
             }
         }
 
         function handlePairingClick() {
-    // BLOCKING LOGIC - This can stay.
-    if (feedback.show && feedback.isCorrect) return;
+            if (feedback.show && feedback.isCorrect) return;
 
-    // --- The problematic reset block has been REMOVED from here. ---
-
-    for (let org of organisms) {
-        if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
-            
-            // *** NEW LOGIC ADDED HERE ***
-            // If incorrect feedback is showing, clear it now that the user is making a new selection.
-            if (feedback.show && !feedback.isCorrect) {
-                feedback.show = false;
-                feedback.imgKey = null;
-                // Find any organism with an incorrect border and reset it.
-                organisms.forEach(o => {
-                    if (o.borderImgKey === 'border_incorrect') {
-                        o.borderImgKey = null;
+            for (let org of organisms) {
+                if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
+                    if (feedback.show && !feedback.isCorrect) {
+                        feedback.show = false;
+                        feedback.imgKey = null;
+                        organisms.forEach(o => {
+                            if (o.borderImgKey === 'border_incorrect') o.borderImgKey = null;
+                        });
+                        selectedOrganisms = [];
                     }
-                });
-                selectedOrganisms = []; // Fully reset the selection.
+                    
+                    if (selectedOrganisms.includes(org)) {
+                        selectedOrganisms = selectedOrganisms.filter(o => o !== org);
+                        org.borderImgKey = null;
+                    } else if (selectedOrganisms.length < 2) {
+                        selectedOrganisms.push(org);
+                        org.borderImgKey = 'border_selected';
+                    }
+                }
             }
             
-            // The rest of the original selection logic continues from here.
-            if (selectedOrganisms.includes(org)) {
-                selectedOrganisms = selectedOrganisms.filter(o => o !== org);
-                org.borderImgKey = null;
-            } else if (selectedOrganisms.length < 2) {
-                selectedOrganisms.push(org);
-                org.borderImgKey = 'border_selected';
+            if (selectedOrganisms.length === 2) {
+                continueButton.removeAttribute('disabled');
+            } else {
+                continueButton.attribute('disabled', '');
             }
         }
-    }
-
-    // Enable continue button only if 2 cards selected
-    if (selectedOrganisms.length === 2) {
-        continueButton.removeAttribute('disabled');
-    } else {
-        continueButton.attribute('disabled', '');
-    }
-}
 
         function onResetPressed() {
-            // Deselect all selected cards and remove messages
-            selectedOrganisms.forEach(o => {
-                o.borderImgKey = null;
-            });
-            selectedOrganisms = [];
-            
-            // Clear feedback message
-            feedback.show = false;
-            feedback.imgKey = null;
-            
-            // Disable continue button
-            continueButton.attribute('disabled', '');
+            initializeState();
         }
-
-        // Add this function after the drawBucket function
-function drawBucketNative(bucket) {
-    if (bucket.alpha < 255) {
-        bucket.alpha = lerp(bucket.alpha, 255, 0.05);
-    }
-    push();
-    let bodyWidth = bucketWidth * 0.48; // 521/1080 ratio
-    let bodyHeight = bucketHeight * 0.6; // Proportional height
-    let headerHeight = bucketHeight * 0.09;
-    let headerWidth = bucketWidth * 0.23;
-    
-    // Center the bucket
-    let centerX = bucket.x + bucketWidth / 2;
-    let startY = bucket.y + bucketHeight * 0.3;
-    
-    let bucketColor;
-        bucketColor = color(76, 175, 80); // #4caf50
-    
-    bucketColor.setAlpha(bucket.alpha);
-    fill(bucketColor);
-    // stroke(bucketColor);
-    strokeWeight(4 * scale);
-    rectMode(CENTER);
-    rect(centerX, startY, headerWidth, headerHeight, 12 * scale,  12 * scale,0, 0, 0);
-    rectMode(CORNER);
-    let bodyX = centerX - bodyWidth / 2;
-    let bodyY = startY + headerHeight / 2;
-    fill(76, 175, 80,0);
-    rect(bodyX, bodyY, bodyWidth, bodyHeight, 10 * scale);
-    noFill();
-    stroke(bucketColor);
-    strokeWeight(4 * scale);
-    rect(bodyX, bodyY, bodyWidth, bodyHeight, 10 * scale);
-    fill(24, 24, 24, bucket.alpha); // #181818
-    noStroke();
-    textAlign(CENTER, CENTER);
-    textSize(22 * scale);
-    textStyle(BOLD);
-    text(bucket.name, centerX, startY);
-    
-    pop();
-}
-
-           function onContinuePressed() {
-            console.log('Continue pressed',gameState ,pairs.length);
-               
-            
-            // Check if we're transitioning from pairing to bucketing phase
+        
+        function onContinuePressed() {
             if (gameState === 'pairing' && pairs.length === 3) {
                 gameState = 'bucketing';
-                instruction = 'Place the pairs in the correct buckets based on the interactions they share.';
-                
-                // Hide feedback message
+                instruction = 'Drag and drop the pairs in the correct buckets.';
                 feedback.show = false;
                 feedback.imgKey = null;
-                
-                // Hide all buttons
                 resetButton.style('display', 'none');
                 continueButton.style('display', 'none');
                 formNextPairButton.style('display', 'none');
-                
-                // Initialize bucket fade-in animation
-                buckets.forEach(b => {
-                    b.alpha = 0; // Start invisible
-                });
-                
+                buckets.forEach(b => b.alpha = 0);
                 return;
-             
             }
             
             if (selectedOrganisms.length !== 2) return;
             
             let [org1, org2] = selectedOrganisms;
             if (org1.pair === org2.name) {
-                // Correct Pair - Show message, fade out cards, and create combo card
                 feedback.isCorrect = true;
                 feedback.show = true;
                 feedback.imgKey = 'message_correct_pair';
                 
-                // Mark cards for fade out
-                org1.isPaired = true;
-                org2.isPaired = true;
-                org1.isFadingOut = true;
-                org2.isFadingOut = true;
-                org1.borderImgKey = null;
-                org2.borderImgKey = null;
+                org1.isPaired = org2.isPaired = true;
+                org1.isFadingOut = org2.isFadingOut = true;
+                org1.borderImgKey = org2.borderImgKey = null;
                 
-                // Create the combo pair card immediately
                 const pairIndex = pairs.length;
                 const comboKey = 'combo' + org1.type;
-                
                 const pairSpacing = 30 * scale;
                 const totalPairWidth = 3 * pairCardWidth + 2 * pairSpacing;
                 const startXPairs = (width - totalPairWidth) / 2;
 
                 const newPair = {
-                    org1: org1, 
-                    org2: org2, 
-                    type: org1.type, 
-                    comboImgKey: comboKey,
-                    x: (org1.x + org2.x) / 2, 
-                    y: org1.y,
+                    org1, org2, type: org1.type, comboImgKey: comboKey,
+                    x: (org1.x + org2.x) / 2, y: org1.y,
                     targetX: startXPairs + pairIndex * (pairCardWidth + pairSpacing),
                     targetY: 200 * scale, 
-                    isSelected: false, 
-                    isPlaced: false,
-                    alpha: 0 // Start invisible
+                    originalTargetX: startXPairs + pairIndex * (pairCardWidth + pairSpacing),
+                    originalTargetY: 200 * scale,
+                    isSelected: false, isPlaced: false, alpha: 0,
+                    currentWidth: pairCardWidth,
+                    currentHeight: pairCardHeight,
+                    targetWidth: pairCardWidth,
+                    targetHeight: pairCardHeight
                 };
                 pairs.push(newPair);
-
-                // Clear the selection array only after a CORRECT pair is processed
                 selectedOrganisms = [];
                 
-                // Check if this is the last pair
                 if (pairs.length === 3) {
-                    // All pairs formed - show continue button only with special instruction
                     instruction = 'Tap on Continue for the next activity';
                     resetButton.style('display', 'none');
                     continueButton.style('display', 'block');
                     continueButton.removeAttribute('disabled');
                     formNextPairButton.style('display', 'none');
                 } else {
-                    // Not the last pair - show Form Next Pair button
                     resetButton.style('display', 'none');
                     continueButton.style('display', 'none');
                     formNextPairButton.style('display', 'block');
                     formNextPairButton.removeAttribute('disabled');
                 }
-                
             } else {
-                // Incorrect Pair - Show red border and message
-                console.log('Incorrect pair');
                 feedback.isCorrect = false;
                 feedback.imgKey = 'message_incorrect_pair';
                 feedback.show = true;
-                
-                // Add red border to incorrect selections
                 org1.borderImgKey = 'border_incorrect';
                 org2.borderImgKey = 'border_incorrect';
             }
-            
             continueButton.attribute('disabled', '');
         }
+
         function onFormNextPairPressed() {
-            // Remove the message
             feedback.show = false;
             feedback.imgKey = null;
-            
-            // Hide Form Next Pair button, show Reset and Continue buttons
             formNextPairButton.style('display', 'none');
             formNextPairButton.attribute('disabled', '');
             resetButton.style('display', 'block');
@@ -510,59 +552,36 @@ function drawBucketNative(bucket) {
             continueButton.attribute('disabled', '');
         }
 
-        // --- BUCKETING LOGIC ---
-        function handleBucketingClick() {
-            for (let pair of pairs) {
-                if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pairCardWidth && mouseY > pair.y && mouseY < pair.y + pairCardHeight) {
-                    pairs.forEach(p => p.isSelected = false);
-                    pair.isSelected = true;
-                    selectedPair = pair;
-                    return;
-                }
-            }
-
-            if (selectedPair) {
-                for (let bucket of buckets) {
-                    if (mouseX > bucket.x && mouseX < bucket.x + bucketWidth && mouseY > bucket.y && mouseY < bucket.y + bucketHeight) {
-                        placeInBucket(selectedPair, bucket);
-                        return;
-                    }
-                }
-            }
-        }
-
         function placeInBucket(pair, bucket) {
-            if (pair.type === bucket.name) {
-                pair.targetX = bucket.x + bucketWidth / 2 - pairCardWidth / 2;
-                pair.targetY = bucket.y + bucketHeight / 2 - pairCardHeight / 2;
-                pair.isPlaced = true;
-                pair.isSelected = false;
-                bucket.filled = true;
-                selectedPair = null;
+            if (pair.type === bucket.name && !bucket.filled) {
+                let bodyWidth = bucketWidth * 0.48;
+                let bodyHeight = bucketHeight * 0.6;
+                let centerX = bucket.x + bucketWidth / 2;
+                let startY = bucket.y + bucketHeight * 0.3;
+                let headerHeight = bucketHeight * 0.09;
+                let bodyY = startY + headerHeight / 2 + 100;
 
+                const finalCardWidth = bodyWidth * 0.6;
+                const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth); 
+
+                pair.targetWidth = finalCardWidth;
+                pair.targetHeight = finalCardHeight;
+                pair.targetX = centerX - finalCardWidth / 2;
+                pair.targetY = bodyY + bodyHeight / 2 - finalCardHeight / 2;
+
+                pair.isPlaced = true;
+                bucket.filled = true;
+                
                 if (buckets.every(b => b.filled)) {
                     setTimeout(() => {
                         instruction = 'All pairs correctly placed! Well done!';
                         gameState = 'finished';
+                        resetButton.style('display','block');
                     }, 500);
                 }
             }
         }
-
-        // A simple shuffle function (not used anymore)
-        function shuffle(array, modifyOriginal = false) {
-            let arr = modifyOriginal ? array : [...array];
-            let currentIndex = arr.length, randomIndex;
-
-            while (currentIndex !== 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-
-                [arr[currentIndex], arr[randomIndex]] = [
-                    arr[randomIndex], arr[currentIndex]];
-            }
-            return arr;
-        }
     </script>
 </body>
 </html>
+
