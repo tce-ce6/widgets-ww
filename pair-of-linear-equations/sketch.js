@@ -5,6 +5,7 @@ let a1 = 9, b1 = 10, c1 = 10;
 let a2 = 6, b2 = 1, c2 = -5;
 let showAnswer = false; // controls ratio placeholders
 let hidden = true;      // controls graph visibility
+let resultText = " ";
 
 function initBoard() {
     board = JXG.JSXGraph.initBoard('jxgbox', {
@@ -166,6 +167,9 @@ function onSliderChange() {
     // Update optional graph toggle button label if present
     const hideBtn = document.getElementById('hideShowBtn');
     if (hideBtn) hideBtn.innerText = 'Show Graph';
+
+    document.getElementById("solutionDiv").style.display = "none";
+    document.getElementById("solutionDiv"),innerText = " ";
 }
 
 function toggleHide() {
@@ -186,15 +190,49 @@ function toggleHide() {
     }
 }
 
+// function checkCondition() {
+//     // toggles ratio placeholders (Show/Hide)
+//     showAnswer = !showAnswer;
+
+//     if (showAnswer) {
+//         updateRatioPlaceholdersToValues();
+
+//         let ratioAB = (a2 !== 0 && b2 !== 0) ? (a1 / a2 === b1 / b2) : false;
+//         let ratioBC = (b2 !== 0 && c2 !== 0) ? (b1 / b2 === c1 / c2) : false;
+
+//         // Update = or ≠ dynamically
+//         document.getElementById("eqSign1").innerText = ratioAB ? "=" : "≠";
+//         document.getElementById("eqSign2").innerText = ratioBC ? "=" : "≠";
+
+//         document.getElementById("toggleBtn").innerText = "Hide";
+//         document.getElementById("isText").innerText = " ";
+//         document.getElementById("questionMark").innerText = " ";
+
+//         // show possible solution
+//         document.getElementsById("solutionDiv").innerText = ratioAB ? " " : "One Solution";
+//         document.getElementById("solutionDiv").innerText = ratioBC ? " " : "No Solution";
+//         document.getElementById("solutionDiv").innerText = ratioAB && ratioBC ? "Infinite Solution" : " ";
+//     } else {
+//         resetRatioPlaceholders();
+//         // Reset signs to "="
+//         document.getElementById("eqSign1").innerText = "=";
+//         document.getElementById("eqSign2").innerText = "=";
+
+//         document.getElementById("toggleBtn").innerText = "Show";
+//         document.getElementById("isText").innerText = "Is";
+//         document.getElementById("questionMark").innerText = "?";
+//     }
+// }
+
 function checkCondition() {
-    // toggles ratio placeholders (Show/Hide)
     showAnswer = !showAnswer;
 
     if (showAnswer) {
         updateRatioPlaceholdersToValues();
 
-        let ratioAB = (a2 !== 0 && b2 !== 0) ? (a1 / a2 === b1 / b2) : false;
-        let ratioBC = (b2 !== 0 && c2 !== 0) ? (b1 / b2 === c1 / c2) : false;
+        const eps = 1e-9;
+        const ratioAB = Math.abs(a1 / a2 - b1 / b2) < eps;
+        const ratioBC = Math.abs(b1 / b2 - c1 / c2) < eps;
 
         // Update = or ≠ dynamically
         document.getElementById("eqSign1").innerText = ratioAB ? "=" : "≠";
@@ -203,17 +241,29 @@ function checkCondition() {
         document.getElementById("toggleBtn").innerText = "Hide";
         document.getElementById("isText").innerText = " ";
         document.getElementById("questionMark").innerText = " ";
+
+        // Determine relationship
+        resultText = "";
+        if (!ratioAB) {
+            resultText = "one solution";
+        } else if (ratioAB && !ratioBC) {
+            resultText = "no solution";
+        } else if (ratioAB && ratioBC) {
+            resultText = "infinite solutions";
+        }
+
+        //  document.getElementById("solutionDiv").innerText = resultText;
     } else {
         resetRatioPlaceholders();
-        // Reset signs to "="
         document.getElementById("eqSign1").innerText = "=";
         document.getElementById("eqSign2").innerText = "=";
-
         document.getElementById("toggleBtn").innerText = "Show";
         document.getElementById("isText").innerText = "Is";
         document.getElementById("questionMark").innerText = "?";
+        document.getElementById("solutionDiv").innerText = "";
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     initBoard();
@@ -230,6 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
             updateValues();
             hidden = false;
             plotLines();
+            showSolution.disabled = false;
+            document.getElementById("solutionDiv").innerText = " ";
         });
     }
 
@@ -246,6 +298,23 @@ document.addEventListener("DOMContentLoaded", () => {
         hideBtn.innerText = 'Show Graph'; // initial text
     }
 
+    const solDiv = document.getElementById("solutionDiv");
+    const showSolution = document.getElementById("solutionBtn");
+    if (showSolution) {
+        showSolution.addEventListener("click", () => {
+            solDiv.innerText = resultText;
+            solDiv.style.display = "block";
+
+            // Position the div inside the board (in pixels)
+            // You can adjust this for any corner you like
+            solDiv.style.left = "20px";
+            solDiv.style.top = "20px";
+            showSolution.disabled = true;
+
+        });
+    }
+
+    //showSolution.disabled = true;
     // Initial sync (reads slider values and keeps graph hidden initially)
     updateValues();
     clearBoard();

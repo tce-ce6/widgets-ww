@@ -163,6 +163,7 @@
       font-size: 26px;
       font-weight: 600;
       margin: 20px 0;
+      min-width: 224px;
     }
 
     .ratioText {
@@ -170,10 +171,28 @@
       align-items: center;
       justify-content: center;
       gap: 15px;
+      background-color: #b7ffb7;
+      padding: 0 17px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      min-width: 345px;
     }
 
     .txt-align {
       line-height: 2.2;
+    }
+
+    .result-box {
+      position: absolute;
+      background-color: #e0f7fa;
+      color: #00695c;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #00695c;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      display: none; /* initially hidden */
     }
   </style>
 </head>
@@ -183,7 +202,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Pair of Linear Equations</h2>
-        <span id="versionId" class="versionText">v_25100201</span>
+        <span id="versionId" class="versionText">b2_25101601</span>
       </div>
 
       <!-- Your original main container kept as-is; quadratic app goes inside -->
@@ -197,7 +216,14 @@
               <input type="range" min="-30" max="30" value="10" class="coeff-slider vertical" id="c1">
             </div>
             <div class="upEquation">
-              <span id="eq1"><span style="color: rgb(241, 93, 82);">a₁</span><i>x</i> + <span style="color: rgb(241, 93, 82);">b₁</span><i>y</i> + <span style="color: rgb(241, 93, 82);">c₁</span> = 0</span>
+              <span id="eq1"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">a₁</span><i class="roman-txt">x</i> + <span
+                  style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">b₁</span><i class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">c₁</span>
+                = 0</span>
+                <div>
+                  <span id="eq1"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="a1_val">9</span></span><i class="roman-txt">x</i> + <span
+                  style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="b1_val">10</span></span><i class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="c1_val">10</span></span>
+                = 0</span>
+                </div>
             </div>
             <div class="upCoefficient">
               <span class="equation-wrapper">a₁ = <span id="a1_val">9</span></span>
@@ -231,7 +257,7 @@
             </div>
             <button id="toggleBtn" class="hideRatio">Show</button>
           </div>
-          
+
 
           <!-- Second Equation -->
           <div class="downSlider">
@@ -241,7 +267,14 @@
               <input type="range" min="-30" max="30" value="-5" class="coeff-slider vertical" id="c2">
             </div>
             <div class="downEquation">
-              <span id="eq2"><span style="color: rgb(110, 195, 238);">a₂</span><i>x</i> + <span style="color: rgb(110, 195, 238);">b₂</span><i>y</i> + <span style="color: rgb(110, 195, 238);">c₂</span> = 0</span>
+              <span id="eq2"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">a₂</span><i class="roman-txt">x</i> + <span
+                  style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">b₂</span><i class="roman-txt">y</i> + <span
+                  style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">c₂</span> = 0</span>
+                  <div>
+                    <span id="eq2"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="a2_val">6</span></span><i class="roman-txt">x</i> + <span
+                    style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="b2_val">1</span></span><i class="roman-txt">y</i> + <span
+                    style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="c2_val">-5</span></span> = 0</span>
+                  </div>
             </div>
             <div class="downCoefficient">
               <span class="equation-wrapper">a₂ = <span id="a2_val">6</span></span>
@@ -251,8 +284,12 @@
           </div>
         </div>
 
+        <div class="solution-wrapper">
+          <span id="solutionDiv" class="solution-div"></span>
+          <div id="jxgbox" class="jxgbox">
+          </div>
+        </div>
         <!-- Graph -->
-        <div id="jxgbox" class="jxgbox"></div>
         <!-- <div>
                     <button class="plot">Plot</button>
                 </div> -->
@@ -263,7 +300,7 @@
         <div class="flexItem flexItemFirst">
           <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
           <button id="toggleBtn" class="btn btn-primary plot">Plot</button>
-
+          <button id="solutionBtn" class="btn btn-primary plot">Show Solution</button>
         </div>
       </div>
     </div>
