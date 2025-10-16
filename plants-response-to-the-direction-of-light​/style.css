@@ -179,3 +179,14 @@
 #phototropism-widget #bulb-3.active .bulb-rays{
   display: block !important;
 }
+
+#position-1,
+#position-2,
+#position-3{
+  cursor: pointer;
+}
+#position-1.active #Vector_2,
+#position-2.active #Vector_4,
+#position-3.active #Vector_6{
+  fill: #02FFFF !important;
+}
