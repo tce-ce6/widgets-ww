@@ -161,5 +161,21 @@
     width: 100% !important;
     height: 100%;
 }
-/* parlament style  */
+/* plant style  */
 
+#phototropism-widget #bulb-1.active .bulb-bg,
+#phototropism-widget #bulb-2.active .bulb-bg,
+#phototropism-widget #bulb-3.active .bulb-bg{
+  fill: #FCEE21;
+}
+
+#phototropism-widget .bulb-rays{
+  display: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#phototropism-widget #bulb-1.active .bulb-rays,
+#phototropism-widget #bulb-2.active .bulb-rays,
+#phototropism-widget #bulb-3.active .bulb-rays{
+  display: block !important;
+}
