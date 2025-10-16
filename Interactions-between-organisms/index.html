@@ -3,16 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecological Interactions Simulation (4K)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    <title>Ecological Interactions Simulation</title>
+    <script src="p5.js"></script>
     <link rel="stylesheet" href="global_style.css">
     <style>
-        /* Your existing CSS can remain here */
-        canvas {
-            border: 2px solid #fff;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            cursor: default; /* Default cursor for canvas */
-        }
+        
     </style>
 </head>
 
@@ -27,18 +22,18 @@
         </div>
         <div class="button-controls2-hover">
             <div><button id="resetButton" >
-                <image src="assets/cta/reset-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+                <image src="assets/cta/reset-btn.svg" alt="logo" style="height:60px; margin-right: 20px; vertical-align: middle;">
             </button>
             </div>
             <div>
                 <button id="continueButton" >
-                <image src="assets/cta/continue-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+                <image src="assets/cta/continue-btn.svg" alt="logo" style="height:60px; margin-right: 20px; vertical-align: middle;">
                     
                 </button>
             </div>
             <div>
                 <button id="formNextPair" >
-                    <image src="assets/cta/form-nxt-pair-btn.svg" alt="logo" style="height:70px; margin-right: 20px; vertical-align: middle;">
+                    <image src="assets/cta/form-nxt-pair-btn.svg" alt="logo" style="height:60px; margin-right: 20px; vertical-align: middle;">
     
                 </button>
             </div>
@@ -139,7 +134,7 @@
                 { name: 'Plant branch', cardImgKey: 'card_plant', pair: 'Orchid', type: 'Commensalism' },
                 { name: 'Orchid', cardImgKey: 'card_orchid', pair: 'Plant branch', type: 'Commensalism' },
             ];
-            
+            shuffleArray(organismData);
             const organismSpacing = 30 * scale;
             const totalOrganismsWidth = organismData.length * cardWidth + (organismData.length - 1) * organismSpacing;
             const startXOrganisms = (width - totalOrganismsWidth) / 2;
@@ -169,6 +164,13 @@
             ];
         }
 
+        function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+}
+
         // --- P5.js Draw Loop ---
         function draw() {
             clear();
@@ -193,6 +195,10 @@
                 drawHeader();
             } else if (gameState === 'bucketing' || gameState === 'finished') {
                 drawHeader();
+            }   
+
+            if(buckets.every(b => b.filled)) {
+                drawFinalText();
             }
 
             if (gameState === 'pairing') {
@@ -253,33 +259,33 @@
 
         function updateAndDrawPair(p) {
             if (draggedPair !== p) {
-                p.x = lerp(p.x, p.targetX, 0.1);
-                p.y = lerp(p.y - 25, p.targetY, 0.1);
+                p.x = lerp(p.x, p.targetX, 0.6);
+                p.y = lerp(p.y , p.targetY, 0.6);
             }
             
             // Animate size gradually
-            p.currentWidth = lerp(p.currentWidth, p.targetWidth, 0.1);
-            p.currentHeight = lerp(p.currentHeight, p.targetHeight, 0.1);
+            p.currentWidth = lerp(p.currentWidth, p.targetWidth, 0.6);
+            p.currentHeight = lerp(p.currentHeight, p.targetHeight, 0.6);
             
             if (p.alpha < 255) {
-                p.alpha = lerp(p.alpha, 255, 0.1);
+                p.alpha = lerp(p.alpha, 255, 0.3);
             }
 
             push();
             tint(255, p.alpha);
             imageMode(CORNER);
-            image(assets[p.comboImgKey], p.x, p.y, p.currentWidth, p.currentHeight);
+            image(assets[p.comboImgKey], p.x, p.y - 200, p.currentWidth, p.currentHeight);
             
             // Show a border if the card is being dragged
-            if (p.isSelected && !p.isPlaced) {
-                image(assets['border_selected'], p.x - 5, p.y - 5, p.currentWidth + 10, p.currentHeight + 10);
-            }
+            // if (p.isSelected && !p.isPlaced) {
+            //     image(assets['border_selected'], p.x - 5, p.y - 5, p.currentWidth + 10, p.currentHeight + 10);
+            // }
             pop();
         }
         
         function drawBucketNative(bucket) {
             if (bucket.alpha < 255) {
-                bucket.alpha = lerp(bucket.alpha, 255, 0.05);
+                bucket.alpha = lerp(bucket.alpha, 255, 0.3);
             }
             push();
             let bodyWidth = bucketWidth * 0.48; // 521/1080 ratio
@@ -328,7 +334,7 @@
             const infoBoxWidth = placedPair.targetWidth * 1.6;
             const infoBoxHeight = 90 * scale; 
             const infoBoxX = placedPair.targetX + (placedPair.targetWidth / 2) - (infoBoxWidth / 2);
-            const infoBoxY = placedPair.targetY + (placedPair.targetWidth / 3.5) ;
+            const infoBoxY = placedPair.targetY + (placedPair.targetWidth / 3) ;
 
             push();
             fill(255);
@@ -336,11 +342,11 @@
             rect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 15 * scale);
 
             fill(50);
-            textAlign(CENTER);
+            textAlign(CENTER, CENTER); 
             textSize(16 * scale);
             textStyle(BOLD);
-            
-            text(bucket.infoText, infoBoxX + (20 * scale), infoBoxY + (20 * scale), infoBoxWidth - (40 * scale), infoBoxHeight - (40 * scale));
+            text(bucket.infoText, infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight);
+            // text(bucket.infoText, infoBoxX + (20 * scale), infoBoxY + (20 * scale), infoBoxWidth - (40 * scale), infoBoxHeight - (40 * scale));
             pop();
         }
         
@@ -559,7 +565,7 @@
                 let centerX = bucket.x + bucketWidth / 2;
                 let startY = bucket.y + bucketHeight * 0.3;
                 let headerHeight = bucketHeight * 0.09;
-                let bodyY = startY + headerHeight / 2 + 100;
+                let bodyY = startY + headerHeight / 2 + 70;
 
                 const finalCardWidth = bodyWidth * 0.6;
                 const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth); 
@@ -574,12 +580,23 @@
                 
                 if (buckets.every(b => b.filled)) {
                     setTimeout(() => {
-                        instruction = 'All pairs correctly placed! Well done!';
+                        // instruction = 'All pairs correctly placed! Well done!';
                         gameState = 'finished';
                         resetButton.style('display','block');
                     }, 500);
                 }
             }
+        }
+
+
+        function drawFinalText() {
+            fill(255);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(32 * scale);
+            fill(255, 255, 0);
+            textStyle(BOLD);
+            text('All pairs correctly placed! Well done!', width / 2, height / 2.4);
         }
     </script>
 </body>
