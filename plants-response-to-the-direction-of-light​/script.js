@@ -25,8 +25,9 @@ class LottieSVGAnimation {
     // Create a <foreignObject> to host the Lottie animation inside the SVG group
     const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
     // Ensure width/height are either dynamic ("100%") or match your SVG/Group dimensions
-    foreignObject.setAttribute("width", "400"); 
-    foreignObject.setAttribute("height", "400");
+    foreignObject.setAttribute("width", "500"); 
+    foreignObject.setAttribute("height", "700");
+    foreignObject.setAttribute("transform", "translate(700,300)");
     
     // Inner div for animation
     const div = document.createElement("div");
