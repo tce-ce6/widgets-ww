@@ -29,11 +29,14 @@ function initGeometryBoard() {
         }
     });
 
+    const p1 = brd.create('point', [-1, 1], { visible: false, fixed: true });
+const p2 = brd.create('point', [25, 1], { visible: false, fixed: true });
+
     // --- Lines (parallel) ---
     const lineL = brd.create('line', [[-1, 7], [25, 7]], {
         strokeColor: '#3b82f6', strokeWidth: 2, name: 'l', withLabel: true
     });
-    const lineM = brd.create('line', [[-1, 1], [25, 1]], {
+    const lineM = brd.create('line', [p1, p2], {
         strokeColor: '#3b82f6', strokeWidth: 2, name: 'm', withLabel: true
     });
 
@@ -90,26 +93,26 @@ function initGeometryBoard() {
     const leftX = 5, rightX = 19;
 
     // Triangle ABC Info
-    brd.create('text', [leftX, 11.5, 'Area of ▲ABC:'], { fontSize: 12, anchorX: 'middle' });
+    brd.create('text', [leftX, 11.5, 'Area of ▲ABC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
     brd.create('text', [leftX, 10.9, function() { 
         return getArea(polyABC) + ' sq. units'; 
-    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle' });
+    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle', fixed: true });
 
-    brd.create('text', [leftX, 10.2, 'Perimeter of ▲ABC:'], { fontSize: 12, anchorX: 'middle' });
+    brd.create('text', [leftX, 10.2, 'Perimeter of ▲ABC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
     brd.create('text', [leftX, 9.6, function() { 
         return getPerimeter(polyABC) + ' units'; 
-    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle' });
+    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle', fixed: true });
 
     // Triangle DBC Info
-    brd.create('text', [rightX, 11.5, 'Area of ▲DBC:'], { fontSize: 12, anchorX: 'middle' });
+    brd.create('text', [rightX, 11.5, 'Area of ▲DBC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
     brd.create('text', [rightX, 10.9, function() { 
         return getArea(polyDBC) + ' sq. units'; 
-    }], { fontSize: 12, color: '#10b981', anchorX: 'middle' });
+    }], { fontSize: 12, color: '#10b981', anchorX: 'middle', fixed: true });
 
-    brd.create('text', [rightX, 10.2, 'Perimeter of ▲DBC:'], { fontSize: 12, anchorX: 'middle' });
+    brd.create('text', [rightX, 10.2, 'Perimeter of ▲DBC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
     brd.create('text', [rightX, 9.6, function() { 
         return getPerimeter(polyDBC) + ' units'; 
-    }], { fontSize: 12, color: '#10b981', anchorX: 'middle' });
+    }], { fontSize: 12, color: '#10b981', anchorX: 'middle', fixed: true });
 
     // --- Force full initialization ---
     brd.fullUpdate();
