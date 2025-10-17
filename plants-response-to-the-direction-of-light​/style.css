@@ -162,6 +162,9 @@
     height: 100%;
 }
 /* plant style  */
+#play-btn{
+  cursor: pointer;
+}
 
 #phototropism-widget #bulb-1.active .bulb-bg,
 #phototropism-widget #bulb-2.active .bulb-bg,
