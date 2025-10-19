@@ -108,7 +108,7 @@ class Button {
 
 class Slider {
     constructor(x, y, w, minV, maxV, step, initial, onChange) {
-        this.x = x; this.y = y; this.w = w; this.h = 20;
+        this.x = x; this.y = y; this.w = w + 550; this.h = 20;
         this.minV = minV; this.maxV = maxV; this.step = step;
         this.value = this.snap(initial);
         this.onChange = onChange;
@@ -151,12 +151,11 @@ class Slider {
         // Value
         fill(0);
         textAlign(CENTER, BOTTOM);
-        textSize(34);
-        text(this.value, hx, this.y - 8);
+        textSize(40);
+        text(this.value, hx, this.y - 30);
         pop();
     }
 }
-
 class TermBlock {
     constructor(term, x, y) {
         this.term = term; // {key,label,degree}
@@ -172,21 +171,48 @@ class TermBlock {
         stroke(40);
         strokeWeight(4);
         if (this.contains(mouseX, mouseY)) fill(70); else fill(55);
-        rect(this.x, this.y + 360, this.w, this.h, 18);
-        // label
+       // rect(this.x, this.y + 360, this.w, this.h, 18);
+        
+        // --- CORRECTED LABEL DRAWING ---
         noStroke();
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(56);
-        text(this.term.label, this.x + this.w/2, this.y + this.h/2 + 360);
+        fill(0);
+        textAlign(LEFT, CENTER);
+        
+        const label = this.term.label;
+        const startX = this.x + this.w/2 - 140;
+        const startY = this.y + this.h/2 + 360;
+        const baseSize = 60;
+        const superSize = 28;
+        const superOffset = 15;
+
+        if (label.includes('^')) {
+            const parts = label.split('^');
+            const base = parts[0];
+            const exp = parts[1];
+            
+            // Draw base part (e.g., 'x')
+            textSize(baseSize);
+            text(base, startX, startY);
+            
+            // Draw exponent part (e.g., '3' or '2') as superscript
+            const baseWidth = textWidth(base);
+            textSize(superSize);
+            text(exp, startX + baseWidth, startY - superOffset);
+        } else {
+            // Draw normal labels like 'x' or 'constant'
+            textSize(baseSize);
+            text(label, startX, startY);
+        }
+        // --- END OF CORRECTION ---
+
         // active tag
         if (this.active) {
             fill(30, 144, 255);
-            rect(this.x + this.w - 150 + 180, this.y - 38+ 400, 140, 34, 10);
+            rect(this.x + this.w - 150 + 780, this.y - 38+ 430, 160, 50, 10);
             fill(255);
-            textSize(28);
+            textSize(30);
             textAlign(CENTER, CENTER);
-            text('IN USE', this.x + this.w - 80 + 180,  this.y - 21 + 400);
+            text('IN USE', this.x + this.w - 80 + 787,  this.y - 21 + 441);
         }
         pop();
     }
@@ -194,7 +220,6 @@ class TermBlock {
         this.x = this.homeX; this.y = this.homeY;
     }
 }
-
 class ExpressionBox {
     constructor(x, y, w, h) {
         this.x = x; this.y = y; this.w = w; this.h = h;
@@ -317,7 +342,6 @@ function draw() {
     drawBottomBar();
 
     // Floating instructions
-    drawFloatingInstructions();
 
     // Degree popup
     if (showDegreeFlag && degreePopupTimer > 0) {
@@ -510,19 +534,34 @@ function drawPolynomialCurve() {
     stroke(30, 144, 255);
     strokeWeight(6);
     noFill();
-    let first = true;
-    let prev = null;
+
+    let prevScreen = null;
+    let prevWorldY = null;
+
     const steps = 1400; // adequate sampling for 4K
     for (let i = 0; i <= steps; i++) {
         const t = i / steps;
-        const x = X_MIN + t * (X_MAX - X_MIN);
-        const y = polyEval(x);
-        const p = worldToScreen(x, y);
-        if (first) { first = false; } else {
-            // clip to plotting bounds loosely
-            line(prev.x, prev.y, p.x, p.y);
+        const worldX = X_MIN + t * (X_MAX - X_MIN);
+        const worldY = polyEval(worldX);
+        const currentScreen = worldToScreen(worldX, worldY);
+
+        if (prevScreen !== null) {
+            // Determine if the previous and current points are within the Y-axis world bounds
+            const isPrevInBounds = (prevWorldY >= Y_MIN && prevWorldY <= Y_MAX);
+            const isCurrentInBounds = (worldY >= Y_MIN && worldY <= Y_MAX);
+            
+            // Determine if the line segment crosses the entire viewable Y-range
+            const crossesBounds = (prevWorldY > Y_MAX && worldY < Y_MIN) || (prevWorldY < Y_MIN && worldY > Y_MAX);
+
+            // Draw the line only if it starts in, ends in, or crosses the bounds.
+            // This prevents drawing segments that are entirely off-screen vertically.
+            if (isPrevInBounds || isCurrentInBounds || crossesBounds) {
+                line(prevScreen.x, prevScreen.y, currentScreen.x, currentScreen.y);
+            }
         }
-        prev = p;
+        
+        prevScreen = currentScreen;
+        prevWorldY = worldY;
     }
     pop();
 }
