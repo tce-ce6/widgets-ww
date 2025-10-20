@@ -143,32 +143,37 @@
 
     .upCoefficient .equation-wrapper {
       background-color: rgb(241, 93, 82);
-    padding: 10px;
-    margin: 0 7px;
-    border-radius: 50%;
-    height: 15px;
-    width: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+      padding: 10px;
+      margin: 0 7px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
     }
 
     .downCoefficient .equation-wrapper {
       background-color: rgb(110, 195, 238);
       padding: 10px;
-    margin: 0 7px;
-    border-radius: 50%;
-    height: 15px;
-    width: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+      margin: 0 7px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
     }
 
     .upEquation #eq1,
     .downEquation #eq2 {
+      font-size: 26px;
+      letter-spacing: 5px;
+    }
+
+    #eq1_sign, #eq2_sign {
       font-size: 26px;
       letter-spacing: 5px;
     }
@@ -192,8 +197,8 @@
       background-color: #b7ffb7;
       padding: 0 17px;
       border-radius: 10px;
-      margin-bottom: 15px;
-      min-width: 345px;
+      margin: 0 auto 15px auto;
+      width: 310px;
     }
 
     .txt-align {
@@ -213,7 +218,8 @@
       display: none;
       /* initially hidden */
     }
-    .equa-wrap{
+
+    .equa-wrap {
       width: 92px;
     }
   </style>
@@ -223,8 +229,8 @@
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
-        <h2>Pair of Linear Equations</h2>
-        <span id="versionId" class="versionText">b2_25101601</span>
+        <h2>How many solutions does this pair of linear equations have ?</h2>
+        <span id="versionId" class="versionText">b2_25101701</span>
       </div>
 
       <!-- Your original main container kept as-is; quadratic app goes inside -->
@@ -255,11 +261,11 @@
                   class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">c₁</span>
                 = 0</span>
               <div>
-                <span id="eq1"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span
-                      id="a1_val">9</span></span><i class="roman-txt">x</i> + <span
-                    style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="b1_val">10</span></span><i
+                <span id="eq1_sign"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span
+                      id="a1_value">9</span></span><i class="roman-txt">x</i> + <span
+                    style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="b1_value">10</span></span><i
                     class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span
-                      id="c1_val">10</span></span>
+                      id="c1_value">10</span></span>
                   = 0</span>
               </div>
             </div>
@@ -316,11 +322,11 @@
                   class="roman-txt">y</i> + <span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">c₂</span> =
                 0</span>
               <div>
-                <span id="eq2"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span
-                      id="a2_val">6</span></span><i class="roman-txt">x</i> + <span
-                    style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="b2_val">1</span></span><i
+                <span id="eq2_sign"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span
+                      id="a2_value">6</span></span><i class="roman-txt">x</i> + <span
+                    style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="b2_value">1</span></span><i
                     class="roman-txt">y</i> + <span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span
-                      id="c2_val">-5</span></span> = 0</span>
+                      id="c2_value">-5</span></span> = 0</span>
               </div>
             </div>
           </div>

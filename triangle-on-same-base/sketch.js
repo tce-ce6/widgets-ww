@@ -40,9 +40,11 @@ const p2 = brd.create('point', [25, 1], { visible: false, fixed: true });
         strokeColor: '#3b82f6', strokeWidth: 2, name: 'm', withLabel: true
     });
 
+    const Y_CORD = 1;
+
     // --- Base Points (Fixed) ---
-    const B = brd.create('point', [3, 1], { name: 'B', fixed: true, size: 4, color: 'black' });
-    const C = brd.create('point', [12, 1], { name: 'C', fixed: true, size: 4, color: 'black' });
+    const B = brd.create('point', [3, () => Y_CORD], { name: 'B', fixed: false, size: 4, color: 'black' });
+    const C = brd.create('point', [12, () => Y_CORD], { name: 'C', fixed: false, size: 4, color: 'black' });
 
     // --- Movable Gliders ---
     const A = brd.create('glider', [6, 7, lineL], {
@@ -85,36 +87,67 @@ const p2 = brd.create('point', [25, 1], { visible: false, fixed: true });
     }
 
     // --- Text Labels ---
-    brd.create('text', [12, 12.5, '<b>Area of Triangles Between Two Parallel Lines</b>'], {
-        fontSize: 14,
-        anchorX: 'middle'
-    });
+    // brd.create('text', [12, 12.5, '<b>Area of Triangles Between Two Parallel Lines</b>'], {
+    //     fontSize: 14,
+    //     anchorX: 'middle'
+    // });
 
     const leftX = 5, rightX = 19;
-
-    // Triangle ABC Info
-    brd.create('text', [leftX, 11.5, 'Area of ▲ABC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
-    brd.create('text', [leftX, 10.9, function() { 
-        return getArea(polyABC) + ' sq. units'; 
-    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle', fixed: true });
-
-    brd.create('text', [leftX, 10.2, 'Perimeter of ▲ABC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
-    brd.create('text', [leftX, 9.6, function() { 
-        return getPerimeter(polyABC) + ' units'; 
-    }], { fontSize: 12, color: '#9333ea', anchorX: 'middle', fixed: true });
-
-    // Triangle DBC Info
-    brd.create('text', [rightX, 11.5, 'Area of ▲DBC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
-    brd.create('text', [rightX, 10.9, function() { 
-        return getArea(polyDBC) + ' sq. units'; 
-    }], { fontSize: 12, color: '#10b981', anchorX: 'middle', fixed: true });
-
-    brd.create('text', [rightX, 10.2, 'Perimeter of ▲DBC:'], { fontSize: 12, anchorX: 'middle', fixed: true });
-    brd.create('text', [rightX, 9.6, function() { 
-        return getPerimeter(polyDBC) + ' units'; 
-    }], { fontSize: 12, color: '#10b981', anchorX: 'middle', fixed: true });
-
-    // --- Force full initialization ---
-    brd.fullUpdate();
-    setTimeout(() => brd.fullUpdate(), 100);
-}
+        const boxY = 10.5; // Center Y position for the info box
+        
+        // Create the background 'div' using a text element with CSS class
+        // NOTE: This requires CSS to be defined in your HTML (see explanation below)
+        brd.create('text', [rightX, boxY, 
+            '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
+        ], { 
+            fontSize: 12, 
+            anchorX: 'middle', 
+            anchorY: 'middle',
+            fixed: true,
+            cssStyle: 'padding: 30px;',
+            cssClass: 'infoBoxBackgroundDBC' // Custom class for the green background
+        });
+    
+        // Triangle DBC Info - Text elements positioned over the background
+        brd.create('text', [rightX, boxY + 1.0, 'Area of ▲DBC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+        brd.create('text', [rightX, boxY + 0.4, function() { 
+            return getArea(polyDBC) + ' sq. units'; 
+        }], { fontSize: 14, color: '#10b981', anchorX: 'middle', fixed: true });
+    
+        brd.create('text', [rightX, boxY - 0.3, 'Perimeter of ▲DBC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+        brd.create('text', [rightX, boxY - 0.9, function() { 
+            return getPerimeter(polyDBC) + ' units'; 
+        }], { fontSize: 14, color: '#10b981', anchorX: 'middle', fixed: true });
+    
+    
+        // =========================================================================
+        // SECTION FOR TRIANGLE ABC (PURPLE) INFO BOX WITH BACKGROUND
+        // =========================================================================
+        
+        // Create the background 'div' for ABC
+        brd.create('text', [leftX, boxY, 
+            '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
+        ], { 
+            fontSize: 12, 
+            anchorX: 'middle', 
+            anchorY: 'middle',
+            fixed: true,
+            cssStyle: 'padding: 30px;',
+            cssClass: 'infoBoxBackgroundABC' // Custom class for the purple background
+        });
+    
+        // Triangle ABC Info - Text elements positioned over the background
+        brd.create('text', [leftX, boxY + 1.0, 'Area of ▲ABC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+        brd.create('text', [leftX, boxY + 0.4, function() { 
+            return getArea(polyABC) + ' sq. units'; 
+        }], { fontSize: 14, color: '#9333ea', anchorX: 'middle', fixed: true });
+    
+        brd.create('text', [leftX, boxY - 0.3, 'Perimeter of ▲ABC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+        brd.create('text', [leftX, boxY - 0.9, function() { 
+            return getPerimeter(polyABC) + ' units'; 
+        }], { fontSize: 14, color: '#9333ea', anchorX: 'middle', fixed: true });
+    
+        // --- Force full initialization ---
+        brd.fullUpdate();
+        setTimeout(() => brd.fullUpdate(), 100);
+    }

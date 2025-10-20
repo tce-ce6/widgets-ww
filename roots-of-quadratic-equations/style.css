@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
@@ -295,3 +297,8 @@ input[type="range"]::-moz-range-thumb {
   color: #ccc;
 }
 /* new header css end*/
+
+
+.new_roman {
+  font-family: "Newsreader", serif;;
+}

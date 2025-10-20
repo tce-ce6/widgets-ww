@@ -40,6 +40,29 @@
             border: 1px solid #bbb;
             background: #fff;
         }
+
+        /* Style for the Green Info Box (DBC) */
+        .infoBoxBackgroundDBC {
+            background-color: #f0fdf4 !important;
+            /* Light green background */
+            border: 1px solid #10b981 !important;
+            /* Green border */
+            border-radius: 5px !important;
+            /* Rounded corners */
+            text-align: center !important;
+            /* Ensure the text center aligns within the box */
+        }
+
+        /* Style for the Purple Info Box (ABC) */
+        .infoBoxBackgroundABC {
+            background-color: #f7f1ff !important;
+            /* Light purple background */
+            border: 1px solid #9333ea !important;
+            /* Purple border */
+            border-radius: 5px !important;
+            /* Rounded corners */
+            text-align: center !important;
+        }
     </style>
 </head>
 
@@ -47,7 +70,7 @@
     <div class="container">
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
-                <h2>Triangle on Same Base</h2>
+                <h2>Area of triangles with a common base between two parallel lines</h2>
                 <span id="versionId" class="versionText">b2_251006</span>
             </div>
 
@@ -59,8 +82,10 @@
                     <div id="graphRow">
                         <!-- Graph -->
                         <div>
+                            <span
+                            style="font-size: 14px; color: #666; text-align: center; display: block; margin-top: 10px;">Drag
+                            points A and D along line l to observe constant area and changing perimeter.</span>
                             <div id="jxgbox"></div>
-                            <span style="font-size: 14px; color: #666; text-align: center; display: block; margin-top: 10px;">Drag points A and D along line l to observe constant area and changing perimeter.</span>
                         </div>
 
                     </div>
@@ -71,7 +96,7 @@
             <div class="flexContainer button-controls">
                 <div class="flexItem flexItemFirst">
                     <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
-                    <button id="toggleBtn" class="btn btn-primary">Show</button>
+                    <button id="toggleBtn" class="btn btn-primary">Hint</button>
 
                 </div>
             </div>
