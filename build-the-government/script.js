@@ -2,21 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const step1 = document.getElementById('step-1');
     const step2 = document.getElementById('step-2');
     // New: Reference for step-3
-    const step3 = document.getElementById('step-3'); 
-    
+    const step3 = document.getElementById('step-3');
+
     // NEW: References for comparison images
     const block1CompareImg = document.getElementById('block-1-compare-img');
     const block2CompareImg = document.getElementById('block-2-compare-img');
 
     // NEW: Reference for select-box-note
     const selectBoxNote = document.getElementById('select-box-note');
-    
+
     // NEW: Reference for step-1-note (ADDED)
     const step1Note = document.getElementById('step-1-note');
-    
+
     // Ensure all steps and comparison blocks exist
     if (!step1 || !step2 || !step3 || !block1CompareImg || !block2CompareImg) return;
-    
+
     // Find candidate cards: top-level <g> elements inside step-1 that contain a <use>
     const groups = Array.from(step1.querySelectorAll('g[id]'));
     // Filter to get only the <g> elements that represent government cards (those with an ID and a <use> child)
@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let compareMode = false;
     const selectedCardsForCompare = new Set(); // Stores card IDs (used for both modes)
 
+    // ⭐ NEW GLOBAL ARRAY: Stores the IDs of governments where all questions in Step 2 were answered.
+    const completedGovernmentIds = []; // e.g., ['republic', 'monarchy'] 
+    // You can also expose this to the window if needed: window.completedGovernmentIds = completedGovernmentIds;
+
     // Loaded JSON data will be stored here
     let governmentData = null;
 
@@ -34,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // last selected card id (e.g. 'republic')
     window.selectedGovernmentCardId = null;
     // New: Stores an array of IDs for comparison mode when transitioning to step 3
-    window.selectedGovernmentsForComparison = null; 
+    window.selectedGovernmentsForComparison = null;
 
     // Buttons (dynamic)
     const btn1 = document.getElementById('btn-1'); // Compare / Continue / Back / Reset (New in Compare Mode)
@@ -44,37 +48,53 @@ document.addEventListener('DOMContentLoaded', () => {
     let lottieAnimation = null;
     let lottieInitialized = false;
 
-    function initializeLottie(containerElement) {
-        // Prevent re-initialization and ensure lottie library is loaded
-        if (lottieInitialized || typeof lottie === 'undefined') return;
+    function initializeLottie() {
+        const container = document.getElementById("govimg-wrapper");
+        if (!container) {
+            console.error("Lottie container 'govimg-wrapper' not found.");
+            return;
+        }
 
-        // Create a dedicated DIV for Lottie animation
-        const lottieContainer = document.createElement('div');
-        lottieContainer.id = 'lottie-animation-wrapper';
-        
-        // Find a suitable container to attach the Lottie animation, falling back to step2
-        const attachmentPoint = containerElement || step2; 
-        
-        // Append the Lottie wrapper to the attachment point
-        attachmentPoint.appendChild(lottieContainer);
+        // Create wrapper <foreignObject> to host HTML div
+        const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+        foreignObject.setAttribute("width", "500");
+        foreignObject.setAttribute("height", "500");
+        foreignObject.setAttribute("x", "110");
+        foreignObject.setAttribute("y", "100");
 
-        lottieAnimation = lottie.loadAnimation({
-            container: lottieContainer, 
-            renderer: 'svg', // Use 'svg' for best compatibility
-            loop: false,
-            autoplay: false, // Don't play yet
-            path: './lottie-animation.json' // Path to your Lottie JSON file
-        });
+        // Create inner <div> for Lottie container (MUST belong to HTML namespace)
+        const div = document.createElement("div");
+        div.setAttribute("id", "lottie-container");
+        div.style.width = "500px";
+        div.style.height = "500px";
+        div.style.background = "transparent";
 
-        lottieInitialized = true;
-        // Hide it until needed
-        lottieContainer.style.display = 'none';
+        // 💡 THE FIX: Initially hide the Lottie container
+        div.style.display = 'none';
+
+        // Append div inside foreignObject (HTML element inside SVG)
+        foreignObject.appendChild(div);
+        container.appendChild(foreignObject);
+
+        // Delay animation initialization to ensure div is part of DOM
+        setTimeout(() => {
+            lottieAnimation = lottie.loadAnimation({
+                container: div,
+                renderer: 'svg',
+                loop: false,
+                autoplay: false,
+                path: './lottie-animation.json', // working sample animation
+            });
+
+            lottieAnimation.addEventListener('DOMLoaded', () => {
+                lottieInitialized = true;
+                console.log("✅ Lottie animation loaded successfully!");
+            });
+        }, 100);
     }
-    // Initial call to set up the Lottie container inside step2
-    initializeLottie(step2);
-
+    initializeLottie()
     // ---------------------------------------------------
-
+    // ---------------------------------------------------
 
     function updateGovernmentImage(cardId) {
         if (!cardId) return;
@@ -88,19 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure 'active' class is removed on a new image selection
         try { useEl.classList.remove('active'); } catch (e) { }
     }
-    
+
     // Helper function to update the <use> element's href
     function updateUseElementHref(gElement, cardId, isXlink = false) {
         if (!gElement || !cardId) return;
         const useEl = gElement.querySelector('use');
         if (!useEl) return;
-        
+
         const path = `./assets/${cardId}.svg`;
-        
-        try { 
+
+        try {
             // Standard href
-            useEl.setAttribute('href', path); 
-        } catch (e) { 
+            useEl.setAttribute('href', path);
+        } catch (e) {
             // Fallback for older browsers (xlink:href)
             if (isXlink) {
                 try { useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', path); } catch (e) { }
@@ -130,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(s => s.charAt(0).toUpperCase() + s.slice(1))
             .join(' ');
     }
-    
+
     // Helper to find government data based on card ID
     function getGovernmentDataById(cardId) {
         if (!governmentData) return null;
@@ -178,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstFocusable = step2.querySelector('button, [tabindex], a, input, select, textarea');
         if (firstFocusable) firstFocusable.focus();
     }
-    
+
     // Function to show Step 3 (comparison view)
     function showStep3() {
         step1.style.display = 'none';
@@ -191,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn1) {
             btn1.style.display = 'inline-block';
             btn1.disabled = false;
-            btn1.textContent = 'Reset'; 
+            btn1.textContent = 'Reset';
         }
         // Set btn2 to 'Back to Government Types'
         if (btn2) {
@@ -236,27 +256,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function hideActionButtons() {
         if (btn1) { btn1.style.display = 'none'; btn1.disabled = true; }
-        if (btn2) { btn2.style.display = 'none'; btn2.disabled = true; } 
+        if (btn2) { btn2.style.display = 'none'; btn2.disabled = true; }
     }
 
     function setStep1Buttons() {
         // Step 1 Initial State (Single-Select/Continue mode)
+        const canCompare = completedGovernmentIds.length >= 2;
+
         if (btn1) {
             btn1.style.display = 'inline-block';
             btn1.textContent = 'Compare';
-            btn1.disabled = false; // Compare is enabled
+            btn1.disabled = !canCompare; // DISABLE Compare until we have >= 2 completed governments
+            // if disabled, show a tooltip-like note (optional)
+            btn1.title = canCompare ? 'Compare selected governments' : 'Complete at least 2 governments to enable compare';
         }
         if (btn2) {
             btn2.style.display = 'inline-block';
             btn2.textContent = 'Continue';
-            btn2.disabled = true; // Continue is disabled
+            btn2.disabled = true; // Continue is disabled initially
         }
-        
+
         // Ensure note is set for default mode
         if (step1Note) {
-            step1Note.textContent = 'Tap any government-type card to start building its structure.';
+            if (!canCompare) {
+                step1Note.textContent = 'Complete at least two government quizzes to enable Compare.';
+            } else {
+                step1Note.textContent = 'Build at least two government types to compare them. Tap any card to proceed.';
+            }
         }
     }
+
 
     // Logic for Step 1 when in compare mode
     function updateStep1ButtonsInCompareMode() {
@@ -266,20 +295,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn1) {
             if (compareMode) {
                 // Keep 'Reset' if we are in compareMode 
-                btn1.textContent = 'Reset'; 
+                btn1.textContent = 'Reset';
                 btn1.disabled = false;
             } else {
                 btn1.textContent = 'Compare';
-                btn1.disabled = false; 
+                btn1.disabled = false;
             }
         }
         if (btn2) {
             // Ensure btn2 is visible and set the text/disabled state correctly
             btn2.style.display = 'inline-block'; // Explicitly show btn2
-            btn2.textContent = 'Continue'; 
+            btn2.textContent = 'Continue';
             btn2.disabled = !enableContinue;
         }
-        
+
         // Ensure note is set for compare mode
         if (step1Note) {
             step1Note.textContent = 'Tap Compare to view a side-by-side comparison.';
@@ -291,12 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
         step2.style.display = 'none';
         step3.style.display = 'none';
         step1.style.display = 'inline';
-        
+
         // Restore compare mode state
-        compareMode = true; 
-        
+        compareMode = true;
+
         // Ensure buttons and selections are correct for the compare stage
-        updateStep1ButtonsInCompareMode(); 
+        updateStep1ButtonsInCompareMode();
 
         if (cards.length > 0) cards[0].focus();
 
@@ -314,21 +343,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset all states
         compareMode = false;
         selectedCardsForCompare.clear();
-        window.selectedGovernmentsForComparison = null; 
+        window.selectedGovernmentsForComparison = null;
+
+        // ⭐ MODIFICATION: Don't clear 'active' class globally; only clear selections.
         cards.forEach(c => c.classList.remove('active'));
-        
+
+        // ⭐ NEW LOGIC: Re-apply 'active' class to cards that have been completed.
+        cards.forEach(card => {
+            if (completedGovernmentIds.includes(card.id)) {
+                card.classList.add('active');
+            }
+        });
+
         // Reset buttons to initial Step 1 state (this also sets the correct default step1Note text)
-        setStep1Buttons(); 
+        setStep1Buttons();
 
         if (cards.length > 0) cards[0].focus();
-        
+
         // Hide Lottie animation when returning to Step 1
         const lottieDiv = document.getElementById('lottie-animation-wrapper');
         if (lottieDiv) lottieDiv.style.display = 'none';
-        
+
         // Ensure select-box-note is visible when returning to Step 1
         if (selectBoxNote) {
-            selectBoxNote.style.display = 'inline-block'; 
+            selectBoxNote.style.display = 'inline-block';
         }
     }
 
@@ -346,14 +384,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (compareMode) {
                 // In Compare Mode: Toggle selection and update visual/buttons
+                // Check if card is already marked as completed (and thus has 'active')
+                const isCompleted = completedGovernmentIds.includes(cardId);
+
                 if (selectedCardsForCompare.has(cardId)) {
                     selectedCardsForCompare.delete(cardId);
-                    card.classList.remove('active');
+                    // Only remove 'active' if it's NOT a completed card
+                    if (!isCompleted) {
+                        card.classList.remove('active');
+                    }
                 } else {
                     selectedCardsForCompare.add(cardId);
                     card.classList.add('active');
                 }
-                updateStep1ButtonsInCompareMode(); 
+                updateStep1ButtonsInCompareMode();
 
             } else {
                 // Original Single-Select Mode: Select one and immediately proceed to Step 2
@@ -361,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Perform original actions: filter data and show step-2
                 selectGovernmentById(cardId);
                 showStep2();
-                
+
                 // Hide select-box-note when proceeding to Step 2
                 if (selectBoxNote) {
                     selectBoxNote.style.display = 'none';
@@ -369,7 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 2. Clear selections (since we are leaving step 1)
                 selectedCardsForCompare.clear();
-                cards.forEach(c => c.classList.remove('active'));
+                // We DON'T clear the 'active' class on all cards here, 
+                // as that's handled when returning to Step 1.
+                // cards.forEach(c => c.classList.remove('active')); // REMOVED THIS LINE
             }
         };
 
@@ -379,21 +425,75 @@ document.addEventListener('DOMContentLoaded', () => {
             if (compareMode) {
                 handleCardActivation(evt);
             } else {
-                cards.forEach(c => c.classList.remove('active'));
-                selectedCardsForCompare.clear(); 
+                // In single select mode, clear ALL temporary selections/active states 
+                // EXCEPT those marked as completed.
+                cards.forEach(c => {
+                    if (!completedGovernmentIds.includes(c.id)) {
+                        c.classList.remove('active');
+                    }
+                });
+                selectedCardsForCompare.clear();
+
+                // Then select the current card
                 selectedCardsForCompare.add(cardId);
                 card.classList.add('active');
-                handleCardActivation(evt);
+
+                handleCardActivation(evt); // This will proceed to showStep2
             }
         }
 
-        card.addEventListener('click', originalHandleCardSelectAndActivate);
-        card.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                originalHandleCardSelectAndActivate(e);
-            }
-        });
+        const handleCardClick = (evt) => {
+    evt.stopPropagation();
+    const cardId = card.id;
+
+    // --- Single-Select Mode ---
+    if (!compareMode) {
+        // 1️⃣ Select the government
+        selectGovernmentById(cardId);
+
+        // 2️⃣ If government is already completed, just highlight it (active class)
+        if (completedGovernmentIds.includes(cardId)) {
+            // ✅ Do NOT auto-show Step-2 or insights
+            card.classList.add('active');
+
+            // Update Step-1 buttons, allow compare when >=2
+            setStep1Buttons();
+
+            // Hide Step-2 and Step-3
+            step2.style.display = 'none';
+            step3.style.display = 'none';
+
+            // Ensure select-box-note visible
+            if (selectBoxNote) selectBoxNote.style.display = 'inline-block';
+
+        } else {
+            // 3️⃣ If NOT completed → open Step-2 quiz
+            step1.style.display = 'none';
+            step3.style.display = 'none';
+            step2.style.display = 'inline';
+
+            // Reset Step-2 state
+            Object.keys(answeredBlocks).forEach(k => delete answeredBlocks[k]);
+            hideActionButtons();
+
+            if (optionWrapper) optionWrapper.style.display = 'inline';
+            if (questionWrapper) questionWrapper.style.display = 'inline';
+            if (selectBoxNote) selectBoxNote.style.display = 'none';
+
+            // Render block titles and options for new selection
+            renderBlockTitles();
+            renderOptionsForBlock(0);
+        }
+    }
+};
+
+        card.addEventListener('click', handleCardClick);
+card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleCardClick(e);
+    }
+});
     });
 
     // --- Button Click Handlers ---
@@ -422,15 +522,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (compareMode && selectedCardsForCompare.size >= 2) {
                     const selectedIds = Array.from(selectedCardsForCompare);
                     window.selectedGovernmentsForComparison = selectedIds;
-                    
-                    showStep3(); 
-                    
+
+                    showStep3();
+
                     // Hide select-box-note when proceeding to Step 3
                     if (selectBoxNote) {
                         selectBoxNote.style.display = 'none';
                     }
-                    
-                    return; 
+
+                    return;
                 }
 
                 // Safety/Redundancy path for single-select mode
@@ -438,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (cardId) {
                     selectGovernmentById(cardId);
                     showStep2();
-                    
+
                     // Hide select-box-note when proceeding to Step 2
                     if (selectBoxNote) {
                         selectBoxNote.style.display = 'none';
@@ -451,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn1) {
         btn1.addEventListener('click', () => {
             const btnText = btn1.textContent.trim().toLowerCase();
-            
+
             // Handle "Reset" from Step 3 (returns to compare stage)
             if (step3.style.display === 'inline' && btnText === 'reset') {
                 backToCompareStage();
@@ -461,42 +561,111 @@ document.addEventListener('DOMContentLoaded', () => {
             // Logic for Reset in Step 1 (Compare Mode)
             if (step1.style.display === 'inline' && btnText === 'reset' && compareMode) {
                 selectedCardsForCompare.clear();
-                cards.forEach(c => c.classList.remove('active'));
+                // Only remove 'active' from UNCOMPLETED cards
+                cards.forEach(c => {
+                    if (!completedGovernmentIds.includes(c.id)) {
+                        c.classList.remove('active');
+                    }
+                });
 
                 // We only need to update the continue button state
                 if (btn2) btn2.disabled = true;
-                btn1.textContent = 'Reset'; 
-                
+                btn1.textContent = 'Reset';
+
                 return;
             }
 
             // Handle Back from Step 2 (Insights) OR Back from Step 3 (if btn2 was not clicked)
             if (btnText === 'back to government types') {
-                backToDefaultStage();
-                return;
-            }
+    // Go back to Step 1 view
+    step2.style.display = 'none';
+    step3.style.display = 'none';
+    step1.style.display = 'inline';
+
+    compareMode = false;
+    currentGovernment = null;
+    selectedCardsForCompare.clear();
+
+    // ✅ NEW: Reset insight flags
+    insightMode = false;
+    lastCompletedGovernment = null;
+    lastSelectedGovernment = null;
+
+    // ✅ NEW: Allow quiz to reopen
+    isGovernmentQuizActive = false;
+
+    // Reapply UI states
+    cards.forEach(card => {
+        if (completedGovernmentIds.includes(card.id)) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    });
+
+    if (selectBoxNote) selectBoxNote.style.display = 'inline-block';
+    if (step1Note) step1Note.textContent = 'Select another government to continue the quiz.';
+
+    // Hide step-2 content
+    const optionWrapper = document.getElementById('option-wrapper');
+    const quizWrapper = document.getElementById('quiz-wrapper');
+    const insightWrapper = document.getElementById('insight-wrapper');
+    if (optionWrapper) optionWrapper.style.display = 'none';
+    if (quizWrapper) quizWrapper.style.display = 'none';
+    if (insightWrapper) insightWrapper.style.display = 'none';
+
+    // Restore Step-1 buttons
+    setStep1Buttons();
+    return;
+}
+
+
+
 
             if (btnText === 'compare') {
-                // Enter/Exit Compare Mode
+                // Only allow entering Compare Mode when at least two governments are completed
                 if (!compareMode) {
+                    if (completedGovernmentIds.length < 2) {
+                        // Provide user feedback: keep Compare disabled (defensive check)
+                        setStep1Buttons();
+                        return;
+                    }
+
                     // ENTER Compare Mode
                     compareMode = true;
                     selectedCardsForCompare.clear();
-                    cards.forEach(c => c.classList.remove('active'));
+
+                    // Clear active state only from uncompleted cards to allow new selection
+                    cards.forEach(c => {
+                        if (!completedGovernmentIds.includes(c.id)) {
+                            c.classList.remove('active');
+                        }
+                    });
+
+                    // Optionally pre-select completed cards: (uncomment to auto-select them)
+                    // completedGovernmentIds.forEach(id => {
+                    //     const el = document.getElementById(id);
+                    //     if (el) { selectedCardsForCompare.add(id); el.classList.add('active'); }
+                    // });
+
                     updateStep1ButtonsInCompareMode(); // This sets 'Reset' button and 'Tap Compare' note
                 } else {
-                    // EXIT Compare Mode 
+                    // EXIT Compare Mode
                     compareMode = false;
                     selectedCardsForCompare.clear();
+
+                    // Clear ALL temporary selections, then restore completed ones.
                     cards.forEach(c => c.classList.remove('active'));
-                    setStep1Buttons(); // This sets 'Compare' button and the required default note
+                    backToDefaultStage(); // This function already calls setStep1Buttons() and restores completed card styles.
+                    return; // backToDefaultStage handles the final state setup.
                 }
                 // Ensure select-box-note visibility is correct when toggling compare mode
                 if (selectBoxNote) {
-                    selectBoxNote.style.display = 'inline-block'; 
+                    selectBoxNote.style.display = 'inline-block';
                 }
                 return;
             }
+
 
             // ... Existing 'Continue' logic from Step 2 completion
             if (btnText === 'continue' && !btn1.disabled) {
@@ -512,19 +681,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const wrapper = document.getElementById('insights-wrapper');
                 if (wrapper) wrapper.style.display = 'block';
-                
+
                 // HIDE select-box-note when insights-wrapper gets visible
                 if (selectBoxNote) {
                     selectBoxNote.style.display = 'none';
                 }
-                
+
                 const countriesEl = document.getElementById('insights-countries');
                 if (countriesEl) countriesEl.textContent = insights || '';
 
                 const qWrapper = document.getElementById('question-wrapper');
                 if (qWrapper) qWrapper.style.display = 'none';
-                
-                if (optionWrapper) optionWrapper.style.display = 'none'; 
+
+                if (optionWrapper) optionWrapper.style.display = 'none';
 
                 hideActionButtons();
             }
@@ -543,47 +712,40 @@ document.addEventListener('DOMContentLoaded', () => {
     } : null;
 
     const answeredBlocks = {};
-    
+
     // --- Remaining Step 2 Logic ---
 
     function showActionButtons() {
-        if (btn1) { btn1.style.display = 'inline-block'; btn1.disabled = false; btn1.textContent = 'continue'; }
+        if (btn1) { btn1.style.display = 'inline-block'; btn1.disabled = false; btn1.textContent = 'Continue'; }
         if (btn2) { btn2.style.display = 'none'; btn2.disabled = true; }
     }
 
-      function checkAllAnsweredAndActivateImage() {
+    function checkAllAnsweredAndActivateImage() {
         const totalBlocks = (window.selectedGovernment && window.selectedGovernment.blocks) ? window.selectedGovernment.blocks.length : 0;
         const answeredCount = Object.keys(answeredBlocks).length;
 
         // Check if all answers have been correctly provided
         if (totalBlocks > 0 && answeredCount >= totalBlocks) {
+
+            // ⭐ NEW LOGIC: Add the completed government ID to the array
+            const currentCardId = window.selectedGovernmentCardId;
+            if (currentCardId && !completedGovernmentIds.includes(currentCardId)) {
+                completedGovernmentIds.push(currentCardId);
+                console.log(`✅ Completed government recorded: ${currentCardId}. All completed:`, completedGovernmentIds);
+                setStep1Buttons();
+            }
+            // ⭐ END NEW LOGIC
+
             showActionButtons();
-            
+
             const useEl = document.getElementById('government-img') || document.querySelector('use#government-img');
             if (useEl) {
-                try { 
+                try {
                     // 1. Apply 'active' class
-                    useEl.classList.add('active'); 
-                    // play lottie animation here
-                    
-                    // START: Lottie Animation Logic
-                    const lottieDiv = document.getElementById('lottie-animation-wrapper');
-                    
-                    if (lottieAnimation && lottieDiv) {
-                        // Show the animation container
-                        lottieDiv.style.display = 'block';
-                        
-                        // Reset the animation to the start and play
-                        lottieAnimation.goToAndPlay(0, true);
-                        
-                        // Optional: Hide the Lottie animation after it finishes playing once
-                        lottieAnimation.onComplete = () => {
-                            // Hide the wrapper once the animation is complete
-                            lottieDiv.style.display = 'none'; 
-                            // Remove the listener to prevent memory leaks/re-triggering if not needed
-                            lottieAnimation.onComplete = null; 
-                        };
-                    }
+                    useEl.classList.add('active');
+                    const lottieDiv = document.getElementById('lottie-container'); // Corrected ID
+                    if (lottieDiv) lottieDiv.style.display = 'block';
+                    lottieAnimation.goToAndPlay(0, true);
                     // END: Lottie Animation Logic
 
                 } catch (e) {
@@ -691,6 +853,15 @@ document.addEventListener('DOMContentLoaded', () => {
         bt.style.cursor = 'pointer';
         bt.addEventListener('click', (e) => {
             e.stopPropagation();
+
+            // START: NEW LOGIC to add 'active' class
+            // 1. Remove 'active' from all other block titles
+            blockTitles.forEach(otherBt => otherBt.classList.remove('active'));
+
+            // 2. Add 'active' class to the clicked block title
+            bt.classList.add('active');
+            // END: NEW LOGIC
+
             if ((!window.selectedGovernment || !window.selectedGovernment.blocks || window.selectedGovernment.blocks.length === 0) && governmentData) {
                 const current = window.selectedGovernment && window.selectedGovernment['Government Type'];
                 if (current) {
@@ -704,7 +875,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); bt.click(); }
         });
     });
-
     function findOptionDiv(optionEl) {
         return optionEl ? getForeignDiv(optionEl) : null;
     }
@@ -729,6 +899,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     optEl.classList.add('correct-answer');
                     Object.values(options).forEach(o => { if (o) o.style.pointerEvents = 'none'; });
                     checkAllAnsweredAndActivateImage();
+                    const completedBlockTitle = blockTitles[activeIndex];
+                    if (completedBlockTitle) {
+                        completedBlockTitle.classList.add('completed');
+                        // Optionally remove 'active' here since it is now completed
+                        completedBlockTitle.classList.remove('active');
+                    }
                 } else {
                     optEl.classList.add('wrong-answer');
                     const inner = findOptionDiv(optEl);

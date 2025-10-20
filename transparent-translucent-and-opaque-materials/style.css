@@ -4,25 +4,27 @@
     outline: none !important; /* Removes the standard browser focus ring */
 }
 
-#parlament-widgetbody {
+#phototropism-widget body {
   box-sizing: border-box;
   outline: none;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.2;
   padding: 0;
-  margin: 0
+  margin: 0;
+  background-color: #fff !important;
 }
 
-#parlament-widget .container {
+#phototropism-widget .container {
   border: none;
   height: 100vh;
   width: 100vw;
   position: relative
 }
 
-#parlament-widget .container::after {
+#phototropism-widget .container::after {
   content: "";
+  background-image: url("./assets/BG.png");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -33,27 +35,27 @@
   left: 0;
 }
 
-#parlament-widget .mainContainerOuter {
+/* #phototropism-widget .mainContainerOuter {
   background: #60360D !important
-}
+} */
 
-#parlament-widget .button-controls {
+#phototropism-widget .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#parlament-widget .d-flex {
+#phototropism-widget .d-flex {
   display: flex
 }
 
-#parlament-widget .question {
+#phototropism-widget .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#parlament-widget .flexContainer {
+#phototropism-widget .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +63,7 @@
   z-index: 1
 }
 
-#parlament-widget .flexItem {
+#phototropism-widget .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -69,13 +71,13 @@
 }
 
 @media (max-width:768px) {
-  #parlament-widget .flexItem {
+  #phototropism-widget .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#parlament-widget .btn {
+#phototropism-widget .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -92,36 +94,36 @@
   margin-right: 10px
 }
 
-#parlament-widget .btn:hover {
+#phototropism-widget .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#parlament-widget .btn-primary:active {
+#phototropism-widget .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#parlament-widget .btn:focus {
+#phototropism-widget .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#parlament-widget .btn:active {
+#phototropism-widget .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#parlament-widget .btn:disabled {
+#phototropism-widget .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#parlament-widget .wdgetTitle {
+#phototropism-widget .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -131,18 +133,18 @@
   z-index: 1
 }
 
-#parlament-widget .wdgetTitle h2 {
+#phototropism-widget .wdgetTitle h2 {
   font-size: 23px;
   font-weight: 600;
   text-align: left;
   padding: 5px 40px;
-  color: #fff;
+  color: #000;
   border-radius: 0 0px 20px 20px;
-  background: #AF4C00;
+  background: #D7FD1C;
   box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
 }
 
-#parlament-widget .versionText {
+#phototropism-widget .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -150,58 +152,41 @@
   color: #ccc
 }
 
-#parlament-widget .svg-container{
+#phototropism-widget .svg-container{
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#parlament-widget svg{
+#phototropism-widget svg{
     width: 100% !important;
     height: 100%;
 }
-/* parlament style  */
+/* plant style  */
 
-#parlament-widget .correct-answer > path{
-  fill: #B8FFBF;
+#phototropism-widget #bulb-1.active .bulb-bg,
+#phototropism-widget #bulb-2.active .bulb-bg,
+#phototropism-widget #bulb-3.active .bulb-bg{
+  fill: #FCEE21;
 }
 
-#parlament-widget .wrong-answer > path{
-  fill: #FFD5D5;
-}
-
-#parlament-widget #parlament-groups .card-wrapper{
-  position: relative;
-}
-
-#parlament-widget #parlament-groups .correct-icon{
+#phototropism-widget .bulb-rays{
   display: none;
+  transition: all 0.3s ease-in-out;
 }
 
-#parlament-widget #parlament-groups .active .correct-icon{
-  display: block;
-} 
-
-#parlament-widget .card-wrapper .active use:nth-child(1){
-  outline: 8px solid #49BA62;
-  border-radius: 16px;
-}
-#parlament-widget .block-wrapper.active path{
-  fill: #EEFF00 !important;
+#phototropism-widget #bulb-1.active .bulb-rays,
+#phototropism-widget #bulb-2.active .bulb-rays,
+#phototropism-widget #bulb-3.active .bulb-rays{
+  display: block !important;
 }
 
-#parlament-widget .block-wrapper.completed{
-  opacity: .5;
-  filter: grayscale(1);
-  cursor: not-allowed !important;
-  pointer-events: none;
+#position-1,
+#position-2,
+#position-3{
+  cursor: pointer;
 }
-
-#govimg-wrapper{
-  position: relative;
-}
-#govimg-wrapper #lottie-animation-wrapper{
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 111111;
+#position-1.active #Vector_2,
+#position-2.active #Vector_4,
+#position-3.active #Vector_6{
+  fill: #02FFFF !important;
 }
