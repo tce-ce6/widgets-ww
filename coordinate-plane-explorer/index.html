@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coordinate Plane Explorer</title>
     <link rel="stylesheet" href="global_style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="p5.js"></script>
     <style>
        
     </style>
 </head>
 <body>
+     <div class="title-container">
+        <h3>Polynomial Builder & Visualizer</h3>
+    </div>
     <div id="canvas-container"></div>
     <script>// A p5.js sketch to create an interactive polynomial builder and grapher.
 // All UI elements are drawn and managed directly on the canvas.
@@ -320,7 +323,7 @@ function draw() {
     background(245);
 
     // Title bar
-    drawTitleBar();
+    // drawTitleBar();
 
     // Left panel
     drawPanel(leftX, leftY, leftW, leftH, 'Polynomial Builder');
