@@ -1,6 +1,8 @@
       #resetButton {
-        bottom: 10px;
+        position: absolute;
+            bottom: 20px;
         background-color: #F94877;
+        z-index: 10;
         color: white;
         border: none;
         border-radius: 50px;
