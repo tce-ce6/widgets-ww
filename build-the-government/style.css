@@ -178,6 +178,12 @@
 #parlament-widget #parlament-groups .correct-icon {
   display: none;
 }
+#parlament-widget #parlament-groups .completed-icon {
+  display: none;
+}
+#parlament-widget #parlament-groups .active .completed-icon {
+  display: block;
+}
 
 #parlament-widget #parlament-groups .active.compare .correct-icon {
   display: block;

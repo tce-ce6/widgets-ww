@@ -293,28 +293,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Play the segment.
         console.log(`Playing staged transition to Position ${destinationId} [${startFrame}, ${endFrame}]`);
         plantAnim.playSegment(startFrame, endFrame);
-       
+
+        // Hide tap-instruction while animation is playing
+        const tapInstruction = document.getElementById('tap-instruction');
+        if (tapInstruction) tapInstruction.style.display = 'none';
+
         // 2. Update the state.
         currentPosition = destinationId;
- 
+
         // 3. Trigger the new sequential date update
         sequentialDateUpdate();
-       
+
         // 4. Reset staging and hide the play button.
         stagedSegment = null;
         playButton.style.display = 'none';
- 
-        // Optional: Add the 'complete' listener back if you want an idle loop
-        /*
-        plantAnim.animation.addEventListener('complete', function onComplete() {
-            const idleSegmentName = `segment-${currentPosition}${currentPosition}`;
-            const idleFrames = segments[idleSegmentName];
-            if (idleFrames) {
-                plantAnim.playSegment(...idleFrames);
-            }
-            plantAnim.animation.removeEventListener('complete', onComplete);
-        });
-        */
+
+        // Show tap-instruction again after animation completes
+        if (plantAnim.animation) {
+            const onComplete = function() {
+                if (tapInstruction) tapInstruction.style.display = '';
+                plantAnim.animation.removeEventListener('complete', onComplete);
+            };
+            plantAnim.animation.addEventListener('complete', onComplete);
+        }
     }
  
     // 5. Attach click event listeners.

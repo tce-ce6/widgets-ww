@@ -254,8 +254,8 @@
           "Visual Cue": "Monarch & parliament chamber",
           "Option A": "Monarch decides all alone",
           "Option B": "Parliament sets all laws",
-          "Option C": "Shared: Parliament and monarch, by constitution",
-          "Answer": "Shared: Parliament and monarch, by constitution"
+          "Option C": "Parliament and monarch, by constitution",
+          "Answer": "Parliament and monarch, by constitution"
         },
         {
           "Block Title": "Who Participates?",
@@ -352,7 +352,7 @@
           "Option A": "President alone",
           "Option B": "Monarch",
           "Option C": "A small group of the wealthy/powerful",
-          "Insight Countries": "South Africa (apartheid), Historical Venice, Russia (1990s–2000s)",
+          "Insight Countries": "South Africa, Historical Venice, Russia",
           "Answer": "A small group of the wealthy/powerful"
         },
         {
@@ -360,8 +360,8 @@
           "Visual Cue": "Suitcase of money, handshake",
           "Option A": "Born into royal family",
           "Option B": "All adults vote",
-          "Option C": "Selected from among economic or military elite",
-          "Answer": "Selected from among economic or military elite"
+          "Option C": "Selected from economic or military elite",
+          "Answer": "Selected from economic or military elite"
         },
         {
           "Block Title": "How Are Decisions Made?",
@@ -391,21 +391,32 @@
           "Option A": "Monarch",
           "Option B": "Committee of military leaders",
           "Option C": "Elected representatives",
-          "Insight Countries": "Myanmar (1962–2011, 2021–present), Egypt (2011–12, 2013–14), Thailand (2014–19), Sudan (2019–present)"
+          "Insight Countries": "Myanmar (1962–2011, 2021–present), Egypt (2011–12, 2013–14), Thailand (2014–19), Sudan (2019–present)",
+          "Answer": "Committee of military leaders"
         },
         {
           "Block Title": "How is Power Gained?",
           "Visual Cue": "Tanks, coup graphic",
           "Option A": "Popular vote",
           "Option B": "By forceful takeover",
-          "Option C": "Hereditary throne"
+          "Option C": "Hereditary throne",
+          "Answer": "By forceful takeover"
         },
         {
           "Block Title": "How Are Decisions Made?",
-          "Visual Cue": "Millitary officer pointing",
+          "Visual Cue": "Military officer pointing",
           "Option A": "Parliament debates",
           "Option B": "Orders from military leadership",
-          "Option C": "Only dictator decides"
+          "Option C": "Only dictator decides",
+          "Answer": "Orders from military leadership"
+        },
+        {
+          "Block Title": "Who Participates? ",
+          "Visual Cue": "Closed military meeting ",
+          "Option A": "Only military leaders ",
+          "Option B": "All adults freely ",
+          "Option C": "Only party members ",
+          "Answer": "Only military leaders "
         }
       ]
     }
