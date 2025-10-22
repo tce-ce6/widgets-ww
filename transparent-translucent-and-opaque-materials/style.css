@@ -25,7 +25,7 @@
 #phototropism-widget .container::after {
   content: "";
   background-image: url("./assets/BG.png");
-  background-size: 100% 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 100%;
@@ -140,8 +140,8 @@
   padding: 5px 40px;
   color: #000;
   border-radius: 0 0px 20px 20px;
-  background: #D7FD1C;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
+  background: #00ffd4;
+  /* box-shadow: 0 3px 6px rgba(0, 0, 0, .3); */
 }
 
 #phototropism-widget .versionText {
@@ -149,7 +149,7 @@
   right: 20px;
   top: 10px !important;
   font-size: 12px;
-  color: #ccc
+  color: #6a6a6a;
 }
 
 #phototropism-widget .svg-container{
