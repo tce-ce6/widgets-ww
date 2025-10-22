@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Ecological Interactions Simulation</title>
     <script src="p5.js"></script>
     <link rel="stylesheet" href="global_style.css">
     <style>
-        
+        /* nothing special here */
     </style>
 </head>
-
 <body>
     <div class="title-container">
         <h3>Interactions between organisms</h3>
@@ -53,7 +52,6 @@
             assets.comboCommensalism = loadImage('assets/09_card_combo_03.svg');
             assets.comboParasitism = loadImage('assets/08_card_combo_02.svg');
 
-            // Assuming files are in 'assets/', not 'assets/messages/'
             assets.message_correct_pair = loadImage('assets/messages/correct-pair.svg');
             assets.message_incorrect_pair = loadImage('assets/messages/incorrect-pair.svg');
 
@@ -73,7 +71,10 @@
         let feedback = { show: false, isCorrect: false, imgKey: null }; 
         let instruction = 'Tap on the organisms below to form the interactive pairs.';
         
-        let ignoreNextClick = false; // <-- FIX 1: Add new state variable
+        let ignoreNextClick = false; // <-- Add new state variable
+
+        // --- Pair slot positions (top row) ---
+        let slotPositions = []; // will contain x positions for top slots (index 0..2)
 
         // --- Button Elements ---
         let resetButton, continueButton; 
@@ -83,7 +84,6 @@
         const cardWidth = 220 * scale, cardHeight = 280 * scale;
         const bucketWidth = 900 * scale, bucketHeight = 450 * scale;
         const pairCardWidth = 450 * scale,pairCardHeight = 280 * scale;
-
 
         // --- P5.js Setup Function ---
         function setup() {
@@ -158,6 +158,9 @@
                 { name: 'Commensalism', infoText: '• The host plant branch provides nutrition to orchid.\n• The orchid does not affect the plant in any way.', imgKey: 'bucketCommensalism', x: startXBuckets + bucketWidth + bucketSpacing, y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
                 { name: 'Parasitism', infoText: "• The tick feeds on the dog's blood.\n• It causes skin irritation in the dog's skin.", imgKey: 'bucketParasitism', x: startXBuckets + 2 * (bucketWidth + bucketSpacing), y: height - bucketHeight - (100 * scale), filled: false, alpha: 0 },
             ];
+
+            // reset slot positions (will be set when pairs are created)
+            slotPositions = [];
         }
 
         function shuffleArray(array) {
@@ -374,11 +377,9 @@
 
        function drawFeedback() {
             if (feedback.show && feedback.imgKey) {
-                // Check if the asset actually exists
                 let msgImg = assets[feedback.imgKey];
                 
                 if (msgImg) {
-                    // This is the original code, we know it's safe now
                     push();
                     imageMode(CENTER);
                     let msgWidth = msgImg.width * scale * 0.8;
@@ -386,10 +387,7 @@
                     image(msgImg, width / 2, 425 * scale, msgWidth, msgHeight);
                     pop();
                 } else {
-                    // Log an error if the asset is missing
                     console.error("Feedback Error: Image key not found in assets: ", feedback.imgKey);
-                    
-                    // Optional: Draw a text message as a fallback
                     push();
                     fill(255, 0, 0); // Red
                     textAlign(CENTER, CENTER);
@@ -401,12 +399,11 @@
         }
         
         function mousePressed() {
-            // --- FIX 2: Add this block at the top ---
+            // --- ignoreNextClick handling ---
             if (ignoreNextClick) {
                 ignoreNextClick = false;
                 return;
             }
-            // --- End of FIX 2 ---
 
             if (gameState === 'pairing') {
                 handlePairingClick();
@@ -430,10 +427,15 @@
                             if (bucket) {
                                 bucket.filled = false;
                             }
+                            // When picked up from a bucket, pair has no top-slot by default.
+                            // We'll give it a temporary visual size (restored on drop or snap-back)
                             draggedPair.targetWidth = pairCardWidth;
                             draggedPair.targetHeight = pairCardHeight;
                             draggedPair.currentWidth = pairCardWidth; 
                             draggedPair.currentHeight = pairCardHeight;
+
+                            // Pair was placed in a bucket. It shouldn't be occupying any top slot.
+                            draggedPair.slotIndex = null;
                         }
                         
                         break; 
@@ -448,6 +450,7 @@
                 draggedPair.y = (mouseY - dragOffsetY) + 200; 
                 cursor('grabbing');
 
+                // Visual scaling while dragging relative to the *target bucket*
                 const targetBucket = buckets.find(b => b.name === draggedPair.type);
                 if (targetBucket) {
                     let bodyWidth = bucketWidth * 0.48;
@@ -502,30 +505,127 @@
                         let placementBodyY = startY + headerHeight / 2 + 70;
                         draggedPair.targetX = centerX - finalCardWidth / 2;
                         draggedPair.targetY = placementBodyY + bodyHeight / 2 - finalCardHeight / 2;
-                        
+
+                        // If bucket already has a placed pair, disallow placing on top of it.
                         if (bucket.filled) {
-                            // Bucket is full
+                            // Snap back and show wrong-bucket feedback
+                            draggedPair.wrongBucket = bucket.name;
+                            draggedPair.targetX = draggedPair.originalTargetX || (draggedPair.slotIndex !== null ? slotPositions[draggedPair.slotIndex] : draggedPair.originalTargetX);
+                            draggedPair.targetY = draggedPair.originalTargetY || 200 * scale;
+                            draggedPair.targetWidth = pairCardWidth;
+                            draggedPair.targetHeight = pairCardHeight;
                         } else if (draggedPair.type === bucket.name) {
                             // --- Correct drop ---
-                            placeInBucket(draggedPair, bucket); 
+                            handleCorrectBucketPlacement(draggedPair, bucket);
                         } else {
                             // --- Incorrect drop ---
                             draggedPair.wrongBucket = bucket.name; 
+                            // Snap pair into bucket location but marked wrong (user must pick it up again)
+                            // Keep bucket.filled false so next correct placement can occupy
                         }
                         break; 
                     }
                 }
 
                 if (!droppedInBucket) {
-                    // Dropped outside ANY bucket, snap back
-                    draggedPair.targetX = draggedPair.originalTargetX;
-                    draggedPair.targetY = draggedPair.originalTargetY;
+                    // Dropped outside ANY bucket, snap back to top area or original
+                    if (draggedPair.slotIndex !== null && slotPositions[draggedPair.slotIndex] !== undefined) {
+                        draggedPair.targetX = slotPositions[draggedPair.slotIndex];
+                        draggedPair.targetY = draggedPair.originalTargetY;
+                    } else {
+                        // if it had no slotIndex (e.g. was placed and picked up), snap to center top unused slot if available,
+                        // otherwise snap to its originalTargetX
+                        if (slotPositions.length > 0) {
+                            // choose nearest slot
+                            let nearestIndex = 0;
+                            let nearestDist = Math.abs(draggedPair.x - slotPositions[0]);
+                            for (let i = 1; i < slotPositions.length; i++) {
+                                let d = Math.abs(draggedPair.x - slotPositions[i]);
+                                if (d < nearestDist) { nearestIndex = i; nearestDist = d; }
+                            }
+                            draggedPair.targetX = slotPositions[nearestIndex];
+                            draggedPair.targetY = draggedPair.originalTargetY || 200 * scale;
+                            draggedPair.slotIndex = nearestIndex;
+                        } else {
+                            draggedPair.targetX = draggedPair.originalTargetX || draggedPair.targetX;
+                            draggedPair.targetY = draggedPair.originalTargetY || draggedPair.targetY;
+                        }
+                    }
                     draggedPair.targetWidth = pairCardWidth;
                     draggedPair.targetHeight = pairCardHeight;
                 }
                 
                 draggedPair.isSelected = false;
                 draggedPair = null;
+            }
+        }
+
+        // --- When placing correctly into a bucket (handles moving pairs to keep top empty) ---
+        function handleCorrectBucketPlacement(pair, bucket) {
+            const bucketIndex = buckets.indexOf(bucket);
+            // If slot positions not initialized (first time), compute them using current pairs length (3)
+            if (slotPositions.length === 0) {
+                computeSlotPositions();
+            }
+
+            // Find the other pair that currently occupies the top slot equal to bucketIndex
+            // A pair occupying top slot has pair.slotIndex === bucketIndex
+            let occupyingPair = pairs.find(p => p.slotIndex === bucketIndex && !p.isPlaced && p !== pair);
+
+            // If the dragged pair currently occupies a top slot, store its slotIndex for moving occupying pair into it
+            const draggedOldSlot = pair.slotIndex;
+
+            if (occupyingPair && draggedOldSlot !== undefined && draggedOldSlot !== null) {
+                // Move occupyingPair into dragged pair's old slot
+                occupyingPair.slotIndex = draggedOldSlot;
+                occupyingPair.targetX = slotPositions[draggedOldSlot];
+                occupyingPair.originalTargetX = slotPositions[draggedOldSlot];
+                occupyingPair.targetY = occupyingPair.originalTargetY || 200 * scale;
+                occupyingPair.targetWidth = pairCardWidth;
+                occupyingPair.targetHeight = pairCardHeight;
+            } else if (occupyingPair && (draggedOldSlot === null || draggedOldSlot === undefined)) {
+                // dragged pair didn't occupy a top slot (was picked from a bucket). We need to move occupyingPair to any free top slot
+                const usedSlots = pairs.filter(p => p.slotIndex !== null && p.slotIndex !== undefined && !p.isPlaced).map(p => p.slotIndex);
+                // find an unused slot (if any)
+                let freeSlot = null;
+                for (let i = 0; i < slotPositions.length; i++) {
+                    if (!usedSlots.includes(i) || i === bucketIndex) continue;
+                }
+                // if no other free slot, move occupyingPair to draggedOldSlot fallback: swap with another pair (simple fallback)
+                // but to keep logic simple: move occupyingPair to draggedPair's previous slot if defined, otherwise leave in place.
+                // (This case is rare because dragged pair normally comes from top row)
+            }
+
+            // Now place the dragged pair in the bucket
+            pair.isPlaced = true;
+            bucket.filled = true;
+            pair.wrongBucket = null; // Ensure this is clear
+
+            // Clear pair's slotIndex as it no longer occupies a top slot
+            pair.slotIndex = null;
+
+            // Set its final placement inside the bucket
+            let bodyWidth = bucketWidth * 0.48;
+            let bodyHeight = bucketHeight * 0.6;
+            let centerX = bucket.x + bucketWidth / 2;
+            let startY = bucket.y + bucketHeight * 0.3;
+            let headerHeight = bucketHeight * 0.09;
+            let placementBodyY = startY + headerHeight / 2 + 70;
+
+            const finalCardWidth = bodyWidth * 0.6;
+            const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth); 
+            pair.targetWidth = finalCardWidth;
+            pair.targetHeight = finalCardHeight;
+            pair.targetX = centerX - finalCardWidth / 2;
+            pair.targetY = placementBodyY + bodyHeight / 2 - finalCardHeight / 2;
+
+            // If all buckets filled after this placement, finish the game after tiny delay
+            if (buckets.every(b => b.filled)) {
+                setTimeout(() => {
+                    gameState = 'finished';
+                    resetButton.style('display','block');
+                    resetButton.style('opacity','1.0');
+                }, 500);
             }
         }
 
@@ -587,6 +687,9 @@
                 resetButton.style('display', 'none');
                 continueButton.style('display', 'none');
                 buckets.forEach(b => b.alpha = 0);
+
+                // compute slot positions for the top row based on current pairs' originalTargetX
+                computeSlotPositions();
                 return;
             }
             
@@ -597,7 +700,7 @@
                 feedback.isCorrect = true;
                 feedback.show = true;
                 feedback.imgKey = 'message_correct_pair';
-                ignoreNextClick = true; // <-- FIX 3: Set the flag
+                ignoreNextClick = true; // prevent immediate click dismissal
                 
                 org1.isPaired = org2.isPaired = true;
                 org1.isFadingOut = org2.isFadingOut = true;
@@ -609,6 +712,7 @@
                 const totalPairWidth = 3 * pairCardWidth + 2 * pairSpacing;
                 const startXPairs = (width - totalPairWidth) / 2;
 
+                // create new pair and assign its slotIndex (top-left = 0, mid =1, right=2)
                 const newPair = {
                     org1, org2, type: org1.type, comboImgKey: comboKey,
                     x: (org1.x + org2.x) / 2, y: org1.y,
@@ -621,11 +725,15 @@
                     currentHeight: pairCardHeight,
                     targetWidth: pairCardWidth,
                     targetHeight: pairCardHeight,
-                    wrongBucket: null 
+                    wrongBucket: null,
+                    slotIndex: pairIndex // important: top slot index
                 };
                 pairs.push(newPair);
                 selectedOrganisms = [];
                 
+                // build slotPositions once we have all pairs or at least the first time
+                computeSlotPositions();
+
                 if (pairs.length === 3) {
                     instruction = 'Tap on Continue for the next activity';
                     resetButton.style('display', 'none');
@@ -648,20 +756,32 @@
             continueButton.style('opacity', '0.5'); // Disabled style
         }
 
-        function placeInBucket(pair, bucket) {
-            pair.isPlaced = true;
-            bucket.filled = true;
-            pair.wrongBucket = null; // Ensure this is clear
-            
-            if (buckets.every(b => b.filled)) {
-                setTimeout(() => {
-                    gameState = 'finished';
-                    resetButton.style('display','block');
-                    resetButton.style('opacity','1.0');
-                }, 500);
+        // computeSlotPositions: reads all pairs and sets slotPositions array (x values)
+        function computeSlotPositions() {
+            // If there are fewer than 3 pairs yet, compute hypothetical slots for 3 positions
+            const pairSpacing = 30 * scale;
+            const totalPairWidth = 3 * pairCardWidth + 2 * pairSpacing;
+            const startXPairs = (width - totalPairWidth) / 2;
+            slotPositions = [
+                startXPairs + 0 * (pairCardWidth + pairSpacing),
+                startXPairs + 1 * (pairCardWidth + pairSpacing),
+                startXPairs + 2 * (pairCardWidth + pairSpacing)
+            ];
+
+            // Make sure existing pairs align to these slots if they have slotIndex set
+            for (let p of pairs) {
+                if (p.slotIndex !== null && p.slotIndex !== undefined) {
+                    p.targetX = slotPositions[p.slotIndex];
+                    p.originalTargetX = slotPositions[p.slotIndex];
+                    p.targetY = p.originalTargetY || 200 * scale;
+                }
             }
         }
 
+        function placeInBucket(pair, bucket) {
+            // DEPRECATED: replaced by handleCorrectBucketPlacement which handles repositioning
+            handleCorrectBucketPlacement(pair, bucket);
+        }
 
         function drawFinalText() {
             fill(255);
