@@ -31,12 +31,6 @@
                     
                 </button>
             </div>
-            <div>
-                <button id="formNextPair" >
-                    <image src="assets/cta/form-nxt-pair-btn.svg" alt="logo" style="height:60px; margin-right: 20px; vertical-align: middle;">
-    
-                </button>
-            </div>
         </div>
     </div>
 
@@ -59,10 +53,11 @@
             assets.comboCommensalism = loadImage('assets/09_card_combo_03.svg');
             assets.comboParasitism = loadImage('assets/08_card_combo_02.svg');
 
+            // Assuming files are in 'assets/', not 'assets/messages/'
             assets.message_correct_pair = loadImage('assets/messages/correct-pair.svg');
             assets.message_incorrect_pair = loadImage('assets/messages/incorrect-pair.svg');
+
             assets.border_selected = loadImage('assets/blue-border.svg');
-            
             assets.border_incorrect = loadImage('assets/red-border.svg');
         }
 
@@ -71,15 +66,17 @@
         let pairs = [];
         let buckets = [];
         let selectedOrganisms = [];
-        let draggedPair = null; // Changed from selectedPair for drag logic
-        let dragOffsetX, dragOffsetY; // For smooth dragging
+        let draggedPair = null; 
+        let dragOffsetX, dragOffsetY; 
 
         let gameState = 'pairing'; // 'pairing', 'bucketing', 'finished'
         let feedback = { show: false, isCorrect: false, imgKey: null }; 
         let instruction = 'Tap on the organisms below to form the interactive pairs.';
+        
+        let ignoreNextClick = false; // <-- FIX 1: Add new state variable
 
         // --- Button Elements ---
-        let resetButton, continueButton, formNextPairButton;
+        let resetButton, continueButton; 
 
         let colors;
         const scale = 3840 / 1500;
@@ -95,16 +92,14 @@
             colors = {
                 selected: color('#0295FC'),
                 correct: color('#4CAF50'),
-                incorrect: color('#FF3B3B')
+                incorrect: color('#FF0000') // Red for error text
             };
             
             resetButton = select('#resetButton');
             continueButton = select('#continueButton');
-            formNextPairButton = select('#formNextPair');
             
             resetButton.mousePressed(onResetPressed);
             continueButton.mousePressed(onContinuePressed);
-            formNextPairButton.mousePressed(onFormNextPairPressed);
 
             initializeState();
         }
@@ -118,13 +113,14 @@
             pairs = [];
             feedback.show = false;
             feedback.imgKey = null;
+            ignoreNextClick = false; // Reset flag
             
             resetButton.removeAttribute('disabled');
             resetButton.style('display', 'block');
+            resetButton.style('opacity', '1.0'); // Enabled style
             continueButton.attribute('disabled', '');
             continueButton.style('display', 'block');
-            formNextPairButton.attribute('disabled', '');
-            formNextPairButton.style('display', 'none');
+            continueButton.style('opacity', '0.5'); // Disabled style
 
             const organismData = [
                 { name: 'Flower', cardImgKey: 'card_flower', pair: 'Honey bee', type: 'Mutualism' },
@@ -165,11 +161,11 @@
         }
 
         function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-    }
-}
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
 
         // --- P5.js Draw Loop ---
         function draw() {
@@ -179,7 +175,8 @@
             let onDraggable = false;
             if (gameState === 'bucketing') {
                 for (let pair of pairs) {
-                    if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > pair.y && mouseY < pair.y + pair.currentHeight) {
+                    let drawnY = pair.y - 200;
+                    if (mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > drawnY && mouseY < drawnY + pair.currentHeight) {
                         onDraggable = true;
                         break;
                     }
@@ -190,6 +187,7 @@
 
             if(pairs.length === 3 && gameState === 'pairing') {
                 continueButton.removeAttribute('disabled');
+                continueButton.style('opacity', '1.0'); // Enabled style
                 drawBottomText('Tap on Continue for the next activity');
             } else if(pairs.length === 0 && gameState === 'pairing') {
                 drawHeader();
@@ -210,11 +208,12 @@
                 buckets.forEach(b => drawBucketNative(b));
                 // Draw placed pairs first, then the unplaced ones on top
                 pairs.filter(p => p.isPlaced).forEach(p => updateAndDrawPair(p));
-                buckets.forEach(b => drawBucketInfo(b));
+                buckets.forEach(b => drawBucketInfo(b)); 
+                drawWrongBucketFeedback(); 
                 pairs.filter(p => !p.isPlaced).forEach(p => updateAndDrawPair(p));
             }
 
-            drawFeedback();
+            drawFeedback(); // Draws pairing feedback (images)
         }
         
         function drawHeader() {
@@ -276,10 +275,6 @@
             imageMode(CORNER);
             image(assets[p.comboImgKey], p.x, p.y - 200, p.currentWidth, p.currentHeight);
             
-            // Show a border if the card is being dragged
-            // if (p.isSelected && !p.isPlaced) {
-            //     image(assets['border_selected'], p.x - 5, p.y - 5, p.currentWidth + 10, p.currentHeight + 10);
-            // }
             pop();
         }
         
@@ -298,11 +293,11 @@
             let startY = bucket.y + bucketHeight * 0.3;
             
             let bucketColor;
-                bucketColor = color(76, 175, 80); // #4caf50
+            bucketColor = color(76, 175, 80); // #4caf50
             
             bucketColor.setAlpha(bucket.alpha);
             fill(bucketColor);
-            // stroke(bucketColor);
+            
             strokeWeight(4 * scale);
             rectMode(CENTER);
             rect(centerX, startY, headerWidth, headerHeight, 12 * scale,  12 * scale,0, 0, 0);
@@ -326,7 +321,7 @@
         }
 
         function drawBucketInfo(bucket) {
-            if (!bucket.filled) return;
+            if (!bucket.filled) return; // Only draw for correctly filled buckets
 
             const placedPair = pairs.find(p => p.type === bucket.name && p.isPlaced);
             if (!placedPair) return;
@@ -346,34 +341,101 @@
             textSize(16 * scale);
             textStyle(BOLD);
             text(bucket.infoText, infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight);
-            // text(bucket.infoText, infoBoxX + (20 * scale), infoBoxY + (20 * scale), infoBoxWidth - (40 * scale), infoBoxHeight - (40 * scale));
             pop();
         }
         
-        function drawFeedback() {
+        function drawWrongBucketFeedback() {
+            for (let pair of pairs) {
+                // Check if the pair is in a wrong bucket
+                if (pair.wrongBucket) {
+                    const bucket = buckets.find(b => b.name === pair.wrongBucket);
+                    if (!bucket) continue;
+
+                    // Calculate position relative to the pair (which is inside the wrong bucket)
+                    const infoBoxWidth = pair.targetWidth * 1.6;
+                    const infoBoxHeight = 90 * scale; 
+                    const infoBoxX = pair.targetX + (pair.targetWidth / 2) - (infoBoxWidth / 2);
+                    const infoBoxY = pair.targetY + (pair.targetWidth / 3) ;
+
+                    push();
+                    fill(255); // White background
+                    noStroke();
+                    rect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 15 * scale);
+
+                    fill(colors.incorrect); // Red text
+                    textAlign(CENTER, CENTER); 
+                    textSize(16 * scale);
+                    textStyle(BOLD);
+                    text("You have placed in the wrong bucket!\nPlease try again.", infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight);
+                    pop();
+                }
+            }
+        }
+
+       function drawFeedback() {
             if (feedback.show && feedback.imgKey) {
-                push();
-                imageMode(CENTER);
+                // Check if the asset actually exists
                 let msgImg = assets[feedback.imgKey];
-                let msgWidth = msgImg.width * scale * 0.8;
-                let msgHeight = msgImg.height * scale * 0.8;
-                image(msgImg, width / 2, 425 * scale, msgWidth, msgHeight);
-                pop();
+                
+                if (msgImg) {
+                    // This is the original code, we know it's safe now
+                    push();
+                    imageMode(CENTER);
+                    let msgWidth = msgImg.width * scale * 0.8;
+                    let msgHeight = msgImg.height * scale * 0.8;
+                    image(msgImg, width / 2, 425 * scale, msgWidth, msgHeight);
+                    pop();
+                } else {
+                    // Log an error if the asset is missing
+                    console.error("Feedback Error: Image key not found in assets: ", feedback.imgKey);
+                    
+                    // Optional: Draw a text message as a fallback
+                    push();
+                    fill(255, 0, 0); // Red
+                    textAlign(CENTER, CENTER);
+                    textSize(30 * scale);
+                    text("Error: Missing image asset " + feedback.imgKey, width / 2, 425 * scale);
+                    pop();
+                }
             }
         }
         
         function mousePressed() {
+            // --- FIX 2: Add this block at the top ---
+            if (ignoreNextClick) {
+                ignoreNextClick = false;
+                return;
+            }
+            // --- End of FIX 2 ---
+
             if (gameState === 'pairing') {
                 handlePairingClick();
             } else if (gameState === 'bucketing') {
                 for (let i = pairs.length - 1; i >= 0; i--) {
                     let pair = pairs[i];
-                    if (!pair.isPlaced && mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > pair.y && mouseY < pair.y + pair.currentHeight) {
+                    let drawnY = pair.y - 200; 
+                    
+                    if (mouseX > pair.x && mouseX < pair.x + pair.currentWidth && mouseY > drawnY && mouseY < drawnY + pair.currentHeight) {
+                        
                         draggedPair = pair;
                         dragOffsetX = mouseX - pair.x;
-                        dragOffsetY = mouseY - pair.y;
+                        dragOffsetY = mouseY - drawnY; 
                         draggedPair.isSelected = true; 
+                        draggedPair.wrongBucket = null; // Clear error on pickup
                         cursor('grabbing');
+                        
+                        if (pair.isPlaced) {
+                            pair.isPlaced = false;
+                            const bucket = buckets.find(b => b.name === pair.type);
+                            if (bucket) {
+                                bucket.filled = false;
+                            }
+                            draggedPair.targetWidth = pairCardWidth;
+                            draggedPair.targetHeight = pairCardHeight;
+                            draggedPair.currentWidth = pairCardWidth; 
+                            draggedPair.currentHeight = pairCardHeight;
+                        }
+                        
                         break; 
                     }
                 }
@@ -383,7 +445,7 @@
         function mouseDragged() {
             if (gameState === 'bucketing' && draggedPair) {
                 draggedPair.x = mouseX - dragOffsetX;
-                draggedPair.y = mouseY - dragOffsetY;
+                draggedPair.y = (mouseY - dragOffsetY) + 200; 
                 cursor('grabbing');
 
                 const targetBucket = buckets.find(b => b.name === draggedPair.type);
@@ -400,8 +462,11 @@
                     const finalCardWidth = bodyWidth * 0.9;
                     const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth);
 
-                    const initialDist = dist(draggedPair.originalTargetX, draggedPair.originalTargetY, bucketCenterX, bucketCenterY);
-                    const currentDist = dist(draggedPair.x, draggedPair.y, bucketCenterX, bucketCenterY);
+                    let drawnY = draggedPair.y - 200;
+                    const currentDist = dist(draggedPair.x, drawnY, bucketCenterX, bucketCenterY);
+                    
+                    let originalDrawnY = draggedPair.originalTargetY - 200;
+                    const initialDist = dist(draggedPair.originalTargetX, originalDrawnY, bucketCenterX, bucketCenterY);
                     
                     const newWidth = map(currentDist, initialDist, 0, pairCardWidth, finalCardWidth, true);
                     const newHeight = newWidth * (pairCardHeight / pairCardWidth);
@@ -423,16 +488,36 @@
                     let headerHeight = bucketHeight * 0.09;
                     let bodyX = centerX - bodyWidth / 2;
                     let bodyY = startY + headerHeight / 2;
+                    
                     if (mouseX > bodyX && mouseX < bodyX + bodyWidth && mouseY > bodyY && mouseY < bodyY + bodyHeight) {
-                        if (draggedPair.type === bucket.name) {
-                            placeInBucket(draggedPair, bucket);
-                            droppedInBucket = true;
-                            break;
+                        
+                        droppedInBucket = true; 
+
+                        const finalCardWidth = bodyWidth * 0.6;
+                        const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth); 
+                        
+                        draggedPair.targetWidth = finalCardWidth;
+                        draggedPair.targetHeight = finalCardHeight;
+                        
+                        let placementBodyY = startY + headerHeight / 2 + 70;
+                        draggedPair.targetX = centerX - finalCardWidth / 2;
+                        draggedPair.targetY = placementBodyY + bodyHeight / 2 - finalCardHeight / 2;
+                        
+                        if (bucket.filled) {
+                            // Bucket is full
+                        } else if (draggedPair.type === bucket.name) {
+                            // --- Correct drop ---
+                            placeInBucket(draggedPair, bucket); 
+                        } else {
+                            // --- Incorrect drop ---
+                            draggedPair.wrongBucket = bucket.name; 
                         }
+                        break; 
                     }
                 }
 
                 if (!droppedInBucket) {
+                    // Dropped outside ANY bucket, snap back
                     draggedPair.targetX = draggedPair.originalTargetX;
                     draggedPair.targetY = draggedPair.originalTargetY;
                     draggedPair.targetWidth = pairCardWidth;
@@ -445,10 +530,20 @@
         }
 
         function handlePairingClick() {
-            if (feedback.show && feedback.isCorrect) return;
+            // Clear "Correct" feedback on any click
+            if (feedback.show && feedback.isCorrect) {
+                feedback.show = false;
+                feedback.imgKey = null;
+                resetButton.style('display', 'block');
+                continueButton.style('display', 'block');
+                // Re-disable continue button as we are starting a new selection
+                continueButton.attribute('disabled', '');
+                continueButton.style('opacity', '0.5'); 
+            }
 
             for (let org of organisms) {
                 if (!org.isPaired && mouseX > org.x && mouseX < org.x + cardWidth && mouseY > org.y && mouseY < org.y + cardHeight) {
+                    // If clicking after an *incorrect* pair, clear that feedback
                     if (feedback.show && !feedback.isCorrect) {
                         feedback.show = false;
                         feedback.imgKey = null;
@@ -458,6 +553,7 @@
                         selectedOrganisms = [];
                     }
                     
+                    // Toggle selection
                     if (selectedOrganisms.includes(org)) {
                         selectedOrganisms = selectedOrganisms.filter(o => o !== org);
                         org.borderImgKey = null;
@@ -468,10 +564,13 @@
                 }
             }
             
+            // Enable/disable continue button based on selection
             if (selectedOrganisms.length === 2) {
                 continueButton.removeAttribute('disabled');
+                continueButton.style('opacity', '1.0'); // Enabled style
             } else {
                 continueButton.attribute('disabled', '');
+                continueButton.style('opacity', '0.5'); // Disabled style
             }
         }
 
@@ -487,7 +586,6 @@
                 feedback.imgKey = null;
                 resetButton.style('display', 'none');
                 continueButton.style('display', 'none');
-                formNextPairButton.style('display', 'none');
                 buckets.forEach(b => b.alpha = 0);
                 return;
             }
@@ -499,6 +597,7 @@
                 feedback.isCorrect = true;
                 feedback.show = true;
                 feedback.imgKey = 'message_correct_pair';
+                ignoreNextClick = true; // <-- FIX 3: Set the flag
                 
                 org1.isPaired = org2.isPaired = true;
                 org1.isFadingOut = org2.isFadingOut = true;
@@ -521,7 +620,8 @@
                     currentWidth: pairCardWidth,
                     currentHeight: pairCardHeight,
                     targetWidth: pairCardWidth,
-                    targetHeight: pairCardHeight
+                    targetHeight: pairCardHeight,
+                    wrongBucket: null 
                 };
                 pairs.push(newPair);
                 selectedOrganisms = [];
@@ -531,12 +631,11 @@
                     resetButton.style('display', 'none');
                     continueButton.style('display', 'block');
                     continueButton.removeAttribute('disabled');
-                    formNextPairButton.style('display', 'none');
+                    continueButton.style('opacity', '1.0'); // Enabled style
                 } else {
+                    // Hide buttons, but DO NOT set a timeout
                     resetButton.style('display', 'none');
                     continueButton.style('display', 'none');
-                    formNextPairButton.style('display', 'block');
-                    formNextPairButton.removeAttribute('disabled');
                 }
             } else {
                 feedback.isCorrect = false;
@@ -546,45 +645,20 @@
                 org2.borderImgKey = 'border_incorrect';
             }
             continueButton.attribute('disabled', '');
-        }
-
-        function onFormNextPairPressed() {
-            feedback.show = false;
-            feedback.imgKey = null;
-            formNextPairButton.style('display', 'none');
-            formNextPairButton.attribute('disabled', '');
-            resetButton.style('display', 'block');
-            continueButton.style('display', 'block');
-            continueButton.attribute('disabled', '');
+            continueButton.style('opacity', '0.5'); // Disabled style
         }
 
         function placeInBucket(pair, bucket) {
-            if (pair.type === bucket.name && !bucket.filled) {
-                let bodyWidth = bucketWidth * 0.48;
-                let bodyHeight = bucketHeight * 0.6;
-                let centerX = bucket.x + bucketWidth / 2;
-                let startY = bucket.y + bucketHeight * 0.3;
-                let headerHeight = bucketHeight * 0.09;
-                let bodyY = startY + headerHeight / 2 + 70;
-
-                const finalCardWidth = bodyWidth * 0.6;
-                const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth); 
-
-                pair.targetWidth = finalCardWidth;
-                pair.targetHeight = finalCardHeight;
-                pair.targetX = centerX - finalCardWidth / 2;
-                pair.targetY = bodyY + bodyHeight / 2 - finalCardHeight / 2;
-
-                pair.isPlaced = true;
-                bucket.filled = true;
-                
-                if (buckets.every(b => b.filled)) {
-                    setTimeout(() => {
-                        // instruction = 'All pairs correctly placed! Well done!';
-                        gameState = 'finished';
-                        resetButton.style('display','block');
-                    }, 500);
-                }
+            pair.isPlaced = true;
+            bucket.filled = true;
+            pair.wrongBucket = null; // Ensure this is clear
+            
+            if (buckets.every(b => b.filled)) {
+                setTimeout(() => {
+                    gameState = 'finished';
+                    resetButton.style('display','block');
+                    resetButton.style('opacity','1.0');
+                }, 500);
             }
         }
 
@@ -601,4 +675,3 @@
     </script>
 </body>
 </html>
-
