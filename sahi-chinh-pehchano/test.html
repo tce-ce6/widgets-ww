@@ -44,7 +44,6 @@ const hindiSentences = [
 
 
 let currentIndex = 0;
-let selectedBlank = null;
 
 // Get the SVG text elements
 const sentenceContainer = document.getElementById('sentence-container'); 
@@ -74,65 +73,47 @@ function loadSentence(index) {
         return;
     }
     
-    // Create the HTML content with clickable blanks
-    let htmlContent = data.sentence.replace(/__/g, (match, offset) => {
-        // We use a custom attribute 'data-index' to uniquely identify the blank
-        return `<span class="blank" data-index="${offset}" onclick="selectBlank(this)">__</span>`;
-    });
-
-    sentenceText.innerHTML = htmlContent;
+    // For SVG, we'll use a simpler approach - just display the sentence with blanks
+    // The blanks will be handled by the punctuation buttons
+    sentenceText.textContent = data.sentence;
     console.log("Loaded sentence:", data.sentence);
 
     if (feedback) {
         feedback.textContent = '';
     }
-    selectedBlank = null;
 }
 
-/**
- * Highlights the selected blank and stores its reference.
- * @param {HTMLElement} span - The blank element that was clicked.
- */
-function selectBlank(span) {
-    // Un-highlight the previously selected blank
-    if (selectedBlank) {
-        selectedBlank.classList.remove('selected');
-    }
-    
-    selectedBlank = span;
-    span.classList.add('selected');
-    
-    // Add visual feedback
-    if (feedback) {
-        feedback.textContent = 'अब सही विराम चिह्न पर क्लिक करें (Now click on the correct punctuation mark)';
-    }
-}
 
 /**
- * Places the selected punctuation mark into the selected blank and checks the answer.
+ * Places the selected punctuation mark into the first available blank and checks the answer.
  * @param {string} symbol - The punctuation mark to place.
  */
 function placePunctuation(symbol) {
-    if (!selectedBlank) {
-        if (feedback) {
-            feedback.textContent = 'पहले एक खाली स्थान चुनें (Select a blank first)!';
-        }
+    if (!sentenceText) {
+        console.error("Sentence text element not found.");
         return;
     }
 
-    // Place the punctuation in the selected blank
-    selectedBlank.textContent = symbol;
-    selectedBlank.classList.remove('selected');
-    selectedBlank = null;
+    // Get the current sentence text
+    let currentText = sentenceText.textContent;
+    
+    // Find the first blank (__) and replace it with the symbol
+    const blankIndex = currentText.indexOf('__');
+    if (blankIndex === -1) {
+        if (feedback) {
+            feedback.textContent = 'सभी खाली स्थान भर दिए गए हैं! (All blanks are filled!)';
+        }
+        return;
+    }
+    
+    // Replace the first blank with the symbol
+    const newText = currentText.substring(0, blankIndex) + symbol + currentText.substring(blankIndex + 2);
+    sentenceText.textContent = newText;
     
     // Check if all blanks are filled
-    const allBlanks = sentenceText.querySelectorAll('.blank');
-    const filledBlanks = Array.from(allBlanks).filter(blank => blank.textContent !== '__');
-    
-    if (filledBlanks.length === allBlanks.length) {
+    if (!newText.includes('__')) {
         // All blanks are filled, check the answer
-        const currentText = sentenceText.textContent;
-        const cleanedFilledSentence = currentText.trim().replace(/\s+/g, ' ');
+        const cleanedFilledSentence = newText.trim().replace(/\s+/g, ' ');
         const cleanedAnswer = hindiSentences[currentIndex].answer.trim().replace(/\s+/g, ' ');
         
         if (cleanedFilledSentence === cleanedAnswer) {
@@ -146,7 +127,7 @@ function placePunctuation(symbol) {
         }
     } else {
         if (feedback) {
-            feedback.textContent = 'अब दूसरा खाली स्थान चुनें (Now select another blank)';
+            feedback.textContent = 'जारी रखें... (Keep going...)';
         }
     }
 }
@@ -170,28 +151,13 @@ function resetSentence() {
  */
 function showAnswer() {
     if (sentenceText) {
-        sentenceText.innerHTML = hindiSentences[currentIndex].answer;
+        sentenceText.textContent = hindiSentences[currentIndex].answer;
     }
     if (feedback) {
         feedback.textContent = 'यह रहा सही उत्तर।';
     }
-    selectedBlank = null;
 }
 
-let insight = document.getElementById('btn_insight');
-let insight_container = document.getElementById('insight-container');
-let close_insight = document.getElementById('close-insight-btn');
-
-
-insight.addEventListener('click', () => { 
-    insight_container.style.display = 'block';
-    close_insight.style.display = 'block';
-})
-
-close_insight.addEventListener('click', () => {
-    insight_container.style.display = 'None';
-    close_insight.style.display = 'None';
-})
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM Content Loaded - Initializing...");

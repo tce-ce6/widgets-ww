@@ -50,7 +50,7 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     // Check for ±1 for the X-term
     if (Math.abs(a) === 1 && a !== 0) {
         // If a = -1, start with a minus sign
-        const sign = (a === -1) ? '-' : '';
+        const sign = (a === -1) ? '—' : '';
         
         // **SYNTAX FIX:** Ensure the <i> tag is closed correctly.
         // The value span is hidden to avoid showing '1' or '-1'.
@@ -58,7 +58,7 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     } else {
         // General case (including a=0)
         const a_val = (a === 0) ? 0 : Math.abs(a); 
-        const sign = (a < 0) ? '-' : '';
+        const sign = (a < 0) ? '—' : '';
 
         // **SYNTAX FIX:** Ensure the <i> tag is closed correctly.
         html += `${sign}<span ${colorStyle}><span id="${aID}">${a_val}</span></span><i ${varClass}>x</i>`;
@@ -70,7 +70,7 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     if (b > 0) {
         y_sign = ' + ';
     } else if (b < 0) {
-        y_sign = ' - ';
+        y_sign = ' — ';
     } else { // b === 0
         y_sign = ' + '; 
     }
@@ -96,7 +96,7 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     if (c > 0) {
         c_sign = ' + ';
     } else if (c < 0) {
-        c_sign = ' - ';
+        c_sign = ' — ';
     } else { 
         c_sign = ' + '; 
     }
@@ -120,13 +120,13 @@ function formatCoeff(coeff, variable, isFirst = false) {
         return isFirst ? `${variable}` : ` + ${variable}`;
     }
     if (coeff === -1) {
-        return isFirst ? `-${variable}` : ` - ${variable}`;
+        return isFirst ? `- ${variable}` : ` - ${variable}`;
     }
 
     // General case
     return coeff > 0
         ? (isFirst ? `${coeff}${variable}` : ` + ${coeff}${variable}`)
-        : (isFirst ? `-${Math.abs(coeff)}${variable}` : ` - ${Math.abs(coeff)}${variable}`);
+        : (isFirst ? `- ${Math.abs(coeff)}${variable}` : ` - ${Math.abs(coeff)}${variable}`);
 }
 
 function formatEquation(a, b, c) {
