@@ -161,32 +161,30 @@
     width: 100% !important;
     height: 100%;
 }
-/* plant style  */
-
-#phototropism-widget #bulb-1.active .bulb-bg,
-#phototropism-widget #bulb-2.active .bulb-bg,
-#phototropism-widget #bulb-3.active .bulb-bg{
-  fill: #FCEE21;
+/* transparent style  */
+g.material-container{
+  transition: all .3s ease-in-out;
+}
+g.material-container.hidden-state {
+    transform: scale(0.1) !important; /* Scale down dramatically */
+    opacity: 0;
+}
+.active .material-container{
+  display: none !important;
+  opacity: 0;
+  visibility: hidden;
+}
+.active g use.shuttor-img{
+  transform: translateY(-145px);
+  transition: all .6s ease-in-out;
 }
 
-#phototropism-widget .bulb-rays{
-  display: none;
-  transition: all 0.3s ease-in-out;
-}
-
-#phototropism-widget #bulb-1.active .bulb-rays,
-#phototropism-widget #bulb-2.active .bulb-rays,
-#phototropism-widget #bulb-3.active .bulb-rays{
+.active.show .material-container{
   display: block !important;
+  opacity: 1;
+  visibility: visible;
+  
 }
-
-#position-1,
-#position-2,
-#position-3{
-  cursor: pointer;
-}
-#position-1.active #Vector_2,
-#position-2.active #Vector_4,
-#position-3.active #Vector_6{
-  fill: #02FFFF !important;
+.show .material-container use{
+  transform: translate(15px, 25px) scale(.8) !important;
 }
