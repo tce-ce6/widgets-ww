@@ -6,54 +6,67 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html",
     imagePath: "./assets/interactions-between-organisms.png",
     creators: "sh-bd-02",
+    status: "closed",
   },
   {
     name: "Plant's response to the direction of light​",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light%E2%80%8B/index.html",
     imagePath: "./assets/plant-response.png",
-    creators: "nc-bd-01",
+    creators: "ni-bd-01",
+    status: "closed",
+
   },
 //   {
 //     name: "Triangle Inequality",
 //     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-inequality/index.html",
 //     imagePath: "./assets/triangle-inequality.png",
-//     creators: "",
+//     creators: "as-sr-",
 //   },
   {
     name: "Food Chain Population Simulator",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/food_chain_population_changes/index.html",
     imagePath: "./assets/food-chain.png",
     creators: "sh-nav-03",
+    status: "closed",
+
   },
   {
     name: "Build a Sentence",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/build-a-sentence/index.html",
     imagePath: "./assets/build-a-sentence.png",
-    creators: "ag-dg-05",
+    creators: "as-dg-05",
+    status: "closed",
+
   },
   {
     name: "Sentence Construction",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sentence-construction/index.html",
     imagePath: "./assets/word-wizard.png",
-    creators: "ag-he-06",
+    creators: "as-he-06",
+    status: "closed",
+
   },
   {
     name: "Journey Through Time",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/journey-through-time/index.html",
     imagePath: "./assets/journey-through-time.png",
     creators: "ni-je-08",
+    status: "closed",
+
   },
-  {
-    name: "Symmetry",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
-    imagePath: "./assets/symmetry.png",
-    creators: "sh-mr-10",
-  },
+  // {
+  //   name: "Symmetry",
+  //   link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
+  //   imagePath: "./assets/symmetry.png",
+  //   creators: "sh-mr-10",
+  // },
   {
     name: "Seed Germination Conditions",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/seed_germination_condition/index.html",
     imagePath: "./assets/seed-gemination.png",
     creators: "sh-su-11",
+    status: "closed",
+
   },
 //   {
 //     name: "Pair of Linear Equations​",
@@ -77,95 +90,137 @@ const WIDGET_DATA = [
     name: "Altitude and Temperature - A Cool Connection",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/altitude-temperature-cool-connection/index.html",
     imagePath: "./assets/altitude-and-temperature.png",
-    creators: "as-na-20",
+    creators: "sh-na-20",
+    status: "closed",
+
   },
   {
     name: "Build the Government",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/build-the-government/index.html",
     imagePath: "./assets/build-the-government.png",
     creators: "ni-ba-25",
+    status: "closed",
+
+  },
+  {
+    name: "सही चिह्न पहचानों",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sahi-chinh-pehchano/index.html",
+    imagePath: "./assets/find-correct-sign.png",
+    creators: "as-so-27",
+    status: "closed",
+  },
+  {
+    name: "Transparent, Translucent, and Opaque Materials",
+    link: "",
+    imagePath: "./assets/wip.png",
+    creators: "ni-su-21",
+    status: "work-in-progress",
+  },
+  {
+    name: "Locating decimals",
+    link: "",
+    imagePath: "./assets/wip.png",
+    creators: "sh-mr-17",
+    status: "work-in-progress",
+  },
+  {
+    name: "Reading Large numbers",
+    link: "",
+    imagePath: "./assets/wip.png",
+    creators: "sh-mr-22",
+    status: "work-in-progress",
+  },
+  {
+    name: "Tangents from an External Point",
+    link: "",
+    imagePath: "./assets/wip.png",
+    creators: "sh-ka-30",
+    status: "work-in-progress",
+  },
+  {
+    name: "Build a Molecule",
+    link: "",
+    imagePath: "./assets/not-assigned.png",
+    creators: "sh-ka-13",
+    status: "not-assigned",
+  },
+  {
+    name: "Make Your Own Plant",
+    link: "",
+    imagePath: "./assets/not-assigned.png",
+    creators: "sh-ka-29",
+    status: "not-assigned",
   },
 
   // Add more widget objects here
 ];
 
 document.addEventListener("DOMContentLoaded", function () {
-  // ... (existing code for element references and toggleSidebar function) ...
   const sidebar = document.getElementById("sidebar");
   const toggleButton = document.getElementById("toggle-btn");
   const widgetListing = document.getElementById("widget-listing");
   const totalCount = document.getElementById("total");
-  const iframe = document.querySelector("iframe"); // Select the iframe element
+  const iframe = document.querySelector("iframe");
+  const filterDropdown = document.getElementById("filter");
 
   totalCount.textContent = WIDGET_DATA.length;
-    
+
   function toggleSidebar() {
     sidebar.classList.toggle("active");
-
-    // OPTIONAL: Update the button text
-    if (sidebar.classList.contains("active")) {
-      toggleButton.textContent = "Hide";
-    } else {
-      toggleButton.textContent = "Show";
-    }
+    toggleButton.textContent = sidebar.classList.contains("active") ? "Hide" : "Show";
   }
 
   toggleButton.addEventListener("click", toggleSidebar);
 
-  // --- Dynamic Widget Loading Functionality ---
+  // ------ Load Widget by Filter -------
+function loadWidgetList(filterStatus = "closed") {
+  widgetListing.innerHTML = "";
 
-  function loadWidgetList() {
-    // Clear any existing list items
-    widgetListing.innerHTML = "";
-
-    WIDGET_DATA.forEach((widget) => {
-      // 1. Create the new list item and set its data attribute
-      const listItem = document.createElement("li");
-
-      // Store the link on the element using a data attribute
-      listItem.dataset.widgetLink = widget.link;
-
-      // 2. Populate the content (image and text)
-      listItem.innerHTML = `
-                <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
-                <p class="widget-name">${widget.name}</p>
-                <span class="creators">${widget.creators}</span>
-            `;
-
-      // 3. Attach the click handler to update the iframe
-      listItem.addEventListener("click", function () {
-        const newSrc = this.dataset.widgetLink;
-
-        // CRITICAL STEP: Update the iframe's src attribute
-        iframe.src = newSrc;
-
-        // Optional: Highlight the selected list item
-        document.querySelectorAll("#widget-listing li").forEach((li) => {
-          // CHANGE 1: Remove 'active' instead of 'selected'
-          li.classList.remove("active");
-        });
-        // CHANGE 2: Add 'active' instead of 'selected'
-        this.classList.add("active");
-
-        console.log(`Iframe source updated to: ${newSrc}`);
-      });
-
-      // 4. Append the new item to the list
-      widgetListing.appendChild(listItem);
+  const filteredWidgets = WIDGET_DATA
+    .filter(widget => widget.status === filterStatus)
+    .sort((a, b) => {
+      const numA = parseInt(a.creators.split("-").pop());
+      const numB = parseInt(b.creators.split("-").pop());
+      return numA - numB; // Change to numB - numA for descending
     });
 
-    // Optional: Pre-select and load the first widget on page load
-    if (WIDGET_DATA.length > 0) {
-      iframe.src = WIDGET_DATA[0].link;
-      // Add 'active' class to the first li element after they are created
-      const firstLi = document.querySelector("#widget-listing li");
-      if (firstLi) {
-        // CHANGE 3: Add 'active' instead of 'selected'
-        firstLi.classList.add("active");
-      }
-    }
+  filteredWidgets.forEach((widget) => {
+    const listItem = document.createElement("li");
+    listItem.dataset.widgetLink = widget.link;
+
+    listItem.innerHTML = `
+      <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
+      <p class="widget-name">${widget.name}</p>
+      <span class="creators">${widget.creators}</span>
+    `;
+
+    listItem.addEventListener("click", function () {
+      iframe.src = this.dataset.widgetLink;
+
+      document.querySelectorAll("#widget-listing li").forEach((li) => li.classList.remove("active"));
+      this.classList.add("active");
+    });
+
+    widgetListing.appendChild(listItem);
+  });
+
+  if (filteredWidgets.length > 0) {
+    iframe.src = filteredWidgets[0].link;
+    const firstLi = document.querySelector("#widget-listing li");
+    if (firstLi) firstLi.classList.add("active");
+  } else {
+    iframe.src = "";
   }
 
-  // Call the function to build the list when the DOM is ready
+  totalCount.textContent = filteredWidgets.length;
+}
+
+
+  // Filter change event
+  filterDropdown.addEventListener("change", function () {
+    loadWidgetList(this.value);
+  });
+
+  // Load closed widgets by default
   loadWidgetList();
 });
