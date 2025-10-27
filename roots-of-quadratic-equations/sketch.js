@@ -83,7 +83,7 @@ function updateOutput() {
     } else if (D === 0) {
         msg += `<br><span style="color:#0a7a0a; font-size: 25px;">${D} = 0</span><br><b>One real root (repeated)</b>`;
     } else {
-        msg += `<br><span style="color:#0a3ea0; font-size: 25px;">${D} &lt; 0</span><br><b>Two Complex roots</b>`;
+        msg += `<br><span style="color:#0a3ea0; font-size: 25px;">${D} &lt; 0</span><br><b>Two complex roots</b>`;
     }
 
     rightPanel.innerHTML = msg;

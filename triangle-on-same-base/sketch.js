@@ -43,8 +43,16 @@ function initGeometryBoard() {
     const Y_CORD = 1;
 
     // --- Base Points (Fixed) ---
-    const B = brd.create('point', [3, () => Y_CORD], { name: 'B', fixed: false, size: 4, color: 'black' });
-    const C = brd.create('point', [12, () => Y_CORD], { name: 'C', fixed: false, size: 4, color: 'black' });
+    // const B = brd.create('point', [3, () => Y_CORD], { name: 'B', fixed: false, size: 4, color: 'black' });
+    // const C = brd.create('point', [12, () => Y_CORD], { name: 'C', fixed: false, size: 4, color: 'black' });
+
+    const B = brd.create('glider', [3, 0, lineM], {
+        name: 'B', size: 5, color: 'black', label: { offset: [-15, 10] }
+    });
+
+    const C = brd.create('glider', [12, 0, lineM], {
+        name: 'C', size: 5, color: 'black', label: { offset: [-15, 10] }
+    });
 
     // --- Movable Gliders ---
     const A = brd.create('glider', [6, 7, lineL], {
