@@ -21,7 +21,7 @@ function getLabelOffset(a, b) {
     // small automatic offset depending on slope so text doesn't overlap the line
     if (b === 0) return 0.5;
     let slope = a / b;
-    return slope >= 0 ? 1.5 : -1.5;
+    return slope >= 0 ? 2.5 : -2.5;
 }
 
 function clearBoard() {
@@ -112,21 +112,21 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
 function formatCoeff(coeff, variable, isFirst = false) {
     // Handle zero
     if (coeff === 0) {
-        return (isFirst ? `0${variable}` : ` + 0${variable}`);
+        return (isFirst ? `0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + 0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
     }
 
     // Handle ±1
     if (coeff === 1) {
-        return isFirst ? `${variable}` : ` + ${variable}`;
+        return isFirst ? `<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
     }
     if (coeff === -1) {
-        return isFirst ? `- ${variable}` : ` - ${variable}`;
+        return isFirst ? `- <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
     }
 
     // General case
     return coeff > 0
-        ? (isFirst ? `${coeff}${variable}` : ` + ${coeff}${variable}`)
-        : (isFirst ? `- ${Math.abs(coeff)}${variable}` : ` - ${Math.abs(coeff)}${variable}`);
+        ? (isFirst ? `${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + ${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`)
+        : (isFirst ? `- ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
 }
 
 function formatEquation(a, b, c) {
@@ -160,7 +160,7 @@ function plotLines() {
 
         label1 = board.create('text', [
             () => 0,
-            () => (-a1 * 6 - c1) / b1 + getLabelOffset(a1, b1),
+            () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1),
             () => formatEquation(a1, b1, c1)
         ], { fontSize: 18, strokeColor: 'red', useMathJax: true  });
     }
@@ -174,7 +174,7 @@ function plotLines() {
 
         label2 = board.create('text', [
             () => 0,
-            () => (-a2 * 8 - c2) / b2 + getLabelOffset(a2, b2),
+            () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3,
             () => formatEquation(a2, b2, c2)
         ], { fontSize: 18, strokeColor: 'blue', useMathJax: true  });
     }

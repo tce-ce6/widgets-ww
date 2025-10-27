@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangents from an External Point</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body id="tanget-widget">
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Tangents from an external point</h2>
+                <span id="versionId" class="versionText">b2_25102401</span>
+            </div>
+            <!-- <div> -->
+            <div class="mainContainer" style="align-items: center;">
+                <div class="left-coloum" id="mainCanvas">
+
+                </div>
+                <div class="right-coloum">
+                    <div class="info-box" id="info-box">
+                        <div class="length-info" style="font-size: 20px;">
+                            <strong>PT₁ = PT₂ = <span id="tangent-length">0.0</span> cm</strong>
+                        </div>
+                        <div id="theorem-info" class="theorem-info" style="margin-top: 20px;">
+                            Two tangents from an external point to a circle are always equal in length.
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="radius-slider">r</label>
+                            <input type="range" id="radius-slider" min="1" max="10" value="5" step="1">
+                            <span id="radius-value" style="white-space: nowrap;">5.0 cm</span>
+                        </div>
+                        <div class="control-group switch-group">
+                            <label class="switch">
+                                <input type="checkbox" id="show-lengths" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <span>Show lengths</span>
+                        </div>
+                        <div class="control-group switch-group">
+                            <label class="switch">
+                                <input type="checkbox" id="show-theorem" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <span>Show theorem</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="instructions" id="instructions">
+                    <div class="close-instruction" id="close-ins">X</div>
+                    <h1>Instructions:</h1>
+                    <p>• Drag the external point P to different locations outside the circle</p>
+                    <p>• Use the radius slider to change the circle size</p>
+                    <p>• Toggle "Show lengths" to display tangent lengths</p>
+                    <p>• Toggle "Show theorem" to display the theorem statement</p>
+                    <p>• Observe how the tangent lengths remain equal in all cases!</p></p>
+                </div>
+            </div>
+            <!-- </div> -->
+            <div class="flexContainer button-controls">
+                <div class="flexItem flexItemFirst">
+                    <button class="help-button" id="help-button">
+                        <span class="help-icon"></span>
+                        Click for Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/p5.js"></script>
+    <script src="sketch.js"></script>
+</body>
+
+</html>
