@@ -19,7 +19,6 @@
         min-height: 100vh;
     }
     
-    /* Your requested HTML structure */
     #app.mainContainerOuter {
         width: 100%;
         display: flex;
@@ -27,26 +26,20 @@
     }
     .mainContainer {
         width: 100%;
-        /* Max-width keeps it from being *too* wide on giant monitors */
         max-width: 1800px; 
     }
 
-    /* This is the critical part. 
-      We make the canvas container responsive using the 16:9 aspect ratio
-      (2160 / 3840 = 0.5625 = 56.25%).
-      The p5.js canvas inside will be forced to fit this container.
-    */
     #canvas-container {
         position: relative;
         width: 100%;
         height: 0;
-        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        /* 16:9 Aspect Ratio */
+        padding-bottom: 56.25%; 
         border-radius: 20px;
         border: 2px solid #1d83ec;
         overflow: hidden;
     }
 
-    /* Make the actual canvas element fill the container */
     #canvas-container canvas {
         position: absolute;
         top: 0;
@@ -55,7 +48,6 @@
         height: 100%;
     }
 
-    /* This container is not used in this solution */
     #widget-container {
         display: none;
     }
@@ -63,7 +55,6 @@
 </head>
 <body>
 
-<!-- Your requested HTML structure -->
 <div id="app" class="mainContainerOuter">
     <div class="mainContainer" >
         <main id="canvas-container"></main>
@@ -73,7 +64,6 @@
 
 <script>
     // --- FIXED 4K CANVAS CONSTANTS ---
-    // All layout is based on these fixed numbers
     const CANVAS_WIDTH = 3840;
     const CANVAS_HEIGHT = 2160;
 
@@ -81,34 +71,35 @@
     let feedbackMessage = "";
     let finalMessage = "";
 
-    // 0 = integer, 1 = tenths, 2 = hundredths, 3 = done
+    // --- REVISED: Simulation State ---
+    // 0 = Select Integer
+    // 1 = Integer selected, show Search Icon 1
+    // 2 = Select Tenths
+    // 3 = Tenths selected, show Search Icon 2
+    // 4 = Select Hundredths (drag arrow)
+    // 5 = Done (Submitted)
     let simulationState = 0; 
-    
-    // Number line bounds
-    let currentMin = 0;
-    let currentMax = 10;
-    let currentStep = 1;
+    let showCorrectAnswer = false; 
 
-    let selectedSegment = null; // The segment/tick index clicked
-    let correctSegment = -1;    // The correct segment/tick index
-    let isCorrect = null;       // Was the last click correct?
-    let showCorrectAnswer = false; // Flag to show correct answer
+    // --- REFACTORED: State for each number line ---
+    let line1, line2, line3;
+    let lineY1, lineY2, lineY3;
 
     // p5.js canvas and layout variables
     let canvas;
-    let marginX, lineY, buttonY, btnWidth, btnHeight, startX, endX, segmentWidth;
-    let finalMessageY, feedbackMessageY; // Y-positions for canvas text
+    let marginX, buttonY, btnWidth, btnHeight, startX, endX, segmentWidth;
+    let finalMessageY, feedbackMessageY, titleY, numberY;
 
     // Icon variables
     let searchIcon;
-    let showSearchIcon = false;
-    let searchIconX, searchIconY, searchIconWidth, searchIconHeight;
+    let searchIcon1 = { show: false, x: 0, y: 0 };
+    let searchIcon2 = { show: false, x: 0, y: 0 };
+    let searchIconWidth, searchIconHeight;
     
     // Dragging state variables
     let isDragging = false;
-    let arrowX; // Current X position of the draggable arrow
 
-    // Button labels (based on PPT)
+    // Button labels
     const buttons = {
         show: { label: "Show Explanation" },
         try: { label: "Try Again" },
@@ -117,20 +108,29 @@
 
     // Load assets before setup
     function preload() {
-        // Ensure you have this file at this path
-        searchIcon = loadImage('assets/Search_icon.svg', 
+        // --- NOTE: Make sure 'assets/Search_icon.svg' path is correct ---
+        // Using a placeholder URL for demonstration
+        let iconURL = 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Search_Icon.svg'; 
+        
+        searchIcon = loadImage(iconURL, 
             () => console.log("Search icon loaded successfully."),
             () => {
-                console.error("Failed to load 'assets/Search_icon.svg'. Make sure the file exists.");
-                searchIcon = null; // Set to null on failure
+                console.error("Failed to load search icon. Using a fallback.");
+                // Create a fallback shape if loading fails
+                searchIcon = createGraphics(100, 100);
+                searchIcon.background(255, 0, 0, 0); // Transparent
+                searchIcon.stroke(0);
+                searchIcon.strokeWeight(10);
+                searchIcon.fill(255, 255, 0);
+                searchIcon.ellipse(45, 45, 70, 70);
+                searchIcon.line(75, 75, 95, 95);
             }
         );
     }
 
     function setup() {
-        // User request: Create canvas with fixed 4K size
         canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        canvas.parent('canvas-container'); // Attach to correct container
+        canvas.parent('canvas-container');
         
         textFont("Poppins");
         textAlign(CENTER, CENTER);
@@ -139,19 +139,23 @@
         startNewProblem();
     }
 
-    // NO windowResized() function, as requested.
-
     function setupFixedLayout() {
-        // All layout values are now based on the 3840x2160 canvas
+        // Layout values based on 3840x2160 canvas
         marginX = CANVAS_WIDTH * 0.1; // 384
-        lineY = CANVAS_HEIGHT * 0.3; // 972
         
-        finalMessageY = CANVAS_HEIGHT * 0.65; // 1404
-        feedbackMessageY = CANVAS_HEIGHT * 0.72; // 1555
+        // Y positions for title and lines
+        titleY = CANVAS_HEIGHT * 0.08;
+        numberY = CANVAS_HEIGHT * 0.14;
+        lineY1 = CANVAS_HEIGHT * 0.25;
+        lineY2 = CANVAS_HEIGHT * 0.45;
+        lineY3 = CANVAS_HEIGHT * 0.65;
         
-        buttonY = CANVAS_HEIGHT * 0.85; // 1836
+        finalMessageY = CANVAS_HEIGHT * 0.82;
+        feedbackMessageY = CANVAS_HEIGHT * 0.86;
+        buttonY = CANVAS_HEIGHT * 0.93;
+        
         btnWidth = CANVAS_WIDTH * 0.18; // 691.2
-        btnHeight = CANVAS_HEIGHT * 0.12; // 259.2
+        btnHeight = CANVAS_HEIGHT * 0.1; // 216
         
         startX = marginX;
         endX = CANVAS_WIDTH - marginX;
@@ -160,230 +164,275 @@
         // Icon layout
         searchIconWidth = CANVAS_WIDTH * 0.035; // ~134px
         searchIconHeight = CANVAS_WIDTH * 0.035; // ~134px
-        searchIconY = lineY - 160; // Position above the number line
     }
 
     // Main game loop
     function draw() {
-        // Use p5.js 'width' and 'height' vars (3840, 2160)
         clear();
-        drawNumberLine();
-        drawSearchIcon(); // Draw icon if needed
+        
         showNumberToFind();
+        
+        // --- REVISED: Draw all visible lines and icons based on state ---
+        drawNumberLine(line1);
+        
+        if (simulationState >= 2) {
+            drawZoomLines(lineY1, lineY2, line1.selected);
+            drawNumberLine(line2);
+        }
+        
+        if (simulationState >= 4) {
+            drawZoomLines(lineY2, lineY3, line2.selected);
+            drawNumberLine(line3);
+        }
+
+        // Draw icons on top
+        if (searchIcon1.show) {
+            drawSearchIcon(searchIcon1);
+        }
+        if (searchIcon2.show) {
+            drawSearchIcon(searchIcon2);
+        }
+
         drawButtons();
         drawFeedbackText();
     }
 
-    // Reset simulation
+    // --- REFACTORED: Initialize all line states ---
     function startNewProblem() {
         decimalValue = parseFloat((random(0, 9.99)).toFixed(2));
         simulationState = 0;
-        selectedSegment = null;
-        isCorrect = null;
         showCorrectAnswer = false;
-        showSearchIcon = false; 
+        searchIcon1.show = false; 
+        searchIcon2.show = false; 
         isDragging = false; 
         feedbackMessage = "Click on the interval where the decimal lies.";
         finalMessage = "";
-        updateNumberLineBounds();
-    }
 
-    // Update the min/max/step for the current number line
-    function updateNumberLineBounds() {
-        if (simulationState === 0) {
-            currentMin = 0;
-            currentMax = 10;
-            currentStep = 1;
-            correctSegment = Math.floor(decimalValue);
-            if (decimalValue === 10) correctSegment = 9;
-        } else if (simulationState === 1) {
-            currentMin = Math.floor(decimalValue);
-            currentMax = currentMin + 1;
-            currentStep = 0.1;
-            correctSegment = Math.floor((decimalValue * 10) % 10);
-        } else if (simulationState === 2) {
-            // Setup for state 2
-            currentMin = Math.floor(decimalValue * 10) / 10;
-            currentMax = currentMin + 0.1;
-            currentStep = 0.01;
-            correctSegment = Math.round((decimalValue * 100) % 10);
-            
-            // --- MODIFIED: Initialize arrow position to the right ---
-            arrowX = endX; // Start arrow at the end
-            selectedSegment = 10; // Corresponds to endX
-            feedbackMessage = "Drag the arrow to the correct location and click Submit.";
-        }
-    }
+        // Setup Line 1 (Integers)
+        line1 = {
+            y: lineY1,
+            type: 'interval',
+            min: 0,
+            max: 10,
+            step: 1,
+            precision: 0,
+            selected: null,
+            isCorrect: null,
+            correct: Math.floor(decimalValue)
+        };
+        if (decimalValue === 10) line1.correct = 9;
 
-    // Draws the *current* number line
-    function drawNumberLine() {
-        // Draw main line (scaled up)
-        stroke(0);
-        strokeWeight(12); // Scaled
-        line(startX, lineY, endX, lineY);
+        // Initialize Line 2 (Tenths)
+        line2 = {
+            y: lineY2,
+            type: 'interval',
+            min: 0,
+            max: 0,
+            step: 0.1,
+            precision: 1,
+            selected: null,
+            isCorrect: null,
+            correct: -1
+        };
         
-        // Draw arrows (scaled up)
+        // Initialize Line 3 (Hundredths)
+        line3 = {
+            y: lineY3,
+            type: 'arrow',
+            min: 0,
+            max: 0,
+            step: 0.01,
+            precision: 2,
+            selected: null,
+            isCorrect: null,
+            correct: -1,
+            arrowX: endX // Start arrow at the right
+        };
+    }
+
+    // --- NEW: Setup Line 2 state ---
+    function setupLine2() {
+        line2.min = line1.correct;
+        line2.max = line1.correct + 1;
+        line2.correct = Math.floor((decimalValue * 10) % 10);
+    }
+    
+    // --- NEW: Setup Line 3 state ---
+    function setupLine3() {
+        line3.min = parseFloat((Math.floor(decimalValue * 10) / 10).toFixed(1));
+        line3.max = parseFloat((line3.min + 0.1).toFixed(1));
+        line3.correct = Math.round((decimalValue * 100) % 10);
+        line3.selected = 10; // Corresponds to endX
+        line3.arrowX = endX; // Reset arrow position
+    }
+
+    // --- NEW: Generic function to draw a number line ---
+    function drawNumberLine(lineState) {
+        let y = lineState.y;
+
+        // Draw main line
+        stroke(0);
+        strokeWeight(12);
+        line(startX, y, endX, y);
+        
+        // Draw line arrows
         fill(0);
-        triangle(startX, lineY, startX + 40, lineY - 20, startX + 40, lineY + 20);
-        triangle(endX, lineY, endX - 40, lineY - 20, endX - 40, lineY + 20);
+        triangle(startX, y, startX + 40, y - 20, startX + 40, y + 20);
+        triangle(endX, y, endX - 40, y - 20, endX - 40, y + 20);
 
         // --- Interval/Tick Highlighting ---
-        if (simulationState === 0 || simulationState === 1) {
-            
-            // This only draws the *correct answer* if 'showCorrectAnswer' is true
-            if (showCorrectAnswer) {
-                stroke(0, 0, 255, 150);
-                strokeWeight(40); // Scaled
-                const x1 = startX + correctSegment * segmentWidth;
-                const x2 = x1 + segmentWidth;
-                line(x1, lineY, x2, lineY);
-            }
-            
-            // This draws the *user's selection*
-            if (selectedSegment !== null) {
-                if (isCorrect) stroke(0, 0, 255); // Blue for correct
-                else stroke(255, 0, 0); // Red for incorrect
+        if (lineState.type === 'interval') {
+            // Draw user's selection
+            if (lineState.selected !== null) {
+                if (lineState.isCorrect) stroke(0, 0, 255); // Blue
+                else stroke(255, 0, 0); // Red
                 
-                strokeWeight(40); // Scaled
-                const x1 = startX + selectedSegment * segmentWidth;
+                strokeWeight(40);
+                const x1 = startX + lineState.selected * segmentWidth;
                 const x2 = x1 + segmentWidth;
-                line(x1, lineY, x2, lineY);
+                line(x1, y, x2, y);
             }
         }
         
-        // State 2 arrow drawing
-        if (simulationState === 2) {
-            // Always draw the draggable arrow
-            fill([243, 156, 18]); // Neutral orange color
-            drawArrow(arrowX, lineY);
+        if (lineState.type === 'arrow') {
+            // Draw the draggable arrow
+            fill([243, 156, 18]); // Orange
+            drawArrow(lineState.arrowX, y);
 
             // Show correct (blue) arrow ONLY if submitted and wrong
-            if (showCorrectAnswer && selectedSegment !== correctSegment) {
-                let correctX = startX + correctSegment * segmentWidth;
-                fill(0, 0, 255); // Blue for correct answer
-                drawArrow(correctX, lineY);
+            if (showCorrectAnswer && lineState.selected !== lineState.correct) {
+                let correctX = startX + lineState.correct * segmentWidth;
+                fill(0, 0, 255); // Blue
+                drawArrow(correctX, y);
             }
         }
 
         // --- Draw Ticks and Labels ---
         noStroke();
         fill(0);
-        textSize(57.6); // Scaled (was width * 0.015)
+        textSize(57.6);
 
         for (let i = 0; i <= 10; i++) {
             let x = startX + i * segmentWidth;
-            let labelValue = currentMin + i * currentStep;
+            let labelValue = lineState.min + i * lineState.step;
 
             stroke(0);
-            strokeWeight(8); // Scaled
-            line(x, lineY - 40, x, lineY + 40); // Scaled
+            strokeWeight(8);
+            line(x, y - 40, x, y + 40);
             noStroke();
-
-            let precision = (simulationState === 1) ? 1 : (simulationState === 2) ? 2 : 0;
-            let label = labelValue.toFixed(precision);
-            text(label, x, lineY + 120); // Scaled
+            
+            let label = labelValue.toFixed(lineState.precision);
+            text(label, x, y + 120);
         }
     }
     
-    // Function to draw search icon
-    function drawSearchIcon() {
-        // --- MODIFIED: Check if icon loaded successfully ---
-        if (showSearchIcon && searchIcon) {
+    // --- NEW: Function to draw zoom lines ---
+    function drawZoomLines(y1, y2, selectedSegment) {
+        if (selectedSegment === null) return;
+
+        push();
+        stroke(231, 76, 60); // Red
+        strokeWeight(8);
+        
+        let x1_start = startX + selectedSegment * segmentWidth;
+        let x1_end = x1_start + segmentWidth;
+        
+        let x2_start = startX;
+        let x2_end = endX;
+        
+        line(x1_start, y1, x2_start, y2);
+        line(x1_end, y1, x2_end, y2);
+        pop();
+    }
+    
+    // --- REVISED: Function to draw a specific search icon ---
+    function drawSearchIcon(iconState) {
+        if (iconState.show && searchIcon) {
             imageMode(CENTER);
-            image(searchIcon, searchIconX, searchIconY, searchIconWidth, searchIconHeight);
-            imageMode(CORNER); // Reset to default
+            image(searchIcon, iconState.x, iconState.y, searchIconWidth, searchIconHeight);
+            imageMode(CORNER);
         }
     }
 
-    // Helper function to draw an arrow (scaled)
+    // Helper function to draw an arrow
     function drawArrow(x, y) {
         push();
         stroke(0);
-        strokeWeight(4); // Scaled
-        // --- FIXED: Removed fill(g_fill) ---
-        // The fill color is set *before* this function is called.
-        line(x, y - 48, x, y - 140); // Scaled
-        triangle(x, y - 40, x - 24, y - 80, x + 24, y - 80); // Scaled
+        strokeWeight(4);
+        // fill() is set before calling
+        line(x, y - 48, x, y - 140);
+        triangle(x, y - 40, x - 24, y - 80, x + 24, y - 80);
         pop();
     }
 
-    // Show the decimal value to find (scaled)
+    // Show the decimal value to find
     function showNumberToFind() {
         fill(0);
-        textSize(76.8); // Scaled (was width * 0.02)
+        textSize(76.8);
         noStroke();
-        text(`Locate the given decimal on the number line:`, width / 2, lineY - 480); // Scaled
+        text(`Locate the given decimal on the number line:`, width / 2, titleY);
         fill(231, 76, 60);
-        textSize(115.2); // Scaled (was width * 0.03)
-        text(decimalValue.toFixed(2), width / 2, lineY - 320); // Scaled
+        textSize(115.2);
+        text(decimalValue.toFixed(2), width / 2, numberY);
     }
 
-    // Draw the 3 buttons (scaled)
+    // Draw the 3 buttons
     function drawButtons() {
         const centerX = width / 2;
-        const spacing = btnWidth + 80; // Scaled spacing
+        const spacing = btnWidth + 80;
 
         rectMode(CENTER);
         noStroke();
-        textSize(57.6); // Scaled (was width * 0.015)
+        textSize(57.6);
 
         // Show Explanation
         fill(39, 174, 96);
-        rect(centerX - spacing, buttonY, btnWidth, btnHeight, 60); // Scaled
+        rect(centerX - spacing, buttonY, btnWidth, btnHeight, 60);
         fill(255);
         text(buttons.show.label, centerX - spacing, buttonY);
 
         // Try Again
         fill(243, 156, 18);
-        rect(centerX, buttonY, btnWidth, btnHeight, 60); // Scaled
+        rect(centerX, buttonY, btnWidth, btnHeight, 60);
         fill(255);
         text(buttons.try.label, centerX, buttonY);
 
         // Submit
         fill(231, 76, 60);
-        rect(centerX + spacing, buttonY, btnWidth, btnHeight, 60); // Scaled
+        rect(centerX + spacing, buttonY, btnWidth, btnHeight, 60);
         fill(255);
         text(buttons.submit.label, centerX + spacing, buttonY);
 
         rectMode(CORNER);
     }
     
-    // Draws all feedback text directly onto the canvas (scaled)
+    // Draws all feedback text
     function drawFeedbackText() {
         noStroke();
         textAlign(CENTER, CENTER);
         
-        // Draw Final Message
         fill('#1d83ec');
-        textSize(96); // Scaled (was width * 0.025)
+        textSize(96);
         text(finalMessage, width / 2, finalMessageY);
 
-        // Draw Feedback Message
         fill(50);
-        textSize(69.12); // Scaled (was width * 0.018)
+        textSize(69.12);
         text(feedbackMessage, width / 2, feedbackMessageY);
     }
 
-    // --- Interaction Handlers ---
+    // --- REFACTORED: Interaction Handlers ---
 
     function mousePressed() {
-        if (simulationState === 3 && !isOverButton("try")) {
-            return; // Only "Try Again" works when done
-        }
+        // Lock interaction if 'Done'
+        if (simulationState === 5 && !isOverButton("try")) return;
 
-        // --- 1. Check Search Icon Click ---
-        if (showSearchIcon && isOverSearchIcon()) {
-            handleSearchIconClick();
-            return; // Exit after handling icon click
-        }
-
-        // --- 2. Check Button Clicks ---
+        // 1. Check Button Clicks
         if (isOverButton("show")) {
             handleShowExplanation();
             return;
         }
         if (isOverButton("try")) {
-            handleTryAgain();
+            startNewProblem();
             return;
         }
         if (isOverButton("submit")) {
@@ -391,107 +440,141 @@
             return;
         }
         
-        // --- 3. Check Number Line Clicks ---
-        
-        // State 0 or 1: Click an INTERVAL
-        if (simulationState === 0 || simulationState === 1) {
-            if (mouseY > lineY - 80 && mouseY < lineY + 160 && mouseX >= startX && mouseX <= endX) {
-                let clickedSegment = floor((mouseX - startX) / segmentWidth);
-                if (clickedSegment === 10) clickedSegment = 9;
-
-                selectedSegment = clickedSegment; 
-
-                if (clickedSegment === correctSegment) {
-                    isCorrect = true;
-                    showCorrectAnswer = false;
-                    feedbackMessage = "Correct! Click the magnifying glass to zoom in.";
-                    let segmentX = startX + (clickedSegment * segmentWidth) + (segmentWidth / 2);
-                    searchIconX = segmentX;
-                    showSearchIcon = true;
-                } else {
-                    isCorrect = false;
-                    showSearchIcon = false; 
-                    showCorrectAnswer = false;
-                    feedbackMessage = "This is not the correct interval, check the integer part"; 
-                }
-            }
+        // 2. Check Search Icon Clicks (MUST be checked before line clicks)
+        if (simulationState === 1 && isOverSearchIcon(searchIcon1)) {
+            handleSearchIcon1Click();
+            return;
+        }
+        if (simulationState === 3 && isOverSearchIcon(searchIcon2)) {
+            handleSearchIcon2Click();
+            return;
         }
         
-        // State 2: Check for DRAG START
-        else if (simulationState === 2) {
-            if (isOverArrow(arrowX)) {
-                isDragging = true;
-            }
+        // 3. Check Number Line Interactions
+        if (simulationState === 0 && isOverLine(lineY1)) {
+            handleLine1Click();
+        }
+        else if (simulationState === 2 && isOverLine(lineY2)) {
+            handleLine2Click();
+        }
+        else if (simulationState === 4 && isOverArrow(line3.arrowX, lineY3)) {
+            isDragging = true;
         }
     }
     
-    // p5.js function for dragging
+    // --- REVISED: Check for click on Line 1 (Integers) ---
+    function handleLine1Click() {
+        let clickedSegment = floor((mouseX - startX) / segmentWidth);
+        if (clickedSegment === 10) clickedSegment = 9;
+
+        line1.selected = clickedSegment; 
+        line1.isCorrect = (clickedSegment === line1.correct);
+
+        if (line1.isCorrect) {
+            simulationState = 1; // Advance state to 'show icon 1'
+            setupLine2(); // Populate line 2 data in advance
+            feedbackMessage = "Correct! Click the magnifying glass to zoom in.";
+            
+            // Position and show icon 1
+            searchIcon1.x = startX + (line1.selected * segmentWidth) + (segmentWidth / 2);
+            searchIcon1.y = lineY1 - 160; // Position above line 1
+            searchIcon1.show = true;
+            
+            // Reset downstream states
+            searchIcon2.show = false;
+            line2.selected = null;
+            line2.isCorrect = null;
+
+        } else {
+            searchIcon1.show = false; 
+            feedbackMessage = "This is not the correct interval, check the integer part"; 
+        }
+    }
+
+    // --- NEW: Handle Icon 1 Click ---
+    function handleSearchIcon1Click() {
+        simulationState = 2; // Advance state to 'select tenths'
+        searchIcon1.show = false;
+        feedbackMessage = "Now find the tenths place on the new line.";
+    }
+    
+    // --- REVISED: Check for click on Line 2 (Tenths) ---
+    function handleLine2Click() {
+        let clickedSegment = floor((mouseX - startX) / segmentWidth);
+        if (clickedSegment === 10) clickedSegment = 9;
+
+        line2.selected = clickedSegment; 
+        line2.isCorrect = (clickedSegment === line2.correct);
+
+        if (line2.isCorrect) {
+            simulationState = 3; // Advance state to 'show icon 2'
+            setupLine3(); // Populate line 3 data in advance
+            feedbackMessage = "Correct! Click the magnifying glass to zoom in.";
+            
+            // Position and show icon 2
+            searchIcon2.x = startX + (line2.selected * segmentWidth) + (segmentWidth / 2);
+            searchIcon2.y = lineY2 - 160; // Position above line 2
+            searchIcon2.show = true;
+        } else {
+            searchIcon2.show = false;
+            feedbackMessage = "Not quite. Consider the tenths place."; 
+        }
+    }
+    
+    // --- REVISED: Handle Icon 2 Click ---
+    function handleSearchIcon2Click() {
+        simulationState = 4; // Advance state to 'select hundredths'
+        searchIcon2.show = false;
+        feedbackMessage = "Drag the arrow to the correct location and click Submit.";
+    }
+    
     function mouseDragged() {
-        if (isDragging) {
-            // Update arrow position, constrained to the line
-            arrowX = constrain(mouseX, startX, endX);
+        if (isDragging && simulationState === 4) {
+            line3.arrowX = constrain(mouseX, startX, endX);
+            line3.selected = round((line3.arrowX - startX) / (endX - startX) * 10);
             
-            // Update selectedSegment based on new arrowX
-            let clickPercent = (arrowX - startX) / (endX - startX);
-            selectedSegment = round(clickPercent * 10);
-            
-            // Update feedback message to show current value
-            let selectedValue = currentMin + selectedSegment * currentStep;
+            let selectedValue = line3.min + line3.selected * line3.step;
             feedbackMessage = "Placing arrow at: " + selectedValue.toFixed(2);
         }
     }
     
-    // p5.js function for mouse release
     function mouseReleased() {
-        if (isDragging) {
+        if (isDragging && simulationState === 4) {
             isDragging = false;
-            
-            // Snap the arrow to the center of the nearest tick
-            arrowX = startX + selectedSegment * segmentWidth;
-            
-            // Finalize feedback message
+            // Snap the arrow
+            line3.arrowX = startX + line3.selected * segmentWidth;
             feedbackMessage = "You have placed the arrow. Click Submit to check.";
         }
     }
 
-    // Helper function to check icon click
-    function isOverSearchIcon() {
-        // --- MODIFIED: Check if icon is valid before checking bounds ---
-        if (!searchIcon) return false; 
-        return (
-            mouseX > searchIconX - searchIconWidth / 2 &&
-            mouseX < searchIconX + searchIconWidth / 2 &&
-            mouseY > searchIconY - searchIconHeight / 2 &&
-            mouseY < searchIconY + searchIconHeight / 2
-        );
-    }
-    
-    // Helper function to check if mouse is over the arrow
-    function isOverArrow(x) {
-        // Checks a bounding box around the arrow's triangle
-        return (
-            mouseX > x - 24 && // left of triangle
-            mouseX < x + 24 && // right of triangle
-            mouseY > lineY - 140 && // top of arrow line
-            mouseY < lineY - 40 // bottom of triangle
-        );
-    }
-    
-    // Helper function to handle icon click
-    function handleSearchIconClick() {
-        simulationState++;
-        updateNumberLineBounds();
-        selectedSegment = null;
-        isCorrect = null;
-        feedbackMessage = "Now find the next decimal place...";
-        showCorrectAnswer = false;
-        showSearchIcon = false; 
+    // --- Helper to check if mouse is over *any* line ---
+    function isOverLine(y) {
+        return (mouseY > y - 80 && mouseY < y + 160 && mouseX >= startX && mouseX <= endX);
     }
 
-    // Helper function to check button clicks
+    // --- REVISED: Check over a specific icon's state ---
+    function isOverSearchIcon(iconState) {
+        if (!iconState.show || !searchIcon) return false; 
+        return (
+            mouseX > iconState.x - searchIconWidth / 2 &&
+            mouseX < iconState.x + searchIconWidth / 2 &&
+            mouseY > iconState.y - searchIconHeight / 2 &&
+            mouseY < iconState.y + searchIconHeight / 2
+        );
+    }
+    
+    function isOverArrow(x, y) {
+        return (
+            mouseX > x - 24 &&
+            mouseX < x + 24 &&
+            mouseY > y - 140 &&
+            mouseY < y - 40
+        );
+    }
+    
     function isOverButton(btn) {
         const centerX = width / 2;
-        const spacing = btnWidth + 80; // Scaled
+        const spacing = btnWidth + 80;
         let btnX;
 
         if (btn === "show") btnX = centerX - spacing;
@@ -506,57 +589,68 @@
         );
     }
 
+    // --- REFACTORED: Show explanation advances state ---
     function handleShowExplanation() {
-        // State 0 or 1
-        if (simulationState === 0 || simulationState === 1) {
-            selectedSegment = correctSegment;
-            isCorrect = true;
-            showCorrectAnswer = false;
-            feedbackMessage = "This is the correct interval. Click the magnifying glass to zoom in.";
-            let segmentX = startX + (correctSegment * segmentWidth) + (segmentWidth / 2);
-            searchIconX = segmentX;
-            showSearchIcon = true;
-            
-        } 
-        // State 2
+        if (simulationState === 0) {
+            // Show correct interval on Line 1
+            line1.selected = line1.correct;
+            line1.isCorrect = true;
+            simulationState = 1;
+            setupLine2();
+            searchIcon1.x = startX + (line1.selected * segmentWidth) + (segmentWidth / 2);
+            searchIcon1.y = lineY1 - 160;
+            searchIcon1.show = true;
+            feedbackMessage = "This is the correct interval. Click the magnifying glass.";
+        }
+        else if (simulationState === 1) {
+            // "Click" the first icon
+            handleSearchIcon1Click();
+            feedbackMessage = "This is the correct interval. Now find the tenths.";
+        }
         else if (simulationState === 2) {
-            // Snap arrow to correct answer
-            selectedSegment = correctSegment;
-            isCorrect = true;
-            arrowX = startX + correctSegment * segmentWidth; // Snap arrow
+            // Show correct interval on Line 2
+            line2.selected = line2.correct;
+            line2.isCorrect = true;
+            simulationState = 3;
+            setupLine3();
+            searchIcon2.x = startX + (line2.selected * segmentWidth) + (segmentWidth / 2);
+            searchIcon2.y = lineY2 - 160;
+            searchIcon2.show = true;
+            feedbackMessage = "This is the correct interval. Click the magnifying glass.";
+        }
+        else if (simulationState === 3) {
+            // "Click" the second icon
+            handleSearchIcon2Click();
+        }
+        else if (simulationState === 4) {
+            // Show correct arrow on Line 3
+            line3.selected = line3.correct;
+            line3.isCorrect = true;
+            line3.arrowX = startX + line3.correct * segmentWidth;
             showCorrectAnswer = false;
             feedbackMessage = "This is the correct location. Click Submit.";
         }
         finalMessage = "";
     }
 
-    function handleTryAgain() {
-        startNewProblem();
-    }
-
     function handleSubmit() {
-        if (simulationState !== 2) {
-            finalMessage = "";
+        if (simulationState !== 4) {
             feedbackMessage = "Please find the final location before submitting.";
             return;
         }
         
-        // selectedSegment is now always set by the arrow
-        if (selectedSegment === null) { 
-            // This case should no longer happen, but good to keep
-            finalMessage = "";
+        if (line3.selected === null) { 
             feedbackMessage = "Please place your arrow on the number line.";
             return;
         }
 
-        // Check correctness *here*
-        isCorrect = (selectedSegment === correctSegment);
+        line3.isCorrect = (line3.selected === line3.correct);
 
-        if (isCorrect) {
+        if (line3.isCorrect) {
             finalMessage = "Well done!";
             feedbackMessage = "";
             showCorrectAnswer = false;
-            simulationState = 3; // Done
+            simulationState = 5; // Done
         } else {
             finalMessage = "Check your work";
             feedbackMessage = "That's not the right spot. The correct answer is shown in blue.";
@@ -567,4 +661,3 @@
 
 </body>
 </html>
-
