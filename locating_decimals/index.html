@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decimal Number Line Simulation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #000;
+  }
+  .title-container {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+  .title-container h3 {
+    display: inline-block;
+    margin: 0;
+    background-color: #1d83ec;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 0 0 40px 40px;
+  }
+  #canvas-container {
+    border-radius: 20px;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="title-container">
+  <h3>Decimal Number Line Simulation</h3>
+</div>
+<div id="simulation-container">
+  <div id="canvas-container"></div>
+</div>
+
+<script>
+let decimalValue = 0;
+let explanationText = ""; // global variable to store explanation
+const totalUnits = 10;
+
+let marginX, lineY, buttonY, btnWidth, btnHeight;
+let selectedSegment = null; // clicked segment
+let isCorrect = null;       // null = not clicked, true = correct, false = wrong
+
+const buttons = {
+  show: { label: "Show Explanation" },
+  try: { label: "Try Again" },
+  submit: { label: "Submit" },
+};
+
+function setup() {
+  let canvas = createCanvas(windowWidth, windowHeight * 0.85);
+  canvas.parent("canvas-container");
+  textFont("Poppins");
+  textAlign(CENTER, CENTER);
+  noStroke();
+  setupDynamicPositions();
+  decimalValue = parseFloat((random(1, 10)).toFixed(2)); // random number 1-10
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight * 0.85);
+  setupDynamicPositions();
+}
+
+function setupDynamicPositions() {
+  marginX = width * 0.1;
+  lineY = height * 0.45;
+  buttonY = height * 0.75;
+  btnWidth = width * 0.15;
+  btnHeight = height * 0.08;
+}
+
+function draw() {
+  clear();
+  drawNumberLine();
+  showNumberAboveLine();
+  drawButtons();
+   if (explanationText !== "") {
+    fill(255, 255, 255);
+    textSize(18);
+    textAlign(CENTER, CENTER);
+    text(explanationText, width / 2, lineY + 200);
+  }
+}
+
+function drawNumberLine() {
+  const startX = marginX;
+  const endX = width - marginX;
+  const segmentWidth = (endX - startX) / totalUnits;
+
+  // Highlight clicked segment
+   if (selectedSegment !== null) {
+    strokeWeight(7); // slightly thicker than number line
+    if (isCorrect) stroke(0, 0, 255); // blue for correct
+    else stroke(255, 0, 0);           // red for wrong
+    const x1 = startX + selectedSegment * segmentWidth;
+    const x2 = x1 + segmentWidth;
+    line(x1, lineY, x2, lineY);
+  } 
+
+  stroke(255);
+  strokeWeight(2);
+  line(startX, lineY, endX, lineY);
+
+  noStroke();
+  fill(255);
+  textSize(width * 0.015);
+
+  for (let i = 0; i <= totalUnits; i++) {
+    let x = map(i, 0, totalUnits, startX, endX);
+    stroke(255);
+    line(x, lineY - 15, x, lineY + 15); // tick marks
+    noStroke();
+    text(i, x, lineY - 35);
+  }
+}
+
+function showNumberAboveLine() {
+  fill(255, 255, 0);
+  textSize(18);
+  text(decimalValue.toFixed(2), width / 2, lineY - 150);
+}
+
+function drawButtons() {
+  const centerX = width / 2;
+  const spacing = btnWidth + 20;
+
+  // Show Explanation
+  fill(39, 174, 96);
+  rectMode(CENTER);
+  rect(centerX - spacing, buttonY, btnWidth, btnHeight, 15);
+  fill(255);
+  textSize(width * 0.015);
+  text(buttons.show.label, centerX - spacing, buttonY);
+
+  // Try Again
+  fill(243, 156, 18);
+  rect(centerX, buttonY, btnWidth, btnHeight, 15);
+  fill(255);
+  text(buttons.try.label, centerX, buttonY);
+
+  // Submit
+  fill(231, 76, 60);
+  rect(centerX + spacing, buttonY, btnWidth, btnHeight, 15);
+  fill(255);
+  text(buttons.submit.label, centerX + spacing, buttonY);
+
+  rectMode(CORNER);
+}
+
+function mousePressed() {
+  const startX = marginX;
+  const endX = width - marginX;
+  const segmentWidth = (endX - startX) / totalUnits;
+
+  // Check which segment is clicked
+  if (mouseY > lineY - 15 && mouseY < lineY + 15 && mouseX >= startX && mouseX <= endX) {
+    selectedSegment = floor((mouseX - startX) / segmentWidth);
+
+    // Check correctness
+    let segmentStart = selectedSegment;
+    let segmentEnd = selectedSegment + 1;
+    if (decimalValue >= segmentStart && decimalValue < segmentEnd) isCorrect = true;
+    else isCorrect = false;
+  }
+
+  // Buttons click
+  const centerX = width / 2;
+  const spacing = btnWidth + 20;
+  if (mouseY > buttonY - btnHeight / 2 && mouseY < buttonY + btnHeight / 2) {
+    if (mouseX > centerX - spacing - btnWidth / 2 && mouseX < centerX - spacing + btnWidth / 2)
+      handleShowExplanation();
+    else if (mouseX > centerX - btnWidth / 2 && mouseX < centerX + btnWidth / 2)
+      handleTryAgain();
+    else if (mouseX > centerX + spacing - btnWidth / 2 && mouseX < centerX + spacing + btnWidth / 2)
+      handleSubmit();
+  }
+}
+
+function handleShowExplanation() {
+  const lower = Math.floor(decimalValue);
+  const upper = lower + 1;
+  explanationText = `The decimal ${decimalValue.toFixed(2)} lies between ${lower} and ${upper}.`;
+}
+function handleTryAgain() {
+  selectedSegment = null;
+  isCorrect = null;
+  decimalValue = parseFloat((random(1, 10)).toFixed(2)); // new number
+}
+
+function handleSubmit() {
+  alert(`Submitted: ${decimalValue.toFixed(2)}`);
+}
+</script>
+</body>
+</html>
