@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Triangle Inequality Theorem </title>
+    <link rel="stylesheet" href="global_style.css">
+    <script src="p5.js"></script>
+    <style>
+        .button-controls2-hover {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: opacity 0.3s;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <h3>Triangle Inequality Theorem </h3>
+    </div>
+    
+    <div id="app" class="mainContainerOuter">
+        <div class="mainContainer">
+            <main id="canvas-container"></main>
+            <div id="widget-container"></div>
+        </div>
+        
+        <div class="button-controls2-hover">
+            <button id="showExplanationButton">Show Explanation</button>
+            <button id="backButton">Back</button>
+            <button id="nextButton">Next</button>
+            <button id="submitButton">Submit</button>
+            <button id="resetButton">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Game Objects & State ---
+        let showResult = false;
+        let currentNumber = '';
+        let system = 'none'; // 'none', 'indian', 'american'
+        let explanation = [];
+        let instruction = 'Enter a number and click Use this number';
+        let numberEntered = false;
+        let inExplanationMode = false;
+        let showSystemButtons = false;
+        let commaPositions = []; // Store indices where commas are placed
+        let isDraggingComma = false;
+        let draggedCommaIndex = -1;
+        let showCommaPlacement = false;
+        let isCorrect = false;
+
+        // P5.js DOM elements
+        let numberInputElem;
+        let useNumberBtn;
+        let clearBtn;
+        let indianSystemBtn;
+        let americanSystemBtn;
+        let showExplanationButton, backButton, nextButton, submitButton, resetButton;
+        let canvas;
+
+        const canvasWidth = 1200;
+        const canvasHeight = 700;
+        const boxSize = 50;
+        const boxGap = 6;
+
+        const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+        const teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        const placesIndian = ['units', 'thousand', 'lakh', 'crore', 'arab', 'kharab'];
+        const placesAmerican = ['units', 'thousand', 'million', 'billion', 'trillion'];
+
+        // --- P5.js Setup Function ---
+      function setup() {
+    canvas = createCanvas(canvasWidth, canvasHeight);
+    canvas.parent('canvas-container');
+    drawingContext.imageSmoothingEnabled = false;
+
+    let canvasElement = select('#canvas-container').elt;
+    let canvasRect = canvasElement.getBoundingClientRect();
+    let canvasX = canvasRect.left + (canvasRect.width - canvasWidth) / 2;
+    let canvasY = canvasRect.top;
+
+    let inputWidth = Math.min(windowWidth * 0.5, canvasWidth * 0.5, 250);
+
+    numberInputElem = createInput('234567890');
+    numberInputElem.attribute('maxlength', '11');
+    numberInputElem.attribute('placeholder', 'e.g., 23456789');
+    numberInputElem.style('width', `${inputWidth}px`);
+    numberInputElem.style('height', '36px');
+    numberInputElem.style('font-size', '16px');
+    numberInputElem.style('text-align', 'center');
+    numberInputElem.style('border-radius', '8px');
+    numberInputElem.style('border', '2px solid #ccc');
+    numberInputElem.style('padding', '6px');
+    numberInputElem.style('background-color', 'white');
+    numberInputElem.style('color', '#333');
+    numberInputElem.position(canvasX + (canvasWidth - inputWidth) / 2, canvasY + 130);
+
+    useNumberBtn = createButton('Use this Number');
+    useNumberBtn.style('padding', '8px 25px');
+    useNumberBtn.style('font-size', '14px');
+    useNumberBtn.style('font-weight', 'bold');
+    useNumberBtn.style('cursor', 'pointer');
+    useNumberBtn.style('background', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+    useNumberBtn.style('color', 'white');
+    useNumberBtn.style('border', 'none');
+    useNumberBtn.style('border-radius', '8px');
+    useNumberBtn.style('min-width', `${inputWidth * 0.45}px`); // Adjusted width
+    useNumberBtn.position(canvasX + (canvasWidth - inputWidth) / 2, canvasY + 190);
+
+    clearBtn = createButton('Clear');
+    clearBtn.style('padding', '8px 25px');
+    clearBtn.style('font-size', '14px');
+    clearBtn.style('font-weight', 'bold');
+    clearBtn.style('cursor', 'pointer');
+    clearBtn.style('background-color', '#A9A9A9');
+    clearBtn.style('color', 'white');
+    clearBtn.style('border', 'none');
+    clearBtn.style('border-radius', '8px');
+    clearBtn.style('min-width', `${inputWidth * 0.45}px`); // Adjusted width
+    clearBtn.position(canvasX + (canvasWidth - inputWidth) / 2 + inputWidth - inputWidth * 0.45 + 50, canvasY + 190); // Added gap
+
+    let buttonWidth = Math.min(windowWidth * 0.25, 140);
+    indianSystemBtn = createButton('Indian System');
+    indianSystemBtn.style('padding', '8px 20px');
+    indianSystemBtn.style('font-size', '14px');
+    indianSystemBtn.style('font-weight', 'bold');
+    indianSystemBtn.style('cursor', 'pointer');
+    indianSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+    indianSystemBtn.style('color', 'white');
+    indianSystemBtn.style('border', '1px solid #006064');
+    indianSystemBtn.style('border-radius', '8px');
+    indianSystemBtn.style('min-width', `${buttonWidth}px`);
+    indianSystemBtn.position(canvasX + (canvasWidth - inputWidth - 40) / 2, canvasY + 270);
+    indianSystemBtn.hide();
+
+    americanSystemBtn = createButton('American System');
+    americanSystemBtn.style('padding', '8px 20px');
+    americanSystemBtn.style('font-size', '14px');
+    americanSystemBtn.style('font-weight', 'bold');
+    americanSystemBtn.style('cursor', 'pointer');
+    americanSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+    americanSystemBtn.style('color', 'white');
+    americanSystemBtn.style('border', '1px solid #006064');
+    americanSystemBtn.style('border-radius', '8px');
+    americanSystemBtn.style('min-width', `${buttonWidth}px`);
+    americanSystemBtn.position(canvasX + (canvasWidth + 40) / 2, canvasY + 270);
+    americanSystemBtn.hide();
+
+    showExplanationButton = document.getElementById('showExplanationButton');
+    backButton = document.getElementById('backButton');
+    nextButton = document.getElementById('nextButton');
+    submitButton = document.getElementById('submitButton');
+    resetButton = document.getElementById('resetButton');
+
+    numberInputElem.input(updateInput);
+    useNumberBtn.mousePressed(onUseNumberPressed);
+    clearBtn.mousePressed(onClearPressed);
+    indianSystemBtn.mousePressed(() => onSystemSelected('indian'));
+    americanSystemBtn.mousePressed(() => onSystemSelected('american'));
+    showExplanationButton.addEventListener('click', onShowExplanationPressed);
+    backButton.addEventListener('click', onBackPressed);
+    nextButton.addEventListener('click', onNextPressed);
+    submitButton.addEventListener('click', onSubmitPressed);
+    resetButton.addEventListener('click', onResetPressed);
+
+    initializeState();
+}
+
+        function windowResized() {
+    resizeCanvas(canvasWidth, canvasHeight);
+    
+    let canvasElement = select('#canvas-container').elt;
+    let canvasRect = canvasElement.getBoundingClientRect();
+    let canvasX = canvasRect.left + (canvasRect.width - canvasWidth) / 2;
+    let canvasY = canvasRect.top;
+    
+    let inputWidth = Math.min(windowWidth * 0.5, canvasWidth * 0.5, 250);
+    
+    numberInputElem.style('width', `${inputWidth}px`);
+    numberInputElem.position(canvasX + (canvasWidth - inputWidth) / 2, canvasY + 130);
+    
+    useNumberBtn.position(canvasX + (canvasWidth - inputWidth) / 2, canvasY + 190);
+    
+    clearBtn.position(canvasX + (canvasWidth - inputWidth) / 2 + inputWidth - inputWidth * 0.45 - 10, canvasY + 190); // Adjusted position
+    
+    let buttonWidth = Math.min(windowWidth * 0.25, 140);
+    indianSystemBtn.style('min-width', `${buttonWidth}px`);
+    americanSystemBtn.style('min-width', `${buttonWidth}px`);
+    indianSystemBtn.position(canvasX + (canvasWidth - inputWidth - 40) / 2, canvasY + 270);
+    americanSystemBtn.position(canvasX + (canvasWidth + 40) / 2, canvasY + 270);
+}
+
+        function updateInput() {
+            let val = numberInputElem.value().replace(/[^0-9]/g, '');
+            if (val.length > 11) val = val.substring(0, 11);
+            numberInputElem.value(val);
+        }
+
+        function initializeState() {
+            currentNumber = '';
+            numberInputElem.value('');
+            showResult = false; // Initialize showResult
+            system = 'none';
+            explanation = [];
+            instruction = 'Enter a number and click Use this number';
+            numberEntered = false;
+            showSystemButtons = false;
+            inExplanationMode = false;
+            commaPositions = [];
+            isDraggingComma = false;
+            draggedCommaIndex = -1;
+            showCommaPlacement = false;
+            isCorrect = false;
+            indianSystemBtn.hide();
+            americanSystemBtn.hide();
+            numberInputElem.show();
+            useNumberBtn.show();
+            clearBtn.show();
+            showExplanationButton.disabled = false;
+            backButton.disabled = true;
+            nextButton.disabled = true;
+            submitButton.disabled = true;
+            resetButton.disabled = false;
+        }
+
+       function draw() {
+    background(255); // Changed to white background
+
+    if (!inExplanationMode) {
+        fill(255, 255, 255, 25.5);
+        noStroke();
+        rect((canvasWidth - 600) / 2, 40, 600, 280, 15);
+
+        fill(51);
+        noStroke();
+        textAlign(CENTER, CENTER);
+        textSize(18);
+        textStyle(BOLD);
+        text('Enter a large number (Max length: 11 digits)', canvasWidth / 2, 100);
+
+        drawHeader();
+        if (numberEntered && currentNumber) {
+            drawNumberBoxes();
+        }
+        if (showCommaPlacement) {
+            drawCommaPrompt();
+        }
+        if (showResult && showCommaPlacement) {
+            let totalWidth = 11 * boxSize + 10 * boxGap;
+            let startX = (canvasWidth - totalWidth) / 2;
+            let y = canvasHeight / 2 - boxSize / 2 + 100;
+            drawResult(startX, y, totalWidth);
+        }
+    } else {
+        drawExplanation();
+    }
+}
+
+        function drawHeader() {
+            fill(100);
+            noStroke();
+            textAlign(CENTER, CENTER);
+            textSize(18);
+            textStyle(ITALIC);
+            text(instruction, canvasWidth / 2, 50);
+        }
+
+        function drawNumberBoxes() {
+            let digits = currentNumber.split('');
+            let totalWidth = 11 * boxSize + 10 * boxGap;
+            let startX = (canvasWidth - totalWidth) / 2;
+            let y = canvasHeight / 2 - boxSize / 2 + 100;
+
+            for (let i = 0; i < 11; i++) {
+                let x = startX + i * (boxSize + boxGap);
+                
+                fill(255);
+                stroke(0);
+                rect(x, y, boxSize, boxSize);
+                
+                if (system !== 'none') {
+                    let digitIndex = digits.length - 1 - (10 - i);
+                    if (i >= 11 - digits.length && digits[digitIndex] !== '') {
+                        fill(0);
+                        noStroke();
+                        textAlign(CENTER, CENTER);
+                        textSize(24);
+                        text(digits[digitIndex], x + boxSize / 2, y + boxSize / 2);
+                    }
+                }
+            }
+
+            if (system !== 'none' && !inExplanationMode) {
+                drawCommas(startX, y);
+                drawGroupings(startX, y, digits.length);
+             
+            }
+        }
+
+        function drawCommas(startX, y) {
+            fill(0);
+            textSize(60);
+            textAlign(CENTER, CENTER);
+            for (let i of commaPositions) {
+                if (i >= 0 && i < 10) {
+                    let x = startX + (i + 1) * (boxSize + boxGap) - boxGap / 2;
+                    text(',', x, y + boxSize / 2);
+                }
+            }
+        }
+
+        function drawGroupings(startX, y, numDigits) {
+    let groups = getGroups(numDigits, system);
+    let currentPos = 0;
+    
+    for (let i = groups.length - 1; i >= 0; i--) {
+        let groupSize = groups[i];
+        let groupStartX = startX + (11 - numDigits) * (boxSize + boxGap) + currentPos * (boxSize + boxGap);
+        let groupWidth = groupSize * boxSize + (groupSize - 1) * boxGap;
+        
+
+        
+        currentPos += groupSize;
+    }
+}
+
+        function drawResult(startX, y, totalWidth) {
+            let x = startX + totalWidth + 20;
+            textAlign(LEFT, CENTER);
+            textSize(32);
+            fill(isCorrect ? 'green' : 'red');
+            text(isCorrect ? '✓' : '✗', x, y + boxSize / 2);
+        }
+
+     function drawCommaPrompt() {
+    let totalWidth = 11 * boxSize + 10 * boxGap;
+    let startX = (canvasWidth - totalWidth) / 2;
+    let y = canvasHeight / 2 - boxSize / 2 + 100;
+
+    // Display instruction above the grid
+    fill(0, 128, 0);
+    textSize(18);
+    textAlign(CENTER, CENTER);
+    text("Place the ',' at the proper position", canvasWidth / 2, y - 60);
+
+    // Display draggable comma on the left
+    fill(0);
+    textSize(60); // Changed from 24 to 36
+    textAlign(LEFT, CENTER);
+    text(',', startX - 40, y + boxSize / 2);
+}
+
+        function getGroups(numDigits, sys) {
+            let groups = [];
+            let remaining = numDigits;
+            
+            if (sys === 'indian') {
+                groups.push(Math.min(3, remaining));
+                remaining -= 3;
+                while (remaining > 0) {
+                    groups.push(Math.min(2, remaining));
+                    remaining -= 2;
+                }
+            } else if (sys === 'american') {
+                while (remaining > 0) {
+                    groups.push(Math.min(3, remaining));
+                    remaining -= 3;
+                }
+            }
+            
+            return groups;
+        }
+
+        function drawExplanation() {
+            if (explanation.length === 0) return;
+
+            const padding = 20;
+            const cellWidth = (canvasWidth - 3 * padding) / 3;
+            const cellHeight = 40;
+            const startY = (canvasHeight - (explanation.length + 1) * cellHeight) / 2;
+
+            fill(0);
+            noStroke();
+            textAlign(CENTER, TOP);
+            textSize(20);
+            text('📊 Side-by-Side Comparison', canvasWidth / 2, startY - 30);
+
+            fill(245);
+            stroke(0);
+            strokeWeight(1);
+            rect(padding, startY, cellWidth, cellHeight);
+            fill(245, 222, 179);
+            rect(padding + cellWidth, startY, cellWidth, cellHeight);
+            fill(173, 216, 230);
+            rect(padding + 2 * cellWidth, startY, cellWidth, cellHeight);
+
+            fill(0);
+            textAlign(CENTER, CENTER);
+            textSize(16);
+            text('Aspect', padding + cellWidth / 2, startY + cellHeight / 2);
+            text('IN Indian System', padding + cellWidth + cellWidth / 2, startY + cellHeight / 2);
+            text('US American System', padding + 2 * cellWidth + cellWidth / 2, startY + cellHeight / 2);
+
+            for (let i = 0; i < explanation.length; i++) {
+                const y = startY + (i + 1) * cellHeight;
+                fill(245);
+                rect(padding, y, cellWidth, cellHeight);
+                fill(245, 222, 179);
+                rect(padding + cellWidth, y, cellWidth, cellHeight);
+                fill(173, 216, 230);
+                rect(padding + 2 * cellWidth, y, cellWidth, cellHeight);
+
+                fill(0);
+                textAlign(CENTER, CENTER);
+                textSize(14);
+                text(explanation[i].aspect, padding + cellWidth / 2, y + cellHeight / 2);
+                text(explanation[i].indian, padding + cellWidth + cellWidth / 2, y + cellHeight / 2);
+                text(explanation[i].american, padding + 2 * cellWidth + cellWidth / 2, y + cellHeight / 2);
+            }
+        }
+
+        function getPlaceValue(index, sys) {
+            let places = sys === 'indian' ? placesIndian : placesAmerican;
+            return places[index] || '';
+        }
+
+        function numberToWords(n) {
+            if (n === 0) return '';
+            let str = '';
+            let hundreds = Math.floor(n / 100);
+            if (hundreds > 0) str += ones[hundreds] + ' hundred ';
+            let rem = n % 100;
+            if (rem >= 20) {
+                let t = Math.floor(rem / 10);
+                str += tens[t] + ' ';
+                rem %= 10;
+                if (rem > 0) str += ones[rem] + ' ';
+            } else if (rem >= 10) {
+                str += teens[rem - 10] + ' ';
+            } else if (rem > 0) {
+                str += ones[rem] + ' ';
+            }
+            return str.trim();
+        }
+
+        function getWordForm(numStr, sys) {
+            if (sys === 'none') return '';
+            let places = sys === 'indian' ? placesIndian : placesAmerican;
+            let groups = [];
+            let str = numStr;
+            if (sys === 'indian') {
+                groups.push(parseInt(str.slice(-3)) || 0);
+                str = str.slice(0, -3);
+                while (str.length > 0) {
+                    let pairLen = Math.min(2, str.length);
+                    groups.push(parseInt(str.slice(-pairLen).padStart(2, '0')) || 0);
+                    str = str.slice(0, -pairLen);
+                }
+            } else {
+                while (str.length > 0) {
+                    let groupLen = Math.min(3, str.length);
+                    groups.push(parseInt(str.slice(-groupLen).padStart(3, '0')) || 0);
+                    str = str.slice(0, -groupLen);
+                }
+            }
+            groups.reverse();
+            let word = '';
+            for (let i = 0; i < groups.length; i++) {
+                let grp = groups[i];
+                if (grp > 0) {
+                    let placeIndex = groups.length - i - 1;
+                    let wordPart = numberToWords(grp);
+                    if (placeIndex > 0) {
+                        word += wordPart + ' ' + places[placeIndex] + ' ';
+                    } else {
+                        word += wordPart + ' ';
+                    }
+                }
+            }
+            return word.trim();
+        }
+
+        function onUseNumberPressed() {
+            let val = numberInputElem.value().replace(/[^0-9]/g, '');
+            currentNumber = val.padEnd(11, '');
+            numberEntered = true;
+            system = 'none';
+            explanation = [];
+            instruction = 'Select a number system: Indian or American';
+            showSystemButtons = true;
+            commaPositions = [];
+            showCommaPlacement = false;
+            indianSystemBtn.show();
+            americanSystemBtn.show();
+            showExplanationButton.disabled = true;
+            backButton.disabled = true;
+            nextButton.disabled = true;
+            submitButton.disabled = true;
+            resetButton.disabled = false;
+        }
+
+        function onClearPressed() {
+            numberInputElem.value('');
+            currentNumber = '';
+            system = 'none';
+            explanation = [];
+            instruction = 'Enter a number and click Use this number';
+            numberEntered = false;
+            showSystemButtons = false;
+            commaPositions = [];
+            showCommaPlacement = false;
+            indianSystemBtn.hide();
+            americanSystemBtn.hide();
+            indianSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+            americanSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+            showExplanationButton.disabled = false;
+            backButton.disabled = true;
+            nextButton.disabled = true;
+            submitButton.disabled = true;
+            resetButton.disabled = false;
+        }
+
+        function onSystemSelected(selectedSystem) {
+            system = selectedSystem;
+            explanation = [];
+            commaPositions = [];
+            showCommaPlacement = false;
+            
+            if (selectedSystem === 'indian') {
+                instruction = 'Indian System: Groups of 2 after first 3 digits (lakhs, crores)';
+                indianSystemBtn.style('background', 'linear-gradient(135deg, #0097a7 0%, #00838f 100%)');
+                americanSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+            } else {
+                instruction = 'American System: Groups of 3 digits (millions, billions)';
+                americanSystemBtn.style('background', 'linear-gradient(135deg, #0097a7 0%, #00838f 100%)');
+                indianSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+            }
+
+            showExplanationButton.disabled = false;
+            backButton.disabled = true;
+            nextButton.disabled = true;
+            submitButton.disabled = true;
+            resetButton.disabled = false;
+        }
+
+        function onShowExplanationPressed() {
+            if (system !== 'none' && currentNumber) {
+                const actualNumber = currentNumber.replace(/ /g, '');
+                const indianFormatted = actualNumber.replace(/(\d)(?=(\d{2})+(?!\d))/g, '$1,');
+                const americanFormatted = actualNumber.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                explanation = [
+                    { aspect: 'Formatted Number', indian: indianFormatted, american: americanFormatted },
+                    { aspect: 'Grouping Pattern', indian: '3 digits, then 2 digits', american: '3 digits consistently' },
+                    { aspect: 'Large Unit Names', indian: 'Lakh (1,00,000)\nCrore (1,00,00,000)', american: 'Million (1,000,000)\nBillion (1,000,000,000)' }
+                ];
+                numberInputElem.hide();
+                useNumberBtn.hide();
+                clearBtn.hide();
+                indianSystemBtn.hide();
+                americanSystemBtn.hide();
+                inExplanationMode = true;
+                showExplanationButton.disabled = true;
+                backButton.disabled = false;
+                nextButton.disabled = false;
+                submitButton.disabled = true;
+                resetButton.disabled = true;
+            }
+        }
+
+        function onBackPressed() {
+            if (inExplanationMode) {
+                inExplanationMode = false;
+                explanation = [];
+                instruction = 'Select a number system: Indian or American';
+                indianSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+                americanSystemBtn.style('background', 'linear-gradient(135deg, #00bcd4 0%, #0097a7 100%)');
+                numberInputElem.show();
+                useNumberBtn.show();
+                clearBtn.show();
+                indianSystemBtn.show();
+                americanSystemBtn.show();
+                showExplanationButton.disabled = true;
+                backButton.disabled = true;
+                nextButton.disabled = true;
+                submitButton.disabled = true;
+                resetButton.disabled = false;
+                commaPositions = [];
+                showCommaPlacement = false;
+            }
+        }
+
+        function onNextPressed() {
+            if (inExplanationMode) {
+                inExplanationMode = false;
+                showCommaPlacement = true;
+                instruction = '';
+                showExplanationButton.disabled = false;
+                backButton.disabled = false;
+                nextButton.disabled = true;
+                submitButton.disabled = false;
+                resetButton.disabled = false;
+            } else if (system !== 'none' && showCommaPlacement && commaPositions.length === 0) {
+                instruction = 'Please drag the \',\' to the correct position.';
+            } 
+        }
+
+        function onSubmitPressed() {
+            if (showCommaPlacement) {
+                   if (showCommaPlacement && (submitButton.disabled || nextButton.disabled)) {
+                    drawResult(startX, y, totalWidth);
+                }
+                showResult = true; // Enable result display
+                checkCommaPlacement();
+                showExplanationButton.disabled = true;
+                backButton.disabled = false;
+                nextButton.disabled = true;
+                submitButton.disabled = true;
+                resetButton.disabled = false;
+            }
+        }
+
+        function onResetPressed() {
+            commaPositions = [];
+            showCommaPlacement = false;
+            showResult = false; // Reset result display
+            if (system !== 'none') {
+                instruction = system === 'indian' ? 
+                    'Indian System: Groups of 2 after first 3 digits (lakhs, crores)' :
+                    'American System: Groups of 3 digits (millions, billions)';
+                showExplanationButton.disabled = false;
+                backButton.disabled = false;
+                nextButton.disabled = false;
+                submitButton.disabled = true;
+                resetButton.disabled = false;
+            } else {
+                initializeState();
+            }
+        }
+
+        function checkCommaPlacement() {
+            let actualNumber = currentNumber.replace(/ /g, '');
+            let expected;
+            if (system === 'indian') {
+                expected = actualNumber.replace(/(\d)(?=(\d{2})+(?!\d))/g, '$1,');
+            } else {
+                expected = actualNumber.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+            }
+            let expectedCommas = [];
+            for (let i = 0; i < expected.length; i++) {
+                if (expected[i] === ',') {
+                    expectedCommas.push(actualNumber.length - i - 1);
+                }
+            }
+            expectedCommas.sort((a, b) => a - b);
+            
+            commaPositions.sort((a, b) => a - b);
+            isCorrect = commaPositions.length === expectedCommas.length &&
+                       commaPositions.every((val, index) => val === expectedCommas[index]);
+        }
+
+      function mousePressed() {
+    if (!showCommaPlacement || inExplanationMode) return;
+
+    let totalWidth = 11 * boxSize + 10 * boxGap;
+    let startX = (canvasWidth - totalWidth) / 2;
+    let y = canvasHeight / 2 - boxSize / 2 + 100;
+
+    // Check if clicking the initial comma to drag
+    let commaX = startX - 40;
+    if (mouseX >= commaX - 15 && mouseX <= commaX + 15 && mouseY >= y - 15 && mouseY <= y + boxSize + 15) { // Adjusted hitbox
+        isDraggingComma = true;
+        draggedCommaIndex = -1;
+    }
+
+    // Check if clicking an existing comma
+    for (let i of commaPositions) {
+        let x = startX + (i + 1) * (boxSize + boxGap) - boxGap / 2;
+        if (mouseX >= x - 15 && mouseX <= x + 15 && mouseY >= y - 15 && mouseY <= y + boxSize + 15) { // Adjusted hitbox
+            isDraggingComma = true;
+            draggedCommaIndex = i;
+            commaPositions = commaPositions.filter(index => index !== i);
+            break;
+        }
+    }
+}
+
+        function mouseDragged() {
+            if (isDraggingComma) {
+                // Visual feedback handled in drawCommas
+            }
+        }
+
+       function mouseReleased() {
+    if (isDraggingComma && !inExplanationMode) {
+        let totalWidth = 11 * boxSize + 10 * boxGap;
+        let startX = (canvasWidth - totalWidth) / 2;
+        let y = canvasHeight / 2 - boxSize / 2 + 100;
+
+        let newIndex = -1;
+        for (let i = 0; i < 10; i++) {
+            let x = startX + (i + 1) * (boxSize + boxGap) - boxGap / 2;
+            if (mouseX >= x - 15 && mouseX <= x + 15 && mouseY >= y - 15 && mouseY <= y + boxSize + 15) { // Adjusted hitbox
+                if (!commaPositions.includes(i)) {
+                    newIndex = i;
+                }
+                break;
+            }
+        }
+
+        if (newIndex !== -1) {
+            commaPositions.push(newIndex);
+        }
+
+        isDraggingComma = false;
+        draggedCommaIndex = -1;
+    }
+}
+    </script>
+</body>
+</html>
