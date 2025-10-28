@@ -248,7 +248,8 @@
 .exceptions-txt{
     display: block;
     font-size: 24px;
-    color: #215F9A;
+    color: #6368c6;
+    margin-top: 4px;
 }
 .resize-plant{
   transform: translate(326px,45px) scale(.65);
@@ -256,4 +257,13 @@
 #reset-btn[aria-disabled="true"] .plant-btn {
   opacity: 0.4;
   pointer-events: none;
+}
+#detail-modal{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#detail-modal .modal-outer-container{
+  width:1792;
+  height:836;
 }

@@ -26,6 +26,7 @@ class ZoomManager {
         this.resetNote = null; // Element that contains the reset button/note
         this.btnWrapper = null;
         this.selectNote = null;
+        this.btnGroup = null;
     }
 
     init() {
@@ -41,6 +42,7 @@ class ZoomManager {
         this.plantContainer = document.getElementById('plant-container');
         this.btnWrapper = document.querySelector(".btn-wrapper");
         this.selectNote = document.getElementById("select-note");
+        this.btnGroup = document.getElementById("btn-group");
 
         if (this.monocotBtn) {
             this.monocotBtn.addEventListener('click', () => {
@@ -133,7 +135,7 @@ class ZoomManager {
             this.resultContainer.style.display = "block";
             this.resultContainer.classList.remove('incorrect-result');
             this.resultContainer.classList.add('correct-result');
-            this.resultNote.innerHTML = "<span>You are correct! A monocot plant generally has leaves with parallel venations and fibrous roots.<span class='exceptions-txt'> Exception: Smilax is a monocot plant having reticulate venation.</span></span>";
+            this.resultNote.innerHTML = "<span>You are correct! A monocot plant generally has leaves with parallel venations and fibrous roots.<span class='exceptions-txt'> Exceptions: <i>Smilax</i> and <i>Dioscorea</i> are monocot plants having reticulate leaf venation with fibrous roots.​</span></span>";
             
         }else if (resultType === "dicot-result" && (this.currentLeafType == "monocot" || this.currentRootType == "monocot")) {
             this.resultContainer.style.display = "block";
@@ -145,7 +147,7 @@ class ZoomManager {
             this.resultContainer.style.display = "block";
             this.resultContainer.classList.remove('incorrect-result');
             this.resultContainer.classList.add('correct-result');
-            this.resultNote.innerHTML = "<span>You are correct! A dicot plant generally has leaves with reticulate venations and tap-roots. <span class='exceptions-txt'>​ Exceptions: Calophyllum and Eryngium are dicot plants having parallel leaf venations with tap-roots.</span></span>";
+            this.resultNote.innerHTML = "<span>You are correct! A dicot plant generally has leaves with reticulate venations and tap-roots. <span class='exceptions-txt'>​ Exceptions: <i>Calophyllum</i> and <i>Eryngium</i> are dicot plants having parallel leaf venations with tap-roots.</span></span>";
             
         } else if (resultType === "monocot-result" && (this.currentLeafType == "dicot" || this.currentRootType == "dicot")) {
             this.resultContainer.style.display = "block";
@@ -569,6 +571,10 @@ function initializeModalControls() {
                 modal.style.transform = 'scale(1)';
                 modal.style.opacity = '1';
                 modal.style.visibility = 'visible';
+
+                // alert();
+                this.btnGroup.style.opacity = '0.5';
+
             });
             btn.style.cursor = 'pointer';
         } else {

@@ -3,7 +3,7 @@
 const WIDGET_DATA = [
   {
     name: "Interactions between organisms",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html?test",
     imagePath: "./assets/interactions-between-organisms.png",
     creators: "sh-bd-02",
     status: "closed",
@@ -111,10 +111,24 @@ const WIDGET_DATA = [
   },
   {
     name: "Transparent, Translucent, and Opaque Materials",
-    link: "",
-    imagePath: "./assets/wip.png",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/transparent-translucent-and-opaque-materials/index.html",
+    imagePath: "./assets/transparent-translucent-and-opaque-materials.png",
     creators: "ni-su-21",
-    status: "work-in-progress",
+    status: "closed",
+  },
+  {
+    name: "Make Your Own Plant",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/make-your-own-plant/index.html",
+    imagePath: "./assets/make-your-own-plant.png",
+    creators: "ni-ka-29",
+    status: "closed",
+  },
+  {
+    name: "Tangents from an External Point",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/tangents-from-an-external-point/index.html",
+    imagePath: "./assets/tangents-from-an-external-point.png",
+    creators: "as-ka-30",
+    status: "closed",
   },
   {
     name: "Locating decimals",
@@ -130,13 +144,7 @@ const WIDGET_DATA = [
     creators: "sh-mr-22",
     status: "work-in-progress",
   },
-  {
-    name: "Tangents from an External Point",
-    link: "",
-    imagePath: "./assets/wip.png",
-    creators: "sh-ka-30",
-    status: "work-in-progress",
-  },
+  
   {
     name: "Build a Molecule",
     link: "",
@@ -144,13 +152,7 @@ const WIDGET_DATA = [
     creators: "sh-ka-13",
     status: "not-assigned",
   },
-  {
-    name: "Make Your Own Plant",
-    link: "",
-    imagePath: "./assets/not-assigned.png",
-    creators: "sh-ka-29",
-    status: "not-assigned",
-  },
+  
 
   // Add more widget objects here
 ];
