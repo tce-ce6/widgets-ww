@@ -3,204 +3,568 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Decimal Number Line Simulation</title>
+<title>Locating Decimals on a Number Line (Fixed 4K)</title>
+<link rel="stylesheet" href="global_style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background-color: #000;
-  }
-  .title-container {
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    z-index: 10;
-  }
-  .title-container h3 {
-    display: inline-block;
-    margin: 0;
-    background-color: #1d83ec;
-    color: white;
-    padding: 10px 30px;
-    border-radius: 0 0 40px 40px;
-  }
-  #canvas-container {
-    border-radius: 20px;
-    overflow: hidden;
-  }
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f0f4f8;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    
+    /* Your requested HTML structure */
+    #app.mainContainerOuter {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .mainContainer {
+        width: 100%;
+        /* Max-width keeps it from being *too* wide on giant monitors */
+        max-width: 1800px; 
+    }
+
+    /* This is the critical part. 
+      We make the canvas container responsive using the 16:9 aspect ratio
+      (2160 / 3840 = 0.5625 = 56.25%).
+      The p5.js canvas inside will be forced to fit this container.
+    */
+    #canvas-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        border-radius: 20px;
+        border: 2px solid #1d83ec;
+        overflow: hidden;
+    }
+
+    /* Make the actual canvas element fill the container */
+    #canvas-container canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* This container is not used in this solution */
+    #widget-container {
+        display: none;
+    }
 </style>
 </head>
 <body>
-<div class="title-container">
-  <h3>Decimal Number Line Simulation</h3>
-</div>
-<div id="simulation-container">
-  <div id="canvas-container"></div>
+
+<!-- Your requested HTML structure -->
+<div id="app" class="mainContainerOuter">
+    <div class="mainContainer" >
+        <main id="canvas-container"></main>
+        <div id="widget-container"></div>
+    </div>
 </div>
 
 <script>
-let decimalValue = 0;
-let explanationText = ""; // global variable to store explanation
-const totalUnits = 10;
+    // --- FIXED 4K CANVAS CONSTANTS ---
+    // All layout is based on these fixed numbers
+    const CANVAS_WIDTH = 3840;
+    const CANVAS_HEIGHT = 2160;
 
-let marginX, lineY, buttonY, btnWidth, btnHeight;
-let selectedSegment = null; // clicked segment
-let isCorrect = null;       // null = not clicked, true = correct, false = wrong
+    let decimalValue = 0;
+    let feedbackMessage = "";
+    let finalMessage = "";
 
-const buttons = {
-  show: { label: "Show Explanation" },
-  try: { label: "Try Again" },
-  submit: { label: "Submit" },
-};
+    // 0 = integer, 1 = tenths, 2 = hundredths, 3 = done
+    let simulationState = 0; 
+    
+    // Number line bounds
+    let currentMin = 0;
+    let currentMax = 10;
+    let currentStep = 1;
 
-function setup() {
-  let canvas = createCanvas(windowWidth, windowHeight * 0.85);
-  canvas.parent("canvas-container");
-  textFont("Poppins");
-  textAlign(CENTER, CENTER);
-  noStroke();
-  setupDynamicPositions();
-  decimalValue = parseFloat((random(1, 10)).toFixed(2)); // random number 1-10
-}
+    let selectedSegment = null; // The segment/tick index clicked
+    let correctSegment = -1;    // The correct segment/tick index
+    let isCorrect = null;       // Was the last click correct?
+    let showCorrectAnswer = false; // Flag to show correct answer
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight * 0.85);
-  setupDynamicPositions();
-}
+    // p5.js canvas and layout variables
+    let canvas;
+    let marginX, lineY, buttonY, btnWidth, btnHeight, startX, endX, segmentWidth;
+    let finalMessageY, feedbackMessageY; // Y-positions for canvas text
 
-function setupDynamicPositions() {
-  marginX = width * 0.1;
-  lineY = height * 0.45;
-  buttonY = height * 0.75;
-  btnWidth = width * 0.15;
-  btnHeight = height * 0.08;
-}
+    // Icon variables
+    let searchIcon;
+    let showSearchIcon = false;
+    let searchIconX, searchIconY, searchIconWidth, searchIconHeight;
+    
+    // Dragging state variables
+    let isDragging = false;
+    let arrowX; // Current X position of the draggable arrow
 
-function draw() {
-  clear();
-  drawNumberLine();
-  showNumberAboveLine();
-  drawButtons();
-   if (explanationText !== "") {
-    fill(255, 255, 255);
-    textSize(18);
-    textAlign(CENTER, CENTER);
-    text(explanationText, width / 2, lineY + 200);
-  }
-}
+    // Button labels (based on PPT)
+    const buttons = {
+        show: { label: "Show Explanation" },
+        try: { label: "Try Again" },
+        submit: { label: "Submit" },
+    };
 
-function drawNumberLine() {
-  const startX = marginX;
-  const endX = width - marginX;
-  const segmentWidth = (endX - startX) / totalUnits;
+    // Load assets before setup
+    function preload() {
+        // Ensure you have this file at this path
+        searchIcon = loadImage('assets/Search_icon.svg', 
+            () => console.log("Search icon loaded successfully."),
+            () => {
+                console.error("Failed to load 'assets/Search_icon.svg'. Make sure the file exists.");
+                searchIcon = null; // Set to null on failure
+            }
+        );
+    }
 
-  // Highlight clicked segment
-   if (selectedSegment !== null) {
-    strokeWeight(7); // slightly thicker than number line
-    if (isCorrect) stroke(0, 0, 255); // blue for correct
-    else stroke(255, 0, 0);           // red for wrong
-    const x1 = startX + selectedSegment * segmentWidth;
-    const x2 = x1 + segmentWidth;
-    line(x1, lineY, x2, lineY);
-  } 
+    function setup() {
+        // User request: Create canvas with fixed 4K size
+        canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        canvas.parent('canvas-container'); // Attach to correct container
+        
+        textFont("Poppins");
+        textAlign(CENTER, CENTER);
+        noStroke();
+        setupFixedLayout();
+        startNewProblem();
+    }
 
-  stroke(255);
-  strokeWeight(2);
-  line(startX, lineY, endX, lineY);
+    // NO windowResized() function, as requested.
 
-  noStroke();
-  fill(255);
-  textSize(width * 0.015);
+    function setupFixedLayout() {
+        // All layout values are now based on the 3840x2160 canvas
+        marginX = CANVAS_WIDTH * 0.1; // 384
+        lineY = CANVAS_HEIGHT * 0.3; // 972
+        
+        finalMessageY = CANVAS_HEIGHT * 0.65; // 1404
+        feedbackMessageY = CANVAS_HEIGHT * 0.72; // 1555
+        
+        buttonY = CANVAS_HEIGHT * 0.85; // 1836
+        btnWidth = CANVAS_WIDTH * 0.18; // 691.2
+        btnHeight = CANVAS_HEIGHT * 0.12; // 259.2
+        
+        startX = marginX;
+        endX = CANVAS_WIDTH - marginX;
+        segmentWidth = (endX - startX) / 10;
+        
+        // Icon layout
+        searchIconWidth = CANVAS_WIDTH * 0.035; // ~134px
+        searchIconHeight = CANVAS_WIDTH * 0.035; // ~134px
+        searchIconY = lineY - 160; // Position above the number line
+    }
 
-  for (let i = 0; i <= totalUnits; i++) {
-    let x = map(i, 0, totalUnits, startX, endX);
-    stroke(255);
-    line(x, lineY - 15, x, lineY + 15); // tick marks
-    noStroke();
-    text(i, x, lineY - 35);
-  }
-}
+    // Main game loop
+    function draw() {
+        // Use p5.js 'width' and 'height' vars (3840, 2160)
+        clear();
+        drawNumberLine();
+        drawSearchIcon(); // Draw icon if needed
+        showNumberToFind();
+        drawButtons();
+        drawFeedbackText();
+    }
 
-function showNumberAboveLine() {
-  fill(255, 255, 0);
-  textSize(18);
-  text(decimalValue.toFixed(2), width / 2, lineY - 150);
-}
+    // Reset simulation
+    function startNewProblem() {
+        decimalValue = parseFloat((random(0, 9.99)).toFixed(2));
+        simulationState = 0;
+        selectedSegment = null;
+        isCorrect = null;
+        showCorrectAnswer = false;
+        showSearchIcon = false; 
+        isDragging = false; 
+        feedbackMessage = "Click on the interval where the decimal lies.";
+        finalMessage = "";
+        updateNumberLineBounds();
+    }
 
-function drawButtons() {
-  const centerX = width / 2;
-  const spacing = btnWidth + 20;
+    // Update the min/max/step for the current number line
+    function updateNumberLineBounds() {
+        if (simulationState === 0) {
+            currentMin = 0;
+            currentMax = 10;
+            currentStep = 1;
+            correctSegment = Math.floor(decimalValue);
+            if (decimalValue === 10) correctSegment = 9;
+        } else if (simulationState === 1) {
+            currentMin = Math.floor(decimalValue);
+            currentMax = currentMin + 1;
+            currentStep = 0.1;
+            correctSegment = Math.floor((decimalValue * 10) % 10);
+        } else if (simulationState === 2) {
+            // Setup for state 2
+            currentMin = Math.floor(decimalValue * 10) / 10;
+            currentMax = currentMin + 0.1;
+            currentStep = 0.01;
+            correctSegment = Math.round((decimalValue * 100) % 10);
+            
+            // --- MODIFIED: Initialize arrow position to the right ---
+            arrowX = endX; // Start arrow at the end
+            selectedSegment = 10; // Corresponds to endX
+            feedbackMessage = "Drag the arrow to the correct location and click Submit.";
+        }
+    }
 
-  // Show Explanation
-  fill(39, 174, 96);
-  rectMode(CENTER);
-  rect(centerX - spacing, buttonY, btnWidth, btnHeight, 15);
-  fill(255);
-  textSize(width * 0.015);
-  text(buttons.show.label, centerX - spacing, buttonY);
+    // Draws the *current* number line
+    function drawNumberLine() {
+        // Draw main line (scaled up)
+        stroke(0);
+        strokeWeight(12); // Scaled
+        line(startX, lineY, endX, lineY);
+        
+        // Draw arrows (scaled up)
+        fill(0);
+        triangle(startX, lineY, startX + 40, lineY - 20, startX + 40, lineY + 20);
+        triangle(endX, lineY, endX - 40, lineY - 20, endX - 40, lineY + 20);
 
-  // Try Again
-  fill(243, 156, 18);
-  rect(centerX, buttonY, btnWidth, btnHeight, 15);
-  fill(255);
-  text(buttons.try.label, centerX, buttonY);
+        // --- Interval/Tick Highlighting ---
+        if (simulationState === 0 || simulationState === 1) {
+            
+            // This only draws the *correct answer* if 'showCorrectAnswer' is true
+            if (showCorrectAnswer) {
+                stroke(0, 0, 255, 150);
+                strokeWeight(40); // Scaled
+                const x1 = startX + correctSegment * segmentWidth;
+                const x2 = x1 + segmentWidth;
+                line(x1, lineY, x2, lineY);
+            }
+            
+            // This draws the *user's selection*
+            if (selectedSegment !== null) {
+                if (isCorrect) stroke(0, 0, 255); // Blue for correct
+                else stroke(255, 0, 0); // Red for incorrect
+                
+                strokeWeight(40); // Scaled
+                const x1 = startX + selectedSegment * segmentWidth;
+                const x2 = x1 + segmentWidth;
+                line(x1, lineY, x2, lineY);
+            }
+        }
+        
+        // State 2 arrow drawing
+        if (simulationState === 2) {
+            // Always draw the draggable arrow
+            fill([243, 156, 18]); // Neutral orange color
+            drawArrow(arrowX, lineY);
 
-  // Submit
-  fill(231, 76, 60);
-  rect(centerX + spacing, buttonY, btnWidth, btnHeight, 15);
-  fill(255);
-  text(buttons.submit.label, centerX + spacing, buttonY);
+            // Show correct (blue) arrow ONLY if submitted and wrong
+            if (showCorrectAnswer && selectedSegment !== correctSegment) {
+                let correctX = startX + correctSegment * segmentWidth;
+                fill(0, 0, 255); // Blue for correct answer
+                drawArrow(correctX, lineY);
+            }
+        }
 
-  rectMode(CORNER);
-}
+        // --- Draw Ticks and Labels ---
+        noStroke();
+        fill(0);
+        textSize(57.6); // Scaled (was width * 0.015)
 
-function mousePressed() {
-  const startX = marginX;
-  const endX = width - marginX;
-  const segmentWidth = (endX - startX) / totalUnits;
+        for (let i = 0; i <= 10; i++) {
+            let x = startX + i * segmentWidth;
+            let labelValue = currentMin + i * currentStep;
 
-  // Check which segment is clicked
-  if (mouseY > lineY - 15 && mouseY < lineY + 15 && mouseX >= startX && mouseX <= endX) {
-    selectedSegment = floor((mouseX - startX) / segmentWidth);
+            stroke(0);
+            strokeWeight(8); // Scaled
+            line(x, lineY - 40, x, lineY + 40); // Scaled
+            noStroke();
 
-    // Check correctness
-    let segmentStart = selectedSegment;
-    let segmentEnd = selectedSegment + 1;
-    if (decimalValue >= segmentStart && decimalValue < segmentEnd) isCorrect = true;
-    else isCorrect = false;
-  }
+            let precision = (simulationState === 1) ? 1 : (simulationState === 2) ? 2 : 0;
+            let label = labelValue.toFixed(precision);
+            text(label, x, lineY + 120); // Scaled
+        }
+    }
+    
+    // Function to draw search icon
+    function drawSearchIcon() {
+        // --- MODIFIED: Check if icon loaded successfully ---
+        if (showSearchIcon && searchIcon) {
+            imageMode(CENTER);
+            image(searchIcon, searchIconX, searchIconY, searchIconWidth, searchIconHeight);
+            imageMode(CORNER); // Reset to default
+        }
+    }
 
-  // Buttons click
-  const centerX = width / 2;
-  const spacing = btnWidth + 20;
-  if (mouseY > buttonY - btnHeight / 2 && mouseY < buttonY + btnHeight / 2) {
-    if (mouseX > centerX - spacing - btnWidth / 2 && mouseX < centerX - spacing + btnWidth / 2)
-      handleShowExplanation();
-    else if (mouseX > centerX - btnWidth / 2 && mouseX < centerX + btnWidth / 2)
-      handleTryAgain();
-    else if (mouseX > centerX + spacing - btnWidth / 2 && mouseX < centerX + spacing + btnWidth / 2)
-      handleSubmit();
-  }
-}
+    // Helper function to draw an arrow (scaled)
+    function drawArrow(x, y) {
+        push();
+        stroke(0);
+        strokeWeight(4); // Scaled
+        // --- FIXED: Removed fill(g_fill) ---
+        // The fill color is set *before* this function is called.
+        line(x, y - 48, x, y - 140); // Scaled
+        triangle(x, y - 40, x - 24, y - 80, x + 24, y - 80); // Scaled
+        pop();
+    }
 
-function handleShowExplanation() {
-  const lower = Math.floor(decimalValue);
-  const upper = lower + 1;
-  explanationText = `The decimal ${decimalValue.toFixed(2)} lies between ${lower} and ${upper}.`;
-}
-function handleTryAgain() {
-  selectedSegment = null;
-  isCorrect = null;
-  decimalValue = parseFloat((random(1, 10)).toFixed(2)); // new number
-}
+    // Show the decimal value to find (scaled)
+    function showNumberToFind() {
+        fill(0);
+        textSize(76.8); // Scaled (was width * 0.02)
+        noStroke();
+        text(`Locate the given decimal on the number line:`, width / 2, lineY - 480); // Scaled
+        fill(231, 76, 60);
+        textSize(115.2); // Scaled (was width * 0.03)
+        text(decimalValue.toFixed(2), width / 2, lineY - 320); // Scaled
+    }
 
-function handleSubmit() {
-  alert(`Submitted: ${decimalValue.toFixed(2)}`);
-}
+    // Draw the 3 buttons (scaled)
+    function drawButtons() {
+        const centerX = width / 2;
+        const spacing = btnWidth + 80; // Scaled spacing
+
+        rectMode(CENTER);
+        noStroke();
+        textSize(57.6); // Scaled (was width * 0.015)
+
+        // Show Explanation
+        fill(39, 174, 96);
+        rect(centerX - spacing, buttonY, btnWidth, btnHeight, 60); // Scaled
+        fill(255);
+        text(buttons.show.label, centerX - spacing, buttonY);
+
+        // Try Again
+        fill(243, 156, 18);
+        rect(centerX, buttonY, btnWidth, btnHeight, 60); // Scaled
+        fill(255);
+        text(buttons.try.label, centerX, buttonY);
+
+        // Submit
+        fill(231, 76, 60);
+        rect(centerX + spacing, buttonY, btnWidth, btnHeight, 60); // Scaled
+        fill(255);
+        text(buttons.submit.label, centerX + spacing, buttonY);
+
+        rectMode(CORNER);
+    }
+    
+    // Draws all feedback text directly onto the canvas (scaled)
+    function drawFeedbackText() {
+        noStroke();
+        textAlign(CENTER, CENTER);
+        
+        // Draw Final Message
+        fill('#1d83ec');
+        textSize(96); // Scaled (was width * 0.025)
+        text(finalMessage, width / 2, finalMessageY);
+
+        // Draw Feedback Message
+        fill(50);
+        textSize(69.12); // Scaled (was width * 0.018)
+        text(feedbackMessage, width / 2, feedbackMessageY);
+    }
+
+    // --- Interaction Handlers ---
+
+    function mousePressed() {
+        if (simulationState === 3 && !isOverButton("try")) {
+            return; // Only "Try Again" works when done
+        }
+
+        // --- 1. Check Search Icon Click ---
+        if (showSearchIcon && isOverSearchIcon()) {
+            handleSearchIconClick();
+            return; // Exit after handling icon click
+        }
+
+        // --- 2. Check Button Clicks ---
+        if (isOverButton("show")) {
+            handleShowExplanation();
+            return;
+        }
+        if (isOverButton("try")) {
+            handleTryAgain();
+            return;
+        }
+        if (isOverButton("submit")) {
+            handleSubmit();
+            return;
+        }
+        
+        // --- 3. Check Number Line Clicks ---
+        
+        // State 0 or 1: Click an INTERVAL
+        if (simulationState === 0 || simulationState === 1) {
+            if (mouseY > lineY - 80 && mouseY < lineY + 160 && mouseX >= startX && mouseX <= endX) {
+                let clickedSegment = floor((mouseX - startX) / segmentWidth);
+                if (clickedSegment === 10) clickedSegment = 9;
+
+                selectedSegment = clickedSegment; 
+
+                if (clickedSegment === correctSegment) {
+                    isCorrect = true;
+                    showCorrectAnswer = false;
+                    feedbackMessage = "Correct! Click the magnifying glass to zoom in.";
+                    let segmentX = startX + (clickedSegment * segmentWidth) + (segmentWidth / 2);
+                    searchIconX = segmentX;
+                    showSearchIcon = true;
+                } else {
+                    isCorrect = false;
+                    showSearchIcon = false; 
+                    showCorrectAnswer = false;
+                    feedbackMessage = "This is not the correct interval, check the integer part"; 
+                }
+            }
+        }
+        
+        // State 2: Check for DRAG START
+        else if (simulationState === 2) {
+            if (isOverArrow(arrowX)) {
+                isDragging = true;
+            }
+        }
+    }
+    
+    // p5.js function for dragging
+    function mouseDragged() {
+        if (isDragging) {
+            // Update arrow position, constrained to the line
+            arrowX = constrain(mouseX, startX, endX);
+            
+            // Update selectedSegment based on new arrowX
+            let clickPercent = (arrowX - startX) / (endX - startX);
+            selectedSegment = round(clickPercent * 10);
+            
+            // Update feedback message to show current value
+            let selectedValue = currentMin + selectedSegment * currentStep;
+            feedbackMessage = "Placing arrow at: " + selectedValue.toFixed(2);
+        }
+    }
+    
+    // p5.js function for mouse release
+    function mouseReleased() {
+        if (isDragging) {
+            isDragging = false;
+            
+            // Snap the arrow to the center of the nearest tick
+            arrowX = startX + selectedSegment * segmentWidth;
+            
+            // Finalize feedback message
+            feedbackMessage = "You have placed the arrow. Click Submit to check.";
+        }
+    }
+
+    // Helper function to check icon click
+    function isOverSearchIcon() {
+        // --- MODIFIED: Check if icon is valid before checking bounds ---
+        if (!searchIcon) return false; 
+        return (
+            mouseX > searchIconX - searchIconWidth / 2 &&
+            mouseX < searchIconX + searchIconWidth / 2 &&
+            mouseY > searchIconY - searchIconHeight / 2 &&
+            mouseY < searchIconY + searchIconHeight / 2
+        );
+    }
+    
+    // Helper function to check if mouse is over the arrow
+    function isOverArrow(x) {
+        // Checks a bounding box around the arrow's triangle
+        return (
+            mouseX > x - 24 && // left of triangle
+            mouseX < x + 24 && // right of triangle
+            mouseY > lineY - 140 && // top of arrow line
+            mouseY < lineY - 40 // bottom of triangle
+        );
+    }
+    
+    // Helper function to handle icon click
+    function handleSearchIconClick() {
+        simulationState++;
+        updateNumberLineBounds();
+        selectedSegment = null;
+        isCorrect = null;
+        feedbackMessage = "Now find the next decimal place...";
+        showCorrectAnswer = false;
+        showSearchIcon = false; 
+    }
+
+    // Helper function to check button clicks
+    function isOverButton(btn) {
+        const centerX = width / 2;
+        const spacing = btnWidth + 80; // Scaled
+        let btnX;
+
+        if (btn === "show") btnX = centerX - spacing;
+        else if (btn === "try") btnX = centerX;
+        else if (btn === "submit") btnX = centerX + spacing;
+
+        return (
+            mouseX > btnX - btnWidth / 2 &&
+            mouseX < btnX + btnWidth / 2 &&
+            mouseY > buttonY - btnHeight / 2 &&
+            mouseY < buttonY + btnHeight / 2
+        );
+    }
+
+    function handleShowExplanation() {
+        // State 0 or 1
+        if (simulationState === 0 || simulationState === 1) {
+            selectedSegment = correctSegment;
+            isCorrect = true;
+            showCorrectAnswer = false;
+            feedbackMessage = "This is the correct interval. Click the magnifying glass to zoom in.";
+            let segmentX = startX + (correctSegment * segmentWidth) + (segmentWidth / 2);
+            searchIconX = segmentX;
+            showSearchIcon = true;
+            
+        } 
+        // State 2
+        else if (simulationState === 2) {
+            // Snap arrow to correct answer
+            selectedSegment = correctSegment;
+            isCorrect = true;
+            arrowX = startX + correctSegment * segmentWidth; // Snap arrow
+            showCorrectAnswer = false;
+            feedbackMessage = "This is the correct location. Click Submit.";
+        }
+        finalMessage = "";
+    }
+
+    function handleTryAgain() {
+        startNewProblem();
+    }
+
+    function handleSubmit() {
+        if (simulationState !== 2) {
+            finalMessage = "";
+            feedbackMessage = "Please find the final location before submitting.";
+            return;
+        }
+        
+        // selectedSegment is now always set by the arrow
+        if (selectedSegment === null) { 
+            // This case should no longer happen, but good to keep
+            finalMessage = "";
+            feedbackMessage = "Please place your arrow on the number line.";
+            return;
+        }
+
+        // Check correctness *here*
+        isCorrect = (selectedSegment === correctSegment);
+
+        if (isCorrect) {
+            finalMessage = "Well done!";
+            feedbackMessage = "";
+            showCorrectAnswer = false;
+            simulationState = 3; // Done
+        } else {
+            finalMessage = "Check your work";
+            feedbackMessage = "That's not the right spot. The correct answer is shown in blue.";
+            showCorrectAnswer = true; // Show the correct blue arrow
+        }
+    }
 </script>
+
 </body>
 </html>
+
