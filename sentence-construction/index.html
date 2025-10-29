@@ -13,17 +13,17 @@
         <div class="mainContainerOuter">
           <div class="wdgetTitle">
             <h2>Word Wizard: Build Your Sentences!</h2>
-            <span id="versionId" class="versionText">v_25092201</span>
+            <span id="versionId" class="versionText">v_25102801</span>
           </div>
-          <div class="question" style="font-style: italic; font-size: 18px;font-weight: medium;color: white; padding-left: 60px;">
-            Tap the words in the correct order to make a sentence.
+    
+          <div class="mainContainer" id="mainCanvas" style="flex-direction: column;">
+
           </div>
-          <div class="mainContainer" id="mainCanvas"></div>
           <div class="flexContainer button-controls">
             <div class="flexItem flexItemFirst">
               <!-- <button class="btn btn-primary" id="prev-btn">Previous</button> -->
               <button class="btn" id="show-example-btn"
-              style="background-color:#4caf50; color:white;"
+              style="background-color:#4caf50; color:white; font-size: 18px;"
               onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
@@ -36,7 +36,7 @@
               Show Example
             </button>
             
-              <button class="btn btn-primary" id="next-btn" style="background-color:#1e6bef; color:white;"
+              <button class="btn btn-primary" id="next-btn" style="background-color:#1e6bef; color:white; font-size: 18px;"
               onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
