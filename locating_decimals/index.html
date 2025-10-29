@@ -8,7 +8,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-   
+    /* --- NEW: Styles for the floating keyboard --- */
+    #floating-keyboard {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #eee;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        display: none; /* Hidden by default */
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 400px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    #floating-keyboard.visible {
+        display: flex;
+    }
+
+    #floating-keyboard button {
+        width: 80px;
+        height: 80px;
+        margin: 10px;
+        font-size: 32px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #floating-keyboard button:active {
+        background: #d9d9d9;
+    }
 </style>
 </head>
 <body>
@@ -18,6 +59,21 @@
         <main id="canvas-container"></main>
         <div id="widget-container"></div>
     </div>
+</div>
+
+<div id="floating-keyboard">
+    <button onclick="handleKeyboardClick('1')">1</button>
+    <button onclick="handleKeyboardClick('2')">2</button>
+    <button onclick="handleKeyboardClick('3')">3</button>
+    <button onclick="handleKeyboardClick('4')">4</button>
+    <button onclick="handleKeyboardClick('5')">5</button>
+    <button onclick="handleKeyboardClick('6')">6</button>
+    <button onclick="handleKeyboardClick('7')">7</button>
+    <button onclick="handleKeyboardClick('8')">8</button>
+    <button onclick="handleKeyboardClick('9')">9</button>
+    <button onclick="handleKeyboardClick('.')">.</button>
+    <button onclick="handleKeyboardClick('0')">0</button>
+    <button onclick="handleKeyboardClick('bksp')">&larr;</button>
 </div>
 
 <script>
@@ -30,13 +86,14 @@
     let finalMessage = "";
 
     // --- REVISED: Simulation State ---
+    // -1 = Initial Input Page
     // 0 = Select Integer
     // 1 = Integer selected, show Search Icon 1
     // 2 = Select Tenths
     // 3 = Tenths selected, show Search Icon 2
     // 4 = Select Hundredths (drag arrow)
     // 5 = Done (Submitted)
-    let simulationState = 0; 
+    let simulationState = -1; // Start at the new initial page
     let showCorrectAnswer = false; 
 
     // --- REFACTORED: State for each number line ---
@@ -47,6 +104,14 @@
     let canvas;
     let marginX, buttonY, btnWidth, btnHeight, startX, endX, segmentWidth;
     let finalMessageY, feedbackMessageY, titleY, numberY;
+    
+    // --- NEW: Input field and keyboard variables ---
+    let userDecimalValue = null; // Stores the number the user entered
+    let inputValue = "";
+    let isInputActive = false;
+    let keyboardElement;
+    let inputX, inputY, inputWidth, inputHeight;
+    let nextBtnX, nextBtnY, nextBtnWidth, nextBtnHeight;
 
     // Icon variables
     let searchIcon;
@@ -62,21 +127,19 @@
         show: { label: "Show Explanation" },
         try: { label: "Try Again" },
         submit: { label: "Submit" },
+        reset: { label: "Reset" }, // --- NEW: Reset button
     };
 
     // Load assets before setup
     function preload() {
-        // --- NOTE: Make sure 'assets/Search_icon.svg' path is correct ---
-        // Using a placeholder URL for demonstration
         let iconURL = 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Search_Icon.svg'; 
         
         searchIcon = loadImage(iconURL, 
             () => console.log("Search icon loaded successfully."),
             () => {
                 console.error("Failed to load search icon. Using a fallback.");
-                // Create a fallback shape if loading fails
                 searchIcon = createGraphics(100, 100);
-                searchIcon.background(255, 0, 0, 0); // Transparent
+                searchIcon.background(255, 0, 0, 0); 
                 searchIcon.stroke(0);
                 searchIcon.strokeWeight(10);
                 searchIcon.fill(255, 255, 0);
@@ -90,11 +153,23 @@
         canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.parent('canvas-container');
         
+        // --- NEW: Add a mousedown event to the p5 canvas ---
+        canvas.mousePressed(handleCanvasPress);
+        
+        // --- NEW: Select the keyboard element ---
+        keyboardElement = select('#floating-keyboard');
+
+        // --- NEW: Add a global listener to hide the keyboard ---
+        // This listens for clicks on the *entire* window
+        window.addEventListener('mousedown', handleWindowPress);
+        
         textFont("Poppins");
         textAlign(CENTER, CENTER);
         noStroke();
         setupFixedLayout();
-        startNewProblem();
+        
+        // --- CHANGED: Start at the initialization page ---
+        initialize();
     }
 
     function setupFixedLayout() {
@@ -103,7 +178,7 @@
         
         // Y positions for title and lines
         titleY = CANVAS_HEIGHT * 0.08;
-        numberY = CANVAS_HEIGHT * 0.14;
+        numberY = CANVAS_HEIGHT * 0.14; // Will be used for Input Box
         lineY1 = CANVAS_HEIGHT * 0.25;
         lineY2 = CANVAS_HEIGHT * 0.45;
         lineY3 = CANVAS_HEIGHT * 0.65;
@@ -112,7 +187,7 @@
         feedbackMessageY = CANVAS_HEIGHT * 0.86;
         buttonY = CANVAS_HEIGHT * 0.93;
         
-        btnWidth = CANVAS_WIDTH * 0.18; // 691.2
+        btnWidth = CANVAS_WIDTH * 0.15; // Adjusted for 4 buttons
         btnHeight = CANVAS_HEIGHT * 0.1; // 216
         
         startX = marginX;
@@ -122,49 +197,114 @@
         // Icon layout
         searchIconWidth = CANVAS_WIDTH * 0.035; // ~134px
         searchIconHeight = CANVAS_WIDTH * 0.035; // ~134px
+        
+        // --- NEW: Layout for canvas input and next button ---
+        inputWidth = CANVAS_WIDTH * 0.2; // ~768px
+        inputHeight = CANVAS_HEIGHT * 0.07; // ~151px
+        inputX = (CANVAS_WIDTH / 2) - (inputWidth / 2) - 150; // Centered, shifted left
+        inputY = numberY - (inputHeight / 2);
+        
+        nextBtnWidth = CANVAS_WIDTH * 0.07; // ~268px
+        nextBtnHeight = inputHeight;
+        nextBtnX = inputX + inputWidth + 30; // 30px to the right of input
+        nextBtnY = inputY;
     }
 
     // Main game loop
     function draw() {
         clear();
-        
-        showNumberToFind();
-        
-        // --- REVISED: Draw all visible lines and icons based on state ---
-        drawNumberLine(line1);
-        
-        if (simulationState >= 2) {
-            drawZoomLines(lineY1, lineY2, line1.selected);
-            drawNumberLine(line2);
-        }
-        
-        if (simulationState >= 4) {
-            drawZoomLines(lineY2, lineY3, line2.selected);
-            drawNumberLine(line3);
-        }
 
-        // Draw icons on top
-        if (searchIcon1.show) {
-            drawSearchIcon(searchIcon1);
-        }
-        if (searchIcon2.show) {
-            drawSearchIcon(searchIcon2);
+        if (simulationState === -1) {
+            // --- NEW: Draw the initial input page ---
+            drawInputPage();
+            // Draw line 1 (as requested, visible but not clickable)
+            if (line1) {
+                drawNumberLine(line1);
+            }
+        } else {
+            // --- EXISTING: Draw the simulation ---
+            showNumberToFind();
+            
+            drawNumberLine(line1);
+            
+            if (simulationState >= 2) {
+                drawZoomLines(lineY1, lineY2, line1.selected);
+                drawNumberLine(line2);
+            }
+            
+            if (simulationState >= 4) {
+                drawZoomLines(lineY2, lineY3, line2.selected);
+                drawNumberLine(line3);
+            }
+
+            // Draw icons on top
+            if (searchIcon1.show) {
+                drawSearchIcon(searchIcon1);
+            }
+            if (searchIcon2.show) {
+                drawSearchIcon(searchIcon2);
+            }
         }
 
         drawButtons();
         drawFeedbackText();
     }
 
-    // --- REFACTORED: Initialize all line states ---
+    // --- NEW: Function to set up the initial input state ---
+    function initialize() {
+        simulationState = -1;
+        userDecimalValue = null;
+        decimalValue = 0; // Reset
+        inputValue = "";
+        isInputActive = false;
+        
+        showCorrectAnswer = false;
+        searchIcon1.show = false; 
+        searchIcon2.show = false; 
+        isDragging = false; 
+        feedbackMessage = "Enter a decimal (e.g., 1.23) between 0 and 10 in the box above.";
+        finalMessage = "";
+        hideKeyboard();
+
+        // Setup Line 1 (Integers) - so it's visible
+        line1 = {
+            y: lineY1,
+            type: 'interval',
+            min: 0,
+            max: 10,
+            step: 1,
+            precision: 0,
+            selected: null,
+            isCorrect: null,
+            correct: -1 // Not relevant yet
+        };
+        
+        // Reset other lines
+        line2 = {};
+        line3 = {};
+    }
+
+    // --- REVISED: This function is now called AFTER "Next" is clicked ---
     function startNewProblem() {
-        decimalValue = parseFloat((random(0, 9.99)).toFixed(2));
-        simulationState = 0;
+        // --- CHANGED: Get value from input, not random ---
+        userDecimalValue = parseFloat(inputValue);
+        if (isNaN(userDecimalValue)) {
+             // Failsafe, though handleNextClick should prevent this
+             initialize();
+             return;
+        }
+        
+        decimalValue = userDecimalValue; // Set the global decimal value
+        simulationState = 0; // Move to the first step (select integer)
+        
         showCorrectAnswer = false;
         searchIcon1.show = false; 
         searchIcon2.show = false; 
         isDragging = false; 
         feedbackMessage = "Click on the interval where the decimal lies.";
         finalMessage = "";
+        isInputActive = false;
+        hideKeyboard();
 
         // Setup Line 1 (Integers)
         line1 = {
@@ -207,6 +347,34 @@
             arrowX: endX // Start arrow at the right
         };
     }
+    
+    // --- NEW: Function to reset the current problem back to Line 1 ---
+    function resetToLine1() {
+        if (userDecimalValue === null) {
+            initialize(); // If no number is set, just go to start
+            return;
+        }
+        
+        decimalValue = userDecimalValue; // Restore the number
+        simulationState = 0; // Go back to state 0
+        
+        showCorrectAnswer = false;
+        searchIcon1.show = false; 
+        searchIcon2.show = false; 
+        isDragging = false; 
+        feedbackMessage = "Click on the interval where the decimal lies.";
+        finalMessage = "";
+        
+        // Reset line states
+        line1.selected = null;
+        line1.isCorrect = null;
+        line2.selected = null;
+        line2.isCorrect = null;
+        line3.selected = null;
+        line3.isCorrect = null;
+        line3.arrowX = endX;
+    }
+
 
     // --- NEW: Setup Line 2 state ---
     function setupLine2() {
@@ -322,8 +490,79 @@
         triangle(x, y - 40, x - 24, y - 80, x + 24, y - 80);
         pop();
     }
-
-    // Show the decimal value to find
+    
+    // --- NEW: Functions to draw the input page elements ---
+    function drawInputPage() {
+        // Draw Title
+        fill(0);
+        textSize(76.8);
+        noStroke();
+        text(`Enter a number to locate:`, width / 2, titleY);
+        
+        // Draw Input Box and Next Button
+        drawCanvasInput();
+        drawNextButton();
+    }
+    
+    function drawCanvasInput() {
+        push();
+        rectMode(CORNER);
+        strokeWeight(6);
+        // Highlight if active
+        if (isInputActive) {
+            stroke(39, 174, 96); // Green
+        } else {
+            stroke(150); // Gray
+        }
+        fill(255);
+        rect(inputX, inputY, inputWidth, inputHeight, 15);
+        
+        // Draw text or placeholder
+        noStroke();
+        textAlign(LEFT, CENTER);
+        textSize(70);
+        
+        if (inputValue.length === 0 && !isInputActive) {
+            fill(180); // Placeholder color
+            text("e.g., 4.56", inputX + 25, inputY + inputHeight / 2);
+        } else {
+            fill(0); // Text color
+            text(inputValue, inputX + 25, inputY + inputHeight / 2);
+            
+            // Draw blinking cursor if active
+            if (isInputActive && frameCount % 60 < 30) {
+                let txtWidth = textWidth(inputValue);
+                stroke(0);
+                strokeWeight(4);
+                line(inputX + 25 + txtWidth + 5, inputY + 25, inputX + 25 + txtWidth + 5, inputY + inputHeight - 25);
+            }
+        }
+        pop();
+    }
+    
+    function drawNextButton() {
+        push();
+        rectMode(CORNER);
+        noStroke();
+        
+        // Check if input is valid for enabling button color
+        let val = parseFloat(inputValue);
+        if (!isNaN(val) && val >= 0 && val <= 10 && inputValue.slice(-1) !== '.') {
+            fill(39, 174, 96); // Green
+        } else {
+            fill(180); // Grayed out
+        }
+        
+        rect(nextBtnX, nextBtnY, nextBtnWidth, nextBtnHeight, 15);
+        
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(57.6);
+        text("Next", nextBtnX + nextBtnWidth / 2, nextBtnY + nextBtnHeight / 2);
+        pop();
+    }
+    
+    // Show the decimal value to find (only in simulation states)
     function showNumberToFind() {
         fill(0);
         textSize(76.8);
@@ -334,32 +573,57 @@
         text(decimalValue.toFixed(2), width / 2, numberY);
     }
 
-    // Draw the 3 buttons
+    // --- REVISED: Draw all 4 buttons ---
     function drawButtons() {
+        // --- NEW: Don't draw buttons on the input page ---
+        if (simulationState === -1) {
+            return;
+        }
+
         const centerX = width / 2;
+        // Spacing for 4 buttons
+        const totalButtonWidth = 4 * btnWidth;
+        const totalSpacing = 3 * 80; // 80px gap
+        const startDrawX = centerX - (totalButtonWidth + totalSpacing) / 2 + (btnWidth / 2);
         const spacing = btnWidth + 80;
 
         rectMode(CENTER);
         noStroke();
         textSize(57.6);
 
-        // Show Explanation
+        // --- Button 1: Show Explanation ---
+        let showX = startDrawX;
         fill(39, 174, 96);
-        rect(centerX - spacing, buttonY, btnWidth, btnHeight, 60);
+        rect(showX, buttonY, btnWidth, btnHeight, 60);
         fill(255);
-        text(buttons.show.label, centerX - spacing, buttonY);
+        text(buttons.show.label, showX, buttonY);
 
-        // Try Again
-        fill(243, 156, 18);
-        rect(centerX, buttonY, btnWidth, btnHeight, 60);
+        // --- Button 2: Try Again ---
+        let tryX = startDrawX + spacing;
+        
+        // --- NEW: Check if disabled (line1.selected is null) ---
+        if (line1.selected === null) {
+            fill(180); // Disabled gray
+        } else {
+            fill(243, 156, 18); // Enabled orange
+        }
+        rect(tryX, buttonY, btnWidth, btnHeight, 60);
         fill(255);
-        text(buttons.try.label, centerX, buttonY);
+        text(buttons.try.label, tryX, buttonY);
 
-        // Submit
+        // --- Button 3: Submit ---
+        let submitX = startDrawX + 2 * spacing;
         fill(231, 76, 60);
-        rect(centerX + spacing, buttonY, btnWidth, btnHeight, 60);
+        rect(submitX, buttonY, btnWidth, btnHeight, 60);
         fill(255);
-        text(buttons.submit.label, centerX + spacing, buttonY);
+        text(buttons.submit.label, submitX, buttonY);
+        
+        // --- Button 4: Reset ---
+        let resetX = startDrawX + 3 * spacing;
+        fill(52, 152, 219); // Blue
+        rect(resetX, buttonY, btnWidth, btnHeight, 60);
+        fill(255);
+        text(buttons.reset.label, resetX, buttonY);
 
         rectMode(CORNER);
     }
@@ -380,9 +644,30 @@
 
     // --- REFACTORED: Interaction Handlers ---
 
-    function mousePressed() {
+    // --- NEW: Handles clicks *inside* the p5 canvas ---
+    function handleCanvasPress() {
+        
+        // --- Interaction for Input State ---
+        if (simulationState === -1) {
+            if (isOverCanvasInput()) {
+                isInputActive = true;
+                showKeyboard();
+                return; // Don't check other buttons
+            }
+            if (isOverNextButton()) {
+                handleNextClick();
+                return;
+            }
+            // --- NEW: Clicks outside input/next on input page ---
+            isInputActive = false;
+            hideKeyboard();
+            return; // Don't process any other clicks
+        }
+        
+        // --- Interaction for Simulation State ---
+        
         // Lock interaction if 'Done'
-        if (simulationState === 5 && !isOverButton("try")) return;
+        if (simulationState === 5 && !isOverButton("try") && !isOverButton("reset")) return;
 
         // 1. Check Button Clicks
         if (isOverButton("show")) {
@@ -390,11 +675,19 @@
             return;
         }
         if (isOverButton("try")) {
-            startNewProblem();
+            // --- NEW: Only run if not disabled ---
+            if (line1.selected !== null) {
+                resetToLine1();
+            }
             return;
         }
         if (isOverButton("submit")) {
             handleSubmit();
+            return;
+        }
+        // --- NEW: Check for Reset button ---
+        if (isOverButton("reset")) {
+            initialize();
             return;
         }
         
@@ -409,6 +702,7 @@
         }
         
         // 3. Check Number Line Interactions
+        // --- NOTE: This check now correctly fails if simulationState is -1 ---
         if (simulationState === 0 && isOverLine(lineY1)) {
             handleLine1Click();
         }
@@ -418,6 +712,100 @@
         else if (simulationState === 4 && isOverArrow(line3.arrowX, lineY3)) {
             isDragging = true;
         }
+    }
+    
+    // --- NEW: Handles clicks *anywhere* in the window ---
+    function handleWindowPress(event) {
+        // Check if the click target is *inside* the keyboard
+        if (keyboardElement.elt.contains(event.target)) {
+            return; // Click was on keyboard, do nothing
+        }
+        
+        // Check if the click target is *inside* the p5 canvas
+        if (event.target === canvas.elt) {
+            // Click was on canvas.
+            // Let handleCanvasPress (which is called by p5)
+            // determine if the input should be active or not.
+            return;
+        }
+        
+        // Click was outside keyboard AND outside canvas
+        isInputActive = false;
+        hideKeyboard();
+    }
+    
+    // --- NEW: Handles the "Next" button click ---
+    function handleNextClick() {
+        if (simulationState !== -1) return;
+        
+        let val = parseFloat(inputValue);
+        
+        if (isNaN(val) || val < 0 || val > 10) {
+            feedbackMessage = "Please enter a valid number between 0 and 10.";
+            return;
+        }
+        
+        if (inputValue.slice(-1) === '.') {
+            feedbackMessage = "Invalid format. Please complete the number.";
+            return;
+        }
+        
+        // Success! Start the problem.
+        startNewProblem();
+    }
+    
+    // --- NEW: Handles clicks from the HTML keyboard ---
+    // This is a global function, so it must be defined in the main <script>
+    window.handleKeyboardClick = function(key) {
+        if (!isInputActive) return;
+
+        if (key === 'bksp') {
+            inputValue = inputValue.substring(0, inputValue.length - 1);
+        } else if (key === '.') {
+            // Only add a decimal if one doesn't exist
+            if (!inputValue.includes('.')) {
+                inputValue += '.';
+            }
+        } else {
+            // Check 2 decimal place rule
+            let parts = inputValue.split('.');
+            if (parts.length > 1 && parts[1].length >= 2) {
+                // Already 2 decimal places, do nothing
+                return;
+            }
+            
+            // Check max value
+            let testValue = parseFloat(inputValue + key);
+            if (testValue > 10) {
+                // Don't add the key if it makes it > 10
+                // Special case: allow '10'
+                if (inputValue === '1' && key === '0') {
+                   inputValue += key;
+                }
+                return;
+            }
+            
+            // Special case: prevent "00"
+            if (inputValue === "0" && key === "0") {
+                return;
+            }
+            // Special case: replace "0" with new number (e.g., 0 -> 5)
+            if (inputValue === "0" && key !== ".") {
+                inputValue = key;
+                return;
+            }
+            
+            inputValue += key;
+        }
+    }
+
+    // --- NEW: Helper functions to show/hide keyboard ---
+    function showKeyboard() {
+        keyboardElement.addClass('visible');
+    }
+
+    function hideKeyboard() {
+        keyboardElement.removeClass('visible');
     }
     
     // --- REVISED: Check for click on Line 1 (Integers) ---
@@ -448,6 +836,8 @@
             feedbackMessage = "This is not the correct interval, check the integer part"; 
         }
     }
+
+// --- (Rest of the functions remain unchanged) ---
 
     // --- NEW: Handle Icon 1 Click ---
     function handleSearchIcon1Click() {
@@ -509,6 +899,26 @@
     function isOverLine(y) {
         return (mouseY > y - 80 && mouseY < y + 160 && mouseX >= startX && mouseX <= endX);
     }
+    
+    // --- NEW: Helper to check if mouse is over canvas input ---
+    function isOverCanvasInput() {
+        return (
+            mouseX > inputX &&
+            mouseX < inputX + inputWidth &&
+            mouseY > inputY &&
+            mouseY < inputY + inputHeight
+        );
+    }
+    
+    // --- NEW: Helper to check if mouse is over next button ---
+    function isOverNextButton() {
+        return (
+            mouseX > nextBtnX &&
+            mouseX < nextBtnX + nextBtnWidth &&
+            mouseY > nextBtnY &&
+            mouseY < nextBtnY + nextBtnHeight
+        );
+    }
 
     // --- REVISED: Check over a specific icon's state ---
     function isOverSearchIcon(iconState) {
@@ -530,14 +940,25 @@
         );
     }
     
+    // --- REVISED: Checks for 4 buttons ---
     function isOverButton(btn) {
-        const centerX = width / 2;
-        const spacing = btnWidth + 80;
-        let btnX;
+        // --- NEW: If buttons aren't drawn, can't be over them ---
+        if (simulationState === -1) {
+            return false;
+        }
 
-        if (btn === "show") btnX = centerX - spacing;
-        else if (btn === "try") btnX = centerX;
-        else if (btn === "submit") btnX = centerX + spacing;
+        const centerX = width / 2;
+        const totalButtonWidth = 4 * btnWidth;
+        const totalSpacing = 3 * 80; // 80px gap
+        const startDrawX = centerX - (totalButtonWidth + totalSpacing) / 2 + (btnWidth / 2);
+        const spacing = btnWidth + 80;
+
+        let btnX;
+        if (btn === "show") btnX = startDrawX;
+        else if (btn === "try") btnX = startDrawX + spacing;
+        else if (btn === "submit") btnX = startDrawX + 2 * spacing;
+        else if (btn === "reset") btnX = startDrawX + 3 * spacing;
+        else return false;
 
         return (
             mouseX > btnX - btnWidth / 2 &&
@@ -549,6 +970,14 @@
 
     // --- REFACTORED: Show explanation advances state ---
     function handleShowExplanation() {
+        // Don't allow if number hasn't been entered
+        if (simulationState === -1) {
+            // This feedback won't be seen as buttons aren't drawn,
+            // but it's good practice to guard.
+            feedbackMessage = "Please enter a number and click 'Next' first.";
+            return;
+        }
+
         if (simulationState === 0) {
             // Show correct interval on Line 1
             line1.selected = line1.correct;
