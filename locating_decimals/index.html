@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Locating Decimals on a Number Line (Fixed 4K)</title>
 <link rel="stylesheet" href="global_style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+<script src="p5.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
     /* --- NEW: Styles for the floating keyboard --- */
@@ -132,7 +132,7 @@
 
     // Load assets before setup
     function preload() {
-        let iconURL = 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Search_Icon.svg'; 
+        let iconURL = 'assets/Search_Icon.svg'; // Replace with the actual path to your Search_Icon.svg'; 
         
         searchIcon = loadImage(iconURL, 
             () => console.log("Search icon loaded successfully."),
