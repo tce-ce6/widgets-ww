@@ -21,15 +21,17 @@ const sketch = (p) => {
         balloon: {
             x: 959,   // 333 * 2.88
             y: 1691,  // 587 * 2.88
-            baseWidth: 115,   // 40 * 2.88
-            baseHeight: 173,  // 60 * 2.88
+            baseWidth: 300,   // 40 * 2.88
+            baseHeight: 300,  // 60 * 2.88
             currentWidth: 153, // 53 * 2.88
             currentHeight: 251, // 87 * 2.88
         },
         isDragging: false,
-        balloonSVG: null, // To hold baloon2.svg
+        // balloonSVG: null, // REPLACED: No longer loading a static SVG
+        balloonAnimation: null, // To hold the Lottie animation instance
+        lottieCanvas: null,     // To hold the offscreen p5.Graphics for Lottie
         insightButtonSVG: null, // To hold btn_Insight.svg
-        
+        lottieBottomPadding: 0.20,
         // Atmosphere state
         airMolecules: [],
         numMolecules: 2500,
@@ -119,7 +121,7 @@ const sketch = (p) => {
             const normalizedAltitude = p.map(model.altitude, 0, model.maxAltitude, 0, 1);
             const growthFactor = Math.pow(normalizedAltitude, 3); 
             const startMultiplier = 1.0;
-            const endMultiplier = 1.6;
+            const endMultiplier = 1.48;
             const sizeMultiplier = p.map(model.altitude, 0, model.maxAltitude, startMultiplier, endMultiplier);
             
             model.balloon.currentWidth = model.balloon.baseWidth * sizeMultiplier;
@@ -175,7 +177,7 @@ const sketch = (p) => {
 
         moveMolecules() {
             const moveRange = 19; // 6.67 * 2.88
-            const radius = 6;    // 2 * 2.88
+            const radius = 6;     // 2 * 2.88
 
             // Container geometry - Scaled (2.88x)
             const rectX = 384, rectY = 383, rectW = 1152, rectH = 1306, cornerRadius = 58; // 133*2.88, 133*2.88, 400*2.88, 453*2.88, 20*2.88
@@ -294,21 +296,29 @@ const sketch = (p) => {
         },
         
         drawBalloons() {
-            p.push();
-            p.imageMode(p.CENTER);
+             p.push();
+             p.imageMode(p.CENTER);
 
             const centerX = model.balloon.x;
-            const centerY = model.balloon.y - model.balloon.currentHeight / 2;
-            const currentW = model.balloon.currentWidth;
-            const currentH = model.balloon.currentHeight;
+             const currentW = model.balloon.currentWidth;
+             const currentH = model.balloon.currentHeight;
+ // **--- START OF FIX ---**
 
-            // Draw the single balloon if the SVG is loaded
-            if (model.balloonSVG) {
-                p.image(model.balloonSVG, centerX, centerY, currentW, currentH);
-            }
-            
-            p.pop();
-        },
+ // 1. Calculate the padding in pixels based on the balloon's current height
+            const paddingInPixels = currentH * model.lottieBottomPadding;
+
+ // 2. Adjust the center Y by ADDING the padding. This shifts the image DOWN.
+            const centerY = (model.balloon.y - currentH / 2) + paddingInPixels;
+
+ // **--- END OF FIX ---**
+
+ // Draw the Lottie animation
+            if (model.lottieCanvas) {
+            p.image(model.lottieCanvas, centerX, centerY, currentW, currentH);
+        }
+
+    p.pop();
+     },
 
         drawReadoutPanels() {
             const drawBox = (y, label, value, unit, valColor, valBorderColor) => {
@@ -377,7 +387,7 @@ const sketch = (p) => {
                 p.textStyle(p.NORMAL);
                 p.textSize(43); // 15 * 2.88
                 p.fill(80);
-                p.text("• With an increase in altitude, air density decreases,\n  resulting in lower temperature and pressure.", 2093, 1535, 1152); // 727*2.88=2093, 533*2.88=1535, 400*2.88=1152
+                p.text("• With an increase in altitude, air density decreases,\n  resulting in lower temperature and pressure.", 2093, 1535, 1152); // 727*2.88=2093, 533*2.88=1535, 400*2.88=1152
                 
                 p.textStyle(p.NORMAL);
                 p.textSize(43); // 15 * 2.88
@@ -405,12 +415,40 @@ const sketch = (p) => {
     //===========================================
     p.preload = function() {
         model.bgImage = p.loadImage('assets/Sky_BG_02.jpg');
-        model.balloonSVG = p.loadImage('assets/baloon2.svg'); // Only load one balloon
+        // **MODIFIED:** Removed the static balloon SVG load
+        // model.balloonSVG = p.loadImage('assets/baloon2.svg');
         model.insightButtonSVG = p.loadImage('assets/btn_Insight.svg');
     };
 
     p.setup = function() {
         p.createCanvas(model.canvasWidth, model.canvasHeight).parent('canvas-container');
+        
+        // --- Lottie Initialization ---
+        // 1. Create an offscreen p5.Graphics canvas for Lottie to draw on.
+        // We make it larger than the max balloon size (approx 184w x 277h) for good resolution.
+        const lottieWidth = 400;
+        const lottieHeight = 400;
+        model.lottieCanvas = p.createGraphics(lottieWidth, lottieHeight);
+
+        // 2. Load the Lottie animation, checking if the library is loaded
+        if (typeof lottie !== 'undefined') {
+            model.balloonAnimation = lottie.loadAnimation({
+                renderer: 'canvas',
+                loop: true,
+                autoplay: true,
+                path: 'assets/hot_air_baloon.json', // Your specified path
+                rendererSettings: {
+                    canvas: model.lottieCanvas.elt, // Pass the <canvas> element from p5.Graphics
+                    context: model.lottieCanvas.drawingContext, // Pass its 2D context
+                    clearCanvas: true, // Lottie will clear its own canvas each frame
+                    progressiveLoad: true,
+                    hideOnTransparent: true,
+                }
+            });
+        } else {
+            console.error("Lottie library is not loaded. Please include it in your HTML.");
+        }
+        // --- End Lottie Initialization ---
         
         model.resetButton = document.getElementById('resetButton');
         if (model.resetButton) {
@@ -428,7 +466,7 @@ const sketch = (p) => {
         controller.handleMouseInteraction();
         
         view.drawAtmosphereColumn();
-        view.drawBalloons();
+        view.drawBalloons(); // This now draws the Lottie animation
         view.drawReadoutPanels();
         view.drawHeaderAndFooter();
         view.drawInsights();
