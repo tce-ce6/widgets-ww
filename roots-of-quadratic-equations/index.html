@@ -44,7 +44,7 @@
         #rightPanel {
             display: flex;
             flex-direction: column;
-            min-width: 200px;
+            min-width: 280px;
             min-height: 150px;
         }
 
@@ -169,8 +169,8 @@
     <div class="container">
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
-                <h2>How many roots does this quadratic equation have ?</h2>
-                <span id="versionId" class="versionText">b2_25102701</span>
+                <h2>How many roots does this quadratic equation have?</h2>
+                <span id="versionId" class="versionText">b2_25103002</span>
             </div>
 
 
@@ -183,10 +183,13 @@
                         <div>
                             <div class="question">
                                 <h2 style="text-align:center; font-weight: 500;font-size: 25px;">
-                                    Quadratic Equation: <i class="new_roman">y</i> = a<i class="new_roman">x</i>² + b<i class="new_roman">x</i> + c</h2>
-                                    <!-- <span><i>y</i> = <span id="a_value">a</span><i>x</i>² + <span id="b_value">b</span><i>x</i> + <span id="c_value">c</span></h2></span> -->
+                                    Quadratic Equation: <i class="new_roman">y</i> = <span style="color:#ff8800;">a</span><i class="new_roman">x</i>² + <span style="color:#228B22;">b</span><i class="new_roman">x</i> + <span style="color:#0099ff;">c</span></h2>
                             </div>
-                            <div id="jxgbox"></div>
+                            <div style="position: relative;">
+                                <span id="dynamic-eqn"><i class="new_roman">y</i> = <span style="color:#ff8800;">a</span><i class="new_roman">x</i>² + <span style="color:#228B22;">b</span><i class="new_roman">x</i> + <span style="color:#0099ff;">c</span></span>
+                                <div id="jxgbox">
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Right panel (a,b,c values + Show/Hide) -->

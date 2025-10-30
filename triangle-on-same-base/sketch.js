@@ -103,53 +103,62 @@ function initGeometryBoard() {
     const leftX = 5, rightX = 19;
     const boxY = 10.5; // Center Y position for the info box
 
-    // Create the background 'div' using a text element with CSS class
-    // NOTE: This requires CSS to be defined in your HTML (see explanation below)
-    brd.create('text', [rightX, boxY,
-        '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
-    ], {
-        fontSize: 12,
-        anchorX: 'middle',
-        anchorY: 'middle',
-        fixed: true,
-        cssStyle: 'padding: 30px;',
-        cssClass: 'infoBoxBackgroundDBC' // Custom class for the green background
-    });
+    // Background rectangle for DBC info (stable, non-hovering)
+    (function createRectDBC() {
+        const halfW = 3;   // width/2 in board units
+        const halfH = 1.5; // height/2 in board units
+        const p1 = brd.create('point', [rightX - halfW, boxY - halfH], { visible: false, fixed: true });
+        const p2 = brd.create('point', [rightX + halfW, boxY - halfH], { visible: false, fixed: true });
+        const p3 = brd.create('point', [rightX + halfW, boxY + halfH], { visible: false, fixed: true });
+        const p4 = brd.create('point', [rightX - halfW, boxY + halfH], { visible: false, fixed: true });
+        brd.create('polygon', [p1, p2, p3, p4], {
+            fillColor: '#f0fdf4', fillOpacity: 1,
+            borders: { visible: true, strokeColor: '#10b981', strokeWidth: 1 },
+            hasInnerPoints: true,
+            withLines: true,
+            fixed: true
+        });
+    })();
 
     // Triangle DBC Info - Text elements positioned over the background
-    brd.create('text', [rightX, boxY + 1.0, 'Area of ▲DBC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+    brd.create('text', [rightX, boxY + 1.0, 'Area of ▲DBC:'], { fontSize: 16, anchorX: 'middle', fixed: true });
     brd.create('text', [rightX, boxY + 0.4, function () {
         return getArea(polyDBC) + ' sq. units';
-    }], { fontSize: 14, color: '#10b981', anchorX: 'middle', fixed: true });
+    }], { fontSize: 16, color: '#10b981', anchorX: 'middle', fixed: true });
 
-    brd.create('text', [rightX, boxY - 0.3, 'Perimeter of ▲DBC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+    brd.create('text', [rightX, boxY - 0.3, 'Perimeter of ▲DBC:'], { fontSize: 16, anchorX: 'middle', fixed: true });
     brd.create('text', [rightX, boxY - 0.9, function () {
         return getPerimeter(polyDBC) + ' units';
-    }], { fontSize: 14, color: '#10b981', anchorX: 'middle', fixed: true });
+    }], { fontSize: 16, color: '#10b981', anchorX: 'middle', fixed: true });
 
 
-    // Create the background 'div' for ABC
-    brd.create('text', [leftX, boxY,
-        '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
-    ], {
-        fontSize: 12,
-        anchorX: 'middle',
-        anchorY: 'middle',
-        fixed: true,
-        cssStyle: 'padding: 30px;',
-        cssClass: 'infoBoxBackgroundABC' // Custom class for the purple background
-    });
+    // Background rectangle for ABC info
+    (function createRectABC() {
+        const halfW = 3;   // width/2 in board units
+        const halfH = 1.5; // height/2 in board units
+        const p1 = brd.create('point', [leftX - halfW, boxY - halfH], { visible: false, fixed: true });
+        const p2 = brd.create('point', [leftX + halfW, boxY - halfH], { visible: false, fixed: true });
+        const p3 = brd.create('point', [leftX + halfW, boxY + halfH], { visible: false, fixed: true });
+        const p4 = brd.create('point', [leftX - halfW, boxY + halfH], { visible: false, fixed: true });
+        brd.create('polygon', [p1, p2, p3, p4], {
+            fillColor: '#f7f1ff', fillOpacity: 1,
+            borders: { visible: true, strokeColor: '#9333ea', strokeWidth: 1 },
+            hasInnerPoints: true,
+            withLines: true,
+            fixed: true
+        });
+    })();
 
     // Triangle ABC Info - Text elements positioned over the background
-    brd.create('text', [leftX, boxY + 1.0, 'Area of ▲ABC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+    brd.create('text', [leftX, boxY + 1.0, 'Area of ▲ABC:'], { fontSize: 16, anchorX: 'middle', fixed: true });
     brd.create('text', [leftX, boxY + 0.4, function () {
         return getArea(polyABC) + ' sq. units';
-    }], { fontSize: 14, color: '#9333ea', anchorX: 'middle', fixed: true });
+    }], { fontSize: 16, color: '#9333ea', anchorX: 'middle', fixed: true });
 
-    brd.create('text', [leftX, boxY - 0.3, 'Perimeter of ▲ABC:'], { fontSize: 14, anchorX: 'middle', fixed: true });
+    brd.create('text', [leftX, boxY - 0.3, 'Perimeter of ▲ABC:'], { fontSize: 16, anchorX: 'middle', fixed: true });
     brd.create('text', [leftX, boxY - 0.9, function () {
         return getPerimeter(polyABC) + ' units';
-    }], { fontSize: 14, color: '#9333ea', anchorX: 'middle', fixed: true });
+    }], { fontSize: 16, color: '#9333ea', anchorX: 'middle', fixed: true });
 
     // --- Force full initialization ---
     brd.fullUpdate();

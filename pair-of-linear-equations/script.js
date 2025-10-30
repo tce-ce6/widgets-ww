@@ -1,6 +1,7 @@
 let board;
 let line1 = null, line2 = null, intersection = null;
 let label1 = null, label2 = null;
+let label1Bg = null, label2Bg = null;
 let a1 = 9, b1 = 10, c1 = 10;
 let a2 = 6, b2 = 1, c2 = -5;
 let showAnswer = false; // controls ratio placeholders
@@ -27,9 +28,11 @@ function getLabelOffset(a, b) {
 function clearBoard() {
     if (line1) { board.removeObject(line1); line1 = null; }
     if (line2) { board.removeObject(line2); line2 = null; }
+    if (intersection) { board.removeObject(intersection); intersection = null; }
     if (label1) { board.removeObject(label1); label1 = null; }
     if (label2) { board.removeObject(label2); label2 = null; }
-    if (intersection) { board.removeObject(intersection); intersection = null; }
+    if (label1Bg) { board.removeObject(label1Bg); label1Bg = null; }
+    if (label2Bg) { board.removeObject(label2Bg); label2Bg = null; }
 }
 
 function formatEquationHTML(a, b, c, colorString, idSuffix) {
@@ -158,6 +161,17 @@ function plotLines() {
             { strokeColor: 'red', strokeWidth: 2 }
         );
 
+        // // Rectangle patch for label1 background
+        // label1Bg = board.create('polygon', [
+        //     [() => -2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) - 1.1],
+        //     [() =>  2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) - 1.1],
+        //     [() =>  2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) + 1.1],
+        //     [() => -2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) + 1.1]
+        // ], {
+        //     fillColor: '#fff', fillOpacity: 1,
+        //     strokeWidth: 0, fixed: true, highlight: false
+        // });
+
         label1 = board.create('text', [
             () => 0,
             () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1),
@@ -171,6 +185,17 @@ function plotLines() {
             [x => (-a2 * x - c2) / b2],
             { strokeColor: 'blue', strokeWidth: 2 }
         );
+
+        // // Rectangle patch for label2 background
+        // label2Bg = board.create('polygon', [
+        //     [() => -2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 - 1.1],
+        //     [() =>  2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 - 1.1],
+        //     [() =>  2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 + 1.1],
+        //     [() => -2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 + 1.1]
+        // ], {
+        //     fillColor: '#fff', fillOpacity: 1,
+        //     strokeWidth: 0, fixed: true, highlight: false
+        // });
 
         label2 = board.create('text', [
             () => 0,

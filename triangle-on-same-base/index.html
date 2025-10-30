@@ -51,6 +51,8 @@
             /* Rounded corners */
             text-align: center !important;
             /* Ensure the text center aligns within the box */
+            pointer-events: none; /* prevent hover/highlight from JSXGraph */
+            opacity: 1 !important;
         }
 
         /* Style for the Purple Info Box (ABC) */
@@ -62,6 +64,15 @@
             border-radius: 5px !important;
             /* Rounded corners */
             text-align: center !important;
+            pointer-events: none; /* prevent hover/highlight from JSXGraph */
+            opacity: 1 !important; /* keep visible even when hovered */
+        }
+
+        /* Extra safety: never hide background on hover inside JSXGraph */
+        #jxgbox .JXGtext.infoBoxBackgroundDBC:hover,
+        #jxgbox .JXGtext.infoBoxBackgroundABC:hover {
+            background-color: inherit !important;
+            opacity: 1 !important;
         }
     </style>
 </head>
@@ -71,7 +82,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Area of triangles with a common base between two parallel lines</h2>
-                <span id="versionId" class="versionText">b2_251006</span>
+                <span id="versionId" class="versionText">b2_25103001</span>
             </div>
 
 
@@ -83,7 +94,7 @@
                         <!-- Graph -->
                         <div>
                             <span
-                            style="font-size: 14px; color: #666; text-align: center; display: block; margin-top: 10px;">Drag
+                            style="font-size: 20px; color: black; text-align: center; display: block; margin: 10px 0px;">Drag
                             points A and D along line l to observe constant area and changing perimeter.</span>
                             <div id="jxgbox"></div>
                         </div>

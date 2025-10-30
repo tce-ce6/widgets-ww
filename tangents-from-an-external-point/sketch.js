@@ -97,7 +97,7 @@ function draw() {
         textAlign(CENTER, CENTER);
         textSize(20);
         text('T₁', tangentPoint1.x, tangentPoint1.y - 15);
-        text('T₂', tangentPoint2.x, tangentPoint2.y - 15);
+        text('T₂', tangentPoint2.x, tangentPoint2.y + 15);
         
         // Draw radii to tangent points
         stroke(colors.radius1);

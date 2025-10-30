@@ -351,4 +351,10 @@ input[type="range"]::-moz-range-thumb {
   font-size: 12px;
   color: #ccc;
 }
+#jxgbox .JXGtext{
+  background-color: #fff;
+    line-height: 1;
+    padding: 5px 10px;
+    box-shadow: 4px 4px 4px #ccc;
+}
 /* new header css end*/

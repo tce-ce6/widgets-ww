@@ -396,14 +396,30 @@ input[type="range"]::-moz-range-thumb {
 .instructions {
   display: none;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  box-shadow: 4px 4px 4px #ccc;
-  border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 10px;
+    top: calc(50% - 50px);
+    left: 220px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    box-shadow: 4px 4px 4px #ccc;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 320px;
+    line-height: 1.3;
+}
+.instructions p{
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  position: relative;
+  padding-left: 20px;
+}
+.instructions p::before{
+  content: "•";
+  font-size: 30px;
+  position: absolute;
+  top: -7px;
+  left: 0;
 }
 
 .close-instruction {
@@ -415,7 +431,7 @@ input[type="range"]::-moz-range-thumb {
   background-color: #F2F2F2;
   padding: 10px;
   line-height: 0.6;
-  right: 15px;
-  top: 5px;
+  right: 10px;
+  top: 10px;
   cursor: pointer;
 }
