@@ -145,6 +145,7 @@ const WRONG_LOTTIE_PATH = 'incorrect.json';
 
 // **NEW:** Variable to store the bounding box of the leaf area for quick lookup
 let leafAreaBBox = null;
+let plantAreaBBox = null;
 
 // Helper function to get the BBox of the #leaf-svg group
 function getLeafAreaBBox() {
@@ -164,9 +165,56 @@ function getLeafAreaBBox() {
     return null;
 }
 
+// Helper function to get the BBox of the #plant-svg group
+function getPlantAreaBBox() {
+    const svg = document.querySelector('svg');
+    const plantGroup = svg ? svg.querySelector('#plant-svg') : null;
+
+    if (plantGroup) {
+        try {
+            return plantGroup.getBBox();
+        } catch (e) {
+            console.error("Could not get BBox for #plant-svg", e);
+            return null;
+        }
+    }
+    return null;
+}
+
+// Helper function to extract transform values from a transform string
+function parseTransform(transformStr) {
+    const result = { x: 0, y: 0, scale: 1 };
+    
+    if (!transformStr) return result;
+    
+    // Extract translate values
+    const translateMatch = /translate\(([-\d.]+)\s*,?\s*([-\d.]+)?\)/.exec(transformStr);
+    if (translateMatch) {
+        result.x = parseFloat(translateMatch[1]) || 0;
+        result.y = parseFloat(translateMatch[2]) || 0;
+    }
+    
+    // Extract scale value
+    const scaleMatch = /scale\(([-\d.]+)\)/.exec(transformStr);
+    if (scaleMatch) {
+        result.scale = parseFloat(scaleMatch[1]) || 1;
+    }
+    
+    return result;
+}
+
 // --- Implementation Logic ---
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Reset button functionality
+    const resetBtn = document.getElementById('btn-1');
+    if (resetBtn) {
+        resetBtn.disabled = true; // Initially disabled
+        resetBtn.addEventListener('click', () => {
+            location.reload();
+        });
+    }
+    
     // Function to hide materials in target boxes initially
     function hideInitialMaterials() {
         // Query groups that are the target boxes and contain a 'use' element
@@ -190,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // **NEW:** Initialize the leaf area BBox once the SVG is loaded
     // This is run before Lottie to ensure it's ready.
     leafAreaBBox = getLeafAreaBBox();
+    plantAreaBBox = getPlantAreaBBox();
 
     // --- Lottie initialization logic ---
     const allBoxIds = [
@@ -260,6 +309,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalTransform = '';
     let isDragging = false;
     let originalParent = null;
+    let currentScale = 1; // Track current scale of dragging material
+    
+    // Track materials that have been placed on the leaf
+    const materialsOnLeaf = new Set();
+    
+    // Track original positions for materials on leaf
+    const leafMaterialPositions = new Map();
+    
+    // Track if material has ever been over plant/leaf area
+    const materialHasBeenOverPlant = new Map();
 
     // Add custom drag handlers to each material, including its transparent rect
     Object.keys(materialMap).forEach(materialId => {
@@ -270,10 +329,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const startDrag = function (e) {
                 e.preventDefault();
                 if (isDragging) return;
+                
+                // Check if there's already a material on the leaf (and it's not this one)
+                const leafGroupCheck = getSVGElementById('leaf-svg');
+                if (leafGroupCheck) {
+                    const materialsInLeaf = Array.from(leafGroupCheck.children).filter(child => 
+                        child.id && materialMap[child.id] && child.id !== material.id
+                    );
+                    
+                    if (materialsInLeaf.length > 0) {
+                        // There's already a material on the leaf, prevent dragging
+                        console.log('Cannot drag: another material is already on the leaf');
+                        return;
+                    }
+                }
 
                 // --- CRITICAL FIX 1: Recalculate BBox and CTM on drag start ---
                 // 1. Refresh the leaf area BBox (if it changed due to resize)
-                leafAreaBBox = getLeafAreaBBox(); 
+                leafAreaBBox = getLeafAreaBBox();
+                plantAreaBBox = getPlantAreaBBox(); 
                 
                 isDragging = true;
                 draggingMaterial = material;
@@ -304,29 +378,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cursorpt = pt.matrixTransform(screenCTMInverse);
                 // --- END CRITICAL FIX 1 ---
 
-                // Get current transform (if any)
+                // Get current transform and parse it properly
                 let currentTransform = material.getAttribute('transform');
-                let tx = 0, ty = 0;
+                const transform = parseTransform(currentTransform);
+                let tx = transform.x;
+                let ty = transform.y;
+                currentScale = transform.scale;
 
-                // *** CORRECTED LOGIC FOR EXTRACTING TRANSLATION ***
-                if (currentTransform) {
-                    // Regex to find translate(x, y) even if other transforms like scale are present
-                    const translateMatch = /translate\(([-\d.]+)\s*,\s*([-\d.]+)\)/.exec(currentTransform);
-                    if (translateMatch) {
-                        tx = parseFloat(translateMatch[1]);
-                        ty = parseFloat(translateMatch[2]);
-                    }
+                // *** CRITICAL FIX: Account for scale when calculating drag offset ***
+                // When the material is scaled, we need to adjust the offset calculation
+                // The cursor position needs to be compared to the SCALED coordinate space
+                dragOffset.x = (cursorpt.x - tx) / currentScale;
+                dragOffset.y = (cursorpt.y - ty) / currentScale;
+
+                // Store the original transform for snap back
+                if (currentScale > 1) {
+                    originalTransform = `translate(${tx},${ty}) scale(${currentScale})`;
+                } else {
+                    originalTransform = `translate(${tx},${ty})`;
                 }
 
-                // Store offset from where you grab inside the material
-                dragOffset.x = cursorpt.x - tx;
-                dragOffset.y = cursorpt.y - ty;
-
-                // Store only the original translate transform for snap back
-                originalTransform = `translate(${tx},${ty})`; // Force a clean translate for snap back
-
-                // Bring to front
-                material.parentNode.appendChild(material);
+                // If material is in leaf group, move it to a higher z-index container for dragging
+                const leafGroup = getSVGElementById('leaf-svg');
+                if (originalParent === leafGroup) {
+                    // Move to the main group container to ensure proper z-index
+                    const mainGroup = svg.querySelector('#Group');
+                    if (mainGroup) {
+                        mainGroup.appendChild(material);
+                        // After moving to new parent, the transform is still valid
+                        material.setAttribute('transform', originalTransform);
+                    }
+                } else {
+                    // Bring to front within current parent
+                    material.parentNode.appendChild(material);
+                }
 
                 document.addEventListener('mousemove', onDragMove);
                 document.addEventListener('mouseup', onDragEnd);
@@ -376,13 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // --- END CRITICAL FIX 2 ---
 
-
-        // 1. Calculate the required TRANSLATE position if no scaling was applied
-        const x = svgCursorPoint.x - dragOffset.x;
-        const y = svgCursorPoint.y - dragOffset.y;
-
-        // 2. Determine SCALE factor
+        // 1. Determine SCALE factor based on cursor position
         let scaleFactor = 1;
+        let isOverPlantOrLeaf = false;
 
         if (leafAreaBBox) {
             // Check if cursor is over the #leaf-svg group
@@ -394,32 +475,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isOverLeafArea) {
                 scaleFactor = 1.7;
+                isOverPlantOrLeaf = true;
             }
         }
+        
+        // Check if cursor is over the #plant-svg group
+        if (!isOverPlantOrLeaf && plantAreaBBox) {
+            const isOverPlantArea =
+                svgCursorPoint.x >= plantAreaBBox.x &&
+                svgCursorPoint.x <= plantAreaBBox.x + plantAreaBBox.width &&
+                svgCursorPoint.y >= plantAreaBBox.y &&
+                svgCursorPoint.y <= plantAreaBBox.y + plantAreaBBox.height;
 
-        // 3. Apply the combined TRANSFORM with compensation
+            if (isOverPlantArea) {
+                isOverPlantOrLeaf = true;
+            }
+        }
+        
+        // Track that this material has been over the plant/leaf area
+        if (isOverPlantOrLeaf && draggingMaterial) {
+            materialHasBeenOverPlant.set(draggingMaterial.id, true);
+        }
+
+        // 2. Calculate position using the scale-adjusted offset
+        const x = svgCursorPoint.x - (dragOffset.x * scaleFactor);
+        const y = svgCursorPoint.y - (dragOffset.y * scaleFactor);
+
+        // 3. Apply the transform
         if (scaleFactor > 1) {
-            // The material's top-left corner (x, y) shifts when scaled from (0,0).
-            // We need to calculate how far the *grab point* (dragOffset) shifts 
-            // and compensate the translation by that amount.
-
-            // The compensation amount is the grab point's coordinate multiplied 
-            // by the expansion ratio (scaleFactor - 1).
-
-            const scaleCompensationX = dragOffset.x * (scaleFactor - 1);
-            const scaleCompensationY = dragOffset.y * (scaleFactor - 1);
-
-            // The final translation must be the initial desired position (x, y) minus the compensation.
-            const compensatedX = x - scaleCompensationX;
-            const compensatedY = y - scaleCompensationY;
-
-            // Apply the compensated translation and scale
-            draggingMaterial.setAttribute('transform', `translate(${compensatedX},${compensatedY}) scale(${scaleFactor})`);
-
+            draggingMaterial.setAttribute('transform', `translate(${x},${y}) scale(${scaleFactor})`);
         } else {
-            // Default transformation: just translate
             draggingMaterial.setAttribute('transform', `translate(${x},${y})`);
         }
+        
+        // Update current scale for next drag operation
+        currentScale = scaleFactor;
     }
 
     function onDragEnd(e) {
@@ -451,14 +541,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const currentMaterial = draggingMaterial.id;
             const mapping = materialMap[currentMaterial];
+            
+            // Check if dropped on leaf area
+            let droppedOnLeaf = false;
+            if (leafAreaBBox) {
+                droppedOnLeaf = 
+                    svgCursorPoint.x >= leafAreaBBox.x &&
+                    svgCursorPoint.x <= leafAreaBBox.x + leafAreaBBox.width &&
+                    svgCursorPoint.y >= leafAreaBBox.y &&
+                    svgCursorPoint.y <= leafAreaBBox.y + leafAreaBBox.height;
+            }
+            
+            // If dropped on leaf, keep it there and mark it
+            if (droppedOnLeaf) {
+                materialsOnLeaf.add(currentMaterial);
+                
+                // Get the current transform and store it
+                const currentTransformAttr = draggingMaterial.getAttribute('transform');
+                leafMaterialPositions.set(currentMaterial, currentTransformAttr);
+                dropped = true;
+                
+                // Move to leaf-svg group to keep it on the leaf
+                const leafGroup = getSVGElementById('leaf-svg');
+                if (leafGroup) {
+                    leafGroup.appendChild(draggingMaterial);
+                    // Ensure the transform is maintained after moving to leaf group
+                    draggingMaterial.setAttribute('transform', currentTransformAttr);
+                }
+            }
 
-            if (mapping) {
-                // ... (Finding targetBox logic remains the same) ...
-                const allBoxIds = [
-                    'transparent-box-1', 'transparent-box-2', 'transparent-box-3',
-                    'translucent-box-1', 'translucent-box-2', 'translucent-box-3',
-                    'opaque-panel-1', 'opaque-panel-2', 'opaque-panel-3'
-                ];
+            if (mapping && !droppedOnLeaf) {
+                // Only allow dropping in boxes if material has been over plant/leaf area
+                const hasBeenOverPlant = materialHasBeenOverPlant.get(currentMaterial) || false;
+                
+                if (!hasBeenOverPlant) {
+                    // Material was never dragged over plant/leaf, don't allow box drop
+                    console.log('Material must be dragged over plant/leaf area first');
+                    
+                    // Show warning by adding active class to warning-note
+                    const warningNote = document.getElementById('warning-note');
+                    if (warningNote) {
+                        warningNote.classList.add('active');
+                        setTimeout(() => {
+                            warningNote.classList.remove('active');
+                        }, 3000);
+                    }
+                } else {
+                    // Material has been over plant/leaf, proceed with normal box drop logic
+                    const allBoxIds = [
+                        'transparent-box-1', 'transparent-box-2', 'transparent-box-3',
+                        'translucent-box-1', 'translucent-box-2', 'translucent-box-3',
+                        'opaque-panel-1', 'opaque-panel-2', 'opaque-panel-3'
+                    ];
 
                 let targetBox = null;
 
@@ -610,6 +744,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
 
                             dropped = true;
+                            
+                            // Enable reset button after first successful drop
+                            if (resetBtn) {
+                                resetBtn.disabled = false;
+                            }
+                            
+                            // Remove from leaf tracking since it's now in a category
+                            materialsOnLeaf.delete(currentMaterial);
+                            leafMaterialPositions.delete(currentMaterial);
+                            // Clear the plant tracking for this material
+                            materialHasBeenOverPlant.delete(currentMaterial);
                         }
                         // --- END UPDATED PLACEMENT LOGIC ---
 
@@ -634,13 +779,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            }
 
-            // If not a valid/allowed drop (i.e., dropped === false), return to original position.
-            if (!dropped && originalParent) {
-                // Snap back to original position (using the stored originalTransform which is just translate)
-                originalParent.appendChild(draggingMaterial);
-                // originalTransform is guaranteed to be a valid translate(x, y) string
-                draggingMaterial.setAttribute('transform', originalTransform);
+            // If not a valid/allowed drop (i.e., dropped === false), return to appropriate position.
+            if (!dropped) {
+                // If material is on leaf, return to leaf position
+                if (materialsOnLeaf.has(currentMaterial) && leafMaterialPositions.has(currentMaterial)) {
+                    const leafGroup = getSVGElementById('leaf-svg');
+                    if (leafGroup) {
+                        leafGroup.appendChild(draggingMaterial);
+                        draggingMaterial.setAttribute('transform', leafMaterialPositions.get(currentMaterial));
+                    }
+                } else if (originalParent) {
+                    // Snap back to original position (using the stored originalTransform)
+                    originalParent.appendChild(draggingMaterial);
+                    draggingMaterial.setAttribute('transform', originalTransform);
+                }
             }
         }
 
@@ -649,6 +803,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dragOffset = { x: 0, y: 0 };
         originalTransform = '';
         isDragging = false;
+        currentScale = 1;
 
         // Clean up event listeners
         document.removeEventListener('mousemove', onDragMove);

@@ -188,3 +188,16 @@ g.material-container.hidden-state {
 .show .material-container use{
   transform: translate(15px, 25px) scale(.8) !important;
 }
+
+/* Warning note animation */
+#warning-note {
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#warning-note.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

@@ -28,9 +28,7 @@
                   fill="white"></path>
 
               </g>
-              <g id="leaf-svg">
-                <use href="./assets/leaf.svg" x="813.85" y="326.92" width="309.16" height="426.16" />
-              </g>
+              
               <g id="Drag box panel">
                 <path id="Vector_17"
                   d="M54.1523 264.49L54.1523 821.49C54.1523 854.075 80.4962 880.49 112.993 880.49H655.524C688.02 880.49 714.364 854.075 714.364 821.49V264.49C714.364 231.905 688.02 205.49 655.524 205.49H112.993C80.4962 205.49 54.1523 231.905 54.1523 264.49Z"
@@ -109,6 +107,9 @@
                       fill="#024D52" />
                   </g>
                 </g>
+              </g>
+              <g id="leaf-svg">
+                <use href="./assets/leaf.svg" x="813.85" y="326.92" width="309.16" height="426.16" />
               </g>
               <g id="translucent-material-1" draggable="true">
                 <rect x="137.29" y="272.05" width="99.73" height="141.7" fill="transparent" pointer-events="all" />
@@ -275,7 +276,11 @@
                   </g>
                 </g>
               </g>
-
+              <foreignObject id="warning-note" x="1210" y="970" width="700" height="50">
+                <div xmlns="http://www.w3.org/1999/xhtml"
+                  style="font-family: Roboto;font-size: 28px;font-weight: 400;color: #A90C0C;font-style: italic;text-align: center;">
+                  Please drag the material over the leaves first!</div>
+              </foreignObject>
 
 
               <g id="Layer 32">
@@ -303,19 +308,23 @@
                     <text id="Place the objects on the frame to check their transparency," fill="#A90C0C"
                       xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="28"
                       font-style="italic" letter-spacing="0em">
-                      <tspan x="275.992" y="149.43">Place the objects on the frame to check their transparency,</tspan>
+                      <tspan x="275.992" y="149.43">Place each object over the leaves to check its transparency </tspan>
                     </text>
                     <text id="and then drop them in the correct category" fill="#A90C0C" xml:space="preserve"
                       style="white-space: pre" font-family="Roboto" font-size="28" font-style="italic"
                       letter-spacing="0em">
-                      <tspan x="389.32" y="183.03">and then drop them in the correct category</tspan>
+                      <tspan x="379.32" y="183.03">and then drop it into the correct category.</tspan>
                     </text>
                   </g>
                 </g>
               </g>
             </g>
           </g>
+
           <defs>
+
+
+
             <clipPath id="boxClip1">
               <path
                 d="M1431.07 208.4H1316.38C1303.99 208.4 1293.95 218.473 1293.95 230.9V344.9C1293.95 357.326 1303.99 367.4 1316.38 367.4H1431.07C1443.47 367.4 1453.51 357.326 1453.51 344.9V230.9C1453.51 218.473 1443.47 208.4 1431.07 208.4Z" />
@@ -355,7 +364,20 @@
           </defs>
         </svg>
       </div>
-
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <button class="btn" id="btn-1" style="background-color:#F94877; color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
