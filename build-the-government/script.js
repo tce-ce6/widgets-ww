@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Buttons (dynamic)
   const btn1 = document.getElementById("btn-1"); // Compare / Continue / Back / Reset (New in Compare Mode)
   const btn2 = document.getElementById("btn-2"); // Continue / Reset
+  const btn3 = document.getElementById("btn-3"); // Home
 
   // --- Lottie Animation Initialization and Control ---
   let lottieAnimation = null;
@@ -306,6 +307,10 @@ document.addEventListener("DOMContentLoaded", () => {
       btn2.style.display = "none";
       btn2.disabled = true;
     }
+    if (btn3) {
+      btn3.style.display = "none";
+      btn3.disabled = true;
+    }
   }
 
   function setStep1Buttons() {
@@ -325,6 +330,10 @@ document.addEventListener("DOMContentLoaded", () => {
       btn2.textContent = "Continue";
       btn2.disabled = true;
     }
+    if (btn3) {
+      btn3.style.display = "none";
+      btn3.disabled = true;
+    }
 
     // Ensure note is set for default mode
     if (step1Note) {
@@ -333,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "Build at least two government types to compare them. Tap any card to proceed.";
       } else {
         step1Note.textContent =
-          "Tap 'Compare' or Continue to build more governments.";
+          "Tap 'Compare' or continue to build more governments.";
       }
     }
   }
@@ -347,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn1) {
       if (compareMode) {
         btn1.style.display = canCompare ? "inline-block" : "none";
-        btn1.textContent = "Reset";
+        btn1.textContent = "Home";
         btn1.disabled = !canCompare;
       } else {
         btn1.style.display = canCompare ? "inline-block" : "none";
@@ -360,11 +369,15 @@ document.addEventListener("DOMContentLoaded", () => {
       btn2.textContent = "Continue";
       btn2.disabled = !enableContinue;
     }
+    if (btn3) {
+      btn3.style.display = "none";
+      btn3.disabled = true;
+    }
 
     // Ensure note is set for compare mode
     if (step1Note) {
       step1Note.textContent = canCompare
-        ? "Select any two completed cards, then tap Continue to view a side-by-side comparison."
+        ? "Tap any two completed cards. Then tap 'Continue' to view a comparison."
         : "Complete at least two government quizzes to enable Compare.";
     }
   }
@@ -400,7 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.selectedGovernmentsForComparison = null;
 
     // ⭐ MODIFICATION: Don't clear 'active' class globally; only clear selections.
-    cards.forEach((c) => c.classList.remove("active"));
+    cards.forEach((c) => {
+      c.classList.remove("active");
+      c.classList.remove("compare"); // Remove compare class when exiting compare mode
+    });
 
     // ⭐ NEW LOGIC: Re-apply 'active' class to cards that have been completed.
     cards.forEach((card) => {
@@ -408,6 +424,11 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add("active");
       }
     });
+
+    // Remove correct-answer class from option-wrapper when returning to Step 1
+    if (optionWrapper) {
+      optionWrapper.classList.remove("correct-answer");
+    }
 
     // Reset buttons to initial Step 1 state (this also sets the correct default step1Note text)
     setStep1Buttons();
@@ -521,13 +542,55 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1️⃣ Select the government
     selectGovernmentById(cardId);
 
-    // 2️⃣ If government is already completed, just highlight it (active class)
+    // 2️⃣ If government is already completed, show Step-2 with solved answers
     if (completedGovernmentIds.includes(cardId)) {
-      card.classList.add("active");
-      setStep1Buttons();
-      step2.style.display = "none";
+      // Show Step 2 with the solved answers
+      step1.style.display = "none";
       step3.style.display = "none";
-      if (selectBoxNote) selectBoxNote.style.display = "inline-block";
+      step2.style.display = "inline";
+
+      // Restore answered blocks state
+      const govData = getGovernmentDataById(cardId);
+      if (govData && govData.blocks) {
+        // Mark all blocks as answered
+        govData.blocks.forEach((_, idx) => {
+          answeredBlocks[idx] = true;
+        });
+
+        // Reset and update UI
+        blockTitles.forEach((bt) => {
+          bt.classList.remove("active");
+          bt.classList.add("completed");
+        });
+
+        // Display all result boxes with correct answers
+        for (let i = 0; i < govData.blocks.length; i++) {
+          const blk = govData.blocks[i];
+          setResultText(i + 1, blk["Answer"] || "");
+        }
+
+        // Show options for the first block (in answered state)
+        renderOptionsForBlock(0);
+        
+        // Show both Home and Continue buttons for completed state
+        showActionButtons();
+      }
+
+      if (selectBoxNote) selectBoxNote.style.display = "none";
+      
+      // Hide insights initially
+      const insightResultBox = document.getElementById("insight-result-box");
+      if (insightResultBox) insightResultBox.style.display = "none";
+      const insightsWrapper = document.getElementById("insights-wrapper");
+      if (insightsWrapper) insightsWrapper.style.display = "none";
+
+      if (optionWrapper) {
+        optionWrapper.style.display = "inline";
+        optionWrapper.setAttribute("data-active-block", "0");
+        // Add correct-answer class to option-wrapper for completed answers
+        optionWrapper.classList.add("correct-answer");
+      }
+      if (questionWrapper) questionWrapper.style.display = "inline";
     } else {
       // 3️⃣ If NOT completed → open Step-2 quiz
       step1.style.display = "none";
@@ -566,8 +629,13 @@ document.addEventListener("DOMContentLoaded", () => {
         optionWrapper.style.display = "inline";
         // ✅ FIX: Set the active block index so options are immediately clickable
         optionWrapper.setAttribute("data-active-block", "0");
+        // Remove correct-answer class when starting a new quiz
+        optionWrapper.classList.remove("correct-answer");
       }
       if (questionWrapper) questionWrapper.style.display = "inline";
+      
+      // Show only Home button when starting a new quiz
+      showHomeButtonOnly();
       if (selectBoxNote) selectBoxNote.style.display = "none";
 
       renderBlockTitles();
@@ -687,18 +755,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Logic for Reset in Step 1 (Compare Mode)
-      if (compareMode && btn1.textContent.trim().toLowerCase() === "reset") {
-        // Clear selected cards for compare
-        selectedCardsForCompare.clear();
-
-        // Remove .compare class from all cards
-        cards.forEach((c) => c.classList.remove("compare"));
-
-        // Disable the Reset button until at least one card is selected
-        btn1.disabled = true;
-
-        updateStep1ButtonsInCompareMode();
+      // Logic for Home in Step 1 (Compare Mode) - Go back to default mode
+      if (compareMode && btn1.textContent.trim().toLowerCase() === "home") {
+        backToDefaultStage();
         return;
       }
 
@@ -828,6 +887,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  if (btn3) {
+    btn3.addEventListener("click", () => {
+      const btnText = btn3.textContent.trim().toLowerCase();
+
+      // Handle "Home" - Go back to Step 1 default mode (exit compare mode if active)
+      if (btnText === "home") {
+        backToDefaultStage();
+      }
+    });
+  }
+
   // --- Step 2 Logic ---
 
   const questionWrapper = step2.querySelector("#question-wrapper");
@@ -856,6 +926,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn2) {
       btn2.style.display = "none";
       btn2.disabled = true;
+    }
+    if (btn3) {
+      btn3.style.display = "inline-block";
+      btn3.disabled = false;
+      btn3.textContent = "Home";
+    }
+  }
+
+  function showHomeButtonOnly() {
+    if (btn1) {
+      btn1.style.display = "none";
+      btn1.disabled = true;
+    }
+    if (btn2) {
+      btn2.style.display = "none";
+      btn2.disabled = true;
+    }
+    if (btn3) {
+      btn3.style.display = "inline-block";
+      btn3.disabled = false;
+      btn3.textContent = "Home";
     }
   }
 
@@ -915,6 +1006,17 @@ document.addEventListener("DOMContentLoaded", () => {
         step2.querySelector("#insights-note");
       if (note) note.style.display = "none";
 
+      // Adjust insight-box y-position for Military Junta
+      const insightBox = document.getElementById("insight-box");
+      if (insightBox && window.selectedGovernment) {
+        const govType = window.selectedGovernment["Government Type"];
+        if (govType === "Military Junta") {
+          insightBox.setAttribute("y", "220");
+        } else {
+          insightBox.setAttribute("y", "235");
+        }
+      }
+
       if (btn1) {
         btn1.style.display = "inline-block";
         btn1.disabled = false;
@@ -944,9 +1046,9 @@ document.addEventListener("DOMContentLoaded", () => {
       opt.style.display = "none";
       opt.style.pointerEvents = "";
       try {
-        opt.classList.remove("wrong-answer", "correct-answer");
+        opt.classList.remove("wrong-answer", "correct-answer", "completed-ans");
         const inner = getForeignDiv(opt);
-        if (inner) inner.classList.remove("wrong-answer", "correct-answer");
+        if (inner) inner.classList.remove("wrong-answer", "correct-answer", "completed-ans");
       } catch (e) {}
     });
   }
@@ -985,12 +1087,20 @@ document.addEventListener("DOMContentLoaded", () => {
         2: blk["Option B"] || "",
         3: blk["Option C"] || "",
       };
+      const correctAnswer = blk["Answer"] || "";
       Object.keys(map2).forEach((k) => {
         const optEl = options[k];
         if (!optEl) return;
-        if (getForeignDiv(optEl)) getForeignDiv(optEl).textContent = map2[k];
+        const optText = map2[k];
+        if (getForeignDiv(optEl)) getForeignDiv(optEl).textContent = optText;
         optEl.style.display = "inline";
         optEl.style.pointerEvents = "none";
+        // Add completed-ans class to the correct answer option
+        if (optText.trim().toLowerCase() === correctAnswer.trim().toLowerCase()) {
+          optEl.classList.add("completed-ans");
+          const inner = getForeignDiv(optEl);
+          if (inner) inner.classList.add("completed-ans");
+        }
       });
       setResultText(index + 1, blk["Answer"] || "");
       return;
