@@ -1,7 +1,7 @@
-
-*:focus, 
+*:focus,
 *:focus {
-    outline: none !important; /* Removes the standard browser focus ring */
+  outline: none !important;
+  /* Removes the standard browser focus ring */
 }
 
 #phototropism-widget body {
@@ -152,40 +152,47 @@
   color: #6a6a6a;
 }
 
-#phototropism-widget .svg-container{
+#phototropism-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#phototropism-widget svg{
-    width: 100% !important;
-    height: 100%;
+
+#phototropism-widget svg {
+  width: 100% !important;
+  height: 100%;
 }
+
 /* transparent style  */
-g.material-container{
+g.material-container {
   transition: all .3s ease-in-out;
 }
+
 g.material-container.hidden-state {
-    transform: scale(0.1) !important; /* Scale down dramatically */
-    opacity: 0;
+  transform: scale(0.1) !important;
+  /* Scale down dramatically */
+  opacity: 0;
 }
-.active .material-container{
+
+.active .material-container {
   display: none !important;
   opacity: 0;
   visibility: hidden;
 }
-.active g use.shuttor-img{
+
+.active g use.shuttor-img {
   transform: translateY(-145px);
   transition: all .6s ease-in-out;
 }
 
-.active.show .material-container{
+.active.show .material-container {
   display: block !important;
   opacity: 1;
   visibility: visible;
-  
+
 }
-.show .material-container use{
+
+.show .material-container use {
   transform: translate(15px, 25px) scale(.8) !important;
 }
 
@@ -200,4 +207,8 @@ g.material-container.hidden-state {
 #warning-note.active {
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+.leaf-img {
+  border: 1px solid red;
 }

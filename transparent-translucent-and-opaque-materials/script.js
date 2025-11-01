@@ -149,21 +149,21 @@ let plantAreaBBox = null;
 
 // Helper function to get the BBox of the #leaf-svg group
 function getLeafAreaBBox() {
-    // We need to query the SVG element first, then the group inside it
     const svg = document.querySelector('svg');
-    const leafGroup = svg ? svg.querySelector('#leaf-svg') : null;
+    const leafImg = svg ? svg.querySelector('#leaf-img') : null;
 
-    if (leafGroup) {
+    if (leafImg) {
         try {
-            // Since we use CTM.inverse() on the cursor, we should use getBBox() for SVG coords.
-            return leafGroup.getBBox();
+            // Use only the leaf image, not the whole group, so the bbox doesn’t grow.
+            return leafImg.getBBox();
         } catch (e) {
-            console.error("Could not get BBox for #leaf-svg", e);
+            console.error("Could not get BBox for #leaf-img", e);
             return null;
         }
     }
     return null;
 }
+
 
 // Helper function to get the BBox of the #plant-svg group
 function getPlantAreaBBox() {
@@ -184,22 +184,22 @@ function getPlantAreaBBox() {
 // Helper function to extract transform values from a transform string
 function parseTransform(transformStr) {
     const result = { x: 0, y: 0, scale: 1 };
-    
+
     if (!transformStr) return result;
-    
+
     // Extract translate values
     const translateMatch = /translate\(([-\d.]+)\s*,?\s*([-\d.]+)?\)/.exec(transformStr);
     if (translateMatch) {
         result.x = parseFloat(translateMatch[1]) || 0;
         result.y = parseFloat(translateMatch[2]) || 0;
     }
-    
+
     // Extract scale value
     const scaleMatch = /scale\(([-\d.]+)\)/.exec(transformStr);
     if (scaleMatch) {
         result.scale = parseFloat(scaleMatch[1]) || 1;
     }
-    
+
     return result;
 }
 
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             location.reload();
         });
     }
-    
+
     // Function to hide materials in target boxes initially
     function hideInitialMaterials() {
         // Query groups that are the target boxes and contain a 'use' element
@@ -310,13 +310,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDragging = false;
     let originalParent = null;
     let currentScale = 1; // Track current scale of dragging material
-    
+
     // Track materials that have been placed on the leaf
     const materialsOnLeaf = new Set();
-    
+
     // Track original positions for materials on leaf
     const leafMaterialPositions = new Map();
-    
+
     // Track if material has ever been over plant/leaf area
     const materialHasBeenOverPlant = new Map();
 
@@ -329,14 +329,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const startDrag = function (e) {
                 e.preventDefault();
                 if (isDragging) return;
-                
+
                 // Check if there's already a material on the leaf (and it's not this one)
                 const leafGroupCheck = getSVGElementById('leaf-svg');
                 if (leafGroupCheck) {
-                    const materialsInLeaf = Array.from(leafGroupCheck.children).filter(child => 
+                    const materialsInLeaf = Array.from(leafGroupCheck.children).filter(child =>
                         child.id && materialMap[child.id] && child.id !== material.id
                     );
-                    
+
                     if (materialsInLeaf.length > 0) {
                         // There's already a material on the leaf, prevent dragging
                         console.log('Cannot drag: another material is already on the leaf');
@@ -347,8 +347,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // --- CRITICAL FIX 1: Recalculate BBox and CTM on drag start ---
                 // 1. Refresh the leaf area BBox (if it changed due to resize)
                 leafAreaBBox = getLeafAreaBBox();
-                plantAreaBBox = getPlantAreaBBox(); 
-                
+                plantAreaBBox = getPlantAreaBBox();
+
                 isDragging = true;
                 draggingMaterial = material;
                 originalParent = material.parentNode;
@@ -359,11 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     draggingMaterial = null;
                     return;
                 }
-                
+
                 const pt = svg.createSVGPoint();
                 pt.x = e.clientX;
                 pt.y = e.clientY;
-                
+
                 // 2. Get the current Screen CTM and its inverse (fresh matrix)
                 let screenCTMInverse;
                 try {
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     draggingMaterial = null;
                     return;
                 }
-                
+
                 const cursorpt = pt.matrixTransform(screenCTMInverse);
                 // --- END CRITICAL FIX 1 ---
 
@@ -442,13 +442,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function onDragMove(e) {
         if (!draggingMaterial) return;
         const svg = document.querySelector('svg');
-        
+
         if (!svg) return; // Safety check
 
         const pt = svg.createSVGPoint();
         pt.x = e.clientX;
         pt.y = e.clientY;
-        
+
         // --- CRITICAL FIX 2: Get a FRESH CTM inverse on EVERY move for accurate coordinates. ---
         let svgCursorPoint;
         try {
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // This is the fallback if CTM fails mid-drag
             console.error("Failed to get fresh CTM inverse on drag move. Stopping drag.", error);
             onDragEnd(e); // End the drag gracefully
-            return; 
+            return;
         }
         // --- END CRITICAL FIX 2 ---
 
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isOverPlantOrLeaf = true;
             }
         }
-        
+
         // Check if cursor is over the #plant-svg group
         if (!isOverPlantOrLeaf && plantAreaBBox) {
             const isOverPlantArea =
@@ -491,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isOverPlantOrLeaf = true;
             }
         }
-        
+
         // Track that this material has been over the plant/leaf area
         if (isOverPlantOrLeaf && draggingMaterial) {
             materialHasBeenOverPlant.set(draggingMaterial.id, true);
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             draggingMaterial.setAttribute('transform', `translate(${x},${y})`);
         }
-        
+
         // Update current scale for next drag operation
         currentScale = scaleFactor;
     }
@@ -515,9 +515,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function onDragEnd(e) {
         if (!draggingMaterial) return;
         const svg = document.querySelector('svg');
-        
+
         if (!svg) {
-             // Just snap back if SVG is gone
+            // Just snap back if SVG is gone
             if (originalParent) {
                 originalParent.appendChild(draggingMaterial);
                 draggingMaterial.setAttribute('transform', originalTransform);
@@ -527,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pt = svg.createSVGPoint();
             pt.x = e.clientX;
             pt.y = e.clientY;
-            
+
             // Use a fresh CTM inverse one last time for the drop point calculation
             let svgCursorPoint;
             try {
@@ -541,26 +541,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const currentMaterial = draggingMaterial.id;
             const mapping = materialMap[currentMaterial];
-            
+
             // Check if dropped on leaf area
             let droppedOnLeaf = false;
             if (leafAreaBBox) {
-                droppedOnLeaf = 
+                droppedOnLeaf =
                     svgCursorPoint.x >= leafAreaBBox.x &&
                     svgCursorPoint.x <= leafAreaBBox.x + leafAreaBBox.width &&
                     svgCursorPoint.y >= leafAreaBBox.y &&
                     svgCursorPoint.y <= leafAreaBBox.y + leafAreaBBox.height;
             }
-            
+
             // If dropped on leaf, keep it there and mark it
             if (droppedOnLeaf) {
                 materialsOnLeaf.add(currentMaterial);
-                
+
                 // Get the current transform and store it
                 const currentTransformAttr = draggingMaterial.getAttribute('transform');
                 leafMaterialPositions.set(currentMaterial, currentTransformAttr);
                 dropped = true;
-                
+                if (resetBtn) {
+                    resetBtn.disabled = false;
+                }
+
                 // Move to leaf-svg group to keep it on the leaf
                 const leafGroup = getSVGElementById('leaf-svg');
                 if (leafGroup) {
@@ -573,11 +576,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mapping && !droppedOnLeaf) {
                 // Only allow dropping in boxes if material has been over plant/leaf area
                 const hasBeenOverPlant = materialHasBeenOverPlant.get(currentMaterial) || false;
-                
+
                 if (!hasBeenOverPlant) {
                     // Material was never dragged over plant/leaf, don't allow box drop
                     console.log('Material must be dragged over plant/leaf area first');
-                    
+
                     // Show warning by adding active class to warning-note
                     const warningNote = document.getElementById('warning-note');
                     if (warningNote) {
@@ -594,191 +597,191 @@ document.addEventListener('DOMContentLoaded', () => {
                         'opaque-panel-1', 'opaque-panel-2', 'opaque-panel-3'
                     ];
 
-                let targetBox = null;
+                    let targetBox = null;
 
-                // --- 1. Find the target box the cursor is directly over or the closest available box ---
-                let closestEmptyDistance = Infinity;
-                let closestEmptyBox = null;
+                    // --- 1. Find the target box the cursor is directly over or the closest available box ---
+                    let closestEmptyDistance = Infinity;
+                    let closestEmptyBox = null;
 
-                for (const boxId of allBoxIds) {
-                    const box = getSVGElementById(boxId);
-                    if (!box) continue;
+                    for (const boxId of allBoxIds) {
+                        const box = getSVGElementById(boxId);
+                        if (!box) continue;
 
-                    // Get the path element's BBox (not affected by foreignObject)
-                    const boxPath = box.querySelector('path');
-                    if (!boxPath) continue;
+                        // Get the path element's BBox (not affected by foreignObject)
+                        const boxPath = box.querySelector('path');
+                        if (!boxPath) continue;
 
-                    let boxBBox;
-                    try {
-                        boxBBox = boxPath.getBBox();
-                    } catch (e) {
-                        continue; // Skip if BBox fails
+                        let boxBBox;
+                        try {
+                            boxBBox = boxPath.getBBox();
+                        } catch (e) {
+                            continue; // Skip if BBox fails
+                        }
+
+                        // Check if cursor is directly over this box
+                        if (
+                            svgCursorPoint.x >= boxBBox.x &&
+                            svgCursorPoint.x <= boxBBox.x + boxBBox.width &&
+                            svgCursorPoint.y >= boxBBox.y &&
+                            svgCursorPoint.y <= boxBBox.y + boxBBox.height
+                        ) {
+                            targetBox = box;
+                            break; // Found the box under the cursor, use it immediately
+                        }
+
+                        // Check if box is empty and calculate distance for fallback snapping
+                        const existingMaterialGroup = box.querySelector('g.material-container');
+                        // Check if the box is empty (no material group, or the material group is hidden)
+                        const targetBoxIsMaterialContainer = box.id.includes('-box-') || box.id.includes('-panel-');
+                        const isEmptyBox = targetBoxIsMaterialContainer && (!existingMaterialGroup || existingMaterialGroup.style.display === 'none');
+
+                        // Only consider empty boxes within the material's intended panel for *snapping*
+                        if (isEmptyBox && boxId.startsWith(mapping.category)) {
+                            const boxCenterX = boxBBox.x + boxBBox.width / 2;
+                            const boxCenterY = boxBBox.y + boxBBox.height / 2;
+                            const distance = Math.sqrt(
+                                Math.pow(svgCursorPoint.x - boxCenterX, 2) +
+                                Math.pow(svgCursorPoint.y - boxCenterY, 2)
+                            );
+
+                            if (distance < closestEmptyDistance) {
+                                closestEmptyDistance = distance;
+                                closestEmptyBox = box;
+                            }
+                        }
                     }
 
-                    // Check if cursor is directly over this box
-                    if (
-                        svgCursorPoint.x >= boxBBox.x &&
-                        svgCursorPoint.x <= boxBBox.x + boxBBox.width &&
-                        svgCursorPoint.y >= boxBBox.y &&
-                        svgCursorPoint.y <= boxBBox.y + boxBBox.height
-                    ) {
-                        targetBox = box;
-                        break; // Found the box under the cursor, use it immediately
+                    // If no box was directly under the cursor, use the closest empty box (if close enough)
+                    if (!targetBox && closestEmptyBox && closestEmptyDistance < 50) {
+                        targetBox = closestEmptyBox;
                     }
 
-                    // Check if box is empty and calculate distance for fallback snapping
-                    const existingMaterialGroup = box.querySelector('g.material-container');
-                    // Check if the box is empty (no material group, or the material group is hidden)
-                    const targetBoxIsMaterialContainer = box.id.includes('-box-') || box.id.includes('-panel-');
-                    const isEmptyBox = targetBoxIsMaterialContainer && (!existingMaterialGroup || existingMaterialGroup.style.display === 'none');
 
-                    // Only consider empty boxes within the material's intended panel for *snapping*
-                    if (isEmptyBox && boxId.startsWith(mapping.category)) {
-                        const boxCenterX = boxBBox.x + boxBBox.width / 2;
-                        const boxCenterY = boxBBox.y + boxBBox.height / 2;
-                        const distance = Math.sqrt(
-                            Math.pow(svgCursorPoint.x - boxCenterX, 2) +
-                            Math.pow(svgCursorPoint.y - boxCenterY, 2)
-                        );
+                    // --- 2. Process Drop (Correct/Incorrect/No Drop) ---
+                    if (targetBox) {
 
-                        if (distance < closestEmptyDistance) {
-                            closestEmptyDistance = distance;
-                            closestEmptyBox = box;
+                        // Extract category from targetBox.id
+                        let boxCategory = '';
+                        if (targetBox.id.includes('transparent-box-') || targetBox.id.includes('translucent-box-')) {
+                            boxCategory = targetBox.id.split('-box-')[0];
+                        } else if (targetBox.id.includes('opaque-panel-')) {
+                            boxCategory = targetBox.id.split('-panel-')[0];
+                        }
+
+                        const materialCategory = mapping.category;
+                        const existingMaterialGroup = targetBox.querySelector('g.material-container');
+                        const targetIsEmpty = !existingMaterialGroup || existingMaterialGroup.style.display === 'none';
+
+
+                        if (materialCategory === boxCategory && targetIsEmpty) {
+                            // *** CORRECT Drop (and empty slot) ***
+
+                            // 1. Play CORRECT Lottie animation on the target box
+                            const animPlayer = lottieAnimations[targetBox.id]?.correct;
+                            if (animPlayer) {
+                                if (!animPlayer.playFull()) {
+                                    console.error(`Failed to play CORRECT Lottie for: ${targetBox.id}. Check Lottie file path and readiness.`);
+                                }
+                            } else {
+                                console.error(`Lottie animation instance not found for: ${targetBox.id}`);
+                            }
+
+                            // *** NEW: Add 'active' class to the target box (g element) ***
+                            targetBox.classList.add('active');
+
+                            setTimeout(() => {
+                                targetBox.classList.add('show');
+                            }, 900);
+                            // *************************************************************
+
+                            // --- UPDATED MATERIAL PLACEMENT LOGIC ---
+                            // Get ONLY the path element's BBox, ignoring any foreignObject children
+                            const targetPath = targetBox.querySelector('path');
+                            if (!targetPath) {
+                                console.error('Target box has no path element');
+                                return;
+                            }
+
+                            const boxBBox = targetPath.getBBox(); // Use path BBox, not container BBox
+                            let materialGroup = existingMaterialGroup;
+                            let targetUse = materialGroup ? materialGroup.querySelector('use') : null;
+                            const sourceUse = draggingMaterial.querySelector('use');
+
+                            if (sourceUse) {
+                                if (!materialGroup) {
+                                    // Create new group and use element if none exists
+                                    materialGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                                    materialGroup.classList.add('material-container'); // Add class for better targeting
+                                    targetUse = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                                    materialGroup.appendChild(targetUse);
+                                    targetBox.appendChild(materialGroup);
+                                }
+
+                                // Update existing or new use element attributes
+                                targetUse.setAttribute('href', sourceUse.getAttribute('href'));
+                                targetUse.setAttribute('width', sourceUse.getAttribute('width'));
+                                targetUse.setAttribute('height', sourceUse.getAttribute('height'));
+
+                                // Calculate center position based on PATH bounding box only
+                                const useWidth = parseFloat(sourceUse.getAttribute('width'));
+                                const useHeight = parseFloat(sourceUse.getAttribute('height'));
+                                // Calculate the required TRANSLATION to center the use element (which has x/y=0 relative to its g parent)
+                                // inside the box's PATH BBox (not affected by foreignObject).
+                                const xTranslate = boxBBox.x + (boxBBox.width - useWidth) / 2;
+                                const yTranslate = boxBBox.y + (boxBBox.height - useHeight) / 2;
+
+                                // Use transform to position the material group
+                                materialGroup.setAttribute('transform', `translate(${xTranslate}, ${yTranslate})`);
+
+                                // The inner use element should have x/y=0 relative to its parent container group,
+                                // as the translation handles the final position.
+                                targetUse.setAttribute('x', 0);
+                                targetUse.setAttribute('y', 0);
+
+                                // Show the target material group
+                                materialGroup.style.display = 'block';
+
+                                // Remove the dragged material from the material area
+                                if (draggingMaterial.parentNode) {
+                                    draggingMaterial.parentNode.removeChild(draggingMaterial);
+                                }
+
+                                dropped = true;
+
+                                // Enable reset button after first successful drop
+                                if (resetBtn) {
+                                    resetBtn.disabled = false;
+                                }
+
+                                // Remove from leaf tracking since it's now in a category
+                                materialsOnLeaf.delete(currentMaterial);
+                                leafMaterialPositions.delete(currentMaterial);
+                                // Clear the plant tracking for this material
+                                materialHasBeenOverPlant.delete(currentMaterial);
+                            }
+                            // --- END UPDATED PLACEMENT LOGIC ---
+
+                        } else if (materialCategory !== boxCategory) {
+                            // *** INCORRECT Drop (and a drop target was found) ***
+
+                            // 1. Play WRONG Lottie animation on the target box
+                            const animPlayer = lottieAnimations[targetBox.id]?.wrong;
+                            if (animPlayer) {
+                                if (!animPlayer.playFull()) {
+                                    console.error(`Failed to play WRONG Lottie for: ${targetBox.id}. Check Lottie file path and readiness.`);
+                                }
+                            } else {
+                                console.error(`Lottie animation instance not found for: ${targetBox.id}`);
+                            }
+                            // Do NOT set dropped = true, so the material snaps back to its origin.
+
+                        } else if (materialCategory === boxCategory && !targetIsEmpty) {
+                            // *** Correct panel, but the box is NOT empty (already placed) ***
+                            // Do NOT set dropped = true, so the material snaps back to its origin.
+                            console.log('Box already filled. Snapping back.');
                         }
                     }
                 }
-
-                // If no box was directly under the cursor, use the closest empty box (if close enough)
-                if (!targetBox && closestEmptyBox && closestEmptyDistance < 50) {
-                    targetBox = closestEmptyBox;
-                }
-
-
-                // --- 2. Process Drop (Correct/Incorrect/No Drop) ---
-                if (targetBox) {
-
-                    // Extract category from targetBox.id
-                    let boxCategory = '';
-                    if (targetBox.id.includes('transparent-box-') || targetBox.id.includes('translucent-box-')) {
-                        boxCategory = targetBox.id.split('-box-')[0];
-                    } else if (targetBox.id.includes('opaque-panel-')) {
-                        boxCategory = targetBox.id.split('-panel-')[0];
-                    }
-
-                    const materialCategory = mapping.category;
-                    const existingMaterialGroup = targetBox.querySelector('g.material-container');
-                    const targetIsEmpty = !existingMaterialGroup || existingMaterialGroup.style.display === 'none';
-
-
-                    if (materialCategory === boxCategory && targetIsEmpty) {
-                        // *** CORRECT Drop (and empty slot) ***
-
-                        // 1. Play CORRECT Lottie animation on the target box
-                        const animPlayer = lottieAnimations[targetBox.id]?.correct;
-                        if (animPlayer) {
-                            if (!animPlayer.playFull()) {
-                                console.error(`Failed to play CORRECT Lottie for: ${targetBox.id}. Check Lottie file path and readiness.`);
-                            }
-                        } else {
-                            console.error(`Lottie animation instance not found for: ${targetBox.id}`);
-                        }
-
-                        // *** NEW: Add 'active' class to the target box (g element) ***
-                        targetBox.classList.add('active');
-
-                        setTimeout(() => {
-                            targetBox.classList.add('show');
-                        }, 900);
-                        // *************************************************************
-
-                        // --- UPDATED MATERIAL PLACEMENT LOGIC ---
-                        // Get ONLY the path element's BBox, ignoring any foreignObject children
-                        const targetPath = targetBox.querySelector('path');
-                        if (!targetPath) {
-                            console.error('Target box has no path element');
-                            return;
-                        }
-
-                        const boxBBox = targetPath.getBBox(); // Use path BBox, not container BBox
-                        let materialGroup = existingMaterialGroup;
-                        let targetUse = materialGroup ? materialGroup.querySelector('use') : null;
-                        const sourceUse = draggingMaterial.querySelector('use');
-
-                        if (sourceUse) {
-                            if (!materialGroup) {
-                                // Create new group and use element if none exists
-                                materialGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                                materialGroup.classList.add('material-container'); // Add class for better targeting
-                                targetUse = document.createElementNS("http://www.w3.org/2000/svg", "use");
-                                materialGroup.appendChild(targetUse);
-                                targetBox.appendChild(materialGroup);
-                            }
-
-                            // Update existing or new use element attributes
-                            targetUse.setAttribute('href', sourceUse.getAttribute('href'));
-                            targetUse.setAttribute('width', sourceUse.getAttribute('width'));
-                            targetUse.setAttribute('height', sourceUse.getAttribute('height'));
-
-                            // Calculate center position based on PATH bounding box only
-                            const useWidth = parseFloat(sourceUse.getAttribute('width'));
-                            const useHeight = parseFloat(sourceUse.getAttribute('height'));
-                            // Calculate the required TRANSLATION to center the use element (which has x/y=0 relative to its g parent)
-                            // inside the box's PATH BBox (not affected by foreignObject).
-                            const xTranslate = boxBBox.x + (boxBBox.width - useWidth) / 2;
-                            const yTranslate = boxBBox.y + (boxBBox.height - useHeight) / 2;
-
-                            // Use transform to position the material group
-                            materialGroup.setAttribute('transform', `translate(${xTranslate}, ${yTranslate})`);
-
-                            // The inner use element should have x/y=0 relative to its parent container group,
-                            // as the translation handles the final position.
-                            targetUse.setAttribute('x', 0);
-                            targetUse.setAttribute('y', 0);
-
-                            // Show the target material group
-                            materialGroup.style.display = 'block';
-
-                            // Remove the dragged material from the material area
-                            if (draggingMaterial.parentNode) {
-                                draggingMaterial.parentNode.removeChild(draggingMaterial);
-                            }
-
-                            dropped = true;
-                            
-                            // Enable reset button after first successful drop
-                            if (resetBtn) {
-                                resetBtn.disabled = false;
-                            }
-                            
-                            // Remove from leaf tracking since it's now in a category
-                            materialsOnLeaf.delete(currentMaterial);
-                            leafMaterialPositions.delete(currentMaterial);
-                            // Clear the plant tracking for this material
-                            materialHasBeenOverPlant.delete(currentMaterial);
-                        }
-                        // --- END UPDATED PLACEMENT LOGIC ---
-
-                    } else if (materialCategory !== boxCategory) {
-                        // *** INCORRECT Drop (and a drop target was found) ***
-
-                        // 1. Play WRONG Lottie animation on the target box
-                        const animPlayer = lottieAnimations[targetBox.id]?.wrong;
-                        if (animPlayer) {
-                            if (!animPlayer.playFull()) {
-                                console.error(`Failed to play WRONG Lottie for: ${targetBox.id}. Check Lottie file path and readiness.`);
-                            }
-                        } else {
-                            console.error(`Lottie animation instance not found for: ${targetBox.id}`);
-                        }
-                        // Do NOT set dropped = true, so the material snaps back to its origin.
-
-                    } else if (materialCategory === boxCategory && !targetIsEmpty) {
-                        // *** Correct panel, but the box is NOT empty (already placed) ***
-                        // Do NOT set dropped = true, so the material snaps back to its origin.
-                        console.log('Box already filled. Snapping back.');
-                    }
-                }
-            }
             }
 
             // If not a valid/allowed drop (i.e., dropped === false), return to appropriate position.
