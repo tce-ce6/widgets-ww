@@ -1,0 +1,101 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build the Government</title>
+
+  <!-- Importmap MUST come before module script -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module" src="script.js"></script>
+
+  <script src="./lottie.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body id="parlament-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Effect of Friction on Motion</h2>
+        <!-- <span id="versionId" class="versionText">B2_251010</span> -->
+      </div>
+
+      <div class="svg-container">
+        <div id="controls">
+          <div class="control-group">
+            <label>
+              <span>Gravity</span>
+              <span id="gravityValue">3.0</span>
+            </label>
+            <input type="range" id="gravitySlider" min="0.1" max="10" step="0.1" value="3.0">
+            <div class="info-text">Controls downward acceleration</div>
+          </div>
+
+          <div class="control-group">
+            <label>
+              <span>Angle of Plane</span>
+              <span id="angleValue">30°</span>
+            </label>
+            <input type="range" id="angleSlider" min="0" max="40" step="1" value="30">
+            <div class="info-text">Tilt of the inclined plane</div>
+          </div>
+
+          <div class="control-group">
+            <label>
+              <span>Friction Coeff (μ)</span>
+              <span id="frictionValue">0.20</span>
+            </label>
+            <input type="range" id="frictionSlider" min="0" max="1" step="0.01" value="0.20">
+            <div class="info-text">Surface friction resistance</div>
+          </div>
+        </div>
+        <div id="canvas-container"></div>
+
+      </div>
+
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <button class="btn" id="runButton" style="background-color:#4caf50; color:white;" onfocus="
+              document.querySelectorAll('.btn').forEach(b => {
+                b.style.outline = 'none';
+                b.style.outlineOffset = '0';
+              });
+              this.style.outline = '3px solid #4caf50';
+              this.style.outlineOffset = '3px';
+            " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Run
+          </button>
+
+          <button class="btn btn-primary" id="resetButton" style="background-color:#1e6bef; color:white;" onfocus="
+              document.querySelectorAll('.btn').forEach(b => {
+                b.style.outline = 'none';
+                b.style.outlineOffset = '0';
+              });
+              this.style.outline = '3px solid #1e6bef';
+              this.style.outlineOffset = '3px';
+            " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/oimo/build/oimo.min.js"></script>
+</body>
+
+</html>
