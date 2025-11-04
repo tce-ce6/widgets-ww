@@ -1010,7 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const insightBox = document.getElementById("insight-box");
       if (insightBox && window.selectedGovernment) {
         const govType = window.selectedGovernment["Government Type"];
-        if (govType === "Military Junta") {
+        if (govType === "Military Junta" || govType === "Oligarchy") {
           insightBox.setAttribute("y", "220");
         } else {
           insightBox.setAttribute("y", "235");

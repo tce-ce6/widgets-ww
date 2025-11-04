@@ -132,17 +132,17 @@ const WIDGET_DATA = [
   },
   {
     name: "Locating decimals",
-    link: "",
-    imagePath: "./assets/wip.png",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/locating_decimals/index.html",
+    imagePath: "./assets/locating-decimals.png",
     creators: "sh-mr-17",
-    status: "work-in-progress",
+    status: "closed",
   },
   {
     name: "Reading Large numbers",
-    link: "",
-    imagePath: "./assets/wip.png",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/large_numbers/index.html",
+    imagePath: "./assets/large-numbers.png",
     creators: "sh-mr-22",
-    status: "work-in-progress",
+    status: "closed",
   },
   
   {
