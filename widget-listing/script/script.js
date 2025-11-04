@@ -13,21 +13,23 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light%E2%80%8B/index.html",
     imagePath: "./assets/plant-response.png",
     creators: "ni-bd-01",
-    status: "closed",
+    status: "WIP-With-Tech",
 
   },
-//   {
-//     name: "Triangle Inequality",
-//     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-inequality/index.html",
-//     imagePath: "./assets/triangle-inequality.png",
-//     creators: "as-sr-",
-//   },
+  {
+    name: "Triangle Inequality",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-inequality/index.html",
+    imagePath: "./assets/triangle-inequality.png",
+    creators: "as-sr-09",
+    status: "closed", 
+
+  },
   {
     name: "Food Chain Population Simulator",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/food_chain_population_changes/index.html",
     imagePath: "./assets/food-chain.png",
     creators: "sh-nav-03",
-    status: "closed",
+    status: "WIP-With-Tech",
 
   },
   {
@@ -43,7 +45,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sentence-construction/index.html",
     imagePath: "./assets/word-wizard.png",
     creators: "as-he-06",
-    status: "closed",
+    status: "WIP-With-Tech",
 
   },
   {
@@ -54,44 +56,52 @@ const WIDGET_DATA = [
     status: "closed",
 
   },
-  // {
-  //   name: "Symmetry",
-  //   link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
-  //   imagePath: "./assets/symmetry.png",
-  //   creators: "sh-mr-10",
-  // },
+  {
+    name: "Symmetry",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
+    imagePath: "./assets/symmetry.png",
+    creators: "sh-mr-10",
+    status: "WIP-With-Tech",
+
+  },
   {
     name: "Seed Germination Conditions",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/seed_germination_condition/index.html",
     imagePath: "./assets/seed-gemination.png",
     creators: "sh-su-11",
+    status: "WIP-With-Tech",
+
+  },
+  {
+    name: "Pair of Linear Equations​",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/pair-of-linear-equations/index.html",
+    imagePath: "./assets/pair-of-linear-equation.png",
+    creators: "as-sr-12",
+    status: "WIP-With-Tech",
+
+  },
+  {
+    name: "Roots of a Quadratic Equation",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/roots-of-quadratic-equations/index.html",
+    imagePath: "./assets/roots-of-quadratic-equations.png",
+    creators: "as-sr-14",
     status: "closed",
 
   },
-//   {
-//     name: "Pair of Linear Equations​",
-//     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/pair-of-linear-equations/index.html",
-//     imagePath: "./assets/pair-of-linear-equation.png",
-//     creators: "as-sr-12",
-//   },
-//   {
-//     name: "Roots of a Quadratic Equation",
-//     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-inequality/index.html",
-//     imagePath: "./assets/triangle-inequality-1.png",
-//     creators: "as-sr-14",
-//   },
-//   {
-//     name: "Triangles on Same Base, Between Same Parallels",
-//     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-on-same-base/index.html",
-//     imagePath: "./assets/triangle-on-same-base.png",
-//     creators: "as-ka-16",
-//   },
+  {
+    name: "Triangles on Same Base, Between Same Parallels",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-on-same-base/index.html",
+    imagePath: "./assets/triangle-on-same-base.png",
+    creators: "as-ka-16",
+    status: "closed",
+
+  },
   {
     name: "Altitude and Temperature - A Cool Connection",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/altitude-temperature-cool-connection/index.html",
     imagePath: "./assets/altitude-and-temperature.png",
     creators: "sh-na-20",
-    status: "closed",
+    status: "WIP-With-Tech",
 
   },
   {
@@ -107,7 +117,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sahi-chinh-pehchano/index.html",
     imagePath: "./assets/find-correct-sign.png",
     creators: "as-so-27",
-    status: "closed",
+    status: "WIP-With-Tech",
   },
   {
     name: "Transparent, Translucent, and Opaque Materials",
@@ -129,20 +139,21 @@ const WIDGET_DATA = [
     imagePath: "./assets/tangents-from-an-external-point.png",
     creators: "as-ka-30",
     status: "closed",
+
   },
   {
     name: "Locating decimals",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/locating_decimals/index.html",
     imagePath: "./assets/locating-decimals.png",
     creators: "sh-mr-17",
-    status: "closed",
+    status: "WIP-With-Tech",
   },
   {
     name: "Reading Large numbers",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/large_numbers/index.html",
     imagePath: "./assets/large-numbers.png",
     creators: "sh-mr-22",
-    status: "closed",
+    status: "WIP-With-Tech",
   },
   
   {
