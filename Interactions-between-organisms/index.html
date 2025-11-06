@@ -11,8 +11,8 @@
     </style>
 </head>
 <body>
-    <div class="title-container">
-        <h3>Interactions between organisms</h3>
+    <div class="wdgetTitle">
+        <h2>Interactions between organisms</h2>
     </div>
     <div id="app" class="mainContainerOuter">
         <div class="mainContainer" >
@@ -69,7 +69,7 @@
 
         let gameState = 'pairing'; // 'pairing', 'bucketing', 'finished'
         let feedback = { show: false, isCorrect: false, imgKey: null }; 
-        let instruction = 'Tap on the organisms below to form the interactive pairs.';
+        let instruction = 'Tap the organisms below to form the interactive pairs.';
         
         let ignoreNextClick = false; // <-- Add new state variable
 
@@ -108,7 +108,7 @@
         // --- Initialize or Reset Game State ---
         function initializeState() {
             gameState = 'pairing';
-            instruction = 'Tap on the organisms below to form the interactive pairs.';
+            instruction = 'Tap the organisms below to form the interactive pairs.';
             selectedOrganisms = [];
             draggedPair = null;
             pairs = [];
@@ -192,7 +192,7 @@
             if(pairs.length === 3 && gameState === 'pairing') {
                 continueButton.removeAttribute('disabled');
                 continueButton.style('opacity', '1.0'); // Enabled style
-                drawBottomText('Tap on Continue for the next activity');
+                drawBottomText('Tap Continue for the next activity');
             } else if(pairs.length === 0 && gameState === 'pairing') {
                 drawHeader();
             } else if (gameState === 'bucketing' || gameState === 'finished') {
@@ -736,7 +736,7 @@
                 computeSlotPositions();
 
                 if (pairs.length === 3) {
-                    instruction = 'Tap on Continue for the next activity';
+                    instruction = 'Tap Continue for the next activity';
                     resetButton.style('display', 'none');
                     continueButton.style('display', 'block');
                     continueButton.removeAttribute('disabled');
