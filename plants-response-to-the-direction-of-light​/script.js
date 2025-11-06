@@ -155,19 +155,19 @@ document.addEventListener('DOMContentLoaded', () => {
             case '1':
                 // When clicked on position-1 (current state is 1), suggest 2 or 3
                 // newText = 'Tap between any of the position 2 and position 3 to move the light source';
-                newText = 'Tap between the positions to move the light source.';
+                newText = 'Tap another position to move the light source.';
                 break;
             case '2':
                 // When clicked on position-2 (current state is 2) or default, suggest 1 or 3
                 // newText = 'Tap between any of the position 1 and position 3 to move the light source';
-                newText = 'Tap between the positions to move the light source.';
+                newText = 'Tap another position to move the light source.';
 
 
                 break;
             case '3':
                 // When clicked on position-3 (current state is 3), suggest 1 or 2
                 // newText = 'Tap between any of the position 1 and position 2 to move the light source';
-                newText = 'Tap between the positions to move the light source.';
+                newText = 'Tap another position to move the light source.';
 
                 break;
             default:
