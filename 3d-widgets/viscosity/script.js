@@ -248,7 +248,7 @@ const timerCtx = timerCanvas.getContext("2d");
 
 // Load and cache the timer background image
 const timerBgImage = new Image();
-timerBgImage.src = "./timer.svg";
+timerBgImage.src = "./assets/timer.svg";
 await new Promise((resolve) => {
   timerBgImage.onload = resolve;
 });
@@ -259,7 +259,7 @@ async function drawTimerBackground() {
   timerCtx.fillStyle = "lime";
   timerCtx.textAlign = "center";
   timerCtx.textBaseline = "middle";
-  timerCtx.fillText("0.00 s", 128, 85);
+  timerCtx.fillText("0.00s", 128, 85);
 }
 await drawTimerBackground();
 
@@ -277,6 +277,7 @@ let timerStart = 0;
 let timerRunning = false;
 let elapsedTime = 0;
 let timerFinished = false;
+let sphereSelectionLocked = false;
 
 function updateTimerDisplay() {
   timerCtx.clearRect(0, 0, 256, 128);
@@ -287,13 +288,13 @@ function updateTimerDisplay() {
   timerCtx.font = "bold 60px monospace";
   timerCtx.textAlign = "center";
   timerCtx.textBaseline = "middle";
-  timerCtx.fillText(elapsedTime.toFixed(2) + " s", 128, 85);
+  timerCtx.fillText(elapsedTime.toFixed(2) + "s", 128, 85);
   timerTexture.needsUpdate = true;
 }
 
 // --- Main Async Init ---
 (async () => {
-  const bgTexture = await loadSVGToCanvasTexture("./background.svg", 4);
+  const bgTexture = await loadSVGToCanvasTexture("./assets/background.svg", 4);
   scene.background = bgTexture;
   const envMap = createEnvMap(renderer);
   const glassMaterial = createGlassMaterial(envMap);
@@ -335,7 +336,7 @@ function updateTimerDisplay() {
   }
 
   // --- Right-side 3 small beakers ---
-  const smallOffsets = [3.5, 5.3, 7.1];
+  const smallOffsets = [2.9, 4.7, 6.5];
   const labels = ["Water", "Oil", "Honey"];
   const liquidTypeNames = ["water", "oil", "honey"];
   const liquidHeights = [0.6, 0.65, 0.5];
@@ -357,9 +358,27 @@ function updateTimerDisplay() {
       liquidType.opacity
     );
     l.position.x = smallOffsets[i];
-    l.userData = { isLiquidBeaker: true, liquidType: liquidTypeNames[i] };
     sceneGroup.add(l);
-    clickableBeakers.push(l);
+
+    const clickableZoneGeo = new THREE.CylinderGeometry(
+      1.2 * scales[i],
+      1.2 * scales[i],
+      3.3 * scales[i],
+      16,
+      1,
+      true
+    );
+    const clickableZoneMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+    });
+    const clickableZone = new THREE.Mesh(clickableZoneGeo, clickableZoneMat);
+    clickableZone.position.set(smallOffsets[i], 1.65 * scales[i], 0);
+    clickableZone.userData = { isLiquidBeaker: true, liquidType: liquidTypeNames[i] };
+    sceneGroup.add(clickableZone);
+    clickableBeakers.push(clickableZone);
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -433,7 +452,8 @@ function updateTimerDisplay() {
   // --- Drop Function ---
   const tmpVec = new THREE.Vector3();
   function dropSphere(mesh) {
-    if (mesh.userData.dropped) return;
+    if (sphereSelectionLocked || mesh.userData.dropped) return false;
+    sphereSelectionLocked = true;
     mesh.userData.dropped = true;
     mesh.visible = true;
 
@@ -455,6 +475,7 @@ function updateTimerDisplay() {
     timerRunning = false;
     timerFinished = false;
     updateTimerDisplay();
+    return true;
   }
 
   // Reset function
@@ -470,6 +491,13 @@ function updateTimerDisplay() {
       const staticMesh = staticMeshes.find(m => m.userData.dynamicName === data.name);
       if (staticMesh) staticMesh.visible = true;
     }
+
+    // Reset main beaker liquid to default state
+    mainBeakerLiquid.currentLiquidType = mainBeakerLiquid.type;
+    mainBeakerLiquid.fillLevel = 0.9;
+    updateMainBeakerLiquid();
+
+    sphereSelectionLocked = false;
 
     // Clear physics bodies
     for (const physicsData of physicsBodies) {
@@ -501,10 +529,11 @@ function updateTimerDisplay() {
     if (sphereIntersects.length > 0) {
       const staticClickedMesh = sphereIntersects[0].object;
       const dynamicName = staticClickedMesh.userData.dynamicName;
-      if (dynamicName) {
+      if (dynamicName && !sphereSelectionLocked) {
         const dynamicMesh = dynamicSpheres[dynamicName];
-        dropSphere(dynamicMesh);
-        staticClickedMesh.visible = false;
+        if (dropSphere(dynamicMesh)) {
+          staticClickedMesh.visible = false;
+        }
         return;
       }
     }
@@ -519,14 +548,39 @@ function updateTimerDisplay() {
   });
 
   // --- Animation Loop ---
-  function onResize() {
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
+ function onResize() {
+  const desiredAspect = 16 / 9; // ✅ Fixed aspect ratio
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
+  const containerAspect = containerWidth / containerHeight;
+
+  let renderWidth, renderHeight;
+
+  if (containerAspect > desiredAspect) {
+    // Container is wider than desired aspect — add side bars
+    renderHeight = containerHeight;
+    renderWidth = renderHeight * desiredAspect;
+  } else {
+    // Container is taller — add top/bottom bars
+    renderWidth = containerWidth;
+    renderHeight = renderWidth / desiredAspect;
   }
-  window.addEventListener("resize", onResize);
+
+  const resetButton = document.getElementById("reset-btn");
+  if (resetButton) {
+    resetButton.addEventListener("click", resetSimulation);
+  }
+
+  // Center canvas with letterboxing
+  renderer.setSize(renderWidth, renderHeight);
+
+  // Maintain camera’s aspect ratio
+  camera.aspect = desiredAspect;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener("resize", onResize);
+onResize(); // run once initially
+
 
   function animate() {
     requestAnimationFrame(animate);
