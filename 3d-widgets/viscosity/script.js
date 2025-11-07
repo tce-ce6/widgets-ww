@@ -279,6 +279,9 @@ let elapsedTime = 0;
 let timerFinished = false;
 let sphereSelectionLocked = false;
 
+// Store timer data per sphere
+const sphereTimers = new Map();
+
 function updateTimerDisplay() {
   timerCtx.clearRect(0, 0, 256, 128);
   // Draw cached background image
@@ -470,6 +473,17 @@ function updateTimerDisplay() {
     });
     physicsBodies.push({ body, mesh, inLiquid: false });
     activeSphere = mesh;
+    
+    // Initialize timer data for this sphere
+    sphereTimers.set(mesh, {
+      enteredLiquid: false,
+      timerStart: 0,
+      elapsedTime: 0,
+      finished: false,
+      liquidType: mainBeakerLiquid.currentLiquidType
+    });
+    
+    // Reset global timer display
     timerStart = 0;
     elapsedTime = 0;
     timerRunning = false;
@@ -511,6 +525,7 @@ function updateTimerDisplay() {
     elapsedTime = 0;
     timerRunning = false;
     timerFinished = false;
+    sphereTimers.clear();
     updateTimerDisplay();
   }
 
@@ -590,42 +605,73 @@ onResize(); // run once initially
     const mainBeakerHeight = 3.0 * 1.5;
     const liquidTopY =
       sceneGroup.position.y + mainBeakerLiquid.fillLevel * 3.0 * 1.5 + 0.05;
-    const currentLiquid = liquidTypes[mainBeakerLiquid.currentLiquidType];
-    const viscosity = currentLiquid.viscosity;
-    const dampingFactor = Math.max(0.3, 1.0 - Math.log10(viscosity) / 10);
 
     for (const physicsData of physicsBodies) {
       const { body, mesh } = physicsData;
       const p = body.getPosition();
       const q = body.getQuaternion();
 
-      // Start timer when entering fluid
-      if (mesh === activeSphere && !timerRunning && !timerFinished && p.y < liquidTopY) {
-        timerStart = performance.now();
-        timerRunning = true;
-      }
-
-      // Update timer display in real-time while running
-      if (timerRunning && mesh === activeSphere && !timerFinished) {
-        elapsedTime = (performance.now() - timerStart) / 1000;
-        updateTimerDisplay();
-      }
-
-      if (p.y < liquidTopY) {
-        let vel = body.linearVelocity || body.getLinearVelocity?.();
-        if (!vel) continue;
-        const newVel = {
-          x: vel.x * dampingFactor,
-          y: vel.y * dampingFactor,
-          z: vel.z * dampingFactor,
+      // Get or create timer data for this sphere
+      let timerData = sphereTimers.get(mesh);
+      if (!timerData) {
+        timerData = {
+          enteredLiquid: false,
+          timerStart: 0,
+          elapsedTime: 0,
+          finished: false,
+          liquidType: mainBeakerLiquid.currentLiquidType
         };
-        if (viscosity > 100) {
-          const buoyancyFactor = Math.min(viscosity / 2000, 0.8);
-          newVel.y += 0.05 * buoyancyFactor;
+        sphereTimers.set(mesh, timerData);
+      }
+
+      // Check if sphere is in the liquid
+      const isInLiquid = p.y < liquidTopY;
+      physicsData.inLiquid = isInLiquid;
+
+      // Start timer when sphere first enters the fluid
+      if (isInLiquid && !timerData.enteredLiquid && !timerData.finished) {
+        timerData.enteredLiquid = true;
+        timerData.timerStart = performance.now();
+        timerData.liquidType = mainBeakerLiquid.currentLiquidType;
+      }
+
+      // Update timer while sphere is in liquid and not finished
+      if (timerData.enteredLiquid && isInLiquid && !timerData.finished) {
+        timerData.elapsedTime = (performance.now() - timerData.timerStart) / 1000;
+        
+        // Update display if this is the active sphere
+        if (mesh === activeSphere) {
+          elapsedTime = timerData.elapsedTime;
+          timerRunning = true;
+          timerFinished = false;
+          updateTimerDisplay();
         }
-        if (body.setLinearVelocity) body.setLinearVelocity(newVel);
-        else if (body.linearVelocity)
-          Object.assign(body.linearVelocity, newVel);
+      }
+
+      // Apply viscosity damping when in liquid
+      // Note: Physics always uses current fluid viscosity, even if it changes mid-fall
+      // Timer tracks time from entry to bottom, recording the fluid type at entry for logging
+      if (isInLiquid) {
+        // Use current fluid viscosity for physics (always reflects current fluid state)
+        const currentLiquid = liquidTypes[mainBeakerLiquid.currentLiquidType];
+        const currentViscosity = currentLiquid.viscosity;
+        const currentDampingFactor = Math.max(0.3, 1.0 - Math.log10(currentViscosity) / 10);
+        
+        let vel = body.linearVelocity || body.getLinearVelocity?.();
+        if (vel) {
+          const newVel = {
+            x: vel.x * currentDampingFactor,
+            y: vel.y * currentDampingFactor,
+            z: vel.z * currentDampingFactor,
+          };
+          if (currentViscosity > 100) {
+            const buoyancyFactor = Math.min(currentViscosity / 2000, 0.8);
+            newVel.y += 0.05 * buoyancyFactor;
+          }
+          if (body.setLinearVelocity) body.setLinearVelocity(newVel);
+          else if (body.linearVelocity)
+            Object.assign(body.linearVelocity, newVel);
+        }
       }
 
       const beakerBottomY = -2.4;
@@ -638,15 +684,20 @@ onResize(); // run once initially
         body.position = p;
 
         // Stop timer when reaching bottom
-        if (mesh === activeSphere && timerRunning && !timerFinished) {
-          timerRunning = false;
-          timerFinished = true;
-          elapsedTime = (performance.now() - timerStart) / 1000;
-          updateTimerDisplay();
+        if (timerData.enteredLiquid && !timerData.finished) {
+          timerData.finished = true;
+          timerData.elapsedTime = (performance.now() - timerData.timerStart) / 1000;
+          
+          // Update display if this is the active sphere
+          if (mesh === activeSphere) {
+            elapsedTime = timerData.elapsedTime;
+            timerRunning = false;
+            timerFinished = true;
+            updateTimerDisplay();
+          }
+          
           console.log(
-            `${mesh.userData.name} sphere reached bottom in ${elapsedTime.toFixed(
-              2
-            )}s`
+            `${mesh.userData.name} sphere reached bottom in ${timerData.elapsedTime.toFixed(2)}s (fluid: ${timerData.liquidType}, viscosity: ${liquidTypes[timerData.liquidType].viscosity})`
           );
         }
       }
