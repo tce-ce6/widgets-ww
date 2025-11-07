@@ -420,8 +420,8 @@ function updateTimerDisplay() {
 
   const sphereData = [
     { name: "small", size: 0.3, color: 0xff4444, staticPos: [-6.7, 0.2, 0], dropPos: [0, 8, 0] },
-    { name: "medium", size: 0.5, color: 0x44ff44, staticPos: [-5.5, 0.4, 0], dropPos: [0.5, 8, 0] },
-    { name: "large", size: 0.7, color: 0x4488ff, staticPos: [-4, 0.6, 0], dropPos: [-0.5, 8, 0] },
+    { name: "medium", size: 0.5, color: 0x44ff44, staticPos: [-5.5, 0.4, 0], dropPos: [0, 8, 0] },
+    { name: "large", size: 0.7, color: 0x4488ff, staticPos: [-4, 0.6, 0], dropPos: [0, 8, 0] },
   ];
 
   const dynamicSpheres = {};
