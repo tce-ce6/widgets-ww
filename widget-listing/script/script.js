@@ -13,7 +13,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light%E2%80%8B/index.html",
     imagePath: "./assets/plant-response.png",
     creators: "ni-bd-01",
-    status: "WIP-With-Tech",
+    status: "closed",
 
   },
   {
@@ -208,6 +208,8 @@ function loadWidgetList(filterStatus = "closed") {
     `;
 
     listItem.addEventListener("click", function () {
+    sidebar.classList.toggle("active");
+
       iframe.src = this.dataset.widgetLink;
 
       document.querySelectorAll("#widget-listing li").forEach((li) => li.classList.remove("active"));
