@@ -5,9 +5,9 @@ let label1Bg = null, label2Bg = null;
 let a1 = 9, b1 = 10, c1 = 10;
 let a2 = 6, b2 = 1, c2 = -5;
 let showAnswer = false; // controls ratio placeholders
-let hidden = true;      // controls graph visibility
+let hidden = true; // controls graph visibility
 let resultText = " ";
-const eps = 1e-9;       // Epsilon for floating-point comparison
+const eps = 1e-9;  // Epsilon for floating-point comparison
 
 function initBoard() {
     board = JXG.JSXGraph.initBoard('jxgbox', {
@@ -112,42 +112,127 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     return html;
 }
 
+// function formatCoeff(coeff, variable, isFirst = false) {
+//     // Handle zero
+//     if (coeff === 0) {
+//         return (isFirst ? `0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + 0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
+//     }
+
+//     // Handle ±1
+//     if (coeff === 1) {
+//         return isFirst ? `<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
+//     }
+//     if (coeff === -1) {
+//         return isFirst ? `- <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
+//     }
+
+//     // General case
+//     return coeff > 0
+//         ? (isFirst ? `${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + ${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`)
+//         : (isFirst ? `- ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
+// }
+
+// function formatEquation(a, b, c) {
+//     let eq = "";
+//     eq += formatCoeff(a, "x", true);
+//     eq += formatCoeff(b, "y");
+
+//     // constant term
+//     if (c === 0) {
+//         eq += " + 0";
+//     } else if (c > 0) {
+//         eq += ` + ${c}`;
+//     } else {
+//         eq += ` - ${Math.abs(c)}`;
+//     }
+
+//     eq += " = 0";
+//     return eq;
+// }
+
+/**
+ * Helper function to format a coefficient and its variable.
+ * @param {number} coeff - The coefficient (a or b).
+ * @param {string} variable - The variable ('x' or 'y').
+ * @param {boolean} isFirst - True if this is the first term in the equation.
+ * @returns {string} The HTML string for the term, or an empty string if coeff is 0.
+ */
 function formatCoeff(coeff, variable, isFirst = false) {
-    // Handle zero
+    const varHtml = `<i class="roman-txt">${variable}</i>`;
+
+    // 1. Term is ZERO: Return an empty string to skip it
     if (coeff === 0) {
-        return (isFirst ? `0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + 0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
+        return "";
     }
 
-    // Handle ±1
-    if (coeff === 1) {
-        return isFirst ? `<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
-    }
-    if (coeff === -1) {
-        return isFirst ? `- <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
+    // 2. Handle ±1
+    if (Math.abs(coeff) === 1) {
+        let sign = '';
+        if (coeff === -1) {
+            sign = isFirst ? '—' : ' — '; // Using the em dash as in your original code for negative sign
+        } else { // coeff === 1
+            sign = isFirst ? '' : ' + ';
+        }
+        // If it's the first term and 1, don't show the sign.
+        if (isFirst && coeff === 1) {
+            return varHtml;
+        }
+        return `${sign}${varHtml}`;
     }
 
-    // General case
-    return coeff > 0
-        ? (isFirst ? `${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + ${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`)
-        : (isFirst ? `- ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
+    // 3. General case (coeff is not 0, 1, or -1)
+    let sign = '';
+    let absCoeff = Math.abs(coeff);
+
+    if (coeff > 0) {
+        sign = isFirst ? '' : ' + ';
+    } else { // coeff < 0
+        sign = isFirst ? '—' : ' — ';
+    }
+
+    return `${sign}${absCoeff}${varHtml}`;
 }
 
+/**
+ * Formats a linear equation (ax + by + c = 0) into a clean string, 
+ * omitting terms with a coefficient of zero.
+ * @param {number} a - Coefficient for x.
+ * @param {number} b - Coefficient for y.
+ * @param {number} c - The constant term.
+ * @returns {string} The formatted equation string.
+ */
 function formatEquation(a, b, c) {
     let eq = "";
-    eq += formatCoeff(a, "x", true);
-    eq += formatCoeff(b, "y");
-
-    // constant term
-    if (c === 0) {
-        eq += " + 0";
-    } else if (c > 0) {
-        eq += ` + ${c}`;
-    } else {
-        eq += ` - ${Math.abs(c)}`;
+    
+    // 1. X TERM (a*x)
+    const xTerm = formatCoeff(a, "x", true);
+    
+    // 2. Y TERM (b*y)
+    // The y-term is only 'the first term' if the x-term was omitted (a=0).
+    const yTerm = formatCoeff(b, "y", xTerm === "");
+    
+    // 3. Constant Term (c)
+    let cTerm = "";
+    if (c !== 0) {
+        const isFirst = (xTerm === "" && yTerm === "");
+        if (c > 0) {
+            cTerm = isFirst ? `${c}` : ` + ${c}`;
+        } else { // c < 0
+            cTerm = isFirst ? `— ${Math.abs(c)}` : ` — ${Math.abs(c)}`;
+        }
     }
+    
+    // Combine all parts
+    eq = xTerm + yTerm + cTerm;
 
-    eq += " = 0";
-    return eq;
+    // Final check: If the entire equation is just "0 = 0" (a=0, b=0, c=0), 
+    // we'll return a simple "0 = 0".
+    if (eq === "") {
+        return "0 = 0";
+    }
+    
+    // Add the "= 0" part
+    return `${eq} = 0`;
 }
 
 
@@ -160,17 +245,6 @@ function plotLines() {
             [x => (-a1 * x - c1) / b1],
             { strokeColor: 'red', strokeWidth: 2 }
         );
-
-        // // Rectangle patch for label1 background
-        // label1Bg = board.create('polygon', [
-        //     [() => -2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) - 1.1],
-        //     [() =>  2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) - 1.1],
-        //     [() =>  2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) + 1.1],
-        //     [() => -2.8, () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1) + 1.1]
-        // ], {
-        //     fillColor: '#fff', fillOpacity: 1,
-        //     strokeWidth: 0, fixed: true, highlight: false
-        // });
 
         label1 = board.create('text', [
             () => 0,
@@ -185,17 +259,6 @@ function plotLines() {
             [x => (-a2 * x - c2) / b2],
             { strokeColor: 'blue', strokeWidth: 2 }
         );
-
-        // // Rectangle patch for label2 background
-        // label2Bg = board.create('polygon', [
-        //     [() => -2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 - 1.1],
-        //     [() =>  2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 - 1.1],
-        //     [() =>  2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 + 1.1],
-        //     [() => -2.8, () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3 + 1.1]
-        // ], {
-        //     fillColor: '#fff', fillOpacity: 1,
-        //     strokeWidth: 0, fixed: true, highlight: false
-        // });
 
         label2 = board.create('text', [
             () => 0,
@@ -385,7 +448,6 @@ function checkCondition() {
         document.getElementById("solutionDiv").style.display = "none";
     }
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
     initBoard();

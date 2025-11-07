@@ -57,7 +57,7 @@ function draw() {
     fill(colors.text);
     textAlign(CENTER, CENTER);
     textSize(15);
-    text('O', circleCenter.x, circleCenter.y - 20);
+    text('O', circleCenter.x - 15, circleCenter.y);
     
     // Draw line OP (center to external point)
     stroke(colors.lineOP);
@@ -160,39 +160,50 @@ function calculateTangentPoints() {
 }
 
 function drawRightAngle(point, center, external, color) {
-    let radius = 12;
+    let radiusSize = 12; // Controls the size of the right-angle mark
+
+    // 1. Calculate Radius Direction (from center to point)
+    let radiusDirX = point.x - center.x;
+    let radiusDirY = point.y - center.y;
+    let radiusAngle = atan2(radiusDirY, radiusDirX);
+
+    // 2. Calculate Tangent Direction (from point to external)
+    let T_x = external.x - point.x;
+    let T_y = external.y - point.y;
+    let T_mag = sqrt(T_x * T_x + T_y * T_y);
     
-    // Calculate the direction from center to tangent point (radius direction)
-    let radiusAngle = atan2(point.y - center.y, point.x - center.x);
+    // Normalize and scale the tangent vector to radiusSize
+    T_x = T_x / T_mag * radiusSize;
+    T_y = T_y / T_mag * radiusSize;
+
+    // --- Calculate the Three Critical Points ---
+
+    // V1: Point on the RADIUS line (Inward)
+    let V1_x = point.x - radiusSize * cos(radiusAngle);
+    let V1_y = point.y - radiusSize * sin(radiusAngle);
+
+    // V2: Point on the TANGENT line (Outward towards external point)
+    let V2_x = point.x + T_x;
+    let V2_y = point.y + T_y;
+
+    // CORNER: The corner of the square (Vector sum of the inward radius 
+    // and the outward tangent segments, relative to the tangent point 'point')
+    let corner_x = V1_x + T_x;
+    let corner_y = V1_y + T_y;
+
+    // --- Draw the Right Angle Marker ---
     
-    // Calculate the direction from tangent point to external point (tangent direction)
-    let tangentAngle = atan2(external.y - point.y, external.x - point.x);
-    
-    // Create the right angle square inside the circle
     stroke(color);
     strokeWeight(2);
     noFill();
     
-    // Calculate the two adjacent sides of the right angle square
-    // Side 1: along the radius direction (towards center)
-    let side1End = createVector(
-        point.x - radius * cos(radiusAngle),
-        point.y - radius * sin(radiusAngle)
-    );
+    // Draw the two segments that form the right angle symbol:
     
-    // Side 2: along the tangent direction (towards external point)
-    let side2End = createVector(
-        point.x + radius * cos(tangentAngle),
-        point.y + radius * sin(tangentAngle)
-    );
+    // Segment 1: From the point on the radius (V1) to the corner
+    line(V1_x, V1_y, corner_x, corner_y);
     
-    // Draw the right angle square
-    beginShape();
-    vertex(point.x, point.y); // Corner at tangent point
-    vertex(side1End.x, side1End.y); // Along radius
-    vertex(side1End.x + side2End.x - point.x, side1End.y + side2End.y - point.y); // Corner
-    vertex(side2End.x, side2End.y); // Along tangent
-    endShape(CLOSE);
+    // Segment 2: From the corner to the point on the tangent (V2)
+    line(corner_x, corner_y, V2_x, V2_y);
 }
 
 function drawLengthLabels() {
