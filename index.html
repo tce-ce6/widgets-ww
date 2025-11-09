@@ -3,44 +3,1323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widgets</title>
-      <link rel="stylesheet" href="../css/global_style.css">
+    <title>Effect of Friction on an Inclined Plane (Single File)</title>
+    
+    <script type="importmap">
+  {
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/",
+    "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/+esm",
+    "chart.js": "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm"
+  }
+}
+
+    </script>
+
+    <style>
+        /* General Setup */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        h2, h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            color: #1a6a9c;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 12px 0;
+        }
+
+        /* Main Layout */
+        #simulation-wrapper {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+
+        #controls-panel {
+            width: 300px;
+            background: #ffffff;
+            border-right: 1px solid #ddd;
+        }
+
+        #readouts-panel {
+            width: 350px;
+            background: #ffffff;
+            border-left: 1px solid #ddd;
+        }
+
+        .panel {
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        #simulation-canvas {
+            flex-grow: 1;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #loading-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        /* UI Controls */
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .control-group label span {
+            font-weight: bold;
+            color: #0056b3;
+            float: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 0;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            background-color: #004a99;
+        }
+
+        #runButton.paused {
+            background-color: #28a745; /* Green for "Run" */
+        }
+        #runButton.paused:hover {
+            background-color: #218838;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .button-group h3 {
+            grid-column: 1 / -1; /* Span full width */
+            margin-bottom: 5px;
+        }
+
+        #resetButton {
+            background-color: #dc3545;
+        }
+        #resetButton:hover {
+            background-color: #c82333;
+        }
+
+        /* Readouts & Charts */
+        #readout-data p {
+            margin: 6px 0;
+            font-size: 0.95em;
+            display: flex;
+            justify-content: space-between;
+        }
+        #readout-data p span {
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            color: #333;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 180px; /* Fixed height for charts */
+            margin-bottom: 15px;
+        }
+
+        .activity-box {
+            background: #e6f7ff;
+            border: 1px solid #b3e0ff;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 0.9em;
+        }
+        .activity-box h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .activity-box p {
+            margin-bottom: 10px;
+        }
+
+        /* Energy Bar */
+        #energy-bar-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            max-width: 400px;
+            height: 25px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            display: flex;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 5;
+            visibility: hidden; /* Toggled by checkbox */
+        }
+
+        .energy-bar {
+            height: 100%;
+            transition: width 0.1s linear;
+            text-align: right;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .energy-bar .label {
+            padding: 4px 8px;
+            font-size: 0.8em;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        #pe-bar { background-color: #4A90E2; } /* Blue */
+        #ke-t-bar { background-color: #50E3C2; } /* Teal */
+        #ke-r-bar { background-color: #7ED321; } /* Green */
+        #lost-bar { background-color: #F5A623; } /* Orange */
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            #simulation-wrapper {
+                flex-direction: column;
+            }
+            .panel {
+                width: 100%;
+                height: 30vh; /* 30% of viewport height */
+                box-sizing: border-box;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+            #simulation-canvas {
+                height: 70vh; /* 70% of viewport height */
+            }
+            #readouts-panel {
+                order: 3; /* Move to bottom */
+            }
+        }
+    </style>
 </head>
 <body>
-<ol>
-    <!-- <li><a href=""></a>Adding and Subtracting Mixed Numbers</li> -->
-    <!-- <li><a href="/solving_elapsed_time_problems/index.html">Solving Elapsed Time Problems</a></li>
-    <li><a href="/identifying-right-triangles/index.html">Identifying Right Triangles</a></li>
-    <li><a href="/modeling_distributive_property/index.html">Modeling Distributive Property</a></li>
-    <li><a href="/estimating_the_sum_of_decimals/index.html">Estimating the Sum of Decimals</a></li>
-    <li><a href="/determining_the_complement/index.html">Determining the Complement</a></li>
-    <li><a href="/venn_diagrams_for_statements_about_two_sets/index.html">Venn Diagrams for Statements about Two Sets</a></li>
-    <li><a href="/set_operations_and_elements_in_sets/index.html">Set Operations and Elements in Sets</a></li>
-    <li><a href="/visualizing_algebraic_equations/index.html">Visualizing Algebraic Equations</a></li>
-    <li><a href="/the-distance-between-two-points/index.html">The Distance Between Two Points</a></li>
-    <li><a href="/multiple-multiplications/index.html">Multiple Multiplications</a></li>
-   <li><a href="/long_division_with_one_digit/index.html">Long Division With One-Digit</a></li>
-   <li><a href="/division_word_problem/index.html">Division Word Problem</a></li>
-   <li><a href="/multiplying-multi-digit/index.html">Multiplying Multi-Digit</a></li>
-   <li><a href="/visualizing_the_commutative_property_of_addition/index.html">Visualizing the Commutative addition</a></li>
-   <li><a href="/measurement-system/index.html">Measurement System</a></li>
-   <li><a href="/estimating_temperature/index.html">Estimating temperature</a></li>
-   <li><a href="/Subtracting_Numbers_with_Regrouping/index.html">subtracting Numbers grouping</a></li>
-   <li><a href="/estimating_using_numberline/index.html">Estimating using numberline</a></li>
-   <li><a href="/expanding-decimal-numbers/index.html">Expanding Decimal Numbers</a></li>
-    <li><a href="/finding_common_multiples/index.html"> Finding Common Multiples Using a Hundreds Grid</a></li>
-    <li><a href="/fractions_with_unlike_denominators/index.html"> Adding and Subtracting Multiple Fractions</a></li> -->
-    <!-- <li><a href="/adding_fraction_with_like_unlike_denominator/index.html">Adding Fractions with Like and Unlike Denominators</a></li> -->
-    <!-- <li><a href="/dividing_whole_numbers_by_fractions_word_problems/index1.html">Dividing Whole Numbers by Fractions Word Problems</a></li> 
-    <li><a href="/Modeling_the_Fractional_Part_of_a_Set/index.html">Modeling the Fractional Part of a Set</a></li>
-    <li><a href="/modeling-division-as-a-Fraction/index.html">Modeling Division as a Fraction</a></li>
-    <li><a href="comparing_rational_numbers/index.html">Comparing rational numbers</a></li>
-    <li><a href="Converting Fractions to Terminating Decimals/index2.html">Converting Fractions to Terminating Decimals</a></li>
-    <li><a href="estimating _sums_of_fractions_and_mixed Numbers/index.html">Estimating Sums of Fractions and Mixed Numbers</a></li>
-    <li><a href="Adding_Fractions_with_Like_Denominators_in_Word_Problems/index.html">addding Fractions with Like Denominators in Word Problems</a></li> -->
-    <li><a href="finding_the_missing_fraction/index.html">Finding the Missing Fraction</a></li>
-    <li><a href="Simulation/index.html">Concept 13: Explore Decimal Forms of Rational Numbers</a></li>
-    <li><a href="order_of_operations_puzzle/index.html">Concept 9: Order of Operations Puzzle</a></li>
-    <li><a href="angles_formed_by_intersecting_lines/index.html">Concept 4: Angles formed by Intersecting Lines</a></li>
-    
-</ol>
+
+    <div id="simulation-wrapper">
+        
+        <div id="controls-panel" class="panel">
+            <h2>Simulation Controls</h2>
+            
+            <div class="control-group">
+                <label for="angleSlider">Plane Angle (θ): <span id="angleValue">30.0</span>°</label>
+                <input type="range" id="angleSlider" min="0" max="60" value="30" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label for="frictionSlider">Coefficient of Friction (μ): <span id="frictionValue">0.2</span></label>
+                <input type="range" id="frictionSlider" min="0" max="1" value="0.2" step="0.01">
+            </div>
+            
+            <div class="control-group">
+                <label for="gravitySlider">Gravity (g): <span id="gravityValue">9.81</span> m/s²</label>
+                <input type="range" id="gravitySlider" min="0.1" max="20" value="9.81" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label for="massSlider">Object Mass: <span id="massValue">1.0</span> kg</label>
+                <input type="range" id="massSlider" min="0.1" max="10" value="1.0" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label>Simulation Mode:</label>
+                <select id="modeSelector">
+                    <option value="hybrid" selected>Hybrid (Realistic)</option>
+                    <option value="rolling">Force Rolling</option>
+                    <option value="sliding">Force Sliding (No Rotation)</option>
+                </select>
+            </div>
+
+            <div class="control-group button-group">
+                <h3>Spawn Object (at 1.0 kg)</h3>
+                <button id="spawnBallButton">Spawn Sphere</button>
+                <button id="spawnBoxButton">Spawn Box</button>
+                <button id="spawnCoinButton">Spawn Coin (Solid)</button>
+                <button id="spawnRingButton">Spawn Ring (Hollow)</button>
+            </div>
+
+            <div class="control-group button-group">
+                <h3>Simulation Control</h3>
+                <button id="runButton">Run</button>
+                <button id="stepButton">Step →</button>
+                <button id="resetButton">Reset All</button>
+            </div>
+            
+            <div class="control-group">
+                <h3>Visual Aids</h3>
+                <label><input type="checkbox" id="vectorsCheckbox"> Show Force Vectors</label>
+                <label><input type="checkbox" id="energyCheckbox"> Show Energy Bar</label>
+            </div>
+        </div>
+
+        <div id="simulation-canvas">
+            <div id="loading-overlay">Loading...</div>
+            <div id="energy-bar-container">
+                <div id="pe-bar" class="energy-bar" style="width: 50%;"><span class="label">PE</span></div>
+                <div id="ke-t-bar" class="energy-bar" style="width: 25%;"><span class="label">KE-T</span></div>
+                <div id="ke-r-bar" class="energy-bar" style="width: 25%;"><span class="label">KE-R</span></div>
+                <div id="lost-bar" class="energy-bar"><span class="label">Lost</span></div>
+            </div>
+        </div>
+
+        <div id="readouts-panel" class="panel">
+            <h2>Analysis & Readouts</h2>
+            
+            <div classs="readout-group">
+                <h3>Object 1 Readouts (Primary)</h3>
+                <div id="readout-data">
+                    <p>Time: <span id="timeReadout">0.00</span> s</p>
+                    <p>Velocity (v): <span id="velocityReadout">0.00</span> m/s</p>
+                    <p>Acceleration (a): <span id="accelerationReadout">0.00</span> m/s²</p>
+                    <p>Ang. Velocity (ω): <span id="angularVelocityReadout">0.00</span> rad/s</p>
+                    <hr>
+                    <p>Potential Energy (PE): <span id="peReadout">0.00</span> J</p>
+                    <p>Kinetic Energy (Trans): <span id="keTReadout">0.00</span> J</p>
+                    <p>Kinetic Energy (Rot): <span id="keRReadout">0.00</span> J</p>
+                    <p><strong>Total Energy (E): <span id="totalEnergyReadout">0.00</span> J</strong></p>
+                    <p>Energy Lost (Friction): <span id="lostEnergyReadout">0.00</span> J</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="velocityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="energyChart"></canvas>
+            </div>
+            
+            <div class="control-group button-group">
+                <button id="exportCsvButton">Export Data (CSV)</button>
+                <button id="exportPngButton">Screenshot (PNG)</button>
+            </div>
+
+            <div class="activity-box">
+                <h3>🎓 Activity Tasks</h3>
+                <p>1. Set μ = 0.3. Find the minimum angle θ where the **Box** just begins to slide. (Hint: Does $tan(θ) > μ$ hold?)</p>
+                <p>2. Set θ = 30° and μ = 0.1. Compare the time it takes for the **Sphere** and the **Coin** to reach the bottom. Which is faster and why?</p>
+                <p>3. Set μ = 0. Verify that the **Sphere** and the **Box** accelerate at the same rate. Does mass affect this?</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // 1. ALL EXTERNAL IMPORTS
+        import * as THREE from 'three';
+        import * as CANNON from 'cannon-es';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+       import { Chart,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    LineController,
+    Title,
+    Tooltip,
+    Legend } from 'chart.js';
+    Chart.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    LineController,
+    Title,
+    Tooltip,
+    Legend
+);
+
+        // 2. ALL MODULE CONTENTS (COMBINED)
+
+        // --- Contents from threeInit.js ---
+        
+        function initThree(canvasContainer) {
+            
+            // 1. Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            canvasContainer.appendChild(renderer.domElement);
+
+            // 2. Scene
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xEEEEF4);
+            scene.fog = new THREE.Fog(0xEEEEF4, 20, 100);
+
+            // 3. Camera
+            const camera = new THREE.PerspectiveCamera(50, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
+            camera.position.set(0, 6, 30); // Positioned to view the plane from the side
+
+            // 4. Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.target.set(0, 2, 0);
+            controls.enableDamping = true;
+            controls.update();
+
+            // 5. Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            directionalLight.shadow.camera.left = -20;
+            directionalLight.shadow.camera.right = 20;
+            directionalLight.shadow.camera.top = 20;
+            directionalLight.shadow.camera.bottom = -20;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 100;
+            scene.add(directionalLight);
+
+            // 6. Ground Plane (Mesh)
+            const groundGeometry = new THREE.PlaneGeometry(100, 100);
+            const groundMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xAAAAAA,
+                metalness: 0.1,
+                roughness: 0.8,
+            });
+            const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+            groundMesh.rotation.x = -Math.PI / 2;
+            groundMesh.receiveShadow = true;
+            scene.add(groundMesh);
+
+            // 7. Inclined Plane (Mesh)
+            const planeGeometry = new THREE.BoxGeometry(20, 0.2, 10);
+            const planeMaterial = new THREE.MeshStandardMaterial({
+                color: 0x666666,
+                metalness: 0.5,
+                roughness: 0.4,
+            });
+            const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+            planeMesh.receiveShadow = true;
+            planeMesh.castShadow = true;
+            planeMesh.position.y = 5.0; // Initial elevation
+            scene.add(planeMesh);
+            
+            // 8. Protractor (Visual Aid)
+            const arcShape = new THREE.Shape();
+            const radius = 3;
+            arcShape.moveTo(radius, 0);
+            arcShape.absarc(0, 0, radius, 0, Math.PI / 2, false);
+            arcShape.lineTo(0, 0);
+            const arcGeometry = new THREE.ShapeGeometry(arcShape);
+            const arcMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000, opacity: 0.3, transparent: true, side: THREE.DoubleSide });
+            const protractorMesh = new THREE.Mesh(arcGeometry, arcMaterial);
+            protractorMesh.position.set(-10, 5.1, 0); // Position at the pivot point
+            protractorMesh.rotation.y = Math.PI / 2;
+            scene.add(protractorMesh);
+
+            // 9. Resize Listener
+            window.addEventListener('resize', () => {
+                camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+            });
+
+            return { scene, camera, renderer, controls, groundMesh, planeMesh, protractorMesh };
+        }
+
+        // --- Contents from physicsInit.js ---
+
+        function initPhysics(ctx) {
+
+            // 1. Create the World
+            const world = new CANNON.World();
+            world.gravity.set(0, -ctx.params.g, 0);
+            world.broadphase = new CANNON.SAPBroadphase(world);
+            world.allowSleep = true;
+            world.solver.iterations = 10; // More iterations = more stable
+
+            // 2. Define Materials
+            const objectMaterial = new CANNON.Material('objectMaterial');
+            const planeMaterial = new CANNON.Material('planeMaterial');
+
+            // 3. Define Contact Properties
+            const defaultContactMaterial = new CANNON.ContactMaterial(
+                planeMaterial,
+                objectMaterial,
+                {
+                    friction: ctx.params.mu, // Initial friction from UI
+                    restitution: 0.1,        // A little bounce
+                    contactEquationStiffness: 1e8,
+                    contactEquationRelaxation: 3,
+                    frictionEquationStiffness: 1e8,
+                    frictionEquationRelaxation: 3,
+                }
+            );
+            world.addContactMaterial(defaultContactMaterial);
+
+            // 4. Ground Body
+            const groundBody = new CANNON.Body({
+                type: CANNON.Body.STATIC,
+                shape: new CANNON.Plane(),
+                material: planeMaterial,
+            });
+            groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0); // Rotate to be flat
+            world.addBody(groundBody);
+
+            // 5. Inclined Plane Body
+            const planeBody = new CANNON.Body({
+                type: CANNON.Body.STATIC,
+                shape: new CANNON.Box(new CANNON.Vec3(10, 0.1, 5)), // Half-extents
+                material: planeMaterial,
+            });
+            planeBody.position.set(0, 5.0, 0); // Same as mesh
+            world.addBody(planeBody);
+
+            return {
+                world,
+                groundBody,
+                planeBody,
+                objectMaterial,
+                defaultContactMaterial
+            };
+        }
+
+        // --- Contents from helpers.js ---
+
+        function initHelpers(ctx) {
+            
+            // Create a group to hold all arrows
+            const forceArrowGroup = new THREE.Group();
+            forceArrowGroup.visible = false; // Initially hidden
+            ctx.three.scene.add(forceArrowGroup);
+
+            // 1. Gravity Arrow (Fg)
+            const gravityArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(0, -1, 0), 1, 0xFF0000, 0.4, 0.2
+            );
+            forceArrowGroup.add(gravityArrow);
+
+            // 2. Normal Force Arrow (N)
+            const normalArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(0, 1, 0), 1, 0x0000FF, 0.4, 0.2
+            );
+            forceArrowGroup.add(normalArrow);
+            
+            // 3. Friction Force Arrow (Ff)
+            const frictionArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(1, 0, 0), 1, 0xFFFF00, 0.4, 0.2
+            );
+            forceArrowGroup.add(frictionArrow);
+            
+            // 4. Parallel Gravity Component (F_parallel)
+            const parallelArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(-1, 0, 0), 1, 0xFF00FF, 0.4, 0.2
+            );
+            forceArrowGroup.add(parallelArrow);
+            
+            return {
+                forceArrowGroup,
+                gravityArrow,
+                normalArrow,
+                frictionArrow,
+                parallelArrow
+            };
+        }
+
+        function updateHelpers(ctx) {
+            const obj = ctx.state.selectedObject;
+            if (!obj) {
+                ctx.helpers.forceArrowGroup.visible = false;
+                return;
+            }
+            
+            ctx.helpers.forceArrowGroup.visible = true;
+            
+            const { body } = obj;
+            const { g, mu, angle } = ctx.params;
+            const m = body.mass;
+            const theta = angle * (Math.PI / 180);
+            
+            const v = body.velocity.length();
+            const isMoving = v > 0.01;
+            
+            // --- Vector Directions ---
+            const zAxis = new THREE.Vector3(0, 0, 1);
+            const gDir = new THREE.Vector3(0, -1, 0);
+            const nDir = new THREE.Vector3(0, 1, 0).applyAxisAngle(zAxis, theta);
+            const pDir = new THREE.Vector3(-1, 0, 0).applyAxisAngle(zAxis, theta);
+            const fDir = pDir.clone().negate();
+
+            // --- Force Magnitudes (Textbook Model) ---
+            const Fg_mag = m * g;
+            const Fn_mag = m * g * Math.cos(theta);
+            const Fp_mag = m * g * Math.sin(theta);
+            
+            let Ff_mag;
+            const F_static_max = mu * Fn_mag;
+            
+            if (!isMoving) {
+                Ff_mag = Math.min(Fp_mag, F_static_max);
+            } else {
+                Ff_mag = F_static_max; // Assume μ_s = μ_k
+            }
+            
+            // Set arrow properties
+            const origin = body.position;
+            const scale = 0.2; // Scale factor
+            
+            ctx.helpers.gravityArrow.position.copy(origin);
+            ctx.helpers.gravityArrow.setDirection(gDir);
+            ctx.helpers.gravityArrow.setLength(Fg_mag * scale, 0.4, 0.2);
+
+            ctx.helpers.normalArrow.position.copy(origin);
+            ctx.helpers.normalArrow.setDirection(nDir);
+            ctx.helpers.normalArrow.setLength(Fn_mag * scale, 0.4, 0.2);
+            
+            ctx.helpers.parallelArrow.position.copy(origin);
+            ctx.helpers.parallelArrow.setDirection(pDir);
+            ctx.helpers.parallelArrow.setLength(Fp_mag * scale, 0.4, 0.2);
+
+            ctx.helpers.frictionArrow.visible = Ff_mag > 0.01;
+            if (ctx.helpers.frictionArrow.visible) {
+                ctx.helpers.frictionArrow.position.copy(origin);
+                ctx.helpers.frictionArrow.setDirection(fDir);
+                ctx.helpers.frictionArrow.setLength(Ff_mag * scale, 0.4, 0.2);
+            }
+        }
+
+        // --- Contents from objects.js ---
+
+        // Reusable geometries
+        const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const cylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 32); // For Coin
+        const ringGeometry = new THREE.TorusGeometry(0.5, 0.1, 16, 100); // For Ring visual (approx)
+
+        function spawnObject(ctx, type) {
+            const mass = ctx.params.mass;
+            const radius = 0.5;
+            const height = 0.2;
+            
+            let mesh, body, shape;
+            const material = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+                metalness: 0.3,
+                roughness: 0.5,
+            });
+            
+            // 1. Determine Shape, Mesh, and Inertia based on type
+            switch(type) {
+                case 'Sphere':
+                    shape = new CANNON.Sphere(radius);
+                    mesh = new THREE.Mesh(sphereGeometry, material);
+                    break;
+                    
+                case 'Box':
+                    shape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5));
+                    mesh = new THREE.Mesh(boxGeometry, material);
+                    break;
+                    
+                case 'Coin':
+                    shape = new CANNON.Cylinder(radius, radius, height, 16);
+                    mesh = new THREE.Mesh(cylinderGeometry, material);
+                    break;
+                    
+                case 'Ring':
+                    shape = new CANNON.Cylinder(radius, radius, height, 16);
+                    mesh = new THREE.Mesh(cylinderGeometry, material); // Simple cylinder mesh
+                    
+                    body = new CANNON.Body({ mass, shape, material: ctx.physics.objectMaterial });
+                    const I_z = mass * radius * radius;
+                    const I_xy = 0.5 * mass * radius * radius; 
+                    body.inertia.set(I_xy, I_xy, I_z);
+                    body.invInertia.set(1 / I_xy, 1 / I_xy, 1 / I_z);
+                    break;
+            }
+            
+            if (!body) {
+                body = new CANNON.Body({
+                    mass: mass,
+                    shape: shape,
+                    material: ctx.physics.objectMaterial,
+                });
+            }
+
+            // 2. Calculate Initial Position (top of the plane)
+            const angleRad = ctx.params.angle * (Math.PI / 180);
+            const startX = -8; 
+            const planeY = 5.0; 
+            const planeThickness = 0.1; 
+            const objectRadius = 0.5; 
+
+            const x = startX * Math.cos(angleRad) + (planeY + planeThickness + objectRadius) * Math.sin(angleRad);
+            const y = startX * -Math.sin(angleRad) + (planeY + planeThickness + objectRadius) * Math.cos(angleRad);
+            const z = (ctx.objects.length % 5 - 2) * 1.5; 
+
+            body.position.set(x, y, z);
+            body.quaternion.setFromEuler(0, 0, angleRad); 
+            
+            body.customType = type;
+            const initialPE = mass * ctx.params.g * y;
+
+            // 3. Add to worlds
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            ctx.three.scene.add(mesh);
+            ctx.physics.world.addBody(body);
+            
+            // 4. Store object pair
+            ctx.objects.push({ mesh, body, type, initialPE });
+            
+            // 5. Set as selected object if it's the first one
+            if (ctx.objects.length === 1) {
+                ctx.state.selectedObject = ctx.objects[0];
+            }
+        }
+
+        function resetAllObjects(ctx) {
+            for (const obj of ctx.objects) {
+                ctx.three.scene.remove(obj.mesh);
+                ctx.physics.world.removeBody(obj.body);
+            }
+            ctx.objects.length = 0; 
+            ctx.state.selectedObject = null;
+            
+            ctx.state.simulationTime = 0;
+            ctx.data.time = [];
+            ctx.data.velocity = [];
+            ctx.data.pe = [];
+            ctx.data.ke_t = [];
+            ctx.data.ke_r = [];
+            
+            if (ctx.charts.velocityChart) {
+                ctx.charts.velocityChart.data.labels = [];
+                ctx.charts.velocityChart.data.datasets[0].data = [];
+                ctx.charts.velocityChart.update();
+            }
+            if (ctx.charts.energyChart) {
+                ctx.charts.energyChart.data.labels = [];
+                ctx.charts.energyChart.data.datasets.forEach(ds => ds.data = []);
+                ctx.charts.energyChart.update();
+            }
+            
+            updateReadouts(ctx);
+            updateEnergyBar(ctx);
+        }
+
+        function updateObjectProperties(ctx) {
+            ctx.physics.defaultContactMaterial.friction = ctx.params.mu;
+            ctx.physics.world.gravity.set(0, -ctx.params.g, 0);
+            
+            const mode = ctx.params.mode;
+            for (const obj of ctx.objects) {
+                if (mode === 'sliding') {
+                    obj.body.angularDamping = 0.99; 
+                    obj.body.angularVelocity.set(0,0,0);
+                } else if (mode === 'rolling') {
+                    obj.body.angularDamping = 0.01;
+                } else {
+                    obj.body.angularDamping = 0.01;
+                }
+                obj.body.wakeUp();
+            }
+        }
+
+        function updateReadouts(ctx) {
+            const obj = ctx.state.selectedObject;
+            if (!obj) {
+                document.getElementById('timeReadout').textContent = (0).toFixed(2);
+                document.getElementById('velocityReadout').textContent = (0).toFixed(2);
+                document.getElementById('accelerationReadout').textContent = (0).toFixed(2);
+                document.getElementById('angularVelocityReadout').textContent = (0).toFixed(2);
+                document.getElementById('peReadout').textContent = (0).toFixed(2);
+                document.getElementById('keTReadout').textContent = (0).toFixed(2);
+                document.getElementById('keRReadout').textContent = (0).toFixed(2);
+                document.getElementById('totalEnergyReadout').textContent = (0).toFixed(2);
+                document.getElementById('lostEnergyReadout').textContent = (0).toFixed(2);
+                return;
+            }
+            
+            const { body, initialPE } = obj;
+            const v = body.velocity.length();
+            const w = body.angularVelocity.length();
+            const m = body.mass;
+            const g = ctx.params.g;
+            
+            const pe = m * g * (body.position.y); 
+            const ke_t = 0.5 * m * v * v;
+            
+            const I = body.inertia;
+            const w_vec = body.angularVelocity;
+            const ke_r = 0.5 * (I.x * w_vec.x**2 + I.y * w_vec.y**2 + I.z * w_vec.z**2);
+            
+            const total_e = pe + ke_t + ke_r;
+            const lost_e = initialPE - total_e; 
+            
+            let a = 0;
+            const data = ctx.data.velocity;
+            if (data.length > 2) {
+                const v1 = data[data.length - 2];
+                const v2 = data[data.length - 1];
+                const dt = ctx.data.time[data.length - 1] - ctx.data.time[data.length - 2];
+                if (dt > 0) a = (v2 - v1) / dt;
+            }
+
+            document.getElementById('timeReadout').textContent = ctx.state.simulationTime.toFixed(2);
+            document.getElementById('velocityReadout').textContent = v.toFixed(2);
+            document.getElementById('accelerationReadout').textContent = a.toFixed(2);
+            document.getElementById('angularVelocityReadout').textContent = w.toFixed(2);
+            document.getElementById('peReadout').textContent = pe.toFixed(2);
+            document.getElementById('keTReadout').textContent = ke_t.toFixed(2);
+            document.getElementById('keRReadout').textContent = ke_r.toFixed(2);
+            document.getElementById('totalEnergyReadout').textContent = total_e.toFixed(2);
+            document.getElementById('lostEnergyReadout').textContent = lost_e.toFixed(2);
+        }
+
+        function updateEnergyBar(ctx) {
+            const bar = document.getElementById('energy-bar-container');
+            if (!ctx.params.showEnergy) {
+                bar.style.visibility = 'hidden';
+                return;
+            }
+            bar.style.visibility = 'visible';
+
+            const obj = ctx.state.selectedObject;
+            if (!obj) {
+                document.getElementById('pe-bar').style.width = '0%';
+                document.getElementById('ke-t-bar').style.width = '0%';
+                document.getElementById('ke-r-bar').style.width = '0%';
+                document.getElementById('lost-bar').style.width = '0%';
+                return;
+            }
+            
+            const { body, initialPE } = obj;
+            if (initialPE === 0) return; 
+
+            const v = body.velocity.length();
+            const m = body.mass;
+            const g = ctx.params.g;
+            
+            const pe = m * g * (body.position.y);
+            const ke_t = 0.5 * m * v * v;
+            const I = body.inertia;
+            const w_vec = body.angularVelocity;
+            const ke_r = 0.5 * (I.x * w_vec.x**2 + I.y * w_vec.y**2 + I.z * w_vec.z**2);
+            
+            const total_e_current = pe + ke_t + ke_r;
+            const lost_e = Math.max(0, initialPE - total_e_current);
+            
+            const pe_p = Math.max(0, (pe / initialPE) * 100);
+            const ket_p = Math.max(0, (ke_t / initialPE) * 100);
+            const ker_p = Math.max(0, (ke_r / initialPE) * 100);
+            const lost_p = Math.max(0, (lost_e / initialPE) * 100);
+            
+            const total_p = pe_p + ket_p + ker_p + lost_p;
+            
+            document.getElementById('pe-bar').style.width = `${(pe_p / total_p) * 100}%`;
+            document.getElementById('ke-t-bar').style.width = `${(ket_p / total_p) * 100}%`;
+            document.getElementById('ke-r-bar').style.width = `${(ker_p / total_p) * 100}%`;
+            document.getElementById('lost-bar').style.width = `${(lost_p / total_p) * 100}%`;
+        }
+        
+        // --- Contents from ui.js ---
+        
+        function initUI(ctx) {
+            ctx.dom = {
+                angleSlider: document.getElementById('angleSlider'),
+                angleValue: document.getElementById('angleValue'),
+                frictionSlider: document.getElementById('frictionSlider'),
+                frictionValue: document.getElementById('frictionValue'),
+                gravitySlider: document.getElementById('gravitySlider'),
+                gravityValue: document.getElementById('gravityValue'),
+                massSlider: document.getElementById('massSlider'),
+                massValue: document.getElementById('massValue'),
+                modeSelector: document.getElementById('modeSelector'),
+                spawnBallButton: document.getElementById('spawnBallButton'),
+                spawnBoxButton: document.getElementById('spawnBoxButton'),
+                spawnCoinButton: document.getElementById('spawnCoinButton'),
+                spawnRingButton: document.getElementById('spawnRingButton'),
+                runButton: document.getElementById('runButton'),
+                stepButton: document.getElementById('stepButton'),
+                resetButton: document.getElementById('resetButton'),
+                vectorsCheckbox: document.getElementById('vectorsCheckbox'),
+                energyCheckbox: document.getElementById('energyCheckbox'),
+                exportCsvButton: document.getElementById('exportCsvButton'),
+                exportPngButton: document.getElementById('exportPngButton'),
+            };
+
+            ctx.dom.angleSlider.addEventListener('input', (e) => {
+                ctx.params.angle = parseFloat(e.target.value);
+                ctx.dom.angleValue.textContent = ctx.params.angle.toFixed(1);
+                updatePlaneAngle(ctx);
+            });
+            updatePlaneAngle(ctx); 
+
+            ctx.dom.frictionSlider.addEventListener('input', (e) => {
+                ctx.params.mu = parseFloat(e.target.value);
+                ctx.dom.frictionValue.textContent = ctx.params.mu.toFixed(2);
+                updateObjectProperties(ctx); 
+            });
+
+            ctx.dom.gravitySlider.addEventListener('input', (e) => {
+                ctx.params.g = parseFloat(e.target.value);
+                ctx.dom.gravityValue.textContent = ctx.params.g.toFixed(2);
+                updateObjectProperties(ctx);
+            });
+            
+            ctx.dom.massSlider.addEventListener('input', (e) => {
+                ctx.params.mass = parseFloat(e.target.value);
+                ctx.dom.massValue.textContent = ctx.params.mass.toFixed(1);
+            });
+            
+            ctx.dom.modeSelector.addEventListener('change', (e) => {
+                ctx.params.mode = e.target.value;
+                updateObjectProperties(ctx); 
+            });
+
+            ctx.dom.spawnBallButton.addEventListener('click', () => spawnObject(ctx, 'Sphere'));
+            ctx.dom.spawnBoxButton.addEventListener('click', () => spawnObject(ctx, 'Box'));
+            ctx.dom.spawnCoinButton.addEventListener('click', () => spawnObject(ctx, 'Coin'));
+            ctx.dom.spawnRingButton.addEventListener('click', () => spawnObject(ctx, 'Ring'));
+
+            ctx.dom.runButton.addEventListener('click', () => {
+                ctx.state.isRunning = !ctx.state.isRunning;
+                ctx.dom.runButton.textContent = ctx.state.isRunning ? 'Pause' : 'Run';
+                ctx.dom.runButton.classList.toggle('paused', !ctx.state.isRunning);
+            });
+
+            ctx.dom.stepButton.addEventListener('click', () => {
+                if (ctx.state.isRunning) return; 
+                ctx.state.isStepping = true;
+            });
+
+            ctx.dom.resetButton.addEventListener('click', () => {
+                resetAllObjects(ctx);
+                updatePlaneAngle(ctx); 
+                updateReadouts(ctx);
+            });
+            
+            ctx.dom.vectorsCheckbox.addEventListener('change', (e) => {
+                ctx.params.showVectors = e.target.checked;
+                ctx.helpers.forceArrowGroup.visible = ctx.params.showVectors;
+            });
+            ctx.dom.energyCheckbox.addEventListener('change', (e) => {
+                ctx.params.showEnergy = e.target.checked;
+            });
+
+            ctx.dom.exportCsvButton.addEventListener('click', () => exportDataAsCSV(ctx));
+            ctx.dom.exportPngButton.addEventListener('click', () => takeScreenshot(ctx));
+            
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    ctx.dom.runButton.click();
+                }
+                if (e.code === 'KeyR') {
+                    e.preventDefault();
+                    ctx.dom.resetButton.click();
+                }
+                if (e.code === 'ArrowRight') {
+                    e.preventDefault();
+                    ctx.dom.stepButton.click();
+                }
+            });
+
+            initCharts(ctx);
+        }
+
+       /**
+         * Updates the 3D plane mesh and physics body to match the slider angle.
+         * @param {object} ctx - The main application context.
+         */
+        function updatePlaneAngle(ctx) {
+            const angleRad = ctx.params.angle * (Math.PI / 180);
+
+            // --- Define Pivot and Axis ---
+            // We use CANNON vectors since this is for the physics body
+            const pivot = new CANNON.Vec3(-10, 5, 0); // Pivot at the "top" edge
+            const axis = new CANNON.Vec3(0, 0, 1); // Rotate around Z-axis
+
+            // --- 1. Update Physics Body ---
+            const { planeBody } = ctx.physics;
+            
+            // Reset to base position/rotation
+            planeBody.position.set(0, 5, 0);
+            planeBody.quaternion.set(0, 0, 0, 1);
+            
+            // Get the new rotation quaternion
+            const q = new CANNON.Quaternion();
+            q.setFromAxisAngle(axis, angleRad);
+            planeBody.quaternion.copy(q); // Set the body's rotation
+            
+            // Calculate the new position based on pivot
+            const pos = new CANNON.Vec3(0, 5, 0); // Start from base position
+            pos.vsub(pivot, pos); // Translate so pivot is at origin (pos = pos - pivot)
+            q.vmult(pos, pos);    // Rotate the position vector (pos = q * pos)
+            pos.vadd(pivot, pos); // Translate back (pos = pos + pivot)
+            planeBody.position.copy(pos); // Set the body's final position
+            
+            // --- 2. Update Three.js Mesh (to match physics) ---
+            const { planeMesh, protractorMesh } = ctx.three;
+            // This is the simplest way: make the mesh match the physics body exactly
+            planeMesh.quaternion.copy(planeBody.quaternion);
+            planeMesh.position.copy(planeBody.position);
+
+            // --- 3. Update Protractor Visual ---
+            protractorMesh.scale.set(1, 1, 1); // Reset scale
+            const protractorAngle = (ctx.params.angle / 90) * (Math.PI / 2); // Map 0-60 to 0-PI/3
+            protractorMesh.geometry.dispose(); // Dispose old geometry
+            const arcShape = new THREE.Shape();
+            arcShape.moveTo(0, 0);
+            arcShape.absarc(0, 0, 3, 0, protractorAngle, false);
+            arcShape.lineTo(0, 0);
+            protractorMesh.geometry = new THREE.ShapeGeometry(arcShape);
+
+            // --- 4. Reposition Existing Objects ---
+            // (This is a simplified reset)
+            for (const obj of ctx.objects) {
+                const startX = -8;
+                const objectRadius = 0.5;
+                const planeThickness = 0.1;
+
+                // Calculate object's new starting position on the rotated plane
+                const x = startX * Math.cos(angleRad) + (pos.y + planeThickness + objectRadius) * Math.sin(angleRad);
+                const y = startX * -Math.sin(angleRad) + (pos.y + planeThickness + objectRadius) * Math.cos(angleRad);
+                
+                obj.body.sleep();
+                obj.body.position.set(x, y, obj.body.position.z); // Keep original Z
+                obj.body.quaternion.copy(planeBody.quaternion);
+                obj.body.velocity.set(0, 0, 0);
+                obj.body.angularVelocity.set(0, 0, 0);
+                obj.body.wakeUp();
+                
+                // Recalculate initial PE
+                obj.initialPE = obj.body.mass * ctx.params.g * y;
+            }
+            
+            // Reset data and time as parameters have changed
+            // We call this last so objects aren't wiped before being repositioned
+            resetAllObjects(ctx);
+        }
+        function initCharts(ctx) {
+            const velCanvas = document.getElementById('velocityChart');
+            ctx.charts.velocityChart = new Chart(velCanvas, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Velocity (m/s)',
+                        data: [],
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Time (s)' } },
+                        y: { title: { display: true, text: 'Velocity' }, beginAtZero: true }
+                    }
+                }
+            });
+
+            const energyCanvas = document.getElementById('energyChart');
+            ctx.charts.energyChart = new Chart(energyCanvas, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'PE (J)', data: [], borderColor: '#4A90E2', borderWidth: 2, pointRadius: 0, },
+                        { label: 'KE-Trans (J)', data: [], borderColor: '#50E3C2', borderWidth: 2, pointRadius: 0, },
+                        { label: 'KE-Rot (J)', data: [], borderColor: '#7ED321', borderWidth: 2, pointRadius: 0, },
+                        { label: 'Total E (J)', data: [], borderColor: '#F5A623', borderWidth: 2, pointRadius: 0, }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Time (s)' } },
+                        y: { title: { display: true, text: 'Energy (J)' }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function exportDataAsCSV(ctx) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Time (s),Velocity (m/s),PE (J),KE_Trans (J),KE_Rot (J),Total_E (J)\n";
+            
+            for (let i = 0; i < ctx.data.time.length; i++) {
+                let row = [
+                    ctx.data.time[i].toFixed(3),
+                    ctx.data.velocity[i].toFixed(3),
+                    ctx.data.pe[i].toFixed(3),
+                    ctx.data.ke_t[i].toFixed(3),
+                    ctx.data.ke_r[i].toFixed(3),
+                    ctx.data.total_e[i].toFixed(3),
+                ].join(",");
+                csvContent += row + "\n";
+            }
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "inclined_plane_simulation.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function takeScreenshot(ctx) {
+            const { renderer } = ctx.three;
+            renderer.render(ctx.three.scene, ctx.three.camera);
+            const dataURL = renderer.domElement.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'inclined_plane_screenshot.png';
+            link.href = dataURL;
+            link.click();
+        }
+
+        // --- Contents from animate.js ---
+
+        const clock = new THREE.Clock();
+        const fixedTimeStep = 1.0 / 60.0; // 60 FPS
+        let lastTime_anim = 0; // Renamed to avoid conflict
+        const maxSubSteps = 10;
+        let dataSampleCounter = 0;
+        const dataSampleRate = 3; 
+
+        function animate(ctx) {
+            requestAnimationFrame(() => animate(ctx));
+
+            const { scene, camera, renderer, controls } = ctx.three;
+            const { world } = ctx.physics;
+            
+            const time = performance.now() / 1000;
+            let deltaTime = time - lastTime_anim;
+            lastTime_anim = time;
+
+            if (ctx.state.isRunning || ctx.state.isStepping) {
+                
+                world.step(fixedTimeStep, deltaTime, maxSubSteps);
+                ctx.state.simulationTime += fixedTimeStep;
+
+                for (const obj of ctx.objects) {
+                    obj.mesh.position.copy(obj.body.position);
+                    obj.mesh.quaternion.copy(obj.body.quaternion);
+                    
+                    if (obj.mesh.position.y < 0) {
+                        obj.body.velocity.set(0,0,0);
+                        obj.body.angularVelocity.set(0,0,0);
+                        obj.body.sleep();
+                    }
+                }
+                
+                dataSampleCounter++;
+                if (dataSampleCounter >= dataSampleRate) {
+                    recordData(ctx);
+                    dataSampleCounter = 0;
+                }
+
+                updateReadouts(ctx);
+                updateEnergyBar(ctx);
+
+                if (ctx.params.showVectors) {
+                    updateHelpers(ctx);
+                }
+
+                if (ctx.state.isStepping) {
+                    ctx.state.isStepping = false;
+                }
+            }
+            
+            if (ctx.state.isRunning && ctx.data.time.length > 0 && dataSampleCounter === 0) {
+                updateCharts(ctx);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function recordData(ctx) {
+            const obj = ctx.state.selectedObject;
+            if (!obj) return;
+            
+            const { body, initialPE } = obj;
+            const v = body.velocity.length();
+            const m = body.mass;
+            const g = ctx.params.g;
+            
+            const pe = m * g * (body.position.y);
+            const ke_t = 0.5 * m * v * v;
+            
+            const I = body.inertia;
+            const w_vec = body.angularVelocity;
+            const ke_r = 0.5 * (I.x * w_vec.x**2 + I.y * w_vec.y**2 + I.z * w_vec.z**2);
+            
+            const total_e = pe + ke_t + ke_r;
+
+            ctx.data.time.push(ctx.state.simulationTime);
+            ctx.data.velocity.push(v);
+            ctx.data.pe.push(pe);
+            ctx.data.ke_t.push(ke_t);
+            ctx.data.ke_r.push(ke_r);
+            ctx.data.total_e.push(total_e);
+            
+            const maxDataPoints = 500;
+            if (ctx.data.time.length > maxDataPoints) {
+                ctx.data.time.shift();
+                ctx.data.velocity.shift();
+                ctx.data.pe.shift();
+                ctx.data.ke_t.shift();
+                ctx.data.ke_r.shift();
+                ctx.data.total_e.shift();
+            }
+        }
+
+        function updateCharts(ctx) {
+            ctx.charts.velocityChart.data.labels = ctx.data.time;
+            ctx.charts.velocityChart.data.datasets[0].data = ctx.data.velocity;
+            ctx.charts.velocityChart.update('none'); 
+
+            ctx.charts.energyChart.data.labels = ctx.data.time;
+            ctx.charts.energyChart.data.datasets[0].data = ctx.data.pe;
+            ctx.charts.energyChart.data.datasets[1].data = ctx.data.ke_t;
+            ctx.charts.energyChart.data.datasets[2].data = ctx.data.ke_r;
+            ctx.charts.energyChart.data.datasets[3].data = ctx.data.total_e;
+            ctx.charts.energyChart.update('none');
+        }
+
+        // --- Contents from main.js (Execution Logic) ---
+
+        /**
+         * Main application context object.
+         */
+        const ctx = {
+            three: {},
+            physics: {},
+            objects: [],
+            charts: {},
+            helpers: {},
+            params: {
+                angle: 30,
+                mu: 0.2,
+                g: 9.81,
+                mass: 1.0,
+                mode: 'hybrid',
+                showVectors: false,
+                showEnergy: false,
+            },
+            state: {
+                isRunning: false,
+                isStepping: false,
+                simulationTime: 0,
+                lastTime: 0,
+                selectedObject: null,
+            },
+            data: {
+                time: [],
+                velocity: [],
+                pe: [],
+                ke_t: [],
+                ke_r: [],
+                total_e: [],
+            },
+            dom: {},
+        };
+
+        /**
+         * Initializes the entire simulation.
+         */
+        function start() {
+            // 1. Initialize Three.js
+            ctx.three = initThree(document.getElementById('simulation-canvas'));
+
+            // 2. Initialize cannon-es
+            ctx.physics = initPhysics(ctx);
+            
+            // 3. Initialize visual helpers
+            ctx.helpers = initHelpers(ctx);
+
+            // 4. Initialize UI controls
+            initUI(ctx);
+            
+            // 5. Hide loading overlay
+            document.getElementById('loading-overlay').style.display = 'none';
+
+            // 6. Start the animation loop
+            animate(ctx);
+        }
+
+        // Start the simulation
+        start();
+
+    </script>
+</body>
+</html>
