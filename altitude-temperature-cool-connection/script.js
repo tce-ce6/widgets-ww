@@ -175,6 +175,49 @@ const sketch = (p) => {
             model.isDragging = false;
         },
 
+        // --- START: Added Touch Handlers ---
+
+        handleTouchStarted() {
+            if (p.touches.length === 0) return; // Exit if no touch data
+            const touchX = p.touches[0].x;
+            const touchY = p.touches[0].y;
+
+            // 1. Check for Insights button tap
+            const ib = model.insightsButton;
+            const isTouchingInsights = (touchX > ib.x && touchX < ib.x + ib.w && touchY > ib.y && touchY < ib.y + ib.h);
+            if (model.insightsButton.alpha > 200 && isTouchingInsights) {
+                model.isInsightsVisible = !model.isInsightsVisible;
+                return; // Tapped button, don't start drag
+            }
+
+            // 2. Check for balloon drag start
+            let d = p.dist(touchX, touchY, model.balloon.x, model.balloon.y - model.balloon.currentHeight / 2);
+            if (d < model.balloon.currentWidth / 2) {
+                model.isDragging = true;
+                return false; // Prevent default behavior (like page scrolling)
+            }
+        },
+
+        handleTouchMoved() {
+            if (model.isDragging && p.touches.length > 0) {
+                const touchY = p.touches[0].y;
+                // The y-coordinate corresponding to the 5000m mark
+                const topLimit = 646;   // 224 * 2.88
+                const bottomLimit = 1691; // 587 * 2.88
+                
+                // Constrain the balloon's y-position to the defined limits
+                model.balloon.y = p.constrain(touchY, topLimit, bottomLimit);
+                this.updateValuesFromY(model.balloon.y);
+                return false; // IMPORTANT: Prevent default page scrolling
+            }
+        },
+        
+        handleTouchEnded() {
+            model.isDragging = false;
+        },
+
+        // --- END: Added Touch Handlers ---
+
         moveMolecules() {
             const moveRange = 19; // 6.67 * 2.88
             const radius = 6;     // 2 * 2.88
@@ -258,7 +301,7 @@ const sketch = (p) => {
             p.text("What changes do you observe in temperature and atmospheric pressure in relation to altitude?", p.width / 4, 308); // 107 * 2.88
             
             p.fill(130);
-            p.textSize(37); // 13 * 2.88
+            p.textSize(50); // 13 * 2.88
             p.textAlign(p.CENTER, p.BOTTOM);
             p.text("Disclaimer: These are simplified and approximate values. Real atmospheric conditions require detailed calculations for accuracy.", p.width / 2, p.height - 250); // -13 * 2.88
         },
@@ -302,23 +345,23 @@ const sketch = (p) => {
             const centerX = model.balloon.x;
              const currentW = model.balloon.currentWidth;
              const currentH = model.balloon.currentHeight;
- // **--- START OF FIX ---**
+// **--- START OF FIX ---**
 
- // 1. Calculate the padding in pixels based on the balloon's current height
+// 1. Calculate the padding in pixels based on the balloon's current height
             const paddingInPixels = currentH * model.lottieBottomPadding;
 
- // 2. Adjust the center Y by ADDING the padding. This shifts the image DOWN.
+// 2. Adjust the center Y by ADDING the padding. This shifts the image DOWN.
             const centerY = (model.balloon.y - currentH / 2) + paddingInPixels;
 
- // **--- END OF FIX ---**
+// **--- END OF FIX ---**
 
- // Draw the Lottie animation
+// Draw the Lottie animation
             if (model.lottieCanvas) {
             p.image(model.lottieCanvas, centerX, centerY, currentW, currentH);
         }
 
     p.pop();
-     },
+       },
 
         drawReadoutPanels() {
             const drawBox = (y, label, value, unit, valColor, valBorderColor) => {
@@ -371,30 +414,44 @@ const sketch = (p) => {
         },
 
         drawInsights() {
-            if (model.isInsightsVisible) {
-                p.fill(255);
-                p.stroke(220);
-                p.strokeWeight(3.84); // 1.33 * 2.88
-                p.rect(2053, 1228, 1230, 576, 37); // 713*2.88=2053, 427*2.88=1230, 200*2.88=576, 13*2.88=37
+        if (model.isInsightsVisible) {
+            p.fill(255);
+            p.stroke(220);
+            p.strokeWeight(3.84); 
+            p.rect(2053, 1228, 1230, 576, 37); 
 
-                p.fill(50);
-                p.noStroke();
-                p.textAlign(p.LEFT, p.TOP);
-                p.textStyle(p.BOLD);
-                p.textSize(46); // 16 * 2.88
-                p.text("Impact of Altitude on Temperature and\nAtmospheric Pressure", 2093, 1419, 1152); // 727*2.88=2093, 493*2.88=1419, 400*2.88=1152
-                
-                p.textStyle(p.NORMAL);
-                p.textSize(43); // 15 * 2.88
-                p.fill(80);
-                p.text("• With an increase in altitude, air density decreases,\n  resulting in lower temperature and pressure.", 2093, 1535, 1152); // 727*2.88=2093, 533*2.88=1535, 400*2.88=1152
-                
-                p.textStyle(p.NORMAL);
-                p.textSize(43); // 15 * 2.88
-                p.fill(80);
-                p.text("• With a decrease in altitude, the air density increases, resulting in higher temperature and atmospheric pressure.", 2093, 1654, 1152); // 727*2.88=2093, 573*2.88=1654, 400*2.88=1152
-            }
-        },
+            p.fill(50);
+            p.noStroke();
+            p.textAlign(p.LEFT, p.TOP);
+            p.textStyle(p.BOLD);
+            p.textSize(46); 
+            p.text("Impact of Altitude on Temperature and\nAtmospheric Pressure", 2093, 1369, 1152); 
+            
+            p.textStyle(p.NORMAL);
+            p.textSize(43); 
+            p.fill(80);
+
+            // --- Define positions for hanging indent ---
+            let startX = 2093;
+            let y1 = 1505;
+            let y2 = 1624;
+            let totalWidth = 1152;
+            let indent = 45; // Adjust this value for more/less space
+            
+            let textX = startX + indent;
+            let textWidth = totalWidth - indent;
+            
+            // --- Bullet 1 ---
+            let text1 = "With an increase in altitude, air density decreases, resulting in lower temperature and pressure.";
+            p.text("*", startX, y1); // Draw bullet
+            p.text(text1, textX, y1, textWidth); // Draw indented text
+            
+            // --- Bullet 2 ---
+            let text2 = "With a decrease in altitude, the air density increases, resulting in higher temperature and atmospheric pressure.";
+            p.text("*", startX, y2); // Draw bullet
+            p.text(text2, textX, y2, textWidth); // Draw indented text
+        }
+    },
         
         drawInsightsButton() {
             model.insightsButton.alpha = 255;
@@ -414,15 +471,19 @@ const sketch = (p) => {
     // P5.js Main Functions
     //===========================================
     p.preload = function() {
-        model.bgImage = p.loadImage('assets/Sky_BG_02.jpg');
+        model.bgImage = p.loadImage('assets/Sky_BG_02.svg');
         // **MODIFIED:** Removed the static balloon SVG load
         // model.balloonSVG = p.loadImage('assets/baloon2.svg');
         model.insightButtonSVG = p.loadImage('assets/btn_Insight.svg');
     };
 
     p.setup = function() {
+       p.pixelDensity(p.displayDensity());
+
+
         p.createCanvas(model.canvasWidth, model.canvasHeight).parent('canvas-container');
-        
+        p.smooth(); // Ensures smoothing is on
+        p.drawingContext.imageSmoothingQuality = 'high';        
         // --- Lottie Initialization ---
         // 1. Create an offscreen p5.Graphics canvas for Lottie to draw on.
         // We make it larger than the max balloon size (approx 184w x 277h) for good resolution.
@@ -476,6 +537,12 @@ const sketch = (p) => {
     p.mousePressed = () => controller.handleMousePressed();
     p.mouseDragged = () => controller.handleMouseDragged();
     p.mouseReleased = () => controller.handleMouseReleased();
+
+    // --- START: Added Touch Event Hooks ---
+    p.touchStarted = () => controller.handleTouchStarted();
+    p.touchMoved = () => controller.handleTouchMoved();
+    p.touchEnded = () => controller.handleTouchEnded();
+    // --- END: Added Touch Event Hooks ---
 };
 
 new p5(sketch);
