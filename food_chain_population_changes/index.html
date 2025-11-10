@@ -44,9 +44,9 @@
     </style>
   </head>
   <body>
-    <div class="title-container">
-      <h3>Food Chain Population Changes</h3>
-    </div>
+     <div class="wdgetTitle">
+        <h2>Food Chain Population Changes</h2>
+      </div>
 
     <div id="simulation-container">
       <div id="canvas-container"></div>
@@ -117,7 +117,9 @@
         sliderBaseImage = loadImage("assets/Slider_Base.svg");
       increaseSound = loadSound(
     "assets/Increase_01.mp3",
-    () => console.log("✅ Increase sound loaded successfully"),
+    () => {
+      increaseSound.setVolume(0.3);
+    },
     (err) => console.error("❌ Error loading Increase_01.mp3:", err)
   );
 
@@ -204,115 +206,125 @@
       }
 
       // --- NEW FUNCTION: Animate per-member fade ---
-      function drawOrganismPopulation(type, x, y, w, h) {
-        const organism = organisms[type];
-        const members = organism.members;
-        const populationCount = members.length;
+     // --- NEW FUNCTION: Animate per-member fade ---
+function drawOrganismPopulation(type, x, y, w, h) {
+  const organism = organisms[type];
+  const members = organism.members;
+  const populationCount = members.length;
 
-        let imgWidth, imgHeight;
-        if (type === "maize") {
-          imgWidth = imgHeight = 50 * scale;
-        } else if (type === "grasshoppers") {
-          imgWidth = 60 * scale;
-          imgHeight = 50 * scale;
-        } else {
-          imgWidth = 60 * scale;
-          imgHeight = 50 * scale;
-        }
+  let imgWidth, imgHeight;
+  if (type === "maize") {
+    imgWidth = imgHeight = 50 * scale;
+  } else if (type === "grasshoppers") {
+    imgWidth = 60 * scale;
+    imgHeight = 50 * scale;
+  } else {
+    imgWidth = 60 * scale;
+    imgHeight = 50 * scale;
+  }
 
-        // --- NEW: Decide columns and rows ---
-        let cols, rows;
+  // --- FIXED: Decide columns and rows based on current population ---
+  let cols, rows;
 
-        if (type === "maize" && populationCount === 12) {
-          // 3rd step: fill vertically
-          cols = 3;
-          rows = 4;
-        } else if (type === "maize") {
-          // other steps: normal columns
-          cols = 2;
-          rows = Math.ceil(populationCount / cols);
-        } else {
-          cols = 2; // for grasshoppers/lizards
-          rows = Math.ceil(populationCount / cols);
-        }
+  if (type === "maize") {
+    // Use 3 columns when population is > 8
+    if (populationCount > 8) {
+      cols = 3;
+      rows = Math.ceil(populationCount / cols);
+    } else {
+      cols = 2;
+      rows = Math.ceil(populationCount / cols);
+    }
+  } else {
+    cols = 2; // for grasshoppers/lizards
+    rows = Math.ceil(populationCount / cols);
+  }
 
-        const maxSpacing = 15 * scale;
-        const totalImagesHeight = imgHeight * rows;
-        const availableSpacingHeight = h - totalImagesHeight;
-        const calculatedSpacing = availableSpacingHeight / (rows + 1);
-        const cellSpacing = Math.min(
-          maxSpacing,
-          Math.max(10 * scale, calculatedSpacing)
-        );
+  const maxSpacing = 15 * scale;
+  const totalImagesHeight = imgHeight * rows;
+  const availableSpacingHeight = h - totalImagesHeight;
+  const calculatedSpacing = availableSpacingHeight / (rows + 1);
+  const cellSpacing = Math.min(
+    maxSpacing,
+    Math.max(10 * scale, calculatedSpacing)
+  );
 
-        const totalGridWidth = imgWidth * cols + cellSpacing * (cols - 1);
-        const totalGridHeight = imgHeight * rows + cellSpacing * (rows - 1);
+  const totalGridWidth = imgWidth * cols + cellSpacing * (cols - 1);
+  const totalGridHeight = imgHeight * rows + cellSpacing * (rows - 1);
 
-        const startX = x + (w - totalGridWidth) / 2;
-        const startY = y + (h - totalGridHeight) / 2;
+  const startX = x + (w - totalGridWidth) / 2;
+  const startY = y + (h - totalGridHeight) / 2;
 
-        let img;
-        if (type === "maize") img = maizeImage;
-        else if (type === "grasshoppers") img = grasshopperImage;
-        else img = lizardImage;
+  let img;
+  if (type === "maize") img = maizeImage;
+  else if (type === "grasshoppers") img = grasshopperImage;
+  else img = lizardImage;
 
-        for (let i = 0; i < members.length; i++) {
-          const member = members[i];
+  for (let i = 0; i < members.length; i++) {
+    const member = members[i];
 
-          // Animate fade in/out
-          if (member.fadingOut) {
-            member.alpha -= FADE_SPEED;
-            if (member.alpha <= 0) {
-              members.splice(i, 1);
-              i--;
-              continue;
-            }
-          } else if (member.alpha < 255) {
-            member.alpha += FADE_SPEED;
-          }
-
-          let col = i % cols;
-          let row = Math.floor(i / cols);
-          let animalX = startX + col * (imgWidth + cellSpacing) + imgWidth / 2;
-          let animalY =
-            startY + row * (imgHeight + cellSpacing) + imgHeight / 2;
-
-          push();
-          tint(255, member.alpha);
-          image(img, animalX, animalY, imgWidth, imgHeight);
-          pop();
-        }
+    // Animate fade in/out
+    if (member.fadingOut) {
+      member.alpha -= FADE_SPEED;
+      if (member.alpha <= 0) {
+        members.splice(i, 1);
+        i--;
+        continue;
       }
+    } else if (member.alpha < 255) {
+      member.alpha += FADE_SPEED;
+    }
+
+    let col = i % cols;
+    let row = Math.floor(i / cols);
+    let animalX = startX + col * (imgWidth + cellSpacing) + imgWidth / 2;
+    let animalY =
+      startY + row * (imgHeight + cellSpacing) + imgHeight / 2;
+
+    push();
+    tint(255, member.alpha);
+    image(img, animalX, animalY, imgWidth, imgHeight);
+    pop();
+  }
+}
 
       // Helper to update population with fade effects
-      function setPopulationWithFade(type, newCount) {
-        const organism = organisms[type];
-        const currentCount = organism.members.length;
+     // Helper to update population with fade effects
+// Helper to update population with fade effects
+function setPopulationWithFade(type, newCount) {
+    const organism = organisms[type];
+    const currentCount = organism.members.length;
 
-        if (newCount > currentCount) {
-          // Fade IN one by one
-          const diff = newCount - currentCount;
-          for (let i = 0; i < diff; i++) {
+    if (newCount > currentCount) {
+        const diff = newCount - currentCount;
+        let actualDiff = diff;
+        
+        // --- FIX REMOVED: No more logic to skip animation for Maize ---
+        // actualDiff = diff now runs for ALL population increases.
+        // --- END FIX REMOVED ---
+
+        // Fade IN one by one (using actualDiff)
+        for (let i = 0; i < actualDiff; i++) {
             setTimeout(() => {
-              organism.members.push({ alpha: 0 });
+                organism.members.push({ alpha: 0 });
             }, i * STEP_DELAY);
-          }
-        } else if (newCount < currentCount) {
-          // Fade OUT one by one
-          const diff = currentCount - newCount;
-          for (let i = 0; i < diff; i++) {
-            setTimeout(() => {
-              const idx = organism.members.length - 1 - i;
-              if (idx >= 0) {
-                organism.members[idx].fadingOut = true;
-              }
-            }, i * STEP_DELAY);
-          }
         }
+    } else if (newCount < currentCount) {
+        // Fade OUT logic remains the same
+        const diff = currentCount - newCount;
+        for (let i = 0; i < diff; i++) {
+            setTimeout(() => {
+                const idx = organism.members.length - 1 - i;
+                if (idx >= 0) {
+                    organism.members[idx].fadingOut = true;
+                }
+            }, i * STEP_DELAY);
+        }
+    }
 
-        organism.population = newCount;
-      }
-
+    // The population count is always set to newCount (12).
+    organism.population = newCount;
+}
       function drawBlinkingStatus(type, x, y) {
         if (
           gameState.blinkingText[type] &&
@@ -575,70 +587,72 @@
 
         if (activeSliderValue === 1) {
           gameState.instructionText =
-            "Drag the slider left or right to see the changes.";
+            "Drag the slider left or right to see other changes.";
         } else if (activeSliderValue === 2) {
           gameState.instructionText =
-            "Drag the slider left to see the changes or click 'Reset' to start again.";
+            "Drag the slider left to see other changes or click 'Reset' to start again.";
         }
 
         applyCascadeEffects();
       }
 
-      function applyCascadeEffects() {
-        const activeType = gameState.activeSlider;
-        if (!activeType) return;
-        const sliderValue = organisms[activeType].slider;
+   function applyCascadeEffects() {
+    const activeType = gameState.activeSlider;
+    if (!activeType) return;
+    const sliderValue = organisms[activeType].slider;
 
-        const playSound = (type) => {
-          if (type === "increase") {
+    const playSound = (type) => {
+        if (type === "increase") {
             if (increaseSound && increaseSound.isLoaded()) increaseSound.play();
-          } else if (type === "decrease") {
+        } else if (type === "decrease") {
             if (decreaseSound && decreaseSound.isLoaded()) decreaseSound.play();
-          }
-        };
+        }
+    };
 
-        if (activeType === "maize") {
-          setTimeout(() => {
+    if (activeType === "maize") {
+        setTimeout(() => {
             setPopulationWithFade("grasshoppers", sliderValue === 1 ? 6 : 8);
             gameState.blinkingText.grasshoppers = "increase";
-            playSound("increase"); // ✅ sound for this phase
-          }, 1500);
+            playSound("increase");
+        }, 1500);
 
-          setTimeout(() => {
+        setTimeout(() => {
             setPopulationWithFade("lizards", sliderValue === 1 ? 4 : 6);
             gameState.blinkingText.lizards = "increase";
-            playSound("increase"); // ✅ sound for this phase
-          }, 3000);
-        } else if (activeType === "grasshoppers") {
-          setTimeout(() => {
+            playSound("increase");
+        }, 3000);
+    } else if (activeType === "grasshoppers") {
+        setTimeout(() => {
             setPopulationWithFade("maize", sliderValue === 1 ? 4 : 2);
             gameState.blinkingText.maize = "decrease";
-            playSound("decrease"); // ✅ sound for this phase
-          }, 1500);
+            playSound("decrease");
+        }, 1500);
 
-          setTimeout(() => {
+        setTimeout(() => {
             setPopulationWithFade("lizards", sliderValue === 1 ? 4 : 6);
             gameState.blinkingText.lizards = "increase";
-            playSound("increase"); // ✅ sound for this phase
-          }, 3000);
-        } else if (activeType === "lizards") {
-          setTimeout(() => {
+            playSound("increase");
+        }, 3000);
+    } else if (activeType === "lizards") {
+        setTimeout(() => {
             setPopulationWithFade("grasshoppers", sliderValue === 1 ? 2 : 1);
             gameState.blinkingText.grasshoppers = "decrease";
             playSound("decrease"); 
-          }, 1500);
+        }, 1500);
 
-          setTimeout(() => {
+        setTimeout(() => {
+            // FIX: Set the population to 12. 
+            // setPopulationWithFade logic below will ensure it displays 12 because activeSlider is "lizards"
             setPopulationWithFade("maize", sliderValue === 1 ? 8 : 12);
             gameState.blinkingText.maize = "increase";
             playSound("increase"); 
-          }, 3000);
-        }
+        }, 3000);
+    }
 
-        setTimeout(() => {
-          gameState.phase = "waiting";
-        }, 4500);
-      }
+    setTimeout(() => {
+        gameState.phase = "waiting";
+    }, 4500);
+}
 
       function handleReset() {
         organisms = initialOrganisms();
