@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Front and Temperate Cyclone</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #a0a0a0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #222;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #2196f3;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2196f3;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .divider {
+            width: 2px;
+            height: 40px;
+            background: #ddd;
+        }
+
+        #info {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-size: 13px;
+            color: #333;
+            max-width: 280px;
+            z-index: 10;
+        }
+
+        #info div {
+            margin: 5px 0;
+        }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .fullscreen-btns {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="title">Weather front and temperate cyclone</div>
+
+        <div id="info">
+            <div style="font-weight: bold; margin-bottom: 10px;">Air Masses:</div>
+            <div class="legend">
+                <div class="color-box" style="background: #90EE90;"></div>
+                <span>Warm Air (Light green)</span>
+            </div>
+            <div class="legend">
+                <div class="color-box" style="background: #6B9DB3;"></div>
+                <span>Cold Air (Blue-gray)</span>
+            </div>
+            <div style="margin-top: 10px;">
+                <strong>☁️ Clouds:</strong> Form at the front boundary
+            </div>
+        </div>
+
+        <div id="controls">
+            <button id="playBtn">▶ Play Animation</button>
+            <button id="resetBtn">↻ Reset</button>
+
+            <div class="divider"></div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="particlesCheckbox" checked>
+                <label for="particlesCheckbox">Show air particles</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="arrowsCheckbox" checked>
+                <label for="arrowsCheckbox">Show wind arrows</label>
+            </div>
+        </div>
+
+        <div class="fullscreen-btns">
+            <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+
+    <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        // ========== SCENE SETUP ==========
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xb0b0b0);
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(-15, 12, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.target.set(0, 5, 0);
+        controls.update();
+
+        // ========== LIGHTING ==========
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(20, 30, 20);
+        dirLight.castShadow = true;
+        dirLight.shadow.camera.left = -30;
+        dirLight.shadow.camera.right = 30;
+        dirLight.shadow.camera.top = 30;
+        dirLight.shadow.camera.bottom = -30;
+        scene.add(dirLight);
+
+        // ========== BOUNDING BOX ==========
+        const boxEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(40, 20, 30));
+        const boxMaterial = new THREE.LineBasicMaterial({ color: 0x333333, linewidth: 2 });
+        const box = new THREE.LineSegments(boxEdges, boxMaterial);
+        box.position.set(0, 10, 0);
+        scene.add(box);
+
+        // ========== AIR MASSES ==========
+        // Warm air mass (light green)
+        const warmAirGeometry = new THREE.BoxGeometry(20, 1, 30);
+        const warmAirMaterial = new THREE.MeshStandardMaterial({
+            color: 0x90EE90,
+            transparent: true,
+            opacity: 0.6,
+            side: THREE.DoubleSide
+        });
+        const warmAir = new THREE.Mesh(warmAirGeometry, warmAirMaterial);
+        warmAir.position.set(-10, 0.5, 0);
+        scene.add(warmAir);
+
+        // Cold air mass (blue-gray) - wedge shape
+        const coldAirShape = new THREE.Shape();
+        coldAirShape.moveTo(0, 0);
+        coldAirShape.lineTo(20, 0);
+        coldAirShape.lineTo(20, 10);
+        coldAirShape.lineTo(0, 0);
+
+        const extrudeSettings = {
+            steps: 1,
+            depth: 30,
+            bevelEnabled: false
+        };
+
+        const coldAirGeometry = new THREE.ExtrudeGeometry(coldAirShape, extrudeSettings);
+        const coldAirMaterial = new THREE.MeshStandardMaterial({
+            color: 0x6B9DB3,
+            transparent: true,
+            opacity: 0.7,
+            side: THREE.DoubleSide
+        });
+        const coldAir = new THREE.Mesh(coldAirGeometry, coldAirMaterial);
+        coldAir.rotation.x = Math.PI / 2;
+        coldAir.position.set(0, 0, -15);
+        scene.add(coldAir);
+
+        // Warm air rising wedge (above cold air)
+        const warmRiseShape = new THREE.Shape();
+        warmRiseShape.moveTo(0, 0);
+        warmRiseShape.lineTo(15, 0);
+        warmRiseShape.lineTo(0, 8);
+        warmRiseShape.lineTo(0, 0);
+
+        const warmRiseGeometry = new THREE.ExtrudeGeometry(warmRiseShape, extrudeSettings);
+        const warmRise = new THREE.Mesh(warmRiseGeometry, warmAirMaterial);
+        warmRise.rotation.x = Math.PI / 2;
+        warmRise.position.set(0, 0, -15);
+        scene.add(warmRise);
+
+        // ========== CLOUDS ==========
+        const clouds = [];
+        function createCloud(x, y, z, scale = 1) {
+            const cloudGroup = new THREE.Group();
+            const cloudMaterial = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                roughness: 1
+            });
+
+            for (let i = 0; i < 6; i++) {
+                const cloudPart = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.8 + Math.random() * 0.5, 16, 16),
+                    cloudMaterial
+                );
+                cloudPart.position.set(
+                    (Math.random() - 0.5) * 3 * scale,
+                    (Math.random() - 0.5) * 0.8 * scale,
+                    (Math.random() - 0.5) * 2 * scale
+                );
+                cloudPart.scale.set(1.2, 0.7, 1);
+                cloudPart.castShadow = true;
+                cloudGroup.add(cloudPart);
+            }
+
+            cloudGroup.position.set(x, y, z);
+            scene.add(cloudGroup);
+            clouds.push(cloudGroup);
+            return cloudGroup;
+        }
+
+        // Create clouds at the front
+        createCloud(2, 8, 0, 1.5);
+        createCloud(5, 10, 5, 1.2);
+        createCloud(4, 9, -5, 1.3);
+
+        // ========== PARTICLES ==========
+        const particles = [];
+        const particleGeometry = new THREE.SphereGeometry(0.15, 8, 8);
+
+        // Warm air particles (green dots)
+        for (let i = 0; i < 80; i++) {
+            const particle = new THREE.Mesh(
+                particleGeometry,
+                new THREE.MeshBasicMaterial({ color: 0x2E7D32 })
+            );
+            particle.position.set(
+                -20 + Math.random() * 20,
+                Math.random() * 5,
+                -15 + Math.random() * 30
+            );
+            scene.add(particle);
+            particles.push({
+                mesh: particle,
+                type: 'warm',
+                velocity: new THREE.Vector3(0.02, 0, 0),
+                baseY: particle.position.y
+            });
+        }
+
+        // Cold air particles (blue dots)
+        for (let i = 0; i < 80; i++) {
+            const particle = new THREE.Mesh(
+                particleGeometry,
+                new THREE.MeshBasicMaterial({ color: 0x1565C0 })
+            );
+            const yPos = Math.random() * 8;
+            particle.position.set(
+                Math.random() * 20,
+                yPos,
+                -15 + Math.random() * 30
+            );
+            scene.add(particle);
+            particles.push({
+                mesh: particle,
+                type: 'cold',
+                velocity: new THREE.Vector3(-0.015, -0.005, 0),
+                baseY: yPos
+            });
+        }
+
+        // ========== ARROWS ==========
+        const arrows = [];
+
+        function createArrow(color) {
+            const group = new THREE.Group();
+            const shaftGeometry = new THREE.CylinderGeometry(0.08, 0.08, 2, 8);
+            const headGeometry = new THREE.ConeGeometry(0.25, 0.6, 8);
+            const material = new THREE.MeshStandardMaterial({ color });
+
+            const shaft = new THREE.Mesh(shaftGeometry, material);
+            const head = new THREE.Mesh(headGeometry, material);
+
+            shaft.rotation.z = Math.PI / 2;
+            head.rotation.z = -Math.PI / 2;
+            head.position.x = 1.3;
+
+            group.add(shaft);
+            group.add(head);
+
+            return group;
+        }
+
+        // Warm air arrow
+        const warmArrow = createArrow(0x000000);
+        warmArrow.position.set(-5, 3, 0);
+        scene.add(warmArrow);
+        arrows.push(warmArrow);
+
+        // Add "Warm air" text (using a plane with texture)
+        const warmTextCanvas = document.createElement('canvas');
+        warmTextCanvas.width = 256;
+        warmTextCanvas.height = 64;
+        const warmCtx = warmTextCanvas.getContext('2d');
+        warmCtx.fillStyle = 'black';
+        warmCtx.font = 'bold 48px Arial';
+        warmCtx.fillText('Warm air', 10, 45);
+
+        const warmTextTexture = new THREE.CanvasTexture(warmTextCanvas);
+        const warmTextMaterial = new THREE.MeshBasicMaterial({
+            map: warmTextTexture,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const warmTextMesh = new THREE.Mesh(
+            new THREE.PlaneGeometry(4, 1),
+            warmTextMaterial
+        );
+        warmTextMesh.position.set(-8, 3, 0);
+        warmTextMesh.rotation.y = Math.PI / 6;
+        scene.add(warmTextMesh);
+
+        // Cold air arrow
+        const coldArrow = createArrow(0x000000);
+        coldArrow.position.set(8, 5, 0);
+        scene.add(coldArrow);
+        arrows.push(coldArrow);
+
+        // Add "Cold air" text
+        const coldTextCanvas = document.createElement('canvas');
+        coldTextCanvas.width = 256;
+        coldTextCanvas.height = 64;
+        const coldCtx = coldTextCanvas.getContext('2d');
+        coldCtx.fillStyle = 'black';
+        coldCtx.font = 'bold 48px Arial';
+        coldCtx.fillText('Cold air', 10, 45);
+
+        const coldTextTexture = new THREE.CanvasTexture(coldTextCanvas);
+        const coldTextMaterial = new THREE.MeshBasicMaterial({
+            map: coldTextTexture,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const coldTextMesh = new THREE.Mesh(
+            new THREE.PlaneGeometry(4, 1),
+            coldTextMaterial
+        );
+        coldTextMesh.position.set(11, 5, 0);
+        coldTextMesh.rotation.y = Math.PI / 6;
+        scene.add(coldTextMesh);
+
+        // ========== ANIMATION STATE ==========
+        let isAnimating = false;
+        let showParticles = true;
+        let showArrows = true;
+        let animationTime = 0;
+
+        function updateParticles(delta) {
+            if (!isAnimating) return;
+
+            particles.forEach(p => {
+                p.mesh.position.add(p.velocity);
+
+                if (p.type === 'warm') {
+                    // Warm air rises at the front
+                    if (p.mesh.position.x > -2 && p.mesh.position.x < 10) {
+                        p.mesh.position.y += 0.02;
+                    }
+
+                    // Reset if out of bounds
+                    if (p.mesh.position.x > 20) {
+                        p.mesh.position.x = -20;
+                        p.mesh.position.y = p.baseY;
+                    }
+                } else {
+                    // Cold air stays low
+                    if (p.mesh.position.x < -20) {
+                        p.mesh.position.x = 20;
+                        p.mesh.position.y = p.baseY;
+                    }
+                    if (p.mesh.position.y < 0) {
+                        p.mesh.position.y = p.baseY;
+                    }
+                }
+            });
+        }
+
+        // ========== ANIMATION LOOP ==========
+        let lastTime = performance.now();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const currentTime = performance.now();
+            const deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            if (isAnimating) {
+                animationTime += deltaTime;
+                updateParticles(deltaTime);
+
+                // Animate clouds slightly
+                clouds.forEach((cloud, i) => {
+                    cloud.position.x += 0.005;
+                    cloud.position.y += Math.sin(animationTime + i) * 0.002;
+                    if (cloud.position.x > 15) cloud.position.x = -5;
+                });
+            }
+
+            // Update visibility
+            particles.forEach(p => p.mesh.visible = showParticles);
+            arrows.forEach(a => a.visible = showArrows);
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // ========== EVENT LISTENERS ==========
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        document.getElementById('playBtn').addEventListener('click', (e) => {
+            isAnimating = !isAnimating;
+            e.target.textContent = isAnimating ? '⏸ Pause' : '▶ Play Animation';
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            animationTime = 0;
+            particles.forEach(p => {
+                if (p.type === 'warm') {
+                    p.mesh.position.set(
+                        -20 + Math.random() * 20,
+                        p.baseY,
+                        -15 + Math.random() * 30
+                    );
+                } else {
+                    p.mesh.position.set(
+                        Math.random() * 20,
+                        p.baseY,
+                        -15 + Math.random() * 30
+                    );
+                }
+            });
+            clouds.forEach((cloud, i) => {
+                cloud.position.x = 2 + i * 2;
+            });
+        });
+
+        document.getElementById('particlesCheckbox').addEventListener('change', (e) => {
+            showParticles = e.target.checked;
+        });
+
+        document.getElementById('arrowsCheckbox').addEventListener('change', (e) => {
+            showArrows = e.target.checked;
+        });
+
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
+</body>
+
+</html>

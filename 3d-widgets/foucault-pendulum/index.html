@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foucault Pendulum (WebGL)</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #2196f3;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #latitudeValue {
+            min-width: 80px;
+            text-align: center;
+            font-weight: bold;
+            color: #2196f3;
+        }
+
+        .divider {
+            width: 2px;
+            height: 40px;
+            background: #ddd;
+        }
+
+        #info {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-size: 13px;
+            color: #333;
+            max-width: 250px;
+            z-index: 10;
+        }
+
+        #info div {
+            margin: 5px 0;
+        }
+
+        #info strong {
+            color: #2196f3;
+        }
+
+        .fullscreen-btns {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="title">Foucault Pendulum (WebGL)</div>
+
+        <div id="info">
+            <div><strong>Period:</strong> <span id="periodText">0.0s</span></div>
+            <div><strong>Rotation Rate:</strong> <span id="rotationText">0.0°/h</span></div>
+            <div><strong>Time:</strong> <span id="timeText">0.0s</span></div>
+        </div>
+
+        <div id="controls">
+            <div class="checkbox-group">
+                <input type="checkbox" id="runCheckbox" checked>
+                <label for="runCheckbox">Run</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="fixEarthCheckbox">
+                <label for="fixEarthCheckbox">Fix the earth</label>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <input type="range" id="latitudeSlider" min="0" max="90" value="83" step="1">
+                <div id="latitudeValue">Latitude 83°N</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="traceCheckbox" checked>
+                <label for="traceCheckbox">Trace drawing</label>
+            </div>
+
+            <button id="resetBtn">Paper reset</button>
+        </div>
+
+        <div class="fullscreen-btns">
+            <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+            <button class="icon-btn" id="expandBtn" title="Expand">⬚</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+
+    <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        // ========== SCENE SETUP ==========
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 8, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 5;
+        controls.maxDistance = 50;
+
+        // ========== LIGHTING ==========
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1.5);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // ========== STARS ==========
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+        const starsVertices = [];
+        for (let i = 0; i < 1000; i++) {
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 200;
+            const z = (Math.random() - 0.5) * 200;
+            starsVertices.push(x, y, z);
+        }
+        starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // ========== EARTH ==========
+        const textureLoader = new THREE.TextureLoader();
+        const earthGeometry = new THREE.SphereGeometry(5, 64, 64);
+
+        // Create earth material with color map
+        const earthMaterial = new THREE.MeshStandardMaterial({
+            map: textureLoader.load('https://unpkg.com/three-globe@2.31.1/example/img/earth-blue-marble.jpg'),
+            roughness: 0.8,
+            metalness: 0.2
+        });
+
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+
+        // ========== PENDULUM ==========
+        const pendulumGroup = new THREE.Group();
+        scene.add(pendulumGroup);
+
+        // Pendulum rod
+        const rodGeometry = new THREE.CylinderGeometry(0.02, 0.02, 3, 8);
+        const rodMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc });
+        const rod = new THREE.Mesh(rodGeometry, rodMaterial);
+        rod.position.y = -1.5;
+        pendulumGroup.add(rod);
+
+        // Pendulum bob
+        const bobGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+        const bobMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const bob = new THREE.Mesh(bobGeometry, bobMaterial);
+        bob.position.y = -3;
+        pendulumGroup.add(bob);
+
+        // Pendulum attachment point (visual indicator)
+        const attachmentGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+        const attachmentMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const attachment = new THREE.Mesh(attachmentGeometry, attachmentMaterial);
+        pendulumGroup.add(attachment);
+
+        // Position pendulum at North Pole initially
+        const pendulumRadius = 6.5;
+        pendulumGroup.position.set(0, pendulumRadius, 0);
+
+        // ========== TRACE DRAWING ==========
+        const tracePoints = [];
+        const maxTracePoints = 500;
+        const traceGeometry = new THREE.BufferGeometry();
+        const traceMaterial = new THREE.LineBasicMaterial({
+            color: 0xff6600,
+            linewidth: 2,
+            transparent: true,
+            opacity: 0.8
+        });
+        const traceLine = new THREE.Line(traceGeometry, traceMaterial);
+        scene.add(traceLine);
+
+        // ========== SIMULATION STATE ==========
+        let isRunning = true;
+        let fixEarth = false;
+        let latitude = 83; // degrees
+        let traceEnabled = true;
+        let time = 0;
+
+        // Pendulum physics
+        let theta = 0.3; // Initial angle in radians
+        let phi = 0; // Azimuthal angle
+        let thetaVel = 0;
+        let phiVel = 0.5;
+        const g = 9.81;
+        const length = 3;
+        const omega = 2 * Math.PI / (24 * 3600); // Earth's rotation rate (rad/s)
+
+        // ========== HELPER FUNCTIONS ==========
+        function updatePendulumPosition() {
+            const latRad = (latitude * Math.PI) / 180;
+
+            // Position pendulum at the specified latitude
+            const x = pendulumRadius * Math.cos(latRad);
+            const y = pendulumRadius * Math.sin(latRad);
+
+            pendulumGroup.position.set(x, y, 0);
+
+            // Orient pendulum to point toward Earth's center
+            pendulumGroup.lookAt(0, 0, 0);
+            pendulumGroup.rotateX(Math.PI);
+        }
+
+        function updateEarthRotation(deltaTime) {
+            if (!fixEarth && isRunning) {
+                earth.rotation.y += omega * deltaTime;
+            }
+        }
+
+        function updatePendulumPhysics(dt) {
+            if (!isRunning) return;
+
+            const latRad = (latitude * Math.PI) / 180;
+            const coriolisEffect = 2 * omega * Math.sin(latRad);
+
+            // Simple pendulum equations with Coriolis effect
+            const thetaAcc = -(g / length) * Math.sin(theta) - coriolisEffect * phiVel * Math.cos(theta);
+            const phiAcc = -coriolisEffect * thetaVel;
+
+            thetaVel += thetaAcc * dt;
+            phiVel += phiAcc * dt;
+
+            theta += thetaVel * dt;
+            phi += phiVel * dt;
+
+            // Apply damping
+            thetaVel *= 0.999;
+            phiVel *= 0.999;
+
+            // Update bob position
+            const x = length * Math.sin(theta) * Math.cos(phi);
+            const z = length * Math.sin(theta) * Math.sin(phi);
+            const y = -length * Math.cos(theta);
+
+            bob.position.set(x, y, z);
+
+            // Update rod
+            rod.position.set(x / 2, y / 2, z / 2);
+            rod.lookAt(x, y, z);
+            rod.rotateX(Math.PI / 2);
+            rod.scale.y = Math.sqrt(x * x + y * y + z * z) / length;
+        }
+
+        function updateTrace() {
+            if (!traceEnabled || !isRunning) return;
+
+            // Get bob world position
+            const worldPos = new THREE.Vector3();
+            bob.getWorldPosition(worldPos);
+
+            tracePoints.push(worldPos.clone());
+
+            if (tracePoints.length > maxTracePoints) {
+                tracePoints.shift();
+            }
+
+            const positions = new Float32Array(tracePoints.length * 3);
+            tracePoints.forEach((point, i) => {
+                positions[i * 3] = point.x;
+                positions[i * 3 + 1] = point.y;
+                positions[i * 3 + 2] = point.z;
+            });
+
+            traceGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            traceGeometry.computeBoundingSphere();
+        }
+
+        function resetTrace() {
+            tracePoints.length = 0;
+            traceGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(0), 3));
+        }
+
+        function updateStats() {
+            const period = 2 * Math.PI * Math.sqrt(length / g);
+            const latRad = (latitude * Math.PI) / 180;
+            const rotationRate = 360 / (24 * Math.sin(latRad)); // degrees per hour
+
+            document.getElementById('periodText').textContent = period.toFixed(2) + 's';
+            document.getElementById('rotationText').textContent = (isFinite(rotationRate) ? rotationRate.toFixed(2) : '∞') + '°/h';
+            document.getElementById('timeText').textContent = time.toFixed(1) + 's';
+        }
+
+        // ========== INITIAL SETUP ==========
+        updatePendulumPosition();
+        updateStats();
+
+        // ========== ANIMATION LOOP ==========
+        let lastTime = performance.now();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const currentTime = performance.now();
+            const deltaTime = Math.min((currentTime - lastTime) / 1000, 0.1); // Cap at 0.1s
+            lastTime = currentTime;
+
+            if (isRunning) {
+                time += deltaTime;
+            }
+
+            updateEarthRotation(deltaTime);
+            updatePendulumPhysics(deltaTime);
+            updateTrace();
+            updateStats();
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // ========== EVENT LISTENERS ==========
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Run checkbox
+        document.getElementById('runCheckbox').addEventListener('change', (e) => {
+            isRunning = e.target.checked;
+        });
+
+        // Fix earth checkbox
+        document.getElementById('fixEarthCheckbox').addEventListener('change', (e) => {
+            fixEarth = e.target.checked;
+        });
+
+        // Latitude slider
+        document.getElementById('latitudeSlider').addEventListener('input', (e) => {
+            latitude = parseInt(e.target.value);
+            document.getElementById('latitudeValue').textContent = `Latitude ${latitude}°N`;
+            updatePendulumPosition();
+            resetTrace();
+            updateStats();
+        });
+
+        // Trace checkbox
+        document.getElementById('traceCheckbox').addEventListener('change', (e) => {
+            traceEnabled = e.target.checked;
+            traceLine.visible = e.target.checked;
+            if (!e.target.checked) {
+                resetTrace();
+            }
+        });
+
+        // Reset button
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            resetTrace();
+            time = 0;
+            theta = 0.3;
+            phi = 0;
+            thetaVel = 0;
+            phiVel = 0.5;
+            updateStats();
+        });
+
+        // Fullscreen buttons
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        document.getElementById('expandBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
+</body>
+
+</html>

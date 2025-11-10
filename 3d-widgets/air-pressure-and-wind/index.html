@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Air Pressure and Wind</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #e8f0ff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #222;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            z-index: 10;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        input[type="range"] {
+            width: 250px;
+            cursor: pointer;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff4444;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff4444;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2196f3;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2196f3;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #coriolisValue {
+            font-weight: bold;
+            color: #333;
+            min-width: 120px;
+        }
+
+        .fullscreen-btns {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .divider {
+            width: 2px;
+            height: 40px;
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="title">The Air Pressure and Wind</div>
+
+        <div id="controls">
+            <div class="slider-group">
+                <div id="coriolisValue">Coriolis effect 0%</div>
+                <input type="range" id="coriolisSlider" min="0" max="100" value="0" step="1">
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="verticalCheckbox" checked>
+                <label for="verticalCheckbox">Display the vertical airflow</label>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="northernRadio" name="hemisphere" value="northern" checked>
+                    <label for="northernRadio">Northern Hemisphere</label>
+                </div>
+                <div class="radio-item">
+                    <input type="radio" id="southernRadio" name="hemisphere" value="southern">
+                    <label for="southernRadio">Southern Hemisphere</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="fullscreen-btns">
+            <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+            <button class="icon-btn" id="expandBtn" title="Expand">⬚</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+
+    <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        // ========== SCENE SETUP ==========
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xd4e4ff);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 25, 40);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 20;
+        controls.maxDistance = 80;
+        controls.maxPolarAngle = Math.PI / 2.1;
+
+        // ========== LIGHTING ==========
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        dirLight.position.set(20, 40, 20);
+        scene.add(dirLight);
+
+        // ========== GROUND PLANE ==========
+        const groundGeometry = new THREE.PlaneGeometry(100, 60);
+        const groundMaterial = new THREE.MeshStandardMaterial({
+            color: 0xddf5dd,
+            roughness: 0.9,
+            side: THREE.DoubleSide
+        });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        scene.add(ground);
+
+        // ========== CLOUD ==========
+        const cloudGroup = new THREE.Group();
+        const cloudMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 1,
+            metalness: 0
+        });
+
+        for (let i = 0; i < 8; i++) {
+            const cloudPart = new THREE.Mesh(
+                new THREE.SphereGeometry(2 + Math.random() * 1.5, 16, 16),
+                cloudMaterial
+            );
+            cloudPart.position.set(
+                (Math.random() - 0.5) * 8,
+                Math.random() * 1,
+                (Math.random() - 0.5) * 4
+            );
+            cloudPart.scale.set(1.5, 0.8, 1);
+            cloudGroup.add(cloudPart);
+        }
+        cloudGroup.position.set(25, 15, 8);
+        scene.add(cloudGroup);
+
+        // ========== PRESSURE SYSTEMS ==========
+        // High pressure (H)
+        const highPressureGroup = new THREE.Group();
+        const hShape = createHShape();
+        hShape.position.set(0, 0.5, 0);
+        highPressureGroup.add(hShape);
+        highPressureGroup.position.set(-20, 0, 0);
+        scene.add(highPressureGroup);
+
+        // Low pressure (L)
+        const lowPressureGroup = new THREE.Group();
+        const lShape = createLShape();
+        lShape.position.set(0, 0.5, 0);
+        lowPressureGroup.add(lShape);
+        lowPressureGroup.position.set(20, 0, 0);
+        scene.add(lowPressureGroup);
+
+        function createHShape() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+
+            // Left vertical
+            const left = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.5, 0.1), material);
+            left.position.x = -0.6;
+            group.add(left);
+
+            // Right vertical
+            const right = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.5, 0.1), material);
+            right.position.x = 0.6;
+            group.add(right);
+
+            // Middle horizontal
+            const middle = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.3, 0.1), material);
+            group.add(middle);
+
+            // Ellipse around H
+            const ellipseShape = new THREE.Shape();
+            ellipseShape.absellipse(0, 0, 1.8, 1.8, 0, Math.PI * 2, false, 0);
+            const ellipseGeometry = new THREE.ShapeGeometry(ellipseShape);
+            const ellipseMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            const ellipse = new THREE.Line(ellipseGeometry, ellipseMaterial);
+            ellipse.rotation.x = Math.PI / 2;
+            ellipse.position.y = -0.05;
+            group.add(ellipse);
+
+            return group;
+        }
+
+        function createLShape() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+
+            // Vertical line
+            const vertical = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.5, 0.1), material);
+            vertical.position.x = -0.3;
+            group.add(vertical);
+
+            // Horizontal line
+            const horizontal = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.3, 0.1), material);
+            horizontal.position.set(0.15, -1.1, 0);
+            group.add(horizontal);
+
+            // Ellipse around L
+            const ellipseShape = new THREE.Shape();
+            ellipseShape.absellipse(0, 0, 1.8, 1.8, 0, Math.PI * 2, false, 0);
+            const ellipseGeometry = new THREE.ShapeGeometry(ellipseShape);
+            const ellipseMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            const ellipse = new THREE.Line(ellipseGeometry, ellipseMaterial);
+            ellipse.rotation.x = Math.PI / 2;
+            ellipse.position.y = -0.05;
+            group.add(ellipse);
+
+            return group;
+        }
+
+        // ========== WIND ARROWS ==========
+        const arrows = [];
+        const arrowsWithCoriolis = [];
+        let coriolisEffect = 0;
+        let showVertical = true;
+        let hemisphere = 'northern';
+
+        function createArrowMesh(color, length = 1) {
+            const group = new THREE.Group();
+
+            // Arrow shaft
+            const shaft = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.05, 0.05, length, 8),
+                new THREE.MeshStandardMaterial({ color })
+            );
+            shaft.rotation.z = Math.PI / 2;
+            group.add(shaft);
+
+            // Arrow head
+            const head = new THREE.Mesh(
+                new THREE.ConeGeometry(0.15, 0.4, 8),
+                new THREE.MeshStandardMaterial({ color })
+            );
+            head.rotation.z = -Math.PI / 2;
+            head.position.x = length / 2 + 0.2;
+            group.add(head);
+
+            return group;
+        }
+
+        function createWindField() {
+            // Clear existing arrows
+            arrows.forEach(a => scene.remove(a.group));
+            arrows.length = 0;
+            arrowsWithCoriolis.length = 0;
+
+            const gridSize = 40;
+            const spacing = 2.5;
+
+            for (let x = -gridSize; x <= gridSize; x += spacing) {
+                for (let z = -gridSize / 1.5; z <= gridSize / 1.5; z += spacing) {
+                    const distToHigh = Math.sqrt(Math.pow(x - (-20), 2) + Math.pow(z, 2));
+                    const distToLow = Math.sqrt(Math.pow(x - 20, 2) + Math.pow(z, 2));
+
+                    // Skip arrows too close to pressure centers
+                    if (distToHigh < 3 || distToLow < 3) continue;
+
+                    // Base direction (from high to low)
+                    let dirX = (20 - (-20));
+                    let dirZ = 0;
+                    let length = Math.sqrt(dirX * dirX + dirZ * dirZ);
+                    dirX /= length;
+                    dirZ /= length;
+
+                    // Determine if this is a horizontal or vertical arrow
+                    const isVertical = (distToHigh < 8 || distToLow < 8);
+
+                    let arrow;
+                    if (isVertical && showVertical) {
+                        // Vertical arrows (up near low, down near high)
+                        const isNearLow = distToLow < distToHigh;
+                        arrow = createArrowMesh(0x2196f3, 1.5);
+                        arrow.rotation.z = isNearLow ? 0 : Math.PI;
+                        arrow.rotation.y = 0;
+                        arrow.position.set(x, isNearLow ? 5 : 8, z);
+                    } else {
+                        // Horizontal arrows
+                        arrow = createArrowMesh(0x2196f3, 1.2);
+
+                        // Calculate angle from high pressure
+                        const angleFromHigh = Math.atan2(z, x - (-20));
+
+                        // Base rotation pointing outward from high
+                        let rotation = angleFromHigh;
+
+                        // Calculate angle from low pressure
+                        const angleFromLow = Math.atan2(z, x - 20);
+
+                        // Blend between outward from high and inward to low
+                        const blendFactor = distToHigh / (distToHigh + distToLow);
+                        rotation = angleFromHigh * (1 - blendFactor) + (angleFromLow + Math.PI) * blendFactor;
+
+                        arrow.rotation.y = -rotation;
+                        arrow.position.set(x, 0.5, z);
+                    }
+
+                    const arrowData = {
+                        group: arrow,
+                        baseRotation: arrow.rotation.y,
+                        x, z,
+                        distToHigh,
+                        distToLow,
+                        isVertical: isVertical && showVertical
+                    };
+
+                    arrows.push(arrowData);
+                    arrowsWithCoriolis.push({ ...arrowData });
+                    scene.add(arrow);
+                }
+            }
+        }
+
+        function updateArrowsWithCoriolis() {
+            arrows.forEach((arrowData, i) => {
+                if (arrowData.isVertical) return; // Don't apply Coriolis to vertical arrows
+
+                const coriolisAngle = (coriolisEffect / 100) * (Math.PI / 4);
+                const sign = hemisphere === 'northern' ? 1 : -1;
+
+                // Apply Coriolis rotation
+                arrowData.group.rotation.y = arrowData.baseRotation + (coriolisAngle * sign);
+            });
+        }
+
+        // ========== SIMULATION STATE ==========
+        createWindField();
+
+        // ========== ANIMATION LOOP ==========
+        function animate() {
+            requestAnimationFrame(animate);
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // ========== EVENT LISTENERS ==========
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Coriolis slider
+        document.getElementById('coriolisSlider').addEventListener('input', (e) => {
+            coriolisEffect = parseInt(e.target.value);
+            document.getElementById('coriolisValue').textContent = `Coriolis effect ${coriolisEffect}%`;
+            updateArrowsWithCoriolis();
+        });
+
+        // Vertical checkbox
+        document.getElementById('verticalCheckbox').addEventListener('change', (e) => {
+            showVertical = e.target.checked;
+            createWindField();
+            updateArrowsWithCoriolis();
+        });
+
+        // Hemisphere radios
+        document.querySelectorAll('input[name="hemisphere"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                hemisphere = e.target.value;
+                updateArrowsWithCoriolis();
+            });
+        });
+
+        // Fullscreen buttons
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        document.getElementById('expandBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
+</body>
+
+</html>

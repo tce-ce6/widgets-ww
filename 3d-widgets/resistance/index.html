@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resistance Connection Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button {
+            margin: 0 8px;
+            padding: 10px 20px;
+            border: 2px solid #555;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button.active {
+            background: #2196f3;
+            color: white;
+            border-color: #2196f3;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ui">
+        <button id="serialBtn-add">Serial +</button>
+        <button id="serialBtn-remove">Serial -</button>
+        <button id="parallelBtn-add">Parallel +</button>
+        <button id="parallelBtn-remove">Parallel -</button>
+    </div>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+    <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        // ========== SCENE SETUP ==========
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xe8f4f8);
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 45, 90);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 0, 0);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2.2;
+        controls.update();
+
+        // ========== LIGHTING ==========
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(50, 80, 40);
+        dirLight.castShadow = true;
+        dirLight.shadow.camera.left = -100;
+        dirLight.shadow.camera.right = 100;
+        dirLight.shadow.camera.top = 100;
+        dirLight.shadow.camera.bottom = -100;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        scene.add(dirLight);
+
+        // ========== GLOBAL STATE ==========
+        let mode = "series";
+        const cars = [];
+        const checkposts = [];
+        let serialCount = 1;
+        let parallelCount = 1;
+        let road = null;
+        let tollOffsetZ = -6;  // move gates upward (-) or downward (+) on road
+
+        // ========== CONICAL ROAD CREATION ==========
+        function createConicalRoad() {
+            if (road) scene.remove(road);
+
+            const roadLength = 240;
+            const laneSpacing = 16;
+            const lanesTotal = parallelCount * laneSpacing;
+
+            // Gradual transition: more parallel = straighter road
+            const funnelFactor = Math.max(0, (4 - parallelCount) / 3); // 1.0 at parallel=1, 0.0 at parallel=4
+
+            // Road width scales with lanes + buffer space
+            const bufferWidth = 12; // Increased buffer space on each side
+            const fullWidth = lanesTotal / 2 + bufferWidth;
+            const neckWidth = THREE.MathUtils.lerp(fullWidth, lanesTotal * 0.5, funnelFactor);
+
+            const halfLen = roadLength / 2;
+
+            const shape = new THREE.Shape();
+
+            // --- STRAIGHT WIDE SECTION (LEFT) ---
+            const leftStraightEnd = -halfLen * 0.55; // Extended straight section
+
+            shape.moveTo(-halfLen, -fullWidth);
+            shape.lineTo(leftStraightEnd, -fullWidth);
+
+            // --- CURVED TAPER INTO NECK with smoother bezier curve ---
+            const curveIntensity = funnelFactor * 0.5;
+            shape.bezierCurveTo(
+                leftStraightEnd + 15, -fullWidth * (1 - curveIntensity * 0.3),
+                -45, -fullWidth * (1 - curveIntensity * 0.7),
+                -30, -neckWidth
+            );
+
+            // --- STRAIGHT NARROW NECK CENTER ---
+            const rightStraightStart = 30;
+            shape.lineTo(rightStraightStart, -neckWidth);
+
+            // --- CURVED EXPANSION OUT OF NECK with smoother bezier curve ---
+            shape.bezierCurveTo(
+                45, -fullWidth * (1 - curveIntensity * 0.7),
+                halfLen * 0.55 - 15, -fullWidth * (1 - curveIntensity * 0.3),
+                halfLen * 0.55, -fullWidth
+            );
+
+            // --- STRAIGHT WIDE SECTION (RIGHT) ---
+            shape.lineTo(halfLen, -fullWidth);
+
+            // RIGHT SIDE MIRRORED
+            shape.lineTo(halfLen, fullWidth);
+            shape.lineTo(halfLen * 0.55, fullWidth);
+
+            shape.bezierCurveTo(
+                halfLen * 0.55 - 15, fullWidth * (1 - curveIntensity * 0.3),
+                45, fullWidth * (1 - curveIntensity * 0.7),
+                rightStraightStart, neckWidth
+            );
+
+            shape.lineTo(-30, neckWidth);
+
+            shape.bezierCurveTo(
+                -45, fullWidth * (1 - curveIntensity * 0.7),
+                leftStraightEnd + 15, fullWidth * (1 - curveIntensity * 0.3),
+                leftStraightEnd, fullWidth
+            );
+
+            shape.lineTo(-halfLen, fullWidth);
+            shape.lineTo(-halfLen, -fullWidth);
+
+            // Extrude
+            const extrudeSettings = {
+                steps: 1,
+                depth: 0.1,
+                bevelEnabled: false,
+                curveSegments: 64
+            };
+
+            const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x8a9ba8,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+
+            road = new THREE.Mesh(geometry, material);
+            road.rotation.x = -Math.PI / 2;
+            road.receiveShadow = true;
+
+            scene.add(road);
+        }
+
+        // Ground
+        const groundGeometry = new THREE.PlaneGeometry(300, 200);
+        const groundMaterial = new THREE.MeshStandardMaterial({
+            color: 0x7cb342,
+            roughness: 0.9
+        });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.1;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // ========== HELPER FUNCTIONS ==========
+        function getLanePositions() {
+            const spacingZ = 16;
+            const startRow = -(parallelCount - 1) / 2;
+            const lanes = [];
+            for (let r = 0; r < parallelCount; r++) {
+                lanes.push((startRow + r) * spacingZ);
+            }
+            return lanes;
+        }
+
+        function makeCheckpost(x, z) {
+            const group = new THREE.Group();
+
+            const boothGeometry = new THREE.BoxGeometry(4, 4, 4);
+            const boothMaterial = new THREE.MeshStandardMaterial({
+                color: mode === "serial" ? 0xff5722 : 0xff9800,
+                roughness: 0.5,
+                metalness: 0.3
+            });
+            const booth = new THREE.Mesh(boothGeometry, boothMaterial);
+            booth.position.y = 2;
+            booth.castShadow = true;
+            booth.receiveShadow = true;
+            group.add(booth);
+
+            const poleGeometry = new THREE.CylinderGeometry(0.3, 0.3, 5, 8);
+            const poleMaterial = new THREE.MeshStandardMaterial({ color: 0xffd54f });
+            const pole = new THREE.Mesh(poleGeometry, poleMaterial);
+            pole.position.set(2.5, 2.5, 0);
+            pole.castShadow = true;
+            group.add(pole);
+
+            const barrierGeometry = new THREE.BoxGeometry(0.5, 0.5, 6);
+            const barrierMaterial = new THREE.MeshStandardMaterial({ color: 0xffeb3b });
+            const barrier = new THREE.Mesh(barrierGeometry, barrierMaterial);
+            barrier.position.set(2.5, 5, 0);
+            barrier.castShadow = true;
+            group.add(barrier);
+
+            group.position.set(x, 0, z);
+            return group;
+        }
+
+        function makeCar() {
+            const group = new THREE.Group();
+
+            const bodyGeometry = new THREE.BoxGeometry(2.5, 1, 1.5);
+            const bodyMaterial = new THREE.MeshStandardMaterial({
+                color: new THREE.Color().setHSL(Math.random() * 0.15 + 0.55, 0.6, 0.7),
+                roughness: 0.4,
+                metalness: 0.6
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.position.y = 0.5;
+            body.castShadow = true;
+            group.add(body);
+
+            const topGeometry = new THREE.BoxGeometry(1.2, 0.6, 1.4);
+            const top = new THREE.Mesh(topGeometry, bodyMaterial);
+            top.position.set(-0.2, 1.1, 0);
+            top.castShadow = true;
+            group.add(top);
+
+            const wheelGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 8);
+            const wheelMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const wheelPositions = [
+                [-0.7, 0.3, -0.8], [-0.7, 0.3, 0.8],
+                [0.7, 0.3, -0.8], [0.7, 0.3, 0.8]
+            ];
+            wheelPositions.forEach(pos => {
+                const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+                wheel.rotation.z = Math.PI / 2;
+                wheel.position.set(...pos);
+                wheel.castShadow = true;
+                group.add(wheel);
+            });
+
+            return group;
+        }
+
+        function createRoadMarkings() {
+            scene.children.filter(c => c.userData.isMarking).forEach(m => scene.remove(m));
+
+            const lineGeometry = new THREE.PlaneGeometry(200, 0.3);
+            const lineMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+            const lanes = getLanePositions();
+            for (let i = 0; i < lanes.length - 1; i++) {
+                const z = (lanes[i] + lanes[i + 1]) / 2;
+                const line = new THREE.Mesh(lineGeometry, lineMaterial);
+                line.rotation.x = -Math.PI / 2;
+                line.position.set(0, 0.11, z);
+                line.userData.isMarking = true;
+                scene.add(line);
+            }
+        }
+
+        function createCheckposts() {
+            checkposts.forEach(p => scene.remove(p));
+            checkposts.length = 0;
+
+            const spacingX = 20;
+            const spacingZ = 16;
+            const startCol = -(serialCount - 1) / 2;
+            const startRow = -(parallelCount - 1) / 2;
+
+            for (let r = 0; r < parallelCount; r++) {
+                for (let c = 0; c < serialCount; c++) {
+
+                    const x = (startCol + c) * spacingX;
+                    const z = (startRow + r) * spacingZ + tollOffsetZ;  // ✅ SHIFT ON Z AXIS
+
+                    const post = makeCheckpost(x, z);
+                    checkposts.push(post);
+                    scene.add(post);
+                }
+            }
+        }
+
+
+
+        function createCars() {
+            cars.forEach(c => scene.remove(c.mesh));
+            cars.length = 0;
+
+            const lanes = getLanePositions();
+            const numCars = 50;
+
+            for (let i = 0; i < numCars; i++) {
+                const carMesh = makeCar();
+                const laneZ = lanes[Math.floor(Math.random() * lanes.length)];
+                const startX = -110 + Math.random() * 220;
+                carMesh.position.set(startX, 0, laneZ);
+                scene.add(carMesh);
+
+                cars.push({
+                    mesh: carMesh,
+                    baseSpeed: 0.35 + Math.random() * 0.25,
+                    targetLane: laneZ,
+                    currentLane: laneZ
+                });
+            }
+        }
+
+        // ========== INITIAL SETUP ==========
+        createConicalRoad();
+        createRoadMarkings();
+        createCheckposts();
+        createCars();
+
+        // ========== ANIMATION LOOP ==========
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const speedMultiplier = mode === "serial" ? 0.35 : 1.0;
+
+            cars.forEach(car => {
+                let speed = car.baseSpeed * speedMultiplier;
+
+                let minDist = Infinity;
+                checkposts.forEach(post => {
+                    const dist = Math.sqrt(
+                        Math.pow(car.mesh.position.x - post.position.x, 2) +
+                        Math.pow(car.mesh.position.z - post.position.z, 2)
+                    );
+                    minDist = Math.min(minDist, dist);
+                    if (dist < 10) {
+                        speed *= Math.max(0.2, dist / 10);
+                    }
+                });
+
+                car.mesh.position.x += speed;
+
+                if (car.mesh.position.x > 120) {
+                    car.mesh.position.x = -120;
+                    const lanes = getLanePositions();
+                    car.targetLane = lanes[Math.floor(Math.random() * lanes.length)];
+                }
+
+                const laneDiff = car.targetLane - car.mesh.position.z;
+                car.mesh.position.z += laneDiff * 0.02;
+
+                car.mesh.children.forEach((child, i) => {
+                    if (i >= 2) {
+                        child.rotation.x += speed * 0.5;
+                    }
+                });
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // ========== RESIZE HANDLER ==========
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ========== UI BUTTON HANDLERS ==========
+        document.getElementById("serialBtn-add").onclick = () => {
+            mode = "serial";
+            if (serialCount < 4) {
+                serialCount++;
+                createCheckposts();
+                createRoadMarkings();
+            }
+        };
+
+        document.getElementById("serialBtn-remove").onclick = () => {
+            mode = "serial";
+            serialCount = Math.max(1, serialCount - 1);
+            createCheckposts();
+            createRoadMarkings();
+        };
+
+        document.getElementById("parallelBtn-add").onclick = () => {
+            mode = "parallel";
+            if (parallelCount < 4) {
+                parallelCount++;
+                createConicalRoad();
+                createCheckposts();
+                createRoadMarkings();
+            }
+        };
+
+        document.getElementById("parallelBtn-remove").onclick = () => {
+            mode = "parallel";
+            parallelCount = Math.max(1, parallelCount - 1);
+            createConicalRoad();
+            createCheckposts();
+            createRoadMarkings();
+        };
+    </script>
+</body>
+
+</html>
