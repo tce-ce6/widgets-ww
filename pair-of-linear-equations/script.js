@@ -2,6 +2,8 @@ let board;
 let line1 = null, line2 = null, intersection = null;
 let label1 = null, label2 = null;
 let label1Bg = null, label2Bg = null;
+let label1Offset = { x: 0, y: 0 };
+let label2Offset = { x: 0, y: 0 };
 let a1 = 9, b1 = 10, c1 = 10;
 let a2 = 6, b2 = 1, c2 = -5;
 let showAnswer = false; // controls ratio placeholders
@@ -112,44 +114,6 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     return html;
 }
 
-// function formatCoeff(coeff, variable, isFirst = false) {
-//     // Handle zero
-//     if (coeff === 0) {
-//         return (isFirst ? `0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + 0<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
-//     }
-
-//     // Handle ±1
-//     if (coeff === 1) {
-//         return isFirst ? `<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
-//     }
-//     if (coeff === -1) {
-//         return isFirst ? `- <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - <span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`;
-//     }
-
-//     // General case
-//     return coeff > 0
-//         ? (isFirst ? `${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` + ${coeff}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`)
-//         : (isFirst ? `- ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>` : ` - ${Math.abs(coeff)}<span style="font-family: 'Newsreader', serif; font-style: italic;">${variable}</span>`);
-// }
-
-// function formatEquation(a, b, c) {
-//     let eq = "";
-//     eq += formatCoeff(a, "x", true);
-//     eq += formatCoeff(b, "y");
-
-//     // constant term
-//     if (c === 0) {
-//         eq += " + 0";
-//     } else if (c > 0) {
-//         eq += ` + ${c}`;
-//     } else {
-//         eq += ` - ${Math.abs(c)}`;
-//     }
-
-//     eq += " = 0";
-//     return eq;
-// }
-
 /**
  * Helper function to format a coefficient and its variable.
  * @param {number} coeff - The coefficient (a or b).
@@ -169,7 +133,7 @@ function formatCoeff(coeff, variable, isFirst = false) {
     if (Math.abs(coeff) === 1) {
         let sign = '';
         if (coeff === -1) {
-            sign = isFirst ? '—' : ' — '; // Using the em dash as in your original code for negative sign
+            sign = isFirst ? '-' : ' - '; // Using the em dash as in your original code for negative sign
         } else { // coeff === 1
             sign = isFirst ? '' : ' + ';
         }
@@ -187,7 +151,7 @@ function formatCoeff(coeff, variable, isFirst = false) {
     if (coeff > 0) {
         sign = isFirst ? '' : ' + ';
     } else { // coeff < 0
-        sign = isFirst ? '—' : ' — ';
+        sign = isFirst ? '-' : ' - ';
     }
 
     return `${sign}${absCoeff}${varHtml}`;
@@ -218,7 +182,7 @@ function formatEquation(a, b, c) {
         if (c > 0) {
             cTerm = isFirst ? `${c}` : ` + ${c}`;
         } else { // c < 0
-            cTerm = isFirst ? `— ${Math.abs(c)}` : ` — ${Math.abs(c)}`;
+            cTerm = isFirst ? `- ${Math.abs(c)}` : ` - ${Math.abs(c)}`;
         }
     }
     
@@ -238,6 +202,8 @@ function formatEquation(a, b, c) {
 
 function plotLines() {
     clearBoard();
+    label1Offset = { x: 0, y: 0 };
+    label2Offset = { x: 0, y: 0 };
 
     // Line 1
     if (b1 !== 0) {
@@ -245,13 +211,25 @@ function plotLines() {
             [x => (-a1 * x - c1) / b1],
             { strokeColor: 'red', strokeWidth: 2 }
         );
-
+        
         label1 = board.create('text', [
-            () => 0,
-            () => (-a1 * 0 - c1) / b1 + getLabelOffset(a1, b1),
+            () => 0 + label1Offset.x,
+            () => ((-a1 * 0 - c1) / b1) + getLabelOffset(a1, b1) + label1Offset.y,
             () => formatEquation(a1, b1, c1)
         ], { fontSize: 18, strokeColor: 'red', useMathJax: true  });
-    }
+    } else if (a1 !== 0) {
+        // Vertical line: a1*x + c1 = 0 -> x = -c1/a1
+        const xConst1 = -c1 / a1;
+        const p11 = board.create('point', [xConst1, -20], { visible: false, fixed: true });
+        const p12 = board.create('point', [xConst1, 20], { visible: false, fixed: true });
+        line1 = board.create('line', [p11, p12], { strokeColor: 'red', strokeWidth: 2 });
+        
+        label1 = board.create('text', [
+            () => xConst1 + 0.5 + label1Offset.x,
+            () => 0 + getLabelOffset(a1, b1) + label1Offset.y,
+            () => formatEquation(a1, b1, c1)
+        ], { fontSize: 18, strokeColor: 'red', useMathJax: true  });
+    } // else (a1==0 and b1==0): no drawable line (either inconsistent or whole plane)
 
     // Line 2
     if (b2 !== 0) {
@@ -259,17 +237,74 @@ function plotLines() {
             [x => (-a2 * x - c2) / b2],
             { strokeColor: 'blue', strokeWidth: 2 }
         );
-
+        
         label2 = board.create('text', [
-            () => 0,
-            () => (-a2 * 0 - c2) / b2 + getLabelOffset(a2, b2) + 3,
+            () => 0 + label2Offset.x,
+            () => ((-a2 * 0 - c2) / b2) + getLabelOffset(a2, b2) + 3 + label2Offset.y,
             () => formatEquation(a2, b2, c2)
         ], { fontSize: 18, strokeColor: 'blue', useMathJax: true  });
-    }
+    } else if (a2 !== 0) {
+        // Vertical line: a2*x + c2 = 0 -> x = -c2/a2
+        const xConst2 = -c2 / a2;
+        const p21 = board.create('point', [xConst2, -20], { visible: false, fixed: true });
+        const p22 = board.create('point', [xConst2, 20], { visible: false, fixed: true });
+        line2 = board.create('line', [p21, p22], { strokeColor: 'blue', strokeWidth: 2 });
+        
+        label2 = board.create('text', [
+            () => xConst2 + 0.5 + label2Offset.x,
+            () => 3 + getLabelOffset(a2, b2) + label2Offset.y,
+            () => formatEquation(a2, b2, c2)
+        ], { fontSize: 18, strokeColor: 'blue', useMathJax: true  });
+    } // else (a2==0 and b2==0): no drawable line
 
     // Intersection
     if (line1 && line2) {
         intersection = board.create('intersection', [line1, line2], { name: 'P', size: 3, color: 'green' });
+
+        // Avoid overlapping of labels with point P
+        const px = () => intersection.X();
+        const py = () => intersection.Y();
+
+        // Compute base label positions (without offsets)
+        const baseLabel1 = (() => {
+            if (b1 !== 0) {
+                return { x: 0, y: ((-a1 * 0 - c1) / b1) + getLabelOffset(a1, b1) };
+            } else if (a1 !== 0) {
+                const xConst1 = -c1 / a1;
+                return { x: xConst1 + 0.5, y: 0 + getLabelOffset(a1, b1) };
+            }
+            return null;
+        })();
+
+        const baseLabel2 = (() => {
+            if (b2 !== 0) {
+                return { x: 0, y: ((-a2 * 0 - c2) / b2) + getLabelOffset(a2, b2) + 3 };
+            } else if (a2 !== 0) {
+                const xConst2 = -c2 / a2;
+                return { x: xConst2 + 0.5, y: 3 + getLabelOffset(a2, b2) };
+            }
+            return null;
+        })();
+
+        const pushAway = (basePos, pushDist = 3.5) => {
+            if (!basePos) return { x: 0, y: 0 };
+            const dx = basePos.x - px();
+            const dy = basePos.y - py();
+            const d = Math.hypot(dx, dy);
+            if (d < 2.0) {
+                // Too close: push along vector from P to label
+                const ux = (d === 0 ? 1 : dx / d);
+                const uy = (d === 0 ? 1 : dy / d);
+                return { x: ux * (pushDist - d), y: uy * (pushDist - d) };
+            }
+            return { x: 0, y: 0 };
+        };
+
+        const off1 = pushAway(baseLabel1);
+        const off2 = pushAway(baseLabel2);
+        label1Offset = off1;
+        label2Offset = off2;
+        board.update();
     }
 }
 
@@ -422,13 +457,21 @@ function checkCondition() {
     showAnswer = !showAnswer;
 
     const solutionData = determineSolutionType(a1, b1, c1, a2, b2, c2);
+    // Helper to decide displayed equality sign for ratios with possible zero denominators
+    const displayEq = (num1, den1, num2, den2, isEqual) => {
+        if (den1 === 0 || den2 === 0) {
+            // Avoid showing "=" when any denominator is zero (undefined division)
+            return "≠";
+        }
+        return isEqual ? "=" : "≠";
+    };
 
     if (showAnswer) {
         updateRatioPlaceholdersToValues();
 
         // Update = or ≠ dynamically
-        document.getElementById("eqSign1").innerText = solutionData.ratioAB ? "=" : "≠";
-        document.getElementById("eqSign2").innerText = solutionData.ratioBC ? "=" : "≠";
+        document.getElementById("eqSign1").innerText = displayEq(a1, a2, b1, b2, solutionData.ratioAB);
+        document.getElementById("eqSign2").innerText = displayEq(b1, b2, c1, c2, solutionData.ratioBC);
 
         document.getElementById("toggleBtn").innerText = "Hide";
         document.getElementById("isText").innerText = " ";
