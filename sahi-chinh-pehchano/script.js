@@ -2,15 +2,15 @@
 const hindiSentences = [
     { "sentence": "शाबाश__ तुमने बहुत अच्छा खेला__", "answer": "शाबाश! तुमने बहुत अच्छा खेला।" },
     { "sentence": "वाह__ क्या सुंदर चित्र बनाया है तुमने__", "answer": "वाह! क्या सुंदर चित्र बनाया है तुमने।" },
-    { "sentence": "माँ ने कहा__  __बेटा __ अपना कमरा साफ़ करो__ __", "answer": "माँ ने कहा, \"बेटा, अपना कमरा साफ़ करो।\"" },
-    { "sentence": "हमारे देश में कई भाषाएँ बोली जाती हैं__ जैसे हिंदी___तमिल___ बंगाली आदि____", "answer": "हमारे देश में कई भाषाएँ बोली जाती हैं; जैसे हिंदी, तमिल, बंगाली आदि।" },
-    { "sentence": "अरे__ यह क्या हो गया___ सब कुछ बिखर गया है__", "answer": "अरे! यह क्या हो गया? सब कुछ बिखर गया है।" },
+    { "sentence": "माँ ने कहा__ __बेटा __ अपना कमरा साफ़ करो__ __", "answer": "माँ ने कहा, \"बेटा, अपना कमरा साफ़ करो।\"" },
+    { "sentence": "हमारे देश में कई भाषाएँ बोली जाती हैं__ जैसे हिंदी__ तमिल__ बंगाली आदि__", "answer": "हमारे देश में कई भाषाएँ बोली जाती हैं; जैसे हिंदी, तमिल, बंगाली आदि।" },
+    { "sentence": "अरे__ यह क्या हो गया__ सब कुछ बिखर गया है__", "answer": "अरे! यह क्या हो गया? सब कुछ बिखर गया है।" },
     { "sentence": "मोहन पढ़ने में तेज़ है__परंतु खेल में कमज़ोर है__", "answer": "मोहन पढ़ने में तेज़ है, परंतु खेल में कमज़ोर है।" },
     { "sentence": "तुम घर जाओगे__ या यहीं रुकोगे__", "answer": "तुम घर जाओगे, या यहीं रुकोगे?" },
-    { "sentence": "शिक्षक जी ने पूछा__  __तुमने अपना काम पूरा किया है__  __", "answer": "शिक्षक जी ने पूछा, \"तुमने अपना काम पूरा किया है?\"" },
+    { "sentence": "शिक्षक जी ने पूछा__ __तुमने अपना काम पूरा किया है__ __", "answer": "शिक्षक जी ने पूछा, \"तुमने अपना काम पूरा किया है?\"" },
     { "sentence": "सीता__ गीता और रीता सभी स्कूल जा रही हैं__", "answer": "सीता, गीता और रीता सभी स्कूल जा रही हैं।" },
     { "sentence": "रमेश बहुत अच्छा लड़का है__ वह सबकी मदद करता है__", "answer": "रमेश बहुत अच्छा लड़का है; वह सबकी मदद करता है।" },
-    { "sentence": "उसने कहा__ __मैं कल दिल्ली जाऊँगा__  __", "answer": "उसने कहा, \"मैं कल दिल्ली जाऊँगा।\"" },
+    { "sentence": "उसने कहा__ __मैं कल दिल्ली जाऊँगा__ __", "answer": "उसने कहा, \"मैं कल दिल्ली जाऊँगा।\"" },
     { "sentence": "डॉक्टर साहब__ क्या मेरी माँ ठीक हो जाएगी__", "answer": "डॉक्टर साहब, क्या मेरी माँ ठीक हो जाएगी?" },
     { "sentence": "भारत एक महान देश है__ यहाँ अनेक धर्मों के लोग रहते हैं__", "answer": "भारत एक महान देश है; यहाँ अनेक धर्मों के लोग रहते हैं।" },
     { "sentence": "अरे वाह__ कितना स्वादिष्ट खाना बनाया है__", "answer": "अरे वाह! कितना स्वादिष्ट खाना बनाया है।" },
@@ -18,7 +18,7 @@ const hindiSentences = [
     { "sentence": "गुरुजी ने समझाया__ __पढ़ाई में मन लगाना जरूरी है__ __", "answer": "गुरु जी ने समझाया, \"पढ़ाई में मन लगाना जरूरी है।\"" },
     { "sentence": "छी छी__ कितनी गंदगी फैली हुई है__", "answer": "छी छी! कितनी गंदगी फैली हुई है।" },
     { "sentence": "सुनीता बहुत सुंदर गाती है__ वह एक अच्छी नर्तकी भी है__", "answer": "सुनीता बहुत सुंदर गाती है; वह एक अच्छी नर्तकी भी है।" },
-    { "sentence": "अरे भई__ तुम यहाँ क्या कर रहे हो__", "answer": "अरे भई, तुम यहाँ क्या कर रहे हो?" },
+    { "sentence": "अरे भाई__ तुम यहाँ क्या कर रहे हो__", "answer": "अरे भाई! तुम यहाँ क्या कर रहे हो?" },
     { "sentence": "पिता जी ने कहा__ __बेटे__ मेहनत करोगे तो सफल होगे____", "answer": "पिता जी ने कहा, \"बेटे, मेहनत करोगे तो सफल होगे।\"" },
     { "sentence": "इस साल बारिश कम हुई है__किसान परेशान हैं__", "answer": "इस साल बारिश कम हुई है; किसान परेशान हैं।" },
     { "sentence": "तुम्हें क्या लगता है__ मैं परीक्षा में पास हो जाऊँगा__", "answer": "तुम्हें क्या लगता है, मैं परीक्षा में पास हो जाऊँगा?" },
@@ -29,13 +29,13 @@ const hindiSentences = [
     { "sentence": "नानी जी ने कहा__ __पहले के ज़माने में बच्चे बहुत मेहनती होते थे__ __", "answer": "नानी जी ने कहा, \"पहले के ज़माने में बच्चे बहुत मेहनती होते थे।\"" },
     { "sentence": "अहा__ कितना सुंदर नज़ारा है पहाड़ों का__", "answer": "अहा! कितना सुंदर नज़ारा है पहाड़ों का।" },
     { "sentence": "हे भगवान__ यह क्या हो गया__ सब कुछ तो बर्बाद हो गया__", "answer": "हे भगवान! यह क्या हो गया? सब कुछ तो बर्बाद हो गया।" },
-    { "sentence": "रीता ने कहा__  __मैं कल तुम्हारे घर आऊँगी__  __", "answer": "रीता ने कहा, \"मैं कल तुम्हारे घर आऊँगी।\"" },
+    { "sentence": "रीता ने कहा__ __मैं कल तुम्हारे घर आऊँगी__ __", "answer": "रीता ने कहा, \"मैं कल तुम्हारे घर आऊँगी।\"" },
     { "sentence": "क्या आपको पता है__ आज कौन सा दिन है__", "answer": "क्या आपको पता है, आज कौन सा दिन है?" },
     { "sentence": "पेड़ हमें ऑक्सीजन देते हैं__ हमें उनकी रक्षा करनी चाहिए__", "answer": "पेड़ हमें ऑक्सीजन देते हैं; हमें उनकी रक्षा करनी चाहिए।" },
-    { "sentence": "अरे वाह__  कितनी मिठास है इस आम में__", "answer": "अरे वाह! कितनी मिठास है इस आम में।" },
-    { "sentence": "गाँधी जी ने कहा__ __सत्य और अहिंसा से सब कुछ संभव है__  __", "answer": "गाँधी जी ने कहा, \"सत्य और अहिंसा से सब कुछ संभव है।\"" },
+    { "sentence": "अरे वाह__ कितनी मिठास है इस आम में__", "answer": "अरे वाह! कितनी मिठास है इस आम में।" },
+    { "sentence": "गाँधी जी ने कहा__ __सत्य और अहिंसा से सब कुछ संभव है__ __", "answer": "गाँधी जी ने कहा, \"सत्य और अहिंसा से सब कुछ संभव है।\"" },
     { "sentence": "उफ़__ कितनी गर्मी है__ आज तो जान निकल रही है__", "answer": "उफ़! कितनी गर्मी है। आज तो जान निकल रही है।" },
-    { "sentence": "शाबाश__  तुमने बहुत अच्छा काम किया है__", "answer": "शाबाश! तुमने बहुत अच्छा काम किया है।" },
+    { "sentence": "शाबाश__ तुमने बहुत अच्छा काम किया है__", "answer": "शाबाश! तुमने बहुत अच्छा काम किया है।" },
     { "sentence": "तुम्हें क्या लगता है__ मौसम कैसा रहेगा आज__", "answer": "तुम्हें क्या लगता है, मौसम कैसा रहेगा आज?" },
     { "sentence": "हाय राम__ यह तो बड़ी मुश्किल में फँस गया__", "answer": "हाय राम! यह तो बड़ी मुश्किल में फँस गया।" },
     { "sentence": "बच्चे खुशी__खुशी स्कूल से घर लौट रहे थे__", "answer": "बच्चे खुशी-खुशी स्कूल से घर लौट रहे थे।" },
@@ -74,13 +74,70 @@ function loadSentence(index) {
         return;
     }
     
+    // Determine expected punctuation for each blank by aligning sentence and answer text
+    const sentence = data.sentence;
+    const answerText = data.answer;
+    const blankExpectations = [];
+    const punctChars = new Set(['।', '?', '!', ',', ';', '"', '-']);
+    const whitespaceChars = new Set([' ', '\u00A0']);
+
+    let sentencePos = 0;
+    let answerPos = 0;
+
+    while (sentencePos < sentence.length) {
+        if (sentence.substring(sentencePos, sentencePos + 2) === '__') {
+            let expectedPunct = '';
+
+            while (answerPos < answerText.length) {
+                const ansChar = answerText[answerPos];
+                if (punctChars.has(ansChar)) {
+                    expectedPunct = ansChar;
+                    answerPos++;
+                    break;
+                }
+                answerPos++;
+            }
+
+            blankExpectations.push(expectedPunct);
+            sentencePos += 2; // skip '__'
+        } else {
+            const sentChar = sentence[sentencePos];
+
+            if (whitespaceChars.has(sentChar)) {
+                sentencePos++;
+                continue;
+            }
+
+            if (answerPos < answerText.length) {
+                const ansChar = answerText[answerPos];
+
+                if (sentChar === ansChar) {
+                    sentencePos++;
+                    answerPos++;
+                } else if (whitespaceChars.has(ansChar) || punctChars.has(ansChar)) {
+                    answerPos++;
+                } else {
+                    sentencePos++;
+                }
+            } else {
+                sentencePos++;
+            }
+        }
+    }
+    
     // Create the HTML content with clickable blanks
-    let htmlContent = data.sentence.replace(/__/g, (match, offset) => {
-        // We use a custom attribute 'data-index' to uniquely identify the blank
-        return `<span class="blank" data-index="${offset}" onclick="selectBlank(this)">__</span>`;
+    let blankCounter = 0;
+    let htmlContent = data.sentence.replace(/__/g, () => {
+        const blankId = blankCounter++;
+        return `<span class="blank" data-index="${blankId}" onclick="selectBlank(this)">__</span>`;
     });
 
     sentenceText.innerHTML = htmlContent;
+
+    const blankElements = sentenceText.querySelectorAll('.blank');
+    blankElements.forEach((blank, idx) => {
+        blank.dataset.expected = blankExpectations[idx] || '';
+    });
     console.log("Loaded sentence:", data.sentence);
 
     if (feedback) {
@@ -102,6 +159,9 @@ function selectBlank(span) {
     selectedBlank = span;
     span.classList.add('selected');
     
+    // Remove correct/incorrect classes when reselecting (user wants to change it)
+    span.classList.remove('correct', 'incorrect');
+    
     // Add visual feedback
     if (feedback) {
         feedback.textContent = 'अब सही विराम चिह्न पर क्लिक करें।';
@@ -120,28 +180,43 @@ function placePunctuation(symbol) {
         return;
     }
 
+    let symbolToUse = symbol === '&quot;' ? '"' : symbol;
+
+    // Get the expected punctuation for this blank
+    const expectedPunct = selectedBlank.getAttribute('data-expected');
+    
     // Place the punctuation in the selected blank
-    selectedBlank.textContent = symbol;
+    selectedBlank.textContent = symbolToUse;
     selectedBlank.classList.remove('selected');
+    
+    // Remove any previous correct/incorrect classes
+    selectedBlank.classList.remove('correct', 'incorrect');
+    
+    // Check if the placed punctuation matches the expected one
+    if (symbolToUse === expectedPunct) {
+        selectedBlank.classList.add('correct');
+    } else {
+        selectedBlank.classList.add('incorrect');
+    }
+    
     selectedBlank = null;
     
-    // Check if all blanks are filled
+    // Check if all blanks are filled and correct
     const allBlanks = sentenceText.querySelectorAll('.blank');
     const filledBlanks = Array.from(allBlanks).filter(blank => blank.textContent !== '__');
+    const correctBlanks = Array.from(allBlanks).filter(blank => blank.classList.contains('correct'));
     
     if (filledBlanks.length === allBlanks.length) {
-        // All blanks are filled, check the answer
-        const currentText = sentenceText.textContent;
-        const cleanedFilledSentence = currentText.trim().replace(/\s+/g, ' ');
-        const cleanedAnswer = hindiSentences[currentIndex].answer.trim().replace(/\s+/g, ' ');
-        
-        if (cleanedFilledSentence === cleanedAnswer) {
+        // All blanks are filled
+        if (correctBlanks.length === allBlanks.length) {
+            // All blanks are correct
             if (feedback) {
                 feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
             }
         } else {
+            // Some blanks are incorrect
             if (feedback) {
-                feedback.textContent = '❌ गलत उत्तर। सही उत्तर देखने के लिए "उत्तर दिखाएँ" बटन दबाएं।';
+                feedback.textContent = 'कुछ उत्तर गलत हैं। सही उत्तर देखने के लिए "उत्तर दिखाएँ" बटन दबाएं।';
             }
         }
     } else {

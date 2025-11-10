@@ -49,7 +49,7 @@
 /* New: Style for a correctly filled blank (Green) */
 .blank.correct {
     color: #155724; /* Dark green text */
-    background-color: #d4edda; /* Light green background */
+    background-color: #8adc3b; /* Light green background */
     border: 1px solid #c3e6cb;
     padding: 0 4px; /* Ensure visual spacing */
     cursor: default !important; /* Indicates it cannot be changed */
@@ -58,7 +58,7 @@
 /* New: Style for an incorrectly filled blank (Red) */
 .blank.incorrect {
     color: #721c24; /* Dark red text */
-    background-color: #f8d7da; /* Light red background */
+    background-color: #fb8e6c; /* Light red background */
     border: 1px solid #f5c6cb;
     padding: 0 4px;
     cursor: pointer; /* Indicates it can be re-clicked to correct */
@@ -86,7 +86,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>सही चिह्न पहचानों</h2>
-        <span id="versionId" class="versionText">b2_25110401</span>
+        <span id="versionId" class="versionText">b2_25111001</span>
       </div>
       <div class="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -115,7 +115,7 @@
                  font-size: 55px;
                  letter-spacing: 0em;
                  color: black;
-                 white-space: nowrap;
+                 white-space: normal;
                  line-height: 2;
                  text-align: center;
                " id='sentence-text'>
@@ -133,7 +133,7 @@
                         stroke="#7EB6A1" stroke-width="15" />
                     </g>
                   </g>
-                  <g id="Group 81">
+                  <g id="Group 81" onclick="placePunctuation('।')" style="cursor: pointer;">
                     <g id="Group 65">
                       <g id="Group 63">
                         <g id="Group 60">
@@ -156,13 +156,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="à¥¤" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('।')">
+                    <text id="à¥¤" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="434" y="631.273">।</tspan>
                     </text>
                   </g>
-                  <g id="Group 82">
+                  <g id="Group 82" onclick="placePunctuation('?')" style="cursor: pointer;">
                     <g id="Group 74">
                       <g id="Group 63_2">
                         <g id="Group 60_2">
@@ -185,13 +184,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="?" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('?')">
+                    <text id="?" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="583" y="631.273">?</tspan>
                     </text>
                   </g>
-                  <g id="Group 83">
+                  <g id="Group 83" onclick="placePunctuation('!')" style="cursor: pointer;">
                     <g id="Group 75">
                       <g id="Group 63_3">
                         <g id="Group 60_3">
@@ -214,13 +212,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="!" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('!')">
+                    <text id="!" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="735" y="631.273">!</tspan>
                     </text>
                   </g>
-                  <g id="Group 84">
+                  <g id="Group 84" onclick="placePunctuation(',')" style="cursor: pointer;">
                     <g id="Group 76">
                       <g id="Group 63_4">
                         <g id="Group 60_4">
@@ -243,13 +240,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="," fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation(',')">
+                    <text id="," fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="884" y="631.273">,</tspan>
                     </text>
                   </g>
-                  <g id="Group 85">
+                  <g id="Group 85" onclick="placePunctuation(';')" style="cursor: pointer;">
                     <g id="Group 77">
                       <g id="Group 63_5">
                         <g id="Group 60_5">
@@ -272,13 +268,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id=";" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation(';')">
+                    <text id=";" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="1032" y="631.273">;</tspan>
                     </text>
                   </g>
-                  <g id="Group 86">
+                  <g id="Group 86" onclick="placePunctuation('&quot;')" style="cursor: pointer;">
                     <g id="Group 78">
                       <g id="Group 63_6">
                         <g id="Group 60_6">
@@ -301,13 +296,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="&quot;" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('&quot;')">
+                    <text id="&quot;" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="1174" y="631.273">"</tspan>
                     </text>
                   </g>
-                  <g id="Group 87">
+                  <g id="Group 87" onclick="placePunctuation('&quot;')" style="cursor: pointer;">
                     <g id="Group 73">
                       <g id="Group 63_7">
                         <g id="Group 60_7">
@@ -330,13 +324,12 @@
                         </g>
                       </g>
                     </g>
-                    <text id="&quot;_2" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('&quot;')">
+                    <text id="&quot;_2" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="1325" y="631.273">"</tspan>
                     </text>
                   </g>
-                  <g id="Group 603">
+                  <g id="Group 603" onclick="placePunctuation('-')" style="cursor: pointer;">
                     <g id="Group 73_2">
                       <g id="Group 63_8">
                         <g id="Group 60_8">
@@ -359,9 +352,8 @@
                         </g>
                       </g>
                     </g>
-                    <text id="-" fill="black" xml:space="preserve" style="white-space: pre; cursor: pointer;"
-                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em"
-                      onclick="placePunctuation('-')">
+                    <text id="-" fill="black" xml:space="preserve" style="white-space: pre;"
+                      font-family="Nirmala UI" font-size="55" font-weight="bold" letter-spacing="0em">
                       <tspan x="1474" y="631.619">-</tspan>
                     </text>
                   </g>
