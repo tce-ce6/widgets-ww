@@ -146,25 +146,72 @@ function loadSentence(index) {
     selectedBlank = null;
 }
 
+
 /**
- * Highlights the selected blank and stores its reference.
+ * Highlights the selected blank or clears it if it's already filled.
  * @param {HTMLElement} span - The blank element that was clicked.
  */
 function selectBlank(span) {
+    
+    // --- New Logic: FREEZE CHECK ---
+    if (span.classList.contains('frozen')) {
+        // if (feedback) {
+        //     feedback.textContent = 'यह उत्तर पहले ही सही भरा जा चुका है।';
+        // }
+        return; // Prevent interaction with correct/frozen blanks
+    }
+    // -----------------------------
+
+    // New Logic: If the blank is already filled and incorrect, clear it and return
+    if (span.textContent !== '__' && !span.classList.contains('selected')) {
+        
+        // 1. Clear the content (make it a blank again)
+        span.textContent = '__';
+        
+        
+        // 2. Reset the state (remove correct/incorrect indicators)
+        span.classList.remove('correct', 'incorrect');
+        
+        // 3. Remove any previous selection state
+        if (selectedBlank) {
+            selectedBlank.classList.remove('selected');
+        }
+        selectedBlank = null; // Important: Clear the reference after unfilling
+        
+        // Add visual feedback
+        if (feedback) {
+            feedback.textContent = 'रिक्त स्थान साफ़ हो गया है। अब कोई विराम चिह्न चुनें।';
+        }
+        
+        return; // Stop execution, the blank has been cleared
+    }
+    
+    // --- Original Logic (for selecting an empty blank or re-selecting a blank) ---
+    
     // Un-highlight the previously selected blank
-    if (selectedBlank) {
+    if (selectedBlank && selectedBlank !== span) { // Only un-highlight if it's a different blank
         selectedBlank.classList.remove('selected');
+    }
+    
+    // Handle the case where the user clicks the already selected span (to unselect it)
+    if (selectedBlank === span) {
+        span.classList.remove('selected');
+        selectedBlank = null;
+        if (feedback) {
+            feedback.textContent = 'एक रिक्त स्थान पर टैप करें।';
+        }
+        return;
     }
     
     selectedBlank = span;
     span.classList.add('selected');
     
-    // Remove correct/incorrect classes when reselecting (user wants to change it)
+    // Remove correct/incorrect classes when selecting (user wants to change it)
     span.classList.remove('correct', 'incorrect');
     
     // Add visual feedback
     if (feedback) {
-        feedback.textContent = 'अब सही विराम चिह्न पर क्लिक करें।';
+        feedback.textContent = 'अब सही विराम चिह्न पर टैप करें।';
     }
 }
 
@@ -175,7 +222,7 @@ function selectBlank(span) {
 function placePunctuation(symbol) {
     if (!selectedBlank) {
         if (feedback) {
-            feedback.textContent = 'पहले एक खाली स्थान चुनें!';
+            feedback.textContent = 'पहले एक रिक्त स्थान पर टैप करें।';
         }
         return;
     }
@@ -185,45 +232,46 @@ function placePunctuation(symbol) {
     // Get the expected punctuation for this blank
     const expectedPunct = selectedBlank.getAttribute('data-expected');
     
-    // Place the punctuation in the selected blank
+    // 1. Place the punctuation in the selected blank
     selectedBlank.textContent = symbolToUse;
-    selectedBlank.classList.remove('selected');
     
-    // Remove any previous correct/incorrect classes
-    selectedBlank.classList.remove('correct', 'incorrect');
+    // 2. Clear previous state classes
+    selectedBlank.classList.remove('correct', 'incorrect', 'frozen');
     
     // Check if the placed punctuation matches the expected one
     if (symbolToUse === expectedPunct) {
+        // --- CORRECT ANSWER LOGIC ---
         selectedBlank.classList.add('correct');
+        selectedBlank.classList.add('frozen'); // FREEZE the correct blank
+        selectedBlank.classList.remove('selected'); // Remove selection highlight
+        
+        // Clear selection for correct answer
+        selectedBlank = null; 
+        
+        if (feedback) {
+            feedback.textContent = 'सही! अब दूसरे रिक्त स्थान पर टैप करें।';
+        }
     } else {
-        selectedBlank.classList.add('incorrect');
+        // --- INCORRECT ANSWER LOGIC ---
+        selectedBlank.classList.add('incorrect'); // Add red background immediately
+        selectedBlank.classList.remove('selected'); // Keep selection highlight (Auto-select)
+        
+        // selectedBlank remains as is (Auto-selected for correction)
+        
+        if (feedback) {
+            feedback.textContent = 'गलत उत्तर! कोई दूसरा विराम चिह्न आज़माएँ।';
+        }
     }
     
-    selectedBlank = null;
-    
-    // Check if all blanks are filled and correct
+    // Check for game completion
     const allBlanks = sentenceText.querySelectorAll('.blank');
-    const filledBlanks = Array.from(allBlanks).filter(blank => blank.textContent !== '__');
     const correctBlanks = Array.from(allBlanks).filter(blank => blank.classList.contains('correct'));
     
-    if (filledBlanks.length === allBlanks.length) {
-        // All blanks are filled
-        if (correctBlanks.length === allBlanks.length) {
-            // All blanks are correct
-            if (feedback) {
-                feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
-            }
-        } else {
-            // Some blanks are incorrect
-            if (feedback) {
-                feedback.textContent = 'कुछ उत्तर गलत हैं। सही उत्तर देखने के लिए "उत्तर दिखाएँ" बटन दबाएं।';
-            }
-        }
-    } else {
+    if (correctBlanks.length === allBlanks.length) {
         if (feedback) {
-            feedback.textContent = 'अब दूसरा खाली स्थान चुनें।';
+            feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
         }
-    }
+    } 
 }
 
 /**
