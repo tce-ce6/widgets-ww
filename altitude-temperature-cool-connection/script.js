@@ -318,24 +318,27 @@ const sketch = (p) => {
             }
 
             // Draw altitude markers - Scaled (2.88x)
-            p.stroke(80);
+            p.stroke(0);
             // p.strokeWeight(3.84); // 1.33 * 2.88
             p.textAlign(p.LEFT, p.CENTER);
             p.textSize(46); // 16 * 2.88
             p.fill(0);
             for (let i = 0; i <= 5; i++) {
                 let yPos = p.map(i * 1000, 0, model.maxAltitude, 1691, 646); // 587*2.88=1691, 224*2.88=646
+                p.strokeWeight(3.84); // 1.33 * 2.88
                 p.line(1555, yPos -12, 1593, yPos - 12); // 540*2.88=1555, 553*2.88=1593
+                p.strokeWeight(3); // 1.33 * 2.88
                 p.text(`${i * 1000} m`, 1613, yPos -12); // 560 * 2.88
             }
             
             p.textStyle(p.BOLD);
             p.textSize(55); // 19 * 2.88
             p.fill(0);
-            p.strokeWeight(0.6); // 0.67 * 2.88
+            p.strokeWeight(0); // 0.67 * 2.88
             p.text("Thin Air", 115, 646); // 40*2.88=115, 224*2.88=646
             p.text("Dense Air", 80, 1655); // 40*2.88=115, 587*2.88=1691
             p.textStyle(p.NORMAL);
+            p.strokeWeight(0.6); // 0.67 * 2.88
         },
         
         drawBalloons() {
