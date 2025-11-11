@@ -245,43 +245,43 @@
             ];
 
             colors.forEach((colorInfo) => {
-    const offset = colorInfo.offset;
+                const offset = colorInfo.offset;
 
-    // ✅ Straight vertical entry refraction
-    const refractPoint1 = new THREE.Vector3(
-        .85,
-        1 + offset * 0.15,
-        0
-    );
-    createRay(entryPoint, refractPoint1, colorInfo.color);
+                // ✅ Straight vertical entry refraction
+                const refractPoint1 = new THREE.Vector3(
+                    .85,
+                    1 + offset * 0.15,
+                    0
+                );
+                createRay(entryPoint, refractPoint1, colorInfo.color);
 
-    // ✅ Straight internal reflection
-    const reflectPoint = new THREE.Vector3(
-        -1.4,
-        -0.2 + offset * 0.15,
-        0
-    );
-    createRay(refractPoint1, reflectPoint, colorInfo.color);
+                // ✅ Straight internal reflection
+                const reflectPoint = new THREE.Vector3(
+                    -1.4,
+                    -0.2 + offset * 0.15,
+                    0
+                );
+                createRay(refractPoint1, reflectPoint, colorInfo.color);
 
 
-    // ✅ Straight exit refraction
-    const exitPoint = new THREE.Vector3(
-        -0.2,
-        -1.2 + offset * 0.15,
-        0
-    );
-    createRay(reflectPoint, exitPoint, colorInfo.color);
+                // ✅ Straight exit refraction
+                const exitPoint = new THREE.Vector3(
+                    -0.2,
+                    -1.2 + offset * 0.15,
+                    0
+                );
+                createRay(reflectPoint, exitPoint, colorInfo.color);
 
-    // ✅ Rainbow exiting ray (straight)
-    const exitAngle = colorInfo.exitAngle * Math.PI / 180;
-    const rainbowEnd = new THREE.Vector3(
-        exitPoint.x - Math.cos(exitAngle) * 4,
-        exitPoint.y - Math.sin(exitAngle) * 4,
-        0
-    );
-    createRay(exitPoint, rainbowEnd, colorInfo.color);
-    createArrowHelper(exitPoint, rainbowEnd, colorInfo.color);
-});
+                // ✅ Rainbow exiting ray (straight)
+                const exitAngle = colorInfo.exitAngle * Math.PI / 180;
+                const rainbowEnd = new THREE.Vector3(
+                    exitPoint.x - Math.cos(exitAngle) * 4,
+                    exitPoint.y - Math.sin(exitAngle) * 4,
+                    0
+                );
+                createRay(exitPoint, rainbowEnd, colorInfo.color);
+                createArrowHelper(exitPoint, rainbowEnd, colorInfo.color);
+            });
 
         }
 

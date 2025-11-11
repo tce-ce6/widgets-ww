@@ -29,7 +29,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/food_chain_population_changes/index.html",
     imagePath: "./assets/food-chain.png",
     creators: "sh-nav-03",
-    status: "WIP-With-Tech",
+    status: "in-review",
 
   },
   {
@@ -45,7 +45,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sentence-construction/index.html",
     imagePath: "./assets/word-wizard.png",
     creators: "as-he-06",
-    status: "WIP-With-Tech",
+    status: "in-review",
 
   },
   {
@@ -61,7 +61,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
     imagePath: "./assets/symmetry.png",
     creators: "sh-mr-10",
-    status: "WIP-With-Tech",
+    status: "in-review",
 
   },
   {
@@ -77,7 +77,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/pair-of-linear-equations/index.html",
     imagePath: "./assets/pair-of-linear-equation.png",
     creators: "as-sr-12",
-    status: "WIP-With-Tech",
+    status: "in-review",
 
   },
   {
@@ -101,7 +101,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/altitude-temperature-cool-connection/index.html",
     imagePath: "./assets/altitude-and-temperature.png",
     creators: "sh-na-20",
-    status: "WIP-With-Tech",
+    status: "in-review",
 
   },
   {
@@ -117,7 +117,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sahi-chinh-pehchano/index.html",
     imagePath: "./assets/find-correct-sign.png",
     creators: "as-so-27",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Transparent, Translucent, and Opaque Materials",
@@ -146,14 +146,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/locating_decimals/index.html",
     imagePath: "./assets/locating-decimals.png",
     creators: "sh-mr-17",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Reading Large numbers",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/large_numbers/index.html",
     imagePath: "./assets/large-numbers.png",
     creators: "sh-mr-22",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   
   {
@@ -161,7 +161,7 @@ const WIDGET_DATA = [
     link: "",
     imagePath: "./assets/not-assigned.png",
     creators: "sh-ka-13",
-    status: "not-assigned",
+    status: "asset-development",
   },
   
 
@@ -186,16 +186,25 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleButton.addEventListener("click", toggleSidebar);
 
   // ------ Load Widget by Filter -------
-function loadWidgetList(filterStatus = "closed") {
+function loadWidgetList(filterStatus = "all") {
   widgetListing.innerHTML = "";
 
-  const filteredWidgets = WIDGET_DATA
-    .filter(widget => widget.status === filterStatus)
-    .sort((a, b) => {
-      const numA = parseInt(a.creators.split("-").pop());
-      const numB = parseInt(b.creators.split("-").pop());
-      return numA - numB; // Change to numB - numA for descending
-    });
+  let filteredWidgets = [];
+
+  if (filterStatus === "all") {
+    // ✅ Show all widgets without filtering
+    filteredWidgets = [...WIDGET_DATA];
+  } else {
+    // ✅ Filter based on selected category
+    filteredWidgets = WIDGET_DATA.filter(widget => widget.status === filterStatus);
+  }
+
+  // ✅ Sort by creators number
+  filteredWidgets.sort((a, b) => {
+    const numA = parseInt(a.creators.split("-").pop());
+    const numB = parseInt(b.creators.split("-").pop());
+    return numA - numB;
+  });
 
   filteredWidgets.forEach((widget) => {
     const listItem = document.createElement("li");
@@ -208,7 +217,7 @@ function loadWidgetList(filterStatus = "closed") {
     `;
 
     listItem.addEventListener("click", function () {
-    sidebar.classList.toggle("active");
+      sidebar.classList.toggle("active");
 
       iframe.src = this.dataset.widgetLink;
 
@@ -219,6 +228,7 @@ function loadWidgetList(filterStatus = "closed") {
     widgetListing.appendChild(listItem);
   });
 
+  // ✅ Load first widget if any
   if (filteredWidgets.length > 0) {
     iframe.src = filteredWidgets[0].link;
     const firstLi = document.querySelector("#widget-listing li");
@@ -227,8 +237,10 @@ function loadWidgetList(filterStatus = "closed") {
     iframe.src = "";
   }
 
+  // ✅ Update total count
   totalCount.textContent = filteredWidgets.length;
 }
+
 
 
   // Filter change event
@@ -237,5 +249,6 @@ function loadWidgetList(filterStatus = "closed") {
   });
 
   // Load closed widgets by default
-  loadWidgetList();
+loadWidgetList("closed");
 });
+
