@@ -334,7 +334,7 @@ const sketch = (p) => {
             p.fill(0);
             p.strokeWeight(0.6); // 0.67 * 2.88
             p.text("Thin Air", 115, 646); // 40*2.88=115, 224*2.88=646
-            p.text("Dense Air", 115, 1655); // 40*2.88=115, 587*2.88=1691
+            p.text("Dense Air", 80, 1655); // 40*2.88=115, 587*2.88=1691
             p.textStyle(p.NORMAL);
         },
         
