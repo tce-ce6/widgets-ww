@@ -10,7 +10,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Plant's response to the direction of light​",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light%E2%80%8B/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light/index.html",
     imagePath: "./assets/plant-response.png",
     creators: "ni-bd-01",
     status: "closed",
