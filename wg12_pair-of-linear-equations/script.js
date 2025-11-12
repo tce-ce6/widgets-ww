@@ -429,6 +429,26 @@ function toggleHide() {
 function determineSolutionType(a1, b1, c1, a2, b2, c2) {
     // Use cross-multiplication for safer ratio comparison (avoids division by zero)
 
+    // Handle special vertical line case (b1 and b2 both zero)
+    if (Math.abs(b1) < eps && Math.abs(b2) < eps) {
+        // Compare a1/a2 and c1/c2 safely
+        if (Math.abs(a1 * c2 - a2 * c1) < eps) {
+            return { text: "infinite solutions (coincident vertical lines)" };
+        } else {
+            return { text: "no solution (parallel vertical lines)" };
+        }
+    }
+
+    // Handle special vertical line case (b1 and b2 both zero)
+    if (Math.abs(b1) < eps && Math.abs(b2) < eps) {
+        // Compare a1/a2 and c1/c2 safely
+        if (Math.abs(a1 * c2 - a2 * c1) < eps) {
+            return { text: "infinite solutions (coincident vertical lines)" };
+        } else {
+            return { text: "no solution (parallel vertical lines)" };
+        }
+    }
+
     // Check a1/a2 = b1/b2  =>  a1 * b2 = a2 * b1
     const det_ab = a1 * b2 - a2 * b1;
     const ratioAB_equal = Math.abs(det_ab) < eps;

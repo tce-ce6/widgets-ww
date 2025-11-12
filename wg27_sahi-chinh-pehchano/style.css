@@ -136,6 +136,7 @@
   background: #ade1b7;
   padding: 8px 40px;
   color: #24824f;
+  white-space: nowrap;
   border-radius: 0 0px 20px 20px;
 }
 

@@ -255,7 +255,7 @@ button:disabled{
     justify-content: center;
         padding: 0;
         flex-grow: 1;
-        min-height: calc(100% - 200px);
+        min-height: calc(100%);
         margin: auto;
         height: 100%;
   }
@@ -299,4 +299,13 @@ button:disabled{
   top: 20px;
     font-size: 12px;
     color: #ccc;
+  }
+
+  @media (max-width: 480px) {
+    #jxgbox {
+        max-width: 1200px;
+        height: 500px;
+        border: 1px solid red;
+        background: #fff;
+    }
   }

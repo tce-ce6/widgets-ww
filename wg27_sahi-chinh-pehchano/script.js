@@ -9,7 +9,7 @@ const hindiSentences = [
     { "sentence": "तुम घर जाओगे__ या यहीं रुकोगे__", "answer": "तुम घर जाओगे, या यहीं रुकोगे?" },
     { "sentence": "शिक्षक जी ने पूछा__ __तुमने अपना काम पूरा किया है__ __", "answer": "शिक्षक जी ने पूछा, \"तुमने अपना काम पूरा किया है?\"" },
     { "sentence": "सीता__ गीता और रीता सभी स्कूल जा रही हैं__", "answer": "सीता, गीता और रीता सभी स्कूल जा रही हैं।" },
-    { "sentence": "रमेश बहुत अच्छा लड़का है__ वह सबकी मदद करता है__", "answer": "रमेश बहुत अच्छा लड़का है; वह सबकी मदद करता है।" },
+    { "sentence": "रमेश बहुत अच्छा लड़का है__ वह सबकी मदद करता है__", "answer": "रमेश बहुत अच्छा लड़का है; वह सबकी मदद करता है." },
     { "sentence": "उसने कहा__ __मैं कल दिल्ली जाऊँगा__ __", "answer": "उसने कहा, \"मैं कल दिल्ली जाऊँगा।\"" },
     { "sentence": "डॉक्टर साहब__ क्या मेरी माँ ठीक हो जाएगी__", "answer": "डॉक्टर साहब, क्या मेरी माँ ठीक हो जाएगी?" },
     { "sentence": "भारत एक महान देश है__ यहाँ अनेक धर्मों के लोग रहते हैं__", "answer": "भारत एक महान देश है; यहाँ अनेक धर्मों के लोग रहते हैं।" },
@@ -43,21 +43,42 @@ const hindiSentences = [
 ];
 
 
-let currentIndex = 0;
+// ===================================================================
+// 1. SEQUENTIAL INDEX TRACKING (MODIFIED/NEW CODE)
+// ===================================================================
+
+// Global variable to track the current index. Start at -1 so the first call yields 0.
+let currentSentenceIndex = -1; 
+let currentIndex = 0; // Kept to track the currently loaded sentence index
 let selectedBlank = null;
+
+/**
+ * Generates the next index in a sequential order, wrapping around to 0
+ * after the last sentence is reached.
+ * @returns {number} The next index.
+ */
+function getNextIndex() {
+    if (!hindiSentences || hindiSentences.length === 0) {
+        return -1;
+    }
+    
+    // Increment the index
+    currentSentenceIndex++;
+    
+    // Wrap-around logic
+    if (currentSentenceIndex >= hindiSentences.length) {
+        currentSentenceIndex = 0;
+    }
+    
+    return currentSentenceIndex;
+}
+
+// REMOVED: function selectRandomIndex() is deleted.
 
 // Get the SVG text elements
 const sentenceContainer = document.getElementById('sentence-container'); 
 const sentenceText = document.getElementById('sentence-text');
 const feedback = document.getElementById('feedback'); // Assuming you have an element for feedback
-
-/**
- * Generates a random index for a sentence.
- * @returns {number} The random index.
- */
-function selectRandomIndex() {
-    return Math.floor(Math.random() * hindiSentences.length);
-}
 
 /**
  * Loads a sentence into the container, replacing '__' with clickable blanks.
@@ -160,7 +181,6 @@ function selectBlank(span) {
         // }
         return; // Prevent interaction with correct/frozen blanks
     }
-    // -----------------------------
 
     // New Logic: If the blank is already filled and incorrect, clear it and return
     if (span.textContent !== '__' && !span.classList.contains('selected')) {
@@ -179,9 +199,9 @@ function selectBlank(span) {
         selectedBlank = null; // Important: Clear the reference after unfilling
         
         // Add visual feedback
-        if (feedback) {
-            feedback.textContent = 'रिक्त स्थान साफ़ हो गया है। अब कोई विराम चिह्न चुनें।';
-        }
+        // if (feedback) {
+        //     feedback.textContent = 'रिक्त स्थान साफ़ हो गया है। अब कोई विराम चिह्न चुनें।';
+        // }
         
         return; // Stop execution, the blank has been cleared
     }
@@ -238,54 +258,84 @@ function placePunctuation(symbol) {
     // 2. Clear previous state classes
     selectedBlank.classList.remove('correct', 'incorrect', 'frozen');
     
-    // Check if the placed punctuation matches the expected one
+    // --- STEP 3: Check if the placed punctuation matches the expected one ---
     if (symbolToUse === expectedPunct) {
-        // --- CORRECT ANSWER LOGIC ---
+        // --- If the CURRENT answer is CORRECT ---
         selectedBlank.classList.add('correct');
         selectedBlank.classList.add('frozen'); // FREEZE the correct blank
-        selectedBlank.classList.remove('selected'); // Remove selection highlight
+        selectedBlank.classList.remove('selected');
         
         // Clear selection for correct answer
         selectedBlank = null; 
         
-        if (feedback) {
-            feedback.textContent = 'सही! अब दूसरे रिक्त स्थान पर टैप करें।';
-        }
     } else {
-        // --- INCORRECT ANSWER LOGIC ---
+        // --- If the CURRENT answer is INCORRECT ---
         selectedBlank.classList.add('incorrect'); // Add red background immediately
-        selectedBlank.classList.remove('selected'); // Keep selection highlight (Auto-select)
+        selectedBlank.classList.remove('selected'); 
         
-        // selectedBlank remains as is (Auto-selected for correction)
+        // selectedBlank remains as is (for correction)
+    }
+
+    // --- STEP 4: Comprehensive Game Completion Check (New Logic) ---
+    const allBlanks = sentenceText.querySelectorAll('.blank');
+    const filledBlanks = Array.from(allBlanks).filter(blank => blank.textContent !== '__');
+    
+    // Check if ALL blanks are now FILLED
+    if (filledBlanks.length === allBlanks.length) {
         
-        if (feedback) {
-            feedback.textContent = 'गलत उत्तर! कोई दूसरा विराम चिह्न आज़माएँ।';
+        // ALL blanks are filled. Now, check if ALL filled blanks are CORRECT.
+        const incorrectBlanks = Array.from(allBlanks).filter(blank => blank.classList.contains('incorrect'));
+        
+        if (incorrectBlanks.length === 0) {
+            // All blanks filled AND all are correct
+            if (feedback) {
+                feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
+            }
+        } else {
+            // All blanks filled, but at least one is incorrect
+            if (feedback) {
+                // Find the first incorrect blank and auto-select it for user convenience
+                const firstIncorrect = incorrectBlanks[0];
+               // firstIncorrect.classList.add('selected');
+                selectedBlank = firstIncorrect;
+                
+                feedback.textContent = 'आपकी कोशिश अच्छी रही! गलत उत्तर! फिर से कोशिश करने के लिए गलत उत्तर पर टैप करें।';
+            }
         }
+        return; // Stop execution as we've handled the final check
     }
     
-    // Check for game completion
-    const allBlanks = sentenceText.querySelectorAll('.blank');
-    const correctBlanks = Array.from(allBlanks).filter(blank => blank.classList.contains('correct'));
+    // --- STEP 5: Standard Feedback (If not the last blank) ---
     
-    if (correctBlanks.length === allBlanks.length) {
+    // If we reach here, it means not all blanks are filled yet.
+    if (selectedBlank && selectedBlank.classList.contains('incorrect')) {
+        // Current blank was incorrect, wait for correction
         if (feedback) {
-            feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
+            feedback.textContent = 'गलत उत्तर! फिर से कोशिश करने के लिए गलत उत्तर पर टैप करें।';
         }
-    } 
+    } else if (!selectedBlank) {
+        // Current blank was correct, prompt for the next one
+          if (feedback) {
+            feedback.textContent = 'सही! अब दूसरे रिक्त स्थान पर टैप करें।';
+        }
+    }
 }
 
 /**
- * Loads the next random sentence.
+ * Loads the next sequential sentence. (UPDATED)
  */
 function nextSentence() {
-    loadSentence(selectRandomIndex());
+    loadSentence(getNextIndex());
 }
 
 /**
- * Resets the current sentence (reloads it with a new random one).
+ * Resets the current sentence (reloads it with the next sequential one). (UPDATED)
  */
 function resetSentence() {
-    loadSentence(selectRandomIndex());
+    // Note: If you want 'reset' to reload the *current* sentence, use: loadSentence(currentIndex);
+    // If you want it to behave like 'next', use: loadSentence(getNextIndex());
+    // Assuming 'reset' means moving to the next task:
+    loadSentence(getNextIndex());
 }
 
 /**
@@ -293,6 +343,7 @@ function resetSentence() {
  */
 function showAnswer() {
     if (sentenceText) {
+        // Uses the currently loaded index
         sentenceText.innerHTML = hindiSentences[currentIndex].answer;
     }
     if (feedback) {
@@ -320,15 +371,19 @@ close_insight.addEventListener('click', () => {
     next_btn.disabled = false;
     show_example_btn.disabled = false;
 });
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM Content Loaded - Initializing...");
-    // Initial load: Start with a random sentence
-    loadSentence(selectRandomIndex());
+    // Initial load: Start with the first sequential sentence (index 0) (UPDATED)
+    loadSentence(getNextIndex());
 });
 
-// Also load a random sentence on page refresh/load
+// Also load a sentence on page refresh/load
 window.addEventListener('load', function() {
-    console.log("Window Loaded - Loading random sentence...");
-    loadSentence(selectRandomIndex());
+    console.log("Window Loaded - Loading first sequential sentence...");
+    // This will load the next sentence after DOMContentLoaded, which might be sentence 1. 
+    // It's generally safer to just use DOMContentLoaded for initialization.
+    // However, keeping the original logic structure but updating to use getNextIndex():
+    loadSentence(getNextIndex());
 });
