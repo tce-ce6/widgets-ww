@@ -301,11 +301,3 @@ button:disabled{
     color: #ccc;
   }
 
-  @media (max-width: 480px) {
-    #jxgbox {
-        max-width: 1200px;
-        height: 500px;
-        border: 1px solid red;
-        background: #fff;
-    }
-  }
