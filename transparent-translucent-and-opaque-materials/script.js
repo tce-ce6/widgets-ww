@@ -184,7 +184,7 @@ function getLeafAreaBBox() {
 
   if (leafImg) {
     try {
-      // Use only the leaf image, not the whole group, so the bbox doesn’t grow.
+      // Use only the leaf image, not the whole group, so the bbox doesn't grow.
       return leafImg.getBBox();
     } catch (e) {
       console.error("Could not get BBox for #leaf-img", e);
@@ -232,6 +232,26 @@ function parseTransform(transformStr) {
   }
 
   return result;
+}
+
+// **NEW:** Helper function to get client coordinates from mouse or touch event
+function getEventCoordinates(e) {
+  if (e.touches && e.touches.length > 0) {
+    return {
+      clientX: e.touches[0].clientX,
+      clientY: e.touches[0].clientY
+    };
+  } else if (e.changedTouches && e.changedTouches.length > 0) {
+    return {
+      clientX: e.changedTouches[0].clientX,
+      clientY: e.changedTouches[0].clientY
+    };
+  } else {
+    return {
+      clientX: e.clientX,
+      clientY: e.clientY
+    };
+  }
 }
 
 // --- Implementation Logic ---
@@ -414,9 +434,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
+        // Get coordinates from mouse or touch event
+        const coords = getEventCoordinates(e);
+
         const pt = svg.createSVGPoint();
-        pt.x = e.clientX;
-        pt.y = e.clientY;
+        pt.x = coords.clientX;
+        pt.y = coords.clientY;
 
         // 2. Get the current Screen CTM and its inverse (fresh matrix)
         let screenCTMInverse;
@@ -469,11 +492,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.addEventListener("mousemove", onDragMove);
         document.addEventListener("mouseup", onDragEnd);
+        document.addEventListener("touchmove", onDragMove, { passive: false });
+        document.addEventListener("touchend", onDragEnd);
       };
 
       // Get the rect and use elements
       const rect = material.querySelector("rect");
-      const use = material.querySelector("use");
+      const use = material.querySelector("image");
 
       if (rect && use) {
         // Ensure rect exactly matches the use element's dimensions
@@ -485,23 +510,32 @@ document.addEventListener("DOMContentLoaded", () => {
         rect.style.cursor = "pointer";
       }
 
-      // Add event listeners to both the group and the rect
+      // Add event listeners to both the group and the rect (mouse and touch)
       material.addEventListener("mousedown", startDrag);
+      material.addEventListener("touchstart", startDrag, { passive: false });
       if (rect) {
         rect.addEventListener("mousedown", startDrag);
+        rect.addEventListener("touchstart", startDrag, { passive: false });
       }
     }
   });
 
   function onDragMove(e) {
     if (!draggingMaterial) return;
+    
+    // Prevent default touch behavior (scrolling)
+    e.preventDefault();
+    
     const svg = document.querySelector("svg");
 
     if (!svg) return; // Safety check
 
+    // Get coordinates from mouse or touch event
+    const coords = getEventCoordinates(e);
+
     const pt = svg.createSVGPoint();
-    pt.x = e.clientX;
-    pt.y = e.clientY;
+    pt.x = coords.clientX;
+    pt.y = coords.clientY;
 
     // --- CRITICAL FIX 2: Get a FRESH CTM inverse on EVERY move for accurate coordinates. ---
     let svgCursorPoint;
@@ -584,9 +618,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       // Proceed to cleanup
     } else {
+      // Get coordinates from mouse or touch event
+      const coords = getEventCoordinates(e);
+
       const pt = svg.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
+      pt.x = coords.clientX;
+      pt.y = coords.clientY;
 
       // Use a fresh CTM inverse one last time for the drop point calculation
       let svgCursorPoint;
@@ -789,9 +826,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const boxBBox = targetPath.getBBox(); // Use path BBox, not container BBox
               let materialGroup = existingMaterialGroup;
               let targetUse = materialGroup
-                ? materialGroup.querySelector("use")
+                ? materialGroup.querySelector("image")
                 : null;
-              const sourceUse = draggingMaterial.querySelector("use");
+              const sourceUse = draggingMaterial.querySelector("image");
 
               if (sourceUse) {
                 if (!materialGroup) {
@@ -803,7 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   materialGroup.classList.add("material-container"); // Add class for better targeting
                   targetUse = document.createElementNS(
                     "http://www.w3.org/2000/svg",
-                    "use"
+                    "image"
                   );
                   materialGroup.appendChild(targetUse);
                   targetBox.appendChild(materialGroup);
@@ -917,9 +954,11 @@ document.addEventListener("DOMContentLoaded", () => {
     isDragging = false;
     currentScale = 1;
 
-    // Clean up event listeners
+    // Clean up event listeners (both mouse and touch)
     document.removeEventListener("mousemove", onDragMove);
     document.removeEventListener("mouseup", onDragEnd);
+    document.removeEventListener("touchmove", onDragMove);
+    document.removeEventListener("touchend", onDragEnd);
 
     // Re-enable all draggable materials
     Object.keys(materialMap).forEach((materialId) => {

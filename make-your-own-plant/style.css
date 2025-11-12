@@ -141,6 +141,7 @@
   color: #fff;
   border-radius: 0 0px 20px 20px;
   background: #1d83ec;
+  white-space: nowrap;
 }
 
 #phototropism-widget .versionText {

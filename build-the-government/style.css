@@ -140,6 +140,7 @@
   border-radius: 0 0px 20px 20px;
   background: #AF4C00;
   box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
+  white-space: nowrap;
 }
 
 #parlament-widget .versionText {
@@ -158,7 +159,7 @@
 
 #parlament-widget svg {
   width: 100% !important;
-  height: 100%;
+  height: calc(100% - 40px);
 }
 
 /* parlament style  */
@@ -189,7 +190,7 @@
   display: block;
 }
 
-#parlament-widget .card-wrapper .compare use:nth-child(1) {
+#parlament-widget .card-wrapper .compare .svg-image:nth-child(1) {
   outline: 8px solid #49BA62;
   border-radius: 16px;
 }

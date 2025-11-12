@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Find candidate cards: top-level <g> elements inside step-1 that contain a <use>
   const groups = Array.from(step1.querySelectorAll("g[id]"));
   // Filter to get only the <g> elements that represent government cards (those with an ID and a <use> child)
-  const cards = groups.filter((g) => g.id && Boolean(g.querySelector("use")));
+  const cards = groups.filter((g) => g.id && Boolean(g.querySelector("image")));
 
   // State for the new comparison mode
   let compareMode = false;
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // element is a <use id="government-img"> inside the SVG
     const useEl =
       document.getElementById("government-img") ||
-      document.querySelector("use#government-img");
+      document.querySelector("image#government-img");
     if (!useEl) return;
     const path = `./assets/${cardId}.svg`;
     try {
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Helper function to update the <use> element's href
   function updateUseElementHref(gElement, cardId, isXlink = false) {
     if (!gElement || !cardId) return;
-    const useEl = gElement.querySelector("use");
+    const useEl = gElement.querySelector("image");
     if (!useEl) return;
 
     const path = `./assets/${cardId}.svg`;
@@ -972,7 +972,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const useEl =
         document.getElementById("government-img") ||
-        document.querySelector("use#government-img");
+        document.querySelector("image#government-img");
       if (useEl) {
         try {
           // 1. Apply 'active' class

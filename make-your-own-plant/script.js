@@ -361,7 +361,7 @@ class ZoomManager {
         if (allSelectors) {
             document.querySelectorAll(allSelectors).forEach(group => {
                 group.style.display = 'none';
-                const useElement = group.querySelector('use');
+                const useElement = group.querySelector('image');
                 if (useElement) {
                     useElement.style.display = 'none';
                 }
@@ -389,7 +389,7 @@ class ZoomManager {
         
         selectedElements.forEach(group => {
             group.style.display = 'block';
-            const useElement = group.querySelector('use');
+            const useElement = group.querySelector('image');
             if (useElement) {
                 useElement.style.display = 'block';
             }
@@ -399,7 +399,7 @@ class ZoomManager {
     // --- Function 3: Update Selected Groups & Rectangle Hiding ---
 
     getSvgSource(element) {
-        const useElement = element.querySelector('use');
+        const useElement = element.querySelector('image');
         return useElement ? useElement.getAttribute('href') : null;
     }
 
@@ -425,7 +425,7 @@ class ZoomManager {
 
             leafGroups.forEach(g => {
                 if (g) {
-                    const useElement = g.querySelector('use');
+                    const useElement = g.querySelector('image');
                     if (useElement) {
                         useElement.setAttribute('href', svgSource);
                     }
@@ -448,7 +448,7 @@ class ZoomManager {
             const rootGroup = document.querySelector('.selected-root');
 
             if (rootGroup) {
-                const useElement = rootGroup.querySelector('use');
+                const useElement = rootGroup.querySelector('image');
                 if (useElement) {
                     useElement.setAttribute('href', svgSource);
                 }
@@ -555,7 +555,7 @@ function initializeModalControls() {
                 return;
             }
 
-            const useElement = primaryGroup.querySelector('use');
+            const useElement = primaryGroup.querySelector('image');
             if (!useElement) {
                 console.warn(`No <use> element found in primary group '${primaryGroupId}'.`);
                 return;

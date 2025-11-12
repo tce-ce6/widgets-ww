@@ -142,6 +142,7 @@
   border-radius: 0 0px 20px 20px;
   background: #00ffd4;
   /* box-shadow: 0 3px 6px rgba(0, 0, 0, .3); */
+  white-space: nowrap;
 }
 
 #phototropism-widget .versionText {
@@ -160,7 +161,8 @@
 
 #phototropism-widget svg {
   width: 100% !important;
-  height: 100%;
+    height: calc(100% - 40px);
+
 }
 
 /* transparent style  */
@@ -180,7 +182,7 @@ g.material-container.hidden-state {
   visibility: hidden;
 }
 
-.active g use.shuttor-img {
+.active g image.shuttor-img {
   transform: translateY(-145px);
   transition: all .6s ease-in-out;
 }
@@ -192,7 +194,7 @@ g.material-container.hidden-state {
 
 }
 
-.show .material-container use {
+.show .material-container image {
   transform: translate(15px, 25px) scale(.8) !important;
 }
 
