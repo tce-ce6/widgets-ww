@@ -48,6 +48,7 @@ let currentSentenceIndex = -1;
 let currentIndex = 0; // Kept to track the currently loaded sentence index
 let selectedBlank = null;
 let showBtn = false;
+let incorrectBlankLength = false;
 
 /**
  * Generates the next index in a sequential order, wrapping around to 0
@@ -62,6 +63,7 @@ function getNextIndex() {
     // Increment the index
     currentSentenceIndex++;
     showBtn = false;
+    incorrectBlankLength = false;
     
     // Wrap-around logic
     if (currentSentenceIndex >= hindiSentences.length) {
@@ -241,6 +243,9 @@ function placePunctuation(symbol) {
         if (feedback && showBtn) {
             feedback.textContent = 'यह रहा सही उत्तर।';
         }
+        else if(incorrectBlankLength){
+            feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
+        }
         else {
             feedback.textContent = 'पहले एक रिक्त स्थान पर टैप करें।';
         }
@@ -288,6 +293,7 @@ function placePunctuation(symbol) {
         
         if (incorrectBlanks.length === 0) {
             // All blanks filled AND all are correct
+            incorrectBlankLength = true;
             if (feedback) {
                 feedback.textContent = '🎉 शाबाश! सभी उत्तर सही हैं।';
             }
@@ -295,9 +301,9 @@ function placePunctuation(symbol) {
             // All blanks filled, but at least one is incorrect
             if (feedback) {
                 // Find the first incorrect blank and auto-select it for user convenience
-                const firstIncorrect = incorrectBlanks[0];
+               // const firstIncorrect = incorrectBlanks[0];
                // firstIncorrect.classList.add('selected');
-                selectedBlank = firstIncorrect;
+              //  selectedBlank = firstIncorrect;
                 
                 feedback.textContent = 'आपकी कोशिश अच्छी रही! फिर से कोशिश करने के लिए गलत उत्तर पर टैप करें।';
             }
@@ -379,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial load: Start with the first sequential sentence (index 0) (UPDATED)
     loadSentence(getNextIndex());
     showBtn = false;
+    incorrectBlankLength = false;
 });
 
 // Also load a sentence on page refresh/load
@@ -389,4 +396,5 @@ window.addEventListener('load', function() {
     // However, keeping the original logic structure but updating to use getNextIndex():
     loadSentence(getNextIndex());
     showBtn = false;
+    incorrectBlankLength = false;
 });
