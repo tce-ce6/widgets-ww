@@ -30,7 +30,7 @@ const hindiSentences = [
     { "sentence": "अहा__ कितना सुंदर नज़ारा है पहाड़ों का__", "answer": "अहा! कितना सुंदर नज़ारा है पहाड़ों का।" },
     { "sentence": "हे भगवान__ यह क्या हो गया__ सब कुछ तो बर्बाद हो गया__", "answer": "हे भगवान! यह क्या हो गया? सब कुछ तो बर्बाद हो गया।" },
     { "sentence": "रीता ने कहा__ __मैं कल तुम्हारे घर आऊँगी__ __", "answer": "रीता ने कहा, \"मैं कल तुम्हारे घर आऊँगी।\"" },
-    { "sentence": "क्या आपको पता है__ आज कौन सा दिन है__", "answer": "क्या आपको पता है, आज कौन सा दिन है?" },
+    { "sentence": "क्या आपको पता है__ आज कौन__सा दिन है__", "answer": "क्या आपको पता है, आज कौन-सा दिन है?" },
     { "sentence": "पेड़ हमें ऑक्सीजन देते हैं__ हमें उनकी रक्षा करनी चाहिए__", "answer": "पेड़ हमें ऑक्सीजन देते हैं; हमें उनकी रक्षा करनी चाहिए।" },
     { "sentence": "अरे वाह__ कितनी मिठास है इस आम में__", "answer": "अरे वाह! कितनी मिठास है इस आम में।" },
     { "sentence": "गाँधी जी ने कहा__ __सत्य और अहिंसा से सब कुछ संभव है__ __", "answer": "गाँधी जी ने कहा, \"सत्य और अहिंसा से सब कुछ संभव है।\"" },
@@ -43,14 +43,11 @@ const hindiSentences = [
 ];
 
 
-// ===================================================================
-// 1. SEQUENTIAL INDEX TRACKING (MODIFIED/NEW CODE)
-// ===================================================================
-
 // Global variable to track the current index. Start at -1 so the first call yields 0.
 let currentSentenceIndex = -1; 
 let currentIndex = 0; // Kept to track the currently loaded sentence index
 let selectedBlank = null;
+let showBtn = false;
 
 /**
  * Generates the next index in a sequential order, wrapping around to 0
@@ -64,6 +61,7 @@ function getNextIndex() {
     
     // Increment the index
     currentSentenceIndex++;
+    showBtn = false;
     
     // Wrap-around logic
     if (currentSentenceIndex >= hindiSentences.length) {
@@ -73,7 +71,6 @@ function getNextIndex() {
     return currentSentenceIndex;
 }
 
-// REMOVED: function selectRandomIndex() is deleted.
 
 // Get the SVG text elements
 const sentenceContainer = document.getElementById('sentence-container'); 
@@ -241,7 +238,10 @@ function selectBlank(span) {
  */
 function placePunctuation(symbol) {
     if (!selectedBlank) {
-        if (feedback) {
+        if (feedback && showBtn) {
+            feedback.textContent = 'यह रहा सही उत्तर।';
+        }
+        else {
             feedback.textContent = 'पहले एक रिक्त स्थान पर टैप करें।';
         }
         return;
@@ -299,7 +299,7 @@ function placePunctuation(symbol) {
                // firstIncorrect.classList.add('selected');
                 selectedBlank = firstIncorrect;
                 
-                feedback.textContent = 'आपकी कोशिश अच्छी रही! गलत उत्तर! फिर से कोशिश करने के लिए गलत उत्तर पर टैप करें।';
+                feedback.textContent = 'आपकी कोशिश अच्छी रही! फिर से कोशिश करने के लिए गलत उत्तर पर टैप करें।';
             }
         }
         return; // Stop execution as we've handled the final check
@@ -347,6 +347,7 @@ function showAnswer() {
         sentenceText.innerHTML = hindiSentences[currentIndex].answer;
     }
     if (feedback) {
+        showBtn = true;
         feedback.textContent = 'यह रहा सही उत्तर।';
     }
     selectedBlank = null;
@@ -377,6 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM Content Loaded - Initializing...");
     // Initial load: Start with the first sequential sentence (index 0) (UPDATED)
     loadSentence(getNextIndex());
+    showBtn = false;
 });
 
 // Also load a sentence on page refresh/load
@@ -386,4 +388,5 @@ window.addEventListener('load', function() {
     // It's generally safer to just use DOMContentLoaded for initialization.
     // However, keeping the original logic structure but updating to use getNextIndex():
     loadSentence(getNextIndex());
+    showBtn = false;
 });

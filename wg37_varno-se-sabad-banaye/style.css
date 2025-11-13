@@ -19,7 +19,7 @@
 
 #shabd-widget .container::after {
   content: "";
-  background-image: url("assets/bg2.svg");
+  background-image: url("Assets/Images/BG_Base.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -133,10 +133,9 @@
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #ade1b7;
+  background: #15dcf2;
   padding: 8px 40px;
-  color: #24824f;
-  white-space: nowrap;
+  color: #0e3d85;
   border-radius: 0 0px 20px 20px;
 }
 
@@ -155,8 +154,54 @@
 #shabd-widget svg{
     width: 100% !important;
     height: 100%;
-} 
-
-.noSelect {
-  user-select: none;
 }
+
+/* Shake animation for answer slots */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Subtle 1px shake animation for letter buttons when wrong */
+/* @keyframes shakeButton {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+} */
+
+/* .letter-button.shake-button {
+  animation: shakeButton 0.3s ease-in-out;
+} */
+
+/* Red border for wrong letter button - handled via JavaScript */
+.letter-button.wrong-letter {
+  filter: drop-shadow(5px 5px 5px #ff0000);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Letter button hover effects */
+/* .letter-button:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+} */
+
+.letter-button {
+  transition: all 0.2s ease;
+}
+
+/* Sound button hover - no shake */
+/* .sound-button:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+} */
+
+.sound-button {
+  transition: all 0.2s ease;
+} 

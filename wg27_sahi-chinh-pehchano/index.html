@@ -58,6 +58,7 @@
       /* Light green background */
       border: 1px solid #c3e6cb;
       padding: 0 4px;
+      margin-left: 5px;
       /* Ensure visual spacing */
       cursor: default !important;
       /* Indicates it cannot be changed */
@@ -72,6 +73,7 @@
       border: 1px solid #f5c6cb;
       padding: 0 4px;
       cursor: pointer;
+      margin-left: 5px;
       /* Indicates it can be re-clicked to correct */
     }
 
@@ -100,9 +102,9 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>सही चिह्न पहचानों</h2>
-        <span id="versionId" class="versionText">b2_25111201</span>
+        <span id="versionId" class="versionText">b2_25111301</span>
       </div>
-      <div class="svg-container">
+      <div class="svg-container noSelect">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
           <g id="Web 1920 â 8 1" clip-path="url(#clip0_4456_1637)">
             <g id="Clip path group">
@@ -371,7 +373,7 @@
                       <tspan x="1474" y="631.619">-</tspan>
                     </text>
                   </g>
-                  <text fill="#BE1C1C" font-family="Nirmala UI" font-size="30" letter-spacing="0em">
+                  <text class="noSelect" fill="#BE1C1C" font-family="Nirmala UI" font-size="30" letter-spacing="0em">
                     <tspan x="199.23" y="246.422">खेलने के लिए रिक्त स्थान पर टैप करें फिर सही विराम चिह्न पर टैप करें।
                       एक विराम चिह्न दो रिक्त स्थानों में भी प्रयोग किया जा सकता है।</tspan>
                   </text>
@@ -385,7 +387,7 @@
                 white-space: nowrap;
                 line-height: 2;
                 text-align: center;
-              " id="feedback">हे भगवान! यह क्या हो गया? सब कुछ तो बर्बाद हो गया।</div>
+              " id="feedback" class="noSelect">हे भगवान! यह क्या हो गया? सब कुछ तो बर्बाद हो गया।</div>
                   </foreignObject>
                   <foreignObject x="49" y="185" width="1820" height="800" id="insight-container"
                     style="display: none;box-shadow: 5px 5px 5px #ccc;background-color: #fff; border-radius: 15px;">
@@ -402,7 +404,7 @@
                  
                " id='insights-txt'>
 
-                      <div class="left-col">
+                      <div class="left-col noSelect">
                         <div>
                           <h2>पूर्ण विराम (।)</h2>
                           <p>यह वाक्य के अंत में लगाया जाता है जब वाक्य पूरी तरह समाप्त हो जाता है। इससे पता चलता है कि
@@ -427,7 +429,7 @@
                             अलग करने या सूची बनाने में उपयोग होता है। </p>
                         </div>
                       </div>
-                      <div class="right-col">
+                      <div class="right-col noSelect">
                         <div>
                           <h2>अर्द्ध विराम (;)</h2>
                           <p>यह अल्प विराम से ज्यादा और पूर्ण विराम से कम रुकने का संकेत देता है। दो स्वतंत्र वाक्यों को
@@ -456,7 +458,7 @@
                         d="M91.628 954H306.905C317.945 954 328.534 958.386 336.34 966.193C344.147 973.999 348.533 984.588 348.533 995.628C348.533 1006.67 344.147 1017.26 336.34 1025.06C328.534 1032.87 317.945 1037.26 306.905 1037.26H91.628C80.5876 1037.26 69.9993 1032.87 62.1926 1025.06C54.3858 1017.26 50 1006.67 50 995.628C50 984.588 54.3858 973.999 62.1926 966.193C69.9993 958.386 80.5876 954 91.628 954Z"
                         fill="#F79120" />
                       <g id="insights-btn">
-                        <text id="insights_2" fill="white" xml:space="preserve" style="white-space: pre"
+                        <text class="noSelect" id="insights_2" fill="white" xml:space="preserve" style="white-space: pre"
                           font-family="Roboto" font-size="35" font-weight="600" letter-spacing="0em">
                           <tspan x="155" y="1005.26">ज्ञान कोष</tspan>
                         </text>
