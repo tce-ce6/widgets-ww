@@ -42,9 +42,9 @@ body {
 
 .question {
   display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    left: 30%;
+  justify-content: flex-start;
+  align-items: center;
+  left: 30%;
 }
 
 .right-col {
@@ -305,18 +305,15 @@ input[type="range"]::-moz-range-thumb {
 
 .wdgetTitle h2 {
   font-size: 16px;
-    font-weight: 600;
-    text-align: left;
-    padding: 5px 20px;
-    color: #fff;
-    border-radius: 0 0px 20px 20px;
-    background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
-    margin: 0px 0px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 20px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
+  margin: 0px 0px;
 }
+
 .versionText {
   position: absolute;
   right: 20px;
@@ -328,10 +325,10 @@ input[type="range"]::-moz-range-thumb {
 
 @media (max-width: 768px) {
   #jxgbox {
-      max-width: 670px !important;
-      height: 380px !important;
-      border: 1px solid #bbb;
-      background: #fff;
-      margin: 0 auto;
+    max-width: 670px !important;
+    height: 380px !important;
+    border: 1px solid #bbb;
+    background: #fff;
+    margin: 0 auto;
   }
 }

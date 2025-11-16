@@ -277,7 +277,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .wdgetTitle h2 {
-  font-size: 16px;
+  font-size: 23px !important;
   font-weight: 600;
   text-align: left;
   padding: 5px 20px;
@@ -285,10 +285,10 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 0 0px 20px 20px;
   background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
   margin: 0px 0px;
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
 }
 
 .versionText {
@@ -309,13 +309,13 @@ input[type="range"]::-moz-range-thumb {
 
 #dynamic-eqn {
   position: absolute;
-    top: 5px !important;
-    z-index: 1;
-    right: 15px;
-    min-width: 115px;
-    white-space: nowrap;
-    word-break: normal;
-    text-align: left;
-    font-size: 20px;
-    background-color: #fff;
+  top: 5px !important;
+  z-index: 1;
+  right: 15px;
+  min-width: 115px;
+  white-space: nowrap;
+  word-break: normal;
+  text-align: left;
+  font-size: 20px;
+  background-color: #fff;
 }

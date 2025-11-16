@@ -24,6 +24,7 @@
             align-items: center;
             gap: 12px;
             width: 100%;
+            height: 100%;
         }
 
         #graphRow {
@@ -35,10 +36,12 @@
         }
 
         #jxgbox {
-            max-width: 1200px;
-            height: 500px;
+            max-width: 720px;
+            height: 460px;
             border: 1px solid #bbb;
             background: #fff;
+            width: 100%;
+            min-height: 100%;
         }
 
         /* Style for the Green Info Box (DBC) */
@@ -51,7 +54,8 @@
             /* Rounded corners */
             text-align: center !important;
             /* Ensure the text center aligns within the box */
-            pointer-events: none; /* prevent hover/highlight from JSXGraph */
+            pointer-events: none;
+            /* prevent hover/highlight from JSXGraph */
             opacity: 1 !important;
         }
 
@@ -64,8 +68,10 @@
             border-radius: 5px !important;
             /* Rounded corners */
             text-align: center !important;
-            pointer-events: none; /* prevent hover/highlight from JSXGraph */
-            opacity: 1 !important; /* keep visible even when hovered */
+            pointer-events: none;
+            /* prevent hover/highlight from JSXGraph */
+            opacity: 1 !important;
+            /* keep visible even when hovered */
         }
 
         /* Extra safety: never hide background on hover inside JSXGraph */
@@ -94,8 +100,8 @@
                         <!-- Graph -->
                         <div>
                             <span
-                            style="font-size: 20px; color: black; text-align: center; display: block; margin: 10px 0px; white-space: nowrap;">Drag
-                            points A and D along line l to observe constant area and changing perimeter.</span>
+                                style="font-size: 20px; color: black; text-align: center; display: block; margin: 10px 0px; white-space: nowrap;">Drag
+                                points A and D along line l to observe constant area and changing perimeter.</span>
                             <div id="jxgbox"></div>
                         </div>
 
@@ -103,7 +109,7 @@
                 </div>
             </div>
 
-            
+
         </div>
     </div>
     <script src="sketch.js"></script>

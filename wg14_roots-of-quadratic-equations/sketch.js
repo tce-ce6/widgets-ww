@@ -3,7 +3,9 @@ const board = JXG.JSXGraph.initBoard('jxgbox', {
     boundingbox: [-12, 35, 12, -35],
     axis: true,
     showCopyright: false,
-    showNavigation: false
+    showNavigation: false,
+    height: 200,
+    width: 200
 
 });
 
