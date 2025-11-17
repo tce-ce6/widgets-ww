@@ -16,7 +16,12 @@ function initBoard() {
         boundingbox: [-20, 20, 20, -20],
         axis: true,
         showCopyright: false,
-        showNavigation: false
+        showNavigation: false,
+        // attempt to disable pan/zoom interactions
+        pan: { enabled: false },
+        zoom: { enabled: false, pinch: false },
+        // optional: disable default mouse wheel
+        mouseDrag: false
     });
 }
 
@@ -42,27 +47,27 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     const aID = `a${idSuffix}_value`;
     const bID = `b${idSuffix}_value`;
     const cID = `c${idSuffix}_value`;
-    
+
     // --- Configuration ---
     // Use the passed colorString and apply correct styling
     const colorStyle = `style="color: ${colorString}; letter-spacing: 0.4px;"`;
     const varClass = 'class="roman-txt"';
 
     let html = '';
-    
+
     // 1. X TERM (a*x) - MUST be the first term
-    
+
     // Check for ±1 for the X-term
     if (Math.abs(a) === 1 && a !== 0) {
         // If a = -1, start with a minus sign
         const sign = (a === -1) ? '—' : '';
-        
+
         // **SYNTAX FIX:** Ensure the <i> tag is closed correctly.
         // The value span is hidden to avoid showing '1' or '-1'.
         html += `${sign}<span ${colorStyle}><span id="${aID}" style="display:none;">${a}</span></span><i ${varClass}>x</i>`;
     } else {
         // General case (including a=0)
-        const a_val = (a === 0) ? 0 : Math.abs(a); 
+        const a_val = (a === 0) ? 0 : Math.abs(a);
         const sign = (a < 0) ? '—' : '';
 
         // **SYNTAX FIX:** Ensure the <i> tag is closed correctly.
@@ -71,15 +76,15 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
     // 2. Y TERM (b*y)
     let y_sign = '';
     let y_val_html = '';
-    
+
     if (b > 0) {
         y_sign = ' + ';
     } else if (b < 0) {
         y_sign = ' — ';
     } else { // b === 0
-        y_sign = ' + '; 
+        y_sign = ' + ';
     }
-    
+
     // Check for ±1 for the Y-term
     if (Math.abs(b) === 1 && b !== 0) {
         // Hide the value span
@@ -89,28 +94,28 @@ function formatEquationHTML(a, b, c, colorString, idSuffix) {
         const b_display = (b === 0) ? 0 : Math.abs(b);
         y_val_html = `<span ${colorStyle}><span id="${bID}">${b_display}</span></span>`;
     }
-    
+
     // **SYNTAX FIX:** Ensure the <i> tag is closed correctly.
     html += `${y_sign}${y_val_html}<i ${varClass}>y</i>`;
-    
+
     // =======================================================
     // 3. CONSTANT TERM (c)
     // =======================================================
     let c_sign = '';
-    
+
     if (c > 0) {
         c_sign = ' + ';
     } else if (c < 0) {
         c_sign = ' — ';
-    } else { 
-        c_sign = ' + '; 
+    } else {
+        c_sign = ' + ';
     }
-    
+
     const c_display = Math.abs(c);
     const c_html = `<span ${colorStyle}><span id="${cID}">${c_display}</span></span>`;
-    
+
     html += `${c_sign}${c_html} = 0`;
-    
+
     return html;
 }
 
@@ -167,14 +172,14 @@ function formatCoeff(coeff, variable, isFirst = false) {
  */
 function formatEquation(a, b, c) {
     let eq = "";
-    
+
     // 1. X TERM (a*x)
     const xTerm = formatCoeff(a, "x", true);
-    
+
     // 2. Y TERM (b*y)
     // The y-term is only 'the first term' if the x-term was omitted (a=0).
     const yTerm = formatCoeff(b, "y", xTerm === "");
-    
+
     // 3. Constant Term (c)
     let cTerm = "";
     if (c !== 0) {
@@ -185,7 +190,7 @@ function formatEquation(a, b, c) {
             cTerm = isFirst ? `- ${Math.abs(c)}` : ` - ${Math.abs(c)}`;
         }
     }
-    
+
     // Combine all parts
     eq = xTerm + yTerm + cTerm;
 
@@ -194,7 +199,7 @@ function formatEquation(a, b, c) {
     if (eq === "") {
         return "0 = 0";
     }
-    
+
     // Add the "= 0" part
     return `${eq} = 0`;
 }
@@ -211,24 +216,24 @@ function plotLines() {
             [x => (-a1 * x - c1) / b1],
             { strokeColor: 'red', strokeWidth: 2 }
         );
-        
+
         label1 = board.create('text', [
             () => 0 + label1Offset.x,
             () => ((-a1 * 0 - c1) / b1) + getLabelOffset(a1, b1) + label1Offset.y,
             () => formatEquation(a1, b1, c1)
-        ], { fontSize: 18, strokeColor: 'red', useMathJax: true  });
+        ], { fontSize: 18, strokeColor: 'red', useMathJax: true });
     } else if (a1 !== 0) {
         // Vertical line: a1*x + c1 = 0 -> x = -c1/a1
         const xConst1 = -c1 / a1;
         const p11 = board.create('point', [xConst1, -20], { visible: false, fixed: true });
         const p12 = board.create('point', [xConst1, 20], { visible: false, fixed: true });
         line1 = board.create('line', [p11, p12], { strokeColor: 'red', strokeWidth: 2 });
-        
+
         label1 = board.create('text', [
             () => xConst1 + 0.5 + label1Offset.x,
             () => 0 + getLabelOffset(a1, b1) + label1Offset.y,
             () => formatEquation(a1, b1, c1)
-        ], { fontSize: 18, strokeColor: 'red', useMathJax: true  });
+        ], { fontSize: 18, strokeColor: 'red', useMathJax: true });
     } // else (a1==0 and b1==0): no drawable line (either inconsistent or whole plane)
 
     // Line 2
@@ -237,24 +242,24 @@ function plotLines() {
             [x => (-a2 * x - c2) / b2],
             { strokeColor: 'blue', strokeWidth: 2 }
         );
-        
+
         label2 = board.create('text', [
             () => 0 + label2Offset.x,
             () => ((-a2 * 0 - c2) / b2) + getLabelOffset(a2, b2) + 3 + label2Offset.y,
             () => formatEquation(a2, b2, c2)
-        ], { fontSize: 18, strokeColor: 'blue', useMathJax: true  });
+        ], { fontSize: 18, strokeColor: 'blue', useMathJax: true });
     } else if (a2 !== 0) {
         // Vertical line: a2*x + c2 = 0 -> x = -c2/a2
         const xConst2 = -c2 / a2;
         const p21 = board.create('point', [xConst2, -20], { visible: false, fixed: true });
         const p22 = board.create('point', [xConst2, 20], { visible: false, fixed: true });
         line2 = board.create('line', [p21, p22], { strokeColor: 'blue', strokeWidth: 2 });
-        
+
         label2 = board.create('text', [
             () => xConst2 + 0.5 + label2Offset.x,
             () => 3 + getLabelOffset(a2, b2) + label2Offset.y,
             () => formatEquation(a2, b2, c2)
-        ], { fontSize: 18, strokeColor: 'blue', useMathJax: true  });
+        ], { fontSize: 18, strokeColor: 'blue', useMathJax: true });
     } // else (a2==0 and b2==0): no drawable line
 
     // Intersection
@@ -361,11 +366,11 @@ function updateValues() {
 
     const eq1HTML = formatEquationHTML(a1, b1, c1, 'rgb(241, 93, 82)', 1);
     const eq2HTML = formatEquationHTML(a2, b2, c2, 'rgb(110, 195, 238);', 2);
-    
+
     console.log(eq1HTML);
     console.log(eq2HTML);
     const eq1Container = document.getElementById("eq1_sign");
-    if(eq1Container){
+    if (eq1Container) {
         eq1Container.innerHTML = eq1HTML;
     }
 

@@ -227,33 +227,8 @@ function loadWord(word) {
     button.querySelector('path[fill="#3CD3C4"]')?.setAttribute('fill', '#3CD3C4');
   });
   
-  // Load puzzled images
-  loadPuzzledImages();
-  
   // Hide final image initially
   hideFinalImage();
-}
-
-/**
- * Loads puzzled images (Part_01, Part_02, Part_03, Part_04)
- */
-function loadPuzzledImages() {
-  if (!currentWord) return;
-  
-  const wordName = currentWord.word;
-  const imageBasePath = `Assets/Images/`;
-  
-  // Load Part images
-  const parts = ['Part_01', 'Part_02', 'Part_03', 'Part_04'];
-  parts.forEach((partId, index) => {
-    const partElement = document.getElementById(partId);
-    if (partElement) {
-      // Try to load the corresponding part image
-      const imagePath = `${imageBasePath}${partId}_.png`;
-      // For now, we'll keep the pattern fill, but we could update it to use the part images
-      // The pattern should be defined in the SVG defs section
-    }
-  });
 }
 
 /**
@@ -286,6 +261,29 @@ function showFinalImage() {
     "महल": "GR_Mahal.svg",
     "नहर": "GR_Nahar.svg"
   };
+
+  // const imageMap = {
+  //   "गगन": "Gagan.json",
+  //   "मटर": "matar.json",
+  //   "मगर": "magar.json",
+  //   "शहद": "Shahad.json",
+  //   "सड़क": "Sadak.json",
+  //   "कमल": "Kamal.json",
+  //   "कलम": "Kalam.json",
+  //   "नमक": "Namak.json",
+  //   "बटन": "Batan.json",
+  //   "भवन": "Bhavan.json",
+  //   "फसल": "Fasal.json",
+  //   "हवन": "Havan.json",
+  //   "नयन": "Nayan.json",
+  //   "कलश": "Kalash.json",
+  //   "रबड़": "Rabar.json",
+  //   "शहर": "Shahar.json",
+  //   "गरम": "Garam.json",
+  //   "चरण": "Charan.json",
+  //   "महल": "Mahal.json",
+  //   "नहर": "Nahar.json"
+  // };
   
   const finalImageName = imageMap[wordName];
   if (finalImageName) {
@@ -324,7 +322,11 @@ function showFinalImage() {
       img.setAttribute('width', '450');
       img.setAttribute('height', '450');
       img.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      imageContainer.appendChild(img);
+      
+      setTimeout(() => {
+        imageContainer.appendChild(img);
+        playWordSound();
+      }, 1000);
     }
   }
 }

@@ -3,7 +3,13 @@ const board = JXG.JSXGraph.initBoard('jxgbox', {
     boundingbox: [-12, 35, 12, -35],
     axis: true,
     showCopyright: false,
-    showNavigation: false
+    showNavigation: false,
+    showZoom: false,
+    // attempt to disable pan/zoom interactions
+    pan: { enabled: false },
+    zoom: { enabled: false, pinch: false },
+    // optional: disable default mouse wheel
+    mouseDrag: false
 
 });
 

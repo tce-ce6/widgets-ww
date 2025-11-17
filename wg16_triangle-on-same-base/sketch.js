@@ -5,6 +5,11 @@ function initGeometryBoard() {
         grid: true,
         showCopyright: false,
         showNavigation: false,
+        // attempt to disable pan/zoom interactions
+        pan: { enabled: false },
+        zoom: { enabled: false, pinch: false },
+        // optional: disable default mouse wheel
+        mouseDrag: false,
         renderer: 'canvas'
     });
 
