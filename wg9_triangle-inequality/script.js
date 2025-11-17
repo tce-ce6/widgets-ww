@@ -9,7 +9,7 @@ let showShuffle = false;
 const baseX = 120, baseY = 400, gap = 100;
 
 function setup() {
-    const canvas = createCanvas(1200, 600);
+    const canvas = createCanvas(1200, 650);
     canvas.parent('mainCanvas');
     textFont('Georgia');
     noLoop();

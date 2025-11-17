@@ -284,18 +284,6 @@ function showFinalImage() {
   //   "महल": "Mahal.json",
   //   "नहर": "Nahar.json"
   // };
-  
-  const finalImageName = imageMap[wordName];
-  if (finalImageName) {
-    // Hide puzzled parts
-    const parts = ['Part_01', 'Part_02', 'Part_03', 'Part_04'];
-    parts.forEach(partId => {
-      const partElement = document.getElementById(partId);
-      if (partElement) {
-        partElement.style.display = 'none';
-        partElement.style.visibility = 'hidden';
-      }
-    });
     
     // Show final image - create an image element in the image area
     const imageContainer = document.getElementById('Group 217');
@@ -329,7 +317,6 @@ function showFinalImage() {
       }, 1000);
     }
   }
-}
 
 /**
  * Hides the final image and shows puzzled images
@@ -340,16 +327,6 @@ function hideFinalImage() {
   if (finalImage) {
     finalImage.remove();
   }
-  
-  // Show puzzled parts
-  const parts = ['Part_01', 'Part_02', 'Part_03', 'Part_04'];
-  parts.forEach(partId => {
-    const partElement = document.getElementById(partId);
-    if (partElement) {
-      partElement.style.display = 'block';
-      partElement.style.visibility = 'visible';
-    }
-  });
 }
 
 /**

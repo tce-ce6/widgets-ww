@@ -9,7 +9,9 @@ const board = JXG.JSXGraph.initBoard('jxgbox', {
     pan: { enabled: false },
     zoom: { enabled: false, pinch: false },
     // optional: disable default mouse wheel
-    mouseDrag: false
+    mouseDrag: false,
+    height: 200,
+    width: 200
 
 });
 
