@@ -70,7 +70,9 @@
     </style>
   </head>
   <body>
-    <div class="title-container"><h3>Large numbers</h3></div>
+      <div class="wdgetTitle">
+        <h2>Large Numbers</h2>
+      </div>
     <div id="app" class="mainContainerOuter">
       <div class="mainContainer">
         <main id="canvas-container"></main>
@@ -80,7 +82,6 @@
         <button id="showExplanationButton">Show Explanation</button>
         <button id="backButton">Back</button>
         <button id="nextButton">Next</button>
-        <button id="submitButton">Submit</button>
         <button id="resetButton">Reset</button>
       </div>
     </div>
@@ -127,7 +128,6 @@
       let showExplanationButton,
         backButton,
         nextButton,
-        submitButton,
         resetButton,
         canvas;
       const canvasWidth = 1200,
@@ -324,7 +324,6 @@
         );
         backButton = document.getElementById("backButton");
         nextButton = document.getElementById("nextButton");
-        submitButton = document.getElementById("submitButton");
         resetButton = document.getElementById("resetButton");
         keyboard = document.getElementById("keyboard-container");
         keyboard.addEventListener("click", handleKeyboardClick);
@@ -335,7 +334,6 @@
         );
         backButton.addEventListener("click", onBackPressed);
         nextButton.addEventListener("click", onNextPressed);
-        submitButton.addEventListener("click", onSubmitPressed);
         resetButton.addEventListener("click", onResetPressed);
         updateCanvasElementPositions();
         initializeState();
@@ -362,7 +360,7 @@
         isCorrect = false;
         showPlaceLabels = false;
         isInputActive = false;
-        keyboard.style.display = "none";
+       keyboard.style.display = "none";
         showCanvasInput = true;
         showCanvasUseNumberBtn = true;
         showCanvasClearBtn = true;
@@ -370,7 +368,6 @@
         showExplanationButton.disabled = true;
         backButton.disabled = true;
         nextButton.disabled = true;
-        submitButton.disabled = true;
         resetButton.disabled = true;
       }
 
@@ -468,8 +465,7 @@
     if (showPlaceLabels && system !== 'none') { 
         const digits = currentNumber.replace(/ /g, '');
         const word = getWordForm(digits, system);
-        const formattedNumber = formatIndianNumber(digits, system);
-        
+const formattedNumber = formatNumberWithCommas(digits, system);        
         // 1. Display the Word Form (unchanged position)
         push(); 
         fill(0); 
@@ -667,18 +663,19 @@
     }
 }
       function drawCommas(startX, y) {
-        /* Unchanged */
-        fill(0, 128, 0);
-        textSize(60);
-        textAlign(CENTER, CENTER);
-        for (let i of commaPositions) {
-          if (i >= 0 && i < 10) {
-            // Draw comma in the center of the gap *after* box 'i'
-            let x = startX + i * (boxSize + boxGap) + boxSize + boxGap / 2;
-            text(",", x, y + boxSize / 2 + 5); // Added +5 for better vertical alignment
-          }
-        }
-      }
+  let digits = currentNumber.replace(/ /g, "");
+  let numDigits = digits.length;
+
+  fill(0, 128, 0);
+  textSize(60);
+  textAlign(CENTER, CENTER);
+  for (let i of commaPositions) {
+    if (i >= 0 && i < numDigits - 1) {
+      let x = startX + i * (boxSize + boxGap) + boxSize + boxGap / 2;
+      text(",", x, y + boxSize / 2 + 5);
+    }
+  }
+}
       // --- Event Handlers (Unchanged from previous version) ---
    // --- Event Handlers (Modified) ---
 
@@ -733,7 +730,6 @@ function onUseNumberPressed() {
     showExplanationButton.disabled = true; 
     backButton.disabled = false; 
     nextButton.disabled = true; 
-    submitButton.disabled = true; 
     resetButton.disabled = true; // Still disabled until a comma is placed
 }
       function onClearPressed() {
@@ -760,7 +756,6 @@ function onUseNumberPressed() {
     showExplanationButton.disabled = false; 
     backButton.disabled = false; 
     nextButton.disabled = false; 
-    submitButton.disabled = true; 
     resetButton.disabled = true; 
 }
       function onShowExplanationPressed() {
@@ -793,7 +788,6 @@ function onUseNumberPressed() {
         showExplanationButton.disabled = true;
         backButton.disabled = false;
         nextButton.disabled = false;
-        submitButton.disabled = true;
         resetButton.disabled = true;
       }
       function onBackPressed() { 
@@ -807,47 +801,43 @@ function onUseNumberPressed() {
         showExplanationButton.disabled = false; 
         backButton.disabled = false; 
         nextButton.disabled = (system === 'none'); 
-        submitButton.disabled = true; 
         resetButton.disabled = true; // Reset only active when commas are placed
     } 
     // Condition 2: Back from viewing the SUBMITTED Result (Return to Comma Placement)
-    else if (showCommaPlacement && showResult) {
-        showResult = false;       // Hide the result indicator (✔/✖)
-        isCorrect = false;        // Reset correctness state
-        showPlaceLabels = false;  // Hide the speaker and word form
-        
-        // Restore buttons to the state needed for a new submission/reset
-        submitButton.disabled = (commaPositions.length === 0); // Re-enable Submit if any commas are there
-        nextButton.disabled = (commaPositions.length === 0);   // Re-enable Next (as Submit)
-        resetButton.disabled = (commaPositions.length === 0);  // Re-enable Reset if any commas are there
+    // Condition 2: Back from viewing the SUBMITTED Result (Return to Comma Placement)
+else if (showCommaPlacement && showResult) {
+    showResult = false;
+    isCorrect = false;
+    showPlaceLabels = false;
 
-        // Restore instructions
-        const actualNumber = currentNumber.replace(/ /g, '');
-        const expectedCommas = getExpectedCommaPositions(actualNumber.length, system);
-        instruction = (expectedCommas.length === 0) 
-            ? 'No commas needed. Click Next or Submit.' // Case: small number
-            : 'Drag the comma (,) to the right position(s) in the number.'; // Case: large number
+    const expectedCommas = getExpectedCommaPositions(actualNumber.length, system);
+    instruction = expectedCommas.length === 0
+      ? 'No commas needed. Click Next.'
+      : 'Drag the comma (,) to the right position(s) in the number.';
 
-        showExplanationButton.disabled = false; // Always allow explanation review
-    }
+    nextButton.textContent = "Next";  // Reset to "Next"
+    nextButton.disabled = false;
+    resetButton.disabled = commaPositions.length === 0;
+
+    showExplanationButton.disabled = false;
+}
     // Condition 3: Back from Comma Placement (Return to System Selection)
-    else if (showCommaPlacement) { 
-        showCommaPlacement = false; 
-        commaPositions = []; 
-        showResult = false; 
-        isCorrect = false; 
-        showPlaceLabels = false;
-        system = 'none'; // Clear system selection
-        instruction = 'Select the system in which you want to represent the number'; 
-        showCanvasSystemBtns = true; 
-        
-        // Button states
-        showExplanationButton.disabled = true; // Disable until system is re-selected
-        backButton.disabled = false; 
-        nextButton.disabled = true; 
-        submitButton.disabled = true; 
-        resetButton.disabled = true;
-    } 
+    // Condition 3: Back from Comma Placement (Return to System Selection)
+else if (showCommaPlacement) {
+    showCommaPlacement = false;
+    commaPositions = [];
+    showResult = false;
+    isCorrect = false;
+    showPlaceLabels = false;
+    system = 'none';
+    instruction = 'Select the system in which you want to represent the number';
+    showCanvasSystemBtns = true;
+
+    nextButton.textContent = "Next";  // Reset
+    nextButton.disabled = true;
+    resetButton.disabled = true;
+    showExplanationButton.disabled = true;
+}
     // Condition 4: Back from System Selection (Return to Input)
     else if (numberEntered) {
         initializeState(); // Full reset to initial input state
@@ -856,77 +846,73 @@ function onUseNumberPressed() {
 }
       // --- Event Handlers (Modified) ---
 
-function onNextPressed() { 
-    const actualNumber = currentNumber.replace(/ /g, '');
-    const numDigits = actualNumber.length;
-    const expectedCommas = getExpectedCommaPositions(numDigits, system);
+function onNextPressed() {
+  const actualNumber = currentNumber.replace(/ /g, '');
+  const numDigits = actualNumber.length;
+  const expectedCommas = getExpectedCommaPositions(numDigits, system);
 
-    if (inExplanationMode) { 
-        inExplanationMode = false; 
-        showCommaPlacement = true; 
-        instruction = 'Drag the comma (,) to the right position(s) in the number.'; 
-        showExplanationButton.disabled = false; 
-        backButton.disabled = false; 
-        
-        if (expectedCommas.length === 0) {
-            // Implicit Submit: No commas needed, so it's correct.
-            showResult = true; 
-            isCorrect = true; 
-            showPlaceLabels = true; 
-            instruction = '';
-            
-            nextButton.disabled = false; // Next is active to start a new problem
-            submitButton.disabled = true;
-        } else {
-            // Proceed to placement stage
-            nextButton.disabled = false;
-            submitButton.disabled = false; 
-        }
-        
-        resetButton.disabled = true; 
-    } 
-    else if (system !== 'none' && !inExplanationMode && !showCommaPlacement) { 
-        showCommaPlacement = true; 
-        showCanvasSystemBtns = false; 
-        showExplanationButton.disabled = false; 
-        backButton.disabled = false; 
-        
-        if (expectedCommas.length === 0) {
-            // Implicit Submit: No commas needed, so it's correct.
-            showResult = true; 
-            isCorrect = true; 
-            showPlaceLabels = true; 
-            instruction = '';
-            
-            nextButton.disabled = false; 
-            submitButton.disabled = true; 
-        } else {
-            // Enter the placement stage
-            instruction = 'Drag the comma (,) to the right position(s) in the number.';
-            nextButton.disabled = false; 
-            submitButton.disabled = false; 
-        }
-        resetButton.disabled = true; 
-    } 
-    // --- MODIFICATION START ---
-    else if (showCommaPlacement) { 
-        // If we are in the comma placement stage, the Next button acts as Submit, 
-        // unless the answer is already correct and finalized.
-        if (isCorrect) {
-            // If correct, clicking Next moves to a new problem
-            initializeState();
-        } else {
-            // If not correct, clicking Next submits the current answer
-            onSubmitPressed();
-            // Note: onSubmitPressed handles disabling/enabling buttons based on the result.
-        }
+  // --- 1. From Explanation → Comma Placement ---
+  if (inExplanationMode) {
+    inExplanationMode = false;
+    showCommaPlacement = true;
+    instruction = expectedCommas.length === 0
+      ? 'No commas needed. Click Next.'
+      : 'Drag the comma (,) to the right position(s) in the number.';
+    showExplanationButton.disabled = false;
+    backButton.disabled = false;
+    nextButton.textContent = "Next"; // Ensure text is "Next"
+    resetButton.disabled = true;
+    return;
+  }
+
+  // --- 2. From System Selection → Comma Placement ---
+  if (system !== 'none' && !showCommaPlacement) {
+    showCommaPlacement = true;
+    showCanvasSystemBtns = false;
+    showExplanationButton.disabled = false;
+    backButton.disabled = false;
+
+    if (expectedCommas.length === 0) {
+      showResult = true;
+      isCorrect = true;
+      showPlaceLabels = true;
+      instruction = '';
+      nextButton.textContent = "New Question"; // Ready for new problem
+      resetButton.disabled = true;
+    } else {
+      instruction = 'Drag the comma (,) to the right position(s) in the number.';
+      nextButton.textContent = "Next";
+      resetButton.disabled = true;
     }
-    // --- MODIFICATION END ---
-    else if (showCommaPlacement && !isCorrect) { 
-        // This block is now covered by the new logic above, but is left as a failsafe 
-        // for specific edge cases handled by the original code.
-        instruction = "Incorrect. Try again or Reset."; 
-    } 
+    return;
+  }
+
+  // --- 3. In Comma Placement: Act as Submit ---
+  if (showCommaPlacement && !showResult) {
+    showResult = true;
+    checkCommaPlacement();
+
+    if (isCorrect) {
+      showPlaceLabels = true;
+      instruction = "";
+      nextButton.textContent = "New Question";
+      resetButton.disabled = true;
+      showExplanationButton.disabled = true;
+    } else {
+      instruction = "Incorrect. Try again or Reset.";
+      nextButton.textContent = "Next";
+      resetButton.disabled = false;
+    }
+    backButton.disabled = false;
+    return;
+  }
+
+  // --- 4. "New Question" → Start Fresh ---
+  if (nextButton.textContent === "New Question") {
+    initializeState();
+    nextButton.textContent = "Next";
+    return;
+  }
 }
       function onSubmitPressed() {
         if (showCommaPlacement) {
@@ -936,33 +922,32 @@ function onNextPressed() {
             showPlaceLabels = true;
             nextButton.disabled = false;
             instruction = "";
-            submitButton.disabled = true;
             resetButton.disabled = true;
             showExplanationButton.disabled = true;
           } else {
             nextButton.disabled = true;
             instruction = "Incorrect. Try again or Reset.";
-            submitButton.disabled = true;
           }
           backButton.disabled = false;
         }
       }
       function onResetPressed() {
-        if (showCommaPlacement) {
-          commaPositions = [];
-          showResult = false;
-          showPlaceLabels = false;
-          isCorrect = false;
-          instruction = "";
-          submitButton.disabled = false;
-          nextButton.disabled = false;
-          showExplanationButton.disabled = false;
-          backButton.disabled = false;
-          resetButton.disabled = true;
-        } else {
-          initializeState();
-        }
-      }
+  if (showCommaPlacement) {
+    commaPositions = [];
+    showResult = false;
+    showPlaceLabels = false;
+    isCorrect = false;
+    instruction = "";
+    nextButton.textContent = "Next";  // Reset text
+    nextButton.disabled = false;
+    showExplanationButton.disabled = false;
+    backButton.disabled = false;
+    resetButton.disabled = true;
+  } else {
+    initializeState();
+    nextButton.textContent = "Next";
+  }
+}
       function checkCommaPlacement() {
         const actualNumber = currentNumber.replace(/ /g, "");
         const digits = actualNumber.length;
@@ -1048,41 +1033,50 @@ function onNextPressed() {
         } // Return after starting drag
       }
 
+      function formatNumberWithCommas(digits, system) {
+  if (system === "indian") {
+    return formatIndianNumber(digits);
+  } else if (system === "american") {
+    // American: groups of 3 from the right
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return digits;
+}
+
       function mouseDragged() {
         /* Unchanged */
       }
-      function mouseReleased() {
-        /* Unchanged */ if (
-          isDraggingComma &&
-          !inExplanationMode &&
-          !showResult
-        ) {
-          const totalWidth = 11 * boxSize + 10 * boxGap;
-          const startX = (canvasWidth - totalWidth) / 2;
-          const y = canvasHeight / 2 - boxSize / 2 + 100;
-          const dropZoneHeight = boxSize + 20;
-          let newIndex = -1;
-          for (let i = 0; i < 10; i++) {
-            const x = startX + i * (boxSize + boxGap) + boxSize + boxGap / 2;
-            if (
-              mouseX >= x - boxSize / 2 &&
-              mouseX <= x + boxSize / 2 &&
-              mouseY >= y - 10 &&
-              mouseY <= y + dropZoneHeight
-            ) {
-              if (!commaPositions.includes(i)) newIndex = i;
-              break;
-            }
-          }
-          if (newIndex !== -1) {
-            commaPositions.push(newIndex);
-            // --- MODIFICATION: Enable Reset as a comma was placed ---
-            resetButton.disabled = false;
-          }
-          isDraggingComma = false;
-          draggedCommaIndex = -1;
-        }
-      }
+    function mouseReleased() {
+  if (!isDraggingComma || inExplanationMode || showResult) return;
+
+  const digits = currentNumber.replace(/ /g, "");
+  const numDigits = digits.length;
+  const totalWidth = numDigits * boxSize + (numDigits - 1) * boxGap;
+  const startX = (canvasWidth - totalWidth) / 2;
+  const y = canvasHeight / 2 - boxSize / 2 + 100;
+
+  let bestGap = -1;
+  let bestDist = Infinity;
+
+  // look at every possible gap (0 … numDigits-2)
+  for (let i = 0; i < numDigits - 1; i++) {
+    const gapX = startX + i * (boxSize + boxGap) + boxSize + boxGap / 2;
+    const d = dist(mouseX, mouseY, gapX, y + boxSize / 2);
+    if (d < 40 && d < bestDist) {          // 40 px tolerance
+      bestDist = d;
+      bestGap = i;
+    }
+  }
+
+  // drop only if we found a gap and it is not already occupied
+  if (bestGap !== -1 && !commaPositions.includes(bestGap)) {
+    commaPositions.push(bestGap);
+    resetButton.disabled = false;          // a comma exists → enable Reset
+  }
+
+  isDraggingComma = false;
+  draggedCommaIndex = -1;
+}
 
       // --- Canvas UI Helpers ---
       function handleKeyboardClick(event) {
@@ -1327,45 +1321,50 @@ function onNextPressed() {
       /**
        * _**[FIXED]**_ Draws the number LEFT-ALIGNED in the boxes.
        */
-      function drawNumberBoxes() {
-        let digits = currentNumber.replace(/ /g, ""); // Get actual digits without spaces
-        let numDigits = digits.length;
-        let totalWidth = 11 * boxSize + 10 * boxGap;
-        let startX = (canvasWidth - totalWidth) / 2;
-        let y = canvasHeight / 2 - boxSize / 2 + 100;
+    /**
+ * _**[UPDATED]**_ Draws only as many boxes as there are digits in the entered number.
+ * Boxes are centered on the canvas.
+ */
+function drawNumberBoxes() {
+  let digits = currentNumber.replace(/ /g, ""); // Get actual digits
+  let numDigits = digits.length;
 
-        // Draw speaker + word only after correct answer
-        if (showPlaceLabels && system !== "none") {
-          drawSpeakerAndWord(startX, y);
-        }
+  // If no digits, exit early
+  if (numDigits === 0) return;
 
-        // Draw all 11 boxes first (ALWAYS)
-        for (let i = 0; i < 11; i++) {
-          let x = startX + i * (boxSize + boxGap);
-          fill(255);
-          stroke(0);
-          rect(x, y, boxSize, boxSize);
-        }
+  // Dynamic total width based on actual number of digits
+  let totalWidth = numDigits * boxSize + (numDigits - 1) * boxGap;
+  let startX = (canvasWidth - totalWidth) / 2;
+  let y = canvasHeight / 2 - boxSize / 2 + 100;
 
-        // --- MODIFICATION: Draw digits only if a system has been selected (i.e., system is not 'none') ---
-        if (system !== "none") {
-          for (let i = 0; i < numDigits; i++) {
-            let x = startX + i * (boxSize + boxGap); // Box position is simply i
-            fill(0);
-            noStroke();
-            textAlign(CENTER, CENTER);
-            textSize(24);
-            text(digits[i], x + boxSize / 2, y + boxSize / 2 + 2); // Draw digit[i] in box i
-          }
-        }
-        // --- END MODIFICATION ---
+  // Draw speaker + word only after correct answer
+  if (showPlaceLabels && system !== "none") {
+    drawSpeakerAndWord(startX, y);
+  }
 
-        // Draw commas/labels only if a system is selected and we are in the later stages
-        if (system !== "none" && !inExplanationMode) {
-          drawCommas(startX, y);
-          if (showPlaceLabels) drawPlaceLabels(startX, y, numDigits); // Pass numDigits
-        }
-      }
+  // Draw exactly `numDigits` boxes
+  for (let i = 0; i < numDigits; i++) {
+    let x = startX + i * (boxSize + boxGap);
+    fill(255);
+    stroke(0);
+    rect(x, y, boxSize, boxSize);
+
+    // Draw digit only if system is selected
+    if (system !== "none") {
+      fill(0);
+      noStroke();
+      textAlign(CENTER, CENTER);
+      textSize(24);
+      text(digits[i], x + boxSize / 2, y + boxSize / 2 + 2);
+    }
+  }
+
+  // Draw commas and place labels only if system is selected and in correct stage
+  if (system !== "none" && !inExplanationMode) {
+    drawCommas(startX, y);
+    if (showPlaceLabels) drawPlaceLabels(startX, y, numDigits);
+  }
+}
 
       function drawCommaPrompt() {
         /* Unchanged */

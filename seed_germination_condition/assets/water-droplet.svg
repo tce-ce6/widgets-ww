@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Solid blue water drops, transparent background -->
+  <g fill="#5ec4e4">
+    <!-- top drop -->
+    <path d="M32 4c-4 8-8 12-8 16a8 8 0 0016 0c0-4-4-8-8-16z"/>
+    <!-- left drop -->
+    <path d="M18 20c-3 6-6 9-6 12a6 6 0 0012 0c0-3-3-6-6-12z"/>
+    <!-- right drop -->
+    <path d="M46 20c-3 6-6 9-6 12a6 6 0 0012 0c0-3-3-6-6-12z"/>
+    <!-- bottom drop -->
+    <path d="M32 36c-3 6-6 9-6 12a6 6 0 0012 0c0-3-3-6-6-12z"/>
+  </g>
+</svg>

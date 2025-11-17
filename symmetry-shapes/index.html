@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Symmetry Puzzle Widget</title>
-    <link rel="stylesheet" href="global_style.css">
+    <title>Symmetry Puzzle Widget (4K - White Theme)</title>
+    <link rel="stylesheet" href="global_style.css"> 
     <script src="p5.js"></script>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #ffffff; /* Pure white theme background */
             font-family: Arial, sans-serif;
         }
         canvas {
-            border: 2px solid #333;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            /* Scaled border and shadow, adjusted for pure white background */
+
         }
     </style>
 </head>
@@ -39,119 +39,23 @@
 
 
 <script>
+    // Puzzle data is unchanged
     const puzzleData  = [
-  {
-    "gridSize": 10,
-    "puzzles": {
-      "vertical": {
-        "question": [
-          { "type": "diag_down", "x": 5, "y": 0 },
-          { "type": "diag_down", "x": 6, "y": 1 },
-          { "type": "diag_down", "x": 7, "y": 2 },
-          { "type": "diag_up", "x": 7, "y": 3 },
-          { "type": "diag_up", "x": 6, "y": 4 },
-          { "type": "diag_up", "x": 5, "y": 5 },
-          { "type": "line_h", "x": 5, "y": 2 },
-          { "type": "line_h", "x": 5, "y": 3 }
-        ],
-        "solution": [
-          { "type": "diag_up", "x": 4, "y": 0 },
-          { "type": "diag_up", "x": 3, "y": 1 },
-          { "type": "diag_up", "x": 2, "y": 2 },
-          { "type": "diag_down", "x": 2, "y": 3 },
-          { "type": "diag_down", "x": 3, "y": 4 },
-          { "type": "diag_down", "x": 4, "y": 5 },
-          { "type": "line_h", "x": 4, "y": 2 },
-          { "type": "line_h", "x": 4, "y": 3 }
-        ]
-      },
-      "horizontal": {
-        "question": [
-          { "type": "diag_up", "x": 9, "y": 5 },
-          { "type": "diag_up", "x": 8, "y": 6 },
-          { "type": "diag_up", "x": 7, "y": 7 },
-          { "type": "diag_down", "x": 6, "y": 7 },
-          { "type": "diag_down", "x": 5, "y": 6 },
-          { "type": "diag_down", "x": 4, "y": 5 },
-          { "type": "line_v", "x": 7, "y": 5 },
-          { "type": "line_v", "x": 6, "y": 5 }
-        ],
-        "solution": [
-          { "type": "diag_down", "x": 9, "y": 4 },
-          { "type": "diag_down", "x": 8, "y": 3 },
-          { "type": "diag_down", "x": 7, "y": 2 },
-          { "type": "diag_up", "x": 6, "y": 2 },
-          { "type": "diag_up", "x": 5, "y": 3 },
-          { "type": "diag_up", "x": 4, "y": 4 },
-          { "type": "line_v", "x": 7, "y": 4 },
-          { "type": "line_v", "x": 6, "y": 4 }
-        ]
-      }
-    },
-    "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
-    "id": "puzzle_1"
-  },
-  {
-    "gridSize": 10,
-    "puzzles": {
-      "vertical": {
-        "question": [
-          { "type": "arc_bl", "x": 5, "y": 2 },
-          { "type": "arc_bl", "x": 6, "y": 3 },
-          { "type": "arc_bl", "x": 7, "y": 4 },
-          { "type": "arc_tl", "x": 7, "y": 5 },
-          { "type": "arc_tl", "x": 6, "y": 6 },
-          { "type": "arc_tl", "x": 5, "y": 7 },
-          { "type": "circle", "x": 5, "y": 4 },
-          { "type": "circle", "x": 5, "y": 5 }
-        ],
-        "solution": [
-          { "type": "arc_br", "x": 4, "y": 2 },
-          { "type": "arc_br", "x": 3, "y": 3 },
-          { "type": "arc_br", "x": 2, "y": 4 },
-          { "type": "arc_tr", "x": 2, "y": 5 },
-          { "type": "arc_tr", "x": 3, "y": 6 },
-          { "type": "arc_tr", "x": 4, "y": 7 },
-          { "type": "circle", "x": 4, "y": 4 },
-          { "type": "circle", "x": 4, "y": 5 }
-        ]
-      },
-      "horizontal": {
-        "question": [
-          { "type": "arc_tl", "x": 7, "y": 5 },
-          { "type": "arc_tl", "x": 6, "y": 6 },
-          { "type": "arc_tl", "x": 5, "y": 7 },
-          { "type": "arc_tr", "x": 4, "y": 7 },
-          { "type": "arc_tr", "x": 3, "y": 6 },
-          { "type": "arc_tr", "x": 2, "y": 5 },
-          { "type": "circle", "x": 5, "y": 5 },
-          { "type": "circle", "x": 4, "y": 5 }
-        ],
-        "solution": [
-          { "type": "arc_bl", "x": 7, "y": 4 },
-          { "type": "arc_bl", "x": 6, "y": 3 },
-          { "type": "arc_bl", "x": 5, "y": 2 },
-          { "type": "arc_br", "x": 4, "y": 2 },
-          { "type": "arc_br", "x": 3, "y": 3 },
-          { "type": "arc_br", "x": 2, "y": 4 },
-          { "type": "circle", "x": 5, "y": 4 },
-          { "type": "circle", "x": 4, "y": 4 }
-        ]
-      }
-    },
-    "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ],
-    "id": "puzzle_2"
-  }
-]
+      { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 7, "y": 3 }, { "type": "diag_up", "x": 6, "y": 4 }, { "type": "diag_up", "x": 5, "y": 5 }, { "type": "line_h", "x": 5, "y": 2 }, { "type": "line_h", "x": 5, "y": 3 } ], "solution": [ { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 }, { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_down", "x": 2, "y": 3 }, { "type": "diag_down", "x": 3, "y": 4 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_h", "x": 4, "y": 2 }, { "type": "line_h", "x": 4, "y": 3 } ] }, "horizontal": { "question": [ { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 }, { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 7 }, { "type": "diag_down", "x": 5, "y": 6 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_v", "x": 7, "y": 5 }, { "type": "line_v", "x": 6, "y": 5 } ], "solution": [ { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 2 }, { "type": "diag_up", "x": 5, "y": 3 }, { "type": "diag_up", "x": 4, "y": 4 }, { "type": "line_v", "x": 7, "y": 4 }, { "type": "line_v", "x": 6, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_1" },
+      { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 5, "y": 5 } ], "solution": [ { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "circle", "x": 4, "y": 4 }, { "type": "circle", "x": 4, "y": 5 } ] }, "horizontal": { "question": [ { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "circle", "x": 5, "y": 5 }, { "type": "circle", "x": 4, "y": 5 } ], "solution": [ { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 4, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_2" }
+    ]
 
     let sketch = function(p) {
-        // --- Canvas & Layout Configuration ---
-        const canvasWidth = 800;
-        const canvasHeight = 600;
-        const controlsX = 0, controlsY = 0, controlsW = 250, controlsH = canvasHeight;
-        const gridAreaX = 280, gridAreaY = 20, gridAreaSize = 480;
+        // --- 4K Scaling Factor ---
+        const scaleFactor = 3.6; 
 
-        // --- State Variables ---
+        // --- Canvas & Layout Configuration (Scaled) ---
+        const canvasWidth = 800 * scaleFactor;
+        const canvasHeight = 600 * scaleFactor;
+        const controlsX = 0, controlsY = 0, controlsW = 250 * scaleFactor, controlsH = canvasHeight;
+        const gridAreaX = 280 * scaleFactor, gridAreaY = 20 * scaleFactor, gridAreaSize = 480 * scaleFactor;
+
+        // --- State Variables (Unchanged) ---
         let currentPuzzleIndex = 0;
         let symmetryMode = 'horizontal';
         let userShapes = [];
@@ -171,26 +75,27 @@
         };
 
         function initializeUI() {
-            const palSize = 45;
-            const palGap = 10;
+            const palSize = 45 * scaleFactor;
+            const palGap = 10 * scaleFactor;
+
             uiElements = {
-                title: { x: controlsX + 20, y: 40, text: "Complete the picture\nto make it symmetrical"},
-                modeLabel: { x: controlsX + 20, y: 140, text: "Select the line of symmetry"},
-                btnHorizontal: { x: controlsX + 40, y: 170, w: 120, h: 30, label: "Horizontal"},
-                btnVertical: { x: controlsX + 40, y: 210, w: 120, h: 30, label: "Vertical"},
-                btnReset: { x: controlsX + 20, y: 380, w: 90, h: 40, label: "Reset"},
-                btnCheck: { x: controlsX + 130, y: 380, w: 90, h: 40, label: "Check"},
+                title: { x: controlsX + 20 * scaleFactor, y: 40 * scaleFactor, text: "Complete the picture\nto make it symmetrical"},
+                modeLabel: { x: controlsX + 20 * scaleFactor, y: 140 * scaleFactor, text: "Select the line of symmetry"},
+                btnHorizontal: { x: controlsX + 40 * scaleFactor, y: 170 * scaleFactor, w: 120 * scaleFactor, h: 30 * scaleFactor, label: "Horizontal"},
+                btnVertical: { x: controlsX + 40 * scaleFactor, y: 210 * scaleFactor, w: 120 * scaleFactor, h: 30 * scaleFactor, label: "Vertical"},
+                btnReset: { x: controlsX + 20 * scaleFactor, y: 380 * scaleFactor, w: 90 * scaleFactor, h: 40 * scaleFactor, label: "Reset"},
+                btnCheck: { x: controlsX + 130 * scaleFactor, y: 380 * scaleFactor, w: 90 * scaleFactor, h: 40 * scaleFactor, label: "Check"},
                 palette: [],
-                navLabel: { x: controlsX + 20, y: 560, text: ""},
-                btnPrev: { x: controlsX + 130, y: 545, w: 50, h: 30, label: "< Prev"},
-                btnNext: { x: controlsX + 190, y: 545, w: 50, h: 30, label: "Next >"},
+                navLabel: { x: controlsX + 20 * scaleFactor, y: 560 * scaleFactor, text: ""},
+                btnPrev: { x: controlsX + 130 * scaleFactor, y: 545 * scaleFactor, w: 50 * scaleFactor, h: 30 * scaleFactor, label: "< Prev"},
+                btnNext: { x: controlsX + 190 * scaleFactor, y: 545 * scaleFactor, w: 50 * scaleFactor, h: 30 * scaleFactor, label: "Next >"},
                 congratsMsg: { text: "Congratulations!\nYou completed the \nsymmetrical picture"},
             };
 
             const paletteParts = puzzleData[currentPuzzleIndex].availableParts;
             const paletteWidth = paletteParts.length * (palSize + palGap) - palGap;
             let palX = gridAreaX + (gridAreaSize - paletteWidth) / 2;
-            let palY = gridAreaY + gridAreaSize + 20;
+            let palY = gridAreaY + gridAreaSize + 20 * scaleFactor; 
 
             paletteParts.forEach(partId => {
                 uiElements.palette.push({ id: partId, x: palX, y: palY, size: palSize });
@@ -198,6 +103,7 @@
             });
         }
 
+        // Logic function - unchanged
         function loadPuzzle() {
             userShapes = [];
             selectedPart = null;
@@ -207,7 +113,7 @@
         }
 
         p.draw = function() {
-            p.background(240);
+            p.background(255); // Pure white canvas background
             drawControls();
             drawGridAndPalette();
             drawFeedback();
@@ -216,22 +122,28 @@
             }
         };
         
+        // --- UPDATED FUNCTION ---
         function drawControls() {
-            p.noStroke(); p.fill(50);
-            p.textSize(20); p.textAlign(p.LEFT, p.TOP);
+            p.noStroke(); p.fill(50); // Dark text
+            p.textSize(20 * scaleFactor); 
+            p.textAlign(p.LEFT, p.TOP);
             p.text(uiElements.title.text, uiElements.title.x, uiElements.title.y);
-            p.textSize(14);
+            p.textSize(14 * scaleFactor); 
             p.text(uiElements.modeLabel.text, uiElements.modeLabel.x, uiElements.modeLabel.y);
             
             drawRadioButton(uiElements.btnHorizontal, symmetryMode === 'horizontal');
             drawRadioButton(uiElements.btnVertical, symmetryMode === 'vertical');
 
-            drawButton(uiElements.btnReset);
-            drawButton(uiElements.btnCheck);
-            p.fill(100); p.textSize(14);
+            // Apply button types based on UI principles
+            drawButton(uiElements.btnReset, 'secondary'); // Less prominent
+            drawButton(uiElements.btnCheck, 'primary');   // Primary action
+            
+            p.fill(100); // Dimmer dark text
+            p.textSize(14 * scaleFactor); 
             p.text(uiElements.navLabel.text, uiElements.navLabel.x, uiElements.navLabel.y);
-            drawButton(uiElements.btnPrev);
-            drawButton(uiElements.btnNext);
+
+            drawButton(uiElements.btnPrev, 'default');
+            drawButton(uiElements.btnNext, 'default');
         }
         
         function drawGridAndPalette() {
@@ -240,14 +152,14 @@
             const gridSize = puzzleData[currentPuzzleIndex].gridSize;
             const cellSize = gridAreaSize / gridSize;
             const currentPuzzle = puzzleData[currentPuzzleIndex].puzzles[symmetryMode];
-            p.stroke(200); p.strokeWeight(1);
+            p.stroke(200); p.strokeWeight(1 * scaleFactor); // Light grid lines
             for (let i = 0; i <= gridSize; i++) {
                 p.line(i * cellSize, 0, i * cellSize, gridAreaSize);
                 p.line(0, i * cellSize, gridAreaSize, i * cellSize);
             }
             currentPuzzle.question.forEach(shape => drawShapeOnGrid(shape, p.color(0, 110, 255, 150), cellSize));
             userShapes.forEach(shape => drawShapeOnGrid(shape, p.color(0, 110, 255), cellSize));
-            p.stroke(255, 0, 0); p.strokeWeight(4);
+            p.stroke(255, 0, 0); p.strokeWeight(4 * scaleFactor); // Red line (unchanged)
             if (symmetryMode === 'vertical') p.line(gridAreaSize / 2, 0, gridAreaSize / 2, gridAreaSize);
             else p.line(0, gridAreaSize / 2, gridAreaSize, gridAreaSize / 2);
             drawHoverPreview(cellSize, gridSize);
@@ -255,28 +167,34 @@
             
             uiElements.palette.forEach(btn => {
                 p.push();
-                if (btn.id === selectedPart) { p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
-                else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
-                p.rect(btn.x, btn.y, btn.size, btn.size, 5);
+                if (btn.id === selectedPart) { 
+                    p.fill(209, 231, 255); p.stroke(0, 123, 255); p.strokeWeight(2 * scaleFactor); // Light selected fill
+                } 
+                else { 
+                    p.fill(255); p.stroke(180); p.strokeWeight(1 * scaleFactor); // White default fill
+                }
+                p.rect(btn.x, btn.y, btn.size, btn.size, 5 * scaleFactor); 
                 p.translate(btn.x + btn.size / 2, btn.y + btn.size / 2);
-                p.stroke(50); p.strokeWeight(3); p.noFill(); drawPart(btn.id, 0, 0, btn.size * 0.8);
+                p.stroke(50); p.strokeWeight(3 * scaleFactor); p.noFill(); drawPart(btn.id, 0, 0, btn.size * 0.8); // Dark icon
                 p.pop();
             });
         }
 
         function drawFeedback() {
             if (feedbackMessage && p.millis() < feedbackTimer) {
-                p.fill(220, 53, 69); p.noStroke();
-                p.textSize(18); p.textAlign(p.CENTER, p.CENTER);
-                p.text(feedbackMessage, gridAreaX - 150, gridAreaY + 280);
+                p.fill(220, 53, 69); p.noStroke(); // Red text (unchanged)
+                p.textSize(18 * scaleFactor); 
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text(feedbackMessage, gridAreaX - 150 * scaleFactor, gridAreaY + 280 * scaleFactor); 
             }
         }
         
         function drawShapeOnGrid(shape, color, cellSize) {
             const centerX = (shape.x + 0.5) * cellSize;
             const centerY = (shape.y + 0.5) * cellSize;
-            p.push(); p.translate(centerX, centerY); p.stroke(color); p.strokeWeight(4);
-            p.noFill(); drawPart(shape.type, 0, 0, cellSize * 0.9); p.pop();
+            p.push(); p.translate(centerX, centerY); p.stroke(color); 
+            p.strokeWeight(4 * scaleFactor); 
+            p.noFill(); drawPart(shape.type, 0, 0, cellSize * 0.9); p.pop(); 
         }
         
         function drawHoverPreview(cellSize, gridSize) {
@@ -287,28 +205,31 @@
             if (isCoordInAnswerArea(gridX, gridY, gridSize) && isAnswerCell(gridX, gridY, gridSize)) {
                 const centerX = (gridX + 0.5) * cellSize;
                 const centerY = (gridY + 0.5) * cellSize;
-                p.push(); p.translate(centerX, centerY); p.stroke(0, 150, 255, 100); p.strokeWeight(4);
-                p.noFill(); drawPart(selectedPart, 0, 0, cellSize * 0.9); p.pop();
+                p.push(); p.translate(centerX, centerY); p.stroke(0, 150, 255, 100); // Light blue preview (unchanged)
+                p.strokeWeight(4 * scaleFactor); 
+                p.noFill(); drawPart(selectedPart, 0, 0, cellSize * 0.9); p.pop(); 
             }
         }
 
         function drawCongrats() {
-            p.fill(0, 0, 0, 150);
-            p.noStroke(); p.fill(255); p.stroke(0, 200, 0); p.strokeWeight(3);
-            p.rect(gridAreaX - 260, gridAreaY + 230, gridAreaSize - 250, 100, 10);
-            p.noStroke(); p.fill(0, 100, 0); p.textSize(18); p.textAlign(p.CENTER, p.CENTER);
-            p.text(uiElements.congratsMsg.text, gridAreaX - 150, gridAreaY + 280);
+            p.fill(0, 0, 0, 150); // Dark overlay (unchanged)
+            p.noStroke(); p.fill(255); p.stroke(0, 200, 0); // White box, green stroke
+            p.strokeWeight(3 * scaleFactor); 
+            p.rect(gridAreaX - 260 * scaleFactor, gridAreaY + 230 * scaleFactor, gridAreaSize - 250 * scaleFactor, 100 * scaleFactor, 10 * scaleFactor);
+            p.noStroke(); p.fill(0, 100, 0); // Dark green text
+            p.textSize(18 * scaleFactor); 
+            p.textAlign(p.CENTER, p.CENTER);
+            p.text(uiElements.congratsMsg.text, gridAreaX - 150 * scaleFactor, gridAreaY + 280 * scaleFactor);
         }
         
+        // Logic function - unchanged
         p.mousePressed = function() {
-            // If puzzle is complete, only allow navigation
             if (puzzleCompleted) {
                  if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); }
                  if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); }
                  return;
             }
 
-            // Handle UI button clicks
             if (isMouseIn(uiElements.btnHorizontal)) { symmetryMode = 'horizontal'; loadPuzzle(); return; }
             if (isMouseIn(uiElements.btnVertical)) { symmetryMode = 'vertical'; loadPuzzle(); return; }
             if (isMouseIn(uiElements.btnReset)) { loadPuzzle(); return; }
@@ -316,7 +237,6 @@
             if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); return; }
             if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); return; }
             
-            // Handle palette selection
             for(const btn of uiElements.palette) {
                 if (isMouseIn(btn)) {
                     selectedPart = (selectedPart === btn.id) ? null : btn.id;
@@ -324,7 +244,6 @@
                 }
             }
             
-            // Handle grid interaction (placing/erasing shapes)
             const gridSize = puzzleData[currentPuzzleIndex].gridSize;
             const cellSize = gridAreaSize / gridSize;
             const gridX = p.floor((p.mouseX - gridAreaX) / cellSize);
@@ -334,25 +253,24 @@
                 const existingShapeIndex = userShapes.findIndex(s => s.x === gridX && s.y === gridY);
 
                 if (existingShapeIndex !== -1) {
-                    // If a shape exists, remove it.
                     userShapes.splice(existingShapeIndex, 1);
                 } else if (selectedPart) {
-                    // If the cell is empty and a part is selected, add the new shape.
                     userShapes.push({ type: selectedPart, x: gridX, y: gridY });
                 }
-                feedbackMessage = null; // Clear feedback on any valid grid interaction
+                feedbackMessage = null; 
             }
         };
         
-        // Add touch support by calling mousePressed on touch
+        // Logic function - unchanged
         p.touchStarted = function() {
             p.mousePressed();
-            return false; // prevent default browser behavior
+            return false;
         }
 
+        // Logic function - unchanged
         function isCoordInAnswerArea(x, y, gridSize) {
             const currentPuzzle = puzzleData[currentPuzzleIndex].puzzles[symmetryMode];
-            if (currentPuzzle.question.length === 0) return true; // If no question, allow drawing anywhere
+            if (currentPuzzle.question.length === 0) return true;
 
             const firstQuestionShape = currentPuzzle.question[0];
 
@@ -365,6 +283,7 @@
             }
         }
         
+        // Logic function - unchanged
         function isAnswerCell(x, y, gridSize) {
             if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return false;
             const isQuestionCell = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].question.some(
@@ -373,6 +292,7 @@
             return !isQuestionCell;
         }
         
+        // Logic function - unchanged
         function checkSolution() {
             const solution = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].solution;
             if (userShapes.length !== solution.length) {
@@ -397,60 +317,104 @@
             puzzleCompleted = true;
         }
         
+        // Logic function - unchanged
         function nextPuzzle() {
             currentPuzzleIndex = (currentPuzzleIndex + 1) % puzzleData.length;
-            initializeUI(); // Recalculate palette for new puzzle
+            initializeUI(); 
             loadPuzzle();
         }
+        // Logic function - unchanged
         function prevPuzzle() {
             currentPuzzleIndex = (currentPuzzleIndex - 1 + puzzleData.length) % puzzleData.length;
-            initializeUI(); // Recalculate palette for new puzzle
+            initializeUI();
             loadPuzzle();
         }
 
         function drawRadioButton(btn, isSelected) {
             p.push();
-            const radioRadius = 10;
+            const radioRadius = 10 * scaleFactor; 
             const radioY = btn.y + btn.h / 2;
-            const radioX = btn.x + radioRadius + 5; 
-            const textX = radioX + radioRadius + 10;
-            p.strokeWeight(2);
-            p.stroke(120);
+            const radioX = btn.x + radioRadius + 5 * scaleFactor; 
+            const textX = radioX + radioRadius + 10 * scaleFactor; 
+            p.strokeWeight(2 * scaleFactor); 
+            p.stroke(120); // Dark gray ring
             p.noFill();
             if (isSelected) {
-                p.stroke(0, 110, 255);
+                p.stroke(0, 110, 255); // Blue ring (unchanged)
             }
             p.ellipse(radioX, radioY, radioRadius * 2, radioRadius * 2);
             if (isSelected) {
                 p.noStroke();
-                p.fill(0, 110, 255);
+                p.fill(0, 110, 255); // Blue fill (unchanged)
                 p.ellipse(radioX, radioY, radioRadius, radioRadius);
             }
-            p.fill(50);
+            p.fill(50); // Dark text
             p.noStroke();
-            p.textSize(16);
+            p.textSize(16 * scaleFactor); 
             p.textAlign(p.LEFT, p.CENTER);
             p.text(btn.label, textX, radioY);
             p.pop();
         }
 
-        function drawButton(btn, isSelected = false) {
+        // --- UPDATED FUNCTION ---
+        function drawButton(btn, type = 'default', isSelected = false) { // Added 'type'
             p.push();
-            if (isSelected) { p.fill(180, 220, 255); p.stroke(0, 123, 255); p.strokeWeight(2); } 
-            else if (isMouseIn(btn)) { p.fill(220); p.stroke(150); p.strokeWeight(1); }
-            else { p.fill(255); p.stroke(180); p.strokeWeight(1); }
-            p.rect(btn.x, btn.y, btn.w, btn.h, 5);
-            p.fill(50); p.noStroke(); p.textSize(14); p.textAlign(p.CENTER, p.CENTER);
+            const isHover = isMouseIn(btn);
+
+            // Define color variables
+            let fillCol, strokeCol, textCol, strokeW;
+
+            // 1. Set colors based on type and state (hover/default)
+            if (type === 'primary') {
+                // Blue button for "Check"
+                fillCol = isHover ? p.color(0, 100, 230) : p.color(0, 123, 255);
+                strokeCol = isHover ? p.color(0, 100, 230) : p.color(0, 123, 255);
+                textCol = p.color(255); // White text
+                strokeW = 1 * scaleFactor;
+            } else if (type === 'secondary') {
+                // Lighter, less prominent button for "Reset"
+                fillCol = isHover ? p.color(240) : p.color(255);
+                strokeCol = p.color(180);
+                textCol = p.color(80); // Dark gray text
+                strokeW = 1 * scaleFactor;
+            } else { // 'default'
+                // Standard white button for "Prev", "Next"
+                fillCol = isHover ? p.color(245) : p.color(255);
+                strokeCol = p.color(180);
+                textCol = p.color(50); // Standard dark text
+                strokeW = 1 * scaleFactor;
+            }
+            
+            // 2. Override for 'isSelected' state (if needed)
+            if (isSelected) { 
+                fillCol = p.color(180, 220, 255); 
+                strokeCol = p.color(0, 123, 255); 
+                strokeW = 2 * scaleFactor; 
+                textCol = p.color(50); // Keep text dark for light blue
+            }
+
+            // 3. Draw the button
+            p.fill(fillCol);
+            p.stroke(strokeCol);
+            p.strokeWeight(strokeW);
+            p.rect(btn.x, btn.y, btn.w, btn.h, 5 * scaleFactor); 
+            
+            // 4. Draw the text
+            p.fill(textCol); p.noStroke(); 
+            p.textSize(14 * scaleFactor); 
+            p.textAlign(p.CENTER, p.CENTER);
             p.text(btn.label, btn.x + btn.w / 2, btn.y + btn.h / 2);
             p.pop();
         }
 
+        // Logic function - unchanged
         function isMouseIn(btn) {
             const btnW = btn.w || btn.size;
             const btnH = btn.h || btn.size;
             return p.mouseX > btn.x && p.mouseX < btn.x + btnW && p.mouseY > btn.y && p.mouseY < btn.y + btnH;
         }
 
+        // Drawing logic - unchanged (scales with `s`)
         const drawPart = (partId,x,y,s) => { const h=s/2; switch(partId){case'diag_up':p.line(x-h,y+h,x+h,y-h);break;case'diag_down':p.line(x-h,y-h,x+h,y+h);break;case'arc_tl':p.arc(x-h,y-h,s*2,s*2,0,p.HALF_PI);break;case'arc_tr':p.arc(x+h,y-h,s*2,s*2,p.HALF_PI,p.PI);break;case'arc_bl':p.arc(x-h,y+h,s*2,s*2,p.PI+p.HALF_PI,p.TWO_PI);break;case'arc_br':p.arc(x+h,y+h,s*2,s*2,p.PI,p.PI+p.HALF_PI);break;case'line_v':p.line(x,y-h,x,y+h);break;case'line_h':p.line(x-h,y,x+h,y);break;case'circle':p.ellipse(x,y,s*0.8);break;} };
         
     };
@@ -459,4 +423,3 @@
 </script>
 </body>
 </html>
-
