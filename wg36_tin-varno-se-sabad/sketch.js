@@ -186,6 +186,7 @@ function playWordSound() {
         // Assuming your word sounds are in Assets/Audio/Word sound/word.mp3
         const audioPath = `Assets/Audio/Word sound/${wordName}.mp3`;
         const audio = new Audio(audioPath);
+        audio.playbackRate = 0.75;
         audio.play().catch(err => console.log("Word audio play failed:", err));
     }
 }
@@ -235,7 +236,7 @@ function loadWord(word) {
     letterButtons = Array.from(document.querySelectorAll('.letter-button'));
     letterButtons.forEach((button, index) => {
         if (index < shuffledLetters.length) {
-            const textElement = button.querySelector('text tspan');
+            const textElement = button.querySelector('.btn-wrap span');
             if (textElement) {
                 textElement.textContent = shuffledLetters[index];
             }
@@ -266,7 +267,7 @@ function showFinalImage() {
     // Play word sound after a small delay to sync with animation start
     setTimeout(() => {
         playWordSound();
-    }, 1200);
+    }, 2500);
 }
 
 /**

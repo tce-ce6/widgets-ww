@@ -212,3 +212,10 @@
   height: 1020px;
   width: 1990px;
 }
+.btn-wrap{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
