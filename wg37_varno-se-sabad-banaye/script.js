@@ -289,7 +289,26 @@ const letterAudioMap = {
 };
  
 const wordAudioFileNameMap = {
-  "पतझड़": "पतझड.mp3"
+  "अजगर": "अजगर.mp3",
+  "कटहल": "कटहल.mp3",
+  "खटमल": "खटमल.mp3",
+  "बचपन": "बचपन.mp3",
+  "बरगद": "बरगद.mp3",
+  "शलगम": "शलगम.mp3",
+  "शरबत": "शरबत.mp3",
+  "पनघट": "पनघट.mp3",
+  "उपवन": "उपवन.mp3",
+  "करवट": "करवट.mp3",
+  "कसरत": "कसरत.mp3",
+  "परवल": "परवल.mp3",
+  "पचपन": "पचपन.mp3",
+  "अदरक": "अदरक.mp3",
+  "बरतन": "बरतन.mp3",
+  "चमचम": "चमचम.mp3",
+  "दलदल": "दलदल.mp3",
+  "थरमस": "थरमस.mp3",
+  "पतझड़": "पतझड़.mp3",
+  "उपटन": "उपटन.mp3"
 };
  
 const wordImageMap = {
@@ -625,7 +644,6 @@ function loadWord(word) {
     return;
   }
  
-  ensureSoundPulseStyle();
   setSoundPromptState(true);
  
   currentWord = word;
@@ -852,23 +870,6 @@ function initGame() {
     resetBtn.__wordSearchBound = true;
     resetBtn.addEventListener("click", resetSentence);
   }
-}
- 
-function ensureSoundPulseStyle() {
-  if (soundPulseStyleInjected) {
-    return;
-  }
- 
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes wordSoundPulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.08); opacity: 0.6; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-  `;
-  document.head.appendChild(style);
-  soundPulseStyleInjected = true;
 }
  
 function setSoundPromptState(isActive) {

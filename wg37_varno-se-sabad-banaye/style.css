@@ -167,16 +167,6 @@
   animation: shake 0.5s ease-in-out;
 }
 
-/* Subtle 1px shake animation for letter buttons when wrong */
-/* @keyframes shakeButton {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-1px); }
-  75% { transform: translateX(1px); }
-} */
-
-/* .letter-button.shake-button {
-  animation: shakeButton 0.3s ease-in-out;
-} */
 
 /* Red border for wrong letter button - handled via JavaScript */
 .letter-button.wrong-letter {
@@ -184,12 +174,6 @@
   animation: shake 0.5s ease-in-out;
 }
 
-/* Letter button hover effects */
-/* .letter-button:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
-  transition: all 0.2s ease;
-} */
 
 .letter-button {
   transition: all 0.2s ease;
@@ -202,6 +186,6 @@
   transition: all 0.2s ease;
 } */
 
-.sound-button {
+/* .sound-button {
   transition: all 0.2s ease;
-} 
+}  */
