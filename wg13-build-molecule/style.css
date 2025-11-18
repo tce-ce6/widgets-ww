@@ -1,0 +1,396 @@
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+#molecule-widget body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#molecule-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative
+}
+
+#molecule-widget .container::after {
+  content: "";
+  background-image: url("./assets/BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* #molecule-widget .mainContainerOuter {
+  background: #60360D !important
+} */
+
+#molecule-widget .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#molecule-widget .d-flex {
+  display: flex
+}
+
+#molecule-widget .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#molecule-widget .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#molecule-widget .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #molecule-widget .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#molecule-widget .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#molecule-widget .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#molecule-widget .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#molecule-widget .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#molecule-widget .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#molecule-widget .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#molecule-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#molecule-widget .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #1d83ec;
+  white-space: nowrap;
+}
+
+#molecule-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #6a6a6a;
+}
+
+#molecule-widget .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#molecule-widget svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+/* molecule style -----------------------------------  */
+
+#wheel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.wheel-container {
+  position: relative;
+  width: 850px;
+  height: 850px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.3),
+    inset 8px 8px 20px rgba(231, 198, 12, 0.3);
+  background: conic-gradient(#6DBF5B 0deg 18deg,
+      #F7E725 18deg 36deg,
+      #FAB019 36deg 54deg,
+      #F89747 54deg 72deg,
+      #EF5F76 72deg 90deg,
+      #C65CA3 90deg 108deg,
+      #797CBB 108deg 126deg,
+      #6BC6AF 126deg 144deg,
+      #8DC63F 144deg 162deg,
+      #6DBF5B 162deg 180deg,
+      #EF5F76 180deg 198deg,
+      #797CBB 198deg 216deg,
+      #F7E725 216deg 234deg,
+      #FAB019 234deg 252deg,
+      #F89747 252deg 270deg,
+      #EF5F76 270deg 288deg,
+      #C65CA3 288deg 306deg,
+      #797CBB 306deg 324deg,
+      #6BC6AF 324deg 342deg,
+      #8DC63F 342deg 360deg);
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.wheel span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 0 0;
+  color: #000;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.wheel span.active {
+  color: #fff;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.spin-btn {
+  position: absolute;
+  left: calc(50% + 5px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 200px;
+  width: 200px;
+  background-image: url("./assets/spin.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  background-color: transparent !important;
+  font-size: 26px;
+  text-indent: -24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+.pointer {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 40px solid #d39907;
+  z-index: 3;
+}
+
+.result {
+  text-align: center;
+  margin-top: 540px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 8px 16px;
+  border-radius: 10px;
+  color: #3a2408;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+}
+
+#droping-wrapper {
+  height: 100%;
+  width: 100%;
+}
+#droping-wrapper.active-3d {
+  gap: 100px;
+}
+
+#droping-wrapper img {
+  width: 150px;
+}
+
+.atom,
+#home-btn {
+  cursor: pointer;
+}
+
+.atom-fly {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.reset-btn {
+  background-color: #FF2C68;
+  padding: 15px 25px;
+  border-radius: 50px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.dropped-atom{
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+}
+#threeD-container{
+  border: 10px solid #000;
+}
+.btn-3d{
+  cursor: pointer;
+}
+#molecule-list{
+  background-color: #F4943E;
+  list-style-type: none;
+  padding: 15px;
+  width: 422px;
+  height: 830px;
+  overflow-y: auto;
+  border-radius: 10px;
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+#molecule-list.active{
+  width: 422px;
+}
+#molecule-list::-webkit-scrollbar {
+  display: none;          /* Chrome, Safari */
+}
+#molecule-list li{
+  background-color: #FDC1A0;
+  border-radius: 16px;
+  padding: 10px 20px;
+  margin-bottom: 8px;
+  font-size: 25px;
+  cursor: pointer;
+}
+#molecule-list li.active{
+  background-color: #fff;
+}
+#sidebar-wrapper{
+  position: relative;
+  transform:translateX(-452px);
+  transition: all 0.4s ease-in-out;
+}
+#sidebar-wrapper.active{
+  transform:translateX(0);
+}
+#sidebar-btn{
+  height: 85px;
+  width: 53px;
+  background-color:#F4943E;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sidebar-btn::after{
+content: "";
+  display: block;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='48' viewBox='0 0 30 48'%3E%3Cpath id='Polygon_2' data-name='Polygon 2' d='M24,0,48,30H0Z' transform='translate(0 48) rotate(-90)' fill='%23fff' opacity='0.81'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 48%;
+  background-position: center center;
+  height: 60px;
+  width: 60px;
+  transform: rotate(180deg);
+}
+#sidebar-wrapper.active #sidebar-btn::after{
+ transform: rotate(0); 
+}
+

@@ -65,7 +65,7 @@ html {
     gap: 5px;
      position: absolute;
     top: 50%;
-    left: -60px;
+    left: -57px;
     transform: translateY(-50%) rotate(270deg);
     padding: 10px 20px;
     background-color: #35363a;
@@ -75,6 +75,7 @@ html {
     cursor: pointer;
     text-transform: uppercase;
     min-width: 82px;
+    justify-content: center;
 }
 
 .toggle-btn:focus {

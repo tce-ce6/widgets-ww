@@ -10,7 +10,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Plant's response to the direction of light​",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/plants-response-to-the-direction-of-light/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg01-phototropism/index.html",
     imagePath: "./assets/plant-response.png",
     creators: "ni-bd-01",
     status: "closed",
@@ -18,7 +18,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Triangle Inequality",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-inequality/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg9_triangle-inequality/index.html",
     imagePath: "./assets/triangle-inequality.png",
     creators: "as-sr-09",
     status: "closed", 
@@ -34,7 +34,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Build a Sentence",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/build-a-sentence/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg5_build-a-sentence/index.html",
     imagePath: "./assets/build-a-sentence.png",
     creators: "as-dg-05",
     status: "closed",
@@ -42,15 +42,15 @@ const WIDGET_DATA = [
   },
   {
     name: "Sentence Construction",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sentence-construction/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg6_sentence-construction/index.html",
     imagePath: "./assets/word-wizard.png",
     creators: "as-he-06",
-    status: "in-review",
+    status: "closed",
 
   },
   {
     name: "Journey Through Time",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/journey-through-time/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg08-journey-through-time/index.html",
     imagePath: "./assets/journey-through-time.png",
     creators: "ni-je-08",
     status: "closed",
@@ -74,15 +74,15 @@ const WIDGET_DATA = [
   },
   {
     name: "Pair of Linear Equations​",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/pair-of-linear-equations/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg12_pair-of-linear-equations/index.html",
     imagePath: "./assets/pair-of-linear-equation.png",
     creators: "as-sr-12",
-    status: "in-review",
+    status: "closed",
 
   },
   {
     name: "Roots of a Quadratic Equation",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/roots-of-quadratic-equations/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg14_roots-of-quadratic-equations/index.html",
     imagePath: "./assets/roots-of-quadratic-equations.png",
     creators: "as-sr-14",
     status: "closed",
@@ -90,7 +90,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Triangles on Same Base, Between Same Parallels",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/triangle-on-same-base/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg30_tangents-from-an-external-point/index.html",
     imagePath: "./assets/triangle-on-same-base.png",
     creators: "as-ka-16",
     status: "closed",
@@ -101,12 +101,12 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/altitude-temperature-cool-connection/index.html",
     imagePath: "./assets/altitude-and-temperature.png",
     creators: "sh-na-20",
-    status: "in-review",
+    status: "closed",
 
   },
   {
     name: "Build the Government",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/build-the-government/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg25-build-government/index.html",
     imagePath: "./assets/build-the-government.png",
     creators: "ni-ba-25",
     status: "closed",
@@ -114,28 +114,28 @@ const WIDGET_DATA = [
   },
   {
     name: "सही चिह्न पहचानों",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sahi-chinh-pehchano/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg27_sahi-chinh-pehchano/index.html",
     imagePath: "./assets/find-correct-sign.png",
     creators: "as-so-27",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Transparent, Translucent, and Opaque Materials",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/transparent-translucent-and-opaque-materials/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg21-tto-materials/index.html",
     imagePath: "./assets/transparent-translucent-and-opaque-materials.png",
     creators: "ni-su-21",
     status: "closed",
   },
   {
     name: "Make Your Own Plant",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/make-your-own-plant/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg29-make-plant/index.html",
     imagePath: "./assets/make-your-own-plant.png",
     creators: "ni-ka-29",
     status: "closed",
   },
   {
     name: "Tangents from an External Point",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/tangents-from-an-external-point/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg30_tangents-from-an-external-point/index.html",
     imagePath: "./assets/tangents-from-an-external-point.png",
     creators: "as-ka-30",
     status: "closed",
@@ -158,10 +158,45 @@ const WIDGET_DATA = [
   
   {
     name: "Build a Molecule",
-    link: "",
-    imagePath: "./assets/not-assigned.png",
-    creators: "sh-ka-13",
-    status: "asset-development",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg13-build-molecule/index.html",
+    imagePath: "./assets/build-molecule.png",
+    creators: "ni-ha-13",
+    status: "in-review",
+  },
+  {
+    name: "तीन वर्णों से शब्द बनाना",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg36_tin-varno-se-sabad/index.html",
+    imagePath: "./assets/three-words.png",
+    creators: "as-sh-36",
+    status: "in-review",
+  },
+  {
+    name: "Build a Nucleus",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    imagePath: "./assets/wg-15.png",
+    creators: "ni-sh-15",
+    status: "WIP-With-Tech",
+  },
+  {
+    name: "शब्दों का खेल",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    imagePath: "./assets/wg-07.png",
+    creators: "as-sh-07",
+    status: "WIP-With-Tech",
+  },
+  {
+    name: "चार वर्णों से शब्द बनाना",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    imagePath: "./assets/wg-37.png",
+    creators: "as-sh-37",
+    status: "WIP-With-Tech",
+  },
+  {
+    name: "Build an Atom",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    imagePath: "./assets/wg-28.png",
+    creators: "as-sh-28",
+    status: "WIP-With-Tech",
   },
   
 
