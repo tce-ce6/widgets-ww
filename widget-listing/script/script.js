@@ -6,7 +6,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html?test",
     imagePath: "./assets/interactions-between-organisms.png",
     creators: "sh-bd-02",
-    status: "closed",
+    status: "in-review",
   },
   {
     name: "Plant's response to the direction of light​",
@@ -29,7 +29,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/food_chain_population_changes/index.html",
     imagePath: "./assets/food-chain.png",
     creators: "sh-nav-03",
-    status: "in-review",
+    status: "closed",
 
   },
   {

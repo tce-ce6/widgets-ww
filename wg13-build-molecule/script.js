@@ -1,4 +1,16 @@
+// script.js
+// Final script for hollow-SVG based molecule builder (Option B, class-only slot detection)
+
 // ============ CONSTANTS & DATA ============
+const moleculeLayout = {
+  Water: [{ x: 200, y: 200 }], // kept for reference (not used under hollow-SVG)
+  Oxygen: [
+    { x: 180, y: 200 },
+    { x: 260, y: 200 },
+  ],
+  Methane: [{ x: 200, y: 200 }],
+};
+
 const labels = [
   "Oxygen",
   "Nitrogen",
@@ -25,52 +37,6 @@ let selectedMolecule = "";
 
 const moleculeList = document.getElementById("molecule-list");
 moleculeList.innerHTML = "";
-
-// Generate <li> items
-labels.forEach((name) => {
-  const li = document.createElement("li");
-  li.textContent = name;
-  li.addEventListener("click", () => {
-    // 1️⃣ Set selected molecule
-    selectedMolecule = name;
-
-    // 2️⃣ Highlight active li
-    document
-      .querySelectorAll("#molecule-list li")
-      .forEach((item) => item.classList.remove("active"));
-    li.classList.add("active");
-
-    // 3️⃣ Update Step-2 molecule name immediately
-    getEl("molecule-name").textContent = selectedMolecule;
-
-    if (name === selectedMolecule) {
-      li.classList.add("active");
-    }
-
-    // 4️⃣ Reset drop area (atoms and answer)
-    resetDropArea();
-    syncUserAtomCount();
-    onAtomLimitChange();
-
-    // 5️⃣ Hide 3D button (new selection should hide previous)
-    hide("3d-btn");
-
-    // 6️⃣ If you are already in Step-2, update UI directly
-    if (document.getElementById("step2").style.display === "block") {
-      // update answer image (if answer was shown)
-      if (isAnswerShown) {
-        toggleAnswer(); // hides answer and restores atoms (but drop area is empty)
-        syncUserAtomCount();
-        onAtomLimitChange();
-      }
-
-      // update final molecule SVG if answer was shown earlier
-      dropArea.innerHTML = "";
-    }
-  });
-
-  moleculeList.appendChild(li);
-});
 
 const moleculeRequirements = {
   Water: ["atom-h", "atom-h", "atom-o"],
@@ -295,18 +261,28 @@ let savedDroppedAtoms = [];
 let currentRotation = 0;
 let current3DScene = null;
 
+// Hollow-SVG specific state
+let currentMoleculeTargets = []; // elements inside hollow SVG: outer <g class="atom-...">
+let filledAtoms = {}; // map targetSlotId -> src (e.g., "slot-0" -> "assets/atoms/Gr_h.svg")
+
+let savedHollowSVG = "";
+let savedSlotState = {};
+
+let originalHollowSVGText = "";
+
+
 // ============ UTILITY FUNCTIONS ============
 const getEl = (id) => document.getElementById(id);
 const hide = (id) => (getEl(id).style.display = "none");
 const show = (id, display = "block") => (getEl(id).style.display = display);
 
+const resetWheelBtn = document.querySelector(".resetWheel-btn");
+
 function highlightActiveMolecule() {
-  document.querySelectorAll("#molecule-list li").forEach((li) => {
-    if (li.textContent === selectedMolecule) {
-      li.classList.add("active");
-    } else {
-      li.classList.remove("active");
-    }
+  const allLi = document.querySelectorAll("#molecule-list li");
+
+  allLi.forEach((li) => {
+    li.classList.toggle("active", li.textContent === selectedMolecule);
   });
 }
 
@@ -318,7 +294,7 @@ function getAtomIdFromImage(imgSrc) {
       .pop()
       .split(".")[0]
       .replace(/^Gr_/i, "")
-      .replace(/[^a-zA-Z]/g, "")
+      .replace(/[^a-zA-Z0-9_]/g, "")
       .toLowerCase()
   );
 }
@@ -326,7 +302,7 @@ function getAtomIdFromImage(imgSrc) {
 function updateNote(text, color) {
   const note = getEl("instruction-note");
   note.textContent = text;
-  note.style.color = color;
+  note.style.color = color || "#231F20";
   show("instruction-note");
 }
 
@@ -352,7 +328,7 @@ document.getElementById("sidebar-btn").addEventListener("click", () => {
 });
 
 // ============ SPIN WHEEL LOGIC ============
-spinBtn.addEventListener("click", () => {
+spinBtn.addEventListener("click", async () => {
   if (spinBtn.dataset.state === "go") {
     getEl("molecule-widget").classList.add("active");
     hide("step1");
@@ -360,6 +336,11 @@ spinBtn.addEventListener("click", () => {
     show("btn-wrapper");
     getEl("molecule-name").textContent = selectedMolecule;
     highlightActiveMolecule();
+
+    // Load hollow SVG for currently selected molecule (if any)
+    if (selectedMolecule) {
+      await loadAndShowMoleculeSVG(selectedMolecule);
+    }
     return;
   }
 
@@ -379,17 +360,26 @@ spinBtn.addEventListener("click", () => {
     }
   );
 
-  anim.onfinish = () => {
+  anim.onfinish = async () => {
     currentRotation = newRotation % 360;
     updateActiveSlice(currentRotation);
     const normalized = (360 - (currentRotation % 360)) % 360;
     selectedMolecule = labels[Math.floor(normalized / sliceAngle)];
     spinBtn.textContent = "START";
     spinBtn.dataset.state = "go";
+
+    // On spin finish, load hollow SVG and reset drop area for new molecule
+    getEl("molecule-name").textContent = selectedMolecule;
+    highlightActiveMolecule();
+    resetDropArea(); // clears old stuff
+    await loadAndShowMoleculeSVG(selectedMolecule);
+    resetWheelBtn.style.display = "block"; // show reset wheel button
+    highlightActiveMolecule();
+    updateScrollDownButton();
   };
 });
 
-// ============ ATOM INTERACTION ============
+// ============ ATOM INTERACTION (hollow SVG flow) ============
 function getDropRect() {
   return dropArea.getBoundingClientRect();
 }
@@ -399,16 +389,13 @@ const MAX_ATOMS = 30;
 let userAtomCount = 0; // authoritative counter
 let atomBusy = false; // prevents race during animation
 
-// initialize count if there are already atoms on load (safety)
 function syncUserAtomCount() {
   userAtomCount = dropArea.querySelectorAll(".user-atom").length;
 }
 syncUserAtomCount();
 
-// optional: UI hook when full
 function onAtomLimitChange() {
   if (userAtomCount >= MAX_ATOMS) {
-    // e.g. disable atom palette, show message, dim palette etc.
     document.body.classList.add("atoms-full");
     updateNote(`Maximum ${MAX_ATOMS} atoms reached`, "orange");
   } else {
@@ -418,85 +405,196 @@ function onAtomLimitChange() {
 }
 onAtomLimitChange();
 
-// helper to safely add a user atom to drop area
-function appendUserAtom(src) {
-  const finalImg = document.createElement("img");
-  finalImg.src = src;
+// helper to find first empty target for a given atom id (prefix), using class-only detection
+function findFirstEmptyTargetFor(atomId) {
+  // atomId example: "atom-h"
+  // currentMoleculeTargets hold outer groups (<g class="atom-h">)
+  return currentMoleculeTargets.find((t) => {
+    if (!t) return false;
+    const cls =
+      t.className && typeof t.className === "string"
+        ? t.className
+        : (t.getAttribute && t.getAttribute("class")) || "";
+    // check if the class list contains the requested prefix as a token or starts with it
+    if (!cls) return false;
+    const tokens = cls.split(/\s+/);
+    const matches = tokens.some((tk) =>
+      tk.toLowerCase().startsWith(atomId.toLowerCase())
+    );
+    if (!matches) return false;
+    // ensure this slot isn't filled
+    return !filledAtoms[t.dataset.slotId];
+  });
+}
 
-  // user-specific class and data
-  finalImg.classList.add("dropped-atom", "user-atom");
-  finalImg.dataset.userAtom = "1";
+// place atom inside target outer group and hide its child shapes
+function placeAtomIntoTargetBySrc(target, src) {
+  // 1. Find the TRUE hollow circle geometry inside the slot
+  const shape = target.querySelector("circle, path");
 
-  // removal handler decrements counter
-  finalImg.addEventListener("click", () => {
-    finalImg.remove();
-    if (userAtomCount > 0) userAtomCount--;
+  // If no shape found, fallback to group bbox
+  const refBox = shape ? shape.getBBox() : target.getBBox();
+
+  const slotX = refBox.x;
+  const slotY = refBox.y;
+  const slotW = refBox.width;
+  const slotH = refBox.height;
+
+  // final atom size = match circle diameter exactly
+  const atomSize = Math.min(slotW, slotH);
+
+  // compute center
+  const cx = slotX + slotW / 2;
+  const cy = slotY + slotH / 2;
+
+  const imgX = cx - atomSize / 2;
+  const imgY = cy - atomSize / 2;
+
+  // 2. Hide the hollow placeholder (circle + outline)
+  target.querySelectorAll("circle, path").forEach((n) => {
+    n.style.opacity = "0";
+  });
+
+  // 3. Create atom SVG <image>
+  const img = document.createElementNS("http://www.w3.org/2000/svg", "image");
+  img.setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
+
+  img.setAttribute("width", atomSize);
+  img.setAttribute("height", atomSize);
+
+  img.setAttribute("x", imgX);
+  img.setAttribute("y", imgY);
+
+  img.classList.add("svg-atom");
+
+  // 4. Remove atom & restore hollow if clicked
+  img.addEventListener("click", () => {
+    img.remove();
+    target.querySelectorAll("circle, path").forEach((n) => {
+      n.style.opacity = "1";
+    });
+    delete filledAtoms[target.dataset.slotId];
+    userAtomCount--;
     onAtomLimitChange();
   });
 
-  dropArea.appendChild(finalImg);
+  // 5. Insert into SVG slot
+  target.appendChild(img);
+
+  // Save state
+  filledAtoms[target.dataset.slotId] = src;
   userAtomCount++;
   onAtomLimitChange();
 }
 
-// ======= ATOM INTERACTION (replaced) =======
-document.querySelectorAll("g.atom").forEach((atom) => {
-  atom.addEventListener("click", () => {
-    // prevent adding when answer shown
-    if (isAnswerShown) return;
+resetWheelBtn.addEventListener("click", () => {
+  resetSpinnerWheel(); // your existing function
+  resetWheelBtn.style.display = "none"; // hide again after reset
+});
 
-    // prevent new clicks while current atom is animating
-    if (atomBusy) return;
+// Animated fly + place (used when clicking atom palette)
+function flyAtomFromPaletteToDrop(paletteImageHref, atomImageRect, atomId) {
+  // create fly image in body
+  const flyImg = document.createElement("img");
+  flyImg.src = paletteImageHref;
+  flyImg.className = "atom-fly";
+  flyImg.style.position = "fixed";
+  flyImg.style.left = atomImageRect.left + "px";
+  flyImg.style.top = atomImageRect.top + "px";
+  flyImg.style.width = atomImageRect.width + "px";
+  flyImg.style.height = atomImageRect.height + "px";
+  flyImg.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+  document.body.appendChild(flyImg);
+  flyImg.getBoundingClientRect();
 
-    // authoritative check
-    if (userAtomCount >= MAX_ATOMS) {
-      updateNote(`Maximum ${MAX_ATOMS} atoms reached`, "orange");
+  const dropRect = getDropRect();
+  // choose target center - we animate towards dropArea center, then snap to correct target
+  const centerX = dropRect.left + dropRect.width / 2;
+  const centerY = dropRect.top + dropRect.height / 2;
+  const translateX = centerX - atomImageRect.left;
+  const translateY = centerY - atomImageRect.top;
+
+  flyImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(0.3)`;
+  flyImg.style.opacity = "0";
+
+  setTimeout(() => {
+    // find the correct target for this atom (class-only)
+    const atomPrefix = atomId; // e.g., "atom-h"
+    const target = findFirstEmptyTargetFor(atomPrefix);
+    if (!target) {
+      updateNote("That’s an incorrect selection.", "orange");
+      flyImg.remove();
+      atomBusy = false;
       return;
     }
 
-    const img = atom.querySelector("image");
-    if (!img) return;
+    // place final image inside dropArea at target
+    placeAtomIntoTargetBySrc(target, paletteImageHref);
+    flyImg.remove();
+    atomBusy = false;
+  }, 620);
+}
 
-    atomBusy = true; // lock
-
-    const flyImg = document.createElement("img");
-    flyImg.src = img.getAttribute("href");
-    flyImg.className = "atom-fly";
-    document.body.appendChild(flyImg);
-
-    const atomRect = img.getBoundingClientRect();
-    flyImg.style.left = atomRect.left + "px";
-    flyImg.style.top = atomRect.top + "px";
-    flyImg.getBoundingClientRect();
-
-    const dropRect = getDropRect(); // recalculated center
-    const targetX = dropRect.left + dropRect.width / 2;
-    const targetY = dropRect.top + dropRect.height / 2;
-
-    flyImg.style.transform = `translate(${targetX - atomRect.left}px, ${
-      targetY - atomRect.top
-    }px) scale(0.3)`;
-    flyImg.style.opacity = "0";
-
-    // once animation done, append user atom and release lock
-    setTimeout(() => {
-      appendUserAtom(img.getAttribute("href"));
-      flyImg.remove();
-      atomBusy = false;
-    }, 600);
+// attach click events to palette atoms (g.atom)
+function activatePaletteAtoms() {
+  // remove existing listeners by replacing nodes
+  document.querySelectorAll("g.atom").forEach((g) => {
+    g.replaceWith(g.cloneNode(true));
   });
-});
+
+  document.querySelectorAll("g.atom").forEach((atom) => {
+    atom.addEventListener("click", () => {
+      // disable when showing answer
+      if (isAnswerShown) return;
+      if (atomBusy) return;
+      if (userAtomCount >= MAX_ATOMS) {
+        updateNote(`Maximum ${MAX_ATOMS} atoms reached`, "orange");
+        return;
+      }
+
+      const image = atom.querySelector("image");
+      if (!image) return;
+
+      const href =
+        image.getAttribute("href") ||
+        image.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+      if (!href) return;
+
+      const atomId = atom.id || getAtomIdFromImage(href); // e.g., "atom-h"
+      atomBusy = true;
+
+      // get bounding rect of the palette image
+      let imgRect = image.getBoundingClientRect();
+      if (imgRect.width === 0 && image.parentElement) {
+        // fallback: compute approx
+        const parentRect = image.parentElement.getBoundingClientRect();
+        imgRect = parentRect;
+      }
+
+      flyAtomFromPaletteToDrop(href, imgRect, atomId);
+    });
+  });
+}
 
 // ============ ANSWER MANAGEMENT ============
 function checkMoleculeCompleted() {
   if (isAnswerShown) return;
-
   hide("instruction-note");
+  Object.keys(filledAtoms).forEach((slotId) => {
+    const slot = currentMoleculeTargets.find(
+      (s) => s.dataset.slotId === slotId
+    );
+    const hasActualImg = slot && slot.querySelector("image.svg-atom");
+    if (!hasActualImg) {
+      delete filledAtoms[slotId];
+    }
+  });
   const required = moleculeRequirements[selectedMolecule];
   if (!required) return;
 
-  const dropped = [...dropArea.querySelectorAll("img.user-atom")].map((img) =>
-    getAtomIdFromImage(img.src)
+  // derive dropped ids from filledAtoms (map slot -> src)
+  const dropped = Object.values(filledAtoms).map((src) =>
+    getAtomIdFromImage(src)
   );
   const reqSorted = [...required].sort();
   const droppedSorted = [...dropped].sort();
@@ -505,18 +603,12 @@ function checkMoleculeCompleted() {
     show("3d-btn");
     getEl("show-ans").textContent = "Hide Answer";
 
-    savedDroppedAtoms = [...dropArea.querySelectorAll("img.user-atom")].map(
-      (atom) => {
-        const clone = atom.cloneNode(true);
-        clone.classList.add("user-atom");
-        clone.addEventListener("click", () => {
-          clone.remove();
-          if (userAtomCount > 0) userAtomCount--;
-          onAtomLimitChange();
-        });
-        return clone;
-      }
-    );
+    // Save clones for restore (if hide answer)
+ savedDroppedAtoms = [...dropArea.querySelectorAll(".svg-atom")].map(atom => ({
+    src: atom.getAttributeNS("http://www.w3.org/1999/xlink", "href"),
+    slotId: atom.parentElement.dataset.slotId
+}));
+
 
     showAnswerImage();
     updateNote("That is the correct answer!", "#4caf50");
@@ -529,8 +621,8 @@ function showAnswerImage() {
   dropArea.innerHTML = "";
   const img = document.createElement("img");
   img.src = `assets/molecules/${selectedMolecule.replace(/\s+/g, "_")}.png`;
-  img.style.width = "500px";
-  img.style.height = "500px";
+  img.style.width = "auto";
+  img.style.height = "450";
   img.classList.add("dropped-atom");
   dropArea.appendChild(img);
   isAnswerShown = true;
@@ -540,51 +632,80 @@ function toggleAnswer() {
   const showBtn = getEl("show-ans");
 
   if (!isAnswerShown) {
-    savedDroppedAtoms = [...dropArea.querySelectorAll("img.user-atom")].map(
+    savedHollowSVG = dropArea.innerHTML;
+    savedSlotState = { ...filledAtoms };
+    savedDroppedAtoms = [...dropArea.querySelectorAll(".svg-atom")].map(
       (atom) => {
-        const clone = atom.cloneNode(true);
-        clone.addEventListener("click", () => clone.remove());
-        return clone;
+        return {
+          src: atom.getAttributeNS("http://www.w3.org/1999/xlink", "href"),
+          slotId: atom.parentElement.dataset.slotId,
+        };
       }
     );
+
     showAnswerImage();
     showBtn.textContent = "Hide Answer";
-  } else {
-    dropArea.innerHTML = "";
-    dropArea.innerHTML = "";
-    savedDroppedAtoms.forEach((atom) => {
-      atom.classList.add("user-atom"); // ensure correct class
-      atom.addEventListener("click", () => {
-        // ensure removal decrements count
-        atom.remove();
-        if (userAtomCount > 0) userAtomCount--;
-        onAtomLimitChange();
-      });
-      dropArea.appendChild(atom);
+  }
+  // ===== RESTORE ANSWER (Hide Answer) =====
+// ===== RESTORE ANSWER (Hide Answer) =====
+else {
+  dropArea.innerHTML = originalHollowSVGText;  // 🔥 fixed
+
+    // Re-detect hollow groups
+    currentMoleculeTargets = [...dropArea.querySelectorAll("[class^='atom-']")];
+    currentMoleculeTargets.forEach((t, i) => t.dataset.slotId = "slot-" + i);
+
+    // 🔥 FIX: Reassign slotId because innerHTML removed them
+    currentMoleculeTargets.forEach((t, i) => {
+        t.dataset.slotId = "slot-" + i;
     });
 
-    // ⭐ VERY IMPORTANT — resync counter after restore
+    // Restore hollow shapes
+    currentMoleculeTargets.forEach(slot => {
+        slot.querySelectorAll("circle, path").forEach(n => {
+            n.style.opacity = "1";
+        });
+    });
+
+    // Restore atoms
+    filledAtoms = {};
+    savedDroppedAtoms.forEach(item => {
+        const slot = currentMoleculeTargets.find(s => s.dataset.slotId === item.slotId);
+        if (slot) placeAtomIntoTargetBySrc(slot, item.src);
+    });
+
     syncUserAtomCount();
     onAtomLimitChange();
 
-    showBtn.textContent = "Show Answer";
+    getEl("show-ans").textContent = "Show Answer";
     isAnswerShown = false;
-  }
 }
 
+}
+
+// ============ RESET & HELPERS ============
 function resetDropArea() {
   dropArea.innerHTML = "";
   isAnswerShown = false;
   savedDroppedAtoms = [];
+  filledAtoms = {};
+  currentMoleculeTargets = [];
   getEl("show-ans").textContent = "Show Answer";
 
   userAtomCount = 0;
   atomBusy = false;
-  onAtomLimitChange(); // remove "limit reached" message/UI state
+
+  onAtomLimitChange();
 
   document.getElementById("droping-wrapper").classList.remove("active-3d");
-  document.getElementById("3d-btn").style.display = "none";
   hide("instruction-note");
+  hide("3d-btn");
+  // if a molecule is selected, reload its hollow SVG
+  if (selectedMolecule) {
+    loadAndShowMoleculeSVG(selectedMolecule).catch((e) => {
+      console.warn("Could not reload molecule SVG on reset:", e);
+    });
+  }
 }
 
 function resetSpinnerWheel() {
@@ -618,6 +739,8 @@ function cleanup3DScene() {
 }
 
 function load3DMolecule(moleculeName, container) {
+  cleanup3DScene();
+
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
 
@@ -685,11 +808,149 @@ function open3DModel() {
   container.id = "threeD-container";
   container.style.width = "400px";
   container.style.height = "400px";
-  container.backgroundColor = "#000";
+  container.style.backgroundColor = "#000";
   dropArea.appendChild(container);
 
   load3DMolecule(selectedMolecule, container);
 }
+
+// ============ HOLLOW SVG LOADING ============
+// Load SVG file content
+async function loadSVG(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error("SVG not found: " + path);
+  return await res.text();
+}
+
+// Insert SVG into dropArea and detect outer group slots by class-only
+function loadMoleculeStructure(svgHtml) {
+  const wrapper = document.getElementById("droping-wrapper");
+  wrapper.innerHTML = svgHtml;
+
+  // find outer groups whose class starts with "atom-"
+  // We only target outer groups (the <g class="atom-x"> itself)
+  const byClass = Array.from(wrapper.querySelectorAll("g")).filter((g) => {
+    const cls = (g.getAttribute && g.getAttribute("class")) || "";
+    if (!cls) return false;
+    return cls.split(/\s+/).some((tk) => tk.toLowerCase().startsWith("atom-"));
+  });
+
+  // assign predictable slot ids and store
+  currentMoleculeTargets = [...wrapper.querySelectorAll("[class^='atom-']")];
+  currentMoleculeTargets.forEach((t, i) => {
+    t.dataset.slotId = "slot-" + i;
+  });
+
+  // reset filled map
+  filledAtoms = {};
+
+  // re-activate palette atom handlers (they are on page-level, so ensure they exist)
+  activatePaletteAtoms();
+}
+
+// wrapper that fetches SVG file and inserts it
+async function loadAndShowMoleculeSVG(name) {
+  if (!name) return;
+  const path = `assets/hollow-molecule/${name}.svg`;
+  try {
+    const svgText = await loadSVG(path);
+    originalHollowSVGText = svgText; 
+    loadMoleculeStructure(svgText);
+    // ensure we're not showing answer when loading new structure
+    isAnswerShown = false;
+    getEl("show-ans").textContent = "Show Answer";
+    syncUserAtomCount();
+    onAtomLimitChange();
+  } catch (err) {
+    console.warn("Failed to load hollow SVG for", name, err);
+    // fallback: clear area and show message
+    dropArea.innerHTML = `<div style="padding:20px;color:#b00;">Hollow SVG not found for ${name}</div>`;
+    currentMoleculeTargets = [];
+    filledAtoms = {};
+  }
+}
+const listBox = document.getElementById("molecule-list");
+const scrollDownBtn = document.querySelector(".scoll-down");
+
+listBox.addEventListener("scroll", () => {
+  const atBottom =
+    listBox.scrollTop + listBox.clientHeight >= listBox.scrollHeight - 5;
+
+  if (atBottom) {
+    scrollDownBtn.classList.add("active");
+  } else {
+    scrollDownBtn.classList.remove("active");
+  }
+});
+function updateScrollDownButton() {
+  const scrollTop = moleculeList.scrollTop;
+  const visibleHeight = moleculeList.clientHeight;
+  const totalHeight = moleculeList.scrollHeight;
+
+  scrollDownBtn.classList.remove("top", "bottom");
+
+  // list not scrollable → no indicator at all
+  if (totalHeight <= visibleHeight) {
+    return;
+  }
+
+  const atTop = scrollTop <= 5;
+  const atBottom = scrollTop + visibleHeight >= totalHeight - 5;
+
+  if (atBottom) {
+    scrollDownBtn.classList.add("top");     // show "scroll to top" version
+  } else if (atTop) {
+    scrollDownBtn.classList.add("bottom");  // show "scroll to bottom" version
+  }
+}
+
+
+moleculeList.addEventListener("scroll", updateScrollDownButton);
+
+// ============ INIT: build molecule list & attach event handlers ============
+// ============ INIT: build molecule list in A–Z order ============
+const sortedLabels = [...labels].sort((a, b) => a.localeCompare(b));
+
+sortedLabels.forEach((name) => {
+  const li = document.createElement("li");
+  li.textContent = name;
+
+  li.addEventListener("click", async () => {
+    selectedMolecule = name;
+
+    document
+      .querySelectorAll("#molecule-list li")
+      .forEach((item) => item.classList.remove("active"));
+
+    li.classList.add("active");
+
+    li.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    updateScrollDownButton();
+    getEl("molecule-name").textContent = selectedMolecule;
+
+    resetDropArea();
+    syncUserAtomCount();
+    onAtomLimitChange();
+    hide("3d-btn");
+
+    await loadAndShowMoleculeSVG(selectedMolecule);
+
+    if (document.getElementById("step2").style.display === "block") {
+      if (isAnswerShown) {
+        toggleAnswer();
+        syncUserAtomCount();
+        onAtomLimitChange();
+      }
+    }
+  });
+
+  moleculeList.appendChild(li);
+});
+
+
+// activate palette immediately
+activatePaletteAtoms();
 
 // ============ EVENT LISTENERS ============
 getEl("show-ans").addEventListener("click", () => {
@@ -702,6 +963,7 @@ getEl("reset-btn").addEventListener("click", resetDropArea);
 getEl("check-ans").addEventListener("click", checkMoleculeCompleted);
 getEl("3d-btn").addEventListener("click", open3DModel);
 getEl("home-btn").addEventListener("click", () => {
+  document.getElementsByClassName("resetWheel-btn")[0].style.display = "none"; // hide reset wheel button
   hide("step2");
   show("step1");
   hide("btn-wrapper");
@@ -712,6 +974,7 @@ getEl("home-btn").addEventListener("click", () => {
 });
 
 // ============ THREE.JS ORBIT CONTROLS ============
+// (Your OrbitControls code is preserved as-is)
 (function () {
   THREE.OrbitControls = function (object, domElement) {
     this.object = object;

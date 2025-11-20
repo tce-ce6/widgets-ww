@@ -222,3 +222,7 @@
     padding-left: 128px;
     margin-top: 5px;
 }
+
+#flag-1{
+  cursor: pointer;
+}

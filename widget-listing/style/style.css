@@ -194,3 +194,10 @@ html {
     text-shadow: 0px 0px 6px #000000;
 }
 
+.last-modify{
+    font-style: italic;
+    font-size: 12px;
+    margin-right: 20px;
+    display: inline-block;
+}
+

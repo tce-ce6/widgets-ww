@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 268.6 246.5">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        isolation: isolate;
+      }
+
+      .st1 {
+        fill: #d8d8d8;
+      }
+
+      .st2 {
+        fill: #eaeaea;
+      }
+    </style>
+  </defs>
+  <g class="atom-h">
+    <g id="O">
+      <g>
+        <circle class="st2" cx="77.9" cy="166.9" r="70.7" transform="translate(-95.2 103.9) rotate(-45)"/>
+        <path class="st1" d="M77.9,238.4c-39.4,0-71.5-32.1-71.5-71.5s32.1-71.5,71.5-71.5,71.5,32.1,71.5,71.5-32.1,71.5-71.5,71.5ZM77.9,97c-38.5,0-69.9,31.3-69.9,69.9s31.3,69.9,69.9,69.9,69.9-31.3,69.9-69.9-31.3-69.9-69.9-69.9Z"/>
+      </g>
+    </g>
+  </g>
+  <g class="atom-cl">
+    <g id="O1" data-name="O">
+      <g>
+        <circle class="st2" cx="190.1" cy="77.9" r="70.7" transform="translate(.6 157.2) rotate(-45)"/>
+        <path class="st1" d="M190.1,149.4c-39.4,0-71.5-32.1-71.5-71.5S150.7,6.4,190.1,6.4s71.5,32.1,71.5,71.5-32.1,71.5-71.5,71.5ZM190.1,8c-38.5,0-69.9,31.3-69.9,69.9s31.3,69.9,69.9,69.9,69.9-31.3,69.9-69.9S228.7,8,190.1,8Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
