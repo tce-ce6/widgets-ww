@@ -1,0 +1,236 @@
+[
+  {
+    "id": 1,
+    "element": "Hydrogen",
+    "isotope": "Hydrogen",
+    "symbol": "H",
+    "protons": 1,
+    "neutrons": 0,
+    "indicator": "Stable isotope (Protium)"
+  },
+  {
+    "id": 2,
+    "element": "Hydrogen",
+    "isotope": "Hydrogen",
+    "symbol": "H",
+    "protons": 1,
+    "neutrons": 1,
+    "indicator": "Stable isotope (Deuterium)"
+  },
+  {
+    "id": 3,
+    "element": "Hydrogen",
+    "isotope": "Hydrogen",
+    "symbol": "H",
+    "protons": 1,
+    "neutrons": 2,
+    "indicator": "Stable isotope (Tritium)"
+  },
+  {
+    "id": 4,
+    "element": "Helium",
+    "isotope": "Helium",
+    "symbol": "He",
+    "protons": 2,
+    "neutrons": 2,
+    "indicator": "Stable isotope (Helium-4)"
+  },
+  {
+    "id": 5,
+    "element": "Lithium",
+    "isotope": "Lithium",
+    "symbol": "Li",
+    "protons": 3,
+    "neutrons": 3,
+    "indicator": "Stable isotope (Lithium-6)"
+  },
+  {
+    "id": 6,
+    "element": "Lithium",
+    "isotope": "Lithium",
+    "symbol": "Li",
+    "protons": 3,
+    "neutrons": 4,
+    "indicator": "Stable isotope (Lithium-7)"
+  },
+  {
+    "id": 7,
+    "element": "Beryllium",
+    "isotope": "Beryllium",
+    "symbol": "Be",
+    "protons": 4,
+    "neutrons": 5,
+    "indicator": "Stable isotope (Beryllium-9)"
+  },
+  {
+    "id": 8,
+    "element": "Boron",
+    "isotope": "Boron",
+    "symbol": "B",
+    "protons": 5,
+    "neutrons": 5,
+    "indicator": "Stable isotope (Boron-10)"
+  },
+  {
+    "id": 9,
+    "element": "Carbon",
+    "isotope": "Carbon",
+    "symbol": "C",
+    "protons": 6,
+    "neutrons": 6,
+    "indicator": "Stable isotope (Carbon-12)"
+  },
+  {
+    "id": 10,
+    "element": "Carbon",
+    "isotope": "Carbon",
+    "symbol": "C",
+    "protons": 6,
+    "neutrons": 7,
+    "indicator": "Stable isotope (Carbon-13)"
+  },
+  {
+    "id": 11,
+    "element": "Carbon",
+    "isotope": "Carbon",
+    "symbol": "C",
+    "protons": 6,
+    "neutrons": 8,
+    "indicator": "Stable isotope (Carbon-14)"
+  },
+  {
+    "id": 12,
+    "element": "Nitrogen",
+    "isotope": "Nitrogen",
+    "symbol": "N",
+    "protons": 7,
+    "neutrons": 7,
+    "indicator": "Stable isotope (Nitrogen-14)"
+  },
+  {
+    "id": 13,
+    "element": "Oxygen",
+    "isotope": "Oxygen",
+    "symbol": "O",
+    "protons": 8,
+    "neutrons": 8,
+    "indicator": "Stable isotope (Oxygen-16)"
+  },
+  {
+    "id": 14,
+    "element": "Fluorine",
+    "isotope": "Fluorine",
+    "symbol": "F",
+    "protons": 9,
+    "neutrons": 10,
+    "indicator": "Stable isotope (Fluorine-19)"
+  },
+  {
+    "id": 15,
+    "element": "Neon",
+    "isotope": "Neon",
+    "symbol": "Ne",
+    "protons": 10,
+    "neutrons": 10,
+    "indicator": "Stable isotope (Neon-20)"
+  },
+  {
+    "id": 16,
+    "element": "Sodium",
+    "isotope": "Sodium",
+    "symbol": "Na",
+    "protons": 11,
+    "neutrons": 12,
+    "indicator": "Stable isotope (Sodium-23)"
+  },
+  {
+    "id": 17,
+    "element": "Magnesium",
+    "isotope": "Magnesium",
+    "symbol": "Mg",
+    "protons": 12,
+    "neutrons": 12,
+    "indicator": "Stable isotope (Magnesium-24)"
+  },
+  {
+    "id": 18,
+    "element": "Aluminium",
+    "isotope": "Aluminium",
+    "symbol": "Al",
+    "protons": 13,
+    "neutrons": 14,
+    "indicator": "Stable isotope (Aluminium-27)"
+  },
+  {
+    "id": 19,
+    "element": "Silicon",
+    "isotope": "Silicon",
+    "symbol": "Si",
+    "protons": 14,
+    "neutrons": 14,
+    "indicator": "Stable isotope (Silicon-28)"
+  },
+  {
+    "id": 20,
+    "element": "Phosphorus",
+    "isotope": "Phosphorus",
+    "symbol": "P",
+    "protons": 15,
+    "neutrons": 16,
+    "indicator": "Stable isotope (Phosphorus-31)"
+  },
+  {
+    "id": 21,
+    "element": "Sulphur",
+    "isotope": "Sulphur",
+    "symbol": "S",
+    "protons": 16,
+    "neutrons": 16,
+    "indicator": "Stable isotope (Sulfur-32)"
+  },
+  {
+    "id": 22,
+    "element": "Chlorine",
+    "isotope": "Chlorine",
+    "symbol": "Cl",
+    "protons": 17,
+    "neutrons": 18,
+    "indicator": "Stable isotope (Chlorine-35)"
+  },
+  {
+    "id": 23,
+    "element": "Chlorine",
+    "isotope": "Chlorine",
+    "symbol": "Cl",
+    "protons": 17,
+    "neutrons": 20,
+    "indicator": "Stable isotope (Chlorine-37)"
+  },
+  {
+    "id": 24,
+    "element": "Argon",
+    "isotope": "Argon",
+    "symbol": "Ar",
+    "protons": 18,
+    "neutrons": 18,
+    "indicator": "Stable isotope (Argon-36)"
+  },
+  {
+    "id": 25,
+    "element": "Potassium",
+    "isotope": "Potassium",
+    "symbol": "K",
+    "protons": 19,
+    "neutrons": 20,
+    "indicator": "Stable isotope (Potassium-39)"
+  },
+  {
+    "id": 26,
+    "element": "Calcium",
+    "isotope": "Calcium",
+    "symbol": "Ca",
+    "protons": 20,
+    "neutrons": 20,
+    "indicator": "Stable isotope (Calcium-40)"
+  }
+]
