@@ -44,7 +44,6 @@ function initGeometryBoard() {
     const lineM = brd.create('line', [p1, p2], {
         strokeColor: '#3b82f6', strokeWidth: 2, name: 'm', withLabel: true
     });
-
     const Y_CORD = 1;
 
     // --- Base Points (Fixed) ---

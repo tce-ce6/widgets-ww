@@ -628,32 +628,6 @@ function setup() {
    // createButtons();
 }
 
-// function createButtons() {
-//     // Styling the buttons to match the look in the image (basic p5.js button styling)
-
-//     // CHECK Button
-//     checkButton = createButton('Check');
-//     checkButton.position(width / 2 - 50, 450);
-//     checkButton.size(100, 35);
-//     checkButton.style('background-color', '#4CAF50'); // Green
-//     checkButton.style('color', 'white');
-//     checkButton.style('font-size', '18px');
-//     checkButton.style('border-radius', '8px');
-//     checkButton.style('border', 'none');
-//     checkButton.mousePressed(() => game.checkPayment());
-
-//     // NEXT ITEM Button
-//     nextButton = createButton('Next Item');
-//     nextButton.position(width / 2 - 60, 500);
-//     nextButton.size(120, 35);
-//     nextButton.style('background-color', '#F39C12'); // Orange/Yellow
-//     nextButton.style('color', 'white');
-//     nextButton.style('font-size', '18px');
-//     nextButton.style('border-radius', '8px');
-//     nextButton.style('border', 'none');
-//     nextButton.mousePressed(() => game.nextItem());
-// }
-
 function draw() {
     background('#E6EBF9'); // Light background color
 

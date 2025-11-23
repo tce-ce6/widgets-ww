@@ -31,15 +31,16 @@ let answerSlotElements = [];
 
 // Audio mapping for letters
 const letterAudioMap = {
-    "ग": "02_ग.wav", "म": "24_म.wav", "ण": "14_ण.wav", "न": "19_न.wav",
-    "भ": "23_भ.wav", "स": "31_स.wav", "त": "15_त.wav", "ट": "08_ट.wav",
-    "र": "26_r.wav", "श": "29_श.wav", "ह": "32_ह.wav", "द": "17_द.wav",
-    "ध": "18_ध.wav", "ड": "10_ड.wav", "ड़": "11_ड़.wav", "क": "00_क.wav",
-    "ख": "01_ख.wav", "ल": "27_ल.wav", "ब": "22_ब.wav", "व": "28_व.wav",
-    "फ": "21_फ.wav", "प": "20_प.wav", "य": "25_य.wav", "च": "04_च.wav",
-    "ज": "06_ज.wav", "झ": "07_झ.wav", "इ": "02_इ.wav", "ष": "30_ष.wav",
-    "क्ष": "33_क्ष.wav", "त्र": "34_त्र.wav", "ज्ञ": "35_ग्य.wav",
-    "ल": "27_ल.wav", "र": "26_र.wav", "ह": "32_ह.wav", "ग": "02_ग.wav" // Assuming fallback/lowercase
+    "ग": "02_ga.wav", "म": "24_ma.wav", "ण": "14_nan.wav", "न": "19_na.wav",
+    "भ": "23_bha.wav", "स": "31_s.wav", "त": "15_ta.wav", "ट": "08_ta.wav",
+    "र": "26_ra.wav", "श": "29_sha.wav", "ह": "32_ha.wav", "द": "17_da.wav",
+    "ध": "18_dah.wav", "ड": "10_dha.wav", "ड़": "11_adha.wav", "क": "00_ka.wav",
+    "ख": "01_kha.wav", "ल": "27_la.wav", "ब": "22_ba.wav", "व": "28_wa.wav",
+    "फ": "21_pha.wav", "प": "20_pa.wav", "य": "25_ya.wav", "च": "04_ch.wav",
+    "ज": "06_ja.wav", "झ": "07_jha.wav", "इ": "02_e.wav", "ष": "30_sa.wav",
+    "क्ष": "33_chha.wav", "त्र": "34_tra.wav", "ज्ञ": "35_gya.wav", "छ": "05_cha.wav",
+    "ल": "27_la.wav", "र": "26_ra.wav", "ह": "32_ha.wav", "घ": "03_gha.wav",
+    "ठ": "09_tha.wav", "ढ": "12_ddha.wav", "ढ़": "13_addha.wav", "थ": "16_tha.wav" // Assuming fallback/lowercase
 };
 
 // --- LOTTIE INTEGRATION CONSTANTS & GLOBALS ---
@@ -171,6 +172,7 @@ function getLetterAudioPath(letter) {
  */
 function playLetterSound(letter) {
     const audioPath = getLetterAudioPath(letter);
+    console.log(letter);
     if (audioPath) {
         const audio = new Audio(audioPath);
         audio.play().catch(err => console.log("Audio play failed:", err));
@@ -187,6 +189,7 @@ function playWordSound() {
         const audioPath = `Assets/Audio/Word sound/${wordName}.mp3`;
         const audio = new Audio(audioPath);
         audio.playbackRate = 0.75;
+        audio.volume = 1.0;
         audio.play().catch(err => console.log("Word audio play failed:", err));
     }
 }
