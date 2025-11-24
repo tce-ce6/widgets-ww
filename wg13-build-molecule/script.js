@@ -80,24 +80,22 @@ const moleculeRequirements = {
     "atom-o",
   ],
   "Copper sulphate": [
+    "atom-c",
     "atom-cu",
-    "atom-s",
-    "atom-o",
     "atom-o",
     "atom-o",
     "atom-o",
   ],
   "Aluminium oxide": ["atom-ai", "atom-ai", "atom-o", "atom-o", "atom-o"],
-  "Carbon dioxide": ["atom-c", "atom-o", "atom-o"],
+  "Carbon dioxide": ["atom-o", "atom-c", "atom-o"],
   "Acetic acid": [
-    "atom-c",
+    "atom-h",
     "atom-c",
     "atom-o",
+    "atom-h",
     "atom-o",
-    "atom-h",
-    "atom-h",
-    "atom-h",
-    "atom-h",
+    "atom-c",
+    "atom-c",
   ],
 };
 
@@ -434,8 +432,8 @@ function findFirstEmptyTargetFor(atomId) {
     if (!cls) return false;
     const tokens = cls.split(/\s+/);
     const matches = tokens.some((tk) =>
-      tk.toLowerCase().startsWith(atomId.toLowerCase())
-    );
+  tk.toLowerCase() === atomId.toLowerCase()
+);
     if (!matches) return false;
     // ensure this slot isn't filled
     return !filledAtoms[t.dataset.slotId];
@@ -497,7 +495,7 @@ function placeAtomIntoTargetBySrc(target, src) {
   filledAtoms[target.dataset.slotId] = src;
   userAtomCount++;
   onAtomLimitChange();
-   checkMoleculeCompleted();
+checkMoleculeCompleted(false);
 }
 
 resetWheelBtn.addEventListener("click", () => {
@@ -590,7 +588,7 @@ function activatePaletteAtoms() {
 }
 
 // ============ ANSWER MANAGEMENT ============
-function checkMoleculeCompleted() {
+function checkMoleculeCompleted(showMessage = false) {
   if (isAnswerShown) return;
   hide("instruction-note");
   Object.keys(filledAtoms).forEach((slotId) => {
@@ -617,18 +615,24 @@ function checkMoleculeCompleted() {
     getEl("show-ans").textContent = "Hide Answer";
 
     // Save clones for restore (if hide answer)
- savedDroppedAtoms = [...dropArea.querySelectorAll(".svg-atom")].map(atom => ({
-    src: atom.getAttributeNS("http://www.w3.org/1999/xlink", "href"),
-    slotId: atom.parentElement.dataset.slotId
-}));
-
+    savedDroppedAtoms = [...dropArea.querySelectorAll(".svg-atom")].map(atom => ({
+      src: atom.getAttributeNS("http://www.w3.org/1999/xlink", "href"),
+      slotId: atom.parentElement.dataset.slotId
+    }));
 
     showAnswerImage();
     updateNote("That is the correct answer!", "#4caf50");
   } else {
-    updateNote("That's incorrect. Try again!", "red");
+    // Only show the red "incorrect" note when explicitly requested
+    if (showMessage) {
+      updateNote("That's incorrect. Try again!", "red");
+    } else {
+      // keep instruction-note hidden when auto-checking
+      hide("instruction-note");
+    }
   }
 }
+
 
 function showAnswerImage() {
   dropArea.innerHTML = "";
@@ -973,7 +977,8 @@ getEl("show-ans").addEventListener("click", () => {
   onAtomLimitChange();
 });
 getEl("reset-btn").addEventListener("click", resetDropArea);
-getEl("check-ans").addEventListener("click", checkMoleculeCompleted);
+getEl("check-ans").addEventListener("click", () => checkMoleculeCompleted(true));
+
 getEl("3d-btn").addEventListener("click", open3DModel);
 getEl("home-btn").addEventListener("click", () => {
   document.getElementsByClassName("resetWheel-btn")[0].style.display = "none"; // hide reset wheel button

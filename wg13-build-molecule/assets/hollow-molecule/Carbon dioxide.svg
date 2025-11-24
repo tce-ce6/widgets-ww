@@ -16,7 +16,7 @@
       }
     </style>
   </defs>
-  <g class="atom-c">
+  <g class="atom-o">
     <g id="O">
       <g>
         <circle class="st2" cx="319.4" cy="59.8" r="53"/>
@@ -24,7 +24,7 @@
       </g>
     </g>
   </g>
-  <g class="atom-o">
+  <g class="atom-c">
     <g id="O1" data-name="O">
       <g>
         <circle class="st2" cx="183.8" cy="114.1" r="94.3" transform="translate(-26.8 163.4) rotate(-45)"/>
@@ -32,7 +32,7 @@
       </g>
     </g>
   </g>
-  <g class="atom-c">
+  <g class="atom-o">
     <g id="O2" data-name="O">
       <g>
         <circle class="st2" cx="58.4" cy="191.8" r="53"/>
