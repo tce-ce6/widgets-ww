@@ -345,8 +345,23 @@ spinBtn.addEventListener("click", async () => {
   }
 
   spanElements.forEach((s) => s.classList.remove("active"));
-  const randomSpin = Math.random() * 360 + 3600;
-  const newRotation = currentRotation + randomSpin;
+
+  // Choose a random slice index to stop on
+  const chosenIndex = Math.floor(Math.random() * labels.length);
+
+  // Compute the slice center angle in degrees (matches how spans are positioned)
+  // Note: spans use `sliceAngle * i + sliceAngle/2 - 8` in their transform, so include that -8deg offset.
+  const sliceCenterAngle = (sliceAngle * chosenIndex + sliceAngle / 2 - 16 + 360) % 360;
+
+  // We want normalized = sliceCenterAngle when the rotation finishes, where
+  // normalized = (360 - (rotation % 360)) % 360
+  // Solve rotation_mod = (360 - normalized) % 360
+  const desiredNormalized = sliceCenterAngle;
+  const rotationMod = (360 - desiredNormalized) % 360;
+
+  // Add several full turns for animation flair, with slight randomness
+  const fullTurns = 10 + Math.floor(Math.random() * 6); // 10..15 full turns
+  const newRotation = currentRotation + fullTurns * 360 + rotationMod;
 
   const anim = wheel.animate(
     [
@@ -362,9 +377,9 @@ spinBtn.addEventListener("click", async () => {
 
   anim.onfinish = async () => {
     currentRotation = newRotation % 360;
+    // Ensure active slice corresponds to the chosen index
     updateActiveSlice(currentRotation);
-    const normalized = (360 - (currentRotation % 360)) % 360;
-    selectedMolecule = labels[Math.floor(normalized / sliceAngle)];
+    selectedMolecule = labels[chosenIndex];
     spinBtn.textContent = "START";
     spinBtn.dataset.state = "go";
 
@@ -468,15 +483,12 @@ function placeAtomIntoTargetBySrc(target, src) {
   img.classList.add("svg-atom");
 
   // 4. Remove atom & restore hollow if clicked
-  img.addEventListener("click", () => {
-    img.remove();
-    target.querySelectorAll("circle, path").forEach((n) => {
-      n.style.opacity = "1";
-    });
-    delete filledAtoms[target.dataset.slotId];
-    userAtomCount--;
-    onAtomLimitChange();
+  // Disable remove-on-click (atom stays fixed)
+  img.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
   });
+
 
   // 5. Insert into SVG slot
   target.appendChild(img);
