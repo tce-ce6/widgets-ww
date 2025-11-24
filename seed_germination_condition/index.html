@@ -48,10 +48,13 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         #startBtn {
+            border-radius: 25px;
             background-color: #4CAF50; 
         }
 
         #resetBtn {
+                        border-radius: 25px;
+
             background-color: #F94877; 
         }
 
@@ -88,11 +91,11 @@
 </head>
 <body>
      <div class="wdgetTitle">
-         <h2>Seed Germination Condition</h2>
+         <h2>Seed Germination Conditions</h2>
      </div>
     <div id="canvas-container">
     </div>
-    <div class="button-controls d-flex justify-content-start gap-8">
+    <div class="button-controls d-flex justify-content-start gap-16">
         <button id="startBtn">Start Experiment</button>
         <button id="resetBtn">Reset</button>
     </div>
@@ -108,7 +111,7 @@ let seedGerminationFrames = [0, 0, 0, 0];
 const insightButton = { x: 270, y: 580, w: 150, h: 45 };
 
 // Experiment conditions
-let waterLevel = 1;
+let waterLevel = 0;
 let sunlight = false;
 let air = false;
 
@@ -152,6 +155,7 @@ function preload() {
     svgAssets.calendar = loadImage('assets/Calendar.svg');
     svgAssets.insightBtn = loadImage('assets/btn_Insight.svg');
     svgAssets.waterDropIcon = loadImage('assets/water-droplet.svg');
+    svgAssets.airIcon = loadImage('assets/air.svg'); // Replace AirIcon.svg with your actual SVG file name
 }
 
 function setup() {
@@ -289,9 +293,61 @@ function draw() {
         drawInsightsModal();
     }
     drawInsightButton();
-    
+    updateCursor()
     if (experimentRunning) {
         updateDay();
+    }
+}
+
+function updateCursor() {
+    let pointer = false;
+
+    // 1. Insight Button
+    if (mouseX > insightButton.x && mouseX < insightButton.x + insightButton.w && 
+        mouseY > insightButton.y && mouseY < insightButton.y + insightButton.h) {
+        pointer = true;
+    }
+    
+    // 2. Close Modal Button (if modal is open)
+    if (showInsights && dist(mouseX, mouseY, 1030, 160) < 30) {
+        pointer = true;
+    }
+
+    if (!experimentRunning) {
+        // Water Control Panel (interactive only when experiment is not running)
+        const waterContainerX = 850 + 80;
+        const waterContainerWidth = 360;
+        const waterContainerHeight = 50;
+        const waterPanelY = 280;
+        const waterContainerY = waterPanelY - waterContainerHeight / 2;
+
+        if (mouseX > waterContainerX && mouseX < waterContainerX + waterContainerWidth && 
+            mouseY > waterContainerY && mouseY < waterContainerY + waterContainerHeight) {
+            pointer = true;
+        }
+
+        // Toggle Controls (Sunlight and Air)
+        const toggleX = 780 + 150;
+        const toggleW = 100;
+        const toggleH = 45;
+
+        // Sunlight Toggle (380)
+        if (mouseX > toggleX && mouseX < toggleX + toggleW && 
+            mouseY > 380 - toggleH / 2 && mouseY < 380 + toggleH / 2) {
+            pointer = true;
+        }
+
+        // Air Toggle (470)
+        if (mouseX > toggleX && mouseX < toggleX + toggleW && 
+            mouseY > 470 - toggleH / 2 && mouseY < 470 + toggleH / 2) {
+            pointer = true;
+        }
+    }
+
+    if (pointer) {
+        cursor(HAND);
+    } else {
+        cursor(ARROW);
     }
 }
 
@@ -317,7 +373,7 @@ function drawInstructionText() {
     textStyle(ITALIC);
     fill(150, 220, 255);
     textAlign(CENTER, CENTER);
-    text('Experiment with different conditions to see\nhow they affect bean seed germination.', 1150, 180);
+    text('Experiment with different conditions to see\nhow they affect bean seed germination.', 1100, 180);
 }
 
 function drawPotAndEnvironment() {
@@ -325,7 +381,7 @@ function drawPotAndEnvironment() {
 
     // --- Sunlight (Sun.json) ---
     const sunX = 400;
-    const sunY = 100;
+    const sunY = 85;
     const sunW = 120;
     const sunH = 120;
 
@@ -345,7 +401,7 @@ function drawPotAndEnvironment() {
     
     // --- Water (Water_Moderate.json / Water_Excess.json) ---
     const waterX = 120; 
-    const waterY = 120; 
+    const waterY = 90; 
     const waterW = 260; 
     const waterH = 200; 
     
@@ -359,12 +415,13 @@ function drawPotAndEnvironment() {
 }
 
 function drawSeeds() {
-    const yIndex = 320;
+    const yIndex = 335;
     const originalHeight = 45;
     const originalWidth = 35;
     const seedPositions = [
-        { x: 235, y: yIndex }, { x: 300, y: yIndex },
-        { x: 365, y: yIndex }, { x: 430, y: yIndex }
+        { x: 230, y: yIndex },{x:300,y:yIndex}, // Seed 2 (75px gap)
+        {x:375,y:yIndex}, // Seed 3 (75px gap)
+        {x:450,y:yIndex}
     ];
 
     const bufferW = 150;
@@ -538,7 +595,7 @@ function drawWaterControl(x, y) {
 function drawToggleControl(label, x, y, isOn) {
     const iconSize = 40;
     const iconOffsetX = 10;
-    const textWidthOffset = 80;
+    let textWidthOffset = 80;
     const iconTotalWidth = iconSize + iconOffsetX;
     const buttonStartX = 850 + 80; 
     let labelDrawX = buttonStartX - (textWidthOffset + iconTotalWidth); 
@@ -549,6 +606,9 @@ function drawToggleControl(label, x, y, isOn) {
     textAlign(LEFT, CENTER);
     textStyle(NORMAL);
     
+    if (label === 'Air:') {
+        textWidthOffset = 50; // Adjusted value (e.g., from 80 to 25)
+    }
     if (label === 'Sunlight:') {
         text('Sunlight', labelDrawX, y); 
 
@@ -563,6 +623,9 @@ function drawToggleControl(label, x, y, isOn) {
         }
     } else if (label === 'Air:') {
         text('Air', labelDrawX, y); 
+        if(svgAssets.airIcon){ 
+            image(svgAssets.airIcon,labelDrawX+textWidthOffset + 38,y-iconSize/2 ,iconSize - 15,iconSize - 15);
+        }
     } else {
         text(label, labelDrawX, y); 
     }
@@ -600,7 +663,7 @@ function drawInsightButton() {
 function drawInsightsModal() {
     fill(0, 0, 0, 180); 
     noStroke(); 
-    rect(0, 0, 1500, 700);
+    rect(0, 0, width, height);
     
     fill(255); 
     rect(170, 150, 850, 460, 15);
@@ -644,13 +707,21 @@ function drawInsightsModal() {
     text(' for cellular respiration during germination.', xPos + textWidth('• Seeds need air (oxygen)') + 15, yPos);
     yPos += 55;
     
-    textStyle(NORMAL);
-    text('• Most seeds can germinate in ', xPos, yPos);
-    textStyle(BOLD);
-    text('darkness', xPos + textWidth('• Most seeds can germinate in ') - 15, yPos);
-    textStyle(NORMAL);
-    text(', but need light for growth after sprouting.', xPos + textWidth('• Most seeds can germinate in darkness') + 15, yPos);
-    yPos += 55;
+   textStyle(NORMAL);
+text('• Most seeds can germinate in ', xPos, yPos);
+
+// Calculate the start position for 'darkness'
+let xBoldStart = xPos + textWidth('• Most seeds can germinate in ');
+
+textStyle(BOLD);
+text('darkness', xBoldStart, yPos);
+
+// Calculate the start position for ', but need light...'
+let xNormalStart = xBoldStart + textWidth('darkness');
+
+textStyle(NORMAL);
+text(', but need light for growth after sprouting.', xNormalStart, yPos);
+yPos += 55;
     
     textStyle(BOLD);
     text('• Optimal conditions', xPos, yPos);
@@ -668,59 +739,42 @@ function drawInsightsModal() {
 
 // --- LOGIC AND INTERACTION ---
 
-function startExperiment() {
-    if (experimentRunning) return;
-    experimentRunning = true;
-    startTime = millis();
-    let key = `${waterLevel}-${sunlight}-${air}`;
-    experimentResult = resultsTable[key] || { germinated: 0, sprouted: false, result: 'None' };
+function startExperiment(){
+    if(experimentRunning)return;
+    experimentRunning=true;
+    startTime=millis();
+    let key=`${waterLevel}-${sunlight}-${air}`;
+    experimentResult=resultsTable[key]||{germinated:0,sprouted:false,result:'None'};
+    let numToAnimate=experimentResult.germinated;
+    let willSprout=experimentResult.sprouted;
+    if(willSprout){for(let i=0;i<numToAnimate;i++){seedStates[i]=2;}}else{for(let i=0;i<numToAnimate;i++){seedStates[i]=1;}}
+    if(sunlight&&sunAnimation){sunAnimation.play();}
+    if(air&&airAnimation){airAnimation.play();}
+    if(waterLevel===1&&waterModerateAnimation){waterModerateAnimation.play();}else if(waterLevel===2&&waterExcessAnimation){waterExcessAnimation.play();}
     
-    // --- THIS IS THE NEW LOGIC ---
-    // Set the final seed states immediately based on the result.
-    let numToAnimate = experimentResult.germinated;
-    let willSprout = experimentResult.sprouted;
-
-    if (willSprout) {
-        // Set states for FULL animation (State 2)
-        for (let i = 0; i < numToAnimate; i++) {
-            seedStates[i] = 2;
-        }
-    } else {
-        // Set states for HALF animation (State 1)
-        for (let i = 0; i < numToAnimate; i++) {
-            seedStates[i] = 1;
-        }
-    }
-    // --- END OF NEW LOGIC ---
-
-    if (sunlight && sunAnimation) {
-        sunAnimation.play();
-    }
-    if (air && airAnimation) {
-        airAnimation.play(); 
-    }
-    if (waterLevel === 1 && waterModerateAnimation) {
-        waterModerateAnimation.play();
-    } else if (waterLevel === 2 && waterExcessAnimation) {
-        waterExcessAnimation.play();
-    }
-
-    document.getElementById('startBtn').disabled = true;
-    document.getElementById('resetBtn').disabled = true;
+    // --- MODIFICATION START ---
+    // document.getElementById('startBtn').disabled=true; // REMOVED: Keep Start active
+    document.getElementById('resetBtn').disabled=true; // Reset is disabled only during the run
+    // --- MODIFICATION END ---
 }
-function updateDay() {
-    let elapsed = millis() - startTime;
-    currentDay = floor(elapsed / 800);
-
-    if (currentDay > 10) {
-        currentDay = 10;
-        experimentRunning = false;
-        document.getElementById('resetBtn').disabled = false;
-
-        if (sunAnimation) sunAnimation.stop();
-        if (airAnimation) airAnimation.stop();
-        if (waterModerateAnimation) waterModerateAnimation.stop();
-        if (waterExcessAnimation) waterExcessAnimation.stop();
+function updateDay(){
+    let elapsed=millis()-startTime;
+    currentDay=floor(elapsed/800);
+    if(currentDay>10){
+        currentDay=10;
+        experimentRunning=false;
+        
+        // --- MODIFICATION START ---
+        // document.getElementById('resetBtn').disabled=false; // Reset is re-enabled here
+        // The Start button remains active, so we don't touch it.
+        // We re-enable the Reset button and the controls here.
+        document.getElementById('resetBtn').disabled=false;
+        // --- MODIFICATION END ---
+        
+        if(sunAnimation)sunAnimation.stop();
+        if(airAnimation)airAnimation.stop();
+        if(waterModerateAnimation)waterModerateAnimation.stop();
+        if(waterExcessAnimation)waterExcessAnimation.stop();
     }
 }
 
@@ -733,7 +787,7 @@ function resetExperiment() {
     seedStates = [0, 0, 0, 0];
     previousSeedStates = [0, 0, 0, 0];
     seedSnapshots = [null, null, null, null]; 
-    waterLevel = 1;
+    waterLevel = 0;
     sunlight = false; 
     air = false; 
     showInsights = false;
@@ -765,16 +819,12 @@ function resetExperiment() {
 }
 
 function mousePressed() {
-    if (showInsights && dist(mouseX, mouseY, 1030, 160) < 30) { 
-        showInsights = false; return;
-    }
-
-    if (mouseX > insightButton.x && mouseX < insightButton.x + insightButton.w &&
-        mouseY > insightButton.y && mouseY < insightButton.y + insightButton.h) {
-        showInsights = !showInsights; return;
-    }
+  if(showInsights&&dist(mouseX,mouseY,1030,160)<30){showInsights=false;return;}
+    if(mouseX>insightButton.x&&mouseX<insightButton.x+insightButton.w&&mouseY>insightButton.y&&mouseY<insightButton.y+insightButton.h){showInsights=!showInsights;return;}
     
-    if (experimentRunning) return;
+    // --- MODIFICATION START ---
+    // Block all parameter changes if the experiment is running
+    if(experimentRunning) return;
     
     const waterContainerX = 850 + 80;
     const waterContainerWidth = 360;

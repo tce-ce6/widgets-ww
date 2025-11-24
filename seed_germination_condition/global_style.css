@@ -291,6 +291,9 @@ input[type="checkbox"] {
 .gap-8{
     gap: 8px;
 }
+.gap-16{
+    gap: 16px;
+}
 
 /* Responsive adjustments for smaller screens */
 @media screen and (max-width: 1300px) {
