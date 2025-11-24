@@ -345,23 +345,8 @@ spinBtn.addEventListener("click", async () => {
   }
 
   spanElements.forEach((s) => s.classList.remove("active"));
-
-  // Choose a random slice index to stop on
-  const chosenIndex = Math.floor(Math.random() * labels.length);
-
-  // Compute the slice center angle in degrees (matches how spans are positioned)
-  // Note: spans use `sliceAngle * i + sliceAngle/2 - 8` in their transform, so include that -8deg offset.
-  const sliceCenterAngle = (sliceAngle * chosenIndex + sliceAngle / 2 - 16 + 360) % 360;
-
-  // We want normalized = sliceCenterAngle when the rotation finishes, where
-  // normalized = (360 - (rotation % 360)) % 360
-  // Solve rotation_mod = (360 - normalized) % 360
-  const desiredNormalized = sliceCenterAngle;
-  const rotationMod = (360 - desiredNormalized) % 360;
-
-  // Add several full turns for animation flair, with slight randomness
-  const fullTurns = 10 + Math.floor(Math.random() * 6); // 10..15 full turns
-  const newRotation = currentRotation + fullTurns * 360 + rotationMod;
+  const randomSpin = Math.random() * 360 + 3600;
+  const newRotation = currentRotation + randomSpin;
 
   const anim = wheel.animate(
     [
@@ -377,9 +362,9 @@ spinBtn.addEventListener("click", async () => {
 
   anim.onfinish = async () => {
     currentRotation = newRotation % 360;
-    // Ensure active slice corresponds to the chosen index
     updateActiveSlice(currentRotation);
-    selectedMolecule = labels[chosenIndex];
+    const normalized = (360 - (currentRotation % 360)) % 360;
+    selectedMolecule = labels[Math.floor(normalized / sliceAngle)];
     spinBtn.textContent = "START";
     spinBtn.dataset.state = "go";
 
