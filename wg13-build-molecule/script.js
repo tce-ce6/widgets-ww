@@ -318,8 +318,19 @@ labels.forEach((label, i) => {
 function updateActiveSlice(rotation) {
   const normalized = (360 - (rotation % 360)) % 360;
   const index = Math.floor(normalized / sliceAngle);
-  spanElements.forEach((s, i) => s.classList.toggle("active", i === index));
+
+  spanElements.forEach((s, i) => {
+    const active = i === index;
+    s.classList.toggle("active", active);
+    
+    if (active) {
+      console.log("labels[i]", labels[i]);
+      selectedMolecule = labels[i];   // 🔥 update selected molecule here
+      getEl("molecule-name").textContent = selectedMolecule;
+    }
+  });
 }
+
 
 document.getElementById("sidebar-btn").addEventListener("click", () => {
   document.getElementById("sidebar-wrapper").classList.toggle("active");
@@ -327,12 +338,15 @@ document.getElementById("sidebar-btn").addEventListener("click", () => {
 
 // ============ SPIN WHEEL LOGIC ============
 spinBtn.addEventListener("click", async () => {
+  
   if (spinBtn.dataset.state === "go") {
+    console.log("getEl", getEl("molecule-widget"));
+    
     getEl("molecule-widget").classList.add("active");
     hide("step1");
     show("step2");
     show("btn-wrapper");
-    getEl("molecule-name").textContent = selectedMolecule;
+    // getEl("molecule-name").textContent = selectedMolecule;
     highlightActiveMolecule();
 
     // Load hollow SVG for currently selected molecule (if any)
@@ -377,7 +391,7 @@ spinBtn.addEventListener("click", async () => {
     currentRotation = newRotation % 360;
     // Ensure active slice corresponds to the chosen index
     updateActiveSlice(currentRotation);
-    selectedMolecule = labels[chosenIndex];
+    // selectedMolecule = labels[chosenIndex];
     spinBtn.textContent = "START";
     spinBtn.dataset.state = "go";
 
