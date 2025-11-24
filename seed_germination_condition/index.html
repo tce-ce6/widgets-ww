@@ -7,23 +7,72 @@
     <script src="p5.js"></script>
     <script src="lottie.min.js"></script>
     <style>
-        body {
+        /* CSS FIXES FOR BACKDROP */
+        
+        /* Ensure HTML and body fill the viewport */
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             background-image: url(assets/BG_01.svg);
+            background-size: cover;
+            background-position: center;
             font-family: 'Arial', sans-serif;
         }
         
+        /* New Styles for the full-page, title-excluding backdrop */
+        #modal-backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Same opacity as original p5 backdrop (180/255 ≈ 0.7) */
+            z-index: 100; /* Backdrop layer */
+            display: none; /* Hidden by default */
+        }
+
+        /* MODIFICATION START: Ensure these elements are above the backdrop (z-index: 100) */
+        .wdgetTitle {
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            width: 100%;
+            text-align: center; 
+            z-index: 101; /* Layer 1: Above backdrop */
+        }
+
         #canvas-container {
             position: relative;
             margin-bottom: 20px;
             border-radius: 10px;
             overflow: hidden;
+            z-index: 101; /* Layer 1: Above backdrop. This holds the modal content and insight button. */
+        }
+        /* MODIFICATION END */
+        
+        .wdgetTitle h2 {
+            display: inline-block;
+            margin: 0;
+            background-color: #1d83ec;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 0 0 40px 40px;
+        }
+
+        /* Existing Styles (cleaned up) */
+        
+        .button-controls {
+            z-index: 10;
         }
         
         .button-container {
@@ -53,8 +102,7 @@
         }
 
         #resetBtn {
-                        border-radius: 25px;
-
+            border-radius: 25px;
             background-color: #F94877; 
         }
 
@@ -75,7 +123,8 @@
         left: 0;
         width: 100%;
         text-align: center; 
-        z-index: 10;
+        /* Kept original z-index 10, but .wdgetTitle handles the main widget title visibility */
+        z-index: 10; 
     }
 
         .title-container h3 {
@@ -90,8 +139,10 @@
     <link rel="stylesheet" href="global_style.css">
 </head>
 <body>
+    <div id="modal-backdrop-overlay"></div>
+    
      <div class="wdgetTitle">
-         <h2>Seed Germination Conditions</h2>
+          <h2>Seed Germination Conditions</h2>
      </div>
     <div id="canvas-container">
     </div>
@@ -109,6 +160,8 @@ let startTime;
 let seedGerminationFrames = [0, 0, 0, 0];
 // UI element positions
 const insightButton = { x: 270, y: 580, w: 150, h: 45 };
+// Close button position and size
+const closeModalButton = { x: 1315, y: 75, size: 60 }; // Center (1030, 160), Diameter 60
 
 // Experiment conditions
 let waterLevel = 0;
@@ -149,18 +202,24 @@ let lottieWaterCanvas;
 let airAnimation;
 let lottieAirCanvas;
 
+let backdropElement; // Reference to the new HTML backdrop element
+
 function preload() {
     svgAssets.pot = loadImage('assets/Pot.svg');
     svgAssets.sunIcon = loadImage('assets/Sun.svg');
     svgAssets.calendar = loadImage('assets/Calendar.svg');
     svgAssets.insightBtn = loadImage('assets/btn_Insight.svg');
     svgAssets.waterDropIcon = loadImage('assets/water-droplet.svg');
-    svgAssets.airIcon = loadImage('assets/air.svg'); // Replace AirIcon.svg with your actual SVG file name
+    svgAssets.airIcon = loadImage('assets/air.svg');
+    svgAssets.closeModal = loadImage('assets/closeModal.svg'); 
 }
 
 function setup() {
     let canvas = createCanvas(1500, 700);
     canvas.parent('canvas-container');
+    
+    // NEW: Get reference to the HTML backdrop element
+    backdropElement = document.getElementById('modal-backdrop-overlay');
 
     // --- Lottie Seed Initialization ---
     const seedBufferW = 120;
@@ -281,6 +340,11 @@ function setup() {
 function draw() {
     clear();
     
+    // NEW: Control the HTML backdrop visibility
+    if (backdropElement) {
+        backdropElement.style.display = showInsights ? 'block' : 'none';
+    }
+
     drawCalendar();
     drawInstructionText();
     drawPotAndEnvironment(); 
@@ -309,7 +373,7 @@ function updateCursor() {
     }
     
     // 2. Close Modal Button (if modal is open)
-    if (showInsights && dist(mouseX, mouseY, 1030, 160) < 30) {
+    if (showInsights && dist(mouseX, mouseY, closeModalButton.x, closeModalButton.y) < closeModalButton.size / 2) {
         pointer = true;
     }
 
@@ -419,8 +483,8 @@ function drawSeeds() {
     const originalHeight = 45;
     const originalWidth = 35;
     const seedPositions = [
-        { x: 230, y: yIndex },{x:300,y:yIndex}, // Seed 2 (75px gap)
-        {x:375,y:yIndex}, // Seed 3 (75px gap)
+        { x: 230, y: yIndex },{x:300,y:yIndex}, 
+        {x:375,y:yIndex}, 
         {x:450,y:yIndex}
     ];
 
@@ -607,7 +671,7 @@ function drawToggleControl(label, x, y, isOn) {
     textStyle(NORMAL);
     
     if (label === 'Air:') {
-        textWidthOffset = 50; // Adjusted value (e.g., from 80 to 25)
+        textWidthOffset = 50; 
     }
     if (label === 'Sunlight:') {
         text('Sunlight', labelDrawX, y); 
@@ -661,28 +725,25 @@ function drawInsightButton() {
 }
 
 function drawInsightsModal() {
-    fill(0, 0, 0, 180); 
-    noStroke(); 
-    rect(0, 0, width, height);
-    
+    // Draw the actual modal content box
     fill(255); 
-    rect(170, 150, 850, 460, 15);
+    rect(170, 65, 1150, 540, 15);
     
-    fill(80, 180, 100); 
-    noStroke(); 
-    circle(1030, 160, 60);
+    // Use SVG for Close button
+    const closeX = closeModalButton.x - closeModalButton.size / 2;
+    const closeY = closeModalButton.y - closeModalButton.size / 2;
+    const closeSize = closeModalButton.size;
     
-    stroke(255); 
-    strokeWeight(4); 
-    line(1020, 145, 1045, 175); 
-    line(1045, 145, 1020, 175);
+    if (svgAssets.closeModal) {
+        image(svgAssets.closeModal, closeX, closeY, closeSize, closeSize);
+    }
     
     fill(50); 
     noStroke(); 
     textAlign(LEFT, TOP); 
-    textSize(18);
+    textSize(24);
     
-    let yPos = 220;
+    let yPos = 180;
     const xPos = 220;
     
     textStyle(NORMAL);
@@ -707,21 +768,21 @@ function drawInsightsModal() {
     text(' for cellular respiration during germination.', xPos + textWidth('• Seeds need air (oxygen)') + 15, yPos);
     yPos += 55;
     
-   textStyle(NORMAL);
-text('• Most seeds can germinate in ', xPos, yPos);
+    textStyle(NORMAL);
+    text('• Most seeds can germinate in ', xPos, yPos);
 
-// Calculate the start position for 'darkness'
-let xBoldStart = xPos + textWidth('• Most seeds can germinate in ');
+    // Calculate the start position for 'darkness'
+    let xBoldStart = xPos + textWidth('• Most seeds can germinate in ');
 
-textStyle(BOLD);
-text('darkness', xBoldStart, yPos);
+    textStyle(BOLD);
+    text('darkness', xBoldStart, yPos);
 
-// Calculate the start position for ', but need light...'
-let xNormalStart = xBoldStart + textWidth('darkness');
+    // Calculate the start position for ', but need light...'
+    let xNormalStart = xBoldStart + textWidth('darkness');
 
-textStyle(NORMAL);
-text(', but need light for growth after sprouting.', xNormalStart, yPos);
-yPos += 55;
+    textStyle(NORMAL);
+    text(', but need light for growth after sprouting.', xNormalStart, yPos);
+    yPos += 55;
     
     textStyle(BOLD);
     text('• Optimal conditions', xPos, yPos);
@@ -732,7 +793,7 @@ yPos += 55;
     textStyle(NORMAL);
     text('• Both ', xPos, yPos);
     textStyle(BOLD);
-    text('too little and too much water', xPos + textWidth('• Both '), yPos);
+    text('too little and too much water', xPos + textWidth('• Both'), yPos);
     textStyle(NORMAL);
     text(' significantly reduce germination success.', xPos + textWidth('• Both too little and too much water')+ 24, yPos);
 }
@@ -752,10 +813,7 @@ function startExperiment(){
     if(air&&airAnimation){airAnimation.play();}
     if(waterLevel===1&&waterModerateAnimation){waterModerateAnimation.play();}else if(waterLevel===2&&waterExcessAnimation){waterExcessAnimation.play();}
     
-    // --- MODIFICATION START ---
-    // document.getElementById('startBtn').disabled=true; // REMOVED: Keep Start active
-    document.getElementById('resetBtn').disabled=true; // Reset is disabled only during the run
-    // --- MODIFICATION END ---
+    document.getElementById('resetBtn').disabled=true; 
 }
 function updateDay(){
     let elapsed=millis()-startTime;
@@ -764,12 +822,7 @@ function updateDay(){
         currentDay=10;
         experimentRunning=false;
         
-        // --- MODIFICATION START ---
-        // document.getElementById('resetBtn').disabled=false; // Reset is re-enabled here
-        // The Start button remains active, so we don't touch it.
-        // We re-enable the Reset button and the controls here.
         document.getElementById('resetBtn').disabled=false;
-        // --- MODIFICATION END ---
         
         if(sunAnimation)sunAnimation.stop();
         if(airAnimation)airAnimation.stop();
@@ -777,9 +830,6 @@ function updateDay(){
         if(waterExcessAnimation)waterExcessAnimation.stop();
     }
 }
-
-
-
 
 function resetExperiment() {
     experimentRunning = false;
@@ -791,6 +841,12 @@ function resetExperiment() {
     sunlight = false; 
     air = false; 
     showInsights = false;
+    
+    // Hide the HTML backdrop on reset
+    if (backdropElement) {
+        backdropElement.style.display = 'none';
+    }
+
     experimentResult = { germinated: 0, sprouted: false, result: 'None' };
     document.getElementById('startBtn').disabled = false;
     document.getElementById('resetBtn').disabled = false;
@@ -819,10 +875,18 @@ function resetExperiment() {
 }
 
 function mousePressed() {
-  if(showInsights&&dist(mouseX,mouseY,1030,160)<30){showInsights=false;return;}
-    if(mouseX>insightButton.x&&mouseX<insightButton.x+insightButton.w&&mouseY>insightButton.y&&mouseY<insightButton.y+insightButton.h){showInsights=!showInsights;return;}
+    // Check for close modal button click using constant
+    if(showInsights && dist(mouseX, mouseY, closeModalButton.x, closeModalButton.y) < closeModalButton.size / 2){
+        showInsights=false;
+        return;
+    }
     
-    // --- MODIFICATION START ---
+    // Check for insight button click
+    if(mouseX>insightButton.x&&mouseX<insightButton.x+insightButton.w&&mouseY>insightButton.y&&mouseY<insightButton.y+insightButton.h){
+        showInsights=!showInsights;
+        return;
+    }
+    
     // Block all parameter changes if the experiment is running
     if(experimentRunning) return;
     
