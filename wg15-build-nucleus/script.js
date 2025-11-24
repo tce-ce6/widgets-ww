@@ -106,19 +106,24 @@ function applyNameIds(json, svg) {
 // =============================
 document.querySelector("#add-proton-button").addEventListener("click", () => {
   addParticle("proton");
+  if (!isAnswerVisible) checkAnswer();
 });
 
 document.querySelector("#remove-proton-button").addEventListener("click", () => {
   removeParticle("proton");
+  if (!isAnswerVisible) checkAnswer();
 });
 
 document.querySelector("#add-neutron-button").addEventListener("click", () => {
   addParticle("neutron");
+  if (!isAnswerVisible) checkAnswer();
 });
 
 document.querySelector("#remove-neutron-button").addEventListener("click", () => {
   removeParticle("neutron");
+  if (!isAnswerVisible) checkAnswer();
 });
+
 
 // NEW: show-ans toggle listener
 document.querySelector("#show-ans").addEventListener("click", showCorrectAnswer);

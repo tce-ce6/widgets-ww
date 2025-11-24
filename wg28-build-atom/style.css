@@ -178,7 +178,7 @@
   position: relative;
 }
 
-#droping-wrapper::before {
+/* #droping-wrapper::before {
   content: "";
   background-image: radial-gradient(circle, #195FCF, #fff 70%, #fff 100%);
   height: 500px;
@@ -186,7 +186,7 @@
   filter: blur(50%);
   display: block;
   margin: 0 auto;
-}
+} */
 
 #sidebar-wrapper {
   position: relative;

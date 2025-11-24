@@ -2,6 +2,20 @@ let elementData = [];
 const MAX_PROTONS = 20;
 const MAX_NEUTRONS = 20;
 
+// =============================
+// ELECTRON GLOBALS
+// =============================
+
+// store electron DOM elements
+const electronParticles = [];
+
+// electron shell limits
+const SHELL_CAPACITY = [2, 8, 8, 18]; // K,L,M,N shells
+
+// shell radii (distance from nucleus)
+const SHELL_RADII = [70, 110, 150, 190]; // px
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.querySelector("#molecule-listing");
   elementData = await fetch("atom-data.json").then(r => r.json());
@@ -110,6 +124,113 @@ document.querySelector("#remove-neutron-button").addEventListener("click", () =>
   removeParticle("neutron");
 });
 
+document.querySelector("#add-electron-button").addEventListener("click", () => {
+  addElectron();
+});
+
+document.querySelector("#remove-electron-button").addEventListener("click", () => {
+  removeElectron();
+});
+
+function addElectron() {
+  resetFeedback();
+
+  const totalElectrons = electronParticles.length;
+
+  // Determine shell index from current total electrons
+  let shellIndex = 0;
+  let remaining = totalElectrons;
+
+  while (shellIndex < SHELL_CAPACITY.length && remaining >= SHELL_CAPACITY[shellIndex]) {
+    remaining -= SHELL_CAPACITY[shellIndex];
+    shellIndex++;
+  }
+
+  // No more shells available
+  if (shellIndex >= SHELL_CAPACITY.length) {
+    document.querySelector("#limit-note").textContent = "Maximum shell limit reached!";
+    return;
+  }
+
+  // Check shell capacity
+  if (remaining >= SHELL_CAPACITY[shellIndex]) {
+    document.querySelector("#limit-note").textContent =
+      `Shell ${shellIndex + 1} is full`;
+    return;
+  }
+
+  document.querySelector("#limit-note").textContent = "";
+
+  // Create electron
+  const droppingWrapper = document.querySelector("#droping-wrapper");
+  const electronImg = document.createElement("img");
+
+  electronImg.src = "assets/electron.svg";
+  electronImg.classList.add("electron");
+  electronImg.style.width = "20px";
+  electronImg.style.position = "absolute";
+
+  electronImg.addEventListener("click", () => removeSingleElectron(electronImg));
+
+  droppingWrapper.appendChild(electronImg);
+  electronParticles.push(electronImg);
+
+  updateElectronPositions();
+  updateCounters();
+}
+
+function removeElectron() {
+  const last = electronParticles.pop();
+  if (last) last.remove();
+
+  resetFeedback();
+  updateElectronPositions();
+  updateCounters();
+}
+
+function removeSingleElectron(el) {
+  el.remove();
+
+  const index = electronParticles.indexOf(el);
+  if (index !== -1) electronParticles.splice(index, 1);
+
+  resetFeedback();
+  updateElectronPositions();
+  updateCounters();
+}
+
+function updateElectronPositions() {
+  const droppingWrapper = document.querySelector("#droping-wrapper");
+  const rect = droppingWrapper.getBoundingClientRect();
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  let electronIndex = 0;
+
+  SHELL_CAPACITY.forEach((capacity, shell) => {
+    const electronsInShell = electronParticles.slice(
+      electronIndex,
+      electronIndex + capacity
+    );
+
+    const count = electronsInShell.length;
+    const radius = SHELL_RADII[shell];
+
+    electronsInShell.forEach((electron, i) => {
+      const angle = (i / count) * Math.PI * 2;
+
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+
+      electron.style.left = `${x}px`;
+      electron.style.top = `${y}px`;
+    });
+
+    electronIndex += count;
+  });
+}
+
+
 // Global array to hold the DOM elements of the added particles
 const droppedParticles = [];
 // Keep track of the last particle's position for stacking
@@ -157,8 +278,8 @@ function addParticle(type) {
     return;
   }
 
-  particleImg.style.width = '50px';
-  particleImg.style.height = '50px';
+  particleImg.style.width = '30px';
+  particleImg.style.height = '30px';
 
   const particleCount = droppedParticles.length;
   const radius = 20;
@@ -206,11 +327,14 @@ function removeParticle(type) {
 function updateCounters() {
   const protonCount = droppedParticles.filter(p => p.classList.contains("proton")).length;
   const neutronCount = droppedParticles.filter(p => p.classList.contains("neutron")).length;
+  const electronCount = electronParticles.length; // 👈 NEW
 
   document.querySelector("#protrons-count").textContent = protonCount;
-  // document.querySelector("#neutrons").textContent = neutronCount;
   document.querySelector("#total-mass").textContent = protonCount + neutronCount;
+
+  document.querySelector("#electrons-count").textContent = electronCount; // 👈 NEW
 }
+
 
 function checkAnswer() {
   document.querySelector("#limit-note").textContent = "";
@@ -257,12 +381,17 @@ function resetFeedback() {
 
 function resetStep2() {
   droppedParticles.forEach(p => p.remove());
-  droppedParticles.length = 0; // clear array
+  droppedParticles.length = 0;
+
+  electronParticles.forEach(e => e.remove());   // 👈 NEW
+  electronParticles.length = 0;                 // 👈 NEW
+
   updateCounters();
   document.querySelector("#feedback-image").style.display = "none";
   document.querySelector("#indicator-note").textContent = "";
   document.querySelector("#limit-note").textContent = "";
 }
+
 
 function repositionParticles() {
   const radius = 20;
