@@ -290,11 +290,24 @@
   transform: translate(-50%, -50%);
 }
 #electron-wrapper {
-  position: absolute;
-    left: 18%;
-    top: 17%;
-    transform: translate(-70%, -60%);
+    /* position: relative;
+    left: 393px;
+    top: 116px;
     pointer-events: none;
+    border: 2px solid red;
+    height: 420px;
+    width: 970px; */
+    /* transform: translate(396px, 121px) !important; */
+    height: 400px;
+    width: 670px;
+    transform: translate(815px, 263px);
+}
+#droping-wrapper {
+  position: relative;
+}
+.electron {
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 #data-panel-wrapper{
   border: 2px solid #C3BF73;
@@ -309,4 +322,7 @@
 }
 #data-panel-wrapper .record-txt{
   font-size: 40px;
+}
+#I_text{
+  display: none !important;
 }

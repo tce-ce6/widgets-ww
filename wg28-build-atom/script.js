@@ -7,6 +7,8 @@ let savedUserProtons = [];
 let savedUserNeutrons = [];
 let savedUserElectrons = [];
 
+let FIXED_CENTER_X = 0;
+let FIXED_CENTER_Y = 0;
 // =============================
 // ELECTRON GLOBALS
 // =============================
@@ -85,6 +87,7 @@ function applyNameIds(json, svg) {
 
       target.addEventListener("click", () => {
         selectedAtom = newId;
+setFixedCenter();    // 👈 ADD THIS
 
         document.querySelector("#step1").style.display = "none";
         document.querySelector("#step2").style.display = "block";
@@ -214,11 +217,6 @@ function removeSingleElectron(el) {
 }
 
 function updateElectronPositions() {
-  const droppingWrapper = document.querySelector("#droping-wrapper");
-  const rect = droppingWrapper.getBoundingClientRect();
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-
   let electronIndex = 0;
 
   SHELL_CAPACITY.forEach((capacity, shell) => {
@@ -228,23 +226,36 @@ function updateElectronPositions() {
     );
 
     const count = electronsInShell.length;
-    const radius = SHELL_RADII[shell];
+    const radius = SHELL_RADII[shell]; // in px, OK
 
     electronsInShell.forEach((electron, i) => {
       const angle = (i / count) * Math.PI * 2;
 
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
 
-      electron.style.left = `${x}px`;
-      electron.style.top = `${y}px`;
+      // FIXED CENTER
+      electron.style.left = "50%";
+      electron.style.top = "50%";
+
+      // Offset the electron around center
+      electron.style.transform =
+        `translate(-50%, -50%) translate(${x}px, ${y}px)`;
     });
 
     electronIndex += count;
   });
 
   updateShellRings();
-  updateShellCounts(); // 👈 NEW
+  updateShellCounts();
+}
+
+function setFixedCenter() {
+  const wrap = document.querySelector("#droping-wrapper");
+  const rect = wrap.getBoundingClientRect();
+
+  FIXED_CENTER_X = rect.width / 2;
+  FIXED_CENTER_Y = rect.height / 2;
 }
 
 
@@ -591,11 +602,6 @@ function updateShellRings() {
   });
 }
 function updateElectronPositions() {
-  const droppingWrapper = document.querySelector("#droping-wrapper");
-  const rect = droppingWrapper.getBoundingClientRect();
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-
   let electronIndex = 0;
 
   SHELL_CAPACITY.forEach((capacity, shell) => {
@@ -610,8 +616,8 @@ function updateElectronPositions() {
     electronsInShell.forEach((electron, i) => {
       const angle = (i / count) * Math.PI * 2;
 
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
+      const x = FIXED_CENTER_X + radius * Math.cos(angle);
+      const y = FIXED_CENTER_Y + radius * Math.sin(angle);
 
       electron.style.left = `${x}px`;
       electron.style.top = `${y}px`;
@@ -620,8 +626,10 @@ function updateElectronPositions() {
     electronIndex += count;
   });
 
-  updateShellRings();   // 👈 ADD THIS (mandatory)
+  updateShellRings();
+  updateShellCounts();
 }
+
 
 function updateShellCounts() {
   let electronIndex = 0;
