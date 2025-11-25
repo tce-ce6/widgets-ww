@@ -17,15 +17,7 @@
             background-color: #ffffff;
             font-family: Arial, sans-serif;
         }
-        /* Hidden container for Lottie-web's canvas */
-        #lottie-hidden-container {
-            position: absolute;
-            left: -9999px; /* Hide it completely off screen */
-            top: -9999px;
-            width: 1px; /* Minimal size */
-            height: 1px;
-            overflow: hidden;
-        }
+        /* Hidden container is no longer necessary as Lottie will draw to the p5 buffer */
     </style>
 </head>
 <body>
@@ -37,10 +29,7 @@
       </div>
     </div>
 
-    <div id="lottie-hidden-container"></div>
-
-
-<script>
+    <script>
     // ... (puzzleData array remains unchanged) ...
     const puzzleData = [
         { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 7, "y": 3 }, { "type": "diag_up", "x": 6, "y": 4 }, { "type": "diag_up", "x": 5, "y": 5 }, { "type": "line_h", "x": 5, "y": 2 }, { "type": "line_h", "x": 5, "y": 3 } ], "solution": [ { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 }, { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_down", "x": 2, "y": 3 }, { "type": "diag_down", "x": 3, "y": 4 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_h", "x": 4, "y": 2 }, { "type": "line_h", "x": 4, "y": 3 } ] }, "horizontal": { "question": [ { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 }, { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 7 }, { "type": "diag_down", "x": 5, "y": 6 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_v", "x": 7, "y": 5 }, { "type": "line_v", "x": 6, "y": 5 } ], "solution": [ { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 2 }, { "type": "diag_up", "x": 5, "y": 3 }, { "type": "diag_up", "x": 4, "y": 4 }, { "type": "line_v", "x": 7, "y": 4 }, { "type": "line_v", "x": 6, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_1" },
@@ -58,11 +47,13 @@
         const gridAreaX = 280 * scaleFactor, gridAreaY = 20 * scaleFactor, gridAreaSize = 480 * scaleFactor;
 
         // --- Lottie Animation Configuration ---
-        const lottieSize = 50 * scaleFactor; 
-        const wrongAnimAnchorX = gridAreaX - 30 * scaleFactor; // Next to "Not quite" message
-        const wrongAnimAnchorY = gridAreaY + 280 * scaleFactor - lottieSize/2;
-        const successAnimAnchorX = gridAreaX - 150 * scaleFactor - lottieSize/2; // Centered above "Congratulations"
-        const successAnimAnchorY = gridAreaY + 230 * scaleFactor - lottieSize * 1.5;
+        const lottieW = 200; // Standard size for Lottie buffer
+        const lottieH = 200; 
+        const drawSize = 50 * scaleFactor; // Size to draw on main canvas
+        const wrongAnimAnchorX = gridAreaX - 65 * scaleFactor; 
+        const wrongAnimAnchorY = gridAreaY + 280 * scaleFactor - drawSize/2;
+        const successAnimAnchorX = gridAreaX - 250 * scaleFactor - drawSize/2; 
+        const successAnimAnchorY = gridAreaY + 330 * scaleFactor - drawSize * 1.5;
 
         // --- State Variables (Unchanged) ---
         let currentPuzzleIndex = 0;
@@ -73,15 +64,15 @@
         let feedbackMessage = null;
         let feedbackTimer = 0;
 
-        // --- New Lottie Variables ---
+        // --- Lottie Variables ---
         let successAnim, wrongAnim;
-        let lottieCanvasElement; // Reference to the canvas Lottie-web creates
+        let lottieBuffer; // NEW: The p5.Graphics buffer for Lottie-web to draw on
 
         // --- UI Element Definitions ---
         let uiElements = {};
 
         p.preload = function() {
-             // Lottie-web loads JSON asynchronously, so we initialize it in setup
+              // Lottie-web loads JSON asynchronously, so we initialize it in setup
         };
 
         p.setup = function() {
@@ -91,55 +82,53 @@
             loadPuzzle();
             
             // --- LOTTIE INITIALIZATION ---
-            const container = document.getElementById('lottie-hidden-container');
-            const animParams = {
-                container: container,
+            if (typeof lottie === 'undefined') {
+                console.error("Lottie library is not loaded. Animations will not work.");
+                return;
+            }
+
+            // 1. Create the p5.Graphics buffer (The key fix!)
+            lottieBuffer = p.createGraphics(lottieW, lottieH); 
+            
+            // 2. Define shared renderer settings
+            const rendererSettings = {
+                // The Lottie animation draws into the off-screen buffer's canvas element
+                canvas: lottieBuffer.elt,
+                // And uses the off-screen buffer's drawing context
+                context: lottieBuffer.drawingContext, 
+                clearCanvas: true,
+            };
+
+            // 3. Initialize Wrong Animation
+            wrongAnim = lottie.loadAnimation({
                 renderer: 'canvas', // IMPORTANT: Use canvas renderer
                 loop: false,
                 autoplay: false,
-                rendererSettings: {
-                    context: null, // Lottie will create its own canvas context
-                    scaleMode: 'noScale',
-                    clearCanvas: true,
-                }
-            };
-            
-            // 1. Initialize Wrong Animation
-            wrongAnim = lottie.loadAnimation({
-                ...animParams,
-                path: 'assets/wrong.lottie',
-                name: 'wrongAnim'
+                path: 'assets/wrong.json',
+                name: 'wrongAnim',
+                rendererSettings: rendererSettings // Use the shared settings
             });
             wrongAnim.addEventListener('complete', () => {
                 if (wrongAnim.name === 'wrongAnim') {
-                    wrongAnim.goToAndStop(0, true); // Stop after one loop
+                    wrongAnim.goToAndStop(wrongAnim.totalFrames - 1, true); 
                 }
             });
 
-            // 2. Initialize Success Animation
+            // 4. Initialize Success Animation
             successAnim = lottie.loadAnimation({
-                ...animParams,
-                path: 'assets/success.lottie',
-                name: 'successAnim'
+                renderer: 'canvas', // IMPORTANT: Use canvas renderer
+                loop: false,
+                autoplay: false,
+                path: 'assets/success.json',
+                name: 'successAnim',
+                rendererSettings: rendererSettings // Use the shared settings
             });
             successAnim.addEventListener('complete', () => {
                 if (successAnim.name === 'successAnim') {
-                    // Success animation can loop or stop, depending on its design.
-                    // Assuming a one-shot animation:
+                    // This stop logic is fine for a one-shot animation
                     successAnim.goToAndStop(successAnim.totalFrames - 1, true); 
                 }
             });
-
-            // Lottie-web adds a canvas to the hidden container. We need to reference it.
-            // This assumes Lottie-web creates a canvas element directly inside the container.
-            // We set its size to a standard Lottie frame size (e.g., 200x200) for drawing clarity.
-            lottieCanvasElement = container.querySelector('canvas');
-            if (lottieCanvasElement) {
-                lottieCanvasElement.width = 200; 
-                lottieCanvasElement.height = 200;
-            } else {
-                 console.error("Lottie canvas element not found. Check Lottie initialization.");
-            }
         };
 
         function initializeUI() {
@@ -197,7 +186,7 @@
             }
         };
         
-        // ... (drawControls and drawGridAndPalette remain unchanged) ...
+        // ... (drawControls and drawGridAndPalette remain largely unchanged) ...
         function drawControls() {
             p.noStroke(); p.fill(50); // Dark text
             p.textSize(20 * scaleFactor); 
@@ -266,14 +255,24 @@
                 p.text(feedbackMessage, msgX, msgY); 
 
                 // Draw Wrong Animation next to the message
-                if (feedbackMessage === "Not quite, try again!" && wrongAnim) {
+                if (feedbackMessage === "Not quite, try again!" && wrongAnim && lottieBuffer) {
                     // Check if animation is running, if not, play it
-                    if (wrongAnim.isPaused) wrongAnim.play();
-                    
-                    // Render Lottie canvas content to main p5 canvas
-                    if (lottieCanvasElement) {
-                        p.image(lottieCanvasElement, wrongAnimAnchorX, wrongAnimAnchorY, lottieSize, lottieSize);
+                    if (wrongAnim.isPaused) {
+                        // wrongAnim.play();
                     }
+                    p.push();
+                    // Render Lottie buffer content to main p5 canvas (The fix!)
+                    // Note: Lottie-web automatically draws the current frame to the buffer.
+                    p.tint(220, 53, 69);
+                    p.strokeWeight(2);
+
+                    p.image(lottieBuffer, wrongAnimAnchorX, wrongAnimAnchorY, drawSize, drawSize);
+                    p.pop();
+                }else if (wrongAnim && feedbackMessage) {
+                    // FIX 2: When the timer expires (p.millis() >= feedbackTimer),
+                    // we force stop the animation and hide the feedback message.
+                    wrongAnim.goToAndStop(0, true);
+                    feedbackMessage = null; // Clear the message immediately after the timer expires
                 }
             }
         }
@@ -302,8 +301,8 @@
 
         // --- MODIFIED FUNCTION: drawCongrats ---
         function drawCongrats() {
-            p.fill(0, 0, 0, 150); // Dark overlay
-            p.rect(0, 0, canvasWidth, canvasHeight); // Full overlay
+            // p.fill(0, 0, 0, 150); // Dark overlay
+            // p.rect(0, 0, canvasWidth, canvasHeight); // Full overlay
 
             // Congrats message box
             const boxW = gridAreaSize - 250 * scaleFactor;
@@ -312,28 +311,26 @@
             const boxY = gridAreaY + 230 * scaleFactor;
             const textX = boxX + boxW / 2;
             const textY = boxY + boxH / 2;
-            
-            p.noStroke(); p.fill(255); p.stroke(0, 200, 0); // White box, green stroke
-            p.strokeWeight(3 * scaleFactor); 
-            p.rect(boxX, boxY, boxW, boxH, 10 * scaleFactor);
-            p.noStroke(); p.fill(0, 100, 0); // Dark green text
+            p.fill(0,200,0);             // White box
+            p.stroke(0, 200, 0);    // White box, green stroke
+            p.strokeWeight(1); 
+            // p.rect(boxX, boxY, boxW, boxH, 10 * scaleFactor);
             p.textSize(18 * scaleFactor); 
             p.textAlign(p.CENTER, p.CENTER);
             p.text(uiElements.congratsMsg.text, textX, textY);
 
             // Draw Success Animation
-            if (successAnim) {
+            if (successAnim && lottieBuffer) {
                 // Check if animation is running, if not, play it
                 if (successAnim.isPaused) successAnim.play();
-
-                // Render Lottie canvas content to main p5 canvas
-                if (lottieCanvasElement) {
-                    p.image(lottieCanvasElement, successAnimAnchorX, successAnimAnchorY, lottieSize, lottieSize);
-                }
+                p.push();
+                // Render Lottie buffer content to main p5 canvas (The fix!)
+                p.image(lottieBuffer, successAnimAnchorX, successAnimAnchorY, drawSize, drawSize);
+                p.pop();
             }
         }
         
-        // ... (p.mousePressed and helper functions remain unchanged) ...
+        // ... (p.mousePressed and helper functions) ...
         
         // Logic function - **MODIFIED** to play animation on success/wrong
         function checkSolution() {
@@ -357,13 +354,16 @@
             if (isCorrect) {
                 feedbackMessage = null;
                 puzzleCompleted = true;
-                if (successAnim) successAnim.play(); // Play success animation
+                if (successAnim) successAnim.play(); 
             } else {
                 feedbackMessage = "Not quite, try again!";
-                feedbackTimer = p.millis() + 2000;
+                feedbackTimer = p.millis() + 3000;
                 puzzleCompleted = false;
+
                 if (wrongAnim) {
-                    wrongAnim.goToAndPlay(0, true); // Play wrong animation from start
+                    // FIX 3: Force the animation to rewind to frame 0 AND play once.
+                    // This ensures it plays every time 'Check' is clicked when wrong.
+                    wrongAnim.goToAndPlay(0, true); 
                 }
             }
         }
@@ -371,6 +371,7 @@
         // ... (other unchanged helper functions) ...
         p.mousePressed = function() {
             if (puzzleCompleted) {
+                if (isMouseIn(uiElements.btnReset)) { loadPuzzle(); return; }
                  if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); }
                  if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); }
                  return;
@@ -477,7 +478,7 @@
 
         function drawButton(btn, type = 'default', isSelected = false) { // Added 'type'
             p.push();
-            const isHover = isMouseIn(btn);
+            const isHover = p.mouseX > btn.x && p.mouseX < btn.x + btn.w && p.mouseY > btn.y && p.mouseY < btn.y + btn.h;
 
             // Define color variables
             let fillCol, strokeCol, textCol, strokeW;
