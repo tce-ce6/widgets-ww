@@ -473,9 +473,9 @@ function drawPotAndEnvironment() {
     
     // --- Water (Water_Moderate.json / Water_Excess.json) ---
     const waterX = 120; 
-    const waterY = 90; 
+    const waterY = 50; 
     const waterW = 260; 
-    const waterH = 200; 
+    const waterH = 260; 
     
     if (experimentRunning && lottieWaterCanvas) {
         if (waterLevel === 1) {
@@ -588,8 +588,7 @@ function drawResultsBox() {
     text("• Germinated: ", xAxis, 380);
     textStyle(BOLD);
     text(`${experimentResult.germinated}/4`, xAxis + textWidth("• Germinated: "), 380);
-
-
+    
     textSize(16);
     textStyle(NORMAL);
     text("• Sprouted: ", xAxis, 400);
