@@ -221,49 +221,71 @@ const wordData = [
 // Global variables to store the currently selected game state
 let currentWordObject = null;
 let currentActivity = null;
-const initialText = document.getElementById('initialText');
-const afterText = document.getElementById('afterText');
 
+// LOTTIE ANIMATION CONSTANTS & VARIABLES
 const LOTTIE_ANIMATION_MAP = {
     "activities": "activities.json", "words": "words.json"
 };
+const ANIMATION_PATH_BASE = 'assets/lottieJson/';
 
+// HTML Container references
+const lottieRight = document.getElementById('lottieRight'); // Activities Lottie
+const lottieLeft = document.getElementById('lottieLeft');   // Word Lottie
+const initialText = document.getElementById('initialText');
+const afterText = document.getElementById('afterText');
+const showAnswerBtn = document.getElementById('showAnswer');
+const answerSvg = document.getElementById('Group 115');
+
+// Lottie Instances
 let activitiesLottieInstance = null;
 let wordsLottieInstance = null;
 
-const ANIMATION_PATH_BASE = 'assets/lottieJson/'; // Adjust this path if necessary
-const lottieRight = document.getElementById('lottieRight');
-const lottieLeft = document.getElementById('lottieLeft');
+// GAME STATE for Activity Clicks
+let activityClickCount = 0;
+const MAX_ACTIVITY_CLICKS = 3; 
+
+
+// SVG Elements (assuming these IDs/classes exist in your HTML SVG structure)
+const wordElement = document.getElementById('wordDisplay'); // Placeholder for the actual SVG element showing the word
+const activityElement = document.getElementById('activityDisplay'); // Placeholder for the actual SVG element showing the activity
+const answerForeignObject = document.querySelector('.svg-container foreignObject div'); // Container for the answer
+
+// --- LOTTIE CORE FUNCTIONS ---
+
 
 /**
- * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
+ * Loads a Lottie animation into a specified container.
+ * @param {HTMLElement} container The DOM element for the Lottie.
+ * @param {string} key The key from LOTTIE_ANIMATION_MAP ('words' or 'activities').
+ * @returns {LottieInstance | null} The created Lottie instance.
  */
-function loadInitialLottie(word) {
-    
-    if (!lottieLeft && !lottieRight) {
-        console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
-        return;
+function loadAndPauseLottie(container, key) {
+    if (!container) {
+        console.error(`Lottie container for ${key} not found.`);
+        return null;
     }
 
-    // 1. Destroy previous instance
-    if (currentLottieInstance) {
-        currentLottieInstance.destroy();
-        currentLottieInstance = null;
-    }
-
-    // 2. Find file path
-    const fileName = LOTTIE_ANIMATION_MAP[word];
-    if (!fileName) {
-        console.warn(`No Lottie file found for the word: ${word}`);
-        // Optionally, hide the container if no animation exists
-        container.innerHTML = '';
-        return;
-    }
+    const fileName = LOTTIE_ANIMATION_MAP[key];
+    if (!fileName) return null;
     const animationPath = ANIMATION_PATH_BASE + fileName;
-    console.log(animationPath);
 
-    // 3. Create the animation instance
-    currentLottieInstance = lottie.loadAnimation({
+    // --- REVISED DESTRUCTION LOGIC ---
+    // If the global instances exist, destroy them before reloading.
+    // This is safer than relying on lottie.getAnimation(container).
+    if (key === 'words' && wordsLottieInstance) {
+        wordsLottieInstance.destroy();
+        wordsLottieInstance = null;
+    }
+    if (key === 'activities' && activitiesLottieInstance) {
+        activitiesLottieInstance.destroy();
+        activitiesLottieInstance = null;
+    }
+    
+    // Ensure the container is visibly clear before loading the new SVG/animation
+    container.innerHTML = ''; 
+    // --- END REVISED DESTRUCTION LOGIC ---
+
+    const lottieInstance = lottie.loadAnimation({
         container: container,
         renderer: 'svg',
         loop: false,
@@ -271,39 +293,98 @@ function loadInitialLottie(word) {
         path: animationPath
     });
 
-    // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
-        requestAnimationFrame(() => {
-             currentLottieInstance.goToAndStop(0, true);
-        });
+    // Go to frame 0 immediately upon loading to show the initial state
+    lottieInstance.addEventListener('DOMLoaded', () => {
+        lottieInstance.goToAndStop(0, true);
     });
+
+    return lottieInstance;
+}
+
+
+/**
+ * Resets a Lottie instance to its initial state (Frame 0).
+ * @param {LottieInstance | null} instance The Lottie instance to reset.
+ */
+function resetLottie(instance) {
+    if (instance) {
+        instance.goToAndStop(0, true);
+        instance.stop();
+    }
 }
 
 /**
- * Starts playing the Lottie animation. (Replaces showFinalImage visual logic)
+ * Initializes both Lotties on page load and sets up click handlers.
  */
-function playLottieAnimation() {
-    if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
-        currentLottieInstance.goToAndStop(0, true);
-        currentLottieInstance.play();
+function initDualLotties() {
+    wordsLottieInstance = loadAndPauseLottie(lottieLeft, 'words');
+    activitiesLottieInstance = loadAndPauseLottie(lottieRight, 'activities');
+
+    // Attach click handlers
+    if (lottieLeft) {
+        lottieLeft.onclick = handleWordLottieClick;
+    }
+    if (lottieRight) {
+        lottieRight.onclick = handleActivityLottieClick;
+    }
+}
+
+// --- LOTTIE CLICK HANDLERS ---
+
+/**
+ * Handles click on the LEFT Lottie (Word Lottie).
+ * This should only play the Lottie animation for visual feedback.
+ */
+function handleWordLottieClick() {
+    if (wordsLottieInstance) {
+        wordsLottieInstance.stop();
+        wordsLottieInstance.play();
     }
 }
 
 /**
- * Hides the animation container by destroying the instance and clearing its content.
- * (Replaces hideFinalImage visual logic)
+ * Handles click on the RIGHT Lottie (Activity Lottie).
+ * This cycles through the activities and ultimately shows the answer.
  */
-function hideLottieAnimation() {
-    if (currentLottieInstance) {
-        currentLottieInstance.destroy();
-        currentLottieInstance = null;
+function handleActivityLottieClick() {
+    if (!currentWordObject) {
+        alert("पहले 'शब्द चुनें' पर क्लिक करें।");
+        return;
     }
-    const container = document.getElementById(LOTTIE_CONTAINER_ID);
-    if (container) {
-        container.innerHTML = '';
+    
+    // Play the Lottie animation for visual feedback
+    if (activitiesLottieInstance) {
+        activitiesLottieInstance.stop();
+        activitiesLottieInstance.play();
+    }
+
+    // Cycle through activities for the current word
+    const activities = currentWordObject.Activities;
+    
+    // 1. Increment click count
+    activityClickCount++;
+
+    if (activityClickCount <= MAX_ACTIVITY_CLICKS) {
+        // Select the activity corresponding to the click index (0-indexed)
+        const activityIndex = (activityClickCount - 1) % activities.length;
+        currentActivity = activities[activityIndex];
+        
+        updateDisplay();
+        hideAnswer();
+        
+        // Show the answer if it's the final click
+        if (activityClickCount === MAX_ACTIVITY_CLICKS) {
+             // After playing the Lottie once, show the answer
+             setTimeout(showAnswer, 500); // Small delay to let Lottie play
+        }
+
+    } else {
+        // After showing the answer, subsequent clicks do nothing or prompt
+        console.log("Activity cycle complete. Click 'Next' to reset.");
     }
 }
+
+// --- GAME LOGIC FUNCTIONS ---
 
 // Function to select a random word and activity
 function selectWordAndActivity() {
@@ -311,87 +392,154 @@ function selectWordAndActivity() {
     const randomIndex = Math.floor(Math.random() * wordData.length);
     currentWordObject = wordData[randomIndex];
 
-    // 2. Select a random activity for that word
-    const activityIndex = Math.floor(Math.random() * currentWordObject.Activities.length);
-    currentActivity = currentWordObject.Activities[activityIndex];
+    // Reset activity to the first one for the new word
+    currentActivity = currentWordObject.Activities[0];
+    
+    // Reset click counter
+    activityClickCount = 0;
 }
 
 // Function to display the selected word and activity
 function updateDisplay() {
-   
-    // Clear the previous answer
-    answerForeignObject.innerHTML = '';
-
     if (currentWordObject) {
-        // Update the word box
         wordElement.textContent = currentWordObject.Word;
     } else {
-        // Initial state before selection
-        wordElement.textContent = ' ';
+        wordElement.textContent = '...';
     }
 
     if (currentActivity) {
-        // Update the activity box
         activityElement.textContent = currentActivity.Activity;
     } else {
-        // Initial state before selection
         activityElement.textContent = '...';
     }
 }
 
 // Function to handle the 'शब्दचुनें' button click
 function handleWordSelection() {
-    // Reset state and select new word/activity
     selectWordAndActivity();
     updateDisplay();
-    // Hide the answer when a new activity is selected
     hideAnswer();
+    
+    // Reset the Activities Lottie to initial state
+    resetLottie(activitiesLottieInstance);
+    // You might want to play the Words Lottie here for selection feedback
+    handleWordLottieClick();
+    
+    // Hide the initial instruction text and show the after text
+    initialText.style.display = 'none';
+    afterText.style.display = 'block';
 }
 
-// Function to handle the 'गतिविधिचुनें' button click (re-selects only activity for the same word)
-function handleActivitySelection() {
-    if (!currentWordObject) {
-        // If no word is selected, select both
-        handleWordSelection();
+/**
+ * Loads the 'words' Lottie, waits for its DOM to load, and injects the new word 
+ * into the text element with ID 'word'.
+ * * NOTE: The SVG text element ID must be exactly 'word'.
+ * @param {string} wordToDisplay The Hindi word to be displayed inside the Lottie SVG.
+ */
+function loadAndSetWordLottie(wordToDisplay) {
+    if (!lottieLeft) {
+        console.error("Lottie container 'lottieLeft' not found.");
         return;
     }
+
+    // 1. Destroy and Load the Lottie (using the existing helper function)
+    wordsLottieInstance = loadAndPauseLottie(lottieLeft, 'words');
+
+    if (wordsLottieInstance) {
+        // 2. Wait for the SVG content to be ready
+        wordsLottieInstance.addEventListener('DOMLoaded', () => {
+            // Lottie renders its content (SVG) inside the container.
+            // We search for the specific text element within the container.
+
+            // The 'word' ID might be inside a <text> element or a <tspan>.
+            // We target the element with the ID 'word' which Lottie will create.
+            // The actual ID in your example is "à¤œà¤µà¤¾à¤¨", so we use the fixed 'word' ID here,
+            // assuming you will adjust the Lottie file's text layer name to 'word'.
+            const wordTextElement = document.getElementById('word');
+            
+            if (wordTextElement) {
+                // To replace all text correctly, we often clear existing tspans and add a new one.
+                wordTextElement.innerHTML = '';
+                
+                // Create a new tspan element to hold the text
+                const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                tspan.textContent = wordToDisplay;
+                
+                // Apply desired styling/positioning (based on your Lottie's setup)
+                // You may need to manually adjust x/y coordinates here if the text alignment breaks.
+                // Example positioning:
+                tspan.setAttribute('x', '50%'); // Center horizontally
+                tspan.setAttribute('dy', '0.5em'); // Center vertically relative to the baseline
+
+                // Append the new text
+                wordTextElement.appendChild(tspan);
+                
+                console.log(`Lottie text updated to: ${wordToDisplay}`);
+                
+            } else {
+                console.warn(`Text element with ID 'word' not found in the Lottie SVG. Cannot inject word.`);
+                // Fallback: Just update the display element outside the Lottie if needed.
+            }
+            
+            // Ensure it starts at frame 0
+            wordsLottieInstance.goToAndStop(0, true);
+        }, { once: true }); // Use { once: true } to remove the listener after execution
+    }
+}
+
+// Function to handle the 'शब्दचुनें' button click
+function handleWordSelection() {
+    // 1. Reset state and select new word/activity
+    selectWordAndActivity();
     
-    // 1. Select a new random activity for the current word
-    const activities = currentWordObject.Activities;
-    const activityIndex = Math.floor(Math.random() * activities.length);
-    currentActivity = activities[activityIndex];
-    
-    // 2. Update the display and hide the answer
+    // 2. Update the display elements (outside the Lottie)
     updateDisplay();
     hideAnswer();
+    
+    // 3. Load the Lottie and INJECT THE NEW WORD
+    if (currentWordObject && currentWordObject.Word) {
+        loadAndSetWordLottie(currentWordObject.Word);
+    }
+    
+    // 4. Reset the Activities Lottie
+    resetLottie(activitiesLottieInstance);
+    
+    // Hide the initial instruction text and show the after text
+    initialText.style.display = 'none';
+    afterText.style.display = 'block';
+    
+    // Optional: Play the Words Lottie to show the new word appearing
+    handleWordLottieClick();
 }
 
 // Function to display the answer
 function showAnswer() {
-    if (!currentActivity) {
-        alert("पहले 'शब्द चुनें' और 'गतिविधि चुनें' पर क्लिक करें।");
-        return;
-    }
+    if (!currentActivity) return;
 
-    const answerForeignObject = document.querySelector('.svg-container foreignObject div');
-    const answerContainer = document.createElement('div');
-    answerContainer.style.color = '#BE1C1C';
-    answerContainer.style.fontWeight = 'bold';
-    answerContainer.style.fontSize = '35px';
-    answerContainer.style.padding = '10px';
+    // Show the HTML answer div
+    showAnswer.addEventListener('click', () => {
+        answerSvg.style.display = 'block';
+    })
+    const answerContainer = document.getElementById('answer-container'); // Assuming a container div for the answer
     
-    // Generate the HTML for the answer, handling multiple lines/points
-    const answerHTML = currentActivity.Answer.map(ans => `<p style="margin: 0; padding: 0;">${ans}</p>`).join('');
+    // Clear previous content and fill with the answer
+    let answerHTML = currentActivity.Answer.map(ans => `<p style="margin: 0; padding: 0;">${ans}</p>`).join('');
     
-    answerContainer.innerHTML = `उत्तर: <br/>${answerHTML}`;
-    
-    answerForeignObject.innerHTML = ''; // Clear previous content
-    answerForeignObject.appendChild(answerContainer);
+    // Assuming 'answer-container' is the div you want to show/fill
+    if (answerContainer) {
+        answerContainer.innerHTML = `उत्तर: <br/>${answerHTML}`;
+        answerContainer.style.display = 'block'; // Or however you show it
+    }
 }
 
 // Function to hide the answer (used when a new word/activity is selected)
 function hideAnswer() {
-    const answerForeignObject = document.querySelector('.svg-container foreignObject div');
+    const answerContainer = document.getElementById('answer-container');
+    if (answerContainer) {
+        answerContainer.innerHTML = '';
+        answerContainer.style.display = 'none';
+    }
+    // Also reset the SVG text container to empty/placeholder
     answerForeignObject.innerHTML = '';
 }
 
@@ -399,39 +547,38 @@ function hideAnswer() {
 function resetGame() {
     currentWordObject = null;
     currentActivity = null;
+    activityClickCount = 0;
 
-    wordElement.textContent = 'जवान'; // Reset to the initial placeholder from your SVG
-    activityElement.textContent = 'विलोम शब्द बताइए'; // Reset to the initial placeholder
-    answerForeignObject.innerHTML = 'askdjbasjdvas'; // Reset to the initial placeholder
+    // Reset Lotties to initial state
+    resetLottie(activitiesLottieInstance);
+    resetLottie(wordsLottieInstance);
 
-    // Reset the buttons' text to their initial state (or prompt the user)
-    // We'll leave the button text as is for simplicity, relying on the user to click 'शब्दचुनें'.
+    // Reset display elements to placeholders
+    wordElement.textContent = '...'; 
+    activityElement.textContent = '...';
+    hideAnswer(); // Hide the answer div
+    
+    // Show initial instruction text
+    initialText.style.display = 'block';
+    afterText.style.display = 'none';
+    
+    updateDisplay();
 }
 
 
 // Wait for the DOM to fully load before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Attach event listeners to your SVG-based "buttons"
-    
-    // 1. 'शब्द चुनें' Button (inside the SVG)
-    // We'll attach the listener to the whole group (path + text) for simplicity
-    const shabdBtns = document.querySelectorAll('#shabd-widget path[fill="#94D8B3"]')[0].parentNode; 
-    shabdBtns.addEventListener('click', handleWordSelection);
-    
-    // 2. 'गतिविधि चुनें' Button (inside the SVG)
-    const activityBtns = document.querySelectorAll('#shabd-widget path[fill="#94D8B3"]')[1].parentNode;
-    activityBtns.addEventListener('click', handleActivitySelection);
-    
-    // 3. 'Show Answer' Button (outside the SVG)
-    const showAnswerBtn = document.getElementById('show-example-btn');
-    showAnswerBtn.addEventListener('click', showAnswer);
+    // Initialize both Lotties and their click listeners
+    initDualLotties();
 
-    // 4. 'Reset' Button (outside the SVG)
+    // 4. 'Reset' Button (HTML)
     const resetBtn = document.getElementById('next-btn');
     resetBtn.addEventListener('click', resetGame);
+
+    answerSvg.style.display = 'none';
     
-    initialText.style.display = 'block';
-    afterText.style.display = 'none';
-    // Initial display update (to clear the SVG's default placeholder text if needed)
-    updateDisplay();
+    // Initial setup
+    handleWordSelection();
+    hideAnswer();
+    resetGame(); // Start in a clean state
 });

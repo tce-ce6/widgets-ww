@@ -19,7 +19,7 @@
 
 #shabd-widget .container::after {
   content: "";
-  background-image: url("assets/bg2.svg");
+  background-image: url("assets/BG.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -130,15 +130,15 @@
 }
 
 #shabd-widget .wdgetTitle h2 {
-  font-size: 16px;
+  font-size: 23px;
   font-weight: 600;
   text-align: left;
-  background: #1e6bef;
+  background: #b478ff;
   padding: 5px 20px;
-  color: #fff;
+  color: black;
   border-radius: 0 0px 20px 20px;
-  background: #099eed;
-  background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%)
+  background: #b478ff;
+  /* background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%) */
 }
 
 #shabd-widget .versionText {

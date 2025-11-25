@@ -169,6 +169,9 @@ button {
   cursor: pointer;
   font-size: 34px !important;
 }
+button:focus{
+  outline: none;
+}
 
 /* Responsive Adjustments */
 /* @media (max-width: 768px) {
@@ -473,6 +476,7 @@ input[type="range"]::-moz-range-thumb {
   height: auto;
   width: 642px;
   object-fit: contain;
+  max-height: 100%;
 }
 .img-wrapper{
   display: flex;
@@ -486,9 +490,8 @@ input[type="range"]::-moz-range-thumb {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  padding: 20px 0;
+  padding: 28px 0 0 0;
   row-gap: 25px;
-  max-height: 200px;  /* VERY IMPORTANT */
   overflow-y: auto;
 }
 .currency-piece{
