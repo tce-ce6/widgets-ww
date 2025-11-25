@@ -75,8 +75,112 @@ const correctAnswer = document.getElementById('correct_answer');
 const tryAgain = document.getElementById('tryAgainBtn');
 const text = document.getElementById('text');
 
+// --- Constants ---
+const ANIMATION_PATH_BASE = 'Assets/lotties/'; // Adjust this path if necessary
+const LOTTIE_CONTAINER_ID = 'lottieWrapper'; // ID of the SVG group/DIV where Lottie renders
+
+const LOTTIE_ANIMATION_MAP = {
+    "success": "success.json", 
+    "wrong": "wrong.json"
+};
+
+// --- Global Variable ---
+let currentLottieInstance = null; // **REQUIRED ADDITION**
+
 // --- Utility Functions ---
 
+/**
+ * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
+ */
+function loadInitialLottie(word) {
+    const container = document.getElementById(LOTTIE_CONTAINER_ID);
+    if (!container) {
+        console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
+        return;
+    }
+
+    // 1. Destroy previous instance
+    if (currentLottieInstance) {
+        currentLottieInstance.destroy();
+        currentLottieInstance = null;
+    }
+
+    // 2. Find file path
+    const fileName = LOTTIE_ANIMATION_MAP[word];
+    if (!fileName) {
+        console.warn(`No Lottie file found for the word: ${word}`);
+        // Optionally, hide the container if no animation exists
+        container.innerHTML = '';
+        return;
+    }
+    const animationPath = ANIMATION_PATH_BASE + fileName;
+    console.log(animationPath);
+
+    // 3. Create the animation instance
+    // NOTE: Ensure the 'lottie' library is loaded globally before this code runs.
+    currentLottieInstance = lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true, // Start paused
+        path: animationPath
+    });
+
+    // // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
+    // // This is useful if the first frame is a static image before the animation starts.
+    // currentLottieInstance.addEventListener('DOMLoaded', () => {
+    //     requestAnimationFrame(() => {
+    //         currentLottieInstance.goToAndStop(0, true);
+    //     });
+    // });
+}
+
+/**
+ * Starts playing the Lottie animation.
+ */
+function playLottieAnimation() {
+    if (currentLottieInstance) {
+        // Ensure it starts from the beginning and play!
+        currentLottieInstance.goToAndStop(0, true);
+        currentLottieInstance.play();
+    }
+}
+
+/**
+ * Hides the animation container by destroying the instance and clearing its content.
+ */
+function hideLottieAnimation() {
+    if (currentLottieInstance) {
+        currentLottieInstance.destroy();
+        currentLottieInstance = null;
+    }
+    const container = document.getElementById(LOTTIE_CONTAINER_ID);
+    if (container) {
+        container.innerHTML = '';
+    }
+}
+
+// --- NEW MAIN LOGIC FUNCTION ---
+
+/**
+ * Main handler to load and play the 'success' or 'wrong' Lottie animation
+ * based on the answer result.
+ * @param {boolean} isCorrect - true if the answer is correct, false otherwise.
+ */
+function handleAnswerResult(isCorrect) {
+    // 1. Determine which animation to load
+    const animationKey = isCorrect ? "success" : "wrong";
+
+    // 2. Load the initial state (Frame 0) of the chosen animation
+    loadInitialLottie(animationKey);
+
+    // // 3. Play the animation once the data is ready
+    // if (currentLottieInstance) {
+    //     currentLottieInstance.addEventListener('data_ready', () => {
+    //         playLottieAnimation();
+    //     });
+    // }
+}
 /**
  * Updates the image source and detail displays based on the current item index.
  * @param {number} index - The index of the item in ITEMS_DATA to display.
@@ -323,6 +427,7 @@ function checkPayment() {
         isCorrect = false;
         console.log(message);
     }
+    handleAnswerResult(isCorrect);
 }
 
 

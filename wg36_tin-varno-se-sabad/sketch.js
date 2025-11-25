@@ -57,6 +57,10 @@ let currentLottieInstance = null;
 
 const ANIMATION_PATH_BASE = 'Assets/lottie-json/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
+let lettersDiv = document.getElementById('lettersDiv');
+let dashLine = document.getElementById('Group 212');
+let wordBox = document.getElementById('wordBox');
+let completeWord = document.getElementById('completeWord');
 
 /**
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
@@ -128,15 +132,6 @@ function hideLottieAnimation() {
     }
 }
 
-
-/**
- * Selects a random word from the words array
- */
-// function selectRandomWord() {
-//     currentWordIndex = Math.floor(Math.random() * words.length);
-//     currentWord = words[currentWordIndex];
-//     return currentWord;
-// }
 
 /**
  * Selects words one by one sequentially, wrapping back to the start 
@@ -270,6 +265,11 @@ function showFinalImage() {
     // Play word sound after a small delay to sync with animation start
     setTimeout(() => {
         playWordSound();
+        dashLine.style.display = 'none';
+        wordBox.style.display = 'block';
+        completeWord.textContent = `${currentWord.word}`;
+        completeWord.style.display = 'block';
+        lettersDiv.style.display = 'none';
     }, 2500);
 }
 
@@ -426,6 +426,9 @@ function shakeAnswerSlots() {
  * Resets the game with a new word
  */
 function resetSentence() {
+    lettersDiv.style.display = 'block';
+    dashLine.style.display = 'block';
+    completeWord.style.display = 'none';
     loadWord(selectNextWord());
 }
 
@@ -435,12 +438,18 @@ function resetSentence() {
 function showAnswer() {
     if (!currentWord) return;
 
-    currentWord.answer.forEach((letter, index) => {
-        answerSlots[index] = letter;
-        if (answerSlotElements[index]) {
-            answerSlotElements[index].textContent = letter;
-        }
-    });
+    // currentWord.answer.forEach((letter, index) => {
+    //     answerSlots[index] = letter;
+    //     if (answerSlotElements[index]) {
+    //         answerSlotElements[index].textContent = letter;
+    //     }
+    // });
+    
+        dashLine.style.display = 'none';
+        wordBox.style.display = 'block';
+        completeWord.textContent = `${currentWord.word}`;
+        completeWord.style.display = 'block';
+        lettersDiv.style.display = 'none';
 
     // Show final image (triggers Lottie animation playback)
     showFinalImage();
