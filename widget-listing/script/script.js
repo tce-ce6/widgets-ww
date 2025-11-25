@@ -172,10 +172,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Build a Nucleus",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg15-build-nucleus/index.html",
     imagePath: "./assets/wg-15.png",
     creators: "ni-sh-15",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "शब्दों का खेल",
@@ -193,10 +193,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Build an Atom",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg28-build-atom/index.html",
     imagePath: "./assets/wg-28.png",
     creators: "as-sh-28",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   
 

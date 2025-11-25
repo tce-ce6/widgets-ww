@@ -1,6 +1,11 @@
 let elementData = [];
 const MAX_PROTONS = 20;
 const MAX_NEUTRONS = 20;
+let isAnswerShown = false;
+
+let savedUserProtons = [];
+let savedUserNeutrons = [];
+let savedUserElectrons = [];
 
 // =============================
 // ELECTRON GLOBALS
@@ -13,7 +18,7 @@ const electronParticles = [];
 const SHELL_CAPACITY = [2, 8, 8, 18]; // K,L,M,N shells
 
 // shell radii (distance from nucleus)
-const SHELL_RADII = [70, 110, 150, 190]; // px
+const SHELL_RADII = [100, 150, 200, 250]; // px
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -45,6 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 document.querySelector("#check-ans").addEventListener("click", checkAnswer);
 document.querySelector("#reset-btn").addEventListener("click", resetStep2);
+document.querySelector("#show-ans").addEventListener("click", toggleShowAnswer);
 
 document.getElementById("sidebar-btn").addEventListener("click", () => {
   document.getElementById("sidebar-wrapper").classList.toggle("active");
@@ -94,9 +100,9 @@ function applyNameIds(json, svg) {
         console.log("match.symbol", match.symbol);
 
         if (match) {
-          document.querySelector("#selected-atom").textContent = match.symbol;
+          // document.querySelector("#selected-atom").textContent = match.symbol;
         } else {
-          document.querySelector("#selected-atom").textContent = "?";
+          // document.querySelector("#selected-atom").textContent = "?";
         }
       });
 
@@ -162,7 +168,7 @@ function addElectron() {
   document.querySelector("#limit-note").textContent = "";
 
   // Create electron
-  const droppingWrapper = document.querySelector("#droping-wrapper");
+  const electronWrapper = document.querySelector("#electron-wrapper");  // 👈 FIX
   const electronImg = document.createElement("img");
 
   electronImg.src = "assets/electron.svg";
@@ -172,12 +178,16 @@ function addElectron() {
 
   electronImg.addEventListener("click", () => removeSingleElectron(electronImg));
 
-  droppingWrapper.appendChild(electronImg);
+  electronWrapper.appendChild(electronImg);  // 👈 FIXED append target
+
   electronParticles.push(electronImg);
 
   updateElectronPositions();
   updateCounters();
+  updateShellCounts(); // 👈 NEW
+
 }
+
 
 function removeElectron() {
   const last = electronParticles.pop();
@@ -186,6 +196,8 @@ function removeElectron() {
   resetFeedback();
   updateElectronPositions();
   updateCounters();
+  updateShellCounts(); // 👈 NEW
+
 }
 
 function removeSingleElectron(el) {
@@ -197,6 +209,8 @@ function removeSingleElectron(el) {
   resetFeedback();
   updateElectronPositions();
   updateCounters();
+  updateShellCounts(); // 👈 NEW
+
 }
 
 function updateElectronPositions() {
@@ -228,7 +242,14 @@ function updateElectronPositions() {
 
     electronIndex += count;
   });
+
+  updateShellRings();
+  updateShellCounts(); // 👈 NEW
 }
+
+
+
+
 
 
 // Global array to hold the DOM elements of the added particles
@@ -282,13 +303,13 @@ function addParticle(type) {
   particleImg.style.height = '30px';
 
   const particleCount = droppedParticles.length;
-  const radius = 20;
+  const radius = 10;
   const angle = particleCount * 0.618034 * 2 * Math.PI;
 
   const offsetX = radius * Math.sqrt(particleCount) * Math.cos(angle);
   const offsetY = radius * Math.sqrt(particleCount) * Math.sin(angle);
 
-  const zOffset = particleCount * 0.1;
+  const zOffset = particleCount * - 0.1;
   const rotation = Math.random() * 360;
 
   particleImg.style.position = 'absolute';
@@ -329,15 +350,11 @@ function updateCounters() {
   const neutronCount = droppedParticles.filter(p => p.classList.contains("neutron")).length;
   const electronCount = electronParticles.length; // 👈 NEW
 
-  document.querySelector("#protrons-count").textContent = protonCount;
-  document.querySelector("#total-mass").textContent = protonCount + neutronCount;
-
-  document.querySelector("#electrons-count").textContent = electronCount; // 👈 NEW
 }
 
 
 function checkAnswer() {
-  document.querySelector("#limit-note").textContent = "";
+  resetFeedback(); // clear previous messages
 
   const protonCount = droppedParticles.filter(p => p.classList.contains("proton")).length;
   const neutronCount = droppedParticles.filter(p => p.classList.contains("neutron")).length;
@@ -351,50 +368,61 @@ function checkAnswer() {
     e.neutrons === neutronCount
   );
 
-  const feedbackImg = document.querySelector("#feedback-image");
+  const note = document.querySelector("#indicator-note");
 
   if (match) {
-
-    // Set indicator text (stable info)
-    document.querySelector("#indicator-note").textContent = match.indicator;
-
-    // Show stable image
-    feedbackImg.src = "./assets/stable.svg";
-    feedbackImg.style.display = "block";
+    // ✔ Correct answer
+    note.textContent = "That is the correct answer!";
+    note.style.color = "green";
   } else {
-    // No match → isotope incorrect
-    document.querySelector("#indicator-note").textContent =
-      "This combination does not match any known isotope.";
-    document.querySelector("#indicator-note").style.color = "red";
-
-    // Show unstable image
-    feedbackImg.src = "./assets/unstable.svg";
-    feedbackImg.style.display = "block";
+    // ❌ Incorrect answer
+    note.textContent = "That's incorrect. Try again!";
+    note.style.color = "red";
   }
 }
 
+
 function resetFeedback() {
-  document.querySelector("#feedback-image").style.display = "none";
-  document.querySelector("#indicator-note").textContent = "";
+  const note = document.querySelector("#indicator-note");
+
+  note.textContent = "";
+  note.style.color = "";
   document.querySelector("#limit-note").textContent = "";
 }
 
+
 function resetStep2() {
+  // remove nucleus particles
   droppedParticles.forEach(p => p.remove());
   droppedParticles.length = 0;
 
-  electronParticles.forEach(e => e.remove());   // 👈 NEW
-  electronParticles.length = 0;                 // 👈 NEW
+  // remove electrons
+  electronParticles.forEach(e => e.remove());
+  electronParticles.length = 0;
 
+  // update counters
   updateCounters();
+
+  // hide feedback
   document.querySelector("#feedback-image").style.display = "none";
   document.querySelector("#indicator-note").textContent = "";
   document.querySelector("#limit-note").textContent = "";
+
+  // reset shell counts
+  document.getElementById("shell-k").textContent = 0;
+  document.getElementById("shell-L").textContent = 0;
+  document.getElementById("shell-M").textContent = 0;
+  document.getElementById("shell-N").textContent = 0;
+
+  // remove shell rings
+  const shellWrapper = document.querySelector("#shell-wrapper");
+  if (shellWrapper) shellWrapper.innerHTML = "";
 }
 
 
+
 function repositionParticles() {
-  const radius = 20;
+  const radius = 10;
 
   droppedParticles.forEach((particle, index) => {
     const angle = index * 0.618034 * 2 * Math.PI; // golden angle
@@ -531,3 +559,153 @@ document.querySelector("#home-btn").addEventListener("click", () => {
   // Reset scroll button state
   updateScrollDownButton();
 });
+
+function updateShellRings() {
+  const shellWrapper = document.querySelector("#shell-wrapper");
+  shellWrapper.innerHTML = ""; // clear old rings
+
+  let electronIndex = 0;
+
+  SHELL_CAPACITY.forEach((capacity, shell) => {
+    const electronsInShell = electronParticles.slice(
+      electronIndex,
+      electronIndex + capacity
+    );
+
+    const count = electronsInShell.length;
+
+    // If this shell has electrons → draw ring
+    if (count > 0) {
+      const radius = SHELL_RADII[shell];
+
+      const ring = document.createElement("div");
+      ring.classList.add("atom-shell");
+
+      ring.style.width = `${radius * 2}px`;
+      ring.style.height = `${radius * 2}px`;
+
+      shellWrapper.appendChild(ring);
+    }
+
+    electronIndex += count;
+  });
+}
+function updateElectronPositions() {
+  const droppingWrapper = document.querySelector("#droping-wrapper");
+  const rect = droppingWrapper.getBoundingClientRect();
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+
+  let electronIndex = 0;
+
+  SHELL_CAPACITY.forEach((capacity, shell) => {
+    const electronsInShell = electronParticles.slice(
+      electronIndex,
+      electronIndex + capacity
+    );
+
+    const count = electronsInShell.length;
+    const radius = SHELL_RADII[shell];
+
+    electronsInShell.forEach((electron, i) => {
+      const angle = (i / count) * Math.PI * 2;
+
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+
+      electron.style.left = `${x}px`;
+      electron.style.top = `${y}px`;
+    });
+
+    electronIndex += count;
+  });
+
+  updateShellRings();   // 👈 ADD THIS (mandatory)
+}
+
+function updateShellCounts() {
+  let electronIndex = 0;
+
+  // K, L, M, N shell counters
+  let shellCounts = [0, 0, 0, 0];
+
+  SHELL_CAPACITY.forEach((capacity, shell) => {
+    const electronsInShell = electronParticles.slice(
+      electronIndex,
+      electronIndex + capacity
+    );
+
+    shellCounts[shell] = electronsInShell.length;
+
+    electronIndex += electronsInShell.length;
+  });
+
+  // Update UI text
+  document.getElementById("shell-k").textContent = shellCounts[0];
+  document.getElementById("shell-L").textContent = shellCounts[1];
+  document.getElementById("shell-M").textContent = shellCounts[2];
+  document.getElementById("shell-N").textContent = shellCounts[3];
+}
+function toggleShowAnswer() {
+  if (!selectedAtom) return;
+
+  const cleanName = selectedAtom.split("_")[0];
+  const match = elementData.find(e => e.element.toLowerCase() === cleanName.toLowerCase());
+  if (!match) return;
+
+  if (!isAnswerShown) {
+    // ==========================
+    // SHOW ANSWER
+    // ==========================
+    isAnswerShown = true;
+    document.querySelector("#show-ans").textContent = "Hide Answer";
+
+    // ---- SAVE USER STATE ----
+    savedUserProtons = droppedParticles.filter(p => p.classList.contains("proton")).map(() => "proton");
+    savedUserNeutrons = droppedParticles.filter(p => p.classList.contains("neutron")).map(() => "neutron");
+    savedUserElectrons = electronParticles.map(() => "electron");
+
+    // ---- CLEAR UI (but keep saved state) ----
+    droppedParticles.forEach(p => p.remove());
+    droppedParticles.length = 0;
+
+    electronParticles.forEach(e => e.remove());
+    electronParticles.length = 0;
+
+    // ---- SHOW CORRECT PROTONS ----
+    for (let i = 0; i < match.protons; i++) addParticle("proton");
+
+    // ---- SHOW CORRECT NEUTRONS ----
+    for (let i = 0; i < match.neutrons; i++) addParticle("neutron");
+
+    // ---- SHOW CORRECT ELECTRONS BY SHELL ----
+    const electronConfig = match.electronicConfiguration.split(",").map(n => parseInt(n.trim()));
+    electronConfig.forEach(count => {
+      for (let i = 0; i < count; i++) addElectron();
+    });
+
+  } else {
+    // ==========================
+    // HIDE ANSWER → RESTORE USER STATE
+    // ==========================
+    isAnswerShown = false;
+    document.querySelector("#show-ans").textContent = "Show Answer";
+
+    // Clear the answer particles
+    droppedParticles.forEach(p => p.remove());
+    droppedParticles.length = 0;
+
+    electronParticles.forEach(e => e.remove());
+    electronParticles.length = 0;
+
+    // ---- RESTORE USER PROTONS ----
+    savedUserProtons.forEach(() => addParticle("proton"));
+
+    // ---- RESTORE USER NEUTRONS ----
+    savedUserNeutrons.forEach(() => addParticle("neutron"));
+
+    // ---- RESTORE USER ELECTRONS ----
+    savedUserElectrons.forEach(() => addElectron());
+  }
+}
+
