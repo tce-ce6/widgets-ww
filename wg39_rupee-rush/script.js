@@ -69,7 +69,7 @@ let currentIndex = -1; // Start before the first item so the first call to updat
 // Get references to the HTML elements
 const svgImageElement = document.getElementById('svgImage');
 const nextButton = document.getElementById('nextBtn');
-const checkButton = document.getElementById('checkBtn');
+let checkButton = document.getElementById('checkBtn');
 const incorrectAnswer = document.getElementById('InCorrect_answer');
 const correctAnswer = document.getElementById('correct_answer');
 const tryAgain = document.getElementById('tryAgainBtn');
@@ -203,11 +203,13 @@ function updateItem(index) {
         correctAnswer.style.display = 'none';
         tryAgain.style.display = 'none';
         text.style.display = 'block';
+        checkButton.disabled = 'true';
             
         console.log(`Displaying: ${item.name} (${fullPath})`);
     } else {
         console.error("Index is out of bounds for ITEMS_DATA.");
     }
+    hideLottieAnimation();
 }
 
 /**
@@ -228,6 +230,8 @@ function cycleNextItem() {
         correctAnswer.style.display = 'none';
         tryAgain.style.display = 'none';
         text.style.display = 'block';
+        checkButton.disabled = 'true';
+        hideLottieAnimation();
     }
 
     // 3. Call the update function with the new index
@@ -325,6 +329,9 @@ function handleImageClick(event) {
             incorrectAnswer.style.display = 'none';
             tryAgain.style.display = 'none';
             text.style.display = 'block';
+            checkButton.disabled = false;
+            isCorrect = false;
+            hideLottieAnimation();
             }
         }
     }
@@ -350,6 +357,8 @@ currencyDisplayArea.addEventListener('click', function(event) {
         removeCurrency(valueToRemove);
         correctAnswer.style.display = 'none';
         incorrectAnswer.style.display = 'none';
+        checkButton.disabled = false;
+        hideLottieAnimation();
         tryAgain.style.display = 'none';
         text.style.display = 'block';
          currencyPiece.remove();
@@ -370,7 +379,6 @@ function getTotalPayment() {
  */
 function addCurrency(value) {
     if (isCorrect) return;
-
     payment.push(value);
 }
 
@@ -405,9 +413,10 @@ function checkPayment() {
         return;
     }
 
-    if (total === price) {
+        if (total === price) {
         correctAnswer.style.display = 'block';
         text.style.display = 'none';
+        checkButton.disabled = true;
         let message = "✅ Well done! Correct payment.";
         isCorrect = true;
         console.log(message);
@@ -427,7 +436,7 @@ function checkPayment() {
         isCorrect = false;
         console.log(message);
     }
-    handleAnswerResult(isCorrect);
+   handleAnswerResult(isCorrect);
 }
 
 
@@ -439,4 +448,6 @@ tryAgain.addEventListener('click', () => {
     correctAnswer.style.display = 'none';
     tryAgain.style.display = 'none';
     text.style.display = 'block';
+    checkButton.disabled = true;
+    hideLottieAnimation();
 });
