@@ -589,12 +589,14 @@ function drawResultsBox() {
     textStyle(BOLD);
     text(`${experimentResult.germinated}/4`, xAxis + textWidth("• Germinated: "), 380);
 
+
+    textSize(16);
     textStyle(NORMAL);
     text("• Sprouted: ", xAxis, 400);
     textStyle(BOLD);
     text(`${experimentResult.sprouted ? 'Yes' : 'No'}`, xAxis + textWidth("• Sprouted: "), 400);
 
-    textSize(18);
+    textSize(16);
     textStyle(NORMAL);
     text("• Result: ", xAxis, 420);
     textStyle(BOLD);
