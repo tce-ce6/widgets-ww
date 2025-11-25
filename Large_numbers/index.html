@@ -43,6 +43,42 @@ rightPos+=2;while(digits>rightPos){expected.push(digits-rightPos-1);rightPos+=2;
 return expected.sort((a,b)=>a-b);}
 function formatIndianNumber(numStr){if(!numStr||numStr.length<=3)return numStr;const parts=[];let i=numStr.length;parts.push(numStr.slice(Math.max(i-3,0),i));i-=3;while(i>0){parts.push(numStr.slice(Math.max(i-2,0),i));i-=2;}
 return parts.reverse().join(",");}
+
+
+function speak(text, system) {
+  // Fix: This function was empty. Implement Web Speech API to enable sound.
+  if ('speechSynthesis' in window && !isSpeaking) {
+    // text sanitization to handle system-specific pronunciation
+    let utteranceText = text;
+    if (system === 'indian') {
+      // Small adjustment for better pronunciation of 'lakh' and 'crore' in general English voice
+      utteranceText = utteranceText.replace(/Lakh/g, 'Lac').replace(/Crore/g, 'Krore');
+    }
+
+    const utterance = new SpeechSynthesisUtterance(utteranceText);
+
+    // Optional: Set a specific voice or rate/pitch if desired
+    // utterance.rate = 1.0; 
+    // utterance.pitch = 1.0; 
+
+    utterance.onstart = () => {
+      isSpeaking = true;
+    };
+    utterance.onend = () => {
+      isSpeaking = false;
+    };
+    utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event);
+      isSpeaking = false;
+    };
+
+    speechSynthesis.speak(utterance);
+  } else if (!('speechSynthesis' in window)) {
+    console.warn("Web Speech API is not supported in this browser.");
+  }
+}
+
+
 function drawResult(startX,y,totalWidth){
                 const x=startX+totalWidth+20;
                 
