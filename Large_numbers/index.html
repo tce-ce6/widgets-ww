@@ -3,14 +3,16 @@
 <head>
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
-<title>Triangle Inequality Theorem</title>
+<title>Reading Large Numbers</title>
 <link rel=stylesheet href=global_style.css />
 <script src=p5.js></script>
+<!-- 1. Lottie library added -->
+<script src=lottie.min.js></script>
 <style>#keyboard-container{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background-color:#f0f0f0;border-radius:10px;padding:10px;box-shadow:0 4px 10px rgba(0,0,0,0.2);grid-template-columns:repeat(3,1fr);gap:8px;z-index:1000}#keyboard-container button{padding:15px;font-size:20px;font-weight:bold;cursor:pointer;background-color:#fff;color:#333;border:1px solid #ccc;border-radius:5px;transition:background-color .2s}#keyboard-container button:hover{background-color:#e9e9e9}#keyboard-container button[data-key="0"]{grid-column:2 / 3}#keyboard-container button[data-key="backspace"]{grid-column:3 / 4;font-size:18px}.button-controls2-hover{display:flex;justify-content:center;gap:20px;padding:20px;flex-wrap:wrap}button{padding:10px 20px;font-size:16px;cursor:pointer;background-color:#4caf50;color:white;border:0;border-radius:5px;transition:opacity .3s}button:disabled{opacity:.5;cursor:not-allowed}button:hover:not(:disabled){background-color:#45a049}</style>
 </head>
 <body>
 <div class=wdgetTitle>
-<h2>Large Numbers</h2>
+<h2>Reading large numbers</h2>
 </div>
 <div id=app class=mainContainerOuter>
 <div class=mainContainer>
@@ -33,12 +35,27 @@
 <button class=key data-key=0>0</button>
 <button class=key data-key=backspace>⌫</button>
 </div>
-<script>let animationStartTime=0;let animationDuration=800;let isSpeaking=false;let showResult=false,currentNumber="",system="none",explanation=[],instruction="Enter...",numberEntered=false,inExplanationMode=false,showSystemButtons=false,
+<script>
+let animationStartTime=0;
+let animationDuration=800;
+let isSpeaking=false;
+let showResult=false,currentNumber="",system="none",explanation=[],instruction="Enter...",numberEntered=false,inExplanationMode=false,
 commaPositions=[],
 isDraggingComma=false,
 draggedCommaIndex=-1,
-draggedCommaPosition={x:0,y:0}, // NEW: To track the visual position of the dragged comma
-showCommaPlacement=false,isCorrect=false,showPlaceLabels=false;let canvasInputString="234567890",isInputActive=false,showCanvasInput=true,showCanvasUseNumberBtn=true,showCanvasClearBtn=true,showCanvasSystemBtns=false;let canvasInputRect={},useNumberBtnRect={},clearBtnRect={},indianSystemBtnRect={},americanSystemBtnRect={},keyboard;let speakerPos={x:0,y:0,r:22};let showExplanationButton,backButton,nextButton,resetButton,showAnswerButton,canvas;const canvasWidth=1200,canvasHeight=700,boxSize=50,boxGap=6;const ones=["","one","two","three","four","five","six","seven","eight","nine",];const teens=["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen",];const tens=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety",];const placesIndian=["","thousand","lakh","crore","arab"];const placesAmerican=["","thousand","million","billion"];function getExpectedCommaPositions(digits,sys){const expected=[];if(sys==="indian"){let rightPos=3;if(digits>rightPos){expected.push(digits-rightPos-1);}
+draggedCommaPosition={x:0,y:0},
+showCommaPlacement=false,isCorrect=false,showPlaceLabels=false;
+
+// --- Lottie Variables ---
+let lottieSuccessAnim, lottieWrongAnim;
+let successBuffer, wrongBuffer;
+let successPlaying = false; // Tracks if success animation is currently running
+let wrongPlaying = false;   // Tracks if wrong animation is currently running
+let resultSnapshot = null;  // Holds the frozen p5.Image snapshot of the final frame
+const lottieSize = 60;      // Size for the Lottie canvas (boxSize is 50)
+// --- End Lottie Variables ---
+
+let canvasInputString="234567890",isInputActive=false,showCanvasInput=true,showCanvasUseNumberBtn=true,showCanvasClearBtn=true,showCanvasSystemBtns=false;let canvasInputRect={},useNumberBtnRect={},clearBtnRect={},indianSystemBtnRect={},americanSystemBtnRect={},keyboard;let speakerPos={x:0,y:0,r:22};let showExplanationButton,backButton,nextButton,resetButton,showAnswerButton,canvas;const canvasWidth=1200,canvasHeight=700,boxSize=50,boxGap=6;const ones=["","one","two","three","four","five","six","seven","eight","nine",];const teens=["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen",];const tens=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety",];const placesIndian=["","thousand","lakh","crore","arab"];const placesAmerican=["","thousand","million","billion"];function getExpectedCommaPositions(digits,sys){const expected=[];if(sys==="indian"){let rightPos=3;if(digits>rightPos){expected.push(digits-rightPos-1);}
 rightPos+=2;while(digits>rightPos){expected.push(digits-rightPos-1);rightPos+=2;}}else if(sys==="american"){let rightPos=3;while(digits>rightPos){expected.push(digits-rightPos-1);rightPos+=3;}}
 return expected.sort((a,b)=>a-b);}
 function formatIndianNumber(numStr){if(!numStr||numStr.length<=3)return numStr;const parts=[];let i=numStr.length;parts.push(numStr.slice(Math.max(i-3,0),i));i-=3;while(i>0){parts.push(numStr.slice(Math.max(i-2,0),i));i-=2;}
@@ -78,74 +95,60 @@ function speak(text, system) {
   }
 }
 
+// Helper to check Lottie readiness
+function isAnimReady(anim) {
+    return anim && anim.___ready === true;
+}
 
 function drawResult(startX,y,totalWidth){
-                const x=startX+totalWidth+20;
-                
-                // --- Animation Logic ---
-                let elapsed = millis() - animationStartTime;
-                let symbolSize;
-                let symbolAlpha;
-
-                const maxSymbolSize = 48; // Max size for the symbol (larger than the original 32)
-
-                if (elapsed < animationDuration) {
-                                // Phase 1: Initial scale-up and fade-in (800ms duration)
-                                let progress = constrain(elapsed / animationDuration, 0, 1);
-                                let easeProgress = sin(progress * HALF_PI); 
-                                
-                                symbolSize = easeProgress * maxSymbolSize;
-                                symbolAlpha = easeProgress * 255;
-                } else {
-                                // Phase 2: Subtle pulse (zoomin-zoomout)
-                                // Pulse period of 1.5 seconds (1500 ms)
-                                let pulseTime = elapsed - animationDuration; // Time since initial animation finished
-                                let pulsePeriod = 1500;
-                                let pulseProgress = (pulseTime % pulsePeriod) / pulsePeriod; // 0.0 to 1.0 repeating
-
-                                // Scale from base size (48) up to 10% larger, then back.
-                                // cos() ranges from -1 to 1, we map it to 0.9 to 1.1
-                                let scaleFactor = map(cos(pulseProgress * TWO_PI), -1, 1, 0.9, 1.1); 
-                                symbolSize = maxSymbolSize * scaleFactor;
-                                symbolAlpha = 255; // Fully visible
-                }
-                // --- End Animation ---
-
-                textAlign(LEFT,CENTER);
-                textSize(symbolSize); // Use animated size
-
-                // Use p5.js color objects to set alpha for the animation
-                let col = isCorrect ? color("green") : color("red");
-                col.setAlpha(symbolAlpha);
-                fill(col);
-
-                text(isCorrect?"✔":"✖",x,y+boxSize/2);
-
-                if(!isCorrect){
-                                // Fade in the helper text after the symbol (using textProgress)
-                                let textProgress = constrain((elapsed - 200) / (animationDuration - 200), 0, 1);
-                                let textAlpha = textProgress * 255;
-                                
-                                if (textAlpha > 0) {
-                                                const actualNumber=currentNumber.replace(/ /g,"");
-                                                const digits=actualNumber.length;
-                                                const expected=getExpectedCommaPositions(digits,system);
-                                                
-                                                fill(0, textAlpha); // Apply alpha to the text
-                                                textSize(18);
-                                                textAlign(CENTER,CENTER);
-                                                let posText="";
-                                                if(system==="indian"){
-                                                                posText="The first comma is placed after 3 digits from the right, then every 2 digits after that";
-                                                }else if(system==="american"){
-                                                                posText="Comma after every 3 digits from the right";
-                                                }else{
-                                                                const expectedLabels=expected.map((idx)=>`after box ${idx+1}`);
-                                                                posText=expected.length>0?expectedLabels.join(", "):"No commas needed";
-                                                }
-                                                text(posText,canvasWidth/2,y+boxSize+60);
-                                }
-                }
+    const x=startX+totalWidth+20;
+    const drawX = x + lottieSize/2; 
+    const drawY = y + boxSize/2; 
+    
+    // 2. Draw Lottie Animation
+    if (resultSnapshot) {
+        // Draw the frozen final frame
+        push();
+        imageMode(CENTER);
+        // Drawing the snapshot image (which captures the final Lottie frame in its original color)
+        image(resultSnapshot, drawX, drawY, lottieSize, lottieSize);
+        pop();
+    } else if (showResult && (successPlaying || wrongPlaying)) {
+        // Draw the live buffer while the animation is running
+        const buffer = isCorrect ? successBuffer : wrongBuffer;
+        push();
+        imageMode(CENTER);
+        // Drawing the live buffer (while Lottie is managing the frames inside it)
+        image(buffer, drawX, drawY, lottieSize, lottieSize);
+        pop();
+    }
+    
+    if(!isCorrect){
+        // Fade in the helper text after the symbol (using textProgress)
+        let elapsed = millis() - animationStartTime;
+        let textProgress = constrain((elapsed - 200) / (animationDuration - 200), 0, 1);
+        let textAlpha = textProgress * 255;
+        
+        if (textAlpha > 0) {
+            const actualNumber=currentNumber.replace(/ /g,"");
+            const digits=actualNumber.length;
+            const expected=getExpectedCommaPositions(digits,system);
+            
+            fill(0, textAlpha); // Apply alpha to the text
+            textSize(18);
+            textAlign(CENTER,CENTER);
+            let posText="";
+            if(system==="indian"){
+                            posText="The first comma is placed after 3 digits from the right, then every 2 digits after that";
+            }else if(system==="american"){
+                            posText="Comma after every 3 digits from the right";
+            }else{
+                            const expectedLabels=expected.map((idx)=>`after box ${idx+1}`);
+                            posText=expected.length>0?expectedLabels.join(", "):"No commas needed";
+            }
+            text(posText,canvasWidth/2,y+boxSize+60);
+        }
+    }
 }
 function numberToWords(n){if(n===0)return"";if(n<0)return"minus "+numberToWords(Math.abs(n));let str="";let hundreds=Math.floor(n/100);if(hundreds>0)str+=ones[hundreds]+" hundred ";let rem=n%100;if(rem>0){if(rem<10)str+=ones[rem]+" ";else if(rem<20)str+=teens[rem-10]+" ";else{let t=Math.floor(rem/10);let o=rem%10;str+=tens[t]+" ";if(o>0)str+=ones[o]+" ";}}
 return str.trim();}
@@ -167,10 +170,80 @@ function getWordForm(numStr,sys){                  if(sys==="none"||numStr.trim(
                 if(finalWord.length>0){                                  return finalWord.charAt(0).toUpperCase()+finalWord.slice(1);                  }
                  
                 return finalWord;}
-function setup(){                  canvas=createCanvas(canvasWidth,canvasHeight);                  canvas.parent("canvas-container");                  drawingContext.imageSmoothingEnabled=false;                  showExplanationButton=document.getElementById("showExplanationButton");                  backButton=document.getElementById("backButton");                  nextButton=document.getElementById("nextButton");                  resetButton=document.getElementById("resetButton");showAnswerButton=document.getElementById("showAnswerButton");showAnswerButton.addEventListener("click",onShowAnswerPressed);                  keyboard=document.getElementById("keyboard-container");                  keyboard.addEventListener("click",handleKeyboardClick);                  window.addEventListener("click",handleWindowClick,true);                  
+
+// Helper to stop and reset Lottie animations
+function resetLottie() {
+    resultSnapshot = null;
+    successPlaying = false;
+    wrongPlaying = false;
+    
+    if (lottieSuccessAnim && lottieSuccessAnim.___ready) {
+        lottieSuccessAnim.stop();
+        lottieSuccessAnim.goToAndStop(0, true);
+    }
+    if (lottieWrongAnim && lottieWrongAnim.___ready) {
+        lottieWrongAnim.stop();
+        lottieWrongAnim.goToAndStop(0, true);
+    }
+}
+
+function setup(){                  
+    canvas=createCanvas(canvasWidth,canvasHeight);                  
+    canvas.parent("canvas-container");                  
+    drawingContext.imageSmoothingEnabled=false;                  
+    
+    // --- Lottie Initialization for Result Icons (Copied from Seed Germination pattern) ---
+    if (typeof lottie !== 'undefined') {
+        // Create dedicated buffers (p5.Graphics)
+        successBuffer = createGraphics(lottieSize, lottieSize);
+        wrongBuffer = createGraphics(lottieSize, lottieSize);
+        
+        // 3. Settings for success - MUST use 'canvas' renderer with buffer context
+        let successRendererSettings = {
+            renderer: 'canvas', loop: false, autoplay: false,
+            path: 'assets/success.json', 
+            rendererSettings: {
+                canvas: successBuffer.elt,
+                context: successBuffer.drawingContext, 
+                clearCanvas: true 
+            }
+        };
+
+        // Load Success Animation
+        lottieSuccessAnim = lottie.loadAnimation(successRendererSettings);
+        lottieSuccessAnim.addEventListener('DOMLoaded', () => {
+            lottieSuccessAnim.___ready = true;
+            lottieSuccessAnim.goToAndStop(0, true); // Initial state: stopped at frame 0
+        });
+
+        // Settings for wrong - MUST use 'canvas' renderer with buffer context
+        let wrongRendererSettings = {
+            renderer: 'canvas', loop: false, autoplay: false,
+            path: 'assets/wrong.json', 
+            rendererSettings: {
+                canvas: wrongBuffer.elt,
+                context: wrongBuffer.drawingContext, 
+                clearCanvas: true 
+            }
+        };
+
+        // Load Wrong Animation
+        lottieWrongAnim = lottie.loadAnimation(wrongRendererSettings);
+        lottieWrongAnim.addEventListener('DOMLoaded', () => {
+            lottieWrongAnim.___ready = true;
+            lottieWrongAnim.goToAndStop(0, true); // Initial state: stopped at frame 0
+        });
+        
+    } else {
+        console.error("Lottie library is not loaded. Result animations will not work.");
+    }
+    // --- End Lottie Initialization ---
+    
+    showExplanationButton=document.getElementById("showExplanationButton");                  backButton=document.getElementById("backButton");                  nextButton=document.getElementById("nextButton");                  resetButton=document.getElementById("resetButton");showAnswerButton=document.getElementById("showAnswerButton");showAnswerButton.addEventListener("click",onShowAnswerPressed);                  keyboard=document.getElementById("keyboard-container");                  keyboard.addEventListener("click",handleKeyboardClick);                  window.addEventListener("click",handleWindowClick,true);                  
                  
-                window.addEventListener("keydown",handlePhysicalKeypress);                  showExplanationButton.addEventListener("click",onShowExplanationPressed);                  backButton.addEventListener("click",onBackPressed);                  nextButton.addEventListener("click",onNextPressed);                  resetButton.addEventListener("click",onResetPressed);                  
-                updateCanvasElementPositions();                  initializeState();}
+    window.addEventListener("keydown",handlePhysicalKeypress);                  showExplanationButton.addEventListener("click",onShowExplanationPressed);                  backButton.addEventListener("click",onBackPressed);                  nextButton.addEventListener("click",onNextPressed);                  resetButton.addEventListener("click",onResetPressed);                  
+    updateCanvasElementPositions();                  initializeState();
+}
 function handlePhysicalKeypress(event){                  if(!isInputActive)return;                  
                 if(/[0-9]/.test(event.key)&&canvasInputString.length<11){                                  canvasInputString+=event.key;                                  event.preventDefault();                  }
                  
@@ -180,7 +253,9 @@ function initializeState(){currentNumber="";canvasInputString="";showResult=fals
 isDraggingComma=false;
 draggedCommaIndex=-1;
 draggedCommaPosition={x:0,y:0};
-showCommaPlacement=false;isCorrect=false;showPlaceLabels=false;isInputActive=false;keyboard.style.display="none";showCanvasInput=true;showCanvasUseNumberBtn=true;showCanvasClearBtn=true;showCanvasSystemBtns=false;showExplanationButton.disabled=true;backButton.disabled=true;nextButton.disabled=true;resetButton.disabled=true;showAnswerButton.style.display="none";}
+showCommaPlacement=false;isCorrect=false;showPlaceLabels=false;isInputActive=false;keyboard.style.display="none";showCanvasInput=true;showCanvasUseNumberBtn=true;showCanvasClearBtn=true;showCanvasSystemBtns=false;showExplanationButton.disabled=true;backButton.disabled=true;nextButton.disabled=true;resetButton.disabled=true;showAnswerButton.style.display="none";
+resetLottie(); // Reset Lottie state
+}
 function draw(){background(255);if(!inExplanationMode){drawCanvasUI();drawHeader();if(numberEntered&&currentNumber){drawNumberBoxes();}
 if(showCommaPlacement){drawCommaPrompt();}
 if(showResult&&showCommaPlacement){let totalWidth=11*boxSize+10*boxGap;let startX=(canvasWidth-totalWidth)/2;let y=canvasHeight/2-boxSize/2+100;drawResult(startX,y,totalWidth);}}else{drawExplanation();}}
@@ -195,12 +270,9 @@ function drawHeader(){
                 noStroke();
                 textAlign(CENTER,CENTER);
                 textSize(18);
-                textStyle(BOLD);
                 let instructionY=100;
 
-                // --- New code starts here ---
                 // This draws the selected system name at the top
-                // if a system is selected and we're not on the selection screen or in explanation mode.
                 if(system !== 'none' && (showCommaPlacement || (showPlaceLabels && !showResult)) && !inExplanationMode) {
                                 push();
                                 let systemText = (system === 'indian') ? "Indian System" : "American System";
@@ -223,11 +295,7 @@ function drawHeader(){
                                 textAlign(CENTER, CENTER);
                                 text(systemText, canvasWidth / 2, textY + textH / 2);
                                 pop();
-                                
-                                // instructionY is NOT adjusted, it remains 100
                 }
-                // --- New code ends here ---
-
 
                 if(!showPlaceLabels){
                                 let textToShow=instruction;
@@ -292,6 +360,20 @@ function onNextPressed(){
                                                 resetButton.disabled=true;
                                                 backButton.disabled=true;
                                                 showExplanationButton.disabled=true;showAnswerButton.style.display="none";
+                                                
+                                                // Start Lottie for correct, no commas case
+                                                if (isAnimReady(lottieSuccessAnim)) {
+                                                    resetLottie();
+                                                    lottieSuccessAnim.playSegments([0, lottieSuccessAnim.totalFrames], true);
+                                                    successPlaying = true;
+                                                    
+                                                    const captureSnapshot = () => {
+                                                        resultSnapshot = successBuffer.get(); 
+                                                        lottieSuccessAnim.stop(); 
+                                                        lottieSuccessAnim.removeEventListener('complete', captureSnapshot);
+                                                    };
+                                                    lottieSuccessAnim.addEventListener('complete', captureSnapshot);
+                                                }
                                 }else{
                                                 instruction='Drag the comma (,) to the right position(s) in the number.';
                                                 nextButton.textContent="Next";
@@ -303,6 +385,26 @@ function onNextPressed(){
                                 showResult=true;
                                 animationStartTime = millis(); // <-- Start animation
                                 checkCommaPlacement();
+                                
+                                // START LOTTIE ANIMATION
+                                const anim = isCorrect ? lottieSuccessAnim : lottieWrongAnim;
+                                const buffer = isCorrect ? successBuffer : wrongBuffer;
+                                const isSuccess = isCorrect;
+                                
+                                if (isAnimReady(anim)) {
+                                    resetLottie();
+                                    anim.playSegments([0, anim.totalFrames], true);
+                                    if (isSuccess) successPlaying = true; else wrongPlaying = true;
+                                    
+                                    const captureSnapshot = () => {
+                                        resultSnapshot = buffer.get(); 
+                                        anim.stop(); 
+                                        anim.removeEventListener('complete', captureSnapshot);
+                                    };
+                                    anim.addEventListener('complete', captureSnapshot);
+                                }
+                                // END LOTTIE ANIMATION
+                                
                                 if(isCorrect){
                                                 showPlaceLabels=true;
                                                 instruction="";
@@ -341,9 +443,25 @@ function onShowAnswerPressed(){
                 resetButton.disabled=true;
                 showExplanationButton.disabled=true;
                 showAnswerButton.style.display="none";
+                
+                // Start Lottie for correct answer
+                if (isAnimReady(lottieSuccessAnim)) {
+                    resetLottie();
+                    lottieSuccessAnim.playSegments([0, lottieSuccessAnim.totalFrames], true);
+                    successPlaying = true;
+                    
+                    const captureSnapshot = () => {
+                        resultSnapshot = successBuffer.get(); 
+                        lottieSuccessAnim.stop(); 
+                        lottieSuccessAnim.removeEventListener('complete', captureSnapshot);
+                    };
+                    lottieSuccessAnim.addEventListener('complete', captureSnapshot);
+                }
 }
 function onSubmitPressed(){}
-function onResetPressed(){if(showCommaPlacement){commaPositions=[];showResult=false;showPlaceLabels=false;isCorrect=false;const actualNumber=currentNumber.replace(/ /g,'');const expectedCommas=getExpectedCommaPositions(actualNumber.length,system);instruction=expectedCommas.length===0?'No commas needed. Click Next.':'Drag the comma (,) to the right position(s) in the number.';nextButton.textContent="Next";nextButton.disabled=false;showExplanationButton.disabled=false;backButton.disabled=false;resetButton.disabled=true;showAnswerButton.style.display="none";}else{initializeState();nextButton.textContent="Next";}}
+function onResetPressed(){if(showCommaPlacement){commaPositions=[];showResult=false;showPlaceLabels=false;isCorrect=false;const actualNumber=currentNumber.replace(/ /g,'');const expectedCommas=getExpectedCommaPositions(actualNumber.length,system);instruction=expectedCommas.length===0?'No commas needed. Click Next.':'Drag the comma (,) to the right position(s) in the number.';nextButton.textContent="Next";nextButton.disabled=false;showExplanationButton.disabled=false;backButton.disabled=false;resetButton.disabled=true;showAnswerButton.style.display="none";
+resetLottie(); // Reset Lottie state
+}else{initializeState();nextButton.textContent="Next";}}
 function checkCommaPlacement(){const actualNumber=currentNumber.replace(/ /g,"");const digits=actualNumber.length;const expected=getExpectedCommaPositions(digits,system);commaPositions.sort((a,b)=>a-b);isCorrect=commaPositions.length===expected.length&&commaPositions.every((v,i)=>v===expected[i]);console.log("Check:",{number:actualNumber,digits,user:commaPositions,expected,isCorrect,});}
 
 // --- MODIFIED EVENT HANDLERS ---
@@ -446,6 +564,7 @@ function mouseReleased(){
                                 const d=dist(mouseX,mouseY,gapX,y+boxSize/2);                                  
                                 
                                 if(d<50&&d<bestDist){                                  
+                                                 bestDist=d;                                  
                                                  bestDist=d;                                  
                                                  bestGap=i;                                  
                                 }
