@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="global_style.css">
 </head>
 
-<body id="nucleus-widget">
+<body id="atom-widget">
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
@@ -95,6 +95,16 @@
                   </div>
                 </foreignObject>
               </g>
+              <g >
+                <foreignObject x="1490" y="313" width="220" height="157">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="data-panel-wrapper" style="text-align: left;">
+                      <p class="data-title" style="font-size: 30px; margin-bottom:10px">Proton: <span id="proton-count" style="color: #706D39;">0</span></p>
+                      <p class="data-title" style="margin: 0;font-size: 30px;">Neutron: <span id="neutron-count" style="color: #706D39;">0</span></p>
+                    </div>
+                  </div>
+                </foreignObject>
+              </g>
               <g id="reset-btn" style="cursor: pointer; transform:translateX(-160px)">
                 <g id="Group_4">
                   <path id="Path 21"
@@ -129,11 +139,11 @@
               </text>
               <text id="Neutron" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto"
                 font-size="30" letter-spacing="0em">
-                <tspan x="1039.38" y="945.52">Neutron</tspan>
+                <tspan x="1039.38" y="945.52">Neutrons</tspan>
               </text>
               <text id="Electron" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto"
                 font-size="30" letter-spacing="0em">
-                <tspan x="1372" y="946.52">Electron</tspan>
+                <tspan x="1372" y="946.52">Electrons</tspan>
               </text>
               
               <g>
@@ -219,7 +229,7 @@
                   style="vertical-align: middle; display:none" />
               </div>
             </foreignObject>
-            <foreignObject x="680" y="770" width="600" height="50">
+            <foreignObject x="610" y="770" width="800" height="50">
               <div xmlns="http://www.w3.org/1999/xhtml">
                 <div id="indicator-note" style="font-size: 24px; font-weight: 500; text-align: center; color:green">
                 </div>
@@ -260,7 +270,7 @@
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
             Check Answer
           </button>
-          <button class="btn" id="show-ans" style="background-color:#1e6bef; color:white;" onfocus="
+          <button class="btn" id="show-ans" style="background-color:#1e6bef; color:white; min-width: 155px;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';

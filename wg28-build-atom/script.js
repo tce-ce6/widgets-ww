@@ -1,6 +1,6 @@
 let elementData = [];
 const MAX_PROTONS = 20;
-const MAX_NEUTRONS = 20;
+const MAX_NEUTRONS = 22;
 let isAnswerShown = false;
 
 let savedUserProtons = [];
@@ -359,9 +359,13 @@ function removeParticle(type) {
 function updateCounters() {
   const protonCount = droppedParticles.filter(p => p.classList.contains("proton")).length;
   const neutronCount = droppedParticles.filter(p => p.classList.contains("neutron")).length;
-  const electronCount = electronParticles.length; // 👈 NEW
+  const electronCount = electronParticles.length;
 
+  // UPDATE TEXT UI
+  document.getElementById("proton-count").textContent = protonCount;
+  document.getElementById("neutron-count").textContent = neutronCount;
 }
+
 
 
 function checkAnswer() {
@@ -369,28 +373,53 @@ function checkAnswer() {
 
   const protonCount = droppedParticles.filter(p => p.classList.contains("proton")).length;
   const neutronCount = droppedParticles.filter(p => p.classList.contains("neutron")).length;
+  const electronCount = electronParticles.length;
 
   const cleanName = selectedAtom.split("_")[0];
 
   // Find isotope from JSON
   const match = elementData.find(e =>
-    e.element.toLowerCase() === cleanName.toLowerCase() &&
-    e.protons === protonCount &&
-    e.neutrons === neutronCount
+    e.element.toLowerCase() === cleanName.toLowerCase()
   );
 
   const note = document.querySelector("#indicator-note");
 
-  if (match) {
-    // ✔ Correct answer
+  if (!match) {
+    note.textContent = "Atom not found in data!";
+    note.style.color = "red";
+    return;
+  }
+
+  // -------------------------------
+  // Calculate correct electron count
+  // -------------------------------
+  const correctElectronTotal = match.electronicConfiguration
+    .split(",")
+    .map(n => parseInt(n.trim()))
+    .reduce((sum, n) => sum + n, 0);
+
+  // -------------------------------
+  // Validate everything
+  // -------------------------------
+  const isProtonCorrect = protonCount === match.protons;
+  const isNeutronCorrect = neutronCount === match.neutrons;
+  const isElectronCorrect = electronCount === correctElectronTotal;
+
+if (isProtonCorrect && isNeutronCorrect && isElectronCorrect) {
     note.textContent = "That is the correct answer!";
     note.style.color = "green";
-  } else {
-    // ❌ Incorrect answer
-    note.textContent = "That's incorrect. Try again!";
+
+    setControlsDisabled(true);  // disable after correct answer
+} else {
+    note.textContent =
+      "Incorrect! Check your protons, neutrons, and electron configuration.";
     note.style.color = "red";
-  }
+
+    // wrong answer → keep enabled
+    setControlsDisabled(false);
 }
+}
+
 
 
 function resetFeedback() {
@@ -428,7 +457,11 @@ function resetStep2() {
   // remove shell rings
   const shellWrapper = document.querySelector("#shell-wrapper");
   if (shellWrapper) shellWrapper.innerHTML = "";
+
+  // 🔥 Enable all buttons again
+  setControlsDisabled(false);
 }
+
 
 
 
@@ -489,6 +522,26 @@ function populateSidebarList() {
   });
 }
 function handleElementSelection(elementName) {
+
+  // FULL CLEAR BEFORE SWITCHING ELEMENT
+  isAnswerShown = false;
+  document.querySelector("#show-ans").textContent = "Show Answer";
+
+  savedUserProtons = [];
+  savedUserNeutrons = [];
+  savedUserElectrons = [];
+
+  resetStep2();
+
+  // 🟢 Fix center AFTER reset + DOM changes
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setFixedCenter();
+      updateElectronPositions();
+    });
+  });
+
+  // Set new selected element
   selectedAtom = elementName;
 
   // Switch steps
@@ -496,23 +549,19 @@ function handleElementSelection(elementName) {
   document.querySelector("#step2").style.display = "block";
   document.querySelector("#btn-wrapper").style.display = "block";
 
+  // Highlight sidebar item
   setActiveSidebarItem(elementName);
 
-  // Update name
+  // Update UI name
   document.querySelector("#molecule-name").textContent = elementName;
 
-  // Find its symbol
-  const match = elementData.find(e => e.element.toLowerCase() === elementName.toLowerCase());
-
-  if (match) {
-    document.querySelector("#selected-atom").textContent = match.symbol;
-  } else {
-    document.querySelector("#selected-atom").textContent = "?";
-  }
-
-  // Reset UI (recommended)
-  resetStep2();
+  // If you want symbol:
+  // const match = elementData.find(e => e.element.toLowerCase() === elementName.toLowerCase());
+  // document.querySelector("#selected-atom").textContent = match ? match.symbol : "?";
 }
+
+
+
 
 function setActiveSidebarItem(elementName) {
   const items = document.querySelectorAll("#molecule-list .molecule-item");
@@ -602,6 +651,8 @@ function updateShellRings() {
   });
 }
 function updateElectronPositions() {
+  // We will position electrons relative to the CENTER of #droping-wrapper
+  // using transform, so layout changes don't break pixel math.
   let electronIndex = 0;
 
   SHELL_CAPACITY.forEach((capacity, shell) => {
@@ -613,14 +664,23 @@ function updateElectronPositions() {
     const count = electronsInShell.length;
     const radius = SHELL_RADII[shell];
 
+    if (count === 0) {
+      electronIndex += 0;
+      return;
+    }
+
     electronsInShell.forEach((electron, i) => {
+      // even distribution around the circle
       const angle = (i / count) * Math.PI * 2;
+      const x = Math.round(radius * Math.cos(angle)); // px offset
+      const y = Math.round(radius * Math.sin(angle)); // px offset
 
-      const x = FIXED_CENTER_X + radius * Math.cos(angle);
-      const y = FIXED_CENTER_Y + radius * Math.sin(angle);
-
-      electron.style.left = `${x}px`;
-      electron.style.top = `${y}px`;
+      // Put electron at the centered origin, then offset by x,y via transform.
+      // Using translate(-50%, -50%) keeps the electron centered on its own middle.
+      electron.style.left = "50%";
+      electron.style.top = "50%";
+      electron.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+      electron.style.position = "absolute";
     });
 
     electronIndex += count;
@@ -629,6 +689,7 @@ function updateElectronPositions() {
   updateShellRings();
   updateShellCounts();
 }
+
 
 
 function updateShellCounts() {
@@ -655,6 +716,7 @@ function updateShellCounts() {
   document.getElementById("shell-N").textContent = shellCounts[3];
 }
 function toggleShowAnswer() {
+
   if (!selectedAtom) return;
 
   const cleanName = selectedAtom.split("_")[0];
@@ -667,6 +729,8 @@ function toggleShowAnswer() {
     // ==========================
     isAnswerShown = true;
     document.querySelector("#show-ans").textContent = "Hide Answer";
+        setControlsDisabled(true);   // disable in SHOW ANSWER
+
 
     // ---- SAVE USER STATE ----
     savedUserProtons = droppedParticles.filter(p => p.classList.contains("proton")).map(() => "proton");
@@ -679,6 +743,7 @@ function toggleShowAnswer() {
 
     electronParticles.forEach(e => e.remove());
     electronParticles.length = 0;
+    // setFixedCenter(); // IMPORTANT: recalculate center before placing electrons
 
     // ---- SHOW CORRECT PROTONS ----
     for (let i = 0; i < match.protons; i++) addParticle("proton");
@@ -698,6 +763,18 @@ function toggleShowAnswer() {
     // ==========================
     isAnswerShown = false;
     document.querySelector("#show-ans").textContent = "Show Answer";
+    setControlsDisabled(false);  // enable in HIDE ANSWER
+
+       // 🔥 RESET COUNTERS (UI Only)
+    document.getElementById("proton-count").textContent = 0;
+    document.getElementById("neutron-count").textContent = 0;
+    document.getElementById("shell-k").textContent = 0;
+    document.getElementById("shell-L").textContent = 0;
+    document.getElementById("shell-M").textContent = 0;
+    document.getElementById("shell-N").textContent = 0;
+    
+    // Clear shell rings created during SHOW ANSWER
+    document.querySelector("#shell-wrapper").innerHTML = "";
 
     // Clear the answer particles
     droppedParticles.forEach(p => p.remove());
@@ -714,6 +791,27 @@ function toggleShowAnswer() {
 
     // ---- RESTORE USER ELECTRONS ----
     savedUserElectrons.forEach(() => addElectron());
-  }
+}
+}
+
+function setControlsDisabled(state) {
+  const btns = [
+    "#add-proton-button",
+    "#remove-proton-button",
+    "#add-neutron-button",
+    "#remove-neutron-button",
+    "#add-electron-button",
+    "#remove-electron-button",
+    "#check-ans"
+  ];
+
+  btns.forEach(id => {
+    const btn = document.querySelector(id);
+    if (state) {
+      btn.classList.add("disable");
+    } else {
+      btn.classList.remove("disable");
+    }
+  });
 }
 

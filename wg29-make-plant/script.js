@@ -573,7 +573,7 @@ function initializeModalControls() {
                 modal.style.visibility = 'visible';
 
                 // alert();
-                this.btnGroup.style.opacity = '0.5';
+                // this.btnGroup.style.opacity = '0.5';
 
             });
             btn.style.cursor = 'pointer';

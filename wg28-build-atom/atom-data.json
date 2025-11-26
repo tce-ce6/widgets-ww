@@ -21,7 +21,7 @@
     "element": "Lithium",
     "symbol": "Li",
     "protons": 3,
-    "neutrons": 4,
+    "neutrons": 3,
     "electrons": 3,
     "shells": "K, L",
     "electronicConfiguration": "2, 1"
@@ -30,7 +30,7 @@
     "element": "Beryllium",
     "symbol": "Be",
     "protons": 4,
-    "neutrons": 5,
+    "neutrons": 4,
     "electrons": 4,
     "shells": "K, L",
     "electronicConfiguration": "2, 2"
@@ -39,7 +39,7 @@
     "element": "Boron",
     "symbol": "B",
     "protons": 5,
-    "neutrons": 6,
+    "neutrons": 5,
     "electrons": 5,
     "shells": "K, L",
     "electronicConfiguration": "2, 3"
@@ -75,7 +75,7 @@
     "element": "Fluorine",
     "symbol": "F",
     "protons": 9,
-    "neutrons": 10,
+    "neutrons": 9,
     "electrons": 9,
     "shells": "K, L",
     "electronicConfiguration": "2, 7"
@@ -93,7 +93,7 @@
     "element": "Sodium",
     "symbol": "Na",
     "protons": 11,
-    "neutrons": 12,
+    "neutrons": 11,
     "electrons": 11,
     "shells": "K, L, M",
     "electronicConfiguration": "2, 8, 1"
@@ -111,7 +111,7 @@
     "element": "Aluminium",
     "symbol": "Al",
     "protons": 13,
-    "neutrons": 14,
+    "neutrons": 13,
     "electrons": 13,
     "shells": "K, L, M",
     "electronicConfiguration": "2, 8, 3"
@@ -129,7 +129,7 @@
     "element": "Phosphorus",
     "symbol": "P",
     "protons": 15,
-    "neutrons": 16,
+    "neutrons": 15,
     "electrons": 15,
     "shells": "K, L, M",
     "electronicConfiguration": "2, 8, 5"
@@ -147,7 +147,7 @@
     "element": "Chlorine",
     "symbol": "Cl",
     "protons": 17,
-    "neutrons": 18,
+    "neutrons": 17,
     "electrons": 17,
     "shells": "K, L, M",
     "electronicConfiguration": "2, 8, 7"
@@ -156,7 +156,7 @@
     "element": "Argon",
     "symbol": "Ar",
     "protons": 18,
-    "neutrons": 22,
+    "neutrons": 18,
     "electrons": 18,
     "shells": "K, L, M",
     "electronicConfiguration": "2, 8, 8"
@@ -165,7 +165,7 @@
     "element": "Potassium",
     "symbol": "K",
     "protons": 19,
-    "neutrons": 20,
+    "neutrons": 19,
     "electrons": 19,
     "shells": "K, L, M, N",
     "electronicConfiguration": "2, 8, 8, 1"
