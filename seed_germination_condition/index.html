@@ -5,25 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seed Germination Simulator</title>
     <script src="p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script src="lottie.min.js"></script>
     <style>
-        body {
+        /* CSS FIXES FOR BACKDROP */
+        
+        /* Ensure HTML and body fill the viewport */
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             background-image: url(assets/BG_01.svg);
+            background-size: cover;
+            background-position: center;
             font-family: 'Arial', sans-serif;
         }
         
+        /* New Styles for the full-page, title-excluding backdrop */
+        #modal-backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Same opacity as original p5 backdrop (180/255 ≈ 0.7) */
+            z-index: 100; /* Backdrop layer */
+            display: none; /* Hidden by default */
+        }
+
+        /* MODIFICATION START: Ensure these elements are above the backdrop (z-index: 100) */
+        .wdgetTitle {
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            width: 100%;
+            text-align: center; 
+            z-index: 101; /* Layer 1: Above backdrop */
+        }
+
         #canvas-container {
             position: relative;
             margin-bottom: 20px;
             border-radius: 10px;
             overflow: hidden;
+            z-index: 101; /* Layer 1: Above backdrop. This holds the modal content and insight button. */
+        }
+        /* MODIFICATION END */
+        
+        .wdgetTitle h2 {
+            display: inline-block;
+            margin: 0;
+            background-color: #1d83ec;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 0 0 40px 40px;
+        }
+
+        /* Existing Styles (cleaned up) */
+        
+        .button-controls {
+            z-index: 10;
         }
         
         .button-container {
@@ -48,10 +97,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         #startBtn {
+            border-radius: 25px;
             background-color: #4CAF50; 
         }
 
         #resetBtn {
+            border-radius: 25px;
             background-color: #F94877; 
         }
 
@@ -72,7 +123,8 @@
         left: 0;
         width: 100%;
         text-align: center; 
-        z-index: 10;
+        /* Kept original z-index 10, but .wdgetTitle handles the main widget title visibility */
+        z-index: 10; 
     }
 
         .title-container h3 {
@@ -87,12 +139,14 @@
     <link rel="stylesheet" href="global_style.css">
 </head>
 <body>
+    <div id="modal-backdrop-overlay"></div>
+    
      <div class="wdgetTitle">
-         <h2>Seed Germination Condition</h2>
+          <h2>Seed Germination Conditions</h2>
      </div>
     <div id="canvas-container">
     </div>
-    <div class="button-controls d-flex justify-content-start gap-8">
+    <div class="button-controls d-flex justify-content-start gap-16">
         <button id="startBtn">Start Experiment</button>
         <button id="resetBtn">Reset</button>
     </div>
@@ -106,9 +160,11 @@ let startTime;
 let seedGerminationFrames = [0, 0, 0, 0];
 // UI element positions
 const insightButton = { x: 270, y: 580, w: 150, h: 45 };
+// Close button position and size
+const closeModalButton = { x: 1315, y: 75, size: 60 }; 
 
 // Experiment conditions
-let waterLevel = 1;
+let waterLevel = 0;
 let sunlight = false;
 let air = false;
 
@@ -135,8 +191,8 @@ let seedSnapshots = [null, null, null, null]; // Static Image storage for final 
 
 // --- Lottie Seed Variables ---
 let seedBuffers = [];
-let seedHalfAnims = [];   // For Seeds_plant_half.json
-let seedFullAnims = [];   // For Seeds_plant.json
+let seedHalfAnims = []; 
+let seedFullAnims = []; 
 // --- Lottie Variables ---
 let sunAnimation; 
 let lottieSunCanvas; 
@@ -146,17 +202,29 @@ let lottieWaterCanvas;
 let airAnimation;
 let lottieAirCanvas;
 
+let backdropElement; // Reference to the new HTML backdrop element
+
 function preload() {
     svgAssets.pot = loadImage('assets/Pot.svg');
     svgAssets.sunIcon = loadImage('assets/Sun.svg');
     svgAssets.calendar = loadImage('assets/Calendar.svg');
     svgAssets.insightBtn = loadImage('assets/btn_Insight.svg');
     svgAssets.waterDropIcon = loadImage('assets/water-droplet.svg');
+    svgAssets.airIcon = loadImage('assets/air.svg');
+    svgAssets.closeModal = loadImage('assets/closeModal.svg'); 
+}
+
+// Helper function to check custom ready flag
+function isAnimReady(anim) {
+    return anim && anim.___ready === true;
 }
 
 function setup() {
     let canvas = createCanvas(1500, 700);
     canvas.parent('canvas-container');
+    
+    // NEW: Get reference to the HTML backdrop element
+    backdropElement = document.getElementById('modal-backdrop-overlay');
 
     // --- Lottie Seed Initialization ---
     const seedBufferW = 120;
@@ -171,7 +239,7 @@ function setup() {
             let rendererSettings = {
                 canvas: buffer.elt,
                 context: buffer.drawingContext,
-                clearCanvas: true
+                clearCanvas: true // MUST remain true for animation quality
             };
 
             // 3. Load the "half germinated" animation (animGerm)
@@ -180,8 +248,9 @@ function setup() {
                 path: 'assets/Seeds_plant_half.json', 
                 rendererSettings: rendererSettings
             });
-            // Stop it in case its file has autoplay:true
+            // NEW: Add custom ready flag
             animHalf.addEventListener('DOMLoaded', () => {
+                animHalf.___ready = true;
                 animHalf.stop();
             });
 
@@ -195,6 +264,7 @@ function setup() {
             // 5. THIS IS THE KEY: When it loads, stop it at frame 0 (the static seed)
             // This fixes the autoplaying bug.
             animFull.addEventListener('DOMLoaded', () => {
+                animFull.___ready = true;
                 animFull.goToAndStop(0, true);
             });
 
@@ -220,6 +290,11 @@ function setup() {
                 context: lottieSunCanvas.drawingContext, 
                 clearCanvas: true, 
             }
+        });
+        // NEW: Add custom ready flag
+        sunAnimation.addEventListener('DOMLoaded', () => {
+            sunAnimation.___ready = true;
+            sunAnimation.goToAndStop(1, true); 
         });
         
         // 2. Water Lottie Setup (Shared buffer)
@@ -255,13 +330,9 @@ function setup() {
                 clearCanvas: true, 
             }
         });
-        
-        // Set up animations to display static frame on load
-        sunAnimation.addEventListener('DOMLoaded', () => {
-            sunAnimation.goToAndStop(1, true); 
-        });
-        
+        // NEW: Add custom ready flag
         airAnimation.addEventListener('DOMLoaded', () => {
+            airAnimation.___ready = true;
             airAnimation.goToAndStop(1, true); 
         });
 
@@ -277,6 +348,11 @@ function setup() {
 function draw() {
     clear();
     
+    // NEW: Control the HTML backdrop visibility
+    if (backdropElement) {
+        backdropElement.style.display = showInsights ? 'block' : 'none';
+    }
+
     drawCalendar();
     drawInstructionText();
     drawPotAndEnvironment(); 
@@ -289,9 +365,61 @@ function draw() {
         drawInsightsModal();
     }
     drawInsightButton();
-    
+    updateCursor()
     if (experimentRunning) {
         updateDay();
+    }
+}
+
+function updateCursor() {
+    let pointer = false;
+
+    // 1. Insight Button
+    if (mouseX > insightButton.x && mouseX < insightButton.x + insightButton.w && 
+        mouseY > insightButton.y && mouseY < insightButton.y + insightButton.h) {
+        pointer = true;
+    }
+    
+    // 2. Close Modal Button (if modal is open)
+    if (showInsights && dist(mouseX, mouseY, closeModalButton.x, closeModalButton.y) < closeModalButton.size / 2) {
+        pointer = true;
+    }
+
+    if (!experimentRunning) {
+        // Water Control Panel (interactive only when experiment is not running)
+        const waterContainerX = 850 + 80;
+        const waterContainerWidth = 360;
+        const waterContainerHeight = 50;
+        const waterPanelY = 280;
+        const waterContainerY = waterPanelY - waterContainerHeight / 2;
+
+        if (mouseX > waterContainerX && mouseX < waterContainerX + waterContainerWidth && 
+            mouseY > waterContainerY && mouseY < waterContainerY + waterContainerHeight) {
+            pointer = true;
+        }
+
+        // Toggle Controls (Sunlight and Air)
+        const toggleX = 780 + 150;
+        const toggleW = 100;
+        const toggleH = 45;
+
+        // Sunlight Toggle (380)
+        if (mouseX > toggleX && mouseX < toggleX + toggleW && 
+            mouseY > 380 - toggleH / 2 && mouseY < 380 + toggleH / 2) {
+            pointer = true;
+        }
+
+        // Air Toggle (470)
+        if (mouseX > toggleX && mouseX < toggleX + toggleW && 
+            mouseY > 470 - toggleH / 2 && mouseY < 470 + toggleH / 2) {
+            pointer = true;
+        }
+    }
+
+    if (pointer) {
+        cursor(HAND);
+    } else {
+        cursor(ARROW);
     }
 }
 
@@ -317,7 +445,7 @@ function drawInstructionText() {
     textStyle(ITALIC);
     fill(150, 220, 255);
     textAlign(CENTER, CENTER);
-    text('Experiment with different conditions to see\nhow they affect bean seed germination.', 1150, 180);
+    text('Experiment with different conditions to see\nhow they affect bean seed germination.', 1100, 180);
 }
 
 function drawPotAndEnvironment() {
@@ -325,7 +453,7 @@ function drawPotAndEnvironment() {
 
     // --- Sunlight (Sun.json) ---
     const sunX = 400;
-    const sunY = 100;
+    const sunY = 85;
     const sunW = 120;
     const sunH = 120;
 
@@ -345,9 +473,9 @@ function drawPotAndEnvironment() {
     
     // --- Water (Water_Moderate.json / Water_Excess.json) ---
     const waterX = 120; 
-    const waterY = 120; 
+    const waterY = 50; 
     const waterW = 260; 
-    const waterH = 200; 
+    const waterH = 260; 
     
     if (experimentRunning && lottieWaterCanvas) {
         if (waterLevel === 1) {
@@ -359,12 +487,13 @@ function drawPotAndEnvironment() {
 }
 
 function drawSeeds() {
-    const yIndex = 320;
+    const yIndex = 335;
     const originalHeight = 45;
     const originalWidth = 35;
     const seedPositions = [
-        { x: 235, y: yIndex }, { x: 300, y: yIndex },
-        { x: 365, y: yIndex }, { x: 430, y: yIndex }
+        { x: 230, y: yIndex },{x:300,y:yIndex}, 
+        {x:375,y:yIndex}, 
+        {x:450,y:yIndex}
     ];
 
     const bufferW = 150;
@@ -373,7 +502,6 @@ function drawSeeds() {
     for (let i = 0; i < 4; i++) {
         const pos = seedPositions[i];
         const state = seedStates[i];
-        const prevState = previousSeedStates[i];
 
         // Get the two animations for this seed
         const buffer = seedBuffers[i];
@@ -386,58 +514,57 @@ function drawSeeds() {
         const adjustedY = pos.y - (bufferH - originalHeight);
         const adjustedX = pos.x - (bufferW - originalWidth) / 2;
         
-        // 1. If a STATIC SNAPSHOT exists, draw it and stop.
-        if (seedSnapshots[i] !== null && state === seedSnapshots[i].state) {
+        // 1. Draw STATIC SNAPSHOT if it exists. This prevents redrawing the Lottie and holds the final state.
+        if (seedSnapshots[i] !== null) {
             push();
             imageMode(CORNER);
+            // Ensure we draw the snapshot image
             image(seedSnapshots[i].img, adjustedX, adjustedY, bufferW, bufferH);
             pop();
             continue; 
         }
         
         // 2. State Transition Logic: RUN ONCE WHEN STATE CHANGES
-        if (state !== prevState) {
-            previousSeedStates[i] = state; // Update previous state
+        if (state !== previousSeedStates[i]) {
+            previousSeedStates[i] = state;
 
-            // Stop all previous animations to start the new one cleanly
+            // Stop all previous animations before switching
             animHalf.stop();
             animFull.stop();
-            seedSnapshots[i] = null; // Clear old snapshot
 
-            if (state === 0 && animFull.isLoaded) {
-                // Initial state: Show first frame (static seed) from the FULL anim
+            // DEFAULT SEED (State 0)
+            if (state === 0 && isAnimReady(animFull)) {
                 animFull.goToAndStop(0, true);
-            } 
-            else if (state === 1 && animHalf.isLoaded) {
-                // Germination: Play the HALF anim
+            }
+
+            // HALF GROWN SEED (State 1)
+            else if (state === 1 && isAnimReady(animHalf)) {
                 animHalf.playSegments([0, animHalf.totalFrames], true);
                 
                 const captureSnapshot = () => {
-                    animHalf.stop();
-                    seedSnapshots[i] = { img: buffer.get(), state: 1 }; 
-                    animHalf.removeEventListener('loopComplete', captureSnapshot);
+                    // Capture the final frame of the Lottie into a static image buffer
+                    seedSnapshots[i] = { img: buffer.get(), state: 1 };
+                    animHalf.stop(); // Freeze the Lottie drawing loop
                     animHalf.removeEventListener('complete', captureSnapshot);
                 };
-                animHalf.addEventListener('loopComplete', captureSnapshot);
                 animHalf.addEventListener('complete', captureSnapshot); 
             } 
-            else if (state === 2 && animFull.isLoaded) {
-                // Sprouting: Play the FULL anim
+            // FULLY GROWN SEED (State 2)
+            else if (state === 2 && isAnimReady(animFull)) {
                 animFull.playSegments([0, animFull.totalFrames], true);
                 
                 const captureSnapshot = () => {
-                    animFull.stop();
+                    // Capture the final frame of the Lottie into a static image buffer
                     seedSnapshots[i] = { img: buffer.get(), state: 2 }; 
-                    animFull.removeEventListener('loopComplete', captureSnapshot);
+                    animFull.stop(); // Freeze the Lottie drawing loop
                     animFull.removeEventListener('complete', captureSnapshot);
                 };
-                animFull.addEventListener('loopComplete', captureSnapshot);
                 animFull.addEventListener('complete', captureSnapshot);
             }
         }
         // --- End State Transition Logic ---
 
-        // 3. Draw the LIVE buffer only if a snapshot hasn't been taken
+        // 3. Draw the LIVE buffer (only runs if snapshot is null and Lottie is currently animating or static (state 0))
         if (seedSnapshots[i] === null) {
              push();
              imageMode(CORNER);
@@ -445,8 +572,7 @@ function drawSeeds() {
              pop();
         }
     }
-}
-        
+}   
 function drawResultsBox() {
     fill(40, 30, 20, 230);
     rect(240, 350, 220, 100, 10);
@@ -462,13 +588,14 @@ function drawResultsBox() {
     text("• Germinated: ", xAxis, 380);
     textStyle(BOLD);
     text(`${experimentResult.germinated}/4`, xAxis + textWidth("• Germinated: "), 380);
-
+    
+    textSize(16);
     textStyle(NORMAL);
     text("• Sprouted: ", xAxis, 400);
     textStyle(BOLD);
     text(`${experimentResult.sprouted ? 'Yes' : 'No'}`, xAxis + textWidth("• Sprouted: "), 400);
 
-    textSize(18);
+    textSize(16);
     textStyle(NORMAL);
     text("• Result: ", xAxis, 420);
     textStyle(BOLD);
@@ -480,6 +607,51 @@ function drawControlPanel() {
     drawToggleControl('Sunlight:', 780, 380, sunlight);
     drawToggleControl('Air:', 780, 470, air);
 }
+
+
+// Force-clear seed state so next Start will re-run animations.
+function clearSeedsForOptionChange() {
+    // Stop any playing seed animations
+    seedHalfAnims.forEach(a => a && a.stop && a.stop());
+    seedFullAnims.forEach(a => a && a.stop && a.stop());
+
+    // NEW: Reset Lottie back to the static seed frame (frame 0) using the new helper check
+    seedFullAnims.forEach(a => {
+        if (isAnimReady(a)) a.goToAndStop(0, true); 
+    });
+
+    // Clear persistent snapshots (so old final images are removed)
+    seedSnapshots = [null, null, null, null];
+
+    // Make previousSeedStates impossible to equal to actual states so transitions run
+    previousSeedStates = [-1, -1, -1, -1];
+
+    // Reset runtime display state to initial seed icons (state 0)
+    seedStates = [0, 0, 0, 0];
+
+    // Also ensure the experiment UI is reset to allow new start
+    experimentRunning = false;
+    currentDay = 0;
+    
+    // Stop and set environment animations to their static initial state
+    if (sunAnimation) { 
+        sunAnimation.stop(); 
+        // Use the helper check
+        if (isAnimReady(sunAnimation)) sunAnimation.goToAndStop(1, true); 
+    }
+    if (airAnimation) { 
+        airAnimation.stop(); 
+        // Use the helper check
+        if (isAnimReady(airAnimation)) airAnimation.goToAndStop(1, true); 
+    }
+    if (waterModerateAnimation) waterModerateAnimation.stop();
+    if (waterExcessAnimation) waterExcessAnimation.stop();
+    
+    // Ensure the start button is enabled
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('resetBtn').disabled = false;
+}
+
 
 function drawWaterControl(x, y) {
     const iconSize = 40;
@@ -538,7 +710,7 @@ function drawWaterControl(x, y) {
 function drawToggleControl(label, x, y, isOn) {
     const iconSize = 40;
     const iconOffsetX = 10;
-    const textWidthOffset = 80;
+    let textWidthOffset = 80;
     const iconTotalWidth = iconSize + iconOffsetX;
     const buttonStartX = 850 + 80; 
     let labelDrawX = buttonStartX - (textWidthOffset + iconTotalWidth); 
@@ -549,6 +721,9 @@ function drawToggleControl(label, x, y, isOn) {
     textAlign(LEFT, CENTER);
     textStyle(NORMAL);
     
+    if (label === 'Air:') {
+        textWidthOffset = 50; 
+    }
     if (label === 'Sunlight:') {
         text('Sunlight', labelDrawX, y); 
 
@@ -563,6 +738,9 @@ function drawToggleControl(label, x, y, isOn) {
         }
     } else if (label === 'Air:') {
         text('Air', labelDrawX, y); 
+        if(svgAssets.airIcon){ 
+            image(svgAssets.airIcon,labelDrawX+textWidthOffset + 38,y-iconSize/2 ,iconSize - 15,iconSize - 15);
+        }
     } else {
         text(label, labelDrawX, y); 
     }
@@ -598,28 +776,25 @@ function drawInsightButton() {
 }
 
 function drawInsightsModal() {
-    fill(0, 0, 0, 180); 
-    noStroke(); 
-    rect(0, 0, 1500, 700);
-    
+    // Draw the actual modal content box
     fill(255); 
-    rect(170, 150, 850, 460, 15);
+    rect(170, 65, 1150, 540, 15);
     
-    fill(80, 180, 100); 
-    noStroke(); 
-    circle(1030, 160, 60);
+    // Use SVG for Close button
+    const closeX = closeModalButton.x - closeModalButton.size / 2;
+    const closeY = closeModalButton.y - closeModalButton.size / 2;
+    const closeSize = closeModalButton.size;
     
-    stroke(255); 
-    strokeWeight(4); 
-    line(1020, 145, 1045, 175); 
-    line(1045, 145, 1020, 175);
+    if (svgAssets.closeModal) {
+        image(svgAssets.closeModal, closeX, closeY, closeSize, closeSize);
+    }
     
     fill(50); 
     noStroke(); 
     textAlign(LEFT, TOP); 
-    textSize(18);
+    textSize(24);
     
-    let yPos = 220;
+    let yPos = 180;
     const xPos = 220;
     
     textStyle(NORMAL);
@@ -646,10 +821,18 @@ function drawInsightsModal() {
     
     textStyle(NORMAL);
     text('• Most seeds can germinate in ', xPos, yPos);
+
+    // Calculate the start position for 'darkness'
+    let xBoldStart = xPos + textWidth('• Most seeds can germinate in ');
+
     textStyle(BOLD);
-    text('darkness', xPos + textWidth('• Most seeds can germinate in ') - 15, yPos);
+    text('darkness', xBoldStart, yPos);
+
+    // Calculate the start position for ', but need light...'
+    let xNormalStart = xBoldStart + textWidth('darkness');
+
     textStyle(NORMAL);
-    text(', but need light for growth after sprouting.', xPos + textWidth('• Most seeds can germinate in darkness') + 15, yPos);
+    text(', but need light for growth after sprouting.', xNormalStart, yPos);
     yPos += 55;
     
     textStyle(BOLD);
@@ -661,71 +844,49 @@ function drawInsightsModal() {
     textStyle(NORMAL);
     text('• Both ', xPos, yPos);
     textStyle(BOLD);
-    text('too little and too much water', xPos + textWidth('• Both '), yPos);
+    text('too little and too much water', xPos + textWidth('• Both'), yPos);
     textStyle(NORMAL);
     text(' significantly reduce germination success.', xPos + textWidth('• Both too little and too much water')+ 24, yPos);
 }
 
 // --- LOGIC AND INTERACTION ---
 
-function startExperiment() {
-    if (experimentRunning) return;
-    experimentRunning = true;
-    startTime = millis();
-    let key = `${waterLevel}-${sunlight}-${air}`;
-    experimentResult = resultsTable[key] || { germinated: 0, sprouted: false, result: 'None' };
+function startExperiment(){
+    if(experimentRunning)return;
+    experimentRunning=true;
+    startTime=millis();
+    let key=`${waterLevel}-${sunlight}-${air}`;
+    experimentResult=resultsTable[key]||{germinated:0,sprouted:false,result:'None'};
+    let numToAnimate=experimentResult.germinated;
+    let willSprout=experimentResult.sprouted;
+    if(willSprout){for(let i=0;i<numToAnimate;i++){seedStates[i]=2;}}else{for(let i=0;i<numToAnimate;i++){seedStates[i]=1;}}
     
-    // --- THIS IS THE NEW LOGIC ---
-    // Set the final seed states immediately based on the result.
-    let numToAnimate = experimentResult.germinated;
-    let willSprout = experimentResult.sprouted;
-
-    if (willSprout) {
-        // Set states for FULL animation (State 2)
-        for (let i = 0; i < numToAnimate; i++) {
-            seedStates[i] = 2;
-        }
-    } else {
-        // Set states for HALF animation (State 1)
-        for (let i = 0; i < numToAnimate; i++) {
-            seedStates[i] = 1;
-        }
-    }
-    // --- END OF NEW LOGIC ---
-
-    if (sunlight && sunAnimation) {
-        sunAnimation.play();
-    }
-    if (air && airAnimation) {
-        airAnimation.play(); 
-    }
-    if (waterLevel === 1 && waterModerateAnimation) {
-        waterModerateAnimation.play();
-    } else if (waterLevel === 2 && waterExcessAnimation) {
-        waterExcessAnimation.play();
-    }
-
-    document.getElementById('startBtn').disabled = true;
-    document.getElementById('resetBtn').disabled = true;
+    // Check readiness before playing environment animations
+    if(sunlight&&isAnimReady(sunAnimation)){sunAnimation.play();}
+    if(air&&isAnimReady(airAnimation)){airAnimation.play();}
+    
+    // We don't use ready flags on water animations as they are triggered after the fact
+    if(waterLevel===1&&waterModerateAnimation){waterModerateAnimation.play();}
+    else if(waterLevel===2&&waterExcessAnimation){waterExcessAnimation.play();}
+    
+    document.getElementById('resetBtn').disabled=true; 
 }
-function updateDay() {
-    let elapsed = millis() - startTime;
-    currentDay = floor(elapsed / 800);
-
-    if (currentDay > 10) {
-        currentDay = 10;
-        experimentRunning = false;
-        document.getElementById('resetBtn').disabled = false;
-
-        if (sunAnimation) sunAnimation.stop();
-        if (airAnimation) airAnimation.stop();
-        if (waterModerateAnimation) waterModerateAnimation.stop();
-        if (waterExcessAnimation) waterExcessAnimation.stop();
+function updateDay(){
+    let elapsed=millis()-startTime;
+    currentDay=floor(elapsed/800);
+    if(currentDay>10){
+        currentDay=10;
+        experimentRunning=false;
+        
+        document.getElementById('resetBtn').disabled=false;
+        
+        // Stop animations once experiment finishes
+        if(sunAnimation)sunAnimation.stop();
+        if(airAnimation)airAnimation.stop();
+        if(waterModerateAnimation)waterModerateAnimation.stop();
+        if(waterExcessAnimation)waterExcessAnimation.stop();
     }
 }
-
-
-
 
 function resetExperiment() {
     experimentRunning = false;
@@ -733,21 +894,29 @@ function resetExperiment() {
     seedStates = [0, 0, 0, 0];
     previousSeedStates = [0, 0, 0, 0];
     seedSnapshots = [null, null, null, null]; 
-    waterLevel = 1;
+    waterLevel = 0;
     sunlight = false; 
     air = false; 
     showInsights = false;
+    
+    // Hide the HTML backdrop on reset
+    if (backdropElement) {
+        backdropElement.style.display = 'none';
+    }
+
     experimentResult = { germinated: 0, sprouted: false, result: 'None' };
     document.getElementById('startBtn').disabled = false;
     document.getElementById('resetBtn').disabled = false;
 
     if (sunAnimation) {
         sunAnimation.stop();
-        if (sunAnimation.isLoaded) sunAnimation.goToAndStop(1, true);
+        // Use the helper check
+        if (isAnimReady(sunAnimation)) sunAnimation.goToAndStop(1, true);
     }
     if (airAnimation) {
         airAnimation.stop();
-        if (airAnimation.isLoaded) airAnimation.goToAndStop(1, true);
+        // Use the helper check
+        if (isAnimReady(airAnimation)) airAnimation.goToAndStop(1, true);
     }
     if (waterModerateAnimation) waterModerateAnimation.stop();
     if (waterExcessAnimation) waterExcessAnimation.stop();
@@ -757,24 +926,226 @@ function resetExperiment() {
         if (seedHalfAnims[i]) {
             seedHalfAnims[i].stop();
         }
-        if (seedFullAnims[i] && seedFullAnims[i].isLoaded) {
+        // Use the helper check
+        if (isAnimReady(seedFullAnims[i])) {
             // Reset the full animation back to the static seed frame
             seedFullAnims[i].goToAndStop(0, true);
         }
     });
 }
 
-function mousePressed() {
-    if (showInsights && dist(mouseX, mouseY, 1030, 160) < 30) { 
-        showInsights = false; return;
-    }
 
-    if (mouseX > insightButton.x && mouseX < insightButton.x + insightButton.w &&
-        mouseY > insightButton.y && mouseY < insightButton.y + insightButton.h) {
-        showInsights = !showInsights; return;
+function drawWaterControl(x, y) {
+    const iconSize = 40;
+    const iconOffsetX = 10;
+    const textWidthOffset = 80;
+    const iconTotalWidth = iconSize + iconOffsetX;
+    const buttonStartX = 850 + 80;
+    const labelDrawX = buttonStartX - (textWidthOffset + iconTotalWidth);
+
+    fill(255);
+    noStroke();
+    textSize(22);
+    textAlign(LEFT, CENTER);
+    textStyle(NORMAL);
+    
+    text('Water', labelDrawX, y); 
+
+    if (svgAssets.waterDropIcon) {
+        image(
+            svgAssets.waterDropIcon, 
+            labelDrawX + textWidthOffset,
+            y - iconSize / 2 + 5, 
+            iconSize, 
+            iconSize
+        );
     }
     
-    if (experimentRunning) return;
+    const containerX = x + 80;
+    const containerWidth = 360;
+    const containerHeight = 50;
+    const containerY = y - containerHeight / 2;
+    const cornerRadius = 10;
+    const optionWidth = containerWidth / 3;
+    const buttons = ['None', 'Moderate', 'Excess'];
+
+    fill(255);
+    noStroke();
+    rect(containerX, containerY, containerWidth, containerHeight, cornerRadius);
+
+    const activeX = containerX + (waterLevel * optionWidth);
+    fill('#4CAF50');
+    noStroke();
+    rect(activeX + 5, containerY + 5, optionWidth - 10, containerHeight - 10, cornerRadius);
+
+    for (let i = 0; i < buttons.length; i++) {
+        const textX = containerX + (i * optionWidth) + (optionWidth / 2);
+        fill(0);
+        noStroke();
+        textSize(18);
+        textAlign(CENTER, CENTER);
+        textStyle(BOLD);
+        text(buttons[i], textX, y);
+    }
+}
+
+function drawToggleControl(label, x, y, isOn) {
+    const iconSize = 40;
+    const iconOffsetX = 10;
+    let textWidthOffset = 80;
+    const iconTotalWidth = iconSize + iconOffsetX;
+    const buttonStartX = 850 + 80; 
+    let labelDrawX = buttonStartX - (textWidthOffset + iconTotalWidth); 
+
+    fill(255); 
+    noStroke(); 
+    textSize(22); 
+    textAlign(LEFT, CENTER);
+    textStyle(NORMAL);
+    
+    if (label === 'Air:') {
+        textWidthOffset = 50; 
+    }
+    if (label === 'Sunlight:') {
+        text('Sunlight', labelDrawX, y); 
+
+        if (svgAssets.sunIcon) {
+            image(
+                svgAssets.sunIcon, 
+                labelDrawX + textWidthOffset,
+                y - iconSize / 2,
+                iconSize, 
+                iconSize
+            );
+        }
+    } else if (label === 'Air:') {
+        text('Air', labelDrawX, y); 
+        if(svgAssets.airIcon){ 
+            image(svgAssets.airIcon,labelDrawX+textWidthOffset + 38,y-iconSize/2 ,iconSize - 15,iconSize - 15);
+        }
+    } else {
+        text(label, labelDrawX, y); 
+    }
+
+    let toggleX = buttonStartX;
+    let toggleW = 100, toggleH = 45;
+    
+    noStroke();
+    fill(isOn ? '#4CAF50' : '#FFFFFF');
+    rect(toggleX, y - toggleH / 2, toggleW, toggleH, 25);
+    
+    textSize(16);
+    textStyle(BOLD);
+    if (isOn) {
+        fill(255);
+        textAlign(CENTER, CENTER);
+        text("ON", toggleX + (toggleW / 4) + 5, y); 
+    } else {
+        fill(50);
+        textAlign(CENTER, CENTER);
+        text("OFF", toggleX + (toggleW * 3 / 4) - 5, y);
+    }
+
+    noStroke();
+    fill(isOn ? 255 : '#CCCCCC');
+    let circleX = isOn ? toggleX + toggleW - 27 : toggleX + 27;
+    let circleDiameter = 35;
+    circle(circleX, y, circleDiameter);
+}
+
+function drawInsightButton() {
+    image(svgAssets.insightBtn, insightButton.x, insightButton.y, insightButton.w, insightButton.h);
+}
+
+function drawInsightsModal() {
+    // Draw the actual modal content box
+    fill(255); 
+    rect(170, 65, 1150, 540, 15);
+    
+    // Use SVG for Close button
+    const closeX = closeModalButton.x - closeModalButton.size / 2;
+    const closeY = closeModalButton.y - closeModalButton.size / 2;
+    const closeSize = closeModalButton.size;
+    
+    if (svgAssets.closeModal) {
+        image(svgAssets.closeModal, closeX, closeY, closeSize, closeSize);
+    }
+    
+    fill(50); 
+    noStroke(); 
+    textAlign(LEFT, TOP); 
+    textSize(24);
+    
+    let yPos = 180;
+    const xPos = 220;
+    
+    textStyle(NORMAL);
+    text('• Seeds need ', xPos, yPos);
+    textStyle(BOLD);
+    text('moderate water', xPos + textWidth('• Seeds need '), yPos);
+    textStyle(NORMAL);
+    text(' to soften the seed coat and activate enzymes.', xPos + textWidth('• Seeds need moderate water') + 15, yPos);
+    yPos += 55;
+    
+    textStyle(BOLD);
+    text('• Excess water', xPos, yPos);
+    textStyle(NORMAL);
+    text(' can cause seeds to rot and prevents proper air circulation.', xPos + textWidth('• Excess water')+ 15, yPos);
+    yPos += 55;
+    
+    textStyle(NORMAL);
+    text('• Seeds need ', xPos, yPos);
+    textStyle(BOLD);
+    text('air (oxygen)', xPos + textWidth('• Seeds need '), yPos);
+    textStyle(NORMAL);
+    text(' for cellular respiration during germination.', xPos + textWidth('• Seeds need air (oxygen)') + 15, yPos);
+    yPos += 55;
+    
+    textStyle(NORMAL);
+    text('• Most seeds can germinate in ', xPos, yPos);
+
+    // Calculate the start position for 'darkness'
+    let xBoldStart = xPos + textWidth('• Most seeds can germinate in ');
+
+    textStyle(BOLD);
+    text('darkness', xBoldStart, yPos);
+
+    // Calculate the start position for ', but need light...'
+    let xNormalStart = xBoldStart + textWidth('darkness');
+
+    textStyle(NORMAL);
+    text(', but need light for growth after sprouting.', xNormalStart, yPos);
+    yPos += 55;
+    
+    textStyle(BOLD);
+    text('• Optimal conditions', xPos, yPos);
+    textStyle(NORMAL);
+    text(' (moderate water + air + warmth) produce the best germination rates.', xPos + textWidth('• Optimal conditions') + 15, yPos);
+    yPos += 55;
+    
+    textStyle(NORMAL);
+    text('• Both ', xPos, yPos);
+    textStyle(BOLD);
+    text('too little and too much water', xPos + textWidth('• Both'), yPos);
+    textStyle(NORMAL);
+    text(' significantly reduce germination success.', xPos + textWidth('• Both too little and too much water')+ 24, yPos);
+}
+
+function mousePressed() {
+    // Check for close modal button click using constant
+    if(showInsights && dist(mouseX, mouseY, closeModalButton.x, closeModalButton.y) < closeModalButton.size / 2){
+        showInsights=false;
+        return;
+    }
+    
+    // Check for insight button click
+    if(mouseX>insightButton.x&&mouseX<insightButton.x+insightButton.w&&mouseY>insightButton.y&&mouseY<insightButton.y+insightButton.h){
+        showInsights=!showInsights;
+        return;
+    }
+    
+    // Block all parameter changes if the experiment is running
+    if(experimentRunning) return;
     
     const waterContainerX = 850 + 80;
     const waterContainerWidth = 360;
@@ -783,9 +1154,15 @@ function mousePressed() {
     const waterContainerY = waterPanelY - waterContainerHeight / 2;
     const optionWidth = waterContainerWidth / 3;
 
+    // Water Level Change
     if (mouseX > waterContainerX && mouseX < waterContainerX + waterContainerWidth &&
         mouseY > waterContainerY && mouseY < waterContainerY + waterContainerHeight) {
-        waterLevel = floor((mouseX - waterContainerX) / optionWidth);
+        const newWater = floor((mouseX - waterContainerX) / optionWidth);
+        if (newWater !== waterLevel) {
+            waterLevel = newWater;
+            // Reset seeds because options changed (per spec)
+            clearSeedsForOptionChange();
+        }
         return; 
     }
     
@@ -793,19 +1170,33 @@ function mousePressed() {
     const toggleW = 100;
     const toggleH = 45;
 
+    // Sunlight Toggle
     if (mouseX > toggleX && mouseX < toggleX + toggleW && mouseY > 380 - toggleH / 2 && mouseY < 380 + toggleH / 2) {
-        sunlight = !sunlight;
+        const newSun = !sunlight;
+        if (newSun !== sunlight) {
+            sunlight = newSun;
+            // Per spec, changing options should reset seeds
+            clearSeedsForOptionChange();
+        }
         
-        if (sunlight && sunAnimation && !experimentRunning) {
-            sunAnimation.goToAndStop(1, true); 
+        // Keep the Lottie appearance static ON when user toggles
+        if (sunlight && sunAnimation) {
+            sunAnimation.goToAndStop(1, true);
         }
         return;
     }
 
+    // Air Toggle
     if (mouseX > toggleX && mouseX < toggleX + toggleW && mouseY > 470 - toggleH / 2 && mouseY < 470 + toggleH / 2) {
-        air = !air;
-        
-        if (air && airAnimation && !experimentRunning) {
+        const newAir = !air;
+        if (newAir !== air) {
+            air = newAir;
+            // Per spec, changing options should reset seeds
+            clearSeedsForOptionChange();
+        }
+
+        // Keep the Lottie appearance static ON when user toggles
+        if (air && airAnimation) {
             airAnimation.goToAndStop(1, true);
         } 
         return;

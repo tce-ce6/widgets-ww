@@ -6,6 +6,7 @@
     <title>Symmetry Puzzle Widget (4K - White Theme)</title>
     <link rel="stylesheet" href="global_style.css"> 
     <script src="p5.js"></script>
+    <script src="lottie.min.js"></script> 
     <style>
         body {
             display: flex;
@@ -13,47 +14,46 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #ffffff; /* Pure white theme background */
+            background-color: #ffffff;
             font-family: Arial, sans-serif;
         }
-        canvas {
-            /* Scaled border and shadow, adjusted for pure white background */
-
-        }
+        /* Hidden container is no longer necessary as Lottie will draw to the p5 buffer */
     </style>
 </head>
 <body>
 
-   <div id="app" class="mainContainerOuter">
-
+    <div id="app" class="mainContainerOuter">
       <div class="mainContainer" >
-    <main id="canvas-container">
-        </main>
+        <main id="canvas-container"></main>
         <div id="widget-container"></div>
-        
- </div>
+      </div>
+    </div>
 
- 
-</div>
-
-
-
-<script>
-    // Puzzle data is unchanged
-    const puzzleData  = [
-      { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 7, "y": 3 }, { "type": "diag_up", "x": 6, "y": 4 }, { "type": "diag_up", "x": 5, "y": 5 }, { "type": "line_h", "x": 5, "y": 2 }, { "type": "line_h", "x": 5, "y": 3 } ], "solution": [ { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 }, { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_down", "x": 2, "y": 3 }, { "type": "diag_down", "x": 3, "y": 4 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_h", "x": 4, "y": 2 }, { "type": "line_h", "x": 4, "y": 3 } ] }, "horizontal": { "question": [ { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 }, { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 7 }, { "type": "diag_down", "x": 5, "y": 6 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_v", "x": 7, "y": 5 }, { "type": "line_v", "x": 6, "y": 5 } ], "solution": [ { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 2 }, { "type": "diag_up", "x": 5, "y": 3 }, { "type": "diag_up", "x": 4, "y": 4 }, { "type": "line_v", "x": 7, "y": 4 }, { "type": "line_v", "x": 6, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_1" },
-      { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 5, "y": 5 } ], "solution": [ { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "circle", "x": 4, "y": 4 }, { "type": "circle", "x": 4, "y": 5 } ] }, "horizontal": { "question": [ { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "circle", "x": 5, "y": 5 }, { "type": "circle", "x": 4, "y": 5 } ], "solution": [ { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 4, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_2" }
-    ]
+    <script>
+    // ... (puzzleData array remains unchanged) ...
+    const puzzleData = [
+        { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "diag_down", "x": 5, "y": 0 }, { "type": "diag_down", "x": 6, "y": 1 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 7, "y": 3 }, { "type": "diag_up", "x": 6, "y": 4 }, { "type": "diag_up", "x": 5, "y": 5 }, { "type": "line_h", "x": 5, "y": 2 }, { "type": "line_h", "x": 5, "y": 3 } ], "solution": [ { "type": "diag_up", "x": 4, "y": 0 }, { "type": "diag_up", "x": 3, "y": 1 }, { "type": "diag_up", "x": 2, "y": 2 }, { "type": "diag_down", "x": 2, "y": 3 }, { "type": "diag_down", "x": 3, "y": 4 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_h", "x": 4, "y": 2 }, { "type": "line_h", "x": 4, "y": 3 } ] }, "horizontal": { "question": [ { "type": "diag_up", "x": 9, "y": 5 }, { "type": "diag_up", "x": 8, "y": 6 }, { "type": "diag_up", "x": 7, "y": 7 }, { "type": "diag_down", "x": 6, "y": 7 }, { "type": "diag_down", "x": 5, "y": 6 }, { "type": "diag_down", "x": 4, "y": 5 }, { "type": "line_v", "x": 7, "y": 5 }, { "type": "line_v", "x": 6, "y": 5 } ], "solution": [ { "type": "diag_down", "x": 9, "y": 4 }, { "type": "diag_down", "x": 8, "y": 3 }, { "type": "diag_down", "x": 7, "y": 2 }, { "type": "diag_up", "x": 6, "y": 2 }, { "type": "diag_up", "x": 5, "y": 3 }, { "type": "diag_up", "x": 4, "y": 4 }, { "type": "line_v", "x": 7, "y": 4 }, { "type": "line_v", "x": 6, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_1" },
+        { "gridSize": 10, "puzzles": { "vertical": { "question": [ { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 5, "y": 5 } ], "solution": [ { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "circle", "x": 4, "y": 4 }, { "type": "circle", "x": 4, "y": 5 } ] }, "horizontal": { "question": [ { "type": "arc_tl", "x": 7, "y": 5 }, { "type": "arc_tl", "x": 6, "y": 6 }, { "type": "arc_tl", "x": 5, "y": 7 }, { "type": "arc_tr", "x": 4, "y": 7 }, { "type": "arc_tr", "x": 3, "y": 6 }, { "type": "arc_tr", "x": 2, "y": 5 }, { "type": "circle", "x": 5, "y": 5 }, { "type": "circle", "x": 4, "y": 5 } ], "solution": [ { "type": "arc_bl", "x": 7, "y": 4 }, { "type": "arc_bl", "x": 6, "y": 3 }, { "type": "arc_bl", "x": 5, "y": 2 }, { "type": "arc_br", "x": 4, "y": 2 }, { "type": "arc_br", "x": 3, "y": 3 }, { "type": "arc_br", "x": 2, "y": 4 }, { "type": "circle", "x": 5, "y": 4 }, { "type": "circle", "x": 4, "y": 4 } ] } }, "availableParts": [ "diag_up", "diag_down", "arc_tl", "arc_tr", "arc_bl", "arc_br", "line_v", "line_h", "circle" ], "id": "puzzle_2" }
+    ];
 
     let sketch = function(p) {
         // --- 4K Scaling Factor ---
-        const scaleFactor = 3.6; 
+        const scaleFactor = 1.5; 
 
         // --- Canvas & Layout Configuration (Scaled) ---
         const canvasWidth = 800 * scaleFactor;
         const canvasHeight = 600 * scaleFactor;
         const controlsX = 0, controlsY = 0, controlsW = 250 * scaleFactor, controlsH = canvasHeight;
         const gridAreaX = 280 * scaleFactor, gridAreaY = 20 * scaleFactor, gridAreaSize = 480 * scaleFactor;
+
+        // --- Lottie Animation Configuration ---
+        const lottieW = 200; // Standard size for Lottie buffer
+        const lottieH = 200; 
+        const drawSize = 50 * scaleFactor; // Size to draw on main canvas
+        const wrongAnimAnchorX = gridAreaX - 65 * scaleFactor; 
+        const wrongAnimAnchorY = gridAreaY + 280 * scaleFactor - drawSize/2;
+        const successAnimAnchorX = gridAreaX - 250 * scaleFactor - drawSize/2; 
+        const successAnimAnchorY = gridAreaY + 330 * scaleFactor - drawSize * 1.5;
 
         // --- State Variables (Unchanged) ---
         let currentPuzzleIndex = 0;
@@ -64,17 +64,75 @@
         let feedbackMessage = null;
         let feedbackTimer = 0;
 
+        // --- Lottie Variables ---
+        let successAnim, wrongAnim;
+        let lottieBuffer; // NEW: The p5.Graphics buffer for Lottie-web to draw on
+
         // --- UI Element Definitions ---
         let uiElements = {};
+
+        p.preload = function() {
+              // Lottie-web loads JSON asynchronously, so we initialize it in setup
+        };
 
         p.setup = function() {
             p.createCanvas(canvasWidth, canvasHeight).parent('canvas-container');
             p.textFont('Arial');
             initializeUI();
             loadPuzzle();
+            
+            // --- LOTTIE INITIALIZATION ---
+            if (typeof lottie === 'undefined') {
+                console.error("Lottie library is not loaded. Animations will not work.");
+                return;
+            }
+
+            // 1. Create the p5.Graphics buffer (The key fix!)
+            lottieBuffer = p.createGraphics(lottieW, lottieH); 
+            
+            // 2. Define shared renderer settings
+            const rendererSettings = {
+                // The Lottie animation draws into the off-screen buffer's canvas element
+                canvas: lottieBuffer.elt,
+                // And uses the off-screen buffer's drawing context
+                context: lottieBuffer.drawingContext, 
+                clearCanvas: true,
+            };
+
+            // 3. Initialize Wrong Animation
+            wrongAnim = lottie.loadAnimation({
+                renderer: 'canvas', // IMPORTANT: Use canvas renderer
+                loop: false,
+                autoplay: false,
+                path: 'assets/wrong.json',
+                name: 'wrongAnim',
+                rendererSettings: rendererSettings // Use the shared settings
+            });
+            wrongAnim.addEventListener('complete', () => {
+                if (wrongAnim.name === 'wrongAnim') {
+                    wrongAnim.goToAndStop(wrongAnim.totalFrames - 1, true); 
+                }
+            });
+
+            // 4. Initialize Success Animation
+            successAnim = lottie.loadAnimation({
+                renderer: 'canvas', // IMPORTANT: Use canvas renderer
+                loop: false,
+                autoplay: false,
+                path: 'assets/success.json',
+                name: 'successAnim',
+                rendererSettings: rendererSettings // Use the shared settings
+            });
+            successAnim.addEventListener('complete', () => {
+                if (successAnim.name === 'successAnim') {
+                    // This stop logic is fine for a one-shot animation
+                    successAnim.goToAndStop(successAnim.totalFrames - 1, true); 
+                }
+            });
         };
 
         function initializeUI() {
+            // ... (unchanged) ...
             const palSize = 45 * scaleFactor;
             const palGap = 10 * scaleFactor;
 
@@ -103,13 +161,18 @@
             });
         }
 
-        // Logic function - unchanged
+        // Logic function - **MODIFIED** to include Lottie reset
         function loadPuzzle() {
             userShapes = [];
             selectedPart = null;
             puzzleCompleted = false;
             feedbackMessage = null;
+            feedbackTimer = 0;
             uiElements.navLabel.text = `Puzzle ${currentPuzzleIndex + 1} of ${puzzleData.length}`;
+
+            // Stop and reset Lottie animations when puzzle changes
+            if (successAnim) successAnim.goToAndStop(0, true);
+            if (wrongAnim) wrongAnim.goToAndStop(0, true);
         }
 
         p.draw = function() {
@@ -117,12 +180,13 @@
             drawControls();
             drawGridAndPalette();
             drawFeedback();
+            
             if (puzzleCompleted) {
-              drawCongrats();
+                drawCongrats();
             }
         };
         
-        // --- UPDATED FUNCTION ---
+        // ... (drawControls and drawGridAndPalette remain largely unchanged) ...
         function drawControls() {
             p.noStroke(); p.fill(50); // Dark text
             p.textSize(20 * scaleFactor); 
@@ -145,7 +209,7 @@
             drawButton(uiElements.btnPrev, 'default');
             drawButton(uiElements.btnNext, 'default');
         }
-        
+
         function drawGridAndPalette() {
             p.push();
             p.translate(gridAreaX, gridAreaY);
@@ -179,13 +243,36 @@
                 p.pop();
             });
         }
-
+        
+        // --- MODIFIED FUNCTION: drawFeedback ---
         function drawFeedback() {
             if (feedbackMessage && p.millis() < feedbackTimer) {
-                p.fill(220, 53, 69); p.noStroke(); // Red text (unchanged)
+                p.fill(220, 53, 69); p.noStroke(); // Red text
                 p.textSize(18 * scaleFactor); 
                 p.textAlign(p.CENTER, p.CENTER);
-                p.text(feedbackMessage, gridAreaX - 150 * scaleFactor, gridAreaY + 280 * scaleFactor); 
+                const msgX = gridAreaX - 150 * scaleFactor;
+                const msgY = gridAreaY + 280 * scaleFactor;
+                p.text(feedbackMessage, msgX, msgY); 
+
+                // Draw Wrong Animation next to the message
+                if (feedbackMessage === "Not quite, try again!" && wrongAnim && lottieBuffer) {
+                    // Check if animation is running, if not, play it
+                    if (wrongAnim.isPaused) {
+                        // wrongAnim.play();
+                    }
+                    p.push();
+                    // Render Lottie buffer content to main p5 canvas (The fix!)
+                    // Note: Lottie-web automatically draws the current frame to the buffer.
+                    p.tint(220, 53, 69);
+
+                    p.image(lottieBuffer, wrongAnimAnchorX, wrongAnimAnchorY, drawSize, drawSize);
+                    p.pop();
+                }else if (wrongAnim && feedbackMessage) {
+                    // FIX 2: When the timer expires (p.millis() >= feedbackTimer),
+                    // we force stop the animation and hide the feedback message.
+                    wrongAnim.goToAndStop(0, true);
+                    feedbackMessage = null; // Clear the message immediately after the timer expires
+                }
             }
         }
         
@@ -211,20 +298,79 @@
             }
         }
 
+        // --- MODIFIED FUNCTION: drawCongrats ---
         function drawCongrats() {
-            p.fill(0, 0, 0, 150); // Dark overlay (unchanged)
-            p.noStroke(); p.fill(255); p.stroke(0, 200, 0); // White box, green stroke
-            p.strokeWeight(3 * scaleFactor); 
-            p.rect(gridAreaX - 260 * scaleFactor, gridAreaY + 230 * scaleFactor, gridAreaSize - 250 * scaleFactor, 100 * scaleFactor, 10 * scaleFactor);
-            p.noStroke(); p.fill(0, 100, 0); // Dark green text
+            // p.fill(0, 0, 0, 150); // Dark overlay
+            // p.rect(0, 0, canvasWidth, canvasHeight); // Full overlay
+
+            // Congrats message box
+            const boxW = gridAreaSize - 250 * scaleFactor;
+            const boxH = 100 * scaleFactor;
+            const boxX = gridAreaX - 260 * scaleFactor;
+            const boxY = gridAreaY + 230 * scaleFactor;
+            const textX = boxX + boxW / 2;
+            const textY = boxY + boxH / 2;
+            p.fill(0,200,0);             // White box
+            p.stroke(0, 200, 0);    // White box, green stroke
+            p.strokeWeight(1); 
+            // p.rect(boxX, boxY, boxW, boxH, 10 * scaleFactor);
             p.textSize(18 * scaleFactor); 
             p.textAlign(p.CENTER, p.CENTER);
-            p.text(uiElements.congratsMsg.text, gridAreaX - 150 * scaleFactor, gridAreaY + 280 * scaleFactor);
+            p.text(uiElements.congratsMsg.text, textX, textY);
+
+            // Draw Success Animation
+            if (successAnim && lottieBuffer) {
+                // Check if animation is running, if not, play it
+                if (successAnim.isPaused) successAnim.play();
+                p.push();
+                // Render Lottie buffer content to main p5 canvas (The fix!)
+                p.image(lottieBuffer, successAnimAnchorX, successAnimAnchorY, drawSize, drawSize);
+                p.pop();
+            }
         }
         
-        // Logic function - unchanged
+        // ... (p.mousePressed and helper functions) ...
+        
+        // Logic function - **MODIFIED** to play animation on success/wrong
+        function checkSolution() {
+            const solution = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].solution;
+            let isCorrect = false;
+
+            if (userShapes.length === solution.length) {
+                const sortedUserShapes = [...userShapes].sort((a,b) => a.x - b.x || a.y - b.y);
+                const sortedSolution = [...solution].sort((a,b) => a.x - b.x || a.y - b.y);
+                isCorrect = true;
+                for (let i = 0; i < sortedSolution.length; i++) {
+                    if (sortedUserShapes[i].x !== sortedSolution[i].x ||
+                        sortedUserShapes[i].y !== sortedSolution[i].y ||
+                        sortedUserShapes[i].type !== sortedSolution[i].type) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isCorrect) {
+                feedbackMessage = null;
+                puzzleCompleted = true;
+                if (successAnim) successAnim.play(); 
+            } else {
+                feedbackMessage = "Not quite, try again!";
+                feedbackTimer = p.millis() + 3000;
+                puzzleCompleted = false;
+
+                if (wrongAnim) {
+                    // FIX 3: Force the animation to rewind to frame 0 AND play once.
+                    // This ensures it plays every time 'Check' is clicked when wrong.
+                    wrongAnim.goToAndPlay(0, true); 
+                }
+            }
+        }
+        
+        // ... (other unchanged helper functions) ...
         p.mousePressed = function() {
             if (puzzleCompleted) {
+                if (isMouseIn(uiElements.btnReset)) { loadPuzzle(); return; }
                  if (isMouseIn(uiElements.btnNext)) { nextPuzzle(); }
                  if (isMouseIn(uiElements.btnPrev)) { prevPuzzle(); }
                  return;
@@ -258,16 +404,16 @@
                     userShapes.push({ type: selectedPart, x: gridX, y: gridY });
                 }
                 feedbackMessage = null; 
+                // Stop and reset wrong animation if user clicks again
+                if (wrongAnim) wrongAnim.goToAndStop(0, true);
             }
         };
-        
-        // Logic function - unchanged
+
         p.touchStarted = function() {
             p.mousePressed();
             return false;
         }
 
-        // Logic function - unchanged
         function isCoordInAnswerArea(x, y, gridSize) {
             const currentPuzzle = puzzleData[currentPuzzleIndex].puzzles[symmetryMode];
             if (currentPuzzle.question.length === 0) return true;
@@ -282,8 +428,7 @@
                 return isQuestionOnBottom ? (y < gridSize / 2) : (y >= gridSize / 2);
             }
         }
-        
-        // Logic function - unchanged
+
         function isAnswerCell(x, y, gridSize) {
             if (x < 0 || y < 0 || x >= gridSize || y >= gridSize) return false;
             const isQuestionCell = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].question.some(
@@ -292,38 +437,12 @@
             return !isQuestionCell;
         }
         
-        // Logic function - unchanged
-        function checkSolution() {
-            const solution = puzzleData[currentPuzzleIndex].puzzles[symmetryMode].solution;
-            if (userShapes.length !== solution.length) {
-                feedbackMessage = "Not quite, try again!";
-                feedbackTimer = p.millis() + 2000;
-                puzzleCompleted = false;
-                return;
-            }
-            const sortedUserShapes = [...userShapes].sort((a,b) => a.x - b.x || a.y - b.y);
-            const sortedSolution = [...solution].sort((a,b) => a.x - b.x || a.y - b.y);
-            for (let i = 0; i < sortedSolution.length; i++) {
-                if (sortedUserShapes[i].x !== sortedSolution[i].x ||
-                    sortedUserShapes[i].y !== sortedSolution[i].y ||
-                    sortedUserShapes[i].type !== sortedSolution[i].type) {
-                    feedbackMessage = "Not quite, try again!";
-                    feedbackTimer = p.millis() + 2000;
-                    puzzleCompleted = false;
-                    return;
-                }
-            }
-            feedbackMessage = null;
-            puzzleCompleted = true;
-        }
-        
-        // Logic function - unchanged
         function nextPuzzle() {
             currentPuzzleIndex = (currentPuzzleIndex + 1) % puzzleData.length;
             initializeUI(); 
             loadPuzzle();
         }
-        // Logic function - unchanged
+
         function prevPuzzle() {
             currentPuzzleIndex = (currentPuzzleIndex - 1 + puzzleData.length) % puzzleData.length;
             initializeUI();
@@ -356,10 +475,9 @@
             p.pop();
         }
 
-        // --- UPDATED FUNCTION ---
         function drawButton(btn, type = 'default', isSelected = false) { // Added 'type'
             p.push();
-            const isHover = isMouseIn(btn);
+            const isHover = p.mouseX > btn.x && p.mouseX < btn.x + btn.w && p.mouseY > btn.y && p.mouseY < btn.y + btn.h;
 
             // Define color variables
             let fillCol, strokeCol, textCol, strokeW;
@@ -407,7 +525,6 @@
             p.pop();
         }
 
-        // Logic function - unchanged
         function isMouseIn(btn) {
             const btnW = btn.w || btn.size;
             const btnH = btn.h || btn.size;

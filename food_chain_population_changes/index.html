@@ -104,8 +104,15 @@
         blinkingText: {},
         instructionText:
           "Drag any slider to see how it affects other populations.",
-        playClickedAfterEndpoint: false,
-        playDisabled: false,
+        // **MODIFIED:** Added lastAppliedSliderValues to track 'played' states
+        lastAppliedSliderValues: {
+          maize: 0,
+          grasshoppers: 0,
+          lizards: 0,
+        },
+        // **REMOVED:** Obsolete state properties
+        // playClickedAfterEndpoint: false,
+        // playDisabled: false,
       });
 
       // --- p5.js Sketch ---
@@ -175,11 +182,11 @@
         const w = 320 * scale;
         const h = 333 * scale;
 
-        if (gameState.phase === "playing" && gameState.blinkingText[type]) {
-          fill(255);
-        } else {
+        // if (gameState.phase === "playing" && gameState.blinkingText[type]) {
+        //   fill(255);
+        // } else {
           fill(197, 255, 255);
-        }
+        // }
 
         rect(x, y, w, h, 15 * scale);
 
@@ -291,7 +298,11 @@ function drawOrganismPopulation(type, x, y, w, h) {
       // Helper to update population with fade effects
      // Helper to update population with fade effects
 // Helper to update population with fade effects
+// Helper to update population with fade effects
 function setPopulationWithFade(type, newCount) {
+    // **MODIFIED:** Ensure newCount is a non-negative integer
+    newCount = Math.max(0, Math.round(newCount));
+    
     const organism = organisms[type];
     const currentCount = organism.members.length;
 
@@ -310,19 +321,24 @@ function setPopulationWithFade(type, newCount) {
             }, i * STEP_DELAY);
         }
     } else if (newCount < currentCount) {
-        // Fade OUT logic remains the same
+        // Fade OUT logic
         const diff = currentCount - newCount;
         for (let i = 0; i < diff; i++) {
+            
+            // **BUG FIX:** Calculate the correct index to target based on
+            // the count *before* any animations start.
+            const targetIndex = currentCount - 1 - i;
+            
             setTimeout(() => {
-                const idx = organism.members.length - 1 - i;
-                if (idx >= 0) {
-                    organism.members[idx].fadingOut = true;
+                // Target the specific member (e.g., member[5], then member[4])
+                if (targetIndex >= 0 && organism.members[targetIndex]) {
+                     organism.members[targetIndex].fadingOut = true;
                 }
             }, i * STEP_DELAY);
         }
     }
 
-    // The population count is always set to newCount (12).
+    // The population count is always set to newCount.
     organism.population = newCount;
 }
       function drawBlinkingStatus(type, x, y) {
@@ -407,21 +423,27 @@ function setPopulationWithFade(type, newCount) {
         const y = 620 * scale;
         rectMode(CENTER);
 
-        let playDisabled = false;
-
-        if (gameState.activeSlider) {
-          const sliderValue = organisms[gameState.activeSlider].slider;
-          if (sliderValue === 2 && gameState.playClickedAfterEndpoint) {
-            playDisabled = true;
+        // **MODIFIED:** New Play button disable logic
+        let playDisabled = true; // Disabled by default
+        if (gameState.phase === "waiting" && gameState.activeSlider) {
+          const activeType = gameState.activeSlider;
+          const currentSliderValue = organisms[activeType].slider;
+          const lastAppliedValue = gameState.lastAppliedSliderValues[activeType];
+          
+          // Enable ONLY if in 'waiting' phase AND slider has moved since last Play
+          if (currentSliderValue !== lastAppliedValue) {
+            playDisabled = false;
           }
         }
+        // ** END MODIFIED LOGIC **
 
         if (gameState.phase === "waiting" && !playDisabled) {
           if (frameCount % 60 < 30) fill(39, 174, 96);
           else fill(46, 204, 113);
         } else {
-          fill(150);
+          fill(150); // Disabled state
         }
+        // ** END MODIFIED FILL LOGIC **
 
         rect(
           width / 2 - 70 * scale,
@@ -498,9 +520,11 @@ function setPopulationWithFade(type, newCount) {
           mouseX > x - sliderWidth / 2 &&
           mouseX < x + sliderWidth / 2
         ) {
+          // **MODIFIED:** Allow switching active slider only if not 'waiting'
           if (
             gameState.activeSlider !== null &&
-            gameState.activeSlider !== type
+            gameState.activeSlider !== type &&
+            gameState.phase === 'waiting'
           )
             return;
 
@@ -531,30 +555,32 @@ function setPopulationWithFade(type, newCount) {
       }
 
       // --- Game logic ---
+      // **MODIFIED:** handleSliderChange no longer resets all organisms
       function handleSliderChange(type, newValue) {
         if (gameState.phase === "playing") return;
-         if (newValue > 0) {
-    if (type === "maize" || type === "grasshoppers" || type === "lizards") {
-      if (increaseSound && increaseSound.isLoaded()) increaseSound.play();
-    }
-  } else {
-    if (decreaseSound && decreaseSound.isLoaded()) decreaseSound.play();
-  }
-    if (newValue === 0) {
+
+        // **MODIFIED:** Play sound based on direction of change
+        if (newValue > organisms[type].slider) {
+          if (increaseSound && increaseSound.isLoaded()) increaseSound.play();
+        } else if (newValue < organisms[type].slider) {
+          if (decreaseSound && decreaseSound.isLoaded()) decreaseSound.play();
+        }
+        
+        // If slider dragged to 0, reset the whole simulation
+        if (newValue === 0) {
           handleReset();
           return;
         }
 
-        const initialPops = initialOrganisms();
-        organisms = JSON.parse(JSON.stringify(initialPops)); // reset states
-        organisms.maize.members = initialPops.maize.members;
-        organisms.grasshoppers.members = initialPops.grasshoppers.members;
-        organisms.lizards.members = initialPops.lizards.members;
+        // **REMOVED:** Full reset logic
+        // const initialPops = initialOrganisms();
+        // organisms = JSON.parse(JSON.stringify(initialPops)); 
+        // ...
+        
+        // Clear *only* the blinking text
         gameState.blinkingText = {};
-        organisms.maize.slider = 0;
-        organisms.grasshoppers.slider = 0;
-        organisms.lizards.slider = 0;
 
+        // Update just the active slider and its population
         organisms[type].slider = newValue;
         if (type === "maize") {
           setPopulationWithFade("maize", newValue === 1 ? 8 : 12);
@@ -563,32 +589,40 @@ function setPopulationWithFade(type, newCount) {
         } else if (type === "lizards") {
           setPopulationWithFade("lizards", newValue === 1 ? 4 : 6);
         }
-        gameState.blinkingText[type] = "increase";
+        gameState.blinkingText[type] = "increase"; // Always 'increase' for the active slider
 
         if (newValue === 1 || newValue === 2) {
           gameState.instructionText = "Click 'Play' to observe the changes.";
         }
 
         gameState.phase = "waiting";  
-        gameState.activeSlider = type;
+        gameState.activeSlider = type; // Set/confirm this is the active slider
       }
 
+      // **MODIFIED:** handlePlay checks against last applied value
       function handlePlay() {
-        if (gameState.phase !== "waiting" || gameState.activeSlider === null)
-          return;
+        // Check if button should be disabled
+        if (gameState.phase !== "waiting" || !gameState.activeSlider) return;
 
-        const activeSliderValue = organisms[gameState.activeSlider].slider;
+        const activeType = gameState.activeSlider;
+        const currentSliderValue = organisms[activeType].slider;
+        const lastAppliedValue = gameState.lastAppliedSliderValues[activeType];
 
-        if (activeSliderValue === 2) {
-          gameState.playClickedAfterEndpoint = true;
-        }
+        // If slider value hasn't changed since last play, do nothing
+        if (currentSliderValue === lastAppliedValue) return;
+        // ** END MODIFIED CHECK **
+        
+        gameState.phase = "playing"; // Set to playing *first* to disable button
 
-        gameState.phase = "playing";
+        // **REMOVED:** Obsolete logic
+        // if (activeSliderValue === 2) {
+        //   gameState.playClickedAfterEndpoint = true;
+        // }
 
-        if (activeSliderValue === 1) {
+        if (currentSliderValue === 1) {
           gameState.instructionText =
             "Drag the slider left or right to see other changes.";
-        } else if (activeSliderValue === 2) {
+        } else if (currentSliderValue === 2) {
           gameState.instructionText =
             "Drag the slider left to see other changes or click 'Reset' to start again.";
         }
@@ -596,10 +630,46 @@ function setPopulationWithFade(type, newCount) {
         applyCascadeEffects();
       }
 
+   // **MODIFIED:** applyCascadeEffects now calculates deltas based on current state
+  // **MODIFIED:** applyCascadeEffects now sets populations to ABSOLUTE targets
    function applyCascadeEffects() {
     const activeType = gameState.activeSlider;
     if (!activeType) return;
-    const sliderValue = organisms[activeType].slider;
+    
+    const currentSliderValue = organisms[activeType].slider;
+    // We still need lastAppliedValue to check if Play should be enabled,
+    // but we no longer need it for population calculations.
+    // const lastAppliedValue = gameState.lastAppliedSliderValues[activeType]; 
+
+    // Helper to get target population based on a source slider value
+    // This function defines the "rules" of the simulation per user data table
+    const getTargetPop = (affectedType, sourceValue) => {
+      // Default state (slider 0)
+      if (sourceValue === 0) {
+        const defaults = initialOrganisms();
+        return defaults[affectedType].population;
+      }
+      
+      // Maize slider active
+      if (activeType === "maize") {
+        if (affectedType === "grasshoppers") return sourceValue === 1 ? 6 : 8;
+        if (affectedType === "lizards") return sourceValue === 1 ? 4 : 6;
+      } 
+      // Grasshopper slider active
+      else if (activeType === "grasshoppers") {
+        if (affectedType === "maize") return sourceValue === 1 ? 4 : 2;
+        if (affectedType === "lizards") return sourceValue === 1 ? 4 : 6;
+      } 
+      // Lizard slider active
+      else if (activeType === "lizards") {
+        if (affectedType === "grasshoppers") return sourceValue === 1 ? 2 : 1;
+        if (affectedType === "maize") return sourceValue === 1 ? 8 : 12;
+      }
+
+      // If affectedType is the same as activeType, just return current
+      const organism = organisms[affectedType];
+      return organism ? organism.members.length : 0;
+    };
 
     const playSound = (type) => {
         if (type === "increase") {
@@ -609,51 +679,111 @@ function setPopulationWithFade(type, newCount) {
         }
     };
 
+    // Store calculations to apply in timeouts
+    const effects = [];
+
+    // --- NEW LOGIC ---
+    // 1. Get the absolute target population (targetNow)
+    // 2. Get the current population (currentPop)
+    // 3. The new population is *always* targetNow
+    // 4. The delta (for sound/blink) is (targetNow - currentPop)
+    // ---------------
+
     if (activeType === "maize") {
-        setTimeout(() => {
-            setPopulationWithFade("grasshoppers", sliderValue === 1 ? 6 : 8);
-            gameState.blinkingText.grasshoppers = "increase";
-            playSound("increase");
-        }, 1500);
+        // Grasshoppers
+        const g_targetNow = getTargetPop("grasshoppers", currentSliderValue);
+        const g_currentPop = organisms.grasshoppers.members.length;
+        const g_delta = g_targetNow - g_currentPop;
+        
+        effects.push({
+          delay: 1500,
+          type: "grasshoppers",
+          newPop: g_targetNow, // Set to absolute target
+          effect: g_delta > 0 ? "increase" : (g_delta < 0 ? "decrease" : null),
+        });
 
-        setTimeout(() => {
-            setPopulationWithFade("lizards", sliderValue === 1 ? 4 : 6);
-            gameState.blinkingText.lizards = "increase";
-            playSound("increase");
-        }, 3000);
+        // Lizards
+        const l_targetNow = getTargetPop("lizards", currentSliderValue);
+        const l_currentPop = organisms.lizards.members.length;
+        const l_delta = l_targetNow - l_currentPop;
+
+        effects.push({
+          delay: 3000,
+          type: "lizards",
+          newPop: l_targetNow, // Set to absolute target
+          effect: l_delta > 0 ? "increase" : (l_delta < 0 ? "decrease" : null),
+        });
+
     } else if (activeType === "grasshoppers") {
-        setTimeout(() => {
-            setPopulationWithFade("maize", sliderValue === 1 ? 4 : 2);
-            gameState.blinkingText.maize = "decrease";
-            playSound("decrease");
-        }, 1500);
+        // Maize
+        const m_targetNow = getTargetPop("maize", currentSliderValue);
+        const m_currentPop = organisms.maize.members.length;
+        const m_delta = m_targetNow - m_currentPop;
 
-        setTimeout(() => {
-            setPopulationWithFade("lizards", sliderValue === 1 ? 4 : 6);
-            gameState.blinkingText.lizards = "increase";
-            playSound("increase");
-        }, 3000);
+        effects.push({
+          delay: 1500,
+          type: "maize",
+          newPop: m_targetNow, // Set to absolute target
+          effect: m_delta > 0 ? "increase" : (m_delta < 0 ? "decrease" : null),
+        });
+        
+        // Lizards
+        const l_targetNow = getTargetPop("lizards", currentSliderValue);
+        const l_currentPop = organisms.lizards.members.length;
+        const l_delta = l_targetNow - l_currentPop;
+
+        effects.push({
+          delay: 3000,
+          type: "lizards",
+          newPop: l_targetNow, // Set to absolute target
+          effect: l_delta > 0 ? "increase" : (l_delta < 0 ? "decrease" : null),
+        });
+
     } else if (activeType === "lizards") {
-        setTimeout(() => {
-            setPopulationWithFade("grasshoppers", sliderValue === 1 ? 2 : 1);
-            gameState.blinkingText.grasshoppers = "decrease";
-            playSound("decrease"); 
-        }, 1500);
+        // Grasshoppers
+        const g_targetNow = getTargetPop("grasshoppers", currentSliderValue);
+        const g_currentPop = organisms.grasshoppers.members.length;
+        const g_delta = g_targetNow - g_currentPop;
 
-        setTimeout(() => {
-            // FIX: Set the population to 12. 
-            // setPopulationWithFade logic below will ensure it displays 12 because activeSlider is "lizards"
-            setPopulationWithFade("maize", sliderValue === 1 ? 8 : 12);
-            gameState.blinkingText.maize = "increase";
-            playSound("increase"); 
-        }, 3000);
+        effects.push({
+          delay: 1500,
+          type: "grasshoppers",
+          newPop: g_targetNow, // Set to absolute target
+          effect: g_delta > 0 ? "increase" : (g_delta < 0 ? "decrease" : null),
+        });
+
+        // Maize
+        const m_targetNow = getTargetPop("maize", currentSliderValue);
+        const m_currentPop = organisms.maize.members.length;
+        const m_delta = m_targetNow - m_currentPop;
+
+        effects.push({
+          delay: 3000,
+          type: "maize",
+          newPop: m_targetNow, // Set to absolute target
+          effect: m_delta > 0 ? "increase" : (m_delta < 0 ? "decrease" : null),
+        });
     }
 
+    // Apply all effects
+    effects.forEach(e => {
+      // Only apply if there's a change and an effect
+      if (e.effect) { 
+          setTimeout(() => {
+              setPopulationWithFade(e.type, e.newPop);
+              gameState.blinkingText[e.type] = e.effect;
+              playSound(e.effect);
+          }, e.delay);
+      }
+    });
+
+    // Update lastAppliedSliderValue after animation completes
     setTimeout(() => {
         gameState.phase = "waiting";
+        // Lock in the new value as "played"
+        gameState.lastAppliedSliderValues[activeType] = currentSliderValue;
     }, 4500);
 }
-
       function handleReset() {
         organisms = initialOrganisms();
         gameState = initialGameState();
