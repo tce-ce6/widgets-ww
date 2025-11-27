@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class=wdgetTitle>
-<h2>Reading large numbers</h2>
+<h2>Reading Large Numbers</h2>
 </div>
 <div id=app class=mainContainerOuter>
 <div class=mainContainer>
@@ -300,7 +300,7 @@ function drawHeader(){
                 if(!showPlaceLabels){
                                 let textToShow=instruction;
                                 if(instruction==='Enter...'){
-                                                textToShow='Enter a number(Maximum 11 digits)';
+                                                textToShow='Enter a number (maximum 11 digits)';
                                 }
                                 text(textToShow,canvasWidth/2,instructionY);
                 }
@@ -333,16 +333,38 @@ function onNextPressed(){
                 const actualNumber=currentNumber.replace(/ /g,'');
                 const numDigits=actualNumber.length;
                 const expectedCommas=getExpectedCommaPositions(numDigits,system);
+                
+                // 1. Logic for transitioning OUT of Explanation Mode
                 if(inExplanationMode){
                                 inExplanationMode=false;
                                 showCommaPlacement=true;
+                                
+                                // --- START FIX ---
+                                // Check if the number was previously placed incorrectly (showResult=true, isCorrect=false)
+                                if (showResult && !isCorrect) {
+                                    // RESTORE STATE AFTER INCORRECT ATTEMPT
+                                    instruction="Incorrect. Try again or Reset.";
+                                    nextButton.textContent="Next";
+                                    nextButton.disabled=true; // Must be disabled
+                                    resetButton.disabled=false; // Must be enabled
+                                    showExplanationButton.disabled=false;
+                                    backButton.disabled=false;
+                                    showAnswerButton.style.display="inline-block"; // Must be visible
+                                    return;
+                                }
+                                // --- END FIX ---
+
+                                // Original logic for moving from system selection or correct attempt
                                 instruction=expectedCommas.length===0?'No commas needed. Click Next.':'Drag the comma (,) to the right position(s) in the number.';
                                 showExplanationButton.disabled=false;
                                 backButton.disabled=false;
                                 nextButton.textContent="Next";
-                                resetButton.disabled=true;showAnswerButton.style.display="none";
+                                resetButton.disabled=true;
+                                showAnswerButton.style.display="none"; // Should be hidden for a new attempt
                                 return;
                 }
+                
+                // 2. Logic for transitioning from System Selection to Comma Placement
                 if(system!=='none'&&!showCommaPlacement){
                                 showCommaPlacement=true;
                                 
@@ -351,15 +373,17 @@ function onNextPressed(){
                                 backButton.disabled=false;
                                 
                                 if(expectedCommas.length===0){
+                                                // Correct path: No commas needed
                                                 showResult=true;
-                                                animationStartTime = millis(); // <-- Start animation
+                                                animationStartTime = millis(); 
                                                 isCorrect=true;
                                                 showPlaceLabels=true;
                                                 instruction='';
                                                 nextButton.textContent="New Question";
                                                 resetButton.disabled=true;
                                                 backButton.disabled=true;
-                                                showExplanationButton.disabled=true;showAnswerButton.style.display="none";
+                                                showExplanationButton.disabled=true;
+                                                showAnswerButton.style.display="none";
                                                 
                                                 // Start Lottie for correct, no commas case
                                                 if (isAnimReady(lottieSuccessAnim)) {
@@ -375,18 +399,22 @@ function onNextPressed(){
                                                     lottieSuccessAnim.addEventListener('complete', captureSnapshot);
                                                 }
                                 }else{
+                                                // Path: Commas needed, user must place them
                                                 instruction='Drag the comma (,) to the right position(s) in the number.';
                                                 nextButton.textContent="Next";
-                                                resetButton.disabled=true;showAnswerButton.style.display="none";
+                                                resetButton.disabled=true;
+                                                showAnswerButton.style.display="none";
                                 }
                                 return;
                 }
+                
+                // 3. Logic for checking Comma Placement (when Next is pressed with commas placed)
                 if(showCommaPlacement&&!showResult){
                                 showResult=true;
-                                animationStartTime = millis(); // <-- Start animation
+                                animationStartTime = millis(); 
                                 checkCommaPlacement();
                                 
-                                // START LOTTIE ANIMATION
+                                // START LOTTIE ANIMATION (existing logic)
                                 const anim = isCorrect ? lottieSuccessAnim : lottieWrongAnim;
                                 const buffer = isCorrect ? successBuffer : wrongBuffer;
                                 const isSuccess = isCorrect;
@@ -411,22 +439,28 @@ function onNextPressed(){
                                                 nextButton.textContent="New Question";
                                                 resetButton.disabled=true;
                                                 backButton.disabled=true;
-                                                showExplanationButton.disabled=true;showAnswerButton.style.display="none";
+                                                showExplanationButton.disabled=true;
+                                                showAnswerButton.style.display="none";
                                 }else{
+                                                // Incorrect path
                                                 instruction="Incorrect. Try again or Reset.";
                                                 nextButton.textContent="Next";
-                                                nextButton.disabled=true;
-                                                resetButton.disabled=false;showAnswerButton.style.display="inline-block";
+                                                nextButton.disabled=true; // Disable Next after a wrong answer
+                                                resetButton.disabled=false;
+                                                showAnswerButton.style.display="inline-block"; // Show Answer button after a wrong answer
                                 }
                                 backButton.disabled=false;
                                 return;
                 }
+                
+                // 4. Logic for "New Question"
                 if(nextButton.textContent==="New Question"){
                                 initializeState();
                                 nextButton.textContent="Next";
                                 return;
                 }
 }
+
 function onShowAnswerPressed(){
                 const actualNumber=currentNumber.replace(/ /g,'');
                 const numDigits=actualNumber.length;
