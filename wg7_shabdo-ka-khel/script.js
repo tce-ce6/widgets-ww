@@ -389,14 +389,13 @@ function handleActivityLottieClick() {
     if (!isWordSelected) {
        // alert("कृपया पहले बाएँ बॉक्स पर क्लिक करके एक शब्द चुनें।");
        feedbackText.style.display = 'block';
-        feedbackText.innerHTML = "कृपया पहले बाएँ बॉक्स पर क्लिक करके एक शब्द चुनें।";
+        feedbackText.innerHTML = "कृपया पहले गुलाबी बॉक्स पर क्लिक करके एक शब्द चुनें।";
         return;
     }
     
     if (activityClickCount >= MAX_ACTIVITY_CLICKS) {
        // alert("तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए शब्द बॉक्स या 'आगे बढ़ें' पर क्लिक करें।");
-        feedbackText.innerHTML = "तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए शब्द बॉक्स या 'आगे बढ़ें' पर क्लिक करें।";
-
+        feedbackText.innerHTML = "तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए गुलाबी बॉक्स या 'अगला शब्द' पर क्लिक करें।";
         return;
     }
     
@@ -517,25 +516,28 @@ function hideAnswer() {
 }
 
 function resetGame() {
+    // 1. Reset all state variables
     isWordSelected = false; 
     activityClickCount = 0;
+    currentWordObject = null;
+    currentActivity = null;
 
-    selectWordAndActivity();
-    isWordSelected = true; 
-
-    updateDisplay();
-    hideAnswer(); // This handles hiding and disabling the button
-
-    resetLottie(activitiesLottieInstance);
-    resetLottie(wordsLottieInstance);
-    // if (wordsLottieInstance) {
-    //     wordsLottieInstance.stop();
-    //     wordsLottieInstance.play();
-    // }
+    // 2. Reset Display to Initial Placeholders
+    injectForeignObject(lottieLeft, WORD_TARGET_GROUP_ID, 'शुरुआत करने के लिए क्लिक करें', 'word');
+    injectForeignObject(lottieRight, ACTIVITY_TARGET_GROUP_ID, 'गतिविधि निष्क्रिय', 'activity');
     
-    if (initialText) initialText.style.display = 'none';
-    if (afterText) afterText.style.display = 'block';
+    // 3. Clear and hide previous answer and disable button
+    hideAnswer(); 
 
+    // 4. Reset Lottie animations (stop at frame 0)
+    resetLottie(activitiesLottieInstance);
+    resetLottie(wordsLottieInstance); 
+    
+    // 5. Update text visibility (show initial instruction)
+    if (initialText) initialText.style.display = 'block';
+    if (afterText) afterText.style.display = 'none';
+    
+    // Console log will now correctly show isWordSelected as false
 }
 
 
