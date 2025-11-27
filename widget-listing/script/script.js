@@ -6,7 +6,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html?test",
     imagePath: "./assets/interactions-between-organisms.png",
     creators: "sh-bd-02",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Plant's response to the direction of light​",
@@ -69,7 +69,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/seed_germination_condition/index.html",
     imagePath: "./assets/seed-gemination.png",
     creators: "sh-su-11",
-    status: "WIP-With-Tech",
+    status: "closed",
 
   },
   {
@@ -168,14 +168,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg36_tin-varno-se-sabad/index.html",
     imagePath: "./assets/three-words.png",
     creators: "as-sh-36",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Build a Nucleus",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg15-build-nucleus/index.html",
     imagePath: "./assets/wg-15.png",
     creators: "ni-sh-15",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "शब्दों का खेल",
@@ -195,8 +195,85 @@ const WIDGET_DATA = [
     name: "Build an Atom",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg28-build-atom/index.html",
     imagePath: "./assets/wg-28.png",
-    creators: "as-sh-28",
-    status: "in-review",
+    creators: "ni-sh-28",
+    status: "closed",
+  },
+  {
+    name: "Rupee Rush",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg39_rupee-rush/",
+    imagePath: "./assets/wg-39.png",
+    creators: "as-di-39",
+    status: "closed",
+  },
+  {
+    name: "Plant Classification Challenge",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    imagePath: "./assets/wg-34.png",
+    creators: "ni-di-34",
+    status: "WIP-With-Tech",
+  },
+  {
+    name: "Temperature Conversions",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-49.png",
+    creators: "ni-di-49",
+    status: "todo",
+  },
+  {
+    name: "Hard and Soft Ferromagnetic Materials",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-44.png",
+    creators: "ni-di-44",
+    status: "todo",
+  },
+  {
+    name: "Make a Food Chain",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-35.png",
+    creators: "ni-di-35",
+    status: "todo",
+  },
+  {
+    name: "LCM of Numbers",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-23.png",
+    creators: "ni-di-23",
+    status: "todo",
+  },
+  {
+    name: "Rhyme Scheme",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-41.png",
+    creators: "ni-di-41",
+    status: "todo",
+  },
+  {
+    name: "Mendel's Monohybrid Cross",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-47.png",
+    creators: "ni-di-47",
+    status: "todo",
+  },
+  {
+    name: "Spin & Match: Exploring Rotational Symmetry",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-45.png",
+    creators: "ni-di-45",
+    status: "todo",
+  },
+  {
+    name: "Modes of Communicable Disease Transmission",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-46.png",
+    creators: "ni-di-46",
+    status: "todo",
+  },
+  {
+    name: "Rutherford's Scattering Experiment - Discovery of Nucleus",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-38.png",
+    creators: "ni-di-38",
+    status: "todo",
   },
   
 
@@ -210,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalCount = document.getElementById("total");
   const iframe = document.querySelector("iframe");
   const filterDropdown = document.getElementById("filter");
+const creatorDropdown = document.getElementById("creator-filter");
 
   totalCount.textContent = WIDGET_DATA.length;
 
@@ -221,26 +299,31 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleButton.addEventListener("click", toggleSidebar);
 
   // ------ Load Widget by Filter -------
-function loadWidgetList(filterStatus = "all") {
+function loadWidgetList(filterStatus = "all", filterCreator = "all") {
   widgetListing.innerHTML = "";
 
-  let filteredWidgets = [];
+  let filteredWidgets = [...WIDGET_DATA];
 
-  if (filterStatus === "all") {
-    // ✅ Show all widgets without filtering
-    filteredWidgets = [...WIDGET_DATA];
-  } else {
-    // ✅ Filter based on selected category
-    filteredWidgets = WIDGET_DATA.filter(widget => widget.status === filterStatus);
+  // 🔹 Filter by status
+  if (filterStatus !== "all") {
+    filteredWidgets = filteredWidgets.filter(widget => widget.status === filterStatus);
   }
 
-  // ✅ Sort by creators number
+  // 🔹 Filter by creator prefix (as / sh / ni)
+  if (filterCreator !== "all") {
+    filteredWidgets = filteredWidgets.filter(widget =>
+      widget.creators.startsWith(filterCreator)
+    );
+  }
+
+  // 🔹 Sort by creators number
   filteredWidgets.sort((a, b) => {
     const numA = parseInt(a.creators.split("-").pop());
     const numB = parseInt(b.creators.split("-").pop());
     return numA - numB;
   });
 
+  // 🔹 Render widgets
   filteredWidgets.forEach((widget) => {
     const listItem = document.createElement("li");
     listItem.dataset.widgetLink = widget.link;
@@ -263,7 +346,7 @@ function loadWidgetList(filterStatus = "all") {
     widgetListing.appendChild(listItem);
   });
 
-  // ✅ Load first widget if any
+  // 🔹 Load first widget if any
   if (filteredWidgets.length > 0) {
     iframe.src = filteredWidgets[0].link;
     const firstLi = document.querySelector("#widget-listing li");
@@ -272,18 +355,24 @@ function loadWidgetList(filterStatus = "all") {
     iframe.src = "";
   }
 
-  // ✅ Update total count
   totalCount.textContent = filteredWidgets.length;
 }
 
 
 
+
   // Filter change event
-  filterDropdown.addEventListener("change", function () {
-    loadWidgetList(this.value);
-  });
+ filterDropdown.addEventListener("change", function () {
+  loadWidgetList(this.value, creatorDropdown.value);
+});
+
+creatorDropdown.addEventListener("change", function () {
+  loadWidgetList(filterDropdown.value, this.value);
+});
 
   // Load closed widgets by default
 loadWidgetList("closed");
+loadWidgetList("closed", "all");
+
 });
 
