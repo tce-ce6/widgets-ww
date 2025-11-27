@@ -224,6 +224,7 @@ let currentActivity = null;
 let currentWordIndex = -1; 
 let isWordSelected = false;
 let feedbackText = null;
+let shuffledActivityIndices = [];
 
 // Lottie Constants
 const LOTTIE_ANIMATION_MAP = { "activities": "activities.json", "words": "words.json" };
@@ -250,6 +251,15 @@ let wordsLottieInstance = null;
 // Game State
 let activityClickCount = 0;
 const MAX_ACTIVITY_CLICKS = 3; 
+
+// --- HELPER FUNCTION: Fisher-Yates Shuffle ---
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 
 // --- LOTTIE CORE FUNCTIONS ---
 
@@ -358,12 +368,12 @@ function toggleAnswerButton(disable) {
 // --- LOTTIE CLICK HANDLERS ---
 
 function handleWordLottieClick() {
-    if (isWordSelected && activityClickCount > 0 && activityClickCount < MAX_ACTIVITY_CLICKS) {
-       // alert("कृपया पहले इस शब्द की गतिविधियाँ पूरी करें।");
-        feedbackText.innerHTML = "कृपया पहले इस शब्द की गतिविधियाँ पूरी करें।";
+    // if (isWordSelected && activityClickCount > 0 && activityClickCount < MAX_ACTIVITY_CLICKS) {
+    //    // alert("कृपया पहले इस शब्द की गतिविधियाँ पूरी करें।");
+    //     feedbackText.innerHTML = "कृपया पहले इस शब्द की गतिविधियाँ पूरी करें।";
 
-        return;
-    }
+    //     return;
+    // }
     
     selectWordAndActivity();
     isWordSelected = true; 
@@ -380,9 +390,10 @@ function handleWordLottieClick() {
         wordsLottieInstance.stop();
         wordsLottieInstance.play();
     }
-
-    if (initialText) initialText.style.display = 'none';
-    if (afterText) afterText.style.display = 'block';
+    // setTimeout(() => {
+    //     if (initialText) initialText.style.display = 'none';
+    // }, 4000);
+    // if (afterText) afterText.style.display = 'block';
 }
 
 function handleActivityLottieClick() {
@@ -392,10 +403,11 @@ function handleActivityLottieClick() {
         feedbackText.innerHTML = "कृपया पहले गुलाबी बॉक्स पर क्लिक करके एक शब्द चुनें।";
         return;
     }
-    
+    console.log(activityClickCount);
     if (activityClickCount >= MAX_ACTIVITY_CLICKS) {
        // alert("तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए शब्द बॉक्स या 'आगे बढ़ें' पर क्लिक करें।");
-        feedbackText.innerHTML = "तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए गुलाबी बॉक्स या 'अगला शब्द' पर क्लिक करें।";
+       feedbackText.style.display = 'block';
+        feedbackText.innerHTML = "तीनों गतिविधियाँ पूरी हो चुकी हैं। नए शब्द के लिए गुलाबी बॉक्स पर टैप करें।";
         return;
     }
     
@@ -407,14 +419,25 @@ function handleActivityLottieClick() {
     activityClickCount++;
 
     const activities = currentWordObject.Activities;
-    const activityIndex = activityClickCount - 1; 
+    const activityIndex = shuffledActivityIndices[activityClickCount - 1]; 
     currentActivity = activities[activityIndex];
+
+    // const activityIndex = activityClickCount - 1; 
+    // currentActivity = activities[activityIndex];
     
     updateDisplay();
     hideAnswer();
     
     // Enable button because an activity has been loaded
     toggleAnswerButton(false); 
+
+    setTimeout(() => {
+        if (afterText) afterText.style.display = 'block';
+    }, 3000);
+
+    setTimeout(() => {
+        if (initialText) initialText.style.display = 'none';
+    }, 2500);
 }
 
 // --- GAME LOGIC FUNCTIONS ---
@@ -424,6 +447,8 @@ function selectWordAndActivity() {
     currentWordObject = wordData[currentWordIndex];
     currentActivity = currentWordObject.Activities[0];
     activityClickCount = 0;
+
+    shuffledActivityIndices = shuffleArray([0, 1, 2]);
 }
 
 function updateDisplay() {
@@ -444,51 +469,109 @@ function updateDisplay() {
 }
 
 function showAnswer() {
+    // Check if an activity is selected
     if (!currentActivity) {
-       // alert("कृपया पहले गतिविधि बॉक्स (दाएँ तरफ) पर क्लिक करें।");
-        feedbackText.innerHTML = "कृपया पहले गतिविधि बॉक्स (दाएँ तरफ) पर क्लिक करें।";
-        return;
-    }
-
-    if (!ans1Element || !ans2Element) {
-        console.error("Ans1 या Ans2 पैराग्राफ तत्व DOM में नहीं मिले।");
-        return;
+        return; 
     }
     
-    if (answerSvg) answerSvg.style.display = 'block';
+    const isAnswerCurrentlyShown = showAnswerBtn.innerHTML === 'उत्तर हटाएँ';
 
-    // 1. Reset content and display of paragraph elements
-    ans1Element.innerHTML = '';
-    ans2Element.innerHTML = '';
-    ans2Element.style.display = 'none'; 
-    
-    // 2. Ensure container is visible or set to 'flex'
-    if (answerContainer) {
-        answerContainer.style.display = 'flex'; 
-    }
-
-    const answers = currentActivity.Answer;
-    
-    if (answers && answers.length > 0) {
+    if (isAnswerCurrentlyShown) {
+        // --- HIDE ANSWER LOGIC (Toggle off) ---
+        if (ans1Element) ans1Element.innerHTML = '';
+        if (ans2Element) ans2Element.innerHTML = '';
+        if (ans2Element) ans2Element.style.display = 'none';
+        if (answerContainer) answerContainer.style.display = 'none';
+        if (answerSvg) answerSvg.style.display = 'none';
         
-        // --- LOGIC: Always show the first answer in ans1, with header ---
-        const ans1Text = answers[0].replace(/, /g, ', ');
-        ans1Element.innerHTML = `<br/>${ans1Text}`;
-        
-        // --- LOGIC: Show the second answer in ans2 ONLY if it exists ---
-        if (answers.length > 1) {
-            const ans2Text = answers[1].replace(/, /g, ', ');
-            ans2Element.innerHTML = ans2Text;
-            ans2Element.style.display = 'block'; 
-        }
+        // Change button text back to show state
+        showAnswerBtn.innerHTML = 'उत्तर देखें';
+
     } else {
-        // Fallback for no answer
-        ans1Element.innerHTML = '<br/>कोई उत्तर उपलब्ध नहीं है।';
+        // --- SHOW ANSWER LOGIC (Toggle on) ---
+        if (!ans1Element || !ans2Element) {
+            console.error("Ans1 या Ans2 पैराग्राफ तत्व DOM में नहीं मिले।");
+            return;
+        }
+        
+        // 1. Show display elements
+        if (answerSvg) answerSvg.style.display = 'block';
+        if (answerContainer) answerContainer.style.display = 'flex'; 
+
+        // 2. Reset content
+        ans1Element.innerHTML = '';
+        ans2Element.innerHTML = '';
+        ans2Element.style.display = 'none'; 
+        
+        const answers = currentActivity.Answer;
+        
+        if (answers && answers.length > 0) {
+            
+            // 3. Populate content
+            const ans1Text = answers[0].replace(/, /g, ', ');
+            ans1Element.innerHTML = `<br/>${ans1Text}`; 
+            
+            if (answers.length > 1) {
+                const ans2Text = answers[1].replace(/, /g, ', ');
+                ans2Element.innerHTML = ans2Text;
+                ans2Element.style.display = 'block'; 
+            }
+        } else {
+            ans1Element.innerHTML = '<br/>कोई उत्तर उपलब्ध नहीं है।';
+        }
+        
+        // 4. Change button text to 'hide' state
+        showAnswerBtn.innerHTML = 'उत्तर हटाएँ';
     }
-    
-    // Disable button after the answer is shown (user should click next activity)
-    toggleAnswerButton(true);
 }
+
+// function showAnswer() {
+//     // if (!currentActivity) {
+//     //    // alert("कृपया पहले गतिविधि बॉक्स (दाएँ तरफ) पर क्लिक करें।");
+//     //     feedbackText.innerHTML = "कृपया पहले गतिविधि बॉक्स (दाएँ तरफ) पर क्लिक करें।";
+//     //     return;
+//     // }
+
+//     if (!ans1Element || !ans2Element) {
+//         console.error("Ans1 या Ans2 पैराग्राफ तत्व DOM में नहीं मिले।");
+//         return;
+//     }
+    
+//     if (answerSvg) answerSvg.style.display = 'block';
+
+//     // 1. Reset content and display of paragraph elements
+//     ans1Element.innerHTML = '';
+//     ans2Element.innerHTML = '';
+//     ans2Element.style.display = 'none'; 
+    
+//     // 2. Ensure container is visible or set to 'flex'
+//     if (answerContainer) {
+//         answerContainer.style.display = 'flex'; 
+//     }
+
+//     const answers = currentActivity.Answer;
+    
+//     if (answers && answers.length > 0) {
+        
+//         showAnswerBtn.innerHTML = 'उत्तर हटाएँ';
+//         // --- LOGIC: Always show the first answer in ans1, with header ---
+//         const ans1Text = answers[0].replace(/, /g, ', ');
+//         ans1Element.innerHTML = `<br/>${ans1Text}`;
+        
+//         // --- LOGIC: Show the second answer in ans2 ONLY if it exists ---
+//         if (answers.length > 1) {
+//             const ans2Text = answers[1].replace(/, /g, ', ');
+//             ans2Element.innerHTML = ans2Text;
+//             ans2Element.style.display = 'block'; 
+//         }
+//     } else {
+//         // Fallback for no answer
+//         ans1Element.innerHTML = '<br/>कोई उत्तर उपलब्ध नहीं है।';
+//     }
+    
+//     // Disable button after the answer is shown (user should click next activity)
+//    // toggleAnswerButton(true);
+// }
 
 /**
  * Function to hide the answer and disable the button.
@@ -510,6 +593,11 @@ function hideAnswer() {
     
     // 4. Hide the SVG background
     if (answerSvg) answerSvg.style.display = 'none';
+
+    // 3. Reset button inner text to default
+    if (showAnswerBtn) {
+        showAnswerBtn.innerHTML = 'उत्तर देखें';
+    }
     
     // 5. Disable the answer button
     toggleAnswerButton(true); // <--- Ensures button is disabled when answer is hidden/cleared
@@ -521,6 +609,7 @@ function resetGame() {
     activityClickCount = 0;
     currentWordObject = null;
     currentActivity = null;
+    shuffledActivityIndices = [];
 
     // 2. Reset Display to Initial Placeholders
     injectForeignObject(lottieLeft, WORD_TARGET_GROUP_ID, 'शुरुआत करने के लिए क्लिक करें', 'word');
@@ -536,8 +625,6 @@ function resetGame() {
     // 5. Update text visibility (show initial instruction)
     if (initialText) initialText.style.display = 'block';
     if (afterText) afterText.style.display = 'none';
-    
-    // Console log will now correctly show isWordSelected as false
 }
 
 
@@ -550,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initialText = document.getElementById('initialText');
     afterText = document.getElementById('afterText');
     showAnswerBtn = document.getElementById('showAnswer'); 
-    nextBtn = document.getElementById('next-btn'); 
+    //nextBtn = document.getElementById('next-btn'); 
     answerSvg = document.getElementById('Group 115');
     answerContainer = document.getElementById('result-wrapper'); 
     feedbackText = document.getElementById('feedback');
@@ -562,9 +649,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initDualLotties();
 
     // 3. Attach Secondary Event Handlers
-    if (nextBtn) {
-        nextBtn.addEventListener('click', resetGame);
-    }
+    // if (nextBtn) {
+    //     nextBtn.addEventListener('click', resetGame);
+    // }
 
     // 4. Set Initial Game State
     currentWordIndex = wordData.length - 1; 

@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   user-select: none;
+  white-space: nowrap;
 }
 
 #shabd-widgetbody {
@@ -193,7 +194,8 @@
   font-size: 40px;
   font-weight: 500;
   text-align: center;
-
+  text-wrap: auto;
+  line-height: 1.4;
 }
 
 .result-wrapper {
