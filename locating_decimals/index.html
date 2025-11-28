@@ -605,10 +605,10 @@ function drawFinalLottie() {
         imageMode(CENTER);
         // Position slightly to the right of the center (width/2 is center, text is centered there)
         const textW = textWidth('Well done!');
-        const iconDrawX = width / 2 + textW / 2 + 200; // Right of the text
-        const iconDrawY = finalMessageY ;
-        const iconW = lottieSuccessBuffer.width 
-        const iconH = lottieSuccessBuffer.height 
+        const iconDrawX = width / 2 + textW / 2 + 150; // Right of the text
+        const iconDrawY = finalMessageY;
+        const iconW = lottieSuccessBuffer.width * 0.7
+        const iconH = lottieSuccessBuffer.height  * 0.7
         
         image(lottieSuccessBuffer, iconDrawX, iconDrawY, iconW, iconH);
     } else if (showCorrectAnswer && finalMessage === 'Check your work' && lottieWrongReady) {
@@ -616,10 +616,10 @@ function drawFinalLottie() {
         imageMode(CENTER);
         // Position slightly to the right of the center (width/2 is center, text is centered there)
         const textW = textWidth('Check your work');
-        const iconDrawX = width / 2 + textW / 2 + 200; // Right of the text
-        const iconDrawY = finalMessageY - 70;
-        const iconW = lottieWrongBuffer.width ;
-        const iconH = lottieWrongBuffer.height ;
+        const iconDrawX = width / 2 + textW / 2 + 150; // Right of the text
+        const iconDrawY = finalMessageY - 40;
+        const iconW = lottieWrongBuffer.width  * 0.7;
+        const iconH = lottieWrongBuffer.height  * 0.7;
         
         image(lottieWrongBuffer, iconDrawX, iconDrawY, iconW, iconH);
     }
@@ -909,6 +909,14 @@ function handleSearchIcon2Click(){
 }
 
 function mouseDragged(){
+    // NEW: If dragging is active and a previous wrong submission state exists, clear it.
+    if (isDragging && finalMessage === "Check your work") {
+        finalMessage = "";
+        showCorrectAnswer = false;
+        // Stop and reset the wrong animation
+        if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
+    }
+    
     if(isDragging&&simulationState===2&&line2.type==='arrow'){
         line2.arrowX=constrain(mouseX,startX,endX);
         line2.selected=round((line2.arrowX-startX)/(endX-startX)*10);
@@ -928,12 +936,14 @@ function mouseReleased(){
         isDragging=false;
         hasArrowBeenDragged=true;
         line2.arrowX=startX+line2.selected*segmentWidth;
+        // NOTE: The feedback message is set here, but the 'finalMessage' is only applied on submit.
         feedbackMessage="You have placed the arrow. Click Submit to check.";
     }
     else if(isDragging&&simulationState===4){
         isDragging=false;
         hasArrowBeenDragged=true;
         line3.arrowX=startX+line3.selected*segmentWidth;
+        // NOTE: The feedback message is set here, but the 'finalMessage' is only applied on submit.
         feedbackMessage="You have placed the arrow. Click Submit to check.";
     }
 }
