@@ -161,7 +161,7 @@
 
 #nucleus-widget svg {
   width: 100% !important;
-  height: 100%;
+  height: calc(100% - 40px) !important;
 }
 
 /* molecule style -----------------------------------  */

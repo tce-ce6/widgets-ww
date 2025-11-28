@@ -36,8 +36,10 @@ const wrongReasonMap = {
   shrub: `Not a shrub. Shrubs are medium-sized with multiple woody branches near the ground. This plant has different characteristics.`,
   herb: `Not a herb. Herbs are short plants with soft, green stems. This plant doesn't fit that description.`,
   climber: `Not a climber. Climbers have weak stems that need support to grow. This plant grows differently.`,
-  creeper: `Not a creeper. Creepers spread along the ground with weak stems. This plant has different growth habits.`,
+  creeper: `Not a creeper. Creepers spread along the ground with weak stems. This plant has different growth habits.`
 };
+
+
 
 let selectedValues = {
   height: null,
@@ -126,62 +128,66 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("svg-container").classList.remove("modal-open");
   });
 
-  document.getElementById("reset-btn").addEventListener("click", () => {
-    // 1️⃣ Reset selected values
-    selectedValues = {
-      height: null,
-      stemColor: null,
-      stemType: null,
-      stemThickness: null,
-      branchPosition: null,
-      growthHabit: null,
-    };
+document.getElementById("reset-btn").addEventListener("click", () => {
+  // 1️⃣ Reset selected values
+  selectedValues = {
+    height: null,
+    stemColor: null,
+    stemType: null,
+    stemThickness: null,
+    branchPosition: null,
+    growthHabit: null,
+  };
 
-    // 2️⃣ Remove active + wrong classes
-    document.querySelectorAll(".active, .wrong").forEach((el) => {
-      el.classList.remove("active", "wrong");
-    });
-
-    // 3️⃣ Reset selected text
-    Object.keys(selectedValues).forEach((category) => {
-      const labelEl = document.querySelector(`.${category}-value`);
-      if (labelEl) labelEl.textContent = "--";
-    });
-
-    // 4️⃣ Hide all selection groups
-    Object.keys(selectedValues).forEach((category) => {
-      const group = document.getElementById(`${category}-selection`);
-      if (group) group.style.display = "none";
-    });
-
-    // 5️⃣ Hide any open modal
-    const modal = document.getElementById("detail-modal");
-    modal.style.display = "none";
-    modal.style.opacity = "0";
-    modal.style.visibility = "hidden";
-
-    // 6️⃣ Remove blur
-    document.getElementById("svg-container").classList.remove("modal-open");
-
-    // 7️⃣ Hide classify plant screen
-    document.getElementById("classify-plant").style.display = "none";
-
-    // 8️⃣ Show characteristic section again
-    document.getElementById("characteristic-wrapper").style.display = "block";
-
-    // 9️⃣ Hide result note
-    document.getElementById("result-note").style.display = "none";
-
-    // 🔟 Remove correct/wrong highlight on classify icons
-    document.querySelectorAll(".classify-wrap li").forEach((li) => {
-      li.classList.remove("correct", "wrong");
-    });
-
-    // ⭐ ADD disable-reset BACK after resetting
-    document.getElementById("reset-btn").classList.add("disable-reset");
-
-    console.log("All selections reset!");
+  // 2️⃣ Remove active + wrong classes
+  document.querySelectorAll(".active, .wrong").forEach((el) => {
+    el.classList.remove("active", "wrong");
   });
+
+  // 3️⃣ Reset selected text
+  Object.keys(selectedValues).forEach((category) => {
+    const labelEl = document.querySelector(`.${category}-value`);
+    if (labelEl) labelEl.textContent = "--";
+  });
+
+  // 4️⃣ Hide all selection groups
+  Object.keys(selectedValues).forEach((category) => {
+    const group = document.getElementById(`${category}-selection`);
+    if (group) group.style.display = "none";
+  });
+
+  // 5️⃣ Hide any open modal
+  const modal = document.getElementById("detail-modal");
+  modal.style.display = "none";
+  modal.style.opacity = "0";
+  modal.style.visibility = "hidden";
+
+  // 6️⃣ Remove blur
+  document.getElementById("svg-container").classList.remove("modal-open");
+
+  // 7️⃣ Hide classify plant screen
+  document.getElementById("classify-plant").style.display = "none";
+
+  // 8️⃣ Show characteristic section again
+  document.getElementById("characteristic-wrapper").style.display = "block";
+
+  // 9️⃣ Hide result note
+  document.getElementById("result-note").style.display = "none";
+
+  // 🔟 Remove correct/wrong highlight on classify icons
+  document.querySelectorAll(".classify-wrap li").forEach(li => {
+    li.classList.remove("correct", "wrong");
+  });
+
+  // ⭐ NEW → Remove disable state from classify button
+  document.getElementById("classify-btn").classList.remove("disable-classify");
+
+  console.log("All selections reset!");
+});
+
+
+
+
 
   document.getElementById("insight-btn").addEventListener("click", () => {
     const modal = document.getElementById("characteristics-modal");
@@ -192,11 +198,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Add blur/disable to the SVG
     document.getElementById("svg-container").classList.add("modal-open");
-  });
+});
 
-  document
-    .getElementById("characteristics-close-btn")
-    .addEventListener("click", () => {
+  document.getElementById("characteristics-close-btn").addEventListener("click", () => {
       const modal = document.getElementById("characteristics-modal");
 
       modal.style.opacity = "0";
@@ -205,16 +209,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
       // Remove blur/disable
       document.getElementById("svg-container").classList.remove("modal-open");
-    });
+  });
 
-  document.getElementById("classify-btn").addEventListener("click", () => {
+document.getElementById("classify-btn").addEventListener("click", () => {
+
     // Prevent action if button is disabled
-    if (
-      document
-        .getElementById("classify-btn")
-        .classList.contains("disable-classify")
-    ) {
-      return;
+    if (document.getElementById("classify-btn").classList.contains("disable-classify")) {
+        return;
     }
 
     // ⭐ Add disable-classify again when classify screen opens
@@ -227,53 +228,56 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("classify-plant").style.display = "block";
 
     console.log("Classification screen opened.");
-  });
+});
 
-  document.querySelectorAll(".classify-wrap li").forEach((li) => {
-    li.addEventListener("click", () => {
-      const chosen = li.id.replace("-classify", ""); // tree, shrub, herb...
-      const correctPlantType = detectCorrectCategory();
 
-      const resultNote = document.getElementById("result-note");
-      const resultTxt = document.getElementById("result-txt");
+document.querySelectorAll(".classify-wrap li").forEach(li => {
+  li.addEventListener("click", () => {
 
-      // Always show the result container
-      resultNote.style.display = "block";
+    const chosen = li.id.replace("-classify", "");   // tree, shrub, herb...
+    const correctPlantType = detectCorrectCategory();
 
-      // Remove previous classes from result box
-      resultNote.classList.remove("wrong", "correct");
+    const resultNote = document.getElementById("result-note");
+    const resultTxt  = document.getElementById("result-txt");
 
-      // Remove previous classes from all li items
-      document.querySelectorAll(".classify-wrap li").forEach((item) => {
-        item.classList.remove("correct", "wrong");
-      });
+    // Always show the result container
+    resultNote.style.display = "block";
 
-      if (!correctPlantType) {
-        resultTxt.textContent = "⚠ Unable to determine correct plant type!";
-        resultNote.classList.add("wrong");
+    // Remove previous classes from result box
+    resultNote.classList.remove("wrong", "correct");
 
-        // mark selected li as wrong
-        li.classList.add("wrong");
-        return;
-      }
-
-      if (chosen === correctPlantType) {
-        // ✔ CORRECT
-        resultTxt.textContent = explanationMap[correctPlantType];
-        resultNote.classList.add("correct");
-
-        // Add correct class to the chosen li
-        li.classList.add("correct");
-      } else {
-        // ❌ WRONG
-        resultTxt.textContent = wrongReasonMap[chosen];
-        resultNote.classList.add("wrong");
-
-        // Add wrong class to the chosen li
-        li.classList.add("wrong");
-      }
+    // Remove previous classes from all li items
+    document.querySelectorAll(".classify-wrap li").forEach(item => {
+      item.classList.remove("correct", "wrong");
     });
+
+    if (!correctPlantType) {
+      resultTxt.textContent = "⚠ Unable to determine correct plant type!";
+      resultNote.classList.add("wrong");
+
+      // mark selected li as wrong
+      li.classList.add("wrong");
+      return;
+    }
+
+    if (chosen === correctPlantType) {
+      // ✔ CORRECT
+      resultTxt.textContent = explanationMap[correctPlantType];
+      resultNote.classList.add("correct");
+
+      // Add correct class to the chosen li
+      li.classList.add("correct");
+
+    } else {
+      // ❌ WRONG
+      resultTxt.textContent = wrongReasonMap[chosen];
+      resultNote.classList.add("wrong");
+
+      // Add wrong class to the chosen li
+      li.classList.add("wrong");
+    }
   });
+});
 
   Object.keys(idMap).forEach((id) => {
     const el = document.getElementById(id);
@@ -311,9 +315,6 @@ function handleSelection(clickedId) {
     return;
   }
 
-  // ⭐ REMOVE disable-reset because user made first valid selection
-  document.getElementById("reset-btn").classList.remove("disable-reset");
-
   // VALID → update UI
   categoryGroups[category].forEach((id) => {
     const el = document.getElementById(id);
@@ -329,11 +330,13 @@ function handleSelection(clickedId) {
   updateSelectedValue(category, value);
   showCurrentCategory(category);
 
-  // Check completion
+  // 🔥 NEW — check if all categories selected
   checkCompletion();
 
   console.log("Selected →", selectedValues);
 }
+
+
 
 function updateSelectedValue(category, value) {
   const el = document.querySelector(`.${category}-value`);
@@ -469,7 +472,7 @@ function showInvalidMessage(msg) {
 
 function checkCompletion() {
   // 1️⃣ Check if all 6 categories are selected
-  const allSelected = Object.values(selectedValues).every((v) => v !== null);
+  const allSelected = Object.values(selectedValues).every(v => v !== null);
   if (!allSelected) {
     document.getElementById("classify-btn").classList.add("disable-classify");
     return;
@@ -480,14 +483,13 @@ function checkCompletion() {
 
   if (plantType) {
     // Valid combination → enable classify button
-    document
-      .getElementById("classify-btn")
-      .classList.remove("disable-classify");
+    document.getElementById("classify-btn").classList.remove("disable-classify");
   } else {
     // Wrong combination → keep classify disabled
     document.getElementById("classify-btn").classList.add("disable-classify");
   }
 }
+
 
 function detectCorrectCategory() {
   const s = selectedValues;
@@ -500,8 +502,7 @@ function detectCorrectCategory() {
     s.stemThickness === "Thick" &&
     s.branchPosition === "Higher up on stem" &&
     s.growthHabit === "Grows upright"
-  )
-    return "tree";
+  ) return "tree";
 
   // SHRUB
   if (
@@ -511,8 +512,7 @@ function detectCorrectCategory() {
     s.stemThickness === "Thin" &&
     s.branchPosition === "Close to ground" &&
     s.growthHabit === "Grows upright"
-  )
-    return "shrub";
+  ) return "shrub";
 
   // HERB
   if (
@@ -522,9 +522,8 @@ function detectCorrectCategory() {
     s.stemThickness === "Thin" &&
     s.branchPosition === "Close to ground" &&
     s.growthHabit === "Grows upright"
-  )
-    return "herb";
-
+  ) return "herb";
+  
   // CLIMBER
   if (
     s.height === "Short" &&
@@ -533,8 +532,7 @@ function detectCorrectCategory() {
     s.stemThickness === "Thin" &&
     s.branchPosition === "Close to ground" &&
     s.growthHabit === "Need support to grow"
-  )
-    return "climber";
+  ) return "climber";
 
   // CREEPER
   if (
@@ -544,8 +542,7 @@ function detectCorrectCategory() {
     s.stemThickness === "Thin" &&
     s.branchPosition === "Close to ground" &&
     s.growthHabit === "Spread on the ground"
-  )
-    return "creeper";
+  ) return "creeper";
 
   return null;
 }

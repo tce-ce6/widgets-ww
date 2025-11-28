@@ -3,7 +3,7 @@
 const WIDGET_DATA = [
   {
     name: "Interactions between organisms",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/Interactions-between-organisms/index.html?test",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg02-Interactions-btw-organisms/index.html",
     imagePath: "./assets/interactions-between-organisms.png",
     creators: "sh-bd-02",
     status: "closed",
@@ -26,7 +26,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Food Chain Population Simulator",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/food_chain_population_changes/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg03-food_chain_population/index.html",
     imagePath: "./assets/food-chain.png",
     creators: "sh-nav-03",
     status: "closed",
@@ -66,7 +66,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Seed Germination Conditions",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/seed_germination_condition/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg11-seed_germination/index.html",
     imagePath: "./assets/seed-gemination.png",
     creators: "sh-su-11",
     status: "closed",
@@ -98,7 +98,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Altitude and Temperature - A Cool Connection",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/altitude-temperature-cool-connection/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg20-altitude-temperature/index.html",
     imagePath: "./assets/altitude-and-temperature.png",
     creators: "sh-na-20",
     status: "closed",
