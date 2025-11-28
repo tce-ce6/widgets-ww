@@ -107,7 +107,7 @@ const wordData = [
     {
         "Word": "अग्र",
         "Activities": [
-            {"Activity": "पर्यायवाची शब्द बताइए", "Answer": ["आगे, सामने, पहले"]},
+            {"Activity": "पर्यायवाची शब्द बताइए", "Answer": ["आगे, सामने"]},
             {"Activity": "विलोम शब्द बताइए", "Answer": ["पश्च"]},
             {"Activity": "शब्द के दो अलग-अलग अर्थ बताइए", "Answer": ["1. आगे", "2. मुख्य"]}
         ]
@@ -224,6 +224,7 @@ let currentActivity = null;
 let currentWordIndex = -1; 
 let isWordSelected = false;
 let feedbackText = null;
+let clickAudio = null;
 let shuffledActivityIndices = [];
 
 // Lottie Constants
@@ -235,6 +236,8 @@ const WORD_TARGET_GROUP_ID = '#_928';
 // DOM Element references (Declared globally using 'let')
 let lottieRight = null; 
 let lottieLeft = null;
+let rightHit = null;
+let leftHit = null;
 let initialText = null;
 let afterText = null;
 let showAnswerBtn = null; // Target for disabling/enabling
@@ -307,11 +310,11 @@ function initDualLotties() {
     wordsLottieInstance = loadAndPauseLottie(lottieLeft, 'words');
     activitiesLottieInstance = loadAndPauseLottie(lottieRight, 'activities');
 
-    if (lottieLeft) {
-        lottieLeft.onclick = handleWordLottieClick;
+    if (leftHit) {
+        leftHit.onclick = handleWordLottieClick;
     }
-    if (lottieRight) {
-        lottieRight.onclick = handleActivityLottieClick;
+    if (rightHit) {
+        rightHit.onclick = handleActivityLottieClick;
     }
     if (showAnswerBtn) {
         showAnswerBtn.onclick = showAnswer;
@@ -374,7 +377,10 @@ function handleWordLottieClick() {
 
     //     return;
     // }
-    
+    setTimeout(() => {
+        playClickSound();
+    }, 1500);
+
     selectWordAndActivity();
     isWordSelected = true; 
     
@@ -403,7 +409,7 @@ function handleActivityLottieClick() {
         feedbackText.innerHTML = "कृपया पहले गुलाबी बॉक्स पर क्लिक करके एक शब्द चुनें।";
         return;
     }
-    console.log(activityClickCount);
+    
     if (activityClickCount >= MAX_ACTIVITY_CLICKS) {
        // alert("तीनों गतिविधियाँ पूरी हो चुकी हैं। नया शब्द पाने के लिए शब्द बॉक्स या 'आगे बढ़ें' पर क्लिक करें।");
        feedbackText.style.display = 'block';
@@ -427,17 +433,23 @@ function handleActivityLottieClick() {
     
     updateDisplay();
     hideAnswer();
-    
-    // Enable button because an activity has been loaded
-    toggleAnswerButton(false); 
 
     setTimeout(() => {
-        if (afterText) afterText.style.display = 'block';
+        playClickSound();
+    }, 1500);
+    
+    // Enable button because an activity has been loaded
+    setTimeout(() => {
+        toggleAnswerButton(false); 
     }, 3000);
 
     setTimeout(() => {
+        if (afterText) afterText.style.display = 'block';
+    }, 4000);
+
+    setTimeout(() => {
         if (initialText) initialText.style.display = 'none';
-    }, 2500);
+    }, 4000);
 }
 
 // --- GAME LOGIC FUNCTIONS ---
@@ -465,6 +477,24 @@ function updateDisplay() {
     } else {
         // When reset, set a placeholder for the activity
         injectForeignObject(lottieRight, ACTIVITY_TARGET_GROUP_ID, 'गतिविधि के लिए शब्द बॉक्स पर क्लिक करें', 'activity');
+    }
+}
+
+/**
+ * Plays the defined click sound. If the audio is already playing, 
+ * it resets it to the start (rewinds) and plays again.
+ */
+function playClickSound() {
+    if (clickAudio) {
+        // Rewind the audio to the beginning
+        clickAudio.currentTime = 0; 
+        
+        // Play the sound
+        clickAudio.play().catch(e => {
+            // Catches potential errors, such as user not interacting with the page yet, 
+            // though modern browsers often allow non-muted playback after initial interaction.
+            console.warn("Audio playback prevented:", e);
+        });
     }
 }
 
@@ -509,7 +539,7 @@ function showAnswer() {
             
             // 3. Populate content
             const ans1Text = answers[0].replace(/, /g, ', ');
-            ans1Element.innerHTML = `<br/>${ans1Text}`; 
+            ans1Element.innerHTML = `${ans1Text}`; 
             
             if (answers.length > 1) {
                 const ans2Text = answers[1].replace(/, /g, ', ');
@@ -633,10 +663,13 @@ function resetGame() {
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize all DOM Element references here
     lottieRight = document.getElementById('lottieRight'); 
-    lottieLeft = document.getElementById('lottieLeft');   
+    lottieLeft = document.getElementById('lottieLeft');  
+    rightHit = document.getElementById('right-hit'); 
+    leftHit = document.getElementById('left-hit');  
     initialText = document.getElementById('initialText');
     afterText = document.getElementById('afterText');
     showAnswerBtn = document.getElementById('showAnswer'); 
+    clickAudio = new Audio('assets/Box_open.mp3');
     //nextBtn = document.getElementById('next-btn'); 
     answerSvg = document.getElementById('Group 115');
     answerContainer = document.getElementById('result-wrapper'); 

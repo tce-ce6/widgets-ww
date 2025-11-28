@@ -1,7 +1,5 @@
 * {
-  box-sizing: border-box;
-  user-select: none;
-  white-space: nowrap;
+  box-sizing: border-box
 }
 
 #shabd-widgetbody {
@@ -16,12 +14,13 @@
   border: none;
   height: 100vh;
   width: 100vw;
-  position: relative
+  position: relative;
+  user-select: none !important;
 }
 
 #shabd-widget .container::after {
   content: "";
-  background-image: url("assets/BG.png");
+  background-image: url("Assets/Images/BG_Base.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -132,15 +131,14 @@
 }
 
 #shabd-widget .wdgetTitle h2 {
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #b478ff;
-  padding: 8px 20px;
-  color: black;
+  background: #15dcf2;
+  padding: 8px 40px;
+  color: #0e3d85;
   border-radius: 0 0px 20px 20px;
-  background: #b478ff;
-  /* background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%) */
+  white-space: nowrap;
 }
 
 #shabd-widget .versionText {
@@ -150,90 +148,74 @@
   font-size: 12px;
   color: #ccc
 }
-
-#shabd-widget .svg-container {
+#shabd-widget .svg-container{
   width: 100%;
   height: 100%;
   z-index: 1;
 }
+#shabd-widget svg{
+    width: 100% !important;
+    height: 100%;
+}
 
-#shabd-widget svg {
-  width: 100% !important;
+/* Shake animation for answer slots */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Subtle 1px shake animation for letter buttons when wrong */
+/* @keyframes shakeButton {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  75% { transform: translateX(1px); }
+} */
+
+/* .letter-button.shake-button {
+  animation: shakeButton 0.3s ease-in-out;
+} */
+
+/* Red border for wrong letter button - handled via JavaScript */
+.letter-button.wrong-letter {
+  filter: drop-shadow(5px 5px 5px #ff0000);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Letter button hover effects */
+/* .letter-button:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+} */
+
+.letter-button {
+  transition: all 0.2s ease;
+}
+
+/* Sound button hover - no shake */
+/* .sound-button:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+} */
+
+.sound-button {
+  transition: all 0.2s ease;
+} 
+
+#lottie-wrapper{
+  height: 1020px;
+  width: 1990px;
+}
+.btn-wrap{
   height: 100%;
-}
-
-.text-wrap {
-  width: 100%;
-}
-
-.word,
-.activity {
-  font-size: 50px;
-  font-weight: 500;
-  line-height: 1.4;
-  background-image: url("./assets/leftLottie.svg");
-  background-size: auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 143px;
-  width: 276px;
   display: flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  background-position: center center;
+  font-weight: 800;
 }
-
-.activity {
-  background-image: url("./assets/rightLottie.svg");
-  height: 180px;
-  width: 1018px;
-}
-
-.show-ans {
-  font-size: 42px;
-  font-weight: 500;
-  text-align: center;
-  text-wrap: auto;
-  line-height: 1.4;
-}
-
-.result-wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1.1;
-  background-image: url("./assets/answerPaper.svg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center;
-}
-
-.feedbackWrapper {
-  font-size: 28px;
-  height: 100%;
-  color: white;
-  white-space: nowrap;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1.3;
-}
-.feedbackWrapper .showfeedback{
-  text-align: center;
-}
-
-.left1{
-  height: 200px;
-  width: 200px;
-  border: 1px solid red;
-}
-/* #lottieLeft, #lottieRight {
-  cursor: pointer;
-}
-
-#lottieLeft.disabled, #lottieRight.disabled {
-  cursor: default;
-}  */
