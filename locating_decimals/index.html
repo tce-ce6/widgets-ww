@@ -75,6 +75,15 @@ let lottieMagnifyAnimation; // The Lottie animation object
 let lottieMagnifyBuffer;    // The p5.Graphics buffer (for canvas rendering)
 let lottieReady = false;    // Custom flag to ensure Lottie is loaded
 
+// NEW: Success/Wrong Lottie variables
+let lottieSuccessAnimation; 
+let lottieSuccessBuffer;
+let lottieSuccessReady = false;
+
+let lottieWrongAnimation;
+let lottieWrongBuffer;
+let lottieWrongReady = false;
+
 // MODIFIED: Global arrays to hold celebration objects (Fireworks logic)
 let rockets = [];
 let fireworkParticles = [];
@@ -206,32 +215,63 @@ function setup(){
     
     // --- Lottie Magnifying Glass Initialization (using Seed Germination technique) ---
     if (typeof lottie !== 'undefined') {
-        // Create an offscreen p5.Graphics buffer (size slightly larger than icon)
-        const bufferSize = searchIconWidth * 3;
-        lottieMagnifyBuffer = createGraphics(bufferSize, bufferSize);
+        const iconSize = searchIconWidth * 3;
         
-        // Load the Lottie animation, assigning it to the buffer's canvas element
+        // 1. Magnifying Glass
+        lottieMagnifyBuffer = createGraphics(iconSize, iconSize);
         lottieMagnifyAnimation = lottie.loadAnimation({
             renderer: 'canvas',
-            loop: true, // Loop for continuous animation
+            loop: true, 
             autoplay: false, 
             path: 'assets/magnifying-glass.json', 
             rendererSettings: {
                 canvas: lottieMagnifyBuffer.elt,
-                context: lottieMagnifyBuffer.drawingContext, // Use the buffer's context
+                context: lottieMagnifyBuffer.drawingContext, 
                 clearCanvas: true, 
             }
         });
-        
-        // Custom ready flag and initial state
         lottieMagnifyAnimation.addEventListener('DOMLoaded', () => {
             lottieReady = true;
-            // START THE ANIMATION IMMEDIATELY (since autoplay is false)
             lottieMagnifyAnimation.play(); 
         });
+
+        // 2. Success Animation
+        lottieSuccessBuffer = createGraphics(CANVAS_WIDTH*0.1, CANVAS_HEIGHT*0.15);
+        lottieSuccessAnimation = lottie.loadAnimation({
+            renderer: 'canvas',
+            loop: false, // Should play once
+            autoplay: false, 
+            path: 'assets/success.json', 
+            rendererSettings: {
+                canvas: lottieSuccessBuffer.elt,
+                context: lottieSuccessBuffer.drawingContext, 
+                clearCanvas: true, 
+            }
+        });
+        lottieSuccessAnimation.addEventListener('DOMLoaded', () => {
+            lottieSuccessReady = true;
+            lottieSuccessAnimation.goToAndStop(0, true);
+        });
+
+        // 3. Wrong Animation
+        lottieWrongBuffer = createGraphics(CANVAS_WIDTH*0.1, CANVAS_HEIGHT*0.15);
+        lottieWrongAnimation = lottie.loadAnimation({
+            renderer: 'canvas',
+            loop: false, // Should play once
+            autoplay: false, 
+            path: 'assets/wrong.json', 
+            rendererSettings: {
+                canvas: lottieWrongBuffer.elt,
+                context: lottieWrongBuffer.drawingContext, 
+                clearCanvas: true, 
+            }
+        });
+        lottieWrongAnimation.addEventListener('DOMLoaded', () => {
+            lottieWrongReady = true;
+            lottieWrongAnimation.goToAndStop(0, true);
+        });
     } else {
-        // Fallback for missing Lottie, though it should be available
-        console.error("Lottie library is not loaded. Search icon will be static.");
+        console.error("Lottie library is not loaded. Animations will not work.");
     }
     
     initialize();
@@ -250,6 +290,8 @@ function setupFixedLayout(){
     startX=marginX;
     endX=CANVAS_WIDTH-marginX;
     segmentWidth=(endX-startX)/10;
+    
+    // Adjusted size for magnifying glass (used for Lottie buffer creation)
     searchIconWidth=CANVAS_WIDTH*0.1775;
     searchIconHeight=CANVAS_WIDTH*0.1775;
     
@@ -300,12 +342,13 @@ function draw(){
             drawNumberLine(line3);
         }
         
-        // MODIFIED: Draw Lottie icon
+        // Draw Lottie icon
         if(searchIcon1.show)drawSearchIcon(searchIcon1);
         if(searchIcon2.show)drawSearchIcon(searchIcon2);
     }
     
     drawFeedbackText();
+    drawFinalLottie(); // NEW: Draw success/wrong Lottie if needed
 
     // NEW: Firework logic (Continuous blasting is maintained by simulationState === 5)
     if (simulationState === 5) {
@@ -367,6 +410,11 @@ function initialize(){
     line2={};
     line3={};
     hasNonZeroHundredths=false;
+    
+    // NEW: Stop and reset Lottie animations
+    if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
+    if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
+    
     // NEW: Clear fireworks when resetting
     rockets = [];
     fireworkParticles = [];
@@ -429,6 +477,10 @@ function resetToLine1(){
     line3.selected=null;
     line3.isCorrect=null;
     line3.arrowX=endX;
+    
+    // NEW: Stop and reset Lottie animations
+    if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
+    if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
     
     // NEW: Clear fireworks when resetting to line 1
     rockets = [];
@@ -541,6 +593,39 @@ function drawSearchIcon(ic){
     pop();
 }
 
+// NEW: Function to draw the final success or wrong Lottie animation
+function drawFinalLottie() {
+    // We must call textWidth() inside the p5 drawing context (draw, mousePressed, etc.)
+    // to avoid the "Cannot access 'textWidth' before initialization" error.
+    push();
+    textSize(96); // Set size used for finalMessage in drawFeedbackText()
+    
+    if (simulationState === 5 && lottieSuccessReady) {
+        // Correct answer: Draw Success animation
+        imageMode(CENTER);
+        // Position slightly to the right of the center (width/2 is center, text is centered there)
+        const textW = textWidth('Well done!');
+        const iconDrawX = width / 2 + textW / 2 + 200; // Right of the text
+        const iconDrawY = finalMessageY ;
+        const iconW = lottieSuccessBuffer.width 
+        const iconH = lottieSuccessBuffer.height 
+        
+        image(lottieSuccessBuffer, iconDrawX, iconDrawY, iconW, iconH);
+    } else if (showCorrectAnswer && finalMessage === 'Check your work' && lottieWrongReady) {
+        // Wrong answer: Draw Wrong animation
+        imageMode(CENTER);
+        // Position slightly to the right of the center (width/2 is center, text is centered there)
+        const textW = textWidth('Check your work');
+        const iconDrawX = width / 2 + textW / 2 + 200; // Right of the text
+        const iconDrawY = finalMessageY - 70;
+        const iconW = lottieWrongBuffer.width ;
+        const iconH = lottieWrongBuffer.height ;
+        
+        image(lottieWrongBuffer, iconDrawX, iconDrawY, iconW, iconH);
+    }
+    pop();
+}
+
 function drawArrow(x,y){
     push();
     stroke(0);
@@ -633,6 +718,9 @@ function drawFeedbackText() {
   // --- 1. Final Message (Applies to the "Well done!" / "Check your work" text) ---
   fill('#1d83ec');
   textSize(baseSizeFinal + pulse); // Apply pulse to final message
+  
+  // NOTE: We calculate the position for drawing Lottie in drawFinalLottie,
+  // so we center the text here.
   text(finalMessage, width / 2, finalMessageY);
 
   // --- 2. Feedback Message (Applies to instructions/hints) ---
@@ -876,6 +964,10 @@ function handleShowExplanation(){
     if(simulationState===-1)return;
     hasArrowBeenDragged=true;
     
+    // Stop final result Lotties on new action
+    if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
+    if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
+
     if(simulationState===0){
         line1.selected=line1.correct;
         line1.isCorrect=true;
@@ -922,6 +1014,11 @@ function handleShowExplanation(){
 
 function handleSubmit(){
   hasArrowBeenDragged=true;
+  
+  // Stop existing Lottie animations before new outcome
+  if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
+  if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
+  
   if(simulationState===4){
     if(line3.selected===null){feedbackMessage="Please place your arrow on the number line.";return;}
     line3.isCorrect=(line3.selected===line3.correct);
@@ -930,9 +1027,20 @@ function handleSubmit(){
       feedbackMessage="";
       showCorrectAnswer=false;
       simulationState=5;
+      
+      // NEW: Play success animation once
+      if(lottieSuccessAnimation) lottieSuccessAnimation.play();
+      
       // Fireworks start automatically in draw() loop when simulationState === 5
     }
-    else{finalMessage="Check your work";feedbackMessage="That's not the right spot. The correct answer is shown in blue.";showCorrectAnswer=true;}
+    else{
+      finalMessage="Check your work";
+      feedbackMessage="That's not the right spot. The correct answer is shown in blue.";
+      showCorrectAnswer=true;
+      
+      // NEW: Play wrong animation once
+      if(lottieWrongAnimation) lottieWrongAnimation.play();
+    }
   }else if(simulationState===2&&line2.type==='arrow'){
     if(line2.selected===null){feedbackMessage="Please place your arrow on the number line.";return;}
     line2.isCorrect=(line2.selected===line2.correct);
@@ -941,9 +1049,20 @@ function handleSubmit(){
       feedbackMessage="";
       showCorrectAnswer=false;
       simulationState=5;
+      
+      // NEW: Play success animation once
+      if(lottieSuccessAnimation) lottieSuccessAnimation.play();
+      
       // Fireworks start automatically in draw() loop when simulationState === 5
     }
-    else{finalMessage="Check your work";feedbackMessage="That's not the right spot. The correct answer is shown in blue.";showCorrectAnswer=true;}
+    else{
+      finalMessage="Check your work";
+      feedbackMessage="That's not the right spot. The correct answer is shown in blue.";
+      showCorrectAnswer=true;
+      
+      // NEW: Play wrong animation once
+      if(lottieWrongAnimation) lottieWrongAnimation.play();
+    }
   }else{feedbackMessage="Please find the final location before submitting.";return;}
 }
 </script>
