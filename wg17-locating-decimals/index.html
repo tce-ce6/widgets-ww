@@ -195,6 +195,11 @@ function setup(){
     canvas=createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
     canvas.parent('canvas-container');
     canvas.mousePressed(handleCanvasPress);
+    // NEW: Add touch listeners
+    canvas.touchStarted(touchStarted);
+    canvas.touchMoved(touchMoved);
+    canvas.touchEnded(touchEnded);
+
     keyboardElement=select('#floating-keyboard');
     window.addEventListener('mousedown',handleWindowPress);
     textFont("Poppins");
@@ -607,8 +612,8 @@ function drawFinalLottie() {
         const textW = textWidth('Well done!');
         const iconDrawX = width / 2 + textW / 2 + 150; // Right of the text
         const iconDrawY = finalMessageY;
-        const iconW = lottieSuccessBuffer.width * 0.7
-        const iconH = lottieSuccessBuffer.height  * 0.7
+        const iconW = lottieSuccessBuffer.width * 0.7 
+        const iconH = lottieSuccessBuffer.height * 0.7 
         
         image(lottieSuccessBuffer, iconDrawX, iconDrawY, iconW, iconH);
     } else if (showCorrectAnswer && finalMessage === 'Check your work' && lottieWrongReady) {
@@ -618,8 +623,8 @@ function drawFinalLottie() {
         const textW = textWidth('Check your work');
         const iconDrawX = width / 2 + textW / 2 + 150; // Right of the text
         const iconDrawY = finalMessageY - 40;
-        const iconW = lottieWrongBuffer.width  * 0.7;
-        const iconH = lottieWrongBuffer.height  * 0.7;
+        const iconW = lottieWrongBuffer.width * 0.7;
+        const iconH = lottieWrongBuffer.height * 0.7;
         
         image(lottieWrongBuffer, iconDrawX, iconDrawY, iconW, iconH);
     }
@@ -772,7 +777,11 @@ function handleCanvasPress(){
 }
 
 function handleWindowPress(e){
-    if(keyboardElement.elt.contains(e.target))return;
+    // MODIFIED: Check if the target is *within* the keyboard container.
+    // If it is, do nothing (prevent closing input/keyboard).
+    if(keyboardElement.elt.contains(e.target)) return;
+
+    // The rest of the original logic: close input/keyboard if click is outside canvas and buttons.
     if(e.target===canvas.elt)return;
     if(btnContainer.elt.contains(e.target))return;
     isInputActive=false;
@@ -909,7 +918,7 @@ function handleSearchIcon2Click(){
 }
 
 function mouseDragged(){
-    // NEW: If dragging is active and a previous wrong submission state exists, clear it.
+    // If dragging is active and a previous wrong submission state exists, clear it.
     if (isDragging && finalMessage === "Check your work") {
         finalMessage = "";
         showCorrectAnswer = false;
@@ -947,6 +956,33 @@ function mouseReleased(){
         feedbackMessage="You have placed the arrow. Click Submit to check.";
     }
 }
+
+// NEW: Touch handler implementations
+function touchStarted() {
+    // Only call the main press handler if the touch is within the canvas
+    if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+        handleCanvasPress();
+    }
+    // Returning false prevents default browser behavior like scrolling/panning
+    return false;
+}
+
+function touchMoved() {
+    if (isDragging) {
+        // Since touchMoved is active, call mouseDragged logic
+        mouseDragged(); 
+    }
+    // Prevents page scrolling/panning when dragging is attempted
+    return false;
+}
+
+function touchEnded() {
+    // Call the mouse release logic which handles setting isDragging=false
+    mouseReleased(); 
+    return false;
+}
+// End of NEW touch handler implementations
+
 
 function isOverLine(y){
     return mouseY>y-80&&mouseY<y+160&&mouseX>=startX&&mouseX<=endX;
