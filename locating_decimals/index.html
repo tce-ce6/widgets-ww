@@ -6,6 +6,8 @@
 <title>Locating Decimals on a Number Line (Fixed 4K)</title>
 <link rel=stylesheet href=global_style.css>
 <script src=p5.js></script>
+<!-- ADDED: Lottie library for the magnifying glass animation -->
+<script src=lottie.min.js></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel=stylesheet>
 <style>#widget-container{width:100%}#html-button-container{display:none;flex-direction:row;justify-content:center;align-items:center;gap:20px;font-family:'Poppins',sans-serif;width:100%;position:fixed;bottom:20px;left:0;margin:0;margin:0 auto}#html-button-container.visible{display:flex}.html-btn{flex-grow:1;max-width:200px;padding:12px 20px;font-size:18px;color:white;border:0;border-radius:8px;cursor:pointer;font-weight:600;transition:background-color .2s}.html-btn:disabled{background-color:#bdc3c7!important;cursor:not-allowed}#btn-show{background-color:#27ae60}#btn-try{background-color:#f39c12}#btn-submit{background-color:#3498db}#btn-reset{background-color:#e74c3c}#btn-show:hover:not(:disabled){background-color:#2ecc71}#btn-try:hover:not(:disabled){background-color:#f1c40f}#btn-submit:hover:not(:disabled){background-color:#5dade2}#btn-reset:hover:not(:disabled){background-color:#c0392b}</style>
 </head>
@@ -38,7 +40,40 @@
 <button onclick="handleKeyboardClick('0')">0</button>
 <button onclick="handleKeyboardClick('bksp')">&larr;</button>
 </div>
-<script>const CANVAS_WIDTH=3840;const CANVAS_HEIGHT=2160;let decimalValue=0;let feedbackMessage="";let finalMessage="";let simulationState=-1;let showCorrectAnswer=false;let line1,line2,line3;let lineY1,lineY2,lineY3;let canvas;let marginX,buttonY,btnWidth,btnHeight,startX,endX,segmentWidth;let finalMessageY,feedbackMessageY,titleY,numberY;let userDecimalValue=null;let inputValue="";let isInputActive=false;let keyboardElement;let inputX,inputY,inputWidth,inputHeight;let nextBtnX,nextBtnY,nextBtnWidth,nextBtnHeight;let searchIcon;let searchIcon1={show:false,x:0,y:0};let searchIcon2={show:false,x:0,y:0};let searchIconWidth,searchIconHeight;let isDragging=false;let hasArrowBeenDragged=false;let btnShow,btnTry,btnSubmit,btnReset,btnContainer;let hasNonZeroHundredths=false;let arrowYOffset=0;
+<script>
+const CANVAS_WIDTH=3840;
+const CANVAS_HEIGHT=2160;
+let decimalValue=0;
+let feedbackMessage="";
+let finalMessage="";
+let simulationState=-1;
+let showCorrectAnswer=false;
+let line1,line2,line3;
+let lineY1,lineY2,lineY3;
+let canvas;
+let marginX,buttonY,btnWidth,btnHeight,startX,endX,segmentWidth;
+let finalMessageY,feedbackMessageY,titleY,numberY;
+let userDecimalValue=null;
+let inputValue="";
+let isInputActive=false;
+let keyboardElement;
+let inputX,inputY,inputWidth,inputHeight;
+let nextBtnX,nextBtnY,nextBtnWidth,nextBtnHeight;
+
+// CHANGED: Removed searchIcon image variable
+let searchIcon1={show:false,x:0,y:0};
+let searchIcon2={show:false,x:0,y:0};
+let searchIconWidth,searchIconHeight;
+let isDragging=false;
+let hasArrowBeenDragged=false;
+let btnShow,btnTry,btnSubmit,btnReset,btnContainer;
+let hasNonZeroHundredths=false;
+let arrowYOffset=0;
+
+// NEW LOTTIE VARIABLES
+let lottieMagnifyAnimation; // The Lottie animation object
+let lottieMagnifyBuffer;    // The p5.Graphics buffer (for canvas rendering)
+let lottieReady = false;    // Custom flag to ensure Lottie is loaded
 
 // MODIFIED: Global arrays to hold celebration objects (Fireworks logic)
 let rockets = [];
@@ -142,139 +177,749 @@ class Rocket {
   }
 }
 
-function preload(){let iconURL='assets/Search_Icon.svg';searchIcon=loadImage(iconURL,()=>console.log("Search icon OK"),()=>{console.error("Icon load fail – fallback");searchIcon=createGraphics(100,100);searchIcon.background(255,0,0,0);searchIcon.stroke(0);searchIcon.strokeWeight(10);searchIcon.fill(255,255,0);searchIcon.ellipse(45,45,70,70);searchIcon.line(75,75,95,95);});}
-function setup(){canvas=createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);canvas.parent('canvas-container');canvas.mousePressed(handleCanvasPress);keyboardElement=select('#floating-keyboard');window.addEventListener('mousedown',handleWindowPress);textFont("Poppins");textAlign(CENTER,CENTER);noStroke();btnContainer=select('#html-button-container');btnShow=select('#btn-show');btnTry=select('#btn-try');btnSubmit=select('#btn-submit');btnReset=select('#btn-reset');btnShow.mousePressed(handleShowExplanation);btnTry.mousePressed(()=>{if(line1&&line1.selected!==null){resetToLine1();}});btnSubmit.mousePressed(handleSubmit);btnReset.mousePressed(initialize);setupFixedLayout();initialize();}
-function setupFixedLayout(){marginX=CANVAS_WIDTH*0.1;titleY=CANVAS_HEIGHT*0.1;numberY=CANVAS_HEIGHT*0.16;lineY1=CANVAS_HEIGHT*0.25;lineY2=CANVAS_HEIGHT*0.45;lineY3=CANVAS_HEIGHT*0.65;
-// MODIFIED: Adjusted positions for final and feedback messages to prevent overlap
-finalMessageY=CANVAS_HEIGHT*0.78; 
-feedbackMessageY=CANVAS_HEIGHT*0.84;
-startX=marginX;endX=CANVAS_WIDTH-marginX;segmentWidth=(endX-startX)/10;searchIconWidth=CANVAS_WIDTH*0.035;searchIconHeight=CANVAS_WIDTH*0.035;inputWidth=CANVAS_WIDTH*0.2;inputHeight=CANVAS_HEIGHT*0.07;inputX=(CANVAS_WIDTH/2)-(inputWidth/2)-150;inputY=numberY-(inputHeight/2);nextBtnWidth=CANVAS_WIDTH*0.07;nextBtnHeight=inputHeight;nextBtnX=inputX+inputWidth+30;nextBtnY=inputY;
-// Set the target Y for fireworks once
-fireworkTargetY = finalMessageY;
-}
-function draw(){clear();if(isDragging||hasArrowBeenDragged){arrowYOffset=0;}else{let bobAmount=20;let bobSpeed=0.08;arrowYOffset=sin(frameCount*bobSpeed)*bobAmount;}
-if(simulationState===-1){drawInputPage();if(line1)drawNumberLine(line1);btnContainer.removeClass('visible');}else{btnContainer.addClass('visible');if(line1&&line1.selected===null){btnTry.attribute('disabled','');}else{btnTry.removeAttribute('disabled');}
-showNumberToFind();drawNumberLine(line1);if(simulationState>=2){drawZoomLines(lineY1,lineY2,line1.selected);drawNumberLine(line2);}
-if(hasNonZeroHundredths&&simulationState>=4){drawZoomLines(lineY2,lineY3,line2.selected);drawNumberLine(line3);}
-if(searchIcon1.show)drawSearchIcon(searchIcon1);if(searchIcon2.show)drawSearchIcon(searchIcon2);}
-drawFeedbackText();
-
-// NEW: Firework logic (Continuous blasting is maintained by simulationState === 5)
-if (simulationState === 5) {
-  // Continuous rocket spawning (a new rocket every 30-45 frames)
-  if (frameCount % floor(random(30, 45)) === 0) {
-    // Blast location is centered on the message with a 60px random offset
-    let blastX = width / 2 + random(-60, 60);
-    // Use finalMessageY as the primary target for the blast area
-    let blastY = finalMessageY + random(-60, 60); 
-    rockets.push(new Rocket(blastX, blastY));
-  }
+// MODIFIED: Removed preload function content (SVG loading)
+function preload(){
+    // Lottie animation is loaded in setup() to ensure p5.Graphics is ready.
 }
 
-// Update and display rockets
-for (let i = rockets.length - 1; i >= 0; i--) {
-  rockets[i].update();
-  rockets[i].display();
-  if (rockets[i].arrived) {
-    rockets.splice(i, 1);
-  }
+function setup(){
+    canvas=createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT);
+    canvas.parent('canvas-container');
+    canvas.mousePressed(handleCanvasPress);
+    keyboardElement=select('#floating-keyboard');
+    window.addEventListener('mousedown',handleWindowPress);
+    textFont("Poppins");
+    textAlign(CENTER,CENTER);
+    noStroke();
+    
+    btnContainer=select('#html-button-container');
+    btnShow=select('#btn-show');
+    btnTry=select('#btn-try');
+    btnSubmit=select('#btn-submit');
+    btnReset=select('#btn-reset');
+    btnShow.mousePressed(handleShowExplanation);
+    btnTry.mousePressed(()=>{if(line1&&line1.selected!==null){resetToLine1();}});
+    btnSubmit.mousePressed(handleSubmit);
+    btnReset.mousePressed(initialize);
+    
+    setupFixedLayout();
+    
+    // --- Lottie Magnifying Glass Initialization (using Seed Germination technique) ---
+    if (typeof lottie !== 'undefined') {
+        // Create an offscreen p5.Graphics buffer (size slightly larger than icon)
+        const bufferSize = searchIconWidth * 3;
+        lottieMagnifyBuffer = createGraphics(bufferSize, bufferSize);
+        
+        // Load the Lottie animation, assigning it to the buffer's canvas element
+        lottieMagnifyAnimation = lottie.loadAnimation({
+            renderer: 'canvas',
+            loop: true, // Loop for continuous animation
+            autoplay: false, 
+            path: 'assets/magnifying-glass.json', 
+            rendererSettings: {
+                canvas: lottieMagnifyBuffer.elt,
+                context: lottieMagnifyBuffer.drawingContext, // Use the buffer's context
+                clearCanvas: true, 
+            }
+        });
+        
+        // Custom ready flag and initial state
+        lottieMagnifyAnimation.addEventListener('DOMLoaded', () => {
+            lottieReady = true;
+            // START THE ANIMATION IMMEDIATELY (since autoplay is false)
+            lottieMagnifyAnimation.play(); 
+        });
+    } else {
+        // Fallback for missing Lottie, though it should be available
+        console.error("Lottie library is not loaded. Search icon will be static.");
+    }
+    
+    initialize();
 }
 
-// Update and display firework particles
-for (let i = fireworkParticles.length - 1; i >= 0; i--) {
-  fireworkParticles[i].update();
-  fireworkParticles[i].display();
-  if (fireworkParticles[i].isDead()) {
-    fireworkParticles.splice(i, 1);
-  }
+function setupFixedLayout(){
+    marginX=CANVAS_WIDTH*0.1;
+    titleY=CANVAS_HEIGHT*0.1;
+    numberY=CANVAS_HEIGHT*0.16;
+    lineY1=CANVAS_HEIGHT*0.25;
+    lineY2=CANVAS_HEIGHT*0.45;
+    lineY3=CANVAS_HEIGHT*0.65;
+    // MODIFIED: Adjusted positions for final and feedback messages to prevent overlap
+    finalMessageY=CANVAS_HEIGHT*0.78; 
+    feedbackMessageY=CANVAS_HEIGHT*0.84;
+    startX=marginX;
+    endX=CANVAS_WIDTH-marginX;
+    segmentWidth=(endX-startX)/10;
+    searchIconWidth=CANVAS_WIDTH*0.1775;
+    searchIconHeight=CANVAS_WIDTH*0.1775;
+    
+    inputWidth=CANVAS_WIDTH*0.2;
+    inputHeight=CANVAS_HEIGHT*0.07;
+    inputX=(CANVAS_WIDTH/2)-(inputWidth/2)-150;
+    inputY=numberY-(inputHeight/2);
+    nextBtnWidth=CANVAS_WIDTH*0.07;
+    nextBtnHeight=inputHeight;
+    nextBtnX=inputX+inputWidth+30;
+    nextBtnY=inputY;
+    // Set the target Y for fireworks once
+    fireworkTargetY = finalMessageY;
 }
+
+function draw(){
+    clear();
+    
+    if(isDragging||hasArrowBeenDragged){
+        arrowYOffset=0;
+    }else{
+        let bobAmount=20;
+        let bobSpeed=0.08;
+        arrowYOffset=sin(frameCount*bobSpeed)*bobAmount;
+    }
+    
+    if(simulationState===-1){
+        drawInputPage();
+        if(line1)drawNumberLine(line1);
+        btnContainer.removeClass('visible');
+    }else{
+        btnContainer.addClass('visible');
+        if(line1&&line1.selected===null){
+            btnTry.attribute('disabled','');
+        }else{
+            btnTry.removeAttribute('disabled');
+        }
+        showNumberToFind();
+        drawNumberLine(line1);
+        
+        if(simulationState>=2){
+            drawZoomLines(lineY1,lineY2,line1.selected);
+            drawNumberLine(line2);
+        }
+        
+        if(hasNonZeroHundredths&&simulationState>=4){
+            drawZoomLines(lineY2,lineY3,line2.selected);
+            drawNumberLine(line3);
+        }
+        
+        // MODIFIED: Draw Lottie icon
+        if(searchIcon1.show)drawSearchIcon(searchIcon1);
+        if(searchIcon2.show)drawSearchIcon(searchIcon2);
+    }
+    
+    drawFeedbackText();
+
+    // NEW: Firework logic (Continuous blasting is maintained by simulationState === 5)
+    if (simulationState === 5) {
+      // Continuous rocket spawning (a new rocket every 30-45 frames)
+      if (frameCount % floor(random(30, 45)) === 0) {
+        // Blast location is centered on the message with a 60px random offset
+        let blastX = width / 2 + random(-60, 60);
+        // Use finalMessageY as the primary target for the blast area
+        let blastY = finalMessageY + random(-60, 60); 
+        rockets.push(new Rocket(blastX, blastY));
+      }
+    }
+
+    // Update and display rockets
+    for (let i = rockets.length - 1; i >= 0; i--) {
+      rockets[i].update();
+      rockets[i].display();
+      if (rockets[i].arrived) {
+        rockets.splice(i, 1);
+      }
+    }
+
+    // Update and display firework particles
+    for (let i = fireworkParticles.length - 1; i >= 0; i--) {
+      fireworkParticles[i].update();
+      fireworkParticles[i].display();
+      if (fireworkParticles[i].isDead()) {
+        fireworkParticles.splice(i, 1);
+      }
+    }
+    
+    // NEW: Cursor logic for Lottie icon hover
+    if (searchIcon1.show && isOverSearchIcon(searchIcon1) || 
+        searchIcon2.show && isOverSearchIcon(searchIcon2)) {
+        cursor(HAND);
+    } else {
+        // Only set cursor to ARROW if not dragging an arrow, which already implies a cursor change
+        if (!isDragging) {
+             cursor(ARROW);
+        }
+    }
 }
-function initialize(){simulationState=-1;userDecimalValue=null;decimalValue=0;inputValue="";isInputActive=false;showCorrectAnswer=false;searchIcon1.show=false;searchIcon2.show=false;isDragging=false;hasArrowBeenDragged=false;feedbackMessage="Enter a decimal (e.g., 1.23) between 0 and 10 in the box above.";finalMessage="";hideKeyboard();line1={y:lineY1,type:'interval',min:0,max:10,step:1,precision:0,selected:null,isCorrect:null,correct:-1};line2={};line3={};hasNonZeroHundredths=false;
-// NEW: Clear fireworks when resetting
-rockets = [];
-fireworkParticles = [];
+
+function initialize(){
+    simulationState=-1;
+    userDecimalValue=null;
+    decimalValue=0;
+    inputValue="";
+    isInputActive=false;
+    showCorrectAnswer=false;
+    searchIcon1.show=false;
+    searchIcon2.show=false;
+    isDragging=false;
+    hasArrowBeenDragged=false;
+    feedbackMessage="Enter a decimal (e.g., 1.23) between 0 and 10 in the box above.";
+    finalMessage="";
+    hideKeyboard();
+    line1={y:lineY1,type:'interval',min:0,max:10,step:1,precision:0,selected:null,isCorrect:null,correct:-1};
+    line2={};
+    line3={};
+    hasNonZeroHundredths=false;
+    // NEW: Clear fireworks when resetting
+    rockets = [];
+    fireworkParticles = [];
 }
-function normalizeAndDetect(value){let str=value.toFixed(2);let parts=str.split('.');let hundredths=parts[1]?parts[1][1]:'0';hasNonZeroHundredths=(hundredths!=='0');str=str.replace(/\.?0+$/,'');return parseFloat(str);}
-function startNewProblem(){userDecimalValue=parseFloat(inputValue);if(isNaN(userDecimalValue)){initialize();return;}
-decimalValue=normalizeAndDetect(userDecimalValue);simulationState=0;showCorrectAnswer=false;searchIcon1.show=false;searchIcon2.show=false;isDragging=false;hasArrowBeenDragged=false;feedbackMessage="Click the interval where the decimal number lies.";finalMessage="";isInputActive=false;hideKeyboard();line1={y:lineY1,type:'interval',min:0,max:10,step:1,precision:0,selected:null,isCorrect:null,correct:Math.floor(decimalValue)};if(decimalValue===10)line1.correct=9;if(hasNonZeroHundredths){line2={y:lineY2,type:'interval',min:0,max:0,step:0.1,precision:1,selected:null,isCorrect:null,correct:-1};line3={y:lineY3,type:'arrow',min:0,max:0,step:0.01,precision:2,selected:null,isCorrect:null,correct:-1,arrowX:endX};}else{line2={y:lineY2,type:'arrow',min:0,max:0,step:0.1,precision:1,selected:null,isCorrect:null,correct:-1,arrowX:endX};line3={};}}
-function resetToLine1(){if(userDecimalValue===null){initialize();return;}
-decimalValue=normalizeAndDetect(userDecimalValue);simulationState=0;showCorrectAnswer=false;searchIcon1.show=false;searchIcon2.show=false;isDragging=false;hasArrowBeenDragged=false;feedbackMessage="Click the interval where the decimal number lies.";finalMessage="";line1.selected=null;line1.isCorrect=null;line2.selected=null;line2.isCorrect=null;if(line2.type==='arrow')line2.arrowX=endX;line3.selected=null;line3.isCorrect=null;line3.arrowX=endX;
-// NEW: Clear fireworks when resetting to line 1
-rockets = [];
-fireworkParticles = [];
+
+function normalizeAndDetect(value){
+    let str=value.toFixed(2);
+    let parts=str.split('.');
+    let hundredths=parts[1]?parts[1][1]:'0';
+    hasNonZeroHundredths=(hundredths!=='0');
+    str=str.replace(/\.?0+$/,'');
+    return parseFloat(str);
 }
-function setupLine2(){line2.min=line1.correct;line2.max=line1.correct+1;line2.correct=Math.floor((decimalValue*10)%10);if(line2.type==='arrow'){line2.selected=10;line2.arrowX=endX;}}
-function setupLine3(){line3.min=parseFloat((Math.floor(decimalValue*10)/10).toFixed(1));line3.max=parseFloat((line3.min+0.1).toFixed(1));line3.correct=Math.round((decimalValue*100)%10);line3.selected=10;line3.arrowX=endX;}
-function drawNumberLine(lineState){if(!lineState.y)return;let y=lineState.y;stroke(0);strokeWeight(12);line(startX,y,endX,y);fill(0);triangle(startX,y,startX+40,y-20,startX+40,y+20);triangle(endX,y,endX-40,y-20,endX-40,y+20);if(lineState.type==='interval'&&lineState.selected!==null){stroke(lineState.isCorrect?color(0,0,255):color(255,0,0));strokeWeight(40);let x1=startX+lineState.selected*segmentWidth;line(x1,y,x1+segmentWidth,y);}
-if(lineState.type==='arrow'){fill(243,156,18);drawArrow(lineState.arrowX,y);if(showCorrectAnswer&&lineState.selected!==lineState.correct){fill(0,0,255);drawArrow(startX+lineState.correct*segmentWidth,y);}}
-noStroke();fill(0);textSize(57.6);for(let i=0;i<=10;i++){let x=startX+i*segmentWidth;let v=lineState.min+i*lineState.step;stroke(0);strokeWeight(8);line(x,y-40,x,y+40);noStroke();text(v.toFixed(lineState.precision),x,y+120);}}
-function drawZoomLines(y1,y2,sel){if(sel===null)return;push();stroke(231,76,60);strokeWeight(8);let x1s=startX+sel*segmentWidth,x1e=x1s+segmentWidth;line(x1s,y1,startX,y2);line(x1e,y1,endX,y2);pop();}
-function drawSearchIcon(ic){if(ic.show&&searchIcon){imageMode(CENTER);image(searchIcon,ic.x,ic.y,searchIconWidth,searchIconHeight);imageMode(CORNER);}}
-function drawArrow(x,y){push();stroke(0);strokeWeight(8);line(x,y-80+arrowYOffset,x,y-150+arrowYOffset);stroke(0);strokeWeight(4);triangle(x,y-40+arrowYOffset,x-20,y-80+arrowYOffset,x+20,y-80+arrowYOffset);pop();}
-function drawInputPage(){fill(0);textSize(76.8);text("Enter a decimal number:",width/2,titleY);drawCanvasInput();drawNextButton();}
-function drawCanvasInput(){push();rectMode(CORNER);strokeWeight(6);stroke(isInputActive?color(39,174,96):color(150));fill(255);rect(inputX,inputY,inputWidth,inputHeight,15);noStroke();textAlign(LEFT,CENTER);textSize(70);if(inputValue.length===0&&!isInputActive){fill(180);text("e.g., 4.56",inputX+25,inputY+inputHeight/2);}
-else{fill(0);text(inputValue,inputX+25,inputY+inputHeight/2);if(isInputActive&&frameCount%60<30){let w=textWidth(inputValue);stroke(0);strokeWeight(4);line(inputX+25+w+5,inputY+25,inputX+25+w+5,inputY+inputHeight-25);}}
-pop();}
-function drawNextButton(){push();rectMode(CORNER);noStroke();let v=parseFloat(inputValue);let isValidRange=!isNaN(v)&&v>=0&&v<=10;let hasDecimal=inputValue.includes('.');let parts=inputValue.split('.');let hasPostDecimalDigit=hasDecimal&&parts.length>1&&parts[1].length>0;let isButtonEnabled=isValidRange&&hasDecimal&&hasPostDecimalDigit;fill(isButtonEnabled?color(39,174,96):color(180));rect(nextBtnX,nextBtnY,nextBtnWidth,nextBtnHeight,15);fill(255);textAlign(CENTER,CENTER);textSize(57.6);text("Next",nextBtnX+nextBtnWidth/2,nextBtnY+nextBtnHeight/2);pop();}
-function showNumberToFind(){fill(0);textSize(76.8);text("Locate given decimal on the number line:",width/2,titleY);fill(231,76,60);textSize(115.2);text(decimalValue.toFixed(2),width/2,numberY);}
+
+function startNewProblem(){
+    userDecimalValue=parseFloat(inputValue);
+    if(isNaN(userDecimalValue)){initialize();return;}
+    
+    decimalValue=normalizeAndDetect(userDecimalValue);
+    simulationState=0;
+    showCorrectAnswer=false;
+    searchIcon1.show=false;
+    searchIcon2.show=false;
+    isDragging=false;
+    hasArrowBeenDragged=false;
+    feedbackMessage="Click the interval where the decimal number lies.";
+    finalMessage="";
+    isInputActive=false;
+    hideKeyboard();
+    
+    line1={y:lineY1,type:'interval',min:0,max:10,step:1,precision:0,selected:null,isCorrect:null,correct:Math.floor(decimalValue)};
+    if(decimalValue===10)line1.correct=9;
+    
+    if(hasNonZeroHundredths){
+        line2={y:lineY2,type:'interval',min:0,max:0,step:0.1,precision:1,selected:null,isCorrect:null,correct:-1};
+        line3={y:lineY3,type:'arrow',min:0,max:0,step:0.01,precision:2,selected:null,isCorrect:null,correct:-1,arrowX:endX};
+    }else{
+        line2={y:lineY2,type:'arrow',min:0,max:0,step:0.1,precision:1,selected:null,isCorrect:null,correct:-1,arrowX:endX};
+        line3={};
+    }
+}
+
+function resetToLine1(){
+    if(userDecimalValue===null){initialize();return;}
+    
+    decimalValue=normalizeAndDetect(userDecimalValue);
+    simulationState=0;
+    showCorrectAnswer=false;
+    searchIcon1.show=false;
+    searchIcon2.show=false;
+    isDragging=false;
+    hasArrowBeenDragged=false;
+    feedbackMessage="Click the interval where the decimal number lies.";
+    finalMessage="";
+    line1.selected=null;
+    line1.isCorrect=null;
+    line2.selected=null;
+    line2.isCorrect=null;
+    if(line2.type==='arrow')line2.arrowX=endX;
+    line3.selected=null;
+    line3.isCorrect=null;
+    line3.arrowX=endX;
+    
+    // NEW: Clear fireworks when resetting to line 1
+    rockets = [];
+    fireworkParticles = [];
+}
+
+function setupLine2(){
+    line2.min=line1.correct;
+    line2.max=line1.correct+1;
+    line2.correct=Math.floor((decimalValue*10)%10);
+    if(line2.type==='arrow'){
+        line2.selected=10;
+        line2.arrowX=endX;
+    }
+}
+
+function setupLine3(){
+    line3.min=parseFloat((Math.floor(decimalValue*10)/10).toFixed(1));
+    line3.max=parseFloat((line3.min+0.1).toFixed(1));
+    line3.correct=Math.round((decimalValue*100)%10);
+    line3.selected=10;
+    line3.arrowX=endX;
+}
+
+function drawNumberLine(lineState){
+    if(!lineState.y)return;
+    let y=lineState.y;
+    
+    stroke(0);
+    strokeWeight(12);
+    line(startX,y,endX,y);
+    
+    fill(0);
+    triangle(startX,y,startX+40,y-20,startX+40,y+20);
+    triangle(endX,y,endX-40,y-20,endX-40,y+20);
+    
+    if(lineState.type==='interval'&&lineState.selected!==null){
+        stroke(lineState.isCorrect?color(0,0,255):color(255,0,0));
+        strokeWeight(40);
+        let x1=startX+lineState.selected*segmentWidth;
+        line(x1,y,x1+segmentWidth,y);
+    }
+    
+    if(lineState.type==='arrow'){
+        fill(243,156,18);
+        drawArrow(lineState.arrowX,y);
+        
+        if(showCorrectAnswer&&lineState.selected!==lineState.correct){
+            fill(0,0,255);
+            drawArrow(startX+lineState.correct*segmentWidth,y);
+        }
+    }
+    
+    noStroke();
+    fill(0);
+    textSize(57.6);
+    
+    for(let i=0;i<=10;i++){
+        let x=startX+i*segmentWidth;
+        let v=lineState.min+i*lineState.step;
+        stroke(0);
+        strokeWeight(8);
+        line(x,y-40,x,y+40);
+        noStroke();
+        text(v.toFixed(lineState.precision),x,y+120);
+    }
+}
+
+function drawZoomLines(y1,y2,sel){
+    if(sel===null)return;
+    push();
+    stroke(231,76,60);
+    strokeWeight(8);
+    let x1s=startX+sel*segmentWidth,x1e=x1s+segmentWidth;
+    line(x1s,y1,startX,y2);
+    line(x1e,y1,endX,y2);
+    pop();
+}
+
+// MODIFIED: Function to draw the Lottie Search Icon (removed hover logic, animates when visible)
+function drawSearchIcon(ic){
+    // Optimization: If not shown or Lottie not ready, pause animation and exit
+    if (!ic.show || !lottieMagnifyAnimation || !lottieReady) {
+        // Only pause if it was playing, to maintain the correct state
+        if(lottieMagnifyAnimation && lottieMagnifyAnimation.isPaused === false) {
+             lottieMagnifyAnimation.pause();
+        }
+        return;
+    }
+    
+    // Ensure the animation is playing if it is visible and ready
+    if(lottieMagnifyAnimation.isPaused) {
+        lottieMagnifyAnimation.play();
+    }
+    
+    // Draw the Lottie buffer (p5 image() using the offscreen buffer)
+    push();
+    imageMode(CENTER);
+    
+    // The drawing size is searchIconWidth/Height (the intended size of the icon)
+    image(
+        lottieMagnifyBuffer, 
+        ic.x, 
+        ic.y, 
+        searchIconWidth, 
+        searchIconHeight
+    );
+    
+    imageMode(CORNER);
+    pop();
+}
+
+function drawArrow(x,y){
+    push();
+    stroke(0);
+    strokeWeight(8);
+    line(x,y-80+arrowYOffset,x,y-150+arrowYOffset);
+    stroke(0);
+    strokeWeight(4);
+    triangle(x,y-40+arrowYOffset,x-20,y-80+arrowYOffset,x+20,y-80+arrowYOffset);
+    pop();
+}
+
+function drawInputPage(){
+    fill(0);
+    textSize(76.8);
+    text("Enter a decimal number:",width/2,titleY);
+    drawCanvasInput();
+    drawNextButton();
+}
+
+function drawCanvasInput(){
+    push();
+    rectMode(CORNER);
+    strokeWeight(6);
+    stroke(isInputActive?color(39,174,96):color(150));
+    fill(255);
+    rect(inputX,inputY,inputWidth,inputHeight,15);
+    noStroke();
+    textAlign(LEFT,CENTER);
+    textSize(70);
+    
+    if(inputValue.length===0&&!isInputActive){
+        fill(180);
+        text("e.g., 4.56",inputX+25,inputY+inputHeight/2);
+    }
+    else{
+        fill(0);
+        text(inputValue,inputX+25,inputY+inputHeight/2);
+        
+        if(isInputActive&&frameCount%60<30){
+            let w=textWidth(inputValue);
+            stroke(0);
+            strokeWeight(4);
+            line(inputX+25+w+5,inputY+25,inputX+25+w+5,inputY+inputHeight-25);
+        }
+    }
+    pop();
+}
+
+function drawNextButton(){
+    push();
+    rectMode(CORNER);
+    noStroke();
+    
+    let v=parseFloat(inputValue);
+    let isValidRange=!isNaN(v)&&v>=0&&v<=10;
+    let hasDecimal=inputValue.includes('.');
+    let parts=inputValue.split('.');
+    let hasPostDecimalDigit=hasDecimal&&parts.length>1&&parts[1].length>0;
+    let isButtonEnabled=isValidRange&&hasDecimal&&hasPostDecimalDigit;
+    
+    fill(isButtonEnabled?color(39,174,96):color(180));
+    rect(nextBtnX,nextBtnY,nextBtnWidth,nextBtnHeight,15);
+    
+    fill(255);
+    textAlign(CENTER,CENTER);
+    textSize(57.6);
+    text("Next",nextBtnX+nextBtnWidth/2,nextBtnY+nextBtnHeight/2);
+    pop();
+}
+
+function showNumberToFind(){
+    fill(0);
+    textSize(76.8);
+    text("Locate given decimal on the number line:",width/2,titleY);
+    
+    fill(231,76,60);
+    textSize(115.2);
+    text(decimalValue.toFixed(2),width/2,numberY);
+}
+
 function drawFeedbackText() {
-  noStroke();
-  textAlign(CENTER, CENTER);
+  noStroke();
+  textAlign(CENTER, CENTER);
 
-  // NEW: Calculate the pulse amount once for both messages
-  let pulse = sin(frameCount * 0.1) * 3;
-  let baseSizeFinal = 96; // Base size for finalMessage
-  let baseSizeFeedback = 69.12; // Base size for feedbackMessage
+  // NEW: Calculate the pulse amount once for both messages
+  let pulse = sin(frameCount * 0.1) * 3;
+  let baseSizeFinal = 96; // Base size for finalMessage
+  let baseSizeFeedback = 69.12; // Base size for feedbackMessage
 
-  // --- 1. Final Message (Applies to the "Well done!" / "Check your work" text) ---
-  fill('#1d83ec');
-  textSize(baseSizeFinal + pulse); // Apply pulse to final message
-  text(finalMessage, width / 2, finalMessageY);
+  // --- 1. Final Message (Applies to the "Well done!" / "Check your work" text) ---
+  fill('#1d83ec');
+  textSize(baseSizeFinal + pulse); // Apply pulse to final message
+  text(finalMessage, width / 2, finalMessageY);
 
-  // --- 2. Feedback Message (Applies to instructions/hints) ---
-  fill(50);
-  textSize(baseSizeFeedback + pulse); // Apply pulse to feedback message
-  text(feedbackMessage, width / 2, feedbackMessageY);
+  // --- 2. Feedback Message (Applies to instructions/hints) ---
+  fill(50);
+  textSize(baseSizeFeedback + pulse); // Apply pulse to feedback message
+  text(feedbackMessage, width / 2, feedbackMessageY);
 }
-function handleCanvasPress(){if(simulationState===-1){if(isOverCanvasInput()){isInputActive=true;showKeyboard();return;}
-if(isOverNextButton()){handleNextClick();return;}
-isInputActive=false;hideKeyboard();return;}
-if(simulationState===5)return;if(simulationState===1&&isOverSearchIcon(searchIcon1)){handleSearchIcon1Click();return;}
-if(simulationState===3&&isOverSearchIcon(searchIcon2)){handleSearchIcon2Click();return;}
-if(simulationState===0&&isOverLine(lineY1)){handleLine1Click();}
-else if(simulationState===2){if(line2.type==='interval'&&isOverLine(lineY2)){handleLine2Click();}else if(line2.type==='arrow'&&isOverArrow(line2.arrowX,lineY2)){isDragging=true;}}
-else if(simulationState===4&&isOverArrow(line3.arrowX,lineY3)){isDragging=true;}}
-function handleWindowPress(e){if(keyboardElement.elt.contains(e.target))return;if(e.target===canvas.elt)return;if(btnContainer.elt.contains(e.target))return;isInputActive=false;hideKeyboard();}
-function handleNextClick(){if(simulationState!==-1)return;let v=parseFloat(inputValue);if(isNaN(v)||v<0||v>10){feedbackMessage="Please enter a valid decimal number between 0 and 10.";return;}
-if(!inputValue.includes('.')){feedbackMessage="Please enter a decimal number (e.g. 5.0 or 1.23).";return;}
-let parts=inputValue.split('.');if(parts.length>1&&parts[1].length===0){feedbackMessage="Please complete the decimal number (e.g. type '4.0' instead of '4.').";return;}
-startNewProblem();}
-window.handleKeyboardClick=function(k){if(!isInputActive)return;if(k==='bksp'){inputValue=inputValue.slice(0,-1);}
-else if(k==='.'){if(!inputValue.includes('.')){if(inputValue===""){inputValue="0.";}else if(inputValue==="10"){return;}else{inputValue+='.';}}}
-else{let p=inputValue.split('.');if(p.length>1&&p[1].length>=2)return;if(inputValue==="0"&&k==="0")return;if(inputValue==="0"&&k!=="."){inputValue=k;return;}
-let newInputValue=inputValue+k;let test=parseFloat(newInputValue);if(test>10){if(inputValue==='1'&&k==='0'&&newInputValue.length===2){inputValue+=k;}
-return;}
-inputValue=newInputValue;}};function showKeyboard(){keyboardElement.addClass('visible');}
-function hideKeyboard(){keyboardElement.removeClass('visible');}
-function handleLine1Click(){let seg=floor((mouseX-startX)/segmentWidth);if(seg===10)seg=9;line1.selected=seg;line1.isCorrect=(seg===line1.correct);if(line1.isCorrect){setupLine2();simulationState=1;feedbackMessage="Correct! Click the magnifying glass to zoom in.";searchIcon1.x=startX+seg*segmentWidth+segmentWidth/2;searchIcon1.y=lineY1-160;searchIcon1.show=true;searchIcon2.show=false;if(line2.type==='interval'){line2.selected=null;line2.isCorrect=null;}}else{searchIcon1.show=false;feedbackMessage="This is not the correct interval, check the integer part";}}
-function handleSearchIcon1Click(){simulationState=2;searchIcon1.show=false;if(line2.type==='arrow'){feedbackMessage="Drag the arrow to the correct location and click Submit.";}else{feedbackMessage="Click the interval on the new number line where the decimal lies";}}
-function handleLine2Click(){let seg=floor((mouseX-startX)/segmentWidth);if(seg===10)seg=9;line2.selected=seg;line2.isCorrect=(seg===line2.correct);if(line2.isCorrect){simulationState=3;setupLine3();feedbackMessage="Correct! Click the magnifying glass to zoom in.";searchIcon2.x=startX+seg*segmentWidth+segmentWidth/2;searchIcon2.y=lineY2-160;searchIcon2.show=true;}else{searchIcon2.show=false;feedbackMessage="Not quite. Consider the tenths place.";}}
-function handleSearchIcon2Click(){simulationState=4;searchIcon2.show=false;feedbackMessage="Drag the arrow to the correct location and click Submit.";}
-function mouseDragged(){if(isDragging&&simulationState===2&&line2.type==='arrow'){line2.arrowX=constrain(mouseX,startX,endX);line2.selected=round((line2.arrowX-startX)/(endX-startX)*10);let val=line2.min+line2.selected*line2.step;feedbackMessage="Placing arrow at: "+val.toFixed(line2.precision);}
-else if(isDragging&&simulationState===4){line3.arrowX=constrain(mouseX,startX,endX);line3.selected=round((line3.arrowX-startX)/(endX-startX)*10);let val=line3.min+line3.selected*line3.step;feedbackMessage="Placing arrow at: "+val.toFixed(2);}}
-function mouseReleased(){if(isDragging&&simulationState===2&&line2.type==='arrow'){isDragging=false;hasArrowBeenDragged=true;line2.arrowX=startX+line2.selected*segmentWidth;feedbackMessage="You have placed the arrow. Click Submit to check.";}
-else if(isDragging&&simulationState===4){isDragging=false;hasArrowBeenDragged=true;line3.arrowX=startX+line3.selected*segmentWidth;feedbackMessage="You have placed the arrow. Click Submit to check.";}}
-function isOverLine(y){return mouseY>y-80&&mouseY<y+160&&mouseX>=startX&&mouseX<=endX;}
-function isOverCanvasInput(){return mouseX>inputX&&mouseX<inputX+inputWidth&&mouseY>inputY&&mouseY<inputY+inputHeight;}
-function isOverNextButton(){return mouseX>nextBtnX&&mouseX<nextBtnX+nextBtnWidth&&mouseY>nextBtnY&&mouseY<nextBtnY+nextBtnHeight;}
-function isOverSearchIcon(ic){if(!ic.show||!searchIcon)return false;return mouseX>ic.x-searchIconWidth/2&&mouseX<ic.x+searchIconWidth/2&&mouseY>ic.y-searchIconHeight/2&&mouseY<ic.y+searchIconHeight/2;}
-function isOverArrow(x,y){return mouseX>x-20&&mouseX<x+20&&mouseY>y-150+arrowYOffset&&mouseY<y-40+arrowYOffset;}
-function handleShowExplanation(){if(simulationState===-1)return;hasArrowBeenDragged=true;if(simulationState===0){line1.selected=line1.correct;line1.isCorrect=true;setupLine2();simulationState=1;searchIcon1.x=startX+line1.correct*segmentWidth+segmentWidth/2;searchIcon1.y=lineY1-160;searchIcon1.show=true;feedbackMessage="This is the correct interval.";}
-else if(simulationState===1){handleSearchIcon1Click();}
-else if(simulationState===2){if(line2.type==='interval'){line2.selected=line2.correct;line2.isCorrect=true;simulationState=3;setupLine3();searchIcon2.x=startX+line2.correct*segmentWidth+segmentWidth/2;searchIcon2.y=lineY2-160;searchIcon2.show=true;feedbackMessage="This is the correct interval.";}else{line2.selected=line2.correct;line2.isCorrect=true;line2.arrowX=startX+line2.correct*segmentWidth;showCorrectAnswer=false;feedbackMessage="This is the correct location.";}}
-else if(simulationState===3){handleSearchIcon2Click();}
-else if(simulationState===4){line3.selected=line3.correct;line3.isCorrect=true;line3.arrowX=startX+line3.correct*segmentWidth;showCorrectAnswer=false;feedbackMessage="This is the correct location.";}
-finalMessage="";}
+
+function handleCanvasPress(){
+    if(simulationState===-1){
+        if(isOverCanvasInput()){
+            isInputActive=true;
+            showKeyboard();
+            return;
+        }
+        if(isOverNextButton()){
+            handleNextClick();
+            return;
+        }
+        isInputActive=false;
+        hideKeyboard();
+        return;
+    }
+    
+    if(simulationState===5)return;
+    
+    if(simulationState===1&&isOverSearchIcon(searchIcon1)){
+        handleSearchIcon1Click();
+        return;
+    }
+    if(simulationState===3&&isOverSearchIcon(searchIcon2)){
+        handleSearchIcon2Click();
+        return;
+    }
+    
+    if(simulationState===0&&isOverLine(lineY1)){
+        handleLine1Click();
+    }
+    else if(simulationState===2){
+        if(line2.type==='interval'&&isOverLine(lineY2)){
+            handleLine2Click();
+        }else if(line2.type==='arrow'&&isOverArrow(line2.arrowX,lineY2)){
+            isDragging=true;
+        }
+    }
+    else if(simulationState===4&&isOverArrow(line3.arrowX,lineY3)){
+        isDragging=true;
+    }
+}
+
+function handleWindowPress(e){
+    if(keyboardElement.elt.contains(e.target))return;
+    if(e.target===canvas.elt)return;
+    if(btnContainer.elt.contains(e.target))return;
+    isInputActive=false;
+    hideKeyboard();
+}
+
+function handleNextClick(){
+    if(simulationState!==-1)return;
+    let v=parseFloat(inputValue);
+    
+    if(isNaN(v)||v<0||v>10){
+        feedbackMessage="Please enter a valid decimal number between 0 and 10.";
+        return;
+    }
+    
+    if(!inputValue.includes('.')){
+        feedbackMessage="Please enter a decimal number (e.g. 5.0 or 1.23).";
+        return;
+    }
+    
+    let parts=inputValue.split('.');
+    if(parts.length>1&&parts[1].length===0){
+        feedbackMessage="Please complete the decimal number (e.g. type '4.0' instead of '4.').";
+        return;
+    }
+    
+    startNewProblem();
+}
+
+window.handleKeyboardClick=function(k){
+    if(!isInputActive)return;
+    
+    if(k==='bksp'){
+        inputValue=inputValue.slice(0,-1);
+    }
+    else if(k==='.'){
+        if(!inputValue.includes('.')){
+            if(inputValue===""){
+                inputValue="0.";
+            }else if(inputValue==="10"){
+                return;
+            }else{
+                inputValue+='.';
+            }
+        }
+    }
+    else{
+        let p=inputValue.split('.');
+        if(p.length>1&&p[1].length>=2)return;
+        
+        if(inputValue==="0"&&k==="0")return;
+        if(inputValue==="0"&&k!=="."){
+            inputValue=k;
+            return;
+        }
+        
+        let newInputValue=inputValue+k;
+        let test=parseFloat(newInputValue);
+        
+        if(test>10){
+            if(inputValue==='1'&&k==='0'&&newInputValue.length===2){
+                inputValue+=k;
+            }
+            return;
+        }
+        inputValue=newInputValue;
+    }
+};
+
+function showKeyboard(){
+    keyboardElement.addClass('visible');
+}
+
+function hideKeyboard(){
+    keyboardElement.removeClass('visible');
+}
+
+function handleLine1Click(){
+    let seg=floor((mouseX-startX)/segmentWidth);
+    if(seg===10)seg=9;
+    line1.selected=seg;
+    line1.isCorrect=(seg===line1.correct);
+    
+    if(line1.isCorrect){
+        setupLine2();
+        simulationState=1;
+        feedbackMessage="Correct! Click the magnifying glass to zoom in.";
+        searchIcon1.x=startX+seg*segmentWidth+segmentWidth/2;
+        searchIcon1.y=lineY1-160;
+        searchIcon1.show=true;
+        searchIcon2.show=false;
+        if(line2.type==='interval'){line2.selected=null;line2.isCorrect=null;}
+    }
+    else{
+        searchIcon1.show=false;
+        feedbackMessage="This is not the correct interval, check the integer part";
+    }
+}
+
+function handleSearchIcon1Click(){
+    simulationState=2;
+    searchIcon1.show=false;
+    if(line2.type==='arrow'){
+        feedbackMessage="Drag the arrow to the correct location and click Submit.";
+    }else{
+        feedbackMessage="Click the interval on the new number line where the decimal lies";
+    }
+}
+
+function handleLine2Click(){
+    let seg=floor((mouseX-startX)/segmentWidth);
+    if(seg===10)seg=9;
+    line2.selected=seg;
+    line2.isCorrect=(seg===line2.correct);
+    
+    if(line2.isCorrect){
+        simulationState=3;
+        setupLine3();
+        feedbackMessage="Correct! Click the magnifying glass to zoom in.";
+        searchIcon2.x=startX+seg*segmentWidth+segmentWidth/2;
+        searchIcon2.y=lineY2-160;
+        searchIcon2.show=true;
+    }
+    else{
+        searchIcon2.show=false;
+        feedbackMessage="Not quite. Consider the tenths place.";
+    }
+}
+
+function handleSearchIcon2Click(){
+    simulationState=4;
+    searchIcon2.show=false;
+    feedbackMessage="Drag the arrow to the correct location and click Submit.";
+}
+
+function mouseDragged(){
+    if(isDragging&&simulationState===2&&line2.type==='arrow'){
+        line2.arrowX=constrain(mouseX,startX,endX);
+        line2.selected=round((line2.arrowX-startX)/(endX-startX)*10);
+        let val=line2.min+line2.selected*line2.step;
+        feedbackMessage="Placing arrow at: "+val.toFixed(line2.precision);
+    }
+    else if(isDragging&&simulationState===4){
+        line3.arrowX=constrain(mouseX,startX,endX);
+        line3.selected=round((line3.arrowX-startX)/(endX-startX)*10);
+        let val=line3.min+line3.selected*line3.step;
+        feedbackMessage="Placing arrow at: "+val.toFixed(2);
+    }
+}
+
+function mouseReleased(){
+    if(isDragging&&simulationState===2&&line2.type==='arrow'){
+        isDragging=false;
+        hasArrowBeenDragged=true;
+        line2.arrowX=startX+line2.selected*segmentWidth;
+        feedbackMessage="You have placed the arrow. Click Submit to check.";
+    }
+    else if(isDragging&&simulationState===4){
+        isDragging=false;
+        hasArrowBeenDragged=true;
+        line3.arrowX=startX+line3.selected*segmentWidth;
+        feedbackMessage="You have placed the arrow. Click Submit to check.";
+    }
+}
+
+function isOverLine(y){
+    return mouseY>y-80&&mouseY<y+160&&mouseX>=startX&&mouseX<=endX;
+}
+
+function isOverCanvasInput(){
+    return mouseX>inputX&&mouseX<inputX+inputWidth&&mouseY>inputY&&mouseY<inputY+inputHeight;
+}
+
+function isOverNextButton(){
+    return mouseX>nextBtnX&&mouseX<nextBtnX+nextBtnWidth&&mouseY>nextBtnY&&mouseY<nextBtnY+nextBtnHeight;
+}
+
+// MODIFIED: Check only for position, relying on lottieReady flag
+function isOverSearchIcon(ic){
+    if(!ic.show||!lottieReady)return false;
+    return mouseX>ic.x-searchIconWidth/2&&mouseX<ic.x+searchIconWidth/2&&mouseY>ic.y-searchIconHeight/2&&mouseY<ic.y+searchIconHeight/2;
+}
+
+function isOverArrow(x,y){
+    return mouseX>x-20&&mouseX<x+20&&mouseY>y-150+arrowYOffset&&mouseY<y-40+arrowYOffset;
+}
+
+function handleShowExplanation(){
+    if(simulationState===-1)return;
+    hasArrowBeenDragged=true;
+    
+    if(simulationState===0){
+        line1.selected=line1.correct;
+        line1.isCorrect=true;
+        setupLine2();
+        simulationState=1;
+        searchIcon1.x=startX+line1.correct*segmentWidth+segmentWidth/2;
+        searchIcon1.y=lineY1-160;
+        searchIcon1.show=true;
+        feedbackMessage="This is the correct interval.";
+    }
+    else if(simulationState===1){
+        handleSearchIcon1Click();
+    }
+    else if(simulationState===2){
+        if(line2.type==='interval'){
+            line2.selected=line2.correct;
+            line2.isCorrect=true;
+            simulationState=3;
+            setupLine3();
+            searchIcon2.x=startX+line2.correct*segmentWidth+segmentWidth/2;
+            searchIcon2.y=lineY2-160;
+            searchIcon2.show=true;
+            feedbackMessage="This is the correct interval.";
+        }else{
+            line2.selected=line2.correct;
+            line2.isCorrect=true;
+            line2.arrowX=startX+line2.correct*segmentWidth;
+            showCorrectAnswer=false;
+            feedbackMessage="This is the correct location.";
+        }
+    }
+    else if(simulationState===3){
+        handleSearchIcon2Click();
+    }
+    else if(simulationState===4){
+        line3.selected=line3.correct;
+        line3.isCorrect=true;
+        line3.arrowX=startX+line3.correct*segmentWidth;
+        showCorrectAnswer=false;
+        feedbackMessage="This is the correct location.";
+    }
+    finalMessage="";
+}
+
 function handleSubmit(){
   hasArrowBeenDragged=true;
   if(simulationState===4){
@@ -300,6 +945,7 @@ function handleSubmit(){
     }
     else{finalMessage="Check your work";feedbackMessage="That's not the right spot. The correct answer is shown in blue.";showCorrectAnswer=true;}
   }else{feedbackMessage="Please find the final location before submitting.";return;}
-}</script>
+}
+</script>
 </body>
 </html>
