@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepForwardBtn = document.getElementById("step-forward");
   const stepForward = document.getElementById("step-forward");
   const resetBtn = document.getElementById("reset-btn");
+  const closeBtn = document.getElementById('close-btn');
 
   const torchAnim = lottie.loadAnimation({
     container: document.getElementById("ray-container"),
@@ -79,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (nextFrame > totalFrames) nextFrame = totalFrames;
 
       torchAnim.goToAndStop(nextFrame, true);
-        playBtn.classList.remove("playing");
-  playBtn.classList.add("pause");
+      playBtn.classList.remove("playing");
+      playBtn.classList.add("pause");
     });
 
     resetBtn.addEventListener("click", () => {
@@ -94,21 +95,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
       torchBeam.classList.remove("active");
       torchBtn.classList.remove("active");
-      
+
       segmentStarted = false; // 👈 Reset segment tracking
 
       console.log("Reset complete");
     });
 
     document.getElementById("insight-btn").addEventListener("click", () => {
-    const modal = document.getElementById("characteristics-modal");
+      const modal = document.getElementById("characteristics-modal");
 
-    modal.style.display = "block";
-    modal.style.opacity = "1";
-    modal.style.visibility = "visible";
+      modal.style.display = "block";
+      modal.style.opacity = "1";
+      modal.style.visibility = "visible";
 
-    // Add blur/disable to the SVG
-    document.getElementById("svg-container").classList.add("modal-open");
-  });
+      // Add blur/disable to the SVG
+      document.getElementById("svg-container").classList.add("modal-open");
+
+      closeBtn.addEventListener('click', () => {
+        document.getElementById("svg-container").classList.remove("modal-open");
+        modal.style.display = "none";
+        modal.style.opacity = "0";
+        modal.style.visibility = "hidden";
+      });
+    });
   });
 });
