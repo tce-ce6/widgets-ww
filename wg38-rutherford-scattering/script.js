@@ -48,9 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // If paused → resume from exact location
+      // If paused → resume it (fixed: resume starts the main segment if it wasn't started yet)
       if (playBtn.classList.contains("pause")) {
-        torchAnim.play();
+        // If the main segment hasn't been started yet, start it from the correct frame.
+        if (!segmentStarted) {
+          const startFrom = currentFrame >= endFrame ? currentFrame : endFrame;
+          torchAnim.playSegments([startFrom, totalFrames], true);
+          segmentStarted = true;
+        } else {
+          // already in the main segment, just resume
+          torchAnim.play();
+        }
+
         playBtn.classList.remove("pause");
         playBtn.classList.add("playing");
         return;

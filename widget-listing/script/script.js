@@ -266,14 +266,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-46.png",
     creators: "ni-di-46",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "Rutherford's Scattering Experiment - Discovery of Nucleus",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-38.png",
     creators: "ni-di-38",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   
 

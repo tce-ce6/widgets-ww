@@ -479,3 +479,5 @@ setInterval(() => {
 
 // Initialize first tab
 initializeSimulation('direct');
+
+// slider js 
