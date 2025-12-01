@@ -1,0 +1,338 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modes of Communicable Disease Transmission</title>
+  <script src="lottie.min.js"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global_style.css">
+</head>
+
+<body id="rutherford-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Modes of Communicable Disease Transmission</h2>
+        <span id="versionId" class="versionText">b2_wg46_291125</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g id="Web 1920 â 1 1" clip-path="url(#clip0_5016_123)">
+            <g id="Clip path group">
+              <mask id="mask0_5016_123" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1920"
+                height="1080">
+                <g id="clip-Web_1920_1">
+                  <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="white" />
+                </g>
+              </mask>
+              <g mask="url(#mask0_5016_123)">
+                <g id="Web 1920 â 1">
+
+
+                  <text id="Explore how different parameters affect disease spread through various transmission modes"
+                    fill="white" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="25"
+                    font-style="italic" letter-spacing="0em">
+                    <tspan x="333.344" y="111.045">Explore how different parameters affect disease spread through
+                      various transmission modes </tspan>
+                  </text>
+
+                  <foreignObject x="58" y="133" width="1815" height="817">
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                      <div class="tabs">
+                        <button class="tab active" onclick="switchTab('direct')"><img src="./assets/tab-direct.svg"
+                            height="54" width="54" alt="tab-img" /> Direct Contact</button>
+                        <button class="tab" onclick="switchTab('indirect')"><img src="./assets/tab-indirect.svg"
+                            height="54" width="54" alt="tab-img" /> Indirect Contact</button>
+                        <button class="tab" onclick="switchTab('airborne')"><img src="./assets/tab-air.svg" height="54"
+                            width="54" alt="tab-img" /> Airborne</button>
+                        <button class="tab" onclick="switchTab('food')"><img src="./assets/tab-food.svg" height="54"
+                            width="54" alt="tab-img" /> Food/Water</button>
+                        <button class="tab" onclick="switchTab('vector')"><img src="./assets/tab-food.svg" height="54"
+                            width="54" alt="tab-img" /> Vector-Borne</button>
+                      </div>
+
+                      <div class="content">
+                        <!-- Direct Contact -->
+                        <div id="direct" class="tab-content active">
+                          <div class="tab-wrapper">
+                            <div class="left-col">
+                              <div class="info-box">
+                                <h4>Direct Contact Transmission</h4>
+                                <p>Disease spreads through physical contact between infected and healthy individuals.
+                                  Higher
+                                  population density and more frequent physical contact increase transmission rates.</p>
+                              </div>
+                              <div class="simulation-area" id="direct-sim"></div>
+                            </div>
+                            <div class="controls">
+                              <div class="button-group">
+                                <div class="control-column">
+                                  <div class="control-group">
+                                    <label>Population Density</label>
+                                    <div class="slider-container">
+                                      <div class="slider-wrapper">
+                                        <input type="range" id="direct-density" min="0" max="2" value="1" step="1">
+                                        <div class="slider-labels">
+                                          <span>Low</span>
+                                          <span>Medium</span>
+                                          <span>High</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="control-column">
+                                  <div class="control-group">
+                                    <label>Physical Contact Rate</label>
+                                    <div class="slider-container">
+                                      <div class="slider-wrapper">
+                                        <input type="range" id="direct-contact" min="0" max="2" value="1" step="1">
+                                        <div class="slider-labels">
+                                          <span>Low</span>
+                                          <span>Medium</span>
+                                          <span>High</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Indirect Contact -->
+                        <div id="indirect" class="tab-content">
+                          <div class="info-box">
+                            <h4>Indirect Contact Transmission</h4>
+                            <p>Disease spreads through contaminated surfaces and objects. Population density and surface
+                              contamination levels affect transmission.</p>
+                          </div>
+                          <div class="simulation-area" id="indirect-sim"></div>
+                          <div class="controls">
+                            <div class="button-group">
+                              <div class="control-column">
+                                <button class="control-button start-button" id="indirect-start"
+                                  onclick="toggleSimulation('indirect')">▶ Start</button>
+                                <div class="control-group">
+                                  <label>Population Density</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="indirect-density" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="control-column">
+                                <button class="control-button reset-button" onclick="resetSimulation('indirect')">↻
+                                  Reset</button>
+                                <div class="control-group">
+                                  <label>Surface Contamination Level</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="indirect-contamination" min="0" max="2" value="1"
+                                        step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Airborne -->
+                        <div id="airborne" class="tab-content">
+                          <div class="info-box">
+                            <h4>Airborne Transmission</h4>
+                            <p>Disease spreads through respiratory droplets and aerosols. Ventilation quality
+                              significantly impacts transmission alongside population density.</p>
+                          </div>
+                          <div class="simulation-area" id="airborne-sim"></div>
+                          <div class="controls">
+                            <div class="button-group">
+                              <div class="control-column">
+                                <button class="control-button start-button" id="airborne-start"
+                                  onclick="toggleSimulation('airborne')">▶ Start</button>
+                                <div class="control-group">
+                                  <label>Population Density</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="airborne-density" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="control-column">
+                                <button class="control-button reset-button" onclick="resetSimulation('airborne')">↻
+                                  Reset</button>
+                                <div class="control-group">
+                                  <label>Ventilation Quality</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="airborne-ventilation" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Food/Water -->
+                        <div id="food" class="tab-content">
+                          <div class="info-box">
+                            <h4>Food and Water Transmission</h4>
+                            <p>Disease spreads through contaminated food and water sources. Sanitation levels are
+                              crucial in preventing transmission.</p>
+                          </div>
+                          <div class="simulation-area" id="food-sim"></div>
+                          <div class="controls">
+                            <div class="button-group">
+                              <div class="control-column">
+                                <button class="control-button start-button" id="food-start"
+                                  onclick="toggleSimulation('food')">▶ Start</button>
+                                <div class="control-group">
+                                  <label>Population Density</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="food-density" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="control-column">
+                                <button class="control-button reset-button" onclick="resetSimulation('food')">↻
+                                  Reset</button>
+                                <div class="control-group">
+                                  <label>Sanitation Level</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="food-sanitation" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Vector-Borne -->
+                        <div id="vector" class="tab-content">
+                          <div class="info-box">
+                            <h4>Vector-Borne Transmission</h4>
+                            <p>Disease spreads through insects like mosquitoes. Vector population directly affects
+                              transmission rates.</p>
+                          </div>
+                          <div class="simulation-area" id="vector-sim"></div>
+                          <div class="controls">
+                            <div class="button-group">
+                              <div class="control-column">
+                                <button class="control-button start-button" id="vector-start"
+                                  onclick="toggleSimulation('vector')">▶ Start</button>
+                                <div class="control-group">
+                                  <label>Population Density</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="vector-density" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="control-column">
+                                <button class="control-button reset-button" onclick="resetSimulation('vector')">↻
+                                  Reset</button>
+                                <div class="control-group">
+                                  <label>Vector Population</label>
+                                  <div class="slider-container">
+                                    <div class="slider-wrapper">
+                                      <input type="range" id="vector-population" min="0" max="2" value="1" step="1">
+                                      <div class="slider-labels">
+                                        <span>Low</span>
+                                        <span>Medium</span>
+                                        <span>High</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </foreignObject>
+                </g>
+              </g>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+      <div class="flexContainer button-controls" id="btn-wrapper">
+        <div class=" flexItem flexItemFirst">
+          <button class="btn" id="direct-start" onclick="toggleSimulation('direct')"
+            style="background-color:#4caf50; color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Start
+          </button>
+          <button class="btn" id="show-ans" onclick="resetSimulation('direct')"
+            style="background-color:#1e6bef; color:white; min-width: 155px;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
