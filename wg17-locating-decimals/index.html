@@ -6,7 +6,6 @@
 <title>Locating Decimals on a Number Line (Fixed 4K)</title>
 <link rel=stylesheet href=global_style.css>
 <script src=p5.js></script>
-<!-- ADDED: Lottie library for the magnifying glass animation -->
 <script src=lottie.min.js></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel=stylesheet>
 <style>#widget-container{width:100%}#html-button-container{display:none;flex-direction:row;justify-content:center;align-items:center;gap:20px;font-family:'Poppins',sans-serif;width:100%;position:fixed;bottom:20px;left:0;margin:0;margin:0 auto}#html-button-container.visible{display:flex}.html-btn{flex-grow:1;max-width:200px;padding:12px 20px;font-size:18px;color:white;border:0;border-radius:8px;cursor:pointer;font-weight:600;transition:background-color .2s}.html-btn:disabled{background-color:#bdc3c7!important;cursor:not-allowed}#btn-show{background-color:#27ae60}#btn-try{background-color:#f39c12}#btn-submit{background-color:#3498db}#btn-reset{background-color:#e74c3c}#btn-show:hover:not(:disabled){background-color:#2ecc71}#btn-try:hover:not(:disabled){background-color:#f1c40f}#btn-submit:hover:not(:disabled){background-color:#5dade2}#btn-reset:hover:not(:disabled){background-color:#c0392b}</style>
@@ -84,107 +83,11 @@ let lottieWrongAnimation;
 let lottieWrongBuffer;
 let lottieWrongReady = false;
 
-// MODIFIED: Global arrays to hold celebration objects (Fireworks logic)
-let rockets = [];
-let fireworkParticles = [];
-let fireworkTargetY; // To store the Y coordinate of the target area
+// MODIFIED: Removed Firework related arrays and variables (rockets, fireworkParticles, fireworkTargetY)
 
-// NEW: FireworkParticle class for the explosions
-class FireworkParticle {
-  constructor(x, y, hue) {
-    this.x = x;
-    this.y = y;
-    let angle = random(TWO_PI); 
-    let speed = random(5, 10);
-    this.vx = cos(angle) * speed;
-    this.vy = sin(angle) * speed;
-    this.alpha = 255;
-    this.hue = hue;
-    this.size = random(20, 30); // INCREASED PARTICLE SIZE
-    this.lifespan = 120;
-    this.mass = 0.4;
-  }
+// MODIFIED: Removed FireworkParticle class
 
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    this.vy += this.mass; // Gravity
-    this.alpha -= 4; 
-    this.lifespan--;
-  }
-
-  display() {
-    push();
-    colorMode(HSB, 255);
-    noStroke();
-    // Fade the color saturation/brightness for a trailing effect
-    fill(this.hue, 200, 255, this.alpha);
-    rect(this.x, this.y, this.size / 5, this.size / 5); // Use size to scale the drawn point
-    pop();
-    colorMode(RGB); 
-  }
-
-  isDead() {
-    return this.alpha < 0 || this.lifespan < 0;
-  }
-}
-
-// NEW: Rocket class
-class Rocket {
-  constructor(targetX, targetY) {
-    this.hue = random(255);
-    this.blastX = targetX;
-    this.blastY = targetY;
-
-    // MODIFIED: Restrict launch position to ONLY the bottom (side === 1)
-    let side = 1; // 1 = Bottom
-    
-    // Only launch from the bottom
-    this.x = random(width);
-    this.y = height + 10;
-    
-    // Calculate velocity to aim at the blast point
-    let angle = atan2(this.blastY - this.y, this.blastX - this.x);
-    let speed = random(15, 25);
-    this.vx = cos(angle) * speed;
-    this.vy = sin(angle) * speed;
-    
-    this.arrived = false;
-    this.distanceToTarget = dist(this.x, this.y, this.blastX, this.blastY);
-  }
-
-  update() {
-    if (this.arrived) return;
-
-    let d = dist(this.x, this.y, this.blastX, this.blastY);
-
-    // Check if the rocket has passed the target
-    if (d < 30 || d > this.distanceToTarget) {
-      this.arrived = true;
-      this.explode();
-    } else {
-      this.x += this.vx;
-      this.y += this.vy;
-    }
-  }
-
-  explode() {
-    for (let i = 0; i < 50; i++) {
-      fireworkParticles.push(new FireworkParticle(this.blastX, this.blastY, this.hue));
-    }
-  }
-
-  display() {
-    if (this.arrived) return;
-    push();
-    strokeWeight(10);
-    colorMode(HSB, 255);
-    stroke(this.hue, 255, 255);
-    point(this.x, this.y);
-    pop();
-    colorMode(RGB);
-  }
-}
+// MODIFIED: Removed Rocket class
 
 // MODIFIED: Removed preload function content (SVG loading)
 function preload(){
@@ -308,8 +211,7 @@ function setupFixedLayout(){
     nextBtnHeight=inputHeight;
     nextBtnX=inputX+inputWidth+30;
     nextBtnY=inputY;
-    // Set the target Y for fireworks once
-    fireworkTargetY = finalMessageY;
+    // Removed: Set the target Y for fireworks once
 }
 
 function draw(){
@@ -355,35 +257,10 @@ function draw(){
     drawFeedbackText();
     drawFinalLottie(); // NEW: Draw success/wrong Lottie if needed
 
-    // NEW: Firework logic (Continuous blasting is maintained by simulationState === 5)
-    if (simulationState === 5) {
-      // Continuous rocket spawning (a new rocket every 30-45 frames)
-      if (frameCount % floor(random(30, 45)) === 0) {
-        // Blast location is centered on the message with a 60px random offset
-        let blastX = width / 2 + random(-60, 60);
-        // Use finalMessageY as the primary target for the blast area
-        let blastY = finalMessageY + random(-60, 60); 
-        rockets.push(new Rocket(blastX, blastY));
-      }
-    }
-
-    // Update and display rockets
-    for (let i = rockets.length - 1; i >= 0; i--) {
-      rockets[i].update();
-      rockets[i].display();
-      if (rockets[i].arrived) {
-        rockets.splice(i, 1);
-      }
-    }
-
-    // Update and display firework particles
-    for (let i = fireworkParticles.length - 1; i >= 0; i--) {
-      fireworkParticles[i].update();
-      fireworkParticles[i].display();
-      if (fireworkParticles[i].isDead()) {
-        fireworkParticles.splice(i, 1);
-      }
-    }
+    // NEW: Firework logic (REMOVED: Continuous blasting logic)
+    // Removed: if (simulationState === 5) { ... rocket spawning ... }
+    // Removed: Update and display rockets
+    // Removed: Update and display firework particles
     
     // NEW: Cursor logic for Lottie icon hover
     if (searchIcon1.show && isOverSearchIcon(searchIcon1) || 
@@ -420,9 +297,7 @@ function initialize(){
     if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
     if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
     
-    // NEW: Clear fireworks when resetting
-    rockets = [];
-    fireworkParticles = [];
+    // NEW: Clear fireworks when resetting (REMOVED: rockets, fireworkParticles)
 }
 
 function normalizeAndDetect(value){
@@ -487,9 +362,7 @@ function resetToLine1(){
     if(lottieSuccessAnimation) lottieSuccessAnimation.goToAndStop(0, true);
     if(lottieWrongAnimation) lottieWrongAnimation.goToAndStop(0, true);
     
-    // NEW: Clear fireworks when resetting to line 1
-    rockets = [];
-    fireworkParticles = [];
+    // NEW: Clear fireworks when resetting to line 1 (REMOVED: rockets, fireworkParticles)
 }
 
 function setupLine2(){
@@ -1077,7 +950,7 @@ function handleSubmit(){
       // NEW: Play success animation once
       if(lottieSuccessAnimation) lottieSuccessAnimation.play();
       
-      // Fireworks start automatically in draw() loop when simulationState === 5
+      // Removed: Fireworks start automatically in draw() loop when simulationState === 5
     }
     else{
       finalMessage="Check your work";
@@ -1099,7 +972,7 @@ function handleSubmit(){
       // NEW: Play success animation once
       if(lottieSuccessAnimation) lottieSuccessAnimation.play();
       
-      // Fireworks start automatically in draw() loop when simulationState === 5
+      // Removed: Fireworks start automatically in draw() loop when simulationState === 5
     }
     else{
       finalMessage="Check your work";
