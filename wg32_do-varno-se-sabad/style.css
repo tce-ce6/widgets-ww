@@ -209,8 +209,8 @@
 } 
 
 #lottie-wrapper{
-  height: 1020px;
-  width: 1990px;
+  height: 580px;
+  width: 780px;
 }
 .btn-wrap{
   height: 100%;
@@ -218,4 +218,23 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
+}
+
+.afterContainers {
+  display: none;
+}
+
+#starLottie-wrapper{
+  width: 480px;
+  height: 620px;
+  transform: translate(50px, -20px);
+  position: absolute;
+}
+/* #lottie-object {
+    transition: x 0.4s ease;
+} */
+
+#show-example-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

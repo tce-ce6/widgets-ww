@@ -1,31 +1,31 @@
 // Word puzzle game script
 const words = [
-    { "word": "गगन", "letters": ["ग", "म", "ण", "न", "भ", "स"], "answer": ["ग", "ग", "न"] },
-    { "word": "मटर", "letters": ["त", "म", "ट", "र", "ग", "भ"], "answer": ["म", "ट", "र"] },
-    { "word": "मगर", "letters": ["म", "ग", "र", "भ", "स", "न"], "answer": ["म", "ग", "र"] },
-    { "word": "शहद", "letters": ["ष", "श", "ह", "द", "ध", "ड"], "answer": ["श", "ह", "द"] },
-    { "word": "सड़क", "letters": ["स", "ड", "श", "ड़", "क", "ख"], "answer": ["स", "ड़", "क"] },
-    { "word": "कमल", "letters": ["क", "ल", "न", "भ", "ज्ञ", "म"], "answer": ["क", "म", "ल"] },
-    { "word": "कलम", "letters": ["ख", "क", "त", "न", "म", "ल"], "answer": ["क", "ल", "म"] },
-    { "word": "नमक", "letters": ["ण", "न", "भ", "क", "व", "म"], "answer": ["न", "म", "क"] },
-    { "word": "बटन", "letters": ["त", "ज", "ट", "ब", "व", "न"], "answer": ["ब", "ट", "न"] },
-    { "word": "भवन", "letters": ["न", "भ", "ब", "व", "छ", "म"], "answer": ["भ", "व", "न"] },
-    { "word": "फसल", "letters": ["प", "र", "फ", "स", "ज्ञ", "ल"], "answer": ["फ", "स", "ल"] },
-    { "word": "हवन", "letters": ["ह", "झ", "त्र", "व", "न", "क्ष"], "answer": ["ह", "व", "न"] },
-    { "word": "नयन", "letters": ["य", "ण", "र", "न", "ख", "श"], "answer": ["न", "य", "न"] },
-    { "word": "कलश", "letters": ["भ", "क", "श", "ल", "स", "न"], "answer": ["क", "ल", "श"] },
-    { "word": "रबड़", "letters": ["ड़", "ब", "ड", "द", "व", "र"], "answer": ["र", "ब", "ड़"] },
-    { "word": "शहर", "letters": ["ह", "र", "श", "इ", "ष", "स"], "answer": ["श", "ह", "र"] },
-    { "word": "गरम", "letters": ["र", "ग", "भ", "म", "य", "ह"], "answer": ["ग", "र", "म"] },
-    { "word": "चरण", "letters": ["न", "ण", "च", "ज", "र", "स"], "answer": ["च", "र", "ण"] },
-    { "word": "महल", "letters": ["म", "न", "ह", "स", "ल", "ज्ञ"], "answer": ["म", "ह", "ल"] },
-    { "word": "नहर", "letters": ["र", "स", "ह", "न", "झ", "ग"], "answer": ["न", "ह", "र"] }
+    { "word": "घर", "letters": ["घ", "ध", "र", "ह"], "answer": ["घ", "र"] },
+    { "word": "जल", "letters": ["ल", "ज", "च", "त"], "answer": ["ज", "ल"] },
+    { "word": "नल", "letters": ["न", "ल", "म", "च"], "answer": ["न", "ल"] },
+    { "word": "फल", "letters": ["ग", "फ", "प", "ल"], "answer": ["फ", "ल"] },
+    { "word": "छत", "letters": ["च", "छ", "त", "ग"], "answer": ["छ", "त"] },
+    { "word": "वन", "letters": ["ब", "व", "न", "त"], "answer": ["व", "न"] },
+    { "word": "तट", "letters": ["त", "ट", "ठ", "थ"], "answer": ["त", "ट"] },
+    { "word": "रथ", "letters": ["र", "थ", "ठ", "छ"], "answer": ["र", "थ"] },
+    { "word": "पर", "letters": ["प", "फ", "र", "ह"], "answer": ["प", "र"] },
+    { "word": "धन", "letters": ["घ", "न", "ध", "म"], "answer": ["ध", "न"] },
+    { "word": "हल", "letters": ["ड", "ह", "ल", "च"], "answer": ["ह", "ल"] },
+    { "word": "कप", "letters": ["क", "ख", "फ", "प"], "answer": ["क", "प"] },
+    { "word": "बस", "letters": ["ब", "स", "ष", "व"], "answer": ["ब", "स"] },
+    { "word": "दस", "letters": ["ढ", "द", "स", "श"], "answer": ["द", "स"] },
+    { "word": "रस", "letters": ["स", "र", "ष", "ख"], "answer": ["र", "स"] },
+    { "word": "जग", "letters": ["च", "ज", "ग", "म"], "answer": ["ज", "ग"] },
+    { "word": "खत", "letters": ["ख", "ट", "त", "झ"], "answer": ["ख", "त"] },
+    { "word": "एक", "letters": ["इ", "ख", "ए", "क"], "answer": ["ए", "क"] },
+    { "word": "तन", "letters": ["त", "त्र", "न", "ण"], "answer": ["त", "न"] },
+    { "word": "नभ", "letters": ["ण", "न", "भ", "म"], "answer": ["न", "भ"] }
 ];
 
 // Game state
 let currentWordIndex = 0;
 let currentWord = null;
-let answerSlots = ["", "", ""]; // Three answer slots
+let answerSlots = ["", ""]; // Three answer slots
 let letterButtons = [];
 let answerSlotElements = [];
 
@@ -40,27 +40,35 @@ const letterAudioMap = {
     "ज": "06_ja.wav", "झ": "07_jha.wav", "इ": "02_e.wav", "ष": "30_sa.wav",
     "क्ष": "33_chha.wav", "त्र": "34_tra.wav", "ज्ञ": "35_gya.wav", "छ": "05_cha.wav",
     "ल": "27_la.wav", "र": "26_ra.wav", "ह": "32_ha.wav", "घ": "03_gha.wav",
-    "ठ": "09_tha.wav", "ढ": "12_ddha.wav", "ढ़": "13_addha.wav", "थ": "16_tha.wav" // Assuming fallback/lowercase
+    "ठ": "09_tha.wav", "ढ": "12_ddha.wav", "ढ़": "13_addha.wav", "थ": "16_tha.wav",
+    "ए": "07_ae.wav" // Assuming fallback/lowercase
 };
 
 // --- LOTTIE INTEGRATION CONSTANTS & GLOBALS ---
 const LOTTIE_ANIMATION_MAP = {
-    "गगन": "Gagan.json", "मटर": "Matar.json", "मगर": "Magar.json",
-    "शहद": "Shahad.json", "सड़क": "Sadak.json", "कमल": "Kamal.json",
-    "कलम": "Kalam.json", "नमक": "Namak.json", "बटन": "Batan.json",
-    "भवन": "Bhavan.json", "फसल": "Fasal.json", "हवन": "Havan.json",
-    "नयन": "Nayan.json", "कलश": "Kalash.json", "रबड़": "Rabar.json",
-    "शहर": "Shahar.json", "गरम": "Garam.json", "चरण": "Charan.json",
-    "महल": "Mahal.json", "नहर": "Nahar.json"
+    "घर": "house.json", "जल": "water.json", "नल": "tap.json",
+    "फल": "fruit.json", "छत": "roof.json", "वन": "jungle.json",
+    "तट": "river.json", "रथ": "cart.json", "पर": "wings.json",
+    "धन": "coin.json", "हल": "Plough.json", "कप": "cup.json",
+    "बस": "bus.json", "दस": "number-ten.json", "रस": "juice.json",
+    "जग": "jug.json", "खत": "letter.json", "एक": "number-one.json",
+    "तन": "body.json", "नभ": "sky.json"
 };
 let currentLottieInstance = null;
+let starLottieInstance = null;
 
-const ANIMATION_PATH_BASE = 'Assets/lottie-json/'; // Adjust this path if necessary
+const ANIMATION_PATH_BASE = 'Assets/lottieJSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
+const showAnswerBtn = document.getElementById('show-example-btn');
+let STAR_LOTTIE_CONTAINER_ID = 'starLottie-wrapper';
 let lettersDiv = document.getElementById('lettersDiv');
-let dashLine = document.getElementById('Group 212');
+let dashLine = document.getElementById('Group 155');
 let wordBox = document.getElementById('wordBox');
 let completeWord = document.getElementById('completeWord');
+let afterContainer = document.getElementById("afterContainers");
+let lottieObject = document.getElementById('lottie-object');
+let soundIcon = document.getElementById('volume-icon');
+
 
 /**
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
@@ -87,7 +95,6 @@ function loadInitialLottie(word) {
         return;
     }
     const animationPath = ANIMATION_PATH_BASE + fileName;
-    console.log(animationPath);
 
     // 3. Create the animation instance
     currentLottieInstance = lottie.loadAnimation({
@@ -101,9 +108,16 @@ function loadInitialLottie(word) {
     // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
     currentLottieInstance.addEventListener('DOMLoaded', () => {
         requestAnimationFrame(() => {
-             currentLottieInstance.goToAndStop(0, true);
+            currentLottieInstance.goToAndStop(0, true);
         });
     });
+
+    container.onclick = playLottieAnimation;
+    // To handle touch devices, you might also want to add a 'touchstart' listener
+    container.ontouchstart = (event) => {
+        event.preventDefault(); // Prevents double firing with click on some devices
+        playLottieAnimation();
+    };
 }
 
 /**
@@ -114,7 +128,49 @@ function playLottieAnimation() {
         // Ensure it starts from the beginning and play!
         currentLottieInstance.goToAndStop(0, true);
         currentLottieInstance.play();
+        setTimeout(() => {
+            soundIcon.style.display = 'block';
+            afterContainer.style.display = 'block';
+            lottieObject.setAttribute('x', 300);
+            showAnswerBtn.disabled = false;
+        }, 2000)
     }
+}
+
+/**
+ * Loads the specific Star Lottie animation and plays it immediately.
+ * This is designed to be called once upon successful completion.
+ */
+function playStarLottieAnimation() {
+    const container = document.getElementById(STAR_LOTTIE_CONTAINER_ID);
+    if (!container) {
+        console.error(`Lottie container with ID "${STAR_LOTTIE_CONTAINER_ID}" not found.`);
+        return;
+    }
+
+    // 1. Destroy previous instance (important to clear any paused word animation)
+    if (starLottieInstance) {
+        starLottieInstance.destroy();
+        starLottieInstance = null;
+    }
+
+    // 2. Define the path for the Star animation
+    const animationPath = ANIMATION_PATH_BASE + "Right_Ans_Stars.json";
+
+    // 3. Create the instance and play immediately
+    starLottieInstance = lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: false, // Stars usually don't loop
+        autoplay: true, 
+        path: animationPath
+    });
+
+    // You can add an event listener here to hide the star animation after it finishes
+    // starLottieInstance.addEventListener('complete', () => {
+    //     // Optionally, destroy and hide the star animation after it plays once
+    //     setTimeout(hideLottieAnimation, 1000); 
+    // });
 }
 
 /**
@@ -200,8 +256,7 @@ function initGame() {
     // Get answer slot elements
     answerSlotElements = [
         document.getElementById('answer-slot-1'),
-        document.getElementById('answer-slot-2'),
-        document.getElementById('answer-slot-3')
+        document.getElementById('answer-slot-2')
     ];
 
     if (answerSlotElements.some(slot => !slot)) {
@@ -260,7 +315,6 @@ function showFinalImage() {
     if (!currentWord) return;
 
     // --- LOTTIE INTEGRATION POINT 2: Play the animation ---
-    playLottieAnimation();
 
     // Play word sound after a small delay to sync with animation start
     setTimeout(() => {
@@ -270,7 +324,9 @@ function showFinalImage() {
         completeWord.textContent = `${currentWord.word}`;
         completeWord.style.display = 'block';
         lettersDiv.style.display = 'none';
-    }, 2500);
+        document.getElementById("starLottie-wrapper").style.display="block";
+        playStarLottieAnimation();
+    }, 1500);
 }
 
 /**
@@ -309,7 +365,7 @@ function handleLetterClick(button) {
         button.classList.remove('wrong-letter', 'shake-button');
 
         // Check if answer is complete
-        if (answerSlots[0] !== "" && answerSlots[1] !== "" && answerSlots[2] !== "") {
+        if (answerSlots[0] !== "" && answerSlots[1] !== "") {
             checkAnswer();
         }
     } else {
@@ -326,7 +382,7 @@ function shakeLetterButton(button) {
     button.classList.add('shake-button');
 
     const mainPaths = button.querySelectorAll('path[fill="#3CD3C4"]');
-    
+
     mainPaths.forEach(path => {
         if (!path.dataset.originalStroke) {
             path.dataset.originalStroke = path.getAttribute('stroke') || 'none';
@@ -334,18 +390,18 @@ function shakeLetterButton(button) {
         if (!path.dataset.originalStrokeWidth) {
             path.dataset.originalStrokeWidth = path.getAttribute('stroke-width') || '0';
         }
-        
+
         path.setAttribute('stroke', '#ff0000');
         path.setAttribute('stroke-width', '4');
         path.setAttribute('stroke-linejoin', 'round');
         path.setAttribute('stroke-linecap', 'round');
     });
-    
+
     button.classList.add('wrong-letter');
 
     setTimeout(() => {
         button.classList.remove('shake-button', 'wrong-letter');
-        
+
         const allPaths = button.querySelectorAll('path');
         allPaths.forEach(path => {
             if (path.dataset.originalStroke !== undefined) {
@@ -426,9 +482,14 @@ function shakeAnswerSlots() {
  * Resets the game with a new word
  */
 function resetSentence() {
+    document.getElementById("starLottie-wrapper").style.display="none";
+    showAnswerBtn.disabled = true;
     lettersDiv.style.display = 'block';
     dashLine.style.display = 'block';
     completeWord.style.display = 'none';
+    soundIcon.style.display = 'none';
+    afterContainer.style.display = 'none';
+    lottieObject.setAttribute('x', 650);
     loadWord(selectNextWord());
 }
 
@@ -444,43 +505,43 @@ function showAnswer() {
     //         answerSlotElements[index].textContent = letter;
     //     }
     // });
-    
-        dashLine.style.display = 'none';
-        wordBox.style.display = 'block';
-        completeWord.textContent = `${currentWord.word}`;
-        completeWord.style.display = 'block';
-        lettersDiv.style.display = 'none';
+    playLottieAnimation();
+    dashLine.style.display = 'none';
+    wordBox.style.display = 'block';
+    completeWord.textContent = `${currentWord.word}`;
+    completeWord.style.display = 'block';
+    lettersDiv.style.display = 'none';
 
     // Show final image (triggers Lottie animation playback)
     showFinalImage();
 }
 
 // Initialize game when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         initGame();
 
         // Add click handlers to letter buttons
         const buttonGroups = document.querySelectorAll('.letter-button');
         buttonGroups.forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.stopPropagation();
                 handleLetterClick(this);
             });
         });
 
         // Add click handler to sound button
-        const soundButton = document.querySelector('.sound-button') || document.getElementById('Group 196');
+        const soundButton = document.getElementById('volume-icon') || document.getElementById('Group 196');
         if (soundButton) {
             soundButton.style.cursor = 'pointer';
-            soundButton.addEventListener('click', function(e) {
+            soundButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 playWordSound();
             });
         }
 
+        showAnswerBtn.disabled = true;
         // Update button handlers
-        const showAnswerBtn = document.getElementById('show-example-btn');
         if (showAnswerBtn) {
             showAnswerBtn.onclick = showAnswer;
         }
