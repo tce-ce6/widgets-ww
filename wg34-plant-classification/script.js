@@ -312,23 +312,28 @@ window.addEventListener("DOMContentLoaded", () => {
 function handleSelection(clickedId) {
   const { category, value } = idMap[clickedId];
 
-  const previousValue = selectedValues[category];
-  selectedValues[category] = value;
+  const tempValues = { ...selectedValues }; // clone
+  tempValues[category] = value;
 
-  const isValid = validateCombination();
+  // Validate using temp object
+  const result = validateSelection(tempValues);
 
-  if (!isValid) {
+  if (!result.valid) {
     const clickedEl = document.getElementById(clickedId);
     if (clickedEl) clickedEl.classList.add("wrong");
 
-    selectedValues[category] = previousValue;
-    return;
+    showInvalidMessage(result.message);
+
+    return; // ❌ DO NOT UPDATE GLOBAL selectedValues
   }
 
-  // ⭐ REMOVE disable-reset because user made first valid selection
+  // ⭐ VALID SELECTION – now update the real values
+  selectedValues[category] = value;
+
+  // ENABLE reset
   document.getElementById("reset-btn").classList.remove("disable-reset");
 
-  // VALID → update UI
+  // Remove previous active/wrong classes
   categoryGroups[category].forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -342,12 +347,11 @@ function handleSelection(clickedId) {
 
   updateSelectedValue(category, value);
   showCurrentCategory(category);
-
-  // Check completion
   checkCompletion();
 
   console.log("Selected →", selectedValues);
 }
+
 
 function updateSelectedValue(category, value) {
   const el = document.querySelector(`.${category}-value`);
@@ -491,6 +495,24 @@ if (selection.growthHabit && selection.height) {
       };
     }
   }
+
+  // ❌ Ground-spreading plants must have branches near the ground
+if (selection.growthHabit === "Spread on the ground" &&
+    selection.branchPosition === "Higher up on stem") {
+  return {
+    valid: false,
+    message:
+      "Plants that spread on the ground grow close to the soil and have branches near the ground, not higher up on the stem."
+  };
+}
+if (selection.height === "Short" &&
+    selection.branchPosition === "Higher up on stem") {
+  return {
+    valid: false,
+    message:
+      "Short plants do not develop branches high on the stem. High branching occurs only in taller plants like trees."
+  };
+}
 
   return { valid: true };
 };

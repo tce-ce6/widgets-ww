@@ -31,17 +31,32 @@ function switchTab(tabName, btn) {
   }
   document.getElementById(tabName).classList.add("active");
 
-  // keep a convenient reference to the current tab
   window.currentSimulationTab = tabName;
+
+  // 🔥 Reset global button every time tab changes
+  const globalButton = document.getElementById("global-start");
+  globalButton.textContent = "Start";
+  globalButton.classList.remove("pause-button");
+  globalButton.classList.add("start-button");
+
+  // 🔥 Stop running state for new tab
+  if (simulationStates[tabName]) {
+    simulationStates[tabName].running = false;
+  }
 
   if (!simulations[tabName]) {
     initializeSimulation(tabName);
   }
 }
 
+
 function toggleSimulation(type) {
   const perTabButton = document.getElementById(`${type}-start`);
   const globalButton = document.getElementById("global-start");
+
+  globalButton.textContent = "Start";
+  globalButton.classList.remove("pause-button");
+  globalButton.classList.add("start-button");
 
   if (!simulationStates[type]) {
     simulationStates[type] = { running: false };
@@ -115,7 +130,7 @@ function resetSimulation(type) {
 // Helpers for the shared/global start & reset buttons
 function getActiveTab() {
   const active = document.querySelector(".tab-content.active");
-  return active ? active.id : (window.currentSimulationTab || "direct");
+  return active ? active.id : window.currentSimulationTab || "direct";
 }
 
 function toggleActiveSimulation() {
