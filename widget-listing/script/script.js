@@ -61,7 +61,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/symmetry-shapes/index.html",
     imagePath: "./assets/symmetry.png",
     creators: "sh-mr-10",
-    status: "in-review",
+    status: "closed",
 
   },
   {
@@ -143,7 +143,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Locating decimals",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/locating_decimals/index.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg17-locating-decimals/index.html",
     imagePath: "./assets/locating-decimals.png",
     creators: "sh-mr-17",
     status: "in-review",
@@ -153,7 +153,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/large_numbers/index.html",
     imagePath: "./assets/large-numbers.png",
     creators: "sh-mr-22",
-    status: "in-review",
+    status: "closed",
   },
   
   {
@@ -161,7 +161,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg13-build-molecule/index.html",
     imagePath: "./assets/build-molecule.png",
     creators: "ni-ha-13",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "तीन वर्णों से शब्द बनाना",
@@ -182,7 +182,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-07.png",
     creators: "as-sh-07",
-    status: "WIP-With-Tech",
+    status: "closed",
   },
   {
     name: "चार वर्णों से शब्द बनाना",
@@ -207,10 +207,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Plant Classification Challenge",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg34-plant-classification/index.html",
     imagePath: "./assets/wg-34.png",
     creators: "ni-di-34",
-    status: "WIP-With-Tech",
+    status: "closed",
   },
   {
     name: "Temperature Conversions",
@@ -224,7 +224,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-44.png",
     creators: "ni-di-44",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "Make a Food Chain",
@@ -244,8 +244,8 @@ const WIDGET_DATA = [
     name: "Rhyme Scheme",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-41.png",
-    creators: "ni-di-41",
-    status: "todo",
+    creators: "as-di-41",
+    status: "WIP-With-Tech",
   },
   {
     name: "Mendel's Monohybrid Cross",
@@ -258,8 +258,8 @@ const WIDGET_DATA = [
     name: "Spin & Match: Exploring Rotational Symmetry",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-45.png",
-    creators: "ni-di-45",
-    status: "todo",
+    creators: "sh-di-45",
+    status: "WIP-With-Tech",
   },
   {
     name: "Modes of Communicable Disease Transmission",
@@ -270,10 +270,38 @@ const WIDGET_DATA = [
   },
   {
     name: "Rutherford's Scattering Experiment - Discovery of Nucleus",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg38-rutherford-scattering/index.html",
     imagePath: "./assets/wg-38.png",
     creators: "ni-di-38",
-    status: "WIP-With-Tech",
+    status: "closed",
+  },
+  {
+    name: "दो वर्णों वाले शब्द बनाना",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg38-rutherford-scattering/index.html",
+    imagePath: "./assets/wg-32.png",
+    creators: "as-su-32",
+    status: "closed",
+  },
+  {
+    name: "Seasons Uncovered",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-33.png",
+    creators: "ni-di-33",
+    status: "todo",
+  },
+  {
+    name: "Mendel's Dihybrid Cross",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-48.png",
+    creators: "ni-di-48",
+    status: "todo",
+  },
+  {
+    name: "Complex number plotter​",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-54.png",
+    creators: "ni-di-54",
+    status: "todo",
   },
   
 

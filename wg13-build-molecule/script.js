@@ -22,7 +22,7 @@ const labels = [
   "Potassium permanganate",
   "Sodium bicarbonate",
   "Copper sulphate",
-  "Aluminium oxide",
+  "Butane",
   "Sodium hydroxide",
   "Hydrochloric acid",
   "Ethanol",
@@ -86,7 +86,7 @@ const moleculeRequirements = {
     "atom-o",
     "atom-o",
   ],
-  "Aluminium oxide": ["atom-ai", "atom-ai", "atom-o", "atom-o", "atom-o"],
+  "Butane": ["atom-c", "atom-c", "atom-c", "atom-c", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h", "atom-h"],
   "Carbon dioxide": ["atom-o", "atom-c", "atom-o"],
   "Acetic acid": [
     "atom-h",
@@ -222,7 +222,7 @@ const molecule3D = {
     { atom: "O", pos: [2, 1.5, 1] },
     { atom: "O", pos: [2, -1.5, -1] },
   ],
-  "Aluminium oxide": [
+  "Butane": [
     { atom: "Al", pos: [0, 0, 0] },
     { atom: "Al", pos: [2, 0, 0] },
     { atom: "O", pos: [1, 1.5, 0] },
@@ -625,6 +625,8 @@ function checkMoleculeCompleted(showMessage = false) {
   const droppedSorted = [...dropped].sort();
 
   if (JSON.stringify(reqSorted) === JSON.stringify(droppedSorted)) {
+
+
     show("3d-btn");
     getEl("show-ans").textContent = "Hide Answer";
 
@@ -636,6 +638,7 @@ function checkMoleculeCompleted(showMessage = false) {
 
     showAnswerImage();
     updateNote("That is the correct answer!", "#4caf50");
+    setDisabledStateForCorrectAnswer(true);
   } else {
     // Only show the red "incorrect" note when explicitly requested
     if (showMessage) {
@@ -645,6 +648,7 @@ function checkMoleculeCompleted(showMessage = false) {
       hide("instruction-note");
     }
   }
+
 }
 
 
@@ -710,6 +714,8 @@ else {
 
     getEl("show-ans").textContent = "Show Answer";
     isAnswerShown = false;
+    setDisabledStateForCorrectAnswer(false);
+
 }
 
 }
@@ -725,6 +731,7 @@ function resetDropArea() {
 
   userAtomCount = 0;
   atomBusy = false;
+setDisabledStateForCorrectAnswer(false);
 
   onAtomLimitChange();
 
@@ -1011,6 +1018,27 @@ getEl("home-btn").addEventListener("click", () => {
   resetSpinnerWheel();
 });
 
+function setDisabledStateForCorrectAnswer(disable) {
+  const paletteAtoms = document.querySelectorAll("g.atom");
+
+  paletteAtoms.forEach(atom => {
+    if (disable) atom.classList.add("disable");
+    else atom.classList.remove("disable");
+  });
+
+  const checkBtn = document.getElementById("check-ans");
+  const showAnsBtn = document.getElementById("show-ans");
+
+  if (disable) {
+    checkBtn.classList.add("disable");
+    showAnsBtn.classList.add("disable");
+  } else {
+    checkBtn.classList.remove("disable");
+    showAnsBtn.classList.remove("disable");
+  }
+}
+
+
 function load3DSDFModel(moleculeName, container) {
   if (!moleculeName) {
     console.warn("No molecule selected for 3D view");
@@ -1033,11 +1061,24 @@ function load3DSDFModel(moleculeName, container) {
 
     viewer.setStyle({}, { stick: { radius: 0.15 }, sphere: { scale: 0.25 } });
 
-    viewer.zoomTo();
-    viewer.zoom(1.5);      
+    const model = viewer.getModel();
+    const atoms = model.selectedAtoms({});
 
+    atoms.forEach(atom => {
+        viewer.addLabel(atom.elem, {
+            position: atom,
+            fontSize: 12,
+            fontColor: "black",
+            backgroundColor: "white",
+            inFront: true
+        });
+    });
+
+    viewer.zoomTo();
+    viewer.zoom(1.5);
     viewer.render();
-  })
+})
+
   .fail(() => {
     container.innerHTML = `
       <div style="color: red; padding: 20px;">

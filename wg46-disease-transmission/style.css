@@ -139,9 +139,9 @@
   font-weight: 600;
   text-align: left;
   padding: 5px 40px;
-  color: #fff;
+  color: #000;
   border-radius: 0 0px 20px 20px;
-  background: #1d83ec;
+  background: #FFA000;
   white-space: nowrap;
 }
 
@@ -169,12 +169,12 @@
 .tabs {
   display: flex;
   width: 1422px;
-  gap: 7px;
+  gap: 10px;
 }
 
 .tab {
-  flex: 1;
-  padding: 4px 20px 4px 4px;
+  flex: 0 0 auto;
+  padding: 4px 50px 4px 4px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s;
@@ -212,10 +212,10 @@
 
 .tab-content.active {
   display: block;
-  animation: fadeIn 0.5s;
+  /* animation: fadeIn 0.5s; */
 }
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -225,12 +225,12 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
+} */
 
 .simulation-area {
   position: relative;
   height: 610px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #EBEBEB;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-left-radius: 20px;
@@ -239,7 +239,8 @@
   border: 2px solid #e9ecef;
 }
 
-.person {
+.person,
+.vector {
   position: absolute;
   font-size: 30px;
   transition: all 0.5s;
@@ -253,7 +254,8 @@
 
 }
 
-.person::after {
+.person::after,
+.vector::after {
   content: "";
   background-image: url("data:image/svg+xml,%3Csvg width='62' height='49' viewBox='0 0 62 49' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='mask0_5024_1001' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='62' height='49'%3E%3Cpath d='M61.839 0H0V48.682H61.839V0Z' fill='white'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_5024_1001)'%3E%3Cpath d='M1.04823 0C0.124233 20.508 18.3622 52.531 61.7842 41.408C63.0842 41.076 40.4722 57.782 17.1002 41.636C11.8014 37.9262 7.43694 33.036 4.35123 27.351C-2.08477 14.706 0.313233 4.061 1.05123 0' fill='%2355B7BC' fill-opacity='0.33'/%3E%3C/g%3E%3C/svg%3E%0A");
   background-repeat: no-repeat;
@@ -288,24 +290,37 @@
 }
 
 .controls {
-  background: #f8f9fa;
   padding: 25px;
   border-radius: 15px;
+  height: 727px;
 }
 
 .button-group {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
-  margin-bottom: 25px;
   height: 100%;
+  margin-top: 40px;
 }
 
 .control-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 110px;
 }
+
+.slider-container {
+  background-color: #F9F5BA;
+  border-radius: 20px;
+  border: 4px dotted #000;
+  position: relative;
+  width: 100%;
+  height: 532px;
+  align-items: center;
+  display: flex;
+}
+
 
 .control-button {
   padding: 12px 24px;
@@ -319,22 +334,6 @@
   letter-spacing: 1px;
 }
 
-.start-button {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.start-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.start-button:disabled {
-  background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
-  cursor: not-allowed;
-  transform: none;
-}
 
 .pause-button {
   background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
@@ -366,13 +365,13 @@
   display: block;
   margin-bottom: 10px;
   font-weight: 600;
-  color: #495057;
-  font-size: 1.1em;
+  color: #fff;
 }
 
-.slider-container {
-  position: relative;
-  width: 100%;
+.control-group label.bottom-label {
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0 0 0;
 }
 
 .slider-wrapper {
@@ -380,6 +379,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .slider-labels {
@@ -387,36 +387,80 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 8px;
+  height: 490px;
+  position: absolute;
+  top: -60px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .slider-labels span {
-  font-size: 0.9em;
-  color: #5e72e4;
-  font-weight: 600;
+  font-size: 22px;
+  color: #000;
+  background-color: #F9F5BA;
+}
+
+.slider-labels span:nth-child(2) {
+  margin-top: 120px;
+}
+
+.slider-wrapper .pointers span {
+  height: 25px;
+  width: 25px;
+  display: block;
+  background-color: #F2DD71;
+  border-radius: 50%;
+  box-shadow: inset 3px 6px 6px rgba(0, 0, 0, .2);
+}
+
+.slider-wrapper .pointers {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Slider styles */
 
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 8px;
-  background: #e9ecef;
-  border-radius: 5px;
-  outline: none;
-  transition: background 0.3s;
-  
+.rangeslider {
+  background-color: #F2DD71 !important;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 30px;
-  height: 30px;
-  background: url('./assets/BG.png') no-repeat center;
-  background-size: contain;
-  cursor: pointer;
-  border: none;
+.rangeslider--vertical,
+.rangeslider--horizontal {
+  min-height: 388px !important;
+  width: 13px !important;
 }
+.rangeslider--horizontal .rangeslider__fill{
+  width: 12px;
+}
+.rangeslider--vertical .rangeslider__handle,
+.rangeslider--horizontal .rangeslider__handle {
+  background: url("assets/person1.svg") no-repeat center center;
+  background-size: contain;
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50%;
+  left: -34px !important;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.rangeslider__fill {
+  background: transparent !important;
+}
+
+.rangeslider--vertical .rangeslider__handle:active,
+.rangeslider--horizontal .rangeslider__handle:active {
+  background: url("assets/person1.svg") no-repeat center center;
+}
+
+.rangeslider--vertical .rangeslider__handle:after {
+  display: none;
+}
+
+
 
 /* Styles for each tab */
 #direct input[type="range"]::-webkit-slider-thumb {
@@ -460,6 +504,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   background: #F7F8DF;
   padding: 15px 20px;
   height: 110px;
+  border-top-right-radius: 20px;
 }
 
 .info-box h4 {
@@ -562,7 +607,9 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 .left-col {
-  width: 1558px;
+  /* width: 1558px; */
+  width: 1518px;
+  flex: 0 0 auto;
 }
 
 .tabs path {

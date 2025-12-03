@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepForwardBtn = document.getElementById("step-forward");
   const stepForward = document.getElementById("step-forward");
   const resetBtn = document.getElementById("reset-btn");
-  const closeBtn = document.getElementById('close-btn');
+  const closeBtn = document.getElementById("close-btn");
 
   const torchAnim = lottie.loadAnimation({
     container: document.getElementById("ray-container"),
@@ -27,13 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🔥 Torch button → play 0–1s
     torchBtn.addEventListener("click", () => {
+      const ray = document.getElementById("ray-container");
+      ray.style.opacity = "1";
+      ray.style.visibility = "visible";
+
       torchAnim.stop();
       torchAnim.playSegments([startFrame, endFrame], true);
+
       torchBeam.classList.add("active");
       playBtn.classList.remove("disabled");
       stepForward.classList.remove("disabled");
       resetBtn.classList.remove("disabled");
-      segmentStarted = false; // Reset segment tracking
+
+      segmentStarted = false;
     });
 
     // ▶ Play button → play remaining animation after 1s
@@ -105,7 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
       torchBeam.classList.remove("active");
       torchBtn.classList.remove("active");
 
-      segmentStarted = false; // 👈 Reset segment tracking
+      // 👉 HIDE LOTTIE COMPLETELY
+      const ray = document.getElementById("ray-container");
+      ray.style.opacity = "0";
+      ray.style.visibility = "hidden";
+
+      segmentStarted = false;
 
       console.log("Reset complete");
     });
@@ -120,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add blur/disable to the SVG
       document.getElementById("svg-container").classList.add("modal-open");
 
-      closeBtn.addEventListener('click', () => {
+      closeBtn.addEventListener("click", () => {
         document.getElementById("svg-container").classList.remove("modal-open");
         modal.style.display = "none";
         modal.style.opacity = "0";

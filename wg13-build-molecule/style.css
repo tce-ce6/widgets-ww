@@ -450,3 +450,7 @@ content: "";
 #instruction-note{
   font-weight: 600 !important;
 }
+.atom.disable, .btn.disable{
+  opacity: .5;
+  cursor: not-allowed !important;
+}

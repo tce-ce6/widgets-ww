@@ -25,7 +25,7 @@ const selectionOrder = [
 
 const explanationMap = {
   tree: `Correct! This is a tree because it has a tall, thick, woody stem that provides strong support and branches high up to maximize sunlight exposure.`,
-  shrub: `Correct! This is a shrub because it has a medium height with woody stems and multiple branches near the ground, creating a bushy appearance.`,
+  shrub: `Correct! This is a shrub because it has a short to medium height with woody stems and multiple branches near the ground, creating a bushy appearance.`,
   herb: `Correct! This is a herb because it has a short, soft, green stem that's tender and flexible, perfect for quick growth cycles.`,
   climber: `Correct! This is a climber because it has weak, flexible stems that cannot support themselves and need external support to grow upward.`,
   creeper: `Correct! This is a creeper because it has weak stems that spread along the ground rather than growing upright.`,
@@ -258,13 +258,27 @@ window.addEventListener("DOMContentLoaded", () => {
       }
 
       if (chosen === correctPlantType) {
-        // ✔ CORRECT
-        resultTxt.textContent = explanationMap[correctPlantType];
-        resultNote.classList.add("correct");
 
-        // Add correct class to the chosen li
-        li.classList.add("correct");
-      } else {
+    // 🔍 SPECIAL CASE: ID 26 (medium tree)
+    const isSpecialTreeCase =
+        selectedValues.height === "Medium" &&
+        selectedValues.stemColor === "Brown" &&
+        selectedValues.stemType === "Hard/Woody" &&
+        selectedValues.stemThickness === "Thick" &&
+        selectedValues.branchPosition === "Higher up on stem" &&
+        selectedValues.growthHabit === "Grows upright";
+
+    if (correctPlantType === "tree" && isSpecialTreeCase) {
+        resultTxt.textContent =
+            "Correct! This is a tree because it has a tall, thick, woody stem that provides strong support and branches high up to maximize sunlight exposure. While trees are often tall, some species are medium-sized.";
+    } else {
+        resultTxt.textContent = explanationMap[correctPlantType];
+    }
+
+    resultNote.classList.add("correct");
+    li.classList.add("correct");
+}
+ else {
         // ❌ WRONG
         resultTxt.textContent = wrongReasonMap[chosen];
         resultNote.classList.add("wrong");
@@ -365,18 +379,41 @@ function validateCombination() {
 }
 
 const validateSelection = (selection) => {
+
+  if (
+  selection.growthHabit === "Spread on the ground" &&
+  (selection.height === "Medium" || selection.height === "Tall")
+) {
+  return {
+    valid: false,
+    message:
+      "Plants that spread on the ground remain close to the soil surface and are naturally short."
+  };
+}
   // Only validate combinations when we have enough characteristics to make meaningful checks
 
   // Check height + stem color combination
-  if (selection.height && selection.stemColor) {
-    if (selection.height === "Tall" && selection.stemColor === "Green") {
-      return {
-        valid: false,
-        message:
-          "Tall plants need strong, woody (brown) stems to support their height and weight.",
-      };
-    }
+if (selection.height && selection.stemColor && selection.stemType) {
+// Validate Tall + Green only AFTER stemType is selected
+if (selection.height === "Tall" && selection.stemColor === "Green" && selection.stemType) {
+  
+  if (selection.stemType === "Soft/Tender") {
+    return {
+      valid: false,
+      message: "Tall plants need strong, woody (brown) stems to support their height and weight."
+    };
   }
+
+  if (selection.stemType === "Hard/Woody") {
+    return {
+      valid: false,
+      message: "Tall plants need strong, woody stems for support. Only bamboo stays green when young before turning brown."
+    };
+  }
+}
+
+}
+
 
   // Check height + stem thickness combination
   if (selection.height && selection.stemThickness) {
@@ -415,29 +452,31 @@ const validateSelection = (selection) => {
   }
 
   // Check growth habit + height combination
-  if (selection.growthHabit && selection.height) {
-    if (
-      selection.growthHabit === "Spread on the ground" &&
-      selection.height !== "Short"
-    ) {
-      return {
-        valid: false,
-        message:
-          "Plants that spread on the ground remain close to the soil surface and are naturally short.",
-      };
-    }
-
-    if (
-      selection.height === "Tall" &&
-      selection.growthHabit !== "Grows upright"
-    ) {
-      return {
-        valid: false,
-        message:
-          "Tall plants must grow upright to reach their full height and access sunlight.",
-      };
-    }
+ // Check growth habit + height combination
+if (selection.growthHabit && selection.height) {
+  if (
+    selection.growthHabit === "Spread on the ground" &&
+    !(selection.height === "Short" || selection.height === "Medium")
+  ) {
+    return {
+      valid: false,
+      message:
+        "Plants that spread on the ground must be short or medium in height.",
+    };
   }
+
+  if (
+    selection.height === "Tall" &&
+    selection.growthHabit !== "Grows upright"
+  ) {
+    return {
+      valid: false,
+      message:
+        "Tall plants must grow upright to reach their full height and access sunlight.",
+    };
+  }
+}
+
 
   // Check growth habit + stem type combination
   if (selection.growthHabit && selection.stemType) {
@@ -448,7 +487,7 @@ const validateSelection = (selection) => {
       return {
         valid: false,
         message:
-          "Climbing plants have weak, flexible stems that cannot support themselves upright.",
+          "Climbing plants have weak, flexible stems that cannot support themselves upright. However, some woody climbers like lianas have hard, woody stems.",
       };
     }
   }
@@ -468,33 +507,35 @@ function showInvalidMessage(msg) {
 }
 
 function checkCompletion() {
-  // 1️⃣ Check if all 6 categories are selected
   const allSelected = Object.values(selectedValues).every((v) => v !== null);
   if (!allSelected) {
     document.getElementById("classify-btn").classList.add("disable-classify");
     return;
   }
 
-  // 2️⃣ Check if the selected combination matches any valid plant type
   const plantType = detectCorrectCategory();
 
   if (plantType) {
-    // Valid combination → enable classify button
     document
       .getElementById("classify-btn")
       .classList.remove("disable-classify");
   } else {
-    // Wrong combination → keep classify disabled
+    showInvalidMessage(
+      "This combination doesn't form a valid plant type. Please try different characteristics."
+    );
+
     document.getElementById("classify-btn").classList.add("disable-classify");
   }
 }
+
+
 
 function detectCorrectCategory() {
   const s = selectedValues;
 
   // TREE
   if (
-    s.height === "Tall" &&
+    (s.height === "Tall" || s.height === "Medium") &&   // ✔ ALLOW MEDIUM TREES
     s.stemColor === "Brown" &&
     s.stemType === "Hard/Woody" &&
     s.stemThickness === "Thick" &&
@@ -505,10 +546,10 @@ function detectCorrectCategory() {
 
   // SHRUB
   if (
-    s.height === "Medium" &&
+  (s.height === "Medium" || s.height === "Short") &&
     s.stemColor === "Brown" &&
     s.stemType === "Hard/Woody" &&
-    s.stemThickness === "Thin" &&
+      (s.stemThickness === "Thin" || s.stemThickness === "Thick") &&   // ✔ FIXED
     s.branchPosition === "Close to ground" &&
     s.growthHabit === "Grows upright"
   )
@@ -527,7 +568,7 @@ function detectCorrectCategory() {
 
   // CLIMBER
   if (
-    s.height === "Short" &&
+    (s.height === "Short" || s.height === "Medium") &&   // ✔ FIXED
     s.stemColor === "Green" &&
     s.stemType === "Soft/Tender" &&
     s.stemThickness === "Thin" &&
@@ -538,7 +579,7 @@ function detectCorrectCategory() {
 
   // CREEPER
   if (
-    s.height === "Short" &&
+    (s.height === "Short" || s.height === "Medium") &&
     s.stemColor === "Green" &&
     s.stemType === "Soft/Tender" &&
     s.stemThickness === "Thin" &&

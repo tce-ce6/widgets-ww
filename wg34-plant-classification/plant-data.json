@@ -686,7 +686,7 @@
       "growthPattern": null,
       "status": "invalid",
       "category":"",
-      "message": "Tall plants need strong woody stems."
+      "message": "Tall plants need strong, woody (brown) stems to support their height and weight."
     },
     {
       "id": 58,
@@ -698,7 +698,7 @@
       "growthPattern": null,
       "status": "invalid",
       "category":"",
-      "message": "Tall plants require woody stems, except bamboo which turns brown as it matures."
+      "message": "Tall plants require strong, woody (brown) stems to support their height and weight, except for bamboo, which is a giant woody grass that is green when young and turns brown as it matures. "
     }
   ]
 }
