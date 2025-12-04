@@ -44,10 +44,34 @@ function switchTab(tabName, btn) {
     simulationStates[tabName].running = false;
   }
 
+  // 🔥 Add class on all .control-column
+  const controlColumns = document.querySelectorAll(".control-column");
+
+  controlColumns.forEach(col => {
+      col.classList.remove(
+          "direct-contact",
+          "indirect-contact",
+          "airborne-contact",
+          "food-contact",
+          "vector-contact"
+      );
+  });
+
+  const tabClassMap = {
+      direct: "direct-contact",
+      indirect: "indirect-contact",
+      airborne: "airborne-contact",
+      food: "food-contact",
+      vector: "vector-contact"
+  };
+
+  controlColumns.forEach(col => col.classList.add(tabClassMap[tabName]));
+
   if (!simulations[tabName]) {
     initializeSimulation(tabName);
   }
 }
+
 
 
 function toggleSimulation(type) {
@@ -153,8 +177,10 @@ function initializeSimulation(type) {
   }
 
   const densityValue = parseInt(densityElement.value);
+  console.log("densityValue", densityValue);
+  
   // Map 0,1,2 to 5,15,30
-  const densityMap = [5, 15, 30];
+  const densityMap = [5, 15, 25];
   const density = densityMap[densityValue];
 
   sim.innerHTML = "";
@@ -608,10 +634,8 @@ setInterval(() => {
   });
 }, 100);
 
-// Initialize first tab
-initializeSimulation("direct");
-
-// slider js
+const defaultBtn = document.querySelector('button[onclick*="direct"]');
+switchTab("direct", defaultBtn);
 
 $('input[type="range"]').each(function () {
   var $slider = $(this);
@@ -630,5 +654,43 @@ $('input[type="range"]').each(function () {
     })
     .on("input", function () {
       updateOutput(this.value);
+
+      // Ensure the simulation resets when the rangeslider plugin updates the value.
+      // Some polyfills/widgets may not trigger the native input event used earlier,
+      // so explicitly call resetSimulation using the input's id to infer the type.
+      try {
+        var id = this.id || this.getAttribute && this.getAttribute('id');
+        if (id) {
+          var parts = id.split('-');
+          if (parts && parts.length) {
+            var type = parts[0];
+            // Only reset known simulation types
+            if (["direct", "indirect", "airborne", "food", "vector"].includes(type)) {
+              resetSimulation(type);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Error resetting simulation from rangeslider input:', err);
+      }
     });
+});
+
+$(document).on("click", ".high-pointer, .high-medium, .high-low", function () {
+    let slider = $(this).closest(".control-column").find('input[type="range"]');
+
+    if (!slider.length) return;
+
+    if ($(this).hasClass("high-pointer")) {
+        slider.val(2).change();
+    } 
+    else if ($(this).hasClass("high-medium")) {
+        slider.val(1).change();
+    } 
+    else if ($(this).hasClass("high-low")) {
+        slider.val(0).change();
+    }
+
+    // Tell rangeslider.js to reposition handle
+    slider.rangeslider('update', true);
 });

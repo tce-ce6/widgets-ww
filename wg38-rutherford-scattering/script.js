@@ -25,6 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const endFrame = 50;
     let segmentStarted = false; // 👈 Track if we've started the main segment
 
+    torchAnim.addEventListener("complete", () => {
+      if (segmentStarted) {
+        playBtn.classList.add("play-btn", "disabled", "pause");
+        playBtn.classList.remove("playing");
+        stepForwardBtn.classList.add("disabled");
+      }
+    });
+
     // 🔥 Torch button → play 0–1s
     torchBtn.addEventListener("click", () => {
       const ray = document.getElementById("ray-container");
@@ -40,6 +48,20 @@ document.addEventListener("DOMContentLoaded", () => {
       resetBtn.classList.remove("disabled");
 
       segmentStarted = false;
+
+      function playAnimation() {
+        const playButton = document.getElementById("play-btn");
+
+        // 1. Add 'playing' class after 2000 milliseconds (2 seconds)
+        setTimeout(() => {
+          playButton.classList.add("starting");
+          setTimeout(() => {
+            playButton.classList.remove("starting");
+          }, 2000);
+        }, 2000);
+      }
+
+      playAnimation();
     });
 
     // ▶ Play button → play remaining animation after 1s
@@ -131,7 +153,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add blur/disable to the SVG
       document.getElementById("svg-container").classList.add("modal-open");
 
+      
+      torchAnim.pause();   
+
       closeBtn.addEventListener("click", () => {
+
+        playBtn.classList.add("play-btn", "pause");
+        playBtn.classList.remove("playing");
+
         document.getElementById("svg-container").classList.remove("modal-open");
         modal.style.display = "none";
         modal.style.opacity = "0";

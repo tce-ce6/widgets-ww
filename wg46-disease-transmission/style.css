@@ -411,6 +411,7 @@
   background-color: #F2DD71;
   border-radius: 50%;
   box-shadow: inset 3px 6px 6px rgba(0, 0, 0, .2);
+  cursor: pointer;
 }
 
 .slider-wrapper .pointers {
@@ -435,9 +436,8 @@
 .rangeslider--horizontal .rangeslider__fill{
   width: 12px !important;
 }
-.rangeslider--vertical .rangeslider__handle,
-.rangeslider--horizontal .rangeslider__handle {
-  background: url("assets/person1.svg") no-repeat center center;
+.rangeslider--vertical .rangeslider__handle{
+  background: url("assets/population-slider.svg") no-repeat center center;
   background-size: contain;
   width: 80px !important;
   height: 80px !important;
@@ -447,13 +447,47 @@
   cursor: pointer;
 }
 
+.right-col.direct-contact .rangeslider__handle{
+  background: url("assets/physical-slider.svg") no-repeat center center;
+}
+.right-col.indirect-contact .rangeslider__handle{
+  background: url("assets/indirect-slider.svg") no-repeat center center;
+}
+.right-col.airborne-contact .rangeslider__handle{
+  background: url("assets/air-slider.svg") no-repeat center center;
+}
+.right-col.food-contact .rangeslider__handle{
+  background: url("assets/food-slider.svg") no-repeat center center;
+}
+.right-col.vector-contact .rangeslider__handle{
+  background: url("assets/insect-slider.svg") no-repeat center center;
+}
+
+.direct-contact,
+.indirect-contact,
+.airborne-contact,
+.food-contact,
+.vector-contact {
+    pointer-events: none !important;
+}
+
+.direct-contact *,
+.indirect-contact *,
+.airborne-contact *,
+.food-contact *,
+.vector-contact * {
+    pointer-events: auto !important;
+}
+.rangeslider--vertical .rangeslider__fill{
+  height: 100% !important;
+}
 .rangeslider__fill {
   background: transparent !important;
 }
 
 .rangeslider--vertical .rangeslider__handle:active,
 .rangeslider--horizontal .rangeslider__handle:active {
-  background: url("assets/person1.svg") no-repeat center center;
+  background: url("assets/population-slider.svg") no-repeat center center;
 }
 
 .rangeslider--vertical .rangeslider__handle:after {
@@ -466,7 +500,7 @@
 #direct input[type="range"]::-webkit-slider-thumb {
   background: url('./assets/BG.png') no-repeat center;
 }
-
+/* 
 #indirect input[type="range"]::-webkit-slider-thumb {
   background: url('./assets/indirect-thumb.png') no-repeat center;
 }
@@ -481,7 +515,7 @@
 
 #vector input[type="range"]::-webkit-slider-thumb {
   background: url('./assets/vector-thumb.png') no-repeat center;
-}
+} */
 
 /* Track styles */
 input[type="range"]::-webkit-slider-runnable-track {

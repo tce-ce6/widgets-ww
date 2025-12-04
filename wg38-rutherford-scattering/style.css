@@ -194,6 +194,23 @@
   cursor: pointer;
 }
 
+#rutherford-widget #play-btn.starting {
+    animation-name: blinking;
+    animation-duration: 1s; 
+    animation-timing-function: ease-in-out; 
+    animation-iteration-count: infinite; 
+}
+
+@keyframes blinking {
+    0%, 100% { /* Start and End points */
+        opacity: 1;
+    }
+
+    50% { /* Middle point for the blink */
+        opacity: 0;
+    }
+}
+
 #rutherford-widget #play-btn.playing {
   background-image: url("./assets/play-btn.svg");
 }
@@ -274,6 +291,12 @@
     font-weight: 500;
     letter-spacing: -1px;
     cursor: pointer;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .char-wrapper ul li {
