@@ -69,7 +69,7 @@
       "branchingLevel": "Close to ground",
       "growthPattern": "Grows upright",
       "status": "valid",
-      "category":"",
+      "category":"shrub",
       "message": "Correct! This is a shrub because it has a short to medium height with woody stems and multiple branches near the ground, creating a bushy appearance."
     },
     {
@@ -324,7 +324,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "Climbing plants have weak, flexible stems that cannot support themselves upright."
+      "message": "Climbing plants have weak, flexible stems that cannot support themselves upright. However, some woody climbers like lianas have hard, woody stems."
     },
     {
       "id": 28,
@@ -336,7 +336,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground remain naturally short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 29,
@@ -360,7 +360,7 @@
       "growthPattern": null,
       "status": "invalid",
       "category":"",
-      "message": "Brown stems are mature and woody."
+      "message": "Brown stems are mature and woody, providing structural support to the plant."
     },
     {
       "id": 31,
@@ -372,7 +372,7 @@
       "growthPattern": null,
       "status": "invalid",
       "category":"",
-      "message": "Green stems are soft and tender."
+      "message": "Green stems are young and contain chlorophyll for photosynthesis, making them soft and tender."
     },
     {
       "id": 32,
@@ -384,7 +384,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 33,
@@ -396,7 +396,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground are naturally short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 34,
@@ -408,7 +408,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 35,
@@ -444,7 +444,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 38,
@@ -456,7 +456,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 39,
@@ -468,7 +468,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground remain short."
+      "message": " Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 40,
@@ -480,7 +480,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination falls under giant herbs like banana and papaya."
+      "message": "This combination falls under a special category known as giant herbs, including banana and papaya. Please try different characteristics."
     },
     {
       "id": 41,
@@ -492,7 +492,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 42,
@@ -504,7 +504,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground stay naturally short."
+      "message": " Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 43,
@@ -516,7 +516,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
 
 
@@ -542,7 +542,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground remain close to the soil and stay short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 46,
@@ -554,7 +554,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type except Areca palm."
+      "message": "This combination doesn't form a valid plant type, except for the Areca palm. These are trees characterized by tall, slender trunks rather than thick ones. Please try different characteristics."
     },
     {
       "id": 47,
@@ -566,7 +566,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "Tall plants must grow upright to reach sunlight."
+      "message": "Tall plants must grow upright to reach their full height and access sunlight."
     },
     {
       "id": 48,
@@ -578,7 +578,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground stay short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 49,
@@ -590,7 +590,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics."
     },
     {
       "id": 50,
@@ -602,7 +602,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "Tall plants must grow upright to reach sunlight."
+      "message": "Tall plants must grow upright to reach their full height and access sunlight."
     },
     {
       "id": 51,
@@ -614,7 +614,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread along the ground are naturally short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 52,
@@ -638,7 +638,7 @@
       "growthPattern": "Need support to grow",
       "status": "invalid",
       "category":"",
-      "message": "Tall plants must grow upright."
+      "message": "Tall plants must grow upright to reach their full height and access sunlight."
     },
     {
       "id": 54,
@@ -650,7 +650,7 @@
       "growthPattern": "Spread on the ground",
       "status": "invalid",
       "category":"",
-      "message": "Plants that spread on the ground stay short."
+      "message": "Plants that spread on the ground remain close to the soil surface and are naturally short."
     },
     {
       "id": 55,
@@ -662,7 +662,7 @@
       "growthPattern": "Grows upright",
       "status": "invalid",
       "category":"",
-      "message": "This combination doesn't form a valid plant type."
+      "message": "This combination doesn't form a valid plant type. Please try different characteristics. "
     },
     {
       "id": 56,
@@ -674,7 +674,7 @@
       "growthPattern": null,
       "status": "invalid",
       "category":"",
-      "message": "Brown stems are woody and strong, not soft/tender."
+      "message": "Brown stems are mature and woody, providing structural support to the plant."
     },
     {
       "id": 57,

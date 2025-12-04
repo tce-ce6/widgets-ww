@@ -11,18 +11,15 @@ fetch("plant-data.json")
   })
   .catch((err) => console.error("Error loading JSON:", err));
 
+/* JSON key mapping */
+const jsonKeyMap = {
+  branchPosition: "branchingLevel",
+  growthHabit: "growthPattern",
+};
+
 /* -------------------------------
    2. SELECTION ORDER & VALUES
 --------------------------------*/
-const selectionOrder = [
-  "height",
-  "stemColor",
-  "stemType",
-  "stemThickness",
-  "branchPosition",
-  "growthHabit",
-];
-
 const explanationMap = {
   tree: `Correct! This is a tree because it has a tall, thick, woody stem that provides strong support and branches high up to maximize sunlight exposure.`,
   shrub: `Correct! This is a shrub because it has a short to medium height with woody stems and multiple branches near the ground, creating a bushy appearance.`,
@@ -32,11 +29,11 @@ const explanationMap = {
 };
 
 const wrongReasonMap = {
-  tree: `Not a tree. Trees need tall height with thick, woody stems and branches high up. This plant doesn't match those characteristics.`,
-  shrub: `Not a shrub. Shrubs are medium-sized with multiple woody branches near the ground. This plant has different characteristics.`,
-  herb: `Not a herb. Herbs are short plants with soft, green stems. This plant doesn't fit that description.`,
-  climber: `Not a climber. Climbers have weak stems that need support to grow. This plant grows differently.`,
-  creeper: `Not a creeper. Creepers spread along the ground with weak stems. This plant has different growth habits.`,
+  tree: `Not a tree. Trees need tall height with thick, woody stems and branches high up.`,
+  shrub: `Not a shrub. Shrubs are short to medium-sized with multiple woody branches near the ground. This plant has different characteristics.`,
+  herb: `Not a herb. Herbs are short plants with soft, green stems.`,
+  climber: `Not a climber. Climbers have weak stems needing support.`,
+  creeper: `Not a creeper. Creepers spread along the ground.`,
 };
 
 let selectedValues = {
@@ -49,27 +46,22 @@ let selectedValues = {
 };
 
 /* -------------------------------
-   3. MAP SVG ID → CATEGORY & VALUE
+   3. SVG ID MAP
 --------------------------------*/
 const idMap = {
-  // HEIGHT
   "height-tall": { category: "height", value: "Tall" },
   "height-medium": { category: "height", value: "Medium" },
   "height-short": { category: "height", value: "Short" },
 
-  // STEM COLOR
   "stemColor-green": { category: "stemColor", value: "Green" },
   "stemColor-brown": { category: "stemColor", value: "Brown" },
 
-  // STEM TYPE
   "steamType-softTender": { category: "stemType", value: "Soft/Tender" },
   "steamType-hardWoody": { category: "stemType", value: "Hard/Woody" },
 
-  // STEM THICKNESS
   "steamTickness-thin": { category: "stemThickness", value: "Thin" },
   "steamTickness-thick": { category: "stemThickness", value: "Thick" },
 
-  // BRANCH POSITION
   "branchPosition-closeToGround": {
     category: "branchPosition",
     value: "Close to ground",
@@ -79,7 +71,6 @@ const idMap = {
     value: "Higher up on stem",
   },
 
-  // GROWTH HABIT
   "growthHabit-upright": { category: "growthHabit", value: "Grows upright" },
   "growthHabit-spreadonGround": {
     category: "growthHabit",
@@ -91,6 +82,9 @@ const idMap = {
   },
 };
 
+/* -------------------------------
+   4. CATEGORY GROUPS
+--------------------------------*/
 const categoryGroups = {
   height: ["height-tall", "height-medium", "height-short"],
   stemColor: ["stemColor-green", "stemColor-brown"],
@@ -108,17 +102,18 @@ const categoryGroups = {
 };
 
 /* -------------------------------
-   4. WAIT FOR SVG TO LOAD FIRST
+   5. DOM READY
 --------------------------------*/
 window.addEventListener("DOMContentLoaded", () => {
   console.log("DOM Loaded. Attaching listeners...");
+
+  /* CLOSE MODAL */
   document.getElementById("close-btn").addEventListener("click", () => {
     const modal = document.getElementById("detail-modal");
+    modal.style.display = "none";
     modal.style.opacity = "0";
     modal.style.visibility = "hidden";
-    modal.style.display = "none";
 
-    // Remove ALL wrong classes
     document.querySelectorAll(".wrong").forEach((el) => {
       el.classList.remove("wrong");
     });
@@ -126,489 +121,262 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("svg-container").classList.remove("modal-open");
   });
 
-  document.getElementById("reset-btn").addEventListener("click", () => {
-    // 1️⃣ Reset selected values
-    selectedValues = {
-      height: null,
-      stemColor: null,
-      stemType: null,
-      stemThickness: null,
-      branchPosition: null,
-      growthHabit: null,
-    };
+  /* RESET BUTTON */
+  document.getElementById("reset-btn").addEventListener("click", resetAll);
 
-    // 2️⃣ Remove active + wrong classes
-    document.querySelectorAll(".active, .wrong").forEach((el) => {
-      el.classList.remove("active", "wrong");
-    });
-
-    // 3️⃣ Reset selected text
-    Object.keys(selectedValues).forEach((category) => {
-      const labelEl = document.querySelector(`.${category}-value`);
-      if (labelEl) labelEl.textContent = "--";
-    });
-
-    // 4️⃣ Hide all selection groups
-    Object.keys(selectedValues).forEach((category) => {
-      const group = document.getElementById(`${category}-selection`);
-      if (group) group.style.display = "none";
-    });
-
-    // 5️⃣ Hide any open modal
-    const modal = document.getElementById("detail-modal");
-    modal.style.display = "none";
-    modal.style.opacity = "0";
-    modal.style.visibility = "hidden";
-
-    // 6️⃣ Remove blur
-    document.getElementById("svg-container").classList.remove("modal-open");
-
-    // 7️⃣ Hide classify plant screen
-    document.getElementById("classify-plant").style.display = "none";
-
-    // 8️⃣ Show characteristic section again
-    document.getElementById("characteristic-wrapper").style.display = "block";
-
-    // 9️⃣ Hide result note
-    document.getElementById("result-note").style.display = "none";
-
-    // 🔟 Remove correct/wrong highlight on classify icons
-    document.querySelectorAll(".classify-wrap li").forEach((li) => {
-      li.classList.remove("correct", "wrong");
-    });
-
-    // ⭐ ADD disable-reset BACK after resetting
-    document.getElementById("reset-btn").classList.add("disable-reset");
-
-    console.log("All selections reset!");
-  });
-
-  document.getElementById("insight-btn").addEventListener("click", () => {
-    const modal = document.getElementById("characteristics-modal");
-
-    modal.style.display = "block";
-    modal.style.opacity = "1";
-    modal.style.visibility = "visible";
-
-    // Add blur/disable to the SVG
-    document.getElementById("svg-container").classList.add("modal-open");
-  });
-
-  document
-    .getElementById("characteristics-close-btn")
-    .addEventListener("click", () => {
-      const modal = document.getElementById("characteristics-modal");
-
-      modal.style.opacity = "0";
-      modal.style.visibility = "hidden";
-      modal.style.display = "none";
-
-      // Remove blur/disable
-      document.getElementById("svg-container").classList.remove("modal-open");
-    });
-
+  /* CLASSIFY BUTTON */
   document.getElementById("classify-btn").addEventListener("click", () => {
-    // Prevent action if button is disabled
     if (
       document
         .getElementById("classify-btn")
         .classList.contains("disable-classify")
-    ) {
+    )
       return;
-    }
 
-    // ⭐ Add disable-classify again when classify screen opens
     document.getElementById("classify-btn").classList.add("disable-classify");
 
-    // Hide characteristic section
     document.getElementById("characteristic-wrapper").style.display = "none";
-
-    // Show classify plant section
     document.getElementById("classify-plant").style.display = "block";
-
-    console.log("Classification screen opened.");
   });
 
+  /* CLASSIFY OPTION CLICK */
   document.querySelectorAll(".classify-wrap li").forEach((li) => {
-    li.addEventListener("click", () => {
-      const chosen = li.id.replace("-classify", ""); // tree, shrub, herb...
-      const correctPlantType = detectCorrectCategory();
-
-      const resultNote = document.getElementById("result-note");
-      const resultTxt = document.getElementById("result-txt");
-
-      // Always show the result container
-      resultNote.style.display = "block";
-
-      // Remove previous classes from result box
-      resultNote.classList.remove("wrong", "correct");
-
-      // Remove previous classes from all li items
-      document.querySelectorAll(".classify-wrap li").forEach((item) => {
-        item.classList.remove("correct", "wrong");
-      });
-
-      if (!correctPlantType) {
-        resultTxt.textContent = "⚠ Unable to determine correct plant type!";
-        resultNote.classList.add("wrong");
-
-        // mark selected li as wrong
-        li.classList.add("wrong");
-        return;
-      }
-
-      if (chosen === correctPlantType) {
-
-    // 🔍 SPECIAL CASE: ID 26 (medium tree)
-    const isSpecialTreeCase =
-        selectedValues.height === "Medium" &&
-        selectedValues.stemColor === "Brown" &&
-        selectedValues.stemType === "Hard/Woody" &&
-        selectedValues.stemThickness === "Thick" &&
-        selectedValues.branchPosition === "Higher up on stem" &&
-        selectedValues.growthHabit === "Grows upright";
-
-    if (correctPlantType === "tree" && isSpecialTreeCase) {
-        resultTxt.textContent =
-            "Correct! This is a tree because it has a tall, thick, woody stem that provides strong support and branches high up to maximize sunlight exposure. While trees are often tall, some species are medium-sized.";
-    } else {
-        resultTxt.textContent = explanationMap[correctPlantType];
-    }
-
-    resultNote.classList.add("correct");
-    li.classList.add("correct");
-}
- else {
-        // ❌ WRONG
-        resultTxt.textContent = wrongReasonMap[chosen];
-        resultNote.classList.add("wrong");
-
-        // Add wrong class to the chosen li
-        li.classList.add("wrong");
-      }
-    });
+    li.addEventListener("click", () => handleClassifyClick(li));
   });
 
+  /* SVG CLICK LISTENERS */
   Object.keys(idMap).forEach((id) => {
     const el = document.getElementById(id);
-
-    if (!el) {
-      console.warn("❗ SVG element not found:", id);
-      return;
-    }
-
-    // Enable clicks on SVG <g> (very important)
+    if (!el) return;
     el.style.pointerEvents = "all";
-    // el.style.cursor = "pointer";
-
-    // Attach click listener
     el.addEventListener("click", () => handleSelection(id));
   });
 });
 
 /* -------------------------------
-   5. HANDLE SVG SELECTION
+   6. HANDLE SELECTION
 --------------------------------*/
 function handleSelection(clickedId) {
   const { category, value } = idMap[clickedId];
+  const previous = selectedValues[category];
 
-  const tempValues = { ...selectedValues }; // clone
-  tempValues[category] = value;
-
-  // Validate using temp object
-  const result = validateSelection(tempValues);
-
-  if (!result.valid) {
-    const clickedEl = document.getElementById(clickedId);
-    if (clickedEl) clickedEl.classList.add("wrong");
-
-    showInvalidMessage(result.message);
-
-    return; // ❌ DO NOT UPDATE GLOBAL selectedValues
-  }
-
-  // ⭐ VALID SELECTION – now update the real values
   selectedValues[category] = value;
 
-  // ENABLE reset
+  const isValid = validateCombination();
+
+  if (!isValid) {
+    selectedValues[category] = previous;
+    document.getElementById(clickedId).classList.add("wrong");
+    return;
+  }
+
   document.getElementById("reset-btn").classList.remove("disable-reset");
 
-  // Remove previous active/wrong classes
   categoryGroups[category].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.remove("active");
-      el.classList.remove("wrong");
-    }
+    document.getElementById(id)?.classList.remove("active", "wrong");
   });
 
-  const clickedEl = document.getElementById(clickedId);
-  if (clickedEl) clickedEl.classList.add("active");
+  document.getElementById(clickedId)?.classList.add("active");
 
   updateSelectedValue(category, value);
   showCurrentCategory(category);
   checkCompletion();
-
-  console.log("Selected →", selectedValues);
 }
-
 
 function updateSelectedValue(category, value) {
   const el = document.querySelector(`.${category}-value`);
-  if (el) {
-    el.textContent = value;
-  } else {
-    console.warn("⚠️ Selected-value element not found for:", category);
-  }
+  if (el) el.textContent = value;
 }
 
-/* -------------------------------
-   6. SHOW NEXT SELECTION GROUP
---------------------------------*/
 function showCurrentCategory(category) {
-  // SHOW the matching selection group, but DO NOT hide others
   const group = document.getElementById(`${category}-selection`);
   if (group) group.style.display = "block";
 }
 
+/* -------------------------------
+   7. JSON-BASED VALIDATION
+--------------------------------*/
 function validateCombination() {
-  const result = validateSelection(selectedValues);
+  const formatted = convertToJsonFormat(selectedValues);
+  const match = detectCorrectCategory();
 
-  if (!result.valid) {
-    showInvalidMessage(result.message);
+  // JSON INVALID MATCH (even partial)
+  if (match && match.status === "invalid") {
+    showInvalidMessage(match.message);
     return false;
   }
 
-  return true; // No rules violated
-}
+  // When all 6 are selected
+  const allSelected = Object.values(selectedValues).every((v) => v !== null);
 
-const validateSelection = (selection) => {
-
-  if (
-  selection.growthHabit === "Spread on the ground" &&
-  (selection.height === "Medium" || selection.height === "Tall")
-) {
-  return {
-    valid: false,
-    message:
-      "Plants that spread on the ground remain close to the soil surface and are naturally short."
-  };
-}
-  // Only validate combinations when we have enough characteristics to make meaningful checks
-
-  // Check height + stem color combination
-if (selection.height && selection.stemColor && selection.stemType) {
-// Validate Tall + Green only AFTER stemType is selected
-if (selection.height === "Tall" && selection.stemColor === "Green" && selection.stemType) {
-  
-  if (selection.stemType === "Soft/Tender") {
-    return {
-      valid: false,
-      message: "Tall plants need strong, woody (brown) stems to support their height and weight."
-    };
-  }
-
-  if (selection.stemType === "Hard/Woody") {
-    return {
-      valid: false,
-      message: "Tall plants need strong, woody stems for support. Only bamboo stays green when young before turning brown."
-    };
-  }
-}
-
-}
-
-
-  // Check height + stem thickness combination
-  if (selection.height && selection.stemThickness) {
-    if (selection.height === "Short" && selection.stemThickness === "Thick") {
-      return {
-        valid: false,
-        message:
-          "Short plants typically have thin stems as they don't need thick support structures.",
-      };
+  if (allSelected) {
+    // No matching object in JSON → invalid
+    if (!match) {
+      showInvalidMessage(
+        "This combination doesn't form a valid plant type. Please try different characteristics."
+      );
+      return false;
     }
+    return true;  // Full valid JSON combination
   }
 
-  // Check stem color + stem type combination
-  if (selection.stemColor && selection.stemType) {
-    if (
-      selection.stemColor === "Green" &&
-      selection.stemType === "Hard/Woody"
-    ) {
-      return {
-        valid: false,
-        message:
-          "Green stems are young and contain chlorophyll for photosynthesis, making them soft and tender.",
-      };
-    }
-
-    if (
-      selection.stemColor === "Brown" &&
-      selection.stemType === "Soft/Tender"
-    ) {
-      return {
-        valid: false,
-        message:
-          "Brown stems are mature and woody, providing structural support to the plant.",
-      };
-    }
-  }
-
-  // Check growth habit + height combination
- // Check growth habit + height combination
-if (selection.growthHabit && selection.height) {
-  if (
-    selection.growthHabit === "Spread on the ground" &&
-    !(selection.height === "Short" || selection.height === "Medium")
-  ) {
-    return {
-      valid: false,
-      message:
-        "Plants that spread on the ground must be short or medium in height.",
-    };
-  }
-
-  if (
-    selection.height === "Tall" &&
-    selection.growthHabit !== "Grows upright"
-  ) {
-    return {
-      valid: false,
-      message:
-        "Tall plants must grow upright to reach their full height and access sunlight.",
-    };
-  }
+  return true; // Partial but still fine
 }
 
 
-  // Check growth habit + stem type combination
-  if (selection.growthHabit && selection.stemType) {
-    if (
-      selection.growthHabit === "Need support to grow" &&
-      selection.stemType === "Hard/Woody"
-    ) {
-      return {
-        valid: false,
-        message:
-          "Climbing plants have weak, flexible stems that cannot support themselves upright. However, some woody climbers like lianas have hard, woody stems.",
-      };
-    }
-  }
-
-  // ❌ Ground-spreading plants must have branches near the ground
-if (selection.growthHabit === "Spread on the ground" &&
-    selection.branchPosition === "Higher up on stem") {
-  return {
-    valid: false,
-    message:
-      "Plants that spread on the ground grow close to the soil and have branches near the ground, not higher up on the stem."
-  };
-}
-if (selection.height === "Short" &&
-    selection.branchPosition === "Higher up on stem") {
-  return {
-    valid: false,
-    message:
-      "Short plants do not develop branches high on the stem. High branching occurs only in taller plants like trees."
-  };
-}
-
+/* RULE CHECKS (optional partial rules) */
+const validateSelection = () => {
   return { valid: true };
 };
 
 function showInvalidMessage(msg) {
   const modal = document.getElementById("detail-modal");
-  const msgBox = document.getElementById("msg-txt");
+  document.getElementById("msg-txt").textContent = msg;
 
-  msgBox.textContent = msg;
   modal.style.display = "block";
   modal.style.opacity = "1";
   modal.style.visibility = "visible";
+
   document.getElementById("svg-container").classList.add("modal-open");
 }
 
+/* -------------------------------
+   8. JSON MATCH LOGIC
+--------------------------------*/
+function convertToJsonFormat(selection) {
+  return {
+    height: selection.height,
+    stemColor: selection.stemColor,
+    stemType: selection.stemType,
+    stemThickness: selection.stemThickness,
+    branchingLevel: selection.branchPosition,
+    growthPattern: selection.growthHabit,
+  };
+}
+
+function detectCorrectCategory() {
+  if (!plantData.length) return null;
+
+  const formatted = convertToJsonFormat(selectedValues);
+
+  const match = plantData.find(item => 
+    (item.height === formatted.height) &&
+    (item.stemColor === formatted.stemColor) &&
+    (item.stemType === formatted.stemType) &&
+    (item.stemThickness === formatted.stemThickness) &&
+    (item.branchingLevel === null || item.branchingLevel === formatted.branchingLevel) &&
+    (item.growthPattern === null || item.growthPattern === formatted.growthPattern)
+  );
+
+  return match || null;
+}
+
+
+/* -------------------------------
+   9. COMPLETION CHECK
+--------------------------------*/
 function checkCompletion() {
   const allSelected = Object.values(selectedValues).every((v) => v !== null);
+
   if (!allSelected) {
     document.getElementById("classify-btn").classList.add("disable-classify");
     return;
   }
 
-  const plantType = detectCorrectCategory();
+  const match = detectCorrectCategory();
 
-  if (plantType) {
-    document
-      .getElementById("classify-btn")
-      .classList.remove("disable-classify");
+  if (match && match.status === "valid") {
+    document.getElementById("classify-btn").classList.remove("disable-classify");
   } else {
-    showInvalidMessage(
-      "This combination doesn't form a valid plant type. Please try different characteristics."
-    );
-
     document.getElementById("classify-btn").classList.add("disable-classify");
   }
 }
 
+/* -------------------------------
+   10. CLASSIFY CLICK HANDLER
+--------------------------------*/
+function handleClassifyClick(li) {
+  const chosen = li.id.replace("-classify", "");
+  const match = detectCorrectCategory();
 
+  const resultNote = document.getElementById("result-note");
+  const resultTxt = document.getElementById("result-txt");
 
-function detectCorrectCategory() {
-  const s = selectedValues;
+  resultNote.style.display = "block";
+  resultNote.classList.remove("wrong", "correct");
 
-  // TREE
-  if (
-    (s.height === "Tall" || s.height === "Medium") &&   // ✔ ALLOW MEDIUM TREES
-    s.stemColor === "Brown" &&
-    s.stemType === "Hard/Woody" &&
-    s.stemThickness === "Thick" &&
-    s.branchPosition === "Higher up on stem" &&
-    s.growthHabit === "Grows upright"
-  )
-    return "tree";
+  document.querySelectorAll(".classify-wrap li").forEach((item) =>
+    item.classList.remove("correct", "wrong")
+  );
 
-  // SHRUB
-  if (
-  (s.height === "Medium" || s.height === "Short") &&
-    s.stemColor === "Brown" &&
-    s.stemType === "Hard/Woody" &&
-      (s.stemThickness === "Thin" || s.stemThickness === "Thick") &&   // ✔ FIXED
-    s.branchPosition === "Close to ground" &&
-    s.growthHabit === "Grows upright"
-  )
-    return "shrub";
+  if (!match) {
+    resultTxt.textContent =
+      "⚠ Unable to determine correct plant type!";
+    resultNote.classList.add("wrong");
+    li.classList.add("wrong");
+    return;
+  }
 
-  // HERB
-  if (
-    s.height === "Short" &&
-    s.stemColor === "Green" &&
-    s.stemType === "Soft/Tender" &&
-    s.stemThickness === "Thin" &&
-    s.branchPosition === "Close to ground" &&
-    s.growthHabit === "Grows upright"
-  )
-    return "herb";
+  if (chosen === match.category) {
 
-  // CLIMBER
-  if (
-    (s.height === "Short" || s.height === "Medium") &&   // ✔ FIXED
-    s.stemColor === "Green" &&
-    s.stemType === "Soft/Tender" &&
-    s.stemThickness === "Thin" &&
-    s.branchPosition === "Close to ground" &&
-    s.growthHabit === "Need support to grow"
-  )
-    return "climber";
+    // ⭐ SPECIAL CASE FOR TREE (ID 26)
+    if (match.category === "tree" && match.height === "Medium") {
+        resultTxt.textContent =
+            "Correct! This is a tree because it has a thick, woody stem that provides strong support and branches high up to maximise sunlight exposure. While trees are often tall, some species are medium-sized.";
+    } else {
+        // Normal explanation
+        resultTxt.textContent = explanationMap[match.category];
+    }
 
-  // CREEPER
-  if (
-    (s.height === "Short" || s.height === "Medium") &&
-    s.stemColor === "Green" &&
-    s.stemType === "Soft/Tender" &&
-    s.stemThickness === "Thin" &&
-    s.branchPosition === "Close to ground" &&
-    s.growthHabit === "Spread on the ground"
-  )
-    return "creeper";
+    resultNote.classList.add("correct");
+    li.classList.add("correct");
+} else {
+    resultTxt.textContent = wrongReasonMap[chosen];
+    resultNote.classList.add("wrong");
+    li.classList.add("wrong");
+  }
+}
 
-  return null;
+/* -------------------------------
+   11. RESET FUNCTION
+--------------------------------*/
+function resetAll() {
+  selectedValues = {
+    height: null,
+    stemColor: null,
+    stemType: null,
+    stemThickness: null,
+    branchPosition: null,
+    growthHabit: null,
+  };
+
+  document.querySelectorAll(".active, .wrong").forEach((el) =>
+    el.classList.remove("active", "wrong")
+  );
+
+  Object.keys(selectedValues).forEach((category) => {
+    const label = document.querySelector(`.${category}-value`);
+    if (label) label.textContent = "--";
+  });
+
+  Object.keys(selectedValues).forEach((c) => {
+    const group = document.getElementById(`${c}-selection`);
+    if (group) group.style.display = "none";
+  });
+
+  document.getElementById("detail-modal").style.display = "none";
+  document.getElementById("svg-container").classList.remove("modal-open");
+
+  document.getElementById("classify-plant").style.display = "none";
+  document.getElementById("characteristic-wrapper").style.display = "block";
+
+  document.getElementById("result-note").style.display = "none";
+
+  document.querySelectorAll(".classify-wrap li").forEach((li) =>
+    li.classList.remove("correct", "wrong")
+  );
+
+  document.getElementById("reset-btn").classList.add("disable-reset");
+
+  console.log("All selections reset!");
 }
