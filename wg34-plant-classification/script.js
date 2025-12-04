@@ -139,6 +139,31 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("classify-plant").style.display = "block";
   });
 
+  /* INSIGHT MODAL OPEN */
+document.getElementById("insight-btn").addEventListener("click", () => {
+  const modal = document.getElementById("characteristics-modal");
+
+  modal.style.display = "block";
+  modal.style.opacity = "1";
+  modal.style.visibility = "visible";
+
+  // Blur background
+  document.getElementById("svg-container").classList.add("modal-open");
+});
+
+/* INSIGHT MODAL CLOSE */
+document.getElementById("characteristics-close-btn").addEventListener("click", () => {
+  const modal = document.getElementById("characteristics-modal");
+
+  modal.style.opacity = "0";
+  modal.style.visibility = "hidden";
+  modal.style.display = "none";
+
+  // Remove blur
+  document.getElementById("svg-container").classList.remove("modal-open");
+});
+
+
   /* CLASSIFY OPTION CLICK */
   document.querySelectorAll(".classify-wrap li").forEach((li) => {
     li.addEventListener("click", () => handleClassifyClick(li));
