@@ -59,6 +59,7 @@ let starLottieInstance = null;
 
 const ANIMATION_PATH_BASE = 'Assets/lottieJSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
+let container = document.getElementById('lottie-wrapper');
 const showAnswerBtn = document.getElementById('show-example-btn');
 let STAR_LOTTIE_CONTAINER_ID = 'starLottie-wrapper';
 let lettersDiv = document.getElementById('lettersDiv');
@@ -68,13 +69,14 @@ let completeWord = document.getElementById('completeWord');
 let afterContainer = document.getElementById("afterContainers");
 let lottieObject = document.getElementById('lottie-object');
 let soundIcon = document.getElementById('volume-icon');
+let instructionText = document.getElementById('instruction-text');
+let lottieStar = document.getElementById('lottie-star');
+let letterButton = document.querySelectorAll('.letter-button');/**
 
-
-/**
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
  */
 function loadInitialLottie(word) {
-    const container = document.getElementById(LOTTIE_CONTAINER_ID);
+   // const container = document.getElementById(LOTTIE_CONTAINER_ID);
     if (!container) {
         console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
         return;
@@ -129,6 +131,7 @@ function playLottieAnimation() {
         currentLottieInstance.goToAndStop(0, true);
         currentLottieInstance.play();
         setTimeout(() => {
+            instructionText.textContent = "ऑडियो प्ले करें और सही वर्ण चुनकर शब्द बनाएँ।";
             soundIcon.style.display = 'block';
             afterContainer.style.display = 'block';
             lottieObject.setAttribute('x', 300);
@@ -319,14 +322,22 @@ function showFinalImage() {
     // Play word sound after a small delay to sync with animation start
     setTimeout(() => {
         playWordSound();
+        letterButton.forEach((item)=>{
+            console.log("item", item);
+            item.style.pointerEvents = 'none';
+            
+        });
+        showAnswerBtn.disabled = true;
         dashLine.style.display = 'none';
         wordBox.style.display = 'block';
         completeWord.textContent = `${currentWord.word}`;
         completeWord.style.display = 'block';
         lettersDiv.style.display = 'none';
         document.getElementById("starLottie-wrapper").style.display="block";
+        lottieStar.style.display="block";
         playStarLottieAnimation();
-    }, 1500);
+        container.classList.add('no-touch');
+    }, 1000);
 }
 
 /**
@@ -483,12 +494,19 @@ function shakeAnswerSlots() {
  */
 function resetSentence() {
     document.getElementById("starLottie-wrapper").style.display="none";
+    instructionText.textContent = "इमेज स्क्रैच करें और देखें इसके पीछे क्या छुपा है।";
+    container.classList.remove('no-touch');
+    letterButton.forEach((item) => {
+        item.style.pointerEvents = 'auto';
+    });
+    soundIcon.style.display = 'none';
     showAnswerBtn.disabled = true;
     lettersDiv.style.display = 'block';
     dashLine.style.display = 'block';
     completeWord.style.display = 'none';
     soundIcon.style.display = 'none';
     afterContainer.style.display = 'none';
+    lottieStar.style.display="none";
     lottieObject.setAttribute('x', 650);
     loadWord(selectNextWord());
 }
@@ -505,15 +523,33 @@ function showAnswer() {
     //         answerSlotElements[index].textContent = letter;
     //     }
     // });
-    playLottieAnimation();
+   // playLottieAnimation();
     dashLine.style.display = 'none';
     wordBox.style.display = 'block';
     completeWord.textContent = `${currentWord.word}`;
     completeWord.style.display = 'block';
     lettersDiv.style.display = 'none';
-
+    showAnswerBtn.disabled = true;
     // Show final image (triggers Lottie animation playback)
-    showFinalImage();
+   // showFinalImage();
+    setTimeout(() => {
+        playWordSound();
+        letterButton.forEach((item)=>{
+            console.log("item", item);
+            item.style.pointerEvents = 'none';
+            
+        });
+        showAnswerBtn.disabled = true;
+        dashLine.style.display = 'none';
+        wordBox.style.display = 'block';
+        completeWord.textContent = `${currentWord.word}`;
+        completeWord.style.display = 'block';
+        lettersDiv.style.display = 'none';
+        document.getElementById("starLottie-wrapper").style.display="block";
+        lottieStar.style.display="block";
+        playStarLottieAnimation();
+        container.classList.add('no-touch');
+    }, 100);
 }
 
 // Initialize game when DOM is loaded

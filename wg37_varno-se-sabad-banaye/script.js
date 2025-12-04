@@ -775,16 +775,7 @@ function ensureFinalImageHolder() {
     return null;
   }
  
-  const img = document.createElement("img");
-  img.id = "final-word-image";
-  img.style.position = "absolute";
-  img.style.top = "200px";
-  img.style.right = "160px";
-  img.style.width = "320px";
-  img.style.maxWidth = "22vw";
-  img.style.display = "none";
-  img.style.pointerEvents = "none";
-  img.alt = "";
+  const img = document.querySelector(".final-image-container");
  
   container.appendChild(img);
   finalImageElement = img;

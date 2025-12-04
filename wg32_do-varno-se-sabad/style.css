@@ -195,6 +195,7 @@
 
 .letter-button {
   transition: all 0.2s ease;
+  pointer-events: auto;
 }
 
 /* Sound button hover - no shake */
@@ -225,8 +226,8 @@
 }
 
 #starLottie-wrapper{
-  width: 480px;
-  height: 620px;
+  width: 680px;
+  height: 480px;
   transform: translate(50px, -20px);
   position: absolute;
 }
@@ -237,4 +238,8 @@
 #show-example-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.no-touch {
+  pointer-events: none;
 }
