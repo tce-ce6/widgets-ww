@@ -29,11 +29,11 @@ const explanationMap = {
 };
 
 const wrongReasonMap = {
-  tree: `Not a tree. Trees need tall height with thick, woody stems and branches high up.`,
+  tree: `Not a tree. Trees need tall height with thick, woody stems and branches high up. This plant doesn't match those characteristics.`,
   shrub: `Not a shrub. Shrubs are short to medium-sized with multiple woody branches near the ground. This plant has different characteristics.`,
-  herb: `Not a herb. Herbs are short plants with soft, green stems.`,
-  climber: `Not a climber. Climbers have weak stems needing support.`,
-  creeper: `Not a creeper. Creepers spread along the ground.`,
+  herb: `Not a herb. Herbs are short plants with soft, green stems. This plant doesn't fit that description.`,
+  creeper: `Not a creeper. Creepers spread along the ground with weak stems. This plant has different growth habits`,
+  climber: `Not a climber. Climbers have weak stems that need support to grow. This plant grows differently.`,
 };
 
 let selectedValues = {
