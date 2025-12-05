@@ -377,31 +377,30 @@
 .slider-wrapper {
   position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 70%;
 }
 
 .slider-labels {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 8px;
-  height: 490px;
+  height: 500px;
   position: absolute;
-  top: -60px;
+  top: -67px;
   flex-direction: column;
   align-items: center;
 }
 
 .slider-labels span {
-  font-size: 22px;
+  font-size: 18px;
   color: #000;
   background-color: #F9F5BA;
+  z-index: 1;
+  line-height: 1;
 }
 
 .slider-labels span:nth-child(2) {
-  margin-top: 120px;
+  margin-top: 110px;
 }
 
 .slider-wrapper .pointers span {
@@ -412,17 +411,94 @@
   border-radius: 50%;
   box-shadow: inset 3px 6px 6px rgba(0, 0, 0, .2);
   cursor: pointer;
+  margin-left: 1px;
 }
 
 .slider-wrapper .pointers {
-  height: 100%;
+  height: 102%;
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* z-index: 1; */
 }
 
 /* Slider styles */
+
+
+/* new slider  */
+.noUi-vertical .noUi-handle:after, .noUi-vertical .noUi-handle:before{
+  display: none;
+}
+
+.noUi-target {
+  margin: 0 auto;
+  border: none !important;
+  cursor: pointer;
+}
+
+.noUi-tooltip {
+  display: none !important;
+}
+
+.noUi-connects, .noUi-connect {
+  background-color: #F2DD71 !important;
+  box-shadow: inset 3px -1px 6px rgba(0, 0, 0, .2) !important;
+}
+
+.noUi-base::after,
+.noUi-base::before,
+.nouislider-vertical::before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #F2DD71;
+  box-shadow: inset 3px 6px 6px rgba(0, 0, 0, .2);
+  display: block;
+  position: absolute;
+  left: -6.5px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nouislider-vertical::before {
+  top: 50%;
+  transform: translateY(-50%);
+      /* z-index: 2; */
+}
+.noUi-base::after {
+  bottom: 0;
+}
+
+.noUi-base::before {
+  top: 0;
+}
+
+.noUi-vertical {
+  width: 8px !important;
+}
+.mid-circle{
+  height: 20px;
+  width: 20px;
+  display: block;
+  background-color: red;
+}
+.noUi-handle.noUi-handle-lower{
+    background: url("assets/population-slider.svg") no-repeat center center;
+  background-size: contain;
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50%;
+     left: -44px !important;
+  top: -45px !important;
+  z-index: 10;
+  cursor: pointer;
+}
+/* new slider  */
 
 .rangeslider {
   background-color: #F2DD71 !important;
@@ -433,10 +509,12 @@
   min-height: 388px !important;
   width: 13px !important;
 }
-.rangeslider--horizontal .rangeslider__fill{
+
+.rangeslider--horizontal .rangeslider__fill {
   width: 12px !important;
 }
-.rangeslider--vertical .rangeslider__handle{
+
+.rangeslider--vertical .rangeslider__handle {
   background: url("assets/population-slider.svg") no-repeat center center;
   background-size: contain;
   width: 80px !important;
@@ -447,19 +525,23 @@
   cursor: pointer;
 }
 
-.right-col.direct-contact .rangeslider__handle{
+.right-col.direct-contact .rangeslider__handle {
   background: url("assets/physical-slider.svg") no-repeat center center;
 }
-.right-col.indirect-contact .rangeslider__handle{
+
+.right-col.indirect-contact .rangeslider__handle {
   background: url("assets/indirect-slider.svg") no-repeat center center;
 }
-.right-col.airborne-contact .rangeslider__handle{
+
+.right-col.airborne-contact .rangeslider__handle {
   background: url("assets/air-slider.svg") no-repeat center center;
 }
-.right-col.food-contact .rangeslider__handle{
+
+.right-col.food-contact .rangeslider__handle {
   background: url("assets/food-slider.svg") no-repeat center center;
 }
-.right-col.vector-contact .rangeslider__handle{
+
+.right-col.vector-contact .rangeslider__handle {
   background: url("assets/insect-slider.svg") no-repeat center center;
 }
 
@@ -468,7 +550,7 @@
 .airborne-contact,
 .food-contact,
 .vector-contact {
-    pointer-events: none !important;
+  pointer-events: none !important;
 }
 
 .direct-contact *,
@@ -476,11 +558,13 @@
 .airborne-contact *,
 .food-contact *,
 .vector-contact * {
-    pointer-events: auto !important;
+  pointer-events: auto !important;
 }
-.rangeslider--vertical .rangeslider__fill{
+
+.rangeslider--vertical .rangeslider__fill {
   height: 100% !important;
 }
+
 .rangeslider__fill {
   background: transparent !important;
 }
@@ -500,6 +584,7 @@
 #direct input[type="range"]::-webkit-slider-thumb {
   background: url('./assets/BG.png') no-repeat center;
 }
+
 /* 
 #indirect input[type="range"]::-webkit-slider-thumb {
   background: url('./assets/indirect-thumb.png') no-repeat center;

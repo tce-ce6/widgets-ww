@@ -2,77 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vertical Range Slider</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.css">
+  <title>noUiSlider 3-Step Vertical Slider</title>
+
+  <!-- noUiSlider CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
+
   <style>
     body {
-      color: #404040;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      padding: 50px;
       font-family: Arial, sans-serif;
-      min-height: 100vh;
-      margin: 0;
-    }
-    
-    h1 {
-      font-size: 1.6em;
-      font-weight: 300;
-    }
-    
-    output {
-      font-size: 2em;
-      padding: .3em;
+      padding: 40px;
     }
 
-    /* Custom thumb image styles */
-    .rangeslider--vertical .rangeslider__handle {
-      background: url("assets/person1.svg") no-repeat center center;
-      background-size: contain;
-      width: 40px;
-      height: 40px;
-      border-radius: 0;
+    .slider-container {
+      height: 200px;      /* slider height */
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .rangeslider--vertical .rangeslider__handle:after {
-      display: none;
+    #direct-density-slider {
+      height: 200px;      /* REQUIRED for vertical slider */
     }
   </style>
 </head>
 <body>
-  <!--
-    rangeslider.js example
-    
-    https://github.com/andreruffert/rangeslider.js
-    by André Ruffert - @andreruffert
-  -->
-  <h1>Vertical orientation support</h1>
-  <input type="range" data-orientation="vertical" min="0" max="100" value="50">
-  <output></output>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js"></script>
+  <h2>Vertical 3-Step noUiSlider</h2>
+
+  <!-- Hidden input to store the actual value -->
+  <input type="hidden" id="direct-density" value="1">
+
+  <div class="slider-container">
+    <div id="direct-density-slider"></div>
+  </div>
+
+  <!-- noUiSlider JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+
   <script>
-    var $element = $('input[type="range"]');
-    var $output = $('output');
-    
-    function updateOutput(el, val) {
-      el.textContent = val;
-    }
-    
-    $element
-      .rangeslider({
-        polyfill: false,
-        onInit: function() {
-          updateOutput($output[0], this.value);
-        }
-      })
-      .on('input', function() {
-        updateOutput($output[0], this.value);
-      });
+    const directDensitySlider = document.getElementById("direct-density-slider");
+    const hiddenInput = document.getElementById("direct-density");
+
+    noUiSlider.create(directDensitySlider, {
+      start: 1,
+      orientation: "vertical",
+      direction: "rtl",          // makes high value at top (optional)
+      step: 1,
+      range: {
+        min: 0,
+        max: 2
+      },
+      tooltips: true,            // shows current value
+      connect: [true, false]
+    });
+
+    // Update hidden input value on change
+    directDensitySlider.noUiSlider.on("update", function (value) {
+      hiddenInput.value = Math.round(value);  // store integer
+      console.log("Slider Value:", hiddenInput.value);
+    });
   </script>
+
 </body>
 </html>

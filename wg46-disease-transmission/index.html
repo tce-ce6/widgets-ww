@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="global_style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
 </head>
 
 <body id="rutherford-widget">
@@ -73,18 +73,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="direct-density" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="direct-density" value="1">
+                                        <div id="direct-density-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Population Density</label>
@@ -95,18 +91,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="direct-contact" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="direct-contact" value="1">
+                                        <div id="direct-contact-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Physical Contact Rate</label>
@@ -135,18 +127,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="indirect-density" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="indirect-density" value="1">
+                                        <div id="indirect-density-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Population Density</label>
@@ -156,18 +144,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="indirect-contamination" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="indirect-contamination" value="1">
+                                        <div id="indirect-contamination-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Surface Contamination Level</label>
@@ -195,18 +179,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="airborne-density" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="airborne-density" value="1">
+                                        <div id="airborne-density-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Population Density</label>
@@ -216,18 +196,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="airborne-ventilation" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="airborne-ventilation" value="1">
+                                        <div id="airborne-ventilation-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Ventilation Quality</label>
@@ -255,18 +231,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="food-density" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="food-density" value="1">
+                                        <div id="food-density-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Population Density</label>
@@ -276,18 +248,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="food-sanitation" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="food-sanitation" value="1">
+                                        <div id="food-sanitation-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Sanitation Level</label>
@@ -315,18 +283,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="vector-density" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="vector-density" value="1">
+                                        <div id="vector-density-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Population Density</label>
@@ -336,18 +300,14 @@
                                   <div class="control-group">
                                     <div class="slider-container">
                                       <div class="slider-wrapper">
-                                        <input type="range" id="vector-population" data-orientation="vertical" min="0"
-                                          max="2" value="1" step="1">
+                                        <input type="hidden" id="vector-population" value="1">
+                                        <div id="vector-population-slider" class="nouislider-vertical"></div>
                                         <div class="slider-labels">
                                           <span>High</span>
                                           <span>Medium</span>
                                           <span>Low</span>
                                         </div>
-                                        <div class="pointers">
-                                          <span class="high-pointer"></span>
-                                          <span class="high-medium"></span>
-                                          <span class="high-low"></span>
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                     <label class="bottom-label">Vector Population</label>
@@ -402,9 +362,47 @@
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
   <script src="lottie.min.js"></script>
-  <script src="script.js"></script>
+  <script>
+    (function () {
+      // IDs of the hidden inputs that we replaced from <input type="range">
+      const sliders = [
+        'direct-density', 'direct-contact',
+        'indirect-density', 'indirect-contamination',
+        'airborne-density', 'airborne-ventilation',
+        'food-density', 'food-sanitation',
+        'vector-density', 'vector-population'
+      ];
+
+      sliders.forEach(id => {
+        const hidden = document.getElementById(id);
+        const sliderEl = document.getElementById(id + '-slider');
+        if (!hidden || !sliderEl || !window.noUiSlider) return;
+
+        const startVal = parseInt(hidden.value, 10) || 1;
+
+        noUiSlider.create(sliderEl, {
+          start: startVal,
+          orientation: 'vertical',
+          direction: 'rtl', // high value at top
+          step: 1,
+          range: { min: 0, max: 2 },
+          connect: [true, false],
+          tooltips: [true]
+        });
+
+        sliderEl.noUiSlider.on('update', function (values) {
+          const v = Math.round(values[0]);
+          hidden.value = v;
+          // Keep compatibility with any existing listeners on the original input
+          hidden.dispatchEvent(new Event('input', { bubbles: true }));
+          hidden.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    })();
+  </script>
+  <script src="script.js?v=2"></script>
 </body>
 
 </html>

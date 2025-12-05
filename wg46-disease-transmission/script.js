@@ -1,6 +1,31 @@
 let simulations = {};
+// Diagnostic: confirm this updated script is loaded in the browser
+console.log("script.js loaded: noUiSlider integration active");
+window.__noUiSliderIntegrated = true;
 let animationFrames = {};
+
+// Defensive shim: if some leftover code still calls the old rangeslider plugin
+// provide a no-op that calls `onInit` and returns the jQuery object so `.on()` chaining works.
+// 🔥 Safe global shim: prevents "$slider.rangeslider is not a function" errors
+if (window.jQuery && typeof jQuery.fn.rangeslider !== "function") {
+  jQuery.fn.rangeslider = function (opts) {
+    // Simulate onInit
+    if (opts && typeof opts.onInit === "function") {
+      this.each(function () {
+        try {
+          opts.onInit.call(this);
+        } catch (e) {}
+      });
+    }
+    // Return jQuery object for chaining
+    return this;
+  };
+}
+
 let simulationStates = {};
+// global debounce settings for sliders (used by native and polyfilled handlers)
+window.__sliderResetTimers = window.__sliderResetTimers || {};
+window.__SLIDER_DEBOUNCE = window.__SLIDER_DEBOUNCE || 150;
 
 // const personEmojis = ['🧑', '👨', '👩', '🧒', '👦', '👧'];
 // const surfaceEmojis = ['🪑', '🚪', '📱', '⌨️'];
@@ -23,8 +48,12 @@ const vectorImages = ["./assets/vector1.svg"];
 const foodImages = ["./assets/food1.svg", "./assets/food2.svg"];
 
 function switchTab(tabName, btn) {
-  document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"));
+  document
+    .querySelectorAll(".tab")
+    .forEach((tab) => tab.classList.remove("active"));
+  document
+    .querySelectorAll(".tab-content")
+    .forEach((content) => content.classList.remove("active"));
 
   if (btn && btn.classList) {
     btn.classList.add("active");
@@ -47,32 +76,63 @@ function switchTab(tabName, btn) {
   // 🔥 Add class on all .control-column
   const controlColumns = document.querySelectorAll(".control-column");
 
-  controlColumns.forEach(col => {
-      col.classList.remove(
-          "direct-contact",
-          "indirect-contact",
-          "airborne-contact",
-          "food-contact",
-          "vector-contact"
-      );
+  controlColumns.forEach((col) => {
+    col.classList.remove(
+      "direct-contact",
+      "indirect-contact",
+      "airborne-contact",
+      "food-contact",
+      "vector-contact"
+    );
   });
 
   const tabClassMap = {
-      direct: "direct-contact",
-      indirect: "indirect-contact",
-      airborne: "airborne-contact",
-      food: "food-contact",
-      vector: "vector-contact"
+    direct: "direct-contact",
+    indirect: "indirect-contact",
+    airborne: "airborne-contact",
+    food: "food-contact",
+    vector: "vector-contact",
   };
 
-  controlColumns.forEach(col => col.classList.add(tabClassMap[tabName]));
+  controlColumns.forEach((col) => col.classList.add(tabClassMap[tabName]));
 
   if (!simulations[tabName]) {
     initializeSimulation(tabName);
   }
 }
+function resetSimulation(type) {
+  console.log("Resetting simulation for:", type);
 
+  // Stop animation frame if running
+  if (animationFrames[type]) {
+    cancelAnimationFrame(animationFrames[type]);
+    animationFrames[type] = null;
+  }
 
+  // Reset running flag
+  if (simulationStates[type]) {
+    simulationStates[type].running = false;
+  }
+
+  // Reset start buttons UI
+  const perTabButton = document.getElementById(`${type}-start`);
+  const globalButton = document.getElementById("global-start");
+
+  if (perTabButton) {
+    perTabButton.textContent = "Start";
+    perTabButton.classList.remove("pause-button");
+    perTabButton.classList.add("start-button");
+  }
+
+  if (globalButton) {
+    globalButton.textContent = "Start";
+    globalButton.classList.remove("pause-button");
+    globalButton.classList.add("start-button");
+  }
+
+  // Rebuild simulation with new slider values
+  initializeSimulation(type);
+}
 
 function toggleSimulation(type) {
   const perTabButton = document.getElementById(`${type}-start`);
@@ -124,33 +184,6 @@ function toggleSimulation(type) {
   }
 }
 
-function resetSimulation(type) {
-  // Stop current animation
-  if (animationFrames[type]) {
-    cancelAnimationFrame(animationFrames[type]);
-  }
-
-  // Reset button state (both per-tab and global)
-  const perTabButton = document.getElementById(`${type}-start`);
-  const globalButton = document.getElementById("global-start");
-  if (perTabButton) {
-    perTabButton.textContent = "Start";
-    perTabButton.classList.remove("pause-button");
-    perTabButton.classList.add("start-button");
-  }
-  if (globalButton) {
-    globalButton.textContent = "Start";
-    globalButton.classList.remove("pause-button");
-    globalButton.classList.add("start-button");
-  }
-
-  // Reset simulation state
-  simulationStates[type] = { running: false };
-
-  // Reinitialize simulation
-  initializeSimulation(type);
-}
-
 // Helpers for the shared/global start & reset buttons
 function getActiveTab() {
   const active = document.querySelector(".tab-content.active");
@@ -178,7 +211,7 @@ function initializeSimulation(type) {
 
   const densityValue = parseInt(densityElement.value);
   console.log("densityValue", densityValue);
-  
+
   // Map 0,1,2 to 5,15,30
   const densityMap = [5, 15, 25];
   const density = densityMap[densityValue];
@@ -576,9 +609,44 @@ function updateStats(type) {
 ["direct", "indirect", "airborne", "food", "vector"].forEach((type) => {
   const densitySlider = document.getElementById(`${type}-density`);
 
+  // Debounce timers to avoid reinitialising DOM while user is dragging
+  const resetTimers =
+    window.__sliderResetTimers || (window.__sliderResetTimers = {});
+  const DEBOUNCE_DELAY = 150;
+
+  function clampSliderValue(slider) {
+    const min = parseFloat(slider.getAttribute("min")) || 0;
+    const max = parseFloat(slider.getAttribute("max")) || 100;
+    let val = Number(slider.value);
+    if (isNaN(val)) val = min;
+    if (val < min) val = min;
+    if (val > max) val = max;
+    if (String(slider.value) !== String(val)) slider.value = val;
+    return val;
+  }
+
+  function scheduleReset(type, slider) {
+    if (slider) clampSliderValue(slider);
+    if (resetTimers[type]) clearTimeout(resetTimers[type]);
+    resetTimers[type] = setTimeout(() => {
+      resetSimulation(type);
+      resetTimers[type] = null;
+    }, DEBOUNCE_DELAY);
+  }
+
   if (densitySlider) {
-    // Check if the element exists
-    densitySlider.addEventListener("input", (e) => {
+    // debounce on input while dragging
+    densitySlider.addEventListener("input", () =>
+      scheduleReset(type, densitySlider)
+    );
+
+    // immediate on change (when user releases the handle)
+    densitySlider.addEventListener("change", () => {
+      clampSliderValue(densitySlider);
+      if (resetTimers[type]) {
+        clearTimeout(resetTimers[type]);
+        resetTimers[type] = null;
+      }
       resetSimulation(type);
     });
   } else {
@@ -605,16 +673,25 @@ function updateStats(type) {
   }
 
   if (secondarySlider) {
-    // Check if the secondary slider exists
-    secondarySlider.addEventListener("input", (e) => {
-      if (
-        type === "vector" ||
-        type === "indirect" ||
-        type === "food" ||
-        type === "airborne"
-      ) {
-        resetSimulation(type);
+    secondarySlider.addEventListener("input", () => {
+      if (["vector", "indirect", "food", "airborne"].includes(type))
+        scheduleReset(type, secondarySlider);
+    });
+
+    secondarySlider.addEventListener("change", () => {
+      if (resetTimers[type]) {
+        clearTimeout(resetTimers[type]);
+        resetTimers[type] = null;
       }
+      // clamp value and reset immediately
+      const min = parseFloat(secondarySlider.getAttribute("min")) || 0;
+      const max = parseFloat(secondarySlider.getAttribute("max")) || 100;
+      let v = Number(secondarySlider.value);
+      if (isNaN(v)) v = min;
+      if (v < min) v = min;
+      if (v > max) v = max;
+      secondarySlider.value = v;
+      resetSimulation(type);
     });
   } else {
     console.warn(`Secondary slider for ${type} not found.`);
@@ -637,60 +714,91 @@ setInterval(() => {
 const defaultBtn = document.querySelector('button[onclick*="direct"]');
 switchTab("direct", defaultBtn);
 
-$('input[type="range"]').each(function () {
-  var $slider = $(this);
-  var $output = $slider.next("output"); // finds the output next to slider
+// Initialize noUiSlider instances for each native range input.
+// The native input elements remain in the DOM and are kept in sync so
+// existing input/change listeners work without change.
+const noUiInstances = {};
 
-  function updateOutput(val) {
-    if ($output.length) $output[0].textContent = val;
-  }
+document.querySelectorAll('input[type="range"]').forEach((input) => {
+  const $input = $(input);
+  const wrapper = input.closest(".slider-wrapper");
+  if (!wrapper) return;
 
-  $slider
-    .rangeslider({
-      polyfill: false,
-      onInit: function () {
-        updateOutput(this.value);
-      },
-    })
-    .on("input", function () {
-      updateOutput(this.value);
+  // Hide native input visually but keep it for accessibility/event handling
+  input.style.display = "none";
 
-      // Ensure the simulation resets when the rangeslider plugin updates the value.
-      // Some polyfills/widgets may not trigger the native input event used earlier,
-      // so explicitly call resetSimulation using the input's id to infer the type.
-      try {
-        var id = this.id || this.getAttribute && this.getAttribute('id');
-        if (id) {
-          var parts = id.split('-');
-          if (parts && parts.length) {
-            var type = parts[0];
-            // Only reset known simulation types
-            if (["direct", "indirect", "airborne", "food", "vector"].includes(type)) {
-              resetSimulation(type);
-            }
-          }
-        }
-      } catch (err) {
-        console.warn('Error resetting simulation from rangeslider input:', err);
-      }
-    });
+  const sliderDiv = document.createElement("div");
+  sliderDiv.className = "no-ui-slider";
+  wrapper.insertBefore(sliderDiv, input.nextSibling);
+
+  const min = Number(input.getAttribute("min") || 0);
+  const max = Number(input.getAttribute("max") || 2);
+  const start = Number(input.value || min);
+  const orientation =
+    input.dataset.orientation === "vertical" ? "vertical" : "horizontal";
+
+  noUiSlider.create(sliderDiv, {
+    start: start,
+    connect: [true, false],
+    step: 1,
+    range: { min: min, max: max },
+    orientation: orientation,
+    direction: orientation === "vertical" ? "rtl" : "ltr",
+    behaviour: "tap-drag",
+    tooltips: false,
+  });
+
+  const instance = sliderDiv.noUiSlider;
+  if (input.id) noUiInstances[input.id] = instance;
+
+  instance.on("update", function (values) {
+    const v = Math.round(values[0]);
+    if (String(input.value) !== String(v)) {
+      input.value = v;
+      const ev = new Event("input", { bubbles: true });
+      input.dispatchEvent(ev);
+    }
+
+    const $output = $input.next("output");
+    if ($output.length) $output.text(v);
+  });
+
+  instance.on("change", function (values) {
+    const v = Math.round(values[0]);
+    input.value = v;
+    const ev = new Event("change", { bubbles: true });
+    input.dispatchEvent(ev);
+  });
 });
 
 $(document).on("click", ".high-pointer, .high-medium, .high-low", function () {
-    let slider = $(this).closest(".control-column").find('input[type="range"]');
+  const $col = $(this).closest(".control-column");
+  const $input = $col.find('input[type="range"]');
+  if (!$input.length) return;
 
-    if (!slider.length) return;
+  const input = $input[0];
+  let target = null;
+  if ($(this).hasClass("high-pointer")) target = 2;
+  else if ($(this).hasClass("high-medium")) target = 1;
+  else target = 0;
 
-    if ($(this).hasClass("high-pointer")) {
-        slider.val(2).change();
-    } 
-    else if ($(this).hasClass("high-medium")) {
-        slider.val(1).change();
-    } 
-    else if ($(this).hasClass("high-low")) {
-        slider.val(0).change();
+  // If we have a noUiSlider instance for this input, use it
+  if (
+    input &&
+    input.id &&
+    typeof noUiInstances !== "undefined" &&
+    noUiInstances[input.id]
+  ) {
+    try {
+      noUiInstances[input.id].set(target);
+    } catch (e) {
+      // fallback to updating native input
+      input.value = target;
+      $input.change();
     }
-
-    // Tell rangeslider.js to reposition handle
-    slider.rangeslider('update', true);
+  } else {
+    // fallback: update native input and trigger change
+    input.value = target;
+    $input.change();
+  }
 });
