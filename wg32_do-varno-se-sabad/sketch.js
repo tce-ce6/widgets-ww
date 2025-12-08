@@ -56,6 +56,7 @@ const LOTTIE_ANIMATION_MAP = {
 };
 let currentLottieInstance = null;
 let starLottieInstance = null;
+let isAnswerShown = false;
 
 const ANIMATION_PATH_BASE = 'Assets/lottieJSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
@@ -323,9 +324,7 @@ function showFinalImage() {
     setTimeout(() => {
         playWordSound();
         letterButton.forEach((item)=>{
-            console.log("item", item);
             item.style.pointerEvents = 'none';
-            
         });
         showAnswerBtn.disabled = true;
         dashLine.style.display = 'none';
@@ -339,6 +338,7 @@ function showFinalImage() {
         container.classList.add('no-touch');
     }, 1000);
 }
+
 
 /**
  * Hides the final image and shows puzzled images (NOW DESTROYS LOTTIE ANIMATION)
@@ -517,40 +517,59 @@ function resetSentence() {
 function showAnswer() {
     if (!currentWord) return;
 
-    // currentWord.answer.forEach((letter, index) => {
-    //     answerSlots[index] = letter;
-    //     if (answerSlotElements[index]) {
-    //         answerSlotElements[index].textContent = letter;
-    //     }
-    // });
-   // playLottieAnimation();
-    dashLine.style.display = 'none';
-    wordBox.style.display = 'block';
-    completeWord.textContent = `${currentWord.word}`;
-    completeWord.style.display = 'block';
-    lettersDiv.style.display = 'none';
-    showAnswerBtn.disabled = true;
-    // Show final image (triggers Lottie animation playback)
-   // showFinalImage();
-    setTimeout(() => {
-        playWordSound();
-        letterButton.forEach((item)=>{
-            console.log("item", item);
-            item.style.pointerEvents = 'none';
-            
-        });
-        showAnswerBtn.disabled = true;
+    // ---------------------- TOGGLE ON ----------------------
+    if (!isAnswerShown) {
+
+        // First click → Show the answer
         dashLine.style.display = 'none';
         wordBox.style.display = 'block';
-        completeWord.textContent = `${currentWord.word}`;
+        showAnswerBtn.textContent = "उत्तर छुपाएँ";
+        completeWord.textContent = currentWord.word;
         completeWord.style.display = 'block';
+
         lettersDiv.style.display = 'none';
-        document.getElementById("starLottie-wrapper").style.display="block";
-        lottieStar.style.display="block";
-        playStarLottieAnimation();
-        container.classList.add('no-touch');
-    }, 100);
+       // showAnswerBtn.disabled = false;
+
+        setTimeout(() => {
+            playWordSound();
+
+            letterButton.forEach(item => {
+                item.style.pointerEvents = 'none';
+            });
+
+            document.getElementById("starLottie-wrapper").style.display = "block";
+            lottieStar.style.display = "block";
+            playStarLottieAnimation();
+
+            container.classList.add('no-touch');
+        }, 100);
+
+        isAnswerShown = true;
+        return;
+    }
+
+    // ---------------------- TOGGLE OFF ----------------------
+    // Second click → Hide answer and restore original UI
+
+    dashLine.style.display = 'block';
+    wordBox.style.display = 'none';
+    completeWord.style.display = 'none';
+    showAnswerBtn.textContent = "उत्तर देखें";
+    lettersDiv.style.display = 'block';
+    showAnswerBtn.disabled = false;
+
+    letterButton.forEach(item => {
+        item.style.pointerEvents = 'auto';
+    });
+
+    document.getElementById("starLottie-wrapper").style.display = "none";
+    lottieStar.style.display = "none";
+
+    container.classList.remove('no-touch');
+
+    isAnswerShown = false;
 }
+
 
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
