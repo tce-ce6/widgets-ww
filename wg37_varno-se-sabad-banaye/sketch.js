@@ -487,6 +487,7 @@ function resetSentence() {
   }
 
   const nextWord = getNextWord();
+  isShowAnswer = false;
   if (nextWord) {
     loadWord(nextWord, nextWord.grid_data);
   } else {
@@ -568,7 +569,7 @@ function isAdjacent(meta1, meta2) {
 // Normal function exposed via event listener
 function showAnswer() {
   if (!currentWord || !finalImageElement) return;
-
+  console.log(isShowAnswer);
   if (!isShowAnswer) {
     // --- SHOW ANSWER --- (Focus on this block)
     if (isWordCompleted) {
@@ -655,6 +656,7 @@ function showAnswer() {
     // --- HIDE ANSWER --- (No change needed here)
     hideFinalImage();
     resetCorrectCellsVisuals();
+    resetGridVisuals();
     isGameLocked = false;
     isShowAnswer = false;
     if (showAnswerButtonRef) {

@@ -46,19 +46,19 @@ const letterAudioMap = {
 
 // --- LOTTIE INTEGRATION CONSTANTS & GLOBALS ---
 const LOTTIE_ANIMATION_MAP = {
-    "घर": "house.json", "जल": "water.json", "नल": "tap.json",
-    "फल": "fruit.json", "छत": "roof.json", "वन": "jungle.json",
-    "तट": "river.json", "रथ": "cart.json", "पर": "wings.json",
-    "धन": "coin.json", "हल": "Plough.json", "कप": "cup.json",
-    "बस": "bus.json", "दस": "number-ten.json", "रस": "juice.json",
-    "जग": "jug.json", "खत": "letter.json", "एक": "number-one.json",
-    "तन": "body.json", "नभ": "sky.json"
+    "घर": "House.json", "जल": "water.json", "नल": "tap.json",
+    "फल": "Fruits.json", "छत": "Roof.json", "वन": "Jungle.json",
+    "तट": "Beach.json", "रथ": "Rath.json", "पर": "Wings.json",
+    "धन": "Money.json", "हल": "Plow.json", "कप": "Cup.json",
+    "बस": "Bus.json", "दस": "Ten.json", "रस": "Juice.json",
+    "जग": "Jug.json", "खत": "Letter.json", "एक": "one.json",
+    "तन": "Body.json", "नभ": "Sky.json"
 };
 let currentLottieInstance = null;
 let starLottieInstance = null;
 let isAnswerShown = false;
 
-const ANIMATION_PATH_BASE = 'Assets/lottieJSON/'; // Adjust this path if necessary
+const ANIMATION_PATH_BASE = 'Assets/JSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
 let container = document.getElementById('lottie-wrapper');
 const showAnswerBtn = document.getElementById('show-example-btn');
@@ -495,6 +495,8 @@ function shakeAnswerSlots() {
 function resetSentence() {
     document.getElementById("starLottie-wrapper").style.display="none";
     instructionText.textContent = "इमेज स्क्रैच करें और देखें इसके पीछे क्या छुपा है।";
+    showAnswerBtn.textContent = "उत्तर देखें";
+    isAnswerShown = false;
     container.classList.remove('no-touch');
     letterButton.forEach((item) => {
         item.style.pointerEvents = 'auto';
