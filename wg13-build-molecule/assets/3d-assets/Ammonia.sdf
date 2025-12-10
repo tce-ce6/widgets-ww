@@ -1,5 +1,5 @@
 Ammonia
-  Avogadro12022518303D
+  Avogadro11282519033D
 
   4  3  0  0  0  0  0  0  0  0999 V2000
    -0.0000   -0.0000    0.0550 N   0  0  0  0  0  0  0  0  0  0  0  0
@@ -10,9 +10,6 @@ Ammonia
   1  3  1  0  0  0  0
   1  4  1  0  0  0  0
 M  END
-> <fileName>
-D:/OneDrive - Tata Class Edge Limited/Widget/Widget 13_3D Assets_Final/Ammonia.sdf
-
 > <name>
 Ammonia
 

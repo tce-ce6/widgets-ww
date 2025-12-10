@@ -1,8 +1,8 @@
 Nitric acid
-  Avogadro12022519163D
+  Avogadro11282520043D
 
   5  4  0  0  0  0  0  0  0  0999 V2000
-   -0.0804    0.0027    0.0014 N   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.0804    0.0027    0.0014 N   0  1  0  0  0  0  0  0  0  0  0  0
    -0.5861   -1.2605   -0.0198 O   0  0  0  0  0  0  0  0  0  0  0  0
     1.3211    0.2045   -0.0002 O   0  0  0  0  0  0  0  0  0  0  0  0
    -0.8648    1.0548    0.0146 O   0  5  0  0  0  0  0  0  0  0  0  0
@@ -11,11 +11,9 @@ Nitric acid
   1  3  1  0  0  0  0
   1  4  1  0  0  0  0
   3  5  1  0  0  0  0
+M  CHG  1   1   1
 M  CHG  1   4  -1
 M  END
-> <fileName>
-D:/OneDrive - Tata Class Edge Limited/Widget/Widget 13_3D Assets_Final/Nitric_acid.sdf
-
 > <name>
 Nitric acid
 

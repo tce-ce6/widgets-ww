@@ -537,7 +537,9 @@ function checkTransmission(type) {
           }
         });
       });
-      return; // Exit early for indirect transmission
+      // Set low person-to-person transmission for indirect contact
+      transmissionProbability = 0.001;
+      break;
     case "airborne":
       const ventilationValue = parseInt(
         document.getElementById("airborne-ventilation").value
@@ -565,7 +567,9 @@ function checkTransmission(type) {
           }
         });
       });
-      return; // Exit early for food transmission
+      // Set low person-to-person transmission for food-borne
+      transmissionProbability = 0.001;
+      break;
     case "vector":
       const vectorValue = parseInt(
         document.getElementById("vector-population").value
@@ -575,6 +579,7 @@ function checkTransmission(type) {
       break;
   }
 
+  // Person-to-person transmission (works for all types now)
   infected.forEach((infectedPerson) => {
     healthy.forEach((healthyPerson) => {
       const distance = calculateDistance(infectedPerson, healthyPerson);

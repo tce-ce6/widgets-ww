@@ -1,5 +1,5 @@
 butane
-  Avogadro12022518543D
+  Avogadro12022510583D
 
  14 13  0  0  0  0  0  0  0  0999 V2000
     1.9203   -0.1373   -0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
@@ -30,9 +30,6 @@ butane
   4 13  1  0  0  0  0
   4 14  1  0  0  0  0
 M  END
-> <fileName>
-D:/OneDrive - Tata Class Edge Limited/Widget/Widget 13_3D Assets_Final/Butane.sdf
-
 > <name>
 butane
 

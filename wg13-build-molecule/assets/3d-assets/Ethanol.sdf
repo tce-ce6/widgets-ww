@@ -1,5 +1,5 @@
 Ethanol
-  Avogadro12022519083D
+  Avogadro11282522113D
 
   9  8  0  0  0  0  0  0  0  0999 V2000
     0.0072   -0.5687   -0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
@@ -20,9 +20,6 @@ Ethanol
   2  8  1  0  0  0  0
   3  9  1  0  0  0  0
 M  END
-> <fileName>
-D:/OneDrive - Tata Class Edge Limited/Widget/Widget 13_3D Assets_Final/Ethanol.sdf
-
 > <name>
 Ethanol
 
