@@ -192,11 +192,10 @@
   display: flex;
   align-items: center;
   gap: 7px;
+  width: 288px;
+  justify-content: center;
 }
-.tab span {
-  display: block;
-  width: 210px;
-}
+
 .tab:hover {
   background: #FFE923;
 }
