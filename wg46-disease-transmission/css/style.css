@@ -262,13 +262,16 @@
   cursor: default;
   user-select: none;
   border: 2px solid #487072;
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: #81E5EF;
   height: 80px;
   width: 80px;
   overflow: hidden;
 }
-
+.person img,
+.vector img{
+  border-radius: 50%;
+}
 .person::after,
 .vector::after {
   content: "";

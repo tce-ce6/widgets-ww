@@ -4,6 +4,12 @@ console.log("script.js loaded: noUiSlider integration active");
 window.__noUiSliderIntegrated = true;
 let animationFrames = {};
 
+// Pixels to inset the visual collision circle from the DOM bounding box.
+// Increase this value if people look like circles inside larger square boxes
+// and you want to require a closer visual contact before infection.
+const CONTACT_RADIUS_OFFSET = 1; // px (tweakable)
+window.CONTACT_RADIUS_OFFSET = CONTACT_RADIUS_OFFSET;
+
 // Defensive shim: if some leftover code still calls the old rangeslider plugin
 // provide a no-op that calls `onInit` and returns the jQuery object so `.on()` chaining works.
 // 🔥 Safe global shim: prevents "$slider.rangeslider is not a function" errors
@@ -418,6 +424,46 @@ function startAnimation(type) {
     const vectors = simulations[type].vectors;
     const particles = simulations[type].particles || [];
 
+    // 🔥 Determine movement speed multiplier for ALL simulation types
+    let sliderVal = 1;
+    switch (type) {
+      case "direct":
+        sliderVal = parseInt(document.getElementById("direct-contact").value);
+        break;
+      case "indirect":
+        sliderVal = parseInt(
+          document.getElementById("indirect-contamination").value
+        );
+        break;
+      case "airborne":
+        sliderVal = parseInt(
+          document.getElementById("airborne-ventilation").value
+        );
+        break;
+      case "food":
+        sliderVal = parseInt(document.getElementById("food-sanitation").value);
+        break;
+      case "vector":
+        sliderVal = parseInt(
+          document.getElementById("vector-population").value
+        );
+        break;
+    }
+
+    let speedMultiplier;
+
+    // Normal direction → Direct, Indirect, Vector
+    if (type === "direct" || type === "indirect" || type === "vector") {
+      const speedMap = { 0: 0.66, 1: 1.0, 2: 2.0 };
+      speedMultiplier = speedMap[sliderVal] || 1;
+    }
+
+    // Reverse direction → Airborne, Food/Water
+    else if (type === "airborne" || type === "food") {
+      const speedMap = { 0: 2.0, 1: 1.0, 2: 0.66 };
+      speedMultiplier = speedMap[sliderVal] || 1;
+    }
+
     // Move people
     people.forEach((person) => {
       let x = parseFloat(person.style.left);
@@ -425,8 +471,8 @@ function startAnimation(type) {
       let vx = parseFloat(person.dataset.vx);
       let vy = parseFloat(person.dataset.vy);
 
-      x += vx;
-      y += vy;
+      x += vx * speedMultiplier;
+      y += vy * speedMultiplier;
 
       if (x <= 0 || x >= sim.offsetWidth - 40) {
         vx = -vx;
@@ -448,8 +494,8 @@ function startAnimation(type) {
       let vx = parseFloat(vector.dataset.vx);
       let vy = parseFloat(vector.dataset.vy);
 
-      x += vx;
-      y += vy;
+      x += vx * speedMultiplier;
+      y += vy * speedMultiplier;
 
       if (x <= 0 || x >= sim.offsetWidth - 30) {
         vx = -vx;
@@ -463,20 +509,18 @@ function startAnimation(type) {
       vector.style.left = x + "px";
       vector.style.top = y + "px";
     });
-
-    // Move particles (for airborne)
+    // Move particles
     particles.forEach((particle) => {
       let x = parseFloat(particle.style.left);
       let y = parseFloat(particle.style.top);
       let vx = parseFloat(particle.dataset.vx);
       let vy = parseFloat(particle.dataset.vy);
 
-      // Add slight brownian motion for realism
       vx += (Math.random() - 0.5) * 0.3;
       vy += (Math.random() - 0.5) * 0.3;
 
-      x += vx;
-      y += vy;
+      x += vx * speedMultiplier;
+      y += vy * speedMultiplier;
 
       if (x <= 0 || x >= sim.offsetWidth - 6) {
         vx = -vx * 0.8;
@@ -537,6 +581,24 @@ function checkTransmission(type) {
           }
         });
       });
+      // Also infect on contact with any vector (mosquito) elements.
+      // This covers cases where vectors exist in the 'indirect' sim or in the global 'vector' sim.
+      try {
+        // Include any element with class 'vector' in the DOM so
+        // vectors created in other simulation containers are also considered.
+        const allVectors =
+          Array.from(document.querySelectorAll(".vector")) || [];
+        allVectors.forEach((vector) => {
+          healthy.forEach((healthyPerson) => {
+            if (elementsOverlap(vector, healthyPerson)) {
+              healthyPerson.classList.remove("healthy");
+              healthyPerson.classList.add("infected");
+            }
+          });
+        });
+      } catch (e) {
+        // ignore if query selection fails for any reason
+      }
       // Set low person-to-person transmission for indirect contact
       transmissionProbability = 0.001;
       break;
@@ -546,6 +608,23 @@ function checkTransmission(type) {
       );
       const ventilationMap = [0.008, 0.005, 0.003];
       transmissionProbability = ventilationMap[ventilationValue];
+      // Immediate infection when airborne particles (droplets/aerosols)
+      // overlap a person. This checks the particle elements added in
+      // addAirborneParticles() and uses elementsOverlap() so the
+      // circular visual must touch (respecting CONTACT_RADIUS_OFFSET).
+      try {
+        const particles = simulations[type].particles || [];
+        particles.forEach((particle) => {
+          healthy.forEach((healthyPerson) => {
+            if (elementsOverlap(particle, healthyPerson)) {
+              healthyPerson.classList.remove("healthy");
+              healthyPerson.classList.add("infected");
+            }
+          });
+        });
+      } catch (e) {
+        // ignore when simulation not fully initialized
+      }
       break;
     case "food":
       const sanitationValue = parseInt(
@@ -567,6 +646,21 @@ function checkTransmission(type) {
           }
         });
       });
+      // Also infect on contact with any vector (mosquito) elements in the DOM
+      try {
+        const allVectors =
+          Array.from(document.querySelectorAll(".vector")) || [];
+        allVectors.forEach((vector) => {
+          healthy.forEach((healthyPerson) => {
+            if (elementsOverlap(vector, healthyPerson)) {
+              healthyPerson.classList.remove("healthy");
+              healthyPerson.classList.add("infected");
+            }
+          });
+        });
+      } catch (e) {
+        // ignore if selection fails
+      }
       // Set low person-to-person transmission for food-borne
       transmissionProbability = 0.001;
       break;
@@ -576,20 +670,46 @@ function checkTransmission(type) {
       );
       const vectorMap = [0.003, 0.006, 0.009];
       transmissionProbability = vectorMap[vectorValue];
+      // Immediate infection on contact with any moving vector (mosquito)
+      // Iterate current vectors and infect any healthy person whose circle overlaps a vector.
+      try {
+        const vectors = simulations[type].vectors || [];
+        vectors.forEach((vector) => {
+          healthy.forEach((healthyPerson) => {
+            if (elementsOverlap(vector, healthyPerson)) {
+              healthyPerson.classList.remove("healthy");
+              healthyPerson.classList.add("infected");
+            }
+          });
+        });
+      } catch (e) {
+        // ignore errors if sims not ready
+      }
       break;
   }
 
   // Person-to-person transmission (works for all types now)
-  infected.forEach((infectedPerson) => {
-    healthy.forEach((healthyPerson) => {
-      const distance = calculateDistance(infectedPerson, healthyPerson);
+  // Person-to-person transmission (works for all types except 'vector')
+  // In the 'vector' simulation, infection should only occur via vector contact.
+  if (type !== "vector") {
+    infected.forEach((infectedPerson) => {
+      healthy.forEach((healthyPerson) => {
+        // If their boundaries overlap even slightly, infect immediately
+        if (elementsOverlap(infectedPerson, healthyPerson)) {
+          healthyPerson.classList.remove("healthy");
+          healthyPerson.classList.add("infected");
+          return; // move to next healthy person
+        }
 
-      if (distance < 50 && Math.random() < transmissionProbability) {
-        healthyPerson.classList.remove("healthy");
-        healthyPerson.classList.add("infected");
-      }
+        // Otherwise fall back to proximity-based probabilistic transmission
+        const distance = calculateDistance(infectedPerson, healthyPerson);
+        if (distance < 50 && Math.random() < transmissionProbability) {
+          healthyPerson.classList.remove("healthy");
+          healthyPerson.classList.add("infected");
+        }
+      });
     });
-  });
+  }
 }
 
 function calculateDistance(elem1, elem2) {
@@ -599,6 +719,41 @@ function calculateDistance(elem1, elem2) {
   const y2 = parseFloat(elem2.style.top);
 
   return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+// Returns true when the rendered boundaries of two elements overlap at all.
+function elementsOverlap(elem1, elem2) {
+  // Use circle-based collision using element center and an inset radius
+  // This avoids false positives from square DOM bounding boxes when visuals are circular.
+  try {
+    const r1 = elem1.getBoundingClientRect();
+    const r2 = elem2.getBoundingClientRect();
+
+    const w1 = r1.width,
+      h1 = r1.height;
+    const w2 = r2.width,
+      h2 = r2.height;
+
+    const cx1 = r1.left + w1 / 2;
+    const cy1 = r1.top + h1 / 2;
+    const cx2 = r2.left + w2 / 2;
+    const cy2 = r2.top + h2 / 2;
+
+    // Radius is half the smaller dimension (fits a circle inside the element)
+    const rRad1 = Math.max(1, Math.min(w1, h1) / 2 - CONTACT_RADIUS_OFFSET);
+    const rRad2 = Math.max(1, Math.min(w2, h2) / 2 - CONTACT_RADIUS_OFFSET);
+
+    const dx = cx2 - cx1;
+    const dy = cy2 - cy1;
+    const dist = Math.hypot(dx, dy);
+
+    // Allow a small epsilon so visually-touching elements are detected
+    const EPS = 4; // pixels
+    return dist <= rRad1 + rRad2 + EPS;
+  } catch (e) {
+    // Fallback to center-distance with a conservative threshold
+    const d = calculateDistance(elem1, elem2);
+    return d < 50 - CONTACT_RADIUS_OFFSET;
+  }
 }
 
 function updateStats(type) {
@@ -682,12 +837,8 @@ function updateStats(type) {
       if (["vector", "indirect", "food", "airborne"].includes(type))
         scheduleReset(type, secondarySlider);
     });
-
+    // immediate on change (when user releases the handle)
     secondarySlider.addEventListener("change", () => {
-      if (resetTimers[type]) {
-        clearTimeout(resetTimers[type]);
-        resetTimers[type] = null;
-      }
       // clamp value and reset immediately
       const min = parseFloat(secondarySlider.getAttribute("min")) || 0;
       const max = parseFloat(secondarySlider.getAttribute("max")) || 100;
