@@ -46,7 +46,7 @@ const letterAudioMap = {
 
 // --- LOTTIE INTEGRATION CONSTANTS & GLOBALS ---
 const LOTTIE_ANIMATION_MAP = {
-    "घर": "House.json", "जल": "water.json", "नल": "tap.json",
+    "घर": "House.json", "जल": "Glass.json", "नल": "tap.json",
     "फल": "Fruits.json", "छत": "Roof.json", "वन": "Jungle.json",
     "तट": "Beach.json", "रथ": "Rath.json", "पर": "Wings.json",
     "धन": "Money.json", "हल": "Plow.json", "कप": "Cup.json",
