@@ -575,7 +575,6 @@ function showAnswer() {
 
 // Initialize game when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(() => {
         initGame();
 
         // Add click handlers to letter buttons
@@ -607,5 +606,4 @@ document.addEventListener('DOMContentLoaded', function () {
         if (resetBtn) {
             resetBtn.onclick = resetSentence;
         }
-    }, 200);
 });
