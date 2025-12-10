@@ -136,6 +136,7 @@ function playLottieAnimation() {
             soundIcon.style.display = 'block';
             afterContainer.style.display = 'block';
             lottieObject.setAttribute('x', 300);
+            container.classList.add('no-touch');
             showAnswerBtn.disabled = false;
         }, 2000)
     }
@@ -310,6 +311,7 @@ function loadWord(word) {
     // --- LOTTIE INTEGRATION POINT 1: Load initial image/state ---
     hideLottieAnimation(); // Ensure clean slate
     loadInitialLottie(word.word);
+    
 }
 
 /**
@@ -567,7 +569,7 @@ function showAnswer() {
     document.getElementById("starLottie-wrapper").style.display = "none";
     lottieStar.style.display = "none";
 
-    container.classList.remove('no-touch');
+  //  container.classList.remove('no-touch');
 
     isAnswerShown = false;
 }
