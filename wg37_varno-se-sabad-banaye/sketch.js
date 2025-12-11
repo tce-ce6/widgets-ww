@@ -412,8 +412,14 @@ function markCellAsCorrect(meta) {
   meta.isUsed = true;
   usedCellMetas.push(meta); // Track the cell in the correct sequence
 
+  const parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+
+  // Add correct highlight class
+  if (parentDiv) parentDiv.classList.add("correct");
+
   if (meta.tspan) {
     meta.tspan.setAttribute("fill", CORRECT_LETTER_FILL);
+    console.log("correct")
   }
 }
 
@@ -425,11 +431,18 @@ function blinkSingleWrongFeedback(meta) {
   if (!meta) return;
 
   // Blink Red
-  if (meta.tspan) meta.tspan.setAttribute("fill", WRONG_LETTER_FILL);
+  //if (meta.tspan) meta.tspan.setAttribute("fill", WRONG_LETTER_FILL);
 
+  const parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+
+  // ADD the class
+  if (parentDiv) parentDiv.classList.add("wrong");
+
+  console.log("wrong");
   // Revert after duration
   setTimeout(() => {
-    if (meta.tspan) meta.tspan.setAttribute("fill", meta.originalFill);
+   // if (meta.tspan) meta.tspan.setAttribute("fill", meta.originalFill);
+    if (parentDiv) parentDiv.classList.remove("wrong");
     // Game remains unlocked. Correct sequence is preserved.
   }, WRONG_FEEDBACK_DURATION);
 }
@@ -532,7 +545,7 @@ function handleCellClick(meta) {
 
   if (meta.letter === nextExpectedChar) {
     // CORRECT: Process the click sequentially
-
+    console.log(meta);
     // 2. Append the letter to the user's answer array
     userAnswerArray.push(meta.letter);
 

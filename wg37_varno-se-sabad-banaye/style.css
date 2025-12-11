@@ -216,3 +216,14 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
+.wrong {
+  border: 2px solid red;
+  border-radius: 4px;
+}
+
+.correct {
+  border: 2px solid #28a745;  /* green */
+  border-radius: 4px;
+  background-color: rgba(40, 167, 69, 0.15); /* light green tint (optional) */
+}
