@@ -191,3 +191,28 @@
 /* .sound-button {
   transition: all 0.2s ease;
 }  */
+
+.grid-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px 15px;
+      justify-content: center;
+}
+
+.grid-wrapper div{
+  height: 120px;
+  width: 120px;
+  background-image: url("./Assets/Images/bg-btn.svg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
+  font-weight: 600;
+  color: #000;
+  border-radius: 10px;
+  cursor: pointer;
+}
