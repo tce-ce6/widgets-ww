@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complex Number Plotter</title>
+
+  <!-- Your existing libs & CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global_style.css">
+  <!-- JSXGraph -->
+   <!-- <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"> -->
+  <script src="jsxgraphcore.js"></script>
+  <link rel="stylesheet" href="jsxgraph.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Complex Number Plotter</h2>
+        <span id="versionId" class="versionText">b2_wg54_25121101</span>
+      </div>
+
+      <!-- Your original main container kept as-is; quadratic app goes inside -->
+      <div class="mainContainer" id="mainCanvas" style="align-items: center;">
+        <div class="question">
+          <h4>Plot the Complex Number :</h4> 2 + 3i
+        </div>
+        <div id="jxgBox" class="jxgBox">
+        </div>
+      </div>
+
+      <!-- Your existing buttons kept intact -->
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
+          <button id="checkAnswer" class="btn btn-primary plot">Check</button>
+          <button id="showAnswer" class="btn btn-primary plot">Show answer</button>
+          <button id="next-btn" class="btn btn-primary plot">Try Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
