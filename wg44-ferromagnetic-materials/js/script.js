@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const torchBtn = document.getElementById("torch-btn");
+  /* ---------------------------------------------
+     LOAD BOTH LOTTIE ANIMATIONS
+  --------------------------------------------- */
 
-  const torchAnim = lottie.loadAnimation({
+  // X-RAY animation
+  const xrayAnim = lottie.loadAnimation({
     container: document.getElementById("xray-container"),
     renderer: "svg",
     loop: false,
@@ -9,29 +12,90 @@ document.addEventListener("DOMContentLoaded", () => {
     path: "xray-lottie.json",
   });
 
-  // Wait for Lottie JSON to load before using frames
-  torchAnim.addEventListener("DOMLoaded", () => {
-    const totalFrames = torchAnim.totalFrames;
-    const durationInSec = torchAnim.getDuration(true);
-    const fps = totalFrames / durationInSec;
-
-    const startFrame = 0;
-    const endFrame = 50;
-    let segmentStarted = false; // 👈 Track if we've started the main segment
-
+  // Magnetic Field animation
+  const magneticAnim = lottie.loadAnimation({
+    container: document.getElementById("magnetic-container"),
+    renderer: "svg",
+    loop: false,
+    autoplay: false,
+    path: "magnetic-lottie.json",
   });
-  
-  const button = document.getElementsByClassName("js-button")[0];
-button.addEventListener("click", function (event) {
-  let parentNode = event.target.parentNode;
-  if (parentNode.classList.contains("turn-on")) {
-    event.target.parentNode.classList.remove("turn-on");
-    document.body.classList.remove("active");
-  } else {
-    event.target.parentNode.classList.add("turn-on");
-    document.body.classList.add("active");
-  }
-});
 
+  xrayAnim.addEventListener("DOMLoaded", () => {
+    console.log("X-ray Lottie Ready");
+  });
 
+  magneticAnim.addEventListener("DOMLoaded", () => {
+    console.log("Magnetic Lottie Ready");
+  });
+
+  /* ---------------------------------------------
+     BUTTON LOGIC
+  --------------------------------------------- */
+
+  const buttons = document.querySelectorAll(".js-button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      let parentNode = event.target.parentNode;
+      let isTurningOn = !parentNode.classList.contains("turn-on");
+
+      // 🔥 First, turn OFF all buttons (mutual exclusive)
+      document.querySelectorAll(".button-inner-wrapper").forEach((wrapper) => {
+        wrapper.classList.remove("turn-on");
+      });
+
+      // 🔥 Now turn ON only the clicked one (if it was not already ON)
+      if (isTurningOn) parentNode.classList.add("turn-on");
+
+      // -----------------------------------------
+      // Update body active state
+      const anyActive = document.querySelector(".button-inner-wrapper.turn-on");
+      if (anyActive) document.body.classList.add("active");
+      else document.body.classList.remove("active");
+      // -----------------------------------------
+
+      /* ---------------------------------------------
+       X-RAY BUTTON CLICKED
+    --------------------------------------------- */
+      if (event.target.id === "xray-button") {
+        if (isTurningOn) {
+          // Show only X-ray
+          document.getElementById("xray-container").style.display = "block";
+          document.getElementById("magnetic-container").style.display = "none";
+
+          magneticAnim.stop();
+
+          setTimeout(() => {
+            xrayAnim.goToAndPlay(0, true);
+          }, 50);
+        } else {
+          // Turning X-ray off
+          document.getElementById("xray-container").style.display = "none";
+          xrayAnim.stop();
+        }
+      }
+
+      /* ---------------------------------------------
+       MAGNETIC BUTTON CLICKED
+    --------------------------------------------- */
+      if (event.target.id === "magnetic-button") {
+        if (isTurningOn) {
+          // Show only Magnetic
+          document.getElementById("magnetic-container").style.display = "block";
+          document.getElementById("xray-container").style.display = "none";
+
+          xrayAnim.stop();
+
+          setTimeout(() => {
+            magneticAnim.goToAndPlay(0, true);
+          }, 50);
+        } else {
+          // Turning Magnetic off
+          document.getElementById("magnetic-container").style.display = "none";
+          magneticAnim.stop();
+        }
+      }
+    });
+  });
 });
