@@ -3,7 +3,7 @@ const words = [
   {
     word: "अजगर",
     grid_data: [
-      ["र", "क", "म", "त", "न"],
+      ["ख", "क", "म", "त", "न"],
       ["ल", "अ", "ज", "ग", "र"],
       ["प", "स", "व", "द", "ह"],
       ["य", "ब", "च", "ए", "श"],
@@ -25,8 +25,8 @@ const words = [
   {
     word: "खटमल",
     grid_data: [
-      ["म", "ख", "र", "स", "प"],
-      ["ब", "ट", "ज", "द", "ल"],
+      ["थ", "ख", "र", "स", "प"],
+      ["ब", "ट", "ज", "द", "फ"],
       ["य", "म", "व", "ए", "श"],
       ["ग", "ल", "थ", "च", "फ"],
       ["क", "ध", "ण", "औ", "झ"]
@@ -36,7 +36,7 @@ const words = [
   {
     word: "बचपन",
     grid_data: [
-      ["म", "ख", "र", "स", "प"],
+      ["म", "ख", "र", "स", "ध"],
       ["ल", "ब", "ज", "द", "श"],
       ["य", "व", "च", "ए", "क"],
       ["ग", "थ", "त", "प", "फ"],
@@ -51,7 +51,7 @@ const words = [
       ["ल", "त", "ए", "र", "श"],
       ["य", "भ", "च", "ग", "क"],
       ["प", "थ", "न", "द", "फ"],
-      ["र", "ध", "ण", "औ", "स"]
+      ["झ", "ध", "ण", "औ", "स"]
     ],
     correct_answer_char_array: ["ब", "र", "ग", "द"]
   },
@@ -59,9 +59,9 @@ const words = [
     word: "शलगम",
     grid_data: [
       ["म", "ख", "र", "ब", "प"],
-      ["ल", "त", "ग", "द", "श"],
+      ["ध", "त", "फ", "द", "श"],
       ["य", "च", "न", "ए", "ल"],
-      ["द", "थ", "श", "प", "ग"],
+      ["द", "थ", "स", "प", "ग"],
       ["झ", "ध", "ण", "आ", "म"]
     ],
     correct_answer_char_array: ["श", "ल", "ग", "म"]
@@ -73,7 +73,7 @@ const words = [
       ["ल", "त", "ग", "द", "स"],
       ["य", "च", "ल", "ए", "क"],
       ["श", "र", "ब", "त", "फ"],
-      ["झ", "ध", "ण", "ई", "श"]
+      ["झ", "ध", "ण", "ई", "आ"]
     ],
     correct_answer_char_array: ["श", "र", "ब", "त"]
   },
@@ -94,7 +94,7 @@ const words = [
       ["उ", "ख", "र", "ऊ", "श"],
       ["ल", "प", "फ", "द", "व"],
       ["य", "भ", "व", "ए", "क"],
-      ["न", "ब", "र", "न", "फ"],
+      ["ण", "ब", "र", "न", "फ"],
       ["झ", "घ", "ग", "अ", "स"]
     ],
     correct_answer_char_array: ["उ", "प", "व", "न"]
@@ -102,8 +102,8 @@ const words = [
   {
     word: "करवट",
     grid_data: [
-      ["प", "ख", "र", "उ", "श"],
-      ["ल", "त", "प", "द", "व"],
+      ["प", "ख", "ज्ञ", "उ", "श"],
+      ["ल", "त", "प", "द", "अ"],
       ["क", "र", "व", "ट", "ज"],
       ["न", "ब", "म", "ए", "फ"],
       ["झ", "ज्ञ", "ण", "ओ", "श"]
@@ -171,7 +171,7 @@ const words = [
       ["च", "ऋ", "ञ", "घ", "ष"],
       ["म", "द", "व", "प", "ऐ"],
       ["च", "ज", "ठ", "इ", "औ"],
-      ["म", "भ", "र", "ए", "म"],
+      ["म", "भ", "र", "ए", "ज्ञ"],
       ["य", "ख", "त", "ऊ", "फ"]
     ],
     correct_answer_char_array: ["च", "म", "च", "म"]
@@ -212,8 +212,8 @@ const words = [
   {
     word: "उपटन",
     grid_data: [
-      ["घ", "न", "ऋ", "च", "ष"],
-      ["म", "ट", "औ", "ज", "इ"],
+      ["घ", "अ", "ऋ", "च", "ष"],
+      ["म", "ञ", "औ", "ज", "इ"],
       ["य", "ऐ", "फ", "द", "व"],
       ["ख", "भ", "ए", "ऊ", "ठ"],
       ["फ", "उ", "प", "ट", "न"]
@@ -253,21 +253,21 @@ const letterAudioMap = {
 const wordAudioFileNameMap = {
   "अजगर": "अजगर.mp3", "कटहल": "कटहल.mp3", "खटमल": "खटमल.mp3",
   "बचपन": "बचपन.mp3", "बरगद": "बरगद.mp3", "शलगम": "शलगम.mp3",
-  "शरबत": "शरबत.mp3", "पनघट": " पनघट.mp3", "उपवन": "उपवन.mp3",
+  "शरबत": "शरबत.mp3", "पनघट": " panghat.mp3", "उपवन": "उपवन.mp3",
   "करवट": "करवट.mp3", "कसरत": "कसरत.mp3", "परवल": "परवल.mp3",
   "पचपन": "पचपन.mp3", "अदरक": "अदरक.mp3", "बरतन": "बरतन.mp3",
   "चमचम": "चमचम.mp3", "दलदल": "दलदल.mp3", "थरमस": "थरमस.mp3",
-  "पतझड़": "पतझड़.mp3", "उपटन": "उपटन.mp3"
+  "पतझड़": "patjhad.mp3", "उपटन": "उपटन.mp3"
 };
 
 const wordImageMap = {
   "अजगर": "अजगर.svg", "कटहल": "कटहल.svg", "खटमल": "खटमल.svg",
   "बचपन": "बचपन.svg", "बरगद": "बरगद.svg", "शलगम": "शलगम.svg",
-  "शरबत": "शरबत.svg", " पनघट": "पनघट.svg", "उपवन": "उपवन.svg",
+  "शरबत": "शरबत.svg", "पनघट": "panghat.svg", "उपवन": "उपवन.svg",
   "करवट": "करवट.svg", "कसरत": "कसरत.svg", "परवल": "परवल.svg",
   "पचपन": "पचपन.svg", "अदरक": "अदरक.svg", "बरतन": "बरतन.svg",
   "चमचम": "चमचम.svg", "दलदल": "दलदल.svg", "थरमस": "थरमस.svg",
-  "पतझड़": "पतझड़.svg", "उपटन": "उपटन.svg"
+  "पतझड़": "patjhad.svg", "उपटन": "उपटन.svg"
 };
 
 // --- Constants and State ---
@@ -278,15 +278,17 @@ const WRONG_FEEDBACK_DURATION = 300;
 const DEFAULT_LETTER_FILL = "#000000"; // Default black letter color
 
 let gridCellMetas = [];
-let currentWordIndex = -1;
+let currentWordIndex = 0;
 let currentWord = null;
 let userAnswerArray = [];
 let usedCellMetas = []; // Holds the Meta objects for cells that are currently green
 let isGameLocked = false;
 let isWordCompleted = false;
+let tempShowAnswerCellMetas = [];
 let activeLetterAudio = null;
 let activeWordAudio = null;
 let isShowAnswer = false;
+let parentDiv;
 
 let finalImageElement = null; // ID: final-image-container
 let showAnswerButtonRef = null;
@@ -377,50 +379,53 @@ function prepareGridCellsById() {
 function resetGridVisuals() {
   gridCellMetas.forEach((meta) => {
     meta.isUsed = false;
-    if (meta.tspan) {
-      meta.tspan.setAttribute("fill", meta.originalFill);
-    }
+    parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+
+    // Add correct highlight class
+    if (parentDiv) parentDiv.classList.remove("correct");
   });
   usedCellMetas = []; // Clear the sequence of used cells
 }
 
 /**
- * Resets the visual appearance and 'isUsed' state only for the currently correct cells.
- * Used when hiding the "Show Answer" result.
- */
-function resetCorrectCellsVisuals() {
-  usedCellMetas.forEach(meta => {
-    meta.isUsed = false;
-    if (meta.tspan) {
-      meta.tspan.setAttribute("fill", meta.originalFill);
-    }
-  });
-  // Do NOT clear userAnswerArray here, as the user might be mid-attempt.
-  usedCellMetas = [];
-}
+ * Marks a cell temporarily for "Show Answer" mode.
+ */
+function markCellAsTemporaryCorrect(meta) { // <--- REVISED FUNCTION
+    // DO NOT set meta.isUsed = true, as this is for user progress only.
+  
+    tempShowAnswerCellMetas.push(meta); // Track the cell in the TEMPORARY sequence
+  
+    parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+  
+    // Add correct highlight class
+    if (parentDiv) parentDiv.classList.add("correct");
+  }
 
+  /**
+ * Resets the visual appearance only for the TEMPORARY (show answer) cells, 
+ * and then reapplies the visual state for the cells the user has correctly found.
+ */
+  function resetTemporaryAnswerVisuals() {
+    // 1. Remove ALL temporary highlights.
+    tempShowAnswerCellMetas.forEach(meta => {
+        parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+        if (parentDiv) parentDiv.classList.remove("correct");
+    });
+    tempShowAnswerCellMetas = [];
+
+    // 2. Re-apply the green highlight class to the cells the user has correctly found (usedCellMetas).
+    // This restores the visual state of the user's persistent progress.
+    usedCellMetas.forEach(meta => {
+        parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+        if (parentDiv) {
+            // Ensure the 'correct' class is present for the user's progress
+            parentDiv.classList.add("correct"); 
+        }
+    });
+}
 
 function flattenGrid(grid) {
   return grid.reduce((acc, row) => acc.concat(row), []);
-}
-
-// --- Game Flow Functions ---
-
-function markCellAsCorrect(meta) {
-  if (!meta || meta.isUsed) return; // Should not happen but good guard
-
-  meta.isUsed = true;
-  usedCellMetas.push(meta); // Track the cell in the correct sequence
-
-  const parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
-
-  // Add correct highlight class
-  if (parentDiv) parentDiv.classList.add("correct");
-
-  if (meta.tspan) {
-    meta.tspan.setAttribute("fill", CORRECT_LETTER_FILL);
-    console.log("correct")
-  }
 }
 
 /**
@@ -431,17 +436,13 @@ function blinkSingleWrongFeedback(meta) {
   if (!meta) return;
 
   // Blink Red
-  //if (meta.tspan) meta.tspan.setAttribute("fill", WRONG_LETTER_FILL);
-
-  const parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
+  parentDiv = meta.tspan ? meta.tspan.closest("div") : null;
 
   // ADD the class
   if (parentDiv) parentDiv.classList.add("wrong");
 
-  console.log("wrong");
   // Revert after duration
   setTimeout(() => {
-   // if (meta.tspan) meta.tspan.setAttribute("fill", meta.originalFill);
     if (parentDiv) parentDiv.classList.remove("wrong");
     // Game remains unlocked. Correct sequence is preserved.
   }, WRONG_FEEDBACK_DURATION);
@@ -518,10 +519,6 @@ function handleWordComplete() {
     showFinalImage();
     showAnswerButtonRef.disabled = true;
   }, 1000);
-
-  // if (showAnswerButtonRef) {
-  //    showAnswerButtonRef.textContent = "उत्तर छुपाएँ"; // When completed, button becomes 'Next Word' helper
-  // }
 }
 
 
@@ -545,12 +542,12 @@ function handleCellClick(meta) {
 
   if (meta.letter === nextExpectedChar) {
     // CORRECT: Process the click sequentially
-    console.log(meta);
     // 2. Append the letter to the user's answer array
     userAnswerArray.push(meta.letter);
-
+    usedCellMetas.push(meta);
     // 3. Mark the cell as used/disabled and give green feedback
-    markCellAsCorrect(meta);
+   // markCellAsCorrect(meta);
+    markCellAsTemporaryCorrect(meta);
 
     // 4. Check for final word completion
     if (userAnswerArray.length === targetChars.length) {
@@ -582,99 +579,81 @@ function isAdjacent(meta1, meta2) {
 // Normal function exposed via event listener
 function showAnswer() {
   if (!currentWord || !finalImageElement) return;
-  console.log(isShowAnswer);
+
   if (!isShowAnswer) {
-    // --- SHOW ANSWER --- (Focus on this block)
-    if (isWordCompleted) {
-      // If already completed, just show the image. No path logic needed.
-      showFinalImage();
-    } else {
-      // If incomplete, show the answer (mark the correct path and show image)
-      isGameLocked = true;
+      // --- SHOW ANSWER ---
+      // ... (Show Answer logic remains as previously revised)
+      
+      // Lock the game and show the full path
+      isGameLocked = true; 
       isShowAnswer = true;
-      userAnswerArray = currentWord.correct_answer_char_array;
-
-      resetCorrectCellsVisuals();
-
+      resetTemporaryAnswerVisuals(); // Clears any previous temp marks, but restores user marks
+      
+      // Path finding and temporary marking logic (using markCellAsTemporaryCorrect) goes here...
       const requiredChars = [...currentWord.correct_answer_char_array];
-
-      // --- NEW VARIABLES TO TRACK DIRECTION ---
       let lastMeta = null;
-      let direction = null; // Stores { dRow, dCol } for the path
+      let direction = null;
 
-      // Loop to find and mark the sequential, directional cells
       for (let i = 0; i < requiredChars.length; i++) {
-        const char = requiredChars[i];
+          const char = requiredChars[i];
+          let foundMeta = null;
 
-        // Step 1: Find the next sequential cell that hasn't been used yet.
-        // This logic is more complex than a simple find, as it needs direction.
-
-        let foundMeta = null;
-
-        // If this is the first letter (i=0), we search the entire grid
-        if (i === 0) {
-          // Find the STARTING point (only need to match letter and not used)
-          foundMeta = gridCellMetas.find(meta => meta.letter === char && !meta.isUsed);
-
-        } else if (i === 1) {
-          // Find the SECOND letter, adjacent to the first, to establish direction
-          const potentialNext = gridCellMetas.find(meta => meta.letter === char && !meta.isUsed);
-
-          if (potentialNext && lastMeta && isAdjacent(lastMeta, potentialNext)) {
-            // Establish direction (dRow, dCol)
-            direction = {
-              dRow: potentialNext.row - lastMeta.row,
-              dCol: potentialNext.col - lastMeta.col
-            };
-            foundMeta = potentialNext;
+          if (i === 0) {
+              foundMeta = gridCellMetas.find(meta => meta.letter === char);
+          } else if (i === 1) {
+              const potentialNext = gridCellMetas.find(meta => 
+                  meta.letter === char && lastMeta && isAdjacent(lastMeta, meta)
+              );
+              if (potentialNext) {
+                  direction = {
+                      dRow: potentialNext.row - lastMeta.row,
+                      dCol: potentialNext.col - lastMeta.col
+                  };
+                  foundMeta = potentialNext;
+              }
+          } else {
+              if (lastMeta && direction) {
+                  const expectedRow = lastMeta.row + direction.dRow;
+                  const expectedCol = lastMeta.col + direction.dCol;
+                  foundMeta = gridCellMetas.find(meta =>
+                      meta.row === expectedRow &&
+                      meta.col === expectedCol &&
+                      meta.letter === char
+                  );
+              }
           }
 
-        } else {
-          // i >= 2: Use the established direction to predict the next cell
-
-          if (lastMeta && direction) {
-            const expectedRow = lastMeta.row + direction.dRow;
-            const expectedCol = lastMeta.col + direction.dCol;
-
-            // Find the cell in the exact expected position
-            foundMeta = gridCellMetas.find(meta =>
-              meta.row === expectedRow &&
-              meta.col === expectedCol &&
-              meta.letter === char &&
-              !meta.isUsed
-            );
+          if (foundMeta) {
+              markCellAsTemporaryCorrect(foundMeta);
+              lastMeta = foundMeta;
+          } else {
+              console.error(`Answer path broke at character index ${i}`);
+              break;
           }
-        }
-
-        // Step 2: If the correct, directional cell is found, mark it
-        if (foundMeta) {
-          markCellAsCorrect(foundMeta);
-          lastMeta = foundMeta; // Update the reference for the next iteration
-        } else {
-          // If the path breaks (e.g., the word isn't continuous)
-          console.error(`Answer path broke at character index ${i}`);
-          break;
-        }
       }
-
+      
+      // UI updates
       showFinalImage();
       playWordSound();
       setSoundPromptState(false);
       if (showAnswerButtonRef) {
-        showAnswerButtonRef.textContent = "उत्तर छुपाएँ";
+          showAnswerButtonRef.textContent = "उत्तर छुपाएँ";
       }
-    }
-  }
-  else {
-    // --- HIDE ANSWER --- (No change needed here)
-    hideFinalImage();
-    resetCorrectCellsVisuals();
-    resetGridVisuals();
-    isGameLocked = false;
-    isShowAnswer = false;
-    if (showAnswerButtonRef) {
-      showAnswerButtonRef.textContent = "उत्तर देखें"; // Revert to initial state
-    }
+
+  } else {
+      // --- HIDE ANSWER ---
+      hideFinalImage();
+      
+      // This function removes the full-solution highlight AND restores the user's progress highlight.
+      resetTemporaryAnswerVisuals(); 
+    
+      isGameLocked = false; // Unlock the game
+      isShowAnswer = false;
+      
+      if (showAnswerButtonRef) {
+          showAnswerButtonRef.textContent = "उत्तर देखें";
+      }
+      // User's progress (userAnswerArray and usedCellMetas) is preserved.
   }
 }
 
@@ -692,11 +671,17 @@ function showFinalImage() {
     imgElement.src = imagePath;
   }
   finalImageElement.style.display = "block";
+  setTimeout(() => {
+    finalImageElement.classList.add("show");  // animate
+  }, 10);
 }
 
 function hideFinalImage() {
   if (finalImageElement) {
     finalImageElement.style.display = "none";
+    setTimeout(() => {
+      finalImageElement.classList.remove("show");  // animate
+    }, 10);
     showAnswerButtonRef.disabled = false;
     const imgElement = finalImageElement.querySelector('img');
     if (imgElement) {
@@ -710,7 +695,6 @@ function attachSoundButtonHandler() {
   //const candidate = document.getElementById("Group 595");
 
   if (!candidate) return;
-
   soundButtonRef = candidate;
   setSoundPromptState(false);
 
@@ -770,6 +754,5 @@ function initGame() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // setTimeout(initGame, 300);
   initGame();
 });

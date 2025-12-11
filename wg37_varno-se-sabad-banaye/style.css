@@ -221,6 +221,22 @@
   background-image: url("./Assets/Images/bg-success-btn.svg");
 }
 
+#final-image-container {
+  background-color: #fff;
+  border-radius: 30px;
+  display: none;     /* initially hidden */
+  transform: scale(0.3);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#final-image-container.show {
+  display: block;
+  transform: scale(1);
+  opacity: 1;
+}
+
+
 .wrong {
   border: 10px solid red;
   border-radius: 4px;
