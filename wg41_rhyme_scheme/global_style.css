@@ -29,10 +29,10 @@ h4{
 h5{
     font-size: 16px;
 }
-p{
+/* p{
     font-size: 16px;
     color: #494949;
-}
+} */
 a{
     color: #1b57be;
     text-decoration: underline;
@@ -122,11 +122,14 @@ h1, h2, h3, h4, h5, p{
 }   
 .button-controls{
     padding: 12px;
-    position: relative;
+    position: absolute;
     border-top: 1px solid #ddd;
     background: #f7f7f7;
     border-radius: 10px;
     flex-wrap: wrap;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     @media screen and (max-width: 650px) {
         justify-content: center;
         flex-direction: column;
@@ -141,7 +144,6 @@ button{
     color: white;
     border: none;
     border-radius: 12px;
-    /* Ensures the slider thumb is interactive and indicates it can be dragged */
     cursor: pointer;
     font-size: 14px;
 }
@@ -268,22 +270,24 @@ button:disabled{
     gap: 20px;
     left: 0;
     top: 0;
+    position: absolute;
   }
-  /* comment below for new header start */
   .wdgetTitle h2 {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     text-align: left;
     background: #1e6bef;
-    padding: 5px 20px;
+    padding: 5px 30px;
     color: #fff;
-    /* border-radius: 0 20px 20px 0;
+    border-radius: 0 0px 20px 20px;
     background: #099eed;
     background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
-    margin: 16px 0px; */
+    margin: 0px 0px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
-  
-  /* comment below for new header end */
 
   .p5Canvas{
     max-width: 100%;
