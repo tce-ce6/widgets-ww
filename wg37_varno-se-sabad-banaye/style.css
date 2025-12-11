@@ -217,8 +217,12 @@
   cursor: pointer;
 }
 
+.grid-wrapper .correct{
+  background-image: url("./Assets/Images/bg-success-btn.svg");
+}
+
 .wrong {
-  border: 2px solid red;
+  border: 10px solid red;
   border-radius: 4px;
 }
 
