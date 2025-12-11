@@ -297,42 +297,45 @@ function addSurfaces(type, sim) {
   const contaminationValue = parseInt(
     document.getElementById("indirect-contamination").value
   );
-  // Always show 4 surfaces regardless of contamination level
+
   const surfaceCount = 4;
 
-  // Visual class based on contamination level
   let visualClass = "";
+  let suffix = "";
+
   if (contaminationValue === 0) {
     visualClass = "surface-low";
+    suffix = "-low";
   } else if (contaminationValue === 1) {
     visualClass = "surface-medium";
+    suffix = "-medium";
   } else {
     visualClass = "surface-high";
+    suffix = "-high";
   }
 
-  // Fixed positions for the 4 objects
   const fixedPositions = [
     { left: "15%", top: "20%" },
     { left: "75%", top: "25%" },
     { left: "25%", top: "70%" },
-    { left: "80%", top: "75%" },
+    { left: "80%", top: "75%" }
   ];
 
   for (let i = 0; i < surfaceCount; i++) {
     const surface = document.createElement("div");
     surface.className = "vector " + visualClass;
 
-    // Create image just like person block
     const img = document.createElement("img");
-    img.src = surfaceImages[i]; // Each image once
+
+    // ✔️ New dynamic image selection
+    img.src = `./assets/surface${i + 1}${suffix}.svg`;
     img.className = "icon-img";
+
     surface.appendChild(img);
 
-    // Fixed positions
     surface.style.left = fixedPositions[i].left;
     surface.style.top = fixedPositions[i].top;
 
-    // Mark contaminated
     surface.dataset.contaminated = "true";
 
     sim.appendChild(surface);
@@ -340,50 +343,57 @@ function addSurfaces(type, sim) {
   }
 }
 
+
 function addFoodItems(type, sim) {
   const sanitationValue = parseInt(
     document.getElementById("food-sanitation").value
   );
-  // Always show 2 food items regardless of sanitation level
+
+  // Always show 2 items
   const foodCount = 2;
 
-  // Visual class based on sanitation level (inverse - low sanitation = high contamination)
+  // Determine class + filename suffix based on sanitation
   let visualClass = "";
+  let suffix = "";
+
   if (sanitationValue === 0) {
-    visualClass = "food-low"; // Low sanitation = high contamination (bright, pulsating)
+    visualClass = "food-low";   // low sanitation → highly contaminated
+    suffix = "-low";
   } else if (sanitationValue === 1) {
-    visualClass = "food-medium"; // Medium sanitation
+    visualClass = "food-medium";
+    suffix = "-medium";
   } else {
-    visualClass = "food-high"; // High sanitation = low contamination (faded, safe)
+    visualClass = "food-high";  // high sanitation → low contamination
+    suffix = "-high";
   }
 
-  // Fixed positions for the 2 food/water objects
   const fixedPositions = [
     { left: "30%", top: "40%" },
-    { left: "65%", top: "55%" },
+    { left: "65%", top: "55%" }
   ];
 
   for (let i = 0; i < foodCount; i++) {
     const food = document.createElement("div");
     food.className = "vector " + visualClass;
 
-    // Create image element like others
     const img = document.createElement("img");
-    img.src = foodImages[i]; // Use first 2 images
+
+    // ✔️ Dynamic image selection (food1-*, food2-*)
+    img.src = `./assets/food${i + 1}${suffix}.svg`;
     img.className = "icon-img";
+
     food.appendChild(img);
 
-    // Position
     food.style.left = fixedPositions[i].left;
     food.style.top = fixedPositions[i].top;
 
-    // Contaminated flag
     food.dataset.contaminated = "true";
 
     sim.appendChild(food);
     simulations[type].surfaces.push(food);
   }
 }
+
 
 function addAirborneParticles(type, sim) {
   const ventilationValue = parseInt(
@@ -691,17 +701,18 @@ function checkTransmission(type) {
   // Person-to-person transmission (works for all types now)
   // Person-to-person transmission (works for all types except 'vector')
   // In the 'vector' simulation, infection should only occur via vector contact.
-  if (type !== "vector") {
+  // Person-to-person transmission (works for all types except 'vector' and 'airborne')
+  if (type !== "vector" && type !== "airborne" && type !== "food") {
     infected.forEach((infectedPerson) => {
       healthy.forEach((healthyPerson) => {
-        // If their boundaries overlap even slightly, infect immediately
+        // Direct overlap = immediate infection
         if (elementsOverlap(infectedPerson, healthyPerson)) {
           healthyPerson.classList.remove("healthy");
           healthyPerson.classList.add("infected");
-          return; // move to next healthy person
+          return;
         }
 
-        // Otherwise fall back to proximity-based probabilistic transmission
+        // Probabilistic spread based on distance
         const distance = calculateDistance(infectedPerson, healthyPerson);
         if (distance < 50 && Math.random() < transmissionProbability) {
           healthyPerson.classList.remove("healthy");
