@@ -4,7 +4,7 @@
     outline: none !important; /* Removes the standard browser focus ring */
 }
 
-#phototropism-widget body {
+#make-food-chain-widget body {
   box-sizing: border-box;
   outline: none;
   font-family: Arial, Helvetica, sans-serif;
@@ -15,7 +15,7 @@
   background-color: #fff !important;
 }
 
-#phototropism-widget .container {
+#make-food-chain-widget .container {
   user-select: none !important;
   border: none;
   height: 100vh;
@@ -23,7 +23,7 @@
   position: relative
 }
 
-#phototropism-widget .container::after {
+#make-food-chain-widget .container::after {
   content: "";
   background-image: url("./assets/BG.png");
   background-size: 100% 100%;
@@ -36,27 +36,27 @@
   left: 0;
 }
 
-/* #phototropism-widget .mainContainerOuter {
+/* #make-food-chain-widget .mainContainerOuter {
   background: #60360D !important
 } */
 
-#phototropism-widget .button-controls {
+#make-food-chain-widget .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#phototropism-widget .d-flex {
+#make-food-chain-widget .d-flex {
   display: flex
 }
 
-#phototropism-widget .question {
+#make-food-chain-widget .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#phototropism-widget .flexContainer {
+#make-food-chain-widget .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@
   z-index: 1
 }
 
-#phototropism-widget .flexItem {
+#make-food-chain-widget .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -72,13 +72,13 @@
 }
 
 @media (max-width:768px) {
-  #phototropism-widget .flexItem {
+  #make-food-chain-widget .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#phototropism-widget .btn {
+#make-food-chain-widget .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -95,36 +95,36 @@
   margin-right: 10px
 }
 
-#phototropism-widget .btn:hover {
+#make-food-chain-widget .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#phototropism-widget .btn-primary:active {
+#make-food-chain-widget .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#phototropism-widget .btn:focus {
+#make-food-chain-widget .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#phototropism-widget .btn:active {
+#make-food-chain-widget .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#phototropism-widget .btn:disabled {
+#make-food-chain-widget .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#phototropism-widget .wdgetTitle {
+#make-food-chain-widget .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -133,20 +133,26 @@
   top: 0;
   z-index: 1
 }
-
-#phototropism-widget .wdgetTitle h2 {
+#flying-animal-clone {
+    /* The transition property is key for smooth animation */
+    /* It applies to transform (for movement) and width/height (for scaling) */
+    transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
+    /* Ensure it's on the very top of other SVG elements */
+    z-index: 100; 
+}
+#make-food-chain-widget .wdgetTitle h2 {
   font-size: 23px;
   font-weight: 600;
   text-align: left;
   padding: 5px 40px;
-  color: #000;
+  color: #ffffff;
   border-radius: 0 0px 20px 20px;
-  background: #D7FD1C;
+  background: #0295fc;
   box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
   white-space: nowrap;
 }
 
-#phototropism-widget .versionText {
+#make-food-chain-widget .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -154,12 +160,12 @@
   color: #ccc
 }
 
-#phototropism-widget .svg-container{
+#make-food-chain-widget .svg-container{
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#phototropism-widget svg{
+#make-food-chain-widget svg{
     width: 100% !important;
     height: 100%;
 }
@@ -168,20 +174,20 @@
   cursor: pointer;
 }
 
-#phototropism-widget #bulb-1.active .bulb-bg,
-#phototropism-widget #bulb-2.active .bulb-bg,
-#phototropism-widget #bulb-3.active .bulb-bg{
+#make-food-chain-widget #bulb-1.active .bulb-bg,
+#make-food-chain-widget #bulb-2.active .bulb-bg,
+#make-food-chain-widget #bulb-3.active .bulb-bg{
   fill: #FCEE21;
 }
 
-#phototropism-widget .bulb-rays{
+#make-food-chain-widget .bulb-rays{
   display: none;
   transition: all 0.3s ease-in-out;
 }
 
-#phototropism-widget #bulb-1.active .bulb-rays,
-#phototropism-widget #bulb-2.active .bulb-rays,
-#phototropism-widget #bulb-3.active .bulb-rays{
+#make-food-chain-widget #bulb-1.active .bulb-rays,
+#make-food-chain-widget #bulb-2.active .bulb-rays,
+#make-food-chain-widget #bulb-3.active .bulb-rays{
   display: block !important;
 }
 
