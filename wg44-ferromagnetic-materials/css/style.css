@@ -182,8 +182,8 @@
 }
 
 .primary--button {
-  width: 150px;
-  min-height: 70px;
+  width: 140px;
+  min-height: 60px;
   border: none;
   background-color: transparent;
   border-radius: 50px;
@@ -195,8 +195,8 @@
 
 .primary--button::after {
   content: "";
-  height: 55px;
-  width: 55px;
+  height: 45px;
+  width: 45px;
   display: block;
   border-radius: 50px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -212,7 +212,7 @@
   font-size: 30px;
   position: absolute;
   top: 50%;
-  left: 76px;
+  left: 65px;
   right: unset;
   transform: translateY(-50%);
   color: #000;
@@ -235,8 +235,8 @@
 
 .turn-on .primary--button::after {
   content: "";
-  min-height: 55px;
-  width: 55px;
+  min-height: 45px;
+  width: 45px;
   display: block;
   border-radius: 50px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -293,4 +293,16 @@
 #xray-right{
       height: 530px;
     width: 530px;
+}
+.pole-names{
+  display: none;
+  font-size: 50px;
+  color: #fff;
+  font-weight: 500;
+  text-shadow: -3px 4px 0px #000;
+}
+
+#pin-right-animation{
+      height: 600px;
+    width: 600px;
 }

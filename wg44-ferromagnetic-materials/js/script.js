@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   /* ---------------------------------------------
        GET X-RAY CONTAINERS SAFELY
   --------------------------------------------- */
@@ -23,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderer: "svg",
       loop: true,
       autoplay: false,
-      path: "xray-left.json"
+      path: "xray-left.json",
     });
 
     xrayRightAnim = lottie.loadAnimation({
@@ -31,12 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
       renderer: "svg",
       loop: true,
       autoplay: false,
-      path: "xray-right.json"
+      path: "xray-right.json",
     });
   }
 
   setTimeout(initXrayAnimations, 150);
-
 
   /* ---------------------------------------------
        LOAD ARROW ANIMATION
@@ -47,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "arrow-animation.json"
+    path: "arrow-animation.json",
   });
 
   /* ---------------------------------------------
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "pin-left-animation.json"
+    path: "pin-left-animation.json",
   });
 
   const pinRightAnim = lottie.loadAnimation({
@@ -67,9 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "pin-right-animation.json"
+    path: "pin-right-animation.json",
   });
-
 
   /* ---------------------------------------------
        EXISTING BUTTON LOGIC (UNCHANGED)
@@ -79,13 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => {
     button.addEventListener("click", function (event) {
-
       let parentNode = event.target.parentNode;
       let isTurningOn = !parentNode.classList.contains("turn-on");
 
-      document.querySelectorAll(".button-inner-wrapper").forEach((wrapper) => {
-        wrapper.classList.remove("turn-on");
-      });
+      if (!isTurningOn) {
+        parentNode.classList.remove("turn-on");
+      }
 
       if (isTurningOn) parentNode.classList.add("turn-on");
 
@@ -93,17 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (anyActive) document.body.classList.add("active");
       else document.body.classList.remove("active");
 
-
       /* ---------------------------------------------
            MAGNETIC BUTTON CLICKED
       --------------------------------------------- */
 
       if (event.target.id === "magnetic-button") {
-
         // ⭐ NEW: remove material classes
-        document.querySelectorAll(".material-block").forEach(el => {
+        document.querySelectorAll(".material-block").forEach((el) => {
           el.classList.remove("hard-material", "soft-material");
           el.classList.add("hard-pole", "soft-pole");
+        });
+
+        document.querySelectorAll(".pole-names").forEach((el) => {
+          el.style.display = "block";
         });
 
         if (isTurningOn) {
@@ -119,54 +117,54 @@ document.addEventListener("DOMContentLoaded", () => {
             pinLeftAnim.goToAndPlay(0, true);
             pinRightAnim.goToAndPlay(0, true);
           }, 50);
-
         } else {
+          document.querySelectorAll(".material-block").forEach((el) => {
+            el.classList.remove("hard-pole", "soft-pole");
+            el.classList.add("hard-material", "soft-material");
+          });
           document.getElementById("arrow-container").style.display = "none";
+          document.querySelectorAll(".pole-names").forEach((el) => {
+            el.style.display = "none";
+          });
           arrowAnim.stop();
           pinLeftAnim.stop();
           pinRightAnim.stop();
         }
       }
 
-
       /* ---------------------------------------------
            X-RAY BUTTON CLICKED
       --------------------------------------------- */
 
       if (event.target.id === "xray-button") {
-        document.getElementById("arrow-container").style.display = "none";
-        arrowAnim.stop();
+        if (isTurningOn) {
+          xrayLeftContainer.style.display = "block";
+          xrayRightContainer.style.display = "block";
+
+          xrayLeftAnim.stop();
+          xrayRightAnim.stop();
+          xrayLeftAnim.goToAndPlay(0, true);
+          xrayRightAnim.goToAndPlay(0, true);
+        } else {
+          xrayLeftContainer.style.display = "none";
+          xrayRightContainer.style.display = "none";
+
+          xrayLeftAnim.stop();
+          xrayRightAnim.stop();
+        }
       }
 
+      if (event.target.id === "type-button") {
+        if (isTurningOn) {
+          document.querySelectorAll(".label-main").forEach((el) => {
+            el.style.display = "block";
+          });
+        }else {
+          document.querySelectorAll(".label-main").forEach((el) => {
+            el.style.display = "none";
+          });
+        }
+      }
     });
   });
-
-
-  /* ------------------------------------------------------
-      FIXED X-RAY PLAYBACK LISTENER
-  --------------------------------------------------------- */
-
-  const xrayClickable = document.querySelector("#xray-button");
-
-  if (xrayClickable) {
-    xrayClickable.addEventListener("click", () => {
-
-      if (!xrayLeftAnim || !xrayRightAnim) {
-        console.warn("X-RAY animations not ready yet");
-        return;
-      }
-
-      xrayLeftContainer.style.display = "block";
-      xrayRightContainer.style.display = "block";
-
-      xrayLeftAnim.stop();
-      xrayRightAnim.stop();
-
-      xrayLeftAnim.goToAndPlay(0, true);
-      xrayRightAnim.goToAndPlay(0, true);
-    });
-  } else {
-    console.error("ERROR: #xray-button not found in DOM");
-  }
-
 });
