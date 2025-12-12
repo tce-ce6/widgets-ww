@@ -563,23 +563,23 @@
 }
 
 .right-col.airborne-contact .noUi-handle.noUi-handle-lower[aria-valuetext="0.00"] {
-  background: url("../assets/air-slider-0.svg") no-repeat center center;
+  background: url("../assets/air-slider-2.svg") no-repeat center center;
 }
 .right-col.airborne-contact .noUi-handle.noUi-handle-lower[aria-valuetext="1.00"] {
   background: url("../assets/air-slider-1.svg") no-repeat center center;
 }
 .right-col.airborne-contact .noUi-handle.noUi-handle-lower[aria-valuetext="2.00"] {
-  background: url("../assets/air-slider-2.svg") no-repeat center center;
+  background: url("../assets/air-slider-0.svg") no-repeat center center;
 }
 
 .right-col.food-contact .noUi-handle.noUi-handle-lower[aria-valuetext="0.00"] {
-  background: url("../assets/food-slider-0.svg") no-repeat center center;
+  background: url("../assets/food-slider-1.svg") no-repeat center center;
 }
 .right-col.food-contact .noUi-handle.noUi-handle-lower[aria-valuetext="1.00"] {
   background: url("../assets/food-slider-2.svg") no-repeat center center;
 }
 .right-col.food-contact .noUi-handle.noUi-handle-lower[aria-valuetext="2.00"] {
-  background: url("../assets/food-slider-1.svg") no-repeat center center;
+  background: url("../assets/food-slider-0.svg") no-repeat center center;
 }
 
 .right-col.vector-contact .noUi-handle.noUi-handle-lower[aria-valuetext="0.00"] {

@@ -1,37 +1,57 @@
 document.addEventListener("DOMContentLoaded", () => {
   /* ---------------------------------------------
-     LOAD BOTH LOTTIE ANIMATIONS
-  --------------------------------------------- */
+       LOAD ARROW LOTTIE ANIMATION
+    --------------------------------------------- */
 
-  // X-RAY animation
-  const xrayAnim = lottie.loadAnimation({
-    container: document.getElementById("xray-container"),
+  const arrowAnim = lottie.loadAnimation({
+    container: document.getElementById("arrow-container"),
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "xray-lottie.json",
+    path: "arrow-animation.json",
   });
 
-  // Magnetic Field animation
-  const magneticAnim = lottie.loadAnimation({
-    container: document.getElementById("magnetic-container"),
+  arrowAnim.addEventListener("DOMLoaded", () =>
+    console.log("Arrow Lottie Ready")
+  );
+
+  /* ---------------------------------------------
+       LOAD PIN ANIMATIONS
+    --------------------------------------------- */
+
+  const pinLeftAnim = lottie.loadAnimation({
+    container: document.getElementById("pin-left-animation"),
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "magnetic-lottie.json",
+    path: "pin-left-animation.json",
   });
 
-  xrayAnim.addEventListener("DOMLoaded", () => {
-    console.log("X-ray Lottie Ready");
+  const pinRightAnim = lottie.loadAnimation({
+    container: document.getElementById("pin-right-animation"),
+    renderer: "svg",
+    loop: false,
+    autoplay: false,
+    path: "pin-right-animation.json",
   });
 
-  magneticAnim.addEventListener("DOMLoaded", () => {
-    console.log("Magnetic Lottie Ready");
+  // Track Lottie load status
+  pinLeftAnim.isLoaded = false;
+  pinRightAnim.isLoaded = false;
+
+  pinLeftAnim.addEventListener("DOMLoaded", () => {
+    pinLeftAnim.isLoaded = true;
+    console.log("Pin Left Ready");
+  });
+
+  pinRightAnim.addEventListener("DOMLoaded", () => {
+    pinRightAnim.isLoaded = true;
+    console.log("Pin Right Ready");
   });
 
   /* ---------------------------------------------
-     BUTTON LOGIC
-  --------------------------------------------- */
+       BUTTON LOGIC (UNCHANGED)
+    --------------------------------------------- */
 
   const buttons = document.querySelectorAll(".js-button");
 
@@ -40,61 +60,56 @@ document.addEventListener("DOMContentLoaded", () => {
       let parentNode = event.target.parentNode;
       let isTurningOn = !parentNode.classList.contains("turn-on");
 
-      // 🔥 First, turn OFF all buttons (mutual exclusive)
+      // TURN OFF all buttons
       document.querySelectorAll(".button-inner-wrapper").forEach((wrapper) => {
         wrapper.classList.remove("turn-on");
       });
 
-      // 🔥 Now turn ON only the clicked one (if it was not already ON)
+      // TURN ON only clicked button
       if (isTurningOn) parentNode.classList.add("turn-on");
 
-      // -----------------------------------------
-      // Update body active state
+      // Body active state toggle
       const anyActive = document.querySelector(".button-inner-wrapper.turn-on");
       if (anyActive) document.body.classList.add("active");
       else document.body.classList.remove("active");
-      // -----------------------------------------
 
       /* ---------------------------------------------
-       X-RAY BUTTON CLICKED
-    --------------------------------------------- */
-      if (event.target.id === "xray-button") {
+           MAGNETIC BUTTON CLICKED
+        --------------------------------------------- */
+      if (event.target.id === "magnetic-button") {
         if (isTurningOn) {
-          // Show only X-ray
-          document.getElementById("xray-container").style.display = "block";
-          document.getElementById("magnetic-container").style.display = "none";
-
-          magneticAnim.stop();
+          // Show arrow animation
+          document.getElementById("arrow-container").style.display = "block";
+          arrowAnim.stop();
 
           setTimeout(() => {
-            xrayAnim.goToAndPlay(0, true);
+            arrowAnim.goToAndPlay(0, true);
+          }, 50);
+
+          // Play pins (ONLY if Lottie is loaded)
+          pinLeftAnim.stop();
+          pinRightAnim.stop();
+
+          setTimeout(() => {
+            if (pinLeftAnim.isLoaded) pinLeftAnim.goToAndPlay(0, true);
+            if (pinRightAnim.isLoaded) pinRightAnim.goToAndPlay(0, true);
           }, 50);
         } else {
-          // Turning X-ray off
-          document.getElementById("xray-container").style.display = "none";
-          xrayAnim.stop();
+          // Turning OFF Magnetic
+          document.getElementById("arrow-container").style.display = "none";
+          arrowAnim.stop();
+
+          pinLeftAnim.stop();
+          pinRightAnim.stop();
         }
       }
 
       /* ---------------------------------------------
-       MAGNETIC BUTTON CLICKED
-    --------------------------------------------- */
-      if (event.target.id === "magnetic-button") {
-        if (isTurningOn) {
-          // Show only Magnetic
-          document.getElementById("magnetic-container").style.display = "block";
-          document.getElementById("xray-container").style.display = "none";
-
-          xrayAnim.stop();
-
-          setTimeout(() => {
-            magneticAnim.goToAndPlay(0, true);
-          }, 50);
-        } else {
-          // Turning Magnetic off
-          document.getElementById("magnetic-container").style.display = "none";
-          magneticAnim.stop();
-        }
+           X-RAY BUTTON CLICKED
+        --------------------------------------------- */
+      if (event.target.id === "xray-button") {
+        document.getElementById("arrow-container").style.display = "none";
+        arrowAnim.stop();
       }
     });
   });
