@@ -1,5 +1,5 @@
 // Global variables and configuration
-const BOARD_ID = 'jxgBox'; // Ensure this matches your HTML id
+const BOARD_ID = 'jxgbox'; // Ensure this matches your HTML id
 const FEEDBACK_ID = 'feedback'; // You may need to add a div with this ID for feedback
 const TARGET_NUMBER_ID = 'target-complex-number'; // You may need to add a span/div with this ID
 
@@ -49,37 +49,92 @@ function initializeBoard() {
         console.error("JSXGraph container element with ID '" + BOARD_ID + "' not found.");
         return;
     }
-    
+
     if (board) JXG.JSXGraph.freeBoard(board);
 
+    // Initialize board with default axes enabled
     board = JXG.JSXGraph.initBoard(BOARD_ID, {
-        boundingbox: [-11, 11, 11, -11], 
-        axis: false,
+        boundingbox: [-11, 11, 11, -11],
+        axis: true, 
         grid: true,
         showCopyright: false,
-        showNavigation: false
+        showNavigation: false,
+        // *** KEY CHANGE 1: Enable snapping to 1 unit grid ***
+        pan: { enabled: true, snapToGrid: true, snapSize: 1.0 },
+        zoom: { enabled: true, snapToGrid: true, snapSize: 1.0 }
     });
 
-    // Add Axes setup... (omitting details for brevity, assume previous setup is here)
+    const greenColor = '#17b077'; 
+    
+    const xAxis = board.select('axisX');
+    const yAxis = board.select('axisY');
 
-    // Add X-axis (Real axis)
-    board.create('axis', [[0, 0], [1, 0]], { name: 'X', label: { position: 'll', offset: [0, -15], anchorX: 'left', cssStyle: 'font-weight: bold; color: #007bff;' }, ticks: { drawLabels: true, insertTicks: false, majorHeight: -1, minDistance: 1 }});
-
-    // Add Y-axis (Imaginary axis)
-    board.create('axis', [[0, 0], [0, 1]], { name: 'Y', label: { position: 'ul', offset: [15, 0], anchorY: 'top', cssStyle: 'font-weight: bold; color: #007bff;' }, ticks: { drawLabels: true, insertTicks: false, majorHeight: -1, minDistance: 1, label: { cssStyle: 'transform: translateY(-50%)', generateLabel: function(tick, board) { const val = tick.usrCoords[1]; if (val === 0) return ''; if (val === 1) return 'i'; if (val === -1) return '-i'; return `${val}i`; } } } });
+    if (xAxis) {
+        xAxis.setAttribute({
+            strokeColor: greenColor, 
+            highlightStrokeColor: greenColor,
+            label: { strokeColor: 'black', offset: [-10, -15], fontSize: 14 },
+            ticks: {
+                strokeColor: greenColor,
+                drawLabels: true,
+                label: { fontSize: 12 },
+                // *** KEY CHANGE 2: Ensure ticks are displayed every 1 unit ***
+                minDistance: 1 
+            }
+        });
+        xAxis.name = 'X'; 
+    }
+    
+    if (yAxis) {
+        yAxis.setAttribute({
+            strokeColor: greenColor, 
+            highlightStrokeColor: greenColor,
+            label: { strokeColor: 'black', offset: [0, 10], fontSize: 14 },
+            ticks: {
+                strokeColor: greenColor,
+                drawLabels: true,
+                // *** KEY CHANGE 2: Ensure ticks are displayed every 1 unit ***
+                minDistance: 1, 
+                // CRUCIAL PART: Custom label generator for the Imaginary axis
+                label: {
+                    // Adjusted style for better visibility
+                    cssStyle: `transform: translateY(-50%); color: ${greenColor}; font-weight: bold;`, 
+                    generateLabel: function (tick) {
+                        const val = tick.usrCoords[2]; // Y-coordinate value
+                        if (val === 0) return '';
+                        if (val === 1) return 'i';
+                        if (val === -1) return '-i';
+                        return `${val}i`;
+                    }
+                }
+            }
+        });
+        yAxis.name = 'Y';
+    }
 
     // Initial point at origin
-    board.create('point', [0, 0], { size: 0, visible: true, name: '', fixed: true, fillColor: 'transparent', strokeColor: 'transparent' });
+    board.create('point', [0, 0], { 
+        size: 4, 
+        color: 'red', 
+        name: '', 
+        fixed: true 
+    });
 
 
-    // Event handler for plotting a point (no snapping)
-    board.on('click', function(e) {
-        if (isLocked) return; 
+    // Event handler for plotting a point
+    board.on('click', function (e) {
+        if (isLocked) return;
 
         const coords = board.getCoords(JXG.COORDS_BY_MOUSE, e);
-        const x = coords.usrCoords[1];
-        const y = coords.usrCoords[2];
+        // Get raw coordinates
+        const xRaw = coords.usrCoords[1];
+        const yRaw = coords.usrCoords[2];
+        
+        // *** KEY CHANGE 3: Snap the plotted point to the nearest integer coordinates ***
+        const x = Math.round(xRaw);
+        const y = Math.round(yRaw);
 
+        // Ensure the click is within the plotting boundaries
         if (x < -10 || x > 10 || y < -10 || y > 10) return;
 
         if (userPlot) {
@@ -88,17 +143,17 @@ function initializeBoard() {
 
         const labelText = formatComplex(x, y);
 
-        userPlot = board.create('point', [x, y], {
+        userPlot = board.create('point', [x, y], { // Plot using the snapped coordinates
             name: labelText,
             size: 4,
-            color: 'orange', 
-            fixed: true, 
+            color: 'orange',
+            fixed: true,
             label: { position: 'auto', offset: [0, 10], autoPosition: true, cssStyle: 'font-weight: bold; color: orange;' }
         });
 
         userPlot.coords = {
-            a: Math.round(x),
-            b: Math.round(y)
+            a: x, // Use snapped value
+            b: y  // Use snapped value
         };
     });
 }
@@ -106,7 +161,7 @@ function initializeBoard() {
 function loadProblem() {
     isLocked = false;
     const problem = PROBLEMS[currentProblemIndex % PROBLEMS.length];
-    
+
     // Attempt to update the displayed target number. Handle if the element doesn't exist.
     const targetEl = document.getElementById(TARGET_NUMBER_ID);
     if (targetEl) {
@@ -118,11 +173,11 @@ function loadProblem() {
         // BEST PRACTICE: Add <span id="target-complex-number"></span> next to your 'h4'.
         const questionEl = document.querySelector('.question');
         if (questionEl) {
-             // For now, let's assume you've added the span/updated your static text.
-             // If you cannot add the span, the static text "2 + 3i" in the HTML will remain.
+            // For now, let's assume you've added the span/updated your static text.
+            // If you cannot add the span, the static text "2 + 3i" in the HTML will remain.
         }
     }
-    
+
     document.getElementById(FEEDBACK_ID).textContent = '';
     document.getElementById(FEEDBACK_ID).className = '';
 
@@ -139,7 +194,7 @@ function loadProblem() {
 }
 
 // --- Interaction Handlers ---
-window.checkAnswer = function() {
+window.checkAnswer = function () {
     // ... (rest of checkAnswer logic remains the same)
     if (isLocked) return;
     const feedbackEl = document.getElementById(FEEDBACK_ID);
@@ -148,7 +203,7 @@ window.checkAnswer = function() {
         feedbackEl.className = 'incorrect';
         return;
     }
-    const userA = userPlot.coords.a; 
+    const userA = userPlot.coords.a;
     const userB = userPlot.coords.b;
     const targetA = targetPoint.a;
     const targetB = targetPoint.b;
@@ -163,15 +218,15 @@ window.checkAnswer = function() {
     }
 };
 
-window.nextProblem = function() {
+window.nextProblem = function () {
     currentProblemIndex++;
     loadProblem();
 };
 
-window.showAnswer = function() {
+window.showAnswer = function () {
     // ... (rest of showAnswer logic remains the same)
     if (isLocked) return;
-    isLocked = true; 
+    isLocked = true;
     const targetA = targetPoint.a;
     const targetB = targetPoint.b;
     const labelText = targetPoint.label;
@@ -186,7 +241,8 @@ window.showAnswer = function() {
 
 
 // --- The Crucial Initialization Block ---
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOMContentLoaded event fired');
     // 1. Attach button handlers
     const checkBtn = document.getElementById('checkAnswer');
     const nextBtn = document.getElementById('next-btn'); // 'Try Another' in your corrected flow
@@ -195,8 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkBtn) checkBtn.onclick = window.checkAnswer;
     if (nextBtn) nextBtn.onclick = window.nextProblem;
     if (showAnsBtn) showAnsBtn.onclick = window.showAnswer;
-    
+
     // 2. Start the activity ONLY after the DOM is fully loaded
-    initializeBoard();
     loadProblem();
 });

@@ -360,3 +360,8 @@ input[type="range"]::-moz-range-thumb {
     box-shadow: 4px 4px 4px #ccc;
 }
 /* new header css end*/
+
+.jxgbox {
+  width: 500px;
+  height: 500px;
+}
