@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Delay ensures foreignObject HTML is fully rendered
   setTimeout(initXrayAnimations, 150);
 
 
@@ -84,15 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let parentNode = event.target.parentNode;
       let isTurningOn = !parentNode.classList.contains("turn-on");
 
-      // Turn OFF all buttons
       document.querySelectorAll(".button-inner-wrapper").forEach((wrapper) => {
         wrapper.classList.remove("turn-on");
       });
 
-      // Turn ON clicked button
       if (isTurningOn) parentNode.classList.add("turn-on");
 
-      // Body active toggle
       const anyActive = document.querySelector(".button-inner-wrapper.turn-on");
       if (anyActive) document.body.classList.add("active");
       else document.body.classList.remove("active");
@@ -103,6 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
       --------------------------------------------- */
 
       if (event.target.id === "magnetic-button") {
+
+        // ⭐ NEW: remove material classes
+        document.querySelectorAll(".material-block").forEach(el => {
+          el.classList.remove("hard-material", "soft-material");
+          el.classList.add("hard-pole", "soft-pole");
+        });
 
         if (isTurningOn) {
           document.getElementById("arrow-container").style.display = "block";
@@ -128,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       /* ---------------------------------------------
-           X-RAY BUTTON CLICKED (existing behavior)
+           X-RAY BUTTON CLICKED
       --------------------------------------------- */
 
       if (event.target.id === "xray-button") {
@@ -141,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ------------------------------------------------------
-      FIXED X-RAY PLAYBACK LISTENER (NO CHANGE TO LOGIC)
+      FIXED X-RAY PLAYBACK LISTENER
   --------------------------------------------------------- */
 
   const xrayClickable = document.querySelector("#xray-button");
@@ -154,11 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Show both sides
       xrayLeftContainer.style.display = "block";
       xrayRightContainer.style.display = "block";
 
-      // Restart animations
       xrayLeftAnim.stop();
       xrayRightAnim.stop();
 
