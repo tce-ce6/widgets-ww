@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const xrayLeftContainer = document.getElementById("xray-left");
   const xrayRightContainer = document.getElementById("xray-right");
+  const resetBtn = document.getElementById("global-reset");
 
   console.log("XRAY containers:", xrayLeftContainer, xrayRightContainer);
 
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "pin-left-animation.json",
+    path: "pin-animation.json",
   });
 
   const pinRightAnim = lottie.loadAnimation({
@@ -65,8 +66,79 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "pin-right-animation.json",
+    path: "pin-animation.json",
   });
+
+  const pinLeftAnimOne = lottie.loadAnimation({
+    container: document.getElementById("pin-left-animation-one"),
+    renderer: "svg",
+    loop: false,
+    autoplay: false,
+    path: "pin-animation.json",
+  });
+
+  const pinRightAnimTwo = lottie.loadAnimation({
+    container: document.getElementById("pin-right-animation-two"),
+    renderer: "svg",
+    loop: false,
+    autoplay: false,
+    path: "pin-animation.json",
+  });
+  /* ------------------------------------------------------
+      GLOBAL RESET BUTTON
+--------------------------------------------------------- */
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      /* 1️⃣ Turn off ALL buttons */
+      document.querySelectorAll(".button-inner-wrapper").forEach((w) => {
+        w.classList.remove("turn-on");
+      });
+
+      document.body.classList.remove("active");
+
+      /* 2️⃣ Reset MATERIAL blocks to default */
+      document.querySelectorAll(".material-block").forEach((el) => {
+        el.classList.remove("hard-pole", "soft-pole");
+        el.classList.add("hard-material", "soft-material");
+      });
+
+      /* 3️⃣ Hide pole names */
+      document.querySelectorAll(".pole-names").forEach((el) => {
+        el.style.display = "none";
+      });
+
+      /* 4️⃣ Hide labels */
+      document.querySelectorAll(".label-main").forEach((el) => {
+        el.style.display = "none";
+      });
+
+      /* 5️⃣ Hide X-Ray containers */
+      xrayLeftContainer.style.display = "none";
+      xrayRightContainer.style.display = "none";
+
+      if (xrayLeftAnim) xrayLeftAnim.stop();
+      if (xrayRightAnim) xrayRightAnim.stop();
+
+      /* 6️⃣ Stop arrow animation */
+      document.getElementById("arrow-container").style.display = "none";
+      arrowAnim.stop();
+
+      /* 7️⃣ Reset ALL pin animations to first frame */
+      [pinLeftAnim, pinRightAnim, pinLeftAnimOne, pinRightAnimTwo].forEach(
+        (anim) => {
+          if (anim) {
+            anim.stop();
+            anim.goToAndStop(0, true);
+          }
+        }
+      );
+
+      resetBtn.disabled = true;
+    });
+  }
+
+  
 
   /* ---------------------------------------------
        EXISTING BUTTON LOGIC (UNCHANGED)
@@ -76,6 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => {
     button.addEventListener("click", function (event) {
+      resetBtn.disabled = false;
+
       let parentNode = event.target.parentNode;
       let isTurningOn = !parentNode.classList.contains("turn-on");
 
@@ -105,6 +179,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (isTurningOn) {
+
+            document.getElementById("material-btn").style.visibility = "hidden";
+
+          // NEW PIN ANIMATIONS (play forward)
+          pinLeftAnimOne.stop();
+          pinRightAnimTwo.stop();
+
+          setTimeout(() => {
+            pinLeftAnimOne.setDirection(1);
+            pinRightAnimTwo.setDirection(1);
+
+            pinLeftAnimOne.goToAndPlay(0, true);
+            pinRightAnimTwo.goToAndPlay(0, true);
+          }, 50);
+
           document.getElementById("arrow-container").style.display = "block";
           arrowAnim.stop();
 
@@ -113,22 +202,47 @@ document.addEventListener("DOMContentLoaded", () => {
           pinLeftAnim.stop();
           pinRightAnim.stop();
 
+          // Play forward
           setTimeout(() => {
+            pinLeftAnim.setDirection(1);
+            pinRightAnim.setDirection(1);
+
             pinLeftAnim.goToAndPlay(0, true);
             pinRightAnim.goToAndPlay(0, true);
           }, 50);
+
+          // ⭐ Play reverse after 1 second
         } else {
-          document.querySelectorAll(".material-block").forEach((el) => {
-            el.classList.remove("hard-pole", "soft-pole");
-            el.classList.add("hard-material", "soft-material");
+          // ⭐ Reverse MAIN pin animations
+          pinLeftAnim.setDirection(-1);
+          pinRightAnim.setDirection(-1);
+
+          pinLeftAnim.goToAndPlay(pinLeftAnim.totalFrames - 1, true);
+          pinRightAnim.goToAndPlay(pinRightAnim.totalFrames - 1, true);
+
+          // ⭐ UPDATED MATERIAL CLASS LOGIC
+          const left = document.getElementById("left-material");
+          const right = document.getElementById("right-material");
+
+          [left, right].forEach((el) => {
+            el.classList.remove(
+              "hard-pole",
+              "soft-pole",
+              "hard-material",
+              "soft-material"
+            );
           });
+
+          left.classList.add("soft-pole");
+          right.classList.add("hard-material");
+
+            document.getElementById("material-btn").style.visibility = "visible";
+
+
           document.getElementById("arrow-container").style.display = "none";
           document.querySelectorAll(".pole-names").forEach((el) => {
             el.style.display = "none";
           });
-          arrowAnim.stop();
-          pinLeftAnim.stop();
-          pinRightAnim.stop();
         }
       }
 
@@ -159,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.querySelectorAll(".label-main").forEach((el) => {
             el.style.display = "block";
           });
-        }else {
+        } else {
           document.querySelectorAll(".label-main").forEach((el) => {
             el.style.display = "none";
           });

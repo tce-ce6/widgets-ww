@@ -26,12 +26,11 @@
           <g id="Web 1920 â 25 2" clip-path="url(#clip0_5097_20929)">
             <g id="Clip path group">
 
-              
+
               <g id="Web 1920 â 25">
                 <path id="Path 2288" opacity="1" d="M179.473 641.956V167.83L213.999 187.83V621.956" fill="#920025" />
                 <path id="Path 2289" opacity="1" d="M179.956 642.3V168.174H59.1172V642.837" fill="#CE0038" />
-                <path id="Path 2290" opacity="1" d="M1698.4 622.772V188.646L1732.92 168.646V642.772"
-                  fill="#00819E" />
+                <path id="Path 2290" opacity="1" d="M1698.4 622.772V188.646L1732.92 168.646V642.772" fill="#00819E" />
 
                 <path id="Path 2291" opacity="1" d="M1853.72 643.301V168.635H1732.88V642.763" fill="#009BBC" />
 
@@ -60,12 +59,12 @@
                     </g>
                   </g>
                 </g>
-                <text class="label-main" fill="white" xml:space="preserve" style="display: none;"
-                  font-family="Roboto" font-size="28" letter-spacing="0em">
+                <text class="label-main" fill="white" xml:space="preserve" style="display: none;" font-family="Roboto"
+                  font-size="28" letter-spacing="0em">
                   <tspan x="470.207" y="210.07">Hard Ferromagnetic Material</tspan>
                 </text>
-                <text class="label-main" fill="white" xml:space="preserve" style="display: none;"
-                  font-family="Roboto" font-size="28" letter-spacing="0em">
+                <text class="label-main" fill="white" xml:space="preserve" style="display: none;" font-family="Roboto"
+                  font-size="28" letter-spacing="0em">
                   <tspan x="1084.71" y="210.07">Soft Ferromagnetic Material</tspan>
                 </text>
                 <g id="Group 83">
@@ -114,26 +113,13 @@
                   </div>
                 </foreignObject>
 
-                <foreignObject x="400" y="523" width="900" height="350">
-                  <div xmlns="http://www.w3.org/1999/xhtml">
-                    <div class="">
-                      <div id="pin-left-animation"></div>
-                    </div>
-                  </div>
-                </foreignObject>
-                <foreignObject x="700" y="523" width="900" height="350">
-                  <div xmlns="http://www.w3.org/1999/xhtml">
-                    <div class="">
-                      <div id="pin-right-animation"></div>
-                    </div>
-                  </div>
-                </foreignObject>
+
 
                 <foreignObject x="400" y="223" width="1200" height="350">
                   <div xmlns="http://www.w3.org/1999/xhtml">
                     <div class="block-wrapper">
-                      <div class="material-block hard-material"></div>
-                      <div class="material-block soft-material"></div>
+                      <div id="left-material" class="material-block hard-material"></div>
+                      <div id="right-material" class="material-block soft-material"></div>
                     </div>
                   </div>
                 </foreignObject>
@@ -146,11 +132,17 @@
                   </div>
                 </foreignObject>
 
-                <foreignObject x="-50" y="-5" width="1815" height="817">
+                <foreignObject x="382" y="235" width="530" height="330">
                   <div xmlns="http://www.w3.org/1999/xhtml">
-                    <div id="arrow-container" style="display:none"></div>
+                    <div id="xray-left-img" style="width:100%; height:100%; display:none;"></div>
                   </div>
                 </foreignObject>
+                <foreignObject x="382" y="235" width="530" height="330">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="xray-right-img" style="width:100%; height:100%; display:none;"></div>
+                  </div>
+                </foreignObject>
+
 
                 <!-- Left X-ray -->
                 <foreignObject x="382" y="235" width="530" height="330">
@@ -163,6 +155,42 @@
                 <foreignObject x="995" y="235" width="530" height="330">
                   <div xmlns="http://www.w3.org/1999/xhtml">
                     <div id="xray-right" style="width:100%; height:100%; display:none;"></div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="850" y="348" width="500" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div class="">
+                      <div id="pin-left-animation"></div>
+                    </div>
+                  </div>
+                </foreignObject>
+                <foreignObject x="1150" y="348" width="500" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div class="">
+                      <div id="pin-right-animation"></div>
+                    </div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="210" y="348" width="500" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div class="">
+                      <div id="pin-left-animation-one"></div>
+                    </div>
+                  </div>
+                </foreignObject>
+                <foreignObject x="530" y="348" width="500" height="500">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div class="">
+                      <div id="pin-right-animation-two"></div>
+                    </div>
+                  </div>
+                </foreignObject>
+
+                <foreignObject x="-50" y="-5" width="1815" height="817">
+                  <div xmlns="http://www.w3.org/1999/xhtml">
+                    <div id="arrow-container" style="display:none"></div>
                   </div>
                 </foreignObject>
 
@@ -180,7 +208,7 @@
                             <button id="magnetic-button" class="js-button primary--button"></button>
                             <span>Magnetic Field</span>
                           </div>
-                          <div class="button-inner-wrapper" >
+                          <div id="material-btn" class="button-inner-wrapper" style="visibility: hidden;">
                             <button id="type-button" class="js-button primary--button"></button>
                             <span>Material Type</span>
                           </div>
@@ -194,13 +222,13 @@
               </g>
             </g>
           </g>
-          
+
         </svg>
       </div>
       <div class="flexContainer button-controls" id="btn-wrapper">
         <div class=" flexItem flexItemFirst">
-          <button class="btn" id="global-reset" onclick="resetActiveSimulation()"
-            style="background-color:#1e6bef; color:white; " onfocus="
+          <button disabled class="btn" id="global-reset" onclick="resetActiveSimulation()"
+            style="background-color:#FF2C68; color:white; " onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';
