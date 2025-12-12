@@ -282,3 +282,15 @@
   display:flex;
   gap:110px;
 }
+#arrow-container{
+  height: 1090px;
+    width: 1910px;
+}
+#xray-left{
+      height: 530px;
+    width: 530px;
+}
+#xray-right{
+      height: 530px;
+    width: 530px;
+}
