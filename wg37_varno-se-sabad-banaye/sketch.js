@@ -245,9 +245,9 @@ const letterAudioMap = {
   "ष": { folder: "Vyanjan_Sound", file: "30_sa.wav" }, "स": { folder: "Vyanjan_Sound", file: "31_s.wav" },
   "ह": { folder: "Vyanjan_Sound", file: "32_ha.wav" }, "ज्ञ": { folder: "Vyanjan_Sound", file: "35_gya.wav" },
   "अं": { folder: "Swar_Sound", file: "11_anga.wav" }, "अः": { folder: "Swar_Sound", file: "12_aha.wav" },
-  "ऋ": { folder: "Swar_Sound", file: "06_ऋ.wav" }, "क्ष": { folder: "Vyanjan_Sound", file: "33_chha.wav" },
+  "ऋ": { folder: "Swar_Sound", file: "06_agya.wav" }, "क्ष": { folder: "Vyanjan_Sound", file: "33_chha.wav" },
   "त्र": { folder: "Vyanjan_Sound", file: "34_tra.wav" }, "ञ": { folder: "Vyanjan_Sound", file: "14_nan.wav" },
-  "ङ": { folder: "Vyanjan_Sound", file: "03_ङ.wav" }, "ण": { folder: "Vyanjan_Sound", file: "13_addha.wav" },
+  "ङ": { folder: "Vyanjan_Sound", file: "12_ddha.wav" }, "ण": { folder: "Vyanjan_Sound", file: "13_addha.wav" },
 };
 
 const wordAudioFileNameMap = {
@@ -457,6 +457,10 @@ function loadWord(word, gridToLoad) {
   isGameLocked = false;
   isWordCompleted = false;
 
+  document.querySelectorAll('[id^="Group"]').forEach(el => {
+    el.style.cursor = "pointer";
+  });
+
   if (showAnswerButtonRef) {
     showAnswerButtonRef.textContent = "उत्तर देखें";
   }
@@ -513,6 +517,9 @@ function handleWordComplete() {
   if (isWordCompleted) return;
   isWordCompleted = true;
   isGameLocked = true;
+  document.querySelectorAll('[id^="Group"]').forEach(el => {
+    el.style.cursor = "auto";
+  });  
   setSoundPromptState(false);
   setTimeout(() => {
     playWordSound(); // Play word sound only on natural completion
@@ -588,6 +595,10 @@ function showAnswer() {
       isGameLocked = true; 
       isShowAnswer = true;
       resetTemporaryAnswerVisuals(); // Clears any previous temp marks, but restores user marks
+
+      document.querySelectorAll('[id^="Group"]').forEach(el => {
+        el.style.cursor = "auto";
+      });      
       
       // Path finding and temporary marking logic (using markCellAsTemporaryCorrect) goes here...
       const requiredChars = [...currentWord.correct_answer_char_array];
@@ -649,6 +660,10 @@ function showAnswer() {
     
       isGameLocked = false; // Unlock the game
       isShowAnswer = false;
+
+      document.querySelectorAll('[id^="Group"]').forEach(el => {
+        el.style.cursor = "pointer";
+      });
       
       if (showAnswerButtonRef) {
           showAnswerButtonRef.textContent = "उत्तर देखें";
