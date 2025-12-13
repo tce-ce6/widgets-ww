@@ -222,8 +222,8 @@
 }
 
 #final-image-container {
-  background-color: #fff;
-  border-radius: 30px;
+  /* background-color: #fff;
+  border-radius: 30px; */
   display: none;     /* initially hidden */
   transform: scale(0.3);
   opacity: 0;

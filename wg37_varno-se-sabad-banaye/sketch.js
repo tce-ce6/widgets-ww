@@ -263,7 +263,7 @@ const wordAudioFileNameMap = {
 const wordImageMap = {
   "अजगर": "अजगर.svg", "कटहल": "कटहल.svg", "खटमल": "खटमल.svg",
   "बचपन": "बचपन.svg", "बरगद": "बरगद.svg", "शलगम": "शलगम.svg",
-  "शरबत": "शरबत.svg", "पनघट": "panghat.svg", "उपवन": "उपवन.svg",
+  "शरबत": "शरबत.svg", "पनघट": "पनघट.svg", "उपवन": "उपवन.svg",
   "करवट": "करवट.svg", "कसरत": "कसरत.svg", "परवल": "परवल.svg",
   "पचपन": "पचपन.svg", "अदरक": "अदरक.svg", "बरतन": "बरतन.svg",
   "चमचम": "चमचम.svg", "दलदल": "दलदल.svg", "थरमस": "थरमस.svg",
@@ -678,7 +678,7 @@ function showFinalImage() {
   if (!currentWord || !finalImageElement) return;
 
   const imageFileName = wordImageMap[currentWord.word];
-  const imagePath = `Assets/Images/Final-Images/${imageFileName}`;
+  const imagePath = `Assets/Images/Final Images/${imageFileName}`;
 
   const imgElement = finalImageElement.querySelector('img');
 
