@@ -89,22 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
         data-value="${value}"
         data-band-group="${band_group}"
       >
-        <defs>
-        <linearGradient id="paint2_linear_5135_217" x1="${x}" y1="${y}" x2="${x - 170}" y2="${y}" gradientUnits="userSpaceOnUse">
-<stop stop-color="#E7C452"/>
-<stop offset="0.24" stop-color="#9F7B25"/>
-<stop offset="0.499" stop-color="#FFDA66"/>
-<stop offset="0.75" stop-color="#9F7B25"/>
-<stop offset="1" stop-color="#E7C452"/>
-</linearGradient>
-<linearGradient id="paint3_linear_5135_217" x1="1468.21" y1="842.413" x2="1624.21" y2="842.413" gradientUnits="userSpaceOnUse">
-<stop stop-color="#ABABAB"/>
-<stop offset="0.259" stop-color="#808080"/>
-<stop offset="0.5" stop-color="#EDEDED"/>
-<stop offset="0.76" stop-color="#808080"/>
-<stop offset="1" stop-color="#ABABAB"/>
-</linearGradient>
-        </defs>
         <path d="M156 0H0V43.25H156V0Z" id="filler" fill="${fill}" />
         <path d="M155 1H1V42.25H155V1Z" stroke="white" stroke-width="2" />
       </svg>
