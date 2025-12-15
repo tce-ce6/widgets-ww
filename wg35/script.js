@@ -43,6 +43,8 @@ window.addEventListener("DOMContentLoaded", () => {
         return map;
     }, {});
     
+    //Y 358
+// X 72
     // All correct combinations based on the image:
     const correctChains = [
         ["plant", "deer", "tiger"], ["plant", "goat", "tiger"], ["plant", "rabbit", "tiger"],
@@ -224,17 +226,17 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function showInsightPopup() {
-        const popup = document.getElementById("insight-popup");
-        const content = document.getElementById("insight-content");
-        if (popup && content) {
-            content.innerHTML = `
-                <p><strong>1. Most food chains start with plants (Producers).</strong></p>
-                <p><strong>2. The second level is usually occupied by plant-eating/herbivorous organisms (Primary Consumers).</strong></p>
-                <p><strong>3. The third level of a food chain is usually occupied by flesh-eating/carnivorous or both plant and flesh-eating/omnivorous organisms (Secondary Consumers/Predators).</strong></p>
-            `;
-            popup.style.display = 'block'; 
+        console.log("Show Insight Popup");
+        const insightDetails = document.getElementById("insight-detials");
+        const insightCloseBtn = document.getElementById("close-insight-btn");
+        if (insightDetails) {
+            insightDetails.style.display = 'block'; 
         }
-        showInsightButton(false); 
+        if (insightCloseBtn) {
+            console.log( "Insight button")
+            insightCloseBtn.addEventListener("click", () => insightDetails.style.display = 'none'); 
+        }
+        showInsightButton(true); 
     }
     
     // --- Animal Icon Generation (No change) ---
@@ -419,7 +421,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 console.log(`Placed ${selectedAnimalData.id} into ${bucketId} (Role: ${selectedAnimalData.role})`);
 
                 selectedAnimalData = null; 
-                showInsightButton(false); 
+                showInsightButton(true); 
 
                 checkFoodChainCompletion();
 
@@ -477,7 +479,7 @@ window.addEventListener("DOMContentLoaded", () => {
         flashMessage('', '');
         const resetButton = document.getElementById("reset-button");
         if (resetButton) resetButton.classList.remove("blinking"); 
-        showInsightButton(false);
+        showInsightButton(true);
         
         console.log("Widget reset to default screen.");
     }
@@ -503,11 +505,21 @@ window.addEventListener("DOMContentLoaded", () => {
     if (resetButton) {
         resetButton.addEventListener("click", resetWidget);
     }
+
+
+     const insightDetails = document.getElementById("insight-detials");
+        const insightCloseBtn = document.getElementById("insight-close-btn");
+        if (insightDetails && insightCloseBtn) {
+            console.log( "Insight button")
+            insightCloseBtn.addEventListener("click", () => insightDetails.style.display = 'none');             
+        }
+
+        showInsightButton(true); 
     
     const popupClose = document.getElementById("insight-popup-close"); 
     const insightPopup = document.getElementById("insight-popup");
     if (popupClose && insightPopup) {
          popupClose.addEventListener("click", () => insightPopup.style.display = 'none');
     }
-    showInsightButton(false);
+    showInsightButton(true);
 });
