@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
         { id: "lion", src: "assets/lion.svg", x: 1350, y: 140, role: "predator" },
         { id: "rabbit", src: "assets/Rabbit.svg", x: 1530, y: 140, role: "herbivore" },
         { id: "butterfly", src: "assets/butterfly.svg", x: 1710, y: 140, role: "herbivore" },
-        { id: "crow", src: "assets/crow.svg", x: 1350, y: 320, role: "predator" }, // Crow is omnivorous/carnivorous, so acts as a predator/secondary consumer here
+        { id: "crow", src: "assets/crow.svg", x: 1350, y: 320, role: "predator" }, 
         { id: "goat", src: "assets/Goat.svg", x: 1530, y: 320, role: "herbivore" },
         { id: "frog", src: "assets/frog.svg", x: 1710, y: 320, role: "predator" },
         { id: "snake", src: "assets/snake.svg", x: 1350, y: 500, role: "predator" },
@@ -62,38 +62,31 @@ window.addEventListener("DOMContentLoaded", () => {
     
     const bucketIds = ["1st-bucket", "2nd-bucket", "3rd-bucket"];
 
-    // --- Lottie Animation Variables ---
+    // --- Lottie Animation Variables (No change) ---
     let currentLottie = null;
     const LOTTIE_FO_ID = "lottie-animation-container-fo";
     const LOTTIE_DIV_ID = "lottie-animation-div";
     const CORRECT_ANIM_PATH = 'assets/animation/en_evs_04_wg35_Assets_Correct.json';
     const INCORRECT_ANIM_PATH = 'assets/animation/en_evs_04_wg35_Assets_Incorrect.json';
-    const COMPLETE_ANIM_PATH = 'assets/animation/en_evs_04_wg35_Assets_correct_food_chain.json'; // New Path
+    const COMPLETE_ANIM_PATH = 'assets/animation/en_evs_04_wg35_Assets_correct_food_chain.json'; 
     
-    // Full screen dimensions
     const FULL_SCREEN_WIDTH = 1920; 
     const FULL_SCREEN_HEIGHT = 1080; 
-    const LOTTIE_X = 0; // Start at top left corner of the SVG viewbox
+    const LOTTIE_X = 0; 
     const LOTTIE_Y = 0; 
     
-    // --- Lottie Animation Functions (MODIFIED) ---
     function playLottieAnimation(animationPath, loop = false) { 
-        // 1. Remove any previous animation
         removeLottieAnimation();
         
-        // 2. Create the outer ForeignObject container (Full Screen)
         const fo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
         fo.setAttribute("x", LOTTIE_X);
         fo.setAttribute("y", LOTTIE_Y);
         fo.setAttribute("width", FULL_SCREEN_WIDTH.toString());
         fo.setAttribute("height", FULL_SCREEN_HEIGHT.toString());
         fo.setAttribute("id", LOTTIE_FO_ID);
-        // Ensure Lottie is on top of everything, but doesn't block interaction 
-        // with the panels beneath (except for the duration of the visual feedback).
         fo.style.pointerEvents = 'none'; 
-        fo.style.zIndex = '9999'; // Use z-index if CSS is available/needed, otherwise rely on SVG append order
+        fo.style.zIndex = '9999'; 
 
-        // 3. Create the inner HTML div container for Lottie
         const div = document.createElement("div");
         div.setAttribute("id", LOTTIE_DIV_ID);
         div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
@@ -101,9 +94,8 @@ window.addEventListener("DOMContentLoaded", () => {
         div.style.height = '100%';
         
         fo.appendChild(div);
-        group.appendChild(fo); // Append to the main SVG group
+        group.appendChild(fo); 
 
-        // 4. Load and play the animation
         if (typeof lottie === 'undefined') {
             console.error("Lottie library is not loaded. Cannot play animation.");
             return;
@@ -117,18 +109,12 @@ window.addEventListener("DOMContentLoaded", () => {
             path: animationPath
         });
         
-        // Fix: Do NOT automatically remove the animation after it completes.
-        // Instead, we will force the animation to hold its end state.
-        
-        // Use the segment feature to stop the animation on the last frame if it's not looping.
         if (!loop) {
             currentLottie.addEventListener('complete', () => {
-                // By pausing on the last frame, the final state is held.
                 currentLottie.pause(); 
             });
         }
         
-        // Make sure it plays immediately if it was destroyed and re-loaded
         if (currentLottie && currentLottie.isPaused) {
             currentLottie.play();
         }
@@ -139,15 +125,12 @@ window.addEventListener("DOMContentLoaded", () => {
             currentLottie.destroy();
             currentLottie = null;
         }
-        // Remove the foreignObject container from the SVG
         const fo = document.getElementById(LOTTIE_FO_ID);
         if (fo) {
             fo.remove();
         }
     }
 
-
-    // --- Utility Functions for Feedback and Visibility (No change) ---
 
     function flashMessage(message, type) {
         const msgElement = document.getElementById("feedback-message");
@@ -187,9 +170,34 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // --- Completion Check (MODIFIED) ---
+    // --- NEW CORE FIX: Compatibility Check for Any-Order Placement ---
+    function isPartialChainValid(currentAnimals, nextAnimalId, nextBucketId) {
+        // 1. Combine all placed animals (current ones + the new one)
+        const allPlacedAnimals = [...currentAnimals, { id: nextAnimalId, bucket: nextBucketId }];
+        
+        // 2. Check if this combination of placed items fits into ANY single correct chain
+        return correctChains.some(correctChain => {
+            // Check 1: Does every placed item's ID match the required ID at its bucket's position
+            // in the target correctChain?
+            const positionMatch = allPlacedAnimals.every(placedItem => {
+                const bucketIndex = bucketIds.indexOf(placedItem.bucket);
+                // The item's ID must match the ID at that position in the correct chain
+                return placedItem.id === correctChain[bucketIndex];
+            });
+
+            // Check 2: (Optional but highly recommended) Ensure ALL placed IDs are accounted for in the chain
+            // This is implicitly handled by the positionMatch check if bucketIds are unique.
+            
+            return positionMatch;
+        });
+    }
+    // ---------------------------------------------------------------------------------
+
+
+    // --- Completion Check (No change) ---
     function checkFoodChainCompletion() {
         if (placedAnimals.length === 3) {
+            // Since partial validation passed, the final check only confirms the 3 IDs form a complete chain
             const chainIds = placedAnimals.sort((a, b) => 
                 bucketIds.indexOf(a.bucket) - bucketIds.indexOf(b.bucket)
             ).map(a => a.id);
@@ -199,7 +207,6 @@ window.addEventListener("DOMContentLoaded", () => {
             );
 
             if (isChainCorrect) {
-                // Play the grand completion animation (Full Screen)
                 playLottieAnimation(COMPLETE_ANIM_PATH, false); 
                 
                 flashMessage('Correct! The food chain is complete!', 'complete'); 
@@ -207,6 +214,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 if (resetButton) resetButton.classList.add("blinking"); 
                 return true;
             } else {
+                // Should not happen if partial validation is correct, but kept as a safeguard
                 console.warn("Completed chain is incorrect. Resetting.");
                 resetWidget(); 
                 return false;
@@ -253,7 +261,7 @@ window.addEventListener("DOMContentLoaded", () => {
         group.appendChild(fo);
     });
     
-    // --- New: Utility to remove any flying/animating clones ---
+    // --- Utility to remove any flying/animating clones (No change) ---
     function removeFlyingClone() {
         const flyingClone = document.getElementById("flying-animal-clone");
         if (flyingClone) {
@@ -262,63 +270,52 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --- Animal Selection Function (Clears Lottie) ---
+    // --- Animal Selection Function (No change) ---
     function selectAnimal(animal) {
-        // If the animal is already placed, you can't select it
         if (placedAnimals.some(a => a.id === animal.id)) {
             console.log(`${animal.id} is already placed.`);
             return;
         }
 
         removeFlyingClone(); 
-        removeLottieAnimation(); // Clear previous feedback when selecting a new animal
+        removeLottieAnimation(); 
 
-        // 1. Store the selected animal's data
         selectedAnimalData = animal;
 
-        // 2. Remove previous border
         if (currentBorder) {
             currentBorder.remove();
             currentBorder = null;
         }
 
-        // 3. Create new border
         const border = document.createElementNS("http://www.w3.org/2000/svg", "image");
         border.setAttributeNS("http://www.w3.org/1999/xlink", "href", "assets/yellow-border.svg");
-
-        // 4. Position border slightly around icon
         border.setAttribute("x", animal.x - 20);
         border.setAttribute("y", animal.y - 20);
         border.setAttribute("width", '180px');
         border.setAttribute("height", '180px');
 
-        // 5. Place border after animals (on top)
         group.appendChild(border);
 
-        // 6. Save reference
         currentBorder = border;
 
         console.log(`Selected: ${animal.id}`);
     }
 
-    // --- Core Placement and Validation Function (No change to core logic) ---
+    // --- Core Placement and Validation Function (Uses new compatibility check) ---
     function placeAnimalInBucket(bucketId) {
         if (!selectedAnimalData) {
             console.log("No animal selected yet.");
             return; 
         }
 
-        // Clear any previous feedback animation before starting a new placement
         removeLottieAnimation(); 
         
-        // Get the target role and position for the selected bucket
         const targetBucket = bucketPositions[bucketId];
         if (!targetBucket) {
             console.error("Invalid bucket ID:", bucketId);
             return;
         }
 
-        // 1. Check if the bucket is already occupied
         const existingPlacement = placedAnimals.find(p => p.bucket === bucketId);
         if (existingPlacement) {
             console.log(`Bucket ${bucketId} is already occupied by ${existingPlacement.id}.`);
@@ -350,13 +347,17 @@ window.addEventListener("DOMContentLoaded", () => {
         flyingFo.appendChild(flyingImg);
         group.appendChild(flyingFo); 
 
-        // Apply initial transformation for animation
         flyingFo.style.transition = 'transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out';
         flyingFo.style.transformOrigin = '0 0'; 
         flyingFo.style.pointerEvents = 'none'; 
 
         // 3. Check for correctness
         const isCorrectRole = selectedAnimalData.role === targetBucket.role;
+        
+        // Check for compatibility with existing placements and overall chain structure
+        const isChainValid = isPartialChainValid(placedAnimals, selectedAnimalData.id, bucketId);
+        
+        const isCorrectPlacement = isCorrectRole && isChainValid; 
 
         // 4. Start the movement animation
         const deltaX = endX - startX;
@@ -364,40 +365,33 @@ window.addEventListener("DOMContentLoaded", () => {
         const animationDuration = 500; // 0.5s
 
         setTimeout(() => {
-            // Translate to the target bucket's coordinates and scale up
             flyingFo.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
             flyingFo.setAttribute("width", "270"); 
             flyingFo.setAttribute("height", "270"); 
         }, 50); 
 
-        // 5. Post-Animation Logic (Correct/Incorrect)
+        // 5. Post-Animation Logic
         
-        if (isCorrectRole) {
+        if (isCorrectPlacement) {
             // --- CORRECT PLACEMENT ---
             setTimeout(() => {
-                // Trigger Lottie and Audio (Individual Correct Feedback)
                 playLottieAnimation(CORRECT_ANIM_PATH); 
                 playAudio('correct');
-
-                // 1. 'Correct' message will flash
                 flashMessage('Correct!', 'correct');
                 
-                // 2. Remove the flying clone (its job is done)
                 removeFlyingClone(); 
 
-                // 3. Hide the original icon from the panel
                 const animalIconFo = group.querySelector(`[data-id="${selectedAnimalData.id}"]`);
                 if (animalIconFo) {
                     animalIconFo.style.display = 'none';
                 }
 
-                // 4. Remove the selection border
                 if (currentBorder) {
                     currentBorder.remove();
                     currentBorder = null;
                 }
                 
-                // 5. Place the final static icon in the bucket group
+                // Place the final static icon
                 const finalFo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
                 finalFo.setAttribute("x", endX); 
                 finalFo.setAttribute("y", endY);
@@ -416,7 +410,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 finalFo.appendChild(finalImg);
                 selectedAnimalsGroup.appendChild(finalFo);
 
-                // 6. Record the placement
                 placedAnimals.push({ 
                     id: selectedAnimalData.id, 
                     role: selectedAnimalData.role, 
@@ -425,11 +418,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 console.log(`Placed ${selectedAnimalData.id} into ${bucketId} (Role: ${selectedAnimalData.role})`);
 
-                // 7. Clear selected animal after successful placement
                 selectedAnimalData = null; 
                 showInsightButton(false); 
 
-                // 8. Check if the chain is complete and correct (all 3 boxes filled)
                 checkFoodChainCompletion();
 
             }, animationDuration);
@@ -437,63 +428,52 @@ window.addEventListener("DOMContentLoaded", () => {
         } else {
             // --- INCORRECT PLACEMENT ---
             
-            // Wait for the first part of the animation (going to the bucket)
             setTimeout(() => {
-                // Trigger Lottie and Audio (Individual Incorrect Feedback)
                 playLottieAnimation(INCORRECT_ANIM_PATH); 
                 playAudio('incorrect');
                 
-                // 1. 'Incorrect' message will flash
                 flashMessage('Incorrect', 'incorrect');
 
-                // 2. Animate the clone back to its starting position (No transform) and original size
+                // Animate the clone back to its starting position (Go back)
                 flyingFo.style.transform = `translate(0, 0)`;
                 flyingFo.setAttribute("width", "140"); 
                 flyingFo.setAttribute("height", "140"); 
 
-                // 3. After the return animation, remove the clone
                 setTimeout(() => {
                     removeFlyingClone();
                 }, animationDuration);
                 
-                // 4. Clear selection and border
+                // Clear selection and border
                 if (currentBorder) {
                     currentBorder.remove();
                     currentBorder = null;
                 }
                 selectedAnimalData = null;
-                // 5. 'Insight' button will appear and blink
                 showInsightButton(true);
 
             }, animationDuration);
         }
     }
 
-    // --- Reset Function (Modified to remove flying clones and Lottie) ---
+    // --- Reset Function (No change) ---
     function resetWidget() {
-        // IMPORTANT: Remove any flying clone and Lottie animation on reset
         removeFlyingClone(); 
         removeLottieAnimation();
 
-        // 1. Remove all animals from the buckets
         const placedFos = selectedAnimalsGroup.querySelectorAll('foreignObject');
         placedFos.forEach(fo => fo.remove());
         
-        // 2. Show all animals in the image panel again
         const allAnimalIcons = group.querySelectorAll('foreignObject[data-id]');
         allAnimalIcons.forEach(fo => fo.style.display = 'block');
         
-        // 3. Clear placed animals array
         placedAnimals = [];
         
-        // 4. Clear selection and border
         if (currentBorder) {
             currentBorder.remove();
             currentBorder = null;
         }
         selectedAnimalData = null;
         
-        // 5. Clear messages and reset button
         flashMessage('', '');
         const resetButton = document.getElementById("reset-button");
         if (resetButton) resetButton.classList.remove("blinking"); 
@@ -502,9 +482,8 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log("Widget reset to default screen.");
     }
     
-    // --- Event Listeners for Buckets and Reset/Insight ---
+    // --- Event Listeners for Buckets and Reset/Insight (No change) ---
     
-    // Bucket Listeners
     bucketIds.forEach(id => {
         const bucket = document.getElementById(id);
         if (bucket) {
@@ -515,7 +494,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     });
     
-    // Assuming you have elements with these IDs in your SVG/HTML
     const insightButton = document.getElementById("insight-button");
     if (insightButton) {
         insightButton.addEventListener("click", showInsightPopup);
@@ -526,12 +504,10 @@ window.addEventListener("DOMContentLoaded", () => {
         resetButton.addEventListener("click", resetWidget);
     }
     
-    // Optional: Listener to close the Insight popup
     const popupClose = document.getElementById("insight-popup-close"); 
     const insightPopup = document.getElementById("insight-popup");
     if (popupClose && insightPopup) {
          popupClose.addEventListener("click", () => insightPopup.style.display = 'none');
     }
-    // Initialize the insight button to be hidden
     showInsightButton(false);
 });
