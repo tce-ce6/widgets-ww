@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const xrayLeftContainer = document.getElementById("xray-left");
   const xrayRightContainer = document.getElementById("xray-right");
   const resetBtn = document.getElementById("global-reset");
+  const xrayLeftImg = document.getElementById("xray-left-img");
+const xrayRightImg = document.getElementById("xray-right-img");
 
   console.log("XRAY containers:", xrayLeftContainer, xrayRightContainer);
 
@@ -52,6 +54,44 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------------------------------------------
        LOAD PIN ANIMATIONS
   --------------------------------------------- */
+
+function updateXrayImagesVisibility() {
+  const xrayOn = document
+    .getElementById("xray-button")
+    .parentNode.classList.contains("turn-on");
+
+  const magneticOn = document
+    .getElementById("magnetic-button")
+    .parentNode.classList.contains("turn-on");
+
+  // CASE 1: X-ray ON + Magnetic OFF → show LOTTIE
+  if (xrayOn && !magneticOn) {
+    xrayLeftContainer.style.display = "block";
+    xrayRightContainer.style.display = "block";
+
+    xrayLeftImg.style.display = "none";
+    xrayRightImg.style.display = "none";
+    return;
+  }
+
+  // CASE 2: X-ray ON + Magnetic ON → show IMAGES
+  if (xrayOn && magneticOn) {
+    xrayLeftContainer.style.display = "none";
+    xrayRightContainer.style.display = "none";
+
+    xrayLeftImg.style.display = "block";
+    xrayRightImg.style.display = "block";
+    return;
+  }
+
+  // CASE 3: X-ray OFF → hide everything
+  xrayLeftContainer.style.display = "none";
+  xrayRightContainer.style.display = "none";
+  xrayLeftImg.style.display = "none";
+  xrayRightImg.style.display = "none";
+}
+
+
 
   const pinLeftAnim = lottie.loadAnimation({
     container: document.getElementById("pin-left-animation"),
@@ -168,6 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
       --------------------------------------------- */
 
       if (event.target.id === "magnetic-button") {
+        updateXrayImagesVisibility();
+
         // ⭐ NEW: remove material classes
         document.querySelectorAll(".material-block").forEach((el) => {
           el.classList.remove("hard-material", "soft-material");
@@ -251,6 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
       --------------------------------------------- */
 
       if (event.target.id === "xray-button") {
+        updateXrayImagesVisibility();
+
         if (isTurningOn) {
           xrayLeftContainer.style.display = "block";
           xrayRightContainer.style.display = "block";

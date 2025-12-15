@@ -1,0 +1,150 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tally Marks</title>
+
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/global_style.css">
+</head>
+
+<body id="tally-marks">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Tally Marks</h2>
+        <span id="versionId" class="versionText">b2_wg51_151225</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g id="Web 1920 â 1 1" clip-path="url(#clip0_5016_123)">
+            <g id="Clip path group">
+              <mask id="mask0_5016_123" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1920"
+                height="1080">
+                <g id="clip-Web_1920_1">
+                  <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="white" />
+                </g>
+              </mask>
+              <g mask="url(#mask0_5016_123)">
+                <g id="Web 1920 â 1">
+
+                  <foreignObject x="61" y="108" width="1798" height="806">
+                    <div class="main-wrapper" xmlns="http://www.w3.org/1999/xhtml">
+                      <div class="left-col" id="left-col">
+                        <div id="activity-title"></div>
+                        <ul id="list-container">
+                        </ul>
+                        <div class="bottom-itext" id="note-txt"></div>
+                        <div class="message-modal success-modal" style="display: none;">Well done!</div>
+                        <div class="message-modal faillure-modal" style="display: none;">Incorrect!</div>
+                        <div class="showans-modal" style="display: none;">
+                          <div class="solution-header">Solution</div>
+                          <table class="table-main" id="answer-table" style="display: none;">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Correct Count</th>
+                              </tr>
+                            </thead>
+                            <tbody id="answer-body"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="right-col">
+                        <div class="instruction-wrapper">
+                          <span class="instruction-title">How to use:</span>
+                          <ul>
+                            <li>Add the categories using the dropdown box at the top</li>
+                            <li>Click the + button to add one tally mark</li>
+                            <li>Click the - button to remove one tally mark</li>
+                            <li>Every 5 marks are grouped with a diagonal line (////)</li>
+                          </ul>
+                        </div>
+
+                        <div class="selectwrap">
+                          <select id="category-wrap">
+                            <option selected disabled>Select a new category...</option>
+                            <option></option>
+                          </select>
+                          <button class="common-btn add-btn" id="add-btn">Add</button>
+                        </div>
+
+                        <table class="table-main" id="result-table">
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th style="width: 30%;">Tally Marks</th>
+                              <th>Count</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody id="result-body">
+                            <tr class="total-row">
+                              <td style="text-align:left;" colspan="2">Total:</td>
+                              <td><input type="text" id="total-count"></td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+
+                        <div class="btn-wrapper">
+                          <button class="common-btn">Reset All Counts</button>
+                          <button class="common-btn next-btn">Next Activity</button>
+                        </div>
+                      </div>
+                    </div>
+                  </foreignObject>
+
+                </g>
+              </g>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+      <div class="flexContainer button-controls" id="btn-wrapper">
+        <div class=" flexItem flexItemFirst">
+          <button class="btn" id="check-ans" disabled onclick="toggleActiveSimulation()"
+            style="background-color:#4caf50; color:white; min-width:97.15px;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Check Answer
+          </button>
+          <button class="btn" id="global-reset" disabled onclick="resetActiveSimulation()"
+            style="background-color:#FF2C68; color:white; " onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+          <button class="btn" id="show-answer" disabled onclick="resetActiveSimulation()"
+            style="background-color:#1e6bef; color:white; " onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Show Answer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
