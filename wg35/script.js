@@ -76,6 +76,16 @@ window.addEventListener("DOMContentLoaded", () => {
     const FULL_SCREEN_HEIGHT = 1080; 
     const LOTTIE_X = 0; 
     const LOTTIE_Y = 0; 
+     const resetButtonPrimary = document.getElementById("reset-button");
+    if (resetButtonPrimary) {
+        resetButtonPrimary.addEventListener("click", resetWidget);
+        if(placedAnimals.length > 0) {
+            resetButtonPrimary.disabled = false;
+        }else{
+            resetButtonPrimary.disabled = true;
+
+        }
+    }
     
     function playLottieAnimation(animationPath, loop = false) { 
         removeLottieAnimation();
@@ -133,32 +143,19 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
-    function flashMessage(message, type) {
-        const msgElement = document.getElementById("feedback-message");
-        if (msgElement) {
-            msgElement.textContent = message;
-            msgElement.className = `flash-message ${type}`; 
-            setTimeout(() => {
-                msgElement.textContent = '';
-                msgElement.className = 'flash-message';
-            }, 3000); 
-        }
-    }
-
-    function playAudio(type) {
-        let audioSrc = '';
-        if (type === 'correct') {
-            audioSrc = 'assets/celebration.mp3'; 
-        } else if (type === 'incorrect') {
-            audioSrc = 'assets/sad-music.mp3'; 
-        }
+    // function playAudio(type) {
+    //     let audioSrc = '';
+    //     if (type === 'correct') {
+    //         audioSrc = 'assets/celebration.mp3'; 
+    //     } else if (type === 'incorrect') {
+    //         audioSrc = 'assets/sad-music.mp3'; 
+    //     }
         
-        if (audioSrc) {
-            const audio = new Audio(audioSrc);
-            audio.play().catch(e => console.error("Audio playback failed:", e));
-        }
-    }
+    //     if (audioSrc) {
+    //         const audio = new Audio(audioSrc);
+    //         audio.play().catch(e => console.error("Audio playback failed:", e));
+    //     }
+    // }
 
     function showInsightButton(show) {
         const insightBtn = document.getElementById("insight-button");
@@ -317,7 +314,8 @@ window.addEventListener("DOMContentLoaded", () => {
             console.error("Invalid bucket ID:", bucketId);
             return;
         }
-
+        resetButtonPrimary.disabled = false;
+        // Check if the bucket is already occupied
         const existingPlacement = placedAnimals.find(p => p.bucket === bucketId);
         if (existingPlacement) {
             console.log(`Bucket ${bucketId} is already occupied by ${existingPlacement.id}.`);
@@ -378,8 +376,7 @@ window.addEventListener("DOMContentLoaded", () => {
             // --- CORRECT PLACEMENT ---
             setTimeout(() => {
                 playLottieAnimation(CORRECT_ANIM_PATH); 
-                playAudio('correct');
-                flashMessage('Correct!', 'correct');
+                // playAudio('correct');
                 
                 removeFlyingClone(); 
 
@@ -432,9 +429,9 @@ window.addEventListener("DOMContentLoaded", () => {
             
             setTimeout(() => {
                 playLottieAnimation(INCORRECT_ANIM_PATH); 
-                playAudio('incorrect');
+                // playAudio('incorrect');
                 
-                flashMessage('Incorrect', 'incorrect');
+                // flashMessage('Incorrect', 'incorrect');
 
                 // Animate the clone back to its starting position (Go back)
                 flyingFo.style.transform = `translate(0, 0)`;
@@ -456,9 +453,11 @@ window.addEventListener("DOMContentLoaded", () => {
             }, animationDuration);
         }
     }
-
+   
     // --- Reset Function (No change) ---
     function resetWidget() {
+    
+    resetButtonPrimary.disabled = true;
         removeFlyingClone(); 
         removeLottieAnimation();
 
@@ -476,9 +475,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         selectedAnimalData = null;
         
-        flashMessage('', '');
+        // flashMessage('', '');
         const resetButton = document.getElementById("reset-button");
         if (resetButton) resetButton.classList.remove("blinking"); 
+
         showInsightButton(true);
         
         console.log("Widget reset to default screen.");
@@ -501,10 +501,7 @@ window.addEventListener("DOMContentLoaded", () => {
         insightButton.addEventListener("click", showInsightPopup);
     }
     
-    const resetButton = document.getElementById("reset-button");
-    if (resetButton) {
-        resetButton.addEventListener("click", resetWidget);
-    }
+    
 
 
      const insightDetails = document.getElementById("insight-detials");

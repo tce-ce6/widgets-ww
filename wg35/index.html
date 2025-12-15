@@ -463,16 +463,27 @@
                         </clipPath>
                     </defs>
                 </svg>
-                <div id="feedback-message" class="flash-message"></div>
-                <button id="reset-button">Reset</button>
-<button id="insight-button" style="display:none;">Insight</button>
-<div id="insight-popup" style="display:none;">
-    <span id="insight-popup-close">X</span>
-    <h3>Food Chain Levels</h3>
-    <div id="insight-content">
-        </div>
-</div>
 
+
+                
+                
+</div>
+ <div class="flexContainer button-controls" id="btn-wrapper">
+        <div class=" flexItem flexItemFirst">
+          
+          <button class="btn" id="reset-button" onclick="resetActiveSimulation()"
+            style="background-color:#ff2c68; color:white; " onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+        </div>
+      </div>
             </div>
             <!-- <div class="flexContainer button-controls">
         <div class="flexItem flexItemFirst">
