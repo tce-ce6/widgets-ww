@@ -39,17 +39,20 @@
                         <div class="bottom-itext" id="note-txt"></div>
                         <div class="message-modal success-modal" style="display: none;">Well done!</div>
                         <div class="message-modal faillure-modal" style="display: none;">Incorrect!</div>
-                        <div class="showans-modal" style="display: none;">
+                        <div class="showans-modal" id="answer-table-wrapper" style="display: none;">
+                          <div id="close-btn"></div>
                           <div class="solution-header">Solution</div>
-                          <table class="table-main" id="answer-table" style="display: none;">
+                          <table id="answer-table" class="table-main">
                             <thead>
                               <tr>
                                 <th>Category</th>
+                                <th>Tally Marks</th>
                                 <th>Correct Count</th>
                               </tr>
                             </thead>
                             <tbody id="answer-body"></tbody>
                           </table>
+
                         </div>
                       </div>
                       <div class="right-col">
@@ -91,8 +94,8 @@
 
 
                         <div class="btn-wrapper">
-                          <button class="common-btn">Reset All Counts</button>
-                          <button class="common-btn next-btn">Next Activity</button>
+                          <button class="common-btn" id="reset-all-count">Reset All Counts</button>
+                          <button class="common-btn next-btn" id="next-activity">Next Activity</button>
                         </div>
                       </div>
                     </div>
@@ -107,7 +110,7 @@
       </div>
       <div class="flexContainer button-controls" id="btn-wrapper">
         <div class=" flexItem flexItemFirst">
-          <button class="btn" id="check-ans" disabled onclick="toggleActiveSimulation()"
+          <button class="btn" id="check-ans" disabled
             style="background-color:#4caf50; color:white; min-width:97.15px;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
@@ -118,7 +121,7 @@
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
             Check Answer
           </button>
-          <button class="btn" id="global-reset" disabled onclick="resetActiveSimulation()"
+          <button class="btn" id="global-reset" disabled
             style="background-color:#FF2C68; color:white; " onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
@@ -129,7 +132,7 @@
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
             Reset
           </button>
-          <button class="btn" id="show-answer" disabled onclick="resetActiveSimulation()"
+          <button class="btn" id="show-answer" disabled
             style="background-color:#1e6bef; color:white; " onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';

@@ -189,7 +189,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-37.png",
     creators: "as-sh-37",
-    status: "WIP-With-Tech",
+    status: "closed",
   },
   {
     name: "Build an Atom",
@@ -221,17 +221,17 @@ const WIDGET_DATA = [
   },
   {
     name: "Hard and Soft Ferromagnetic Materials",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg44-ferromagnetic-materials/index.html",
     imagePath: "./assets/wg-44.png",
     creators: "ni-di-44",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Make a Food Chain",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg35_make_a_food_chain/index.html",
     imagePath: "./assets/wg-35.png",
     creators: "sh-di-35",
-    status: "todo",
+    status: "in-review",
   },
   {
     name: "LCM of Numbers",
@@ -287,7 +287,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-33.png",
     creators: "ni-di-33",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "Mendel's Dihybrid Cross",
@@ -298,17 +298,17 @@ const WIDGET_DATA = [
   },
   {
     name: "Complex number plotter​",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg54_complex-number/index.html",
     imagePath: "./assets/wg-54.png",
     creators: "as-di-54",
-    status: "todo",
+    status: "in-review",
   },
   {
     name: "Tally Marks",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg51-tally-marks/index.html",
     imagePath: "./assets/wg-51.png",
     creators: "ni-di-51",
-    status: "todo",
+    status: "in-review",
   },
   {
     name: "The switching game",
@@ -329,7 +329,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-40.png",
     creators: "as-di-40",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "HCF of numbers",
@@ -350,7 +350,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-43.png",
     creators: "sh-di-43",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "वाक्य में क्रिया का प्रयोग",
