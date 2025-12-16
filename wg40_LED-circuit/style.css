@@ -19,7 +19,7 @@
 
 #rhyme-widget .container::after {
   content: "";
-  background-image: url("./Assests/Images/BG.png");
+  background-image: url("./Assets/Images/BG.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -163,4 +163,10 @@
 
 #bulb-minus-sign {
   fill: blue;
+}
+
+#switch-lottie{
+  height: 200px;
+  width: 300px;
+  border: 1px solid red;
 }

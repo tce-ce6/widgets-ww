@@ -16,7 +16,7 @@ let currentLottieInstance = null
 let currentBuldSign = false;
 let currentLEDSign = false;
 
-const ANIMATION_PATH_BASE = 'Assets/Lottie Animation';
+const ANIMATION_PATH_BASE = './Assets/Lottie-animation/';
 
 /* Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
  */
@@ -34,7 +34,7 @@ function loadInitialLottie() {
     }
 
     // 2. Find file path
-    const fileName = "Switch_on_off.lottie";
+    const fileName = "Switch_on_off.json";
     if (!fileName) {
         console.warn(`No Lottie file found for the word: ${word}`);
         // Optionally, hide the container if no animation exists
@@ -42,7 +42,7 @@ function loadInitialLottie() {
         return;
     }
     const animationPath = ANIMATION_PATH_BASE + fileName;
-
+    console.log("animationPath",animationPath );
     // 3. Create the animation instance
     currentLottieInstance = lottie.loadAnimation({
         container: container,
