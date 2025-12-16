@@ -146,7 +146,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg17-locating-decimals/index.html",
     imagePath: "./assets/locating-decimals.png",
     creators: "sh-mr-17",
-    status: "in-review",
+    status: "WIP-With-Tech",
   },
   {
     name: "Reading Large numbers",

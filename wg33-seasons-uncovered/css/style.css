@@ -1,0 +1,296 @@
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+#tally-marks body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#tally-marks .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#tally-marks .container::after {
+  content: "";
+  background-image: url("./../assets/BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* #tally-marks .mainContainerOuter {
+  background: #60360D !important
+} */
+
+#tally-marks .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#tally-marks .d-flex {
+  display: flex
+}
+
+#tally-marks .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#tally-marks .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#tally-marks .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #tally-marks .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#tally-marks .btn {
+  display: inline-block;
+  padding: 22px 55px;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 55px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px;
+}
+
+#tally-marks .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#tally-marks .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#tally-marks .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#tally-marks .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#tally-marks .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#tally-marks .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#tally-marks .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #0295FC;
+  white-space: nowrap;
+}
+
+#tally-marks .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #bbb;
+}
+
+#tally-marks .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#tally-marks svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+/* tally mark style  */
+
+#bottom-controller {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+#bottom-controller {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+#slider-pips {
+  width: 820px;
+}
+
+.tilt-txt {
+  font-size: 30px;
+}
+
+/* .noUi-pips.noUi-pips-horizontal {
+  display: none;
+} */
+
+.noUi-handle.noUi-handle-lower{
+  background-image: url("data:image/svg+xml,%3Csvg width='69' height='61' viewBox='0 0 69 61' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.019 2.50498C30.4574 1.74354 31.0888 1.11108 31.8495 0.671312C32.6102 0.231545 33.4733 0 34.352 0C35.2306 0 36.0938 0.231545 36.8545 0.671312C37.6152 1.11108 38.2465 1.74354 38.685 2.50498L68.037 53.484C68.4747 54.2442 68.7047 55.1061 68.704 55.9833C68.7032 56.8605 68.4717 57.7221 68.0327 58.4815C67.5936 59.2409 66.9625 59.8714 66.2027 60.3098C65.4429 60.7482 64.5812 60.979 63.704 60.979H4.99999C4.1228 60.979 3.26104 60.7482 2.50124 60.3098C1.74145 59.8714 1.11035 59.2409 0.671314 58.4815C0.23228 57.7221 0.000760855 56.8605 1.87214e-06 55.9833C-0.000757111 55.1061 0.229271 54.2442 0.66699 53.484L30.019 2.50498Z' fill='%232196F3'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: 55px !important;
+  width: 63px !important;
+  border: 0;
+  box-shadow: none;
+  background-color: transparent;
+  top: -19px !important;
+  right: -32px !important;
+  cursor: pointer;
+}
+.noUi-handle.noUi-handle-lower::after,
+.noUi-handle.noUi-handle-lower::before{
+  display: none;
+}
+.noUi-connects,
+.noUi-connect{
+  background-color: #CAE6FC !important;
+}
+.bars-wrapper{
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 820px;
+  top: 47px;
+}
+.bars-wrapper span{
+  display: block;
+  height: 50px;
+  width: 15px;
+  background-color: #CAE6FC;
+  border-radius: 10px;
+  position: relative;
+}
+.bars-wrapper span::before{
+  position: absolute;
+  top: -35px;
+  font-weight: 600;
+  font-size: 25px;
+  color: #000;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bars-wrapper span:nth-child(1)::before{
+  content: "-45";
+}
+.bars-wrapper span:nth-child(2)::before{
+  content: "-23";
+}
+.bars-wrapper span:nth-child(2)::after,
+.bars-wrapper span:nth-child(4)::after{
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg width='29' height='33' viewBox='0 0 29 33' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18.4121 6.09375L11.6035 27.709H8.32227L15.1309 6.09375H18.4121Z' fill='black'/%3E%3Cpath d='M6.53125 6.625V18H3.89844V9.59375L1.30469 10.3516V8.35156L6.28906 6.625H6.53125Z' fill='black'/%3E%3Cpath d='M27.6406 24.9688V27H19.7031V25.2812L23.3594 21.4375C23.6823 21.0677 23.9427 20.737 24.1406 20.4453C24.3385 20.1484 24.4818 19.8802 24.5703 19.6406C24.6641 19.401 24.7109 19.1849 24.7109 18.9922C24.7109 18.6641 24.6615 18.3906 24.5625 18.1719C24.4688 17.9479 24.3281 17.7786 24.1406 17.6641C23.9583 17.5495 23.7318 17.4922 23.4609 17.4922C23.1901 17.4922 22.9531 17.5703 22.75 17.7266C22.5469 17.8828 22.388 18.0964 22.2734 18.3672C22.1641 18.638 22.1094 18.9427 22.1094 19.2812H19.4688C19.4688 18.5833 19.638 17.9453 19.9766 17.3672C20.3203 16.7891 20.7969 16.3281 21.4062 15.9844C22.0156 15.6354 22.7214 15.4609 23.5234 15.4609C24.362 15.4609 25.0651 15.5911 25.6328 15.8516C26.2005 16.112 26.6276 16.4896 26.9141 16.9844C27.2057 17.474 27.3516 18.0651 27.3516 18.7578C27.3516 19.1536 27.2891 19.5339 27.1641 19.8984C27.0391 20.263 26.8594 20.625 26.625 20.9844C26.3906 21.3385 26.1042 21.7031 25.7656 22.0781C25.4323 22.4531 25.0521 22.8516 24.625 23.2734L23.1562 24.9688H27.6406Z' fill='black'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  height: 23px;
+  width: 23px;
+  position: absolute;
+  top: -35px;
+  background-size: 100%;
+  left: 33px;
+}
+.bars-wrapper span:nth-child(4)::after{
+  left: 28px;
+}
+.bars-wrapper span:nth-child(3)::before{
+  content: "0";
+}
+.bars-wrapper span:nth-child(4)::before{
+  content: "23";
+}
+.bars-wrapper span:nth-child(5)::before{
+  content: "45";
+}
+.noUi-pips.noUi-pips-horizontal{
+  display: none;
+}
+.earth-img{
+  height: 100%;
+  width: 100%;
+}
+
+.earth-img {
+  transition: transform 0.4s ease;
+  transform-origin: center center;
+}
+
+.tap-txt{
+  display: none;
+}
+
+#earth-wrap {
+  transition: transform 0.45s ease;
+  transform-origin: center center;
+}
+#top-lottie-wrapper,
+#bottom-lottie-wrapper,
+#left-lottie-wrapper,
+#right-lottie-wrapper {
+  display: none;
+}
