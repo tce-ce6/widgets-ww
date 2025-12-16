@@ -45,9 +45,15 @@ body {
 
 .question {
   display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    left: 30%;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 60px;
+  flex-wrap: wrap;
+}
+
+#feedback {
+  width: 100%;
+  text-align: end;
 }
 
 .right-col {
@@ -274,7 +280,7 @@ input[type="range"]::-moz-range-thumb {
   top: 0;
 }
 
-.roman-txt{
+.roman-txt {
   font-family: "Newsreader", serif;
   /* font-style: normal; */
   font-weight: 500;
@@ -294,18 +300,19 @@ input[type="range"]::-moz-range-thumb {
 
 .wdgetTitle h2 {
   font-size: 23px;
-    font-weight: 600;
-    text-align: left;
-    padding: 5px 20px;
-    color: #fff;
-    border-radius: 0 0px 20px 20px;
-    background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
-    margin: 0px 0px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 20px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%);
+  margin: 0px 0px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 .versionText {
   position: absolute;
   right: 20px;
@@ -313,19 +320,40 @@ input[type="range"]::-moz-range-thumb {
   font-size: 12px;
   color: #ccc;
 }
-#jxgbox .JXGtext{
+
+#jxgbox .JXGtext {
   background-color: transparent;
   line-height: 1;
   padding: 0;
   box-shadow: none;
 }
+
 /* new header css end*/
 
 .jxgbox {
-  width: 500px;
-  height: 500px;
+  width: 545px;
+  height: 550px;
   min-width: 500px;
   min-height: 500px;
   border: 1px solid #e0e0e0;
   background-color: #ffffff;
+}
+
+.mainContainer {
+  align-items: center !important;
+  padding-top: 35px !important;
+  gap: 30px;
+}
+
+.mainContainer .chart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.mainContainer .left-div,
+.mainContainer .chart-wrapper {
+  width: 50%;
+  height: 100%;
+
 }

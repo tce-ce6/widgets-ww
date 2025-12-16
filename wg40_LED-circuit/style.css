@@ -19,7 +19,7 @@
 
 #rhyme-widget .container::after {
   content: "";
-  background-image: url("Assets/Images/Final images/Group.png");
+  background-image: url("./Assests/Images/BG.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -133,7 +133,7 @@
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #af4c00;
+  background: #1e6bef;
   padding: 8px 40px;
   color: white;
   white-space: nowrap;
@@ -157,37 +157,10 @@
     height: 100%;
 } 
 
-.btn-wrap img{
-  width: 100%;
-  height: 100%;
+#bulb-plus-sign {
+  fill: blue;
 }
 
-.btn-wrap{
-  position: relative;
-  cursor: pointer;
-}
-.btn-wrap::before{
-  font-size: 40px;
-  position: absolute;
-  top: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 600;
-}
-.btn-wrap.one::before{
-  content: "a";
-  color: #73c050;
-}
-
-.btn-wrap.two::before{
-  content: "b";
-  color: #e8b83f;
-}
-.btn-wrap.three::before{
-  content: "c";
-  color: #55beed;
-}
-.btn-wrap.four::before{
-  content: "d";
-  color: #b72c83;
+#bulb-minus-sign {
+  fill: blue;
 }

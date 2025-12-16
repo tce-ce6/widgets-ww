@@ -207,8 +207,6 @@ function initializeBoard() {
         // 🔥 generateLabel MUST be here
         generateLabel: function (tick) {
             const val = Math.round(tick.usrCoords[2]); // ensure integer
-            console.log(tick.usrCoord);
-            console.log("Hi")
             if (val === 0) return '';
             if (val === 1) return 'i';
             if (val === -1) return '− i';
