@@ -280,17 +280,148 @@
   transform-origin: center center;
 }
 
-.tap-txt{
+/* .tap-txt{
   display: none;
-}
+} */
 
 #earth-wrap {
   transition: transform 0.45s ease;
-  transform-origin: center center;
+    transform-box: fill-box;
+  transform-origin: center;
 }
 #top-lottie-wrapper,
 #bottom-lottie-wrapper,
 #left-lottie-wrapper,
 #right-lottie-wrapper {
   display: none;
+}
+
+#earth-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+#earth-wrap > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.observation-wrapper{
+  background-color: #fff;
+  height: 100%;
+  border-radius: 20px;
+  border: 3px solid #0295FC;
+  height: -webkit-fill-available;
+  padding: 20px 40px;
+  font-size: 32px;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 80px;
+}
+
+.observation-title{
+  color: #0295FC;
+  padding-bottom: 10px;
+  border-bottom: 3px dotted #0295FC;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+#option-wrapper{
+  margin-top: 30px;
+}
+
+ .check-box{
+  height: 35px;
+  width: 35px;
+  border: 2px solid #0295FC;
+  border-radius: 5px;
+  flex: 0 0 auto;
+  position: relative;
+}
+.common-btn.disabled{
+  filter: contrast(0.5);
+}
+ .check-box.right{
+  border: 2px solid green;
+}
+ .check-box.wrong{
+  border: 2px solid red;
+}
+ .check-box.right::after,
+ .check-box.wrong::after{
+  content: "";
+  display: block;
+  height: 26px;
+  width: 26px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+}
+
+ .check-box.right::after{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cg id='Group_1220' data-name='Group 1220' transform='translate(-1291 -330)'%3E%3Crect id='Rectangle_385' data-name='Rectangle 385' width='26' height='26' rx='4' transform='translate(1291 330)' fill='%234caf50'/%3E%3Cpath id='Path_2164' data-name='Path 2164' d='M96.945,48.548A53.966,53.966,0,0,0,90.3,60.476a1.8,1.8,0,0,1-1.464,1.138c-.446.053-.858.127-1.209.2a1.8,1.8,0,0,1-1.9-.8c-1.082-1.721-2.332-3.778-2.966-4.83a.97.97,0,0,1,.249-1.281c.145-.107.318-.229.519-.356a2.113,2.113,0,0,1,2.821.517l1.68,2.233a32.783,32.783,0,0,1,5.94-8.539,2.877,2.877,0,0,1,2.808-.687.308.308,0,0,1,.163.476Z' transform='translate(1214.379 288.045)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+ .check-box.wrong::after{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cg id='Group_1221' data-name='Group 1221' transform='translate(-1291 -400)'%3E%3Crect id='Rectangle_386' data-name='Rectangle 386' width='26' height='26' rx='4' transform='translate(1291 400)' fill='%23d63434'/%3E%3Cpath id='Path_2160' data-name='Path 2160' d='M270.4,60.419l-.713.868a.962.962,0,0,1-1.416.083l-4.008-3.88-3.958,3.83a.965.965,0,0,1-1.418-.083l-.713-.871a1.252,1.252,0,0,1,.048-1.646l3.48-3.71-3.47-3.36a.966.966,0,0,1-.108-1.263l1.226-1.674a.966.966,0,0,1,1.489-.085l3.422,3.65,3.47-3.7a.965.965,0,0,1,1.489.085l1.226,1.674a.966.966,0,0,1-.108,1.263l-3.518,3.407,3.527,3.763a1.252,1.252,0,0,1,.048,1.646h.005Z' transform='translate(1040.111 357.732)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+ .form-control{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 28px;
+}
+.note-wrap p{
+  font-size: 23px;
+  margin-bottom: 5px;
+  color: #000;
+}
+.fw-bold{
+  font-weight: 600;
+}
+#observation-next{
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%);
+  padding: 20px 40px;
+}
+.common-btn{
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 55px;
+  font-size: 32px;
+}
+.info-modal{
+  height: 100%;
+}
+.info-panel{
+  background-color: #fff;
+  border-radius: 15px;
+  border: 4px solid #0295FC;
+  display: flex;
+  height: -webkit-fill-available;
+}
+.info-panel .left-col{
+  width: 50%;
+  height: 100%;
+}
+.info-panel .right-col{
+  width: 50%;
+  height: 100%;
 }
