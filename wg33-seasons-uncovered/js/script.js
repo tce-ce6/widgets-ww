@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalObsEl = document.getElementById("total-observations");
 
   let currentConclusion = null;
-let isConclusionStage = false;
+  let isConclusionStage = false;
 
   if (!pipsSlider || !earthImg) return;
 
@@ -48,6 +48,16 @@ let isConclusionStage = false;
         to: (value) => ["-45°", "-23°", "0°", "23°", "45°"][value],
       },
     },
+  });
+
+  // smooth rotation
+  earthImg.style.transition = "transform 0.4s ease";
+
+  pipsSlider.noUiSlider.on("update", (values, handle) => {
+    const index = Math.round(values[handle]); // 0–4
+    const rotateDeg = degrees[index];         // -45, -23, 0, 23, 45
+
+    earthImg.style.transform = `rotate(${rotateDeg}deg)`;
   });
 
   /* ---------------------------------------------------
@@ -187,6 +197,7 @@ let isConclusionStage = false;
     });
   }
 
+
   /* ---------------------------------------------------
      TARGET CLICK HANDLING (ONLY 1 LINE ADDED)
   --------------------------------------------------- */
@@ -223,15 +234,13 @@ let isConclusionStage = false;
 
       const wrapperRect = wrapperEl.getBoundingClientRect();
       requestAnimationFrame(() => {
-        earthOverlay.style.left = `${
-          wrapperRect.left -
+        earthOverlay.style.left = `${wrapperRect.left -
           svgRect.left +
           wrapperRect.width / 2 -
           fixedSize / 2
-        }px`;
-        earthOverlay.style.top = `${
-          wrapperRect.top - svgRect.top + wrapperRect.height / 2 - fixedSize / 2
-        }px`;
+          }px`;
+        earthOverlay.style.top = `${wrapperRect.top - svgRect.top + wrapperRect.height / 2 - fixedSize / 2
+          }px`;
         earthOverlay.style.width = `${fixedSize}px`;
         earthOverlay.style.height = `${fixedSize}px`;
       });
@@ -267,212 +276,212 @@ let isConclusionStage = false;
       .map(({ value }) => value);
   }
 
-function renderObservations(tiltObject) {
+  function renderObservations(tiltObject) {
 
-  const observationTitle = document.getElementById("observation-title");
+    const observationTitle = document.getElementById("observation-title");
 
-if (observationTitle) {
-  observationTitle.innerHTML = `
+    if (observationTitle) {
+      observationTitle.innerHTML = `
     Observation <span id="current-observation"></span>/<span id="total-observations"></span>
   `;
-}
+    }
 
 
-  if (!tiltObject || !tiltObject.observations) return;
+    if (!tiltObject || !tiltObject.observations) return;
 
-  // Shuffle ONCE per position click
-  shuffledObservations = shuffleArray(tiltObject.observations);
-  currentObservationIndex = 0;
+    // Shuffle ONCE per position click
+    shuffledObservations = shuffleArray(tiltObject.observations);
+    currentObservationIndex = 0;
 
-  // ✅ TOTAL COUNT
-  if (totalObsEl) {
-    totalObsEl.textContent = shuffledObservations.length;
-  }
+    // ✅ TOTAL COUNT
+    if (totalObsEl) {
+      totalObsEl.textContent = shuffledObservations.length;
+    }
 
-  // ✅ RESET CURRENT COUNT (1-based)
-  if (currentObsEl) {
-    currentObsEl.textContent = currentObservationIndex + 1;
-  }
-
-  renderCurrentObservation();
-}
-
-
-
-function handleAnswerSelection(clickedBox, selectedOption) {
-  if (!currentObservation) return;
-
-  // Prevent re-click
-  if (
-    clickedBox.classList.contains("right") ||
-    clickedBox.classList.contains("wrong")
-  ) {
-    return;
-  }
-
-  if (selectedOption === currentObservation.correctAnswer) {
-    clickedBox.classList.add("right");
-
-    // ✅ ENABLE NEXT IMMEDIATELY ON CORRECT
-    observationNextBtn?.classList.remove("disabled");
-  } else {
-    clickedBox.classList.add("wrong");
-  }
-}
-
-
-
-
-function renderCurrentObservation() {
-  const optionWrapper = document.getElementById("option-wrapper");
-  if (!optionWrapper) return;
-
-  // Disable next button for new question
-  observationNextBtn?.classList.add("disabled");
-
-  optionWrapper.innerHTML = "";
-
-  currentObservation = shuffledObservations[currentObservationIndex];
-  if (!currentObservation) return;
-
-  // ✅ UPDATE CURRENT COUNT
-  if (currentObsEl) {
-    currentObsEl.textContent = currentObservationIndex + 1;
-  }
-
-  const shuffledOptions = shuffleArray(currentObservation.options);
-
-  shuffledOptions.forEach(optionText => {
-    const formControl = document.createElement("div");
-    formControl.className = "form-control";
-
-    const checkBox = document.createElement("div");
-    checkBox.className = "check-box";
-
-    const span = document.createElement("span");
-    span.textContent = optionText;
-
-    checkBox.addEventListener("click", () => {
-      handleAnswerSelection(checkBox, optionText);
-    });
-
-    formControl.appendChild(checkBox);
-    formControl.appendChild(span);
-    optionWrapper.appendChild(formControl);
-  });
-}
-
-
-
-const nextBtn = document.getElementById("observation-next");
-
-if (nextBtn) {
-  nextBtn.addEventListener("click", () => {
-    if (!shuffledObservations.length) return;
-
-    currentObservationIndex++;
-
-    // Stop at last observation
-    if (currentObservationIndex >= shuffledObservations.length) {
-      currentObservationIndex = shuffledObservations.length - 1;
-      console.log("All observations completed");
-      return;
+    // ✅ RESET CURRENT COUNT (1-based)
+    if (currentObsEl) {
+      currentObsEl.textContent = currentObservationIndex + 1;
     }
 
     renderCurrentObservation();
-  });
-}
+  }
 
-if (observationNextBtn) {
-  observationNextBtn.addEventListener("click", () => {
-    if (observationNextBtn.classList.contains("disabled")) return;
 
-    /* ✅ LAST OBSERVATION → SHOW CONCLUSION */
-    if (currentObservationIndex === shuffledObservations.length - 1) {
-      showConclusion();
+
+  function handleAnswerSelection(clickedBox, selectedOption) {
+    if (!currentObservation) return;
+
+    // Prevent re-click
+    if (
+      clickedBox.classList.contains("right") ||
+      clickedBox.classList.contains("wrong")
+    ) {
       return;
     }
 
-    currentObservationIndex++;
-    renderCurrentObservation();
-  });
-}
+    if (selectedOption === currentObservation.correctAnswer) {
+      clickedBox.classList.add("right");
 
-function showConclusion() {
-  const optionWrapper = document.getElementById("option-wrapper");
-  const conclusionWrapper = document.getElementById("conclusion-wrapper");
-  const observationTitle = document.getElementById("observation-title");
-
-  if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
-
-  currentConclusion = filteredTiltObject.conclusion;
-  isConclusionStage = true;
-
-  if (optionWrapper) optionWrapper.style.display = "none";
-  if (conclusionWrapper) conclusionWrapper.style.display = "block";
-
-  // ✅ CHANGE TITLE TO CONCLUSION
-  if (observationTitle) {
-    observationTitle.textContent = "Conclusion";
+      // ✅ ENABLE NEXT IMMEDIATELY ON CORRECT
+      observationNextBtn?.classList.remove("disabled");
+    } else {
+      clickedBox.classList.add("wrong");
+    }
   }
 
-  observationNextBtn?.classList.add("disabled");
-
-  bindConclusionOptions();
-}
 
 
-function bindConclusionOptions() {
-  const conclusionWrapper = document.getElementById("conclusion-wrapper");
-  if (!conclusionWrapper || !currentConclusion) return;
 
-  const formControls = conclusionWrapper.querySelectorAll(".form-control");
+  function renderCurrentObservation() {
+    const optionWrapper = document.getElementById("option-wrapper");
+    if (!optionWrapper) return;
 
-  // Clear old state
-  formControls.forEach(fc => {
-    const box = fc.querySelector(".check-box");
-    const span = fc.querySelector("span");
+    // Disable next button for new question
+    observationNextBtn?.classList.add("disabled");
 
-    box.classList.remove("right", "wrong");
-    box.style.pointerEvents = "auto";
-    span.textContent = "";
-  });
+    optionWrapper.innerHTML = "";
 
-  // Fill text dynamically
-  currentConclusion.options.forEach((optionText, index) => {
-    const formControl = formControls[index];
-    if (!formControl) return;
+    currentObservation = shuffledObservations[currentObservationIndex];
+    if (!currentObservation) return;
 
-    const checkBox = formControl.querySelector(".check-box");
-    const span = formControl.querySelector("span");
+    // ✅ UPDATE CURRENT COUNT
+    if (currentObsEl) {
+      currentObsEl.textContent = currentObservationIndex + 1;
+    }
 
-    span.textContent = optionText;
+    const shuffledOptions = shuffleArray(currentObservation.options);
 
-    checkBox.addEventListener("click", () => {
-      handleConclusionSelection(checkBox, optionText);
+    shuffledOptions.forEach(optionText => {
+      const formControl = document.createElement("div");
+      formControl.className = "form-control";
+
+      const checkBox = document.createElement("div");
+      checkBox.className = "check-box";
+
+      const span = document.createElement("span");
+      span.textContent = optionText;
+
+      checkBox.addEventListener("click", () => {
+        handleAnswerSelection(checkBox, optionText);
+      });
+
+      formControl.appendChild(checkBox);
+      formControl.appendChild(span);
+      optionWrapper.appendChild(formControl);
     });
-  });
-}
-
-function handleConclusionSelection(clickedBox, selectedOption) {
-  if (!currentConclusion) return;
-
-  if (
-    clickedBox.classList.contains("right") ||
-    clickedBox.classList.contains("wrong")
-  ) {
-    return;
   }
 
-  if (selectedOption === currentConclusion.correctAnswer) {
-    clickedBox.classList.add("right");
 
-    // ✅ ENABLE NEXT IMMEDIATELY ON CORRECT
-    observationNextBtn?.classList.remove("disabled");
-  } else {
-    clickedBox.classList.add("wrong");
+
+  const nextBtn = document.getElementById("observation-next");
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      if (!shuffledObservations.length) return;
+
+      currentObservationIndex++;
+
+      // Stop at last observation
+      if (currentObservationIndex >= shuffledObservations.length) {
+        currentObservationIndex = shuffledObservations.length - 1;
+        console.log("All observations completed");
+        return;
+      }
+
+      renderCurrentObservation();
+    });
   }
-}
+
+  if (observationNextBtn) {
+    observationNextBtn.addEventListener("click", () => {
+      if (observationNextBtn.classList.contains("disabled")) return;
+
+      /* ✅ LAST OBSERVATION → SHOW CONCLUSION */
+      if (currentObservationIndex === shuffledObservations.length - 1) {
+        showConclusion();
+        return;
+      }
+
+      currentObservationIndex++;
+      renderCurrentObservation();
+    });
+  }
+
+  function showConclusion() {
+    const optionWrapper = document.getElementById("option-wrapper");
+    const conclusionWrapper = document.getElementById("conclusion-wrapper");
+    const observationTitle = document.getElementById("observation-title");
+
+    if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
+
+    currentConclusion = filteredTiltObject.conclusion;
+    isConclusionStage = true;
+
+    if (optionWrapper) optionWrapper.style.display = "none";
+    if (conclusionWrapper) conclusionWrapper.style.display = "block";
+
+    // ✅ CHANGE TITLE TO CONCLUSION
+    if (observationTitle) {
+      observationTitle.textContent = "Conclusion";
+    }
+
+    observationNextBtn?.classList.add("disabled");
+
+    bindConclusionOptions();
+  }
+
+
+  function bindConclusionOptions() {
+    const conclusionWrapper = document.getElementById("conclusion-wrapper");
+    if (!conclusionWrapper || !currentConclusion) return;
+
+    const formControls = conclusionWrapper.querySelectorAll(".form-control");
+
+    // Clear old state
+    formControls.forEach(fc => {
+      const box = fc.querySelector(".check-box");
+      const span = fc.querySelector("span");
+
+      box.classList.remove("right", "wrong");
+      box.style.pointerEvents = "auto";
+      span.textContent = "";
+    });
+
+    // Fill text dynamically
+    currentConclusion.options.forEach((optionText, index) => {
+      const formControl = formControls[index];
+      if (!formControl) return;
+
+      const checkBox = formControl.querySelector(".check-box");
+      const span = formControl.querySelector("span");
+
+      span.textContent = optionText;
+
+      checkBox.addEventListener("click", () => {
+        handleConclusionSelection(checkBox, optionText);
+      });
+    });
+  }
+
+  function handleConclusionSelection(clickedBox, selectedOption) {
+    if (!currentConclusion) return;
+
+    if (
+      clickedBox.classList.contains("right") ||
+      clickedBox.classList.contains("wrong")
+    ) {
+      return;
+    }
+
+    if (selectedOption === currentConclusion.correctAnswer) {
+      clickedBox.classList.add("right");
+
+      // ✅ ENABLE NEXT IMMEDIATELY ON CORRECT
+      observationNextBtn?.classList.remove("disabled");
+    } else {
+      clickedBox.classList.add("wrong");
+    }
+  }
 
 
 
