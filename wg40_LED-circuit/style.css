@@ -168,5 +168,14 @@
 #switch-lottie{
   height: 200px;
   width: 300px;
-  border: 1px solid red;
+  display: block;
 }
+
+.hidden {
+  display: none !important;
+}
+
+/* .on-bulb{
+  height: 100px;
+  width: 100px;
+} */

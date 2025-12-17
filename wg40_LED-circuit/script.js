@@ -1,117 +1,228 @@
+// 1. Element Selectors
+const container1 = document.getElementById('switch-lottie');
+const container2 = document.getElementById('current-lottie');
+const container3 = document.getElementById('half-current-lottie');
+const flipLED = document.getElementById('flip-LED');
+const flipBulb = document.getElementById('flip-bulb');
+const onBulb = document.getElementById('on-bulb');
+const offBulb = document.getElementById('off-bulb');
+const onLED = document.getElementById('on-led');
+const offLED = document.getElementById('off-led');
 
+const bulbGreenSign = document.getElementById('bulb-green-sign');
+const bulbRedSign = document.getElementById('bulb-red-sign');
+const LEDGreenSign = document.getElementById('LED-green-sign');
+const LEDRedSign = document.getElementById('LED-red-sign');
+const bulbPlusMinus = document.getElementById('bulb-plus-minus');
+const bulbMinusPlus = document.getElementById('bulb-minus-plus');
+const LEDPlusMinus = document.getElementById('led-plus-minus');
+const LEDMinusPlus = document.getElementById('led-minus-plus');
 
-
-let container = document.getElementById('switch-lottie');
-let flipLED = document.getElementById('flip-LED');
-let flipBulb = document.getElementById('flip-bulb');
-let bulbGreenSign = document.getElementById('bulb-green-sign');
-let bulbRedSign = document.getElementById('bulb-red-sign');
-let LEDGreenSign = document.getElementById('LED-green-sign');
-let LEDRedSign = document.getElementById('LED-red-sign');
-let bulbPlusSign = document.getElementById('bulb-plus-sign');
-let bulbMinusSign = document.getElementById('bulb-minus-sign');
-
-let currentLottieInstance = null
-
-let currentBuldSign = false;
+// 2. State Variables
+let switchLottieInstance = null;
+let currentFlowLottie = null;
+let halfFlowLottie = null;
+let isSwitchOn = false;
+let currentBulbSign = false; // Fixed typo 'Buld' to 'Bulb'
 let currentLEDSign = false;
+let LEDSign = false;
 
-const ANIMATION_PATH_BASE = './Assets/Lottie-animation/';
+const PATH_BASE = './Assets/Lottie-animation/';
 
-/* Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
+/**
+ * Loads the Lottie animation and sets it to Frame 0
  */
 function loadInitialLottie() {
-    // const container = document.getElementById(LOTTIE_CONTAINER_ID);
-    if (!container) {
-        console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
+    // Check if container exists
+    if (!container1) {
+        console.error("Lottie container '#switch-lottie' not found.");
         return;
     }
 
-    // 1. Destroy previous instance
-    if (currentLottieInstance) {
-        currentLottieInstance.destroy();
-        currentLottieInstance = null;
+    // Destroy previous instance if it exists
+    if (switchLottieInstance) {
+        switchLottieInstance.destroy();
     }
 
-    // 2. Find file path
-    const fileName = "Switch_on_off.json";
-    if (!fileName) {
-        console.warn(`No Lottie file found for the word: ${word}`);
-        // Optionally, hide the container if no animation exists
-        container.innerHTML = '';
-        return;
-    }
-    const animationPath = ANIMATION_PATH_BASE + fileName;
-    console.log("animationPath",animationPath );
-    // 3. Create the animation instance
-    currentLottieInstance = lottie.loadAnimation({
-        container: container,
+    // Load Instance
+    switchLottieInstance = lottie.loadAnimation({
+        container: container1,
         renderer: 'svg',
         loop: false,
-        autoplay: false, // Start paused
-        path: animationPath
+        autoplay: false,
+        path: PATH_BASE + 'Switch_on_off.json'
     });
 
-    // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
-        requestAnimationFrame(() => {
-            currentLottieInstance.goToAndStop(0, true);
-        });
+    currentFlowLottie = lottie.loadAnimation({
+        container: container2,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: PATH_BASE + 'current_flow_A.json'
     });
 
-    container.onclick = playLottieAnimation;
-    // To handle touch devices, you might also want to add a 'touchstart' listener
-    container.ontouchstart = (event) => {
-        event.preventDefault(); // Prevents double firing with click on some devices
-        playLottieAnimation();
-    };
+    halfFlowLottie = lottie.loadAnimation({
+        container: container3,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: PATH_BASE + 'current_flow_A2.json'
+    });
+
+    // Event: Once loaded, stop at frame 0
+    switchLottieInstance.addEventListener('DOMLoaded', () => {
+        switchLottieInstance.goToAndStop(0, true);
+        console.log("Animation loaded at frame 0");
+    });
+
+    // Error handling for file paths
+    switchLottieInstance.addEventListener('data_failed', () => {
+        console.error("Failed to load Lottie JSON at:", animationPath);
+    });
+
+    // Setup Interaction
+    container1.onclick = handleSwitchToggle;
 }
 
 /**
- * Starts playing the Lottie animation. (Replaces showFinalImage visual logic)
+ * Handles the 2-segment logic
+ * Segment 1 (ON): Frames 0 to 30 (adjust based on your JSON)
+ * Segment 2 (OFF): Frames 30 to 60 (adjust based on your JSON)
  */
-function playLottieAnimation() {
-    if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
-        currentLottieInstance.goToAndStop(0, true);
-        currentLottieInstance.play();
-        // setTimeout(() => {
-        //     instructionText.textContent = "ऑडियो प्ले करें और सही वर्ण चुनकर शब्द बनाएँ।";
-        //     soundIcon.style.display = 'block';
-        //     afterContainer.style.display = 'block';
-        //     lottieObject.setAttribute('x', 300);
-        //     container.classList.add('no-touch');
-        //     showAnswerBtn.disabled = false;
-        // }, 2000)
+function handleSwitchToggle() {
+    if (!switchLottieInstance || !currentFlowLottie) return;
+
+    if (!isSwitchOn) {
+        // --- ACTION: TURN ON ---
+        // Play first segment (e.g., frame 0 to 30)
+        switchLottieInstance.playSegments([0, 10], true);
+
+        // Play secondary animation (from start)
+        if (LEDSign) {
+            halfFlowLottie.goToAndPlay(0, true);
+            setTimeout(() => {
+                onBulb.style.display = 'block';
+                offBulb.style.display = 'none';
+                container3.classList.remove('hidden'); // Make it visible
+                currentFlowLottie.goToAndPlay(0, true);          // Start animation
+            }, 300)
+            LEDSign = true;
+        }
+        else {
+            currentFlowLottie.goToAndPlay(0, true);
+            showAndPlayCurrentFlow();
+        }
+
+        isSwitchOn = true;
+    } else {
+        // --- ACTION: TURN OFF ---
+        // Play second segment (e.g., frame 30 to 60)
+        switchLottieInstance.playSegments([10, 30], true);
+
+        hideCurrentFlow();
+
+        isSwitchOn = false;
     }
 }
 
-loadInitialLottie();
+function showAndPlayCurrentFlow() {
+    setTimeout(() => {
+        onBulb.style.display = 'block';
+        offBulb.style.display = 'none';
+        offLED.style.display = 'none';
+        onLED.style.display = 'block';
+        container2.classList.remove('hidden'); // Make it visible
+        currentFlowLottie.goToAndPlay(0, true);          // Start animation
+    }, 300)
+}
 
+function hideCurrentFlow() {
+    setTimeout(() => {
+        offBulb.style.display = 'block';
+        onBulb.style.display = 'none';
+        offLED.style.display = 'block';
+        onLED.style.display = 'none';
+        container2.classList.add('hidden');    // Hide it
+        container3.classList.add('hidden');    // Hide it
+        currentFlowLottie.stop();                        // Stop animation
+    }, 200);
+}
+
+// 3. UI Interaction Listeners
 flipLED.addEventListener('click', () => {
-    console.log("LED");
     if (!currentLEDSign) {
         LEDGreenSign.style.fill = "#FF4C4C";
         LEDRedSign.style.fill = "#47D847";
+        LEDPlusMinus.style.display = 'none';
+        LEDMinusPlus.style.display = 'block';
         currentLEDSign = true;
-    }
-    else{
+        LEDSign = true;
+    } else {
         LEDGreenSign.style.fill = "#47D847";
         LEDRedSign.style.fill = "#FF4C4C";
+        LEDPlusMinus.style.display = 'block';
+        LEDMinusPlus.style.display = 'none';
         currentLEDSign = false;
     }
 });
 
 flipBulb.addEventListener('click', () => {
-    console.log("bulb");
-    if (!currentBuldSign) {
+    if (!currentBulbSign) {
         bulbGreenSign.style.fill = "#FF4C4C";
         bulbRedSign.style.fill = "#47D847";
-        currentBuldSign = true;
-    }
-    else {
+        bulbPlusMinus.style.display = 'none';
+        bulbMinusPlus.style.display = 'block';
+        currentBulbSign = true;
+    } else {
         bulbGreenSign.style.fill = "#47D847";
         bulbRedSign.style.fill = "#FF4C4C";
-        currentBuldSign = false;
+        bulbPlusMinus.style.display = 'block';
+        bulbMinusPlus.style.display = 'none';
+        currentBulbSign = false;
     }
+});
+
+function reset(){
+    container2.classList.add('hidden');
+    container3.classList.add('hidden');
+    offBulb.style.display = 'block';
+    onBulb.style.display = 'none';
+    offLED.style.display = 'block';
+    onLED.style.display = 'none';
+    
+    bulbPlusMinus.style.display = 'block';
+    bulbMinusPlus.style.display = 'none';
+    LEDPlusMinus.style.display = 'block';
+    LEDMinusPlus.style.display = 'none';
+
+    if (switchLottieInstance) {
+        // Force the animation back to the very first frame (OFF state)
+        switchLottieInstance.goToAndStop(0, true);
+    }
+    
+    // Reset your tracking variable so the next click plays the ON segment
+    isSwitchOn = false; 
+
+    // Reset signs if applicable
+    currentBulbSign = false;
+    currentLEDSign = false;
+    LEDSign = false;
+    // Reset Sign colors/fills to default
+    // if(bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
+    // if(bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
+
+    if(LEDGreenSign) LEDGreenSign.style.fill = "#47D847";
+    if(LEDRedSign) LEDRedSign.style.fill = "#FF4C4C";    
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    let resetBtn = document.getElementById('reset-btn');
+    resetBtn.addEventListener('click', () => {
+        reset();
+    });
+
+    // 4. Initialize
+    loadInitialLottie();
+    reset();
 });
