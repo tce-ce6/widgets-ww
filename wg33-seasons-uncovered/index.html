@@ -36,6 +36,15 @@
                       stroke="#00CCFF" stroke-width="3" stroke-dasharray="4 8" />
                   </g>
 
+                  
+
+                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="top-lottie-wrapper" x="385" y="290"
+                    width="500" height="270">
+                    <div xmlns="http://www.w3.org/1999/xhtml" id="Layer_1-2" class="event-image">
+                      <div id="top-earth-lottie"></div>
+                    </div>
+                  </foreignObject>
+
                   <g id="top" class="position-4">
                     <g class="main-wrapper">
                       <path id="Vector_3"
@@ -68,7 +77,7 @@
                     </text>
                   </g>
 
-                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="bottom-lottie-wrapper" x="527" y="550"
+                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="bottom-lottie-wrapper" x="530" y="550"
                     width="300" height="250">
                     <div xmlns="http://www.w3.org/1999/xhtml" id="Layer_1-2" class="event-image">
                       <div id="bottom-earth-lottie"></div>
@@ -210,9 +219,15 @@
                       </g>
                     </g>
                   </g>
+                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="" x="350" y="100"
+                    width="1200" height="100">
+                    <div xmlns="http://www.w3.org/1999/xhtml" id="Layer_1-2">
+                      <div id="itext">Select the tilt of the Earth's axis.</div>
+                    </div>
+                  </foreignObject>
 
-                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="" style="display: none;" x="1254" y="227"
-                    width="599" height="629">
+                  <foreignObject xmlns="http://www.w3.org/2000/svg" id="observation-section" style="display: none;" x="1254" y="227"
+                    width="599" height="679">
                     <div xmlns="http://www.w3.org/1999/xhtml" id="" class="observation-wrapper">
                       <span class="observation-title" id="observation-title">
                         Observation <span id="current-observation">0</span>/<span id="total-observations">4</span>
@@ -282,7 +297,7 @@
             </div>
           </foreignObject>
 
-          <foreignObject x="44" y="104" width="1833" height="858" style="overflow: visible; display: none;">
+          <foreignObject x="44" y="104" width="1833" height="950" id="info-section" style="overflow: visible; display: none;">
             <div class="info-modal" xmlns="http://www.w3.org/1999/xhtml">
               <div class="info-panel">
                 <div class="left-col">
@@ -293,26 +308,26 @@
                     </div>
                     <div id="observe-wrapper">
                       <h6>Observation 1</h6>
-                      <p id="obsercation-1">NH - Tilted towards the Sun</p>
+                      <p id="obsercation-2">NH - Tilted towards the Sun</p>
                     </div>
                     <div id="observe-wrapper">
                       <h6>Observation 1</h6>
-                      <p id="obsercation-1">NH - Tilted towards the Sun</p>
+                      <p id="obsercation-3">NH - Tilted towards the Sun</p>
                     </div>
                     <div id="observe-wrapper">
                       <h6>Observation 1</h6>
-                      <p id="obsercation-1">NH - Tilted towards the Sun</p>
+                      <p id="obsercation-4">NH - Tilted towards the Sun</p>
                     </div>
                     <span class="info-note">NH: Northern Hemisphere | SH: Southern Hemisphere</span>
                   </div>
                 </div>
                 <div class="right-col">
                   <div class="info-right">
-                    <h6 style="color: #0295FC; margin-bottom:30px;">Conclusion</h6>
-                    <h6 style="margin-bottom: 50px;">NH – Summer, SH - Winter.</h6>
+                    <h6 style="color: #0295FC; margin-bottom:10px;">Conclusion</h6>
+                    <h6 style="margin-bottom: 40px;" id="info-conclusion">NH – Summer, SH - Winter.</h6>
                     <div class="conclusion-content">
                       <h6>🌍 Season Uncovered!</h6>
-                      <p>At this position in Earth's orbit, the 23.5° axial tilt causes the Northern Hemisphere to lean
+                      <p id="seasonUncovered">At this position in Earth's orbit, the 23.5° axial tilt causes the Northern Hemisphere to lean
                         toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer
                         temperatures and summer conditions. Simultaneously, the Southern Hemisphere tilts away from the
                         Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and
@@ -321,12 +336,14 @@
                   </div>
                 </div>
                 <div class="infoBtn-wrap">
-                  <div class="common-btn back-btn">Back</div>
-                  <div class="common-btn reset-btn">Reset</div>
+                  <div class="common-btn back-btn" id="infoBack-btn">Back</div>
+                  <div class="common-btn reset-btn" id="infoReset-btn">Reset</div>
                 </div>
               </div>
             </div>
           </foreignObject>
+
+          
 
         </svg>
       </div>

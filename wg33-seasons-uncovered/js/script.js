@@ -9,19 +9,40 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentObservationIndex = 0;
   const observationNextBtn = document.getElementById("observation-next");
 
-  const currentObsEl = document.getElementById("current-observation");
-  const totalObsEl = document.getElementById("total-observations");
+let currentObsEl = document.getElementById("current-observation");
+let totalObsEl = document.getElementById("total-observations");
+
+
+  const observationSection = document.getElementById("observation-section");
+  const infoSection = document.getElementById("info-section");
+  const globalResetBtn = document.getElementById("global-reset");
+  const earthWrap = document.getElementById("earth-wrap");
+  const infoBackBtn = document.getElementById("infoBack-btn");
+  const infoResetBtn = document.getElementById("infoReset-btn");
 
   let currentConclusion = null;
   let isConclusionStage = false;
+
+  let isEarthResized = false;
+  let earthCurrentSize = null;
+
+  const instructionText = document.getElementById("itext");
+
+  const TEXT_STATES = {
+    initial: "Select the tilt of the Earth’s axis.",
+    afterSlider:
+      "Select the tilt of the Earth’s axis. Tap one of the positions to place the Earth and observe.",
+    afterObservation:
+      "Select the tilt of the Earth’s axis. Tap one of the positions to place the Earth and observe. Select the correct observation(s) to uncover the season.",
+  };
 
   if (!pipsSlider || !earthImg) return;
 
   const degrees = [-45, -23, 0, 23, 45];
 
   /* ---------------------------------------------------
-     ✅ GLOBAL DATA VARIABLES (ADDED)
-  --------------------------------------------------- */
+      ✅ GLOBAL DATA VARIABLES (ADDED)
+    --------------------------------------------------- */
   let tiltData = [];
   let filteredTiltObject = null;
   window.filteredTiltObject = null; // optional global access
@@ -34,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ---------------------------------------------------
-     SLIDER INIT (UNCHANGED)
-  --------------------------------------------------- */
+      SLIDER INIT (UNCHANGED)
+    --------------------------------------------------- */
   noUiSlider.create(pipsSlider, {
     start: 2, // 0°
     step: 1,
@@ -53,16 +74,49 @@ document.addEventListener("DOMContentLoaded", () => {
   // smooth rotation
   earthImg.style.transition = "transform 0.4s ease";
 
+  if (infoBackBtn && infoSection) {
+    infoBackBtn.addEventListener("click", () => {
+      infoSection.style.display = "none";
+         toggleInfoModal(false);
+    });
+  }
+
+  if (infoResetBtn) {
+    infoResetBtn.addEventListener("click", () => {
+      // 🔁 Same behaviour as global reset
+      resetSimulation();
+
+      // 👁️ Hide info section explicitly
+      if (infoSection) {
+        infoSection.style.display = "none";
+            toggleInfoModal(false);
+
+      }
+    });
+  }
+
   pipsSlider.noUiSlider.on("update", (values, handle) => {
-    const index = Math.round(values[handle]); // 0–4
-    const rotateDeg = degrees[index];         // -45, -23, 0, 23, 45
+    const index = Math.round(values[handle]);
+    const rotateDeg = degrees[index];
 
     earthImg.style.transform = `rotate(${rotateDeg}deg)`;
+
+    // ✅ ONLY UPDATE INSTRUCTION IF EARTH IS NOT IN A POSITION
+    // Check if earth-wrap is inside any of the target positions
+    const isEarthPlaced = ["top", "bottom", "left", "right"].some((id) => {
+      const targetEl = document.getElementById(id);
+      return targetEl && targetEl.contains(earthWrap);
+    });
+
+    // Only update to afterSlider if earth is NOT placed in a position
+    if (!isEarthPlaced) {
+      updateInstructionText("afterSlider");
+    }
   });
 
   /* ---------------------------------------------------
-     ✅ LOAD data.json (ADDED)
-  --------------------------------------------------- */
+      ✅ LOAD data.json (ADDED)
+    --------------------------------------------------- */
   fetch("./data.json")
     .then((res) => res.json())
     .then((data) => {
@@ -72,8 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((err) => console.error("Failed to load data.json", err));
 
   /* ---------------------------------------------------
-     ✅ HELPERS (ADDED)
-  --------------------------------------------------- */
+      ✅ HELPERS (ADDED)
+    --------------------------------------------------- */
   function getCurrentTiltLabel() {
     const index = Number(pipsSlider.noUiSlider.get());
     return `${degrees[index]} degree`;
@@ -96,14 +150,27 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Filtered Tilt Object:", filteredTiltObject);
   }
 
+  function updateInstructionText(state) {
+    if (!instructionText) return;
+    instructionText.textContent = TEXT_STATES[state];
+  }
+
   /* ---------------------------------------------------
-     EXISTING EARTH / SVG SETUP (UNCHANGED)
-  --------------------------------------------------- */
-  const earthWrap = document.getElementById("earth-wrap");
+      EXISTING EARTH / SVG SETUP (UNCHANGED)
+    --------------------------------------------------- */
   if (!earthWrap) return;
 
   const svgContainer =
     document.getElementById("svg-container") || document.body;
+
+  const earthOriginalState = {
+    parent: earthWrap.parentNode,
+    nextSibling: earthWrap.nextSibling, // critical for SVG order
+    x: earthWrap.getAttribute("x"),
+    y: earthWrap.getAttribute("y"),
+    width: earthWrap.getAttribute("width"),
+    height: earthWrap.getAttribute("height"),
+  };
 
   if (getComputedStyle(svgContainer).position === "static") {
     svgContainer.style.position = "relative";
@@ -137,8 +204,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------------------------------------------------
-     LOTTIE MAP (UNCHANGED)
-  --------------------------------------------------- */
+      LOTTIE MAP (UNCHANGED)
+    --------------------------------------------------- */
   const lottieMap = {
     top: {
       wrapper: document.getElementById("top-lottie-wrapper"),
@@ -185,7 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function playEarthLottie(direction) {
     Object.keys(lottieMap).forEach((key) => {
       const { wrapper, anim } = lottieMap[key];
-      if (!wrapper || !anim) return;
 
       if (key === direction) {
         wrapper.style.display = "block";
@@ -197,10 +263,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   /* ---------------------------------------------------
-     TARGET CLICK HANDLING (ONLY 1 LINE ADDED)
-  --------------------------------------------------- */
+      TARGET CLICK HANDLING (ONLY 1 LINE ADDED)
+    --------------------------------------------------- */
   ["top", "bottom", "left", "right"].forEach((id) => {
     const targetEl = document.getElementById(id);
     if (!targetEl) return;
@@ -233,39 +298,69 @@ document.addEventListener("DOMContentLoaded", () => {
       earthWrap.style.display = "none";
 
       const wrapperRect = wrapperEl.getBoundingClientRect();
+      const targetSize = isEarthResized ? earthCurrentSize : fixedSize;
+
       requestAnimationFrame(() => {
-        earthOverlay.style.left = `${wrapperRect.left -
+        earthOverlay.style.left = `${
+          wrapperRect.left -
           svgRect.left +
           wrapperRect.width / 2 -
-          fixedSize / 2
-          }px`;
-        earthOverlay.style.top = `${wrapperRect.top - svgRect.top + wrapperRect.height / 2 - fixedSize / 2
-          }px`;
-        earthOverlay.style.width = `${fixedSize}px`;
-        earthOverlay.style.height = `${fixedSize}px`;
+          targetSize / 2
+        }px`;
+
+        earthOverlay.style.top = `${
+          wrapperRect.top -
+          svgRect.top +
+          wrapperRect.height / 2 -
+          targetSize / 2
+        }px`;
       });
 
       setTimeout(() => {
         earthOverlay.style.display = "none";
 
+        const finalSize = isEarthResized ? earthCurrentSize : fixedSize;
+
         earthWrap.setAttribute(
           "x",
-          wrapperBBox.x + wrapperBBox.width / 2 - fixedSize / 2
+          wrapperBBox.x + wrapperBBox.width / 2 - finalSize / 2
         );
         earthWrap.setAttribute(
           "y",
-          wrapperBBox.y + wrapperBBox.height / 2 - fixedSize / 2
+          wrapperBBox.y + wrapperBBox.height / 2 - finalSize / 2
         );
-        earthWrap.setAttribute("width", fixedSize);
-        earthWrap.setAttribute("height", fixedSize);
+
+        // ✅ Resize ONLY ONCE
+        if (!isEarthResized) {
+          earthWrap.setAttribute("width", fixedSize);
+          earthWrap.setAttribute("height", fixedSize);
+          earthCurrentSize = fixedSize;
+          isEarthResized = true;
+        } else {
+          // keep existing size
+          earthWrap.setAttribute("width", earthCurrentSize);
+          earthWrap.setAttribute("height", earthCurrentSize);
+        }
 
         targetEl.appendChild(earthWrap);
         earthWrap.style.display = "";
 
+        if (globalResetBtn) {
+          globalResetBtn.removeAttribute("disabled");
+        }
+
         playEarthLottie(id);
 
-        if (topLottieWrapper) topLottieWrapper.style.display = "none";
-      }, 470);
+        if (id !== "top" && topLottieWrapper) {
+          topLottieWrapper.style.display = "none";
+        }
+
+        /* ✅ SHOW OBSERVATION SECTION HERE */
+        if (observationSection) {
+          observationSection.style.display = "block";
+        }
+        updateInstructionText("afterObservation");
+      }, 0);
     });
   });
 
@@ -276,35 +371,36 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(({ value }) => value);
   }
 
-  function renderObservations(tiltObject) {
+function renderObservations(tiltObject) {
+  const observationTitle = document.getElementById("observation-title");
 
-    const observationTitle = document.getElementById("observation-title");
+  if (observationTitle) {
+    observationTitle.innerHTML = `
+      Observation <span id="current-observation">0</span>/<span id="total-observations">0</span>
+    `;
 
-    if (observationTitle) {
-      observationTitle.innerHTML = `
-    Observation <span id="current-observation"></span>/<span id="total-observations"></span>
-  `;
-    }
-
-
-    if (!tiltObject || !tiltObject.observations) return;
-
-    // Shuffle ONCE per position click
-    shuffledObservations = shuffleArray(tiltObject.observations);
-    currentObservationIndex = 0;
-
-    // ✅ TOTAL COUNT
-    if (totalObsEl) {
-      totalObsEl.textContent = shuffledObservations.length;
-    }
-
-    // ✅ RESET CURRENT COUNT (1-based)
-    if (currentObsEl) {
-      currentObsEl.textContent = currentObservationIndex + 1;
-    }
-
-    renderCurrentObservation();
+    // 🔁 RE-BIND references (🔥 FIX)
+    currentObsEl = document.getElementById("current-observation");
+    totalObsEl = document.getElementById("total-observations");
   }
+
+  if (!tiltObject || !tiltObject.observations) return;
+
+  shuffledObservations = shuffleArray(tiltObject.observations);
+  currentObservationIndex = 0;
+
+  // ✅ TOTAL COUNT
+  if (totalObsEl) {
+    totalObsEl.textContent = shuffledObservations.length;
+  }
+
+  // ✅ CURRENT COUNT (1-based)
+  if (currentObsEl) {
+    currentObsEl.textContent = currentObservationIndex + 1;
+  }
+
+  renderCurrentObservation();
+}
 
 
 
@@ -319,18 +415,38 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (selectedOption === currentObservation.correctAnswer) {
+    // Split correct answer by ". " to handle multiple correct options
+    const correctAnswers = currentObservation.correctAnswer
+      .split(". ")
+      .map((ans) => ans.trim())
+      .filter((ans) => ans.length > 0)
+      .map((ans) => (ans.endsWith(".") ? ans : ans + "."));
+
+    // Check if selected option is in the correct answers
+    const isCorrect = correctAnswers.some(
+      (correctAns) =>
+        correctAns === selectedOption || correctAns === selectedOption + "."
+    );
+
+    if (isCorrect) {
       clickedBox.classList.add("right");
 
-      // ✅ ENABLE NEXT IMMEDIATELY ON CORRECT
-      observationNextBtn?.classList.remove("disabled");
+      // Check if ALL correct answers are selected
+      const allCheckBoxes = document.querySelectorAll(
+        "#option-wrapper .check-box"
+      );
+      const selectedCorrectCount = Array.from(allCheckBoxes).filter((box) =>
+        box.classList.contains("right")
+      ).length;
+
+      // Enable next only when all correct answers are selected
+      if (selectedCorrectCount === correctAnswers.length) {
+        observationNextBtn?.classList.remove("disabled");
+      }
     } else {
       clickedBox.classList.add("wrong");
     }
   }
-
-
-
 
   function renderCurrentObservation() {
     const optionWrapper = document.getElementById("option-wrapper");
@@ -351,7 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const shuffledOptions = shuffleArray(currentObservation.options);
 
-    shuffledOptions.forEach(optionText => {
+    shuffledOptions.forEach((optionText) => {
       const formControl = document.createElement("div");
       formControl.className = "form-control";
 
@@ -370,8 +486,6 @@ document.addEventListener("DOMContentLoaded", () => {
       optionWrapper.appendChild(formControl);
     });
   }
-
-
 
   const nextBtn = document.getElementById("observation-next");
 
@@ -397,38 +511,51 @@ document.addEventListener("DOMContentLoaded", () => {
       if (observationNextBtn.classList.contains("disabled")) return;
 
       /* ✅ LAST OBSERVATION → SHOW CONCLUSION */
-      if (currentObservationIndex === shuffledObservations.length - 1) {
-        showConclusion();
-        return;
-      }
+    if (isConclusionStage) {
+  // 👉 Conclusion completed → show info section
+  infoSection && (infoSection.style.display = "block");
+  populateInfoSection();
+  toggleInfoModal(true);
+
+  return;
+}
+
+if (currentObservationIndex === shuffledObservations.length - 1) {
+  showConclusion();
+  return;
+}
+
 
       currentObservationIndex++;
       renderCurrentObservation();
     });
   }
 
-  function showConclusion() {
-    const optionWrapper = document.getElementById("option-wrapper");
-    const conclusionWrapper = document.getElementById("conclusion-wrapper");
-    const observationTitle = document.getElementById("observation-title");
+function showConclusion() {
+  const optionWrapper = document.getElementById("option-wrapper");
+  const conclusionWrapper = document.getElementById("conclusion-wrapper");
+  const observationTitle = document.getElementById("observation-title");
 
-    if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
+  if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
 
-    currentConclusion = filteredTiltObject.conclusion;
-    isConclusionStage = true;
+  currentConclusion = filteredTiltObject.conclusion;
+  isConclusionStage = true;
 
-    if (optionWrapper) optionWrapper.style.display = "none";
-    if (conclusionWrapper) conclusionWrapper.style.display = "block";
+  // Hide options, show conclusion
+  optionWrapper && (optionWrapper.style.display = "none");
+  conclusionWrapper && (conclusionWrapper.style.display = "block");
 
-    // ✅ CHANGE TITLE TO CONCLUSION
-    if (observationTitle) {
-      observationTitle.textContent = "Conclusion";
-    }
+  // Change title
+  observationTitle && (observationTitle.textContent = "Conclusion");
 
-    observationNextBtn?.classList.add("disabled");
+  // ❌ DO NOT show info section here
+  infoSection && (infoSection.style.display = "none");
 
-    bindConclusionOptions();
-  }
+  // Disable next until correct conclusion is chosen
+  observationNextBtn?.classList.add("disabled");
+
+  bindConclusionOptions();
+}
 
 
   function bindConclusionOptions() {
@@ -438,7 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formControls = conclusionWrapper.querySelectorAll(".form-control");
 
     // Clear old state
-    formControls.forEach(fc => {
+    formControls.forEach((fc) => {
       const box = fc.querySelector(".check-box");
       const span = fc.querySelector("span");
 
@@ -482,7 +609,152 @@ document.addEventListener("DOMContentLoaded", () => {
       clickedBox.classList.add("wrong");
     }
   }
+  function populateInfoSection() {
+    if (!filteredTiltObject) return;
 
+    /* --------------------------------
+      LEFT COLUMN – OBSERVATIONS
+    -------------------------------- */
+    const observerLeftCol = document.querySelector(".observer-leftcol");
+    if (!observerLeftCol) return;
 
+    // Remove existing observation blocks (keep info-note)
+    observerLeftCol
+      .querySelectorAll("#observe-wrapper")
+      .forEach((el) => el.remove());
 
+    const observations = filteredTiltObject.observations || [];
+
+    observations.forEach((obs, index) => {
+      const wrapper = document.createElement("div");
+      wrapper.id = "observe-wrapper";
+
+      const h6 = document.createElement("h6");
+      h6.textContent = `Observation ${index + 1}`;
+
+      const p = document.createElement("p");
+      p.id = `obsercation-${index + 1}`;
+      p.textContent = obs.correctAnswer;
+
+      wrapper.appendChild(h6);
+      wrapper.appendChild(p);
+
+      // Insert before note
+      const note = observerLeftCol.querySelector(".info-note");
+      observerLeftCol.insertBefore(wrapper, note);
+    });
+
+    /* --------------------------------
+      RIGHT COLUMN – CONCLUSION
+    -------------------------------- */
+    const infoConclusionEl = document.getElementById("info-conclusion");
+    if (infoConclusionEl && filteredTiltObject.conclusion) {
+      infoConclusionEl.textContent =
+        filteredTiltObject.conclusion.correctAnswer;
+    }
+
+    /* --------------------------------
+      SEASON UNCOVERED (ROOT LEVEL)
+    -------------------------------- */
+    const seasonUncoveredEl = document.getElementById("seasonUncovered");
+    if (seasonUncoveredEl && filteredTiltObject.seasonUncovered) {
+      seasonUncoveredEl.textContent = filteredTiltObject.seasonUncovered;
+    }
+  }
+
+  function resetEarthToOriginalPosition() {
+    const { parent, nextSibling, x, y, width, height } = earthOriginalState;
+
+    if (!parent) return;
+
+    // ✅ Put earth-wrap back EXACTLY where it was
+    if (nextSibling) {
+      parent.insertBefore(earthWrap, nextSibling);
+    } else {
+      parent.appendChild(earthWrap);
+    }
+
+    // ✅ Restore SVG attributes
+    earthWrap.setAttribute("x", x);
+    earthWrap.setAttribute("y", y);
+    earthWrap.setAttribute("width", width);
+    earthWrap.setAttribute("height", height);
+
+    earthWrap.style.display = "";
+  }
+
+  function resetSimulation() {
+
+    toggleInfoModal(false);
+
+    isEarthResized = false;
+    earthCurrentSize = null;
+    /* ---------------------------
+      RESET EARTH POSITION (ONLY ONCE)
+    --------------------------- */
+    resetEarthToOriginalPosition();
+
+    /* ---------------------------
+      RESET LOTTIE
+    --------------------------- */
+    Object.values(lottieMap).forEach(({ wrapper, anim }) => {
+      if (wrapper) wrapper.style.display = "none";
+      if (anim) anim.stop();
+    });
+
+    /* ---------------------------
+      RESET UI SECTIONS
+    --------------------------- */
+    observationSection && (observationSection.style.display = "none");
+    infoSection && (infoSection.style.display = "none");
+
+    const conclusionWrapper = document.getElementById("conclusion-wrapper");
+    const optionWrapper = document.getElementById("option-wrapper");
+
+    conclusionWrapper && (conclusionWrapper.style.display = "none");
+    optionWrapper && (optionWrapper.style.display = "block");
+
+    /* ---------------------------
+      RESET STATE
+    --------------------------- */
+    currentObservation = null;
+    shuffledObservations = [];
+    currentObservationIndex = 0;
+    isConclusionStage = false;
+
+    observationNextBtn?.classList.add("disabled");
+
+    /* ---------------------------
+      RESET SLIDER & ROTATION
+    --------------------------- */
+    pipsSlider.noUiSlider.set(2); // 0°
+    earthImg.style.transform = "rotate(0deg)";
+
+    /* ---------------------------
+      ✅ RESET INSTRUCTION TEXT
+    --------------------------- */
+    updateInstructionText("initial");
+
+    /* ---------------------------
+      DISABLE RESET BUTTON
+    --------------------------- */
+    globalResetBtn?.setAttribute("disabled", "true");
+  }
+
+  if (globalResetBtn) {
+    globalResetBtn.addEventListener("click", resetSimulation);
+  }
+function toggleInfoModal(isOpen) {
+  const svgContainer = document.getElementById("svg-container");
+
+  if (isOpen) {
+    infoSection?.classList.add("modal-open");
+    svgContainer?.classList.add("modal-open");
+  } else {
+    infoSection?.classList.remove("modal-open");
+    svgContainer?.classList.remove("modal-open");
+  }
+}
+
+  updateInstructionText("initial");
 });

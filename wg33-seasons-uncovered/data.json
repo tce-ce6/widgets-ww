@@ -44,8 +44,8 @@
   "conclusion": {
     "options": [
       "NH and SH - No variation in seasons.",
-      "NH – Summer, SH – Winter.",
-      "NH – Winter, SH – Summer."
+      "NH - Summer, SH - Winter.",
+      "NH - Winter, SH - Summer."
     ],
     "correctAnswer": "NH and SH - No variation in seasons."
   },
@@ -208,7 +208,7 @@
   "seasonUncovered": "At this position in Earth's orbit with a hypothetical 0° axial tilt, Earth's axis stands perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at identical angles throughout the year. This uniform solar distribution results in equal day and night lengths across the Northern and Southern Hemispheres, with minimal temperature variations between them. Consequently, no seasonal variation occurs in either hemisphere—Earth would experience perpetual equinox-like conditions, eliminating the cyclic pattern of seasons that defines our current climate system."
 },
 {
-  "tilt": "23.5 degree",
+  "tilt": "23 degree",
   "position": 1,
   "title": "Tilt 23½ degree – Position 1",
   "observations": [
@@ -263,7 +263,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the 23.5° axial tilt causes the Northern Hemisphere to lean towards the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Southern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
 },
 {
-  "tilt": "23.5 degree",
+  "tilt": "23 degree",
   "position": 2,
   "title": "Tilt 23½ degree – Position 2",
   "observations": [
@@ -315,7 +315,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the planet's 23.5° tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. This configuration results in approximately equal day and night duration for both hemispheres, marking an equinox. The Northern Hemisphere experiences transitioning temperatures from warm to cooler, indicating autumn, while the Southern Hemisphere transitions from cool to warmer temperatures, experiencing spring. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
 },
 {
-  "tilt": "23.5 degree",
+  "tilt": "23 degree",
   "position": 3,
   "title": "Tilt 23½ degree – Position 3",
   "observations": [
@@ -370,7 +370,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the 23.5° axial tilt causes the Southern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Northern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
 },
 {
-  "tilt": "23.5 degree",
+  "tilt": "23 degree",
   "position": 4,
   "title": "Tilt 23½ degree – Position 4",
   "observations": [
@@ -422,7 +422,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the planet's 23.5° tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. Both hemispheres experience approximately equal day and night lengths, marking a transitional phase where neither is tilted toward or away from the Sun. The Northern Hemisphere is warming as it transitions from winter to summer, experiencing spring, while the Southern Hemisphere is cooling as it moves from summer to winter, experiencing autumn. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
 },
 {
-  "tilt": "-23.5 degree",
+  "tilt": "-23 degree",
   "position": 1,
   "title": "Tilt −23½ degree – Position 1",
   "observations": [
@@ -477,7 +477,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the −23.5° axial tilt causes the Southern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Northern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
 },
 {
-  "tilt": "-23.5 degree",
+  "tilt": "-23 degree",
   "position": 2,
   "title": "Tilt −23½ degree – Position 2",
   "observations": [
@@ -529,7 +529,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the planet's −23.5° tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. Both hemispheres experience approximately equal day and night lengths, marking a transitional phase where neither is tilted toward or away from the Sun. The Northern Hemisphere is warming as it transitions from winter to summer, experiencing spring, while the Southern Hemisphere is cooling as it moves from summer to winter, experiencing autumn. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
 },
 {
-  "tilt": "-23.5 degree",
+  "tilt": "-23 degree",
   "position": 3,
   "title": "Tilt −23½ degree – Position 3",
   "observations": [
@@ -584,7 +584,7 @@
   "seasonUncovered": "At this position in Earth's orbit, the −23.5° axial tilt causes the Northern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Southern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
 },
 {
-  "tilt": "-23.5 degree",
+  "tilt": "-23 degree",
   "position": 4,
   "title": "Tilt −23½ degree – Position 4",
   "observations": [
