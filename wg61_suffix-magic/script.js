@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Update Root Word
      // if (rootDisplay) rootDisplay.textContent = wordObj.root;
-      if(wordSpan) wordSpan.textContent = wordObj.root;
+      // if(wordSpan) wordSpan.textContent = wordObj.root;
 
       // Shuffle Suffixes
       const allSuff = [...d.suffixes.correct, ...d.suffixes.incorrect]

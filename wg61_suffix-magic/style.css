@@ -21,7 +21,7 @@
 
 #rhyme-widget .container::after {
   content: "";
-  background-image: url("Assets/Images/Final images/Group.png");
+  background-image: url("Assets/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -135,7 +135,7 @@
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #af4c00;
+  background: #1e6bef;
   padding: 8px 40px;
   color: white;
   white-space: nowrap;
@@ -217,3 +217,123 @@
   padding: 0px 8px;
   /* border-radius: 4px; */
 }
+
+/* .....................  */
+#puzzleDiv{
+  display: flex;
+}
+.box-top{
+  height: 210px;
+  width: 260px;
+  border: 1px solid red;
+  flex: 0 0 auto;
+}
+
+/* The temporary element that flies across the screen */
+.flying-suffix {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transition: all 0.5s ease-in-out; /* Control speed here */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white; /* Match your puzzle button style */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#puzzlePart1, #puzzlePart2 {
+  min-height: 50px; /* Match your puzzle height */
+  border: 2px dashed #ccc; /* Shows where the slot is */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The ghost element that flies */
+.flying-suffix {
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Optional: styling for the slots in the SVG */
+[id^="puzzlePart"] {
+  cursor: default;
+}
+
+[id^="puzzle"]:not([id*="Part"]) {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#completePuzzle{
+  border: 1px soldi red;
+}
+
+#puzzleDiv{
+  display: flex;
+  flex-direction: column;
+}
+#completeWord{
+  display: flex;
+  margin-left: 70px;
+  margin-bottom: 40px;
+}
+#completeWord div{
+  width: 300px;
+  height: 200px;
+}
+#completeWord #word{
+  width: 360px;
+  background-size: 100% 100%;
+  object-fit: contain;
+  /* background-image: url(./Assets/word-bg.svg); */
+  background-repeat: no-repeat;
+}
+.w-100{
+  width: 100%;
+} 
+.h-100{
+  height: 100%;}
+
+  #completeWord #puzzleSuffix1,
+  #completeWord #puzzleSuffix2{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    object-fit: contain;
+    
+  }
+
+  .centerTxt-wrap{
+    position: relative;
+  }
+  .center-txt{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+  }
+  #completeWord #puzzleSuffix1{
+  margin-left: -127px;
+}
+#completeWord #puzzleSuffix2{
+  margin-left: -106px;
+}
+#list-suffix{
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
+}
+#list-suffix li{
+  width: 256px;
+  height: 230px;
+
+}
+/* [id^="puzzle"]:not([id*="Part"]):hover {
+  transform: scale(1.02);
+} */
