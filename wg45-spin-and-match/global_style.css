@@ -270,6 +270,7 @@ button:disabled{
     gap: 20px;
     left: 0;
     top: 0;
+    z-index: 20;
     position: absolute;
   }
   .wdgetTitle h2 {
