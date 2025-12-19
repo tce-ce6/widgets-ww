@@ -1,0 +1,697 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const learnBtn = document.getElementById("learnBtn");
+  const step1 = document.getElementById("step-1");
+  const step2 = document.getElementById("step-2");
+
+  const questionList = document.querySelector(".question-list");
+  const answerList = document.querySelector(".answer-list");
+
+  const showAnsBtn = document.getElementById("show-ans");
+  const nextBtn = document.getElementById("next-btn");
+
+  const step3 = document.getElementById("step-3");
+  const optionList = document.getElementById("option-list");
+  let currentStep3GroupIndex = 0;
+  let selectedCategoryItem = null;
+
+  const rightColOption = document.getElementById("right-col-option");
+  const rightColCategory = document.getElementById("right-col-category");
+
+  const subjectList = document.getElementById("subject-list");
+  const categoryList = document.getElementById("category-list");
+  let selectedSubjectListItem = null;
+  const homeBtn = document.getElementById("home-btn");
+
+  const quizQuestion = document.getElementById("quiz-question");
+  const quizOptions = document.getElementById("quiz-options");
+  const step4 = document.getElementById("step-4");
+  const questionListing = document.querySelectorAll(".question-listing li");
+  let isQuizAnswerVisible = false;
+
+  let quizData = [];
+  let currentQuizIndex = 0;
+
+  let selectedQuizBlank = null;
+
+  let selectedCategoryListItem = null;
+
+  const verbRules = [
+    { suffix: "ती हैं।", rootClass: "blue", suffixClass: "green" }, // ✅ plural feminine
+    { suffix: "ती है।", rootClass: "blue", suffixClass: "green" },
+    { suffix: "ता है।", rootClass: "blue", suffixClass: "green" },
+    { suffix: "ते हैं।", rootClass: "blue", suffixClass: "green" },
+  ];
+
+  if (
+    !learnBtn ||
+    !step1 ||
+    !step2 ||
+    !step3 ||
+    !questionList ||
+    !answerList ||
+    !showAnsBtn ||
+    !nextBtn ||
+    !optionList ||
+    !rightColOption ||
+    !rightColCategory
+  )
+    return;
+
+  let allData = [];
+  let currentGroupIndex = 0;
+  let currentSelectedQuestion = null;
+  let isAnswerVisible = false;
+
+  /* ----------------------------------
+     STEP SWITCH
+  ---------------------------------- */
+  learnBtn.addEventListener("click", () => {
+    step1.style.display = "none";
+    step2.style.display = "block";
+  });
+
+  /* ----------------------------------
+     UTILS
+  ---------------------------------- */
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  function checkAllAnswered() {
+    const blanks = document.querySelectorAll(".question-list .blank");
+    const allCorrect = [...blanks].every((b) =>
+      b.classList.contains("correct")
+    );
+
+    showAnsBtn.disabled = allCorrect;
+    nextBtn.disabled = !allCorrect;
+  }
+
+  /* ----------------------------------
+     RENDER GROUP
+  ---------------------------------- */
+  function renderGroup(groupData) {
+    questionList.innerHTML = "";
+    answerList.innerHTML = "";
+
+    // Questions
+    groupData.forEach((item, index) => {
+      const qLi = document.createElement("li");
+      qLi.dataset.index = index;
+      qLi.dataset.answer = item.answer;
+      qLi.innerHTML = item.question.replace(
+        /_+/g,
+        `<span class="blank"></span>`
+      );
+      questionList.appendChild(qLi);
+    });
+
+    // Answers (shuffled)
+    const answers = groupData.map((item) => item.answer);
+    shuffleArray(answers);
+
+    answers.forEach((answer) => {
+      const aLi = document.createElement("li");
+      aLi.textContent = answer;
+      answerList.appendChild(aLi);
+    });
+
+    // Reset states
+    showAnsBtn.textContent = "उत्तर देखें";
+    showAnsBtn.disabled = false;
+    nextBtn.disabled = true;
+    isAnswerVisible = false;
+    currentSelectedQuestion = null;
+  }
+
+  /* ----------------------------------
+     LOAD JSON
+  ---------------------------------- */
+  fetch("./data.json")
+    .then((res) => res.json())
+    .then((data) => {
+      allData = data;
+      const firstKey = Object.keys(allData[0])[0];
+      renderGroup(allData[0][firstKey]);
+      const quizObject = allData.find((item) => item.quiz);
+      if (quizObject && Array.isArray(quizObject.quiz)) {
+        quizData = quizObject.quiz;
+      }
+    })
+    .catch((err) => console.error("JSON load error:", err));
+
+  /* ----------------------------------
+     QUESTION CLICK
+  ---------------------------------- */
+  questionList.addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+    if (!li) return;
+
+    const blank = li.querySelector(".blank");
+    if (!blank || blank.classList.contains("correct")) return;
+
+    document
+      .querySelectorAll(".blank.selected")
+      .forEach((b) => b.classList.remove("selected"));
+
+    blank.classList.add("selected");
+    currentSelectedQuestion = li;
+  });
+
+  /* ----------------------------------
+     ANSWER CLICK
+  ---------------------------------- */
+  answerList.addEventListener("click", (e) => {
+    const answerLi = e.target.closest("li");
+    if (!answerLi || !currentSelectedQuestion) return;
+
+    const selectedBlank = currentSelectedQuestion.querySelector(".blank");
+
+    const correctAnswer = currentSelectedQuestion.dataset.answer;
+
+    const selectedAnswer = answerLi.textContent.trim();
+
+    // Remove previous wrong
+    answerList
+      .querySelectorAll("li.wrong")
+      .forEach((li) => li.classList.remove("wrong"));
+
+    if (selectedAnswer === correctAnswer) {
+      // ✅ Correct
+      selectedBlank.textContent = selectedAnswer;
+      selectedBlank.classList.remove("selected");
+      selectedBlank.classList.add("correct");
+      selectedBlank.dataset.userFilled = "true";
+
+      answerLi.style.display = "none";
+      currentSelectedQuestion = null;
+
+      checkAllAnswered();
+    } else {
+      // ❌ Wrong
+      answerLi.classList.add("wrong");
+    }
+  });
+
+  /* ----------------------------------
+     SHOW / HIDE ANSWERS
+  ---------------------------------- */
+  showAnsBtn.addEventListener("click", () => {
+    const questions = document.querySelectorAll(".question-list li");
+    const answers = document.querySelectorAll(".answer-list li");
+
+    if (!isAnswerVisible) {
+      // Show answers
+      questions.forEach((li) => {
+        const blank = li.querySelector(".blank");
+        if (blank) {
+          blank.textContent = li.dataset.answer;
+          blank.classList.remove("selected");
+          blank.classList.add("correct");
+        }
+      });
+
+      answers.forEach((li) => (li.style.display = "none"));
+      showAnsBtn.textContent = "उत्तर छिपाएं";
+      isAnswerVisible = true;
+
+      checkAllAnswered();
+    } else {
+      // Hide answers
+      questions.forEach((li) => {
+        const blank = li.querySelector(".blank");
+        if (blank && !blank.dataset.userFilled) {
+          blank.textContent = "";
+          blank.classList.remove("correct", "selected");
+        }
+      });
+
+      answers.forEach((li) => (li.style.display = ""));
+      showAnsBtn.textContent = "उत्तर देखें";
+      isAnswerVisible = false;
+    }
+
+    currentSelectedQuestion = null;
+  });
+
+  /* ----------------------------------
+     NEXT GROUP
+  ---------------------------------- */
+  nextBtn.addEventListener("click", () => {
+    // 🔹 STEP 3 MODE
+    // 🔹 STEP 3 MODE
+    if (step3.style.display === "block") {
+      // ✅ If all options are placed → toggle right panels
+      if (areAllOptionsPlaced()) {
+        rightColOption.style.display = "none";
+        rightColCategory.style.display = "block";
+      }
+
+      currentStep3GroupIndex++;
+
+      // ✅ All step-3 groups completed
+      if (currentStep3GroupIndex >= allData.length) {
+        console.log("Step 3 completed");
+        nextBtn.disabled = true;
+        return;
+      }
+
+      // 🔄 Reset panels for next group
+      rightColOption.style.display = "block";
+      rightColCategory.style.display = "none";
+
+      renderStep3Options(currentStep3GroupIndex);
+      return;
+    }
+    // 🔹 STEP 4 QUIZ MODE
+    // 🔹 STEP-4 QUIZ MODE
+    // 🔹 STEP-4 QUIZ MODE
+    // 🔹 STEP-4 QUIZ SHOW ANSWER
+// 🔹 STEP-4 QUIZ SHOW ANSWER
+// 🔹 STEP-4 QUIZ SHOW ANSWER
+if (step4.style.display === "block") {
+  const quiz = quizData[currentQuizIndex];
+
+  if (!isQuizAnswerVisible) {
+    // ✅ THIS WILL NOW WORK
+    quizQuestion.textContent = quiz.completeSentence;
+
+    quizOptions
+      .querySelectorAll("li")
+      .forEach(li => (li.style.display = "none"));
+
+    showAnsBtn.textContent = "उत्तर छिपाएं";
+    nextBtn.disabled = false;
+    isQuizAnswerVisible = true;
+  } else {
+    // Restore blank question
+    quizQuestion.innerHTML = quiz.question.replace(
+      /_+/g,
+      `<span class="quiz-blank"></span>`
+    );
+
+    quizOptions
+      .querySelectorAll("li")
+      .forEach(li => {
+        li.style.display = "";
+        li.classList.remove("wrong", "selected");
+      });
+
+    showAnsBtn.textContent = "उत्तर देखें";
+    nextBtn.disabled = true;
+    isQuizAnswerVisible = false;
+  }
+
+  selectedQuizBlank = null;
+  return;
+}
+
+
+
+    // 🔹 STEP 2 MODE (existing logic)
+    currentGroupIndex++;
+
+    if (currentGroupIndex >= allData.length) {
+      step2.style.display = "none";
+      step3.style.display = "block";
+
+      currentStep3GroupIndex = 0;
+
+      // ⭐ RESET UI
+      rightColOption.style.display = "block";
+      rightColCategory.style.display = "none";
+
+      renderStep3Options(currentStep3GroupIndex);
+      return;
+    }
+
+    const nextKey = Object.keys(allData[currentGroupIndex])[0];
+    renderGroup(allData[currentGroupIndex][nextKey]);
+  });
+
+  function renderStep3Options(groupIndex) {
+    optionList.innerHTML = "";
+
+    const groupKey = Object.keys(allData[groupIndex])[0];
+    const groupData = allData[groupIndex][groupKey];
+
+    groupData.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item.completeSentence;
+      li.dataset.category = item.category;
+      optionList.appendChild(li);
+    });
+  }
+
+  optionList.addEventListener("click", (e) => {
+    const optionLi = e.target.closest("li");
+    if (!optionLi) return;
+
+    // 🚫 Category not selected
+    if (!selectedCategoryItem) {
+      alert("पहले सही श्रेणी चुनें।");
+      return;
+    }
+
+    const optionCategory = optionLi.dataset.category;
+    const selectedCategory = selectedCategoryItem.dataset.category;
+
+    // 🔄 Remove previous wrong state
+    optionList
+      .querySelectorAll("li.wrong")
+      .forEach((li) => li.classList.remove("wrong"));
+
+    // ✅ CATEGORY MATCH
+    if (optionCategory === selectedCategory) {
+      const wordWrap = selectedCategoryItem.querySelector(".word-wrap");
+      if (!wordWrap) return;
+
+      const span = document.createElement("span");
+      span.textContent = optionLi.textContent;
+      wordWrap.appendChild(span);
+
+      // Remove option after correct placement
+      optionLi.remove();
+
+      // Clear selected category
+      selectedCategoryItem.classList.remove("selected");
+      selectedCategoryItem = null;
+    }
+    // ❌ CATEGORY MISMATCH
+    else {
+      optionLi.classList.add("wrong");
+    }
+  });
+
+  // Click handler for subject-list (first click)
+  subjectList.addEventListener("click", (e) => {
+    const subjectLi = e.target.closest("li");
+    if (!subjectLi) return;
+
+    // Store selected subject
+    selectedSubjectListItem = subjectLi;
+
+    // Also set for option placement if has data-category
+    if (subjectLi.dataset.category) {
+      selectedCategoryItem = subjectLi;
+    }
+  });
+  function areAllOptionsPlaced() {
+    return optionList.children.length === 0;
+  }
+
+  // Click handler for category-list (second click)
+  categoryList.addEventListener("click", (e) => {
+    const categoryLi = e.target.closest("li[data-category]");
+    if (!categoryLi || !selectedSubjectListItem) return;
+
+    const subjectId = selectedSubjectListItem.id;
+    const categoryDataCategory = categoryLi.dataset.category;
+
+    // Check if subject id matches category data-category
+    if (subjectId === categoryDataCategory) {
+      // ✅ Match: Add the class (category-1, category-2, category-3, category-4)
+      selectedSubjectListItem.classList.add(categoryDataCategory);
+      applyCategoryFormatting(selectedSubjectListItem);
+      categoryLi.classList.remove("wrong");
+      selectedSubjectListItem = null;
+      categoryLi.remove();
+
+      // Get the complete sentence from category list item
+      const completeSentence = categoryLi.textContent.trim();
+
+      // Find matching data to get the answer
+      // ✅ SAFETY CHECK
+      if (
+        !allData[currentStep3GroupIndex] ||
+        typeof allData[currentStep3GroupIndex] !== "object"
+      ) {
+        console.warn("Invalid Step-3 group index:", currentStep3GroupIndex);
+        return;
+      }
+
+      const groupKey = Object.keys(allData[currentStep3GroupIndex])[0];
+      const groupData = allData[currentStep3GroupIndex][groupKey];
+
+      const matchingItem = groupData.find(
+        (item) =>
+          item.completeSentence === completeSentence &&
+          item.category === categoryDataCategory
+      );
+
+      if (matchingItem) {
+        const answer = matchingItem.answer;
+        const wordWrap = selectedSubjectListItem.querySelector(".word-wrap");
+
+        if (wordWrap) {
+          // Split answer into root and suffix
+          // For "दौड़ता है", we want "दौड़" and "ता है"
+          // For "दौड़ती है", we want "दौड़" and "ती है"
+          // Pattern: answer contains verb root + suffix
+
+          let rootPart = "";
+          let suffixPart = "";
+
+          // Common patterns to split
+          if (answer.includes("ता है")) {
+            const parts = answer.split("ता है");
+            rootPart = parts[0] + "ता है".substring(0, 0); // just the root
+            suffixPart = "ता है";
+            rootPart = answer.replace("ता है", "");
+          } else if (answer.includes("ती है")) {
+            rootPart = answer.replace("ती है", "");
+            suffixPart = "ती है";
+          } else if (answer.includes("ते हैं")) {
+            rootPart = answer.replace("ते हैं", "");
+            suffixPart = "ते हैं";
+          } else if (answer.includes("ती हैं")) {
+            rootPart = answer.replace("ती हैं", "");
+            suffixPart = "ती हैं";
+          }
+
+          // Split the complete sentence by the answer to get the prefix
+          const beforeAnswer = completeSentence.split(answer)[0];
+          const afterAnswer = completeSentence.split(answer)[1] || "";
+
+          // Create outer span
+          const outerSpan = document.createElement("span");
+
+          // Add prefix text
+          if (beforeAnswer) {
+            outerSpan.appendChild(document.createTextNode(beforeAnswer));
+          }
+
+          // Add root part in span
+          if (rootPart) {
+            const rootSpan = document.createElement("span");
+            rootSpan.textContent = rootPart;
+            outerSpan.appendChild(rootSpan);
+          }
+
+          // Add suffix part in span
+          if (suffixPart) {
+            const suffixSpan = document.createElement("span");
+            suffixSpan.textContent = suffixPart + afterAnswer;
+            outerSpan.appendChild(suffixSpan);
+          }
+
+          // Append to word-wrap
+          wordWrap.appendChild(outerSpan);
+        }
+      }
+
+      selectedSubjectListItem = null;
+
+      // Remove the category list item
+      categoryLi.remove();
+    } else {
+      // ❌ No match: Show error
+      categoryLi.classList.add("wrong");
+      setTimeout(() => {
+        categoryLi.classList.remove("wrong");
+      }, 500);
+    }
+  });
+
+  function transformSentence(span) {
+    const text = span.textContent.trim();
+
+    for (const rule of verbRules) {
+      if (text.includes(rule.suffix)) {
+        const root = text.replace(rule.suffix, "");
+
+        span.innerHTML = `
+        ${root.replace(
+          /([^\s]+)$/,
+          `<span class="${rule.rootClass}">$1</span>`
+        )}
+        <span class="${rule.suffixClass}">${rule.suffix}</span>
+      `;
+        break;
+      }
+    }
+  }
+
+  function applyCategoryFormatting(subjectLi) {
+    const wordWrap = subjectLi.querySelector(".word-wrap");
+    if (!wordWrap) return;
+
+    wordWrap.querySelectorAll("span").forEach((span) => {
+      transformSentence(span);
+    });
+  }
+  if (homeBtn) {
+    homeBtn.addEventListener("click", () => {
+      resetApplication();
+    });
+  }
+
+  function resetApplication() {
+    /* -------------------------
+     STEP VISIBILITY
+  ------------------------- */
+    step1.style.display = "block";
+    step2.style.display = "none";
+    step3.style.display = "none";
+    step4.style.display = "none";
+
+    /* -------------------------
+     RESET INDICES
+  ------------------------- */
+    currentGroupIndex = 0;
+    currentStep3GroupIndex = 0;
+
+    /* -------------------------
+     RESET STATES
+  ------------------------- */
+    currentSelectedQuestion = null;
+    selectedCategoryItem = null;
+    isAnswerVisible = false;
+
+    /* -------------------------
+     RESET BUTTONS
+  ------------------------- */
+    nextBtn.disabled = true;
+    showAnsBtn.disabled = false;
+    showAnsBtn.textContent = "उत्तर देखें";
+
+    /* -------------------------
+     RESET STEP-3 PANELS
+  ------------------------- */
+    rightColOption.style.display = "block";
+    rightColCategory.style.display = "none";
+
+    /* -------------------------
+     CLEAR STEP-3 CONTENT
+  ------------------------- */
+    optionList.innerHTML = "";
+    document
+      .querySelectorAll("#subject-list .word-wrap")
+      .forEach((wrap) => (wrap.innerHTML = ""));
+
+    document.querySelectorAll("#subject-list li").forEach((li) => {
+      li.className = ""; // removes category-* classes
+    });
+
+    /* -------------------------
+     RELOAD FIRST GROUP
+  ------------------------- */
+    if (allData.length > 0) {
+      const firstKey = Object.keys(allData[0])[0];
+      renderGroup(allData[0][firstKey]);
+    }
+  }
+function renderQuizQuestion() {
+  const quiz = quizData[currentQuizIndex];
+
+  quizQuestion.innerHTML = quiz.question.replace(
+    /_+/g,
+    `<span class="quiz-blank"></span>`
+  );
+
+  quizOptions.innerHTML = "";
+  quiz.options.forEach(opt => {
+    const li = document.createElement("li");
+    li.textContent = opt;
+    quizOptions.appendChild(li);
+  });
+
+  selectedQuizBlank = null;
+  isQuizAnswerVisible = false;
+  showAnsBtn.textContent = "उत्तर देखें";
+  nextBtn.disabled = true;
+}
+
+
+  quizBtn.addEventListener("click", () => {
+    step1.style.display = "none";
+    step2.style.display = "none";
+    step3.style.display = "none";
+    step4.style.display = "block";
+
+    currentQuizIndex = 0;
+    nextBtn.disabled = true; // ✅ IMPORTANT
+    renderQuizQuestion();
+    questionListing.forEach((li) => li.classList.add("disabled"));
+    if (questionListing[0]) {
+      questionListing[0].classList.remove("disabled");
+    }
+  });
+
+  quizQuestion.addEventListener("click", (e) => {
+    const blank = e.target.closest(".quiz-blank");
+    if (!blank || blank.classList.contains("correct")) return;
+
+    document
+      .querySelectorAll(".quiz-blank.selected")
+      .forEach((b) => b.classList.remove("selected"));
+
+    blank.classList.add("selected");
+    selectedQuizBlank = blank;
+  });
+
+  quizOptions.addEventListener("click", (e) => {
+    const optionLi = e.target.closest("li");
+    if (!optionLi || !selectedQuizBlank) return;
+
+    const correctAnswer = optionLi.dataset.answer;
+    const selectedAnswer = optionLi.textContent.trim();
+
+    // Remove previous states
+    quizOptions
+      .querySelectorAll("li.selected")
+      .forEach((li) => li.classList.remove("selected"));
+    quizOptions
+      .querySelectorAll("li.wrong")
+      .forEach((li) => li.classList.remove("wrong"));
+
+    optionLi.classList.add("selected");
+
+    // ✅ Correct
+    if (selectedAnswer === correctAnswer) {
+      // Enable Next button
+      nextBtn.disabled = false;
+
+      // Enable next question number
+
+      selectedQuizBlank.textContent = selectedAnswer;
+      selectedQuizBlank.classList.remove("selected");
+      selectedQuizBlank.classList.add("correct");
+
+      optionLi.style.display = "none";
+      optionLi.classList.remove("selected");
+
+      selectedQuizBlank = null;
+
+      // ⭐ ENABLE NEXT BUTTON
+      nextBtn.disabled = false;
+    }
+    // ❌ Wrong
+    else {
+      optionLi.classList.add("wrong");
+    }
+  });
+});
