@@ -159,17 +159,23 @@ function getGridAndClues(min, max) {
 function showMessage(txt, ok) {
   const msg = document.getElementById("message");
 
-  // ✅ ensure span exists
-  let span = msg.querySelector("span");
-  if (!span) {
-    span = document.createElement("span");
-    msg.appendChild(span);
+  // ✅ ensure text span exists (NOT the lottie span)
+  let textSpan = msg.querySelector(".message-text");
+  if (!textSpan) {
+    textSpan = document.createElement("span");
+    textSpan.className = "message-text";
+    msg.appendChild(textSpan);
   }
 
-  span.textContent = txt; // 👈 text goes inside span
+  textSpan.textContent = txt;
   msg.className = ok ? "message" : "message incorrect";
   msg.style.display = "block";
+
+  // ✅ play emoji lottie
+  playMessageLottie(ok ? "correct" : "wrong");
 }
+
+
 
 function clearAllCrosses() {
   document.querySelectorAll(".cell-front.crossed").forEach((cell) => {
@@ -556,4 +562,27 @@ function playResultLottie(cellOuter, type) {
   setTimeout(() => {
     span.remove();
   }, 5000000);
+}
+
+function playMessageLottie(type) {
+  const container = document.getElementById("message-lottie");
+  if (!container) return;
+
+  // clear previous animation
+  container.innerHTML = "";
+
+  lottie.loadAnimation({
+    container: container,
+    renderer: "svg",
+    loop: false,
+    autoplay: true,
+    path:
+      type === "correct"
+        ? "lottie/correct-emoji.json"
+        : "lottie/wrong-emoji.json",
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid meet",
+      clearCanvas: true,
+    },
+  });
 }
