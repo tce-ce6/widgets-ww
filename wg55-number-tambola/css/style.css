@@ -1,0 +1,595 @@
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+#tambola-wrapper body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#tambola-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#tambola-wrapper .container::after {
+  content: "";
+  background-image: url("./../assets/BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* #tambola-wrapper .mainContainerOuter {
+  background: #60360D !important
+} */
+
+#tambola-wrapper .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#tambola-wrapper .d-flex {
+  display: flex
+}
+
+#tambola-wrapper .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#tambola-wrapper .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#tambola-wrapper .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #tambola-wrapper .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#tambola-wrapper .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#tambola-wrapper .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#tambola-wrapper .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#tambola-wrapper .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#tambola-wrapper .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#tambola-wrapper .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#tambola-wrapper .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#tambola-wrapper .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #0295FC;
+  white-space: nowrap;
+}
+
+#tambola-wrapper .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #bbb;
+}
+
+#tambola-wrapper .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#tambola-wrapper svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+/* tambola style  */
+.main-wrapper {
+  height: 100%;
+  background-color: #C8FCEC;
+  border-radius: 20px;
+}
+
+.game-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 16px;
+  color: #e17055;
+  font-weight: bold;
+}
+
+.top-bar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 10px 0 20px 0;
+}
+
+.top-bar label {
+  font-size: 30px;
+  color: #000;
+}
+
+.top-bar select {
+  font-size: 30px;
+  padding: 11px 70px 11px 20px;
+  border-radius: 8px;
+  border: 3px solid #0F86FD;
+  background: #f3fbff;
+  color: #000;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='29' height='18' viewBox='0 0 29 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.94581 0L0 2.9458L14.3076 17.2534L17.2534 14.3076L2.94581 0Z' fill='%23004897'/%3E%3Cpath d='M28.6167 2.9458L25.6709 0L11.3633 14.3076L14.3091 17.2534L28.6167 2.9458Z' fill='%23004897'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.top-bar select option{
+  font-size: 18px;
+}
+
+.top-bar button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.top-bar button {
+  background: #FF2C68;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 28px;
+  margin-left: 20px;
+}
+.top-bar button:hover{
+  background: #FF2C68;
+}
+.instructions {
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: 8px;
+  background: #ffeaa7;
+  padding: 7px 16px;
+  border-radius: 10px;
+  color: #7d4a00;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 50%;
+
+}
+
+/* Flipping clue card */
+.flip-wrapper {
+  width: 220px;
+  height: 80px;
+  perspective: 1000px;
+}
+
+.flip-card {
+  width: 650px;
+  height: 220px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
+
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 35px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  box-sizing: border-box;
+}
+
+.flip-front {
+  font-weight: bold;
+  font-size: 1.05em;
+  background-image: url("../assets/clue-card.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.flip-back {
+  background: #fff;
+  border: 5px solid #FFE629;
+  color: #000;
+  transform: rotateY(180deg);
+  font-size: 50px;
+  text-align: center;
+  padding: 6px 10px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.flip-front.disabled {
+  background-image: none;
+  cursor: not-allowed;
+  background: #fff;
+  border: 5px solid #FFE629;
+  color: #D63434;
+  font-size: 40px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Show Answer button - ALWAYS ACTIVE when clue active */
+.clue-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    width: 230px;
+    margin-top: 160px;
+    font-size: 30px;
+    margin-left: 215px;
+}
+
+.small-btn {
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 22px 35px;
+  font-size: 25px;
+  cursor: pointer;
+  /* font-weight: bold; */
+  width: 100%;
+  transition: all 0.3s ease;
+  border-radius: 50px;
+}
+
+.small-btn:hover:not(:disabled) {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.small-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* 4x4 Number grid - FIXED POSITION FLIP */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  gap: 25px;
+  background-color: #80C6FC;
+  border-radius: 30px;
+      justify-content: center;
+}
+
+.cell-outer {
+  width: 175px;
+  height: 175px;
+  position: relative;
+  font-size: 50px;
+}
+
+.cell-inner {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.cell-inner.clicked {
+  /* allow clicks again when this cell is reused in a new clue
+     pointer-events removed so JS controls per-clue blocking */
+}
+
+.cell-inner.correct {
+  /* allow clicks on previously-correct cells when reused in later clues;
+     JS controls whether a click should be accepted, so avoid blocking here */
+}
+
+.cell-inner.grid-blocked * {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.cell-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 7px solid #0F86FD;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+  box-sizing: border-box;
+  font-weight: bold;
+  user-select: none;
+}
+
+.cell-face.cell-front.crossed{
+  border: 7px solid #D63434;
+  background-color: #FFBDBD;
+}
+.cell-inner.correct .cell-face.cell-front{
+  border: 7px solid #069B00;
+  background-color: #61CB5C;
+
+}
+.cell-front {
+  background: #fff;
+  color: #000;
+  font-size: 1.2em;
+}
+
+.cell-back {
+  background: #dff9fb;
+  color: #00b894;
+  transform: rotateY(180deg);
+  font-size: 1.6em;
+}
+
+.cell-back span {
+  animation: starPop 0.5s ease;
+}
+
+@keyframes starPop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Highlight for Show Answer */
+.cell-inner.show-highlight .cell-face.cell-front {
+    border: 7px solid #069B00;
+    background-color: #61CB5C;
+}
+
+.message{
+  width: 500px;
+  height: 150px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-top: 40px;
+  margin-left: 80px;
+  font-weight: 600;
+  border: 3px solid #2196F3;
+  background: #ACFF89;
+}
+
+.message span{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+      text-align: center;
+    line-height: 1.2;
+}
+
+.message.incorrect {
+  border: 3px solid #D63434;
+  background: #FFBDBD;
+}
+
+.score-area {
+  text-align: center;
+  font-size: 1.1em;
+  color: #00b894;
+  margin: 4px 0 0 0;
+  font-weight: bold;
+}
+
+.play-again-btn {
+  background: #fd79a8;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 8px;
+  display: inline-block;
+}
+.instruction-wrapper{
+  font-size: 30px;
+  white-space: nowrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.instruction-wrapper li{
+  margin-bottom: 15px;
+  font-style: italic;
+  color: #0B009F;
+}
+.result-lottie{
+  height: 80px;
+    width: 80px;
+    display: block;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.total-txt{
+  font-size: 25px;
+  font-weight: 600;
+  color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.play-again{
+  background-color: #FF2C68;
+  width:200px;
+  margin-top: 30px;
+}
+#clue-info{
+  width: 370px;
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  margin-left: 143px;
+  margin-top: 160px;
+}
+.total-count{
+  font-size: 34px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+.star-wrapper{
+  position: absolute;
+  top: -45px;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  color: #fff;
+  gap: 10px;
+  right: 30px;
+}
+.star-container{
+  display: flex;
+  gap: 5px;
+}
+.star-wrapper .star-container svg{
+  height: 30px !important;
+  width: 30px !important;
+}
+.correct .svg-wrap path {
+  fill: #FFD700 !important;
+}
+.correct .svg-wrap[opacity="0.3"] {
+  opacity: 1 !important;
+}

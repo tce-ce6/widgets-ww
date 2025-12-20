@@ -33,7 +33,7 @@ const xrayRightImg = document.getElementById("xray-right-img");
       renderer: "svg",
       loop: true,
       autoplay: false,
-      path: "xray-right.json",
+      path: "xray-left.json",
     });
   }
 

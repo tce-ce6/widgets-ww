@@ -158,7 +158,7 @@
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="home-btn" x="81.89" y="965.72" width="65.2" height="65.2" style="display: block;">
+                  <foreignObject id="home-btn" x="81.89" y="965.72" width="65.2" height="65.2" style="display: block; cursor: pointer;">
                     <div class="h-100" xmlns="http://www.w3.org/1999/xhtml">
                       <img src="./assets/home-btn.svg" alt="Congratulations" style="" />
                     </div>
@@ -174,10 +174,12 @@
             </clipPath>
           </defs>
         </svg>
+        <span id="abhyas-label" class="abhyas-label" style="display: none;"></span>
+
       </div>
       <div class="flexContainer button-controls" id="btn-wrapper">
         <div class="flexItem flexItemFirst">
-          <button class="btn" id="show-ans" style="background-color:#4caf50; color:white;" onfocus="
+          <button class="btn" id="show-ans" disabled style="background-color:#4caf50; color:white;min-width: 130px;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';
@@ -187,7 +189,7 @@
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
             उत्तर देखें
           </button>
-          <button class="btn" id="next-btn" disabled style="background-color:#1e6bef; color:white;" onfocus="
+          <button class="btn" id="next-btn" disabled style="background-color:#1e6bef; color:white; min-width: 130px;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';

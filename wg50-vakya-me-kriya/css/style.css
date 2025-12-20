@@ -225,6 +225,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  cursor: pointer;
 }
 
 .step1-itext{
@@ -242,11 +243,9 @@
 }
 .subject-wrapper .left-col{
   width: 72%;
-  border: 1px solid red;
 }
 .subject-wrapper .right-col{
   width: 28%;
-  border: 1px solid red;
   text-align: center;
 
 }
@@ -275,7 +274,8 @@
   top: 35px;
   margin: 0;
   color: #fff;
-      white-space: nowrap;
+  white-space: nowrap;
+  cursor: pointer;
 }
 .word-wrap{
   display: flex;
@@ -318,7 +318,8 @@
   align-items: center;
   justify-content: center;
   font-size: 30px;
-      position: relative;
+  position: relative;
+  cursor: pointer;
 }
 .option-wrap li.wrong::before{
       content: "";
@@ -415,4 +416,14 @@
 .question-listing li.disabled{
   pointer-events: none;
   opacity: 0.4;
+}
+
+.abhyas-label{
+  position: absolute;
+  top: 0;
+  left: 100px;
+  background-image: url("../assets/abhyas-label.svg");
+  height: 85px;
+  width: 196px;
+  background-size: 100% 100%;
 }
