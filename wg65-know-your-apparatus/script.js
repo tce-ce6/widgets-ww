@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // -------------------------------------------------------------
+  // 1. DATA CONFIGURATION
+  // -------------------------------------------------------------
+
   const objectsData = [
     { id: "test-tube", path: "assets/test-tube.svg", x: 1037, y: 161 },
     { id: "beaker", path: "assets/beaker.svg", x: 1251, y: 161 },
@@ -35,241 +39,265 @@ document.addEventListener("DOMContentLoaded", () => {
     { "id": "exp_10", "name": "Exp:10- Your experiment", "x": 27, "y": 581 }
   ];
 
-
   const experimentDetails = {
-  "experiments": [
-    {
-      "id": "exp_1",
-      "title": "Testing for Starch in Food",
-      "gradeLevel": "6-7",
-      "difficulty": "Beginner",
-      "learningObjective": "Introduce basic testing procedures and simple apparatus",
-      "scenario": "You have a small piece of potato. You need to add a few drops of iodine solution to test for starch.",
-      "requiredApparatus": [
-        { "id": "petri-dish", "name": "Petri Dish", "reason": "Perfect for placing small food samples and adding drops of solution" },
-        { "id": "dropper", "name": "Dropper", "reason": "To add iodine solution drop by drop with control" }
-      ],
-      "incorrectSelections": [
-        { "id": "beaker", "name": "Beaker", "feedback": "Not ideal. Too large! You only need a small dish for this simple test" },
-        { "id": "test-tube", "name": "Test Tube", "feedback": "The potato piece won't fit well, and you can't observe color change easily" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Way too big for testing a tiny food sample!" },
-        { "id": "pipette", "name": "Pipette", "feedback": "A dropper is simpler and better for adding just a few drops" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "You're not measuring volumes here - just adding drops to a sample" }
-      ]
-    },
+    "experiments": [
+      {
+        "id": "exp_1",
+        "title": "Testing for Starch in Food",
+        "gradeLevel": "6-7",
+        "difficulty": "Beginner",
+        "learningObjective": "Introduce basic testing procedures and simple apparatus",
+        "scenario": "You have a small piece of potato. You need to add a few drops of iodine solution to test for starch.",
+        "yourTask": "Set up the apparatus to test the potato for starch.",
+        "requiredApparatus": [
+          { "id": "petri-dish", "name": "Petri Dish", "reason": "Perfect for placing small food samples and adding drops of solution" },
+          { "id": "dropper", "name": "Dropper", "reason": "To add iodine solution drop by drop with control" }
+        ],
+        "incorrectSelections": [
+          { "id": "beaker", "name": "Beaker", "feedback": "Not ideal. Too large! You only need a small dish for this simple test" },
+          { "id": "test-tube", "name": "Test Tube", "feedback": "The potato piece won't fit well, and you can't observe color change easily" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Way too big for testing a tiny food sample!" },
+          { "id": "pipette", "name": "Pipette", "feedback": "A dropper is simpler and better for adding just a few drops" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "You're not measuring volumes here - just adding drops to a sample" }
+        ]
+      },
+      {
+        "id": "exp_2",
+        "title": "Making a Salt Solution",
+        "gradeLevel": "6-7",
+        "difficulty": "Beginner",
+        "learningObjective": "Understand dissolving and stirring techniques",
+        "scenario": "You have 10g of salt. You need to dissolve it in 100 cm³ of water and stir it well.",
+        "yourTask": "Select the correct apparatus to mix salt and water.",
+        "requiredApparatus": [
+          { "id": "beaker", "name": "Beaker", "reason": "Wide opening makes it easy to add salt and stir" },
+          { "id": "stirring-rod", "name": "Stirring Rod", "reason": "To mix the salt and water thoroughly" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure exactly 100 cm³ of water" }
+        ],
+        "incorrectSelections": [
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow to stir properly and measure accurately" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Narrow neck makes it hard to add salt and stir" },
+          { "id": "pipette", "name": "Pipette", "feedback": "Can't measure 100 cm³ - pipettes are for smaller, precise volumes" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the solution would spill when stirring" },
+          { "id": "dropper", "name": "Dropper", "feedback": "Way too small to measure 100 cm³ of water!" }
+        ]
+      },
+      {
+        "id": "exp_3",
+        "title": "Observing a Chemical Reaction",
+        "gradeLevel": "7-8",
+        "difficulty": "Beginner",
+        "learningObjective": "Safe observation of gas-producing reactions",
+        "scenario": "You need to add 5 cm³ of vinegar to 5 cm³ of baking soda solution and watch the reaction.",
+        "yourTask": "Prepare the setup to observe the reaction safely.",
+        "requiredApparatus": [
+          { "id": "test-tube", "name": "Test Tube", "reason": "Perfect size for small volume reactions and easy observation" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure the liquids accurately" },
+          { "id": "test-tube-rack", "name": "Test Tube Rack", "reason": "To hold the test tube safely while you work" }
+        ],
+        "incorrectSelections": [
+          { "id": "beaker", "name": "Beaker", "feedback": "Works but wastes space - test tubes are better for small volumes" },
+          { "id": "pipette", "name": "Pipette", "feedback": "You need something to hold and observe the reaction" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the bubbles might overflow!" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large for just 10 cm³ total volume" },
+          { "id": "dropper", "name": "Dropper", "feedback": "Can't hold the reaction - you need a proper vessel" }
+        ]
+      },
+      {
+        "id": "exp_4",
+        "title": "Heating Water to Boiling Point",
+        "gradeLevel": "7-8",
+        "difficulty": "Intermediate",
+        "learningObjective": "Safe heating procedures and temperature measurement",
+        "scenario": "You need to heat 50 cm³ of water until it boils and record the temperature.",
+        "yourTask": "Heat water and measure its boiling temperature.",
+        "requiredApparatus": [
+          { "id": "beaker", "name": "Beaker", "reason": "Can be heated safely and holds enough water" },
+          { "id": "bunsen-burner", "name": "Bunsen Burner", "reason": "Provides heat source" },
+          { "id": "tripod-stand", "name": "Tripod Stand", "reason": "Holds the beaker safely above the flame" },
+          { "id": "thermometer", "name": "Thermometer", "reason": "To measure the temperature as water heats up" }
+        ],
+        "incorrectSelections": [
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Dangerous for boiling!" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Beakers are more standard for heating" },
+          { "id": "evaporating-dish", "name": "Evaporating Dish", "feedback": "You want to heat water, not evaporate it" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not designed for heating" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Never heat measuring cylinders" }
+        ]
+      },
+      {
+        "id": "exp_5",
+        "title": "Separating Sand from Water",
+        "gradeLevel": "8-9",
+        "difficulty": "Intermediate",
+        "learningObjective": "Filtration technique for separation",
+        "scenario": "You have muddy water with sand. Separate the sand using filtration.",
+        "yourTask": "Set up the filtration apparatus to separate sand.",
+        "requiredApparatus": [
+          { "id": "funnel", "name": "Funnel", "reason": "Guides the mixture through the filter paper" },
+          { "id": "filter-paper", "name": "Filter Paper", "reason": "Traps sand particles" },
+          { "id": "beaker", "name": "Beaker", "reason": "To collect filtered water" }
+        ],
+        "incorrectSelections": [
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too small for filtration setup" },
+          { "id": "pipette", "name": "Pipette", "feedback": "Can't separate solids from liquids" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Not designed for filtration" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow" },
+          { "id": "dropper", "name": "Dropper", "feedback": "A dropper can't perform filtration" }
+        ]
+      },
+      {
+        "id": "exp_6",
+        "title": "Titration Experiment",
+        "gradeLevel": "9-10",
+        "difficulty": "Advanced",
+        "learningObjective": "Precise measurement and volumetric analysis",
+        "scenario": "You have 25.0 cm³ of hydrochloric acid. Use 0.1 M sodium hydroxide to find the acid's concentration.",
+        "yourTask": "Select the precise apparatus needed for titration.",
+        "requiredApparatus": [
+          { "id": "pipette", "name": "Pipette", "reason": "Measures exactly 25.0 cm³" },
+          { "id": "conical-flask", "name": "Conical Flask", "reason": "Prevents splashing during swirling" },
+          { "id": "burette", "name": "Burette", "reason": "Delivers solution drop by drop" }
+        ],
+        "incorrectSelections": [
+          { "id": "beaker", "name": "Beaker", "feedback": "Not accurate enough" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Less accurate than a pipette" },
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too small" },
+          { "id": "volumetric-flask", "name": "Volumetric Flask", "feedback": "Used for making solutions, not titration" },
+          { "id": "dropper", "name": "Dropper", "feedback": "Not precise enough" }
+        ]
+      },
+      {
+        "id": "exp_7",
+        "title": "Crystallization of Salt",
+        "gradeLevel": "8-9",
+        "difficulty": "Intermediate",
+        "learningObjective": "Evaporation technique to obtain pure crystals",
+        "scenario": "You have a concentrated salt solution. Evaporate the water to get salt crystals.",
+        "yourTask": "Prepare the setup to evaporate the solution.",
+        "requiredApparatus": [
+          { "id": "evaporating-dish", "name": "Evaporating Dish", "reason": "Wide and shallow for quick evaporation" },
+          { "id": "bunsen-burner", "name": "Bunsen Burner", "reason": "Provides gentle heat" },
+          { "id": "tripod-stand", "name": "Tripod Stand", "reason": "Supports the dish safely" }
+        ],
+        "incorrectSelections": [
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow" },
+          { "id": "beaker", "name": "Beaker", "feedback": "Slower evaporation" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Narrow neck traps vapor" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not suitable for heating" },
+          { "id": "watch-glass", "name": "Watch Glass", "feedback": "Too small" }
+        ]
+      },
+      {
+        "id": "exp_8",
+        "title": "Preparing a Standard Solution",
+        "gradeLevel": "10",
+        "difficulty": "Advanced",
+        "learningObjective": "Precise solution preparation for quantitative analysis",
+        "scenario": "You need to prepare a precise concentration of salt solution.",
+        "yourTask": "Choose the correct glassware for a standard solution.",
+        "requiredApparatus": [
+          { "id": "beaker", "name": "Beaker", "reason": "For initial dissolving" },
+          { "id": "volumetric-flask", "name": "Volumetric Flask", "reason": "Accurate 250 cm³ volume" },
+          { "id": "stirring-rod", "name": "Stirring Rod", "reason": "Ensures complete dissolution" }
+        ],
+        "incorrectSelections": [
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Less accurate" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Not calibrated" },
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too small" },
+          { "id": "pipette", "name": "Pipette", "feedback": "For transferring only" },
+          { "id": "burette", "name": "Burette", "feedback": "Not for making solutions" }
+        ]
+      },
+      {
+        "id": "exp_9",
+        "title": "Testing pH of Solutions",
+        "gradeLevel": "7-8",
+        "difficulty": "Beginner",
+        "learningObjective": "Understanding acids, bases, and pH indicators",
+        "scenario": "You have three unknown solutions. Test their pH using universal indicator.",
+        "yourTask": "Set up to test small samples of the solutions.",
+        "requiredApparatus": [
+          { "id": "test-tube", "name": "Test Tube", "reason": "Holds small samples" },
+          { "id": "dropper", "name": "Dropper", "reason": "Adds indicator carefully" },
+          { "id": "test-tube-rack", "name": "Test Tube Rack", "reason": "Organizes samples" }
+        ],
+        "incorrectSelections": [
+          { "id": "beaker", "name": "Beaker", "feedback": "Wastes solution" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Colors spread too much" },
+          { "id": "pipette", "name": "Pipette", "feedback": "Dropper is simpler" },
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Not required" }
+        ]
+      },
+      {
+        "id": "exp_10",
+        "title": "Displacement Reaction",
+        "gradeLevel": "9-10",
+        "difficulty": "Advanced",
+        "learningObjective": "Observing reactivity series and metal displacement",
+        "scenario": "You have blue copper sulfate solution. Add zinc pieces and observe the reaction.",
+        "yourTask": "Select apparatus to safely handle and observe the metal reaction.",
+        "requiredApparatus": [
+          { "id": "beaker", "name": "Beaker", "reason": "Easy observation of color change" },
+          { "id": "stirring-rod", "name": "Stirring Rod", "reason": "Mixes solution" },
+          { "id": "tongs", "name": "Tongs", "reason": "Safe handling of metal" }
+        ],
+        "incorrectSelections": [
+          { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow" },
+          { "id": "evaporating-dish", "name": "Evaporating Dish", "feedback": "Too shallow" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Beaker gives better visibility" },
+          { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not deep enough" },
+          { "id": "dropper", "name": "Dropper", "feedback": "You need tongs" }
+        ]
+      }
+    ]
+  };
 
-    {
-      "id": "exp_2",
-      "title": "Making a Salt Solution",
-      "gradeLevel": "6-7",
-      "difficulty": "Beginner",
-      "learningObjective": "Understand dissolving and stirring techniques",
-      "scenario": "You have 10g of salt. You need to dissolve it in 100 cm³ of water and stir it well.",
-      "requiredApparatus": [
-        { "id": "beaker", "name": "Beaker", "reason": "Wide opening makes it easy to add salt and stir" },
-        { "id": "stirring-rod", "name": "Stirring Rod", "reason": "To mix the salt and water thoroughly" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure exactly 100 cm³ of water" }
-      ],
-      "incorrectSelections": [
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow to stir properly and measure accurately" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Narrow neck makes it hard to add salt and stir" },
-        { "id": "pipette", "name": "Pipette", "feedback": "Can't measure 100 cm³ - pipettes are for smaller, precise volumes" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the solution would spill when stirring" },
-        { "id": "dropper", "name": "Dropper", "feedback": "Way too small to measure 100 cm³ of water!" }
-      ]
-    },
-
-    {
-      "id": "exp_3",
-      "title": "Observing a Chemical Reaction",
-      "gradeLevel": "7-8",
-      "difficulty": "Beginner",
-      "learningObjective": "Safe observation of gas-producing reactions",
-      "scenario": "You need to add 5 cm³ of vinegar to 5 cm³ of baking soda solution and watch the reaction.",
-      "requiredApparatus": [
-        { "id": "test-tube", "name": "Test Tube", "reason": "Perfect size for small volume reactions and easy observation" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure the liquids accurately" },
-        { "id": "test-tube-rack", "name": "Test Tube Rack", "reason": "To hold the test tube safely while you work" }
-      ],
-      "incorrectSelections": [
-        { "id": "beaker", "name": "Beaker", "feedback": "Works but wastes space - test tubes are better for small volumes" },
-        { "id": "pipette", "name": "Pipette", "feedback": "You need something to hold and observe the reaction" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the bubbles might overflow!" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large for just 10 cm³ total volume" },
-        { "id": "dropper", "name": "Dropper", "feedback": "Can't hold the reaction - you need a proper vessel" }
-      ]
-    },
-
-    {
-      "id": "exp_4",
-      "title": "Heating Water to Boiling Point",
-      "gradeLevel": "7-8",
-      "difficulty": "Intermediate",
-      "learningObjective": "Safe heating procedures and temperature measurement",
-      "scenario": "You need to heat 50 cm³ of water until it boils and record the temperature.",
-      "requiredApparatus": [
-        { "id": "beaker", "name": "Beaker", "reason": "Can be heated safely and holds enough water" },
-        { "id": "bunsen-burner", "name": "Bunsen Burner", "reason": "Provides heat source" },
-        { "id": "tripod-stand", "name": "Tripod Stand", "reason": "Holds the beaker safely above the flame" },
-        { "id": "thermometer", "name": "Thermometer", "reason": "To measure the temperature as water heats up" }
-      ],
-      "incorrectSelections": [
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Dangerous for boiling!" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Beakers are more standard for heating" },
-        { "id": "evaporating-dish", "name": "Evaporating Dish", "feedback": "You want to heat water, not evaporate it" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not designed for heating" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Never heat measuring cylinders" }
-      ]
-    },
-
-    {
-      "id": "exp_5",
-      "title": "Separating Sand from Water",
-      "gradeLevel": "8-9",
-      "difficulty": "Intermediate",
-      "learningObjective": "Filtration technique for separation",
-      "scenario": "You have muddy water with sand. Separate the sand using filtration.",
-      "requiredApparatus": [
-        { "id": "funnel", "name": "Funnel", "reason": "Guides the mixture through the filter paper" },
-        { "id": "filter-paper", "name": "Filter Paper", "reason": "Traps sand particles" },
-        { "id": "beaker", "name": "Beaker", "reason": "To collect filtered water" },
-        { "id": "conical-flask", "name": "Conical Flask", "reason": "Alternative collection vessel" }
-      ],
-      "note": "Use funnel + filter paper + ONE collection vessel",
-      "incorrectSelections": [
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too small for filtration setup" },
-        { "id": "pipette", "name": "Pipette", "feedback": "Can't separate solids from liquids" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Not designed for filtration" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow" },
-        { "id": "dropper", "name": "Dropper", "feedback": "A dropper can't perform filtration" }
-      ]
-    },
-
-    {
-      "id": "exp_6",
-      "title": "Titration Experiment",
-      "gradeLevel": "9-10",
-      "difficulty": "Advanced",
-      "learningObjective": "Precise measurement and volumetric analysis",
-      "scenario": "You have 25.0 cm³ of hydrochloric acid. Use 0.1 M sodium hydroxide to find the acid's concentration.",
-      "requiredApparatus": [
-        { "id": "pipette", "name": "Pipette", "reason": "Measures exactly 25.0 cm³" },
-        { "id": "conical-flask", "name": "Conical Flask", "reason": "Prevents splashing during swirling" },
-        { "id": "burette", "name": "Burette", "reason": "Delivers solution drop by drop" }
-      ],
-      "incorrectSelections": [
-        { "id": "beaker", "name": "Beaker", "feedback": "Not accurate enough" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Less accurate than a pipette" },
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too small" },
-        { "id": "volumetric-flask", "name": "Volumetric Flask", "feedback": "Used for making solutions, not titration" },
-        { "id": "dropper", "name": "Dropper", "feedback": "Not precise enough" }
-      ]
-    },
-
-    {
-      "id": "exp_7",
-      "title": "Crystallization of Salt",
-      "gradeLevel": "8-9",
-      "difficulty": "Intermediate",
-      "learningObjective": "Evaporation technique to obtain pure crystals",
-      "scenario": "You have a concentrated salt solution. Evaporate the water to get salt crystals.",
-      "requiredApparatus": [
-        { "id": "evaporating-dish", "name": "Evaporating Dish", "reason": "Wide and shallow for quick evaporation" },
-        { "id": "bunsen-burner", "name": "Bunsen Burner", "reason": "Provides gentle heat" },
-        { "id": "tripod-stand", "name": "Tripod Stand", "reason": "Supports the dish safely" }
-      ],
-      "incorrectSelections": [
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow" },
-        { "id": "beaker", "name": "Beaker", "feedback": "Slower evaporation" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Narrow neck traps vapor" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not suitable for heating" },
-        { "id": "watch-glass", "name": "Watch Glass", "feedback": "Too small" }
-      ]
-    },
-
-    {
-      "id": "exp_8",
-      "title": "Preparing a Standard Solution",
-      "gradeLevel": "10",
-      "difficulty": "Advanced",
-      "learningObjective": "Precise solution preparation for quantitative analysis",
-      "scenario": "You need to prepare a precise concentration of salt solution.",
-      "requiredApparatus": [
-        { "id": "beaker", "name": "Beaker", "reason": "For initial dissolving" },
-        { "id": "volumetric-flask", "name": "Volumetric Flask", "reason": "Accurate 250 cm³ volume" },
-        { "id": "stirring-rod", "name": "Stirring Rod", "reason": "Ensures complete dissolution" }
-      ],
-      "incorrectSelections": [
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Less accurate" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Not calibrated" },
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too small" },
-        { "id": "pipette", "name": "Pipette", "feedback": "For transferring only" },
-        { "id": "burette", "name": "Burette", "feedback": "Not for making solutions" }
-      ]
-    },
-
-    {
-      "id": "exp_9",
-      "title": "Testing pH of Solutions",
-      "gradeLevel": "7-8",
-      "difficulty": "Beginner",
-      "learningObjective": "Understanding acids, bases, and pH indicators",
-      "scenario": "You have three unknown solutions. Test their pH using universal indicator.",
-      "requiredApparatus": [
-        { "id": "test-tube", "name": "Test Tube", "reason": "Holds small samples" },
-        { "id": "dropper", "name": "Dropper", "reason": "Adds indicator carefully" },
-        { "id": "test-tube-rack", "name": "Test Tube Rack", "reason": "Organizes samples" }
-      ],
-      "incorrectSelections": [
-        { "id": "beaker", "name": "Beaker", "feedback": "Wastes solution" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Colors spread too much" },
-        { "id": "pipette", "name": "Pipette", "feedback": "Dropper is simpler" },
-        { "id": "measuring-cylinder", "name": "Measuring Cylinder", "feedback": "Not required" }
-      ]
-    },
-
-    {
-      "id": "exp_10",
-      "title": "Displacement Reaction",
-      "gradeLevel": "9-10",
-      "difficulty": "Advanced",
-      "learningObjective": "Observing reactivity series and metal displacement",
-      "scenario": "You have blue copper sulfate solution. Add zinc pieces and observe the reaction.",
-      "requiredApparatus": [
-        { "id": "beaker", "name": "Beaker", "reason": "Easy observation of color change" },
-        { "id": "stirring-rod", "name": "Stirring Rod", "reason": "Mixes solution" },
-        { "id": "tongs", "name": "Tongs", "reason": "Safe handling of metal" }
-      ],
-      "incorrectSelections": [
-        { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow" },
-        { "id": "evaporating-dish", "name": "Evaporating Dish", "feedback": "Too shallow" },
-        { "id": "conical-flask", "name": "Conical Flask", "feedback": "Beaker gives better visibility" },
-        { "id": "petri-dish", "name": "Petri Dish", "feedback": "Not deep enough" },
-        { "id": "dropper", "name": "Dropper", "feedback": "You need tongs" }
-      ]
-    }
-  ]
-}
-
-
+  // -------------------------------------------------------------
+  // 2. DOM ELEMENTS
+  // -------------------------------------------------------------
   const group = document.getElementById("object-group");
   const svg = document.querySelector("svg");
   const clearButton = document.getElementById("clear-bench-btn");
-  const initialClosedButton = document.getElementById("initial-dropdown");
+  const checkSetupBtn = document.getElementById("check-setup-btn");
   const selectDropdown = document.getElementById('select-dropdown');
-  const experimentGroup = document.getElementById("experiment-list"); 
+  const experimentGroup = document.getElementById("experiment-list");
   const defaultTextLabel = document.getElementById("default-text");
-  const selectedExpContainer = document.getElementById("experiment-selected"); // Container for selection indicator
-const listOfExperiments = document.getElementById("list-of-experiments");
-const openDrop = document.getElementById("open-drop");
-const closeDrop = document.getElementById("close-drop");
-const selectedExpScenario = document.getElementById("selected-exp-scenario");
-  group.innerHTML = "";
+  const selectedExpContainer = document.getElementById("experiment-selected");
+  const listOfExperiments = document.getElementById("list-of-experiments");
+  const openDrop = document.getElementById("open-drop");
+  const closeDrop = document.getElementById("close-drop");
+  
+  // Feedback Groups
+  const selectedExpScenarioGroup = document.getElementById("selected-exp-scenario");
+  const correctMessageGroup = document.getElementById("correct-message");
+  const correctFeedbackText = document.getElementById("correct-feedback-text");
+  const incorrectMessageGroup = document.getElementById("incorrect-message");
+  const incorrectMessageOnDropGroup = document.getElementById("incorrect-message-on-drop"); 
+  const setupChecklistGroup = document.getElementById("setup-checklist");
 
+  // State Variables
+  let currentExperiment = null;
   let selectedElement = null;
   let offset = { x: 0, y: 0 };
+  let placedApparatusIds = new Set(); 
 
+  // -------------------------------------------------------------
+  // 3. INITIALIZATION
+  // -------------------------------------------------------------
+  group.innerHTML = "";
+  
+  // Hide UI elements initially
+  if(selectedExpScenarioGroup) selectedExpScenarioGroup.style.display = 'none';
+  if(correctMessageGroup) correctMessageGroup.style.display = 'none';
+  if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none';
+  if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
+  if(setupChecklistGroup) setupChecklistGroup.style.display = 'none';
+
+  // -------------------------------------------------------------
+  // 4. HELPER FUNCTIONS
+  // -------------------------------------------------------------
   function getCoordinates(evt) {
     const CTM = svg.getScreenCTM();
     let clientX, clientY;
@@ -286,6 +314,67 @@ const selectedExpScenario = document.getElementById("selected-exp-scenario");
     };
   }
 
+  function hideAllFeedback() {
+    if(correctMessageGroup) correctMessageGroup.style.display = 'none';
+    if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none';
+    if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
+    if(setupChecklistGroup) setupChecklistGroup.style.display = 'none';
+  }
+
+  function updateScenarioDisplay(exp) {
+    if(!selectedExpScenarioGroup) return;
+    selectedExpScenarioGroup.style.display = 'block';
+
+    const foreignObject = selectedExpScenarioGroup.querySelector("foreignObject");
+    if(foreignObject) {
+      foreignObject.innerHTML = `
+       <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:20px; padding:25px; box-sizing:border-box; color: black;">
+          <h3 style="margin:0 0 25px 0; font-size:25px; color:black;">${exp.title} <span style="font-size=25px; font-weight:bold;">(Grade ${exp.gradeLevel})</span></h3>
+          <p style="margin:0 0 10px 0;font-size:25px;"><b>Scenario:</b> ${exp.scenario}</p>
+          <p style="margin:0;font-size:25px;"><b>Your Task:</b> ${exp.yourTask}</p>
+        </div>
+      `;
+    }
+  }
+
+  function updateIncorrectDropMessage(text) {
+    if (!incorrectMessageOnDropGroup) return;
+    
+    const foreignObject = incorrectMessageOnDropGroup.querySelector("foreignObject");
+    if(foreignObject && foreignObject.firstElementChild) {
+        const wrapper = foreignObject.firstElementChild; 
+        const borderDiv = wrapper.firstElementChild;
+        if(borderDiv) {
+            const pillDiv = borderDiv.firstElementChild; 
+            if(pillDiv && pillDiv.lastElementChild) {
+                pillDiv.lastElementChild.textContent = text;
+            }
+        }
+    }
+  }
+
+  function resetBench() {
+    Array.from(group.children).forEach(object => {
+      const original = objectsData.find(d => d.id === object.id);
+      if (original) {
+        object.setAttribute("x", original.x);
+        object.setAttribute("y", original.y);
+      }
+    });
+    placedApparatusIds.clear();
+    hideAllFeedback();
+  }
+
+  function enableAllObjects() {
+    Array.from(group.children).forEach(el => {
+        el.style.opacity = "1";
+        el.style.cursor = "grab";
+    });
+  }
+
+  // -------------------------------------------------------------
+  // 5. RENDER EXPERIMENT LIST
+  // -------------------------------------------------------------
   experimentsData.forEach((exp) => {
     const textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
     textNode.setAttribute("x", exp.x);
@@ -298,57 +387,57 @@ const selectedExpScenario = document.getElementById("selected-exp-scenario");
     textNode.textContent = exp.name;
 
     textNode.addEventListener("click", () => {
-      // 1. Update the default label
       if (defaultTextLabel) {
-        defaultTextLabel.style.opacity ='1'
+        defaultTextLabel.style.opacity = '1';
         defaultTextLabel.textContent = exp.name;
       }
 
-      // 2. Hide the dropdown
-      // if (selectDropdown) {
-      //   selectDropdown.style.display = 'none';
-      // }
-
-      // 3. Update Dynamic Selection Indicator
+      currentExperiment = experimentDetails.experiments.find(e => e.id === exp.id);
+      
       if (selectedExpContainer) {
-        selectedExpContainer.innerHTML = ""; // Clear existing selection
-        
+        selectedExpContainer.innerHTML = "";
         const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-        foreignObject.setAttribute("x", exp.x - 28); // Position at clicked item's X
-        console.log(selectedExpContainer,"sleec")
-        let selectedExpIndex  = experimentsData.findIndex(e => e.id === exp.id);
-        if(selectedExpIndex <= 5){
-          foreignObject.setAttribute("y", exp.y - 38); // Aligned with text height
-        }else if(selectedExpIndex > 5){
+        foreignObject.setAttribute("x", exp.x - 28);
+        let selectedExpIndex = experimentsData.findIndex(e => e.id === exp.id);
+        if (selectedExpIndex <= 5) {
+          foreignObject.setAttribute("y", exp.y - 38);
+        } else {
           foreignObject.setAttribute("y", exp.y - 40);
         }
-        
         foreignObject.setAttribute("width", 525);
         foreignObject.setAttribute("height", 59);
         foreignObject.style.pointerEvents = "none";
-
         const img = document.createElement("img");
         img.src = "assets/start-selected.svg";
         img.style.width = "100%";
         img.style.height = "100%";
-        
         foreignObject.appendChild(img);
         selectedExpContainer.appendChild(foreignObject);
       }
 
-      console.log(`Experiment Selected: ${exp.id}`);
+      updateScenarioDisplay(currentExperiment);
+      
+      listOfExperiments.style.display = 'none';
+      openDrop.setAttribute('display', 'none');
+      closeDrop.setAttribute('display', 'block');
+
+      resetBench();
+      enableAllObjects(); 
     });
 
     textNode.addEventListener("mouseenter", () => textNode.setAttribute("fill", "#555"));
     textNode.addEventListener("mouseleave", () => textNode.setAttribute("fill", "black"));
 
     if (experimentGroup) {
-        experimentGroup.appendChild(textNode);
+      experimentGroup.appendChild(textNode);
     } else {
-        svg.appendChild(textNode);
+      svg.appendChild(textNode);
     }
   });
 
+  // -------------------------------------------------------------
+  // 6. RENDER APPARATUS (OBJECTS)
+  // -------------------------------------------------------------
   objectsData.forEach((item) => {
     const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
     foreignObject.setAttribute("x", item.x);
@@ -356,23 +445,33 @@ const selectedExpScenario = document.getElementById("selected-exp-scenario");
     foreignObject.setAttribute("width", 208);
     foreignObject.setAttribute("height", 165);
     foreignObject.setAttribute("id", item.id);
-    foreignObject.style.cursor = "grab";
+    
+    // Initially disabled
+    foreignObject.style.cursor = "not-allowed";
+    foreignObject.style.opacity = "0.5";
     foreignObject.style.touchAction = "none";
 
     const img = document.createElement("img");
     img.src = item.path;
     img.style.width = "100%";
     img.style.height = "100%";
-    img.style.pointerEvents = "none"; 
+    img.style.pointerEvents = "none";
     img.setAttribute("draggable", "false");
 
     const startDrag = (evt) => {
-      if (evt.cancelable) evt.preventDefault(); 
+      if (evt.cancelable) evt.preventDefault();
+      
+      if (!currentExperiment) return;
+
+      hideAllFeedback();
+
       selectedElement = foreignObject;
+      foreignObject.style.cursor = "grabbing";
+      
       const pos = getCoordinates(evt);
       offset.x = pos.x - parseFloat(selectedElement.getAttribute("x"));
       offset.y = pos.y - parseFloat(selectedElement.getAttribute("y"));
-      group.appendChild(selectedElement);
+      group.appendChild(selectedElement); 
     };
 
     foreignObject.addEventListener("mousedown", startDrag);
@@ -381,6 +480,9 @@ const selectedExpScenario = document.getElementById("selected-exp-scenario");
     group.appendChild(foreignObject);
   });
 
+  // -------------------------------------------------------------
+  // 7. DRAG HANDLERS
+  // -------------------------------------------------------------
   const moveDrag = (evt) => {
     if (selectedElement) {
       const pos = getCoordinates(evt);
@@ -391,85 +493,223 @@ const selectedExpScenario = document.getElementById("selected-exp-scenario");
 
   const endDrag = (evt) => {
     if (selectedElement) {
+      selectedElement.style.cursor = "grab";
       const pos = getCoordinates(evt);
       const apparatusIds = ["apparatus-1", "apparatus-2", "apparatus-3", "apparatus-4", "apparatus-5", "apparatus-6", "apparatus-7", "apparatus-8"];
       let snapped = false;
       const original = objectsData.find(d => d.id === selectedElement.id);
+      
+      const maxSlots = currentExperiment.requiredApparatus.length;
 
-      apparatusIds.forEach(id => {
+      for (let i = 0; i < apparatusIds.length; i++) {
+        const id = apparatusIds[i];
         const zone = document.getElementById(id);
+        
         if (zone) {
           const bbox = zone.getBBox();
           if (pos.x > bbox.x && pos.x < bbox.x + bbox.width &&
               pos.y > bbox.y && pos.y < bbox.y + bbox.height) {
-            selectedElement.setAttribute("x", bbox.x);
-            selectedElement.setAttribute("y", bbox.y);
-            snapped = true;
+            
+            // Check if slot valid for this experiment
+            if (i < maxSlots) {
+                selectedElement.setAttribute("x", bbox.x);
+                selectedElement.setAttribute("y", bbox.y);
+                snapped = true;
+                
+                placedApparatusIds.add(selectedElement.id);
+
+                // Is this a required/correct item?
+                const req = currentExperiment.requiredApparatus.find(a => a.id === selectedElement.id);
+                
+                if (req) {
+                  // CORRECT: Show Green Feedback
+                  if(correctMessageGroup) {
+                    correctMessageGroup.style.display = "block";
+                    if(correctFeedbackText) {
+                      correctFeedbackText.textContent = `Good choice! ${req.reason}`;
+                    }
+                  }
+                  if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none';
+                  if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
+                } else {
+                   // INCORRECT: Show Floating Pill Feedback
+                   
+                   let feedbackMsg = "Incorrect selection"; // Default fallback text
+
+                   if (currentExperiment.incorrectSelections) {
+                       const incorrectObj = currentExperiment.incorrectSelections.find(sel => sel.id === selectedElement.id);
+                       if (incorrectObj && incorrectObj.feedback) {
+                           feedbackMsg = incorrectObj.feedback;
+                       }
+                   }
+                   
+                   updateIncorrectDropMessage(feedbackMsg);
+
+                   if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'block';
+                   if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none'; // Ensure panel is hidden
+                   if(correctMessageGroup) correctMessageGroup.style.display = 'none';
+                }
+            } else {
+                snapped = false; // Invalid slot
+            }
+            break; 
           }
         }
-      });
+      }
 
       if (!snapped && original) {
         selectedElement.setAttribute("x", original.x);
         selectedElement.setAttribute("y", original.y);
+        placedApparatusIds.delete(selectedElement.id);
       }
+      
       selectedElement = null;
     }
   };
 
-  clearButton.style.cursor = "pointer";
-  clearButton.addEventListener('click', () => {
-    Array.from(group.children).forEach(object => {
-      const original = objectsData.find(d => d.id === object.id);
-      if (original) {
-        object.setAttribute("x", original.x);
-        object.setAttribute("y", original.y);
+  // -------------------------------------------------------------
+  // 8. CHECK SETUP VALIDATION & CHECKLIST RENDER
+  // -------------------------------------------------------------
+  if (checkSetupBtn) {
+    checkSetupBtn.style.cursor = "pointer";
+    checkSetupBtn.addEventListener("click", () => {
+      if (!currentExperiment) return;
+
+      // When checking setup, hide the immediate drop feedback
+      if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
+      if(correctMessageGroup) correctMessageGroup.style.display = 'none';
+
+      const requiredIds = currentExperiment.requiredApparatus.map(a => a.id);
+      const placedArray = Array.from(placedApparatusIds);
+
+      const missing = requiredIds.filter(id => !placedApparatusIds.has(id));
+      const extra = placedArray.filter(id => !requiredIds.includes(id));
+      
+      const isCorrect = (missing.length === 0 && extra.length === 0);
+
+      if (isCorrect) {
+        if(correctMessageGroup) {
+            correctMessageGroup.style.display = "block";
+            if(correctFeedbackText) {
+                correctFeedbackText.textContent = "Great job! Setup is correct.";
+            }
+        }
+      } else {
+        // Show the panel incorrect message and checklist
+        if (incorrectMessageGroup) incorrectMessageGroup.style.display = 'block';
+        renderChecklist(currentExperiment.requiredApparatus);
+        setupChecklistGroup.style.display = 'block';
       }
     });
-    console.log('Clear button clicked');
+  }
+
+  function renderChecklist(requiredItems) {
+    setupChecklistGroup.innerHTML = "";
+
+    const startX = 680;
+    const startY = 732; // Header Y
+    
+    const firstItemY = 795;
+    const interval = 53;
+    const circleX = 690;
+    const textX = 710;
+    const iconX = 960;
+
+    // A. Add Header (Static)
+    const header = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    header.setAttribute("href", "assets/header-setup.svg");
+    header.setAttribute("x", startX);
+    header.setAttribute("y", startY);
+    header.setAttribute("width", "324");
+    header.setAttribute("height", "76");
+    setupChecklistGroup.appendChild(header);
+
+    // B. Loop Required Items
+    requiredItems.forEach((item, index) => {
+        const isLast = index === requiredItems.length - 1;
+        const currentY = firstItemY + (index * interval);
+
+        // 1. Background Image
+        const bg = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        if (isLast) {
+            bg.setAttribute("href", "assets/bottom-setup.svg");
+        } else {
+            bg.setAttribute("href", "assets/mid-setup.svg");
+        }
+        bg.setAttribute("x", startX);
+        bg.setAttribute("y", currentY);
+        bg.setAttribute("width", "324");
+        bg.setAttribute("height", "76");
+        setupChecklistGroup.appendChild(bg);
+
+        // 2. Circle (Yellow Dot)
+        const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        const dotY = currentY + 31; 
+        dot.setAttribute("cx", circleX + 4.5); 
+        dot.setAttribute("cy", dotY); 
+        dot.setAttribute("r", "4.5");
+        dot.setAttribute("fill", "#FCD44A");
+        setupChecklistGroup.appendChild(dot);
+
+        // 3. Text
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", textX);
+        text.setAttribute("y", currentY + 43); 
+        text.setAttribute("font-size", "25");
+        text.setAttribute("fill", "black");
+        text.textContent = item.name;
+        setupChecklistGroup.appendChild(text);
+
+        // 4. Icon (Tick / Not Tick)
+        const isPlaced = placedApparatusIds.has(item.id);
+        const icon = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        icon.setAttribute("href", isPlaced ? "assets/tick.svg" : "assets/not-tick.svg");
+        icon.setAttribute("x", iconX);
+        icon.setAttribute("y", currentY + 20); 
+        icon.setAttribute("width", "32.75");
+        icon.setAttribute("height", "32.52");
+        setupChecklistGroup.appendChild(icon);
+    });
+  }
+
+  // -------------------------------------------------------------
+  // 9. OTHER UI HANDLERS
+  // -------------------------------------------------------------
+  clearButton.addEventListener('click', () => {
+    resetBench();
   });
 
-  // 1. Update the selectDropdown listener
-selectDropdown.style.cursor = 'pointer'
+  selectDropdown.style.cursor = 'pointer';
+  selectDropdown.addEventListener('click', (evt) => {
+    evt.stopPropagation();
+    toggleDropdown();
+  });
 
-selectDropdown.addEventListener('click', (evt) => {
-    evt.stopPropagation(); // ADD THIS LINE
-    console.log(listOfExperiments.style.display, "difeereeee---------")
+  defaultTextLabel.style.cursor = 'pointer';
+  defaultTextLabel.addEventListener('click', (evt) => {
+    evt.stopPropagation();
+    toggleDropdown();
+  });
 
+  function toggleDropdown() {
     if (listOfExperiments.style.display === 'none' || listOfExperiments.style.display === '') {
-        listOfExperiments.style.display = 'block';
-        openDrop.setAttribute('display', 'block');
-         closeDrop.setAttribute('display', 'none');
-        if (defaultTextLabel.textContent === 'Select your experiment') {
-            defaultTextLabel.style.opacity = '0.28'
-        }
+      listOfExperiments.style.display = 'block';
+      openDrop.setAttribute('display', 'block');
+      closeDrop.setAttribute('display', 'none');
+      if (defaultTextLabel.textContent === 'Select your experiment') {
+        defaultTextLabel.style.opacity = '0.28';
+      }
     } else {
-        listOfExperiments.style.display = 'none';
-        defaultTextLabel.style.opacity = '1'
-         openDrop.setAttribute('display', 'none');
-         closeDrop.setAttribute('display', 'block');
+      listOfExperiments.style.display = 'none';
+      defaultTextLabel.style.opacity = '1';
+      openDrop.setAttribute('display', 'none');
+      closeDrop.setAttribute('display', 'block');
     }
-});
+  }
 
-// 2. Update the defaultTextLabel listener (Ensure stopPropagation is there)
-defaultTextLabel.style.cursor = 'pointer'
-defaultTextLabel.addEventListener('click', (evt) => {
-    evt.stopPropagation(); // THIS IS ALREADY HERE, BUT ENSURE IT STAYS
-    if (listOfExperiments.style.display === 'none' || listOfExperiments.style.display === '') {
-        listOfExperiments.style.display = 'block';
-           openDrop.setAttribute('display', 'block');
-         closeDrop.setAttribute('display', 'none');
-        if (defaultTextLabel.textContent === 'Select your experiment') {
-            defaultTextLabel.style.opacity = '0.28'
-        }
-    } else {
-        listOfExperiments.style.display = 'none';
-        defaultTextLabel.style.opacity = '1'
-          openDrop.setAttribute('display', 'none');
-         closeDrop.setAttribute('display', 'block');
-    }
-});
-
+  // -------------------------------------------------------------
+  // 10. GLOBAL LISTENERS
+  // -------------------------------------------------------------
   window.addEventListener("mousemove", moveDrag);
   window.addEventListener("touchmove", moveDrag, { passive: false });
   window.addEventListener("mouseup", endDrag);
