@@ -36,35 +36,6 @@
   left: 0;
 }
 
-
-
-/* 
-img {
-      transform-origin: 50% 50%;
-      transition: transform 0.6s ease-in-out;
-          user-select: none;
-          -webkit-user-drag: none;
-} */
-
-/* Apply this to the images inside the foreignObject */
-/* Update your existing img block */
-img {
-    transform-origin: 50% 50%;
-    transition: transform 0.6s ease-in-out;
-    user-select: none;
-    
-    /* Change this to none so the parent foreignObject handles the drag */
-    -webkit-user-drag: none; 
-    /* Essential: allow mouse events to pass through to the container */
-    pointer-events: none; 
-}
-
-/* Ensure the foreignObject is interactive */
-#initial-dropdown{
-  cursor: pointer;
-}
-
-
 /* #make-food-chain-widget .mainContainerOuter {
   background: #60360D !important
 } */
@@ -230,11 +201,4 @@ img {
 #position-2.active #Vector_4,
 #position-3.active #Vector_6{
   fill: #02FFFF !important;
-}
-
-
-
-#increment-btn #next-object-btn #check-answer-btn #show-answer-btn
-#slider-control #reset-btn #decrement-btn {
-  cursor: pointer;
 }
