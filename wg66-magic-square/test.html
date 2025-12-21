@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Magic Square 3x3</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      color: #222;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #4f46e5, #06b6d4);
+      color: #fff;
+      padding: 16px 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 0.03em;
+    }
+
+    .header p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 22px auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 18px 20px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      animation: floatIn 0.45s ease-out;
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .magic-info {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .magic-info span {
+      font-weight: 700;
+      color: #4f46e5;
+    }
+
+    .options-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .options {
+      margin-bottom: 14px;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .option-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 2px solid #e5e7eb;
+      background: #f9fafb;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+    }
+
+    .option-chip input {
+      accent-color: #4f46e5;
+      cursor: pointer;
+    }
+
+    .option-chip span {
+      pointer-events: none;
+    }
+
+    .option-chip:hover {
+      border-color: #4f46e5;
+      background: #eef2ff;
+    }
+
+    .option-chip input:checked+span {
+      font-weight: 600;
+      color: #4f46e5;
+    }
+
+    .grid-wrapper {
+      display: inline-block;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f3f4ff;
+      border: 1px solid #e0e7ff;
+    }
+
+    .grid {
+      display: inline-grid;
+      grid-template-columns: repeat(3, 70px);
+      grid-template-rows: repeat(3, 70px);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .grid input {
+      width: 70px;
+      height: 70px;
+      text-align: center;
+      font-size: 24px;
+      border-radius: 12px;
+      border: 2px solid #c7d2fe;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .grid input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+    }
+
+    .grid input:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+    }
+
+    .grid input.correct {
+      background-color: #dcfce7;
+      border-color: #22c55e;
+    }
+
+    .grid input.wrong {
+      background-color: #fee2e2;
+      border-color: #ef4444;
+    }
+
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      min-width: 110px;
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: all 0.18s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #4f46e5, #6366f1);
+      color: #ffffff;
+      box-shadow: 0 3px 8px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(79, 70, 229, 0.55);
+    }
+
+    .btn-secondary {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    .btn-secondary:hover {
+      background: #bfdbfe;
+    }
+
+    .btn-accent {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .btn-accent:hover {
+      background: #fde68a;
+    }
+
+    .message {
+      margin-top: 12px;
+      font-weight: 600;
+      min-height: 22px;
+      font-size: 14px;
+    }
+
+    .message.ok {
+      color: #16a34a;
+    }
+
+    .message.warn {
+      color: #ea580c;
+    }
+
+    .message.err {
+      color: #b91c1c;
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: repeat(3, 60px);
+        grid-template-rows: repeat(3, 60px);
+      }
+
+      .grid input {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Magic Square 3×3</h1>
+    <p>Can you make every row, column, and diagonal add up to the same number?</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="magic-info">
+        Make each row, column and diagonal add up to
+        <span id="magic-sum"></span>.
+      </div>
+
+      <div class="options-title">Magic Constant Options:</div>
+      <div class="options">
+        <label class="option-chip">
+          <input type="radio" name="rangeMode" value="fixed15" checked>
+          <span>15</span>
+        </label>
+        <label class="option-chip">
+          <input type="radio" name="rangeMode" value="range16to50">
+          <span>16–50</span>
+        </label>
+        <label class="option-chip">
+          <input type="radio" name="rangeMode" value="range51to100">
+          <span>51–100</span>
+        </label>
+      </div>
+
+      <div class="grid-wrapper">
+        <div class="grid" id="grid">
+          <input type="number" id="c00" min="0" step="1">
+          <input type="number" id="c01" min="0" step="1">
+          <input type="number" id="c02" min="0" step="1">
+          <input type="number" id="c10" min="0" step="1">
+          <input type="number" id="c11" min="0" step="1">
+          <input type="number" id="c12" min="0" step="1">
+          <input type="number" id="c20" min="0" step="1">
+          <input type="number" id="c21" min="0" step="1">
+          <input type="number" id="c22" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="checkBtn" class="btn-primary">Check It</button>
+        <button id="newBtn" class="btn-secondary">New Game</button>
+        <button id="showBtn" class="btn-accent">Show Answer</button>
+      </div>
+
+      <div class="message" id="message"></div>
+    </div>
+  </div>
+
+  <script>
+    const baseLoShu = [
+      [8, 1, 6],
+      [3, 5, 7],
+      [4, 9, 2]
+    ];
+
+    const sumsFixed15 = [15];
+    const sums16to50 = [18, 24, 39, 45, 36, 21, 27, 48, 33, 42, 30, 60];
+    const sums51to100 = [51, 54, 57, 60, 63, 66, 69, 72, 75, 78, 81, 84, 87, 90, 93, 96];
+
+    let magicConstant = 15;
+    let currentSolution = null;
+    let currentMode = "fixed15";
+
+    function getCells() {
+      const ids = [
+        "c00", "c01", "c02",
+        "c10", "c11", "c12",
+        "c20", "c21", "c22"
+      ];
+      return ids.map(id => document.getElementById(id));
+    }
+
+    function randIndex(len) {
+      return Math.floor(Math.random() * len);
+    }
+
+    function pickMagicConstant(mode, prevConst) {
+      let options;
+      if (mode === "fixed15") {
+        options = sumsFixed15;
+      } else if (mode === "range16to50") {
+        options = sums16to50;
+      } else if (mode === "range51to100") {
+        options = sums51to100;
+      } else {
+        options = sumsFixed15;
+      }
+
+      let choice = options[randIndex(options.length)];
+      if (options.length > 1 && choice === prevConst) {
+        choice = options[randIndex(options.length)];
+      }
+      return choice;
+    }
+
+    function allDistinctPositive(square) {
+      const seen = new Set();
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const v = square[r][c];
+          if (!Number.isInteger(v) || v <= 0) return false;
+          if (seen.has(v)) return false;
+          seen.add(v);
+        }
+      }
+      return true;
+    }
+
+    function buildDistinctSolution(targetSum) {
+      const S = targetSum;
+
+      for (let k = 1; k <= 5; k++) {
+        const numerator = S - 15 * k;
+        if (numerator % 3 !== 0) continue;
+        const d = numerator / 3;
+
+        const candidate = [];
+        for (let r = 0; r < 3; r++) {
+          candidate[r] = [];
+          for (let c = 0; c < 3; c++) {
+            candidate[r][c] = k * baseLoShu[r][c] + d;
+          }
+        }
+
+        if (!allDistinctPositive(candidate)) continue;
+
+        const sumRow0 = candidate[0][0] + candidate[0][1] + candidate[0][2];
+        const sumRow1 = candidate[1][0] + candidate[1][1] + candidate[1][2];
+        const sumRow2 = candidate[2][0] + candidate[2][1] + candidate[2][2];
+        const sumCol0 = candidate[0][0] + candidate[1][0] + candidate[2][0];
+        const sumCol1 = candidate[0][1] + candidate[1][1] + candidate[2][1];
+        const sumCol2 = candidate[0][2] + candidate[1][2] + candidate[2][2];
+        const sumDiag1 = candidate[0][0] + candidate[1][1] + candidate[2][2];
+        const sumDiag2 = candidate[0][2] + candidate[1][1] + candidate[2][0];
+
+        if (
+          sumRow0 === S && sumRow1 === S && sumRow2 === S &&
+          sumCol0 === S && sumCol1 === S && sumCol2 === S &&
+          sumDiag1 === S && sumDiag2 === S
+        ) {
+          return candidate;
+        }
+      }
+
+      return baseLoShu;
+    }
+
+    function setMessage(text, type) {
+      const msgEl = document.getElementById("message");
+      msgEl.textContent = text;
+      msgEl.classList.remove("ok", "warn", "err");
+      if (type) msgEl.classList.add(type);
+    }
+
+    function newGame() {
+      const cells = getCells();
+      cells.forEach(c => {
+        c.value = "";
+        c.readOnly = false;
+        c.classList.remove("correct", "wrong");
+      });
+      setMessage("", null);
+
+      magicConstant = pickMagicConstant(currentMode, magicConstant);
+      currentSolution = buildDistinctSolution(magicConstant);
+      document.getElementById("magic-sum").textContent = magicConstant;
+
+      const positions = [];
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          positions.push({ r, c });
+        }
+      }
+      positions.sort(() => Math.random() - 0.5);
+
+      const prefillCount = 4;
+      for (let i = 0; i < prefillCount; i++) {
+        const { r, c } = positions[i];
+        const id = `c${r}${c}`;
+        const cell = document.getElementById(id);
+        cell.value = currentSolution[r][c];
+        cell.readOnly = true;
+        cell.classList.add("correct");
+      }
+
+      for (let i = prefillCount; i < positions.length; i++) {
+        const { r, c } = positions[i];
+        const id = `c${r}${c}`;
+        const cell = document.getElementById(id);
+        cell.readOnly = false;
+        cell.classList.remove("correct", "wrong");
+      }
+    }
+
+    function checkSquare() {
+      const solution = currentSolution;
+      if (!solution) return;
+
+      const cells = getCells();
+      let allFilled = true;
+      let allCorrect = true;
+
+      cells.forEach(cell => {
+        if (!cell.readOnly) {
+          cell.classList.remove("correct", "wrong");
+        }
+      });
+
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const cell = document.getElementById(`c${r}${c}`);
+          const val = cell.value.trim();
+
+          if (val === "") {
+            allFilled = false;
+            continue;
+          }
+
+          const num = Number(val);
+          if (!Number.isInteger(num) || num <= 0) {
+            allCorrect = false;
+            if (!cell.readOnly) {
+              cell.classList.add("wrong");
+            }
+            continue;
+          }
+
+          if (num === solution[r][c]) {
+            if (!cell.readOnly) {
+              cell.classList.add("correct");
+            }
+          } else {
+            allCorrect = false;
+            if (!cell.readOnly) {
+              cell.classList.add("wrong");
+            }
+          }
+        }
+      }
+
+      if (!allFilled) {
+        setMessage("🔍 Fill in all empty squares, then try again.", "warn");
+      } else if (allCorrect) {
+        setMessage("🎉 Awesome! Your magic square is correct.", "ok");
+      } else {
+        setMessage("🤔 Some numbers are not matching yet. Keep trying!", "err");
+      }
+    }
+
+    function showAnswer() {
+      if (!currentSolution) return;
+      const cells = getCells();
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const cell = document.getElementById(`c${r}${c}`);
+          cell.value = currentSolution[r][c];
+          cell.readOnly = true;
+          cell.classList.remove("wrong");
+          cell.classList.add("correct");
+        }
+      }
+      setMessage("✅ Here is the correct magic square.", "ok");
+    }
+
+    document.querySelectorAll('input[name="rangeMode"]').forEach(radio => {
+      radio.addEventListener("change", function () {
+        currentMode = this.value;
+        newGame();
+      });
+    });
+
+    document.getElementById("checkBtn").addEventListener("click", checkSquare);
+    document.getElementById("newBtn").addEventListener("click", function () {
+      newGame();
+    });
+    document.getElementById("showBtn").addEventListener("click", showAnswer);
+
+    magicConstant = 15;
+    currentMode = "fixed15";
+    newGame();
+  </script>
+
+</body>
+
+</html>
