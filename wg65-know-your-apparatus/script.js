@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Feedback Groups
   const selectedExpScenarioGroup = document.getElementById("selected-exp-scenario");
   const correctMessageGroup = document.getElementById("correct-message");
-  const correctFeedbackText = document.getElementById("correct-feedback-text");
+  const correctFeedbackText = document.getElementById("correct-feedback-msg");
   const incorrectMessageGroup = document.getElementById("incorrect-message");
   const incorrectMessageOnDropGroup = document.getElementById("incorrect-message-on-drop"); 
   const setupChecklistGroup = document.getElementById("setup-checklist");
@@ -282,6 +282,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedElement = null;
   let offset = { x: 0, y: 0 };
   let placedApparatusIds = new Set(); 
+  
+  // Track the remove buttons (check marks) so we can clear them easily
+  let activeRemoveButtons = {};
 
   // -------------------------------------------------------------
   // 3. INITIALIZATION
@@ -353,20 +356,129 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Logic to snap apparatus back to original position and remove it from placed set
+  function removeApparatus(id) {
+    const object = document.getElementById(id);
+    const original = objectsData.find(d => d.id === id);
+    
+    if (object && original) {
+      // 1. Snap back to original position
+      object.setAttribute("x", original.x);
+      object.setAttribute("y", original.y);
+      
+      // 2. Remove from placed set
+      placedApparatusIds.delete(id);
+      
+      // 3. Remove the button itself
+      if (activeRemoveButtons[id]) {
+        activeRemoveButtons[id].remove();
+        delete activeRemoveButtons[id];
+      }
+      
+      // 4. Clear feedback since state changed
+      hideAllFeedback();
+    }
+  }
+
+  // Create the "Check Mark" (Remove Button) attached to the element
+  function createRemoveButton(item, x, y) {
+    // If a button already exists for this item, remove it first
+    if (activeRemoveButtons[item.id]) {
+      activeRemoveButtons[item.id].remove();
+    }
+
+    const fo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+    // Position it at the top-right corner of the apparatus
+    // Apparatus width is 208, so x + 170 places it nicely near the corner
+    fo.setAttribute("x", x + 160); 
+    fo.setAttribute("y", y -10);
+    fo.setAttribute("width", "40");
+    fo.setAttribute("height", "40");
+    fo.style.overflow = "visible";
+    // We add a prefix so we can distinguish buttons from apparatus in resetBench
+    fo.setAttribute("id", `btn-${item.id}`);
+
+    // Create container div
+    const container = document.createElement("div");
+    container.style.cursor = "pointer";
+    
+    // Insert User's HTML Layout
+    container.innerHTML = `
+      <div style="
+        width: 33.4px;
+        height: 33.4px;
+        background: #007D00;
+        border-radius: 50%;
+        position: relative;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      ">
+        <span style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 18px;
+          height: 4px;
+          background: #ffffff;
+          border-radius: 2px;
+          transform: translate(-50%, -50%) rotate(45deg);
+        "></span>
+        <span style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 18px;
+          height: 4px;
+          background: #ffffff;
+          border-radius: 2px;
+          transform: translate(-50%, -50%) rotate(-45deg);
+        "></span>
+      </div>
+    `;
+
+    // Add Click Listener to Snap Back
+    container.addEventListener("click", (e) => {
+      e.stopPropagation(); // Stop event bubbling to SVG
+      e.preventDefault();
+      removeApparatus(item.id);
+    });
+    
+    // Prevent drag events on the button itself
+    container.addEventListener("mousedown", (e) => e.stopPropagation());
+    container.addEventListener("touchstart", (e) => e.stopPropagation());
+
+    fo.appendChild(container);
+    group.appendChild(fo); // Add to SVG group
+    
+    // Store reference
+    activeRemoveButtons[item.id] = fo;
+  }
+
   function resetBench() {
     Array.from(group.children).forEach(object => {
+      // Don't move the buttons (foreignObjects starting with btn-)
+      if(object.id && object.id.startsWith('btn-')) return;
+
       const original = objectsData.find(d => d.id === object.id);
       if (original) {
         object.setAttribute("x", original.x);
         object.setAttribute("y", original.y);
       }
     });
+
+    // Clear all remove buttons
+    Object.values(activeRemoveButtons).forEach(btn => btn.remove());
+    activeRemoveButtons = {};
+
     placedApparatusIds.clear();
     hideAllFeedback();
   }
 
   function enableAllObjects() {
     Array.from(group.children).forEach(el => {
+        // Skip buttons when enabling apparatus
+        if(el.id && el.id.startsWith('btn-')) return;
+
         el.style.opacity = "1";
         el.style.cursor = "grab";
     });
@@ -465,6 +577,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       hideAllFeedback();
 
+      // NEW: If this object had a remove button, remove it now because we are moving the object
+      if (activeRemoveButtons[foreignObject.id]) {
+        activeRemoveButtons[foreignObject.id].remove();
+        delete activeRemoveButtons[foreignObject.id];
+      }
+
       selectedElement = foreignObject;
       foreignObject.style.cursor = "grabbing";
       
@@ -512,20 +630,27 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Check if slot valid for this experiment
             if (i < maxSlots) {
-                selectedElement.setAttribute("x", bbox.x);
-                selectedElement.setAttribute("y", bbox.y);
+                const finalX = bbox.x - 2;
+                const finalY = bbox.y - 2;
+
+                selectedElement.setAttribute("x", finalX);
+                selectedElement.setAttribute("y", finalY);
                 snapped = true;
                 
                 placedApparatusIds.add(selectedElement.id);
+
+                // Add the Remove Button (Check Mark) here
+                createRemoveButton(selectedElement, finalX, finalY);
 
                 // Is this a required/correct item?
                 const req = currentExperiment.requiredApparatus.find(a => a.id === selectedElement.id);
                 
                 if (req) {
-                  // CORRECT: Show Green Feedback
+                  // CORRECT: Show Green Feedback with Dynamic Reason
                   if(correctMessageGroup) {
                     correctMessageGroup.style.display = "block";
                     if(correctFeedbackText) {
+                      // UPDATED: Uses the specific reason from experimentDetails
                       correctFeedbackText.textContent = `Good choice! ${req.reason}`;
                     }
                   }
@@ -533,7 +658,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
                 } else {
                    // INCORRECT: Show Floating Pill Feedback
-                   
                    let feedbackMsg = "Incorrect selection"; // Default fallback text
 
                    if (currentExperiment.incorrectSelections) {
@@ -546,7 +670,7 @@ document.addEventListener("DOMContentLoaded", () => {
                    updateIncorrectDropMessage(feedbackMsg);
 
                    if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'block';
-                   if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none'; // Ensure panel is hidden
+                   if(incorrectMessageGroup) incorrectMessageGroup.style.display = 'none'; 
                    if(correctMessageGroup) correctMessageGroup.style.display = 'none';
                 }
             } else {
@@ -567,7 +691,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // -------------------------------------------------------------
+ // -------------------------------------------------------------
   // 8. CHECK SETUP VALIDATION & CHECKLIST RENDER
   // -------------------------------------------------------------
   if (checkSetupBtn) {
@@ -588,12 +712,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const isCorrect = (missing.length === 0 && extra.length === 0);
 
       if (isCorrect) {
+        // 1. Show Success Message Group
         if(correctMessageGroup) {
             correctMessageGroup.style.display = "block";
             if(correctFeedbackText) {
-                correctFeedbackText.textContent = "Great job! Setup is correct.";
+                // UPDATED: Specific message for Check Setup completion
+                correctFeedbackText.textContent = "Experiment Complete! Your setup is correct";
             }
         }
+
+        // 2. Show Checklist on Success
+        renderChecklist(currentExperiment.requiredApparatus);
+        setupChecklistGroup.style.display = 'block';
+
       } else {
         // Show the panel incorrect message and checklist
         if (incorrectMessageGroup) incorrectMessageGroup.style.display = 'block';
@@ -637,7 +768,11 @@ document.addEventListener("DOMContentLoaded", () => {
             bg.setAttribute("href", "assets/mid-setup.svg");
         }
         bg.setAttribute("x", startX);
-        bg.setAttribute("y", currentY);
+        if(isLast) {
+            bg.setAttribute("y", currentY + 6);
+        } else {
+            bg.setAttribute("y", currentY);
+        }
         bg.setAttribute("width", "324");
         bg.setAttribute("height", "76");
         setupChecklistGroup.appendChild(bg);

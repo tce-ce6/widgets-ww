@@ -231,6 +231,16 @@ img {
 #position-3.active #Vector_6{
   fill: #02FFFF !important;
 }
+.box {
+  border: 6px solid transparent;
+  border-image: repeating-linear-gradient(
+    to right,
+    #007D00 0,
+    #007D00 16px,   /* dash length */
+    transparent 16px,
+    transparent 28px /* gap length */
+  ) 6 round;
+}
 
 
 
