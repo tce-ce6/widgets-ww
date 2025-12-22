@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const svg = document.querySelector("svg");
     const buttonsGroup = document.getElementById("buttons-water-cycle");
 
+
+    // --- NEW: LOTTIE BACKGROUND CONFIGURATION ---
+    lottie.loadAnimation({
+        container: document.getElementById('lottie-env'), // Points to the new DIV in HTML
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'assets/animation/wg-71.json' // <--- UPDATE THIS PATH TO YOUR LOTTIE JSON FILE
+    });
     // 1. CONFIGURATION
     // Maps Button IDs to correct Drop Zone IDs
     const correctMap = {
