@@ -412,184 +412,319 @@ const wordData = {
   ]
 }
 
-const wordSpan = document.getElementById('word');
+const wordSpan = document.getElementById('word-span');
 const suffix1 = document.getElementById('suffix1');
 const suffix2 = document.getElementById('suffix2');
 const suffix3 = document.getElementById('suffix3');
 const suffix4 = document.getElementById('suffix4');
 const suffix5 = document.getElementById('suffix5');
 const suffix6 = document.getElementById('suffix6');
+const finalWord = document.getElementById('final-word');
+const lottieWord = document.getElementById('lottie-word');
+const exampleSentence = document.getElementById('exampleSentence');
+const showExample = document.getElementById('showExampleBtn');
+
+let wordObj = null;
 
 /**
  * DATA LAYER: Manages the words and ensures no repeats
  */
 class WordPicker {
   constructor(data) {
-      this.data = data;
-      this.history = new Set();
-      this.allWords = this.flattenData();
+    this.data = data;
+    this.history = new Set();
+    this.allWords = this.flattenData();
   }
 
   flattenData() {
-      let flatList = [];
-      for (const groupKey in this.data) {
-          this.data[groupKey].forEach((item, index) => {
-              flatList.push({ group: groupKey, root: item.word, details: item });
-          });
-      }
-      return flatList;
+    let flatList = [];
+    for (const groupKey in this.data) {
+      this.data[groupKey].forEach((item, index) => {
+        flatList.push({ group: groupKey, root: item.word, details: item });
+      });
+    }
+    return flatList;
   }
 
   getNext() {
-      const available = this.allWords.filter(w => !this.history.has(`${w.group}-${w.root}`));
+    const available = this.allWords.filter(w => !this.history.has(`${w.group}-${w.root}`));
 
-      if (available.length === 0) {
-          this.history.clear();
-          return this.getNext();
-      }
+    if (available.length === 0) {
+      this.history.clear();
+      return this.getNext();
+    }
 
-      const selected = available[Math.floor(Math.random() * available.length)];
-      this.history.add(`${selected.group}-${selected.root}`);
-      return selected;
+    const selected = available[Math.floor(Math.random() * available.length)];
+    this.history.add(`${selected.group}-${selected.root}`);
+    return selected;
   }
 }
 
-/**
-* UI LAYER: Handles the smooth SVG movement
-*/
 function handleSmoothMove(source, target) {
-    const sourceRect = source.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-    const sourceText = source.querySelector('tspan');
+  if (!source || !target) return;
+  if (target.dataset.full === "true") return;
 
-    // 1. Create a DIV element for the flyer
-    const flyer = document.createElement('div');
-    flyer.textContent = sourceText.textContent;
-    flyer.classList.add('flying-suffix');
+  target.dataset.full = "true";
+  target.style.display = "block";
 
-    // 2. Assign styles for fixed flight
-    Object.assign(flyer.style, {
-        position: 'fixed',
-        top: `${sourceRect.top}px`,
-        left: `${sourceRect.left}px`,
-        width: `${sourceRect.width}px`,
-        height: `${sourceRect.height}px`,
-        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-        pointerEvents: 'none',
-        zIndex: '1000',
-        opacity: '1',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-        fontSize: '45px',
-        fontWeight: '600',
-        fontFamily: 'Segoe UI'
-    });
+  source.style.opacity = "0.3";
+  source.style.pointerEvents = "none";
 
-    document.body.appendChild(flyer);
+  const clone = source.cloneNode(true);
+  clone.removeAttribute("id");
 
-    // 3. Set logical states
-    source.style.opacity = "0.3";
-    source.style.pointerEvents = "none";
-    target.dataset.full = "true"; // Mark slot as occupied
+  clone.style.position = "absolute";
+  clone.style.top = "0";
+  clone.style.left = "0";
+  clone.style.opacity = "1";
+  clone.style.pointerEvents = "none";
 
-    // 4. Trigger the flight to the target coordinates
-    requestAnimationFrame(() => {
-        flyer.style.top = `${targetRect.top}px`;
-        flyer.style.left = `${targetRect.left}px`;
-    });
-
-    // 5. Landing logic
-    flyer.addEventListener('transitionend', () => {
-        target.style.display = "block"; // Show the hidden SVG group
-        
-        // Update the text inside the slot to match the flyer
-        const targetText = target.querySelector('tspan');
-        if (targetText) {
-            targetText.textContent = flyer.textContent;
-        }
-
-        flyer.remove();
-    }, { once: true });
+  target.appendChild(clone);
 }
 
-/**
-* ORCHESTRATION LAYER: DOM Content Loaded
-*/
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Logic
-  const picker = new WordPicker(wordData); // wordData must be defined globally
-  const slots = [
-      document.getElementById('puzzlePart1'),
-      document.getElementById('puzzlePart2')
-  ];
-  const nextBtn = document.getElementById('next-btn');
- // const rootDisplay = document.getElementById('root-display'); // Your root word element
+function showExampleSentences(wordObj) {
+  const popup = document.getElementById('examplePopup');
+  const list = document.getElementById('exampleSentenceList');
 
-  function loadNextWord() {
-      const wordObj = picker.getNext();
-      const d = wordObj.details;
+  if (!popup || !list) return;
 
-      // Reset Slots
-      slots.forEach(slot => {
-          if (slot) {
-              slot.style.display = "none";
-              slot.dataset.full = "false";
-              const ts = slot.querySelector('tspan');
-              if (ts) ts.textContent = "";
-          }
-      });
+  list.innerHTML = "";
 
-      // Update Root Word
-     // if (rootDisplay) rootDisplay.textContent = wordObj.root;
-      // if(wordSpan) wordSpan.textContent = wordObj.root;
+  const sentencesObj = wordObj.details.sentences || {};
 
-      // Shuffle Suffixes
-      const allSuff = [...d.suffixes.correct, ...d.suffixes.incorrect]
-          .sort(() => Math.random() - 0.5);
+  Object.entries(sentencesObj).forEach(([key, sentence]) => {
+    const li = document.createElement('li');
 
-      // Assign to Puzzle Sources (puzzle1 - puzzle6)
-      for (let i = 1; i <= 6; i++) {
-          const el = document.getElementById(`puzzle${i}`);
-          if (el) {
-              const tspan = el.querySelector('tspan');
-              if (tspan) tspan.textContent = allSuff[i - 1] || "";
-              
-              // Reset visual state
-              el.style.opacity = "1";
-              el.style.pointerEvents = "auto";
-              el.style.display = allSuff[i - 1] ? "block" : "none";
-          }
-      }
-  }
+    // Create regex to bold the key inside sentence (case-insensitive)
+    const regex = new RegExp(`(${key})`, 'gi');
 
-  // EVENT DELEGATION: Handle all clicks on the puzzle pieces
-  document.addEventListener('click', (e) => {
-      // Find if the click was on or inside a puzzle group
-      const clickedItem = e.target.closest('g[id^="puzzle"]');
+    // Replace key with bold version
+    li.innerHTML = sentence.replace(regex, '<strong>$1</strong>');
 
-      // Logic check: Is it a source piece (not a part) and not already used?
-      if (clickedItem && !clickedItem.id.toLowerCase().includes('part')) {
-          const isUsed = clickedItem.style.opacity === "0.3";
-          const isEmpty = clickedItem.querySelector('tspan')?.textContent === "";
-
-          if (!isUsed && !isEmpty) {
-              const emptySlot = slots.find(s => s && s.dataset.full === "false");
-              if (emptySlot) {
-                  handleSmoothMove(clickedItem, emptySlot);
-              } else {
-                  console.warn("All slots are full!");
-              }
-          }
-      }
+    list.appendChild(li);
   });
 
-  // Wire Next Button
-  if (nextBtn) nextBtn.addEventListener('click', loadNextWord);
+  popup.setAttribute('aria-hidden', 'false');
+}
 
-  // Initial Start
+function showAllAnswers(wordObj) {
+  if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
+
+  const answers = wordObj.details.answer;
+
+  const wordSlots = [
+    document.getElementById('word1'),
+    document.getElementById('word2'),
+    document.getElementById('word3'),
+    document.getElementById('word4'),
+    document.getElementById('word5')
+  ];
+
+  // Reset all slots first
+  wordSlots.forEach(slot => {
+    if (!slot) return;
+    slot.textContent = "";
+    slot.style.display = "none";
+  });
+
+  // Fill slots based on number of answers
+  answers.forEach((answer, index) => {
+    if (!wordSlots[index]) return;
+    wordSlots[index].textContent = answer;
+    wordSlots[index].style.display = "block";
+  });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const picker = new WordPicker(wordData);
+
+  const slots = [
+    document.getElementById("puzzleSuffix1"),
+    document.getElementById("puzzleSuffix2")
+  ];
+
+  const sourceList = document.getElementById("list-suffix");
+  const wordSpan = document.getElementById("word-span");
+  const nextBtn = document.getElementById("next-btn");
+  const showAnswerBtn = document.getElementById('showAnswer');
+
+  // const finalWord = document.getElementById("final-Word");
+
+  let correctSuffixes = [];
+  let answers = [];
+  let selectedSuffixes = [];
+  let completedAnswers = [];
+  let wordIndex = 0;
+
+  const wordSlots = [
+    document.getElementById('word1'),
+    document.getElementById('word2'),
+    document.getElementById('word3'),
+    document.getElementById('word4'),
+    document.getElementById('word5')
+  ];
+
+  if (showAnswerBtn) {
+    showAnswerBtn.addEventListener('click', () => {
+      console.log("Hi")
+      showAllAnswers(wordObj); // current wordObj
+    });
+  }
+
+  finalWord.style.display = "none";
+
+  function resetSlots() {
+    slots.forEach(slot => {
+      slot.style.display = "none";
+      slot.dataset.full = "false";
+      const clone = slot.querySelector(".centerTxt-wrap");
+      if (clone) clone.remove();
+    });
+  }
+
+  function loadNextWord() {
+    wordObj = picker.getNext();
+    const d = wordObj.details;
+
+    // currentWordObj = wordObj;
+
+    correctSuffixes = d.suffixes.correct.map(s => s.trim());
+    answers = d.answer.map(a => a.trim());
+    selectedSuffixes = [];
+    completedAnswers = [];
+    wordIndex = 0;
+
+    finalWord.style.display = "none";
+    exampleSentence.style.display = 'none';
+    // reset word slots
+    wordSlots.forEach(ws => {
+      if (ws) ws.textContent = "";
+    });
+
+    // reset slots
+    slots.forEach(slot => {
+      slot.style.display = "none";
+      slot.dataset.full = "false";
+      const clone = slot.querySelector(".centerTxt-wrap");
+      if (clone) clone.remove();
+    });
+
+    // reset suffix buttons
+    document.querySelectorAll("#list-suffix li").forEach(li => {
+      li.style.opacity = "1";
+      li.style.pointerEvents = "auto";
+    });
+
+    wordSpan.textContent = wordObj.root;
+    lottieWord.textContent = wordObj.root;
+
+    const allSuffixes = [...d.suffixes.correct, ...d.suffixes.incorrect]
+      .sort(() => Math.random() - 0.5);
+
+    for (let i = 1; i <= 6; i++) {
+      const el = document.getElementById(`puzzle${i}`);
+      if (!el) continue;
+      el.querySelector("span").textContent = allSuffixes[i - 1] || "";
+      el.style.display = allSuffixes[i - 1] ? "block" : "none";
+      sourceList.appendChild(el);
+    }
+  }
+
+  document.addEventListener("click", e => {
+    const clickedItem = e.target.closest("#list-suffix li");
+    if (!clickedItem) return;
+    if (clickedItem.style.opacity === "0.3") return;
+
+    const suffixText = clickedItem.querySelector("span")?.textContent.trim();
+    if (!suffixText) return;
+
+    /* ❌ WRONG */
+    if (!correctSuffixes.includes(suffixText)) {
+      clickedItem.classList.add("wrong-answer", "shake");
+      setTimeout(() => {
+        clickedItem.classList.remove("wrong-answer", "shake");
+      }, 500);
+      return;
+    }
+
+    /* ✅ CORRECT */
+    const emptySlot = slots.find(s => s.dataset.full === "false");
+    if (!emptySlot) return;
+
+    selectedSuffixes.push(suffixText);
+    handleSmoothMove(clickedItem, emptySlot);
+
+    const root = wordSpan.textContent.trim();
+    const combined = root + selectedSuffixes.join("");
+
+    // must be a valid answer and not already completed
+    if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
+
+    completedAnswers.push(combined);
+
+    /* ---- ASSIGN TO word1, word2, ... ---- */
+    if (wordSlots[wordIndex]) {
+      wordSlots[wordIndex].textContent = combined;
+      wordIndex++;
+    }
+
+    const remainingSuffixes = correctSuffixes.filter(
+      s => !selectedSuffixes.includes(s)
+    );
+
+    const canExtend = remainingSuffixes.some(
+      suf => answers.includes(combined + suf)
+    );
+
+    setTimeout(() => {
+      finalWord.style.display = "block";
+      finalWord.querySelector("span").textContent = combined;
+
+      // NOT last answer → hide & continue
+      if (completedAnswers.length < answers.length) {
+        setTimeout(() => {
+          finalWord.style.display = "none";
+        }, 1000);
+      }
+      // LAST answer → lock puzzle
+      else {
+        document.querySelectorAll("#list-suffix li").forEach(li => {
+          li.style.pointerEvents = "none";
+          li.style.opacity = "0.3";
+          showExample.style.display = 'block';
+        });
+      }
+
+      // clear slots only if cannot extend
+      if (!canExtend) {
+        setTimeout(() => {
+          slots.forEach(slot => {
+            slot.style.display = "none";
+            slot.dataset.full = "false";
+            const clone = slot.querySelector(".centerTxt-wrap");
+            if (clone) clone.remove();
+          });
+          selectedSuffixes = [];
+        }, 1000);
+      }
+
+    }, 1000);
+  });
+
+  showExample.addEventListener('click', () => {
+    showExampleSentences(wordObj);
+    exampleSentence.style.display = 'block';
+  });
+
+  document.getElementById('closeExampleBtn').addEventListener('click', () => {
+    // document.getElementById('examplePopup')
+    //   .setAttribute('aria-hidden', 'true');
+    exampleSentence.style.display = 'none';
+  });
+
+
+  if (nextBtn) nextBtn.addEventListener("click", loadNextWord);
+
   loadNextWord();
 });

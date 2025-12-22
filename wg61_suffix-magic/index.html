@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charet="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suffix Magic</title>
     <link rel="stylesheet" href="style.css">
@@ -16,7 +16,7 @@
                 <h2>Suffix Magic</h2>
                 <span id="versionId" class="versionText">b2_wg61_25121801</span>
             </div>
-            <div class="svg-container">
+            <div class="svg-container" id="svg-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
                     <g id="Web 1920 â 10 2" clip-path="url(#clip0_5185_639)">
                         <g id="Clip path group">
@@ -63,26 +63,26 @@
                                     </g>
                                     <foreignObject id="letter-button-5" x="20" y="195" width="1197" height="883">
                                         <div class="tree" xmlns="http://www.w3.org/1999/xhtml">
-                                          <img id="tree" src="Assets/tree.svg"/>
+                                            <img id="tree" src="Assets/tree.svg" />
                                         </div>
-                                      </foreignObject>
+                                    </foreignObject>
                                     <g id="Group 1421">
                                         <path id="Rectangle 17" d="M309 364H112V422H309V364Z" fill="black" />
                                         <text id="colourless" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="134.418" y="404.75">colourless</tspan>
+                                            <tspan id="word1" x="134.418" y="404.75">colourless</tspan>
                                         </text>
                                     </g>
-                                    <!-- <g id="Group 1422">
+                                    <g id="Group 1422">
                                         <path id="Rectangle 17_2" d="M624 303H459V376H624V303Z" fill="black" />
                                         <text id="colour" fill="white" xml:space="preserve" style="white-space: pre"
                                             font-family="Segoe UI" font-size="40" font-weight="bold"
                                             letter-spacing="0em">
-                                            <tspan x="482.203" y="359.062">colour</tspan>
+                                            <tspan id="lottie-word" x="482.203" y="359.062">colour</tspan>
                                         </text>
                                     </g>
-                                    <g id="puzzle2" opacity="1" style="cursor: pointer;">
+                                    <!--  <g id="puzzle2" opacity="1" style="cursor: pointer;">
                                         <g id="Clip path group_2">
                                             <mask id="mask1_5185_639" style="mask-type:luminance"
                                                 maskUnits="userSpaceOnUse" x="1221" y="481" width="266" height="214">
@@ -231,7 +231,7 @@
                                         <text id="colourlessly" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="478.262" y="572.75">colourlessly</tspan>
+                                            <tspan id="word2" x="478.262" y="572.75"></tspan>
                                         </text>
                                     </g>
                                     <g id="Group 1420">
@@ -239,7 +239,7 @@
                                         <text id="colourful" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="87.9414" y="713.75">colourful</tspan>
+                                            <tspan id="word3" x="87.9414" y="713.75"></tspan>
                                         </text>
                                     </g>
                                     <g id="Group 1418">
@@ -247,12 +247,12 @@
                                         <text id="colourfully" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="509.785" y="822.75">colourfully</tspan>
+                                            <tspan id="word4" x="509.785" y="822.75"></tspan>
                                         </text>
                                         <text id="colourfully_2" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="509.785" y="822.75">colourfully</tspan>
+                                            <tspan id="word5" x="509.785" y="822.75"></tspan>
                                         </text>
                                     </g>
                                     <g id="Group 1419">
@@ -260,55 +260,63 @@
                                         <text id="colourable" fill="#FFFF00" xml:space="preserve"
                                             style="white-space: pre" font-family="Segoe UI" font-size="32"
                                             font-weight="bold" letter-spacing="0em">
-                                            <tspan x="199.965" y="912.75">colourable</tspan>
+                                            <tspan x="199.965" y="912.75"></tspan>
                                         </text>
                                     </g>
+
+
                                     <foreignObject id="completePuzzle" x="900" y="212" width="800" height="800">
                                         <div id="puzzleDiv" xmlns="http://www.w3.org/1999/xhtml" style="">
-                                            <div id="completeWord" >
+                                            <div id="completeWord">
                                                 <div class="centerTxt-wrap" id="word">
                                                     <img class="w-100 h-100" src="./Assets/word-bg.svg" alt="">
-                                                    <span class="center-txt">sdfsdf</span>
+                                                    <span id="word-span" class="center-txt"></span>
                                                 </div>
                                                 <div class="centerTxt-wrap" id="puzzleSuffix1">
-                                                    <img class="w-100 h-100" src="./Assets/suff-01.svg" alt="">
-                                                    <span class="center-txt">sdfsdf</span>
+                                                    <!-- <img class="w-100 h-100" src="./Assets/suff-01.svg" alt="">
+                                                    <span class="center-txt">sdfsdf</span> -->
                                                 </div>
                                                 <div class="centerTxt-wrap" id="puzzleSuffix2">
-                                                    <img class="w-100 h-100" src="./Assets/suff-02.svg" alt="">
-                                                    <span class="center-txt">sdfsdf</span>
+                                                    <!-- <img class="w-100 h-100" src="./Assets/suff-02.svg" alt="">
+                                                    <span class="center-txt">sdfsdf</span> -->
                                                 </div>
                                             </div>
                                             <div id="suffixs">
                                                 <ul id="list-suffix">
-                                                    <li class="centerTxt-wrap">
+                                                    <li class="centerTxt-wrap" id="puzzle1">
                                                         <img class="w-100 h-100" src="./Assets/suff-01.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                        <span id="suffix1" class="center-txt">sdfsdf</span>
                                                     </li>
-                                                    <li class="centerTxt-wrap">
+                                                    <li class="centerTxt-wrap" id="puzzle2">
                                                         <img class="w-100 h-100" src="./Assets/suff-02.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                        <span id="suffix2" class="center-txt">sdfsdf</span>
                                                     </li>
-                                                    <li class="centerTxt-wrap">
+                                                    <li class="centerTxt-wrap" id="puzzle3">
                                                         <img class="w-100 h-100" src="./Assets/suff-03.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                        <span id="suffix3" class="center-txt">sdfsdf</span>
                                                     </li>
-                                                    <li class="centerTxt-wrap">
+                                                    <li class="centerTxt-wrap" id="puzzle4">
                                                         <img class="w-100 h-100" src="./Assets/suff-04.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                        <span id="suffix4" class="center-txt">sdfsdf</span>
                                                     </li>
-                                                    <li class="centerTxt-wrap">
-                                                        <img class="w-100 h-100" src="./Assets/suff-02.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                    <li class="centerTxt-wrap" id="puzzle5">
+                                                        <img class="w-100 h-100" src="./Assets/suff-05.svg" alt="">
+                                                        <span id="suffix5" class="center-txt">sdfsdf</span>
                                                     </li>
-                                                    <li class="centerTxt-wrap">
-                                                        <img class="w-100 h-100" src="./Assets/suff-02.svg" alt="">
-                                                        <span class="center-txt">sdfsdf</span>
+                                                    <li class="centerTxt-wrap" id="puzzle6">
+                                                        <img class="w-100 h-100" src="./Assets/suff-06.svg" alt="">
+                                                        <span id="suffix6" class="center-txt">sdfsdf</span>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
-                                      </foreignObject>
+                                    </foreignObject>
+                                    <foreignObject id="completePuzzle" x="960" y="212" width="740" height="200">
+                                        <div id="final-word" xmlns="http://www.w3.org/1999/xhtml">
+                                            <span>final</span>
+                                        </div>
+                                    </foreignObject>
+                                    
                                     <!-- <g id="Group 1436">
                                         <g id="Group 1383">
                                             <g id="Clip path group_8">
@@ -386,6 +394,28 @@
                                             </text>
                                         </g>
                                     </g> -->
+
+                                    <foreignObject id="exampleSentence" x="0" y="0" width="1920" height="1080" style="overflow: visible;">
+                                        <!-- Example Sentences Popup -->
+                                        <div id="examplePopup" role="dialog" aria-labelledby="exampleTitle"
+                                            aria-hidden="true">
+
+                                            <!-- Header -->
+                                            <div id="exampleHeader">
+                                                <h3 id="exampleTitle">Example Sentences</h3>
+                                                <button id="closeExampleBtn" aria-label="Close">✖</button>
+                                            </div>
+
+                                            <!-- Content -->
+                                            <div id="exampleContent">
+                                                <ul id="exampleSentenceList">
+
+                                                </ul>
+                                            </div>
+
+                                        </div>
+
+                                    </foreignObject>
                                 </g>
                             </g>
                         </g>
@@ -419,6 +449,16 @@
                 this.style.outline = '3px solid #1e6bef';
                 this.style.outlineOffset = '3px';
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">Next</button>
+
+                    <button class="btn btn-primary" id="showExampleBtn" style="background-color:#ec3268; color:white; display: block;"
+                        onfocus="
+                    document.querySelectorAll('.btn').forEach(b => {
+                    b.style.outline = 'none';
+                    b.style.outlineOffset = '0';
+                    });
+                    this.style.outline = '3px solid #ec3268';
+                    this.style.outlineOffset = '3px';
+                    " onblur="this.style.outline='none'; this.style.outlineOffset='0';">Example</button>
                 </div>
             </div>
         </div>
