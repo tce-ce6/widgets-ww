@@ -117,15 +117,15 @@
 
                 <foreignObject x="400" y="223" width="1200" height="350">
                   <div xmlns="http://www.w3.org/1999/xhtml">
-                    <div class="block-wrapper">
+                    <div class="block-wrapper active" id="block-wrapper">
                       <div id="left-material" class="material-block hard-material"></div>
                       <div id="right-material" class="material-block soft-material"></div>
                     </div>
                   </div>
                 </foreignObject>
 
-                <foreignObject x="510" y="83" width="900" height="60">
-                  <div xmlns="http://www.w3.org/1999/xhtml">
+                <foreignObject x="510" y="100" width="900" height="60">
+                  <div xmlns="http://www.w3.org/1999/xhtml" style="height: 100%;display: flex;align-items: center;justify-content: center;">
                     <div id="i-text" style="color: #E8CF9A; font-size: 28px; text-align: center; font-style: italic;">
                       Identify soft and hard ferromagnetic materials using the magnetic field. Use X-ray to observe
                       dipoles and domain behaviour inside the materials. </div>
@@ -188,9 +188,9 @@
                   </div>
                 </foreignObject>
 
-                <foreignObject x="100" y="100" width="300" height="300">
+                <foreignObject x="-50" y="-5" width="1815" height="817">
                   <div xmlns="http://www.w3.org/1999/xhtml">
-                    <div id="arrow-container" ></div>
+                    <div id="arrow-container" style="display:none"></div>
                   </div>
                 </foreignObject>
 
@@ -202,7 +202,7 @@
                         <div class="button-outer-wrapper">
                           <div class="button-inner-wrapper">
                             <button id="xray-button" class="js-button primary--button"></button>
-                            <span>X-ray</span>
+                            <span>Domain View</span>
                           </div>
                           <div class="button-inner-wrapper">
                             <button id="magnetic-button" class="js-button primary--button"></button>
@@ -227,7 +227,7 @@
       </div>
       <div class="flexContainer button-controls" id="btn-wrapper">
         <div class=" flexItem flexItemFirst">
-          <button disabled class="btn" id="global-reset" onclick="resetActiveSimulation()"
+          <button disabled class="btn" id="global-reset"
             style="background-color:#FF2C68; color:white; " onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';

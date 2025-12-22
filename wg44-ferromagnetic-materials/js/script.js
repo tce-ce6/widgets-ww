@@ -7,7 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const xrayRightContainer = document.getElementById("xray-right");
   const resetBtn = document.getElementById("global-reset");
   const xrayLeftImg = document.getElementById("xray-left-img");
-const xrayRightImg = document.getElementById("xray-right-img");
+  const xrayRightImg = document.getElementById("xray-right-img");
+  const iText = document.getElementById("i-text");
+  let magneticFirstTimeUsed = false;
+  let magneticInitialized = false;
+  let resetMode = false;
+  const resetClickedSet = new Set();
+  const activeTimeouts = [];
 
   console.log("XRAY containers:", xrayLeftContainer, xrayRightContainer);
 
@@ -37,7 +43,7 @@ const xrayRightImg = document.getElementById("xray-right-img");
     });
   }
 
-  setTimeout(initXrayAnimations, 150);
+  activeTimeouts.push(setTimeout(initXrayAnimations, 150));
 
   /* ---------------------------------------------
        LOAD ARROW ANIMATION
@@ -50,48 +56,47 @@ const xrayRightImg = document.getElementById("xray-right-img");
     autoplay: false,
     path: "arrow-animation.json",
   });
+  function updateXrayImagesVisibility() {
+    const xrayOn = document
+      .getElementById("xray-button")
+      .parentNode.classList.contains("turn-on");
 
-  /* ---------------------------------------------
-       LOAD PIN ANIMATIONS
-  --------------------------------------------- */
+    const magneticOn = document
+      .getElementById("magnetic-button")
+      .parentNode.classList.contains("turn-on");
+    // if (xrayOn && !magneticOn) {
+    //   xrayLeftContainer.style.display = "none";
+    //   xrayRightContainer.style.display = "none";
+    //   xrayLeftImg.style.display = "block";
+    //   xrayRightImg.style.display = "none";
+    // }
 
-function updateXrayImagesVisibility() {
-  const xrayOn = document
-    .getElementById("xray-button")
-    .parentNode.classList.contains("turn-on");
+    // CASE 1: X-ray ON + Magnetic OFF → show LOTTIE only
+    if (xrayOn && !magneticOn) {
+      xrayLeftContainer.style.display = "block";
+      xrayRightContainer.style.display = "block";
+      xrayLeftContainer.style.display = "none";
+      xrayLeftImg.style.display = "block";
+      xrayRightImg.style.display = "none";
+      return;
+    }
 
-  const magneticOn = document
-    .getElementById("magnetic-button")
-    .parentNode.classList.contains("turn-on");
+    // CASE 2: X-ray ON + Magnetic ON → show IMAGES only
+    if (xrayOn && magneticOn) {
+      xrayLeftContainer.style.display = "none";
+      xrayRightContainer.style.display = "none";
 
-  // CASE 1: X-ray ON + Magnetic OFF → show LOTTIE
-  if (xrayOn && !magneticOn) {
-    xrayLeftContainer.style.display = "block";
-    xrayRightContainer.style.display = "block";
+      xrayLeftImg.style.display = "block";
+      xrayRightImg.style.display = "block";
+      return;
+    }
 
-    xrayLeftImg.style.display = "none";
-    xrayRightImg.style.display = "none";
-    return;
-  }
-
-  // CASE 2: X-ray ON + Magnetic ON → show IMAGES
-  if (xrayOn && magneticOn) {
+    // CASE 3: X-ray OFF → hide everything
     xrayLeftContainer.style.display = "none";
     xrayRightContainer.style.display = "none";
-
-    xrayLeftImg.style.display = "block";
-    xrayRightImg.style.display = "block";
-    return;
+    xrayLeftImg.style.display = "none";
+    xrayRightImg.style.display = "none";
   }
-
-  // CASE 3: X-ray OFF → hide everything
-  xrayLeftContainer.style.display = "none";
-  xrayRightContainer.style.display = "none";
-  xrayLeftImg.style.display = "none";
-  xrayRightImg.style.display = "none";
-}
-
-
 
   const pinLeftAnim = lottie.loadAnimation({
     container: document.getElementById("pin-left-animation"),
@@ -130,6 +135,15 @@ function updateXrayImagesVisibility() {
 
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+
+      // Clear any scheduled timeouts to prevent actions after reset
+      activeTimeouts.forEach((id) => clearTimeout(id));
+      activeTimeouts.length = 0;
+      // reset one-time flags
+      magneticInitialized = false;
+
+      document.getElementById("block-wrapper")?.classList.add("active");
+      magneticFirstTimeUsed = false;
       /* 1️⃣ Turn off ALL buttons */
       document.querySelectorAll(".button-inner-wrapper").forEach((w) => {
         w.classList.remove("turn-on");
@@ -175,10 +189,52 @@ function updateXrayImagesVisibility() {
       );
 
       resetBtn.disabled = true;
+      document
+        .getElementById("left-material")
+        ?.classList.remove("soft-material");
+      document
+        .getElementById("right-material")
+        ?.classList.remove("hard-material");
+      document.getElementById("material-btn").style.visibility = "hidden";
+      // Hide label-main when material button is hidden
+      document.querySelectorAll(".label-main").forEach((el) => {
+        el.style.display = "none";
+      });
+      if (iText)
+        iText.textContent =
+          "Identify soft and hard ferromagnetic materials using the magnetic field. Use X-ray to observe\n                      dipoles and domain behaviour inside the materials.";
+      document.getElementById("xray-right-img").style.display = "none";
+      document.getElementById("xray-left-img").style.display = "none";
+
+      // Enter reset mode so next clicks on left/right set them to soft-materia
+      resetMode = true;
+      resetClickedSet.clear();
     });
   }
 
-  
+  // Click handlers for left/right material when in reset mode
+  const leftMaterial = document.getElementById("left-material");
+  const rightMaterial = document.getElementById("right-material");
+
+  function applySoftMateria(el) {
+    if (!el) return;
+    el.classList.remove("hard-pole", "soft-pole", "hard-material", "soft-material");
+    if (!el.classList.contains("soft-materia")) el.classList.add("soft-materia");
+  }
+
+  [leftMaterial, rightMaterial].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("click", () => {
+      if (!resetMode) return;
+      applySoftMateria(el);
+      resetClickedSet.add(el.id || el);
+      // once both left and right have been clicked, exit reset mode
+      if (resetClickedSet.size >= 2) {
+        resetMode = false;
+        resetClickedSet.clear();
+      }
+    });
+  });
 
   /* ---------------------------------------------
        EXISTING BUTTON LOGIC (UNCHANGED)
@@ -208,53 +264,69 @@ function updateXrayImagesVisibility() {
       --------------------------------------------- */
 
       if (event.target.id === "magnetic-button") {
+        if (!magneticFirstTimeUsed) {
+          document.getElementById("block-wrapper")?.classList.remove("active");
+          magneticFirstTimeUsed = true;
+        }
         updateXrayImagesVisibility();
-
-        // ⭐ NEW: remove material classes
-        document.querySelectorAll(".material-block").forEach((el) => {
-          el.classList.remove("hard-material", "soft-material");
-          el.classList.add("hard-pole", "soft-pole");
-        });
 
         document.querySelectorAll(".pole-names").forEach((el) => {
           el.style.display = "block";
         });
 
         if (isTurningOn) {
+          document.getElementById("material-btn").style.visibility = "hidden";
+          // Hide label-main when material button is hidden
+          document.querySelectorAll(".label-main").forEach((el) => {
+            el.style.display = "none";
+          });
+          if (iText)
+            iText.textContent =
+              "Identify soft and hard ferromagnetic materials using the magnetic field. Use X-ray to observe\n                      dipoles and domain behaviour inside the materials.";
 
-            document.getElementById("material-btn").style.visibility = "hidden";
+          // After 2s, convert material blocks to pole variants when magnetic is ON
+          activeTimeouts.push(setTimeout(() => {
+            document.querySelectorAll(".material-block").forEach((el) => {
+              el.classList.remove("hard-material", "soft-material");
+              el.classList.add("hard-pole", "soft-pole");
+            });
+          }, 1300));
 
           // NEW PIN ANIMATIONS (play forward)
           pinLeftAnimOne.stop();
           pinRightAnimTwo.stop();
 
-          setTimeout(() => {
+          activeTimeouts.push(setTimeout(() => {
             pinLeftAnimOne.setDirection(1);
             pinRightAnimTwo.setDirection(1);
 
             pinLeftAnimOne.goToAndPlay(0, true);
             pinRightAnimTwo.goToAndPlay(0, true);
-          }, 50);
+          }, 1000));
 
           document.getElementById("arrow-container").style.display = "block";
           arrowAnim.stop();
 
-          setTimeout(() => arrowAnim.goToAndPlay(0, true), 50);
+          activeTimeouts.push(setTimeout(() => arrowAnim.goToAndPlay(0, true), 50));
 
           pinLeftAnim.stop();
           pinRightAnim.stop();
 
           // Play forward
-          setTimeout(() => {
+          activeTimeouts.push(setTimeout(() => {
             pinLeftAnim.setDirection(1);
             pinRightAnim.setDirection(1);
 
             pinLeftAnim.goToAndPlay(0, true);
             pinRightAnim.goToAndPlay(0, true);
-          }, 50);
+          }, 1000));
 
           // ⭐ Play reverse after 1 second
         } else {
+          document.querySelectorAll(".material-block").forEach((el) => {
+            el.classList.remove("hard-pole", "soft-pole");
+              el.classList.add("hard-material", "soft-material");
+            });
           // ⭐ Reverse MAIN pin animations
           pinLeftAnim.setDirection(-1);
           pinRightAnim.setDirection(-1);
@@ -278,13 +350,14 @@ function updateXrayImagesVisibility() {
           left.classList.add("soft-pole");
           right.classList.add("hard-material");
 
-            document.getElementById("material-btn").style.visibility = "visible";
-
+          document.getElementById("material-btn").style.visibility = "visible";
 
           document.getElementById("arrow-container").style.display = "none";
           document.querySelectorAll(".pole-names").forEach((el) => {
             el.style.display = "none";
           });
+
+          if (iText) iText.textContent = "Identify the materials.";
         }
       }
 

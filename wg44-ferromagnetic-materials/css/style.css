@@ -277,7 +277,9 @@
 .material-block.soft-pole{
   background-image: url("../assets/soft-pole.png");
 }
-
+.block-wrapper.active{
+  opacity: .6;
+}
 .block-wrapper{
   display:flex;
   gap:110px;
