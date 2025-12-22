@@ -5,36 +5,38 @@
      INTERNAL JSON DATA
   =========================== */
 
-  const OBJECTS_DATA = [
-    { id: 19, name: "Flower", src: "assets-2/flower-new.svg", symmetry: 5 },  
-    { id: 13, name: "Swastik", src: "assets-2/swasktik-new.svg", symmetry: 4 },
-    { id: 12, name: "Fidget Spinner", src: "assets-2/fidget-spinner-new.svg", symmetry: 6 },
-    { id: 1, name: "Kite", src: "assets-2/kite-main-new.svg", symmetry: 1 },
-    { id: 2, name: "Key", src: "assets-2/key-new.svg", symmetry: 1 },
-    { id: 3, name: "Trapezoid", src: "assets-2/trapezoid-new-main.svg", symmetry: 1 },
-    { id: 4, name: "Rectangle", src: "assets-2/rectangle-new.svg", symmetry: 2 },
-    { id: 5, name: "Parallelogram", src: "assets-2/parallelogram-new.svg", symmetry: 2 },
-    { id: 6, name: "Rhombus", src: "assets-2/rhombus-new.svg", symmetry: 2 },
-    { id: 7, name: "Oval", src: "assets-2/oval-new.svg", symmetry: 2 },
-    // { id: 8, name: "H", src: "assets-2/h-new.svg", symmetry: 2 },
-    { id: 9, name: "X", src: "assets-2/x-new.svg", symmetry: 2 },
-    // { id: 10, name: "Equilateral Triangle", src: "assets-2/equilateral-triangle-new.svg", symmetry: 3 },
-    { id: 11, name: "Recycling Symbol", src: "assets-2/recycling-new.svg", symmetry: 3 },
-    { id: 14, name: "Square", src: "assets-2/square-new.svg", symmetry: 4 },
-    { id: 15, name: "Four-pointed Star", src: "assets-2/four-pointed-star-new.svg", symmetry: 4 },
-    // { id: 16, name: "Windmill", src: "assets-2/windmill-new.svg", symmetry: 4 },
-    // { id: 17, name: "Regular Pentagon", src: "assets-2/pentagon-new.svg", symmetry: 5 },
-    // { id: 18, name: "Starfish", src: "assets-2/starfish-new.svg", symmetry: 5 },
-    { id: 20, name: "Regular Hexagon", src: "assets-2/hexagon-new.svg", symmetry: 6 },
-    // { id: 21, name: "Snowflake", src: "assets-2/snowflake-new.svg", symmetry: 6 },
-    { id: 22, name: "Nut", src: "assets-2/nut-new.svg", symmetry: 6 },
-    // { id: 23, name: "Regular Heptagon", src: "assets-2/heptagon-new.svg", symmetry: 7 },
-    // { id: 24, name: "Stop Sign", src: "assets-2/stop-sign-new.svg", symmetry: 8 },
-    { id: 25, name: "Ninja Star", src: "assets-2/ninja-star-new.svg", symmetry: 8 },
-    // { id: 26, name: "Gears", src: "assets-2/gears-new.svg", symmetry: 9 },
-    // { id: 27, name: "Regular Nonagon", src: "assets-2/nonagon-new.svg", symmetry: 9 },
-    // { id: 28, name: "Regular Decagon", src: "assets-2/decagon-new.svg", symmetry: 10 },
-  ];
+ const OBJECTS_DATA = [
+  { id: 19, name: "Flower", src: "assets-2/flower-new.svg", symmetry: 5 },
+  { id: 13, name: "Swastik", src: "assets-2/swasktik-new.svg", symmetry: 4 },
+  { id: 12, name: "Fidget Spinner", src: "assets-2/fidget-spinner-new.svg", symmetry: 6 },
+  { id: 1, name: "Kite", src: "assets-2/kite-main-new.svg", symmetry: 1 },
+
+  { id: 22, name: "Nut", src: "assets-2/nut-new.svg", symmetry: 6 },
+  { id: 4, name: "Rectangle", src: "assets-2/rectangle-new.svg", symmetry: 2 },
+  { id: 9, name: "X", src: "assets-2/x-new.svg", symmetry: 2 },
+  { id: 20, name: "Regular Hexagon", src: "assets-2/hexagon-new.svg", symmetry: 6 },
+  { id: 7, name: "Oval", src: "assets-2/oval-new.svg", symmetry: 2 },
+  { id: 11, name: "Recycling Symbol", src: "assets-2/recycling-new.svg", symmetry: 3 },
+  { id: 25, name: "Ninja Star", src: "assets-2/ninja-star-new.svg", symmetry: 8 },
+  { id: 6, name: "Rhombus", src: "assets-2/rhombus-new.svg", symmetry: 2 },
+  { id: 2, name: "Key", src: "assets-2/key-new.svg", symmetry: 1 },
+  { id: 15, name: "Four-pointed Star", src: "assets-2/four-pointed-star-new.svg", symmetry: 4 },
+  { id: 3, name: "Trapezoid", src: "assets-2/trapezoid-new-main.svg", symmetry: 1 },
+  { id: 5, name: "Parallelogram", src: "assets-2/parallelogram-new.svg", symmetry: 2 },
+  { id: 14, name: "Square", src: "assets-2/square-new.svg", symmetry: 4 },
+
+  // { id: 8, name: "H", src: "assets-2/h-new.svg", symmetry: 2 },
+  // { id: 10, name: "Equilateral Triangle", src: "assets-2/equilateral-triangle-new.svg", symmetry: 3 },
+  // { id: 16, name: "Windmill", src: "assets-2/windmill-new.svg", symmetry: 4 },
+  // { id: 17, name: "Regular Pentagon", src: "assets-2/pentagon-new.svg", symmetry: 5 },
+  // { id: 18, name: "Starfish", src: "assets-2/starfish-new.svg", symmetry: 5 },
+  // { id: 21, name: "Snowflake", src: "assets-2/snowflake-new.svg", symmetry: 6 },
+  // { id: 23, name: "Regular Heptagon", src: "assets-2/heptagon-new.svg", symmetry: 7 },
+  // { id: 24, name: "Stop Sign", src: "assets-2/stop-sign-new.svg", symmetry: 8 },
+  // { id: 26, name: "Gears", src: "assets-2/gears-new.svg", symmetry: 9 },
+  // { id: 27, name: "Regular Nonagon", src: "assets-2/nonagon-new.svg", symmetry: 9 },
+  // { id: 28, name: "Regular Decagon", src: "assets-2/decagon-new.svg", symmetry: 10 },
+];
 
   let currentObjectIndex = 0;
   let OBJECT = OBJECTS_DATA[currentObjectIndex];
