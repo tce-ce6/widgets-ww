@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         indicator: {
             bottomAnchor: 870, // Fixed bottom Y
-            maxHeight: 628     // Max fill height
+            maxHeight: 608     // Max fill height
         },
         referenceZeroCelsiusY: 615 // The Y position for 0°C
     };
@@ -131,10 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
         movables.forEach(item => {
             item.element.setAttribute('y', clampedY + item.baseOffset);
         });
-
-        // E. Update Indicator Fill 
         const tempPercent = (k - CONFIG.temperature.minK) / CONFIG.temperature.rangeK;
-        const fillHeight = Math.max(0, tempPercent * CONFIG.indicator.maxHeight);
+        const fillHeight = Math.max(0, tempPercent * CONFIG.indicator.maxHeight) + 37;
         
         els.indicator.setAttribute('height', fillHeight);
         els.indicator.setAttribute('y', CONFIG.indicator.bottomAnchor - fillHeight);
