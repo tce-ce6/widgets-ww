@@ -319,11 +319,11 @@
   background-image: url(../assets/clue-card.svg) !important;
   cursor: not-allowed;
   background: #fff;
-  border: 5px solid #ffe629;
   color: #d63434;
   font-size: 40px;
   font-weight: 400;
   font-style: italic;
+      background-size: 100% 100%;
 }
 
 /* Show Answer button - ALWAYS ACTIVE when clue active */
