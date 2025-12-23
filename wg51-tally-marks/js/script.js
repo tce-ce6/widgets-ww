@@ -178,9 +178,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <td class="tally-cell"></td>
       <td><input type="text" class="count-input" value="0"></td>
       <td>
-        <button class="action-btn add-btn">+</button>
-        <button class="action-btn minus-btn">−</button>
-        <button class="action-btn del-btn">✕</button>
+        <button class="action-btn add-btn"></button>
+        <button class="action-btn minus-btn"></button>
+        <button class="action-btn del-btn"></button>
       </td>
     `;
 
