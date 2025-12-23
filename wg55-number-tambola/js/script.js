@@ -87,7 +87,7 @@ let currentAnswers = [],
   selectedClue = -1,
   cluesStatus = [],
   totalStars = 0,
-  cluesCount = 6,
+  cluesCount = 2,// 6
   finished = false;
 let clueTextsGlobal = [],
   answersPerClueGlobal = [],
@@ -177,13 +177,27 @@ function showMessage(txt, ok) {
 
 
 
-function clearAllCrosses() {
+function clearAllCrosses(callee) {
+  console.log("clearAllCrosses callee: ", callee)
   document.querySelectorAll(".cell-front.crossed").forEach((cell) => {
     cell.classList.remove("crossed");
+  });
+  document.querySelectorAll(".cell-inner.correct").forEach((cell) => {
+    cell.classList.remove("correct");
+  });
+  document.querySelectorAll(".cell-front.wrong").forEach((cell) => {
+    cell.classList.remove("wrong");
   });
   document.querySelectorAll(".cell-inner.clicked").forEach((cell) => {
     cell.classList.remove("clicked");
   });
+
+  document.querySelectorAll(".cell-outer").forEach((cell) => {
+    // console.log("cell: ", cell)
+    removeResultLottie(cell, "correct");
+    removeResultLottie(cell, "wrong");
+  });
+
 }
 
 function updateScoreArea() {
@@ -192,24 +206,25 @@ function updateScoreArea() {
   //   ? `Total stars gained: ${totalStars} / ${cluesCount} ⭐`
   //   : "";
 }
-function showPlayAgainButton() {
-  const playAgainArea = document.getElementById("playAgainArea");
-  playAgainArea.innerHTML = `<button class="play-again-btn" id="playAgainBtn">Play Again</button>`;
-  document.getElementById("playAgainBtn").onclick = () => {
+function handlePlayAgainClick(callee) {
+  console.log("handlePlayAgainClick callee: ", callee)
+
   document.getElementById("clue-info").style.display = "none";
 
   const clueControls = document.getElementById("clueControls");
   if (clueControls) clueControls.style.display = "";
 
   buildGame(currentRange);
-};
 
 }
-function disableNewGrid() {
+
+function disableNewGrid(callee) {
+  console.log("disableNewGrid callee: ", callee)
   document.getElementById("generate").disabled = true;
   document.getElementById("number-range").disabled = true;
 }
-function enableNewGrid() {
+function enableNewGrid(callee) {
+  console.log("enableNewGrid callee: ", callee)
   document.getElementById("generate").disabled = false;
   document.getElementById("number-range").disabled = false;
   finished = false;
@@ -234,7 +249,9 @@ function enableNewGrid() {
       "grid-blocked"
     );
   });
-  document.getElementById("message").style.display = "none";
+  hideWrongMessage("from enableNewGrid");
+
+
 }
 
 function updateShowButton() {
@@ -258,7 +275,6 @@ function showClueInfo() {
 
   const correctEl = clueInfo.querySelector("#correct-answers");
   const totalEl = clueInfo.querySelector("#total-questions");
-  const playAgainBtn = clueInfo.querySelector("#playAgainBtn");
 
   if (correctEl) correctEl.textContent = correctCount;
   if (totalEl) totalEl.textContent = cluesCount;
@@ -269,7 +285,7 @@ function showClueInfo() {
   const clueControls = document.getElementById("clueControls");
   if (clueControls) clueControls.style.display = "none";
 
-  if (playAgainBtn) playAgainBtn.disabled = false;
+  enablePlayAgain("from showClueInfo");
 }
 
 function generateNextClue() {
@@ -288,9 +304,10 @@ function generateNextClue() {
   clueAttempted = false;
   gridBlocked = false;
   showAnswerUsed = false;
+  const myClueText = clueTextsGlobal[selectedClue];
+  console.log("pkp mini-browser: ~ generateNextClue ~ myClueText:", myClueText)
+  document.getElementById("flipBack").textContent = myClueText;
 
-  document.getElementById("flipBack").textContent =
-    clueTextsGlobal[selectedClue];
   document.getElementById("flipFront").textContent = "";
   document.getElementById("flipCard").classList.add("flipped");
   isShowingBack = true;
@@ -300,21 +317,21 @@ function generateNextClue() {
     .forEach((ci) => ci.classList.remove("show-highlight"));
 
   // ✅ FIX: clear previous clue interaction states
-document.querySelectorAll(".cell-inner").forEach((ci) => {
-  ci.classList.remove("clicked");
-});
+  document.querySelectorAll(".cell-inner").forEach((ci) => {
+    ci.classList.remove("clicked");
+  });
 
-document.querySelectorAll(".cell-front").forEach((cf) => {
-  cf.classList.remove("crossed");
-});
+  document.querySelectorAll(".cell-front").forEach((cf) => {
+    cf.classList.remove("crossed");
+  });
 
 
-  document.getElementById("message").style.display = "none";
+  hideWrongMessage("from generateNextClue");
 
   return true;
 }
 
-document.querySelector("#clue-info #showBtn").onclick = () => {
+/* document.querySelector("#showBtn").onclick = () => {
   alert("hello")
   document.getElementById("clue-info").style.display = "none";
 
@@ -324,14 +341,24 @@ document.querySelector("#clue-info #showBtn").onclick = () => {
   resetStarSvgs(); // ⭐
 
   buildGame(currentRange);
-};
+}; */
 
-function handleFlipCardClick() {
+function hideWrongMessage(callee) {
+  console.log("hideWrongMessage callee: ", callee)
+  const msgDiv = document.getElementById("message");
+  if (msgDiv) {
+    msgDiv.style.display = "none";
+  } else {
+    console.log("hideWrongMessage message div not found");
+  }
+}
+function handleFlipCardClick(callee) {
+  console.log("handleFlipCardClick callee isShowingBack: ", callee, isShowingBack)
   if (finished) return;
   const front = document.getElementById("flipFront");
   if (front.classList.contains("disabled")) return;
 
-  document.getElementById("message").style.display = "none";
+  hideWrongMessage("from flip");
 
   const flipCard = document.getElementById("flipCard");
 
@@ -343,6 +370,7 @@ function handleFlipCardClick() {
     isShowingBack = false;
     document.getElementById("flipFront").textContent = "";
   }
+  clearAllCrosses("from flip");
 }
 
 function highlightAnswerForCurrentClue() {
@@ -362,7 +390,7 @@ function highlightAnswerForCurrentClue() {
     }
   });
 
-  clearAllCrosses();
+  clearAllCrosses("from highlight");
 
   showMessage(
     "This is the correct number(s) for current clue! Tap card for next clue.",
@@ -427,7 +455,7 @@ function resetStarSvgs() {
 
 
 function buildGame(r) {
-    resetStarSvgs(); // ⭐ RESET STARS
+  resetStarSvgs(); // ⭐ RESET STARS
 
   currentRange = r;
   let [min, max] = r.split("-").map(Number);
@@ -514,26 +542,54 @@ function buildGame(r) {
         .querySelectorAll(".cell-inner")
         .forEach((ci) => ci.classList.remove("show-highlight"));
 
-      if (
-  cluesStatus.filter((x) => x === "correct" || x === "incorrect")
-    .length === cluesCount
-  ) {
-    finished = true;
-    showClueInfo();
-    disableNewGrid();
+      if (cluesStatus.filter((x) => x === "correct" || x === "incorrect").length === cluesCount) {
+        finished = true;
+        console.log("finished");
+        showClueInfo();
+        disableNewGrid();
 
-    // ✅ ADD THIS (works for correct + wrong both)
-    const msg = document.getElementById("message");
-    if (msg) msg.style.display = "none";
+        // ✅ ADD THIS (works for correct + wrong both)
+        const msg = document.getElementById("message");
+        if (msg) {
+          msg.style.display = "none";
+        } else {
+          console.log("message not found");
+        }
 
-    const playAgainBtn = document.querySelector("#clue-info #showBtn");
-    if (playAgainBtn) playAgainBtn.disabled = false;
-  }
+        enablePlayAgain("from build game");
+      }
     };
-    
+
     gridDiv.appendChild(outer);
   });
-  enableNewGrid();
+  enableNewGrid("from build game");
+  /**
+   * disable the btn new grid
+   */
+  disableNewGrid("from build game");
+
+
+}
+
+
+function disableFlipCard(callee) {
+  console.log("disableFlipCard callee: ", callee)
+  const front = document.getElementById("flipFront");
+  front.classList.add("disabled");
+}
+/**
+ * enable the btn play again
+ */
+function enablePlayAgain(callee) {
+  console.log("enablePlayAgain callee: ", callee)
+  const playAgainBtn = document.querySelector("#play-again");
+  if (playAgainBtn) {
+    playAgainBtn.disabled = false;
+  } else {
+    console.log("playAgainBtn not found build game");
+  }
+  enableNewGrid("from enable play again");
+  disableFlipCard("from enable play again");
 }
 
 document.getElementById("generate").onclick = () => {
@@ -549,13 +605,14 @@ document.getElementById("number-range").onchange = function () {
   buildGame(r);
 };
 
-document.getElementById("flipCard").onclick = function () {
-  handleFlipCardClick();
-};
 
 document.getElementById("showBtn").onclick = function () {
   highlightAnswerForCurrentClue();
 };
+
+function removeResultLottie(cellOuter, type) {
+  cellOuter.querySelector(".result-lottie")?.remove();
+}
 
 function playResultLottie(cellOuter, type) {
   if (cellOuter.querySelector(".result-lottie")) return;

@@ -42,18 +42,18 @@
 
 #tambola-wrapper .button-controls {
   background: 0 0 !important;
-  border: none !important
+  border: none !important;
 }
 
 #tambola-wrapper .d-flex {
-  display: flex
+  display: flex;
 }
 
 #tambola-wrapper .question {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
 }
 
 #tambola-wrapper .flexContainer {
@@ -61,20 +61,20 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  z-index: 1
+  z-index: 1;
 }
 
 #tambola-wrapper .flexItem {
   padding: 8px;
-  transition: box-shadow .3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out;
   display: flex;
-  align-items: center
+  align-items: center;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
   #tambola-wrapper .flexItem {
     width: 100%;
-    margin: 8px 0
+    margin: 8px 0;
   }
 }
 
@@ -90,38 +90,38 @@
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  transition: background-color .3s ease, transform .2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-  margin-right: 10px
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
 }
 
 #tambola-wrapper .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 #tambola-wrapper .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #tambola-wrapper .btn:focus {
   outline: 3px solid #1e6bef;
-  outline-offset: 3px
+  outline-offset: 3px;
 }
 
 #tambola-wrapper .btn:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #tambola-wrapper .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
-  box-shadow: none
+  box-shadow: none;
 }
 
 #tambola-wrapper .wdgetTitle {
@@ -131,7 +131,7 @@
   gap: 20px;
   left: 0;
   top: 0;
-  z-index: 1
+  z-index: 1;
 }
 
 #tambola-wrapper .wdgetTitle h2 {
@@ -141,7 +141,7 @@
   padding: 5px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
-  background: #0295FC;
+  background: #0295fc;
   white-space: nowrap;
 }
 
@@ -167,7 +167,7 @@
 /* tambola style  */
 .main-wrapper {
   height: 100%;
-  background-color: #C8FCEC;
+  background-color: #c8fcec;
   border-radius: 20px;
 }
 
@@ -195,7 +195,7 @@
   font-size: 30px;
   padding: 11px 70px 11px 20px;
   border-radius: 8px;
-  border: 3px solid #0F86FD;
+  border: 3px solid #0f86fd;
   background: #f3fbff;
   color: #000;
   appearance: none;
@@ -203,7 +203,7 @@
   background-repeat: no-repeat;
   background-position: right 14px center;
 }
-.top-bar select option{
+.top-bar select option {
   font-size: 18px;
 }
 
@@ -213,7 +213,7 @@
 }
 
 .top-bar button {
-  background: #FF2C68;
+  background: #ff2c68;
   color: white;
   border: none;
   border-radius: 7px;
@@ -222,8 +222,8 @@
   font-size: 28px;
   margin-left: 20px;
 }
-.top-bar button:hover{
-  background: #FF2C68;
+.top-bar button:hover {
+  background: #ff2c68;
 }
 .instructions {
   text-align: center;
@@ -258,7 +258,6 @@
   align-items: center;
   gap: 8px;
   width: 50%;
-
 }
 
 /* Flipping clue card */
@@ -287,7 +286,7 @@
   height: 100%;
   backface-visibility: hidden;
   border-radius: 35px;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -306,7 +305,7 @@
 
 .flip-back {
   background: #fff;
-  border: 5px solid #FFE629;
+  border: 5px solid #ffe629;
   color: #000;
   transform: rotateY(180deg);
   font-size: 50px;
@@ -317,11 +316,11 @@
 }
 
 .flip-front.disabled {
-  background-image: none;
+  background-image: url(../assets/clue-card.svg) !important;
   cursor: not-allowed;
   background: #fff;
-  border: 5px solid #FFE629;
-  color: #D63434;
+  border: 5px solid #ffe629;
+  color: #d63434;
   font-size: 40px;
   font-weight: 400;
   font-style: italic;
@@ -329,18 +328,18 @@
 
 /* Show Answer button - ALWAYS ACTIVE when clue active */
 .clue-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    width: 230px;
-    margin-top: 160px;
-    font-size: 30px;
-    margin-left: 215px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 230px;
+  margin-top: 160px;
+  font-size: 30px;
+  margin-left: 215px;
 }
 
 .small-btn {
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -354,7 +353,7 @@
 }
 
 .small-btn:hover:not(:disabled) {
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
 }
 
@@ -363,16 +362,15 @@
   cursor: not-allowed;
 }
 
-
 /* 4x4 Number grid - FIXED POSITION FLIP */
 .grid {
   display: flex;
   flex-wrap: wrap;
   padding: 30px;
   gap: 25px;
-  background-color: #80C6FC;
+  background-color: #80c6fc;
   border-radius: 30px;
-      justify-content: center;
+  justify-content: center;
 }
 
 .cell-outer {
@@ -416,21 +414,20 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 7px solid #0F86FD;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+  border: 7px solid #0f86fd;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   font-weight: bold;
   user-select: none;
 }
 
-.cell-face.cell-front.crossed{
-  border: 7px solid #D63434;
-  background-color: #FFBDBD;
+.cell-face.cell-front.crossed {
+  border: 7px solid #d63434;
+  background-color: #ffbdbd;
 }
-.cell-inner.correct .cell-face.cell-front{
-  border: 7px solid #069B00;
-  background-color: #61CB5C;
-
+.cell-inner.correct .cell-face.cell-front {
+  border: 7px solid #069b00;
+  background-color: #61cb5c;
 }
 .cell-front {
   background: #fff;
@@ -468,11 +465,11 @@
 
 /* Highlight for Show Answer */
 .cell-inner.show-highlight .cell-face.cell-front {
-    border: 7px solid #069B00;
-    background-color: #61CB5C;
+  border: 7px solid #069b00;
+  background-color: #61cb5c;
 }
 
-.message{
+.message {
   width: 500px;
   height: 150px;
   border-radius: 15px;
@@ -483,24 +480,24 @@
   margin-top: 40px;
   margin-left: 80px;
   font-weight: 600;
-  border: 3px solid #2196F3;
-  background: #ACFF89;
+  border: 3px solid #2196f3;
+  background: #acff89;
   position: relative;
 }
 
-.message span{
+.message span {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-      text-align: center;
-    line-height: 1.2;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .message.incorrect {
-  border: 3px solid #D63434;
-  background: #FFBDBD;
+  border: 3px solid #d63434;
+  background: #ffbdbd;
 }
 
 .score-area {
@@ -512,6 +509,11 @@
 }
 
 .play-again-btn {
+  background-color: #ff2c68;
+  width: 200px;
+  margin-top: 30px;
+}
+.play-again-btnx {
   background: #fd79a8;
   color: white;
   font-weight: bold;
@@ -523,28 +525,28 @@
   margin-top: 8px;
   display: inline-block;
 }
-.instruction-wrapper{
+.instruction-wrapper {
   font-size: 30px;
   white-space: nowrap;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.instruction-wrapper li{
+.instruction-wrapper li {
   margin-bottom: 15px;
   font-style: italic;
-  color: #0B009F;
+  color: #0b009f;
 }
-.result-lottie{
+.result-lottie {
   height: 80px;
-    width: 80px;
-    display: block;
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
+  width: 80px;
+  display: block;
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.total-txt{
+.total-txt {
   font-size: 25px;
   font-weight: 600;
   color: green;
@@ -552,12 +554,8 @@
   align-items: center;
   justify-content: center;
 }
-.play-again{
-  background-color: #FF2C68;
-  width:200px;
-  margin-top: 30px;
-}
-#clue-info{
+
+#clue-info {
   width: 370px;
   display: block;
   margin-top: 30px;
@@ -565,12 +563,12 @@
   margin-left: 143px;
   margin-top: 160px;
 }
-.total-count{
+.total-count {
   font-size: 34px;
   font-weight: 600;
   margin-left: 5px;
 }
-.star-wrapper{
+.star-wrapper {
   position: absolute;
   top: -45px;
   display: flex;
@@ -580,21 +578,21 @@
   gap: 10px;
   right: 30px;
 }
-.star-container{
+.star-container {
   display: flex;
   gap: 5px;
 }
-.star-wrapper .star-container svg{
+.star-wrapper .star-container svg {
   height: 30px !important;
   width: 30px !important;
 }
 .correct .svg-wrap path {
-  fill: #FFD700 !important;
+  fill: #ffd700 !important;
 }
 .correct .svg-wrap[opacity="0.3"] {
   opacity: 1 !important;
 }
-.total-txt::before{
+.total-txt::before {
   content: "";
   height: 35px;
   width: 34px;
@@ -603,7 +601,7 @@
   background-size: 100% 100%;
   margin-right: 10px;
 }
-#message-lottie{
+#message-lottie {
   height: 100px;
   width: 100px;
   position: absolute;

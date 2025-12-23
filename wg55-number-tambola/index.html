@@ -47,7 +47,7 @@
                           </svg>
                           <svg id="star-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="32.449" height="31" viewBox="0 0 32.449 31">
-                            
+
                             <g class="svg-wrap" data-name="Group 1657" transform="translate(0 0)" opacity="0.3">
                               <g id="Group_1656" data-name="Group 1656" transform="translate(0 0)"
                                 clip-path="url(#clip-path)">
@@ -59,7 +59,7 @@
                           </svg>
                           <svg id="star-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="32.449" height="31" viewBox="0 0 32.449 31">
-                            
+
                             <g class="svg-wrap" data-name="Group 1657" transform="translate(0 0)" opacity="0.3">
                               <g id="Group_1656" data-name="Group 1656" transform="translate(0 0)"
                                 clip-path="url(#clip-path)">
@@ -71,7 +71,7 @@
                           </svg>
                           <svg id="star-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="32.449" height="31" viewBox="0 0 32.449 31">
-                            
+
                             <g class="svg-wrap" data-name="Group 1657" transform="translate(0 0)" opacity="0.3">
                               <g id="Group_1656" data-name="Group 1656" transform="translate(0 0)"
                                 clip-path="url(#clip-path)">
@@ -94,7 +94,7 @@
                           </svg>
                           <svg id="star-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="32.449" height="31" viewBox="0 0 32.449 31">
-                            
+
                             <g class="svg-wrap" data-name="Group 1657" transform="translate(0 0)" opacity="0.3">
                               <g id="Group_1656" data-name="Group 1656" transform="translate(0 0)"
                                 clip-path="url(#clip-path)">
@@ -123,7 +123,7 @@
                             <button id="generate">New Grid</button>
                           </div>
                           <div class="flip-wrapper">
-                            <div id="flipCard" class="flip-card">
+                            <div id="flipCard" class="flip-card" onclick="handleFlipCardClick('from html')">
                               <div id="flipFront" class="flip-face flip-front"></div>
                               <div id="flipBack" class="flip-face flip-back"></div>
                             </div>
@@ -131,16 +131,15 @@
                           <div class="clue-controls" id="clueControls">
                             <button id="showBtn" class="small-btn" disabled>Show Answer</button>
                           </div>
-                          <div id="message" class="msg-wrapper">
-                            <span id="message-lottie"></span>
-                          </div>
-
                           <div id="clue-info" style="display: none;">
                             <div class="total-txt">Total stars gained: <span class="total-count"><span
                                   id="correct-answers">2</span>/<span id="total-questions">6</span></span></div>
-                            <button id="showBtn" class="small-btn play-again" disabled>Play Again</button>
+                            <button onclick="handlePlayAgainClick('from html')" id="play-again"
+                              class="small-btn play-again-btn" disabled>Play Again</button>
                           </div>
-
+                          <div id="message" class="msg-wrapper">
+                            <span id="message-lottie"></span>
+                          </div>
                         </div>
 
                         <!-- RIGHT: 4x4 grid + feedback + score -->
