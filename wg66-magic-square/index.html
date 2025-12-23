@@ -29,9 +29,9 @@
               </mask>
               <g mask="url(#mask0_5016_123)">
                 <g id="Web 1920 â 1">
-                  <foreignObject x="0" y="0" width="1920" height="1080" style="overflow: visible;">
+                  <foreignObject x="450" y="100" width="1920" height="1080" style="overflow: visible;">
                     <div xmlns="http://www.w3.org/1999/xhtml">
-                      <span></span>
+                      <span style="color: #fff; font-size: 30px;">Can you make every row, column, and diagonal add up to the same number?</span>
                     </div>
                   </foreignObject>
                   <foreignObject x="61" y="108" width="1798" height="929" style="overflow: visible;">
@@ -40,10 +40,10 @@
                         <div class="card">
                           <div class="header-wrapper">
                             <div class="magic-info">
-                              Make each row, column and diagonal add up to
-                              <span id="magic-sum"></span>.
+                              Make every row, column, and diagonal add up to
+                              <span id="magic-sum">36</span>.
                             </div>
-                            <div class="options-title">Magic Constant Options:</div>
+                            <div class="options-title">Select your magic sum:</div>
                             <div class="options">
                               <label class="option-chip">
                                 <input type="radio" name="rangeMode" value="fixed15" checked>
@@ -134,7 +134,7 @@
       </div>
       <div class="flexContainer button-controls" id="btn-wrapper">
         <div class="flexItem flexItemFirst">
-          <button class="btn" id="checkBtn" style="background-color:#4caf50; color:white;" onfocus="
+          <button class="btn" id="checkBtn" disabled style="background-color:#4caf50; color:white;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';
@@ -154,7 +154,7 @@
               " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
             New Game
           </button>
-          <button class="btn" id="showBtn" style="background-color:#FF2C68; color:white; min-width: 155px;" onfocus="
+          <button class="btn" id="showBtn" disabled style="background-color:#FF2C68; color:white; min-width: 155px;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';

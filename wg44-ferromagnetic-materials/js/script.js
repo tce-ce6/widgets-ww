@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+          document.getElementById("magnetic-button").removeAttribute("disabled");
+
       // Clear any scheduled timeouts to prevent actions after reset
       activeTimeouts.forEach((id) => clearTimeout(id));
       activeTimeouts.length = 0;
@@ -313,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
       --------------------------------------------- */
 
       if (event.target.id === "magnetic-button") {
+        
         if (!magneticFirstTimeUsed) {
           document.getElementById("block-wrapper")?.classList.remove("active");
           document
@@ -404,6 +407,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // ⭐ Play reverse after 1 second
         } else {
+              event.target.disabled = true;
+
           document.querySelectorAll(".material-block").forEach((el) => {
             el.classList.remove("hard-pole", "soft-pole");
             el.classList.add("hard-material", "soft-material");
