@@ -1,7 +1,8 @@
 // Global variables and configuration
 const BOARD_ID = 'jxgbox'; // Ensure this matches your HTML id
-const FEEDBACK_ID = 'feedback'; // You may need to add a div with this ID for feedback
 const TARGET_NUMBER_ID = 'target-complex-number'; // You may need to add a span/div with this ID
+const feedbackEl = document.getElementById('feedback');
+
 
 // Global state variables
 let board;
@@ -17,12 +18,24 @@ const IMAG_COLOR = '#17b077';  // b → green
 
 function coloredComplexLabel(a, b) {
     function span(text, color) {
-        return `<span style="color:${color}">${text}</span>`;
+        // return `<span style="color:${color}">${text}</span>`;
+        return `<span style="color:${color}; font-style: italic; font-family: 'Times New Roman', Times, serif;">${text}</span>`;
     }
 
     function formatSigned(n, color, isFirst = false) {
         if (n < 0) return (isFirst ? '− ' : ' − ') + span(Math.abs(n), color);
         return (isFirst ? '' : ' + ') + span(n, color);
+    }
+
+    function formatSignedB(n, color, isFirst = false) {
+        // If the number is 1 or -1, we want to pass an empty string to the span
+        const valueToShow = Math.abs(n) === 1 ? "" : Math.abs(n);
+    
+        if (n < 0) {
+            return (isFirst ? '− ' : ' − ') + span(valueToShow, color);
+        }
+        // For positive numbers, we only show the sign if it's NOT the first term
+        return (isFirst ? '' : ' + ') + span(valueToShow, color);
     }
 
     if (b === 0) {
@@ -37,7 +50,7 @@ function coloredComplexLabel(a, b) {
             : `${span(b, IMAG_COLOR)} <i>i</i>`;
     }
 
-    return `${formatSigned(a, REAL_COLOR, true)}${formatSigned(b, IMAG_COLOR)} <i>i</i>`;
+    return `${formatSigned(a, REAL_COLOR, true)}${formatSignedB(b, IMAG_COLOR)} <i>i</i>`;
 }
 
 for (let a = -10; a <= 10; a++) {
@@ -70,7 +83,8 @@ function formatComplex(a, b) {
     const colorB = '#17b077';   // imaginary part color
 
     function span(text, color) {
-        return `<span style="color:${color}">${text}</span>`;
+        // return `<span style="color:${color}">${text}</span>`;
+        return `<span style="color:${color}; font-style: italic; font-family: 'Times New Roman', Times, serif;">${text}</span>`;
     }
 
     function formatSigned(n, color, isFirst = false) {
@@ -78,6 +92,18 @@ function formatComplex(a, b) {
             return (isFirst ? '− ' : ' − ') + span(Math.abs(n), color);
         }
         return (isFirst ? '' : ' + ') + span(n, color);
+    }
+
+    function formatSignedB(n, color, isFirst = false) {
+        // If the number is 1 or -1, we want to pass an empty string to the span
+        const valueToShow = Math.abs(n) === 1 ? "" : Math.abs(n);
+    
+        if (n < 0) {
+            return (isFirst ? '− ' : ' − ') + span(valueToShow, color);
+        }
+        
+        // For positive numbers, we only show the sign if it's NOT the first term
+        return (isFirst ? '' : ' + ') + span(valueToShow, color);
     }
 
     // Only real part
@@ -96,34 +122,9 @@ function formatComplex(a, b) {
 
     return `
         ${formatSigned(roundedA, colorA, true)}
-        ${formatSigned(roundedB, colorB)} <i>i</i>
+        ${formatSignedB(roundedB, colorB)} <i>i</i>
     `;
 }
-
-
-// function formatComplex(a, b) {
-//     const roundedA = Math.round(a);
-//     const roundedB = Math.round(b);
-
-//     // Helper to format signed numbers with spacing
-//     function formatSigned(n, isFirst = false) {
-//         if (n < 0) return (isFirst ? '− ' : ' − ') + Math.abs(n);
-//         return (isFirst ? '' : ' + ') + n;
-//     }
-
-//     // Only real part
-//     if (roundedB === 0) {
-//         return roundedA < 0 ? `− ${Math.abs(roundedA)}` : `${roundedA}`;
-//     }
-
-//     // Only imaginary part
-//     if (roundedA === 0) {
-//         return roundedB < 0 ? `− ${Math.abs(roundedB)} i` : `${roundedB} i`;
-//     }
-
-//     return `${formatSigned(roundedA, true)}${formatSigned(roundedB)} i`;
-// }
-
 
 function initializeBoard() {
     // Check if the HTML element exists before trying to draw the board
@@ -203,7 +204,7 @@ function initializeBoard() {
         minorTicks: 0,
         strokeColor: greenColor,
         majorHeight: 6,
-    
+
         // 🔥 generateLabel MUST be here
         generateLabel: function (tick) {
             const val = Math.round(tick.usrCoords[2]); // ensure integer
@@ -212,7 +213,7 @@ function initializeBoard() {
             if (val === -1) return '− i';
             return `${val} i`;
         },
-    
+
         label: {
             strokeColor: greenColor,
             fontSize: 12,
@@ -220,7 +221,7 @@ function initializeBoard() {
             cssStyle: `color:${greenColor}; font-weight:bold;`
         }
     });
-    
+
 
     // Origin dot to match reference (fixed, should not move)
     board.create('point', [0, 0], {
@@ -271,7 +272,8 @@ function handleBoardClick(e) {
         }
 
         const labelText = formatComplex(x, y);
-        const labelOffset = x > 8 ? [-50, 20] : [5, 20];
+        //  const labelOffset = x > 8 ? [-50, 20] : [5, 20];
+        const labelOffset = x > 8 ? [-70, -10] : x < -8 ? [10, -15] : [10, -15];
 
         // Create new user plot point
         userPlot = board.create('point', [x, y], {
@@ -298,7 +300,7 @@ function handleBoardClick(e) {
         });
 
         // Store coordinates for checking
-        userPlot.coords = { a: x, b: y };
+        userPlot.userData = { a: x, b: y };
 
         // Force board update
         board.update();
@@ -319,7 +321,6 @@ function loadProblem() {
     }
 
     // Clear feedback
-    const feedbackEl = document.getElementById(FEEDBACK_ID);
     if (feedbackEl) {
         feedbackEl.innerHTML = '';
         feedbackEl.className = '';
@@ -342,49 +343,105 @@ function loadProblem() {
     }, 50);
 }
 
+function markCorrect() {
+    if (!userPlot) return;
+
+    userPlot.setAttribute({
+        color: '#17b077',
+        fillColor: '#17b077'
+    });
+
+    userPlot.label.setAttribute({
+        cssStyle: `
+            font-weight:bold;
+            color:#0066ff;
+            background:#e6f0ff;
+            padding:2px 6px;
+            border-radius:12px;
+            box-shadow: 
+                0 0 0 2px rgba(86, 213, 13, 0.3),
+                0 4px 8px rgba(116, 191, 116, 0.15);
+        `
+    });
+
+    board.update();
+}
+
+function markWrong() {
+    if (!userPlot) return;
+
+    userPlot.setAttribute({
+        color: '#d32f2f',
+        fillColor: '#d32f2f'
+    });
+
+    userPlot.label.setAttribute({
+        cssStyle: `
+            font-weight:bold;
+            color:#d32f2f;
+            background:#fdecea;
+            padding:2px 6px;
+            border-radius:12px;
+            box-shadow: 
+                0 0 0 2px rgba(246, 7, 7, 0.3),
+                0 4px 8px rgba(242, 76, 76, 0.15);
+        `
+    });
+
+    board.update();
+}
+
+
 // --- Interaction Handlers ---
 window.checkAnswer = function () {
     // ... (rest of checkAnswer logic remains the same)
     if (isLocked) return;
-    const feedbackEl = document.getElementById(FEEDBACK_ID);
     if (!userPlot) {
         feedbackEl.textContent = 'Please plot a point first.';
+        feedbackEl.style.color = 'red';
         feedbackEl.className = 'incorrect';
         return;
     }
-    const userA = userPlot.coords.a;
-    const userB = userPlot.coords.b;
+    const userA = userPlot.userData.a;
+    const userB = userPlot.userData.b;
     const targetA = targetPoint.a;
     const targetB = targetPoint.b;
     if (userA === targetA && userB === targetB) {
         feedbackEl.textContent = 'Well done! 🎉';
         feedbackEl.className = 'correct';
+        markCorrect();
         isLocked = true;
         document.getElementById('checkAnswer').disabled = true;
+        document.getElementById('showAnswer').disabled = true;
     } else {
         feedbackEl.textContent = 'Good attempt, but not the right one!';
+        feedbackEl.style.color = 'red';
         feedbackEl.className = 'incorrect';
+        markWrong();
+        isLocked = true;
+        document.getElementById('checkAnswer').disabled = true;
     }
 };
 
 window.nextProblem = function () {
     currentProblemIndex++;
+    feedbackEl.style.color = 'black';
     loadProblem();
 };
 
 window.showAnswer = function () {
     // ... (rest of showAnswer logic remains the same)
-    if (isLocked) return;
+    // if (isLocked) return;
     isLocked = true;
-    const labelOffset = targetPoint.a > 8 ? [-50, 20] : [5, 20];
+    //const labelOffset = targetPoint.a > 8 ? [-50, 20] : [5, 20];
+    const labelOffset = targetPoint.a > 8 ? [-70, -10] : targetPoint.a < -8 ? [10, -15] : [10, -15];
     const targetA = targetPoint.a;
     const targetB = targetPoint.b;
     const labelText = targetPoint.label;
-    const feedbackEl = document.getElementById(FEEDBACK_ID);
-    if (userPlot) { board.removeObject(userPlot); userPlot = null; }
+    // if (userPlot) { board.removeObject(userPlot); userPlot = null; }
     board.create('point', [targetA, targetB],
         {
-            name: labelText, size: 5,
+            name: labelText, size: 4,
             color: 'blue',
             fixed: true,
             // label: { position: 'auto', offset: [0, 10], 
@@ -406,7 +463,7 @@ window.showAnswer = function () {
                 0 4px 8px rgba(0, 0, 0, 0.15);`
             }
         });
-    feedbackEl.innerHTML = `The correct answer is ${labelText}.`;
+    feedbackEl.innerHTML = `The correct answer is ${labelText}`;
     feedbackEl.className = 'correct';
     document.getElementById('checkAnswer').disabled = true;
     document.getElementById('showAnswer').disabled = true;
