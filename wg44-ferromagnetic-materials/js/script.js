@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       if (iText)
         iText.textContent =
-          "Identify soft and hard ferromagnetic materials using the magnetic field. Use X-ray to observe\n                      dipoles and domain behaviour inside the materials.";
+          "Identify soft and hard ferromagnetic materials using the magnetic field. Use Domain View to observe\n                      dipoles and domain behaviour inside the materials.";
       document.getElementById("xray-right-img").style.display = "none";
       document.getElementById("xray-left-img").style.display = "none";
 
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           if (iText)
             iText.textContent =
-              "Identify soft and hard ferromagnetic materials using the magnetic field. Use X-ray to observe\n                      dipoles and domain behaviour inside the materials.";
+              "Identify soft and hard ferromagnetic materials using the magnetic field. Use Domain View to observe\n                      dipoles and domain behaviour inside the materials.";
 
           // After 2s, convert material blocks to pole variants when magnetic is ON
           activeTimeouts.push(
@@ -407,6 +407,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // ⭐ Play reverse after 1 second
         } else {
+          document.getElementById("block-wrapper-two")?.classList.add("active");
+          document.getElementById("block-wrapper")?.classList.add("active");
               event.target.disabled = true;
 
           document.querySelectorAll(".material-block").forEach((el) => {
