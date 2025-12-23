@@ -246,8 +246,8 @@ function reset() {
     currentLEDSign = false;
     LEDSign = false;
     // Reset Sign colors/fills to default
-    // if(bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
-    // if(bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
+    if(bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
+    if(bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
 
     if (LEDGreenSign) LEDGreenSign.style.fill = "#47D847";
     if (LEDRedSign) LEDRedSign.style.fill = "#FF4C4C";
