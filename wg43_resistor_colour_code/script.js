@@ -44,9 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
 
     "tolerance": [
-      { "id": "tol-1", "x": 1638, "y": 400, "fill": "url(#paint2_linear_5135_217)", "value": 0.05, "display": "±5%", "band_group": "tol" },
-      { "id": "tol-2", "x": 1638, "y": 441, "fill": "url(#paint3_linear_5135_217)", "value": 0.10, "display": "±10%", "band_group": "tol" },
-      { "id": "tol-3", "x": 1638, "y": 482, "fill": "#FDE4C6", "value": 0.20, "display": "±20%", "band_group": "tol" }
+      { "id": "tol-1", "x": 1638, "y": 400, "fill": "url(#paint2_linear_5135_217)", "value": 0.05, "display": "± 5%", "band_group": "tol" },
+      { "id": "tol-2", "x": 1638, "y": 441, "fill": "url(#paint3_linear_5135_217)", "value": 0.10, "display": "± 10%", "band_group": "tol" },
+      { "id": "tol-3", "x": 1638, "y": 482, "fill": "#FDE4C6", "value": 0.20, "display": "± 20%", "band_group": "tol" }
     ]
   };
 
@@ -244,13 +244,18 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // --- HIGHLIGHT LOGIC ---
-  const HIGHLIGHT_PATH = `<path d="M158 -2 H-2 V45.25 H158 V-2 Z" stroke="#EEFF00" stroke-width="12" fill="none" data-highlight="true" />`;
+  
+  
+
+
+  const HIGHLIGHT_PATH = `<path d="M158 -2 H-2 V45.25 H158 V-2 Z" stroke="#13FFEF" stroke-width="20" fill="none" data-highlight="true" />`;
   const selectedHighlights = { "fd": null, "sd": null, "mul": null, "tol": null };
 
   const createSVG = ({ id, x, y, fill, value, band_group, display }) => {
+  
     const wrapper = document.createElement("div");
     wrapper.innerHTML = `
-      <svg width="156" height="44" x="${x}" y="${y}" viewBox="0 0 156 44" xmlns="http://www.w3.org/2000/svg" id="${id}" data-id="${id}" data-value="${value}" data-band-group="${band_group}" data-fill="${fill}" data-display="${display || value}">
+      <svg width="156" height="44" x="${x}" y="${y -24}" viewBox="0 0 156 44" xmlns="http://www.w3.org/2000/svg" id="${id}" data-id="${id}" data-value="${value}" data-band-group="${band_group}" data-fill="${fill}" data-display="${display || value}">
         <path d="M156 0H0V43.25H156V0Z" id="filler" fill="${fill}" />
         <path d="M155 1H1V42.25H155V1Z" stroke="white" stroke-width="2" />
       </svg>`;
