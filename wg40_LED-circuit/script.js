@@ -18,6 +18,9 @@ const bulbMinusPlus = document.getElementById('bulb-minus-plus');
 const LEDPlusMinus = document.getElementById('led-plus-minus');
 const LEDMinusPlus = document.getElementById('led-minus-plus');
 
+const flipBulbImg = document.getElementById('flip-bulb-img');
+const flipLEDImg = document.getElementById('flip-LED-img');
+const LEDStick = document.getElementById('LED-stick-img');
 // 2. State Variables
 let switchLottieInstance = null;
 let currentFlowLottie = null;
@@ -105,12 +108,25 @@ function handleSwitchToggle() {
                 offBulb.style.display = 'none';
                 container3.classList.remove('hidden'); // Make it visible
                 currentFlowLottie.goToAndPlay(0, true);          // Start animation
+                flipBulb.style.opacity = "0.3";
+                flipBulb.style.pointerEvents = "none";
+    
+                flipLED.style.opacity = "0.3";
+                flipLED.style.pointerEvents = "none";
             }, 300)
             LEDSign = true;
         }
         else {
             currentFlowLottie.goToAndPlay(0, true);
             showAndPlayCurrentFlow();
+
+            setTimeout(() => {
+                flipBulb.style.opacity = "0.3";
+                flipBulb.style.pointerEvents = "none";
+    
+                flipLED.style.opacity = "0.3";
+                flipLED.style.pointerEvents = "none";
+            }, 300);
         }
 
         isSwitchOn = true;
@@ -120,6 +136,14 @@ function handleSwitchToggle() {
         switchLottieInstance.playSegments([10, 30], true);
 
         hideCurrentFlow();
+
+        setTimeout(() => {
+            flipBulb.style.opacity = "1";
+        flipBulb.style.pointerEvents = "auto";
+
+        flipLED.style.opacity = "1";
+        flipLED.style.pointerEvents = "auto";
+        }, 300);
 
         isSwitchOn = false;
     }
@@ -157,12 +181,16 @@ flipLED.addEventListener('click', () => {
         LEDMinusPlus.style.display = 'block';
         currentLEDSign = true;
         LEDSign = true;
+        flipLEDImg.src = './Assets/Images/bulb/left-flip.svg';
+        LEDStick.src = './Assets/Images/bulb/negative-stick.svg';
     } else {
         LEDGreenSign.style.fill = "#47D847";
         LEDRedSign.style.fill = "#FF4C4C";
         LEDPlusMinus.style.display = 'block';
         LEDMinusPlus.style.display = 'none';
         currentLEDSign = false;
+        flipLEDImg.src = './Assets/Images/bulb/right-flip.svg';
+        LEDStick.src = './Assets/Images/bulb/positive-stick.svg';
     }
 });
 
@@ -173,35 +201,45 @@ flipBulb.addEventListener('click', () => {
         bulbPlusMinus.style.display = 'none';
         bulbMinusPlus.style.display = 'block';
         currentBulbSign = true;
+        flipBulbImg.src = './Assets/Images/bulb/left-flip.svg';
     } else {
         bulbGreenSign.style.fill = "#47D847";
         bulbRedSign.style.fill = "#FF4C4C";
         bulbPlusMinus.style.display = 'block';
         bulbMinusPlus.style.display = 'none';
         currentBulbSign = false;
+        flipBulbImg.src = './Assets/Images/bulb/right-flip.svg';
     }
 });
 
-function reset(){
+function reset() {
     container2.classList.add('hidden');
     container3.classList.add('hidden');
     offBulb.style.display = 'block';
     onBulb.style.display = 'none';
     offLED.style.display = 'block';
     onLED.style.display = 'none';
-    
+
     bulbPlusMinus.style.display = 'block';
     bulbMinusPlus.style.display = 'none';
     LEDPlusMinus.style.display = 'block';
     LEDMinusPlus.style.display = 'none';
 
+    flipBulb.style.opacity = "1";
+    flipBulb.style.pointerEvents = "auto";
+
+    flipLED.style.opacity = "1";
+    flipLED.style.pointerEvents = "auto";
+    LEDStick.src = './Assets/Images/bulb/positive-stick.svg';
+
+
     if (switchLottieInstance) {
         // Force the animation back to the very first frame (OFF state)
         switchLottieInstance.goToAndStop(0, true);
     }
-    
+
     // Reset your tracking variable so the next click plays the ON segment
-    isSwitchOn = false; 
+    isSwitchOn = false;
 
     // Reset signs if applicable
     currentBulbSign = false;
@@ -211,8 +249,8 @@ function reset(){
     // if(bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
     // if(bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
 
-    if(LEDGreenSign) LEDGreenSign.style.fill = "#47D847";
-    if(LEDRedSign) LEDRedSign.style.fill = "#FF4C4C";    
+    if (LEDGreenSign) LEDGreenSign.style.fill = "#47D847";
+    if (LEDRedSign) LEDRedSign.style.fill = "#FF4C4C";
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -1,66 +1,104 @@
-
-
-const container = document.getElementById('lottie-container');
+const leftContainer = document.getElementById('left-container');
+const rightContainer = document.getElementById('right-container');
 const leftButton = document.getElementById('left-btn');
 const rightButton = document.getElementById('right-btn');
 
+let leftLottieInstance = null;
+let rightLottieInstance = null;
 
-const lottieInstance = null;
+let leftPlayedOnce = false;
+let rightPlayedOnce = false;
 
-const PATH_BASE = './Assets/Animation/JSON';
+const PATH_BASE = './Assets/Animation/JSON/';
+
+function loadInitialLottie() {
+
+  // destroy old instances
+  if (leftLottieInstance) leftLottieInstance.destroy();
+  if (rightLottieInstance) rightLottieInstance.destroy();
+
+  // LEFT LOTTIE
+  leftLottieInstance = lottie.loadAnimation({
+    container: leftContainer,
+    renderer: 'svg',
+    loop: false,
+    autoplay: false,
+    path: PATH_BASE + 'Condition_01_LH.json'
+  });
+
+  // RIGHT LOTTIE
+  rightLottieInstance = lottie.loadAnimation({
+    container: rightContainer,
+    renderer: 'svg',
+    loop: false,
+    autoplay: false,
+    path: PATH_BASE + 'Condition_01_RH.json'
+  });
+
+  // stop both at frame 0
+  leftLottieInstance.addEventListener('DOMLoaded', () => {
+    leftLottieInstance.goToAndStop(0, true);
+  });
+
+  rightLottieInstance.addEventListener('DOMLoaded', () => {
+    rightLottieInstance.goToAndStop(0, true);
+  });
+
+  // BUTTON EVENTS
+  leftButton.onclick = () => playSingleFrame('left');
+  rightButton.onclick = () => playSingleFrame('right');
+}
 
 /**
- * Loads the Lottie animation and sets it to Frame 0
+ * Play only 1 frame for left or right
  */
-function loadInitialLottie() {
-    // Check if container exists
-    if (!container) {
-        console.error("Lottie container not found.");
-        return;
-    }
+function playSingleFrame(side) {
 
-    // Destroy previous instance if it exists
-    if (lottieInstance) {
-        lottieLeft.destroy();
-        lottieRight.destroy();
-    }
+  if (side === 'left' && !leftPlayedOnce) {
+    leftPlayedOnce = true;
+    console.log("Hi")
+    playOneFrame(leftLottieInstance);
+  }
 
-    // Load Instance
-    lottieInstance = lottie.loadAnimation({
-        container: container,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        path: PATH_BASE + 'Condition_01.json'
-    });
+  if (side === 'right' && !rightPlayedOnce) {
+    rightPlayedOnce = true;
+    playOneFrame(rightLottieInstance);
+  }
 
-    // Event: Once loaded, stop at frame 0
-    lottieInstance.addEventListener('DOMLoaded', () => {
-        lottieInstance.goToAndStop(0, true);
-        console.log("Animation loaded at frame 0");
-    });
-
-    // Error handling for file paths
-    lottieInstance.addEventListener('data_failed', () => {
-        console.error("Failed to load Lottie JSON at:", animationPath);
-    });
-
-    // Setup Interaction
-    container.onclick = handleSwitchToggle;
+  // if both have played once → play full animation
+  if (leftPlayedOnce && rightPlayedOnce) {
+    playFullAnimation();
+  }
 }
 
-function reset(){
-
+/**
+ * Play exactly 1 frame
+ */
+function playOneFrame(instance) {
+  const currentFrame = Math.floor(instance.currentFrame);
+  instance.goToAndStop(currentFrame + 1, true);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+/**
+ * Play both animations fully
+ */
+function playFullAnimation() {
+  leftLottieInstance.play();
+  rightLottieInstance.play();
+}
 
-    let resetBtn = document.getElementById('reset-btn');
-    resetBtn.addEventListener('click', () => {
-        reset();
-    });
+/**
+ * RESET
+ */
+function reset() {
+  leftPlayedOnce = false;
+  rightPlayedOnce = false;
 
-    // 4. Initialize
-    loadInitialLottie();
-    reset();
+  leftLottieInstance.goToAndStop(0, true);
+  rightLottieInstance.goToAndStop(0, true);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('reset-btn').addEventListener('click', reset);
+  loadInitialLottie();
 });

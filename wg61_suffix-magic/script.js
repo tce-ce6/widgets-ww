@@ -426,6 +426,14 @@ const showExample = document.getElementById('showExampleBtn');
 
 let wordObj = null;
 
+const IMAGES = [
+  'Assets/tree.svg',
+  'Assets/Milestone.svg',
+  'Assets/Mountain.svg',
+  'Assets/Stone.svg'
+];
+
+
 /**
  * DATA LAYER: Manages the words and ensures no repeats
  */
@@ -434,6 +442,9 @@ class WordPicker {
     this.data = data;
     this.history = new Set();
     this.allWords = this.flattenData();
+
+    this.images = IMAGES;
+    this.imageIndex = 0;
   }
 
   flattenData() {
@@ -456,7 +467,15 @@ class WordPicker {
 
     const selected = available[Math.floor(Math.random() * available.length)];
     this.history.add(`${selected.group}-${selected.root}`);
-    return selected;
+
+    // 🔁 rotate image (1 → 2 → 3 → 4 → 1 ...)
+    const image = this.images[this.imageIndex];
+    this.imageIndex = (this.imageIndex + 1) % this.images.length;
+
+    return {
+      ...selected,
+      image
+    };
   }
 }
 
@@ -469,6 +488,12 @@ function handleSmoothMove(source, target) {
 
   source.style.opacity = "0.3";
   source.style.pointerEvents = "none";
+
+  // Reset after 1 second (1000 milliseconds)
+  setTimeout(() => {
+    source.style.opacity = "1";
+    source.style.pointerEvents = "auto";
+  }, 1000);
 
   const clone = source.cloneNode(true);
   clone.removeAttribute("id");
@@ -588,6 +613,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const d = wordObj.details;
 
     // currentWordObj = wordObj;
+
+    const imgEl = document.getElementById('objects-img');
+    imgEl.src = wordObj.image;
+
+    console.log(wordObj.root, wordObj.image);
 
     correctSuffixes = d.suffixes.correct.map(s => s.trim());
     answers = d.answer.map(a => a.trim());
