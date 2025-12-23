@@ -35,6 +35,15 @@
   top: 0;
   left: 0;
 }
+#modal-background{
+  display: none;
+}
+.modal-open  {
+  background-color: #000000e7;
+}
+.modal-open #modal-background{
+  display: block;
+}
 
 /* #make-food-chain-widget .mainContainerOuter {
   background: #60360D !important
