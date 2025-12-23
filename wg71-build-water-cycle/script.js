@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         autoplay: true,
         path: 'assets/animation/wg-71.json' // <--- UPDATE THIS PATH TO YOUR LOTTIE JSON FILE
     });
+    
     // 1. CONFIGURATION
     // Maps Button IDs to correct Drop Zone IDs
     const correctMap = {
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Global Controls
     document.getElementById("show-answer-btn").addEventListener("click", showAnswer);
-    document.getElementById("check-answer-btn").addEventListener("click", checkAllAnswers); // Keeps manual check available
+    document.getElementById("check-answer-btn").addEventListener("click", checkAllAnswers); 
     document.getElementById("reset-button").addEventListener("click", resetWidget);
 
     // 3. CORE DRAG LOGIC
@@ -94,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Move to top of stack visually
         buttonsGroup.appendChild(draggedElement);
 
-        // Remove existing icon for this button if any
+        // Remove existing icon for this button immediately when user picks it up
         removeStatusIcon(draggedElement.id);
 
         const coord = getMousePosition(evt);
@@ -137,10 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropZoneId = getIntersectingZone(el);
 
         if (dropZoneId) {
-            // Valid drop zone found
+            // Valid drop zone found: Snap to it.
             snapToZone(el, dropZoneId);
-            // Automatic Feedback
-            validateSingleDrop(el, dropZoneId);
+            
+            // UPDATED: Validation removed from here. 
+            // Icons will only appear when "Check Answer" is clicked.
         } else {
             // No zone found, snap back home
             snapToOriginal(el);
@@ -205,9 +207,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkAllAnswers() {
         if(isLocked) return;
+        
+        // Remove old icons first to avoid duplicates
+        document.querySelectorAll(".status-icon").forEach(el => el.remove());
+
         draggableIds.forEach(btnId => {
             const btn = document.getElementById(btnId);
             const zoneId = getIntersectingZone(btn);
+            
+            // Only validate if the button is actually inside a drop zone
             if(zoneId) {
                 validateSingleDrop(btn, zoneId);
             }
@@ -246,111 +254,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 6. ICON RENDERING (Tick/Cross)
 
-  function showStatusIcon(button, isCorrect) {
-    removeStatusIcon(button.id); // Clear previous
+    function showStatusIcon(button, isCorrect) {
+        removeStatusIcon(button.id); // Clear previous
 
-    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    group.setAttribute("class", "status-icon");
-    group.setAttribute("id", "icon-" + button.id);
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("class", "status-icon");
+        group.setAttribute("id", "icon-" + button.id);
 
-    // Button position
-    const bx = parseFloat(button.getAttribute("x"));
-    const by = parseFloat(button.getAttribute("y"));
-    const bw = parseFloat(button.getAttribute("width"));
+        // Button position
+        const bx = parseFloat(button.getAttribute("x"));
+        const by = parseFloat(button.getAttribute("y"));
+        const bw = parseFloat(button.getAttribute("width"));
 
-    // Icon size
-    const size = 40;
+        // Icon size
+        const size = 40;
 
-    // Top-right positioning
-    const x = bx + bw - size;
-    const y = by;
+        // Top-right positioning
+        const x = bx + bw - size;
+        const y = by;
 
-    // foreignObject
-    const foreignObject = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "foreignObject"
-    );
-    foreignObject.setAttribute("x", x + 14);
-    foreignObject.setAttribute("y", y  - 14);
-    foreignObject.setAttribute("width", size);
-    foreignObject.setAttribute("height", size);
+        // foreignObject
+        const foreignObject = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "foreignObject"
+        );
+        foreignObject.setAttribute("x", x + 14);
+        foreignObject.setAttribute("y", y  - 14);
+        foreignObject.setAttribute("width", size);
+        foreignObject.setAttribute("height", size);
 
-    /* ------------------ ICON HTML ------------------ */
-    let html = "";
+        /* ------------------ ICON HTML ------------------ */
+        let html = "";
 
-    if (isCorrect) {
-        html = `
-        <div
-          style="
-            width:${size}px;
-            height:${size}px;
-            border-radius:50%;
-            background:#2ECC71;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-           
-          "
-        >
-          <span
-            style="
-              width:10px;
-              height:22px;
-              border-right:5px solid #fff;
-              border-bottom:5px solid #fff;
-              transform:rotate(45deg);
-              margin-bottom:4px;
-              display:inline-block;
-            "
-          ></span>
-        </div>
-        `;
-    } else {
-        html = `
-        <div
-          style="
-            width:${size}px;
-            height:${size}px;
-            background:#e53935;
-            border-radius:50%;
-            position:relative;
-           
-          "
-        >
-          <div
-            style="
-              position:absolute;
-              top:50%;
-              left:50%;
-              width:24px;
-              height:4px;
-              background:white;
-              transform:translate(-50%, -50%) rotate(45deg);
-              border-radius:2px;
-            "
-          ></div>
-          <div
-            style="
-              position:absolute;
-              top:50%;
-              left:50%;
-              width:24px;
-              height:4px;
-              background:white;
-              transform:translate(-50%, -50%) rotate(-45deg);
-              border-radius:2px;
-            "
-          ></div>
-        </div>
-        `;
+        if (isCorrect) {
+            html = `
+            <div
+              style="
+                width:${size}px;
+                height:${size}px;
+                border-radius:50%;
+                background:#2ECC71;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+               
+              "
+            >
+              <span
+                style="
+                  width:10px;
+                  height:22px;
+                  border-right:5px solid #fff;
+                  border-bottom:5px solid #fff;
+                  transform:rotate(45deg);
+                  margin-bottom:4px;
+                  display:inline-block;
+                "
+              ></span>
+            </div>
+            `;
+        } else {
+            html = `
+            <div
+              style="
+                width:${size}px;
+                height:${size}px;
+                background:#e53935;
+                border-radius:50%;
+                position:relative;
+               
+              "
+            >
+              <div
+                style="
+                  position:absolute;
+                  top:50%;
+                  left:50%;
+                  width:24px;
+                  height:4px;
+                  background:white;
+                  transform:translate(-50%, -50%) rotate(45deg);
+                  border-radius:2px;
+                "
+              ></div>
+              <div
+                style="
+                  position:absolute;
+                  top:50%;
+                  left:50%;
+                  width:24px;
+                  height:4px;
+                  background:white;
+                  transform:translate(-50%, -50%) rotate(-45deg);
+                  border-radius:2px;
+                "
+              ></div>
+            </div>
+            `;
+        }
+
+        foreignObject.innerHTML = html;
+
+        group.appendChild(foreignObject);
+        svg.appendChild(group);
     }
-
-    foreignObject.innerHTML = html;
-
-    group.appendChild(foreignObject);
-    svg.appendChild(group);
-}
-
 
     function removeStatusIcon(btnId) {
         const icon = document.getElementById("icon-" + btnId);
