@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Global Controls
     document.getElementById("show-answer-btn").addEventListener("click", showAnswer);
-    document.getElementById("check-answer-btn").addEventListener("click", checkAllAnswers); 
     document.getElementById("reset-button").addEventListener("click", resetWidget);
 
     // 3. CORE DRAG LOGIC
@@ -120,6 +119,20 @@ document.addEventListener("DOMContentLoaded", () => {
         draggedElement.setAttribute("y", coord.y - offset.y);
     }
 
+    function checkAnswers(){
+        document.querySelectorAll(".status-icon").forEach(el => el.remove());
+
+        draggableIds.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            const zoneId = getIntersectingZone(btn);
+            
+            // Only validate if the button is actually inside a drop zone
+            if(zoneId) {
+                validateSingleDrop(btn, zoneId);
+            }
+        });
+    }
+
     function endDrag(evt) {
         if (!draggedElement) return;
 
@@ -140,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (dropZoneId) {
             // Valid drop zone found: Snap to it.
             snapToZone(el, dropZoneId);
+            checkAnswers();
             
             // UPDATED: Validation removed from here. 
             // Icons will only appear when "Check Answer" is clicked.
@@ -209,17 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(isLocked) return;
         
         // Remove old icons first to avoid duplicates
-        document.querySelectorAll(".status-icon").forEach(el => el.remove());
-
-        draggableIds.forEach(btnId => {
-            const btn = document.getElementById(btnId);
-            const zoneId = getIntersectingZone(btn);
-            
-            // Only validate if the button is actually inside a drop zone
-            if(zoneId) {
-                validateSingleDrop(btn, zoneId);
-            }
-        });
+        
     }
 
     function showAnswer() {
