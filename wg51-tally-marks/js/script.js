@@ -58,6 +58,12 @@ const data = [
   },
 ];
 document.addEventListener("DOMContentLoaded", () => {
+  let correctLottie = null;
+  let incorrectLottie = null;
+  const errorBeep = document.createElement("audio");
+  errorBeep.src = "assets/beep_error.mp3"; // 👈 update path
+  errorBeep.preload = "auto";
+
   // 🔹 GLOBAL VARIABLE – initially select id "1"
   let selectedActivityId = "1";
   let selectedActivityData = null;
@@ -150,6 +156,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function playCorrectLottie() {
+    const container = document.getElementById("correct-emoji");
+    if (!container) return;
+
+    // Clear previous instance
+    container.innerHTML = "";
+    if (correctLottie) correctLottie.destroy();
+
+    correctLottie = lottie.loadAnimation({
+      container,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: "lottie/emoji_correct.json", // ✅ update path if needed
+    });
+  }
+
+  function playIncorrectLottie() {
+    const container = document.getElementById("incorrect-emoji");
+    if (!container) return;
+
+    // container.innerHTML = "";
+    if (incorrectLottie) incorrectLottie.destroy();
+
+    incorrectLottie = lottie.loadAnimation({
+      container,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: "lottie/emoji_incorrect.json", // ✅ update path if needed
+    });
+  }
+
   function removeEmptyRow() {
     const emptyRow = tableBody.querySelector(".empty-row");
     if (emptyRow) emptyRow.remove();
@@ -208,10 +247,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("add-btn")) {
       if (currentCount >= MAX_TALLY) return;
 
+      const correctCount = getCorrectCountForCategory(category);
+
       currentCount++;
       countInput.value = currentCount;
-      renderTally(tallyCell, currentCount);
-      syncCompletedListItems(category, currentCount); // ✅ NEW
+
+      // 🔊 Play sound ONLY when exceeding correct count
+      if (currentCount > correctCount) {
+        errorBeep.currentTime = 0;
+        errorBeep.play().catch(() => {});
+      }
+
+      renderTally(tallyCell, currentCount, correctCount);
+      syncCompletedListItems(category, Math.min(currentCount, correctCount));
       updateTotal();
     }
 
@@ -219,7 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("minus-btn")) {
       currentCount = Math.max(0, currentCount - 1);
       countInput.value = currentCount;
-      renderTally(tallyCell, currentCount);
+      renderTally(
+        tallyCell,
+        currentCount,
+        getCorrectCountForCategory(category)
+      );
       syncCompletedListItems(category, currentCount); // ✅ NEW
       updateTotal();
     }
@@ -248,38 +300,83 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("total-count").value = total;
   }
 
-  function renderTally(cell, count) {
+  function renderTally(cell, count, correctCount = Infinity) {
     cell.innerHTML = "";
 
-    const groupsOfFive = Math.floor(count / 5);
-    const remainder = count % 5;
+    let rendered = 0;
 
-    // Full groups of 5
-    for (let i = 0; i < groupsOfFive; i++) {
+    while (rendered < count) {
       const group = document.createElement("div");
       group.classList.add("tally-group");
 
-      // 4 vertical lines
-      for (let j = 0; j < 4; j++) {
-        const line = document.createElement("div");
-        line.classList.add("tally-line");
-        group.appendChild(line);
-      }
+      for (let i = 0; i < 5 && rendered < count; i++) {
+        // 5th line = cross
+        if (i === 4) {
+          const cross = document.createElement("div");
+          cross.classList.add("tally-cross");
 
-      // diagonal cross
-      const cross = document.createElement("div");
-      cross.classList.add("tally-cross");
-      group.appendChild(cross);
+          if (rendered >= correctCount) {
+            cross.classList.add("error");
+          }
+
+          group.appendChild(cross);
+        } else {
+          const line = document.createElement("div");
+          line.classList.add("tally-line");
+
+          if (rendered >= correctCount) {
+            line.classList.add("error");
+          }
+
+          group.appendChild(line);
+        }
+
+        rendered++;
+      }
 
       cell.appendChild(group);
     }
+  }
 
-    // Remaining lines (<5)
-    for (let i = 0; i < remainder; i++) {
-      const line = document.createElement("div");
-      line.classList.add("tally-line");
-      cell.appendChild(line);
+  function getCorrectCountForCategory(category) {
+    if (!selectedActivityData) return Infinity;
+
+    let count = 0;
+
+    // 🔹 ACTIVITY 1 – Sports (exact match)
+    if (selectedActivityId === "1") {
+      selectedActivityData.raw_responses.forEach((v) => {
+        if (v === category) count++;
+      });
     }
+
+    // 🔹 ACTIVITY 2 – Library (range like "0-2 books")
+    if (selectedActivityId === "2") {
+      const match = category.match(/(\d+)\s*-\s*(\d+)/);
+      if (!match) return 0;
+
+      const min = Number(match[1]);
+      const max = Number(match[2]);
+
+      selectedActivityData.raw_responses.forEach((num) => {
+        if (num >= min && num <= max) count++;
+      });
+    }
+
+    // 🔹 ACTIVITY 3 – Math Test (range like "0-10 Score")
+    if (selectedActivityId === "3") {
+      const match = category.match(/(\d+)\s*-\s*(\d+)/);
+      if (!match) return 0;
+
+      const min = Number(match[1]);
+      const max = Number(match[2]);
+
+      selectedActivityData.raw_responses.forEach((score) => {
+        if (score >= min && score <= max) count++;
+      });
+    }
+
+    return count;
   }
 
   function syncCompletedListItems(category, count) {
@@ -455,23 +552,39 @@ document.addEventListener("DOMContentLoaded", () => {
     if (correct) {
       successModal.style.display = "block";
       successModal.classList.add("active", "correct");
+      playCorrectLottie();
     } else {
       failureModal.style.display = "block";
       failureModal.classList.add("active", "incorrect");
+      playIncorrectLottie();
     }
   });
 
-  function resetModals() {
-    if (successModal) {
-      successModal.style.display = "none";
-      successModal.classList.remove("correct", "active");
-    }
-
-    if (failureModal) {
-      failureModal.style.display = "none";
-      failureModal.classList.remove("incorrect", "active");
-    }
+function resetModals() {
+  if (successModal) {
+    successModal.style.display = "none";
+    successModal.classList.remove("correct", "active");
   }
+
+  if (failureModal) {
+    failureModal.style.display = "none";
+    failureModal.classList.remove("incorrect", "active");
+  }
+
+  // 🔹 Destroy lottie instances
+  if (correctLottie) {
+    correctLottie.destroy();
+    correctLottie = null;
+    document.getElementById("correct-emoji").innerHTML = "";
+  }
+
+  if (incorrectLottie) {
+    incorrectLottie.destroy();
+    incorrectLottie = null;
+    document.getElementById("incorrect-emoji").innerHTML = "";
+  }
+}
+
 
   function populateShowAnswerTable() {
     if (!selectedActivityData || !answerBody) return;

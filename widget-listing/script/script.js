@@ -259,7 +259,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg45-spin-and-match/index.html",
     imagePath: "./assets/wg-45.png",
     creators: "sh-di-45",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Modes of Communicable Disease Transmission",

@@ -37,8 +37,8 @@
                         <ul id="list-container">
                         </ul>
                         <div class="bottom-itext" id="note-txt"></div>
-                        <div class="message-modal success-modal" style="display: none;">Well done!</div>
-                        <div class="message-modal faillure-modal" style="display: none;">Incorrect!</div>
+                        <div class="message-modal success-modal" style="display: none;"><span class="emoji-wrapper" id="correct-emoji"></span>Well done!</div>
+                        <div class="message-modal faillure-modal" style="display: none;"><span class="emoji-wrapper" id="incorrect-emoji">Incorrect!</span></div>
                         <div class="showans-modal" id="answer-table-wrapper" style="display: none;">
                           <div id="close-btn"></div>
                           <div class="solution-header">Solution</div>
@@ -59,9 +59,9 @@
                         <div class="instruction-wrapper">
                           <span class="instruction-title">How to use:</span>
                           <ul>
-                            <li>Add the categories using the dropdown box</li>
-                            <li>Click the <span></span> button to add one tally mark</li>
-                            <li>Click the <span></span>  button to remove one tally mark</li>
+                            <li>Add the categories using the dropdown box.</li>
+                            <li>Click the <span class="pen-icon"></span> button to add one tally mark.</li>
+                            <li>Click the <span class="eraser-icon"></span>  button to remove one tally mark.</li>
                           </ul>
                         </div>
 
@@ -147,6 +147,7 @@
       </div>
     </div>
   </div>
+  <script src="./js/lottie.min.js"></script>
   <script src="./js/script.js"></script>
 </body>
 
