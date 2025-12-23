@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: 'assets/animation/wg-71.json' // <--- UPDATE THIS PATH TO YOUR LOTTIE JSON FILE
+        path: 'assets/animation/Chem_WG71_Assets.json' // <--- UPDATE THIS PATH TO YOUR LOTTIE JSON FILE
     });
     
     // 1. CONFIGURATION
@@ -151,12 +151,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropZoneId = getIntersectingZone(el);
 
         if (dropZoneId) {
-            // Valid drop zone found: Snap to it.
-            snapToZone(el, dropZoneId);
-            checkAnswers();
-            
-            // UPDATED: Validation removed from here. 
-            // Icons will only appear when "Check Answer" is clicked.
+            // NEW CHECK: Prevent multiple buttons in one zone
+            if (isZoneOccupied(dropZoneId, el.id)) {
+                // If occupied, reject drop and snap back
+                snapToOriginal(el);
+            } else {
+                // Valid drop zone found AND empty: Snap to it.
+                snapToZone(el, dropZoneId);
+                checkAnswers();
+            }
         } else {
             // No zone found, snap back home
             snapToOriginal(el);
@@ -191,6 +194,21 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
         return null;
+    }
+
+    // NEW HELPER: Check if a zone already has a button snapped to it
+    function isZoneOccupied(zoneId, currentBtnId) {
+        // Iterate over all buttons to see if any OTHER button is currently in this zone
+        for (let id of draggableIds) {
+            if (id === currentBtnId) continue; // Skip the button we are currently holding
+
+            const btn = document.getElementById(id);
+            // Check if this other button intersects the target zone
+            if (getIntersectingZone(btn) === zoneId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function snapToZone(button, zoneId) {
