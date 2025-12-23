@@ -132,10 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const formatResistance = (value) => {
     if (value === null || isNaN(value)) return '...';
     const absValue = Math.abs(value);
-    if (absValue >= 1e9) return `${(value / 1e9).toFixed(1)} GΩ`;
-    if (absValue >= 1e6) return `${(value / 1e6).toFixed(1)} MΩ`;
-    if (absValue >= 1e3) return `${(value / 1e3).toFixed(1)} kΩ`;
-    if (absValue >= 1) return `${value.toFixed(0)} Ω`;
+    if (absValue >= 1e9) return `${(value / 1e9).toFixed(2)} GΩ`;
+    if (absValue >= 1e6) return `${(value / 1e6).toFixed(2)} MΩ`;
+    if (absValue >= 1e3) return `${(value / 1e3).toFixed(2)} kΩ`;
+    if (absValue >= 1) return `${value.toFixed(2)} Ω`;
     return `${value.toFixed(2)} Ω`;
   };
   
