@@ -37,6 +37,22 @@ function playMessageLottie(jsonPath) {
   });
 }
 
+function updateActionButtonsState() {
+  const cells = getCells();
+  const hasAnyValue = cells.some(cell => cell.value.trim() !== "");
+
+  const showBtn = document.getElementById("showBtn");
+  const checkBtn = document.getElementById("checkBtn");
+
+  if (hasAnyValue) {
+    showBtn.removeAttribute("disabled");
+    checkBtn.removeAttribute("disabled");
+  }
+}
+
+getCells().forEach(cell => {
+  cell.addEventListener("input", updateActionButtonsState);
+});
 
 function getCells() {
   const ids = [
@@ -209,6 +225,10 @@ function newGame() {
     c.readOnly = false;
     c.classList.remove("correct", "wrong");
   });
+
+  document.getElementById("showBtn").setAttribute("disabled", true);
+  document.getElementById("checkBtn").setAttribute("disabled", true);
+
   setMessage("", null);
 
   magicConstant = pickMagicConstant(currentMode, magicConstant);
@@ -305,6 +325,7 @@ function checkSquare() {
 
 function showAnswer() {
   if (!currentSolution) return;
+
   const cells = getCells();
   for (let r = 0; r < 3; r++) {
     for (let c = 0; c < 3; c++) {
@@ -315,10 +336,14 @@ function showAnswer() {
       cell.classList.add("correct");
     }
   }
+
+  // ✅ Disable Check button after Show Answer
+  document.getElementById("checkBtn").setAttribute("disabled", true);
+
   setMessage("Here is the correct magic square.", "ok");
   playMessageLottie("correct.json");
-
 }
+
 
 document.querySelectorAll('input[name="rangeMode"]').forEach(radio => {
   radio.addEventListener("change", function () {
