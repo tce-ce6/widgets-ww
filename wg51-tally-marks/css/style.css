@@ -276,6 +276,16 @@
   width: 60px;
 }
 
+.common-btn.next-btn.previous-btn::before {
+  transform: rotate(180deg);
+  left: -30px;
+
+}
+.common-btn.next-btn.previous-btn{
+  padding-left: 60px;
+  padding-right: 20px;
+}
+
 #activity-title {
   font-size: 28px;
   font-weight: medium;

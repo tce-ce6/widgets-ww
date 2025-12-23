@@ -245,7 +245,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-41.png",
     creators: "as-di-41",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Mendel's Monohybrid Cross",
@@ -385,7 +385,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-65.png",
     creators: "sh-ra-65",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Number Tambola",
@@ -416,18 +416,11 @@ const WIDGET_DATA = [
     status: "WIP-With-Tech",
   },
   {
-    name: "Role of Fuse in Household Circuit",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-57.png",
-    creators: "as-ra-57",
-    status: "WIP-With-Tech",
-  },
-  {
     name: "Build a Water Cycle",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-71.png",
     creators: "sh-ra-71",
-    status: "todo",
+    status: "in-review",
   },
   
   {

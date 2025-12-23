@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const resetAllCountBtn = document.getElementById("reset-all-count");
   const nextActivityBtn = document.getElementById("next-activity");
+  const previousActivityBtn = document.getElementById("previous-activity");
 
   const MAX_TALLY = 15;
 
@@ -710,6 +711,34 @@ document.addEventListener("DOMContentLoaded", () => {
     showAnswerBtn.disabled = true;
   }
 
+  if (previousActivityBtn) {
+    previousActivityBtn.addEventListener("click", () => {
+      const currentIndex = data.findIndex(
+        (item) => item.id === selectedActivityId
+      );
+
+      if (currentIndex <= 0) return;
+
+      selectedActivityId = data[currentIndex - 1].id;
+
+      resetActivityUI();
+      loadActivity(selectedActivityId);
+
+      updateListContainerClass();
+      updateActionButtonsState();
+
+      // 🔹 ENABLE Next button again when going back
+      if (nextActivityBtn) {
+        nextActivityBtn.disabled = false;
+      }
+
+      // Disable Previous if first activity
+      if (currentIndex - 1 === 0) {
+        previousActivityBtn.disabled = true;
+      }
+    });
+  }
+
   if (nextActivityBtn) {
     nextActivityBtn.addEventListener("click", () => {
       const currentIndex = data.findIndex(
@@ -722,17 +751,24 @@ document.addEventListener("DOMContentLoaded", () => {
       // Move to next activity
       selectedActivityId = data[currentIndex + 1].id;
 
+      // 🔹 ENABLE Previous button
+      if (previousActivityBtn) {
+        previousActivityBtn.disabled = false;
+      }
+
       // Reset previous UI
       resetActivityUI();
 
       // Load new activity
       loadActivity(selectedActivityId);
 
-      // 🔥 IMPORTANT: update list-container class
       updateListContainerClass();
-
-      // Reset button state
       updateActionButtonsState();
+
+      // 🔹 DISABLE Next button if last activity reached
+      if (currentIndex + 1 === data.length - 1) {
+        nextActivityBtn.disabled = true;
+      }
     });
   }
 
