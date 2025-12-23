@@ -237,7 +237,9 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
-
+#reset-all-count::before{
+  display: none;
+}
 .selectwrap select option {
   font-size: 15px !important;
 }

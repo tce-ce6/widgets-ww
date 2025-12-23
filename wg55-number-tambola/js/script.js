@@ -239,8 +239,18 @@ function enableNewGrid() {
 
 function updateShowButton() {
   const showBtn = document.getElementById("showBtn");
-  showBtn.disabled = selectedClue === -1 || finished;
+
+  const shouldDisable =
+    !isShowingBack ||        // ❌ card not flipped
+    selectedClue === -1 ||   // ❌ no clue yet
+    finished ||              // ❌ game finished
+    showAnswerUsed;          // ❌ already used for this clue
+
+  showBtn.disabled = shouldDisable;
+  showBtn.classList.toggle("disabled", shouldDisable);
 }
+
+
 
 function showClueInfo() {
   const clueInfo = document.getElementById("clue-info");
@@ -305,6 +315,7 @@ document.querySelectorAll(".cell-front").forEach((cf) => {
 }
 
 document.querySelector("#clue-info #showBtn").onclick = () => {
+  alert("hello")
   document.getElementById("clue-info").style.display = "none";
 
   // ✅ restore controls
@@ -340,12 +351,10 @@ function highlightAnswerForCurrentClue() {
     return;
   }
 
-  // Clear previous highlights
   document
     .querySelectorAll(".cell-inner")
     .forEach((ci) => ci.classList.remove("show-highlight"));
 
-  // Highlight correct answers
   currentAnswers.forEach((answerNum) => {
     const outer = gridCellMap.get(answerNum);
     if (outer) {
@@ -353,7 +362,6 @@ function highlightAnswerForCurrentClue() {
     }
   });
 
-  // Clear crosses and restore clicked cells
   clearAllCrosses();
 
   showMessage(
@@ -361,13 +369,22 @@ function highlightAnswerForCurrentClue() {
     true
   );
 
-  // Block grid clicks until clue card tapped
   gridBlocked = true;
   document
     .querySelectorAll(".cell-inner")
     .forEach((ci) => ci.classList.add("grid-blocked"));
   showAnswerUsed = true;
+  document.getElementById("showBtn").disabled = true;
+
+  // ✅ NEW: flip card back after Show Answer
+  setTimeout(() => {
+    document.getElementById("flipCard").classList.remove("flipped");
+    isShowingBack = false;
+    document.getElementById("flipFront").textContent = "";
+    updateShowButton();
+  }, 800);
 }
+
 
 function handleCorrectAnswer(cellOuter) {
   const inner = cellOuter.querySelector(".cell-inner");

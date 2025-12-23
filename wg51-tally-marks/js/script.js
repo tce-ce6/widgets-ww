@@ -541,49 +541,82 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  checkAnsBtn.addEventListener("click", () => {
-    if (!successModal || !failureModal || !leftCol) return;
+checkAnsBtn.addEventListener("click", () => {
+  if (!successModal || !failureModal || !leftCol) return;
 
-    resetModals();
+  // 🔹 FULL RESET FIRST
+  successModal.style.display = "none";
+  failureModal.style.display = "none";
 
-    const correct = isAnswerCorrect();
-    leftCol.classList.add("active");
+  successModal.classList.remove("active", "correct");
+  failureModal.classList.remove("active", "incorrect");
 
-    if (correct) {
-      successModal.style.display = "block";
-      successModal.classList.add("active", "correct");
-      playCorrectLottie();
-    } else {
-      failureModal.style.display = "block";
-      failureModal.classList.add("active", "incorrect");
-      playIncorrectLottie();
-    }
-  });
+  // 🔹 Clear emojis
+  const correctEmoji = document.getElementById("correct-emoji");
+  const incorrectEmoji = document.getElementById("incorrect-emoji");
 
-function resetModals() {
-  if (successModal) {
-    successModal.style.display = "none";
-    successModal.classList.remove("correct", "active");
-  }
+  if (correctEmoji) correctEmoji.innerHTML = "";
+  if (incorrectEmoji) incorrectEmoji.innerHTML = "";
 
-  if (failureModal) {
-    failureModal.style.display = "none";
-    failureModal.classList.remove("incorrect", "active");
-  }
-
-  // 🔹 Destroy lottie instances
   if (correctLottie) {
     correctLottie.destroy();
     correctLottie = null;
-    document.getElementById("correct-emoji").innerHTML = "";
   }
-
   if (incorrectLottie) {
     incorrectLottie.destroy();
     incorrectLottie = null;
-    document.getElementById("incorrect-emoji").innerHTML = "";
+  }
+
+  const correct = isAnswerCorrect();
+  leftCol.classList.add("active");
+
+  if (correct) {
+    // Ensure modal text exists (in case it was removed)
+    const successTextEl = successModal.querySelector(".modal-text");
+    if (successTextEl) successTextEl.textContent = "Well done!";
+
+    successModal.style.display = "block";   // ✅ IMPORTANT
+    successModal.classList.add("active", "correct");
+    playCorrectLottie();
+  } else {
+    // Ensure modal text exists (in case it was removed)
+    const failureTextEl = failureModal.querySelector(".modal-text");
+    if (failureTextEl) failureTextEl.textContent = "Incorrect!";
+
+    failureModal.style.display = "block";   // ✅ IMPORTANT
+    failureModal.classList.add("active", "incorrect");
+    playIncorrectLottie();
+  }
+});
+
+
+function resetModals() {
+  if (successModal) {
+    successModal.classList.remove("active", "correct");
+    successModal.style.display = "none";
+  }
+
+  if (failureModal) {
+    failureModal.classList.remove("active", "incorrect");
+    failureModal.style.display = "none";
+  }
+
+  const correctEmoji = document.getElementById("correct-emoji");
+  const incorrectEmoji = document.getElementById("incorrect-emoji");
+
+  if (correctEmoji) correctEmoji.innerHTML = "";
+  if (incorrectEmoji) incorrectEmoji.innerHTML = "";
+
+  if (correctLottie) {
+    correctLottie.destroy();
+    correctLottie = null;
+  }
+  if (incorrectLottie) {
+    incorrectLottie.destroy();
+    incorrectLottie = null;
   }
 }
+
 
 
   function populateShowAnswerTable() {
@@ -726,47 +759,44 @@ function resetModals() {
     });
   }
 
-  function resetActiveSimulation() {
-    // Clear table rows
-    const rows = document.querySelectorAll("#result-body tr[data-category]");
-    rows.forEach((row) => row.remove());
+function resetActiveSimulation() {
+  // Clear table rows
+  const rows = document.querySelectorAll("#result-body tr[data-category]");
+  rows.forEach((row) => row.remove());
 
-    // Reset total
-    const totalInput = document.getElementById("total-count");
-    if (totalInput) totalInput.value = 0;
+  // Reset total
+  const totalInput = document.getElementById("total-count");
+  if (totalInput) totalInput.value = 0;
 
-    // Clear raw response highlights
-    document
-      .querySelectorAll("#list-container li.complete")
-      .forEach((li) => li.classList.remove("complete"));
+  // Clear raw response highlights
+  document
+    .querySelectorAll("#list-container li.complete")
+    .forEach((li) => li.classList.remove("complete"));
 
-    // Hide modals
-    const successModal = document.querySelector(".success-modal");
-    const failureModal = document.querySelector(".faillure-modal");
-    const answerWrapper = document.getElementById("answer-table-wrapper");
+  // Hide modals - use resetModals() for consistency
+  resetModals();
+  
+  const answerWrapper = document.getElementById("answer-table-wrapper");
+  if (answerWrapper) answerWrapper.style.display = "none";
 
-    if (successModal) successModal.style.display = "none";
-    if (failureModal) failureModal.style.display = "none";
-    if (answerWrapper) answerWrapper.style.display = "none";
+  // Remove active state
+  const leftCol = document.getElementById("left-col");
+  if (leftCol) leftCol.classList.remove("active");
 
-    // Remove active state
-    const leftCol = document.getElementById("left-col");
-    if (leftCol) leftCol.classList.remove("active");
+  // Disable buttons again
+  document.getElementById("check-ans").disabled = true;
+  document.getElementById("global-reset").disabled = true;
+  document.getElementById("show-answer").disabled = true;
 
-    // Disable buttons again
-    document.getElementById("check-ans").disabled = true;
-    document.getElementById("global-reset").disabled = true;
-    document.getElementById("show-answer").disabled = true;
-
-    // Re-add empty placeholder
-    const tbody = document.getElementById("result-body");
-    if (tbody && !tbody.querySelector(".empty-row")) {
-      const tr = document.createElement("tr");
-      tr.className = "empty-row";
-      tr.innerHTML = `<td colspan="4" style="text-align:center;">Select a category</td>`;
-      tbody.appendChild(tr);
-    }
+  // Re-add empty placeholder
+  const tbody = document.getElementById("result-body");
+  if (tbody && !tbody.querySelector(".empty-row")) {
+    const tr = document.createElement("tr");
+    tr.className = "empty-row";
+    tr.innerHTML = `<td colspan="4" style="text-align:center;">Select a category</td>`;
+    tbody.appendChild(tr);
   }
+}
 
   globalResetBtn.addEventListener("click", resetActiveSimulation);
 
