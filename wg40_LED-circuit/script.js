@@ -28,6 +28,8 @@ const insightContainer = document.getElementById('insight-container');
 let insightText1 = document.getElementById('insight-text-1');
 let insightText2 = document.getElementById('insight-text-2');
 
+let resetBtn = document.getElementById('reset-btn');
+
 // 2. State Variables
 let switchLottieInstance = null;
 let currentFlowLottie = null;
@@ -104,6 +106,9 @@ function loadInitialLottie() {
 function handleSwitchToggle() {
     if (!switchLottieInstance || !currentFlowLottie) return;
 
+    switchLottieInstance.stop();
+
+
     if (!isSwitchOn) {
         // --- ACTION: TURN ON ---
         // Play first segment (e.g., frame 0 to 30)
@@ -148,7 +153,6 @@ function handleSwitchToggle() {
         // --- ACTION: TURN OFF ---
         // Play second segment (e.g., frame 30 to 60)
         switchLottieInstance.playSegments([10, 30], true);
-
         hideCurrentFlow();
 
         setTimeout(() => {
@@ -268,9 +272,12 @@ function reset() {
 
     insightContainer.style.display = 'none';
 
-    if (switchLottieInstance) {
+    if (switchLottieInstance) {        
         // Force the animation back to the very first frame (OFF state)
-        switchLottieInstance.goToAndStop(0, true);
+        // switchLottieInstance.stop();              
+        switchLottieInstance.playSegments([0, 0], true);
+
+        // switchLottieInstance.goToAndStop(0, true);
     }
 
     // Reset your tracking variable so the next click plays the ON segment
@@ -292,6 +299,8 @@ function reset() {
 
     insightBtn.style.pointerEvents = 'none';
     insightBtn.style.opacity = '0.3';
+
+    
 }
 
 function insightToggle() {
@@ -343,7 +352,6 @@ document.addEventListener('DOMContentLoaded', function () {
     insightBtn.style.opacity = '0.3';
 
 
-    let resetBtn = document.getElementById('reset-btn');
     resetBtn.addEventListener('click', () => {
         reset();
     });
