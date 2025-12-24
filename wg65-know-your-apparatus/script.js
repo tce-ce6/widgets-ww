@@ -253,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     ]
   };
+  const apparatusIds = ["apparatus-1", "apparatus-2", "apparatus-3", "apparatus-4", "apparatus-5", "apparatus-6", "apparatus-7", "apparatus-8"];
 
   // -------------------------------------------------------------
   // 2. DOM ELEMENTS
@@ -304,13 +305,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCoordinates(evt) {
     const CTM = svg.getScreenCTM();
     let clientX, clientY;
+    
+    // Check if it's a touch event with active touches (start/move)
     if (evt.touches && evt.touches.length > 0) {
       clientX = evt.touches[0].clientX;
       clientY = evt.touches[0].clientY;
-    } else {
+    } 
+    // Check if it's a touch event where fingers left (end/cancel) - use changedTouches
+    else if (evt.changedTouches && evt.changedTouches.length > 0) {
+      clientX = evt.changedTouches[0].clientX;
+      clientY = evt.changedTouches[0].clientY;
+    }
+    // Fallback for mouse events
+    else {
       clientX = evt.clientX;
       clientY = evt.clientY;
     }
+
     return {
       x: (clientX - CTM.e) / CTM.a,
       y: (clientY - CTM.f) / CTM.d
@@ -332,9 +343,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if(foreignObject) {
       foreignObject.innerHTML = `
        <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:20px; padding:25px; box-sizing:border-box; color: black;">
-          <h3 style="margin:0 0 25px 0; font-size:25px; color:black;">${exp.title} <span style="font-size=25px; font-weight:bold;">(Grade ${exp.gradeLevel})</span></h3>
-          <p style="margin:0 0 10px 0;font-size:25px;"><b>Scenario:</b> ${exp.scenario}</p>
-          <p style="margin:0;font-size:25px;"><b>Your Task:</b> ${exp.yourTask}</p>
+          <h3 style="margin:0 0 25px 0; font-size:25px; color:black;">${exp.title} <span style="font-size=25px; font-weight:bold;"></span></h3>
+          <p style="margin:0 0 10px 0;font-size:25px;color: black;"><b>Scenario:</b> ${exp.scenario}</p>
+          <p style="margin:0;font-size:25px;color: black;"><b>Your Task:</b> ${exp.yourTask}</p>
         </div>
       `;
     }
@@ -443,9 +454,15 @@ document.addEventListener("DOMContentLoaded", () => {
       removeApparatus(item.id);
     });
     
+    // Add touch listener for button interaction
+    container.addEventListener("touchstart", (e) => {
+        e.stopPropagation(); // Stop event bubbling
+        e.preventDefault(); // Prevent default touch behavior
+        removeApparatus(item.id);
+    }, {passive: false});
+    
     // Prevent drag events on the button itself
     container.addEventListener("mousedown", (e) => e.stopPropagation());
-    container.addEventListener("touchstart", (e) => e.stopPropagation());
 
     fo.appendChild(container);
     group.appendChild(fo); // Add to SVG group
@@ -498,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
     textNode.setAttribute("cursor", "pointer");
     textNode.textContent = exp.name;
 
-    textNode.addEventListener("click", () => {
+    const selectExperiment = () => {
       if (defaultTextLabel) {
         defaultTextLabel.style.opacity = '1';
         defaultTextLabel.textContent = exp.name;
@@ -506,18 +523,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
       currentExperiment = experimentDetails.experiments.find(e => e.id === exp.id);
       
+       const maxSlots = currentExperiment.requiredApparatus.length;
+
+      for (let i = 0; i < apparatusIds.length; i++) {
+        const id = apparatusIds[i];
+        const zone = document.getElementById(`${id}`);
+        const zoneStroke = document.getElementById(`${id}-stroke`);
+        const zoneText = document.getElementById(`${id}-text`);
+        zone.style.strokeOpacity = "1"; 
+        zoneStroke.style.strokeOpacity = "1";
+        zoneText.setAttribute("display", "block");
+
+        if (zone) {
+          if(i > maxSlots - 1) {
+            console.log("Hiding zone:", id);
+            console.log("Hiding zone:", zone);
+          zone.style.strokeOpacity = "0.1"; 
+          zoneStroke.style.strokeOpacity = "0.1";
+          zoneText.setAttribute("display", "none");
+
+          }
+        }
+      }
       if (selectedExpContainer) {
         selectedExpContainer.innerHTML = "";
         const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-        foreignObject.setAttribute("x", exp.x - 28);
+        foreignObject.setAttribute("x", exp.x - 24);
         let selectedExpIndex = experimentsData.findIndex(e => e.id === exp.id);
         if (selectedExpIndex <= 5) {
-          foreignObject.setAttribute("y", exp.y - 38);
+          foreignObject.setAttribute("y", exp.y - 36);
         } else {
           foreignObject.setAttribute("y", exp.y - 40);
         }
         foreignObject.setAttribute("width", 525);
-        foreignObject.setAttribute("height", 59);
+        foreignObject.setAttribute("height", 57);
         foreignObject.style.pointerEvents = "none";
         const img = document.createElement("img");
         img.src = "assets/start-selected.svg";
@@ -535,7 +574,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       resetBench();
       enableAllObjects(); 
-    });
+    };
+
+    textNode.addEventListener("click", selectExperiment);
+    textNode.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        selectExperiment();
+    }, {passive: false});
 
     textNode.addEventListener("mouseenter", () => textNode.setAttribute("fill", "#555"));
     textNode.addEventListener("mouseleave", () => textNode.setAttribute("fill", "black"));
@@ -561,7 +606,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initially disabled
     foreignObject.style.cursor = "not-allowed";
     foreignObject.style.opacity = "0.5";
-    foreignObject.style.touchAction = "none";
+    foreignObject.style.touchAction = "none"; // Important for touch dragging
 
     const img = document.createElement("img");
     img.src = item.path;
@@ -603,6 +648,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------------------------------------
   const moveDrag = (evt) => {
     if (selectedElement) {
+      // Prevent screen scrolling on touch devices while dragging
+      if (evt.type === 'touchmove') {
+          evt.preventDefault();
+      }
+
       const pos = getCoordinates(evt);
       selectedElement.setAttribute("x", pos.x - offset.x);
       selectedElement.setAttribute("y", pos.y - offset.y);
@@ -612,8 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const endDrag = (evt) => {
     if (selectedElement) {
       selectedElement.style.cursor = "grab";
-      const pos = getCoordinates(evt);
-      const apparatusIds = ["apparatus-1", "apparatus-2", "apparatus-3", "apparatus-4", "apparatus-5", "apparatus-6", "apparatus-7", "apparatus-8"];
+      const pos = getCoordinates(evt); // Updated getCoordinates handles touch end
       let snapped = false;
       const original = objectsData.find(d => d.id === selectedElement.id);
       
@@ -629,6 +678,8 @@ document.addEventListener("DOMContentLoaded", () => {
               pos.y > bbox.y && pos.y < bbox.y + bbox.height) {
             
             // Check if slot valid for this experiment
+          
+
             if (i < maxSlots) {
                 const finalX = bbox.x - 2;
                 const finalY = bbox.y - 2;
@@ -696,42 +747,48 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------------------------------------
   if (checkSetupBtn) {
     checkSetupBtn.style.cursor = "pointer";
-    checkSetupBtn.addEventListener("click", () => {
-      if (!currentExperiment) return;
+    
+    const performCheck = (e) => {
+        if(e && e.preventDefault) e.preventDefault();
+        
+        if (!currentExperiment) return;
 
-      // When checking setup, hide the immediate drop feedback
-      if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
-      if(correctMessageGroup) correctMessageGroup.style.display = 'none';
-
-      const requiredIds = currentExperiment.requiredApparatus.map(a => a.id);
-      const placedArray = Array.from(placedApparatusIds);
-
-      const missing = requiredIds.filter(id => !placedApparatusIds.has(id));
-      const extra = placedArray.filter(id => !requiredIds.includes(id));
-      
-      const isCorrect = (missing.length === 0 && extra.length === 0);
-
-      if (isCorrect) {
-        // 1. Show Success Message Group
-        if(correctMessageGroup) {
-            correctMessageGroup.style.display = "block";
-            if(correctFeedbackText) {
-                // UPDATED: Specific message for Check Setup completion
-                correctFeedbackText.textContent = "Experiment Complete! Your setup is correct";
-            }
+        // When checking setup, hide the immediate drop feedback
+        if(incorrectMessageOnDropGroup) incorrectMessageOnDropGroup.style.display = 'none';
+        if(correctMessageGroup) correctMessageGroup.style.display = 'none';
+  
+        const requiredIds = currentExperiment.requiredApparatus.map(a => a.id);
+        const placedArray = Array.from(placedApparatusIds);
+  
+        const missing = requiredIds.filter(id => !placedApparatusIds.has(id));
+        const extra = placedArray.filter(id => !requiredIds.includes(id));
+        
+        const isCorrect = (missing.length === 0 && extra.length === 0);
+  
+        if (isCorrect) {
+          // 1. Show Success Message Group
+          if(correctMessageGroup) {
+              correctMessageGroup.style.display = "block";
+              if(correctFeedbackText) {
+                  // UPDATED: Specific message for Check Setup completion
+                  correctFeedbackText.textContent = "Experiment Complete! Your setup is correct";
+              }
+          }
+  
+          // 2. Show Checklist on Success
+          renderChecklist(currentExperiment.requiredApparatus);
+          setupChecklistGroup.style.display = 'block';
+  
+        } else {
+          // Show the panel incorrect message and checklist
+          if (incorrectMessageGroup) incorrectMessageGroup.style.display = 'block';
+          renderChecklist(currentExperiment.requiredApparatus);
+          setupChecklistGroup.style.display = 'block';
         }
+    };
 
-        // 2. Show Checklist on Success
-        renderChecklist(currentExperiment.requiredApparatus);
-        setupChecklistGroup.style.display = 'block';
-
-      } else {
-        // Show the panel incorrect message and checklist
-        if (incorrectMessageGroup) incorrectMessageGroup.style.display = 'block';
-        renderChecklist(currentExperiment.requiredApparatus);
-        setupChecklistGroup.style.display = 'block';
-      }
-    });
+    checkSetupBtn.addEventListener("click", performCheck);
+    checkSetupBtn.addEventListener("touchstart", performCheck, {passive: false});
   }
 
   function renderChecklist(requiredItems) {
@@ -810,21 +867,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------------------------------------
   // 9. OTHER UI HANDLERS
   // -------------------------------------------------------------
-  clearButton.addEventListener('click', () => {
-    resetBench();
-  });
+  const resetHandler = (e) => {
+      if(e && e.preventDefault) e.preventDefault();
+      resetBench();
+  };
+
+  clearButton.addEventListener('click', resetHandler);
+  clearButton.addEventListener('touchstart', resetHandler, {passive: false});
 
   selectDropdown.style.cursor = 'pointer';
   selectDropdown.addEventListener('click', (evt) => {
     evt.stopPropagation();
     toggleDropdown();
   });
+  selectDropdown.addEventListener('touchstart', (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    toggleDropdown();
+  }, {passive: false});
 
   defaultTextLabel.style.cursor = 'pointer';
   defaultTextLabel.addEventListener('click', (evt) => {
     evt.stopPropagation();
     toggleDropdown();
   });
+  defaultTextLabel.addEventListener('touchstart', (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    toggleDropdown();
+  }, {passive: false});
 
   function toggleDropdown() {
     if (listOfExperiments.style.display === 'none' || listOfExperiments.style.display === '') {

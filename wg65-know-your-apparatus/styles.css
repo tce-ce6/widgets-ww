@@ -82,7 +82,8 @@ img {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  color: #ffffc85e;
 }
 
 #make-food-chain-widget .flexContainer {
