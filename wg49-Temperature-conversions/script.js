@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // C. Update Text 
         const kStr = `${Math.round(k)} K`;
         const cStr = `${Math.round(c)} °C`;
-        const fStr = `${Math.round(f)}° F`;
+        const fStr = `${Math.round(f)} °F`;
 
         // Update Small Text
         if(els.text.smallK) els.text.smallK.textContent = kStr;
