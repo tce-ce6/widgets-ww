@@ -601,4 +601,6 @@
   width: 170px;
 
 }
- 
+#observation-section{
+  transition: all .4s ease-in-out;
+}

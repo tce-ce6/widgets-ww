@@ -29,11 +29,11 @@ let totalObsEl = document.getElementById("total-observations");
   const instructionText = document.getElementById("itext");
 
   const TEXT_STATES = {
-    initial: "Select the tilt of the Earth’s axis.",
+    initial: "How does the tilt of the Earth’s axis impact seasons? Select a tilt to explore.",
     afterSlider:
-      "Select the tilt of the Earth’s axis. Tap one of the positions to place the Earth and observe.",
+      "Tap one of the positions to place the Earth and observe.",
     afterObservation:
-      "Select the tilt of the Earth’s axis. Tap one of the positions to place the Earth and observe. Select the correct observation(s) to uncover the season.",
+      "Select the correct observation(s) to uncover the season.",
   };
 
   if (!pipsSlider || !earthImg) return;
@@ -76,6 +76,8 @@ let totalObsEl = document.getElementById("total-observations");
 
   if (infoBackBtn && infoSection) {
     infoBackBtn.addEventListener("click", () => {
+      observationSection.style.display = "none";
+      disableSliderInteraction()
       infoSection.style.display = "none";
          toggleInfoModal(false);
     });
@@ -100,6 +102,15 @@ let totalObsEl = document.getElementById("total-observations");
     const rotateDeg = degrees[index];
 
     earthImg.style.transform = `rotate(${rotateDeg}deg)`;
+
+      const tiltNote = document.getElementById("tilt-note");
+  if (tiltNote) {
+    if (rotateDeg === 23) {
+      tiltNote.style.display = "block";
+    } else {
+      tiltNote.style.display = "none";
+    }
+  }
 
     // ✅ ONLY UPDATE INSTRUCTION IF EARTH IS NOT IN A POSITION
     // Check if earth-wrap is inside any of the target positions
@@ -153,6 +164,23 @@ let totalObsEl = document.getElementById("total-observations");
   function updateInstructionText(state) {
     if (!instructionText) return;
     instructionText.textContent = TEXT_STATES[state];
+  }
+
+  // Disable/enable slider interactions (mouse + keyboard)
+  function disableSliderInteraction() {
+    if (!pipsSlider) return;
+    pipsSlider.style.pointerEvents = "none";
+    pipsSlider.setAttribute("aria-disabled", "true");
+    const handles = pipsSlider.querySelectorAll(".noUi-handle");
+    handles.forEach((h) => h.setAttribute("tabindex", "-1"));
+  }
+
+  function enableSliderInteraction() {
+    if (!pipsSlider) return;
+    pipsSlider.style.pointerEvents = "";
+    pipsSlider.removeAttribute("aria-disabled");
+    const handles = pipsSlider.querySelectorAll(".noUi-handle");
+    handles.forEach((h) => h.setAttribute("tabindex", "0"));
   }
 
   /* ---------------------------------------------------
@@ -355,11 +383,19 @@ let totalObsEl = document.getElementById("total-observations");
           topLottieWrapper.style.display = "none";
         }
 
-        /* ✅ SHOW OBSERVATION SECTION HERE */
+        /* ✅ SHOW OBSERVATION SECTION HERE (with 2s delay) */
         if (observationSection) {
-          observationSection.style.display = "block";
+          document.getElementById("tilt-note").style.display = "none";
+          observationSection.style.display = "none";
+          setTimeout(() => {
+            observationSection.style.display = "block";
+            // Disable slider while observation panel is active
+            disableSliderInteraction();
+            updateInstructionText("afterObservation");
+          }, 2200);
+        } else {
+          updateInstructionText("afterObservation");
         }
-        updateInstructionText("afterObservation");
       }, 0);
     });
   });
@@ -386,7 +422,10 @@ function renderObservations(tiltObject) {
 
   if (!tiltObject || !tiltObject.observations) return;
 
-  shuffledObservations = shuffleArray(tiltObject.observations);
+  // Keep observations in serial order by `id` (do not randomize)
+  shuffledObservations = (tiltObject.observations || []).slice().sort((a, b) => {
+    return (a.id || 0) - (b.id || 0);
+  });
   currentObservationIndex = 0;
 
   // ✅ TOTAL COUNT
@@ -465,7 +504,8 @@ function renderObservations(tiltObject) {
       currentObsEl.textContent = currentObservationIndex + 1;
     }
 
-    const shuffledOptions = shuffleArray(currentObservation.options);
+    // Keep options in the same order as provided in data.json
+    const shuffledOptions = (currentObservation.options || []).slice();
 
     shuffledOptions.forEach((optionText) => {
       const formControl = document.createElement("div");
@@ -729,6 +769,9 @@ function showConclusion() {
     --------------------------- */
     pipsSlider.noUiSlider.set(2); // 0°
     earthImg.style.transform = "rotate(0deg)";
+
+    // Re-enable slider after reset
+    enableSliderInteraction();
 
     /* ---------------------------
       ✅ RESET INSTRUCTION TEXT

@@ -220,8 +220,8 @@ function handlePlayAgainClick(callee) {
 
 function disableNewGrid(callee) {
   console.log("disableNewGrid callee: ", callee)
-  document.getElementById("generate").disabled = true;
-  document.getElementById("number-range").disabled = true;
+  // document.getElementById("generate").disabled = true;
+  // document.getElementById("number-range").disabled = true;
 }
 function enableNewGrid(callee) {
   console.log("enableNewGrid callee: ", callee)
@@ -256,16 +256,21 @@ function enableNewGrid(callee) {
 
 function updateShowButton() {
   const showBtn = document.getElementById("showBtn");
+  const flipFront = document.getElementById("flipFront");
+
+  const isFrontVisible = !isShowingBack && flipFront.textContent.trim() !== "";
 
   const shouldDisable =
-    !isShowingBack ||        // ❌ card not flipped
-    selectedClue === -1 ||   // ❌ no clue yet
-    finished ||              // ❌ game finished
-    showAnswerUsed;          // ❌ already used for this clue
+    isFrontVisible ||        // ✅ NEW: front side visible
+    !isShowingBack ||        // card not flipped
+    selectedClue === -1 ||   // no clue yet
+    finished ||              // game finished
+    showAnswerUsed;          // already used for this clue
 
   showBtn.disabled = shouldDisable;
   showBtn.classList.toggle("disabled", shouldDisable);
 }
+
 
 
 
@@ -353,6 +358,10 @@ function hideWrongMessage(callee) {
   }
 }
 function handleFlipCardClick(callee) {
+
+    document.getElementById("generate").disabled = true;
+  document.getElementById("number-range").disabled = true;
+
   console.log("handleFlipCardClick callee isShowingBack: ", callee, isShowingBack)
   if (finished) return;
   const front = document.getElementById("flipFront");
@@ -369,6 +378,8 @@ function handleFlipCardClick(callee) {
     flipCard.classList.remove("flipped");
     isShowingBack = false;
     document.getElementById("flipFront").textContent = "";
+      updateShowButton(); // ✅ IMPORTANT
+
   }
   clearAllCrosses("from flip");
 }
@@ -437,6 +448,10 @@ function handleCorrectAnswer(cellOuter) {
 
     const playAgainBtn = document.querySelector("#clue-info #showBtn");
     if (playAgainBtn) playAgainBtn.disabled = false;
+    // ensure any lingering result lotties (correct/wrong) are removed immediately
+    clearAllCrosses('from finalCorrect');
+    // also remove any stray .result-lottie anywhere in the document
+    document.querySelectorAll('.result-lottie').forEach(el => el.remove());
   }
 
   setTimeout(() => {
@@ -507,6 +522,9 @@ function buildGame(r) {
     gridCellMap.set(n, outer);
 
     outer.onclick = function () {
+        if (!isShowingBack) {
+    return;
+  }
       // Block if finished, no clue, correct cell, grid blocked
       if (finished || selectedClue === -1 || gridBlocked) {
         return;
@@ -593,17 +611,35 @@ function enablePlayAgain(callee) {
 }
 
 document.getElementById("generate").onclick = () => {
+  // ✅ ADD THESE TWO LINES
+  document.getElementById("clue-info").style.display = "none";
+  const clueControls = document.getElementById("clueControls");
+  if (clueControls) clueControls.style.display = "";
+
+  // ⬇️ existing code (UNCHANGED)
   const r = document.getElementById("number-range").value;
   buildGame(r);
 };
+
+
 window.onload = () => {
   fillRangeDropdown();
   buildGame("100-199");
 };
 document.getElementById("number-range").onchange = function () {
+
+  // ✅ NEW: reset clue UI
+  const clueInfo = document.getElementById("clue-info");
+  if (clueInfo) clueInfo.style.display = "none";
+
+  const clueControls = document.getElementById("clueControls");
+  if (clueControls) clueControls.style.display = "";
+
+  // ⬇️ existing functionality (UNCHANGED)
   const r = this.value;
   buildGame(r);
 };
+
 
 
 document.getElementById("showBtn").onclick = function () {
@@ -635,7 +671,7 @@ function playResultLottie(cellOuter, type) {
 
   setTimeout(() => {
     span.remove();
-  }, 5000000);
+  }, 3000);
 }
 
 function playMessageLottie(type) {
