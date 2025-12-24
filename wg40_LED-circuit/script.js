@@ -21,6 +21,13 @@ const LEDMinusPlus = document.getElementById('led-minus-plus');
 const flipBulbImg = document.getElementById('flip-bulb-img');
 const flipLEDImg = document.getElementById('flip-LED-img');
 const LEDStick = document.getElementById('LED-stick-img');
+
+const insightBtn = document.getElementById('insight-btn');
+const insightContainer = document.getElementById('insight-container');
+
+let insightText1 = document.getElementById('insight-text-1');
+let insightText2 = document.getElementById('insight-text-2');
+
 // 2. State Variables
 let switchLottieInstance = null;
 let currentFlowLottie = null;
@@ -29,6 +36,8 @@ let isSwitchOn = false;
 let currentBulbSign = false; // Fixed typo 'Buld' to 'Bulb'
 let currentLEDSign = false;
 let LEDSign = false;
+let bulbFlip = false;
+let LEDFlip = false;
 
 const PATH_BASE = './Assets/Lottie-animation/';
 
@@ -107,12 +116,14 @@ function handleSwitchToggle() {
                 onBulb.style.display = 'block';
                 offBulb.style.display = 'none';
                 container3.classList.remove('hidden'); // Make it visible
-                currentFlowLottie.goToAndPlay(0, true);          // Start animation
+                currentFlowLottie.goToAndPlay(0, true);         // Start animation
                 flipBulb.style.opacity = "0.3";
                 flipBulb.style.pointerEvents = "none";
-    
                 flipLED.style.opacity = "0.3";
                 flipLED.style.pointerEvents = "none";
+
+                insightBtn.style.pointerEvents = 'auto';
+                insightBtn.style.opacity = '1';
             }, 300)
             LEDSign = true;
         }
@@ -123,12 +134,15 @@ function handleSwitchToggle() {
             setTimeout(() => {
                 flipBulb.style.opacity = "0.3";
                 flipBulb.style.pointerEvents = "none";
-    
+
                 flipLED.style.opacity = "0.3";
                 flipLED.style.pointerEvents = "none";
+
+                insightBtn.style.pointerEvents = 'auto';
+                insightBtn.style.opacity = '1';
             }, 300);
         }
-
+        
         isSwitchOn = true;
     } else {
         // --- ACTION: TURN OFF ---
@@ -139,10 +153,13 @@ function handleSwitchToggle() {
 
         setTimeout(() => {
             flipBulb.style.opacity = "1";
-        flipBulb.style.pointerEvents = "auto";
+            flipBulb.style.pointerEvents = "auto";
 
-        flipLED.style.opacity = "1";
-        flipLED.style.pointerEvents = "auto";
+            flipLED.style.opacity = "1";
+            flipLED.style.pointerEvents = "auto";
+
+            insightBtn.style.pointerEvents = 'none';
+            insightBtn.style.opacity = '0.3';
         }, 300);
 
         isSwitchOn = false;
@@ -158,7 +175,6 @@ function showAndPlayCurrentFlow() {
         container2.classList.remove('hidden'); // Make it visible
         currentFlowLottie.goToAndPlay(0, true);          // Start animation
         LEDStick.src = './Assets/Images/bulb/on-anode-cathode.svg';
-
     }, 300)
 }
 
@@ -168,6 +184,7 @@ function hideCurrentFlow() {
         onBulb.style.display = 'none';
         offLED.style.display = 'block';
         onLED.style.display = 'none';
+        insightContainer.style.display = 'none';
         container2.classList.add('hidden');    // Hide it
         container3.classList.add('hidden');    // Hide it
         currentFlowLottie.stop();                        // Stop animation
@@ -190,6 +207,7 @@ flipLED.addEventListener('click', () => {
         LEDMinusPlus.style.display = 'block';
         currentLEDSign = true;
         LEDSign = true;
+        LEDFlip = true;
         flipLEDImg.src = './Assets/Images/bulb/left-flip.svg';
         LEDStick.src = './Assets/Images/bulb/off-cathode-anode.svg';
     } else {
@@ -199,6 +217,7 @@ flipLED.addEventListener('click', () => {
         LEDMinusPlus.style.display = 'none';
         currentLEDSign = false;
         LEDSign = false;
+        LEDFlip = false;
         flipLEDImg.src = './Assets/Images/bulb/right-flip.svg';
         LEDStick.src = './Assets/Images/bulb/off-anode-cathode.svg';
     }
@@ -212,6 +231,7 @@ flipBulb.addEventListener('click', () => {
         bulbMinusPlus.style.display = 'block';
         currentBulbSign = true;
         flipBulbImg.src = './Assets/Images/bulb/left-flip.svg';
+        bulbFlip = true;
     } else {
         bulbGreenSign.style.fill = "#47D847";
         bulbRedSign.style.fill = "#FF4C4C";
@@ -219,6 +239,7 @@ flipBulb.addEventListener('click', () => {
         bulbMinusPlus.style.display = 'none';
         currentBulbSign = false;
         flipBulbImg.src = './Assets/Images/bulb/right-flip.svg';
+        bulbFlip = false;
     }
 });
 
@@ -245,6 +266,8 @@ function reset() {
     flipBulbImg.src = './Assets/Images/bulb/right-flip.svg';
     flipLEDImg.src = './Assets/Images/bulb/right-flip.svg';
 
+    insightContainer.style.display = 'none';
+
     if (switchLottieInstance) {
         // Force the animation back to the very first frame (OFF state)
         switchLottieInstance.goToAndStop(0, true);
@@ -257,20 +280,84 @@ function reset() {
     currentBulbSign = false;
     currentLEDSign = false;
     LEDSign = false;
+
+    LEDFlip = false;
+    bulbFlip = false;
     // Reset Sign colors/fills to default
-    if(bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
-    if(bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
+    if (bulbGreenSign) bulbGreenSign.style.fill = "#47D847";
+    if (bulbRedSign) bulbRedSign.style.fill = "#FF4C4C";
 
     if (LEDGreenSign) LEDGreenSign.style.fill = "#47D847";
     if (LEDRedSign) LEDRedSign.style.fill = "#FF4C4C";
+
+    insightBtn.style.pointerEvents = 'none';
+    insightBtn.style.opacity = '0.3';
+}
+
+function insightToggle() {
+    if (isSwitchOn) {
+
+        if (!bulbFlip && !LEDFlip) {
+            insightText1.innerHTML = `
+              <span><strong>Standard Connection:</strong> The bulb glows because the circuit is complete and current flows through the filament.</span>
+            `;
+            insightText2.innerHTML = `
+              <span><strong>Forward Bias (Correct):</strong> The LED glows because it is forward-biased (the positive leg is connected to the positive terminal), which allows the current to flow through it.</span>
+            `;
+        }
+        else if (bulbFlip && !LEDFlip) {
+            insightText1.innerHTML = `
+              <span><strong>Reversed Connection (Flipped):</strong> The bulb still glows because it works regardless of the direction of current flow.</span>
+            `;
+            insightText2.innerHTML = `
+              <span><strong>Forward Bias (Correct):</strong> The LED glows because it is forward-biased (the positive leg is connected to the positive terminal), which allows the current to flow through it.</span>
+            `;
+        }
+        else if (!bulbFlip && LEDFlip) {
+            insightText1.innerHTML = `
+              <span><strong>Standard Connection:</strong> The bulb glows because the circuit is complete and current flows through the filament.</span>
+            `;
+            insightText2.innerHTML = `
+              <span><strong>Reverse Bias (Incorrect):</strong> The LED remains off because it is reverse-biased (the negative leg is connected to the positive terminal), which blocks the flow of current.</span>
+            `;
+        }
+        else if (bulbFlip && LEDFlip) {
+            insightText1.innerHTML = `
+              <span><strong>Reversed Connection (Flipped):</strong> The bulb still glows because it works regardless of the direction of current flow.</span>
+            `;
+            insightText2.innerHTML = `
+              <span><strong>Reverse Bias (Incorrect):</strong> The LED remains off because it is reverse-biased (the negative leg is connected to the positive terminal), which blocks the flow of current.</span>
+            `;
+        }
+
+
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    const closeInsightBtn = document.getElementById('close-insight');
+
+    insightContainer.style.display = 'none';
+    insightBtn.style.pointerEvents = 'none';
+    insightBtn.style.opacity = '0.3';
+
 
     let resetBtn = document.getElementById('reset-btn');
     resetBtn.addEventListener('click', () => {
         reset();
     });
+    
+    insightBtn.addEventListener('click', () => {
+        if (isSwitchOn) {
+            insightContainer.style.display = 'block';
+            insightToggle();
+        }
+    })
+
+    closeInsightBtn.addEventListener('click', () => {
+        insightContainer.style.display = 'none';
+    })
 
     // 4. Initialize
     loadInitialLottie();
