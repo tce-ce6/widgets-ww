@@ -220,6 +220,10 @@ fetch("./data.json")
   ---------------------------------- */
  showAnsBtn.addEventListener("click", () => {
 
+    document
+    .querySelectorAll(".question-list .blank.selected")
+    .forEach(b => b.classList.remove("selected"));
+
   /* -------------------------
      🔹 STEP-4 QUIZ MODE
   ------------------------- */

@@ -76,10 +76,16 @@ let totalObsEl = document.getElementById("total-observations");
 
   if (infoBackBtn && infoSection) {
     infoBackBtn.addEventListener("click", () => {
-      observationSection.style.display = "none";
-      disableSliderInteraction()
-      infoSection.style.display = "none";
-         toggleInfoModal(false);
+      // Hide observation and info panels
+      if (observationSection) observationSection.style.display = "none";
+      if (infoSection) infoSection.style.display = "none";
+      toggleInfoModal(false);
+
+      // Reset observation internal state so next selection is fresh
+      resetObservationState();
+
+      // Re-enable slider so user can pick a new tilt/position
+      enableSliderInteraction();
     });
   }
 
@@ -164,6 +170,41 @@ let totalObsEl = document.getElementById("total-observations");
   function updateInstructionText(state) {
     if (!instructionText) return;
     instructionText.textContent = TEXT_STATES[state];
+  }
+
+  // Reset observation UI/state so the next position selection starts fresh
+  function resetObservationState() {
+    currentObservation = null;
+    shuffledObservations = [];
+    currentObservationIndex = 0;
+    isConclusionStage = false;
+
+    const optionWrapper = document.getElementById("option-wrapper");
+    const conclusionWrapper = document.getElementById("conclusion-wrapper");
+    const observationTitle = document.getElementById("observation-title");
+
+    if (optionWrapper) {
+      optionWrapper.innerHTML = "";
+      optionWrapper.style.display = "block";
+    }
+
+    if (conclusionWrapper) {
+      conclusionWrapper.style.display = "none";
+      conclusionWrapper.querySelectorAll(".check-box").forEach((box) => {
+        box.classList.remove("right", "wrong");
+        box.style.pointerEvents = "auto";
+      });
+    }
+
+    if (observationTitle) {
+      observationTitle.innerHTML = `Observation <span id="current-observation">0</span>/<span id="total-observations">0</span>`;
+      currentObsEl = document.getElementById("current-observation");
+      totalObsEl = document.getElementById("total-observations");
+      if (currentObsEl) currentObsEl.textContent = 0;
+      if (totalObsEl) totalObsEl.textContent = 0;
+    }
+
+    observationNextBtn?.classList.add("disabled");
   }
 
   // Disable/enable slider interactions (mouse + keyboard)
