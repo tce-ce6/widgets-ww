@@ -14,7 +14,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>How to connect an LED in a circuit</h2>
-                <span id="versionId" class="versionText">b2_wg40_25122401</span>
+                <span id="versionId" class="versionText">b2_wg40_25122402</span>
             </div>
             <div class="svg-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -234,7 +234,7 @@
                                                 transform="translate(1272.36 495.854) rotate(-0.973934)" fill="#CAAE7F"
                                                 xml:space="preserve" style="white-space: pre" font-family="Roboto"
                                                 font-size="20.0029" letter-spacing="0em">
-                                                <tspan x="0" y="18.3369">Flip bulb</tspan>
+                                                <tspan x="50" y="20.50">Flip bulb</tspan>
                                             </text>
                                             <foreignObject id="flip-bulb" x="1335" y="445" width="580" height="780"
                                                 font-size="50" font-family="Nirmala UI" letter-spacing="0em">
@@ -249,7 +249,7 @@
                                             <text id="Flip led" fill="#CAAE7F" xml:space="preserve"
                                                 style="white-space: pre" font-family="Roboto" font-size="20"
                                                 letter-spacing="0em">
-                                                <tspan x="1271.59" y="807.727">Flip LED</tspan>
+                                                <tspan x="1322.59" y="810.727">Flip LED</tspan>
                                             </text>
                                             <foreignObject id="flip-LED" x="1335" y="740" width="580" height="780"
                                                 font-size="50" font-family="Nirmala UI" letter-spacing="0em">
@@ -293,14 +293,14 @@
                                                             src="./Assets/Images/bulb/LED-minus-plus.svg" alt="">
                                                     </div>
                                                 </foreignObject>
-                                                <foreignObject id="insight-btn" x="594" y="982" width="480" height="680"
+                                                <!-- <foreignObject id="insight-btn" x="594" y="982" width="480" height="680"
                                                     font-size="50" font-family="Nirmala UI" letter-spacing="0em">
                                                     <div xmlns="http://www.w3.org/1999/xhtml"
                                                         style="display: flex; cursor: pointer;">
                                                         <img id="insight-img" src="./Assets/Images/bulb/Insight.svg"
                                                             alt="">
                                                     </div>
-                                                </foreignObject>
+                                                </foreignObject> -->
 
                                                 <foreignObject id="insight-container" x="1351" y="363" width="450"
                                                     height="780" font-size="50" font-family="Nirmala UI"
@@ -333,6 +333,14 @@
             </div>
             <div class="flexContainer button-controls">
                 <div class="flexItem flexItemFirst">
+                    <button class="btn" id="insight-btn" style="background-color:#F7901E; color:white;position: relative; padding-left:50px" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });">
+                        <img class="insight-img" src="./Assets/Images/bulb/Insight.svg"
+                        alt=""> Insights
+                    </button>
                     <button class="btn" id="reset-btn" style="background-color:#ff2c68; color:white;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
