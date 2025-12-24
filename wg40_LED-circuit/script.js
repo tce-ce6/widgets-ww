@@ -157,6 +157,8 @@ function showAndPlayCurrentFlow() {
         onLED.style.display = 'block';
         container2.classList.remove('hidden'); // Make it visible
         currentFlowLottie.goToAndPlay(0, true);          // Start animation
+        LEDStick.src = './Assets/Images/bulb/on-anode-cathode.svg';
+
     }, 300)
 }
 
@@ -169,6 +171,13 @@ function hideCurrentFlow() {
         container2.classList.add('hidden');    // Hide it
         container3.classList.add('hidden');    // Hide it
         currentFlowLottie.stop();                        // Stop animation
+        if (!currentLEDSign) {
+            LEDStick.src = './Assets/Images/bulb/off-anode-cathode.svg';
+
+        } else {
+            LEDStick.src = './Assets/Images/bulb/off-cathode-anode.svg';
+
+        }
     }, 200);
 }
 
@@ -182,15 +191,16 @@ flipLED.addEventListener('click', () => {
         currentLEDSign = true;
         LEDSign = true;
         flipLEDImg.src = './Assets/Images/bulb/left-flip.svg';
-        LEDStick.src = './Assets/Images/bulb/negative-stick.svg';
+        LEDStick.src = './Assets/Images/bulb/off-cathode-anode.svg';
     } else {
         LEDGreenSign.style.fill = "#47D847";
         LEDRedSign.style.fill = "#FF4C4C";
         LEDPlusMinus.style.display = 'block';
         LEDMinusPlus.style.display = 'none';
         currentLEDSign = false;
+        LEDSign = false;
         flipLEDImg.src = './Assets/Images/bulb/right-flip.svg';
-        LEDStick.src = './Assets/Images/bulb/positive-stick.svg';
+        LEDStick.src = './Assets/Images/bulb/off-anode-cathode.svg';
     }
 });
 
@@ -230,8 +240,10 @@ function reset() {
 
     flipLED.style.opacity = "1";
     flipLED.style.pointerEvents = "auto";
-    LEDStick.src = './Assets/Images/bulb/positive-stick.svg';
+    LEDStick.src = './Assets/Images/bulb/off-anode-cathode.svg';
 
+    flipBulbImg.src = './Assets/Images/bulb/right-flip.svg';
+    flipLEDImg.src = './Assets/Images/bulb/right-flip.svg';
 
     if (switchLottieInstance) {
         // Force the animation back to the very first frame (OFF state)

@@ -16,27 +16,28 @@ const COMPLEX_NUMBERS = [];
 const REAL_COLOR = '#0066ff';   // a → blue
 const IMAG_COLOR = '#17b077';  // b → green
 
+function span(text, color) {
+    // return `<span style="color:${color}">${text}</span>`;
+    return `<span style="color:${color};">${text}</span>`;
+}
+
+function formatSigned(n, color, isFirst = false) {
+    if (n < 0) return (isFirst ? '− ' : ' − ') + span(Math.abs(n), color);
+    return (isFirst ? '' : ' + ') + span(n, color);
+}
+
+function formatSignedB(n, color, isFirst = false) {
+    // If the number is 1 or -1, we want to pass an empty string to the span
+    const valueToShow = Math.abs(n) === 1 ? "" : Math.abs(n);
+
+    if (n < 0) {
+        return (isFirst ? '− ' : ' − ') + span(valueToShow, color);
+    }
+    // For positive numbers, we only show the sign if it's NOT the first term
+    return (isFirst ? '' : ' + ') + span(valueToShow, color);
+}
+
 function coloredComplexLabel(a, b) {
-    function span(text, color) {
-        // return `<span style="color:${color}">${text}</span>`;
-        return `<span style="color:${color}; font-style: italic; font-family: 'Times New Roman', Times, serif;">${text}</span>`;
-    }
-
-    function formatSigned(n, color, isFirst = false) {
-        if (n < 0) return (isFirst ? '− ' : ' − ') + span(Math.abs(n), color);
-        return (isFirst ? '' : ' + ') + span(n, color);
-    }
-
-    function formatSignedB(n, color, isFirst = false) {
-        // If the number is 1 or -1, we want to pass an empty string to the span
-        const valueToShow = Math.abs(n) === 1 ? "" : Math.abs(n);
-    
-        if (n < 0) {
-            return (isFirst ? '− ' : ' − ') + span(valueToShow, color);
-        }
-        // For positive numbers, we only show the sign if it's NOT the first term
-        return (isFirst ? '' : ' + ') + span(valueToShow, color);
-    }
 
     if (b === 0) {
         return a < 0
@@ -50,7 +51,7 @@ function coloredComplexLabel(a, b) {
             : `${span(b, IMAG_COLOR)} <i>i</i>`;
     }
 
-    return `${formatSigned(a, REAL_COLOR, true)}${formatSignedB(b, IMAG_COLOR)} <i>i</i>`;
+    return `${formatSigned(a, REAL_COLOR, true)}${formatSignedB(b, IMAG_COLOR)} <i style="font-style: italic; font-family: 'Times New Roman', Times, serif;">i</i>`;
 }
 
 for (let a = -10; a <= 10; a++) {
@@ -82,30 +83,6 @@ function formatComplex(a, b) {
     const colorA = '#0066ff';   // real part color
     const colorB = '#17b077';   // imaginary part color
 
-    function span(text, color) {
-        // return `<span style="color:${color}">${text}</span>`;
-        return `<span style="color:${color}; font-style: italic; font-family: 'Times New Roman', Times, serif;">${text}</span>`;
-    }
-
-    function formatSigned(n, color, isFirst = false) {
-        if (n < 0) {
-            return (isFirst ? '− ' : ' − ') + span(Math.abs(n), color);
-        }
-        return (isFirst ? '' : ' + ') + span(n, color);
-    }
-
-    function formatSignedB(n, color, isFirst = false) {
-        // If the number is 1 or -1, we want to pass an empty string to the span
-        const valueToShow = Math.abs(n) === 1 ? "" : Math.abs(n);
-    
-        if (n < 0) {
-            return (isFirst ? '− ' : ' − ') + span(valueToShow, color);
-        }
-        
-        // For positive numbers, we only show the sign if it's NOT the first term
-        return (isFirst ? '' : ' + ') + span(valueToShow, color);
-    }
-
     // Only real part
     if (roundedB === 0) {
         return roundedA < 0
@@ -122,7 +99,7 @@ function formatComplex(a, b) {
 
     return `
         ${formatSigned(roundedA, colorA, true)}
-        ${formatSignedB(roundedB, colorB)} <i>i</i>
+        ${formatSignedB(roundedB, colorB)} <i style="font-style: italic; font-family: 'Times New Roman', Times, serif;">i</i>
     `;
 }
 
@@ -200,32 +177,85 @@ function initializeBoard() {
     });
 
     board.create('ticks', [yAxis, 1], {
-        drawLabels: true,
+        drawLabels: false,
         minorTicks: 0,
         strokeColor: greenColor,
         majorHeight: 6,
 
-        // 🔥 generateLabel MUST be here
-        generateLabel: function (tick) {
-            const val = Math.round(tick.usrCoords[2]); // ensure integer
-            if (val === 0) return '';
-            if (val === 1) return 'i';
-            if (val === -1) return '− i';
-            return `${val} i`;
-        },
+        // // 🔥 generateLabel MUST be here
+        // generateLabel: function (tick) {
+        //     const val = Math.round(tick.usrCoords[2]); // ensure integer
+        //     if (val === 0) return '';
+        //     if (val === 1) return 'i';
+        //     if (val === -1) return '− i';
+        //     return `${val} i`;
+        // },
 
-        label: {
-            strokeColor: greenColor,
-            fontSize: 12,
-            offset: [10, 0],
-            cssStyle: `color:${greenColor}; font-weight:bold;`
-        }
+        // label: {
+        //     strokeColor: greenColor,
+        //     fontSize: 12,
+        //     offset: [10, 0],
+        //     cssStyle: `color:${greenColor}; font-weight:bold;`
+        // }
     });
+
+    // const yMin = -10;
+    // const yMax = 10;
+
+    // for (let y = yMin; y <= yMax; y++) {
+    //     if (y === 0) continue;
+
+    //     let labelText = '';
+    //     if (y === 1) labelText = ' i';
+    //     else if (y === -1) labelText = '− i';
+    //     else labelText = `${ y}i`;
+
+    //     board.create('text', [0.2, y, labelText], {
+    //         strokeColor: greenColor,
+    //         anchorX: 'left',
+    //         anchorY: 'middle',
+    //         fixed: true,
+    //         cssStyle: `
+    //         color: ${greenColor};
+    //         font-weight: bold;
+    //         font-size: 12px;
+    //     `
+    //     });
+    // }
+
+    for (let y = -10; y <= 10; y++) {
+        if (y === 0) continue;
+    
+        let labelText = '';
+    
+        if (y === 1) {
+            labelText = 'i';
+        } else if (y === -1) {
+            labelText = '<span style="font-size:12px;">−</span> i';
+        } else if (y < 0) {
+            labelText = `<span style="font-size:12px;">−</span> ${Math.abs(y)}i`;
+        } else {
+            labelText = `${y}i`;
+        }
+    
+        board.create('text', [0.4, y, labelText], {
+            strokeColor: greenColor,
+            anchorX: 'left',
+            anchorY: 'middle',
+            fixed: true,
+            cssStyle: `
+                color: ${greenColor};
+                font-weight: bold;
+                font-size: 12px;
+            `
+        });
+    }
+    
 
 
     // Origin dot to match reference (fixed, should not move)
     board.create('point', [0, 0], {
-        size: 5,
+        size: 2,
         color: 'red',
         name: '',
         fixed: true,
@@ -397,6 +427,7 @@ window.checkAnswer = function () {
     // ... (rest of checkAnswer logic remains the same)
     if (isLocked) return;
     if (!userPlot) {
+        feedbackEl.style.display = 'block';
         feedbackEl.textContent = 'Please plot a point first.';
         feedbackEl.style.color = 'red';
         feedbackEl.className = 'incorrect';
@@ -407,6 +438,7 @@ window.checkAnswer = function () {
     const targetA = targetPoint.a;
     const targetB = targetPoint.b;
     if (userA === targetA && userB === targetB) {
+        feedbackEl.style.display = 'block';
         feedbackEl.textContent = 'Well done! 🎉';
         feedbackEl.className = 'correct';
         markCorrect();
@@ -414,6 +446,7 @@ window.checkAnswer = function () {
         document.getElementById('checkAnswer').disabled = true;
         document.getElementById('showAnswer').disabled = true;
     } else {
+        feedbackEl.style.display = 'block';
         feedbackEl.textContent = 'Good attempt, but not the right one!';
         feedbackEl.style.color = 'red';
         feedbackEl.className = 'incorrect';
@@ -426,6 +459,7 @@ window.checkAnswer = function () {
 window.nextProblem = function () {
     currentProblemIndex++;
     feedbackEl.style.color = 'black';
+    feedbackEl.style.display = 'none';
     loadProblem();
 };
 
@@ -444,9 +478,6 @@ window.showAnswer = function () {
             name: labelText, size: 4,
             color: 'blue',
             fixed: true,
-            // label: { position: 'auto', offset: [0, 10], 
-            //     autoPosition: true, 
-            //     cssStyle: 'font-weight: bold; color: blue;' }
             label: {
                 position: 'auto',
                 offset: labelOffset,
@@ -463,6 +494,7 @@ window.showAnswer = function () {
                 0 4px 8px rgba(0, 0, 0, 0.15);`
             }
         });
+    feedbackEl.style.display = 'block';
     feedbackEl.innerHTML = `The correct answer is ${labelText}`;
     feedbackEl.className = 'correct';
     document.getElementById('checkAnswer').disabled = true;
