@@ -8,9 +8,27 @@
 
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/global_style.css">
+  <script>
+
+
+    function handleBodyLoad() {
+      console.log("Body loaded");
+      const svg = document.getElementById("mySvg");
+      let angle = 0;
+
+      function animate() {
+        angle += 1;
+        svg.style.transform = `rotate(${angle}deg)`;
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+    }
+  </script>
 </head>
 
-<body id="widget-wrapper">
+<body onload="handleBodyLoad()" id="widget-wrapper">
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
@@ -19,6 +37,116 @@
       </div>
       <div class="svg-container" id="svg-container">
 
+
+        <?xml version="1.0" encoding="UTF-8"?>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+
+          <!-- wheel texts -->
+
+          <defs>
+            <style>
+              .cls-1,
+              .cls-2 {
+                isolation: isolate;
+              }
+
+              .cls-2 {
+                font-family: ArialUnicodeMS, 'Arial Unicode MS';
+                font-size: 55px;
+              }
+            </style>
+          </defs>
+          <g id="mySvg" data-name="wheel texts">
+            <g id="txt1">
+              <g id="_ऊपर_" data-name=" ऊपर " class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(1130.24 711.8) rotate(-.2)">
+                        <tspan x="0" y="0">ऊपर</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="txt2">
+              <g id="_दिन_" data-name=" दिन " class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(1033.64 821.1) rotate(59.2)">
+                        <tspan x="0" y="0">दिन</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="txt3">
+              <g id="_बड़ा_" data-name=" बड़ा " class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(913.14 808.8) rotate(116.5)">
+                        <tspan x="0" y="0">बड़ा</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="txt4">
+              <g id="_अच्छा_" data-name=" अच्छा " class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(878.74 675.6) rotate(-179.4)">
+                        <tspan x="0" y="0">अच्छा</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="txt5">
+              <g id="_अंदर_" data-name=" अंदर " class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(934.74 582.7) rotate(-120.9)">
+                        <tspan x="0" y="0">अंदर</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g id="txt6">
+              <g id="_आना" data-name=" आना" class="cls-1">
+                <g class="cls-1">
+                  <g class="cls-1">
+                    <g class="cls-1">
+                      <text class="cls-2" transform="translate(1053.34 597.5) rotate(-64.9)">
+                        <tspan x="0" y="0">आना</tspan>
+                      </text>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <!-- wheel texts end -->
+
+        </svg>
+
+        <!-- <foreignObject x="100" y="50" width="300" height="200">
+          <div xmlns="http://www.w3.org/1999/xhtml">
+            <img src="assets/bg1.svg" style="width:100%; height:auto;">
+          </div>
+        </foreignObject>
+ -->
       </div>
     </div>
   </div>
