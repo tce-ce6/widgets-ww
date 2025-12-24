@@ -24,19 +24,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // --- JSON Data ---
     const animals = [
-        { id: "lion", src: "assets/lion.svg", x: 1350, y: 118, role: "predator" },
-        { id: "rabbit", src: "assets/Rabbit.svg", x: 1530, y: 118, role: "herbivore" },
-        { id: "butterfly", src: "assets/butterfly.svg", x: 1710, y: 118, role: "herbivore" },
-        { id: "crow", src: "assets/crow.svg", x: 1350, y: 298, role: "predator" },
-        { id: "goat", src: "assets/Goat.svg", x: 1530, y: 298, role: "herbivore" },
-        { id: "frog", src: "assets/frog.svg", x: 1710, y: 298, role: "predator" },
-        { id: "snake", src: "assets/snake.svg", x: 1350, y: 478, role: "predator" },
-        { id: "deer", src: "assets/Deer.svg", x: 1530, y: 478, role: "herbivore" },
-        { id: "plant", src: "assets/plant.svg", x: 1710, y: 478, role: "producer" },
-        { id: "catterpiller", src: "assets/catterpiller.svg", x: 1350, y: 658, role: "herbivore" },
-        { id: "grasshopper", src: "assets/grasshopper.svg", x: 1530, y: 658, role: "herbivore" },
-        { id: "lizard", src: "assets/lizard.svg", x: 1710, y: 658, role: "predator" },
-        { id: "tiger", src: "assets/tiger.svg", x: 1530, y: 838, role: "predator" }
+        { id: "lion", src: "assets/lion.svg", x: 1300, y: 123, role: "predator" },
+        { id: "rabbit", src: "assets/Rabbit.svg", x: 1480, y: 123, role: "herbivore" },
+        { id: "butterfly", src: "assets/butterfly.svg", x: 1660, y: 123, role: "herbivore" },
+
+        { id: "crow", src: "assets/crow.svg", x: 1300, y: 303, role: "predator" },
+        { id: "goat", src: "assets/Goat.svg", x: 1480, y: 303, role: "herbivore" },
+        { id: "frog", src: "assets/frog.svg", x: 1660, y: 303, role: "predator" },
+        
+        { id: "snake", src: "assets/snake.svg", x: 1300, y: 483, role: "predator" },
+        { id: "deer", src: "assets/Deer.svg", x: 1480, y: 483, role: "herbivore" },
+        { id: "plant", src: "assets/plant.svg", x: 1660, y: 483, role: "producer" },
+
+        { id: "catterpiller", src: "assets/catterpiller.svg", x: 1300, y: 663, role: "herbivore" },
+        { id: "grasshopper", src: "assets/grasshopper.svg", x: 1480, y: 663, role: "herbivore" },
+        { id: "lizard", src: "assets/lizard.svg", x: 1660, y: 663, role: "predator" },
+        { id: "tiger", src: "assets/tiger.svg", x: 1480, y: 843, role: "predator" }
     ];
 
     const animalSlots = animals.map(a => Object.freeze({ x: a.x, y: a.y }));
