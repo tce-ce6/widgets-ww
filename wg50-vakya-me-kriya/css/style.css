@@ -469,3 +469,7 @@
 .question-list li.disabled {
   pointer-events: none;
 }
+
+.bottom-box.show {
+  display: block !important;
+}

@@ -227,10 +227,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+
   /* ----------------------------------
      SHOW / HIDE ANSWERS
   ---------------------------------- */
   showAnsBtn.addEventListener("click", () => {
+
+    // ✅ STEP-3: bottom-box toggle (SIMPLE & SAFE)
+
+    // ✅ STEP-3: Show bottom-box when right-col-option is visible
+
 
     if (step3.style.display === "block") {
       if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
@@ -339,6 +346,9 @@ document.addEventListener("DOMContentLoaded", () => {
       showAnsBtn.textContent = "उत्तर देखें";
       isAnswerVisible = false;
     }
+    updateBottomBoxOnShowAns();
+
+
   });
 
   if (studyBtn) {
@@ -359,7 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedQuizBlank = null;
       nextBtn.disabled = true;
       showAnsBtn.textContent = "उत्तर देखें";
-
       // 🔥 THIS WAS MISSING
       renderQuizQuestion();
 
@@ -655,8 +664,30 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 500);
     }
   });
+  function updateBottomBoxOnShowAns() {
+    const isStep3Visible =
+      window.getComputedStyle(step3).display === "block";
+
+    const isRightColCategoryVisible =
+      window.getComputedStyle(rightColCategory).display === "block";
+
+    if (!isStep3Visible || !isRightColCategoryVisible) return;
+
+    const showAnswers =
+      showAnsBtn.textContent.trim() === "उत्तर छिपाएं";
+
+    document
+      .querySelectorAll("#subject-list .bottom-box")
+      .forEach(box => {
+        box.style.display = showAnswers ? "block" : "none";
+      });
+  }
+
+
 
   function normalizeText(str) {
+
+
     return str
       .replace(/\u200B/g, "")
       .replace(/\s+/g, " ")
@@ -664,6 +695,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showStep3Answers(show) {
+
+    // ✅ SAFETY GUARD (DO NOT REMOVE)
+    if (
+      !allData ||
+      !allData[currentStep3GroupIndex] ||
+      typeof allData[currentStep3GroupIndex] !== "object"
+    ) {
+      return;
+    }
+
     const groupKey = Object.keys(allData[currentStep3GroupIndex])[0];
     const groupData = allData[currentStep3GroupIndex][groupKey];
 
