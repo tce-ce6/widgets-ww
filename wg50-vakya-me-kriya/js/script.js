@@ -655,6 +655,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function normalizeText(str) {
+    return str
+      .replace(/\u200B/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function showStep3Answers(show) {
     const groupKey = Object.keys(allData[currentStep3GroupIndex])[0];
     const groupData = allData[currentStep3GroupIndex][groupKey];
@@ -663,16 +670,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const wordWrap = subjectLi.querySelector(".word-wrap");
       if (!wordWrap) return;
 
-      // 🔄 Clear previous content
+      // 🔄 Clear first
       wordWrap.innerHTML = "";
 
       if (!show) return;
 
-      const subjectId = subjectLi.id;
+      const subjectCategory = normalizeText(subjectLi.dataset.category);
 
-      // ✅ Get ALL matching sentences for this category
-      const matches = groupData.filter(
-        item => item.category === subjectId
+      const matches = groupData.filter(item =>
+        normalizeText(item.category) === subjectCategory
       );
 
       matches.forEach(item => {
@@ -681,12 +687,9 @@ document.addEventListener("DOMContentLoaded", () => {
         wordWrap.appendChild(span);
       });
 
-      // ✅ Apply existing verb formatting
-      applyCategoryFormatting(subjectLi);
+      // ✅ DO NOT applyCategoryFormatting here
     });
   }
-
-
 
   function checkStep3Completion() {
     const remainingCategories =
