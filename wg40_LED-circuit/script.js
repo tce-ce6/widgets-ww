@@ -147,7 +147,7 @@ function handleSwitchToggle() {
                 insightBtn.style.opacity = '1';
             }, 300);
         }
-        
+
         isSwitchOn = true;
     } else {
         // --- ACTION: TURN OFF ---
@@ -272,12 +272,13 @@ function reset() {
 
     insightContainer.style.display = 'none';
 
-    if (switchLottieInstance) {        
+    if (switchLottieInstance) {
         // Force the animation back to the very first frame (OFF state)
-        // switchLottieInstance.stop();              
-        switchLottieInstance.playSegments([0, 0], true);
-
-        // switchLottieInstance.goToAndStop(0, true);
+        switchLottieInstance.stop();
+        if (!isSwitchOn) {
+            switchLottieInstance.playSegments([0, 10], true);
+        }
+        switchLottieInstance.goToAndStop(0, true);
     }
 
     // Reset your tracking variable so the next click plays the ON segment
@@ -300,7 +301,7 @@ function reset() {
     insightBtn.style.pointerEvents = 'none';
     insightBtn.style.opacity = '0.3';
 
-    
+
 }
 
 function insightToggle() {
@@ -355,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetBtn.addEventListener('click', () => {
         reset();
     });
-    
+
     insightBtn.addEventListener('click', () => {
         if (isSwitchOn) {
             insightContainer.style.display = 'block';

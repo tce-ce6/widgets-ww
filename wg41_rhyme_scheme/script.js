@@ -113,6 +113,36 @@ const STANZAS = [
   },
   {
     "stanza": [
+      "I wrote some lines once on a time",
+      "In wondrous merry mood,",
+      "And thought, as usual, men would say",
+      "They were exceeding good."
+    ],
+    "source": "The Height of the Ridiculous, Oliver Wendell Holmes",
+    "rhyming_words": {
+      "a": ["time"],
+      "b": ["mood", "good"],
+      "c": ["say"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
+      "They were so queer, so very queer,",
+      "I laughed as I would die;",
+      "Albeit, in the general way,",
+      "A sober man am I."
+    ],
+    "source": "The Height of the Ridiculous, Oliver Wendell Holmes",
+    "rhyming_words": {
+      "a": ["queer"],
+      "b": ["die", "I"],
+      "c": ["way"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
       "Turn, turn thy hasty foot aside,",
       "Nor crush that helpless worm!",
       "The frame thy scornful looks deride",
@@ -155,6 +185,20 @@ const STANZAS = [
   },
   {
     "stanza": [
+      "Tell me, what is the present hour?",
+      "‘A green and flowery spray",
+      "Where a young bird sits gathering its power",
+      "To mount and fly away.’"
+    ],
+    "source": "Past, Present, Future, Emily Bronte",
+    "rhyming_words": {
+      "a": ["hour", "power"],
+      "b": ["spray", "away"]
+    },
+    "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
       "And what is the future, happy one?",
       "‘A sea beneath a cloudless sun;",
       "A mighty, glorious, dazzling sea",
@@ -166,6 +210,20 @@ const STANZAS = [
       "b": ["sea", "infinity"]
     },
     "rhyme_scheme": "aabb"
+  },
+  {
+    "stanza": [
+      "How cheerfully he seems to grin,",
+      "How neatly spreads his claws,",
+      "And welcomes little fishes in,",
+      "With gently smiling jaws!"
+    ],
+    "source": "A Parody, Lewis Carroll",
+    "rhyming_words": {
+      "a": ["grin", "in"],
+      "b": ["claws", "jaws"]
+    },
+    "rhyme_scheme": "abab"
   },
   {
     "stanza": [
@@ -183,6 +241,20 @@ const STANZAS = [
   },
   {
     "stanza": [
+      "By thirty hills I hurry down,",
+      "Or slip between the ridges,",
+      "By twenty thorpes, a little town,",
+      "An half a hundred bridges."
+    ],
+    "source": "The Brook, Alfred Tennyson",
+    "rhyming_words": {
+      "a": ["down", "town"],
+      "b": ["ridges", "bridges"]
+    },
+    "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
       "Till last by Philip’s farm I flow",
       "To join the brimming river,",
       "For men may come and men may go,",
@@ -194,6 +266,137 @@ const STANZAS = [
       "b": ["river", "forever"]
     },
     "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
+      "There’s a silver house in the lovely sky,",
+      "As round as a silver crown;",
+      "It takes two weeks to build it up,",
+      "And two to pull it down."
+    ],
+    "source": "Silver House, John Lea",
+    "rhyming_words": {
+      "a": ["sky"],
+      "b": ["crown", "down"],
+      "c": ["up"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
+      "There’s a man who lives in the silver house,",
+      "In a lonely sort of way;",
+      "But what his name is no one knows,",
+      "Or no one likes to say."
+    ],
+    "source": "Silver House, John Lea",
+    "rhyming_words": {
+      "a": ["house"],
+      "b": ["way", "say"],
+      "c": ["knows"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
+      "I will arise and go now, and go to Innisfree,",
+      "And a small cabin build there, of clay and wattles made:",
+      "Nine bean-rows will I have there, a hive for the honeybee,",
+      "And live alone in the bee-loud glade."
+    ],
+    "source": "The Lake Isle of Innisfree, W.B. Yeats",
+    "rhyming_words": {
+      "a": ["Innisfree", "honeybee"],
+      "b": ["made", "glade"]
+    },
+    "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
+      "Away, away in the Northland,",
+      "Where the hours of the day are few,",
+      "And the nights are so long in winter",
+      "That they cannot sleep them through;"
+    ],
+    "source": "A Legend of the Northland, Phoebe Cary",
+    "rhyming_words": {
+      "a": ["Northland"],
+      "b": ["few", "through"],
+      "c": ["winter"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
+      "Where they harness the swift reindeer",
+      "To the sledges, when it snows;",
+      "And the children look like bear’s cubs",
+      "In their funny, furry clothes:"
+    ],
+    "source": "A Legend of the Northland, Phoebe Cary",
+    "rhyming_words": {
+      "a": ["reindeer"],
+      "b": ["snows", "clothes"],
+      "c": ["cubs"]
+    },
+    "rhyme_scheme": "abcb"
+  },
+  {
+    "stanza": [
+      "The way a crow",
+      "Shook down on me",
+      "The dust of snow",
+      "From a hemlock tree"
+    ],
+    "source": "Dust of Snow, Robert Frost",
+    "rhyming_words": {
+      "a": ["crow", "snow"],
+      "b": ["me", "tree"]
+    },
+    "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
+      "Has given my heart",
+      "A change of mood",
+      "And saved some part",
+      "Of a day I had rued."
+    ],
+    "source": "Dust of Snow, Robert Frost",
+    "rhyming_words": {
+      "a": ["heart", "part"],
+      "b": ["mood", "rued"]
+    },
+    "rhyme_scheme": "abab"
+  },
+  {
+    "stanza": [
+      "Some say the world will end in fire",
+      "Some say in ice.",
+      "From what I’ve tasted of desire",
+      "I hold with those who favour fire."
+    ],
+    "source": "Fire and Ice, Robert Frost",
+    "rhyming_words": {
+      "a": ["fire", "desire", "fire"],
+      "b": ["ice"]
+    },
+    "rhyme_scheme": "abaa"
+  },
+  {
+    "stanza": [
+      "He stalks in his vivid stripes",
+      "The few steps of his cage,",
+      "On pads of velvet quiet,",
+      "In his quiet rage."
+    ],
+    "source": "A Tiger in the Zoo, Leslie Norris",
+    "rhyming_words": {
+      "a": ["stripes"],
+      "b": ["cage", "rage"],
+      "c": ["quiet"]
+    },
+    "rhyme_scheme": "abcb"
   },
   {
     "stanza": [
@@ -254,11 +457,13 @@ let completedRhymes = new Set();
 let correctWordsSet = new Set();   // stores correctly answered word elements
 let stanzaAudioPlayed = false;    // prevents repeat audio
 
+const soundIcon = document.getElementById('sound-icon');
+
 const markerStyles = {
-  green: { color: '#7ef241', cursor: "url('Assets/Images/Final images/Green_Highlighter.svg'), auto" },
-  yellow: { color: '#f7f734', cursor: "url('Assets/Images/Final images/Yellow_Highlighter.svg'), auto" },
-  blue: { color: '#43ceff', cursor: "url('Assets/Images/Final images/Blue_Highlighter.svg'), auto" },
-  pink: { color: '#ff43b7', cursor: "url('Assets/Images/Final images/Pink_Highlighter.svg'), auto" },
+  green: { color: '#7ef241', cursor: "url('Assets/Images/Final images/Green_Highlighter.svg') 64 64, auto" },
+  yellow: { color: '#f7f734', cursor: "url('Assets/Images/Final images/Yellow_Highlighter.svg') 64 64, auto" },
+  blue: { color: '#43ceff', cursor: "url('Assets/Images/Final images/Blue_Highlighter.svg')64 64, auto" },
+  pink: { color: '#ff43b7', cursor: "url('Assets/Images/Final images/Pink_Highlighter.svg') 64 64, auto" },
 };
 
 function setMarkerEnabled(markerEl, enabled) {
@@ -270,6 +475,7 @@ function setMarkerEnabled(markerEl, enabled) {
 function resetMarkers() {
   activeMarker = null;
   document.body.style.cursor = 'default';
+  soundIcon.style.display = 'none';
   setMarkerEnabled(markers.green, true);
   ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
 
@@ -278,7 +484,7 @@ function resetMarkers() {
     const signEl = document.getElementById(`sign${i}`);
 
     if (rEl) rEl.textContent = '';
-    if (signEl) signEl.textContent = '';
+    if (signEl) signEl.src = '';
   }
 
 }
@@ -316,7 +522,8 @@ function wrapLastWord(lineEl, text, lineIndex, rhymingWords) {
 
   // Add the plain text before the last word
   if (before) {
-    lineEl.appendChild(document.createTextNode(before + ' '));
+    //  lineEl.appendChild(document.createTextNode(before + ' '));
+    lineEl.appendChild(document.createTextNode(before));
   }
 
   // Create the "Box" word (Standard HTML span)
@@ -352,7 +559,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
 
   /* WORD STYLE */
   el.style.backgroundColor = isCorrect ? schemaColor : markerColor;
-  el.style.color = "white";
+  el.style.color = "black";
   el.style.padding = "0px 8px";
   el.style.fontWeight = "bold";
   el.style.display = "inline-block";
@@ -368,8 +575,12 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
     }
 
     if (signTag) {
-      signTag.textContent = isCorrect ? " ✅" : " ✗";
-      // ❗ No green/red coloring
+      // Define the paths to your local SVG files
+      const correctPath = 'Assets/Images/right-mark.svg';
+      const wrongPath = 'Assets/Images/wrong-mark.svg';
+    
+      // Update the src based on the boolean
+      signTag.src = isCorrect ? correctPath : wrongPath;
     }
 
     if (isCorrect) {
@@ -417,8 +628,8 @@ function attachWordClicks(rhymingWords, scheme) {
       const record = letterColors[targetLetter];
 
       // Limit to 2 words per rhyme
-      if (record.spans.size >= 2 && !record.spans.has(el)) {
-        applyHighlight(el, targetLetter, activeMarker.color, false, idx);
+      if (record.spans.size >= 0 && !record.spans.has(el)) {
+        applyHighlight(el, targetLetter, chosenColor, false, idx);
         return;
       }
 
@@ -426,91 +637,19 @@ function attachWordClicks(rhymingWords, scheme) {
       record.spans.add(el);
 
       // 🔥 ALWAYS re-evaluate using CURRENT marker color
-      record.spans.forEach(span => {
-        applyHighlight(
-          span,
-          targetLetter,
-          activeMarker.color, // ← current marker ONLY
-          true,
-          idx
-        );
-      });
-
-
-      // if (!letterColors[targetLetter]) {
-      //   letterColors[targetLetter] = { color: chosenColor, spans: new Set() };
-      // }
-      // const record = letterColors[targetLetter];
-
-      // // Limit to 2 words per rhyme
-      // if (record.spans.size >= 2 && !record.spans.has(el)) {
-      //    applyHighlight(el, targetLetter, chosenColor, false, idx);
-      //    return;
-      // }
-
-      // record.spans.add(el);
-      // const isComplete = record.spans.size === 2;
-
       // record.spans.forEach(span => {
-      //   // We pass 'idx' of the current click to update the specific sign
-      //   applyHighlight(span, targetLetter, record.color, isComplete, idx);
+      //   applyHighlight(
+      //     span,
+      //     targetLetter,
+      //     activeMarker.color, // ← current marker ONLY
+      //     true,
+      //     idx
+      //   );
       // });
+
     };
   });
 }
-
-// function attachWordClicks(rhymingWords, scheme) {
-//   letterColors = {}; 
-//   const words = document.querySelectorAll('.clickable-word');
-//   const warningDiv = document.getElementById('warning');
-
-//   // Track if the first word (index 0) has been clicked
-//   let firstWordClicked = false;
-
-//   words.forEach((el, idx) => {
-//     const targetLetter = el.getAttribute('data-letter-target') || (scheme[idx] || 'a');
-
-//     el.onclick = () => {
-//       // 1. Check if the user is trying to click a later word before the first word
-//       if (idx !== 0 && !firstWordClicked) {
-//         if (warningDiv) {
-//           warningDiv.textContent = "Please select a word from the first line first!";
-//           warningDiv.style.display = 'block';
-//         }
-//         return; // Stop execution here
-//       }
-
-//       // 2. If they clicked the first word, unlock the rest and hide warning
-//       if (idx === 0) {
-//         firstWordClicked = true;
-//         if (warningDiv) warningDiv.style.display = 'none';
-//       }
-
-//       // --- Rest of your existing logic ---
-//       if (!activeMarker || !targetLetter) return;
-//       const chosenColor = activeMarker.color;
-
-//       if (!letterColors[targetLetter]) {
-//         letterColors[targetLetter] = { color: chosenColor, spans: new Set() };
-//       }
-//       const record = letterColors[targetLetter];
-
-//       if (record.color !== chosenColor && record.spans.size < 2) {
-//         record.color = chosenColor;
-//         record.spans.forEach(span => applyHighlight(span, targetLetter, record.color, record.spans.size === 2, idx));
-//       }
-
-//       if (record.spans.size >= 2 && !record.spans.has(el)) {
-//         applyHighlight(el, targetLetter, chosenColor, false, idx);
-//         return;
-//       }
-
-//       record.spans.add(el);
-//       const isCompletePair = record.spans.size === 2;
-//       record.spans.forEach(span => applyHighlight(span, targetLetter, record.color, isCompletePair, idx));
-//     };
-//   });
-// }
 
 // Reveal correct answer with default colors (a: green, b: yellow)
 function showAnswer() {
@@ -524,7 +663,7 @@ function showAnswer() {
     const color = defaultColors[letter] || markerStyles.green.color;
     applyHighlight(el, letter, color, true);
   });
-
+  soundIcon.style.display = 'block';
   playCurrentStanzaAudio();
 }
 
@@ -541,12 +680,16 @@ function playCurrentStanzaAudio() {
 
   if (!audioSrc) return;
 
+  if (stanzaAudio) {
+    try { stanzaAudio.pause(); stanzaAudio.currentTime = 0; } catch (e) { }
+  }
+
   // Stop previous audio if playing
   if (stanzaAudio) {
     stanzaAudio.pause();
     stanzaAudio.currentTime = 0;
   }
-  console.log(audioSrc)
+
   stanzaAudio = new Audio(`${audioSrc}.mp3`); // add extension if needed
   stanzaAudio.play().catch(err => {
     console.warn("Audio play blocked:", err);
@@ -556,6 +699,11 @@ function playCurrentStanzaAudio() {
 function resetForNextStanza() {
   correctWordsSet.clear();
   stanzaAudioPlayed = false;
+
+  if (stanzaAudio) {
+    stanzaAudio.pause();
+    stanzaAudio.currentTime = 0;
+  }
 }
 
 function checkAndPlayStanzaAudio() {
@@ -565,7 +713,12 @@ function checkAndPlayStanzaAudio() {
 
   if (correctWordsSet.size === totalWords) {
     stanzaAudioPlayed = true;
+    activeMarker = null;
+    document.body.style.cursor = 'default';
+    soundIcon.style.display = 'block';
     playCurrentStanzaAudio(); // your existing function
+    ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
+
   }
 }
 
@@ -574,7 +727,7 @@ function renderStanza(index) {
   if (!stanzaObj) return;
 
   const [line1 = '', line2 = '', line3 = '', line4 = ''] = stanzaObj.stanza || [];
-  const author = stanzaObj.source || 'Unknown author';
+  const author = stanzaObj.source || 'Anonymous';
   const rhymingWords = stanzaObj.rhyming_words || {};
 
   const s1 = document.getElementById('S1');
@@ -614,6 +767,8 @@ document.addEventListener('DOMContentLoaded', function () {
   markers.yellow = document.getElementById('yellow-marker');
   markers.blue = document.getElementById('blue-marker');
   markers.pink = document.getElementById('pink-marker');
+
+  soundIcon.style.display = 'none';
 
   // Only green enabled initially
   resetMarkers();
@@ -656,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       document.querySelectorAll('[id^="sign"]').forEach(el => {
-        el.textContent = "";
+        el.src = "";
       });
 
       const warningDiv = document.getElementById('warning');
