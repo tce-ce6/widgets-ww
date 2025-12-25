@@ -463,6 +463,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderStep3Options(groupIndex) {
     optionList.innerHTML = "";
 
+    // 🔒 Disable Next until all options are placed
+    nextBtn.disabled = true;
+
     const groupKey = Object.keys(allData[groupIndex])[0];
     const groupData = allData[groupIndex][groupKey];
 
@@ -474,25 +477,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
   optionList.addEventListener("click", (e) => {
     const optionLi = e.target.closest("li");
     if (!optionLi) return;
 
-    // 🚫 Category not selected
-    if (!selectedCategoryItem) {
-      // alert("पहले सही श्रेणी चुनें।");
-      return;
-    }
+    if (!selectedCategoryItem) return;
 
     const optionCategory = optionLi.dataset.category;
     const selectedCategory = selectedCategoryItem.dataset.category;
 
-    // 🔄 Remove previous wrong state
     optionList
       .querySelectorAll("li.wrong")
       .forEach((li) => li.classList.remove("wrong"));
 
-    // ✅ CATEGORY MATCH
     if (optionCategory === selectedCategory) {
       const wordWrap = selectedCategoryItem.querySelector(".word-wrap");
       if (!wordWrap) return;
@@ -501,18 +499,21 @@ document.addEventListener("DOMContentLoaded", () => {
       span.textContent = optionLi.textContent;
       wordWrap.appendChild(span);
 
-      // Remove option after correct placement
       optionLi.remove();
-
-      // Clear selected category
       selectedCategoryItem.classList.remove("selected");
       selectedCategoryItem = null;
-    }
-    // ❌ CATEGORY MISMATCH
-    else {
+
+      /* ===============================
+         ✅ ENABLE NEXT ONLY WHEN DONE
+      =============================== */
+      if (areAllOptionsPlaced()) {
+        nextBtn.disabled = false;
+      }
+    } else {
       optionLi.classList.add("wrong");
     }
   });
+
 
   // Click handler for subject-list (first click)
   subjectList.addEventListener("click", (e) => {
@@ -670,7 +671,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const wordWrap = subjectLi.querySelector(".word-wrap");
       if (!wordWrap) return;
 
-      // 🔄 Clear first
+      /* ===============================
+         🔹 STORE USER STATE (once)
+      =============================== */
+      if (!show && wordWrap.dataset.userHtml) {
+        // Restore previous user answers
+        wordWrap.innerHTML = wordWrap.dataset.userHtml;
+        return;
+      }
+
+      if (show) {
+        // Save current state BEFORE overwriting
+        wordWrap.dataset.userHtml = wordWrap.innerHTML;
+      }
+
+      // Clear only when showing answers
       wordWrap.innerHTML = "";
 
       if (!show) return;
@@ -686,10 +701,9 @@ document.addEventListener("DOMContentLoaded", () => {
         span.textContent = item.completeSentence;
         wordWrap.appendChild(span);
       });
-
-      // ✅ DO NOT applyCategoryFormatting here
     });
   }
+
 
   function checkStep3Completion() {
     const remainingCategories =
