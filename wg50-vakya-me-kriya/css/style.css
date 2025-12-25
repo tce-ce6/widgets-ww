@@ -165,19 +165,22 @@
 }
 
 /* tally mark style  */
-#kriyaPage .h-100{
+#kriyaPage .h-100 {
   height: 100%;
 }
-#kriyaPage .home-btns{
+
+#kriyaPage .home-btns {
   display: flex;
   gap: 50px;
   align-items: center;
   justify-content: center;
 }
-#kriyaPage .home-btns img{
+
+#kriyaPage .home-btns img {
   cursor: pointer;
 }
-.question-wrapper .question-list{
+
+.question-wrapper .question-list {
   display: flex;
   border: 400px;
   align-items: center;
@@ -187,9 +190,10 @@
   justify-content: space-around;
   gap: 50px;
   list-style-type: none;
-      width: 1500;
+  width: 1500;
 }
-.question-wrapper .question-list li{
+
+.question-wrapper .question-list li {
   background-image: url("../assets/input-bg.svg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -213,6 +217,7 @@
   margin-top: 70px;
   list-style-type: none;
 }
+
 .answer-list li {
   background-image: url("../assets/ans-bg.svg");
   background-repeat: no-repeat;
@@ -228,45 +233,52 @@
   cursor: pointer;
 }
 
-.step1-itext{
-      font-size: 35px;
-    color: #940606;
-    line-height: 1.5;
-    display: block;
-    text-align: center;
-    margin-bottom: 35px;
+.step1-itext {
+  font-size: 35px;
+  color: #940606;
+  line-height: 1.5;
+  display: block;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-.subject-wrapper{
+.subject-wrapper {
   display: flex;
   width: 100%;
 }
-.subject-wrapper .left-col{
+
+.subject-wrapper .left-col {
   width: 72%;
 }
-.subject-wrapper .right-col{
+
+.subject-wrapper .right-col {
   width: 28%;
   text-align: center;
 
 }
-.subject-wrapper .subject-list{
+
+.subject-wrapper .subject-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   row-gap: 60px !important;
   padding: 0;
   list-style-type: none;
-  
+  padding-left: 20px;
+
 }
-.subject-wrapper .subject-list li{
+
+.subject-wrapper .subject-list li {
   background-image: url("../assets/subject-bg.svg");
   background-size: 100% 100%;
   background-position: center;
   width: 586px;
   height: 372px;
   position: relative;
+  cursor: pointer;
 }
-.subject-wrapper .subject-list li h6{
+
+.subject-wrapper .subject-list li h6 {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -277,7 +289,8 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.word-wrap{
+
+.word-wrap {
   display: flex;
   flex-direction: column;
   font-size: 33px;
@@ -285,31 +298,37 @@
   top: 110px;
   left: 50px;
 }
-.word-wrap span{
+
+.word-wrap span {
   margin-bottom: 40px;
 }
-.word-wrap span.green{
+
+.word-wrap span.green {
   margin-left: -8px;
   background-color: #7EFC37;
 
 }
-.word-wrap span.blue{
+
+.word-wrap span.blue {
   background-color: #3EEBFE;
 }
-.option-wrap{
-  display:flex;
+
+.option-wrap {
+  display: flex;
   flex-direction: column;
   gap: 20px;
 }
-.right-col h4{
+
+.right-col h4 {
   font-size: 29px;
   font-weight: 600;
   margin-top: 45px;
   padding: 0 50px;
   line-height: 1.4;
 }
-.option-wrap li{
-   background-image: url("../assets/option-bg.svg");
+
+.option-wrap li {
+  background-image: url("../assets/option-bg.svg");
   background-size: 100% 100%;
   background-position: center;
   width: 370px;
@@ -321,31 +340,34 @@
   position: relative;
   cursor: pointer;
 }
-.option-wrap li.wrong::before{
-      content: "";
-    width: 379px;
-    height: 115px;
-    background-color: red;
-    position: absolute;
-    top: -5px;
-    left: -6px;
-    z-index: -1;
-    border-radius: 40px;
+
+.option-wrap li.wrong::before {
+  content: "";
+  width: 379px;
+  height: 115px;
+  background-color: red;
+  position: absolute;
+  top: -5px;
+  left: -6px;
+  z-index: -1;
+  border-radius: 40px;
 }
 
-.sub-title{
+.sub-title {
   font-size: 25px;
   padding: 0 50px;
   display: block;
 }
-.question-listing{
+
+.question-listing {
   display: flex;
   gap: 20px;
   list-style-type: none;
   margin-top: 200px;
 }
-.question-listing li{
-   background-image: url("../assets/q-listing.svg");
+
+.question-listing li {
+  background-image: url("../assets/q-listing.svg");
   background-size: 100% 100%;
   background-position: center;
   width: 80px;
@@ -356,30 +378,35 @@
   justify-content: center;
   font-size: 30px;
 }
+
 .blank,
-.quiz-blank{
-    display: inline-block;
-    height: 40px;
-    width: 270px;
-    flex: 0 0 auto;
-    margin-left: 12px;
-        border-bottom: 5px solid #000;
+.quiz-blank {
+  display: inline-block;
+  height: 40px;
+  width: 270px;
+  flex: 0 0 auto;
+  margin-left: 12px;
+  border-bottom: 5px solid #000;
 
 }
+
 .blank.correct,
-.quiz-blank.correct{
+.quiz-blank.correct {
   height: auto;
   border-bottom: none;
   width: auto;
 }
+
 .blank.selected,
-.quiz-blank.selected{
+.quiz-blank.selected {
   background-color: #FFEB3B;
 }
-#option-list li{
+
+#option-list li {
   position: relative;
 }
-.answer-list li.wrong::before{
+
+.answer-list li.wrong::before {
   content: "";
   height: 136px;
   width: 281px;
@@ -390,35 +417,46 @@
   z-index: -1;
   border-radius: 40px;
 }
-.bottom-box{
-   background-image: url("../assets/option-bg.svg");
-    background-size: 100% 100%;
-    background-position: center;
-    width: 370px;
-    height: 105px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    position: absolute;
-    bottom: -47px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    line-height: 3.4;
+
+.answer-list li.disabled {
+  pointer-events: none;
 }
+
+.bottom-box {
+  background-image: url("../assets/option-bg.svg");
+  background-size: 100% 100%;
+  background-position: center;
+  width: 370px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  position: absolute;
+  bottom: -47px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 3.4;
+}
+
+.subject-list li.active {
+  filter: drop-shadow(-1px 1px 13px rgb(255, 225, 0));
+}
+
 #subject-list li.category-1 .bottom-box,
 #subject-list li.category-2 .bottom-box,
 #subject-list li.category-3 .bottom-box,
-#subject-list li.category-4 .bottom-box{
+#subject-list li.category-4 .bottom-box {
   display: block !important;
 }
-.question-listing li.disabled{
+
+.question-listing li.disabled {
   pointer-events: none;
   opacity: 0.4;
 }
 
-.abhyas-label{
+.abhyas-label {
   position: absolute;
   top: 0;
   left: 100px;
@@ -426,4 +464,8 @@
   height: 85px;
   width: 196px;
   background-size: 100% 100%;
+}
+
+.question-list li.disabled {
+  pointer-events: none;
 }

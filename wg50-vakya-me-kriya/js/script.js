@@ -29,15 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionListing = document.querySelectorAll(".question-listing li");
   const abhyasLabel = document.getElementById("abhyas-label");
   let isQuizAnswerVisible = false;
-  
+
+  const studyBtn = document.getElementById("study-btn");
+
+
 
   let quizData = [];
   let currentQuizIndex = 0;
+  let isStep3AnswerVisible = false;
 
   let selectedQuizBlank = null;
 
   let selectedCategoryListItem = null;
-  
+
 
   const verbRules = [
     { suffix: "ती हैं।", rootClass: "blue", suffixClass: "green" }, // ✅ plural feminine
@@ -102,7 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showAnsBtn.disabled = allCorrect;
     nextBtn.disabled = !allCorrect;
+
+    // ✅ ADD THIS
+    if (allCorrect) {
+      document
+        .querySelectorAll("#step-2 .question-list li")
+        .forEach(li => li.classList.add("disabled"));
+    }
   }
+
 
   /* ----------------------------------
      RENDER GROUP
@@ -144,22 +156,22 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ----------------------------------
      LOAD JSON
   ---------------------------------- */
-fetch("./data.json")
-  .then(res => res.json())
-  .then(data => {
+  fetch("./data.json")
+    .then(res => res.json())
+    .then(data => {
 
-    // ✅ Separate quiz data completely
-    const quizObj = data.find(item => item.quiz);
-    quizData = quizObj ? quizObj.quiz : [];
+      // ✅ Separate quiz data completely
+      const quizObj = data.find(item => item.quiz);
+      quizData = quizObj ? quizObj.quiz : [];
 
-    // ✅ Remove quiz object from step-2 & step-3 flow
-    allData = data.filter(item => !item.quiz);
+      // ✅ Remove quiz object from step-2 & step-3 flow
+      allData = data.filter(item => !item.quiz);
 
-    // ✅ Start Step-2 with first grammar group only
-    const firstKey = Object.keys(allData[0])[0];
-    renderGroup(allData[0][firstKey]);
-  })
-  .catch(err => console.error("JSON load error:", err));
+      // ✅ Start Step-2 with first grammar group only
+      const firstKey = Object.keys(allData[0])[0];
+      renderGroup(allData[0][firstKey]);
+    })
+    .catch(err => console.error("JSON load error:", err));
 
 
   /* ----------------------------------
@@ -218,86 +230,148 @@ fetch("./data.json")
   /* ----------------------------------
      SHOW / HIDE ANSWERS
   ---------------------------------- */
- showAnsBtn.addEventListener("click", () => {
+  showAnsBtn.addEventListener("click", () => {
 
-    document
-    .querySelectorAll(".question-list .blank.selected")
-    .forEach(b => b.classList.remove("selected"));
-
-  /* -------------------------
-     🔹 STEP-4 QUIZ MODE
-  ------------------------- */
-  if (step4.style.display === "block") {
-    const quiz = quizData[currentQuizIndex];
-
-    if (!isQuizAnswerVisible) {
-      // ✅ SHOW ANSWER
-      quizQuestion.textContent = quiz.completeSentence;
-
-      quizOptions
-        .querySelectorAll("li")
-        .forEach(li => (li.style.display = "none"));
-
-      showAnsBtn.textContent = "उत्तर छिपाएं";
-      nextBtn.disabled = false;
-      isQuizAnswerVisible = true;
-    } 
-    else {
-      // 🔄 HIDE ANSWER → RESTORE BLANK QUESTION
-      quizQuestion.innerHTML = quiz.question.replace(
-        /_+/g,
-        `<span class="quiz-blank"></span>`
-      );
-
-      quizOptions
-        .querySelectorAll("li")
-        .forEach(li => {
-          li.style.display = "";
-          li.classList.remove("wrong", "selected");
-        });
-
-      showAnsBtn.textContent = "उत्तर देखें";
-      nextBtn.disabled = true;
-      isQuizAnswerVisible = false;
+    if (step3.style.display === "block") {
+      if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
+        showStep3Answers(true);
+      } else {
+        showStep3Answers(false);
+      }
     }
 
-    selectedQuizBlank = null;
-    return;
-  }
+    if (step4.style.display === "block") {
+      const questionItems = document.querySelectorAll(".question-list li");
 
-  /* -------------------------
-     🔹 STEP-2 EXISTING LOGIC
-  ------------------------- */
-  const questions = document.querySelectorAll(".question-list li");
-  const answers = document.querySelectorAll(".answer-list li");
-
-  if (!isAnswerVisible) {
-    questions.forEach((li) => {
-      const blank = li.querySelector(".blank");
-      if (blank) {
-        blank.textContent = li.dataset.answer;
-        blank.classList.add("correct");
+      if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
+        // 🔒 Disable when showing answer
+        questionItems.forEach(li => li.classList.add("disabled"));
+      } else {
+        // 🔓 Enable when hiding answer
+        questionItems.forEach(li => li.classList.remove("disabled"));
       }
-    });
+    }
 
-    answers.forEach((li) => (li.style.display = "none"));
-    showAnsBtn.textContent = "उत्तर छिपाएं";
-    isAnswerVisible = true;
-  } 
-  else {
-    questions.forEach((li) => {
-      const blank = li.querySelector(".blank");
-      if (blank && !blank.dataset.userFilled) {
-        blank.textContent = "";
-        blank.classList.remove("correct");
+    const step2Questions = document.querySelectorAll("#step-2 .question-list li");
+
+    if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
+      // 🔓 Enable questions
+      step2Questions.forEach(li => li.classList.add("disabled"));
+    } else {
+      // 🔒 Disable questions
+      step2Questions.forEach(li => li.classList.remove("disabled"));
+    }
+
+    document
+      .querySelectorAll(".question-list .blank.selected")
+      .forEach(b => b.classList.remove("selected"));
+
+    /* -------------------------
+       🔹 STEP-4 QUIZ MODE
+    ------------------------- */
+    if (step4.style.display === "block") {
+      const quiz = quizData[currentQuizIndex];
+
+      if (!isQuizAnswerVisible) {
+        // ✅ SHOW ANSWER
+        quizQuestion.textContent = quiz.completeSentence;
+
+        quizOptions
+          .querySelectorAll("li")
+          .forEach(li => (li.style.display = "none"));
+
+        showAnsBtn.textContent = "उत्तर छिपाएं";
+        nextBtn.disabled = false;
+        isQuizAnswerVisible = true;
       }
-    });
+      else {
+        // 🔄 HIDE ANSWER → RESTORE BLANK QUESTION
+        quizQuestion.innerHTML = quiz.question.replace(
+          /_+/g,
+          `<span class="quiz-blank"></span>`
+        );
 
-    answers.forEach((li) => (li.style.display = ""));
-    showAnsBtn.textContent = "उत्तर देखें";
-    isAnswerVisible = false;
+        quizOptions
+          .querySelectorAll("li")
+          .forEach(li => {
+            li.style.display = "";
+            li.classList.remove("wrong", "selected");
+          });
+
+        showAnsBtn.textContent = "उत्तर देखें";
+        nextBtn.disabled = true;
+        isQuizAnswerVisible = false;
+      }
+
+      selectedQuizBlank = null;
+      return;
+    }
+
+    /* -------------------------
+       🔹 STEP-2 EXISTING LOGIC
+    ------------------------- */
+    const questions = document.querySelectorAll(".question-list li");
+    const answers = document.querySelectorAll(".answer-list li");
+
+    if (!isAnswerVisible) {
+      questions.forEach((li) => {
+        const blank = li.querySelector(".blank");
+        if (blank) {
+          blank.textContent = li.dataset.answer;
+          blank.classList.add("correct");
+        }
+      });
+
+      answers.forEach((li) => (li.style.display = "none"));
+      showAnsBtn.textContent = "उत्तर छिपाएं";
+      isAnswerVisible = true;
+    }
+    else {
+      questions.forEach((li) => {
+        const blank = li.querySelector(".blank");
+        if (blank && !blank.dataset.userFilled) {
+          blank.textContent = "";
+          blank.classList.remove("correct");
+        }
+      });
+
+      answers.forEach((li) => (li.style.display = ""));
+      showAnsBtn.textContent = "उत्तर देखें";
+      isAnswerVisible = false;
+    }
+  });
+
+  if (studyBtn) {
+    studyBtn.addEventListener("click", () => {
+      // 🔽 Hide Step-3
+      step3.style.display = "none";
+
+      // 🔼 Show Step-4
+      step4.style.display = "block";
+      abhyasLabel.style.display = "block";
+
+      studyBtn.style.display = "none";
+
+
+      // ✅ INITIALIZE QUIZ PROPERLY
+      currentQuizIndex = 0;
+      isQuizAnswerVisible = false;
+      selectedQuizBlank = null;
+      nextBtn.disabled = true;
+      showAnsBtn.textContent = "उत्तर देखें";
+
+      // 🔥 THIS WAS MISSING
+      renderQuizQuestion();
+
+      // Reset question number UI
+      questionListing.forEach(li => li.classList.add("disabled"));
+      if (questionListing[0]) {
+        questionListing[0].classList.remove("disabled");
+      }
+
+      updateBtnWrapperVisibility();
+    });
   }
-});
 
 
   /* ----------------------------------
@@ -319,8 +393,10 @@ fetch("./data.json")
       if (currentStep3GroupIndex >= allData.length) {
         console.log("Step 3 completed");
         nextBtn.disabled = true;
+
         return;
       }
+
 
       // 🔄 Reset panels for next group
       rightColOption.style.display = "block";
@@ -329,6 +405,8 @@ fetch("./data.json")
       renderStep3Options(currentStep3GroupIndex);
       return;
     }
+
+
     // 🔹 STEP 4 QUIZ MODE
     // 🔹 STEP-4 QUIZ MODE
     // 🔹 STEP-4 QUIZ MODE
@@ -370,6 +448,8 @@ fetch("./data.json")
       // ⭐ RESET UI
       rightColOption.style.display = "block";
       rightColCategory.style.display = "none";
+      showAnsBtn.disabled = false; // ✅ ENABLE Show Answer in Step-3
+
 
       renderStep3Options(currentStep3GroupIndex);
       updateBtnWrapperVisibility();
@@ -439,7 +519,14 @@ fetch("./data.json")
     const subjectLi = e.target.closest("li");
     if (!subjectLi) return;
 
-    // Store selected subject
+    // ✅ ACTIVE STATE (Step-3)
+    subjectList
+      .querySelectorAll("li.active")
+      .forEach(li => li.classList.remove("active"));
+
+    subjectLi.classList.add("active");
+
+    // Store selected subject (existing logic)
     selectedSubjectListItem = subjectLi;
 
     // Also set for option placement if has data-category
@@ -447,6 +534,7 @@ fetch("./data.json")
       selectedCategoryItem = subjectLi;
     }
   });
+
   function areAllOptionsPlaced() {
     return optionList.children.length === 0;
   }
@@ -467,6 +555,9 @@ fetch("./data.json")
       categoryLi.classList.remove("wrong");
       selectedSubjectListItem = null;
       categoryLi.remove();
+
+      checkStep3Completion();
+
 
       // Get the complete sentence from category list item
       const completeSentence = categoryLi.textContent.trim();
@@ -564,6 +655,52 @@ fetch("./data.json")
     }
   });
 
+  function showStep3Answers(show) {
+    const groupKey = Object.keys(allData[currentStep3GroupIndex])[0];
+    const groupData = allData[currentStep3GroupIndex][groupKey];
+
+    document.querySelectorAll("#subject-list li").forEach(subjectLi => {
+      const wordWrap = subjectLi.querySelector(".word-wrap");
+      if (!wordWrap) return;
+
+      // 🔄 Clear previous content
+      wordWrap.innerHTML = "";
+
+      if (!show) return;
+
+      const subjectId = subjectLi.id;
+
+      // ✅ Get ALL matching sentences for this category
+      const matches = groupData.filter(
+        item => item.category === subjectId
+      );
+
+      matches.forEach(item => {
+        const span = document.createElement("span");
+        span.textContent = item.completeSentence;
+        wordWrap.appendChild(span);
+      });
+
+      // ✅ Apply existing verb formatting
+      applyCategoryFormatting(subjectLi);
+    });
+  }
+
+
+
+  function checkStep3Completion() {
+    const remainingCategories =
+      document.querySelectorAll("#category-list li[data-category]").length;
+
+    if (remainingCategories === 0) {
+      const studyBtn = document.getElementById("study-btn");
+      if (studyBtn) {
+        studyBtn.style.display = "block";
+      }
+    }
+  }
+
+
   function transformSentence(span) {
     const text = span.textContent.trim();
 
@@ -597,7 +734,36 @@ fetch("./data.json")
     });
   }
 
+  function checkAllQuizQuestionsAttempted() {
+    const allAttempted = currentQuizIndex === quizData.length - 1 &&
+      document.querySelector(".quiz-blank.correct");
+
+    if (allAttempted) {
+      showAnsBtn.disabled = true;
+      nextBtn.disabled = true;
+
+      document
+        .querySelectorAll(".question-list li")
+        .forEach(li => li.classList.add("disabled"));
+      document
+        .querySelectorAll(".answer-list li")
+        .forEach(li => li.classList.add("disabled"));
+    }
+  }
+
+
   function resetApplication() {
+
+    document
+      .querySelectorAll(".question-list li")
+      .forEach(li => li.classList.remove("disabled"));
+    document
+      .querySelectorAll(".answer-list li")
+      .forEach(li => li.classList.remove("disabled"));
+
+    if (studyBtn) {
+      studyBtn.style.display = "none";
+    }
     /* -------------------------
      STEP VISIBILITY
   ------------------------- */
@@ -654,36 +820,36 @@ fetch("./data.json")
     }
     updateBtnWrapperVisibility();
   }
-function renderQuizQuestion() {
-  const quiz = quizData[currentQuizIndex];
+  function renderQuizQuestion() {
+    const quiz = quizData[currentQuizIndex];
 
-  quizQuestion.innerHTML = quiz.question.replace(
-    /_+/g,
-    `<span class="quiz-blank"></span>`
-  );
+    quizQuestion.innerHTML = quiz.question.replace(
+      /_+/g,
+      `<span class="quiz-blank"></span>`
+    );
 
-  quizOptions.innerHTML = "";
-  quiz.options.forEach(opt => {
-    const li = document.createElement("li");
-    li.textContent = opt;
-    quizOptions.appendChild(li);
-  });
+    quizOptions.innerHTML = "";
+    quiz.options.forEach(opt => {
+      const li = document.createElement("li");
+      li.textContent = opt;
+      quizOptions.appendChild(li);
+    });
 
-  // ✅ ENABLE CURRENT QUESTION NUMBER
-  questionListing.forEach((li, index) => {
-    if (index === currentQuizIndex) {
-      li.classList.remove("disabled");
-      li.classList.add("active"); // optional (if you want highlight)
-    } else {
-      li.classList.remove("active");
-    }
-  });
+    // ✅ ENABLE CURRENT QUESTION NUMBER
+    questionListing.forEach((li, index) => {
+      if (index === currentQuizIndex) {
+        li.classList.remove("disabled");
+        li.classList.add("active"); // optional (if you want highlight)
+      } else {
+        li.classList.remove("active");
+      }
+    });
 
-  selectedQuizBlank = null;
-  isQuizAnswerVisible = false;
-  showAnsBtn.textContent = "उत्तर देखें";
-  nextBtn.disabled = true;
-}
+    selectedQuizBlank = null;
+    isQuizAnswerVisible = false;
+    showAnsBtn.textContent = "उत्तर देखें";
+    nextBtn.disabled = true;
+  }
 
 
   quizBtn.addEventListener("click", () => {
@@ -737,8 +903,13 @@ function renderQuizQuestion() {
       optionLi.style.display = "none";
       selectedQuizBlank = null;
 
-      nextBtn.disabled = false; // ✅ enable next
+      nextBtn.disabled = false;
+
+      // ✅ ADD THIS
+      checkAllQuizQuestionsAttempted();
     }
+
+
     // ❌ Wrong answer
     else {
       optionLi.classList.add("wrong");
