@@ -200,11 +200,10 @@
   display: block !important;
 }
 
-#position-1,
-#position-2,
-#position-3{
+#mirror-surface-selection, #lake-surface-selection, #paper-selection, #wall-selection{
   cursor: pointer;
 }
+
 
 #position-1.active #Vector_2,
 #position-2.active #Vector_4,

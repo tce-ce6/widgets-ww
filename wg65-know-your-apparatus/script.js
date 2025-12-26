@@ -67,19 +67,19 @@ document.addEventListener("DOMContentLoaded", () => {
         "gradeLevel": "6-7",
         "difficulty": "Beginner",
         "learningObjective": "Understand dissolving and stirring techniques",
-        "scenario": "You have 10g of salt. You need to dissolve it in 100 cm³ of water and stir it well.",
+        "scenario": "You have 10g of salt. You need to dissolve it in 100 mL of water and stir it well.",
         "yourTask": "Select the correct apparatus to mix salt and water.",
         "requiredApparatus": [
           { "id": "beaker", "name": "Beaker", "reason": "Wide opening makes it easy to add salt and stir" },
           { "id": "stirring-rod", "name": "Stirring Rod", "reason": "To mix the salt and water thoroughly" },
-          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure exactly 100 cm³ of water" }
+          { "id": "measuring-cylinder", "name": "Measuring Cylinder", "reason": "To measure exactly 100 mL of water" }
         ],
         "incorrectSelections": [
           { "id": "test-tube", "name": "Test Tube", "feedback": "Too narrow to stir properly and measure accurately" },
           { "id": "conical-flask", "name": "Conical Flask", "feedback": "Narrow neck makes it hard to add salt and stir" },
-          { "id": "pipette", "name": "Pipette", "feedback": "Can't measure 100 cm³ - pipettes are for smaller, precise volumes" },
+          { "id": "pipette", "name": "Pipette", "feedback": "Can't measure 100 mL - pipettes are for smaller, precise volumes" },
           { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the solution would spill when stirring" },
-          { "id": "dropper", "name": "Dropper", "feedback": "Way too small to measure 100 cm³ of water!" }
+          { "id": "dropper", "name": "Dropper", "feedback": "Way too small to measure 100 mL of water!" }
         ]
       },
       {
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "gradeLevel": "7-8",
         "difficulty": "Beginner",
         "learningObjective": "Safe observation of gas-producing reactions",
-        "scenario": "You need to add 5 cm³ of vinegar to 5 cm³ of baking soda solution and watch the reaction.",
+        "scenario": "You need to add 5 mL of vinegar to 5 mL of baking soda solution and watch the reaction.",
         "yourTask": "Prepare the setup to observe the reaction safely.",
         "requiredApparatus": [
           { "id": "test-tube", "name": "Test Tube", "reason": "Perfect size for small volume reactions and easy observation" },
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { "id": "beaker", "name": "Beaker", "feedback": "Works but wastes space - test tubes are better for small volumes" },
           { "id": "pipette", "name": "Pipette", "feedback": "You need something to hold and observe the reaction" },
           { "id": "petri-dish", "name": "Petri Dish", "feedback": "Too shallow - the bubbles might overflow!" },
-          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large for just 10 cm³ total volume" },
+          { "id": "conical-flask", "name": "Conical Flask", "feedback": "Too large for just 10 mL total volume" },
           { "id": "dropper", "name": "Dropper", "feedback": "Can't hold the reaction - you need a proper vessel" }
         ]
       },
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "gradeLevel": "7-8",
         "difficulty": "Intermediate",
         "learningObjective": "Safe heating procedures and temperature measurement",
-        "scenario": "You need to heat 50 cm³ of water until it boils and record the temperature.",
+        "scenario": "You need to heat 50 mL of water until it boils and record the temperature.",
         "yourTask": "Heat water and measure its boiling temperature.",
         "requiredApparatus": [
           { "id": "beaker", "name": "Beaker", "reason": "Can be heated safely and holds enough water" },
@@ -152,10 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "gradeLevel": "9-10",
         "difficulty": "Advanced",
         "learningObjective": "Precise measurement and volumetric analysis",
-        "scenario": "You have 25.0 cm³ of hydrochloric acid. Use 0.1 M sodium hydroxide to find the acid's concentration.",
+        "scenario": "You have 25.0 mL of hydrochloric acid. Use 0.1 M sodium hydroxide to find the acid's concentration.",
         "yourTask": "Select the precise apparatus needed for titration.",
         "requiredApparatus": [
-          { "id": "pipette", "name": "Pipette", "reason": "Measures exactly 25.0 cm³" },
+          { "id": "pipette", "name": "Pipette", "reason": "Measures exactly 25.0 mL" },
           { "id": "conical-flask", "name": "Conical Flask", "reason": "Prevents splashing during swirling" },
           { "id": "burette", "name": "Burette", "reason": "Delivers solution drop by drop" }
         ],
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "yourTask": "Choose the correct glassware for a standard solution.",
         "requiredApparatus": [
           { "id": "beaker", "name": "Beaker", "reason": "For initial dissolving" },
-          { "id": "volumetric-flask", "name": "Volumetric Flask", "reason": "Accurate 250 cm³ volume" },
+          { "id": "volumetric-flask", "name": "Volumetric Flask", "reason": "Accurate 250 mL volume" },
           { "id": "stirring-rod", "name": "Stirring Rod", "reason": "Ensures complete dissolution" }
         ],
         "incorrectSelections": [
