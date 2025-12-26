@@ -214,17 +214,17 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((li) => li.classList.remove("wrong"));
 
     if (selectedAnswer === correctAnswer) {
-      // ✅ Correct
-      selectedBlank.textContent = selectedAnswer;
-      selectedBlank.classList.remove("selected");
-      selectedBlank.classList.add("correct");
-      selectedBlank.dataset.userFilled = "true";
+  selectedBlank.textContent = selectedAnswer;
+  selectedBlank.classList.remove("selected");
+  selectedBlank.classList.add("correct");
+  selectedBlank.dataset.userFilled = "true";
 
-      answerLi.style.display = "none";
-      currentSelectedQuestion = null;
+  answerLi.dataset.used = "true";   // ✅ ADD THIS
+  answerLi.style.display = "none";
 
-      checkAllAnswered();
-    } else {
+  currentSelectedQuestion = null;
+  checkAllAnswered();
+} else {
       // ❌ Wrong
       answerLi.classList.add("wrong");
     }
