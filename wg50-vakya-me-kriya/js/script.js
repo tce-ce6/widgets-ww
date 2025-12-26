@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ensure initial state matches current step visibility
   updateBtnWrapperVisibility();
+  updateHomeBtnVisibility();
 
   let allData = [];
   let currentGroupIndex = 0;
@@ -86,6 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
     step1.style.display = "none";
     step2.style.display = "block";
     updateBtnWrapperVisibility();
+    updateHomeBtnVisibility(); // ✅ ADD
+
   });
 
   /* ----------------------------------
@@ -317,23 +320,29 @@ document.addEventListener("DOMContentLoaded", () => {
     /* -------------------------
        🔹 STEP-2 EXISTING LOGIC
     ------------------------- */
-    const questions = document.querySelectorAll(".question-list li");
-    const answers = document.querySelectorAll(".answer-list li");
+    const questions = document.querySelectorAll("#step-2 .question-list li");
+    const answers = document.querySelectorAll("#step-2 .answer-list li");
 
     if (!isAnswerVisible) {
+      // 👉 SHOW ANSWERS
       questions.forEach((li) => {
         const blank = li.querySelector(".blank");
-        if (blank) {
+        if (blank && !blank.dataset.userFilled) {
           blank.textContent = li.dataset.answer;
           blank.classList.add("correct");
         }
       });
 
-      answers.forEach((li) => (li.style.display = "none"));
+      // 🔒 Hide ALL answers (used + unused)
+      answers.forEach(li => {
+        li.style.display = "none";
+      });
+
       showAnsBtn.textContent = "उत्तर छिपाएं";
       isAnswerVisible = true;
-    }
-    else {
+
+    } else {
+      // 👉 HIDE ANSWERS (restore ONLY unused)
       questions.forEach((li) => {
         const blank = li.querySelector(".blank");
         if (blank && !blank.dataset.userFilled) {
@@ -342,7 +351,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      answers.forEach((li) => (li.style.display = ""));
+      // ✅ Restore ONLY unused answers
+      answers.forEach(li => {
+        if (!li.dataset.used) {
+          li.style.display = "";
+        }
+      });
+
       showAnsBtn.textContent = "उत्तर देखें";
       isAnswerVisible = false;
     }
@@ -379,6 +394,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateBtnWrapperVisibility();
+      updateHomeBtnVisibility();
+
     });
   }
 
@@ -462,6 +479,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       renderStep3Options(currentStep3GroupIndex);
       updateBtnWrapperVisibility();
+      updateHomeBtnVisibility();
+
       return;
     }
 
@@ -683,6 +702,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  function updateHomeBtnVisibility() {
+    if (!homeBtn || !step1) return;
+
+    const isStep1Visible =
+      window.getComputedStyle(step1).display === "block";
+
+    homeBtn.style.display = isStep1Visible ? "none" : "block";
+  }
 
 
   function normalizeText(str) {
@@ -877,7 +904,11 @@ document.addEventListener("DOMContentLoaded", () => {
       renderGroup(allData[0][firstKey]);
     }
     updateBtnWrapperVisibility();
+    updateHomeBtnVisibility();
+
   }
+
+
   function renderQuizQuestion() {
     const quiz = quizData[currentQuizIndex];
 
@@ -925,6 +956,8 @@ document.addEventListener("DOMContentLoaded", () => {
       questionListing[0].classList.remove("disabled");
     }
     updateBtnWrapperVisibility();
+    updateHomeBtnVisibility();
+
   });
 
   quizQuestion.addEventListener("click", (e) => {
@@ -954,18 +987,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ✅ Correct answer
     if (selectedAnswer === correctAnswer) {
-      selectedQuizBlank.textContent = selectedAnswer;
-      selectedQuizBlank.classList.remove("selected");
-      selectedQuizBlank.classList.add("correct");
+      selectedBlank.textContent = selectedAnswer;
+      selectedBlank.classList.remove("selected");
+      selectedBlank.classList.add("correct");
+      selectedBlank.dataset.userFilled = "true";
 
-      optionLi.style.display = "none";
-      selectedQuizBlank = null;
+      // ✅ VERY IMPORTANT
+      answerLi.dataset.used = "true";
+      answerLi.style.display = "none";
 
-      nextBtn.disabled = false;
-
-      // ✅ ADD THIS
-      checkAllQuizQuestionsAttempted();
+      currentSelectedQuestion = null;
+      checkAllAnswered();
     }
+
+
+
 
 
     // ❌ Wrong answer
