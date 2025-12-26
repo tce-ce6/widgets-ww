@@ -229,6 +229,10 @@ document.addEventListener("DOMContentLoaded", () => {
       answerLi.classList.add("wrong");
     }
   });
+function updateShowAnsStateForStep3() {
+  // Disable Show Answer when all options are correctly placed
+  showAnsBtn.disabled = areAllOptionsPlaced();
+}
 
 
 
@@ -290,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .querySelectorAll("li")
           .forEach(li => (li.style.display = "none"));
 
-        showAnsBtn.textContent = "उत्तर छिपाएं";
+        showAnsBtn.textContent = "उत्तर छिपाएँ";
         nextBtn.disabled = false;
         isQuizAnswerVisible = true;
       }
@@ -338,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
         li.style.display = "none";
       });
 
-      showAnsBtn.textContent = "उत्तर छिपाएं";
+      showAnsBtn.textContent = "उत्तर छिपाएँ";
       isAnswerVisible = true;
 
     } else {
@@ -411,6 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (areAllOptionsPlaced()) {
         rightColOption.style.display = "none";
         rightColCategory.style.display = "block";
+
+          enableShowAns();
+
       }
 
       currentStep3GroupIndex++;
@@ -453,6 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 👉 Load next question immediately
         renderQuizQuestion();
+showAnsBtn.disabled = false;
 
         showAnsBtn.textContent = "उत्तर देखें";
         nextBtn.disabled = true;
@@ -503,6 +511,8 @@ document.addEventListener("DOMContentLoaded", () => {
       li.dataset.category = item.category;
       optionList.appendChild(li);
     });
+    updateShowAnsStateForStep3();
+
   }
 
 
@@ -537,6 +547,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (areAllOptionsPlaced()) {
         nextBtn.disabled = false;
       }
+        updateShowAnsStateForStep3();
+
     } else {
       optionLi.classList.add("wrong");
     }
@@ -567,6 +579,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function areAllOptionsPlaced() {
     return optionList.children.length === 0;
   }
+function areAllCategoriesPlaced() {
+  return (
+    document.querySelectorAll("#category-list li[data-category]").length === 0
+  );
+}
 
   // Click handler for category-list (second click)
   categoryList.addEventListener("click", (e) => {
@@ -584,6 +601,9 @@ document.addEventListener("DOMContentLoaded", () => {
       categoryLi.classList.remove("wrong");
       selectedSubjectListItem = null;
       categoryLi.remove();
+if (areAllCategoriesPlaced()) {
+  disableShowAns();
+}
 
       checkStep3Completion();
 
@@ -693,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isStep3Visible || !isRightColCategoryVisible) return;
 
     const showAnswers =
-      showAnsBtn.textContent.trim() === "उत्तर छिपाएं";
+      showAnsBtn.textContent.trim() === "उत्तर छिपाएँ";
 
     document
       .querySelectorAll("#subject-list .bottom-box")
@@ -908,6 +928,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  function enableShowAns() {
+  showAnsBtn.disabled = false;
+}
+
+function disableShowAns() {
+  showAnsBtn.disabled = true;
+}
 
   function renderQuizQuestion() {
     const quiz = quizData[currentQuizIndex];
@@ -972,41 +999,40 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedQuizBlank = blank;
   });
 
-  quizOptions.addEventListener("click", (e) => {
-    const optionLi = e.target.closest("li");
-    if (!optionLi || !selectedQuizBlank) return;
+quizOptions.addEventListener("click", (e) => {
+  const optionLi = e.target.closest("li");
+  if (!optionLi || !selectedQuizBlank) return;
 
-    const quiz = quizData[currentQuizIndex];
-    const correctAnswer = quiz.answer.trim(); // ✅ FIX
-    const selectedAnswer = optionLi.textContent.trim();
+  const quiz = quizData[currentQuizIndex];
+  const correctAnswer = quiz.answer.trim();
+  const selectedAnswer = optionLi.textContent.trim();
 
-    // Reset previous states
-    quizOptions
-      .querySelectorAll("li.wrong")
-      .forEach((li) => li.classList.remove("wrong"));
+  // Clear previous wrong state
+  quizOptions.querySelectorAll("li.wrong").forEach(li =>
+    li.classList.remove("wrong")
+  );
 
-    // ✅ Correct answer
-    if (selectedAnswer === correctAnswer) {
-      selectedBlank.textContent = selectedAnswer;
-      selectedBlank.classList.remove("selected");
-      selectedBlank.classList.add("correct");
-      selectedBlank.dataset.userFilled = "true";
+  if (selectedAnswer === correctAnswer) {
+    // ✅ Fill blank
+    selectedQuizBlank.textContent = selectedAnswer;
+    selectedQuizBlank.classList.remove("selected");
+    selectedQuizBlank.classList.add("correct");
 
-      // ✅ VERY IMPORTANT
-      answerLi.dataset.used = "true";
-      answerLi.style.display = "none";
+    // ✅ Hide ONLY correct option
+    optionLi.style.display = "none";
 
-      currentSelectedQuestion = null;
-      checkAllAnswered();
-    }
+      showAnsBtn.disabled = true;   // ✅ ADD THIS
 
+    // ✅ Enable navigation
+    nextBtn.disabled = false;
+    isQuizAnswerVisible = true;
 
-
-
-
+    selectedQuizBlank = null;
+  } else {
     // ❌ Wrong answer
-    else {
-      optionLi.classList.add("wrong");
-    }
-  });
+    optionLi.classList.add("wrong");
+  }
+});
+
+
 });
