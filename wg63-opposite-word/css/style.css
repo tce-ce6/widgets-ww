@@ -171,14 +171,11 @@
 
 .spin-wrapper .left-col {
   width: 40%;
-  border: 1px solid red;
   position: relative;
 }
 
 .spin-wrapper .right-col {
   flex: 1 1;
-  border: 1px solid red;
-
 }
 
 text {
@@ -239,6 +236,7 @@ text {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .right-col .img-box.mainWord-img {
@@ -317,6 +315,7 @@ text {
   height: 83.51px;
   width: 83.51px;
   position: absolute;
+  cursor: pointer;
 }
 .sound-icon.wheel-sound {
     top: calc(50% - 27px);
@@ -326,4 +325,34 @@ text {
   top: -63px;
   right: 20px;
 
+}
+.bottom-section .lottie-wrapper{
+    position: absolute;
+    bottom: -74px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 180px;
+    width: 180px;
+}
+.arrow-wrapper{
+  height: 100%;
+}
+.arrow-wrapper .arrow{
+  background-image: url("../assets/wheel-left-arrow.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 260px;
+    width: 140px;
+}
+.arrow-wrapper .arrow.arrow-top{
+position: absolute;
+    top: 110px;
+    right: 30px;
+    transform: rotate(347deg);
+}
+.arrow-wrapper .arrow.arrow-bottom{
+position: absolute;
+    bottom: 110px;
+    left: -20px;
+    transform: rotate(176deg);
 }
