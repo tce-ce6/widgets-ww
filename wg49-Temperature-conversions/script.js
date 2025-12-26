@@ -1,52 +1,60 @@
 /**
- * Temperature Widget Logic - Final Version
- * Features: Drag, Presets, Reset Button, Starts at 0°C
+ * Temperature Widget Logic — FINAL FIXED VERSION
+ * ✔ Correct slider mapping
+ * ✔ Reaches exact min/max
+ * ✔ No rounding drift
+ * ✔ Mouse + Touch supported
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // --- 1. Configuration & Constraints ---
+
+    /* --------------------------------------------------
+     * 1. CONFIGURATION (UNCHANGED COORDINATES)
+     * -------------------------------------------------- */
     const CONFIG = {
         constraints: {
-            minY: 205, // Top (Max Temp: 380K)
-            maxY: 813, // Bottom (Min Temp: 220K)
-            rangeY: 608 // 813 - 205
+            minY: 205,   // Top → 380K
+            maxY: 813,   // Bottom → 220K
+            rangeY: 813 - 205
         },
         temperature: {
-            maxK: 380,
             minK: 220,
-            rangeK: 160
+            maxK: 380,
+            get rangeK() {
+                return this.maxK - this.minK;
+            }
         },
         indicator: {
-            bottomAnchor: 870, // Fixed bottom Y
-            maxHeight: 608     // Max fill height
+            bottomAnchor: 870,
+            maxHeight: 608
         },
-        referenceZeroCelsiusY: 615 // The Y position for 0°C
+        referenceZeroCelsiusY: 615
     };
 
-    // --- 2. Presets Data ---
-    // Note: 0°C is exactly "water-freezing" (273.15 K)
+    /* --------------------------------------------------
+     * 2. PRESETS
+     * -------------------------------------------------- */
     const PRESETS = [
         { id: 'water-freezing', kelvin: 273.15 },
         { id: 'water-boiling', kelvin: 373.15 },
-        { id: 'room-temperature', kelvin: 293.15 },
+        { id: 'room-temperature', kelvin: 300.15 },
         { id: 'avg-body-temperature', kelvin: 310.15 }
     ];
 
-    // --- 3. DOM Elements Selection ---
+    /* --------------------------------------------------
+     * 3. ELEMENTS
+     * -------------------------------------------------- */
     const els = {
         sliderGroup: document.getElementById('slider-group'),
         sliderControl: document.getElementById('slider-control'),
-        resetBtn: document.getElementById('reset-button'), // Your new button
+        sliderPanel: document.getElementById('slider-panel'),
+        resetBtn: document.getElementById('reset-button'),
         indicator: document.getElementById('temp-level-indicator'),
 
-        // Movable wrappers (ForeignObjects)
-        sliderPanel: document.getElementById('slider-panel'),
-        smallKWrapper: document.getElementById('kelvin-temp') ? document.getElementById('kelvin-temp').closest('foreignObject') : null,
-        smallCWrapper: document.getElementById('celsius-temp') ? document.getElementById('celsius-temp').closest('foreignObject') : null,
-        smallFWrapper: document.getElementById('fahrenheit-temp') ? document.getElementById('fahrenheit-temp').closest('foreignObject') : null,
+        smallKWrapper: document.getElementById('kelvin-temp')?.closest('foreignObject'),
+        smallCWrapper: document.getElementById('celsius-temp')?.closest('foreignObject'),
+        smallFWrapper: document.getElementById('fahrenheit-temp')?.closest('foreignObject'),
 
-        // Text Targets
         text: {
             smallK: document.getElementById('kelvin-temp'),
             smallC: document.getElementById('celsius-temp'),
@@ -57,146 +65,156 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // --- 4. Initialization Logic ---
-    // Capture base offsets relative to 0°C (Y=615) to ensure proportional movement 
+    /* --------------------------------------------------
+     * 4. MOVABLE ELEMENT BASE OFFSETS
+     * -------------------------------------------------- */
     const movables = [
         els.sliderControl,
         els.sliderPanel,
         els.smallKWrapper,
         els.smallCWrapper,
         els.smallFWrapper
-    ].filter(el => el !== null).map(el => ({
+    ].filter(Boolean).map(el => ({
         element: el,
         baseOffset: parseFloat(el.getAttribute('y')) - CONFIG.referenceZeroCelsiusY
     }));
 
-    // --- 5. Helper Functions ---
-
-    // Map Y Position -> Kelvin 
+    /* --------------------------------------------------
+     * 5. MAPPING FUNCTIONS
+     * -------------------------------------------------- */
     function yToKelvin(y) {
-        const percentFromTop = (y - CONFIG.constraints.minY) / CONFIG.constraints.rangeY;
-        return CONFIG.temperature.maxK - (percentFromTop * CONFIG.temperature.rangeK);
+        const ratio = (y - CONFIG.constraints.minY) / CONFIG.constraints.rangeY;
+        return CONFIG.temperature.maxK - ratio * CONFIG.temperature.rangeK;
     }
 
-    // Map Kelvin -> Y Position (for Presets/Reset)
     function kelvinToY(k) {
-        const percentOfRange = (CONFIG.temperature.maxK - k) / CONFIG.temperature.rangeK;
-        return CONFIG.constraints.minY + (percentOfRange * CONFIG.constraints.rangeY);
+        const ratio = (CONFIG.temperature.maxK - k) / CONFIG.temperature.rangeK;
+        return CONFIG.constraints.minY + ratio * CONFIG.constraints.rangeY;
     }
 
-    // Manage Preset Buttons Visibility
+    /* --------------------------------------------------
+     * 6. PRESET VISUAL STATE
+     * -------------------------------------------------- */
     function setPresetVisualState(activeId) {
         PRESETS.forEach(p => {
             const normal = document.getElementById(p.id);
             const selected = document.getElementById(p.id + '-selected');
-            
-            if (normal && selected) {
-                if (p.id === activeId) {
-                    normal.style.display = 'none';
-                    selected.style.display = 'block';
-                } else {
-                    normal.style.display = 'block';
-                    selected.style.display = 'none';
-                }
-            }
+            if (!normal || !selected) return;
+
+            normal.style.display = p.id === activeId ? 'none' : 'block';
+            selected.style.display = p.id === activeId ? 'block' : 'none';
         });
     }
 
-    // --- 6. Core Update System (Single Source of Truth) ---
-    function updateSystem(newY) {
-        // A. Clamp Y (Constraints) 
-        const clampedY = Math.max(CONFIG.constraints.minY, Math.min(CONFIG.constraints.maxY, newY));
+    /* --------------------------------------------------
+     * 7. CORE UPDATE SYSTEM
+     * -------------------------------------------------- */
+    function updateSystem(rawY) {
 
-        // B. Calculate Temperatures 
-        const k = yToKelvin(clampedY);
+        // Clamp first
+        const y = Math.max(
+            CONFIG.constraints.minY,
+            Math.min(CONFIG.constraints.maxY, rawY)
+        );
+
+        let k = yToKelvin(y);
+
+        // Snap only at extremes
+        if (y === CONFIG.constraints.minY) k = CONFIG.temperature.maxK;
+        if (y === CONFIG.constraints.maxY) k = CONFIG.temperature.minK;
+
         const c = k - 273.15;
-        const f = (c * 9/5) + 32;
+        const f = c * 9 / 5 + 32;
 
-        // C. Update Text 
-        const kStr = `${Math.round(k)} K`;
-        const cStr = `${Math.round(c)} °C`;
-        const fStr = `${Math.round(f)} °F`;
+        const kStr = `${k.toFixed(1)} K`;
+        const cStr = `${c.toFixed(1)} °C`;
+        const fStr = `${f.toFixed(1)} °F`;
 
-        // Update Small Text
-        if(els.text.smallK) els.text.smallK.textContent = kStr;
-        if(els.text.smallC) els.text.smallC.textContent = cStr;
-        if(els.text.smallF) els.text.smallF.textContent = fStr;
-        
-        // Update Large Text
-        if(els.text.largeK) els.text.largeK.textContent = kStr;
-        if(els.text.largeC) els.text.largeC.textContent = cStr;
-        if(els.text.largeF) els.text.largeF.textContent = fStr;
+        if (els.text.smallK) els.text.smallK.textContent = kStr;
+        if (els.text.largeK) els.text.largeK.textContent = kStr;
+        if (els.text.smallC) els.text.smallC.textContent = cStr;
+        if (els.text.largeC) els.text.largeC.textContent = cStr;
+        if (els.text.smallF) els.text.smallF.textContent = fStr;
+        if (els.text.largeF) els.text.largeF.textContent = fStr;
 
-        // D. Move Slider Elements 
-        movables.forEach(item => {
-            item.element.setAttribute('y', clampedY + item.baseOffset);
-        });
-        const tempPercent = (k - CONFIG.temperature.minK) / CONFIG.temperature.rangeK;
-        const fillHeight = Math.max(0, tempPercent * CONFIG.indicator.maxHeight) + 37;
-        
-        els.indicator.setAttribute('height', fillHeight);
-        els.indicator.setAttribute('y', CONFIG.indicator.bottomAnchor - fillHeight);
+        movables.forEach(m =>
+            m.element.setAttribute('y', y + m.baseOffset)
+        );
+
+        const percent = (k - CONFIG.temperature.minK) / CONFIG.temperature.rangeK;
+        const height = Math.max(0, percent * CONFIG.indicator.maxHeight) + 37;
+
+        els.indicator.setAttribute('height', height);
+        els.indicator.setAttribute('y', CONFIG.indicator.bottomAnchor - height);
     }
 
-    // --- 7. Reset / 0°C Logic ---
+    /* --------------------------------------------------
+     * 8. RESET (0°C)
+     * -------------------------------------------------- */
     function setZeroCelsius() {
-        const zeroCelsiusY = kelvinToY(273.15); // Calculate Y for 0°C
-        updateSystem(zeroCelsiusY);
-        setPresetVisualState('water-freezing'); // 0°C matches water freezing preset
+        updateSystem(kelvinToY(273.15));
+        setPresetVisualState('water-freezing');
     }
 
-    // --- 8. Event Listeners ---
-
-    // A. Dragging
+    /* --------------------------------------------------
+     * 9. DRAGGING (MOUSE + TOUCH)
+     * -------------------------------------------------- */
     let isDragging = false;
+    const HANDLE_OFFSET = 40;
 
-    function getSVGMouseY(evt) {
+    function getSVGClientY(evt) {
         const svg = els.sliderGroup.closest('svg');
         const pt = svg.createSVGPoint();
-        pt.x = evt.clientX;
-        pt.y = evt.clientY;
+        const src = evt.touches?.[0] || evt.changedTouches?.[0] || evt;
+        pt.x = src.clientX;
+        pt.y = src.clientY;
         return pt.matrixTransform(svg.getScreenCTM().inverse()).y;
     }
 
-    if(els.sliderControl) {
-        els.sliderControl.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            e.preventDefault();
-            setPresetVisualState(null); // Deselect presets when dragging
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            e.preventDefault();
-            const mouseSvgY = getSVGMouseY(e);
-            updateSystem(mouseSvgY - 40); // Offset to center on handle
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+    function startDrag(e) {
+        isDragging = true;
+        e.cancelable && e.preventDefault();
+        setPresetVisualState(null);
     }
 
-    // B. Presets Clicking
-    PRESETS.forEach(preset => {
-        const btnNormal = document.getElementById(preset.id);
-        if (btnNormal) {
-            btnNormal.addEventListener('click', () => {
-                const targetY = kelvinToY(preset.kelvin);
-                updateSystem(targetY);
-                setPresetVisualState(preset.id);
-            });
-        }
+    function moveDrag(e) {
+        if (!isDragging) return;
+        e.cancelable && e.preventDefault();
+        updateSystem(getSVGClientY(e) - HANDLE_OFFSET);
+    }
+
+    function endDrag() {
+        isDragging = false;
+    }
+
+    // Mouse
+    els.sliderControl?.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('mouseup', endDrag);
+
+    // Touch
+    els.sliderControl?.addEventListener('touchstart', startDrag, { passive: false });
+    window.addEventListener('touchmove', moveDrag, { passive: false });
+    window.addEventListener('touchend', endDrag);
+    window.addEventListener('touchcancel', endDrag);
+
+    /* --------------------------------------------------
+     * 10. PRESETS
+     * -------------------------------------------------- */
+    PRESETS.forEach(p => {
+        document.getElementById(p.id)?.addEventListener('click', () => {
+            updateSystem(kelvinToY(p.kelvin));
+            setPresetVisualState(p.id);
+        });
     });
 
-    // C. Reset Button Listener
-    if (els.resetBtn) {
-        els.resetBtn.addEventListener('click', () => {
-            setZeroCelsius(); // Go to 0°C
-        });
-    }
+    /* --------------------------------------------------
+     * 11. RESET BUTTON
+     * -------------------------------------------------- */
+    els.resetBtn?.addEventListener('click', setZeroCelsius);
 
-    // --- 9. Start Application ---
-    // Requirement: Start at 0 Degree C
-    setZeroCelsius(); 
+    /* --------------------------------------------------
+     * 12. START STATE
+     * -------------------------------------------------- */
+    setZeroCelsius();
 });
