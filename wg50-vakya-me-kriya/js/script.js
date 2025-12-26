@@ -115,6 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document
         .querySelectorAll("#step-2 .question-list li")
         .forEach(li => li.classList.add("disabled"));
+
+        markStepOneProgress(currentGroupIndex);
+
+        if (currentGroupIndex === allData.length - 1) {
+    markStarOneCompleted();
+  }
     }
   }
 
@@ -1033,6 +1039,21 @@ quizOptions.addEventListener("click", (e) => {
     optionLi.classList.add("wrong");
   }
 });
+
+// star rating 
+
+function markStepOneProgress(groupIndex) {
+  const circle = document.getElementById(`stepOne-group-${groupIndex + 1}`);
+  if (circle) {
+    circle.setAttribute("fill", "#9cff2b");
+  }
+}
+function markStarOneCompleted() {
+  const star = document.getElementById("star-1");
+  if (star) {
+    star.setAttribute("fill", "#ffe70a");
+  }
+}
 
 
 });
