@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const studyBtn = document.getElementById("study-btn");
 
-
-
   let quizData = [];
   let currentQuizIndex = 0;
   let isStep3AnswerVisible = false;
@@ -41,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedQuizBlank = null;
 
   let selectedCategoryListItem = null;
-
 
   const verbRules = [
     { suffix: "ती हैं।", rootClass: "blue", suffixClass: "green" }, // ✅ plural feminine
@@ -88,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     step2.style.display = "block";
     updateBtnWrapperVisibility();
     updateHomeBtnVisibility(); // ✅ ADD
+      updateStarRatingVisibility(); // ✅ ADD
 
   });
 
@@ -114,16 +112,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (allCorrect) {
       document
         .querySelectorAll("#step-2 .question-list li")
-        .forEach(li => li.classList.add("disabled"));
+        .forEach((li) => li.classList.add("disabled"));
 
-        markStepOneProgress(currentGroupIndex);
+      markStepOneProgress(currentGroupIndex);
 
-        if (currentGroupIndex === allData.length - 1) {
-    markStarOneCompleted();
-  }
+      if (currentGroupIndex === allData.length - 1) {
+        markStarOneCompleted();
+      }
     }
   }
-
 
   /* ----------------------------------
      RENDER GROUP
@@ -166,22 +163,20 @@ document.addEventListener("DOMContentLoaded", () => {
      LOAD JSON
   ---------------------------------- */
   fetch("./data.json")
-    .then(res => res.json())
-    .then(data => {
-
+    .then((res) => res.json())
+    .then((data) => {
       // ✅ Separate quiz data completely
-      const quizObj = data.find(item => item.quiz);
+      const quizObj = data.find((item) => item.quiz);
       quizData = quizObj ? quizObj.quiz : [];
 
       // ✅ Remove quiz object from step-2 & step-3 flow
-      allData = data.filter(item => !item.quiz);
+      allData = data.filter((item) => !item.quiz);
 
       // ✅ Start Step-2 with first grammar group only
       const firstKey = Object.keys(allData[0])[0];
       renderGroup(allData[0][firstKey]);
     })
-    .catch(err => console.error("JSON load error:", err));
-
+    .catch((err) => console.error("JSON load error:", err));
 
   /* ----------------------------------
      QUESTION CLICK
@@ -220,37 +215,33 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((li) => li.classList.remove("wrong"));
 
     if (selectedAnswer === correctAnswer) {
-  selectedBlank.textContent = selectedAnswer;
-  selectedBlank.classList.remove("selected");
-  selectedBlank.classList.add("correct");
-  selectedBlank.dataset.userFilled = "true";
+      selectedBlank.textContent = selectedAnswer;
+      selectedBlank.classList.remove("selected");
+      selectedBlank.classList.add("correct");
+      selectedBlank.dataset.userFilled = "true";
 
-  answerLi.dataset.used = "true";   // ✅ ADD THIS
-  answerLi.style.display = "none";
+      answerLi.dataset.used = "true"; // ✅ ADD THIS
+      answerLi.style.display = "none";
 
-  currentSelectedQuestion = null;
-  checkAllAnswered();
-} else {
+      currentSelectedQuestion = null;
+      checkAllAnswered();
+    } else {
       // ❌ Wrong
       answerLi.classList.add("wrong");
     }
   });
-function updateShowAnsStateForStep3() {
-  // Disable Show Answer when all options are correctly placed
-  showAnsBtn.disabled = areAllOptionsPlaced();
-}
-
-
+  function updateShowAnsStateForStep3() {
+    // Disable Show Answer when all options are correctly placed
+    showAnsBtn.disabled = areAllOptionsPlaced();
+  }
 
   /* ----------------------------------
      SHOW / HIDE ANSWERS
   ---------------------------------- */
   showAnsBtn.addEventListener("click", () => {
-
     // ✅ STEP-3: bottom-box toggle (SIMPLE & SAFE)
 
     // ✅ STEP-3: Show bottom-box when right-col-option is visible
-
 
     if (step3.style.display === "block") {
       if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
@@ -265,26 +256,28 @@ function updateShowAnsStateForStep3() {
 
       if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
         // 🔒 Disable when showing answer
-        questionItems.forEach(li => li.classList.add("disabled"));
+        questionItems.forEach((li) => li.classList.add("disabled"));
       } else {
         // 🔓 Enable when hiding answer
-        questionItems.forEach(li => li.classList.remove("disabled"));
+        questionItems.forEach((li) => li.classList.remove("disabled"));
       }
     }
 
-    const step2Questions = document.querySelectorAll("#step-2 .question-list li");
+    const step2Questions = document.querySelectorAll(
+      "#step-2 .question-list li"
+    );
 
     if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
       // 🔓 Enable questions
-      step2Questions.forEach(li => li.classList.add("disabled"));
+      step2Questions.forEach((li) => li.classList.add("disabled"));
     } else {
       // 🔒 Disable questions
-      step2Questions.forEach(li => li.classList.remove("disabled"));
+      step2Questions.forEach((li) => li.classList.remove("disabled"));
     }
 
     document
       .querySelectorAll(".question-list .blank.selected")
-      .forEach(b => b.classList.remove("selected"));
+      .forEach((b) => b.classList.remove("selected"));
 
     /* -------------------------
        🔹 STEP-4 QUIZ MODE
@@ -298,25 +291,22 @@ function updateShowAnsStateForStep3() {
 
         quizOptions
           .querySelectorAll("li")
-          .forEach(li => (li.style.display = "none"));
+          .forEach((li) => (li.style.display = "none"));
 
         showAnsBtn.textContent = "उत्तर छिपाएँ";
         nextBtn.disabled = false;
         isQuizAnswerVisible = true;
-      }
-      else {
+      } else {
         // 🔄 HIDE ANSWER → RESTORE BLANK QUESTION
         quizQuestion.innerHTML = quiz.question.replace(
           /_+/g,
           `<span class="quiz-blank"></span>`
         );
 
-        quizOptions
-          .querySelectorAll("li")
-          .forEach(li => {
-            li.style.display = "";
-            li.classList.remove("wrong", "selected");
-          });
+        quizOptions.querySelectorAll("li").forEach((li) => {
+          li.style.display = "";
+          li.classList.remove("wrong", "selected");
+        });
 
         showAnsBtn.textContent = "उत्तर देखें";
         nextBtn.disabled = true;
@@ -344,13 +334,12 @@ function updateShowAnsStateForStep3() {
       });
 
       // 🔒 Hide ALL answers (used + unused)
-      answers.forEach(li => {
+      answers.forEach((li) => {
         li.style.display = "none";
       });
 
       showAnsBtn.textContent = "उत्तर छिपाएँ";
       isAnswerVisible = true;
-
     } else {
       // 👉 HIDE ANSWERS (restore ONLY unused)
       questions.forEach((li) => {
@@ -362,7 +351,7 @@ function updateShowAnsStateForStep3() {
       });
 
       // ✅ Restore ONLY unused answers
-      answers.forEach(li => {
+      answers.forEach((li) => {
         if (!li.dataset.used) {
           li.style.display = "";
         }
@@ -372,8 +361,6 @@ function updateShowAnsStateForStep3() {
       isAnswerVisible = false;
     }
     updateBottomBoxOnShowAns();
-
-
   });
 
   if (studyBtn) {
@@ -387,7 +374,6 @@ function updateShowAnsStateForStep3() {
 
       studyBtn.style.display = "none";
 
-
       // ✅ INITIALIZE QUIZ PROPERLY
       currentQuizIndex = 0;
       isQuizAnswerVisible = false;
@@ -398,17 +384,17 @@ function updateShowAnsStateForStep3() {
       renderQuizQuestion();
 
       // Reset question number UI
-      questionListing.forEach(li => li.classList.add("disabled"));
+      questionListing.forEach((li) => li.classList.add("disabled"));
       if (questionListing[0]) {
         questionListing[0].classList.remove("disabled");
       }
 
       updateBtnWrapperVisibility();
       updateHomeBtnVisibility();
+      updateStarRatingVisibility(); // ✅ ADD
 
     });
   }
-
 
   /* ----------------------------------
      NEXT GROUP
@@ -422,8 +408,12 @@ function updateShowAnsStateForStep3() {
         rightColOption.style.display = "none";
         rightColCategory.style.display = "block";
 
-          enableShowAns();
-
+        enableShowAns();
+        markStepTwoProgress(currentStep3GroupIndex);
+        // ⭐ Star-2 after ALL Step-3 groups
+        if (currentStep3GroupIndex === allData.length - 1) {
+          markStarTwoCompleted();
+        }
       }
 
       currentStep3GroupIndex++;
@@ -436,7 +426,6 @@ function updateShowAnsStateForStep3() {
         return;
       }
 
-
       // 🔄 Reset panels for next group
       rightColOption.style.display = "block";
       rightColCategory.style.display = "none";
@@ -444,7 +433,6 @@ function updateShowAnsStateForStep3() {
       renderStep3Options(currentStep3GroupIndex);
       return;
     }
-
 
     // 🔹 STEP 4 QUIZ MODE
     // 🔹 STEP-4 QUIZ MODE
@@ -466,7 +454,7 @@ function updateShowAnsStateForStep3() {
 
         // 👉 Load next question immediately
         renderQuizQuestion();
-showAnsBtn.disabled = false;
+        showAnsBtn.disabled = false;
 
         showAnsBtn.textContent = "उत्तर देखें";
         nextBtn.disabled = true;
@@ -482,6 +470,7 @@ showAnsBtn.disabled = false;
     if (currentGroupIndex >= allData.length) {
       step2.style.display = "none";
       step3.style.display = "block";
+updateStarRatingVisibility(); // ✅ ADD
 
       currentStep3GroupIndex = 0;
 
@@ -489,7 +478,6 @@ showAnsBtn.disabled = false;
       rightColOption.style.display = "block";
       rightColCategory.style.display = "none";
       showAnsBtn.disabled = false; // ✅ ENABLE Show Answer in Step-3
-
 
       renderStep3Options(currentStep3GroupIndex);
       updateBtnWrapperVisibility();
@@ -518,9 +506,7 @@ showAnsBtn.disabled = false;
       optionList.appendChild(li);
     });
     updateShowAnsStateForStep3();
-
   }
-
 
   optionList.addEventListener("click", (e) => {
     const optionLi = e.target.closest("li");
@@ -553,13 +539,11 @@ showAnsBtn.disabled = false;
       if (areAllOptionsPlaced()) {
         nextBtn.disabled = false;
       }
-        updateShowAnsStateForStep3();
-
+      updateShowAnsStateForStep3();
     } else {
       optionLi.classList.add("wrong");
     }
   });
-
 
   // Click handler for subject-list (first click)
   subjectList.addEventListener("click", (e) => {
@@ -569,7 +553,7 @@ showAnsBtn.disabled = false;
     // ✅ ACTIVE STATE (Step-3)
     subjectList
       .querySelectorAll("li.active")
-      .forEach(li => li.classList.remove("active"));
+      .forEach((li) => li.classList.remove("active"));
 
     subjectLi.classList.add("active");
 
@@ -585,11 +569,11 @@ showAnsBtn.disabled = false;
   function areAllOptionsPlaced() {
     return optionList.children.length === 0;
   }
-function areAllCategoriesPlaced() {
-  return (
-    document.querySelectorAll("#category-list li[data-category]").length === 0
-  );
-}
+  function areAllCategoriesPlaced() {
+    return (
+      document.querySelectorAll("#category-list li[data-category]").length === 0
+    );
+  }
 
   // Click handler for category-list (second click)
   categoryList.addEventListener("click", (e) => {
@@ -607,12 +591,21 @@ function areAllCategoriesPlaced() {
       categoryLi.classList.remove("wrong");
       selectedSubjectListItem = null;
       categoryLi.remove();
-if (areAllCategoriesPlaced()) {
-  disableShowAns();
-}
+
+      const totalCircles = 4;
+  const remaining =
+    document.querySelectorAll("#category-list li[data-category]").length;
+
+  const completed = totalCircles - remaining;
+  markStepThreeProgress(completed);
+
+      if (areAllCategoriesPlaced()) {
+        disableShowAns();
+          markStarThreeCompleted();
+
+      }
 
       checkStep3Completion();
-
 
       // Get the complete sentence from category list item
       const completeSentence = categoryLi.textContent.trim();
@@ -710,37 +703,29 @@ if (areAllCategoriesPlaced()) {
     }
   });
   function updateBottomBoxOnShowAns() {
-    const isStep3Visible =
-      window.getComputedStyle(step3).display === "block";
+    const isStep3Visible = window.getComputedStyle(step3).display === "block";
 
     const isRightColCategoryVisible =
       window.getComputedStyle(rightColCategory).display === "block";
 
     if (!isStep3Visible || !isRightColCategoryVisible) return;
 
-    const showAnswers =
-      showAnsBtn.textContent.trim() === "उत्तर छिपाएँ";
+    const showAnswers = showAnsBtn.textContent.trim() === "उत्तर छिपाएँ";
 
-    document
-      .querySelectorAll("#subject-list .bottom-box")
-      .forEach(box => {
-        box.style.display = showAnswers ? "block" : "none";
-      });
+    document.querySelectorAll("#subject-list .bottom-box").forEach((box) => {
+      box.style.display = showAnswers ? "block" : "none";
+    });
   }
 
   function updateHomeBtnVisibility() {
     if (!homeBtn || !step1) return;
 
-    const isStep1Visible =
-      window.getComputedStyle(step1).display === "block";
+    const isStep1Visible = window.getComputedStyle(step1).display === "block";
 
     homeBtn.style.display = isStep1Visible ? "none" : "block";
   }
 
-
   function normalizeText(str) {
-
-
     return str
       .replace(/\u200B/g, "")
       .replace(/\s+/g, " ")
@@ -748,7 +733,6 @@ if (areAllCategoriesPlaced()) {
   }
 
   function showStep3Answers(show) {
-
     // ✅ SAFETY GUARD (DO NOT REMOVE)
     if (
       !allData ||
@@ -761,7 +745,7 @@ if (areAllCategoriesPlaced()) {
     const groupKey = Object.keys(allData[currentStep3GroupIndex])[0];
     const groupData = allData[currentStep3GroupIndex][groupKey];
 
-    document.querySelectorAll("#subject-list li").forEach(subjectLi => {
+    document.querySelectorAll("#subject-list li").forEach((subjectLi) => {
       const wordWrap = subjectLi.querySelector(".word-wrap");
       if (!wordWrap) return;
 
@@ -786,11 +770,11 @@ if (areAllCategoriesPlaced()) {
 
       const subjectCategory = normalizeText(subjectLi.dataset.category);
 
-      const matches = groupData.filter(item =>
-        normalizeText(item.category) === subjectCategory
+      const matches = groupData.filter(
+        (item) => normalizeText(item.category) === subjectCategory
       );
 
-      matches.forEach(item => {
+      matches.forEach((item) => {
         const span = document.createElement("span");
         span.textContent = item.completeSentence;
         wordWrap.appendChild(span);
@@ -798,10 +782,10 @@ if (areAllCategoriesPlaced()) {
     });
   }
 
-
   function checkStep3Completion() {
-    const remainingCategories =
-      document.querySelectorAll("#category-list li[data-category]").length;
+    const remainingCategories = document.querySelectorAll(
+      "#category-list li[data-category]"
+    ).length;
 
     if (remainingCategories === 0) {
       const studyBtn = document.getElementById("study-btn");
@@ -810,7 +794,6 @@ if (areAllCategoriesPlaced()) {
       }
     }
   }
-
 
   function transformSentence(span) {
     const text = span.textContent.trim();
@@ -846,7 +829,8 @@ if (areAllCategoriesPlaced()) {
   }
 
   function checkAllQuizQuestionsAttempted() {
-    const allAttempted = currentQuizIndex === quizData.length - 1 &&
+    const allAttempted =
+      currentQuizIndex === quizData.length - 1 &&
       document.querySelector(".quiz-blank.correct");
 
     if (allAttempted) {
@@ -855,22 +839,20 @@ if (areAllCategoriesPlaced()) {
 
       document
         .querySelectorAll(".question-list li")
-        .forEach(li => li.classList.add("disabled"));
+        .forEach((li) => li.classList.add("disabled"));
       document
         .querySelectorAll(".answer-list li")
-        .forEach(li => li.classList.add("disabled"));
+        .forEach((li) => li.classList.add("disabled"));
     }
   }
 
-
   function resetApplication() {
-
     document
       .querySelectorAll(".question-list li")
-      .forEach(li => li.classList.remove("disabled"));
+      .forEach((li) => li.classList.remove("disabled"));
     document
       .querySelectorAll(".answer-list li")
-      .forEach(li => li.classList.remove("disabled"));
+      .forEach((li) => li.classList.remove("disabled"));
 
     if (studyBtn) {
       studyBtn.style.display = "none";
@@ -931,16 +913,17 @@ if (areAllCategoriesPlaced()) {
     }
     updateBtnWrapperVisibility();
     updateHomeBtnVisibility();
+    updateStarRatingVisibility(); // ✅ ADD
 
   }
 
   function enableShowAns() {
-  showAnsBtn.disabled = false;
-}
+    showAnsBtn.disabled = false;
+  }
 
-function disableShowAns() {
-  showAnsBtn.disabled = true;
-}
+  function disableShowAns() {
+    showAnsBtn.disabled = true;
+  }
 
   function renderQuizQuestion() {
     const quiz = quizData[currentQuizIndex];
@@ -951,7 +934,7 @@ function disableShowAns() {
     );
 
     quizOptions.innerHTML = "";
-    quiz.options.forEach(opt => {
+    quiz.options.forEach((opt) => {
       const li = document.createElement("li");
       li.textContent = opt;
       quizOptions.appendChild(li);
@@ -973,7 +956,6 @@ function disableShowAns() {
     nextBtn.disabled = true;
   }
 
-
   quizBtn.addEventListener("click", () => {
     step1.style.display = "none";
     step2.style.display = "none";
@@ -990,7 +972,6 @@ function disableShowAns() {
     }
     updateBtnWrapperVisibility();
     updateHomeBtnVisibility();
-
   });
 
   quizQuestion.addEventListener("click", (e) => {
@@ -1005,55 +986,92 @@ function disableShowAns() {
     selectedQuizBlank = blank;
   });
 
-quizOptions.addEventListener("click", (e) => {
-  const optionLi = e.target.closest("li");
-  if (!optionLi || !selectedQuizBlank) return;
+  quizOptions.addEventListener("click", (e) => {
+    const optionLi = e.target.closest("li");
+    if (!optionLi || !selectedQuizBlank) return;
 
-  const quiz = quizData[currentQuizIndex];
-  const correctAnswer = quiz.answer.trim();
-  const selectedAnswer = optionLi.textContent.trim();
+    const quiz = quizData[currentQuizIndex];
+    const correctAnswer = quiz.answer.trim();
+    const selectedAnswer = optionLi.textContent.trim();
 
-  // Clear previous wrong state
-  quizOptions.querySelectorAll("li.wrong").forEach(li =>
-    li.classList.remove("wrong")
-  );
+    // Clear previous wrong state
+    quizOptions
+      .querySelectorAll("li.wrong")
+      .forEach((li) => li.classList.remove("wrong"));
 
-  if (selectedAnswer === correctAnswer) {
-    // ✅ Fill blank
-    selectedQuizBlank.textContent = selectedAnswer;
-    selectedQuizBlank.classList.remove("selected");
-    selectedQuizBlank.classList.add("correct");
+    if (selectedAnswer === correctAnswer) {
+      // ✅ Fill blank
+      selectedQuizBlank.textContent = selectedAnswer;
+      selectedQuizBlank.classList.remove("selected");
+      selectedQuizBlank.classList.add("correct");
 
-    // ✅ Hide ONLY correct option
-    optionLi.style.display = "none";
+      // ✅ Hide ONLY correct option
+      optionLi.style.display = "none";
 
-      showAnsBtn.disabled = true;   // ✅ ADD THIS
+      showAnsBtn.disabled = true; // ✅ ADD THIS
 
-    // ✅ Enable navigation
-    nextBtn.disabled = false;
-    isQuizAnswerVisible = true;
+      // ✅ Enable navigation
+      nextBtn.disabled = false;
+      isQuizAnswerVisible = true;
 
-    selectedQuizBlank = null;
-  } else {
-    // ❌ Wrong answer
-    optionLi.classList.add("wrong");
+      selectedQuizBlank = null;
+    } else {
+      // ❌ Wrong answer
+      optionLi.classList.add("wrong");
+    }
+  });
+
+  // star rating
+
+  function markStepOneProgress(groupIndex) {
+    const circle = document.getElementById(`stepOne-group-${groupIndex + 1}`);
+    if (circle) {
+      circle.setAttribute("fill", "#9cff2b");
+    }
   }
-});
-
-// star rating 
-
-function markStepOneProgress(groupIndex) {
-  const circle = document.getElementById(`stepOne-group-${groupIndex + 1}`);
-  if (circle) {
-    circle.setAttribute("fill", "#9cff2b");
+  function markStarOneCompleted() {
+    const star = document.getElementById("star-1");
+    if (star) {
+      star.setAttribute("fill", "#ffe70a");
+    }
   }
-}
-function markStarOneCompleted() {
-  const star = document.getElementById("star-1");
+
+  function markStepTwoProgress(groupIndex) {
+    const circle = document.getElementById(`stepTwo-group-${groupIndex + 1}`);
+    if (circle) {
+      circle.setAttribute("fill", "#9cff2b");
+    }
+  }
+  function markStarTwoCompleted() {
+    const star = document.getElementById("star-2");
+    if (star) {
+      star.setAttribute("fill", "#ffe70a");
+    }
+  }
+
+  function markStepThreeProgress(filledCount) {
+    const circle = document.getElementById(`stepThree-group-${filledCount}`);
+    if (circle) {
+      circle.setAttribute("fill", "#9cff2b");
+    }
+  }
+  function markStarThreeCompleted() {
+  const star = document.getElementById("star-3");
   if (star) {
     star.setAttribute("fill", "#ffe70a");
   }
 }
+function updateStarRatingVisibility() {
+  const starRating = document.getElementById("star-rating");
+  if (!starRating) return;
 
+  const isStep2Visible =
+    window.getComputedStyle(step2).display === "block";
+  const isStep3Visible =
+    window.getComputedStyle(step3).display === "block";
+
+  starRating.style.display =
+    isStep2Visible || isStep3Visible ? "block" : "none";
+}
 
 });
