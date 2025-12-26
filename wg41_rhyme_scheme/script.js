@@ -458,6 +458,7 @@ let correctWordsSet = new Set();   // stores correctly answered word elements
 let stanzaAudioPlayed = false;    // prevents repeat audio
 
 const soundIcon = document.getElementById('sound-icon');
+const showAnswerBtn = document.getElementById('showAnswer');
 
 const markerStyles = {
   green: { color: '#7ef241', cursor: "url('Assets/Images/Final images/Green_Highlighter.svg') 64 64, auto" },
@@ -476,6 +477,7 @@ function resetMarkers() {
   activeMarker = null;
   document.body.style.cursor = 'default';
   soundIcon.style.display = 'none';
+  showAnswerBtn.disabled = true;
   setMarkerEnabled(markers.green, true);
   ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
 
@@ -495,6 +497,7 @@ function setActiveMarker(name, opts = {}) {
   if (!style) return;
   activeMarker = { name, ...style };
   document.body.style.cursor = style.cursor;
+  showAnswerBtn.disabled = false;
   // Unlock other markers only after the user explicitly clicks green
   if (name === 'green' && unlockOthers) {
     ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], true));
@@ -663,8 +666,12 @@ function showAnswer() {
     const color = defaultColors[letter] || markerStyles.green.color;
     applyHighlight(el, letter, color, true);
   });
+  document.body.style.cursor = 'default';
+  ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
   soundIcon.style.display = 'block';
+  showAnswerBtn.disabled = true;
   playCurrentStanzaAudio();
+  
 }
 
 function getCurrentStanzaKey() {
@@ -716,9 +723,9 @@ function checkAndPlayStanzaAudio() {
     activeMarker = null;
     document.body.style.cursor = 'default';
     soundIcon.style.display = 'block';
+    showAnswerBtn.disabled = true;
     playCurrentStanzaAudio(); // your existing function
     ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
-
   }
 }
 
@@ -819,7 +826,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  const showAnswerBtn = document.getElementById('showAnswer');
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', showAnswer);
   }
