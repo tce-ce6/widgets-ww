@@ -23,6 +23,18 @@
   position: relative
 }
 
+#modal-background{
+  display: none;
+}
+.modal-open  {
+  background-color: #000000e7;
+}
+.modal-open #modal-background{
+  display: block;
+}
+
+
+
 #make-food-chain-widget .container::after {
   content: "";
   background-image: url("./assets/BG.png");
@@ -205,8 +217,21 @@
 }
 
 
+
 #position-1.active #Vector_2,
 #position-2.active #Vector_4,
 #position-3.active #Vector_6{
   fill: #02FFFF !important;
+}
+
+#mirror-surface-selection,
+#lake-surface-selection,
+#paper-selection,
+#wall-selection,
+#calm-selection,
+#wavy-selection,
+#rough-selection,
+#reset-btn,
+#light-ray-btn {
+  cursor: pointer;
 }
