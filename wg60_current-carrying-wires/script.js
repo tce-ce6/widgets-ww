@@ -3,6 +3,12 @@ const rightContainer = document.getElementById('right-container');
 const leftButton = document.getElementById('left-btn');
 const rightButton = document.getElementById('right-btn');
 
+const switchArrow1 = document.getElementById('switch-arrow1');
+const switchArrow2 = document.getElementById('switch-arrow2');
+
+const rightArrow = document.getElementById('right-arrow');
+const leftArrow = document.getElementById('left-arrow');
+
 let leftLottieInstance = null;
 let rightLottieInstance = null;
 
@@ -45,8 +51,15 @@ function loadInitialLottie() {
   });
 
   // BUTTON EVENTS
-  leftButton.onclick = () => playSingleFrame('left');
-  rightButton.onclick = () => playSingleFrame('right');
+  leftButton.onclick = () =>{
+    leftButton.src = './Assets/on-btn.svg';
+   playSingleFrame('left');
+  }
+  rightButton.onclick = () => {
+    rightButton.src = './Assets/on-btn.svg';
+    playSingleFrame('right');
+  }
+
 }
 
 /**
@@ -56,7 +69,6 @@ function playSingleFrame(side) {
 
   if (side === 'left' && !leftPlayedOnce) {
     leftPlayedOnce = true;
-    console.log("Hi")
     playOneFrame(leftLottieInstance);
   }
 
@@ -94,11 +106,27 @@ function reset() {
   leftPlayedOnce = false;
   rightPlayedOnce = false;
 
+  leftButton.src = './Assets/off-btn.svg';
+  rightButton.src = './Assets/off-btn.svg';
+
+  leftArrow.src = './Assets/right-arrow-btn.svg';
+  rightArrow.src = './Assets/right-arrow-btn.svg';
+
   leftLottieInstance.goToAndStop(0, true);
   rightLottieInstance.goToAndStop(0, true);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('reset-btn').addEventListener('click', reset);
+
+  switchArrow1.addEventListener('click', () => {
+    leftArrow.src = './Assets/left-arrow-btn.svg';
+
+  });
+
+  switchArrow2.addEventListener('click', () => {
+    rightArrow.src = './Assets/left-arrow-btn.svg';
+
+  });
   loadInitialLottie();
 });

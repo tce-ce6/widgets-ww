@@ -425,14 +425,84 @@ const exampleSentence = document.getElementById('exampleSentence');
 const showExample = document.getElementById('showExampleBtn');
 
 let wordObj = null;
+let wordIndex = 0;
+
 
 const IMAGES = [
   'Assets/tree.svg',
-  'Assets/Milestone.svg',
-  'Assets/Mountain.svg',
-  'Assets/Stone.svg'
+  'Assets/milestone.svg',
+  'Assets/mountain.svg',
+  'Assets/stone.svg'
 ];
 
+//Playing Lotties
+
+function playCorrectAnswerLottie(objectName) {
+
+  const containerId = `${objectName}-${wordIndex}`;
+  console.log(objectName)
+  const container = document.getElementById(containerId);
+
+  if (!container) {
+    console.warn(`Container ${containerId} not found`);
+    return;
+  }
+
+  const variant = (wordIndex % 2 === 0) ? '01' : '02';
+
+  // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
+  const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
+
+  // const animationPath = isEven
+  //   ? './Assets/Images/JSON/Leaf_01.json'
+  //   : './Assets/Images/JSON/Leaf_02.json';
+
+  // Clear previous SVG if any
+  container.innerHTML = '';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: animationPath,
+    rendererSettings: {
+      hideOnTransparent: false, // Prevents disappearing if frames are empty
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Force it to stay on the last frame
+  anim.addEventListener('complete', () => {
+    anim.goToAndStop(anim.totalFrames - 1, true);
+  });
+}
+
+function resetLotties() {
+  // Ensure wordObj exists before trying to extract the image
+  if (!wordObj || !wordObj.image) return;
+
+  // 1. Extract the name (e.g., "mountain")
+  const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
+  const slot = document.getElementById(`${objectName}Word`);
+  const wordDiv = document.getElementById(`${objectName}Main`);
+  if (slot || wordDiv) {
+    slot.textContent = "";
+    slot.style.display = "none";
+    wordDiv.style.display = "none";
+  }
+
+  // 2. Loop through and clear the specific IDs for that object
+  // Changed i to start at 0 and go to 5 (adjust if you have more leaves)
+  for (let i = 0; i <= 4; i++) {
+    const leafId = `${objectName}-${i}`;
+    const objectContainer = document.getElementById(leafId);
+    if (objectContainer) {
+      objectContainer.innerHTML = '';
+    }
+  }
+}
 
 /**
  * DATA LAYER: Manages the words and ensures no repeats
@@ -580,7 +650,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let answers = [];
   let selectedSuffixes = [];
   let completedAnswers = [];
-  let wordIndex = 0;
 
   const wordSlots = [
     document.getElementById('word1'),
@@ -592,7 +661,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
-      console.log("Hi")
       showAllAnswers(wordObj); // current wordObj
     });
   }
@@ -609,6 +677,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function loadNextWord() {
+
+    resetLotties();
+
     wordObj = picker.getNext();
     const d = wordObj.details;
 
@@ -646,8 +717,18 @@ document.addEventListener("DOMContentLoaded", () => {
       li.style.pointerEvents = "auto";
     });
 
+    const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
     wordSpan.textContent = wordObj.root;
-    lottieWord.textContent = wordObj.root;
+  //  `${objectName}Word`.textContent = wordObj.root;
+
+    const slot = document.getElementById(`${objectName}Word`);
+    const wordDiv = document.getElementById(`${objectName}Main`);
+    if (slot || wordDiv) {
+      slot.textContent = wordObj.root;
+      slot.style.display = "block";
+      wordDiv.style.display = "block";
+    }
 
     const allSuffixes = [...d.suffixes.correct, ...d.suffixes.incorrect]
       .sort(() => Math.random() - 0.5);
@@ -665,6 +746,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const clickedItem = e.target.closest("#list-suffix li");
     if (!clickedItem) return;
     if (clickedItem.style.opacity === "0.3") return;
+    const object = wordObj.image.match(/\/([^/]+)\./)[1];
+    console.log(object)
 
     const suffixText = clickedItem.querySelector("span")?.textContent.trim();
     if (!suffixText) return;
@@ -690,12 +773,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // must be a valid answer and not already completed
     if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
-
+    console.log(wordIndex);
     completedAnswers.push(combined);
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
       wordSlots[wordIndex].textContent = combined;
+      playCorrectAnswerLottie(object);
       wordIndex++;
     }
 

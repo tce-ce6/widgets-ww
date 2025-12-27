@@ -149,26 +149,29 @@
   font-size: 12px;
   color: #ccc
 }
-#rhyme-widget .svg-container{
+
+#rhyme-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#rhyme-widget svg{
-    width: 100% !important;
-    height: 100%;
-} 
 
-.btn-wrap img{
+#rhyme-widget svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+.btn-wrap img {
   width: 100%;
   height: 100%;
 }
 
-.btn-wrap{
+.btn-wrap {
   position: relative;
   cursor: pointer;
 }
-.btn-wrap::before{
+
+.btn-wrap::before {
   font-size: 40px;
   position: absolute;
   top: -4px;
@@ -176,20 +179,23 @@
   transform: translateX(-50%);
   font-weight: 600;
 }
-.btn-wrap.one::before{
+
+.btn-wrap.one::before {
   content: "a";
   color: #73c050;
 }
 
-.btn-wrap.two::before{
+.btn-wrap.two::before {
   content: "b";
   color: #e8b83f;
 }
-.btn-wrap.three::before{
+
+.btn-wrap.three::before {
   content: "c";
   color: #55beed;
 }
-.btn-wrap.four::before{
+
+.btn-wrap.four::before {
   content: "d";
   color: #b72c83;
 }
@@ -219,10 +225,11 @@
 }
 
 /* .....................  */
-#puzzleDiv{
+#puzzleDiv {
   display: flex;
 }
-.box-top{
+
+.box-top {
   height: 210px;
   width: 260px;
   border: 1px solid red;
@@ -234,18 +241,23 @@
   position: fixed;
   z-index: 9999;
   pointer-events: none;
-  transition: all 0.5s ease-in-out; /* Control speed here */
+  transition: all 0.5s ease-in-out;
+  /* Control speed here */
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white; /* Match your puzzle button style */
+  background: white;
+  /* Match your puzzle button style */
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#puzzlePart1, #puzzlePart2 {
-  min-height: 50px; /* Match your puzzle height */
-  border: 2px dashed #ccc; /* Shows where the slot is */
+#puzzlePart1,
+#puzzlePart2 {
+  min-height: 50px;
+  /* Match your puzzle height */
+  border: 2px dashed #ccc;
+  /* Shows where the slot is */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -267,62 +279,72 @@
   transition: transform 0.2s ease;
 }
 
-#completePuzzle{
+#completePuzzle {
   border: 1px soldi red;
 }
 
-#puzzleDiv{
+#puzzleDiv {
   display: flex;
   flex-direction: column;
 }
-#completeWord{
+
+#completeWord {
   display: flex;
   margin-left: 70px;
   margin-bottom: 40px;
 }
-#completeWord div{
+
+#completeWord div {
   width: 300px;
   height: 200px;
 }
-#completeWord #word{
+
+#completeWord #word {
   width: 360px;
   background-size: 100% 100%;
   object-fit: contain;
   /* background-image: url(./Assets/word-bg.svg); */
   background-repeat: no-repeat;
 }
-.w-100{
+
+.w-100 {
   width: 100%;
-} 
-.h-100{
-  height: 100%;}
+}
 
-  #completeWord #puzzleSuffix1,
-  #completeWord #puzzleSuffix2{
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    object-fit: contain;
-    
-  }
+.h-100 {
+  height: 100%;
+}
 
-  .centerTxt-wrap{
-    position: relative;
-    height: 100%;
-  }
-  .center-txt{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 30px;
-  }
-  #completeWord #puzzleSuffix1{
+#completeWord #puzzleSuffix1,
+#completeWord #puzzleSuffix2 {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  object-fit: contain;
+
+}
+
+.centerTxt-wrap {
+  position: relative;
+  height: 100%;
+}
+
+.center-txt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+}
+
+#completeWord #puzzleSuffix1 {
   margin-left: -127px;
 }
-#completeWord #puzzleSuffix2{
+
+#completeWord #puzzleSuffix2 {
   margin-left: -106px;
 }
-#list-suffix{
+
+#list-suffix {
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
@@ -330,7 +352,8 @@
   margin: 0;
   justify-content: space-between;
 }
-#list-suffix li{
+
+#list-suffix li {
   width: 256px;
   height: 230px;
 
@@ -345,19 +368,36 @@
 
 /* Shake animation */
 @keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .shake {
   animation: shake 0.5s ease;
 }
 
-#final-word{
+#final-word {
   height: 100%;
   width: 100%;
   background-color: #ffc300;
@@ -367,7 +407,8 @@
   align-items: center;
   justify-content: center;
 }
-#final-word span{
+
+#final-word span {
   height: 100%;
   width: 100%;
   display: flex;
@@ -375,10 +416,11 @@
   justify-content: center;
 }
 
-#exampleSentence{
+#exampleSentence {
   border-radius: 20px;
 }
-#examplePopup{
+
+#examplePopup {
   background-color: #fff;
   border-radius: 20px;
   height: auto;
@@ -388,19 +430,22 @@
   right: 160px;
   transform: translateY(-50%);
 }
-#exampleHeader{
+
+#exampleHeader {
   background-color: #1cabdf;
   color: #fff;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
-#exampleHeader h3{
+
+#exampleHeader h3 {
   font-size: 35px !important;
   padding: 20px 10px;
   text-align: center;
   margin: 0;
 }
-#closeExampleBtn{
+
+#closeExampleBtn {
   position: absolute;
   top: -20px;
   right: -20px;
@@ -410,16 +455,19 @@
   width: 50px;
   background-color: transparent;
 }
-#exampleSentenceList{
+
+#exampleSentenceList {
   margin: 0;
   padding: 30px !important;
 }
-#exampleSentenceList li{
+
+#exampleSentenceList li {
   font-size: 30px;
   list-style: none;
   margin-bottom: 20px;
 }
-.modal-open::after{
+
+.modal-open::after {
   content: "";
   position: absolute;
   height: 100%;
@@ -429,7 +477,8 @@
   left: 0;
   z-index: -1;
 }
-.modal-open-bg::after{
+
+.modal-open-bg::after {
   content: "";
   position: absolute;
   height: 100%;
@@ -438,4 +487,24 @@
   top: 0;
   left: 0;
   z-index: -1;
+}
+
+.leafObjects {
+  width: 520px;
+  height: 350px
+}
+
+.mileStoneObjects {
+  width: 520px;
+  height: 350px
+}
+
+.mountainObjects {
+  width: 520px;
+  height: 350px
+}
+
+.stoneObjects {
+  width: 520px;
+  height: 350px
 }
