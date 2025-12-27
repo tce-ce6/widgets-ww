@@ -453,10 +453,6 @@ function playCorrectAnswerLottie(objectName) {
   // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
   const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
 
-  // const animationPath = isEven
-  //   ? './Assets/Images/JSON/Leaf_01.json'
-  //   : './Assets/Images/JSON/Leaf_02.json';
-
   // Clear previous SVG if any
   container.innerHTML = '';
   // Make sure the container is visible (some containers may be hidden by default)
@@ -607,8 +603,23 @@ function showExampleSentences(wordObj) {
 function showAllAnswers(wordObj) {
   if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
 
-  const answers = wordObj.details.answer;
+  const imgEl = document.getElementById('objects-img');
 
+  const answers = wordObj.details.answer;
+  const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
+  const assetMap = {
+    tree: './Assets/tree-1.svg',
+    milestone: './Assets/milestone-1.svg',
+    mountain: './Assets/mountain-1.svg',
+    stone: './Assets/stone-1.svg'
+  };
+  
+  // If the object exists in our map, update the source
+  if (assetMap[objectName]) {
+    imgEl.src = assetMap[objectName];
+  }
+  // 1. Reset standard word slots (word1, word2, etc)
   const wordSlots = [
     document.getElementById('word1'),
     document.getElementById('word2'),
@@ -617,19 +628,64 @@ function showAllAnswers(wordObj) {
     document.getElementById('word5')
   ];
 
-  // Reset all slots first
   wordSlots.forEach(slot => {
     if (!slot) return;
     slot.textContent = "";
     slot.style.display = "none";
   });
 
-  // Fill slots based on number of answers
+  // 2. Mapping for the visual group containers
+  const mapping = {
+    tree: { container: 'treeWords', prefix: 'treeWord' },
+    milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
+    mountain: { container: 'mountainWords', prefix: 'mountainWord' },
+    stone: { container: 'stoneObjects', prefix: 'stoneWord' }
+  };
+
+  const map = mapping[objectName];
+
+  // Show the main group container (e.g., the tree SVG group)
+  if (map) {
+    const groupEl = document.getElementById(map.container);
+    if (groupEl) groupEl.style.display = 'block';
+  }
+
+  // 3. Fill slots and visual elements based on answers
   answers.forEach((answer, index) => {
-    if (!wordSlots[index]) return;
-    wordSlots[index].textContent = answer;
-    wordSlots[index].style.display = "block";
+    const cleanAnswer = answer.trim();
+
+    // Update standard list slots
+    if (wordSlots[index]) {
+      wordSlots[index].textContent = cleanAnswer;
+      wordSlots[index].style.display = "block";
+    }
+
+    // Update visual group slots (foreignObjects)
+    if (map) {
+      const slotId = `${map.prefix}${index + 1}`;
+      const fo = document.getElementById(slotId);
+      if (fo) {
+        fo.style.display = 'block';
+        const span = fo.querySelector('span');
+        if (span) span.textContent = cleanAnswer;
+      }
+
+      // Show associated lottie/leaf containers if they exist
+      const lottieContainer = document.getElementById(`${objectName}-${index}`);
+      if (lottieContainer) lottieContainer.style.display = 'block';
+    }
   });
+
+  // 4. Disable suffix interaction since answers are revealed
+  document.querySelectorAll("#list-suffix li").forEach(li => {
+    li.style.pointerEvents = "none";
+    li.style.opacity = "0.3";
+  });
+  
+  // Show the example button as the round is effectively over
+  if (typeof showExample !== 'undefined') {
+    showExample.style.display = 'block';
+  }
 }
 
 
@@ -885,8 +941,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById('closeExampleBtn').addEventListener('click', () => {
-    // document.getElementById('examplePopup')
-    //   .setAttribute('aria-hidden', 'true');
+    // document.getElementById('examplePopup');
     exampleSentence.style.display = 'none';
   });
 
