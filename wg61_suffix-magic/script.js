@@ -459,6 +459,8 @@ function playCorrectAnswerLottie(objectName) {
 
   // Clear previous SVG if any
   container.innerHTML = '';
+  // Make sure the container is visible (some containers may be hidden by default)
+  container.style.display = 'block';
 
   const anim = lottie.loadAnimation({
     container: container,
@@ -720,6 +722,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
 
     wordSpan.textContent = wordObj.root;
+    // hide/reset all group word containers (tree, milestone, mountain, stone)
+    const groupPrefixes = ['treeWord', 'milestoneWord', 'mountainWord', 'stoneWord'];
+    const groupContainers = ['treeWords', 'milestoneWords', 'mountainWords', 'stoneObjects'];
+    groupContainers.forEach(gc => {
+      const el = document.getElementById(gc);
+      if (el) el.style.display = 'none';
+    });
+    // hide and clear individual foreignObject slots
+    for (let i = 1; i <= 4; i++) {
+      groupPrefixes.forEach(prefix => {
+        const fo = document.getElementById(`${prefix}${i}`);
+        if (fo) {
+          fo.style.display = 'none';
+          const span = fo.querySelector('span');
+          if (span) span.textContent = '';
+        }
+      });
+    }
   //  `${objectName}Word`.textContent = wordObj.root;
 
     const slot = document.getElementById(`${objectName}Word`);
@@ -779,6 +799,39 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
       wordSlots[wordIndex].textContent = combined;
+
+      // Map object name to group container id and prefix used by foreignObjects
+      const mapping = {
+        tree: { container: 'treeWords', prefix: 'treeWord' },
+        milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
+        mountain: { container: 'mountainWords', prefix: 'mountainWord' },
+        stone: { container: 'stoneObjects', prefix: 'stoneWord' }
+      };
+
+      const map = mapping[object];
+      if (map) {
+        // show group container
+        const groupEl = document.getElementById(map.container);
+        if (groupEl) groupEl.style.display = 'block';
+
+        // show & populate the specific foreignObject slot (e.g., treeWord2)
+        const slotId = `${map.prefix}${wordIndex + 1}`;
+        const fo = document.getElementById(slotId);
+        if (fo) {
+          fo.style.display = 'block';
+          const span = fo.querySelector('span');
+          if (span) span.textContent = combined;
+        }
+      }
+
+      // ensure the lottie container for this leaf is visible and play animation
+      const lottieContainer = document.getElementById(`${object}-${wordIndex}`);
+      if (lottieContainer) lottieContainer.style.display = 'block';
+
+      // populate any element with id wordN (tspan or span) as a fallback
+      const genericWordEl = document.getElementById(`word${wordIndex + 1}`);
+      if (genericWordEl) genericWordEl.textContent = combined;
+
       playCorrectAnswerLottie(object);
       wordIndex++;
     }
