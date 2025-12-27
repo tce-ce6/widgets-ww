@@ -205,6 +205,11 @@
   right: -32px !important;
   cursor: pointer;
 }
+/* Bring slider handle above SVG / foreignObject */
+.noUi-handle {
+  z-index: 9999;
+  position: relative; /* required for z-index to work */
+}
 
 .noUi-handle.noUi-handle-lower::after,
 .noUi-handle.noUi-handle-lower::before {
