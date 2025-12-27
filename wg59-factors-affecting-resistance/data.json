@@ -1,0 +1,1058 @@
+[
+{
+  "tilt": "0 degree",
+  "position": 1,
+  "title": "Tilt 0 degree – Position 1",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays",
+        "Earth’s axis is perpendicular to the Sun rays"
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays"
+    },
+    {
+      "id": 2,
+      "options": [
+        "Only NH – Receives more direct sunrays",
+        "Only SH – Receives more direct sunrays",
+        "NH and SH – Receives sunrays at same angle"
+      ],
+      "correctAnswer": "NH and SH – Receives sunrays at same angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Days are short, SH – Days are long",
+        "NH – Days are long, SH – Days are short",
+        "NH and SH – Days are equal"
+      ],
+      "correctAnswer": "NH and SH – Days are equal"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warm in NH, cool in SH",
+        "Cool in NH, warm in SH",
+        "NH and SH - Minimal temperature change",
+        "NH and SH - Extreme temperature change"
+      ],
+      "correctAnswer": "NH and SH - Minimal temperature change"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH and SH - No variation in seasons",
+      "NH – Summer, SH – Winter",
+      "NH – Winter, SH – Summer"
+    ],
+    "correctAnswer": "NH and SH - No variation in seasons"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a hypothetical 0° axial tilt, Earth's axis stands perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at identical angles throughout the year. This uniform solar distribution results in equal day and night lengths across the Northern and Southern Hemispheres, with minimal temperature variations between them. Consequently, no seasonal variation occurs in either hemisphere—Earth would experience perpetual equinox-like conditions, eliminating the cyclic pattern of seasons that defines our current climate system."
+},
+{
+  "tilt": "0 degree",
+  "position": 2,
+  "title": "Tilt 0 degree – Position 2",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "Only NH – Receives more direct sunrays",
+        "Only SH – Receives more direct sunrays",
+        "NH and SH – Receives sunrays at same angle"
+      ],
+      "correctAnswer": "NH and SH – Receives sunrays at same angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Days are short, SH – Days are long",
+        "NH – Days are long, SH – Days are short",
+        "NH and SH – Days are equal"
+      ],
+      "correctAnswer": "NH and SH – Days are equal"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warm in NH, cool in SH",
+        "Cool in NH, warm in SH",
+        "NH and SH - Minimal temperature change",
+        "NH and SH - Extreme temperature change"
+      ],
+      "correctAnswer": "NH and SH - Minimal temperature change"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH and SH - No variation in seasons",
+      "NH – Summer, SH – Winter",
+      "NH – Winter, SH – Summer"
+    ],
+    "correctAnswer": "NH and SH - No variation in seasons"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a hypothetical 0° axial tilt, Earth's axis stands perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at identical angles throughout the year. This uniform solar distribution results in equal day and night lengths across the Northern and Southern Hemispheres, with minimal temperature variations between them. Consequently, no seasonal variation occurs in either hemisphere—Earth would experience perpetual equinox-like conditions, eliminating the cyclic pattern of seasons that defines our current climate system."
+},
+{
+  "tilt": "0 degree",
+  "position": 3,
+  "title": "Tilt 0 degree – Position 3",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "Only NH – Receives more direct sunrays",
+        "Only SH – Receives more direct sunrays",
+        "NH and SH – Receives sunrays at same angle"
+      ],
+      "correctAnswer": "NH and SH – Receives sunrays at same angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Days are short, SH – Days are long",
+        "NH – Days are long, SH – Days are short",
+        "NH and SH – Days are equal"
+      ],
+      "correctAnswer": "NH and SH – Days are equal"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warm in NH, cool in SH",
+        "Cool in NH, warm in SH",
+        "NH and SH - Minimal temperature change",
+        "NH and SH - Extreme temperature change"
+      ],
+      "correctAnswer": "NH and SH - Minimal temperature change"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH and SH - No variation in seasons",
+      "NH – Summer, SH – Winter",
+      "NH – Winter, SH – Summer"
+    ],
+    "correctAnswer": "NH and SH - No variation in seasons"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a hypothetical 0° axial tilt, Earth's axis stands perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at identical angles throughout the year. This uniform solar distribution results in equal day and night lengths across the Northern and Southern Hemispheres, with minimal temperature variations between them. Consequently, no seasonal variation occurs in either hemisphere—Earth would experience perpetual equinox-like conditions, eliminating the cyclic pattern of seasons that defines our current climate system."
+},
+{
+  "tilt": "0 degree",
+  "position": 4,
+  "title": "Tilt 0 degree – Position 4",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "Only NH – Receives more direct sunrays",
+        "Only SH – Receives more direct sunrays",
+        "NH and SH – Receives sunrays at same angle"
+      ],
+      "correctAnswer": "NH and SH – Receives sunrays at same angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Days are short, SH – Days are long",
+        "NH – Days are long, SH – Days are short",
+        "NH and SH – Days are equal"
+      ],
+      "correctAnswer": "NH and SH – Days are equal"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warm in NH, cool in SH",
+        "Cool in NH, warm in SH",
+        "NH and SH - Minimal temperature change",
+        "NH and SH - Extreme temperature change"
+      ],
+      "correctAnswer": "NH and SH - Minimal temperature change"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH and SH - No variation in seasons",
+      "NH – Summer, SH – Winter",
+      "NH – Winter, SH – Summer"
+    ],
+    "correctAnswer": "NH and SH - No variation in seasons"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a hypothetical 0° axial tilt, Earth's axis stands perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at identical angles throughout the year. This uniform solar distribution results in equal day and night lengths across the Northern and Southern Hemispheres, with minimal temperature variations between them. Consequently, no seasonal variation occurs in either hemisphere—Earth would experience perpetual equinox-like conditions, eliminating the cyclic pattern of seasons that defines our current climate system."
+},
+{
+  "tilt": "23 degree",
+  "position": 1,
+  "title": "Tilt 23 degree – Position 1",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH - Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "NH - Tilted towards the Sun. SH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays",
+        "NH - Slanting sunrays",
+        "SH - Direct sunrays",
+        "SH - Slanting sunrays"
+      ],
+      "correctAnswer": "NH - Direct sunrays. SH - Slanting sunrays"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH - Sunrays spread over large area",
+        "NH - Sunrays spread over small area",
+        "SH - Sunrays spread over large area",
+        "SH - Sunrays spread over small area"
+      ],
+      "correctAnswer": "NH - Sunrays spread over large area. SH - Sunrays spread over small area"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warmer average temperature in NH",
+        "Cooler average temperature in NH",
+        "Warmer average temperature in SH",
+        "Cooler average temperature in SH"
+      ],
+      "correctAnswer": "Warmer average temperature in NH. Cooler average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Summer, SH - Winter",
+      "NH – Winter, SH– Summer"
+    ],
+    "correctAnswer": "NH – Summer, SH - Winter"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the 23.5° axial tilt causes the Northern Hemisphere to lean towards the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Southern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
+},
+{
+  "tilt": "23 degree",
+  "position": 2,
+  "title": "Tilt 23 degree – Position 2",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH has much longer days than nights",
+        "SH has much longer days than nights",
+        "NH and SH have approximately equal day and night"
+      ],
+      "correctAnswer": "NH and SH have approximately equal day and night"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Sun is directly overhead at Equator",
+        "Sun is directly overhead at Tropic of Cancer",
+        "Sun is directly overhead at Tropic of Capricorn",
+        "Sun is directly overhead at north pole"
+      ],
+      "correctAnswer": "Sun is directly overhead at Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from warm to cooler temperature",
+        "NH transitioning from cool to warmer temperature",
+        "SH transitioning from warm to cooler temperature",
+        "SH transitioning from cool to warmer temperature"
+      ],
+      "correctAnswer": "NH is transitioning from warm to cooler temperature. SH transitioning from cool to warmer temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Autumn, SH - Spring",
+      "NH – Spring, SH– Autumn"
+    ],
+    "correctAnswer": "NH – Autumn, SH - Spring"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the planet's 23.5° tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. This configuration results in approximately equal day and night duration for both hemispheres, marking an equinox. The Northern Hemisphere experiences transitioning temperatures from warm to cooler, indicating autumn, while the Southern Hemisphere transitions from cool to warmer temperatures, experiencing spring. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
+},
+{
+  "tilt": "23 degree",
+  "position": 3,
+  "title": "Tilt 23 degree – Position 3",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH - Tilted towards the Sun",
+        "SH - Tilted towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "SH - Tilted towards the Sun. NH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays",
+        "NH - Slanting sunrays",
+        "SH - Direct sunrays",
+        "SH - Slanting sunrays"
+      ],
+      "correctAnswer": "NH - Slanting sunrays. SH - Direct sunrays"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH - Sunrays spread over large area",
+        "NH - Sunrays spread over small area",
+        "SH - Sunrays spread over large area",
+        "SH - Sunrays spread over small area"
+      ],
+      "correctAnswer": "NH - Sunrays spread over small area. SH - Sunrays spread over large area"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warmer average temperature in NH",
+        "Cooler average temperature in NH",
+        "Warmer average temperature in SH",
+        "Cooler average temperature in SH"
+      ],
+      "correctAnswer": "Cooler average temperature in NH. Warmer average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Summer, SH - Winter",
+      "NH – Winter, SH– Summer"
+    ],
+    "correctAnswer": "NH – Winter, SH– Summer"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the 23.5° axial tilt causes the Southern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Northern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
+},
+{
+  "tilt": "23 degree",
+  "position": 4,
+  "title": "Tilt 23 degree – Position 4",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH has much longer days than nights",
+        "SH has much longer days than nights",
+        "NH and SH have approximately equal day and night"
+      ],
+      "correctAnswer": "NH and SH have approximately equal day and night"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Sun is directly overhead at Equator",
+        "Sun is directly overhead at Tropic of Cancer",
+        "Sun is directly overhead at Tropic of Capricorn",
+        "Sun is directly overhead at north pole"
+      ],
+      "correctAnswer": "Sun is directly overhead at Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from warm to cooler temperature",
+        "NH transitioning from cool to warmer temperature",
+        "SH transitioning from warm to cooler temperature",
+        "SH transitioning from cool to warmer temperature"
+      ],
+      "correctAnswer": "NH transitioning from cool to warmer temperature. SH transitioning from warm to cooler temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Autumn, SH - Spring",
+      "NH – Spring , SH - Autumn"
+    ],
+    "correctAnswer": "NH – Spring , SH - Autumn"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the planet's 23.5° tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. Both hemispheres experience approximately equal day and night lengths, marking a transitional phase where neither is tilted toward or away from the Sun. The Northern Hemisphere is warming as it transitions from winter to summer, experiencing spring, while the Southern Hemisphere is cooling as it moves from summer to winter, experiencing autumn. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
+},
+{
+  "tilt": "-23 degree",
+  "position": 1,
+  "title": "Tilt −23 degree – Position 1",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH - Tilted towards the Sun",
+        "SH - Tilted towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "SH - Tilted towards the Sun. NH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays",
+        "NH - Slanting sunrays",
+        "SH - Direct sunrays",
+        "SH - Slanting sunrays"
+      ],
+      "correctAnswer": "NH - Slanting sunrays. SH - Direct sunrays"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH - Sunrays spread over large area",
+        "NH - Sunrays spread over small area",
+        "SH - Sunrays spread over large area",
+        "SH - Sunrays spread over small area"
+      ],
+      "correctAnswer": "NH - Sunrays spread over small area. SH - Sunrays spread over large area"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warmer average temperature in NH",
+        "Cooler average temperature in NH",
+        "Warmer average temperature in SH",
+        "Cooler average temperature in SH"
+      ],
+      "correctAnswer": "Cooler average temperature in NH. Warmer average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Summer, SH - Winter",
+      "NH – Winter, SH– Summer"
+    ],
+    "correctAnswer": "NH – Winter, SH– Summer"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the (−23.5°) axial tilt causes the Southern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Northern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
+},
+{
+  "tilt": "-23 degree",
+  "position": 2,
+  "title": "Tilt −23 degree – Position 2",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays",
+        "Earth’s axis is perpendicular to the Sun rays"
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH has much longer days than nights",
+        "SH has much longer days than nights",
+        "NH and SH have approximately equal day and night"
+      ],
+      "correctAnswer": "NH and SH have approximately equal day and night"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Sun is directly overhead at Equator",
+        "Sun is directly overhead at Tropic of Cancer",
+        "Sun is directly overhead at Tropic of Capricorn",
+        "Sun is directly overhead at north pole"
+      ],
+      "correctAnswer": "Sun is directly overhead at Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from warm to cooler temperature",
+        "NH transitioning from cool to warmer temperature",
+        "SH transitioning from warm to cooler temperature",
+        "SH transitioning from cool to warmer temperature"
+      ],
+      "correctAnswer": "NH transitioning from cool to warmer temperature. SH transitioning from warm to cooler temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Autumn, SH - Spring",
+      "NH – Spring , SH - Autumn"
+    ],
+    "correctAnswer": "NH – Spring , SH - Autumn"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the planet's (−23.5°) tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. Both hemispheres experience approximately equal day and night lengths, marking a transitional phase where neither is tilted toward or away from the Sun. The Northern Hemisphere is warming as it transitions from winter to summer, experiencing spring, while the Southern Hemisphere is cooling as it moves from summer to winter, experiencing autumn. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
+},
+{
+  "tilt": "-23 degree",
+  "position": 3,
+  "title": "Tilt −23 degree – Position 3",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH - Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "NH - Tilted towards the Sun. SH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays",
+        "NH - Slanting sunrays",
+        "SH - Direct sunrays",
+        "SH - Slanting sunrays"
+      ],
+      "correctAnswer": "NH - Direct sunrays. SH - Slanting sunrays"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH - Sunrays spread over large area",
+        "NH - Sunrays spread over small area",
+        "SH - Sunrays spread over large area",
+        "SH - Sunrays spread over small area"
+      ],
+      "correctAnswer": "NH - Sunrays spread over large area. SH - Sunrays spread over small area"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Warmer average temperature in NH",
+        "Cooler average temperature in NH",
+        "Warmer average temperature in SH",
+        "Cooler average temperature in SH"
+      ],
+      "correctAnswer": "Warmer average temperature in NH. Cooler average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Summer, SH - Winter",
+      "NH – Winter, SH– Summer"
+    ],
+    "correctAnswer": "NH – Summer, SH - Winter"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the (−23.5°) axial tilt causes the Northern Hemisphere to lean toward the Sun, receiving direct sunrays concentrated over a smaller area, resulting in warmer temperatures and summer conditions. Simultaneously, the Southern Hemisphere tilts away from the Sun, receiving slanting rays dispersed over a larger area, leading to cooler temperatures and winter conditions."
+},
+{
+  "tilt": "-23 degree",
+  "position": 4,
+  "title": "Tilt −23 degree – Position 4",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH has much longer days than nights",
+        "SH has much longer days than nights",
+        "NH and SH have approximately equal day and night"
+      ],
+      "correctAnswer": "NH and SH have approximately equal day and night"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Sun is directly overhead at Equator",
+        "Sun is directly overhead at Tropic of Cancer",
+        "Sun is directly overhead at Tropic of Capricorn",
+        "Sun is directly overhead at north pole"
+      ],
+      "correctAnswer": "Sun is directly overhead at Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from warm to cooler temperature",
+        "NH transitioning from cool to warmer temperature",
+        "SH transitioning from warm to cooler temperature",
+        "SH transitioning from cool to warmer temperature"
+      ],
+      "correctAnswer": "NH is transitioning from warm to cooler temperature. SH transitioning from cool to warmer temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Autumn, SH - Spring",
+      "NH – Spring, SH– Autumn"
+    ],
+    "correctAnswer": "NH – Autumn, SH - Spring"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the planet's (−23.5°) tilted axis is oriented perpendicular to the Sun's rays, placing the Sun directly overhead at the Equator. This configuration results in approximately equal day and night duration for both hemispheres, marking an equinox. The Northern Hemisphere experiences transitioning temperatures from warm to cooler, indicating autumn, while the Southern Hemisphere transitions from cool to warmer temperatures, experiencing spring. This equilibrium position demonstrates the midpoint in Earth's seasonal cycle, where neither hemisphere is tilted toward or away from the Sun."
+},
+{
+  "tilt": "45 degree",
+  "position": 1,
+  "title": "Tilt 45 degree – Position 1",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH – Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "NH – Tilted towards the Sun. SH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays, almost perpendicular to the surface",
+        "NH - Slanting sunrays hitting at an angle",
+        "SH - Direct sunrays, almost perpendicular to the surface",
+        "SH - Slanting sunrays hitting at an angle"
+      ],
+      "correctAnswer": "NH - Direct sunrays, almost perpendicular to the surface. SH - Slanting sunrays hitting at an angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Sunrays highly concentrated, SH – Sunrays highly spread over",
+        "SH – Sunrays highly concentrated, NH – Sunrays highly spread over",
+        "NH and SH – Equally concentrated"
+      ],
+      "correctAnswer": "NH – Sunrays highly concentrated, SH – Sunrays highly spread over"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Much more warmer average temperature in NH",
+        "Much more cooler average temperature in NH",
+        "Much more warmer average temperature in SH",
+        "Much more cooler average temperature in SH"
+      ],
+      "correctAnswer": "Much more warmer average temperature in NH. Much more cooler average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Extreme Summer, SH – Extreme Winter",
+      "NH – Extreme Winter, SH– Extreme Summer"
+    ],
+    "correctAnswer": "NH – Extreme Summer, SH – Extreme Winter"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with an extreme 45° axial tilt, the Northern Hemisphere tilts sharply toward the Sun, receiving nearly perpendicular sunrays that are highly concentrated over minimal surface area, creating extreme summer with significantly elevated temperatures. Conversely, the Southern Hemisphere tilts dramatically away, receiving highly slanted rays dispersed over vast areas, resulting in extreme winter with severely reduced temperatures. This exaggerated 45° tilt amplifies the seasonal contrast far beyond Earth's actual 23.5° tilt, demonstrating how axial inclination directly controls the intensity of seasonal temperature extremes between hemispheres."
+},
+{
+  "tilt": "45 degree",
+  "position": 2,
+  "title": "Tilt 45 degree – Position 2",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH and SH receive sunrays at similar angles",
+        "NH receives much more direct rays",
+        "SH receives much more direct rays"
+      ],
+      "correctAnswer": "NH and SH receive sunrays at similar angles"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Direct sunlight position more at the Equator",
+        "Direct sunlight position well north of Equator in NH",
+        "Direct sunlight position well south of Equator in SH"
+      ],
+      "correctAnswer": "Direct sunlight position more at the Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from extreme warm to extreme cool temperature",
+        "NH transitioning from extreme cool to extreme warm temperature",
+        "SH transitioning from extreme warm to extreme cool temperature",
+        "SH transitioning from extreme cool to extreme warm temperature"
+      ],
+      "correctAnswer": "NH is transitioning from extreme warm to extreme cool temperature. SH transitioning from extreme cool to extreme warm temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH: Rapid Autumn transition, SH: Rapid Spring transition",
+      "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+    ],
+    "correctAnswer": "NH – Rapid Autumn transition SH – Rapid Spring transition"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a 45° axial tilt, Earth's axis is perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at similar angles with direct sunlight concentrated at the Equator. This equinox-like configuration creates transitional conditions where the Northern Hemisphere experiences rapidly cooling temperatures as it shifts from summer toward autumn, while the Southern Hemisphere undergoes rapidly warming temperatures as it transitions from winter toward spring. The exaggerated 45° tilt (compared to Earth's actual 23.5°) would amplify seasonal contrasts and accelerate these transitions, creating more dramatic temperature shifts between seasons as neither hemisphere maintains a significant tilt advantage toward or away from the Sun."
+},
+{
+  "tilt": "45 degree",
+  "position": 3,
+  "title": "Tilt 45 degree – Position 3",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH – Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "SH - Titled towards the Sun. NH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays, almost perpendicular to the surface",
+        "NH - Slanting sunrays hitting at an angle",
+        "SH - Direct sunrays, almost perpendicular to the surface",
+        "SH - Slanting sunrays hitting at an angle"
+      ],
+      "correctAnswer": "NH - Slanting sunrays hitting at an angle. SH - Direct sunrays, almost perpendicular to the surface"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Sunrays highly concentrated, SH – Sunrays highly spread over",
+        "SH – Sunrays highly concentrated, NH – Sunrays highly spread over",
+        "NH and SH – Equally concentrated"
+      ],
+      "correctAnswer": "SH – Sunrays highly concentrated, NH – Sunrays highly spread over"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Much more warmer average temperature in NH",
+        "Much more cooler average temperature in NH",
+        "Much more warmer average temperature in SH",
+        "Much more cooler average temperature in SH"
+      ],
+      "correctAnswer": "Much more cooler average temperature in NH. Much more warmer average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Extreme Summer, SH – Extreme Winter",
+      "NH – Extreme Winter, SH– Extreme Summer"
+    ],
+    "correctAnswer": "NH – Extreme Winter, SH – Extreme Summer"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the exaggerated 45° axial tilt causes the Southern Hemisphere to lean significantly toward the Sun, receiving nearly perpendicular, highly concentrated sunrays that create extreme summer conditions with much warmer temperatures. Conversely, the Northern Hemisphere tilts dramatically away from the Sun, receiving highly slanting rays dispersed over vast areas, resulting in extreme winter conditions with much cooler temperatures. This scenario illustrates how a greater axial tilt amplifies seasonal extremes—the 45° tilt produces more severe temperature differences and more intense seasonal contrasts."
+},
+{
+  "tilt": "45 degree",
+  "position": 4,
+  "title": "Tilt 45 degree – Position 4",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH and SH receive sunrays at similar angles",
+        "NH receives much more direct rays",
+        "SH receives much more direct rays"
+      ],
+      "correctAnswer": "NH and SH receive sunrays at similar angles"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Direct sunlight position more at the Equator",
+        "Direct sunlight position well north of Equator in NH",
+        "Direct sunlight position well south of Equator in SH"
+      ],
+      "correctAnswer": "Direct sunlight position more at the Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from extreme warm to extreme cool temperature",
+        "NH transitioning from extreme cool to extreme warm temperature",
+        "SH transitioning from extreme warm to extreme cool temperature",
+        "SH transitioning from extreme cool to extreme warm temperature"
+      ],
+      "correctAnswer": "NH transitioning from extreme cool to extreme warm temperature. SH transitioning from extreme warm to extreme cool temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH: Rapid Autumn transition, SH: Rapid Spring transition",
+      "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+    ],
+    "correctAnswer": "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+  },
+  "seasonUncovered": "At this orbital position with a 45° axial tilt, Earth's axis becomes perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at similar angles with direct rays concentrated at the Equator. This unique geometric alignment creates a transitional phase where the Northern Hemisphere rapidly shifts from extreme cool to extreme warm temperatures, experiencing a rapid Spring transition, while the Southern Hemisphere transitions from extreme warm to extreme cool temperatures, experiencing a rapid Autumn transition. The increased 45° tilt (compared to Earth's actual 23.5°) amplifies seasonal extremes and accelerates the rate of temperature change during these equinox-like conditions, demonstrating how axial tilt magnitude directly influences both seasonal intensity and transition speed."
+},
+{
+  "tilt": "-45 degree",
+  "position": 1,
+  "title": "Tilt −45 degree – Position 1",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH – Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "SH - Titled towards the Sun. NH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays, almost perpendicular to the surface",
+        "NH - Slanting sunrays hitting at an angle",
+        "SH - Direct sunrays, almost perpendicular to the surface",
+        "SH - Slanting sunrays hitting at an angle"
+      ],
+      "correctAnswer": "NH - Slanting sunrays hitting at an angle. SH - Direct sunrays, almost perpendicular to the surface"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Sunrays highly concentrated, SH – Sunrays highly spread over",
+        "SH – Sunrays highly concentrated, NH – Sunrays highly spread over",
+        "NH and SH – Equally concentrated"
+      ],
+      "correctAnswer": "SH – Sunrays highly concentrated, NH – Sunrays highly spread over"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Much more warmer average temperature in NH",
+        "Much more cooler average temperature in NH",
+        "Much more warmer average temperature in SH",
+        "Much more cooler average temperature in SH"
+      ],
+      "correctAnswer": "Much more cooler average temperature in NH. Much more warmer average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Extreme Summer, SH – Extreme Winter",
+      "NH – Extreme Winter, SH– Extreme Summer"
+    ],
+    "correctAnswer": "NH – Extreme Winter, SH – Extreme Summer"
+  },
+  "seasonUncovered": "At this position in Earth's orbit, the exaggerated (−45°) axial tilt causes the Southern Hemisphere to lean significantly toward the Sun, receiving nearly perpendicular, highly concentrated sunrays that create extreme summer conditions with much warmer temperatures. Conversely, the Northern Hemisphere tilts dramatically away from the Sun, receiving highly slanting rays dispersed over vast areas, resulting in extreme winter conditions with much cooler temperatures. This scenario illustrates how a greater axial tilt amplifies seasonal extremes—the (−45°) tilt produces more severe temperature differences and more intense seasonal contrasts."
+},
+{
+  "tilt": "-45 degree",
+  "position": 2,
+  "title": "Tilt −45 degree – Position 2",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH and SH receive sunrays at similar angles",
+        "NH receives much more direct rays",
+        "SH receives much more direct rays"
+      ],
+      "correctAnswer": "NH and SH receive sunrays at similar angles"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Direct sunlight position more at the Equator",
+        "Direct sunlight position well north of Equator in NH",
+        "Direct sunlight position well south of Equator in SH"
+      ],
+      "correctAnswer": "Direct sunlight position more at the Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from extreme warm to extreme cool temperature",
+        "NH transitioning from extreme cool to extreme warm temperature",
+        "SH transitioning from extreme warm to extreme cool temperature",
+        "SH transitioning from extreme cool to extreme warm temperature"
+      ],
+      "correctAnswer": "NH transitioning from extreme cool to extreme warm temperature. SH transitioning from extreme warm to extreme cool temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH: Rapid Autumn transition, SH: Rapid Spring transition",
+      "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+    ],
+    "correctAnswer": "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+  },
+  "seasonUncovered": "At this orbital position with a (−45°) axial tilt, Earth's axis becomes perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at similar angles with direct rays concentrated at the Equator. This unique geometric alignment creates a transitional phase where the Northern Hemisphere rapidly shifts from extreme cool to extreme warm temperatures, experiencing a rapid Spring transition, while the Southern Hemisphere transitions from extreme warm to extreme cool temperatures, experiencing a rapid Autumn transition. The increased (−45°) tilt (compared to Earth's actual 23.5°) amplifies seasonal extremes and accelerates the rate of temperature change during these equinox-like conditions, demonstrating how axial tilt magnitude directly influences both seasonal intensity and transition speed."
+},
+{
+  "tilt": "-45 degree",
+  "position": 3,
+  "title": "Tilt −45 degree – Position 3",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "NH – Tilted towards the Sun",
+        "SH - Titled towards the Sun",
+        "NH - Tilted away from the Sun",
+        "SH - Tilted away from the Sun"
+      ],
+      "correctAnswer": "NH – Tilted towards the Sun. SH - Tilted away from the Sun"
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH - Direct sunrays, almost perpendicular to the surface",
+        "NH - Slanting sunrays hitting at an angle",
+        "SH - Direct sunrays, almost perpendicular to the surface",
+        "SH - Slanting sunrays hitting at an angle"
+      ],
+      "correctAnswer": "NH - Direct sunrays, almost perpendicular to the surface. SH - Slanting sunrays hitting at an angle"
+    },
+    {
+      "id": 3,
+      "options": [
+        "NH – Sunrays highly concentrated, SH – Sunrays highly spread over",
+        "SH – Sunrays highly concentrated, NH – Sunrays highly spread over",
+        "NH and SH – Equally concentrated"
+      ],
+      "correctAnswer": "NH – Sunrays highly concentrated, SH – Sunrays highly spread over"
+    },
+    {
+      "id": 4,
+      "options": [
+        "Much more warmer average temperature in NH",
+        "Much more cooler average temperature in NH",
+        "Much more warmer average temperature in SH",
+        "Much more cooler average temperature in SH"
+      ],
+      "correctAnswer": "Much more warmer average temperature in NH. Much more cooler average temperature in SH"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH – Extreme Summer, SH – Extreme Winter",
+      "NH – Extreme Winter, SH– Extreme Summer"
+    ],
+    "correctAnswer": "NH – Extreme Summer, SH – Extreme Winter"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with an extreme (−45°) axial tilt, the Northern Hemisphere tilts sharply toward the Sun, receiving nearly perpendicular sunrays that are highly concentrated over minimal surface area, creating extreme summer with significantly elevated temperatures. Conversely, the Southern Hemisphere tilts dramatically away, receiving highly slanted rays dispersed over vast areas, resulting in extreme winter with severely reduced temperatures. This exaggerated (−45°) tilt amplifies the seasonal contrast far beyond Earth's actual 23.5° tilt, demonstrating how axial inclination directly controls the intensity of seasonal temperature extremes between hemispheres."
+},
+{
+  "tilt": "-45 degree",
+  "position": 4,
+  "title": "Tilt −45 degree – Position 4",
+  "observations": [
+    {
+      "id": 1,
+      "options": [
+        "Earth’s axis is tilted towards the Sun rays.",
+        "Earth’s axis is perpendicular to the Sun rays."
+      ],
+      "correctAnswer": "Earth’s axis is perpendicular to the Sun rays."
+    },
+    {
+      "id": 2,
+      "options": [
+        "NH and SH receive sunrays at similar angles",
+        "NH receives much more direct rays",
+        "SH receives much more direct rays"
+      ],
+      "correctAnswer": "NH and SH receive sunrays at similar angles"
+    },
+    {
+      "id": 3,
+      "options": [
+        "Direct sunlight position more at the Equator",
+        "Direct sunlight position well north of Equator in NH",
+        "Direct sunlight position well south of Equator in SH"
+      ],
+      "correctAnswer": "Direct sunlight position more at the Equator"
+    },
+    {
+      "id": 4,
+      "options": [
+        "NH is transitioning from extreme warm to extreme cool temperature",
+        "NH transitioning from extreme cool to extreme warm temperature",
+        "SH transitioning from extreme warm to extreme cool temperature",
+        "SH transitioning from extreme cool to extreme warm temperature"
+      ],
+      "correctAnswer": "NH is transitioning from extreme warm to extreme cool temperature. SH transitioning from extreme cool to extreme warm temperature"
+    }
+  ],
+  "conclusion": {
+    "options": [
+      "NH: Rapid Autumn transition, SH: Rapid Spring transition",
+      "NH: Rapid Spring transition, SH: Rapid Autumn transition"
+    ],
+    "correctAnswer": "NH – Rapid Autumn transition SH – Rapid Spring transition"
+  },
+  "seasonUncovered": "At this position in Earth's orbit with a (−45°) axial tilt, Earth's axis is perpendicular to the Sun's rays, causing both hemispheres to receive sunlight at similar angles with direct sunlight concentrated at the Equator. This equinox-like configuration creates transitional conditions where the Northern Hemisphere experiences rapidly cooling temperatures as it shifts from summer toward rapid autumn transition, while the Southern Hemisphere undergoes rapidly warming temperatures as it transitions from winter toward rapid spring transition. The exaggerated −45° tilt (compared to Earth's actual 23.5°) would amplify seasonal contrasts and accelerate these transitions, creating more dramatic temperature shifts between seasons as neither hemisphere maintains a significant tilt advantage toward or away from the Sun."
+}
+]
