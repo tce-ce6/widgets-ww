@@ -14,8 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Element Selectors
     const gateButtons = Object.keys(gateData).map(id => document.getElementById(id));
+    const resetBtn = document.getElementById("btn-reset") || document.getElementById("btn_reset");
     
-    // FIX: Select the group that holds the gate image
+    // Truth Table Selectors (Corrected variable names to match logic)
+    const tableOther = document.getElementById("truth_table_other");
+    const tableNot = document.getElementById("truth_table_not");
+
     const displayGroup = document.getElementById("selected_gate_group");
     const gateImg = displayGroup ? displayGroup.querySelector("img") : null;
     
@@ -25,20 +29,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Initialization
     function initDefault() {
+
+        resetBtn.style.opacity = "0.28";
         activeBtnId = null;
         
-        // FIX: Ensure the Gate Display Group is VISIBLE
         if (displayGroup) displayGroup.style.display = "block";
-        if (gateImg) gateImg.src = "assets/Gates/selecr_gate.svg";
+        if (gateImg) gateImg.src = "assets/Gates/Select_Gate.png";
         
-        // Default Wiring Visibility
         if (otherWiring) otherWiring.style.display = "block";
         if (notWiring) notWiring.style.display = "none";
         
-        // Ensure Indicator Wrapper is visible
+        if (tableOther) tableOther.style.display = "none";
+        if (tableNot) tableNot.style.display = "none";
+
         if (indicatorWrapper) indicatorWrapper.style.display = "block";
         
-        // Reset Toggles
         document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
 
         gateButtons.forEach(btn => { 
@@ -47,25 +52,69 @@ document.addEventListener("DOMContentLoaded", () => {
                 btn.style.cursor = "pointer"; 
             }
         });
+
+
         
         updateLogic();
     }
 
-    // 4. Interaction: Gate Selection
+    // 4. Update Truth Table Numbers
+    function updateTruthTableUI(gateId) {
+        const isNotGate = (gateId === "btn_not_gate");
+        
+        // Fix for the ReferenceError: Using the correct variables defined in section 2
+        if (tableNot) tableNot.style.display = isNotGate ? "block" : "none";
+        if (tableOther) tableOther.style.display = isNotGate ? "none" : "block";
+
+        const data = gateData[gateId];
+        if (!data) return;
+
+        if (isNotGate) {
+            // IDs for NOT gate results
+            const el0 = document.getElementById("_13");
+            const el1 = document.getElementById("_0-21");
+            
+            if (el0) {
+                const span = el0.querySelector("tspan");
+                if (span) span.textContent = data.table["0"];
+            }
+            if (el1) {
+                const span = el1.querySelector("tspan");
+                if (span) span.textContent = data.table["1"];
+            }
+        } else {
+            // Mapping for 3 columns and 4 rows using your new IDs
+            const tableMapping = [
+                { a: "0", b: "0", idA: "INPUT_A_R1C1", idB: "INPUT_B_R1C2", idOut: "OUTPUT_R1C3" },
+                { a: "0", b: "1", idA: "INPUT_A_R2C1", idB: "INPUT_B_R2C2", idOut: "OUTPUT_R2C3" },
+                { a: "1", b: "0", idA: "INPUT_A_R3C1", idB: "INPUT_B_R3C2", idOut: "OUTPUT_R3C3" },
+                { a: "1", b: "1", idA: "INPUT_A_R4C1", idB: "INPUT_B_R4C2", idOut: "OUTPUT_R4C3" }
+            ];
+
+            tableMapping.forEach(row => {
+                const elA = document.getElementById(row.idA);
+                const elB = document.getElementById(row.idB);
+                const elOut = document.getElementById(row.idOut);
+
+                if (elA) elA.querySelector("tspan").textContent = row.a;
+                if (elB) elB.querySelector("tspan").textContent = row.b;
+                if (elOut) elOut.querySelector("tspan").textContent = data.table[`${row.a}${row.b}`];
+            });
+        }
+    }
+
+    // 5. Interaction: Gate Selection
     gateButtons.forEach(btn => {
         if (!btn) return;
         btn.addEventListener("click", () => {
             activeBtnId = btn.id;
-
-            // Visual Selection
+            resetBtn.style.opacity = "1";
             gateButtons.forEach(b => b.style.opacity = "1");
             btn.style.opacity = "0.28";
 
-            // FIX: Make sure the group is visible and swap the image
             if (displayGroup) displayGroup.style.display = "block";
             if (gateImg) gateImg.src = `assets/Gates/${gateData[activeBtnId].asset}`;
 
-            // Handle Wiring Switching
             if (activeBtnId === "btn_not_gate") {
                 if (notWiring) notWiring.style.display = "block";
                 if (otherWiring) otherWiring.style.display = "none";
@@ -74,37 +123,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (otherWiring) otherWiring.style.display = "block";
             }
 
+            updateTruthTableUI(activeBtnId);
             updateLogic();
         });
     });
 
-    // 5. Interaction: Toggles
+    // 6. Reset Button
+    if (resetBtn) {
+        resetBtn.style.cursor = "pointer";
+        resetBtn.addEventListener("click", initDefault);
+    }
+
+    // 7. Interaction: Toggles
     document.addEventListener("change", (e) => {
         if (e.target.type === "checkbox") {
             updateLogic();
         }
     });
 
-    // 6. Logic Core
+    // 8. Logic Core
     function updateLogic() {
         const isNotActive = (activeBtnId === "btn_not_gate");
         const currentGroup = isNotActive ? notWiring : otherWiring;
         if (!currentGroup) return;
 
-        // Get Toggle Values
         const toggles = currentGroup.querySelectorAll('input[type="checkbox"]');
         const valA = (toggles[0] && toggles[0].checked) ? 1 : 0;
         const valB = (toggles[1] && toggles[1].checked) ? 1 : 0;
 
         const suffix = isNotActive ? "_not" : "_other";
         
-        // Update Input Indicators
         syncDisplay(currentGroup, `input_indicator_on_a${suffix}`, `input_indicator_off_a${suffix}`, valA);
         if (!isNotActive) {
             syncDisplay(currentGroup, `input_indicator_on_b${suffix}`, `input_indicator_off_b${suffix}`, valB);
         }
 
-        // Calculate Result
         let result = 0;
         if (activeBtnId) {
             if (isNotActive) {
@@ -114,11 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Update Output
         syncDisplay(currentGroup, `out_put_on${suffix}`, `out_put_off${suffix}`, result);
     }
 
-    // Helper to toggle between On/Off elements
     function syncDisplay(group, onId, offId, value) {
         const onEl = group.querySelector(`#${onId}`);
         const offEl = group.querySelector(`#${offId}`);
