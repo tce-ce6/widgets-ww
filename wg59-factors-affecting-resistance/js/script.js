@@ -12,10 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const resistanceLetter = document.getElementById("resistance-letter");
 
+  const noteWrapper = document.getElementById("note-wrapper");
+  const ansText = document.getElementById("ans-text");
+  const closeBtn = noteWrapper.querySelector(".close-btn");
+  const btn1 = document.getElementById("btn-1");
+  const resetBtn = document.getElementById("reset-btn");
+
+  const noteTextByMetal = {
+    copper:
+      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
+    aluminium:
+      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
+    tungsten:
+      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
+  };
+
   /* ------------------ CONSTANTS ------------------ */
 
   const MIN_RESISTANCE_FONT_SIZE = 150;
   const MAX_RESISTANCE_FONT_SIZE = 390;
+  const RESISTANCE_INITIAL_FONT_SIZE = 294; // ✅ FIX
 
   const LENGTH_REFERENCE = 13;
 
@@ -31,50 +47,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentScaleX = 1;
   let currentScaleY = 1;
-  const WIDTH_INITIAL = LENGTH_REFERENCE; // 13
+
+  const WIDTH_INITIAL = LENGTH_REFERENCE;
   const HEIGHT_INITIAL = 6;
 
   /* ------------------ BAR SCALE MAPS ------------------ */
 
   const widthScaleMap = {
-    4: 0.111,
-    5: 0.146,
-    6: 0.183,
-    7: 0.217,
-    8: 0.252,
-    9: 0.287,
-    10: 0.322,
-    11: 0.357,
-    12: 0.392,
-    13: 0.427,
-    14: 0.462,
-    15: 0.497,
-    16: 0.532,
-    17: 0.567,
-    18: 0.602,
-    19: 0.637,
-    20: 0.672,
-    21: 0.707,
-    22: 0.742,
-    23: 0.777,
-    24: 0.812,
-    25: 0.847,
-    26: 0.882,
-    27: 0.917,
-    28: 0.952,
-    29: 0.987,
+    4: 0.111, 5: 0.146, 6: 0.183, 7: 0.217, 8: 0.252,
+    9: 0.287, 10: 0.322, 11: 0.357, 12: 0.392,
+    13: 0.427, 14: 0.462, 15: 0.497, 16: 0.532,
+    17: 0.567, 18: 0.602, 19: 0.637, 20: 0.672,
+    21: 0.707, 22: 0.742, 23: 0.777, 24: 0.812,
+    25: 0.847, 26: 0.882, 27: 0.917, 28: 0.952, 29: 0.987,
   };
 
   const heightScaleMap = {
-    4: 0.59,
-    5: 0.785,
-    6: 0.985,
-    7: 1.185,
-    8: 1.385,
-    9: 1.585,
+    4: 0.59, 5: 0.785, 6: 0.985,
+    7: 1.185, 8: 1.385, 9: 1.585,
   };
 
-  /* ------------------ BUTTON HANDLERS ------------------ */
+  /* ------------------ METAL BUTTONS ------------------ */
 
   document.getElementById("copper-btn").onclick = () => {
     selectedMetal = "copper";
@@ -96,14 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ------------------ TRANSFORM ORIGIN ------------------ */
 
-  [copperBar, aluminiumBar, tungstenBar].forEach((bar) => {
+  [copperBar, aluminiumBar, tungstenBar].forEach(bar => {
     bar.setAttribute("transform-origin", "309.741px 567.498px");
   });
 
   /* ------------------ WIDTH SLIDER ------------------ */
 
   noUiSlider.create(pipsSlider, {
-    start: LENGTH_REFERENCE,
+    start: WIDTH_INITIAL,
     step: 1,
     range: { min: 0, max: 30 },
     connect: [true, false],
@@ -112,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
   pipsSlider.noUiSlider.on("update", () => {
     let value = Number(pipsSlider.noUiSlider.get());
 
-    // 🔒 RESTORE RANGE LOGIC
     if (value < WIDTH_MIN) {
       pipsSlider.noUiSlider.set(WIDTH_MIN);
       value = WIDTH_MIN;
@@ -133,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ------------------ HEIGHT SLIDER ------------------ */
 
   noUiSlider.create(heightSlider, {
-    start: 6,
+    start: HEIGHT_INITIAL,
     step: 1,
     range: { min: 0, max: 10 },
     orientation: "vertical",
@@ -144,7 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
   heightSlider.noUiSlider.on("update", () => {
     let value = Number(heightSlider.noUiSlider.get());
 
-    // 🔒 RESTORE RANGE LOGIC
     if (value < HEIGHT_MIN) {
       heightSlider.noUiSlider.set(HEIGHT_MIN);
       value = HEIGHT_MIN;
@@ -165,16 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ------------------ RESISTANCE LOGIC ------------------ */
 
   function updateResistanceByLength(value) {
-    if (!resistanceLetter) return;
-
-    const distance = Math.abs(value - LENGTH_REFERENCE);
-    const maxDistance = Math.max(
-      Math.abs(WIDTH_MIN - LENGTH_REFERENCE),
-      Math.abs(WIDTH_MAX - LENGTH_REFERENCE)
-    );
-
-    const ratio = distance / maxDistance;
-
+    const ratio = (value - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN);
     const fontSize =
       MIN_RESISTANCE_FONT_SIZE +
       ratio * (MAX_RESISTANCE_FONT_SIZE - MIN_RESISTANCE_FONT_SIZE);
@@ -183,10 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateResistanceByThickness(value) {
-    if (!resistanceLetter) return;
-
     const ratio = (value - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN);
-
     const fontSize =
       MAX_RESISTANCE_FONT_SIZE -
       ratio * (MAX_RESISTANCE_FONT_SIZE - MIN_RESISTANCE_FONT_SIZE);
@@ -194,17 +173,16 @@ document.addEventListener("DOMContentLoaded", () => {
     resistanceLetter.setAttribute("font-size", fontSize);
   }
 
-  /* ------------------ METAL SWITCH ------------------ */
+  /* ------------------ METAL UI ------------------ */
 
   function updateMetalUI() {
     copperBar.style.display =
       aluminiumBar.style.display =
-      tungstenBar.style.display =
-        "none";
+      tungstenBar.style.display = "none";
+
     copperTxt.style.display =
       aluminiumTxt.style.display =
-      tungstenTxt.style.display =
-        "none";
+      tungstenTxt.style.display = "none";
 
     if (selectedMetal === "copper") {
       activeBar = copperBar;
@@ -224,24 +202,57 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  /* ------------------ RESET ON METAL CHANGE ------------------ */
+
   function resetOnMetalChange() {
-    // Reset sliders to ORIGINAL initial positions
     pipsSlider.noUiSlider.set(WIDTH_INITIAL);
     heightSlider.noUiSlider.set(HEIGHT_INITIAL);
 
-    // Reset scale values to match originals
     currentScaleX = widthScaleMap[WIDTH_INITIAL] || 1;
     currentScaleY = heightScaleMap[HEIGHT_INITIAL] || 1;
 
-    // Apply transform immediately
     activeBar.setAttribute(
       "transform",
       `scale(${currentScaleX}, ${currentScaleY})`
     );
 
-    // Reset resistance to minimum (baseline resistance)
-    resistanceLetter.setAttribute("font-size", MIN_RESISTANCE_FONT_SIZE);
+    resistanceLetter.setAttribute(
+      "font-size",
+      RESISTANCE_INITIAL_FONT_SIZE
+    );
   }
+
+  /* ------------------ NOTE LOGIC ------------------ */
+
+  btn1.addEventListener("click", () => {
+    ansText.textContent = noteTextByMetal[selectedMetal] || "";
+    noteWrapper.style.display = "block";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    noteWrapper.style.display = "none";
+  });
+
+  /* ------------------ GLOBAL RESET ------------------ */
+
+  resetBtn.addEventListener("click", () => {
+    selectedMetal = "copper";
+
+    pipsSlider.noUiSlider.set(WIDTH_INITIAL);
+    heightSlider.noUiSlider.set(HEIGHT_INITIAL);
+
+    currentScaleX = widthScaleMap[WIDTH_INITIAL] || 1;
+    currentScaleY = heightScaleMap[HEIGHT_INITIAL] || 1;
+
+    resistanceLetter.setAttribute(
+      "font-size",
+      RESISTANCE_INITIAL_FONT_SIZE
+    );
+
+    noteWrapper.style.display = "none";
+
+    updateMetalUI();
+  });
 
   updateMetalUI(); // default
 });

@@ -258,3 +258,20 @@
 .metal-btn.tungsten{
   background-image: url("../assets/tungsten-btn.png");
 }
+.ans-note{
+  background-color: #5DC4FF;
+  font-size: 28px;
+  padding: 20px 40px;
+  border-radius: 15px;
+}
+.ans-note .close-btn{
+  background-image: url("../assets/close-btn.svg");
+  background-size: 100% 100%;
+  background-position: center center;
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  top: -27px;
+  right: -33px;
+  cursor: pointer;
+}
