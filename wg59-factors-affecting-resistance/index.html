@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="./css/nouislider.min.css">
 </head>
 
-<body id="tally-marks">
+<body id="resistance">
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
@@ -48,6 +48,11 @@
                       </g>
                     </g>
                   </g>
+
+                  <foreignObject x="400" y="150" width="1920" height="1080">
+                    <div style="color: #F7F794; font-size: 28px; font-style: italic;">Change the material, change its length and thickness and observe the change in the resistance.</div>
+                  </foreignObject>
+
                   <g id="Rectangle 3">
                     <path id="Vector"
                       d="M1843.5 225H1456.5C1450.98 225 1446.5 229.477 1446.5 235V723C1446.5 728.523 1450.98 733 1456.5 733H1843.5C1849.02 733 1853.5 728.523 1853.5 723V235C1853.5 229.477 1849.02 225 1843.5 225Z"
@@ -84,9 +89,9 @@
                     font-family="Roboto" font-size="30" font-weight="bold" letter-spacing="0em">
                     <tspan x="1575" y="676.754">Resistance</tspan>
                   </text>
-                  <text id="R" fill="#F6FFA4" xml:space="preserve" style="white-space: pre" font-family="Roboto"
+                  <text id="resistance-letter" fill="#F6FFA4" xml:space="preserve" style="white-space: pre" font-family="Roboto"
                     font-size="338" font-weight="bold" letter-spacing="0em">
-                    <tspan x="1492.15" y="567.527">R</tspan>
+                    <tspan x="1495.15" y="569.527">R</tspan>
                   </text>
                   <g id="Path 5608">
                     <path id="Vector_3"
@@ -170,7 +175,7 @@
                       <path id="Rectangle 6_44" d="M972 602V604H1319V602H972Z" fill="#302121" />
                     </g>
                   </g>
-                 
+
                   <g id="Group 832">
                     <g id="Group 816">
                       <path id="Path 870" d="M1304 698V700H847V698H1304Z" fill="#098B8B" />
@@ -217,7 +222,7 @@
                       <div>
                         <div id="slider-width">
                         </div>
-                        
+
                       </div>
                     </div>
                   </foreignObject>
@@ -227,11 +232,11 @@
                       <div>
                         <div id="slider-height">
                         </div>
-                        
+
                       </div>
                     </div>
                   </foreignObject>
-                  
+
                   <g id="copper-bar">
                     <g id="cylinder_2">
                       <g id="Group 804_2">
@@ -250,15 +255,78 @@
                       </g>
                     </g>
                   </g>
-                  <text id="Copper" fill="white" xml:space="preserve" style="white-space: pre" font-family="Roboto"
+                  <text id="copper-txt" fill="white" xml:space="preserve" style="white-space: pre" font-family="Roboto"
                     font-size="15" letter-spacing="0em">
-                    <tspan x="307.914" y="555.127">Copper</tspan>
+                    <tspan x="337.914" y="555.127">Copper</tspan>
                   </text>
+
+                  <g id="aluminium-bar" style="display: none;">
+                    <g id="cylinder_2">
+                      <g id="Group 804_2">
+                        <g id="Group 803_2">
+                          <path id="Path 859_2"
+                            d="M1282.16 567.37C1282.63 567.444 1283.11 567.487 1283.59 567.499V393.121L342.917 393.121C333.754 393.121 325.95 401.625 319.504 418.633C312.995 435.67 309.741 456.228 309.741 480.309C309.741 504.39 312.995 524.934 319.504 541.943C325.949 558.98 333.754 567.498 342.917 567.498C343.455 567.498 343.994 567.47 344.529 567.412L1282.16 567.37Z"
+                            fill="url(#paint4_linear_5274_2)" />
+                        </g>
+                      </g>
+                      <g id="Group 810_2">
+                        <g id="Group 809_2">
+                          <path id="Path 863_2"
+                            d="M1275.29 418.633C1272.82 435.67 1271.59 456.228 1271.59 480.309C1271.59 504.39 1272.82 524.934 1275.29 541.942C1277.59 557.919 1280.33 566.409 1283.52 567.411C1283.7 567.469 1283.88 567.498 1284.06 567.497H1284.17C1287.64 567.497 1290.62 558.979 1293.08 541.942C1295.53 524.935 1296.75 504.391 1296.75 480.31C1296.75 456.229 1295.53 435.67 1293.08 418.633C1290.62 401.625 1287.64 393.121 1284.17 393.121H1284.06C1280.63 393.293 1277.71 401.797 1275.29 418.633Z"
+                            fill="#727272" />
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                  <text style="display: none;" id="aluminium-txt" fill="white" xml:space="preserve"
+                    style="white-space: pre" font-family="Roboto" font-size="15" letter-spacing="0em">
+                    <tspan x="337.914" y="555.127">Aluminium</tspan>
+                  </text>
+
+                  <g id="tungsten-bar" style="display: none;">
+                    <g id="cylinder_2">
+                      <g id="Group 804_2">
+                        <g id="Group 803_2">
+                          <path id="Path 859_2"
+                            d="M1282.16 567.37C1282.63 567.444 1283.11 567.487 1283.59 567.499V393.121L342.917 393.121C333.754 393.121 325.95 401.625 319.504 418.633C312.995 435.67 309.741 456.228 309.741 480.309C309.741 504.39 312.995 524.934 319.504 541.943C325.949 558.98 333.754 567.498 342.917 567.498C343.455 567.498 343.994 567.47 344.529 567.412L1282.16 567.37Z"
+                            fill="url(#linear-gradient-3)" />
+                        </g>
+                      </g>
+                      <g id="Group 810_2">
+                        <g id="Group 809_2">
+                          <path id="Path 863_2"
+                            d="M1275.29 418.633C1272.82 435.67 1271.59 456.228 1271.59 480.309C1271.59 504.39 1272.82 524.934 1275.29 541.942C1277.59 557.919 1280.33 566.409 1283.52 567.411C1283.7 567.469 1283.88 567.498 1284.06 567.497H1284.17C1287.64 567.497 1290.62 558.979 1293.08 541.942C1295.53 524.935 1296.75 504.391 1296.75 480.31C1296.75 456.229 1295.53 435.67 1293.08 418.633C1290.62 401.625 1287.64 393.121 1284.17 393.121H1284.06C1280.63 393.293 1277.71 401.797 1275.29 418.633Z"
+                            fill="#473c72" />
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                  <text style="display: none;" id="tungsten-txt" fill="white" xml:space="preserve"
+                    style="white-space: pre" font-family="Roboto" font-size="15" letter-spacing="0em">
+                    <tspan x="337.914" y="555.127">Tungsten</tspan>
+                  </text>
+
                 </g>
               </g>
             </g>
           </g>
           <defs>
+            <linearGradient xmlns="http://www.w3.org/2000/svg" id="linear-gradient-3" x1="534.762" y1="393.121"
+              x2="534.762" y2="567.499" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#79859b" />
+              <stop offset="0.148" stop-color="#f9f9f9" />
+              <stop offset="0.427" stop-color="#3f5675" />
+              <stop offset="0.787" stop-color="#34465f" />
+              <stop offset="1" stop-color="#676793" />
+            </linearGradient>
+            <linearGradient xmlns="http://www.w3.org/2000/svg" id="paint4_linear_5274_2" x1="534.762" y1="393.121"
+              x2="534.762" y2="567.499" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#979999" />
+              <stop offset="0.165" stop-color="#E3E3E3" />
+              <stop offset="0.427" stop-color="#616161" />
+              <stop offset="0.87" stop-color="#464646" />
+              <stop offset="1" stop-color="#7B7B7B" />
+            </linearGradient>
             <linearGradient id="paint0_linear_5262_5050" x1="532.056" y1="393.121" x2="532.056" y2="567.499"
               gradientUnits="userSpaceOnUse">
               <stop stop-color="#B64920" />
@@ -280,6 +348,63 @@
             </clipPath>
           </defs>
         </svg>
+      </div>
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <button class="btn metal-btn copper" id="copper-btn" style="color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Copper
+          </button>
+          <button class="btn metal-btn aluminium" id="aluminium-btn" style="color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Aluminium
+          </button>
+
+          <button class="btn metal-btn tungsten" id="tungsten-btn" style="color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Tungsten
+          </button>
+
+          <button class="btn" id="btn-1" style="background-color:#005BD2; color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Answer
+          </button>
+
+          <button class="btn btn-primary" id="btn-2" style="background-color:#FF2C68; color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #1e6bef';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">Reset</button>
+
+
+        </div>
       </div>
     </div>
   </div>

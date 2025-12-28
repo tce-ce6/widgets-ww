@@ -4,7 +4,7 @@
   /* Removes the standard browser focus ring */
 }
 
-#tally-marks body {
+#resistance body {
   box-sizing: border-box;
   outline: none;
   font-family: Arial, Helvetica, sans-serif;
@@ -15,7 +15,7 @@
   background-color: #fff !important;
 }
 
-#tally-marks .container {
+#resistance .container {
   border: none;
   height: 100vh;
   width: 100vw;
@@ -23,7 +23,7 @@
   user-select: none !important;
 }
 
-#tally-marks .container::after {
+#resistance .container::after {
   content: "";
   background-image: url("./../assets/bg.png");
   background-size: cover;
@@ -36,27 +36,27 @@
   left: 0;
 }
 
-/* #tally-marks .mainContainerOuter {
+/* #resistance .mainContainerOuter {
   background: #60360D !important
 } */
 
-#tally-marks .button-controls {
+#resistance .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#tally-marks .d-flex {
+#resistance .d-flex {
   display: flex
 }
 
-#tally-marks .question {
+#resistance .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#tally-marks .flexContainer {
+#resistance .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@
   z-index: 1
 }
 
-#tally-marks .flexItem {
+#resistance .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -72,16 +72,16 @@
 }
 
 @media (max-width:768px) {
-  #tally-marks .flexItem {
+  #resistance .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#tally-marks .btn {
+#resistance .btn {
   display: inline-block;
-  padding: 22px 55px;
-  font-size: 36px;
+  padding: 12px 25px;
+  font-size: 16px;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
@@ -95,36 +95,36 @@
   margin-right: 10px;
 }
 
-#tally-marks .btn:hover {
+#resistance .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#tally-marks .btn-primary:active {
+#resistance .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#tally-marks .btn:focus {
+#resistance .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#tally-marks .btn:active {
+#resistance .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#tally-marks .btn:disabled {
+#resistance .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#tally-marks .wdgetTitle {
+#resistance .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -134,7 +134,7 @@
   z-index: 1
 }
 
-#tally-marks .wdgetTitle h2 {
+#resistance .wdgetTitle h2 {
   font-size: 23px;
   font-weight: 600;
   text-align: left;
@@ -145,7 +145,7 @@
   white-space: nowrap;
 }
 
-#tally-marks .versionText {
+#resistance .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -153,13 +153,13 @@
   color: #bbb;
 }
 
-#tally-marks .svg-container {
+#resistance .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-#tally-marks svg {
+#resistance svg {
   width: 100% !important;
   height: 100%;
 }
@@ -240,4 +240,21 @@
 #slider-height .noUi-handle.noUi-handle-lower {
   background-image: url("data:image/svg+xml,%3Csvg width='71' height='38' viewBox='0 0 71 38' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M46 36.5H7C5.34865 36.5 3.81248 35.6925 2.67448 34.2262C1.59468 32.8349 1 30.9994 1 29.0577V8.44231C1 6.50062 1.59468 4.66507 2.67448 3.27378C3.81248 1.80751 5.34865 1 7 1H46H46.0081L46.0162 1.00013C47.8254 1.02942 49.8382 1.57776 51.9988 2.62991C53.9184 3.56471 55.9601 4.89754 58.0672 6.5914C61.8063 9.5972 65.6196 13.6286 68.8045 17.9428L69.2053 18.4857L68.8519 19.0606C65.8061 24.0139 62.1288 28.2753 58.2175 31.3842C54.0069 34.731 49.7822 36.5 46 36.5Z' fill='%2307E69A'/%3E%3Cpath d='M7 2C4.23857 2 2 4.88432 2 8.44231V29.0577C2 32.6157 4.23857 35.5 7 35.5H46C53.4625 35.5 62.125 28.0914 68 18.5368C62.2125 10.6971 52.9625 2.11273 46 2H7ZM7 0L46.0324 0.000259399C47.9888 0.0319405 50.1435 0.614189 52.4366 1.73085C54.4233 2.69831 56.5285 4.07141 58.6937 5.812C62.498 8.87017 66.3745 12.9674 69.609 17.3489L70.4106 18.4347L69.7037 19.5843C66.5977 24.6356 62.841 28.9866 58.8398 32.167C54.4504 35.6559 50.0105 37.5 46 37.5H7C5.06135 37.5 3.19682 36.5302 1.88449 34.8393C0.669258 33.2736 0 31.2203 0 29.0577V8.44231C0 6.27974 0.669258 4.22644 1.88449 2.66066C3.19682 0.969769 5.06135 0 7 0Z' fill='%232DB6B1'/%3E%3Cpath d='M23 5.6582L31 16.6582H15L23 5.6582Z' fill='white'/%3E%3Cpath d='M23 31.6582L15 20.6582H31L23 31.6582Z' fill='white'/%3E%3C/svg%3E%0A");
   /* transform: rotate(90deg); */
+}
+
+.metal-btn{
+  background-size: 100% 100%;
+  background-position: center center;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  min-width: 120px;
+}
+.metal-btn.copper{
+  background-image: url("../assets/copper-btn.png");
+}
+.metal-btn.aluminium{
+  background-image: url("../assets/aluminium-btn.png");
+}
+.metal-btn.tungsten{
+  background-image: url("../assets/tungsten-btn.png");
 }
