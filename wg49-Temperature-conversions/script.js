@@ -126,9 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const c = k - 273.15;
         const f = c * 9 / 5 + 32;
 
-        const kStr = `${k.toFixed(1)} K`;
+        const kStr = `${Math.round(k * 10) / 10} K`;
         const cStr = `${c.toFixed(1)} °C`;
-        const fStr = `${f.toFixed(1)} °F`;
+        const fStr = `${Math.round(f * 10) / 10} °F`;
 
         if (els.text.smallK) els.text.smallK.textContent = kStr;
         if (els.text.largeK) els.text.largeK.textContent = kStr;
