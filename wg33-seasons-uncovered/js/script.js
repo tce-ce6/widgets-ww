@@ -77,6 +77,8 @@ let totalObsEl = document.getElementById("total-observations");
   if (infoBackBtn && infoSection) {
     infoBackBtn.addEventListener("click", () => {
       // Hide observation and info panels
+      enablePositionTargets();
+
       if (observationSection) observationSection.style.display = "none";
       if (infoSection) infoSection.style.display = "none";
       toggleInfoModal(false);
@@ -92,6 +94,8 @@ let totalObsEl = document.getElementById("total-observations");
   if (infoResetBtn) {
     infoResetBtn.addEventListener("click", () => {
       // 🔁 Same behaviour as global reset
+      enablePositionTargets();
+
       resetSimulation();
 
       // 👁️ Hide info section explicitly
@@ -481,6 +485,19 @@ function renderObservations(tiltObject) {
 
   renderCurrentObservation();
 }
+function disablePositionTargets() {
+  ["top", "left", "right", "bottom"].forEach(id => {
+    const el = document.getElementById(id);
+    el && el.classList.add("disabled");
+  });
+}
+
+function enablePositionTargets() {
+  ["top", "left", "right", "bottom"].forEach(id => {
+    const el = document.getElementById(id);
+    el && el.classList.remove("disabled");
+  });
+}
 
 
 
@@ -510,6 +527,10 @@ function renderObservations(tiltObject) {
 
     if (isCorrect) {
       clickedBox.classList.add("right");
+
+      if (currentObservationIndex === 0) {
+    disablePositionTargets();
+  }
 
       // Check if ALL correct answers are selected
       const allCheckBoxes = document.querySelectorAll(
@@ -767,7 +788,7 @@ function showConclusion() {
   function resetSimulation() {
 
     toggleInfoModal(false);
-
+    enablePositionTargets();
     isEarthResized = false;
     earthCurrentSize = null;
     /* ---------------------------

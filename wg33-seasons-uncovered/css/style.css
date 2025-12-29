@@ -369,6 +369,7 @@
 
 .common-btn.disabled {
   filter: contrast(0.5);
+  pointer-events: none;
 }
 
 .check-box.right {
@@ -608,4 +609,10 @@
 }
 #observation-section{
   transition: all .4s ease-in-out;
+}
+.position-1.disabled,
+.position-2.disabled,
+.position-3.disabled,
+.position-4.disabled{
+  pointer-events: none;
 }
