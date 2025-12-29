@@ -1,4 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const popFuseContainer = document.getElementById('pop-fuse-container');
+    const currentFlowFastContainer = document.getElementById('current-flow-fast-container');
+    const currentFlowNormalContainer = document.getElementById('current-flow-normal-container');
+    const currentFlowFuseCutContainer = document.getElementById('current-flow-fuse-cut-container');
+    const fireTVContainer = document.getElementById('fire-tv-container');
+    const fireMicrowaveContainer = document.getElementById('fire-microwave-container');
+    const fireRefrigeratorContainer = document.getElementById('fire-refrigerator-container');
+    // --------------------------
+  if (!fireTVContainer) {
+    console.error('Lottie container not found');
+    return;
+  }
+
+
+  // assets/animation/pop_up.json
+  //assets/animation/current_flow_normal.json
+  //assets/animation/current_flow_fast.json
+  //assets/animation/current_flow_fuse_cut.json
+  // assets/animation/Fire.json
+
+  // Load Lottie JSON animation
+  const animation = lottie.loadAnimation({
+    container: fireTVContainer,
+    renderer: 'svg',       // REQUIRED for foreignObject
+    loop: true,
+    autoplay: true,
+    path: 'assets/animation/Fire.json' // Path to your Lottie JSON
+  });
+
+  // Optional: expose controls
+  window.lottieAnim = animation;
+
+  // Optional events
+  animation.addEventListener('DOMLoaded', () => {
+    console.log('Lottie animation loaded');
+  });
   // -----------------------------
   // DOM ELEMENTS
   // -----------------------------
