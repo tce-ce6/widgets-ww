@@ -85,8 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     step2.style.display = "block";
     updateBtnWrapperVisibility();
     updateHomeBtnVisibility(); // ✅ ADD
-      updateStarRatingVisibility(); // ✅ ADD
-
+    updateStarRatingVisibility(); // ✅ ADD
   });
 
   /* ----------------------------------
@@ -246,8 +245,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (step3.style.display === "block") {
       if (showAnsBtn.textContent.trim() === "उत्तर देखें") {
         showStep3Answers(true);
+        optionList.style.display = "none";
+        categoryList.style.display = "none";
       } else {
         showStep3Answers(false);
+        optionList.style.display = "block";
+        categoryList.style.display = "block";
       }
     }
 
@@ -392,7 +395,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateBtnWrapperVisibility();
       updateHomeBtnVisibility();
       updateStarRatingVisibility(); // ✅ ADD
-
     });
   }
 
@@ -410,6 +412,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         enableShowAns();
         markStepTwoProgress(currentStep3GroupIndex);
+        updateStarTwoPartialFill(currentStep3GroupIndex);
+
         // ⭐ Star-2 after ALL Step-3 groups
         if (currentStep3GroupIndex === allData.length - 1) {
           markStarTwoCompleted();
@@ -470,7 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentGroupIndex >= allData.length) {
       step2.style.display = "none";
       step3.style.display = "block";
-updateStarRatingVisibility(); // ✅ ADD
+      updateStarRatingVisibility(); // ✅ ADD
 
       currentStep3GroupIndex = 0;
 
@@ -593,16 +597,16 @@ updateStarRatingVisibility(); // ✅ ADD
       categoryLi.remove();
 
       const totalCircles = 4;
-  const remaining =
-    document.querySelectorAll("#category-list li[data-category]").length;
+      const remaining = document.querySelectorAll(
+        "#category-list li[data-category]"
+      ).length;
 
-  const completed = totalCircles - remaining;
-  markStepThreeProgress(completed);
+      const completed = totalCircles - remaining;
+      markStepThreeProgress(completed);
 
       if (areAllCategoriesPlaced()) {
         disableShowAns();
-          markStarThreeCompleted();
-
+        markStarThreeCompleted();
       }
 
       checkStep3Completion();
@@ -733,7 +737,7 @@ updateStarRatingVisibility(); // ✅ ADD
   }
 
   function showStep3Answers(show) {
-    // ✅ SAFETY GUARD (DO NOT REMOVE)
+    // ✅ SAFETY GUARD
     if (
       !allData ||
       !allData[currentStep3GroupIndex] ||
@@ -749,37 +753,54 @@ updateStarRatingVisibility(); // ✅ ADD
       const wordWrap = subjectLi.querySelector(".word-wrap");
       if (!wordWrap) return;
 
-      /* ===============================
-         🔹 STORE USER STATE (once)
-      =============================== */
-      if (!show && wordWrap.dataset.userHtml) {
-        // Restore previous user answers
-        wordWrap.innerHTML = wordWrap.dataset.userHtml;
-        return;
-      }
-
-      if (show) {
-        // Save current state BEFORE overwriting
-        wordWrap.dataset.userHtml = wordWrap.innerHTML;
-      }
-
-      // Clear only when showing answers
-      wordWrap.innerHTML = "";
-
-      if (!show) return;
-
       const subjectCategory = normalizeText(subjectLi.dataset.category);
 
+      // ✅ Get matches ONLY for current category from current group
       const matches = groupData.filter(
         (item) => normalizeText(item.category) === subjectCategory
       );
 
-      matches.forEach((item) => {
-        const span = document.createElement("span");
-        span.textContent = item.completeSentence;
-        wordWrap.appendChild(span);
-      });
+      // ❌ PROBLEM: This only gets current group matches
+      // We need to check if there are ALREADY placed items from previous groups
+
+      if (show) {
+        // 🔹 SAVE current state BEFORE showing answers
+        if (!wordWrap.dataset.userHtml) {
+          wordWrap.dataset.userHtml = wordWrap.innerHTML;
+        }
+
+        // 🔹 Get existing spans (user-placed from ALL groups)
+        const existingSpans = Array.from(wordWrap.querySelectorAll("span"));
+        const existingTexts = existingSpans.map((s) =>
+          normalizeText(s.textContent)
+        );
+
+        // 🔹 Add ONLY missing answers from current group
+        matches.forEach((item) => {
+          const itemText = normalizeText(item.completeSentence);
+
+          // ✅ Only add if NOT already present
+          if (!existingTexts.includes(itemText)) {
+            const span = document.createElement("span");
+            span.textContent = item.completeSentence;
+            span.dataset.autoFilled = "true"; // ✅ Mark as auto-filled
+            wordWrap.appendChild(span);
+          }
+        });
+      } else {
+        // 🔹 HIDE answers: Remove ONLY auto-filled spans, keep user selections
+        const spansToRemove = wordWrap.querySelectorAll(
+          "span[data-auto-filled='true']"
+        );
+        spansToRemove.forEach((span) => span.remove());
+
+        // ✅ Clear the saved state since we're back to user mode
+        delete wordWrap.dataset.userHtml;
+      }
     });
+
+    // ✅ Update button text
+    showAnsBtn.textContent = show ? "उत्तर छिपाएँ" : "उत्तर देखें";
   }
 
   function checkStep3Completion() {
@@ -914,7 +935,6 @@ updateStarRatingVisibility(); // ✅ ADD
     updateBtnWrapperVisibility();
     updateHomeBtnVisibility();
     updateStarRatingVisibility(); // ✅ ADD
-
   }
 
   function enableShowAns() {
@@ -1006,7 +1026,9 @@ updateStarRatingVisibility(); // ✅ ADD
       selectedQuizBlank.classList.add("correct");
 
       // ✅ Hide ONLY correct option
-      optionLi.style.display = "none";
+      quizOptions.querySelectorAll("li").forEach((li) => {
+        li.style.display = "none";
+      });
 
       showAnsBtn.disabled = true; // ✅ ADD THIS
 
@@ -1028,7 +1050,10 @@ updateStarRatingVisibility(); // ✅ ADD
     if (circle) {
       circle.setAttribute("fill", "#9cff2b");
     }
+
+    updateStarOnePartialFill(groupIndex); // ✅ exact control
   }
+
   function markStarOneCompleted() {
     const star = document.getElementById("star-1");
     if (star) {
@@ -1054,24 +1079,57 @@ updateStarRatingVisibility(); // ✅ ADD
     if (circle) {
       circle.setAttribute("fill", "#9cff2b");
     }
+
+    updateStarThreePartialFill(filledCount);
   }
+
   function markStarThreeCompleted() {
-  const star = document.getElementById("star-3");
-  if (star) {
-    star.setAttribute("fill", "#ffe70a");
+    const star = document.getElementById("star-3");
+    if (star) {
+      star.setAttribute("fill", "#ffe70a");
+    }
   }
-}
-function updateStarRatingVisibility() {
-  const starRating = document.getElementById("star-rating");
-  if (!starRating) return;
+  function updateStarPartialFill(starId, clipRectId, progress) {
+    const star = document.getElementById(starId);
+    const clipRect = document.getElementById(clipRectId);
 
-  const isStep2Visible =
-    window.getComputedStyle(step2).display === "block";
-  const isStep3Visible =
-    window.getComputedStyle(step3).display === "block";
+    if (!star || !clipRect) return;
 
-  starRating.style.display =
-    isStep2Visible || isStep3Visible ? "block" : "none";
-}
+    const bbox = star.getBBox();
 
+    clipRect.setAttribute("x", bbox.x);
+    clipRect.setAttribute("y", bbox.y);
+    clipRect.setAttribute("height", bbox.height);
+    clipRect.setAttribute("width", bbox.width * progress);
+  }
+
+  function updateStarRatingVisibility() {
+    const starRating = document.getElementById("star-rating");
+    if (!starRating) return;
+
+    const isStep2Visible = window.getComputedStyle(step2).display === "block";
+    const isStep3Visible = window.getComputedStyle(step3).display === "block";
+
+    starRating.style.display =
+      isStep2Visible || isStep3Visible ? "block" : "none";
+  }
+  function updateStarOnePartialFill(groupIndex) {
+    const totalGroups = 3;
+    const progress = (groupIndex + 1) / totalGroups;
+
+    updateStarPartialFill("star-1", "star1-clip-rect", progress);
+  }
+
+  function updateStarTwoPartialFill(groupIndex) {
+    const totalGroups = 3;
+    const progress = (groupIndex + 1) / totalGroups;
+
+    updateStarPartialFill("star-2", "star2-clip-rect", progress);
+  }
+  function updateStarThreePartialFill(filledCount) {
+    const total = 4;
+    const progress = filledCount / total;
+
+    updateStarPartialFill("star-3", "star3-clip-rect", progress);
+  }
 });

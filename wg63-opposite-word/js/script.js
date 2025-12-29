@@ -9,6 +9,7 @@ let rotation = 0;
 let oldrotation = 0;
 let picked = 100000;
 let oldpick = [];
+let answerConfirmed = false;
 
 const wheelSoundEl = document.getElementById("wheelSound");
 const selectedWordEl = document.getElementById("selectedWord");
@@ -18,9 +19,11 @@ const rightCol = document.getElementById("rightCol");
 const newWordBtn = document.getElementById("new-word");
 const spinArrows = document.getElementById("speen-arrows");
 
-
 let wordAudio = null;
 let optionAudio = null;
+
+let remainingWords = [];
+let usedWords = [];
 
 /* ================= COLORS ================= */
 
@@ -93,7 +96,10 @@ const ALL_DATA = [
   { word: "सोना", realWord: "sona", opposite: "जागना", oppositeWord: "jagana" },
 ];
 
-let data = getRandomSix(ALL_DATA);
+remainingWords = d3.shuffle(ALL_DATA.slice());
+let data = remainingWords.splice(0, 6);
+usedWords = data.slice();
+
 
 const optionTextEls = [
   document.getElementById("option-1"),
@@ -123,6 +129,10 @@ let lottieInstances = [null, null, null];
 let isAnswerVisible = false;
 
 /* ================= HELPERS ================= */
+
+document.querySelectorAll(".img-box").forEach((box) => {
+  box.classList.remove("correct", "wrong");
+});
 
 function getRandomSix(list) {
   return d3.shuffle(list.slice()).slice(0, 6);
@@ -244,6 +254,9 @@ function moveSelectedSliceText(index) {
 /* ================= SPIN FUNCTION ================= */
 
 function spin() {
+  clearImgBoxResults();
+  answerConfirmed = false;
+
   const container = d3.select(".chartholder");
   const vis = container.select("g");
 
@@ -257,9 +270,10 @@ function spin() {
 
   // Reset previous slice transforms and text styles
   vis.selectAll(".slice").attr("transform", "scale(1)");
-  vis.selectAll(".slice-text")
+  vis
+    .selectAll(".slice-text")
     .style("font-size", "50px")
-    .attr("transform", function() {
+    .attr("transform", function () {
       return d3.select(this).attr("data-base-transform");
     });
 
@@ -271,20 +285,20 @@ function spin() {
   // Fixed rotation amount - always 5 full rotations (1800 degrees) plus random position
   const fullRotations = 1800; // 5 complete rotations
   if (oldpick.length === data.length) {
-  // all words used → reset
-  oldpick = [];
-}
+    // all words used → reset
+    oldpick = [];
+  }
 
-let randomSegment;
-do {
-  randomSegment = Math.floor(Math.random() * data.length);
-} while (oldpick.includes(randomSegment));
+  let randomSegment;
+  do {
+    randomSegment = Math.floor(Math.random() * data.length);
+  } while (oldpick.includes(randomSegment));
 
-// store picked index
-oldpick.push(randomSegment);
+  // store picked index
+  oldpick.push(randomSegment);
 
   const segmentAngle = randomSegment * ps;
-  
+
   rotation = fullRotations + segmentAngle;
 
   picked = Math.round(data.length - (rotation % 360) / ps);
@@ -300,9 +314,9 @@ oldpick.push(randomSegment);
     .each("end", () => {
       oldrotation = rotation;
 
-       if (spinArrows) {
-    spinArrows.style.display = "none";
-  }
+      if (spinArrows) {
+        spinArrows.style.display = "none";
+      }
       highlightPickedSlice(picked);
       moveSelectedSliceText(picked);
 
@@ -315,6 +329,10 @@ oldpick.push(randomSegment);
       // set options
       setOptionsForPickedWord(picked);
       rightCol.style.display = "block";
+
+// ✅ enable Show Answer button
+document.getElementById("show-ans").removeAttribute("disabled");
+
 
       // prepare audio
       if (!wordAudio) wordAudio = new Audio();
@@ -423,6 +441,8 @@ function initWheel() {
 /* ================= RESET WHEEL ================= */
 
 function resetWheel() {
+  answerConfirmed = false;
+
   // Hide right column
   rightCol.style.display = "none";
 
@@ -447,7 +467,16 @@ function resetWheel() {
   oldrotation = 0;
 
   // Get new random data
-  data = getRandomSix(ALL_DATA);
+  // If not enough words left, recycle (after all are used)
+if (remainingWords.length < 6) {
+  remainingWords = d3.shuffle(ALL_DATA.slice());
+  usedWords = [];
+}
+
+// Get next 6 unique words
+data = remainingWords.splice(0, 6);
+usedWords = usedWords.concat(data);
+
 
   // Recreate the wheel with new data
   initWheel();
@@ -458,15 +487,31 @@ function resetWheel() {
 // Show/Hide Answer Button
 showAnsBtn.addEventListener("click", () => {
   if (!isAnswerVisible) {
+    // SHOW answers
     showCorrectAnswer();
+    revealAnswerByShowAns();
+
     showAnsBtn.textContent = "उत्तर छिपाएँ";
     isAnswerVisible = true;
   } else {
+    // HIDE answers
     resetLotties();
+    clearImgBoxResults(); // ✅ REMOVE wrong/correct classes
+
     showAnsBtn.textContent = "उत्तर देखें";
     isAnswerVisible = false;
   }
 });
+
+function clearImgBoxResults() {
+  document.querySelectorAll(".img-box.bottom-img").forEach(box => {
+    box.classList.remove("correct", "wrong");
+  });
+
+  // allow fresh confirmation again
+  answerConfirmed = false;
+}
+
 
 // New Word Button
 newWordBtn.addEventListener("click", () => {
@@ -503,17 +548,76 @@ optionSoundEls.forEach((icon) => {
 optionImgEls.forEach((img, i) => {
   img.addEventListener("click", () => {
     const isCorrect = img.dataset.correct === "true";
+    markImgBoxResult(img, isCorrect);
     playLottie(i, isCorrect);
   });
 });
+
+optionTextEls.forEach((text, i) => {
+  text.addEventListener("click", () => {
+    const isCorrect = text.dataset.correct === "true";
+    markImgBoxResult(text, isCorrect);
+    playLottie(i, isCorrect);
+  });
+});
+
 
 // Option Text Click
 optionTextEls.forEach((text, i) => {
   text.addEventListener("click", () => {
     const isCorrect = text.dataset.correct === "true";
+    markImgBoxResult(text, isCorrect); // ✅ ADD
+
     playLottie(i, isCorrect);
   });
 });
+
+function markImgBoxResult(targetEl, isCorrect) {
+  // 🚫 If answer not confirmed yet and user clicked wrong → do nothing
+  if (!isCorrect && !answerConfirmed) {
+    return;
+  }
+
+  const clickedBox = targetEl.closest(".img-box");
+  if (!clickedBox) return;
+
+  const allBoxes = document.querySelectorAll(".img-box.bottom-img");
+
+  // 🔄 Clear previous states
+  allBoxes.forEach(box => {
+    box.classList.remove("correct", "wrong");
+  });
+
+  if (isCorrect) {
+    // ✅ Confirm answer only once
+    answerConfirmed = true;
+
+    // ✅ Mark correct one
+    clickedBox.classList.add("correct");
+
+    // ❌ Mark remaining as wrong
+    allBoxes.forEach(box => {
+      if (box !== clickedBox) {
+        box.classList.add("wrong");
+      }
+    });
+  }
+}
+
+function revealAnswerByShowAns() {
+  if (answerConfirmed) return;
+
+  optionImgEls.forEach((img) => {
+    if (img.dataset.correct === "true") {
+      markImgBoxResult(img, true);
+    }
+  });
+}
+
+document.getElementById("new-word").addEventListener("click", () => {
+  document.getElementById("show-ans").setAttribute("disabled", "true");
+});
+
 
 /* ================= INITIALIZE ================= */
 

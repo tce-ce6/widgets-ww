@@ -356,3 +356,8 @@ position: absolute;
     left: -20px;
     transform: rotate(176deg);
 }
+
+.img-box.wrong{
+  filter: brightness(.6);
+  pointer-events: none;
+}

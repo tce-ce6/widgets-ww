@@ -316,7 +316,7 @@
 .option-wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
 }
 
 .right-col h4 {
@@ -339,6 +339,7 @@
   font-size: 30px;
   position: relative;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .option-wrap li.wrong::before {
