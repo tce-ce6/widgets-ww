@@ -440,7 +440,6 @@ const IMAGES = [
 function playCorrectAnswerLottie(objectName) {
 
   const containerId = `${objectName}-${wordIndex}`;
-  console.log(objectName)
   const container = document.getElementById(containerId);
 
   if (!container) {
@@ -746,8 +745,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const imgEl = document.getElementById('objects-img');
     imgEl.src = wordObj.image;
 
-    console.log(wordObj.root, wordObj.image);
-
     correctSuffixes = d.suffixes.correct.map(s => s.trim());
     answers = d.answer.map(a => a.trim());
     selectedSuffixes = [];
@@ -756,6 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
+    showExample.style.display = 'none';
     // reset word slots
     wordSlots.forEach(ws => {
       if (ws) ws.textContent = "";
@@ -823,7 +821,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!clickedItem) return;
     if (clickedItem.style.opacity === "0.3") return;
     const object = wordObj.image.match(/\/([^/]+)\./)[1];
-    console.log(object)
 
     const suffixText = clickedItem.querySelector("span")?.textContent.trim();
     if (!suffixText) return;
@@ -849,7 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // must be a valid answer and not already completed
     if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
-    console.log(wordIndex);
+
     completedAnswers.push(combined);
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
@@ -874,9 +871,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const slotId = `${map.prefix}${wordIndex + 1}`;
         const fo = document.getElementById(slotId);
         if (fo) {
-          fo.style.display = 'block';
-          const span = fo.querySelector('span');
-          if (span) span.textContent = combined;
+          setTimeout(() =>{
+            fo.style.display = 'block';
+            const span = fo.querySelector('span');
+            if (span) span.textContent = combined;
+          }, 1500)
+          
         }
       }
 
@@ -890,6 +890,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       playCorrectAnswerLottie(object);
       wordIndex++;
+      showExample.style.display = 'block';
     }
 
     const remainingSuffixes = correctSuffixes.filter(

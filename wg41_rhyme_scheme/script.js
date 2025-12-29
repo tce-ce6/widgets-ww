@@ -498,6 +498,7 @@ function setActiveMarker(name, opts = {}) {
   activeMarker = { name, ...style };
   document.body.style.cursor = style.cursor;
   showAnswerBtn.disabled = false;
+  showAnswerBtn.textContent = 'Show Answer'
   // Unlock other markers only after the user explicitly clicks green
   if (name === 'green' && unlockOthers) {
     ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], true));
@@ -574,7 +575,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
 
     if (letterTag) {
       letterTag.textContent = letter;
-      letterTag.style.fill = schemaColor; // ALWAYS schema color
+      letterTag.style.fill = markerColor; // ALWAYS schema color
     }
 
     if (signTag) {
@@ -654,25 +655,102 @@ function attachWordClicks(rhymingWords, scheme) {
   });
 }
 
-// Reveal correct answer with default colors (a: green, b: yellow)
+function hideAnswer() {
+  // 1. Usuń wyróżnienia ze słów
+  document.querySelectorAll('.clickable-word').forEach((el, idx) => {
+    // Zakładamy, że masz funkcję removeHighlight lub czyścisz style ręcznie
+    el.style.backgroundColor = 'transparent'; 
+    el.classList.remove('highlighted'); // Jeśli używasz klas CSS
+
+    // 2. Wyczyść tagi rymów (r1, r2, itd.)
+    const letterTag = document.getElementById(`r${idx + 1}`);
+    if (letterTag) {
+      letterTag.textContent = '';
+    }
+  });
+
+  stanzaAudioPlayed = false;
+  soundIcon.style.display = 'none';
+  if (stanzaAudio) {
+    stanzaAudio.pause();
+    stanzaAudio.currentTime = 0;
+  }
+
+  // 3. Przywróć interfejs
+  showAnswerBtn.textContent = 'Show Answer';
+  // Ponownie włącz markery (opcjonalnie)
+  ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], true));
+}
+
 function showAnswer() {
+  // SPRAWDZENIE: Jeśli odpowiedzi są już pokazane, ukryj je i zakończ
+  if (showAnswerBtn.textContent === 'Hide Answer') {
+    hideAnswer();
+    return;
+  }
+
   const stanzaObj = STANZAS[currentStanzaIndex % STANZAS.length];
   if (!stanzaObj) return;
-  const rhymingWords = stanzaObj.rhyming_words || {};
-  const defaultColors = { a: markerStyles.green.color, b: markerStyles.yellow.color };
 
-  document.querySelectorAll('.clickable-word').forEach(el => {
+  const defaultColors = { 
+    a: markerStyles.green.color, 
+    b: markerStyles.yellow.color, 
+    c: markerStyles.blue.color, 
+    d: markerStyles.pink.color 
+  };
+
+  document.querySelectorAll('.clickable-word').forEach((el, idx) => {
     const letter = el.getAttribute('data-letter-target') || 'a';
     const color = defaultColors[letter] || markerStyles.green.color;
+    const letterTag = document.getElementById(`r${idx + 1}`);
+
+    if (letterTag) {
+      letterTag.textContent = letter;
+      letterTag.style.fill = color;
+    }
     applyHighlight(el, letter, color, true);
   });
+
+  // Zmiana stanu przycisku
   document.body.style.cursor = 'default';
   ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
-  soundIcon.style.display = 'block';
-  showAnswerBtn.disabled = true;
-  playCurrentStanzaAudio();
   
+  soundIcon.style.display = 'block';
+  showAnswerBtn.textContent = 'Hide Answer'; // Zmiana tekstu
+  playCurrentStanzaAudio();
 }
+
+// Event listener pozostaje bez zmian
+if (showAnswerBtn) {
+  showAnswerBtn.addEventListener('click', showAnswer);
+}
+
+// Reveal correct answer with default colors (a: green, b: yellow)
+// function showAnswer() {
+//   const stanzaObj = STANZAS[currentStanzaIndex % STANZAS.length];
+//   if (!stanzaObj) return;
+//   const rhymingWords = stanzaObj.rhyming_words || {};
+//   const defaultColors = { a: markerStyles.green.color, b: markerStyles.yellow.color, c: markerStyles.blue.color, d: markerStyles.pink.color };
+
+//   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
+//     const letter = el.getAttribute('data-letter-target') || 'a';
+//     const color = defaultColors[letter] || markerStyles.green.color;
+//     const letterTag = document.getElementById(`r${idx + 1}`);
+
+//     if (letterTag) {
+//       letterTag.textContent = letter;
+//       letterTag.style.fill = color; // ALWAYS schema color
+//     }
+//     applyHighlight(el, letter, color, true);
+//   });
+//   document.body.style.cursor = 'default';
+//   ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
+//   soundIcon.style.display = 'block';
+//  // showAnswerBtn.disabled = true;
+//   showAnswerBtn.textContent = 'Hide Answer';
+//   playCurrentStanzaAudio();
+  
+// }
 
 function getCurrentStanzaKey() {
   const num = String(currentStanzaIndex + 1).padStart(2, '0');
@@ -706,7 +784,7 @@ function playCurrentStanzaAudio() {
 function resetForNextStanza() {
   correctWordsSet.clear();
   stanzaAudioPlayed = false;
-
+  showAnswerBtn.textContent = "Show Answer";
   if (stanzaAudio) {
     stanzaAudio.pause();
     stanzaAudio.currentTime = 0;
@@ -828,5 +906,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', showAnswer);
+  }
+
+  if(soundIcon) {
+    soundIcon.addEventListener('click', playCurrentStanzaAudio);
   }
 });
