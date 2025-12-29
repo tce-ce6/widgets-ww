@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let shuffledObservations = [];
   let currentObservationIndex = 0;
   const observationNextBtn = document.getElementById("observation-next");
+  let observationShowTimeout = null;
 
-let currentObsEl = document.getElementById("current-observation");
-let totalObsEl = document.getElementById("total-observations");
-
+  let currentObsEl = document.getElementById("current-observation");
+  let totalObsEl = document.getElementById("total-observations");
 
   const observationSection = document.getElementById("observation-section");
   const infoSection = document.getElementById("info-section");
@@ -19,7 +19,7 @@ let totalObsEl = document.getElementById("total-observations");
   const earthWrap = document.getElementById("earth-wrap");
   const infoBackBtn = document.getElementById("infoBack-btn");
   const infoResetBtn = document.getElementById("infoReset-btn");
-
+const tiltNote = document.getElementById("tilt-note");
   let currentConclusion = null;
   let isConclusionStage = false;
 
@@ -29,9 +29,9 @@ let totalObsEl = document.getElementById("total-observations");
   const instructionText = document.getElementById("itext");
 
   const TEXT_STATES = {
-    initial: "How does the tilt of the Earth’s axis impact seasons? Select a tilt to explore.",
-    afterSlider:
-      "Tap one of the positions to place the Earth and observe.",
+    initial:
+      "How does the tilt of the Earth’s axis impact seasons? Select a tilt to explore.",
+    afterSlider: "Tap one of the positions to place the Earth and observe.",
     afterObservation:
       "Select the correct observation(s) to uncover the season.",
   };
@@ -76,6 +76,7 @@ let totalObsEl = document.getElementById("total-observations");
 
   if (infoBackBtn && infoSection) {
     infoBackBtn.addEventListener("click", () => {
+      tiltNote.style.display = "none";
       // Hide observation and info panels
       enablePositionTargets();
 
@@ -87,22 +88,23 @@ let totalObsEl = document.getElementById("total-observations");
       resetObservationState();
 
       // Re-enable slider so user can pick a new tilt/position
-      enableSliderInteraction();
+      // enableSliderInteraction();
     });
   }
 
   if (infoResetBtn) {
     infoResetBtn.addEventListener("click", () => {
       // 🔁 Same behaviour as global reset
-      enablePositionTargets();
+      tiltNote.style.display = "none";
+
+      // enablePositionTargets();
 
       resetSimulation();
 
       // 👁️ Hide info section explicitly
       if (infoSection) {
         infoSection.style.display = "none";
-            toggleInfoModal(false);
-
+        toggleInfoModal(false);
       }
     });
   }
@@ -113,14 +115,14 @@ let totalObsEl = document.getElementById("total-observations");
 
     earthImg.style.transform = `rotate(${rotateDeg}deg)`;
 
-      const tiltNote = document.getElementById("tilt-note");
-  if (tiltNote) {
-    if (rotateDeg === 23) {
-      tiltNote.style.display = "block";
-    } else {
-      tiltNote.style.display = "none";
+    
+    if (tiltNote) {
+      if (rotateDeg === 23) {
+        tiltNote.style.display = "block";
+      } else {
+        tiltNote.style.display = "none";
+      }
     }
-  }
 
     // ✅ ONLY UPDATE INSTRUCTION IF EARTH IS NOT IN A POSITION
     // Check if earth-wrap is inside any of the target positions
@@ -344,6 +346,8 @@ let totalObsEl = document.getElementById("total-observations");
     if (!targetEl) return;
 
     targetEl.addEventListener("click", () => {
+          disableSliderInteraction();
+
       /* ✅ FILTER JSON HERE (ADDED) */
       filterTiltData(id);
       renderObservations(filteredTiltObject);
@@ -432,9 +436,21 @@ let totalObsEl = document.getElementById("total-observations");
         if (observationSection) {
           document.getElementById("tilt-note").style.display = "none";
           observationSection.style.display = "none";
-          setTimeout(() => {
+          // clear any previous pending timer
+          if (observationShowTimeout) {
+            clearTimeout(observationShowTimeout);
+          }
+
+          observationShowTimeout = setTimeout(() => {
+            // 🛑 guard: do not show if reset already happened
+            if (
+              globalResetBtn?.hasAttribute("disabled") &&
+              observationSection
+            ) {
+              return;
+            }
+
             observationSection.style.display = "block";
-            // Disable slider while observation panel is active
             disableSliderInteraction();
             updateInstructionText("afterObservation");
           }, 2200);
@@ -452,54 +468,54 @@ let totalObsEl = document.getElementById("total-observations");
       .map(({ value }) => value);
   }
 
-function renderObservations(tiltObject) {
-  const observationTitle = document.getElementById("observation-title");
+  function renderObservations(tiltObject) {
+    const observationTitle = document.getElementById("observation-title");
 
-  if (observationTitle) {
-    observationTitle.innerHTML = `
+    if (observationTitle) {
+      observationTitle.innerHTML = `
       Observation <span id="current-observation">0</span>/<span id="total-observations">0</span>
     `;
 
-    // 🔁 RE-BIND references (🔥 FIX)
-    currentObsEl = document.getElementById("current-observation");
-    totalObsEl = document.getElementById("total-observations");
+      // 🔁 RE-BIND references (🔥 FIX)
+      currentObsEl = document.getElementById("current-observation");
+      totalObsEl = document.getElementById("total-observations");
+    }
+
+    if (!tiltObject || !tiltObject.observations) return;
+
+    // Keep observations in serial order by `id` (do not randomize)
+    shuffledObservations = (tiltObject.observations || [])
+      .slice()
+      .sort((a, b) => {
+        return (a.id || 0) - (b.id || 0);
+      });
+    currentObservationIndex = 0;
+
+    // ✅ TOTAL COUNT
+    if (totalObsEl) {
+      totalObsEl.textContent = shuffledObservations.length;
+    }
+
+    // ✅ CURRENT COUNT (1-based)
+    if (currentObsEl) {
+      currentObsEl.textContent = currentObservationIndex + 1;
+    }
+
+    renderCurrentObservation();
+  }
+  function disablePositionTargets() {
+    ["top", "left", "right", "bottom"].forEach((id) => {
+      const el = document.getElementById(id);
+      el && el.classList.add("disabled");
+    });
   }
 
-  if (!tiltObject || !tiltObject.observations) return;
-
-  // Keep observations in serial order by `id` (do not randomize)
-  shuffledObservations = (tiltObject.observations || []).slice().sort((a, b) => {
-    return (a.id || 0) - (b.id || 0);
-  });
-  currentObservationIndex = 0;
-
-  // ✅ TOTAL COUNT
-  if (totalObsEl) {
-    totalObsEl.textContent = shuffledObservations.length;
+  function enablePositionTargets() {
+    ["top", "left", "right", "bottom"].forEach((id) => {
+      const el = document.getElementById(id);
+      el && el.classList.remove("disabled");
+    });
   }
-
-  // ✅ CURRENT COUNT (1-based)
-  if (currentObsEl) {
-    currentObsEl.textContent = currentObservationIndex + 1;
-  }
-
-  renderCurrentObservation();
-}
-function disablePositionTargets() {
-  ["top", "left", "right", "bottom"].forEach(id => {
-    const el = document.getElementById(id);
-    el && el.classList.add("disabled");
-  });
-}
-
-function enablePositionTargets() {
-  ["top", "left", "right", "bottom"].forEach(id => {
-    const el = document.getElementById(id);
-    el && el.classList.remove("disabled");
-  });
-}
-
-
 
   function handleAnswerSelection(clickedBox, selectedOption) {
     if (!currentObservation) return;
@@ -529,8 +545,8 @@ function enablePositionTargets() {
       clickedBox.classList.add("right");
 
       if (currentObservationIndex === 0) {
-    disablePositionTargets();
-  }
+        disablePositionTargets();
+      }
 
       // Check if ALL correct answers are selected
       const allCheckBoxes = document.querySelectorAll(
@@ -613,87 +629,81 @@ function enablePositionTargets() {
       if (observationNextBtn.classList.contains("disabled")) return;
 
       /* ✅ LAST OBSERVATION → SHOW CONCLUSION */
-    if (isConclusionStage) {
-  // 👉 Conclusion completed → show info section
-  infoSection && (infoSection.style.display = "block");
-  populateInfoSection();
-  toggleInfoModal(true);
+      if (isConclusionStage) {
+        // 👉 Conclusion completed → show info section
+        infoSection && (infoSection.style.display = "block");
+        populateInfoSection();
+        toggleInfoModal(true);
 
-  return;
-}
+        return;
+      }
 
-if (currentObservationIndex === shuffledObservations.length - 1) {
-  showConclusion();
-  return;
-}
-
+      if (currentObservationIndex === shuffledObservations.length - 1) {
+        showConclusion();
+        return;
+      }
 
       currentObservationIndex++;
       renderCurrentObservation();
     });
   }
 
-function showConclusion() {
-  const optionWrapper = document.getElementById("option-wrapper");
+  function showConclusion() {
+    const optionWrapper = document.getElementById("option-wrapper");
+    const conclusionWrapper = document.getElementById("conclusion-wrapper");
+    const observationTitle = document.getElementById("observation-title");
+
+    if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
+
+    currentConclusion = filteredTiltObject.conclusion;
+    isConclusionStage = true;
+
+    // Hide options, show conclusion
+    optionWrapper && (optionWrapper.style.display = "none");
+    conclusionWrapper && (conclusionWrapper.style.display = "block");
+
+    // Change title
+    observationTitle && (observationTitle.textContent = "Conclusion");
+
+    // ❌ DO NOT show info section here
+    infoSection && (infoSection.style.display = "none");
+
+    // Disable next until correct conclusion is chosen
+    observationNextBtn?.classList.add("disabled");
+
+    bindConclusionOptions();
+  }
+
+  function bindConclusionOptions() {
   const conclusionWrapper = document.getElementById("conclusion-wrapper");
-  const observationTitle = document.getElementById("observation-title");
+  if (!conclusionWrapper || !currentConclusion) return;
 
-  if (!filteredTiltObject || !filteredTiltObject.conclusion) return;
+  const formControls = conclusionWrapper.querySelectorAll(".form-control");
 
-  currentConclusion = filteredTiltObject.conclusion;
-  isConclusionStage = true;
+  formControls.forEach((fc, index) => {
+    const oldBox = fc.querySelector(".check-box");
+    const span = fc.querySelector("span");
 
-  // Hide options, show conclusion
-  optionWrapper && (optionWrapper.style.display = "none");
-  conclusionWrapper && (conclusionWrapper.style.display = "block");
+    // 🔥 CLONE to remove ALL old listeners
+    const newBox = oldBox.cloneNode(true);
+    oldBox.replaceWith(newBox);
 
-  // Change title
-  observationTitle && (observationTitle.textContent = "Conclusion");
+    newBox.classList.remove("right", "wrong");
+    newBox.style.pointerEvents = "auto";
+    span.textContent = currentConclusion.options[index] || "";
 
-  // ❌ DO NOT show info section here
-  infoSection && (infoSection.style.display = "none");
-
-  // Disable next until correct conclusion is chosen
-  observationNextBtn?.classList.add("disabled");
-
-  bindConclusionOptions();
+    if (currentConclusion.options[index]) {
+      newBox.addEventListener("click", () => {
+        handleConclusionSelection(newBox, currentConclusion.options[index]);
+      });
+    }
+  });
 }
 
 
-  function bindConclusionOptions() {
-    const conclusionWrapper = document.getElementById("conclusion-wrapper");
-    if (!conclusionWrapper || !currentConclusion) return;
-
-    const formControls = conclusionWrapper.querySelectorAll(".form-control");
-
-    // Clear old state
-    formControls.forEach((fc) => {
-      const box = fc.querySelector(".check-box");
-      const span = fc.querySelector("span");
-
-      box.classList.remove("right", "wrong");
-      box.style.pointerEvents = "auto";
-      span.textContent = "";
-    });
-
-    // Fill text dynamically
-    currentConclusion.options.forEach((optionText, index) => {
-      const formControl = formControls[index];
-      if (!formControl) return;
-
-      const checkBox = formControl.querySelector(".check-box");
-      const span = formControl.querySelector("span");
-
-      span.textContent = optionText;
-
-      checkBox.addEventListener("click", () => {
-        handleConclusionSelection(checkBox, optionText);
-      });
-    });
-  }
-
   function handleConclusionSelection(clickedBox, selectedOption) {
-    if (!currentConclusion) return;
+      if (!currentConclusion || !currentConclusion.correctAnswer) return;
+
 
     if (
       clickedBox.classList.contains("right") ||
@@ -786,6 +796,10 @@ function showConclusion() {
   }
 
   function resetSimulation() {
+    if (observationShowTimeout) {
+  clearTimeout(observationShowTimeout);
+  observationShowTimeout = null;
+}
 
     toggleInfoModal(false);
     enablePositionTargets();
@@ -849,17 +863,17 @@ function showConclusion() {
   if (globalResetBtn) {
     globalResetBtn.addEventListener("click", resetSimulation);
   }
-function toggleInfoModal(isOpen) {
-  const svgContainer = document.getElementById("svg-container");
+  function toggleInfoModal(isOpen) {
+    const svgContainer = document.getElementById("svg-container");
 
-  if (isOpen) {
-    infoSection?.classList.add("modal-open");
-    svgContainer?.classList.add("modal-open");
-  } else {
-    infoSection?.classList.remove("modal-open");
-    svgContainer?.classList.remove("modal-open");
+    if (isOpen) {
+      infoSection?.classList.add("modal-open");
+      svgContainer?.classList.add("modal-open");
+    } else {
+      infoSection?.classList.remove("modal-open");
+      svgContainer?.classList.remove("modal-open");
+    }
   }
-}
 
   updateInstructionText("initial");
 });

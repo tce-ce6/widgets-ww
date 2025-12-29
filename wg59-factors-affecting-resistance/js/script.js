@@ -254,5 +254,26 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMetalUI();
   });
 
+  function updateResistanceFont() {
+  const widthValue = Number(pipsSlider.noUiSlider.get());
+  const heightValue = Number(heightSlider.noUiSlider.get());
+
+  const lengthRatio =
+    (widthValue - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN); // ↑ L → ↑ R
+
+  const thicknessRatio =
+    (heightValue - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN); // ↑ A → ↓ R
+
+  // Combine physics effect
+  const resistanceRatio = lengthRatio * (1 - thicknessRatio);
+
+  const fontSize =
+    MIN_RESISTANCE_FONT_SIZE +
+    resistanceRatio * (MAX_RESISTANCE_FONT_SIZE - MIN_RESISTANCE_FONT_SIZE);
+
+  resistanceLetter.setAttribute("font-size", fontSize);
+}
+
+
   updateMetalUI(); // default
 });

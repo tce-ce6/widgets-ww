@@ -402,6 +402,9 @@ document.addEventListener("DOMContentLoaded", () => {
      NEXT GROUP
   ---------------------------------- */
   nextBtn.addEventListener("click", () => {
+
+    quizQuestion.classList.remove("correct","disabled");
+
     // 🔹 STEP 3 MODE
     // 🔹 STEP 3 MODE
     if (step3.style.display === "block") {
@@ -583,7 +586,10 @@ document.addEventListener("DOMContentLoaded", () => {
   categoryList.addEventListener("click", (e) => {
     const categoryLi = e.target.closest("li[data-category]");
     if (!categoryLi || !selectedSubjectListItem) return;
-
+  categoryList
+    .querySelectorAll("li.wrong")
+    .forEach(li => li.classList.remove("wrong"));
+    
     const subjectId = selectedSubjectListItem.id;
     const categoryDataCategory = categoryLi.dataset.category;
 
@@ -701,9 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // ❌ No match: Show error
       categoryLi.classList.add("wrong");
-      setTimeout(() => {
-        categoryLi.classList.remove("wrong");
-      }, 500);
+  
     }
   });
   function updateBottomBoxOnShowAns() {
@@ -1020,6 +1024,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((li) => li.classList.remove("wrong"));
 
     if (selectedAnswer === correctAnswer) {
+      quizQuestion.classList.add("correct");
       // ✅ Fill blank
       selectedQuizBlank.textContent = selectedAnswer;
       selectedQuizBlank.classList.remove("selected");
