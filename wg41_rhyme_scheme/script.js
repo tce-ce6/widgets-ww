@@ -558,6 +558,13 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
     d: markerStyles.pink.color
   };
 
+  const RHYME_COLORS = {
+    a: '#7ef241',
+    b: '#f7f734',
+    c: '#43ceff',
+    d: '#ff43b7'
+  };
+
   const schemaColor = rhymeColorMap[letter];
   const isCorrect = markerColor === schemaColor;
 
@@ -572,9 +579,9 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
   if (typeof idx === "number") {
     const letterTag = document.getElementById(`r${idx + 1}`);
     const signTag = document.getElementById(`sign${idx + 1}`);
-
+    const markerLetter = Object.keys(RHYME_COLORS).find(key => RHYME_COLORS[key] === markerColor) || 'a';
     if (letterTag) {
-      letterTag.textContent = letter;
+      letterTag.textContent = markerLetter;
       letterTag.style.fill = markerColor; // ALWAYS schema color
     }
 
@@ -703,11 +710,17 @@ function showAnswer() {
     const letter = el.getAttribute('data-letter-target') || 'a';
     const color = defaultColors[letter] || markerStyles.green.color;
     const letterTag = document.getElementById(`r${idx + 1}`);
+    const signTag = document.getElementById(`sign${idx + 1}`);
 
     if (letterTag) {
       letterTag.textContent = letter;
       letterTag.style.fill = color;
     }
+
+    if (signTag) {
+      signTag.src = " ";
+    }
+
     applyHighlight(el, letter, color, true);
   });
 
@@ -724,33 +737,6 @@ function showAnswer() {
 if (showAnswerBtn) {
   showAnswerBtn.addEventListener('click', showAnswer);
 }
-
-// Reveal correct answer with default colors (a: green, b: yellow)
-// function showAnswer() {
-//   const stanzaObj = STANZAS[currentStanzaIndex % STANZAS.length];
-//   if (!stanzaObj) return;
-//   const rhymingWords = stanzaObj.rhyming_words || {};
-//   const defaultColors = { a: markerStyles.green.color, b: markerStyles.yellow.color, c: markerStyles.blue.color, d: markerStyles.pink.color };
-
-//   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
-//     const letter = el.getAttribute('data-letter-target') || 'a';
-//     const color = defaultColors[letter] || markerStyles.green.color;
-//     const letterTag = document.getElementById(`r${idx + 1}`);
-
-//     if (letterTag) {
-//       letterTag.textContent = letter;
-//       letterTag.style.fill = color; // ALWAYS schema color
-//     }
-//     applyHighlight(el, letter, color, true);
-//   });
-//   document.body.style.cursor = 'default';
-//   ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
-//   soundIcon.style.display = 'block';
-//  // showAnswerBtn.disabled = true;
-//   showAnswerBtn.textContent = 'Hide Answer';
-//   playCurrentStanzaAudio();
-  
-// }
 
 function getCurrentStanzaKey() {
   const num = String(currentStanzaIndex + 1).padStart(2, '0');
