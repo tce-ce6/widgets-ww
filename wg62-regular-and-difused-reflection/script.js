@@ -33,11 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeInsightBtn = document.getElementById("close-insight-btn");
     const INSIGHT_LINE_2_TEXT = {
     lake: {
-        calm:  "Surface is smooth. Rays reflect in parallel forming mirror image",
+        calm:  "Surface is smooth. Rays reflect in parallel forming mirror image.",
         wavy:  "Surface is rough. Rays reflect in different directions, no image is formed.",
         rough: "Surface is very rough. Rays scatter completely, no image is formed."
     },
-    mirror: "Surface is smooth. Rays reflect in parallel forming mirror image",
+    mirror: "Surface is smooth. Rays reflect in parallel forming mirror image.",
     paper:  "Surface is rough. Rays reflect in different directions, no image is formed.",
     wall:   "Surface is very rough. Rays scatter completely, no image is formed."
 };
