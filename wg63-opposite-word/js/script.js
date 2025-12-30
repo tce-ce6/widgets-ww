@@ -17,13 +17,16 @@ const mainWordImg = document.getElementById("main-word");
 const showAnsBtn = document.getElementById("show-ans");
 const rightCol = document.getElementById("rightCol");
 const newWordBtn = document.getElementById("new-word");
-const spinArrows = document.getElementById("speen-arrows");
 
 let wordAudio = null;
 let optionAudio = null;
 
 let remainingWords = [];
 let usedWords = [];
+
+const spinAudio = new Audio("./assets/audio/spin-sound.mp3");
+spinAudio.loop = true; // play continuously while spinning
+spinAudio.preload = "auto";
 
 /* ================= COLORS ================= */
 
@@ -99,7 +102,6 @@ const ALL_DATA = [
 remainingWords = d3.shuffle(ALL_DATA.slice());
 let data = remainingWords.splice(0, 6);
 usedWords = data.slice();
-
 
 const optionTextEls = [
   document.getElementById("option-1"),
@@ -257,13 +259,14 @@ function spin() {
   clearImgBoxResults();
   answerConfirmed = false;
 
+  spinAudio.currentTime = 0;
+  spinAudio.play().catch(() => {});
+
   const container = d3.select(".chartholder");
   const vis = container.select("g");
 
   container.on("click", null);
-  if (spinArrows) {
-    spinArrows.style.display = "block";
-  }
+
   isAnswerVisible = false;
   showAnsBtn.textContent = "उत्तर देखें";
   resetLotties();
@@ -312,11 +315,12 @@ function spin() {
     .ease("cubic-out")
     .attrTween("transform", rotTween)
     .each("end", () => {
+      spinAudio.pause();
+      spinAudio.currentTime = 0;
+
       oldrotation = rotation;
 
-      if (spinArrows) {
-        spinArrows.style.display = "none";
-      }
+
       highlightPickedSlice(picked);
       moveSelectedSliceText(picked);
 
@@ -330,9 +334,8 @@ function spin() {
       setOptionsForPickedWord(picked);
       rightCol.style.display = "block";
 
-// ✅ enable Show Answer button
-document.getElementById("show-ans").removeAttribute("disabled");
-
+      // ✅ enable Show Answer button
+      document.getElementById("show-ans").removeAttribute("disabled");
 
       // prepare audio
       if (!wordAudio) wordAudio = new Audio();
@@ -441,6 +444,9 @@ function initWheel() {
 /* ================= RESET WHEEL ================= */
 
 function resetWheel() {
+  spinAudio.pause();
+  spinAudio.currentTime = 0;
+
   answerConfirmed = false;
 
   // Hide right column
@@ -468,15 +474,14 @@ function resetWheel() {
 
   // Get new random data
   // If not enough words left, recycle (after all are used)
-if (remainingWords.length < 6) {
-  remainingWords = d3.shuffle(ALL_DATA.slice());
-  usedWords = [];
-}
+  if (remainingWords.length < 6) {
+    remainingWords = d3.shuffle(ALL_DATA.slice());
+    usedWords = [];
+  }
 
-// Get next 6 unique words
-data = remainingWords.splice(0, 6);
-usedWords = usedWords.concat(data);
-
+  // Get next 6 unique words
+  data = remainingWords.splice(0, 6);
+  usedWords = usedWords.concat(data);
 
   // Recreate the wheel with new data
   initWheel();
@@ -504,14 +509,13 @@ showAnsBtn.addEventListener("click", () => {
 });
 
 function clearImgBoxResults() {
-  document.querySelectorAll(".img-box.bottom-img").forEach(box => {
+  document.querySelectorAll(".img-box.bottom-img").forEach((box) => {
     box.classList.remove("correct", "wrong");
   });
 
   // allow fresh confirmation again
   answerConfirmed = false;
 }
-
 
 // New Word Button
 newWordBtn.addEventListener("click", () => {
@@ -561,7 +565,6 @@ optionTextEls.forEach((text, i) => {
   });
 });
 
-
 // Option Text Click
 optionTextEls.forEach((text, i) => {
   text.addEventListener("click", () => {
@@ -584,7 +587,7 @@ function markImgBoxResult(targetEl, isCorrect) {
   const allBoxes = document.querySelectorAll(".img-box.bottom-img");
 
   // 🔄 Clear previous states
-  allBoxes.forEach(box => {
+  allBoxes.forEach((box) => {
     box.classList.remove("correct", "wrong");
   });
 
@@ -596,7 +599,7 @@ function markImgBoxResult(targetEl, isCorrect) {
     clickedBox.classList.add("correct");
 
     // ❌ Mark remaining as wrong
-    allBoxes.forEach(box => {
+    allBoxes.forEach((box) => {
       if (box !== clickedBox) {
         box.classList.add("wrong");
       }
@@ -617,7 +620,6 @@ function revealAnswerByShowAns() {
 document.getElementById("new-word").addEventListener("click", () => {
   document.getElementById("show-ans").setAttribute("disabled", "true");
 });
-
 
 /* ================= INITIALIZE ================= */
 
