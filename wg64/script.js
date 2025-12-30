@@ -193,18 +193,44 @@ document.addEventListener('DOMContentLoaded', () => {
     playAnimation(key, true);
   }
 
+  function disableLiquidCursors() {
+  Object.keys(config.substances).forEach(key => {
+    const btn = document.getElementById(config.substances[key].btnId);
+    if (btn) {
+      btn.style.cursor = 'default';
+    }
+  });
+}
+
+function enableLiquidCursors() {
+  Object.keys(config.substances).forEach(key => {
+    // Do not re-enable completed substances
+    if (state.completedSubstances.has(key)) return;
+
+    const btn = document.getElementById(config.substances[key].btnId);
+    if (btn) {
+      btn.style.cursor = 'pointer';
+    }
+  });
+}
+
+
   function handlePhSelection(type) {
-    state.selectedNature = type;
-    state.phSelected = true;
+  state.selectedNature = type;
+  state.phSelected = true;
 
-    // UI Update for pH buttons
-    Object.values(els.phButtons).forEach(btn => btn.style.opacity = '0.4');
-    els.phButtons[type].style.opacity = '1'; // Highlight selected
+  // UI Update for pH buttons
+  Object.values(els.phButtons).forEach(btn => btn.style.opacity = '0.4');
+  els.phButtons[type].style.opacity = '1';
 
-    // Enable Test Paper
-    els.btnTestPaper.style.opacity = '1';
-    els.btnTestPaper.style.cursor = 'pointer';
-  }
+  // Disable liquid cursors after pH selection
+  disableLiquidCursors();
+
+  // Enable Test Paper
+  els.btnTestPaper.style.opacity = '1';
+  els.btnTestPaper.style.cursor = 'pointer';
+}
+
 
   function handleTestPaperClick() {
     // Disable controls during animation
@@ -378,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide all labels
     Object.values(els.labels).forEach(lbl => lbl.style.display = 'none');
-
+     enableLiquidCursors();
     // Restore opacity of completed buttons (they stay 0.5, current selected goes back to 1 if not complete)
     // Actually handled in handleLiquidSelection by checking completed set.
   }
