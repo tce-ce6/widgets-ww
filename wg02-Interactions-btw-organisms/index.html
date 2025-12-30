@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset=UTF-8 />
+<meta name=viewport content="width=device-width, initial-scale=1.0"/>
+<title>Ecological Interactions Simulation</title>
+<script src=p5.js></script>
+<link rel=stylesheet href=global_style.css>
+<style></style>
+</head>
+<body>
+<div class=wdgetTitle>
+<h2>Interactions between Organisms</h2>
+</div>
+<div id=app class=mainContainerOuter>
+<div class=mainContainer>
+<main id=canvas-container></main>
+<div id=widget-container></div>
+</div>
+<div class=button-controls>
+<button id=resetButton>
+<image src=assets/cta/reset-btn.svg alt=logo >
+</button>
+<button id=continueButton>
+<image src=assets/cta/continue-btn.svg alt=logo >
+</button>
+<button id=tryAgainButton style=display:none;>
+<image src=assets/cta/try-again-btn.svg alt=logo >
+
+</button>
+</div>
+</div>
+</div>
+<script>
+let assets={};function preload(){assets.card_flower=loadImage('assets/01_card_flower.svg');assets.card_dog=loadImage('assets/02_card_dog.svg');assets.card_honeybee=loadImage('assets/03_card_honeybee.svg');assets.card_plant=loadImage('assets/04_card_plantbranc.svg');assets.card_tick=loadImage('assets/05_card_tick.svg');assets.card_orchid=loadImage('assets/06_card_orchid.svg');assets.bucketMutualism=loadImage('assets/Bucket_01.svg');assets.bucketCommensalism=loadImage('assets/Bucket_02.svg');assets.bucketParasitism=loadImage('assets/Bucket_03.svg');assets.comboMutualism=loadImage('assets/07_card_combo_01.svg');assets.comboCommensalism=loadImage('assets/09_card_combo_03.svg');assets.comboParasitism=loadImage('assets/08_card_combo_02.svg');assets.message_correct_pair=loadImage('assets/messages/correct-pair.svg');assets.message_incorrect_pair=loadImage('assets/messages/incorrect-pair.svg');assets.border_selected=loadImage('assets/blue-border.svg');assets.border_incorrect=loadImage('assets/red-border.svg');}
+let organisms=[];let pairs=[];let buckets=[];let selectedOrganisms=[];let draggedPair=null;let dragOffsetX,dragOffsetY;let gameState='pairing';let feedback={show:false,isCorrect:false,imgKey:null};let instruction='Tap the organisms below to form the interactive pairs.';let ignoreNextClick=false;let slotPositions=[];
+let resetButton,continueButton, tryAgainButton; 
+let colors;const scale=3840/1500;const cardWidth=220*scale,cardHeight=280*scale;const bucketWidth=900*scale,bucketHeight=450*scale;const pairCardWidth=450*scale,pairCardHeight=280*scale;
+function setup(){
+   createCanvas(3840,2160).parent('canvas-container');
+   smooth();drawingContext.imageSmoothingEnabled=true;
+   colors={selected:color('#0295FC'),correct:color('#4CAF50'),incorrect:color('#FF0000')};
+   resetButton=select('#resetButton');
+   continueButton=select('#continueButton');
+   tryAgainButton=select('#tryAgainButton'); 
+   
+   resetButton.mousePressed(onResetPressed);
+   continueButton.mousePressed(onContinuePressed);
+   tryAgainButton.mousePressed(onTryAgainPressed); 
+    
+    // ADDED: Robust touch/pointer listeners for buttons
+    resetButton.elt.addEventListener('pointerdown', onResetPressed);
+    continueButton.elt.addEventListener('pointerdown', onContinuePressed);
+    tryAgainButton.elt.addEventListener('pointerdown', onTryAgainPressed);
+    // ------------------------------------------------
+   
+   initializeState();
+}
+function initializeState(){
+   gameState='pairing';
+   instruction='Tap the organisms below to form the interactive pairs.';
+   selectedOrganisms=[];
+   draggedPair=null;
+   pairs=[];
+   feedback.show=false;
+   feedback.imgKey=null;
+   ignoreNextClick=false;
+   resetButton.removeAttribute('disabled');
+   resetButton.style('display','block');
+   resetButton.style('opacity','1.0');
+   continueButton.attribute('disabled','');
+   continueButton.style('display','block');
+   continueButton.style('opacity','0.5');
+   tryAgainButton.style('display', 'none'); 
+   const organismData=[{name:'Flower',cardImgKey:'card_flower',pair:'Honey bee',type:'Mutualism'},{name:'Honey bee',cardImgKey:'card_honeybee',pair:'Flower',type:'Mutualism'},{name:'Dog',cardImgKey:'card_dog',pair:'Tick',type:'Parasitism'},{name:'Tick',cardImgKey:'card_tick',pair:'Dog',type:'Parasitism'},{name:'Plant branch',cardImgKey:'card_plant',pair:'Orchid',type:'Commensalism'},{name:'Orchid',cardImgKey:'card_orchid',pair:'Plant branch',type:'Commensalism'},];
+   shuffleArray(organismData);
+   const organismSpacing=30*scale;
+   const totalOrganismsWidth=organismData.length*cardWidth+(organismData.length-1)*organismSpacing;
+   const startXOrganisms=(width-totalOrganismsWidth)/2;
+   organisms=organismData.map((data,i)=>({...data,x:startXOrganisms+i*(cardWidth+organismSpacing),y:height-cardHeight-(100*scale),targetX:startXOrganisms+i*(cardWidth+organismSpacing),targetY:height-cardHeight-(100*scale),originalX:startXOrganisms+i*(cardWidth+organismSpacing),originalY:height-cardHeight-(100*scale),borderImgKey:null,isPaired:false,isFadingOut:false,alpha:255}));
+   const bucketSpacing=scale-1100;
+   const totalBucketsWidth=3*bucketWidth+2*bucketSpacing;
+   const startXBuckets=(width-totalBucketsWidth)/2;
+   buckets=[{name:'Mutualism',infoText:'• The bee pollinates the flower.\n• The flower gives nectar to the bee.',imgKey:'bucketMutualism',x:startXBuckets,y:height-bucketHeight-(100*scale),filled:false,alpha:0},{name:'Commensalism',infoText:'• The host plant branch provides nutrition to orchid.\n• The orchid does not affect the plant in any way.',imgKey:'bucketCommensalism',x:startXBuckets+bucketWidth+bucketSpacing,y:height-bucketHeight-(100*scale),filled:false,alpha:0},{name:'Parasitism',infoText:"• The tick feeds on the dog's blood.\n• It causes skin irritation in the dog's skin.",imgKey:'bucketParasitism',x:startXBuckets+2*(bucketWidth+bucketSpacing),y:height-bucketHeight-(100*scale),filled:false,alpha:0},];
+   slotPositions=[];
+}
+function shuffleArray(array){for(let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[array[i],array[j]]=[array[j],array[i]];}}
+function draw(){
+   clear();
+   let onDraggable=false;
+   if(gameState==='bucketing'){
+      for(let pair of pairs){
+         let drawnY=pair.y-200;
+         if(mouseX>pair.x&&mouseX<pair.x+pair.currentWidth&&mouseY>drawnY&&mouseY<drawnY+pair.currentHeight){
+            onDraggable=true;
+            break;
+         }
+      }
+   }
+   cursor(onDraggable?'grab':'default');
+   
+   if(gameState==='pairing' || gameState==='bucketing'||gameState==='finished'){
+      drawHeader();
+   }
+
+   if(pairs.length===3&&gameState==='pairing'){
+      continueButton.removeAttribute('disabled');
+      continueButton.style('opacity','1.0');
+      drawBottomText('Tap Continue for the next activity.');
+   }
+   
+   if(buckets.every(b=>b.filled)){drawFinalText();}
+   if(gameState==='pairing'){organisms.forEach(o=>updateAndDrawOrganism(o));pairs.forEach(p=>updateAndDrawPair(p));}
+   if(gameState==='bucketing'||gameState==='finished'){buckets.forEach(b=>drawBucketNative(b));pairs.filter(p=>p.isPlaced).forEach(p=>updateAndDrawPair(p));buckets.forEach(b=>drawBucketInfo(b));drawWrongBucketFeedback();pairs.filter(p=>!p.isPlaced).forEach(p=>updateAndDrawPair(p));}
+   drawFeedback();
+}
+function drawHeader(){fill(255);noStroke();textAlign(CENTER,CENTER);textSize(22*scale);fill(255,255,255,200);textStyle(ITALIC);text(instruction,width/2,100*scale);}
+function drawBottomText(instructionText){fill(255);noStroke();textAlign(CENTER,CENTER);textSize(22*scale);fill(255,255,255,200);textStyle(ITALIC);text(instructionText,width/2,height-150*scale);}
+function updateAndDrawOrganism(org){
+  if(org.alpha<=5)return;
+ org.x=lerp(org.x,org.targetX,0.1);
+  org.y=lerp(org.y,org.targetY,0.1);
+    if(org.isFadingOut){
+   // Increased lerp factor from 0.1 to 0.3 for faster fade out
+    org.alpha=lerp(org.alpha,0,0.3);
+  }
+  push();
+     tint(255,org.alpha);
+   imageMode(CORNER);
+   image(assets[org.cardImgKey],org.x,org.y,cardWidth,cardHeight);
+   if(org.borderImgKey){
+      image(assets[org.borderImgKey],org.x,org.y,cardWidth-10,cardHeight-10);
+   }
+   pop();
+}
+function updateAndDrawPair(p){
+   if(draggedPair!==p){
+      // Reduced lerp factor from 0.6 to 0.4 for slightly less intense animation updates
+      p.x=lerp(p.x,p.targetX,0.4); 
+      p.y=lerp(p.y,p.targetY,0.4);
+   }
+   p.currentWidth=lerp(p.currentWidth,p.targetWidth,0.6);
+   p.currentHeight=lerp(p.currentHeight,p.targetHeight,0.6);
+   if(p.alpha<255){
+      p.alpha=lerp(p.alpha,255,0.3);
+   }
+   push();
+   tint(255,p.alpha);
+   imageMode(CORNER);
+   image(assets[p.comboImgKey],p.x,p.y-200,p.currentWidth,p.currentHeight);
+   pop();
+}
+function drawBucketNative(bucket){if(bucket.alpha<255){bucket.alpha=lerp(bucket.alpha,255,0.3);}
+push();let bodyWidth=bucketWidth*0.48;let bodyHeight=bucketHeight*0.6;let headerHeight=bucketHeight*0.09;let headerWidth=bucketWidth*0.23;let centerX=bucket.x+bucketWidth/2;let startY=bucket.y+bucketHeight*0.3;let bucketColor;bucketColor=color(76,175,80);bucketColor.setAlpha(bucket.alpha);fill(bucketColor);strokeWeight(4*scale);rectMode(CENTER);rect(centerX,startY,headerWidth,headerHeight,12*scale,12*scale,0,0,0);rectMode(CORNER);let bodyX=centerX-bodyWidth/2;let bodyY=startY+headerHeight/2;fill(76,175,80,0);rect(bodyX,bodyY,bodyWidth,bodyHeight,10*scale);noFill();stroke(bucketColor);strokeWeight(4*scale);rect(bodyX,bodyY,bodyWidth,bodyHeight,10*scale);fill(24,24,24,bucket.alpha);noStroke();textAlign(CENTER,CENTER);textSize(22*scale);textStyle(BOLD);text(bucket.name,centerX,startY);pop();}
+function drawBucketInfo(bucket){if(!bucket.filled)return;const placedPair=pairs.find(p=>p.type===bucket.name&&p.isPlaced);if(!placedPair)return;const infoBoxWidth=placedPair.targetWidth*1.6;const infoBoxHeight=90*scale;const infoBoxX=placedPair.targetX+(placedPair.targetWidth/2)-(infoBoxWidth/2);const infoBoxY=placedPair.targetY+(placedPair.targetWidth/3);push();fill(255);noStroke();rect(infoBoxX,infoBoxY,infoBoxWidth,infoBoxHeight,15*scale);fill(50);textAlign(CENTER,CENTER);textSize(16*scale);textStyle(BOLD);text(bucket.infoText,infoBoxX,infoBoxY,infoBoxWidth,infoBoxHeight);pop();}
+
+function drawWrongBucketFeedback(){
+   let isAnyWrong = false;
+   let totalPlacedOrWrong = 0; 
+
+   for(let pair of pairs){
+      if (pair.isPlaced) {
+         totalPlacedOrWrong++;
+      } else if (pair.wrongBucket) {
+         isAnyWrong = true;
+         totalPlacedOrWrong++; 
+         
+         // Draw feedback text only if wrongBucket is set
+         const infoBoxWidth=pair.targetWidth*1.6;
+         const infoBoxHeight=90*scale;
+         const infoBoxX=pair.x+(pair.currentWidth/2)-(infoBoxWidth/2);
+         const infoBoxY=pair.y-200+(pair.currentWidth/3)+200; 
+         
+         push();
+         fill(255);
+         noStroke();
+         rect(infoBoxX,infoBoxY,infoBoxWidth,infoBoxHeight,15*scale);
+         fill(colors.incorrect);
+         textAlign(CENTER,CENTER);
+         textSize(16*scale);
+         textStyle(BOLD);
+         text("You have placed in the wrong bucket!\nPlease try again.",infoBoxX,infoBoxY,infoBoxWidth,infoBoxHeight);
+         pop();
+      }
+   }
+
+   let allPairsHandled = (totalPlacedOrWrong === pairs.length) && (pairs.length === 3);
+
+   if (allPairsHandled && isAnyWrong) {
+      tryAgainButton.style('display', 'block');
+   } else {
+      tryAgainButton.style('display', 'none');
+   }
+}
+
+function drawFeedback(){if(feedback.show&&feedback.imgKey){let msgImg=assets[feedback.imgKey];if(msgImg){push();imageMode(CENTER);let msgWidth=msgImg.width*scale*0.8;let msgHeight=msgImg.height*scale*0.8;image(msgImg,width/2,425*scale,msgWidth,msgHeight);pop();}else{console.error("Feedback Error: Image key not found in assets: ",feedback.imgKey);push();fill(255,0,0);textAlign(CENTER,CENTER);textSize(30*scale);text("Error: Missing image asset "+feedback.imgKey,width/2,425*scale);pop();}}}
+
+// --- NEW GLOBAL POINTER/TOUCH HANDLERS (Start) ---
+
+/**
+ * Executes the core 'pointer down' logic using explicit coordinates.
+ * This function is called by both mousePressed and touchStarted.
+ * @param {number} px - Pointer X coordinate (canvas space).
+ * @param {number} py - Pointer Y coordinate (canvas space).
+ */
+function handleGlobalPointerDown(px, py) {
+    // Check for ignoring the click (e.g., after successful pairing)
+    if (ignoreNextClick) { 
+        ignoreNextClick = false; 
+        return; 
+    }
+
+    // Clear pairing feedback on any tap if it's currently showing an incorrect message
+    if (gameState === 'pairing' && feedback.show && !feedback.isCorrect) {
+        feedback.show = false;
+        feedback.imgKey = null;
+        organisms.forEach(o => {
+            if (o.borderImgKey === 'border_incorrect') o.borderImgKey = null;
+        });
+        selectedOrganisms = [];
+        continueButton.attribute('disabled', '');
+        continueButton.style('opacity', '0.5');
+    }
+
+    // Handle organism selection in pairing state or pair selection/drag in bucketing state
+    if (gameState === 'pairing') {
+        handlePairingClickAt(px, py);
+    } else if (gameState === 'bucketing') {
+        handleBucketingPointerDownAt(px, py);
+    }
+}
+
+/**
+ * Executes the core 'pointer move' logic using explicit coordinates.
+ * This function is called by both mouseDragged and touchMoved.
+ * @param {number} px - Pointer X coordinate (canvas space).
+ * @param {number} py - Pointer Y coordinate (canvas space).
+ */
+function handleGlobalPointerMove(px, py) {
+    if (gameState === 'bucketing' && draggedPair) {
+        draggedPair.x = px - dragOffsetX;
+        draggedPair.y = (py - dragOffsetY) + 200; 
+        
+        // Optimization: Fix card size while dragging
+        draggedPair.currentWidth = pairCardWidth;
+        draggedPair.currentHeight = pairCardHeight;
+    }
+}
+
+/**
+ * Executes the core 'pointer up' logic (drop and snap-back) using explicit coordinates.
+ * This function is called by both mouseReleased and touchEnded.
+ * @param {number} px - Pointer X coordinate (canvas space).
+ * @param {number} py - Pointer Y coordinate (canvas space).
+ */
+function handleGlobalPointerUp(px, py) {
+    if (gameState === 'bucketing' && draggedPair) {
+        finalizeDraggedPairAt(px, py);
+    }
+}
+
+// --- Helper for getting first touch/mouse coords ---
+function _getPrimaryPointerXY(touchesArr) {
+    // Use the first touch from p5's touches array if available
+    if (touchesArr && touchesArr.length > 0) return { x: touchesArr[0].x, y: touchesArr[0].y };
+    // Fall back to mouseX/mouseY for desktop or single-click events
+    return { x: mouseX, y: mouseY };
+}
+
+// --- p5 Touch Hooks (for touch screens/IFPs) ---
+function touchStarted() {
+    const { x, y } = _getPrimaryPointerXY(touches);
+    handleGlobalPointerDown(x, y);
+    return false; // Prevent default browser gestures (e.g., scrolling/pinch on canvas)
+}
+
+function touchMoved() {
+    // Only process the move if a drag is active (multi-touch ignoring is handled implicitly by draggedPair check)
+    if (draggedPair) {
+        const { x, y } = _getPrimaryPointerXY(touches);
+        handleGlobalPointerMove(x, y);
+    }
+    return false; // Prevent default browser gestures
+}
+
+function touchEnded() {
+    // p5 updates touches[] before this call, so the primary touch might be gone.
+    // Use the last known mouseX/mouseY as a safe fallback for the release position.
+    handleGlobalPointerUp(mouseX, mouseY);
+    return false; // Prevent default browser gestures
+}
+
+// --- NEW LOGIC FUNCTIONS (Called by global handlers) ---
+
+/**
+ * Logic for selecting/deselecting organisms in pairing state.
+ * Extracted from original handlePairingClick.
+ * @param {number} px - Pointer X coordinate.
+ * @param {number} py - Pointer Y coordinate.
+ */
+function handlePairingClickAt(px, py) {
+    if (feedback.show && feedback.isCorrect) {
+        // Dismiss correct feedback message on tap
+        feedback.show = false;
+        feedback.imgKey = null;
+        resetButton.style('display', 'block');
+        continueButton.style('display', 'block');
+        continueButton.attribute('disabled', '');
+        continueButton.style('opacity', '0.5');
+    }
+    
+    for (let org of organisms) {
+        // Use px/py for hit testing
+        if (!org.isPaired && px > org.x && px < org.x + cardWidth && py > org.y && py < org.y + cardHeight) {
+            
+            // Selection/Deselection Logic
+            if (selectedOrganisms.includes(org)) {
+                selectedOrganisms = selectedOrganisms.filter(o => o !== org);
+                org.borderImgKey = null;
+            } else if (selectedOrganisms.length < 2) {
+                selectedOrganisms.push(org);
+                org.borderImgKey = 'border_selected';
+            }
+            break; // Stop after finding the organism that was clicked
+        }
+    }
+    
+    if (selectedOrganisms.length === 2) {
+        continueButton.removeAttribute('disabled');
+        continueButton.style('opacity', '1.0');
+    } else {
+        continueButton.attribute('disabled', '');
+        continueButton.style('opacity', '0.5');
+    }
+}
+
+/**
+ * Logic for starting a drag of a pair card in bucketing state.
+ * Extracted from original mousePressed.
+ * @param {number} px - Pointer X coordinate.
+ * @param {number} py - Pointer Y coordinate.
+ */
+function handleBucketingPointerDownAt(px, py) {
+    for (let i = pairs.length - 1; i >= 0; i--) {
+        let pair = pairs[i];
+        let drawnY = pair.y - 200; // Adjusted Y for drawing
+        
+        // Use px/py for hit test
+        if (px > pair.x && px < pair.x + pair.currentWidth && py > drawnY && py < drawnY + pair.currentHeight) {
+            
+            draggedPair = pair;
+            dragOffsetX = px - pair.x;
+            dragOffsetY = py - drawnY;
+            draggedPair.isSelected = true;
+            draggedPair.wrongBucket = null; // Clear flag since it's being dragged
+            cursor('grabbing');
+            
+            // Logic for pulling a placed card out of the bucket
+            if (pair.isPlaced) {
+                pair.isPlaced = false;
+                const bucket = buckets.find(b => b.name === pair.type);
+                if (bucket) { bucket.filled = false; }
+                draggedPair.targetWidth = pairCardWidth;
+                draggedPair.targetHeight = pairCardHeight;
+                draggedPair.currentWidth = pairCardWidth;
+                draggedPair.currentHeight = pairCardHeight;
+            }
+            // Bring the dragged pair to the front for rendering
+            pairs.splice(i, 1);
+            pairs.push(draggedPair);
+            break;
+        }
+    }
+}
+
+/**
+ * Logic for dropping a dragged pair card in bucketing state.
+ * Extracted from original mouseReleased.
+ * @param {number} px - Pointer X coordinate.
+ * @param {number} py - Pointer Y coordinate.
+ */
+function finalizeDraggedPairAt(px, py) {
+    if (!draggedPair) return;
+    
+    let droppedInBucket = false;
+    for (let bucket of buckets) {
+        let bodyWidth = bucketWidth * 0.48;
+        let bodyHeight = bucketHeight * 0.6;
+        let centerX = bucket.x + bucketWidth / 2;
+        let startY = bucket.y + bucketHeight * 0.3;
+        let headerHeight = bucketHeight * 0.09;
+        let bodyX = centerX - bodyWidth / 2;
+        let bodyY = startY + headerHeight / 2;
+        
+        // Use px/py for bucket hit test
+        if (px > bodyX && px < bodyX + bodyWidth && py > bodyY && py < bodyY + bodyHeight) {
+            droppedInBucket = true;
+            const finalCardWidth = bodyWidth * 0.6;
+            const finalCardHeight = finalCardWidth * (pairCardHeight / pairCardWidth);
+            
+            // Calculate target position inside the bucket
+            draggedPair.targetWidth = finalCardWidth;
+            draggedPair.targetHeight = finalCardHeight;
+            let placementBodyY = startY + headerHeight / 2 + 70;
+            draggedPair.targetX = centerX - finalCardWidth / 2;
+            draggedPair.targetY = placementBodyY + bodyHeight / 2 - finalCardHeight / 2;
+            
+            // Check for occupancy by any card (correct or incorrect)
+            const incorrectOccupant = pairs.find(p => p !== draggedPair && p.wrongBucket === bucket.name);
+            
+            if (bucket.filled || incorrectOccupant) {
+                // Bucket is occupied. Snap back.
+                resetDraggedPairToSlot(draggedPair); 
+            } else if (draggedPair.type === bucket.name) {
+                // Bucket is empty, and card is correct.
+                handleCorrectBucketPlacement(draggedPair, bucket);
+            } else {
+                // Bucket is empty, and card is wrong.
+                draggedPair.wrongBucket = bucket.name;
+            }
+            break;
+        }
+    }
+    
+    // Snap back if not dropped in a bucket
+    if (!droppedInBucket) {
+        resetDraggedPairToSlot(draggedPair);
+    }
+    
+    draggedPair.isSelected = false;
+    draggedPair = null;
+}
+
+// --- ORIGINAL MOUSE HANDLERS (UPDATED to call global handlers) ---
+
+function mousePressed(){
+    // Use the global handler for all pointer down logic
+    if (ignoreNextClick) { 
+        ignoreNextClick = false; 
+        return;
+    }
+    handleGlobalPointerDown(mouseX, mouseY);
+}
+
+function mouseDragged(){
+    // Use the global handler for all pointer move/drag logic
+    handleGlobalPointerMove(mouseX, mouseY);
+}
+
+function mouseReleased(){
+    // Use the global handler for all pointer up/drop logic
+    handleGlobalPointerUp(mouseX, mouseY);
+}
+
+// --- ORIGINAL FUNCTIONS (KEPT OR SLIGHTLY MODIFIED) ---
+
+function resetDraggedPairToSlot(pair) {
+   if (!pair) return;
+   let slotIdx = pair.slotIndex;
+   let originalY = pair.originalTargetY || 200 * scale; 
+   
+   if (slotIdx !== null && slotIdx !== undefined && slotPositions[slotIdx] !== undefined) {
+      pair.targetX = slotPositions[slotIdx];
+      pair.targetY = originalY;
+   } else if (pair.originalTargetX !== undefined) {
+      pair.targetX = pair.originalTargetX;
+      pair.targetY = originalY;
+   } else if (slotPositions.length > 0) {
+      let nearestIndex = 0;
+      let nearestDist = Math.abs(pair.x - slotPositions[0]);
+      for (let i = 1; i < slotPositions.length; i++) {
+         let d = Math.abs(pair.x - slotPositions[i]);
+         if (d < nearestDist) {
+            nearestIndex = i;
+            nearestDist = d;
+         }
+      }
+      pair.targetX = slotPositions[nearestIndex];
+      pair.targetY = originalY;
+      pair.slotIndex = nearestIndex; 
+   } else {
+      pair.targetX = width / 2;
+      pair.targetY = originalY;
+   }
+   pair.targetWidth = pairCardWidth;
+   pair.targetHeight = pairCardHeight;
+   pair.wrongBucket = null; 
+}
+
+
+function handleCorrectBucketPlacement(pair,bucket){const bucketIndex=buckets.indexOf(bucket);if(slotPositions.length===0){computeSlotPositions();}
+let occupyingPair=pairs.find(p=>p.slotIndex===bucketIndex&&!p.isPlaced&&p!==pair);const draggedOldSlot=pair.slotIndex;if(occupyingPair&&draggedOldSlot!==undefined&&draggedOldSlot!==null){occupyingPair.slotIndex=draggedOldSlot;occupyingPair.targetX=slotPositions[draggedOldSlot];occupyingPair.originalTargetX=slotPositions[draggedOldSlot];occupyingPair.targetY=occupyingPair.originalTargetY||200*scale;occupyingPair.targetWidth=pairCardWidth;occupyingPair.targetHeight=pairCardHeight;}else if(occupyingPair&&(draggedOldSlot===null||draggedOldSlot===undefined)){const usedSlots=pairs.filter(p=>p.slotIndex!==null&&p.slotIndex!==undefined&&!p.isPlaced).map(p=>p.slotIndex);let freeSlot=null;for(let i=0;i<slotPositions.length;i++){if(!usedSlots.includes(i)||i===bucketIndex)continue;}}
+pair.isPlaced=true;bucket.filled=true;pair.wrongBucket=null;pair.slotIndex=null;let bodyWidth=bucketWidth*0.48;let bodyHeight=bucketHeight*0.6;let centerX=bucket.x+bucketWidth/2;let startY=bucket.y+bucketHeight*0.3;let headerHeight=bucketHeight*0.09;let placementBodyY=startY+headerHeight/2+70;const finalCardWidth=bodyWidth*0.6;const finalCardHeight=finalCardWidth*(pairCardHeight/pairCardWidth);pair.targetWidth=finalCardWidth;pair.targetHeight=finalCardHeight;pair.targetX=centerX-finalCardWidth/2;pair.targetY=placementBodyY+bodyHeight/2-finalCardHeight/2;if(buckets.every(b=>b.filled)){setTimeout(()=>{gameState='finished';resetButton.style('display','block');resetButton.style('opacity','1.0');},500);}}
+
+function handlePairingClick(){
+    // This is now just a wrapper for mouse compatibility
+    handlePairingClickAt(mouseX, mouseY);
+}
+
+function onResetPressed(){initializeState();}
+
+function onTryAgainPressed() {
+   for (let pair of pairs) {
+      if (pair.wrongBucket) {
+         resetDraggedPairToSlot(pair); 
+      }
+   }
+}
+
+function onContinuePressed(){
+   if(gameState==='pairing'&&pairs.length===3){
+      gameState='bucketing';
+      instruction='Drag and drop the pairs in the correct buckets.';
+      feedback.show=false;
+      feedback.imgKey=null;
+      resetButton.style('display','none');
+      continueButton.style('display','none');
+      buckets.forEach(b=>b.alpha=0);
+      computeSlotPositions();
+      return;
+   }
+   if(selectedOrganisms.length!==2)return;
+   let[org1,org2]=selectedOrganisms;
+   if(org1.pair===org2.name){
+      feedback.isCorrect=true;
+      feedback.show=true;
+      feedback.imgKey='message_correct_pair';
+      ignoreNextClick=true;
+      org1.isPaired=org2.isPaired=true;
+      org1.isFadingOut=org2.isFadingOut=true;
+      org1.borderImgKey=org2.borderImgKey=null;
+      const pairIndex=pairs.length;
+      const comboKey='combo'+org1.type;
+      const pairSpacing=30*scale;
+      const totalPairWidth=3*pairCardWidth+2*pairSpacing;
+      const startXPairs=(width-totalPairWidth)/2;
+      const newPair={org1,org2,type:org1.type,comboImgKey:comboKey,x:(org1.x+org2.x)/2,y:org1.y,targetX:startXPairs+pairIndex*(pairCardWidth+pairSpacing),targetY:200*scale,originalTargetX:startXPairs+pairIndex*(pairCardWidth+pairSpacing),originalTargetY:200*scale,isSelected:false,isPlaced:false,alpha:0,currentWidth:pairCardWidth,currentHeight:pairCardHeight,targetWidth:pairCardWidth,targetHeight:pairCardHeight,wrongBucket:null,slotIndex:pairIndex};
+      pairs.push(newPair);
+      selectedOrganisms=[];
+      computeSlotPositions();
+      if(pairs.length===3){
+         instruction='Tap Continue for the next activity';
+         resetButton.style('display','block');
+         continueButton.style('display','block');
+         continueButton.removeAttribute('disabled');
+         continueButton.style('opacity','1.0');
+      }
+   }else{
+      feedback.isCorrect=false;
+      feedback.imgKey='message_incorrect_pair';
+      feedback.show=true;
+      org1.borderImgKey='border_incorrect';
+      org2.borderImgKey='border_incorrect';
+   }
+   continueButton.attribute('disabled','');
+   continueButton.style('opacity','0.5');
+}
+function computeSlotPositions(){const pairSpacing=30*scale;const totalPairWidth=3*pairCardWidth+2*pairSpacing;const startXPairs=(width-totalPairWidth)/2;slotPositions=[startXPairs+0*(pairCardWidth+pairSpacing),startXPairs+1*(pairCardWidth+pairSpacing),startXPairs+2*(pairCardWidth+pairSpacing)];for(let p of pairs){if(p.slotIndex!==null&&p.slotIndex!==undefined){p.targetX=slotPositions[p.slotIndex];p.originalTargetX=slotPositions[p.slotIndex];p.targetY=p.originalTargetY||200*scale;}}}
+function placeInBucket(pair,bucket){handleCorrectBucketPlacement(pair,bucket);}
+function drawFinalText(){fill(255);noStroke();textAlign(CENTER,CENTER);textSize(32*scale);fill(255,255,0);textStyle(BOLD);text('All pairs correctly placed! Well done!',width/2,height/2.4);}
+</script>
+</body>
+</html>

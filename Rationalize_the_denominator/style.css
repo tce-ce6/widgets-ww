@@ -1,0 +1,140 @@
+.container {
+            background: white;
+            border-radius: 20px;
+            /* padding: 30px; */
+            /* Make container accommodate keyboard */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+            font-size: 16px;
+        }
+        #p5-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        } */
+
+        /* --- MODIFICATION: New Keyboard Styles --- */
+        #keyboard-container {
+            position: fixed;
+            bottom: 20px; /* MODIFICATION: Set default position from the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: none;
+            
+            padding: 15px;
+            padding-top: 45px; /* Added space for icons */
+            background-color: #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            flex-direction: column;
+            gap: 12px;
+            width: auto;
+            box-sizing: border-box;
+        }
+
+
+        /* Rows in the keyboard */
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Horizontal space between keys */
+        }
+
+        /* Individual keyboard buttons */
+        .key-btn {
+            height: 45px; /* Increased height for better touch targets */
+            width: 65px;
+            font-size: 22px;
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            border-bottom: 3px solid #b0b4b8;
+            background-color: #ffffff;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .key-btn:hover {
+            background-color: #f9fafb;
+        }
+
+        /* "Press down" effect on click */
+        .key-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+            background-color: #f3f4f6;
+        }
+
+        /* New class for the grey-colored special keys */
+        .key-btn.key-btn-special {
+            background-color: #d1d5db;
+            border-bottom-color: #9ca3af;
+            color: #1f2937;
+        }
+
+        .key-btn.key-btn-special:hover {
+            background-color: #c4c9d1;
+        }
+
+        .key-btn.key-btn-special:active {
+            background-color: #b8bcc4;
+        }
+
+        /* --- MODIFICATION: Styles for icons --- */
+        .keyboard-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            border: none;
+            font-size: 28px;
+            font-weight: bold;
+            color: #6b7280;
+            cursor: pointer;
+            line-height: 30px;
+            text-align: center;
+            padding: 0;
+        }
+
+        .keyboard-close-btn:hover {
+            color: #1f2937;
+        }
+
+        .keyboard-drag-handle {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            width: 25px;
+            height: 25px;
+            cursor: move;
+        }
+
+        .keyboard-drag-handle svg {
+            width: 100%;
+            height: 100%;
+            fill: #6b7280;
+        }
+        .keyboard-drag-handle:hover svg {
+            fill: #1f2937;
+        }

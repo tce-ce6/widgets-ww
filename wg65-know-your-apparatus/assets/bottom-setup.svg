@@ -1,0 +1,15 @@
+<svg width="800" height="160" viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="
+      M 0 0
+      H 800
+      V 100
+      Q 800 160 740 160
+      H 60
+      Q 0 160 0 100
+      Z
+    "
+    fill="#F4FFA8"
+  />
+</svg>
+

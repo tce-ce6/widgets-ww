@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1080 1080">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #181818;
+        font-family: Roboto-Bold, Roboto;
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .st0, .st1 {
+        isolation: isolate;
+      }
+
+      .st2 {
+        fill: none;
+      }
+
+      .st3 {
+        fill: #4caf50;
+      }
+    </style>
+  </defs>
+  <g id="Group_799">
+    <g id="Path_417-2">
+      <path class="st2" d="M278.5,378.57h521c6.63,0,12,6.3,12,14.07v347.06c0,7.77-5.37,14.07-12,14.07H278.5c-6.63,0-12-6.3-12-14.07v-347.06c0-7.77,5.37-14.07,12-14.07Z"/>
+      <path class="st3" d="M278.5,382.57c-2.02,0-3.95.96-5.44,2.72-1.65,1.93-2.56,4.55-2.56,7.35v347.06c0,2.81.91,5.42,2.56,7.35,1.49,1.75,3.43,2.72,5.44,2.72h521c2.02,0,3.95-.96,5.44-2.72,1.65-1.93,2.56-4.55,2.56-7.35v-347.06c0-2.81-.91-5.42-2.56-7.35-1.49-1.75-3.43-2.72-5.44-2.72H278.5M278.5,378.57h521c6.63,0,12,6.3,12,14.07v347.06c0,7.77-5.37,14.07-12,14.07H278.5c-6.63,0-12-6.3-12-14.07v-347.06c0-7.77,5.37-14.07,12-14.07Z"/>
+    </g>
+    <g id="Group_794">
+      <path id="Rectangle_86" class="st3" d="M416.5,325.57h246c6.63,0,12,5.37,12,12v42h-270v-42c0-6.63,5.37-12,12-12Z"/>
+      <g id="Parasitism" class="st1">
+        <text class="st0" transform="translate(467.14 366.57)"><tspan x="0" y="0">Parasitism</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

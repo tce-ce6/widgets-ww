@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centripetal Force & Rotational Motion</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        canvas {
+            display: block;
+        }
+        #ui-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 15px;
+            border-radius: 10px;
+            width: 320px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .slider-group {
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 70px 1fr 65px;
+            align-items: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 0 10px;
+        }
+        span {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            color: #4dff91; /* Light green for data */
+        }
+        #button-group {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #cutStringBtn {
+            background-color: #dc3545;
+        }
+        #cutStringBtn:hover {
+            background-color: #a71d2a;
+        }
+        #resetBtn {
+            background-color: #6c757d;
+        }
+        #resetBtn:hover {
+            background-color: #5a6268;
+        }
+        h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        #info {
+            margin-top: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        #info span {
+            font-size: 1.1em;
+            color: #ffc107; /* Yellow for force */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-container">
+        <h3>Simulation Controls</h3>
+        
+        <div class="slider-group">
+            <label for="speedSlider">Speed:</label>
+            <input type="range" id="speedSlider" min="0.5" max="5" step="0.1" value="2.0">
+            <span id="speedValue">2.0 m/s</span>
+        </div>
+        
+        <div class="slider-group">
+            <label for="radiusSlider">Radius:</label>
+            <input type="range" id="radiusSlider" min="1" max="5" step="0.1" value="3.0">
+            <span id="radiusValue">3.0 m</span>
+        </div>
+
+        <div class="slider-group">
+            <label for="massSlider">Mass:</label>
+            <input type="range" id="massSlider" min="0.5" max="5" step="0.1" value="1.0">
+            <span id="massValue">1.0 kg</span>
+        </div>
+
+        <div id="info">
+            Centripetal Force: <span id="forceValue">0.0 N</span>
+        </div>
+
+        <div id="button-group">
+            <button id="startPauseBtn">Pause</button>
+            <button id="cutStringBtn">Cut String</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // This simulation demonstrates Centripetal Force.
+        // The red arrow represents the tension (centripetal force)
+        // keeping the ball in a circular path.
+        // The blue arrow represents the ball's tangential velocity.
+        // When tension is removed ("Cut String"), the ball moves
+        // in a straight line, illustrating Newton's First Law (Inertia).
+
+        // ==== 1. Scene Setup ====
+        let scene, camera, renderer, controls, clock;
+        let ambientLight, pointLight;
+        let groundPlane;
+
+        // ==== 2. Object Creation ====
+        let pivot, ballMesh, stringLine, pathGuide;
+        let tensionArrow, velocityArrow;
+
+        // ==== 3. Physics Variables ====
+        let mass = 1.0;
+        let speed = 2.0;
+        let radius = 3.0;
+        let centripetalForce = 0;
+        let angle = 0; // Current angle in radians
+        let angularVelocity = 0;
+
+        // State flags
+        let isRunning = true;
+        let isStringCut = false;
+
+        // Vectors for physics
+        const ballPosition = new THREE.Vector3();
+        const tangentialVelocity = new THREE.Vector3();
+        const tensionDirection = new THREE.Vector3();
+        const BALL_HEIGHT = 0.5; // Keep ball elevated
+
+        // UI Element References
+        let speedSlider, speedValue, radiusSlider, radiusValue, massSlider, massValue;
+        let forceValue, startPauseBtn, cutStringBtn, resetBtn;
+
+        init();
+        animate();
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a1a);
+            clock = new THREE.Clock();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(5, 6, 8);
+            camera.lookAt(0, 0, 0);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true; // Enable shadows
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.body.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
+            // Lights
+            ambientLight = new THREE.AmbientLight(0x404040, 1.5); // Soft white light
+            scene.add(ambientLight);
+
+            pointLight = new THREE.PointLight(0xffffff, 1.2, 100);
+            pointLight.position.set(0, 10, 5);
+            pointLight.castShadow = true;
+            pointLight.shadow.mapSize.width = 1024;
+            pointLight.shadow.mapSize.height = 1024;
+            scene.add(pointLight);
+
+            // Ground Plane
+            const groundGeo = new THREE.PlaneGeometry(30, 30);
+            const groundMat = new THREE.MeshPhongMaterial({ color: 0x444444, side: THREE.DoubleSide });
+            groundPlane = new THREE.Mesh(groundGeo, groundMat);
+            groundPlane.rotation.x = -Math.PI / 2;
+            groundPlane.receiveShadow = true;
+            scene.add(groundPlane);
+
+            // ==== 2. Object Creation ====
+
+            // Pivot
+            const pivotGeo = new THREE.SphereGeometry(0.1, 16, 16);
+            const pivotMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
+            pivot = new THREE.Mesh(pivotGeo, pivotMat);
+            pivot.position.y = BALL_HEIGHT;
+            scene.add(pivot);
+
+            // Ball
+            const ballGeo = new THREE.SphereGeometry(0.3, 32, 32);
+            const ballMat = new THREE.MeshPhongMaterial({ color: 0x00aaff, shininess: 80 });
+            ballMesh = new THREE.Mesh(ballGeo, ballMat);
+            ballMesh.castShadow = true;
+            ballMesh.position.y = BALL_HEIGHT;
+            scene.add(ballMesh);
+
+            // String (Line)
+            const stringMat = new THREE.LineBasicMaterial({ color: 0xaaaaaa, linewidth: 2 });
+            const stringPoints = [pivot.position, ballMesh.position];
+            const stringGeo = new THREE.BufferGeometry().setFromPoints(stringPoints);
+            stringLine = new THREE.Line(stringGeo, stringMat);
+            scene.add(stringLine);
+
+            // Path Guide (Torus)
+            const pathGeo = new THREE.TorusGeometry(radius, 0.02, 16, 100);
+            const pathMat = new THREE.MeshBasicMaterial({ color: 0xffff00, opacity: 0.5, transparent: true });
+            pathGuide = new THREE.Mesh(pathGeo, pathMat);
+            pathGuide.rotation.x = Math.PI / 2;
+            pathGuide.position.y = BALL_HEIGHT;
+            scene.add(pathGuide);
+
+            // Arrows
+            // Tension Arrow (Red) - points from ball to center
+            tensionArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(-1, 0, 0), // Initial direction
+                ballMesh.position,           // Origin
+                radius,                      // Length
+                0xff0000,                    // Color
+                0.5,                         // Head length
+                0.3                          // Head width
+            );
+            scene.add(tensionArrow);
+
+            // Velocity Arrow (Blue) - tangent to path
+            velocityArrow = new THREE.ArrowHelper(
+                new THREE.Vector3(0, 0, 1),  // Initial direction
+                ballMesh.position,           // Origin
+                speed,                       // Length
+                0x0000ff,                    // Color
+                0.4,                         // Head length
+                0.25                         // Head width
+            );
+            scene.add(velocityArrow);
+
+            // ==== 4. UI Controls ====
+            setupUIControls();
+            updatePhysicsValues(); // Initial calculation
+
+            // ==== 6. Rendering & Resizing ====
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function setupUIControls() {
+            // Get elements
+            speedSlider = document.getElementById('speedSlider');
+            speedValue = document.getElementById('speedValue');
+            radiusSlider = document.getElementById('radiusSlider');
+            radiusValue = document.getElementById('radiusValue');
+            massSlider = document.getElementById('massSlider');
+            massValue = document.getElementById('massValue');
+            forceValue = document.getElementById('forceValue');
+            startPauseBtn = document.getElementById('startPauseBtn');
+            cutStringBtn = document.getElementById('cutStringBtn');
+            resetBtn = document.getElementById('resetBtn');
+
+            // Add event listeners
+            speedSlider.addEventListener('input', updatePhysicsValues);
+            radiusSlider.addEventListener('input', updatePhysicsValues);
+            massSlider.addEventListener('input', updatePhysicsValues);
+
+            startPauseBtn.addEventListener('click', () => {
+                isRunning = !isRunning;
+                startPauseBtn.textContent = isRunning ? 'Pause' : 'Start';
+            });
+
+            cutStringBtn.addEventListener('click', () => {
+                if (!isStringCut) {
+                    isStringCut = true;
+                    // Store the current velocity and position to fly off from
+                    tangentialVelocity.set(
+                        -angularVelocity * radius * Math.sin(angle),
+                        0,
+                        angularVelocity * radius * Math.cos(angle)
+                    );
+                    ballPosition.copy(ballMesh.position);
+                }
+            });
+
+            resetBtn.addEventListener('click', () => {
+                isStringCut = false;
+                isRunning = true;
+                angle = 0;
+                startPauseBtn.textContent = 'Pause';
+                updatePhysicsValues(); // Recalculate and reset
+            });
+        }
+
+        function updatePhysicsValues() {
+            // Read values from sliders
+            speed = parseFloat(speedSlider.value);
+            radius = parseFloat(radiusSlider.value);
+            mass = parseFloat(massSlider.value);
+
+            // Update UI text
+            speedValue.textContent = `${speed.toFixed(1)} m/s`;
+            radiusValue.textContent = `${radius.toFixed(1)} m`;
+            massValue.textContent = `${mass.toFixed(1)} kg`;
+
+            // Calculate physics
+            // Fc = m * v^2 / r
+            centripetalForce = (mass * speed * speed) / radius;
+            // v = ω * r  =>  ω = v / r
+            angularVelocity = speed / radius;
+
+            // Update UI
+            forceValue.textContent = `${centripetalForce.toFixed(2)} N`;
+
+            // Update visual elements tied to sliders
+            // Dispose old geometry to prevent memory leaks
+            pathGuide.geometry.dispose(); 
+            pathGuide.geometry = new THREE.TorusGeometry(radius, 0.02, 16, 100);
+            pathGuide.rotation.x = Math.PI / 2; // Re-apply rotation
+            pathGuide.position.y = BALL_HEIGHT;
+
+            // Reset motion if not cut
+            if (!isStringCut) {
+                resetCircularMotion();
+            }
+        }
+        
+        function resetCircularMotion() {
+            // This function is called by 'reset' or slider changes to
+            // place the ball back on the (potentially new) track.
+            
+            // Calculate position
+            ballPosition.x = radius * Math.cos(angle);
+            ballPosition.z = radius * Math.sin(angle);
+            ballPosition.y = BALL_HEIGHT;
+            ballMesh.position.copy(ballPosition);
+
+            // Update string
+            const positions = stringLine.geometry.attributes.position.array;
+            positions[3] = ballPosition.x;
+            positions[4] = ballPosition.y;
+            positions[5] = ballPosition.z;
+            stringLine.geometry.attributes.position.needsUpdate = true;
+            
+            // Make sure objects are visible
+            stringLine.visible = true;
+            tensionArrow.visible = true;
+            velocityArrow.visible = true;
+            pathGuide.visible = true;
+        }
+
+
+        // ==== 5. Animation Loop ====
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+
+            if (isRunning) {
+                if (!isStringCut) {
+                    // --- CIRCULAR MOTION ---
+                    
+                    // Update angle based on time and angular velocity
+                    angle += angularVelocity * delta;
+
+                    // Calculate new position
+                    ballPosition.x = radius * Math.cos(angle);
+                    ballPosition.z = radius * Math.sin(angle);
+                    ballMesh.position.copy(ballPosition);
+                    
+                    // Update String
+                    const positions = stringLine.geometry.attributes.position.array;
+                    positions[3] = ballPosition.x;
+                    positions[4] = ballPosition.y;
+                    positions[5] = ballPosition.z;
+                    stringLine.geometry.attributes.position.needsUpdate = true;
+                    stringLine.visible = true;
+
+                    // Update Tension Arrow (Red)
+                    tensionDirection.copy(ballPosition).multiplyScalar(-1).normalize();
+                    tensionArrow.position.copy(ballPosition);
+                    tensionArrow.setDirection(tensionDirection);
+                    tensionArrow.setLength(radius * 0.95); // Point almost to center
+                    tensionArrow.visible = true;
+
+                    // Update Velocity Arrow (Blue)
+                    // Velocity is perpendicular (tangent) to the radius
+                    tangentialVelocity.set(
+                        -angularVelocity * radius * Math.sin(angle), // dx/dt
+                        0,
+                        angularVelocity * radius * Math.cos(angle)  // dz/dt
+                    );
+                    velocityArrow.position.copy(ballPosition);
+                    velocityArrow.setDirection(tangentialVelocity.clone().normalize());
+                    velocityArrow.setLength(speed * 0.8); // Scale length for visibility
+                    velocityArrow.visible = true;
+                    
+                    pathGuide.visible = true;
+
+                } else {
+                    // --- INERTIAL MOTION (STRING CUT) ---
+
+                    // Hide string and tension force
+                    stringLine.visible = false;
+                    tensionArrow.visible = false;
+                    pathGuide.visible = false; // Hide the path guide
+
+                    // Move ball along its stored tangent vector
+                    ballPosition.x += tangentialVelocity.x * delta;
+                    ballPosition.z += tangentialVelocity.z * delta;
+                    ballMesh.position.copy(ballPosition);
+                    
+                    // Velocity arrow moves with the ball, but direction is constant
+                    velocityArrow.position.copy(ballPosition);
+                }
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // ==== 6. Rendering & Resizing ====
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+    </script>
+</body>
+</html>

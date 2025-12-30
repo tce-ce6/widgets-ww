@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_Ñëîé_8" data-name="Ñëîé_8" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2000 2000">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1000" y1="1999.5" x2="1000" y2="-.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4fa3da"/>
+      <stop offset="1" stop-color="#8fd7f3"/>
+    </linearGradient>
+  </defs>
+  <rect class="st0" y="-.5" width="2000" height="2000"/>
+</svg>

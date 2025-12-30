@@ -1,0 +1,729 @@
+[
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "horizontal": {
+        "question": [
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 4,
+            "y": 3
+          },
+          {
+            "type": "arc_tl",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "arc_tl",
+            "x": 2,
+            "y": 4
+          }
+        ],
+        "solution": [
+          {
+            "type": "arc_br",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "arc_br",
+            "x": 4,
+            "y": 6
+          },
+          {
+            "type": "arc_bl",
+            "x": 3,
+            "y": 6
+          },
+          {
+            "type": "arc_bl",
+            "x": 2,
+            "y": 5
+          }
+        ]
+      },
+      "vertical": {
+        "question": [
+          {
+            "type": "arc_br",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "arc_br",
+            "x": 6,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 2
+          }
+        ],
+        "solution": [
+          {
+            "type": "arc_bl",
+            "x": 4,
+            "y": 5
+          },
+          {
+            "type": "arc_bl",
+            "x": 3,
+            "y": 4
+          },
+          {
+            "type": "arc_tl",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "arc_tl",
+            "x": 4,
+            "y": 2
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758107405803"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "vertical": {
+        "question": [
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "arc_tl",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "arc_tl",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "arc_tl",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "arc_tr",
+            "x": 5,
+            "y": 7
+          }
+        ],
+        "solution": [
+          {
+            "type": "diag_up",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "diag_up",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "type": "diag_up",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "diag_up",
+            "x": 1,
+            "y": 4
+          },
+          {
+            "type": "arc_tr",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "arc_tr",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "arc_tr",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "arc_tl",
+            "x": 4,
+            "y": 7
+          }
+        ]
+      },
+      "horizontal": {
+        "question": [
+          {
+            "type": "diag_up",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "diag_up",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "diag_up",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "diag_up",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "arc_tr",
+            "x": 4,
+            "y": 8
+          },
+          {
+            "type": "arc_tr",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "arc_tr",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "type": "arc_br",
+            "x": 2,
+            "y": 5
+          }
+        ],
+        "solution": [
+          {
+            "type": "diag_down",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "diag_down",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "type": "diag_down",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "arc_br",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "type": "arc_br",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "arc_br",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "arc_tr",
+            "x": 2,
+            "y": 4
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758107428138"
+  },
+  {
+    "gridSize": 10,
+    "puzzles": {
+      "horizontal": {
+        "question": [
+          {
+            "type": "line_h",
+            "x": 3,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "line_h",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 6
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 6
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "arc_tr",
+            "x": 3,
+            "y": 8
+          },
+          {
+            "type": "arc_tr",
+            "x": 4,
+            "y": 9
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 9
+          },
+          {
+            "type": "arc_tl",
+            "x": 6,
+            "y": 9
+          },
+          {
+            "type": "arc_tl",
+            "x": 7,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 8
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 6
+          }
+        ],
+        "solution": [
+          {
+            "type": "line_h",
+            "x": 3,
+            "y": 4
+          },
+          {
+            "type": "line_h",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 4
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 4
+          },
+          {
+            "type": "line_h",
+            "x": 6,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 3,
+            "y": 2
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 7,
+            "y": 2
+          },
+          {
+            "type": "arc_br",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "type": "arc_br",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "type": "line_h",
+            "x": 5,
+            "y": 0
+          },
+          {
+            "type": "arc_bl",
+            "x": 6,
+            "y": 0
+          },
+          {
+            "type": "arc_bl",
+            "x": 7,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 2
+          },
+          {
+            "type": "circle",
+            "x": 5,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "circle",
+            "x": 4,
+            "y": 3
+          }
+        ]
+      },
+      "vertical": {
+        "question": [
+          {
+            "type": "line_v",
+            "x": 4,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 4,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 4,
+            "y": 7
+          },
+          {
+            "type": "line_v",
+            "x": 4,
+            "y": 6
+          },
+          {
+            "type": "line_h",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 2,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 3,
+            "y": 7
+          },
+          {
+            "type": "line_h",
+            "x": 2,
+            "y": 7
+          },
+          {
+            "type": "arc_br",
+            "x": 1,
+            "y": 3
+          },
+          {
+            "type": "arc_br",
+            "x": 0,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 0,
+            "y": 5
+          },
+          {
+            "type": "arc_tr",
+            "x": 0,
+            "y": 6
+          },
+          {
+            "type": "arc_tr",
+            "x": 1,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 1,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 2,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 3,
+            "y": 4
+          }
+        ],
+        "solution": [
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 3
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 7
+          },
+          {
+            "type": "line_v",
+            "x": 5,
+            "y": 6
+          },
+          {
+            "type": "line_h",
+            "x": 6,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 3
+          },
+          {
+            "type": "line_h",
+            "x": 6,
+            "y": 7
+          },
+          {
+            "type": "line_h",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "type": "arc_bl",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "type": "arc_bl",
+            "x": 9,
+            "y": 4
+          },
+          {
+            "type": "line_v",
+            "x": 9,
+            "y": 5
+          },
+          {
+            "type": "arc_tl",
+            "x": 9,
+            "y": 6
+          },
+          {
+            "type": "arc_tl",
+            "x": 8,
+            "y": 7
+          },
+          {
+            "type": "circle",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 7,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "type": "circle",
+            "x": 6,
+            "y": 4
+          }
+        ]
+      }
+    },
+    "availableParts": [
+      "diag_up",
+      "diag_down",
+      "arc_tl",
+      "arc_tr",
+      "arc_bl",
+      "arc_br",
+      "line_v",
+      "line_h",
+      "circle"
+    ],
+    "id": "puzzle_1758107475707"
+  }
+]

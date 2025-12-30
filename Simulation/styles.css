@@ -1,0 +1,50 @@
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .main-canvas {
+            width: 900px;
+            height: 500px;
+        }
+        .cta-container {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .cta-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover:not(:disabled) {
+            background-color: #45a049;
+        }
+        .cta-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .cta-input {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .cta-checkbox, .cta-slider {
+            margin: 0 10px;
+        }
+        .cta-label {
+            font-size: 16px;
+            margin-right: 5px;
+        }

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinate Plane Explorer</title>
+    <link rel="stylesheet" href="global_style.css">
+    <script src="p5.js"></script>
+    <style>
+       
+    </style>
+</head>
+<body>
+     <div class="title-container">
+        <h3>Polynomial Builder & Visualizer</h3>
+    </div>
+    <div id="canvas-container"></div>
+    <script>// A p5.js sketch to create an interactive polynomial builder and grapher.
+// All UI elements are drawn and managed directly on the canvas.
+
+// --- GLOBAL STATE & CONFIGURATION ---
+
+let CANVAS_W = 3840;
+let CANVAS_H = 2160;
+
+// Panels layout
+let titleBarH = 140;
+let bottomBarH = 180;
+let sidePadding = 80;
+let panelGutter = 40;
+
+// Left panel (builder)
+let leftW = 1300;
+let leftX = sidePadding;
+let leftY = titleBarH + panelGutter;
+let leftH = CANVAS_H - titleBarH - bottomBarH - panelGutter * 2;
+
+// Middle panel (expression)
+let midW = 700;
+let midX = leftX + leftW + panelGutter;
+let midY = leftY;
+let midH = 500;
+
+// Right panel (graph)
+let rightX = midX + midW + panelGutter;
+let rightY = leftY;
+let rightW = CANVAS_W - rightX - sidePadding;
+let rightH = CANVAS_H - titleBarH - bottomBarH - panelGutter * 2;
+
+// Graph world bounds
+const X_MIN = -10;
+const X_MAX = 10;
+const Y_MIN = -10;
+const Y_MAX = 10;
+
+// Term definitions (degree descending)
+const TERMS = [
+    { key: 'x3', label: 'x^3', degree: 3 },
+    { key: 'x2', label: 'x^2', degree: 2 },
+    { key: 'x1', label: 'x', degree: 1 },
+    { key: 'c',  label: 'constant', degree: 0 }
+];
+
+// State: coefficients
+let coeff = { x3: 0, x2: 1, x1: -3, c: 5 }; // default example y = x^2 - 3x + 5
+
+// UI state
+let sliders = [];
+let buttons = [];
+let termBlocks = [];
+let expressionBox;
+
+let showDegreeFlag = false;
+let highlightRootsFlag = false;
+
+// Drag state
+let draggingTerm = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+// Fonts
+let titleText = 'Build & See Your Polynomial';
+let quickText = 'Drag terms to build your polynomial. See its graph instantly below!';
+
+// --- UI ELEMENTS ---
+
+class Button {
+    constructor(x, y, w, h, label, onClick) {
+        this.x = x; this.y = y; this.w = w; this.h = h;
+        this.label = label;
+        this.onClick = onClick;
+        this.enabled = true;
+    }
+    contains(mx, my) {
+        return mx >= this.x && mx <= this.x + this.w && my >= this.y && my <= this.y + this.h;
+    }
+    draw() {
+        push();
+        stroke(20);
+        strokeWeight(3);
+        if (!this.enabled) fill(180); else if (this.contains(mouseX, mouseY)) fill(30, 144, 255); else fill(40);
+        rect(this.x, this.y, this.w, this.h, 14);
+        noStroke();
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(48);
+        text(this.label, this.x + this.w/2, this.y + this.h/2 + 2);
+        pop();
+    }
+}
+
+class Slider {
+    constructor(x, y, w, minV, maxV, step, initial, onChange) {
+        this.x = x; this.y = y; this.w = w + 550; this.h = 20;
+        this.minV = minV; this.maxV = maxV; this.step = step;
+        this.value = this.snap(initial);
+        this.onChange = onChange;
+        this.dragging = false;
+    }
+    snap(v) {
+        const s = this.step || 1;
+        return Math.round(v / s) * s;
+    }
+    valToX(v) {
+        return this.x + ((v - this.minV) / (this.maxV - this.minV)) * this.w;
+    }
+    xToVal(px) {
+        let t = (px - this.x) / this.w; t = constrain(t, 0, 1);
+        const v = this.minV + t * (this.maxV - this.minV);
+        return this.snap(v);
+    }
+    containsHandle(mx, my) {
+        const hx = this.valToX(this.value);
+        return dist(mx, my, hx, this.y + this.h/2) <= 22;
+    }
+    draw() {
+        push();
+        // Track
+        stroke(100);
+        strokeWeight(8);
+        line(this.x, this.y + this.h/2, this.x + this.w, this.y + this.h/2);
+        // Ticks
+        stroke(120);
+        strokeWeight(2);
+        for (let i = this.minV; i <= this.maxV; i += 5) {
+            const tx = this.valToX(i);
+            line(tx, this.y + this.h/2 - 14, tx, this.y + this.h/2 + 14);
+        }
+        // Handle
+        const hx = this.valToX(this.value);
+        noStroke();
+        fill(30, 144, 255);
+        circle(hx, this.y + this.h/2, 36);
+        // Value
+        fill(0);
+        textAlign(CENTER, BOTTOM);
+        textSize(40);
+        text(this.value, hx, this.y - 30);
+        pop();
+    }
+}
+class TermBlock {
+    constructor(term, x, y) {
+        this.term = term; // {key,label,degree}
+        this.x = x; this.y = y; this.w = 300; this.h = 120;
+        this.homeX = x; this.homeY = y;
+        this.active = coeff[term.key] !== 0; // active if non-zero coeff
+    }
+    contains(mx, my) {
+        return mx >= this.x && mx <= this.x + this.w && my >= this.y && my <= this.y + this.h;
+    }
+    draw() {
+        push();
+        stroke(40);
+        strokeWeight(4);
+        if (this.contains(mouseX, mouseY)) fill(70); else fill(55);
+       // rect(this.x, this.y + 360, this.w, this.h, 18);
+        
+        // --- CORRECTED LABEL DRAWING ---
+        noStroke();
+        fill(0);
+        textAlign(LEFT, CENTER);
+        
+        const label = this.term.label;
+        const startX = this.x + this.w/2 - 140;
+        const startY = this.y + this.h/2 + 360;
+        const baseSize = 60;
+        const superSize = 28;
+        const superOffset = 15;
+
+        if (label.includes('^')) {
+            const parts = label.split('^');
+            const base = parts[0];
+            const exp = parts[1];
+            
+            // Draw base part (e.g., 'x')
+            textSize(baseSize);
+            text(base, startX, startY);
+            
+            // Draw exponent part (e.g., '3' or '2') as superscript
+            const baseWidth = textWidth(base);
+            textSize(superSize);
+            text(exp, startX + baseWidth, startY - superOffset);
+        } else {
+            // Draw normal labels like 'x' or 'constant'
+            textSize(baseSize);
+            text(label, startX, startY);
+        }
+        // --- END OF CORRECTION ---
+
+        // active tag
+        if (this.active) {
+            fill(30, 144, 255);
+            rect(this.x + this.w - 150 + 780, this.y - 38+ 430, 160, 50, 10);
+            fill(255);
+            textSize(30);
+            textAlign(CENTER, CENTER);
+            text('IN USE', this.x + this.w - 80 + 787,  this.y - 21 + 441);
+        }
+        pop();
+    }
+    resetPosition() {
+        this.x = this.homeX; this.y = this.homeY;
+    }
+}
+class ExpressionBox {
+    constructor(x, y, w, h) {
+        this.x = x; this.y = y; this.w = w; this.h = h;
+    }
+    contains(mx, my) {
+        return mx >= this.x && mx <= this.x + this.w && my >= this.y && my <= this.y + this.h;
+    }
+    draw(expressionStr) {
+        push();
+        stroke(40);
+        strokeWeight(4);
+        fill(250);
+        rect(this.x, this.y, this.w, this.h, 22);
+        noStroke();
+        fill(20);
+        textAlign(LEFT, TOP);
+        textSize(64);
+        text('Expression', this.x + 30, this.y + 24);
+        textSize(60);
+        fill(0);
+        this.drawFormattedExpression('y = ' + expressionStr, this.x + 30, this.y + 120);
+        pop();
+    }
+    drawFormattedExpression(expr, startX, startY) {
+    let xCursor = startX;
+    let baseSize = 60;
+    let superSize = 40;
+    let superOffset = 25;
+
+    // Split into tokens so we can detect ^numbers
+    let tokens = expr.match(/x\^\d+|x|\^|\d+|[+\-*/=]|[^\s]+/g);
+
+    if (!tokens) {
+        text(expr, startX, startY);
+        return;
+    }
+
+    for (let token of tokens) {
+        if (/x\^\d+/.test(token)) {
+            // Case like x^2
+            let base = 'x';
+            let exp = token.split('^')[1];
+            textSize(baseSize);
+            text(base, xCursor, startY);
+            let w = textWidth(base);
+            textSize(superSize);
+            text(exp, xCursor + w, startY - superOffset);
+            xCursor += w + textWidth(exp) + 10;
+        } else {
+            textSize(baseSize);
+            text(token, xCursor, startY);
+            xCursor += textWidth(token) + 10;
+        }
+    }
+}
+}
+
+// --- p5 LIFECYCLE ---
+
+function setup() {
+    createCanvas(CANVAS_W, CANVAS_H).parent('canvas-container');
+    textFont('Arial');
+
+    // Build UI elements
+    const termStartX = leftX + 40;
+    let ty = leftY + 40;
+    for (let i = 0; i < TERMS.length; i++) {
+        const t = TERMS[i];
+        const block = new TermBlock(t, termStartX, ty);
+        termBlocks.push(block);
+        // Slider below each block
+        const s = new Slider(termStartX, ty + block.h + 400, 540, -10, 10, 1, coeff[t.key], (v) => {
+            coeff[t.key] = v;
+            block.active = v !== 0;
+        });
+        sliders.push({ slider: s, key: t.key });
+        ty += block.h + 140; // spacing per term
+    }
+
+    expressionBox = new ExpressionBox(midX, midY, midW, midH);
+
+    // Buttons bottom bar
+    const btnY = CANVAS_H - bottomBarH/2 - 50;
+    const btnW = 460; const btnH = 100; const gap = 60;
+    const startX = sidePadding;
+    buttons.push(new Button(startX, btnY, btnW, btnH, 'CLEAR', () => clearAll()))
+    buttons.push(new Button(startX + (btnW + gap), btnY, btnW, btnH, 'SHOW DEGREE', () => {
+        showDegreeFlag = true; degreePopupTimer = 120; // 2 seconds at 60fps
+    }));
+    buttons.push(new Button(startX + 2*(btnW + gap), btnY, btnW + 80, btnH, 'HIGHLIGHT ROOTS', () => {
+        highlightRootsFlag = !highlightRootsFlag;
+    }));
+}
+
+let degreePopupTimer = 0;
+
+function draw() {
+    background(245);
+
+    // Title bar
+    // drawTitleBar();
+
+    // Left panel
+    drawPanel(leftX, leftY, leftW, leftH, 'Polynomial Builder');
+    drawBuilder();
+
+    // Middle panel (expression)
+    drawPanel(midX, midY, midW, midH, '');
+    const exprStr = buildExpressionString();
+    expressionBox.draw(exprStr);
+
+    // Right panel (graph)
+    drawPanel(rightX, rightY, rightW, rightH, 'Graph Viewer');
+    drawGraphBackground();
+    drawAxes();
+    drawPolynomialCurve();
+    drawInterceptsAndRoots();
+
+    // Bottom bar buttons
+    drawBottomBar();
+
+    // Floating instructions
+
+    // Degree popup
+    if (showDegreeFlag && degreePopupTimer > 0) {
+        drawDegreePopup();
+        degreePopupTimer--;
+        if (degreePopupTimer <= 0) showDegreeFlag = false;
+    }
+}
+
+// --- DRAW HELPERS ---
+
+function drawTitleBar() {
+    push();
+    fill(30);
+    noStroke();
+    
+    // quick instruction (top-right)
+    textAlign(CENTER, CENTER);
+    textSize(44);
+    fill(0);
+    text(quickText, width / 2, titleBarH/2);
+    pop();
+}
+
+function drawPanel(x, y, w, h, label) {
+    push();
+    stroke(200);
+    strokeWeight(4);
+    fill(255);
+    rect(x, y, w, h, 24);
+    // if (label) {
+    //     noStroke();
+    //     fill(30);
+    //     textAlign(LEFT, TOP);
+    //     textSize(52);
+    // }
+    pop();
+}
+
+function drawBuilder() {
+    // Section instructions
+    push();
+    fill(60);
+    noStroke();
+    textSize(40);
+    textAlign(LEFT, TOP);
+    text('Steps:', leftX + 40, leftY + 18);
+    textSize(36);
+    const steps = [
+        '1. Drag and drop terms to create your polynomial.',
+        '2. Adjust coefficients using the sliders.',
+        '3. Watch the graph update instantly.',
+        '4. Use the buttons to check degree and roots.'
+    ];
+    for (let i = 0; i < steps.length; i++) {
+        text(steps[i], leftX + 40, leftY + 70 + i * 40);
+    }
+    pop();
+
+    // Expression drop hint box (visual)
+    push();
+    stroke(150);
+    strokeWeight(3);
+    noFill();
+    rect(midX, midY, midW, midH, 22);
+    pop();
+
+    // Term blocks + sliders
+    for (let i = 0; i < termBlocks.length; i++) termBlocks[i].draw();
+    for (let i = 0; i < sliders.length; i++) sliders[i].slider.draw();
+}
+
+function drawBottomBar() {
+    push();
+    fill(255);
+    noStroke();
+    rect(0, height - bottomBarH, width, bottomBarH);
+    for (let b of buttons) b.draw();
+    pop();
+}
+
+function drawFloatingInstructions() {
+    push();
+    const bx = sidePadding + 100;
+    const by = titleBarH + 1500;
+    fill(255, 255, 255, 230);
+    stroke(50);
+    strokeWeight(3);
+    // rect(bx, by, 1100, 220, 18);
+    noStroke();
+    fill(20);
+    textAlign(LEFT, TOP);
+    textSize(40);
+    text('On-Screen Instructions', bx + 20, by + 14);
+    textSize(34);
+    const lines = [
+        'Step 1: Drag and drop terms to create your polynomial.',
+        'Step 2: Adjust coefficients using the sliders.',
+        'Step 3: Watch the graph update instantly.',
+        'Step 4: Use the buttons to check degree and roots.'
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        text(lines[i], bx + 20, by + 70 + i * 34);
+    }
+    pop();
+}
+
+
+function drawGraphBackground() {
+    push();
+    fill(252);
+    noStroke();
+    rect(rightX, rightY, rightW, rightH, 18);
+
+    // grid
+    translate(rightX, rightY);
+    const plotW = rightW - 120; // padding inside panel
+    const plotH = rightH - 120;
+    const ox = 60; const oy = 60;
+    push();
+    translate(ox, oy);
+    const scaleX = plotW / (X_MAX - X_MIN);
+    const scaleY = plotH / (Y_MAX - Y_MIN);
+    console.log('scaleX, scaleY:', scaleY , scaleX);
+    // vertical and horizontal grid lines
+    stroke(230);
+    strokeWeight(2);
+    console.log('Drawing grid lines', X_MIN, X_MAX, Y_MIN, Y_MAX);
+    for (let x = Math.ceil(X_MIN); x <= Math.floor(X_MAX); x++) {
+        const px = (x - X_MIN) * scaleX;
+        line(px, 0, px, plotH);
+    }
+    for (let y = Math.ceil(Y_MIN); y <= Math.floor(Y_MAX); y++) {
+        const py = plotH - (y - Y_MIN) * scaleY;
+        line(0, py, plotW, py);
+    }
+    // border
+    stroke(180);
+    strokeWeight(3);
+    noFill();
+    rect(0, 0, plotW, plotH);
+    pop();
+    pop();
+}
+
+function worldToScreen(wx, wy) {
+    const plotW = rightW - 120; const plotH = rightH - 120;
+    const ox = rightX + 60; const oy = rightY + 60;
+    const scaleX = plotW / (X_MAX - X_MIN);
+    const scaleY = plotH / (Y_MAX - Y_MIN);
+    const sx = ox + (wx - X_MIN) * scaleX;
+    const sy = oy + (Y_MAX - wy) * scaleY;
+    return { x: sx, y: sy };
+}
+
+function drawAxes() {
+    const origin = worldToScreen(0, 0);
+    const minX = worldToScreen(X_MIN, 0);
+    const maxX = worldToScreen(X_MAX, 0);
+    const minY = worldToScreen(0, Y_MIN);
+    const maxY = worldToScreen(0, Y_MAX);
+    push();
+    stroke(120);
+    strokeWeight(4);
+    line(minX.x, minX.y, maxX.x, maxX.y);
+    line(minY.x, minY.y, maxY.x, maxY.y);
+    // ticks and labels
+    textSize(28);
+    fill(50);
+    noStroke();
+    for (let x = Math.ceil(X_MIN); x <= Math.floor(X_MAX); x++) {
+        const p = worldToScreen(x, 0);
+        stroke(120); strokeWeight(3); line(p.x, p.y - 10, p.x, p.y + 10);
+        noStroke(); if (x !== 0) text(x, p.x - 8, p.y + 36);
+    }
+    for (let y = Math.ceil(Y_MIN); y <= Math.floor(Y_MAX); y++) {
+        const p = worldToScreen(0, y);
+        stroke(120); strokeWeight(3); line(p.x - 10, p.y, p.x + 10, p.y);
+        noStroke(); if (y !== 0) text(y, p.x + 16, p.y + 10);
+    }
+    pop();
+}
+
+function polyEval(x) {
+    return coeff.x3 * x * x * x + coeff.x2 * x * x + coeff.x1 * x + coeff.c;
+}
+
+function drawPolynomialCurve() {
+    push();
+    stroke(30, 144, 255);
+    strokeWeight(6);
+    noFill();
+
+    let prevScreen = null;
+    let prevWorldY = null;
+
+    const steps = 1400; // adequate sampling for 4K
+    for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const worldX = X_MIN + t * (X_MAX - X_MIN);
+        const worldY = polyEval(worldX);
+        const currentScreen = worldToScreen(worldX, worldY);
+
+        if (prevScreen !== null) {
+            // Determine if the previous and current points are within the Y-axis world bounds
+            const isPrevInBounds = (prevWorldY >= Y_MIN && prevWorldY <= Y_MAX);
+            const isCurrentInBounds = (worldY >= Y_MIN && worldY <= Y_MAX);
+            
+            // Determine if the line segment crosses the entire viewable Y-range
+            const crossesBounds = (prevWorldY > Y_MAX && worldY < Y_MIN) || (prevWorldY < Y_MIN && worldY > Y_MAX);
+
+            // Draw the line only if it starts in, ends in, or crosses the bounds.
+            // This prevents drawing segments that are entirely off-screen vertically.
+            if (isPrevInBounds || isCurrentInBounds || crossesBounds) {
+                line(prevScreen.x, prevScreen.y, currentScreen.x, currentScreen.y);
+            }
+        }
+        
+        prevScreen = currentScreen;
+        prevWorldY = worldY;
+    }
+    pop();
+}
+
+function drawInterceptsAndRoots() {
+    // y-intercept (x=0)
+    const y0 = polyEval(0);
+    const p0 = worldToScreen(0, y0);
+    push();
+    fill(0, 180, 0);
+    noStroke();
+    circle(p0.x, p0.y, 20);
+    fill(20);
+    textSize(34);
+    textAlign(LEFT, BOTTOM);
+    text('Y-Intercept (0, ' + nf(y0, 1, 2) + ')', p0.x + 16, p0.y - 10);
+    pop();
+
+    if (!highlightRootsFlag) return;
+
+    const roots = findRealRootsInRange(X_MIN, X_MAX);
+    push();
+    for (let r of roots) {
+        const pr = worldToScreen(r, 0);
+        fill(220, 30, 30);
+        noStroke();
+        circle(pr.x, pr.y, 24);
+        fill(40);
+        textSize(32);
+        textAlign(CENTER, TOP);
+        text('x ≈ ' + nf(r, 1, 3), pr.x, pr.y + 18);
+    }
+    pop();
+}
+
+function drawDegreePopup() {
+    const deg = currentDegree();
+    push();
+    const w = 540, h = 160;
+    const x = midX + midW/2 - w/2;
+    const y = midY + midH + 40;
+    fill(255, 255, 255, 240);
+    stroke(40);
+    strokeWeight(4);
+    rect(x, y, w, h, 18);
+    noStroke();
+    fill(20);
+    textAlign(CENTER, CENTER);
+    textSize(52);
+    text('Degree = ' + deg, x + w/2, y + h/2);
+    pop();
+}
+
+// --- LOGIC HELPERS ---
+
+function buildExpressionString() {
+    const parts = [];
+    const order = [ 'x3', 'x2', 'x1', 'c' ];
+    for (let key of order) {
+        const a = coeff[key];
+        if (a === 0) continue;
+        const sign = a > 0 ? '+' : '-';
+        const absA = Math.abs(a);
+        let termStr = '';
+        if (key === 'x3') termStr = (absA === 1 ? '' : absA) + 'x^3';
+        else if (key === 'x2') termStr = (absA === 1 ? '' : absA) + 'x^2';
+        else if (key === 'x1') termStr = (absA === 1 ? '' : absA) + 'x';
+        else termStr = '' + absA;
+        parts.push((parts.length === 0 && a < 0 ? '-' : (parts.length === 0 ? '' : ' ' + sign + ' ')) + termStr);
+    }
+    return parts.length ? parts.join('') : '0';
+}
+
+function currentDegree() {
+    if (coeff.x3 !== 0) return 3;
+    if (coeff.x2 !== 0) return 2;
+    if (coeff.x1 !== 0) return 1;
+    return 0;
+}
+
+function findRealRootsInRange(xmin, xmax) {
+    const roots = [];
+    const N = 2000;
+    let prevX = xmin;
+    let prevY = polyEval(prevX);
+    const pushRoot = (x) => {
+        // avoid duplicates close by
+        for (let r of roots) if (Math.abs(r - x) < 0.01) return;
+        roots.push(x);
+    };
+    for (let i = 1; i <= N; i++) {
+        const x = xmin + (i / N) * (xmax - xmin);
+        const y = polyEval(x);
+        if (prevY === 0) pushRoot(prevX);
+        if (y === 0) pushRoot(x);
+        if (prevY * y < 0) {
+            // sign change, bisection refine
+            const root = bisection(prevX, x, 40);
+            pushRoot(root);
+        }
+        prevX = x; prevY = y;
+    }
+    return roots;
+}
+
+function bisection(a, b, iters) {
+    let fa = polyEval(a), fb = polyEval(b);
+    for (let i = 0; i < iters; i++) {
+        const m = 0.5 * (a + b);
+        const fm = polyEval(m);
+        if (fa * fm <= 0) { b = m; fb = fm; } else { a = m; fa = fm; }
+    }
+    return 0.5 * (a + b);
+}
+
+// --- INTERACTION ---
+
+function mousePressed() {
+    // buttons
+    for (let b of buttons) {
+        if (b.contains(mouseX, mouseY) && b.enabled) {
+            b.onClick && b.onClick();
+            return;
+        }
+    }
+    // sliders
+    for (let s of sliders) {
+        if (s.slider.containsHandle(mouseX, mouseY)) {
+            s.slider.dragging = true;
+            return;
+        }
+    }
+    // term blocks
+    for (let tb of termBlocks) {
+        if (tb.contains(mouseX, mouseY)) {
+            draggingTerm = tb;
+            dragOffsetX = mouseX - tb.x;
+            dragOffsetY = mouseY - tb.y;
+            return;
+        }
+    }
+}
+
+function mouseDragged() {
+    // sliders
+    for (let s of sliders) {
+        if (s.slider.dragging) {
+            s.slider.value = s.slider.xToVal(mouseX);
+            s.slider.onChange && s.slider.onChange(s.slider.value);
+            return;
+        }
+    }
+    // term drag
+    if (draggingTerm) {
+        draggingTerm.x = mouseX - dragOffsetX;
+        draggingTerm.y = mouseY - dragOffsetY;
+    }
+}
+
+function mouseReleased() {
+    // sliders stop
+    for (let s of sliders) s.slider.dragging = false;
+    // dropping term into expression box toggles active/use and sets default coeff if zero
+    if (draggingTerm) {
+        const tb = draggingTerm;
+        if (expressionBox.contains(mouseX, mouseY)) {
+            tb.active = true;
+            if (coeff[tb.term.key] === 0) {
+                coeff[tb.term.key] = tb.term.degree === 0 ? 1 : 1; // default 1 when added
+                // sync slider value
+                const sl = sliders.find(s => s.key === tb.term.key);
+                if (sl) sl.slider.value = coeff[tb.term.key];
+            }
+        }
+        tb.resetPosition();
+        draggingTerm = null;
+    }
+}
+
+function mouseClicked() {
+    // double-click on active term block to remove from expression (set coeff 0)
+}
+
+function clearAll() {
+    coeff = { x3: 0, x2: 0, x1: 0, c: 0 };
+    for (let s of sliders) s.slider.value = 0;
+    for (let tb of termBlocks) tb.active = false;
+    highlightRootsFlag = false;
+    showDegreeFlag = false; degreePopupTimer = 0;
+}
+
+</script>
+</body>
+</html>

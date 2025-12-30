@@ -1,0 +1,43 @@
+      #resetButton {
+        position: absolute;
+            bottom: 20px;
+        background-color: #F94877;
+        z-index: 10;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #resetButton:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+
+      .title-container {
+           width: 100%;
+  display: flex;
+  justify-content: center; /* centers the title horizontally */
+  align-items: center;
+  position: absolute; /* ensures it stays at the top */
+  top: 0;
+  margin: 0;
+  left: 0;
+  z-index: 10;
+  background: transparent; /* optional */     /* Ensures the title is on top of the canvas */
+        }
+
+        .title-container h3 {
+           font-size: 23px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 40px;
+  margin: 0;
+  color: #fff;
+  border-radius: 0 0 20px 20px;
+  background: #1d83ec;
+        }

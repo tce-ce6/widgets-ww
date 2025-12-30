@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles Formed by Intersecting Lines</title>
+    <script src="p5.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+<body class="angles_formed_by_intersecting_lines">
+    <div class="mainContainerOuter">
+        <div class="wdgetTitle">
+            <h2>Angles Formed by Intersecting Lines</h2>
+            
+        </div>
+        
+        <div class="mainContainer" >
+            <p class="subtitle">Rotate the lines by dragging the blue handles. Watch how the angles change!</p>
+            <div class="container" id="canvas"></div>
+
+        </div>
+        
+        <div class="button-controls d-flex justify-content-start gap-8">
+                <button id="reflectBtn" class="action-button">Reflect</button>
+                <div class="control-group">
+                    <input type="checkbox" id="measurements">
+                    <label for="measurements">Show Measurements</label>
+                </div>
+    
+                <div class="control-group">
+                    <input type="checkbox" id="observations">
+                    <label for="observations">Show Observations</label>
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" id="angleMeasurements">
+                    <label for="angleMeasurements">Show Values</label>
+                </div>
+                <button id="reset" class="action-button">Reset</button>
+        </div>
+    </div>
+    3
+    <!-- Reflection Modal -->
+    <div id="reflectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Reflection Questions</h3>
+            <p>Click on a question circle to see the reflection question.</p>
+            <div class="questions-container">
+                <div class="question-circle" data-question="1">
+                    💡 Q1
+                </div>
+                <div class="question-circle" data-question="2">
+                    🔍 Q2
+                </div>
+                <div class="question-circle" data-question="3">
+                    🧠 Q3
+                </div>
+            </div>
+            <div id="questionDisplay"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

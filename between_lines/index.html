@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Between Lines - Geometry Simulation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+  </head>
+  <body>
+    <div id="app" class="mainContainerOuter">
+      <div class="wdgetTitle">
+            <h2>Between Lines - Transversal Geometry</h2>
+            
+        </div>
+     
+      
+      
+      <div class="mainContainer" >
+        <p class="subtitle"></p>
+            <div class="container" id="p5-container"></div>
+      </div>
+
+        <!-- <div class="panel" id="info-panel">
+          <p><strong>Angle Relationships:</strong></p>
+          <ul>
+            <li><strong>Corresponding Angles:</strong> Equal when lines are parallel (e.g., ∠A = ∠E)</li>
+            <li><strong>Alternate Interior Angles:</strong> Equal when lines are parallel (e.g., ∠C = ∠F)</li>
+            <li><strong>Co-Interior Angles:</strong> Sum to 180° when lines are parallel (e.g., ∠C + ∠E = 180°)</li>
+          </ul>
+        </div> -->
+        <!-- <div class="panel" id="instructions">
+          <p><strong>Instructions:</strong></p>
+          <ul>
+            <li>Drag the endpoints of lines to change their slope and position</li>
+            <li>Drag anywhere on the transversal to move it</li>
+            <li>Use buttons to highlight different angle relationships</li>
+            <li>Toggle between parallel and non-parallel lines</li>
+            <li>Observe how angle relationships change</li>
+          </ul>
+        </div> -->
+        <div class="status-bar">
+        <div class="status-item" id="parallelStatus">Lines are NOT PARALLEL</div>
+        <div class="status-item" id="highlightStatus">Highlight Mode: NONE</div>
+      </div>
+       <div id="controls" class="button-controls d-flex justify-content-start gap-8">
+        <button id="parallelToggle">Make Lines Parallel</button>
+        <button id="highlightCorresponding">Corresponding Angles</button>
+        <button id="highlightAlternate">Alternate Interior</button>
+        <button id="highlightCoInterior">Co-Interior Angles</button>
+        <button id="clearHighlight">Clear Highlight</button>
+      </div>
+    </div>
+    <script src="p5.js"></script>
+   <script src="script.js"></script>
+  </body>
+</html>

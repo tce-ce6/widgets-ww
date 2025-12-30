@@ -1,0 +1,40 @@
+    /* #canvas-holder ,canvas {
+      margin-bottom: 20px;
+      transation: none !important;
+    } */
+    #problem, #hint, #solutionDiv {
+      text-align: center;
+    }
+    /* #checkBtn, #nextBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    #checkBtn {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #nextBtn {
+      background-color: #e75480;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    } */
+    #denominatorSliderDiv {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #denominatorSlider {
+      width: 250px;
+      margin: 0 10px;
+    }
+    #denominatorValue {
+      font-size: 18px;
+      margin-left: 10px;
+    }
+ 
