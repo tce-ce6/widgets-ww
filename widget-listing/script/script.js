@@ -420,7 +420,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg71-build-water-cycle/index.html",
     imagePath: "./assets/wg-71.png",
     creators: "sh-ra-71",
-    status: "in-review",
+    status: "closed",
   },
   
   {
