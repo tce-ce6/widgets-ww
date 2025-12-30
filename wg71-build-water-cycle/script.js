@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const svg = document.querySelector("svg");
     const buttonsGroup = document.getElementById("buttons-water-cycle");
-
+    const showAnswerBtn = document.getElementById("show-answer-btn");
 
     // --- NEW: LOTTIE BACKGROUND CONFIGURATION ---
     lottie.loadAnimation({
@@ -54,8 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+
+
+    showAnswerBtn.addEventListener("click", () => {
+        if (showAnswerBtn.innerText === "Show Answer") {
+            showAnswer();
+            showAnswerBtn.innerText = "Hide Answer";
+        } else {
+            resetWidget();
+            showAnswerBtn.innerText = "Show Answer";
+        }
+    });
     // Global Controls
-    document.getElementById("show-answer-btn").addEventListener("click", showAnswer);
+    // document.getElementById("show-answer-btn").addEventListener("click",{ showAnswer});
     document.getElementById("reset-button").addEventListener("click", resetWidget);
 
     // 3. CORE DRAG LOGIC
@@ -87,6 +98,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Always find the foreignObject, even if user clicked the internal image
         const target = evt.target.closest("foreignObject");
         if (!target || !draggableIds.includes(target.id)) return;
+        
+
+
+        // console.log("Picked up:", correctMap[target.id]);
+        if (isButtonCorrectlyPlaced(target)) {
+            return;
+        }
 
         draggedElement = target;
         draggedElement.style.cursor = "grabbing";
@@ -118,6 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
         draggedElement.setAttribute("x", coord.x - offset.x);
         draggedElement.setAttribute("y", coord.y - offset.y);
     }
+    function isButtonCorrectlyPlaced(button) {
+    const zoneId = getIntersectingZone(button);
+    if (!zoneId) return false;
+
+    const validZones = correctMap[button.id];
+    return validZones.includes(zoneId);
+}
+
 
     function checkAnswers(){
         document.querySelectorAll(".status-icon").forEach(el => el.remove());
@@ -232,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5. VALIDATION & FEEDBACK
 
     function validateSingleDrop(button, zoneId) {
+        console.log("Validating:", button.id, "in", zoneId);
         const validZones = correctMap[button.id];
         const isCorrect = validZones.includes(zoneId);
         showStatusIcon(button, isCorrect);
