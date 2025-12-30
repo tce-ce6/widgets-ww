@@ -432,10 +432,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Word Discovery Adventure",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg64/index.html",
     imagePath: "./assets/wg-64.png",
     creators: "as-ra-64",
-    status: "WIP-With-Tech",
+    status: "closed",
   },
   {
     name: "उल्टे अर्थ वाले शब्द",
