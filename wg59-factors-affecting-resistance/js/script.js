@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn1 = document.getElementById("btn-1");
   const resetBtn = document.getElementById("reset-btn");
 
+  const particleWrapper = document.getElementById("particle-wrapper");
+const PARTICLE_COUNT = 50;
+
   const noteTextByMetal = {
     copper:
       "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
@@ -27,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
   };
 
+  
   /* ------------------ CONSTANTS ------------------ */
 
   const MIN_RESISTANCE_FONT_SIZE = 150;
@@ -62,6 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
     aluminium: 60,
     tungsten: 120,
   };
+
+  /* ------------------ PARTICLE SIZE BASE ------------------ */
+
+// Base size of particle wrapper when WIDTH_INITIAL & HEIGHT_INITIAL
+const PARTICLE_BASE_WIDTH = 900;   // matches your foreignObject width
+const PARTICLE_BASE_HEIGHT = 170;  // matches your foreignObject height
+
+const copperParticleFO = document.getElementById("copper-particle");
 
   /* ------------------ BAR SCALE MAPS ------------------ */
 
@@ -162,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     updateResistanceFont(); // ✅
+    updateParticleWrapperSize(); // ✅ ADD
+
   });
 
   /* ------------------ HEIGHT SLIDER ------------------ */
@@ -193,7 +207,30 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     updateResistanceFont(); // ✅
+    updateParticleWrapperSize(); // ✅ ADD
+
   });
+
+function updateParticleWrapperSize() {
+  if (!particleWrapper || !copperParticleFO) return;
+
+  const newWidth = PARTICLE_BASE_WIDTH * currentScaleX;
+  const newHeight = PARTICLE_BASE_HEIGHT * currentScaleY;
+
+  // Resize SVG foreignObject
+  copperParticleFO.setAttribute("width", newWidth);
+  copperParticleFO.setAttribute("height", newHeight);
+
+  // Resize inner container
+  particleWrapper.style.width = `${newWidth}px`;
+  particleWrapper.style.height = `${newHeight}px`;
+
+  // 🔥 IMPORTANT: recreate particles to occupy full area
+  createParticles();
+}
+
+
+
 
   function updateMetalUI() {
     copperBar.style.display =
@@ -252,40 +289,45 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMetalUI();
   });
 
- function updateResistanceFont() {
+function updateResistanceFont() {
   if (!widthSlider.noUiSlider || !heightSlider.noUiSlider) return;
 
   const widthValue = Number(widthSlider.noUiSlider.get());
   const heightValue = Number(heightSlider.noUiSlider.get());
 
-  /* -------- Normalize length (L) -------- */
-  const L =
-    (widthValue - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN); // 0 → 1
+  // Normalize to 0-1 range
+  const L = (widthValue - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN); // length (0 to 1)
+  const t = (heightValue - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN); // thickness (0 to 1)
 
-  /* -------- Normalize thickness -------- */
-  const t =
-    (heightValue - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN); // 0 → 1
+  // Cross-sectional area - inverse relationship with resistance
+  // 🔥 Much smaller minimum for more dramatic effect
+  const A = Math.max(0.02 + t * 0.98, 0.02); // scale from 0.02 to 1.0
 
-  /* -------- Area ∝ thickness² -------- */
-  const A = Math.max(t * t, 0.04); // prevent divide-by-zero
+  // Physics: R = ρ * (L / A)
+  // Apply exponential scaling for dramatic visual effect
+  const lengthEffect = Math.pow(0.3 + L * 0.7, 2.5);
+  const areaEffect = Math.pow(A, 0.25); // 🔥 Reduced from 0.4 to 0.25 for MORE dramatic effect
+  
+  // Calculate base resistance
+  let R = lengthEffect / areaEffect;
 
-  /* -------- Resistance ∝ L / A -------- */
-  let R = L / A;
+  // Normalize to 0-1 range
+  const R_MIN = Math.pow(0.3, 2.5) / Math.pow(1.0, 0.25);
+  const R_MAX = Math.pow(1.0, 2.5) / Math.pow(0.02, 0.25);
+  
+  R = Math.max(0, Math.min((R - R_MIN) / (R_MAX - R_MIN), 1));
 
-  /* -------- Normalize R to 0–1 -------- */
-  const R_MAX = 1 / 0.04; // must match A clamp
-  R = Math.min(R / R_MAX, 1);
+  // Apply metal-specific resistivity offset
+  const minFont = MIN_RESISTANCE_FONT_SIZE + METAL_FONT_OFFSET[selectedMetal];
+  const maxFont = MAX_RESISTANCE_FONT_BY_METAL[selectedMetal];
 
-  /* -------- Metal-based font scaling -------- */
-  const maxFont =
-    MAX_RESISTANCE_FONT_BY_METAL[selectedMetal] || 390;
-
-  const fontSize =
-    MIN_RESISTANCE_FONT_SIZE +
-    R * (maxFont - MIN_RESISTANCE_FONT_SIZE);
+  // Map to font size with metal-specific range
+  const fontSize = minFont + R * (maxFont - minFont);
 
   resistanceLetter.setAttribute("font-size", fontSize);
 }
+
+
 
   function adjustFontOnMetalChange(prevMetal, newMetal) {
     const currentFont =
@@ -303,6 +345,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resistanceLetter.setAttribute("font-size", newFont);
   }
+
+  /* ------------------ PARTICLES ------------------ */
+
+
+
+function createParticles() {
+  if (!particleWrapper) return;
+
+  particleWrapper.innerHTML = "";
+
+  const w = particleWrapper.clientWidth;
+  const h = particleWrapper.clientHeight;
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const p = document.createElement("span");
+    p.className = "particle";
+
+    const size = Math.random() * 3 + 2;   // 2–5px
+    const duration = Math.random() * 2 + 1.5;
+
+    p.style.width = `${size}px`;
+    p.style.height = `${size}px`;
+
+    // ✅ Spread across full container
+    p.style.left = `${Math.random() * w}px`;
+    p.style.top = `${Math.random() * h}px`;
+
+    p.style.animationDuration = `${duration}s`;
+    p.style.animationDelay = `${Math.random() * 1.5}s`;
+
+    particleWrapper.appendChild(p);
+  }
+}
+
+
+/* create on load */
+createParticles();
+
+/* recreate on reset */
+resetBtn.addEventListener("click", () => {
+  createParticles();
+    updateParticleWrapperSize(); // ✅ ADD
+
+});
+
 
   updateMetalUI(); // default
 });
