@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const gateButtons = Object.keys(gateData).map(id => document.getElementById(id));
     const resetBtn = document.getElementById("btn-reset") || document.getElementById("btn_reset");
     
-    // Truth Table Selectors (Corrected variable names to match logic)
     const tableOther = document.getElementById("truth_table_other");
     const tableNot = document.getElementById("truth_table_not");
 
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Initialization
     function initDefault() {
-
         resetBtn.style.opacity = "0.28";
         activeBtnId = null;
         
@@ -53,8 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-
-        
         updateLogic();
     }
 
@@ -62,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateTruthTableUI(gateId) {
         const isNotGate = (gateId === "btn_not_gate");
         
-        // Fix for the ReferenceError: Using the correct variables defined in section 2
         if (tableNot) tableNot.style.display = isNotGate ? "block" : "none";
         if (tableOther) tableOther.style.display = isNotGate ? "none" : "block";
 
@@ -70,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!data) return;
 
         if (isNotGate) {
-            // IDs for NOT gate results
             const el0 = document.getElementById("_13");
             const el1 = document.getElementById("_0-21");
             
@@ -83,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (span) span.textContent = data.table["1"];
             }
         } else {
-            // Mapping for 3 columns and 4 rows using your new IDs
             const tableMapping = [
                 { a: "0", b: "0", idA: "INPUT_A_R1C1", idB: "INPUT_B_R1C2", idOut: "OUTPUT_R1C3" },
                 { a: "0", b: "1", idA: "INPUT_A_R2C1", idB: "INPUT_B_R2C2", idOut: "OUTPUT_R2C3" },
@@ -107,6 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
     gateButtons.forEach(btn => {
         if (!btn) return;
         btn.addEventListener("click", () => {
+            // Get current value of Input A from whichever group is currently visible before switching
+            const currentIs_Not = (activeBtnId === "btn_not_gate");
+            const currentSourceGroup = currentIs_Not ? notWiring : otherWiring;
+            const sourceToggles = currentSourceGroup.querySelectorAll('input[type="checkbox"]');
+            const currentValA = (sourceToggles[0] && sourceToggles[0].checked);
+
             activeBtnId = btn.id;
             resetBtn.style.opacity = "1";
             gateButtons.forEach(b => b.style.opacity = "1");
@@ -116,11 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (gateImg) gateImg.src = `assets/Gates/${gateData[activeBtnId].asset}`;
 
             if (activeBtnId === "btn_not_gate") {
-                if (notWiring) notWiring.style.display = "block";
+                if (notWiring) {
+                    notWiring.style.display = "block";
+                    // Sync Input A to the NOT gate checkbox
+                    const notToggle = notWiring.querySelector('input[type="checkbox"]');
+                    if (notToggle) notToggle.checked = currentValA;
+                }
                 if (otherWiring) otherWiring.style.display = "none";
             } else {
                 if (notWiring) notWiring.style.display = "none";
-                if (otherWiring) otherWiring.style.display = "block";
+                if (otherWiring) {
+                    otherWiring.style.display = "block";
+                    // Sync Input A back from the NOT gate checkbox
+                    const otherToggles = otherWiring.querySelectorAll('input[type="checkbox"]');
+                    if (otherToggles[0]) otherToggles[0].checked = currentValA;
+                }
             }
 
             updateTruthTableUI(activeBtnId);
@@ -148,12 +157,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentGroup) return;
 
         const toggles = currentGroup.querySelectorAll('input[type="checkbox"]');
+        
+        // Input A mapping
         const valA = (toggles[0] && toggles[0].checked) ? 1 : 0;
+        
+        // Input B mapping (only relevant for non-NOT gates)
         const valB = (toggles[1] && toggles[1].checked) ? 1 : 0;
 
         const suffix = isNotActive ? "_not" : "_other";
         
+        // Update Indicator A for NOT or OTHER
         syncDisplay(currentGroup, `input_indicator_on_a${suffix}`, `input_indicator_off_a${suffix}`, valA);
+        
+        // Update Indicator B only if it's NOT a NOT gate
         if (!isNotActive) {
             syncDisplay(currentGroup, `input_indicator_on_b${suffix}`, `input_indicator_off_b${suffix}`, valB);
         }
@@ -161,8 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let result = 0;
         if (activeBtnId) {
             if (isNotActive) {
+                // NOT gate only cares about valA
                 result = gateData[activeBtnId].table[valA];
             } else {
+                // Other gates care about valA and valB
                 result = gateData[activeBtnId].table[`${valA}${valB}`];
             }
         }

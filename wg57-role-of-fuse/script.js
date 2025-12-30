@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
         flowCut: document.getElementById('current-flow-fuse-cut-container'),
         fireTV: document.getElementById('fire-tv-container'),
         fireMicro: document.getElementById('fire-microwave-container'),
-        fireFridge: document.getElementById('fire-refrigerator-container')
+        fireFridge: document.getElementById('fire-refrigerator-container'),
+        spark: document.getElementById('spark-container') // Added Spark Container
     };
 
     const appliancesNormal = document.getElementById('appliances-normal');
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const shortCircuitBtn = document.getElementById('short-circuit-btn');
     const resetBtn = document.getElementById('reset-btn');
     const fuseSliderHandle = document.getElementById('fuse-slider-handle');
+    const fuseSliderGroup = document.getElementById('fuse-group');
 
     const FUSE_OFF_X = 787;
     const FUSE_ON_X = 956;
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fuseOn: false,
         shortCircuitActive: false,
         fireTimeout: null,
-        fuseCutTimeout: null // New timer for the 3-second delay
+        fuseCutTimeout: null
     };
 
     // -----------------------------
@@ -54,18 +56,21 @@ document.addEventListener("DOMContentLoaded", () => {
     initAnimation('fireTV', containers.fireTV, 'assets/animation/Fire.json', true);
     initAnimation('fireMicro', containers.fireMicro, 'assets/animation/Fire.json', true);
     initAnimation('fireFridge', containers.fireFridge, 'assets/animation/Fire.json', true);
+    initAnimation('spark', containers.spark, 'assets/animation/spark-animation.json', true); // Init Spark (Looping)
 
     // -----------------------------
     // 3. CORE CONTROL FUNCTIONS
     // -----------------------------
 
-    function resetToDefault() {
+   function resetToDefault() {
         // Clear all logic timers
         state.shortCircuitActive = false;
         state.fuseOn = false;
         if (state.fireTimeout) clearTimeout(state.fireTimeout);
         if (state.fuseCutTimeout) clearTimeout(state.fuseCutTimeout);
-
+        shortCircuitBtn.style.opacity = "1";
+        fuseSliderGroup.style.opacity = "1";
+        fuseNormalGroup.style.opacity = "1";
         // UI Reset
         fuseNormalGroup.style.display = "none";
         appliancesNormal.style.display = "block";
@@ -89,12 +94,19 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleShortCircuit() {
         if (state.shortCircuitActive) return;
         state.shortCircuitActive = true;
-
+        shortCircuitBtn.style.opacity = "0.4";
+        fuseSliderGroup.style.opacity = "0.4";
+        fuseNormalGroup.style.opacity = "0.4";
+        // Stop normal flow
         anims.flowNormal.stop();
         containers.flowNormal.style.display = "none";
 
+        // Show and Start Sparking immediately
+        containers.spark.style.display = "block";
+        anims.spark.play();
+
         if (!state.fuseOn) {
-            // SCENARIO 1: FIRE (1 second delay)
+            // SCENARIO 1: FIRE (Loop Sparking indefinitely until Reset)
             containers.flowFast.style.display = "block";
             anims.flowFast.play();
 
@@ -112,24 +124,27 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 1000);
 
         } else {
-            // SCENARIO 2: FUSE CUT (3 second delay)
+            // SCENARIO 2: FUSE (Stop Sparking after 3 seconds)
             containers.flowFast.style.display = "block";
             anims.flowFast.play();
 
             containers.pop.style.display = "block";
             anims.pop.play();
 
-            // Handle the transition exactly 3 seconds after the pop animation starts
             state.fuseCutTimeout = setTimeout(() => {
-                // Stop Fast Flow
+                // Cut current flow
                 anims.flowFast.stop();
                 containers.flowFast.style.display = "none";
 
-                // Play Fuse Cut Flow
+                // STOP Sparking
+                anims.spark.stop();
+                containers.spark.style.display = "none";
+
+                // Start Fuse Cut animation
                 containers.flowCut.style.display = "block";
                 anims.flowCut.play();
 
-                // Stop the pop animation if it hasn't finished, and hold at end
+                // Stop pop and hold at end
                 anims.pop.pause();
                 anims.pop.goToAndStop(anims.pop.totalFrames - 1, true);
             }, 3000);
@@ -140,16 +155,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. EVENT LISTENERS
     // -----------------------------
 
-    fuseSliderHandle.addEventListener("click", () => {
+    // Slider Logic
+    const toggleFuse = (evt) => {
+        evt.stopPropagation();
         if (state.shortCircuitActive) return;
         state.fuseOn = !state.fuseOn;
         fuseNormalGroup.style.display = state.fuseOn ? "block" : "none";
         fuseSliderHandle.style.transition = "x 0.4s ease-in-out";
         fuseSliderHandle.setAttribute("x", state.fuseOn ? FUSE_ON_X : FUSE_OFF_X);
-    });
+    };
+
+    fuseSliderHandle.addEventListener("click", toggleFuse);
+    if(fuseSliderGroup) fuseSliderGroup.addEventListener("click", toggleFuse);
 
     shortCircuitBtn.addEventListener("click", handleShortCircuit);
     resetBtn.addEventListener("click", resetToDefault);
 
+    // Initial State Run
     resetToDefault();
 });
