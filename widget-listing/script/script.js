@@ -368,10 +368,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Role of Fuse in Household Circuit",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg57-role-of-fuse/index.html",
     imagePath: "./assets/wg-57.png",
     creators: "sh-di-57",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Logic gates: AND, OR and NOT",
