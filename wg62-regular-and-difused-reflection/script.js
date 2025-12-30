@@ -31,6 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const insightBtn      = document.getElementById("insight-btn");
     const insightContent  = document.getElementById("insight-content");
     const closeInsightBtn = document.getElementById("close-insight-btn");
+    const INSIGHT_LINE_2_TEXT = {
+    lake: {
+        calm:  "Surface is smooth. Rays reflect in parallel forming mirror image",
+        wavy:  "Surface is rough. Rays reflect in different directions, no image is formed.",
+        rough: "Surface is very rough. Rays scatter completely, no image is formed."
+    },
+    mirror: "Surface is smooth. Rays reflect in parallel forming mirror image",
+    paper:  "Surface is rough. Rays reflect in different directions, no image is formed.",
+    wall:   "Surface is very rough. Rays scatter completely, no image is formed."
+};
 
     if (insightBtn && insightContent) {
         insightBtn.addEventListener("click", () => {
@@ -46,6 +56,28 @@ document.addEventListener("DOMContentLoaded", () => {
             insightContent.style.display = "none";
         });
     }
+
+
+    function updateSecondLineText() {
+    const secondLine = document.getElementById("2nd-line");
+    if (!secondLine) return;
+
+    const tspan = secondLine.querySelector("tspan");
+    if (!tspan) return;
+
+    let text;
+
+    if (activeSurface === "lake") {
+        text = INSIGHT_LINE_2_TEXT.lake[activeRoughness];
+    } else {
+        text = INSIGHT_LINE_2_TEXT[activeSurface];
+    }
+
+    if (text) {
+        tspan.textContent = text;
+    }
+}
+
 
     /* ==================================================
      * 3. SURFACE SELECTION CONFIG
@@ -86,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             hideAllReflections();
             target.style.display = "block";
-
+            updateSecondLineText();
             if (item.isLake) {
                 activateLakeState("calm");
             }
@@ -114,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === "calm")  lakeCalm.style.display  = "block";
         if (type === "wavy")  lakeWavy.style.display  = "block";
         if (type === "rough") lakeRough.style.display = "block";
+        updateSecondLineText();
     }
 
     calmBtn?.addEventListener("click",  () => activateLakeState("calm"));
