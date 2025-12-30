@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showAnswerBtn.innerText = "Hide Answer";
         } else {
             resetWidget();
-            showAnswerBtn.innerText = "Show Answer";
+            // showAnswerBtn.innerText = "Show Answer";
         }
     });
     // Global Controls
@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function resetWidget(clearIcons = true) {
+        showAnswerBtn.innerText = "Show Answer"
         isLocked = false;
         if (clearIcons) {
             document.querySelectorAll(".status-icon").forEach(el => el.remove());
