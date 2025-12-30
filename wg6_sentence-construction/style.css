@@ -1,0 +1,312 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+}
+
+/* .mainContainer {
+  canvas{
+    max-width: 100%;
+    height: auto !important;
+  }
+} */
+
+.container {
+  border: none;
+  background-image: url('Images/BG_Base.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+}
+
+.mainContainerOuter {
+  background: transparent !important;
+}
+
+.button-controls {
+  background: transparent !important;
+  border: none !important;
+}
+
+#info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a40b4;
+  margin-top: 5px;
+  text-align: center;
+}
+
+#point-count {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+
+
+.right-col {
+  padding: 20px;
+  background-color: #e4e5ea;
+  height: auto !important;
+  overflow: auto;
+  flex-basis: 300px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.right-col table {
+  margin: 0 auto;
+}
+
+.right-col table td,
+.right-col table th {
+  padding: 5px 15px;
+  border: 1px solid #000 34;
+}
+
+/* Flex Container */
+.flexContainer,
+.controlsSec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.radioOptions div {
+  display: flex;
+  gap: 20px;
+}
+
+.radioOptions input[type="radio"] {
+  margin-right: 12px;
+  accent-color: #1e6bef;
+  transform: scale(1.5);
+}
+
+/* Flex Item */
+.flexItem {
+  padding: 8px;
+  transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+  margin-right: 12px;
+  accent-color: #1e6bef;
+  transform: scale(1.5);
+}
+
+/* Label Styling */
+label {
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Select Dropdown Styling */
+.selectOptions select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  appearance: none;
+  margin: -8px;
+}
+
+.selectOptions select:focus {
+  border-color: #1e6bef;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Select Dropdown Icon */
+.selectOptions select::-ms-expand {
+  display: none;
+  /* Hide default dropdown arrow in IE */
+}
+
+/* Responsive Adjustments */
+/* @media (max-width: 768px) {
+  .controlsSec, .flexContainer {
+    flex-direction: column;
+    align-items: stretch;
+ } */
+
+@media (max-width: 768px) {
+  .step-buttons {
+    /* flex-direction: column; */
+    gap: 10px;
+  }
+
+  .flexItem {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+.label span {
+  border-radius: 5px;
+  background-color: #1e6bef;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  cursor: pointer;
+  outline: none;
+  /* slider progress trick */
+  overflow: hidden;
+  border-radius: 16px;
+  height: 15px;
+  min-width: 300px
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 15px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 15px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  height: 15px;
+  width: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #1e6bef;
+  /* slider progress trick */
+  box-shadow: -407px 0 0 400px #1e6bef;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #1e6bef;
+  /* slider progress trick */
+  box-shadow: -407px 0 0 400px #1e6bef;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+}
+
+.btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* new header css start*/
+.wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.wdgetTitle h2 {
+  font-size: 23px !important;
+  font-weight: 600;
+  text-align: left;
+  background: #3DE7E7 !important;
+  padding: 5px 20px;
+  color: black !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, .3);
+  border-radius: 0 0px 20px 20px;
+  margin: 0px 0px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* new header css end*/
+
+* {
+  user-select: none;
+}

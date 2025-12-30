@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root-of-quadratic-equations</title>
+
+    <!-- Your existing libs & CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+    <!-- JSXGraph -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"> -->
+    <script src="jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="jsxgraph.css">
+
+    <!-- Local tweaks only for the quadratic widget layout -->
+    <style>
+        /* Layout inside #mainCanvas only */
+        #quadraticApp {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        #graphRow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            width: 90%;
+        }
+
+        #jxgbox {
+            width: 550px;
+            height: 350px;
+            border: 1px solid #bbb;
+            background: #fff;
+        }
+
+        #rightPanel {
+            display: flex;
+            flex-direction: column;
+            min-width: 280px;
+            min-height: 150px;
+        }
+
+        #rightPanel .kv {
+            font-size: 15px;
+        }
+
+        #rightPanel .btn {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        #sliders {
+            width: 100%;
+            /* same width as graph */
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 18px 0;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .value-bubble {
+            position: absolute;
+            top: 0px;
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            pointer-events: none;
+            left: 50%;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        #output {
+            padding: 10px 12px;
+            display: none;
+            border-radius: 6px;
+            background: #f7f7f7;
+            border: 1px solid #e5e5e5;
+            max-width: 520px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .right-section {
+            padding: 40px 10px 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* slider css  */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        /* Track: webkit browsers */
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 15px;
+            background: #ccc;
+            border-radius: 16px;
+        }
+
+        /* Track: Mozilla Firefox */
+        input[type="range"]::-moz-range-track {
+            height: 15px;
+            background: #ccc;
+            border-radius: 16px;
+        }
+
+        /* Thumb: webkit */
+
+        #aSlider::-webkit-slider-thumb {
+            border: 2px solid #ff8800;
+
+            box-shadow: -407px 0 0 400px #ff8800;
+        }
+
+        #bSlider::-webkit-slider-thumb {
+            border: 2px solid #228B22;
+            box-shadow: -407px 0 0 400px #228B22;
+        }
+
+        #cSlider::-webkit-slider-thumb {
+            border: 2px solid #0099ff;
+            box-shadow: -407px 0 0 400px #0099ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>How many roots does this quadratic equation have?</h2>
+                <span id="versionId" class="versionText">b2_wg14_25103002</span>
+            </div>
+
+
+
+            <!-- Your original main container kept as-is; quadratic app goes inside -->
+            <div class="mainContainer" id="mainCanvas" style="align-items: center;">
+                <div id="quadraticApp">
+                    <div id="graphRow">
+                        <!-- Graph -->
+                        <div>
+                            <div class="question">
+                                <h2 style="text-align:center; font-weight: 500;font-size: 25px;">
+                                    Quadratic Equation: <i class="new_roman">y</i> = <span
+                                        style="color:#ff8800;">a</span><i class="new_roman">x</i>² + <span
+                                        style="color:#228B22;">b</span><i class="new_roman">x</i> + <span
+                                        style="color:#0099ff;">c</span></h2>
+                            </div>
+                            <div style="position: relative;">
+                                <span id="dynamic-eqn"><i class="new_roman">y</i> = <span
+                                        style="color:#ff8800;">a</span><i class="new_roman">x</i>² + <span
+                                        style="color:#228B22;">b</span><i class="new_roman">x</i> + <span
+                                        style="color:#0099ff;">c</span></span>
+                                <div id="jxgbox">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right panel (a,b,c values + Show/Hide) -->
+                        <div class="right-section">
+                            <span style="display: block; margin-right: 5px; font-size: 22px;">Is</span>
+                            <div id="rightPanel">
+                                <span style="font-size: 22px;">
+                                    <span style="color:#228B22;">b</span>² − 4
+                                    <span style="color:#ff8800;">a</span>
+                                    <span style="color:#0099ff;">c</span> ≥ 0 ? 9999
+                                </span>
+                            </div>
+                            <div id="sliders">
+                                <div class="slider-container">
+                                    <div class="slider-labels">
+                                        <span>-6</span><span>6</span>
+                                    </div>
+                                    <div class="value-bubble" id="aBubble" style="background-color: #ff8800;">1</div>
+                                    <div class="input-wrapper">
+                                        <span style="color:#ff8800;">a</span>
+                                        <input type="range" id="aSlider" min="-6" max="6" step="1" value="1" />
+                                    </div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-labels">
+                                        <span>-6</span><span>6</span>
+                                    </div>
+                                    <div class="value-bubble" id="bBubble" style="background-color: #228B22">0</div>
+                                    <div class="input-wrapper">
+                                        <span style="color:#228B22;">b</span>
+                                        <input type="range" id="bSlider" min="-6" max="6" step="1" value="0" />
+                                    </div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-labels">
+                                        <span>-20</span><span>20</span>
+                                    </div>
+                                    <div class="value-bubble" id="cBubble" style="background-color: #0099ff">0</div>
+                                    <div class="input-wrapper">
+                                        <span style="color:#0099ff;">c</span>
+                                        <input type="range" id="cSlider" min="-20" max="20" step="1" value="0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your existing buttons kept intact -->
+            <div class="flexContainer button-controls">
+                <div class="flexItem flexItemFirst">
+                    <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
+                    <button id="toggleBtn" class="btn btn-primary">Show answer</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="sketch.js"></script>
+
+</body>
+
+</html>

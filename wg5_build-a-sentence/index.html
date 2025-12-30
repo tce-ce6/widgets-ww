@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build a Sentence</title>
+    <script src="lib/p5.js"></script>
+    <script src="sketch.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="global_style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="mainContainerOuter">
+          <div class="wdgetTitle">
+            <h2>Build a Sentence</h2>
+            <span id="versionId" class="versionText">b2_wg05_25091901</span>
+          </div>
+          <div class="mainContainer" id="mainCanvas">
+            <div class="question" style="font-style: italic; font-size: 18px;font-weight: medium;color: white; padding-left: 60px;">
+              Use the two words in a single meaningful sentence. Write your sentence in your notebook.
+            </div>
+
+          </div>
+          <div class="flexContainer button-controls">
+            <div class="flexItem flexItemFirst">
+              <!-- <button class="btn btn-primary" id="prev-btn">Previous</button> -->
+              <button class="btn" id="show-example-btn"
+              style="background-color:#4caf50; color:white;"
+              onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              "
+              onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+              Show Example
+            </button>
+            
+              <button class="btn btn-primary" id="next-btn" style="background-color:#1e6bef; color:white;"
+              onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #1e6bef';
+                this.style.outlineOffset = '3px';
+              "
+              onblur="this.style.outline='none'; this.style.outlineOffset='0';">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>

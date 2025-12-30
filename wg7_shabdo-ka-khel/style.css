@@ -1,0 +1,239 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+  white-space: nowrap;
+}
+
+#shabd-widgetbody {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0
+}
+
+#shabd-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative
+}
+
+#shabd-widget .container::after {
+  content: "";
+  background-image: url("assets/BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* filter: blur(5px) */
+}
+
+#shabd-widget .mainContainerOuter {
+  background: #000 !important
+}
+
+#shabd-widget .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#shabd-widget .d-flex {
+  display: flex
+}
+
+#shabd-widget .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#shabd-widget .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#shabd-widget .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #shabd-widget .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#shabd-widget .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#shabd-widget .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#shabd-widget .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabd-widget .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#shabd-widget .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabd-widget .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#shabd-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#shabd-widget .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  background: #b478ff;
+  padding: 8px 20px;
+  color: black;
+  border-radius: 0 0px 20px 20px;
+  background: #b478ff;
+  /* background: linear-gradient(90deg, #099eed 0, #1779e6 48%, #09f 100%) */
+}
+
+#shabd-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #ccc
+}
+
+#shabd-widget .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#shabd-widget svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+.text-wrap {
+  width: 100%;
+}
+
+.word,
+.activity {
+  font-size: 50px;
+  font-weight: 500;
+  line-height: 1.4;
+  background-image: url("./assets/leftLottie.svg");
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 143px;
+  width: 276px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  background-position: center center;
+}
+
+.activity {
+  background-image: url("./assets/rightLottie.svg");
+  height: 180px;
+  width: 1018px;
+}
+
+.show-ans {
+  font-size: 42px;
+  font-weight: 500;
+  text-align: center;
+  text-wrap: auto;
+  line-height: 1.4;
+}
+
+.result-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  background-image: url("./assets/answerPaper.svg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+}
+
+.feedbackWrapper {
+  font-size: 28px;
+  height: 100%;
+  color: white;
+  white-space: nowrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+}
+.feedbackWrapper .showfeedback{
+  text-align: center;
+}
+
+.left1{
+  height: 200px;
+  width: 200px;
+  border: 1px solid red;
+}
+/* #lottieLeft, #lottieRight {
+  cursor: pointer;
+}
+
+#lottieLeft.disabled, #lottieRight.disabled {
+  cursor: default;
+}  */

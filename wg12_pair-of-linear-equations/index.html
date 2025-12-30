@@ -1,0 +1,359 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pair_of_linear_equations</title>
+
+  <!-- Your existing libs & CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="global_style.css">
+  <!-- JSXGraph -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"> -->
+  <script src="jsxgraphcore.js"></script>
+  <link rel="stylesheet" href="jsxgraph.css">
+
+  <style>
+    #jxgbox {
+      width: 800px;
+      height: 500px;
+      border: 1px solid gray;
+    }
+
+    input[type="range"].vertical {
+      transform: rotate(-90deg);
+      position: absolute;
+      top: 38px;
+      width: 100px;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    input[type="range"] {
+      --thumb-height: 1.125em;
+      --track-height: 0.125em;
+      --track-color: rgba(0, 0, 0, 0.2);
+      --brightness-hover: 180%;
+      --brightness-down: 80%;
+      --clip-edges: 0.125em;
+      color: red;
+    }
+
+    .downSlider .slider-group input[type="range"] {
+      color: blue !important;
+      border: none !important;
+    }
+
+    input[type="range"].win10-thumb {
+      color: #2b2d42;
+      --thumb-height: 1.375em;
+      --thumb-width: 0.5em;
+      --clip-edges: 0.0125em;
+    }
+
+    input[type="range"],
+    input[type="range"]::-webkit-slider-runnable-track,
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      transition: all ease 100ms;
+      height: var(--thumb-height);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
+      --clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+      --clip-bottom: calc(var(--thumb-height) - var(--clip-top));
+      --clip-further: calc(100% + 1px);
+      --box-fill: calc(-100vmax - var(--thumb-width, var(--thumb-height))) 0 0 100vmax currentColor;
+
+      width: var(--thumb-width, var(--thumb-height));
+      background: linear-gradient(currentColor 0 0) scroll no-repeat left center / 50% calc(var(--track-height) + 1px);
+      background-color: currentColor;
+      box-shadow: var(--box-fill);
+      border-radius: var(--thumb-width, var(--thumb-height));
+      filter: brightness(100%);
+      clip-path: polygon(100% -1px,
+          var(--clip-edges) -1px,
+          0 var(--clip-top),
+          -100vmax var(--clip-top),
+          -100vmax var(--clip-bottom),
+          0 var(--clip-bottom),
+          var(--clip-edges) 100%,
+          var(--clip-further) var(--clip-further));
+      border: 0 !important;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: linear-gradient(var(--track-color) 0 0) scroll no-repeat center / 100% calc(var(--track-height) + 1px);
+    }
+
+    input[type="range"]:disabled {
+      filter: grayscale(1);
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    input[type="range"]:disabled::-webkit-slider-thumb {
+      cursor: not-allowed;
+    }
+
+    input[type=range].vertical:nth-child(1) {
+      left: -30px;
+    }
+
+    input[type=range].vertical:nth-child(2) {
+      left: 65px;
+    }
+
+    input[type=range].vertical:nth-child(3) {
+      left: 147px;
+    }
+
+    .slider-group {
+      display: inline-flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 60px;
+      height: 100px;
+      position: relative;
+      width: 285px;
+    }
+
+    .leftPanel,
+    .jxgbox {
+      width: 50%;
+      text-align: center;
+    }
+
+    .mainContainer {
+      width: 80%;
+      gap: 15px;
+    }
+
+    .upCoefficient,
+    .downCoefficient {
+      display: inline-block;
+      margin: 15px 0 15px -50px;
+      display: flex;
+      margin: 15px 0 15px -50px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upCoefficient .equation-wrapper {
+      background-color: rgb(241, 93, 82);
+      padding: 10px;
+      margin: 0 7px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .downCoefficient .equation-wrapper {
+      background-color: rgb(110, 195, 238);
+      padding: 10px;
+      margin: 0 7px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .upEquation #eq1,
+    .downEquation #eq2 {
+      font-size: 26px;
+      letter-spacing: 5px;
+    }
+
+    #eq1_sign, #eq2_sign {
+      font-size: 26px;
+      letter-spacing: 5px;
+    }
+
+    .equation-ratio {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      gap: 15px;
+      font-size: 26px;
+      font-weight: 600;
+      margin: 20px 0;
+      min-width: 224px;
+    }
+
+    .ratioText {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      background-color: #b7ffb7;
+      padding: 0 17px;
+      border-radius: 10px;
+      margin: 0 auto 15px auto;
+      width: 310px;
+    }
+
+    .txt-align {
+      line-height: 2.2;
+    }
+
+    .result-box {
+      position: absolute;
+      background-color: #e0f7fa;
+      color: #00695c;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #00695c;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      display: none;
+      /* initially hidden */
+    }
+
+    .equa-wrap {
+      width: 92px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>How many solutions does this pair of linear equations have?</h2>
+        <span id="versionId" class="versionText">b2_wg12_25111001</span>
+      </div>
+
+      <!-- Your original main container kept as-is; quadratic app goes inside -->
+      <div class="mainContainer" id="mainCanvas" style="align-items: center;">
+        <div class="leftPanel">
+          <!-- First Equation -->
+          <div class="upSlider">
+            <div class="upCoefficient">
+              <div class="equa-wrap">
+                <span class="equation-wrapper"><span id="a1_val">9</span></span>
+              </div>
+              <div class="equa-wrap">
+                <span class="equation-wrapper"><span id="b1_val">10</span></span>
+              </div>
+              <div class="equa-wrap">
+                <span class="equation-wrapper" style="margin-left: 19px;"><span id="c1_val">10</span></span>
+              </div>
+            </div>
+            <div class="slider-group">
+
+              <input type="range" min="-20" max="20" value="9" class="coeff-slider vertical" id="a1">
+              <input type="range" min="-20" max="20" value="10" class="coeff-slider vertical" id="b1">
+              <input type="range" min="-30" max="30" value="10" class="coeff-slider vertical" id="c1">
+            </div>
+            <div class="upEquation">
+              <span id="eq1"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">a₁</span><i
+                  class="roman-txt">x</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">b₁</span><i
+                  class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;">c₁</span>
+                = 0</span>
+              <div>
+                <span id="eq1_sign"><span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span
+                      id="a1_value">9</span></span><i class="roman-txt">x</i> + <span
+                    style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span id="b1_value">10</span></span><i
+                    class="roman-txt">y</i> + <span style="color: rgb(241, 93, 82); letter-spacing: 0.4px;"><span
+                      id="c1_value">10</span></span>
+                  = 0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ratio -->
+          <div class="ratioText">
+            <div class="equation-ratio">
+              <div class="txt-align" id="isText">Is</div>
+              <div style="line-height: 1;">
+                <div id="ratio_a1_val">a₁</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                <div id="ratio_a2_val">a₂</div>
+              </div>
+              <div id="eqSign1" class="txt-align">=</div> <!-- dynamic -->
+              <div style="line-height: 1;">
+                <div id="ratio_b1_val">b₁</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                <div id="ratio_b2_val">b₂</div>
+              </div>
+              <div id="eqSign2" class="txt-align">=</div> <!-- dynamic -->
+              <div style="line-height: 1;">
+                <div id="ratio_c1_val">c₁</div>
+                <hr style="margin: 2px 0; border: none; border-top: 1px solid black;">
+                <div id="ratio_c2_val">c₂</div>
+              </div>
+              <div class="txt-align" id="questionMark">?</div>
+            </div>
+            <button id="toggleBtn" class="hideRatio">Show</button>
+          </div>
+
+
+          <div class="downCoefficient">
+            <div class="equa-wrap">
+              <span class="equation-wrapper"><span id="a2_val">6</span></span>
+            </div>
+            <div class="equa-wrap">
+              <span class="equation-wrapper"><span id="b2_val">1</span></span>
+            </div>
+            <div class="equa-wrap">
+              <span class="equation-wrapper" style="margin-left: 19px;"><span id="c2_val">—5</span></span>
+            </div>
+          </div>
+          <!-- Second Equation -->
+          <div class="downSlider">
+            <div class="slider-group">
+              <input type="range" min="-20" max="20" value="6" class="coeff-slider vertical" id="a2">
+              <input type="range" min="-20" max="20" value="1" class="coeff-slider vertical" id="b2">
+              <input type="range" min="-30" max="30" value="-5" class="coeff-slider vertical" id="c2">
+            </div>
+            <div class="downEquation">
+              <span id="eq2"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">a₂</span><i
+                  class="roman-txt">x</i> + <span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">b₂</span><i
+                  class="roman-txt">y</i> + <span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;">c₂</span> =
+                0</span>
+              <div>
+                <span id="eq2_sign"><span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span
+                      id="a2_value">6</span></span><i class="roman-txt">x</i> + <span
+                    style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span id="b2_value">1</span></span><i
+                    class="roman-txt">y</i> + <span style="color: rgb(110, 195, 238); letter-spacing: 0.4px;"><span
+                      id="c2_value">—5</span></span> = 0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="solution-wrapper">
+          <span id="solutionDiv" class="solution-div"></span>
+          <div id="jxgbox" class="jxgbox">
+          </div>
+        </div>
+        <!-- Graph -->
+        <!-- <div>
+                    <button class="plot">Plot</button>
+                </div> -->
+      </div>
+
+      <!-- Your existing buttons kept intact -->
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <!-- <button class="btn btn-primary" id="reset-btn">Reset</button> -->
+          <button id="toggleBtn" class="btn btn-primary plot">Plot</button>
+          <button id="solutionBtn" class="btn btn-primary plot">Show answer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
