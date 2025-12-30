@@ -238,16 +238,9 @@
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="note-wrapper" x="449" y="800" width="1023" height="80"
-                    style="overflow: visible; display:none;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" class="ans-note">
-                      <span id="ans-text">Increasing the wire's thickness (cross-sectional area) lowers its
-                        resistance.</span>
-                      <img src="./assets/close-btn.svg" class="close-btn" alt="">
-                    </div>
-                  </foreignObject>
 
-                  
+
+
 
                   <g id="copper-bar">
                     <g id="cylinder_2">
@@ -320,7 +313,47 @@
 
                   <foreignObject id="copper-particle" x="319" y="400" width="420" height="170">
                     <div xmlns="http://www.w3.org/1999/xhtml" id="particle-wrapper">
+                    </div>
+                  </foreignObject>
 
+                  <foreignObject id="note-wrapper" x="0" y="0" width="1920" height="1080"
+                    style="overflow: visible; display:none; background-color: rgba(0, 0, 0, 0.9);">
+                    <div xmlns="http://www.w3.org/1999/xhtml" class="ans-note">
+                      <div class="modal-box">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Factor</th>
+                            <th>Effect</th>
+                            <th>Explanation</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="factor-cell">Length (L)</td>
+                            <td>Longer wire = Higher resistance</td>
+                            <td>Electrons travel a greater distance and collide with more atoms, increasing resistance
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="factor-cell"></td>
+                            <td>Shorter wire = Lower resistance</td>
+                            <td>Electrons travel a shorter distance with fewer collisions, reducing resistance</td>
+                          </tr>
+                          <tr>
+                            <td class="factor-cell">Cross-sectional Area (A)</td>
+                            <td>Thicker wire = Lower resistance</td>
+                            <td>More space allows electrons to flow freely with less obstruction</td>
+                          </tr>
+                          <tr>
+                            <td class="factor-cell"></td>
+                            <td>Thinner wire = Higher resistance</td>
+                            <td>Less space restricts electron flow, causing more obstruction</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <img src="./assets/close-btn.svg" class="close-btn" alt="">
+                    </div>
                     </div>
                   </foreignObject>
 
@@ -401,7 +434,7 @@
             Tungsten
           </button>
 
-          <button class="btn" id="btn-1" style="background-color:#005BD2; color:white;" onfocus="
+          <button class="btn answer-btn" id="btn-1" style="background-color:#F7901E; color:white;" onfocus="
                 document.querySelectorAll('.btn').forEach(b => {
                   b.style.outline = 'none';
                   b.style.outlineOffset = '0';

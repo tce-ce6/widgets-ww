@@ -11,26 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const tungstenTxt = document.getElementById("tungsten-txt");
 
   const resistanceLetter = document.getElementById("resistance-letter");
+  const svgContainer = document.getElementById("svg-container");
 
   const noteWrapper = document.getElementById("note-wrapper");
-  const ansText = document.getElementById("ans-text");
   const closeBtn = noteWrapper.querySelector(".close-btn");
   const btn1 = document.getElementById("btn-1");
   const resetBtn = document.getElementById("reset-btn");
 
   const particleWrapper = document.getElementById("particle-wrapper");
-const PARTICLE_COUNT = 50;
+  const PARTICLE_COUNT = 50;
 
-  const noteTextByMetal = {
-    copper:
-      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
-    aluminium:
-      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
-    tungsten:
-      "Increasing the wire's thickness (cross-sectional area) lowers its resistance.",
-  };
-
-  
   /* ------------------ CONSTANTS ------------------ */
 
   const MIN_RESISTANCE_FONT_SIZE = 150;
@@ -69,11 +59,12 @@ const PARTICLE_COUNT = 50;
 
   /* ------------------ PARTICLE SIZE BASE ------------------ */
 
-// Base size of particle wrapper when WIDTH_INITIAL & HEIGHT_INITIAL
-const PARTICLE_BASE_WIDTH = 900;   // matches your foreignObject width
-const PARTICLE_BASE_HEIGHT = 170;  // matches your foreignObject height
+  // Base size of particle wrapper when WIDTH_INITIAL & HEIGHT_INITIAL
+  const PARTICLE_BASE_WIDTH = 880; // matches your foreignObject width
+  const PARTICLE_BASE_HEIGHT = 160; // matches your foreignObject height
+  const PARTICLE_BASE_Y = 400; // original y of copper-particle
 
-const copperParticleFO = document.getElementById("copper-particle");
+  const copperParticleFO = document.getElementById("copper-particle");
 
   /* ------------------ BAR SCALE MAPS ------------------ */
 
@@ -175,7 +166,6 @@ const copperParticleFO = document.getElementById("copper-particle");
 
     updateResistanceFont(); // ✅
     updateParticleWrapperSize(); // ✅ ADD
-
   });
 
   /* ------------------ HEIGHT SLIDER ------------------ */
@@ -208,29 +198,29 @@ const copperParticleFO = document.getElementById("copper-particle");
 
     updateResistanceFont(); // ✅
     updateParticleWrapperSize(); // ✅ ADD
-
   });
 
-function updateParticleWrapperSize() {
-  if (!particleWrapper || !copperParticleFO) return;
+  function updateParticleWrapperSize() {
+    if (!particleWrapper || !copperParticleFO) return;
 
-  const newWidth = PARTICLE_BASE_WIDTH * currentScaleX;
-  const newHeight = PARTICLE_BASE_HEIGHT * currentScaleY;
+    const newWidth = PARTICLE_BASE_WIDTH * currentScaleX;
+    const newHeight = PARTICLE_BASE_HEIGHT * currentScaleY;
 
-  // Resize SVG foreignObject
-  copperParticleFO.setAttribute("width", newWidth);
-  copperParticleFO.setAttribute("height", newHeight);
+    // 🔥 Center vertically by adjusting Y
+    const newY = PARTICLE_BASE_Y - (newHeight - PARTICLE_BASE_HEIGHT) / 1;
 
-  // Resize inner container
-  particleWrapper.style.width = `${newWidth}px`;
-  particleWrapper.style.height = `${newHeight}px`;
+    // Resize SVG foreignObject
+    copperParticleFO.setAttribute("width", newWidth);
+    copperParticleFO.setAttribute("height", newHeight);
+    copperParticleFO.setAttribute("y", newY);
 
-  // 🔥 IMPORTANT: recreate particles to occupy full area
-  createParticles();
-}
+    // Resize inner container
+    particleWrapper.style.width = `${newWidth}px`;
+    particleWrapper.style.height = `${newHeight}px`;
 
-
-
+    // Recreate particles so they fill new area
+    createParticles();
+  }
 
   function updateMetalUI() {
     copperBar.style.display =
@@ -261,14 +251,14 @@ function updateParticleWrapperSize() {
     );
   }
 
-
   btn1.addEventListener("click", () => {
-    ansText.textContent = noteTextByMetal[selectedMetal] || "";
     noteWrapper.style.display = "block";
+    svgContainer.classList.add("modal-open"); // ✅ ADD
   });
 
   closeBtn.addEventListener("click", () => {
     noteWrapper.style.display = "none";
+    svgContainer.classList.remove("modal-open"); // ✅ ADD
   });
 
   /* ------------------ GLOBAL RESET ------------------ */
@@ -285,49 +275,48 @@ function updateParticleWrapperSize() {
     resistanceLetter.setAttribute("font-size", RESISTANCE_INITIAL_FONT_SIZE);
 
     noteWrapper.style.display = "none";
+    svgContainer.classList.remove("modal-open"); // ✅ ADD
 
     updateMetalUI();
   });
 
-function updateResistanceFont() {
-  if (!widthSlider.noUiSlider || !heightSlider.noUiSlider) return;
+  function updateResistanceFont() {
+    if (!widthSlider.noUiSlider || !heightSlider.noUiSlider) return;
 
-  const widthValue = Number(widthSlider.noUiSlider.get());
-  const heightValue = Number(heightSlider.noUiSlider.get());
+    const widthValue = Number(widthSlider.noUiSlider.get());
+    const heightValue = Number(heightSlider.noUiSlider.get());
 
-  // Normalize to 0-1 range
-  const L = (widthValue - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN); // length (0 to 1)
-  const t = (heightValue - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN); // thickness (0 to 1)
+    // Normalize to 0-1 range
+    const L = (widthValue - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN); // length (0 to 1)
+    const t = (heightValue - HEIGHT_MIN) / (HEIGHT_MAX - HEIGHT_MIN); // thickness (0 to 1)
 
-  // Cross-sectional area - inverse relationship with resistance
-  // 🔥 Much smaller minimum for more dramatic effect
-  const A = Math.max(0.02 + t * 0.98, 0.02); // scale from 0.02 to 1.0
+    // Cross-sectional area - inverse relationship with resistance
+    // 🔥 Much smaller minimum for more dramatic effect
+    const A = Math.max(0.02 + t * 0.98, 0.02); // scale from 0.02 to 1.0
 
-  // Physics: R = ρ * (L / A)
-  // Apply exponential scaling for dramatic visual effect
-  const lengthEffect = Math.pow(0.3 + L * 0.7, 2.5);
-  const areaEffect = Math.pow(A, 0.25); // 🔥 Reduced from 0.4 to 0.25 for MORE dramatic effect
-  
-  // Calculate base resistance
-  let R = lengthEffect / areaEffect;
+    // Physics: R = ρ * (L / A)
+    // Apply exponential scaling for dramatic visual effect
+    const lengthEffect = Math.pow(0.3 + L * 0.7, 2.5);
+    const areaEffect = Math.pow(A, 0.25); // 🔥 Reduced from 0.4 to 0.25 for MORE dramatic effect
 
-  // Normalize to 0-1 range
-  const R_MIN = Math.pow(0.3, 2.5) / Math.pow(1.0, 0.25);
-  const R_MAX = Math.pow(1.0, 2.5) / Math.pow(0.02, 0.25);
-  
-  R = Math.max(0, Math.min((R - R_MIN) / (R_MAX - R_MIN), 1));
+    // Calculate base resistance
+    let R = lengthEffect / areaEffect;
 
-  // Apply metal-specific resistivity offset
-  const minFont = MIN_RESISTANCE_FONT_SIZE + METAL_FONT_OFFSET[selectedMetal];
-  const maxFont = MAX_RESISTANCE_FONT_BY_METAL[selectedMetal];
+    // Normalize to 0-1 range
+    const R_MIN = Math.pow(0.3, 2.5) / Math.pow(1.0, 0.25);
+    const R_MAX = Math.pow(1.0, 2.5) / Math.pow(0.02, 0.25);
 
-  // Map to font size with metal-specific range
-  const fontSize = minFont + R * (maxFont - minFont);
+    R = Math.max(0, Math.min((R - R_MIN) / (R_MAX - R_MIN), 1));
 
-  resistanceLetter.setAttribute("font-size", fontSize);
-}
+    // Apply metal-specific resistivity offset
+    const minFont = MIN_RESISTANCE_FONT_SIZE + METAL_FONT_OFFSET[selectedMetal];
+    const maxFont = MAX_RESISTANCE_FONT_BY_METAL[selectedMetal];
 
+    // Map to font size with metal-specific range
+    const fontSize = minFont + R * (maxFont - minFont);
 
+    resistanceLetter.setAttribute("font-size", fontSize);
+  }
 
   function adjustFontOnMetalChange(prevMetal, newMetal) {
     const currentFont =
@@ -348,48 +337,43 @@ function updateResistanceFont() {
 
   /* ------------------ PARTICLES ------------------ */
 
+  function createParticles() {
+    if (!particleWrapper) return;
 
+    particleWrapper.innerHTML = "";
 
-function createParticles() {
-  if (!particleWrapper) return;
+    const w = particleWrapper.clientWidth;
+    const h = particleWrapper.clientHeight;
 
-  particleWrapper.innerHTML = "";
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = document.createElement("span");
+      p.className = "particle";
 
-  const w = particleWrapper.clientWidth;
-  const h = particleWrapper.clientHeight;
+      const size = Math.random() * 3 + 2; // 2–5px
+      const duration = Math.random() * 2 + 1.5;
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const p = document.createElement("span");
-    p.className = "particle";
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
 
-    const size = Math.random() * 3 + 2;   // 2–5px
-    const duration = Math.random() * 2 + 1.5;
+      // ✅ Spread across full container
+      p.style.left = `${Math.random() * w}px`;
+      p.style.top = `${Math.random() * h}px`;
 
-    p.style.width = `${size}px`;
-    p.style.height = `${size}px`;
+      p.style.animationDuration = `${duration}s`;
+      p.style.animationDelay = `${Math.random() * 1.5}s`;
 
-    // ✅ Spread across full container
-    p.style.left = `${Math.random() * w}px`;
-    p.style.top = `${Math.random() * h}px`;
-
-    p.style.animationDuration = `${duration}s`;
-    p.style.animationDelay = `${Math.random() * 1.5}s`;
-
-    particleWrapper.appendChild(p);
+      particleWrapper.appendChild(p);
+    }
   }
-}
 
-
-/* create on load */
-createParticles();
-
-/* recreate on reset */
-resetBtn.addEventListener("click", () => {
+  /* create on load */
   createParticles();
+
+  /* recreate on reset */
+  resetBtn.addEventListener("click", () => {
+    createParticles();
     updateParticleWrapperSize(); // ✅ ADD
-
-});
-
+  });
 
   updateMetalUI(); // default
 });
