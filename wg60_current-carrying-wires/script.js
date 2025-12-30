@@ -13,10 +13,9 @@ const rightTap = document.getElementById('right-tap');
 const leftTap = document.getElementById('left-tap');
 
 const showAnswerText = document.getElementById('showAnswerText');
+const insightText = document.getElementById('message-txt');
+const closeBtn = document.getElementById('closeExampleBtn');
 
-let line1 = document.getElementById('line1');
-let line2 = document.getElementById('line2');
-let line3 = document.getElementById('line3');
 
 let leftLottieInstance = null;
 let rightLottieInstance = null;
@@ -35,24 +34,16 @@ const PATH_BASE = './Assets/Animation/JSON/';
  */
 function getConditionPaths() {
     if (isArrow1Active && isArrow2Active) {
-        line1.textContent = 'When current passes in the ';
-        line2.textContent = 'opposite direction, the wires ';
-        line3.textContent = 'are forced apart.';
+        insightText.textContent = 'When current passes in the opposite direction, the wires are forced apart.';
         return { left: 'Condition_03_LH.json', right: 'Condition_03_RH.json' };
     } else if (isArrow1Active) {
-        line1.textContent = 'When current passes in the ';
-        line2.textContent = 'same direction, the wires are ';
-        line3.textContent = 'forced together.';
+        insightText.textContent = 'When current passes in the same direction, the wires are forced together.';
         return { left: 'Condition_04_LH.json', right: 'Condition_04_RH.json' };
     } else if (isArrow2Active) {
-        line1.textContent = 'When current passes in the ';
-        line2.textContent = 'same direction, the wires are ';
-        line3.textContent = 'forced together.';
+        insightText.textContent = 'When current passes in the same direction, the wires are forced together.';
         return { left: 'Condition_02_LH.json', right: 'Condition_02_RH.json' };
     } else {
-        line1.textContent = 'When current passes in the ';
-        line2.textContent = 'opposite direction, the wires ';
-        line3.textContent = 'are forced apart.';
+        insightText.textContent = 'When current passes in the opposite direction, the wires are forced apart.';
         return { left: 'Condition_01_LH.json', right: 'Condition_01_RH.json' };
     }
 }
@@ -146,6 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('showAnswer').addEventListener('click', () =>{
         showAnswerText.style.display = 'block';
     });
+
+    closeBtn.addEventListener('click', () => {
+        showAnswerText.style.display = 'none';
+    })
 
     leftButton.onclick = () => {
         leftButton.src = './Assets/on-btn.svg';

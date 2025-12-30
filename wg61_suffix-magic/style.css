@@ -359,6 +359,11 @@
 
 }
 
+#list-suffix li span {
+  font-size: 40px;
+  font-weight: bold;
+}
+
 /* Red glow */
 .wrong-answer {
   /* border: 3px solid red; */
