@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Initialization
     function initDefault() {
-        resetBtn.style.opacity = "0.28";
+        // resetBtn.style.opacity = "0.28";
         activeBtnId = null;
         
         if (displayGroup) displayGroup.style.display = "block";
