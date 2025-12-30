@@ -369,3 +369,10 @@ table {
     border-radius: 20px;
     position: relative;
 }
+.btn.active{
+  opacity: 1;
+  pointer-events: all;
+}
+.btn.disabled{
+  opacity: .6;
+}

@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const particleWrapper = document.getElementById("particle-wrapper");
   const PARTICLE_COUNT = 50;
+let hasUserChangedSlider = false;
 
   /* ------------------ CONSTANTS ------------------ */
 
@@ -56,6 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
     aluminium: 60,
     tungsten: 120,
   };
+
+  const copperBtn = document.getElementById("copper-btn");
+  const aluminiumBtn = document.getElementById("aluminium-btn");
+  const tungstenBtn = document.getElementById("tungsten-btn");
 
   /* ------------------ PARTICLE SIZE BASE ------------------ */
 
@@ -108,29 +113,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ------------------ METAL BUTTONS ------------------ */
 
-  document.getElementById("copper-btn").onclick = () => {
-    const prevMetal = selectedMetal;
-    selectedMetal = "copper";
+document.getElementById("copper-btn").onclick = () => {
+  const prevMetal = selectedMetal;
+  selectedMetal = "copper";
 
-    adjustFontOnMetalChange(prevMetal, selectedMetal);
-    updateMetalUI();
-  };
+  adjustFontOnMetalChange(prevMetal, selectedMetal);
+  updateMetalUI();
+  updateMetalButtonClasses(); // ✅ ADD
+};
 
-  document.getElementById("aluminium-btn").onclick = () => {
-    const prevMetal = selectedMetal;
-    selectedMetal = "aluminium";
 
-    adjustFontOnMetalChange(prevMetal, selectedMetal);
-    updateMetalUI();
-  };
+document.getElementById("aluminium-btn").onclick = () => {
+  const prevMetal = selectedMetal;
+  selectedMetal = "aluminium";
 
-  document.getElementById("tungsten-btn").onclick = () => {
-    const prevMetal = selectedMetal;
-    selectedMetal = "tungsten";
+  adjustFontOnMetalChange(prevMetal, selectedMetal);
+  updateMetalUI();
+  updateMetalButtonClasses(); // ✅ ADD
+};
 
-    adjustFontOnMetalChange(prevMetal, selectedMetal);
-    updateMetalUI();
-  };
+
+document.getElementById("tungsten-btn").onclick = () => {
+  const prevMetal = selectedMetal;
+  selectedMetal = "tungsten";
+
+  adjustFontOnMetalChange(prevMetal, selectedMetal);
+  updateMetalUI();
+  updateMetalButtonClasses(); // ✅ ADD
+};
+
 
   /* ------------------ TRANSFORM ORIGIN ------------------ */
 
@@ -147,26 +158,29 @@ document.addEventListener("DOMContentLoaded", () => {
     connect: [true, false],
   });
 
-  widthSlider.noUiSlider.on("update", () => {
-    let value = Number(widthSlider.noUiSlider.get());
+widthSlider.noUiSlider.on("update", () => {
 
-    if (value < WIDTH_MIN) {
-      widthSlider.noUiSlider.set(WIDTH_MIN);
-      value = WIDTH_MIN;
-    } else if (value > WIDTH_MAX) {
-      widthSlider.noUiSlider.set(WIDTH_MAX);
-      value = WIDTH_MAX;
-    }
+  let value = Number(widthSlider.noUiSlider.get());
 
-    currentScaleX = widthScaleMap[value] || 1;
-    activeBar.setAttribute(
-      "transform",
-      `scale(${currentScaleX}, ${currentScaleY})`
-    );
+  if (value < WIDTH_MIN) {
+    widthSlider.noUiSlider.set(WIDTH_MIN);
+    value = WIDTH_MIN;
+  } else if (value > WIDTH_MAX) {
+    widthSlider.noUiSlider.set(WIDTH_MAX);
+    value = WIDTH_MAX;
+  }
 
-    updateResistanceFont(); // ✅
-    updateParticleWrapperSize(); // ✅ ADD
-  });
+  currentScaleX = widthScaleMap[value] || 1;
+  activeBar.setAttribute(
+    "transform",
+    `scale(${currentScaleX}, ${currentScaleY})`
+  );
+
+  updateResistanceFont();
+  updateParticleWrapperSize();
+
+});
+
 
   /* ------------------ HEIGHT SLIDER ------------------ */
 
@@ -180,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   heightSlider.noUiSlider.on("update", () => {
+
     let value = Number(heightSlider.noUiSlider.get());
 
     if (value < HEIGHT_MIN) {
@@ -198,7 +213,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateResistanceFont(); // ✅
     updateParticleWrapperSize(); // ✅ ADD
+
+
   });
+
+  widthSlider.noUiSlider.on("change", () => {
+  resetBtn.removeAttribute("disabled"); // ✅ USER ACTION
+});
+
+heightSlider.noUiSlider.on("change", () => {
+  resetBtn.removeAttribute("disabled"); // ✅ USER ACTION
+});
+
 
   function updateParticleWrapperSize() {
     if (!particleWrapper || !copperParticleFO) return;
@@ -264,7 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ------------------ GLOBAL RESET ------------------ */
 
   resetBtn.addEventListener("click", () => {
+
+    hasUserChangedSlider = false;
+resetBtn.setAttribute("disabled", true);
+
     selectedMetal = "copper";
+updateMetalButtonClasses();
 
     widthSlider.noUiSlider.set(WIDTH_INITIAL);
     heightSlider.noUiSlider.set(HEIGHT_INITIAL);
@@ -371,9 +402,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* recreate on reset */
   resetBtn.addEventListener("click", () => {
+    resetBtn.setAttribute("disabled", true);
+
     createParticles();
     updateParticleWrapperSize(); // ✅ ADD
   });
 
+  function updateMetalButtonClasses() {
+  // Remove all states first
+  [copperBtn, aluminiumBtn, tungstenBtn].forEach(btn => {
+    btn.classList.remove("active", "disabled");
+  });
+
+  // Apply states based on selected metal
+  if (selectedMetal === "copper") {
+    copperBtn.classList.add("active");
+    aluminiumBtn.classList.add("disabled");
+    tungstenBtn.classList.add("disabled");
+  } 
+  else if (selectedMetal === "aluminium") {
+    aluminiumBtn.classList.add("active");
+    copperBtn.classList.add("disabled");
+    tungstenBtn.classList.add("disabled");
+  } 
+  else if (selectedMetal === "tungsten") {
+    tungstenBtn.classList.add("active");
+    copperBtn.classList.add("disabled");
+    aluminiumBtn.classList.add("disabled");
+  }
+}
+function enableResetButton() {
+  if (!hasUserChangedSlider) return;
+
+  resetBtn.removeAttribute("disabled");
+}
+
+
+
   updateMetalUI(); // default
+  updateMetalButtonClasses();
 });
