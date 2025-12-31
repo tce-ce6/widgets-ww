@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       "correct": {
         "containerId": "correct-feedback",
-        "labelText": { "x": 380.8, "y": 847.154 },
-        "phText": { "x": 380.8, "y": 897.154 },
+        "labelText": { "x": 365.7, "y": 847.154 },
+        "phText": { "x": 365.7, "y": 897.154 },
         "natureText": { "x": 380.8, "y": 947.154 }
       }
     },
@@ -286,6 +286,13 @@ function enableLiquidCursors() {
         addTickMarkToButton(btn);
         btn.style.pointerEvents = 'none'; // Disable future clicks
     }
+    console.log(state.testedCount, config.config.totalSubstances);  
+
+    if (state.testedCount === config.config.totalSubstances) {
+    els.btnNextCorrect.style.display = 'none';
+  } else {
+    els.btnNextCorrect.style.display = 'block';
+  }
   }
 
   function showIncorrectFeedback(substance) {
