@@ -217,7 +217,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg49-Temperature-conversions/index.html",
     imagePath: "./assets/wg-49.png",
     creators: "sh-di-49",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Hard and Soft Ferromagnetic Materials",
@@ -371,14 +371,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg57-role-of-fuse/index.html",
     imagePath: "./assets/wg-57.png",
     creators: "sh-di-57",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Logic gates: AND, OR and NOT",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg58-logic-gates/index.html",
     imagePath: "./assets/wg-58.png",
     creators: "sh-ra-58",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Know Your Apparatus",
@@ -420,7 +420,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg71-build-water-cycle/index.html",
     imagePath: "./assets/wg-71.png",
     creators: "sh-ra-71",
-    status: "in-review",
+    status: "closed",
   },
   
   {
@@ -428,14 +428,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg62-regular-and-difused-reflection/index.html",
     imagePath: "./assets/wg-62.png",
     creators: "sh-ra-62",
-    status: "in-review",
+    status: "closed",
   },
   {
     name: "Word Discovery Adventure",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/wg64/index.html",
     imagePath: "./assets/wg-64.png",
     creators: "as-ra-64",
-    status: "WIP-With-Tech",
+    status: "closed",
   },
   {
     name: "उल्टे अर्थ वाले शब्द",
@@ -456,7 +456,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/wg59-factors-affecting-resistance/index.html",
     imagePath: "./assets/wg-59.png",
     creators: "ni-ra-59",
-    status: "in-review",
+    status: "closed",
   },
   
 
