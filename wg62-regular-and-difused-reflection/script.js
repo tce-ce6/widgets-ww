@@ -31,6 +31,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const insightBtn      = document.getElementById("insight-btn");
     const insightContent  = document.getElementById("insight-content");
     const closeInsightBtn = document.getElementById("close-insight-btn");
+    const INSIGHT_LINE_2_TEXT = {
+    lake: {
+        calm:  {
+            header:"Specular Reflection:",
+            description:"The surface is smooth. The parallel light rays remain parallel after reflection, forming a mirror image."},
+        wavy:  {
+            header:"Diffused Reflection:",
+            description:"The surface of disturbed water is bumpy. The parallel light rays reflect in different directions, so no clear image is formed."},
+        rough: {
+            header:"Diffused Reflection:",
+            description:"The surface of the disturbed water is very bumpy. The parallel light rays reflect in different directions, so no image is formed."
+        }
+    },
+    mirror: {
+        header:"Specular Reflection:",
+        description:"The surface is smooth. The parallel light rays remain parallel after reflection, forming a mirror image."
+    },
+    paper: {
+        header:"Diffused Reflection:",
+        description:"The surface is rough. The parallel light rays reflect in different directions, so no image is formed."
+    },
+    wall: {
+        header:"Diffused Reflection:",
+        description:"The surface is very rough. The parallel light rays reflect in different directions, so no image is formed."
+    }
+};
 
     if (insightBtn && insightContent) {
         insightBtn.addEventListener("click", () => {
@@ -46,6 +72,36 @@ document.addEventListener("DOMContentLoaded", () => {
             insightContent.style.display = "none";
         });
     }
+
+
+    function updateSecondLineText() {
+    const secondLine = document.getElementById("2nd-line");
+    const firstLine = document.getElementById("1st-line");
+    if (!secondLine) return;
+
+    const tspan = secondLine.querySelector("div");
+    const tspanFirst = firstLine ? firstLine.querySelector("tspan") : null;
+    if (!tspan) return;
+
+    let text;
+
+    if (activeSurface === "lake") {
+        text = INSIGHT_LINE_2_TEXT.lake[activeRoughness].description;
+        if (tspanFirst) {
+            tspanFirst.textContent = INSIGHT_LINE_2_TEXT.lake[activeRoughness].header;
+        }
+    } else {
+        text = INSIGHT_LINE_2_TEXT[activeSurface].description;
+        if (tspanFirst) {
+            tspanFirst.textContent = INSIGHT_LINE_2_TEXT[activeSurface].header;
+        }
+    }
+
+    if (text) {
+        tspan.textContent = text;
+    }
+}
+
 
     /* ==================================================
      * 3. SURFACE SELECTION CONFIG
@@ -86,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             hideAllReflections();
             target.style.display = "block";
-
+            updateSecondLineText();
             if (item.isLake) {
                 activateLakeState("calm");
             }
@@ -114,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === "calm")  lakeCalm.style.display  = "block";
         if (type === "wavy")  lakeWavy.style.display  = "block";
         if (type === "rough") lakeRough.style.display = "block";
+        updateSecondLineText();
     }
 
     calmBtn?.addEventListener("click",  () => activateLakeState("calm"));

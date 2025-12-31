@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetBtn = document.getElementById('reset-btn');
     const fuseSliderHandle = document.getElementById('fuse-slider-handle');
     const fuseSliderGroup = document.getElementById('fuse-group');
+    const tvOffSvg = document.getElementById('tv-off-svg');
 
     const FUSE_OFF_X = 787;
     const FUSE_ON_X = 956;
@@ -66,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Clear all logic timers
         state.shortCircuitActive = false;
         state.fuseOn = false;
+        tvOffSvg.style.display = "none";
         if (state.fireTimeout) clearTimeout(state.fireTimeout);
         if (state.fuseCutTimeout) clearTimeout(state.fuseCutTimeout);
         shortCircuitBtn.style.opacity = "1";
@@ -147,6 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Stop pop and hold at end
                 anims.pop.pause();
                 anims.pop.goToAndStop(anims.pop.totalFrames - 1, true);
+            tvOffSvg.style.display = "block";
+
             }, 3000);
         }
     }

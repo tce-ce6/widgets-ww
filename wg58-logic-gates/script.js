@@ -25,12 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const notWiring = document.getElementById("not_gate_connection_group");
     const otherWiring = document.getElementById("other_gate_connection_group");
     const indicatorWrapper = document.getElementById("input_indicator_group");
+    const hideBtn = document.getElementById("hide-btn");
+    const showBtn = document.getElementById("show-btn");
 
     // 3. Initialization
     function initDefault() {
         // resetBtn.style.opacity = "0.28";
         activeBtnId = null;
-        
+        hideBtn.style.display = "none";
+        showBtn.style.display = "none";
         if (displayGroup) displayGroup.style.display = "block";
         if (gateImg) gateImg.src = "assets/Gates/Select_Gate.png";
         
@@ -58,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateTruthTableUI(gateId) {
         const isNotGate = (gateId === "btn_not_gate");
         
-        if (tableNot) tableNot.style.display = isNotGate ? "block" : "none";
-        if (tableOther) tableOther.style.display = isNotGate ? "none" : "block";
+        // if (tableNot) tableNot.style.display = isNotGate ? "block" : "none";
+        // if (tableOther) tableOther.style.display = isNotGate ? "none" : "block";
 
         const data = gateData[gateId];
         if (!data) return;
@@ -101,6 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!btn) return;
         btn.addEventListener("click", () => {
             // Get current value of Input A from whichever group is currently visible before switching
+            showBtn.style.display = "block";
+            hideBtn.style.display = "none";
+
+            hideTruthTable();
+
+
+
             const currentIs_Not = (activeBtnId === "btn_not_gate");
             const currentSourceGroup = currentIs_Not ? notWiring : otherWiring;
             const sourceToggles = currentSourceGroup.querySelectorAll('input[type="checkbox"]');
@@ -187,6 +197,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
         syncDisplay(currentGroup, `out_put_on${suffix}`, `out_put_off${suffix}`, result);
     }
+if (showBtn) {
+    showBtn.addEventListener("click", showTruthTable);
+}
+
+if (hideBtn) {
+    hideBtn.addEventListener("click", hideTruthTable);
+}
+function showTruthTable() {
+    if (!activeBtnId) return;
+
+    const isNotGate = activeBtnId === "btn_not_gate";
+
+    // Show correct truth table
+    if (isNotGate) {
+        if (tableNot) tableNot.style.display = "block";
+        if (tableOther) tableOther.style.display = "none";
+    } else {
+        if (tableOther) tableOther.style.display = "block";
+        if (tableNot) tableNot.style.display = "none";
+    }
+
+    // Toggle buttons
+    showBtn.style.display = "none";
+    hideBtn.style.display = "block";
+}
+
+function hideTruthTable() {
+    // Hide both tables
+    if (tableOther) tableOther.style.display = "none";
+    if (tableNot) tableNot.style.display = "none";
+
+    // Toggle buttons
+    showBtn.style.display = "block";
+    hideBtn.style.display = "none";
+}
+
+
+
 
     function syncDisplay(group, onId, offId, value) {
         const onEl = group.querySelector(`#${onId}`);
