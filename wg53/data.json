@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "title": "Activity 1",
+    "description": [
+      "School library has Fiction books (450) ",
+      "as largest category, followed by ",
+      "Science (320), History (280), Comics ",
+      "(250), and Biography (180).",
+      "Draw a vertical bar graph showing ",
+      "book categories."
+    ],
+    "subject": "Books",
+    "categories": [
+      { "label": "Fiction", "value": 450 },
+      { "label": "Science", "value": 320 },
+      { "label": "History", "value": 280 },
+      { "label": "Biography", "value": 180 },
+      { "label": "Comics", "value": 250 }
+    ],
+    "labels": ["Fiction", "Science", "History", "Biography", "Comics"]
+  },
+  {
+    "id": 2,
+    "title": "Activity 2",
+    "description": [
+      "The Meteorological Department recorded",
+      "monsoon rainfall over five months.",
+      "July had the highest rainfall (180 mm),",
+      "followed by August (150 mm) and June",
+      "(120 mm). Rainfall decreased in",
+      "September (90 mm) and October (40 mm)."
+    ],
+    "subject": "Rainfall",
+    "categories": [
+      { "label": "July", "value": 180 },
+      { "label": "August", "value": 150 },
+      { "label": "June", "value": 120 },
+      { "label": "September", "value": 90 },
+      { "label": "October", "value": 40 }
+    ],
+    "labels": ["July", "August", "June", "Sept", "Oct"]
+  },
+  {
+    "id": 3,
+    "title": "Activity 3",
+    "description": [
+      "Rahul's first term report card shows",
+      "Hindi as his best subject (88 marks),",
+      "followed by Mathematics (85),",
+      "English (82), Science (78),",
+      "and Social Studies (75).",
+      "Represent Rahul's marks using a bar graph."
+    ],
+    "subject": "Marks",
+    "categories": [
+      { "label": "Hindi", "value": 88 },
+      { "label": "Maths", "value": 85 },
+      { "label": "English", "value": 82 },
+      { "label": "Science", "value": 78 },
+      { "label": "S.St", "value": 75 }
+    ],
+    "labels": ["Hindi", "Maths", "English", "Science", "S.St"]
+  }
+]
