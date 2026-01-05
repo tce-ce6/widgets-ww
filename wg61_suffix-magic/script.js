@@ -429,7 +429,7 @@ let wordIndex = 0;
 
 
 const IMAGES = [
-  'Assets/tree.svg',
+  'Assets/tree-2.svg',
   'Assets/milestone.svg',
   'Assets/mountain.svg',
   'Assets/stone.svg'
