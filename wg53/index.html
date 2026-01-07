@@ -350,7 +350,11 @@
               <g id="selection-stage">
 
               </g>
-              <foreignObject x="1245" y="115" width="160" height="400">
+              <g id="bars-container">
+                <!-- Bars will be injected by script.js -->
+
+              </g>
+              <foreignObject id="dropdwn-foreignobject" x="1245" y="115" width="160" height="80">
                 <div xmlns="http://www.w3.org/1999/xhtml" class="dropdown-container">
                   <div class="custom-dropdown" id="scale-dropdown">
                     <div class="dropdown-selected">50</div>
@@ -365,6 +369,54 @@
                   </div>
                 </div>
               </foreignObject>
+
+              <foreignObject id="correct-feedback-image" x="1148" y="318" width="358" height="92">
+                <svg width="358" height="92" viewBox="0 0 358 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="correct-feedback-group">
+                    <g id="Group_1587">
+                      <g id="Rectangle_331">
+                        <path id="Vector"
+                          d="M340 0H18C8.05887 0 0 8.05887 0 18V74C0 83.9411 8.05887 92 18 92H340C349.941 92 358 83.9411 358 74V18C358 8.05887 349.941 0 340 0Z"
+                          fill="#ACFF89" />
+                        <path id="Vector_2"
+                          d="M340 2H18C9.16344 2 2 9.16344 2 18V74C2 82.8366 9.16344 90 18 90H340C348.837 90 356 82.8366 356 74V18C356 9.16344 348.837 2 340 2Z"
+                          stroke="#41B2B6" stroke-width="4" />
+                      </g>
+                      <g id="Correct_">
+                        <text id="Correct!" fill="black" xml:space="preserve" style="white-space: pre"
+                          font-family="Roboto" font-size="28" font-weight="bold" letter-spacing="0em">
+                          <tspan x="128.3" y="52.2503">Correct!</tspan>
+                        </text>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </foreignObject>
+
+              <foreignObject id="incorrect-feedback-image" x="1148" y="318" width="358" height="92">
+                <svg width="358" height="92" viewBox="0 0 358 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="incorrect-feedback-group">
+                    <g id="Group_1587">
+                      <g id="Rectangle_331">
+                        <path id="Vector"
+                          d="M340 0H18C8.05887 0 0 8.05887 0 18V74C0 83.9411 8.05887 92 18 92H340C349.941 92 358 83.9411 358 74V18C358 8.05887 349.941 0 340 0Z"
+                          fill="#FFA8A8" />
+                        <path id="Vector_2"
+                          d="M340 2H18C9.16344 2 2 9.16344 2 18V74C2 82.8366 9.16344 90 18 90H340C348.837 90 356 82.8366 356 74V18C356 9.16344 348.837 2 340 2Z"
+                          stroke="#AA0000" stroke-width="4" />
+                      </g>
+                      <g id="Correct_">
+                        <text id="Incorrect" fill="black" xml:space="preserve" style="white-space: pre"
+                          font-family="Roboto" font-size="28" font-weight="bold" letter-spacing="0em">
+                          <tspan x="122.05" y="52.2503">Incorrect</tspan>
+                        </text>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+
+              </foreignObject>
+
             </g>
           </g>
         </svg>

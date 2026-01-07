@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let activities = [];
   let currentActivityIndex = 0;
   let currentScale = 50;
+  let draggingBar = null; 
 
   // DOM Elements
   const els = {
@@ -19,7 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     yAxisGroup: document.getElementById("y-axis-labels"),
     dropdown: document.getElementById("scale-dropdown"),
     dropdownSelected: document.querySelector(".dropdown-selected"),
-    dropdownOptions: document.querySelectorAll(".dropdown-options div")
+    dropdownOptions: document.querySelectorAll(".dropdown-options div"),
+    barsContainer: document.getElementById("bars-container"),
+    dropdownFO: document.getElementById("dropdwn-foreignobject"),
+    // New Feedback and Control Elements
+    btnSubmit: document.getElementById("btn-submit"),
+    btnReset: document.getElementById("btn-reset"),
+    correctFeedback: document.getElementById("correct-feedback-image"),
+    incorrectFeedback: document.getElementById("incorrect-feedback-image")
   };
 
   const CONFIG = {
@@ -33,7 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
     gridStepPx: 41.66
   };
 
-  // Fetch Data
+  // Helper to hide feedback
+  function hideFeedback() {
+    if (els.correctFeedback) els.correctFeedback.style.display = "none";
+    if (els.incorrectFeedback) els.incorrectFeedback.style.display = "none";
+  }
+
+  function getSVGPoint(e) {
+    const p = svg.createSVGPoint();
+    if (e.touches && e.touches.length > 0) {
+      p.x = e.touches[0].clientX;
+      p.y = e.touches[0].clientY;
+    } else {
+      p.x = e.clientX;
+      p.y = e.clientY;
+    }
+    const ctm = svg.getScreenCTM().inverse();
+    return p.matrixTransform(ctm);
+  }
+
   fetch("data.json")
     .then(res => res.json())
     .then(data => {
@@ -44,22 +70,20 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(err => console.error("Error loading data:", err));
 
   // Dropdown Logic
-  els.dropdown.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+  els.dropdown.addEventListener("click", (e) => e.stopPropagation());
 
   els.dropdownSelected.addEventListener("click", (e) => {
     e.stopImmediatePropagation();
     e.preventDefault();
     const isOpen = els.dropdown.classList.toggle("open");
-    if (selectionStage) {
-      selectionStage.style.pointerEvents = isOpen ? "none" : "auto";
-    }
+    if (els.dropdownFO) els.dropdownFO.setAttribute("height", isOpen ? "400" : "80");
+    if (selectionStage) selectionStage.style.pointerEvents = isOpen ? "none" : "auto";
   });
 
   window.addEventListener("click", () => {
     if (els.dropdown.classList.contains("open")) {
       els.dropdown.classList.remove("open");
+      if (els.dropdownFO) els.dropdownFO.setAttribute("height", "80");
       if (selectionStage) selectionStage.style.pointerEvents = "auto";
     }
   });
@@ -70,7 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScale = val;
       els.dropdownSelected.textContent = val;
       renderYAxis(currentScale);
+      updateAllTooltips(); 
       els.dropdown.classList.remove("open");
+      if (els.dropdownFO) els.dropdownFO.setAttribute("height", "80");
       if (selectionStage) selectionStage.style.pointerEvents = "auto";
       e.stopPropagation();
     });
@@ -94,6 +120,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function updateAllTooltips() {
+    bars.forEach(item => {
+      const height = parseFloat(item.bar.getAttribute("height"));
+      if (height > 0) {
+        const val = Math.round((height / CONFIG.gridStepPx) * currentScale);
+        item.tText.textContent = val;
+      }
+    });
+  }
+
   // Navigation Logic
   els.btnNext.addEventListener("click", () => {
     if (currentActivityIndex < activities.length - 1) {
@@ -108,9 +144,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Submit and Reset Listeners
+  if (els.btnSubmit) {
+    els.btnSubmit.addEventListener("click", () => {
+      const activity = activities[currentActivityIndex];
+      if (!activity) return;
+
+      let allCorrect = true;
+      bars.forEach((item, i) => {
+        const height = parseFloat(item.bar.getAttribute("height"));
+        const currentVal = Math.round((height / CONFIG.gridStepPx) * currentScale);
+        const targetVal = activity.categories[i].value;
+
+        if (currentVal !== targetVal) {
+          allCorrect = false;
+        }
+      });
+
+      if (allCorrect) {
+        if (els.correctFeedback) els.correctFeedback.style.display = "block";
+        if (els.incorrectFeedback) els.incorrectFeedback.style.display = "none";
+      } else {
+        if (els.correctFeedback) els.correctFeedback.style.display = "none";
+        if (els.incorrectFeedback) els.incorrectFeedback.style.display = "block";
+      }
+    });
+  }
+
+  if (els.btnReset) {
+    els.btnReset.addEventListener("click", () => {
+      resetBars();
+      hideFeedback();
+    });
+  }
+
   function renderActivity(index) {
     const activity = activities[index];
     if (!activity) return;
+    
+    hideFeedback();
     els.activityTitle.textContent = activity.title;
     const tspans = els.activityText.querySelectorAll("tspan");
     activity.description.forEach((line, i) => {
@@ -174,20 +246,20 @@ document.addEventListener("DOMContentLoaded", () => {
     bar.setAttribute("width", CONFIG.barWidth);
     bar.setAttribute("height", 0);
     bar.setAttribute("fill", col.barColor);
+    bar.style.cursor = "ns-resize";
 
-    const graphGroup = document.getElementById("graph-labels_and_numbers");
-    const parent = graphGroup || svg;
-    parent.appendChild(bar);
+    if (els.barsContainer) els.barsContainer.appendChild(bar);
 
     const handleLine = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    handleLine.setAttribute("x", barX);
-    handleLine.setAttribute("y", CONFIG.baselineY - 2);
-    handleLine.setAttribute("width", CONFIG.barWidth);
-    handleLine.setAttribute("height", 4);
-    handleLine.setAttribute("fill", "red");
-    parent.appendChild(handleLine);
+    // handleLine.setAttribute("x", barX);
+    // handleLine.setAttribute("y", CONFIG.baselineY - 2);
+    // handleLine.setAttribute("width", CONFIG.barWidth);
+    // handleLine.setAttribute("height", 4);
+    // handleLine.setAttribute("fill", "red");
+    // handleLine.style.cursor = "ns-resize";
+    
+    if (els.barsContainer) els.barsContainer.appendChild(handleLine);
 
-    // Create a specific tooltip for THIS bar
     const barTooltip = document.createElementNS("http://www.w3.org/2000/svg", "g");
     barTooltip.style.display = "none";
     barTooltip.style.pointerEvents = "none";
@@ -206,47 +278,58 @@ document.addEventListener("DOMContentLoaded", () => {
     tText.setAttribute("fill", "black");
     barTooltip.appendChild(tRect);
     barTooltip.appendChild(tText);
-    svg.appendChild(barTooltip);
+    
+    if (els.barsContainer) els.barsContainer.appendChild(barTooltip);
 
-    bars.push({ bar, handleLine, barTooltip, tText, index });
+    const barObj = { bar, handleLine, barTooltip, tText, index, centerX };
+    bars.push(barObj);
+
+    const manualStart = (e) => {
+      draggingBar = barObj;
+      barTooltip.style.display = "block";
+      hideFeedback(); // Hide feedback when user starts adjusting
+    };
+    bar.addEventListener("mousedown", manualStart);
+    bar.addEventListener("touchstart", manualStart, { passive: false });
+    handleLine.addEventListener("mousedown", manualStart);
+    handleLine.addEventListener("touchstart", manualStart, { passive: false });
 
     const colGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     for (let i = 1; i <= CONFIG.gridSteps; i++) {
       const stepY = CONFIG.baselineY - (i * CONFIG.gridStepPx);
-      const target = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-      target.setAttribute("x", centerX - 40);
-      target.setAttribute("y", stepY);
-      target.setAttribute("width", 80);
-      target.setAttribute("height", CONFIG.gridStepPx);
-      target.setAttribute("fill", "transparent");
-      target.style.cursor = "pointer";
-
       const blueLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
       blueLine.setAttribute("x1", centerX - 30);
       blueLine.setAttribute("x2", centerX + 30);
       blueLine.setAttribute("y1", stepY);
       blueLine.setAttribute("y2", stepY);
-      blueLine.setAttribute("stroke", "#2196F3");
+      blueLine.setAttribute("stroke", "#2195f3ff");
       blueLine.setAttribute("stroke-width", "2");
       blueLine.setAttribute("opacity", "0.3");
 
-      const updateBarToStep = () => {
+      const target = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      target.setAttribute("x", centerX - 80); 
+      target.setAttribute("y", stepY);
+      target.setAttribute("width", 160);
+      target.setAttribute("height", CONFIG.gridStepPx);
+      target.setAttribute("fill", "transparent");
+      target.style.cursor = "pointer";
+
+      const startInteraction = (e) => {
         const val = i * currentScale;
         bar.setAttribute("y", stepY);
         bar.setAttribute("height", CONFIG.baselineY - stepY);
         handleLine.setAttribute("y", stepY - 2);
-
-        // Show only this bar's tooltip
         barTooltip.style.display = "block";
         barTooltip.setAttribute("transform", `translate(${centerX - 40}, ${stepY - 50})`);
         tText.textContent = val;
-
         blueLine.setAttribute("opacity", "1");
         setTimeout(() => blueLine.setAttribute("opacity", "0.3"), 500);
+        draggingBar = barObj; 
+        hideFeedback(); // Hide feedback on click interaction
       };
 
-      target.addEventListener("mousedown", updateBarToStep);
-      target.addEventListener("mouseenter", (e) => { if (e.buttons === 1) updateBarToStep(); });
+      target.addEventListener("mousedown", startInteraction);
+      target.addEventListener("touchstart", (e) => startInteraction(e), { passive: false });
       colGroup.appendChild(blueLine);
       colGroup.appendChild(target);
     }
@@ -255,12 +338,36 @@ document.addEventListener("DOMContentLoaded", () => {
     else svg.appendChild(colGroup);
   });
 
+  const handleMove = (e) => {
+    if (!draggingBar) return;
+    if (e.type === "touchmove") e.preventDefault();
+    const pt = getSVGPoint(e);
+    let newY = pt.y;
+    if (newY < CONFIG.minY) newY = CONFIG.minY;
+    if (newY > CONFIG.baselineY) newY = CONFIG.baselineY;
+    const height = CONFIG.baselineY - newY;
+    const val = Math.round((height / CONFIG.gridStepPx) * currentScale);
+    draggingBar.bar.setAttribute("y", newY);
+    draggingBar.bar.setAttribute("height", height);
+    draggingBar.handleLine.setAttribute("y", newY - 2);
+    draggingBar.barTooltip.style.display = "block";
+    draggingBar.barTooltip.setAttribute("transform", `translate(${draggingBar.centerX - 40}, ${newY - 50})`);
+    draggingBar.tText.textContent = val;
+  };
+
+  const endInteraction = () => { draggingBar = null; };
+
+  window.addEventListener("mousemove", handleMove);
+  window.addEventListener("touchmove", handleMove, { passive: false });
+  window.addEventListener("mouseup", endInteraction);
+  window.addEventListener("touchend", endInteraction);
+
   function resetBars() {
     bars.forEach(item => {
       item.bar.setAttribute("height", 0);
       item.bar.setAttribute("y", CONFIG.baselineY);
       item.handleLine.setAttribute("y", CONFIG.baselineY - 2);
-      item.barTooltip.style.display = "none"; // Hide all individual tooltips
+      item.barTooltip.style.display = "none";
     });
   }
 });
