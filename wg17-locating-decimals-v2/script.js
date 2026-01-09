@@ -373,7 +373,8 @@ function renderLottieIcon(svg, x, y, type, onClick) {
     if(type ==='magnify'){
          size = 300;
     }else{
-         size = 120;
+        x = x - 70;
+         size = 100;
     }
     const fo = createFO(svg, x - size/2, y - size/2, size, size);
     if(onClick) { fo.style.cursor = 'pointer'; fo.onclick = onClick; }
