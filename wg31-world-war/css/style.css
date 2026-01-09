@@ -250,8 +250,8 @@ svg * {
   width: 103.49px;
   height: 25.1px;
   position: absolute;
-  bottom: 50px;
-  right: 200px;
+  bottom: 40px;
+  right: 52px;
 }
 .mapHome-img{
   width: 120px;
@@ -283,4 +283,49 @@ svg * {
   height: 119px;
   width: 249px;
   margin: 0 auto;
+}
+.show-msg-wrapper{
+  position: relative;
+  border: 2px solid #9D5900;
+  padding: 20px;
+  position: absolute;
+  bottom: 23px;
+  left: 340px;
+  max-width: 810px;
+  background-color: #fff;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, .3);
+}
+.show-msg-wrapper p{
+  font-size: 30px;
+  line-height: 1.2;
+}
+.close-btn{
+  background-image: url("../assets/close-btn.svg");
+  background-size: 100%;
+  background-position: center;
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background-repeat: no-repeat;
+  display: block;
+  cursor: pointer;
+}
+.show-msg-wrapper.hint{
+  background-color: #F2C224;
+}
+.action-btn{
+  padding: 25px 35px;
+  border-radius: 50px;
+  font-size: 35px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.action-btn.try-again{
+  background-color: #FF2C68;
+}
+.action-btn.proceed{
+  background-color: #4CAF50;
 }
