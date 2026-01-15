@@ -163,6 +163,8 @@
   width: 100%;
   position: absolute;
   bottom: 0;
+  object-fit: cover;
+  height: 100%;
 }
 .message-box{
   background-color: #C8FFB1;

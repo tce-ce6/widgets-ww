@@ -261,13 +261,13 @@ const wordAudioFileNameMap = {
 };
 
 const wordImageMap = {
-  "अजगर": "अजगर.svg", "कटहल": "कटहल.svg", "खटमल": "खटमल.svg",
-  "बचपन": "बचपन.svg", "बरगद": "बरगद.svg", "शलगम": "शलगम.svg",
-  "शरबत": "शरबत.svg", "पनघट": "पनघट.svg", "उपवन": "उपवन.svg",
-  "करवट": "करवट.svg", "कसरत": "कसरत.svg", "परवल": "परवल.svg",
-  "पचपन": "पचपन.svg", "अदरक": "अदरक.svg", "बरतन": "बरतन.svg",
-  "चमचम": "चमचम.svg", "दलदल": "दलदल.svg", "थरमस": "थरमस.svg",
-  "पतझड़": "patjhad.svg", "उपटन": "उपटन.svg"
+  "अजगर": "ajgar.svg", "कटहल": "kathal.svg", "खटमल": "khatmal.svg",
+  "बचपन": "bachpan.svg", "बरगद": "bargad.svg", "शलगम": "shalgam.svg",
+  "शरबत": "sharbat.svg", "पनघट": "panghat.svg", "उपवन": "upvan.svg",
+  "करवट": "karvat.svg", "कसरत": "kasrat.svg", "परवल": "parval.svg",
+  "पचपन": "pachpan.svg", "अदरक": "adrak.svg", "बरतन": "bartan.svg",
+  "चमचम": "chamcham.svg", "दलदल": "daldal.svg", "थरमस": "tharmas.svg",
+  "पतझड़": "patjhad.svg", "उपटन": "uptan.svg"
 };
 
 // --- Constants and State ---

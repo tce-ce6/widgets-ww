@@ -235,3 +235,15 @@
 #light-ray-btn {
   cursor: pointer;
 }
+
+.lake_calm_reflection{
+  position: relative;
+}
+
+.mirror-label{
+  /* position: absolute;
+  top: 310px;
+  left: -125px;
+  height: 50px !important;
+  width: 100px !important; */
+}

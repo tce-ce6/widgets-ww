@@ -1,66 +1,227 @@
 let wordPairs = [
-    { "words": ["curious", "shoes"], "sentence": "The curious child wondered why her shoes made squeaky noises." },
-    { "words": ["ordinary", "heroes"], "sentence": "The most ordinary people often turn out to be heroes." },
-    { "words": ["forget", "kindness"], "sentence": "We must never forget the kindness shown to us during difficult times." },
-    { "words": ["chess", "lantern"], "sentence": "We played chess under the old lantern when the lights went out." },
-    { "words": ["park", "bicycle"], "sentence": "He rode his bicycle to the park every Saturday morning." },
-    { "words": ["stubborn", "directions"], "sentence": "The stubborn driver refused to ask for directions." },
-    { "words": ["football", "lemonade"], "sentence": "After playing football all afternoon, cold lemonade tasted especially sweet." },
-    { "words": ["peacock", "blanket"], "sentence": "The blanket had a beautiful peacock printed on it." },
-    { "words": ["curry", "notebook"], "sentence": "My notebook still smells of the curry that I dropped on it." },
-    { "words": ["flute", "market"], "sentence": "The sound of a flute filled the market on weekends." },
-    { "words": ["hungry", "bicycle"], "sentence": "The hungry student rode his bicycle to the cafeteria." },
-    { "words": ["noise", "peace"], "sentence": "The constant noise made us treasure moments of peace." },
-    { "words": ["goat", "slipper"], "sentence": "A goat wandered off with someone’s slipper near the field." },
-    { "words": ["train", "flowers"], "sentence": "She bought fresh flowers from the market before catching the morning train to visit her grandmother." },
-    { "words": ["guitar", "window"], "sentence": "Guitar melodies drifted through the window each evening." },
-    { "words": ["night", "dawn"], "sentence": "The long night finally gave way to the first light of dawn." },
-    { "words": ["laughing", "umbrella"], "sentence": "The children were laughing as they shared one umbrella." },
-    { "words": ["excited", "library"], "sentence": "The excited researcher spent hours in the quiet library." },
-    { "words": ["calm", "thunder"], "sentence": "She remained calm despite the loud thunder outside." },
-    { "words": ["sceptical", "advertisement"], "sentence": "She remained sceptical about the claims in the advertisement." },
-    { "words": ["adventurous", "recipe"], "sentence": "The adventurous cook tried a complicated recipe." },
-    { "words": ["patient", "technology"], "sentence": "The patient teacher helped students with the new technology." },
-    { "words": ["hunger", "feast"], "sentence": "True hunger makes the simplest meal seem like a feast." },
-    { "words": ["frustrated", "shoelaces"], "sentence": "The frustrated runner could not untie her wet shoelaces." },
-    { "words": ["jealous", "piano"], "sentence": "He became jealous when his sister played the piano so beautifully." },
-    { "words": ["lonely", "crowded"], "sentence": "She felt lonely even in the crowded restaurant." },
-    { "words": ["poison", "antidote"], "sentence": "One person's poison often becomes another's antidote." },
-    { "words": ["surprised", "laundry"], "sentence": "They were surprised to find a letter in the pocket of a pair of jeans in the laundry basket." },
-    { "words": ["drum", "shelf"], "sentence": "The old drum was kept safely on the top shelf after the parade." },
-    { "words": ["content", "rain"], "sentence": "Feeling content, he listened to the gentle rhythm of the rain against the window." },
-    { "words": ["sandal", "river"], "sentence": "Her sandal slipped off and floated down the river during the picnic." },
-    { "words": ["pastries", "holiday"], "sentence": "She baked chocolate pastries for the holiday party." },
-    { "words": ["embarrassed", "parking"], "sentence": "He felt embarrassed about his terrible parking job." },
-    { "words": ["delighted", "hardware"], "sentence": "She was delighted to find the right screws at the hardware store." },
-    { "words": ["soap", "festival"], "sentence": "We made fragrant soap for the festival hampers this year." },
-    { "words": ["mirror", "mistake"], "sentence": "Looking in the mirror, she realised her mistake and quickly fixed her hair before leaving." },
-    { "words": ["construction", "peaceful"], "sentence": "The construction workers arrived early to disrupt the peaceful morning." },
-    { "words": ["busy", "rain"], "sentence": "The busy road slowed down as evening rain started to fall." },
-    { "words": ["restless", "homework"], "sentence": "The restless child couldn't concentrate on her homework." },
-    { "words": ["hopeful", "interview"], "sentence": "She felt hopeful walking into the job interview." },
-    { "words": ["pot", "cricket"], "sentence": "We used an old clay pot as stumps while playing cricket in our garden." },
-    { "words": ["saree", "bus"], "sentence": "Her bright saree matched the colours of the school bus." },
-    { "words": ["weak", "strong"], "sentence": "Although she felt weak at first, overcoming her fears made her remarkably strong." },
-    { "words": ["overwhelmed", "cupboard"], "sentence": "He felt overwhelmed trying to organise his messy cupboard." },
-    { "words": ["impatient", "coffee"], "sentence": "The impatient customer tapped her fingers waiting for coffee." },
-    { "words": ["disappointed", "weather"], "sentence": "They were disappointed when bad weather cancelled the picnic." },
-    { "words": ["grumpy", "breakfast"], "sentence": "He was grumpy until he had his morning breakfast." },
-    { "words": ["suspicious", "delivery"], "sentence": "The suspicious neighbour watched the delivery truck." },
-    { "words": ["optimistic", "surgery"], "sentence": "She remained optimistic despite needing a complicated surgery." },
-    { "words": ["clock", "laughter"], "sentence": "Laughter filled the room as the clock struck midnight at the party." }
-]
-
+  {
+    words: ["curious", "shoes"],
+    sentence: "The curious child wondered why her shoes made squeaky noises.",
+  },
+  {
+    words: ["ordinary", "heroes"],
+    sentence: "The most ordinary people often turn out to be heroes.",
+  },
+  {
+    words: ["forget", "kindness"],
+    sentence:
+      "We must never forget the kindness shown to us during difficult times.",
+  },
+  {
+    words: ["chess", "lantern"],
+    sentence: "We played chess under the old lantern when the lights went out.",
+  },
+  {
+    words: ["park", "bicycle"],
+    sentence: "He rode his bicycle to the park every Saturday morning.",
+  },
+  {
+    words: ["stubborn", "directions"],
+    sentence: "The stubborn driver refused to ask for directions.",
+  },
+  {
+    words: ["football", "lemonade"],
+    sentence:
+      "After playing football all afternoon, cold lemonade tasted especially sweet.",
+  },
+  {
+    words: ["peacock", "blanket"],
+    sentence: "The blanket had a beautiful peacock printed on it.",
+  },
+  {
+    words: ["curry", "notebook"],
+    sentence: "My notebook still smells of the curry that I dropped on it.",
+  },
+  {
+    words: ["flute", "market"],
+    sentence: "The sound of a flute filled the market on weekends.",
+  },
+  {
+    words: ["hungry", "bicycle"],
+    sentence: "The hungry student rode his bicycle to the cafeteria.",
+  },
+  {
+    words: ["noise", "peace"],
+    sentence: "The constant noise made us treasure moments of peace.",
+  },
+  {
+    words: ["goat", "slipper"],
+    sentence: "A goat wandered off with someone’s slipper near the field.",
+  },
+  {
+    words: ["train", "flowers"],
+    sentence:
+      "She bought fresh flowers from the market before catching the morning train to visit her grandmother.",
+  },
+  {
+    words: ["guitar", "window"],
+    sentence: "Guitar melodies drifted through the window each evening.",
+  },
+  {
+    words: ["night", "dawn"],
+    sentence: "The long night finally gave way to the first light of dawn.",
+  },
+  {
+    words: ["laughing", "umbrella"],
+    sentence: "The children were laughing as they shared one umbrella.",
+  },
+  {
+    words: ["excited", "library"],
+    sentence: "The excited researcher spent hours in the quiet library.",
+  },
+  {
+    words: ["calm", "thunder"],
+    sentence: "She remained calm despite the loud thunder outside.",
+  },
+  {
+    words: ["sceptical", "advertisement"],
+    sentence: "She remained sceptical about the claims in the advertisement.",
+  },
+  {
+    words: ["adventurous", "recipe"],
+    sentence: "The adventurous cook tried a complicated recipe.",
+  },
+  {
+    words: ["patient", "technology"],
+    sentence: "The patient teacher helped students with the new technology.",
+  },
+  {
+    words: ["hunger", "feast"],
+    sentence: "True hunger makes the simplest meal seem like a feast.",
+  },
+  {
+    words: ["frustrated", "shoelaces"],
+    sentence: "The frustrated runner could not untie her wet shoelaces.",
+  },
+  {
+    words: ["jealous", "piano"],
+    sentence:
+      "He became jealous when his sister played the piano so beautifully.",
+  },
+  {
+    words: ["lonely", "crowded"],
+    sentence: "She felt lonely even in the crowded restaurant.",
+  },
+  {
+    words: ["poison", "antidote"],
+    sentence: "One person's poison often becomes another's antidote.",
+  },
+  {
+    words: ["surprised", "laundry"],
+    sentence:
+      "They were surprised to find a letter in the pocket of a pair of jeans in the laundry basket.",
+  },
+  {
+    words: ["drum", "shelf"],
+    sentence: "The old drum was kept safely on the top shelf after the parade.",
+  },
+  {
+    words: ["content", "rain"],
+    sentence:
+      "Feeling content, he listened to the gentle rhythm of the rain against the window.",
+  },
+  {
+    words: ["sandal", "river"],
+    sentence:
+      "Her sandal slipped off and floated down the river during the picnic.",
+  },
+  {
+    words: ["pastries", "holiday"],
+    sentence: "She baked chocolate pastries for the holiday party.",
+  },
+  {
+    words: ["embarrassed", "parking"],
+    sentence: "He felt embarrassed about his terrible parking job.",
+  },
+  {
+    words: ["delighted", "hardware"],
+    sentence:
+      "She was delighted to find the right screws at the hardware store.",
+  },
+  {
+    words: ["soap", "festival"],
+    sentence: "We made fragrant soap for the festival hampers this year.",
+  },
+  {
+    words: ["mirror", "mistake"],
+    sentence:
+      "Looking in the mirror, she realised her mistake and quickly fixed her hair before leaving.",
+  },
+  {
+    words: ["construction", "peaceful"],
+    sentence:
+      "The construction workers arrived early to disrupt the peaceful morning.",
+  },
+  {
+    words: ["busy", "rain"],
+    sentence: "The busy road slowed down as evening rain started to fall.",
+  },
+  {
+    words: ["restless", "homework"],
+    sentence: "The restless child couldn't concentrate on her homework.",
+  },
+  {
+    words: ["hopeful", "interview"],
+    sentence: "She felt hopeful walking into the job interview.",
+  },
+  {
+    words: ["pot", "cricket"],
+    sentence:
+      "We used an old clay pot as stumps while playing cricket in our garden.",
+  },
+  {
+    words: ["saree", "bus"],
+    sentence: "Her bright saree matched the colours of the school bus.",
+  },
+  {
+    words: ["weak", "strong"],
+    sentence:
+      "Although she felt weak at first, overcoming her fears made her remarkably strong.",
+  },
+  {
+    words: ["overwhelmed", "cupboard"],
+    sentence: "He felt overwhelmed trying to organise his messy cupboard.",
+  },
+  {
+    words: ["impatient", "coffee"],
+    sentence: "The impatient customer tapped her fingers waiting for coffee.",
+  },
+  {
+    words: ["disappointed", "weather"],
+    sentence: "They were disappointed when bad weather cancelled the picnic.",
+  },
+  {
+    words: ["grumpy", "breakfast"],
+    sentence: "He was grumpy until he had his morning breakfast.",
+  },
+  {
+    words: ["suspicious", "delivery"],
+    sentence: "The suspicious neighbour watched the delivery truck.",
+  },
+  {
+    words: ["optimistic", "surgery"],
+    sentence: "She remained optimistic despite needing a complicated surgery.",
+  },
+  {
+    words: ["clock", "laughter"],
+    sentence:
+      "Laughter filled the room as the clock struck midnight at the party.",
+  },
+];
 
 let currentIndex = 0;
 let showSentence = false;
 
 function svgBgColor() {
-
-    let colors = ["#DBFFC6", "#FFC6FD", "#FFFFC6"];
-    let bgColor = random(colors); // p5.js random()
-    // Encode the SVG string into a data URI
-    let svgCode = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 666.06 412.3">
+  let colors = ["#DBFFC6", "#FFC6FD", "#FFFFC6"];
+  let bgColor = random(colors); // p5.js random()
+  // Encode the SVG string into a data URI
+  let svgCode = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" version="1.1" viewBox="0 0 666.06 412.3">
   <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
   <defs>
     <style>
@@ -82,52 +243,51 @@ function svgBgColor() {
     </g>
   </g>
 </svg>`;
-    let encoded =
-        "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgCode);
-    svgBg = loadImage(encoded);
+  let encoded =
+    "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgCode);
+  svgBg = loadImage(encoded);
 }
 
 function preload() {
-    svgBgColor();
+  svgBgColor();
 }
 
-
 function setup() {
-    let canvas = createCanvas(600, 300);
-    canvas.parent("mainCanvas");
-    textAlign(CENTER, CENTER);
-    textFont("Arial");
-    textSize(20);
+  let canvas = createCanvas(600, 300);
+  canvas.parent("mainCanvas");
+  textAlign(CENTER, CENTER);
+  textFont("Arial");
+  textSize(20);
 
-    // Button listeners
-    document.getElementById("show-example-btn").addEventListener("click", () => {
-        showSentence = true;
-    });
+  // Button listeners
+  document.getElementById("show-example-btn").addEventListener("click", () => {
+    showSentence = true;
+  });
 
-    document.getElementById("next-btn").addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % wordPairs.length;
-        showSentence = false;
-        svgBgColor();
-    });
+  document.getElementById("next-btn").addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % wordPairs.length;
+    showSentence = false;
+    svgBgColor();
+  });
 
-    // document.getElementById("prev-btn").addEventListener("click", () => {
-    //     currentIndex = (currentIndex - 1 + wordPairs.length) % wordPairs.length;
-    //     showSentence = false;
-    //     svgBgColor();
-    // });
+  // document.getElementById("prev-btn").addEventListener("click", () => {
+  //     currentIndex = (currentIndex - 1 + wordPairs.length) % wordPairs.length;
+  //     showSentence = false;
+  //     svgBgColor();
+  // });
 }
 
 function drawCard(x, y, w, h, word) {
-    // draw SVG background
-    image(svgBg, x, y, w + 20, h + 20);
+  // draw SVG background
+  image(svgBg, x, y, w + 20, h + 20);
 
-    // overlay text
-    push();
-    fill(0);
-    textSize(28);
-    textStyle(BOLD);
-    text(word, x + w / 2 + 10, y + h / 2 + 10);
-    pop();
+  // overlay text
+  push();
+  fill(0);
+  textSize(28);
+  textStyle(BOLD);
+  text(word, x + w / 2 + 10, y + h / 2 + 10);
+  pop();
 }
 
 // function draw() {
@@ -152,79 +312,80 @@ function drawCard(x, y, w, h, word) {
 // }
 
 function draw() {
-    clear();
+  clear();
 
-    let pair = wordPairs[currentIndex];
-    drawCard(70, 30, 200, 120, pair.words[0]);
-    drawCard(350, 30, 200, 120, pair.words[1]);
+  let pair = wordPairs[currentIndex];
+  drawCard(70, 30, 200, 120, pair.words[0]);
+  drawCard(350, 30, 200, 120, pair.words[1]);
 
+  if (showSentence) {
+    push();
+    textSize(15);
+    textAlign(LEFT, TOP);
 
-    if (showSentence) {
-        push();
-        textSize(15);               
-        textAlign(LEFT, TOP);
-      
-        let rectX = 70;
-        let rectW = 500;      // ✅ fixed width
-        let padding = 10;
-        let maxWidth = rectW - 2 * padding;
-        let lineHeight = 25;
-      
-        // Split sentence into lines
-        let words = pair.sentence.split(" ");
-        let lines = [];
-        let currentLine = "";
-      
-        for (let i = 0; i < words.length; i++) {
-          let testLine = currentLine === "" ? words[i] : currentLine + " " + words[i];
-          if (textWidth(testLine) > maxWidth && currentLine !== "") {
-            lines.push(currentLine);
-            currentLine = words[i];
-          } else {
-            currentLine = testLine;
-          }
-        }
-        if (currentLine !== "") lines.push(currentLine);
-      
-        // ✅ Dynamic height only
-        let totalTextHeight = lines.length * lineHeight + padding * 2;
-        let rectH = totalTextHeight;
-      
-        // Keep rect vertically centered around Y = 200
-        let rectY = 220 - rectH / 2;
-      
-        // Draw background rect (fixed width, dynamic height)
-        fill(255);
-        noStroke();
-        rect(rectX, rectY, rectW, rectH, 10);
-      
-        // Text positioning
-        let startY = rectY + (rectH - lines.length * lineHeight) / 2;
-      
-        for (let i = 0; i < lines.length; i++) {
-          let line = lines[i].split(" ");
-          let lineWidth = textWidth(lines[i]);
-          let x = rectX + (rectW - lineWidth) / 2; // center line horizontally
-          let y = startY + i * lineHeight;
-      
-          for (let w of line) {
-            let clean = w.replace(/[^\w]/g, "");
-      
-            if (pair.words.some(word => word.toLowerCase() === clean.toLowerCase())) {
-              fill("#4caf50");
-              textStyle(BOLD);
-            } else {
-              fill(0);
-              textStyle(NORMAL);
-            }
-      
-            let wordWidth = textWidth(w + " ");
-            text(w, x, y + 5);
-            x += wordWidth;
-          }
-        }
-      
-        pop();
+    let rectX = 70;
+    let rectW = 500; // ✅ fixed width
+    let padding = 10;
+    let maxWidth = rectW - 2 * padding;
+    let lineHeight = 25;
+
+    // Split sentence into lines
+    let words = pair.sentence.split(" ");
+    let lines = [];
+    let currentLine = "";
+
+    for (let i = 0; i < words.length; i++) {
+      let testLine =
+        currentLine === "" ? words[i] : currentLine + " " + words[i];
+      if (textWidth(testLine) > maxWidth && currentLine !== "") {
+        lines.push(currentLine);
+        currentLine = words[i];
+      } else {
+        currentLine = testLine;
       }
-      
+    }
+    if (currentLine !== "") lines.push(currentLine);
+
+    // ✅ Dynamic height only
+    let totalTextHeight = lines.length * lineHeight + padding * 2;
+    let rectH = totalTextHeight;
+
+    // Keep rect vertically centered around Y = 200
+    let rectY = 220 - rectH / 2;
+
+    // Draw background rect (fixed width, dynamic height)
+    fill(255);
+    noStroke();
+    rect(rectX, rectY, rectW, rectH, 10);
+
+    // Text positioning
+    let startY = rectY + (rectH - lines.length * lineHeight) / 2;
+
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i].split(" ");
+      let lineWidth = textWidth(lines[i]);
+      let x = rectX + (rectW - lineWidth) / 2; // center line horizontally
+      let y = startY + i * lineHeight;
+
+      for (let w of line) {
+        let clean = w.replace(/[^\w]/g, "");
+
+        if (
+          pair.words.some((word) => word.toLowerCase() === clean.toLowerCase())
+        ) {
+          fill("#4caf50");
+          textStyle(BOLD);
+        } else {
+          fill(0);
+          textStyle(NORMAL);
+        }
+
+        let wordWidth = textWidth(w + " ");
+        text(w, x, y + 5);
+        x += wordWidth;
+      }
+    }
+
+    pop();
+  }
 }

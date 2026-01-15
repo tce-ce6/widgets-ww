@@ -608,3 +608,14 @@
   top: -50px;
   right: -40px;
 }
+.card-count{
+  background-color: #ffeb50;
+    /* padding: 5px; */
+    border-radius: 50%;
+    /* line-height: 1; */
+    height: 60px;
+    width: 60px;
+    display: block;
+    flex: 0 0 auto;
+    font-size: 50px;
+}

@@ -616,3 +616,21 @@
   height: 110px !important;
   width: 110px !important;
 }
+
+.close-modal-btn{
+  background-image: url("../assets/close-btn.svg");
+  background-size: 100%;
+  background-position: center;
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  cursor: pointer;
+}
+.showans-modal #close-btn{
+  top: -35px;
+  right: -40px;
+  height: 70px;
+  width: 70px;
+}

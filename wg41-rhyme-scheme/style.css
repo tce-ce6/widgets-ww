@@ -216,3 +216,7 @@
   padding: 0px 8px;
   /* border-radius: 4px; */
 }
+
+.svg-container #b tspan,.svg-container #b_2 tspan{
+  fill: #e8b83f !important;
+}

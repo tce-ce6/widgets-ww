@@ -311,7 +311,9 @@ function generateNextClue() {
   showAnswerUsed = false;
   const myClueText = clueTextsGlobal[selectedClue];
   console.log("pkp mini-browser: ~ generateNextClue ~ myClueText:", myClueText)
-  document.getElementById("flipBack").textContent = myClueText;
+  const flipBack = document.getElementById("flipBack");
+  flipBack.innerHTML = `<span class="card-count">${selectedClue + 1}</span> ${myClueText}`;
+
 
   document.getElementById("flipFront").textContent = "";
   document.getElementById("flipCard").classList.add("flipped");

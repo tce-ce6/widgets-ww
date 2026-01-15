@@ -454,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ✅ If quiz finished
         if (currentQuizIndex >= quizData.length) {
-          alert("Quiz completed!");
           nextBtn.disabled = true;
           return;
         }
