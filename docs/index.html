@@ -1,224 +1,512 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>CE6 – Project Status</title>
 <style>
-body { font-family: Arial; margin: 40px; }
-h1 { font-size: 48px; }
-ul { list-style: none; padding: 0; }
-li { display: flex; align-items: center; gap: 20px; margin: 12px 0; font-size: 26px; }
-img { width: 80px; height: 80px; object-fit: contain; border: 1px solid #ddd; border-radius: 6px; }
-.in-progress { color: #f39c12; font-weight: 600; }
-.done { color: #2ecc71; font-weight: 600; }
-.closed { color: #000; font-weight: 700; }
-.unknown { color: #000; font-weight: 700; }
+body { font-family: Arial; margin: 30px; }
+h1 { font-size: 42px; }
+
+.counters { display: flex; gap: 20px; margin-bottom: 30px; }
+.counter { font-size: 18px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.meta { margin-top: 10px; }
+.title { font-weight: bold; }
+
+.badges { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+.status {
+  background: #eee;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.draft {
+  background: #999;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.missing {
+  background: #c0392b;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.in-progress .status { background: #f39c12; color: #fff; }
+.done .status { background: #2ecc71; color: #fff; }
+
+.disabled { pointer-events: none; opacity: 0.6; }
 </style>
 </head>
 <body>
 
 <h1>CE6 – Project Status</h1>
-<ul>
 
-<li class="in-progress">
-  <a href="../wg60/index.html">
-    <img src="../wg60/thumb.png" alt="wg60">
+<div class="counters">
+  <div class="counter">In progress: 32</div>
+  <div class="counter">Done: 0</div>
+  <div class="counter">Unknown: 0</div>
+</div>
+
+<div class="grid">
+
+<div class="card in-progress">
+  <a href="../wg01-phototropism/index.html" class="">
+    <img src="../wg01-phototropism/thumb.png">
   </a>
-  <span>wg60 — In progress</span>
-</li>
-<li class="closed">
-  <a href="../wg02/index.html">
-    <img src="../wg02/thumb.png" alt="wg02">
+  <div class="meta">
+    <div class="title">wg01-phototropism</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      
+    </div>
+  </div>
+</div>
+<div class="card closed-by content">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg02 — Closed by Content</span>
-</li>
-<li class="in-progress">
-  <a href="../wg20/index.html">
-    <img src="../wg20/thumb.png" alt="wg20">
+  <div class="meta">
+    <div class="title">wg02</div>
+    <div class="badges">
+      <span class="status">Closed by Content</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg20 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg03/index.html">
-    <img src="../wg03/thumb.png" alt="wg03">
+  <div class="meta">
+    <div class="title">wg02</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg03 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg37/index.html">
-    <img src="../wg37/thumb.png" alt="wg37">
+  <div class="meta">
+    <div class="title">wg03</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg37 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg02/index.html">
-    <img src="../wg02/thumb.png" alt="wg02">
+  <div class="meta">
+    <div class="title">wg03</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg02 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg29/index.html">
-    <img src="../wg29/thumb.png" alt="wg29">
+  <div class="meta">
+    <div class="title">wg05</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg29 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg34/index.html">
-    <img src="../wg34/thumb.png" alt="wg34">
+  <div class="meta">
+    <div class="title">wg07</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg34 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg01-phototropism/index.html">
-    <img src="../wg01-phototropism/thumb.png" alt="wg01-phototropism">
+  <div class="meta">
+    <div class="title">wg08</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg01-phototropism — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg11/index.html">
-    <img src="../wg11/thumb.png" alt="wg11">
+  <div class="meta">
+    <div class="title">wg09</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg11 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg46/index.html">
-    <img src="../wg46/thumb.png" alt="wg46">
+  <div class="meta">
+    <div class="title">wg11</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg46 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg65/index.html">
-    <img src="../wg65/thumb.png" alt="wg65">
+  <div class="meta">
+    <div class="title">wg20</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg65 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg64/index.html">
-    <img src="../wg64/thumb.png" alt="wg64">
+  <div class="meta">
+    <div class="title">wg22</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg64 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg38/index.html">
-    <img src="../wg38/thumb.png" alt="wg38">
+  <div class="meta">
+    <div class="title">wg29</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg38 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg39/index.html">
-    <img src="../wg39/thumb.png" alt="wg39">
+  <div class="meta">
+    <div class="title">wg30</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg39 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg55/index.html">
-    <img src="../wg55/thumb.png" alt="wg55">
+  <div class="meta">
+    <div class="title">wg32</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg55 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg51/index.html">
-    <img src="../wg51/thumb.png" alt="wg51">
+  <div class="meta">
+    <div class="title">wg34</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg51 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg22/index.html">
-    <img src="../wg22/thumb.png" alt="wg22">
+  <div class="meta">
+    <div class="title">wg37</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg22 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg09/index.html">
-    <img src="../wg09/thumb.png" alt="wg09">
+  <div class="meta">
+    <div class="title">wg37</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg09 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg30/index.html">
-    <img src="../wg30/thumb.png" alt="wg30">
+  <div class="meta">
+    <div class="title">wg38</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg30 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg05/index.html">
-    <img src="../wg05/thumb.png" alt="wg05">
+  <div class="meta">
+    <div class="title">wg39</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg05 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg41/index.html">
-    <img src="../wg41/thumb.png" alt="wg41">
+  <div class="meta">
+    <div class="title">wg40</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg41 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg07/index.html">
-    <img src="../wg07/thumb.png" alt="wg07">
+  <div class="meta">
+    <div class="title">wg41</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg07 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg37/index.html">
-    <img src="../wg37/thumb.png" alt="wg37">
+  <div class="meta">
+    <div class="title">wg46</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg37 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg32/index.html">
-    <img src="../wg32/thumb.png" alt="wg32">
+  <div class="meta">
+    <div class="title">wg49 temperature</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg32 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg50/index.html">
-    <img src="../wg50/thumb.png" alt="wg50">
+  <div class="meta">
+    <div class="title">wg50</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg50 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg03/index.html">
-    <img src="../wg03/thumb.png" alt="wg03">
+  <div class="meta">
+    <div class="title">wg51</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg03 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg08/index.html">
-    <img src="../wg08/thumb.png" alt="wg08">
+  <div class="meta">
+    <div class="title">wg55</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg08 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg58/index.html">
-    <img src="../wg58/thumb.png" alt="wg58">
+  <div class="meta">
+    <div class="title">wg57</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg58 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg62/index.html">
-    <img src="../wg62/thumb.png" alt="wg62">
+  <div class="meta">
+    <div class="title">wg58</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg62 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg40/index.html">
-    <img src="../wg40/thumb.png" alt="wg40">
+  <div class="meta">
+    <div class="title">wg60</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg40 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg57/index.html">
-    <img src="../wg57/thumb.png" alt="wg57">
+  <div class="meta">
+    <div class="title">wg62</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a href="../wg64/index.html" class="">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg57 — In progress</span>
-</li>
-<li class="in-progress">
-  <a href="../wg49 temperature/index.html">
-    <img src="../wg49 temperature/thumb.png" alt="wg49 temperature">
+  <div class="meta">
+    <div class="title">wg64</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      
+    </div>
+  </div>
+</div>
+<div class="card in-progress">
+  <a  class="disabled">
+    <img src="../docs/placeholder.png">
   </a>
-  <span>wg49 temperature — In progress</span>
-</li>
-</ul>
+  <div class="meta">
+    <div class="title">wg65</div>
+    <div class="badges">
+      <span class="status">In progress</span>
+      
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+</div>
 
 </body>
 </html>
