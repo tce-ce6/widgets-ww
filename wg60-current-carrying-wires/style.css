@@ -3,7 +3,9 @@
   user-select: none;
   white-space: nowrap;
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #rhyme-widgetbody {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;

@@ -59,6 +59,10 @@ body{
     margin: auto;
 }
 
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
 h1{
     font-size: 28px;
 }

@@ -5,7 +5,9 @@ body {
   padding: 0;
   margin: 0;
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 /* .mainContainer {
   canvas{
     max-width: 100%;

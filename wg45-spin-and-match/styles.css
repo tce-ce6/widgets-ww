@@ -5,7 +5,9 @@
 *:focus {
   outline: none !important;
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 /* ===========================
    BASE LAYOUT
 =========================== */

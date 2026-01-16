@@ -54,7 +54,9 @@ body {
   margin: 0;
   user-select: none !important;
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 .container {
   width: 100%;
   display: flex;

@@ -15,7 +15,9 @@ body {
     height: auto !important;
   }
 } */
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #mainCanvas canvas {
   max-width: 100%;
   height: auto !important;
