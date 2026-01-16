@@ -209,6 +209,7 @@ svg * {
   justify-content: center;
   cursor: pointer;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .answer-list {
@@ -393,6 +394,17 @@ svg * {
   border-bottom: 5px solid #000;
 
 }
+
+#step-4 .blank.correct, #step-4 .quiz-blank.correct {
+    height: auto;
+    width: auto;
+  }
+
+  #step-4 .blank,
+  #step-4 .quiz-blank {
+    width: 190px;
+    
+  }
 #quiz-question.correct{
   pointer-events: none;
 }
