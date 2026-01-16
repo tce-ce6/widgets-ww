@@ -6,27 +6,43 @@ const TOKEN = process.env.GH_TOKEN;
 const ORG = "tce-ce6";
 const PROJECT_NUMBER = 5;
 
+console.log("▶ Generator started");
+console.log("▶ Org:", ORG);
+console.log("▶ Project:", PROJECT_NUMBER);
+console.log("▶ Token present:", !!TOKEN);
+
 if (!TOKEN) {
-  console.error("Missing GH_TOKEN");
+  console.error("❌ Missing GH_TOKEN");
   process.exit(1);
 }
 
-/* ---------- GRAPHQL ---------- */
+/* ---------------- GRAPHQL QUERY ---------------- */
 
 const query = `
 query {
   organization(login: "${ORG}") {
     projectV2(number: ${PROJECT_NUMBER}) {
+      title
       items(first: 100) {
         nodes {
+          id
           content {
+            __typename
             ... on Issue {
               title
               state
             }
+            ... on PullRequest {
+              title
+              state
+            }
+            ... on ProjectV2DraftIssue {
+              title
+            }
           }
           fieldValues(first: 20) {
             nodes {
+              __typename
               ... on ProjectV2ItemFieldSingleSelectValue {
                 field {
                   ... on ProjectV2SingleSelectField {
@@ -59,7 +75,15 @@ function graphql(query) {
       res => {
         let body = "";
         res.on("data", d => (body += d));
-        res.on("end", () => resolve(JSON.parse(body)));
+        res.on("end", () => {
+          try {
+            resolve(JSON.parse(body));
+          } catch (e) {
+            console.error("❌ Failed to parse response");
+            console.error(body);
+            reject(e);
+          }
+        });
       }
     );
     req.on("error", reject);
@@ -68,7 +92,7 @@ function graphql(query) {
   });
 }
 
-/* ---------- HELPERS ---------- */
+/* ---------------- HELPERS ---------------- */
 
 function statusClass(status, state) {
   if (state === "CLOSED") return "closed";
@@ -82,26 +106,67 @@ function statusLabel(status, state) {
   return status || "Unknown";
 }
 
-/* ---------- MAIN ---------- */
+/* ---------------- MAIN ---------------- */
 
 (async () => {
+  console.log("▶ Fetching project data…");
+
   const data = await graphql(query);
-  console.log("pkp storeFingerprint: ~ data:", data)
 
-  const items =
-    data?.data?.organization?.projectV2?.items?.nodes || [];
+  console.log("▶ Raw API keys:", Object.keys(data || {}));
 
-  const rows = items.map(item => {
-    const title = item.content?.title;
-    if (!title) return "";
+  const project =
+    data?.data?.organization?.projectV2;
 
-    const status =
-      item.fieldValues.nodes.find(
-        n => n.field?.name === "Status"
-      )?.name || "Unknown";
+  if (!project) {
+    console.error("❌ Project not found or access denied");
+    console.error(JSON.stringify(data, null, 2));
+    process.exit(1);
+  }
 
-    const cls = statusClass(status, item.content.state);
-    const label = statusLabel(status, item.content.state);
+  console.log("▶ Project title:", project.title);
+
+  const items = project.items?.nodes || [];
+  console.log("▶ Total items returned:", items.length);
+
+  let renderedCount = 0;
+  let skippedNoTitle = 0;
+
+  const rows = items.map((item, index) => {
+    console.log(`\n--- Item ${index + 1} ---`);
+    console.log("ID:", item.id);
+    console.log("Type:", item.content?.__typename);
+
+    if (!item.content) {
+      console.warn("⚠ Item has NO content (skipped)");
+      skippedNoTitle++;
+      return "";
+    }
+
+    const title = item.content.title;
+    console.log("Title:", title);
+
+    if (!title) {
+      console.warn("⚠ Item has no title (skipped)");
+      skippedNoTitle++;
+      return "";
+    }
+
+    const statusNode = item.fieldValues.nodes.find(
+      n => n.field?.name === "Status"
+    );
+
+    const status = statusNode?.name || "Unknown";
+
+    console.log("Status:", status);
+
+    const state = item.content.state;
+    console.log("State:", state);
+
+    const cls = statusClass(status, state);
+    const label = statusLabel(status, state);
+
+    renderedCount++;
 
     return `
 <li class="${cls}">
@@ -111,6 +176,9 @@ function statusLabel(status, state) {
   <span>${title} — ${label}</span>
 </li>`;
   }).join("");
+
+  console.log("\n▶ Rendered rows:", renderedCount);
+  console.log("▶ Skipped (no title):", skippedNoTitle);
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -143,5 +211,6 @@ ${rows}
   fs.mkdirSync(docsDir, { recursive: true });
 
   fs.writeFileSync(path.join(docsDir, "index.html"), html.trim());
-  console.log("docs/index.html generated");
+
+  console.log("✅ docs/index.html written successfully");
 })();
