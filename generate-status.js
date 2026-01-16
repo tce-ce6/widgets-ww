@@ -43,7 +43,7 @@ query {
 
               ... on ProjectV2ItemFieldSingleSelectValue {
                 field {
-                  ... on ProjectV2SingleSelectField {
+                  ... on ProjectV2FieldCommon {
                     name
                   }
                 }
@@ -52,7 +52,9 @@ query {
 
               ... on ProjectV2ItemFieldTextValue {
                 field {
-                  name
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
                 }
                 text
               }
