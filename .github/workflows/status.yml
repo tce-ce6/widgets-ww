@@ -1,9 +1,12 @@
-name: Update CE6 Project Status2
+name: Update CE6 Project Status
 
 on:
   schedule:
-    - cron: "0 * * * *"   # every hour
+    - cron: "0 * * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - release52
 
 jobs:
   build:
@@ -14,8 +17,10 @@ jobs:
       actions: read
 
     steps:
-      - name: Checkout
+      - name: Checkout release52
         uses: actions/checkout@v4
+        with:
+          ref: release52
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -31,6 +36,6 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add index.html
+          git add docs/index.html
           git diff --cached --quiet || git commit -m "Auto-update CE6 project status"
           git push
