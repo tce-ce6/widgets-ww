@@ -21,6 +21,12 @@ function log(...args) {
   if (DEBUG) console.log(...args);
 }
 
+/* 🔍 REQUIRED DEBUG LINE */
+log(
+  "Token type:",
+  process.env.GITHUB_ACTIONS ? "Actions token" : "Local token"
+);
+
 if (!TOKEN) {
   console.error("❌ Missing GH_TOKEN");
   process.exit(1);
@@ -145,18 +151,16 @@ function extractNumber(title) {
     process.exit(1);
   }
 
-  log("Project:", project.title);
+  log("Project title:", project.title);
 
   const items = project.items.nodes
     .map(item => {
       const title = getTitle(item);
       if (!title) return null;
 
-      const status = getStatus(item);
-
       return {
         title,
-        status,
+        status: getStatus(item),
         num: extractNumber(title)
       };
     })
@@ -185,7 +189,7 @@ function extractNumber(title) {
   data-title="${i.title.toLowerCase()}"
   data-status="${i.status}">
   <a ${folderExists ? `href="../${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img src="${thumbExists ? `../${i.title}/thumb.png` : "./placeholder.png"}">
+    <img src="${thumbExists ? `../${i.title}/thumb.png` : "../docs/placeholder.png"}">
   </a>
   <div class="meta">
     <div class="title">${i.title}</div>
@@ -206,131 +210,30 @@ function extractNumber(title) {
 <head>
 <meta charset="UTF-8">
 <title>CE6 – Project Status</title>
-
 <style>
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
-
-.controls {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-input, select {
-  padding: 6px 10px;
-  font-size: 14px;
-}
-
-.counters {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  font-size: 14px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 12px;
-  background: #fff;
-}
-
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: contain;
-  background: #f9f9f9;
-  border-radius: 6px;
-}
-
-.meta { margin-top: 10px; }
-.title { font-weight: bold; }
-
-.badges {
-  margin-top: 6px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.status {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: #fff;
-}
-
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; background: #fff; }
+.card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; border-radius: 6px; }
+.title { font-weight: bold; margin-top: 8px; }
+.status { padding: 2px 8px; border-radius: 6px; font-size: 12px; color: #fff; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
-
-.missing {
-  background: #c0392b;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
+.missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
-.hidden { display: none; }
 </style>
 </head>
-
 <body>
 
 <h1>CE6 – Project Status</h1>
 
-<div class="controls">
-  <input id="search" placeholder="Search wg…" />
-  <select id="statusFilter">
-    <option value="all">All statuses</option>
-    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
-  </select>
-</div>
-
-<div class="counters">
-  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
-  <div>Unknown: ${counters["Unknown"]}</div>
-</div>
-
-<div class="grid" id="grid">
+<div class="grid">
 ${cards}
 </div>
-
-<script>
-const search = document.getElementById("search");
-const statusFilter = document.getElementById("statusFilter");
-const cards = [...document.querySelectorAll(".card")];
-
-function applyFilters() {
-  const q = search.value.toLowerCase();
-  const status = statusFilter.value;
-
-  cards.forEach(card => {
-    const matchText = card.dataset.title.includes(q);
-    const matchStatus =
-      status === "all" || card.dataset.status === status;
-
-    card.classList.toggle("hidden", !(matchText && matchStatus));
-  });
-}
-
-[search, statusFilter].forEach(el =>
-  el.addEventListener("input", applyFilters)
-);
-</script>
 
 </body>
 </html>`;
