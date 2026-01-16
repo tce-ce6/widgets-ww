@@ -21,7 +21,6 @@ function log(...args) {
   if (DEBUG) console.log(...args);
 }
 
-/* 🔍 REQUIRED DEBUG LINE */
 log(
   "Token type:",
   process.env.GITHUB_ACTIONS ? "Actions token" : "Local token"
@@ -188,8 +187,11 @@ function extractNumber(title) {
 <div class="card"
   data-title="${i.title.toLowerCase()}"
   data-status="${i.status}">
-  <a ${folderExists ? `href="../${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img src="${thumbExists ? `../${i.title}/thumb.png` : "../docs/placeholder.png"}">
+  <a ${folderExists ? `data-href="__BASE_PATH__/${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
+    <img data-src="${thumbExists
+      ? "__BASE_PATH__/" + i.title + "/thumb.png"
+      : "__BASE_PATH__/placeholder.png"}"
+      alt="${i.title}">
   </a>
   <div class="meta">
     <div class="title">${i.title}</div>
@@ -210,30 +212,94 @@ function extractNumber(title) {
 <head>
 <meta charset="UTF-8">
 <title>CE6 – Project Status</title>
+
 <style>
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+
+.controls { display: flex; gap: 12px; margin-bottom: 20px; }
+input, select { padding: 6px 10px; font-size: 14px; }
+
+.counters { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
 .card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; background: #fff; }
 .card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; border-radius: 6px; }
-.title { font-weight: bold; margin-top: 8px; }
+
 .status { padding: 2px 8px; border-radius: 6px; font-size: 12px; color: #fff; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
+
 .missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
+.hidden { display: none; }
 </style>
 </head>
+
 <body>
 
 <h1>CE6 – Project Status</h1>
 
-<div class="grid">
+<div class="controls">
+  <input id="search" placeholder="Search wg…" />
+  <select id="statusFilter">
+    <option value="all">All statuses</option>
+    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
+  </select>
+</div>
+
+<div class="counters">
+  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
+  <div>Unknown: ${counters["Unknown"]}</div>
+</div>
+
+<div class="grid" id="grid">
 ${cards}
 </div>
+
+<script>
+/* ===== AUTO BASE PATH DETECTION ===== */
+(function () {
+  var base = location.pathname.replace(/\\/[^\\/]*$/, "");
+  if (!base.endsWith("/")) base += "/";
+  document.querySelectorAll("[data-src]").forEach(el => {
+    el.src = el.dataset.src.replace("__BASE_PATH__", base);
+  });
+  document.querySelectorAll("[data-href]").forEach(el => {
+    el.href = el.dataset.href.replace("__BASE_PATH__", base);
+  });
+})();
+
+/* ===== FILTERS ===== */
+const search = document.getElementById("search");
+const statusFilter = document.getElementById("statusFilter");
+const cards = [...document.querySelectorAll(".card")];
+
+function applyFilters() {
+  const q = search.value.toLowerCase();
+  const status = statusFilter.value;
+
+  cards.forEach(card => {
+    const matchText = card.dataset.title.includes(q);
+    const matchStatus =
+      status === "all" || card.dataset.status === status;
+
+    card.classList.toggle("hidden", !(matchText && matchStatus));
+  });
+}
+
+[search, statusFilter].forEach(el =>
+  el.addEventListener("input", applyFilters)
+);
+</script>
 
 </body>
 </html>`;
