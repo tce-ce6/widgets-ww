@@ -199,7 +199,7 @@ img { width: 80px; height: 80px; object-fit: contain; border: 1px solid #ddd; bo
 </head>
 <body>
 
-<h1>CE6 – Project Status</h1>
+<h1>CE6 – Project Status 2</h1>
 <ul>
 ${rows}
 </ul>
