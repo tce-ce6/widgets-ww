@@ -3,7 +3,9 @@
 *:focus {
     outline: none !important; /* Removes the standard browser focus ring */
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #make-food-chain-widget body {
   box-sizing: border-box;
   outline: none;
@@ -234,4 +236,16 @@
 #reset-btn,
 #light-ray-btn {
   cursor: pointer;
+}
+
+.lake_calm_reflection{
+  position: relative;
+}
+
+.mirror-label{
+  /* position: absolute;
+  top: 310px;
+  left: -125px;
+  height: 50px !important;
+  width: 100px !important; */
 }

@@ -7,11 +7,13 @@
 <link rel=stylesheet href=global_style.css>
 <script src=p5.js></script>
 <script src=lottie.min.js></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel=stylesheet>
-<style>#widget-container{width:100%}#html-button-container{display:none;flex-direction:row;justify-content:center;align-items:center;gap:20px;font-family:'Poppins',sans-serif;width:100%;position:fixed;bottom:20px;left:0;margin:0;margin:0 auto}#html-button-container.visible{display:flex}.html-btn{flex-grow:1;max-width:200px;padding:12px 20px;font-size:18px;color:white;border:0;border-radius:8px;cursor:pointer;font-weight:600;transition:background-color .2s}.html-btn:disabled{background-color:#bdc3c7!important;cursor:not-allowed}#btn-show{background-color:#27ae60}#btn-try{background-color:#f39c12}#btn-submit{background-color:#3498db}#btn-reset{background-color:#e74c3c}#btn-show:hover:not(:disabled){background-color:#2ecc71}#btn-try:hover:not(:disabled){background-color:#f1c40f}#btn-submit:hover:not(:disabled){background-color:#5dade2}#btn-reset:hover:not(:disabled){background-color:#c0392b}</style>
+<style>#widget-container{width:100%}#html-button-container{display:none;flex-direction:row;justify-content:center;align-items:center;gap:20px;font-family:'Roboto',sans-serif;width:100%;position:fixed;bottom:20px;left:0;margin:0;margin:0 auto}#html-button-container.visible{display:flex}.html-btn{flex-grow:1;max-width:200px;padding:12px 20px;font-size:18px;color:white;border:0;border-radius:8px;cursor:pointer;font-weight:600;transition:background-color .2s}.html-btn:disabled{background-color:#bdc3c7!important;cursor:not-allowed}#btn-show{background-color:#27ae60}#btn-try{background-color:#f39c12}#btn-submit{background-color:#3498db}#btn-reset{background-color:#e74c3c}#btn-show:hover:not(:disabled){background-color:#2ecc71}#btn-try:hover:not(:disabled){background-color:#f1c40f}#btn-submit:hover:not(:disabled){background-color:#5dade2}#btn-reset:hover:not(:disabled){background-color:#c0392b}</style>
 </head>
 <body>
-<div class=wdgetTitle><h2>Locating Decimals</h2></div>
+<div class=wdgetTitle>
+    <h2>Locating Decimals</h2>
+    <span id="versionId" class="versionText">b2_wg17_251021</span>
+</div>
 <div id=app class=mainContainerOuter>
 <div class=mainContainer>
 <main id=canvas-container></main>
@@ -112,7 +114,7 @@ function setup(){
     frameRate(30);
     keyboardElement=select('#floating-keyboard');
     window.addEventListener('mousedown',handleWindowPress);
-    textFont("Poppins");
+    textFont("Roboto");
     textAlign(CENTER,CENTER);
     noStroke();
     //minor change

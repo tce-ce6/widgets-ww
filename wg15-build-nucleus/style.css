@@ -3,7 +3,9 @@
   outline: none !important;
   /* Removes the standard browser focus ring */
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #nucleus-widget body {
   box-sizing: border-box;
   outline: none;

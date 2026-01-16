@@ -300,7 +300,7 @@ const sketch = (p) => {
             p.textStyle(p.ITALIC);
             p.text("What changes do you observe in temperature and atmospheric pressure in relation to altitude?", p.width / 4, 308); // 107 * 2.88
             
-            p.fill(130);
+            p.fill(110);
             p.textSize(50); // 13 * 2.88
             p.textAlign(p.CENTER, p.BOTTOM);
             p.text("Disclaimer: These are simplified and approximate values. Real atmospheric conditions require detailed calculations for accuracy.", p.width / 2, p.height - 250); // -13 * 2.88

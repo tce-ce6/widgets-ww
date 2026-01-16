@@ -325,6 +325,7 @@ function handleImageClick(event) {
             
             // Insert the new HTML into the display area
             currencyDisplayArea.insertAdjacentHTML('beforeend', newPieceHTML);
+            resetAfterCurrencyChange();
             correctAnswer.style.display = 'none';
             incorrectAnswer.style.display = 'none';
             tryAgain.style.display = 'none';
@@ -355,13 +356,8 @@ currencyDisplayArea.addEventListener('click', function(event) {
         // 2. Convert the string to an integer
         const valueToRemove = parseInt(valueString, 10);
         removeCurrency(valueToRemove);
-        correctAnswer.style.display = 'none';
-        incorrectAnswer.style.display = 'none';
-        checkButton.disabled = false;
-        hideLottieAnimation();
-        tryAgain.style.display = 'none';
-        text.style.display = 'block';
-         currencyPiece.remove();
+        resetAfterCurrencyChange();
+        currencyPiece.remove();
         }
     }
 });
@@ -451,3 +447,13 @@ tryAgain.addEventListener('click', () => {
     checkButton.disabled = true;
     hideLottieAnimation();
 });
+
+function resetAfterCurrencyChange() {
+    isCorrect = false;           // reset evaluation state
+    correctAnswer.style.display = 'none';
+    incorrectAnswer.style.display = 'none';
+    tryAgain.style.display = 'none';
+    text.style.display = 'block';
+    checkButton.disabled = false;
+    hideLottieAnimation();
+}

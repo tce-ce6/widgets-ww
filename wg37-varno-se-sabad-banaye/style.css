@@ -3,7 +3,9 @@
   white-space: nowrap;
   user-select: none;
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #shabd-widgetbody {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
@@ -21,7 +23,7 @@
 
 #shabd-widget .container::after {
   content: "";
-  background-image: url("Assets/Images/BG_Base.png");
+  background-image: url("./Assets/Images/bg-base.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

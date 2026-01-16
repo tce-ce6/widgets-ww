@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="159" height="35" viewBox="0 0 159 35">
+  <g id="Group_1288" data-name="Group 1288" transform="translate(-1330 -707)">
+    <text id="Lake_surface" data-name="Lake surface" transform="translate(1342 709)" fill="#fff" font-size="20" font-family="Roboto-Regular, Roboto"><tspan x="4.769" y="21">Lake surface</tspan></text>
+    <g id="Rectangle_22" data-name="Rectangle 22" transform="translate(1330 707)" fill="none" stroke="#a5e7ff" stroke-width="2">
+      <rect width="148" height="35" rx="10" stroke="none"/>
+      <rect x="1" y="1" width="146" height="33" rx="9" fill="none"/>
+    </g>
+    <path id="Polygon_2" data-name="Polygon 2" d="M10,0,20,12H0Z" transform="translate(1489 715) rotate(90)" fill="#a5e7ff"/>
+  </g>
+</svg>

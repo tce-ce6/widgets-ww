@@ -65,7 +65,7 @@
     </clipPath>
     <radialGradient id="radial-gradient-8" cx="-3.682" cy="4.544" r="0.007" gradientTransform="translate(0)"
       xlink:href="#radial-gradient-2" />
-    <filter id="Clue_Cards" x="121.5" y="50.5" width="432" height="131" filterUnits="userSpaceOnUse">
+    <filter id="Clue_Cards" x="121.5" y="50.5" width="452" height="131" filterUnits="userSpaceOnUse">
       <feOffset dx="3" dy="3" input="SourceAlpha" />
       <feGaussianBlur stdDeviation="3" result="blur" />
       <feFlood flood-opacity="0.302" />
@@ -209,7 +209,7 @@
 
       <text id="Clue_Cards-2" data-name="Clue Cards" transform="translate(129.5 58.5)" fill="#fff" stroke="#9d0000"
         stroke-width="2" font-size="82" font-family="Roboto, Sans-Serif" font-weight="800">
-        <tspan x="-8.397" y="86">Clue Cards</tspan>
+        <tspan x="0" y="86">Clue Cards</tspan>
       </text>
 
     </g>

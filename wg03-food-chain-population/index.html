@@ -7,10 +7,7 @@
     <script src="p5.js"></script>
     <script src="p5.sound.min.js"></script>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    
     <link rel="stylesheet" href="global_style.css" />
     <style>
       body {
@@ -46,6 +43,7 @@
   <body>
      <div class="wdgetTitle">
         <h2>Food Chain Population Changes</h2>
+        <span id="versionId" class="versionText">b2_wg06_25111101</span>
       </div>
 
     <div id="simulation-container">
@@ -141,7 +139,7 @@
         let canvas = createCanvas(3840, 2160);
         canvas.parent("canvas-container");
         noStroke();
-        textFont("Poppins");
+        textFont("Roboto");
         imageMode(CENTER);
         handleReset();
       }

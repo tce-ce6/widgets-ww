@@ -927,4 +927,39 @@ function resetActiveSimulation() {
       listEl.classList.add("math-test");
     }
   }
+  // 🔹 Close Success / Failure modal
+document.addEventListener("click", (e) => {
+  const closeBtn = e.target.closest(".close-modal-btn");
+  if (!closeBtn) return;
+
+  const modal = closeBtn.closest(".message-modal");
+  if (modal) {
+    modal.classList.remove("active", "correct", "incorrect");
+    modal.style.display = "none";
+  }
+
+  // 🔹 Remove active state from left column
+  const leftCol = document.getElementById("left-col");
+  if (leftCol) {
+    leftCol.classList.remove("active");
+  }
+
+  // 🔹 Clear emojis & destroy lottie safely
+  const correctEmoji = document.getElementById("correct-emoji");
+  const incorrectEmoji = document.getElementById("incorrect-emoji");
+
+  if (correctEmoji) correctEmoji.innerHTML = "";
+  if (incorrectEmoji) incorrectEmoji.innerHTML = "";
+
+  if (typeof correctLottie !== "undefined" && correctLottie) {
+    correctLottie.destroy();
+    correctLottie = null;
+  }
+
+  if (typeof incorrectLottie !== "undefined" && incorrectLottie) {
+    incorrectLottie.destroy();
+    incorrectLottie = null;
+  }
+});
+
 });

@@ -3,7 +3,9 @@
   outline: none !important;
   /* Removes the standard browser focus ring */
 }
-
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
 #rutherford-widget body {
   box-sizing: border-box;
   outline: none;
@@ -316,6 +318,6 @@
   font-weight: 600;
 }
 #ray-container svg{
-      width: 1005px !important;
-    height: 815px !important;
+      width: 1920px !important;
+    height: 1080px !important;
 }
