@@ -9,6 +9,14 @@ const ORG = "tce-ce6";
 const PROJECT_NUMBER = 5;
 const DEBUG = process.env.DEBUG === "true";
 
+const STATUS_LIST = [
+  "Ready for Tech",
+  "TODO by tech",
+  "In progress",
+  "In review with Content",
+  "Closed by Content"
+];
+
 function log(...args) {
   if (DEBUG) console.log(...args);
 }
@@ -28,7 +36,6 @@ query {
       items(first: 100) {
         nodes {
           content {
-            __typename
             ... on Issue {
               title
               state
@@ -102,6 +109,7 @@ function getTitle(item) {
       n.__typename === "ProjectV2ItemFieldTextValue" &&
       n.field?.name === "Title"
   );
+
   return titleField?.text;
 }
 
@@ -111,11 +119,8 @@ function getStatus(item) {
       n.__typename === "ProjectV2ItemFieldSingleSelectValue" &&
       n.field?.name === "Status"
   );
-  return statusField?.name || "Unknown";
-}
 
-function isDraft(item) {
-  return !item.content;
+  return statusField?.name || "Unknown";
 }
 
 function extractNumber(title) {
@@ -147,66 +152,84 @@ function extractNumber(title) {
       const title = getTitle(item);
       if (!title) return null;
 
+      const status = getStatus(item);
+
       return {
         title,
-        status: getStatus(item),
-        state: item.content?.state,
-        draft: isDraft(item),
+        status,
         num: extractNumber(title)
       };
     })
     .filter(Boolean)
     .sort((a, b) => a.num - b.num);
 
-  /* ===== Counters ===== */
+  /* ================= COUNTERS ================= */
 
-  const counters = {
-    "In progress": 0,
-    Done: 0,
-    Unknown: 0
-  };
+  const counters = {};
+  STATUS_LIST.forEach(s => (counters[s] = 0));
+  counters["Unknown"] = 0;
 
   items.forEach(i => {
     counters[i.status] = (counters[i.status] || 0) + 1;
   });
 
-  /* ================= HTML ================= */
+  /* ================= CARDS ================= */
 
   const cards = items.map(i => {
-    const folderPath = `../${i.title}`;
-    const thumbPath = `${folderPath}/thumb.png`;
-    const indexPath = `${folderPath}/index.html`;
-
-    const folderExists = fs.existsSync(path.join(process.cwd(), i.title));
-    const thumbExists = fs.existsSync(path.join(process.cwd(), i.title, "thumb.png"));
+    const folderPath = path.join(process.cwd(), i.title);
+    const folderExists = fs.existsSync(folderPath);
+    const thumbExists = fs.existsSync(path.join(folderPath, "thumb.png"));
 
     return `
-<div class="card ${i.status.replace(" ", "-").toLowerCase()}">
-  <a ${folderExists ? `href="${indexPath}"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img src="${thumbExists ? thumbPath : "../docs/placeholder.png"}">
+<div class="card"
+  data-title="${i.title.toLowerCase()}"
+  data-status="${i.status}">
+  <a ${folderExists ? `href="../${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
+    <img src="${thumbExists ? `../${i.title}/thumb.png` : "../docs/placeholder.png"}">
   </a>
   <div class="meta">
     <div class="title">${i.title}</div>
     <div class="badges">
-      <span class="status">${i.status}</span>
-      ${i.draft ? `<span class="draft">Draft</span>` : ""}
+      <span class="status ${i.status.replace(/\\s+/g, "-").toLowerCase()}">
+        ${i.status}
+      </span>
       ${!folderExists ? `<span class="missing">Missing folder</span>` : ""}
     </div>
   </div>
 </div>`;
   }).join("");
 
+  /* ================= HTML ================= */
+
   const html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>CE6 – Project Status</title>
+
 <style>
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
 
-.counters { display: flex; gap: 20px; margin-bottom: 30px; }
-.counter { font-size: 18px; }
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+input, select {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.counters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
 
 .grid {
   display: grid;
@@ -232,22 +255,25 @@ h1 { font-size: 42px; }
 .meta { margin-top: 10px; }
 .title { font-weight: bold; }
 
-.badges { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+.badges {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
 
 .status {
-  background: #eee;
   padding: 2px 8px;
   border-radius: 6px;
   font-size: 12px;
+  color: #fff;
 }
 
-.draft {
-  background: #999;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
+.ready-for-tech { background: #27ae60; }
+.todo-by-tech { background: #2980b9; }
+.in-progress { background: #f39c12; }
+.in-review-with-content { background: #8e44ad; }
+.closed-by-content { background: #2c3e50; }
 
 .missing {
   background: #c0392b;
@@ -257,25 +283,54 @@ h1 { font-size: 42px; }
   font-size: 12px;
 }
 
-.in-progress .status { background: #f39c12; color: #fff; }
-.done .status { background: #2ecc71; color: #fff; }
-
 .disabled { pointer-events: none; opacity: 0.6; }
+.hidden { display: none; }
 </style>
 </head>
+
 <body>
 
 <h1>CE6 – Project Status</h1>
 
-<div class="counters">
-  <div class="counter">In progress: ${counters["In progress"]}</div>
-  <div class="counter">Done: ${counters["Done"]}</div>
-  <div class="counter">Unknown: ${counters["Unknown"]}</div>
+<div class="controls">
+  <input id="search" placeholder="Search wg…" />
+  <select id="statusFilter">
+    <option value="all">All statuses</option>
+    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
+  </select>
 </div>
 
-<div class="grid">
+<div class="counters">
+  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
+  <div>Unknown: ${counters["Unknown"]}</div>
+</div>
+
+<div class="grid" id="grid">
 ${cards}
 </div>
+
+<script>
+const search = document.getElementById("search");
+const statusFilter = document.getElementById("statusFilter");
+const cards = [...document.querySelectorAll(".card")];
+
+function applyFilters() {
+  const q = search.value.toLowerCase();
+  const status = statusFilter.value;
+
+  cards.forEach(card => {
+    const matchText = card.dataset.title.includes(q);
+    const matchStatus =
+      status === "all" || card.dataset.status === status;
+
+    card.classList.toggle("hidden", !(matchText && matchStatus));
+  });
+}
+
+[search, statusFilter].forEach(el =>
+  el.addEventListener("input", applyFilters)
+);
+</script>
 
 </body>
 </html>`;
