@@ -8,25 +8,10 @@
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
 
-.controls {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
+.controls { display: flex; gap: 12px; margin-bottom: 20px; }
+input, select { padding: 6px 10px; font-size: 14px; }
 
-input, select {
-  padding: 6px 10px;
-  font-size: 14px;
-}
-
-.counters {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  font-size: 14px;
-}
+.counters { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
 
 .grid {
   display: grid;
@@ -34,52 +19,17 @@ input, select {
   gap: 20px;
 }
 
-.card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 12px;
-  background: #fff;
-}
+.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; background: #fff; }
+.card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; border-radius: 6px; }
 
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: contain;
-  background: #f9f9f9;
-  border-radius: 6px;
-}
-
-.meta { margin-top: 10px; }
-.title { font-weight: bold; }
-
-.badges {
-  margin-top: 6px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.status {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: #fff;
-}
-
+.status { padding: 2px 8px; border-radius: 6px; font-size: 12px; color: #fff; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
 
-.missing {
-  background: #c0392b;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
+.missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
 .hidden { display: none; }
 </style>
@@ -98,7 +48,7 @@ input, select {
 </div>
 
 <div class="counters">
-  <div>Ready for Tech: 0</div><div>TODO by tech: 0</div><div>In progress: 32</div><div>In review with Content: 0</div><div>Closed by Content: 1</div>
+  <div>Ready for Tech: 0</div><div>TODO by tech: 0</div><div>In progress: 31</div><div>In review with Content: 1</div><div>Closed by Content: 1</div>
   <div>Unknown: 0</div>
 </div>
 
@@ -107,8 +57,9 @@ input, select {
 <div class="card"
   data-title="wg01-phototropism"
   data-status="In progress">
-  <a href="../wg01-phototropism/index.html" class="">
-    <img src="../wg01-phototropism/thumb.png">
+  <a data-href="__BASE_PATH__/wg01-phototropism/index.html" class="">
+    <img data-src="__BASE_PATH__/wg01-phototropism/thumb.png"
+      alt="wg01-phototropism">
   </a>
   <div class="meta">
     <div class="title">wg01-phototropism</div>
@@ -124,7 +75,8 @@ input, select {
   data-title="wg02"
   data-status="Closed by Content">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg02">
   </a>
   <div class="meta">
     <div class="title">wg02</div>
@@ -140,7 +92,8 @@ input, select {
   data-title="wg02"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg02">
   </a>
   <div class="meta">
     <div class="title">wg02</div>
@@ -156,7 +109,8 @@ input, select {
   data-title="wg03"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg03">
   </a>
   <div class="meta">
     <div class="title">wg03</div>
@@ -172,7 +126,8 @@ input, select {
   data-title="wg03"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg03">
   </a>
   <div class="meta">
     <div class="title">wg03</div>
@@ -188,7 +143,8 @@ input, select {
   data-title="wg05"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg05">
   </a>
   <div class="meta">
     <div class="title">wg05</div>
@@ -204,7 +160,8 @@ input, select {
   data-title="wg07"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg07">
   </a>
   <div class="meta">
     <div class="title">wg07</div>
@@ -220,7 +177,8 @@ input, select {
   data-title="wg08"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg08">
   </a>
   <div class="meta">
     <div class="title">wg08</div>
@@ -236,7 +194,8 @@ input, select {
   data-title="wg09"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg09">
   </a>
   <div class="meta">
     <div class="title">wg09</div>
@@ -252,7 +211,8 @@ input, select {
   data-title="wg11"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg11">
   </a>
   <div class="meta">
     <div class="title">wg11</div>
@@ -268,7 +228,8 @@ input, select {
   data-title="wg20"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg20">
   </a>
   <div class="meta">
     <div class="title">wg20</div>
@@ -284,7 +245,8 @@ input, select {
   data-title="wg22"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg22">
   </a>
   <div class="meta">
     <div class="title">wg22</div>
@@ -300,7 +262,8 @@ input, select {
   data-title="wg29"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg29">
   </a>
   <div class="meta">
     <div class="title">wg29</div>
@@ -316,7 +279,8 @@ input, select {
   data-title="wg30"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg30">
   </a>
   <div class="meta">
     <div class="title">wg30</div>
@@ -332,7 +296,8 @@ input, select {
   data-title="wg32"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg32">
   </a>
   <div class="meta">
     <div class="title">wg32</div>
@@ -348,7 +313,8 @@ input, select {
   data-title="wg34"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg34">
   </a>
   <div class="meta">
     <div class="title">wg34</div>
@@ -364,7 +330,8 @@ input, select {
   data-title="wg37"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg37">
   </a>
   <div class="meta">
     <div class="title">wg37</div>
@@ -380,7 +347,8 @@ input, select {
   data-title="wg37"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg37">
   </a>
   <div class="meta">
     <div class="title">wg37</div>
@@ -396,7 +364,8 @@ input, select {
   data-title="wg38"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg38">
   </a>
   <div class="meta">
     <div class="title">wg38</div>
@@ -412,7 +381,8 @@ input, select {
   data-title="wg39"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg39">
   </a>
   <div class="meta">
     <div class="title">wg39</div>
@@ -428,7 +398,8 @@ input, select {
   data-title="wg40"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg40">
   </a>
   <div class="meta">
     <div class="title">wg40</div>
@@ -444,7 +415,8 @@ input, select {
   data-title="wg41"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg41">
   </a>
   <div class="meta">
     <div class="title">wg41</div>
@@ -460,7 +432,8 @@ input, select {
   data-title="wg46"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg46">
   </a>
   <div class="meta">
     <div class="title">wg46</div>
@@ -474,15 +447,16 @@ input, select {
 </div>
 <div class="card"
   data-title="wg49 temperature"
-  data-status="In progress">
+  data-status="In review with Content">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg49 temperature">
   </a>
   <div class="meta">
     <div class="title">wg49 temperature</div>
     <div class="badges">
-      <span class="status in progress">
-        In progress
+      <span class="status in review with content">
+        In review with Content
       </span>
       <span class="missing">Missing folder</span>
     </div>
@@ -492,7 +466,8 @@ input, select {
   data-title="wg50"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg50">
   </a>
   <div class="meta">
     <div class="title">wg50</div>
@@ -508,7 +483,8 @@ input, select {
   data-title="wg51"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg51">
   </a>
   <div class="meta">
     <div class="title">wg51</div>
@@ -524,7 +500,8 @@ input, select {
   data-title="wg55"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg55">
   </a>
   <div class="meta">
     <div class="title">wg55</div>
@@ -540,7 +517,8 @@ input, select {
   data-title="wg57"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg57">
   </a>
   <div class="meta">
     <div class="title">wg57</div>
@@ -556,7 +534,8 @@ input, select {
   data-title="wg58"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg58">
   </a>
   <div class="meta">
     <div class="title">wg58</div>
@@ -572,7 +551,8 @@ input, select {
   data-title="wg60"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg60">
   </a>
   <div class="meta">
     <div class="title">wg60</div>
@@ -588,7 +568,8 @@ input, select {
   data-title="wg62"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg62">
   </a>
   <div class="meta">
     <div class="title">wg62</div>
@@ -603,8 +584,9 @@ input, select {
 <div class="card"
   data-title="wg64"
   data-status="In progress">
-  <a href="../wg64/index.html" class="">
-    <img src="../docs/placeholder.png">
+  <a  class="disabled">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg64">
   </a>
   <div class="meta">
     <div class="title">wg64</div>
@@ -612,7 +594,7 @@ input, select {
       <span class="status in progress">
         In progress
       </span>
-      
+      <span class="missing">Missing folder</span>
     </div>
   </div>
 </div>
@@ -620,7 +602,8 @@ input, select {
   data-title="wg65"
   data-status="In progress">
   <a  class="disabled">
-    <img src="../docs/placeholder.png">
+    <img data-src="__BASE_PATH__/placeholder.png"
+      alt="wg65">
   </a>
   <div class="meta">
     <div class="title">wg65</div>
@@ -635,6 +618,19 @@ input, select {
 </div>
 
 <script>
+/* ===== AUTO BASE PATH DETECTION ===== */
+(function () {
+  var base = location.pathname.replace(/\/[^\/]*$/, "");
+  if (!base.endsWith("/")) base += "/";
+  document.querySelectorAll("[data-src]").forEach(el => {
+    el.src = el.dataset.src.replace("__BASE_PATH__", base);
+  });
+  document.querySelectorAll("[data-href]").forEach(el => {
+    el.href = el.dataset.href.replace("__BASE_PATH__", base);
+  });
+})();
+
+/* ===== FILTERS ===== */
 const search = document.getElementById("search");
 const statusFilter = document.getElementById("statusFilter");
 const cards = [...document.querySelectorAll(".card")];
