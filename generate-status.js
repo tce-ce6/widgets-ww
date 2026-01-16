@@ -185,7 +185,7 @@ function extractNumber(title) {
   data-title="${i.title.toLowerCase()}"
   data-status="${i.status}">
   <a ${folderExists ? `href="../${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img src="${thumbExists ? `../${i.title}/thumb.png` : "../docs/placeholder.png"}">
+    <img src="${thumbExists ? `../${i.title}/thumb.png` : "./placeholder.png"}">
   </a>
   <div class="meta">
     <div class="title">${i.title}</div>
