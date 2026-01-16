@@ -316,7 +316,7 @@ button:disabled{
   }
   /* comment below for new header start */
   .wdgetTitle h2 {
-    font-size: 16px;
+    font-size: 23px !important;
     font-weight: 600;
     text-align: left;
     background: #1e6bef;
