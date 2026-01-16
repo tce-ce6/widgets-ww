@@ -86,6 +86,7 @@ function statusLabel(status, state) {
 
 (async () => {
   const data = await graphql(query);
+  console.log("pkp storeFingerprint: ~ data:", data)
 
   const items =
     data?.data?.organization?.projectV2?.items?.nodes || [];
