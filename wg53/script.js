@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const els = {
     activityTitle: document.getElementById("activity-title").querySelector("tspan"),
     activityText: document.getElementById("curr-activity-text"),
-    activeSubject: document.getElementById("active-subject-text").querySelector("tspan"),
+    activeSubjectText: document.getElementById("active-subject-text").querySelector("tspan"),
+    activeSubject: document.getElementById("active-subject"),
+    activeBargraph: document.getElementById("active-bargraph"),
     xAxisLabels: document.querySelectorAll("#x-axis-labels text tspan"),
     dragLabels: document.querySelectorAll("#y-axis-drag-selectors text tspan"),
     btnNext: document.getElementById("btn-next"),
@@ -189,6 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (tspans[i]) tspans[i].textContent = line + (i < activity.description.length - 1 ? " " : "");
     });
     els.activeSubject.textContent = activity.subject;
+    els.activeBargraph.textContent = activity.subject;
     if (activity.labels && activity.labels.length === 5) {
       activity.labels.forEach((label, i) => {
         if (els.xAxisLabels[i]) els.xAxisLabels[i].textContent = label;

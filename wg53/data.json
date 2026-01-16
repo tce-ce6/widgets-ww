@@ -10,7 +10,7 @@
       "Draw a vertical bar graph showing ",
       "book categories."
     ],
-    "subject": "Books",
+    "subject": "Number of Books",
     "categories": [
       { "label": "Fiction", "value": 450 },
       { "label": "Science", "value": 320 },

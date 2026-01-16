@@ -383,3 +383,45 @@
   transform: rotate(-135deg);
   margin-top: 5px;
 }
+
+.active-bargraph-box{
+      margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.active-bargraph-text{
+      margin: 0;
+    background: #8ADCDD;
+    padding: 4px 10px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 26px;
+    border-radius: 10px;
+}
+
+.show-answer-main{
+     width: 100%;
+    height: 100%;
+    background: #e4f7f1b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.show-answer-content{
+  width: 85%;
+    height: 90%;
+    position: relative;
+    background: #EAFFEB;
+    margin-top: 55px;
+    border: 6px solid #4CAF50;
+    border-radius: 12px;
+    box-shadow: 2px 2px 5px #a5a5a5b0;
+}
+.show-answer-content-close{
+      width: 70px;
+    height: 70px;
+    position: absolute;
+    top: -38px;
+    right: -38px;
+}
