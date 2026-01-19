@@ -166,6 +166,28 @@ function extractNumber(title) {
     .filter(Boolean)
     .sort((a, b) => a.num - b.num);
 
+  /* ================= BUILD-TIME VALIDATION ================= */
+
+  let missingFolders = 0;
+  let missingThumbs = 0;
+
+  items.forEach(i => {
+    const folder = path.join(process.cwd(), i.title);
+    const thumb = path.join(folder, "thumb.png");
+
+    if (!fs.existsSync(folder)) {
+      console.warn(`⚠ Missing folder: ${i.title}/`);
+      missingFolders++;
+    } else if (!fs.existsSync(thumb)) {
+      console.warn(`⚠ Missing thumb.png in ${i.title}/`);
+      missingThumbs++;
+    }
+  });
+
+  console.log(
+    `✔ Validation → Missing folders: ${missingFolders}, Missing thumbs: ${missingThumbs}`
+  );
+
   /* ================= COUNTERS ================= */
 
   const counters = {};
@@ -179,19 +201,22 @@ function extractNumber(title) {
   /* ================= CARDS ================= */
 
   const cards = items.map(i => {
-    const folderPath = path.join(process.cwd(), i.title);
-    const folderExists = fs.existsSync(folderPath);
-    const thumbExists = fs.existsSync(path.join(folderPath, "thumb.png"));
+    const folderExists = fs.existsSync(path.join(process.cwd(), i.title));
+    const thumbExists = fs.existsSync(
+      path.join(process.cwd(), i.title, "thumb.png")
+    );
+
+    const linkUrl = folderExists ? `./${i.title}/index.html` : "";
+    const thumbUrl = thumbExists
+      ? `./${i.title}/thumb.png`
+      : `./placeholder.png`;
 
     return `
 <div class="card"
   data-title="${i.title.toLowerCase()}"
   data-status="${i.status}">
-  <a ${folderExists ? `data-href="__BASE_PATH__/${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img data-src="${thumbExists
-      ? "__BASE_PATH__/" + i.title + "/thumb.png"
-      : "__BASE_PATH__/placeholder.png"}"
-      alt="${i.title}">
+  <a ${folderExists ? `href="${linkUrl}"` : ""} class="${folderExists ? "" : "disabled"}">
+    <img src="${thumbUrl}" alt="${i.title}">
   </a>
   <div class="meta">
     <div class="title">${i.title}</div>
@@ -228,17 +253,44 @@ input, select { padding: 6px 10px; font-size: 14px; }
   gap: 20px;
 }
 
-.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; background: #fff; }
-.card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; border-radius: 6px; }
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
 
-.status { padding: 2px 8px; border-radius: 6px; font-size: 12px; color: #fff; }
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.title { font-weight: bold; margin-top: 8px; }
+
+.status {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+}
+
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
 
-.missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+.missing {
+  background: #c0392b;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
 .disabled { pointer-events: none; opacity: 0.6; }
 .hidden { display: none; }
 </style>
@@ -266,19 +318,6 @@ ${cards}
 </div>
 
 <script>
-/* ===== AUTO BASE PATH DETECTION ===== */
-(function () {
-  var base = location.pathname.replace(/\\/[^\\/]*$/, "");
-  if (!base.endsWith("/")) base += "/";
-  document.querySelectorAll("[data-src]").forEach(el => {
-    el.src = el.dataset.src.replace("__BASE_PATH__", base);
-  });
-  document.querySelectorAll("[data-href]").forEach(el => {
-    el.href = el.dataset.href.replace("__BASE_PATH__", base);
-  });
-})();
-
-/* ===== FILTERS ===== */
 const search = document.getElementById("search");
 const statusFilter = document.getElementById("statusFilter");
 const cards = [...document.querySelectorAll(".card")];
