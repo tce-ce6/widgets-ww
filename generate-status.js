@@ -185,7 +185,7 @@ function extractNumber(title) {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>B3 Widgets Status</title>
+<title>B3 Widgets Status v1.0.0</title>
 
 <style>
 body { font-family: Arial; margin: 30px; }
