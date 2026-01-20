@@ -202,9 +202,11 @@ function extractNumber(title) {
 
   const cards = items.map(i => {
     const folderExists = fs.existsSync(path.join(process.cwd(), i.title));
+    console.log("pkp storeFingerprint: ~ folderExists:", i.title,":", folderExists)
     const thumbExists = fs.existsSync(
       path.join(process.cwd(), i.title, "thumb.png")
     );
+    console.log("pkp storeFingerprint: ~ thumbExists:", thumbExists)
 
     const linkUrl = folderExists ? `./${i.title}/index.html` : "";
     const thumbUrl = thumbExists

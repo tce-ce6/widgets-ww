@@ -28,3 +28,13 @@
 - **Graph:** JSX-graph
 - **Canvas:** p5
 - **Math Equations:** MathJax 
+
+## commands to run locally
+
+```
+export GH_TOKEN=github_pat_XXXXXXXXXXX
+
+node generate-status.js
+
+node preview.js
+```
