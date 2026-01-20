@@ -1,10 +1,9 @@
 name: Generate Project Status Page
 
 on:
-  # 1️⃣ Any commit to tracked branches
+  # 1️⃣ Any commit ONLY to b3-main
   push:
     branches:
-      # - release52
       - b3-main
 
   # 2️⃣ Pull requests activity
@@ -40,8 +39,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (b3-main)
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
