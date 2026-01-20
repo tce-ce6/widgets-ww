@@ -2,16 +2,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CE6 – Project Status</title>
+<title>B3 Widgets Status</title>
 
 <style>
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
 
-.release-time { font-size: 13px; color: #666; margin-bottom: 20px; }
+.release-time {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
 
 .controls { margin-bottom: 20px; }
-.filters { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.filters label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.count {
+  color: #666;
+  font-size: 12px;
+}
 
 .grid {
   display: grid;
@@ -44,8 +65,8 @@ h1 { font-size: 42px; }
 
 <body>
 
-<h1>CE6 – Project Status</h1>
-<div class="release-time">Last updated: 20 Jan 2026, 20:37</div>
+<h2>B3 Widgets Status</h2>
+<div class="release-time">Last updated: 20 Jan 2026, 20:52</div>
 
 <div class="controls">
   <input id="search" placeholder="Search wg…" />
@@ -54,27 +75,27 @@ h1 { font-size: 42px; }
     
       <label>
         <input type="checkbox" value="Ready for Tech">
-        Ready for Tech
+        Ready for Tech <span class="count">(6)</span>
       </label>
     
       <label>
         <input type="checkbox" value="TODO by tech">
-        TODO by tech
+        TODO by tech <span class="count">(0)</span>
       </label>
     
       <label>
         <input type="checkbox" value="In progress">
-        In progress
+        In progress <span class="count">(31)</span>
       </label>
     
       <label>
         <input type="checkbox" value="In review with Content">
-        In review with Content
+        In review with Content <span class="count">(1)</span>
       </label>
     
       <label>
         <input type="checkbox" value="Closed by Content">
-        Closed by Content
+        Closed by Content <span class="count">(7)</span>
       </label>
     
   </div>
