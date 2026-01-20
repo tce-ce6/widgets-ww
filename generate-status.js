@@ -29,13 +29,12 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-/* ================= GRAPHQL QUERY ================= */
+/* ================= GRAPHQL ================= */
 
 const query = `
 query {
   organization(login: "${ORG}") {
     projectV2(number: ${PROJECT_NUMBER}) {
-      title
       items(first: 100) {
         nodes {
           content {
@@ -61,8 +60,6 @@ query {
   }
 }
 `;
-
-/* ================= GRAPHQL ================= */
 
 function graphql(query) {
   return new Promise((resolve, reject) => {
@@ -92,24 +89,21 @@ function graphql(query) {
 
 function getTitle(item) {
   if (item.content?.title) return item.content.title;
-
-  const titleField = item.fieldValues.nodes.find(
+  const t = item.fieldValues.nodes.find(
     n =>
       n.__typename === "ProjectV2ItemFieldTextValue" &&
       n.field?.name === "Title"
   );
-
-  return titleField?.text;
+  return t?.text;
 }
 
 function getStatus(item) {
-  const statusField = item.fieldValues.nodes.find(
+  const s = item.fieldValues.nodes.find(
     n =>
       n.__typename === "ProjectV2ItemFieldSingleSelectValue" &&
       n.field?.name === "Status"
   );
-
-  return statusField?.name || "Unknown";
+  return s?.name || "Unknown";
 }
 
 function extractNumber(title) {
@@ -123,22 +117,14 @@ function extractNumber(title) {
   const res = await graphql(query);
 
   if (res.errors) {
-    console.error("❌ GraphQL error");
     console.error(JSON.stringify(res.errors, null, 2));
     process.exit(1);
   }
 
-  const project = res.data?.organization?.projectV2;
-  if (!project) {
-    console.error("❌ Project not accessible");
-    process.exit(1);
-  }
-
-  const items = project.items.nodes
+  const items = res.data.organization.projectV2.items.nodes
     .map(item => {
       const title = getTitle(item);
       if (!title) return null;
-
       return {
         title,
         status: getStatus(item),
@@ -148,35 +134,17 @@ function extractNumber(title) {
     .filter(Boolean)
     .sort((a, b) => a.num - b.num);
 
-  /* ================= BUILD-TIME VALIDATION ================= */
-
-  items.forEach(i => {
-    const folder = path.join(DOCS_ROOT, i.title);
-    const thumb = path.join(folder, "thumb.png");
-
-    const folderExists = fs.existsSync(folder);
-    const thumbExists = fs.existsSync(thumb);
-
-    log("folderExists:", i.title, ":", folderExists);
-
-    if (!folderExists) {
-      console.warn(`⚠ Missing folder: docs/${i.title}/`);
-    } else if (!thumbExists) {
-      console.warn(`⚠ Missing thumb.png in docs/${i.title}/`);
-    }
-  });
-
   /* ================= COUNTERS ================= */
 
   const counters = {};
   STATUS_LIST.forEach(s => (counters[s] = 0));
-  counters["Unknown"] = 0;
+  counters.Unknown = 0;
 
   items.forEach(i => {
     counters[i.status] = (counters[i.status] || 0) + 1;
   });
 
-  /* ================= RELEASE TIMESTAMP ================= */
+  /* ================= TIMESTAMP ================= */
 
   const releaseTimestamp = new Date().toLocaleString("en-IN", {
     year: "numeric",
@@ -191,35 +159,23 @@ function extractNumber(title) {
   /* ================= CARDS ================= */
 
   const cards = items.map(i => {
-    const folderExists = fs.existsSync(
-      path.join(DOCS_ROOT, i.title)
-    );
+    const folder = path.join(DOCS_ROOT, i.title);
+    const thumb = path.join(folder, "thumb.png");
 
-    const thumbExists = fs.existsSync(
-      path.join(DOCS_ROOT, i.title, "thumb.png")
-    );
-
-    const linkUrl = folderExists ? `./${i.title}/index.html` : "";
-    const thumbUrl = thumbExists
-      ? `./${i.title}/thumb.png`
-      : `./placeholder.png`;
+    const folderExists = fs.existsSync(folder);
+    const thumbExists = fs.existsSync(thumb);
 
     return `
 <div class="card"
   data-title="${i.title.toLowerCase()}"
   data-status="${i.status}">
-  <a ${folderExists ? `href="${linkUrl}"` : ""} class="${folderExists ? "" : "disabled"}">
-    <img src="${thumbUrl}" alt="${i.title}">
+  <a ${folderExists ? `href="./${i.title}/index.html"` : ""} class="${folderExists ? "" : "disabled"}">
+    <img src="${thumbExists ? `./${i.title}/thumb.png` : "./placeholder.png"}">
   </a>
-  <div class="meta">
-    <div class="title">${i.title}</div>
-    <div class="badges">
-      <span class="status ${i.status.replace(/\\s+/g, "-").toLowerCase()}">
-        ${i.status}
-      </span>
-      ${!folderExists ? `<span class="missing">Missing folder</span>` : ""}
-    </div>
-  </div>
+  <div class="title">${i.title}</div>
+  <span class="status ${i.status.replace(/\\s+/g, "-").toLowerCase()}">
+    ${i.status}
+  </span>
 </div>`;
   }).join("");
 
@@ -235,31 +191,10 @@ function extractNumber(title) {
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
 
-.release-time {
-  margin-top: -10px;
-  margin-bottom: 20px;
-  font-size: 13px;
-  color: #666;
-}
+.release-time { font-size: 13px; color: #666; margin-bottom: 20px; }
 
-.controls {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-input, select {
-  padding: 6px 10px;
-  font-size: 14px;
-}
-
-.counters {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  font-size: 14px;
-}
+.controls { margin-bottom: 20px; }
+.filters { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
 
 .grid {
   display: grid;
@@ -267,42 +202,45 @@ input, select {
   gap: 20px;
 }
 
-.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
+.card { border: 1px solid #ddd; padding: 12px; border-radius: 10px; }
 .card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; }
 
-.title { font-weight: bold; margin-top: 8px; }
+.status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+}
 
-.status { color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 12px; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
 
-.missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
-.disabled { pointer-events: none; opacity: 0.6; }
 .hidden { display: none; }
+.disabled { pointer-events: none; opacity: 0.6; }
 </style>
 </head>
 
 <body>
 
 <h1>CE6 – Project Status</h1>
-<div class="release-time">
-  Last updated: ${releaseTimestamp}
-</div>
+<div class="release-time">Last updated: ${releaseTimestamp}</div>
 
 <div class="controls">
   <input id="search" placeholder="Search wg…" />
-  <select id="statusFilter">
-    <option value="all">All statuses</option>
-    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
-  </select>
-</div>
 
-<div class="counters">
-  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
-  <div>Unknown: ${counters["Unknown"]}</div>
+  <div class="filters" id="statusFilters">
+    ${STATUS_LIST.map(s => `
+      <label>
+        <input type="checkbox" value="${s}">
+        ${s}
+      </label>
+    `).join("")}
+  </div>
 </div>
 
 <div class="grid" id="grid">
@@ -311,25 +249,49 @@ ${cards}
 
 <script>
 const search = document.getElementById("search");
-const statusFilter = document.getElementById("statusFilter");
 const cards = [...document.querySelectorAll(".card")];
+const checkboxes = [...document.querySelectorAll("#statusFilters input")];
+
+const STORAGE_KEY = "ce6-filters";
+
+/* ===== Restore state ===== */
+const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+search.value = saved.search || "";
+
+checkboxes.forEach(cb => {
+  cb.checked = saved.statuses
+    ? saved.statuses.includes(cb.value)
+    : true;
+});
 
 function applyFilters() {
   const q = search.value.toLowerCase();
-  const status = statusFilter.value;
+  const activeStatuses = checkboxes
+    .filter(c => c.checked)
+    .map(c => c.value);
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      search: search.value,
+      statuses: activeStatuses
+    })
+  );
 
   cards.forEach(card => {
     const matchText = card.dataset.title.includes(q);
     const matchStatus =
-      status === "all" || card.dataset.status === status;
+      activeStatuses.length === 0 ||
+      activeStatuses.includes(card.dataset.status);
 
     card.classList.toggle("hidden", !(matchText && matchStatus));
   });
 }
 
-[search, statusFilter].forEach(el =>
-  el.addEventListener("input", applyFilters)
-);
+search.addEventListener("input", applyFilters);
+checkboxes.forEach(cb => cb.addEventListener("change", applyFilters));
+
+applyFilters();
 </script>
 
 </body>
