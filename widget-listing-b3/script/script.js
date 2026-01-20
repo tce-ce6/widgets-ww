@@ -162,6 +162,34 @@ const WIDGET_DATA = [
     creators: "ni-ra-72",
     status: "todo",
   },
+  {
+    name: "Legislature vs Executive: Scenario Challenge",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-84.png",
+    creators: "ni-ra-84",
+    status: "todo",
+  },
+  {
+    name: "Major Soil Types",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-83.png",
+    creators: "ni-ra-83",
+    status: "todo",
+  },
+  {
+    name: "Commonly Confused Words",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-82.png",
+    creators: "ni-ra-82",
+    status: "todo",
+  },
+  {
+    name: "उ और ऊ की मात्रा में अंतर",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-81.png",
+    creators: "ni-ra-81",
+    status: "todo",
+  },
 ];
 
 document.addEventListener("DOMContentLoaded", function () {

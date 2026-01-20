@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Custom Bar Slider</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .slider-wrapper {
+    width: 420px;
+  }
+
+  .value-text {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    font-weight: bold;
+  }
+
+  .slider {
+    position: relative;
+    height: 46px;
+    background: #e0e0e0;
+    border-radius: 30px;
+    padding: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .bars {
+    display: flex;
+    height: 100%;
+    gap: 4px;
+  }
+
+  .bar {
+    flex: 1;
+    background: #cfd8dc;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .bar.active {
+    background: #4caf50;
+  }
+
+  .thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="slider-wrapper">
+  <div class="value-text">Value: <span id="value">0</span></div>
+
+  <div class="slider" id="slider">
+    <div class="bars" id="bars"></div>
+    <div class="thumb" id="thumb"></div>
+  </div>
+</div>
+
+<script>
+  const slider = document.getElementById("slider");
+  const barsContainer = document.getElementById("bars");
+  const thumb = document.getElementById("thumb");
+  const valueText = document.getElementById("value");
+
+  const STEPS = 10;
+  let currentValue = 0;
+
+  // Create bars
+  for (let i = 0; i < STEPS; i++) {
+    const bar = document.createElement("div");
+    bar.classList.add("bar");
+    barsContainer.appendChild(bar);
+  }
+
+  const bars = document.querySelectorAll(".bar");
+
+  function updateSlider(value) {
+    currentValue = Math.max(0, Math.min(STEPS - 1, value));
+    valueText.textContent = currentValue + 1;
+
+    bars.forEach((bar, i) => {
+      bar.classList.toggle("active", i <= currentValue);
+    });
+
+    const sliderWidth = slider.clientWidth;
+    const stepWidth = sliderWidth / STEPS;
+    thumb.style.left = stepWidth * (currentValue + 0.5) + "px";
+  }
+
+  function handleMove(clientX) {
+    const rect = slider.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const step = Math.floor((x / rect.width) * STEPS);
+    updateSlider(step);
+  }
+
+  slider.addEventListener("click", e => {
+    handleMove(e.clientX);
+  });
+
+  let dragging = false;
+
+  slider.addEventListener("mousedown", () => dragging = true);
+  window.addEventListener("mouseup", () => dragging = false);
+  window.addEventListener("mousemove", e => {
+    if (dragging) handleMove(e.clientX);
+  });
+
+  slider.addEventListener("touchstart", () => dragging = true);
+  slider.addEventListener("touchend", () => dragging = false);
+  slider.addEventListener("touchmove", e => {
+    handleMove(e.touches[0].clientX);
+  });
+
+  // Init
+  updateSlider(0);
+</script>
+
+</body>
+</html>
