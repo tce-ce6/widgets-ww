@@ -161,14 +161,8 @@ function extractNumber(title) {
 
     if (!folderExists) {
       console.warn(`⚠ Missing folder: docs/${i.title}/`);
-    } else{
-      console.warn(`✅ Found folder for ${i.title}`);
-    }
-    
-    if (!thumbExists) {
+    } else if (!thumbExists) {
       console.warn(`⚠ Missing thumb.png in docs/${i.title}/`);
-    }else{
-      console.warn(`✅ Found thumb.png for ${i.title}`);
     }
   });
 
@@ -180,6 +174,19 @@ function extractNumber(title) {
 
   items.forEach(i => {
     counters[i.status] = (counters[i.status] || 0) + 1;
+  });
+
+  /* ================= RELEASE TIMESTAMP ================= */
+
+  const now = new Date();
+  const releaseTimestamp = now.toLocaleString("en-IN", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Kolkata"
   });
 
   /* ================= CARDS ================= */
@@ -224,24 +231,47 @@ function extractNumber(title) {
 <head>
 <meta charset="UTF-8">
 <title>CE6 – Project Status</title>
+
 <style>
 body { font-family: Arial; margin: 30px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+h1 { font-size: 42px; }
+
+.release-time {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
 .card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
 .card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; }
+
+.title { font-weight: bold; margin-top: 8px; }
+
 .status { color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 12px; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
+
 .missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
 </style>
 </head>
+
 <body>
 
 <h1>CE6 – Project Status</h1>
+<div class="release-time">
+  Last updated: ${releaseTimestamp}
+</div>
 
 <div class="grid">
 ${cards}
