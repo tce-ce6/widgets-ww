@@ -248,7 +248,7 @@ h1 { font-size: 42px; }
 
 <body>
 
-<h1>CE6 – Project Status</h1>
+<h2>B3 Widgets Status</h2>
 <div class="release-time">Last updated: ${releaseTimestamp}</div>
 
 <div class="controls">
