@@ -178,8 +178,7 @@ function extractNumber(title) {
 
   /* ================= RELEASE TIMESTAMP ================= */
 
-  const now = new Date();
-  const releaseTimestamp = now.toLocaleString("en-IN", {
+  const releaseTimestamp = new Date().toLocaleString("en-IN", {
     year: "numeric",
     month: "short",
     day: "2-digit",
@@ -243,6 +242,25 @@ h1 { font-size: 42px; }
   color: #666;
 }
 
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.counters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -263,6 +281,7 @@ h1 { font-size: 42px; }
 
 .missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
+.hidden { display: none; }
 </style>
 </head>
 
@@ -273,9 +292,45 @@ h1 { font-size: 42px; }
   Last updated: ${releaseTimestamp}
 </div>
 
-<div class="grid">
+<div class="controls">
+  <input id="search" placeholder="Search wg…" />
+  <select id="statusFilter">
+    <option value="all">All statuses</option>
+    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
+  </select>
+</div>
+
+<div class="counters">
+  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
+  <div>Unknown: ${counters["Unknown"]}</div>
+</div>
+
+<div class="grid" id="grid">
 ${cards}
 </div>
+
+<script>
+const search = document.getElementById("search");
+const statusFilter = document.getElementById("statusFilter");
+const cards = [...document.querySelectorAll(".card")];
+
+function applyFilters() {
+  const q = search.value.toLowerCase();
+  const status = statusFilter.value;
+
+  cards.forEach(card => {
+    const matchText = card.dataset.title.includes(q);
+    const matchStatus =
+      status === "all" || card.dataset.status === status;
+
+    card.classList.toggle("hidden", !(matchText && matchStatus));
+  });
+}
+
+[search, statusFilter].forEach(el =>
+  el.addEventListener("input", applyFilters)
+);
+</script>
 
 </body>
 </html>`;
