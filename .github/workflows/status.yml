@@ -1,46 +1,72 @@
-name: B3 Widgets Status Page
+name: Generate Project Status Page
 
 on:
+  # 1️⃣ Any commit to tracked branches
+  push:
+    branches:
+      # - release52
+      - b3-main
+
+  # 2️⃣ Pull requests activity
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+  # 3️⃣ Issue changes (covers title edits, close/reopen)
+  issues:
+    types:
+      - opened
+      - edited
+      - closed
+      - reopened
+
+  # 4️⃣ Polling for Project status changes (Projects v2 has no events)
   schedule:
-    - cron: "*/10 * * * *"
-  workflow_dispatch: {}
+    - cron: "*/5 * * * *"   # every 5 minutes
+
+  # 5️⃣ Manual trigger
+  workflow_dispatch:
 
 permissions:
   contents: write
-  actions: write
+  projects: read
+  issues: read
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout b3-main
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: b3-main
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Verify token exists
-        run: echo "Token exists"
+      - name: Verify token
+        run: echo "GITHUB_TOKEN is available"
 
-      - name: Generate status page
+      - name: Generate status HTML
         env:
-          GH_TOKEN: ${{ secrets.CE6_PROJECT_TOKEN }}
-        run: node generate-status.js
-
-      - name: Commit if changed
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          node generate-status.js
 
-          if git diff --quiet; then
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add docs/index.html
+
+          if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git add docs/index.html
-            git commit -m "commit B3 Widgets status page"
-            git push origin b3-main
+            git commit -m "Auto-update project status page"
+            git push
           fi
