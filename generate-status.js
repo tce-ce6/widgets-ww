@@ -134,14 +134,14 @@ function extractNumber(title) {
     .filter(Boolean)
     .sort((a, b) => a.num - b.num);
 
-  /* ================= COUNTERS ================= */
+  /* ================= STATUS COUNTS ================= */
 
-  const counters = {};
-  STATUS_LIST.forEach(s => (counters[s] = 0));
-  counters.Unknown = 0;
+  const statusCounts = {};
+  STATUS_LIST.forEach(s => (statusCounts[s] = 0));
+  statusCounts.Unknown = 0;
 
   items.forEach(i => {
-    counters[i.status] = (counters[i.status] || 0) + 1;
+    statusCounts[i.status] = (statusCounts[i.status] || 0) + 1;
   });
 
   /* ================= TIMESTAMP ================= */
@@ -185,16 +185,37 @@ function extractNumber(title) {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CE6 – Project Status</title>
+<title>B3 Widgets Status</title>
 
 <style>
 body { font-family: Arial; margin: 30px; }
 h1 { font-size: 42px; }
 
-.release-time { font-size: 13px; color: #666; margin-bottom: 20px; }
+.release-time {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
 
 .controls { margin-bottom: 20px; }
-.filters { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.filters label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.count {
+  color: #666;
+  font-size: 12px;
+}
 
 .grid {
   display: grid;
@@ -234,12 +255,14 @@ h1 { font-size: 42px; }
   <input id="search" placeholder="Search wg…" />
 
   <div class="filters" id="statusFilters">
-    ${STATUS_LIST.map(s => `
+    ${STATUS_LIST.map(
+      s => `
       <label>
         <input type="checkbox" value="${s}">
-        ${s}
+        ${s} <span class="count">(${statusCounts[s] || 0})</span>
       </label>
-    `).join("")}
+    `
+    ).join("")}
   </div>
 </div>
 
