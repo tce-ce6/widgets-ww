@@ -40,6 +40,7 @@
 let animationStartTime=0;
 let animationDuration=800;
 let isSpeaking=false;
+let lastInputActivationTime = 0;
 let showResult=false,currentNumber="",system="none",explanation=[],instruction="Enter...",numberEntered=false,inExplanationMode=false,
 commaPositions=[],
 isDraggingComma=false,
@@ -514,7 +515,9 @@ function mousePressed(){
                 if(showCanvasInput&&isMouseOver(canvasInputRect)){                                  
                                  if(!isInputActive){                                  
                                  isInputActive=true;                                  
-                                 keyboard.style.display="grid";                                  
+                                 keyboard.style.display="grid";   
+                                 lastInputActivationTime = millis(); // ✅ ADD THIS
+                               
                                  }
                                 return;                  
                 }
@@ -634,7 +637,7 @@ function mouseReleased(){
 
 function handleKeyboardClick(event){event.stopPropagation();const key=event.target.closest(".key");if(!key||!isInputActive)return;const keyValue=key.innerText;const keyAction=key.dataset.key;if(keyAction==="backspace"){canvasInputString=canvasInputString.slice(0,-1);}else if(/[0-9]/.test(keyValue)&&canvasInputString.length<11){canvasInputString+=keyValue;}
 console.log("Kbd:",keyValue,"->",canvasInputString);}
-function handleWindowClick(event){if(!isInputActive)return;const canvasEl=document.getElementById("defaultCanvas0");if(!canvasEl)return;const isClickOnKeyboard=keyboard.contains(event.target);const isClickOnCanvas=canvasEl.contains(event.target);let isClickOnInput=false;if(isClickOnCanvas){let rect=canvasEl.getBoundingClientRect();let canvasMouseX=event.clientX-rect.left;let canvasMouseY=event.clientY-rect.top;isClickOnInput=canvasMouseX>canvasInputRect.x&&canvasMouseX<canvasInputRect.x+canvasInputRect.w&&canvasMouseY>canvasInputRect.y&&canvasMouseY<canvasInputRect.y+canvasInputRect.h;}
+function handleWindowClick(event){if (millis() - lastInputActivationTime < 100) return; if(!isInputActive)return;const canvasEl=document.getElementById("defaultCanvas0");if(!canvasEl)return;const isClickOnKeyboard=keyboard.contains(event.target);const isClickOnCanvas=canvasEl.contains(event.target);let isClickOnInput=false;if(isClickOnCanvas){let rect=canvasEl.getBoundingClientRect();let canvasMouseX=event.clientX-rect.left;let canvasMouseY=event.clientY-rect.top;isClickOnInput=canvasMouseX>canvasInputRect.x&&canvasMouseX<canvasInputRect.x+canvasInputRect.w&&canvasMouseY>canvasInputRect.y&&canvasMouseY<canvasInputRect.y+canvasInputRect.h;}
 if(!isClickOnKeyboard&&!isClickOnInput){isInputActive=false;keyboard.style.display="none";}}
 function isMouseOver(rect){return(mouseX>rect.x&&mouseX<rect.x+rect.w&&mouseY>rect.y&&mouseY<rect.y+rect.h);}
 function updateCanvasElementPositions(){let inputWidth=Math.min(windowWidth*0.5,canvasWidth*0.5,300);canvasInputRect.w=inputWidth;canvasInputRect.h=48;canvasInputRect.x=(canvasWidth-inputWidth)/2;canvasInputRect.y=130;let btnWidth=(inputWidth-10)/2;useNumberBtnRect.w=btnWidth;useNumberBtnRect.h=40;useNumberBtnRect.x=(canvasWidth-inputWidth)/2;useNumberBtnRect.y=190;clearBtnRect.w=btnWidth;clearBtnRect.h=40;clearBtnRect.x=useNumberBtnRect.x+btnWidth+10;clearBtnRect.y=190;let systemButtonWidth=Math.min(windowWidth*0.25,160);indianSystemBtnRect.w=systemButtonWidth;indianSystemBtnRect.h=40;indianSystemBtnRect.x=(canvasWidth-systemButtonWidth*2-40)/2;indianSystemBtnRect.y=270;americanSystemBtnRect.w=systemButtonWidth;americanSystemBtnRect.h=40;americanSystemBtnRect.x=indianSystemBtnRect.x+systemButtonWidth+40;americanSystemBtnRect.y=270;}

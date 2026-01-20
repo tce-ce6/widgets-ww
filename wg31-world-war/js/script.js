@@ -10,6 +10,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const showMsg = document.getElementById("show-msg");
   const closeBtn = document.getElementById("closeBtn");
   const hintText = document.getElementById("hintText");
+  const labelWrapper = document.getElementById("label-wrapper");
 
   let selectedClueIndex = null; // which clue is active
   let selectedCountryId = null; // country name from clue
@@ -20,7 +21,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   let currentClueIndex = 0;
   let currentQuestionIndex = 0;
-
 
   const actionBtn = document.getElementById("action-btn");
 
@@ -95,41 +95,43 @@ window.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     if (!draggedFlag) return;
 
+    console.log("🖱️ Mouse Screen Position:", {
+      clientX: e.clientX,
+      clientY: e.clientY,
+    });
+
     const FLAG_SIZE = 45;
 
     const pt = svgElem.createSVGPoint();
     pt.x = e.clientX;
     pt.y = e.clientY;
 
-    const svgRootPoint = pt.matrixTransform(svgElem.getScreenCTM().inverse());
-
-    const worldMapPoint = svgRootPoint.matrixTransform(
-      worldMap.getCTM().inverse()
+    // 🔵 1️⃣ FLAG PLACEMENT (Panzoom space)
+    const placementPoint = pt.matrixTransform(
+      worldMap.getScreenCTM().inverse(),
     );
 
-    // 🔍 FIND WHICH COUNTRY WAS DROPPED ON
+    // 🟢 2️⃣ COUNTRY HIT TEST (SVG root space)
+    const hitTestPoint = pt.matrixTransform(svgElem.getScreenCTM().inverse());
+
+    // ✅ FIND COUNTRY FIRST (FIX)
     const droppedCountryPath = getCountryAtPoint(
       svgElem,
       worldMap,
-      worldMapPoint.x,
-      worldMapPoint.y
+      hitTestPoint.x,
+      hitTestPoint.y,
     );
-
-    if (droppedCountryPath) {
-      console.log("🗺 Dropped on country ID:", droppedCountryPath.id);
-    } else {
-      console.log("🗺 Dropped on empty area");
-    }
 
     const offsetX = DRAG_ANCHOR_X - DRAG_IMG_SIZE / 2;
     const offsetY = DRAG_ANCHOR_Y - DRAG_IMG_SIZE / 2;
 
-    const finalX = worldMapPoint.x - FLAG_SIZE / 2 - offsetX;
-    const finalY = worldMapPoint.y - FLAG_SIZE / 2 - offsetY;
+    const finalX = placementPoint.x - FLAG_SIZE / 2 - offsetX;
+
+    const finalY = placementPoint.y - FLAG_SIZE / 2 - offsetY;
 
     const foreignObject = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "foreignObject"
+      "foreignObject",
     );
 
     foreignObject.setAttribute("x", finalX);
@@ -149,13 +151,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     foreignObject.appendChild(div);
     worldMap.appendChild(foreignObject);
 
-    // 🔐 STORE LAST DROP STATE (CORRECT PLACE)
+    // 🔐 STORE LAST DROP STATE (NOW SAFE)
     lastDroppedFlag = draggedFlag;
     lastDroppedCountryPath = droppedCountryPath;
     lastPlacedFlagEl = foreignObject;
 
     draggedFlag.style.visibility = "hidden";
-    console.log(`✅ FINAL DROP: ${finalX.toFixed(2)}, ${finalY.toFixed(2)}`);
 
     /* ================= VALIDATION ================= */
 
@@ -166,39 +167,32 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const flagCountry = draggedFlag.dataset.country;
     const flagAlliance = draggedFlag.dataset.alliance;
-    const droppedCountryId = droppedCountryPath.id;
 
-    console.log("🚩 Flag country:", flagCountry);
-    console.log("🛡 Alliance:", flagAlliance);
-    console.log("🗺 Dropped on:", droppedCountryId);
+    const parentGroup = droppedCountryPath.closest("g");
+    const droppedCountryId = parentGroup
+      ? parentGroup.id
+      : droppedCountryPath.id;
 
-    // ✅ MATCH
-    // ✅ CORRECT MATCH
+    // ✅ CORRECT
     if (flagCountry === droppedCountryId) {
-      let fillColor = "";
+      const fillColor =
+        flagAlliance === "Central Powers" ? "#FE984A" : "#007608";
 
-      if (flagAlliance === "Central Powers") {
-        fillColor = "#FE984A";
-      } else if (flagAlliance === "Allied Powers") {
-        fillColor = "#007608";
+      if (parentGroup) {
+        fillGroupPaths(parentGroup, fillColor); // ✅ whole group
+      } else {
+        droppedCountryPath.setAttribute("fill", fillColor); // ✅ single path
       }
 
-      if (fillColor) {
-        droppedCountryPath.setAttribute("fill", fillColor);
-        draggedFlag.style.visibility = "hidden";
-
-        showActionButton("Proceed", "proceed");
-
-        console.log("✅ Correct drop");
+      showActionButton("Proceed", "proceed");
+    } else {
+      if (parentGroup) {
+        fillGroupPaths(parentGroup, "#FFD5D5");
+      } else {
+        droppedCountryPath.setAttribute("fill", "#FFD5D5");
       }
-    }
-    // ❌ WRONG DROP
-    else {
-      droppedCountryPath.setAttribute("fill", "#FFD5D5");
 
       showActionButton("Try Again", "try-again");
-
-      console.warn("❌ Wrong drop");
     }
   });
 
@@ -252,81 +246,76 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (step2Description) {
     step2Description.style.cursor = "pointer";
     step2Description.addEventListener("click", () => {
-    document.getElementById("step-2").style.display = "none";
-    document.getElementById("step-3").style.display = "block";
-    setActiveStep(3);
+      document.getElementById("step-2").style.display = "none";
+      document.getElementById("step-3").style.display = "block";
+      setActiveStep(3);
 
-    currentClueIndex = 0;
+      currentClueIndex = 0;
 
-    const currentQuestion = selectedYearData.questions[0];
-    renderFlagsForQuestion(currentQuestion);
-    renderCluesForQuestion(currentQuestion);
-  });
-
+      const currentQuestion = selectedYearData.questions[0];
+      renderFlagsForQuestion(currentQuestion);
+      renderCluesForQuestion(currentQuestion);
+    });
   }
 
-function renderFlagsForQuestion(question) {
-  if (!flagList || !Array.isArray(question.totalClues)) return;
+  function renderFlagsForQuestion(question) {
+    if (!flagList || !Array.isArray(question.totalClues)) return;
 
-  flagList.innerHTML = "";
+    flagList.innerHTML = "";
 
-  question.totalClues.forEach((clue, index) => {
-    const li = document.createElement("li");
+    question.totalClues.forEach((clue, index) => {
+      const li = document.createElement("li");
 
-    // 🔗 store metadata
-    li.dataset.index = index;
-    li.dataset.country = clue.country;
-    li.dataset.alliance = clue.alliance;
+      // 🔗 store metadata
+      li.dataset.index = index;
+      li.dataset.country = clue.country;
+      li.dataset.alliance = clue.alliance;
 
-    const img = document.createElement("img");
-    img.src = "./assets/flag.svg";
-    img.width = 45;
-    img.height = 45;
+      const img = document.createElement("img");
+      img.src = "./assets/flag.svg";
+      img.width = 45;
+      img.height = 45;
 
-    li.appendChild(img);
+      li.appendChild(img);
 
-    // ✅ ACTIVE FLAG (current clue)
-    if (index === currentClueIndex) {
-      li.classList.add("active-flag");
-      makeFlagDraggable(li);
-    }
-    // ❌ INACTIVE FLAGS (future / past)
-    else {
-      li.classList.add("inactive-flag");
-      li.style.opacity = "0.4";
-      li.style.pointerEvents = "none";
-    }
+      // ✅ ACTIVE FLAG (current clue)
+      if (index === currentClueIndex) {
+        li.classList.add("active-flag");
+        makeFlagDraggable(li);
+      }
+      // ❌ INACTIVE FLAGS (future / past)
+      else {
+        li.classList.add("inactive-flag");
+        li.style.opacity = "0.4";
+        li.style.pointerEvents = "none";
+      }
 
-    flagList.appendChild(li);
-  });
-}
-
-
-
-function renderCluesForQuestion(question) {
-  clueWrapper.innerHTML = "";
-
-  question.totalClues.forEach((clue, index) => {
-    const li = document.createElement("li");
-    li.classList.add("clue-item");
-
-    if (index === currentClueIndex) {
-      li.classList.add("active");
-    }
-
-    li.textContent = `Clue ${index + 1}`;
-
-    li.addEventListener("click", () => {
-      selectedClueIndex = index;
-      selectedCountryId = clue.country;
-      showMsg.style.display = "block";
+      flagList.appendChild(li);
     });
+  }
 
-    clueWrapper.appendChild(li);
-  });
-}
+  function renderCluesForQuestion(question) {
+    clueWrapper.innerHTML = "";
 
+    question.totalClues.forEach((clue, index) => {
+      const li = document.createElement("li");
+      li.classList.add("clue-item");
 
+      if (index === currentClueIndex) {
+        li.classList.add("active");
+      }
+
+      li.textContent = `Clue ${index + 1}`;
+
+      li.addEventListener("click", () => {
+        selectedClueIndex = index;
+        selectedCountryId = clue.country;
+        showMsg.style.display = "block";
+      });
+
+      clueWrapper.appendChild(li);
+    });
+  }
 
   closeBtn.addEventListener("click", () => {
     showMsg.style.display = "none";
@@ -334,22 +323,17 @@ function renderCluesForQuestion(question) {
 
   function getCountryAtPoint(svgElem, worldMap, x, y) {
     const paths = worldMap.querySelectorAll("path");
-
-    const hitPoint = svgElem.createSVGPoint();
-    hitPoint.x = x;
-    hitPoint.y = y;
+    const point = svgElem.createSVGPoint();
+    point.x = x;
+    point.y = y;
 
     for (const path of paths) {
       const ctm = path.getCTM();
       if (!ctm) continue;
 
-      const localPoint = hitPoint.matrixTransform(ctm.inverse());
-
-      if (path.isPointInFill(localPoint)) {
-        return path; // ✅ FOUND COUNTRY
-      }
+      const localPoint = point.matrixTransform(ctm.inverse());
+      if (path.isPointInFill(localPoint)) return path;
     }
-
     return null;
   }
 
@@ -361,8 +345,7 @@ function renderCluesForQuestion(question) {
   }
 
   actionBtn.addEventListener("click", () => {
-    const currentQuestion =
-      selectedYearData.questions[currentQuestionIndex];
+    const currentQuestion = selectedYearData.questions[currentQuestionIndex];
 
     // 🔁 TRY AGAIN
     if (actionBtn.classList.contains("try-again")) {
@@ -386,8 +369,7 @@ function renderCluesForQuestion(question) {
         currentClueIndex = 0;
 
         if (currentQuestionIndex < selectedYearData.questions.length) {
-          const nextQuestion =
-            selectedYearData.questions[currentQuestionIndex];
+          const nextQuestion = selectedYearData.questions[currentQuestionIndex];
 
           resetDropState();
           document.querySelector(".question-text").textContent =
@@ -404,21 +386,58 @@ function renderCluesForQuestion(question) {
     actionBtn.style.display = "none";
   });
 
+  function resetDropState() {
+    if (lastPlacedFlagEl) {
+      lastPlacedFlagEl.remove();
+      lastPlacedFlagEl = null;
+    }
 
+    if (lastDroppedCountryPath) {
+      const parentGroup = lastDroppedCountryPath.closest("g");
 
-function resetDropState() {
-  if (lastPlacedFlagEl) {
-    lastPlacedFlagEl.remove();
-    lastPlacedFlagEl = null;
+      if (parentGroup) {
+        fillGroupPaths(parentGroup, "#D1DBDD");
+      } else {
+        lastDroppedCountryPath.setAttribute("fill", "white");
+      }
+
+      lastDroppedCountryPath = null;
+    }
+
+    lastDroppedFlag = null;
+  }
+  function fillGroupPaths(groupEl, color) {
+    if (!groupEl) return;
+    const paths = groupEl.querySelectorAll("path");
+    paths.forEach((p) => p.setAttribute("fill", color));
   }
 
-  if (lastDroppedCountryPath) {
-    lastDroppedCountryPath.setAttribute("fill", "white");
-    lastDroppedCountryPath = null;
+  // safety check
+  if (labelWrapper) {
+    const DEFAULT_SCALE = 1;
+    const HIDE_SCALE_THRESHOLD = 1.05; // 👈 slight zoom-in
+
+    const updateLabelVisibility = () => {
+      const scale = panzoom.getScale();
+
+      if (scale > HIDE_SCALE_THRESHOLD) {
+        labelWrapper.style.display = "none";
+        labelWrapper.style.opacity = "0";
+        labelWrapper.style.visibility = "hidden";
+        labelWrapper.style.transition = "all .4s ease-in-out";
+      } else {
+        labelWrapper.style.display = "block";
+        labelWrapper.style.opacity = "1";
+        labelWrapper.style.visibility = "visible";
+        labelWrapper.style.transition = "all .4s ease-in-out";
+      }
+    };
+
+    // 🔁 Listen to panzoom zoom events
+    worldMap.addEventListener("panzoomzoom", updateLabelVisibility);
+    worldMap.addEventListener("panzoomreset", updateLabelVisibility);
+
+    // ✅ Initial state (important on load)
+    updateLabelVisibility();
   }
-
-  lastDroppedFlag = null;
-}
-
-
 });

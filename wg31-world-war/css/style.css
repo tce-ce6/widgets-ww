@@ -11,7 +11,7 @@ svg * {
 #world-war body {
   box-sizing: border-box;
   outline: none;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 1.2;
   padding: 0;
@@ -160,7 +160,7 @@ svg * {
   right: 20px;
   top: 10px !important;
   font-size: 12px;
-  color: #6a6a6a;
+  color: rgb(0 0 0 / 20%);
 }
 
 #world-war .svg-container {
@@ -328,4 +328,51 @@ svg * {
 }
 .action-btn.proceed{
   background-color: #4CAF50;
+}
+.location-wrapper{
+  position: relative;
+}
+.location-label{
+position: absolute;
+    display: block;
+    color: #fff;
+    top: 50%;
+    left: 45px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    background-color: #f37021;
+    padding: 4px 10px;
+    white-space: nowrap;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px #0000008a;
+}
+.location-wrapper.left{
+  display: flex;
+  justify-content: center;
+}
+.location-label::before{
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 9px solid #f37021;
+}
+.location-label.left{
+     left: 10px;
+
+}
+.location-label.left::before{
+  left: auto;
+  right: -7px;
+  border-right: none;
+  border-left: 9px solid #f37021;
+}
+
+.country-label-wrap{
+  font-size: 8px;
 }

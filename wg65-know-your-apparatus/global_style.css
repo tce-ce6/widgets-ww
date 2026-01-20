@@ -351,5 +351,5 @@ button:disabled{
   right: 20px;
   top: 20px;
     font-size: 12px;
-    color: #ccc;
+    color: rgb(0 0 0 / 20%);
   }

@@ -32,12 +32,13 @@
         }
 
         .title-container h3 {
-           font-size: 23px;
-  font-weight: 600;
-  text-align: center;
-  padding: 8px 40px;
-  margin: 0;
-  color: #fff;
-  border-radius: 0 0 20px 20px;
-  background: #1d83ec;
+    font-size: 23px;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 40px;
+    color: #ffffff;
+    border-radius: 0 0px 20px 20px;
+    background: #0295fc;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .3);
+    white-space: nowrap;
         }
