@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CE6 – Project Status</title>
+
+<style>
+body { font-family: Arial; margin: 30px; }
+h1 { font-size: 42px; }
+
+.controls { display: flex; gap: 12px; margin-bottom: 20px; }
+input, select { padding: 6px 10px; font-size: 14px; }
+
+.counters { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.title { font-weight: bold; margin-top: 8px; }
+
+.status {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.ready-for-tech { background: #27ae60; }
+.todo-by-tech { background: #2980b9; }
+.in-progress { background: #f39c12; }
+.in-review-with-content { background: #8e44ad; }
+.closed-by-content { background: #2c3e50; }
+
+.missing {
+  background: #c0392b;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.disabled { pointer-events: none; opacity: 0.6; }
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<h1>CE6 – Project Status</h1>
+
+<div class="controls">
+  <input id="search" placeholder="Search wg…" />
+  <select id="statusFilter">
+    <option value="all">All statuses</option>
+    <option>Ready for Tech</option><option>TODO by tech</option><option>In progress</option><option>In review with Content</option><option>Closed by Content</option>
+  </select>
+</div>
+
+<div class="counters">
+  <div>Ready for Tech: 6</div><div>TODO by tech: 0</div><div>In progress: 31</div><div>In review with Content: 1</div><div>Closed by Content: 7</div>
+  <div>Unknown: 0</div>
+</div>
+
+<div class="grid" id="grid">
+
+<div class="card"
+  data-title="wg01-phototropism"
+  data-status="In progress">
+  <a href="./wg01-phototropism/index.html" class="">
+    <img src="./wg01-phototropism/thumb.png" alt="wg01-phototropism">
+  </a>
+  <div class="meta">
+    <div class="title">wg01-phototropism</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg02"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg02">
+  </a>
+  <div class="meta">
+    <div class="title">wg02</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg02"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg02">
+  </a>
+  <div class="meta">
+    <div class="title">wg02</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg03"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg03">
+  </a>
+  <div class="meta">
+    <div class="title">wg03</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg03"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg03">
+  </a>
+  <div class="meta">
+    <div class="title">wg03</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg05"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg05">
+  </a>
+  <div class="meta">
+    <div class="title">wg05</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg07"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg07">
+  </a>
+  <div class="meta">
+    <div class="title">wg07</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg08"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg08">
+  </a>
+  <div class="meta">
+    <div class="title">wg08</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg09"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg09">
+  </a>
+  <div class="meta">
+    <div class="title">wg09</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg11"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg11">
+  </a>
+  <div class="meta">
+    <div class="title">wg11</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg20"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg20">
+  </a>
+  <div class="meta">
+    <div class="title">wg20</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg22"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg22">
+  </a>
+  <div class="meta">
+    <div class="title">wg22</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg29"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg29">
+  </a>
+  <div class="meta">
+    <div class="title">wg29</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg30"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg30">
+  </a>
+  <div class="meta">
+    <div class="title">wg30</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg32"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg32">
+  </a>
+  <div class="meta">
+    <div class="title">wg32</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg34"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg34">
+  </a>
+  <div class="meta">
+    <div class="title">wg34</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg37"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg37">
+  </a>
+  <div class="meta">
+    <div class="title">wg37</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg37"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg37">
+  </a>
+  <div class="meta">
+    <div class="title">wg37</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg38"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg38">
+  </a>
+  <div class="meta">
+    <div class="title">wg38</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg39"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg39">
+  </a>
+  <div class="meta">
+    <div class="title">wg39</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg40"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg40">
+  </a>
+  <div class="meta">
+    <div class="title">wg40</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg41"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg41">
+  </a>
+  <div class="meta">
+    <div class="title">wg41</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg46"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg46">
+  </a>
+  <div class="meta">
+    <div class="title">wg46</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg49 temperature"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg49 temperature">
+  </a>
+  <div class="meta">
+    <div class="title">wg49 temperature</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg50"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg50">
+  </a>
+  <div class="meta">
+    <div class="title">wg50</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg51"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg51">
+  </a>
+  <div class="meta">
+    <div class="title">wg51</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg55"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg55">
+  </a>
+  <div class="meta">
+    <div class="title">wg55</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg57"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg57">
+  </a>
+  <div class="meta">
+    <div class="title">wg57</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg58"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg58">
+  </a>
+  <div class="meta">
+    <div class="title">wg58</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg60"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg60">
+  </a>
+  <div class="meta">
+    <div class="title">wg60</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg62"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg62">
+  </a>
+  <div class="meta">
+    <div class="title">wg62</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg64"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg64">
+  </a>
+  <div class="meta">
+    <div class="title">wg64</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="wg65"
+  data-status="In progress">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="wg65">
+  </a>
+  <div class="meta">
+    <div class="title">wg65</div>
+    <div class="badges">
+      <span class="status in progress">
+        In progress
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="testing for demo"
+  data-status="In review with Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="testing for demo">
+  </a>
+  <div class="meta">
+    <div class="title">testing for demo</div>
+    <div class="badges">
+      <span class="status in review with content">
+        In review with Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="en_geo"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="en_geo">
+  </a>
+  <div class="meta">
+    <div class="title">en_geo</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="sub1"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="sub1">
+  </a>
+  <div class="meta">
+    <div class="title">sub1</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="test_subissue"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="test_subissue">
+  </a>
+  <div class="meta">
+    <div class="title">test_subissue</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="content_issue 1"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="content_issue 1">
+  </a>
+  <div class="meta">
+    <div class="title">content_issue 1</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="time pass :)"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="Time pass :)">
+  </a>
+  <div class="meta">
+    <div class="title">Time pass :)</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="graphic"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="Graphic">
+  </a>
+  <div class="meta">
+    <div class="title">Graphic</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="content_sub1"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="content_sub1">
+  </a>
+  <div class="meta">
+    <div class="title">content_sub1</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="new issue"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="New issue">
+  </a>
+  <div class="meta">
+    <div class="title">New issue</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="new comment"
+  data-status="Ready for Tech">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="new comment">
+  </a>
+  <div class="meta">
+    <div class="title">new comment</div>
+    <div class="badges">
+      <span class="status ready for tech">
+        Ready for Tech
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="content_sub 2"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="content_sub 2">
+  </a>
+  <div class="meta">
+    <div class="title">content_sub 2</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+<div class="card"
+  data-title="graphic2"
+  data-status="Closed by Content">
+  <a  class="disabled">
+    <img src="./placeholder.png" alt="graphic2">
+  </a>
+  <div class="meta">
+    <div class="title">graphic2</div>
+    <div class="badges">
+      <span class="status closed by content">
+        Closed by Content
+      </span>
+      <span class="missing">Missing folder</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const search = document.getElementById("search");
+const statusFilter = document.getElementById("statusFilter");
+const cards = [...document.querySelectorAll(".card")];
+
+function applyFilters() {
+  const q = search.value.toLowerCase();
+  const status = statusFilter.value;
+
+  cards.forEach(card => {
+    const matchText = card.dataset.title.includes(q);
+    const matchStatus =
+      status === "all" || card.dataset.status === status;
+
+    card.classList.toggle("hidden", !(matchText && matchStatus));
+  });
+}
+
+[search, statusFilter].forEach(el =>
+  el.addEventListener("input", applyFilters)
+);
+</script>
+
+</body>
+</html>
