@@ -1,0 +1,46 @@
+name: Update CE6 Project Status
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout b3-main
+        uses: actions/checkout@v4
+        with:
+          ref: b3-main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify token exists
+        run: echo "Token exists"
+
+      - name: Generate status page
+        env:
+          GH_TOKEN: ${{ secrets.CE6_PROJECT_TOKEN }}
+        run: node generate-status.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add docs/index.html
+            git commit -m "Update CE6 Project Status"
+            git push origin release52
+          fi
