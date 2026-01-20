@@ -298,7 +298,7 @@ input, select { padding: 6px 10px; font-size: 14px; }
 
 <body>
 
-<h1>CE6 – Project Status</h1>
+<h1>B3 Widgets Status</h1>
 
 <div class="controls">
   <input id="search" placeholder="Search wg…" />
