@@ -236,7 +236,7 @@ function extractNumber(title) {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CE6 – Project Status</title>
+<title>B3 Widgets Status</title>
 
 <style>
 body { font-family: Arial; margin: 30px; }

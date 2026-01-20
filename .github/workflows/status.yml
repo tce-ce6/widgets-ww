@@ -1,4 +1,4 @@
-name: Update CE6 Project Status
+name: B3 Widgets Status Page
 
 on:
   schedule:
@@ -41,6 +41,6 @@ jobs:
             echo "No changes to commit"
           else
             git add docs/index.html
-            git commit -m "Update CE6 Project Status"
-            git push origin release52
+            git commit -m "commit B3 Widgets status page"
+            git push origin b3-main
           fi
