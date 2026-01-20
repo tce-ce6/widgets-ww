@@ -6,14 +6,13 @@ const ROOT = process.cwd();
 const PORT = 8080;
 
 http.createServer((req, res) => {
-  let urlPath = req.url;
+  let filePath;
 
-  // Serve docs/index.html at root
-  if (urlPath === "/") {
-    urlPath = "/docs/index.html";
+  if (req.url === "/") {
+    filePath = path.join(ROOT, "docs", "index.html");
+  } else {
+    filePath = path.join(ROOT, "docs", req.url);
   }
-
-  let filePath = path.join(ROOT, urlPath);
 
   if (!fs.existsSync(filePath)) {
     res.writeHead(404);
@@ -33,5 +32,5 @@ http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": type });
   fs.createReadStream(filePath).pipe(res);
 }).listen(PORT, () => {
-  console.log(`Preview: http://localhost:${PORT}`);
+  console.log(`Preview running at http://localhost:${PORT}`);
 });

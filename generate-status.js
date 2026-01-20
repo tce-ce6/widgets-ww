@@ -17,14 +17,12 @@ const STATUS_LIST = [
   "Closed by Content"
 ];
 
+const REPO_ROOT = __dirname;
+const DOCS_ROOT = path.join(REPO_ROOT, "docs");
+
 function log(...args) {
   if (DEBUG) console.log(...args);
 }
-
-log(
-  "Token type:",
-  process.env.GITHUB_ACTIONS ? "Actions token" : "Local token"
-);
 
 if (!TOKEN) {
   console.error("❌ Missing GH_TOKEN");
@@ -41,32 +39,18 @@ query {
       items(first: 100) {
         nodes {
           content {
-            ... on Issue {
-              title
-              state
-            }
-            ... on PullRequest {
-              title
-              state
-            }
+            ... on Issue { title }
+            ... on PullRequest { title }
           }
           fieldValues(first: 20) {
             nodes {
               __typename
               ... on ProjectV2ItemFieldSingleSelectValue {
-                field {
-                  ... on ProjectV2FieldCommon {
-                    name
-                  }
-                }
+                field { ... on ProjectV2FieldCommon { name } }
                 name
               }
               ... on ProjectV2ItemFieldTextValue {
-                field {
-                  ... on ProjectV2FieldCommon {
-                    name
-                  }
-                }
+                field { ... on ProjectV2FieldCommon { name } }
                 text
               }
             }
@@ -150,8 +134,6 @@ function extractNumber(title) {
     process.exit(1);
   }
 
-  log("Project title:", project.title);
-
   const items = project.items.nodes
     .map(item => {
       const title = getTitle(item);
@@ -168,25 +150,27 @@ function extractNumber(title) {
 
   /* ================= BUILD-TIME VALIDATION ================= */
 
-  let missingFolders = 0;
-  let missingThumbs = 0;
-
   items.forEach(i => {
-    const folder = path.join(process.cwd(), i.title);
+    const folder = path.join(DOCS_ROOT, i.title);
     const thumb = path.join(folder, "thumb.png");
 
-    if (!fs.existsSync(folder)) {
-      console.warn(`⚠ Missing folder: ${i.title}/`);
-      missingFolders++;
-    } else if (!fs.existsSync(thumb)) {
-      console.warn(`⚠ Missing thumb.png in ${i.title}/`);
-      missingThumbs++;
+    const folderExists = fs.existsSync(folder);
+    const thumbExists = fs.existsSync(thumb);
+
+    log("folderExists:", i.title, ":", folderExists);
+
+    if (!folderExists) {
+      console.warn(`⚠ Missing folder: docs/${i.title}/`);
+    } else{
+      console.warn(`✅ Found folder for ${i.title}`);
+    }
+    
+    if (!thumbExists) {
+      console.warn(`⚠ Missing thumb.png in docs/${i.title}/`);
+    }else{
+      console.warn(`✅ Found thumb.png for ${i.title}`);
     }
   });
-
-  console.log(
-    `✔ Validation → Missing folders: ${missingFolders}, Missing thumbs: ${missingThumbs}`
-  );
 
   /* ================= COUNTERS ================= */
 
@@ -201,12 +185,13 @@ function extractNumber(title) {
   /* ================= CARDS ================= */
 
   const cards = items.map(i => {
-    const folderExists = fs.existsSync(path.join(process.cwd(), i.title));
-    console.log("pkp storeFingerprint: ~ folderExists:", i.title,":", folderExists)
-    const thumbExists = fs.existsSync(
-      path.join(process.cwd(), i.title, "thumb.png")
+    const folderExists = fs.existsSync(
+      path.join(DOCS_ROOT, i.title)
     );
-    console.log("pkp storeFingerprint: ~ thumbExists:", thumbExists)
+
+    const thumbExists = fs.existsSync(
+      path.join(DOCS_ROOT, i.title, "thumb.png")
+    );
 
     const linkUrl = folderExists ? `./${i.title}/index.html` : "";
     const thumbUrl = thumbExists
@@ -238,113 +223,33 @@ function extractNumber(title) {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>B3 Widgets Status</title>
-
+<title>CE6 – Project Status</title>
 <style>
 body { font-family: Arial; margin: 30px; }
-h1 { font-size: 42px; }
-
-.controls { display: flex; gap: 12px; margin-bottom: 20px; }
-input, select { padding: 6px 10px; font-size: 14px; }
-
-.counters { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 12px;
-  background: #fff;
-}
-
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: contain;
-  background: #f9f9f9;
-  border-radius: 6px;
-}
-
-.title { font-weight: bold; margin-top: 8px; }
-
-.status {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: #fff;
-}
-
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
+.card img { width: 100%; height: 140px; object-fit: contain; background: #f9f9f9; }
+.status { color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 12px; }
 .ready-for-tech { background: #27ae60; }
 .todo-by-tech { background: #2980b9; }
 .in-progress { background: #f39c12; }
 .in-review-with-content { background: #8e44ad; }
 .closed-by-content { background: #2c3e50; }
-
-.missing {
-  background: #c0392b;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-
+.missing { background: #c0392b; color: #fff; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
 .disabled { pointer-events: none; opacity: 0.6; }
-.hidden { display: none; }
 </style>
 </head>
-
 <body>
 
-<h1>B3 Widgets Status</h1>
+<h1>CE6 – Project Status</h1>
 
-<div class="controls">
-  <input id="search" placeholder="Search wg…" />
-  <select id="statusFilter">
-    <option value="all">All statuses</option>
-    ${STATUS_LIST.map(s => `<option>${s}</option>`).join("")}
-  </select>
-</div>
-
-<div class="counters">
-  ${STATUS_LIST.map(s => `<div>${s}: ${counters[s]}</div>`).join("")}
-  <div>Unknown: ${counters["Unknown"]}</div>
-</div>
-
-<div class="grid" id="grid">
+<div class="grid">
 ${cards}
 </div>
-
-<script>
-const search = document.getElementById("search");
-const statusFilter = document.getElementById("statusFilter");
-const cards = [...document.querySelectorAll(".card")];
-
-function applyFilters() {
-  const q = search.value.toLowerCase();
-  const status = statusFilter.value;
-
-  cards.forEach(card => {
-    const matchText = card.dataset.title.includes(q);
-    const matchStatus =
-      status === "all" || card.dataset.status === status;
-
-    card.classList.toggle("hidden", !(matchText && matchStatus));
-  });
-}
-
-[search, statusFilter].forEach(el =>
-  el.addEventListener("input", applyFilters)
-);
-</script>
 
 </body>
 </html>`;
 
-  fs.mkdirSync("docs", { recursive: true });
-  fs.writeFileSync("docs/index.html", html.trim());
+  fs.mkdirSync(DOCS_ROOT, { recursive: true });
+  fs.writeFileSync(path.join(DOCS_ROOT, "index.html"), html.trim());
 })();
