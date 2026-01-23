@@ -195,7 +195,7 @@
   z-index: 10;
 }
 
-#make-food-chain-widget svg {
+#make-food-chain-widget .svg-container > svg {
   width: 100% !important;
   height: 100%;
 }
@@ -424,4 +424,33 @@
     position: absolute;
     top: -38px;
     right: -38px;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  padding-right: 14px; /* space from content */
+}
+
+/* width */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* track */
+.scroll-container::-webkit-scrollbar-track {
+  background: #d9d9d9;
+  border-radius: 20px;
+}
+
+/* thumb (green small pill) */
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #4CAF50;
+  border-radius: 20px;
+  min-height: 40px;          /* IMPORTANT: small thumb */
+  border: 2px solid #d9d9d9; /* creates floating pill effect */
+}
+
+/* hover */
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #43a047;
 }
