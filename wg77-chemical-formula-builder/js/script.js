@@ -75,6 +75,26 @@ let selectedAnion = null;
 // Initialization
 function init() {
   setupInteractions();
+  modalFunctionality();
+  
+
+}
+function modalFunctionality() {
+
+  document.getElementById("ruleModal").style.display = "none";
+  document.getElementById("exampleModal").style.display = "none";
+  let button = document.getElementById("ruleBtn");
+  button.addEventListener("click", function () {
+    document.getElementById("ruleModal").style.display = "block";
+      document.getElementById("exampleModal").style.display = "none";
+
+  });
+  let btnClose = document.getElementById("btn-close");
+  btnClose.addEventListener("click", function () {
+ document.getElementById("ruleModal").style.display = "none";
+  document.getElementById("exampleModal").style.display = "none";
+   })
+ 
 }
 
 function setupInteractions() {
