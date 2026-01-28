@@ -2,6 +2,27 @@ WordAudioEnum = {};
 let usedWords = [];
 let selectedWord = null;
 let audioPlayer = new Audio();
+let lottieInstances = {};
+let selectedLottie = null;
+const LottieAnimations = {
+  LION: {
+    CORRECT: "Lion_Correct_Big_U.json",
+    INCORRECT: "Lion_Incorrect.json"
+  },
+  HIPPO: {
+    CORRECT: "Hippo_Correct_Big_U.json",
+    INCORRECT: "Hippo_Incorrect.json"
+  },
+  TIGER: {
+    CORRECT: "Tiger_Correct_Big_U.json",
+    INCORRECT: "Tiger_Incorrect.json"
+  },
+  MONKEY: {
+    CORRECT: "Monkey_Correct_Big_U.json",
+    INCORRECT: "Monkey_Incorrect.json"
+  }
+};
+
 
 function init() {
     console.log("Script loaded and initialized.");
@@ -17,6 +38,7 @@ function init() {
     audioListener();
     nextStep();
     gyankosh_button();
+    getRandomAnimation();
 }
 
 selectRandomWord = () => {
@@ -60,6 +82,7 @@ function textClickEvent() {
             document.getElementById("incorrect-box").style.display = 'block';
              document.getElementById("correct-box").style.display = 'none';
             lottiAnimation('block');
+            playLottieAnimation('INCORRECT');
 
     });
     cloud_text_02.addEventListener("click", () => {
@@ -68,6 +91,7 @@ function textClickEvent() {
         document.getElementById("correct-box").style.display = 'block';
          document.getElementById("incorrect-box").style.display = 'none';
         lottiAnimation('block');
+        playLottieAnimation('CORRECT');
     });
 }
 
@@ -145,10 +169,42 @@ function naya_shabd(){
         showText();
         lottiAnimation('none');
         nextbutton();
+        getRandomAnimation();
     });
 }
 
+ 
+ function getRandomAnimation() {
+  const animals = Object.keys(LottieAnimations);
+  const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+  selectedLottie = LottieAnimations[randomAnimal];
+}
+  
+ 
+  const playLottieAnimation = (bandGroup) => {
+      const containerEl = document.getElementById('lottie-container');
+      const animationPath = selectedLottie[bandGroup];
+      const type = animationPath.split('_')[0]; // Extract type from filename
 
+      if (!containerEl || !animationPath || typeof lottie === 'undefined') return;
+     
+      containerEl.innerHTML = '';
+      if (lottieInstances[bandGroup]) {
+          lottieInstances[bandGroup].destroy();
+          delete lottieInstances[bandGroup];
+      }
+ 
+      const anim = lottie.loadAnimation({
+          container: containerEl,
+          renderer: 'svg',
+          loop: false,
+          autoplay: true,
+          path: `assets/JSON/${type}/${animationPath}` 
+      });
+      lottieInstances[bandGroup] = anim;
+  };
+ 
+ 
 
 function getRandomUnusedWordKey() {
   const keys = Object.keys(WordAudioEnum).filter(k => !usedWords.includes(k));
