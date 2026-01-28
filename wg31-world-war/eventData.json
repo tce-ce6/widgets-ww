@@ -72,7 +72,24 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "overview": {
+                "title":"Overview of 1914",
+                "overviewDescription":"Archduke Franz Ferdinand's assassination in Sarajevo on June 28, 1914, triggered a chain reaction: Austria-Hungary declared war on Serbia, activating alliance systems that split Europe into the Allied Powers and Central Powers, beginning World War I.",
+                "alliedPowers":[
+                    "Serbia",
+                    "Russia",
+                    "France",
+                    "United Kingdom",
+                    "Belgium",
+                    "Japan"
+                ],
+                "centralPowers":[
+                    "Germany",
+                    "Austria-Hungary",
+                    "Ottoman Turkey"
+                ]
+            }
         },
         {
             "id": 2,
@@ -105,7 +122,26 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "overview": {
+                "title":"Overview of 1915",
+                "overviewDescription":"The war expanded as more nations chose sides, hoping to gain territory and power.  Italy joined the Allies (hoping to gain Austrian land), while Bulgaria joined the Central Powers (hoping to reclaim lost territories from Serbia).",
+                "alliedPowers":[
+                    "Serbia",
+                    "Russia",
+                    "France",
+                    "United Kingdom",
+                    "Belgium",
+                    "Japan",
+                    "Italy"
+                ],
+                "centralPowers":[
+                    "Germany",
+                    "Austria-Hungary",
+                    "Ottoman Turkey",
+                    "Bulgaria"
+                ]
+            }
         },
         {
             "id": 3,
@@ -132,7 +168,28 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "overview": {
+                "title":"Overview of 1916",
+                "overviewDescription":"The war caused unprecedented casualties, as both sides tried to exhaust each other's resources and willpower. Portugal joined the Allies to protect its African colonies, and Romania entered the war hoping to gain territory from Austria-Hungary.",
+                "alliedPowers":[
+                    "Serbia",
+                    "Russia",
+                    "France",
+                    "United Kingdom",
+                    "Belgium",
+                    "Japan",
+                    "Italy",
+                    "Portugal",
+                    "Romania"
+                ],
+                "centralPowers":[
+                    "Germany",
+                    "Austria-Hungary",
+                    "Ottoman Turkey",
+                    "Bulgaria"
+                ]
+            }
         },
         {
             "id": 4,
@@ -146,7 +203,7 @@
                         {
                             "id": 1,
                             "alliance": "Allied Powers",
-                            "country": "United States of America",
+                            "country": "United-States-of-America",
                             "clue": "This country is home to the Statue of Liberty, gifted Disney and jazz music to the world, and was the first nation to put a man on the Moon.",
                             "feedback": "Yes! The USA joined due to German submarine attacks (including the Lusitania), the Zimmermann Telegram revealing German-Mexico plans, and economic ties with the Allies."
                         },
@@ -159,7 +216,30 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "overview": {
+                "title":"Overview of 1917",
+                "overviewDescription":"In 1917, the United States entered World War I on the side of the Allies, bringing fresh troops and resources that would help tip the balance of the war This marked a major turning point, as American involvement strengthened the Allied forces fighting against Germany and Austria-Hungary",
+                "alliedPowers":[
+                    "Serbia",
+                    "Russia",
+                    "France",
+                    "United Kingdom",
+                    "Belgium",
+                    "Japan",
+                    "Italy",
+                    "Portugal",
+                    "Romania",
+                    "United States of America",
+                    "Greece"
+                ],
+                "centralPowers":[
+                    "Germany",
+                    "Austria-Hungary",
+                    "Ottoman Turkey",
+                    "Bulgaria"
+                ]
+            }
         },
         {
             "id": 5,
@@ -182,11 +262,11 @@
                 },
                 {
                     "id": 2,
-                    "question": "",
+                    "question": "Four nations that fought together now fall together. Wha waves the white flag?",
                     "totalClues" : [
                         {
                             "id": 1,
-                            "alliance": "Defeated Nations ",
+                            "alliance": "Defeated Nations",
                             "country": [
                             "Bulgaria",
                             "Ottoman Turkey",
@@ -198,7 +278,30 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "overview": {
+                "title":"Overview of 1918",
+                "overviewDescription":"In 1918, Russia officially exited World War I after signing the Treaty of Brest-Litovsk with the Central Powers. As the war dragged on, the Central Powers grew exhausted and began surrendering, starting with Bulgaria, the Ottoman Empire, and Austria-Hungary. Finally, Germany signed the Armistice on November 11, ending the war.",
+                "alliedPowers":[
+                    "Serbia",
+                    "Russia",
+                    "France",
+                    "United Kingdom",
+                    "Belgium",
+                    "Japan",
+                    "Italy",
+                    "Portugal",
+                    "Romania",
+                    "United States of America",
+                    "Greece"
+                ],
+                "centralPowers":[
+                    "Germany",
+                    "Austria-Hungary",
+                    "Ottoman Turkey",
+                    "Bulgaria"
+                ]
+            }
         }
     ]
 }

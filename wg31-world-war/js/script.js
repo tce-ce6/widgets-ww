@@ -10,6 +10,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const showMsg = document.getElementById("show-msg");
   const closeBtn = document.getElementById("closeBtn");
   const hintText = document.getElementById("hintText");
+const solvedCountryPaths = new Set();
 
   let selectedClueIndex = null; // which clue is active
   let selectedCountryId = null; // country name from clue
@@ -23,8 +24,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   let solvedClues = {};
   let lastDropWasCorrect = false;
+  const usedFlags = new Set();
 
   const actionBtn = document.getElementById("action-btn");
+  let returningFromOverview = false;
 
   try {
     const response = await fetch("eventData.json");
@@ -34,6 +37,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.error("❌ Failed to load eventData.json", err);
     return;
   }
+  let tappedFlag = null; // selected flag (tap mode)
+  let tapModeActive = false; // whether tap mode is active
 
   /* ================= MAP ELEMENTS ================= */
   const svgElem = document.querySelector(".map-wrapper svg");
@@ -41,7 +46,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   const mapWrapper = document.querySelector(".map-wrapper");
 
   const austriaHungary = document.getElementById("Austria-Hungary");
-
+  const backOverviewBtn = document.getElementById("back-overview");
+  const goToTimelineBtn = document.getElementById("go-to-timeline");
   /* ================== PANZOOM ================== */
   const panzoom = Panzoom(worldMap, {
     maxScale: 8,
@@ -58,34 +64,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   const DRAG_ANCHOR_Y = 40.5;
 
   let draggedFlag = null;
-
-  /* ================== DRAG START ================== */
-  function makeFlagDraggable(flag) {
-    flag.setAttribute("draggable", "true");
-    flag.style.cursor = "grab";
-
-    flag.addEventListener("dragstart", (e) => {
-      draggedFlag = flag;
-      flag.style.cursor = "grabbing";
-
-      const img = flag.querySelector("img");
-      const dragImg = img.cloneNode(true);
-      dragImg.style.width = `${DRAG_IMG_SIZE}px`;
-      dragImg.style.height = `${DRAG_IMG_SIZE}px`;
-
-      document.body.appendChild(dragImg);
-
-      e.dataTransfer.setDragImage(dragImg, DRAG_ANCHOR_X, DRAG_ANCHOR_Y);
-      e.dataTransfer.effectAllowed = "move";
-
-      setTimeout(() => document.body.removeChild(dragImg), 0);
-    });
-
-    flag.addEventListener("dragend", () => {
-      flag.style.cursor = "grab";
-      draggedFlag = null;
-    });
-  }
 
   /* ================== DROP ZONE ================== */
   mapWrapper.addEventListener("dragover", (e) => {
@@ -180,8 +158,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (flagCountry === droppedCountryId) {
       lastDropWasCorrect = true;
 
+        // ✅ Remember this country as permanently solved
+  const parentGroup = countryPath.closest("g");
+  if (parentGroup) {
+    parentGroup.querySelectorAll("path").forEach(p => solvedCountryPaths.add(p));
+  } else {
+    solvedCountryPaths.add(countryPath);
+  }
+
       const fillColor =
-        flagAlliance === "Central Powers" ? "#FE984A" : "#007608";
+        flagAlliance === "Central Powers" ? "#FF6F00" : "#007608";
 
       if (parentGroup) {
         fillGroupPaths(parentGroup, fillColor);
@@ -194,7 +180,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       hintText.textContent = currentClue.feedback;
       setShowMsgState("correct");
-
 
       const year = selectedYearData.year;
       solvedClues[year] ??= {};
@@ -217,7 +202,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       hintText.textContent = "Incorrect! Try again.";
       setShowMsgState("incorrect");
 
-
       showActionButton("Try Again", "try-again");
     }
   });
@@ -230,6 +214,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     yearBtn.style.cursor = "pointer";
 
     yearBtn.addEventListener("click", () => {
+      // 🔁 Reset overview return state for new year
+      returningFromOverview = false;
+      currentQuestionIndex = 0;
+      currentClueIndex = 0;
+      hideActionButton();
+      
+
       const year = Number(yearBtn.id.replace("year-", ""));
       if (selectedYearBox) {
         selectedYearBox.textContent = year;
@@ -237,14 +228,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       selectedYearData = eventData.worldWarI.find((item) => item.year === year);
 
-      console.log("📦 Selected Year Data:", selectedYearData);
-
       if (!selectedYearData) return;
 
       document.getElementById("step-1").style.display = "none";
       document.getElementById("step-2").style.display = "block";
 
-      setActiveStep(2); // ✅ ADD THIS
+      setActiveStep(2);
       updateStep2Content(selectedYearData);
     });
   });
@@ -286,36 +275,45 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderFlagsForQuestion(question) {
-    if (!flagList || !Array.isArray(question.totalClues)) return;
-
     flagList.innerHTML = "";
 
     question.totalClues.forEach((clue, index) => {
       const li = document.createElement("li");
 
-      // 🔗 store metadata
       li.dataset.index = index;
       li.dataset.country = clue.country;
       li.dataset.alliance = clue.alliance;
 
       const img = document.createElement("img");
-      img.src = "./assets/flag.svg";
+      if (clue.alliance === "Allied Powers") {
+        img.src = "./assets/flag-allied.svg";
+      } else if (clue.alliance === "Central Powers") {
+        img.src = "./assets/flag-cenral.svg";
+      } else {
+        img.src = "./assets/flag.svg"; // fallback (keeps existing behavior)
+      }
       img.width = 45;
       img.height = 45;
 
       li.appendChild(img);
 
-      // ✅ ACTIVE FLAG (current clue)
-      if (index === currentClueIndex) {
-        li.classList.add("active-flag");
-        makeFlagDraggable(li);
-      }
-      // ❌ INACTIVE FLAGS (future / past)
-      else {
-        li.classList.add("inactive-flag");
+      // ✅ RESTORE PLACEHOLDER STATE
+      if (usedFlags.has(clue.country)) {
+        li.dataset.hasPlaceholder = "true";
+        li.style.filter = "sepia(1)";
         li.style.opacity = "0.4";
-        li.style.pointerEvents = "none";
       }
+
+      li.addEventListener("click", () => {
+        tappedFlag = li;
+        tapModeActive = true;
+
+        document
+          .querySelectorAll("#flag-list li")
+          .forEach((f) => f.classList.remove("tap-selected"));
+
+        li.classList.add("tap-selected");
+      });
 
       flagList.appendChild(li);
     });
@@ -331,6 +329,22 @@ window.addEventListener("DOMContentLoaded", async () => {
       const li = document.createElement("li");
       li.classList.add("clue-item");
 
+      // ✅ SHOW CLUE TEXT ON CLICK (restored functionality)
+      li.addEventListener("click", () => {
+        if (!clue.clue) return;
+
+        // 🔄 Update active state
+        document
+          .querySelectorAll("#clue-wrapper .clue-item")
+          .forEach((item) => item.classList.remove("active"));
+
+        li.classList.add("active");
+
+        // 📝 Show clue text
+        hintText.textContent = clue.clue;
+        setShowMsgState("clue");
+      });
+
       // ✅ disabled clues stay disabled
       if (solvedSet.has(index)) {
         li.classList.add("disabled");
@@ -341,26 +355,24 @@ window.addEventListener("DOMContentLoaded", async () => {
         li.classList.add("active");
       }
 
-      li.textContent = `Clue ${index + 1}`;
-
       // prevent click if disabled
       if (!li.classList.contains("disabled")) {
+        // ✅ TAP SUPPORT (ADDITIVE)
         li.addEventListener("click", () => {
-          resetDropState();
-          currentClueIndex = index;
+          // ignore inactive flags
+          if (!li.classList.contains("active-flag")) return;
 
-          hintText.textContent = clue.clue;
-          setShowMsgState("clue");
+          tappedFlag = li;
+          tapModeActive = true;
 
+          // visual feedback
+          document
+            .querySelectorAll("#flag-list li")
+            .forEach((f) => f.classList.remove("tap-selected"));
 
-          hideActionButton(); // ✅ ADD THIS
+          li.classList.add("tap-selected");
 
-          renderCluesForQuestion(
-            selectedYearData.questions[currentQuestionIndex],
-          );
-          renderFlagsForQuestion(
-            selectedYearData.questions[currentQuestionIndex],
-          );
+          console.log("👆 Flag tapped:", li.dataset.country);
         });
       }
 
@@ -368,11 +380,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-closeBtn.addEventListener("click", () => {
-  showMsg.style.display = "none";
-  showMsg.classList.remove("clue", "incorrect", "correct");
-});
-
+  closeBtn.addEventListener("click", () => {
+    showMsg.style.display = "none";
+    showMsg.classList.remove("clue", "incorrect", "correct");
+  });
 
   function getCountryAtPoint(svgElem, worldMap, x, y) {
     const paths = worldMap.querySelectorAll("path");
@@ -389,6 +400,90 @@ closeBtn.addEventListener("click", () => {
     }
     return null;
   }
+  // ================= TAP ON COUNTRY =================
+  worldMap.querySelectorAll("g[id]").forEach((countryGroup) => {
+    countryGroup.style.cursor = "pointer";
+
+countryGroup.addEventListener("click", (e) => {
+  if (!tapModeActive || !tappedFlag) return;
+
+  e.stopPropagation();
+
+  const countryId = countryGroup.id;
+  const countryPath = countryGroup.querySelector("path");
+
+  if (!countryPath) return;
+
+  handleFlagCountrySelection(
+    tappedFlag,
+    countryPath,
+    countryId,
+    e.clientX,
+    e.clientY
+  );
+});
+
+  });
+
+  function handleFlagCountrySelection(  flagEl,
+  countryPath,
+  countryId,
+  clientX,
+  clientY) {
+    const flagCountry = flagEl.dataset.country;
+    const flagAlliance = flagEl.dataset.alliance;
+
+    lastDroppedFlag = flagEl;
+    lastDroppedCountryPath = countryPath;
+placeFlagAtPoint(flagEl, clientX, clientY);
+
+    if (flagCountry === countryId) {
+      lastDropWasCorrect = true;
+
+      const fillColor =
+        flagAlliance === "Central Powers" ? "#FF6F00" : "#007608";
+
+      const parentGroup = countryPath.closest("g");
+      if (parentGroup) {
+        fillGroupPaths(parentGroup, fillColor);
+      } else {
+        countryPath.setAttribute("fill", fillColor);
+      }
+
+      const currentQuestion = selectedYearData.questions[currentQuestionIndex];
+      const currentClue = currentQuestion.totalClues[currentClueIndex];
+
+      hintText.textContent = currentClue.feedback;
+      setShowMsgState("correct");
+
+      const year = selectedYearData.year;
+      solvedClues[year] ??= {};
+      solvedClues[year][currentQuestionIndex] ??= new Set();
+      solvedClues[year][currentQuestionIndex].add(currentClueIndex);
+
+      renderCluesForQuestion(currentQuestion);
+      showActionButton("Proceed", "proceed");
+    } else {
+      lastDropWasCorrect = false;
+
+      const parentGroup = countryPath.closest("g");
+      if (parentGroup) {
+        fillGroupPaths(parentGroup, "#FFD5D5");
+      } else {
+        countryPath.setAttribute("fill", "#FFD5D5");
+      }
+
+      hintText.textContent = "Incorrect! Try again.";
+      setShowMsgState("incorrect");
+      showActionButton("Try Again", "try-again");
+    }
+    keepFlagPlaceholder(flagEl);
+
+    // 🔄 Reset tap mode
+    tapModeActive = false;
+    tappedFlag.classList.remove("tap-selected");
+    tappedFlag = null;
+  }
 
   function showActionButton(text, className) {
     actionBtn.textContent = text;
@@ -398,13 +493,32 @@ closeBtn.addEventListener("click", () => {
   }
 
   actionBtn.addEventListener("click", () => {
+    // 🔁 Special case: return to overview
+    if (returningFromOverview && actionBtn.classList.contains("proceed")) {
+      returningFromOverview = false;
+
+      // Hide step-3
+      document.getElementById("step-3").style.display = "none";
+
+      // Show step-4 again
+      document.getElementById("step-4").style.display = "block";
+
+      setActiveStep(4);
+
+      return; // ⛔ stop normal proceed logic
+    }
+
     showMsg.style.display = "none";
-      showMsg.classList.remove("clue", "incorrect", "correct");
+    showMsg.classList.remove("clue", "incorrect", "correct");
 
     const currentQuestion = selectedYearData.questions[currentQuestionIndex];
 
     // 🔁 TRY AGAIN
     if (actionBtn.classList.contains("try-again")) {
+      if (lastDroppedFlag) {
+        removeFlagPlaceholder(lastDroppedFlag);
+      }
+
       resetDropState();
       renderFlagsForQuestion(currentQuestion);
     }
@@ -434,7 +548,9 @@ closeBtn.addEventListener("click", () => {
           renderFlagsForQuestion(nextQuestion);
           renderCluesForQuestion(nextQuestion);
         } else {
-          console.log("🏁 Year completed");
+          if (isYearCompleted()) {
+            showStep4Overview();
+          }
         }
       }
     }
@@ -443,6 +559,13 @@ closeBtn.addEventListener("click", () => {
   });
 
   function resetDropState() {
+    tapModeActive = false;
+    tappedFlag = null;
+
+    document
+      .querySelectorAll("#flag-list li")
+      .forEach((f) => f.classList.remove("tap-selected"));
+
     if (lastPlacedFlagEl) {
       lastPlacedFlagEl.remove();
       lastPlacedFlagEl = null;
@@ -453,11 +576,18 @@ closeBtn.addEventListener("click", () => {
       const parentGroup = lastDroppedCountryPath.closest("g");
 
       if (parentGroup) {
-        fillGroupPaths(parentGroup, "#fff");
+        parentGroup.querySelectorAll("path").forEach((p) => {
+          if (!solvedCountryPaths.has(p)) {
+            p.setAttribute("fill", "#fff");
+          }
+        });
       } else {
-        lastDroppedCountryPath.setAttribute("fill", "white");
+        if (!solvedCountryPaths.has(lastDroppedCountryPath)) {
+          lastDroppedCountryPath.setAttribute("fill", "white");
+        }
       }
     }
+
 
     lastDroppedCountryPath = null;
     lastDroppedFlag = null;
@@ -476,9 +606,202 @@ closeBtn.addEventListener("click", () => {
     actionBtn.classList.remove("try-again", "proceed");
   }
   function setShowMsgState(stateClass) {
-  showMsg.classList.remove("clue", "incorrect", "correct");
-  showMsg.classList.add(stateClass);
-  showMsg.style.display = "block";
+    showMsg.classList.remove("clue", "incorrect", "correct");
+    showMsg.classList.add(stateClass);
+    showMsg.style.display = "block";
+  }
+
+  function isYearCompleted() {
+    const year = selectedYearData.year;
+    const questions = selectedYearData.questions;
+
+    if (!solvedClues[year]) return false;
+
+    return questions.every((question, qIndex) => {
+      const solvedSet = solvedClues[year][qIndex];
+      return solvedSet && solvedSet.size === question.totalClues.length;
+    });
+  }
+
+  function showStep4Overview() {
+    // Hide step-3
+    document.getElementById("step-3").style.display = "none";
+
+    // Show step-4
+    const step4 = document.getElementById("step-4");
+    step4.style.display = "block";
+
+    const overview = selectedYearData.overview;
+
+    // ✅ Title & Description
+    document.getElementById("overview-title").textContent = overview.title;
+    document.getElementById("overview-description").textContent =
+      overview.overviewDescription;
+
+    // ✅ Central Powers list
+    const centralList = document.getElementById("central-power-list");
+    centralList.innerHTML = "";
+
+    overview.centralPowers.forEach((country) => {
+      const li = document.createElement("li");
+      li.textContent = country;
+      centralList.appendChild(li);
+    });
+
+    // ✅ Allied Powers list
+    const alliedList = document.getElementById("allied-power-list");
+    alliedList.innerHTML = "";
+
+    overview.alliedPowers.forEach((country) => {
+      const li = document.createElement("li");
+      li.textContent = country;
+      alliedList.appendChild(li);
+    });
+      showActionButton("Proceed", "proceed");
+  }
+
+  function keepFlagPlaceholder(flagEl) {
+    const key = flagEl.dataset.country;
+
+    if (usedFlags.has(key)) return;
+
+    usedFlags.add(key);
+    flagEl.dataset.hasPlaceholder = "true";
+    flagEl.style.filter = "sepia(1)";
+    flagEl.style.opacity = "0.4";
+  }
+
+  function removeFlagPlaceholder(flagEl) {
+    const key = flagEl.dataset.country;
+
+    usedFlags.delete(key);
+    delete flagEl.dataset.hasPlaceholder;
+
+    flagEl.style.filter = "";
+    flagEl.style.opacity = "";
+  }
+
+  // 🔙 Back to map (step-3)
+  if (backOverviewBtn) {
+    backOverviewBtn.addEventListener("click", () => {
+      // Hide step-4
+      document.getElementById("step-4").style.display = "none";
+
+      // Show step-3
+      document.getElementById("step-3").style.display = "block";
+
+      setActiveStep(3);
+
+      // 🔑 Mark special return state
+      returningFromOverview = true;
+
+      // ✅ Force action button to Proceed & visible
+      showActionButton("Proceed", "proceed");
+    });
+  }
+
+  // 🕒 Back to timeline (step-1)
+  if (goToTimelineBtn) {
+    goToTimelineBtn.addEventListener("click", () => {
+      // ✅ Mark year as completed on timeline
+      if (selectedYearData && isYearCompleted()) {
+        const yearId = `year-${selectedYearData.year}`;
+        const yearEl = document.getElementById(yearId);
+
+        if (yearEl) {
+          yearEl.classList.add("completed");
+        }
+      }
+
+      // Hide step-4
+      document.getElementById("step-4").style.display = "none";
+
+      // Show step-1
+      document.getElementById("step-1").style.display = "block";
+
+      // Restore container state
+      setActiveStep(1);
+
+      // Safety: hide any open hint
+      showMsg.style.display = "none";
+    });
+  }
+
+  function placeFlagAtCountry(countryPath, flagEl) {
+  const FLAG_SIZE = 25;
+
+  const bbox = countryPath.getBBox();
+
+  // 🎯 Center of the country
+  const x = bbox.x + bbox.width / 2 - FLAG_SIZE / 2;
+  const y = bbox.y + bbox.height / 2 - FLAG_SIZE / 2;
+
+  const foreignObject = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "foreignObject"
+  );
+
+  foreignObject.setAttribute("x", x);
+  foreignObject.setAttribute("y", y);
+  foreignObject.setAttribute("width", FLAG_SIZE);
+  foreignObject.setAttribute("height", FLAG_SIZE);
+  foreignObject.setAttribute("class", "placed-flag no-pan");
+
+  const div = document.createElement("div");
+  div.style.width = "100%";
+  div.style.height = "100%";
+  div.style.display = "flex";
+  div.style.alignItems = "center";
+  div.style.justifyContent = "center";
+  div.innerHTML = flagEl.querySelector("img").outerHTML;
+
+  foreignObject.appendChild(div);
+  worldMap.appendChild(foreignObject);
+
+  // 🔐 Track placed flag (same as drag)
+  lastPlacedFlagEl = foreignObject;
 }
+
+function placeFlagAtPoint(flagEl, clientX, clientY) {
+  const FLAG_SIZE = 25;
+
+  // Convert screen → SVG coordinates
+  const pt = svgElem.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+
+  const svgPoint = pt.matrixTransform(
+    worldMap.getScreenCTM().inverse()
+  );
+
+  const x = svgPoint.x - FLAG_SIZE / 2 + 8;
+  const y = svgPoint.y - FLAG_SIZE / 2 - 10;
+
+  const foreignObject = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "foreignObject"
+  );
+
+  foreignObject.setAttribute("x", x);
+  foreignObject.setAttribute("y", y);
+  foreignObject.setAttribute("width", FLAG_SIZE);
+  foreignObject.setAttribute("height", FLAG_SIZE);
+  foreignObject.setAttribute("class", "placed-flag no-pan");
+
+  const div = document.createElement("div");
+  div.style.width = "100%";
+  div.style.height = "100%";
+  div.style.display = "flex";
+  div.style.alignItems = "center";
+  div.style.justifyContent = "center";
+  div.innerHTML = flagEl.querySelector("img").outerHTML;
+
+  foreignObject.appendChild(div);
+  worldMap.appendChild(foreignObject);
+
+  // Track for reset / try again
+  lastPlacedFlagEl = foreignObject;
+}
+
 
 });

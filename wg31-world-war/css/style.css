@@ -284,6 +284,9 @@ svg * {
   width: 249px;
   margin: 0 auto;
 }
+.clue-wrapper li.active{
+  filter: drop-shadow(4px 6px 0px #F37021);
+}
 .show-msg-wrapper{
   position: relative;
   border: 2px solid #9D5900;
@@ -362,6 +365,7 @@ svg * {
 .country-label-wrap{
   font-size: 5px;
   position: relative;
+  line-height: 1.2;
 }
 
 .clue-item.disabled {
@@ -369,4 +373,134 @@ svg * {
   pointer-events: none;
   text-decoration: line-through;
   cursor: default;
+}
+.show-msg-wrapper.hint.incorrect{
+  background-color: #FFD5D5;
+  border-color: #EC8A8A;
+  left: 670px;
+}
+.show-msg-wrapper.hint.correct{
+  background-color: #B8FFBF;
+  border-color: #4CAF50;
+}
+.overview-container{
+  background-color: #fff;
+  border: 4px solid #BB682A;
+  border-radius: 10px;
+  padding: 50px 200px;
+  text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+.overview-container .overview-title{
+  font-size: 40px;
+  margin: 0 0 30px 0;
+}
+.overview-container .overview-description{
+  line-height: 1.2;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+.country-list{
+  display: flex;
+}
+.country-list .right-col{
+  width: 50%;
+}
+.country-list .left-col{
+  width: 50%;
+  border-right: 2px dotted #000;
+}
+.country-list ul{
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  font-size: 28px;
+}
+.country-list ul li{
+  margin-bottom: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.country-list ul li::before{
+  content: "";
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: block;
+}
+.country-list .country-title{
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: block;
+}
+.country-list .left-list{
+  width: 50%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: 100px;
+}
+.country-list .right-list{
+  width: 50%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: 160px;
+}
+.country-list .left-list li::before{
+  background-color: #FF6F00;
+}
+
+.country-list .right-list li::before{
+  background-color: #007608;
+}
+.country-list .left-list li{
+  color: #FF6F00;
+}
+.country-list .right-list li{
+  color: #007608;
+}
+.country-title.alllied{
+  margin-left: -130px;
+  color: #007608;
+}
+.country-title.central{
+  color: #FF6F00;
+}
+.btn-wrapper{
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  display: flex;
+  gap: 20px;
+  transform: translateX(-50%);
+}
+.btn-wrapper button{
+  padding: 15px 50px !important;
+  font-size: 30px;
+  border-radius: 50px;
+  font-weight: 600;
+}
+.btn-wrapper button.reset-btn{
+  background-color: #FF2C68;
+  color: #fff;
+}
+.btn-wrapper button.timeline-btn{
+  background-color: #4CAF50;
+  color: #fff;
+}
+.timeline-year.completed .status-tracker{
+  stroke: #49BA62;
+ stroke-width: 10;
+}
+.timeline-year .correct-icon{
+  display: none;
+}
+.timeline-year.completed .correct-icon{
+  display: block;
+}
+.placed-flag img{
+  height: 100%;
+  width: 100%;
 }
