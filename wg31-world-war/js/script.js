@@ -10,7 +10,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   const showMsg = document.getElementById("show-msg");
   const closeBtn = document.getElementById("closeBtn");
   const hintText = document.getElementById("hintText");
-const solvedCountryPaths = new Set();
+  const solvedCountryPaths = new Set();
+  let multiSolvedCountries = new Set(); // ONLY for 1918 Q2
 
   let selectedClueIndex = null; // which clue is active
   let selectedCountryId = null; // country name from clue
@@ -18,6 +19,14 @@ const solvedCountryPaths = new Set();
   let lastDroppedFlag = null;
   let lastDroppedCountryPath = null;
   let lastPlacedFlagEl = null;
+  const mapHomeImg = document.querySelector(".mapHome-img");
+  const videoWrapper = document.getElementById("video-wrapper");
+const videoEl = videoWrapper?.querySelector("video");
+const videoSource = videoWrapper?.querySelector("source");
+
+
+  // 🎨 Store original fill colors to restore them correctly
+  const lastDroppedCountryFills = new Map();
 
   let currentClueIndex = 0;
   let currentQuestionIndex = 0;
@@ -100,7 +109,24 @@ const solvedCountryPaths = new Set();
       worldMap,
       hitTestPoint.x,
       hitTestPoint.y,
+      hitTestPoint.y,
     );
+
+    // 🎨 CAPTURE STATE BEFORE MODIFICATION
+    if (droppedCountryPath) { 
+        const parentGroup = droppedCountryPath.closest("g");
+        
+        // Determine ID for comparison
+        const currentId = parentGroup ? parentGroup.id : droppedCountryPath.id;
+        const lastParent = lastDroppedCountryPath ? lastDroppedCountryPath.closest("g") : null;
+        const lastId = lastParent ? lastParent.id : (lastDroppedCountryPath ? lastDroppedCountryPath.id : null);
+
+        // Only capture if it's a NEW attempt or the previous one was correct (reset)
+        // If we are retrying on the same wrong country, keep the ORIGINAL original color.
+        if (currentId !== lastId || lastDropWasCorrect) {
+            captureCountryFills(droppedCountryPath);
+        }
+    }
 
     const offsetX = DRAG_ANCHOR_X - DRAG_IMG_SIZE / 2;
     const offsetY = DRAG_ANCHOR_Y - DRAG_IMG_SIZE / 2;
@@ -166,8 +192,16 @@ const solvedCountryPaths = new Set();
     solvedCountryPaths.add(countryPath);
   }
 
-      const fillColor =
-        flagAlliance === "Central Powers" ? "#FF6F00" : "#007608";
+      let fillColor = "#007608"; // default Allied
+
+if (flagAlliance === "Central Powers") {
+  fillColor = "#FF6F00";
+} else if (flagAlliance === "Exited Nation") {
+  fillColor = "#ccc";
+} else if (flagAlliance === "Defeated Nations") {
+  fillColor = "#eee";
+}
+
 
       if (parentGroup) {
         fillGroupPaths(parentGroup, fillColor);
@@ -188,7 +222,18 @@ const solvedCountryPaths = new Set();
 
       renderCluesForQuestion(selectedYearData.questions[currentQuestionIndex]);
 
-      showActionButton("Proceed", "proceed");
+      if (is1918MultiDefeatedQuestion()) {
+  multiSolvedCountries.add(flagCountry);
+
+  if (multiSolvedCountries.size < 4) {
+    showActionButton("Next Flag", "proceed");
+  } else {
+    showActionButton("Proceed", "proceed");
+  }
+} else {
+  showActionButton("Proceed", "proceed");
+}
+
     } else {
       lastDropWasCorrect = false;
 
@@ -214,6 +259,9 @@ const solvedCountryPaths = new Set();
     yearBtn.style.cursor = "pointer";
 
     yearBtn.addEventListener("click", () => {
+      
+        resetMapStateForNewYear();
+
       // 🔁 Reset overview return state for new year
       returningFromOverview = false;
       currentQuestionIndex = 0;
@@ -229,7 +277,8 @@ const solvedCountryPaths = new Set();
       selectedYearData = eventData.worldWarI.find((item) => item.year === year);
 
       if (!selectedYearData) return;
-
+        updateYearVideo(year);
+      showYearVideo();
       document.getElementById("step-1").style.display = "none";
       document.getElementById("step-2").style.display = "block";
 
@@ -237,6 +286,24 @@ const solvedCountryPaths = new Set();
       updateStep2Content(selectedYearData);
     });
   });
+
+  if (mapHomeImg) {
+  mapHomeImg.addEventListener("click", () => {
+    // Hide step-3
+    const step3 = document.getElementById("step-3");
+    if (step3) step3.style.display = "none";
+
+    // Show step-1
+    const step1 = document.getElementById("step-1");
+    if (step1) step1.style.display = "block";
+
+    // Update container state
+    setActiveStep(1);
+
+    // Safety: hide hint/message box
+    showMsg.style.display = "none";
+  });
+}
 
   /* ================= STEP-2 CONTENT ================= */
   function updateStep2Content(yearData) {
@@ -261,6 +328,8 @@ const solvedCountryPaths = new Set();
   if (step2Description) {
     step2Description.style.cursor = "pointer";
     step2Description.addEventListener("click", () => {
+        hideYearVideo();
+
       document.getElementById("step-2").style.display = "none";
       document.getElementById("step-3").style.display = "block";
       setActiveStep(3);
@@ -270,40 +339,51 @@ const solvedCountryPaths = new Set();
       const currentQuestion = selectedYearData.questions[0];
       renderFlagsForQuestion(currentQuestion);
       renderCluesForQuestion(currentQuestion);
+      updateItextNote(currentQuestion); // ✅ Update itext
       hideActionButton(); // ✅ ADD
     });
   }
 
-  function renderFlagsForQuestion(question) {
-    flagList.innerHTML = "";
+function renderFlagsForQuestion(question) {
+  flagList.innerHTML = "";
 
-    question.totalClues.forEach((clue, index) => {
+  question.totalClues.forEach((clue, index) => {
+    // 🔁 CASE: multiple countries (1918 defeated nations)
+    const countries = Array.isArray(clue.country)
+      ? clue.country
+      : [clue.country];
+
+    countries.forEach((countryName) => {
       const li = document.createElement("li");
 
       li.dataset.index = index;
-      li.dataset.country = clue.country;
+      li.dataset.country = countryName;
       li.dataset.alliance = clue.alliance;
 
       const img = document.createElement("img");
+
       if (clue.alliance === "Allied Powers") {
         img.src = "./assets/flag-allied.svg";
       } else if (clue.alliance === "Central Powers") {
         img.src = "./assets/flag-cenral.svg";
-      } else {
-        img.src = "./assets/flag.svg"; // fallback (keeps existing behavior)
+      } else if (clue.alliance === "Exited Nation") {
+        img.src = "./assets/flag-exited.svg";
+      } else if (clue.alliance === "Defeated Nations") {
+        img.src = "./assets/flag-defeated.svg";
       }
+
       img.width = 45;
       img.height = 45;
-
       li.appendChild(img);
 
-      // ✅ RESTORE PLACEHOLDER STATE
-      if (usedFlags.has(clue.country)) {
+      // ♻️ placeholder restore
+      if (usedFlags.has(countryName)) {
         li.dataset.hasPlaceholder = "true";
         li.style.filter = "sepia(1)";
         li.style.opacity = "0.4";
       }
 
+      // 👆 TAP MODE
       li.addEventListener("click", () => {
         tappedFlag = li;
         tapModeActive = true;
@@ -317,7 +397,9 @@ const solvedCountryPaths = new Set();
 
       flagList.appendChild(li);
     });
-  }
+  });
+}
+
 
   function renderCluesForQuestion(question) {
     clueWrapper.innerHTML = "";
@@ -326,6 +408,8 @@ const solvedCountryPaths = new Set();
     const solvedSet = solvedClues[year]?.[currentQuestionIndex] ?? new Set();
 
     question.totalClues.forEach((clue, index) => {
+      if (clue.clue == null) return;
+
       const li = document.createElement("li");
       li.classList.add("clue-item");
 
@@ -433,6 +517,17 @@ countryGroup.addEventListener("click", (e) => {
     const flagCountry = flagEl.dataset.country;
     const flagAlliance = flagEl.dataset.alliance;
 
+
+
+    // 🎨 CAPTURE STATE BEFORE MODIFICATION
+    // Determine ID for comparison (passed as countryId)
+    const lastParent = lastDroppedCountryPath ? lastDroppedCountryPath.closest("g") : null;
+    const lastId = lastParent ? lastParent.id : (lastDroppedCountryPath ? lastDroppedCountryPath.id : null);
+
+    if (countryId !== lastId || lastDropWasCorrect) {
+        captureCountryFills(countryPath);
+    }
+
     lastDroppedFlag = flagEl;
     lastDroppedCountryPath = countryPath;
 placeFlagAtPoint(flagEl, clientX, clientY);
@@ -440,8 +535,16 @@ placeFlagAtPoint(flagEl, clientX, clientY);
     if (flagCountry === countryId) {
       lastDropWasCorrect = true;
 
-      const fillColor =
-        flagAlliance === "Central Powers" ? "#FF6F00" : "#007608";
+      let fillColor = "#007608"; // default Allied
+
+if (flagAlliance === "Central Powers") {
+  fillColor = "#FF6F00";
+} else if (flagAlliance === "Exited Nation") {
+  fillColor = "#ccc";
+} else if (flagAlliance === "Defeated Nations") {
+  fillColor = "#eee";
+}
+
 
       const parentGroup = countryPath.closest("g");
       if (parentGroup) {
@@ -462,7 +565,18 @@ placeFlagAtPoint(flagEl, clientX, clientY);
       solvedClues[year][currentQuestionIndex].add(currentClueIndex);
 
       renderCluesForQuestion(currentQuestion);
-      showActionButton("Proceed", "proceed");
+      if (is1918MultiDefeatedQuestion()) {
+  multiSolvedCountries.add(flagCountry);
+
+  if (multiSolvedCountries.size < 4) {
+    showActionButton("Next Flag", "proceed");
+  } else {
+    showActionButton("Proceed", "proceed");
+  }
+} else {
+  showActionButton("Proceed", "proceed");
+}
+
     } else {
       lastDropWasCorrect = false;
 
@@ -525,6 +639,22 @@ placeFlagAtPoint(flagEl, clientX, clientY);
 
     // ➡️ PROCEED
     if (actionBtn.classList.contains("proceed")) {
+
+      // 🔁 SPECIAL: 1918 defeated nations (must solve all 4)
+if (is1918MultiDefeatedQuestion()) {
+  if (multiSolvedCountries.size < 4) {
+    // Stay on same question, just reset for next flag
+    resetDropState();
+    renderFlagsForQuestion(currentQuestion);
+    hideActionButton();
+    return;
+  } else {
+    // All 4 solved → allow normal flow
+    multiSolvedCountries.clear();
+  }
+}
+
+
       currentClueIndex++;
 
       // ▶ Next clue
@@ -545,6 +675,8 @@ placeFlagAtPoint(flagEl, clientX, clientY);
           document.querySelector(".question-text").textContent =
             nextQuestion.question;
 
+          updateItextNote(nextQuestion); // ✅ Update itext
+
           renderFlagsForQuestion(nextQuestion);
           renderCluesForQuestion(nextQuestion);
         } else {
@@ -559,6 +691,10 @@ placeFlagAtPoint(flagEl, clientX, clientY);
   });
 
   function resetDropState() {
+    if (!is1918MultiDefeatedQuestion()) {
+  multiSolvedCountries.clear();
+}
+
     tapModeActive = false;
     tappedFlag = null;
 
@@ -572,20 +708,9 @@ placeFlagAtPoint(flagEl, clientX, clientY);
     }
 
     // ❌ ONLY reset country fill if last drop was WRONG
+    // ❌ ONLY reset country fill if last drop was WRONG
     if (lastDroppedCountryPath && !lastDropWasCorrect) {
-      const parentGroup = lastDroppedCountryPath.closest("g");
-
-      if (parentGroup) {
-        parentGroup.querySelectorAll("path").forEach((p) => {
-          if (!solvedCountryPaths.has(p)) {
-            p.setAttribute("fill", "#fff");
-          }
-        });
-      } else {
-        if (!solvedCountryPaths.has(lastDroppedCountryPath)) {
-          lastDroppedCountryPath.setAttribute("fill", "white");
-        }
-      }
+      restoreCountryFills();
     }
 
 
@@ -657,7 +782,25 @@ placeFlagAtPoint(flagEl, clientX, clientY);
       li.textContent = country;
       alliedList.appendChild(li);
     });
-      showActionButton("Proceed", "proceed");
+      if (is1918MultiDefeatedQuestion()) {
+  multiSolvedCountries.add(flagCountry);
+
+  if (multiSolvedCountries.size < 4) {
+    showActionButton("Next Flag", "proceed");
+  } else {
+    showActionButton("Proceed", "proceed");
+  }
+} else {
+  showActionButton("Proceed", "proceed");
+}
+
+  }
+
+  function updateItextNote(question) {
+    const itextNote = document.getElementById("itext-note");
+    if (itextNote && question.itext) {
+      itextNote.innerHTML = question.itext;
+    }
   }
 
   function keepFlagPlaceholder(flagEl) {
@@ -696,7 +839,18 @@ placeFlagAtPoint(flagEl, clientX, clientY);
       returningFromOverview = true;
 
       // ✅ Force action button to Proceed & visible
-      showActionButton("Proceed", "proceed");
+      if (is1918MultiDefeatedQuestion()) {
+  multiSolvedCountries.add(flagCountry);
+
+  if (multiSolvedCountries.size < 4) {
+    showActionButton("Next Flag", "proceed");
+  } else {
+    showActionButton("Proceed", "proceed");
+  }
+} else {
+  showActionButton("Proceed", "proceed");
+}
+
     });
   }
 
@@ -801,6 +955,96 @@ function placeFlagAtPoint(flagEl, clientX, clientY) {
 
   // Track for reset / try again
   lastPlacedFlagEl = foreignObject;
+}
+
+// 🎨 HELPER: Capture original fill
+function captureCountryFills(targetEl) {
+  if (!targetEl) return;
+  lastDroppedCountryFills.clear();
+  
+  const parent = targetEl.closest("g");
+  const elements = parent ? parent.querySelectorAll("path") : [targetEl];
+  
+  elements.forEach(el => {
+      lastDroppedCountryFills.set(el, el.getAttribute("fill"));
+  });
+}
+
+// 🎨 HELPER: Restore original fill
+function restoreCountryFills() {
+  lastDroppedCountryFills.forEach((fill, el) => {
+      // Don't revert if it became solved in the meantime (safety check)
+      if (solvedCountryPaths.has(el)) return;
+
+      if (fill === null) {
+          el.removeAttribute("fill");
+      } else {
+          el.setAttribute("fill", fill);
+      }
+  });
+  lastDroppedCountryFills.clear();
+}
+
+function isMultiCountry1918Question() {
+  return (
+    selectedYearData?.year === 1918 &&
+    selectedYearData.questions[currentQuestionIndex]?.id === 2
+  );
+}
+function is1918MultiDefeatedQuestion() {
+  return (
+    selectedYearData?.year === 1918 &&
+    selectedYearData.questions[currentQuestionIndex]?.id === 2
+  );
+}
+
+function resetMapStateForNewYear() {
+  // 🧹 Remove all placed flags from previous flow
+  worldMap.querySelectorAll(".placed-flag").forEach(el => el.remove());
+
+  lastPlacedFlagEl = null;
+  lastDroppedFlag = null;
+  lastDroppedCountryPath = null;
+
+  // 🔍 Reset zoom & pan to default
+  panzoom.reset();
+
+  // Safety: hide any open message
+  showMsg.style.display = "none";
+}
+
+function updateYearVideo(year) {
+  if (!videoWrapper || !videoEl || !videoSource) return;
+
+  const videoPath = `./assets/videos/year-${year}.mp4`;
+
+  // Update source
+  videoSource.src = videoPath;
+
+  // Reload & play
+  videoEl.load();
+  videoEl.play().catch(() => {}); // autoplay safety
+
+  // Show video
+  videoWrapper.style.display = "block";
+}
+
+function hideYearVideo() {
+  if (videoWrapper) {
+    videoWrapper.style.display = "none";
+  }
+}
+mapHomeImg.addEventListener("click", () => {
+  hideYearVideo();
+});
+function showYearVideo() {
+  if (!videoWrapper) return;
+  videoWrapper.style.display = "block";
+}
+
+function hideYearVideo() {
+  if (!videoWrapper) return;
+  videoWrapper.style.display = "none";
 }
 
 
