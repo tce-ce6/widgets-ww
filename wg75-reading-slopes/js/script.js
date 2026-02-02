@@ -61,3 +61,7 @@ const data =
       ]
   },
 }
+
+document.getElementById("line-1").addEventListener("click", function() {
+    alert("hii")
+});
