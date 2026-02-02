@@ -1,0 +1,72 @@
+[
+  {
+    "scenarioNumber": 1,
+    "icon": "📜 Scroll / Document",
+    "scenarioText": "A bill on consumer protection has been debated. It now needs to be voted on to become a law. Who votes on this bill?",
+    "correctAnswer": "Legislature",
+    "feedback": "Legislature must debate and vote to turn bills into laws."
+  },
+  {
+    "scenarioNumber": 2,
+    "icon": "⚙️ Gear / Settings",
+    "scenarioText": "A new road safety law was passed last month. Now it needs to be put into action across all states. Who does this work?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive must implement and enforce laws passed by Legislature."
+  },
+  {
+    "scenarioNumber": 3,
+    "icon": "📋 Clipboard",
+    "scenarioText": "The Health Ministry has drafted a bill on medical insurance. Who typically brings this bill to Parliament for discussion?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive introduces most bills in Parliament."
+  },
+  {
+    "scenarioNumber": 4,
+    "icon": "❓ Question Mark",
+    "scenarioText": "MPs want to know why unemployment is rising. They demand the Labour Minister explain government policies. Who has this questioning power?",
+    "correctAnswer": "Legislature",
+    "feedback": "Legislature questions ministers in Parliament to keep check."
+  },
+  {
+    "scenarioNumber": 5,
+    "icon": "📊 Bar Chart / Graph",
+    "scenarioText": "A Parliamentary committee is meeting to review education policies. The Education Ministry is called. Who must explain and provide data?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive must provide information to Parliamentary committees."
+  },
+  {
+    "scenarioNumber": 6,
+    "icon": "✅ Check Mark / Tick",
+    "scenarioText": "The Finance Minister presents a budget of ₹45 lakh crore for the next year. Before this money can be spent, who must approve it?",
+    "correctAnswer": "Legislature",
+    "feedback": "Legislature must approve all government spending plans."
+  },
+  {
+    "scenarioNumber": 7,
+    "icon": "💰 Money Bag",
+    "scenarioText": "Experts are calculating budget allocations: ₹8 lakh crore for health, ₹12 lakh crore for education. Who prepares these calculations?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive prepares the budget, Legislature approves it."
+  },
+  {
+    "scenarioNumber": 8,
+    "icon": "👁️ Eye",
+    "scenarioText": "After the budget is approved, ministries start spending. Who keeps watching to ensure money is spent properly and not misused?",
+    "correctAnswer": "Legislature",
+    "feedback": "Legislature monitors spending to prevent misuse of public money."
+  },
+  {
+    "scenarioNumber": 9,
+    "icon": "🏢 Office Building",
+    "scenarioText": "Every day, government offices process passports, issue certificates, run schools, and handle public services. Who manages these daily tasks?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive handles daily government functioning independently."
+  },
+  {
+    "scenarioNumber": 10,
+    "icon": "🏛️ Parliament",
+    "scenarioText": "It's time for the Budget Session to begin. Someone must advise the President to summon Parliament. Who gives this advice?",
+    "correctAnswer": "Executive",
+    "feedback": "Executive advises the President to call Parliament."
+  }
+]

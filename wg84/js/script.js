@@ -1,0 +1,213 @@
+let questionData = [];
+const usedIndexes = new Set();
+let selectedQuestion = null;
+insightsInfo = () => {
+  document.getElementById("insights-info").style.display = "block";
+};
+
+function init() {
+  selectedQuestion = getRandomQuestion();
+  setQuestionStem(selectedQuestion.scenarioText);
+  buttonClickEvent();
+  progress_count_update();
+  let btnInsights = document.getElementById("btn-insights");
+  btnInsights.addEventListener("click", insightsInfo);
+  let btnClose = document.getElementById("btn-close");
+  btnClose.addEventListener("click", () => {
+    document.getElementById("insights-info").style.display = "none";
+  });
+  let btnStartAgain = document.getElementById("start_again");
+  btnStartAgain.addEventListener("click", () => {
+    location.reload();
+  });
+}
+
+
+let executiveCount = 0;
+let legislatureCount = 0;
+
+function addLegislatureIcons(count) {
+  const svg = document.getElementById("legislature-Badges");
+  const legislatureoriginalIcon = document.getElementById("legislature-icon");
+  const clone = legislatureoriginalIcon.cloneNode(true);
+  // remove duplicate id
+  clone.removeAttribute("id");
+
+  // position each icon
+  clone.setAttribute(
+    "transform",
+    `translate(${(count - 1) * 80}, 0)`, // move horizontally
+  );
+
+  svg.appendChild(clone);
+}
+
+progress_count_update = (current, total) => {
+  const progress_count = document.getElementById("progress_count");
+  const tspan = progress_count.querySelector("tspan") || progress_count;
+  tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;
+};
+function addExecutiveIcons(count) {
+  const ExecutiveBadges = document.getElementById("Executive-Badges");
+  const executiveoriginalIcon = document.getElementById("executive-icon");
+  const clone = executiveoriginalIcon.cloneNode(true);
+  // remove duplicate id
+  clone.removeAttribute("id");
+
+  // position each icon
+  clone.setAttribute(
+    "transform",
+    `translate(${(count - 1) * 80}, 0)`, // move horizontally
+  );
+
+  ExecutiveBadges.appendChild(clone);
+}
+
+function buttonClickEvent() {
+  const btnlegislature = document.getElementById("btn-legislature");
+  btnlegislature.addEventListener("click", () => {
+    if (selectedQuestion.correctAnswer === "Legislature") {
+      console.log("executive correct");
+      questionValidation("CORRECT");
+      legislatureCountIncrement();
+    } else {
+      questionValidation("INCORRECT");
+    }
+  });
+  const btnexecutive = document.getElementById("btn-executive");
+  btnexecutive.addEventListener("click", () => {
+    if (selectedQuestion.correctAnswer === "Executive") {
+      console.log("executive correct");
+      questionValidation("CORRECT");
+      executiveCountIncrement();
+    } else {
+      questionValidation("INCORRECT");
+    }
+  });
+  const btnnext = document.getElementById("btn-next");
+  btnnext.addEventListener("click", () => {
+    hideAllBoxAndButton();
+    selectedQuestion = getRandomQuestion();
+    setQuestionStem(selectedQuestion.scenarioText);
+  });
+}
+executiveCountIncrement = () => {
+  executiveCount += 1;
+  document.getElementById("executive-icon").style.display = "block";
+  if (executiveCount > 1) {
+    addExecutiveIcons(executiveCount);
+  }
+  progress_count_update();
+};
+legislatureCountIncrement = () => {
+  legislatureCount += 1;
+  document.getElementById("legislature-icon").style.display = "block";
+  if (legislatureCount > 1) {
+    addLegislatureIcons(legislatureCount);
+  }
+  progress_count_update();
+};
+questionValidation = (type) => {
+  if (type === "CORRECT") {
+    document.getElementById("correct-box").style.display = "block";
+    document.getElementById("correct-animation").style.display = "block";
+    document.getElementById("incorrect-box").style.display = "none";
+    showFeedback("correct_feedback");
+  } else {
+    document.getElementById("incorrect-box").style.display = "block";
+    document.getElementById("correct-box").style.display = "none";
+    showFeedback("incorrect_feedback");
+  }
+  document.getElementById("btn-next").style.display = "block";
+};
+showFeedback = (id) => {
+  let feedback = document.getElementById(id);
+  var q_santance_fisrt = "";
+  var q_santance_second = "";
+  y = 517.754;
+  if (selectedQuestion.feedback.length > 46) {
+    q_santance_fisrt = selectedQuestion.feedback.substring(0, 46);
+    q_santance_second = selectedQuestion.feedback.substring(
+      46,
+      selectedQuestion.feedback.length,
+    );
+  } else {
+    q_santance_fisrt = selectedQuestion.feedback;
+    q_santance_second = "";
+  }
+  let q_santance = [q_santance_fisrt, q_santance_second];
+  feedback.innerHTML = "";
+  for (let i = 0; i < q_santance.length; i++) {
+    y += 35;
+    feedback.innerHTML += `<tspan x='625'  y='${y}'>${q_santance[i]}</tspan>`;
+  }
+};
+hideAllBoxAndButton = () => {
+  document.getElementById("correct-box").style.display = "none";
+  document.getElementById("incorrect-box").style.display = "none";
+  document.getElementById("correct-animation").style.display = "none";
+  document.getElementById("btn-next").style.display = "none";
+};
+
+function setQuestionStem(questionStem) {
+  let q_santance = questionStem.split(".");
+  let question_text = document.getElementById("question_stem");
+  let y = 477.754;
+  question_text.innerHTML = "";
+  for (let i = 0; i < q_santance.length; i++) {
+    y += 35;
+    question_text.innerHTML += `<tspan x='626'  y='${y}'>${q_santance[i]}</tspan>`;
+  }
+}
+function getRandomQuestion() {
+  if (usedIndexes.size === questionData.length) {
+    console.log("All questions used");
+    document.getElementById("summary-box").style.display = "block";
+    let legislature_summary = document.getElementById("legislature-summary");
+    let legislaturetspan = legislature_summary.querySelector("tspan") || legislature_summary;
+    legislaturetspan.textContent = legislatureCount;
+    let executive_summary = document.getElementById("executive-summary"); 
+    const tspan1 = executive_summary.querySelector("tspan") || executive_summary;
+    tspan1.textContent = executiveCount;
+    let totalbadges = document.getElementById("totalbadges");
+    const tspan = totalbadges.querySelector("tspan") || totalbadges;
+    tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;  
+    return null;
+  }
+
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * questionData.length);
+  } while (usedIndexes.has(randomIndex));
+
+  usedIndexes.add(randomIndex);
+  return questionData[randomIndex];
+}
+
+getAllQuestion = () => {
+  fetch("assets/question.json") // Replace with your API endpoint
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok: " + response.statusText);
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      questionData = data;
+      init();
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+};
+loadPlayer = () => {
+  let proceedbtn = document.getElementById("proceed-btn");
+  proceedbtn.addEventListener("click", () => {
+    document.getElementById("player").style.display = "block";
+    document.getElementById("legislature-vs-executive-box").style.display = "none";
+    init();
+  });
+}
+window.onload = getAllQuestion();
