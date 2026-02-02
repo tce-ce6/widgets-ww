@@ -196,7 +196,7 @@ getAllQuestion = () => {
     .then((data) => {
       console.log(data);
       questionData = data;
-      init();
+      loadPlayer();
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
