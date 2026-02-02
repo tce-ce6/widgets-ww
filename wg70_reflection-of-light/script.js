@@ -1,5 +1,5 @@
 // These will be initialized in DOMContentLoaded
-let upArrow, downArrow, angleValue, torch, yellowLine, resetBtn;
+let integerUpArrow, integerDownArrow, decimalUpArrow, decimalDownArrow, angleIntegerValue, angleDecimalValue, torch, yellowLine, resetBtn;
 
 // Function to set angle increment (can be called to change how much angle changes per click)
 function setAngleIncrement(value) {
@@ -7,8 +7,9 @@ function setAngleIncrement(value) {
 }
 
 // Initial Defaults
-const INITIAL_ANGLE = 69.6;
-let angle = INITIAL_ANGLE;
+const INITIAL_ANGLE = 69.;
+let angleInteger = INITIAL_ANGLE;
+let angleDecimal = 6;
 let angleIncrement = 1; // Default angle change value
 let currentN2 = null; // No medium selected initially
 const n1 = 1.0;
@@ -33,8 +34,12 @@ const mediaData = {
 
 function updateSimulation() {
     // Display angle with degree symbol
-    if (angleValue) {
-        angleValue.textContent = angle.toFixed(1) + "°";
+    if (angleIntegerValue) {
+        angleIntegerValue.textContent = angleInteger + ".";
+    }
+
+    if (angleDecimalValue) {
+        angleDecimalValue.textContent = angleDecimal + "°";
     }
 
     // Calculate torch position in circular motion around center point
@@ -49,7 +54,7 @@ function updateSimulation() {
     // - angle 270° → SVG 180° (left)
     // Formula: SVG_angle = (270 - angle) mod 360
 
-    let normalizedAngle = angle % 360;
+    let normalizedAngle = angleInteger % 360;
     if (normalizedAngle < 0) normalizedAngle += 360;
 
     let svgAngle = (270 - normalizedAngle) % 360;
@@ -88,14 +93,14 @@ function updateSimulation() {
         }
 
         // Update incident angle arc (red arc showing angle from normal to incident ray)
-        updateIncidentAngleArc(angle);
+        updateIncidentAngleArc(angleInteger);
 
         // Get current medium data
         const currentMedium = Object.values(mediaData).find(m => m.n === currentN2);
         const allowedAngles = currentMedium ? currentMedium.angles : [];
 
         // Normalize angle to 0-360
-        let effectiveAngle = angle % 360;
+        let effectiveAngle = angleInteger % 360;
         if (effectiveAngle < 0) effectiveAngle += 360;
 
         // Get the actual incident angle from normal (use acute angle)
@@ -118,7 +123,7 @@ function updateSimulation() {
 
                 // Determine direction of refracted ray based on incident ray direction
                 // Check which side of normal the incident ray is on
-                let normalizedAngle = angle % 360;
+                let normalizedAngle = angleInteger % 360;
                 if (normalizedAngle < 0) normalizedAngle += 360;
                 let svgAngle = (270 - normalizedAngle) % 360;
                 if (svgAngle < 0) svgAngle += 360;
@@ -340,9 +345,12 @@ function resetSimulation() {
 
 document.addEventListener("DOMContentLoaded", () => {
     // Initialize DOM element references
-    upArrow = document.getElementById('upArrow');
-    downArrow = document.getElementById('downArrow');
-    angleValue = document.getElementById('angleValue');
+    integerUpArrow = document.getElementById('integerUpArrow');
+    integerDownArrow = document.getElementById('integerDownArrow');
+    decimalUpArrow = document.getElementById('decimalUpArrow');
+    decimalDownArrow = document.getElementById('decimalDownArrow');
+    angleIntegerValue = document.getElementById('angleIntegerValue');
+    angleDecimalValue = document.getElementById('angleDecimalValue');
     torch = document.getElementById('torch');
     yellowLine = document.getElementById('yelloLineDiv');
     resetBtn = document.getElementById('reset-btn');
@@ -353,20 +361,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!torchGroup || !torchGroup.parentNode) return;
 
     // Set up arrow listeners for angle control
-    if (upArrow) {
-        upArrow.addEventListener('click', () => {
-            angle += angleIncrement;
+    if (integerUpArrow) {
+        integerUpArrow.addEventListener('click', () => {
+            angleInteger += angleIncrement;
             // Allow full 360 degree rotation
-            if (angle >= 360) angle -= 360;
+            if (angleInteger >= 360) angleInteger -= 360;
             updateSimulation();
         });
     }
 
-    if (downArrow) {
-        downArrow.addEventListener('click', () => {
-            angle -= angleIncrement;
+    if (integerDownArrow) {
+        integerDownArrow.addEventListener('click', () => {
+            angleInteger -= angleIncrement;
             // Allow full 360 degree rotation
-            if (angle < 0) angle += 360;
+            if (angleInteger < 0) angleInteger += 360;
             updateSimulation();
         });
     }
@@ -479,7 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.style.cursor = "pointer";
             btn.addEventListener('click', () => {
                 // Set angle to 69.6° when medium button is clicked
-                angle = INITIAL_ANGLE;
+                angleInteger = INITIAL_ANGLE;
                 currentN2 = mediaData[id].n;
 
                 // Show/hide medium images - only show the clicked one
