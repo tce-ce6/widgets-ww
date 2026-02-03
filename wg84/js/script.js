@@ -2,7 +2,9 @@ let questionData = [];
 const usedIndexes = new Set();
 let selectedQuestion = null;
 insightsInfo = () => {
-  document.getElementById("insights-info").style.display = "block";
+  document.getElementById("insights-box").style.display = "block";
+  document.getElementById("svg-container").classList.add("modal-open");
+  
 };
 
 function init() {
@@ -14,7 +16,8 @@ function init() {
   btnInsights.addEventListener("click", insightsInfo);
   let btnClose = document.getElementById("btn-close");
   btnClose.addEventListener("click", () => {
-    document.getElementById("insights-info").style.display = "none";
+    document.getElementById("insights-box").style.display = "none";
+    document.getElementById("svg-container").classList.remove("modal-open");
   });
   let btnStartAgain = document.getElementById("start_again");
   btnStartAgain.addEventListener("click", () => {
@@ -156,7 +159,7 @@ function setQuestionStem(questionStem) {
   question_text.innerHTML = "";
   for (let i = 0; i < q_santance.length; i++) {
     y += 35;
-    question_text.innerHTML += `<tspan x='626'  y='${y}'>${q_santance[i]}</tspan>`;
+    question_text.innerHTML += `${q_santance[i]}`;
   }
 }
 function getRandomQuestion() {
