@@ -1,4 +1,5 @@
 let questionData = [];
+let audioPlayer = new Audio();
 const usedIndexes = new Set();
 let selectedQuestion = null;
 insightsInfo = () => {
@@ -91,6 +92,7 @@ function buttonClickEvent() {
   btnnext.addEventListener("click", () => {
     hideAllBoxAndButton();
     selectedQuestion = getRandomQuestion();
+    if(selectedQuestion)
     setQuestionStem(selectedQuestion.scenarioText);
   });
 }
@@ -175,6 +177,7 @@ function getRandomQuestion() {
     let totalbadges = document.getElementById("totalbadges");
     const tspan = totalbadges.querySelector("tspan") || totalbadges;
     tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;  
+    playLottieAnimation();
     return null;
   }
 
@@ -186,7 +189,25 @@ function getRandomQuestion() {
   usedIndexes.add(randomIndex);
   return questionData[randomIndex];
 }
+function playAudio() {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  audioPlayer.src = `assets/JSON/FinalAnswer_celebration.json`;
+  audioPlayer.play();
+}
 
+  const playLottieAnimation = () => {
+      const containerEl = document.getElementById('lottie-container');
+      if (!containerEl) return;
+      const anim = lottie.loadAnimation({
+          container: containerEl,
+          renderer: 'svg',
+          loop: false,
+          autoplay: true,
+          path: `assets/JSON/FinalAnswer_celebration.json` 
+      });
+      
+  };
 getAllQuestion = () => {
   fetch("assets/question.json") // Replace with your API endpoint
     .then((response) => {
