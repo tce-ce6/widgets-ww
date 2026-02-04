@@ -436,21 +436,16 @@ const IMAGES = [
 ];
 
 //Playing Lotties
-
-function playCorrectAnswerLottie(objectName) {
-
-  const containerId = `${objectName}-${wordIndex}`;
-  const container = document.getElementById(containerId);
+function playCompleteLottie() {
+  const container = document.getElementById('completion-lottie');
 
   if (!container) {
-    console.warn(`Container ${containerId} not found`);
+    console.warn(`Container completion-lottie not found`);
     return;
   }
 
-  const variant = (wordIndex % 2 === 0) ? '01' : '02';
-
   // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
-  const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
+  const animationPath = `./assets/animation/celebration.json`;
 
   // Clear previous SVG if any
   container.innerHTML = '';

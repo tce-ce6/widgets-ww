@@ -12,13 +12,49 @@ const state = {
         "recievers-address-blank",
         "salutation-blank",
         "introduction-blank",
-        "body-2-blank",
         "body-1-blank",
+        "body-2-blank",
         "conclusion-blank",
         "complimentary-close-blank",
         "senders-name-blank" 
     ]
 };
+
+const lottieContainer = document.getElementById('lottie-container');
+
+function playCompleteLottie() {
+    const container = document.getElementById('completion-lottie');
+  
+    if (!container) {
+      console.warn(`Container completion-lottie not found`);
+      return;
+    }
+  
+    const animationPath = `./animation/celebration.json`;
+  
+    // Clear previous animation
+    container.innerHTML = '';
+    container.style.display = 'block';
+  
+    const anim = lottie.loadAnimation({
+      container: container,
+      renderer: 'svg',
+      loop: false,
+      autoplay: true,
+      path: animationPath,
+      rendererSettings: {
+        hideOnTransparent: false,
+        preserveAspectRatio: 'xMidYMid meet'
+      }
+    });
+  
+    // Ensure totalFrames is available
+    anim.addEventListener('DOMLoaded', () => {
+      anim.addEventListener('complete', () => {
+        anim.goToAndStop(anim.totalFrames - 1, true);
+      });
+    });
+  }  
 
 document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
@@ -85,31 +121,77 @@ function validateMatch(leftId, rightId) {
 
 function processCorrectMatch(btnElement) {
     const targetG = document.getElementById(state.activeLeftId);
-    
-    // 1. Update SVG Appearance
+
+    // 1. Update SVG Box Appearance
     targetG.querySelectorAll('path').forEach(p => {
-        p.setAttribute('fill', '#f0fff0');
-        p.setAttribute('stroke', '#28a745');
+        //p.setAttribute('fill', '#f8f9fa');
+      //  p.setAttribute('stroke', '#28a745');
+        p.setAttribute('stroke-width', '2');
         p.removeAttribute('stroke-dasharray');
+        p.setAttribute("pointer-events", "none");
     });
 
-    // 2. Disable Button
+    // 2. Add Text to the Box
+    addTextToSvg(targetG, btnElement.innerText || btnElement.textContent);
+
+    // 3. Disable Button
     btnElement.style.opacity = "0.3";
     btnElement.style.pointerEvents = "none";
     btnElement.style.filter = "grayscale(1)";
 
-    // 3. Advance State
+    // 4. Advance State
     state.currentStepIndex++;
     state.activeLeftId = null;
 
     if (state.currentStepIndex === state.sequence.length) {
-        showFeedback("Congratulations! You've completed the formal letter structure.");
+       // showFeedback("Congratulations! You've completed the formal letter structure.");
+       lottieContainer.style.display = 'block';
+       document.getElementById('learn-example-btn').style.display = 'block';
+       playCompleteLottie();
     }
+}
+
+/**
+ * FUNCTION: Injects text into the center of the SVG group
+ */
+function addTextToSvg(groupElement, label) {
+    // Get the bounding box of the paths to find the center
+    const bbox = groupElement.getBBox();
+    
+    // Create SVG Text element
+    const textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    
+    // Set text position (center of the box)
+    textNode.setAttribute("x", bbox.x + bbox.width / 2);
+    textNode.setAttribute("y", bbox.y + bbox.height / 2);
+    
+    // Styling the text
+    textNode.setAttribute("fill", "#333");
+    textNode.setAttribute("font-size", "32px");
+    textNode.setAttribute("font-weight", "BOLD");
+    textNode.setAttribute("font-family", "Roboto, sans-serif");
+    textNode.setAttribute("text-anchor", "middle"); // Horizontal center
+    textNode.setAttribute("dominant-baseline", "central"); // Vertical center    
+    textNode.setAttribute("pointer-events", "none");
+    textNode.textContent = label;
+    console.log(label)
+    // 2. Reset paths to original state (Remove Blue, Keep Dash)
+    const paths = groupElement.querySelectorAll('path');
+    paths.forEach(path => {
+        // Reset to original grey from your SVG code
+        path.setAttribute("stroke", "#707070"); 
+        // Reset thickness to original
+        path.setAttribute("stroke-width", "1"); 
+        // Ensure the dash is visible (if it was removed during highlight)
+        path.setAttribute("stroke-dasharray", "5 5");
+    });
+    
+    groupElement.appendChild(textNode);
 }
 
 function applyVisualHighlight(el) {
     // Reset all paths to default grey dash
-    document.querySelectorAll('.left-blanks path').forEach(p => p.setAttribute('stroke', '#707070'));
+   // document.querySelectorAll('.left-blanks path').forEach(p => p.setAttribute('stroke', '#707070'));
     // Highlight selected one blue
     el.querySelectorAll('path').forEach(p => p.setAttribute('stroke', '#007bff'));
 }
@@ -129,6 +211,7 @@ function initNavigation() {
     document.getElementById('example-btn').onclick = () => navigateTo('practice-examples');
     document.getElementById('home-btn').onclick = () => navigateTo('home-page');
     document.getElementById('smartPhone').onclick = () => navigateTo('practice-page');
+    document.getElementById('learn-example-btn').onclick = () => navigateTo('practice-examples');
 }
 
 function initGameListeners() {
@@ -136,7 +219,7 @@ function initGameListeners() {
         g.addEventListener('click', () => handleBlankSelection(g));
     });
 
-    document.querySelectorAll('.right-option').forEach(btn => {
+    document.querySelectorAll('.right-option > g').forEach(btn => {
         btn.addEventListener('click', () => handleOptionSelection(btn));
     });
 }
