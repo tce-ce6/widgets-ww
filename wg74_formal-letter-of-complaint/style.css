@@ -165,3 +165,10 @@ svg{
   position: absolute;
   bottom: 0;
 }
+
+.letter-box {
+  background-color: white;
+  border: 1px dashed #707070;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
