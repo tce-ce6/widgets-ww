@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reading Slopes with Counter Lines</title>
+  <title>Forming Landforms with Contour Lines</title>
 
 
   <link rel="stylesheet" href="./css/global_style.css">
@@ -14,17 +14,17 @@
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
-        <h2>Reading Slopes with Counter Lines</h2>
-        <span id="versionId" class="versionText">b3_wg75_290126</span>
+        <h2>Forming Landforms with Contour Lines</h2>
+        <span id="versionId" class="versionText">b3_wg80_260206</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080"
           viewBox="0 0 1920 1080" fill="none" class="svg-main">
           <g id="step-1" style="display: block;">
 
-            <foreignObject x="500" y="100" width="1260" height="734">
+            <foreignObject x="330" y="100" width="1260" height="50">
               <div xmlns="http://www.w3.org/1999/xhtml" class="i-text">
-                There are five types of slopes. Tap any one to create its contour profile.
+                There are several types of uplands. Tap any one to create its contour profile.
               </div>
             </foreignObject>
             <g filter="url(#groupShadow)">
@@ -34,34 +34,29 @@
                     <ul class="slope-list" id="slope-list">
                       <li>
                         <div class="img-wrapper">
-                          <img src="./assets/gentle-slope.svg" alt="">
+                          <img src="./assets/conical-slope-1.svg" alt="">
                         </div>
-                        <div class="img-label">Gentle Slope</div>
+                        <div class="img-label">Conical Slope</div>
                       </li>
                       <li>
                         <div class="img-wrapper">
-                          <img src="./assets/steep-slope.svg" alt="">
+                          <img src="./assets/saddle-slope-1.svg" alt="">
                         </div>
-                        <div class="img-label">Steep Slope</div>
+                        <div class="img-label">Saddle Slope</div>
                       </li>
                       <li>
                         <div class="img-wrapper">
-                          <img src="./assets/convex-slope.svg" alt="">
+                          <img src="./assets/ridge-slope-1.svg" alt="">
                         </div>
-                        <div class="img-label">Convex Slope</div>
+                        <div class="img-label">Ridge Slope</div>
                       </li>
                       <li>
                         <div class="img-wrapper">
-                          <img src="./assets/concave-slope.svg" alt="">
+                          <img src="./assets/plateau-slope-1.svg" alt="">
                         </div>
-                        <div class="img-label">Concave Slope</div>
+                        <div class="img-label">Plateau Slope</div>
                       </li>
-                      <li>
-                        <div class="img-wrapper">
-                          <img src="./assets/irregular-slope.svg" alt="">
-                        </div>
-                        <div class="img-label">Irregular Slope</div>
-                      </li>
+
                     </ul>
                   </div>
                 </div>
@@ -114,7 +109,7 @@
                   <div class="correct-lottie" id="correct-lottie"></div>
                 </div>
                 <div class="right-col">
-                  <div class="slope-title">Gentle Slope</div>
+                  <div class="slope-title">Conical Slope</div>
                   <foreignObject x="0" y="0" width="1260" height="600">
                     <div xmlns="http://www.w3.org/1999/xhtml" class="profile-container">
                       <svg xmlns="http://www.w3.org/2000/svg" width="824" height="621" viewBox="0 0 824 621"
@@ -191,7 +186,7 @@
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="gentle-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
+                  <foreignObject id="conical-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
                     width="720" height="580">
                     <div xmlns="http://www.w3.org/1999/xhtml" class="finalimg-wrapper">
                       <svg xmlns="http://www.w3.org/2000/svg" width="923" height="602" viewBox="0 0 770 575"
@@ -209,7 +204,7 @@
                             </text>
                           </g>
                           <path id="line-100"
-                            d="M748.963 7.99086C736.397 7.49541 716.451 6.42829 703.903 6.3325C696.668 5.98104 689.465 5.1379 682.344 3.80888C676.348 2.67584 670.808 1.31619 665.389 1.39344C655.282 1.75293 644.82 2.71807 634.579 1.57163C601.49 -1.40364 568.158 -0.150974 535.386 5.29936C509.206 8.20305 485.028 -0.225788 459.375 5.08202C455.161 5.82468 451.045 6.82279 446.831 6.70949C440.918 6.6312 432.659 5.45695 426.579 5.02125C422.444 4.78199 418.296 4.84843 414.17 5.22005C392.145 6.3531 368.745 5.04597 346.302 7.99086C304.394 13.2575 262.066 12.008 220.506 20.0259C212.06 21.571 203.656 21.3371 195.38 22.3641C185.066 23.825 175.081 27.056 165.867 31.9146C150.447 39.984 134.971 51.7595 120.602 63.5771C112.767 70.7298 105.283 81.2187 97.2063 88.7813C94.316 91.5119 91.1589 93.6987 88.4025 96.7126C81.9133 104.499 76.3109 113.071 70.178 121.199C63.7423 129.311 62.9028 136.22 63.7371 146.529C64.1584 156.495 65.2966 165.941 69.1624 175.188C70.5014 178.524 72.0516 181.851 73.2393 185.23C75.4734 191.505 76.7198 198.091 79.0322 204.312C81.0513 209.671 83.7993 214.726 87.1984 219.335C92.4413 226.32 98.0994 233.433 104.853 238.582C106.661 239.976 108.746 241.333 110.395 242.865C113.183 245.304 114.274 248.864 116.385 251.886C121.226 258.537 130.142 261.849 136.677 266.635C141.022 269.408 145.787 271.456 150.788 272.703C170.895 277.853 190.157 290.14 210.732 292.978C221.775 294.453 233.273 294.757 244.038 297.786C249.862 299.504 255.429 301.996 260.59 305.198C272.613 311.91 285.231 317.496 298.283 321.884C303.45 323.589 308.764 324.811 314.157 325.534C346.804 330.156 376.806 330.719 408.458 333.843C439.728 337.036 470.614 343.253 502.089 345.01C512.899 345.499 523.651 346.877 534.235 349.13C548.759 352.117 562.789 352.33 577.505 354.952C585.217 356.291 592.844 358.013 600.563 359.312C607.272 360.537 614.077 361.147 620.897 361.137C662.123 359.306 706.929 363.552 747.71 363.33"
+                            d="M748.963 7.99086C736.397 7.49541 716.451 6.42829 703.903 6.3325C696.668 5.98104 689.465 5.1379 682.344 3.80888C676.348 2.67584 670.808 1.31619 665.389 1.39344C655.282 1.75293 644.82 2.71807 634.579 1.57163C601.49 -1.40364 568.158 -0.150974 535.386 5.29936C509.206 8.20305 485.028 -0.225788 459.375 5.08202C455.161 5.82468 451.045 6.82279 446.831 6.70949C440.918 6.6312 432.659 5.45695 426.579 5.02125C422.444 4.78199 418.296 4.84843 414.17 5.22005C392.145 6.3531 368.745 5.04597 346.302 7.99086C304.394 13.2575 262.066 12.008 220.506 20.0259C212.06 21.571 203.656 21.3371 195.38 22.3641C185.066 23.825 175.081 27.056 165.867 31.9146C150.447 39.984 134.971 51.7595 120.602 63.5771C112.767 70.7298 105.283 81.2187 97.2063 88.7813C94.316 91.5119 91.1589 93.6987 88.4025 96.7126C81.9133 104.499 76.3109 113.071 70.178 21.199C63.7423 129.311 62.9028 136.22 63.7371 146.529C64.1584 156.495 65.2966 165.941 69.1624 175.188C70.5014 178.524 72.0516 181.851 73.2393 185.23C75.4734 191.505 76.7198 198.091 79.0322 204.312C81.0513 209.671 83.7993 214.726 87.1984 219.335C92.4413 226.32 98.0994 233.433 104.853 238.582C106.661 239.976 108.746 241.333 110.395 242.865C113.183 245.304 114.274 248.864 116.385 251.886C121.226 258.537 130.142 261.849 136.677 266.635C141.022 269.408 145.787 271.456 150.788 272.703C170.895 277.853 190.157 290.14 210.732 292.978C221.775 294.453 233.273 294.757 244.038 297.786C249.862 299.504 255.429 301.996 260.59 305.198C272.613 311.91 285.231 317.496 298.283 321.884C303.45 323.589 308.764 324.811 314.157 325.534C346.804 330.156 376.806 330.719 408.458 333.843C439.728 337.036 470.614 343.253 502.089 345.01C512.899 345.499 523.651 346.877 534.235 349.13C548.759 352.117 562.789 352.33 577.505 354.952C585.217 356.291 592.844 358.013 600.563 359.312C607.272 360.537 614.077 361.147 620.897 361.137C662.123 359.306 706.929 363.552 747.71 363.33"
                             stroke="#8E0000" stroke-width="2.06009" stroke-dasharray="4.12 4.12" />
                           <path id="line-200"
                             d="M748.648 24.5702C707.417 20.2862 653.472 32.3872 612.04 31.2809C586.392 30.5527 561.137 24.5506 535.449 24.5702C498.47 24.7329 461.686 31.01 424.909 34.6584C373.626 40.197 322.199 45.3358 273.167 63.1237C248.821 72.2364 225.882 86.3923 209.901 107.387C200.268 120.713 194.178 135.068 197.064 150.056C199.19 160.814 206.897 170.624 213.798 179.329C232.45 203.484 253.97 224.699 282.692 234.909C295.29 239.699 308.3 243.025 321.009 247.465C340.101 254.091 358.131 262.934 377.794 267.368C394.463 271.256 411.349 274.159 427.993 278.132C457.432 284.974 486.643 293.432 516.7 297.045C593.705 306.592 671.012 312.676 748.643 313.68"
@@ -226,6 +221,9 @@
                           <path id="line-600"
                             d="M747.935 119.582C732.095 119.038 710.36 118.3 694.579 119.582C690.101 119.844 685.659 120.526 681.31 121.62C668.25 125.975 654.882 128.934 651.107 141.712C648.738 149.249 650.006 159.695 658.014 163.101C663.744 165.967 669.242 169.116 675.696 170.245C698.595 174.229 726.109 176.859 749.407 175.978"
                             stroke="#8E0000" stroke-width="2.06009" stroke-dasharray="4.12 4.12" />
+                          <path id="line-700"
+                            d="M748.1 135.5C730 135 715 134.5 700 135.5C695 135.7 690 136.2 685 137C675 140 665 142 660 148C658 152 658 158 665 161C670 163 675 165 680 166C700 169 720 171 748 170"
+                            stroke="#8E0000" stroke-width="2" stroke-dasharray="4 4" />
                           <text id="100" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
                             font-size="18.5408" font-weight="bold" letter-spacing="0em">
                             <tspan x="30" y="125.216">100 </tspan>
@@ -250,6 +248,10 @@
                             font-size="18.5408" font-weight="bold" letter-spacing="0em">
                             <tspan x="628.453" y="125.216">600 </tspan>
                           </text>
+                          <text id="700" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
+                            font-size="18.5408" font-weight="bold" letter-spacing="0em">
+                            <tspan x="680" y="125.216">700 </tspan>
+                          </text>
                           <path id="dot-line-100" style="display: none;" d="M63.4688 140.684V574.332" stroke="black"
                             stroke-width="1.03004" stroke-dasharray="3.09 3.09" />
                           <path id="dot-line-200" style="display: none;" d="M196.344 140.684V538.28" stroke="black"
@@ -262,14 +264,16 @@
                             stroke-width="1.03004" stroke-dasharray="3.09 3.09" />
                           <path id="dot-line-600" style="display: none;" d="M650.008 140.684V399.224" stroke="black"
                             stroke-width="1.03004" stroke-dasharray="3.09 3.09" />
+                          <path id="dot-line-700" style="display: none;" d="M700 140.684V375" stroke="black"
+                            stroke-width="1.03004" stroke-dasharray="3.09 3.09" />
                         </g>
                       </svg>
-                      <img id="gentle-final" style="display: none;" class="final-img img-gentle"
+                      <img id="conical-final" style="display: none;" class="final-img img-conical"
                         src="./assets/gentle-shapes.svg" alt="">
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="steep-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
+                  <foreignObject id="saddle-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
                     width="610" height="600">
                     <div xmlns="http://www.w3.org/1999/xhtml" class="">
                       <svg xmlns="http://www.w3.org/2000/svg" width="810" height="600" viewBox="0 0 770 567"
@@ -351,12 +355,12 @@
                           </text>
                         </g>
                       </svg>
-                      <img id="steep-final" style="display: none;" class="final-img img-steep"
+                      <img id="saddle-final" style="display: none;" class="final-img img-saddle"
                         src="./assets/steep-shapes.svg" alt="">
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="convex-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
+                  <foreignObject id="ridge-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
                     width="460" height="610">
                     <div xmlns="http://www.w3.org/1999/xhtml" class="">
                       <svg xmlns="http://www.w3.org/2000/svg" width="790" height="610" viewBox="0 0 790 610" fill="none"
@@ -441,13 +445,13 @@
                           </g>
                         </g>
                       </svg>
-                      <img id="convex-final" style="display: none;" class="final-img img-convex"
+                      <img id="ridge-final" style="display: none;" class="final-img img-ridge"
                         src="./assets/convex-shapes.svg" alt="">
 
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="concave-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
+                  <foreignObject id="plateau-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
                     width="470" height="580">
                     <div xmlns="http://www.w3.org/1999/xhtml" class="">
                       <svg xmlns="http://www.w3.org/2000/svg" style="overflow: visible;" width="790" height="610"
@@ -539,128 +543,14 @@
                           </text>
                         </g>
                       </svg>
-                      <img id="concave-final" style="display: none;" class="final-img img-concave"
+                      <img id="plateau-final" style="display: none;" class="final-img img-plateau"
                         src="./assets/concave-shapes.svg" alt="">
                     </div>
                   </foreignObject>
 
-                  <foreignObject id="irregular-slope-lines" style="display: none;" class="line-marker" x="0" y="100"
-                    width="520" height="610">
-                    <div xmlns="http://www.w3.org/1999/xhtml" class="">
-                      <svg xmlns="http://www.w3.org/2000/svg" style="overflow: visible;" width="790" height="610"
-                        viewBox="0 0 790 610" fill="none">
-                        <g id="Group 3693">
-                          <g id="Group 3697">
-                            <path id="Path 2135" d="M21 152L790 152" stroke="black" stroke-width="2" />
-                            <text id="A" fill="#8E0000" style="white-space: pre" xml:space="preserve"
-                              font-family="Roboto" font-size="20" font-weight="500" letter-spacing="0em">
-                              <tspan x="0" y="158.336">A</tspan>
-                            </text>
-                            <text id="B" fill="#8E0000" style="white-space: pre" xml:space="preserve"
-                              font-family="Roboto" font-size="20" font-weight="500" letter-spacing="0em">
-                              <tspan x="795" y="158.336">B</tspan>
-                            </text>
-                          </g>
-                          <path id="line-100"
-                            d="M185.904 0.046875C203.191 8.48247 221.62 14.3466 240.604 17.4534C270.906 22.5277 304.182 21.4746 330.49 33.7628C336.495 36.7137 342.299 40.0561 347.865 43.7685L390.087 70.6463C396.137 74.3541 401.997 78.3658 407.643 82.6657C409.275 83.956 410.85 85.2842 412.424 86.6134C418.789 91.9868 425.233 97.4443 429.466 103.878C430.799 105.979 432.022 108.149 433.129 110.378C436.869 117.603 440.61 124.827 444.351 132.052C448.057 139.206 451.813 146.987 449.018 154.367C447.799 157.589 445.403 160.479 443.497 163.51C435.894 175.601 436.042 190.047 426.499 201.35C421.023 207.84 412.802 212.729 405.802 218.348C396.39 225.908 388.922 234.993 377.597 240.921C370.896 244.428 363.165 246.65 355.519 248.836L316.289 260.057C303.447 263.732 290.566 267.406 277.247 269.963C270.795 271.199 264.258 272.168 257.719 273.104C226.778 277.543 195.416 281.367 163.928 280.517C151.7 280.187 139.433 279.152 127.263 280.097C119.375 280.71 111.65 282.147 103.85 283.222C76.2965 287.02 49.5804 286.198 21.5781 285.438"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-200"
-                            d="M98.1549 0C103.77 2.72978 109.234 5.63489 114.988 8.18933C144.1 21.1264 178.73 24.3937 212.18 28.0233C245.63 31.6528 280.333 36.3323 307.592 51.3912C317.776 57.0166 321.842 67.0727 330.815 73.767C337.717 78.9178 347.209 81.8376 353.692 87.2888C363.066 95.1705 364.438 106.767 371.788 115.788C373.919 118.405 376.534 120.777 378.968 123.242C385.158 129.44 390.318 136.588 394.25 144.416C397.099 150.18 399.127 156.49 397.133 162.453C396.692 163.691 396.162 164.895 395.547 166.056C389.624 178.154 380.843 188.626 369.963 196.567C364.919 200.023 359.685 203.194 354.287 206.065L292.637 240.366C269.67 253.144 242.037 261.103 213.62 263.126C193.797 264.537 173.716 263.12 153.97 265.052C138.747 266.543 123.966 270 108.79 271.75C96.4005 273.179 83.8341 273.46 71.3412 274.225C53.2826 275.332 39.3839 276.578 21.7422 279.699"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-300"
-                            d="M21.8566 8.66154C26.3408 8.19013 35.641 10.8065 39.7682 12.1987C52.0673 16.318 64.7564 19.1652 77.6365 20.6956C94.4981 22.723 112.518 22.7661 127.158 29.3343C144.498 37.1152 164.259 41.2467 183.748 45.293L222.119 53.2577L264.6 63.7505C269.671 65.0031 274.754 66.2587 279.614 67.9176C292.744 72.3986 303.772 79.6399 314.592 86.7783C319.181 89.8073 323.891 92.9518 326.529 97.08L339.422 117.255C343.389 123.463 347.38 129.719 349.653 136.384C351.817 142.726 352.383 149.304 352.933 155.838C353.833 166.467 341.909 175.256 329.6 180.638C326.541 181.976 323.277 183.288 321.299 185.485C318.885 188.176 318.853 191.68 317.172 194.665C315.778 196.828 314.017 198.733 311.969 200.293C300.326 209.947 287.174 217.62 273.04 223.004C263.038 226.889 252.431 229.828 241.858 232.76L194.933 245.755C179.726 249.932 164.086 252.333 148.326 252.91C137.163 253.33 125.858 252.864 114.917 254.577C95.9858 257.538 79.0874 266.869 59.7585 267.396C47.5207 267.73 32.5206 265.571 21.7422 269.916"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-400"
-                            d="M22.4369 30.2632C35.7708 28.4405 51.2266 34.5731 64.4082 36.9501C71.0688 38.1463 77.8134 38.8133 84.5792 38.9449C92.2299 39.0961 100.032 38.5817 107.421 40.1103C120.386 42.7929 129.784 51.1974 141.314 56.4816C155.681 63.0667 174.091 65.1718 184.838 75.0116C185.323 75.5584 185.974 75.9297 186.691 76.0678C202.095 77.6185 217.85 79.4516 231.458 85.202C237.043 87.6958 242.455 90.5596 247.658 93.7746L266.75 105.008C282.184 114.085 293.838 126.883 299.625 141.125C300.901 143.931 301.618 146.955 301.737 150.034C301.706 157.93 295.311 164.881 289.058 171.154C282.62 177.612 275.918 184.077 267.297 188.81C260.588 192.492 252.766 195.098 247.109 199.705C245.648 200.895 244.358 202.199 243.014 203.466C225.526 219.987 198.464 230.313 170.733 231.048C167.842 231.125 164.943 231.103 162.065 231.31C158.144 231.662 154.246 232.232 150.387 233.015L90.6235 243.994L75.7253 246.734C71.8756 247.442 68.0309 248.154 64.1909 248.875C50.0374 251.55 35.9686 254.473 21.9844 257.641"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-500"
-                            d="M21.9404 55.751C31.8232 54.6476 44.65 60.4757 54.2683 62.48C69.3587 65.6298 85.8644 62.0946 100.998 65.1268C111.888 67.3085 121.509 72.7912 132.754 73.48C138.99 73.8237 145.087 75.4579 150.657 78.279C153.605 79.8151 156.243 81.6767 159.357 83.0226C162.9 84.3986 166.571 85.4184 170.316 86.0673L180.265 88.1389C200.914 92.4383 222.439 97.0946 237.999 108.002C244.273 112.347 249.616 117.903 253.713 124.342C257.81 130.781 260.577 137.974 261.854 145.499C262.489 149.528 262.306 153.644 261.315 157.6C260.324 161.557 258.547 165.274 256.088 168.529C252.801 173.059 248.329 177.053 243.837 180.979C238.912 185.53 233.557 189.591 227.845 193.107C220.575 197.323 213.656 202.115 207.154 207.44C205.604 208.813 203.93 210.041 202.154 211.108C198.825 212.961 194.699 213.81 190.858 214.993C180.972 218.037 170.472 219.822 160.032 221.591L137.472 225.413C99.2382 231.89 60.7126 238.396 21.5078 239.3"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-600"
-                            d="M22.2682 73.4727C52.5193 73.5147 80.026 78.1059 107.199 79.9107C108.341 79.9644 109.478 80.0842 110.606 80.2698C112.315 80.6478 113.989 81.1747 115.605 81.8447C124.406 85.0757 133.563 87.2344 142.88 88.2743C149.759 89.0597 156.764 89.2749 163.583 90.2849C181.837 92.9885 197.372 101.118 212.259 109.034C224.878 115.744 234.555 125.289 238.766 136.025C239.365 137.553 239.862 139.118 240.252 140.711C243.387 153.498 239.129 167.108 228.652 177.781C214.613 192.083 191.323 200.179 169.052 207.678L149.453 214.278C136.582 218.612 121.868 219.017 107.632 219.653C77.9735 220.977 51.0904 222.819 21.9102 226.785"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-700"
-                            d="M21.8711 83.1406C33.9367 88.3818 50.8739 84.5832 64.2026 86.7103C69.7451 87.5954 74.982 89.5241 80.4762 90.595C89.18 92.2969 98.2618 91.8108 107.12 92.7862C115.737 93.9036 124.213 95.9231 132.409 98.8116C138.987 100.987 145.533 103.431 151.106 107.098C154.444 109.414 157.603 111.978 160.555 114.77L181.193 133.326C182.844 134.635 184.246 136.23 185.335 138.035C186.013 139.548 186.433 141.163 186.578 142.814C187.236 147.395 187.885 152.085 186.672 156.585C185.618 160.001 183.901 163.176 181.62 165.93C168.165 183.283 144.181 192.192 121.536 200.188C109.482 204.444 96.2701 205.614 83.2743 206.738C62.655 208.523 43.1329 209.972 22.5126 211.756"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-800"
-                            d="M21.5312 92.8789L59.262 97.867C61.1196 98.0699 62.9613 98.3989 64.774 98.8519C68.1621 99.78 71.2835 101.559 74.6065 102.7C78.5048 104.035 82.6257 104.474 86.6637 105.243C91.3857 106.144 96.0097 107.498 100.471 109.288C105.356 111.136 109.902 113.775 113.929 117.1C116.835 119.743 119.518 122.623 121.95 125.709C127.734 132.638 129.318 142.734 127.156 151.634C124.994 160.535 119.439 168.264 112.628 174.103C105.818 179.941 97.7865 184.022 89.6024 187.447C86.8331 188.705 83.9282 189.64 80.9448 190.234C77.5631 190.8 74.1088 190.572 70.6914 190.797C59.7985 191.517 49.5419 196.828 38.6459 197.479C32.7748 197.83 27.6995 196.888 22.22 199.113"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-900"
-                            d="M21.8711 104.238C30.935 105.227 42.2478 106.615 51.3107 107.604C54.749 107.873 58.1553 108.46 61.4854 109.356C65.0229 110.503 68.376 112.155 71.4407 114.262C80.1655 120.036 87.3072 127.902 92.2153 137.141C94.9566 142.324 96.9452 148.601 94.5041 153.93C93.6207 155.692 92.4709 157.308 91.0951 158.719C86.1933 164.101 80.3467 168.538 73.845 171.812C68.2458 174.449 62.4504 176.649 56.5109 178.388C52.4908 179.816 48.3494 180.875 44.1377 181.553C41.1045 181.946 38.0345 181.945 34.9772 182.078C30.638 182.358 26.3266 182.97 22.0811 183.909"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="line-1000"
-                            d="M22.2089 116.73C28.016 119.925 34.999 123.107 41.5746 123.948C45.4089 124.437 49.3692 124.524 52.9546 125.969C57.1259 127.649 60.3649 130.997 63.4695 134.251C68.8157 139.853 68.2834 149.365 63.7845 155.67C59.2856 161.974 51.764 165.48 44.2141 167.199C36.6642 168.917 28.858 169.11 21.2031 170.277"
-                            stroke="#8E0000" stroke-width="2.09983" stroke-dasharray="4.2 4.2" />
-                          <path id="dot-line-100" style="display: none;" d="M450.09 143.312V609.474" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-200" style="display: none;" d="M397.594 152.762V567.478" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-300" style="display: none;" d="M352.449 152.762V539.13" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-400" style="display: none;" d="M303.102 152.762V502.383" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-500" style="display: none;" d="M263.207 152.762V466.686" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-600" style="display: none;" d="M241.16 152.762V435.189" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-700" style="display: none;" d="M189.711 152.762V399.491" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-800" style="display: none;" d="M126.719 152.762V362.744" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-900" style="display: none;" d="M96.2695 152.762V328.097" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <path id="dot-line-1000" style="display: none;" d="M65.8242 152.762V292.4" stroke="black"
-                            stroke-width="1.04991" stroke-dasharray="3.15 3.15" />
-                          <text id="100" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="449.574" y="138.834">100 </tspan>
-                          </text>
-                          <text id="200" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="395.027" y="138.834">200 </tspan>
-                          </text>
-                          <text id="300" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="349.883" y="138.834">300 </tspan>
-                          </text>
-                          <text id="400" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="300.488" y="138.834">400 </tspan>
-                          </text>
-                          <text id="500" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="260.641" y="138.834">500 </tspan>
-                          </text>
-                          <text id="600" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="198.797" y="138.834">600 </tspan>
-                          </text>
-                          <text id="700" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="164.625" y="116.834">700 </tspan>
-                          </text>
-                          <text id="800" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="132.449" y="138.834">800 </tspan>
-                          </text>
-                          <text id="900" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto"
-                            font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="80.6328" y="130.436">900 </tspan>
-                          </text>
-                          <text id="1000" fill="black" style="white-space: pre" xml:space="preserve"
-                            font-family="Roboto" font-size="18.8984" font-weight="bold" letter-spacing="0em">
-                            <tspan x="21.4688" y="145.135">1000 </tspan>
-                          </text>
-                        </g>
-                      </svg>
-                      <img id="irregular-final" style="display: none;" class="final-img img-irregular"
-                        src="./assets/irregular-shapes.svg" alt="">
-                    </div>
-                  </foreignObject>
                 </div>
               </div>
             </foreignObject>
-
 
             <foreignObject x="350" y="800" width="270" height="80">
               <img class="insight-btn" id="insight-btn" src="./assets/insights-btn.svg" alt="">
@@ -686,7 +576,7 @@
                 <div class="insight-current" id="insight-current" style="display: none;">
                   <span class=" close-insight" id="close-insight"></span>
                   <img id="insight-current-img" src="" alt="">
-                  <h6 id="insight-current-title">Gentle Slope</h6>
+                  <h6 id="insight-current-title">Conical Slope</h6>
                   <p id="insight-current-desc"></p>
                 </div>
 
