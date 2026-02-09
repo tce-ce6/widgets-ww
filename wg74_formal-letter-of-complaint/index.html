@@ -69,7 +69,7 @@
                                                 d="M1148 594H1428C1433.3 594 1438.39 596.107 1442.14 599.858C1445.89 603.609 1448 608.696 1448 614V642C1448 647.304 1445.89 652.391 1442.14 656.142C1438.39 659.893 1433.3 662 1428 662H1148C1142.7 662 1137.61 659.893 1133.86 656.142C1130.11 652.391 1128 647.304 1128 642V614C1128 608.696 1130.11 603.609 1133.86 599.858C1137.61 596.107 1142.7 594 1148 594Z"
                                                 fill="#FFEA58" />
                                         </g>
-                                        <text id="Senderâs Name" fill="black" style="white-space: pre"
+                                        <text id="Senders Name" fill="black" style="white-space: pre"
                                             xml:space="preserve" font-family="Roboto" font-size="28" font-weight="500"
                                             letter-spacing="0em">
                                             <tspan x="1194" y="636.07">Sender’s Name</tspan>
@@ -121,30 +121,58 @@
                                             <tspan x="1517" y="714.07">Body Paragraph 2</tspan>
                                         </text>
                                     </g>
+                                
                                     <g id="recievers-address" style="cursor: pointer;">
-                                        <g id="Group_9" filter="url(#filter8_d_3351_20)">
-                                            <path id="Path 3602_9"
+
+                                        <!-- 🎯 HIT AREA (controls clickable size only) -->
+                                        <rect x="1148" y="342"
+                                              width="300"
+                                              height="68"
+                                              fill="transparent"
+                                              pointer-events="all" />
+                                    
+                                        <!-- 🎨 VISUAL SHAPE (no pointer events, shadow allowed) -->
+                                        <g filter="url(#filter8_d_3351_20)" pointer-events="none">
+                                            <path
                                                 d="M1148 342H1428C1433.3 342 1438.39 344.107 1442.14 347.858C1445.89 351.609 1448 356.696 1448 362V390C1448 395.304 1445.89 400.391 1442.14 404.142C1438.39 407.893 1433.3 410 1428 410H1148C1142.7 410 1137.61 407.893 1133.86 404.142C1130.11 400.391 1128 395.304 1128 390V362C1128 356.696 1130.11 351.609 1133.86 347.858C1137.61 344.107 1142.7 342 1148 342Z"
                                                 fill="#FFEA58" />
                                         </g>
-                                        <text id="Receiverâs Address" fill="black" style="white-space: pre"
-                                            xml:space="preserve" font-family="Roboto" font-size="28" font-weight="500"
-                                            letter-spacing="0em">
+                                    
+                                        <!-- 📝 TEXT (does not affect hit area) -->
+                                        <text fill="black"
+                                              font-family="Roboto"
+                                              font-size="28"
+                                              font-weight="500"
+                                              pointer-events="none">
                                             <tspan x="1169" y="384.07">Receiver’s Address</tspan>
                                         </text>
+                                    
                                     </g>
+                                    
                                     <g id="senders-address" style="cursor: pointer;">
-                                        <g id="Group_10" filter="url(#filter9_d_3351_20)">
-                                            <path id="Path 3602_10"
-                                                d="M1148 426H1428C1433.3 426 1438.39 428.107 1442.14 431.858C1445.89 435.609 1448 440.696 1448 446V474C1448 479.304 1445.89 484.391 1442.14 488.142C1438.39 491.893 1433.3 494 1428 494H1148C1142.7 494 1137.61 491.893 1133.86 488.142C1130.11 484.391 1128 479.304 1128 474V446C1128 440.696 1130.11 435.609 1133.86 431.858C1137.61 428.107 1142.7 426 1148 426Z"
-                                                fill="#FFEA58" />
+
+                                        <!-- HIT AREA (controls click size) -->
+                                        <rect x="1148" y="426" width="300" height="68"
+                                              fill="transparent"
+                                              pointer-events="all" />
+                                    
+                                        <!-- VISUAL GROUP -->
+                                        <g filter="url(#filter9_d_3351_20)" pointer-events="none">
+                                            <path d="M1148 426H1428C1433.3 426 1438.39 428.107 1442.14 431.858C1445.89 435.609 1448 440.696 1448 446V474C1448 479.304 1445.89 484.391 1442.14 488.142C1438.39 491.893 1433.3 494 1428 494H1148C1142.7 494 1137.61 491.893 1133.86 488.142C1130.11 484.391 1128 479.304 1128 474V446C1128 440.696 1130.11 435.609 1133.86 431.858C1137.61 428.107 1142.7 426 1148 426Z"
+                                                  fill="#FFEA58" />
                                         </g>
-                                        <text id="Senderâs Address" fill="black" style="white-space: pre"
-                                            xml:space="preserve" font-family="Roboto" font-size="28" font-weight="500"
-                                            letter-spacing="0em">
+                                    
+                                        <!-- TEXT -->
+                                        <text fill="black"
+                                              font-family="Roboto"
+                                              font-size="28"
+                                              font-weight="500"
+                                              pointer-events="none">
                                             <tspan x="1179" y="468.07">Sender’s Address</tspan>
                                         </text>
+                                    
                                     </g>
+                                    
                                 </g>
 
                                 <g id="Group 1697">
@@ -302,94 +330,157 @@
                             <foreignObject class="practice-page-content" x="134" y="147" width="1583" height="840">
                                 <div xmlns="http://www.w3.org/1999/xhtml" style="height: 820px;width: 1571px;display: flex;flex-direction: column;gap: 30px;overflow-y: auto;padding: 40px 90px;
                                 ">
-                                    <div id="sender-address-box" class="letter-box" style="height:100px">
+                                    <div id="senders-address-box" class="letter-box" style="height:206px; width:566px">
+                                        <span class="placeholder-txt" id="sendersAddress-placeholder">Sender's address</span>
                                         <div class="suggestion-answer">
-                                            <span>Tap on the correct address format</span>
-                                            <div class="answer1">
+                                            <span class="tap-txt">Tap on the correct address format</span>
+                                            <div class="text1">
                                                 <span></span>
                                             </div>
-                                            <div class="answer2">
+                                            <div class="text2">
                                                 <span></span>
                                             </div>
-                                            <div class="answer3">
+                                            <div class="text3">
                                                 <span></span>
                                             </div>
                                         </div>
 
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="date-box" class="letter-box" style="height:74px; width:385px">
+                                        <span class="placeholder-txt" id="date-placeholder">Date</span>
                                         <div class="suggestion-answer">
-                                            <span>Tap on the correct date format</span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct date format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="receivers-address-box" class="letter-box" style="height:206px; width:566px">
+                                        <span class="placeholder-txt" id="receiversAddress-placeholder">Receiver's address</span>
                                         <div class="suggestion-answer">
-                                            <span>Tap on the correct address format</span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct address format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="salutation-box" class="letter-box" style="height:77px; width:847px">
+                                        <span class="placeholder-txt" id="salutation-placeholder">Salutation</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct salutation format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="introduction-box" class="letter-box" style="height:188px; width:1350px">
+                                        <span class="placeholder-txt" id="introduction-placeholder">Introduction</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct introduction format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="body-1-box" class="letter-box" style="height:208px; width:1350px">
+                                        <span class="placeholder-txt" id="bodyParagraph-1-placeholder">Body paragraph 1</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct body format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="body-2-box" class="letter-box" style="height:208px; width:1350px">
+                                        <span class="placeholder-txt" id="bodyParagraph-2-placeholder">Body paragraph 2</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct body format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="conclusion-box" class="letter-box" style="height:208px; width:1350px">
+                                        <span class="placeholder-txt" id="conclusion-placeholder">Conclusion</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct conclusion format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="complimentary-close-box" class="letter-box" style="height:87px; width:566px">
+                                        <span class="placeholder-txt" id="complimentary-placeholder">Complimentary close</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct complimentary format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="letter-box" style="height:100px">
+                                    <div id="senders-name-box" class="letter-box" style="height:108px; width:677px">
+                                        <span class="placeholder-txt" id="sendersName-placeholder">Sender's name</span>
                                         <div class="suggestion-answer">
-                                            <span></span>
-                                            <div class="answer1"></div>
-                                            <div class="answer2"></div>
-                                            <div class="answer3"></div>
+                                            <span class="tap-txt">Tap on the correct name format</span>
+                                            <div class="text1">
+                                                <span></span>
+                                            </div>
+                                            <div class="text2">
+                                                <span></span>
+                                            </div>
+                                            <div class="text3">
+                                                <span></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </foreignObject>
                         </g>

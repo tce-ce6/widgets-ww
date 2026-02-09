@@ -688,7 +688,14 @@ function initNavigation() {
 
     Object.entries(navButtons).forEach(([id, page]) => {
         const btn = document.getElementById(id);
-        if (btn) btn.onclick = () => navigateTo(page);
+        if (btn) {
+            btn.onclick = () => {
+                if (id === 'home-btn') {
+                    resetPracticeSession(); // 🔥 RESET EVERYTHING
+                }
+                navigateTo(page);
+            };
+        }
     });
 
     // Practice Trigger Buttons
@@ -706,54 +713,128 @@ function initNavigation() {
 /**
  * FUNCTION: Prepares the specific letter data and UI
  */
+// Reusable function to handle any letter box (sender, receiver, date, etc.)
+// function initializeLetterBox(boxId, dataKey) {
+//     const mainBox = document.getElementById(boxId);
+
+//     if (!mainBox || !state.activeLetter) return;
+//     const suggestionBox = mainBox.querySelector('.suggestion-answer');
+
+//     if (!suggestionBox) {
+//         console.warn(`Missing .suggestion-answer inside #${boxId}`);
+//         return;
+//     }
+
+//     const optionsData = state.activeLetter.sections[dataKey];
+//     console.log("Data", optionsData)
+//     // 1. Assign data to spans and set attributes
+//     optionsData.forEach((option, index) => {
+//         const optionDiv = suggestionBox.querySelector(`.text${index + 1}`);
+//         if (optionDiv) {
+//             const span = optionDiv.querySelector('span');
+//             span.innerText = option.text;
+
+//             // Set attributes for validation
+//             optionDiv.setAttribute('data-is-correct', option.is_correct);
+//             optionDiv.setAttribute('data-feedback', option.feedback);
+
+//             // Handle clicking an option
+//             optionDiv.onclick = (e) => {
+//                 e.stopPropagation(); // Prevent re-triggering the main box click
+
+//                 if (option.is_correct) {
+//                     // Success: Update main box and hide suggestions
+//                     mainBox.querySelector('.suggestion-answer').style.display = 'none';
+//                     // Clear the box and put the correct text in
+//                     mainBox.innerText = option.text;
+//                     mainBox.style.height = "auto";
+//                     mainBox.classList.add('completed');
+//                 } else {
+//                     // Failure: Show feedback
+//                     alert(option.feedback || "Incorrect format. Try again!");
+//                 }
+//             };
+//         }
+//     });
+
+//     // 2. Toggle display of suggestions when main box is clicked
+//     mainBox.onclick = function() {
+//         const isAlreadyCorrect = this.classList.contains('completed');
+//         if (!isAlreadyCorrect) {
+//             suggestionBox.style.display = 'block';
+//         }
+//     };
+// }
+
+function initializeLetterBox(boxId, dataKey, placeholder) {
+    const mainBox = document.getElementById(boxId);
+    if (!mainBox || !state.activeLetter) return;
+
+    const suggestionBox = mainBox.querySelector('.suggestion-answer');
+    if (!suggestionBox) {
+        console.warn(`Missing .suggestion-answer inside #${boxId}`);
+        return;
+    }
+
+    const optionsData = state.activeLetter.sections[dataKey];
+    if (!Array.isArray(optionsData)) return;
+
+    optionsData.forEach((option, index) => {
+        const optionDiv = suggestionBox.querySelector(`.text${index + 1}`);
+        if (!optionDiv) return;
+
+        const span = optionDiv.querySelector('span');
+        if (span) span.innerText = option.text;
+
+        optionDiv.onclick = (e) => {
+            e.stopPropagation();
+
+            if (option.is_correct) {
+                suggestionBox.style.display = 'none';
+
+                // ✅ SAFE text injection
+                let filled = mainBox.querySelector('.filled-text');
+                if (!filled) {
+                    document.getElementById(placeholder).style.display = 'none';
+                    filled = document.createElement('div');
+                    filled.className = 'filled-text';
+                    mainBox.appendChild(filled);
+                }
+
+                filled.innerText = option.text;
+                mainBox.style.height = "auto";
+                mainBox.classList.add('completed');
+            } else {
+                alert(option.feedback || "Incorrect format. Try again!");
+            }
+        };
+    });
+
+    mainBox.onclick = () => {
+        if (!mainBox.classList.contains('completed')) {
+            suggestionBox.style.display = 'block';
+        }
+    };
+}
+
+
+// How to trigger it for Senders Address
 function startPracticeSession(matchId) {
     state.activeLetter = letterData.letters.find(l => l.title === matchId);
     state.currentStepIndex = 0;
-    state.activeLeftId = null;
-    console.log(state.activeLetter);
-}
+    console.log(matchId, state.activeLetter);
+    // Initialize specific components
+    initializeLetterBox('senders-address-box', 'senders_address', 'sendersAddress-placeholder');
+    initializeLetterBox('date-box', 'date', 'date-placeholder');
+    initializeLetterBox('receivers-address-box', 'receivers_address', 'receiversAddress-placeholder');
+    initializeLetterBox('salutation-box', 'salutation', 'salutation-placeholder');
+    initializeLetterBox('introduction-box', 'introduction', 'introduction-placeholder');
+    initializeLetterBox('body-1-box', 'body_paragraph_1', 'bodyParagraph-1-placeholder');
+    initializeLetterBox('body-2-box', 'body_paragraph_2', 'bodyParagraph-2-placeholder');
+    initializeLetterBox('conclusion-box', 'conclusion', 'conclusion-placeholder');
+    initializeLetterBox('complimentary-close-box', 'complimentary_close', 'complimentary-placeholder');
+    initializeLetterBox('senders-name-box', 'senders_name', 'sendersName-placeholder');
 
-/**
- * FUNCTION: Handles clicking the SVG boxes
- */
-function handleBlankSelection(event) {
-    // Use currentTarget to ensure we get the <g> element even if <path> is clicked
-    const gElement = event.currentTarget;
-    const expectedId = state.sequence[state.currentStepIndex];
-
-    if (gElement.id !== expectedId) {
-        showFeedback(`Please select the section: ${formatIdText(expectedId)}`);
-        return;
-    }
-
-    state.activeLeftId = gElement.id;
-    applyVisualHighlight(gElement);
-}
-
-/**
- * FUNCTION: Handles the selected option logic
- */
-function handleOptionSelection(optionObj) {
-    if (!state.activeLeftId) {
-        showFeedback("First, click the highlighted box in the letter.");
-        return;
-    }
-
-    if (optionObj.is_correct) {
-        const targetG = document.getElementById(state.activeLeftId);
-        addTextToSvg(targetG, optionObj.text);
-
-        state.currentStepIndex++;
-        state.activeLeftId = null;
-
-        if (state.currentStepIndex < state.sequence.length) {
-            renderOptions();
-        } else {
-            handleCompletion();
-        }
-    } else {
-        showFeedback(optionObj.feedback || "That is not the correct format.");
-    }
 }
 
 // 4. UI Support Functions
@@ -773,7 +854,8 @@ function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
 
     if (gElement.id !== expectedId) {
-        showFeedback(`Sequence Error: Please select the box for "${formatIdText(expectedId)}"`);
+        applyRightVisualHighlight(expectedId);
+        //  showFeedback(`Sequence Error: Please select the box for "${formatIdText(expectedId)}"`);
         return;
     }
 
@@ -785,8 +867,11 @@ function handleBlankSelection(gElement) {
  * Checks if the selected option matches the active blank
  */
 function handleOptionSelection(btnElement) {
+    const expectedId = state.sequence[state.currentStepIndex];
+    console.log("btnElement", btnElement);
     if (!state.activeLeftId) {
-        showFeedback("Select a section on the letter first!");
+        // showFeedback("Select a section on the letter first!");
+        applyRightVisualHighlight(expectedId);
         return;
     }
 
@@ -796,7 +881,8 @@ function handleOptionSelection(btnElement) {
     if (isMatch) {
         processCorrectMatch(btnElement);
     } else {
-        showFeedback("That component doesn't belong in this section.");
+        applyWrongVisualHighlight(btnElement);
+        //   showFeedback("That component doesn't belong in this section.");
     }
 }
 
@@ -857,8 +943,8 @@ function addTextToSvg(groupElement, label) {
 
     // Styling the text
     textNode.setAttribute("fill", "#333");
-    textNode.setAttribute("font-size", "32px");
-    textNode.setAttribute("font-weight", "BOLD");
+    textNode.setAttribute("font-size", "28px");
+    textNode.setAttribute("font-weight", "500");
     textNode.setAttribute("font-family", "Roboto, sans-serif");
     textNode.setAttribute("text-anchor", "middle"); // Horizontal center
     textNode.setAttribute("dominant-baseline", "central"); // Vertical center    
@@ -880,10 +966,45 @@ function addTextToSvg(groupElement, label) {
 }
 
 function applyVisualHighlight(el) {
-    // Reset all paths to default grey dash
-    // document.querySelectorAll('.left-blanks path').forEach(p => p.setAttribute('stroke', '#707070'));
     // Highlight selected one blue
-    el.querySelectorAll('path').forEach(p => p.setAttribute('stroke', '#007bff'));
+    el.querySelectorAll('path').forEach(p => {
+        p.setAttribute('stroke', '#007bff');
+        p.setAttribute('stroke-width', '6');
+        p.removeAttribute('stroke-dasharray');
+    });
+}
+
+function applyRightVisualHighlight(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    el.querySelectorAll('path').forEach(p => {
+        // STEP 1: Blue highlight
+        p.setAttribute('stroke', '#007bff');
+        p.setAttribute('stroke-width', '6');
+        p.removeAttribute('stroke-dasharray');
+
+        // STEP 2: Switch to grey dashed after 600ms
+        setTimeout(() => {
+            p.setAttribute('stroke', '#9e9e9e');      // grey
+            p.setAttribute('stroke-width', '2');
+            p.setAttribute('stroke-dasharray', '4 4'); // dashed
+        }, 600);
+    });
+}
+
+
+
+function applyWrongVisualHighlight(el) {
+    el.querySelectorAll('path').forEach(p => {
+        p.setAttribute('stroke', 'red');
+        p.setAttribute('stroke-width', '6');
+
+        setTimeout(() => {
+            p.setAttribute('stroke', 'none');
+            p.setAttribute('stroke-width', '0');
+        }, 600);
+    });
 }
 
 function formatIdText(id) {
@@ -894,15 +1015,75 @@ function showFeedback(msg) {
     alert(msg); // Replace with a custom UI popup if preferred
 }
 
-/** * INITIALIZERS: Event Attachments
- */
-// function initNavigation() {
-//     document.getElementById('learn-btn').onclick = () => navigateTo('learn-page');
-//     document.getElementById('example-btn').onclick = () => navigateTo('practice-examples');
-//     document.getElementById('home-btn').onclick = () => navigateTo('home-page');
-//     document.getElementById('smartPhone').onclick = () => navigateTo('practice-page');
-//     document.getElementById('learn-example-btn').onclick = () => navigateTo('practice-examples');
-// }
+function resetPracticeSession() {
+    /* 1. Reset STATE */
+    state.currentStepIndex = 0;
+    state.activeLeftId = null;
+    state.activeLetter = null;
+
+    /* 2. Reset LEFT SVG BLANKS */
+    document.querySelectorAll('.left-blanks > g').forEach(g => {
+        // Remove added text nodes
+        g.querySelectorAll('text').forEach(t => t.remove());
+
+        // Restore path styles
+        g.querySelectorAll('path').forEach(p => {
+            p.setAttribute('stroke', '#707070');
+            p.setAttribute('stroke-width', '1');
+            p.setAttribute('stroke-dasharray', '5 5');
+            p.setAttribute('pointer-events', 'auto');
+        });
+    });
+
+    /* 3. Reset RIGHT OPTIONS */
+    document.querySelectorAll('.right-option > g').forEach(btn => {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+        btn.style.filter = 'none';
+    });
+
+    /* 4. Reset LETTER BOXES (practice fill-in UI) */
+    document.querySelectorAll('.letter-box').forEach(box => {
+        box.classList.remove('completed');
+
+        // Remove filled text
+        box.querySelector('.filled-text')?.remove();
+
+        // Hide suggestions again
+        const suggestion = box.querySelector('.suggestion-answer');
+        if (suggestion) suggestion.style.display = 'none';
+
+        box.style.height = "200px";
+    });
+
+    /* 5. Reset LOTTIE */
+    const completion = document.getElementById('completion-lottie');
+    if (completion) {
+        completion.innerHTML = '';
+        completion.style.display = 'none';
+    }
+
+    const lottieWrapper = document.getElementById('lottie-container');
+    if (lottieWrapper) {
+        lottieWrapper.style.display = 'none';
+    }
+
+    /* 6. Hide learn-example button */
+    const learnExampleBtn = document.getElementById('learn-example-btn');
+    if (learnExampleBtn) {
+        learnExampleBtn.style.display = 'none';
+    }
+
+    document.querySelectorAll('.placeholder-txt')
+        .forEach(el => el.style.display = 'block');
+
+}
+
+document.getElementById('home-btn').onclick = () => {
+    resetPracticeSession();
+    navigateTo('home-page');
+};
+
 
 function initGameListeners() {
     document.querySelectorAll('.left-blanks > g').forEach(g => {
@@ -912,4 +1093,10 @@ function initGameListeners() {
     document.querySelectorAll('.right-option > g').forEach(btn => {
         btn.addEventListener('click', () => handleOptionSelection(btn));
     });
+
+    document.querySelectorAll('.letter-box').forEach(box => {
+        // Save the initial height
+        box.dataset.defaultHeight = box.offsetHeight + 'px';
+    });
+    
 }
