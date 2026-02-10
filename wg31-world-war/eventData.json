@@ -3,12 +3,12 @@
         {
             "id": 1,
             "year": 1914,
-            "description": "In June 1914, Archduke Franz Ferdinand, heir to the Austro-Hungarian throne, was assassinated in Sarajevo. A single shot set off a chain of events that would plunge the world into war. But who were the key players behind this global conflict? Predict the alliances that will shape history. Use the clue cards whenever you need help.",
+            "description": "In June 1914, Archduke Franz Ferdinand, heir to the Austro-Hungarian throne, was assassinated in Sarajevo. A single shot set off a chain of events that would plunge the world into war. But who were the key players behind this global conflict? <span> Predict the alliances that will shape history. Use the clue cards whenever you need help.</span>",
             "questions": [
                 {
                     "id": 1,
                     "question": "Which country do you think will stand by Austria-Hungary first in 1914?",
-                    "itext": "Drag the orange flag and place it on the correct nation that joined Central Powers.",
+                    "itext": "Tap the orange flag and place it on the correct nation that joined Central Powers.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -22,7 +22,7 @@
                 {
                     "id": 2,
                     "question": "Which 5 nations will support Serbia in the conflict?",
-                    "itext": "Drag the green flag and place it on the correct nations that joined Allied Powers.",
+                    "itext": "Tap the green flag and place it on the correct nations that joined Allied Powers.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -64,7 +64,7 @@
                 {
                     "id": 3,
                     "question": "A new ally joins Germany and Austria-Hungary! Which is this nation ?",
-                    "itext": "Drag the orange flag and place it on the correct nation that joined Central Powers.",
+                    "itext": "Tap the orange flag and place it on the correct nation that joined Central Powers.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -102,7 +102,7 @@
                 {
                     "id": 1,
                     "question": "Which country joined the war in 1915 to support Serbia and its allies?",
-                    "itext": "Drag the green flag and place it on the correct nation that joined Allied Powers.",
+                    "itext": "Tap the green flag and place it on the correct nation that joined Allied Powers.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -116,7 +116,7 @@
                 {
                     "id": 2,
                     "question": "A Balkan country joined team Central Powers in 1915. Can you spot the new ally on the map?",
-                    "itext": "Drag the orange flag and place it on the correct nation that joined Central Powers.",
+                    "itext": "Tap the orange flag and place it on the correct nation that joined Central Powers.",
                     "totalClues": [
                         {
                             "id": 2,
@@ -157,7 +157,7 @@
                 {
                     "id": 1,
                     "question": "Two nations break their silence in 1916. Can you discover who joins the Allied Powers?",
-                    "itext": "Drag the green flag and place it on the correct nations that joined Allied Powers.",
+                    "itext": "Tap the green flag and place it on the correct nations that joined Allied Powers.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -206,13 +206,13 @@
                 {
                     "id": 1,
                     "question": "The tide shifts in 1917. Two nations answer the call. Who crosses the seas to fight?",
-                    "itext": "Drag the green flag and place it on the correct nations that joined Allied Powers.",
+                    "itext": "Tap the green flag and place it on the correct nations that joined Allied Powers.",
                     "totalClues": [
                         {
                             "id": 1,
                             "alliance": "Allied Powers",
                             "country": "United-States-of-America",
-                            "clue": "This country is home to the Statue of Liberty, gifted Disney and jazz music to the world, and was the first nation to put a man on the Moon.",
+                            "clue": "This country is home to the Statue of Liberty, gifted Disney and jazz music to the world, and has the first nation to put a man on the Moon.",
                             "feedback": "Yes! The USA joined due to German submarine attacks (including the Lusitania), the Zimmermann Telegram revealing German-Mexico plans, and economic ties with the Allies."
                         },
                         {
@@ -257,7 +257,7 @@
                 {
                     "id": 1,
                     "question": "Torn apart by chaos, one empire exits early. Who withdrew in 1918?",
-                    "itext": "Drag the grey flag and place it on the correct nation that exited the war.",
+                    "itext": "Tap the grey flag and place it on the correct nation that exited the war.",
                     "totalClues": [
                         {
                             "id": 1,
@@ -270,8 +270,8 @@
                 },
                 {
                     "id": 2,
-                    "question": "Four nations that fought together now fall together. Wha waves the white flag?",
-                    "itext": "Drag the white flag and place it on the correct nations that surrendered in 1918.",
+                    "question": "Four nations that fought together now fall together. Who waves the white flag?",
+                    "itext": "Tap the white flag and place it on the correct nations that surrendered in 1918.",
                     "totalClues": [
                         {
                             "id": 1,

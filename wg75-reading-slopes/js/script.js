@@ -15,7 +15,7 @@ const data = {
   "Steep Slope": {
     title: "Steep Slope",
     Insights:
-      "When the degree or angle of slope of a feature is high, and the contours are closely spaced, they indicate a steep slope. ",
+      "When the degree or angle of slope of a feature is high, and the counter are closely spaced, they indicate a steep slope. ",
     "counter lines": [
       "./assets/steep-slope-1.svg",
       "./assets/steep-slope-2.svg",
