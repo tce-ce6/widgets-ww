@@ -564,6 +564,8 @@ function loadSlope(title) {
       label800.style.display = "none";
     }
   }
+    updateExtraContourLines(title); // ✅ ADD THIS
+
   updateButtonStates();
   // ✅ Restore final image if this slope was already completed
   if (isSlopeCompleted(title)) {
@@ -713,4 +715,42 @@ function isSlopeCompleted(title) {
       li.classList.contains("completed")
     );
   });
+}
+
+function updateExtraContourLines(title) {
+  const line8 = document.getElementById("line-8");
+  const label800 = document.getElementById("800-m");
+  const line9 = document.getElementById("line-9");
+  const label900 = document.getElementById("900-m");
+  const line10 = document.getElementById("line-10");
+  const label1000 = document.getElementById("1000-m");
+
+  if (!line8 || !label800) return;
+
+  // 🔴 Reset everything first
+  line8.style.display = "none";
+  label800.style.display = "none";
+
+  if (line9) line9.style.display = "none";
+  if (label900) label900.style.display = "none";
+
+  if (line10) line10.style.display = "none";
+  if (label1000) label1000.style.display = "none";
+
+  // 🟢 Apply per slope
+  if (title === "Concave Slope") {
+    line8.style.display = "block";
+    label800.style.display = "block";
+  }
+
+  if (title === "Irregular Slope") {
+    line8.style.display = "block";
+    label800.style.display = "block";
+
+    if (line9) line9.style.display = "block";
+    if (label900) label900.style.display = "block";
+
+    if (line10) line10.style.display = "block";
+    if (label1000) label1000.style.display = "block";
+  }
 }
