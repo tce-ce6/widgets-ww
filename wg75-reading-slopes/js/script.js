@@ -82,7 +82,7 @@ const finalImageMap = {
 };
 
 let currentSlopeTitle = "";
-let selectedSlopeHeight = 100; // Default to 100m as the first item is active by default
+let selectedSlopeHeight = null; // No height selected by default
 
 const step1 = document.getElementById("step-1");
 const step2 = document.getElementById("step-2");
@@ -103,6 +103,8 @@ function playLottie(path, { loop = false, autoHide = false } = {}) {
   const container = document.getElementById("correct-lottie");
   if (!container || typeof lottie === "undefined") return;
 
+  // 👉 SHOW lottie container
+  container.style.display = "block";
   container.innerHTML = "";
 
   if (correctAnimation) {
@@ -121,11 +123,13 @@ function playLottie(path, { loop = false, autoHide = false } = {}) {
   if (autoHide) {
     correctAnimation.addEventListener("complete", () => {
       container.innerHTML = "";
+      container.style.display = "none"; // 👈 HIDE again
       correctAnimation.destroy();
       correctAnimation = null;
     });
   }
 }
+
 
 function updateSlopeCategory(title) {
   const slopeData = data[title];
@@ -153,11 +157,8 @@ function updateSlopeCategory(title) {
       li.appendChild(yearDiv);
       li.appendChild(img);
 
-      // Step 1: Add default active class to the first item
-      if (index === 0) {
-        li.classList.add("active");
-        selectedSlopeHeight = 100;
-      }
+      // Step 1: No default selection for height anymore
+      // Users must click to select a height first
 
       // Step 2: Add click event listener to toggle active class
       li.addEventListener("click", function () {
@@ -237,14 +238,36 @@ let correctAnimation = null;
 document.addEventListener("click", function (e) {
   let target = e.target;
 
+  // Support clicking on tspan inside text
+  if (target.tagName === "tspan" || target.tagName === "TSPAN") {
+    target = target.parentElement;
+  }
+
   // Support clicking on the transparent hit area
   if (target._realLine) {
     target = target._realLine;
   }
 
+  let targetId = target.id;
+
+  // If clicked on numeric ID (text label), redirect to the corresponding line
+  if (targetId && /^\d+$/.test(targetId)) {
+    const className = currentSlopeTitle.toLowerCase().replace(/\s+/g, "-");
+    const containerId = className + "-lines";
+    const container = document.getElementById(containerId);
+    if (container) {
+      const line = container.querySelector(`#line-${targetId}`);
+      if (line) {
+        target = line;
+        targetId = line.id;
+      }
+    }
+  }
+
   // Check if the clicked element (or resolved real element) is an SVG path
   if (target.tagName === "path" || target.tagName === "PATH") {
-    const targetId = target.id;
+    // If no height is selected, don't play incorrect animation, just do nothing
+    if (selectedSlopeHeight === null) return;
 
     // Check if the ID matches the pattern 'line-{height}'
     if (targetId && targetId.startsWith("line-")) {
@@ -307,19 +330,25 @@ function markSlopeAsCompleted(title) {
   // ✅ Show final result image
   Object.values(finalImageMap).forEach((id) => {
     const img = document.getElementById(id);
-    if (img) img.style.display = "none";
+    if (img) {
+      img.style.display = "none";
+      img.classList.remove("animated");
+    }
   });
 
   const finalImgId = finalImageMap[title];
   if (finalImgId) {
     const finalImg = document.getElementById(finalImgId);
-    if (finalImg) finalImg.style.display = "block";
+    if (finalImg) {
+      finalImg.style.display = "block";
+      finalImg.classList.add("animated");
+    }
   }
 
   // ✅ Play correct animation
   playLottie("./lottie/correctLottie.json", {
     loop: false,
-    autoHide: false,
+    autoHide: true,
   });
 
   // 🔒 DISABLE SHOW ANSWER BUTTON (ONLY AFTER COMPLETION)
@@ -346,6 +375,10 @@ if (insightBtn) {
     if (svgContainer) {
       svgContainer.classList.add("modal-open");
     }
+    // Add active class to .i-text elements
+    document.querySelectorAll(".i-text").forEach((el) => {
+      el.classList.add("active");
+    });
   });
 }
 
@@ -359,6 +392,10 @@ if (closeInsightBtn) {
     if (svgContainer) {
       svgContainer.classList.remove("modal-open");
     }
+    // Remove active class from .i-text elements
+    document.querySelectorAll(".i-text").forEach((el) => {
+      el.classList.remove("active");
+    });
   });
 }
 
@@ -379,9 +416,6 @@ function updateButtonStates() {
   const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
 
   if (prevBtn) {
-    if (!correctSelectedOptions) {
-      resetActivity();
-    }
     if (currentIndex <= 0) {
       prevBtn.classList.add("disabled");
     } else {
@@ -398,8 +432,11 @@ function updateButtonStates() {
   }
 }
 
-function resetActivity() {
+function resetActivity(keepCompletedStatus = false) {
   if (!currentSlopeTitle) return;
+
+  selectedSlopeHeight = null;
+  correctSelectedOptions = false;
 
   const className = currentSlopeTitle.toLowerCase().replace(/\s+/g, "-");
   const selectedSlopeId = className + "-lines";
@@ -444,18 +481,23 @@ function resetActivity() {
   }
 
   // Reset slope-list items completed status for the current slope ONLY
-  const slopeListItemsStatus = document.querySelectorAll("#slope-list li");
-  slopeListItemsStatus.forEach((li) => {
-    const label = li.querySelector(".img-label");
-    if (label && label.textContent.trim() === currentSlopeTitle) {
-      li.classList.remove("completed");
-    }
-  });
+  if (!keepCompletedStatus) {
+    const slopeListItemsStatus = document.querySelectorAll("#slope-list li");
+    slopeListItemsStatus.forEach((li) => {
+      const label = li.querySelector(".img-label");
+      if (label && label.textContent.trim() === currentSlopeTitle) {
+        li.classList.remove("completed");
+      }
+    });
+  }
   // 🔄 Hide final result image on reset
   const finalImgId = finalImageMap[currentSlopeTitle];
   if (finalImgId) {
     const finalImg = document.getElementById(finalImgId);
-    if (finalImg) finalImg.style.display = "none";
+    if (finalImg) {
+      finalImg.style.display = "none";
+      finalImg.classList.remove("animated");
+    }
   }
   if (showAnsBtnElement) {
     showAnsBtnElement.classList.remove("disabled");
@@ -466,7 +508,10 @@ function loadSlope(title) {
   // Hide all final images when switching slopes
   Object.values(finalImageMap).forEach((id) => {
     const img = document.getElementById(id);
-    if (img) img.style.display = "none";
+    if (img) {
+      img.style.display = "none";
+      img.classList.remove("animated");
+    }
   });
 
   currentSlopeTitle = title;
@@ -476,27 +521,10 @@ function loadSlope(title) {
   if (step2) step2.style.display = "block";
   currentStepIndex = 1; // Sync step index
 
-  // Update main container state based on whether this slope is completed
+  // Ensure main container starts without the 'correct' class during load
   const mainContainer = document.querySelector(".main-container");
   if (mainContainer) {
-    const slopeListItems = document.querySelectorAll("#slope-list li");
-    let isCompleted = false;
-    slopeListItems.forEach((li) => {
-      const label = li.querySelector(".img-label");
-      if (
-        label &&
-        label.textContent.trim() === title &&
-        li.classList.contains("completed")
-      ) {
-        isCompleted = true;
-      }
-    });
-
-    if (isCompleted) {
-      mainContainer.classList.add("correct");
-    } else {
-      mainContainer.classList.remove("correct");
-    }
+    mainContainer.classList.remove("correct");
   }
 
   // Reset Show Answer Button State for the new slope
@@ -567,27 +595,11 @@ function loadSlope(title) {
     updateExtraContourLines(title); // ✅ ADD THIS
 
   updateButtonStates();
-  // ✅ Restore final image if this slope was already completed
-  if (isSlopeCompleted(title)) {
-    const finalImgId = finalImageMap[title];
-    if (finalImgId) {
-      const finalImg = document.getElementById(finalImgId);
-      if (finalImg) finalImg.style.display = "block";
-    }
-  }
-  // 🔐 Handle Show Answer button state per slope
-if (showAnsBtnElement) {
-  if (isSlopeCompleted(title)) {
-    showAnsBtnElement.classList.add("disabled");
-  } else {
-    showAnsBtnElement.classList.remove("disabled");
-  }
-}
-
 }
 
 if (prevBtn) {
   prevBtn.addEventListener("click", () => {
+    resetActivity(true);
     const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
     if (currentIndex > 0) {
       const prevSlope = slopeOrder[currentIndex - 1];
@@ -598,6 +610,7 @@ if (prevBtn) {
 
 if (nextBtn) {
   nextBtn.addEventListener("click", () => {
+    resetActivity(true);
     const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
     if (currentIndex < slopeOrder.length - 1) {
       const nextSlope = slopeOrder[currentIndex + 1];
@@ -665,7 +678,10 @@ if (showAnsBtn) {
         });
 
         // ✅ SHOW FINAL IMAGE
-        if (finalImg) finalImg.style.display = "block";
+        if (finalImg) {
+          finalImg.style.display = "block";
+          finalImg.classList.add("animated");
+        }
       } else {
         // 🔴 HIDE ANSWER
         showAnsBtn.src = "./assets/show-ans-btn.svg";
@@ -692,7 +708,10 @@ if (showAnsBtn) {
         });
 
         // ❌ HIDE FINAL IMAGE
-        if (finalImg) finalImg.style.display = "none";
+        if (finalImg) {
+          finalImg.style.display = "none";
+          finalImg.classList.remove("animated");
+        }
       }
     }
   });
