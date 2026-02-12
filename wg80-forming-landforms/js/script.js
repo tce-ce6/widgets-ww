@@ -60,7 +60,7 @@ const finalImageMap = {
 };
 
 let currentSlopeTitle = "";
-let selectedSlopeHeight = 100; // Default to 100m as the first item is active by default
+let selectedSlopeHeight = null; // No height selected by default
 
 const step1 = document.getElementById("step-1");
 const step2 = document.getElementById("step-2");
@@ -100,6 +100,7 @@ function playLottie(path, { loop = false, autoHide = false } = {}) {
   if (autoHide) {
     correctAnimation.addEventListener("complete", () => {
       container.innerHTML = "";
+      container.style.display = "none";
       correctAnimation.destroy();
       correctAnimation = null;
     });
@@ -136,11 +137,8 @@ function updateSlopeCategory(title) {
       li.appendChild(yearDiv);
       li.appendChild(img);
 
-      // Step 1: Add default active class to the first item
-      if (index === 0) {
-        li.classList.add("active");
-        selectedSlopeHeight = currentHeight;
-      }
+      // Step 1: No default selection for height anymore
+      // Users must click to select a height first
 
       // Step 2: Add click event listener to toggle active class
       li.addEventListener("click", function () {
@@ -227,6 +225,9 @@ document.addEventListener("click", function (e) {
 
   // Check if the clicked element (or resolved real element) is an SVG path
   if (target.tagName === "path" || target.tagName === "PATH") {
+    // If no height is selected, don't play incorrect animation, just do nothing
+    if (selectedSlopeHeight === null) return;
+
     const targetId = target.id;
 
     // Check if the ID matches the pattern 'line-{height}'
@@ -241,15 +242,44 @@ document.addEventListener("click", function (e) {
         target.dataset.done = "true";
 
         if (target.parentNode) {
-          const dotLineId = targetId.replace("line-", "dot-line-");
-          
-          // 1. Try exact match (e.g., line-1000-1 -> dot-line-1000-1)
-          const dotLine = target.parentNode.querySelector(`[id="${dotLineId}"]`);
-          if (dotLine) dotLine.style.display = "block";
+          // 1. Check for indexed line pattern (e.g. line-1500-1)
+          const indexedMatch = targetId.match(/^line-(\d+)-(\d+)$/);
 
-          // 2. Try prefix match (e.g., line-1000 -> dot-line-1000-1, dot-line-1000-2)
-          const nestedDotLines = target.parentNode.querySelectorAll(`[id^="${dotLineId}-"]`);
-          nestedDotLines.forEach((el) => el.style.display = "block");
+          if (indexedMatch) {
+            const height = indexedMatch[1];
+            const index = parseInt(indexedMatch[2], 10);
+
+            // Map index N to dot-lines 2N-1 and 2N
+            const dotLine1Id = `dot-line-${height}-${index * 2 - 1}`;
+            const dotLine2Id = `dot-line-${height}-${index * 2}`;
+
+            const dl1 = target.parentNode.querySelector(`[id="${dotLine1Id}"]`);
+            const dl2 = target.parentNode.querySelector(`[id="${dotLine2Id}"]`);
+
+            if (dl1) dl1.style.display = "block";
+            if (dl2) dl2.style.display = "block";
+
+            // Show associated text label for indexed line
+            const textLabelId = `${height}-${index}`;
+            const textLabel = target.parentNode.querySelector(`[id="${textLabelId}"]`);
+            if (textLabel) textLabel.style.display = "block";
+          } else {
+             // 2. Default logic: exact match or prefix match
+             const dotLineId = targetId.replace("line-", "dot-line-");
+             
+             // Try exact match
+             const dotLine = target.parentNode.querySelector(`[id="${dotLineId}"]`);
+             if (dotLine) dotLine.style.display = "block";
+
+             // Show associated text label for simple line
+             const height = targetId.replace("line-", "");
+             const textLabel = target.parentNode.querySelector(`[id="${height}"]`);
+             if (textLabel) textLabel.style.display = "block";
+
+             // Try prefix match
+             const nestedDotLines = target.parentNode.querySelectorAll(`[id^="${dotLineId}-"]`);
+             nestedDotLines.forEach((el) => el.style.display = "block");
+          }
 
 
           const allLines =
@@ -296,13 +326,19 @@ function markSlopeAsCompleted(title) {
   // ✅ Show final result image
   Object.values(finalImageMap).forEach((id) => {
     const img = document.getElementById(id);
-    if (img) img.style.display = "none";
+    if (img) {
+      img.style.display = "none";
+      img.classList.remove("animated");
+    }
   });
 
   const finalImgId = finalImageMap[title];
   if (finalImgId) {
     const finalImg = document.getElementById(finalImgId);
-    if (finalImg) finalImg.style.display = "block";
+    if (finalImg) {
+      finalImg.style.display = "block";
+      finalImg.classList.add("animated");
+    }
   }
 
   // ✅ Play correct animation
@@ -335,6 +371,10 @@ if (insightBtn) {
     if (svgContainer) {
       svgContainer.classList.add("modal-open");
     }
+    // Add active class to .i-text elements
+    document.querySelectorAll(".i-text").forEach((el) => {
+      el.classList.add("active");
+    });
   });
 }
 
@@ -348,6 +388,10 @@ if (closeInsightBtn) {
     if (svgContainer) {
       svgContainer.classList.remove("modal-open");
     }
+    // Remove active class from .i-text elements
+    document.querySelectorAll(".i-text").forEach((el) => {
+      el.classList.remove("active");
+    });
   });
 }
 
@@ -360,16 +404,13 @@ const slopeOrder = [
   "Conical Slope",
   "Saddle Slope",
   "Ridge Slope",
-  "Plateau  Slope",
+  "Plateau Slope",
 ];
 
 function updateButtonStates() {
   const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
 
   if (prevBtn) {
-    if (!correctSelectedOptions) {
-      resetActivity();
-    }
     if (currentIndex <= 0) {
       prevBtn.classList.add("disabled");
     } else {
@@ -386,8 +427,10 @@ function updateButtonStates() {
   }
 }
 
-function resetActivity() {
+function resetActivity(keepCompletedStatus = false) {
   if (!currentSlopeTitle) return;
+  
+  selectedSlopeHeight = null;
 
   const className = currentSlopeTitle.toLowerCase().replace(/\s+/g, "-");
   const selectedSlopeId = className + "-lines";
@@ -408,6 +451,13 @@ function resetActivity() {
       line.style.strokeDasharray = "";
       delete line.dataset.done;
     });
+
+    // Reset numeric text labels
+    container.querySelectorAll("text").forEach((label) => {
+       if (/^\d/.test(label.id)) {
+         label.style.display = "none";
+       }
+    });
   }
 
   // Reset Lottie and correct class
@@ -418,6 +468,7 @@ function resetActivity() {
   const correctLottie = document.getElementById("correct-lottie");
   if (correctLottie) {
     correctLottie.innerHTML = "";
+    correctLottie.style.display = "none";
     if (correctAnimation) {
       correctAnimation.destroy();
       correctAnimation = null;
@@ -432,18 +483,24 @@ function resetActivity() {
   }
 
   // Reset slope-list items completed status for the current slope ONLY
-  const slopeListItemsStatus = document.querySelectorAll("#slope-list li");
-  slopeListItemsStatus.forEach((li) => {
-    const label = li.querySelector(".img-label");
-    if (label && label.textContent.trim() === currentSlopeTitle) {
-      li.classList.remove("completed");
-    }
-  });
+  if (!keepCompletedStatus) {
+    const slopeListItemsStatus = document.querySelectorAll("#slope-list li");
+    slopeListItemsStatus.forEach((li) => {
+      const label = li.querySelector(".img-label");
+      if (label && label.textContent.trim() === currentSlopeTitle) {
+        li.classList.remove("completed");
+      }
+    });
+  }
+
   // 🔄 Hide final result image on reset
   const finalImgId = finalImageMap[currentSlopeTitle];
   if (finalImgId) {
     const finalImg = document.getElementById(finalImgId);
-    if (finalImg) finalImg.style.display = "none";
+    if (finalImg) {
+      finalImg.style.display = "none";
+      finalImg.classList.remove("animated");
+    }
   }
   if (showAnsBtnElement) {
     showAnsBtnElement.classList.remove("disabled");
@@ -451,10 +508,14 @@ function resetActivity() {
 }
 
 function loadSlope(title) {
+  selectedSlopeHeight = null;
   // Hide all final images when switching slopes
   Object.values(finalImageMap).forEach((id) => {
     const img = document.getElementById(id);
-    if (img) img.style.display = "none";
+    if (img) {
+      img.style.display = "none";
+      img.classList.remove("animated");
+    }
   });
 
   currentSlopeTitle = title;
@@ -464,27 +525,10 @@ function loadSlope(title) {
   if (step2) step2.style.display = "block";
   currentStepIndex = 1; // Sync step index
 
-  // Update main container state based on whether this slope is completed
+  // Ensure main container starts without the 'correct' class during load
   const mainContainer = document.querySelector(".main-container");
   if (mainContainer) {
-    const slopeListItems = document.querySelectorAll("#slope-list li");
-    let isCompleted = false;
-    slopeListItems.forEach((li) => {
-      const label = li.querySelector(".img-label");
-      if (
-        label &&
-        label.textContent.trim() === title &&
-        li.classList.contains("completed")
-      ) {
-        isCompleted = true;
-      }
-    });
-
-    if (isCompleted) {
-      mainContainer.classList.add("correct");
-    } else {
-      mainContainer.classList.remove("correct");
-    }
+    mainContainer.classList.remove("correct");
   }
 
   // Reset Show Answer Button State for the new slope
@@ -498,6 +542,7 @@ function loadSlope(title) {
   const correctLottie = document.getElementById("correct-lottie");
   if (correctLottie) {
     correctLottie.innerHTML = "";
+    correctLottie.style.display = "none";
     if (correctAnimation) {
       correctAnimation.destroy();
       correctAnimation = null;
@@ -541,27 +586,16 @@ function loadSlope(title) {
     }
   }
   updateButtonStates();
-  // ✅ Restore final image if this slope was already completed
-  if (isSlopeCompleted(title)) {
-    const finalImgId = finalImageMap[title];
-    if (finalImgId) {
-      const finalImg = document.getElementById(finalImgId);
-      if (finalImg) finalImg.style.display = "block";
-    }
-  }
-  // 🔐 Handle Show Answer button state per slope
-if (showAnsBtnElement) {
-  if (isSlopeCompleted(title)) {
-    showAnsBtnElement.classList.add("disabled");
-  } else {
+
+  if (showAnsBtnElement) {
     showAnsBtnElement.classList.remove("disabled");
   }
 }
 
-}
 
 if (prevBtn) {
   prevBtn.addEventListener("click", () => {
+    resetActivity(true);
     const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
     if (currentIndex > 0) {
       const prevSlope = slopeOrder[currentIndex - 1];
@@ -572,6 +606,7 @@ if (prevBtn) {
 
 if (nextBtn) {
   nextBtn.addEventListener("click", () => {
+    resetActivity(true);
     const currentIndex = slopeOrder.indexOf(currentSlopeTitle);
     if (currentIndex < slopeOrder.length - 1) {
       const nextSlope = slopeOrder[currentIndex + 1];
@@ -630,6 +665,12 @@ if (showAnsBtn) {
           d.style.display = "block";
         });
 
+        // Show all numeric text labels
+        container.querySelectorAll("text").forEach((label) => {
+          // Check if ID starts with a digit (e.g., "1000", "1400-1")
+          if (/^\d/.test(label.id)) label.style.display = "block";
+        });
+
         // Highlight profile lines
         container.querySelectorAll('path[id^="line-"]').forEach((line) => {
           line.style.stroke = "black";
@@ -638,7 +679,10 @@ if (showAnsBtn) {
         });
 
         // ✅ SHOW FINAL IMAGE
-        if (finalImg) finalImg.style.display = "block";
+        if (finalImg) {
+          finalImg.style.display = "block";
+          finalImg.classList.add("animated");
+        }
       } else {
         // 🔴 HIDE ANSWER
         showAnsBtn.src = "./assets/show-ans-btn.svg";
@@ -648,12 +692,59 @@ if (showAnsBtn) {
         container
           .querySelectorAll('path[id^="dot-line-"]')
           .forEach((dotLine) => {
-            const height = dotLine.id.replace("dot-line-", "");
-            const profileLine = container.querySelector(`#line-${height}`);
-            if (!profileLine || profileLine.dataset.done !== "true") {
+            // Check if this dot-line corresponds to a completed line
+            // Parsing logic: dot-line-H-I
+            const match = dotLine.id.match(/^dot-line-(\d+)-(\d+)$/);
+            let shouldShow = false;
+
+            if (match) {
+              const height = match[1];
+              const index = parseInt(match[2], 10);
+              
+              // Case 1: Indexed line (line-H-ceil(I/2))
+              const lineIndex = Math.ceil(index / 2);
+              const indexedLineId = `line-${height}-${lineIndex}`;
+              const indexedLine = container.querySelector(`#${indexedLineId}`);
+
+              if (indexedLine && indexedLine.dataset.done === "true") {
+                shouldShow = true;
+              } else {
+                 // Case 2: Non-indexed line (line-H)
+                 const simpleLineId = `line-${height}`;
+                 const simpleLine = container.querySelector(`#${simpleLineId}`);
+                 if (simpleLine && simpleLine.dataset.done === "true") {
+                    shouldShow = true;
+                 }
+              }
+            }
+
+            if (!shouldShow) {
               dotLine.style.display = "none";
             }
           });
+
+        // Hide numeric text labels except completed
+        container.querySelectorAll("text").forEach((label) => {
+          if (/^\d/.test(label.id)) {
+            // Check if it's an indexed label (e.g. 1400-1) or simple (1000)
+            const match = label.id.match(/^(\d+)-(\d+)$/);
+            let profileLine = null;
+
+            if (match) {
+              const height = match[1];
+              const index = match[2];
+              profileLine = container.querySelector(`#line-${height}-${index}`);
+            } else {
+               // Simple ID like "1000"
+               const height = label.id;
+               profileLine = container.querySelector(`#line-${height}`);
+            }
+
+            if (!profileLine || profileLine.dataset.done !== "true") {
+              label.style.display = "none";
+            }
+          }
+        });
 
         // Reset uncompleted profile lines
         container.querySelectorAll('path[id^="line-"]').forEach((line) => {
@@ -665,7 +756,10 @@ if (showAnsBtn) {
         });
 
         // ❌ HIDE FINAL IMAGE
-        if (finalImg) finalImg.style.display = "none";
+        if (finalImg) {
+          finalImg.style.display = "none";
+          finalImg.classList.remove("animated");
+        }
       }
     }
   });
