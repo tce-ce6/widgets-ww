@@ -2,7 +2,7 @@ const data = {
   "Gentle Slope": {
     title: "Gentle Slope",
     Insights:
-      "When a landform has a very small gradient or angle, the slope is gentle, and its contour lines are widely spaced.",
+      "When a landform has a very small gradient or angle, the slope is gentle, and its Counter lines are widely spaced.",
     "counter lines": [
       "./assets/gentle-slope-1.svg",
       "./assets/gentle-slope-2.svg",
@@ -29,7 +29,7 @@ const data = {
   "Convex Slope": {
     title: "Convex Slope",
     Insights:
-      "The slope is gentle at the base and gradually becomes steeper toward the summit. The contour lines are widely spaced at lower elevations and progressively closer together at higher elevations. ",
+      "The slope is gentle at the base and gradually becomes steeper toward the summit. The Counter lines are widely spaced at lower elevations and progressively closer together at higher elevations. ",
     "counter lines": [
       "./assets/convex-slope-1.svg",
       "./assets/convex-slope-2.svg",
@@ -43,7 +43,7 @@ const data = {
   "Concave Slope": {
     title: "Concave Slope",
     Insights:
-      "A concave slope is steep at the base and gradually becomes gentler toward the top. The contour lines are closely spaced at lower levels and increasingly wider apart at higher levels. ",
+      "A concave slope is steep at the base and gradually becomes gentler toward the top. The Counter lines are closely spaced at lower levels and increasingly wider apart at higher levels. ",
     "counter lines": [
       "./assets/concave-slope-1.svg",
       "./assets/concave-slope-2.svg",
@@ -58,7 +58,7 @@ const data = {
   "Irregular Slope": {
     title: "Irregular Slope",
     Insights:
-      "A slope where contour spacing alternates between wide and close intervals, indicating an uneven gradient with successive gentle and steep sections along the slope.",
+      "A slope where Counter spacing alternates between wide and close intervals, indicating an uneven gradient with successive gentle and steep sections along the slope.",
     "counter lines": [
       "./assets/irregular-slope-1.svg",
       "./assets/irregular-slope-2.svg",
@@ -286,6 +286,11 @@ document.addEventListener("click", function (e) {
           );
           if (dotLine) dotLine.style.display = "block";
 
+          const textLabel = target.parentNode.querySelector(
+            `[id="${selectedSlopeHeight}"]`,
+          );
+          if (textLabel) textLabel.style.display = "block";
+
           const allLines =
             target.parentNode.querySelectorAll('path[id^="line-"]');
           const doneLines = target.parentNode.querySelectorAll(
@@ -449,6 +454,13 @@ function resetActivity(keepCompletedStatus = false) {
       dotLine.style.display = "none";
     });
 
+    const textLabels = container.querySelectorAll("text");
+    textLabels.forEach((label) => {
+      if (/^\d+$/.test(label.id)) {
+        label.style.display = "none";
+      }
+    });
+
     // Reset profile lines to default
     const profileLines = container.querySelectorAll('path[id^="line-"]');
     profileLines.forEach((line) => {
@@ -592,7 +604,7 @@ function loadSlope(title) {
       label800.style.display = "none";
     }
   }
-    updateExtraContourLines(title); // ✅ ADD THIS
+    updateExtraCounterLines(title); // ✅ ADD THIS
 
   updateButtonStates();
 }
@@ -670,6 +682,11 @@ if (showAnsBtn) {
           d.style.display = "block";
         });
 
+        // Show all numeric text labels
+        container.querySelectorAll("text").forEach((label) => {
+          if (/^\d+$/.test(label.id)) label.style.display = "block";
+        });
+
         // Highlight profile lines
         container.querySelectorAll('path[id^="line-"]').forEach((line) => {
           line.style.stroke = "black";
@@ -697,6 +714,17 @@ if (showAnsBtn) {
               dotLine.style.display = "none";
             }
           });
+
+        // Hide numeric text labels except completed
+        container.querySelectorAll("text").forEach((label) => {
+          if (/^\d+$/.test(label.id)) {
+            const height = label.id;
+            const profileLine = container.querySelector(`#line-${height}`);
+            if (!profileLine || profileLine.dataset.done !== "true") {
+              label.style.display = "none";
+            }
+          }
+        });
 
         // Reset uncompleted profile lines
         container.querySelectorAll('path[id^="line-"]').forEach((line) => {
@@ -736,7 +764,7 @@ function isSlopeCompleted(title) {
   });
 }
 
-function updateExtraContourLines(title) {
+function updateExtraCounterLines(title) {
   const line8 = document.getElementById("line-8");
   const label800 = document.getElementById("800-m");
   const line9 = document.getElementById("line-9");

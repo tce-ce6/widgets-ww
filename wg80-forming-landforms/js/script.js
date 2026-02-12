@@ -2,15 +2,15 @@ const data = {
   "Conical Slope": {
     title: "Conical Hill",
     Insights:
-      "The conical hill rises almost uniformly from the surrounding land. It has a uniform slope and a narrow top, as shown by evenly spaced concentric contours. ",
+      "The conical hill rises almost uniformly from the surrounding land. It has a uniform slope and a narrow top, as shown by evenly spaced concentric Counter. ",
     "counter lines": [
-      "./assets/conical-slope-1.svg",
-      "./assets/conical-slope-2.svg",
-      "./assets/conical-slope-3.svg",
-      "./assets/conical-slope-4.svg",
-      "./assets/conical-slope-5.svg",
-      "./assets/conical-slope-6.svg",
-      "./assets/conical-slope-7.svg",
+      "./assets/conical-slope-1000.svg",
+      "./assets/conical-slope-1100.svg",
+      "./assets/conical-slope-1200.svg",
+      "./assets/conical-slope-1300.svg",
+      "./assets/conical-slope-1400.svg",
+      "./assets/conical-slope-1500.svg",
+      "./assets/conical-slope-1600.svg",
     ],
   },
   "Saddle Slope": {
@@ -18,13 +18,12 @@ const data = {
     Insights:
       "The narrow or broad depression between the two hills is called a saddle, pass, gap or col.  ",
     "counter lines": [
-      "./assets/saddle-slope-1.svg",
-      "./assets/saddle-slope-2.svg",
-      "./assets/saddle-slope-3.svg",
-      "./assets/saddle-slope-4.svg",
-      "./assets/saddle-slope-5.svg",
-      "./assets/saddle-slope-6.svg",
-      "./assets/saddle-slope-7.svg",
+      "./assets/saddle-slope-1000.svg",
+      "./assets/saddle-slope-1100.svg",
+      "./assets/saddle-slope-1200.svg",
+      "./assets/saddle-slope-1300.svg",
+      "./assets/saddle-slope-1400.svg",
+      "./assets/saddle-slope-1500.svg",
     ],
   },
   "Ridge Slope": {
@@ -32,28 +31,23 @@ const data = {
     Insights:
       "An elongated hill or a narrow chain of hills is called a ridge.  ",
     "counter lines": [
-      "./assets/ridge-slope-1.svg",
-      "./assets/ridge-slope-2.svg",
-      "./assets/ridge-slope-3.svg",
-      "./assets/ridge-slope-4.svg",
-      "./assets/ridge-slope-5.svg",
-      "./assets/ridge-slope-6.svg",
-      "./assets/ridge-slope-7.svg",
+      "./assets/ridge-slope-1200.svg",
+      "./assets/ridge-slope-1300.svg",
+      "./assets/ridge-slope-1400.svg",
+      "./assets/ridge-slope-1500.svg",
+      "./assets/ridge-slope-1600.svg",
     ],
   },
-  "Plateau  Slope": {
-    title: "Plateau  Slope",
+  "Plateau Slope": {
+    title: "Plateau Slope",
     Insights:
       "A plateau is a broad, flat-topped highland with relatively steep sides.  ",
     "counter lines": [
-      "./assets/plateau-slope-1.svg",
-      "./assets/plateau-slope-2.svg",
-      "./assets/plateau-slope-3.svg",
-      "./assets/plateau-slope-4.svg",
-      "./assets/plateau-slope-5.svg",
-      "./assets/plateau-slope-6.svg",
-      "./assets/plateau-slope-7.svg",
-      "./assets/plateau-slope-8.svg",
+      "./assets/plateau-slope-1000.svg",
+      "./assets/plateau-slope-1100.svg",
+      "./assets/plateau-slope-1200.svg",
+      "./assets/plateau-slope-1300.svg",
+      "./assets/plateau-slope-1400.svg",
     ],
   },
 };
@@ -62,7 +56,7 @@ const finalImageMap = {
   "Conical Slope": "conical-final",
   "Saddle Slope": "saddle-final",
   "Ridge Slope": "ridge-final",
-  "Plateau  Slope": "plateau-final",
+  "Plateau Slope": "plateau-final",
 };
 
 let currentSlopeTitle = "";
@@ -87,6 +81,7 @@ function playLottie(path, { loop = false, autoHide = false } = {}) {
   const container = document.getElementById("correct-lottie");
   if (!container || typeof lottie === "undefined") return;
 
+  container.style.display = "block";
   container.innerHTML = "";
 
   if (correctAnimation) {
@@ -123,10 +118,14 @@ function updateSlopeCategory(title) {
     counterLines.forEach((path, index) => {
       const li = document.createElement("li");
 
+      // Extract height from path (e.g., ./assets/conical-slope-1000.svg -> 1000)
+      const heightMatch = path.match(/-(\d+)\.svg/);
+      const currentHeight = heightMatch ? parseInt(heightMatch[1]) : (index + 1) * 100;
+
       // Create the year/height label
       const yearDiv = document.createElement("div");
       yearDiv.classList.add("selected-year");
-      yearDiv.textContent = `${(index + 1) * 100} m`; // Assume 100m intervals based on index
+      yearDiv.textContent = `${currentHeight} m`;
 
       // Create the image
       const img = document.createElement("img");
@@ -140,7 +139,7 @@ function updateSlopeCategory(title) {
       // Step 1: Add default active class to the first item
       if (index === 0) {
         li.classList.add("active");
-        selectedSlopeHeight = 100;
+        selectedSlopeHeight = currentHeight;
       }
 
       // Step 2: Add click event listener to toggle active class
@@ -151,7 +150,7 @@ function updateSlopeCategory(title) {
 
         // Add active class to the clicked item
         this.classList.add("active");
-        selectedSlopeHeight = (index + 1) * 100;
+        selectedSlopeHeight = currentHeight;
       });
 
       slopeCategoryList.appendChild(li);
@@ -234,7 +233,7 @@ document.addEventListener("click", function (e) {
     if (targetId && targetId.startsWith("line-")) {
       const expectedId = `line-${selectedSlopeHeight}`;
 
-      if (targetId === expectedId) {
+      if (targetId === expectedId || targetId.startsWith(`${expectedId}-`)) {
         // ✅ CORRECT ANSWER
         target.style.stroke = "black";
         target.style.strokeWidth = "2";
@@ -242,10 +241,16 @@ document.addEventListener("click", function (e) {
         target.dataset.done = "true";
 
         if (target.parentNode) {
-          const dotLine = target.parentNode.querySelector(
-            `[id="dot-line-${selectedSlopeHeight}"]`,
-          );
+          const dotLineId = targetId.replace("line-", "dot-line-");
+          
+          // 1. Try exact match (e.g., line-1000-1 -> dot-line-1000-1)
+          const dotLine = target.parentNode.querySelector(`[id="${dotLineId}"]`);
           if (dotLine) dotLine.style.display = "block";
+
+          // 2. Try prefix match (e.g., line-1000 -> dot-line-1000-1, dot-line-1000-2)
+          const nestedDotLines = target.parentNode.querySelectorAll(`[id^="${dotLineId}-"]`);
+          nestedDotLines.forEach((el) => el.style.display = "block");
+
 
           const allLines =
             target.parentNode.querySelectorAll('path[id^="line-"]');
@@ -303,7 +308,7 @@ function markSlopeAsCompleted(title) {
   // ✅ Play correct animation
   playLottie("./lottie/correctLottie.json", {
     loop: false,
-    autoHide: false,
+    autoHide: true,
   });
 
   // 🔒 DISABLE SHOW ANSWER BUTTON (ONLY AFTER COMPLETION)
@@ -524,19 +529,15 @@ function loadSlope(title) {
   }
 
   const line8 = document.getElementById("line-8");
-  const label800 = document.getElementById("800-m");
-  const line9 = document.getElementById("line-9");
-  const label900 = document.getElementById("900-m");
-  const line10 = document.getElementById("line-10");
-  const label1000 = document.getElementById("1000-m");
+  const label1700 = document.getElementById("1700-m");
 
-  if (line8 && label800) {
-    if (title === "Plateau  Slope") {
-      line8.style.display = "block";
-      label800.style.display = "block";
-    } else {
+  if (line8 && label1700) {
+    if (title === "Saddle Slope") {
       line8.style.display = "none";
-      label800.style.display = "none";
+      label1700.style.display = "none";
+    } else {
+      line8.style.display = "block";
+      label1700.style.display = "block";
     }
   }
   updateButtonStates();
