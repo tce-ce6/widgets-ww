@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { "text": "कमला", "isCorrect": false, "sound": "../assets/audio/set-05/kamla-wr.mp3" },
       { "text": "बच्चा", "isCorrect": false, "sound": "../assets/audio/set-05/bachha-wr.mp3" },
       { "text": "मटका", "isCorrect": false, "sound": "../assets/audio/set-05/matka-wr.mp3" },
-      { "text": "लड़की", "isCorrect": false, "sound": "../assets/audio/set-05/ladki-wr.mp3" }
+      { "text": "लड़की", "isCorrect": false, "sound": "../assets/audio/set-05/ladki-wr.mp3" }
     ]
   },
 
@@ -166,10 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
   },
   {
     "firstWord": "लकड़ी",
-    "firstWordSound": "../assets/audio/set-10/ladki-cr.mp3",
+    "firstWordSound": "../assets/audio/set-10/lakdi-cr.mp3",
     "options": [
-      { "text": "मकड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/makdi-cr.mp3" },
-      { "text": "ककड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/kakdi-cr.mp3" },
+      { "text": "मकड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/makdi-cr.mp3" },
+      { "text": "ककड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/kakdi-cr.mp3" },
       { "text": "पगड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/pagdi-cr.mp3" },
       { "text": "अकड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/akdi-cr.mp3" },
       { "text": "जकड़ी", "isCorrect": true, "sound": "../assets/audio/set-10/jakdi-cr.mp3" },
@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { "text": "पिटाई", "isCorrect": true, "sound": "../assets/audio/set-10/pitai-cr.mp3" },
       { "text": "खटाई", "isCorrect": true, "sound": "../assets/audio/set-10/khatai-cr.mp3" },
       { "text": "चटाई", "isCorrect": true, "sound": "../assets/audio/set-10/chatai-cr.mp3" },
-      { "text": "चौड़ाई", "isCorrect": true, "sound": "../assets/audio/set-10/choudai-cr.mp3" },
-      { "text": "पढ़ाई", "isCorrect": true, "sound": "../assets/audio/set-10/padhai-cr.mp3" },
+      { "text": "चौड़ाई", "isCorrect": true, "sound": "../assets/audio/set-10/choudai-cr.mp3" },
+      { "text": "पढ़ाई", "isCorrect": true, "sound": "../assets/audio/set-10/padhai-cr.mp3" },
 
       { "text": "खटिया", "isCorrect": false, "sound": "../assets/audio/set-10/khatai-cr.mp3" },
       { "text": "साड़ी", "isCorrect": false, "sound": "../assets/audio/set-10/sadi-wr.mp3" },
@@ -201,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   }
 ]
+
 
 	const svgContainer = document.getElementById('svg-content');
 	if (!svgContainer) return;
@@ -395,7 +396,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstEl = document.getElementById('firstWord');
     if (firstEl) {
       firstEl.textContent = q.firstWord || '';
-      if (q.firstWordSound) firstEl.dataset.sound = q.firstWordSound;
+      if (q.firstWordSound) {
+        firstEl.dataset.sound = q.firstWordSound;
+        if (firstEl) {
+  firstEl.textContent = q.firstWord || '';
+
+  if (q.firstWordSound) {
+    firstEl.dataset.sound = q.firstWordSound;
+  }
+
+  firstEl.style.display = 'none';
+
+  // 👉 PLAY SOUND ON CLICK
+  firstEl.onclick = () => {
+    if (firstEl.dataset.sound) {
+      playSound(firstEl.dataset.sound);
+    }
+  };
+}
+      }
       firstEl.style.display = 'none';
     }
 
@@ -447,8 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const instruct = document.getElementById('i-text');
         if (instruct) instruct.style.display = 'block';
 
-        // play first word sound if present
+        // ✅ USE THE SAME playSound HELPER THAT WORKS FOR OPTIONS
         if (firstEl.dataset && firstEl.dataset.sound) {
+          console.log('🎵 Attempting to play firstWord sound:', firstEl.dataset.sound);
           playSound(firstEl.dataset.sound);
         }
 
@@ -481,5 +501,18 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   populateQuestion();
-});
 
+  let audioUnlocked = false;
+
+const unlockAudio = () => {
+  if (audioUnlocked) return;
+
+  const silent = new Audio();
+  silent.src = 'data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAA'; // tiny silent sound
+  silent.play().catch(() => {});
+  audioUnlocked = true;
+
+  document.removeEventListener('click', unlockAudio);
+  document.removeEventListener('touchstart', unlockAudio);
+};
+});
