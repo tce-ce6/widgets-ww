@@ -150,11 +150,27 @@ function closeModal() {
   document.getElementById("modalOverlay").style.display = "none";
 }
 function gyankosh_button() {
-  document.getElementById("gyankosh_button").addEventListener("click", function() {
+  const btn = document.getElementById("gyankosh_button");
+  if (!btn) {
+    console.error("gyankosh_button element not found in DOM");
+    return;
+  }
+  btn.addEventListener("click", function() {
     console.log("Gyankosh button clicked");
     openModal();
   });
-  //document.getElementById("closeModal").addEventListener("click", closeModal);
+  // Add close modal event after DOM is ready
+    var closeBtn = document.getElementById("closeModal");
+    if (closeBtn) {
+      closeBtn.onclick = closeModal;
+    }
+    // Also close modal when clicking outside modal content
+    var overlay = document.getElementById("modalOverlay");
+    if (overlay) {
+      overlay.addEventListener("click", function(e) {
+        if (e.target === overlay) closeModal();
+      });
+    }
 }
 function naya_shabd(){
     naya_shabd_button = document.getElementById("naya_shabd_button");

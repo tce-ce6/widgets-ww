@@ -50,6 +50,7 @@ const cationData = {
   Mg: { name: "Magnesium", charge: 3 },
   Al: { name: "Aluminium", charge: 3 },
   "NH₄": { name: "Ammonium", charge: 1 },
+  Na :{name:'Sodium',charge:1}
 };
 
 const anionData = {
@@ -170,6 +171,7 @@ function showApplyCrissCrossMethod() {
     applyButton.style.pointerEvents = "auto";
     applyButton.style.cursor = "pointer";
     applyButton.style.opacity = "1";
+    applyButton.classList.add("blink-animation");
     applyButton.onclick = () => {
       calculateFormula();
       showCrissCrossLines();
@@ -184,6 +186,7 @@ function showApplyCrissCrossMethod() {
         apply_criss_cross_method.style.pointerEvents = "none";
         apply_criss_cross_method.style.cursor = "null";
         apply_criss_cross_method.style.opacity = "0.5";
+          applyButton.classList.remove("blink-animation");
       }
       setDisabledState();
     };
@@ -199,6 +202,31 @@ function showCrissCrossLines() {
     compound_explanation_box.style.display = "block";
   if (line1) line1.style.display = "block";
   if (line2) line2.style.display = "block";
+
+    const path1 = document.getElementById("arrow-path-1");
+  const path2 = document.getElementById("arrow-path-2");
+
+  if (path1) {
+    path1.style.strokeDashoffset = "1000";
+    path1.style.animation = "none";  // reset
+  }
+  if (path2) {
+    path2.style.strokeDashoffset = "1000";
+    path2.style.animation = "none";
+  }
+l
+
+
+  setTimeout(() => {
+      line1.classList.add("visible");
+      line2.classList.add("visible");
+    }, 100);
+    const inter_ = setInterval(() => {
+      path1.style.strokeDashoffset += "1000";
+      path2.style.strokeDashoffset += "1000";
+      clearInterval(inter_);
+    }, 10);
+    
 }
 function updateDisplay(elementId, text, type) {
   const el = document.getElementById(elementId);
@@ -398,3 +426,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 });
 window.onload = init;
+window.addEventListener("load", () => {
+  const cationEl = document.getElementById("moving-cation-charge");
+  const anionEl  = document.getElementById("moving-anion-charge");
+
+  console.log("moving-cation-charge exists?", !!cationEl);
+  console.log("moving-anion-charge exists?",  !!anionEl);
+
+  if (!cationEl) {
+    console.warn("Add this to your SVG:\n",
+      '<text id="moving-cation-charge" class="charge-moving" x="280" y="520" display="none"></text>');
+  }
+});
