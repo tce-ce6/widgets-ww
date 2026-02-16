@@ -8,22 +8,14 @@ let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false
 const LottieAnimations = {
-  LION: {
-    CORRECT: "Lion_Correct_Big_U.json",
-    INCORRECT: "Lion_Incorrect.json"
+  badi_e: {
+    CORRECT: "Correct_01.json",
+    INCORRECT: "inCorrect.json"
   },
-  HIPPO: {
-    CORRECT: "Hippo_Correct_Big_U.json",
-    INCORRECT: "Hippo_Incorrect.json"
+  choti_e: {
+    CORRECT: "Correct_02.json",
+    INCORRECT: "inCorrect.json"
   },
-  TIGER: {
-    CORRECT: "Tiger_Correct_Big_U.json",
-    INCORRECT: "Tiger_Incorrect.json"
-  },
-  MONKEY: {
-    CORRECT: "Monkey_Correct_Big_U.json",
-    INCORRECT: "Monkey_Incorrect.json"
-  }
 };
 
 
@@ -127,6 +119,9 @@ function audioListener() {
 }
 
 function playAudio(type) {
+  if (!audioPlayer || !(audioPlayer instanceof Audio)) {
+    audioPlayer = new Audio();
+  }
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
 
@@ -135,14 +130,26 @@ function playAudio(type) {
     : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
-  audioPlayer.play();
+  audioPlayer.addEventListener('error', () => {
+    console.error('Error loading audio:', audioPath);
+  });
+  audioPlayer.play().catch(error => {
+    console.error('Error playing audio:', error);
+  });;
 }
 function playAnimationAudio(type) {
+    if (!audioPlayer || !(audioPlayer instanceof Audio)) {
+    audioPlayer = new Audio();
+  }
   audioPlayer.pause();
   audioPlayer.currentTime = 0
-
+audioPlayer.addEventListener('error', () => {
+    console.error('Error loading audio:', audioPath);
+  });
   audioPlayer.src = `assets/audio/final_audio/${type}.mp3`;
-  audioPlayer.play();
+  audioPlayer.play().catch(error => {
+    console.error('Error playing audio:', error);
+  });
 }
 
 function hideAndShowText1(state='none') {
@@ -225,41 +232,15 @@ function naya_shabd(){
 
  
  function getRandomAnimation() {
-  const animals = Object.keys(LottieAnimations);
-  const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
-  selectedLottie = LottieAnimations[randomAnimal];
+  selectedLottie = LottieAnimations[selectedWord.type];
 }
   
  
-  // const playLottieAnimation = (bandGroup) => {
-  //     const containerEl = document.getElementById('lottie-container');
-  //     const animationPath = selectedLottie[bandGroup];
-  //     const type = animationPath.split('_')[0]; // Extract type from filename
-
-  //     if (!containerEl || !animationPath || typeof lottie === 'undefined') return;
-     
-  //     containerEl.innerHTML = '';
-  //     if (lottieInstances[bandGroup]) {
-  //         lottieInstances[bandGroup].destroy();
-  //         delete lottieInstances[bandGroup];
-  //     }
- 
-  //     const anim = lottie.loadAnimation({
-  //         container: containerEl,
-  //         renderer: 'svg',
-  //         loop: false,
-  //         autoplay: true,
-  //         path: `assets/JSON/${type}/${animationPath}` 
-  //     });
-  //     lottieInstances[bandGroup] = anim;
-  // };
- function playLottieAnimation(bandGroup) {
+  function playLottieAnimation(bandGroup) {
     const containerEl = document.getElementById('lottie-container');
     if (!containerEl) return;
 
     const animationPath = selectedLottie[bandGroup];
-    const type = animationPath.split('_')[0];
-
     // Clear previous
     if (lottieInstances) {
         lottieInstances.destroy();
@@ -271,13 +252,14 @@ function naya_shabd(){
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: `assets/JSON/${type}/${animationPath}`
+        path: `assets/JSON/${animationPath}`
     });
 
     // Optional guard (as above)
     lottieInstances.audioController = lottieInstances.audioController || {};
     lottieInstances.audioController.pause = () => console.warn("Audio pause skipped");
 }
+ 
  
 
 function getRandomUnusedWordKey() {
