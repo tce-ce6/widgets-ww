@@ -187,7 +187,7 @@ function gyankosh_button() {
     openModal();
   });
   // Add close modal event after DOM is ready
-    var closeBtn = document.getElementById("closeModal");
+    var closeBtn = document.getElementById("btn-close");
     if (closeBtn) {
       closeBtn.onclick = closeModal;
     }
