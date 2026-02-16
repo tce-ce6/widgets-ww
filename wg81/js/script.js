@@ -4,6 +4,9 @@ let selectedWord = null;
 let audioPlayer = new Audio();
 let lottieInstances = {};
 let selectedLottie = null;
+let audio_button_1 = false;
+let audio_button_2 = false;
+let age_badhe_button = false
 const LottieAnimations = {
   LION: {
     CORRECT: "Lion_Correct_Big_U.json",
@@ -39,6 +42,12 @@ function init() {
     nextStep();
     gyankosh_button();
     getRandomAnimation();
+        let audioPLay = document.getElementById("audio_button_3")
+        audioPLay.addEventListener("click", () => {
+             playAudio("correct");
+          
+        });
+          textClickEvent();
 }
 
 selectRandomWord = () => {
@@ -60,15 +69,15 @@ function nextStep() {
     nextButton.addEventListener("click", () => {
         // Logic to go to the next step
         nextButton.style.display = 'none';
+        let i_text = document.getElementById("i_text_1");
+         const tspans = i_text.querySelector("tspan");
+         tspans.innerHTML = 'ऑडियो सुनें। कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।'
+        age_badhe_button = true
         document.getElementById("audio_button_1").style.display = 'none';
         document.getElementById("audio_button_2").style.display = 'none';
         hideAndShowAudioButtons('block');
        
-        let audioPLay = document.getElementById("audio_button_3")
-        audioPLay.addEventListener("click", () => {
-             playAudio("correct");
-            textClickEvent();
-        });
+    
         // You can add your navigation logic here
     });
 
@@ -76,22 +85,30 @@ function nextStep() {
 function textClickEvent() {
     let cloud_text_01 =  document.getElementById("cloud_text_01");
     let cloud_text_02 =  document.getElementById("cloud_text_02");
+
+    // Remove previous listeners by cloning and replacing the node
+
     cloud_text_01.addEventListener("click", () => {
+        if(age_badhe_button ){
             document.getElementById("cloud_text_highlight_01").style.display = 'block';
             document.getElementById("cloud_text_outline_Incorrect").style.display = 'block';
-            document.getElementById("incorrect-box").style.display = 'block';
-             document.getElementById("correct-box").style.display = 'none';
+            // document.getElementById("incorrect-box").style.display = 'block';
+            // document.getElementById("correct-box").style.display = 'none';
             lottiAnimation('block');
             playLottieAnimation('INCORRECT');
-
+             playAnimationAudio("feedback-Incorrect");
+        }
     });
     cloud_text_02.addEventListener("click", () => {
+      if(age_badhe_button){
         document.getElementById("cloud_text_highlight_02").style.display = 'block';
         document.getElementById("cloud_text_outline_correct").style.display = 'block';
-        document.getElementById("correct-box").style.display = 'block';
-         document.getElementById("incorrect-box").style.display = 'none';
+        // document.getElementById("correct-box").style.display = 'block';
+        // document.getElementById("incorrect-box").style.display = 'none';
         lottiAnimation('block');
         playLottieAnimation('CORRECT');
+         playAnimationAudio(`feedback-Correct-${selectedWord.type}`);
+      }
     });
 }
 
@@ -99,10 +116,12 @@ function audioListener() {
     const audio1 = document.getElementById("audio_button_1");
     const audio2 = document.getElementById("audio_button_2");
         audio1.addEventListener("click", () => {
+          audio_button_1 = true;
          playAudio("wrong");
         });
 
         audio2.addEventListener("click", () => {
+           audio_button_2 = true;
          playAudio("correct");
         });
 }
@@ -118,6 +137,14 @@ function playAudio(type) {
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
   audioPlayer.play();
 }
+function playAnimationAudio(type) {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0
+
+  audioPlayer.src = `assets/audio/final_audio/${type}.mp3`;
+  audioPlayer.play();
+}
+
 function hideAndShowText1(state='none') {
     document.getElementById("i_text_2").style.display = state;
 }
@@ -178,7 +205,10 @@ function naya_shabd(){
         console.log("Naya shabd button clicked");
         document.getElementById("audio_button_1").style.display = 'block';
         document.getElementById("audio_button_2").style.display = 'block';
-       selectRandomWord();
+        audio_button_1 = false;
+        audio_button_2 = false;
+        age_badhe_button = false
+        selectRandomWord();
         hideAndShowText1();
         hideAndShowAudioButtons('none');
         showAnswer();
@@ -186,6 +216,10 @@ function naya_shabd(){
         lottiAnimation('none');
         nextbutton();
         getRandomAnimation();
+        audioPlayer.pause();
+          let i_text = document.getElementById("i_text_1");
+         const tspans = i_text.querySelector("tspan");
+         tspans.innerHTML = 'दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। '
     });
 }
 
