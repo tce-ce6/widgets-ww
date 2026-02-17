@@ -140,7 +140,6 @@ function playAudio(type) {
 function playAnimationAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0
-
   audioPlayer.src = `assets/audio/final_audio/${type}.mp3`;
   audioPlayer.play();
 }
@@ -253,30 +252,64 @@ function naya_shabd(){
   //     });
   //     lottieInstances[bandGroup] = anim;
   // };
- function playLottieAnimation(bandGroup) {
+
+
+function playLottieAnimation(bandGroup) {
     const containerEl = document.getElementById('lottie-container');
-    if (!containerEl) return;
+    const parentEl    = document.getElementById('Character_train_01');
+
+    if (!containerEl || !parentEl) return;
 
     const animationPath = selectedLottie[bandGroup];
+    if (!animationPath) return;
+
     const type = animationPath.split('_')[0];
 
-    // Clear previous
     if (lottieInstances) {
         lottieInstances.destroy();
+        lottieInstances = null;
     }
     containerEl.innerHTML = '';
+    parentEl.style.display = 'none';
 
-    lottieInstances = lottie.loadAnimation({
-        container: containerEl,
-        renderer: 'svg',
-        loop: false,
-        autoplay: true,
-        path: `assets/JSON/${type}/${animationPath}`
-    });
+    try {
+        lottieInstances = lottie.loadAnimation({
+            container: containerEl,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: `assets/JSON/${type}/${animationPath}`
+        });
 
-    // Optional guard (as above)
-    lottieInstances.audioController = lottieInstances.audioController || {};
-    lottieInstances.audioController.pause = () => console.warn("Audio pause skipped");
+        lottieInstances.addEventListener('DOMLoaded', () => {
+            parentEl.style.display = 'flex';
+        });
+
+        lottieInstances.addEventListener('complete', () => {
+            setTimeout(() => {
+                parentEl.style.display = 'none';
+                if (lottieInstances) {
+                    lottieInstances.destroy();
+                    lottieInstances = null;
+                }
+                containerEl.innerHTML = '';
+            }, 1000); // ← keep final frame ~1 second
+        });
+
+        lottieInstances.addEventListener('error', (e) => {
+           // console.error('Lottie render error:', e);
+           // parentEl.style.display = 'none';
+        });
+
+        // Safety override
+        if (lottieInstances.audioController) {
+            lottieInstances.audioController.pause = () => console.warn("[patched] Audio pause skipped");
+        }
+
+    } catch (err) {
+        console.error('Lottie load crashed:', err);
+        parentEl.style.display = 'none';
+    }
 }
  
 
