@@ -367,7 +367,12 @@ function calculateFormula() {
   // Update the Formula area in your SVG (id="Formula")
   const formulaEl = document.querySelector("#compound_formula_display p");
   if (formulaEl) {
-    formulaEl.innerHTML = formula;
+    formulaEl.innerHTML =  formatFormula1(
+    selectedCation.symbol,
+    cSub,
+    selectedAnion.symbol,
+    aSub,
+  );
     const compound_explanation_box = document.getElementById(
       "compound_formula_display",
     );
@@ -391,6 +396,22 @@ function calculateFormula() {
   }
 }
 
+function formatFormula1(cSym, cSub, aSym, aSub) {
+  let part1 =
+    cSub > 1 && isPolyatomic(cSym)
+      ? `(${cSym})${cSub}`
+      : `${cSym}${cSub > 1 ? cSub : ""}`;
+  let part2 =
+    aSub > 1 && isPolyatomic(aSym)
+      ? `(${aSym})${aSub}`
+      : `${aSym}${aSub > 1 ? aSub : ""}`;
+
+  // Convert numbers to HTML subscripts
+  return (part1 + part2).replace(
+    /(\d+)/g,
+    '<sub>$1</sub>',
+  );
+}
 function formatFormula(cSym, cSub, aSym, aSub) {
   let part1 =
     cSub > 1 && isPolyatomic(cSym)
