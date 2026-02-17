@@ -10,19 +10,27 @@ let age_badhe_button = false
 const LottieAnimations = {
   LION: {
     CORRECT: "Lion_Correct_Big_U.json",
-    INCORRECT: "Lion_Incorrect.json"
+    INCORRECT: "Lion_Incorrect.json",
+    "Badi-U":'Lion_Correct_Big_U.mp3',
+    "Choti-U":'Lion_Correct_Small_U.mp3'
   },
   HIPPO: {
     CORRECT: "Hippo_Correct_Big_U.json",
-    INCORRECT: "Hippo_Incorrect.json"
+    INCORRECT: "Hippo_Incorrect.json",
+     "Badi-U":'Hippo_Correct_Big_U.mp3',
+    "Choti-U":'Hippo_Correct_Small_U.mp3'
   },
   TIGER: {
     CORRECT: "Tiger_Correct_Big_U.json",
-    INCORRECT: "Tiger_Incorrect.json"
+    INCORRECT: "Tiger_Incorrect.json",
+     "Badi-U":'Tiger_Correct_Big_U.mp3',
+    "Choti-U":'Tiger_Correct_Small_U.mp3'
   },
   MONKEY: {
     CORRECT: "Monkey_Correct_Big_U.json",
-    INCORRECT: "Monkey_Incorrect.json"
+    INCORRECT: "Monkey_Incorrect.json",
+    "Badi-U":'Monkey_Correct_Big_U.mp3',
+    "Choti-U":'Monkey_Correct_Small_U.mp3'
   }
 };
 
@@ -96,7 +104,7 @@ function textClickEvent() {
             // document.getElementById("correct-box").style.display = 'none';
             lottiAnimation('block');
             playLottieAnimation('INCORRECT');
-             playAnimationAudio("feedback-Incorrect");
+           //  playAnimationAudio("feedback-Incorrect");
         }
     });
     cloud_text_02.addEventListener("click", () => {
@@ -107,7 +115,7 @@ function textClickEvent() {
         // document.getElementById("incorrect-box").style.display = 'none';
         lottiAnimation('block');
         playLottieAnimation('CORRECT');
-         playAnimationAudio(`feedback-Correct-${selectedWord.type}`);
+       //  playAnimationAudio(`feedback-Correct-${selectedWord.type}`);
       }
     });
 }
@@ -137,10 +145,16 @@ function playAudio(type) {
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
   audioPlayer.play();
 }
-function playAnimationAudio(type) {
+function playAnimationAudio(type,animationPath) {
+  let name = ''
+  if(animationPath === "CORRECT"){
+    name = selectedLottie[selectedWord.type]
+  } else {
+    name = selectedLottie[animationPath].replace('json','mp3')
+  }
   audioPlayer.pause();
   audioPlayer.currentTime = 0
-  audioPlayer.src = `assets/audio/final_audio/${type}.mp3`;
+  audioPlayer.src = `assets/JSON/${type}/${name}` ;
   audioPlayer.play();
 }
 
@@ -270,24 +284,26 @@ function playLottieAnimation(bandGroup) {
         lottieInstances = null;
     }
     containerEl.innerHTML = '';
-    parentEl.style.display = 'none';
+     parentEl.classList.remove('visible');
 
     try {
         lottieInstances = lottie.loadAnimation({
             container: containerEl,
-            renderer: 'svg',
+            renderer: 'canvas',
             loop: false,
-            autoplay: true,
+            autoplay: false,
             path: `assets/JSON/${type}/${animationPath}`
         });
 
         lottieInstances.addEventListener('DOMLoaded', () => {
-            parentEl.style.display = 'flex';
+            playAnimationAudio(type,bandGroup)
+            lottieInstances.play();
+            parentEl.classList.add('visible');
         });
 
         lottieInstances.addEventListener('complete', () => {
             setTimeout(() => {
-                parentEl.style.display = 'none';
+               parentEl.classList.remove('visible');
                 if (lottieInstances) {
                     lottieInstances.destroy();
                     lottieInstances = null;
@@ -308,7 +324,7 @@ function playLottieAnimation(bandGroup) {
 
     } catch (err) {
         console.error('Lottie load crashed:', err);
-        parentEl.style.display = 'none';
+           parentEl.classList.remove('visible');
     }
 }
  
