@@ -2,7 +2,7 @@ WordAudioEnum = {};
 let usedWords = [];
 let selectedWord = null;
 let audioPlayer = new Audio();
-let lottieInstances = {};
+let lottieInstances = null;
 let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
@@ -231,29 +231,53 @@ function naya_shabd(){
 }
   
  
-  const playLottieAnimation = (bandGroup) => {
-      const containerEl = document.getElementById('lottie-container');
-      const animationPath = selectedLottie[bandGroup];
-      const type = animationPath.split('_')[0]; // Extract type from filename
+  // const playLottieAnimation = (bandGroup) => {
+  //     const containerEl = document.getElementById('lottie-container');
+  //     const animationPath = selectedLottie[bandGroup];
+  //     const type = animationPath.split('_')[0]; // Extract type from filename
 
-      if (!containerEl || !animationPath || typeof lottie === 'undefined') return;
+  //     if (!containerEl || !animationPath || typeof lottie === 'undefined') return;
      
-      containerEl.innerHTML = '';
-      if (lottieInstances[bandGroup]) {
-          lottieInstances[bandGroup].destroy();
-          delete lottieInstances[bandGroup];
-      }
+  //     containerEl.innerHTML = '';
+  //     if (lottieInstances[bandGroup]) {
+  //         lottieInstances[bandGroup].destroy();
+  //         delete lottieInstances[bandGroup];
+  //     }
  
-      const anim = lottie.loadAnimation({
-          container: containerEl,
-          renderer: 'svg',
-          loop: false,
-          autoplay: true,
-          path: `assets/JSON/${type}/${animationPath}` 
-      });
-      lottieInstances[bandGroup] = anim;
-  };
- 
+  //     const anim = lottie.loadAnimation({
+  //         container: containerEl,
+  //         renderer: 'svg',
+  //         loop: false,
+  //         autoplay: true,
+  //         path: `assets/JSON/${type}/${animationPath}` 
+  //     });
+  //     lottieInstances[bandGroup] = anim;
+  // };
+ function playLottieAnimation(bandGroup) {
+    const containerEl = document.getElementById('lottie-container');
+    if (!containerEl) return;
+
+    const animationPath = selectedLottie[bandGroup];
+    const type = animationPath.split('_')[0];
+
+    // Clear previous
+    if (lottieInstances) {
+        lottieInstances.destroy();
+    }
+    containerEl.innerHTML = '';
+
+    lottieInstances = lottie.loadAnimation({
+        container: containerEl,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: `assets/JSON/${type}/${animationPath}`
+    });
+
+    // Optional guard (as above)
+    lottieInstances.audioController = lottieInstances.audioController || {};
+    lottieInstances.audioController.pause = () => console.warn("Audio pause skipped");
+}
  
 
 function getRandomUnusedWordKey() {

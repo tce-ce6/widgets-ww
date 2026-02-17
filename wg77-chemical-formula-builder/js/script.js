@@ -188,9 +188,96 @@ function showApplyCrissCrossMethod() {
         apply_criss_cross_method.style.opacity = "0.5";
           applyButton.classList.remove("blink-animation");
       }
+    
+
+      swapCharges()
       setDisabledState();
-    };
   }
+}
+
+function swapCharges1(){
+  const group = document.getElementById('setup_cation');
+      if (group) {
+       const child = group.querySelector(
+                    `#${CSS.escape(selectedCation.symbol)}`
+                );
+                if (child) {
+                    // mark it in some way instead of appending random text
+                    child.id = `${child.id}-chosen`;
+                }
+        const tspan = group.querySelector("tspan");
+        if (tspan) {
+          tspan.textContent = periodicTable_minusChange[selectedAnion.symbol] +'-'; // Change to whatever value you want
+        }
+      }
+       const group1 = document.getElementById('setup_anion');
+      if (group1) {
+           const child1 = group1.querySelector(
+                    `#${CSS.escape(selectedAnion.symbol)}`
+                );
+                if (child1) {
+                    child1.id = `${child1.id}-chosen`;
+                }
+        const tspan1 = group1.querySelector("tspan");
+        if (tspan1) {
+          tspan1.textContent = periodicTable_plusChange[selectedCation.symbol] + '+'; // Change to whatever value you want
+        }
+      }
+    };
+}
+
+function swapCharges() {
+    const update = (containerId, symbol, chargeText) => {
+        const grp = document.getElementById(containerId);
+        if (!grp) return;
+
+        const child = grp.querySelector(`#${CSS.escape(symbol)}`);
+        if (child) {
+            child.id = `${child.id}-chosen`;      // mark the chosen ion
+        }
+
+        const tspan = grp.querySelector('tspan');
+        if (tspan) {
+            // clear any fixed length so the new text can expand
+            const textEl = tspan.parentNode;
+            if (textEl && textEl.hasAttribute('textLength')) {
+                textEl.removeAttribute('textLength');
+            }
+
+            // add a trailing space (or you could set dx) so the ‘+’ isn’t
+            // drawn flush against the right edge
+            tspan.textContent = chargeText + ' ';
+        }
+    };
+
+    if (selectedCation && selectedAnion) {
+        update(
+            'setup_cation',
+            selectedCation.symbol,
+            periodicTable_minusChange[selectedAnion.symbol] + '-'
+        );
+        update(
+            'setup_anion',
+            selectedAnion.symbol,
+            periodicTable_plusChange[selectedCation.symbol] + '+'
+        );
+    }
+}
+
+function loadSVGIntoContainer(svgUrl, containerId, callback) {
+  fetch(svgUrl)
+    .then(response => {
+      if (!response.ok) throw new Error('SVG not found: ' + svgUrl);
+      return response.text();
+    })
+    .then(svgText => {
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.innerHTML = svgText;
+        if (typeof callback === 'function') callback(container);
+      }
+    })
+    .catch(err => console.error(err));
 }
 function showCrissCrossLines() {
   const line1 = document.getElementById("cross_lines_1");
@@ -214,7 +301,7 @@ function showCrissCrossLines() {
     path2.style.strokeDashoffset = "1000";
     path2.style.animation = "none";
   }
-l
+
 
 
   setTimeout(() => {
@@ -243,11 +330,15 @@ function updateDisplay(elementId, text, type) {
   }
 }
 function showCompoundName(elementId, text, type) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  const img = el.querySelector("img");
+  // const el = document.getElementById(elementId);
+  // if (!el) return;
+  // const img = el.querySelector("img");
   const sr = "assets/images/Gr_" + text + ".svg";
-  img.setAttribute("src", sr);
+  // img.setAttribute("src", sr);
+  loadSVGIntoContainer(sr, elementId, function(container) {
+  console.log("🚀 ~ showCompoundName ~ container:", container)
+ 
+});
 }
 
 function formatSubscripts(text) {
@@ -274,7 +365,7 @@ function calculateFormula() {
   );
 
   // Update the Formula area in your SVG (id="Formula")
-  const formulaEl = document.querySelector("#compound_formula_display tspan");
+  const formulaEl = document.querySelector("#compound_formula_display p");
   if (formulaEl) {
     formulaEl.innerHTML = formula;
     const compound_explanation_box = document.getElementById(
