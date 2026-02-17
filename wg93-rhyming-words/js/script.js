@@ -656,7 +656,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
   ];
-
+  let firstWordTimer = null;
+  let isShowingAnswers = false;
+  let resultBeeAnim = null;
+  let userSelectedMap = {}; // stores user's chosen answers
   const svgContainer = document.getElementById("svg-content");
   if (!svgContainer) return;
 
@@ -674,54 +677,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((err) => console.error("Failed to inline SVG:", err));
 
-  // Load bee intro Lottie animation into #bee-intor (try a few likely paths)
-  const beeContainer = document.getElementById("bee-intor");
-  if (beeContainer) {
-    if (window.lottie && typeof window.lottie.loadAnimation === "function") {
-      const candidates = [
-        "./lottie/bee-ntro.json",
-        "./lottie/bee-intro.json",
-        "./assets/bee-ntro.json",
-        "./assets/bee-intro.json",
-      ];
-
-      const tryLoad = (i) => {
-        if (i >= candidates.length) {
-          console.warn("bee intro Lottie not found in known locations");
-          return;
-        }
-        fetch(candidates[i])
-          .then((res) => {
-            if (!res.ok) throw new Error("not found");
-            return res.json();
-          })
-          .then((animationData) => {
-            const anim = window.lottie.loadAnimation({
-              container: beeContainer,
-              renderer: "svg",
-              loop: false,
-              autoplay: true,
-              animationData,
-            });
-
-            try {
-              anim.addEventListener("complete", () => {
-                const wrapper = document.getElementById("lottie-wrapper");
-                if (wrapper) wrapper.style.display = "none";
-              });
-            } catch (e) {
-              // ignore if addEventListener not supported
-            }
-          })
-          .catch(() => tryLoad(i + 1));
-      };
-
-      tryLoad(0);
-    } else {
-      console.warn("Lottie library not available (window.lottie)");
-    }
-  }
-
   // Populate question and options dynamically on each page load
 
   // helper to set class on option shell
@@ -731,12 +686,18 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById(shellId) ||
       document.querySelector("#svg-content #" + shellId) ||
       document.querySelector("#" + shellId);
-    if (shell) {
-      shell.classList.remove("correct", "incorrect");
+
+    if (!shell) return false;
+
+    // always clear old state first
+    shell.classList.remove("correct", "incorrect");
+
+    // ✅ ONLY add class if it's valid
+    if (className && className.trim() !== "") {
       shell.classList.add(className);
-      return true;
     }
-    return false;
+
+    return true;
   };
 
   // helper to play a sound (returns the Audio instance)
@@ -854,11 +815,146 @@ document.addEventListener("DOMContentLoaded", () => {
   // audio cache for preloaded Audio objects keyed by normalized path
   const audioCache = {};
 
+  const playStarAnimation = (optionEl) => {
+    if (!window.lottie || !optionEl) return;
+
+    // ❌ Prevent duplicate stars
+    if (optionEl.querySelector(".star-lottie")) return;
+
+    // ⭐ Create container
+    const starDiv = document.createElement("div");
+    starDiv.className = "star-lottie";
+    optionEl.appendChild(starDiv);
+
+    // ⭐ Load animation
+    const starAnim = window.lottie.loadAnimation({
+      container: starDiv,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: "./lottie/star-animation.json",
+    });
+    starAnim.setSpeed(0.3); // 🔥 make animation slower
+
+    // ✅ When animation finishes → hide/remove star
+    starAnim.addEventListener("complete", () => {
+      starDiv.style.display = "none"; // hides it
+
+      // (Optional — better) remove from DOM completely:
+      setTimeout(() => {
+        starAnim.destroy(); // cleanup lottie instance
+        starDiv.remove(); // remove element
+      }, 100);
+    });
+  };
+  let currentQuestion = null;
+  let optionElementsMap = {}; // store optionId → optionData
+
+  let beeIntroAnim = null;
+
+  const playBeeIntro = () => {
+    const beeContainer = document.getElementById("bee-intor");
+    const wrapper = document.getElementById("lottie-wrapper");
+
+    if (!beeContainer || !window.lottie) return;
+
+    // show wrapper again
+    if (wrapper) wrapper.style.display = "block";
+
+    // destroy previous animation
+    if (beeIntroAnim) {
+      beeIntroAnim.destroy();
+      beeIntroAnim = null;
+    }
+
+    // reset container
+    beeContainer.innerHTML = "";
+
+    const candidates = [
+      "./lottie/bee-ntro.json",
+      "./lottie/bee-intro.json",
+      "./assets/bee-ntro.json",
+      "./assets/bee-intro.json",
+    ];
+
+    const tryLoad = (i) => {
+      if (i >= candidates.length) {
+        console.warn("bee intro Lottie not found");
+        return;
+      }
+
+      fetch(candidates[i])
+        .then((res) => {
+          if (!res.ok) throw new Error("not found");
+          return res.json();
+        })
+        .then((animationData) => {
+          beeIntroAnim = window.lottie.loadAnimation({
+            container: beeContainer,
+            renderer: "svg",
+            loop: false,
+            autoplay: true,
+            animationData,
+          });
+
+          beeIntroAnim.addEventListener("complete", () => {
+            if (wrapper) wrapper.style.display = "none";
+          });
+        })
+        .catch(() => tryLoad(i + 1));
+    };
+
+    tryLoad(0);
+  };
+
   const populateQuestion = () => {
+    // 🔒 Disable Show Answer until firstWord is clicked
+    const showAnsBtn = document.getElementById("showAns-btn");
+
+    isShowingAnswers = false;
+    userSelectedMap = {};
+
+    if (showAnsBtn) {
+      showAnsBtn.classList.add("disabled");
+      showAnsBtn.style.pointerEvents = "none";
+      showAnsBtn.style.opacity = "0.5"; // optional visual
+    }
+    if (showAnsBtn) {
+      showAnsBtn.setAttribute("src", "./assets/show-ans.svg");
+    }
+    // 🧹 clear previous stars, classes, clicks
+    document.querySelectorAll(".star-lottie").forEach((el) => el.remove());
+
+    document.querySelectorAll(".options-txt").forEach((el) => {
+      el.classList.remove("answered");
+      el.style.pointerEvents = "auto";
+    });
+
+    // remove shell classes
+    [
+      "option1",
+      "option2",
+      "option3",
+      "option4",
+      "option5",
+      "option6",
+      "option7",
+      "option8",
+      "option9",
+      "option10",
+      "option11",
+    ].forEach((id) => setOptionShellClass(id, ""));
+
+    const firstShell = document.getElementById("firstWord-shell");
+    if (firstShell) firstShell.classList.remove("active");
+
     let totalCorrect = 0;
     let selectedCorrect = 0;
+    let correctSelectedElements = [];
+    currentQuestion =
+      questionsData[Math.floor(Math.random() * questionsData.length)];
 
-    const q = questionsData[Math.floor(Math.random() * questionsData.length)];
+    const q = currentQuestion;
     if (!q) return;
 
     totalCorrect = q.options.filter((o) => o.isCorrect).length;
@@ -880,6 +976,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // 👉 PLAY SOUND ON CLICK
           firstEl.onclick = () => {
+            // 🔓 Enable Show Answer now
+            const showAnsBtn = document.getElementById("showAns-btn");
+            if (showAnsBtn) {
+              showAnsBtn.classList.remove("disabled");
+              showAnsBtn.style.pointerEvents = "auto";
+              showAnsBtn.style.opacity = "1";
+            }
             // 🔓 unlock audio (important for mobile browsers)
             unlockAudio();
 
@@ -936,37 +1039,48 @@ document.addEventListener("DOMContentLoaded", () => {
       const opt = shuffled[idx];
       if (!el) return;
       if (opt) {
+        optionElementsMap[id] = opt;
         el.textContent = opt.text || "";
         el.dataset.isCorrect = opt.isCorrect ? "1" : "0";
         if (opt.sound) el.dataset.sound = opt.sound;
         el.style.display = "none";
         // attach click handler to mark shell correct/incorrect and play sound
         el.onclick = () => {
-          // prevent double click counting
-          if (el.classList.contains("answered")) return;
-          el.classList.add("answered");
-
-          // play option sound
+          // 🔊 ALWAYS PLAY SOUND (even after completion)
           if (el.dataset.sound) playSound(el.dataset.sound);
 
+          // ❗ If already answered → don't evaluate again
+          if (el.classList.contains("answered")) return;
+
+          el.classList.add("answered");
+          userSelectedMap[id] = {
+            isCorrect: el.dataset.isCorrect === "1",
+          };
           const isCorrect = el.dataset.isCorrect === "1";
           const cls = isCorrect ? "correct" : "incorrect";
 
-          if (isCorrect) selectedCorrect++;
-
-          // apply shell class
-          if (!setOptionShellClass(id, cls)) {
-            let attempts = 0;
-            const iv = setInterval(() => {
-              attempts++;
-              if (setOptionShellClass(id, cls) || attempts > 20)
-                clearInterval(iv);
-            }, 100);
+          if (isCorrect) {
+            selectedCorrect++;
+            correctSelectedElements.push(el);
           }
 
-          // ✅ CHECK IF ALL CORRECT SELECTED
+          // apply visual shell
+          setOptionShellClass(id, cls);
+
+          // ✅ Only run result logic ONCE
           if (selectedCorrect === totalCorrect) {
-            showResultAnimation();
+            // prevent re-triggering again
+            selectedCorrect = -999;
+
+            correctSelectedElements.forEach((optEl, index) => {
+              setTimeout(() => {
+                playStarAnimation(optEl);
+              }, index * 150);
+            });
+
+            setTimeout(() => {
+              showResultAnimation();
+            }, 800);
           }
         };
       } else {
@@ -982,7 +1096,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (instruct) instruct.style.display = "block";
 
     // ⏱ Show firstWord after 3 seconds
-    setTimeout(() => {
+    if (firstWordTimer) clearTimeout(firstWordTimer);
+
+    firstWordTimer = setTimeout(() => {
       if (firstEl) {
         firstEl.style.display = "block";
 
@@ -1013,11 +1129,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 3000);
   };
-
+  playBeeIntro();
   populateQuestion();
-
   let audioUnlocked = false;
 
+  const stopResultAnimation = () => {
+    const resultWrapper = document.getElementById("result-wrapper");
+    const resultContainer = document.getElementById("result-bee");
+
+    if (resultBeeAnim) {
+      resultBeeAnim.destroy(); // stop animation
+      resultBeeAnim = null;
+    }
+
+    if (resultContainer) resultContainer.innerHTML = "";
+    if (resultWrapper) resultWrapper.style.display = "none";
+  };
   const unlockAudio = () => {
     if (audioUnlocked) return;
 
@@ -1029,34 +1156,123 @@ document.addEventListener("DOMContentLoaded", () => {
     document.removeEventListener("click", unlockAudio);
     document.removeEventListener("touchstart", unlockAudio);
   };
-const showResultAnimation = () => {
-  document.querySelectorAll(".options-txt").forEach((el) => {
-    el.style.pointerEvents = "none";
-  });
+  const showResultAnimation = () => {
+    const resultWrapper = document.getElementById("result-wrapper");
+    const resultContainer = document.getElementById("result-bee");
 
-  const resultWrapper = document.getElementById("result-wrapper");
-  const resultContainer = document.getElementById("result-bee");
+    if (!resultWrapper || !resultContainer) return;
 
-  if (!resultWrapper || !resultContainer) return;
+    resultWrapper.style.display = "block";
 
-  resultWrapper.style.display = "block";
+    // clear previous animation if any
+    resultContainer.innerHTML = "";
 
-  // clear previous animation if any
-  resultContainer.innerHTML = "";
+    if (window.lottie) {
+      // destroy previous if exists
+      if (resultBeeAnim) {
+        resultBeeAnim.destroy();
+        resultBeeAnim = null;
+      }
 
-  if (window.lottie) {
-    const anim = window.lottie.loadAnimation({
-      container: resultContainer,
-      renderer: "svg",
-      loop: false,
-      autoplay: true,
-      path: "./lottie/bee-thumb.json",
-    });
+      resultBeeAnim = window.lottie.loadAnimation({
+        container: resultContainer,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        path: "./lottie/bee-thumb.json",
+      });
 
-    // ✅ WHEN ANIMATION FINISHES
-    anim.addEventListener("complete", () => {
-      resultWrapper.style.display = "none";
+      resultBeeAnim.addEventListener("complete", () => {
+        resultWrapper.style.display = "none";
+      });
+    }
+  };
+
+  const newBtn = document.getElementById("newWords-btn");
+
+  if (newBtn) {
+    newBtn.addEventListener("click", () => {
+      stopResultAnimation(); // 🛑 hide bee-thumb immediately
+
+      playBeeIntro(); // 🐝 intro animation
+      populateQuestion(); // load new question
+
+      const instruct = document.getElementById("itext-content");
+      if (instruct) {
+        instruct.textContent = "शब्द को टैप करें और ऑडियो सुनें।";
+      }
     });
   }
-};
+
+  const showAnsBtn = document.getElementById("showAns-btn");
+
+  if (showAnsBtn) {
+    showAnsBtn.addEventListener("click", () => {
+      // ================================
+      // 👉 IF ANSWERS ARE HIDDEN → SHOW THEM
+      // ================================
+      if (!isShowingAnswers) {
+        isShowingAnswers = true;
+
+        // 🔁 change icon to HIDE
+        showAnsBtn.setAttribute("src", "./assets/hide-ans.svg");
+
+        Object.keys(optionElementsMap).forEach((id) => {
+          const el = document.getElementById(id);
+          const opt = optionElementsMap[id];
+          if (!el || !opt) return;
+
+          el.style.display = "block";
+
+          if (opt.isCorrect) {
+            setOptionShellClass(id, "correct");
+            playStarAnimation(el);
+          } else {
+            setOptionShellClass(id, "incorrect");
+          }
+
+          el.style.pointerEvents = "none";
+        });
+
+        const instruct = document.getElementById("itext-content");
+        if (instruct) instruct.textContent = "सही उत्तर दिखाए गए हैं।";
+      }
+
+      // ================================
+      // 👉 IF ANSWERS ARE SHOWN → HIDE THEM
+      // ================================
+      else {
+        isShowingAnswers = false;
+
+        // 🔁 change icon back to SHOW
+        showAnsBtn.setAttribute("src", "./assets/show-ans.svg");
+
+        // remove stars
+        document.querySelectorAll(".star-lottie").forEach((el) => el.remove());
+
+        Object.keys(optionElementsMap).forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          // Was this option previously selected by user?
+          if (userSelectedMap[id]) {
+            el.classList.add("answered");
+
+            const cls = userSelectedMap[id].isCorrect ? "correct" : "incorrect";
+
+            setOptionShellClass(id, cls);
+          } else {
+            // user never touched this option
+            el.classList.remove("answered");
+            setOptionShellClass(id, "");
+          }
+
+          el.style.pointerEvents = "auto"; // allow interaction again
+        });
+
+        const instruct = document.getElementById("itext-content");
+        if (instruct) instruct.textContent = "फिर से सही तुक वाले शब्द चुनें।";
+      }
+    });
+  }
 });
