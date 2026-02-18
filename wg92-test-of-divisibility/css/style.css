@@ -186,10 +186,8 @@ svg * {
 }
 
 .flask-container {
-  border: 1px solid red;
   height: 100%;
   width: 100%;
-  /* clip-path: polygon(34% 54%, 64% 54%, 100% 100%, 0% 100%); */
 }
 
 .number-wrapper {
@@ -206,14 +204,16 @@ svg * {
   padding: 30px 50px !important;
   justify-content: space-between;
 }
-.number-wrapper li{
+
+.number-wrapper li {
   cursor: pointer;
 }
-.final-number{
-    font-size: 50px;
-    font-weight: 900;
-    line-height: 1.4;
-    text-align: center;
+
+.final-number {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .flask-container {
@@ -254,24 +254,122 @@ svg * {
     transform: translateY(-60px) scale(0.8);
     opacity: 0;
   }
+
   to {
     transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
 
-.flask-row.flask-row-2{
-margin-bottom: -28px;
+.flask-row.flask-row-2 {
+  margin-bottom: -28px;
 }
+
 .flask-row.flask-row-3 {
-    margin-bottom: -16px;
+  margin-bottom: -16px;
 }
+
 .flask-row.flask-row-2.active {
-    margin-bottom: -17px;
+  margin-bottom: -17px;
 }
+
 /* Fade ONLY the options row item */
 .number-wrapper li.used {
   opacity: 0.4;
-  pointer-events: none; /* prevents re-click */
+  pointer-events: none;
+  /* prevents re-click */
   transition: opacity 0.2s ease;
+}
+
+.note-wrapper {
+  border: 6px dotted transparent;
+  font-size: 30px;
+  padding: 30px 20px 20px 20px;
+  border-radius: 20px;
+  position: relative;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.note-wrapper.correct {
+  border: 6px dotted #009306;
+  background-color: #E9FFEA;
+}
+
+.note-wrapper.incorrect {
+  border: 6px dotted #FF0000;
+  background-color: #FFDCDC;
+}
+
+.note-wrapper.incorrect .ans-status,
+.note-wrapper.incorrect .note-verdict {
+  color: #FF0000;
+  font-weight: 500;
+}
+
+.note-wrapper.correct .ans-status,
+.note-wrapper.correct .note-verdict {
+  color: #006B04;
+  font-weight: 500;
+}
+
+.note-wrapper .lottie-anim {
+  height: 240px;
+  width: 240px;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.note-verdict {
+  margin-bottom: 20px;
+}
+
+.note-verdict,
+.ans-status {
+  text-align: center;
+  font-size: 34px;
+}
+
+/* incorrect flask fills from bottom */
+.incorrect-flask {
+  display: flex;
+  flex-direction: column-reverse;
+  /* start filling from bottom */
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.incorrect-flask::before {
+  content: "";
+  background-image: url("../assets/cart-bg.svg");
+  background-repeat: no-repeat;
+  background-size: 110%;
+  background-position: center 211px;
+  height: 410px;
+  width: 410px;
+  position: absolute;
+}
+
+/* each row holds 4 balls */
+.incorrect-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: -6px;
+}
+
+.incorrect-flask .flask-row.flask-row-2 {
+  margin-bottom: -17px;
+}
+.incorrect-flask.active .flask-row.flask-row-2 {
+    margin-bottom: -28px;
+}
+
+.number-wrapper li.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: 0.2s ease;
 }
