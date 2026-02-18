@@ -321,7 +321,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-92.png",
     creators: "-ra-92",
-    status: "todo",
+    status: "in-review",
   },
   {
     name: "समान तुक वाले शब्द",

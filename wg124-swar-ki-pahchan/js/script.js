@@ -243,6 +243,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
           console.log("Correct Answer");
 
+          // ⭐ Mark remaining options incorrect
+          const allOptions =
+            li.parentElement.querySelectorAll(".option-flower");
+          allOptions.forEach((option) => {
+            if (option !== li && !option.classList.contains("incorrect")) {
+              option.classList.add("incorrect");
+            }
+          });
+
           playCorrectLottie(index);
         } else {
           li.classList.add("incorrect");
@@ -342,25 +351,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   homeBtn.addEventListener("click", () => {
+    // 🔁 Show Step-1 and Hide Step-2
+    step2.style.display = "none";
+    step1.style.display = "block";
 
-  // 🔁 Show Step-1 and Hide Step-2
-  step2.style.display = "none";
-  step1.style.display = "block";
+    // 🔄 Reset all states
+    hideAllLotties();
+    finalImg.classList.remove("correct");
 
-  // 🔄 Reset all states
-  hideAllLotties();
-  finalImg.classList.remove("correct");
+    isAnswerVisible = false;
+    showAnsBtn.src = "./assets/show-ans.svg";
+    showAnsBtn.classList.remove("disabled");
 
-  isAnswerVisible = false;
-  showAnsBtn.src = "./assets/show-ans.svg";
-  showAnsBtn.classList.remove("disabled");
+    currentQuestion = null;
+    currentIndex = -1;
 
-  currentQuestion = null;
-  currentIndex = -1;
-
-  // Clear options
-  const optionContainer = document.querySelector(".optFlower-list");
-  optionContainer.innerHTML = "";
-});
-
+    // Clear options
+    const optionContainer = document.querySelector(".optFlower-list");
+    optionContainer.innerHTML = "";
+  });
 });
