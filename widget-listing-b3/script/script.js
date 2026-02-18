@@ -41,7 +41,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-24.png",
     creators: "sh-di-24",
-    status: "WIP-With-Techx",
+    status: "WIP-With-Tech",
   },
   {
     name: "World War I Alliances: Allied vs. Central Powers",
