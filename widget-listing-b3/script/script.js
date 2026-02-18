@@ -377,7 +377,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-124.png",
     creators: "ni-ra-124",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Barter Fails, Money Wins",
