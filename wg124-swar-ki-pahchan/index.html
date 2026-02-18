@@ -20,7 +20,7 @@
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
            <g>
-            <foreignObject x="0" y="0" width="1920" height="1080" style="border: 1px solid red;">
+            <foreignObject x="0" y="0" width="1920" height="1080">
             </foreignObject>
           </g>
           <g id="step-1" style="display: block;">
@@ -30,60 +30,70 @@
             <foreignObject x="145" y="224.56" width="1637.58" height="478.69">
               <div class="">
                 <ul class="flower-list">
-                  <li class="flowe-bg">अ</li>
-                  <li class="flowe-bg">आ</li>
-                  <li class="flowe-bg">इ</li>
-                  <li class="flowe-bg">ई</li>
-                  <li class="flowe-bg">उ</li>
-                  <li class="flowe-bg">ऊ</li>
-                  <li class="flowe-bg">ऋ</li>
-                  <li class="flowe-bg">ए</li>
-                  <li class="flowe-bg">ऐ</li>
-                  <li class="flowe-bg">ओ</li>
-                  <li class="flowe-bg">औ</li>
-                  <li class="flowe-bg">अं</li>
-                  <li class="flowe-bg">अः</li>
+                  <li class="flowe-bg"><span class="text-wrap">अ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">आ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">इ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ई</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">उ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ऊ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ऋ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ए</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ऐ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">ओ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">औ</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">अं</span></li>
+                  <li class="flowe-bg"><span class="text-wrap">अः</span></li>
                 </ul>
               </div>
             </foreignObject>
           </g>
           <g id="step-2" style="display: none;">
-            <foreignObject x="145" y="120" width="1637.58" height="448.69">
+            <foreignObject x="145" y="150" width="1637.58" height="100">
               <div class="i-text">ऑडियो सुनें और नीचे दिए सही स्वर पर टैप करें।</div>
             </foreignObject>
-            <foreignObject x="733.03" y="178.03" width="485" height="485">
+            <foreignObject x="733.03" y="220" width="485" height="485">
               <div class="final-img">
                 <svg viewBox="0 0 120 120" class="trace-letter">
                   <text x="50%" y="53%" class="letter">ऋ</text>
                 </svg>
               </div>
             </foreignObject>
+            <foreignObject style="display: none;" x="390" y="460" width="452" height="350">
+              <div class="lottie-wrapper" id="option1-lottie"></div>
+            </foreignObject>
+            <foreignObject style="display: none;" x="640" y="500" width="452" height="350">
+              <div class="lottie-wrapper" id="option2-lottie"></div>
+            </foreignObject>
+            <foreignObject style="display: none;" x="890" y="460" width="452" height="350">
+              <div class="lottie-wrapper" id="option3-lottie"></div>
+            </foreignObject>
+            <foreignObject style="display: none;" x="1130" y="500" width="452" height="350">
+              <div class="lottie-wrapper" id="option4-lottie"></div>
+            </foreignObject>
 
             <foreignObject x="145" y="700" width="1637.58" height="448.69">
-              <div class="">
                 <ul class="flower-list optFlower-list">
-                  <li class="flower-bg option-flower"><span class="">अ</span></li>
-                  <li class="flower-bg option-flower"><span class="">आ</span></li>
-                  <li class="flower-bg option-flower"><span class="">इ</span></li>
-                  <li class="flower-bg option-flower"><span class="">ई</span></li>
+                  <li class="flower-bg option-flower"><span class="text-wrap">अ</span></li>
+                  <li class="flower-bg option-flower"><span class="text-wrap">आ</span></li>
+                  <li class="flower-bg option-flower"><span class="text-wrap">इ</span></li>
+                  <li class="flower-bg option-flower"><span class="text-wrap">ई</span></li>
 
                 </ul>
-              </div>
             </foreignObject>
             <foreignObject x="1450" y="960" width="500" height="100">
               <div class="btn-container">
-                <img id="showAns-btn" height="80" src="./assets/show-ans.svg" alt="">
-                <img id="newWords-btn" height="80" src="./assets/next-word.svg" alt="">
+                <img style="cursor: pointer;" class="show-ans" id="showAns-btn" height="80" src="./assets/show-ans.svg" alt="">
+                <img style="cursor: pointer;" id="newLetter-btn" height="80" src="./assets/next-word.svg" alt="">
               </div>
             </foreignObject>
-            <foreignObject x="650" y="380" width="500" height="100">
+            <foreignObject x="650" y="420" width="100" height="100">
               <div>
-                <img id="home-btn" height="80" src="./assets/sound-icon.svg" alt="">
+                <img id="sound-btn" height="80" src="./assets/sound-icon.svg" alt="">
               </div>
             </foreignObject>
             <foreignObject x="50" y="975" width="500" height="100">
               <div>
-                <img id="home-btn" src="./assets/home-icon.svg" alt="">
+                <img style="cursor: pointer;" id="home-btn" src="./assets/home-icon.svg" alt="">
               </div>
             </foreignObject>
           </g>

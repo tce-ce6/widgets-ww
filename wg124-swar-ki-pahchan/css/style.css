@@ -173,15 +173,56 @@ svg * {
   height: 100%;
 }
 
-/* swar ki pehchan  */
+/* swar ki pehchan style */
+
 .flower-list{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
 }
-.flower-list li{
+.flower-list li::before{
+  content: "";
   background-image: url("../assets/flower-bg.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 210px;
+  width: 210px;
+  position: absolute;
+}
+.flower-list li .text-wrap{
+  z-index: 1;
+  border: 7px solid transparent;
+  border-radius: 50%;
+  height: 90px;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: brightness(1);
+    background-color: #fff;
+}
+
+/* Correct Answer */
+.option-flower.correct .text-wrap {
+  border: 7px solid #4CAF50;
+  pointer-events: none;
+}
+
+/* Wrong Answer */
+.option-flower.incorrect .text-wrap {
+  border: 7px solid #F44336;
+  pointer-events: none;
+}
+.option-flower.incorrect::before {
+  filter: brightness(0.5);
+}
+.option-flower.incorrect::after {
+  filter: brightness(0.5);
+}
+
+.flower-list li{
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -198,7 +239,7 @@ svg * {
 .flower-bg.option-flower{
   position: relative;
 }
-.flower-bg.option-flower::before{
+.flower-bg.option-flower::after{
   content: "";
   background-image: url("../assets/flower-stem.svg");
   background-size: 100% 100%;
@@ -207,7 +248,7 @@ svg * {
   height: 210px;
   width: 210px;
   position: absolute;
-  bottom: -203px;
+  bottom: -198px;
 }
 .flower-list.optFlower-list{
   gap: 30px;
@@ -230,11 +271,17 @@ svg * {
   font-size: 30px;              
   fill: none;
   stroke: #333;
-  stroke-width: 1;
+  stroke-width: .5;
   stroke-dasharray: 1,2;
   stroke-linecap: round;
   text-anchor: middle;          
   dominant-baseline: middle;   
+}
+.final-img.correct .trace-letter text{
+  fill: #000;
+  stroke: none;
+  stroke-width: 0;
+  stroke-dasharray: none;
 }
 .final-img{
   background-image: url("../assets/final-img.svg");
@@ -252,4 +299,12 @@ svg * {
 .btn-container{
   display: flex;
   gap: 20px;
+}
+.lottie-wrapper{
+  height: 100%;
+  width: 100%;
+}
+.show-ans.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

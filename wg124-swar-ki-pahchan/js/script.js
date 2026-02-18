@@ -145,49 +145,81 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
+  const lottieFOs = [
+    document.getElementById("option1-lottie").parentElement,
+    document.getElementById("option2-lottie").parentElement,
+    document.getElementById("option3-lottie").parentElement,
+    document.getElementById("option4-lottie").parentElement,
+  ];
+
   // 🌟 Global variable to store selected letter
   let selectedLetter = null;
-
+  let currentQuestion = null; // stores active question
   const step1 = document.getElementById("step-1");
   const step2 = document.getElementById("step-2");
-
+  const showAnsBtn = document.getElementById("showAns-btn");
+  let isAnswerVisible = false; // toggle flag
   const letterButtons = document.querySelectorAll(".flower-list li");
-
-  // SVG big letter (Step-2)
+  const finalImg = document.querySelector(".final-img");
+  let currentIndex = -1;
   const bigLetter = document.querySelector(".trace-letter .letter");
-
+  const newLetterBtn = document.getElementById("newLetter-btn");
+  const homeBtn = document.getElementById("home-btn");
   // 👉 Click on any flower letter
   letterButtons.forEach((li) => {
     li.addEventListener("click", () => {
-      // Store clicked letter globally
+      hideAllLotties();
+      finalImg.classList.remove("correct");
+
+      isAnswerVisible = false;
+      showAnsBtn.src = "./assets/show-ans.svg";
+      showAnsBtn.classList.remove("disabled"); // enable again
+
       selectedLetter = li.textContent.trim();
 
-      console.log("Selected Letter:", selectedLetter);
+      // ⭐ set index from clicked letter
+      currentIndex = questionsData.findIndex(
+        (q) => q.letter === selectedLetter,
+      );
 
-      // Hide Step-1
       step1.style.display = "none";
-
-      // Show Step-2
       step2.style.display = "block";
 
-      // Update the big tracing letter
-      bigLetter.textContent = selectedLetter;
-
-      // OPTIONAL 👉 load its data from questionsData
-      loadQuestion(selectedLetter);
+      loadQuestionByIndex(currentIndex);
     });
   });
 
+  function hideAllLotties() {
+    lottieFOs.forEach((fo) => {
+      fo.style.display = "none";
+      fo.querySelector(".lottie-wrapper").innerHTML = "";
+    });
+  }
+
+  function playCorrectLottie(index) {
+    hideAllLotties();
+
+    const fo = lottieFOs[index];
+    fo.style.display = "block";
+
+    const container = fo.querySelector(".lottie-wrapper");
+
+    lottie.loadAnimation({
+      container: container,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: "lottie/correct-ans.json",
+    });
+  }
   // 🔎 Find question data for selected letter
   function loadQuestion(letter) {
     const question = questionsData.find((q) => q.letter === letter);
 
     if (!question) return;
 
-    // Play sound (if needed later)
-    // playAudio(question.letterSound);
+    currentQuestion = question; // ⭐ store globally
 
-    // Load options dynamically
     renderOptions(question.options);
   }
 
@@ -196,19 +228,139 @@ document.addEventListener("DOMContentLoaded", () => {
     const optionContainer = document.querySelector(".optFlower-list");
     optionContainer.innerHTML = "";
 
-    options.forEach((opt) => {
+    options.forEach((opt, index) => {
       const li = document.createElement("li");
       li.className = "flower-bg option-flower";
-      li.innerHTML = `<span>${opt.text}</span>`;
+      li.innerHTML = `<span class="text-wrap">${opt.text}</span>`;
 
-      // Option click
       li.addEventListener("click", () => {
-        console.log("Clicked Option:", opt.text);
+        if (li.classList.contains("correct")) return;
 
-        // playAudio(opt.sound);
+        if (opt.text === currentQuestion.answer) {
+          li.classList.add("correct");
+          finalImg.classList.add("correct"); // ⭐ add class to big image
+          showAnsBtn.classList.add("disabled"); // ⭐ disable button
+
+          console.log("Correct Answer");
+
+          playCorrectLottie(index);
+        } else {
+          li.classList.add("incorrect");
+          console.log("Wrong Answer");
+        }
       });
 
       optionContainer.appendChild(li);
     });
   }
+
+  function highlightCorrectAnswer(container) {
+    const allOptions = container.querySelectorAll(".option-flower");
+
+    allOptions.forEach((li) => {
+      if (li.textContent.trim() === currentQuestion.answer) {
+        li.classList.add("correct");
+      }
+    });
+  }
+
+  showAnsBtn.addEventListener("click", () => {
+    if (showAnsBtn.classList.contains("disabled")) return;
+
+    const optionContainer = document.querySelector(".optFlower-list");
+    const allOptions = optionContainer.querySelectorAll(".option-flower");
+
+    // 🔁 TOGGLE ON → SHOW ANSWER
+    if (!isAnswerVisible) {
+      showAnsBtn.src = "./assets/hide-ans.svg";
+      isAnswerVisible = true;
+
+      allOptions.forEach((li, index) => {
+        const text = li.textContent.trim();
+
+        if (text === currentQuestion.answer) {
+          li.classList.add("correct");
+          finalImg.classList.add("correct");
+          playCorrectLottie(index);
+        } else {
+          li.classList.add("incorrect");
+        }
+      });
+    }
+    // 🔁 TOGGLE OFF → HIDE ANSWER
+    else {
+      showAnsBtn.src = "./assets/show-ans.svg";
+      isAnswerVisible = false;
+
+      hideAllLotties();
+      finalImg.classList.remove("correct");
+
+      allOptions.forEach((li) => {
+        li.classList.remove("correct", "incorrect");
+      });
+    }
+  });
+  function loadQuestionByIndex(index) {
+    if (index < 0 || index >= questionsData.length) return;
+
+    const question = questionsData[index];
+    currentQuestion = question;
+
+    bigLetter.textContent = question.letter;
+
+    // Reset visuals
+    hideAllLotties();
+    finalImg.classList.remove("correct");
+
+    const optionContainer = document.querySelector(".optFlower-list");
+    optionContainer.innerHTML = "";
+
+    renderOptions(question.options);
+  }
+
+  newLetterBtn.addEventListener("click", () => {
+    if (currentIndex === -1) return; // nothing selected yet
+
+    // 👉 move to next index
+    currentIndex++;
+
+    // 👉 if reached end, start again (loop)
+    if (currentIndex >= questionsData.length) {
+      currentIndex = 0;
+    }
+
+    // 🔄 Reset UI state
+    hideAllLotties();
+    finalImg.classList.remove("correct");
+
+    isAnswerVisible = false;
+    showAnsBtn.src = "./assets/show-ans.svg";
+    showAnsBtn.classList.remove("disabled");
+
+    // 👉 Load next question
+    loadQuestionByIndex(currentIndex);
+  });
+
+  homeBtn.addEventListener("click", () => {
+
+  // 🔁 Show Step-1 and Hide Step-2
+  step2.style.display = "none";
+  step1.style.display = "block";
+
+  // 🔄 Reset all states
+  hideAllLotties();
+  finalImg.classList.remove("correct");
+
+  isAnswerVisible = false;
+  showAnsBtn.src = "./assets/show-ans.svg";
+  showAnsBtn.classList.remove("disabled");
+
+  currentQuestion = null;
+  currentIndex = -1;
+
+  // Clear options
+  const optionContainer = document.querySelector(".optFlower-list");
+  optionContainer.innerHTML = "";
+});
+
 });
