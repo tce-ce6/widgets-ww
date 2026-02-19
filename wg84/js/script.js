@@ -5,7 +5,6 @@ let selectedQuestion = null;
 insightsInfo = () => {
   document.getElementById("insights-box").style.display = "block";
   document.getElementById("svg-container").classList.add("modal-open");
-  
 };
 
 function init() {
@@ -26,7 +25,6 @@ function init() {
   });
 }
 
-
 let executiveCount = 0;
 let legislatureCount = 0;
 
@@ -40,7 +38,7 @@ function addLegislatureIcons(count) {
   // position each icon
   clone.setAttribute(
     "transform",
-    `translate(${(count - 1) * 80}, 0)`, // move horizontally
+    `translate(${(count - 1) * 55}, 0)`, // move horizontally
   );
 
   svg.appendChild(clone);
@@ -61,7 +59,7 @@ function addExecutiveIcons(count) {
   // position each icon
   clone.setAttribute(
     "transform",
-    `translate(${(count - 1) * 80}, 0)`, // move horizontally
+    `translate(${(count - 1) * 55}, 0)`, // move horizontally
   );
 
   ExecutiveBadges.appendChild(clone);
@@ -92,8 +90,7 @@ function buttonClickEvent() {
   btnnext.addEventListener("click", () => {
     hideAllBoxAndButton();
     selectedQuestion = getRandomQuestion();
-    if(selectedQuestion)
-    setQuestionStem(selectedQuestion.scenarioText);
+    if (selectedQuestion) setQuestionStem(selectedQuestion.scenarioText);
   });
 }
 executiveCountIncrement = () => {
@@ -127,24 +124,27 @@ questionValidation = (type) => {
 };
 showFeedback = (id) => {
   let feedback = document.getElementById(id);
-  var q_santance_fisrt = "";
-  var q_santance_second = "";
-  y = 517.754;
-  if (selectedQuestion.feedback.length > 46) {
-    q_santance_fisrt = selectedQuestion.feedback.substring(0, 46);
-    q_santance_second = selectedQuestion.feedback.substring(
-      46,
-      selectedQuestion.feedback.length,
-    );
+  let lines = [];
+  const maxLineLength = 46;
+
+  if (selectedQuestion.feedback.length > maxLineLength) {
+    let splitIndex = selectedQuestion.feedback.lastIndexOf(" ", maxLineLength);
+    if (splitIndex === -1) {
+      lines.push(selectedQuestion.feedback.substring(0, maxLineLength));
+      lines.push(selectedQuestion.feedback.substring(maxLineLength));
+    } else {
+      lines.push(selectedQuestion.feedback.substring(0, splitIndex));
+      lines.push(selectedQuestion.feedback.substring(splitIndex + 1));
+    }
   } else {
-    q_santance_fisrt = selectedQuestion.feedback;
-    q_santance_second = "";
+    lines.push(selectedQuestion.feedback);
   }
-  let q_santance = [q_santance_fisrt, q_santance_second];
+
+  let y = 517.754;
   feedback.innerHTML = "";
-  for (let i = 0; i < q_santance.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     y += 35;
-    feedback.innerHTML += `<tspan x='625'  y='${y}'>${q_santance[i]}</tspan>`;
+    feedback.innerHTML += `<tspan x='625' y='${y}'>${lines[i]}</tspan>`;
   }
 };
 hideAllBoxAndButton = () => {
@@ -155,28 +155,24 @@ hideAllBoxAndButton = () => {
 };
 
 function setQuestionStem(questionStem) {
-  let q_santance = questionStem.split(".");
   let question_text = document.getElementById("question_stem");
-  let y = 477.754;
-  question_text.innerHTML = "";
-  for (let i = 0; i < q_santance.length; i++) {
-    y += 35;
-    question_text.innerHTML += `${q_santance[i]}`;
-  }
+  question_text.innerHTML = questionStem;
 }
 function getRandomQuestion() {
   if (usedIndexes.size === questionData.length) {
     console.log("All questions used");
     document.getElementById("summary-box").style.display = "block";
     let legislature_summary = document.getElementById("legislature-summary");
-    let legislaturetspan = legislature_summary.querySelector("tspan") || legislature_summary;
+    let legislaturetspan =
+      legislature_summary.querySelector("tspan") || legislature_summary;
     legislaturetspan.textContent = legislatureCount;
-    let executive_summary = document.getElementById("executive-summary"); 
-    const tspan1 = executive_summary.querySelector("tspan") || executive_summary;
+    let executive_summary = document.getElementById("executive-summary");
+    const tspan1 =
+      executive_summary.querySelector("tspan") || executive_summary;
     tspan1.textContent = executiveCount;
     let totalbadges = document.getElementById("totalbadges");
     const tspan = totalbadges.querySelector("tspan") || totalbadges;
-    tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;  
+    tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;
     playLottieAnimation();
     return null;
   }
@@ -196,18 +192,17 @@ function playAudio() {
   audioPlayer.play();
 }
 
-  const playLottieAnimation = () => {
-      const containerEl = document.getElementById('lottie-container');
-      if (!containerEl) return;
-      const anim = lottie.loadAnimation({
-          container: containerEl,
-          renderer: 'svg',
-          loop: false,
-          autoplay: true,
-          path: `assets/JSON/FinalAnswer_celebration.json` 
-      });
-      
-  };
+const playLottieAnimation = () => {
+  const containerEl = document.getElementById("lottie-container");
+  if (!containerEl) return;
+  const anim = lottie.loadAnimation({
+    container: containerEl,
+    renderer: "svg",
+    loop: false,
+    autoplay: true,
+    path: `assets/JSON/FinalAnswer_celebration.json`,
+  });
+};
 getAllQuestion = () => {
   fetch("assets/question.json") // Replace with your API endpoint
     .then((response) => {
@@ -230,8 +225,9 @@ loadPlayer = () => {
   let proceedbtn = document.getElementById("proceed-btn");
   proceedbtn.addEventListener("click", () => {
     document.getElementById("player").style.display = "block";
-    document.getElementById("legislature-vs-executive-box").style.display = "none";
+    document.getElementById("legislature-vs-executive-box").style.display =
+      "none";
     init();
   });
-}
+};
 window.onload = getAllQuestion();
