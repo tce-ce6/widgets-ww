@@ -157,10 +157,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Build a Carbon Cycle",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/shyam/b-3/wg72-build-a-carbon-cycle/index.html",
     imagePath: "./assets/wg-72.png",
     creators: "sh-ra-72",
-    status: "todo",
+    status: "in-review",
   },
   {
     name: "Legislature vs Executive: Scenario Challenge",
@@ -318,7 +318,7 @@ const WIDGET_DATA = [
   },
   {
     name: "Tests of Divisibility",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg92-test-of-divisibility/index.html",
     imagePath: "./assets/wg-92.png",
     creators: "-ra-92",
     status: "in-review",
@@ -374,7 +374,7 @@ const WIDGET_DATA = [
   },
   {
     name: "स्वर की पहचान",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg124-swar-ki-pahchan/index.html",
     imagePath: "./assets/wg-124.png",
     creators: "ni-ra-124",
     status: "in-review",
