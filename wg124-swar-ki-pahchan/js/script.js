@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "a.mp3",
       answer: "अ",
       options: [
-        { text: "अ", sound: "a.mp3" },
-        { text: "अः", sound: "aha.mp3" },
-        { text: "आ", sound: "aa.mp3" },
-        { text: "अं", sound: "am.mp3" },
+        { text: "अ", sound: "assets/audio/a.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
+        { text: "आ", sound: "assets/audio/aa.mp3" },
+        { text: "अं", sound: "assets/audio/um.mp3" },
       ],
     },
     {
@@ -16,21 +16,21 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "aa.mp3",
       answer: "आ",
       options: [
-        { text: "ओ", sound: "o.mp3" },
-        { text: "आ", sound: "aa.mp3" },
-        { text: "औ", sound: "au.mp3" },
-        { text: "अ", sound: "a.mp3" },
+        { text: "ओ", sound: "assets/audio/o.mp3" },
+        { text: "आ", sound: "assets/audio/aa.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
+        { text: "अ", sound: "assets/audio/a.mp3" },
       ],
     },
     {
       letter: "इ",
-      letterSound: "i.mp3",
+      letterSound: "e.mp3",
       answer: "इ",
       options: [
-        { text: "ई", sound: "ee.mp3" },
-        { text: "ऋ", sound: "ri.mp3" },
-        { text: "ए", sound: "e.mp3" },
-        { text: "इ", sound: "i.mp3" },
+        { text: "ई", sound: "assets/audio/ee.mp3" },
+        { text: "ऋ", sound: "assets/audio/ri.mp3" },
+        { text: "ए", sound: "assets/audio/ae.mp3" },
+        { text: "इ", sound: "assets/audio/e.mp3" },
       ],
     },
     {
@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "ee.mp3",
       answer: "ई",
       options: [
-        { text: "ऋ", sound: "ri.mp3" },
-        { text: "ई", sound: "ee.mp3" },
-        { text: "ऐ", sound: "ai.mp3" },
-        { text: "इ", sound: "i.mp3" },
+        { text: "ऋ", sound: "assets/audio/ri.mp3" },
+        { text: "ई", sound: "assets/audio/ee.mp3" },
+        { text: "ऐ", sound: "assets/audio/aee.mp3" },
+        { text: "इ", sound: "assets/audio/e.mp3" },
       ],
     },
     {
@@ -49,21 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "u.mp3",
       answer: "उ",
       options: [
-        { text: "ओ", sound: "o.mp3" },
-        { text: "अं", sound: "am.mp3" },
-        { text: "उ", sound: "u.mp3" },
-        { text: "अ", sound: "a.mp3" },
+        { text: "ओ", sound: "assets/audio/o.mp3" },
+        { text: "अं", sound: "assets/audio/um.mp3" },
+        { text: "उ", sound: "assets/audio/u.mp3" },
+        { text: "अ", sound: "assets/audio/a.mp3" },
       ],
     },
     {
       letter: "ऊ",
-      letterSound: "oo.mp3",
+      letterSound: "uu.mp3",
       answer: "ऊ",
       options: [
-        { text: "औ", sound: "au.mp3" },
-        { text: "ऊ", sound: "oo.mp3" },
-        { text: "ऐ", sound: "ai.mp3" },
-        { text: "उ", sound: "u.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
+        { text: "ऊ", sound: "assets/audio/uu.mp3" },
+        { text: "ऐ", sound: "assets/audio/aee.mp3" },
+        { text: "उ", sound: "assets/audio/u.mp3" },
       ],
     },
     {
@@ -71,32 +71,32 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "ri.mp3",
       answer: "ऋ",
       options: [
-        { text: "ए", sound: "e.mp3" },
-        { text: "ऐ", sound: "ai.mp3" },
-        { text: "ऋ", sound: "ri.mp3" },
-        { text: "औ", sound: "au.mp3" },
+        { text: "ए", sound: "assets/audio/ae.mp3" },
+        { text: "ऐ", sound: "assets/audio/aee.mp3" },
+        { text: "ऋ", sound: "assets/audio/ri.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
       ],
     },
     {
       letter: "ए",
-      letterSound: "e.mp3",
+      letterSound: "ae.mp3",
       answer: "ए",
       options: [
-        { text: "अः", sound: "aha.mp3" },
-        { text: "ए", sound: "e.mp3" },
-        { text: "ऐ", sound: "ai.mp3" },
-        { text: "अं", sound: "am.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
+        { text: "ए", sound: "assets/audio/ae.mp3" },
+        { text: "ऐ", sound: "assets/audio/aee.mp3" },
+        { text: "अं", sound: "assets/audio/um.mp3" },
       ],
     },
     {
       letter: "ऐ",
-      letterSound: "ai.mp3",
+      letterSound: "aee.mp3",
       answer: "ऐ",
       options: [
-        { text: "ई", sound: "ee.mp3" },
-        { text: "ऐ", sound: "ai.mp3" },
-        { text: "ऊ", sound: "oo.mp3" },
-        { text: "ऋ", sound: "ri.mp3" },
+        { text: "ई", sound: "assets/audio/ee.mp3" },
+        { text: "ऐ", sound: "assets/audio/aee.mp3" },
+        { text: "ऊ", sound: "assets/audio/uu.mp3" },
+        { text: "ऋ", sound: "assets/audio/ri.mp3" },
       ],
     },
     {
@@ -104,43 +104,43 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "o.mp3",
       answer: "ओ",
       options: [
-        { text: "अ", sound: "a.mp3" },
-        { text: "अः", sound: "aha.mp3" },
-        { text: "ओ", sound: "o.mp3" },
-        { text: "औ", sound: "au.mp3" },
+        { text: "अ", sound: "assets/audio/a.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
+        { text: "ओ", sound: "assets/audio/o.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
       ],
     },
     {
       letter: "औ",
-      letterSound: "au.mp3",
+      letterSound: "ou.mp3",
       answer: "औ",
       options: [
-        { text: "ओ", sound: "o.mp3" },
-        { text: "आ", sound: "aa.mp3" },
-        { text: "अः", sound: "aha.mp3" },
-        { text: "औ", sound: "au.mp3" },
+        { text: "ओ", sound: "assets/audio/o.mp3" },
+        { text: "आ", sound: "assets/audio/aa.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
       ],
     },
     {
       letter: "अं",
-      letterSound: "am.mp3",
+      letterSound: "um.mp3",
       answer: "अं",
       options: [
-        { text: "अं", sound: "am.mp3" },
-        { text: "आ", sound: "aa.mp3" },
-        { text: "औ", sound: "au.mp3" },
-        { text: "अः", sound: "aha.mp3" },
+        { text: "अं", sound: "assets/audio/um.mp3" },
+        { text: "आ", sound: "assets/audio/aa.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
       ],
     },
     {
       letter: "अः",
-      letterSound: "aha.mp3",
+      letterSound: "uhh.mp3",
       answer: "अः",
       options: [
-        { text: "अं", sound: "am.mp3" },
-        { text: "अः", sound: "aha.mp3" },
-        { text: "ओ", sound: "o.mp3" },
-        { text: "औ", sound: "au.mp3" },
+        { text: "अं", sound: "assets/audio/um.mp3" },
+        { text: "अः", sound: "assets/audio/uhh.mp3" },
+        { text: "ओ", sound: "assets/audio/o.mp3" },
+        { text: "औ", sound: "assets/audio/ou.mp3" },
       ],
     },
   ];
@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const bigLetter = document.querySelector(".trace-letter .letter");
   const newLetterBtn = document.getElementById("newLetter-btn");
   const homeBtn = document.getElementById("home-btn");
+  const soundBtn = document.getElementById("sound-btn");
+  let currentAudio = null;
   // 👉 Click on any flower letter
   letterButtons.forEach((li) => {
     li.addEventListener("click", () => {
@@ -325,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
     optionContainer.innerHTML = "";
 
     renderOptions(question.options);
+
   }
 
   newLetterBtn.addEventListener("click", () => {
@@ -370,4 +373,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const optionContainer = document.querySelector(".optFlower-list");
     optionContainer.innerHTML = "";
   });
+
+  function playLetterSound() {
+  if (!currentQuestion) return;
+
+  // stop previous audio if playing
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
+  // build path from question data
+  const audioPath = `assets/audio/${currentQuestion.letterSound}`;
+
+  currentAudio = new Audio(audioPath);
+  currentAudio.play().catch(err => console.log("Audio play blocked:", err));
+}
+soundBtn.addEventListener("click", () => {
+  playLetterSound();
+});
 });
