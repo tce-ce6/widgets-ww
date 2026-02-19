@@ -73,10 +73,11 @@ function highlightConsonantWithUmatra(text) {
   // \u0900-\u097F = Devanagari range
   // [क-हक्षत्रज्ञ] = common consonants (you can adjust if needed)
   return text.replace(
-    /([\u0915-\u0939\u0958-\u095F][\u0941\u0942])/g,
+    /([\u0915-\u0939\u0958-\u095F][\u093F\u0940])/g,
     (match) => {
-      const className = match[1] === "\u0942" ? "uu-vowel" : "u-vowel";
-      return `<span >${match}</span>`;
+      const charCode = match.charCodeAt(1); // Get code of the matra (2nd char)
+      const className = charCode === 0x0940 ? "uu-vowel" : "u-vowel"; // 0940 = badi_e
+      return `<span>${match}</span>`;
     },
   );
 }
