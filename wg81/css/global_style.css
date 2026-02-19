@@ -384,4 +384,22 @@ button:disabled{
   height: 100%;
   /* or fixed px values if needed, e.g. width: 300px; height: 400px; */
 }
+.title{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0em;
+    color: #700707;
+}
 
+#star-lottie-container.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+#star-lottie-container {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-out;   /* gentle fade-in */
+  pointer-events: none;                /* while hidden */
+}
