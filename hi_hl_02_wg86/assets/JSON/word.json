@@ -4,21 +4,21 @@
     "correct": "दिन",
     "wrongAudio": "din-wr.mp3",
     "correctAudio": "din-cr.mp3",
-    "type": "badi_e"
+    "type": "choti_e"
   },
   "TIL": {
     "incorrect": "तील",
     "correct": "तिल",
     "wrongAudio": "til-wr.mp3",
     "correctAudio": "til-cr.mp3",
-    "type": "badi_e"
+    "type": "choti_e"
   },
   "TEER": {
     "incorrect": "तिर",
     "correct": "तीर",
     "wrongAudio": "tir-wr.mp3",
     "correctAudio": "tir-cr.mp3",
-    "type": "choti_e"
+    "type": "badi_e"
   },
   "PITA": {
     "incorrect": "पीता",
@@ -56,25 +56,25 @@
     "type": "badi_e"
   },
   "HIRAN": {
-    "incorrect": "हीरन",
+    "incorrect": "हीरण",
     "correct": "हिरण",
     "wrongAudio": "hiran-wr.mp3",
     "correctAudio": "hiran-cr.mp3",
     "type": "choti_e"
   },
   "HATHI": {
-    "incorrect": "हाथी",
+    "incorrect": "हाथि",
     "correct": "हाथी",
     "wrongAudio": "hathi-wr.mp3",
     "correctAudio": "hathi-cr.mp3",
     "type": "badi_e"
   },
   "HIRA": {
-    "incorrect": "हीरा",
-    "correct": "हिरा",
+    "incorrect": "हिरा",
+    "correct": "हीरा",
     "wrongAudio": "hira-wr.mp3",
     "correctAudio": "hira-cr.mp3",
-    "type": "choti_e"
+    "type": "badi_e"
   },
   "KITAB": {
     "incorrect": "कीताब",
@@ -84,7 +84,7 @@
     "type": "choti_e"
   },
   "NEELA": {
-    "incorrect": "नीला",
+    "incorrect": "निला",
     "correct": "नीला",
     "wrongAudio": "nila-wr.mp3",
     "correctAudio": "nila-cr.mp3",
@@ -119,7 +119,7 @@
     "type": "choti_e"
   },
   "DEEPAK": {
-    "incorrect": "दियपाक",
+    "incorrect": "दिपक",
     "correct": "दीपक",
     "wrongAudio": "dipak-wr.mp3",
     "correctAudio": "dipak-cr.mp3",
