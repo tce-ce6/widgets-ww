@@ -436,16 +436,21 @@ const IMAGES = [
 ];
 
 //Playing Lotties
-function playCompleteLottie() {
-  const container = document.getElementById('completion-lottie');
+
+function playCorrectAnswerLottie(objectName) {
+
+  const containerId = `${objectName}-${wordIndex}`;
+  const container = document.getElementById(containerId);
 
   if (!container) {
-    console.warn(`Container completion-lottie not found`);
+    console.warn(`Container ${containerId} not found`);
     return;
   }
 
+  const variant = (wordIndex % 2 === 0) ? '01' : '02';
+
   // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
-  const animationPath = `./assets/animation/celebration.json`;
+  const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
 
   // Clear previous SVG if any
   container.innerHTML = '';
@@ -532,8 +537,6 @@ class WordPicker {
 
     // 🔁 rotate image (1 → 2 → 3 → 4 → 1 ...)
     const image = this.images[this.imageIndex];
-    console.log("pkp storeFingerprint: ~ getNext ~ image:", image)
-    //tree svg
     this.imageIndex = (this.imageIndex + 1) % this.images.length;
 
     return {
@@ -610,7 +613,7 @@ function showAllAnswers(wordObj) {
     mountain: './Assets/mountain-1.svg',
     stone: './Assets/stone-1.svg'
   };
-
+  
   // If the object exists in our map, update the source
   if (assetMap[objectName]) {
     imgEl.src = assetMap[objectName];
@@ -677,7 +680,7 @@ function showAllAnswers(wordObj) {
     li.style.pointerEvents = "none";
     li.style.opacity = "0.3";
   });
-
+  
   // Show the example button as the round is effectively over
   if (typeof showExample !== 'undefined') {
     showExample.style.display = 'block';
@@ -791,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
-    //  `${objectName}Word`.textContent = wordObj.root;
+  //  `${objectName}Word`.textContent = wordObj.root;
 
     const slot = document.getElementById(`${objectName}Word`);
     const wordDiv = document.getElementById(`${objectName}Main`);
@@ -868,12 +871,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const slotId = `${map.prefix}${wordIndex + 1}`;
         const fo = document.getElementById(slotId);
         if (fo) {
-          setTimeout(() => {
+          setTimeout(() =>{
             fo.style.display = 'block';
             const span = fo.querySelector('span');
             if (span) span.textContent = combined;
           }, 1500)
-
+          
         }
       }
 

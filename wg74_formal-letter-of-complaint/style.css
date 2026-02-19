@@ -227,3 +227,19 @@ svg{
   border: 2px solid #aa0000;
   border-radius: 20px;
 }
+
+.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.letter-box-highlight {
+  border: 3px solid #007bff !important;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+  animation: letter-box-pulse 0.4s ease-in-out;
+}
+
+@keyframes letter-box-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}

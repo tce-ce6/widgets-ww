@@ -14,7 +14,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Formal Letter of Complaint</h2>
-                <span id="versionId" class="versionText">b3_wg74_26020201</span>
+                <span id="versionId" class="versionText">b3_wg74_26020218</span>
             </div>
             <div class="svg-container" id="svg-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -129,7 +129,7 @@
                                               width="300"
                                               height="68"
                                               fill="transparent"
-                                              pointer-events="all" />
+                                               />
                                     
                                         <!-- 🎨 VISUAL SHAPE (no pointer events, shadow allowed) -->
                                         <g filter="url(#filter8_d_3351_20)" pointer-events="none">
@@ -154,7 +154,7 @@
                                         <!-- HIT AREA (controls click size) -->
                                         <rect x="1148" y="426" width="300" height="68"
                                               fill="transparent"
-                                              pointer-events="all" />
+                                              />
                                     
                                         <!-- VISUAL GROUP -->
                                         <g filter="url(#filter9_d_3351_20)" pointer-events="none">
@@ -330,7 +330,7 @@
                             <foreignObject class="practice-page-content" x="134" y="147" width="1583" height="840">
                                 <div xmlns="http://www.w3.org/1999/xhtml" style="height: 820px;width: 1571px;display: flex;flex-direction: column;gap: 30px;overflow-y: auto;padding: 40px 90px;
                                 ">
-                                    <div id="senders-address-box" class="letter-box" style="height:206px; width:566px">
+                                    <div id="senders-address-box" class="letter-box" style="height:206px; width:566px;">
                                         <span class="placeholder-txt" id="sendersAddress-placeholder">Sender's address</span>
                                         <div class="suggestion-answer">
                                             <span class="tap-txt">Tap on the correct address format</span>
@@ -485,8 +485,26 @@
                             </foreignObject>
                         </g>
 
-                        <g id="practice-result">
+                        <foreignObject class="proceed" x="1350" y="810" width="250" height="145" style="cursor: pointer;">
+                            <div id="formal-letter" xmlns="http://www.w3.org/1999/xhtml">
+                                <img id="proceed-btn" src="./assets/proceed-btn.svg" alt="Formal Letter" width="100%"
+                                    height="100%" style="display: none;">
+                            </div>
+                        </foreignObject>
 
+                        <g id="practice-result" style="display: none;">
+                            <foreignObject class="result" x="300" y="100" width="1312.41" height="947.48">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; position: relative;">
+                                    <img id="practice-result-smartPhone" class="practice-result-img" src="./assets/paper-with-btn.svg" alt="Smartphone complaint result" width="100%" height="100%" style="display: none;">
+                                    <img id="practice-result-parking" class="practice-result-img" src="./assets/paper-with-btn.svg" alt="Parking complaint result" width="100%" height="100%" style="display: none;">
+                                    <img id="practice-result-shopping" class="practice-result-img" src="./assets/paper-with-btn.svg" alt="Shopping complaint result" width="100%" height="100%" style="display: none;">
+                                </div>
+                            </foreignObject>
+                            <foreignObject id="practice-some-more" x="1215" y="940" width="385" height="93" style="cursor: pointer;">
+                                <div xmlns="http://www.w3.org/1999/xhtml">
+                                    <img src="./assets/practice-some-more.svg" alt="Formal Letter" width="100%" height="100%">
+                                </div>
+                            </foreignObject>
                         </g>
                         <g id="home-page" style="display: block;">
                             <foreignObject class="front-page" x="373" y="213" width="1174" height="519">

@@ -628,6 +628,7 @@ const state = {
     currentStepIndex: 0,
     activeLeftId: null,
     activeLetter: null,
+    letterBoxIndex: 0, // Tracks which letter box must be filled next (practice page)
     sequence: [
         "senders-address-blank", "date-blank", "recievers-address-blank",
         "salutation-blank", "introduction-blank", "body-1-blank",
@@ -636,7 +637,30 @@ const state = {
     ]
 };
 
+const boxSequence = [
+    'senders-address-box',
+    'date-box',
+    'receivers-address-box',
+    'salutation-box',
+    'introduction-box',
+    'body-1-box',
+    'body-2-box',
+    'conclusion-box',
+    'complimentary-close-box',
+    'senders-name-box'
+];
+
 const lottieContainer = document.getElementById('lottie-container');
+const proceedBtn = document.getElementById('proceed-btn');
+const practicePageEl = document.getElementById('practice-page');
+const practiceResultEl = document.getElementById('practice-result');
+
+const resultImageMap = {
+    smartPhone: 'practice-result-smartPhone',
+    parking: 'practice-result-parking',
+    shopping: 'practice-result-shopping'
+};
+
 
 function playCompleteLottie() {
     const container = document.getElementById('completion-lottie');
@@ -676,14 +700,61 @@ function playCompleteLottie() {
 document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
     initGameListeners();
+    initProceedButton();
 });
+
+function initProceedButton() {
+    if (!proceedBtn) return;
+    proceedBtn.onclick = () => showPracticeResult();
+}
+
+function resetLetterBoxesAndRetry() {
+    if (!state.activeLetter) return;
+
+    /* 1. Reset letter box state */
+    state.letterBoxIndex = 0;
+
+    /* 2. Reset LETTER BOXES (practice fill-in UI) */
+    document.querySelectorAll('.letter-box').forEach(box => {
+        box.classList.remove('completed', 'letter-box-highlight');
+        box.querySelector('.filled-text')?.remove();
+        const suggestion = box.querySelector('.suggestion-answer');
+        if (suggestion) suggestion.style.display = 'none';
+        box.style.height = "200px";
+    });
+    document.querySelectorAll('.placeholder-txt').forEach(el => el.style.display = 'block');
+
+    /* 3. Hide proceed, result; show practice page */
+    if (proceedBtn) proceedBtn.style.display = 'none';
+    if (practiceResultEl) practiceResultEl.style.display = 'none';
+    if (practicePageEl) practicePageEl.style.display = 'block';
+
+    /* 4. Re-initialize letter boxes with same topic */
+    startPracticeSession(state.activeLetter.title);
+}
+
+function showPracticeResult() {
+    if (!practicePageEl || !practiceResultEl) return;
+    practicePageEl.style.display = 'none';
+    practiceResultEl.style.display = 'block';
+    if (proceedBtn) proceedBtn.style.display = 'none';
+
+    document.querySelectorAll('.practice-result-img').forEach(img => {
+        img.style.display = 'none';
+    });
+    const topic = state.activeLetter?.title || 'smartPhone';
+    const imgId = resultImageMap[topic] || resultImageMap.smartPhone;
+    const img = document.getElementById(imgId);
+    if (img) img.style.display = 'block';
+}
 
 function initNavigation() {
     const navButtons = {
         'learn-btn': 'learn-page',
         'example-btn': 'practice-examples',
         'home-btn': 'home-page',
-        'learn-example-btn': 'practice-examples'
+        'learn-example-btn': 'practice-examples',
+        'practice-some-more': 'practice-examples'
     };
 
     Object.entries(navButtons).forEach(([id, page]) => {
@@ -698,73 +769,36 @@ function initNavigation() {
         }
     });
 
+    // Practice Some More: reset filled data and return to practice page with same topic
+    // const practiceSomeMoreBtn = document.getElementById('practice-some-more');
+    // if (practiceSomeMoreBtn) {
+    //     practiceSomeMoreBtn.onclick = () => resetLetterBoxesAndRetry();
+    // }
+
     // Practice Trigger Buttons
     ['smartPhone', 'parking', 'shopping'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
             btn.onclick = () => {
                 startPracticeSession(id);
+                resetLetterBoxesAndRetry();
                 navigateTo('practice-page');
             };
         }
     });
 }
 
-/**
- * FUNCTION: Prepares the specific letter data and UI
- */
-// Reusable function to handle any letter box (sender, receiver, date, etc.)
-// function initializeLetterBox(boxId, dataKey) {
-//     const mainBox = document.getElementById(boxId);
-
-//     if (!mainBox || !state.activeLetter) return;
-//     const suggestionBox = mainBox.querySelector('.suggestion-answer');
-
-//     if (!suggestionBox) {
-//         console.warn(`Missing .suggestion-answer inside #${boxId}`);
-//         return;
-//     }
-
-//     const optionsData = state.activeLetter.sections[dataKey];
-//     console.log("Data", optionsData)
-//     // 1. Assign data to spans and set attributes
-//     optionsData.forEach((option, index) => {
-//         const optionDiv = suggestionBox.querySelector(`.text${index + 1}`);
-//         if (optionDiv) {
-//             const span = optionDiv.querySelector('span');
-//             span.innerText = option.text;
-
-//             // Set attributes for validation
-//             optionDiv.setAttribute('data-is-correct', option.is_correct);
-//             optionDiv.setAttribute('data-feedback', option.feedback);
-
-//             // Handle clicking an option
-//             optionDiv.onclick = (e) => {
-//                 e.stopPropagation(); // Prevent re-triggering the main box click
-
-//                 if (option.is_correct) {
-//                     // Success: Update main box and hide suggestions
-//                     mainBox.querySelector('.suggestion-answer').style.display = 'none';
-//                     // Clear the box and put the correct text in
-//                     mainBox.innerText = option.text;
-//                     mainBox.style.height = "auto";
-//                     mainBox.classList.add('completed');
-//                 } else {
-//                     // Failure: Show feedback
-//                     alert(option.feedback || "Incorrect format. Try again!");
-//                 }
-//             };
-//         }
-//     });
-
-//     // 2. Toggle display of suggestions when main box is clicked
-//     mainBox.onclick = function() {
-//         const isAlreadyCorrect = this.classList.contains('completed');
-//         if (!isAlreadyCorrect) {
-//             suggestionBox.style.display = 'block';
-//         }
-//     };
-// }
+function highlightLetterBox(boxId) {
+    document.querySelectorAll('.letter-box').forEach(box => {
+        box.classList.remove('letter-box-highlight');
+    });
+    const box = document.getElementById(boxId);
+    if (box) {
+        box.classList.add('letter-box-highlight');
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => box.classList.remove('letter-box-highlight'), 800);
+    }
+}
 
 function initializeLetterBox(boxId, dataKey, placeholder) {
     const mainBox = document.getElementById(boxId);
@@ -792,7 +826,6 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             if (option.is_correct) {
                 suggestionBox.style.display = 'none';
 
-                // ✅ SAFE text injection
                 let filled = mainBox.querySelector('.filled-text');
                 if (!filled) {
                     document.getElementById(placeholder).style.display = 'none';
@@ -804,16 +837,28 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
                 filled.innerText = option.text;
                 mainBox.style.height = "auto";
                 mainBox.classList.add('completed');
+                mainBox.classList.remove('letter-box-highlight');
+
+                state.letterBoxIndex++;
+                if (state.letterBoxIndex >= boxSequence.length && proceedBtn) {
+                    proceedBtn.style.display = 'block';
+                }
             } else {
                 alert(option.feedback || "Incorrect format. Try again!");
             }
         };
     });
 
-    mainBox.onclick = () => {
-        if (!mainBox.classList.contains('completed')) {
-            suggestionBox.style.display = 'block';
+    mainBox.onclick = (e) => {
+        if (mainBox.classList.contains('completed')) return;
+
+        const expectedBoxId = boxSequence[state.letterBoxIndex];
+        if (boxId !== expectedBoxId) {
+            highlightLetterBox(expectedBoxId);
+            return;
         }
+
+        suggestionBox.style.display = 'block';
     };
 }
 
@@ -822,6 +867,8 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
 function startPracticeSession(matchId) {
     state.activeLetter = letterData.letters.find(l => l.title === matchId);
     state.currentStepIndex = 0;
+    state.letterBoxIndex = 0;
+    if (proceedBtn) proceedBtn.style.display = 'none';
     console.log(matchId, state.activeLetter);
     // Initialize specific components
     initializeLetterBox('senders-address-box', 'senders_address', 'sendersAddress-placeholder');
@@ -844,6 +891,12 @@ function navigateTo(pageId) {
         const el = document.getElementById(id);
         if (el) el.style.display = (id === pageId) ? 'block' : 'none';
     });
+
+    if(pageId == 'practice-examples'){
+        document.getElementById('learn-example-btn').style.display = 'none';
+        document.getElementById('practice-result').style.display = 'none';
+        // document.getElementById('practice-some-more').style.display = 'none';
+    }
     document.getElementById('home-btn').style.display = (pageId === 'home-page') ? 'none' : 'block';
 }
 
@@ -1020,6 +1073,7 @@ function resetPracticeSession() {
     state.currentStepIndex = 0;
     state.activeLeftId = null;
     state.activeLetter = null;
+    state.letterBoxIndex = 0;
 
     /* 2. Reset LEFT SVG BLANKS */
     document.querySelectorAll('.left-blanks > g').forEach(g => {
@@ -1044,7 +1098,7 @@ function resetPracticeSession() {
 
     /* 4. Reset LETTER BOXES (practice fill-in UI) */
     document.querySelectorAll('.letter-box').forEach(box => {
-        box.classList.remove('completed');
+        box.classList.remove('completed', 'letter-box-highlight');
 
         // Remove filled text
         box.querySelector('.filled-text')?.remove();
@@ -1072,6 +1126,19 @@ function resetPracticeSession() {
     const learnExampleBtn = document.getElementById('learn-example-btn');
     if (learnExampleBtn) {
         learnExampleBtn.style.display = 'none';
+    }
+
+    /* 7. Hide proceed button */
+    if (proceedBtn) {
+        proceedBtn.style.display = 'none';
+    }
+
+    /* 8. Hide practice-result, ensure practice-page hidden */
+    if (practiceResultEl) {
+        practiceResultEl.style.display = 'none';
+    }
+    if (practicePageEl) {
+        practicePageEl.style.display = 'none';
     }
 
     document.querySelectorAll('.placeholder-txt')
