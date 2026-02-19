@@ -7,34 +7,35 @@ let lottieInstances_star = null;
 let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
-let age_badhe_button = false
+let age_badhe_button = false;
+let animationTimeout = null;
+let starAnimationTimeout = null;
 const LottieAnimations = {
   LION: {
     CORRECT: "Lion_Correct_Big_U.json",
     INCORRECT: "Lion_Incorrect.json",
-    "Badi-U": 'Lion_Correct_Big_U.mp3',
-    "Choti-U": 'Lion_Correct_Small_U.mp3'
+    "Badi-U": "Lion_Correct_Big_U.mp3",
+    "Choti-U": "Lion_Correct_Small_U.mp3",
   },
   HIPPO: {
     CORRECT: "Hippo_Correct_Big_U.json",
     INCORRECT: "Hippo_Incorrect.json",
-    "Badi-U": 'Hippo_Correct_Big_U.mp3',
-    "Choti-U": 'Hippo_Correct_Small_U.mp3'
+    "Badi-U": "Hippo_Correct_Big_U.mp3",
+    "Choti-U": "Hippo_Correct_Small_U.mp3",
   },
   TIGER: {
     CORRECT: "Tiger_Correct_Big_U.json",
     INCORRECT: "Tiger_Incorrect.json",
-    "Badi-U": 'Tiger_Correct_Big_U.mp3',
-    "Choti-U": 'Tiger_Correct_Small_U.mp3'
+    "Badi-U": "Tiger_Correct_Big_U.mp3",
+    "Choti-U": "Tiger_Correct_Small_U.mp3",
   },
   MONKEY: {
     CORRECT: "Monkey_Correct_Big_U.json",
     INCORRECT: "Monkey_Incorrect.json",
-    "Badi-U": 'Monkey_Correct_Big_U.mp3',
-    "Choti-U": 'Monkey_Correct_Small_U.mp3'
-  }
+    "Badi-U": "Monkey_Correct_Big_U.mp3",
+    "Choti-U": "Monkey_Correct_Small_U.mp3",
+  },
 };
-
 
 function init() {
   console.log("Script loaded and initialized.");
@@ -42,19 +43,18 @@ function init() {
   selectRandomWord();
   naya_shabd();
   hideAndShowText1();
-  hideAndShowAudioButtons('none');
+  hideAndShowAudioButtons("none");
   showAnswer();
   //showText();
-  lottiAnimation('none');
+  lottiAnimation("none");
   nextbutton();
   audioListener();
   nextStep();
   gyankosh_button();
   getRandomAnimation();
-  let audioPLay = document.getElementById("audio_button_3")
+  let audioPLay = document.getElementById("audio_button_3");
   audioPLay.addEventListener("click", () => {
     playAudio("correct");
-
   });
   textClickEvent();
 }
@@ -64,7 +64,7 @@ selectRandomWord = () => {
   selectedWord = WordAudioEnum[currentWordKey];
   console.log("Selected Word:", selectedWord);
   textDisplay();
-}
+};
 function textDisplay() {
   let text1 = document.getElementById("cloud_text_01");
   let text2 = document.getElementById("cloud_text_02");
@@ -74,65 +74,66 @@ function textDisplay() {
 
   if (isLeftCorrect) {
     tspans.innerHTML = highlightConsonantWithUmatra(selectedWord.correct);
-    tspan2.innerHTML =highlightConsonantWithUmatra(selectedWord.incorrect);
-    correctCloudId = "cloud_text_01";          // ← remember
+    tspan2.innerHTML = highlightConsonantWithUmatra(selectedWord.incorrect);
+    correctCloudId = "cloud_text_01"; // ← remember
   } else {
     tspans.innerHTML = highlightConsonantWithUmatra(selectedWord.incorrect);
-    tspan2.innerHTML =highlightConsonantWithUmatra(selectedWord.correct);
-    correctCloudId = "cloud_text_02";          // ← remember
+    tspan2.innerHTML = highlightConsonantWithUmatra(selectedWord.correct);
+    correctCloudId = "cloud_text_02"; // ← remember
   }
-  resetFeedbackVisuals()
+  resetFeedbackVisuals();
 }
 
-
-
 function highlightConsonantWithUmatra(text) {
-    // Matches any consonant + exactly one following ु or ू
-    // \u0900-\u097F = Devanagari range
-    // [क-हक्षत्रज्ञ] = common consonants (you can adjust if needed)
-    return text.replace(/([\u0915-\u0939\u0958-\u095F][\u0941\u0942])/g, (match) => {
-        const className = match[1] === '\u0942' ? 'uu-vowel' : 'u-vowel';
-        return `<span >${match}</span>`;
-    });
+  // Matches any consonant + exactly one following ु or ू
+  // \u0900-\u097F = Devanagari range
+  // [क-हक्षत्रज्ञ] = common consonants (you can adjust if needed)
+  return text.replace(
+    /([\u0915-\u0939\u0958-\u095F][\u0941\u0942])/g,
+    (match) => {
+      const className = match[1] === "\u0942" ? "uu-vowel" : "u-vowel";
+      return `<span >${match}</span>`;
+    },
+  );
 }
 
 function resetFeedbackVisuals() {
   const highlights = ["cloud_text_01", "cloud_text_02"];
-  const outlines = ["cloud_text_outline_correct", "cloud_text_outline_Incorrect"];
+  const outlines = [
+    "cloud_text_outline_correct",
+    "cloud_text_outline_Incorrect",
+  ];
 
-  highlights.forEach(id => {
-    const el = document.getElementById(id).querySelector("p");;
+  highlights.forEach((id) => {
+    const el = document.getElementById(id).querySelector("p");
     if (el) el.classList.remove("cloud_text_highlight");
   });
 
-  outlines.forEach(id => {
+  outlines.forEach((id) => {
     const el = document.getElementById(id);
-    el.style.display = 'none';
+    el.style.display = "none";
     if (el) el.classList.remove("visible");
   });
 
-  lottiAnimation('none');
+  lottiAnimation("none");
 }
 function nextStep() {
   let nextButton = document.getElementById("age_badhe_button");
   nextButton.addEventListener("click", () => {
     // Logic to go to the next step
-    nextButton.style.display = 'none';
+    nextButton.style.display = "none";
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
-    tspans.innerHTML = 'ऑडियो सुनें।&nbsp;&nbsp;&nbsp;&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।'
-    age_badhe_button = true
-    document.getElementById("audio_button_1").style.display = 'none';
-    document.getElementById("audio_button_2").style.display = 'none';
-    hideAndShowAudioButtons('block');
-
+    tspans.innerHTML =
+      "ऑडियो सुनें।&nbsp;&nbsp;&nbsp;&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+    age_badhe_button = true;
+    document.getElementById("audio_button_1").style.display = "none";
+    document.getElementById("audio_button_2").style.display = "none";
+    hideAndShowAudioButtons("block");
 
     // You can add your navigation logic here
   });
-
 }
-
-
 
 function textClickEvent() {
   const cloud1 = document.getElementById("cloud_text_01");
@@ -145,32 +146,36 @@ function textClickEvent() {
     resetFeedbackVisuals();
 
     // Activate clicked highlight
-    const highlightId = cloudId === "cloud_text_01"
-      ? "cloud_text_highlight_01"
-      : "cloud_text_highlight_02";
+    const highlightId =
+      cloudId === "cloud_text_01"
+        ? "cloud_text_highlight_01"
+        : "cloud_text_highlight_02";
 
-   // moveYellowPatchToCorrectSide(cloudId)
+    // moveYellowPatchToCorrectSide(cloudId)
     // Choose outline based on correctness (not position!)
-    const outlineId = cloudId === "cloud_text_01"
-      ? "cloud_text_outline_Incorrect"   // red
-      : "cloud_text_outline_correct"; // yellow
+    const outlineId =
+      cloudId === "cloud_text_01"
+        ? "cloud_text_outline_Incorrect" // red
+        : "cloud_text_outline_correct"; // yellow
 
-
-    document.getElementById(outlineId).style.display = 'block';
-   // document.getElementById(highlightId).style.display = 'block';
-    document.getElementById(outlineId).querySelectorAll('path').forEach((path) => {
-      if (path.hasAttribute('stroke')) {
-        path.setAttribute('stroke', isCorrect ? '#93F724' : '#FF0000');
-      }
-    })
+    document.getElementById(outlineId).style.display = "block";
+    // document.getElementById(highlightId).style.display = 'block';
+    document
+      .getElementById(outlineId)
+      .querySelectorAll("path")
+      .forEach((path) => {
+        if (path.hasAttribute("stroke")) {
+          path.setAttribute("stroke", isCorrect ? "#93F724" : "#FF0000");
+        }
+      });
     let tspans = document.getElementById(cloudId).querySelector("p");
-    tspans.classList.add('cloud_text_highlight')
-   
+    tspans.classList.add("cloud_text_highlight");
+
     // Animation
-    lottiAnimation('block');
-    playLottieAnimation(isCorrect ? 'CORRECT' : 'INCORRECT');
-    if(isCorrect){
-       playLottieAnimationStart(cloudId);
+    lottiAnimation("block");
+    playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
+    if (isCorrect) {
+      playLottieAnimationStart(cloudId);
     }
   }
 
@@ -186,7 +191,7 @@ function textClickEvent() {
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
 
-   text_cloud_01.addEventListener("click", () => {
+  text_cloud_01.addEventListener("click", () => {
     if (!age_badhe_button) return;
     const isCorrect = correctCloudId === "cloud_text_01";
     activateHighlightAndOutline("cloud_text_01", isCorrect);
@@ -198,7 +203,6 @@ function textClickEvent() {
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
 }
-
 
 function audioListener() {
   const audio1 = document.getElementById("audio_button_1");
@@ -218,37 +222,36 @@ function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
 
-  let fileName = type === "wrong"
-    ? selectedWord.wrongAudio
-    : selectedWord.correctAudio;
+  let fileName =
+    type === "wrong" ? selectedWord.wrongAudio : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
   audioPlayer.play();
 }
 function playAnimationAudio(type, animationPath) {
-  let name = ''
+  let name = "";
   if (animationPath === "CORRECT") {
-    name = selectedLottie[selectedWord.type]
+    name = selectedLottie[selectedWord.type];
   } else {
-    name = selectedLottie[animationPath].replace('json', 'mp3')
+    name = selectedLottie[animationPath].replace("json", "mp3");
   }
   audioPlayer.pause();
-  audioPlayer.currentTime = 0
+  audioPlayer.currentTime = 0;
   audioPlayer.src = `assets/JSON/${type}/${name}`;
   audioPlayer.play();
 }
 
-function hideAndShowText1(state = 'none') {
+function hideAndShowText1(state = "none") {
   document.getElementById("i_text_2").style.display = state;
 }
 
-function hideAndShowAudioButtons(state = 'none') {
+function hideAndShowAudioButtons(state = "none") {
   // document.getElementById("audio_button_1").style.display = state;
   // document.getElementById("audio_button_2").style.display = state;
   document.getElementById("audio_button_3").style.display = state;
   document.getElementById("arrow_audio").style.display = state;
 }
-function showAnswer(state = 'none') {
+function showAnswer(state = "none") {
   document.getElementById("cloud_text_outline_Incorrect").style.display = state;
   document.getElementById("cloud_text_outline_correct").style.display = state;
 }
@@ -256,10 +259,10 @@ function showAnswer(state = 'none') {
 //   document.getElementById("cloud_text_highlight_01").style.display = state;
 //   document.getElementById("cloud_text_highlight_02").style.display = state;
 // }
-function lottiAnimation(state = 'block') {
+function lottiAnimation(state = "block") {
   document.getElementById("Character_train_01").style.display = state;
 }
-function nextbutton(state = 'block') {
+function nextbutton(state = "block") {
   document.getElementById("age_badhe_button").style.display = state;
 }
 function openModal() {
@@ -296,26 +299,25 @@ function naya_shabd() {
   naya_shabd_button = document.getElementById("naya_shabd_button");
   naya_shabd_button.addEventListener("click", () => {
     console.log("Naya shabd button clicked");
-    document.getElementById("audio_button_1").style.display = 'block';
-    document.getElementById("audio_button_2").style.display = 'block';
+    document.getElementById("audio_button_1").style.display = "block";
+    document.getElementById("audio_button_2").style.display = "block";
     audio_button_1 = false;
     audio_button_2 = false;
-    age_badhe_button = false
+    age_badhe_button = false;
     selectRandomWord();
     hideAndShowText1();
-    hideAndShowAudioButtons('none');
+    hideAndShowAudioButtons("none");
     showAnswer();
-   // showText();
-    lottiAnimation('none');
+    // showText();
+    lottiAnimation("none");
     nextbutton();
     getRandomAnimation();
     audioPlayer.pause();
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
-    tspans.innerHTML = 'दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। '
+    tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
   });
 }
-
 
 function getRandomAnimation() {
   const animals = Object.keys(LottieAnimations);
@@ -323,134 +325,129 @@ function getRandomAnimation() {
   selectedLottie = LottieAnimations[randomAnimal];
 }
 
-
-
-
-
 function playLottieAnimation(bandGroup) {
-  const containerEl = document.getElementById('lottie-container');
-  const parentEl = document.getElementById('Character_train_01');
+  const containerEl = document.getElementById("lottie-container");
+  const parentEl = document.getElementById("Character_train_01");
 
   if (!containerEl || !parentEl) return;
 
   const animationPath = selectedLottie[bandGroup];
   if (!animationPath) return;
 
-  const type = animationPath.split('_')[0];
+  const type = animationPath.split("_")[0];
 
   if (lottieInstances) {
+    if (animationTimeout) clearTimeout(animationTimeout);
     lottieInstances.destroy();
     lottieInstances = null;
   }
-  containerEl.innerHTML = '';
-  parentEl.classList.remove('visible');
-  playAnimationAudio(type, bandGroup)
+  containerEl.innerHTML = "";
+  parentEl.classList.remove("visible");
+  playAnimationAudio(type, bandGroup);
 
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: 'canvas',
+      renderer: "canvas",
       loop: false,
       autoplay: false,
-      path: `assets/JSON/${type}/${animationPath}`
+      path: `assets/JSON/${type}/${animationPath}`,
     });
 
-    lottieInstances.addEventListener('DOMLoaded', () => {
-
+    lottieInstances.addEventListener("DOMLoaded", () => {
       lottieInstances.play();
-      parentEl.classList.add('visible');
+      parentEl.classList.add("visible");
     });
 
-    lottieInstances.addEventListener('complete', () => {
-      setTimeout(() => {
-        parentEl.classList.remove('visible');
-        resetFeedbackVisuals()
-    
+    lottieInstances.addEventListener("complete", () => {
+      animationTimeout = setTimeout(() => {
+        parentEl.classList.remove("visible");
+        resetFeedbackVisuals();
+
         if (lottieInstances) {
           lottieInstances.destroy();
           lottieInstances = null;
         }
-        containerEl.innerHTML = '';
+        containerEl.innerHTML = "";
       }, 1000); // ← keep final frame ~1 second
     });
 
-    lottieInstances.addEventListener('error', (e) => {
+    lottieInstances.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
     });
 
     // Safety override
     if (lottieInstances.audioController) {
-      lottieInstances.audioController.pause = () => console.warn("[patched] Audio pause skipped");
+      lottieInstances.audioController.pause = () =>
+        console.warn("[patched] Audio pause skipped");
     }
-
   } catch (err) {
-    console.error('Lottie load crashed:', err);
-    parentEl.classList.remove('visible');
+    console.error("Lottie load crashed:", err);
+    parentEl.classList.remove("visible");
   }
 }
 
 function playLottieAnimationStart(bandGroup) {
-  let el = bandGroup === "cloud_text_01" ?"star-lottie-container-1":"star-lottie-container-2"
+  let el =
+    bandGroup === "cloud_text_01"
+      ? "star-lottie-container-1"
+      : "star-lottie-container-2";
   const containerEl = document.getElementById(el);
-  
 
-  if (!containerEl ) return;
-
+  if (!containerEl) return;
 
   if (lottieInstances_star) {
+    if (starAnimationTimeout) clearTimeout(starAnimationTimeout);
     lottieInstances_star.destroy();
     lottieInstances_star = null;
   }
-  containerEl.innerHTML = '';
-  containerEl.classList.remove('visible');
-
+  containerEl.innerHTML = "";
+  containerEl.classList.remove("visible");
 
   try {
     lottieInstances_star = lottie.loadAnimation({
       container: containerEl,
-      renderer: 'canvas',
+      renderer: "canvas",
       loop: false,
       autoplay: false,
-      path: `assets/Animation/shining stars.json`
+      path: `assets/Animation/shining stars.json`,
     });
 
-    lottieInstances_star.addEventListener('DOMLoaded', () => {
-
+    lottieInstances_star.addEventListener("DOMLoaded", () => {
       lottieInstances_star.play();
-      containerEl.classList.add('visible');
+      containerEl.classList.add("visible");
     });
 
-    lottieInstances_star.addEventListener('complete', () => {
-      setTimeout(() => {
-        containerEl.classList.remove('visible');
+    lottieInstances_star.addEventListener("complete", () => {
+      starAnimationTimeout = setTimeout(() => {
+        containerEl.classList.remove("visible");
         if (lottieInstances_star) {
           lottieInstances_star.destroy();
           lottieInstances_star = null;
         }
-        containerEl.innerHTML = '';
+        containerEl.innerHTML = "";
       }, 1000); // ← keep final frame ~1 second
     });
 
-    lottieInstances_star.addEventListener('error', (e) => {
+    lottieInstances_star.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
     });
 
     // Safety override
     if (lottieInstances_star.audioController) {
-      lottieInstances_star.audioController.pause = () => console.warn("[patched] Audio pause skipped");
+      lottieInstances_star.audioController.pause = () =>
+        console.warn("[patched] Audio pause skipped");
     }
-
   } catch (err) {
-    console.error('Lottie load crashed:', err);
-    containerEl.classList.remove('visible');
+    console.error("Lottie load crashed:", err);
+    containerEl.classList.remove("visible");
   }
 }
 
-
 function getRandomUnusedWordKey() {
-  const keys = Object.keys(WordAudioEnum).filter(k => !usedWords.includes(k));
+  const keys = Object.keys(WordAudioEnum).filter((k) => !usedWords.includes(k));
 
   if (keys.length === 0) {
     usedWords = []; // reset when all used
@@ -462,24 +459,22 @@ function getRandomUnusedWordKey() {
   return randomKey;
 }
 getAllWordElements = () => {
-  fetch('assets/JSON/word.json') // Replace with your API endpoint
-    .then(response => {
+  fetch("assets/JSON/word.json") // Replace with your API endpoint
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Network response was not ok: ' + response.statusText);
+        throw new Error("Network response was not ok: " + response.statusText);
       }
 
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       // Work with the parsed JSON data (a JavaScript object)
       console.log(data);
       WordAudioEnum = data;
       init();
-
     })
-    .catch(error => {
-
-      console.error('Error fetching data:', error);
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
-}
-window.onload = getAllWordElements();
+};
+window.addEventListener("load", getAllWordElements);
