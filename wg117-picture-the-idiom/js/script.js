@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Display Idiom (Image + Options)
   function showIdiom(index) {
     document.getElementById("wrapper-1").style.display = "none";
-document.getElementById("wrapper-2").style.display = "none";
+    document.getElementById("wrapper-2").style.display = "none";
     // Hide animation when new question loads
     lottieWrapper.style.display = "none";
     if (successAnim) {
@@ -165,13 +165,13 @@ document.getElementById("wrapper-2").style.display = "none";
       playSuccessAnimation();
 
       // ⏱ Wait 2 seconds before showing result
-setTimeout(() => {
-  document.getElementById("step-1").style.display = "none";
-  document.getElementById("step-2").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("step-1").style.display = "none";
+        document.getElementById("step-2").style.display = "block";
 
-  showMeaning();
-  revealStep2Content(); // ⭐ stagger reveal
-}, 1000);
+        showMeaning();
+        revealStep2Content(); // ⭐ stagger reveal
+      }, 1000);
     }
   }
 
@@ -251,23 +251,31 @@ setTimeout(() => {
   }
 
   function revealStep2Content() {
-  const wrapper1 = document.getElementById("wrapper-1");
-  const wrapper2 = document.getElementById("wrapper-2");
+    const wrapper1 = document.getElementById("wrapper-1");
+    const wrapper2 = document.getElementById("wrapper-2");
 
-  // reset visibility first
-  wrapper1.style.display = "none";
-  wrapper2.style.display = "none";
+    // reset visibility first
+    wrapper1.style.display = "none";
+    wrapper1.style.visibility = "hidden";
+    wrapper1.style.opacity = "0";
+    wrapper2.style.display = "none";
+    wrapper2.style.visibility = "hidden";
+    wrapper2.style.opacity = "0";
 
-  // ⏱ Show Meaning after 1 sec
-  setTimeout(() => {
-    wrapper1.style.display = "block";
-  }, 1000);
+    // ⏱ Show Meaning after 1 sec
+    setTimeout(() => {
+      wrapper1.style.display = "block";
+      wrapper1.style.visibility = "visible";
+      wrapper1.style.opacity = "1";
+    }, 1000);
 
-  // ⏱ Show Example after 2 sec
-  setTimeout(() => {
-    wrapper2.style.display = "block";
-  }, 2000);
-}
+    // ⏱ Show Example after 2 sec
+    setTimeout(() => {
+      wrapper2.style.display = "block";
+      wrapper2.style.visibility = "visible";
+      wrapper2.style.opacity = "1";
+    }, 2000);
+  }
 
   loadData();
 });
