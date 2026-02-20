@@ -7,12 +7,17 @@ function setAngleIncrement(value) {
 }
 
 // Initial Defaults
-const INITIAL_ANGLE = 69.;
+const INITIAL_ANGLE = 69;
+const INITIAL_DECIMAL = 6;
 let angleInteger = INITIAL_ANGLE;
-let angleDecimal = 6;
+let angleDecimal = INITIAL_DECIMAL;
 let angleIncrement = 1; // Default angle change value
 let currentN2 = null; // No medium selected initially
 const n1 = 1.0;
+
+function getTotalAngle() {
+    return angleInteger + angleDecimal / 10;
+}
 
 // Center point where light ray hits the interface (from HTML: normal line at x=960.5, interface at y=524.5)
 const CENTER_X = 960.5;
@@ -54,7 +59,8 @@ function updateSimulation() {
     // - angle 270° → SVG 180° (left)
     // Formula: SVG_angle = (270 - angle) mod 360
 
-    let normalizedAngle = angleInteger % 360;
+    const totalAngle = getTotalAngle();
+    let normalizedAngle = totalAngle % 360;
     if (normalizedAngle < 0) normalizedAngle += 360;
 
     let svgAngle = (270 - normalizedAngle) % 360;
@@ -80,12 +86,13 @@ function updateSimulation() {
     torch.setAttribute("y", torchY - 42);
     torch.setAttribute("transform", `rotate(${torchRotation - 19} ${torchX} ${torchY})`);
 
-    // Calculate and show yellow refracted ray line if a medium is selected
+    // Calculate and show yellow ray line if a medium is selected
     if (currentN2) {
 
         // Update red incident ray line (from torch to center point)
         const redLineEl = document.getElementById('redIncidentRay');
         if (redLineEl) {
+            redLineEl.style.display = "block";
             redLineEl.setAttribute("x1", torchX);
             redLineEl.setAttribute("y1", torchY);
             redLineEl.setAttribute("x2", CENTER_X);
@@ -93,14 +100,14 @@ function updateSimulation() {
         }
 
         // Update incident angle arc (red arc showing angle from normal to incident ray)
-        updateIncidentAngleArc(angleInteger);
-
-        // Get current medium data
-        const currentMedium = Object.values(mediaData).find(m => m.n === currentN2);
-        const allowedAngles = currentMedium ? currentMedium.angles : [];
+        const incidentArc = document.getElementById('incidentAngleArc');
+        const incidentLabel = document.getElementById('incidentAngleLabel');
+        if (incidentArc) incidentArc.style.display = "block";
+        if (incidentLabel) incidentLabel.style.display = "block";
+        updateIncidentAngleArc(totalAngle);
 
         // Normalize angle to 0-360
-        let effectiveAngle = angleInteger % 360;
+        let effectiveAngle = totalAngle % 360;
         if (effectiveAngle < 0) effectiveAngle += 360;
 
         // Get the actual incident angle from normal (use acute angle)
@@ -108,60 +115,63 @@ function updateSimulation() {
         if (incidentAngle > 180) incidentAngle = 360 - incidentAngle;
         if (incidentAngle > 90) incidentAngle = 180 - incidentAngle;
 
-        // Check if current angle is in predefined angles (with tolerance)
-        const isAllowedAngle = allowedAngles.some(a => Math.abs(incidentAngle - a) < 0.5);
+        // Snell's law: n1 * sin(θ1) = n2 * sin(θ2)
+        const theta1Rad = incidentAngle * (Math.PI / 180);
+        const sinTheta2 = (n1 * Math.sin(theta1Rad)) / currentN2;
 
-        if (isAllowedAngle) {
-            // Snell's law: n1 * sin(θ1) = n2 * sin(θ2)
-            const theta1Rad = incidentAngle * (Math.PI / 180);
-            const sinTheta2 = (n1 * Math.sin(theta1Rad)) / currentN2;
+        // Determine which side of normal the incident ray is on (to keep yellow ray on same side)
+        let normalizedAngle = totalAngle % 360;
+        if (normalizedAngle < 0) normalizedAngle += 360;
+        let svgAngle = (270 - normalizedAngle) % 360;
+        if (svgAngle < 0) svgAngle += 360;
+        const angleRad = svgAngle * (Math.PI / 180);
+        const torchXForSide = CENTER_X + TORCH_RADIUS * Math.cos(angleRad);
+        const isRightSide = torchXForSide > CENTER_X;
 
-            // Check if total internal reflection occurs (sinTheta2 > 1)
+        const yellowLineEl = document.getElementById('yelloLineDiv');
+        if (yellowLineEl) {
+            yellowLineEl.style.display = "block";
+
+            const lineLength = 350;
+
             if (sinTheta2 <= 1 && sinTheta2 >= -1) {
+                // Refraction
                 const theta2Rad = Math.asin(sinTheta2);
                 let theta2Deg = theta2Rad * (180 / Math.PI);
-
-                // Determine direction of refracted ray based on incident ray direction
-                // Check which side of normal the incident ray is on
-                let normalizedAngle = angleInteger % 360;
-                if (normalizedAngle < 0) normalizedAngle += 360;
-                let svgAngle = (270 - normalizedAngle) % 360;
-                if (svgAngle < 0) svgAngle += 360;
-                const angleRad = svgAngle * (Math.PI / 180);
-                const torchX = CENTER_X + TORCH_RADIUS * Math.cos(angleRad);
-                const isRightSide = torchX > CENTER_X;
-
-                // Refracted ray should be on the same side as incident ray
                 if (!isRightSide) theta2Deg = -theta2Deg;
 
-                // Show yellow line - it should cross the y-axis (normal) at the calculated angle
-                const yellowLineEl = document.getElementById('yelloLineDiv');
-                if (yellowLineEl) {
-                    yellowLineEl.style.display = "block";
-                    // Position at center point
-                    // The refracted ray goes into medium 2 (below the interface)
-                    // Start from center, extend downward and to the side based on refracted angle
-                    const lineLength = 300;
-                    // Calculate end point: from normal (pointing down = 90°) rotate by theta2Deg
-                    const refractedAngleRad = (90 + theta2Deg) * (Math.PI / 180);
-                    const endX = CENTER_X + lineLength * Math.cos(refractedAngleRad);
-                    const endY = CENTER_Y + lineLength * Math.sin(refractedAngleRad);
+                // Refracted ray goes into medium 2 (below interface)
+                const refractedAngleRad = (90 + theta2Deg) * (Math.PI / 180);
+                const endX = CENTER_X + lineLength * Math.cos(refractedAngleRad);
+                const endY = CENTER_Y + lineLength * Math.sin(refractedAngleRad);
 
-                    yellowLineEl.setAttribute("x1", CENTER_X);
-                    yellowLineEl.setAttribute("y1", CENTER_Y);
-                    yellowLineEl.setAttribute("x2", endX);
-                    yellowLineEl.setAttribute("y2", endY);
-                }
+                yellowLineEl.setAttribute("x1", CENTER_X);
+                yellowLineEl.setAttribute("y1", CENTER_Y);
+                yellowLineEl.setAttribute("x2", endX);
+                yellowLineEl.setAttribute("y2", endY);
 
                 // Update refracted angle arc
                 updateRefractedAngleArc(theta2Deg);
             } else {
-                // Total internal reflection - hide yellow line and arc
+                // Total internal reflection: show reflected ray in medium 1 (above interface)
+                // Reflected ray is symmetric about the normal (upwards)
+                const normalAngleUp = 270; // up in SVG
+                const reflectedRayAngle = isRightSide
+                    ? (normalAngleUp + incidentAngle) % 360
+                    : (normalAngleUp - incidentAngle + 360) % 360;
+
+                const reflectedRad = reflectedRayAngle * (Math.PI / 180);
+                const endX = CENTER_X + lineLength * Math.cos(reflectedRad);
+                const endY = CENTER_Y + lineLength * Math.sin(reflectedRad);
+
+                yellowLineEl.setAttribute("x1", CENTER_X);
+                yellowLineEl.setAttribute("y1", CENTER_Y);
+                yellowLineEl.setAttribute("x2", endX);
+                yellowLineEl.setAttribute("y2", endY);
+
+                // Hide refracted arc + label for TIR case
                 hideRefractedElements();
             }
-        } else {
-            // Angle not in predefined list - hide yellow line and arc
-            hideRefractedElements();
         }
     } else {
         // Hide yellow line and arc if no medium is active
@@ -172,9 +182,6 @@ function updateSimulation() {
 // Helper function to hide refracted elements
 function hideRefractedElements() {
     const yellowLineEl = document.getElementById('yelloLineDiv');
-    if (yellowLineEl) {
-        yellowLineEl.style.display = "none";
-    }
     const refractedArc = document.getElementById('refractedAngleArc');
     if (refractedArc) {
         refractedArc.style.display = "none";
@@ -322,7 +329,8 @@ function updateRefractedAngleArc(angleDeg) {
 
 function resetSimulation() {
     // 1. Reset variables
-    angle = INITIAL_ANGLE;
+    angleInteger = INITIAL_ANGLE;
+    angleDecimal = INITIAL_DECIMAL;
     currentN2 = null;
 
     // 2. Hide all medium images and reset button states
@@ -338,8 +346,19 @@ function resetSimulation() {
         }
     });
 
-    // 3. Update visuals (will hide yellow line)
+    // 3. Update visuals
     updateSimulation();
+
+    // 4. Hide all ray/arc visuals in the full reset state
+    const yellowLineEl = document.getElementById('yelloLineDiv');
+    if (yellowLineEl) yellowLineEl.style.display = "none";
+    const redLineEl = document.getElementById('redIncidentRay');
+    if (redLineEl) redLineEl.style.display = "none";
+    const incidentArc = document.getElementById('incidentAngleArc');
+    if (incidentArc) incidentArc.style.display = "none";
+    const incidentLabel = document.getElementById('incidentAngleLabel');
+    if (incidentLabel) incidentLabel.style.display = "none";
+    hideRefractedElements();
 }
 
 
@@ -357,6 +376,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const svg = document.querySelector('svg');
     const torchGroup = document.getElementById('Group 56');
+
+    // Bind reset as early as possible (even if other elements are missing)
+    if (resetBtn) {
+        resetBtn.style.pointerEvents = 'all';
+        resetBtn.querySelectorAll?.('*')?.forEach(el => {
+            el.style.pointerEvents = 'all';
+        });
+        resetBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetSimulation();
+        });
+    }
 
     if (!torchGroup || !torchGroup.parentNode) return;
 
@@ -379,9 +410,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Set up reset button listener
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetSimulation);
+    // Decimal arrow listeners for 0.1° adjustments
+    if (decimalUpArrow) {
+        decimalUpArrow.addEventListener('click', () => {
+            angleDecimal += 1;
+            if (angleDecimal >= 10) {
+                angleDecimal = 0;
+                angleInteger += 1;
+                if (angleInteger >= 360) angleInteger -= 360;
+            }
+            updateSimulation();
+        });
+    }
+
+    if (decimalDownArrow) {
+        decimalDownArrow.addEventListener('click', () => {
+            angleDecimal -= 1;
+            if (angleDecimal < 0) {
+                angleDecimal = 9;
+                angleInteger -= 1;
+                if (angleInteger < 0) angleInteger += 360;
+            }
+            updateSimulation();
+        });
     }
 
     // Create red incident ray line if it doesn't exist
@@ -486,8 +537,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btn) {
             btn.style.cursor = "pointer";
             btn.addEventListener('click', () => {
-                // Set angle to 69.6° when medium button is clicked
+                // Set angle to initial value when medium button is clicked
                 angleInteger = INITIAL_ANGLE;
+                angleDecimal = INITIAL_DECIMAL;
                 currentN2 = mediaData[id].n;
 
                 // Show/hide medium images - only show the clicked one

@@ -719,7 +719,10 @@ function resetLetterBoxesAndRetry() {
         box.classList.remove('completed', 'letter-box-highlight');
         box.querySelector('.filled-text')?.remove();
         const suggestion = box.querySelector('.suggestion-answer');
-        if (suggestion) suggestion.style.display = 'none';
+        if (suggestion) {
+            suggestion.style.display = 'none';
+           // hideFeedback(suggestion);
+        }
         box.style.height = "200px";
     });
     document.querySelectorAll('.placeholder-txt').forEach(el => el.style.display = 'block');
@@ -824,6 +827,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             e.stopPropagation();
 
             if (option.is_correct) {
+               // hideFeedback(suggestionBox);
                 suggestionBox.style.display = 'none';
 
                 let filled = mainBox.querySelector('.filled-text');
@@ -844,7 +848,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
                     proceedBtn.style.display = 'block';
                 }
             } else {
-                alert(option.feedback || "Incorrect format. Try again!");
+                showFeedback(option.feedback || "Incorrect format. Try again!", suggestionBox);
             }
         };
     });
@@ -858,6 +862,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             return;
         }
 
+       // hideFeedback(suggestionBox);
         suggestionBox.style.display = 'block';
     };
 }
@@ -1064,9 +1069,31 @@ function formatIdText(id) {
     return id.replace('-blank', '').replace(/-/g, ' ').toUpperCase();
 }
 
-function showFeedback(msg) {
-    alert(msg); // Replace with a custom UI popup if preferred
+function showFeedback(msg, anchorEl) {
+    if (!anchorEl) return;
+    let feedbackEl = anchorEl.querySelector('.feedback-text');
+    if (!feedbackEl) {
+        feedbackEl = document.createElement('div');
+        feedbackEl.className = 'feedback-text';
+        anchorEl.appendChild(feedbackEl);
+    }
+    feedbackEl.textContent = msg || 'Incorrect format. Try again!';
+    feedbackEl.classList.add('is-visible');
+    // const hide = () => {
+    //     feedbackEl.classList.remove('is-visible');
+    // };
+    // const t = setTimeout(hide, 5000);
+    // feedbackEl._hideTimeout = t;
 }
+
+// function hideFeedback(anchorEl) {
+//     if (!anchorEl) return;
+//     const feedbackEl = anchorEl.querySelector('.feedback-text');
+//     if (feedbackEl) {
+//         feedbackEl.classList.remove('is-visible');
+//         if (feedbackEl._hideTimeout) clearTimeout(feedbackEl._hideTimeout);
+//     }
+// }
 
 function resetPracticeSession() {
     /* 1. Reset STATE */
@@ -1103,9 +1130,12 @@ function resetPracticeSession() {
         // Remove filled text
         box.querySelector('.filled-text')?.remove();
 
-        // Hide suggestions again
+        // Hide suggestions and feedback
         const suggestion = box.querySelector('.suggestion-answer');
-        if (suggestion) suggestion.style.display = 'none';
+        if (suggestion) {
+            suggestion.style.display = 'none';
+           // hideFeedback(suggestion);
+        }
 
         box.style.height = "200px";
     });
