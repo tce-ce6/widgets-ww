@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // ✅ Display Idiom (Image + Options)
   function showIdiom(index) {
+    document.getElementById("wrapper-1").style.display = "none";
+document.getElementById("wrapper-2").style.display = "none";
     // Hide animation when new question loads
     lottieWrapper.style.display = "none";
     if (successAnim) {
@@ -152,24 +154,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const correctSentence = currentAnswerWords.join(" ");
 
-if (formedSentence === correctSentence) {
-  console.log("✅ Correct!");
+    if (formedSentence === correctSentence) {
+      console.log("✅ Correct!");
 
-  // Disable button immediately
-  showAnswerBtn.disabled = true;
-  showAnswerBtn.classList.add("disabled");
+      // Disable button immediately
+      showAnswerBtn.disabled = true;
+      showAnswerBtn.classList.add("disabled");
 
-  // Play animation first
-  playSuccessAnimation();
+      // Play animation first
+      playSuccessAnimation();
 
-  // ⏱ Wait 2 seconds before showing result
-  setTimeout(() => {
-    document.getElementById("step-1").style.display = "none";
-    document.getElementById("step-2").style.display = "block";
+      // ⏱ Wait 2 seconds before showing result
+setTimeout(() => {
+  document.getElementById("step-1").style.display = "none";
+  document.getElementById("step-2").style.display = "block";
 
-    showMeaning();
-  }, 3000);
-}
+  showMeaning();
+  revealStep2Content(); // ⭐ stagger reveal
+}, 1000);
+    }
   }
 
   function showMeaning() {
@@ -246,5 +249,25 @@ if (formedSentence === correctSentence) {
 
     currentFillIndex = 0;
   }
+
+  function revealStep2Content() {
+  const wrapper1 = document.getElementById("wrapper-1");
+  const wrapper2 = document.getElementById("wrapper-2");
+
+  // reset visibility first
+  wrapper1.style.display = "none";
+  wrapper2.style.display = "none";
+
+  // ⏱ Show Meaning after 1 sec
+  setTimeout(() => {
+    wrapper1.style.display = "block";
+  }, 1000);
+
+  // ⏱ Show Example after 2 sec
+  setTimeout(() => {
+    wrapper2.style.display = "block";
+  }, 2000);
+}
+
   loadData();
 });
