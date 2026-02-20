@@ -109,7 +109,7 @@
     "correct": "मैदान",
     "wrongAudio": "maidan-wr.mp3",
     "correctAudio": "maidan-cr.mp3",
-    "type": "ye"
+    "type": "ayee"
   },
   "LEKHAK": {
     "incorrect": "लैखक",
@@ -126,7 +126,7 @@
     "type": "ayee"
   },
   "TAIRAK": {
-    "incorrect": "तैरक",
+    "incorrect": "तेराक",
     "correct": "तैराक",
     "wrongAudio": "tairak-wr.mp3",
     "correctAudio": "tairak-cr.mp3",

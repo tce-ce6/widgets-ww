@@ -366,3 +366,11 @@ button:disabled{
       font-size: 34px;
       line-height: 41px;
       }
+      
+
+.title{
+        text-align: center;
+    font-size: 30px;
+    color: #00ccff;
+    font-weight: 300;
+}
