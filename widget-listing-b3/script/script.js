@@ -380,6 +380,13 @@ const WIDGET_DATA = [
     status: "in-review",
   },
   {
+    name: "व्यंजन की पहचान",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg125-vyanjan-ki-pahchan/index.html",
+    imagePath: "./assets/wg-125.png",
+    creators: "ni-ra-125",
+    status: "in-review",
+  },
+  {
     name: "Barter Fails, Money Wins",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-114.png",
@@ -416,10 +423,10 @@ const WIDGET_DATA = [
   },
   {
     name: "Picture the Idiom",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg117-picture-the-idiom/index.html",
     imagePath: "./assets/wg-117.png",
-    creators: "-ra-117",
-    status: "todo",
+    creators: "ni-ra-117",
+    status: "in-review",
   },
   {
     name: "Law of Constant Proportions - Molecular Visualizer",
@@ -430,6 +437,13 @@ const WIDGET_DATA = [
   },
   {
     name: "Election Officer - Enforce Model Code of Conduct",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-130.png",
+    creators: "-ra-130",
+    status: "todo",
+  },
+  {
+    name: "Electrolytic Refining of Metals",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-130.png",
     creators: "-ra-130",
