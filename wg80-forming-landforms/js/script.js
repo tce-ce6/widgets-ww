@@ -1,5 +1,5 @@
 const data = {
-  "Conical Slope": {
+  "Conical Hill": {
     title: "Conical Hill",
     Insights:
       "The conical hill rises almost uniformly from the surrounding land. It has a uniform slope and a narrow top, as shown by evenly spaced concentric contours. ",
@@ -13,8 +13,8 @@ const data = {
       "./assets/conical-slope-1600.svg",
     ],
   },
-  "Saddle Slope": {
-    title: "Saddle ",
+  "Saddle": {
+    title: "Saddle",
     Insights:
       "The narrow or broad depression between the two hills is called a saddle, pass, gap or col.  ",
     "counter lines": [
@@ -26,7 +26,7 @@ const data = {
       "./assets/saddle-slope-1500.svg",
     ],
   },
-  "Ridge Slope": {
+  "Ridge": {
     title: "Ridge",
     Insights:
       "An elongated hill or a narrow chain of hills is called a ridge.  ",
@@ -38,8 +38,8 @@ const data = {
       "./assets/ridge-slope-1600.svg",
     ],
   },
-  "Plateau Slope": {
-    title: "Plateau Slope",
+  "Plateau": {
+    title: "Plateau",
     Insights:
       "A plateau is a broad, flat-topped highland with relatively steep sides.  ",
     "counter lines": [
@@ -53,10 +53,10 @@ const data = {
 };
 
 const finalImageMap = {
-  "Conical Slope": "conical-final",
-  "Saddle Slope": "saddle-final",
-  "Ridge Slope": "ridge-final",
-  "Plateau Slope": "plateau-final",
+  "Conical Hill": "conical-final",
+  "Saddle": "saddle-final",
+  "Ridge": "ridge-final",
+  "Plateau": "plateau-final",
 };
 
 let currentSlopeTitle = "";
@@ -406,10 +406,10 @@ let currentStepIndex = 0;
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const slopeOrder = [
-  "Conical Slope",
-  "Saddle Slope",
-  "Ridge Slope",
-  "Plateau Slope",
+  "Conical Hill",
+  "Saddle",
+  "Ridge",
+  "Plateau",
 ];
 
 function updateButtonStates() {
@@ -574,10 +574,10 @@ function loadSlope(title) {
   updateSlopeCategory(currentSlopeTitle);
 
   const slopeIds = [
-    "conical-slope-lines",
-    "saddle-slope-lines",
-    "ridge-slope-lines",
-    "plateau-slope-lines",
+    "conical-hill-lines",
+    "saddle-lines",
+    "ridge-lines",
+    "plateau-lines",
   ];
 
   slopeIds.forEach((id) => {
@@ -599,7 +599,7 @@ function loadSlope(title) {
   const label1700 = document.getElementById("1700-m");
 
   if (line8 && label1700) {
-    if (title === "Saddle Slope") {
+    if (title === "Saddle") {
       line8.style.display = "none";
       label1700.style.display = "none";
     } else {
@@ -607,6 +607,29 @@ function loadSlope(title) {
       label1700.style.display = "block";
     }
   }
+
+  // Handle Plateau specific visibility
+  if (title === "Plateau") {
+    const label1600 = document.getElementById("1600-m");
+    const line7 = document.getElementById("line-7");
+    const line10 = document.getElementById("line-10");
+    const line8 = document.getElementById("line-8");
+
+    if (label1700) label1700.style.display = "none";
+    if (label1600) label1600.style.display = "none";
+    if (line7) line7.style.display = "none";
+    if (line10) line10.style.display = "none";
+    if (line8) line8.style.display = "none";
+  } else {
+    const label1600 = document.getElementById("1600-m");
+    const line7 = document.getElementById("line-7");
+    const line10 = document.getElementById("line-10");
+
+    if (label1600) label1600.style.display = "block";
+    if (line7) line7.style.display = "block";
+    if (line10) line10.style.display = "block";
+  }
+
   updateButtonStates();
 
   if (showAnsBtnElement) {
@@ -642,6 +665,7 @@ const homeBtn = document.getElementById("home-btn");
 
 if (homeBtn) {
   homeBtn.addEventListener("click", () => {
+    resetActivity(true);
     currentSlopeTitle = "";
 
     currentStepIndex = 0;
@@ -650,14 +674,25 @@ if (homeBtn) {
 
     // Hide all slope line containers
     const slopeIds = [
-      "conical-slope-lines",
-      "saddle-slope-lines",
-      "ridge-slope-lines",
-      "plateau-slope-lines",
+      "conical-hill-lines",
+      "saddle-lines",
+      "ridge-lines",
+      "plateau-lines",
     ];
     slopeIds.forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.style.display = "none";
+    });
+  });
+}
+
+const homeResetBtn = document.getElementById("home-resetBtn");
+if (homeResetBtn) {
+  homeResetBtn.addEventListener("click", () => {
+    // Remove completed class from all slope list items
+    const slopeListItems = document.querySelectorAll("#slope-list li");
+    slopeListItems.forEach((li) => {
+      li.classList.remove("completed");
     });
   });
 }

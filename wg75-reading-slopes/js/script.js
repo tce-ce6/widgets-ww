@@ -654,6 +654,7 @@ const homeBtn = document.getElementById("home-btn");
 
 if (homeBtn) {
   homeBtn.addEventListener("click", () => {
+    resetActivity(true);
     currentSlopeTitle = "";
 
     currentStepIndex = 0;

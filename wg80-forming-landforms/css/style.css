@@ -354,22 +354,22 @@ svg * {
   cursor: pointer;
 }
 
-.line-marker.conical-slope {
+.line-marker.conical-hill {
   top: 100px;
   right: 32px;
 }
 
-.line-marker.saddle-slope {
+.line-marker.saddle {
   top: 60px;
   right: 35px;
 }
 
-.line-marker.ridge-slope {
+.line-marker.ridge {
   top: 75px;
   right: 25px;
 }
 
-.line-marker.plateau-slope {
+.line-marker.plateau {
   top: 105px;
   right: 36px;
 }
