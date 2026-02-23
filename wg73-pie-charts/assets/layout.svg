@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pie Charts</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Pie Charts</h2>
-        <span id="versionId" class="versionText">b3_wg73_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1" viewBox="0 0 1959.2 1145.11">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1959.2 1145.11">
   <defs>
     <clipPath id="clippath">
       <rect x="221" y="415.09" width="235.09" height="136.29" fill="none"/>
@@ -1307,7 +1288,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(82 228.09)" font-family="Roboto-Medium, Roboto" font-size="24" font-weight="500" isolation="isolate"><tspan x="0" y="0">A school</tspan><tspan x="93.68" y="0" letter-spacing="-.04em">'</tspan><tspan x="96.66" y="0">s annual budget of ₹12 lakh is distributed among </tspan><tspan x="625.71" y="0" letter-spacing="0em">v</tspan><tspan x="637.41" y="0">arious</tspan></text>
+            <text transform="translate(82 228.09)" font-family="Roboto-Medium, Roboto" font-size="24" font-weight="500" isolation="isolate"><tspan x="0" y="0">A school</tspan><tspan x="93.68" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="96.66" y="0">s annual budget of ₹12 lakh is distributed among </tspan><tspan x="625.71" y="0" letter-spacing="0em">v</tspan><tspan x="637.41" y="0">arious</tspan></text>
           </g>
         </g>
       </g>
@@ -1365,13 +1346,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

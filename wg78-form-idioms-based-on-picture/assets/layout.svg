@@ -1,30 +1,11 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>चित्र देखकर मुहावरे बनाओ</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>चित्र देखकर मुहावरे बनाओ</h2>
-        <span id="versionId" class="versionText">b3_wg78_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1" viewBox="0 0 1920 1085.2">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1085.2">
   <g id="I_text" data-name="I text">
     <g id="_सही_शब्दों_को_टैप_करें_और_उचित_मुहावरा_बनाएँ_" data-name=" सही शब्दों को टैप करें और उचित मुहावरा बनाएँ " isolation="isolate">
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(946.7 255.6)" fill="#77fd92" font-family="NirmalaUI, 'Nirmala UI'" font-size="30" isolation="isolate"><tspan x="0" y="0">सही शब्दों को टैप करें और उचित मुहावरा बनाएँ।</tspan></text>
+            <text transform="translate(946.7 255.6)" fill="#77fd92" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">सही शब्दों को टैप करें और उचित मुहावरा बनाएँ।</tspan></text>
           </g>
         </g>
       </g>
@@ -61,7 +42,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1006.6 584.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">का</tspan></text>
+            <text transform="translate(1006.6 584.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">का</tspan></text>
           </g>
         </g>
       </g>
@@ -70,7 +51,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1218.3 584.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
+            <text transform="translate(1218.3 584.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
           </g>
         </g>
       </g>
@@ -79,7 +60,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1437.1 583.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">मिट्टी</tspan></text>
+            <text transform="translate(1437.1 583.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">मिट्टी</tspan></text>
           </g>
         </g>
       </g>
@@ -88,7 +69,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1651.7 582.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
+            <text transform="translate(1651.7 582.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
           </g>
         </g>
       </g>
@@ -103,7 +84,7 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(783.2 693.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">पर</tspan></text>
+              <text transform="translate(783.2 693.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">पर</tspan></text>
             </g>
           </g>
         </g>
@@ -112,7 +93,7 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(989.6 694.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">पत्थर</tspan></text>
+              <text transform="translate(989.6 694.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">पत्थर</tspan></text>
             </g>
           </g>
         </g>
@@ -121,7 +102,7 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1236.6 694.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">से</tspan></text>
+              <text transform="translate(1236.6 694.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">से</tspan></text>
             </g>
           </g>
         </g>
@@ -130,7 +111,7 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1436.7 693.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">लेकर</tspan></text>
+              <text transform="translate(1436.7 693.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">लेकर</tspan></text>
             </g>
           </g>
         </g>
@@ -139,7 +120,7 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1671.2 692.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">देना</tspan></text>
+              <text transform="translate(1671.2 692.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">देना</tspan></text>
             </g>
           </g>
         </g>
@@ -150,7 +131,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(788.9 584.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="40" isolation="isolate"><tspan x="0" y="0">ईंट</tspan></text>
+            <text transform="translate(788.9 584.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="40" isolation="isolate"><tspan x="0" y="0">ईंट</tspan></text>
           </g>
         </g>
       </g>
@@ -182,14 +163,14 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1277.4 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">अगला</tspan></text>
+              <text transform="translate(1277.4 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">अगला</tspan></text>
             </g>
           </g>
         </g>
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1383.4 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उदाहरण</tspan></text>
+              <text transform="translate(1383.4 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उदाहरण</tspan></text>
             </g>
           </g>
         </g>
@@ -203,14 +184,14 @@
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1005 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
+              <text transform="translate(1005 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
             </g>
           </g>
         </g>
         <g isolation="isolate">
           <g isolation="isolate">
             <g isolation="isolate">
-              <text transform="translate(1103 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">देखें</tspan></text>
+              <text transform="translate(1103 1009.6)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">देखें</tspan></text>
             </g>
           </g>
         </g>
@@ -228,98 +209,98 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(788.7 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">जब</tspan></text>
+            <text transform="translate(788.7 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">जब</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(868.1 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">दुश्मन</tspan></text>
+            <text transform="translate(868.1 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">दुश्मन</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1011.8 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">ने</tspan></text>
+            <text transform="translate(1011.8 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">ने</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1053.7 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">हमला</tspan></text>
+            <text transform="translate(1053.7 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">हमला</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1176.1 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">किया</tspan></text>
+            <text transform="translate(1176.1 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">किया</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1286.4 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">तो</tspan></text>
+            <text transform="translate(1286.4 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">तो</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1341.3 800.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">हमने</tspan></text>
+            <text transform="translate(1341.3 800.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">हमने</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1445.7 800.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">ईंट</tspan></text>
+            <text transform="translate(1445.7 800.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">ईंट</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1518.8 800.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">का</tspan></text>
+            <text transform="translate(1518.8 800.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">का</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1590.5 800.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
+            <text transform="translate(1590.5 800.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1106.8 866.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">पत्थर</tspan></text>
+            <text transform="translate(1106.8 866.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">पत्थर</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1243.2 866.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">से</tspan></text>
+            <text transform="translate(1243.2 866.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">से</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1294.5 866.6)" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">दिया</tspan></text>
+            <text transform="translate(1294.5 866.6)" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="49" font-weight="700" isolation="isolate"><tspan x="0" y="0">दिया</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1388.4 866.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="49" isolation="isolate"><tspan x="0" y="0">।</tspan></text>
+            <text transform="translate(1388.4 866.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="49" isolation="isolate"><tspan x="0" y="0">।</tspan></text>
           </g>
         </g>
       </g>
@@ -329,7 +310,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(749.5 727.8)" fill="#fff" font-family="NirmalaUI, 'Nirmala UI'" font-size="35" isolation="isolate"><tspan x="0" y="0">प्रयोग</tspan></text>
+            <text transform="translate(749.5 727.8)" fill="#fff" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="35" isolation="isolate"><tspan x="0" y="0">प्रयोग</tspan></text>
           </g>
         </g>
       </g>
@@ -344,21 +325,21 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(949.3 618.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="55" isolation="isolate"><tspan x="0" y="0">कड़ा</tspan></text>
+            <text transform="translate(949.3 618.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="55" isolation="isolate"><tspan x="0" y="0">कड़ा</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1064 618.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="55" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
+            <text transform="translate(1064 618.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="55" isolation="isolate"><tspan x="0" y="0">जवाब</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1199.7 618.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="55" isolation="isolate"><tspan x="0" y="0">देना</tspan></text>
+            <text transform="translate(1199.7 618.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="55" isolation="isolate"><tspan x="0" y="0">देना</tspan></text>
           </g>
         </g>
       </g>
@@ -372,14 +353,14 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1306 618.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="55" isolation="isolate"><tspan x="0" y="0">बदला</tspan></text>
+            <text transform="translate(1306 618.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="55" isolation="isolate"><tspan x="0" y="0">बदला</tspan></text>
           </g>
         </g>
       </g>
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1441.7 618.6)" font-family="NirmalaUI, 'Nirmala UI'" font-size="55" isolation="isolate"><tspan x="0" y="0">लेना</tspan></text>
+            <text transform="translate(1441.7 618.6)" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="55" isolation="isolate"><tspan x="0" y="0">लेना</tspan></text>
           </g>
         </g>
       </g>
@@ -389,7 +370,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(764.5 535.6)" fill="#fff" font-family="NirmalaUI, 'Nirmala UI'" font-size="35" isolation="isolate"><tspan x="0" y="0">अर्थ</tspan></text>
+            <text transform="translate(764.5 535.6)" fill="#fff" font-family="NirmalaUI, &apos;Nirmala UI&apos;" font-size="35" isolation="isolate"><tspan x="0" y="0">अर्थ</tspan></text>
           </g>
         </g>
       </g>
@@ -413,7 +394,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(964.4 1012.4)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
+            <text transform="translate(964.4 1012.4)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">उत्तर</tspan></text>
           </g>
         </g>
       </g>
@@ -427,7 +408,7 @@
       <g isolation="isolate">
         <g isolation="isolate">
           <g isolation="isolate">
-            <text transform="translate(1071.1 1012.4)" fill="#fff" font-family="NirmalaUI-Bold, 'Nirmala UI'" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">छिपाएँ</tspan></text>
+            <text transform="translate(1071.1 1012.4)" fill="#fff" font-family="NirmalaUI-Bold, &apos;Nirmala UI&apos;" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">छिपाएँ</tspan></text>
           </g>
         </g>
       </g>
@@ -504,13 +485,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

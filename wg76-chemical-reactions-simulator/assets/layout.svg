@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chemical Reactions Simulator</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Chemical Reactions Simulator</h2>
-        <span id="versionId" class="versionText">b3_wg76_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1920 1080">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
   <g id="lab_base" data-name="lab base">
     <path id="Path_392" data-name="Path 392" d="M1155.11,108h707.7v820h-707.7V108h0Z" fill="#161945"/>
   </g>
@@ -235,7 +216,7 @@
         <text transform="translate(92 887)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">two entirely new compounds, often resulting in a solid precipitate, gas, or wate</tspan><tspan x="700.1" y="0" letter-spacing="-.08em">r</tspan><tspan x="705.44" y="0">.(AgNO₃ + NaCl</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(939.32 887)" font-family="SegoeUI-Semibold, 'Segoe UI'" font-size="20" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(939.32 887)" font-family="SegoeUI-Semibold, &apos;Segoe UI&apos;" font-size="20" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(956.58 887)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AgCl↓ </tspan></text>
@@ -390,7 +371,7 @@
         <text transform="translate(467.92 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AB + CD</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(526.28 599)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(526.28 599)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(539.22 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AD + CB</tspan></text>
@@ -401,7 +382,7 @@
         <text transform="translate(493.62 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">A + B</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(532.39 233)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(532.39 233)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(545.33 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AB </tspan></text>
@@ -412,7 +393,7 @@
         <text transform="translate(495.48 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AB</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(518.32 355)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(518.32 355)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(531.26 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> A + B</tspan></text>
@@ -423,7 +404,7 @@
         <text transform="translate(477.75 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">A + BC</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(526.28 477)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(526.28 477)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(539.22 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AC + B</tspan></text>
@@ -442,7 +423,7 @@
           <text transform="translate(455.4 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AgNO₃ + NaCl</tspan></text>
         </g>
         <g isolation="isolate">
-          <text transform="translate(552 599)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(552 599)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
         </g>
         <g isolation="isolate">
           <text transform="translate(564.95 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AgCl↓ </tspan></text>
@@ -453,7 +434,7 @@
           <text transform="translate(497.13 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">H₂ + O₂</tspan></text>
         </g>
         <g isolation="isolate">
-          <text transform="translate(548.78 233)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(548.78 233)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
         </g>
         <g isolation="isolate">
           <text transform="translate(561.72 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> H₂O </tspan></text>
@@ -464,7 +445,7 @@
           <text transform="translate(467.34 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">CaCO₃</tspan></text>
         </g>
         <g isolation="isolate">
-          <text transform="translate(514.55 355)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(514.55 355)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
         </g>
         <g isolation="isolate">
           <text transform="translate(527.49 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> CaO + CO₂ </tspan></text>
@@ -475,7 +456,7 @@
           <text transform="translate(429.71 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">Zn + CuSO₄</tspan></text>
         </g>
         <g isolation="isolate">
-          <text transform="translate(509.36 477)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(509.36 477)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
         </g>
         <g isolation="isolate">
           <text transform="translate(522.3 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> ZnSO₄ + Cu </tspan></text>
@@ -486,7 +467,7 @@
           <text transform="translate(481.36 721)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">2Mg + O₂</tspan></text>
         </g>
         <g isolation="isolate">
-          <text transform="translate(546.75 721)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(546.75 721)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
         </g>
         <g isolation="isolate">
           <text transform="translate(559.7 721)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> 2MgO</tspan></text>
@@ -863,13 +844,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

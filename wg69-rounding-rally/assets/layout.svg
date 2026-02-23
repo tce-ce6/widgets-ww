@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rounding Rally</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Rounding Rally</h2>
-        <span id="versionId" class="versionText">b3_wg69_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1" viewBox="0 0 2258.4 1166.22">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2258.4 1166.22">
   <defs>
     <clipPath id="clippath">
       <rect x="858.43" y="356.55" width="575.76" height="45.06" fill="none"/>
@@ -410,13 +391,13 @@
                       </g>
                       <g id="_Pick_the_number_that_s_fewer_steps_away_" data-name=" Pick the number that s fewer steps away " isolation="isolate">
                         <g isolation="isolate">
-                          <text transform="translate(623.98 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">"Pick the number that</tspan></text>
+                          <text transform="translate(623.98 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">&quot;Pick the number that</tspan></text>
                         </g>
                         <g isolation="isolate">
-                          <text transform="translate(914.88 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate" letter-spacing="-.05em"><tspan x="0" y="0">'</tspan></text>
+                          <text transform="translate(914.88 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate" letter-spacing="-.05em"><tspan x="0" y="0">&apos;</tspan></text>
                         </g>
                         <g isolation="isolate">
-                          <text transform="translate(918.32 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">s fewer steps away!"</tspan></text>
+                          <text transform="translate(918.32 665.77)" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">s fewer steps away!&quot;</tspan></text>
                         </g>
                       </g>
                     </g>
@@ -788,15 +769,12 @@
         </g>
       </g>
     </g>
+    <g id="Header-btn-text">
+      <g id="LCM_of_numbers" data-name="LCM of numbers" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1005.17 74.89)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="45" font-weight="700" isolation="isolate"><tspan x="0" y="0">Rounding Rally</tspan></text>
+        </g>
+      </g>
+    </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

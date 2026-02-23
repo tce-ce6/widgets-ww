@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Build a Paragraph</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Build a Paragraph</h2>
-        <span id="versionId" class="versionText">b3_wg85_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920.01 1080">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920.01 1080">
   <defs>
     <clipPath id="clippath">
       <rect x="1458.01" y="367" width="355" height="355" fill="none"/>
@@ -1036,7 +1017,7 @@
       <text transform="translate(131.01 233)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">A pa</tspan><tspan x="52.55" y="0" letter-spacing="-.01em">r</tspan><tspan x="61.65" y="0">ag</tspan><tspan x="90.43" y="0" letter-spacing="-.01em">r</tspan><tspan x="99.53" y="0">aph is a g</tspan><tspan x="211.12" y="0" letter-spacing="-.02em">r</tspan><tspan x="220.15" y="0">oup of </tspan></text>
       <text transform="translate(131.01 273)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">sentences on a single idea. Here, </tspan></text>
       <text transform="translate(131.01 313)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">all sentences describe the</tspan><tspan x="305.6" y="0" letter-spacing="-.03em"> </tspan><tspan x="311.31" y="0" letter-spacing="-.08em">T</tspan><tspan x="325.27" y="0">aj </tspan></text>
-      <text transform="translate(131.01 353)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">Mahal</tspan><tspan x="72.1" y="0" letter-spacing="-.04em">'</tspan><tspan x="75.13" y="0">s impo</tspan><tspan x="153.71" y="0" letter-spacing=".02em">r</tspan><tspan x="163.83" y="0">tance and beauty. </tspan></text>
+      <text transform="translate(131.01 353)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">Mahal</tspan><tspan x="72.1" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="75.13" y="0">s impo</tspan><tspan x="153.71" y="0" letter-spacing=".02em">r</tspan><tspan x="163.83" y="0">tance and beauty. </tspan></text>
       <text transform="translate(131.01 393)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">When</tspan><tspan x="65.9" y="0" letter-spacing="0em">e</tspan><tspan x="79.79" y="0">ver you write a pa</tspan><tspan x="285.5" y="0" letter-spacing="-.01em">r</tspan><tspan x="294.61" y="0">ag</tspan><tspan x="323.39" y="0" letter-spacing="-.01em">r</tspan><tspan x="332.49" y="0">aph, </tspan></text>
       <text transform="translate(131.01 433)" fill="#181818" font-family="Roboto-Bold, Roboto" font-size="26" font-weight="700" isolation="isolate"><tspan x="0" y="0">try p</tspan><tspan x="52.43" y="0" letter-spacing="-.02em">r</tspan><tspan x="61.46" y="0" letter-spacing="0em">o</tspan><tspan x="75.97" y="0">viding a suitable title.</tspan></text>
     </g>
@@ -1119,13 +1100,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

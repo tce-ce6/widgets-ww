@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Race to the Magic Numbers!</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Race to the Magic Numbers!</h2>
-        <span id="versionId" class="versionText">b3_wg67_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
   <defs>
     <clipPath id="clippath-1">
       <rect x="864.6" y="371.69" width="241.01" height="241.01" transform="translate(212.44 1276.84) rotate(-71.99)" fill="none"/>
@@ -2253,7 +2234,7 @@
         <circle cx="91" cy="78" r="38.5" fill="none" stroke="#707070"/>
       </g>
       <g id="i" isolation="isolate">
-        <text transform="translate(85.32 92)" fill="#030000" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
+        <text transform="translate(85.32 92)" fill="#030000" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
       </g>
     </g>
   </g>
@@ -2266,15 +2247,15 @@
       </g>
       <g id="Group_7056" data-name="Group 7056">
         <g id="Start_at_Home_Spin_the_wheels:_Orange_wheel_tens_Green_wheel_ones_Check_the_target_number._Choose_the_direction_forward_or_backward_._Select_the_number_of_steps_using_the_number_pad._Land_EXACTLY_on_the_magic_number_If_the_steps_are_wrong_t" data-name="Start at Home Spin the wheels: Orange wheel tens Green wheel ones Check the target number. Choose the direction forward or backward . Select the number of steps using the number pad. Land EXACTLY on the magic number If the steps are wrong t" isolation="isolate">
-          <text transform="translate(855.71 381.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">S</tspan><tspan x="15.97" y="0">tart at Home!</tspan></text>
-          <text transform="translate(844.07 436.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Spin the wheels:</tspan></text>
-          <text transform="translate(630.67 491.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Orange wheel = tens,        Green wheel = ones</tspan></text>
-          <text transform="translate(778.3 546.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Check the target number.</tspan></text>
-          <text transform="translate(647.76 601.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Choose the direction (forward or backward).</tspan></text>
-          <text transform="translate(605.09 656.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Select the number of steps using the number pad.</tspan></text>
-          <text transform="translate(697.02 711.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Land EX</tspan><tspan x="112.12" y="0" letter-spacing="-.02em">A</tspan><tspan x="132.14" y="0">CT</tspan><tspan x="168.72" y="0" letter-spacing="-.06em">L</tspan><tspan x="181.91" y="0">Y on the magic number!</tspan></text>
-          <text transform="translate(569.38 766.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">If the steps are wrong, try again or tap      Hint for help.</tspan></text>
-          <text transform="translate(553.28 821.19)" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">The first player to reach any number from 91 to 100 wins!</tspan></text>
+          <text transform="translate(855.71 381.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">S</tspan><tspan x="15.97" y="0">tart at Home!</tspan></text>
+          <text transform="translate(844.07 436.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Spin the wheels:</tspan></text>
+          <text transform="translate(630.67 491.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Orange wheel = tens,        Green wheel = ones</tspan></text>
+          <text transform="translate(778.3 546.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Check the target number.</tspan></text>
+          <text transform="translate(647.76 601.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Choose the direction (forward or backward).</tspan></text>
+          <text transform="translate(605.09 656.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Select the number of steps using the number pad.</tspan></text>
+          <text transform="translate(697.02 711.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Land EX</tspan><tspan x="112.12" y="0" letter-spacing="-.02em">A</tspan><tspan x="132.14" y="0">CT</tspan><tspan x="168.72" y="0" letter-spacing="-.06em">L</tspan><tspan x="181.91" y="0">Y on the magic number!</tspan></text>
+          <text transform="translate(569.38 766.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">If the steps are wrong, try again or tap      Hint for help.</tspan></text>
+          <text transform="translate(553.28 821.19)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">The first player to reach any number from 91 to 100 wins!</tspan></text>
         </g>
         <g id="Group_7051" data-name="Group 7051">
           <g id="bunny-face1-10" data-name="bunny-face1" opacity=".23">
@@ -2622,15 +2603,15 @@
         <path d="M417,144.48c-2.17,0-4,2.42-4,5.28v655.55c0,2.86,1.83,5.28,4,5.28h1086.1c2.17,0,4-2.42,4-5.28V149.77c0-2.86-1.83-5.28-4-5.28H417M417,136.48h1086.1c6.63,0,12,5.95,12,13.28v655.55c0,7.34-5.37,13.28-12,13.28H417c-6.63,0-12-5.95-12-13.28V149.77c0-7.34,5.37-13.28,12-13.28Z" fill="#f9e93b"/>
       </g>
       <g id="Start_at_Home_Spin_the_wheels:_Orange_wheel_tens_Green_wheel_ones_Check_the_target_number._Choose_the_direction_forward_or_backward_._Select_the_number_of_steps_using_the_number_pad._Land_EXACTLY_on_the_magic_number_If_the_steps_are_wrong_t-2" data-name="Start at Home Spin the wheels: Orange wheel tens Green wheel ones Check the target number. Choose the direction forward or backward . Select the number of steps using the number pad. Land EXACTLY on the magic number If the steps are wrong t" isolation="isolate">
-        <text transform="translate(848.21 303)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">S</tspan><tspan x="15.97" y="0">tart at Home!</tspan></text>
-        <text transform="translate(836.57 358)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Spin the wheels:</tspan></text>
-        <text transform="translate(623.17 413)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Orange wheel = tens,        Green wheel = ones</tspan></text>
-        <text transform="translate(770.8 468)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Check the target number.</tspan></text>
-        <text transform="translate(640.26 523)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Choose the direction (forward or backward).</tspan></text>
-        <text transform="translate(597.59 578)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Select the number of steps using the number pad.</tspan></text>
-        <text transform="translate(689.52 633)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">Land EX</tspan><tspan x="112.12" y="0" letter-spacing="-.02em">A</tspan><tspan x="132.14" y="0">CT</tspan><tspan x="168.72" y="0" letter-spacing="-.06em">L</tspan><tspan x="181.91" y="0">Y on the magic number!</tspan></text>
-        <text transform="translate(561.88 688)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">If the steps are wrong, try again or tap      Hint for help.</tspan></text>
-        <text transform="translate(545.78 743)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="32" isolation="isolate"><tspan x="0" y="0">The first player to reach any number from 91 to 100 wins!</tspan></text>
+        <text transform="translate(848.21 303)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">S</tspan><tspan x="15.97" y="0">tart at Home!</tspan></text>
+        <text transform="translate(836.57 358)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Spin the wheels:</tspan></text>
+        <text transform="translate(623.17 413)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Orange wheel = tens,        Green wheel = ones</tspan></text>
+        <text transform="translate(770.8 468)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Check the target number.</tspan></text>
+        <text transform="translate(640.26 523)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Choose the direction (forward or backward).</tspan></text>
+        <text transform="translate(597.59 578)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Select the number of steps using the number pad.</tspan></text>
+        <text transform="translate(689.52 633)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Land EX</tspan><tspan x="112.12" y="0" letter-spacing="-.02em">A</tspan><tspan x="132.14" y="0">CT</tspan><tspan x="168.72" y="0" letter-spacing="-.06em">L</tspan><tspan x="181.91" y="0">Y on the magic number!</tspan></text>
+        <text transform="translate(561.88 688)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">If the steps are wrong, try again or tap      Hint for help.</tspan></text>
+        <text transform="translate(545.78 743)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">The first player to reach any number from 91 to 100 wins!</tspan></text>
       </g>
       <g id="Group_6976-5" data-name="Group 6976">
         <g id="bunny-face1-11" data-name="bunny-face1" opacity=".23">
@@ -3129,12 +3110,3 @@
     </g>
   </g>
 </svg>
-      </div>
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

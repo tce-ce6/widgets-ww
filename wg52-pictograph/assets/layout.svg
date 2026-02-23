@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pictograph</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Pictograph</h2>
-        <span id="versionId" class="versionText">b3_wg52_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1" viewBox="0 0 1920 1080.01">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080.01">
   <defs>
     <clipPath id="clippath">
       <rect x="1674" y="932" width="90" height="90" fill="none"/>
@@ -4486,7 +4467,7 @@
         <text transform="translate(113 341)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">one week.</tspan><tspan x="126.81" y="0" letter-spacing="-.03em"> </tspan><tspan x="132.96" y="0">The table shows the number</tspan></text>
       </g>
       <g isolation="isolate">
-        <text transform="translate(113 378)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">of fruit b</tspan><tspan x="107.37" y="0" letter-spacing="-.01em">o</tspan><tspan x="123.02" y="0">xes sold by M</tspan><tspan x="294.75" y="0" letter-spacing="-.08em">r</tspan><tspan x="302.23" y="0">. Sharm</tspan><tspan x="398.82" y="0" letter-spacing="0em">a</tspan><tspan x="413.74" y="0" letter-spacing="-.04em">'</tspan><tspan x="417.21" y="0">s</tspan></text>
+        <text transform="translate(113 378)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">of fruit b</tspan><tspan x="107.37" y="0" letter-spacing="-.01em">o</tspan><tspan x="123.02" y="0">xes sold by M</tspan><tspan x="294.75" y="0" letter-spacing="-.08em">r</tspan><tspan x="302.23" y="0">. Sharm</tspan><tspan x="398.82" y="0" letter-spacing="0em">a</tspan><tspan x="413.74" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="417.21" y="0">s</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(113 415)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">shop in one week. Represent this</tspan></text>
@@ -4987,7 +4968,7 @@
   <g id="Act_05_TOS">
     <g id="During_the_school_s_summer_fair_an_ice_cream_vendor_surveyed_100_Class_6_students_about_their_favourite_ice_cream_flavour._A_survey_was_conducted_among_students_to_find_their_favourite_ice_cream_flavour._The_results_are_shown_in_the_table._Prepare_a_picto" data-name="During the school s summer fair an ice cream vendor surveyed 100 Class 6 students about their favourite ice cream flavour. A survey was conducted among students to find their favourite ice cream flavour. The results are shown in the table. Prepare a picto" isolation="isolate">
       <g isolation="isolate">
-        <text transform="translate(113 230)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">During the school</tspan><tspan x="219.8" y="0" letter-spacing="-.04em">'</tspan><tspan x="223.28" y="0">s summer fai</tspan><tspan x="387.5" y="0" letter-spacing="-.08em">r</tspan><tspan x="394.98" y="0">, an ice</tspan></text>
+        <text transform="translate(113 230)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">During the school</tspan><tspan x="219.8" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="223.28" y="0">s summer fai</tspan><tspan x="387.5" y="0" letter-spacing="-.08em">r</tspan><tspan x="394.98" y="0">, an ice</tspan></text>
       </g>
       <g isolation="isolate">
         <text transform="translate(113 267)" font-family="Roboto-Medium, Roboto" font-size="28" font-weight="500" isolation="isolate"><tspan x="0" y="0">cream vendor su</tspan><tspan x="209.03" y="0" letter-spacing="0em">r</tspan><tspan x="219.12" y="0">veyed 100 Class 6</tspan></text>
@@ -7527,13 +7508,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

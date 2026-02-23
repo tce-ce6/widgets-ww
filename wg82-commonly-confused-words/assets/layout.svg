@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Commonly Confused Words</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Commonly Confused Words</h2>
-        <span id="versionId" class="versionText">b3_wg82_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2118.41 1296.05">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2118.41 1296.05">
   <defs>
     <linearGradient id="linear-gradient" x1="914.92" y1="1729.73" x2="919.42" y2="1734.04" gradientTransform="translate(-1522.46 4966.24) scale(2.44 -2.44)" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#d28c54"/>
@@ -729,12 +710,3 @@
     </g>
   </g>
 </svg>
-      </div>
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

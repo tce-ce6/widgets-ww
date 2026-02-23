@@ -1,23 +1,4 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solubility</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Solubility</h2>
-        <span id="versionId" class="versionText">b3_wg18_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
+<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1973.11 1127.25">
   <defs>
     <clipPath id="clippath">
@@ -602,20 +583,20 @@
             <rect id="Rectangle_343" data-name="Rectangle 343" x="516.85" y="347.5" width="20" height="20" fill="#2da4ff"/>
           </g>
           <g id="Sugar_Added_g_" data-name="Sugar Added g " isolation="isolate">
-            <text transform="translate(172.35 421) rotate(-90)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="20" isolation="isolate"><tspan x="0" y="0">Sugar Added (g)</tspan></text>
+            <text transform="translate(172.35 421) rotate(-90)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="20" isolation="isolate"><tspan x="0" y="0">Sugar Added (g)</tspan></text>
           </g>
           <g id="Temprature_oC_" data-name="Temprature oC " isolation="isolate">
-            <text transform="translate(309.85 514.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="20" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.1em">T</tspan><tspan x="8.53" y="0">emprature (</tspan></text>
-            <text transform="translate(421.97 507.83)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="11.67" isolation="isolate"><tspan x="0" y="0">o</tspan></text>
-            <text transform="translate(428.81 514.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="20" isolation="isolate"><tspan x="0" y="0">C)</tspan></text>
+            <text transform="translate(309.85 514.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="20" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.1em">T</tspan><tspan x="8.53" y="0">emprature (</tspan></text>
+            <text transform="translate(421.97 507.83)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="11.67" isolation="isolate"><tspan x="0" y="0">o</tspan></text>
+            <text transform="translate(428.81 514.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="20" isolation="isolate"><tspan x="0" y="0">C)</tspan></text>
           </g>
           <g id="_600_500_400_300_200_100" data-name=" 600 500 400 300 200 100" isolation="isolate">
-            <text transform="translate(187.85 284.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">600</tspan></text>
-            <text transform="translate(187.85 314.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">500</tspan></text>
-            <text transform="translate(187.85 344.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">400</tspan></text>
-            <text transform="translate(187.85 374.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">300</tspan></text>
-            <text transform="translate(187.85 404.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">200</tspan></text>
-            <text transform="translate(187.85 434.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">100</tspan></text>
+            <text transform="translate(187.85 284.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">600</tspan></text>
+            <text transform="translate(187.85 314.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">500</tspan></text>
+            <text transform="translate(187.85 344.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">400</tspan></text>
+            <text transform="translate(187.85 374.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">300</tspan></text>
+            <text transform="translate(187.85 404.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">200</tspan></text>
+            <text transform="translate(187.85 434.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">100</tspan></text>
           </g>
           <g id="Group_840" data-name="Group 840">
             <line id="Line_3" data-name="Line 3" x1="222.85" y1="428" x2="482.85" y2="428" fill="none" stroke="#6f6e6e" stroke-width="2"/>
@@ -628,29 +609,29 @@
             <line id="Line_2" data-name="Line 2" x1="222.85" y1="463" x2="482.85" y2="463" fill="none" stroke="#fff" stroke-width="2"/>
           </g>
           <g id="_0_20_40_60_80_100" data-name=" 0 20 40 60 80 100" isolation="isolate">
-            <text transform="translate(218.85 488.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">0        20       40        60        80        100</tspan></text>
+            <text transform="translate(218.85 488.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">0        20       40        60        80        100</tspan></text>
           </g>
           <g id="Group_841" data-name="Group 841">
             <path id="Path_465" data-name="Path 465" d="M307.84,390.5h203c11.05,0,20,8.95,20,20v8c0,11.05-8.95,20-20,20h-183c-11.05,0-20-8.95-20-20v-28Z" fill="#a9a9a9"/>
             <path id="Path_464" data-name="Path 464" d="M286.44,390.5h29.33v25.47l-29.33-25.47Z" fill="#a9a9a9"/>
             <g id="Saturation_Point_" data-name="Saturation Point " isolation="isolate">
-              <text transform="translate(323.09 423)" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">Saturation </tspan><tspan x="103.89" y="0" letter-spacing="-.03em">P</tspan><tspan x="115.58" y="0">oint</tspan></text>
+              <text transform="translate(323.09 423)" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">Saturation </tspan><tspan x="103.89" y="0" letter-spacing="-.03em">P</tspan><tspan x="115.58" y="0">oint</tspan></text>
             </g>
             <g id="Group_842" data-name="Group 842">
               <circle id="Ellipse_10" data-name="Ellipse 10" cx="506.59" cy="414.5" r="17.5" fill="#575454"/>
               <g id="i" isolation="isolate">
-                <text transform="translate(504.09 422)" fill="#bcbcbc" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
+                <text transform="translate(504.09 422)" fill="#bcbcbc" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
               </g>
             </g>
           </g>
           <g id="Crystalized" isolation="isolate">
-            <text transform="translate(547.85 283.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">Crystalized</tspan></text>
+            <text transform="translate(547.85 283.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">Crystalized</tspan></text>
           </g>
           <g id="Not_Dissolves" data-name="Not Dissolves" isolation="isolate">
-            <text transform="translate(547.85 323.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">Not Dissolves</tspan></text>
+            <text transform="translate(547.85 323.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">Not Dissolves</tspan></text>
           </g>
           <g id="Dissolves" isolation="isolate">
-            <text transform="translate(547.85 363.5)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="16" isolation="isolate"><tspan x="0" y="0">Dissolves</tspan></text>
+            <text transform="translate(547.85 363.5)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="16" isolation="isolate"><tspan x="0" y="0">Dissolves</tspan></text>
           </g>
         </g>
       </g>
@@ -709,13 +690,13 @@
             </g>
           </g>
           <g id="Amount_of_Solute_" data-name="Amount of Solute " isolation="isolate">
-            <text transform="translate(1264.58 257.92)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="25" isolation="isolate"><tspan x="0" y="0">Amount of Solute =</tspan></text>
+            <text transform="translate(1264.58 257.92)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="25" isolation="isolate"><tspan x="0" y="0">Amount of Solute =</tspan></text>
           </g>
           <g id="Amount_of_Solvent_" data-name="Amount of Solvent " isolation="isolate">
-            <text transform="translate(1264.44 382.92)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="25" isolation="isolate"><tspan x="0" y="0">Amount of Solvent =</tspan></text>
+            <text transform="translate(1264.44 382.92)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="25" isolation="isolate"><tspan x="0" y="0">Amount of Solvent =</tspan></text>
           </g>
           <g id="Temprature_" data-name="Temprature " isolation="isolate">
-            <text transform="translate(1264.44 507.92)" fill="#fff" font-family="SegoeUI, 'Segoe UI'" font-size="25" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.1em">T</tspan><tspan x="10.66" y="0">emprature =</tspan></text>
+            <text transform="translate(1264.44 507.92)" fill="#fff" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="25" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.1em">T</tspan><tspan x="10.66" y="0">emprature =</tspan></text>
           </g>
           <g id="Group_824" data-name="Group 824">
             <g id="Group_849" data-name="Group 849">
@@ -8378,19 +8359,19 @@
         <g id="Group_845" data-name="Group 845">
           <ellipse id="Ellipse_10-2" data-name="Ellipse 10" cx="1845.94" cy="447.92" rx="21.5" ry="22" fill="#575454"/>
           <g id="i-2" data-name="i" isolation="isolate">
-            <text transform="translate(1842.44 456.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
+            <text transform="translate(1842.44 456.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
           </g>
         </g>
         <g id="Group_848" data-name="Group 848">
           <ellipse id="uuid-b469f056-d309-4155-8435-5f621e37556c" data-name="Ellipse 10-2" cx="1845.94" cy="572.92" rx="21.5" ry="22" fill="#575454"/>
           <g id="uuid-52d55a47-9546-404a-be99-a338f57bc045" data-name="i-2" isolation="isolate">
-            <text transform="translate(1842.44 581.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
+            <text transform="translate(1842.44 581.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
           </g>
         </g>
         <g id="Group_847" data-name="Group 847">
           <ellipse id="Ellipse_10-3" data-name="Ellipse 10-3" cx="1845.94" cy="697.92" rx="21.5" ry="22" fill="#575454"/>
           <g id="i-3" isolation="isolate">
-            <text transform="translate(1842.44 706.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
+            <text transform="translate(1842.44 706.92)" fill="#bcbcbc" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">i</tspan></text>
           </g>
         </g>
       </g>
@@ -8434,13 +8415,3 @@
     </g>
   </g>
 </svg>
-      </div>
-      
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

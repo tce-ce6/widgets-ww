@@ -35,7 +35,7 @@ svg * {
 
 #idiom-wrapper .container::after {
   content: "";
-  background-image: url("../assets/bg.png");
+  /* background-image: url("../assets/bg.png"); */
   background-color: #000;
   background-size: cover;
   background-position: center;
