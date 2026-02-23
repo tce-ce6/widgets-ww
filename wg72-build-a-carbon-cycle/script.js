@@ -135,10 +135,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     modalTryAgainBtn.addEventListener("click", () => {
-        hideModal();
-        pendingIncorrectBtn = null;
-    });
+    hideModal();
 
+    if (pendingIncorrectBtn) {
+        snapToOriginal(pendingIncorrectBtn);  
+        setButtonColor(pendingIncorrectBtn, COLOR_DEFAULT); 
+        removeStatusIcon(pendingIncorrectBtn.id); 
+    }
+
+    pendingIncorrectBtn = null;
+    isLocked = false; 
+});
     // 3. COORDINATE HELPER
     function getMousePosition(evt) {
         const CTM = svg.getScreenCTM();
@@ -317,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!fb) return;
 
         pendingIncorrectBtn = isCorrect ? null : document.getElementById(btnId);
+        if(!isCorrect) isLocked = true;
 
         const GREEN = "#2ECC71";
         const RED = "#e53935";
@@ -416,4 +424,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const icon = document.getElementById("icon-" + btnId);
         if (icon) icon.remove();
     }
+
+    const deadOrganismBtn = document.getElementById("btn-dead-organisms");
+    console.log("Dead Organism Button:", deadOrganismBtn);
+    
 });
