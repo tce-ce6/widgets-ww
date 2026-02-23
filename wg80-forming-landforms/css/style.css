@@ -172,15 +172,17 @@ svg * {
 
 /* Slope style  */
 .step-conatiner {
-  background-color: #F7DDC7;
   height: 100%;
   width: 100%;
-  border-radius: 20px;
   /* padding: 10px; */
 }
 
 .slope-list-wrapper {
+  border-radius: 20px;
+  background-color: #F7DDC7;
   padding: 100px;
+  margin-bottom: 30px;
+
 }
 
 .slope-list {
@@ -558,4 +560,8 @@ svg * {
   bottom: -36px;
   width: 525px;
   right: 125px;
+}
+.reset-btn.disabled{
+  opacity: .4;
+  pointer-events: none;
 }

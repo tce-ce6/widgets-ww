@@ -2,7 +2,7 @@ const data = {
   "Conical Slope": {
     title: "Conical Hill",
     Insights:
-      "The conical hill rises almost uniformly from the surrounding land. It has a uniform slope and a narrow top, as shown by evenly spaced concentric Counter. ",
+      "The conical hill rises almost uniformly from the surrounding land. It has a uniform slope and a narrow top, as shown by evenly spaced concentric contours. ",
     "counter lines": [
       "./assets/conical-slope-1000.svg",
       "./assets/conical-slope-1100.svg",
@@ -306,6 +306,11 @@ document.addEventListener("click", function (e) {
 });
 
 function markSlopeAsCompleted(title) {
+  // ✅ Enable Home Reset after at least one completion
+const homeResetBtn = document.getElementById("home-resetBtn");
+if (homeResetBtn) {
+  homeResetBtn.classList.remove("disabled");
+}
   correctSelectedOptions = true;
 
   // Mark slope as completed in list
@@ -428,9 +433,25 @@ function updateButtonStates() {
 }
 
 function resetActivity(keepCompletedStatus = false) {
+  // ✅ Remove previously created hit areas
+document.querySelectorAll('path[id^="hit-"]').forEach((el) => el.remove());
+
+// Also unlock original lines so hit areas can be recreated
+document.querySelectorAll('path[id^="line-"]').forEach((line) => {
+  delete line.dataset.hasHitArea;
+});
+
   if (!currentSlopeTitle) return;
   
-  selectedSlopeHeight = null;
+  // Reset selected height
+selectedSlopeHeight = null;
+
+// ✅ Reset slopeCategory selection UI
+const slopeCategoryList = document.querySelector(".slopeCategory");
+if (slopeCategoryList) {
+  const items = slopeCategoryList.querySelectorAll("li");
+  items.forEach((li) => li.classList.remove("active"));
+}
 
   const className = currentSlopeTitle.toLowerCase().replace(/\s+/g, "-");
   const selectedSlopeId = className + "-lines";
@@ -505,6 +526,7 @@ function resetActivity(keepCompletedStatus = false) {
   if (showAnsBtnElement) {
     showAnsBtnElement.classList.remove("disabled");
   }
+  createHitAreas();
 }
 
 function loadSlope(title) {
@@ -782,4 +804,6 @@ function isSlopeCompleted(title) {
       li.classList.contains("completed")
     );
   });
+  
 }
+
