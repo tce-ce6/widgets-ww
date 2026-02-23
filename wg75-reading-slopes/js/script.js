@@ -440,9 +440,18 @@ function updateButtonStates() {
 function resetActivity(keepCompletedStatus = false) {
   if (!currentSlopeTitle) return;
 
+  // ✅ Reset left side selection (VERY IMPORTANT)
+const slopeCategoryItems = document.querySelectorAll(".slopeCategory li");
+
+slopeCategoryItems.forEach((li) => {
+  li.classList.remove("active");
+});
+
   selectedSlopeHeight = null;
   correctSelectedOptions = false;
-
+  // ✅ Reset left side selection
+  slopeCategoryItems.forEach((li) => li.classList.remove("active"));
+  
   const className = currentSlopeTitle.toLowerCase().replace(/\s+/g, "-");
   const selectedSlopeId = className + "-lines";
   const container = document.getElementById(selectedSlopeId);
@@ -514,6 +523,8 @@ function resetActivity(keepCompletedStatus = false) {
   if (showAnsBtnElement) {
     showAnsBtnElement.classList.remove("disabled");
   }
+
+  createHitAreas();
 }
 
 function loadSlope(title) {
