@@ -285,7 +285,7 @@ const WIDGET_DATA = [
     name: "Fast Multiplications Using the Distributive Property",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-100.png",
-    creators: "-ra-100",
+    creators: "shailesh-ra-100",
     status: "todo",
   },
   {
@@ -313,7 +313,7 @@ const WIDGET_DATA = [
     name: "Applying Distributive Property",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-99.png",
-    creators: "-ra-99",
+    creators: "shailesh-ra-99",
     status: "todo",
   },
   {
@@ -468,13 +468,6 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-68.png",
     creators: "-ra-68",
-    status: "todo",
-  },
-  {
-    name: "Informal Letters",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-153.png",
-    creators: "-ra-153",
     status: "todo",
   },
   {
