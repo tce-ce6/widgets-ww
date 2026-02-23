@@ -1,24 +1,4 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Identify The Criminal Through DNA Fingerprinting</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Identify The Criminal Through DNA Fingerprinting</h2>
-        <span id="versionId" class="versionText">b3_wg112_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <svg id="Layer_23" data-name="Layer 23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1921 1080.26">
   <defs>
     <clipPath id="clippath">
@@ -843,12 +823,3 @@
     </g>
   </g>
 </svg>
-      </div>
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>
