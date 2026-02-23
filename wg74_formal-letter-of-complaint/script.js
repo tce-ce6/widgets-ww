@@ -766,6 +766,7 @@ function initNavigation() {
             btn.onclick = () => {
                 if (id === 'home-btn') {
                     resetPracticeSession(); // 🔥 RESET EVERYTHING
+                    resetContainerScrolls();
                 }
                 navigateTo(page);
             };
@@ -901,8 +902,17 @@ function navigateTo(pageId) {
         document.getElementById('learn-example-btn').style.display = 'none';
         document.getElementById('practice-result').style.display = 'none';
         // document.getElementById('practice-some-more').style.display = 'none';
+        resetPracticeSession();
     }
     document.getElementById('home-btn').style.display = (pageId === 'home-page') ? 'none' : 'block';
+    resetContainerScrolls();
+}
+
+function resetContainerScrolls() {
+    window.scrollTo(0, 0);
+    // Add any specific scrollable containers here
+    const letterArea = document.querySelector('.letter-container'); 
+    if (letterArea) letterArea.scrollTop = 0;
 }
 
 /** * FUNCTION: Left Panel Interaction
@@ -1086,14 +1096,14 @@ function showFeedback(msg, anchorEl) {
     // feedbackEl._hideTimeout = t;
 }
 
-// function hideFeedback(anchorEl) {
-//     if (!anchorEl) return;
-//     const feedbackEl = anchorEl.querySelector('.feedback-text');
-//     if (feedbackEl) {
-//         feedbackEl.classList.remove('is-visible');
-//         if (feedbackEl._hideTimeout) clearTimeout(feedbackEl._hideTimeout);
-//     }
-// }
+function hideFeedback(anchorEl) {
+    if (!anchorEl) return;
+    const feedbackEl = anchorEl.querySelector('.feedback-text');
+    if (feedbackEl) {
+        feedbackEl.classList.remove('is-visible');
+        if (feedbackEl._hideTimeout) clearTimeout(feedbackEl._hideTimeout);
+    }
+}
 
 function resetPracticeSession() {
     /* 1. Reset STATE */
@@ -1134,7 +1144,7 @@ function resetPracticeSession() {
         const suggestion = box.querySelector('.suggestion-answer');
         if (suggestion) {
             suggestion.style.display = 'none';
-           // hideFeedback(suggestion);
+            hideFeedback(suggestion);
         }
 
         box.style.height = "200px";
