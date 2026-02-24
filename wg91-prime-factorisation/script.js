@@ -1,261 +1,446 @@
 document.addEventListener("DOMContentLoaded", () => {
     // --- Configuration & State ---
     const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
-    let currentPrimeIndex = 0; // Tracks which set of 4 primes we are showing
-    let selectedPrime = null;  // Currently selected prime loaded in the cannon
-    let currentMainNumber = 10; // The number modified by plus/minus
-    let isPlaneActive = false;
-    let lottieAnim = null; // Store current Lottie animation to clean up
+
+    // Defined flow positions for the plane per step
+    const planePositions = [
+        { x: 1547.97, y: 90 },
+        { x: 1200, y: 180 },
+        { x: 800, y: 180 },
+        { x: 280, y: 90 }
+    ];
+
+    let currentPrimeIndex = 0;
+    let targetNumber = 0;
+    let currentPlaneNumber = 0;
+    let originalTarget = 0;
+    let selectedPrime = null;
+    let isGameStarted = false;
+    let primeFactors = [];
+
+    // Animation Instances
+    let lottieAnim = null;
+    let trophyAnim = null;
+    let confettiAnim = null;
+
+    let currentStep = 0; // Tracks which position the plane is currently in
 
     // --- DOM Elements ---
     const DOM = {
+        btnPlus: document.getElementById("btn-plus"),
+        btnMinus: document.getElementById("btn-minus"),
+        btnAdd: document.getElementById("btn-factor-add"),
+        btnNewGame: document.getElementById("btn-new-game"),
+        targetNumberText: document.querySelector("#target-number-text div"),
+
+        cannonBallContainer: document.getElementById("canon-ball-factors"),
         cannonBalls: [
             document.getElementById("cannon-ball-1"),
             document.getElementById("cannon-ball-2"),
             document.getElementById("cannon-ball-3"),
             document.getElementById("cannon-ball-4")
         ],
-        cannonBallTexts: [
-            document.getElementById("cannon-ball-text-1"),
-            document.getElementById("cannon-ball-text-2"),
-            document.getElementById("cannon-ball-text-3"),
-            document.getElementById("cannon-ball-text-4")
-        ],
         btnNext: document.getElementById("btn-next"),
         btnBack: document.getElementById("btn-back"),
-        btnPlus: document.getElementById("btn-plus"),
-        btnMinus: document.getElementById("btn-minus"),
-        btnAdd: document.getElementById("btn-add"),
 
-        mainNumberText: document.getElementById("main-number-text"),
-        shooterLoadedText: document.getElementById("shooter-loaded-text"),
+        currentPrimeText: document.querySelector("#current-prime-text tspan"),
+        planeNumberText: document.querySelector("#plane-number-text tspan"),
+        loadedPrimeText: document.getElementById("prime-shoot-text"),
+        calcPanel: document.getElementById("calculation-display-pannel"),
+        calcTexts: document.querySelectorAll("#_24_212_226_2223 text tspan"),
+
         shooterBody: document.getElementById("missile-shooter"),
+        planes: document.querySelectorAll('foreignObject[id="plan-generated"]'),
 
-        planeGroup: document.getElementById("plane-group"),
-        plane: document.getElementById("plane"),
+        explosionObject: document.getElementById("explosion-animation"),
+        lottieContainer: document.getElementById("explosion-animation-lottie"),
 
-        feedbackText: document.getElementById("feedback-text"),
-        lottieContainer: document.getElementById("lottie-container")
+        // New elements for victory animations
+        confettiContainer: document.getElementById("confetti-lottie"),
+        trophyContainer: document.getElementById("trophy-lottie"),
+
+        feedbackCorrect: document.getElementById("feedback-correct-object"),
+        feedbackIncorrect: document.getElementById("feedback-incorrect-object"),
+        hitPrimeText: document.querySelector("#hit-text-panel text:nth-of-type(2) tspan"),
+        missPrimeText: document.querySelector("#miss-text-panel text:nth-of-type(2) tspan"),
+        missTargetText: document.querySelector("#miss-text-panel text:nth-of-type(4) tspan"),
+        victoryPanel: document.getElementById("final-result-tos")
     };
+
+    const activePlane = DOM.planes[0];
+    const activePlaneText = activePlane ? activePlane.querySelector("#prime-plain-text tspan") : null;
 
     // --- Initialization ---
     function init() {
-        applyCursors(); // Apply the pointer cursors
-        updateCannonBalls();
-        updateMainNumberDisplay();
-        hidePlane();
+        applyCursors();
+        resetGame();
         bindEvents();
     }
 
-    // --- Styling Functions ---
-    // Adds cursor: pointer to all clickable elements
     function applyCursors() {
-        const clickableElements = [
-            DOM.btnNext,
-            DOM.btnBack,
-            DOM.btnPlus,
-            DOM.btnMinus,
-            DOM.btnAdd,
-            DOM.plane,
-            ...DOM.cannonBalls
+        const clickable = [
+            DOM.btnPlus, DOM.btnMinus, DOM.btnAdd,
+            DOM.btnNext, DOM.btnBack, DOM.btnNewGame,
+            activePlane, ...DOM.cannonBalls
         ];
+        clickable.forEach(el => {
+            if (el) el.style.cursor = "pointer";
+        });
+    }
 
-        clickableElements.forEach(el => {
-            if (el) {
-                el.style.cursor = "pointer";
+    function resetGame() {
+        targetNumber = 0;
+        currentPlaneNumber = 0;
+        originalTarget = 0;
+        selectedPrime = null;
+        isGameStarted = false;
+        primeFactors = [];
+        currentPrimeIndex = 0;
+        currentStep = 0;
+
+        if (DOM.targetNumberText) DOM.targetNumberText.innerHTML = targetNumber;
+        if (DOM.currentPrimeText) DOM.currentPrimeText.textContent = "";
+        if (DOM.loadedPrimeText) DOM.loadedPrimeText.textContent = "";
+        if (DOM.planeNumberText) DOM.planeNumberText.textContent = "";
+
+        if (DOM.calcPanel) DOM.calcPanel.style.display = "none";
+        DOM.calcTexts.forEach(t => t.textContent = "");
+
+        DOM.planes.forEach(p => p.style.display = "none");
+        if (DOM.feedbackCorrect) DOM.feedbackCorrect.style.display = "none";
+        if (DOM.feedbackIncorrect) DOM.feedbackIncorrect.style.display = "none";
+        if (DOM.victoryPanel) DOM.victoryPanel.style.display = "none";
+
+        // Reset Victory Animations
+        if (trophyAnim) {
+            trophyAnim.destroy();
+            trophyAnim = null;
+        }
+        if (confettiAnim) {
+            confettiAnim.destroy();
+            confettiAnim = null;
+        }
+        if (DOM.confettiContainer) {
+            DOM.confettiContainer.parentElement.style.display = "none";
+            DOM.confettiContainer.innerHTML = "";
+        }
+        if (DOM.trophyContainer) {
+            DOM.trophyContainer.parentElement.style.display = "none";
+            DOM.trophyContainer.innerHTML = "";
+        }
+
+        if (DOM.btnAdd) {
+            DOM.btnAdd.style.opacity = "1";
+            DOM.btnAdd.style.pointerEvents = "auto";
+        }
+
+        if (DOM.shooterBody) DOM.shooterBody.setAttribute("transform", "");
+
+        updateCannonBalls();
+    }
+
+    // --- Core Logic ---
+
+    function updateCannonBalls() {
+        for (let i = 0; i < 4; i++) {
+            const ball = DOM.cannonBalls[i];
+            const textEl = document.querySelector(`#cannon-ball-${i + 1}-text div`);
+            const primeVal = primes[currentPrimeIndex + i];
+
+            if (primeVal) {
+                if (ball) {
+                    ball.style.display = "block";
+                    ball.dataset.value = primeVal;
+                }
+                if (textEl) {
+                    textEl.innerHTML = primeVal;
+                    textEl.parentElement.style.display = "block";
+                }
+            } else {
+                if (ball) ball.style.display = "none";
+                if (textEl) textEl.parentElement.style.display = "none";
+            }
+        }
+
+        if (DOM.btnBack) {
+            DOM.btnBack.style.opacity = currentPrimeIndex === 0 ? "0.5" : "1";
+            DOM.btnBack.style.pointerEvents = currentPrimeIndex === 0 ? "none" : "auto";
+        }
+        if (DOM.btnNext) {
+            DOM.btnNext.style.opacity = (currentPrimeIndex + 4 >= primes.length) ? "0.5" : "1";
+            DOM.btnNext.style.pointerEvents = (currentPrimeIndex + 4 >= primes.length) ? "none" : "auto";
+        }
+    }
+
+    function selectCannonBall(value) {
+        if (isGameStarted && currentPlaneNumber === 1) return;
+
+        selectedPrime = parseInt(value);
+        if (DOM.currentPrimeText) DOM.currentPrimeText.textContent = selectedPrime;
+
+        const loadedTextEl = DOM.loadedPrimeText.querySelector("tspan") || DOM.loadedPrimeText;
+        if (loadedTextEl) loadedTextEl.textContent = selectedPrime;
+    }
+
+    function updateCalculationPanel() {
+        if (DOM.calcPanel) DOM.calcPanel.style.display = "block";
+        DOM.calcTexts.forEach(t => t.textContent = "");
+
+        let steps = [];
+        let tempNum = originalTarget;
+        let factorsSoFar = [];
+
+        for (let i = 0; i < primeFactors.length; i++) {
+            factorsSoFar.push(primeFactors[i]);
+            tempNum = tempNum / primeFactors[i];
+
+            let stepStr = "";
+            let remainingText = tempNum > 1 ? ` x ${tempNum}` : "";
+
+            if (i === 0) {
+                stepStr = `${originalTarget} = ${factorsSoFar.join(' x ')}${remainingText}`;
+            } else {
+                stepStr = `= ${factorsSoFar.join(' x ')}${remainingText}`;
+            }
+            steps.push(stepStr);
+        }
+
+        let displaySteps = steps.slice(-3);
+        displaySteps.forEach((stepStr, index) => {
+            if (DOM.calcTexts[index]) {
+                DOM.calcTexts[index].textContent = stepStr;
             }
         });
     }
 
-    // --- Core Functions ---
-
-    // 1. Pagination for Prime Numbers
-    function updateCannonBalls() {
-        for (let i = 0; i < 4; i++) {
-            const primeValue = primes[currentPrimeIndex + i];
-            if (primeValue) {
-                DOM.cannonBalls[i].style.display = "block";
-                if (DOM.cannonBallTexts[i]) DOM.cannonBallTexts[i].textContent = primeValue;
-
-                // Set data attribute for easy access
-                DOM.cannonBalls[i].dataset.value = primeValue;
-            } else {
-                DOM.cannonBalls[i].style.display = "none";
-            }
-        }
-
-        // Handle Back/Next button visibility
-        DOM.btnBack.style.opacity = currentPrimeIndex === 0 ? "0.5" : "1";
-        DOM.btnBack.style.pointerEvents = currentPrimeIndex === 0 ? "none" : "auto";
-
-        DOM.btnNext.style.opacity = (currentPrimeIndex + 4 >= primes.length) ? "0.5" : "1";
-        DOM.btnNext.style.pointerEvents = (currentPrimeIndex + 4 >= primes.length) ? "none" : "auto";
-    }
-
-    // 2. Select a Cannon Ball
-    function selectCannonBall(ballElement) {
-        // Remove highlight from all (Optional: depends on your CSS)
-        DOM.cannonBalls.forEach(ball => ball.classList.remove("selected-ball"));
-
-        // Highlight clicked
-        ballElement.classList.add("selected-ball");
-
-        // Update loaded state
-        selectedPrime = parseInt(ballElement.dataset.value);
-        if (DOM.shooterLoadedText) {
-            DOM.shooterLoadedText.textContent = selectedPrime;
-        }
-    }
-
-    // 3. Number Selection (Plus/Minus)
-    function updateMainNumberDisplay() {
-        if (DOM.mainNumberText) {
-            DOM.mainNumberText.textContent = currentMainNumber;
-        }
-    }
-
-    // 4. Plane Mechanics
-    function showPlane() {
-        if (isPlaneActive) return; // Only one plane visible at a time
-
-        isPlaneActive = true;
-        DOM.planeGroup.setAttribute("transform", `translate(1547.97, 90)`);
-        DOM.planeGroup.style.display = "block";
-        if (DOM.feedbackText) DOM.feedbackText.style.display = "none"; // Hide previous feedback
-    }
-
-    function hidePlane() {
-        isPlaneActive = false;
-        if (DOM.planeGroup) DOM.planeGroup.style.display = "none";
-    }
-
-    // 5. Shooter Rotation Calculation
-    function aimShooterAtPlane(planeX, planeY) {
+    function aimShooterAt(targetX, targetY) {
         if (!DOM.shooterBody) return;
 
-        // Get the bounding box to find the bottom center for the rotation pivot
-        const shooterBox = DOM.shooterBody.getBBox();
-        const pivotX = shooterBox.x + (shooterBox.width / 2);
-        const pivotY = shooterBox.y + shooterBox.height; // Bottom of the element
+        const bbox = DOM.shooterBody.getBBox();
+        const pivotX = bbox.x + (bbox.width / 2);
+        const pivotY = bbox.y + bbox.height;
 
-        const dx = planeX - pivotX;
-        const dy = planeY - pivotY;
+        const planeCenterTargetX = targetX + (144 / 2);
+        const planeCenterTargetY = targetY + (209 / 2);
 
-        // Calculate angle in degrees
+        const dx = planeCenterTargetX - pivotX;
+        const dy = planeCenterTargetY - pivotY;
         let angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-        // Adjust angle assuming 0 degrees is facing right. 
-        // If your cannon graphic points UP by default, add 90 degrees.
         angle += 90;
 
-        // Apply rotation from the bottom pivot
+        DOM.shooterBody.style.transition = "transform 0.4s ease-in-out";
         DOM.shooterBody.setAttribute("transform", `rotate(${angle}, ${pivotX}, ${pivotY})`);
     }
 
-    // 6. Handle Checking & Lottie Animations
-    function handlePlaneClick() {
-        if (!selectedPrime) {
-            alert("Please select a prime number cannonball first!");
-            return;
+    function triggerFeedback(type) {
+        const activePos = planePositions[Math.min(currentStep, planePositions.length - 1)];
+        const shiftedY = activePos.y + 300;
+
+        if (type === "correct") {
+            if (DOM.hitPrimeText) DOM.hitPrimeText.textContent = selectedPrime;
+            if (DOM.feedbackCorrect) {
+                DOM.feedbackCorrect.setAttribute("x", activePos.x);
+                DOM.feedbackCorrect.setAttribute("y", shiftedY);
+                DOM.feedbackCorrect.style.display = "block";
+            }
+            if (DOM.feedbackIncorrect) DOM.feedbackIncorrect.style.display = "none";
+        } else {
+            if (DOM.missPrimeText) DOM.missPrimeText.textContent = selectedPrime;
+            if (DOM.missTargetText) DOM.missTargetText.textContent = currentPlaneNumber;
+            if (DOM.feedbackIncorrect) {
+                DOM.feedbackIncorrect.setAttribute("x", activePos.x);
+                DOM.feedbackIncorrect.setAttribute("y", shiftedY);
+                DOM.feedbackIncorrect.style.display = "block";
+            }
+            if (DOM.feedbackCorrect) DOM.feedbackCorrect.style.display = "none";
         }
 
-        // Aim the shooter
-        aimShooterAtPlane(1547.97, 90);
+        setTimeout(() => {
+            if (DOM.feedbackCorrect) DOM.feedbackCorrect.style.display = "none";
+            if (DOM.feedbackIncorrect) DOM.feedbackIncorrect.style.display = "none";
+        }, 2500);
+    }
 
-        // Check Logic: Is selected prime a factor of the current number?
-        const isCorrect = (currentMainNumber % selectedPrime === 0);
-
-        // Clean up previous lottie if exists
+    function playAnimation(isCorrect, onComplete) {
         if (lottieAnim) {
             lottieAnim.destroy();
         }
 
-        const animPath = isCorrect ? './assets/explode-anim.json' : './assets/wrong-smoke.json';
-        const feedbackMsg = isCorrect ? "Correct!" : "Try Again!";
-
-        // Position feedback text relative to plane
-        if (DOM.feedbackText) {
-            DOM.feedbackText.setAttribute("x", 1547.97);
-            DOM.feedbackText.setAttribute("y", 90 - 20); // 20px above the plane
-            DOM.feedbackText.textContent = feedbackMsg;
-            DOM.feedbackText.style.display = "block";
+        const activePos = planePositions[Math.min(currentStep, planePositions.length - 1)];
+        if (DOM.explosionObject) {
+            DOM.explosionObject.setAttribute("x", activePos.x - 130);
+            DOM.explosionObject.setAttribute("y", activePos.y - 80);
+            DOM.explosionObject.style.display = "block";
         }
 
-        // Play Lottie strictly using SVG renderer to append inside the SVG container
-        if (DOM.lottieContainer) {
-            DOM.lottieContainer.setAttribute("transform", `translate(1547.97, 90)`);
-            lottieAnim = lottie.loadAnimation({
-                container: DOM.lottieContainer, // an existing SVG <g> tag
-                renderer: 'svg',
-                loop: false,
-                autoplay: true,
-                path: animPath
-            });
+        const animPath = isCorrect ? './assets/explode-anim.json' : './assets/wrong-smoke.json';
 
-            lottieAnim.addEventListener('complete', () => {
-                if (isCorrect) {
-                    hidePlane();
-                }
-            });
+        if (DOM.lottieContainer) {
+            DOM.lottieContainer.innerHTML = "";
+            setTimeout(() => {
+                lottieAnim = lottie.loadAnimation({
+                    container: DOM.lottieContainer,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    path: animPath
+                });
+
+                lottieAnim.addEventListener('complete', () => {
+                    DOM.lottieContainer.innerHTML = "";
+                    if (DOM.explosionObject) DOM.explosionObject.style.display = "none";
+
+                    if (onComplete) {
+                        onComplete();
+                    }
+                });
+            }, 800);
         }
     }
 
     // --- Event Listeners ---
     function bindEvents() {
-        // Cannonballs
+
+        if (DOM.btnPlus) DOM.btnPlus.addEventListener("click", () => {
+            if (isGameStarted) return;
+            targetNumber++;
+            if (DOM.targetNumberText) DOM.targetNumberText.innerHTML = targetNumber;
+        });
+
+        if (DOM.btnMinus) DOM.btnMinus.addEventListener("click", () => {
+            if (isGameStarted) return;
+            if (targetNumber > 0) targetNumber--;
+            if (DOM.targetNumberText) DOM.targetNumberText.innerHTML = targetNumber;
+        });
+
+        if (DOM.btnAdd) DOM.btnAdd.addEventListener("click", () => {
+            if (isGameStarted || targetNumber < 2) return;
+
+            isGameStarted = true;
+            originalTarget = targetNumber;
+            currentPlaneNumber = targetNumber;
+            currentStep = 0;
+
+            DOM.btnAdd.style.opacity = "0.6";
+            DOM.btnAdd.style.pointerEvents = "none";
+
+            const initialPos = planePositions[0];
+            if (activePlane) {
+                activePlane.setAttribute("x", initialPos.x);
+                activePlane.setAttribute("y", initialPos.y);
+                activePlane.style.display = "block";
+            }
+
+            if (activePlaneText) activePlaneText.textContent = currentPlaneNumber;
+            if (DOM.planeNumberText) DOM.planeNumberText.textContent = currentPlaneNumber;
+
+            if (DOM.calcPanel) DOM.calcPanel.style.display = "block";
+        });
+
         DOM.cannonBalls.forEach(ball => {
             if (ball) {
                 ball.addEventListener("click", function () {
-                    selectCannonBall(this);
+                    selectCannonBall(this.dataset.value);
                 });
             }
         });
 
-        // Next/Back Primes
-        if (DOM.btnNext) {
-            DOM.btnNext.addEventListener("click", () => {
-                if (currentPrimeIndex + 4 < primes.length) {
-                    currentPrimeIndex += 4;
-                    updateCannonBalls();
-                }
-            });
-        }
+        if (DOM.btnNext) DOM.btnNext.addEventListener("click", () => {
+            if (currentPrimeIndex + 4 < primes.length) {
+                currentPrimeIndex += 4;
+                updateCannonBalls();
+            }
+        });
 
-        if (DOM.btnBack) {
-            DOM.btnBack.addEventListener("click", () => {
-                if (currentPrimeIndex - 4 >= 0) {
-                    currentPrimeIndex -= 4;
-                    updateCannonBalls();
-                }
-            });
-        }
+        if (DOM.btnBack) DOM.btnBack.addEventListener("click", () => {
+            if (currentPrimeIndex - 4 >= 0) {
+                currentPrimeIndex -= 4;
+                updateCannonBalls();
+            }
+        });
 
-        // Number Selection
-        if (DOM.btnPlus) {
-            DOM.btnPlus.addEventListener("click", () => {
-                currentMainNumber++;
-                updateMainNumberDisplay();
-            });
-        }
+        if (activePlane) activePlane.addEventListener("click", () => {
+            if (currentPlaneNumber === 1) return;
 
-        if (DOM.btnMinus) {
-            DOM.btnMinus.addEventListener("click", () => {
-                if (currentMainNumber > 2) currentMainNumber--;
-                updateMainNumberDisplay();
-            });
-        }
+            if (!selectedPrime) {
+                // alert("Please select a prime number cannonball to load first!");
+                return;
+            }
 
-        // Add Plane
-        if (DOM.btnAdd) {
-            DOM.btnAdd.addEventListener("click", showPlane);
-        }
+            const activePos = planePositions[Math.min(currentStep, planePositions.length - 1)];
+            aimShooterAt(activePos.x, activePos.y);
 
-        // Shoot Plane
-        if (DOM.plane) {
-            DOM.plane.addEventListener("click", handlePlaneClick);
+            if (currentPlaneNumber % selectedPrime === 0) {
+                triggerFeedback("correct");
+                primeFactors.push(selectedPrime);
+                currentPlaneNumber = currentPlaneNumber / selectedPrime;
+
+                playAnimation(true, () => {
+                    updateCalculationPanel();
+
+                    if (currentPlaneNumber === 1) {
+                        // VICTORY STATE TRIGGER
+                        if (activePlaneText) activePlaneText.textContent = "1";
+                        if (DOM.planeNumberText) DOM.planeNumberText.textContent = "1";
+                        if (DOM.victoryPanel) DOM.victoryPanel.style.display = "block";
+
+                        // Trigger Confetti Animation mapping to active plane
+                        if (DOM.confettiContainer) {
+                            const confettiFO = DOM.confettiContainer.parentElement; // Grabs the foreignObject wrapper
+                            if (confettiFO) {
+                                confettiFO.setAttribute("x", activePos.x - 120);
+                                confettiFO.setAttribute("y", activePos.y - 100);
+                                confettiFO.style.display = "block";
+                            }
+                            confettiAnim = lottie.loadAnimation({
+                                container: DOM.confettiContainer,
+                                renderer: 'svg',
+                                loop: true,
+                                autoplay: true,
+                                path: './assets/confetti-anim.json' // Path to confetti
+                            });
+                        }
+
+                        // Trigger Trophy Animation
+                        if (DOM.trophyContainer) {
+                            const trophyFO = DOM.trophyContainer.parentElement;
+                            if (trophyFO) trophyFO.style.display = "block";
+
+                            trophyAnim = lottie.loadAnimation({
+                                container: DOM.trophyContainer,
+                                renderer: 'svg',
+                                loop: true,
+                                autoplay: true,
+                                path: './assets/trophy.json'
+                            });
+                        }
+
+                    } else {
+                        currentStep++;
+                        const nextPos = planePositions[Math.min(currentStep, planePositions.length - 1)];
+                        activePlane.setAttribute("x", nextPos.x);
+                        activePlane.setAttribute("y", nextPos.y);
+
+                        if (activePlaneText) activePlaneText.textContent = currentPlaneNumber;
+                        if (DOM.planeNumberText) DOM.planeNumberText.textContent = currentPlaneNumber;
+                    }
+                });
+            } else {
+                triggerFeedback("incorrect");
+                playAnimation(false);
+            }
+
+            selectedPrime = null;
+            if (DOM.currentPrimeText) DOM.currentPrimeText.textContent = "";
+            const loadedTextEl = DOM.loadedPrimeText.querySelector("tspan") || DOM.loadedPrimeText;
+            if (loadedTextEl) loadedTextEl.textContent = "";
+        });
+
+        if (DOM.btnNewGame) {
+            DOM.btnNewGame.addEventListener("click", resetGame);
         }
     }
 
-    // Run
     init();
 });
