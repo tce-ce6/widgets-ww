@@ -278,7 +278,7 @@ const WIDGET_DATA = [
     name: "Area of Different Shapes",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-120.png",
-    creators: "-ra-120",
+    creators: "sh-ra-120",
     status: "todo",
   },
   {
@@ -334,7 +334,7 @@ const WIDGET_DATA = [
     name: "Prime Factorisation",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-91.png",
-    creators: "-ra-91",
+    creators: "sh-ra-91",
     status: "todo",
   },
   {
