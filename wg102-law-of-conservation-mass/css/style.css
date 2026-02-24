@@ -370,3 +370,19 @@ svg * {
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
 }
+
+.molecule-item {
+  cursor: grab !important;
+  pointer-events: all !important;
+  -webkit-user-drag: element !important;
+  user-select: none !important;
+}
+
+.molecule-item:active {
+  cursor: grabbing !important;
+}
+
+.dropped-molecule {
+  cursor: pointer;
+  pointer-events: all;
+}
