@@ -483,10 +483,10 @@ function createSentenceBoxes(topic) {
 
     // Create text element with word wrapping
     const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-    foreignObject.setAttribute('x', x + 24);
-    foreignObject.setAttribute('y', y + 20);
-    foreignObject.setAttribute('width', width - 48);
-    foreignObject.setAttribute('height', height - 40);
+    foreignObject.setAttribute('x', x + 10);
+    foreignObject.setAttribute('y', y + 10);
+    foreignObject.setAttribute('width', width - 20);
+    foreignObject.setAttribute('height', height - 20);
 
     const div = document.createElement('div');
     div.style.fontSize = '22px';
@@ -496,7 +496,9 @@ function createSentenceBoxes(topic) {
     div.style.lineHeight = '1.3';
     div.style.display = 'flex';
     div.style.alignItems = 'center';
-    div.style.height = '100%';
+    div.style.height = '90%';
+    div.style.border = '2px dashed white';
+    div.style.padding = '0px';
     div.textContent = sentence;
 
     foreignObject.appendChild(div);
@@ -540,7 +542,7 @@ function createParagraphSlots(topic) {
   div.style.alignItems = 'center';
   div.style.justifyContent = 'center';
   div.style.textAlign = 'center';
-  div.textContent = 'Arrange your paragraph here!';
+  //div.textContent = 'Arrange your paragraph here!';
 
   foreignObject.appendChild(div);
   container.appendChild(foreignObject);
