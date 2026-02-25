@@ -523,8 +523,8 @@ const WIDGET_DATA = [
     name: "Pick the Opposite!",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-123.png",
-    creators: "-ra-123",
-    status: "todo",
+    creators: "ni-ra-123",
+    status: "in-review",
   },
   {
     name: "The Rhyme Zone",
