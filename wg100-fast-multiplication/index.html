@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fast Multiplications Using the Distributive Property</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<div class="page-bg">    
+    <div class="widget"> 
+        <div class="page-header">
+            <div class="header-pill">Fast Multiplications Using the Distributive Property</div>
+
+            <div class="header-block">
+                <div class="header-title">Garden Planning Problem</div>
+                <p class="header-desc">
+                <strong>Scenario:</strong> You have a square garden you can plant 15 trees lengthwise and along the width. You&apos;re planning to change it by increasing 2 trees </tspan></text>
+    <text class="st32" transform="translate(137.15 204)"><tspan x="0" y="0" xml:space="preserve">lengthwise and increasing 2  trees widthwise and want to know how much more or less trees you&apos;ll have, without actual calculations.
+                </p>
+            </div>
+        </div>
+
+        <div class="layout">
+          <!-- LEFT PANEL -->
+          <div class="left-panel">
+           <div class="left-content">
+            <div class="controls">
+              Trees in each row (a):
+              <select id="aValue">
+                <option>10</option>
+                <option selected>15</option>
+                <option>18</option>
+                <option>20</option>
+              </select>
+              Change (b):
+              <input id="bValue" type="number" value="2" min="0" max="4" />
+            </div>
+          </div>
+            <div class="tabs">
+              <button class="tab active" data-mode="addadd">Add b trees AND Add b rows</button>
+              <button class="tab" data-mode="subsub">Remove b trees AND Remove b rows</button>
+              <button class="tab" data-mode="addsub">Add b trees AND Remove b rows</button>
+              <button class="tab" data-mode="subadd">Remove b trees AND Add b rows</button>
+            </div>
+
+        <div class="scenario-box">
+            <p id="scenarioText"></p>
+            <p id="layoutText"></p>
+
+            <div class="answer-row">
+              The number of trees in new arrangement would
+              <select id="direction">
+                <option value="increase">increase</option>
+                <option value="decrease">decrease</option>
+              </select>
+              by <input id="answerInput" type="number" />
+            </div>
+        </div>
+
+            <div class="feedback-area">
+            <div id="feedback"></div>
+            <div id="formula"></div>
+            </div>
+
+            <div class="actions">
+              <button id="hintBtn" class="btn hint">Hint</button>
+              <button id="submitBtn" class="btn submit">Submit</button>
+              <button id="showBtn" class="btn show">Show Answer</button>
+              <button id="resetBtn" class="btn reset">Reset</button>
+            </div>
+
+          </div>
+
+          <!-- RIGHT PANEL -->
+          <div class="right-panel">
+            <div class="legend">
+            <div class="legend-item">
+            <span class="legend-dot original"></span>
+            Original trees
+            </div>
+            <div class="legend-item">
+            <span class="legend-dot added"></span>
+            Added trees
+            </div>
+        <div class="legend-item">
+            <span class="legend-dot removed"></span>
+            Removed trees
+        </div>
+          </div>
+            <div id="gardenGrid" class="garden-grid"></div>
+            <div id="gridLabel" class="grid-label"></div>
+          </div>
+
+        
+      
+        </div>
+    </div>
+</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -194,8 +194,8 @@ const WIDGET_DATA = [
     name: "Build a Paragraph",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-85.png",
-    creators: "-ra-85",
-    status: "todo",
+    creators: "satyajit-ra-85",
+    status: "WiP-With-Tech",
   },
   {
     name: "इ और ई की मात्रा में अंतर",
@@ -362,8 +362,8 @@ const WIDGET_DATA = [
     name: "Guess the Collective Nouns",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-111.png",
-    creators: "-ra-111",
-    status: "todo",
+    creators: "pr-ra-111",
+    status: "WIP-With-Tech",
   },
   {
     name: "Dominos of Rebellion: 1857 - 58",
