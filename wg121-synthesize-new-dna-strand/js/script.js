@@ -135,10 +135,10 @@ class Wg121 {
         cache.svgContainer = document.querySelector('.svg-container svg');
 
         // ── BUTTONS ─────────────────────────────────────────────
-        cache.btnInsights   = document.getElementById('Button_Insite');
+        cache.btnInsights = document.getElementById('Button_Insite');
         cache.btnShowAnswer = document.getElementById('Group 2');
         cache.btnNewTemplate = document.getElementById('Group 712');
-        cache.btnReset      = document.getElementById('Group 1621');
+        cache.btnReset = document.getElementById('Group 1621');
 
         // ── NUCLEOTIDE SOURCE TRAY (bottom SVG groups) ───────────
         // These are the actual base image groups the user clicks
@@ -425,11 +425,11 @@ class Wg121 {
         svgContainerEl.appendChild(overlay);
 
         // Store overlay references
-        this.state.cache.overlay        = overlay;
-        this.state.cache.feedback       = feedback;
-        this.state.cache.solutionModal  = solutionBackdrop;
-        this.state.cache.insightsModal  = insightsBackdrop;
-        this.state.cache.solTemplate    = document.getElementById('poc-sol-template');
+        this.state.cache.overlay = overlay;
+        this.state.cache.feedback = feedback;
+        this.state.cache.solutionModal = solutionBackdrop;
+        this.state.cache.insightsModal = insightsBackdrop;
+        this.state.cache.solTemplate = document.getElementById('poc-sol-template');
         this.state.cache.solComplementary = document.getElementById('poc-sol-complementary');
     }
 
@@ -552,10 +552,10 @@ class Wg121 {
             const dashedPath = wg.querySelector('g[id^="Rectangle 228"] path:last-child');
             if (dashedPath) {
                 if (isActive) {
-                    dashedPath.setAttribute('stroke',       '#FF6B00');
+                    dashedPath.setAttribute('stroke', '#FF6B00');
                     dashedPath.setAttribute('stroke-width', '3');
                 } else {
-                    dashedPath.setAttribute('stroke',       'black');
+                    dashedPath.setAttribute('stroke', 'black');
                     dashedPath.setAttribute('stroke-width', '2');
                 }
             }
@@ -638,22 +638,22 @@ class Wg121 {
             //   • finding the background rect's bounding box
             //   • placing the text at the rect's visual centre
             //   • using text-anchor="middle" + dominant-baseline="central"
-            const parentGroup  = textEl.closest('g');
+            const parentGroup = textEl.closest('g');
             const parentParent = parentGroup && parentGroup.closest('g[id^="Group"]');
-            const rectGroup    = parentParent && parentParent.querySelector('g[id^="Rectangle 229"]');
+            const rectGroup = parentParent && parentParent.querySelector('g[id^="Rectangle 229"]');
             if (!rectGroup) return;
 
             const fillPath = rectGroup.querySelector('path');
             if (fillPath) {
                 try {
-                    const bb  = fillPath.getBBox();
-                    const cx  = bb.x + bb.width  / 2;
-                    const cy  = bb.y + bb.height / 2;
+                    const bb = fillPath.getBBox();
+                    const cx = bb.x + bb.width / 2;
+                    const cy = bb.y + bb.height / 2;
 
                     // Replace flip matrix with a plain translate to the centre.
-                    textEl.setAttribute('transform',        `translate(${cx}, ${cy})`);
-                    textEl.setAttribute('text-anchor',      'middle');
-                    textEl.setAttribute('dominant-baseline','central');
+                    textEl.setAttribute('transform', `translate(${cx}, ${cy})`);
+                    textEl.setAttribute('text-anchor', 'middle');
+                    textEl.setAttribute('dominant-baseline', 'central');
                     tspan.setAttribute('x', '0');
                     tspan.setAttribute('y', '0');
                 } catch (_) {
@@ -719,7 +719,7 @@ class Wg121 {
         if (currentStep >= 12) return;
 
         const templateBase = templateSequence[currentStep];
-        const isCorrect    = this.validateStep(nuc, templateBase);
+        const isCorrect = this.validateStep(nuc, templateBase);
 
         if (isCorrect) {
             // Lock during animation so double-clicks are ignored
@@ -743,7 +743,7 @@ class Wg121 {
                 this.updateUI();
             });
         } else {
-            const baseName    = this.state.data.wrongMessages[nuc] || nuc;
+            const baseName = this.state.data.wrongMessages[nuc] || nuc;
             const correctName = this.state.data.wrongMessages[
                 { A: 'T', T: 'A', G: 'C', C: 'G' }[templateBase]
             ] || '';
@@ -762,78 +762,78 @@ class Wg121 {
     // CSS transition.  Calls onComplete() when the clone is gone.
     // ----------------------------------------------------------
     _animateTrayToSlot(nuc, slotIdx, onComplete) {
-        const trayEl    = this.state.cache.trayNucleotides[nuc];
+        const trayEl = this.state.cache.trayNucleotides[nuc];
         const slotGroup = this.state.cache.dropZoneGroups[slotIdx];
 
         if (!trayEl || !slotGroup) { onComplete(); return; }
 
         // ── Resolve source rect: prefer the nucleotide square (Rectangle 229) ──
         const trayRectGroup = trayEl.querySelector('g[id^="Rectangle 229"]');
-        const trayBgPath    = trayRectGroup
+        const trayBgPath = trayRectGroup
             ? trayRectGroup.querySelector('path')
             : trayEl.querySelector('path');
-        const fromEl   = trayBgPath || trayRectGroup || trayEl;
+        const fromEl = trayBgPath || trayRectGroup || trayEl;
         const fromRect = fromEl.getBoundingClientRect();
 
         // ── Resolve destination rect: the white-fill path of Rectangle 228 ──
         const slotRectGroup = slotGroup.querySelector('g[id^="Rectangle 228"]');
-        const slotBgPath    = slotRectGroup
+        const slotBgPath = slotRectGroup
             ? slotRectGroup.querySelector('path')
             : slotGroup.querySelector('path');
-        const toEl   = slotBgPath || slotRectGroup || slotGroup;
+        const toEl = slotBgPath || slotRectGroup || slotGroup;
         const toRect = toEl.getBoundingClientRect();
 
         // Fallback: if either rect is zero-size, skip animation
         if (!fromRect.width || !toRect.width) { onComplete(); return; }
 
-        const nucColors  = { A: '#00EFCE', T: '#FFF700', C: '#FF7FA5', G: '#B895FF' };
+        const nucColors = { A: '#00EFCE', T: '#FFF700', C: '#FF7FA5', G: '#B895FF' };
         const nucStrokes = { A: '#04ABA5', T: '#DAAC15', C: '#E34772', G: '#9A38DB' };
 
         // ── Build the flying clone ──
-        const sz    = Math.max(fromRect.width, fromRect.height);
+        const sz = Math.max(fromRect.width, fromRect.height);
         const clone = document.createElement('div');
         Object.assign(clone.style, {
-            position:      'fixed',
-            left:          `${fromRect.left + fromRect.width  / 2 - sz / 2}px`,
-            top:           `${fromRect.top  + fromRect.height / 2 - sz / 2}px`,
-            width:         `${sz}px`,
-            height:        `${sz}px`,
-            background:    nucColors[nuc],
-            border:        `3px solid ${nucStrokes[nuc]}`,
-            borderRadius:  '7px',
-            display:       'flex',
-            alignItems:    'center',
-            justifyContent:'center',
-            fontFamily:    'Roboto, sans-serif',
-            fontSize:      `${Math.round(sz * 0.48)}px`,
-            fontWeight:    'bold',
-            color:         '#020202',
-            zIndex:        '9999',
+            position: 'fixed',
+            left: `${fromRect.left + fromRect.width / 2 - sz / 2}px`,
+            top: `${fromRect.top + fromRect.height / 2 - sz / 2}px`,
+            width: `${sz}px`,
+            height: `${sz}px`,
+            background: nucColors[nuc],
+            border: `3px solid ${nucStrokes[nuc]}`,
+            borderRadius: '7px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'Roboto, sans-serif',
+            fontSize: `${Math.round(sz * 0.48)}px`,
+            fontWeight: 'bold',
+            color: '#020202',
+            zIndex: '9999',
             pointerEvents: 'none',
-            boxShadow:     '0 6px 22px rgba(0,0,0,0.40)',
-            willChange:    'transform, opacity',
+            boxShadow: '0 6px 22px rgba(0,0,0,0.40)',
+            willChange: 'transform, opacity',
         });
         clone.textContent = nuc;
         document.body.appendChild(clone);
 
         // Scale to match landing slot size, capped so it never grows
-        const toSz        = Math.max(toRect.width, toRect.height);
+        const toSz = Math.max(toRect.width, toRect.height);
         const scaleFactor = Math.min((toSz / sz) * 0.9, 1);
 
         // Translation: clone centre → slot rect centre
-        const dx = (toRect.left + toRect.width  / 2) - (fromRect.left + fromRect.width  / 2);
-        const dy = (toRect.top  + toRect.height / 2) - (fromRect.top  + fromRect.height / 2);
+        const dx = (toRect.left + toRect.width / 2) - (fromRect.left + fromRect.width / 2);
+        const dy = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2);
 
         // Start the flight on the next rendered frame
         requestAnimationFrame(() => {
             clone.style.transition = 'transform 0.50s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.50s';
-            clone.style.transform  = `translate(${dx}px,${dy}px) scale(${scaleFactor})`;
+            clone.style.transform = `translate(${dx}px,${dy}px) scale(${scaleFactor})`;
         });
 
         // Fade out and call back once the clone reaches the slot
         setTimeout(() => {
             clone.style.transition = 'opacity 0.18s ease-in';
-            clone.style.opacity    = '0';
+            clone.style.opacity = '0';
             setTimeout(() => {
                 if (clone.parentNode) clone.parentNode.removeChild(clone);
                 onComplete();
@@ -863,7 +863,7 @@ class Wg121 {
     _onShowAnswer() {
         const { templateSequence } = this.state;
         const pairMap = { A: 'T', T: 'A', G: 'C', C: 'G' };
-        const cache   = this.state.cache;
+        const cache = this.state.cache;
 
         if (cache.solTemplate) {
             cache.solTemplate.innerHTML = '';
@@ -879,7 +879,7 @@ class Wg121 {
             cache.solComplementary.innerHTML = '';
             templateSequence.forEach(base => {
                 const comp = pairMap[base];
-                const div  = document.createElement('div');
+                const div = document.createElement('div');
                 div.className = `poc-dna-base ${comp}`;
                 div.textContent = comp;
                 cache.solComplementary.appendChild(div);
@@ -937,7 +937,7 @@ class Wg121 {
         if (this._feedbackTimer) clearTimeout(this._feedbackTimer);
 
         feedback.textContent = message;
-        feedback.className   = `poc-feedback ${type} show`;
+        feedback.className = `poc-feedback ${type} show`;
 
         const hideAfter = timeout !== undefined ? timeout : this.state.config.feedbackTimeout;
         if (hideAfter > 0) {
@@ -987,7 +987,7 @@ class Wg121 {
             if (!rectGroup) return;
 
             const paths = rectGroup.querySelectorAll('path');
-            const bgPath     = paths[0];   // white fill background
+            const bgPath = paths[0];   // white fill background
             const borderPath = paths[1];   // dashed border
             if (!bgPath) return;
 
@@ -1024,8 +1024,8 @@ class Wg121 {
 
             // ── Fill nucleotide box with nucleotide color ──
             const colors = colorMap[placed];
-            bgPath.setAttribute('fill',         colors.bg);
-            bgPath.setAttribute('stroke',       colors.stroke);
+            bgPath.setAttribute('fill', colors.bg);
+            bgPath.setAttribute('stroke', colors.stroke);
             bgPath.setAttribute('stroke-width', '3');
             if (borderPath) borderPath.style.display = 'none';
 
@@ -1049,21 +1049,21 @@ class Wg121 {
 
             // ── Inject letter text, centered in the nucleotide box ──
             try {
-                const bb   = bgPath.getBBox();
+                const bb = bgPath.getBBox();
                 const text = document.createElementNS(ns, 'text');
                 text.classList.add('poc-base-letter');
-                text.setAttribute('x',                String(bb.x + bb.width  / 2));
-                text.setAttribute('y',                String(bb.y + bb.height / 2));
-                text.setAttribute('text-anchor',      'middle');
-                text.setAttribute('dominant-baseline','central');
-                text.setAttribute('font-family',      'Roboto, sans-serif');
-                text.setAttribute('font-size',        '22');
-                text.setAttribute('font-weight',      'bold');
-                text.setAttribute('fill',             '#020202');
-                text.setAttribute('pointer-events',   'none');
+                text.setAttribute('x', String(bb.x + bb.width / 2));
+                text.setAttribute('y', String(bb.y + bb.height / 2));
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('dominant-baseline', 'central');
+                text.setAttribute('font-family', 'Roboto, sans-serif');
+                text.setAttribute('font-size', '22');
+                text.setAttribute('font-weight', 'bold');
+                text.setAttribute('fill', '#020202');
+                text.setAttribute('pointer-events', 'none');
                 text.textContent = placed;
                 wg.appendChild(text);
-            } catch (_) {}
+            } catch (_) { }
         });
     }
 
@@ -1094,15 +1094,15 @@ class Wg121 {
 
         // Fixed vertical gap in SVG user-space coordinates
         const TEMPLATE_BOTTOM = 378;
-        const COMP_TOP        = 405;
-        const GAP             = COMP_TOP - TEMPLATE_BOTTOM; // 27 px
+        const COMP_TOP = 405;
+        const GAP = COMP_TOP - TEMPLATE_BOTTOM; // 27 px
 
         // Fallback cx table: (left_x + right_x) / 2 measured from each
         // comp slot's Rectangle 228 path in the exported SVG.
         // Slot order: 0(G618)…10(G616), 11(G607)
         const fallbackCX = [543, 621, 699, 778, 856, 934, 1013, 1091, 1169, 1248, 1326, 1404];
 
-        const ns    = 'http://www.w3.org/2000/svg';
+        const ns = 'http://www.w3.org/2000/svg';
         const layer = document.createElementNS(ns, 'g');
         layer.classList.add('poc-hbonds-layer');
         layer.setAttribute('pointer-events', 'none');
@@ -1112,45 +1112,42 @@ class Wg121 {
             if (!placed || !group) return;
 
             const templateBase = templateSequence[idx];
-            const bonds        = bondCount[templateBase + placed] || 0;
+            const bonds = bondCount[templateBase + placed] || 0;
             if (!bonds) return;
 
             // Derive horizontal centre from the filled background path.
             // Use _getWorkingGroup so slot 11 (Group 607 container) scopes
             // correctly to Group 617's own Rectangle 228.
-            const wg        = this._getWorkingGroup(group);
+            const wg = this._getWorkingGroup(group);
             const rectGroup = wg.querySelector('g[id^="Rectangle 228"]');
-            const bgPath    = rectGroup && rectGroup.querySelector('path');
+            const bgPath = rectGroup && rectGroup.querySelector('path');
 
             let cx = fallbackCX[idx];
             if (bgPath) {
                 try {
                     const bb = bgPath.getBBox();
                     if (bb.width > 0) cx = bb.x + bb.width / 2;
-                } catch (_) {}
+                } catch (_) { }
             }
 
-            // Vertical bond lines: each line spans the full gap between
-            // template bottom (y=378) and comp top (y=405), with a small
-            // 2 px inset on each end so they don't touch the box edges.
-            // Multiple lines are spaced 5 SVG units apart, centred on cx.
-            //   2 bonds → lines at cx-2.5 and cx+2.5
-            //   3 bonds → lines at cx-5,  cx,  and cx+5
-            const y1         = TEMPLATE_BOTTOM + 2;
-            const y2         = COMP_TOP        - 2;
-            const lineSpacing = 5;
-            const totalWidth  = (bonds - 1) * lineSpacing;
-            const startX      = cx - totalWidth / 2;
+            // Draw VERTICAL bond indicators running from template bottom
+            // to comp top, spaced evenly around the slot centre.
+            //   2 bonds (A-T): two lines at cx ± bondSpacing/2
+            //   3 bonds (G-C): three lines at cx-bondSpacing, cx, cx+bondSpacing
+            const bondSpacing = 7;   // px between adjacent bond lines
+            const lineY1 = TEMPLATE_BOTTOM + 3;   // slight inset below template
+            const lineY2 = COMP_TOP        - 3;   // slight inset above comp
 
             for (let b = 0; b < bonds; b++) {
-                const x  = startX + b * lineSpacing;
+                const xOffset = (b - (bonds - 1) / 2) * bondSpacing;
+                const lx = cx + xOffset;
                 const ln = document.createElementNS(ns, 'line');
-                ln.setAttribute('x1',             String(x));
-                ln.setAttribute('x2',             String(x));
-                ln.setAttribute('y1',             String(y1));
-                ln.setAttribute('y2',             String(y2));
-                ln.setAttribute('stroke',         '#5F1313');
-                ln.setAttribute('stroke-width',   '2.5');
+                ln.setAttribute('x1', String(lx));
+                ln.setAttribute('x2', String(lx));
+                ln.setAttribute('y1', String(lineY1));
+                ln.setAttribute('y2', String(lineY2));
+                ln.setAttribute('stroke', '#5F1313');
+                ln.setAttribute('stroke-width', '2.5');
                 ln.setAttribute('stroke-linecap', 'round');
                 layer.appendChild(ln);
             }
