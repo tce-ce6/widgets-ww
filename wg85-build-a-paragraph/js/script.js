@@ -392,8 +392,8 @@ function clearExistingContent() {
     tocHighlights.style.display = 'none';
   }
 
-  // Hide navigation button
-  const nextBtn = document.getElementById('Group_594');
+  // Hide next button
+  const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.display = 'none';
   }
@@ -533,7 +533,7 @@ function createParagraphSlots(topic) {
   div.style.lineHeight = '1.6';
   div.style.color = '#999';
   div.style.padding = '40px 30px';
-  div.style.background = '#FFFCD8';
+  // div.style.background = '#FFFCD8';
   div.style.border = '3px dashed #fff';
   div.style.borderRadius = '18px';
   div.style.height = '100%';
@@ -633,7 +633,7 @@ function buildParagraphProgressively() {
   div.style.lineHeight = '1.6';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.background = '#FFFCD8';
+  // div.style.background = '#FFFCD8';
   div.style.border = '3px dashed #fff';
   div.style.borderRadius = '18px';
   div.style.height = '100%';
@@ -770,12 +770,14 @@ function showHighlightedParagraph(topic, container) {
   div.style.fontWeight = '700';
   div.style.lineHeight = '1.5';
   div.style.color = '#181818';
-  div.style.padding = '40px 30px';
-  div.style.background = '#FFFCD8';
+  //div.style.padding = '40px 30px';
+  //div.style.background = '#FFFCD8';
   div.style.borderRadius = '18px';
+  div.style.padding = '40px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
+  div.style.marginTop = '80px';
 
   // Add paragraph with highlights (no duplicate title)
   const para = document.createElement('p');
@@ -896,13 +898,15 @@ function showAnnotations(topic, container) {
 // Show navigation button
 function showNavigationButton() {
   const isLastTopic = currentTopicIndex === paragraphData.length - 1;
-  const btnText = isLastTopic ? 'FINISH' : 'NEXT';
+  const btnText = isLastTopic ? 'FINISH' : 'Next';
 
-  // Use the existing Next button from btns-global
-  const nextBtn = document.getElementById('Group_594');
+  // Use Group_594-2 as the Next button (it's positioned on the right)
+  const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.display = 'block';
     nextBtn.style.cursor = 'pointer';
+    nextBtn.style.opacity = '1';
+    nextBtn.style.pointerEvents = 'auto';
 
     // Update text if needed
     const textElement = nextBtn.querySelector('text');
@@ -931,8 +935,8 @@ function handleNavigationClick(e) {
     currentTopicIndex++;
   }
 
-  // Hide navigation button before loading next topic
-  const nextBtn = document.getElementById('Group_594');
+  // Hide next button before loading next topic
+  const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.display = 'none';
   }
@@ -956,17 +960,16 @@ function setupEventListeners() {
     resetBtn.addEventListener('click', handleReset);
   }
 
-  // Back button (Group_594-2)
-  const backBtn = document.getElementById('Group_594-2');
+  // Back button (Group_594)
+  const backBtn = document.getElementById('Group_594');
   if (backBtn) {
     backBtn.style.cursor = 'pointer';
     backBtn.addEventListener('click', handleBackClick);
   }
 
-  // Next button for topic navigation (different from completion Next)
-  const nextTopicBtn = document.getElementById('Group_594');
+  // Next button (Group_594-2) - hidden by default, shown on completion
+  const nextTopicBtn = document.getElementById('Group_594-2');
   if (nextTopicBtn) {
-    // This will be set up dynamically when showing completion screen
     nextTopicBtn.style.display = 'none';
   }
 }
@@ -999,7 +1002,7 @@ function handleNextTopicClick(e) {
 
 // Update topic navigation button visibility
 function updateTopicNavigationButtons() {
-  const backBtn = document.getElementById('Group_594-2');
+  const backBtn = document.getElementById('Group_594');
   if (backBtn) {
     backBtn.style.opacity = currentTopicIndex === 0 ? '0.3' : '1';
     backBtn.style.pointerEvents = currentTopicIndex === 0 ? 'none' : 'auto';
