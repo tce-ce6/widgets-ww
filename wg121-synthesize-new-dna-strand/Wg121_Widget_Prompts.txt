@@ -4,15 +4,20 @@ WIDGET DEVELOPMENT PROMPTS (PLAIN TEXT VERSION) Class Name: Wg121
 FLOW PLANNING + POC VERIFICATION STAGE
 ============================================================
 
-Folder: wg121-synthesize-new-dna-strand
+Folder: @beautifulMention 
 
-OBJECTIVE: 1. Create a complete interaction flow plan. 2. Build a small
-slideshow-style POC to verify understanding. 3. Refine the production
-prompt based on verification. 4. Update prompts.md in the root folder.
+OBJECTIVE: 
+1. Create a complete interaction flow plan. 
+2. Build a small
+slideshow-style POC to verify understanding. 
+3. Refine the production
+prompt based on verification. 
+4. Update prompts.md in the root folder.
 
 STEP 1 – INTERACTION FLOW PLANNING
 
-Analyze: - Adobe XD wireframe - en_en_03_wg121.docx storyboard
+Analyze: - Adobe XD wireframe link - https://xd.adobe.com/view/bfbbeb8c-2cd8-4aa7-ab5c-9e0f8571a575-eae8/
+storyboard file: @beautifulMention 
 
 Generate:
 
@@ -41,11 +46,20 @@ Generate:
 
 All code must be inside a class named:
 
+if the widget name is Wg121 
 class Wg121
 
-Required internal methods: - constructor() - init() - cacheDOM() -
-bindEvents() - updateUI() - validateStep() - handleAnimation() -
-updateText() - updateImage() - resetWidget()
+Required internal methods: 
+- constructor() 
+- init() 
+- cacheDOM() 
+- bindEvents() 
+- updateUI() 
+- validateStep() 
+- handleAnimation() 
+- updateText() 
+- updateImage() 
+- resetWidget()
 
 No production code yet at this stage.
 
@@ -53,10 +67,13 @@ No production code yet at this stage.
 
 STEP 2 – POC INTERACTIVE (SLIDESHOW STYLE)
 
-Create a minimal working interaction: - Use existing index.html SVG. -
-Do NOT modify layout. - Use simple next-step progression. - Use
-show/hide logic. - Simulate state changes. - Demonstrate text updates
-and image swapping if applicable.
+Create a minimal working interaction: 
+- Use existing index.html SVG. 
+- Do NOT modify layout. 
+- Use simple next-step progression. 
+- Use show/hide logic. 
+- Simulate state changes. 
+- Demonstrate text updates and image swapping if applicable.
 
 All JavaScript must be inside:
 
@@ -72,18 +89,29 @@ No global function leakage.
 
 STEP 3 – REFINED PRODUCTION PROMPT
 
-After POC: - Analyze correctness. - Identify mismatches. - Clarify state
-flow. - Clarify animation lifecycle. - Clarify dynamic content logic. -
-Remove ambiguity.
+After POC: 
+- Analyze correctness. 
+- Identify mismatches. 
+- Clarify state flow. 
+- Clarify animation lifecycle. 
+- Clarify dynamic content logic. 
+- Remove ambiguity.
 
 ------------------------------------------------------------------------
 
 STEP 4 – UPDATE prompts.md
 
-Update prompts.md in root folder with: - Final verified production
-prompt. - Flow summary. - State architecture. - Animation notes. - Image
-handling notes. - foreignObject decisions. - Edge cases. - Performance
-notes.
+Update prompts.md in root folder with: 
+- Final verified production prompt. 
+- Flow summary. 
+- State architecture. 
+- Animation notes. 
+- Image handling notes. 
+- foreignObject decisions. 
+- Edge cases. 
+- Performance notes.
+
+
 
 ============================================================ PROMPT 2 –
 FINAL PRODUCTION IMPLEMENTATION
