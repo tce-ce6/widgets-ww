@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests of Divisibility</title>
+    <meta name="description" content="Tests of Divisibility: Click balls that are factors of the target number!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ========== GAME WRAPPER ========== -->
+    <div class="game-wrapper">
+
+        <!-- TOP TITLE BADGE — flush to top -->
+        <div class="title-badge">
+            <h1>Tests of Divisibility</h1>
+        </div>
+
+        <!-- SUBTITLE HINT -->
+        <p class="subtitle-hint">Click on balls that are <strong>factors</strong> of the target number on the flask.</p>
+
+        <!-- BALLS PANEL — horizontal row -->
+        <div class="balls-panel">
+            <div class="balls-grid" id="balls-grid">
+                <!-- Balls injected by JS -->
+            </div>
+        </div>
+
+        <!-- FLASK PANEL -->
+        <div class="flask-panel">
+            <!-- Conical flask SVG: viewBox tightly cropped to the flask shape only -->
+            <svg class="flask-svg" viewBox="598 61 149 221" preserveAspectRatio="xMidYMid meet"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <style>
+                        .fst0 {
+                            fill: #c9dffd;
+                        }
+
+                        .fst1 {
+                            fill: #ecefff;
+                        }
+                    </style>
+                </defs>
+                <!-- Conical/Erlenmeyer flask fill -->
+                <path class="fst0"
+                    d="M733.8,275.28h-120.55c-10.35,0-16.53-11.54-10.77-20.16l32.53-66.27,14.89-30.35c1.44-2.18,2.21-4.73,2.21-7.35v-84.66h42.81v84.66c0,2.62.77,5.17,2.23,7.35l23.53,47.94,23.88,48.68c5.76,8.62-.4,20.16-10.77,20.16Z" />
+                <!-- Conical flask outline -->
+                <path class="fst1"
+                    d="M733.8,279.3h-120.55c-6.37,0-11.97-3.35-14.97-8.97-2.96-5.54-2.69-11.94.7-17.19l47.43-96.65.15-.22c1.01-1.52,1.55-3.29,1.55-5.11V62.47h50.83v88.68c0,1.82.54,3.59,1.55,5.11l.27.46,47.31,96.41c3.39,5.25,3.66,11.66.7,17.19-3,5.62-8.6,8.97-14.97,8.97ZM653.39,160.49l-47.43,96.65-.15.22c-1.87,2.79-2.04,6.23-.45,9.19,1.58,2.96,4.53,4.73,7.89,4.73h120.55c3.36,0,6.31-1.77,7.89-4.73,1.58-2.96,1.41-6.4-.45-9.19l-.27-.46-47.31-96.41c-1.8-2.79-2.75-6.01-2.75-9.33v-80.66h-34.78v80.66c0,3.32-.95,6.54-2.75,9.33Z" />
+                <!-- Neck cap -->
+                <path class="fst1"
+                    d="M701.34,71.3h-55.64c-2.65,0-4.81-2.17-4.81-4.81h0c0-2.65,2.17-4.82,4.81-4.82h55.64c2.65,0,4.82,2.17,4.82,4.82h0c0,2.65-2.17,4.81-4.82,4.81Z" />
+            </svg>
+
+            <!-- Number box sits below the flask (matching XD) -->
+            <div class="flask-number-box">
+                <span id="target-number">—</span>
+            </div>
+        </div>
+
+        <!-- BOTTOM BUTTONS -->
+        <div class="footer-controls">
+            <button class="btn btn-reset" id="btn-reset">Reset</button>
+            <button class="btn btn-new" id="btn-new">New Game</button>
+        </div>
+
+    </div><!-- /game-wrapper -->
+
+    <!-- Accessibility feedback (hidden from view) -->
+    <div class="sr-only" id="feedback-msg" aria-live="polite">
+        <span id="feedback-text">Select a ball to begin!</span>
+    </div>
+
+    <!-- ========== LOTTIE OVERLAY ========== -->
+    <div class="lottie-overlay" id="lottie-overlay" aria-hidden="true">
+        <div class="lottie-wrap" id="lottie-correct-wrap">
+            <div id="lottie-correct" class="lottie-player"></div>
+        </div>
+        <div class="lottie-wrap" id="lottie-incorrect-wrap">
+            <div id="lottie-incorrect" class="lottie-player lottie-small"></div>
+        </div>
+    </div>
+
+    <!-- Lottie-web library -->
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
