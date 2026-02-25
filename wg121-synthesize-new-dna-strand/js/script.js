@@ -1130,21 +1130,27 @@ class Wg121 {
                 } catch (_) {}
             }
 
-            // Line half-length: ~68 % of half the slot width (~30 px wide rect)
-            const halfLen = 14;
-            const x1      = cx - halfLen;
-            const x2      = cx + halfLen;
-            const spacing = GAP / (bonds + 1);
+            // Vertical bond lines: each line spans the full gap between
+            // template bottom (y=378) and comp top (y=405), with a small
+            // 2 px inset on each end so they don't touch the box edges.
+            // Multiple lines are spaced 5 SVG units apart, centred on cx.
+            //   2 bonds → lines at cx-2.5 and cx+2.5
+            //   3 bonds → lines at cx-5,  cx,  and cx+5
+            const y1         = TEMPLATE_BOTTOM + 2;
+            const y2         = COMP_TOP        - 2;
+            const lineSpacing = 5;
+            const totalWidth  = (bonds - 1) * lineSpacing;
+            const startX      = cx - totalWidth / 2;
 
-            for (let b = 1; b <= bonds; b++) {
-                const y  = TEMPLATE_BOTTOM + spacing * b;
+            for (let b = 0; b < bonds; b++) {
+                const x  = startX + b * lineSpacing;
                 const ln = document.createElementNS(ns, 'line');
-                ln.setAttribute('x1',             String(x1));
-                ln.setAttribute('x2',             String(x2));
-                ln.setAttribute('y1',             String(y));
-                ln.setAttribute('y2',             String(y));
+                ln.setAttribute('x1',             String(x));
+                ln.setAttribute('x2',             String(x));
+                ln.setAttribute('y1',             String(y1));
+                ln.setAttribute('y2',             String(y2));
                 ln.setAttribute('stroke',         '#5F1313');
-                ln.setAttribute('stroke-width',   '3');
+                ln.setAttribute('stroke-width',   '2.5');
                 ln.setAttribute('stroke-linecap', 'round');
                 layer.appendChild(ln);
             }
