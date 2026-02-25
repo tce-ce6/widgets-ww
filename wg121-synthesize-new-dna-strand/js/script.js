@@ -66,6 +66,11 @@ class Wg121 {
             isLocked: false,
 
             /**
+             * activeModal: reference to the currently open SVG modal element
+             */
+            activeModal: null,
+
+            /**
              * animations: stores Lottie animation instances (not used in POC)
              */
             animations: {},
@@ -135,8 +140,18 @@ class Wg121 {
         cache.svgContainer = document.querySelector('.svg-container svg');
 
         // ── BUTTONS ─────────────────────────────────────────────
-        cache.btnInsights = document.getElementById('Button_Insite');
+        cache.btnInsights   = document.getElementById('Button_Insite');
         cache.btnShowAnswer = document.getElementById('Group 2');
+
+        // ── SVG MODALS (already in the SVG, just shown/hidden) ───
+        cache.solutionModal = document.getElementById('solution-modal');
+        cache.insightsModal = document.getElementById('insights-modal');
+        // Close (×) buttons inside each SVG modal
+        cache.svgSolutionClose = document.getElementById('Group_1622');
+        // Group_1331 = green circle + × at top-right of insights-modal
+        // Button_Insite_1 = secondary orange button inside insights-modal (also closes)
+        cache.svgInsightsClose  = document.getElementById('Group_1331');
+        cache.svgInsightsClose2 = document.getElementById('Button_Insite_1');
         cache.btnNewTemplate = document.getElementById('Group 712');
         cache.btnReset = document.getElementById('Group 1621');
 
@@ -226,103 +241,6 @@ class Wg121 {
       .poc-feedback.correct { background: #1a6e36; }
       .poc-feedback.wrong   { background: #c0392b; }
 
-      /* Modal backdrop */
-      .poc-modal-backdrop {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.75);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 200;
-        pointer-events: all;
-        opacity: 0;
-        transition: opacity 0.25s;
-      }
-      .poc-modal-backdrop.show   { opacity: 1; }
-      .poc-modal-backdrop.hidden { display: none; }
-
-      /* Modal card */
-      .poc-modal-card {
-        background: #e8f9e8;
-        border: 3px solid #4caf50;
-        border-radius: 16px;
-        padding: 32px;
-        max-width: 700px;
-        width: 90%;
-        position: relative;
-        font-family: Roboto, sans-serif;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-      }
-      .poc-modal-title {
-        font-size: 24px;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 20px;
-        color: #1a6e36;
-      }
-      .poc-modal-close {
-        position: absolute;
-        top: -16px; right: -16px;
-        background: #1a6e36;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 36px; height: 36px;
-        font-size: 20px;
-        cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold;
-      }
-
-      /* Insights modal */
-      .poc-modal-card.insights {
-        background: #fff8ec;
-        border-color: #F7901E;
-        max-width: 640px;
-      }
-      .poc-modal-card.insights .poc-modal-title { color: #F7901E; }
-
-      /* DNA sequence display in solution modal */
-      .poc-dna-display {
-        background: #FFFEEA;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 16px;
-        margin: 12px 0;
-      }
-      .poc-dna-label {
-        font-size: 14px; font-weight: 500; color: #555; margin-bottom: 6px;
-        font-family: Roboto, sans-serif;
-      }
-      .poc-dna-row {
-        display: flex;
-        gap: 4px;
-        flex-wrap: wrap;
-        font-family: Roboto, sans-serif;
-      }
-      .poc-dna-base {
-        width: 36px; height: 36px;
-        border-radius: 5px;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold; font-size: 14px;
-        border: 2px solid transparent;
-      }
-      .poc-dna-base.A { background: #00EFCE; border-color: #04ABA5; }
-      .poc-dna-base.T { background: #FFF700; border-color: #DAAC15; }
-      .poc-dna-base.C { background: #FF7FA5; border-color: #E34772; }
-      .poc-dna-base.G { background: #B895FF; border-color: #9A38DB; }
-
-      /* Insights text */
-      .poc-insights-body {
-        font-family: Roboto, sans-serif;
-        font-size: 16px;
-        line-height: 1.7;
-        color: #333;
-      }
-      .poc-insights-body ul { padding-left: 20px; }
-      .poc-insights-body li { margin-bottom: 8px; }
-      .poc-insights-body strong { color: #c47a00; }
 
       /* Active slot highlight – applied to the drop-zone SVG group */
       @keyframes poc-slot-pulse {
@@ -359,6 +277,28 @@ class Wg121 {
       #Button_Insite, #Group\\ 2, #Group\\ 712, #Group\\ 1621 {
         cursor: pointer;
       }
+      /* SVG modal close buttons */
+      #Group_1622, #Group_1331, #Button_Insite_1 {
+        cursor: pointer;
+      }
+
+      /* ── Insights-modal SVG class definitions ──────────────── */
+      /* These classes come from the original Illustrator export  */
+      /* and must be defined here since the <style> block was not */
+      /* included when the SVG was embedded in index.html.        */
+      .st40 { fill: #fff; }
+      .st1  { fill: none; stroke: #e2a500; stroke-width: 6px; }
+      .st22 { fill: #020202; font-family: Roboto, sans-serif; font-size: 34px; letter-spacing: 0.03em; }
+      .st35 { fill: #020202; font-family: Roboto, sans-serif; font-size: 34px; letter-spacing: 0.03em; font-weight: 700; }
+      .st24 { fill: #fff;    font-family: Roboto, sans-serif; font-size: 35px; font-weight: 500; }
+      .st27 { isolation: isolate; }
+      .st65 { fill: #f7901e; }
+      .st18 { fill: #010101; }
+      .st41 { fill: #f4df21; }
+      .st11 { fill: none; stroke: #fff; stroke-width: 8px; stroke-linecap: round; }
+      .st44 { fill: #48c96b; }
+      /* Remove unresolvable clip-path references so close-button elements are visible */
+      .st49, .st19, .st48 { clip-path: none !important; }
     `;
         document.head.appendChild(style);
 
@@ -376,61 +316,38 @@ class Wg121 {
         feedback.id = 'poc-feedback';
         overlay.appendChild(feedback);
 
-        // ── Solution modal ──────────────────────────────────────
-        const solutionBackdrop = document.createElement('div');
-        solutionBackdrop.className = 'poc-modal-backdrop hidden';
-        solutionBackdrop.id = 'poc-solution-modal';
-        solutionBackdrop.innerHTML = `
-      <div class="poc-modal-card" id="poc-solution-card">
-        <button class="poc-modal-close" id="poc-solution-close">×</button>
-        <div class="poc-modal-title">Solution</div>
-        <div class="poc-dna-display">
-          <div class="poc-dna-label">Template Strand (3' → 5'):</div>
-          <div class="poc-dna-row" id="poc-sol-template"></div>
-        </div>
-        <div class="poc-dna-display">
-          <div class="poc-dna-label">Complementary Strand (5' → 3'):</div>
-          <div class="poc-dna-row" id="poc-sol-complementary"></div>
-        </div>
-        <p style="font-family:Roboto,sans-serif;font-size:14px;color:#555;text-align:center;margin-top:12px;">
-          A↔T (2 hydrogen bonds) &nbsp;|&nbsp; G↔C (3 hydrogen bonds)
-        </p>
-      </div>
-    `;
-        overlay.appendChild(solutionBackdrop);
-
-        // ── Insights modal ──────────────────────────────────────
-        const insightsBackdrop = document.createElement('div');
-        insightsBackdrop.className = 'poc-modal-backdrop hidden';
-        insightsBackdrop.id = 'poc-insights-modal';
-        insightsBackdrop.innerHTML = `
-      <div class="poc-modal-card insights" id="poc-insights-card">
-        <button class="poc-modal-close" id="poc-insights-close" style="background:#F7901E;">×</button>
-        <div class="poc-modal-title">🔬 Insights</div>
-        <div class="poc-insights-body">
-          <ul>
-            <li><strong>Base Pairing Rule:</strong> Adenine (A) pairs with Thymine (T) via <strong>2 hydrogen bonds</strong>.</li>
-            <li><strong>Base Pairing Rule:</strong> Guanine (G) pairs with Cytosine (C) via <strong>3 hydrogen bonds</strong>.</li>
-            <li><strong>Purines</strong> (A, G) have a double-ring structure.</li>
-            <li><strong>Pyrimidines</strong> (T, C) have a single-ring structure.</li>
-            <li>The complementary strand is synthesized in the <strong>5' → 3' direction</strong>.</li>
-            <li>The template strand is read in the <strong>3' → 5' direction</strong>.</li>
-            <li>This process, called <strong>DNA replication</strong>, ensures genetic fidelity.</li>
-          </ul>
-        </div>
-      </div>
-    `;
-        overlay.appendChild(insightsBackdrop);
-
         svgContainerEl.appendChild(overlay);
 
         // Store overlay references
-        this.state.cache.overlay = overlay;
+        this.state.cache.overlay  = overlay;
         this.state.cache.feedback = feedback;
-        this.state.cache.solutionModal = solutionBackdrop;
-        this.state.cache.insightsModal = insightsBackdrop;
-        this.state.cache.solTemplate = document.getElementById('poc-sol-template');
-        this.state.cache.solComplementary = document.getElementById('poc-sol-complementary');
+
+        // Hide the SVG modals by default; they are revealed on button click.
+        const { solutionModal, insightsModal, svgContainer } = this.state.cache;
+        if (solutionModal) solutionModal.style.display = 'none';
+        if (insightsModal) insightsModal.style.display = 'none';
+
+        // ── SVG backdrop ─────────────────────────────────────────
+        // A full-canvas semi-transparent rect inserted as a sibling
+        // just before insightsModal in the SVG DOM tree. This places
+        // it above all main content (lower z-order elements) but
+        // below both modals (which follow it in DOM order).
+        if (insightsModal) {
+            const NS = 'http://www.w3.org/2000/svg';
+            const backdrop = document.createElementNS(NS, 'rect');
+            backdrop.id = 'poc-svg-backdrop';
+            backdrop.setAttribute('x', '0');
+            backdrop.setAttribute('y', '0');
+            backdrop.setAttribute('width', '1920');
+            backdrop.setAttribute('height', '1080');
+            backdrop.setAttribute('fill', '#000000');
+            backdrop.setAttribute('fill-opacity', '0.65');
+            backdrop.style.display = 'none';
+            backdrop.style.cursor = 'default';
+            // insertBefore requires the parent to be the direct container
+            insightsModal.parentNode.insertBefore(backdrop, insightsModal);
+            this.state.cache.backdrop = backdrop;
+        }
     }
 
     // ----------------------------------------------------------
@@ -459,25 +376,44 @@ class Wg121 {
             cache.btnReset.style.cursor = 'pointer';
             cache.btnReset.addEventListener('click', () => this.resetWidget());
         }
-        if (cache.btnInsights) {
-            cache.btnInsights.style.cursor = 'pointer';
-            cache.btnInsights.addEventListener('click', () => this._onInsights());
+        // Insights trigger: use event delegation on SVG root so click is
+        // reliably captured regardless of SVG mask/clip nesting issues.
+        if (cache.svgContainer) {
+            cache.svgContainer.addEventListener('click', (e) => {
+                if (this.state.isLocked) return;
+                if (e.target.closest('#Button_Insite')) {
+                    this._onInsights();
+                }
+            });
         }
 
-        // ── Modal close buttons ─────────────────────────────────
-        document.getElementById('poc-solution-close').addEventListener('click', () => {
-            this._closeModal(cache.solutionModal);
-        });
-        document.getElementById('poc-insights-close').addEventListener('click', () => {
-            this._closeModal(cache.insightsModal);
-        });
+        // ── SVG modal close (×) buttons ─────────────────────────
+        if (cache.svgSolutionClose) {
+            cache.svgSolutionClose.addEventListener('click', () => {
+                this._closeModal(cache.solutionModal);
+            });
+        }
+        // Primary close (Group_1331 = top-right green circle ×)
+        if (cache.svgInsightsClose) {
+            cache.svgInsightsClose.addEventListener('click', () => {
+                this._closeModal(cache.insightsModal);
+            });
+        }
+        // Secondary close (Button_Insite_1 = orange button at bottom-left of modal)
+        if (cache.svgInsightsClose2) {
+            cache.svgInsightsClose2.addEventListener('click', () => {
+                this._closeModal(cache.insightsModal);
+            });
+        }
 
-        cache.solutionModal.addEventListener('click', (e) => {
-            if (e.target === cache.solutionModal) this._closeModal(cache.solutionModal);
-        });
-        cache.insightsModal.addEventListener('click', (e) => {
-            if (e.target === cache.insightsModal) this._closeModal(cache.insightsModal);
-        });
+        // ── Backdrop: click outside modal to close ───────────────
+        if (cache.backdrop) {
+            cache.backdrop.addEventListener('click', () => {
+                if (this.state.activeModal) {
+                    this._closeModal(this.state.activeModal);
+                }
+            });
+        }
     }
 
     // ----------------------------------------------------------
@@ -858,35 +794,84 @@ class Wg121 {
 
     // ----------------------------------------------------------
     // _onShowAnswer()
-    // Opens the Solution modal.
+    // Updates the SVG solution-modal with the current sequence
+    // and makes it visible.
     // ----------------------------------------------------------
     _onShowAnswer() {
+        this._updateSolutionModal();
+        this._openModal(this.state.cache.solutionModal);
+    }
+
+    // ----------------------------------------------------------
+    // _updateSolutionModal()
+    // Rewrites the letter and background-rect colour for each of
+    // the 12 template and 12 complementary text elements that
+    // already exist inside the SVG solution-modal group.
+    //
+    // Template text IDs (left → right visual order, pos 0…11):
+    //   T-4-2, A-3-13, C-2-13, A-2, G-3-13, C-13, T-3, G-2,
+    //   T-2-12, G-13, A-13, T-13
+    //
+    // Complementary text IDs (left → right visual order):
+    //   A-4-2, T-5-2, G-4-2, T-6, T-7, C-3-2, C-4, C-5,
+    //   G-5, A-5, A-6, A-7
+    // ----------------------------------------------------------
+    _updateSolutionModal() {
         const { templateSequence } = this.state;
         const pairMap = { A: 'T', T: 'A', G: 'C', C: 'G' };
-        const cache = this.state.cache;
 
-        if (cache.solTemplate) {
-            cache.solTemplate.innerHTML = '';
-            templateSequence.forEach(base => {
-                const div = document.createElement('div');
-                div.className = `poc-dna-base ${base}`;
-                div.textContent = base;
-                cache.solTemplate.appendChild(div);
-            });
+        const templateTextIds = [
+            'T-4-2',  'A-3-13', 'C-2-13', 'A-2',  'G-3-13', 'C-13',
+            'T-3',    'G-2',    'T-2-12', 'G-13', 'A-13',   'T-13',
+        ];
+        const compTextIds = [
+            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'T-7',  'C-3-2',
+            'C-4',   'C-5',   'G-5',   'A-5', 'A-6',  'A-7',
+        ];
+
+        templateSequence.forEach((base, idx) => {
+            this._updateSolutionSlot(templateTextIds[idx], base);
+            this._updateSolutionSlot(compTextIds[idx], pairMap[base]);
+        });
+    }
+
+    // ----------------------------------------------------------
+    // _updateSolutionSlot(textId, base)
+    // Updates a single nucleotide slot in the solution modal:
+    //   • Sets the <tspan> text content to `base`
+    //   • Recolors the Rectangle_229 sibling rects to match
+    //     the nucleotide's background and stroke colors
+    //
+    // DOM structure:
+    //   parentGroup
+    //     <g id="Rectangle_229-xx">  ← rects[0]=bg fill, rects[1]=border
+    //     <g id="T-13">              ← wrapper (= wrapper passed in)
+    //       <text><tspan>T</tspan>
+    // ----------------------------------------------------------
+    _updateSolutionSlot(textId, base) {
+        const colorMap = {
+            A: { bg: '#00EFCE', stroke: '#04ABA5' },
+            T: { bg: '#FFF700', stroke: '#DAAC15' },
+            C: { bg: '#FF7FA5', stroke: '#E34772' },
+            G: { bg: '#B895FF', stroke: '#9A38DB' },
+        };
+
+        const wrapper = document.getElementById(textId);
+        if (!wrapper) return;
+
+        // Update the letter text
+        const tspan = wrapper.querySelector('tspan');
+        if (tspan) tspan.textContent = base;
+
+        // Recolor the sibling Rectangle_229 background rects
+        const parentGroup = wrapper.parentElement;
+        const rect229     = parentGroup && parentGroup.querySelector('[id^="Rectangle_229"]');
+        if (rect229) {
+            const rects = rect229.querySelectorAll('rect');
+            const col   = colorMap[base];
+            if (rects[0] && col) rects[0].setAttribute('fill',   col.bg);
+            if (rects[1] && col) rects[1].setAttribute('stroke', col.stroke);
         }
-
-        if (cache.solComplementary) {
-            cache.solComplementary.innerHTML = '';
-            templateSequence.forEach(base => {
-                const comp = pairMap[base];
-                const div = document.createElement('div');
-                div.className = `poc-dna-base ${comp}`;
-                div.textContent = comp;
-                cache.solComplementary.appendChild(div);
-            });
-        }
-
-        this._openModal(cache.solutionModal);
     }
 
     // ----------------------------------------------------------
@@ -908,23 +893,27 @@ class Wg121 {
 
     // ----------------------------------------------------------
     // _openModal / _closeModal
+    // Toggles visibility of an existing SVG <g> modal element.
+    // No new elements are created; display:'none' / display:''
+    // shows and hides the group in place.
     // ----------------------------------------------------------
-    _openModal(backdropEl) {
-        if (!backdropEl) return;
-        backdropEl.classList.remove('hidden');
-        void backdropEl.offsetWidth;
-        backdropEl.classList.add('show');
-        this.state.isLocked = true;
+    _openModal(modalEl) {
+        if (!modalEl) return;
+        const { backdrop } = this.state.cache;
+        if (backdrop) backdrop.style.display = '';   // show dim backdrop
+        modalEl.style.display = '';                  // show modal
+        this.state.isLocked   = true;
+        this.state.activeModal = modalEl;
         this.updateUI();
     }
 
-    _closeModal(backdropEl) {
-        if (!backdropEl) return;
-        backdropEl.classList.remove('show');
-        backdropEl.addEventListener('transitionend', () => {
-            backdropEl.classList.add('hidden');
-        }, { once: true });
-        this.state.isLocked = false;
+    _closeModal(modalEl) {
+        if (!modalEl) return;
+        modalEl.style.display = 'none';
+        const { backdrop } = this.state.cache;
+        if (backdrop) backdrop.style.display = 'none';
+        this.state.isLocked    = false;
+        this.state.activeModal = null;
         this.updateUI();
     }
 
