@@ -1,0 +1,182 @@
+WIDGET DEVELOPMENT PROMPTS (PLAIN TEXT VERSION) Class Name: Wg121
+
+============================================================ PROMPT 1 –
+FLOW PLANNING + POC VERIFICATION STAGE
+============================================================
+
+Folder: wg121-synthesize-new-dna-strand
+
+OBJECTIVE: 1. Create a complete interaction flow plan. 2. Build a small
+slideshow-style POC to verify understanding. 3. Refine the production
+prompt based on verification. 4. Update prompts.md in the root folder.
+
+STEP 1 – INTERACTION FLOW PLANNING
+
+Analyze: - Adobe XD wireframe - en_en_03_wg121.docx storyboard
+
+Generate:
+
+1.  UI Structure Mapping
+
+-   List all SVG elements.
+-   Identify interactive elements.
+-   Identify static elements.
+-   Identify dynamic text placeholders.
+-   Identify dynamic image placeholders.
+-   Identify animation placeholders.
+-   Identify where foreignObject may be required (justify).
+
+2.  Interaction Flow
+
+-   Step-by-step user journey.
+-   Trigger events.
+-   State transitions.
+-   Validation logic.
+-   Success conditions.
+-   Error handling.
+-   Reset logic.
+-   Animation synchronization points.
+
+3.  Technical Architecture Plan
+
+All code must be inside a class named:
+
+class Wg121
+
+Required internal methods: - constructor() - init() - cacheDOM() -
+bindEvents() - updateUI() - validateStep() - handleAnimation() -
+updateText() - updateImage() - resetWidget()
+
+No production code yet at this stage.
+
+------------------------------------------------------------------------
+
+STEP 2 – POC INTERACTIVE (SLIDESHOW STYLE)
+
+Create a minimal working interaction: - Use existing index.html SVG. -
+Do NOT modify layout. - Use simple next-step progression. - Use
+show/hide logic. - Simulate state changes. - Demonstrate text updates
+and image swapping if applicable.
+
+All JavaScript must be inside:
+
+class Wg121 { … }
+
+Single instance only:
+
+const WG121_WIDGET = new Wg121(); WG121_WIDGET.init();
+
+No global function leakage.
+
+------------------------------------------------------------------------
+
+STEP 3 – REFINED PRODUCTION PROMPT
+
+After POC: - Analyze correctness. - Identify mismatches. - Clarify state
+flow. - Clarify animation lifecycle. - Clarify dynamic content logic. -
+Remove ambiguity.
+
+------------------------------------------------------------------------
+
+STEP 4 – UPDATE prompts.md
+
+Update prompts.md in root folder with: - Final verified production
+prompt. - Flow summary. - State architecture. - Animation notes. - Image
+handling notes. - foreignObject decisions. - Edge cases. - Performance
+notes.
+
+============================================================ PROMPT 2 –
+FINAL PRODUCTION IMPLEMENTATION
+============================================================
+
+Folder: wg121-synthesize-new-dna-strand
+
+Implement full interactive using verified prompts.md.
+
+MANDATORY RULE: All JavaScript must be inside:
+
+class Wg121
+
+Structure:
+
+class Wg121 {
+
+constructor() { this.state = { currentStep: 0, isLocked: false,
+animations: {}, data: {}, config: {}, cache: {} }; }
+
+init() {} cacheDOM() {} bindEvents() {} updateUI() {} validateStep() {}
+handleAnimation() {} updateText() {} updateImage() {} resetWidget() {} }
+
+Single instance only:
+
+const WG121_WIDGET = new Wg121(); WG121_WIDGET.init();
+
+------------------------------------------------------------------------
+
+Lottie Integration:
+
+-   lottie.min.js exists inside js folder.
+-   Do NOT use CDN.
+-   Load locally.
+-   Store animation instances in this.state.animations.
+-   Avoid duplicate initialization.
+-   Reset or destroy properly on retry.
+
+------------------------------------------------------------------------
+
+SVG RULES:
+
+-   Do NOT modify layout.
+-   Only manipulate:
+    -   visibility
+    -   opacity
+    -   transform
+    -   textContent
+    -   image href
+
+Use foreignObject only if: - Multi-line dynamic wrapping is required. -
+Vertical alignment fails with SVG text. - Justify clearly in comments.
+
+------------------------------------------------------------------------
+
+Dynamic Data Rules:
+
+-   If dataset is small, store JSON internally inside class.
+-   Do NOT create external JSON.
+-   Separate data from logic.
+
+------------------------------------------------------------------------
+
+Dynamic Image Rules:
+
+Images located in: assets/images/
+
+-   Update SVG image href dynamically.
+-   Maintain aspect ratio.
+-   Avoid layout shift.
+-   Control via state logic.
+
+------------------------------------------------------------------------
+
+Performance Rules:
+
+-   Cache DOM selectors.
+-   Avoid duplicate listeners.
+-   Prevent rapid click conflicts.
+-   Validate before state transitions.
+-   Prevent animation memory leaks.
+-   Keep architecture scalable.
+
+------------------------------------------------------------------------
+
+FINAL OUTPUT MUST ENSURE:
+
+-   Pixel-perfect fidelity.
+-   Class-based architecture.
+-   No global leaks.
+-   Controlled animation lifecycle.
+-   Clean maintainable structure.
+-   Updated prompts.md.
+-   Production-ready implementation.
+
+END OF FILE
