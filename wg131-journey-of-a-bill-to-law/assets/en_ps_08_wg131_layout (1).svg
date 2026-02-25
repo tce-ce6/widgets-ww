@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Journey of a Bill to Law</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Journey of a Bill to Law</h2>
-        <span id="versionId" class="versionText">b3_wg131_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2172.43 1196.74">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2172.43 1196.74">
   <defs>
     <clipPath id="clippath">
       <rect x="536.73" y="872.61" width="50.04" height="50" fill="none"/>
@@ -329,7 +310,7 @@
       <path id="Rectangle_2-2" data-name="Rectangle 2-2" d="M900.09,978.61h299c25.68,0,46.5,20.82,46.5,46.5h0c0,25.68-20.82,46.5-46.5,46.5h-299c-25.68,0-46.5-20.82-46.5-46.5h0c0-25.68,20.82-46.5,46.5-46.5Z" fill="#ff2c68"/>
       <g id="START_JOURNEY_" data-name="START JOURNEY " isolation="isolate">
         <text transform="translate(896.26 1040.61)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">S</tspan><tspan x="21.12" y="0" letter-spacing="-.06em">T</tspan><tspan x="40.31" y="0">A</tspan><tspan x="63.61" y="0" letter-spacing="-.02em">R</tspan><tspan x="84.59" y="0" letter-spacing="-.03em">T</tspan><tspan x="104.81" y="0" xml:space="preserve"> JOURNEY </tspan></text>
-        <text transform="translate(1172.73 1040.61)" fill="#fff" font-family="SegoeUI-Semibold, 'Segoe UI'" font-size="35" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(1172.73 1040.61)" fill="#fff" font-family="SegoeUI-Semibold, &apos;Segoe UI&apos;" font-size="35" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
     </g>
     <g id="Learn_how_a_bill_becomes_law_in_India_through_9_important_steps._Click_START_JOURNEY_when_ready." data-name="Learn how a bill becomes law in India through 9 important steps. Click START JOURNEY when ready." isolation="isolate">
@@ -677,7 +658,7 @@
         <rect x="763.59" y="502.8" width="573" height="78" rx="11" ry="11" fill="none" stroke="#9ac9f2" stroke-width="2"/>
       </g>
       <g id="President_s_office_first" data-name="President s office first" isolation="isolate">
-        <text transform="translate(902.64 548.8)" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">'</tspan><tspan x="132.38" y="0">s office first</tspan></text>
+        <text transform="translate(902.64 548.8)" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="132.38" y="0">s office first</tspan></text>
       </g>
     </g>
     <g id="Group_1211" data-name="Group 1211">
@@ -692,7 +673,7 @@
   </g>
   <g id="feedback-incorrect">
     <rect x="563.59" y="138.8" width="972" height="909" rx="12" ry="12" fill="none" stroke="#97a700" stroke-width="8"/>
-    <text transform="translate(972.6 752.8)" fill="#db2323" font-family="SegoeUIEmoji, 'Segoe UI Emoji'" font-size="28" isolation="isolate"><tspan x="0" y="0">✗</tspan></text>
+    <text transform="translate(972.6 752.8)" fill="#db2323" font-family="SegoeUIEmoji, &apos;Segoe UI Emoji&apos;" font-size="28" isolation="isolate"><tspan x="0" y="0">✗</tspan></text>
     <text transform="translate(995.47 752.8)" fill="#db2323" font-family="Roboto-Bold, Roboto" font-size="28" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em"> </tspan><tspan x="6.15" y="0" letter-spacing="-.03em">T</tspan><tspan x="22.59" y="0">ry again!</tspan></text>
     <rect x="762.59" y="774.8" width="575" height="106" rx="12" ry="12" fill="#fef9c3"/>
     <rect x="763.59" y="775.8" width="573" height="104" rx="11" ry="11" fill="none" stroke="#f1da57" stroke-width="2"/>
@@ -701,7 +682,7 @@
     <g id="Group_1210-2" data-name="Group 1210">
       <rect id="Rectangle_439-2-2" data-name="Rectangle 439-2" x="762.59" y="501.8" width="575" height="80" rx="12" ry="12" fill="#e5e7eb"/>
       <g id="President_s_office_first-2" data-name="President s office first" isolation="isolate">
-        <text transform="translate(903.97 548.8)" fill="#9aa1ad" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">'</tspan><tspan x="132.38" y="0">s office first</tspan></text>
+        <text transform="translate(903.97 548.8)" fill="#9aa1ad" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="132.38" y="0">s office first</tspan></text>
       </g>
     </g>
   </g>
@@ -745,7 +726,7 @@
     <g id="Group_1210-3" data-name="Group 1210">
       <rect id="Rectangle_439-3-2" data-name="Rectangle 439-3" x="762.59" y="501.8" width="575" height="80" rx="12" ry="12" fill="#e5e7eb"/>
       <g id="President_s_office_first-3" data-name="President s office first" isolation="isolate">
-        <text transform="translate(903.97 548.8)" fill="#9aa1ad" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">'</tspan><tspan x="132.38" y="0">s office first</tspan></text>
+        <text transform="translate(903.97 548.8)" fill="#9aa1ad" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">President</tspan><tspan x="128.66" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="132.38" y="0">s office first</tspan></text>
       </g>
     </g>
   </g>
@@ -833,7 +814,7 @@
         </g>
         <g id="FIRST_READING_The_Announcement_First_Reading_" data-name="FIRST READING The Announcement First Reading " isolation="isolate">
           <text transform="translate(928.59 741.8)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">FIRS</tspan><tspan x="46.03" y="0" letter-spacing="-.03em">T</tspan><tspan x="59" y="0" xml:space="preserve"> READING (The </tspan><tspan x="213.42" y="0" letter-spacing="-.02em">A</tspan><tspan x="227.7" y="0">nnouncement </tspan></text>
-          <text transform="translate(1297.54 741.8)" font-family="SegoeUI-Bold, 'Segoe UI'" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(1297.54 741.8)" font-family="SegoeUI-Bold, &apos;Segoe UI&apos;" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
           <text transform="translate(1316.53 741.8)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> First Reading)</tspan></text>
         </g>
       </g>
@@ -1037,18 +1018,8 @@
       <path id="Rectangle_2" data-name="Rectangle 2" d="M864.09,941.8h372c25.68,0,46.5,20.82,46.5,46.5h0c0,25.68-20.82,46.5-46.5,46.5h-372c-25.68,0-46.5-20.82-46.5-46.5h0c0-25.68,20.82-46.5,46.5-46.5Z" fill="#ff2c68"/>
       <g id="START_NEW_JOURNEY_" data-name="START NEW JOURNEY " isolation="isolate">
         <text transform="translate(854.69 1003.8)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">S</tspan><tspan x="21.12" y="0" letter-spacing="-.06em">T</tspan><tspan x="40.31" y="0">A</tspan><tspan x="63.61" y="0" letter-spacing="-.02em">R</tspan><tspan x="84.59" y="0" letter-spacing="-.03em">T</tspan><tspan x="104.81" y="0" xml:space="preserve"> NEW JOURNEY </tspan></text>
-        <text transform="translate(1215.3 1003.8)" fill="#fff" font-family="SegoeUI-Semibold, 'Segoe UI'" font-size="35" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        <text transform="translate(1215.3 1003.8)" fill="#fff" font-family="SegoeUI-Semibold, &apos;Segoe UI&apos;" font-size="35" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
       </g>
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>

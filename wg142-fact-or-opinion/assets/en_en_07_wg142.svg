@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fact or Opinion</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Fact or Opinion</h2>
-        <span id="versionId" class="versionText">b3_wg142_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920.2 1080.06">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920.2 1080.06">
   <defs>
     <clipPath id="clippath">
       <rect x="271.56" y="412.84" width="229.68" height="337.63" fill="none"/>
@@ -195,20 +176,20 @@
                   <g clip-path="url(#clippath-2)">
                     <g id="Group_2" data-name="Group 2">
                       <g id="Current_" data-name="Current " isolation="isolate">
-                        <text transform="translate(335.39 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
-                        <text transform="translate(374.37 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
-                        <text transform="translate(386.69 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                        <text transform="translate(398.7 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
+                        <text transform="translate(335.39 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
+                        <text transform="translate(374.37 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
+                        <text transform="translate(386.69 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                        <text transform="translate(398.7 599.68)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
                       </g>
                       <g id="Events_" data-name="Events " isolation="isolate">
-                        <text transform="translate(342 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
-                        <text transform="translate(361.35 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-                        <text transform="translate(376.69 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
+                        <text transform="translate(342 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
+                        <text transform="translate(361.35 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+                        <text transform="translate(376.69 638.19)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
                       </g>
                       <g id="_News" data-name=" News" isolation="isolate">
-                        <text transform="translate(339.53 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
-                        <text transform="translate(390.85 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-                        <text transform="translate(407.7 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+                        <text transform="translate(339.53 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
+                        <text transform="translate(390.85 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+                        <text transform="translate(407.7 676.69)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
                       </g>
                     </g>
                   </g>
@@ -218,20 +199,20 @@
           </g>
         </g>
         <g id="Current_2" data-name="Current 2" isolation="isolate">
-          <text transform="translate(334.06 598.04)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
-          <text transform="translate(373.04 598.04)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
-          <text transform="translate(385.37 598.04)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-          <text transform="translate(397.37 598.04)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
+          <text transform="translate(334.06 598.04)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
+          <text transform="translate(373.04 598.04)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
+          <text transform="translate(385.37 598.04)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+          <text transform="translate(397.37 598.04)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
         </g>
         <g id="Events_2" data-name="Events 2" isolation="isolate">
-          <text transform="translate(340.68 636.55)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
-          <text transform="translate(360.02 636.55)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-          <text transform="translate(375.36 636.55)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
+          <text transform="translate(340.68 636.55)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
+          <text transform="translate(360.02 636.55)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+          <text transform="translate(375.36 636.55)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
         </g>
         <g id="_News-2" data-name=" News-2" isolation="isolate">
-          <text transform="translate(338.2 675.05)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
-          <text transform="translate(389.52 675.05)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-          <text transform="translate(406.37 675.05)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+          <text transform="translate(338.2 675.05)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
+          <text transform="translate(389.52 675.05)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+          <text transform="translate(406.37 675.05)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
         </g>
         <g id="Group_11" data-name="Group 11">
           <g clip-path="url(#clippath-3)">
@@ -301,15 +282,15 @@
                     <g clip-path="url(#clippath-7)">
                       <g id="Group_14" data-name="Group 14">
                         <g id="Science_" data-name="Science " isolation="isolate">
-                          <text transform="translate(629.9 590.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Science</tspan></text>
+                          <text transform="translate(629.9 590.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Science</tspan></text>
                         </g>
                         <g id="_" data-name=" " isolation="isolate">
-                          <text transform="translate(677 630.01)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="30" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+                          <text transform="translate(677 630.01)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
                         </g>
                         <g id="Discovery" isolation="isolate">
-                          <text transform="translate(619.88 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Disc</tspan></text>
-                          <text transform="translate(682.15 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">o</tspan><tspan x="16.76" y="0" letter-spacing="-.01em">v</tspan></text>
-                          <text transform="translate(714.25 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ery</tspan></text>
+                          <text transform="translate(619.88 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Disc</tspan></text>
+                          <text transform="translate(682.15 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">o</tspan><tspan x="16.76" y="0" letter-spacing="-.01em">v</tspan></text>
+                          <text transform="translate(714.25 667.51)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ery</tspan></text>
                         </g>
                       </g>
                     </g>
@@ -319,15 +300,15 @@
             </g>
           </g>
           <g id="Science_2" data-name="Science 2" isolation="isolate">
-            <text transform="translate(628.63 588.14)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Science</tspan></text>
+            <text transform="translate(628.63 588.14)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Science</tspan></text>
           </g>
           <g id="_2" data-name=" 2" isolation="isolate">
-            <text transform="translate(675.73 627.64)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="30" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+            <text transform="translate(675.73 627.64)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
           </g>
           <g id="Discovery-2" isolation="isolate">
-            <text transform="translate(618.61 665.15)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Disc</tspan></text>
-            <text transform="translate(680.89 665.15)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">o</tspan><tspan x="16.76" y="0" letter-spacing="-.01em">v</tspan></text>
-            <text transform="translate(712.98 665.15)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ery</tspan></text>
+            <text transform="translate(618.61 665.15)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Disc</tspan></text>
+            <text transform="translate(680.89 665.15)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">o</tspan><tspan x="16.76" y="0" letter-spacing="-.01em">v</tspan></text>
+            <text transform="translate(712.98 665.15)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ery</tspan></text>
           </g>
           <g id="Group_23" data-name="Group 23">
             <g clip-path="url(#clippath-8)">
@@ -374,16 +355,16 @@
                     <g clip-path="url(#clippath-12)">
                       <g id="Group_26" data-name="Group 26">
                         <g id="Book_" data-name="Book " isolation="isolate">
-                          <text transform="translate(936.25 595.61)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Book</tspan></text>
+                          <text transform="translate(936.25 595.61)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Book</tspan></text>
                         </g>
                         <g id="Reviews_" data-name="Reviews " isolation="isolate">
-                          <text transform="translate(913.71 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">R</tspan><tspan x="19.44" y="0" letter-spacing="-.02em">e</tspan></text>
-                          <text transform="translate(949.69 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">vi</tspan></text>
-                          <text transform="translate(973.26 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-                          <text transform="translate(990.12 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+                          <text transform="translate(913.71 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">R</tspan><tspan x="19.44" y="0" letter-spacing="-.02em">e</tspan></text>
+                          <text transform="translate(949.69 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">vi</tspan></text>
+                          <text transform="translate(973.26 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+                          <text transform="translate(990.12 634.11)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
                         </g>
                         <g id="_Blogs" data-name=" Blogs" isolation="isolate">
-                          <text transform="translate(921.04 672.62)" fill="#3d0e01" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; Blogs</tspan></text>
+                          <text transform="translate(921.04 672.62)" fill="#3d0e01" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; Blogs</tspan></text>
                         </g>
                       </g>
                     </g>
@@ -393,16 +374,16 @@
             </g>
           </g>
           <g id="Book_2" data-name="Book 2" isolation="isolate">
-            <text transform="translate(934.9 594.2)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">Book</tspan></text>
+            <text transform="translate(934.9 594.2)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">Book</tspan></text>
           </g>
           <g id="Reviews_2" data-name="Reviews 2" isolation="isolate">
-            <text transform="translate(912.36 632.7)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">R</tspan><tspan x="19.44" y="0" letter-spacing="-.02em">e</tspan></text>
-            <text transform="translate(948.34 632.7)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">vi</tspan></text>
-            <text transform="translate(971.91 632.7)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-            <text transform="translate(988.77 632.7)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+            <text transform="translate(912.36 632.7)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">R</tspan><tspan x="19.44" y="0" letter-spacing="-.02em">e</tspan></text>
+            <text transform="translate(948.34 632.7)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">vi</tspan></text>
+            <text transform="translate(971.91 632.7)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+            <text transform="translate(988.77 632.7)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
           </g>
           <g id="_Blogs-2" data-name=" Blogs-2" isolation="isolate">
-            <text transform="translate(919.69 671.2)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; Blogs</tspan></text>
+            <text transform="translate(919.69 671.2)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="29" isolation="isolate"><tspan x="0" y="0">&amp; Blogs</tspan></text>
           </g>
           <g id="Group_35" data-name="Group 35">
             <g clip-path="url(#clippath-13)">
@@ -457,17 +438,17 @@
                     <g clip-path="url(#clippath-17)">
                       <g id="Group_38" data-name="Group 38">
                         <g id="History_" data-name="History " isolation="isolate">
-                          <text transform="translate(1201.66 584.48)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">History</tspan></text>
+                          <text transform="translate(1201.66 584.48)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">History</tspan></text>
                         </g>
                         <g id="_3" data-name=" 3" isolation="isolate">
-                          <text transform="translate(1246.78 629.59)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="33" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+                          <text transform="translate(1246.78 629.59)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="33" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
                         </g>
                         <g id="Biography" isolation="isolate">
-                          <text transform="translate(1181.77 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">Bio</tspan></text>
-                          <text transform="translate(1232.79 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">g</tspan></text>
-                          <text transform="translate(1252.37 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                          <text transform="translate(1265.62 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">a</tspan></text>
-                          <text transform="translate(1284.22 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">phy</tspan></text>
+                          <text transform="translate(1181.77 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Bio</tspan></text>
+                          <text transform="translate(1232.79 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">g</tspan></text>
+                          <text transform="translate(1252.37 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                          <text transform="translate(1265.62 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">a</tspan></text>
+                          <text transform="translate(1284.22 672.7)" fill="#440e00" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">phy</tspan></text>
                         </g>
                       </g>
                     </g>
@@ -477,17 +458,17 @@
             </g>
           </g>
           <g id="History_2" data-name="History 2" isolation="isolate">
-            <text transform="translate(1200.02 582.42)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">History</tspan></text>
+            <text transform="translate(1200.02 582.42)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">History</tspan></text>
           </g>
           <g id="_4" data-name=" 4" isolation="isolate">
-            <text transform="translate(1245.14 627.52)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="33" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+            <text transform="translate(1245.14 627.52)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="33" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
           </g>
           <g id="Biography-2" isolation="isolate">
-            <text transform="translate(1180.13 670.63)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">Bio</tspan></text>
-            <text transform="translate(1231.15 670.63)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">g</tspan></text>
-            <text transform="translate(1250.73 670.63)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-            <text transform="translate(1263.98 670.63)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">a</tspan></text>
-            <text transform="translate(1282.58 670.63)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">phy</tspan></text>
+            <text transform="translate(1180.13 670.63)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Bio</tspan></text>
+            <text transform="translate(1231.15 670.63)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">g</tspan></text>
+            <text transform="translate(1250.73 670.63)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+            <text transform="translate(1263.98 670.63)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">a</tspan></text>
+            <text transform="translate(1282.58 670.63)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">phy</tspan></text>
           </g>
           <g id="Group_47" data-name="Group 47">
             <g clip-path="url(#clippath-18)">
@@ -536,19 +517,19 @@
                     <g clip-path="url(#clippath-22)">
                       <g id="Group_50" data-name="Group 50">
                         <g id="Travel_" data-name="Travel " isolation="isolate">
-                          <text transform="translate(1493.42 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.04em"><tspan x="0" y="0">T</tspan></text>
-                          <text transform="translate(1511.62 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                          <text transform="translate(1524.45 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">a</tspan></text>
-                          <text transform="translate(1542.1 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-                          <text transform="translate(1558.5 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate"><tspan x="0" y="0">el</tspan></text>
+                          <text transform="translate(1493.42 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.04em"><tspan x="0" y="0">T</tspan></text>
+                          <text transform="translate(1511.62 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                          <text transform="translate(1524.45 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">a</tspan></text>
+                          <text transform="translate(1542.1 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+                          <text transform="translate(1558.5 597.9)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate"><tspan x="0" y="0">el</tspan></text>
                         </g>
                         <g id="_5" data-name=" 5" isolation="isolate">
-                          <text transform="translate(1532.49 637.4)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+                          <text transform="translate(1532.49 637.4)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
                         </g>
                         <g id="Culture" isolation="isolate">
-                          <text transform="translate(1486.94 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">Cultu</tspan></text>
-                          <text transform="translate(1569.28 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                          <text transform="translate(1582.53 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">e</tspan></text>
+                          <text transform="translate(1486.94 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Cultu</tspan></text>
+                          <text transform="translate(1569.28 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                          <text transform="translate(1582.53 675.91)" fill="#3b1205" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">e</tspan></text>
                         </g>
                       </g>
                     </g>
@@ -558,19 +539,19 @@
             </g>
           </g>
           <g id="Travel_2" data-name="Travel 2" isolation="isolate">
-            <text transform="translate(1491.63 596.45)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.04em"><tspan x="0" y="0">T</tspan></text>
-            <text transform="translate(1509.82 596.45)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-            <text transform="translate(1522.66 596.45)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">a</tspan></text>
-            <text transform="translate(1540.3 596.45)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-            <text transform="translate(1556.7 596.45)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="31" isolation="isolate"><tspan x="0" y="0">el</tspan></text>
+            <text transform="translate(1491.63 596.45)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.04em"><tspan x="0" y="0">T</tspan></text>
+            <text transform="translate(1509.82 596.45)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+            <text transform="translate(1522.66 596.45)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">a</tspan></text>
+            <text transform="translate(1540.3 596.45)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+            <text transform="translate(1556.7 596.45)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="31" isolation="isolate"><tspan x="0" y="0">el</tspan></text>
           </g>
           <g id="_6" data-name=" 6" isolation="isolate">
-            <text transform="translate(1530.69 635.95)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
+            <text transform="translate(1530.69 635.95)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">&amp;</tspan></text>
           </g>
           <g id="Culture-2" isolation="isolate">
-            <text transform="translate(1485.14 674.46)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">Cultu</tspan></text>
-            <text transform="translate(1567.48 674.46)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-            <text transform="translate(1580.73 674.46)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="32" isolation="isolate"><tspan x="0" y="0">e</tspan></text>
+            <text transform="translate(1485.14 674.46)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">Cultu</tspan></text>
+            <text transform="translate(1567.48 674.46)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+            <text transform="translate(1580.73 674.46)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="32" isolation="isolate"><tspan x="0" y="0">e</tspan></text>
           </g>
           <g id="Group_59" data-name="Group 59">
             <g clip-path="url(#clippath-23)">
@@ -605,7 +586,7 @@
       </g>
     </g>
   </g>
-  <g id="common-BG" style="display: none;">
+  <g id="common-BG">
     <g id="BG">
       <g clip-path="url(#clippath-25)">
         <g id="Mask_Group_1" data-name="Mask Group 1">
@@ -2031,7 +2012,7 @@
         <text transform="translate(493 447)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">in July and </tspan><tspan x="160.5" y="0" letter-spacing="0em">A</tspan><tspan x="181.2" y="0">ugust 2022.</tspan><tspan x="349.61" y="0" letter-spacing="-.02em"> </tspan><tspan x="356.91" y="0">The opening ceremony was the most </tspan></text>
         <text transform="translate(493 490)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">spectacular </tspan><tspan x="174.33" y="0" letter-spacing="0em">e</tspan><tspan x="191.08" y="0">vent Indian spo</tspan><tspan x="407.42" y="0" letter-spacing=".02em">r</tspan><tspan x="419.03" y="0">ts has </tspan><tspan x="513.36" y="0" letter-spacing="0em">e</tspan><tspan x="530.11" y="0">ver hosted. Over 180 countries </tspan></text>
         <text transform="translate(493 533)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">pa</tspan><tspan x="35.36" y="0" letter-spacing=".02em">r</tspan><tspan x="46.97" y="0">ticipated in the </tspan><tspan x="264.73" y="0" letter-spacing="0em">t</tspan><tspan x="274.88" y="0">ournament, making it one of the largest Chess </tspan></text>
-        <text transform="translate(493 576)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">Olympiads in his</tspan><tspan x="233.78" y="0" letter-spacing="0em">t</tspan><tspan x="243.92" y="0">ory. Indi</tspan><tspan x="356.66" y="0" letter-spacing="-.03em">a</tspan><tspan x="373.02" y="0" letter-spacing="-.04em">'</tspan><tspan x="377.34" y="0">s me</tspan><tspan x="446.77" y="0" letter-spacing="-.05em">n</tspan><tspan x="462.8" y="0" letter-spacing="-.04em">'</tspan><tspan x="467.12" y="0">s team and wome</tspan><tspan x="720.66" y="0" letter-spacing="-.05em">n</tspan><tspan x="736.69" y="0" letter-spacing="-.04em">'</tspan><tspan x="741.02" y="0">s team both </tspan></text>
+        <text transform="translate(493 576)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">Olympiads in his</tspan><tspan x="233.78" y="0" letter-spacing="0em">t</tspan><tspan x="243.92" y="0">ory. Indi</tspan><tspan x="356.66" y="0" letter-spacing="-.03em">a</tspan><tspan x="373.02" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="377.34" y="0">s me</tspan><tspan x="446.77" y="0" letter-spacing="-.05em">n</tspan><tspan x="462.8" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="467.12" y="0">s team and wome</tspan><tspan x="720.66" y="0" letter-spacing="-.05em">n</tspan><tspan x="736.69" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="741.02" y="0">s team both </tspan></text>
         <text transform="translate(493 619)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">won b</tspan><tspan x="85.83" y="0" letter-spacing="0em">r</tspan><tspan x="96.34" y="0">onze medals at the </tspan><tspan x="374.36" y="0" letter-spacing="0em">e</tspan><tspan x="391.11" y="0">vent. Hosting the Olympiad has done </tspan></text>
         <text transform="translate(493 662)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">more for Indian chess than any coaching p</tspan><tspan x="602.73" y="0" letter-spacing="0em">r</tspan><tspan x="613.25" y="0">og</tspan><tspan x="649.45" y="0" letter-spacing="-.02em">r</tspan><tspan x="659.66" y="0">amme </tspan><tspan x="758.03" y="0" letter-spacing="0em">e</tspan><tspan x="774.78" y="0">ver could. </tspan></text>
         <text transform="translate(493 705)" font-family="Roboto-Regular, Roboto" font-size="32" isolation="isolate"><tspan x="0" y="0">The g</tspan><tspan x="79.55" y="0" letter-spacing="0em">o</tspan><tspan x="97.56" y="0">vernment should host more international spo</tspan><tspan x="734.67" y="0" letter-spacing=".02em">r</tspan><tspan x="746.28" y="0">ting </tspan><tspan x="808.03" y="0" letter-spacing="0em">e</tspan><tspan x="824.78" y="0">vents in </tspan></text>
@@ -2072,38 +2053,38 @@
                 <path id="Path_8164-2" data-name="Path 8164" d="M79.61,183.46c6.47-3.47,13.82-5.46,20.91-7.05,7.68-1.72,15.49-2.83,23.28-3.96,7.73-1.12,15.37-2.51,23.02-4.09,3.82-.9,7.7-1.5,11.62-1.8,3.11.01,6.22-.15,9.32-.49l-.95-5.42c-.41.62-1.05,1.05-1.78,1.18l-84.54,14.87s-9.97.62-8.85,8.11c.19,1.25.5,2.48.95,3.66,2.13-1.95,4.49-3.63,7.04-5.01" fill="#a9b8bc"/>
                 <g id="Group_1755" data-name="Group 1755">
                   <g id="Current_-2" data-name="Current " isolation="isolate" opacity=".3">
-                    <text transform="translate(85.96 122.99) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
-                    <text transform="translate(104.5 119.73) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
-                    <text transform="translate(110.36 118.69) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                    <text transform="translate(116.08 117.69) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
+                    <text transform="translate(85.96 122.99) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
+                    <text transform="translate(104.5 119.73) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
+                    <text transform="translate(110.36 118.69) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                    <text transform="translate(116.08 117.69) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
                   </g>
                   <g id="Events_-2" data-name="Events " isolation="isolate">
-                    <text transform="translate(93.16 139.04) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
-                    <text transform="translate(102.36 137.42) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-                    <text transform="translate(109.66 136.13) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
+                    <text transform="translate(93.16 139.04) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
+                    <text transform="translate(102.36 137.42) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+                    <text transform="translate(109.66 136.13) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
                   </g>
                   <g id="_News-3" data-name=" News" isolation="isolate">
-                    <text transform="translate(90.28 156.17) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
-                    <text transform="translate(116.44 151.57) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-                    <text transform="translate(125.03 150.05) rotate(-9.98)" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+                    <text transform="translate(90.28 156.17) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
+                    <text transform="translate(116.44 151.57) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+                    <text transform="translate(125.03 150.05) rotate(-9.98)" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
                   </g>
                 </g>
                 <g id="Group_1756" data-name="Group 1756">
                   <g id="Current_2-2" data-name="Current 2" isolation="isolate">
-                    <text transform="translate(86.33 122.03) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
-                    <text transform="translate(104.87 118.77) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
-                    <text transform="translate(110.73 117.74) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
-                    <text transform="translate(116.45 116.73) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
+                    <text transform="translate(86.33 122.03) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
+                    <text transform="translate(104.87 118.77) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">r</tspan></text>
+                    <text transform="translate(110.73 117.74) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.02em"><tspan x="0" y="0">r</tspan></text>
+                    <text transform="translate(116.45 116.73) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ent</tspan></text>
                   </g>
                   <g id="Events_2-2" data-name="Events 2" isolation="isolate">
-                    <text transform="translate(93.53 138.08) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
-                    <text transform="translate(102.73 136.46) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
-                    <text transform="translate(110.03 135.18) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
+                    <text transform="translate(93.53 138.08) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">E</tspan></text>
+                    <text transform="translate(102.73 136.46) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">v</tspan></text>
+                    <text transform="translate(110.03 135.18) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="14.01" isolation="isolate"><tspan x="0" y="0">ents</tspan></text>
                   </g>
                   <g id="_News-2-2" data-name=" News-2" isolation="isolate">
-                    <text transform="translate(90.65 155.21) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
-                    <text transform="translate(116.81 150.61) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
-                    <text transform="translate(125.4 149.1) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, 'Arial Rounded MT Bold'" font-size="15.01" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
+                    <text transform="translate(90.65 155.21) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate"><tspan x="0" y="0">&amp; N</tspan></text>
+                    <text transform="translate(116.81 150.61) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate" letter-spacing="-.01em"><tspan x="0" y="0">e</tspan></text>
+                    <text transform="translate(125.4 149.1) rotate(-9.98)" fill="#fff" font-family="ArialRoundedMTBold, &apos;Arial Rounded MT Bold&apos;" font-size="15.01" isolation="isolate"><tspan x="0" y="0">ws</tspan></text>
                   </g>
                 </g>
               </g>
@@ -2306,7 +2287,7 @@
         <g id="This_is_an_fact._The_number_of_participating_countries_is_documented_in_FIDE_s_official_tournament_records." data-name="This is an fact. The number of participating countries is documented in FIDE s official tournament records." isolation="isolate">
           <text transform="translate(343 400)" fill="red" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">This is an fact.</tspan></text>
           <text transform="translate(475.49 400)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0"> </tspan></text>
-          <text transform="translate(480.47 400)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">The number of pa</tspan><tspan x="157.02" y="0" letter-spacing=".02em">r</tspan><tspan x="164.28" y="0">ticipating countries is documented in FIDE</tspan><tspan x="538.26" y="0" letter-spacing="-.04em">'</tspan><tspan x="540.97" y="0">s official </tspan><tspan x="622.38" y="0" letter-spacing="0em">t</tspan><tspan x="628.72" y="0">ournament records.</tspan></text>
+          <text transform="translate(480.47 400)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">The number of pa</tspan><tspan x="157.02" y="0" letter-spacing=".02em">r</tspan><tspan x="164.28" y="0">ticipating countries is documented in FIDE</tspan><tspan x="538.26" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="540.97" y="0">s official </tspan><tspan x="622.38" y="0" letter-spacing="0em">t</tspan><tspan x="628.72" y="0">ournament records.</tspan></text>
         </g>
       </g>
       <g id="Group_1734" data-name="Group 1734">
@@ -2328,13 +2309,13 @@
         <g id="This_is_an_opinion._More_than_any_coaching_programme_ever_could_is_a_personal_belief_that_cannot_be_measured_or_proven" data-name="This is an opinion. More than any coaching programme ever could is a personal belief that cannot be measured or proven" isolation="isolate">
           <text transform="translate(343 593)" fill="red" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">This is an opinion.</tspan></text>
           <text transform="translate(507.3 593)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0"> </tspan></text>
-          <text transform="translate(512.28 593)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">'</tspan><tspan x="2.44" y="0">'More than any coaching p</tspan><tspan x="235.37" y="0" letter-spacing="0em">r</tspan><tspan x="241.94" y="0">og</tspan><tspan x="264.57" y="0" letter-spacing="-.02em">r</tspan><tspan x="270.95" y="0">amme </tspan><tspan x="332.43" y="0" letter-spacing="0em">e</tspan><tspan x="342.9" y="0">ver could' is a personal belief that cannot be measured or p</tspan><tspan x="865.62" y="0" letter-spacing="0em">r</tspan><tspan x="872.2" y="0" letter-spacing="0em">o</tspan><tspan x="883.46" y="0">ven</tspan></text>
+          <text transform="translate(512.28 593)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.05em">&apos;</tspan><tspan x="2.44" y="0">&apos;More than any coaching p</tspan><tspan x="235.37" y="0" letter-spacing="0em">r</tspan><tspan x="241.94" y="0">og</tspan><tspan x="264.57" y="0" letter-spacing="-.02em">r</tspan><tspan x="270.95" y="0">amme </tspan><tspan x="332.43" y="0" letter-spacing="0em">e</tspan><tspan x="342.9" y="0">ver could&apos; is a personal belief that cannot be measured or p</tspan><tspan x="865.62" y="0" letter-spacing="0em">r</tspan><tspan x="872.2" y="0" letter-spacing="0em">o</tspan><tspan x="883.46" y="0">ven</tspan></text>
         </g>
       </g>
       <g id="_The_opening_ceremony_was_the_most_spectacular_event_Indian_sports_has_ever_hzosted._Over_180_countries_participated_in_the_tournament_making_it_one_of_the_largest_Chess_Olympiads_in_history._India_s_men_s_team_and_women_s_team_both_won_bronze_med" data-name=" The opening ceremony was the most spectacular event Indian sports has ever hzosted. Over 180 countries participated in the tournament making it one of the largest Chess Olympiads in history. India s men s team and women s team both won bronze med" isolation="isolate">
         <text transform="translate(351 258)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">The opening ceremony was the most spectacular </tspan><tspan x="529.9" y="0" letter-spacing="0em">e</tspan><tspan x="542.46" y="0">vent Indian spo</tspan><tspan x="704.72" y="0" letter-spacing=".02em">r</tspan><tspan x="713.43" y="0">ts has </tspan><tspan x="784.17" y="0" letter-spacing="0em">e</tspan><tspan x="796.73" y="0">ver h</tspan><tspan x="848.36" y="0" letter-spacing="0em">z</tspan><tspan x="860.06" y="0">osted. </tspan></text>
         <text transform="translate(351 354)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Over 180 countries pa</tspan><tspan x="233.33" y="0" letter-spacing=".02em">r</tspan><tspan x="242.04" y="0">ticipated in the </tspan><tspan x="405.36" y="0" letter-spacing="0em">t</tspan><tspan x="412.97" y="0">ournament, making it one of the largest Chess Olympiads in his</tspan><tspan x="1084.3" y="0" letter-spacing="0em">t</tspan><tspan x="1091.91" y="0">ory. </tspan></text>
-        <text transform="translate(351 450)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Indi</tspan><tspan x="39.13" y="0" letter-spacing="-.03em">a</tspan><tspan x="51.4" y="0" letter-spacing="-.04em">'</tspan><tspan x="54.64" y="0">s me</tspan><tspan x="106.71" y="0" letter-spacing="-.05em">n</tspan><tspan x="118.73" y="0" letter-spacing="-.04em">'</tspan><tspan x="121.98" y="0">s team and wome</tspan><tspan x="312.13" y="0" letter-spacing="-.05em">n</tspan><tspan x="324.15" y="0" letter-spacing="-.04em">'</tspan><tspan x="327.4" y="0">s team both won b</tspan><tspan x="524.82" y="0" letter-spacing="0em">r</tspan><tspan x="532.71" y="0">onze medals at the </tspan><tspan x="741.22" y="0" letter-spacing="0em">e</tspan><tspan x="753.79" y="0">vent. </tspan></text>
+        <text transform="translate(351 450)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Indi</tspan><tspan x="39.13" y="0" letter-spacing="-.03em">a</tspan><tspan x="51.4" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="54.64" y="0">s me</tspan><tspan x="106.71" y="0" letter-spacing="-.05em">n</tspan><tspan x="118.73" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="121.98" y="0">s team and wome</tspan><tspan x="312.13" y="0" letter-spacing="-.05em">n</tspan><tspan x="324.15" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="327.4" y="0">s team both won b</tspan><tspan x="524.82" y="0" letter-spacing="0em">r</tspan><tspan x="532.71" y="0">onze medals at the </tspan><tspan x="741.22" y="0" letter-spacing="0em">e</tspan><tspan x="753.79" y="0">vent. </tspan></text>
         <text transform="translate(351 546)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Hosting the Olympiad has done more for Indian chess than any coaching p</tspan><tspan x="791.5" y="0" letter-spacing="0em">r</tspan><tspan x="799.38" y="0">og</tspan><tspan x="826.54" y="0" letter-spacing="-.02em">r</tspan><tspan x="834.19" y="0">amme </tspan><tspan x="907.97" y="0" letter-spacing="0em">e</tspan><tspan x="920.53" y="0">ver could.</tspan></text>
         <text transform="translate(351 578)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0"> </tspan></text>
         <text transform="translate(351 642)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">The g</tspan><tspan x="59.66" y="0" letter-spacing="0em">o</tspan><tspan x="73.17" y="0">vernment should host more international spo</tspan><tspan x="551" y="0" letter-spacing=".02em">r</tspan><tspan x="559.71" y="0">ting </tspan><tspan x="606.02" y="0" letter-spacing="0em">e</tspan><tspan x="618.59" y="0">vents in smaller cities </tspan><tspan x="855.3" y="0" letter-spacing="-.02em">r</tspan><tspan x="862.96" y="0">ather than only in met</tspan><tspan x="1093.79" y="0" letter-spacing="0em">r</tspan><tspan x="1101.68" y="0">os.</tspan></text>
@@ -2343,7 +2324,7 @@
         <text transform="translate(706 179)" font-family="Roboto-Bold, Roboto" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">India Hosts the Chess Olympiad</tspan></text>
       </g>
       <g id="The_44th_Chess_Olympiad_was_held_in_Mahabalipuram_Tamil_Nadu_in_July_and_August_2022._" data-name="The 44th Chess Olympiad was held in Mahabalipuram Tamil Nadu in July and August 2022. " isolation="isolate">
-        <text transform="translate(351 228)" font-family="SegoeUI, 'Segoe UI'" font-size="24" isolation="isolate"><tspan x="0" y="0">The 44th Chess Olympiad was held in Mahabalipuram, </tspan><tspan x="579.54" y="0" letter-spacing="-.11em">T</tspan><tspan x="589.42" y="0">amil Nadu, in July and August</tspan></text>
+        <text transform="translate(351 228)" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="24" isolation="isolate"><tspan x="0" y="0">The 44th Chess Olympiad was held in Mahabalipuram, </tspan><tspan x="579.54" y="0" letter-spacing="-.11em">T</tspan><tspan x="589.42" y="0">amil Nadu, in July and August</tspan></text>
       </g>
     </g>
   </g>
@@ -2356,7 +2337,7 @@
       <g id="This_is_an_opinion._Most_spectacular_is_a_personal_judgment_different_people_may_consider_other_sporting_events_more_impressive." data-name="This is an opinion. Most spectacular is a personal judgment different people may consider other sporting events more impressive." isolation="isolate">
         <text transform="translate(343 302)" fill="red" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">This is an opinion.</tspan></text>
         <text transform="translate(507.3 302)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0"> </tspan></text>
-        <text transform="translate(512.28 302)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">'Most spectacula</tspan><tspan x="151.39" y="0" letter-spacing="0em">r</tspan><tspan x="158.31" y="0">' is a personal judgment—different people may consider other spo</tspan><tspan x="738.37" y="0" letter-spacing=".02em">r</tspan><tspan x="745.62" y="0">ting </tspan><tspan x="784.22" y="0" letter-spacing="0em">e</tspan><tspan x="794.69" y="0">vents more impressive.</tspan></text>
+        <text transform="translate(512.28 302)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">&apos;Most spectacula</tspan><tspan x="151.39" y="0" letter-spacing="0em">r</tspan><tspan x="158.31" y="0">&apos; is a personal judgment—different people may consider other spo</tspan><tspan x="738.37" y="0" letter-spacing=".02em">r</tspan><tspan x="745.62" y="0">ting </tspan><tspan x="784.22" y="0" letter-spacing="0em">e</tspan><tspan x="794.69" y="0">vents more impressive.</tspan></text>
       </g>
     </g>
   </g>
@@ -2510,13 +2491,3 @@
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>
