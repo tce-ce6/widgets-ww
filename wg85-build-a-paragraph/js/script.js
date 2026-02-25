@@ -289,6 +289,7 @@ const paragraphData = [
 let currentTopicIndex = 0;
 let userOrder = [];
 let isComplete = false;
+let isAnswerShown = false;
 let audioContext;
 
 // Color mapping for sentence boxes
@@ -342,6 +343,7 @@ function loadTopic(index) {
   currentTopicIndex = index;
   userOrder = [];
   isComplete = false;
+  isAnswerShown = false;
 
   // Clear existing content
   clearExistingContent();
@@ -360,6 +362,12 @@ function loadTopic(index) {
 
   // Show instruction screen
   showInstructionScreen();
+
+  // Reset Show Answer button text
+  updateAnswerButtonText('Show Answer');
+
+  // Disable reset button initially
+  updateResetButtonState();
 }
 
 // Clear existing static content
@@ -392,10 +400,12 @@ function clearExistingContent() {
     tocHighlights.style.display = 'none';
   }
 
-  // Hide next button
+  // Show next button with opacity
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
-    nextBtn.style.display = 'none';
+    nextBtn.style.display = 'block';
+    nextBtn.style.opacity = '0.4';
+    nextBtn.style.pointerEvents = 'none';
   }
 
   // Hide title
@@ -450,13 +460,13 @@ function createSentenceBoxes(topic) {
 
     // Calculate height based on text length
     const estimatedLines = Math.ceil(sentence.length / 50);
-    const height = Math.max(100, Math.min(188, 80 + estimatedLines * 20));
+    const height = Math.max(100, Math.min(188, 100 + estimatedLines * 20));
 
     // Add cumulative spacing for previous boxes
     for (let i = 0; i < displayIndex; i++) {
       const prevSentence = topic.sentences[shuffled[i]];
       const prevLines = Math.ceil(prevSentence.length / 50);
-      const prevHeight = Math.max(100, Math.min(188, 80 + prevLines * 20));
+      const prevHeight = Math.max(100, Math.min(188, 100 + prevLines * 20));
       y += prevHeight + spacing;
     }
 
@@ -565,6 +575,9 @@ function handleSentenceClick(sentenceIndex, element) {
     // Correct placement
     playSound('correct');
     userOrder.push(sentenceIndex);
+
+    // Enable reset button when at least one sentence is selected
+    updateResetButtonState();
 
     // Update UI
     markSentenceCorrect(element);
@@ -699,6 +712,37 @@ function hideCompletionScreen() {
     imageContainer.style.display = 'none';
   }
 
+  const arrowImg = document.getElementById('arrow-img');
+  if (arrowImg) {
+    arrowImg.style.display = 'none';
+  }
+
+  // Remove opacity from answer button when image is hidden
+  const answerBtn = document.getElementById('answer-btn-text');
+  if (answerBtn) {
+    answerBtn.style.opacity = '1';
+    answerBtn.style.pointerEvents = 'auto';
+    
+    // Also reset pointer-events on inner div
+    const answerBtnDiv = answerBtn.querySelector('div');
+    if (answerBtnDiv) {
+      answerBtnDiv.style.pointerEvents = 'auto';
+    }
+  }
+
+  // Reset pointer-events on the button group
+  const buttonGroup = document.getElementById('Group_814');
+  if (buttonGroup) {
+    buttonGroup.style.pointerEvents = 'auto';
+  }
+
+  // Add opacity to next button when image is hidden
+  const nextBtn = document.getElementById('Group_594-2');
+  if (nextBtn) {
+    nextBtn.style.opacity = '0.4';
+    nextBtn.style.pointerEvents = 'none';
+  }
+
   const annotationContainer = document.getElementById('para-toc-highlights');
   if (annotationContainer) {
     annotationContainer.style.display = 'none';
@@ -721,6 +765,44 @@ function showTopicImage(imageName) {
 
   imageContainer.style.display = 'block';
   imageContainer.innerHTML = '';
+
+  const arrowImg = document.getElementById('arrow-img');
+  if (arrowImg) {
+    arrowImg.style.display = 'block';
+  }
+
+  // Add opacity to answer button when image is shown
+  const answerBtn = document.getElementById('answer-btn-text');
+  if (answerBtn) {
+    answerBtn.style.opacity = '0.4';
+    answerBtn.style.pointerEvents = 'none';
+    
+    // Also add pointer-events none to inner div
+    const answerBtnDiv = answerBtn.querySelector('div');
+    if (answerBtnDiv) {
+      answerBtnDiv.style.pointerEvents = 'none';
+    }
+  }
+
+  // Add pointer-events none to the button group itself
+  const buttonGroup = document.getElementById('Group_814');
+  if (buttonGroup) {
+    buttonGroup.style.pointerEvents = 'none';
+  }
+
+  // Remove opacity from back button when image is shown
+  const backBtn = document.getElementById('Group_594');
+  if (backBtn) {
+    backBtn.style.opacity = '1';
+    backBtn.style.pointerEvents = 'auto';
+  }
+
+  // Remove opacity from next button when image is shown
+  const nextBtn = document.getElementById('Group_594-2');
+  if (nextBtn) {
+    nextBtn.style.opacity = '1';
+    nextBtn.style.pointerEvents = 'auto';
+  }
 
   // Create image element using SVG image tag
   const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
@@ -846,9 +928,7 @@ function showAnnotations(topic, container) {
   div.style.fontWeight = '700';
   div.style.lineHeight = '1.4';
   div.style.color = '#181818';
-  div.style.padding = '30px 24px';
-  div.style.background = '#FFF9E6';
-  div.style.borderRadius = '18px';
+  // div.style.background = '#FFF9E6';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -859,14 +939,16 @@ function showAnnotations(topic, container) {
   summaryBox.style.padding = '20px';
   summaryBox.style.borderRadius = '10px';
   summaryBox.style.marginBottom = '20px';
-  summaryBox.style.fontSize = '20px';
+  summaryBox.style.fontSize = '26px';
+  summaryBox.style.fontWeight = '400';
+  summaryBox.style.border = '2px solid #EDE7A8';
   summaryBox.innerHTML = `<strong>Summary:</strong><br/>${topic.summary}`;
   div.appendChild(summaryBox);
 
   // Add annotations with color boxes
   topic.annotations.forEach((ann, index) => {
     const annBox = document.createElement('div');
-    annBox.style.marginBottom = '15px';
+    annBox.style.marginBottom = '30px';
     annBox.style.display = 'flex';
     annBox.style.alignItems = 'flex-start';
     annBox.style.gap = '10px';
@@ -882,8 +964,8 @@ function showAnnotations(topic, container) {
 
     // Annotation text
     const textBox = document.createElement('div');
-    textBox.style.fontSize = '18px';
-    textBox.style.fontWeight = '500';
+    textBox.style.fontSize = '26px';
+    textBox.style.fontWeight = '400';
     textBox.innerHTML = `<strong>${ann.type}:</strong><br/>${ann.text}`;
 
     annBox.appendChild(colorBox);
@@ -903,7 +985,6 @@ function showNavigationButton() {
   // Use Group_594-2 as the Next button (it's positioned on the right)
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
-    nextBtn.style.display = 'block';
     nextBtn.style.cursor = 'pointer';
     nextBtn.style.opacity = '1';
     nextBtn.style.pointerEvents = 'auto';
@@ -913,11 +994,6 @@ function showNavigationButton() {
     if (textElement) {
       textElement.textContent = btnText;
     }
-
-    // Remove any existing click listeners and add new one
-    const newBtn = nextBtn.cloneNode(true);
-    nextBtn.parentNode.replaceChild(newBtn, nextBtn);
-    newBtn.addEventListener('click', handleNavigationClick);
   }
 }
 
@@ -935,10 +1011,11 @@ function handleNavigationClick(e) {
     currentTopicIndex++;
   }
 
-  // Hide next button before loading next topic
+  // Reset next button opacity before loading next topic
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
-    nextBtn.style.display = 'none';
+    nextBtn.style.opacity = '0.4';
+    nextBtn.style.pointerEvents = 'none';
   }
 
   loadTopic(currentTopicIndex);
@@ -951,6 +1028,20 @@ function setupEventListeners() {
   if (showAnswerBtn) {
     showAnswerBtn.style.cursor = 'pointer';
     showAnswerBtn.addEventListener('click', handleShowAnswer);
+  }
+
+  // Show Answer button text (foreignObject)
+  const answerBtnText = document.getElementById('answer-btn-text');
+  if (answerBtnText) {
+    answerBtnText.style.cursor = 'pointer';
+    answerBtnText.addEventListener('click', handleShowAnswer);
+    
+    // Add click listener to inner div as well
+    const answerBtnDiv = answerBtnText.querySelector('div');
+    if (answerBtnDiv) {
+      answerBtnDiv.style.cursor = 'pointer';
+      answerBtnDiv.addEventListener('click', handleShowAnswer);
+    }
   }
 
   // Reset button
@@ -967,10 +1058,13 @@ function setupEventListeners() {
     backBtn.addEventListener('click', handleBackClick);
   }
 
-  // Next button (Group_594-2) - hidden by default, shown on completion
+  // Next button (Group_594-2) - initially with opacity 0.4
   const nextTopicBtn = document.getElementById('Group_594-2');
   if (nextTopicBtn) {
-    nextTopicBtn.style.display = 'none';
+    nextTopicBtn.style.cursor = 'pointer';
+    nextTopicBtn.style.opacity = '0.4';
+    nextTopicBtn.style.pointerEvents = 'none';
+    nextTopicBtn.addEventListener('click', handleNavigationClick);
   }
 }
 
@@ -995,6 +1089,19 @@ function handleBackClick(e) {
     const iText = document.getElementById('i-text');
     if (iText) {
       iText.style.display = 'block';
+    }
+
+    // Add opacity to back and next buttons when going back to building stage
+    const backBtn = document.getElementById('Group_594');
+    if (backBtn) {
+      backBtn.style.opacity = '0.4';
+      backBtn.style.pointerEvents = 'none';
+    }
+
+    const nextBtn = document.getElementById('Group_594-2');
+    if (nextBtn) {
+      nextBtn.style.opacity = '0.4';
+      nextBtn.style.pointerEvents = 'none';
     }
 
     isComplete = false;
@@ -1024,6 +1131,9 @@ function handleBackClick(e) {
 
     // Rebuild paragraph with remaining sentences
     buildParagraphProgressively();
+
+    // Update reset button state - disable if no sentences left
+    updateResetButtonState();
     return;
   }
 
@@ -1055,7 +1165,7 @@ function updateTopicNavigationButtons() {
   const backBtn = document.getElementById('Group_594');
   if (backBtn) {
     // Always enable back button so users can navigate backwards
-    backBtn.style.opacity = '1';
+    backBtn.style.opacity = '.4';
     backBtn.style.pointerEvents = 'auto';
   }
 
@@ -1064,29 +1174,72 @@ function updateTopicNavigationButtons() {
 
 // Handle Show Answer
 function handleShowAnswer() {
-  if (isComplete) return;
+  const buttonText = document.getElementById('answer-btn-text');
+  if (!buttonText) return;
 
+  const textDiv = buttonText.querySelector('div');
+  const currentText = textDiv ? textDiv.textContent.trim() : '';
+  
   const topic = paragraphData[currentTopicIndex];
 
-  // Auto-fill remaining sentences in correct order
-  while (userOrder.length < topic.sentences.length) {
-    const position = userOrder.length;
-    const correctIndex = topic.correctOrder[position] - 1;
+  if (currentText === 'Show Answer') {
+    // Show Answer - auto-fill remaining sentences
+    while (userOrder.length < topic.sentences.length) {
+      const position = userOrder.length;
+      const correctIndex = topic.correctOrder[position] - 1;
 
-    userOrder.push(correctIndex);
+      userOrder.push(correctIndex);
 
-    // Find and mark the sentence box
-    const sentenceBox = document.querySelector(`.sentence-box[data-sentence-index="${correctIndex}"]`);
-    if (sentenceBox) {
-      markSentenceCorrect(sentenceBox);
+      // Find and mark the sentence box
+      const sentenceBox = document.querySelector(`.sentence-box[data-sentence-index="${correctIndex}"]`);
+      if (sentenceBox) {
+        markSentenceCorrect(sentenceBox);
+      }
     }
 
-  }
+    // Show complete paragraph after Show Answer
+    setTimeout(() => {
+      buildParagraphProgressively();
+    }, 500);
 
-  // Show complete paragraph after Show Answer
-  setTimeout(() => {
-    buildParagraphProgressively();
-  }, 500);
+    isAnswerShown = true;
+    updateAnswerButtonText('Hide Answer');
+  } else if (currentText === 'Hide Answer') {
+    // Hide Answer - reset to initial state
+    isAnswerShown = false;
+    updateAnswerButtonText('Show Answer');
+    loadTopic(currentTopicIndex);
+  }
+}
+
+// Update Show Answer button text
+function updateAnswerButtonText(text) {
+  const buttonText = document.getElementById('answer-btn-text');
+  if (buttonText) {
+    const div = buttonText.querySelector('div');
+    if (div) {
+      div.textContent = text;
+    } else {
+      // If div not found, try to create/update it
+      buttonText.innerHTML = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 35px; font-weight: 500; color: #fff;">${text}</div>`;
+    }
+  }
+}
+
+// Update Reset button state based on whether sentences are selected
+function updateResetButtonState() {
+  const resetBtn = document.getElementById('Group_829');
+  if (!resetBtn) return;
+
+  if (userOrder.length > 0) {
+    // Enable reset button when at least one sentence is selected
+    resetBtn.style.opacity = '1';
+    resetBtn.style.pointerEvents = 'auto';
+  } else {
+    // Disable reset button when no sentences are selected
+    resetBtn.style.opacity = '0.4';
+    resetBtn.style.pointerEvents = 'none';
+  }
 }
 
 // Handle Reset
