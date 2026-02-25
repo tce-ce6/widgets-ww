@@ -978,6 +978,56 @@ function setupEventListeners() {
 function handleBackClick(e) {
   if (e) e.stopPropagation();
 
+  // If we're on completion screen, go back to building screen
+  if (isComplete) {
+    hideCompletionScreen();
+
+    // Show the built paragraph (not the completion view)
+    buildParagraphProgressively();
+
+    // Show sentence boxes again
+    const sentenceBoxContainer = document.getElementById('para-sentence-box');
+    if (sentenceBoxContainer) {
+      sentenceBoxContainer.style.display = 'block';
+    }
+
+    // Show instruction text
+    const iText = document.getElementById('i-text');
+    if (iText) {
+      iText.style.display = 'block';
+    }
+
+    isComplete = false;
+    return;
+  }
+
+  // If building and have placed sentences, allow undoing last sentence
+  if (userOrder.length > 0) {
+    // Remove last placed sentence
+    const lastIndex = userOrder[userOrder.length - 1];
+    userOrder.pop();
+
+    // Re-enable the sentence box
+    const sentenceBox = document.querySelector(`.sentence-box[data-sentence-index="${lastIndex}"]`);
+    if (sentenceBox) {
+      sentenceBox.style.opacity = '1';
+      sentenceBox.style.pointerEvents = 'auto';
+      const rect = sentenceBox.querySelector('rect');
+      if (rect) {
+        const displayIndex = Array.from(document.querySelectorAll('.sentence-box')).indexOf(sentenceBox);
+        const color = sentenceColors[displayIndex % sentenceColors.length];
+        rect.setAttribute('fill', color);
+        rect.setAttribute('stroke', 'none');
+        rect.setAttribute('stroke-width', 0);
+      }
+    }
+
+    // Rebuild paragraph with remaining sentences
+    buildParagraphProgressively();
+    return;
+  }
+
+  // Otherwise, navigate to previous topic
   if (currentTopicIndex > 0) {
     currentTopicIndex--;
     loadTopic(currentTopicIndex);
@@ -1004,8 +1054,9 @@ function handleNextTopicClick(e) {
 function updateTopicNavigationButtons() {
   const backBtn = document.getElementById('Group_594');
   if (backBtn) {
-    backBtn.style.opacity = currentTopicIndex === 0 ? '0.3' : '1';
-    backBtn.style.pointerEvents = currentTopicIndex === 0 ? 'none' : 'auto';
+    // Always enable back button so users can navigate backwards
+    backBtn.style.opacity = '1';
+    backBtn.style.pointerEvents = 'auto';
   }
 
   // Don't show next button during normal play - only in completion screen
