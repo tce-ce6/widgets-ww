@@ -1,0 +1,875 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Reactions Simulator</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="idiom-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Chemical Reactions Simulator</h2>
+        <span id="versionId" class="versionText">b3_wg76_260221</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 1920 1080">
+  <g id="lab_base" data-name="lab base">
+    <path id="Path_392" data-name="Path 392" d="M1155.11,108h707.7v820h-707.7V108h0Z" fill="#161945"/>
+  </g>
+  <g id="sediment">
+    <path id="Path_396" data-name="Path 396" d="M1429.48,835.06c11.5,0,63.52-9.06,63.52-9.06,27.88-3.35,55.92-5.12,84-5.3,22.64-.03,65.3,14.36,65.3,14.36,0,0,52.66-.23,56.39,0-14.81,14.81-34.6,36.56-51.07,46.09-27.68,16.02-56.26,21.29-82.12,21.29-22.57,0-53.59-8.66-78.66-21.29-19.98-10.07-41.86-28.89-57.36-46.09h0Z" fill="#a7d9e2"/>
+  </g>
+  <g id="Beaker">
+    <g id="Group_175" data-name="Group 175">
+      <g id="Group_49" data-name="Group 49">
+        <path id="Path_220" data-name="Path 220" d="M1782.17,681.61c0,122.11-98.98,221.09-221.09,221.09s-221.09-98.99-221.09-221.09c0-103.37,70.94-190.15,166.8-214.35v-249.18h104.73v248.29c97.79,22.82,170.66,110.49,170.66,215.24h-.01ZM1759.77,681.61c0-92.82-63.06-172.35-153.37-193.43-10.14-2.37-17.31-11.41-17.31-21.82v-248.29h-59.92v249.18c0,10.26-6.97,19.21-16.92,21.71-88.22,22.25-150,101.66-149.88,192.64,0,109.56,89.14,198.69,198.69,198.69s198.7-89.13,198.7-198.69h.01Z" fill="#6ca0ae"/>
+        <g id="Group_48" data-name="Group 48">
+          <path id="Path_249" data-name="Path 249" d="M1617.78,254.11h-118.75c-9.65,0-17.48-7.82-17.48-17.47h0v-22.81c0-9.65,7.82-17.48,17.47-17.48h118.76c9.65,0,17.48,7.82,17.48,17.47h0v22.81c0,9.65-7.83,17.48-17.48,17.48Z" fill="#6ca0ae"/>
+        </g>
+        <ellipse id="Ellipse_12" data-name="Ellipse 12" cx="1641.46" cy="544.2" rx="17.55" ry="16.94" fill="#6ca0ae" isolation="isolate" opacity=".54"/>
+        <circle id="Ellipse_13" data-name="Ellipse 13" cx="1667.48" cy="568.41" r="8.47" fill="#6ca0ae" isolation="isolate" opacity=".43"/>
+        <ellipse id="Ellipse_14" data-name="Ellipse 14" cx="1593.66" cy="209.59" rx="16.94" ry="7.87" fill="#6ca0ae" isolation="isolate" opacity=".54"/>
+        <circle id="Ellipse_15" data-name="Ellipse 15" cx="1600.92" cy="211.59" r="10.89" fill="#82c3d5"/>
+      </g>
+    </g>
+    <g id="Group_178" data-name="Group 178">
+      <g id="Group_176" data-name="Group 176">
+        <path id="Path_391" data-name="Path 391" d="M1531.63,267.87h-256.12v17.25h256.12v-17.25Z" fill="#a95353"/>
+        <rect id="Rectangle_57" data-name="Rectangle 57" x="1259.74" y="247.71" width="28.73" height="66.84" fill="#a95353"/>
+        <rect id="Rectangle_58" data-name="Rectangle 58" x="1499.43" y="257.81" width="120.62" height="39.42" fill="#a95353"/>
+      </g>
+      <g id="Group_177" data-name="Group 177">
+        <path id="Path_390" data-name="Path 390" d="M1281.75,126.27h-17.52v778.97h17.52V126.27Z" fill="#a95353"/>
+        <path id="Path_389" data-name="Path 389" d="M1218.82,901.89h590.77v26.07h-590.77v-26.07Z" fill="#a95353"/>
+      </g>
+    </g>
+  </g>
+  <g id="Cu">
+    <g id="Group_1096" data-name="Group 1096">
+      <g id="Path_398-10" data-name="Path 398-10">
+        <path d="M1558.4,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1558.4,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1558.4,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#fa2b2b"/>
+      </g>
+      <g id="Cu1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1544.26 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">Cu</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Znso4">
+    <g id="Group_1097" data-name="Group 1097">
+      <g id="Path_398-9" data-name="Path 398-9">
+        <path d="M1558.4,788c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1558.4,695c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1558.4,689c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#9a3838"/>
+      </g>
+      <g id="ZnSO_" data-name="ZnSO " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1530.96 748)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">ZnSO₄</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Ngno3">
+    <g id="Group_1076" data-name="Group 1076">
+      <g id="Path_398-8" data-name="Path 398-8">
+        <path d="M1560.36,786.34c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1560.36,693.34c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1560.36,687.34c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#47cad4"/>
+      </g>
+      <g id="AgNO_3" data-name="AgNO 3" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1530.23 746.34)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">AgNO₃</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Nacl">
+    <g id="Group_1077-2" data-name="Group 1077-2">
+      <g id="Path_398-7" data-name="Path 398-7">
+        <path d="M1559.74,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1559.74,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1559.74,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#5ad447"/>
+      </g>
+      <g id="NaCl-3" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1536.12 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">NaCl</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Agcl">
+    <g id="Group_1077" data-name="Group 1077">
+      <g id="Path_398-6" data-name="Path 398-6">
+        <path d="M1558.4,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1558.4,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1558.4,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#d4478e"/>
+      </g>
+      <g id="AgCl" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1533.77 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">AgCl</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="ZN">
+    <g id="Group_1095" data-name="Group 1095">
+      <g id="Path_398-5" data-name="Path 398-5">
+        <path d="M1559.74,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1559.74,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1559.74,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#838280"/>
+      </g>
+      <g id="Zn-2" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1545.08 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">Zn</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Cuso4">
+    <g id="Group_1094" data-name="Group 1094">
+      <g id="Path_398-4" data-name="Path 398-4">
+        <path d="M1551.11,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1551.11,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1551.11,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#d49747"/>
+      </g>
+      <g id="CuSO_2" data-name="CuSO 2" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1524.19 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">CuSO₄</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Caco3">
+    <g id="Group_1093" data-name="Group 1093">
+      <g id="Path_398-3" data-name="Path 398-3">
+        <path d="M1559.74,792.16c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1559.74,699.16c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1559.74,693.16c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#bed447"/>
+      </g>
+      <g id="CaCO_2" data-name="CaCO 2" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1530.66 752.16)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">CaCO₃</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="H2">
+    <g id="Group_1092" data-name="Group 1092">
+      <g id="Path_398-2" data-name="Path 398-2">
+        <path d="M1558.4,794.34c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1558.4,701.34c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1558.4,695.34c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#4771d4"/>
+      </g>
+      <g id="H21" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1551.99 754.34)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">H</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(1566.12 761.01)" font-family="Roboto-Bold, Roboto" font-size="11.67" font-weight="700" isolation="isolate"><tspan x="0" y="0">2</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="O2">
+    <g id="Group_1091" data-name="Group 1091">
+      <g id="Path_398" data-name="Path 398">
+        <path d="M1558.4,789.2c-6.48,0-12.77-1.27-18.68-3.77-5.72-2.42-10.85-5.88-15.26-10.29s-7.87-9.54-10.29-15.26c-2.5-5.92-3.77-12.2-3.77-18.68s1.27-12.77,3.77-18.68c2.42-5.72,5.88-10.85,10.29-15.26,4.41-4.41,9.54-7.87,15.26-10.29,5.92-2.5,12.2-3.77,18.68-3.77s12.77,1.27,18.68,3.77c5.72,2.42,10.85,5.88,15.26,10.29s7.87,9.54,10.29,15.26c2.5,5.92,3.77,12.2,3.77,18.68s-1.27,12.77-3.77,18.68c-2.42,5.72-5.88,10.85-10.29,15.26s-9.54,7.87-15.26,10.29c-5.92,2.5-12.2,3.77-18.68,3.77Z" fill="#fff"/>
+        <path d="M1558.4,696.2c-24.81,0-45,20.19-45,45s20.19,45,45,45,45-20.19,45-45-20.19-45-45-45M1558.4,690.2c28.17,0,51,22.83,51,51s-22.83,51-51,51-51-22.83-51-51,22.83-51,51-51Z" fill="#a047d4"/>
+      </g>
+      <g id="O21" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1549.15 749.2)" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">O</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(1562.96 755.87)" font-family="Roboto-Bold, Roboto" font-size="11.67" font-weight="700" isolation="isolate"><tspan x="0" y="0">2</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="spoon">
+    <g id="Group_1089" data-name="Group 1089">
+      <g id="spoon_Converted_" data-name="spoon Converted ">
+        <path id="Path_403" data-name="Path 403" d="M1640.82,134.95c-.39,11.68-5.97,22.57-15.21,29.73-15.73,12.44-52.84,14.7-65.61,4.15s80.82-33.88,80.82-33.88h0Z" fill="#b0b5f1"/>
+        <g id="Group_1088" data-name="Group 1088">
+          <path id="Path_404" data-name="Path 404" d="M1758.95,27.63l.33,3.24c.26,2.58-1.7,6.79-10.02,13.53-17.8,14.42-79.85,48.32-89.84,57.35-9.96,9.06-17.45,17.34-20.5,20.57-.32.37-.46.87-.38,1.36l-.33-3.24c-.09-.49.05-.99.38-1.36,3.05-3.25,10.53-11.51,20.5-20.57,9.99-9.02,72.04-42.93,89.84-57.35,8.32-6.74,10.29-10.95,10.03-13.53h-.01Z" fill="#b0b5f1"/>
+          <path id="Path_405" data-name="Path 405" d="M1640.5,128.62l.33,3.24c.57,5.51-1.77,13.33-16.19,23.88-11.06,8.14-23.83,13.66-37.35,16.12-9.79,1.75-19.23.61-26.07-2.43-5.99-2.66-9.99-6.79-10.5-11.69l-.33-3.24c.5,4.91,4.5,9.03,10.5,11.69,6.84,3.04,16.28,4.19,26.07,2.43,13.51-2.46,26.29-7.98,37.35-16.12,14.42-10.55,16.75-18.37,16.19-23.88h0Z" fill="#b0b5f1"/>
+          <path id="Path_406" data-name="Path 406" d="M1756.16,24.14c2.19.98,7.69,4.94-7.23,17.02-17.8,14.42-79.85,48.32-89.84,57.35-9.96,9.06-17.45,17.34-20.5,20.57-3,3.24,13.03,13.43-14.27,33.41-11.06,8.14-23.83,13.66-37.35,16.12-9.79,1.75-19.23.61-26.07-2.43s-11.09-7.98-10.49-13.83c.7-6.8,5.51-15.25,18.28-24.6,27.3-19.98,48.57-13.58,53.32-16.04,4.83-2.45,17.06-8.61,29.99-16.35,12.96-7.71,55.46-50.31,75.63-63.66,16.91-11.2,24.99-9.12,27.18-8.15.22.09.43.2.63.34.25.07.49.16.72.26h0Z" fill="#d9ddfd"/>
+        </g>
+        <path id="Path_407" data-name="Path 407" d="M1620.83,152.32c-17.54,12.76-43.07,18.07-57.02,11.87s-11.03-21.57,6.52-34.33c17.55-12.76,43.07-18.07,57.02-11.87,13.95,6.2,11.03,21.57-6.52,34.33Z" fill="#b0b5f1"/>
+      </g>
+    </g>
+  </g>
+  <g id="chemical">
+    <circle id="Ellipse_16" data-name="Ellipse 16" cx="1572.5" cy="169.5" r="9.5" fill="#fff"/>
+    <circle id="Ellipse_52" data-name="Ellipse 52" cx="1560" cy="187" r="7" fill="#fff"/>
+    <circle id="Ellipse_53" data-name="Ellipse 53" cx="1560" cy="176" r="3" fill="#fff"/>
+    <circle id="Ellipse_54" data-name="Ellipse 54" cx="1571" cy="194" r="3" fill="#fff"/>
+    <circle id="Ellipse_55" data-name="Ellipse 55" cx="1587" cy="164" r="3" fill="#fff"/>
+    <circle id="Ellipse_56" data-name="Ellipse 56" cx="1561" cy="160" r="3" fill="#fff"/>
+  </g>
+  <g id="buttond">
+    <g id="Group_183" data-name="Group 183">
+      <path id="Rectangle_104" data-name="Rectangle 104" d="M680,979h217c19.33,0,35,15.67,35,35h0c0,19.33-15.67,35-35,35h-217c-19.33,0-35-15.67-35-35h0c0-19.33,15.67-35,35-35Z" fill="#00c3d8"/>
+      <g id="Start_reaction" data-name="Start reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(682.24 1027)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Sta</tspan><tspan x="51.7" y="0" letter-spacing=".02em">r</tspan><tspan x="64.86" y="0">t reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_2" data-name="Group 2">
+      <path id="Path_21" data-name="Path 21" d="M1015.5,967h116c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-116c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z" fill="#ff2c68"/>
+      <g id="Reset" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1028.45 1028)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Reset</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Answer_tab" data-name="Answer tab">
+    <path id="Path_400" data-name="Path 400" d="M57,789h1091v139H57v-139Z" fill="#f4ff95"/>
+    <g id="A_chemical_reaction_where_two_ionic_compounds_swap_their_positive_cations_and_negative_anions_ions_to_form_two_entirely_new_compounds_often_resulting_in_a_solid_precipitate_gas_or_water._AgNO_NaCl_AgCl_" data-name="A chemical reaction where two ionic compounds swap their positive cations and negative anions ions to form two entirely new compounds often resulting in a solid precipitate gas or water. AgNO NaCl AgCl " isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(92 860)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">A chemical reaction where two ionic compounds swap their positive (cations) and negative (anions) ions </tspan><tspan x="938.58" y="0" letter-spacing="-.01em">t</tspan><tspan x="944.94" y="0">o form</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(92 887)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">two entirely new compounds, often resulting in a solid precipitate, gas, or wate</tspan><tspan x="700.1" y="0" letter-spacing="-.08em">r</tspan><tspan x="705.44" y="0">.(AgNO₃ + NaCl</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(939.32 887)" font-family="SegoeUI-Semibold, 'Segoe UI'" font-size="20" font-weight="600" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(956.58 887)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AgCl↓ </tspan></text>
+      </g>
+    </g>
+    <g id="Group_1078" data-name="Group 1078">
+      <path id="Path_399" data-name="Path 399" d="M92,789h224v20c0,11.05-8.95,20-20,20H112c-11.05,0-20-8.95-20-20v-20Z" fill="#ff9100"/>
+      <g id="Reaction_Complete" data-name="Reaction Complete" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(118.96 815)" fill="#191919" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">Reaction Complete</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Answer_tab_alpha" data-name="Answer tab  alpha">
+    <g opacity=".16">
+      <path id="Path_4001" data-name="Path 4001" d="M57,789h1091v139H57v-139Z" fill="#f4ff95"/>
+      <g id="Group_10781" data-name="Group 10781">
+        <path id="Path_3991" data-name="Path 3991" d="M92,789h224v20c0,11.05-8.95,20-20,20H112c-11.05,0-20-8.95-20-20v-20Z" fill="#ff9100"/>
+        <g id="Reaction_Complete1" data-name="Reaction Complete1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(118.96 815)" fill="#191919" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">Reaction Complete</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="tab_Base" data-name="tab Base">
+    <rect id="Rectangle_97" data-name="Rectangle 97" x="57" y="108" width="1091" height="667" fill="#054d33"/>
+    <line id="Line_25" data-name="Line 25" x1="57.5" y1="286.5" x2="1148.5" y2="286.5" fill="none" stroke="#4a8563" stroke-width="2"/>
+    <line id="Line_25-2" data-name="Line 25-2" x1="57.5" y1="409.5" x2="1148.5" y2="409.5" fill="none" stroke="#4a8563" stroke-width="2"/>
+    <line id="Line_25-3" data-name="Line 25-3" x1="57.5" y1="532.5" x2="1148.5" y2="532.5" fill="none" stroke="#4a8563" stroke-width="2"/>
+    <line id="Line_25-4" data-name="Line 25-4" x1="57.5" y1="655.5" x2="1148.5" y2="655.5" fill="none" stroke="#4a8563" stroke-width="2"/>
+  </g>
+  <g id="Main_tab" data-name="Main tab">
+    <g id="Group_180" data-name="Group 180">
+      <g id="Rectangle_95" data-name="Rectangle 95">
+        <rect x="79" y="188" width="544" height="78" rx="17" ry="17" fill="#a5f700"/>
+        <rect x="82" y="191" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Combination_Reaction" data-name="Combination Reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(110.14 236)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Combination Reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_180-2" data-name="Group 180-2">
+      <g id="Path_401" data-name="Path 401">
+        <path d="M606,385H96c-3.74,0-7.26-1.46-9.9-4.1s-4.1-6.16-4.1-9.9v-44c0-3.74,1.46-7.26,4.1-9.9s6.16-4.1,9.9-4.1h510c3.74,0,7.26,1.46,9.9,4.1s4.1,6.16,4.1,9.9v44c0,3.74-1.46,7.26-4.1,9.9-2.64,2.64-6.16,4.1-9.9,4.1Z" fill="#a5f700"/>
+        <path d="M96,316c-6.07,0-11,4.93-11,11v44c0,6.07,4.93,11,11,11h510c6.07,0,11-4.93,11-11v-44c0-6.07-4.93-11-11-11H96M96,310h510c9.39,0,17,7.61,17,17v44c0,9.39-7.61,17-17,17H96c-9.39,0-17-7.61-17-17v-44c0-9.39,7.61-17,17-17Z" fill="#00c670"/>
+      </g>
+      <g id="Decomposition_reaction" data-name="Decomposition reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(110.44 358)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Decomposition reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_180-3" data-name="Group 180-3">
+      <g id="Rectangle_95-2" data-name="Rectangle 95-2">
+        <rect x="79" y="432" width="544" height="78" rx="17" ry="17" fill="#a5f700"/>
+        <rect x="82" y="435" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Displacement_reaction" data-name="Displacement reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(113.32 480)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Displacement reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g id="Rectangle_95-3" data-name="Rectangle 95-3">
+        <rect x="79" y="554" width="544" height="78" rx="17" ry="17" fill="#a5f700"/>
+        <rect x="82" y="557" width="538" height="72" rx="14" ry="14" fill="#a5f700" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Double_displacement_reaction" data-name="Double displacement reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(107.15 602)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Double displacement reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g id="Rectangle_95-4" data-name="Rectangle 95-4">
+        <rect x="79" y="676" width="544" height="78" rx="17" ry="17" fill="#a5f700"/>
+        <rect x="82" y="679" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Redox_reaction" data-name="Redox reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(106.22 724)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Red</tspan><tspan x="43.13" y="0" letter-spacing="-.01em">o</tspan><tspan x="57.1" y="0">x reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Main_tab_hilight" data-name="Main tab hilight">
+    <g id="Group_1801" data-name="Group 1801">
+      <g id="Rectangle_951" data-name="Rectangle 951">
+        <rect x="79" y="188" width="544" height="78" rx="17" ry="17" fill="#fff"/>
+        <rect x="82" y="191" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Combination_Reaction1" data-name="Combination Reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(110.14 236)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Combination Reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_180-21" data-name="Group 180-21">
+      <g id="Path_4011" data-name="Path 4011">
+        <path d="M606,385H96c-3.74,0-7.26-1.46-9.9-4.1s-4.1-6.16-4.1-9.9v-44c0-3.74,1.46-7.26,4.1-9.9s6.16-4.1,9.9-4.1h510c3.74,0,7.26,1.46,9.9,4.1s4.1,6.16,4.1,9.9v44c0,3.74-1.46,7.26-4.1,9.9-2.64,2.64-6.16,4.1-9.9,4.1Z" fill="#fff"/>
+        <path d="M96,316c-6.07,0-11,4.93-11,11v44c0,6.07,4.93,11,11,11h510c6.07,0,11-4.93,11-11v-44c0-6.07-4.93-11-11-11H96M96,310h510c9.39,0,17,7.61,17,17v44c0,9.39-7.61,17-17,17H96c-9.39,0-17-7.61-17-17v-44c0-9.39,7.61-17,17-17Z" fill="#00c670"/>
+      </g>
+      <g id="Decomposition_reaction1" data-name="Decomposition reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(110.44 358)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Decomposition reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_180-31" data-name="Group 180-31">
+      <g id="Rectangle_95-21" data-name="Rectangle 95-21">
+        <rect x="79" y="432" width="544" height="78" rx="17" ry="17" fill="#fff"/>
+        <rect x="82" y="435" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Displacement_reaction1" data-name="Displacement reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(113.32 480)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Displacement reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g id="Rectangle_95-31" data-name="Rectangle 95-31">
+        <rect x="79" y="554" width="544" height="78" rx="17" ry="17" fill="#a5f700"/>
+        <rect x="82" y="557" width="538" height="72" rx="14" ry="14" fill="#fff" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Double_displacement_reaction1" data-name="Double displacement reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(107.15 602)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Double displacement reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g id="Rectangle_95-41" data-name="Rectangle 95-41">
+        <rect x="79" y="676" width="544" height="78" rx="17" ry="17" fill="#fff"/>
+        <rect x="82" y="679" width="538" height="72" rx="14" ry="14" fill="none" stroke="#00c670" stroke-width="6"/>
+      </g>
+      <g id="Redox_reaction1" data-name="Redox reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(106.22 724)" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Red</tspan><tspan x="43.13" y="0" letter-spacing="-.01em">o</tspan><tspan x="57.1" y="0">x reaction</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Main_tab_text" data-name="Main tab text">
+    <g id="AB_CD_AD_CB" data-name="AB CD AD CB" isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(467.92 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AB + CD</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(526.28 599)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(539.22 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AD + CB</tspan></text>
+      </g>
+    </g>
+    <g id="A_B_AB_" data-name="A B AB " isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(493.62 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">A + B</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(532.39 233)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(545.33 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AB </tspan></text>
+      </g>
+    </g>
+    <g id="AB_A_B" data-name="AB A B" isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(495.48 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AB</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(518.32 355)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(531.26 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> A + B</tspan></text>
+      </g>
+    </g>
+    <g id="A_BC_AC_B" data-name="A BC AC B" isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(477.75 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">A + BC</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(526.28 477)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(539.22 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AC + B</tspan></text>
+      </g>
+    </g>
+    <g id="Oxidation_Reduction" data-name="Oxidation Reduction" isolation="isolate">
+      <g isolation="isolate">
+        <text transform="translate(459.53 721)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">Oxidation + Reduction</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="answer_text" data-name="answer text">
+    <g>
+      <g id="AgNO_NaCl_AgCl_" data-name="AgNO NaCl AgCl " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(455.4 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">AgNO₃ + NaCl</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(552 599)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(564.95 599)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> AgCl↓ </tspan></text>
+        </g>
+      </g>
+      <g id="H_O_H_O_" data-name="H O H O " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(497.13 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">H₂ + O₂</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(548.78 233)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(561.72 233)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> H₂O </tspan></text>
+        </g>
+      </g>
+      <g id="CaCO_CaO_CO_" data-name="CaCO CaO CO " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(467.34 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">CaCO₃</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(514.55 355)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(527.49 355)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> CaO + CO₂ </tspan></text>
+        </g>
+      </g>
+      <g id="Zn_CuSO_ZnSO_Cu_" data-name="Zn CuSO ZnSO Cu " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(429.71 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">Zn + CuSO₄</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(509.36 477)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(522.3 477)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> ZnSO₄ + Cu </tspan></text>
+        </g>
+      </g>
+      <g id="_2Mg_O_2MgO" data-name=" 2Mg O 2MgO" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(481.36 721)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0">2Mg + O₂</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(546.75 721)" font-family="SegoeUI, 'Segoe UI'" font-size="15" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(559.7 721)" font-family="Roboto-Regular, Roboto" font-size="15" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> 2MgO</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="reactant">
+    <g>
+      <g id="Group_181" data-name="Group 181">
+        <g id="Rectangle_106" data-name="Rectangle 106">
+          <rect x="653" y="227" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="229" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="H_" data-name="H " isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(685.7 252)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">H₂</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_1079" data-name="Group 1079">
+        <g id="Rectangle_106-2" data-name="Rectangle 106-2">
+          <rect x="753" y="227" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="229" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="O_" data-name="O " isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(785.96 252)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">O₂</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Mix_hydrogen_and_oxygen_to_form_water" data-name="Instructions : Mix hydrogen and oxygen to form water" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 211)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 211)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 211)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Mix hyd</tspan><tspan x="55.15" y="0" letter-spacing="0em">r</tspan><tspan x="60.41" y="0">ogen and </tspan><tspan x="130.29" y="0" letter-spacing="-.01em">o</tspan><tspan x="139.25" y="0">xygen </tspan><tspan x="184.99" y="0" letter-spacing="0em">t</tspan><tspan x="190.06" y="0">o form water</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_1" data-name="Polygon 1" d="M641.5,227.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g>
+      <g id="Group_1080" data-name="Group 1080">
+        <g id="Rectangle_106-3" data-name="Rectangle 106-3">
+          <rect x="653" y="349" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="351" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="CaCO_" data-name="CaCO " isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(665.5 374)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">CaCO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Apply_heat_to_break_down_calcium_carbonate" data-name="Instructions : Apply heat to break down calcium carbonate" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 332)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 332)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 332)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Apply heat </tspan><tspan x="78.98" y="0" letter-spacing="0em">t</tspan><tspan x="84.05" y="0">o break down calcium carbonate</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_2" data-name="Polygon 2" d="M641.5,349.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g>
+      <g id="Group_1081" data-name="Group 1081">
+        <g id="Rectangle_106-4" data-name="Rectangle 106-4">
+          <rect x="653" y="471" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="473" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="Zn" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(683 496)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">Zn</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_1082" data-name="Group 1082">
+        <g id="Rectangle_106-5" data-name="Rectangle 106-5">
+          <rect x="753" y="471" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="473" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="CuSO_" data-name="CuSO " isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(766 496)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">CuSO₄</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Add_zinc_to_copper_sulfate_solution" data-name="Instructions : Add zinc to copper sulfate solution" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 453)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 453)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 453)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Add zinc </tspan><tspan x="65.42" y="0" letter-spacing="0em">t</tspan><tspan x="70.49" y="0">o copper sulfate solution</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_3" data-name="Polygon 3" d="M641.5,471.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g>
+      <g id="Group_1083" data-name="Group 1083">
+        <g id="Rectangle_106-6" data-name="Rectangle 106-6">
+          <rect x="653" y="593" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="595" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="AgNO_" data-name="AgNO " isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(664.69 618)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">AgNO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_1084" data-name="Group 1084">
+        <g id="Rectangle_106-7" data-name="Rectangle 106-7">
+          <rect x="753" y="593" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="595" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="NaCl" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(774 619)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">NaCl</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Mix_silver_nitrate_with_sodium_chloride_" data-name="Instructions : Mix silver nitrate with sodium chloride " isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 574)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 574)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> :</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(746.39 574)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> Mix silver nit</tspan><tspan x="93.26" y="0" letter-spacing="-.02em">r</tspan><tspan x="98.36" y="0">ate with sodium chloride </tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_4" data-name="Polygon 4" d="M641.5,594.5l-14,10.5v-21l14,10.5Z" fill="#a5f700"/>
+    </g>
+    <g>
+      <g id="Group_1085" data-name="Group 1085">
+        <g id="Rectangle_106-8" data-name="Rectangle 106-8">
+          <rect x="653" y="715" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="717" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="AgNO_2" data-name="AgNO 2" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(664.69 740)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">AgNO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_1086" data-name="Group 1086">
+        <g id="Rectangle_106-9" data-name="Rectangle 106-9">
+          <rect x="753" y="715" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="717" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="NaCl-2" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(774 741)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">NaCl</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Burn_magnesium_in_oxygen-electron_transfer_reaction" data-name="Instructions : Burn magnesium in oxygen-electron transfer reaction" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 695)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 695)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 695)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Burn magnesium in </tspan><tspan x="141.6" y="0" letter-spacing="-.01em">o</tspan><tspan x="150.56" y="0">xygen-elect</tspan><tspan x="231.2" y="0" letter-spacing="0em">r</tspan><tspan x="236.45" y="0">on t</tspan><tspan x="263.59" y="0" letter-spacing="-.02em">r</tspan><tspan x="268.7" y="0">ansfer reaction</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_5" data-name="Polygon 5" d="M641.5,715.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+  </g>
+  <g id="reactant_40_alpha" data-name="reactant 40% alpha">
+    <g opacity=".4">
+      <g id="Group_1811" data-name="Group 1811">
+        <g id="Rectangle_1061" data-name="Rectangle 1061">
+          <rect x="653" y="227" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="229" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="H_1" data-name="H 1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(685.7 252)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">H₂</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_10791" data-name="Group 10791">
+        <g id="Rectangle_106-21" data-name="Rectangle 106-21">
+          <rect x="753" y="227" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="229" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="O_1" data-name="O 1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(785.96 252)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">O₂</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Mix_hydrogen_and_oxygen_to_form_water1" data-name="Instructions : Mix hydrogen and oxygen to form water1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 211)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 211)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 211)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Mix hyd</tspan><tspan x="55.15" y="0" letter-spacing="0em">r</tspan><tspan x="60.41" y="0">ogen and </tspan><tspan x="130.29" y="0" letter-spacing="-.01em">o</tspan><tspan x="139.25" y="0">xygen </tspan><tspan x="184.99" y="0" letter-spacing="0em">t</tspan><tspan x="190.06" y="0">o form water</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_11" data-name="Polygon 11" d="M641.5,227.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g opacity=".4">
+      <g id="Group_10801" data-name="Group 10801">
+        <g id="Rectangle_106-31" data-name="Rectangle 106-31">
+          <rect x="653" y="349" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="351" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="CaCO_1" data-name="CaCO 1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(665.5 374)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">CaCO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Apply_heat_to_break_down_calcium_carbonate1" data-name="Instructions : Apply heat to break down calcium carbonate1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 332)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 332)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 332)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Apply heat </tspan><tspan x="78.98" y="0" letter-spacing="0em">t</tspan><tspan x="84.05" y="0">o break down calcium carbonate</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_21" data-name="Polygon 21" d="M641.5,349.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g opacity=".4">
+      <g id="Group_10811" data-name="Group 10811">
+        <g id="Rectangle_106-41" data-name="Rectangle 106-41">
+          <rect x="653" y="471" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="473" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="Zn1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(683 496)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">Zn</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_10821" data-name="Group 10821">
+        <g id="Rectangle_106-51" data-name="Rectangle 106-51">
+          <rect x="753" y="471" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="473" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="CuSO_1" data-name="CuSO 1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(766 496)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">CuSO₄</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Add_zinc_to_copper_sulfate_solution1" data-name="Instructions : Add zinc to copper sulfate solution1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 453)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 453)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 453)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Add zinc </tspan><tspan x="65.42" y="0" letter-spacing="0em">t</tspan><tspan x="70.49" y="0">o copper sulfate solution</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_31" data-name="Polygon 31" d="M641.5,471.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+    <g opacity=".4">
+      <g id="Group_10831" data-name="Group 10831">
+        <g id="Rectangle_106-61" data-name="Rectangle 106-61">
+          <rect x="653" y="593" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="595" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="AgNO_1" data-name="AgNO 1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(664.69 618)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">AgNO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_10841" data-name="Group 10841">
+        <g id="Rectangle_106-71" data-name="Rectangle 106-71">
+          <rect x="753" y="593" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="595" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="NaCl1" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(774 619)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">NaCl</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Mix_silver_nitrate_with_sodium_chloride_1" data-name="Instructions : Mix silver nitrate with sodium chloride 1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 574)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 574)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> :</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(746.39 574)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> Mix silver nit</tspan><tspan x="93.26" y="0" letter-spacing="-.02em">r</tspan><tspan x="98.36" y="0">ate with sodium chloride </tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_41" data-name="Polygon 41" d="M641.5,594.5l-14,10.5v-21l14,10.5Z" fill="#a5f700"/>
+    </g>
+    <g opacity=".4">
+      <g id="Group_10851" data-name="Group 10851">
+        <g id="Rectangle_106-81" data-name="Rectangle 106-81">
+          <rect x="653" y="715" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="655" y="717" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="AgNO_21" data-name="AgNO 21" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(664.69 740)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">AgNO₃</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Group_10861" data-name="Group 10861">
+        <g id="Rectangle_106-91" data-name="Rectangle 106-91">
+          <rect x="753" y="715" width="85" height="39" rx="15" ry="15" fill="#ffe600"/>
+          <rect x="755" y="717" width="81" height="35" rx="13" ry="13" fill="none" stroke="#97ba1e" stroke-width="4"/>
+        </g>
+        <g id="NaCl-21" isolation="isolate">
+          <g isolation="isolate">
+            <text transform="translate(774 741)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">NaCl</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g id="Instructions_:_Burn_magnesium_in_oxygen-electron_transfer_reaction1" data-name="Instructions : Burn magnesium in oxygen-electron transfer reaction1" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(653 695)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="16" font-weight="500" isolation="isolate"><tspan x="0" y="0">Instructions</tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(738.55 695)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> : </tspan></text>
+        </g>
+        <g isolation="isolate">
+          <text transform="translate(750.35 695)" fill="#ff0" font-family="Roboto-Regular, Roboto" font-size="16" isolation="isolate"><tspan x="0" y="0">Burn magnesium in </tspan><tspan x="141.6" y="0" letter-spacing="-.01em">o</tspan><tspan x="150.56" y="0">xygen-elect</tspan><tspan x="231.2" y="0" letter-spacing="0em">r</tspan><tspan x="236.45" y="0">on t</tspan><tspan x="263.59" y="0" letter-spacing="-.02em">r</tspan><tspan x="268.7" y="0">ansfer reaction</tspan></text>
+        </g>
+      </g>
+      <path id="Polygon_51" data-name="Polygon 51" d="M641.5,715.5l-14,10.5v-21l14,10.5Z" fill="#a5f700" isolation="isolate"/>
+    </g>
+  </g>
+  <g id="Section_header" data-name="Section header">
+    <g id="Group_1072" data-name="Group 1072">
+      <path id="Path_402" data-name="Path 402" d="M82,109h344v32c0,11.05-8.95,20-20,20H102c-11.05,0-20-8.95-20-20v-32Z" fill="#029e02"/>
+      <g id="Select_Reaction_Type" data-name="Select Reaction Type" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(113.17 145)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">Select Reaction</tspan><tspan x="209.27" y="0" letter-spacing="-.03em"> </tspan><tspan x="215.86" y="0">Type</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_1073" data-name="Group 1073">
+      <path id="Path_397" data-name="Path 397" d="M653,109h264v32c0,11.05-8.95,20-20,20h-224c-11.05,0-20-8.95-20-20v-32Z" fill="#c49700"/>
+      <g id="Add_Reactants" data-name="Add Reactants" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(686.8 145)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">Add Reactants</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="Group_1074" data-name="Group 1074">
+      <path id="Path_397-2" data-name="Path 397-2" d="M1181,108h284v32c0,11.05-8.95,20-20,20h-244c-11.05,0-20-8.95-20-20v-32Z" fill="#9863c1"/>
+      <g id="Reaction_chamber" data-name="Reaction chamber" isolation="isolate">
+        <g isolation="isolate">
+          <text transform="translate(1205.07 144)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">Reaction chamber</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
