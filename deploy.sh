@@ -67,8 +67,12 @@ fail() { printf "${RED}✗$NC  %s\n" "$1" >&2; exit 1; }
 # ── Check required tools ───────────────────────────────────────────────────────
 command -v firebase &>/dev/null || \
   fail "Firebase CLI not found. Install it with: npm install -g firebase-tools"
-command -v python3  &>/dev/null || \
-  fail "python3 is required but was not found on PATH."
+
+# Detect Python — macOS/Linux uses `python3`, Windows Git Bash may only have `python`
+if   command -v python3 &>/dev/null; then PYTHON=python3
+elif command -v python  &>/dev/null; then PYTHON=python
+else fail "Python is required but was not found. Install from https://python.org"
+fi
 
 # ── Creator profile ────────────────────────────────────────────────────────────
 # Stored locally in .creator_profile (gitignored) so the prompt only runs once.
@@ -231,7 +235,7 @@ else
 
   WG_NUM=$(echo "$WIDGET_FOLDER" | grep -oE '[0-9]+' | head -1)
   RAW_TITLE=$(echo "$WIDGET_FOLDER" | sed 's/^wg[0-9]*-//' | tr '-' ' ')
-  WIDGET_TITLE=$(python3 -c "print('$RAW_TITLE'.title())")
+  WIDGET_TITLE=$($PYTHON -c "print('$RAW_TITLE'.title())")
   ASSET_PATH="./assets/wg-${WG_NUM}.png"
 
   export _SCRIPT_JS="$MAIN_SCRIPT_JS"
@@ -243,7 +247,7 @@ else
   export _CREATOR_INITIALS="$CREATOR_INITIALS"
   export _WIDGET_STATUS="$WIDGET_STATUS"
 
-  python3 << 'PYEOF'
+  $PYTHON << 'PYEOF'
 import os, re
 
 script_path      = os.environ['_SCRIPT_JS']

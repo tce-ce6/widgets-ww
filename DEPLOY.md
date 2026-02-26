@@ -51,9 +51,8 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-> **Python note:** `python3` is not pre-installed on Windows.  
-> Install it from https://www.python.org/downloads — tick **"Add python.exe to PATH"** during setup.  
-> Then verify with `python3 --version` inside Git Bash.
+> **Python note:** The script auto-detects `python3` (macOS/Linux) or `python` (Windows).  
+> If Python is missing, install from https://www.python.org/downloads and tick **"Add python.exe to PATH"** during setup.
 
 ---
 
@@ -88,6 +87,6 @@ Example: `wg121-synthesize-new-dna-strand` → `assets/wg-121.png`
 | `401` auth error | `firebase login --reauth` |
 | `firebase: command not found` | `npm install -g firebase-tools` |
 | `python3: command not found` (macOS) | `brew install python3` |
-| `python3: command not found` (Windows) | Install from https://python.org — tick **"Add to PATH"** |
+| `python is not recognized` (Windows) | Install from https://python.org — tick **"Add to PATH"** |
 | Widget not in listing | Remove its entry from `widget-listing-b3/script/script.js` and re-run `./deploy.sh` |
 | Merge conflict in `script.js` | Keep **both** widget entries, ensure each ends with a comma, then re-deploy |
