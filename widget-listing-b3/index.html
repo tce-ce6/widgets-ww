@@ -4,40 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Widget Listing</title>
+    <base href="/widget-listing-b3/">
     <link rel="stylesheet" href="./style/style.css">
-    <script src="./script/script.js"></script>
+    <script src="./script/script.js" defer></script>
 </head>
 
 <body>
     <section class="container">
         <iframe
-            src="https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/sentence-construction/index.html"
+            src="about:blank"
             frameborder="0" allow="accelerometer; gyroscope; clipboard-write; fullscreen; encrypted-media">
         </iframe>
         <aside id="sidebar" class="active">
             <button class="toggle-btns" id="toggle-btn">Show</button>
             <div class="widget-title">
-                <h4 class="">Widgets (<span id="total"></span>)</h4>
-                <div style="display: flex;gap: 10px;">
+                <div class="title-row">
+                    <h4>Widgets (<span id="total"></span>)</h4>
                     <span class="last-modify">Last modified: 09-02-26</span>
-                    <select id="creator-filter" style="display: block;">
-                        <option value="all">All Creators</option>
-                        <option value="as">Ashish</option>
-                        <option value="sh">Shyam</option>
-                        <option value="ni">Nitin</option>
-                        <option value="su">Sushant</option>
-                    </select>
-                    <select name="" id="filter">
-                        <!-- <option value="all" selected>All</option> -->
-                        <option value="closed" selected>Closed</option>
-                        <option value="in-review">In Review</option>
-                        <option value="WIP-With-Tech">WIP With Tech</option>
-                        <option value="todo">To Do</option>
-                        <!-- <option value="asset-development">Asset Development</option>
-                        <option value="WIP-With-LDCD">WIP With LDCD</option> -->
-                    </select>
                 </div>
+                <div class="chip-group" id="status-chips"></div>
+                <div class="chip-group" id="creator-chips"></div>
             </div>
             <ul class="widget-list" id="widget-listing">
                 <li>
