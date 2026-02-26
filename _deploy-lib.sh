@@ -109,7 +109,7 @@ lib_build_dist() {
   local new_widget="${1:-}"
   step "Building dist/ (only deployed widgets + listing page)..."
 
-  $PYTHON - "$SCRIPT_DIR" "$MAIN_SCRIPT_JS" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" \
+  PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$MAIN_SCRIPT_JS" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" \
   << 'PYEOF'
 import sys, os, re, shutil
 
@@ -157,7 +157,7 @@ if new_widget:
     print(f"  + {new_widget}  ← new")
 
 # All previously deployed widgets (from WIDGET_DATA URLs in script.js)
-with open(script_js, 'r') as f:
+with open(script_js, 'r', encoding='utf-8') as f:
     content = f.read()
 deployed = re.findall(
     rf'https://{re.escape(hosting_site)}\.web\.app/(wg[^/\"]+)/', content)

@@ -120,7 +120,7 @@ step "Writing widget entry to widget-listing-b3/script/script.js..."
 
 WG_NUM=$(echo "$WIDGET_FOLDER" | grep -oE '[0-9]+' | head -1)
 RAW_TITLE=$(echo "$WIDGET_FOLDER" | sed 's/^wg[0-9]*-//' | tr '-' ' ')
-WIDGET_TITLE=$($PYTHON -c "print('$RAW_TITLE'.title())")
+WIDGET_TITLE=$(PYTHONIOENCODING=utf-8 $PYTHON -c "print('$RAW_TITLE'.title())")
 ASSET_PATH="./assets/wg-${WG_NUM}.png"
 
 export _SCRIPT_JS="$MAIN_SCRIPT_JS"
@@ -133,7 +133,7 @@ export _CREATOR_INITIALS="$CREATOR_INITIALS"
 export _WIDGET_STATUS="$WIDGET_STATUS"
 export _HOSTING_SITE="$FIREBASE_HOSTING_SITE_ID"
 
-$PYTHON << 'PYEOF'
+PYTHONIOENCODING=utf-8 $PYTHON << 'PYEOF'
 import os, re
 
 script_path      = os.environ['_SCRIPT_JS']
@@ -155,7 +155,7 @@ new_entry = (
     "    },"
 )
 
-with open(script_path, 'r') as f:
+with open(script_path, 'r', encoding='utf-8') as f:
     content = f.read()
 
 # Remove any existing entries for this widget (by folder name or asset path)
@@ -178,7 +178,7 @@ if updated == content:
     if idx != -1:
         updated = content[:idx + 2] + "\n" + new_entry + content[idx + 2:]
 
-with open(script_path, 'w') as f:
+with open(script_path, 'w', encoding='utf-8') as f:
     f.write(updated)
 print(f"Written: {widget_title}  [{widget_status}]  →  {widget_url}")
 PYEOF
