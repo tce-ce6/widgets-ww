@@ -268,3 +268,43 @@ svg{
 .feedback-text.is-visible {
   display: block;
 }
+
+.svg-popup {
+  background: #dff3e4;
+  border: 3px solid #3aa655;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  display: none;
+  position: relative;
+  width: 320px;
+}
+
+.svg-popup .close-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: #3aa655;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #3aa655;
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+}

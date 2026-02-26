@@ -920,7 +920,9 @@ function resetContainerScrolls() {
  */
 function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
-
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => p.style.display = "none");
+        
     if (gElement.id !== expectedId) {
         applyRightVisualHighlight(expectedId);
         //  showFeedback(`Sequence Error: Please select the box for "${formatIdText(expectedId)}"`);
@@ -966,6 +968,8 @@ function validateMatch(leftId, rightId) {
 function processCorrectMatch(btnElement) {
     const targetG = document.getElementById(state.activeLeftId);
 
+    showPopupFromGElement(targetG.id);
+    console.log(targetG.id);
     // 1. Update SVG Box Appearance
     targetG.querySelectorAll('path').forEach(p => {
         //p.setAttribute('fill', '#f8f9fa');
@@ -993,6 +997,22 @@ function processCorrectMatch(btnElement) {
         document.getElementById('learn-example-btn').style.display = 'block';
         playCompleteLottie();
     }
+}
+
+function showPopupFromGElement(gElement) {
+
+    if (!gElement) return;
+
+    const popupId =
+        "popup-" + gElement;
+        
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => p.style.display = "none");
+
+    const popup = document.getElementById(popupId);
+    console.log(popup);
+
+    if (popup) popup.style.display = "block";
 }
 
 /**
@@ -1207,3 +1227,15 @@ function initGameListeners() {
     });
     
 }
+
+document.querySelectorAll(".close-btn").forEach(btn => {
+
+    btn.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        document.querySelectorAll(".svg-popup")
+            .forEach(p => p.style.display = "none");
+    });
+
+});

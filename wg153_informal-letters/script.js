@@ -571,9 +571,9 @@ const state = {
     activeLetter: null,
     letterBoxIndex: 0, // Tracks which letter box must be filled next (practice page)
     sequence: [
-        "senders-address-blank", "date-blank", "recievers-address-blank",
-        "salutation-blank", "introduction-blank", "body-1-blank",
-        "body-2-blank", "conclusion-blank", "complimentary-close-blank",
+        "senders-address-blank", "date-blank", "salutation-blank",
+        "introduction-blank", "body-1-blank",
+        "body-2-blank", "conclusion-blank", "sign-off-blank",
         "senders-name-blank"
     ]
 };
@@ -581,13 +581,12 @@ const state = {
 const boxSequence = [
     'senders-address-box',
     'date-box',
-    'receivers-address-box',
     'salutation-box',
     'introduction-box',
     'body-1-box',
     'body-2-box',
     'conclusion-box',
-    'complimentary-close-box',
+    'sign-off-box',
     'senders-name-box'
 ];
 
@@ -820,13 +819,13 @@ function startPracticeSession(matchId) {
     // Initialize specific components
     initializeLetterBox('senders-address-box', 'senders_address', 'sendersAddress-placeholder');
     initializeLetterBox('date-box', 'date', 'date-placeholder');
-    initializeLetterBox('receivers-address-box', 'receivers_address', 'receiversAddress-placeholder');
+    //initializeLetterBox('receivers-address-box', 'receivers_address', 'receiversAddress-placeholder');
     initializeLetterBox('salutation-box', 'salutation', 'salutation-placeholder');
     initializeLetterBox('introduction-box', 'introduction', 'introduction-placeholder');
     initializeLetterBox('body-1-box', 'body_paragraph_1', 'bodyParagraph-1-placeholder');
     initializeLetterBox('body-2-box', 'body_paragraph_2', 'bodyParagraph-2-placeholder');
     initializeLetterBox('conclusion-box', 'conclusion', 'conclusion-placeholder');
-    initializeLetterBox('complimentary-close-box', 'sign_off', 'complimentary-placeholder');
+    initializeLetterBox('sign-off-box', 'sign_off', 'sign-off-placeholder');
     initializeLetterBox('senders-name-box', 'senders_name', 'sendersName-placeholder');
 
 }
