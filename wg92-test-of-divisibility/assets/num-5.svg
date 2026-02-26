@@ -1,0 +1,34 @@
+<svg width="83" height="83" viewBox="0 0 83 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1186">
+<g id="Group 1172">
+<g id="Clip path group">
+<mask id="mask0_5509_315" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="83" height="83">
+<g id="clip-path-2">
+<path id="Ellipse 1" d="M41.38 82.76C64.2335 82.76 82.76 64.2335 82.76 41.38C82.76 18.5265 64.2335 0 41.38 0C18.5265 0 0 18.5265 0 41.38C0 64.2335 18.5265 82.76 41.38 82.76Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask0_5509_315)">
+<g id="Group 1171">
+<path id="Rectangle 131" d="M82.76 0H0V82.76H82.76V0Z" fill="url(#paint0_radial_5509_315)"/>
+</g>
+</g>
+</g>
+</g>
+<text id="5" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="50" font-weight="900" letter-spacing="0em"><tspan x="27.3945" y="54.7539">5</tspan></text>
+</g>
+<defs>
+<radialGradient id="paint0_radial_5509_315" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(28.3867 25.7384) scale(81.1876)">
+<stop stop-color="white"/>
+<stop offset="0.033" stop-color="#FFE4E4"/>
+<stop offset="0.098" stop-color="#FFB5B5"/>
+<stop offset="0.168" stop-color="#FF8A8A"/>
+<stop offset="0.243" stop-color="#FF6464"/>
+<stop offset="0.323" stop-color="#FF4545"/>
+<stop offset="0.409" stop-color="#FF2C2C"/>
+<stop offset="0.505" stop-color="#FF1818"/>
+<stop offset="0.615" stop-color="#FF0A0A"/>
+<stop offset="0.752" stop-color="#FF0202"/>
+<stop offset="1" stop-color="#FF0000"/>
+</radialGradient>
+</defs>
+</svg>

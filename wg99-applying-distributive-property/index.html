@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Distributive Property – Hall Seating</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+  <!-- PAGE HEADER (OUTSIDE WIDGET) -->
+<div class="page-header">
+  <div class="header-pill">Applying Distributive Property</div>
+
+  <div class="header-block">
+    <div class="header-title">Theater Seating Problem</div>
+    <p class="header-desc">
+      <strong>Scenario:</strong> You manage a theater with the seating layout shown below.
+      You’re exploring different ways to increase the number of seats and want to understand
+      how the overall capacity would change — without doing any actual calculations.
+    </p>
+  </div>
+</div>
+
+  <!-- WIDGET -->
+  <div class="widget">
+    <div class="layout">
+
+      <!-- LEFT PANEL -->
+      <div class="left">
+        <p class="desc">
+          Explore how changing rows (a) or seats per row (b) changes total seats.
+        </p>
+
+    <div class="inline-fields">
+        <div class="field">
+            <label>Rows (a)</label>
+            <input id="rows" type="number" value="23" min="1" max="24"/>
+        </div>
+
+        <div class="field">
+            <label>Seats per Row (b)</label>
+            <input id="seats" type="number" value="24" min="1" max="24"/>
+        </div>
+</div>
+
+        <h3>Choose Scenario</h3>
+        <button class="scenario-btn" data-scenario="ADD_ROW_ADD_SEAT">Add 1 row, add 1 Seat per row</button>
+        <button class="scenario-btn" data-scenario="ADD_ROW_REMOVE_SEAT">Add 1 row, remove 1 Seat per row</button>
+        <button class="scenario-btn" data-scenario="REMOVE_ROW_ADD_SEAT">Remove 1 Row, add 1 Seat per row</button>
+        <button class="scenario-btn" data-scenario="ADD_SEAT">Same Rows, add 1 Seat per row</button>
+        <button class="scenario-btn" data-scenario="REMOVE_SEAT">Same Rows, remove 1 Seat per row</button>
+
+        <h3>Predict the Change</h3>
+
+        <div class="predict-row">
+          <select id="trend">
+            <option value="">Increase / Decrease?</option>
+            <option value="increase">Increase</option>
+            <option value="decrease">Decrease</option>
+          </select>
+
+          <input id="guess" type="number" placeholder="How many seats?" min="0" />
+        </div>
+
+        <div id="feedback" class="feedback" hidden></div>
+
+        <div id="hint-box" class="hint" hidden>
+          <strong>Hint:</strong> (a + 1)(b + 1) = ab + a + b + 1
+        </div>
+
+        <div id="answer-box" class="answer" hidden>
+          <strong>Answer:</strong> Seats change by <span id="answer-value"></span>
+        </div>
+        <div id="formula-box" class="formula" hidden>
+        <span class="hint-label">Hint:</span>
+        <span class="term">(a + 1)</span>
+        <span class="multiply">×</span>
+        <span class="term">(b + 1)</span>
+        <span class="equals">=</span>
+        <span class="term">ab</span>
+        <span class="plus">+</span>
+        <span class="term">a</span>
+        <span class="plus">+</span>
+        <span class="term">b</span>
+        <span class="plus">+</span>
+        <span class="term">1</span>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+       <div class="right">
+  <!-- Selected Option Header -->
+  <div class="right-header">
+    <span class="right-label">Selected Option:</span>
+    <span id="selected-option-text" class="right-value">
+      Select an option to see changes
+    </span>
+  </div>
+
+  <!-- Seat Canvas -->
+  <div class="right-canvas">
+    <svg id="theatre-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+      <g id="seat-layer"></g>
+    </svg>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="dot blue"></span> Existing seats
+    </div>
+    <div class="legend-item">
+      <span class="dot orange"></span> New seats added
+    </div>
+    <div class="legend-item">
+      <span class="dot green"></span> New row added
+    </div>
+    <div class="legend-item">
+      <span class="dot grey"></span> Removed seats
+    </div>
+  </div>
+</div>
+
+    <!-- FOOTER BUTTONS -->
+    <div class="footer">
+      <button id="btn-hint" class="btn hint">Hint</button>
+      <button id="btn-submit" class="btn submit">Submit</button>
+      <button id="btn-answer" class="btn answer-btn">Show Answer</button>
+      <button id="btn-reset" class="btn reset">Reset</button>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>

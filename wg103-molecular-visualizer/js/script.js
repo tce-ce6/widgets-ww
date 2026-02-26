@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+ 
   // State
   let moleculeCount = 1;
   let currentSubstance = "Water";

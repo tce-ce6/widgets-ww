@@ -8,6 +8,7 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
+#idiom-wrapper body {
 body#idiom-wrapper {
   box-sizing: border-box;
   outline: none;

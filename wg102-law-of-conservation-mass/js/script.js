@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+ 
   const molecules = document.querySelectorAll(".molecule-item");
   const reactantsDropPanel = document.getElementById("Rectangle_233");
   const productsDropPanel = document.getElementById("Rectangle_232");

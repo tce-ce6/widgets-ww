@@ -1,0 +1,129 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tests of Divisibility</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="swar-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Tests of Divisibility</h2>
+        <span id="versionId" class="versionText">b3_wg124_260217</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g>
+            <foreignObject x="145" y="100" width="1637.58" height="448.69">
+              <div class="i-text">Click on balls that are <strong>factors</strong> of the target number on the flask.
+              </div>
+            </foreignObject>
+
+            <foreignObject x="744" y="250.78" width="432" height="644.22">
+              <div>
+                <img src="./assets/flask.svg" alt="">
+              </div>
+            </foreignObject>
+            <foreignObject x="405" y="164" width="1110" height="146">
+              <ul class="number-wrapper">
+                <li>
+                  <img src="./assets/num-2.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-3.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-4.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-5.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-6.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-9.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-10.svg" alt="">
+                </li>
+                <li>
+                  <img src="./assets/num-11.svg" alt="">
+                </li>
+              </ul>
+            </foreignObject>
+
+            <foreignObject x="744" y="508" width="432" height="300">
+              <div>
+                <ul class="flask-container"></ul>
+              </div>
+            </foreignObject>
+
+            <foreignObject x="244" y="508" width="432" height="300" style=" overflow: visible;">
+              <div>
+                <ul class="incorrect-flask"></ul>
+              </div>
+            </foreignObject>
+
+            <foreignObject x="869" y="813" width="184" height="71">
+              <div>
+                <div class="final-number" id="final-number">3690</div>
+              </div>
+            </foreignObject>
+
+            <foreignObject x="1239" y="449" width="600" height="276" style="overflow: visible;">
+              <div id="note" class="note-wrapper">
+                <div class="notes-grid">
+                  <div class="lottie-anim" id="lottie-anim"></div>
+                  <div class="ans-status" id="ans-status"></div>
+
+                  <div class="note-card" id="note-card">
+                    <div class="note-verdict" id="note-verdict"></div>
+                    <span class="note-rule" id="note-rule"></span>
+                    <span class="note-process" id="note-process"></span>
+                    <span class="note-explanation" id="note-explanation"></span>
+                  </div>
+                </div>
+              </div>
+            </foreignObject>
+
+          </g>
+
+
+          <defs>
+            <clipPath id="clip0_5485_1879">
+              <rect width="1920" height="1080" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="flexContainer button-controls" id="btn-wrapper">
+        <div class=" flexItem flexItemFirst">
+          <button class="btn" id="reset-btn" style="background-color:#FF2C68; color:white; " onfocus="
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Reset
+          </button>
+          <button class="btn" id="newgame-btn" style="background-color:#4CAF50; color:white; " onfocus="
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            New Game
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
