@@ -318,6 +318,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupAnimations();
 
+    // Initialize default metal symbols
+    symbolGroups.forEach(id => {
+        const el = document.querySelector(`#${id} tspan`);
+        if (el) el.textContent = currentMetal.symbol;
+    });
+
     // Electrode transformation transition config
     [anodeRect, cathodeRect, anodeRectAns, cathodeRectAns].forEach(el => {
         if (el) {
