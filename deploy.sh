@@ -270,7 +270,7 @@ new_entry = (
     "    },"
 )
 
-with open(script_path, 'r') as f:
+with open(script_path, 'r', encoding='utf-8') as f:
     content = f.read()
 
 # Remove any existing entries that reference this widget (by folder name OR wg number)
@@ -304,7 +304,7 @@ if updated == content:
         print("Warning: Could not find an insertion point. script.js was not modified.")
 
 if updated != content:
-    with open(script_path, 'w') as f:
+    with open(script_path, 'w', encoding='utf-8') as f:
         f.write(updated)
     print(f"Written: {widget_title}")
     print(f"   Link: {widget_url}")

@@ -2,6 +2,13 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Addition Of Integers",
+        link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
+        imagePath: "./assets/wg-104.png",
+        creators: "su-104",
+        status: "in-review",
+    },
+    {
         name: "Guess The Collective Nouns",
         link: "https://tce-widgets.web.app/wg111-guess-the-collective-nouns/",
         imagePath: "./assets/wg-111.png",
@@ -273,13 +280,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-95.png",
     creators: "ni-ra-95",
     status: "in-review",
-  },
-  {
-    name: "Addition of Integers",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-104.png",
-    creators: "-ra-104",
-    status: "todo",
   },
   {
     name: "Area of Different Shapes",
