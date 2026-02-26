@@ -358,41 +358,56 @@ document.addEventListener("DOMContentLoaded", () => {
     /*
      * positionPopup
      * -------------
-     * The XD design drew the wrong/right popups physically over Maya's card.
+     * The XD design drew the wrong/right popups physically over the first card.
      * To show the popup over Omar/Priya/etc., we calculate the difference
-     * between the clicked card's position and Maya's card's position in SVG space (getBBox),
-     * and apply that as a CSS transform to the popup group.
+     * between the clicked card's position and the base card's position in SVG space.
      */
     function positionPopup(targetCard, popupGroup, baseCardId) {
         if (!targetCard || !popupGroup || !baseCardId) return;
-        const baseCard = S.lim1s1.cards.querySelector("#" + CSS.escape(baseCardId));
+        const baseCard = S.lim1s1.cards.querySelector("#" + CSS.escape(baseCardId)) ||
+            S.lim1s2.cards.querySelector("#" + CSS.escape(baseCardId));
         if (!baseCard) return;
 
-        // Use getBBox instead of getBoundingClientRect because we are applying 
-        // a transform inside the SVG. getBoundingClientRect gives screen space offsets 
-        // which get multiplied incorrectly by the SVG scale.
         const targetBBox = targetCard.getBBox();
         const baseBBox = baseCard.getBBox();
-
-        // However, SVG `getBBox` evaluates to the un-transformed local bounding box,
-        // and we really want the difference in their global (within SVG) coordinates.
-        // For groups that are siblings inside `limitation01-sc01-cards`, we can 
-        // get their transform info or just get the Current Matrix:
         const targetMatrix = targetCard.getCTM();
         const baseMatrix = baseCard.getCTM();
 
-        // If they are siblings or share the same parent coordinate space, this is robust:
         const targetX = targetMatrix.e + targetBBox.x;
         const targetY = targetMatrix.f + targetBBox.y;
-
         const baseX = baseMatrix.e + baseBBox.x;
         const baseY = baseMatrix.f + baseBBox.y;
 
         const dx = targetX - baseX;
         const dy = targetY - baseY;
 
-        popupGroup.style.transform = `translate(${dx}px, ${dy}px)`;
-        popupGroup.style.transformOrigin = "center";
+        // Hide the hardcoded replica card (e.g. Maya's copy) inside the popup
+        // so it doesn't overlay incorrectly on other traders.
+        const replicaCard = popupGroup.querySelector('[data-name="Group 1281"]');
+        if (replicaCard) replicaCard.style.display = "none";
+
+        // Translate ONLY the speech bubble, avoiding the dark full-screen 
+        // background overlay and the static buttons.
+        Array.from(popupGroup.children).forEach(child => {
+            // Skip the dark overlay
+            if (child.tagName.toLowerCase() === 'rect') return;
+
+            // Skip the action buttons
+            const isButton = child.id && (
+                child.id.includes("Try_another_trader") ||
+                child.id.includes("Fair_Trade") ||
+                child.id.includes("Unfair_Trade")
+            );
+            const hasButtonInside = child.querySelector('[id*="Try_another_trader"]') ||
+                child.querySelector('[id*="Fair_Trade"]') ||
+                child.querySelector('[id*="Unfair_Trade"]');
+
+            if (isButton || hasButtonInside) return;
+
+            // Otherwise, it's the speech bubble! Translate it.
+            child.style.transform = `translate(${dx}px, ${dy}px)`;
+            child.style.transformOrigin = "center";
+        });
     }
 
     if (S.lim1s1.cards) {
@@ -421,7 +436,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // "Try another trader" → stop lottie, clear highlight, hide wrong popup
-    onClick("Try_another_trader", () => { stopLottie(); clearCardHighlight(); hide(S.lim1s1.wrong); });
+    onClick("Try_another_trader", () => {
+        stopLottie();
+        clearCardHighlight();
+        hide(S.lim1s1.wrong);
+    });
 
     // Fair / Unfair Trade → stop lottie + show end
     ["Fair_Trade", "Unfair_Trade"].forEach(id => {
@@ -463,16 +482,19 @@ document.addEventListener("DOMContentLoaded", () => {
             highlightCard(topCard, true);
 
             if (lim1s2Correct.has(traderId)) {
+                hide(S.lim1s1.wrong);
                 hide(S.lim1s2.wrong);
                 positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
                 show(S.lim1s2.right);
                 playLottie("emoji_happy-star", S.lim1s2.right);
             } else {
                 const want = lim1s2Wants[traderId] || "that";
-                setIncorrectMsg(S.lim1s2.wrong, `clay pots. I want ${want}!"`);
-                positionPopup(topCard, S.lim1s2.wrong, "Group_1281-3"); // Base is Cheenu
-                show(S.lim1s2.wrong);
-                playLottie("emoji-sad", S.lim1s2.wrong);
+                // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
+                const wrongPopup = S.lim1s2.wrong || S.lim1s1.wrong;
+                setIncorrectMsg(wrongPopup, `clay pots. I want ${want}!"`);
+                positionPopup(topCard, wrongPopup, "Group_1281-3"); // Base is Cheenu
+                show(wrongPopup);
+                playLottie("emoji-sad", wrongPopup);
             }
         });
     }
@@ -482,7 +504,6 @@ document.addEventListener("DOMContentLoaded", () => {
         stopLottie();
         clearCardHighlight();
         hide(S.lim1s1.wrong);
-        if (S.lim1s1.wrong) S.lim1s1.wrong.style.transform = "";
     });
 
     // "Try another trader" for sc02
