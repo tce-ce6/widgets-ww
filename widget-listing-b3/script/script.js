@@ -82,7 +82,7 @@ const WIDGET_DATA = [
     name: "Rhyme Scheme",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-79.png",
-    creators: "ni-as-79",
+    creators: "as-as-79",
     status: "todo",
   },
   {
@@ -195,7 +195,7 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-85.png",
     creators: "satyajit-ra-85",
-    status: "WiP-With-Tech",
+    status: "in-review",
   },
   {
     name: "इ और ई की मात्रा में अंतर",
@@ -411,8 +411,8 @@ const WIDGET_DATA = [
     name: "Regulation of Blood Glucose",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-105.png",
-    creators: "-ra-105",
-    status: "todo",
+    creators: "su-ra-105",
+    status: "WIP-With-Tech",
   },
   {
     name: "Synthesize New DNA Strand",
