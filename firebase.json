@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "site": "tce-widgets",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      ".creator_profile",
+      "deploy.sh",
+      ".git/**",
+      ".github/**",
+      ".gitignore",
+      "**/.DS_Store",
+      "**/node_modules/**",
+      "**/.vscode/**",
+      "**/PROMPT.md",
+      "**/README.md",
+      "**/TODO.md",
+      "**/NOTES.md",
+      "docs/**"
+    ],
+    "rewrites": [
+      { "source": "/", "destination": "/widget-listing-b3/index.html" }
+    ]
+  }
+}
