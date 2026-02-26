@@ -859,6 +859,25 @@ class Wg121 {
         const wrapper = document.getElementById(textId);
         if (!wrapper) return;
 
+        // Fix flipped text: some Illustrator exports use
+        // "translate(X Y) rotate(-180) scale(1 -1)" which makes the
+        // letter render horizontally mirrored.  The transform places the
+        // anchor at the RIGHT edge of the glyph and x grows leftward.
+        // Fix: remove rotate/scale AND set text-anchor="end" so the
+        // right edge still sits at translate(X), preserving the visual
+        // position while making the text readable (left-to-right).
+        const textEl = wrapper.querySelector('text');
+        if (textEl) {
+            const t = textEl.getAttribute('transform') || '';
+            if (t.includes('rotate(-180)')) {
+                const translateMatch = t.match(/translate\(([^)]+)\)/);
+                if (translateMatch) {
+                    textEl.setAttribute('transform', `translate(${translateMatch[1]})`);
+                    textEl.setAttribute('text-anchor', 'end');
+                }
+            }
+        }
+
         // Update the letter text
         const tspan = wrapper.querySelector('tspan');
         if (tspan) tspan.textContent = base;
@@ -1072,12 +1091,16 @@ class Wg121 {
     // comp-row whitePath's getBBox (exact SVG user-space x).
     // ----------------------------------------------------------
     _renderHBonds() {
-        const { placedBases, templateSequence } = this.state;
+        const { placedBases, templateSequence, isLocked } = this.state;
         const svg = this.state.cache.svgContainer;
         if (!svg) return;
 
         // Remove previous H-bond layer completely
         svg.querySelectorAll('.poc-hbonds-layer').forEach(el => el.remove());
+
+        // When a modal is open, don't render H-bonds on top of it.
+        // The removal above already clears any existing layer.
+        if (isLocked) return;
 
         const bondCount = { AT: 2, TA: 2, GC: 3, CG: 3 };
 
