@@ -192,23 +192,10 @@ cat > "$FIREBASE_JSON" << FIREBASE_JSON_EOF
 {
   "hosting": {
     "site": "${FIREBASE_HOSTING_SITE_ID}",
-    "public": ".",
+    "public": "dist",
     "ignore": [
-      "firebase.json",
-      ".firebaserc",
-      ".creator_profile",
-      "deploy.sh",
-      ".git/**",
-      ".github/**",
-      ".gitignore",
       "**/.DS_Store",
-      "**/node_modules/**",
-      "**/.vscode/**",
-      "**/PROMPT.md",
-      "**/README.md",
-      "**/TODO.md",
-      "**/NOTES.md",
-      "docs/**"
+      "**/node_modules/**"
     ],
     "rewrites": [
       { "source": "/", "destination": "/widget-listing-b3/index.html" }
@@ -229,6 +216,7 @@ FIREBASERC_EOF
 ok ".firebaserc written."
 
 # ── Inject (or update) widget link in widget-listing-b3/script/script.js ───────
+# (Must happen before dist/ is built so the updated script.js is included)
 if [[ ! -f "$MAIN_SCRIPT_JS" ]]; then
   warn "Cannot find $MAIN_SCRIPT_JS — skipping link injection."
 else
@@ -314,6 +302,74 @@ PYEOF
 
   unset _SCRIPT_JS _WIDGET_TITLE _WIDGET_URL _ASSET_PATH _WG_NUM _WIDGET_FOLDER _CREATOR_INITIALS _WIDGET_STATUS
 fi
+
+# ── Build dist/ — only listing page + deployed widgets ────────────────────────
+step "Building deploy package (dist/)..."
+
+DIST_DIR="$SCRIPT_DIR/dist"
+export _DIST_DIR="$DIST_DIR"
+export _SCRIPT_DIR="$SCRIPT_DIR"
+export _WIDGET_FOLDER="$WIDGET_FOLDER"
+export _SCRIPT_JS="$MAIN_SCRIPT_JS"
+export _HOSTING_SITE="$FIREBASE_HOSTING_SITE_ID"
+
+$PYTHON << 'PYEOF'
+import os, re, shutil
+
+dist_dir      = os.environ['_DIST_DIR']
+script_dir    = os.environ['_SCRIPT_DIR']
+widget_folder = os.environ['_WIDGET_FOLDER']
+script_js     = os.environ['_SCRIPT_JS']
+hosting_site  = os.environ['_HOSTING_SITE']
+
+# Directories and file extensions to skip when copying
+SKIP_DIRS = {'.vscode', 'node_modules', '.git'}
+SKIP_EXT  = {'.md', '.pptx', '.zip', '.rar', '.7z', '.docx', '.sh'}
+SKIP_FILES = {'firebase.json', '.firebaserc', '.creator_profile', '.gitignore', '.DS_Store'}
+
+def should_ignore(path, names):
+    ignored = []
+    for n in names:
+        full = os.path.join(path, n)
+        if n in SKIP_DIRS or n in SKIP_FILES:
+            ignored.append(n)
+        elif os.path.isfile(full) and os.path.splitext(n)[1].lower() in SKIP_EXT:
+            ignored.append(n)
+    return ignored
+
+def sync(src, dst):
+    if not os.path.isdir(src):
+        return False
+    if os.path.exists(dst):
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst, ignore=should_ignore)
+    return True
+
+os.makedirs(dist_dir, exist_ok=True)
+
+# Always include the listing page
+sync(os.path.join(script_dir, 'widget-listing-b3'),
+     os.path.join(dist_dir,   'widget-listing-b3'))
+print("  + widget-listing-b3")
+
+# Include the widget being deployed now
+sync(os.path.join(script_dir, widget_folder),
+     os.path.join(dist_dir,   widget_folder))
+print(f"  + {widget_folder}")
+
+# Include all previously deployed widgets (those with a Firebase URL in WIDGET_DATA)
+with open(script_js, 'r') as f:
+    content = f.read()
+deployed = re.findall(rf'https://{re.escape(hosting_site)}\.web\.app/(wg[^/\"]+)/', content)
+for folder in sorted(set(deployed)):
+    if folder == widget_folder:
+        continue
+    if sync(os.path.join(script_dir, folder), os.path.join(dist_dir, folder)):
+        print(f"  + {folder}")
+PYEOF
+
+ok "dist/ ready — $(find "$DIST_DIR" -type f | wc -l | tr -d ' ') files"
+unset _DIST_DIR _SCRIPT_DIR _WIDGET_FOLDER _SCRIPT_JS _HOSTING_SITE
 
 # ── Deploy to Firebase Hosting ─────────────────────────────────────────────────
 step "Deploying to Firebase Hosting..."

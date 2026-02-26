@@ -1,4 +1,5 @@
 .creator_profile
+dist/
 *.pptx
 *.zip
 *.rar

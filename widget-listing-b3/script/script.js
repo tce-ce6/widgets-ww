@@ -2,6 +2,20 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Synthesize New Dna Strand",
+        link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
+        imagePath: "./assets/wg-121.png",
+        creators: "pp-121",
+        status: "WIP-With-Tech",
+    },
+    {
+        name: "Identify Criminal Dna",
+        link: "https://tce-widgets.web.app/wg112-identify-criminal-dna/",
+        imagePath: "./assets/wg-112.png",
+        creators: "pp-112",
+        status: "WIP-With-Tech",
+    },
+    {
         name: "Addition Of Integers",
         link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
         imagePath: "./assets/wg-104.png",
@@ -240,13 +254,6 @@ const WIDGET_DATA = [
     status: "in-review",
   },
   {
-    name: "Identify The Criminal Through DNA Fingerprinting",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-112.png",
-    creators: "ni-ra-112",
-    status: "WIP-With-Tech",
-  },
-  {
     name: "Build a Literary Device",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-115.png",
@@ -415,13 +422,6 @@ const WIDGET_DATA = [
     status: "WIP-With-Tech",
   },
   {
-    name: "Synthesize New DNA Strand",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-121.png",
-    creators: "-ra-121",
-    status: "todo",
-  },
-  {
     name: "Picture the Idiom",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg117-picture-the-idiom/index.html",
     imagePath: "./assets/wg-117.png",
@@ -543,99 +543,127 @@ const WIDGET_DATA = [
 
 ];
 
-document.addEventListener("DOMContentLoaded", function () {
-  const sidebar = document.getElementById("sidebar");
-  const toggleButton = document.getElementById("toggle-btn");
-  const widgetListing = document.getElementById("widget-listing");
-  const totalCount = document.getElementById("total");
-  const iframe = document.querySelector("iframe");
-  const filterDropdown = document.getElementById("filter");
-const creatorDropdown = document.getElementById("creator-filter");
+const STATUS_CHIPS = [
+  { label: 'Closed', value: 'closed' },
+  { label: 'Review', value: 'in-review' },
+  { label: 'WIP',    value: 'WIP-With-Tech' },
+  { label: 'Todo',   value: 'todo' },
+  { label: 'All',    value: 'all' },
+];
 
-  totalCount.textContent = WIDGET_DATA.length;
+function buildChipGroup(containerEl, chips, defaultValue, onChange) {
+  containerEl.innerHTML = '';
+  chips.forEach(({ label, value }) => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (value === defaultValue ? ' active' : '');
+    btn.dataset.value = value;
+    btn.textContent = label;
+    btn.addEventListener('click', function () {
+      containerEl.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      onChange(this.dataset.value);
+    });
+    containerEl.appendChild(btn);
+  });
+}
+
+function buildStatusChips(containerEl, defaultValue, onChange) {
+  buildChipGroup(containerEl, STATUS_CHIPS, defaultValue, onChange);
+}
+
+function buildCreatorChips(containerEl, defaultValue, onChange) {
+  const seen = new Set();
+  WIDGET_DATA.forEach(w => {
+    const prefix = (w.creators || '').split('-')[0];
+    if (prefix) seen.add(prefix);
+  });
+  const chips = [
+    { label: 'All', value: 'all' },
+    ...[...seen].sort().map(p => ({ label: p.toUpperCase(), value: p })),
+  ];
+  buildChipGroup(containerEl, chips, defaultValue, onChange);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar       = document.getElementById("sidebar");
+  const toggleButton  = document.getElementById("toggle-btn");
+  const widgetListing = document.getElementById("widget-listing");
+  const totalCount    = document.getElementById("total");
+  const iframe        = document.querySelector("iframe");
+  const statusChipEl  = document.getElementById("status-chips");
+  const creatorChipEl = document.getElementById("creator-chips");
+
+  let activeStatus  = 'closed';
+  let activeCreator = 'all';
 
   function toggleSidebar() {
     sidebar.classList.toggle("active");
     toggleButton.textContent = sidebar.classList.contains("active") ? "Hide" : "Show";
   }
-
   toggleButton.addEventListener("click", toggleSidebar);
 
   // ------ Load Widget by Filter -------
-function loadWidgetList(filterStatus = "all", filterCreator = "all") {
-  widgetListing.innerHTML = "";
+  function loadWidgetList(filterStatus = "all", filterCreator = "all") {
+    widgetListing.innerHTML = "";
 
-  let filteredWidgets = [...WIDGET_DATA];
+    let filteredWidgets = [...WIDGET_DATA];
 
-  // 🔹 Filter by status
-  if (filterStatus !== "all") {
-    filteredWidgets = filteredWidgets.filter(widget => widget.status === filterStatus);
-  }
+    if (filterStatus !== "all") {
+      filteredWidgets = filteredWidgets.filter(w => w.status === filterStatus);
+    }
 
-  // 🔹 Filter by creator prefix (as / sh / ni)
-  if (filterCreator !== "all") {
-    filteredWidgets = filteredWidgets.filter(widget =>
-      widget.creators.startsWith(filterCreator)
-    );
-  }
+    if (filterCreator !== "all") {
+      filteredWidgets = filteredWidgets.filter(w =>
+        (w.creators || '').startsWith(filterCreator)
+      );
+    }
 
-  // 🔹 Sort by creators number
-  filteredWidgets.sort((a, b) => {
-    const numA = parseInt(a.creators.split("-").pop());
-    const numB = parseInt(b.creators.split("-").pop());
-    return numA - numB;
-  });
-
-  // 🔹 Render widgets
-  filteredWidgets.forEach((widget) => {
-    const listItem = document.createElement("li");
-    listItem.dataset.widgetLink = widget.link;
-
-    listItem.innerHTML = `
-      <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
-      <p class="widget-name">${widget.name}</p>
-      <span class="creators">${widget.creators}</span>
-    `;
-
-    listItem.addEventListener("click", function () {
-      sidebar.classList.toggle("active");
-
-      iframe.src = this.dataset.widgetLink;
-
-      document.querySelectorAll("#widget-listing li").forEach((li) => li.classList.remove("active"));
-      this.classList.add("active");
+    filteredWidgets.sort((a, b) => {
+      const numA = parseInt((a.creators || '').split("-").pop()) || 0;
+      const numB = parseInt((b.creators || '').split("-").pop()) || 0;
+      return numA - numB;
     });
 
-    widgetListing.appendChild(listItem);
-  });
+    filteredWidgets.forEach(widget => {
+      const listItem = document.createElement("li");
+      listItem.dataset.widgetLink = widget.link;
+      listItem.innerHTML = `
+        <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
+        <p class="widget-name">${widget.name}</p>
+        <span class="creators">${widget.creators || ''}</span>
+      `;
+      listItem.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+        iframe.src = this.dataset.widgetLink;
+        document.querySelectorAll("#widget-listing li").forEach(li => li.classList.remove("active"));
+        this.classList.add("active");
+      });
+      widgetListing.appendChild(listItem);
+    });
 
-  // 🔹 Load first widget if any
-  if (filteredWidgets.length > 0) {
-    iframe.src = filteredWidgets[0].link;
-    const firstLi = document.querySelector("#widget-listing li");
-    if (firstLi) firstLi.classList.add("active");
-  } else {
-    iframe.src = "";
+    if (filteredWidgets.length > 0) {
+      iframe.src = filteredWidgets[0].link;
+      const firstLi = document.querySelector("#widget-listing li");
+      if (firstLi) firstLi.classList.add("active");
+    } else {
+      iframe.src = "about:blank";
+    }
+
+    totalCount.textContent = filteredWidgets.length;
   }
 
-  totalCount.textContent = filteredWidgets.length;
-}
+  // ── Initialise chips and load default view ──
+  buildStatusChips(statusChipEl, activeStatus, (value) => {
+    activeStatus = value;
+    loadWidgetList(activeStatus, activeCreator);
+  });
 
+  buildCreatorChips(creatorChipEl, activeCreator, (value) => {
+    activeCreator = value;
+    loadWidgetList(activeStatus, activeCreator);
+  });
 
-
-
-  // Filter change event
- filterDropdown.addEventListener("change", function () {
-  loadWidgetList(this.value, creatorDropdown.value);
-});
-
-creatorDropdown.addEventListener("change", function () {
-  loadWidgetList(filterDropdown.value, this.value);
-});
-
-  // Load closed widgets by default
-loadWidgetList("closed");
-loadWidgetList("closed", "all");
+  loadWidgetList(activeStatus, activeCreator);
 
 });
 
