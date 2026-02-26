@@ -9,6 +9,13 @@ const WIDGET_DATA = [
         status: "WIP-With-Tech",
     },
     {
+        name: "Pick The Opposite",
+        link: "https://tce-widgets.web.app/wg123-pick-the-opposite/",
+        imagePath: "./assets/wg-123.png",
+        creators: "pp-123",
+        status: "closed",
+    },
+    {
         name: "Identify Criminal Dna",
         link: "https://tce-widgets.web.app/wg112-identify-criminal-dna/",
         imagePath: "./assets/wg-112.png",
@@ -518,13 +525,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-142.png",
     creators: "-ra-142",
     status: "todo",
-  },
-  {
-    name: "Pick the Opposite!",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-123.png",
-    creators: "ni-ra-123",
-    status: "in-review",
   },
   {
     name: "The Rhyme Zone",
