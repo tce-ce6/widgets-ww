@@ -467,7 +467,7 @@ const WIDGET_DATA = [
     name: "Reflection of a Point",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-68.png",
-    creators: "-ra-68",
+    creators: "as-ra-68",
     status: "todo",
   },
   {
