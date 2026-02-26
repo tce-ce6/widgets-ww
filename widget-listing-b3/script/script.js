@@ -390,8 +390,8 @@ const WIDGET_DATA = [
     name: "Barter Fails, Money Wins",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-114.png",
-    creators: "-ra-114",
-    status: "todo",
+    creators: "sh-ra-114",
+    status: "WIP-With-Tech",
   },
   {
     name: "Simulations for Law of Conversation of Mass",
