@@ -68,9 +68,10 @@ fail() { printf "${RED}✗$NC  %s\n" "$1" >&2; exit 1; }
 command -v firebase &>/dev/null || \
   fail "Firebase CLI not found. Install it with: npm install -g firebase-tools"
 
-# Detect Python — macOS/Linux uses `python3`, Windows Git Bash may only have `python`
+# Detect Python — tries python3 (macOS/Linux), python (Windows), py (Windows launcher)
 if   command -v python3 &>/dev/null; then PYTHON=python3
 elif command -v python  &>/dev/null; then PYTHON=python
+elif command -v py      &>/dev/null; then PYTHON=py
 else fail "Python is required but was not found. Install from https://python.org"
 fi
 

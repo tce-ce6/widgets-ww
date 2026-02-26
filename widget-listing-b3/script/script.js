@@ -2,6 +2,13 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Guess The Collective Nouns",
+        link: "https://tce-widgets.web.app/wg111-guess-the-collective-nouns/",
+        imagePath: "./assets/wg-111.png",
+        creators: "pp-111",
+        status: "WIP-With-Tech",
+    },
+    {
     name: "Suffix Magic",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg61_suffix-magic/index.html",
     imagePath: "./assets/wg-61.png",
@@ -357,13 +364,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-131.png",
     creators: "-ra-131",
     status: "todo",
-  },
-  {
-    name: "Guess the Collective Nouns",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-111.png",
-    creators: "pr-ra-111",
-    status: "WIP-With-Tech",
   },
   {
     name: "Dominos of Rebellion: 1857 - 58",
