@@ -370,3 +370,130 @@ svg * {
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
 }
+
+/* Widget Specific Styles */
+#particles, #particles2, #partical_3, #patical_4,
+#label, #label_2, #label_3, #label_4, #label_5, #label_6, #label_7, #label_8,
+#Group_4121, #Group_4122,
+#Group_4106, #Group_4107, #Group_4118, #Group_4119,
+#Group_4116, #Group_4117,
+#High_glucose_level_in_blood, #Low_glucose_level_in_blood,
+#i_text_2 {
+    display: none;
+}
+
+#Group_1599, #Group_3, #Button_Insite_, 
+#Ellipse_195, #Ellipse_197, #Ellipse_196 {
+    cursor: pointer;
+}
+
+#Group_1599 {
+    transition: transform 0.3s ease;
+}
+
+svg text {
+    user-select: none;
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-3px) translateX(2px); }
+    100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes fromPancreasToLiver {
+    from { transform: translate(0, 0); opacity: 0; }
+    to { transform: translate(-425px, 0px); opacity: 1; }
+}
+
+@keyframes fromPancreasToTissues {
+    from { transform: translate(0, 0); opacity: 0; }
+    to { transform: translate(424px, 0px); opacity: 1; }
+}
+
+@keyframes fromPancreasToBlood {
+    from { transform: translate(0, 0); opacity: 0; }
+    to { transform: translate(0px, -350px); opacity: 1; }
+}
+
+/* Hormone release: from Pancreas (980) to Liver (556) or Tissues (1404) */
+/* Original particles2 x range: ~600 to 900. Center ~750. */
+/* To start at Pancreas (980), offset is +230px. */
+/* To end at Liver (556), offset is -194px. */
+
+/* 
+   Coordinate Reference (X-axis):
+   Liver: 556
+   Pancreas: 980
+   Tissue Cells: 1404
+   
+   Base Centers:
+   particles2 (Green): ~753  -> Offset to Pancreas: +227, Liver: -197, Tissues: +651
+   Group_4101 (Blood): ~945 -> Offset to Cells: +459, Liver: -389
+   patical_4 (Liver Glucose): ~550 -> Offset to Blood: +410
+*/
+
+/* Pancreas to Liver/Vessel (Insulin/Glucagon) */
+@keyframes toVessel {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(0, -350px); opacity: 0; }
+}
+
+@keyframes toLiverFromPancreas {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(-424px, -17px); opacity: 0; }
+}
+
+/* Vessel to Organs (Glucose) */
+@keyframes vesselToLiver {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(-424px, 334px); opacity: 0; }
+}
+
+@keyframes vesselToTissues {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(424px, 334px); opacity: 0; }
+}
+
+/* Liver to Blood (Glucose in Low sequence) */
+@keyframes liverToBlood {
+    from { transform: translate(0, 0); opacity: 1; }
+    to { transform: translate(424px, -334px); opacity: 0; }
+}
+
+@keyframes glucagonToLiver {
+    from { transform: translate(250px, 17px); opacity: 1; }
+    to { transform: translate(-174px, 0); opacity: 0; }
+}
+
+.insulin-to-vessel { animation: toVessel 2.5s forwards ease-out; }
+.insulin-to-liver { animation: toLiverFromPancreas 2.5s forwards ease-out; }
+.glucagon-to-liver { animation: glucagonToLiver 2.5s forwards ease-out; }
+.glucose-to-liver { animation: vesselToLiver 2.5s forwards ease-in; }
+.glucose-to-tissues { animation: vesselToTissues 2.5s forwards ease-in; }
+.glucose-liver-to-blood { animation: liverToBlood 2.5s forwards ease-out; }
+
+@keyframes fromPancreas {
+    from { transform: translate(0, 0); opacity: 0; }
+    to { transform: translate(-200px, -200px); opacity: 1; }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+.move-to-liver {
+    animation: toLiver 2s forwards ease-in;
+}
+
+.release-hormone {
+    animation: fromPancreas 1.5s forwards ease-out;
+}
+
+.insulin-to-liver { animation: fromPancreasToLiver 2s forwards ease-out; }
+.insulin-to-tissues { animation: fromPancreasToTissues 2s forwards ease-out; }
+.glucagon-to-liver { animation: fromPancreasToLiver 2s forwards ease-out; }
+.liver-to-blood { animation: fromLiverToBlood 2s forwards ease-out; }
+.blood-to-cells { animation: fromBloodToCells 2s forwards ease-in; }
+.blood-to-liver { animation: fromBloodToLiver 2s forwards ease-in; }
