@@ -2,41 +2,6 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
-        name: "Fast Multiplications",
-        link: "https://tce-widgets.web.app/wg100-fast-multiplications/",
-        imagePath: "./assets/wg-100.png",
-        creators: "pk-100",
-        status: "todo",
-    },
-    {
-        name: "Build A Paragraph",
-        link: "https://tce-widgets.web.app/wg85-build-a-paragraph/",
-        imagePath: "./assets/wg-85.png",
-        creators: "pk-85",
-        status: "todo",
-    },
-    {
-        name: "Synthesize New Dna Strand",
-        link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
-        imagePath: "./assets/wg-121.png",
-        creators: "pk-121",
-        status: "closed",
-    },
-    {
-        name: "Guess The Collective Nouns",
-        link: "https://tce-widgets.web.app/wg111-guess-the-collective-nouns/",
-        imagePath: "./assets/wg-111.png",
-        creators: "pk-111",
-        status: "closed",
-    },
-    {
-        name: "Identify Criminal Dna",
-        link: "https://tce-widgets.web.app/wg112-identify-criminal-dna/",
-        imagePath: "./assets/wg-112.png",
-        creators: "pk-112",
-        status: "closed",
-    },
-    {
     name: "Suffix Magic",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/ashish/release-2/wg61_suffix-magic/index.html",
     imagePath: "./assets/wg-61.png",
@@ -117,7 +82,7 @@ const WIDGET_DATA = [
     name: "Rhyme Scheme",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-79.png",
-    creators: "ni-as-79",
+    creators: "as-as-79",
     status: "todo",
   },
   {
@@ -226,18 +191,25 @@ const WIDGET_DATA = [
     status: "in-review",
   },
   {
+    name: "Build a Paragraph",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-85.png",
+    creators: "satyajit-ra-85",
+    status: "in-review",
+  },
+  {
     name: "इ और ई की मात्रा में अंतर",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-86.png",
     creators: "su-ra-86",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "ए और ऐ की मात्रा में अंतर",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-87.png",
     creators: "su-ra-87",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "The Tone Lab",
@@ -251,14 +223,14 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/inprogress.html",
     imagePath: "./assets/wg-90.png",
     creators: "su-ra-90",
-    status: "WIP-With-Tech",
+    status: "in-review",
   },
   {
     name: "Identify The Criminal Through DNA Fingerprinting",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-112.png",
-    creators: "-ra-112",
-    status: "todo",
+    creators: "ni-ra-112",
+    status: "WIP-With-Tech",
   },
   {
     name: "Build a Literary Device",
@@ -306,8 +278,15 @@ const WIDGET_DATA = [
     name: "Area of Different Shapes",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-120.png",
-    creators: "-ra-120",
+    creators: "sh-ra-120",
     status: "todo",
+  },
+  {
+    name: "Fast Multiplications Using the Distributive Property",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-100.png",
+    creators: "shailesh-ra-100",
+    status: "WIP-With-Tech",
   },
   {
     name: "Operation Domino: WW II Mission",
@@ -327,15 +306,15 @@ const WIDGET_DATA = [
     name: "Formal Letter of Request",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-101.png",
-    creators: "-ra-101",
-    status: "todo",
+    creators: "as-ra-101",
+    status: "WIP-With-Tech",
   },
   {
     name: "Applying Distributive Property",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-99.png",
     creators: "shailesh-ra-99",
-    status: "todo",
+    status: "WIP-With-Tech",
   },
   {
     name: "Tests of Divisibility",
@@ -355,21 +334,21 @@ const WIDGET_DATA = [
     name: "Prime Factorisation",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-91.png",
-    creators: "-ra-91",
-    status: "todo",
+    creators: "sh-ra-91",
+    status: "in-review",
   },
   {
     name: "Formal Letter: Order Placement",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-127.png",
-    creators: "-ra-127",
-    status: "todo",
+    creators: "as-ra-127",
+    status: "WIP-With-Tech",
   },
   {
     name: "Suffix Magic",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-122.png",
-    creators: "-ra-122",
+    creators: "as-ra-122",
     status: "todo",
   },
   {
@@ -383,8 +362,8 @@ const WIDGET_DATA = [
     name: "Guess the Collective Nouns",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-111.png",
-    creators: "-ra-111",
-    status: "todo",
+    creators: "pr-ra-111",
+    status: "WIP-With-Tech",
   },
   {
     name: "Dominos of Rebellion: 1857 - 58",
@@ -411,15 +390,15 @@ const WIDGET_DATA = [
     name: "Barter Fails, Money Wins",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-114.png",
-    creators: "-ra-114",
-    status: "todo",
+    creators: "sh-ra-114",
+    status: "WIP-With-Tech",
   },
   {
     name: "Simulations for Law of Conversation of Mass",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-102.png",
-    creators: "-ra-102",
-    status: "todo",
+    creators: "su-ra-102",
+    status: "in-review",
   },
   {
     name: "Rounding Rally",
@@ -432,8 +411,8 @@ const WIDGET_DATA = [
     name: "Regulation of Blood Glucose",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-105.png",
-    creators: "-ra-105",
-    status: "todo",
+    creators: "su-ra-105",
+    status: "WIP-With-Tech",
   },
   {
     name: "Synthesize New DNA Strand",
@@ -453,8 +432,8 @@ const WIDGET_DATA = [
     name: "Law of Constant Proportions - Molecular Visualizer",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-103.png",
-    creators: "-ra-103",
-    status: "todo",
+    creators: "su-ra-103",
+    status: "in-review",
   },
   {
     name: "Election Officer - Enforce Model Code of Conduct",
@@ -488,15 +467,15 @@ const WIDGET_DATA = [
     name: "Reflection of a Point",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-68.png",
-    creators: "-ra-68",
+    creators: "as-ra-68",
     status: "todo",
   },
   {
     name: "Informal Letters",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-153.png",
-    creators: "-ra-153",
-    status: "todo",
+    creators: "as-ra-153",
+    status: "WIP-With-Tech",
   },
   {
     name: "Barter Bazaar",
@@ -544,145 +523,119 @@ const WIDGET_DATA = [
     name: "Pick the Opposite!",
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-123.png",
-    creators: "-ra-123",
+    creators: "ni-ra-123",
+    status: "in-review",
+  },
+  {
+    name: "The Rhyme Zone",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-119.png",
+    creators: "-ra-119",
+    status: "todo",
+  },
+  {
+    name: "Compound Words Adventure",
+    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
+    imagePath: "./assets/wg-136.png",
+    creators: "-ra-136",
     status: "todo",
   },
 
 ];
 
-const STATUS_CHIPS = [
-  { label: 'Closed', value: 'closed' },
-  { label: 'Review', value: 'in-review' },
-  { label: 'WIP',    value: 'WIP-With-Tech' },
-  { label: 'Todo',   value: 'todo' },
-  { label: 'All',    value: 'all' },
-];
-
-/**
- * Render a row of mutually-exclusive filter chips inside containerEl.
- * defaultValue sets the initially active chip.
- * onChange(value) is called whenever a chip is clicked.
- */
-function buildChipGroup(containerEl, chips, defaultValue, onChange) {
-  containerEl.innerHTML = '';
-  chips.forEach(({ label, value }) => {
-    const btn = document.createElement('button');
-    btn.className = 'chip' + (value === defaultValue ? ' active' : '');
-    btn.dataset.value = value;
-    btn.textContent = label;
-    btn.addEventListener('click', function () {
-      containerEl.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      onChange(this.dataset.value);
-    });
-    containerEl.appendChild(btn);
-  });
-}
-
-/** Status chips — fixed set of values. */
-function buildStatusChips(containerEl, defaultValue, onChange) {
-  buildChipGroup(containerEl, STATUS_CHIPS, defaultValue, onChange);
-}
-
-/**
- * Creator chips — derived from unique first-segment prefixes in WIDGET_DATA,
- * sorted alphabetically, with an "All" chip prepended.
- */
-function buildCreatorChips(containerEl, defaultValue, onChange) {
-  const seen = new Set();
-  WIDGET_DATA.forEach(w => {
-    const prefix = (w.creators || '').split('-')[0];
-    if (prefix) seen.add(prefix);
-  });
-  const chips = [
-    { label: 'All', value: 'all' },
-    ...[...seen].sort().map(p => ({ label: p.toUpperCase(), value: p })),
-  ];
-  buildChipGroup(containerEl, chips, defaultValue, onChange);
-}
-
-// ── Main ─────────────────────────────────────────────────────────────────────
-
 document.addEventListener("DOMContentLoaded", function () {
-  const sidebar       = document.getElementById("sidebar");
-  const toggleButton  = document.getElementById("toggle-btn");
+  const sidebar = document.getElementById("sidebar");
+  const toggleButton = document.getElementById("toggle-btn");
   const widgetListing = document.getElementById("widget-listing");
-  const totalCount    = document.getElementById("total");
-  const iframe        = document.querySelector("iframe");
-  const statusChipEl  = document.getElementById("status-chips");
-  const creatorChipEl = document.getElementById("creator-chips");
+  const totalCount = document.getElementById("total");
+  const iframe = document.querySelector("iframe");
+  const filterDropdown = document.getElementById("filter");
+const creatorDropdown = document.getElementById("creator-filter");
 
-  let activeStatus  = 'closed';
-  let activeCreator = 'all';
+  totalCount.textContent = WIDGET_DATA.length;
 
   function toggleSidebar() {
     sidebar.classList.toggle("active");
     toggleButton.textContent = sidebar.classList.contains("active") ? "Hide" : "Show";
   }
+
   toggleButton.addEventListener("click", toggleSidebar);
 
   // ------ Load Widget by Filter -------
-  function loadWidgetList(filterStatus = "all", filterCreator = "all") {
-    widgetListing.innerHTML = "";
+function loadWidgetList(filterStatus = "all", filterCreator = "all") {
+  widgetListing.innerHTML = "";
 
-    let filteredWidgets = [...WIDGET_DATA];
+  let filteredWidgets = [...WIDGET_DATA];
 
-    if (filterStatus !== "all") {
-      filteredWidgets = filteredWidgets.filter(w => w.status === filterStatus);
-    }
-
-    if (filterCreator !== "all") {
-      filteredWidgets = filteredWidgets.filter(w =>
-        (w.creators || '').startsWith(filterCreator)
-      );
-    }
-
-    filteredWidgets.sort((a, b) => {
-      const numA = parseInt((a.creators || '').split("-").pop()) || 0;
-      const numB = parseInt((b.creators || '').split("-").pop()) || 0;
-      return numA - numB;
-    });
-
-    filteredWidgets.forEach(widget => {
-      const listItem = document.createElement("li");
-      listItem.dataset.widgetLink = widget.link;
-      listItem.innerHTML = `
-        <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
-        <p class="widget-name">${widget.name}</p>
-        <span class="creators">${widget.creators || ''}</span>
-      `;
-      listItem.addEventListener("click", function () {
-        sidebar.classList.toggle("active");
-        iframe.src = this.dataset.widgetLink;
-        document.querySelectorAll("#widget-listing li").forEach(li => li.classList.remove("active"));
-        this.classList.add("active");
-      });
-      widgetListing.appendChild(listItem);
-    });
-
-    if (filteredWidgets.length > 0) {
-      iframe.src = filteredWidgets[0].link;
-      const firstLi = document.querySelector("#widget-listing li");
-      if (firstLi) firstLi.classList.add("active");
-    } else {
-      iframe.src = "about:blank";
-    }
-
-    totalCount.textContent = filteredWidgets.length;
+  // 🔹 Filter by status
+  if (filterStatus !== "all") {
+    filteredWidgets = filteredWidgets.filter(widget => widget.status === filterStatus);
   }
 
-  // ── Initialise chips and load default view ──
-  buildStatusChips(statusChipEl, activeStatus, (value) => {
-    activeStatus = value;
-    loadWidgetList(activeStatus, activeCreator);
+  // 🔹 Filter by creator prefix (as / sh / ni)
+  if (filterCreator !== "all") {
+    filteredWidgets = filteredWidgets.filter(widget =>
+      widget.creators.startsWith(filterCreator)
+    );
+  }
+
+  // 🔹 Sort by creators number
+  filteredWidgets.sort((a, b) => {
+    const numA = parseInt(a.creators.split("-").pop());
+    const numB = parseInt(b.creators.split("-").pop());
+    return numA - numB;
   });
 
-  buildCreatorChips(creatorChipEl, activeCreator, (value) => {
-    activeCreator = value;
-    loadWidgetList(activeStatus, activeCreator);
+  // 🔹 Render widgets
+  filteredWidgets.forEach((widget) => {
+    const listItem = document.createElement("li");
+    listItem.dataset.widgetLink = widget.link;
+
+    listItem.innerHTML = `
+      <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
+      <p class="widget-name">${widget.name}</p>
+      <span class="creators">${widget.creators}</span>
+    `;
+
+    listItem.addEventListener("click", function () {
+      sidebar.classList.toggle("active");
+
+      iframe.src = this.dataset.widgetLink;
+
+      document.querySelectorAll("#widget-listing li").forEach((li) => li.classList.remove("active"));
+      this.classList.add("active");
+    });
+
+    widgetListing.appendChild(listItem);
   });
 
-  loadWidgetList(activeStatus, activeCreator);
+  // 🔹 Load first widget if any
+  if (filteredWidgets.length > 0) {
+    iframe.src = filteredWidgets[0].link;
+    const firstLi = document.querySelector("#widget-listing li");
+    if (firstLi) firstLi.classList.add("active");
+  } else {
+    iframe.src = "";
+  }
+
+  totalCount.textContent = filteredWidgets.length;
+}
+
+
+
+
+  // Filter change event
+ filterDropdown.addEventListener("change", function () {
+  loadWidgetList(this.value, creatorDropdown.value);
+});
+
+creatorDropdown.addEventListener("change", function () {
+  loadWidgetList(filterDropdown.value, this.value);
+});
+
+  // Load closed widgets by default
+loadWidgetList("closed");
+loadWidgetList("closed", "all");
 
 });
 
