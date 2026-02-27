@@ -39,6 +39,8 @@ html {
     border-radius: 15px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .container aside.active {
@@ -145,12 +147,12 @@ html {
     flex-wrap: wrap;
     gap: 10px;
     padding: 10px 0px 10px 10px;
-    height: calc(100% - 50px);
+    flex: 1;
+    min-height: 0;
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: #5f5f5f transparent;
     align-content: flex-start;
-
 }
 
 .widget-list li {
@@ -250,5 +252,41 @@ position: absolute;
     font-size: 12px;
     margin-right: 20px;
     display: inline-block;
+}
+
+/* ── Search field ────────────────────────────────────────── */
+.widget-search {
+    width: 100%;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #666;
+    background: transparent;
+    color: #fff;
+    font-size: 11px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.widget-search::placeholder {
+    color: #888;
+}
+
+.widget-search:focus {
+    border-color: #aaa;
+}
+
+/* ── Updated date badge ──────────────────────────────────── */
+.updated-date {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    font-size: 10px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 1;
+    line-height: 1.2;
 }
 

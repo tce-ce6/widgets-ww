@@ -1,35 +1,26 @@
 # Widget Deployment Guide
 
-Two focused scripts handle all deployments. Use the one that matches your task.
-
-| Script | When to use |
-|---|---|
-| `deploy-widget.sh` | Deploying your own widget folder |
-| `deploy-listing.sh` | Deploying changes to the listing page (HTML / CSS / JS) |
-
-Both scripts share the same Firebase config and build the deploy package automatically — you never need to manage `dist/` manually.
+One script handles all deployments. Every run publishes your widget folder and the listing page together so the widget's status is always in sync.
 
 ---
 
 ## Quick Start
 
-### Deploy a widget
 ```bash
-chmod +x deploy-widget.sh   # first time only
-./deploy-widget.sh
+chmod +x deploy.sh   # first time only (macOS / Linux)
+./deploy.sh
 ```
 
-### Deploy the listing page
+**Windows (Git Bash):**
 ```bash
-chmod +x deploy-listing.sh  # first time only
-./deploy-listing.sh
+bash deploy.sh
 ```
 
 ---
 
 ## How it Works
 
-Firebase Hosting is snapshot-based — every deploy replaces the entire site. To avoid wiping other teams' widgets, both scripts build a `dist/` folder before deploying that contains:
+Firebase Hosting is snapshot-based — every deploy replaces the entire site. To avoid wiping other teams' widgets, `deploy.sh` builds a `dist/` folder before deploying that contains:
 
 - `widget-listing-b3/` — the listing page
 - Every widget folder referenced in `WIDGET_DATA` in `script.js` — previously deployed widgets
@@ -68,9 +59,9 @@ bash deploy-listing.sh
 
 ---
 
-## Configuration (one-time, inside each script)
+## Configuration (one-time, inside `deploy.sh`)
 
-Both scripts have the same three variables at the top:
+Three variables at the top of the script:
 
 ```bash
 FIREBASE_PROJECT_ID="widgets-c812e"       # Firebase project ID
@@ -90,7 +81,7 @@ These are already filled in. You only need to change them if the project moves.
 4. Commit `script.js` and your widget folder
 5. Open a PR
 
-Listing page maintainers run `./deploy-listing.sh` after merging listing page PRs.
+After merging listing page PRs, run `./deploy.sh` with your own widget to re-publish the updated listing alongside it.
 
 ---
 
