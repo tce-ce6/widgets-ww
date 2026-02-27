@@ -2,6 +2,13 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "World War",
+        link: "https://tce-widgets.web.app/wg31-world-war/",
+        imagePath: "./assets/wg-31.png",
+        creators: "ni-31",
+        status: "in-review",
+    },
+    {
         name: "Synthesize New Dna Strand",
         link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
         imagePath: "./assets/wg-121.png",
@@ -77,13 +84,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-24.png",
     creators: "sh-di-24",
     status: "WIP-With-Tech",
-  },
-  {
-    name: "World War I Alliances: Allied vs. Central Powers",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg31-world-war/index.html",
-    imagePath: "./assets/wg-31.png",
-    creators: "ni-di-31",
-    status: "in-review",
   },
     {
     name: "The switching game",
