@@ -2,6 +2,22 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Prime Factorisation",
+        link: "https://tce-widgets.web.app/wg91-prime-factorisation/",
+        imagePath: "./assets/wg-91.png",
+        creators: "sh-91",
+        status: "in-review",
+        updatedAt: "2026-02-27 16:32",
+    },
+    {
+        name: "Area Of Different Shapes",
+        link: "https://tce-widgets.web.app/wg120-area-of-different-shapes/",
+        imagePath: "./assets/wg-120.png",
+        creators: "sh-120",
+        status: "in-review",
+        updatedAt: "2026-02-27 16:15",
+    },
+    {
         name: "Synthesize New Dna Strand",
         link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
         imagePath: "./assets/wg-121.png",
@@ -343,13 +359,6 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/b-3/wg93-rhyming-words/index.html",
     imagePath: "./assets/wg-93.png",
     creators: "ni-ra-93",
-    status: "in-review",
-  },
-  {
-    name: "Prime Factorisation",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-91.png",
-    creators: "sh-ra-91",
     status: "in-review",
   },
   {
