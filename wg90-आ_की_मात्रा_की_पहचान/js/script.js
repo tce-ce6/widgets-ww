@@ -7,14 +7,13 @@ let lottieInstances_star = null;
 let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
-let age_badhe_button = false
+let age_badhe_button = false;
 const LottieAnimations = {
   aa: {
     CORRECT: "Correct.json",
-    INCORRECT: "Incorrect.json"
-  }
+    INCORRECT: "Incorrect.json",
+  },
 };
-
 
 function init() {
   console.log("Script loaded and initialized.");
@@ -98,11 +97,24 @@ function resetFeedbackVisuals() {
     if (el) el.classList.remove("visible");
   });
 
-  // Hide star groups
+  // Hide star groups (if they exist)
   ["Group_81", "Group_83", "Group_86"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
+
+  // Clean up lingering star lottie animations
+  ["star-lottie-container-1", "star-lottie-container-2"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove("visible");
+      el.innerHTML = "";
+    }
+  });
+  if (lottieInstances_star) {
+    lottieInstances_star.destroy();
+    lottieInstances_star = null;
+  }
 
   lottiAnimation("none");
 }
@@ -114,7 +126,7 @@ function nextStep() {
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML =
-      "ऑडियो सुनें।&nbsp;&nbsp;&nbsp;&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+      "ऑडियो सुनें।&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
     age_badhe_button = true;
     document.getElementById("audio_button_1").style.display = "none";
     document.getElementById("audio_button_2").style.display = "none";
@@ -151,11 +163,11 @@ function textClickEvent() {
     // document.getElementById(highlightId).style.display = 'block';
     const paths = document.getElementById(outlineId).querySelectorAll("path");
     paths.forEach((p) => {
-        if (p && p.hasAttribute("fill")) {
-      p.setAttribute("fill", isCorrect ? "#31DD12" : "#FF0801");
-    }
-    })
-  
+      if (p && p.hasAttribute("fill")) {
+        p.setAttribute("fill", isCorrect ? "#31DD12" : "#FF0801");
+      }
+    });
+
     // Show yellow stars only on correct answer
     if (isCorrect) {
       ["Group_81", "Group_83", "Group_86"].forEach((id) => {
