@@ -2,6 +2,14 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Addition Of Integers",
+        link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
+        imagePath: "./assets/wg-104.png",
+        creators: "su-104",
+        status: "in-review",
+        updatedAt: "2026-02-27 14:56",
+    },
+    {
         name: "Synthesize New Dna Strand",
         link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
         imagePath: "./assets/wg-121.png",
@@ -15,13 +23,6 @@ const WIDGET_DATA = [
         imagePath: "./assets/wg-112.png",
         creators: "pp-112",
         status: "in-review",
-    },
-    {
-        name: "Addition Of Integers",
-        link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
-        imagePath: "./assets/wg-104.png",
-        creators: "pp-104",
-        status: "closed",
     },
     {
         name: "World War",
