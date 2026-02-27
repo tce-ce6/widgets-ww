@@ -2,6 +2,13 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Area Of Different Shapes",
+        link: "https://tce-widgets.web.app/wg120-area-of-different-shapes/",
+        imagePath: "./assets/wg-120.png",
+        creators: "sh-120",
+        status: "in-review",
+    },
+    {
         name: "World War",
         link: "https://tce-widgets.web.app/wg31-world-war/",
         imagePath: "./assets/wg-31.png",
@@ -294,13 +301,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-95.png",
     creators: "ni-ra-95",
     status: "in-review",
-  },
-  {
-    name: "Area of Different Shapes",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-120.png",
-    creators: "sh-ra-120",
-    status: "todo",
   },
   {
     name: "Fast Multiplications Using the Distributive Property",
