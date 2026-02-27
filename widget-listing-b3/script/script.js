@@ -2,12 +2,20 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Locating Decimals V2",
+        link: "https://tce-widgets.web.app/wg17-locating-decimals-v2/",
+        imagePath: "./assets/wg-17.png",
+        creators: "sh-17",
+        status: "in-review",
+        updatedAt: "2026-02-27 16:37",
+    },
+    {
         name: "Prime Factorisation",
         link: "https://tce-widgets.web.app/wg91-prime-factorisation/",
         imagePath: "./assets/wg-91.png",
         creators: "sh-91",
         status: "in-review",
-        updatedAt: "2026-02-27 16:32",
+        updatedAt: "2026-02-27 16:36",
     },
     {
         name: "Area Of Different Shapes",
