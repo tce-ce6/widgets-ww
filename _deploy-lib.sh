@@ -109,6 +109,8 @@ lib_build_dist() {
   local new_widget="${1:-}"
   step "Building dist/ (only deployed widgets + listing page)..."
 
+  # PYTHONIOENCODING=utf-8 ensures non-ASCII folder names (e.g. Hindi widgets)
+  # print correctly on Windows, where Python may default to a narrower encoding.
   PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$MAIN_SCRIPT_JS" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" \
   << 'PYEOF'
 import sys, os, re, shutil

@@ -2,11 +2,26 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
-        name: "Area Of Different Shapes",
-        link: "https://tce-widgets.web.app/wg120-area-of-different-shapes/",
-        imagePath: "./assets/wg-120.png",
-        creators: "sh-120",
+        name: "Synthesize New Dna Strand",
+        link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
+        imagePath: "./assets/wg-121.png",
+        creators: "pp-121",
+        status: "todo",
+        updatedAt: "2026-02-27 13:55",
+    },
+    {
+        name: "Identify Criminal Dna",
+        link: "https://tce-widgets.web.app/wg112-identify-criminal-dna/",
+        imagePath: "./assets/wg-112.png",
+        creators: "pp-112",
         status: "in-review",
+    },
+    {
+        name: "Addition Of Integers",
+        link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
+        imagePath: "./assets/wg-104.png",
+        creators: "pp-104",
+        status: "closed",
     },
     {
         name: "World War",
@@ -16,32 +31,11 @@ const WIDGET_DATA = [
         status: "in-review",
     },
     {
-        name: "Synthesize New Dna Strand",
-        link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
-        imagePath: "./assets/wg-121.png",
-        creators: "pp-121",
-        status: "WIP-With-Tech",
-    },
-    {
         name: "Pick The Opposite",
         link: "https://tce-widgets.web.app/wg123-pick-the-opposite/",
         imagePath: "./assets/wg-123.png",
         creators: "pp-123",
         status: "closed",
-    },
-    {
-        name: "Identify Criminal Dna",
-        link: "https://tce-widgets.web.app/wg112-identify-criminal-dna/",
-        imagePath: "./assets/wg-112.png",
-        creators: "pp-112",
-        status: "WIP-With-Tech",
-    },
-    {
-        name: "Addition Of Integers",
-        link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
-        imagePath: "./assets/wg-104.png",
-        creators: "su-104",
-        status: "in-review",
     },
     {
         name: "Guess The Collective Nouns",
@@ -551,6 +545,12 @@ const STATUS_CHIPS = [
   { label: 'All',    value: 'all' },
 ];
 
+const SORT_CHIPS = [
+  { label: 'Date',   value: 'date' },
+  { label: 'Name',   value: 'name' },
+  { label: 'Number', value: 'number' },
+];
+
 function buildChipGroup(containerEl, chips, defaultValue, onChange) {
   containerEl.innerHTML = '';
   chips.forEach(({ label, value }) => {
@@ -584,6 +584,15 @@ function buildCreatorChips(containerEl, defaultValue, onChange) {
   buildChipGroup(containerEl, chips, defaultValue, onChange);
 }
 
+function buildSortChips(containerEl, defaultValue, onChange) {
+  buildChipGroup(containerEl, SORT_CHIPS, defaultValue, onChange);
+}
+
+function getWgNum(widget) {
+  const m = (widget.imagePath || '').match(/wg-(\d+)/);
+  return m ? m[1] : '';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const sidebar       = document.getElementById("sidebar");
   const toggleButton  = document.getElementById("toggle-btn");
@@ -592,9 +601,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const iframe        = document.querySelector("iframe");
   const statusChipEl  = document.getElementById("status-chips");
   const creatorChipEl = document.getElementById("creator-chips");
+  const sortChipEl    = document.getElementById("sort-chips");
+  const searchInput   = document.getElementById("widget-search");
 
   let activeStatus  = 'closed';
   let activeCreator = 'all';
+  let activeSortBy  = 'date';
+  let activeSearch  = '';
 
   function toggleSidebar() {
     sidebar.classList.toggle("active");
@@ -602,35 +615,61 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   toggleButton.addEventListener("click", toggleSidebar);
 
-  // ------ Load Widget by Filter -------
-  function loadWidgetList(filterStatus = "all", filterCreator = "all") {
+  function loadWidgetList() {
     widgetListing.innerHTML = "";
 
-    let filteredWidgets = [...WIDGET_DATA];
+    let widgets = [...WIDGET_DATA];
 
-    if (filterStatus !== "all") {
-      filteredWidgets = filteredWidgets.filter(w => w.status === filterStatus);
+    // ── Filter by status ──
+    if (activeStatus !== "all") {
+      widgets = widgets.filter(w => w.status === activeStatus);
     }
 
-    if (filterCreator !== "all") {
-      filteredWidgets = filteredWidgets.filter(w =>
-        (w.creators || '').startsWith(filterCreator)
-      );
+    // ── Filter by creator ──
+    if (activeCreator !== "all") {
+      widgets = widgets.filter(w => (w.creators || '').startsWith(activeCreator));
     }
 
-    filteredWidgets.sort((a, b) => {
-      const numA = parseInt((a.creators || '').split("-").pop()) || 0;
-      const numB = parseInt((b.creators || '').split("-").pop()) || 0;
-      return numA - numB;
-    });
+    // ── Search by name, number, or date ──
+    if (activeSearch) {
+      const q = activeSearch.toLowerCase();
+      widgets = widgets.filter(w => {
+        const name = w.name.toLowerCase();
+        const num  = getWgNum(w);
+        const date = (w.updatedAt || '').toLowerCase();
+        return name.includes(q) || num.includes(q) || date.includes(q);
+      });
+    }
 
-    filteredWidgets.forEach(widget => {
+    // ── Sort ──
+    switch (activeSortBy) {
+      case 'date':
+        widgets.sort((a, b) => {
+          const da = a.updatedAt || '';
+          const db = b.updatedAt || '';
+          if (!da && !db) return 0;
+          if (!da) return 1;
+          if (!db) return -1;
+          return db.localeCompare(da); // most recent first
+        });
+        break;
+      case 'name':
+        widgets.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'number':
+        widgets.sort((a, b) => (parseInt(getWgNum(a)) || 0) - (parseInt(getWgNum(b)) || 0));
+        break;
+    }
+
+    // ── Render ──
+    widgets.forEach(widget => {
       const listItem = document.createElement("li");
       listItem.dataset.widgetLink = widget.link;
       listItem.innerHTML = `
         <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
         <p class="widget-name">${widget.name}</p>
         <span class="creators">${widget.creators || ''}</span>
+        ${widget.updatedAt ? `<span class="updated-date">${widget.updatedAt}</span>` : ''}
       `;
       listItem.addEventListener("click", function () {
         sidebar.classList.toggle("active");
@@ -641,29 +680,39 @@ document.addEventListener("DOMContentLoaded", function () {
       widgetListing.appendChild(listItem);
     });
 
-    if (filteredWidgets.length > 0) {
-      iframe.src = filteredWidgets[0].link;
+    if (widgets.length > 0) {
+      iframe.src = widgets[0].link;
       const firstLi = document.querySelector("#widget-listing li");
       if (firstLi) firstLi.classList.add("active");
     } else {
       iframe.src = "about:blank";
     }
 
-    totalCount.textContent = filteredWidgets.length;
+    totalCount.textContent = widgets.length;
   }
 
-  // ── Initialise chips and load default view ──
+  // ── Initialise chips, search, and load default view ──
   buildStatusChips(statusChipEl, activeStatus, (value) => {
     activeStatus = value;
-    loadWidgetList(activeStatus, activeCreator);
+    loadWidgetList();
   });
 
   buildCreatorChips(creatorChipEl, activeCreator, (value) => {
     activeCreator = value;
-    loadWidgetList(activeStatus, activeCreator);
+    loadWidgetList();
   });
 
-  loadWidgetList(activeStatus, activeCreator);
+  buildSortChips(sortChipEl, activeSortBy, (value) => {
+    activeSortBy = value;
+    loadWidgetList();
+  });
+
+  searchInput.addEventListener("input", function () {
+    activeSearch = this.value.trim();
+    loadWidgetList();
+  });
+
+  loadWidgetList();
 
 });
 
