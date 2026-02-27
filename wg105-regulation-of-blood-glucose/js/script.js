@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const elements = {
     toggleKnob: document.getElementById("Group_1599"),
     startButton: document.getElementById("Group_3"),
+    toggleSlider: document.getElementById("toggle_button"), // Full slider widget
     insightsButton: document.getElementById("Button_Insite_"),
 
     // Texts
@@ -57,6 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.insightsButton.style.cursor = "pointer";
 
     elements.startButton.addEventListener("click", startSequence);
+
+    // Insights popup
+    const insightsOverlay = document.getElementById("insights-overlay");
+    const insightsClose = document.getElementById("insights-close");
+    elements.insightsButton.addEventListener("click", () => {
+      insightsOverlay.style.display = "flex";
+    });
+    insightsClose.addEventListener("click", () => {
+      insightsOverlay.style.display = "none";
+    });
+    insightsOverlay.addEventListener("click", (e) => {
+      if (e.target === insightsOverlay) insightsOverlay.style.display = "none";
+    });
+
     elements.toggleKnob.addEventListener("click", () => {
       if (state.isAnimating) return;
       const cycle = { Normal: "High", High: "Low", Low: "Normal" };
@@ -164,6 +179,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (state.isAnimating || state.level === "Normal") return;
     state.isAnimating = true;
     elements.instruction2.style.display = "none";
+
+    // Hide start button and blood glucose level slider on click
+    elements.startButton.style.opacity = "0.5";
+    elements.toggleSlider.style.opacity = "0.5";
+    elements.highLevelText.style.display = "none";
+    elements.normalLevelText.style.display = "none";
+    elements.lowLevelText.style.display = "none";
 
     if (state.level === "High") runHighSequence();
     else runLowSequence();
@@ -314,6 +336,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resetParticles(false);
     updateLevel("Normal");
+    elements.startButton.style.display = "block"; // Restore start button after sequence
+    elements.toggleSlider.style.display = "block"; // Restore slider after sequence
     state.isAnimating = false;
   };
 

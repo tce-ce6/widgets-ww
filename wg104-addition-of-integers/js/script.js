@@ -867,6 +867,7 @@ class UIManager {
       this.startBtn.setAttribute("display", "none");
       if (this.startTextGroup)
         this.startTextGroup.setAttribute("display", "none");
+      if (this.point) this.point.setAttribute("display", "none");
     }
 
     // this.chipInstruction.setAttribute(
