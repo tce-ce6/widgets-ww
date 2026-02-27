@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.style.animation = anim;
     }
 
+
     /* ── Get Timeline-numbers <text> elements sorted by x ── */
     function getTimelineTexts() {
         const g = $("Timeline-numbers"); if (!g) return [];
@@ -179,18 +180,31 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideCorrectPopup() { CORRECT_ELS.forEach(id => setVisible(id, false)); }
 
     /* ── Hint (wrong-answer) popup ── */
-    const HINT_ELS = ["hint-popup", "hint-heading", "quick-hint", "hint-text"];
+    /* ── Hint (wrong-answer) popup ── */
+    const HINT_ELS = ["hint-popup", "hint-heading", "quick-hint", "hint-text", "hint-cross-mark"];
+
+    // Store original arrow x values so we never accumulate shifts
+    const ARROW_ORIG = {
+        "arrow": [[664.85, 534.16, 689.85, 534.16], [683.85, 541.16, 690.85, 533.16], [690.85, 534.16, 682.85, 527.16]],
+        "arrow-2": [[664.85, 594.16, 689.85, 594.16], [683.85, 601.16, 690.85, 593.16], [690.85, 594.16, 682.85, 587.16]]
+    };
+
     function showHintPopup(q, clicked) {
         hideCorrectPopup();
-        // Update heading
+
+        // ── heading ──
         const h = $("hint-heading");
         if (h) { const ts = h.querySelectorAll("tspan"); if (ts.length >= 5) ts[4].textContent = `ou clicked ${clicked}.`; }
-        // Update hint body
+
+        // ── compute distances ──
+        const lower = Math.floor(q.number / q.roundTo) * q.roundTo;
+        const upper = lower + q.roundTo;
+        const dLow = q.number - lower;
+        const dHigh = upper - q.number;
+
+        // ── hint text lines ──
         const ht = $("hint-text");
         if (ht) {
-            const lower = Math.floor(q.number / q.roundTo) * q.roundTo;
-            const upper = lower + q.roundTo;
-            const dLow = q.number - lower, dHigh = upper - q.number;
             const lines = ht.querySelectorAll("text");
             const setText = (el, txt) => { if (!el) return; const ts = el.querySelector("tspan"); if (ts) ts.textContent = txt; };
             setText(lines[0], String(q.number));
@@ -199,15 +213,120 @@ document.addEventListener("DOMContentLoaded", () => {
             setText(lines[3], ` ${upper} = ${dHigh} step${dHigh !== 1 ? "s" : ""}`);
             setText(lines[4], `"Pick the number that's fewer steps away!"`);
         }
-        // Show correct vehicle inside popup
-        setVisible("popup-car", state.vehicle === "car");
-        setVisible("popup-bike", state.vehicle === "bike");
-        HINT_ELS.forEach(id => triggerAnim(id, "fadeInUp 0.35s ease both"));
-    }
-    function hideHintPopup() {
-        HINT_ELS.forEach(id => setVisible(id, false));
+
+        // ── reposition arrows using ORIGINAL coords + fresh delta ──
+        const numDigits = String(q.number).length;
+        const lowerStr = String(lower);
+        const dLowStr = String(dLow) + (dLow !== 1 ? " steps" : " step");
+        const higherStr = String(upper);
+        const dHighStr = String(dHigh) + (dHigh !== 1 ? " steps" : " step");
+
+        // Arrow starts right after the initial number
+        const arrowX = 623.98 + numDigits * 17 + 10; // 10px gap after text
+
+        const textAfterArrowX = arrowX + 35; // 35px for arrow width and gap
+        if (ht) {
+            const lines = ht.querySelectorAll("text");
+            if (lines[1]) lines[1].setAttribute("transform", `translate(${textAfterArrowX} 545.77)`);
+            if (lines[3]) lines[3].setAttribute("transform", `translate(${textAfterArrowX} 605.77)`);
+        }
+
+        ["arrow", "arrow-2"].forEach(arrowId => {
+            const arrowEl = document.getElementById(arrowId);
+            if (!arrowEl) return;
+            const origLines = ARROW_ORIG[arrowId];
+            const lineEls = arrowEl.querySelectorAll("line");
+            const delta = arrowX - 664.85;
+            lineEls.forEach((line, i) => {
+                if (!origLines[i]) return;
+                line.setAttribute("x1", origLines[i][0] + delta);
+                line.setAttribute("y1", origLines[i][1]);
+                line.setAttribute("x2", origLines[i][2] + delta);
+                line.setAttribute("y2", origLines[i][3]);
+            });
+        });
+
+        // ── cars ──
         setVisible("popup-car", false);
         setVisible("popup-bike", false);
+        document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+
+        const sourceId = state.vehicle === "car" ? "popup-car" : "popup-bike";
+        const source = $(sourceId);
+        const svg = document.querySelector("svg");   // top-level SVG
+
+        if (source && svg) {
+            const isCar = state.vehicle === "car";
+            const iconW = isCar ? 78 : 56;
+            // popup right edge ≈ 1708 SVG units
+            const maxRight = 1700;
+            // car origin in SVG: popup-car leftmost x ≈ 866
+            const originX = isCar ? 866 : 883;
+
+            const lowerTextLen = (1 + lowerStr.length + 3 + dLowStr.length) * 17;
+            const upperTextLen = (1 + higherStr.length + 3 + dHighStr.length) * 17;
+            const carsStartX_row1 = textAfterArrowX + lowerTextLen + 10;
+            const carsStartX_row2 = textAfterArrowX + upperTextLen + 10;
+
+            const svgNS = "http://www.w3.org/2000/svg";
+
+            const drawRow = (count, yOffset, dotsY, rowStartX) => {
+                if (count <= 0) return;
+                const maxFit = Math.max(1, Math.floor((maxRight - rowStartX) / iconW));
+                const showCount = Math.min(count, maxFit - 1); // leave 1 slot for dots if needed
+                const actualShow = count <= maxFit ? count : showCount;
+
+                for (let i = 0; i < actualShow; i++) {
+                    const clone = source.cloneNode(true);
+                    clone.removeAttribute("id");
+                    clone.classList.add("hint-car-clone");
+                    clone.style.display = "";
+                    // Remove clip-path refs so clones render correctly
+                    clone.querySelectorAll("[clip-path]").forEach(el => el.removeAttribute("clip-path"));
+                    clone.setAttribute("transform",
+                        `translate(${rowStartX - originX + i * iconW}, ${yOffset})`);
+                    svg.appendChild(clone);
+                }
+
+                if (count > maxFit) {
+                    const dots = document.createElementNS(svgNS, "text");
+                    dots.setAttribute("x", String(rowStartX + actualShow * iconW));
+                    dots.setAttribute("y", String(dotsY));
+                    dots.classList.add("hint-car-clone");
+                    dots.setAttribute("fill", "#333");
+                    dots.setAttribute("font-size", "34");
+                    dots.setAttribute("font-weight", "bold");
+                    dots.textContent = "...";
+                    svg.appendChild(dots);
+                }
+            };
+
+            drawRow(dLow, -8, 548, carsStartX_row1);
+            drawRow(dHigh, 52, 608, carsStartX_row2);
+        }
+
+        HINT_ELS.forEach(id => triggerAnim(id, "fadeInUp 0.35s ease both"));
+    }
+
+    function hideHintPopup() {
+        setVisible("hint-popup", false);
+        setVisible("hint-cross-mark", false);
+        setVisible("hint-heading", false);
+        setVisible("quick-hint", false);
+        setVisible("hint-text", false);
+        setVisible("popup-car", false);
+        setVisible("popup-bike", false);
+        document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+    }
+    // 👇 ADD THIS HERE
+    const hintCross = $("hint-cross-mark");
+
+    if (hintCross) {
+        hintCross.style.cursor = "pointer";
+        hintCross.addEventListener("click", (e) => {
+            e.stopPropagation();
+            hideHintPopup();
+        });
     }
 
     /* ── Generate a new question ── */
@@ -226,15 +345,20 @@ document.addEventListener("DOMContentLoaded", () => {
         resetButtons(); hideCorrectPopup(); hideHintPopup();
         state.currentQ = pickQuestion(); state.answered = false;
         const q = state.currentQ;
+        console.log(q);
         // Q-circle number
         const qn = $("Q-numbers"); if (qn) { const ts = qn.querySelector("tspan"); if (ts) ts.textContent = String(q.number); }
+        console.log(qn);
         // Instruction text
         updateIText(q.number, q.roundTo);
+        console.log(updateIText);
         // Dynamic number line
         const lineVals = computeLineValues(q);
         updateNumberLine(lineVals);
+        console.log(lineVals);
         // Slide marker
         positionQMarker(q.number);
+        console.log(positionQMarker);
     }
 
     /* ── Timeline button click handlers ── */
@@ -270,12 +394,15 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ── New Number button ── */
     const newBtn = $("btn-new-number");
     if (newBtn) {
+        console.log(newBtn);
         newBtn.style.cursor = "pointer";
         newBtn.addEventListener("click", () => {
-            newBtn.style.transform = "scale(0.95)";
-            setTimeout(() => newBtn.style.transform = "scale(1)", 200);
+            console.log("New Number button clicked");
+            // newBtn.style.transform = "scale(0.95)";
+            // setTimeout(() => newBtn.style.transform = "scale(1)", 200);
             generateQuestion();
         });
+        console.log(newBtn.value);
     }
 
     /* ── Help panel ── */
