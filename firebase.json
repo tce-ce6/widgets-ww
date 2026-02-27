@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "site": "tce-widgets",
+    "public": "dist",
+    "ignore": [
+      "**/.DS_Store",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      { "source": "/", "destination": "/widget-listing-b3/index.html" }
+    ]
+  }
+}

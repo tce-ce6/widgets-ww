@@ -1,0 +1,412 @@
+{
+    "soilTypes": [
+        {
+            "id": "alluvial",
+            "title": "Alluvial Soil",
+            "questions": [
+                {
+                    "id": "alluvial_q1",
+                    "question": "How can the texture of alluvial soil be described?",
+                    "options": [
+                        {
+                            "text": "Coarse and gritty",
+                            "isCorrect": false,
+                            "image": "assets/alluvial/coarse-gritty.png"
+                        },
+                        {
+                            "text": "Porous and crumbly",
+                            "isCorrect": false,
+                            "image": "assets/alluvial/porous-crumbly.png"
+                        },
+                        {
+                            "text": "Smooth and fine",
+                            "isCorrect": true,
+                            "image": "assets/alluvial/smooth-fine.png"
+                        },
+                        {
+                            "text": "Loose and sandy",
+                            "isCorrect": false,
+                            "image": "assets/alluvial/loose-sandy.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "alluvial_q2",
+                    "question": "Which four of these crops are best supported by alluvial soil?",
+                    "options": [
+                        {
+                            "text": "Rice",
+                            "isCorrect": true,
+                            "image": "assets/crops/rice.png"
+                        },
+                        {
+                            "text": "Wheat",
+                            "isCorrect": true,
+                            "image": "assets/crops/wheat.png"
+                        },
+                        {
+                            "text": "Sugarcane",
+                            "isCorrect": true,
+                            "image": "assets/crops/sugarcane.png"
+                        },
+                        {
+                            "text": "Maize",
+                            "isCorrect": true,
+                            "image": "assets/crops/maize.png"
+                        },
+                        {
+                            "text": "Rubber",
+                            "isCorrect": false,
+                            "image": "assets/crops/rubber.png"
+                        },
+                        {
+                            "text": "Dates",
+                            "isCorrect": false,
+                            "image": "assets/crops/dates.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "black",
+            "title": "Black Soil",
+            "questions": [
+                {
+                    "id": "black_q1",
+                    "question": "How can the texture of black soil be described?",
+                    "options": [
+                        {
+                            "text": "Rocky and stony",
+                            "isCorrect": false,
+                            "image": "assets/black/rocky-stony.png"
+                        },
+                        {
+                            "text": "Sticky and clayey",
+                            "isCorrect": true,
+                            "image": "assets/black/sticky-clayey.png"
+                        },
+                        {
+                            "text": "Loose and sandy",
+                            "isCorrect": false,
+                            "image": "assets/black/loose-sandy.png"
+                        },
+                        {
+                            "text": "Porous and crumbly",
+                            "isCorrect": false,
+                            "image": "assets/black/porous-crumbly.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "black_q2",
+                    "question": "Which four of these crops are best supported by black soil?",
+                    "options": [
+                        {
+                            "text": "Cotton",
+                            "isCorrect": true,
+                            "image": "assets/crops/cotton.png"
+                        },
+                        {
+                            "text": "Sugarcane",
+                            "isCorrect": true,
+                            "image": "assets/crops/sugarcane.png"
+                        },
+                        {
+                            "text": "Soybean",
+                            "isCorrect": true,
+                            "image": "assets/crops/soybean.png"
+                        },
+                        {
+                            "text": "Groundnut",
+                            "isCorrect": true,
+                            "image": "assets/crops/groundnut.png"
+                        },
+                        {
+                            "text": "Apples",
+                            "isCorrect": false,
+                            "image": "assets/crops/apple.png"
+                        },
+                        {
+                            "text": "Cashew",
+                            "isCorrect": false,
+                            "image": "assets/crops/cashew.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "laterite",
+            "title": "Laterite Soil",
+            "questions": [
+                {
+                    "id": "laterite_q1",
+                    "question": "How can the texture of laterite soil be described?",
+                    "options": [
+                        {
+                            "text": "Rocky and stony",
+                            "isCorrect": false,
+                            "image": "assets/laterite/rocky-stony.png"
+                        },
+                        {
+                            "text": "Sticky and clayey",
+                            "isCorrect": false,
+                            "image": "assets/laterite/sticky-clayey.png"
+                        },
+                        {
+                            "text": "Porous and crumbly",
+                            "isCorrect": true,
+                            "image": "assets/laterite/porous-crumbly.png"
+                        },
+                        {
+                            "text": "Loose and sandy",
+                            "isCorrect": false,
+                            "image": "assets/laterite/loose-sandy.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "laterite_q2",
+                    "question": "Which four of these crops are best supported by laterite soil?",
+                    "options": [
+                        {
+                            "text": "Coffee",
+                            "isCorrect": true,
+                            "image": "assets/crops/coffee.png"
+                        },
+                        {
+                            "text": "Tea",
+                            "isCorrect": true,
+                            "image": "assets/crops/tea.png"
+                        },
+                        {
+                            "text": "Rubber",
+                            "isCorrect": true,
+                            "image": "assets/crops/rubber.png"
+                        },
+                        {
+                            "text": "Cashew",
+                            "isCorrect": true,
+                            "image": "assets/crops/cashew.png"
+                        },
+                        {
+                            "text": "Wheat",
+                            "isCorrect": false,
+                            "image": "assets/crops/wheat.png"
+                        },
+                        {
+                            "text": "Dates",
+                            "isCorrect": false,
+                            "image": "assets/crops/dates.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "red",
+            "title": "Red Soil",
+            "questions": [
+                {
+                    "id": "red_q1",
+                    "question": "How can the texture of red soil be described?",
+                    "options": [
+                        {
+                            "text": "Rocky and stony",
+                            "isCorrect": false,
+                            "image": "assets/red/rocky-stony.png"
+                        },
+                        {
+                            "text": "Sticky and clayey",
+                            "isCorrect": false,
+                            "image": "assets/red/sticky-clayey.png"
+                        },
+                        {
+                            "text": "Coarse and gritty",
+                            "isCorrect": true,
+                            "image": "assets/red/coarse-gritty.png"
+                        },
+                        {
+                            "text": "Smooth and fine",
+                            "isCorrect": false,
+                            "image": "assets/red/smooth-fine.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "red_q2",
+                    "question": "Which four of these crops are best supported by red soil?",
+                    "options": [
+                        {
+                            "text": "Cotton",
+                            "isCorrect": true,
+                            "image": "assets/crops/cotton.png"
+                        },
+                        {
+                            "text": "Groundnuts",
+                            "isCorrect": true,
+                            "image": "assets/crops/groundnut.png"
+                        },
+                        {
+                            "text": "Millet",
+                            "isCorrect": true,
+                            "image": "assets/crops/millet.png"
+                        },
+                        {
+                            "text": "Pulses",
+                            "isCorrect": true,
+                            "image": "assets/crops/pulses.png"
+                        },
+                        {
+                            "text": "Bajra",
+                            "isCorrect": false,
+                            "image": "assets/crops/bajra.png"
+                        },
+                        {
+                            "text": "Jowar",
+                            "isCorrect": false,
+                            "image": "assets/crops/jowar.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "desert",
+            "title": "Desert Soil",
+            "questions": [
+                {
+                    "id": "desert_q1",
+                    "question": "How can the texture of desert soil be described?",
+                    "options": [
+                        {
+                            "text": "Loose and sandy",
+                            "isCorrect": true,
+                            "image": "assets/desert/loose-sandy.png"
+                        },
+                        {
+                            "text": "Sticky and clayey",
+                            "isCorrect": false,
+                            "image": "assets/desert/sticky-clayey.png"
+                        },
+                        {
+                            "text": "Coarse and gritty",
+                            "isCorrect": false,
+                            "image": "assets/desert/coarse-gritty.png"
+                        },
+                        {
+                            "text": "Rocky and stony",
+                            "isCorrect": false,
+                            "image": "assets/desert/rocky-stony.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "desert_q2",
+                    "question": "Which four of these crops are best supported by desert soil?",
+                    "options": [
+                        {
+                            "text": "Bajra",
+                            "isCorrect": true,
+                            "image": "assets/crops/bajra.png"
+                        },
+                        {
+                            "text": "Jowar",
+                            "isCorrect": true,
+                            "image": "assets/crops/jowar.png"
+                        },
+                        {
+                            "text": "Dates",
+                            "isCorrect": true,
+                            "image": "assets/crops/dates.png"
+                        },
+                        {
+                            "text": "Barley",
+                            "isCorrect": true,
+                            "image": "assets/crops/barley.png"
+                        },
+                        {
+                            "text": "Rice",
+                            "isCorrect": false,
+                            "image": "assets/crops/rice.png"
+                        },
+                        {
+                            "text": "Cotton",
+                            "isCorrect": false,
+                            "image": "assets/crops/cotton.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "mountain",
+            "title": "Mountain Soil",
+            "questions": [
+                {
+                    "id": "mountain_q1",
+                    "question": "How can the texture of mountain soil be described?",
+                    "options": [
+                        {
+                            "text": "Sticky and clayey",
+                            "isCorrect": false,
+                            "image": "assets/mountain/sticky-clayey.png"
+                        },
+                        {
+                            "text": "Loose and sandy",
+                            "isCorrect": false,
+                            "image": "assets/mountain/loose-sandy.png"
+                        },
+                        {
+                            "text": "Rocky and stony",
+                            "isCorrect": true,
+                            "image": "assets/mountain/rocky-stony.png"
+                        },
+                        {
+                            "text": "Porous and crumbly",
+                            "isCorrect": false,
+                            "image": "assets/mountain/porous-crumbly.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "mountain_q2",
+                    "question": "Which four of these crops are best supported by mountain soil?",
+                    "options": [
+                        {
+                            "text": "Apples",
+                            "isCorrect": true,
+                            "image": "assets/crops/apples.png"
+                        },
+                        {
+                            "text": "Barley",
+                            "isCorrect": false,
+                            "image": "assets/crops/barley.png"
+                        },
+                        {
+                            "text": "Cashew",
+                            "isCorrect": false,
+                            "image": "assets/crops/cashew.png"
+                        },
+                        {
+                            "text": "Coffee",
+                            "isCorrect": true,
+                            "image": "assets/crops/coffee.png"
+                        },
+                        {
+                            "text": "Rubber",
+                            "isCorrect": false,
+                            "image": "assets/crops/rubber.png"
+                        },
+                        {
+                            "text": "Tea",
+                            "isCorrect": true,
+                            "image": "assets/crops/tea.png"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

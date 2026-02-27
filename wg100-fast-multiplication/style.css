@@ -1,0 +1,328 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #eef8f3;
+}
+
+/* FULL SCREEN STAGE */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eef8f3;
+}
+
+/* SVG FRAME */
+.widget {
+  width: 100vw;          /* ⬅️ FULL WIDTH */
+  height: 100vh;         /* ⬅️ FULL HEIGHT */
+  max-width: none;       /* ⬅️ REMOVE caps */
+  max-height: none;
+
+  background: url("./assets/screen-1.1.svg") no-repeat center center;
+  background-size: cover;   /* ⬅️ FILL SCREEN */
+  padding: 32px 48px 56px 48px;
+  box-sizing: border-box;
+  padding-bottom: 64px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Center the entire header block */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ⬅️ centers header horizontally */
+  text-align: center;   /* ⬅️ centers text */
+  margin-bottom: 0px;
+}
+
+.header-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, #00a8ff, #2563eb);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 0 0 20px 20px;
+  font-weight: 700;
+  font-size: 22px;
+  align-self: center;   /* ⬅️ ensures pill is centered */
+  margin-top: -33px;  /* pulls it up to touch SVG top edge */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.header-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 8px 0 4px;
+  color: #022c22;
+}
+
+#feedback {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #0f766e;
+}
+
+/* Feedback block (Hint / Explanation) */
+.feedback-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #064e3b;
+}
+
+/* Feedback sits just above buttons */
+.feedback-area {
+  margin-top: auto;          /* pushes feedback + buttons to bottom block */
+  margin-bottom: 10px;
+  min-height: 90px;       /* 👈 reserves space */
+}
+
+#formula {
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.header-desc {
+  font-size: 18px;
+  line-height: 1.4;
+  color: #064e3b;
+  max-width: 1100px;
+  margin: 0 0 10px;
+  margin-bottom: 6px;
+}
+
+/* INNER PANEL (LEFT + RIGHT BG) */
+.layout {
+  flex: 1;
+  display: grid;
+
+  /* 👇 REAL PANEL WIDTHS */
+
+  grid-template-columns: minmax(460px, 40%) 1fr;
+
+  gap: 24px;
+
+  background: url("./assets/bg-panel.png") no-repeat center center;
+  background-size: 100% 100%;
+  border-radius: 12px;
+
+  padding: 28px 28px 36px 28px;
+  margin-bottom: 12px;  
+  box-sizing: border-box;
+
+  align-items: stretch;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  outline: 0px dashed rgba(0, 128, 0, 0.4);
+  padding: 18px 24px;
+}
+
+.tabs .tab {
+  transition: all 0.2s ease;
+}
+
+.tabs .tab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.controls {
+  margin-bottom: 10px;
+}
+
+.left-content {
+  flex: 1;                /* take all available vertical space */
+  overflow-y: auto;      /* scroll only inside left panel */
+  padding-right: 6px;    /* avoid scrollbar overlap */
+}
+
+
+.left-content::-webkit-scrollbar {
+  width: 6px;
+}
+.left-content::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 6px;
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;   /* prevents overflow on small screens */
+}
+
+.tab {
+  max-width: 200px;          /* ⬅️ controls width */
+  min-width: 160px;          /* ⬅️ keeps consistency */
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: #e6eef0;
+  font-size: 14px;
+  text-align: center;
+  white-space: normal;      /* ⬅️ allow wrapping */
+  line-height: 1.2;
+}
+
+.tab.active {
+  background: #2f855a;
+  color: #fff;
+}
+
+.answer-row {
+  margin-top: 12px;
+}
+
+/* Buttons fixed at bottom */
+.actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;   /* ⬅️ centers buttons horizontally */
+  padding-top: 10px;
+  border-top: 1.25px dashed rgba(0,0,0,0.15);
+}
+
+/* BUTTONS */
+.btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  margin-right: 14px;
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+  align-items: right;
+  }
+
+  .legend {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+
+.scenario-box {
+  background: rgba(0, 0, 0, 0.04);   /* very light grey */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 12px 0 10px;
+}
+
+.scenario-box p {
+  margin: 6px 0;
+}
+
+.scenario-box .answer-row {
+  margin-top: 8px;
+}
+
+.btn.hint { background: #f43f5e; }
+.btn.submit { background: #22c55e; }
+.btn.show { background: #3b82f6; }
+
+.btn.reset {
+  background: #64748b;  /* slate/neutral */
+}
+.btn.reset:hover {
+  background: #475569;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  outline: 0px dashed rgba(255, 0, 0, 0.4);
+  position: relative;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.original {
+  background: #16a34a;   /* current green */
+}
+
+.legend-dot.added {
+  background: #4dd923;   /* blue for added */
+}
+
+.legend-dot.removed {
+  background: #d6d4d4;   /* red for removed */
+}
+
+.garden-grid {
+  display: grid;
+  gap: 4px;
+}
+
+.tree {
+  width: 12px;
+  height: 12px;
+  background: #16a34a;
+  border-radius: 50%;
+}
+
+.tree.new {
+  background: #22c55e;      /* brighter green */
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+.tree.removed {
+  background: #cbd5e1;        /* light grey */
+  opacity: 0.5;
+  border: 1px dashed #94a3b8; /* subtle dashed outline */
+}
+
+.grid-label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #b91c1c;
+}
