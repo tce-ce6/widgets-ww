@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CropMap India</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>CropMap India</h2>
-        <span id="versionId" class="versionText">b3_wg151_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
   <defs>
     <clipPath id="clippath">
       <path d="M802.16,239.54c-17.62,0-31.9,14.27-31.91,31.89v510.17c0,17.62,14.29,31.89,31.91,31.89h318.76c17.62,0,31.9-14.27,31.91-31.89v-510.17c0-17.62-14.29-31.89-31.91-31.89h-318.76Z" fill="none"/>
@@ -1608,18 +1589,8 @@
     <rect id="Rectangle_959" data-name="Rectangle 959" x="951" y="802" width="838" height="135" rx="12" ry="12" fill="#ffeda7" isolation="isolate" opacity=".8"/>
     <g id="Fact:_Punjab_and_Haryana_are_called_the_Breadbasket_of_India_because_they_produce_nearly_50_of_the_country_s_wheat." data-name="Fact: Punjab and Haryana are called the Breadbasket of India because they produce nearly 50 of the country s wheat." isolation="isolate">
       <text transform="translate(1343.49 838)" font-family="Roboto-Bold, Roboto" font-size="24" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.02em">F</tspan><tspan x="12.75" y="0">act:</tspan></text>
-      <text transform="translate(997.85 870)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Punjab and Haryana are called the 'Breadbasket of Indi</tspan><tspan x="580.71" y="0" letter-spacing="-.03em">a</tspan><tspan x="592.98" y="0">' because they </tspan></text>
-      <text transform="translate(1142.9 902)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">p</tspan><tspan x="13.46" y="0" letter-spacing="0em">r</tspan><tspan x="21.35" y="0">oduce nearly 50% of the country</tspan><tspan x="361.46" y="0" letter-spacing="-.04em">'</tspan><tspan x="364.71" y="0">s wheat.</tspan></text>
+      <text transform="translate(997.85 870)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">Punjab and Haryana are called the &apos;Breadbasket of Indi</tspan><tspan x="580.71" y="0" letter-spacing="-.03em">a</tspan><tspan x="592.98" y="0">&apos; because they </tspan></text>
+      <text transform="translate(1142.9 902)" font-family="Roboto-Regular, Roboto" font-size="24" isolation="isolate"><tspan x="0" y="0">p</tspan><tspan x="13.46" y="0" letter-spacing="0em">r</tspan><tspan x="21.35" y="0">oduce nearly 50% of the country</tspan><tspan x="361.46" y="0" letter-spacing="-.04em">&apos;</tspan><tspan x="364.71" y="0">s wheat.</tspan></text>
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>
