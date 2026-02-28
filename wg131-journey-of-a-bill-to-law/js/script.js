@@ -249,6 +249,21 @@ let holdVotes = 0;
 let collectedStamps = [];
 let quizAnswered = false;
 let gameStarted = false;
+let currentStationIdx = 0; // tracks which station the quiz popup is showing
+const completedStations = new Set(); // indices of stations answered correctly
+
+// Station segment path IDs (order matches STATIONS array)
+const STATION_PATH_IDS = [
+  "Path_2191", // 0 – The Gateway
+  "Path_2181", // 1 – The Announcement
+  "Path_2161", // 2 – The Examination
+  "Path_2151", // 3 – The Assembly
+  "Path_2141", // 4 – The Gathering
+  "Path_2131", // 5 – The Scroll
+  "Path_2121", // 6 – The Chamber
+  "Path_2111", // 7 – The Final Approval
+  "Path_2171", // 8 – The Archive
+];
 
 // ── DOM refs ──────────────────────────────────
 // const gameRoot = document.getElementById("game-root");
@@ -721,17 +736,7 @@ window.addEventListener("load", () => {
 
   // ── STATION SEGMENT CLICK → SHOW POPUP-INSIGHTS ──────────────────────────
   // Station path IDs in the home-screen SVG wheel (stations 1–9)
-  const stationPathIds = [
-    "Path_2191", // Station 1 – The Gateway
-    "Path_2181", // Station 2 – The Announcement
-    "Path_2161", // Station 3 – The Examination
-    "Path_2151", // Station 4 – The Assembly
-    "Path_2141", // Station 5 – The Gathering
-    "Path_2131", // Station 6 – The Scroll
-    "Path_2121", // Station 7 – The Chamber
-    "Path_2111", // Station 8 – The Final Approval
-    "Path_2171", // Station 9 – The Archive
-  ];
+  const stationPathIds = STATION_PATH_IDS;
 
   stationPathIds.forEach((pathId, idx) => {
     const el = document.getElementById(pathId);
@@ -803,6 +808,7 @@ function setQuizText(groupId, text, centerX) {
 // Station click → populate & colour Quiz-popup from STATIONS[idx], then show it
 function showPopupInsights(idx) {
   if (idx === undefined || idx === null) idx = 0;
+  currentStationIdx = idx; // remember for popup-insights
   const s = STATIONS[idx];
   if (!s) return;
 
@@ -1027,13 +1033,43 @@ function hidePopupInsights() {
   }
 }
 
-// btn-insights click → show popup-insights
+// btn-insights click → populate & show popup-insights with selected station facts
 function showInsightsPanel() {
   const panel = document.getElementById("popup-insights");
-  if (panel) {
-    panel.classList.remove("st160");
-    panel.style.display = "inline";
+  if (!panel) return;
+
+  const s = STATIONS[currentStationIdx];
+  if (s) {
+    // ── Update 4 facts bullet points ────────────────────────────────────────
+    const factsGrp = document.getElementById("insights-facts-list");
+    if (factsGrp) {
+      const textEls = factsGrp.querySelectorAll("text");
+      textEls.forEach((t, i) => {
+        const ts = t.querySelector("tspan");
+        if (ts) ts.textContent = s.facts && s.facts[i] ? s.facts[i] : "";
+        t.style.display = s.facts && s.facts[i] ? "" : "none";
+      });
+    }
+
+    // ── Update title (use station label) ────────────────────────────────────
+    const titleGrp = document.getElementById("insights-title");
+    if (titleGrp) {
+      // Replace just the first text element with the station label
+      const firstText = titleGrp.querySelector("text");
+      if (firstText) {
+        const ts = firstText.querySelector("tspan");
+        if (ts) ts.textContent = s.label.toUpperCase();
+      }
+      // Hide the extra split text elements (arrow + "First Reading)")
+      const allTexts = titleGrp.querySelectorAll("text");
+      allTexts.forEach((t, i) => {
+        if (i > 0) t.style.display = "none";
+      });
+    }
   }
+
+  panel.classList.remove("st160");
+  panel.style.display = "inline";
 }
 
 // Hide popup-insights
@@ -1064,8 +1100,8 @@ function resetOptionBoxes() {
 
 /** Remove the injected feedback foreignObject if it exists */
 function removeFeedbackOverlay() {
-  const old = document.getElementById("quiz-feedback-fo");
-  if (old) old.parentNode.removeChild(old);
+  document.getElementById("feedback-correct").setAttribute("display", "none");
+  document.getElementById("feedback-incorrect").setAttribute("display", "none");
 }
 
 /**
@@ -1078,46 +1114,87 @@ function showFeedbackOverlay(isCorrect, s) {
   const quizPopup = document.getElementById("Quiz-popup");
   if (!quizPopup) return;
 
-  const SVG_NS = "http://www.w3.org/2000/svg";
-  const fo = document.createElementNS(SVG_NS, "foreignObject");
-  fo.setAttribute("id", "quiz-feedback-fo");
-  fo.setAttribute("x", "520");
-  fo.setAttribute("y", "660");
-  fo.setAttribute("width", "880");
-  fo.setAttribute("height", "320");
+  // const SVG_NS = "http://www.w3.org/2000/svg";
+  // const fo = document.createElementNS(SVG_NS, "foreignObject");
+  // fo.setAttribute("id", "quiz-feedback-fo");
+  // fo.setAttribute("x", "520");
+  // fo.setAttribute("y", "660");
+  // fo.setAttribute("width", "880");
+  // fo.setAttribute("height", "320");
 
-  const body = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-  body.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+  // const body = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+  // body.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
   if (isCorrect) {
-    body.innerHTML = `
-      <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-        <p style="color:#2e7d32;font-size:22px;font-weight:700;margin:0 0 10px">
-          ✓ Correct! You discovered:
-        </p>
-        <div style="background:#f0fdf4;border:2px solid #4caf50;border-radius:12px;
-                    padding:14px 20px;max-width:720px;margin:0 auto">
-          <p style="color:#005388;font-size:15px;font-weight:700;
-                    letter-spacing:1px;margin:0 0 4px">${s.label.toUpperCase()}</p>
-          <p style="color:#181818;font-size:19px;font-weight:700;margin:0 0 4px">
-            ${s.msg2 || ""}</p>
-          <p style="color:#555;font-size:15px;margin:0">${s.msg3 || ""}</p>
-        </div>
-      </div>`;
+    // body.innerHTML = `
+    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
+    //     <p style="color:#2e7d32;font-size:22px;font-weight:700;margin:0 0 10px">
+    //       ✓ Correct! You discovered:
+    //     </p>
+    //     <div style="background:#f0fdf4;border:2px solid #4caf50;border-radius:12px;
+    //                 padding:14px 20px;max-width:720px;margin:0 auto">
+    //       <p style="color:#005388;font-size:15px;font-weight:700;
+    //                 letter-spacing:1px;margin:0 0 4px">${s.label.toUpperCase()}</p>
+    //       <p style="color:#181818;font-size:19px;font-weight:700;margin:0 0 4px">
+    //         ${s.msg2 || ""}</p>
+    //       <p style="color:#555;font-size:15px;margin:0">${s.msg3 || ""}</p>
+    //     </div>
+    //   </div>`;
+    document
+      .getElementById("feedback-correct")
+      .setAttribute("display", "block");
+    document
+      .getElementById("quiz-insight-title")
+      .querySelector("tspan").textContent = `${s.label}`;
+    document
+      .getElementById("quiz-insight-msg")
+      .querySelector("tspan").textContent = `${s.msg2 || ""}`;
+    // Mark the station segment as completed (yellow border)
+    markStationComplete(currentStationIdx);
+    document.getElementById("Group_592").addEventListener("click", () => {
+      hidePopupInsights();
+      removeFeedbackOverlay();
+    });
   } else {
-    body.innerHTML = `
-      <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-        <p style="color:#c0392b;font-size:22px;font-weight:700;margin:0 0 10px">
-          ✕ Try again!
-        </p>
-        <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;
-                    padding:14px 20px;max-width:720px;margin:0 auto">
-          <p style="color:#92400e;font-size:16px;font-weight:700;margin:0 0 4px">Hint:</p>
-          <p style="color:#181818;font-size:16px;margin:0">${s.hint || ""}</p>
-        </div>
-      </div>`;
+    // body.innerHTML = `
+    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
+    //     <p style="color:#c0392b;font-size:22px;font-weight:700;margin:0 0 10px">
+    //       ✕ Try again!
+    //     </p>
+    //     <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;
+    //                 padding:14px 20px;max-width:720px;margin:0 auto">
+    //       <p style="color:#92400e;font-size:16px;font-weight:700;margin:0 0 4px">Hint:</p>
+    //       <p style="color:#181818;font-size:16px;margin:0">${s.hint || ""}</p>
+    //     </div>
+    //   </div>`;
+    document
+      .getElementById("feedback-incorrect")
+      .setAttribute("display", "block");
+    document
+      .getElementById("quiz-hint-text")
+      .querySelector("tspan").textContent = `${s.hint}`;
   }
 
-  fo.appendChild(body);
-  quizPopup.appendChild(fo);
+  // fo.appendChild(body);
+  // quizPopup.appendChild(fo);
+}
+
+// ── COMPLETION BORDER ─────────────────────────────────────────────────────────
+/**
+ * Applies a bright yellow stroke to the wheel segment at the given station index,
+ * visually marking it as completed (matching the yellow border in the design).
+ */
+function markStationComplete(idx) {
+  if (completedStations.has(idx)) return; // already done
+  completedStations.add(idx);
+
+  const pathId = STATION_PATH_IDS[idx];
+  if (!pathId) return;
+  const el = document.getElementById(pathId);
+  if (!el) return;
+
+  el.style.stroke = "#f9e000"; // bright yellow
+  el.style.strokeWidth = "8";
+  el.style.strokeLinejoin = "round";
+  el.style.paintOrder = "stroke"; // stroke behind fill
 }
