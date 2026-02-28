@@ -770,12 +770,34 @@ window.addEventListener("load", () => {
   }
 });
 
-// Helper: set the first <tspan> text inside an SVG group
-function setQuizText(groupId, text) {
+// Helper: set <tspan> text and optionally centre it at a given SVG x
+// centerX: if provided, sets text-anchor=middle and centres the text element there
+function setQuizText(groupId, text, centerX) {
   const grp = document.getElementById(groupId);
   if (!grp) return;
   const tspan = grp.querySelector("tspan");
-  if (tspan) tspan.textContent = text;
+  if (!tspan) return;
+  tspan.textContent = text;
+
+  const textEl = tspan.closest("text") || grp.querySelector("text");
+  if (textEl) {
+    textEl.style.display = "";
+    textEl.style.visibility = "visible";
+    if (!textEl.style.fill)
+      textEl.style.fill = groupId === "The_Gateway1" ? "#fff" : "#181818";
+
+    if (centerX !== undefined) {
+      // SVG translate can use space OR comma: translate(x y) or translate(x,y)
+      const curTransform = textEl.getAttribute("transform") || "";
+      const yMatch = curTransform.match(
+        /translate\(\s*[\d.+-]+[\s,]+\s*([\d.+-]+)\s*\)/,
+      );
+      const y = yMatch ? yMatch[1].trim() : "314"; // 314 = default question y
+      textEl.setAttribute("text-anchor", "middle");
+      textEl.setAttribute("transform", `translate(${centerX} ${y})`);
+      tspan.setAttribute("x", "0");
+    }
+  }
 }
 
 // Station click → populate & colour Quiz-popup from STATIONS[idx], then show it
@@ -799,13 +821,80 @@ function showPopupInsights(idx) {
   }
 
   // ── 4. Icon circle colour ─────────────────────────────────────────────────
-  const iconCircle = document.getElementById("Ellipse_32");
+  const iconCircle = document.getElementById("Group_1207");
   if (iconCircle) iconCircle.style.fill = s.color;
 
-  // ── 5. Question text ──────────────────────────────────────────────────────
-  setQuizText("Where_can_a_new_bill_be_introduced_in_Parliament_", s.question);
+  // ── 4b. Station SVG icon – clone from Activity-summary-end row ──────────────
+  // Map: station index → inner icon group ID + its source circle cx/cy
+  const ICON_MAP = [
+    { groupId: "Group_7472", cx: 468, cy: 762 }, // 0 – The Gateway
+    { groupId: "Group_7462", cx: 591, cy: 762 }, // 1 – The Announcement
+    { groupId: "Group_7542", cx: 714, cy: 762 }, // 2 – The Examination
+    { groupId: "Group_7532", cx: 837, cy: 762 }, // 3 – The Assembly
+    { groupId: "Group_7522", cx: 960, cy: 762 }, // 4 – The Scroll
+    { groupId: "Group_7512", cx: 1083, cy: 762 }, // 5 – The Gathering
+    { groupId: "Group_7502", cx: 1206, cy: 762 }, // 6 – The Chamber
+    { groupId: "Group_7492", cx: 1329, cy: 762 }, // 7 – The Final Approval
+    { groupId: "Group_7482", cx: 1452, cy: 762 }, // 8 – The Archive
+  ];
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const TARGET_CX = 960,
+    TARGET_CY = 207;
 
-  // ── 6. Options (shuffled) ─────────────────────────────────────────────────
+  // Hide the static hardcoded icon
+  const staticIcon = document.getElementById("Group_7292");
+  if (staticIcon) staticIcon.style.display = "none";
+
+  // Remove any previously injected clone
+  const oldClone = document.getElementById("quiz-icon-clone");
+  if (oldClone) oldClone.parentNode.removeChild(oldClone);
+
+  const iconInfo = ICON_MAP[idx];
+  if (iconInfo) {
+    const srcGroup = document.getElementById(iconInfo.groupId);
+    if (srcGroup) {
+      const dx = TARGET_CX - iconInfo.cx;
+      const dy = TARGET_CY - iconInfo.cy;
+
+      const wrapper = document.createElementNS(SVG_NS, "g");
+      wrapper.setAttribute("id", "quiz-icon-clone");
+      wrapper.setAttribute("transform", `translate(${dx},${dy})`);
+
+      const iconClone = srcGroup.cloneNode(true);
+      iconClone.removeAttribute("id");
+
+      // Force all child paths/rects to white so they show on the coloured circle
+      // iconClone
+      //   .querySelectorAll("path, rect, circle, polygon")
+      //   .forEach((el) => {
+      //     el.style.fill = "#ffffff";
+      //     el.style.stroke = "none";
+      //     el.removeAttribute("class"); // remove CSS class overrides
+      //   });
+
+      wrapper.appendChild(iconClone);
+
+      // Append into Group_1207 (parent of Ellipse_32) so it renders on top
+      if (iconCircle && iconCircle.parentNode) {
+        iconCircle.parentNode.appendChild(wrapper);
+      }
+    }
+  }
+
+  // ── 7. Show Quiz-popup ────────────────────────────────────────────────────
+  const quizPopup = document.getElementById("Quiz-popup");
+  if (quizPopup) {
+    quizPopup.removeAttribute("display");
+    quizPopup.style.display = "inline";
+  }
+
+  // ── 5+6. Set question & options AFTER popup is visible (centered at x=960) ─
+  setQuizText(
+    "Where_can_a_new_bill_be_introduced_in_Parliament_",
+    s.question,
+    960,
+  );
+
   const optionGroupIds = [
     "Lok_Sabha_or_Rajya_Sabha",
     "President_s_office_first",
@@ -815,16 +904,9 @@ function showPopupInsights(idx) {
   optionGroupIds.forEach((gid, i) => {
     if (shuffled[i]) {
       const clean = shuffled[i].text.replace(/^[\p{Emoji}\s]+/u, "").trim();
-      setQuizText(gid, clean || shuffled[i].text);
+      setQuizText(gid, clean || shuffled[i].text, 960); // centred in option box
     }
   });
-
-  // ── 7. Show Quiz-popup ────────────────────────────────────────────────────
-  const quizPopup = document.getElementById("Quiz-popup");
-  if (quizPopup) {
-    quizPopup.removeAttribute("display");
-    quizPopup.style.display = "inline";
-  }
 
   // ── 8. Resize banner to fit label (after render so measurement is accurate)
   requestAnimationFrame(() => resizeQuizBanner());
