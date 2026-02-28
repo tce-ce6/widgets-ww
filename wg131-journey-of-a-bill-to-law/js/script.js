@@ -30,6 +30,7 @@ const STATIONS = [
       "Rajya Sabha = Upper House",
       "Money Bills only in Lok Sabha",
     ],
+    title: "BILL INTRODUCTION (The Gateway → Lok Sabha)",
   },
   {
     id: 2,
@@ -56,6 +57,7 @@ const STATIONS = [
       "No debate or voting",
       "Then printed",
     ],
+    title: "FIRST READING (The Announcement → First Reading) ",
   },
   {
     id: 3,
@@ -82,6 +84,7 @@ const STATIONS = [
       "Suggest changes",
       "Send report",
     ],
+    title: "COMMITTEE STAGE (The Examination → Committee)",
   },
   {
     id: 4,
@@ -108,6 +111,7 @@ const STATIONS = [
       "Decide if good",
       "Voting comes later",
     ],
+    title: "DEBATE (The Assembly → Debate)",
   },
   {
     id: 5,
@@ -134,6 +138,7 @@ const STATIONS = [
       "Examine detail",
       "Amendments made",
     ],
+    title: "CLAUSE-BY-CLAUSE (The Scroll → Clauses)",
   },
   {
     id: 6,
@@ -160,6 +165,7 @@ const STATIONS = [
       "Need 272+ YES",
       "If NO wins, fails",
     ],
+    title: "VOTING (The Gathering → Voting)",
   },
   {
     id: 7,
@@ -186,6 +192,7 @@ const STATIONS = [
       "Both needed",
       "One reject = fail",
     ],
+    title: "RAJYA Sabha (The Chamber → Rajya Sabha) ",
   },
   {
     id: 8,
@@ -212,6 +219,7 @@ const STATIONS = [
       "Signed = LAW",
       "No sign = NOT law",
     ],
+    title: "PRESIDENTIAL ASSENT (The Final Approval → President)",
   },
   {
     id: 9,
@@ -238,6 +246,7 @@ const STATIONS = [
       "Gets Act number",
       "Enforceable!",
     ],
+    title: "GAZETTE PUBLICATION (The Archive → Gazette)",
   },
 ];
 
@@ -773,6 +782,15 @@ window.addEventListener("load", () => {
     insightsDimmer.style.cursor = "pointer";
     insightsDimmer.addEventListener("click", hideInsightsPanel);
   }
+
+  // ── START NEW JOURNEY button (Activity-summary-end) → reset game ──────────
+  ["START_NEW_JOURNEY_", "Group_11581"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", resetGame);
+    }
+  });
 });
 
 // Helper: set <tspan> text and optionally centre it at a given SVG x
@@ -1058,7 +1076,7 @@ function showInsightsPanel() {
       const firstText = titleGrp.querySelector("text");
       if (firstText) {
         const ts = firstText.querySelector("tspan");
-        if (ts) ts.textContent = s.label.toUpperCase();
+        if (ts) ts.textContent = s.title;
       }
       // Hide the extra split text elements (arrow + "First Reading)")
       const allTexts = titleGrp.querySelectorAll("text");
@@ -1197,4 +1215,142 @@ function markStationComplete(idx) {
   el.style.strokeWidth = "8";
   el.style.strokeLinejoin = "round";
   el.style.paintOrder = "stroke"; // stroke behind fill
+
+  // Check if all stations are now complete
+  checkAllComplete();
+}
+
+// ── ALL-STATIONS COMPLETE → show Activity-summary-end ────────────────────────
+
+function checkAllComplete() {
+  if (completedStations.size >= STATIONS.length) {
+    showActivitySummaryEnd();
+  }
+}
+
+/**
+ * Reveal the Activity-summary-end panel.
+ * Adds ✓ stamp badges on each of the 9 station circles and wires
+ * the START NEW JOURNEY button to reset the game.
+ */
+function showActivitySummaryEnd() {
+  const panel = document.getElementById("Activity-summary-end");
+  if (!panel) return;
+
+  panel.removeAttribute("display");
+  panel.style.display = "inline";
+
+  // Add stamp badges on the 9 icon circles
+  showSummaryStamps(panel);
+
+  // Wire START NEW JOURNEY button
+  const btnGrp = document.getElementById("Group_11581");
+  if (btnGrp) {
+    const fresh = btnGrp.cloneNode(true);
+    btnGrp.parentNode.replaceChild(fresh, btnGrp);
+    fresh.style.cursor = "pointer";
+    fresh.addEventListener("click", () => {
+      // Hide summary panel
+      panel.style.display = "none";
+      panel.setAttribute("display", "none");
+      // Remove stamp badges
+      panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
+      // Reset completed state and yellow borders
+      completedStations.clear();
+      STATION_PATH_IDS.forEach((id) => {
+        const seg = document.getElementById(id);
+        if (seg) {
+          seg.style.stroke = "";
+          seg.style.strokeWidth = "";
+        }
+      });
+    });
+  }
+}
+
+/**
+ * Injects a green ✓ badge + station stamp text on each of the 9 summary circles.
+ * @param {SVGElement} panel – the Activity-summary-end group
+ */
+function showSummaryStamps(panel) {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const circleCX = [468, 591, 714, 837, 960, 1083, 1206, 1329, 1452];
+  const cy = 762;
+  const r = 45;
+
+  // Remove any previous stamps
+  panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
+
+  circleCX.forEach((cx, i) => {
+    const s = STATIONS[i];
+    if (!s) return;
+
+    const g = document.createElementNS(SVG_NS, "g");
+    g.setAttribute("class", "summary-stamp");
+
+    // Green checkmark badge at top-right of station circle
+    const badgeCX = cx + Math.round(r * 0.65);
+    const badgeCY = cy - Math.round(r * 0.65);
+
+    const badge = document.createElementNS(SVG_NS, "circle");
+    badge.setAttribute("cx", badgeCX);
+    badge.setAttribute("cy", badgeCY);
+    badge.setAttribute("r", "15");
+    badge.setAttribute("fill", "#2e7d32");
+    badge.setAttribute("stroke", "#ffffff");
+    badge.setAttribute("stroke-width", "2");
+    g.appendChild(badge);
+
+    const tick = document.createElementNS(SVG_NS, "text");
+    tick.setAttribute("x", badgeCX);
+    tick.setAttribute("y", badgeCY + 6);
+    tick.setAttribute("text-anchor", "middle");
+    tick.setAttribute("fill", "#ffffff");
+    tick.setAttribute("font-size", "15");
+    tick.setAttribute("font-weight", "700");
+    tick.setAttribute("font-family", "Roboto,sans-serif");
+    tick.textContent = "✓";
+    g.appendChild(tick);
+
+    // Stamp label below the circle (strip emoji, keep text)
+    const stampLabel = (s.stamp || "DONE").replace(/\p{Emoji}/gu, "").trim();
+    const label = document.createElementNS(SVG_NS, "text");
+    label.setAttribute("x", cx);
+    label.setAttribute("y", cy + r + 16);
+    label.setAttribute("text-anchor", "middle");
+    label.setAttribute("fill", "#2e7d32");
+    label.setAttribute("font-size", "11");
+    label.setAttribute("font-weight", "700");
+    label.setAttribute("font-family", "Roboto,sans-serif");
+    label.textContent = stampLabel;
+    g.appendChild(label);
+
+    panel.appendChild(g);
+  });
+}
+
+// -- RESET / START NEW JOURNEY ------------------------------------------------
+function resetGame() {
+  // 1. Hide Activity-summary-end & remove stamp badges
+  const summaryPanel = document.getElementById("Activity-summary-end");
+  if (summaryPanel) {
+    summaryPanel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
+    summaryPanel.style.display = "none";
+    summaryPanel.setAttribute("display", "none");
+  }
+  // 2. Clear completion tracking & remove yellow borders
+  completedStations.clear();
+  STATION_PATH_IDS.forEach((id) => {
+    const seg = document.getElementById(id);
+    if (seg) {
+      seg.style.stroke = "";
+      seg.style.strokeWidth = "";
+      seg.style.paintOrder = "";
+    }
+  });
+  // 3. Hide Quiz-popup and feedback overlays
+  hidePopupInsights();
+  removeFeedbackOverlay();
+  // 4. Reset option boxes
+  resetOptionBoxes();
 }
