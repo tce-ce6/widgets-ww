@@ -696,6 +696,40 @@ function playCompleteLottie() {
     });
 }
 
+function playSuccessLottie() {
+    const container = document.getElementById('success-lottie-container');
+
+    if (!container) {
+        console.warn(`Container success-lottie-container not found`);
+        return;
+    }
+
+    const animationPath = `./animation/celebration.json`;
+
+    // Clear previous animation
+    container.innerHTML = '';
+    container.style.display = 'block';
+
+    const anim = lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: animationPath,
+        rendererSettings: {
+            hideOnTransparent: false,
+            preserveAspectRatio: 'xMidYMid meet'
+        }
+    });
+
+    // Ensure totalFrames is available
+    anim.addEventListener('DOMLoaded', () => {
+        anim.addEventListener('complete', () => {
+            anim.goToAndStop(anim.totalFrames - 1, true);
+        });
+    });
+}
+
 // 3. Navigation & Initialization
 document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
@@ -721,7 +755,7 @@ function resetLetterBoxesAndRetry() {
         const suggestion = box.querySelector('.suggestion-answer');
         if (suggestion) {
             suggestion.style.display = 'none';
-           // hideFeedback(suggestion);
+            // hideFeedback(suggestion);
         }
         box.style.height = "200px";
     });
@@ -749,6 +783,7 @@ function showPracticeResult() {
     const imgId = resultImageMap[topic] || resultImageMap.smartPhone;
     const img = document.getElementById(imgId);
     if (img) img.style.display = 'block';
+    playSuccessLottie();
 }
 
 function initNavigation() {
@@ -828,7 +863,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             e.stopPropagation();
 
             if (option.is_correct) {
-               // hideFeedback(suggestionBox);
+                // hideFeedback(suggestionBox);
                 suggestionBox.style.display = 'none';
 
                 let filled = mainBox.querySelector('.filled-text');
@@ -863,7 +898,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             return;
         }
 
-       // hideFeedback(suggestionBox);
+        // hideFeedback(suggestionBox);
         suggestionBox.style.display = 'block';
     };
 }
@@ -898,7 +933,7 @@ function navigateTo(pageId) {
         if (el) el.style.display = (id === pageId) ? 'block' : 'none';
     });
 
-    if(pageId == 'practice-examples'){
+    if (pageId == 'practice-examples') {
         document.getElementById('learn-example-btn').style.display = 'none';
         document.getElementById('practice-result').style.display = 'none';
         // document.getElementById('practice-some-more').style.display = 'none';
@@ -911,7 +946,7 @@ function navigateTo(pageId) {
 function resetContainerScrolls() {
     window.scrollTo(0, 0);
     // Add any specific scrollable containers here
-    const letterArea = document.querySelector('.letter-container'); 
+    const letterArea = document.querySelector('.letter-container');
     if (letterArea) letterArea.scrollTop = 0;
 }
 
@@ -922,7 +957,7 @@ function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
     document.querySelectorAll(".svg-popup")
         .forEach(p => p.style.display = "none");
-        
+
     if (gElement.id !== expectedId) {
         applyRightVisualHighlight(expectedId);
         //  showFeedback(`Sequence Error: Please select the box for "${formatIdText(expectedId)}"`);
@@ -1005,7 +1040,7 @@ function showPopupFromGElement(gElement) {
 
     const popupId =
         "popup-" + gElement;
-        
+
     document.querySelectorAll(".svg-popup")
         .forEach(p => p.style.display = "none");
 
@@ -1020,7 +1055,8 @@ function showPopupFromGElement(gElement) {
  */
 function addTextToSvg(groupElement, label) {
     // Get the bounding box of the paths to find the center
-    const bbox = groupElement.getBBox();
+    const path = groupElement.querySelector('path');
+    const bbox = path ? path.getBBox() : groupElement.getBBox();
 
     // Create SVG Text element
     const textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -1225,7 +1261,7 @@ function initGameListeners() {
         // Save the initial height
         box.dataset.defaultHeight = box.offsetHeight + 'px';
     });
-    
+
 }
 
 document.querySelectorAll(".close-btn").forEach(btn => {

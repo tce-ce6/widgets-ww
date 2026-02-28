@@ -2,11 +2,13 @@
   box-sizing: border-box;
   user-select: none;
 }
-svg{
-  font-family:"Roboto" !important; 
+
+svg {
+  font-family: "Roboto" !important;
 }
+
 #formal-letter-widgetbody {
-      font-family: 'Roboto';
+  font-family: 'Roboto';
   font-size: 16px;
   line-height: 1.2;
   padding: 0;
@@ -150,17 +152,19 @@ svg{
   font-size: 12px;
   color: #ccc
 }
-#formal-letter-widget .svg-container{
+
+#formal-letter-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#formal-letter-widget svg{
-    width: 100% !important;
-    height: 100%;
-} 
 
-#table{
+#formal-letter-widget svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+#table {
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -174,53 +178,57 @@ svg{
   padding: 15px 20px;
   /* position: relative; */
 }
+
 .filled-text {
   font-size: 30px;
   font-weight: 500;
   line-height: 1.2;
 }
 
-.practice-page-content{
+.practice-page-content {
   position: relative;
 }
-.placeholder-txt{
+
+.placeholder-txt {
   font-size: 40px;
-    display: block;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    color: #aaaaaa;
+  display: block;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #aaaaaa;
 }
 
 .suggestion-answer {
   display: none;
-    position: absolute;
-    background: #fffbc7;
-    border: 5px solid #e8bc63;
-    z-index: 10;
-    padding: 20px 30px;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 30px;
-    padding: 20px 30px;
-    border-radius: 20px;
-    line-height: 1.3;
-    min-height: 400px;
-    overflow-y: auto;
-    max-height: 740px;
+  position: absolute;
+  background: #fffbc7;
+  border: 5px solid #e8bc63;
+  z-index: 10;
+  padding: 20px 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  padding: 20px 30px;
+  border-radius: 20px;
+  line-height: 1.3;
+  min-height: 400px;
+  overflow-y: auto;
+  max-height: 740px;
 }
-.suggestion-answer .tap-txt{
+
+.suggestion-answer .tap-txt {
   color: red;
   margin-bottom: 15px;
   display: block;
 }
+
 .suggestion-answer .text1,
 .suggestion-answer .text2,
-.suggestion-answer .text3{
+.suggestion-answer .text3 {
   background-color: #fff;
   padding: 20px 30px;
   margin-bottom: 15px;
@@ -240,8 +248,15 @@ svg{
 }
 
 @keyframes letter-box-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.01); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.01);
+  }
 }
 
 .feedback-text {
@@ -267,4 +282,45 @@ svg{
 
 .feedback-text.is-visible {
   display: block;
+}
+
+
+.svg-popup {
+  background: #dff3e4;
+  border: 3px solid #3aa655;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  display: none;
+  position: relative;
+  width: 320px;
+}
+
+.svg-popup .close-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: #3aa655;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #3aa655;
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
 }

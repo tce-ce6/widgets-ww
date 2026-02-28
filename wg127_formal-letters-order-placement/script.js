@@ -1,623 +1,623 @@
 
 const letterData = {
 
-        "letters": [
-            {
-                "title": "scienceExhibitionSupplies",
-                "sections": {
-                    "senders_address": [
-                        {
-                            "id": 1,
-                            "text": "Sunnydale School,\nSunshine Avenue,\nGwalior – 474001.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Saba Qureshi,\nSunnydale School,\nSunshine Avenue,\nGwalior – 474001.",
-                            "is_correct": false,
-                            "feedback": "The sender's name should not be included in the sender's address."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Sunnydale School\nSunshine Avenue\nGwalior – 474001.",
-                            "is_correct": false,
-                            "feedback": "Each line should end with a comma, except the last line."
-                        }
-                    ],
-                    "date": [
-                        {
-                            "id": 1,
-                            "text": "18th September, 2026.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "September 18th, 2026.",
-                            "is_correct": false,
-                            "feedback": "The day should come before the month."
-                        },
-                        {
-                            "id": 3,
-                            "text": "18 09, 2026.",
-                            "is_correct": false,
-                            "feedback": "The month should be written in words, not numbers."
-                        }
-                    ],
-                    "receivers_address": [
-                        {
-                            "id": 1,
-                            "text": "The Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior.",
-                            "is_correct": false,
-                            "feedback": "The PIN code must be included in the address."
-                        },
-                        {
-                            "id": 2,
-                            "text": "The Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior – 474001.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior – 474001.",
-                            "is_correct": false,
-                            "feedback": "The designation should be preceded by 'The'."
-                        }
-                    ],
-                    "salutation": [
-                        {
-                            "id": 1,
-                            "text": "Dear Sir,",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Dear Sir",
-                            "is_correct": false,
-                            "feedback": "A comma should follow the salutation."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Dear Manager Sir,",
-                            "is_correct": false,
-                            "feedback": "Use just ‘Sir’ or ‘Madam’. Designation is not used in the salutation."
-                        }
-                    ],
-                    "introduction": [
-                        {
-                            "id": 1,
-                            "text": "I am Saba Qureshi, a student of Sunnydale School. We are organising a Science Exhibition on 25 October 2026 and wish to place an order for scientific models and materials.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "We are organising a Science Exhibition and need to order scientific models and materials.",
-                            "is_correct": false,
-                            "feedback": "This introduction does not mention the sender's name and lacks a clear personal introduction."
-                        },
-                        {
-                            "id": 3,
-                            "text": "I really need to order scientific models for a school event happening on 25 October 2026.",
-                            "is_correct": false,
-                            "feedback": "This introduction uses casual language and lacks formal phrasing."
-                        }
-                    ],
-                    "body_paragraph_1": [
-                        {
-                            "id": 1,
-                            "text": "We would like to order some science models including solar system and human body models.",
-                            "is_correct": false,
-                            "feedback": "Exact quantities are not specified for each item."
-                        },
-                        {
-                            "id": 2,
-                            "text": "We need the following: 2 Solar System Models, 1 Human Anatomy Model, 2 Volcano Models and 3 Electric Circuit Kits.",
-                            "is_correct": false,
-                            "feedback": "Items should be clearly listed with consistent format: 'item – number of units'."
-                        },
-                        {
-                            "id": 3,
-                            "text": "We would like to order the following items:\n\nSolar System Model – 2 units\nHuman Anatomy Model – 1 unit\nVolcano Eruption Model – 2 units\nElectric Circuit Kits – 3 units\n\nDate of delivery: 23 October 2026 at 9 a.m.",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ],
-                    "body_paragraph_2": [
-                        {
-                            "id": 1,
-                            "text": "Additionally, please inform us of the total cost including shipping, available discounts and return policy. Payment will be made by school cheque upon delivery.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "We need the items before our exhibition starts. Let us know if you have discounts.",
-                            "is_correct": false,
-                            "feedback": "This paragraph lacks specific delivery date and uses informal language."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Kindly deliver by 23 October. Tell us the cost.",
-                            "is_correct": false,
-                            "feedback": "This paragraph is too brief and abrupt."
-                        }
-                    ],
-                    "conclusion": [
-                        {
-                            "id": 1,
-                            "text": "If you could provide this information at your earliest convenience, we would be grateful. We look forward to a prompt fulfilment of our order.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "I hope you will send the items on time.",
-                            "is_correct": false,
-                            "feedback": "This focuses on the sender's needs rather than maintaining formal tone."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Please reply quickly. Hope to hear from you soon!",
-                            "is_correct": false,
-                            "feedback": "Overly casual and demanding language with exclamation mark."
-                        }
-                    ],
-                    "complimentary_close": [
-                        {
-                            "id": 1,
-                            "text": "Thank you,\nRegards,",
-                            "is_correct": false,
-                            "feedback": "A comma should follow 'Thank you'. 'Regards' alone is too informal."
-                        },
-                        {
-                            "id": 2,
-                            "text": "With thanks,\nYours truly,",
-                            "is_correct": false,
-                            "feedback": "'With thanks' is not a standard complimentary close."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Thanking you,\n\nYours sincerely,",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ],
-                    "senders_name": [
-                        {
-                            "id": 1,
-                            "text": "Saba Qureshi",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Saba Qureshi.",
-                            "is_correct": false,
-                            "feedback": "A full stop is not required after the sender’s name."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Student Saba Qureshi",
-                            "is_correct": false,
-                            "feedback": "Designations should not be added before the sender's name."
-                        }
-                    ]
-                }
-            },
-            {
-                "title": "gymEquipmentOrder",
-                "sections": {
-                    "senders_address": [
-                        {
-                            "id": 1,
-                            "text": "Sanskriti International School,\nPune – 411002.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Sanskriti International School\nPune – 411002.",
-                            "is_correct": false,
-                            "feedback": "Commas at the end of each line (except the last) are missing."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Mitali Nayan,\nSports Captain,\nSanskriti International School,\nPune – 411002.",
-                            "is_correct": false,
-                            "feedback": "The sender's name and designation should not be included in the sender's address."
-                        }
-                    ],
-                    "date": [
-                        {
-                            "id": 1,
-                            "text": "2 February, 2026.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "2nd Feb, 2026.",
-                            "is_correct": false,
-                            "feedback": "The month should be written in full, not abbreviated."
-                        },
-                        {
-                            "id": 3,
-                            "text": "February 2, 2026.",
-                            "is_correct": false,
-                            "feedback": "The day should come before the month."
-                        }
-                    ],
-                    "receivers_address": [
-                        {
-                            "id": 1,
-                            "text": "The Supplier,\nNew Development Sports,\nPune – 411002.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Supplier\nNew Development Sports\nPune – 411002.",
-                            "is_correct": false,
-                            "feedback": "The designation should be preceded by 'The'. Each line should end with a comma, except the last line."
-                        },
-                        {
-                            "id": 3,
-                            "text": "The Supplier,\nNew Development Sports,\nPune.",
-                            "is_correct": false,
-                            "feedback": "The PIN code must be included in the address."
-                        }
-                    ],
-                    "salutation": [
-                        {
-                            "id": 1,
-                            "text": "Dear Sir/Madam,",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Dear Supplier",
-                            "is_correct": false,
-                            "feedback": "The designation is not used in the salutation."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Hello",
-                            "is_correct": false,
-                            "feedback": "'Hello' is too informal for a formal letter. A comma should follow the salutation."
-                        }
-                    ],
-                    "introduction": [
-                        {
-                            "id": 1,
-                            "text": "I am writing on behalf of Sanskriti International School to place an order for new gym equipment. I am the Sports Captain of the school. We aim to enhance our physical education programme and were impressed by the quality of your products.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Our school needs new gym equipment. I am the Sports Captain, Mitali Nayan, and I want to order products from your company.",
-                            "is_correct": false,
-                            "feedback": "This introduction uses casual language and lacks proper organisational introduction."
-                        },
-                        {
-                            "id": 3,
-                            "text": "This is to inform you that we require gym equipment for our school.",
-                            "is_correct": false,
-                            "feedback": "This introduction sounds impersonal and lacks specific purpose statement."
-                        }
-                    ],
-                    "body_paragraph_1": [
-                        {
-                            "id": 1,
-                            "text": "We require treadmills, stationary bikes, dumbbells, resistance bands and yoga mats.",
-                            "is_correct": false,
-                            "feedback": "Exact quantities are not specified for each item."
-                        },
-                        {
-                            "id": 2,
-                            "text": "We are interested in the following items:\n\nTreadmills – 3 units\nStationary bikes – 5 units\nDumbbells (various weights) – 10 sets\nResistance bands – 15 sets\nYoga mats – 20 units.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "We want to buy 3 treadmills and 5 bikes. Also send dumbbells and yoga mats in sufficient quantities.",
-                            "is_correct": false,
-                            "feedback": "This paragraph lists some quantities vaguely and uses informal language."
-                        }
-                    ],
-                    "body_paragraph_2": [
-                        {
-                            "id": 1,
-                            "text": "Please send us your complete catalogue and detailed prices. We will inform you about delivery arrangements later.",
-                            "is_correct": false,
-                            "feedback": "This demonstrates poor planning and lacks professional detail."
-                        },
-                        {
-                            "id": 2,
-                            "text": "We would appreciate it if you could provide us with a catalogue and pricing details. If you have recommendations known for durability and safety, we will certainly consider them.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "Send us details and tell us which brands are best.",
-                            "is_correct": false,
-                            "feedback": "This uses commanding language and lacks professional courtesy."
-                        }
-                    ],
-                    "conclusion": [
-                        {
-                            "id": 1,
-                            "text": "We hope to hear from you soon with the requested details.",
-                            "is_correct": false,
-                            "feedback": "This lacks clear professional next steps."
-                        },
-                        {
-                            "id": 2,
-                            "text": "Once we receive the details, our administrative manager will confirm delivery arrangements. I look forward to your prompt attention to this order.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "Kindly respond at the earliest. We need this equipment urgently.",
-                            "is_correct": false,
-                            "feedback": "This focuses too much on urgency and lacks proper closing remarks."
-                        }
-                    ],
-                    "complimentary_close": [
-                        {
-                            "id": 1,
-                            "text": "Thanking you,\n\nYours sincerely,",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Thanking you\nYours sincerely",
-                            "is_correct": false,
-                            "feedback": "Commas are missing after 'Thanking you' and 'Yours sincerely'."
-                        },
-                        {
-                            "id": 3,
-                            "text": "With sincere thanks,\nYours truly,",
-                            "is_correct": false,
-                            "feedback": "'With sincere thanks' is not a standard complimentary close."
-                        }
-                    ],
-                    "senders_name": [
-                        {
-                            "id": 1,
-                            "text": "Ms. Mitali Nayan",
-                            "is_correct": false,
-                            "feedback": "Titles like 'Ms.' are not added to the sender's name."
-                        },
-                        {
-                            "id": 2,
-                            "text": "Mitali Nayan,\nSports Captain",
-                            "is_correct": false,
-                            "feedback": "A comma is not required and the designation should not be added."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Mitali Nayan",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ]
-                }
-            },
-            {
-                "title": "artSuppliesOrder",
-                "sections": {
-                    "senders_address": [
-                        {
-                            "id": 1,
-                            "text": "Riverside School\nLake Road\nKolkata – 700001.",
-                            "is_correct": false,
-                            "feedback": "Each line should end with a comma, except the last line."
-                        },
-                        {
-                            "id": 2,
-                            "text": "Riverside School,\nLake Road,\nKolkata – 700001.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "Riverside School,\nLake Road,\nKolkata – 700001,\nIndia.",
-                            "is_correct": false,
-                            "feedback": "The country name is not required in domestic correspondence."
-                        }
-                    ],
-                    "date": [
-                        {
-                            "id": 1,
-                            "text": "05/03/2026.",
-                            "is_correct": false,
-                            "feedback": "The date should be written in the proper format: day in numbers, month in words and year."
-                        },
-                        {
-                            "id": 2,
-                            "text": "5th March, 2026.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "5 March 26.",
-                            "is_correct": false,
-                            "feedback": "The year should be written in full."
-                        }
-                    ],
-                    "receivers_address": [
-                        {
-                            "id": 1,
-                            "text": "The Manager,\nCreative Art Supplies,\nPark Street,\nKolkata – 700001.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Manager,\nCreative Art Supplies,\nPark Street,\nKolkata – 700001.",
-                            "is_correct": false,
-                            "feedback": "The designation should be preceded by 'The'."
-                        },
-                        {
-                            "id": 3,
-                            "text": "The Manager,\nCreative Art Supplies,\nPark Street,\nKolkata",
-                            "is_correct": false,
-                            "feedback": "The complete address must include the PIN code."
-                        }
-                    ],
-                    "salutation": [
-                        {
-                            "id": 1,
-                            "text": "Dear Sir or Madam,",
-                            "is_correct": false,
-                            "feedback": "The correct format is 'Dear Sir/Madam' with a forward slash."
-                        },
-                        {
-                            "id": 2,
-                            "text": "Sir/Madam,",
-                            "is_correct": false,
-                            "feedback": "The salutation should begin with 'Dear'."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Dear Sir/Madam,",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ],
-                    "introduction": [
-                        {
-                            "id": 1,
-                            "text": "I am John Gomes, President of the Art Club at Riverside School. I am writing on behalf of our school to place an order for art materials.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "This letter is to place an order for art supplies needed at our school.",
-                            "is_correct": false,
-                            "feedback": "This introduction does not clearly mention the sender's name and designation at the beginning."
-                        },
-                        {
-                            "id": 3,
-                            "text": "I am the Art Club President and we need to buy art materials from your shop.",
-                            "is_correct": false,
-                            "feedback": "This uses casual language and lacks formal structure."
-                        }
-                    ],
-                    "body_paragraph_1": [
-                        {
-                            "id": 1,
-                            "text": "We need acrylic paints, watercolour paper, brushes, canvas boards and pencils.",
-                            "is_correct": false,
-                            "feedback": "Items should be listed separately with consistent format and quantities."
-                        },
-                        {
-                            "id": 2,
-                            "text": "We would like to order the following items:\n\nAcrylic paints (assorted colours) – 20 sets\nWatercolour paper pads (A4 size) – 15 pads\nPaintbrushes (various sizes) – 25 sets\nCanvas boards (30 cm × 40 cm) – 10 units\nSketching pencils – 30 sets.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "We require various art supplies in approximate quantities.",
-                            "is_correct": false,
-                            "feedback": "Items and quantities are not clearly matched and specifications are unclear."
-                        }
-                    ],
-                    "body_paragraph_2": [
-                        {
-                            "id": 1,
-                            "text": "Delivery should be completed by 20 March 2026 without fail.",
-                            "is_correct": false,
-                            "feedback": "This sounds abrupt and uses interrogative tone."
-                        },
-                        {
-                            "id": 2,
-                            "text": "Please deliver the supplies by 20 March 2026. We would appreciate a quotation including taxes and delivery charges, and details about bulk discounts and return policy.",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 3,
-                            "text": "Tell us the total price and apply discounts.",
-                            "is_correct": false,
-                            "feedback": "This uses commanding language and lacks courtesy."
-                        }
-                    ],
-                    "conclusion": [
-                        {
-                            "id": 1,
-                            "text": "Please send the quotation ASAP.",
-                            "is_correct": false,
-                            "feedback": "This uses overly casual and demanding language."
-                        },
-                        {
-                            "id": 2,
-                            "text": "We hope you can fulfil this order soon.",
-                            "is_correct": false,
-                            "feedback": "This uses casual tone and lacks professional formality."
-                        },
-                        {
-                            "id": 3,
-                            "text": "We request your prompt attention to this order. Once we receive the quotation, our accounts department will process the payment. We look forward to receiving the supplies.",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ],
-                    "complimentary_close": [
-                        {
-                            "id": 1,
-                            "text": "Thanking you,\n\nYours sincerely,",
-                            "is_correct": true,
-                            "feedback": ""
-                        },
-                        {
-                            "id": 2,
-                            "text": "Yours sincerely,\nThanking you,",
-                            "is_correct": false,
-                            "feedback": "The order should be reversed: 'Thanking you' should come before 'Yours sincerely'."
-                        },
-                        {
-                            "id": 3,
-                            "text": "Thanking you\n\nYour's sincerely",
-                            "is_correct": false,
-                            "feedback": "An apostrophe is not used in 'Yours'."
-                        }
-                    ],
-                    "senders_name": [
-                        {
-                            "id": 1,
-                            "text": "John Gomes\nPresident, Art Club",
-                            "is_correct": false,
-                            "feedback": "The designation should not be added below the sender's name."
-                        },
-                        {
-                            "id": 2,
-                            "text": "John Gomes.",
-                            "is_correct": false,
-                            "feedback": "A full stop is not required after the sender's name."
-                        },
-                        {
-                            "id": 3,
-                            "text": "John Gomes",
-                            "is_correct": true,
-                            "feedback": ""
-                        }
-                    ]
-                }
+    "letters": [
+        {
+            "title": "scienceExhibitionSupplies",
+            "sections": {
+                "senders_address": [
+                    {
+                        "id": 1,
+                        "text": "Sunnydale School,\nSunshine Avenue,\nGwalior – 474001.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Saba Qureshi,\nSunnydale School,\nSunshine Avenue,\nGwalior – 474001.",
+                        "is_correct": false,
+                        "feedback": "The sender's name should not be included in the sender's address."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Sunnydale School\nSunshine Avenue\nGwalior – 474001.",
+                        "is_correct": false,
+                        "feedback": "Each line should end with a comma, except the last line."
+                    }
+                ],
+                "date": [
+                    {
+                        "id": 1,
+                        "text": "18th September, 2026.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "September 18th, 2026.",
+                        "is_correct": false,
+                        "feedback": "The day should come before the month."
+                    },
+                    {
+                        "id": 3,
+                        "text": "18 09, 2026.",
+                        "is_correct": false,
+                        "feedback": "The month should be written in words, not numbers."
+                    }
+                ],
+                "receivers_address": [
+                    {
+                        "id": 1,
+                        "text": "The Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior.",
+                        "is_correct": false,
+                        "feedback": "The PIN code must be included in the address."
+                    },
+                    {
+                        "id": 2,
+                        "text": "The Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior – 474001.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Manager,\nBrightminds Scientific Supplies,\nStation Road,\nGwalior – 474001.",
+                        "is_correct": false,
+                        "feedback": "The designation should be preceded by 'The'."
+                    }
+                ],
+                "salutation": [
+                    {
+                        "id": 1,
+                        "text": "Dear Sir,",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Dear Sir",
+                        "is_correct": false,
+                        "feedback": "A comma should follow the salutation."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Dear Manager Sir,",
+                        "is_correct": false,
+                        "feedback": "Use just ‘Sir’ or ‘Madam’. Designation is not used in the salutation."
+                    }
+                ],
+                "introduction": [
+                    {
+                        "id": 1,
+                        "text": "I am Saba Qureshi, a student of Sunnydale School. We are organising a Science Exhibition on 25 October 2026 and wish to place an order for scientific models and materials.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "We are organising a Science Exhibition and need to order scientific models and materials.",
+                        "is_correct": false,
+                        "feedback": "This introduction does not mention the sender's name and lacks a clear personal introduction."
+                    },
+                    {
+                        "id": 3,
+                        "text": "I really need to order scientific models for a school event happening on 25 October 2026.",
+                        "is_correct": false,
+                        "feedback": "This introduction uses casual language and lacks formal phrasing."
+                    }
+                ],
+                "body_paragraph_1": [
+                    {
+                        "id": 1,
+                        "text": "We would like to order some science models including solar system and human body models.",
+                        "is_correct": false,
+                        "feedback": "Exact quantities are not specified for each item."
+                    },
+                    {
+                        "id": 2,
+                        "text": "We need the following: 2 Solar System Models, 1 Human Anatomy Model, 2 Volcano Models and 3 Electric Circuit Kits.",
+                        "is_correct": false,
+                        "feedback": "Items should be clearly listed with consistent format: 'item – number of units'."
+                    },
+                    {
+                        "id": 3,
+                        "text": "We would like to order the following items:\n\nSolar System Model – 2 units\nHuman Anatomy Model – 1 unit\nVolcano Eruption Model – 2 units\nElectric Circuit Kits – 3 units\n\nDate of delivery: 23 October 2026 at 9 a.m.",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ],
+                "body_paragraph_2": [
+                    {
+                        "id": 1,
+                        "text": "Additionally, please inform us of the total cost including shipping, available discounts and return policy. Payment will be made by school cheque upon delivery.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "We need the items before our exhibition starts. Let us know if you have discounts.",
+                        "is_correct": false,
+                        "feedback": "This paragraph lacks specific delivery date and uses informal language."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Kindly deliver by 23 October. Tell us the cost.",
+                        "is_correct": false,
+                        "feedback": "This paragraph is too brief and abrupt."
+                    }
+                ],
+                "conclusion": [
+                    {
+                        "id": 1,
+                        "text": "If you could provide this information at your earliest convenience, we would be grateful. We look forward to a prompt fulfilment of our order.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "I hope you will send the items on time.",
+                        "is_correct": false,
+                        "feedback": "This focuses on the sender's needs rather than maintaining formal tone."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Please reply quickly. Hope to hear from you soon!",
+                        "is_correct": false,
+                        "feedback": "Overly casual and demanding language with exclamation mark."
+                    }
+                ],
+                "complimentary_close": [
+                    {
+                        "id": 1,
+                        "text": "Thank you,\nRegards,",
+                        "is_correct": false,
+                        "feedback": "A comma should follow 'Thank you'. 'Regards' alone is too informal."
+                    },
+                    {
+                        "id": 2,
+                        "text": "With thanks,\nYours truly,",
+                        "is_correct": false,
+                        "feedback": "'With thanks' is not a standard complimentary close."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Thanking you,\n\nYours sincerely,",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ],
+                "senders_name": [
+                    {
+                        "id": 1,
+                        "text": "Saba Qureshi",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Saba Qureshi.",
+                        "is_correct": false,
+                        "feedback": "A full stop is not required after the sender’s name."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Student Saba Qureshi",
+                        "is_correct": false,
+                        "feedback": "Designations should not be added before the sender's name."
+                    }
+                ]
             }
-        ]
+        },
+        {
+            "title": "gymEquipmentOrder",
+            "sections": {
+                "senders_address": [
+                    {
+                        "id": 1,
+                        "text": "Sanskriti International School,\nPune – 411002.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Sanskriti International School\nPune – 411002.",
+                        "is_correct": false,
+                        "feedback": "Commas at the end of each line (except the last) are missing."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Mitali Nayan,\nSports Captain,\nSanskriti International School,\nPune – 411002.",
+                        "is_correct": false,
+                        "feedback": "The sender's name and designation should not be included in the sender's address."
+                    }
+                ],
+                "date": [
+                    {
+                        "id": 1,
+                        "text": "2 February, 2026.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "2nd Feb, 2026.",
+                        "is_correct": false,
+                        "feedback": "The month should be written in full, not abbreviated."
+                    },
+                    {
+                        "id": 3,
+                        "text": "February 2, 2026.",
+                        "is_correct": false,
+                        "feedback": "The day should come before the month."
+                    }
+                ],
+                "receivers_address": [
+                    {
+                        "id": 1,
+                        "text": "The Supplier,\nNew Development Sports,\nPune – 411002.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Supplier\nNew Development Sports\nPune – 411002.",
+                        "is_correct": false,
+                        "feedback": "The designation should be preceded by 'The'. Each line should end with a comma, except the last line."
+                    },
+                    {
+                        "id": 3,
+                        "text": "The Supplier,\nNew Development Sports,\nPune.",
+                        "is_correct": false,
+                        "feedback": "The PIN code must be included in the address."
+                    }
+                ],
+                "salutation": [
+                    {
+                        "id": 1,
+                        "text": "Dear Sir/Madam,",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Dear Supplier",
+                        "is_correct": false,
+                        "feedback": "The designation is not used in the salutation."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Hello",
+                        "is_correct": false,
+                        "feedback": "'Hello' is too informal for a formal letter. A comma should follow the salutation."
+                    }
+                ],
+                "introduction": [
+                    {
+                        "id": 1,
+                        "text": "I am writing on behalf of Sanskriti International School to place an order for new gym equipment. I am the Sports Captain of the school. We aim to enhance our physical education programme and were impressed by the quality of your products.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Our school needs new gym equipment. I am the Sports Captain, Mitali Nayan, and I want to order products from your company.",
+                        "is_correct": false,
+                        "feedback": "This introduction uses casual language and lacks proper organisational introduction."
+                    },
+                    {
+                        "id": 3,
+                        "text": "This is to inform you that we require gym equipment for our school.",
+                        "is_correct": false,
+                        "feedback": "This introduction sounds impersonal and lacks specific purpose statement."
+                    }
+                ],
+                "body_paragraph_1": [
+                    {
+                        "id": 1,
+                        "text": "We require treadmills, stationary bikes, dumbbells, resistance bands and yoga mats.",
+                        "is_correct": false,
+                        "feedback": "Exact quantities are not specified for each item."
+                    },
+                    {
+                        "id": 2,
+                        "text": "We are interested in the following items:\n\nTreadmills – 3 units\nStationary bikes – 5 units\nDumbbells (various weights) – 10 sets\nResistance bands – 15 sets\nYoga mats – 20 units.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "We want to buy 3 treadmills and 5 bikes. Also send dumbbells and yoga mats in sufficient quantities.",
+                        "is_correct": false,
+                        "feedback": "This paragraph lists some quantities vaguely and uses informal language."
+                    }
+                ],
+                "body_paragraph_2": [
+                    {
+                        "id": 1,
+                        "text": "Please send us your complete catalogue and detailed prices. We will inform you about delivery arrangements later.",
+                        "is_correct": false,
+                        "feedback": "This demonstrates poor planning and lacks professional detail."
+                    },
+                    {
+                        "id": 2,
+                        "text": "We would appreciate it if you could provide us with a catalogue and pricing details. If you have recommendations known for durability and safety, we will certainly consider them.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Send us details and tell us which brands are best.",
+                        "is_correct": false,
+                        "feedback": "This uses commanding language and lacks professional courtesy."
+                    }
+                ],
+                "conclusion": [
+                    {
+                        "id": 1,
+                        "text": "We hope to hear from you soon with the requested details.",
+                        "is_correct": false,
+                        "feedback": "This lacks clear professional next steps."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Once we receive the details, our administrative manager will confirm delivery arrangements. I look forward to your prompt attention to this order.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Kindly respond at the earliest. We need this equipment urgently.",
+                        "is_correct": false,
+                        "feedback": "This focuses too much on urgency and lacks proper closing remarks."
+                    }
+                ],
+                "complimentary_close": [
+                    {
+                        "id": 1,
+                        "text": "Thanking you,\n\nYours sincerely,",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Thanking you\nYours sincerely",
+                        "is_correct": false,
+                        "feedback": "Commas are missing after 'Thanking you' and 'Yours sincerely'."
+                    },
+                    {
+                        "id": 3,
+                        "text": "With sincere thanks,\nYours truly,",
+                        "is_correct": false,
+                        "feedback": "'With sincere thanks' is not a standard complimentary close."
+                    }
+                ],
+                "senders_name": [
+                    {
+                        "id": 1,
+                        "text": "Ms. Mitali Nayan",
+                        "is_correct": false,
+                        "feedback": "Titles like 'Ms.' are not added to the sender's name."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Mitali Nayan,\nSports Captain",
+                        "is_correct": false,
+                        "feedback": "A comma is not required and the designation should not be added."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Mitali Nayan",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ]
+            }
+        },
+        {
+            "title": "artSuppliesOrder",
+            "sections": {
+                "senders_address": [
+                    {
+                        "id": 1,
+                        "text": "Riverside School\nLake Road\nKolkata – 700001.",
+                        "is_correct": false,
+                        "feedback": "Each line should end with a comma, except the last line."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Riverside School,\nLake Road,\nKolkata – 700001.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Riverside School,\nLake Road,\nKolkata – 700001,\nIndia.",
+                        "is_correct": false,
+                        "feedback": "The country name is not required in domestic correspondence."
+                    }
+                ],
+                "date": [
+                    {
+                        "id": 1,
+                        "text": "05/03/2026.",
+                        "is_correct": false,
+                        "feedback": "The date should be written in the proper format: day in numbers, month in words and year."
+                    },
+                    {
+                        "id": 2,
+                        "text": "5th March, 2026.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "5 March 26.",
+                        "is_correct": false,
+                        "feedback": "The year should be written in full."
+                    }
+                ],
+                "receivers_address": [
+                    {
+                        "id": 1,
+                        "text": "The Manager,\nCreative Art Supplies,\nPark Street,\nKolkata – 700001.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Manager,\nCreative Art Supplies,\nPark Street,\nKolkata – 700001.",
+                        "is_correct": false,
+                        "feedback": "The designation should be preceded by 'The'."
+                    },
+                    {
+                        "id": 3,
+                        "text": "The Manager,\nCreative Art Supplies,\nPark Street,\nKolkata",
+                        "is_correct": false,
+                        "feedback": "The complete address must include the PIN code."
+                    }
+                ],
+                "salutation": [
+                    {
+                        "id": 1,
+                        "text": "Dear Sir or Madam,",
+                        "is_correct": false,
+                        "feedback": "The correct format is 'Dear Sir/Madam' with a forward slash."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Sir/Madam,",
+                        "is_correct": false,
+                        "feedback": "The salutation should begin with 'Dear'."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Dear Sir/Madam,",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ],
+                "introduction": [
+                    {
+                        "id": 1,
+                        "text": "I am John Gomes, President of the Art Club at Riverside School. I am writing on behalf of our school to place an order for art materials.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "This letter is to place an order for art supplies needed at our school.",
+                        "is_correct": false,
+                        "feedback": "This introduction does not clearly mention the sender's name and designation at the beginning."
+                    },
+                    {
+                        "id": 3,
+                        "text": "I am the Art Club President and we need to buy art materials from your shop.",
+                        "is_correct": false,
+                        "feedback": "This uses casual language and lacks formal structure."
+                    }
+                ],
+                "body_paragraph_1": [
+                    {
+                        "id": 1,
+                        "text": "We need acrylic paints, watercolour paper, brushes, canvas boards and pencils.",
+                        "is_correct": false,
+                        "feedback": "Items should be listed separately with consistent format and quantities."
+                    },
+                    {
+                        "id": 2,
+                        "text": "We would like to order the following items:\n\nAcrylic paints (assorted colours) – 20 sets\nWatercolour paper pads (A4 size) – 15 pads\nPaintbrushes (various sizes) – 25 sets\nCanvas boards (30 cm × 40 cm) – 10 units\nSketching pencils – 30 sets.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "We require various art supplies in approximate quantities.",
+                        "is_correct": false,
+                        "feedback": "Items and quantities are not clearly matched and specifications are unclear."
+                    }
+                ],
+                "body_paragraph_2": [
+                    {
+                        "id": 1,
+                        "text": "Delivery should be completed by 20 March 2026 without fail.",
+                        "is_correct": false,
+                        "feedback": "This sounds abrupt and uses interrogative tone."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Please deliver the supplies by 20 March 2026. We would appreciate a quotation including taxes and delivery charges, and details about bulk discounts and return policy.",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 3,
+                        "text": "Tell us the total price and apply discounts.",
+                        "is_correct": false,
+                        "feedback": "This uses commanding language and lacks courtesy."
+                    }
+                ],
+                "conclusion": [
+                    {
+                        "id": 1,
+                        "text": "Please send the quotation ASAP.",
+                        "is_correct": false,
+                        "feedback": "This uses overly casual and demanding language."
+                    },
+                    {
+                        "id": 2,
+                        "text": "We hope you can fulfil this order soon.",
+                        "is_correct": false,
+                        "feedback": "This uses casual tone and lacks professional formality."
+                    },
+                    {
+                        "id": 3,
+                        "text": "We request your prompt attention to this order. Once we receive the quotation, our accounts department will process the payment. We look forward to receiving the supplies.",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ],
+                "complimentary_close": [
+                    {
+                        "id": 1,
+                        "text": "Thanking you,\n\nYours sincerely,",
+                        "is_correct": true,
+                        "feedback": ""
+                    },
+                    {
+                        "id": 2,
+                        "text": "Yours sincerely,\nThanking you,",
+                        "is_correct": false,
+                        "feedback": "The order should be reversed: 'Thanking you' should come before 'Yours sincerely'."
+                    },
+                    {
+                        "id": 3,
+                        "text": "Thanking you\n\nYour's sincerely",
+                        "is_correct": false,
+                        "feedback": "An apostrophe is not used in 'Yours'."
+                    }
+                ],
+                "senders_name": [
+                    {
+                        "id": 1,
+                        "text": "John Gomes\nPresident, Art Club",
+                        "is_correct": false,
+                        "feedback": "The designation should not be added below the sender's name."
+                    },
+                    {
+                        "id": 2,
+                        "text": "John Gomes.",
+                        "is_correct": false,
+                        "feedback": "A full stop is not required after the sender's name."
+                    },
+                    {
+                        "id": 3,
+                        "text": "John Gomes",
+                        "is_correct": true,
+                        "feedback": ""
+                    }
+                ]
+            }
+        }
+    ]
 }
 
 /**
@@ -697,6 +697,40 @@ function playCompleteLottie() {
     });
 }
 
+function playSuccessLottie() {
+    const container = document.getElementById('success-lottie-container');
+
+    if (!container) {
+        console.warn(`Container success-lottie-container not found`);
+        return;
+    }
+
+    const animationPath = `./animation/celebration.json`;
+
+    // Clear previous animation
+    container.innerHTML = '';
+    container.style.display = 'block';
+
+    const anim = lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: animationPath,
+        rendererSettings: {
+            hideOnTransparent: false,
+            preserveAspectRatio: 'xMidYMid meet'
+        }
+    });
+
+    // Ensure totalFrames is available
+    anim.addEventListener('DOMLoaded', () => {
+        anim.addEventListener('complete', () => {
+            anim.goToAndStop(anim.totalFrames - 1, true);
+        });
+    });
+}
+
 // 3. Navigation & Initialization
 document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
@@ -722,7 +756,7 @@ function resetLetterBoxesAndRetry() {
         const suggestion = box.querySelector('.suggestion-answer');
         if (suggestion) {
             suggestion.style.display = 'none';
-           // hideFeedback(suggestion);
+            // hideFeedback(suggestion);
         }
         box.style.height = "200px";
     });
@@ -750,6 +784,7 @@ function showPracticeResult() {
     const imgId = resultImageMap[topic] || resultImageMap.scienceExhibitionSupplies;
     const img = document.getElementById(imgId);
     if (img) img.style.display = 'block';
+    playSuccessLottie();
 }
 
 function initNavigation() {
@@ -829,7 +864,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             e.stopPropagation();
 
             if (option.is_correct) {
-               // hideFeedback(suggestionBox);
+                // hideFeedback(suggestionBox);
                 suggestionBox.style.display = 'none';
 
                 let filled = mainBox.querySelector('.filled-text');
@@ -864,7 +899,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
             return;
         }
 
-       // hideFeedback(suggestionBox);
+        // hideFeedback(suggestionBox);
         suggestionBox.style.display = 'block';
     };
 }
@@ -899,7 +934,7 @@ function navigateTo(pageId) {
         if (el) el.style.display = (id === pageId) ? 'block' : 'none';
     });
 
-    if(pageId == 'practice-examples'){
+    if (pageId == 'practice-examples') {
         document.getElementById('learn-example-btn').style.display = 'none';
         document.getElementById('practice-result').style.display = 'none';
         // document.getElementById('practice-some-more').style.display = 'none';
@@ -912,7 +947,7 @@ function navigateTo(pageId) {
 function resetContainerScrolls() {
     window.scrollTo(0, 0);
     // Add any specific scrollable containers here
-    const letterArea = document.querySelector('.letter-container'); 
+    const letterArea = document.querySelector('.letter-container');
     if (letterArea) letterArea.scrollTop = 0;
 }
 
@@ -921,6 +956,8 @@ function resetContainerScrolls() {
  */
 function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => p.style.display = "none");
 
     if (gElement.id !== expectedId) {
         applyRightVisualHighlight(expectedId);
@@ -967,6 +1004,7 @@ function validateMatch(leftId, rightId) {
 function processCorrectMatch(btnElement) {
     const targetG = document.getElementById(state.activeLeftId);
 
+    showPopupFromGElement(targetG.id);
     // 1. Update SVG Box Appearance
     targetG.querySelectorAll('path').forEach(p => {
         //p.setAttribute('fill', '#f8f9fa');
@@ -996,12 +1034,30 @@ function processCorrectMatch(btnElement) {
     }
 }
 
+function showPopupFromGElement(gElement) {
+
+    if (!gElement) return;
+
+    const popupId =
+        "popup-" + gElement;
+
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => p.style.display = "none");
+
+    const popup = document.getElementById(popupId);
+    console.log(popup);
+
+    if (popup) popup.style.display = "block";
+}
+
 /**
  * FUNCTION: Injects text into the center of the SVG group
  */
 function addTextToSvg(groupElement, label) {
     // Get the bounding box of the paths to find the center
-    const bbox = groupElement.getBBox();
+    //const bbox = groupElement.getBBox();
+    const path = groupElement.querySelector('path');
+    const bbox = path ? path.getBBox() : groupElement.getBBox();
 
     // Create SVG Text element
     const textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -1206,5 +1262,17 @@ function initGameListeners() {
         // Save the initial height
         box.dataset.defaultHeight = box.offsetHeight + 'px';
     });
-    
+
 }
+
+document.querySelectorAll(".close-btn").forEach(btn => {
+
+    btn.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        document.querySelectorAll(".svg-popup")
+            .forEach(p => p.style.display = "none");
+    });
+
+});
