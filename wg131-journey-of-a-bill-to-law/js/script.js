@@ -908,7 +908,53 @@ function showPopupInsights(idx) {
     }
   });
 
-  // ── 8. Resize banner to fit label (after render so measurement is accurate)
+  // ── 7. Wire option click feedback ────────────────────────────────────────
+  // Map option slot → parent group containing the box rect + text group
+  const slotGroups = ["Group_1209", "Group_1210", "Group_1211"];
+
+  // Reset option box colours and clear previous feedback
+  resetOptionBoxes();
+  removeFeedbackOverlay();
+
+  slotGroups.forEach((gid, i) => {
+    const grp = document.getElementById(gid);
+    if (!grp) return;
+    // Remove old listener by cloning the node
+    const fresh = grp.cloneNode(true);
+    grp.parentNode.replaceChild(fresh, grp);
+    fresh.style.cursor = "pointer";
+
+    fresh.addEventListener("click", () => {
+      const isCorrect = shuffled[i] && shuffled[i].correct;
+      resetOptionBoxes();
+      // Colour the selected box
+      const boxRects = fresh.querySelectorAll("rect");
+      boxRects.forEach((r) => {
+        r.style.fill = isCorrect ? "#4caf50" : "#f87171";
+        r.style.stroke = isCorrect ? "#2e7d32" : "#c0392b";
+      });
+      // Grey out the other two
+      slotGroups.forEach((ogid, oi) => {
+        if (oi === i) return;
+        const og =
+          document.getElementById(ogid) ||
+          fresh.parentNode.querySelector(`[id="${ogid}"]`);
+        if (og) {
+          og.querySelectorAll("rect").forEach((r) => {
+            r.style.fill = "#e5e7eb";
+            r.style.stroke = "#d1d5db";
+          });
+          og.querySelectorAll("text").forEach(
+            (t) => (t.style.fill = "#9ca3af"),
+          );
+        }
+      });
+      // Show inline feedback
+      showFeedbackOverlay(isCorrect, s);
+    });
+  });
+
+  // ── 8. Resize banner ──────────────────────────────────────────────────────
   requestAnimationFrame(() => resizeQuizBanner());
 
   // ── 9. Reveal btn-insights ────────────────────────────────────────────────
@@ -997,4 +1043,81 @@ function hideInsightsPanel() {
     panel.style.display = "";
     panel.classList.add("st160");
   }
+}
+
+// ── QUIZ FEEDBACK HELPERS ─────────────────────────────────────────────────────
+
+/** Reset all 3 option boxes back to the original light-blue style */
+function resetOptionBoxes() {
+  ["Group_1209", "Group_1210", "Group_1211"].forEach((gid) => {
+    const grp = document.getElementById(gid);
+    if (!grp) return;
+    grp.querySelectorAll("rect").forEach((r) => {
+      r.style.fill = "#dbeafe";
+      r.style.stroke = "#9ac9f2";
+    });
+    grp.querySelectorAll("text").forEach((t) => {
+      t.style.fill = "#181818";
+    });
+  });
+}
+
+/** Remove the injected feedback foreignObject if it exists */
+function removeFeedbackOverlay() {
+  const old = document.getElementById("quiz-feedback-fo");
+  if (old) old.parentNode.removeChild(old);
+}
+
+/**
+ * Show correct / incorrect feedback inline inside Quiz-popup via SVG foreignObject.
+ * @param {boolean} isCorrect
+ * @param {object}  s  – current STATIONS entry
+ */
+function showFeedbackOverlay(isCorrect, s) {
+  removeFeedbackOverlay();
+  const quizPopup = document.getElementById("Quiz-popup");
+  if (!quizPopup) return;
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const fo = document.createElementNS(SVG_NS, "foreignObject");
+  fo.setAttribute("id", "quiz-feedback-fo");
+  fo.setAttribute("x", "520");
+  fo.setAttribute("y", "660");
+  fo.setAttribute("width", "880");
+  fo.setAttribute("height", "320");
+
+  const body = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+  body.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+
+  if (isCorrect) {
+    body.innerHTML = `
+      <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
+        <p style="color:#2e7d32;font-size:22px;font-weight:700;margin:0 0 10px">
+          ✓ Correct! You discovered:
+        </p>
+        <div style="background:#f0fdf4;border:2px solid #4caf50;border-radius:12px;
+                    padding:14px 20px;max-width:720px;margin:0 auto">
+          <p style="color:#005388;font-size:15px;font-weight:700;
+                    letter-spacing:1px;margin:0 0 4px">${s.label.toUpperCase()}</p>
+          <p style="color:#181818;font-size:19px;font-weight:700;margin:0 0 4px">
+            ${s.msg2 || ""}</p>
+          <p style="color:#555;font-size:15px;margin:0">${s.msg3 || ""}</p>
+        </div>
+      </div>`;
+  } else {
+    body.innerHTML = `
+      <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
+        <p style="color:#c0392b;font-size:22px;font-weight:700;margin:0 0 10px">
+          ✕ Try again!
+        </p>
+        <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;
+                    padding:14px 20px;max-width:720px;margin:0 auto">
+          <p style="color:#92400e;font-size:16px;font-weight:700;margin:0 0 4px">Hint:</p>
+          <p style="color:#181818;font-size:16px;margin:0">${s.hint || ""}</p>
+        </div>
+      </div>`;
+  }
+
+  fo.appendChild(body);
+  quizPopup.appendChild(fo);
 }
