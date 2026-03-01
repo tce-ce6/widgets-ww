@@ -129,6 +129,13 @@ class Wg97 {
         const texts = Array.from(document.querySelectorAll('text'));
         this.dom.instruction = texts.find(t => t.textContent.includes('Tap the Eppendorf'));
 
+        const testTubeBase = document.getElementById('test_tube_base');
+        if (testTubeBase) testTubeBase.style.pointerEvents = 'none';
+        Wg97.DOM_MAP.tubes.forEach(id => {
+            const tube = document.getElementById(id);
+            if (tube) tube.style.pointerEvents = 'none';
+        });
+
         this.svgEl = document.querySelector('svg');
     }
 
@@ -434,12 +441,17 @@ class Wg97 {
             if (this.dom[`slot_${slotIndex}`]) this.dom[`slot_${slotIndex}`].style.cursor = 'default';
 
             // Show lane label (Samples only)
-            if (laneIndex >= 1) {
-                const label = this.dom.laneLabels[laneIndex - 1];
-                if (label) {
-                    label.textContent = `Sample ${slotIndex}`;
-                    this._showEl(label);
+            const label = this.dom.laneLabels[laneIndex];
+            if (label) {
+                if (laneIndex >= 1) {
+                    const tspan = label.querySelector('tspan');
+                    if (tspan) {
+                        tspan.textContent = `sample-${slotIndex}`;
+                    } else {
+                        label.textContent = `sample-${slotIndex}`;
+                    }
                 }
+                this._showEl(label);
             }
 
             // Fill well
