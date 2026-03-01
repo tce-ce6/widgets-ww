@@ -1,24 +1,5 @@
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Election Officer - Enforce Model Code of Conduct</title>
-
-
-  <link rel="stylesheet" href="./css/global_style.css">
-  <link rel="stylesheet" href="./css/style.css">
-</head>
-
-<body id="idiom-wrapper">
-  <div class="container">
-    <div class="mainContainerOuter">
-      <div class="wdgetTitle">
-        <h2>Election Officer - Enforce Model Code of Conduct</h2>
-        <span id="versionId" class="versionText">b3_wg130_260221</span>
-      </div>
-      <div class="svg-container" id="svg-container">
-        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1081">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1081">
   <defs>
     <clipPath id="clippath">
       <rect x="379.7" y="816.3" width="1145.2" height="36" fill="none"/>
@@ -3740,24 +3721,38 @@
                 </g>
               </g>
             </g>
-            <foreignObject x="887.9" y="353.6" width="648.8" height="360">
-              <div xmlns="http://www.w3.org/1999/xhtml" class="text-container">
-                <p style="font-size: 28px; color: #7e1f10; letter-spacing: 1px; line-height: 36px;" class="text">You completed your MCC duty! <br/> Every election depends on citizens who understand these rules.<br/> The Election Commission handles 15,000+ MCC complaints every election.<br/> Every vigilant citizen makes elections stronger! Understanding MCC helps you spot violations in real life.<br/> Fair elections are the foundation of democracy.</p>
-              </div>
-              </foreignObject>
+            <g id="You_completed_your_MCC_duty_Every_election_depends_on_citizens_who_understand_these_rules._The_Election_Commission_handles_15_000_MCC_complaints_every_election._Every_vigilant_citizen_makes_elections_stronger_Understanding_MCC_helps_you_spot_violations_" data-name="You completed your MCC duty Every election depends on citizens who understand these rules. The Election Commission handles 15 000 MCC complaints every election. Every vigilant citizen makes elections stronger Understanding MCC helps you spot violations " isolation="isolate">
+              <g isolation="isolate">
+                <text transform="translate(887.9 393.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.09em">Y</tspan><tspan x="16.11" y="0">ou completed your MCC duty!</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 430.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">Every election depends on citizens who understand</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 467.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">these rules.</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 504.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">The Election Commission handles 15,000+ MCC</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 541.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">complaints every election.</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 578.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">Every vigilant citizen makes elections stronger!</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 615.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">Understanding MCC helps you spot violations in real</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 652.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">life.</tspan></text>
+              </g>
+              <g isolation="isolate">
+                <text transform="translate(887.9 689.6)" fill="#7e1f10" font-family="ArialMT, Arial" font-size="28" isolation="isolate"><tspan x="0" y="0">Fair elections are the foundation of democrac</tspan><tspan x="561.87" y="0" letter-spacing="-.07em">y</tspan><tspan x="573.79" y="0">.</tspan></text>
+              </g>
+            </g>
           </g>
         </g>
       </g>
     </g>
   </g>
 </svg>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
-</body>
-
-</html>
