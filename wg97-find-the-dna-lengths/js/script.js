@@ -167,55 +167,61 @@ class Wg97 {
         this.dom.electroOverlay.setAttribute('display', 'none');
         this.dynamicGroup.appendChild(this.dom.electroOverlay);
 
-        // 4. Input Area (foreignObject)
-        const fo = document.createElementNS(ns, "foreignObject");
-        fo.setAttribute('x', 1300);
-        fo.setAttribute('y', 920);
-        fo.setAttribute('width', 450);
-        fo.setAttribute('height', 80);
-        fo.setAttribute('display', 'none');
-        this.dom.inputArea = fo;
-
-        const foDiv = document.createElement('div');
-        foDiv.style.display = 'flex';
-        foDiv.style.gap = '20px';
-        foDiv.style.fontFamily = 'Roboto, sans-serif';
-        foDiv.style.justifyContent = 'space-between';
+        // 4. Input Area (Group containing foreignObjects)
+        this.dom.inputArea = document.createElementNS(ns, "g");
+        this.dom.inputArea.setAttribute('id', 'input_area');
+        this.dom.inputArea.setAttribute('display', 'none');
 
         this.dom.inputs = [];
         this.dom.feedbacks = [];
+        const Xs = [277.06, 457.06, 636.06, 817.06];
+
         for (let i = 0; i < 4; i++) {
+            const fo = document.createElementNS(ns, "foreignObject");
+            fo.setAttribute('x', Xs[i] - 17); // shift left slightly to center with the wider width
+            fo.setAttribute('y', 690);
+            fo.setAttribute('width', 160);
+            fo.setAttribute('height', 150);
+
             const wrapper = document.createElement('div');
             wrapper.style.display = 'flex';
             wrapper.style.flexDirection = 'column';
             wrapper.style.alignItems = 'center';
+            wrapper.style.fontFamily = 'Roboto, sans-serif';
 
             const inp = document.createElement('input');
-            inp.type = 'number';
-            inp.style.width = '80px';
-            inp.style.height = '35px';
-            inp.style.fontSize = '18px';
+            inp.type = 'text'; // handle 'bps' suffix
+            inp.style.width = '126px';
+            inp.style.height = '43px';
+            inp.style.fontSize = '22px';
             inp.style.textAlign = 'center';
-            inp.style.border = '2px solid #ccc';
-            inp.style.borderRadius = '4px';
+            inp.style.border = '2px solid #77c974';
+            inp.style.borderRadius = '9px';
+            inp.style.color = '#333';
+            inp.style.fontWeight = 'bold';
             inp.style.outline = 'none';
+            inp.style.boxSizing = 'border-box';
+            inp.style.padding = '0';
 
             const fb = document.createElement('span');
-            fb.style.fontSize = '12px';
-            fb.style.fontWeight = 'bold';
-            fb.style.marginTop = '4px';
-            fb.style.height = '15px'; // Fixed height to prevent layout shift
+            fb.style.fontSize = '20px';
+            fb.style.fontWeight = '700';
+            fb.style.marginTop = '15px';
+            fb.style.textAlign = 'center';
+            fb.style.lineHeight = '1.2';
+            fb.style.whiteSpace = 'pre-wrap';
+            fb.style.fontFamily = 'Roboto, sans-serif';
             fb.textContent = '';
 
             wrapper.appendChild(inp);
             wrapper.appendChild(fb);
-            foDiv.appendChild(wrapper);
+            fo.appendChild(wrapper);
+            this.dom.inputArea.appendChild(fo);
 
             this.dom.inputs.push(inp);
             this.dom.feedbacks.push(fb);
         }
-        fo.appendChild(foDiv);
-        this.dynamicGroup.appendChild(fo);
+        this.dynamicGroup.appendChild(this.dom.inputArea);
 
         // 5. Submit Button (injected visually below inputs)
         // Native submit button mapped in cacheDOM
@@ -474,7 +480,7 @@ class Wg97 {
         // Fill inputs with correct values
         const correctValues = this.currentSet;
         this.dom.inputs.forEach((inp, idx) => {
-            inp.value = correctValues[idx];
+            inp.value = correctValues[idx] + " bps";
         });
 
         // Trigger submit
@@ -484,17 +490,16 @@ class Wg97 {
     }
 
     _onSubmitClick() {
-        if (this.state !== Wg97.STATE.INPUT) return;
+        if (this.state !== Wg97.STATE.INPUT && this.state !== Wg97.STATE.COMPLETE) return;
 
-        const nonLadderOrder = this.loadQueue.filter(s => s !== 0);
-        // Correct values line up with the 4 sample lanes
         const correctValues = this.currentSet;
-
         let allCorrect = true;
 
         this.dom.inputs.forEach((inp, idx) => {
             const fb = this.dom.feedbacks[idx];
-            const userVal = parseInt(inp.value, 10);
+            const rawVal = inp.value;
+            const numMatch = rawVal.match(/\d+/);
+            const userVal = numMatch ? parseInt(numMatch[0], 10) : NaN;
             const expected = correctValues[idx];
 
             if (isNaN(userVal)) {
@@ -507,23 +512,24 @@ class Wg97 {
             }
 
             if (Math.abs(userVal - expected) <= Wg97.TOLERANCE) {
-                inp.style.borderColor = '#4CAF50';
-                inp.style.backgroundColor = '#E8F5E9';
-                fb.textContent = '✓ Correct';
-                fb.style.color = '#2E7D32';
+                inp.value = userVal + " bps";
+                inp.style.borderColor = '#00992a';
+                inp.style.backgroundColor = '#ecffeb';
+                fb.textContent = 'Very good!';
+                fb.style.color = '#00992a';
                 inp.disabled = true;
                 this.correct[idx] = true;
             } else {
-                inp.style.borderColor = '#F44336';
-                inp.style.backgroundColor = '#FFEBEE';
-                fb.textContent = '✗ Try again';
-                fb.style.color = '#C62828';
+                inp.style.borderColor = '#f23a0a';
+                inp.style.backgroundColor = '#fff';
+                fb.textContent = 'Not really! Enter\nthe correct length.';
+                fb.style.color = '#f23a0a';
                 allCorrect = false;
                 this.correct[idx] = false;
             }
         });
 
-        if (allCorrect || this.validateStep()) {
+        if (allCorrect) {
             this.state = Wg97.STATE.COMPLETE;
             this.updateUI();
         }
