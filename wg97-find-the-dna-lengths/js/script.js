@@ -18,10 +18,10 @@ class Wg97 {
     static TUBE_COLORS = ['#FF6B35', '#9C4DCC', '#E91E63', '#4CAF50', '#FF9800'];
 
     static BP_TO_Y = {
-        100: 908, 200: 843, 300: 804, 400: 776, 500: 755,
-        600: 737, 700: 722, 800: 709, 900: 698, 1000: 688,
-        1100: 679, 1200: 671, 1300: 664, 1400: 657, 1500: 651,
-        1600: 646, 1700: 641, 1800: 636, 1900: 631, 2000: 627, 2100: 623
+        100: 873, 200: 849, 300: 826, 400: 802, 500: 778,
+        600: 755, 700: 731, 800: 707, 900: 683, 1000: 660,
+        1100: 636, 1200: 612, 1300: 589, 1400: 565, 1500: 541,
+        1600: 518, 1700: 494, 1800: 470, 1900: 446, 2000: 423, 2100: 376
     };
 
     static TOLERANCE = 50;
@@ -69,6 +69,8 @@ class Wg97 {
         this.animating = false;
         this.dom = {};
         this.correct = [false, false, false, false];
+        this.showingAnswer = false;
+        this.savedStateInfo = null;
     }
 
     init() {
@@ -381,6 +383,9 @@ class Wg97 {
         this._hideEl(this.dom.electroOverlay);
         this._hideEl(this.dom.modal);
 
+        this.showingAnswer = false;
+        this._updateShowAnswerBtnText("Show Answer");
+
         this.updateUI();
     }
 
@@ -474,19 +479,67 @@ class Wg97 {
         this.resetWidget();
     }
 
+    _updateShowAnswerBtnText(newText) {
+        const g = document.getElementById('Show_Answer');
+        if (g) {
+            const txt = g.querySelector('text');
+            if (txt) {
+                txt.innerHTML = `<tspan x="0" y="0">${newText}</tspan>`;
+                if (newText === "Back") {
+                    txt.setAttribute('transform', 'translate(425 1004.3)');
+                } else {
+                    txt.setAttribute('transform', 'translate(351.91 1004.3)');
+                }
+            }
+        }
+    }
+
     _onShowAnswerClick() {
         if (this.state === Wg97.STATE.IDLE || this.state === Wg97.STATE.LOADING || this.state === Wg97.STATE.ALL_LOADED) return;
 
-        // Fill inputs with correct values
-        const correctValues = this.currentSet;
-        this.dom.inputs.forEach((inp, idx) => {
-            inp.value = correctValues[idx] + " bps";
-        });
+        if (this.showingAnswer) {
+            if (this.savedStateInfo) {
+                this.dom.inputs.forEach((inp, idx) => {
+                    inp.value = this.savedStateInfo.inputs[idx];
+                    inp.style.borderColor = this.savedStateInfo.borderColors[idx];
+                    inp.style.backgroundColor = this.savedStateInfo.bgColors[idx];
+                    this.dom.feedbacks[idx].textContent = this.savedStateInfo.fbText[idx];
+                    this.dom.feedbacks[idx].style.color = this.savedStateInfo.fbColor[idx];
+                    inp.disabled = this.savedStateInfo.disabled[idx];
+                });
+                this.state = this.savedStateInfo.state;
+                if (this.state !== Wg97.STATE.COMPLETE) {
+                    this._hideEl(this.dom.successBanner);
+                }
+            }
+            this.showingAnswer = false;
+            this._updateShowAnswerBtnText("Show Answer");
+        } else {
+            this.savedStateInfo = {
+                inputs: this.dom.inputs.map(inp => inp.value),
+                borderColors: this.dom.inputs.map(inp => inp.style.borderColor),
+                bgColors: this.dom.inputs.map(inp => inp.style.backgroundColor),
+                fbText: this.dom.feedbacks.map(fb => fb.textContent),
+                fbColor: this.dom.feedbacks.map(fb => fb.style.color),
+                disabled: this.dom.inputs.map(inp => inp.disabled),
+                state: this.state
+            };
+            this.showingAnswer = true;
+            this._updateShowAnswerBtnText("Back");
 
-        // Trigger submit
-        this._onSubmitClick();
-
-        // Disable Show Answer once used (optional per prompt, but "once Start clicked it should always be active" implies keep active, so we leave it active but it will just run this block safely again)
+            const correctValues = this.currentSet;
+            this.dom.inputs.forEach((inp, idx) => {
+                inp.value = correctValues[idx] + " bps";
+                inp.style.borderColor = '#00992a';
+                inp.style.backgroundColor = '#ecffeb';
+                this.dom.feedbacks[idx].textContent = 'Very good!';
+                this.dom.feedbacks[idx].style.color = '#00992a';
+                inp.disabled = true;
+            });
+            this.state = Wg97.STATE.COMPLETE;
+            this._showEl(this.dom.successBanner);
+        }
+        this.updateUI();
     }
 
     _onSubmitClick() {
@@ -612,17 +665,20 @@ class Wg97 {
     _animateElectrophoresis(callback) {
         this._showEl(this.dom.electroOverlay);
 
+        const nonLadderTubes = this.loadQueue.filter(s => s !== 0);
+
         // Compute Y positions
         this.dom.sampleBands.forEach((band, idx) => {
-            const bps = this.currentSet[idx];
+            const slotIndex = nonLadderTubes[idx];
+            const bps = this.currentSet[slotIndex - 1];
             let yPos = Wg97.BP_TO_Y[bps];
             if (yPos === undefined) {
-                const Y_BOT = 908;
-                const Y_TOP = 623;
+                const Y_BOT = 873;
+                const Y_TOP = 376;
                 yPos = Math.round(Y_BOT - (Math.log(bps) - Math.log(100)) / (Math.log(2100) - Math.log(100)) * (Y_BOT - Y_TOP));
             }
             band.setAttribute('y', yPos);
-            band.setAttribute('fill', Wg97.TUBE_COLORS[this.loadQueue[idx + 1]]); // Color maps to the tube that went into this lane
+            band.setAttribute('fill', Wg97.TUBE_COLORS[slotIndex]); // Color maps to the specific tube in this lane
         });
 
         const totalDuration = 2000;
