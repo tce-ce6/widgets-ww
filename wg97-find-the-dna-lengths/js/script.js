@@ -363,7 +363,7 @@ class Wg97 {
         // Reset tubes
         for (let i = 0; i < 5; i++) {
             if (this.dom[`tube_${i}`]) this.dom[`tube_${i}`].style.opacity = '1';
-            if (this.dom[`bg_${i}`]) this.dom[`bg_${i}`].setAttribute('fill', '#b1ffae'); // Default hilight BG color from SVG
+            if (this.dom[`bg_${i}`]) this.dom[`bg_${i}`].setAttribute('fill', 'rgba(177, 255, 174, 0.6)'); // Default hilight BG color from SVG
             if (this.dom[`liquid_${i}`]) this.dom[`liquid_${i}`].setAttribute('fill', '#0a719b'); // Monochromatic blue
             if (this.dom[`slot_${i}`]) this.dom[`slot_${i}`].style.cursor = 'pointer';
         }
@@ -425,7 +425,7 @@ class Wg97 {
         this.state = Wg97.STATE.LOADING;
         this.animating = true;
 
-        if (this.dom[`bg_${slotIndex}`]) this.dom[`bg_${slotIndex}`].setAttribute('fill', '#D0F8FF');
+        if (this.dom[`bg_${slotIndex}`]) this.dom[`bg_${slotIndex}`].setAttribute('fill', 'rgba(177, 255, 174, 0.6)');
 
         let laneIndex;
         if (slotIndex === 0) {
@@ -439,7 +439,8 @@ class Wg97 {
             this.loadQueue.push(slotIndex);
 
             const color = Wg97.TUBE_COLORS[slotIndex];
-            if (this.dom[`bg_${slotIndex}`]) this.dom[`bg_${slotIndex}`].setAttribute('fill', color);
+            /** bg color change as per design */
+            if (this.dom[`bg_${slotIndex}`]) this.dom[`bg_${slotIndex}`].setAttribute('fill', 'rgba(177, 255, 174, 0.6)');
             if (this.dom[`slot_${slotIndex}`]) this.dom[`slot_${slotIndex}`].style.cursor = 'default';
 
             // Show lane label (Samples only)
