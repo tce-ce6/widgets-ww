@@ -116,7 +116,7 @@ function nextStep() {
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML =
-      "ऑडियो सुनें।&nbsp;&nbsp;&nbsp;&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+      "ऑडियो सुनें।&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
     age_badhe_button = true;
     document.getElementById("audio_button_1").style.display = "none";
     document.getElementById("audio_button_2").style.display = "none";
@@ -142,27 +142,27 @@ function textClickEvent() {
         ? "cloud_text_highlight_01"
         : "cloud_text_highlight_02";
 
-    // moveYellowPatchToCorrectSide(cloudId)
-    // Choose outline based on correctness (not position!)
+    // Choose outline by POSITION (names are positional: Incorrect=LEFT, correct=RIGHT)
     const outlineId =
       cloudId === "cloud_text_01"
-        ? "cloud_text_outline_Incorrect" // red
-        : "cloud_text_outline_correct"; // yellow
+        ? "cloud_text_outline_Incorrect" // LEFT outline
+        : "cloud_text_outline_correct"; // RIGHT outline
 
-    document.getElementById(outlineId).style.display = "block";
-    // document.getElementById(highlightId).style.display = 'block';
-    const paths = document.getElementById(outlineId).querySelectorAll("path");
+    const outlineEl = document.getElementById(outlineId);
+    outlineEl.style.display = "block";
+    const paths = outlineEl.querySelectorAll("path");
     if (paths[0] && paths[0].hasAttribute("fill")) {
       paths[0].setAttribute("fill", isCorrect ? "#93F724" : "#FF0801");
     }
-    // Show yellow stars only on correct answer
+    // Show stars within THIS outline element (avoids duplicate ID clash)
     if (isCorrect) {
       ["Group_81", "Group_83", "Group_86"].forEach((id) => {
-        const el = document.getElementById(id);
+        const el = outlineEl.querySelector(`[id="${id}"]`);
         if (el) el.style.display = "block";
       });
     }
-
+    let tspans = document.getElementById(cloudId).querySelector("p");
+    tspans.classList.add("cloud_text_highlight");
     // Animation
     lottiAnimation("block");
     playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
@@ -330,6 +330,7 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
+  parentEl.style.display = "block";
   parentEl.classList.remove("visible");
   playAnimationAudio(bandGroup);
 
@@ -350,20 +351,21 @@ function playLottieAnimation(bandGroup) {
     lottieInstances.addEventListener("complete", () => {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
-        resetFeedbackVisuals();
-        if (bandGroup === "INCORRECT") {
-          document.getElementById("audio_button_1").style.display = "block";
-          document.getElementById("audio_button_2").style.display = "block";
-          audio_button_1 = false;
-          audio_button_2 = false;
-          age_badhe_button = false;
-          nextbutton();
-          hideAndShowAudioButtons("none");
-          let i_text = document.getElementById("i_text_1");
-          const tspans = i_text.querySelector("p");
-          tspans.innerHTML =
-            "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
-        }
+        parentEl.style.display = "none";
+        // resetFeedbackVisuals();
+        // if (bandGroup === "INCORRECT") {
+        //   document.getElementById("audio_button_1").style.display = "block";
+        //   document.getElementById("audio_button_2").style.display = "block";
+        //   audio_button_1 = false;
+        //   audio_button_2 = false;
+        //   age_badhe_button = false;
+        //   nextbutton();
+        //   hideAndShowAudioButtons("none");
+        //   let i_text = document.getElementById("i_text_1");
+        //   const tspans = i_text.querySelector("p");
+        //   tspans.innerHTML =
+        //     "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+        // }
 
         if (lottieInstances) {
           lottieInstances.destroy();

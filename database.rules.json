@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "widgets": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}

@@ -200,6 +200,30 @@ ok "script.js updated."
 unset _SCRIPT_JS _WIDGET_TITLE _WIDGET_URL _ASSET_PATH _WG_NUM \
       _WIDGET_FOLDER _CREATOR_INITIALS _WIDGET_STATUS
 
+# ── Write widget entry to Firebase Realtime Database ──────────────────────────
+step "Updating Firebase Realtime Database..."
+
+DB_JSON=$(PYTHONIOENCODING=utf-8 $PYTHON -c "
+import json
+from datetime import datetime
+entry = {
+    'name':      '${WIDGET_TITLE}',
+    'link':      '${WIDGET_URL}',
+    'imagePath': './assets/wg-${WG_NUM}.png',
+    'creators':  '${CREATOR_INITIALS}-${WG_NUM}',
+    'status':    '${WIDGET_STATUS}',
+    'updatedAt': datetime.now().strftime('%Y-%m-%d %H:%M'),
+}
+print(json.dumps(entry))
+")
+
+firebase database:update "/widgets/wg${WG_NUM}" \
+  --data "$DB_JSON" \
+  --project "$FIREBASE_PROJECT_ID" \
+  --force 2>&1 | grep -v "^$" || true
+
+ok "Database updated: wg${WG_NUM}"
+
 # ── Build dist/ and deploy ─────────────────────────────────────────────────────
 lib_build_dist "$WIDGET_FOLDER"
 
