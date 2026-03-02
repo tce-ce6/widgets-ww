@@ -2,6 +2,14 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Journey Of A Bill To Law",
+        link: "https://tce-widgets.web.app/wg131-journey-of-a-bill-to-law/",
+        imagePath: "./assets/wg-131.png",
+        creators: "su-131",
+        status: "in-review",
+        updatedAt: "2026-03-02 19:15",
+    },
+    {
         name: "Addition Of Integers",
         link: "https://tce-widgets.web.app/wg104-addition-of-integers/",
         imagePath: "./assets/wg-104.png",
@@ -372,13 +380,6 @@ const WIDGET_DATA = [
     link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
     imagePath: "./assets/wg-122.png",
     creators: "as-ra-122",
-    status: "todo",
-  },
-  {
-    name: "Journey of a Bill to Law",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-131.png",
-    creators: "-ra-131",
     status: "todo",
   },
   {
