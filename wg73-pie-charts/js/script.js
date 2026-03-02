@@ -12,39 +12,130 @@ document.addEventListener("DOMContentLoaded", () => {
         "I-Text-Arrow",
         "BTNs-Global",
         "Question-TOS",
-        "Activity_Title"
+        "Activity_Title",
+        "Group_1689",
+        "Group_16891",
+        "Group_16892",
+        "Group_16893"
     ];
 
     elementsToHide.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-            el.style.display = "none";
-        }
+        if (el) el.style.display = "none";
     });
 
-    let isBudgetCompleted = false;
+    // Configuration for different games
+    const gameConfigs = {
+        budget: {
+            title: "School Budget Distribution",
+            categoryHeader: "Department",
+            valueHeader: "Amount (₹ in lakhs)",
+            questionRows: [
+                "A school's annual budget of ₹12 lakh is distributed among various ",
+                "departments. The largest allocation of ₹4 lakh goes to infrastructure ",
+                "development. Teacher salaries get ₹3 lakh, sports facilities ₹2 lakh, ",
+                "and library, laboratory, and events each receive ₹1 lakh. ",
+                "Draw a pie chart showing the school budget distribution."
+            ],
+            tableRows: [
+                { id: "Infrastructure", label: "Infrastructure", value: "₹4 lakh", expectedAngle: 120, color: '#2196f3' },
+                { id: "Salaries", label: "Salaries", value: "₹3 lakh", expectedAngle: 90, color: '#ff9800' },
+                { id: "Sports", label: "Sports", value: "₹2 lakh", expectedAngle: 60, color: '#e91e63' },
+                { id: "Library", label: "Library", value: "₹1 lakh", expectedAngle: 30, color: '#ffeb3b' },
+                { id: "Laboratory", label: "Laboratory", value: "₹1 lakh", expectedAngle: 30, color: '#8bc34a' },
+                { id: "Events", label: "Events", value: "₹1 lakh", expectedAngle: 30, color: '#4caf50' }
+            ],
+            totalLabel: "Total",
+            totalValue: "₹12 lakh",
+            totalAngle: "360°"
+        },
+        daily: {
+            title: "Daily Activities Chart",
+            categoryHeader: "Activity",
+            valueHeader: "Hours (h)",
+            questionRows: [
+                "A Class 6 student recorded how they spend their 24 hours in a typical day.",
+                "Maximum time (8 hours) goes to sleeping, followed by 6 hours in school.",
+                "Playing and other activities take 3 hours each, while studying and eating",
+                "take 2 hours each. Draw a pie chart to represent how the student",
+                "spends 24 hours in a day."
+            ],
+            tableRows: [
+                { id: "Sleeping", label: "Sleeping", value: "8", expectedAngle: 120, color: '#4caf50' },
+                { id: "School", label: "School", value: "6", expectedAngle: 90, color: '#03a9f4' },
+                { id: "Playing", label: "Playing", value: "3", expectedAngle: 45, color: '#797b7e' },
+                { id: "Studying", label: "Studying", value: "2", expectedAngle: 30, color: '#f44336' },
+                { id: "Eating", label: "Eating", value: "2", expectedAngle: 30, color: '#ffabc5' },
+                { id: "Others", label: "Others", value: "3", expectedAngle: 45, color: '#9c27b0' }
+            ],
+            totalLabel: "Total",
+            totalValue: "24",
+            totalAngle: "360°"
+        },
+        icecream: {
+            title: "Favorite Ice Cream Flavors",
+            categoryHeader: "Flavor",
+            valueHeader: "Number of Students",
+            questionRows: [
+                "A survey was conducted among 360 Class 6 students about their favorite ice cream",
+                "flavor. Chocolate emerged as the clear favorite with 120 votes (1/3 of students).",
+                "Vanilla received 90 votes, while Strawberry and Mango each got 60 votes.",
+                "Butterscotch was least popular with 30 votes.",
+                "Represent the ice cream flavor survey data using a pie chart."
+            ],
+            tableRows: [
+                { id: "Chocolate", label: "Chocolate", value: "120", expectedAngle: 120, color: '#2196f3' },
+                { id: "Vanilla", label: "Vanilla", value: "90", expectedAngle: 90, color: '#ff9800' },
+                { id: "Strawberry", label: "Strawberry", value: "60", expectedAngle: 60, color: '#9e9e9e' },
+                { id: "Mango", label: "Mango", value: "60", expectedAngle: 60, color: '#ffeb3b' },
+                { id: "Butterscotch", label: "Butterscotch", value: "30", expectedAngle: 30, color: '#8fceff' }
+            ],
+            totalLabel: "Total",
+            totalValue: "360",
+            totalAngle: "360°"
+        },
+        air: {
+            title: "Composition of Air (Simplified)",
+            categoryHeader: "Gas",
+            valueHeader: "Parts",
+            questionRows: [
+                "Air is a mixture of different gases. This simplified model shows nitrogen as",
+                "the major component (6 parts out of 12), oxygen as the second major",
+                "component (3 parts), carbon dioxide (2 parts), and other gases including",
+                "argon and water vapor (1 part).",
+                "Create a pie chart to show the composition of air. Calculate the central",
+                "angle for each gas component and draw the sectors."
+            ],
+            tableRows: [
+                { id: "Nitrogen", label: "Nitrogen", value: "6", expectedAngle: 180, color: '#3f51b5' },
+                { id: "Oxygen", label: "Oxygen", value: "3", expectedAngle: 90, color: '#ff9800' },
+                { id: "CarbonDioxide", label: "Carbon Dioxide", value: "2", expectedAngle: 60, color: '#9e9e9e' },
+                { id: "OtherGases", label: "Other Gases", value: "1", expectedAngle: 30, color: '#ffeb3b' }
+            ],
+            totalLabel: "Total",
+            totalValue: "12",
+            totalAngle: "360°"
+        }
+    };
+
+    let completedGames = {
+        budget: false,
+        daily: false,
+        icecream: false,
+        air: false
+    };
+
+    let currentGameKey = null;
+    let currentPieCategories = [];
+    let currentCumulativeAngle = 0;
 
     function showHomeScreen() {
-        // Elements to show on home screen
-        const homeElements = [
-            "Card_default_state",
-            "I-Text_Home_Screen"
-        ];
-
-        // Elements to hide when on home screen (the entire game UI)
+        currentGameKey = null;
+        const homeElements = ["Card_default_state", "I-Text_Home_Screen"];
         const gameElements = [
-            "Base_panel",
-            "Data_table",
-            "Pie-Chart_Angle_UI",
-            "Pie-Chart_Angle_selector",
-            "Angle_selection_UI",
-            "Pie_Chart-Lables",
-            "I-Text-Arrow",
-            "BTNs-Global",
-            "Question-TOS",
-            "Activity_Title",
-            "custom-popup-fo",
-            "dynamic-sectors"
+            "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
+            "Angle_selection_UI", "Pie_Chart-Lables", "I-Text-Arrow", "BTNs-Global",
+            "Question-TOS", "Activity_Title", "custom-popup-fo", "dynamic-sectors"
         ];
 
         gameElements.forEach(id => {
@@ -57,14 +148,190 @@ document.addEventListener("DOMContentLoaded", () => {
             if (el) el.style.display = "block";
         });
 
-        // Handle completed state visibility
         const completedState = document.getElementById("Card_Complited_state");
         if (completedState) {
-            completedState.style.display = isBudgetCompleted ? "block" : "none";
-            // Show the specific tick for Budget Distribution
+            completedState.style.display = "block";
             const budgetTick = document.getElementById("Group_16891");
-            if (budgetTick) budgetTick.style.display = isBudgetCompleted ? "block" : "none";
+            if (budgetTick) budgetTick.style.display = completedGames.budget ? "block" : "none";
+
+            const dailyTick = document.getElementById("Group_1689");
+            if (dailyTick) dailyTick.style.display = completedGames.daily ? "block" : "none";
+
+            const icecreamTick = document.getElementById("Group_16892");
+            if (icecreamTick) icecreamTick.style.display = completedGames.icecream ? "block" : "none";
+
+            const airTick = document.getElementById("Group_16893");
+            if (airTick) airTick.style.display = completedGames.air ? "block" : "none";
         }
+    }
+
+    function loadGame(gameKey) {
+        currentGameKey = gameKey;
+        const config = gameConfigs[gameKey];
+
+        const titleText = document.querySelector("#Activity_Title text tspan");
+        if (titleText) titleText.textContent = config.title;
+
+        const categoryHeaderEl = document.querySelector("g[id='Department'] text tspan");
+        if (categoryHeaderEl) categoryHeaderEl.textContent = config.categoryHeader;
+
+        const valueHeaderEl = document.querySelector("g[id='Amount_in_lakhs_'] text tspan");
+        if (valueHeaderEl) valueHeaderEl.textContent = config.valueHeader;
+
+        const valueHeaderPieEl = document.querySelector("g[id='Amount_in_lakhs_2'] text tspan");
+        if (valueHeaderPieEl) valueHeaderPieEl.textContent = config.valueHeader;
+
+        const questionTOS = document.getElementById("Question-TOS");
+        if (questionTOS) {
+            const textElements = questionTOS.querySelectorAll("text");
+            config.questionRows.forEach((row, i) => {
+                if (textElements[i]) {
+                    const tspans = textElements[i].querySelectorAll("tspan");
+                    if (tspans.length > 0) {
+                        tspans[0].textContent = row;
+                        for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
+                    } else {
+                        textElements[i].textContent = row;
+                    }
+                }
+            });
+            for (let i = config.questionRows.length; i < textElements.length; i++) textElements[i].textContent = "";
+        }
+
+        const tableGroups = ["Group_1539", "Group_1540", "Group_1541", "Group_1542", "Group_1543", "Group_1544"];
+        tableGroups.forEach((id, i) => {
+            const group = document.getElementById(id);
+            if (!group) return;
+            if (i < config.tableRows.length) {
+                group.style.display = "block";
+                const row = config.tableRows[i];
+                const labelText = group.querySelector("g[isolation='isolate'] text");
+                if (labelText) {
+                    const tspans = labelText.querySelectorAll("tspan");
+                    if (tspans.length > 0) {
+                        tspans[0].textContent = row.label;
+                        for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
+                    } else labelText.textContent = row.label;
+                }
+                const valueGroup = group.querySelector("g[id^='_'] text tspan");
+                if (valueGroup) valueGroup.textContent = row.value;
+                const rowPath = group.querySelector("path[fill]:not([fill='none'])");
+                if (rowPath) rowPath.setAttribute('fill', row.color);
+            } else {
+                group.style.display = "none";
+            }
+        });
+
+        const totalGroup = document.getElementById("Group_1545");
+        const rowHeight = 74;
+        const maxRows = 6;
+        const activeRows = config.tableRows.length;
+        const moveUpBy = (maxRows - activeRows) * rowHeight;
+
+        if (totalGroup) {
+            totalGroup.style.display = "block";
+            if (activeRows < maxRows) {
+                totalGroup.setAttribute("transform", `translate(0, -${moveUpBy})`);
+            } else {
+                totalGroup.setAttribute("transform", `translate(0, 0)`);
+            }
+            const totalValText = totalGroup.querySelector("g[id='_12'] text tspan");
+            if (totalValText) totalValText.textContent = config.totalValue;
+        }
+
+        const pieLabels = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
+        pieLabels.forEach((id, i) => {
+            const labelGroup = document.getElementById(id);
+            if (!labelGroup) return;
+            if (i < config.tableRows.length) {
+                labelGroup.style.display = "block";
+                const row = config.tableRows[i];
+                const textEl = labelGroup.querySelector("text tspan");
+                if (textEl) {
+                    let unit = '';
+                    if (gameKey === 'daily') unit = 'h';
+                    else if (gameKey === 'air') unit = row.value === '1' ? ' part' : ' parts';
+                    textEl.textContent = row.value + unit;
+                }
+            } else {
+                labelGroup.style.display = "none";
+            }
+        });
+
+        const btnSuffixes = ["", "-2", "-3", "-4"];
+        const specialBtns = ["Group_1681", "Group_1682"];
+        for (let i = 0; i < 6; i++) {
+            const inputId = i < 4 ? "Group_1654" + btnSuffixes[i] : "Group_1654-" + (i + 1);
+            const circleId = i < 4 ? "Group_1653" + btnSuffixes[i] : specialBtns[i - 4];
+
+            const inputEl = document.getElementById(inputId);
+            const circleEl = document.getElementById(circleId);
+
+            if (inputEl) inputEl.style.display = i < config.tableRows.length ? "block" : "none";
+            if (circleEl) circleEl.style.display = i < config.tableRows.length ? "block" : "none";
+        }
+
+        currentPieCategories = config.tableRows.map((row, i) => {
+            let btnId, dotId, pathId, rectGroupId, cx, cy;
+            if (i < 4) {
+                btnId = "Group_1653" + btnSuffixes[i];
+                dotId = "Ellipse_3" + btnSuffixes[i];
+                pathId = "Path_4273" + btnSuffixes[i];
+                rectGroupId = "Group_1654" + btnSuffixes[i];
+                cx = 828.5; cy = 571.59 + (i * 74);
+            } else {
+                btnId = specialBtns[i - 4];
+                dotId = "Ellipse_3-" + (i + 1);
+                pathId = "Path_4273-" + (i + 1);
+                rectGroupId = "Group_1654-" + (i + 1);
+                cx = 828.5; cy = 867.59 + ((i - 4) * 74);
+            }
+            return {
+                id: row.id, label: row.label, expectedAngle: row.expectedAngle, color: row.color,
+                btnId, dotId, pathId, rectGroupId, cx, cy, r: 32.5, valueText: row.value
+            };
+        });
+
+        const elementsToShow = [
+            "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
+            "Angle_selection_UI", "Pie_Chart-Lables", "I-Text-Arrow", "BTNs-Global",
+            "Question-TOS", "Activity_Title", "dynamic-sectors"
+        ];
+        elementsToShow.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "block";
+        });
+
+        const homeText = document.getElementById("I-Text_Home_Screen");
+        if (homeText) homeText.style.display = "none";
+        const defaultState = document.getElementById("Card_default_state");
+        if (defaultState) defaultState.style.display = "none";
+
+        initPieChartLogic();
+    }
+
+    const dailyCard = document.getElementById("Group_1684");
+    if (dailyCard) {
+        dailyCard.style.cursor = "pointer";
+        dailyCard.addEventListener("click", () => loadGame('daily'));
+    }
+
+    const budgetCard = document.getElementById("Group_1685");
+    if (budgetCard) {
+        budgetCard.style.cursor = "pointer";
+        budgetCard.addEventListener("click", () => loadGame('budget'));
+    }
+
+    const icecreamCard = document.getElementById("Group_1686");
+    if (icecreamCard) {
+        icecreamCard.style.cursor = "pointer";
+        icecreamCard.addEventListener("click", () => loadGame('icecream'));
+    }
+
+    const airCard = document.getElementById("Group_1687");
+    if (airCard) {
+        airCard.style.cursor = "pointer";
+        airCard.addEventListener("click", () => loadGame('air'));
     }
 
     const homeBtn = document.getElementById("Group_1688");
@@ -73,357 +340,195 @@ document.addEventListener("DOMContentLoaded", () => {
         homeBtn.addEventListener("click", showHomeScreen);
     }
 
-    const budgetDistributionCard = document.getElementById("Group_1685");
-    let isPieChartInitialized = false;
-
-    if (budgetDistributionCard) {
-        budgetDistributionCard.style.cursor = "pointer";
-        budgetDistributionCard.addEventListener("click", () => {
-            const elementsToShow = [
-                "Base_panel",
-                "Data_table",
-                "Pie-Chart_Angle_UI",
-                "Pie-Chart_Angle_selector",
-                "Angle_selection_UI",
-                "Pie_Chart-Lables",
-                "I-Text-Arrow",
-                "BTNs-Global",
-                "Question-TOS",
-                "Activity_Title"
-            ];
-
-            elementsToShow.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.style.display = "block";
-                }
-            });
-
-            // Additionally hide the home text and card state
-            const homeText = document.getElementById("I-Text_Home_Screen");
-            if (homeText) homeText.style.display = "none";
-
-            const defaultState = document.getElementById("Card_default_state");
-            if (defaultState) defaultState.style.display = "none";
-
-            initPieChartLogic();
-        });
-    }
-
-    /* Pie Chart Generation Logic */
     function describeArc(x, y, r, startAngle, endAngle) {
         const polarToCartesian = (cx, cy, r, angleInDegrees) => {
             const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-            return {
-                x: cx + (r * Math.cos(angleInRadians)),
-                y: cy + (r * Math.sin(angleInRadians))
-            };
+            return { x: cx + (r * Math.cos(angleInRadians)), y: cy + (r * Math.sin(angleInRadians)) };
         };
-
         const start = polarToCartesian(x, y, r, endAngle);
         const end = polarToCartesian(x, y, r, startAngle);
         const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-        // SVG sweeps from start to end, moving clockwise
-        return [
-            "M", x, y,
-            "L", end.x, end.y,
-            "A", r, r, 0, largeArcFlag, 1, start.x, start.y,
-            "Z"
-        ].join(" ");
+        return ["M", x, y, "L", end.x, end.y, "A", r, r, 0, largeArcFlag, 1, start.x, start.y, "Z"].join(" ");
     }
-
-    const pieCategories = [
-        { id: 'Infrastructure', expectedAngle: 120, color: '#2196f3', btnId: 'Group_1653', dotId: 'Ellipse_3', pathId: 'Path_4273', rectGroupId: 'Group_1654', cx: 828.5, cy: 571.59, r: 32.5 },
-        { id: 'Salaries', expectedAngle: 90, color: '#ff9800', btnId: 'Group_1653-2', dotId: 'Ellipse_3-2', pathId: 'Path_4273-2', rectGroupId: 'Group_1654-2', cx: 828.5, cy: 645.59, r: 32.5 },
-        { id: 'Sports', expectedAngle: 60, color: '#e91e63', btnId: 'Group_1653-3', dotId: 'Ellipse_3-3', pathId: 'Path_4273-3', rectGroupId: 'Group_1654-3', cx: 828.5, cy: 719.59, r: 32.5 },
-        { id: 'Library', expectedAngle: 30, color: '#ffeb3b', btnId: 'Group_1653-4', dotId: 'Ellipse_3-4', pathId: 'Path_4273-4', rectGroupId: 'Group_1654-4', cx: 828.5, cy: 793.59, r: 32.5 },
-        { id: 'Laboratory', expectedAngle: 30, color: '#8bc34a', btnId: 'Group_1681', dotId: 'Ellipse_3-5', pathId: 'Path_4273-5', rectGroupId: 'Group_1654-5', cx: 828.5, cy: 867.59, r: 32.5 },
-        { id: 'Events', expectedAngle: 30, color: '#4caf50', btnId: 'Group_1682', dotId: 'Ellipse_3-6', pathId: 'Path_4273-6', rectGroupId: 'Group_1654-6', cx: 828.5, cy: 941.59, r: 32.5 }
-    ];
-
-    let currentCumulativeAngle = 0;
 
     function createPopup(text, isSolution = false) {
         const popupFO = document.getElementById('custom-popup-fo');
         if (!popupFO) return;
-
         const content = document.getElementById('custom-popup-content');
         const textContainer = document.getElementById('custom-popup-text');
         const solutionTitle = document.getElementById('custom-popup-solution-title');
         const closeBtn = document.getElementById('custom-popup-close');
         const svgContainer = document.getElementById('custom-popup-solution-svg-container');
 
-        if (!content || !textContainer || !solutionTitle || !closeBtn || !svgContainer) return;
-
-        // Reset visibility/classes
         content.classList.remove('popup-default', 'popup-solution');
-        solutionTitle.style.display = 'none';
-        closeBtn.style.display = 'none';
-        svgContainer.style.display = 'none';
-        textContainer.style.display = 'none';
+        solutionTitle.style.display = 'none'; closeBtn.style.display = 'none';
+        svgContainer.style.display = 'none'; textContainer.style.display = 'none';
         svgContainer.innerHTML = '';
 
         if (isSolution) {
             content.classList.add('popup-solution');
-            solutionTitle.style.display = 'block';
-            closeBtn.style.display = 'flex';
+            solutionTitle.style.display = 'block'; closeBtn.style.display = 'flex';
             svgContainer.style.display = 'block';
-
             closeBtn.onclick = () => { popupFO.style.display = 'none'; };
 
             const svgNS = 'http://www.w3.org/2000/svg';
             const svg = document.createElementNS(svgNS, 'svg');
             svg.setAttribute('viewBox', '0 0 600 600');
-            svg.style.width = '100%';
-            svg.style.height = '100%';
+            svg.style.width = '100%'; svg.style.height = '100%';
 
             let popCumulativeAngle = 0;
-            pieCategories.forEach(cat => {
+            currentPieCategories.forEach(cat => {
                 const startA = popCumulativeAngle;
                 const endA = popCumulativeAngle + cat.expectedAngle;
-
                 const sector = document.createElementNS(svgNS, 'path');
                 sector.setAttribute('d', describeArc(300, 300, 200, startA, endA));
-                sector.setAttribute('fill', cat.color);
-                sector.setAttribute('stroke', '#fff');
-                sector.setAttribute('stroke-width', '1');
+                sector.setAttribute('fill', cat.color); sector.setAttribute('stroke', '#fff'); sector.setAttribute('stroke-width', '1');
                 svg.appendChild(sector);
 
                 const midAngle = startA + (cat.expectedAngle / 2);
                 const midRad = (midAngle - 90) * Math.PI / 180.0;
-                const lx = 300 + 120 * Math.cos(midRad);
-                const ly = 300 + 120 * Math.sin(midRad);
-
-                const amountText = {
-                    'Infrastructure': '₹4 lakh',
-                    'Salaries': '₹3 lakh',
-                    'Sports': '₹2 lakh',
-                    'Library': '₹1 lakh',
-                    'Laboratory': '₹1 lakh',
-                    'Events': '₹1 lakh'
-                }[cat.id];
+                const lx = 300 + 120 * Math.cos(midRad); const ly = 300 + 120 * Math.sin(midRad);
 
                 const rect = document.createElementNS(svgNS, 'rect');
-                rect.setAttribute('x', lx - 30);
-                rect.setAttribute('y', ly - 15);
-                rect.setAttribute('width', 60);
-                rect.setAttribute('height', 30);
-                rect.setAttribute('rx', 5);
-                rect.setAttribute('fill', '#fff');
+                rect.setAttribute('x', lx - 40); rect.setAttribute('y', ly - 15);
+                rect.setAttribute('width', 80); rect.setAttribute('height', 30);
+                rect.setAttribute('rx', 5); rect.setAttribute('fill', '#fff');
                 svg.appendChild(rect);
 
                 const textEl = document.createElementNS(svgNS, 'text');
-                textEl.setAttribute('x', lx);
-                textEl.setAttribute('y', ly + 5);
-                textEl.setAttribute('text-anchor', 'middle');
-                textEl.setAttribute('font-size', '14');
-                textEl.setAttribute('fill', '#424242');
-                textEl.textContent = amountText;
+                textEl.setAttribute('x', lx); textEl.setAttribute('y', ly + 5);
+                textEl.setAttribute('text-anchor', 'middle'); textEl.setAttribute('font-size', '14');
+                textEl.setAttribute('fill', '#424242'); textEl.textContent = cat.valueText;
                 svg.appendChild(textEl);
-
                 popCumulativeAngle = endA;
             });
             svgContainer.appendChild(svg);
         } else {
-            content.classList.add('popup-default');
-            textContainer.style.display = 'block';
+            content.classList.add('popup-default'); textContainer.style.display = 'block';
             textContainer.textContent = text;
-
             setTimeout(() => { popupFO.style.display = 'none'; }, 2000);
         }
-
         popupFO.style.display = 'block';
     }
 
     function initPieChartLogic() {
-        if (isPieChartInitialized) return;
-        isPieChartInitialized = true;
-
-        const style = document.createElement('style');
-        style.innerHTML = `
-            input[type="number"]::-webkit-outer-spin-button,
-            input[type="number"]::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-            input[type="number"] {
-                -moz-appearance: textfield;
-            }
-        `;
-        document.head.appendChild(style);
-
         const selector = document.getElementById('Pie-Chart_Angle_selector');
-        let dynamicSectors;
-        if (selector) {
+        let dynamicSectors = document.getElementById('dynamic-sectors');
+        if (!dynamicSectors && selector) {
             dynamicSectors = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             dynamicSectors.id = 'dynamic-sectors';
             selector.parentNode.insertBefore(dynamicSectors, selector);
         }
 
         const lineGroup = document.getElementById('Group_1675');
-
         const resetChart = () => {
             currentCumulativeAngle = 0;
             if (dynamicSectors) dynamicSectors.innerHTML = '';
             if (lineGroup) lineGroup.setAttribute('transform', `rotate(0, 1411.5, 536.59)`);
-            pieCategories.forEach(cat => {
-                cat.plotted = false;
-                cat.inputAngle = 0;
+            currentPieCategories.forEach(cat => {
+                cat.plotted = false; cat.inputAngle = 0;
                 if (cat.inputEl) cat.inputEl.value = '';
                 const dot = document.getElementById(cat.dotId);
                 const path = document.getElementById(cat.pathId);
                 if (dot) dot.style.display = 'none';
-                if (path) {
-                    path.style.display = 'none';
-                    path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`);
-                }
+                if (path) { path.style.display = 'none'; path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`); }
             });
         };
 
-        pieCategories.forEach(cat => {
+        resetChart();
+
+        currentPieCategories.forEach(cat => {
             const plotSegment = () => {
                 if (cat.plotted) return;
-
                 const inputVal = cat.inputAngle || 0;
-                if (inputVal <= 0) {
-                    createPopup('Please enter an angle first!', false);
-                    return;
-                }
-
+                if (inputVal <= 0) { createPopup('Please enter an angle first!', false); return; }
                 const startA = currentCumulativeAngle;
                 const endA = currentCumulativeAngle + inputVal;
-
                 if (dynamicSectors) {
                     const sectorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                     sectorPath.setAttribute('d', describeArc(1411.5, 536.59, 279, startA, endA));
-                    sectorPath.setAttribute('fill', cat.color);
-                    sectorPath.setAttribute('stroke', '#fff');
-                    sectorPath.setAttribute('stroke-width', '2');
+                    sectorPath.setAttribute('fill', cat.color); sectorPath.setAttribute('stroke', '#fff'); sectorPath.setAttribute('stroke-width', '2');
                     dynamicSectors.appendChild(sectorPath);
                 }
-
-                currentCumulativeAngle = endA;
-                cat.plotted = true;
-
-                if (lineGroup) {
-                    lineGroup.setAttribute('transform', `rotate(${currentCumulativeAngle}, 1411.5, 536.59)`);
-                }
-
-                if (dot) dot.style.display = 'block';
-                const pathEl = document.getElementById(cat.pathId);
-                if (pathEl) pathEl.style.display = 'block';
+                currentCumulativeAngle = endA; cat.plotted = true;
+                if (lineGroup) lineGroup.setAttribute('transform', `rotate(${currentCumulativeAngle}, 1411.5, 536.59)`);
+                const dot = document.getElementById(cat.dotId); if (dot) dot.style.display = 'block';
             };
 
             const parentGroup = document.getElementById(cat.rectGroupId);
             if (parentGroup) {
+                const oldFO = parentGroup.querySelector('foreignObject'); if (oldFO) oldFO.remove();
                 const textGroups = Array.from(parentGroup.querySelectorAll('g[id^="_"]'));
                 textGroups.forEach(tg => tg.style.display = 'none');
-
                 const rect = parentGroup.querySelector('rect');
                 if (rect) {
-                    const x = rect.getAttribute('x');
-                    const y = rect.getAttribute('y');
-                    const w = rect.getAttribute('width');
-                    const h = rect.getAttribute('height');
-
                     const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-                    fo.setAttribute('x', x);
-                    fo.setAttribute('y', y);
-                    fo.setAttribute('width', w);
-                    fo.setAttribute('height', h);
-
+                    fo.setAttribute('x', rect.getAttribute('x')); fo.setAttribute('y', rect.getAttribute('y'));
+                    fo.setAttribute('width', rect.getAttribute('width')); fo.setAttribute('height', rect.getAttribute('height'));
                     const input = document.createElement('input');
-                    input.type = 'number';
-                    input.id = 'input_' + cat.id;
-                    input.style.width = '100%';
-                    input.style.height = '100%';
-                    input.style.border = 'none';
-                    input.style.background = 'transparent';
-                    input.style.textAlign = 'center';
-                    input.style.fontFamily = 'Roboto';
-                    input.style.fontSize = '28px';
-                    input.style.fontWeight = '500';
-                    input.style.color = '#424242';
-                    input.style.outline = 'none';
-
-                    fo.appendChild(input);
-                    parentGroup.appendChild(fo);
-
+                    input.type = 'number'; input.style.width = '100%'; input.style.height = '100%';
+                    input.style.border = 'none'; input.style.background = 'transparent';
+                    input.style.textAlign = 'center'; input.style.fontFamily = 'Roboto';
+                    input.style.fontSize = '28px'; input.style.fontWeight = '500';
+                    input.style.color = '#424242'; input.style.outline = 'none';
+                    fo.appendChild(input); parentGroup.appendChild(fo);
                     cat.inputEl = input;
-
                     input.addEventListener('input', () => {
                         cat.inputAngle = parseFloat(input.value) || 0;
                         const pathEl = document.getElementById(cat.pathId);
                         if (pathEl && cat.inputAngle > 0) {
                             pathEl.style.display = 'block';
                             const angleRad = (cat.inputAngle - 90) * Math.PI / 180.0;
-                            const endX = cat.cx + (cat.r * Math.cos(angleRad));
-                            const endY = cat.cy + (cat.r * Math.sin(angleRad));
+                            const endX = cat.cx + (cat.r * Math.cos(angleRad)); const endY = cat.cy + (cat.r * Math.sin(angleRad));
                             pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${endX},${endY}`);
-                        } else if (pathEl) {
-                            pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`);
-                        }
-
-                        // Update main pie chart radius line as preview
+                        } else if (pathEl) pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`);
                         if (!cat.plotted && lineGroup) {
                             const previewAngle = currentCumulativeAngle + cat.inputAngle;
                             lineGroup.setAttribute('transform', `rotate(${previewAngle}, 1411.5, 536.59)`);
                         }
                     });
-
-                    // Add Enter key listener
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') {
-                            e.preventDefault(); // Prevent accidental form submission if any
-                            plotSegment();
-                        }
-                    });
+                    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') plotSegment(); });
                 }
             }
-
-            const dot = document.getElementById(cat.dotId);
-            const path = document.getElementById(cat.pathId);
-            if (dot) dot.style.display = 'none';
-            if (path) path.style.display = 'none';
 
             const btn = document.getElementById(cat.btnId);
             if (btn) {
                 btn.style.cursor = 'pointer';
-                btn.addEventListener('click', plotSegment);
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', plotSegment);
             }
         });
 
         const submitBtn = document.getElementById('Group_1647');
         if (submitBtn) {
             submitBtn.style.cursor = 'pointer';
-            submitBtn.addEventListener('click', () => {
-                const allPlotted = pieCategories.every(cat => cat.plotted);
-                const allCorrect = pieCategories.every(cat => cat.inputAngle === cat.expectedAngle);
+            const newSubmit = submitBtn.cloneNode(true);
+            submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
+            newSubmit.addEventListener('click', () => {
+                const allPlotted = currentPieCategories.every(cat => cat.plotted);
+                const allCorrect = currentPieCategories.every(cat => cat.inputAngle === cat.expectedAngle);
                 if (allPlotted) {
-                    if (allCorrect) {
-                        isBudgetCompleted = true;
-                        createPopup('Correct! 🥳');
-                    } else {
-                        createPopup('Incorrect! \u274C', false);
-                    }
-                } else {
-                    createPopup('Incomplete!', false);
-                }
+                    if (allCorrect) { completedGames[currentGameKey] = true; createPopup('Correct! 🥳'); }
+                    else createPopup('Incorrect! \u274C', false);
+                } else createPopup('Incomplete!', false);
             });
         }
 
         const resetBtn = document.getElementById('Group_540');
         if (resetBtn) {
             resetBtn.style.cursor = 'pointer';
-            resetBtn.addEventListener('click', resetChart);
+            const newReset = resetBtn.cloneNode(true);
+            resetBtn.parentNode.replaceChild(newReset, resetBtn);
+            newReset.addEventListener('click', resetChart);
         }
 
         const showAnswerBtn = document.getElementById('Group_1161');
         if (showAnswerBtn) {
             showAnswerBtn.style.cursor = 'pointer';
-            showAnswerBtn.addEventListener('click', () => {
-                createPopup('', true); // Show solution modal
-            });
+            const newShow = showAnswerBtn.cloneNode(true);
+            showAnswerBtn.parentNode.replaceChild(newShow, showAnswerBtn);
+            newShow.addEventListener('click', () => createPopup('', true));
         }
     }
 });
