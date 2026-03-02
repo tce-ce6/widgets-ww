@@ -218,6 +218,37 @@ function audioListener() {
   });
 }
 
+function setButtonsDisabled(disabled) {
+  const ids = [
+    "audio_button_1",
+    "audio_button_2",
+    "audio_button_3",
+    "age_badhe_button",
+    "naya_shabd_button",
+    "gyankosh_button",
+    "arrow_audio",
+  ];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      if (disabled) {
+        el.setAttribute("data-audio-disabled", "true");
+        el.style.pointerEvents = "none";
+        el.style.opacity =
+          el.style.opacity === ""
+            ? "0.6"
+            : el.style.opacity === "1"
+              ? "0.6"
+              : el.style.opacity;
+      } else {
+        el.removeAttribute("data-audio-disabled");
+        el.style.pointerEvents = "";
+        el.style.opacity = "";
+      }
+    }
+  });
+}
+
 function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
@@ -226,6 +257,17 @@ function playAudio(type) {
     type === "wrong" ? selectedWord.wrongAudio : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
+
+  setButtonsDisabled(true);
+
+  const onFinish = () => {
+    setButtonsDisabled(false);
+    audioPlayer.removeEventListener("ended", onFinish);
+    audioPlayer.removeEventListener("error", onFinish);
+  };
+  audioPlayer.addEventListener("ended", onFinish);
+  audioPlayer.addEventListener("error", onFinish);
+
   audioPlayer.play();
 }
 function playAnimationAudio(type, animationPath) {
@@ -363,17 +405,18 @@ function playLottieAnimation(bandGroup) {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         resetFeedbackVisuals();
-        if(bandGroup === "INCORRECT"){
-            document.getElementById("audio_button_1").style.display = "block";
-            document.getElementById("audio_button_2").style.display = "block";
-            audio_button_1 = false;
-            audio_button_2 = false;
-            age_badhe_button = false;
-            nextbutton()
-            hideAndShowAudioButtons("none");
-            let i_text = document.getElementById("i_text_1");
-            const tspans = i_text.querySelector("p");
-            tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। "
+        if (bandGroup === "INCORRECT") {
+          document.getElementById("audio_button_1").style.display = "block";
+          document.getElementById("audio_button_2").style.display = "block";
+          audio_button_1 = false;
+          audio_button_2 = false;
+          age_badhe_button = false;
+          nextbutton();
+          hideAndShowAudioButtons("none");
+          let i_text = document.getElementById("i_text_1");
+          const tspans = i_text.querySelector("p");
+          tspans.innerHTML =
+            "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
         }
 
         if (lottieInstances) {
