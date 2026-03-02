@@ -18,6 +18,7 @@ var WG112App = {
         phase: 0,           // 0=init  1=allLoaded  2=running  3=identify  4=answered
         loadedTubes: [],    // indices 0-4 already dispensed into gel
         criminal: 3,        // 0-based index of the criminal (3 = Suspect-4 per SVG data)
+        nextSuspectLane: 1, // Lane index (1 to 4) for the next clicked suspect
         submitted: false,   // true once a suspect is clicked in Phase 3
         animating: false,   // animation guard – prevents double-clicks
         insightsOpen: false,
@@ -94,6 +95,8 @@ var WG112App = {
     PIPETTE_DEFAULT_X: 682,
     TUBE_X: [171, 341, 511, 681, 851],
     LANE_X: [1130, 1284, 1436, 1590, 1739],
+    LANE_WELLS: ['Group_1605', 'Group_1607', 'Group_1608', 'Group_1609', 'Group_1610'],
+    LANE_WELL_X: [1091, 1241, 1397, 1551, 1700],
 
     /* ─── UTILITIES ────────────────────────────────────────────────────────── */
     el: function (id) { return document.getElementById(id); },
@@ -173,6 +176,7 @@ var WG112App = {
         G.phase = 0;
         G.loadedTubes = [];
         G.criminal = 3;        // Suspect-4 is the criminal (matches SVG band data)
+        G.nextSuspectLane = 1;
         G.submitted = false;
         G.animating = false;
         G.insightsOpen = false;
@@ -196,10 +200,22 @@ var WG112App = {
 
         /* ── Restore all five tubes ── */
         for (var i = 0; i < this.TUBES.length; i++) {
-            this.show(this.TUBES[i].tubeId);
-            this.setCursor(this.TUBES[i].tubeId, 'pointer');
-            this.setCursor(this.TUBES[i].baseId, 'pointer');
-            this.hide(this.TUBES[i].wellId);          // empty wells on reset
+            var tube = this.TUBES[i];
+
+            // Show tube and remove disabled class
+            this.show(tube.tubeId);
+            this.el(tube.tubeId).classList.remove('disabled-tube');
+            this.el(tube.baseId).classList.remove('disabled-tube');
+
+            this.setCursor(tube.tubeId, 'pointer');
+            this.setCursor(tube.baseId, 'pointer');
+            this.hide(this.LANE_WELLS[i]);          // empty wells on reset
+
+            // Restore native translations
+            var labelEl = this.el(tube.labelId);
+            if (labelEl) { labelEl.removeAttribute('transform'); }
+            var bandEl = this.el(this.BANDS[i]);
+            if (bandEl) { bandEl.style.removeProperty('--band-tx'); }
         }
 
         /* ── Gel bands hidden until electrophoresis ── */
@@ -301,22 +317,48 @@ var WG112App = {
         G.animating = true;
         var self = this;
         var tube = this.TUBES[idx];
-        var laneDx = this.LANE_X[idx] - this.PIPETTE_DEFAULT_X;
+
+        var targetSlot;
+        if (idx === 0) {
+            targetSlot = 0; // Crime scene always lane 1
+        } else {
+            targetSlot = G.nextSuspectLane;
+            G.nextSuspectLane++;
+        }
+
+        var laneDx = this.LANE_X[targetSlot] - this.PIPETTE_DEFAULT_X;
         var tubeDx = this.TUBE_X[idx] - this.PIPETTE_DEFAULT_X;
+
+        // Calculate translation needed for bands and label
+        var tx = this.LANE_WELL_X[targetSlot] - this.LANE_WELL_X[idx];
+
+        // Move label
+        var labelEl = self.el(tube.labelId);
+        if (labelEl) {
+            labelEl.setAttribute('transform', 'translate(' + tx + ', 0)');
+        }
+        // Set var for bands
+        var bandEl = self.el(self.BANDS[idx]);
+        if (bandEl) {
+            bandEl.style.setProperty('--band-tx', tx + 'px');
+        }
 
         /* Step 1 – show filled pipette, travel to tube */
         this.show('micropipette');
         this.movePipette(tubeDx, 0, 630, function () {
 
-            /* Step 2 – tube is "emptied"; filled pipette travels to gel lane */
-            self.hide(tube.tubeId);
+            /* Step 2 – tube becomes disabled (INSTEAD OF HIDDEN) */
+            self.el(tube.tubeId).classList.add('disabled-tube');
+            self.el(tube.baseId).classList.add('disabled-tube');
             self.setCursor(tube.baseId, 'default');
+            self.setCursor(tube.tubeId, 'default');
 
             self.movePipette(laneDx, -145, 620, function () {
 
-                /* Step 3 – well fills + lane label appears */
-                self.show(tube.wellId);
-                if (idx > 0) { self.show(tube.labelId); }  // Crime scene label always visible
+                /* Step 3 – target well fills + corresponding lane label appears */
+                var wellId = self.LANE_WELLS[targetSlot];
+                self.show(wellId);
+                if (idx > 0) { self.show(tube.labelId); }
 
                 /*
                  * Change 1 & 2:
