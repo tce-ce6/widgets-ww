@@ -126,79 +126,10 @@ done
 # ── Write Firebase config files ────────────────────────────────────────────────
 lib_write_firebase_configs
 
-# ── Update widget entry in script.js ──────────────────────────────────────────
-step "Writing widget entry to widget-listing-b3/script/script.js..."
-
+# ── Derive widget metadata (used by DB update below) ──────────────────────────
 WG_NUM=$(echo "$WIDGET_FOLDER" | grep -oE '[0-9]+' | head -1)
 RAW_TITLE=$(echo "$WIDGET_FOLDER" | sed 's/^wg[0-9]*-//' | tr '-' ' ')
 WIDGET_TITLE=$(PYTHONIOENCODING=utf-8 $PYTHON -c "print('$RAW_TITLE'.title())")
-ASSET_PATH="./assets/wg-${WG_NUM}.png"
-
-export _SCRIPT_JS="$MAIN_SCRIPT_JS"
-export _WIDGET_TITLE="$WIDGET_TITLE"
-export _WIDGET_URL="$WIDGET_URL"
-export _ASSET_PATH="$ASSET_PATH"
-export _WG_NUM="$WG_NUM"
-export _WIDGET_FOLDER="$WIDGET_FOLDER"
-export _CREATOR_INITIALS="$CREATOR_INITIALS"
-export _WIDGET_STATUS="$WIDGET_STATUS"
-
-PYTHONIOENCODING=utf-8 $PYTHON << 'PYEOF'
-import os, re
-from datetime import datetime
-
-script_path      = os.environ['_SCRIPT_JS']
-widget_title     = os.environ['_WIDGET_TITLE']
-widget_url       = os.environ['_WIDGET_URL']
-asset_path       = os.environ['_ASSET_PATH']
-wg_num           = os.environ['_WG_NUM']
-widget_folder    = os.environ['_WIDGET_FOLDER']
-creator_initials = os.environ.get('_CREATOR_INITIALS', '')
-widget_status    = os.environ.get('_WIDGET_STATUS', 'closed')
-updated_at       = datetime.now().strftime('%Y-%m-%d %H:%M')
-
-new_entry = (
-    "    {\n"
-    f'        name: "{widget_title}",\n'
-    f'        link: "{widget_url}",\n'
-    f'        imagePath: "{asset_path}",\n'
-    f'        creators: "{creator_initials}-{wg_num}",\n'
-    f'        status: "{widget_status}",\n'
-    f'        updatedAt: "{updated_at}",\n'
-    "    },"
-)
-
-with open(script_path, 'r', encoding='utf-8') as f:
-    content = f.read()
-
-# Remove any existing entry for this widget (by folder URL or asset image path)
-for pattern in [
-    r'\n\s*\{[^}]*?' + re.escape(widget_folder) + r'[^}]*?\},?',
-    r'\n\s*\{[^}]*?wg-' + re.escape(wg_num) + r'\.png[^}]*?\},?',
-]:
-    match = re.search(pattern, content, re.DOTALL)
-    if match:
-        content = content[:match.start()] + content[match.end():]
-
-# Insert fresh entry at the top of WIDGET_DATA
-updated = re.sub(
-    r'(\[\s*\n)(\s*\{)',
-    lambda m: m.group(1) + new_entry + "\n" + m.group(2),
-    content, count=1
-)
-if updated == content:
-    idx = content.rfind('},')
-    if idx != -1:
-        updated = content[:idx + 2] + "\n" + new_entry + content[idx + 2:]
-
-with open(script_path, 'w', encoding='utf-8') as f:
-    f.write(updated)
-print(f"Written: {widget_title}  [{widget_status}]  →  {widget_url}")
-PYEOF
-
-ok "script.js updated."
-unset _SCRIPT_JS _WIDGET_TITLE _WIDGET_URL _ASSET_PATH _WG_NUM \
-      _WIDGET_FOLDER _CREATOR_INITIALS _WIDGET_STATUS
 
 # ── Write widget entry to Firebase Realtime Database ──────────────────────────
 step "Updating Firebase Realtime Database..."
