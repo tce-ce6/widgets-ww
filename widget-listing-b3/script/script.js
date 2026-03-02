@@ -7,7 +7,15 @@ const WIDGET_DATA = [
         imagePath: "./assets/wg-121.png",
         creators: "pp-121",
         status: "in-review",
-        updatedAt: "2026-03-02 11:21",
+        updatedAt: "2026-03-02 13:17",
+    },
+    {
+        name: "Find The Dna Lengths",
+        link: "https://tce-widgets.web.app/wg97-find-the-dna-lengths/",
+        imagePath: "./assets/wg-97.png",
+        creators: "pp-97",
+        status: "in-review",
+        updatedAt: "2026-03-02 13:14",
     },
     {
         name: "Identify Criminal Dna",
@@ -274,13 +282,6 @@ const WIDGET_DATA = [
     imagePath: "./assets/wg-118.png",
     creators: "as-ra-118",
     status: "WIP-With-Tech",
-  },
-  {
-    name: "Find The DNA Lengths",
-    link: "https://ce-predev-school.devstudi.com/mathwidgets/nitin/widget-listing/todo-list.html",
-    imagePath: "./assets/wg-97.png",
-    creators: "-ra-97",
-    status: "todo",
   },
   {
     name: "Molecular Reaction Simulator",

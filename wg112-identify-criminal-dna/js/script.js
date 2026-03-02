@@ -312,7 +312,7 @@ var WG112App = {
             self.hide(tube.tubeId);
             self.setCursor(tube.baseId, 'default');
 
-            self.movePipette(laneDx, -55, 620, function () {
+            self.movePipette(laneDx, -145, 620, function () {
 
                 /* Step 3 – well fills + lane label appears */
                 self.show(tube.wellId);
@@ -324,7 +324,7 @@ var WG112App = {
                  *  – Keep micropipette2 visible for 1.5 s so user can see where it dispensed.
                  *  – Then hide it and tidy up.
                  */
-                self.placePipette2(laneDx, -55);   // instant position (no travel anim)
+                self.placePipette2(laneDx, -145);   // instant position (no travel anim)
                 self.hide('micropipette');
                 self.resetPipettePos();
                 self.show('micropipette2');        // Change 1: appears only NOW
