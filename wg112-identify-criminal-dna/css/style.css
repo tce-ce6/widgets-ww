@@ -417,11 +417,17 @@ svg * {
   cursor: pointer;
 }
 
+/* Ensure the transparent rectangle of the base catches pointer events */
+#tube_base g rect {
+  pointer-events: all;
+}
+
 /* Disabled tube effect */
 .disabled-tube {
   opacity: 0.55;
   pointer-events: none;
 }
+
 .disabled-tube rect[fill="none"]:first-child {
   fill: #e0ccad !important;
 }

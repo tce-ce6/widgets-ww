@@ -157,6 +157,17 @@ var WG112App = {
         this.setCursor('Group_1691', 'pointer');
     },
 
+    disableInsightsBtn: function () {
+        this.setOpacity('Button_Insite_', '0.42');
+        this.setPointer('Button_Insite_', false);
+        this.setCursor('Button_Insite_', 'not-allowed');
+    },
+    enableInsightsBtn: function () {
+        this.setOpacity('Button_Insite_', '1');
+        this.setPointer('Button_Insite_', true);
+        this.setCursor('Button_Insite_', 'pointer');
+    },
+
     /* ─── INITIALISATION ───────────────────────────────────────────────────── */
     init: function () {
         // Attach CSS transition to the filled micropipette once
@@ -264,8 +275,8 @@ var WG112App = {
 
         /* ── Button states ── */
         this.setStartBtn(false);        // disabled until all loaded
-        this.enableShowAnswerBtn();     // Show Answer is available from Phase 2
-        // But keep it disabled at start; enable when electrophoresis is done
+        this.enableInsightsBtn();       // Insights starts enabled
+        // But keep "Show Answer" disabled at start; enable when electrophoresis is done
         this.disableShowAnswerBtn();
     },
 
@@ -295,7 +306,7 @@ var WG112App = {
         if (resetBtn) { resetBtn.addEventListener('click', function () { self.reset(); }); }
         if (newSetBtn) { newSetBtn.addEventListener('click', function () { self.onNewSetClick(); }); }
         if (showAnsBtn) { showAnsBtn.addEventListener('click', function () { self.onShowAnswerClick(); }); }
-        if (insBtn) { insBtn.addEventListener('click', function () { self.onInsightsOpen(); }); }
+        if (insBtn) { insBtn.addEventListener('click', function () { self.onInsightsClick(); }); }
         if (insCloseBtn) { insCloseBtn.addEventListener('click', function () { self.onInsightsClose(); }); }
 
         /* Suspect portraits */
@@ -486,16 +497,38 @@ var WG112App = {
         var G = this.G;
         /* Only makes sense after electrophoresis + not already shown */
         if (G.phase < 3) { return; }
-        if (G.showAnswerOpen) { return; }
 
-        G.showAnswerOpen = true;
-        this.show('show_answer');
-        this.disableShowAnswerBtn();   // Change 4: disable after first use
+        if (G.showAnswerOpen) {
+            G.showAnswerOpen = false;
+            this.hide('show_answer');
+            this.enableInsightsBtn();
+        } else {
+            G.showAnswerOpen = true;
+            this.show('show_answer');
+            this.disableInsightsBtn();
+        }
     },
 
     /* ─── INSIGHTS PANEL ────────────────────────────────────────────────────── */
-    onInsightsOpen: function () { this.G.insightsOpen = true; this.show('insites'); },
-    onInsightsClose: function () { this.G.insightsOpen = false; this.hide('insites'); },
+    onInsightsClick: function () {
+        if (this.G.insightsOpen) {
+            this.onInsightsClose();
+        } else {
+            this.onInsightsOpen();
+        }
+    },
+    onInsightsOpen: function () {
+        this.G.insightsOpen = true;
+        this.show('insites');
+        this.disableShowAnswerBtn();
+    },
+    onInsightsClose: function () {
+        this.G.insightsOpen = false;
+        this.hide('insites');
+        if (this.G.phase >= 3) {
+            this.enableShowAnswerBtn();
+        }
+    },
 
     /* ─── NEW SET ───────────────────────────────────────────────────────────── */
     onNewSetClick: function () {
