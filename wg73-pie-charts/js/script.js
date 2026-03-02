@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const elementsToShow = [
             "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
-            "Angle_selection_UI", "Pie_Chart-Lables", "I-Text-Arrow", "BTNs-Global",
+            "Angle_selection_UI", "I-Text-Arrow", "BTNs-Global",
             "Question-TOS", "Activity_Title", "dynamic-sectors"
         ];
         elementsToShow.forEach(id => {
@@ -352,63 +352,91 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createPopup(text, isSolution = false) {
-        const popupFO = document.getElementById('custom-popup-fo');
-        if (!popupFO) return;
-        const content = document.getElementById('custom-popup-content');
-        const textContainer = document.getElementById('custom-popup-text');
-        const solutionTitle = document.getElementById('custom-popup-solution-title');
-        const closeBtn = document.getElementById('custom-popup-close');
-        const svgContainer = document.getElementById('custom-popup-solution-svg-container');
-
-        content.classList.remove('popup-default', 'popup-solution');
-        solutionTitle.style.display = 'none'; closeBtn.style.display = 'none';
-        svgContainer.style.display = 'none'; textContainer.style.display = 'none';
-        svgContainer.innerHTML = '';
+        console.log("createPopup", text, isSolution);
 
         if (isSolution) {
-            content.classList.add('popup-solution');
-            solutionTitle.style.display = 'block'; closeBtn.style.display = 'flex';
-            svgContainer.style.display = 'block';
-            closeBtn.onclick = () => { popupFO.style.display = 'none'; };
+            const showAnswerContainer = document.getElementById('show-answer-popup-container');
+            console.log("showAnswerContainer", showAnswerContainer);
+            let dynamicSolutionContainer = document.getElementById('dynamic-solution-container');
+            console.log("dynamicSolutionContainer", dynamicSolutionContainer);
 
-            const svgNS = 'http://www.w3.org/2000/svg';
-            const svg = document.createElementNS(svgNS, 'svg');
-            svg.setAttribute('viewBox', '0 0 600 600');
-            svg.style.width = '100%'; svg.style.height = '100%';
+            if (showAnswerContainer) {
+                console.log("showAnswerContainer found");
+                if (!dynamicSolutionContainer) {
+                    console.log("dynamicSolutionContainer not found, creating...");
+                    dynamicSolutionContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    dynamicSolutionContainer.id = 'dynamic-solution-container';
+                }
+                const answerPopup = document.getElementById('answer_popup');
+                if (answerPopup) {
+                    answerPopup.appendChild(dynamicSolutionContainer);
+                } else {
+                    showAnswerContainer.appendChild(dynamicSolutionContainer);
+                }
+                const group2 = document.getElementById('Group_2');
+                if (group2) group2.style.display = 'block';
+                dynamicSolutionContainer.innerHTML = '';
+                const svgNS = 'http://www.w3.org/2000/svg';
 
-            let popCumulativeAngle = 0;
-            currentPieCategories.forEach(cat => {
-                const startA = popCumulativeAngle;
-                const endA = popCumulativeAngle + cat.expectedAngle;
-                const sector = document.createElementNS(svgNS, 'path');
-                sector.setAttribute('d', describeArc(300, 300, 200, startA, endA));
-                sector.setAttribute('fill', cat.color); sector.setAttribute('stroke', '#fff'); sector.setAttribute('stroke-width', '1');
-                svg.appendChild(sector);
+                let popCumulativeAngle = 0;
+                currentPieCategories.forEach(cat => {
+                    const startA = popCumulativeAngle;
+                    const endA = popCumulativeAngle + cat.expectedAngle;
+                    const sector = document.createElementNS(svgNS, 'path');
+                    sector.setAttribute('d', describeArc(556.11, 490.11, 279, startA, endA));
+                    sector.setAttribute('fill', cat.color); sector.setAttribute('stroke', '#fff'); sector.setAttribute('stroke-width', '2');
+                    dynamicSolutionContainer.appendChild(sector);
 
-                const midAngle = startA + (cat.expectedAngle / 2);
-                const midRad = (midAngle - 90) * Math.PI / 180.0;
-                const lx = 300 + 120 * Math.cos(midRad); const ly = 300 + 120 * Math.sin(midRad);
+                    const midAngle = startA + (cat.expectedAngle / 2);
+                    const midRad = (midAngle - 90) * Math.PI / 180.0;
+                    const lx = 556.11 + 170 * Math.cos(midRad); const ly = 490.11 + 170 * Math.sin(midRad);
 
-                const rect = document.createElementNS(svgNS, 'rect');
-                rect.setAttribute('x', lx - 40); rect.setAttribute('y', ly - 15);
-                rect.setAttribute('width', 80); rect.setAttribute('height', 30);
-                rect.setAttribute('rx', 5); rect.setAttribute('fill', '#fff');
-                svg.appendChild(rect);
+                    let unit = '';
+                    if (currentGameKey === 'daily') unit = 'h';
+                    else if (currentGameKey === 'air') unit = cat.valueText === '1' ? ' part' : ' parts';
+                    const labelStr = cat.valueText + unit;
 
-                const textEl = document.createElementNS(svgNS, 'text');
-                textEl.setAttribute('x', lx); textEl.setAttribute('y', ly + 5);
-                textEl.setAttribute('text-anchor', 'middle'); textEl.setAttribute('font-size', '14');
-                textEl.setAttribute('fill', '#424242'); textEl.textContent = cat.valueText;
-                svg.appendChild(textEl);
-                popCumulativeAngle = endA;
-            });
-            svgContainer.appendChild(svg);
+                    const rect = document.createElementNS(svgNS, 'rect');
+                    rect.setAttribute('x', lx - 40); rect.setAttribute('y', ly - 18);
+                    rect.setAttribute('width', 80); rect.setAttribute('height', 36);
+                    rect.setAttribute('rx', 5); rect.setAttribute('fill', '#fff');
+                    dynamicSolutionContainer.appendChild(rect);
+
+                    const textEl = document.createElementNS(svgNS, 'text');
+                    textEl.setAttribute('x', lx); textEl.setAttribute('y', ly + 6);
+                    textEl.setAttribute('text-anchor', 'middle'); textEl.setAttribute('font-size', '18');
+                    textEl.setAttribute('font-family', 'Roboto');
+                    textEl.setAttribute('fill', '#424242'); textEl.textContent = labelStr;
+                    dynamicSolutionContainer.appendChild(textEl);
+                    popCumulativeAngle = endA;
+                });
+
+                showAnswerContainer.onclick = () => { showAnswerContainer.style.display = 'none'; };
+                showAnswerContainer.style.display = 'block';
+            }
         } else {
-            content.classList.add('popup-default'); textContainer.style.display = 'block';
-            textContainer.textContent = text;
-            setTimeout(() => { popupFO.style.display = 'none'; }, 2000);
+            const popupFO = document.getElementById('custom-popup-fo');
+            if (popupFO) {
+                const content = document.getElementById('custom-popup-content');
+                const textContainer = document.getElementById('custom-popup-text');
+                const solutionTitle = document.getElementById('custom-popup-solution-title');
+                const closeBtn = document.getElementById('custom-popup-close');
+                const svgContainer = document.getElementById('custom-popup-solution-svg-container');
+
+                if (content && textContainer && solutionTitle && closeBtn && svgContainer) {
+                    content.classList.remove('popup-default', 'popup-solution');
+                    solutionTitle.style.display = 'none'; closeBtn.style.display = 'none';
+                    svgContainer.style.display = 'none'; textContainer.style.display = 'none';
+                    svgContainer.innerHTML = '';
+
+                    content.classList.add('popup-default');
+                    textContainer.style.display = 'block';
+                    textContainer.textContent = text;
+                    setTimeout(() => { popupFO.style.display = 'none'; }, 2000);
+                    popupFO.style.display = 'block';
+                }
+            }
         }
-        popupFO.style.display = 'block';
     }
 
     function initPieChartLogic() {
@@ -508,11 +536,40 @@ document.addEventListener("DOMContentLoaded", () => {
             newSubmit.addEventListener('click', () => {
                 const allPlotted = currentPieCategories.every(cat => cat.plotted);
                 const allCorrect = currentPieCategories.every(cat => cat.inputAngle === cat.expectedAngle);
+
+                const correctPopup = document.getElementById('correct-popup-container');
+                const incorrectPopup = document.getElementById('incorrect-popup-container');
+
                 if (allPlotted) {
-                    if (allCorrect) { completedGames[currentGameKey] = true; createPopup('Correct! 🥳'); }
-                    else createPopup('Incorrect! \u274C', false);
-                } else createPopup('Incomplete!', false);
+                    if (allCorrect) {
+                        completedGames[currentGameKey] = true;
+                        if (correctPopup) {
+                            correctPopup.style.display = 'block';
+                            setTimeout(() => { correctPopup.style.display = 'none'; }, 3000);
+                        } else {
+                            createPopup('Correct! 🥳');
+                        }
+                    } else {
+                        if (incorrectPopup) {
+                            incorrectPopup.style.display = 'block';
+                            setTimeout(() => { incorrectPopup.style.display = 'none'; }, 3000);
+                        } else {
+                            createPopup('Incorrect! \u274C', false);
+                        }
+                    }
+                } else {
+                    createPopup('Incomplete!', false);
+                }
             });
+        }
+
+        const correctPopup = document.getElementById('correct-popup-container');
+        if (correctPopup) {
+            correctPopup.addEventListener('click', () => correctPopup.style.display = 'none');
+        }
+        const incorrectPopup = document.getElementById('incorrect-popup-container');
+        if (incorrectPopup) {
+            incorrectPopup.addEventListener('click', () => incorrectPopup.style.display = 'none');
         }
 
         const resetBtn = document.getElementById('Group_540');
