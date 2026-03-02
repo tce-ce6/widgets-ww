@@ -17,7 +17,9 @@ var WG112App = {
     G: {
         phase: 0,           // 0=init  1=allLoaded  2=running  3=identify  4=answered
         loadedTubes: [],    // indices 0-4 already dispensed into gel
-        criminal: 3,        // 0-based index of the criminal (3 = Suspect-4 per SVG data)
+        currentSetIdx: 0,   // currently active set in DNA_SETS
+        criminal: 3,        // 0-based index of the criminal (updated properly per set now)
+        nextSuspectLane: 1, // Lane index (1 to 4) for the next clicked suspect
         submitted: false,   // true once a suspect is clicked in Phase 3
         animating: false,   // animation guard – prevents double-clicks
         insightsOpen: false,
@@ -60,6 +62,50 @@ var WG112App = {
         { groupId: 'Group_1684' }   // Suspect-4 – bottom-right
     ],
 
+    // Predefined DNA test sets corresponding to slides with varied correct suspects
+    DNA_SETS: [
+        {
+            chromosomes: ["6", "13", "17"],
+            criminal: 1, // Suspect-2
+            suspects: [
+                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 800 }],
+                [{ c: 0, y: 440 }, { c: 1, y: 480 }, { c: 0, y: 560 }, { c: 1, y: 640 }, { c: 2, y: 720 }, { c: 2, y: 760 }],
+                [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 0, y: 600 }, { c: 1, y: 640 }, { c: 2, y: 720 }],
+                [{ c: 1, y: 400 }, { c: 0, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 640 }, { c: 0, y: 720 }, { c: 2, y: 760 }]
+            ]
+        },
+        {
+            chromosomes: ["5", "12", "20"],
+            criminal: 2, // Suspect-3
+            suspects: [
+                [{ c: 2, y: 480 }, { c: 1, y: 560 }, { c: 1, y: 640 }, { c: 0, y: 680 }, { c: 0, y: 720 }, { c: 0, y: 760 }],
+                [{ c: 2, y: 440 }, { c: 2, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 0, y: 680 }, { c: 0, y: 720 }],
+                [{ c: 2, y: 440 }, { c: 2, y: 480 }, { c: 1, y: 560 }, { c: 1, y: 640 }, { c: 0, y: 720 }, { c: 0, y: 760 }],
+                [{ c: 2, y: 440 }, { c: 2, y: 480 }, { c: 1, y: 640 }, { c: 1, y: 680 }, { c: 0, y: 720 }, { c: 0, y: 760 }]
+            ]
+        },
+        {
+            chromosomes: ["1", "9", "22"],
+            criminal: 3, // Suspect-4
+            suspects: [
+                [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 520 }, { c: 1, y: 560 }, { c: 1, y: 600 }, { c: 2, y: 640 }],
+                [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 2, y: 640 }],
+                [{ c: 0, y: 440 }, { c: 1, y: 480 }, { c: 0, y: 520 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 2, y: 640 }],
+                [{ c: 0, y: 400 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 2, y: 560 }, { c: 1, y: 600 }, { c: 2, y: 640 }]
+            ]
+        },
+        {
+            chromosomes: ["2", "7", "18"],
+            criminal: 0, // Suspect-1
+            suspects: [
+                [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 1, y: 760 }],
+                [{ c: 0, y: 440 }, { c: 0, y: 520 }, { c: 2, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 1, y: 760 }],
+                [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 600 }, { c: 2, y: 640 }, { c: 1, y: 680 }, { c: 1, y: 720 }],
+                [{ c: 0, y: 400 }, { c: 0, y: 480 }, { c: 2, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 640 }, { c: 1, y: 760 }]
+            ]
+        }
+    ],
+
     // Green "Bravo" text – one per suspect position
     BRAVO_TEXT: [
         'Bravo_You_have_correctly_identified_the_criminal._-4',  // Suspect-1
@@ -94,6 +140,8 @@ var WG112App = {
     PIPETTE_DEFAULT_X: 682,
     TUBE_X: [171, 341, 511, 681, 851],
     LANE_X: [1130, 1284, 1436, 1590, 1739],
+    LANE_WELLS: ['Group_1605', 'Group_1607', 'Group_1608', 'Group_1609', 'Group_1610'],
+    LANE_WELL_X: [1091, 1241, 1397, 1551, 1700],
 
     /* ─── UTILITIES ────────────────────────────────────────────────────────── */
     el: function (id) { return document.getElementById(id); },
@@ -154,8 +202,22 @@ var WG112App = {
         this.setCursor('Group_1691', 'pointer');
     },
 
+    disableInsightsBtn: function () {
+        this.setOpacity('Button_Insite_', '0.42');
+        this.setPointer('Button_Insite_', false);
+        this.setCursor('Button_Insite_', 'not-allowed');
+    },
+    enableInsightsBtn: function () {
+        this.setOpacity('Button_Insite_', '1');
+        this.setPointer('Button_Insite_', true);
+        this.setCursor('Button_Insite_', 'pointer');
+    },
+
     /* ─── INITIALISATION ───────────────────────────────────────────────────── */
     init: function () {
+        // Run random set on page load
+        this.G.currentSetIdx = Math.floor(Math.random() * this.DNA_SETS.length);
+
         // Attach CSS transition to the filled micropipette once
         var pip = this.el('micropipette');
         if (pip) { pip.style.transition = 'transform 0.55s ease-in-out'; }
@@ -172,11 +234,20 @@ var WG112App = {
         var G = this.G;
         G.phase = 0;
         G.loadedTubes = [];
-        G.criminal = 3;        // Suspect-4 is the criminal (matches SVG band data)
+
+        var currentSet = this.DNA_SETS[G.currentSetIdx];
+        G.criminal = currentSet.criminal;
+
+        G.nextSuspectLane = 1;
         G.submitted = false;
         G.animating = false;
         G.insightsOpen = false;
         G.showAnswerOpen = false;
+
+        var lblAns = this.el('lbl_show_answer');
+        if (lblAns) { lblAns.textContent = 'Show Answer'; }
+
+        this.applyDNASet(currentSet);
 
         /* ── always-visible background elements ── */
         this.show('gel_base');
@@ -196,10 +267,22 @@ var WG112App = {
 
         /* ── Restore all five tubes ── */
         for (var i = 0; i < this.TUBES.length; i++) {
-            this.show(this.TUBES[i].tubeId);
-            this.setCursor(this.TUBES[i].tubeId, 'pointer');
-            this.setCursor(this.TUBES[i].baseId, 'pointer');
-            this.hide(this.TUBES[i].wellId);          // empty wells on reset
+            var tube = this.TUBES[i];
+
+            // Show tube and remove disabled class
+            this.show(tube.tubeId);
+            this.el(tube.tubeId).classList.remove('disabled-tube');
+            this.el(tube.baseId).classList.remove('disabled-tube');
+
+            this.setCursor(tube.tubeId, 'pointer');
+            this.setCursor(tube.baseId, 'pointer');
+            this.hide(this.LANE_WELLS[i]);          // empty wells on reset
+
+            // Restore native translations
+            var labelEl = this.el(tube.labelId);
+            if (labelEl) { labelEl.removeAttribute('transform'); }
+            var bandEl = this.el(this.BANDS[i]);
+            if (bandEl) { bandEl.style.removeProperty('--band-tx'); }
         }
 
         /* ── Gel bands hidden until electrophoresis ── */
@@ -248,8 +331,8 @@ var WG112App = {
 
         /* ── Button states ── */
         this.setStartBtn(false);        // disabled until all loaded
-        this.enableShowAnswerBtn();     // Show Answer is available from Phase 2
-        // But keep it disabled at start; enable when electrophoresis is done
+        this.enableInsightsBtn();       // Insights starts enabled
+        // But keep "Show Answer" disabled at start; enable when electrophoresis is done
         this.disableShowAnswerBtn();
     },
 
@@ -279,7 +362,7 @@ var WG112App = {
         if (resetBtn) { resetBtn.addEventListener('click', function () { self.reset(); }); }
         if (newSetBtn) { newSetBtn.addEventListener('click', function () { self.onNewSetClick(); }); }
         if (showAnsBtn) { showAnsBtn.addEventListener('click', function () { self.onShowAnswerClick(); }); }
-        if (insBtn) { insBtn.addEventListener('click', function () { self.onInsightsOpen(); }); }
+        if (insBtn) { insBtn.addEventListener('click', function () { self.onInsightsClick(); }); }
         if (insCloseBtn) { insCloseBtn.addEventListener('click', function () { self.onInsightsClose(); }); }
 
         /* Suspect portraits */
@@ -301,22 +384,48 @@ var WG112App = {
         G.animating = true;
         var self = this;
         var tube = this.TUBES[idx];
-        var laneDx = this.LANE_X[idx] - this.PIPETTE_DEFAULT_X;
+
+        var targetSlot;
+        if (idx === 0) {
+            targetSlot = 0; // Crime scene always lane 1
+        } else {
+            targetSlot = G.nextSuspectLane;
+            G.nextSuspectLane++;
+        }
+
+        var laneDx = this.LANE_X[targetSlot] - this.PIPETTE_DEFAULT_X;
         var tubeDx = this.TUBE_X[idx] - this.PIPETTE_DEFAULT_X;
+
+        // Calculate translation needed for bands and label
+        var tx = this.LANE_WELL_X[targetSlot] - this.LANE_WELL_X[idx];
+
+        // Move label
+        var labelEl = self.el(tube.labelId);
+        if (labelEl) {
+            labelEl.setAttribute('transform', 'translate(' + tx + ', 0)');
+        }
+        // Set var for bands
+        var bandEl = self.el(self.BANDS[idx]);
+        if (bandEl) {
+            bandEl.style.setProperty('--band-tx', tx + 'px');
+        }
 
         /* Step 1 – show filled pipette, travel to tube */
         this.show('micropipette');
         this.movePipette(tubeDx, 0, 630, function () {
 
-            /* Step 2 – tube is "emptied"; filled pipette travels to gel lane */
-            self.hide(tube.tubeId);
+            /* Step 2 – tube becomes disabled (INSTEAD OF HIDDEN) */
+            self.el(tube.tubeId).classList.add('disabled-tube');
+            self.el(tube.baseId).classList.add('disabled-tube');
             self.setCursor(tube.baseId, 'default');
+            self.setCursor(tube.tubeId, 'default');
 
-            self.movePipette(laneDx, -55, 620, function () {
+            self.movePipette(laneDx, -145, 620, function () {
 
-                /* Step 3 – well fills + lane label appears */
-                self.show(tube.wellId);
-                if (idx > 0) { self.show(tube.labelId); }  // Crime scene label always visible
+                /* Step 3 – target well fills + corresponding lane label appears */
+                var wellId = self.LANE_WELLS[targetSlot];
+                self.show(wellId);
+                if (idx > 0) { self.show(tube.labelId); }
 
                 /*
                  * Change 1 & 2:
@@ -324,7 +433,7 @@ var WG112App = {
                  *  – Keep micropipette2 visible for 1.5 s so user can see where it dispensed.
                  *  – Then hide it and tidy up.
                  */
-                self.placePipette2(laneDx, -55);   // instant position (no travel anim)
+                self.placePipette2(laneDx, -145);   // instant position (no travel anim)
                 self.hide('micropipette');
                 self.resetPipettePos();
                 self.show('micropipette2');        // Change 1: appears only NOW
@@ -444,21 +553,105 @@ var WG112App = {
         var G = this.G;
         /* Only makes sense after electrophoresis + not already shown */
         if (G.phase < 3) { return; }
-        if (G.showAnswerOpen) { return; }
 
-        G.showAnswerOpen = true;
-        this.show('show_answer');
-        this.disableShowAnswerBtn();   // Change 4: disable after first use
+        if (G.showAnswerOpen) {
+            G.showAnswerOpen = false;
+            this.hide('show_answer');
+            this.enableInsightsBtn();
+            var lblAns = this.el('lbl_show_answer');
+            if (lblAns) { lblAns.textContent = 'Show Answer'; }
+        } else {
+            G.showAnswerOpen = true;
+            this.show('show_answer');
+            this.disableInsightsBtn();
+            var lblAns = this.el('lbl_show_answer');
+            if (lblAns) { lblAns.textContent = 'Back'; }
+        }
     },
 
     /* ─── INSIGHTS PANEL ────────────────────────────────────────────────────── */
-    onInsightsOpen: function () { this.G.insightsOpen = true; this.show('insites'); },
-    onInsightsClose: function () { this.G.insightsOpen = false; this.hide('insites'); },
+    onInsightsClick: function () {
+        if (this.G.insightsOpen) {
+            this.onInsightsClose();
+        } else {
+            this.onInsightsOpen();
+        }
+    },
+    onInsightsOpen: function () {
+        this.G.insightsOpen = true;
+        this.show('insites');
+        this.disableShowAnswerBtn();
+    },
+    onInsightsClose: function () {
+        this.G.insightsOpen = false;
+        this.hide('insites');
+        if (this.G.phase >= 3) {
+            this.enableShowAnswerBtn();
+        }
+    },
 
     /* ─── NEW SET ───────────────────────────────────────────────────────────── */
     onNewSetClick: function () {
-        this.G.criminal = Math.floor(Math.random() * 4);
+        var G = this.G;
+        // Avoid clicking while animating
+        if (G.animating && G.phase < 4) { return; }
+
+        // Randomly pick a new set that is not the current one
+        if (this.DNA_SETS.length > 1) {
+            var nextSet = G.currentSetIdx;
+            while (nextSet === G.currentSetIdx) {
+                nextSet = Math.floor(Math.random() * this.DNA_SETS.length);
+            }
+            G.currentSetIdx = nextSet;
+        }
+
         this.reset();
+    },
+
+    /* ─── DYNAMIC DNA BAND GENERATION ────────────────────────────────────────── */
+    applyDNASet: function (setDef) {
+        // 1. Update legend labels
+        for (var c = 0; c < 3; c++) {
+            var lbl = this.el('lbl_chrom_' + c);
+            if (lbl) { lbl.textContent = 'Chromosome ' + setDef.chromosomes[c]; }
+        }
+
+        // 2. Update criminal answer text (Suspects 1-indexed)
+        var ansLbl = this.el('lbl_criminal_answer');
+        if (ansLbl) { ansLbl.textContent = 'Suspect ' + (setDef.criminal + 1) + ' is the criminal'; }
+
+        // 3. Colors for chromosomes
+        var colorMap = { 0: '#ff4c00', 1: '#00d62c', 2: '#ffffb4' };
+
+        // 4. Generate bands for all 5 lanes
+        // Lane 0 is Crime Scene, Lanes 1-4 are suspects
+        var crimeSceneBands = setDef.suspects[setDef.criminal];
+
+        var bandGroupsParams = [
+            { id: this.BANDS[0], bands: crimeSceneBands, x: 1091 },     // Crime Scene   (TUBES[0])
+            { id: this.BANDS[1], bands: setDef.suspects[2], x: 1245 },  // Suspect-3     (TUBES[1])
+            { id: this.BANDS[2], bands: setDef.suspects[1], x: 1397 },  // Suspect-2     (TUBES[2])
+            { id: this.BANDS[3], bands: setDef.suspects[3], x: 1551 },  // Suspect-4     (TUBES[3])
+            { id: this.BANDS[4], bands: setDef.suspects[0], x: 1701 }   // Suspect-1     (TUBES[4])
+        ];
+
+        for (var l = 0; l < bandGroupsParams.length; l++) {
+            var params = bandGroupsParams[l];
+            var gEl = this.el(params.id);
+            if (!gEl) { continue; }
+            gEl.innerHTML = ''; // Clear old standard bands
+
+            for (var b = 0; b < params.bands.length; b++) {
+                var bandDef = params.bands[b];
+                var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('x', params.x);
+                rect.setAttribute('y', bandDef.y);
+                rect.setAttribute('width', 78);
+                rect.setAttribute('height', 12);
+                rect.setAttribute('fill', colorMap[bandDef.c]);
+                gEl.appendChild(rect);
+            }
+        }
     }
 
 };
