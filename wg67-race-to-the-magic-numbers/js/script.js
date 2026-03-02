@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ─────────────────────────────────────────────
-  // 1.  SVG ELEMENT REFERENCES
-  // ─────────────────────────────────────────────
   const svg = document.querySelector("svg");
 
-  // Screen / overlay layers
   const howToPlayScreen = svg.getElementById("how-to-play--screen");
   const popupHowToPlay = svg.getElementById("popup-how-to-play");
   const popupHint = svg.getElementById("popup-hint");
@@ -16,17 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const iTextBunny = svg.getElementById("i-text-bunny-player");
   const iTextFox = svg.getElementById("i-text-fox-player");
 
-  // Player badges/boxes on the board
   const player1Box = svg.getElementById("player1");
   const player2Box = svg.getElementById("player2");
 
-  // Wheels
   const redWheel = svg.getElementById("red-spin-wheel");   // Tens (orange)
   const greenWheel = svg.getElementById("green-spin-wheel"); // Ones
 
-  // Buttons
   const btnSpin = svg.getElementById("btn-spin");
   const btnMove = svg.getElementById("btn-move");
+  const radioDotFwd = svg.getElementById("Path_7164");
+  const radioDotBwd = svg.getElementById("Path_7164-2");
   const btnNewGame = svg.getElementById("btn-new-game");
   const btnHTP = svg.getElementById("btn-how-to-play");  // ℹ icon on game board
   const btnPlayHTP = howToPlayScreen.querySelector("#Group_16"); // Play button in HTP screen
@@ -34,11 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnIntroEnter = svg.getElementById("Group_17");
 
   // Forward / Backward panel buttons
-  const fwdPanel = svg.getElementById("forward");      // forward arrow button (top pill)
-  const bwdPanel = svg.getElementById("backward-2");   // backward arrow button (bottom pill)
+  // Fixed IDs: 'backward-2' is the actual ID of the forward arrow in the DOM (see console / index.html).
+  // We will assign them based on what was found to be the forward arrow vs backward arrow
+  const fwdPanel = svg.getElementById("forward") || svg.getElementById("backward-2") || document.querySelector("#backward-2");
+  const bwdPanel = svg.getElementById("backward-3") || document.querySelector("#backward-3");
   const fwdLabel = svg.getElementById("forwar-backward-panel"); // whole panel for label clicks
 
-  // Number pad groups  (Group_7034 = 1, … Group_7043 = 0, Group_7044 = clear X)
   const numpadGroups = {
     '1': svg.getElementById("Group_7034"),
     '2': svg.getElementById("Group_7035"),
@@ -53,47 +49,41 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const numpadClear = svg.getElementById("Group_7044"); // backspace / clear X
 
-  // Target display
   const targetTxtGroup = document.querySelector('[data-name="Target"]') || svg.getElementById("Target");
   const targetValGroup = document.querySelector('[data-name=" 22"]') || document.querySelector('[data-name="22"]') || svg.getElementById("_22");
 
-  // Steps display
   const stepValGroup = document.querySelector('[data-name=" 22-3"]') || svg.getElementById("_22-3") || svg.getElementById("How_many_steps_");
+  const stepEnterBox = svg.getElementById("step-enter-box");
 
-  // Player tokens
   const bunnyToken = svg.getElementById("bunny-on-number");
   const foxToken = svg.getElementById("fox-on-number");
 
-  // Feedback text nodes
   const feedbackBunnyTspan = feedbackBunny ? feedbackBunny.querySelectorAll("tspan") : [];
   const feedbackFoxTspan = feedbackFox ? feedbackFox.querySelectorAll("tspan") : [];
   const winTspan = feedbackEnd ? feedbackEnd.querySelectorAll("tspan") : [];
 
-  // Hint text nodes (inside #popup-hint)
-  const popupHintStr = document.querySelector('[data-name="Bunny Jump to 22 Tap the box and choose steps "]') || svg.getElementById("Bunny_Jump_to_22_Tap_the_box_and_choose_steps_");
+  const hintGroup = document.querySelector('[data-name="Move 7 steps backward to land on15."]') || svg.getElementById("Move_7_steps_backward_to_land_on15.");
+  const hintTexts = hintGroup ? hintGroup.querySelectorAll('text') : [];
+  const hintText1 = hintTexts[0];
+  const hintText2 = hintTexts[1];
+  const hintText3 = hintTexts[2];
 
   const instructionPrompt = svg.getElementById("Bunny_Jump_to_22_Tap_the_box_and_choose_steps_") || document.querySelector('[data-name="Bunny Jump to 22 Tap the box and choose steps "]');
 
   let injectedTargetPrompt, injectedTargetNum, injectedStepNum, injectedInstruction, injectedHint;
 
-  // ─────────────────────────────────────────────
-  // 1b. DYNAMIC TEXT REPLACEMENT & OVERLAYS
-  // ─────────────────────────────────────────────
   window.addEventListener("load", () => {
-    // Inject dynamic texts where stagnant groups were
     injectedTargetPrompt = replaceGroupWithText(targetTxtGroup, "Target", "end", "700", "#1a1a2e", "30", -10);
     injectedTargetNum = replaceGroupWithText(targetValGroup, "?", "middle", "700", "#d0401d", "35");
     injectedStepNum = replaceGroupWithText(stepValGroup, "?", "middle", "700", "#d0401d", "35");
     injectedInstruction = replaceGroupWithText(instructionPrompt, "Wait!", "middle", "italic", "#fff", "23", -20);
 
-    // Add hitboxes for buttons to ensure easy clicking despite gaps in paths
     addHitbox(btnSpin); addHitbox(btnMove); addHitbox(btnNewGame);
     addHitbox(fwdPanel); addHitbox(bwdPanel);
     addHitbox(btnHTP); addHitbox(btnPlayHTP); addHitbox(btnIntroEnter);
     addHitbox(numpadClear);
     for (let i = 0; i <= 9; i++) addHitbox(numpadGroups[i]);
 
-    // Position tokens at home immediately
     positionToken(bunnyToken, 0);
     positionToken(foxToken, 0);
   });
@@ -142,30 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
     rect.setAttribute("height", bbox.height);
     rect.setAttribute("fill", "transparent");
     rect.style.cursor = "pointer";
-    // We forward clicks physically hitting the rect up to the group itself
     rect.addEventListener("click", (e) => {
-      // Create a fake click on the parent if needed, but normally appending catches capturing
-      // Our listeners are on the `<g>`. The rect is a child of the `<g>`.
-      // Event bubbling makes it automatically trigger the group's listener!
     });
     group.appendChild(rect);
   }
-
-  // ─────────────────────────────────────────────
-  // 2.  GRID COORDINATE MAP  (number → SVG centre)
-  // ─────────────────────────────────────────────
-  // The game board is a 10×10 boustrophedon grid.
-  // From the SVG coordinates observed in index.html:
-  //   Column width  = 60px, Row height = 55px
-  //   Left edge x of col-0 = 86 (cell rect x)  → centre x = 86 + 29.5 ≈ 115
-  //   Top row y (row 10, numbers 91-100) = 161   → centre y = 161 + 27.5 ≈ 188
-  //   Each row is 55px taller (rows go down).
-  //   Col spacing is 60px wider per column.
-  //
-  // Layout per row (from top):
-  //   row 10 → numbers 91–100  left→right:  91 @ col0, 92 @ col1, … 100 @ col9
-  //   row  9 → numbers 81–90   right→left:  90 @ col0, 89 @ col1, …  81 @ col9
-  //   etc.  (boustrophedon / snake)
 
   const CELL_COORDS = {};
   const COL_CENTRES = [115, 175, 235, 295, 355, 415, 475, 535, 595, 655]; // x centres
@@ -182,30 +152,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const col = leftToRight ? posInRow : (9 - posInRow);
 
     // Explicit calculations: X goes from Right (670) to Left (103) for cells 1-10
-    let absX = 0;
-    if (rowFromBottom % 2 !== 0) { // Rows 1, 3, 5... (1-10, 21-30) Right to Left
-      absX = 670 - (posInRow * 63);
-    } else {                       // Rows 2, 4, 6... (11-20, 31-40) Left to Right
-      absX = 103 + (posInRow * 63);
-    }
-    const absY = 714 - ((rowFromBottom - 1) * 58) - 25; // -25 puts token slightly above text
+    const CELL_SIZE_X = 64;     // exact horizontal spacing
+    const CELL_SIZE_Y = 63;     // exact vertical spacing
 
+    const LEFT_START = 103;    // center of cell 1 (bottom-right row end)
+    const RIGHT_START = LEFT_START + (CELL_SIZE_X * 9);
+    // 103 + (63 * 9) = 670
+
+    let absX;
+
+    if (rowFromBottom % 2 !== 0) {
+      // Odd rows (1–10, 21–30...) → Right to Left
+      absX = RIGHT_START - (posInRow * CELL_SIZE_X);
+    } else {
+      // Even rows → Left to Right
+      absX = LEFT_START + (posInRow * CELL_SIZE_X);
+    }
+
+    let absY = 716 - ((rowFromBottom - 1) * CELL_SIZE_Y);
     CELL_COORDS[n] = {
       x: absX,
       y: absY
     };
   }
 
-  // Home position (off-board, below cell 1)
   const HOME_POS = { x: 670, y: 760 };
 
-  // Native coordinates where the tokens were drawn in the SVG
   const BUNNY_BASE = { x: 638, y: 591 };
   const FOX_BASE = { x: 388, y: 614 };
 
-  // ─────────────────────────────────────────────
-  // 3.  GAME STATE
-  // ─────────────────────────────────────────────
   const state = {
     currentPlayer: 1,      // 1 = Bunny, 2 = Fox
     positions: [0, 0],     // index 0 = Bunny, 1 = Fox  (0 = HOME)
@@ -218,9 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
     spinning: false,
   };
 
-  // ─────────────────────────────────────────────
-  // 4.  HELPER – SHOW / HIDE SVG GROUPS
-  // ─────────────────────────────────────────────
   function show(el) {
     if (el) {
       el.classList.remove("g-hidden");
@@ -234,11 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ─────────────────────────────────────────────
-  // 5.  INITIAL LAYER SETUP
-  // ─────────────────────────────────────────────
   function initLayers() {
-    // Show How-To-Play screen first
     show(howToPlayScreen);
     hide(popupHowToPlay);
     hide(feedbackBunny);
@@ -260,18 +228,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.style.cursor = pointer ? "pointer" : "default";
   }
 
-  // ─────────────────────────────────────────────
-  // 6.  TOKEN POSITIONING
-  // ─────────────────────────────────────────────
   function positionToken(tokenEl, pos) {
     if (!tokenEl) return;
+
     const coord = pos === 0 ? HOME_POS : CELL_COORDS[pos];
     if (!coord) return;
 
-    // Use token base drawn offsets to calculate pure translation
-    const base = tokenEl === bunnyToken ? BUNNY_BASE : FOX_BASE;
-    const tx = coord.x - base.x;
-    const ty = coord.y - base.y;
+    const bbox = tokenEl.getBBox();
+
+    const tokenCenterX = bbox.x + bbox.width / 2;
+    const tokenCenterY = bbox.y + bbox.height / 2;
+
+    const tx = coord.x - tokenCenterX;
+    const ty = coord.y - tokenCenterY;
 
     tokenEl.style.transition = "transform 0.4s ease-in-out";
     tokenEl.style.transform = `translate(${tx}px, ${ty}px)`;
@@ -296,17 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 160);
   }
 
-  // ─────────────────────────────────────────────
-  // 7.  UPDATE DISPLAY TEXT
-  // ─────────────────────────────────────────────
   function updateTargetDisplay(num) {
     const val = num !== null ? String(num) : "?";
     if (injectedTargetNum) injectedTargetNum.textContent = val;
     if (injectedTargetPrompt) {
       if (state.targetNumber === null) {
-        injectedTargetPrompt.textContent = "Spin the wheel!";
+        injectedTargetPrompt.textContent = "Target";
       } else {
-        injectedTargetPrompt.textContent = `T${state.targetNumber}`;
+        injectedTargetPrompt.textContent = `Target`;
       }
     }
   }
@@ -342,9 +308,6 @@ document.addEventListener("DOMContentLoaded", () => {
     wheelEl.appendChild(txt);
   }
 
-  // ─────────────────────────────────────────────
-  // 8.  TURN DISPLAY
-  // ─────────────────────────────────────────────
   function updateTurnDisplay() {
     if (state.currentPlayer === 1) {
       show(iTextBunny);
@@ -359,17 +322,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ─────────────────────────────────────────────
-  // 9.  HOW-TO-PLAY SCREEN – PLAY BUTTON
-  // ─────────────────────────────────────────────
   if (btnPlayHTP) {
     btnPlayHTP.style.cursor = "pointer";
     btnPlayHTP.addEventListener("click", startGame);
   }
 
-  // ─────────────────────────────────────────────
-  // 10. HOW-TO-PLAY INFO BUTTON (ℹ on the board)
-  // ─────────────────────────────────────────────
   if (btnHTP) {
     btnHTP.style.cursor = "pointer";
     btnHTP.addEventListener("click", () => {
@@ -386,9 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
     closeHTPBtn.addEventListener("click", () => hide(popupHowToPlay));
   }
 
-  // ─────────────────────────────────────────────
-  // 11. START GAME & INTRO SCREENS
-  // ─────────────────────────────────────────────
   if (btnIntroEnter) {
     btnIntroEnter.style.cursor = "pointer";
     btnIntroEnter.addEventListener("click", () => {
@@ -404,25 +358,18 @@ document.addEventListener("DOMContentLoaded", () => {
     show(iTextBunny);
   }
 
-  // ─────────────────────────────────────────────
-  // 12. SPIN WHEELS
-  // ─────────────────────────────────────────────
   if (btnSpin) {
     btnSpin.style.cursor = "pointer";
     btnSpin.addEventListener("click", () => {
       if (state.phase !== 'spin' || state.spinning) return;
       state.spinning = true;
 
-      // Pick random values
       state.tensValue = Math.floor(Math.random() * 10);  // 0-9
       state.onesValue = Math.floor(Math.random() * 10);  // 0-9
 
       const target = state.tensValue * 10 + state.onesValue;
       state.targetNumber = target === 0 ? 100 : target; // Modified to 100 if 00
 
-      // Calculate rotations 
-      // Current rotation modulo 360 gives the current digit.
-      // We want to transition to the new digit with 4 extra spins.
       const currentTensRotation = state.redWheelRot || 0;
       const currentOnesRotation = state.greenWheelRot || 0;
 
@@ -453,46 +400,42 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         updateTargetDisplay(state.targetNumber);
 
-        // Advance phase
         state.phase = 'direction';
         const playerStr = state.currentPlayer === 1 ? "Bunny" : "Fox";
         updateInstructionText(`${playerStr}! Target: ${state.targetNumber}. Fwd / Bwd?`);
         state.spinning = false;
 
-        // Show choose-steps instruction
         show(iTextChooseSteps);
       }, 2300);
     });
   }
 
-  // ─────────────────────────────────────────────
-  // 13. DIRECTION SELECTION (Forward / Backward)
-  // ─────────────────────────────────────────────
-  // The forward/backward panel has two pill-shaped areas + arrow buttons
-  // We click the entire pill area or arrow icon
-
   function selectDirection(dir) {
+    console.log("Direction selected!");
     if (state.phase !== 'direction' && state.phase !== 'steps') return;
     state.direction = dir;
     state.phase = 'steps';
-    // Visual feedback
+    // Visual feedback  
     if (dir === 'forward') {
+      console.log("Forward selected!");
       fwdPanel && fwdPanel.classList.add("dir-selected");
       bwdPanel && bwdPanel.classList.remove("dir-selected");
+      show(radioDotFwd);
+      hide(radioDotBwd);
     } else {
+      console.log("Backward selected!");
       bwdPanel && bwdPanel.classList.add("dir-selected");
       fwdPanel && fwdPanel.classList.remove("dir-selected");
+      show(radioDotBwd);
+      hide(radioDotFwd);
     }
+
+    const playerStr = state.currentPlayer === 1 ? "Bunny" : "Fox";
+    updateInstructionText(`${playerStr}! Target: ${state.targetNumber}. How many steps?`);
   }
 
-  // The whole forward-backward-panel has two sub-elements:
-  //   #forward  (top pill)   → forward
-  //   #backward-2 (bottom pill with minus icon) → backward
-  // Plus the forward / backward text labels sit in that group.
-  // We hook up the whole labelled pill with the containing group that has the label.
-
-  const fwdPill = svg.getElementById("forward") || svg.getElementById("forward-2");
-  const bwdPill = svg.getElementById("backward-2");
+  const fwdPill = svg.getElementById("forward") || svg.getElementById("backward-2");
+  const bwdPill = svg.getElementById("backward-3");
 
   if (fwdPill) {
     fwdPill.style.cursor = "pointer";
@@ -515,9 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
     bwdTextGroup.addEventListener("click", () => selectDirection('backward'));
   }
 
-  // ─────────────────────────────────────────────
-  // 14. NUMBER PAD
-  // ─────────────────────────────────────────────
   Object.entries(numpadGroups).forEach(([digit, el]) => {
     if (!el) return;
     el.style.cursor = "pointer";
@@ -548,16 +488,13 @@ document.addEventListener("DOMContentLoaded", () => {
       updateStepDisplay(state.stepsInput || '');
     });
   }
-
-  // ─────────────────────────────────────────────
-  // 15. MOVE BUTTON
-  // ─────────────────────────────────────────────
   if (btnMove) {
     btnMove.style.cursor = "pointer";
     btnMove.addEventListener("click", handleMove);
   }
 
   function handleMove() {
+    console.log("Moved!");
     if (state.phase !== 'steps') return;
     if (!state.stepsInput || !state.direction) return;
 
@@ -570,15 +507,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const correct = (newPos === state.targetNumber);
 
     if (!correct) {
-      // Wrong answer — shake the step box and let them try again
+      // Wrong answer — shake the step box and show hint automatically
       if (stepEnterBox) {
         stepEnterBox.classList.add("steps-wrong");
         setTimeout(() => stepEnterBox.classList.remove("steps-wrong"), 500);
       }
+      showHint();
       return;
     }
 
     // Correct!
+    hide(popupHint);
     state.phase = 'animating';
     state.positions[playerIdx] = newPos;
 
@@ -611,9 +550,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ─────────────────────────────────────────────
-  // 16. WIN STATE
-  // ─────────────────────────────────────────────
   function triggerWin(playerName, num) {
     state.phase = 'done';
     hide(feedbackBunny);
@@ -622,11 +558,7 @@ document.addEventListener("DOMContentLoaded", () => {
     show(feedbackEnd);
     feedbackEnd.classList.add("win-pulse");
 
-    // Update win text: "Bunny/Fox WINS at N!"
-    // winTspan comes from the text group #Bunny_WINS_at inside #Group_7050-2
-    // The text structure has multiple tspans; the bold number tspan is typically at index 1/2
     if (winTspan.length > 0) {
-      // Find the tspan with "Bunny WINS at " and update
       for (let t of winTspan) {
         const content = t.textContent.trim();
         if (content === "93" || /^\d+$/.test(content)) {
@@ -641,11 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ─────────────────────────────────────────────
-  // 17. NEXT TURN
-  // ─────────────────────────────────────────────
   function nextTurn() {
-    // Hide feedbacks
     hide(feedbackBunny);
     hide(feedbackFox);
     hide(iTextChooseSteps);
@@ -676,12 +604,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ─────────────────────────────────────────────
-  // 18. HINT POPUP
-  // ─────────────────────────────────────────────
-  // Hint button is inside #popup-hint as a pill labelled "Hint"
-  // Also accessible from the main flow; the Hint button group is #Group_7091-2
-  const hintBtnGroup = svg.getElementById("Group_7091-2");
+  const hintBtnGroup = svg.getElementById("Group_7091-2") || document.querySelector('[data-name="Group 7091-2"]');
   if (hintBtnGroup) {
     hintBtnGroup.style.cursor = "pointer";
     hintBtnGroup.addEventListener("click", showHint);
@@ -692,12 +615,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showHint() {
     if (state.phase !== 'steps' && state.phase !== 'direction') return;
+    hide(iTextChooseSteps);
     show(popupHint);
 
-    // Set hint text dynamically
-    if (hintText1) hintText1.textContent = `You need to move exactly ${state.targetNumber || '?'} steps.`;
-    if (hintText2) hintText2.textContent = `Make sure you enter ${state.targetNumber || '?'} on the numpad`;
-    if (hintText3) hintText3.textContent = `and hit Move!`;
     const playerIdx = state.currentPlayer - 1;
     const currentPos = state.positions[playerIdx] || 0;
     const target = state.targetNumber;
@@ -708,13 +628,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const abs = Math.abs(diff);
 
     // Update hint text
-    // Structure: "Move X steps" / "forward / backward" / "to land on N."
-    if (hintText1) hintText1.querySelector("tspan") &&
-      (hintText1.querySelector("tspan").textContent = `Move ${abs} steps`);
-    if (hintText2) hintText2.querySelector("tspan") &&
-      (hintText2.querySelector("tspan").textContent = dir);
-    if (hintText3) hintText3.querySelector("tspan") &&
-      (hintText3.querySelector("tspan").textContent = `to land on ${target}.`);
+    if (hintText1) hintText1.innerHTML = `<tspan x="0" y="0">Move ${abs} steps</tspan>`;
+    if (hintText2) hintText2.innerHTML = `<tspan x="0" y="0">${dir}</tspan>`;
+    if (hintText3) hintText3.innerHTML = `<tspan x="0" y="0">to land on ${target}.</tspan>`;
 
     show(popupHint);
   }
@@ -722,12 +638,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Dismiss on Hint button click within the popup
   if (hintDismissParent) {
     hintDismissParent.style.cursor = "pointer";
-    hintDismissParent.addEventListener("click", () => hide(popupHint));
+    hintDismissParent.addEventListener("click", () => {
+      hide(popupHint);
+      if (state.phase === 'steps') show(iTextChooseSteps);
+    });
   }
 
-  // ─────────────────────────────────────────────
-  // 19. NEW GAME BUTTON
-  // ─────────────────────────────────────────────
   if (btnNewGame) {
     btnNewGame.style.cursor = "pointer";
     btnNewGame.addEventListener("click", resetGame);
@@ -774,9 +690,6 @@ document.addEventListener("DOMContentLoaded", () => {
     positionToken(foxToken, 0);
   }
 
-  // ─────────────────────────────────────────────
-  // 20. BOOTSTRAP
-  // ─────────────────────────────────────────────
   initLayers();
   updateTargetDisplay(null);
   updateStepDisplay('');

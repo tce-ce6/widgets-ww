@@ -36,7 +36,7 @@ svg * {
 #idiom-wrapper .container::after {
   content: "";
   /* background-image: url("../assets/bg.png"); */
-  background-color: #000;
+  background-color: rgb(64, 197, 255);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -45,6 +45,7 @@ svg * {
   position: absolute;
   top: 0;
   left: 0;
+  border: none;
 }
 
 /* #idiom-wrapper .mainContainerOuter {
@@ -406,10 +407,10 @@ svg * {
   display: none !important;
 }
 
-#fox-face-2,
+/* #fox-face-2,
 #bunny-face1 {
   display: none !important;
-}
+} */
 
 .g-fade-in {
   animation: fadeIn 0.35s ease forwards;
