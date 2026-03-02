@@ -6,8 +6,8 @@ const WIDGET_DATA = [
         link: "https://tce-widgets.web.app/wg121-synthesize-new-dna-strand/",
         imagePath: "./assets/wg-121.png",
         creators: "pp-121",
-        status: "todo",
-        updatedAt: "2026-02-27 13:55",
+        status: "in-review",
+        updatedAt: "2026-03-02 11:21",
     },
     {
         name: "Identify Criminal Dna",

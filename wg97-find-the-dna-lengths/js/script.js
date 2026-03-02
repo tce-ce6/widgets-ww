@@ -15,7 +15,7 @@ class Wg97 {
         [200, 600, 1100, 1500]
     ];
 
-    static TUBE_COLORS = ['#FF6B35', '#9C4DCC', '#E91E63', '#4CAF50', '#FF9800'];
+    static TUBE_COLORS = ['#0a719b', '#0a719b', '#0a719b', '#0a719b', '#0a719b'];
 
     static BP_TO_Y = {
         100: 873, 200: 849, 300: 826, 400: 802, 500: 778,
@@ -125,9 +125,8 @@ class Wg97 {
         ];
         elementsToHide.forEach(el => { if (el) el.setAttribute('display', 'none'); });
 
-        // Find existing instruction text (fallback query)
-        const texts = Array.from(document.querySelectorAll('text'));
-        this.dom.instruction = texts.find(t => t.textContent.includes('Tap the Eppendorf'));
+        this.dom.itext1 = document.getElementById('itext1');
+        this.dom.texts = [this.dom.itext1, this.dom.itext2, this.dom.itext3];
 
         const testTubeBase = document.getElementById('test_tube_base');
         if (testTubeBase) testTubeBase.style.pointerEvents = 'none';
@@ -293,9 +292,12 @@ class Wg97 {
             if (this.dom.btnShowAnswer) this.dom.btnShowAnswer.style.pointerEvents = 'auto';
         }
 
+        // Hide all instructions first
+        this.dom.texts.forEach(el => this._hideEl(el));
+
         switch (this.state) {
             case S.IDLE:
-                if (this.dom.instruction) this.dom.instruction.textContent = 'Tap the Eppendorf tubes (in any order) to load DNA samples.';
+                this._showEl(this.dom.itext1);
                 this._setOpacity(this.dom.btnStart, '0.5');
                 if (this.dom.btnStart) this.dom.btnStart.style.pointerEvents = 'none';
                 this._setOpacity(this.dom.btnReset, '0.5');
@@ -306,17 +308,21 @@ class Wg97 {
                 this.dom.sampleBands.forEach(el => this._hideEl(el));
                 break;
 
+            case S.LOADING:
+                this._showEl(this.dom.itext1);
+                break;
+
             case S.ALL_LOADED:
                 this._setOpacity(this.dom.btnStart, '1');
                 if (this.dom.btnStart) this.dom.btnStart.style.pointerEvents = 'auto';
                 this._setOpacity(this.dom.btnReset, '1');
-                if (this.dom.instruction) this.dom.instruction.textContent = 'All samples loaded! Press Start to run electrophoresis.';
+                this._showEl(this.dom.itext2);
                 break;
 
             case S.RUNNING:
                 this._setOpacity(this.dom.btnStart, '0.5');
                 if (this.dom.btnStart) this.dom.btnStart.style.pointerEvents = 'none';
-                if (this.dom.instruction) this.dom.instruction.textContent = 'Running electrophoresis… please wait.';
+                this._showEl(this.dom.itext2);
                 break;
 
             case S.INPUT:
@@ -324,7 +330,7 @@ class Wg97 {
                 this._showEl(this.dom.inputArea);
                 this._showEl(this.dom.btnSubmitGroup);
                 this._setOpacity(this.dom.btnReset, '1');
-                if (this.dom.instruction) this.dom.instruction.textContent = 'Compare band positions and enter fragment sizes (bps).';
+                this._showEl(this.dom.itext3);
                 break;
 
             case S.COMPLETE:
@@ -332,7 +338,6 @@ class Wg97 {
                 // Keep input areas visible to show answers
                 this._showEl(this.dom.successBanner);
                 this._setOpacity(this.dom.btnReset, '1');
-                if (this.dom.instruction) this.dom.instruction.textContent = '🎉 All correct! Press Reset (New Set) to try a new sample set.';
                 break;
         }
     }
@@ -359,7 +364,7 @@ class Wg97 {
         for (let i = 0; i < 5; i++) {
             if (this.dom[`tube_${i}`]) this.dom[`tube_${i}`].style.opacity = '1';
             if (this.dom[`bg_${i}`]) this.dom[`bg_${i}`].setAttribute('fill', '#b1ffae'); // Default hilight BG color from SVG
-            if (this.dom[`liquid_${i}`]) this.dom[`liquid_${i}`].setAttribute('fill', '#006C99'); // Default liquid color
+            if (this.dom[`liquid_${i}`]) this.dom[`liquid_${i}`].setAttribute('fill', '#0a719b'); // Monochromatic blue
             if (this.dom[`slot_${i}`]) this.dom[`slot_${i}`].style.cursor = 'pointer';
         }
 
@@ -399,14 +404,11 @@ class Wg97 {
     // ─── PRIVATE HELPERS ──────────────────────────────────────────────────────
 
     _pickNewSet() {
-        if (this.usedSetIndices.length >= Wg97.SAMPLE_SETS.length) {
-            this.usedSetIndices = [];
+        const bpsOptions = Object.keys(Wg97.BP_TO_Y).map(Number);
+        this.currentSet = [];
+        for (let i = 0; i < 4; i++) {
+            this.currentSet.push(bpsOptions[Math.floor(Math.random() * bpsOptions.length)]);
         }
-        let available = Array.from({ length: Wg97.SAMPLE_SETS.length }, (_, i) => i)
-            .filter(i => !this.usedSetIndices.includes(i));
-        const pick = available[Math.floor(Math.random() * available.length)];
-        this.usedSetIndices.push(pick);
-        this.currentSet = [...Wg97.SAMPLE_SETS[pick]];
     }
 
     _showEl(el) { if (el) el.setAttribute('display', ''); }
@@ -614,7 +616,7 @@ class Wg97 {
         const dyTubeHover = -50;  // Hover cleanly above tube
         const dyTubePlunge = 100; // Drop into tube
         const dyLaneHover = -160; // Up and over to gel well
-        const dyLanePlunge = -80; // Down into gel well
+        const dyLanePlunge = -140; // Down into gel well
 
         // Reset position to rest hover height above clicked tube
         pip.setAttribute('transform', `translate(${dxTube}, ${dyTubeHover})`);
@@ -679,7 +681,7 @@ class Wg97 {
 
         const nonLadderTubes = this.loadQueue.filter(s => s !== 0);
 
-        // Compute Y positions
+        // Setup sample bands
         this.dom.sampleBands.forEach((band, idx) => {
             const slotIndex = nonLadderTubes[idx];
             const bps = this.currentSet[slotIndex - 1];
@@ -689,26 +691,60 @@ class Wg97 {
                 const Y_TOP = 376;
                 yPos = Math.round(Y_BOT - (Math.log(bps) - Math.log(100)) / (Math.log(2100) - Math.log(100)) * (Y_BOT - Y_TOP));
             }
-            band.setAttribute('y', yPos);
-            band.setAttribute('fill', Wg97.TUBE_COLORS[slotIndex]); // Color maps to the specific tube in this lane
+            band._targetY = yPos;
+            band.setAttribute('y', 376); // start well Y position
+            band.setAttribute('fill', Wg97.TUBE_COLORS[slotIndex]);
+            band.style.transition = 'none';
         });
 
+        if (!this.ladderBands) {
+            this.ladderBands = Array.from(this.dom.markings.querySelectorAll('rect, path')).filter(el => {
+                const id = el.getAttribute('id');
+                return id && (id.startsWith('Rectangle_218') || id.startsWith('Path_872'));
+            });
+            this.ladderBands.forEach(b => {
+                if (b.tagName === 'rect') b._origY = b.getAttribute('y');
+                else b._origY = '820'; // Path_872 native layout offset
+            });
+        }
+
+        // Initialize ladder bands array to well Y
+        this.ladderBands.forEach(b => {
+            const startDist = 376 - parseFloat(b._origY);
+            b.style.transition = 'none';
+            b.style.transform = `translateY(${startDist}px)`;
+        });
+
+        // Ensure static sample bands are hidden permanently
+        this.dom.staticSampleBands.forEach(b => { if (b) b.style.display = 'none'; });
+
         const totalDuration = 2000;
-        const stagger = 300;
 
         setTimeout(() => {
             this._showEl(this.dom.readingsNumbers);
             this._showEl(this.dom.markings);
-        }, 400);
+            this.dom.sampleBands.forEach(b => this._showEl(b));
 
-        this.dom.sampleBands.forEach((band, idx) => {
-            setTimeout(() => {
-                this._showEl(band);
-            }, 700 + (stagger * idx));
-        });
+            // Reflow
+            void this.svgEl.getBoundingClientRect();
+
+            // Trigger animation
+            this.dom.sampleBands.forEach((band) => {
+                band.style.transition = 'y 1.5s ease-out';
+                band.setAttribute('y', band._targetY);
+            });
+
+            this.ladderBands.forEach(b => {
+                b.style.transition = 'transform 1.5s ease-out';
+                b.style.transform = `translateY(0px)`;
+            });
+        }, 100);
 
         setTimeout(() => {
             this._hideEl(this.dom.electroOverlay);
+            // Reset transition property
+            this.dom.sampleBands.forEach((band) => band.style.transition = 'none');
+            this.ladderBands.forEach(b => b.style.transition = 'none');
             callback();
         }, totalDuration);
     }
