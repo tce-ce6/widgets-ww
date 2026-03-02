@@ -2,6 +2,14 @@
 // NOTE: I've included the link you provided and placeholders for others.
 const WIDGET_DATA = [
     {
+        name: "Area Of Different Shapes",
+        link: "https://tce-widgets.web.app/wg120-area-of-different-shapes/",
+        imagePath: "./assets/wg-120.png",
+        creators: "sh-120",
+        status: "in-review",
+        updatedAt: "2026-02-27 17:43",
+    },
+    {
         name: "Locating Decimals V2",
         link: "https://tce-widgets.web.app/wg17-locating-decimals-v2/",
         imagePath: "./assets/wg-17.png",
@@ -16,14 +24,6 @@ const WIDGET_DATA = [
         creators: "sh-91",
         status: "in-review",
         updatedAt: "2026-02-27 16:36",
-    },
-    {
-        name: "Area Of Different Shapes",
-        link: "https://tce-widgets.web.app/wg120-area-of-different-shapes/",
-        imagePath: "./assets/wg-120.png",
-        creators: "sh-120",
-        status: "in-review",
-        updatedAt: "2026-02-27 16:15",
     },
     {
         name: "Synthesize New Dna Strand",
