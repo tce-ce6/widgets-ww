@@ -417,6 +417,21 @@ svg * {
   cursor: pointer;
 }
 
+/* Ensure the transparent rectangle of the base catches pointer events */
+#tube_base g rect {
+  pointer-events: all;
+}
+
+/* Disabled tube effect */
+.disabled-tube {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.disabled-tube rect[fill="none"]:first-child {
+  fill: #e0ccad !important;
+}
+
 /* Gel bands fade-in */
 #bands>g {
   animation: bandFadeIn 0.4s ease-in both;
@@ -425,12 +440,12 @@ svg * {
 @keyframes bandFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translate(var(--band-tx, 0px), -8px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(var(--band-tx, 0px), 0px);
   }
 }
 

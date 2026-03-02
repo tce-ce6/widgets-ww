@@ -42,11 +42,12 @@
 var GCN = {
 
     /* ── §1a  Question data ──────────────────────────────────────
-       28 entries: { noun, animal, image }
+       25 entries: { noun, animal, image }
        image paths are relative to the widget root (./assets/images/).
-       All 28 SVG files are present in assets/images/.
+       All 25 SVG files are present in assets/images/.
        The filename is used exactly as placed in that folder.
-       Files with spaces in the name are encoded with %20 in the href.
+       The array is Fisher-Yates shuffled on every init/reset so
+       questions appear in a different random order each launch.
        ─────────────────────────────────────────────────────────── */
     questions: [
         /* 1 */  { noun: "herd", animal: "elephants", image: "herd.svg" },
@@ -54,11 +55,11 @@ var GCN = {
         /* 3 */  { noun: "pride", animal: "lions", image: "pride.svg" },
         /* 4 */  { noun: "flock", animal: "birds", image: "flock.svg" },
         /* 5 */  { noun: "gaggle", animal: "geese", image: "gaggle.svg" },
-        /* 6 */  { noun: "swarm", animal: "bees", image: "swarm-hive .svg" },
+        /* 6 */  { noun: "swarm", animal: "bees", image: "swarm-hive.svg" },
         /* 7 */  { noun: "troop", animal: "monkeys", image: "troop.svg" },
         /* 8 */  { noun: "troupe", animal: "performers", image: "troupe.svg" },
-        /* 9 */  { noun: "army", animal: "ants", image: "army-troop .svg" },
-        /* 10 */ { noun: "colony", animal: "bats", image: "colony-army .svg" },
+        /* 9 */  { noun: "army", animal: "ants", image: "colony-army.svg" },
+        /* 10 */ { noun: "colony", animal: "bats", image: "army-troop.svg" },
         /* 11 */ { noun: "pod", animal: "whales", image: "pod-school.svg" },
         /* 12 */ { noun: "flight", animal: "birds", image: "flight.svg" },
         /* 13 */ { noun: "fleet", animal: "ships", image: "fleet.svg" },
@@ -70,13 +71,10 @@ var GCN = {
         /* 19 */ { noun: "class", animal: "students", image: "class.svg" },
         /* 20 */ { noun: "crew", animal: "sailors", image: "crew.svg" },
         /* 21 */ { noun: "litter", animal: "kittens", image: "litter.svg" },
-        /* 22 */ { noun: "litter", animal: "puppies", image: "litter1.svg" },
-        /* 23 */ { noun: "pack", animal: "cards", image: "pack-deck.svg" },
-        /* 24 */ { noun: "pile", animal: "books", image: "pile-stack.svg" },
-        /* 25 */ { noun: "quiver", animal: "arrows", image: "quiver.svg" },
-        /* 26 */ { noun: "team", animal: "horses", image: "team.svg" },
-        /* 27 */ { noun: "gaggle", animal: "geese", image: "gaggle1.svg" },
-        /* 28 */ { noun: "pride", animal: "lions", image: "pride1.svg" }
+        /* 22 */ { noun: "pack", animal: "cards", image: "pack-deck.svg" },
+        /* 23 */ { noun: "pile", animal: "books", image: "pile-stack.svg" },
+        /* 24 */ { noun: "quiver", animal: "arrows", image: "quiver.svg" },
+        /* 25 */ { noun: "team", animal: "horses", image: "team.svg" }
     ],
 
     /* ── §1b  Runtime state ──────────────────────────────────────
@@ -124,8 +122,31 @@ function init() {
     attachKeyboardListeners(svg);
     attachButtonListeners();
 
-    /* §2d — Start game */
+    /* §2d — Shuffle questions, then start game */
+    shuffleQuestions();
     loadQuestion(0);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   §2e  QUESTION SHUFFLE
+   ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * shuffleQuestions()
+ * ───────────────────
+ * Randomises GCN.questions in-place using the Fisher-Yates algorithm.
+ * Called once on init and again on every "Play Again" reset so the
+ * order is different on every launch/replay.
+ */
+function shuffleQuestions() {
+    var arr = GCN.questions;
+    for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
 }
 
 
@@ -257,9 +278,11 @@ function buildDynamicOverlays(svg) {
     var defs = svg.querySelector("defs") || mkSVG("defs", {});
     if (!svg.querySelector("defs")) svg.insertBefore(defs, svg.firstChild);
 
-    /* ── Clip path for animal image (rounded rectangle inside card) */
+    /* ── Clip path for animal image (rounded rectangle inside card)
+       Image occupies y=245 to y=675 (height 430), leaving a clear
+       text lane below (text baseline at y=725, card bottom ≈ y=828). */
     var imgClip = mkSVG("clipPath", { id: "dyn-img-clip" });
-    imgClip.appendChild(mkSVG("rect", { x: "730", y: "245", width: "430", height: "420", rx: "16" }));
+    imgClip.appendChild(mkSVG("rect", { x: "730", y: "245", width: "430", height: "430", rx: "16" }));
     defs.appendChild(imgClip);
 
     /* ── Typed-answer text inside the input box ────────────────── */
@@ -280,7 +303,7 @@ function buildDynamicOverlays(svg) {
     var animalImg = mkSVG("image", {
         id: "dyn-animal-image",
         x: "730", y: "245",
-        width: "430", height: "420",
+        width: "430", height: "430",
         preserveAspectRatio: "xMidYMid meet",
         "clip-path": "url(#dyn-img-clip)",
         style: "visibility:hidden; pointer-events:none;"
@@ -453,7 +476,7 @@ function buildCompleteOverlay(svg) {
     });
 
     /* Completion sub-message */
-    appendSVGText(g, "960", "540", "You've completed all 28!", {
+    appendSVGText(g, "960", "540", "You've completed all 25!", {
         "font-size": "34", "text-anchor": "middle", fill: "#555555"
     });
 
@@ -788,6 +811,7 @@ function handleCorrectAnswer() {
     /* Card: reveal answer + image */
     updateCardQuestion(true);
     showAnimalImage(GCN.currentIndex);
+    setQuestionTextPosition(true);
 
     /* Feedback */
     showFeedback("excellent");
@@ -834,28 +858,37 @@ function handleWrongAnswer() {
 /**
  * handleShowAnswer()
  * ───────────────────
- * Toggle: reveal or conceal the correct answer on the card.
+ * Fully toggleable: reveal or conceal the correct answer at any time
+ * (the button is disabled only after a correct submit, not here).
  *
- * First click  → reveal answer, count as completed (no star),
- *                unlock Next button, change button to "Hide Answer".
- * Second click → hide answer text/image, change back to "Show Answer".
- *                (isAnswered stays true – Submit is still blocked.)
+ * REVEAL branch:
+ *   • Marks question as answered and increments completed counter on the
+ *     FIRST reveal only (subsequent re-reveals after a Hide do not
+ *     double-count).
+ *   • Shows image + full answer text, unlocks Next, disables Submit.
+ *   • Changes label to "Hide Answer".
+ *
+ * CONCEAL branch:
+ *   • Hides image + blanks the question text.
+ *   • Changes label back to "Show Answer".
+ *   • isAnswered stays true so Submit remains blocked.
  */
 function handleShowAnswer() {
-    if (GCN.isAnswered && !GCN.isShowingAnswer) return; // can't re-show after correct submit
-
     if (!GCN.isShowingAnswer) {
         /* ── REVEAL ─────────────────────────────── */
         GCN.isShowingAnswer = true;
-        GCN.isAnswered = true;
 
-        /* Count as completed (no star) */
-        GCN.completed += 1;
-        updateProgressDisplay();
+        /* Only count as completed on the very first reveal */
+        if (!GCN.isAnswered) {
+            GCN.isAnswered = true;
+            GCN.completed += 1;
+            updateProgressDisplay();
+        }
 
         /* Reveal on card */
         updateCardQuestion(true);
         showAnimalImage(GCN.currentIndex);
+        setQuestionTextPosition(true);
 
         /* Change button label */
         setShowAnswerText("Hide Answer");
@@ -869,11 +902,12 @@ function handleShowAnswer() {
     } else {
         /* ── CONCEAL (toggle back) ──────────────── */
         GCN.isShowingAnswer = false;
-        /* Note: isAnswered remains true → Submit stays blocked */
+        /* isAnswered remains true → Submit stays blocked */
 
         /* Hide image + restore blank question on card */
         hideEl(GCN.els.animalImage);
         updateCardQuestion(false);
+        setQuestionTextPosition(false);
 
         /* Restore button label */
         setShowAnswerText("Show Answer");
@@ -959,6 +993,7 @@ function loadQuestion(index) {
 
     /* — Reset card question — */
     updateCardQuestion(false);
+    setQuestionTextPosition(false);
 
     /* — Button states —
          Submit:      ENABLED  (learner can type and submit)
@@ -970,6 +1005,9 @@ function loadQuestion(index) {
 
     /* — Reset Show Answer button text — */
     setShowAnswerText("Show Answer");
+
+    /* — Sync progress counter (keeps X/25 correct on every load) — */
+    updateProgressDisplay();
 }
 
 /**
@@ -987,19 +1025,60 @@ function updateCardQuestion(showFull) {
     var el = GCN.els.questionText;
     if (!el) return;
 
-    /* Update tspan if present, else set textContent directly */
-    var tspan = el.querySelector("tspan");
-    if (tspan) {
-        tspan.textContent = newText;
-    } else {
-        el.textContent = newText;
-    }
+    /* Write text directly onto the <text> element.
+       No <tspan> child — x/y/text-anchor live on the element itself
+       so they cannot be silently dropped by the browser. */
+    el.textContent = newText;
 }
 
 
 /* ═══════════════════════════════════════════════════════════════
    §13  ANIMAL IMAGE
    ═══════════════════════════════════════════════════════════════ */
+
+/**
+ * setQuestionTextPosition(belowImage)
+ * ─────────────────────────────────────
+ * Repositions the question text element on the card.
+ *
+ * belowImage = false (default / no image):
+ *   Text is horizontally and vertically centred within the card.
+ *   tspan x = 948.72 (card centre), y = 548 (card vertical centre baseline).
+ *
+ * belowImage = true (image is visible):
+ *   Text baseline is placed dynamically at:
+ *       imgY + imgHeight + IMG_TEXT_GAP
+ *   where imgY and imgHeight are read directly from the live image element's
+ *   own SVG attributes — so the text always tracks the image regardless of
+ *   any future changes to the image's position or size.
+ *   Horizontal centre is unchanged (x = 948.72, text-anchor = middle).
+ */
+var IMG_TEXT_GAP = 50; // px between image bottom edge and text baseline
+
+function setQuestionTextPosition(belowImage) {
+    var el = GCN.els.questionText;
+    if (!el) return;
+
+    /* ── Horizontal: always centred on the card ────────────────────
+       x/text-anchor live directly on the <text> element (no <tspan>).
+       "text-anchor:middle" is written as BOTH a presentation attribute
+       AND an inline CSS style — CSS wins over presentation attributes
+       in Chromium, ensuring the anchor is honoured. */
+    var CARD_CENTER_X = "948.72";
+    el.setAttribute("x", CARD_CENTER_X);
+    el.setAttribute("text-anchor", "middle");
+    el.setAttribute("style", "text-anchor:middle");
+
+    /* ── Vertical: centred in card OR below the image ──────────── */
+    if (belowImage) {
+        var imgEl = GCN.els.animalImage;
+        var imgY      = imgEl ? parseFloat(imgEl.getAttribute("y"))      || 0 : 0;
+        var imgHeight = imgEl ? parseFloat(imgEl.getAttribute("height")) || 0 : 0;
+        el.setAttribute("y", String(imgY + imgHeight + IMG_TEXT_GAP));
+    } else {
+        el.setAttribute("y", "548");
+    }
+}
 
 /**
  * showAnimalImage(index)
@@ -1011,7 +1090,7 @@ function showAnimalImage(index) {
     var imgEl = GCN.els.animalImage;
     if (!imgEl) return;
 
-    /* Encode the filename so that names containing spaces (e.g. "army-troop .svg")
+    /* Encode the filename so that names containing spaces (e.g. "army-troop.svg")
        are valid URL paths. Only the filename part is encoded, not the path slashes. */
     var filename = GCN.questions[index].image;
     var src = "./assets/images/" + encodeURIComponent(filename);
@@ -1159,6 +1238,9 @@ function resetGame() {
 
     /* Hide the complete overlay */
     hideEl(GCN.els.completeOverlay);
+
+    /* Re-shuffle so Play Again gives a fresh random order */
+    shuffleQuestions();
 
     /* Load the very first question */
     loadQuestion(0);
