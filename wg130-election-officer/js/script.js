@@ -124,14 +124,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const REWARD_STAR_IDS = [
     "star_1",
     "star_2",
-    "star_5",
     "star_3",
     "star_4",
+    "star_5",
     "star_6",
     "star_7",
   ];
 
   let correctScenarios = new Set();
+  let confettiAnimation;
+
+  // Initialize Lottie Confetti
+  const lottieWrapper = document.getElementById("lottie-wrapper");
+  if (lottieWrapper) {
+    confettiAnimation = lottie.loadAnimation({
+      container: lottieWrapper,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      path: "assets/Animation/For Final compltion/confetti.json",
+    });
+  }
 
   const startBtn = document.getElementById("start_button");
   const introBackground = document.getElementById("Intro_background");
@@ -349,6 +362,12 @@ document.addEventListener("DOMContentLoaded", () => {
           star.style.display = correctScenarios.has(idx) ? "block" : "none";
         }
       });
+
+      // Play Lottie Confetti
+      if (confettiAnimation && lottieWrapper) {
+        lottieWrapper.style.display = "block";
+        confettiAnimation.goToAndPlay(0, true);
+      }
     } else {
       updateSvgTextLines(
         "feedback-wrong-group",
@@ -369,6 +388,12 @@ document.addEventListener("DOMContentLoaded", () => {
     correctPanel.style.display = "none";
     incorrectPanel.style.display = "none";
     darkPatch.style.display = "none";
+
+    // Stop and Hide Lottie Confetti
+    if (confettiAnimation && lottieWrapper) {
+      confettiAnimation.stop();
+      lottieWrapper.style.display = "none";
+    }
 
     tabFullContainer.style.display = "none";
     textPanel.style.display = "none";
