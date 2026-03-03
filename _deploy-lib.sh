@@ -101,31 +101,36 @@ EOF
 #
 # Always includes:
 #   • widget-listing-b3/  (listing page)
-#   • every wg* folder referenced in WIDGET_DATA in script/script.js  (previously deployed)
+#   • every wg* folder on this hosting site, sourced from Firebase Realtime DB
 #   • the new widget folder (if provided)
 #
 # Skips all non-web files (.md, .vscode/, .sh, etc.) automatically.
 lib_build_dist() {
   local new_widget="${1:-}"
-  step "Building dist/ (only deployed widgets + listing page)..."
+  local db_url="https://${FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com/widgets.json"
+  step "Building dist/ (listing page + deployed widgets)..."
 
   # PYTHONIOENCODING=utf-8 ensures non-ASCII folder names (e.g. Hindi widgets)
   # print correctly on Windows, where Python may default to a narrower encoding.
-  PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$MAIN_SCRIPT_JS" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" \
+  PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" "$db_url" \
   << 'PYEOF'
-import sys, os, re, shutil
+import sys, os, re, shutil, json
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen  # Python 2 fallback (Git Bash on old Windows)
 
 script_dir   = sys.argv[1]
-script_js    = sys.argv[2]
-hosting_site = sys.argv[3]
-new_widget   = sys.argv[4]   # empty string when listing-only deploy
+hosting_site = sys.argv[2]
+new_widget   = sys.argv[3]
+db_url       = sys.argv[4]
 
 dist_dir = os.path.join(script_dir, 'dist')
 
 SKIP_DIRS  = {'.vscode', 'node_modules', '.git', 'dist'}
 SKIP_EXT   = {'.md', '.pptx', '.zip', '.rar', '.7z', '.docx', '.sh'}
 SKIP_FILES = {'firebase.json', '.firebaserc', '.creator_profile',
-              '.gitignore', '.DS_Store', 'DEPLOY.md'}
+              '.gitignore', '.DS_Store', 'DEPLOY.md', 'database.rules.json'}
 
 def should_ignore(path, names):
     ignored = []
@@ -152,22 +157,56 @@ sync(os.path.join(script_dir, 'widget-listing-b3'),
      os.path.join(dist_dir,   'widget-listing-b3'))
 print("  + widget-listing-b3")
 
-# New widget being deployed (if any)
+# New widget being deployed right now
 if new_widget:
     sync(os.path.join(script_dir, new_widget),
          os.path.join(dist_dir,   new_widget))
-    print(f"  + {new_widget}  ← new")
+    print(f"  + {new_widget}  <- new")
 
-# All previously deployed widgets (from WIDGET_DATA URLs in script.js)
-with open(script_js, 'r', encoding='utf-8') as f:
-    content = f.read()
-deployed = re.findall(
-    rf'https://{re.escape(hosting_site)}\.web\.app/(wg[^/\"]+)/', content)
+# All previously deployed widgets — query the Realtime Database
+# ssl._create_unverified_context() is used here because this is a local build
+# tool reading public, read-only Firebase data. macOS Python often ships
+# without bundled root certificates, causing SSL errors on urllib.
+import ssl
+deployed = []
+try:
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    with urlopen(db_url, context=ctx) as resp:
+        data = json.loads(resp.read().decode('utf-8'))
+    if data:
+        for entry in data.values():
+            if not entry or 'link' not in entry:
+                continue
+            link = entry['link']
+            if f'{hosting_site}.web.app/' not in link:
+                continue
+            folder = link.split(f'{hosting_site}.web.app/')[1].rstrip('/')
+            if folder and folder != new_widget:
+                deployed.append(folder)
+except Exception as e:
+    print(f"  (warning: could not fetch DB — {e})")
+
+# ── Safety check: abort if any deployed widget folder is missing locally ──────
+# Firebase Hosting replaces the ENTIRE site on each deploy. If a widget folder
+# from another developer's branch is not present locally, it would be silently
+# deleted from the live site. We fail loudly here instead.
+missing = [f for f in sorted(set(deployed))
+           if not os.path.isdir(os.path.join(script_dir, f))]
+if missing:
+    print("\n  ERROR: The following deployed widget folders are missing on this branch:")
+    for f in missing:
+        print(f"    - {f}")
+    print("\n  These folders are live on the site. Deploying without them would")
+    print("  delete them for everyone. To fix, pull the latest changes first:\n")
+    print("    git pull origin <your-base-branch>\n")
+    print("  Then re-run deploy.sh.\n")
+    sys.exit(1)
+
 for folder in sorted(set(deployed)):
-    if folder == new_widget:
-        continue
-    if sync(os.path.join(script_dir, folder), os.path.join(dist_dir, folder)):
-        print(f"  + {folder}")
+    sync(os.path.join(script_dir, folder), os.path.join(dist_dir, folder))
+    print(f"  + {folder}")
 
 total = sum(len(files) for _, _, files in os.walk(dist_dir))
 print(f"\n  Total: {total} files")
