@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const gameElements = [
             "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
             "Angle_selection_UI", "Pie_Chart-Lables", "I-Text-Arrow", "BTNs-Global",
-            "Question-TOS", "Activity_Title", "custom-popup-fo", "dynamic-sectors"
+            "Question-TOS", "Activity_Title", "custom-popup-fo", "dynamic-sectors", "answer_popup"
         ];
 
         gameElements.forEach(id => {
@@ -244,6 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const labelGroup = document.getElementById(id);
             if (!labelGroup) return;
             if (i < config.tableRows.length) {
+                // Labels are hidden until the segment is drawn
                 labelGroup.style.display = "block";
                 const row = config.tableRows[i];
                 const textEl = labelGroup.querySelector("text tspan");
@@ -294,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const elementsToShow = [
             "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
-            "Angle_selection_UI", "I-Text-Arrow", "BTNs-Global",
+            "Angle_selection_UI", "I-Text-Arrow", "BTNs-Global", "Pie_Chart-Lables",
             "Question-TOS", "Activity_Title", "dynamic-sectors"
         ];
         elementsToShow.forEach(id => {
@@ -355,64 +356,92 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("createPopup", text, isSolution);
 
         if (isSolution) {
-            const showAnswerContainer = document.getElementById('show-answer-popup-container');
-            console.log("showAnswerContainer", showAnswerContainer);
-            let dynamicSolutionContainer = document.getElementById('dynamic-solution-container');
-            console.log("dynamicSolutionContainer", dynamicSolutionContainer);
+            const answerPopup = document.getElementById('answer_popup');
+            if (!answerPopup) return;
 
-            if (showAnswerContainer) {
-                console.log("showAnswerContainer found");
-                if (!dynamicSolutionContainer) {
-                    console.log("dynamicSolutionContainer not found, creating...");
-                    dynamicSolutionContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                    dynamicSolutionContainer.id = 'dynamic-solution-container';
+            const sectorsContainer = document.getElementById('answer-popup-sectors');
+            if (sectorsContainer) sectorsContainer.innerHTML = '';
+
+            const ringContainer = document.getElementById('answer-popup-ring');
+            if (ringContainer) {
+                ringContainer.innerHTML = '';
+                // Clone the degree tick ring from the main SVG and shift it
+                // Main ring center: 1411.5, 536.59 → popup ring center: 556.11, 490.11
+                // Popup has transform="translate(411,152)", so in global terms popup center = 967.11, 642.11
+                // Shift = 556.11 - 1411.5 = -855.39, 490.11 - 536.59 = -46.48
+                const mainRing = document.getElementById('Group_1650');
+                if (mainRing) {
+                    const ringClone = mainRing.cloneNode(true);
+                    ringClone.removeAttribute('id');
+                    ringClone.setAttribute('transform', 'translate(-855.39, -46.48)');
+                    ringContainer.appendChild(ringClone);
                 }
-                const answerPopup = document.getElementById('answer_popup');
-                if (answerPopup) {
-                    answerPopup.appendChild(dynamicSolutionContainer);
-                } else {
-                    showAnswerContainer.appendChild(dynamicSolutionContainer);
-                }
-                const group2 = document.getElementById('Group_2');
-                if (group2) group2.style.display = 'block';
-                dynamicSolutionContainer.innerHTML = '';
-                const svgNS = 'http://www.w3.org/2000/svg';
+            }
 
-                let popCumulativeAngle = 0;
-                currentPieCategories.forEach(cat => {
-                    const startA = popCumulativeAngle;
-                    const endA = popCumulativeAngle + cat.expectedAngle;
-                    const sector = document.createElementNS(svgNS, 'path');
-                    sector.setAttribute('d', describeArc(556.11, 490.11, 279, startA, endA));
-                    sector.setAttribute('fill', cat.color); sector.setAttribute('stroke', '#fff'); sector.setAttribute('stroke-width', '2');
-                    dynamicSolutionContainer.appendChild(sector);
+            const svgNS = 'http://www.w3.org/2000/svg';
+            // Match the reference SVG exactly: cx=556.11, cy=490.11, r=279
+            const cx = 556.11, cy = 490.11, r = 279;
 
-                    const midAngle = startA + (cat.expectedAngle / 2);
-                    const midRad = (midAngle - 90) * Math.PI / 180.0;
-                    const lx = 556.11 + 170 * Math.cos(midRad); const ly = 490.11 + 170 * Math.sin(midRad);
+            let popCumulativeAngle = 0;
+            currentPieCategories.forEach(cat => {
+                const startA = popCumulativeAngle;
+                const endA = popCumulativeAngle + cat.expectedAngle;
 
-                    let unit = '';
-                    if (currentGameKey === 'daily') unit = 'h';
-                    else if (currentGameKey === 'air') unit = cat.valueText === '1' ? ' part' : ' parts';
-                    const labelStr = cat.valueText + unit;
+                // Sector
+                const sector = document.createElementNS(svgNS, 'path');
+                sector.setAttribute('d', describeArc(cx, cy, r, startA, endA));
+                sector.setAttribute('fill', cat.color);
+                sector.setAttribute('stroke', '#fff');
+                sector.setAttribute('stroke-width', '2');
+                sectorsContainer.appendChild(sector);
 
-                    const rect = document.createElementNS(svgNS, 'rect');
-                    rect.setAttribute('x', lx - 40); rect.setAttribute('y', ly - 18);
-                    rect.setAttribute('width', 80); rect.setAttribute('height', 36);
-                    rect.setAttribute('rx', 5); rect.setAttribute('fill', '#fff');
-                    dynamicSolutionContainer.appendChild(rect);
+                // Label – adaptive radius: small slices get a tighter inner position
+                const midAngle = startA + (cat.expectedAngle / 2);
+                const midRad = (midAngle - 90) * Math.PI / 180.0;
+                // Use 55% of r for slices < 45°, 65% for larger slices
+                const labelR = cat.expectedAngle < 45 ? r * 0.45 : r * 0.62;
+                const lx = cx + labelR * Math.cos(midRad);
+                const ly = cy + labelR * Math.sin(midRad);
 
-                    const textEl = document.createElementNS(svgNS, 'text');
-                    textEl.setAttribute('x', lx); textEl.setAttribute('y', ly + 6);
-                    textEl.setAttribute('text-anchor', 'middle'); textEl.setAttribute('font-size', '18');
-                    textEl.setAttribute('font-family', 'Roboto');
-                    textEl.setAttribute('fill', '#424242'); textEl.textContent = labelStr;
-                    dynamicSolutionContainer.appendChild(textEl);
-                    popCumulativeAngle = endA;
-                });
+                let unit = '';
+                if (currentGameKey === 'daily') unit = 'h';
+                else if (currentGameKey === 'air') unit = cat.valueText === '1' ? ' part' : ' parts';
+                const labelStr = cat.valueText + unit;
 
-                showAnswerContainer.onclick = () => { showAnswerContainer.style.display = 'none'; };
-                showAnswerContainer.style.display = 'block';
+                // White rounded rect label
+                const labelRect = document.createElementNS(svgNS, 'rect');
+                const labelW = 80, labelH = 34;
+                labelRect.setAttribute('x', lx - labelW / 2); labelRect.setAttribute('y', ly - labelH / 2);
+                labelRect.setAttribute('width', labelW); labelRect.setAttribute('height', labelH);
+                labelRect.setAttribute('rx', 5); labelRect.setAttribute('fill', '#fff');
+                sectorsContainer.appendChild(labelRect);
+
+                const textEl = document.createElementNS(svgNS, 'text');
+                textEl.setAttribute('x', lx); textEl.setAttribute('y', ly + 6);
+                textEl.setAttribute('text-anchor', 'middle');
+                textEl.setAttribute('font-size', '18');
+                textEl.setAttribute('font-family', 'Roboto, sans-serif');
+                textEl.setAttribute('fill', '#424242');
+                textEl.textContent = labelStr;
+                sectorsContainer.appendChild(textEl);
+
+                popCumulativeAngle = endA;
+            });
+
+            // Wire close button
+            const closeBtn = document.getElementById('answer-popup-close-btn');
+            if (closeBtn) {
+                const newClose = closeBtn.cloneNode(true);
+                closeBtn.parentNode.replaceChild(newClose, closeBtn);
+                newClose.addEventListener('click', () => { answerPopup.style.display = 'none'; });
+            }
+
+            answerPopup.style.display = 'block';
+
+            // Update the amount label dynamically
+            const amountLabelEl = answerPopup.querySelector('text[data-role="amount-label"]');
+            if (amountLabelEl && currentGameKey && gameConfigs[currentGameKey]) {
+                amountLabelEl.textContent = gameConfigs[currentGameKey].valueHeader;
             }
         } else {
             const popupFO = document.getElementById('custom-popup-fo');
@@ -461,6 +490,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (dot) dot.style.display = 'none';
                 if (path) { path.style.display = 'none'; path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`); }
             });
+            // Hide all labels on reset
+            const pieLabelsReset = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
+            pieLabelsReset.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+            // Draw white background circle
+            if (dynamicSectors) {
+                const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                bgCircle.setAttribute('cx', '1411.5'); bgCircle.setAttribute('cy', '536.59'); bgCircle.setAttribute('r', '279');
+                bgCircle.setAttribute('fill', '#ffffff');
+                dynamicSectors.appendChild(bgCircle);
+            }
         };
 
         resetChart();
@@ -481,6 +520,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentCumulativeAngle = endA; cat.plotted = true;
                 if (lineGroup) lineGroup.setAttribute('transform', `rotate(${currentCumulativeAngle}, 1411.5, 536.59)`);
                 const dot = document.getElementById(cat.dotId); if (dot) dot.style.display = 'block';
+                // Show label for this segment
+                const labelIds = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
+                const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
+                if (catIdx !== -1 && labelIds[catIdx]) {
+                    const lbl = document.getElementById(labelIds[catIdx]);
+                    if (lbl) lbl.style.display = 'block';
+                }
             };
 
             const parentGroup = document.getElementById(cat.rectGroupId);
@@ -499,10 +545,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     input.style.textAlign = 'center'; input.style.fontFamily = 'Roboto';
                     input.style.fontSize = '28px'; input.style.fontWeight = '500';
                     input.style.color = '#424242'; input.style.outline = 'none';
+                    input.min = '0'; input.max = '360';
                     fo.appendChild(input); parentGroup.appendChild(fo);
                     cat.inputEl = input;
                     input.addEventListener('input', () => {
-                        cat.inputAngle = parseFloat(input.value) || 0;
+                        let val = parseFloat(input.value) || 0;
+                        if (val < 0) { val = 0; input.value = 0; }
+                        if (val > 360) { val = 360; input.value = 360; }
+                        cat.inputAngle = val;
                         const pathEl = document.getElementById(cat.pathId);
                         if (pathEl && cat.inputAngle > 0) {
                             pathEl.style.display = 'block';
