@@ -161,35 +161,37 @@ while true; do
   esac
 done
 
-# Build a status map for each folder
-declare -A FOLDER_STATUS
-for folder in "${SELECTED_FOLDERS[@]}"; do
-  if [[ "$GLOBAL_STATUS" == "per-widget" ]]; then
+# Build a parallel status array (same index as SELECTED_FOLDERS — Bash 3.2 safe)
+SELECTED_STATUSES=()
+if [[ "$GLOBAL_STATUS" == "per-widget" ]]; then
+  for folder in "${SELECTED_FOLDERS[@]}"; do
     printf "\n  ${BOLD}%s${NC}\n" "$folder"
     printf "  1) Closed  2) Review  3) WIP  4) Todo\n"
     while true; do
       read -rp "  Status [1-4, default: 1]: " PS
       PS="${PS:-1}"
       case "$PS" in
-        1) FOLDER_STATUS["$folder"]="closed";        ok "$folder → Closed"; break ;;
-        2) FOLDER_STATUS["$folder"]="in-review";     ok "$folder → Review"; break ;;
-        3) FOLDER_STATUS["$folder"]="WIP-With-Tech"; ok "$folder → WIP";    break ;;
-        4) FOLDER_STATUS["$folder"]="todo";          ok "$folder → Todo";   break ;;
+        1) SELECTED_STATUSES+=("closed");        ok "$folder → Closed"; break ;;
+        2) SELECTED_STATUSES+=("in-review");     ok "$folder → Review"; break ;;
+        3) SELECTED_STATUSES+=("WIP-With-Tech"); ok "$folder → WIP";    break ;;
+        4) SELECTED_STATUSES+=("todo");          ok "$folder → Todo";   break ;;
         *) warn "Enter 1-4." ;;
       esac
     done
-  else
-    FOLDER_STATUS["$folder"]="$GLOBAL_STATUS"
-  fi
-done
+  done
+else
+  for folder in "${SELECTED_FOLDERS[@]}"; do
+    SELECTED_STATUSES+=("$GLOBAL_STATUS")
+  done
+fi
 
 # ── Confirmation ───────────────────────────────────────────────────────────────
 printf "\n${BOLD}Summary:${NC}\n"
 printf '%s\n' "──────────────────────────────────────────────────────────"
 printf "  %-42s  %s\n" "Folder" "Status"
 printf '%s\n' "──────────────────────────────────────────────────────────"
-for folder in "${SELECTED_FOLDERS[@]}"; do
-  printf "  %-42s  %s\n" "$folder" "${FOLDER_STATUS[$folder]}"
+for i in "${!SELECTED_FOLDERS[@]}"; do
+  printf "  %-42s  %s\n" "${SELECTED_FOLDERS[$i]}" "${SELECTED_STATUSES[$i]}"
 done
 printf '%s\n' "──────────────────────────────────────────────────────────"
 printf "  Creator: %s (%s)\n\n" "$CREATOR_NAME" "$CREATOR_INITIALS"
@@ -205,12 +207,13 @@ lib_write_firebase_configs
 # ── Update Realtime Database for each widget ───────────────────────────────────
 step "Updating Firebase Realtime Database..."
 
-for WIDGET_FOLDER in "${SELECTED_FOLDERS[@]}"; do
+for i in "${!SELECTED_FOLDERS[@]}"; do
+  WIDGET_FOLDER="${SELECTED_FOLDERS[$i]}"
+  WIDGET_STATUS="${SELECTED_STATUSES[$i]}"
   WG_NUM=$(echo "$WIDGET_FOLDER" | grep -oE '[0-9]+' | head -1)
   RAW_TITLE=$(echo "$WIDGET_FOLDER" | sed 's/^wg[0-9]*-//' | tr '-' ' ')
   WIDGET_TITLE=$(PYTHONIOENCODING=utf-8 $PYTHON -c "print('$RAW_TITLE'.title())")
   WIDGET_URL="${HOSTING_BASE_URL}/${WIDGET_FOLDER}/"
-  WIDGET_STATUS="${FOLDER_STATUS[$WIDGET_FOLDER]}"
 
   DB_JSON=$(PYTHONIOENCODING=utf-8 $PYTHON -c "
 import json
