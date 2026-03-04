@@ -555,12 +555,7 @@ function handleSmoothMove(source, target) {
 
   source.style.opacity = "0.3";
   source.style.pointerEvents = "none";
-
-  // Reset after 1 second (1000 milliseconds)
-  setTimeout(() => {
-    source.style.opacity = "1";
-    source.style.pointerEvents = "auto";
-  }, 1000);
+  // source.style.filter = "blur(3px)"; // Permanently disable and blur
 
   const clone = source.cloneNode(true);
   clone.removeAttribute("id");
@@ -569,7 +564,10 @@ function handleSmoothMove(source, target) {
   clone.style.top = "0";
   clone.style.left = "0";
   clone.style.opacity = "1";
+  clone.style.filter = "none"; // Remove blur for the animated piece
   clone.style.pointerEvents = "none";
+  clone.style.fontSize = "32px";
+  clone.style.fontWeight = "bold";
 
   target.appendChild(clone);
 }
@@ -613,7 +611,7 @@ function showAllAnswers(wordObj) {
     mountain: './Assets/mountain-1.svg',
     stone: './Assets/stone-1.svg'
   };
-  
+
   // If the object exists in our map, update the source
   if (assetMap[objectName]) {
     imgEl.src = assetMap[objectName];
@@ -680,7 +678,7 @@ function showAllAnswers(wordObj) {
     li.style.pointerEvents = "none";
     li.style.opacity = "0.3";
   });
-  
+
   // Show the example button as the round is effectively over
   if (typeof showExample !== 'undefined') {
     showExample.style.display = 'block';
@@ -771,6 +769,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#list-suffix li").forEach(li => {
       li.style.opacity = "1";
       li.style.pointerEvents = "auto";
+      li.style.filter = "none";
     });
 
     const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
@@ -794,7 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
-  //  `${objectName}Word`.textContent = wordObj.root;
+    //  `${objectName}Word`.textContent = wordObj.root;
 
     const slot = document.getElementById(`${objectName}Word`);
     const wordDiv = document.getElementById(`${objectName}Main`);
@@ -810,7 +809,11 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 1; i <= 6; i++) {
       const el = document.getElementById(`puzzle${i}`);
       if (!el) continue;
-      el.querySelector("span").textContent = allSuffixes[i - 1] || "";
+
+      const span = el.querySelector("span");
+      span.textContent = allSuffixes[i - 1] || "";
+      span.style.fontSize = "40px";   // set font size here
+      // el.querySelector("span").textContent = allSuffixes[i - 1] || "";
       el.style.display = allSuffixes[i - 1] ? "block" : "none";
       sourceList.appendChild(el);
     }
@@ -841,8 +844,10 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSuffixes.push(suffixText);
     handleSmoothMove(clickedItem, emptySlot);
 
-    const root = wordSpan.textContent.trim();
-    const combined = root + selectedSuffixes.join("");
+    // Find the exact matching final answer by checking the suffix index
+    // This handles English spelling rules automatically (e.g. create + tion = creation)
+    const suffixIndex = correctSuffixes.indexOf(suffixText);
+    const combined = suffixIndex !== -1 ? answers[suffixIndex] : wordSpan.textContent.trim() + selectedSuffixes.join("");
 
     // must be a valid answer and not already completed
     if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
@@ -871,12 +876,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const slotId = `${map.prefix}${wordIndex + 1}`;
         const fo = document.getElementById(slotId);
         if (fo) {
-          setTimeout(() =>{
+          setTimeout(() => {
             fo.style.display = 'block';
             const span = fo.querySelector('span');
             if (span) span.textContent = combined;
           }, 1500)
-          
+
         }
       }
 
