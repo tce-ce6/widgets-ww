@@ -1,290 +1,572 @@
     {
-    "soilTypes": [
-        {
-        "id": "mountain",
-        "name": "Mountain Soil",
-        "tabImage": "images/soils/mountain.png",
-        "soilColor": "#8B6F47",
-
-        "mapData": {
-            "correctRegions": [
-            "Jammu & Kashmir",
-            "Ladakh",
-            "Himachal Pradesh",
-            "Uttarakhand",
-            "Sikkim",
-            "Arunachal Pradesh",
-            "North Eastern Hills",
-            "Western Ghats"
-            ]
-        },
-
-        "textureQuestion": {
-            "question": "How can the texture of mountain soil be described?",
-            "options": [
+        "soilTypes": [
             {
-                "id": "t1",
-                "text": "Sticky and clayey",
-                "image": "./assets/sticky_clayey.png",
-                "isCorrect": false
+                "id": "mountain",
+                "name": "Mountain Soil",
+                "tabImage": "./assets/mountain-soil.png",
+                "soilColor": "#8B6F47",
+                "mapData": {
+                    "correctRegions": [
+                        "Jammu & Kashmir",
+                        "Ladakh",
+                        "Himachal Pradesh",
+                        "Uttarakhand",
+                        "Sikkim",
+                        "Arunachal Pradesh",
+                        "North Eastern Hills",
+                        "Western Ghats"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of mountain soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Sticky and clayey",
+                            "image": "./assets/sticky_clayey.png",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Loose and sandy",
+                            "image": "./assets/loose_sandy.png",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Rocky and stony",
+                            "image": "./assets/rocky_stony.png",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Porous and crumbly",
+                            "image": "./assets/porous_crumbly.png",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by mountain soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Apples",
+                            "image": "images/crops/apple.png",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Barley",
+                            "image": "images/crops/barley.png",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Coffee",
+                            "image": "images/crops/coffee.png",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Tea",
+                            "image": "images/crops/tea.png",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Cashew",
+                            "image": "images/crops/cashew.png",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Rubber",
+                            "image": "images/crops/rubber.png",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Rocky and stony; the soil layer is often thin.",
+                    "importantCrops": [
+                        "Tea",
+                        "Coffee",
+                        "Barley",
+                        "Apples"
+                    ],
+                    "distribution": "Himalayan region, north-eastern hills, Western Ghats."
+                }
             },
             {
-                "id": "t2",
-                "text": "Loose and sandy",
-                "image": "./assets/loose_sandy.png",
-                "isCorrect": false
+                "id": "alluvial",
+                "name": "Alluvial Soil",
+                "tabImage": "./assets/alluvial-soil.png",
+                "soilColor": "#C2B280",
+                "mapData": {
+                    "correctRegions": [
+                        "Punjab",
+                        "Haryana",
+                        "Uttar Pradesh",
+                        "Bihar",
+                        "West Bengal",
+                        "River Deltas"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of alluvial soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Coarse and gritty",
+                            "image": "./assets/coarse_gritty.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Porous and crumbly",
+                            "image": "./assets/porous_crumbly.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Smooth and fine",
+                            "image": "./assets/smooth_fine.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Loose and sandy",
+                            "image": "./assets/loose_sandy.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by alluvial soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Rice",
+                            "image": "images/crops/rice.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Wheat",
+                            "image": "images/crops/wheat.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Sugarcane",
+                            "image": "images/crops/sugarcane.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Maize",
+                            "image": "images/crops/maize.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Rubber",
+                            "image": "images/crops/rubber.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Dates",
+                            "image": "images/crops/dates.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Smooth and fine texture.",
+                    "importantCrops": [
+                        "Rice",
+                        "Wheat",
+                        "Sugarcane",
+                        "Maize"
+                    ],
+                    "distribution": "Great Indian Plains and river deltas."
+                }
             },
             {
-                "id": "t3",
-                "text": "Rocky and stony",
-                "image": "./assets/rocky_stony.png",
-                "isCorrect": true
+                "id": "black",
+                "name": "Black Soil",
+                "tabImage": "./assets/black-soil.png",
+                "soilColor": "#2F2F2F",
+                "mapData": {
+                    "correctRegions": [
+                        "Maharashtra",
+                        "Madhya Pradesh",
+                        "Gujarat",
+                        "Karnataka",
+                        "Tamil Nadu"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of black soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Rocky and stony",
+                            "image": "./assets/rocky_stony.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Sticky and clayey",
+                            "image": "./assets/sticky_clayey.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Loose and sandy",
+                            "image": "./assets/loose_sandy.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Porous and crumbly",
+                            "image": "./assets/porous_crumbly.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by black soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Cotton",
+                            "image": "images/crops/cotton.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Sugarcane",
+                            "image": "images/crops/sugarcane.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Soybean",
+                            "image": "images/crops/soybean.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Groundnut",
+                            "image": "images/crops/groundnut.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Apples",
+                            "image": "images/crops/apple.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Cashew",
+                            "image": "images/crops/cashew.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Sticky and clayey; cracks when dry.",
+                    "importantCrops": [
+                        "Cotton",
+                        "Sugarcane",
+                        "Soybean",
+                        "Groundnut"
+                    ],
+                    "distribution": "Deccan Plateau region (Maharashtra, Madhya Pradesh, Gujarat, Karnataka) and parts of Tamil Nadu."
+                }
             },
             {
-                "id": "t4",
-                "text": "Porous and crumbly",
-                "image": "./assets/porous_crumbly.png",
-                "isCorrect": false
+                "id": "laterite",
+                "name": "Laterite Soil",
+                "tabImage": "./assets/lateritic-soil.png",
+                "soilColor": "#B7410E",
+                "mapData": {
+                    "correctRegions": [
+                        "Western Ghats",
+                        "Eastern Ghats",
+                        "North Eastern India"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of laterite soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Rocky and stony",
+                            "image": "./assets/rocky_stony.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Sticky and clayey",
+                            "image": "./assets/sticky_clayey.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Porous and crumbly",
+                            "image": "./assets/porous_crumbly.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Loose and sandy",
+                            "image": "./assets/loose_sandy.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by laterite soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Coffee",
+                            "image": "images/crops/coffee.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Tea",
+                            "image": "images/crops/tea.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Rubber",
+                            "image": "images/crops/rubber.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Cashew",
+                            "image": "images/crops/cashew.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Wheat",
+                            "image": "images/crops/wheat.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Dates",
+                            "image": "images/crops/dates.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Rough, porous and crumbly.",
+                    "importantCrops": [
+                        "Coffee",
+                        "Tea",
+                        "Rubber",
+                        "Cashew"
+                    ],
+                    "distribution": "Western Ghats, Eastern Ghats and parts of north-eastern India."
+                }
+            },
+            {
+                "id": "red",
+                "name": "Red Soil",
+                "tabImage": "./assets/red-soil.png",
+                "soilColor": "#A52A2A",
+                "mapData": {
+                    "correctRegions": [
+                        "Western Ghats",
+                        "Eastern Ghats",
+                        "North Eastern India"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of red soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Rocky and stony",
+                            "image": "./assets/rocky_stony.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Sticky and clayey",
+                            "image": "./assets/sticky_clayey.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Coarse and gritty",
+                            "image": "./assets/coarse_gritty.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Smooth and fine",
+                            "image": "./assets/smooth_fine.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by red soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Cotton",
+                            "image": "images/crops/cotton.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Groundnuts",
+                            "image": "images/crops/groundnut.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Millet",
+                            "image": "images/crops/millets.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Pulses",
+                            "image": "images/crops/pulses.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Bajra",
+                            "image": "images/crops/bajra.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Jowar",
+                            "image": "images/crops/jowar.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Coarse and gritty.",
+                    "importantCrops": [
+                        "Cotton",
+                        "Groundnut",
+                        "Millets",
+                        "Pulses"
+                    ],
+                    "distribution": "Western Ghats, Eastern Ghats and parts of north-eastern India."
+                }
+            },
+            {
+                "id": "desert",
+                "name": "Desert Soil",
+                "tabImage": "./assets/desert-soil.png",
+                "soilColor": "#EDC9AF",
+                "mapData": {
+                    "correctRegions": [
+                        "Rajasthan",
+                        "Gujarat",
+                        "Haryana"
+                    ]
+                },
+                "textureQuestion": {
+                    "question": "How can the texture of desert soil be described?",
+                    "options": [
+                        {
+                            "id": "t1",
+                            "text": "Loose and sandy",
+                            "image": "./assets/loose_sandy.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "t2",
+                            "text": "Sticky and clayey",
+                            "image": "./assets/sticky_clayey.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t3",
+                            "text": "Coarse and gritty",
+                            "image": "./assets/coarse_gritty.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "t4",
+                            "text": "Rocky and stony",
+                            "image": "./assets/rocky_stony.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "cropQuestion": {
+                    "question": "Which four of these crops are best supported by desert soil?",
+                    "options": [
+                        {
+                            "id": "c1",
+                            "name": "Bajra",
+                            "image": "images/crops/bajra.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c2",
+                            "name": "Jowar",
+                            "image": "images/crops/jowar.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c3",
+                            "name": "Dates",
+                            "image": "images/crops/dates.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c4",
+                            "name": "Barley",
+                            "image": "images/crops/barley.jpg",
+                            "isCorrect": true
+                        },
+                        {
+                            "id": "c5",
+                            "name": "Rice",
+                            "image": "images/crops/rice.jpg",
+                            "isCorrect": false
+                        },
+                        {
+                            "id": "c6",
+                            "name": "Cotton",
+                            "image": "images/crops/cotton.jpg",
+                            "isCorrect": false
+                        }
+                    ]
+                },
+                "summary": {
+                    "texture": "Loose and sandy.",
+                    "importantCrops": [
+                        "Bajra",
+                        "Jowar",
+                        "Dates",
+                        "Barley"
+                    ],
+                    "distribution": "Thar Desert (Rajasthan, Gujarat) and parts of Haryana."
+                }
             }
-            ]
-        },
-
-        "cropQuestion": {
-            "question": "Which four of these crops are best supported by mountain soil?",
-            "options": [
-            { "id": "c1", "name": "Apples", "image": "images/crops/apple.png", "isCorrect": true },
-            { "id": "c2", "name": "Barley", "image": "images/crops/barley.png", "isCorrect": true },
-            { "id": "c3", "name": "Coffee", "image": "images/crops/coffee.png", "isCorrect": true },
-            { "id": "c4", "name": "Tea", "image": "images/crops/tea.png", "isCorrect": true },
-            { "id": "c5", "name": "Cashew", "image": "images/crops/cashew.png", "isCorrect": false },
-            { "id": "c6", "name": "Rubber", "image": "images/crops/rubber.png", "isCorrect": false }
-            ]
-        },
-
-        "summary": {
-            "texture": "Rocky and stony; the soil layer is often thin.",
-            "importantCrops": ["Tea", "Coffee", "Barley", "Apples"],
-            "distribution": "Himalayan region, north-eastern hills, Western Ghats."
-        }
-        },
-
-        {
-        "id": "alluvial",
-        "name": "Alluvial Soil",
-        "tabImage": "images/soils/alluvial.jpg",
-        "soilColor": "#C2B280",
-
-        "mapData": {
-            "correctRegions": [
-            "Punjab",
-            "Haryana",
-            "Uttar Pradesh",
-            "Bihar",
-            "West Bengal",
-            "River Deltas"
-            ]
-        },
-
-        "textureQuestion": {
-            "question": "How can the texture of alluvial soil be described?",
-            "options": [
-            { "id": "t1", "text": "Coarse and gritty", "image": "./assets/coarse_gritty.jpg", "isCorrect": false },
-            { "id": "t2", "text": "Porous and crumbly", "image": "./assets/porous_crumbly.jpg", "isCorrect": false },
-            { "id": "t3", "text": "Smooth and fine", "image": "./assets/smooth_fine.jpg", "isCorrect": true },
-            { "id": "t4", "text": "Loose and sandy", "image": "./assets/loose_sandy.jpg", "isCorrect": false }
-            ]
-        },
-
-        "cropQuestion": {
-            "question": "Which four of these crops are best supported by alluvial soil?",
-            "options": [
-            { "id": "c1", "name": "Rice", "image": "images/crops/rice.jpg", "isCorrect": true },
-            { "id": "c2", "name": "Wheat", "image": "images/crops/wheat.jpg", "isCorrect": true },
-            { "id": "c3", "name": "Sugarcane", "image": "images/crops/sugarcane.jpg", "isCorrect": true },
-            { "id": "c4", "name": "Maize", "image": "images/crops/maize.jpg", "isCorrect": true },
-            { "id": "c5", "name": "Rubber", "image": "images/crops/rubber.jpg", "isCorrect": false },
-            { "id": "c6", "name": "Dates", "image": "images/crops/dates.jpg", "isCorrect": false }
-            ]
-        },
-
-        "summary": {
-            "texture": "Smooth and fine texture.",
-            "importantCrops": ["Rice", "Wheat", "Sugarcane", "Maize"],
-            "distribution": "Great Indian Plains and river deltas."
-        }
-        },
-        {
-        "id": "black",
-        "name": "Black Soil",
-        "tabImage": "images/soils/black.jpg",
-        "soilColor": "#2F2F2F",
-
-        "mapData": {
-        "correctRegions": [
-            "Maharashtra",
-            "Madhya Pradesh",
-            "Gujarat",
-            "Karnataka",
-            "Tamil Nadu"
         ]
-        },
-
-        "textureQuestion": {
-        "question": "How can the texture of black soil be described?",
-        "options": [
-            { "id": "t1", "text": "Rocky and stony", "image": "./assets/rocky_stony.jpg", "isCorrect": false },
-            { "id": "t2", "text": "Sticky and clayey", "image": "./assets/sticky_clayey.jpg", "isCorrect": true },
-            { "id": "t3", "text": "Loose and sandy", "image": "./assets/loose_sandy.jpg", "isCorrect": false },
-            { "id": "t4", "text": "Porous and crumbly", "image": "./assets/porous_crumbly.jpg", "isCorrect": false }
-        ]
-        },
-
-        "cropQuestion": {
-        "question": "Which four of these crops are best supported by black soil?",
-        "options": [
-            { "id": "c1", "name": "Cotton", "image": "images/crops/cotton.jpg", "isCorrect": true },
-            { "id": "c2", "name": "Sugarcane", "image": "images/crops/sugarcane.jpg", "isCorrect": true },
-            { "id": "c3", "name": "Soybean", "image": "images/crops/soybean.jpg", "isCorrect": true },
-            { "id": "c4", "name": "Groundnut", "image": "images/crops/groundnut.jpg", "isCorrect": true },
-            { "id": "c5", "name": "Apples", "image": "images/crops/apple.jpg", "isCorrect": false },
-            { "id": "c6", "name": "Cashew", "image": "images/crops/cashew.jpg", "isCorrect": false }
-        ]
-        },
-
-        "summary": {
-        "texture": "Sticky and clayey; cracks when dry.",
-        "importantCrops": ["Cotton", "Sugarcane", "Soybean", "Groundnut"],
-        "distribution": "Deccan Plateau region (Maharashtra, Madhya Pradesh, Gujarat, Karnataka) and parts of Tamil Nadu."
-        }
-        },
-
-        {
-            "id": "laterite",
-            "name": "Laterite Soil",
-            "tabImage": "images/soils/laterite.jpg",
-            "soilColor": "#B7410E",
-
-            "mapData": {
-            "correctRegions": [
-                "Western Ghats",
-                "Eastern Ghats",
-                "North Eastern India"
-            ]
-            },
-
-            "textureQuestion": {
-            "question": "How can the texture of laterite soil be described?",
-            "options": [
-                { "id": "t1", "text": "Rocky and stony", "image": "./assets/rocky_stony.jpg", "isCorrect": false },
-                { "id": "t2", "text": "Sticky and clayey", "image": "./assets/sticky_clayey.jpg", "isCorrect": false },
-                { "id": "t3", "text": "Porous and crumbly", "image": "./assets/porous_crumbly.jpg", "isCorrect": true },
-                { "id": "t4", "text": "Loose and sandy", "image": "./assets/loose_sandy.jpg", "isCorrect": false }
-            ]
-            },
-
-            "cropQuestion": {
-            "question": "Which four of these crops are best supported by laterite soil?",
-            "options": [
-                { "id": "c1", "name": "Coffee", "image": "images/crops/coffee.jpg", "isCorrect": true },
-                { "id": "c2", "name": "Tea", "image": "images/crops/tea.jpg", "isCorrect": true },
-                { "id": "c3", "name": "Rubber", "image": "images/crops/rubber.jpg", "isCorrect": true },
-                { "id": "c4", "name": "Cashew", "image": "images/crops/cashew.jpg", "isCorrect": true },
-                { "id": "c5", "name": "Wheat", "image": "images/crops/wheat.jpg", "isCorrect": false },
-                { "id": "c6", "name": "Dates", "image": "images/crops/dates.jpg", "isCorrect": false }
-            ]
-            },
-
-            "summary": {
-            "texture": "Rough, porous and crumbly.",
-            "importantCrops": ["Coffee", "Tea", "Rubber", "Cashew"],
-            "distribution": "Western Ghats, Eastern Ghats and parts of north-eastern India."
-            }
-        },
-
-        {
-            "id": "red",
-            "name": "Red Soil",
-            "tabImage": "images/soils/red.jpg",
-            "soilColor": "#A52A2A",
-
-            "mapData": {
-            "correctRegions": [
-                "Western Ghats",
-                "Eastern Ghats",
-                "North Eastern India"
-            ]
-            },
-
-            "textureQuestion": {
-            "question": "How can the texture of red soil be described?",
-            "options": [
-                { "id": "t1", "text": "Rocky and stony", "image": "./assets/rocky_stony.jpg", "isCorrect": false },
-                { "id": "t2", "text": "Sticky and clayey", "image": "./assets/sticky_clayey.jpg", "isCorrect": false },
-                { "id": "t3", "text": "Coarse and gritty", "image": "./assets/coarse_gritty.jpg", "isCorrect": true },
-                { "id": "t4", "text": "Smooth and fine", "image": "./assets/smooth_fine.jpg", "isCorrect": false }
-            ]
-            },
-
-            "cropQuestion": {
-            "question": "Which four of these crops are best supported by red soil?",
-            "options": [
-                { "id": "c1", "name": "Cotton", "image": "images/crops/cotton.jpg", "isCorrect": true },
-                { "id": "c2", "name": "Groundnuts", "image": "images/crops/groundnut.jpg", "isCorrect": true },
-                { "id": "c3", "name": "Millet", "image": "images/crops/millets.jpg", "isCorrect": true },
-                { "id": "c4", "name": "Pulses", "image": "images/crops/pulses.jpg", "isCorrect": true },
-                { "id": "c5", "name": "Bajra", "image": "images/crops/bajra.jpg", "isCorrect": false },
-                { "id": "c6", "name": "Jowar", "image": "images/crops/jowar.jpg", "isCorrect": false }
-            ]
-            },
-
-            "summary": {
-            "texture": "Coarse and gritty.",
-            "importantCrops": ["Cotton", "Groundnut", "Millets", "Pulses"],
-            "distribution": "Western Ghats, Eastern Ghats and parts of north-eastern India."
-            }
-        },
-
-        {
-            "id": "desert",
-            "name": "Desert Soil",
-            "tabImage": "images/soils/desert.jpg",
-            "soilColor": "#EDC9AF",
-
-            "mapData": {
-            "correctRegions": [
-                "Rajasthan",
-                "Gujarat",
-                "Haryana"
-            ]
-            },
-
-            "textureQuestion": {
-            "question": "How can the texture of desert soil be described?",
-            "options": [
-                { "id": "t1", "text": "Loose and sandy", "image": "./assets/loose_sandy.jpg", "isCorrect": true },
-                { "id": "t2", "text": "Sticky and clayey", "image": "./assets/sticky_clayey.jpg", "isCorrect": false },
-                { "id": "t3", "text": "Coarse and gritty", "image": "./assets/coarse_gritty.jpg", "isCorrect": false },
-                { "id": "t4", "text": "Rocky and stony", "image": "./assets/rocky_stony.jpg", "isCorrect": false }
-            ]
-            },
-
-            "cropQuestion": {
-            "question": "Which four of these crops are best supported by desert soil?",
-            "options": [
-                { "id": "c1", "name": "Bajra", "image": "images/crops/bajra.jpg", "isCorrect": true },
-                { "id": "c2", "name": "Jowar", "image": "images/crops/jowar.jpg", "isCorrect": true },
-                { "id": "c3", "name": "Dates", "image": "images/crops/dates.jpg", "isCorrect": true },
-                { "id": "c4", "name": "Barley", "image": "images/crops/barley.jpg", "isCorrect": true },
-                { "id": "c5", "name": "Rice", "image": "images/crops/rice.jpg", "isCorrect": false },
-                { "id": "c6", "name": "Cotton", "image": "images/crops/cotton.jpg", "isCorrect": false }
-            ]
-            },
-
-            "summary": {
-            "texture": "Loose and sandy.",
-            "importantCrops": ["Bajra", "Jowar", "Dates", "Barley"],
-            "distribution": "Thar Desert (Rajasthan, Gujarat) and parts of Haryana."
-            }
-        }
-    ]
-}
+    }

@@ -1,100 +1,213 @@
-{
-  "widget": {
-    "id": "en_geo_10_wg83",
-    "title": "Major Soil Types",
-    "instruction": "Tap one soil type to explore.",
-    "mapImage": "assets/maps/india_blank.png",
-    "soils": [
-      {
-        "id": "mountain",
-        "name": "Mountain Soil",
-        "soilImage": "assets/soils/mountain.jpg",
-        "mapHighlightColor": "#8B6F47",
-        "distributionRegions": [
-          "Jammu & Kashmir",
-          "Ladakh",
-          "Himachal Pradesh",
-          "Uttarakhand",
-          "Sikkim",
-          "Arunachal Pradesh"
-        ],
-        "textureQuestion": {
-          "question": "How can the texture of mountain soil be described?",
-          "options": [
-            {
-              "id": "t1",
-              "text": "Sticky and clayey",
-              "image": "assets/textures/sticky_clayey.jpg",
-              "correct": false
-            },
-            {
-              "id": "t2",
-              "text": "Loose and sandy",
-              "image": "assets/textures/loose_sandy.jpg",
-              "correct": false
-            },
-            {
-              "id": "t3",
-              "text": "Rocky and stony",
-              "image": "assets/textures/rocky_stony.jpg",
-              "correct": true
-            },
-            {
-              "id": "t4",
-              "text": "Porous and crumbly",
-              "image": "assets/textures/porous_crumbly.jpg",
-              "correct": false
-            }
-          ]
-        },
-        "cropQuestion": {
-          "question": "Which four of these crops are best supported by mountain soil?",
-          "selectCount": 4,
-          "options": [
-            {
-              "id": "c1",
-              "text": "Apples",
-              "image": "assets/crops/apple.jpg",
-              "correct": true
-            },
-            {
-              "id": "c2",
-              "text": "Barley",
-              "image": "assets/crops/barley.jpg",
-              "correct": true
-            },
-            {
-              "id": "c3",
-              "text": "Coffee",
-              "image": "assets/crops/coffee.jpg",
-              "correct": true
-            },
-            {
-              "id": "c4",
-              "text": "Tea",
-              "image": "assets/crops/tea.jpg",
-              "correct": true
-            },
-            {
-              "id": "c5",
-              "text": "Rubber",
-              "image": "assets/crops/rubber.jpg",
-              "correct": false
-            },
-            {
-              "id": "c6",
-              "text": "Cashew",
-              "image": "assets/crops/cashew.jpg",
-              "correct": false
-            }
-          ]
-        },
-        "summary": {
-          "texture": "Rocky and stony",
-          "importantCrops": ["Tea", "Coffee", "Barley", "Apples"],
-          "distribution": "Himalayan region and north-eastern hills."
-        }
-      }
-    ]
-  }
+// GLOBAL VARIABLES
+let soilTypes = [];
+let selectedSoil = null;
+let selectedTexture = null;
+
+
+// LOAD JSON
+fetch("./data.json")
+  .then(response => response.json())
+  .then(data => {
+
+    soilTypes = data.soilTypes;
+
+    initSoilClick();
+
+  })
+  .catch(err => console.log("JSON Load Error:", err));
+
+
+
+
+// INIT SOIL CLICK
+function initSoilClick() {
+
+  const soilItems = document.querySelectorAll(".soil-list li");
+
+  soilItems.forEach((item) => {
+
+    item.addEventListener("click", () => {
+
+      const soilKey = item.dataset.soil;
+
+      // find correct soil from JSON
+      selectedSoil = soilTypes.find(soil =>
+        soil.tabImage.includes(soilKey)
+      );
+
+      showStep2();
+
+    });
+
+  });
+
 }
+
+
+
+
+// SHOW STEP 2
+function showStep2() {
+
+  const step1 = document.getElementById("step-1");
+  const step2 = document.getElementById("step-2");
+
+  step1.style.display = "none";
+  step2.style.display = "block";
+
+  updateSoilDetails();
+  loadTextureQuestion();
+
+}
+
+
+
+
+// UPDATE LEFT PANEL
+function updateSoilDetails() {
+
+  document.getElementById("soil-typeSection").style.display = "block";
+
+  document.getElementById("selected-img").src =
+    selectedSoil.tabImage;
+
+  document.getElementById("selected-mountain-type").innerText =
+    selectedSoil.name;
+
+  document.getElementById("selected-question").innerText =
+    selectedSoil.textureQuestion.question;
+
+}
+
+
+
+
+// LOAD TEXTURE OPTIONS
+function loadTextureQuestion() {
+
+  const optionList = document.getElementById("option-list");
+
+  optionList.innerHTML = "";
+
+  selectedSoil.textureQuestion.options.forEach(option => {
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+        <img src="${option.image}">
+        <span class="bottom-note">${option.text}</span>
+    `;
+
+    li.dataset.correct = option.isCorrect;
+
+    li.addEventListener("click", function () {
+
+      handleTextureAnswer(this);
+
+    });
+
+    optionList.appendChild(li);
+
+  });
+
+}
+
+
+
+
+// HANDLE TEXTURE ANSWER
+function handleTextureAnswer(element) {
+
+  const allOptions = document.querySelectorAll("#option-list li");
+
+  allOptions.forEach(opt => opt.classList.remove("active"));
+
+  element.classList.add("active");
+
+  selectedTexture = element.dataset.correct;
+
+  const errorNote = document.getElementById("error-note");
+
+  if (selectedTexture === "true") {
+
+    errorNote.style.display = "none";
+
+    showSummary();
+
+  } else {
+
+    errorNote.style.display = "block";
+
+  }
+
+}
+
+
+
+
+// SHOW SUMMARY
+function showSummary() {
+
+  document.getElementById("soil-typeSection").style.display = "none";
+
+  document.getElementById("summary-sec").style.display = "block";
+
+
+  document.querySelector(".summary-header").innerText =
+    selectedSoil.name;
+
+  document.getElementById("textureTxt").innerText =
+    selectedSoil.summary.texture;
+
+  document.getElementById("importantCropsTxt").innerText =
+    selectedSoil.summary.importantCrops.join(", ");
+
+}
+
+
+
+
+// RESET BUTTON
+document.querySelector(".reset-btn").addEventListener("click", () => {
+
+  loadTextureQuestion();
+
+  document.getElementById("error-note").style.display = "none";
+
+});
+
+
+
+
+// BACK BUTTON
+document.querySelectorAll(".backNext-btn span")[0].addEventListener("click", () => {
+
+  const step1 = document.getElementById("step-1");
+  const step2 = document.getElementById("step-2");
+
+  step2.style.display = "none";
+  step1.style.display = "block";
+
+});
+
+
+
+
+// PREVIEW POPUP
+const previewBtn = document.querySelector(".preview-btn");
+const previewPopup = document.querySelector(".preview-popup");
+const closePreview = document.getElementById("close-previewPopup");
+
+
+previewBtn.addEventListener("click", () => {
+
+  previewPopup.style.display = "block";
+
+});
+
+
+closePreview.addEventListener("click", () => {
+
+  previewPopup.style.display = "none";
+
+});

@@ -79,6 +79,7 @@ svg * {
   width: 100% !important;
   height: 100%
 }
+
 /* Soil type style  */
 .step-conatiner {
   height: 100%;
@@ -106,14 +107,15 @@ svg * {
   position: relative;
 }
 
-.img-wrapper {
+.img-wrapper-list {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   height: 300px;
   width: 460px;
   display: flex;
   align-items: flex-end;
-  margin: 70px auto 0 auto;
+  margin: 0 auto;
+  padding-top: 70px;
 }
 
 .img-wrapper img {
@@ -123,7 +125,7 @@ svg * {
 
 .img-label {
   padding: 20px;
-  background-color:#fff;
+  background-color: #fff;
   border-radius: 10px;
   font-size: 30px;
   color: #6F3000;
@@ -168,24 +170,28 @@ svg * {
   gap: 40px;
   height: 100%;
 }
-.left-col{
+
+.left-col {
   width: 45%;
 }
-.right-col{
+
+.right-col {
   width: 55%;
-  background-color:rgba(0, 0, 0, .17);
+  background-color: rgba(0, 0, 0, .17);
   border-radius: 10px;
   padding-top: 30px;
   flex: 0 0 auto;
   position: relative;
 }
-.soil-type{
+
+.soil-type {
   width: 680.7px;
   height: 677.36px;
   position: relative;
   /* height: /; */
 }
-.soil-type::before{
+
+.soil-type::before {
   content: "";
   background-image: url("../assets/paper-bg.svg");
   background-size: cover;
@@ -198,7 +204,8 @@ svg * {
   transform: rotate(3.5deg);
   z-index: -1;
 }
-.mountain-soil{
+
+.mountain-soil {
   position: absolute;
   bottom: -20px;
   left: 50%;
@@ -211,32 +218,38 @@ svg * {
   color: #6F3000;
   font-weight: 700;
 }
-.img-wrapper{
+
+.img-wrapper-list {
   position: relative;
 }
-.note-wrapper{
+
+.note-wrapper {
   text-align: center;
   margin: 60px auto 0 auto;
   line-height: 1.3;
   max-width: 60%;
 
 }
-.note-txt{
+
+.note-txt {
   margin-top: 40px;
   color: #D10404;
   font-style: italic;
 }
-.note-wrapper p{
+
+.note-wrapper p {
   font-size: 30px;
 }
-.show-ansBtn{
+
+.show-ansBtn {
   background-color: #4CAF50;
   color: #fff;
   font-size: 30px;
   padding: 15px 30px;
   border-radius: 50px;
 }
-.backNext-btn span{
+
+.backNext-btn span {
   background-color: #4CAF50;
   color: #fff;
   font-size: 30px;
@@ -244,20 +257,24 @@ svg * {
   border-radius: 50px;
   margin: 0 20px;
 }
-.btn-wrappers{
+
+.btn-wrappers {
   margin-top: 180px;
   text-align: center;
   position: relative;
 }
-.backNext-btn{
-      margin-top: 70px;
+
+.backNext-btn {
+  margin-top: 70px;
 }
-.backNext-btn span{
+
+.backNext-btn span {
   background-color: #2196F3;
   border-radius: 10px;
   margin-top: 20px;
 }
-.error-note{
+
+.error-note {
   font-size: 26px;
   margin-bottom: 20px;
   display: inline-block;
@@ -271,17 +288,20 @@ svg * {
   white-space: nowrap;
   font-weight: 600;
 }
-.error-note.wrong{
+
+.error-note.wrong {
   background-color: #FFDCDC;
   color: #FF0000;
   border: 3px dotted #FF0000;
 }
-.error-note.correct{
+
+.error-note.correct {
   background-color: #DCFFDD;
   color: #00D115;
   border: 3px dotted #00D115;
 }
-.preview-btn{
+
+.preview-btn {
   position: absolute;
   bottom: -30px;
   right: 50%;
@@ -290,6 +310,7 @@ svg * {
   height: auto;
   cursor: pointer;
 }
+
 .option-list {
   display: flex;
   flex-wrap: wrap;
@@ -299,13 +320,14 @@ svg * {
   list-style-type: none;
   justify-content: center;
 }
-.option-list li{
+
+.option-list li {
   position: relative;
 }
-.option-list li img{
 
-}
-.bottom-note{
+.option-list li img {}
+
+.bottom-note {
   background-color: #FAFFB1;
   color: #6F3000;
   font-size: 26px;
@@ -318,7 +340,8 @@ svg * {
   border-radius: 10px;
   font-weight: 600;
 }
-.reset-btn{
+
+.reset-btn {
   background-color: #FF2C68;
   font-size: 30px;
   border-radius: 50px;
@@ -330,12 +353,14 @@ svg * {
   left: 50%;
   transform: translateX(-50%);
 }
-.summary-sec p{
+
+.summary-sec p {
   font-size: 28px;
   margin-bottom: 30px;
   line-height: 1.3;
 }
-.summary-sec{
+
+.summary-sec {
   background-color: #FFFEEC;
   border: 3px solid #6F3000;
   border-radius: 10px;
@@ -343,15 +368,18 @@ svg * {
   font-size: 28px;
   position: relative;
 }
-.summary-sec .summary-title{
+
+.summary-sec .summary-title {
   margin: 0;
   margin-bottom: 30px;
 }
-.title-txt{
+
+.title-txt {
   font-weight: 600;
   color: #000;
 }
-.summary-header{
+
+.summary-header {
   position: absolute;
   top: -30px;
   left: 50%;
@@ -363,10 +391,12 @@ svg * {
   color: #6F3000;
   font-weight: 600;
 }
-.text-center{
+
+.text-center {
   text-align: center;
 }
-.preview-popup{
+
+.preview-popup {
   background-color: #fff;
   height: 100%;
   width: 100%;
@@ -377,6 +407,17 @@ svg * {
   border: 3px solid #6F3000;
   text-align: center;
 }
-.close-popup{
-  
+
+.close-popup {
+  background-image: url("../assets/close-btn.svg");
+  position: absolute;
+  top: -40px;
+  height: 80px;
+  width: 80px;
+  background-size: 100%;
+  right: -40px;
+}
+
+#mountain-soil path {
+  fill: red !important;
 }
