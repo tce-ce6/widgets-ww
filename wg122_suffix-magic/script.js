@@ -183,7 +183,7 @@ const wordData = {
       "answer": ["elegance"],
       "suffixes": {
         "correct": ["ance"],
-        "incorrect": ["en", "er", "or", "ion", "ive", "tion", "ity", "ness", "y", "ment", "ation", "sion"]
+        "incorrect": ["en", "er", "or", "ion", "ive", "tion", "ity", "ness", "ment", "ation", "sion"]
       },
       "sentences": {
         "elegance": "The dancer moved with elegance and grace."
@@ -372,12 +372,7 @@ function handleSmoothMove(source, target) {
 
   source.style.opacity = "0.3";
   source.style.pointerEvents = "none";
-
-  // Reset after 1 second (1000 milliseconds)
-  setTimeout(() => {
-    source.style.opacity = "1";
-    source.style.pointerEvents = "auto";
-  }, 1000);
+  // source.style.filter = "blur(3px)"; // Permanently disable and blur
 
   const clone = source.cloneNode(true);
   clone.removeAttribute("id");
@@ -386,7 +381,10 @@ function handleSmoothMove(source, target) {
   clone.style.top = "0";
   clone.style.left = "0";
   clone.style.opacity = "1";
+  clone.style.filter = "none"; // Remove blur for the animated piece
   clone.style.pointerEvents = "none";
+  clone.style.fontSize = "32px";
+  clone.style.fontWeight = "bold";
 
   target.appendChild(clone);
 }
@@ -588,6 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#list-suffix li").forEach(li => {
       li.style.opacity = "1";
       li.style.pointerEvents = "auto";
+      li.style.filter = "none";
     });
 
     const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
@@ -627,7 +626,11 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 1; i <= 12; i++) {
       const el = document.getElementById(`puzzle${i}`);
       if (!el) continue;
-      el.querySelector("span").textContent = allSuffixes[i - 1] || "";
+
+      const span = el.querySelector("span");
+      span.textContent = allSuffixes[i - 1] || "";
+      span.style.fontSize = "40px";   // set font size here
+      // el.querySelector("span").textContent = allSuffixes[i - 1] || "";
       el.style.display = allSuffixes[i - 1] ? "block" : "none";
       sourceList.appendChild(el);
     }
@@ -658,8 +661,10 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSuffixes.push(suffixText);
     handleSmoothMove(clickedItem, emptySlot);
 
-    const root = wordSpan.textContent.trim();
-    const combined = root + selectedSuffixes.join("");
+    // Find the exact matching final answer by checking the suffix index
+    // This handles English spelling rules automatically (e.g. create + tion = creation)
+    const suffixIndex = correctSuffixes.indexOf(suffixText);
+    const combined = suffixIndex !== -1 ? answers[suffixIndex] : wordSpan.textContent.trim() + selectedSuffixes.join("");
 
     // must be a valid answer and not already completed
     if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
