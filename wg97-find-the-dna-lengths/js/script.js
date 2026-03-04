@@ -621,7 +621,7 @@ class Wg97 {
 
         // Y Deltas relative to native drawn position (hovering over Tube 0)
         const dyTubeHover = -50;  // Hover cleanly above tube
-        const dyTubePlunge = 100; // Drop into tube
+        const dyTubePlunge = 20; // Drop into tube
         const dyLaneHover = -160; // Up and over to gel well
         const dyLanePlunge = -140; // Down into gel well
 
