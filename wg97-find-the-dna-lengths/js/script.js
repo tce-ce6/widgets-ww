@@ -18,10 +18,10 @@ class Wg97 {
     static TUBE_COLORS = ['#0a719b', '#0a719b', '#0a719b', '#0a719b', '#0a719b'];
 
     static BP_TO_Y = {
-        100: 873, 200: 849, 300: 826, 400: 802, 500: 778,
-        600: 755, 700: 731, 800: 707, 900: 683, 1000: 660,
-        1100: 636, 1200: 612, 1300: 589, 1400: 565, 1500: 541,
-        1600: 518, 1700: 494, 1800: 470, 1900: 446, 2000: 423, 2100: 376
+        100: 868, 200: 844, 300: 820, 400: 796, 500: 774,
+        600: 750, 700: 726, 800: 702, 900: 678, 1000: 654,
+        1100: 632, 1200: 608, 1300: 584, 1400: 560, 1500: 536,
+        1600: 512, 1700: 489, 1800: 466, 1900: 442, 2000: 418, 2100: 394
     };
 
     static TOLERANCE = 50;
@@ -328,15 +328,23 @@ class Wg97 {
             case S.INPUT:
                 this._hideEl(this.dom.electroOverlay);
                 this._showEl(this.dom.inputArea);
-                this._showEl(this.dom.btnSubmitGroup);
+                if (this.showingAnswer) {
+                    this._hideEl(this.dom.btnSubmitGroup);
+                } else {
+                    this._showEl(this.dom.btnSubmitGroup);
+                }
                 this._setOpacity(this.dom.btnReset, '1');
                 this._showEl(this.dom.itext3);
                 break;
 
             case S.COMPLETE:
-                this._hideEl(this.dom.btnSubmitGroup);
+                if (this.showingAnswer) {
+                    this._hideEl(this.dom.btnSubmitGroup);
+                } else {
+                    this._hideEl(this.dom.btnSubmitGroup);
+                    this._showEl(this.dom.successBanner);
+                }
                 // Keep input areas visible to show answers
-                this._showEl(this.dom.successBanner);
                 this._setOpacity(this.dom.btnReset, '1');
                 break;
         }
@@ -545,14 +553,12 @@ class Wg97 {
             const correctValues = this.currentSet;
             this.dom.inputs.forEach((inp, idx) => {
                 inp.value = correctValues[idx] + " bps";
-                inp.style.borderColor = '#00992a';
-                inp.style.backgroundColor = '#ecffeb';
-                this.dom.feedbacks[idx].textContent = 'Very good!';
-                this.dom.feedbacks[idx].style.color = '#00992a';
+                inp.style.borderColor = '#aaa';
+                inp.style.backgroundColor = '#f9f9f9';
+                this.dom.feedbacks[idx].textContent = ''; // Hide feedback explicitly
                 inp.disabled = true;
             });
-            this.state = Wg97.STATE.COMPLETE;
-            this._showEl(this.dom.successBanner);
+            this._hideEl(this.dom.successBanner);
         }
         this.updateUI();
     }
@@ -688,8 +694,8 @@ class Wg97 {
             const bps = this.currentSet[slotIndex - 1];
             let yPos = Wg97.BP_TO_Y[bps];
             if (yPos === undefined) {
-                const Y_BOT = 873;
-                const Y_TOP = 376;
+                const Y_BOT = 868;
+                const Y_TOP = 394;
                 yPos = Math.round(Y_BOT - (Math.log(bps) - Math.log(100)) / (Math.log(2100) - Math.log(100)) * (Y_BOT - Y_TOP));
             }
             band._targetY = yPos;
