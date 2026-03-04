@@ -5,6 +5,7 @@
                 "name": "Mountain Soil",
                 "tabImage": "./assets/mountain-soil.png",
                 "soilColor": "#8B6F47",
+                "map-location": "mountain-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Jammu & Kashmir",
@@ -52,37 +53,37 @@
                         {
                             "id": "c1",
                             "name": "Apples",
-                            "image": "images/crops/apple.png",
+                            "image": "./assets/crops/apple.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Barley",
-                            "image": "images/crops/barley.png",
+                            "image": "./assets/crops/barley.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Coffee",
-                            "image": "images/crops/coffee.png",
+                            "image": "./assets/crops/coffee.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Tea",
-                            "image": "images/crops/tea.png",
+                            "image": "./assets/crops/tea.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Cashew",
-                            "image": "images/crops/cashew.png",
+                            "image": "./assets/crops/cashew.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Rubber",
-                            "image": "images/crops/rubber.png",
+                            "image": "./assets/crops/rubber.png",
                             "isCorrect": false
                         }
                     ]
@@ -103,6 +104,7 @@
                 "name": "Alluvial Soil",
                 "tabImage": "./assets/alluvial-soil.png",
                 "soilColor": "#C2B280",
+                "map-location": "alluvial-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Punjab",
@@ -119,25 +121,25 @@
                         {
                             "id": "t1",
                             "text": "Coarse and gritty",
-                            "image": "./assets/coarse_gritty.jpg",
+                            "image": "./assets/coarse_gritty.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t2",
                             "text": "Porous and crumbly",
-                            "image": "./assets/porous_crumbly.jpg",
+                            "image": "./assets/porous_crumbly.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t3",
                             "text": "Smooth and fine",
-                            "image": "./assets/smooth_fine.jpg",
+                            "image": "./assets/smooth_fine.png",
                             "isCorrect": true
                         },
                         {
                             "id": "t4",
                             "text": "Loose and sandy",
-                            "image": "./assets/loose_sandy.jpg",
+                            "image": "./assets/loose_sandy.png",
                             "isCorrect": false
                         }
                     ]
@@ -148,37 +150,37 @@
                         {
                             "id": "c1",
                             "name": "Rice",
-                            "image": "images/crops/rice.jpg",
+                            "image": "./assets/crops/rice.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Wheat",
-                            "image": "images/crops/wheat.jpg",
+                            "image": "./assets/crops/wheat.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Sugarcane",
-                            "image": "images/crops/sugarcane.jpg",
+                            "image": "./assets/crops/sugarcane.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Maize",
-                            "image": "images/crops/maize.jpg",
+                            "image": "./assets/crops/maize.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Rubber",
-                            "image": "images/crops/rubber.jpg",
+                            "image": "./assets/crops/rubber.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Dates",
-                            "image": "images/crops/dates.jpg",
+                            "image": "./assets/crops/dates.png",
                             "isCorrect": false
                         }
                     ]
@@ -199,6 +201,7 @@
                 "name": "Black Soil",
                 "tabImage": "./assets/black-soil.png",
                 "soilColor": "#2F2F2F",
+                "map-location": "black-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Maharashtra",
@@ -214,25 +217,25 @@
                         {
                             "id": "t1",
                             "text": "Rocky and stony",
-                            "image": "./assets/rocky_stony.jpg",
+                            "image": "./assets/rocky_stony.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t2",
                             "text": "Sticky and clayey",
-                            "image": "./assets/sticky_clayey.jpg",
+                            "image": "./assets/sticky_clayey.png",
                             "isCorrect": true
                         },
                         {
                             "id": "t3",
                             "text": "Loose and sandy",
-                            "image": "./assets/loose_sandy.jpg",
+                            "image": "./assets/loose_sandy.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t4",
                             "text": "Porous and crumbly",
-                            "image": "./assets/porous_crumbly.jpg",
+                            "image": "./assets/porous_crumbly.png",
                             "isCorrect": false
                         }
                     ]
@@ -243,37 +246,37 @@
                         {
                             "id": "c1",
                             "name": "Cotton",
-                            "image": "images/crops/cotton.jpg",
+                            "image": "./assets/crops/cotton.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Sugarcane",
-                            "image": "images/crops/sugarcane.jpg",
+                            "image": "./assets/crops/sugarcane.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Soybean",
-                            "image": "images/crops/soybean.jpg",
+                            "image": "./assets/crops/soybean.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Groundnut",
-                            "image": "images/crops/groundnut.jpg",
+                            "image": "./assets/crops/groundnut.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Apples",
-                            "image": "images/crops/apple.jpg",
+                            "image": "./assets/crops/apple.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Cashew",
-                            "image": "images/crops/cashew.jpg",
+                            "image": "./assets/crops/cashew.png",
                             "isCorrect": false
                         }
                     ]
@@ -294,6 +297,7 @@
                 "name": "Laterite Soil",
                 "tabImage": "./assets/lateritic-soil.png",
                 "soilColor": "#B7410E",
+                "map-location": "lateritic-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Western Ghats",
@@ -307,25 +311,25 @@
                         {
                             "id": "t1",
                             "text": "Rocky and stony",
-                            "image": "./assets/rocky_stony.jpg",
+                            "image": "./assets/rocky_stony.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t2",
                             "text": "Sticky and clayey",
-                            "image": "./assets/sticky_clayey.jpg",
+                            "image": "./assets/sticky_clayey.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t3",
                             "text": "Porous and crumbly",
-                            "image": "./assets/porous_crumbly.jpg",
+                            "image": "./assets/porous_crumbly.png",
                             "isCorrect": true
                         },
                         {
                             "id": "t4",
                             "text": "Loose and sandy",
-                            "image": "./assets/loose_sandy.jpg",
+                            "image": "./assets/loose_sandy.png",
                             "isCorrect": false
                         }
                     ]
@@ -336,37 +340,37 @@
                         {
                             "id": "c1",
                             "name": "Coffee",
-                            "image": "images/crops/coffee.jpg",
+                            "image": "./assets/crops/coffee.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Tea",
-                            "image": "images/crops/tea.jpg",
+                            "image": "./assets/crops/tea.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Rubber",
-                            "image": "images/crops/rubber.jpg",
+                            "image": "./assets/crops/rubber.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Cashew",
-                            "image": "images/crops/cashew.jpg",
+                            "image": "./assets/crops/cashew.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Wheat",
-                            "image": "images/crops/wheat.jpg",
+                            "image": "./assets/crops/wheat.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Dates",
-                            "image": "images/crops/dates.jpg",
+                            "image": "./assets/crops/dates.png",
                             "isCorrect": false
                         }
                     ]
@@ -387,6 +391,7 @@
                 "name": "Red Soil",
                 "tabImage": "./assets/red-soil.png",
                 "soilColor": "#A52A2A",
+                "map-location": "red-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Western Ghats",
@@ -400,25 +405,25 @@
                         {
                             "id": "t1",
                             "text": "Rocky and stony",
-                            "image": "./assets/rocky_stony.jpg",
+                            "image": "./assets/rocky_stony.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t2",
                             "text": "Sticky and clayey",
-                            "image": "./assets/sticky_clayey.jpg",
+                            "image": "./assets/sticky_clayey.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t3",
                             "text": "Coarse and gritty",
-                            "image": "./assets/coarse_gritty.jpg",
+                            "image": "./assets/coarse_gritty.png",
                             "isCorrect": true
                         },
                         {
                             "id": "t4",
                             "text": "Smooth and fine",
-                            "image": "./assets/smooth_fine.jpg",
+                            "image": "./assets/smooth_fine.png",
                             "isCorrect": false
                         }
                     ]
@@ -429,37 +434,37 @@
                         {
                             "id": "c1",
                             "name": "Cotton",
-                            "image": "images/crops/cotton.jpg",
+                            "image": "./assets/crops/cotton.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Groundnuts",
-                            "image": "images/crops/groundnut.jpg",
+                            "image": "./assets/crops/groundnut.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Millet",
-                            "image": "images/crops/millets.jpg",
+                            "image": "./assets/crops/millets.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Pulses",
-                            "image": "images/crops/pulses.jpg",
+                            "image": "./assets/crops/pulses.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Bajra",
-                            "image": "images/crops/bajra.jpg",
+                            "image": "./assets/crops/bajra.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Jowar",
-                            "image": "images/crops/jowar.jpg",
+                            "image": "./assets/crops/jowar.png",
                             "isCorrect": false
                         }
                     ]
@@ -480,6 +485,7 @@
                 "name": "Desert Soil",
                 "tabImage": "./assets/desert-soil.png",
                 "soilColor": "#EDC9AF",
+                "map-location": "desert-soil-map",
                 "mapData": {
                     "correctRegions": [
                         "Rajasthan",
@@ -493,25 +499,25 @@
                         {
                             "id": "t1",
                             "text": "Loose and sandy",
-                            "image": "./assets/loose_sandy.jpg",
+                            "image": "./assets/loose_sandy.png",
                             "isCorrect": true
                         },
                         {
                             "id": "t2",
                             "text": "Sticky and clayey",
-                            "image": "./assets/sticky_clayey.jpg",
+                            "image": "./assets/sticky_clayey.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t3",
                             "text": "Coarse and gritty",
-                            "image": "./assets/coarse_gritty.jpg",
+                            "image": "./assets/coarse_gritty.png",
                             "isCorrect": false
                         },
                         {
                             "id": "t4",
                             "text": "Rocky and stony",
-                            "image": "./assets/rocky_stony.jpg",
+                            "image": "./assets/rocky_stony.png",
                             "isCorrect": false
                         }
                     ]
@@ -522,37 +528,37 @@
                         {
                             "id": "c1",
                             "name": "Bajra",
-                            "image": "images/crops/bajra.jpg",
+                            "image": "./assets/crops/bajra.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c2",
                             "name": "Jowar",
-                            "image": "images/crops/jowar.jpg",
+                            "image": "./assets/crops/jowar.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c3",
                             "name": "Dates",
-                            "image": "images/crops/dates.jpg",
+                            "image": "./assets/crops/dates.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c4",
                             "name": "Barley",
-                            "image": "images/crops/barley.jpg",
+                            "image": "./assets/crops/barley.png",
                             "isCorrect": true
                         },
                         {
                             "id": "c5",
                             "name": "Rice",
-                            "image": "images/crops/rice.jpg",
+                            "image": "./assets/crops/rice.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
                             "name": "Cotton",
-                            "image": "images/crops/cotton.jpg",
+                            "image": "./assets/crops/cotton.png",
                             "isCorrect": false
                         }
                     ]

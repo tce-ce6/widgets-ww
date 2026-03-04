@@ -319,6 +319,7 @@ svg * {
   padding: 0;
   list-style-type: none;
   justify-content: center;
+  margin-top: 50px;
 }
 
 .option-list li {
@@ -418,6 +419,55 @@ svg * {
   right: -40px;
 }
 
-#mountain-soil path {
-  fill: red !important;
+#mountain-soil-map.correct path {
+  fill: #C46B39;
+
+}
+
+#red-soil-map.correct path {
+  fill: #E0CF9B;
+}
+
+#lateritic-soil-map.correct path {
+  fill: #B34620;
+}
+
+#black-soil-map.correct path {
+  fill: #312E2B;
+}
+
+#alluvial-soil-map.correct path {
+  fill: #7A592B;
+}
+
+#desert-soil-map.correct path {
+  fill: #FFA300;
+}
+
+#reading-slope .disabled {
+  opacity: .4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.lottie-container {
+  position: absolute;
+  top: -50px;
+  height: 120px;
+  width: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.soil-list li.completed::after {
+  content: "";
+  background-image: url("../assets/completed.svg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -30px;
+  height: 100px;
+  width: 100px;
+  left: 50%;
+  transform: translateX(-50%);
 }
