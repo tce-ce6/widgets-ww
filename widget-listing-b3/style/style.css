@@ -254,6 +254,23 @@ position: absolute;
     display: inline-block;
 }
 
+/* ── Loading state ───────────────────────────────────────── */
+.loading-item {
+    width: 100%;
+    border: none !important;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.loading-text {
+    color: #888;
+    font-size: 13px;
+    font-style: italic;
+}
+
 /* ── Search field ────────────────────────────────────────── */
 .widget-search {
     width: 100%;

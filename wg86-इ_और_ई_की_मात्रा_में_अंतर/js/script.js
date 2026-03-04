@@ -110,7 +110,7 @@ function nextStep() {
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML =
-      "ऑडियो सुनें।&nbsp;&nbsp;&nbsp;&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+      "ऑडियो सुनें। कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
     age_badhe_button = true;
     document.getElementById("audio_button_1").style.display = "none";
     document.getElementById("audio_button_2").style.display = "none";
@@ -203,6 +203,25 @@ function audioListener() {
   });
 }
 
+function setButtonsDisabled(disabled) {
+  const ids = [
+    "audio_button_1",
+    "audio_button_2",
+    "audio_button_3",
+    "age_badhe_button",
+    "naya_shabd_button",
+    "gyankosh_button",
+    "arrow_audio",
+  ];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.pointerEvents = disabled ? "none" : "";
+      el.style.opacity = disabled ? "0.5" : "";
+    }
+  });
+}
+
 function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
@@ -211,7 +230,11 @@ function playAudio(type) {
     type === "wrong" ? selectedWord.wrongAudio : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
+  setButtonsDisabled(true);
   audioPlayer.play();
+
+  audioPlayer.onended = () => setButtonsDisabled(false);
+  audioPlayer.onerror = () => setButtonsDisabled(false);
 }
 function playAnimationAudio(bandGroup) {
   let name = "";
