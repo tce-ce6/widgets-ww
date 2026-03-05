@@ -122,7 +122,19 @@ function init() {
     attachKeyboardListeners(svg);
     attachButtonListeners();
 
-    /* §2d — Shuffle questions, then start game */
+    /* §2d — Preload all SVG images so they don't flash, then start game */
+    GCN.questions.forEach(function (q) {
+        var img = new Image();
+        img.src = "./assets/images/" + encodeURIComponent(q.image);
+    });
+
+    /* Align the score text from the right so double-digit numbers don't push outside the white box */
+    if (GCN.els.scoreText) {
+        GCN.els.scoreText.setAttribute("text-anchor", "end");
+        var sSpan = GCN.els.scoreText.querySelector("tspan");
+        if (sSpan) sSpan.setAttribute("x", "380"); /* Anchored near the right edge of the score box */
+    }
+
     shuffleQuestions();
     loadQuestion(0);
 }
@@ -990,7 +1002,13 @@ function loadQuestion(index) {
     hideFeedback("excellent");
     hideFeedback("tryagain");
     hideEl(els.confetti);
+
+    /* — Hide animal image and wipe source instantly to fix flash — */
     hideEl(els.animalImage);
+    if (els.animalImage) {
+        els.animalImage.setAttribute("href", "");
+        els.animalImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", "");
+    }
 
     /* — Reset card question — */
     updateCardQuestion(false);
@@ -1042,10 +1060,13 @@ function updateCardQuestion(showFull) {
     var el = GCN.els.questionText;
     if (!el) return;
 
-    /* Write text directly onto the <text> element.
-       No <tspan> child — x/y/text-anchor live on the element itself
-       so they cannot be silently dropped by the browser. */
-    el.textContent = newText;
+    /* Write rich text directly onto the <text> element.
+       The noun is bolded, the rest is normal weight. */
+    var html = '<tspan font-weight="bold">' + noun + '</tspan><tspan font-weight="normal"> of ' + q.animal + '</tspan>';
+
+    // Fallback to textContent if innerHTML doesn't work well in old SVGs,
+    // but innerHTML is robust for adding internal tspans in modern browsers.
+    el.innerHTML = html;
 }
 
 
