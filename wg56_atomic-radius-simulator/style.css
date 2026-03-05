@@ -1,0 +1,175 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+#atomic-widgetbody {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0
+}
+
+#atomic-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative
+}
+
+#atomic-widget .container::after {
+  content: "";
+  background-image: url("./Assets/BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* filter: blur(5px) */
+}
+
+#atomic-widget .mainContainerOuter {
+  background: #000 !important
+}
+
+#atomic-widget .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#atomic-widget .d-flex {
+  display: flex
+}
+
+#atomic-widget .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#atomic-widget .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#atomic-widget .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #atomic-widget .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#atomic-widget .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#atomic-widget .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#atomic-widget .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#atomic-widget .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#atomic-widget .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#atomic-widget .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#atomic-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+#atomic-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: #05a6d6;
+  padding: 8px 40px;
+  color: white;
+  white-space: nowrap;
+  border-radius: 0 0px 20px 20px;
+}
+
+#atomic-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: #ccc
+}
+#atomic-widget .svg-container{
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+#atomic-widget svg{
+    width: 100% !important;
+    height: 100%;
+} 
+
+.centerPoint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Essential for absolute children */
+  width: 100%;
+  height: 100%;
+}
+
+.dynamic-img {
+  width: 60px;  /* Adjust to your preference */
+  height: 60px;
+  pointer-events: none; /* Prevents images from blocking button clicks */
+  transition: transform 0.3s ease-out; /* Smoothly "jump" into position */
+}

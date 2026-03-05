@@ -1,5 +1,6 @@
 <!-- Please find below xd wireframe link  -->
 https://xd.adobe.com/view/9f1031e9-82d6-4ce8-9a97-b6bee530029f-ca43/
+Fixing Widget UI Bugs
 
 there should be only one color as blue for all band and sample and its fill
 the tip of the eppendorf in the animation of the gel loading should be within the gel well
