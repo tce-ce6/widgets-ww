@@ -1,2 +1,1 @@
-<!-- Please find below xd wireframe link  -->
-https://xd.adobe.com/view/3461ecf9-d4d2-4e88-be56-d6952086a33c-6132/
+https://xd.adobe.com/view/b329813a-127c-4c94-b660-e04b8d09672e-e67a/

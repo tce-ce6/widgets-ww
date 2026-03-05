@@ -148,6 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
     tryAnotherCropBtn: document.getElementById("Group_16161"),
 
     mapContainer: document.getElementById("state-map-clickable"),
+    croplabel: document.getElementById("crop-label"),
+    panel01buttons: document.getElementById("panel-01-buttons"),
+    itextActivity: document.getElementById("i-text-activity"),
+    panel02map: document.getElementById("panel-02-map"),
+    itextcropmap: document.getElementById("i-text-crop-map"),
+    iTextHomeScreen: document.getElementById("i-text-home-screen"),
   };
 
   // Initialize visibility
@@ -290,6 +296,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (panel) {
       panel.style.display = "block";
       panel.classList.remove("st170");
+      elements.croplabel.classList.remove("st170");
+      elements.iTextHomeScreen.classList.add("st170");
+      elements.itextActivity.classList.remove("st170");
+      elements.panel02map.classList.remove("st170");
+      elements.itextcropmap.classList.remove("st170");
+      elements.globalButtons.classList.remove("st170");
+      elements.mapContainer.classList.remove("st170");
+      elements.panel01buttons.classList.remove("st170");
     }
   };
 
@@ -442,5 +456,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Initial call
-  showHome();
+  
 });
