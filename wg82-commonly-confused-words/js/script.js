@@ -136,10 +136,16 @@ function initDOM() {
     GlobalObj.rectOption2 = document.getElementById('Rectangle_5-4');
 
     const progressNode = document.getElementById('pieces_collected:_00');
-    if (progressNode) GlobalObj.textProgress = progressNode.querySelector('text');
+    if (progressNode) {
+        const tspans = progressNode.querySelectorAll('tspan');
+        if (tspans.length > 1) GlobalObj.textProgress = tspans[1];
+    }
 
     const questionNode = document.getElementById('question:_01');
-    if (questionNode) GlobalObj.textQuestion = questionNode.querySelector('text');
+    if (questionNode) {
+        const tspans = questionNode.querySelectorAll('tspan');
+        if (tspans.length > 1) GlobalObj.textQuestion = tspans[1];
+    }
 
     GlobalObj.iText = document.getElementById('I-text');
     GlobalObj.infoText = document.getElementById('Info_text');
@@ -316,7 +322,7 @@ function setCenteredText(groupId, textStr, boxX, boxWidth, boxBaseline) {
 
         // Setup anchor to middle
         textNode.setAttribute('text-anchor', 'middle');
-        const centerX = boxX + (boxWidth / 2);
+        const centerX = boxX + (boxWidth / 2) + 35;
 
         // Translate text directly to the center coordinates
         textNode.setAttribute('transform', `translate(${centerX} ${boxBaseline})`);
@@ -325,12 +331,14 @@ function setCenteredText(groupId, textStr, boxX, boxWidth, boxBaseline) {
 
 function setProgressText(piecesAmount) {
     if (!GlobalObj.textProgress) return;
-    GlobalObj.textProgress.textContent = `pieces collected ${piecesAmount}/36`;
+    const formatted = piecesAmount.toString().padStart(2, '0');
+    GlobalObj.textProgress.textContent = `${formatted}/36 `;
 }
 
 function setQuestionText(qAmount) {
     if (!GlobalObj.textQuestion) return;
-    GlobalObj.textQuestion.textContent = `question ${qAmount}/36`; // Format natively mapped to requirements without 0-prefix if unnecessary
+    const formatted = qAmount.toString().padStart(2, '0');
+    GlobalObj.textQuestion.textContent = `${formatted}/36 `;
 }
 
 /**
