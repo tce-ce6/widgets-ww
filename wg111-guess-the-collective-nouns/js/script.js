@@ -476,7 +476,7 @@ function buildCompleteOverlay(svg) {
     });
 
     /* Completion sub-message */
-    appendSVGText(g, "960", "540", "You've completed all 25!", {
+    appendSVGText(g, "960", "540", "You've completed all " + GCN.questions.length + "!", {
         "font-size": "34", "text-anchor": "middle", fill: "#555555"
     });
 
@@ -780,9 +780,10 @@ function handleSubmit() {
     if (GCN.typedAnswer.trim() === "") return; // nothing typed
 
     var typed = GCN.typedAnswer.trim().toLowerCase();
-    var correct = GCN.questions[GCN.currentIndex].noun.toLowerCase();
+    var correctStr = GCN.questions[GCN.currentIndex].noun.toLowerCase();
+    var correctOptions = correctStr.split(',').map(function (s) { return s.trim(); });
 
-    if (typed === correct) {
+    if (correctOptions.indexOf(typed) !== -1) {
         handleCorrectAnswer();
     } else {
         handleWrongAnswer();
@@ -1019,7 +1020,23 @@ function loadQuestion(index) {
  */
 function updateCardQuestion(showFull) {
     var q = GCN.questions[GCN.currentIndex];
-    var noun = showFull ? q.noun : "______";
+    var noun = "______";
+
+    if (showFull) {
+        var typed = GCN.typedAnswer.trim().toLowerCase();
+        var options = q.noun.split(',').map(function (s) { return s.trim(); });
+        var lowerOptions = options.map(function (s) { return s.toLowerCase(); });
+        var matchIdx = lowerOptions.indexOf(typed);
+
+        if (matchIdx !== -1) {
+            // They typed a correct option
+            noun = options[matchIdx];
+        } else {
+            // They clicked "Show Answer"
+            noun = options.join(" / ");
+        }
+    }
+
     var newText = noun + " of " + q.animal;
 
     var el = GCN.els.questionText;
