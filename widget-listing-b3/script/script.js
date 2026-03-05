@@ -12,8 +12,8 @@ const STATUS_CHIPS = [
         link: "https://tce-widgets.web.app/wg83-major-soil-types/",
         imagePath: "./assets/wg-83.png",
         creators: "ni-83",
-        status: "WIP-With-Tech",
-        updatedAt: "2026-03-02 11:28",
+        status: "in-review",
+        updatedAt: "2026-03-04 21:23",
     },
     {
         name: "Rhyme Scheme",
