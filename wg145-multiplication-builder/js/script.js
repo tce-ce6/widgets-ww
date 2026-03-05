@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const svg = document.querySelector('svg');
 
     // Mode panel
+    const modePanel = document.getElementById('mode-panel');             // whole panel group
     const modePanelHl = document.getElementById('mode-panel-hl');
+    const modePanelHlRect = document.querySelector('#mode-panel-hl rect');  // Rectangle_172 – the sliding highlight
     const teacherModeBtn = document.getElementById('Teacher_Mode');
     const playgroundModeBtn = document.getElementById('Playground_Mode');
 
@@ -54,11 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const playgroundChooseThemeSection = document.getElementById('playground-panel-choose-theme-section');
     const playgroundAddPictureSection = document.getElementById('playground-panel-add-picture-section');
     const themeDropdownBox = document.getElementById('playground-panel-choose-theme-dropdown-box');
+
+    // ─── PLAYGROUND ADD PICTURE ELEMENTS ──────────────────────────────────────
     const btnAddPicture = document.getElementById('btn-playground-panel-add-picture');
-    const btnAddPictureText = document.getElementById('btn-playground-panel-add-picture-text');
+    const btnAddPictureText = document.getElementById('Click_to_add_more_plate-2');
+
+    // Dynamic Playground Groups
+    const pgGroupTemplate = document.getElementById('pg-group-template');
+    const pgGroupsContainer = document.getElementById('pg-groups-container');
+
+    // ─── BOTTOM BUTTONS (Playground) ──────────────────────────────────────────
     const btnCheckMyAnswer = document.getElementById('btn-playground-panel-check-my-answer');
-    const btnSubPicture = document.getElementById('btn-playground-panel-add-sub-picture');
-    const btnMinusPicture = document.getElementById('btn-playground-panel-minus-sub-picture');
     const newProblemBtn = document.getElementById('new-problem');
 
     // Feedback
@@ -79,7 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Visual layers
     const layer25 = document.getElementById('Layer_25');   // Sliders area
-    const layer50 = document.getElementById('Layer_50');   // Animated pictures area
+    const layer50 = document.getElementById('Layer_50');   // Animated pictures area (inside playground section)
+    const picturePanelEl = document.getElementById('picture-panel'); // Teacher-mode picture background
+    const pictureBorder = document.getElementById('picture-border'); // Placeholder for selected theme SVG preview
     const svgImagesGroup = document.getElementById('svg-images-group'); // Theme SVG output
 
     // ─── SLIDER CONSTANTS (declared early – used by doSurpriseMe / doReset) ───
@@ -112,6 +122,84 @@ document.addEventListener("DOMContentLoaded", () => {
     function show(el) { if (el) el.style.display = 'block'; }
     function hide(el) { if (el) el.style.display = 'none'; }
     function isHidden(el) { return !el || el.style.display === 'none'; }
+
+    // ─── TAB ACTIVE INDICATOR ─────────────────────────────────────────────────
+    // Slides the mode-panel highlight rect (Rectangle_172) between tab positions
+    // and adjusts width: teacher = 244 (default), playground = 264 (+20px).
+    // Both values are in SVG user units (not CSS px).
+    const TAB_X = { teacher: 1325.64, playground: 1586.71 };
+    const TAB_W = { teacher: 244, playground: 284 };
+    let _tabAnimId = null;
+
+    function setTabActive(mode) {
+        if (!modePanelHlRect) return;
+
+        const targetX = TAB_X[mode] || TAB_X.teacher;
+        const targetW = TAB_W[mode] || TAB_W.teacher;
+        const startX = parseFloat(modePanelHlRect.getAttribute('x') || TAB_X.teacher);
+        const startW = parseFloat(modePanelHlRect.getAttribute('width') || TAB_W.teacher);
+
+        if (Math.abs(targetX - startX) < 0.5 && Math.abs(targetW - startW) < 0.5) return;
+
+        // Cancel any in-progress animation
+        if (_tabAnimId) { cancelAnimationFrame(_tabAnimId); _tabAnimId = null; }
+
+        const DURATION = 250;   // ms
+        const startTime = performance.now();
+
+        function step(now) {
+            const t = Math.min((now - startTime) / DURATION, 1);
+            const ease = 1 - Math.pow(1 - t, 3);   // ease-out cubic
+            modePanelHlRect.setAttribute('x', startX + (targetX - startX) * ease);
+            modePanelHlRect.setAttribute('width', startW + (targetW - startW) * ease);
+            if (t < 1) {
+                _tabAnimId = requestAnimationFrame(step);
+            } else {
+                modePanelHlRect.setAttribute('x', targetX);
+                modePanelHlRect.setAttribute('width', targetW);
+                _tabAnimId = null;
+            }
+        }
+        _tabAnimId = requestAnimationFrame(step);
+    }
+
+    // ─── MODE-PANEL VERTICAL SLIDE ───────────────────────────────────────────────
+    // Animates the whole mode-panel group up (playground, translateY = -100)
+    // or back down (teacher, translateY = 0) in SVG coordinate space.
+    const PANEL_SHIFT_Y = -100;   // SVG units — negative = upward
+    let _panelAnimId = null;
+
+    function _getPanelCurrentY() {
+        const t = modePanel ? modePanel.getAttribute('transform') : null;
+        if (!t) return 0;
+        const m = t.match(/translate\([^,)]*,\s*([^)]+)\)/);
+        return m ? parseFloat(m[1]) : 0;
+    }
+
+    function animateModePanel(targetY) {
+        if (!modePanel) return;
+        const startY = _getPanelCurrentY();
+        if (Math.abs(targetY - startY) < 0.5) return;
+
+        if (_panelAnimId) { cancelAnimationFrame(_panelAnimId); _panelAnimId = null; }
+
+        const DURATION = 300;   // ms
+        const startTime = performance.now();
+
+        function step(now) {
+            const t = Math.min((now - startTime) / DURATION, 1);
+            const ease = 1 - Math.pow(1 - t, 3);   // ease-out cubic
+            const y = startY + (targetY - startY) * ease;
+            modePanel.setAttribute('transform', `translate(0, ${y})`);
+            if (t < 1) {
+                _panelAnimId = requestAnimationFrame(step);
+            } else {
+                modePanel.setAttribute('transform', targetY === 0 ? '' : `translate(0, ${targetY})`);
+                _panelAnimId = null;
+            }
+        }
+        _panelAnimId = requestAnimationFrame(step);
+    }
 
     function clickable(el, fn) {
         if (!el) return;
@@ -166,8 +254,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── BIND EVENTS ──────────────────────────────────────────────────────────
     function bindEvents() {
         // Mode toggle buttons
+        // Teacher → switch immediately
         clickable(teacherModeBtn, () => setMode('teacher'));
-        clickable(playgroundModeBtn, () => setMode('playground'));
+        // Playground → show how-to-play modal FIRST; mode switch happens on Got It click
+        clickable(playgroundModeBtn, () => {
+            show(howToPlayModal);
+            show(btnGotIt);
+            show(btnGotItText);
+        });
 
         // Teacher sliders — constants are defined at module scope:
         //   STEP_PX   ≈ 116.11 (1045 SVG units / 9 steps)
@@ -207,16 +301,28 @@ document.addEventListener("DOMContentLoaded", () => {
             togglePanel(inwordAnsPanelHl, 'panelInword', arrowInword);
         });
 
-        // Playground panel interactions
-        clickable(themeDropdownBox, () => {
+        // Playground panel interactions – now uses a real dropdown list
+        clickable(themeDropdownBox, (e) => {
+            e.stopPropagation();
             state.themeDropdownOpen = !state.themeDropdownOpen;
-            doSwitchTheme();
+            if (state.themeDropdownOpen) {
+                openPlaygroundDropdown();
+            } else {
+                closePlaygroundDropdown();
+            }
         });
+        buildPlaygroundDropdown();
         clickable(btnAddPicture, () => addGroup());
         clickable(btnAddPictureText, () => addGroup());
-        clickable(btnSubPicture, () => addItem());
-        clickable(btnMinusPicture, () => removeItem());
+        // Dynamic sub-picture +/- handled during render Playground groups
         clickable(btnCheckMyAnswer, doCheckAnswer);
+
+        // i-text icon → open how-to-play modal
+        clickable(iText, () => {
+            show(howToPlayModal);
+            show(btnGotIt);
+            show(btnGotItText);
+        });
 
         // Modals
         clickable(btnGotIt, closeHowToPlay);
@@ -227,21 +333,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── MODE SWITCH ──────────────────────────────────────────────────────────
     function setMode(mode) {
         state.mode = mode;
+        setTabActive(mode);   // slide the mode-panel highlight to the active tab
 
         if (mode === 'teacher') {
-            // Show teacher elements
-            show(layer25);
-            show(layer50);
+            // ── Show teacher-mode elements ─────────────────────────────────────
+            // Slide mode-panel back to its original vertical position
+            animateModePanel(0);
+
+            show(layer25);            // sliders area
+            show(picturePanelEl);     // picture-panel (teacher mode picture background)
             if (svgImagesGroup) svgImagesGroup.style.display = '';
-            show(teacherThemeDropdown);
-            show(multiQPanelHl);
-            show(repeatQPanelHl);
-            show(inwordQPanelHl);
+            show(teacherThemeDropdown);   // Theme-drop-down
+            show(multiQPanelHl);          // multi-Q-panel-hl
+            show(repeatQPanelHl);         // repea-q-panel-hl
+            show(inwordQPanelHl);         // inword-panel (Q side)
 
             // Default state: answer panels OPEN
-            show(multiAnsPanelHl);
-            show(repeaAnsPanelHl);
-            show(inwordAnsPanelHl);
+            show(multiAnsPanelHl);        // multi-ans-panel-hl
+            show(repeaAnsPanelHl);        // repea-ans-panel-hl
+            show(inwordAnsPanelHl);       // inword-panel (ans side)
             state.panelMulti = true;
             state.panelRepea = true;
             state.panelInword = true;
@@ -249,7 +359,10 @@ document.addEventListener("DOMContentLoaded", () => {
             setArrowRotation(arrowRepeat, true);
             setArrowRotation(arrowInword, true);
 
-            // Hide playground elements
+            show(surpriseMeBtn);          // btn-suprise-me
+            show(resetBtn);               // reset-button
+
+            // ── Hide playground-mode elements ──────────────────────────────────
             hide(playgroundChooseThemeSection);
             hide(playgroundAddPictureSection);
             hide(btnAddPicture);
@@ -262,8 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
             hide(btnCheckMyAnswer);
             hide(showAnswerBtn);
             hide(newProblemBtn);
-            show(surpriseMeBtn);
-            show(resetBtn);
             hide(problemPanel);
 
             // Reset to defaults
@@ -272,38 +383,42 @@ document.addEventListener("DOMContentLoaded", () => {
             refreshAll();
 
         } else {
-            // Playground mode
-            // Hide teacher elements
-            hide(layer25);
-            hide(layer50);
-            if (svgImagesGroup) svgImagesGroup.style.display = 'none';
-            hide(teacherThemeDropdown);
-            hide(multiQPanelHl);
-            hide(repeatQPanelHl);
-            hide(inwordQPanelHl);
-            hide(multiAnsPanelHl);
-            hide(repeaAnsPanelHl);
-            hide(inwordAnsPanelHl);
+            // ── Playground mode ────────────────────────────────────────────────
 
-            // Show playground elements
-            show(playgroundChooseThemeSection);
-            show(playgroundAddPictureSection);
+            // Hide all teacher-mode elements
+            hide(layer25);                // Layer_25 (sliders)
+            hide(picturePanelEl);         // picture-panel (teacher-mode background)
+            if (svgImagesGroup) svgImagesGroup.style.display = 'none';
+            hide(teacherThemeDropdown);   // Theme-drop-down
+            hide(multiQPanelHl);          // multi-Q-panel-h1
+            hide(multiAnsPanelHl);        // multi-ans-panel-h1
+            hide(repeatQPanelHl);         // repea-q-panel-h1
+            hide(repeaAnsPanelHl);        // repea-ans-panel-h1
+            hide(inwordQPanelHl);         // inword-panel (Q)
+            hide(inwordAnsPanelHl);       // inword-panel (ans)
+            hide(surpriseMeBtn);          // btn-suprise-me
+            hide(resetBtn);               // reset-button
+
+            // Show playground-mode elements
+            show(problemPanel);                   // problem-panel
+            show(iText);                          // i-text
+            show(playgroundChooseThemeSection);   // playground-panel-choose-theme-section
+            show(playgroundAddPictureSection);    // playground-panel-add-picture-section
             show(btnAddPicture);
             show(btnAddPictureText);
-            show(iText);
-            show(btnCheckMyAnswer);
-            show(showAnswerBtn);
-            show(newProblemBtn);
-            hide(surpriseMeBtn);
-            hide(resetBtn);
-            show(problemPanel);
-            show(howToPlayModal);
-            show(btnGotIt);
-            show(btnGotItText);
+            show(btnCheckMyAnswer);               // btn-playground-panel-check-my-answer
+            show(showAnswerBtn);                  // show-answer
+            show(newProblemBtn);                  // new-problem
 
-            hide(feedbackCorrect);
-            hide(feedbackIncorrect);
-            hide(answerModal);
+            // Feedback & answer-modal: hidden initially; shown only when
+            // the user clicks "Check My Answer" (doCheckAnswer) or
+            // "Show Answer" (doShowAnswer).
+            hide(feedbackCorrect);    // feedback-playground-panel-correct-ans
+            hide(feedbackIncorrect);  // feedback-playground-panel-incorrect-ans
+            hide(answerModal);        // answer-modal  (btn-new-problem-answer-modal lives inside)
+
+            // How-to-play modal stays hidden on mode switch; user can open it via i-text
+            hide(howToPlayModal);
 
             state.answered = false;
             generateNewProblem();
@@ -327,6 +442,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeHowToPlay() {
         hide(howToPlayModal);
         hide(iText);
+        // Complete the playground mode switch (only if not already in playground)
+        if (state.mode !== 'playground') {
+            setMode('playground');
+        }
+        // Always slide the mode-panel up when closing how-to-play
+        animateModePanel(PANEL_SHIFT_Y);
     }
 
     // ─── PLAYGROUND ACTIONS ───────────────────────────────────────────────────
@@ -438,11 +559,211 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function doSwitchTheme() {
+        // Legacy – kept so nothing breaks if called from elsewhere.
+        // In playground mode we use the dropdown instead.
         const keys = Object.keys(THEMES);
         const idx = keys.indexOf(state.theme);
         state.theme = keys[(idx + 1) % keys.length];
         applyThemeLabels();
         refreshAll();
+    }
+
+    // ─── PLAYGROUND THEME DROPDOWN ────────────────────────────────────────────
+    // Same pattern as buildTeacherDropdown() but for the playground panel.
+    // Playground dropdown box:  x=189.22, y=369.74, width=1622, height=55
+    // Picture-border preview:   x=884.1,  y=629.92, width=208.67, height=176.99
+
+    const PG_DD = {
+        X: 189.22, Y_BOX: 369.74, W: 1622, H_ROW: 55,
+        FILL_NORMAL: '#ffffff',
+        FILL_HOVER: '#dff0ff',
+        FILL_ACTIVE: '#cfeeff',
+        STROKE: '#004897',
+        FONT_SIZE: 28,
+        FONT_FAMILY: 'Roboto-Medium, SQAKWO+Roboto-Medium',
+        TEXT_OFFSET_Y: 36,
+        TEXT_OFFSET_X: 21,
+    };
+    const PG_DROPDOWN_THEMES = [
+        { key: 'plates', label: 'Plates and Cookies' },
+        { key: 'vas', label: 'Vases and Flowers' },
+        { key: 'palette', label: 'Palettes and Drops' },
+    ];
+    // Arrow inside playground dropdown box
+    const playgroundDropdownArrow = document.getElementById('Group_1578-2');
+    let _pgDropdownList = null;   // cached reference to the injected list group
+
+    function buildPlaygroundDropdown() {
+        if (!themeDropdownBox) return;
+        const svgEl = document.querySelector('svg');
+        const NS = 'http://www.w3.org/2000/svg';
+
+        const listGroup = document.createElementNS(NS, 'g');
+        listGroup.setAttribute('id', 'pg-theme-dropdown-list');
+        listGroup.style.display = 'none';
+
+        // Background border rect for the whole list
+        const bgRect = document.createElementNS(NS, 'rect');
+        bgRect.setAttribute('x', PG_DD.X);
+        bgRect.setAttribute('y', PG_DD.Y_BOX + PG_DD.H_ROW);
+        bgRect.setAttribute('width', PG_DD.W);
+        bgRect.setAttribute('height', PG_DD.H_ROW * PG_DROPDOWN_THEMES.length);
+        bgRect.setAttribute('rx', 12);
+        bgRect.setAttribute('ry', 12);
+        bgRect.setAttribute('fill', '#ffffff');
+        bgRect.setAttribute('stroke', PG_DD.STROKE);
+        bgRect.setAttribute('stroke-width', '2');
+        listGroup.appendChild(bgRect);
+
+        PG_DROPDOWN_THEMES.forEach((theme, idx) => {
+            const rowY = PG_DD.Y_BOX + PG_DD.H_ROW + idx * PG_DD.H_ROW;
+            const rowGroup = document.createElementNS(NS, 'g');
+            rowGroup.style.cursor = 'pointer';
+            rowGroup.style.pointerEvents = 'all';
+
+            const rowRect = document.createElementNS(NS, 'rect');
+            rowRect.setAttribute('x', PG_DD.X + 1);
+            rowRect.setAttribute('y', rowY + 1);
+            rowRect.setAttribute('width', PG_DD.W - 2);
+            rowRect.setAttribute('height', PG_DD.H_ROW - 2);
+            rowRect.setAttribute('fill', PG_DD.FILL_NORMAL);
+            rowRect.setAttribute('rx', idx === PG_DROPDOWN_THEMES.length - 1 ? 12 : 0);
+            rowGroup.appendChild(rowRect);
+
+            const rowText = document.createElementNS(NS, 'text');
+            rowText.setAttribute('x', PG_DD.X + PG_DD.TEXT_OFFSET_X);
+            rowText.setAttribute('y', rowY + PG_DD.TEXT_OFFSET_Y);
+            rowText.setAttribute('font-family', PG_DD.FONT_FAMILY);
+            rowText.setAttribute('font-size', PG_DD.FONT_SIZE);
+            rowText.setAttribute('font-weight', '500');
+            rowText.style.pointerEvents = 'none';
+            const tspan = document.createElementNS(NS, 'tspan');
+            tspan.textContent = theme.label;
+            rowText.appendChild(tspan);
+            rowGroup.appendChild(rowText);
+
+            rowGroup.addEventListener('mouseenter', () => {
+                rowRect.setAttribute('fill', PG_DD.FILL_HOVER);
+            });
+            rowGroup.addEventListener('mouseleave', () => {
+                rowRect.setAttribute('fill',
+                    state.theme === theme.key ? PG_DD.FILL_ACTIVE : PG_DD.FILL_NORMAL);
+            });
+            rowGroup.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectPlaygroundTheme(theme.key);
+                closePlaygroundDropdown();
+            });
+
+            listGroup.appendChild(rowGroup);
+        });
+
+        svgEl.appendChild(listGroup);
+        _pgDropdownList = listGroup;
+
+        // Close when clicking anywhere else
+        document.addEventListener('click', () => {
+            if (state.themeDropdownOpen) closePlaygroundDropdown();
+        });
+    }
+
+    function openPlaygroundDropdown() {
+        if (_pgDropdownList) _pgDropdownList.style.display = 'block';
+        state.themeDropdownOpen = true;
+        setArrowRotation(playgroundDropdownArrow, true);
+        _highlightPgThemeRow();
+    }
+
+    function closePlaygroundDropdown() {
+        if (_pgDropdownList) _pgDropdownList.style.display = 'none';
+        state.themeDropdownOpen = false;
+        setArrowRotation(playgroundDropdownArrow, false);
+    }
+
+    function _highlightPgThemeRow() {
+        if (!_pgDropdownList) return;
+        // First child is the background rect; remaining are row groups
+        const rowGroups = Array.from(_pgDropdownList.children).slice(1);
+        rowGroups.forEach((rowGroup, idx) => {
+            const rowRect = rowGroup.querySelector('rect');
+            if (!rowRect) return;
+            const key = PG_DROPDOWN_THEMES[idx] ? PG_DROPDOWN_THEMES[idx].key : null;
+            rowRect.setAttribute('fill', key === state.theme ? PG_DD.FILL_ACTIVE : PG_DD.FILL_NORMAL);
+        });
+    }
+
+    function selectPlaygroundTheme(themeKey) {
+        state.theme = themeKey;
+        applyThemeLabels();
+        refreshAll();
+        _showThemeInPictureBorder(themeKey);
+    }
+
+    // Places the selected theme SVG into picture-border.
+    // Templates live inside #svg-images-group-playground (a foreignObject),
+    // so we look them up from there, read their viewBox for dimensions,
+    // serialize to a data URI, and render via an SVG <image> element.
+    //
+    // picture-border rect: x=884.1, y=629.92, w=208.67, h=176.99
+    function _showThemeInPictureBorder(themeKey) {
+        const NS = 'http://www.w3.org/2000/svg';
+        const PB_X = 884.1, PB_Y = 629.92, PB_W = 208.67, PB_H = 176.99;
+
+        // Remove any previously injected preview
+        const oldPreview = document.getElementById('pg-theme-preview');
+        if (oldPreview) oldPreview.remove();
+
+        // ── Locate the SVG template ───────────────────────────────────────────
+        // Templates are inside:  #svg-images-group-playground > div#svg-templates > svg#<id>
+        const container = document.getElementById('svg-images-group-playground');
+        const srcId = THEME_SVG_MAP[themeKey];
+        // querySelector works across foreignObject content
+        const srcEl = container
+            ? container.querySelector('#' + srcId)
+            : document.getElementById(srcId);   // fallback
+        if (!srcEl) return;
+
+        // ── Read dimensions from the SVG's viewBox ────────────────────────────
+        // getBBox() is unreliable for foreignObject-hosted SVGs.
+        let svgW = 0, svgH = 0;
+        const vb = srcEl.getAttribute('viewBox');
+        if (vb) {
+            const parts = vb.trim().split(/[\s,]+/);
+            svgW = parseFloat(parts[2]) || 0;
+            svgH = parseFloat(parts[3]) || 0;
+        }
+        if (!svgW) svgW = parseFloat(srcEl.getAttribute('width')) || 100;
+        if (!svgH) svgH = parseFloat(srcEl.getAttribute('height')) || 100;
+
+        // ── Serialize to data URI and render via <image> ──────────────────────
+        const serializer = new XMLSerializer();
+        let svgStr = serializer.serializeToString(srcEl);
+        // Ensure xmlns is present for standalone rendering
+        if (!svgStr.includes('xmlns=')) {
+            svgStr = svgStr.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
+        const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+
+        // ── Compute scale / position to fit inside picture-border ────────────
+        const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
+        const imgW = svgW * scale;
+        const imgH = svgH * scale;
+        const imgX = PB_X + (PB_W - imgW) / 2;
+        const imgY = PB_Y + (PB_H - imgH) / 2;
+
+        const imgEl = document.createElementNS(NS, 'image');
+        imgEl.setAttribute('id', 'pg-theme-preview');
+        imgEl.setAttribute('x', imgX);
+        imgEl.setAttribute('y', imgY);
+        imgEl.setAttribute('width', imgW);
+        imgEl.setAttribute('height', imgH);
+        imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
+        imgEl.setAttribute('href', dataUri);   // modern browsers (no xlink)
+        imgEl.style.pointerEvents = 'none';
+
+        // Append on top of main SVG so it renders above picture-border
+        const svgRoot = document.querySelector('svg');
+        svgRoot.appendChild(imgEl);
     }
 
     // ─── TEACHER THEME DROPDOWN (Group_562) ───────────────────────────────────
@@ -811,6 +1132,141 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             container.appendChild(clonedSvg);
+        }
+    }
+
+    // ─── PLAYGROUND GROUPS ───────────────────────────────────────────────────
+    // Dynamically generates the N playground picture groups based on state.groups.
+    function renderPlaygroundGroups() {
+        if (!pgGroupsContainer || !pgGroupTemplate) return;
+
+        // Clear existing
+        pgGroupsContainer.innerHTML = '';
+
+        // Hide if not in playground mode
+        if (state.mode !== 'playground') {
+            pgGroupsContainer.style.display = 'none';
+            return;
+        }
+        pgGroupsContainer.style.display = '';
+
+        // If 0 groups, don't render any
+        if (state.groups === 0) return;
+
+        // Calculate layout
+        // The original picture-border is 208.67 wide.
+        const GROUP_WIDTH = 220; // 208.67 + some gap
+        const TOTAL_WIDTH = GROUP_WIDTH * state.groups;
+
+        // Center the groups around the middle of the available width
+        // Rough container center x ≈ 884 + (1168/2) = 1468. Or let's center relative to x=884.
+        // The background panel is wide. Let's just start at x=884 and go right for now,
+        // or actually center them relative to the main area (x ~ 1468)
+        const CENTER_X = 1468;
+        const startX = CENTER_X - (TOTAL_WIDTH / 2);
+
+        // Get the chosen theme's template
+        const themeGroup = document.getElementById('svg-images-group-playground');
+        const themeTemplateId = THEME_SVG_MAP[state.theme];
+        const themeTemplate = themeGroup ? themeGroup.querySelector('#' + themeTemplateId) : document.getElementById(themeTemplateId);
+
+        // Get viewbox/dimensions for the item svg
+        let svgW = 100, svgH = 100;
+        if (themeTemplate) {
+            const vb = themeTemplate.getAttribute('viewBox');
+            if (vb) {
+                const parts = vb.trim().split(/[\s,]+/);
+                svgW = parseFloat(parts[2]) || 100;
+                svgH = parseFloat(parts[3]) || 100;
+            } else {
+                svgW = parseFloat(themeTemplate.getAttribute('width')) || 100;
+                svgH = parseFloat(themeTemplate.getAttribute('height')) || 100;
+            }
+        }
+
+        for (let g = 0; g < state.groups; g++) {
+            // Clone the group template (border + buttons)
+            const clone = pgGroupTemplate.cloneNode(true);
+            clone.removeAttribute('id');
+            clone.style.display = '';
+
+            // Calculate translation for this group
+            // original template assumes origin at 884.1, 629.92. 
+            // the paths inside the template were translated by -884.1, -629.92 so they are relative to 0,0
+            const tx = startX + (g * GROUP_WIDTH);
+            const ty = 629.92; // keep original vertical position
+            clone.setAttribute('transform', `translate(${tx}, ${ty})`);
+
+            // Setup buttons
+            const btnAdd = clone.querySelector('.btn-pg-add-sub');
+            const btnMinus = clone.querySelector('.btn-pg-minus-sub');
+            const btnCancel = clone.querySelector('.btn-pg-cancel');
+
+            if (btnAdd) {
+                clickable(btnAdd, () => {
+                    if (state.items < 10) { state.items++; refreshAll(); }
+                });
+            }
+            if (btnMinus) {
+                clickable(btnMinus, () => {
+                    if (state.items > 0) { state.items--; refreshAll(); }
+                });
+            }
+            if (btnCancel) {
+                clickable(btnCancel, () => {
+                    if (state.groups > 0) {
+                        state.groups--;
+                        refreshAll();
+                    }
+                });
+            }
+
+            // Inject items into the border
+            const itemsContainer = clone.querySelector('.pg-items-container');
+            if (themeTemplate && itemsContainer) {
+                // We'll create a data URI <image> and append it to pg-items-container.
+                // We must process items visibility *before* serializing to data URI.
+                const imgClone = themeTemplate.cloneNode(true);
+                imgClone.removeAttribute('id');
+
+                if (state.theme === 'vas') {
+                    _setVasItemsVisibility(imgClone, state.items, state.theme);
+                } else {
+                    const items = _getItemsFromSvg(imgClone, state.theme);
+                    items.forEach((item, idx) => {
+                        item.style.display = idx < state.items ? '' : 'none';
+                    });
+                }
+
+                const serializer = new XMLSerializer();
+                let svgStr = serializer.serializeToString(imgClone);
+                if (!svgStr.includes('xmlns=')) {
+                    svgStr = svgStr.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+                }
+                const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+
+                // fit inside 208.67 x 176.99
+                const PB_W = 208.67, PB_H = 176.99;
+                const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
+                const imgW = svgW * scale;
+                const imgH = svgH * scale;
+                const imgX = (PB_W - imgW) / 2;
+                const imgY = (PB_H - imgH) / 2;
+
+                const NS = 'http://www.w3.org/2000/svg';
+                const imgEl = document.createElementNS(NS, 'image');
+                imgEl.setAttribute('x', imgX);
+                imgEl.setAttribute('y', imgY);
+                imgEl.setAttribute('width', imgW);
+                imgEl.setAttribute('height', imgH);
+                imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
+                imgEl.setAttribute('href', dataUri); // modern
+                imgEl.style.pointerEvents = 'none';
+
+                itemsContainer.appendChild(imgEl);
+            }
+
+            pgGroupsContainer.appendChild(clone);
         }
     }
 

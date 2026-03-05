@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: "assets/Animation/For Final compltion/confetti.json",
+      path: "assets/animation/forFinalCompltion/confetti.json",
     });
   }
 
