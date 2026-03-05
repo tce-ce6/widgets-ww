@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="274.237" height="263.584" viewBox="0 0 274.237 263.584">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_103" data-name="Rectangle 103" width="272.771" height="263.584" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_226" data-name="Group 226" transform="translate(0 -0.001)">
+    <path id="Path_4982" data-name="Path 4982" d="M0,59.585l58.7,63.728V59.585Z" transform="translate(0 140.272)" fill="#aeb31b"/>
+    <path id="Path_4983" data-name="Path 4983" d="M0,51.01V185.374H249.435l3.8-139.221Z" transform="translate(0 14.485)" fill="#a0a618"/>
+    <path id="Path_4984" data-name="Path 4984" d="M0,46.013v137.36H231.435l42.8-152.221Z" transform="translate(0 9.775)" fill="#e9f048"/>
+    <path id="Path_4985" data-name="Path 4985" d="M0,47.01V184.37H251.435l21.8-152.218Z" transform="translate(0 12.131)" fill="#d9e021"/>
+    <text id="Let_s_start_with_the_first_rhyming_word_of_the_stanza." data-name="Let’s start with the first rhyming word of the stanza." transform="translate(17 75)" font-size="28" font-family="Roboto-Italic, Roboto" font-style="italic"><tspan x="0" y="29">Let’s start with the </tspan><tspan x="0" y="66">first rhyming word </tspan><tspan x="0" y="103">of the stanza.</tspan></text>
+  </g>
+</svg>
