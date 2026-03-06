@@ -27,10 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnReset = document.getElementById('Group 277');
     const btnInsights = document.getElementById('Group 591'); // Corrected ID
 
-    const insightsPopup = document.getElementById('insightsPopup');
-    const closeInsights = document.getElementById('closeInsights');
-    const overlay = document.getElementById('overlay');
-
     let currentTone = null;
 
     const toneData = {
@@ -256,25 +252,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Insights Popup
-    if (btnInsights) {
+    const insightsPopupGroup = document.getElementById('insightsPopupGroup');
+    if (btnInsights && insightsPopupGroup) {
         btnInsights.style.cursor = 'pointer';
-        btnInsights.addEventListener('click', () => {
-            insightsPopup.style.display = 'block';
-            overlay.style.display = 'block';
+        btnInsights.addEventListener('click', (e) => {
+            e.stopPropagation();
+            insightsPopupGroup.style.display = insightsPopupGroup.style.display === 'block' ? 'none' : 'block';
         });
-    }
 
-    if (closeInsights) {
-        closeInsights.addEventListener('click', () => {
-            insightsPopup.style.display = 'none';
-            overlay.style.display = 'none';
-        });
-    }
-
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            insightsPopup.style.display = 'none';
-            overlay.style.display = 'none';
+        document.addEventListener('click', (e) => {
+            if (insightsPopupGroup.style.display === 'block') {
+                insightsPopupGroup.style.display = 'none';
+            }
         });
     }
 
