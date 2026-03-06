@@ -204,11 +204,12 @@ svg * {
   min-height: 50px;
 }
 
-.list-wrapper .filled{
-      border-bottom: 0;
-    min-width: auto;
-    min-height: auto;
+.list-wrapper .filled {
+  border-bottom: 0;
+  min-width: auto;
+  min-height: auto;
 }
+
 .option-conatiner {
   background-color: #C4E2B9;
   padding: 63px 52px;
@@ -226,13 +227,14 @@ svg * {
 .option-wrapper::after,
 .img-container::after,
 .img-container::before,
-.option-wrapper::before{
+.option-wrapper::before {
   content: "";
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
 }
+
 .img-container::before {
   background-image: url("../assets/images/shadow-2.svg");
   height: 76.09px;
@@ -242,6 +244,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::before {
   background-image: url("../assets/images/shadow.svg");
   height: 76.09px;
@@ -251,6 +254,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::after {
   background-image: url("../assets/images/strip.svg");
   height: 75.15px;
@@ -259,6 +263,7 @@ svg * {
   left: 50%;
   transform: translateX(-50%);
 }
+
 .img-container::after {
   background-image: url("../assets/images/strip-2.svg");
   height: 75.15px;
@@ -280,20 +285,23 @@ svg * {
   box-sizing: border-box;
   min-height: 95px;
 }
-.img-container{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    object-fit: contain;
+
+.img-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
 }
-#main-img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+
+#main-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
-.result-wrapper{
+
+.result-wrapper {
   height: 100%;
   width: 100%;
   font-size: 45px;
@@ -304,18 +312,22 @@ svg * {
   position: relative;
   border-radius: 30px;
 }
-.result-wrapper.top{
+
+.result-wrapper.top {
   background: #A5DCF7;
 }
-.result-wrapper.bottom{
+
+.result-wrapper.bottom {
   background: #CDF9CB;
 }
-.result-wrapper .result-text{
+
+.result-wrapper .result-text {
   display: block;
   width: 100%;
-      line-height: 1.2;
+  line-height: 1.2;
 }
-.sub-title{
+
+.sub-title {
   position: absolute;
   padding: 10px 20px;
   top: -30px;
@@ -324,10 +336,12 @@ svg * {
   border-radius: 10px;
   color: #fff;
 }
-.sub-title.top{
+
+.sub-title.top {
   background-color: #2EACD2;
 }
-.sub-title.bottom{
+
+.sub-title.bottom {
   background-color: #64B285;
 }
 
@@ -348,11 +362,25 @@ svg * {
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 #reset-btn.disabled {
@@ -360,13 +388,201 @@ svg * {
   cursor: not-allowed;
   transform: none !important;
 }
+
 #lottie-wrapper {
   display: none;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
+
 #wrapper-1,
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
+}
+
+/* ══════════════════════════════════════
+   Rounding Rally – Interaction & Animation
+   ══════════════════════════════════════ */
+
+/* Interactive SVG groups: pointer cursor */
+#timeline-btn1,
+#timeline-btn2,
+#timeline-btn3,
+#timeline-btn4,
+#timeline-btn5,
+#timeline-btn6,
+#timeline-btn7,
+#timeline-btn8,
+#timeline-btn9,
+#timeline-btn10,
+#timeline-btn11,
+#timeline-btn12,
+#timeline-btn13,
+#timeline-btn14,
+#timeline-btn15,
+#btn-new-number,
+#text-new-number,
+#drop-down1,
+#drop-down2,
+#car-btn,
+#bike-btn,
+#help-btn,
+#help-btn-text,
+#help-cross-btn,
+#answer-cross-mark,
+#Group_6067,
+#Group_1581,
+#Group_1582,
+#Group_60671,
+#Group_15811,
+#Group_15821,
+#Group_15822 {
+  cursor: pointer;
+}
+
+/* Hover lift for timeline answer circles */
+#timeline-btn1:hover circle,
+#timeline-btn2:hover circle,
+#timeline-btn3:hover circle,
+#timeline-btn4:hover circle,
+#timeline-btn5:hover circle,
+#timeline-btn6:hover circle,
+#timeline-btn7:hover circle,
+#timeline-btn8:hover circle,
+#timeline-btn9:hover circle,
+#timeline-btn10:hover circle,
+#timeline-btn11:hover circle,
+#timeline-btn12:hover circle,
+#timeline-btn13:hover circle,
+#timeline-btn14:hover circle,
+#timeline-btn15:hover circle {
+  filter: drop-shadow(0 0 7px #f99f00);
+  transition: filter 0.2s ease;
+}
+
+/* Hover scale for New Number button */
+#btn-new-number:hover path {
+  filter: brightness(1.1);
+  transition: filter 0.2s ease;
+}
+
+/* Q-marker / Q-circle smooth slide */
+#Q-marker,
+#Q-line,
+#Q-circle,
+#Q-numbers {
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Vehicle selection highlight transition */
+#selected-vechle {
+  transition: transform 0.3s ease;
+}
+
+/* ── Keyframes ── */
+
+/* Correct answer: bounce */
+@keyframes pulse-correct {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 #56db00);
+  }
+
+  30% {
+    transform: scale(1.35);
+    filter: drop-shadow(0 0 14px #56db00);
+  }
+
+  60% {
+    transform: scale(0.9);
+    filter: drop-shadow(0 0 8px #56db00);
+  }
+
+  80% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Wrong answer: horizontal shake */
+@keyframes shake-btn {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  15% {
+    transform: translateX(-9px);
+  }
+
+  30% {
+    transform: translateX(9px);
+  }
+
+  45% {
+    transform: translateX(-7px);
+  }
+
+  60% {
+    transform: translateX(7px);
+  }
+
+  75% {
+    transform: translateX(-4px);
+  }
+
+  90% {
+    transform: translateX(4px);
+  }
+}
+
+/* Popup fade + rise */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown slide */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Number labels must NOT block clicks on the button circles beneath */
+#Timeline-numbers {
+  pointer-events: none;
+}
+
+/* Hint popup is dismissible */
+#hint-popup {
+  cursor: pointer;
+}
+
+/* Car/bike full panel clickable zones */
+#car-btn,
+#car-text,
+#bike-btn,
+#bike-text,
+#selected-vechle,
+#vechile-panel {
+  cursor: pointer;
 }
