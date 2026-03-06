@@ -36,6 +36,7 @@ set -euo pipefail
 lib_validate_config
 lib_check_tools
 lib_auth_check
+lib_validate_script_js
 
 HOSTING_BASE_URL="https://${FIREBASE_HOSTING_SITE_ID}.web.app"
 cd "$SCRIPT_DIR"
