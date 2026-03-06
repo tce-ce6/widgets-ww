@@ -40,7 +40,7 @@ const STATIONS = [
     clicks: 1,
     hold: false,
     instruction: "Click the glowing blue segment (The Announcement) 👇",
-    question: "What happens during the First Reading stage?",
+    question: "What happens during the first reading stage?",
     options: [
       { text: "📢 Title and purpose announced", correct: true },
       { text: "🗳️ MPs vote immediately", correct: false },
@@ -55,7 +55,6 @@ const STATIONS = [
       "First Reading = Just announcement",
       "Title and purpose read aloud",
       "No debate or voting",
-      "Then printed",
     ],
     title: "FIRST READING (The Announcement → First Reading) ",
   },
@@ -67,7 +66,7 @@ const STATIONS = [
     clicks: 1,
     hold: false,
     instruction: "Click the glowing purple segment (The Examination) 👇",
-    question: "What does the Committee do with the bill?",
+    question: "What does the committee do with the bill?",
     options: [
       { text: "🔍 Studies deeply & suggests changes", correct: true },
       { text: "📝 Just reads the title", correct: false },
@@ -93,7 +92,7 @@ const STATIONS = [
     color: "#0289ae",
     clicks: 5,
     hold: false,
-    instruction: "Click the glowing green segment 5 times (The Assembly) 👇",
+    instruction: "Click the glowing green segment 5 times (The Assembly) 👇.",
     question: "Why do MPs debate the bill?",
     options: [
       { text: "💬 To discuss if bill should pass", correct: true },
@@ -108,7 +107,6 @@ const STATIONS = [
     facts: [
       "MPs discuss pros/cons",
       "Share opinions",
-      "Decide if good",
       "Voting comes later",
     ],
     title: "DEBATE (The Assembly → Debate)",
@@ -134,9 +132,7 @@ const STATIONS = [
     stamp: "CLAUSES OK 📝",
     facts: [
       "Clause = One section",
-      "Each can change",
-      "Examine detail",
-      "Amendments made",
+      "Each can be amended",
     ],
     title: "CLAUSE-BY-CLAUSE (The Scroll → Clauses)",
   },
@@ -163,7 +159,6 @@ const STATIONS = [
       "Need MORE than 50%",
       "543 MPs total",
       "Need 272+ YES",
-      "If NO wins, fails",
     ],
     title: "VOTING (The Gathering → Voting)",
   },
@@ -188,9 +183,8 @@ const STATIONS = [
     stamp: "PASSED RS 🏛️",
     facts: [
       "MUST pass both",
-      "Same process",
-      "Both needed",
-      "One reject = fail",
+      "Same process as Lok Sabha",
+      "One house reject = Bill fail",
     ],
     title: "RAJYA Sabha (The Chamber → Rajya Sabha) ",
   },
@@ -217,7 +211,7 @@ const STATIONS = [
       "Final approval",
       "Can sign/reject",
       "Signed = LAW",
-      "No sign = NOT law",
+      "Not signed = NOT law",
     ],
     title: "PRESIDENTIAL ASSENT (The Final Approval → President)",
   },
@@ -244,7 +238,7 @@ const STATIONS = [
       "Official newspaper",
       "Published = official",
       "Gets Act number",
-      "Enforceable!",
+      "Enforceable",
     ],
     title: "GAZETTE PUBLICATION (The Archive → Gazette)",
   },
@@ -1069,6 +1063,14 @@ function showInsightsPanel() {
       });
     }
 
+    // ── Show/hide Ellipse_12-15 according to facts ──────────────────────────
+    ["Ellipse_12", "Ellipse_13", "Ellipse_14", "Ellipse_15"].forEach((eid, i) => {
+      const el = document.getElementById(eid);
+      if (el) {
+        el.style.display = s.facts && s.facts[i] ? "" : "none";
+      }
+    });
+
     // ── Update title (use station label) ────────────────────────────────────
     const titleGrp = document.getElementById("insights-title");
     if (titleGrp) {
@@ -1132,69 +1134,26 @@ function showFeedbackOverlay(isCorrect, s) {
   const quizPopup = document.getElementById("Quiz-popup");
   if (!quizPopup) return;
 
-  // const SVG_NS = "http://www.w3.org/2000/svg";
-  // const fo = document.createElementNS(SVG_NS, "foreignObject");
-  // fo.setAttribute("id", "quiz-feedback-fo");
-  // fo.setAttribute("x", "520");
-  // fo.setAttribute("y", "660");
-  // fo.setAttribute("width", "880");
-  // fo.setAttribute("height", "320");
-
-  // const body = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-  // body.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-
   if (isCorrect) {
-    // body.innerHTML = `
-    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-    //     <p style="color:#2e7d32;font-size:22px;font-weight:700;margin:0 0 10px">
-    //       ✓ Correct! You discovered:
-    //     </p>
-    //     <div style="background:#f0fdf4;border:2px solid #4caf50;border-radius:12px;
-    //                 padding:14px 20px;max-width:720px;margin:0 auto">
-    //       <p style="color:#005388;font-size:15px;font-weight:700;
-    //                 letter-spacing:1px;margin:0 0 4px">${s.label.toUpperCase()}</p>
-    //       <p style="color:#181818;font-size:19px;font-weight:700;margin:0 0 4px">
-    //         ${s.msg2 || ""}</p>
-    //       <p style="color:#555;font-size:15px;margin:0">${s.msg3 || ""}</p>
-    //     </div>
-    //   </div>`;
-    document
-      .getElementById("feedback-correct")
-      .setAttribute("display", "block");
-    document
-      .getElementById("quiz-insight-title")
-      .querySelector("tspan").textContent = `${s.label}`;
-    document
-      .getElementById("quiz-insight-msg")
-      .querySelector("tspan").textContent = `${s.msg2 || ""}`;
-    // Mark the station segment as completed (yellow border)
+    document.getElementById("feedback-correct").setAttribute("display", "block");
+    // document.getElementById("quiz-insight-title").querySelector("tspan").textContent = `${s.label}`;
+    //document.getElementById("quiz-insight-msg").querySelector("tspan").textContent = `${s.msg2 || ""}`;
     markStationComplete(currentStationIdx);
-    document.getElementById("Group_592").addEventListener("click", () => {
-      hidePopupInsights();
-      removeFeedbackOverlay();
-    });
+    // Fix: Remove previous listeners and attach only one
+    const nextBtn = document.getElementById("Group_592");
+    if (nextBtn) {
+      const newBtn = nextBtn.cloneNode(true);
+      nextBtn.parentNode.replaceChild(newBtn, nextBtn);
+      newBtn.style.cursor = "pointer";
+      newBtn.addEventListener("click", () => {
+        hidePopupInsights();
+        removeFeedbackOverlay();
+      });
+    }
   } else {
-    // body.innerHTML = `
-    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-    //     <p style="color:#c0392b;font-size:22px;font-weight:700;margin:0 0 10px">
-    //       ✕ Try again!
-    //     </p>
-    //     <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;
-    //                 padding:14px 20px;max-width:720px;margin:0 auto">
-    //       <p style="color:#92400e;font-size:16px;font-weight:700;margin:0 0 4px">Hint:</p>
-    //       <p style="color:#181818;font-size:16px;margin:0">${s.hint || ""}</p>
-    //     </div>
-    //   </div>`;
-    document
-      .getElementById("feedback-incorrect")
-      .setAttribute("display", "block");
-    document
-      .getElementById("quiz-hint-text")
-      .querySelector("tspan").textContent = `${s.hint}`;
+    document.getElementById("feedback-incorrect").setAttribute("display", "block");
+    document.getElementById("quiz-hint-text").querySelector("tspan").textContent = `${s.hint}`;
   }
-
-  // fo.appendChild(body);
-  // quizPopup.appendChild(fo);
 }
 
 // ── COMPLETION BORDER ─────────────────────────────────────────────────────────
@@ -1253,6 +1212,12 @@ function showActivitySummaryEnd() {
       // Hide summary panel
       panel.style.display = "none";
       panel.setAttribute("display", "none");
+      let startNewJourneyBtn = document.getElementById("START_NEW_JOURNEY_"); // also hide btn-insights if visible
+      if (startNewJourneyBtn) {
+        let textNodes = startNewJourneyBtn.querySelectorAll("text");
+        let tspanNodes = textNodes.querySelectorAll("tspan");
+        tspanNodes.innerHTML = "START JOURNEY AGAIN";
+      }
       // Remove stamp badges
       panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
       // Reset completed state and yellow borders

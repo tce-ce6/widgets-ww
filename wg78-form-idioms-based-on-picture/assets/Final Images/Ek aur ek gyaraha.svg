@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 553 668">
+  <!-- Generator: Adobe Illustrator 29.8.4, SVG Export Plug-In . SVG Version: 2.1.1 Build 6)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #6925a5;
+        font-size: 153.42px;
+      }
+
+      .st1 {
+        letter-spacing: 0em;
+      }
+
+      .st1, .st2 {
+        font-family: NirmalaUI, 'Nirmala UI';
+      }
+
+      .st3, .st4 {
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+      }
+
+      .st4 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <text class="st0" transform="translate(45.3 383.91)"><tspan class="st2" x="0" y="0">१</tspan><tspan class="st3" x="70.72" y="0">+</tspan><tspan class="st1" x="162.15" y="0">१</tspan><tspan class="st4" x="232.87" y="0">=</tspan><tspan class="st2" x="324.3" y="0">११</tspan><tspan class="st4" x="465.73" y="0"> </tspan></text>
+</svg>

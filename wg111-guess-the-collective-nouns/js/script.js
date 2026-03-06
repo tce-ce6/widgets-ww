@@ -51,30 +51,30 @@ var GCN = {
        ─────────────────────────────────────────────────────────── */
     questions: [
         /* 1 */  { noun: "herd", animal: "elephants", image: "herd.svg" },
-        /* 2 */  { noun: "pack", animal: "wolves", image: "pack.svg" },
-        /* 3 */  { noun: "pride", animal: "lions", image: "pride.svg" },
-        /* 4 */  { noun: "flock", animal: "birds", image: "flock.svg" },
-        /* 5 */  { noun: "gaggle", animal: "geese", image: "gaggle.svg" },
-        /* 6 */  { noun: "swarm", animal: "bees", image: "swarm-hive.svg" },
-        /* 7 */  { noun: "troop", animal: "monkeys", image: "troop.svg" },
-        /* 8 */  { noun: "troupe", animal: "performers", image: "troupe.svg" },
-        /* 9 */  { noun: "army", animal: "ants", image: "colony-army.svg" },
-        /* 10 */ { noun: "colony", animal: "bats", image: "army-troop.svg" },
-        /* 11 */ { noun: "pod", animal: "whales", image: "pod-school.svg" },
-        /* 12 */ { noun: "flight", animal: "birds", image: "flight.svg" },
-        /* 13 */ { noun: "fleet", animal: "ships", image: "fleet.svg" },
-        /* 14 */ { noun: "batch", animal: "cookies", image: "batch.svg" },
-        /* 15 */ { noun: "bouquet", animal: "flowers", image: "bouquet.svg" },
-        /* 16 */ { noun: "bunch", animal: "grapes", image: "bunch.svg" },
-        /* 17 */ { noun: "bundle", animal: "sticks", image: "bundle.svg" },
-        /* 18 */ { noun: "choir", animal: "singers", image: "choir.svg" },
-        /* 19 */ { noun: "class", animal: "students", image: "class.svg" },
-        /* 20 */ { noun: "crew", animal: "sailors", image: "crew.svg" },
-        /* 21 */ { noun: "litter", animal: "kittens", image: "litter.svg" },
-        /* 22 */ { noun: "pack", animal: "cards", image: "pack-deck.svg" },
-        /* 23 */ { noun: "pile", animal: "books", image: "pile-stack.svg" },
-        /* 24 */ { noun: "quiver", animal: "arrows", image: "quiver.svg" },
-        /* 25 */ { noun: "team", animal: "horses", image: "team.svg" }
+        /* 2 */  { noun: "pride", animal: "lions", image: "pride.svg" },
+        /* 3 */  { noun: "pack", animal: "wolves", image: "pack.svg" },
+        /* 4 */  { noun: "swarm,hive", animal: "bees", image: "swarm-hive.svg" },
+        /* 5 */  { noun: "troop", animal: "monkeys", image: "troop.svg" },
+        /* 6 */  { noun: "gaggle", animal: "geese", image: "gaggle.svg" },
+        /* 7 */  { noun: "litter", animal: "puppies", image: "litter.svg" },
+        /* 8 */  { noun: "army,colony", animal: "ants", image: "colony-army.svg" },
+        /* 9 */  { noun: "pod,school", animal: "dolphins", image: "pod-school.svg" },
+        /* 10 */ { noun: "flock", animal: "sheep", image: "flock.svg" },
+        /* 11 */ { noun: "batch", animal: "cookies", image: "batch.svg" },
+        /* 12 */ { noun: "team", animal: "players", image: "team.svg" },
+        /* 13 */ { noun: "class", animal: "students", image: "class.svg" },
+        /* 14 */ { noun: "choir", animal: "singers", image: "choir.svg" },
+        /* 15 */ { noun: "crew", animal: "sailors", image: "crew.svg" },
+        /* 16 */ { noun: "army,troop", animal: "soldiers", image: "army-troop.svg" },
+        /* 17 */ { noun: "bouquet", animal: "flowers", image: "bouquet.svg" },
+        /* 18 */ { noun: "fleet", animal: "ships", image: "fleet.svg" },
+        /* 19 */ { noun: "bundle", animal: "sticks", image: "bundle.svg" },
+        /* 20 */ { noun: "bunch", animal: "grapes", image: "bunch.svg" },
+        /* 21 */ { noun: "pack,deck", animal: "cards", image: "pack-deck.svg" },
+        /* 22 */ { noun: "pile,stack", animal: "books", image: "pile-stack.svg" },
+        /* 23 */ { noun: "flight", animal: "stairs", image: "flight.svg" },
+        /* 24 */ { noun: "troupe", animal: "dancers", image: "troupe.svg" },
+        /* 25 */ { noun: "quiver", animal: "arrows", image: "quiver.svg" }
     ],
 
     /* ── §1b  Runtime state ──────────────────────────────────────
@@ -122,7 +122,19 @@ function init() {
     attachKeyboardListeners(svg);
     attachButtonListeners();
 
-    /* §2d — Shuffle questions, then start game */
+    /* §2d — Preload all SVG images so they don't flash, then start game */
+    GCN.questions.forEach(function (q) {
+        var img = new Image();
+        img.src = "./assets/images/" + encodeURIComponent(q.image);
+    });
+
+    /* Align the score text from the right so double-digit numbers don't push outside the white box */
+    if (GCN.els.scoreText) {
+        GCN.els.scoreText.setAttribute("text-anchor", "end");
+        var sSpan = GCN.els.scoreText.querySelector("tspan");
+        if (sSpan) sSpan.setAttribute("x", "380"); /* Anchored near the right edge of the score box */
+    }
+
     shuffleQuestions();
     loadQuestion(0);
 }
@@ -476,7 +488,7 @@ function buildCompleteOverlay(svg) {
     });
 
     /* Completion sub-message */
-    appendSVGText(g, "960", "540", "You've completed all 25!", {
+    appendSVGText(g, "960", "540", "You've completed all " + GCN.questions.length + "!", {
         "font-size": "34", "text-anchor": "middle", fill: "#555555"
     });
 
@@ -780,9 +792,10 @@ function handleSubmit() {
     if (GCN.typedAnswer.trim() === "") return; // nothing typed
 
     var typed = GCN.typedAnswer.trim().toLowerCase();
-    var correct = GCN.questions[GCN.currentIndex].noun.toLowerCase();
+    var correctStr = GCN.questions[GCN.currentIndex].noun.toLowerCase();
+    var correctOptions = correctStr.split(',').map(function (s) { return s.trim(); });
 
-    if (typed === correct) {
+    if (correctOptions.indexOf(typed) !== -1) {
         handleCorrectAnswer();
     } else {
         handleWrongAnswer();
@@ -989,7 +1002,13 @@ function loadQuestion(index) {
     hideFeedback("excellent");
     hideFeedback("tryagain");
     hideEl(els.confetti);
+
+    /* — Hide animal image and wipe source instantly to fix flash — */
     hideEl(els.animalImage);
+    if (els.animalImage) {
+        els.animalImage.setAttribute("href", "");
+        els.animalImage.setAttributeNS("http://www.w3.org/1999/xlink", "href", "");
+    }
 
     /* — Reset card question — */
     updateCardQuestion(false);
@@ -1019,16 +1038,35 @@ function loadQuestion(index) {
  */
 function updateCardQuestion(showFull) {
     var q = GCN.questions[GCN.currentIndex];
-    var noun = showFull ? q.noun : "______";
+    var noun = "______";
+
+    if (showFull) {
+        var typed = GCN.typedAnswer.trim().toLowerCase();
+        var options = q.noun.split(',').map(function (s) { return s.trim(); });
+        var lowerOptions = options.map(function (s) { return s.toLowerCase(); });
+        var matchIdx = lowerOptions.indexOf(typed);
+
+        if (matchIdx !== -1) {
+            // They typed a correct option
+            noun = options[matchIdx];
+        } else {
+            // They clicked "Show Answer"
+            noun = options.join(" / ");
+        }
+    }
+
     var newText = noun + " of " + q.animal;
 
     var el = GCN.els.questionText;
     if (!el) return;
 
-    /* Write text directly onto the <text> element.
-       No <tspan> child — x/y/text-anchor live on the element itself
-       so they cannot be silently dropped by the browser. */
-    el.textContent = newText;
+    /* Write rich text directly onto the <text> element.
+       The noun is bolded, the rest is normal weight. */
+    var html = '<tspan font-weight="bold">' + noun + '</tspan><tspan font-weight="normal"> of ' + q.animal + '</tspan>';
+
+    // Fallback to textContent if innerHTML doesn't work well in old SVGs,
+    // but innerHTML is robust for adding internal tspans in modern browsers.
+    el.innerHTML = html;
 }
 
 
@@ -1072,7 +1110,7 @@ function setQuestionTextPosition(belowImage) {
     /* ── Vertical: centred in card OR below the image ──────────── */
     if (belowImage) {
         var imgEl = GCN.els.animalImage;
-        var imgY      = imgEl ? parseFloat(imgEl.getAttribute("y"))      || 0 : 0;
+        var imgY = imgEl ? parseFloat(imgEl.getAttribute("y")) || 0 : 0;
         var imgHeight = imgEl ? parseFloat(imgEl.getAttribute("height")) || 0 : 0;
         el.setAttribute("y", String(imgY + imgHeight + IMG_TEXT_GAP));
     } else {

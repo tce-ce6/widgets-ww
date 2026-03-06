@@ -68,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const onSwitchAns = document.getElementById("Group_6091");
     const countText = document.querySelector("#_0_7 tspan");
 
+    // Modal Background Tints
+    const showAnswerTint = document.getElementById("for-show-answer");
+    const insightsTint = document.getElementById("for-insights-answer");
+
     // Metal Active Selected Label Text
     const DropdownSelectionText = document.querySelector("#Copper_Cu_ tspan");
 
@@ -90,6 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hide default items
     setVisibility(insightsLayer, false);
     setVisibility(showAnswerLayer, false);
+    setVisibility(showAnswerTint, false);
+    setVisibility(insightsTint, false);
     setVisibility(dropdownBase, false);
     setVisibility(hilight, false);
     setVisibility(dropDownGroup, false);
@@ -292,10 +298,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Lottie positioning over the beaker Area
     // Append currentContainer BEFORE the battery switch but AFTER the wire (z-indexing)
-    const currentContainer = createForeignObject("1111", "250", "430", "260", document.getElementById("Group_624"), "Group_595");
+    const currentContainer = createForeignObject("1133", "238", "430", "260", document.getElementById("Group_624"), "Group_595");
     const metalContainer = createForeignObject("1190", "550", "240", "190", document.getElementById("Layer_2").parentNode, "drop_here");
 
-    const currentAnsCont = createForeignObject("726", "270", "430", "260", document.getElementById("Group_6241"), "Group_5951");
+    const currentAnsCont = createForeignObject("748", "262", "430", "260", document.getElementById("Group_6241"), "Group_5951");
     const metalAnsCont = createForeignObject("806", "572", "240", "190", showAnswerLayer, "Group_4141");
 
     function setupAnimations() {
@@ -354,6 +360,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (correctCount < 7) return;
         electrolysisStarted = true;
 
+
+        setBtnEnabled(startBtn, false);
+
         setVisibility(offSwitch, false);
         setVisibility(onSwitch, true);
 
@@ -396,14 +405,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show Answer Toggle
     showAnswerBtn.style.cursor = "pointer";
     showAnswerBtn.addEventListener("click", () => {
+        setVisibility(showAnswerTint, true);
         setVisibility(showAnswerLayer, true);
+
         // Play the answer layer animations immediately when opened
         setVisibility(onSwitchAns, true);
         transformElectrodes(true);
     });
 
+    // Close Show Answer
     document.getElementById("Group_1622")?.addEventListener("click", () => {
+        setVisibility(showAnswerTint, false);
         setVisibility(showAnswerLayer, false);
+
         // Hide answer layer state resets
         setVisibility(onSwitchAns, false);
         if (!electrolysisStarted) transformElectrodes(false);
@@ -412,11 +426,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Insights Modal
     insightBtn.style.cursor = "pointer";
     insightBtn.addEventListener("click", () => {
+        setVisibility(insightsTint, true);
         setVisibility(insightsLayer, true);
     });
 
+    // Close Insights Modal
     insightCloseBtn.style.cursor = "pointer";
     insightCloseBtn.addEventListener("click", () => {
+        setVisibility(insightsTint, false);
         setVisibility(insightsLayer, false);
     });
 

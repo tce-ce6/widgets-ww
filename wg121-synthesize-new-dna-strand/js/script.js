@@ -140,7 +140,7 @@ class Wg121 {
         cache.svgContainer = document.querySelector('.svg-container svg');
 
         // ── BUTTONS ─────────────────────────────────────────────
-        cache.btnInsights   = document.getElementById('Button_Insite');
+        cache.btnInsights = document.getElementById('Button_Insite');
         cache.btnShowAnswer = document.getElementById('Group 2');
 
         // ── SVG MODALS (already in the SVG, just shown/hidden) ───
@@ -150,7 +150,7 @@ class Wg121 {
         cache.svgSolutionClose = document.getElementById('Group_1622');
         // Group_1331 = green circle + × at top-right of insights-modal
         // Button_Insite_1 = secondary orange button inside insights-modal (also closes)
-        cache.svgInsightsClose  = document.getElementById('Group_1331');
+        cache.svgInsightsClose = document.getElementById('Group_1331');
         cache.svgInsightsClose2 = document.getElementById('Button_Insite_1');
         cache.btnNewTemplate = document.getElementById('Group 712');
         cache.btnReset = document.getElementById('Group 1621');
@@ -221,7 +221,7 @@ class Wg121 {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 30%;
+        bottom: 37%;
         padding: 14px 28px;
         border-radius: 10px;
         font-family: Roboto, sans-serif;
@@ -319,7 +319,7 @@ class Wg121 {
         svgContainerEl.appendChild(overlay);
 
         // Store overlay references
-        this.state.cache.overlay  = overlay;
+        this.state.cache.overlay = overlay;
         this.state.cache.feedback = feedback;
 
         // Hide the SVG modals by default; they are revealed on button click.
@@ -821,12 +821,12 @@ class Wg121 {
         const pairMap = { A: 'T', T: 'A', G: 'C', C: 'G' };
 
         const templateTextIds = [
-            'T-4-2',  'A-3-13', 'C-2-13', 'A-2',  'G-3-13', 'C-13',
-            'T-3',    'G-2',    'T-2-12', 'G-13', 'A-13',   'T-13',
+            'T-4-2', 'A-3-13', 'C-2-13', 'A-2', 'G-3-13', 'C-13',
+            'T-3', 'G-2', 'T-2-12', 'G-13', 'A-13', 'T-13',
         ];
         const compTextIds = [
-            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'T-7',  'C-3-2',
-            'C-4',   'C-5',   'G-5',   'A-5', 'A-6',  'A-7',
+            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'T-7', 'C-3-2',
+            'C-4', 'C-5', 'G-5', 'A-5', 'A-6', 'A-7',
         ];
 
         templateSequence.forEach((base, idx) => {
@@ -884,11 +884,11 @@ class Wg121 {
 
         // Recolor the sibling Rectangle_229 background rects
         const parentGroup = wrapper.parentElement;
-        const rect229     = parentGroup && parentGroup.querySelector('[id^="Rectangle_229"]');
+        const rect229 = parentGroup && parentGroup.querySelector('[id^="Rectangle_229"]');
         if (rect229) {
             const rects = rect229.querySelectorAll('rect');
-            const col   = colorMap[base];
-            if (rects[0] && col) rects[0].setAttribute('fill',   col.bg);
+            const col = colorMap[base];
+            if (rects[0] && col) rects[0].setAttribute('fill', col.bg);
             if (rects[1] && col) rects[1].setAttribute('stroke', col.stroke);
         }
     }
@@ -921,7 +921,7 @@ class Wg121 {
         const { backdrop } = this.state.cache;
         if (backdrop) backdrop.style.display = '';   // show dim backdrop
         modalEl.style.display = '';                  // show modal
-        this.state.isLocked   = true;
+        this.state.isLocked = true;
         this.state.activeModal = modalEl;
         this.updateUI();
     }
@@ -931,7 +931,7 @@ class Wg121 {
         modalEl.style.display = 'none';
         const { backdrop } = this.state.cache;
         if (backdrop) backdrop.style.display = 'none';
-        this.state.isLocked    = false;
+        this.state.isLocked = false;
         this.state.activeModal = null;
         this.updateUI();
     }
@@ -1091,7 +1091,7 @@ class Wg121 {
     // comp-row whitePath's getBBox (exact SVG user-space x).
     // ----------------------------------------------------------
     _renderHBonds() {
-        const { placedBases, templateSequence, isLocked } = this.state;
+        const { placedBases, templateSequence, activeModal } = this.state;
         const svg = this.state.cache.svgContainer;
         if (!svg) return;
 
@@ -1100,7 +1100,7 @@ class Wg121 {
 
         // When a modal is open, don't render H-bonds on top of it.
         // The removal above already clears any existing layer.
-        if (isLocked) return;
+        if (activeModal) return;
 
         const bondCount = { AT: 2, TA: 2, GC: 3, CG: 3 };
 
@@ -1148,7 +1148,7 @@ class Wg121 {
             //   3 bonds (G-C): three lines at cx-bondSpacing, cx, cx+bondSpacing
             const bondSpacing = 7;   // px between adjacent bond lines
             const lineY1 = TEMPLATE_BOTTOM + 3;   // slight inset below template
-            const lineY2 = COMP_TOP        - 3;   // slight inset above comp
+            const lineY2 = COMP_TOP - 3;   // slight inset above comp
 
             for (let b = 0; b < bonds; b++) {
                 const xOffset = (b - (bonds - 1) / 2) * bondSpacing;
