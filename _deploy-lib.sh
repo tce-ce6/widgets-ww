@@ -95,6 +95,27 @@ EOF
   ok "firebase.json and .firebaserc written."
 }
 
+# ── Validate listing-page script.js has the DB_URL declaration ────────────────
+# This catches the common merge-conflict regression where an old branch's
+# static WIDGET_DATA array replaces the Firebase-based script.js, leaving
+# fetch(DB_URL) with no DB_URL declaration and breaking the listing page.
+lib_validate_script_js() {
+  if ! grep -q 'const DB_URL' "$MAIN_SCRIPT_JS" 2>/dev/null; then
+    fail "widget-listing-b3/script/script.js is missing 'const DB_URL'.
+  This usually means your branch has an old version of the file from a merge conflict.
+  Fix it by running:
+    git checkout origin/deploy -- widget-listing-b3/script/script.js
+  Then re-run the deploy script."
+  fi
+  if grep -q 'const WIDGET_DATA' "$MAIN_SCRIPT_JS" 2>/dev/null; then
+    fail "widget-listing-b3/script/script.js still contains a static 'const WIDGET_DATA' array.
+  This version pre-dates the Firebase Realtime Database migration and must not be deployed.
+  Fix it by running:
+    git checkout origin/deploy -- widget-listing-b3/script/script.js
+  Then re-run the deploy script."
+  fi
+}
+
 # ── Build dist/ ────────────────────────────────────────────────────────────────
 # Usage: lib_build_dist [new_widget_folder]
 #   new_widget_folder — optional; the widget being deployed in this run.
