@@ -360,6 +360,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (correctCount < 7) return;
         electrolysisStarted = true;
 
+
+        setBtnEnabled(startBtn, false);
+
         setVisibility(offSwitch, false);
         setVisibility(onSwitch, true);
 
