@@ -1,0 +1,30 @@
+[debug] [2026-03-05T16:14:29.652Z] ----------------------------------------------------------------------
+[debug] [2026-03-05T16:14:29.660Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js database:update C:/Users/v_nitinch/AppData/Local/Programs/Git/widgets/wg120 --data {"name": "Area Of Different Shapes", "link": "https://tce-widgets.web.app/wg120-area-of-different-shapes/", "imagePath": "./assets/wg-120.png", "creators": "ni-120", "status": "in-review", "updatedAt": "2026-03-05 21:44"} --project widgets-c812e --force
+[debug] [2026-03-05T16:14:29.661Z] CLI Version:   15.8.0
+[debug] [2026-03-05T16:14:29.661Z] Platform:      win32
+[debug] [2026-03-05T16:14:29.661Z] Node Version:  v22.18.0
+[debug] [2026-03-05T16:14:29.661Z] Time:          Thu Mar 05 2026 21:44:29 GMT+0530 (India Standard Time)
+[debug] [2026-03-05T16:14:29.661Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-03-05T16:14:35.779Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-03-05T16:14:35.780Z] > authorizing via signed-in user (nitinchorge101@gmail.com)
+[debug] [2026-03-05T16:14:35.781Z] [iam] checking project widgets-c812e for permissions ["firebase.projects.get","firebasedatabase.instances.update"]
+[debug] [2026-03-05T16:14:35.785Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:35.785Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:35.788Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/widgets-c812e:testIamPermissions [none]
+[debug] [2026-03-05T16:14:35.788Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/widgets-c812e:testIamPermissions  x-goog-user-project=widgets-c812e
+[debug] [2026-03-05T16:14:35.788Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/widgets-c812e:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update"]}
+[debug] [2026-03-05T16:14:37.328Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/widgets-c812e:testIamPermissions 200
+[debug] [2026-03-05T16:14:37.329Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/widgets-c812e:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update"]}
+[debug] [2026-03-05T16:14:37.330Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:37.330Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:37.331Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/widgets-c812e [none]
+[debug] [2026-03-05T16:14:37.739Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/widgets-c812e 200
+[debug] [2026-03-05T16:14:37.739Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/widgets-c812e {"projectId":"widgets-c812e","projectNumber":"1031692946976","displayName":"widgets","name":"projects/widgets-c812e","resources":{"hostingSite":"widgets-c812e","realtimeDatabaseInstance":"widgets-c812e-default-rtdb"},"state":"ACTIVE","etag":"1_5f7cfc2e-1b47-4ccd-87c5-7f9b2bf4cc0f"}
+[debug] [2026-03-05T16:14:37.740Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:37.740Z] Checked if tokens are valid: true, expires at: 1772730754390
+[debug] [2026-03-05T16:14:37.740Z] >>> [apiv2][query] GET https://firebasedatabase.googleapis.com/v1beta/projects/widgets-c812e/locations/-/instances/widgets-c812e-default-rtdb [none]
+[debug] [2026-03-05T16:14:39.490Z] <<< [apiv2][status] GET https://firebasedatabase.googleapis.com/v1beta/projects/widgets-c812e/locations/-/instances/widgets-c812e-default-rtdb 200
+[debug] [2026-03-05T16:14:39.491Z] <<< [apiv2][body] GET https://firebasedatabase.googleapis.com/v1beta/projects/widgets-c812e/locations/-/instances/widgets-c812e-default-rtdb {"name":"projects/1031692946976/locations/us-central1/instances/widgets-c812e-default-rtdb","project":"projects/1031692946976","databaseUrl":"https://widgets-c812e-default-rtdb.firebaseio.com","type":"DEFAULT_DATABASE","state":"ACTIVE"}
+[error] 
+[error] Error: Path must begin with /
