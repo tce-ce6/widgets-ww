@@ -1,32 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const SCENARIOS = [
     {
-      id: "tab-legal_rallies",
-      iconId: "scenario-icon-legal_rallies",
-      title: "Political Rally in Public Ground",
-      question:
-        "A party books a government-owned ground for a rally. They paid ₹50,000 booking fee to local authority. Rally is 10 days before voting. No cash or gifts distributed. Is this allowed?",
-      correctAnswer: "ALLOWED",
-      feedbackCorrect:
-        "Legal booking of public space is allowed. Parties can hold rallies before silent period. Proper permission makes it legitimate.",
-      feedbackWrong:
-        "Paying fees makes this legal use. Public grounds can be booked for campaigns. No violation here.",
-    },
-    {
-      id: "tab-free_media",
-      iconId: "scenario-icon-free_media",
-      title: "Newspaper Advertisement",
-      question:
-        "A party publishes full-page newspaper ad. Ad lists their achievements and future plans. Contains party symbol and candidate photos. Published 1 week before voting. Is this allowed?",
-      correctAnswer: "ALLOWED",
-      feedbackCorrect:
-        "Political advertising in media is allowed. Parties can communicate their vision to voters. This is legitimate campaign method.",
-      feedbackWrong:
-        "Paid advertisements are democratic right. Voters need information about all parties. No violation in publishing policy ads.",
-    },
-    {
       id: "tab-policy_debate",
       iconId: "scenario-icon-policy_debate",
+      rectId: "Rectangle_309-3",
+      baseY: 427,
+      lockId: "Group_2046",
+      shieldPatchId: "Path_8894",
       title: "Using Government Vehicle",
       question:
         "A sitting Minister uses their official government car with pilot escort for an election campaign rally. The car belongs to the State Government. Is this allowed?",
@@ -39,6 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "tab-integrity",
       iconId: "scenario-icon-integrity",
+      rectId: "Rectangle_309-4",
+      baseY: 536,
+      lockId: "Group_2047",
+      shieldPatchId: "Path_8896",
       title: "Hate Speech",
       question:
         "A candidate gives a speech in a public meeting. They make highly offensive remarks about another religion and appeal to voters on religious grounds to get support. Is this allowed?",
@@ -51,6 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "tab-resources",
       iconId: "scenario-icon-resources",
+      rectId: "Rectangle_309-5",
+      baseY: 645,
+      lockId: "Group_2048",
+      shieldPatchId: "Path_8898",
       title: "Freebies & Gifts",
       question:
         "A party distributes 10,000 pressure cookers and sarees to households in a constituency. The items have the party symbol and candidate photo. Distributed 3 days before voting. Is this allowed?",
@@ -64,6 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "tab-freedom",
       iconId: "scenario-icon-freedom",
+      rectId: "Rectangle_309-6",
+      baseY: 754,
+      lockId: "Group_2050",
+      shieldPatchId: "Path_8900",
       title: "Campaign during Silent Period",
       question:
         "A group of party workers goes door-to-door just 12 hours before the start of polling, using loud megaphones and carrying banners. Is this allowed?",
@@ -76,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "tab-unity",
       iconId: "scenario-icon-unity",
+      rectId: "Rectangle_309-7",
+      baseY: 863,
+      lockId: "Group_2049",
+      shieldPatchId: "Path_8899",
       title: "Campaign in Religious Place",
       question:
         "A candidate holds an election meeting inside a temple/mosque/church. They urge the devotees to vote for them while the religious ceremony is ongoing. Is this allowed?",
@@ -85,7 +81,49 @@ document.addEventListener("DOMContentLoaded", () => {
       feedbackWrong:
         "Using places of worship for election campaigning is strictly forbidden under the Model Code of Conduct.",
     },
+    {
+      id: "tab-legal_rallies",
+      iconId: "scenario-icon-legal_rallies",
+      rectId: "Rectangle_309",
+      baseY: 209,
+      lockId: "Group_2044",
+      shieldPatchId: "Path_8897",
+      title: "Political Rally in Public Ground",
+      question:
+        "A party books a government-owned ground for a rally. They paid ₹50,000 booking fee to local authority. Rally is 10 days before voting. No cash or gifts distributed. Is this allowed?",
+      correctAnswer: "ALLOWED",
+      feedbackCorrect:
+        "Legal booking of public space is allowed. Parties can hold rallies before silent period. Proper permission makes it legitimate.",
+      feedbackWrong:
+        "Paying fees makes this legal use. Public grounds can be booked for campaigns. No violation here.",
+    },
+    {
+      id: "tab-free_media",
+      iconId: "scenario-icon-free_media",
+      rectId: "Rectangle_309-2",
+      baseY: 318,
+      lockId: "Group_2045",
+      shieldPatchId: "Path_8895",
+      title: "Newspaper Advertisement",
+      question:
+        "A party publishes full-page newspaper ad. Ad lists their achievements and future plans. Contains party symbol and candidate photos. Published 1 week before voting. Is this allowed?",
+      correctAnswer: "ALLOWED",
+      feedbackCorrect:
+        "Political advertising in media is allowed. Parties can communicate their vision to voters. This is legitimate campaign method.",
+      feedbackWrong:
+        "Paid advertisements are democratic right. Voters need information about all parties. No violation in publishing policy ads.",
+    },
   ];
+
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Shuffle scenarios at launch
+  shuffleArray(SCENARIOS);
 
   let currentScenarioIndex = -1;
   let starsCount = 0;
@@ -101,26 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "Path_8346-5", // Star 7 (Right-most)
   ];
 
-  const LOCK_IDS = [
-    "Group_2044",
-    "Group_2045",
-    "Group_2046",
-    "Group_2047",
-    "Group_2048",
-    "Group_2050",
-    "Group_2049",
-  ];
-
-  const SHIELD_PATCH_IDS = [
-    "Path_8897",
-    "Path_8895",
-    "Path_8894",
-    "Path_8896",
-    "Path_8898",
-    "Path_8900",
-    "Path_8899",
-  ];
-
   const REWARD_STAR_IDS = [
     "star_1",
     "star_2",
@@ -132,7 +150,44 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let correctScenarios = new Set();
+  let incorrectScenarios = new Set();
   let confettiAnimation;
+
+  // Tab position mapping
+  const SLOT_Y_COORDINATES = [209, 318, 427, 536, 645, 754, 863];
+
+  function layoutTabs() {
+    SCENARIOS.forEach((scenario, index) => {
+      const tabGroup = document.getElementById(scenario.id);
+      if (tabGroup) {
+        const targetY = SLOT_Y_COORDINATES[index];
+        const deltaY = targetY - scenario.baseY;
+        tabGroup.setAttribute("transform", `translate(0, ${deltaY})`);
+      }
+    });
+  }
+
+  function updateTabStyles() {
+    SCENARIOS.forEach((scenario, index) => {
+      const rect = document.getElementById(scenario.id);
+      if (rect) {
+        if (correctScenarios.has(index) || incorrectScenarios.has(index)) {
+          //rect.setAttribute("class", "st630"); // Muted green-grey for completed
+          rect.setAttribute("opacity", "0.5");
+          rect.setAttribute("pointer-events", "none");
+        }
+        // else {
+        //   //rect.setAttribute("class", "st766"); // Original yellow for pending
+        //   rect.setAttribute("opacity", "1");
+        //   rect.setAttribute("pointer-events", "auto");
+        // }
+      }
+    });
+  }
+
+  // Call layout after shuffle
+  layoutTabs();
+  updateTabStyles();
 
   // Initialize Lottie Confetti
   const lottieWrapper = document.getElementById("lottie-wrapper");
@@ -157,13 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameElements = [
     "common_background",
     "star_panel",
-    "tab-unity",
-    "tab-freedom",
-    "tab-resources",
-    "tab-integrity",
     "tab-policy_debate",
-    "tab-free_media",
+    "tab-integrity",
+    "tab-resources",
+    "tab-freedom",
+    "tab-unity",
     "tab-legal_rallies",
+    "tab-free_media",
     "banner-democracy",
     "inside_button",
     "i_text_02",
@@ -350,6 +405,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // Track correct scenario
       correctScenarios.add(currentScenarioIndex);
 
+      // Hide lock and shield patch
+      const currentLock = document.getElementById(scenario.lockId);
+      const currentShieldPatch = document.getElementById(
+        scenario.shieldPatchId,
+      );
+      if (currentLock) currentLock.style.display = "none";
+      if (currentShieldPatch) currentShieldPatch.style.display = "none";
+      updateTabStyles();
+
       // Show reward star and sparkles
       const starParent = document.getElementById("star");
       const sparkles = document.getElementById("Group_2450");
@@ -369,6 +433,8 @@ document.addEventListener("DOMContentLoaded", () => {
         confettiAnimation.goToAndPlay(0, true);
       }
     } else {
+      incorrectScenarios.add(currentScenarioIndex);
+      updateTabStyles();
       updateSvgTextLines(
         "feedback-wrong-group",
         scenario.feedbackWrong,
