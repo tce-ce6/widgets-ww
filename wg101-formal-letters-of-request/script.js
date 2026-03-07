@@ -754,8 +754,10 @@ function resetLetterBoxesAndRetry() {
         box.classList.remove('completed', 'letter-box-highlight');
         box.querySelector('.filled-text')?.remove();
         const suggestion = box.querySelector('.suggestion-answer');
-        if (suggestion) {
-            suggestion.style.display = 'none';
+        const wrapper = box.querySelector('.suggestion-wrapper');
+        const displayBox = wrapper || suggestion;
+        if (displayBox) {
+            displayBox.style.display = 'none';
             // hideFeedback(suggestion);
         }
         box.style.height = "200px";
@@ -850,7 +852,8 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
         console.warn(`Missing .suggestion-answer inside #${boxId}`);
         return;
     }
-
+    const suggestionWrapper = mainBox.querySelector('.suggestion-wrapper');
+    const displayBox = suggestionWrapper || suggestionBox;
     const optionsData = state.activeLetter.sections[dataKey];
     if (!Array.isArray(optionsData)) return;
 
@@ -866,7 +869,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
 
             if (option.is_correct) {
                 // hideFeedback(suggestionBox);
-                suggestionBox.style.display = 'none';
+                displayBox.style.display = 'none';
 
                 let filled = mainBox.querySelector('.filled-text');
                 if (!filled) {
@@ -886,7 +889,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
                     proceedBtn.style.display = 'block';
                 }
             } else {
-                showFeedback(option.feedback || "Incorrect format. Try again!", suggestionBox);
+                showFeedback(option.feedback || "Incorrect format. Try again!", displayBox, optionDiv);
             }
         };
     });
@@ -901,7 +904,7 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
         }
 
         // hideFeedback(suggestionBox);
-        suggestionBox.style.display = 'block';
+        displayBox.style.display = 'block';
     };
 }
 
@@ -1137,21 +1140,27 @@ function formatIdText(id) {
     return id.replace('-blank', '').replace(/-/g, ' ').toUpperCase();
 }
 
-function showFeedback(msg, anchorEl) {
+function showFeedback(msg, anchorEl, optionDiv) {
     if (!anchorEl) return;
-    let feedbackEl = anchorEl.querySelector('.feedback-text');
-    if (!feedbackEl) {
-        feedbackEl = document.createElement('div');
-        feedbackEl.className = 'feedback-text';
-        anchorEl.appendChild(feedbackEl);
+
+    // Remove existing feedback texts so multiple don't stack
+    document.querySelectorAll('.feedback-text').forEach(el => el.remove());
+
+    // Remove blinking from all texts
+    document.querySelectorAll('.wrong-blink').forEach(el => el.classList.remove('wrong-blink'));
+    if (optionDiv) {
+        optionDiv.classList.add('wrong-blink');
     }
+
+    let feedbackEl = document.createElement('div');
+    feedbackEl.className = 'feedback-text';
+    anchorEl.appendChild(feedbackEl);
+
     feedbackEl.textContent = msg || 'Incorrect format. Try again!';
-    feedbackEl.classList.add('is-visible');
-    // const hide = () => {
-    //     feedbackEl.classList.remove('is-visible');
-    // };
-    // const t = setTimeout(hide, 5000);
-    // feedbackEl._hideTimeout = t;
+    // Slight timeout ensures CSS transition can trigger when class is added
+    setTimeout(() => {
+        feedbackEl.classList.add('is-visible');
+    }, 10);
 }
 
 function hideFeedback(anchorEl) {
@@ -1200,9 +1209,11 @@ function resetPracticeSession() {
 
         // Hide suggestions and feedback
         const suggestion = box.querySelector('.suggestion-answer');
-        if (suggestion) {
-            suggestion.style.display = 'none';
-            hideFeedback(suggestion);
+        const wrapper = box.querySelector('.suggestion-wrapper');
+        const displayBox = wrapper || suggestion;
+        if (displayBox) {
+            displayBox.style.display = 'none';
+            hideFeedback(displayBox);
         }
 
         box.style.height = "200px";
