@@ -10,13 +10,13 @@
  *  Stage 5  → EMPTY F2 Punnett shown → [Auto-fill F2 Punnett Square] → fills 16 cells
  *  Stage 6  → Genotypic & Phenotypic Ratio display (Next button hidden)
  *
- * Fixes applied (v4):
- *  1. F1 Punnett cell text hidden until Auto-fill F1 clicked
- *  2. All 4 F1 offspring in Stage 4 are draggable (any can fill either slot)
- *  3. Parents can be dropped into EITHER drop zone (not locked to specific side)
- *  4. Global "Next" button hidden during stages 2-6 (no overlap with stage buttons)
- *  5. F2 Auto-fill step: HTML overlay button + F2 cell IDs gated like F1
- *  6. Stage 6: Next4 button (stage5 base) hidden after ratios appear
+ * Fixes applied (v5):
+ *  1. F1 Punnett cell text hidden until Auto-fill F1 clicked.
+ *  2. All 4 F1 offspring in Stage 4 are draggable (any can fill either slot).
+ *  3. Parents can be dropped into EITHER drop zone.
+ *  4. Global "Next" button hidden during stages 2-5, completely hidden in Stage 6.
+ *  5. F2 Auto-fill step: SVG group button (Next5) integrated into Stage 5.
+ *  6. Reset buttons: "Reset" visible in Stages 1-5, "Reset All" visible only in Stage 6.
  */
 
 /* ─────────────────────────────────────────────
@@ -146,15 +146,17 @@ const UI = {
     btnAutoFillF1: null,  // Next2 — Auto-fill F1       (S3→S4)
     btnGenF2Gametes: null,// Next3 — Generate F2 Gametes (S4→S5)
     btnNextS5: null,      // Next4 — Next in stage5       (S5→S6)
+    btnAutoFillF2: null,  // Next5 — Auto-fill F2       (S5)
     btnResetAll: null,
     btnReset: null,
+
+    // Button containers (for visibility logic)
+    resetGroup: null,     // Group_31 (Reset)
+    resetAllGroup: null,  // Group_113 (Reset All)
 
     // Drop zone rects (.st235)
     s2Drops: [],          // 2 elements, Stage 2
     s4Drops: [],          // 2 elements, Stage 4
-
-    // HTML overlay button for Auto-fill F2 (not in SVG)
-    btnAutoFillF2Html: null,
 
     // Global buttons wrapper (contains Next + Reset)
     globalBtns: null,
@@ -198,7 +200,6 @@ function hideById(id) {
 window.addEventListener('DOMContentLoaded', () => {
     console.log('[WG48] DOMContentLoaded — init');
     cacheElements();
-    createAutoFillF2Button();
     setupEvents();
     resetWidget();
 });
@@ -231,8 +232,12 @@ function cacheElements() {
     UI.btnAutoFillF1 = document.getElementById('Next2');
     UI.btnGenF2Gametes = document.getElementById('Next3');
     UI.btnNextS5 = document.getElementById('Next4');
+    UI.btnAutoFillF2 = document.getElementById('Next5');
     UI.btnResetAll = document.getElementById('Reset_All');
     UI.btnReset = document.getElementById('Reset');
+
+    UI.resetGroup = document.getElementById('Group_31');
+    UI.resetAllGroup = document.getElementById('Group_113');
 
     // Drop zones
     if (UI.s2Base) UI.s2Drops = Array.from(UI.s2Base.querySelectorAll('.st235'));
@@ -244,45 +249,7 @@ function cacheElements() {
         'Next3:', !!UI.btnGenF2Gametes, 'Next4:', !!UI.btnNextS5);
 }
 
-/**
- * Create an HTML overlay button for "Auto-fill F2 Punnett Square"
- * positioned over the SVG canvas area. This does not exist in the SVG.
- */
-function createAutoFillF2Button() {
-    const btn = document.createElement('button');
-    btn.id = 'autoFillF2HtmlBtn';
-    btn.textContent = 'Auto-fill F2 Punnett Square';
-    btn.style.cssText = [
-        'display:none',
-        'position:absolute',
-        'left:50%',
-        'transform:translateX(-50%)',
-        'bottom:84px',       // matches stage button vertical position
-        'background:linear-gradient(135deg,#0077cc,#00aaff)',
-        'color:#fff',
-        'font-family:inherit',
-        'font-size:16px',
-        'font-weight:600',
-        'padding:14px 36px',
-        'border:none',
-        'border-radius:40px',
-        'box-shadow:0 4px 16px rgba(0,0,0,.25)',
-        'cursor:pointer',
-        'z-index:200',
-        'white-space:nowrap',
-        'pointer-events:auto',
-    ].join(';');
-    btn.addEventListener('pointerup', onAutoFillF2Click);
-    // Append to the widget wrapper (parent of the svg container)
-    const wrapper = document.querySelector('.widget-wrapper') ||
-        document.querySelector('#widget') ||
-        document.querySelector('body > div') ||
-        document.body;
-    wrapper.style.position = wrapper.style.position || 'relative';
-    wrapper.appendChild(btn);
-    UI.btnAutoFillF2Html = btn;
-    console.log('[WG48] Auto-fill F2 HTML button created');
-}
+
 
 /* ─────────────────────────────────────────────
    EVENT SETUP
@@ -330,6 +297,9 @@ function setupEvents() {
         console.log('[WG48] Next (S5) → Stage 6 ratios');
         goToStage6();
     });
+
+    // Auto-fill F2
+    _btnOn(UI.btnAutoFillF2, onAutoFillF2Click);
 
     _btnOn(UI.btnReset, resetWidget);
     _btnOn(UI.btnResetAll, resetWidget);
@@ -404,8 +374,8 @@ function hideAllStages() {
     UI.s3Gametes.forEach(hide);
     UI.s4Cards.forEach(hide);
     UI.s5Gametes.forEach(hide);
-    UI.s6Ratios.forEach(hide);
-    hide(UI.btnAutoFillF2Html);
+    hide(UI.s6Ratios[WidgetState.combinationId - 1]);
+    hide(document.getElementById('Group_5945')); // Ensure Auto-fill F2 group is hidden
 }
 
 function goToStage2() {
@@ -488,13 +458,12 @@ function goToStage5() {
     _hideF2Cells();
 
     // Hide the stage5 "Next" button until after auto-fill
-    disableBtn(UI.btnNextS5);
+    // Next4 is inside Group_5944
+    hideById('Group_5944');
 
-    // Show HTML auto-fill F2 button
-    if (UI.btnAutoFillF2Html) {
-        UI.btnAutoFillF2Html.style.display = 'block';
-        UI.btnAutoFillF2Html.disabled = false;
-    }
+    // Show SVG auto-fill F2 button (Group_5945)
+    showById('Group_5945');
+    enableBtn(UI.btnAutoFillF2);
 }
 
 function _hideF2Cells() {
@@ -516,8 +485,9 @@ function onAutoFillF2Click() {
     console.log('[WG48] Auto-fill F2 clicked → reveal F2 cells → enable Next');
     _revealF2Cells();
     // Hide this button after clicking
-    if (UI.btnAutoFillF2Html) UI.btnAutoFillF2Html.style.display = 'none';
+    hideById('Group_5945');
     // Enable Stage 5 Next button to proceed to Stage 6
+    showById('Group_5944');
     enableBtn(UI.btnNextS5);
 }
 
@@ -528,8 +498,14 @@ function goToStage6() {
     // Reveal ratio panel (keep F2 base + gametes visible from stage 5)
     show(UI.s6Ratios[WidgetState.combinationId - 1]);
 
-    // FIX: Hide the Next4 button — no "next" step after final ratios
+    // COMPLETELY HIDE ALL NEXT BUTTONS on last screen
+    hide(UI.btnNext);
+    hideById('Group_5944'); // Next4
     hide(UI.btnNextS5);
+
+    // Swap Reset with Reset All on final screen
+    hide(UI.resetGroup);
+    show(UI.resetAllGroup);
 }
 
 /* ─────────────────────────────────────────────
@@ -708,8 +684,11 @@ function resetWidget() {
     show(UI.btnNext);
 
     // Show Reset/ResetAll; disable stage-specific action buttons
+    // Show Reset; hide Reset All by default
+    show(UI.resetGroup);
+    hide(UI.resetAllGroup);
+
     disableBtn(UI.btnGenGametes);
     disableBtn(UI.btnGenF2Gametes);
     disableBtn(UI.btnNextS5);
-    if (UI.btnAutoFillF2Html) UI.btnAutoFillF2Html.style.display = 'none';
 }
