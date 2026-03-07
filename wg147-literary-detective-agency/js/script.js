@@ -112,13 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stageWinnerLottieAnimation) {
       stageWinnerLottieAnimation.destroy();
     }
-    step3.style.display = 'none';
-    mainBtn.style.display = 'none';
 
     // Check if all cases are completed
     const remainingCases = document.querySelectorAll('.case-wrapper li:not(.completed)');
     if (remainingCases.length === 0) {
       document.getElementById('restart-wrapper').style.display = 'block';
+      document.querySelector('body').classList.add('modal-open');
+      mainBtn.style.display = 'none';
       const restartLottieContainer = document.getElementById('restart-lottie');
       if (restartLottieAnimation) {
         restartLottieAnimation.destroy();
@@ -131,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
         path: './lottie/over.json'
       });
     } else {
+      step3.style.display = 'none';
+      mainBtn.style.display = 'none';
       step2.style.display = 'block';
     }
   });
@@ -139,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (restartBtn) {
     restartBtn.addEventListener('click', () => {
       document.getElementById('restart-wrapper').style.display = 'none';
+      document.querySelector('body').classList.remove('modal-open');
       if (restartLottieAnimation) {
          restartLottieAnimation.destroy();
       }
@@ -154,6 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
+      currentCaseIndex = 0;
+      currentPassageIndex = 0;
+      step3.style.display = 'none';
       step2.style.display = 'block';
       mainBtn.style.display = 'none';
     });
@@ -169,9 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function showStageWinnerPopup() {
-    document.getElementById('stage-winner-popup').style.display = 'block';
-    document.querySelector('body').classList.add('modal-open');
-
     const completedCase = document.querySelector(`.case-wrapper li[data-case="${currentCaseIndex + 1}"]`);
     if (completedCase) {
       completedCase.classList.add('completed');
@@ -181,6 +184,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (caseSvgElement) {
       caseSvgElement.setAttribute('opacity', '1');
     }
+
+    // Check if all cases are completed
+    const remainingCases = document.querySelectorAll('.case-wrapper li:not(.completed)');
+    if (remainingCases.length === 0) {
+      document.getElementById('restart-wrapper').style.display = 'block';
+      document.querySelector('body').classList.add('modal-open');
+      mainBtn.style.display = 'none';
+      const restartLottieContainer = document.getElementById('restart-lottie');
+      if (restartLottieAnimation) {
+        restartLottieAnimation.destroy();
+      }
+      restartLottieAnimation = lottie.loadAnimation({
+        container: restartLottieContainer,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: './lottie/over.json'
+      });
+      return;
+    }
+
+    document.getElementById('stage-winner-popup').style.display = 'block';
+    document.querySelector('body').classList.add('modal-open');
 
     const lottieStage = document.getElementById('lottie-stage');
     if (stageWinnerLottieAnimation) {

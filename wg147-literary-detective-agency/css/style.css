@@ -370,7 +370,27 @@ body.modal-open .flexContainer {
   width: 500px;
 }
 
-#next-case {
+.lottie-stage.reset-stage {
+  height: 800px;
+  width: 800px;
+}
+
+.message-wrapper-popup.reset-wrapper::after {
+  content: "";
+  background-image: url("../assets/reset-stage.svg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 500px;
+  width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+#next-case,
+#restart-btn {
   font-size: 30px;
   background-color: rgb(28, 125, 255);
   color: #fff;
