@@ -231,6 +231,7 @@ svg {
 .suggestion-answer .text1,
 .suggestion-answer .text2,
 .suggestion-answer .text3 {
+  position: relative;
   background-color: #fff;
   padding: 20px 30px;
   margin-bottom: 15px;
@@ -283,27 +284,6 @@ svg {
   }
 }
 
-/* .feedback-text {
-  display: none;
-  position: absolute;
-  left: 100%;
-  margin-left: -40px;
-  top: 50%;
-  transform: translateY(-50%);
-  min-width: 280px;
-  max-width: 380px;
-  padding: 16px 22px;
-  background: #ffa8a8;
-  border: 3px solid #aa0000;
-  border-radius: 12px;
-  font-size: 22px;
-  line-height: 1.4;
-  color: black;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 20;
-  pointer-events: none;
-} */
-
 .feedback-text {
   display: none;
   position: absolute;
@@ -336,23 +316,27 @@ svg {
   padding: 18px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 26px;
   display: none;
   position: relative;
-  width: 320px;
+  width: auto;
 }
 
 .svg-popup .close-btn {
   position: absolute;
-  top: 6px;
-  right: 8px;
+  top: -27px;
+  right: -27px;
   background: #3aa655;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 52px;
+  height: 52px;
   cursor: pointer;
+  font-size: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .close-btn {
