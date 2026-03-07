@@ -74,6 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function initApp() {
+    console.log("initApp() - Initializing Widget 48 Dihybrid Cross");
     cacheUIElements();
     setupEventListeners();
     resetWidget();
@@ -222,13 +223,14 @@ function handleTraitSelect(idx) {
     if (selectedIdx !== -1) {
         // Deselect
         WidgetState.selectedTraits.splice(selectedIdx, 1);
+        console.log(`handleTraitSelect() - Deselected trait index ${idx}. Current selection: `, WidgetState.selectedTraits);
     } else {
         // Select
         if (WidgetState.selectedTraits.length < 2) {
             WidgetState.selectedTraits.push(idx);
+            console.log(`handleTraitSelect() - Selected trait index ${idx}. Current selection: `, WidgetState.selectedTraits);
         } else {
-            // Replace the second trait or enforce max 2
-            // Often widgets just prevent a 3rd selection
+            console.log(`handleTraitSelect() - Maximum 2 traits reached. Cannot select index ${idx}.`);
             return;
         }
     }
@@ -256,8 +258,10 @@ function updateTraitSelectionUI() {
 }
 
 function handleNextClick() {
+    console.log("handleNextClick() - Triggered. Current traits:", WidgetState.selectedTraits);
     if (WidgetState.stage === 1 && WidgetState.selectedTraits.length === 2) {
         WidgetState.combinationId = getCombinationId(WidgetState.selectedTraits[0], WidgetState.selectedTraits[1]);
+        console.log("Combination ID matched:", WidgetState.combinationId);
         goToStage2();
     }
 }
@@ -267,7 +271,10 @@ function hideElement(el) {
 }
 
 function showElement(el) {
-    if (el) el.style.display = '';
+    if (el) {
+        el.style.display = 'block';
+        el.classList.remove('st656'); // Fix for the removed svg BG hiding elements natively
+    }
 }
 
 function makeDraggable(el, dropTargetId, callbackName) {
@@ -454,7 +461,9 @@ function snapToZone(dragEl, dropEl) {
 }
 
 function checkS2Completion() {
+    console.log(`checkS2Completion() - P1: ${WidgetState.s2.p1Dropped}, P2: ${WidgetState.s2.p2Dropped}`);
     if (WidgetState.s2.p1Dropped && WidgetState.s2.p2Dropped && UI.btnGenGametes) {
+        console.log("Stage 2 drag constraints met, enabling Generate Gametes");
         UI.btnGenGametes.style.cursor = 'pointer';
         UI.btnGenGametes.style.opacity = '1';
         UI.btnGenGametes.classList.remove('disabled');
@@ -462,7 +471,9 @@ function checkS2Completion() {
 }
 
 function checkS4Completion() {
+    console.log(`checkS4Completion() - F1_1: ${WidgetState.s4.f1_1Dropped}, F1_2: ${WidgetState.s4.f1_2Dropped}`);
     if (WidgetState.s4.f1_1Dropped && WidgetState.s4.f1_2Dropped && UI.btnGenF2Gametes) {
+        console.log("Stage 4 drag constraints met, enabling Generate F2 Gametes");
         UI.btnGenF2Gametes.style.cursor = 'pointer';
         UI.btnGenF2Gametes.style.opacity = '1';
         UI.btnGenF2Gametes.classList.remove('disabled');
@@ -472,6 +483,7 @@ function checkS4Completion() {
 /* --------------- STAGE MANAGEMENT --------------- */
 
 function goToStage2() {
+    console.log("goToStage2() - Transitioning to Stage 2");
     WidgetState.stage = 2;
     hideAllStages();
     hideElement(UI.btnNext);
@@ -489,6 +501,7 @@ function goToStage2() {
 }
 
 function goToStage3() {
+    console.log("goToStage3() - Transitioning to Stage 3");
     WidgetState.stage = 3;
     hideAllStages();
 
@@ -501,6 +514,7 @@ function goToStage3() {
 }
 
 function goToStage4() {
+    console.log("goToStage4() - Transitioning to Stage 4");
     WidgetState.stage = 4;
     hideAllStages();
 
@@ -517,6 +531,7 @@ function goToStage4() {
 }
 
 function goToStage5() {
+    console.log("goToStage5() - Transitioning to Stage 5");
     WidgetState.stage = 5;
     hideAllStages();
 
@@ -546,6 +561,7 @@ function hideAllStages() {
 }
 
 function resetWidget() {
+    console.log("resetWidget() - Returning to Stage 1 Defaults");
     WidgetState.stage = 1;
     WidgetState.selectedTraits = [];
     WidgetState.combinationId = null;
