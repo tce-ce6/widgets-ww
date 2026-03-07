@@ -210,3 +210,29 @@
 #position-3.active #Vector_6 {
   fill: #02FFFF !important;
 }
+
+/* Blink animation for New Game button */
+@keyframes blinkButton {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+#btn-new-game.blink {
+  animation: blinkButton 1s ease-in-out infinite;
+}
+
+/* Plane highlight pulse animation */
+@keyframes planePulse {
+  0%, 100% { 
+    filter: drop-shadow(0 0 5px #00DDFF);
+    transform: scale(1);
+  }
+  50% { 
+    filter: drop-shadow(0 0 10px #00DDFF);
+    transform: scale(1.005);
+  }
+}
+
+.plane-highlight {
+  animation: planePulse 2s ease-in-out infinite;
+}
