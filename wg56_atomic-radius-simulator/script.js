@@ -37,14 +37,14 @@ function setupCounter({
     const getMoleculePosition = (index) => {
         const base = OFFSET_PATTERN[index % OFFSET_PATTERN.length];
         const layer = Math.floor(index / OFFSET_PATTERN.length);
-      
+
         return {
-          x: base.x * OFFSET_STEP * (layer + 1),
-          y: base.y * OFFSET_STEP * (layer + 1),
-          z: index
+            x: base.x * OFFSET_STEP * (layer + 1),
+            y: base.y * OFFSET_STEP * (layer + 1),
+            z: index
         };
-      };
-      
+    };
+
 
     const renderImages = () => {
         container.innerHTML = '';
@@ -72,8 +72,8 @@ function setupCounter({
 
                 if (!positions[i]) {
                     positions[i] = getMoleculePosition(i);
-                  }
-                  
+                }
+
 
                 const img = document.createElement('img');
                 img.src = activeImgSrc;
@@ -94,6 +94,14 @@ function setupCounter({
 
         leftElectron.setAttribute('x', initialLE + value * 70);
         rightElectron.setAttribute('x', initialRE - value * 70);
+
+        if (value > 0) {
+            leftElectron.parentElement.classList.add("rotating-electron");
+            rightElectron.parentElement.classList.add("rotating-electron");
+        } else {
+            leftElectron.parentElement.classList.remove("rotating-electron");
+            rightElectron.parentElement.classList.remove("rotating-electron");
+        }
 
         lowerBtn.style.opacity = value > 0 ? "1" : "0.3";
         lowerBtn.style.pointerEvents = value > 0 ? "auto" : "none";
