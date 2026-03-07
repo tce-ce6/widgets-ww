@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 574.63 274.49">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #8571b7;
+      }
+
+      .st1, .st2 {
+        isolation: isolate;
+      }
+
+      .st3 {
+        fill: #3d2e7b;
+      }
+
+      .st4 {
+        stroke: #3d2e7b;
+      }
+
+      .st4, .st5 {
+        fill: none;
+      }
+
+      .st6 {
+        fill: #ede4ff;
+      }
+
+      .st2 {
+        font-family: Roboto-Medium, Roboto;
+        font-size: 32px;
+        font-weight: 500;
+      }
+
+      .st7 {
+        fill: #c0a8ff;
+      }
+
+      .st5 {
+        stroke: #707070;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_115" class="st3" x="13.31" y="10.67" width="551" height="256" rx="18" ry="18"/>
+  <g id="Rectangle_106">
+    <rect class="st0" x="39.31" y="27.67" width="167" height="70"/>
+    <rect class="st4" x="39.81" y="28.17" width="166" height="69"/>
+  </g>
+  <g id="Path_848">
+    <path class="st7" d="M205.81,167.17H39.81v-69h166v69Z"/>
+    <path class="st3" d="M40.31,98.67v68h165v-68H40.31M39.31,97.67h167v70H39.31v-70Z"/>
+  </g>
+  <g id="Path_849">
+    <path class="st7" d="M205.81,237.17H39.81v-69h166v69Z"/>
+    <path class="st3" d="M40.31,168.67v68h165v-68H40.31M39.31,167.67h167v70H39.31v-70Z"/>
+  </g>
+  <g id="Rectangle_109">
+    <rect class="st7" x="206.31" y="27.67" width="167" height="70"/>
+    <rect class="st4" x="206.81" y="28.17" width="166" height="69"/>
+  </g>
+  <g id="Rectangle_110">
+    <rect class="st6" x="206.31" y="97.67" width="167" height="70"/>
+    <rect class="st5" x="206.81" y="98.17" width="166" height="69"/>
+  </g>
+  <g id="Rectangle_111">
+    <rect class="st6" x="206.31" y="167.67" width="167" height="70"/>
+    <rect class="st4" x="206.81" y="168.17" width="166" height="69"/>
+  </g>
+  <g id="Rectangle_112">
+    <rect class="st7" x="371.31" y="27.67" width="167" height="70"/>
+    <rect class="st4" x="371.81" y="28.17" width="166" height="69"/>
+  </g>
+  <g id="Rectangle_113">
+    <rect class="st6" x="371.31" y="97.67" width="167" height="70"/>
+    <rect class="st4" x="371.81" y="98.17" width="166" height="69"/>
+  </g>
+  <g id="Rectangle_114">
+    <rect class="st6" x="371.31" y="167.67" width="167" height="70"/>
+    <rect class="st4" x="371.81" y="168.17" width="166" height="69"/>
+  </g>
+  <g id="R" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(279.83 75.67)"><tspan x="0" y="0">R</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="r-2" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(454.81 75.67) scale(.5 1)"><tspan x="0" y="0">r</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="R-3" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(112.83 145.67)"><tspan x="0" y="0">R</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="r-4" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(117.19 215.67)"><tspan x="0" y="0">r</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="RR-5" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(269.84 145.67)"><tspan x="0" y="0">RR</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Rr-62" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(439.2 145.67)"><tspan x="0" y="0">Rr</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Rr-7" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(274.2 215.67)"><tspan x="0" y="0">Rr</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="rr-8" class="st1">
+    <g class="st1">
+      <g class="st1">
+        <text class="st2" transform="translate(443.56 215.67)"><tspan x="0" y="0">rr</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
