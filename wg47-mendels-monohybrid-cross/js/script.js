@@ -166,29 +166,51 @@ function selectTrait(index, element) {
     WidgetState.selectedTraitIndex = index;
 
     if (UI.traitSelectionHighlight) {
-        showElement(UI.traitSelectionHighlight);
+        hideElement(UI.traitSelectionHighlight);
+    }
 
-        // Hide inline text of the highlight layer as it's hardcoded to 'Seed Shape'
-        const textNode = UI.traitSelectionHighlight.querySelector('text');
-        if (textNode) hideElement(textNode);
+    // Reset styles for all trait groups
+    UI.traitGroups.forEach(groupEl => {
+        if (!groupEl) return;
 
-        // Overlay highlight bounding box matching the clicked trait
-        const highlightBox = UI.traitSelectionHighlight.querySelector('rect');
-
-        // The clickable target is often an internal box
-        let targetBox = null;
-        if (element.querySelector('rect')) {
-            targetBox = element.querySelector('rect').getBBox();
-        } else {
-            targetBox = element.getBBox();
+        // Reset base backdrop
+        const baseBox = groupEl.querySelector('rect[id^="box_x5F_base"]');
+        if (baseBox) {
+            baseBox.style.fill = '';
+            baseBox.style.stroke = '';
+            baseBox.style.strokeWidth = '';
         }
 
-        if (highlightBox && targetBox) {
-            highlightBox.setAttribute('x', targetBox.x);
-            highlightBox.setAttribute('y', targetBox.y);
-            highlightBox.setAttribute('width', targetBox.width);
-            highlightBox.setAttribute('height', targetBox.height);
+        // Reset inner card elements dynamically
+        const innerGroups = Array.from(groupEl.querySelectorAll('g[id^="box_x5F_"]'));
+        innerGroups.forEach(box => {
+            const rects = box.querySelectorAll('rect');
+            if (rects.length >= 2) {
+                rects[0].style.fill = '';
+                rects[1].style.stroke = '';
+                rects[1].style.strokeWidth = '';
+            }
+        });
+    });
+
+    // Apply the active state highlight visually to the selected SVG DOM structures
+    if (element) {
+        const baseBox = element.querySelector('rect[id^="box_x5F_base"]');
+        if (baseBox) {
+            baseBox.style.fill = '#e6ffca';
+            baseBox.style.stroke = '#00ae06';
+            baseBox.style.strokeWidth = '4px';
         }
+
+        const innerGroups = Array.from(element.querySelectorAll('g[id^="box_x5F_"]'));
+        innerGroups.forEach(box => {
+            const rects = box.querySelectorAll('rect');
+            if (rects.length >= 2) {
+                rects[0].style.fill = '#ffffff';
+                rects[1].style.stroke = '#00ae06';
+                rects[1].style.strokeWidth = '4px';
+            }
+        });
     }
 
     // Once a trait is selected, allow progressing
@@ -516,15 +538,12 @@ function checkCollision(element, targetArea) {
     const b1 = element.getBoundingClientRect();
     const b2 = targetArea.getBoundingClientRect();
 
-    // Test if center of dragged card is within the drop zone target
-    const cx = b1.left + (b1.width / 2);
-    const cy = b1.top + (b1.height / 2);
-
-    return (
-        cx > b2.left &&
-        cx < b2.right &&
-        cy > b2.top &&
-        cy < b2.bottom
+    // The drop should be accepted even if any part of the dragged object touches the drop area
+    return !(
+        b1.right < b2.left ||
+        b1.left > b2.right ||
+        b1.bottom < b2.top ||
+        b1.top > b2.bottom
     );
 }
 
