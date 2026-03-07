@@ -141,11 +141,13 @@ const UI = {
     s6Ratios: [],
 
     // SVG Buttons
-    btnNext: null,        // Stage 1 Next
+    btnNext: null,        // Stage 1 Next (Group_594)
     btnGenGametes: null,  // Next1 — Generate Gametes  (S2→S3)
-    btnAutoFillF1: null,  // Next2 — Auto-fill F1       (S3→S4)
+    btnAutoFillF1: null,  // Next2 — Auto-fill F1       (S3)
+    btnAutoFillF1Group: null, // Group_5942
+    btnNextS3: null,      // Group_5946 - Next in stage 3
     btnGenF2Gametes: null,// Next3 — Generate F2 Gametes (S4→S5)
-    btnNextS5: null,      // Next4 — Next in stage5       (S5→S6)
+    btnNextS5: null,      // Next4 — Next in stage 5       (S5→S6)
     btnAutoFillF2: null,  // Next5 — Auto-fill F2       (S5)
     btnResetAll: null,
     btnReset: null,
@@ -227,9 +229,11 @@ function cacheElements() {
         UI.s6Ratios.push(document.getElementById(`stage5_x5F_Genotypic_Ratio_x5F_${pad2}`));
     }
 
-    UI.btnNext = document.getElementById('Next');
+    UI.btnNext = document.getElementById('Group_594');
     UI.btnGenGametes = document.getElementById('Next1');
     UI.btnAutoFillF1 = document.getElementById('Next2');
+    UI.btnAutoFillF1Group = document.getElementById('Group_5942');
+    UI.btnNextS3 = document.getElementById('Group_5946');
     UI.btnGenF2Gametes = document.getElementById('Next3');
     UI.btnNextS5 = document.getElementById('Next4');
     UI.btnAutoFillF2 = document.getElementById('Next5');
@@ -275,10 +279,17 @@ function setupEvents() {
     // S3 → S4: Auto-fill F1 (GATED: only works in stage 3)
     _btnOn(UI.btnAutoFillF1, () => {
         if (WidgetState.stage !== 3) return;
-        console.log('[WG48] Auto-fill F1 clicked → reveal cells → Stage 4');
+        console.log('[WG48] Auto-fill F1 clicked → reveal cells → show Stage 3 Next');
         _revealF1Cells();
-        // Small delay so user sees the fill before advancing
-        setTimeout(() => goToStage4(), 600);
+        // Stay on screen, hide auto-fill, show Next
+        hide(UI.btnAutoFillF1Group);
+        show(UI.btnNextS3);
+    });
+
+    // Stage 3 Next → Stage 4
+    _btnOn(UI.btnNextS3, () => {
+        if (WidgetState.stage !== 3) return;
+        goToStage4();
     });
 
     // S4 → S5: Generate F2 Gametes
@@ -374,7 +385,8 @@ function hideAllStages() {
     UI.s3Gametes.forEach(hide);
     UI.s4Cards.forEach(hide);
     UI.s5Gametes.forEach(hide);
-    hide(UI.s6Ratios[WidgetState.combinationId - 1]);
+    UI.s6Ratios.forEach(hide);
+    hide(UI.btnNextS3);
     hide(document.getElementById('Group_5945')); // Ensure Auto-fill F2 group is hidden
 }
 
@@ -407,6 +419,9 @@ function goToStage3() {
 
     // Hide filled cells — user must click Auto-fill to see them
     _hideF1Cells();
+
+    show(UI.btnAutoFillF1Group);
+    hide(UI.btnNextS3);
 
     enableBtn(UI.btnAutoFillF1);
     disableBtn(UI.btnGenF2Gametes);
