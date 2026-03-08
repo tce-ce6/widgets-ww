@@ -1,56 +1,70 @@
-## Widget 154 – Implementation Prompt
+Widget 154 – Implementation Prompt
+Generic Instructions
 
-### Generic Instructions
+Develop an interactive SVG/HTML/JavaScript implementation based on the provided wireframe.
 
-Develop an interactive **SVG/HTML/JavaScript** implementation based on the provided wireframe.
+Do not modify the main SVG inside index.html. This SVG represents the final designer-approved layout and must remain unchanged.
 
-* Do **not modify** the existing UI layout or design inside the SVG in `index.html`, as this is the **final designer-approved layout**.
-* Maintain the **exact UI as per the wireframe** and implement all required interactions strictly by **showing and hiding SVG elements**.
-* Treat `index.html` as the **main boilerplate file** containing the SVG layout.
+No elements should be added, removed, repositioned, resized, or visually modified within the main SVG.
 
-### SVG Preparation (Important)
+Maintain the exact UI defined in the wireframe, and implement all interactions strictly by showing and hiding existing SVG elements.
+
+Treat index.html as the primary boilerplate file that contains the complete SVG layout.
+
+SVG Preparation (Important) but do not change the positions
 
 Before implementing the functionality:
 
-* **First analyze the SVG structure inside `index.html`.**
-* Make the **necessary structural adjustments to support the widget functionality**.
-* You may:
+Carefully analyze the SVG structure within index.html.
 
-  * **Rename IDs**
-  * **Rename or restructure SVG groups (`<g>` elements)**
-  * **Organize elements logically for scripting**
+Only perform minimal structural adjustments if absolutely necessary for scripting, such as:
+
+Renaming element IDs
+
+Renaming or logically grouping existing SVG <g> elements
+
+Organizing references for easier JavaScript control
 
 However:
 
-* **Do not change the visual layout, positions, sizes, or styling of any SVG elements.**
-* The **UI appearance must remain exactly the same as the designer-approved layout.**
+Do not change the visual layout, positions, sizes, styling, or structure of the main SVG.
 
-### JavaScript Structure
+Do not redraw, recreate, or replace the SVG.
 
-Create a separate JavaScript file: **`js/script.js`**
+The UI appearance must remain exactly the same as the designer-approved layout present in index.html.
 
-The script must:
+JavaScript Structure
 
-* Follow a **modular, function-based structure**
-* Store all **global variables inside a single global state object** (`WidgetState`) to track selections and current stage.
-* Pre-cache all recurring DOM elements in an initialization function to improve performance (`UI.buttons`, `UI.stages`, etc.).
-* Clearly define functions for stage transitions (`goToStage1()`, `goToStage2()`, etc.) that handle hiding/showing proper SVG groups.
-* Use **plain (vanilla) JavaScript only**, without external libraries
-* Include **clear and well-explained comments** throughout the code
+Create a separate JavaScript file named js/script.js.
 
-### Widget-Specific Instructions
+The script should:
 
-* **Target Folder**: `wg154-naming-words`
+Follow a modular, function-based architecture
 
-* **Adobe XD Wireframe**:
-  https://xd.adobe.com/view/1c2f4182-0a7c-419a-afb5-209f2c62babb-497c/
+Store all global variables within a single global state object (WidgetState) to manage selections and track the current stage
 
-* **Storyboard & References**:
-  Use the files provided in the `ref_en_en_1_wg154` directory to design the interaction flow and define the **functional logic**:
+Pre-cache frequently used DOM elements in an initialization function to improve performance (e.g., UI.buttons, UI.stages)
 
-  **for images get from** `ref_en_en_1_wg154/Asset/SVG/en_en_1_wg154_images.svg`
+Define clear stage transition functions (goToStage1(), goToStage2(), etc.) to control the visibility of the relevant SVG groups
 
-  * `ref_en_en_1_wg154/en_en_1_wg154.docx` – Storyboard presentation
+Use plain (vanilla) JavaScript only, without any external libraries
 
-* **Functional Reference**:
-  Use the xd file to fully understand the **expected logic, combinations, and behavior** required for the **Naming Words simulation**.
+Include clear, well-documented comments throughout the code for maintainability
+
+Widget-Specific Instructions
+
+Target Folder: @beautifulMention 
+
+Adobe XD Wireframe:
+https://xd.adobe.com/view/1c2f4182-0a7c-419a-afb5-209f2c62babb-497c/
+
+XD file: @beautifulMention 
+
+Storyboard & References:
+Use the files available in the @beautifulMention  directory to design the interaction flow and define the functional logic.
+
+Images Source: @beautifulMention 
+@beautifulMention  – Storyboard for logic and text and notes needed for presentation
+
+Functional Reference:
+Refer to the XD file to clearly understand the expected logic, combinations, and behavior required for the Naming Words simulation.
