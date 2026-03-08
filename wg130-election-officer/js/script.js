@@ -535,11 +535,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Unlock shield and lights
     attemptedScenarios.forEach((index) => {
-      const lock = document.getElementById(LOCK_IDS[index]);
+      const scenario = SCENARIOS[index];
+      const lock = document.getElementById(scenario.lockId);
       if (lock) lock.style.display = "none";
 
       if (correctScenarios.has(index)) {
-        const patch = document.getElementById(SHIELD_PATCH_IDS[index]);
+        const patch = document.getElementById(scenario.shieldPatchId);
         if (patch) patch.style.display = "none";
       }
     });
@@ -557,7 +558,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check for game completion
     if (attemptedScenarios.size === 7) {
       const completionBanner = document.getElementById("banner-cpmpletion");
-      if (completionBanner) completionBanner.style.display = "block";
+      if (completionBanner) {
+        completionBanner.style.display = "block";
+        darkPatch.style.display = "block";
+      }
     }
   }
 
@@ -611,6 +615,74 @@ document.addEventListener("DOMContentLoaded", () => {
     closeInsightsBtn.addEventListener("click", () => {
       insightsPanel.style.display = "none";
       darkPatch.style.display = "none";
+    });
+  }
+
+  const restartBtn = document.getElementById("restart_button_completion");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", () => {
+      // 1. Reset state
+      attemptedScenarios.clear();
+      correctScenarios.clear();
+      incorrectScenarios.clear();
+      attemptSequenceResults = [];
+      starsCount = 0;
+      currentScenarioIndex = -1;
+
+      // 2. Clear half-star clones
+      document
+        .querySelectorAll("[id^='half-star-clone-']")
+        .forEach((c) => c.remove());
+
+      // 3. Reset Star Band (gray out)
+      STAR_PATH_IDS.forEach((id) => {
+        const star = document.getElementById(id);
+        if (star) star.setAttribute("fill", "#316a7f");
+      });
+
+      // 4. Hide Reward Stars and sparkles
+      REWARD_STAR_IDS.forEach((id) => {
+        const star = document.getElementById(id);
+        if (star) star.style.display = "none";
+      });
+      const starParent = document.getElementById("star");
+      const sparkles = document.getElementById("Group_2450");
+      if (starParent) starParent.style.display = "none";
+      if (sparkles) sparkles.style.display = "none";
+
+      // 5. Hide Banner & Dark Patch
+      const completionBanner = document.getElementById("banner-cpmpletion");
+      if (completionBanner) completionBanner.style.display = "none";
+      if (darkPatch) darkPatch.style.display = "none";
+
+      // 6. Reset Scenario Tabs Styles, locks and patches
+      SCENARIOS.forEach((scenario) => {
+        const tab = document.getElementById(scenario.id);
+        if (tab) {
+          tab.style.opacity = "1";
+          tab.style.pointerEvents = "auto";
+        }
+        const lock = document.getElementById(scenario.lockId);
+        if (lock) lock.style.display = "block";
+        const patch = document.getElementById(scenario.shieldPatchId);
+        if (patch) patch.style.display = "block";
+      });
+
+      // 7. Reshuffle and relayout
+      shuffleArray(SCENARIOS);
+      layoutTabs();
+
+      // 8. Restore main UI visibility
+      iText02.style.display = "block";
+      fairElectionCircle.style.display = "block";
+      shield.style.display = "block";
+      itext03.style.display = "none";
+
+      // Also ensure tab panels are hidden
+      tabFullContainer.style.display = "none";
+      textPanel.style.display = "none";
+      allowedBtn.style.display = "none";
+      violationBtn.style.display = "none";
     });
   }
 });
