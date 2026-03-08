@@ -525,18 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (mapPromptTexts && mapPromptTexts.length >= 3) {
           mapPromptTexts[0].textContent = `Identify and Tap ${count} major `;
-
-          // Re-adjust exact translate coordinates to prevent overlap when text is long
-          if (texts.length >= 3) {
-            texts[0].setAttribute("transform", "translate(1120 120)"); // 'Identify...'
-            texts[1].setAttribute("transform", "translate(1260 120)"); // 'sugarcane'
-            texts[2].setAttribute("transform", "translate(1420 120)"); // 'cultivating states'
-
-            // Crop name might be long, shift right text further right based on length
-            const cropLengthFactor = crop.length * 6;
-            texts[2].setAttribute("transform", `translate(${1380 + cropLengthFactor} 120)`);
-          }
-
           mapPromptTexts[1].textContent = `${crop.toLowerCase()} `;
         }
       }

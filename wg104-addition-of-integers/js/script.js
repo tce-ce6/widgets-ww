@@ -128,8 +128,15 @@ class UIManager {
     this.selectedChip = null;
 
     // Number Line Config
-    this.zeroX = 897.78; // Center of zero tick (895.48 left-edge + 4.6/2 width)
-    this.stepSize = 69.13;
+    // Number Line Config — exact tick center X positions from SVG rect x + width/2
+    this.tickX = {
+      0: 897.78,
+      1: 955.29, 2: 1024.42, 3: 1093.56, 4: 1162.69, 5: 1231.82,
+      6: 1300.96, 7: 1370.09, 8: 1439.23, 9: 1508.36, 10: 1577.49,
+      '-1': 840.27, '-2': 771.13, '-3': 702.00, '-4': 632.87, '-5': 563.73,
+      '-6': 494.60, '-7': 425.46, '-8': 356.33, '-9': 287.20, '-10': 218.06,
+    };
+    this.getTickX = (val) => this.tickX[val.toString()] ?? (897.78 + val * 69.13);
     this.point = document.getElementById("click-btn");
     this.startTextGroup = document.getElementById("start");
     this.arrowsGroup = document.createElementNS(
@@ -373,7 +380,7 @@ class UIManager {
   updateNumberLinePosition(val = null) {
     if (!this.state.currentProblem && val === null) return;
     const targetVal = val !== null ? val : this.state.currentProblem.a;
-    const x = this.zeroX + targetVal * this.stepSize;
+    const x = this.getTickX(targetVal);
 
     // Position point (yellow dot)
     // The point is inside <g id="click-btn">. Original point cx is 1232.
@@ -399,8 +406,8 @@ class UIManager {
 
   drawArrow(fromVal, toVal, color) {
     return new Promise((resolve) => {
-      const fromX = this.zeroX + fromVal * this.stepSize;
-      const toX = this.zeroX + toVal * this.stepSize;
+      const fromX = this.getTickX(fromVal);
+      const toX = this.getTickX(toVal);
       const y = 570; // Base Y of the timeline
 
       // Create arrow line
