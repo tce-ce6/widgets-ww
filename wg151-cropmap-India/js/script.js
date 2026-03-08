@@ -307,6 +307,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Reset opacity on base buttons
+    ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+      const baseContainer = document.getElementById(id);
+      if (baseContainer) {
+        Array.from(baseContainer.children).forEach(childGroup => {
+          childGroup.style.opacity = "1";
+          childGroup.style.display = "block";
+        });
+      }
+    });
+
     currentState = {
       season: null,
       crop: null,
@@ -460,6 +471,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // Reset base buttons opacity/display
+      ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+        const baseContainer = document.getElementById(id);
+        if (baseContainer) {
+          Array.from(baseContainer.children).forEach(childGroup => {
+            childGroup.style.opacity = "1";
+            childGroup.style.display = "block";
+          });
+        }
+      });
+
       elements.croplabel.classList.remove("st170");
       elements.iTextHomeScreen.classList.add("st170");
       elements.itextActivity.classList.remove("st170");
@@ -492,6 +514,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           });
           childGroup.style.display = hasMatch ? "block" : "none";
+        });
+      }
+    });
+
+    // Dim the unselected base buttons and hide the base version of the selected button
+    ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+      const baseContainer = document.getElementById(id);
+      if (baseContainer) {
+        Array.from(baseContainer.children).forEach(childGroup => {
+          let hasMatch = false;
+          childGroup.querySelectorAll("tspan").forEach(tspan => {
+            if (tspan.textContent.trim() === crop) {
+              hasMatch = true;
+            }
+          });
+
+          if (hasMatch) {
+            // Hide the base version because the bright green 'selected' version is showing
+            childGroup.style.display = "none";
+          } else {
+            // Leave the unselected bases visible, but dim them
+            childGroup.style.display = "block";
+            childGroup.style.opacity = "0.5";
+          }
         });
       }
     });
