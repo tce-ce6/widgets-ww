@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateStyling() {
         if (!currentTone || !toneData[currentTone]) {
             middleTitle.textContent = "Select a tone";
-            middlePassage.innerHTML = "Select A Tone From The List To See How The Passage Changes.<br/>Tap The Toggles At The Bottom To Explore What Changed.";
+            middlePassage.innerHTML = "";
             annotationContent.innerHTML = "";
             return;
         }
@@ -228,23 +228,24 @@ document.addEventListener("DOMContentLoaded", () => {
         let annos = "";
 
         // Apply highlights and collect annotations based on toggles
-        if (toggles.sentence) {
-            data.highlights.sentence.forEach(sent => {
-                highlightedText = highlightedText.split(sent).join(`<span class="hl-sentence">${sent}</span>`);
-            });
-            annos += `<div class="anno-item"><span class="anno-label sentence">Sentence Structure</span><p>${data.annotations.sentence}</p></div>`;
-        }
+        // Apply highlights and collect annotations based on toggles (Reordered: Word Choice first)
         if (toggles.word) {
             data.highlights.word.forEach(word => {
                 highlightedText = highlightedText.split(word).join(`<span class="hl-word">${word}</span>`);
             });
-            annos += `<div class="anno-item"><span class="anno-label word">Word Choice</span><p>${data.annotations.word}</p></div>`;
+            annos += `<div class="anno-item"><span class="anno-label word">Word Choice:</span><p> ${data.annotations.word}</p></div>`;
+        }
+        if (toggles.sentence) {
+            data.highlights.sentence.forEach(sent => {
+                highlightedText = highlightedText.split(sent).join(`<span class="hl-sentence">${sent}</span>`);
+            });
+            annos += `<div class="anno-item"><span class="anno-label sentence">Sentence Structure:</span><p> ${data.annotations.sentence}</p></div>`;
         }
         if (toggles.punct) {
             data.highlights.punct.forEach(p => {
                 highlightedText = highlightedText.split(p).join(`<span class="hl-punct">${p}</span>`);
             });
-            annos += `<div class="anno-item"><span class="anno-label punct">Punctuation</span><p>${data.annotations.punct}</p></div>`;
+            annos += `<div class="anno-item"><span class="anno-label punct">Punctuation:</span><p> ${data.annotations.punct}</p></div>`;
         }
 
         middlePassage.innerHTML = highlightedText;
@@ -267,36 +268,55 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Reset Button
+    // Reset Button (Clear Filters Only)
     if (btnReset) {
         btnReset.style.cursor = 'pointer';
         btnReset.addEventListener('click', () => {
-            currentTone = null;
+            if (!currentTone) return;
+
+            // Clear toggles
             toggles = { sentence: false, word: false, punct: false };
 
-            // Reset toggles to OFF
+            // Reset toggle UI to OFF
             [sentenceOn, wordOn, punctOn].forEach(on => on.style.display = 'none');
             [sentenceOff, wordOff, punctOff].forEach(off => off.style.display = 'block');
 
-            if (selectedToneLabel) selectedToneLabel.textContent = "Select a tone";
-            listItems.forEach(li => li.classList.remove('selected'));
+            // Keep buttons and toggles active (opaque) since tone is still selected
+            if (btnNext) btnNext.style.opacity = "1";
+            if (btnReset) btnReset.style.opacity = "1";
 
-            if (btnNext) btnNext.style.opacity = "0.3";
-            if (btnReset) btnReset.style.opacity = "0.3";
-
-            // Revert toggles to pale when reset
-            if (sentenceGroup) sentenceGroup.style.opacity = "0.3";
-            if (wordGroup) wordGroup.style.opacity = "0.3";
-            if (punctGroup) punctGroup.style.opacity = "0.3";
+            if (sentenceGroup) sentenceGroup.style.opacity = "1";
+            if (wordGroup) wordGroup.style.opacity = "1";
+            if (punctGroup) punctGroup.style.opacity = "1";
 
             updateStyling();
         });
     }
 
+    // Next Button (Clear Everything)
     if (btnNext) {
         btnNext.style.cursor = 'pointer';
         btnNext.addEventListener('click', () => {
-            if (currentTone) console.log('Proceeding with', currentTone);
+            currentTone = null;
+            toggles = { sentence: false, word: false, punct: false };
+
+            // Reset toggles UI to OFF
+            [sentenceOn, wordOn, punctOn].forEach(on => on.style.display = 'none');
+            [sentenceOff, wordOff, punctOff].forEach(off => off.style.display = 'block');
+
+            // Reset dropdown
+            if (selectedToneLabel) selectedToneLabel.textContent = "Select a tone";
+            listItems.forEach(li => li.classList.remove('selected'));
+
+            // Deactivate buttons and toggles visually
+            if (btnNext) btnNext.style.opacity = "0.3";
+            if (btnReset) btnReset.style.opacity = "0.3";
+
+            if (sentenceGroup) sentenceGroup.style.opacity = "0.3";
+            if (wordGroup) wordGroup.style.opacity = "0.3";
+            if (punctGroup) punctGroup.style.opacity = "0.3";
+
+            updateStyling();
         });
     }
 });
