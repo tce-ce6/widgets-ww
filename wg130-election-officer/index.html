@@ -4115,9 +4115,9 @@
             </g>
           </g> -->
           <g id="dark_patch" style="display: none;">
-            <g id="Path_8445" class="st159">
+            <g id="Path_8445" class="st159" style="opacity: 0.5;">
               <path d="M1919.5,1079.5H.5V.5h1919v1079Z" />
-              <path class="st832" d="M1,1v1078h1918V1H1M0,0h1920v1080H0V0Z" />
+              <path class="st832" d="M-5000,-5000h11920v11080h-11920Z" style="fill: #000000;" />
             </g>
           </g>
           <g id="incorrect_panel" style="display: none;">
@@ -4131,6 +4131,11 @@
                   <tspan x="0" y="0">Incorrect Decision!</tspan>
                 </text>
               </g>
+              <g id="feedback-wrong-group" class="st57">
+                <text id="feedback-wrong-text" class="st42" transform="translate(609.5 549)">
+                  <tspan x="0" y="0">Paid advertisements are democratic right. Voters </tspan>
+                </text>
+              </g>
               <g id="Group_1793">
                 <path id="Path_4162" class="st294"
                   d="M954,351.5c20.8,0,37.6,16.8,37.6,37.6s-16.8,37.6-37.6,37.6c-20.8,0-37.6-16.8-37.6-37.6h0c0-20.8,16.8-37.6,37.6-37.6" />
@@ -4139,18 +4144,26 @@
                 <path id="Path_4164" class="st191"
                   d="M969.2,402.7l-1.8,2.2c-.8,1-2.3,1.2-3.4.3,0,0-.1,0-.2-.1l-9.9-9.6-9.8,9.5c-.9.9-2.5.9-3.4,0,0,0,0,0-.1-.2l-1.8-2.2c-1-1.2-.9-2.9.1-4.1l8.6-9.2-8.6-8.3c-.9-.8-1-2.2-.3-3.1l3-4.2c.8-1.1,2.3-1.3,3.4-.5.1,0,.2.2.3.3l8.5,9.1,8.6-9.2c.9-1,2.4-1,3.4-.1.1.1.2.2.3.3l3,4.2c.7,1,.6,2.3-.3,3.1l-8.7,8.5,8.8,9.3c1.1,1.1,1.1,2.9.1,4.1h0Z" />
               </g>
-              <g id="feedback-wrong-group" class="st57">
-                <text id="feedback-wrong-text" class="st42" transform="translate(609.5 549)">
-                  <tspan x="0" y="0">Paid advertisements are democratic right. Voters </tspan>
-                </text>
-              </g>
+            </g>
+            <g id="continue_btn_incorrect" style="cursor: pointer;">
+              <rect style="fill:#2365FF" x="815" y="715" width="280" height="70" rx="25" ry="25"></rect>
+              <text class="st103" transform="translate(960 760)" text-anchor="middle" font-size="24px"
+                style="font-family: Roboto-Bold, Roboto; font-weight: 500; fill: #fff;">
+                <tspan x="0" y="0">Continue</tspan>
+              </text>
             </g>
           </g>
+
           <g id="correct_panel" style="display: none;">
             <g id="Group_1593">
               <g id="Rectangle_240">
                 <rect class="st396" x="579.5" y="305" width="761" height="384" rx="19" ry="19" />
                 <rect class="st135" x="580" y="305.5" width="760" height="383" rx="18.5" ry="18.5" />
+              </g>
+              <g id="Correct_Decision_" class="st57">
+                <text class="st103" transform="translate(805.5 489)">
+                  <tspan x="0" y="0">Correct Decision!</tspan>
+                </text>
               </g>
               <g id="feedback-correct-group" class="st57">
                 <text id="feedback-correct-text" class="st42" transform="translate(639.5 563)">
@@ -4165,13 +4178,16 @@
                 <path id="Path_4161" class="st191"
                   d="M971.4,375.6c-6.6,9-12.1,18.7-16.2,29.1-.6,1.5-2,2.6-3.6,2.8-1.1.1-2.1.3-2.9.5-1.8.4-3.7-.4-4.6-2-2.6-4.2-5.7-9.2-7.2-11.8-.6-1-.4-2.4.6-3.1.4-.3.8-.6,1.3-.9,2.3-1.4,5.3-.9,6.9,1.3l4.1,5.4c6-11.5,11.3-17.7,14.5-20.8,1.8-1.7,4.4-2.4,6.8-1.7.4.1.6.5.5.9,0,0,0,.2-.1.2h0Z" />
               </g>
-              <g id="Correct_Decision_" class="st57">
-                <text class="st103" transform="translate(820.5 486)">
-                  <tspan x="0" y="0">Correct Decision!</tspan>
-                </text>
-              </g>
+            </g>
+            <g id="continue_btn_correct" style="cursor: pointer;">
+              <rect style="fill:#2365FF" x="815" y="715" width="280" height="70" rx="25" ry="25"></rect>
+              <text class="st103" transform="translate(960 760)" text-anchor="middle" font-size="24px"
+                style="font-family: Roboto-Bold, Roboto; font-weight: 500; fill: #fff;">
+                <tspan x="0" y="0">Continue</tspan>
+              </text>
             </g>
           </g>
+
           <g id="inside_panel" style="display: none;">
             <g id="Group_2141">
               <g id="Group_1800">
@@ -5916,7 +5932,7 @@
               .st17,
               .st92,
               .st159 {
-                opacity: .5;
+                opacity: .8;
               }
 
               .st160 {
@@ -9982,6 +9998,10 @@
             <clipPath id="clippath-202">
               <rect class="st132" x="737.3" y="884.6" width="5.4" height="6" />
             </clipPath>
+            <linearGradient id="half-star-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="50%" stop-color="#FABD57" />
+              <stop offset="50%" stop-color="#316a7f" />
+            </linearGradient>
           </defs>
         </svg>
       </div>

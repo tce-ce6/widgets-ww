@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let correctScenarios = new Set();
   let incorrectScenarios = new Set();
+  let attemptSequenceResults = [];
   let confettiAnimation;
 
   // Tab position mapping
@@ -336,6 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showScenario(index) {
+    const halfStar = document.getElementById("half-star");
+    if (halfStar) {
+      halfStar.style.display = "block";
+      const shiftX = attemptedScenarios.size * 40.3;
+      halfStar.setAttribute("transform", `translate(${shiftX}, 0)`);
+    }
+
     currentScenarioIndex = index;
     const scenario = SCENARIOS[index];
 
@@ -384,6 +392,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handleAnswer(answer) {
+    const halfStar = document.getElementById("half-star");
+    if (halfStar) {
+      halfStar.style.display = "none";
+    }
+
     const scenario = SCENARIOS[currentScenarioIndex];
     if (answer === scenario.correctAnswer) {
       updateSvgTextLines(
@@ -395,11 +408,12 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       correctPanel.style.display = "block";
 
-      // Increment stars
-      if (starsCount < STAR_PATH_IDS.length) {
-        const starPath = document.getElementById(STAR_PATH_IDS[starsCount]);
+      // Fill star completely
+      if (attemptedScenarios.size < STAR_PATH_IDS.length) {
+        const starPath = document.getElementById(
+          STAR_PATH_IDS[attemptedScenarios.size],
+        );
         if (starPath) starPath.setAttribute("fill", "#FABD57");
-        starsCount++;
       }
 
       // Track correct scenario
@@ -420,10 +434,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (starParent) starParent.style.display = "block";
       if (sparkles) sparkles.style.display = "block";
 
+      // Track correct scenario in the sequence it was attempted
+      const currentAttemptIndex = attemptedScenarios.size;
+      attemptSequenceResults[currentAttemptIndex] = "correct";
+
       REWARD_STAR_IDS.forEach((id, idx) => {
         const star = document.getElementById(id);
         if (star) {
-          star.style.display = correctScenarios.has(idx) ? "block" : "none";
+          star.style.display =
+            attemptSequenceResults[idx] === "correct" ? "block" : "none";
         }
       });
 
@@ -443,6 +462,35 @@ document.addEventListener("DOMContentLoaded", () => {
         "st42",
       );
       incorrectPanel.style.display = "block";
+
+      // Track incorrect scenario in the sequence it was attempted
+      const currentAttemptIndex = attemptedScenarios.size;
+      attemptSequenceResults[currentAttemptIndex] = "incorrect";
+
+      REWARD_STAR_IDS.forEach((id, idx) => {
+        const star = document.getElementById(id);
+        if (star) {
+          star.style.display =
+            attemptSequenceResults[idx] === "correct" ? "block" : "none";
+        }
+      });
+
+      // Stamp the half star by cloning the floating half-star
+      if (halfStar && attemptedScenarios.size < STAR_PATH_IDS.length) {
+        const clone = halfStar.cloneNode(true);
+        clone.id = `half-star-clone-${attemptedScenarios.size}`;
+
+        // Remove IDs from cloned children to prevent SVG ID conflicts
+        const elementsWithId = clone.querySelectorAll("[id]");
+        elementsWithId.forEach((el) => {
+          el.removeAttribute("id");
+        });
+
+        clone.style.display = "block";
+        const shiftX = attemptedScenarios.size * 40.3;
+        clone.setAttribute("transform", `translate(${shiftX}, 0)`);
+        halfStar.parentElement.appendChild(clone);
+      }
     }
 
     // Mark as attempted
