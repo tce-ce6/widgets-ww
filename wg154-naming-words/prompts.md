@@ -68,3 +68,13 @@ Images Source: @beautifulMention
 
 Functional Reference:
 Refer to the XD file to clearly understand the expected logic, combinations, and behavior required for the Naming Words simulation.
+
+
+phase 1:
+Edit the required SVG elements inside the HTML first to enable the functionality of this widget.
+
+Refer to the XD file for the layout and interaction flow: @beautifulMention
+Adobe XD Wireframe:
+https://xd.adobe.com/view/1c2f4182-0a7c-419a-afb5-209f2c62babb-497c/
+
+Refer to the storyboard for the logic and data reference: @beautifulMention
