@@ -23,7 +23,12 @@ g[style*="cursor: pointer"] tspan,
   pointer-events: none;
 }
 
-.chip-pair-container .hover-rect,
+.chip-pair-container .hover-rect {
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.2s;
+}
+
 .chip-pair-container .hover-close {
   opacity: 0;
   pointer-events: none;

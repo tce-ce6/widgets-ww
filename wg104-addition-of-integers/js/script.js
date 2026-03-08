@@ -128,7 +128,7 @@ class UIManager {
     this.selectedChip = null;
 
     // Number Line Config
-    this.zeroX = 895.48;
+    this.zeroX = 897.78; // Center of zero tick (895.48 left-edge + 4.6/2 width)
     this.stepSize = 69.13;
     this.point = document.getElementById("click-btn");
     this.startTextGroup = document.getElementById("start");
@@ -755,7 +755,8 @@ class UIManager {
         rect.setAttribute("width", 110);
         rect.setAttribute("height", rectHeight);
         rect.setAttribute("rx", "15");
-        rect.setAttribute("fill", "transparent");
+        rect.setAttribute("fill", "#fff");
+        rect.setAttribute("fill-opacity", "0");
         rect.setAttribute("stroke", "#6fc6d1");
         rect.setAttribute("stroke-width", "2");
         rect.setAttribute("stroke-dasharray", "5,5");
@@ -1002,7 +1003,7 @@ class UIManager {
     this.btn1Type = "plus";
     this.btn2Type = "minus";
 
-    if (isChipMode && !isPlayground && this.state.currentProblem) {
+    if (isChipMode && this.state.currentProblem) {
       this.btn1Type = this.state.currentProblem.a >= 0 ? "plus" : "minus";
       this.btn2Type = this.state.currentProblem.b >= 0 ? "plus" : "minus";
     }
@@ -1015,12 +1016,16 @@ class UIManager {
       // Find the correct text element to replace
       const textElements = btnGroup.querySelectorAll("text");
       textElements.forEach(textEl => {
-        // If this is top button, target the text near Y=538. If bottom, near 639.
+        // If this is top button, target the text near Y=538. If bottom, near 675.
         const y = parseFloat(textEl.getAttribute("transform").match(/[\d.]+\)/)[0]);
         if ((isTopBtn && y < 600) || (!isTopBtn && y > 600)) {
           textEl.setAttribute("font-size", type === "plus" ? "90" : "85");
           const tspan = textEl.querySelector("tspan");
           if (tspan) tspan.textContent = type === "plus" ? "+" : "_";
+          // Shift _ up by 18px since underscore sits below the text baseline
+          const baseY = isTopBtn ? 528 : 658;
+          const yOffset = type === "plus" ? +10 : -18;
+          textEl.setAttribute("transform", `translate(119.48 ${baseY + yOffset})`);
         }
       });
     };
