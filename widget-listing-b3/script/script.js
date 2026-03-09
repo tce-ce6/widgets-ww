@@ -1,6 +1,10 @@
 // Widget listing page.
 // Folder discovery:   1 GitHub API call  (contents endpoint).
 // Timestamps/authors: 1 fetch from meta.json (built by GitHub Actions on every push — no rate limits).
+//
+// meta.json shape:
+//   { folders: { "wgXX-name": { updatedAt, author }, ... },
+//     commits:  [ { date, author, widgets: [71, 74, ...] }, ... ] }
 
 const REPO     = 'tce-ce6/widgets-ww';
 const BRANCH   = 'deploy';
@@ -37,20 +41,26 @@ function fmtDate(iso) {
 async function loadMeta() {
   try {
     const res = await fetch(META_URL);
-    return res.ok ? await res.json() : {};
-  } catch { return {}; }
+    if (!res.ok) return { folders: {}, commits: [] };
+    const data = await res.json();
+    // support both new { folders, commits } shape and legacy flat shape
+    if (data.folders) return data;
+    return { folders: data, commits: [] };
+  } catch { return { folders: {}, commits: [] }; }
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  const listEl       = document.getElementById('widget-listing');
-  const totalEl      = document.getElementById('total');
-  const searchEl     = document.getElementById('widget-search');
-  const pageUpdEl    = document.getElementById('page-updated');
-  const sortChipsEl  = document.getElementById('sort-chips');
-  const userChipsEl  = document.getElementById('user-chips');
+  const listEl          = document.getElementById('widget-listing');
+  const totalEl         = document.getElementById('total');
+  const searchEl        = document.getElementById('widget-search');
+  const pageUpdEl       = document.getElementById('page-updated');
+  const recentActEl     = document.getElementById('recent-activity');
+  const sortChipsEl     = document.getElementById('sort-chips');
+  const userChipsEl     = document.getElementById('user-chips');
 
   let widgets    = [];
+  let allCommits = [];       // full commits array from meta.json
   let activeSort = 'time';
   let activeUser = 'all';
 
@@ -109,6 +119,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     filtered.forEach(w => listEl.appendChild(renderCard(w)));
   }
 
+  // ── Recent activity panel ─────────────────────────────────────────────────────
+  // All-users mode: last 5 commits across everyone.
+  // User selected: last 3 commits by that user.
+  function buildActivityPanel(user) {
+    if (!allCommits.length) { recentActEl.innerHTML = ''; return; }
+
+    const rows = user === 'all'
+      ? allCommits.slice(0, 5)
+      : allCommits.filter(c => c.author === user).slice(0, 3);
+
+    if (!rows.length) { recentActEl.innerHTML = ''; return; }
+
+    const items = rows.map((c, i) => {
+      const label  = i === 0 ? 'Last&nbsp;Updated' : 'Updated';
+      const nums   = c.widgets.map(n => `<a class="act-wg" href="${BASE_URL}/wg${n}-*/" title="wg${n}">wg${n}</a>`).join(' ');
+      // For user-filtered view, omit the author name (it's the selected chip)
+      const who    = user === 'all' ? `<span class="act-author">${c.author}</span>` : '';
+      return `
+        <div class="act-row${i === 0 ? ' act-row--first' : ''}">
+          <span class="act-label">${label}</span>
+          <span class="act-date">${fmtDate(c.date)}</span>
+          ${who}
+          <span class="act-widgets">(${c.widgets.join(', ')})</span>
+        </div>`;
+    });
+
+    const heading = user === 'all'
+      ? 'Recent Activity'
+      : `${user} — Recent Activity`;
+
+    recentActEl.innerHTML =
+      `<h2 class="act-heading">${heading}</h2>` + items.join('');
+  }
+
+  // ── Page-level header subtitle (first commit) ─────────────────────────────────
+  function setPageUpdated() {
+    if (!allCommits.length) return;
+    const c = allCommits[0];
+    const nums = c.widgets.join(', ');
+    pageUpdEl.textContent =
+      `Updated ${fmtDate(c.date)}  ·  ${c.author}  (${nums})`;
+  }
+
   // ── Sort chips ───────────────────────────────────────────────────────────────
   sortChipsEl.querySelectorAll('.chip').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -120,10 +173,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // ── User chips (built after meta loads) ───────────────────────────────────────
-  function buildUserChips(meta) {
+  // ── User chips ────────────────────────────────────────────────────────────────
+  function buildUserChips(folders) {
     const users = [...new Set(
-      Object.values(meta).map(m => m.author).filter(Boolean)
+      Object.values(folders).map(m => m.author).filter(Boolean)
     )].sort();
 
     userChipsEl.innerHTML = '';
@@ -144,20 +197,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         userChipsEl.querySelectorAll('.chip').forEach(c =>
           c.classList.toggle('active', c.dataset.user === user)
         );
+        buildActivityPanel(activeUser);
         render();
       });
       userChipsEl.appendChild(btn);
     });
-  }
-
-  // ── Page-level last-updated (most recent entry in meta) ───────────────────────
-  function setPageUpdated(meta) {
-    const entries = Object.values(meta).filter(m => m.updatedAt);
-    if (!entries.length) return;
-    const latest = entries.reduce((a, b) =>
-      new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b
-    );
-    pageUpdEl.textContent = `Updated ${fmtDate(latest.updatedAt)}  ·  ${latest.author}`;
   }
 
   // ── 1. Fetch wg* folders (1 API call) ────────────────────────────────────────
@@ -187,15 +231,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── 2. Fetch meta.json (1 fetch, no rate limit) ───────────────────────────────
   const meta = await loadMeta();
+  allCommits = meta.commits || [];
 
   widgets.forEach(w => {
-    const info = meta[w.folder];
+    const info = meta.folders?.[w.folder];
     if (!info) return;
     w.updatedAt = info.updatedAt;
     w.author    = info.author;
   });
 
-  setPageUpdated(meta);
-  buildUserChips(meta);
-  render();   // re-render: real timestamps applied, sort-by-time now meaningful
+  setPageUpdated();
+  buildActivityPanel('all');
+  buildUserChips(meta.folders || {});
+  render();
 });
