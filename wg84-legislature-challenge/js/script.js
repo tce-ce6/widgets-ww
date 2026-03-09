@@ -2,6 +2,7 @@ let questionData = [];
 let audioPlayer = new Audio();
 const usedIndexes = new Set();
 let selectedQuestion = null;
+let correctCount = 0;
 insightsInfo = () => {
   document.getElementById("insights-box").style.display = "block";
   document.getElementById("svg-container").classList.add("modal-open");
@@ -44,10 +45,10 @@ function addLegislatureIcons(count) {
   svg.appendChild(clone);
 }
 
-progress_count_update = (current, total) => {
+progress_count_update = () => {
   const progress_count = document.getElementById("progress_count");
   const tspan = progress_count.querySelector("tspan") || progress_count;
-  tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;
+  tspan.textContent = `${usedIndexes.size}/${questionData.length}`;
 };
 function addExecutiveIcons(count) {
   const ExecutiveBadges = document.getElementById("Executive-Badges");
@@ -69,9 +70,10 @@ function buttonClickEvent() {
   const btnlegislature = document.getElementById("btn-legislature");
   btnlegislature.addEventListener("click", () => {
     if (selectedQuestion.correctAnswer === "Legislature") {
-      console.log("executive correct");
+      console.log("legislature correct");
       questionValidation("CORRECT");
       legislatureCountIncrement();
+      correctCount++;
     } else {
       questionValidation("INCORRECT");
     }
@@ -82,6 +84,7 @@ function buttonClickEvent() {
       console.log("executive correct");
       questionValidation("CORRECT");
       executiveCountIncrement();
+      correctCount++;
     } else {
       questionValidation("INCORRECT");
     }
@@ -91,6 +94,7 @@ function buttonClickEvent() {
     hideAllBoxAndButton();
     selectedQuestion = getRandomQuestion();
     if (selectedQuestion) setQuestionStem(selectedQuestion.scenarioText);
+    progress_count_update();
   });
 }
 executiveCountIncrement = () => {
@@ -162,6 +166,23 @@ function getRandomQuestion() {
   if (usedIndexes.size === questionData.length) {
     console.log("All questions used");
     document.getElementById("summary-box").style.display = "block";
+    // Hide game UI elements
+    var quizBox = document.getElementById("quiz-box");
+    var btnLeg = document.getElementById("btn-legislature");
+    var btnExe = document.getElementById("btn-executive");
+    var iText = document.getElementById("i-text");
+    var legislatureBadges = document.getElementById("legislature-Badges");
+    var executiveBadges = document.getElementById("Executive-Badges");
+    var btnInsights = document.getElementById("btn-insights");
+    var progress = document.getElementById("progress");
+    if (quizBox) quizBox.style.display = "none";
+    if (btnLeg) btnLeg.style.display = "none";
+    if (btnExe) btnExe.style.display = "none";
+    if (iText) iText.style.display = "none";
+    if (legislatureBadges) legislatureBadges.style.display = "none";
+    if (executiveBadges) executiveBadges.style.display = "none";
+    if (btnInsights) btnInsights.style.display = "none";
+    if (progress) progress.style.display = "none";
     let legislature_summary = document.getElementById("legislature-summary");
     let legislaturetspan =
       legislature_summary.querySelector("tspan") || legislature_summary;
@@ -172,7 +193,7 @@ function getRandomQuestion() {
     tspan1.textContent = executiveCount;
     let totalbadges = document.getElementById("totalbadges");
     const tspan = totalbadges.querySelector("tspan") || totalbadges;
-    tspan.textContent = `${executiveCount + legislatureCount}/${questionData.length}`;
+    tspan.textContent = `${correctCount}/${questionData.length}`;
     playLottieAnimation();
     return null;
   }
