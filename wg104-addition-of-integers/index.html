@@ -157,9 +157,9 @@
           <g id="answer-patch" style="cursor: pointer">
             <g id="Group_1226" data-name="Group 1226">
               <g id="Rectangle_18-2" data-name="Rectangle 18-2">
-                <rect x="1003" y="236" width="161" height="72" rx="16" ry="16" fill="#fff" />
-                <rect id="answer-border" x="1003.5" y="236.5" width="160" height="71" rx="15.5" ry="15.5" fill="none"
-                  stroke="#000db9" stroke-width="2" />
+                <rect x="1025" y="236" width="131" height="72" rx="16" ry="16" fill="#fff" />
+                <rect id="answer-border" x="1025.5" y="236.5" width="130" height="71" rx="15.5" ry="15.5" fill="none"
+                  stroke="#000db9" stroke-width="2" stroke-dasharray="5 5" />
               </g>
             </g>
           </g>
@@ -272,9 +272,9 @@
           </g>
           <g id="timeline">
             <!-- Instruction text -->
-            <text id="timeline-instruction" x="897.78" y="470" text-anchor="middle" fill="#333"
+            <!-- <text id="timeline-instruction" x="897.78" y="470" text-anchor="middle" fill="#333"
               font-family="Roboto-Italic, Roboto" font-size="28" font-style="italic" font-weight="500">Tap the answer on
-              the number line</text>
+              the number line</text> -->
             <!-- Number labels -->
             <g id="timeline-numbers" font-family="Roboto-Medium, Roboto" font-size="38" font-weight="500"
               text-anchor="middle">
@@ -700,7 +700,7 @@
             </g>
           </g>
 
-          <!-- Visual Hint Box Modal -->
+          <!-- Visual Hint Box Modal - Number Line -->
           <g id="hint-modal-group" display="none" isolation="isolate">
             <!-- Semi-transparent backdrop -->
             <rect id="hint-backdrop" x="-1000" y="-1000" width="4000" height="3000" fill="#000" opacity="0.6" />
@@ -721,6 +721,33 @@
             </g>
             <!-- Offset Close Button -->
             <g id="hint-close-btn" style="cursor: pointer" filter="url(#chip-shadow)">
+              <circle cx="1405" cy="335" r="30" fill="#4caf50" stroke="#fff" stroke-width="4"></circle>
+              <g transform="translate(1393 323)">
+                <path d="M0,0 L24,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+                <path d="M24,0 L0,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+              </g>
+            </g>
+          </g>
+
+          <!-- Visual Hint Box Modal - Chip Method -->
+          <g id="hint-modal-group-chip" display="none" isolation="isolate">
+            <!-- Semi-transparent backdrop -->
+            <rect id="hint-backdrop-chip" x="-1000" y="-1000" width="4000" height="3000" fill="#000" opacity="0.6" />
+            <!-- Modal Box Background with Shadow -->
+            <rect id="hint-bg-chip" x="500" y="325" width="920" height="460" rx="15" ry="15" fill="#ffc3cf"
+              stroke="#ff2c68" stroke-width="8" filter="url(#chip-shadow)" />
+            <!-- Centered Text -->
+            <g id="hint-content-text-chip">
+              <text transform="translate(560 440)" fill="#1c1c1c" font-family="Roboto-Medium, Roboto" font-size="28"
+                font-weight="500">
+                <tspan x="0" y="0">1. Add positive chips for the first number.</tspan>
+                <tspan x="0" y="60">2. Add chips for the second number (positive or negative).</tspan>
+                <tspan x="0" y="120">3. Match up and remove "zero pairs" (one plus and one minus).</tspan>
+                <tspan x="0" y="180">4. The remaining chips are your final answer.</tspan>
+              </text>
+            </g>
+            <!-- Offset Close Button -->
+            <g id="hint-close-btn-chip" style="cursor: pointer" filter="url(#chip-shadow)">
               <circle cx="1405" cy="335" r="30" fill="#4caf50" stroke="#fff" stroke-width="4"></circle>
               <g transform="translate(1393 323)">
                 <path d="M0,0 L24,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>

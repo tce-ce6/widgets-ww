@@ -95,6 +95,16 @@ class UIManager {
     // Hint Modal
     this.hintModalGroup = document.getElementById("hint-modal-group");
     this.hintCloseBtn = document.getElementById("hint-close-btn");
+    this.hintModalGroupChip = document.getElementById("hint-modal-group-chip");
+    this.hintCloseBtnChip = document.getElementById("hint-close-btn-chip");
+
+    // Close logic
+    if (this.hintCloseBtn) {
+      this.hintCloseBtn.addEventListener("click", () => this.hideHint());
+    }
+    if (this.hintCloseBtnChip) {
+      this.hintCloseBtnChip.addEventListener("click", () => this.hideHint());
+    }
 
     this.keypadDisplayText = document.querySelector(
       "#nubpad-display-text tspan",
@@ -326,8 +336,14 @@ class UIManager {
     this.showAnswerBtn.addEventListener("click", () => this.showAnswer());
     this.hintBtn.addEventListener("click", () => this.showHint());
 
-    if (this.hintCloseBtn) {
-      this.hintCloseBtn.addEventListener("click", () => this.hideHint());
+    // Bind hint close button(s)
+    const hintCloseBtn = document.getElementById("hint-close-btn");
+    if (hintCloseBtn) {
+      hintCloseBtn.addEventListener("click", () => this.hideHint());
+    }
+    const hintCloseBtnChip = document.getElementById("hint-close-btn-chip");
+    if (hintCloseBtnChip) {
+      hintCloseBtnChip.addEventListener("click", () => this.hideHint());
     }
 
     this.attachTimelineListeners();
@@ -503,15 +519,20 @@ class UIManager {
   // --- Completion & Feedback ---
 
   showHint() {
-    if (this.hintModalGroup) {
-      this.hintModalGroup.setAttribute("display", "inline");
+    if (this.state.mode === MODES.CHIP) {
+      if (this.hintModalGroupChip)
+        this.hintModalGroupChip.setAttribute("display", "inline");
+    } else {
+      if (this.hintModalGroup)
+        this.hintModalGroup.setAttribute("display", "inline");
     }
   }
 
   hideHint() {
-    if (this.hintModalGroup) {
+    if (this.hintModalGroup)
       this.hintModalGroup.setAttribute("display", "none");
-    }
+    if (this.hintModalGroupChip)
+      this.hintModalGroupChip.setAttribute("display", "none");
   }
 
   showAnswer() {
@@ -941,7 +962,7 @@ class UIManager {
 
   selectChip(element, type) {
     this.selectedChip = { element, type };
-    element.setAttribute("filter", "drop-shadow(0 0 10px yellow)");
+    element.setAttribute("filter", "drop-shadow(0 0 10px red)");
     if (this.state.isPlayground) {
       const dustbin = document.getElementById("dustbin");
       if (dustbin) dustbin.setAttribute("display", "inline");
@@ -1070,6 +1091,13 @@ class UIManager {
     // Visibility
     const mainSVG = document.getElementById("main-svg");
     if (mainSVG) mainSVG.setAttribute("display", "inline");
+
+    if (this.hintBtn) {
+      this.hintBtn.setAttribute(
+        "display",
+        isNumberLineMode ? "inline" : "none",
+      );
+    }
 
     this.chipMethodGroup.setAttribute(
       "display",
