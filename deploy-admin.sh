@@ -146,9 +146,20 @@ def should_ignore(path, names):
             ignored.append(n)
     return ignored
 
+def remove_readonly(func, path, _):
+    import stat
+    try:
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+    except Exception:
+        pass
+
 def sync(src, dst):
     if os.path.exists(dst):
-        shutil.rmtree(dst)
+        try:
+            shutil.rmtree(dst, onexc=remove_readonly)
+        except TypeError:
+            shutil.rmtree(dst, onerror=remove_readonly)
     shutil.copytree(src, dst, ignore=should_ignore)
 
 os.makedirs(dist_dir, exist_ok=True)
