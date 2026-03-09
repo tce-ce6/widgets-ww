@@ -1,0 +1,54 @@
+name: Update widget meta
+
+# Runs on every push to deploy EXCEPT when the bot itself updates meta.json,
+# which would otherwise cause an infinite trigger loop.
+on:
+  push:
+    branches: [deploy]
+    paths-ignore:
+      - 'widget-listing-b3/data/meta.json'
+
+jobs:
+  update-meta:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history needed for accurate git log per folder
+
+      - name: Generate meta.json
+        run: |
+          python3 - <<'EOF'
+          import subprocess, json, os, re
+
+          meta = {}
+          for name in sorted(os.listdir('.')):
+            if not os.path.isdir(name):
+              continue
+            if not re.match(r'^wg\d+', name):
+              continue
+            result = subprocess.run(
+              ['git', 'log', '-1', '--format=%aI\t%an', '--', name],
+              capture_output=True, text=True
+            )
+            line = result.stdout.strip()
+            if '\t' in line:
+              date, author = line.split('\t', 1)
+              meta[name] = {'updatedAt': date, 'author': author}
+
+          os.makedirs('widget-listing-b3/data', exist_ok=True)
+          with open('widget-listing-b3/data/meta.json', 'w') as f:
+            json.dump(meta, f, indent=2)
+          print(f'Generated meta for {len(meta)} widgets')
+          EOF
+
+      - name: Commit meta.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add widget-listing-b3/data/meta.json
+          git diff --staged --quiet && echo "No changes" || \
+            git commit -m "chore: update widget meta [skip ci]" && git push
