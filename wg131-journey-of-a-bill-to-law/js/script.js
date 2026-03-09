@@ -789,7 +789,7 @@ window.addEventListener("load", () => {
     const el = document.getElementById(id);
     if (el) {
       el.style.cursor = "pointer";
-      el.addEventListener("click", resetGame);
+      el.addEventListener("click", () => resetGame());
     }
   });
 });
@@ -1220,35 +1220,7 @@ function showActivitySummaryEnd() {
   // Add stamp badges on the 9 icon circles
   showSummaryStamps(panel);
 
-  // Wire START NEW JOURNEY button
-  const btnGrp = document.getElementById("Group_11581");
-  if (btnGrp) {
-    const fresh = btnGrp.cloneNode(true);
-    btnGrp.parentNode.replaceChild(fresh, btnGrp);
-    fresh.style.cursor = "pointer";
-    fresh.addEventListener("click", () => {
-      // Hide summary panel
-      panel.style.display = "none";
-      panel.setAttribute("display", "none");
-      let startNewJourneyBtn = document.getElementById("START_NEW_JOURNEY_"); // also hide btn-insights if visible
-      if (startNewJourneyBtn) {
-        let textNodes = startNewJourneyBtn.querySelectorAll("text");
-        let tspanNodes = textNodes.querySelectorAll("tspan");
-        tspanNodes.innerHTML = "START JOURNEY AGAIN";
-      }
-      // Remove stamp badges
-      panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
-      // Reset completed state and yellow borders
-      completedStations.clear();
-      STATION_PATH_IDS.forEach((id) => {
-        const seg = document.getElementById(id);
-        if (seg) {
-          seg.style.stroke = "";
-          seg.style.strokeWidth = "";
-        }
-      });
-    });
-  }
+  // START NEW JOURNEY button is statically wired in window load event.
 }
 
 /**
@@ -1336,4 +1308,21 @@ function resetGame() {
   removeFeedbackOverlay();
   // 4. Reset option boxes
   resetOptionBoxes();
+  // 5. Reset variables
+  quizAnswered = false;
+  currentStationIdx = 0;
+  // 6. Show dashboard
+  const dashboard = document.getElementById("dashboard");
+  if (dashboard) dashboard.style.display = "block";
+  // 7. Hide home screen
+  const homeScreen = document.getElementById("home-screen");
+  if (homeScreen) {
+    homeScreen.style.display = "none";
+    homeScreen.setAttribute("display", "none");
+  }
+  const iText = document.getElementById("i-text");
+  if (iText) {
+    iText.style.display = "none";
+    iText.setAttribute("display", "none");
+  }
 }
