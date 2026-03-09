@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Handle labels hide specifically for deactivated flow
                 if (btn.id === "venous-blood-flow") {
                     if (pulmonaryVein) pulmonaryVein.style.display = "none";
+                    if (venaCava) venaCava.style.display = "none";
                 } else if (btn.id === "arterial-blood-flow") {
                     if (pulmonaryArtery) pulmonaryArtery.style.display = "none";
                     if (dorsalAorta) dorsalAorta.style.display = "none";
@@ -88,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Handle labels display
                 if (btn.id === "venous-blood-flow") {
                     if (pulmonaryVein) pulmonaryVein.style.display = "block";
+                    if (venaCava) venaCava.style.display = "block";
                 } else if (btn.id === "arterial-blood-flow") {
                     if (pulmonaryArtery) pulmonaryArtery.style.display = "block";
                     if (dorsalAorta) dorsalAorta.style.display = "block";
