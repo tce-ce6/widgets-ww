@@ -165,13 +165,6 @@ class UIManager {
     this.getTickX = (val) => this.tickX[val.toString()] ?? 897.78 + val * 69.13;
     this.point = document.getElementById("click-btn");
     this.startTextGroup = document.getElementById("start");
-    this.arrowsGroup = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "g",
-    );
-    this.arrowsGroup.setAttribute("id", "arrows-container");
-    this.timelineGroup.appendChild(this.arrowsGroup);
-
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     this.lottieFeedbackContainer = document.getElementById("lottie-feedback");
@@ -442,78 +435,28 @@ class UIManager {
 
   drawArrow(fromVal, toVal, color) {
     return new Promise((resolve) => {
-      const fromX = this.getTickX(fromVal);
       const toX = this.getTickX(toVal);
-      const y = 570; // Base Y of the timeline
 
-      // Create arrow line
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      );
-      const height = toVal - fromVal > 0 ? -50 : -50; // Curve height
-      const midX = (fromX + toX) / 2;
-      const d = `M ${fromX} ${y} Q ${midX} ${y + height} ${toX} ${y}`;
-
-      line.setAttribute("d", d);
-      line.setAttribute("fill", "none");
-      line.setAttribute("stroke", color);
-      line.setAttribute("stroke-width", "4");
-      line.setAttribute("stroke-dasharray", "1000");
-      line.setAttribute("stroke-dashoffset", "1000");
-
-      // Add arrowhead
-      const head = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path",
-      );
-      head.setAttribute("d", `M ${toX} ${y} l -10 -10 m 10 10 l -10 10`); // Simplified arrowhead
-      head.setAttribute("stroke", color);
-      head.setAttribute("stroke-width", "4");
-      head.style.opacity = "0";
-
-      // Add label (Forward/Backward)
-      const label = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "text",
-      );
-      const isForward = toVal - fromVal > 0;
-      label.textContent = isForward ? "Forward (+)" : "Backward (-)";
-      label.setAttribute("x", midX);
-      label.setAttribute("y", y + height - 10);
-      label.setAttribute("text-anchor", "middle");
-      label.setAttribute("font-size", "20");
-      label.setAttribute("fill", color);
-      label.style.opacity = "0";
-      label.style.transition = "opacity 0.5s";
-
-      this.arrowsGroup.appendChild(line);
-      this.arrowsGroup.appendChild(head);
-      this.arrowsGroup.appendChild(label);
-
-      // Animate line
-      line.style.transition = "stroke-dashoffset 1s ease-in-out";
+      // Simple delay to simulate movement timing
       setTimeout(() => {
-        line.style.strokeDashoffset = "0";
-        label.style.opacity = "1";
-
         // Move point along
         // The point's original position is at 1232, so we need to adjust the translate
-        this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
+        if (this.point) {
+          this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
+        }
 
         setTimeout(() => {
-          head.style.opacity = "1";
           resolve();
-        }, 1000);
-      }, 50);
+        }, 1000); // Wait for "movement" to complete
+      }, 500); // Initial delay before movement
     });
   }
 
   clearNumberLine() {
-    this.arrowsGroup.innerHTML = "";
     // Reset point to its original position (no translation)
-    this.point.setAttribute("transform", "translate(0, 0)");
-    this.currentPointX = this.zeroX;
+    if (this.point) {
+      this.point.setAttribute("transform", "translate(0, 0)");
+    }
   }
 
   // --- Completion & Feedback ---
@@ -1005,7 +948,7 @@ class UIManager {
       indicator.setAttribute("stroke-dasharray", "8,8");
       indicator.setAttribute("rx", "15");
       indicator.style.transition = "opacity 0.5s";
-      this.dynamicChipsGroup.appendChild(indicator);
+      // this.dynamicChipsGroup.appendChild(indicator);
 
       const zeroLabel = document.createElementNS(
         "http://www.w3.org/2000/svg",
@@ -1018,7 +961,7 @@ class UIManager {
       zeroLabel.setAttribute("font-size", "50");
       zeroLabel.setAttribute("font-weight", "bold");
       zeroLabel.setAttribute("fill", "#333");
-      this.dynamicChipsGroup.appendChild(zeroLabel);
+      // this.dynamicChipsGroup.appendChild(zeroLabel);
 
       setTimeout(() => {
         indicator.style.opacity = "0";
