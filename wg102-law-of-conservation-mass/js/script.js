@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
- 
+
   const molecules = document.querySelectorAll(".molecule-item");
   const reactantsDropPanel = document.getElementById("Rectangle_233");
   const productsDropPanel = document.getElementById("Rectangle_232");
+
+  const Group_109 = document.getElementById("Group_109");
+  const Group_109_2 = document.getElementById("Group_109-2");
 
   const reactantsMassDisplay = document.querySelector("#_0g text tspan");
   const productsMassDisplay = document.querySelector("#_0g-2 text tspan");
@@ -210,7 +213,21 @@ document.addEventListener("DOMContentLoaded", () => {
       offset: { x: 1040, y: 560 },
     },
     {
+      panel: Group_109,
+      list: reactantsList,
+      display: reactantsMassDisplay,
+      type: "reactant",
+      offset: { x: 1040, y: 560 },
+    },
+    {
       panel: productsDropPanel,
+      list: productsList,
+      display: productsMassDisplay,
+      type: "product",
+      offset: { x: 1550, y: 560 },
+    },
+    {
+      panel: Group_109_2,
       list: productsList,
       display: productsMassDisplay,
       type: "product",
@@ -303,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showFeedback(data.formula, type);
         }
         updateMasses();
-      } catch (err) {}
+      } catch (err) { }
     });
   });
 
