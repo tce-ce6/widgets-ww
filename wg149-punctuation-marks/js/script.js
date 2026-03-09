@@ -120,17 +120,14 @@ function init() {
     WG.currentIndex = 0;
 
     hide("inside-popup");
+    hide("inside-popup-text");
+    hide("close-btn");
     hideShowAnswer();
     hide("answer-btn");
     hide("answer-btn-text");
     hide("next-btn-panel");
 
-    /* Hide the narrower signal housings – we only use four-signals-panel */
-    hide("three-signals-panel");
-    hide("two-signals-panel");
-    hide("one-signals-panel");
-    show("four-signals-panel");
-
+    /* All signal panels are hidden by CSS; updateSignalPanel() will show the right one */
     /* Bind option buttons */
     Object.keys(WG.optionMap).forEach(function (id) {
         var el = getEl(id);
@@ -139,6 +136,9 @@ function init() {
             el.addEventListener("click", function () { onOptionClick(WG.optionMap[id]); });
         }
     });
+
+    /* Differentiate the two quotation-mark buttons visually */
+    styleQuoteButtons();
 
     /* Bind Insights button */
     var btnInsight = getEl("inside-btn");
@@ -154,6 +154,31 @@ function init() {
 
     loadSentence(WG.currentIndex);
 }
+
+/* ──────────────────────────────────────────────────────────
+   STYLE QUOTE BUTTONS
+   Make "open-quote" (btn-6) and "close-quote" (btn-7)
+   visually distinct: blue tint vs. orange tint, and add
+   small Open / Close labels so users can tell them apart.
+   ────────────────────────────────────────────────────────── */
+
+function styleQuoteButtons() {
+    /* We only need ONE quote button that fills both open/close quotes.
+       Hide button 7, and make button 6 a generic quote character. */
+    var btn7 = getEl("option-btn-7");
+    if (btn7) btn7.style.display = "none";
+
+    /* Button 6 represents the generic quote option */
+    var btn6 = getEl("option-btn-6");
+    if (btn6) {
+        var r6 = btn6.querySelector("rect");
+        if (r6) r6.style.fill = "#c7eabb"; /* default green */
+        /* Update the mapping so btn-6 is treated as generic quote during matching */
+        WG.optionMap["option-btn-6"] = "\u201c"; /* we match on the open quote first */
+    }
+}
+
+/* addQuoteLabel removed as we no longer need labels for quotes */
 
 /* ──────────────────────────────────────────────────────────
    LOAD SENTENCE
@@ -183,11 +208,17 @@ function loadSentence(index) {
    unfilled blanks are a blue underlined tspan.
    ────────────────────────────────────────────────────────── */
 
+/* No padding so adjacent blanks touch each other visually */
+var BLANK_DISPLAY = "____";
+
 function renderSentence() {
     var qText = getEl("q-text");
     if (!qText) return;
     var textEl = qText.querySelector("text");
     if (!textEl) return;
+
+    /* Preserve whitespace so SVG space characters render properly */
+    textEl.setAttribute("xml:space", "preserve");
 
     /* Clear all existing tspan children */
     while (textEl.firstChild) textEl.removeChild(textEl.firstChild);
@@ -197,9 +228,10 @@ function renderSentence() {
     var blankIndex = 0;
 
     parts.forEach(function (part, i) {
-        /* Plain text segment */
         if (part.length > 0) {
             var ts = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            /* For the text part, replace empty segments completely with a standard space
+               if it somehow got collapsed, but generally textContent handles it */
             ts.textContent = part;
             textEl.appendChild(ts);
         }
@@ -215,18 +247,19 @@ function renderSentence() {
                 ts2.textContent = filled;
                 ts2.style.fill = "#1a9c00";
                 ts2.style.fontWeight = "700";
-                ts2.style.textDecoration = "underline";
+                // ts2.style.textDecoration = "underline";
             } else if (isActive) {
-                /* Current blank — bright blue with underline */
-                ts2.textContent = "____";
-                ts2.style.fill = "#2196f3";
+                /* Current active blank — pulsing blue class (CSS animation) */
+                ts2.textContent = BLANK_DISPLAY;
+                ts2.setAttribute("class", "active-blank");
                 ts2.style.fontWeight = "900";
-                ts2.style.textDecoration = "underline";
+                // ts2.style.textDecoration = "underline";
             } else {
-                /* Future blank — dimmed */
-                ts2.textContent = "____";
-                ts2.style.fill = "#aaa";
+                /* Future blank — dimmed grey */
+                ts2.textContent = BLANK_DISPLAY;
+                ts2.style.fill = "#999";
                 ts2.style.fontWeight = "400";
+                ts2.style.textDecoration = "underline";
             }
 
             textEl.appendChild(ts2);
@@ -252,7 +285,16 @@ function onOptionClick(char) {
 function onCorrectAnswer(char) {
     stopBlink();
     WG.filledAnswers[WG.activeBlank] = char;
-    WG.activeBlank++;
+
+    /* If the correct answer was an opening quote, auto-fill the matching closing quote if it exists */
+    if (char === "\u201c") {
+        var closeIdx = WG.blanks.lastIndexOf("\u201d");
+        if (closeIdx !== -1 && closeIdx > WG.activeBlank) {
+            WG.filledAnswers[closeIdx] = "\u201d";
+        }
+    }
+
+    advanceActiveBlank();
     WG.wrongAttempts = 0;
 
     updateSignals();
@@ -267,6 +309,15 @@ function onCorrectAnswer(char) {
         hideShowAnswer();
     }
 }
+
+function advanceActiveBlank() {
+    WG.activeBlank++;
+    /* Skip any blanks that are already filled (e.g. from auto-filling quotes) */
+    while (WG.activeBlank < WG.blanks.length && WG.filledAnswers[WG.activeBlank] !== null) {
+        WG.activeBlank++;
+    }
+}
+
 
 function onWrongAnswer() {
     WG.wrongAttempts++;
@@ -358,17 +409,21 @@ function onInsightClick() {
     overlay.addEventListener("click", onClosePopup);
     svg.appendChild(overlay);
 
-    /* Move inside-popup to be the last child of SVG (renders on top) */
-    var popup = getEl("inside-popup");
-    if (popup) {
-        svg.appendChild(popup);
-        popup.style.display = "";
-    }
+    /* Move inside-popup, its text, and the close button to be the last children of SVG (render on top) */
+    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+        var el = getEl(id);
+        if (el) {
+            svg.appendChild(el);
+            el.style.display = "";
+        }
+    });
 }
 
 function onClosePopup() {
-    /* Hide popup */
-    hide("inside-popup");
+    /* Hide popup elements */
+    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+        hide(id);
+    });
 
     /* Remove overlay */
     var overlay = getEl("insight-overlay");
@@ -405,35 +460,63 @@ var SIGNAL_ORANGE = "#ff9800";
 var SIGNAL_RED = "red";
 
 /*
-  Map each blank index to a signal slot index (right-to-left alignment):
-  With N blanks we use the rightmost N slots.
-  blank[i] → slot (4 - N + i)
+  Signal slot → circle ID mapping (left to right):
+  slot 0: #yellow-signal  (x≈1527, used in 4-blank sentences only)
+  slot 1: #green-signal   (x≈1613, used in 3+ blank sentences)
+  slot 2: #red-signal     (x≈1699, used in 2+ blank sentences)
+  slot 3: #yellow-signal1 (x≈1785, always used)
+
+  For N blanks we show only the rightmost N signal circles AND
+  the matching housing panel (one/two/three/four-signals-panel).
 */
+
 function blankToSlot(blankIdx) {
     var n = WG.blanks.length;
-    return (4 - n) + blankIdx;
+    return (4 - Math.min(n, 4)) + blankIdx;
 }
 
+/* Update housing panel + visibility of each circle, then set colours */
 function updateSignals() {
+    updateSignalPanel();
+
     var n = Math.min(WG.blanks.length, 4);
 
     WG.signalSlots.forEach(function (slotId, slotIndex) {
-        /* Find which blank (if any) maps to this slot */
         var blankIdx = slotIndex - (4 - n);
 
-        if (blankIdx < 0 || blankIdx >= n) {
-            /* Unused slot — dim it */
-            setSlotColor(slotId, SIGNAL_DIM);
-            return;
-        }
+        if (blankIdx < 0 || blankIdx >= n) return;  /* circle already hidden */
 
-        /* Determine state of this blank */
+        /* Colour the visible slot based on blank state */
         if (WG.filledAnswers[blankIdx] !== null) {
             setSlotColor(slotId, SIGNAL_GREEN);
         } else if (blankIdx === WG.activeBlank) {
             setSlotColor(slotId, SIGNAL_ORANGE);
         } else {
-            /* Future blank */
+            setSlotColor(slotId, SIGNAL_YELLOW);
+        }
+    });
+}
+
+/* Show the right housing panel and hide/show individual circles */
+function updateSignalPanel() {
+    var n = Math.min(WG.blanks.length, 4);
+
+    /* Housing panels */
+    var panelMap = {
+        1: "one-signals-panel", 2: "two-signals-panel",
+        3: "three-signals-panel", 4: "four-signals-panel"
+    };
+    ["one-signals-panel", "two-signals-panel",
+        "three-signals-panel", "four-signals-panel"].forEach(function (p) { hide(p); });
+    if (panelMap[n]) show(panelMap[n]);
+
+    /* Signal circles — only show the rightmost N circles */
+    WG.signalSlots.forEach(function (slotId, slotIndex) {
+        var blankIdx = slotIndex - (4 - n);
+        if (blankIdx < 0) {
+            hide(slotId);           /* not needed for this sentence */
+        } else {
+            show(slotId);           /* show and reset to pending colour */
             setSlotColor(slotId, SIGNAL_YELLOW);
         }
     });
@@ -442,14 +525,12 @@ function updateSignals() {
 function setSlotColor(slotId, color) {
     var grp = getEl(slotId);
     if (!grp) return;
-    /* First path/circle child is the main filled lamp circle */
     var paths = grp.querySelectorAll("path, circle");
     if (paths.length > 0) paths[0].style.fill = color;
 }
 
 function showRedSignalBlink() {
     stopBlink();
-    /* Turn the active slot red */
     var slotIndex = blankToSlot(WG.activeBlank);
     var slotId = WG.signalSlots[slotIndex];
     if (!slotId) return;
@@ -464,7 +545,7 @@ function showRedSignalBlink() {
 
     setTimeout(function () {
         stopBlink();
-        updateSignals(); /* Restore proper state */
+        updateSignals();
     }, 2000);
 }
 
@@ -657,17 +738,19 @@ function showCongratulatoryMessage() {
 
     svg.appendChild(g);
 }
-
 /* ──────────────────────────────────────────────────────────
    RESET OPTION BUTTONS
    ────────────────────────────────────────────────────────── */
 
+/* No quote button special fills needed now */
 function resetOptionButtons() {
     Object.keys(WG.optionMap).forEach(function (id) {
         var el = getEl(id);
         if (!el) return;
         var bgRect = el.querySelector("rect");
-        if (bgRect) bgRect.style.fill = "#c7eabb";
+        if (bgRect) {
+            bgRect.style.fill = "#c7eabb";
+        }
     });
 }
 

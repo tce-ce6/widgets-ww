@@ -409,13 +409,22 @@ svg * {
   }
 }
 
-/* Hide SVG elements that JS will manage — prevents flash before DOMContentLoaded */
-#inside-popup,
-#answer-btn,
-#answer-btn-text,
-#next-btn-panel,
-#three-signals-panel,
-#two-signals-panel,
-#one-signals-panel {
-  display: none;
+/* Cleaned up hidden elements residue */
+
+/* Active blank pulsing animation — applied as class on SVG tspan elements */
+@keyframes blankPulse {
+
+  0%,
+  100% {
+    fill: #2196f3;
+  }
+
+  50% {
+    fill: #0a6abf;
+  }
+}
+
+.active-blank {
+  fill: #2196f3;
+  animation: blankPulse 1s ease-in-out infinite;
 }
