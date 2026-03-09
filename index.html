@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widgets</title>
+  <link rel="stylesheet" href="./widget-listing-b3/style/style.css">
+  <script src="./widget-listing-b3/script/script.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-title">
+        <h1>Widgets&nbsp;<span class="count">(<span id="total">…</span>)</span></h1>
+        <p id="page-updated" class="page-updated"></p>
+      </div>
+      <input type="text" id="widget-search" class="widget-search"
+             placeholder="Search by name or number…" autocomplete="off">
+    </header>
+
+    <div id="recent-activity" class="recent-activity"></div>
+
+    <div class="controls">
+      <div class="chips-row" id="sort-chips">
+        <span class="chips-label">Sort</span>
+        <button class="chip active" data-sort="time">Time</button>
+        <button class="chip" data-sort="name">Name</button>
+        <button class="chip" data-sort="num">Number</button>
+      </div>
+      <div class="chips-row" id="user-chips"></div>
+    </div>
+
+    <ul class="widget-list" id="widget-listing"></ul>
+  </div>
+</body>
+</html>
