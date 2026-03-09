@@ -54,6 +54,13 @@ function initGame() {
         }
     });
 
+    // Bind activity home button
+    const activityHome = document.getElementById('Group_1566');
+    if (activityHome) {
+        activityHome.style.cursor = 'pointer';
+        activityHome.addEventListener('click', returnToMenu);
+    }
+
     // Create discovered words container
     let activityBox = document.getElementById('activity-box');
     if (activityBox) {
@@ -77,7 +84,7 @@ function injectStyles() {
            transform-origin: center;
         }
         .interactive-card.used {
-           opacity: 0.4;
+           opacity: 0;
            pointer-events: none;
         }
         .interactive-card.wrong {
@@ -214,20 +221,16 @@ function handleOptionClick(family, idx) {
     } else {
         GameState.isAnimating = true;
 
-        // Highlight and fly to center
-        container.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        // Fade out
+        container.style.transition = 'opacity 0.6s, filter 0.6s';
         container.style.filter = 'drop-shadow(0 0 15px #f6c248)';
-
-        const pos = GameState.CARD_POSITIONS[idx];
-        const targetX = 516.5 - pos.x;
-        const targetY = 452.5 - pos.y;
-
-        container.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.8)`;
+        container.style.opacity = '0';
+        container.style.pointerEvents = 'none';
 
         setTimeout(() => {
-            // Revert container physics
+            // Revert container physics for next round
             container.style.transition = 'none';
-            container.style.transform = 'none';
+            container.style.opacity = '';
             container.style.filter = 'none';
             container.classList.add('used');
 
@@ -249,42 +252,80 @@ function renderDiscoveredWords(family) {
     wordsContainer.innerHTML = '';
     const discovered = GameState.families[family].discovered;
 
+    const WORD_MAPPINGS = {
+        sun: { 0: 'sunflower', 3: 'sunglasses', 4: 'sunscreen', 5: 'sunlight' },
+        rain: { 0: 'raincoat', 1: 'rainstorm', 2: 'rainbow', 3: 'raindrop' },
+        snow: { 0: 'snowball', 2: 'snowflake', 3: 'snowsuit', 4: 'snowman' },
+        fire: { 1: 'fireman', 2: 'fireplace', 3: 'firewood', 4: 'firefly' },
+        sea: { 0: 'seafood', 3: 'seahorse', 4: 'seashell', 5: 'seaweed' },
+        sand: { 0: 'sandpaper', 2: 'sandcastle', 4: 'sandstorm', 5: 'sandbox' }
+    };
+
     discovered.forEach((originalIdx, posIndex) => {
-        const WordX = 1060 + (posIndex % 2) * 270;
-        const WordY = 320 + Math.floor(posIndex / 2) * 200;
+        const WordX = 1060;
+        const WordY = 320 + posIndex * 150;
 
-        const combinedGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const rowGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-        // Setup center wrapper
-        const centerWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        centerWrapper.setAttribute('transform', `translate(${WordX}, ${WordY}) scale(0.4) translate(-516.5, -452.5)`);
-        const centerClone = GameState.elements[family].center.cloneNode(true);
-        centerWrapper.appendChild(centerClone);
+        // White background rectangle for the row
+        const bgRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bgRect.setAttribute("x", WordX - 10);
+        bgRect.setAttribute("y", WordY - 60);
+        bgRect.setAttribute("width", 580);
+        bgRect.setAttribute("height", 120);
+        bgRect.setAttribute("rx", 15);
+        bgRect.setAttribute("fill", "#fff");
+        bgRect.setAttribute("fill-opacity", "0.9");
+        rowGroup.appendChild(bgRect);
 
-        // Setup text + sign
+        // 1. Center Image (Family part)
+        const familyWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        familyWrapper.setAttribute('transform', `translate(${WordX + 40}, ${WordY}) scale(0.25) translate(-516.5, -452.5)`);
+        const familyClone = GameState.elements[family].center.cloneNode(true);
+        familyWrapper.appendChild(familyClone);
+
+        // 2. Plus sign
         const plusSign = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        plusSign.setAttribute("x", WordX + 90);
-        plusSign.setAttribute("y", WordY + 50);
-        plusSign.setAttribute("font-size", "45");
-        plusSign.setAttribute("fill", "#fdce35");
+        plusSign.setAttribute("x", WordX + 110);
+        plusSign.setAttribute("y", WordY + 10);
+        plusSign.setAttribute("font-size", "30");
+        plusSign.setAttribute("fill", "#077077");
         plusSign.setAttribute("font-weight", "bold");
-        plusSign.setAttribute("class", "words-plus");
+        plusSign.setAttribute("text-anchor", "middle");
         plusSign.textContent = "+";
 
-        // Setup option wrapper
+        // 3. Option Image (Object part)
         const optionWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
         const pos = GameState.CARD_POSITIONS[originalIdx];
-        optionWrapper.setAttribute('transform', `translate(${WordX + 120}, ${WordY}) scale(0.4) translate(${-pos.x}, ${-pos.y})`);
-
-        // clone without 'used' styles
+        optionWrapper.setAttribute('transform', `translate(${WordX + 180}, ${WordY}) scale(0.25) translate(${-pos.x}, ${-pos.y})`);
         const optionClone = GameState.elements[family].options[originalIdx].cloneNode(true);
         optionClone.classList.remove('used');
         optionWrapper.appendChild(optionClone);
 
-        combinedGroup.appendChild(centerWrapper);
-        combinedGroup.appendChild(plusSign);
-        combinedGroup.appendChild(optionWrapper);
-        wordsContainer.appendChild(combinedGroup);
+        // 4. Result Text
+        const resultText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        resultText.setAttribute("x", WordX + 270);
+        resultText.setAttribute("y", WordY + 10);
+        resultText.setAttribute("font-size", "28");
+        resultText.setAttribute("fill", "#077077");
+        resultText.setAttribute("font-family", '"Roboto", sans-serif');
+        resultText.setAttribute("font-weight", "500");
+        resultText.textContent = WORD_MAPPINGS[family][originalIdx] || "";
+
+        // 5. Result Icon (using option icon again for now as placeholder for resulting object)
+        const resultIconWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        resultIconWrapper.setAttribute('transform', `translate(${WordX + 500}, ${WordY}) scale(0.3) translate(${-pos.x}, ${-pos.y})`);
+        const resultIconClone = GameState.elements[family].options[originalIdx].cloneNode(true);
+        resultIconClone.classList.remove('used');
+        resultIconWrapper.appendChild(resultIconClone);
+
+        rowGroup.appendChild(familyWrapper);
+        rowGroup.appendChild(plusSign);
+        rowGroup.appendChild(optionWrapper);
+        rowGroup.appendChild(resultText);
+        rowGroup.appendChild(resultIconWrapper);
+
+        wordsContainer.appendChild(rowGroup);
     });
 
     // Update progress text
