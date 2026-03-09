@@ -7,28 +7,14 @@
  *   Screen 2 — Learn:          Category cards (People/Places/Animals/Things), tap to reveal examples
  *   Screen 3 — Practice:       Magic Picture Builder — tap naming words to colour the scene
  *   Screen 4 — Final Score:    "Amazing Work!" with Play Again
- *
- * Architecture:
- *   WidgetState  — single global object tracking all mutable state
- *   UI           — cached DOM/SVG element references
- *   goToScreen*  — screen-transition functions (show/hide SVG groups)
- *   loadSentence — populates word buttons for the current sentence
- *   handleWordClick — processes correct/wrong noun tap
  */
 
 'use strict';
 
 // ─────────────────────────────────────────────────────────────
-// DATA: Practice sentences, nouns, and SVG element mappings
+// DATA
 // ─────────────────────────────────────────────────────────────
 
-/**
- * Each sentence object defines:
- *   words   — array of word strings shown as buttons (max 6)
- *   nouns   — array of noun strings (normalised, no punctuation)
- *   svgMap  — maps each noun to its { grey, color } SVG element IDs
- *   sceneId — wrapper group ID in the second SVG
- */
 const SENTENCES = [
   {
     words:   ["A", "cat", "sits", "on", "a", "mat."],
@@ -106,7 +92,7 @@ const SENTENCES = [
     words:   ["A", "boy", "runs", "to", "the", "park."],
     nouns:   ["boy", "park"],
     svgMap:  {
-      boy:  { grey: "run-grey",  color: "run-color"  },   // running boy illustration
+      boy:  { grey: "run-grey",  color: "run-color"  },
       park: { grey: "park-grey", color: "park-color" }
     },
     sceneId: "scene-9"
@@ -168,26 +154,41 @@ const SENTENCES = [
 ];
 
 // Pre-computed horizontal centre of each word button rect (in first-SVG coordinates)
-// Buttons span: 372.31→602, 638→868, 903.68→1133.68, 1169.36→1399.36, 1435.04→1665.04, 1700.73→1930.73
 const BTN_CENTER_X = [487.31, 753.00, 1018.68, 1284.36, 1550.04, 1815.73];
-const BTN_TEXT_Y   = 944.22;  // vertical baseline shared by all word buttons
+const BTN_TEXT_Y   = 944.22;
 
 // ─────────────────────────────────────────────────────────────
 // GLOBAL STATE
 // ─────────────────────────────────────────────────────────────
 
 const WidgetState = {
-  currentScreen:        1,     // 1=home | 2=learn | 3=practice | 4=score
-  currentSentenceIndex: 0,     // 0-14
-  foundNouns:           [],    // nouns found in the current sentence
-  totalNounsFound:      0,     // cumulative across all sentences
-  flippedCards: {              // learn-screen card flip state
+  currentScreen:      1,      // 1=home | 2=learn | 3=practice | 4=score
+  sentenceOrder:      [],     // shuffled index list into SENTENCES
+  currentOrderIndex:  0,      // current position within sentenceOrder
+  foundNouns:         [],     // nouns found in current sentence
+  totalNounsFound:    0,
+  flippedCards: {
     people: false,
     place:  false,
     animal: false,
     thing:  false
   }
 };
+
+/** Fisher-Yates shuffle of [0..14] into WidgetState.sentenceOrder */
+function shuffleSentences() {
+  const indices = SENTENCES.map((_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  WidgetState.sentenceOrder     = indices;
+  WidgetState.currentOrderIndex = 0;
+}
+
+function currentSentenceData() {
+  return SENTENCES[WidgetState.sentenceOrder[WidgetState.currentOrderIndex]];
+}
 
 // ─────────────────────────────────────────────────────────────
 // UI: Cached DOM/SVG element references
@@ -196,11 +197,12 @@ const WidgetState = {
 const UI = {};
 
 function initUI() {
-  // ── Screen 1 ──────────────────────────────────────────────
+  // Screen 1
   UI.learnBtn    = document.getElementById("learn-btn");
   UI.practiseBtn = document.getElementById("Practise-btn");
+  UI.character   = document.getElementById("Chatacter");
 
-  // ── Screen 2 (Learn) ──────────────────────────────────────
+  // Screen 2 (Learn)
   UI.iTextLearn     = document.getElementById("i-yext-learn");
   UI.activeBtnLearn = document.getElementById("Active-btn-learn");
   UI.peopleCard1    = document.getElementById("people-card-1");
@@ -212,7 +214,7 @@ function initUI() {
   UI.thingCard1     = document.getElementById("thimg-card-1");
   UI.thingCard2     = document.getElementById("thimg-card-2");
 
-  // ── Screen 3 (Practice) ───────────────────────────────────
+  // Screen 3 (Practice)
   UI.iTextPractice     = document.getElementById("i-yext-practice");
   UI.activeBtnPractice = document.getElementById("Active-btn-pactice");
   UI.pictureBg         = document.getElementById("picture-bg");
@@ -222,15 +224,14 @@ function initUI() {
   UI.pic2Colour        = document.getElementById("pic-2-colour");
   UI.nextPicture       = document.getElementById("next-picture");
 
-  // Word buttons (6 pairs of background + text groups)
-  UI.optionsBtns      = [];
-  UI.optionsBtnTexts  = [];
+  UI.optionsBtns     = [];
+  UI.optionsBtnTexts = [];
   for (let i = 1; i <= 6; i++) {
     UI.optionsBtns.push(document.getElementById(`options-btn-${i}`));
     UI.optionsBtnTexts.push(document.getElementById(`options-btn-text-${i}`));
   }
 
-  // ── Second SVG (practice scene illustrations) ─────────────
+  // Second SVG (scene illustrations)
   UI.scenesSvgLayer = document.getElementById("scenes-svg-layer");
   UI.scenesBg       = document.getElementById("scenes-bg");
   UI.scenesInside   = document.getElementById("scenes-inside");
@@ -239,78 +240,22 @@ function initUI() {
     UI.scenes.push(document.getElementById(`scene-${i}`));
   }
 
-  // ── Screen 4 (Score) ──────────────────────────────────────
+  // Screen 4 (Score)
   UI.finalScorePopup = document.getElementById("final-score-popup");
   UI.finalScoreTos   = document.getElementById("final-score-tos");
   UI.playAgain       = document.getElementById("play-again");
 
-  // ── Common ────────────────────────────────────────────────
+  // Common
   UI.homeBtn = document.getElementById("home-btn");
-
-  // HTML feedback overlay (created dynamically)
-  createFeedbackOverlay();
 }
 
 // ─────────────────────────────────────────────────────────────
-// FEEDBACK OVERLAY
-// ─────────────────────────────────────────────────────────────
-
-function createFeedbackOverlay() {
-  const el = document.createElement("div");
-  el.id = "wg154-feedback";
-  el.style.cssText = [
-    "position:absolute",
-    "left:55%",
-    "bottom:13%",
-    "transform:translateX(-50%)",
-    "max-width:44%",
-    "padding:10px 22px",
-    "border-radius:16px",
-    "font-family:Roboto,sans-serif",
-    "font-size:clamp(13px,1.6vw,20px)",
-    "font-weight:700",
-    "text-align:center",
-    "line-height:1.4",
-    "pointer-events:none",
-    "z-index:200",
-    "opacity:0",
-    "transition:opacity 0.25s ease",
-    "box-shadow:0 3px 12px rgba(0,0,0,0.18)"
-  ].join(";");
-  document.getElementById("svg-container").appendChild(el);
-  UI.feedbackEl = el;
-}
-
-function showFeedback(message, isCorrect) {
-  const el = UI.feedbackEl;
-  el.textContent = message;
-  if (isCorrect) {
-    el.style.background = "#e8f9e8";
-    el.style.color       = "#1a6b1a";
-    el.style.border      = "2px solid #4caf50";
-  } else {
-    el.style.background = "#fff8e1";
-    el.style.color       = "#7a5000";
-    el.style.border      = "2px solid #ffc107";
-  }
-  el.style.opacity = "1";
-  clearTimeout(UI._fbTimer);
-  UI._fbTimer = setTimeout(() => { el.style.opacity = "0"; }, 2500);
-}
-
-function hideFeedback() {
-  clearTimeout(UI._fbTimer);
-  if (UI.feedbackEl) UI.feedbackEl.style.opacity = "0";
-}
-
-// ─────────────────────────────────────────────────────────────
-// SVG ELEMENT HELPERS
+// SVG HELPERS
 // ─────────────────────────────────────────────────────────────
 
 function show(el) { if (el) el.style.display = ""; }
 function hide(el) { if (el) el.style.display = "none"; }
 
-/** Show/hide an SVG element by its string ID */
 function showById(id) {
   const el = document.getElementById(id);
   if (el) el.style.display = "";
@@ -324,9 +269,8 @@ function hideById(id) {
 // SCREEN TRANSITIONS
 // ─────────────────────────────────────────────────────────────
 
-/** All first-SVG interactive elements, for easy bulk-hide */
 const ALL_SVG_ELEMENTS = () => [
-  UI.learnBtn, UI.practiseBtn,
+  UI.learnBtn, UI.practiseBtn, UI.character,
   UI.iTextLearn, UI.activeBtnLearn,
   UI.peopleCard1, UI.peopleCard2,
   UI.placeCard1,  UI.placeCard2,
@@ -339,94 +283,77 @@ const ALL_SVG_ELEMENTS = () => [
   UI.homeBtn,
   ...UI.optionsBtns,
   ...UI.optionsBtnTexts,
-  // Second SVG root
   UI.scenesSvgLayer
 ];
 
 function hideEverything() {
   ALL_SVG_ELEMENTS().forEach(hide);
+  removeAllTicks();
+  stopConfetti();
 }
 
-/** Screen 1 — Home/Title */
 function goToScreen1() {
   WidgetState.currentScreen = 1;
   WidgetState.flippedCards  = { people: false, place: false, animal: false, thing: false };
-
   hideEverything();
   show(UI.learnBtn);
   show(UI.practiseBtn);
-  hideFeedback();
+  show(UI.character);
 }
 
-/** Screen 2 — Learn (category cards) */
 function goToScreen2() {
   WidgetState.currentScreen = 2;
   WidgetState.flippedCards  = { people: false, place: false, animal: false, thing: false };
-
   hideEverything();
-  // Navigation
   show(UI.homeBtn);
   show(UI.practiseBtn);
   show(UI.activeBtnLearn);
-  // Content
   show(UI.iTextLearn);
-  // Show card fronts only
   show(UI.peopleCard1); hide(UI.peopleCard2);
   show(UI.placeCard1);  hide(UI.placeCard2);
   show(UI.animalCard1); hide(UI.animalCard2);
   show(UI.thingCard1);  hide(UI.thingCard2);
-
-  hideFeedback();
 }
 
-/** Screen 3 — Practice (Magic Picture Builder) */
-function goToScreen3(sentenceIndex) {
-  WidgetState.currentScreen        = 3;
-  WidgetState.currentSentenceIndex = (sentenceIndex !== undefined) ? sentenceIndex : 0;
-  WidgetState.foundNouns           = [];
-
+function goToScreen3(orderIndex) {
+  WidgetState.currentScreen      = 3;
+  WidgetState.currentOrderIndex  = (orderIndex !== undefined) ? orderIndex : 0;
+  WidgetState.foundNouns         = [];
   hideEverything();
-  // Show second SVG layer
   show(UI.scenesSvgLayer);
   show(UI.scenesBg);
   show(UI.scenesInside);
-  // Navigation & chrome
   show(UI.homeBtn);
   show(UI.activeBtnPractice);
-  // Practice area chrome
   show(UI.iTextPractice);
   show(UI.pictureBg);
-
-  loadSentence(WidgetState.currentSentenceIndex);
+  loadSentence();
 }
 
-/** Screen 4 — Final Score */
 function goToScreen4() {
   WidgetState.currentScreen = 4;
-
   hideEverything();
   show(UI.homeBtn);
   show(UI.finalScorePopup);
   show(UI.finalScoreTos);
   show(UI.playAgain);
-  hideFeedback();
 }
 
 // ─────────────────────────────────────────────────────────────
 // PRACTICE: Sentence loading
 // ─────────────────────────────────────────────────────────────
 
-function loadSentence(index) {
-  const sentence = SENTENCES[index];
+function loadSentence() {
+  const sentence = currentSentenceData();
   WidgetState.foundNouns = [];
+  removeAllTicks();
+  stopConfetti();
 
-  // ── Scene illustration ────────────────────────────────────
-  // Hide all scenes, then show only the current one
+  // Scene illustration: hide all scenes, show current one (grey state)
   UI.scenes.forEach(hide);
   const sceneEl = document.getElementById(sentence.sceneId);
   if (sceneEl) {
     show(sceneEl);
-    // Within the scene: show grey nouns, hide colour nouns
     sentence.nouns.forEach(noun => {
       const map = sentence.svgMap[noun];
       showById(map.grey);
@@ -438,7 +365,7 @@ function loadSentence(index) {
     });
   }
 
-  // ── Word buttons ──────────────────────────────────────────
+  // Word buttons
   const words = sentence.words;
   for (let i = 0; i < 6; i++) {
     const btn     = UI.optionsBtns[i];
@@ -446,8 +373,8 @@ function loadSentence(index) {
     if (i < words.length) {
       show(btn);
       show(btnText);
-      resetButtonStyle(i);          // clear any previous correct/wrong state
-      setButtonWord(i, words[i]);   // update the text label
+      resetButtonStyle(i);
+      setButtonWord(i, words[i]);
     } else {
       hide(btn);
       hide(btnText);
@@ -455,36 +382,30 @@ function loadSentence(index) {
   }
 
   hide(UI.nextPicture);
-  hideFeedback();
 }
 
 // ─────────────────────────────────────────────────────────────
 // WORD BUTTON: Text & Style Helpers
 // ─────────────────────────────────────────────────────────────
 
-/** Update the SVG text inside options-btn-text-N to display `word`, centred */
 function setButtonWord(btnIdx, word) {
-  const group   = UI.optionsBtnTexts[btnIdx];
+  const group  = UI.optionsBtnTexts[btnIdx];
   if (!group) return;
-  const textEl  = group.querySelector("text");
+  const textEl = group.querySelector("text");
   if (!textEl) return;
 
-  // Remove all existing tspan children
   while (textEl.firstChild) textEl.removeChild(textEl.firstChild);
 
-  // Create a single centred tspan
   const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
   tspan.setAttribute("x", "0");
   tspan.setAttribute("y", "0");
   tspan.textContent = word;
   textEl.appendChild(tspan);
 
-  // Centre the text horizontally within the button
   textEl.setAttribute("transform", `translate(${BTN_CENTER_X[btnIdx]} ${BTN_TEXT_Y})`);
   textEl.setAttribute("text-anchor", "middle");
 }
 
-/** Reset button rect to default (cream / pink border) state */
 function resetButtonStyle(btnIdx) {
   const btn = UI.optionsBtns[btnIdx];
   if (!btn) return;
@@ -496,18 +417,19 @@ function resetButtonStyle(btnIdx) {
   btn.style.animation = "";
 }
 
-/** Mark a word button green — correct answer */
+/** Mark button green (XD correct colour) and add SVG tick overlay */
 function markButtonCorrect(btnIdx) {
   const btn = UI.optionsBtns[btnIdx];
   if (!btn) return;
   const rect = btn.querySelector("rect");
   if (rect) {
-    rect.setAttribute("fill",   "#4caf50");
-    rect.setAttribute("stroke", "#2e7d32");
+    rect.setAttribute("fill",   "#7dff66");
+    rect.setAttribute("stroke", "#3db82b");
   }
+  addCorrectTick(btnIdx);
 }
 
-/** Shake a word button red briefly — wrong answer */
+/** Briefly flash red and shake — wrong answer */
 function shakeButtonWrong(btnIdx) {
   const btn = UI.optionsBtns[btnIdx];
   if (!btn) return;
@@ -518,19 +440,73 @@ function shakeButtonWrong(btnIdx) {
   rect.setAttribute("fill",   "#ffdddd");
   rect.setAttribute("stroke", "#e53935");
 
-  // Trigger CSS shake animation
   btn.style.animation = "none";
-  // Force reflow so the animation restarts cleanly
   void btn.offsetWidth;
-  btn.style.animation          = "wg154Shake 0.4s ease";
-  btn.style.transformBox       = "fill-box";
-  btn.style.transformOrigin    = "center";
+  btn.style.animation       = "wg154Shake 0.45s ease";
+  btn.style.transformBox    = "fill-box";
+  btn.style.transformOrigin = "center";
 
   setTimeout(() => {
     rect.setAttribute("fill",   originalFill);
     rect.setAttribute("stroke", "#fc8bc2");
     btn.style.animation = "";
-  }, 420);
+  }, 460);
+}
+
+// ─────────────────────────────────────────────────────────────
+// SVG TICK (correct feedback — SVG elements only)
+// ─────────────────────────────────────────────────────────────
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+function addCorrectTick(btnIdx) {
+  const btnGroup = UI.optionsBtns[btnIdx];
+  if (!btnGroup) return;
+
+  // Remove any existing tick on this button
+  const existing = btnGroup.querySelector(".wg154-tick");
+  if (existing) existing.remove();
+
+  const rect = btnGroup.querySelector("rect");
+  if (!rect) return;
+
+  const bx = parseFloat(rect.getAttribute("x") || 0);
+  const by = parseFloat(rect.getAttribute("y") || 0);
+  const bw = parseFloat(rect.getAttribute("width") || 230);
+
+  // Tick group anchored to top-right of the button
+  const g  = document.createElementNS(SVG_NS, "g");
+  g.classList.add("wg154-tick");
+
+  const cx = bx + bw - 4;
+  const cy = by - 4;
+  const r  = 24;
+
+  const circle = document.createElementNS(SVG_NS, "circle");
+  circle.setAttribute("cx", cx);
+  circle.setAttribute("cy", cy);
+  circle.setAttribute("r",  r);
+  circle.setAttribute("fill",         "#2e7d32");
+  circle.setAttribute("stroke",       "#fff");
+  circle.setAttribute("stroke-width", "4");
+
+  const text = document.createElementNS(SVG_NS, "text");
+  text.setAttribute("x",           cx);
+  text.setAttribute("y",           cy + 11);
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("font-size",   "30");
+  text.setAttribute("fill",        "#fff");
+  text.setAttribute("font-family", "Arial, sans-serif");
+  text.setAttribute("font-weight", "bold");
+  text.textContent = "✓";
+
+  g.appendChild(circle);
+  g.appendChild(text);
+  btnGroup.appendChild(g);
+}
+
+function removeAllTicks() {
+  document.querySelectorAll(".wg154-tick").forEach(el => el.remove());
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -540,37 +516,29 @@ function shakeButtonWrong(btnIdx) {
 function handleWordClick(btnIdx) {
   if (WidgetState.currentScreen !== 3) return;
 
-  const sentence = SENTENCES[WidgetState.currentSentenceIndex];
-  const word     = sentence.words[btnIdx];
-
-  // Normalise: strip trailing punctuation, lowercase
+  const sentence   = currentSentenceData();
+  const word       = sentence.words[btnIdx];
   const normalized = word.replace(/[.,!?]+$/, "").toLowerCase();
 
-  // Ignore clicks on already-correct buttons
+  // Ignore already-correct buttons
   const btn  = UI.optionsBtns[btnIdx];
   const rect = btn && btn.querySelector("rect");
-  if (rect && rect.getAttribute("fill") === "#4caf50") return;
+  if (rect && rect.getAttribute("fill") === "#7dff66") return;
 
   if (sentence.nouns.includes(normalized)) {
-    // ── Correct ───────────────────────────────────────────
     markButtonCorrect(btnIdx);
     revealNoun(sentence, normalized);
     WidgetState.foundNouns.push(normalized);
     WidgetState.totalNounsFound++;
-    showFeedback(`✨ Wonderful! "${normalized}" is a naming word!`, true);
 
-    // Check if all nouns for this sentence have been found
     if (WidgetState.foundNouns.length === sentence.nouns.length) {
       setTimeout(onSentenceComplete, 900);
     }
   } else {
-    // ── Wrong ─────────────────────────────────────────────
     shakeButtonWrong(btnIdx);
-    showFeedback(`Try again! "${normalized}" is not a naming word.`, false);
   }
 }
 
-/** Swap grey noun illustration → colour version */
 function revealNoun(sentence, noun) {
   const map = sentence.svgMap[noun];
   if (!map) return;
@@ -582,19 +550,73 @@ function revealNoun(sentence, noun) {
   }
 }
 
-/** Called when all nouns in the current sentence are found */
 function onSentenceComplete() {
-  hideFeedback();
-  showFeedback("🎉 Picture Complete!", true);
+  launchConfetti();
 
-  const isLastSentence = (WidgetState.currentSentenceIndex >= SENTENCES.length - 1);
-  if (isLastSentence) {
-    // All 15 sentences done → final score screen
-    setTimeout(goToScreen4, 1600);
+  const isLast = (WidgetState.currentOrderIndex >= SENTENCES.length - 1);
+  if (isLast) {
+    setTimeout(goToScreen4, 2200);
   } else {
-    // Show "Next Picture" button
     show(UI.nextPicture);
   }
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONFETTI
+// ─────────────────────────────────────────────────────────────
+
+let _confettiTimeout = null;
+
+function launchConfetti() {
+  stopConfetti();
+
+  const container = document.getElementById("svg-container");
+  if (!container) return;
+
+  const wrap = document.createElement("div");
+  wrap.id = "wg154-confetti";
+  // Positioned over the picture-bg blob area (measured: left=41%, top=31%, right=61%, bottom=66%)
+  wrap.style.cssText = [
+    "position:absolute",
+    "left:41%", "top:31%",
+    "width:20%", "height:35%",
+    "overflow:hidden",
+    "pointer-events:none",
+    "z-index:5"
+  ].join(";");
+
+  const colors = ["#ff6b6b","#ffd93d","#6bcb77","#4d96ff","#ff922b","#cc5de8","#f06595","#fff"];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement("div");
+    const color    = colors[i % colors.length];
+    const size     = 5 + Math.random() * 7;
+    const xStart   = 10 + Math.random() * 80;
+    const delay    = Math.random() * 0.6;
+    const duration = 1.2 + Math.random() * 1.2;
+    const rotation = Math.random() * 360;
+    p.style.cssText = [
+      "position:absolute",
+      `left:${xStart}%`,
+      "top:-12px",
+      `width:${size}px`,
+      `height:${size}px`,
+      `background:${color}`,
+      `border-radius:${Math.random() > 0.4 ? "50%" : "2px"}`,
+      `transform:rotate(${rotation}deg)`,
+      `animation:wg154Fall ${duration}s ${delay}s ease-in forwards`
+    ].join(";");
+    wrap.appendChild(p);
+  }
+
+  container.appendChild(wrap);
+  _confettiTimeout = setTimeout(stopConfetti, 3200);
+}
+
+function stopConfetti() {
+  clearTimeout(_confettiTimeout);
+  _confettiTimeout = null;
+  const el = document.getElementById("wg154-confetti");
+  if (el) el.remove();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -603,9 +625,8 @@ function onSentenceComplete() {
 
 function flipCard(category) {
   const isFlipped = WidgetState.flippedCards[category];
-  // Map category names to UI keys
-  const card1Key = `${category}Card1`;
-  const card2Key = `${category}Card2`;
+  const card1Key  = `${category}Card1`;
+  const card2Key  = `${category}Card2`;
 
   if (isFlipped) {
     show(UI[card1Key]);
@@ -622,31 +643,28 @@ function flipCard(category) {
 // ─────────────────────────────────────────────────────────────
 
 function attachEventListeners() {
-  // ── Screen 1 ────────────────────────────────────────────
   UI.learnBtn.addEventListener("click", () => goToScreen2());
-  // Practise button on screen 1 OR screen 2 → start practice from sentence 0
+
   UI.practiseBtn.addEventListener("click", () => {
     if (WidgetState.currentScreen === 1 || WidgetState.currentScreen === 2) {
       WidgetState.totalNounsFound = 0;
+      shuffleSentences();
       goToScreen3(0);
     }
   });
 
-  // ── Common: Home button ──────────────────────────────────
   UI.homeBtn.addEventListener("click", () => goToScreen1());
 
-  // ── Screen 3: Next Picture ───────────────────────────────
   UI.nextPicture.addEventListener("click", () => {
-    goToScreen3(WidgetState.currentSentenceIndex + 1);
+    goToScreen3(WidgetState.currentOrderIndex + 1);
   });
 
-  // ── Screen 4: Play Again ─────────────────────────────────
   UI.playAgain.addEventListener("click", () => {
     WidgetState.totalNounsFound = 0;
+    shuffleSentences();
     goToScreen3(0);
   });
 
-  // ── Screen 3: Word buttons (btn group + text group both clickable) ──
   for (let i = 0; i < 6; i++) {
     (function(idx) {
       UI.optionsBtns[idx].addEventListener("click",     () => handleWordClick(idx));
@@ -654,7 +672,6 @@ function attachEventListeners() {
     })(i);
   }
 
-  // ── Screen 2: Category card flip ────────────────────────
   UI.peopleCard1.addEventListener("click", () => flipCard("people"));
   UI.peopleCard2.addEventListener("click", () => flipCard("people"));
   UI.placeCard1.addEventListener("click",  () => flipCard("place"));
@@ -666,23 +683,27 @@ function attachEventListeners() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// CSS INJECTION — shake animation + cursor + SVG overlay
+// CSS INJECTION
 // ─────────────────────────────────────────────────────────────
 
 function injectStyles() {
   const style = document.createElement("style");
   style.textContent = `
-    /* Shake animation for wrong-answer word buttons */
     @keyframes wg154Shake {
       0%   { transform: translateX(0); }
-      20%  { transform: translateX(-7px); }
-      40%  { transform: translateX(7px); }
-      60%  { transform: translateX(-7px); }
-      80%  { transform: translateX(7px); }
+      20%  { transform: translateX(-8px); }
+      40%  { transform: translateX(8px); }
+      60%  { transform: translateX(-8px); }
+      80%  { transform: translateX(8px); }
       100% { transform: translateX(0); }
     }
 
-    /* Clickable cursor on all interactive SVG groups */
+    @keyframes wg154Fall {
+      0%   { transform: translateY(0) rotate(0deg);    opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(220px) rotate(540deg); opacity: 0; }
+    }
+
     #learn-btn, #Practise-btn, #home-btn,
     #play-again, #next-picture,
     #people-card-1, #people-card-2,
@@ -696,21 +717,48 @@ function injectStyles() {
       cursor: pointer;
     }
 
-    /* Stack the two SVGs on top of each other inside svg-container */
+    /* Container for both SVGs */
     #svg-container {
       position: relative;
     }
     #svg-container > svg:first-child {
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
-    /* Second SVG (scene illustrations) overlays the first; no pointer-events */
+
+    /*
+     * Second SVG (scene illustrations) sits BEHIND the first SVG (z-index:2).
+     *
+     * Because the second SVG has a different aspect ratio (1141×755) than the
+     * first (2214×1275), its rendered content lands at a different scale and
+     * position than the picture-bg placeholder frame in the first SVG.
+     *
+     * Measured at runtime (container 2165×1277px):
+     *   scenes-bg  (second SVG): L=34.1%  T=16.9%  R=69.0%  B=77.8%
+     *   picture-bg (first  SVG): L=40.6%  T=31.2%  R=60.8%  B=66.4%
+     *
+     * Required scale  = picture-bg.W / scenes-bg.W = 20.2 / 34.9 = 0.578
+     * Required tx     = picture-bg.L - scenes-bg.L × scale
+     *                 = 40.6 - 34.1×0.578 = 20.87%  (% of element width)
+     * Required ty     = picture-bg.T - scenes-bg.T × scale
+     *                 = 31.2 - 16.9×0.578 = 21.43%  (% of element height)
+     *
+     * This keeps the scenes below the instruction text (ends at 29.2%) and
+     * above the option buttons (start at 69.4%).
+     */
     #svg-container > svg:nth-child(2) {
       position: absolute;
       top: 0; left: 0;
       width: 100% !important;
       height: 100%;
-      z-index: 2;
+      z-index: 1;
+      pointer-events: none;
+      transform-origin: 0 0;
+      transform: translate(20.87%, 21.43%) scale(0.578);
+    }
+
+    /* Confetti container */
+    #wg154-confetti {
       pointer-events: none;
     }
   `;
@@ -725,6 +773,6 @@ document.addEventListener("DOMContentLoaded", () => {
   injectStyles();
   initUI();
   attachEventListeners();
-  // Start at Screen 1 (hide everything except Learn + Practise)
+  shuffleSentences();
   goToScreen1();
 });
