@@ -457,7 +457,6 @@ class UIManager {
     if (this.point) {
       this.point.setAttribute("transform", "translate(0, 0)");
     }
-    this.currentPointX = this.zeroX;
   }
 
   // --- Completion & Feedback ---
