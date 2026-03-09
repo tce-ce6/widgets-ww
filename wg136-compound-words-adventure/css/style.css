@@ -4,47 +4,11 @@
   /* Removes the standard browser focus ring */
 }
 
-#idiom-wrapper,
-#idiom-wrapper * {
+svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-text,
-tspan {
-  user-select: none;
-}
-
-g[style*="cursor: pointer"] text,
-g[style*="cursor: pointer"] tspan,
-[id$="-btn"] text,
-[id$="-btn"] tspan,
-[id^="nubpad-"] text,
-[id^="nubpad-"] tspan {
-  pointer-events: none;
-}
-
-.chip-pair-container .hover-rect {
-  opacity: 0;
-  pointer-events: auto;
-  transition: opacity 0.2s;
-}
-
-.chip-pair-container .hover-close {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-
-.chip-pair-container:hover .hover-rect {
-  opacity: 1;
-}
-
-.chip-pair-container:hover .hover-close {
-  opacity: 1;
-  pointer-events: all;
-}
-
-body#idiom-wrapper {
+#idiom-wrapper body {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -53,11 +17,6 @@ body#idiom-wrapper {
   padding: 0;
   margin: 0;
   background-color: #fff !important;
-  background-image: url("../assets/bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 #idiom-wrapper .container {
@@ -66,7 +25,26 @@ body#idiom-wrapper {
   width: 100vw;
   position: relative;
   user-select: none !important;
-  z-index: 1;
+}
+
+#idiom-wrapper ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#idiom-wrapper .container::after {
+  content: "";
+  background-image: url("../assets/bg.png");
+  background-color: #000;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* #idiom-wrapper .mainContainerOuter {
@@ -164,13 +142,11 @@ body#idiom-wrapper {
   gap: 20px;
   left: 0;
   top: 0;
-  position: absolute;
   z-index: 3;
-  height: 60px;
 }
 
 #idiom-wrapper .wdgetTitle h2 {
-  font-size: 33px;
+  font-size: 23px;
   font-weight: 600;
   text-align: left;
   padding: 5px 40px;
@@ -178,7 +154,6 @@ body#idiom-wrapper {
   border-radius: 0 0px 20px 20px;
   background: #0295FC;
   white-space: nowrap;
-  box-shadow: 3px 3px 1px 1px #0000001c;
 }
 
 #idiom-wrapper .versionText {
@@ -190,19 +165,14 @@ body#idiom-wrapper {
 }
 
 #idiom-wrapper .svg-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 #idiom-wrapper svg {
   width: 100% !important;
-  height: 100% !important;
-  position: absolute;
-  top: 0;
-  left: 0;
+  height: 100%;
 }
 
 /* swar ki pehchan style */
@@ -234,12 +204,11 @@ body#idiom-wrapper {
   min-height: 50px;
 }
 
-.list-wrapper .filled {
-  border-bottom: 0;
-  min-width: auto;
-  min-height: auto;
+.list-wrapper .filled{
+      border-bottom: 0;
+    min-width: auto;
+    min-height: auto;
 }
-
 .option-conatiner {
   background-color: #C4E2B9;
   padding: 63px 52px;
@@ -257,14 +226,13 @@ body#idiom-wrapper {
 .option-wrapper::after,
 .img-container::after,
 .img-container::before,
-.option-wrapper::before {
+.option-wrapper::before{
   content: "";
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
 }
-
 .img-container::before {
   background-image: url("../assets/images/shadow-2.svg");
   height: 76.09px;
@@ -274,7 +242,6 @@ body#idiom-wrapper {
   transform: translateX(-50%);
   z-index: -1;
 }
-
 .option-wrapper::before {
   background-image: url("../assets/images/shadow.svg");
   height: 76.09px;
@@ -284,7 +251,6 @@ body#idiom-wrapper {
   transform: translateX(-50%);
   z-index: -1;
 }
-
 .option-wrapper::after {
   background-image: url("../assets/images/strip.svg");
   height: 75.15px;
@@ -293,7 +259,6 @@ body#idiom-wrapper {
   left: 50%;
   transform: translateX(-50%);
 }
-
 .img-container::after {
   background-image: url("../assets/images/strip-2.svg");
   height: 75.15px;
@@ -315,23 +280,20 @@ body#idiom-wrapper {
   box-sizing: border-box;
   min-height: 95px;
 }
-
-.img-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  object-fit: contain;
+.img-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
 }
-
-#main-img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
+#main-img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }
-
-.result-wrapper {
+.result-wrapper{
   height: 100%;
   width: 100%;
   font-size: 45px;
@@ -342,22 +304,18 @@ body#idiom-wrapper {
   position: relative;
   border-radius: 30px;
 }
-
-.result-wrapper.top {
+.result-wrapper.top{
   background: #A5DCF7;
 }
-
-.result-wrapper.bottom {
+.result-wrapper.bottom{
   background: #CDF9CB;
 }
-
-.result-wrapper .result-text {
+.result-wrapper .result-text{
   display: block;
   width: 100%;
-  line-height: 1.2;
+      line-height: 1.2;
 }
-
-.sub-title {
+.sub-title{
   position: absolute;
   padding: 10px 20px;
   top: -30px;
@@ -366,12 +324,10 @@ body#idiom-wrapper {
   border-radius: 10px;
   color: #fff;
 }
-
-.sub-title.top {
+.sub-title.top{
   background-color: #2EACD2;
 }
-
-.sub-title.bottom {
+.sub-title.bottom{
   background-color: #64B285;
 }
 
@@ -392,25 +348,11 @@ body#idiom-wrapper {
 }
 
 @keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-
-  25% {
-    transform: translateX(-4px);
-  }
-
-  50% {
-    transform: translateX(4px);
-  }
-
-  75% {
-    transform: translateX(-4px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
 }
 
 #reset-btn.disabled {
@@ -418,15 +360,62 @@ body#idiom-wrapper {
   cursor: not-allowed;
   transform: none !important;
 }
-
 #lottie-wrapper {
   display: none;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
-
 #wrapper-1,
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
+}/* Adding custom styles for dynamic UI elements */
+#ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.custom-dropdown {
+  pointer-events: auto;
+  position: absolute;
+  background-color: transparent;
+  border: 2px solid #ea602e;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #333;
+  padding: 0.2vw 0.5vw;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align: center;
+}
+
+.custom-dropdown:focus {
+  border-color: #2b7a78;
+  box-shadow: 0 0 5px rgba(43, 122, 120, 0.5);
+}
+
+.custom-dropdown {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ea602e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.5vw center;
+  background-size: 1.5vw;
+  padding-right: 2vw;
+}
+
+.hidden-svg {
+  display: none !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

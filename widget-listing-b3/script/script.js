@@ -6,10 +6,32 @@
 //   { folders: { "wgXX-name": { updatedAt, author }, ... },
 //     commits:  [ { date, author, widgets: [71, 74, ...] }, ... ] }
 
-const REPO     = 'tce-ce6/widgets-ww';
-const BRANCH   = 'deploy';
+const REPO = 'tce-ce6/widgets-ww';
+const BRANCH = 'deploy';
 const BASE_URL = 'https://tce-ce6.github.io/widgets-ww';
 const META_URL = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/widget-listing-b3/data/meta.json`;
+
+// ── User Aliases ───────────────────────────────────────────────────────────────
+// Maps each raw GitHub username (case-sensitive) to a display alias.
+// Multiple accounts belonging to the same person share one alias, so they are
+// treated as a single user in filtering and history display.
+const USER_ALIASES = {
+  'sushantkanaujiya': 'sus',
+  'sushantthe': 'sus',
+  'PrasannaP': 'pkp',
+  'Santosh': 'san',
+  'Santosh Vishwakarma': 'san',
+  'Shyam': 'shm',
+  'aditya': 'adi',
+  'tce-ashishg': 'ash',
+  'tce-nitinc': 'nit',
+};
+
+/** Return the display alias for a raw author string, or the original if not mapped. */
+function resolveAlias(author) {
+  if (!author) return author;
+  return USER_ALIASES[author] ?? author;
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function titleCase(str) {
@@ -21,12 +43,12 @@ function folderToWidget(name) {
   const raw = name.replace(/^wg\d+-?/, '');
   return {
     num,
-    folder:    name,
-    title:     raw ? titleCase(raw) : `Widget ${num}`,
-    link:      `${BASE_URL}/${name}/`,
+    folder: name,
+    title: raw ? titleCase(raw) : `Widget ${num}`,
+    link: `${BASE_URL}/${name}/`,
     imagePath: `./widget-listing-b3/assets/wg-${num}.png`,
     updatedAt: null,
-    author:    null,
+    author: null,
   };
 }
 
@@ -34,7 +56,7 @@ function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso);
   const p = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
 async function loadMeta() {
@@ -50,15 +72,15 @@ async function loadMeta() {
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  const listEl          = document.getElementById('widget-listing');
-  const totalEl         = document.getElementById('total');
-  const searchEl        = document.getElementById('widget-search');
-  const pageUpdEl       = document.getElementById('page-updated');
-  const recentActEl     = document.getElementById('recent-activity');
-  const sortChipsEl     = document.getElementById('sort-chips');
-  const userChipsEl     = document.getElementById('user-chips');
+  const listEl = document.getElementById('widget-listing');
+  const totalEl = document.getElementById('total');
+  const searchEl = document.getElementById('widget-search');
+  const pageUpdEl = document.getElementById('page-updated');
+  const recentActEl = document.getElementById('recent-activity');
+  const sortChipsEl = document.getElementById('sort-chips');
+  const userChipsEl = document.getElementById('user-chips');
 
-  let widgets    = [];
+  let widgets = [];
   let allCommits = [];       // full commits array from meta.json
   let activeSort = 'time';
   let activeUser = 'all';
@@ -92,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <p class="widget-name">${w.title}</p>
         <span class="card-meta">
           ${w.updatedAt ? `<span class="card-ts">${fmtDate(w.updatedAt)}</span>` : ''}
-          ${w.author    ? `<span class="card-author">${w.author}</span>`          : ''}
+          ${w.author ? `<span class="card-author">${w.author}</span>` : ''}
         </span>
       </a>`;
     return li;
@@ -126,15 +148,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const rows = user === 'all'
       ? allCommits.slice(0, 5)
-      : allCommits.filter(c => c.author === user).slice(0, 3);
+      : allCommits.filter(c => resolveAlias(c.author) === user).slice(0, 3);
 
     if (!rows.length) { recentActEl.innerHTML = ''; return; }
 
     const items = rows.map((c, i) => {
-      const label  = i === 0 ? 'Last&nbsp;Updated' : 'Updated';
-      const nums   = c.widgets.map(n => `<a class="act-wg" href="${BASE_URL}/wg${n}-*/" title="wg${n}">wg${n}</a>`).join(' ');
+      const label = i === 0 ? 'Last&nbsp;Updated' : 'Updated';
+      const nums = c.widgets.map(n => `<a class="act-wg" href="${BASE_URL}/wg${n}-*/" title="wg${n}">wg${n}</a>`).join(' ');
       // For user-filtered view, omit the author name (it's the selected chip)
-      const who    = user === 'all' ? `<span class="act-author">${c.author}</span>` : '';
+      const who = user === 'all' ? `<span class="act-author">${resolveAlias(c.author)}</span>` : '';
       return `
         <div class="act-row${i === 0 ? ' act-row--first' : ''}">
           <span class="act-label">${label}</span>
@@ -158,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const c = allCommits[0];
     const nums = c.widgets.join(', ');
     pageUpdEl.textContent =
-      `Updated ${fmtDate(c.date)}  ·  ${c.author}  (${nums})`;
+      `Updated ${fmtDate(c.date)}  ·  ${resolveAlias(c.author)}  (${nums})`;
   }
 
   // ── Sort chips ───────────────────────────────────────────────────────────────
@@ -174,19 +196,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ── User chips ────────────────────────────────────────────────────────────────
   function buildUserChips(folders) {
-    const users = [...new Set(
-      Object.values(folders).map(m => m.author).filter(Boolean)
+    // Map raw authors → aliases, then de-duplicate so each person has one chip.
+    const aliases = [...new Set(
+      Object.values(folders)
+        .map(m => resolveAlias(m.author))
+        .filter(Boolean)
     )].sort();
 
     userChipsEl.innerHTML = '';
-    if (!users.length) return;
+    if (!aliases.length) return;
 
     const label = document.createElement('span');
     label.className = 'chips-label';
     label.textContent = 'User';
     userChipsEl.appendChild(label);
 
-    ['all', ...users].forEach(user => {
+    ['all', ...aliases].forEach(user => {
       const btn = document.createElement('button');
       btn.className = 'chip' + (user === activeUser ? ' active' : '');
       btn.dataset.user = user;
@@ -208,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     '<li class="loading-item"><span class="loading-text">Loading widgets…</span></li>';
 
   const meta = await loadMeta();
-  allCommits  = meta.commits || [];
+  allCommits = meta.commits || [];
   const folders = meta.folders || {};
 
   if (!Object.keys(folders).length) {
@@ -221,10 +246,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   widgets = Object.keys(folders)
     .filter(name => /^wg\d+/.test(name))
     .map(name => {
-      const w    = folderToWidget(name);
+      const w = folderToWidget(name);
       const info = folders[name];
       w.updatedAt = info.updatedAt;
-      w.author    = info.author;
+      w.author = resolveAlias(info.author);  // normalise to alias
       return w;
     })
     .sort((a, b) => parseInt(a.num) - parseInt(b.num));
