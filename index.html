@@ -14,6 +14,15 @@
       <input type="text" id="widget-search" class="widget-search"
              placeholder="Search by name or number…" autocomplete="off">
     </header>
+    <div class="controls">
+      <div class="chips-row" id="sort-chips">
+        <span class="chips-label">Sort</span>
+        <button class="chip active" data-sort="time">Time</button>
+        <button class="chip" data-sort="name">Name</button>
+        <button class="chip" data-sort="num">Number</button>
+      </div>
+      <div class="chips-row" id="user-chips"></div>
+    </div>
     <ul class="widget-list" id="widget-listing"></ul>
   </div>
 </body>
