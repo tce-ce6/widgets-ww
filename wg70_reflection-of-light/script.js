@@ -37,27 +37,57 @@ const mediaData = {
     'dimond-btn': { n: 2.40, img: document.getElementById('dimond-img'), angles: predefinedAngles['dimond-btn'] }
 };
 
+function drawArc(arcGroupId, labelId, normalAngle, rayAngle, color) {
+    const arcRadius = 60;
+    const arcGroup = document.getElementById(arcGroupId);
+    const arcLabel = document.getElementById(labelId);
+    if (!arcGroup || !arcLabel) return;
+
+    let diff = rayAngle - normalAngle;
+    if (diff > 180) diff -= 360;
+    if (diff < -180) diff += 360;
+
+    let sweepFlag = diff > 0 ? 1 : 0;
+    let angleDeg = Math.abs(diff);
+
+    const startX = CENTER_X + arcRadius * Math.cos(normalAngle * Math.PI / 180);
+    const startY = CENTER_Y + arcRadius * Math.sin(normalAngle * Math.PI / 180);
+    const endX = CENTER_X + arcRadius * Math.cos(rayAngle * Math.PI / 180);
+    const endY = CENTER_Y + arcRadius * Math.sin(rayAngle * Math.PI / 180);
+
+    const arcPath = `M ${startX} ${startY} A ${arcRadius} ${arcRadius} 0 0 ${sweepFlag} ${endX} ${endY}`;
+
+    const pathEl = arcGroup.querySelector('path');
+    if (pathEl) {
+        pathEl.setAttribute('d', arcPath);
+        pathEl.setAttribute('stroke', color);
+    }
+
+    let midAngle = normalAngle + diff / 2;
+    const labelX = CENTER_X + (arcRadius + 30) * Math.cos(midAngle * Math.PI / 180);
+    const labelY = CENTER_Y + (arcRadius + 30) * Math.sin(midAngle * Math.PI / 180);
+
+    // adjust text alignment so it centers correctly on the calculated point
+    arcLabel.setAttribute('x', labelX);
+    arcLabel.setAttribute('y', labelY + 8);
+    arcLabel.setAttribute('text-anchor', 'middle');
+
+    const textEl = arcLabel.querySelector('tspan');
+    if (textEl) {
+        textEl.textContent = angleDeg.toFixed(1) + "°";
+    }
+
+    arcGroup.style.display = "block";
+    arcLabel.style.display = "block";
+}
+
 function updateSimulation() {
-    // Display angle with degree symbol
     if (angleIntegerValue) {
         angleIntegerValue.textContent = angleInteger + ".";
     }
-
     if (angleDecimalValue) {
         angleDecimalValue.textContent = angleDecimal + "°";
     }
-
-    // Calculate torch position in circular motion around center point
-    // Angle is measured from the normal (vertical line pointing up, y-axis)
-    // 0° = along normal pointing up, 90° = to the right, 180° = down, 270° = to the left
-    // For SVG coordinates: 0° is right, 90° is down, 180° is left, 270° is up
-    // Normal pointing up = 270° in SVG
-    // Convert: if angle is measured from normal (0° = up), then:
-    // - angle 0° → SVG 270° (up)
-    // - angle 90° → SVG 0° (right)  
-    // - angle 180° → SVG 90° (down)
-    // - angle 270° → SVG 180° (left)
-    // Formula: SVG_angle = (270 - angle) mod 360
 
     const totalAngle = getTotalAngle();
     let normalizedAngle = totalAngle % 360;
@@ -67,29 +97,18 @@ function updateSimulation() {
     if (svgAngle < 0) svgAngle += 360;
 
     const angleRad = svgAngle * (Math.PI / 180);
-
-    // Calculate torch position on circle (torch can be anywhere around center)
     const torchX = CENTER_X + TORCH_RADIUS * Math.cos(angleRad);
     const torchY = CENTER_Y + TORCH_RADIUS * Math.sin(angleRad);
 
-    console.log(torchX - 95, torchY - 42)
-
-    // Calculate rotation angle for torch to point towards center
-    // The torch should point from its position towards the center point
     const dx = CENTER_X - torchX;
     const dy = CENTER_Y - torchY;
     const torchRotation = Math.atan2(dy, dx) * (180 / Math.PI);
 
-    // Position and rotate torch to point towards center
-    // Adjust x, y to account for torch image center (assuming torch image is ~100x100)
     torch.setAttribute("x", torchX - 95);
     torch.setAttribute("y", torchY - 42);
     torch.setAttribute("transform", `rotate(${torchRotation - 19} ${torchX} ${torchY})`);
 
-    // Calculate and show yellow ray line if a medium is selected
     if (currentN2) {
-
-        // Update red incident ray line (from torch to center point)
         const redLineEl = document.getElementById('redIncidentRay');
         if (redLineEl) {
             redLineEl.style.display = "block";
@@ -99,51 +118,43 @@ function updateSimulation() {
             redLineEl.setAttribute("y2", CENTER_Y);
         }
 
-        // Update incident angle arc (red arc showing angle from normal to incident ray)
-        const incidentArc = document.getElementById('incidentAngleArc');
-        const incidentLabel = document.getElementById('incidentAngleLabel');
-        if (incidentArc) incidentArc.style.display = "block";
-        if (incidentLabel) incidentLabel.style.display = "block";
-        updateIncidentAngleArc(totalAngle);
+        const torchInTop = torchY <= CENTER_Y;
+        const normalDir = torchInTop ? 90 : 270;
+        const incidentNormal = torchInTop ? 270 : 90;
 
-        // Normalize angle to 0-360
-        let effectiveAngle = totalAngle % 360;
-        if (effectiveAngle < 0) effectiveAngle += 360;
+        const n_incident = torchInTop ? 1.0 : currentN2;
+        const n_refracted = torchInTop ? currentN2 : 1.0;
 
-        // Get the actual incident angle from normal (use acute angle)
-        let incidentAngle = effectiveAngle;
-        if (incidentAngle > 180) incidentAngle = 360 - incidentAngle;
-        if (incidentAngle > 90) incidentAngle = 180 - incidentAngle;
+        const travelAngle = (svgAngle + 180) % 360;
+        let delta_inc = travelAngle - normalDir;
+        if (delta_inc > 180) delta_inc -= 360;
+        if (delta_inc < -180) delta_inc += 360;
 
-        // Snell's law: n1 * sin(θ1) = n2 * sin(θ2)
-        const theta1Rad = incidentAngle * (Math.PI / 180);
-        const sinTheta2 = (n1 * Math.sin(theta1Rad)) / currentN2;
+        let incidentAngleDeg = Math.abs(delta_inc);
 
-        // Determine which side of normal the incident ray is on (to keep yellow ray on same side)
-        let normalizedAngle = totalAngle % 360;
-        if (normalizedAngle < 0) normalizedAngle += 360;
-        let svgAngle = (270 - normalizedAngle) % 360;
-        if (svgAngle < 0) svgAngle += 360;
-        const angleRad = svgAngle * (Math.PI / 180);
-        const torchXForSide = CENTER_X + TORCH_RADIUS * Math.cos(angleRad);
-        const isRightSide = torchXForSide > CENTER_X;
+        drawArc('incidentAngleArc', 'incidentAngleLabel', incidentNormal, svgAngle, '#FF0000');
+
+        const theta1Rad = incidentAngleDeg * (Math.PI / 180);
+        const sinTheta2 = (n_incident * Math.sin(theta1Rad)) / n_refracted;
 
         const yellowLineEl = document.getElementById('yelloLineDiv');
         if (yellowLineEl) {
             yellowLineEl.style.display = "block";
-
             const lineLength = 350;
 
             if (sinTheta2 <= 1 && sinTheta2 >= -1) {
                 // Refraction
                 const theta2Rad = Math.asin(sinTheta2);
                 let theta2Deg = theta2Rad * (180 / Math.PI);
-                if (!isRightSide) theta2Deg = -theta2Deg;
 
-                // Refracted ray goes into medium 2 (below interface)
-                const refractedAngleRad = (90 + theta2Deg) * (Math.PI / 180);
-                const endX = CENTER_X + lineLength * Math.cos(refractedAngleRad);
-                const endY = CENTER_Y + lineLength * Math.sin(refractedAngleRad);
+                let delta_ref = Math.sign(delta_inc) * theta2Deg;
+                if (delta_inc === 0) delta_ref = 0;
+
+                const refractedTravelAngle = normalDir + delta_ref;
+                const refractedRad = refractedTravelAngle * (Math.PI / 180);
+
+                const endX = CENTER_X + lineLength * Math.cos(refractedRad);
+                const endY = CENTER_Y + lineLength * Math.sin(refractedRad);
 
                 yellowLineEl.setAttribute("x1", CENTER_X);
                 yellowLineEl.setAttribute("y1", CENTER_Y);
@@ -151,16 +162,13 @@ function updateSimulation() {
                 yellowLineEl.setAttribute("y2", endY);
 
                 // Update refracted angle arc
-                updateRefractedAngleArc(theta2Deg);
+                drawArc('refractedAngleArc', 'refractedAngleLabel', normalDir, refractedTravelAngle, '#FFC506');
             } else {
-                // Total internal reflection: show reflected ray in medium 1 (above interface)
-                // Reflected ray is symmetric about the normal (upwards)
-                const normalAngleUp = 270; // up in SVG
-                const reflectedRayAngle = isRightSide
-                    ? (normalAngleUp + incidentAngle) % 360
-                    : (normalAngleUp - incidentAngle + 360) % 360;
+                // Total internal reflection
+                let reflectedTravelAngle = (360 - travelAngle) % 360;
+                if (reflectedTravelAngle < 0) reflectedTravelAngle += 360;
 
-                const reflectedRad = reflectedRayAngle * (Math.PI / 180);
+                const reflectedRad = reflectedTravelAngle * (Math.PI / 180);
                 const endX = CENTER_X + lineLength * Math.cos(reflectedRad);
                 const endY = CENTER_Y + lineLength * Math.sin(reflectedRad);
 
@@ -169,19 +177,18 @@ function updateSimulation() {
                 yellowLineEl.setAttribute("x2", endX);
                 yellowLineEl.setAttribute("y2", endY);
 
-                // Hide refracted arc + label for TIR case
-                hideRefractedElements();
+                // For TIR, we show the reflected arc mapping relative to the incident normal
+                drawArc('refractedAngleArc', 'refractedAngleLabel', incidentNormal, reflectedTravelAngle, '#FFC506');
             }
         }
     } else {
-        // Hide yellow line and arc if no medium is active
         hideRefractedElements();
     }
 }
 
-// Helper function to hide refracted elements
 function hideRefractedElements() {
     const yellowLineEl = document.getElementById('yelloLineDiv');
+    if (yellowLineEl) yellowLineEl.style.display = "none";
     const refractedArc = document.getElementById('refractedAngleArc');
     if (refractedArc) {
         refractedArc.style.display = "none";
@@ -190,141 +197,6 @@ function hideRefractedElements() {
     if (refractedAngleLabel) {
         refractedAngleLabel.style.display = "none";
     }
-}
-
-// Function to update incident angle arc
-function updateIncidentAngleArc(angleDeg) {
-    const arcRadius = 60; // Radius of the arc
-    const arcGroup = document.getElementById('incidentAngleArc');
-    const arcLabel = document.getElementById('incidentAngleLabel');
-
-    if (!arcGroup || !arcLabel) return;
-
-    // Normalize angle to 0-360
-    let angle = angleDeg % 360;
-    if (angle < 0) angle += 360;
-
-    // Get the actual incident angle from normal (use acute angle)
-    let incidentAngle = angle;
-    if (incidentAngle > 180) incidentAngle = 360 - incidentAngle;
-    if (incidentAngle > 90) incidentAngle = 180 - incidentAngle;
-
-    // Calculate torch position to determine which side of normal the ray is on
-    let normalizedAngle = angle % 360;
-    if (normalizedAngle < 0) normalizedAngle += 360;
-    let svgAngle = (270 - normalizedAngle) % 360;
-    if (svgAngle < 0) svgAngle += 360;
-    const angleRad = svgAngle * (Math.PI / 180);
-    const torchX = CENTER_X + TORCH_RADIUS * Math.cos(angleRad);
-
-    // Determine direction: is torch to the left or right of normal?
-    const isRightSide = torchX > CENTER_X;
-
-    // Arc goes from normal (pointing up, 270° in SVG) to the incident ray
-    // Normal pointing up = 270° in SVG coordinates
-    const normalAngle = 270; // Normal pointing up in SVG
-    let rayAngle;
-
-    if (isRightSide) {
-        // Ray is on right side, angle measured clockwise from normal
-        // In SVG: 270° (up) + angle = going clockwise
-        rayAngle = (270 + incidentAngle) % 360;
-    } else {
-        // Ray is on left side, angle measured counter-clockwise from normal
-        // In SVG: 270° (up) - angle = going counter-clockwise
-        rayAngle = (270 - incidentAngle + 360) % 360;
-    }
-
-    // Calculate start and end points
-    const startX = CENTER_X + arcRadius * Math.cos(normalAngle * Math.PI / 180);
-    const startY = CENTER_Y + arcRadius * Math.sin(normalAngle * Math.PI / 180);
-    const endX = CENTER_X + arcRadius * Math.cos(rayAngle * Math.PI / 180);
-    const endY = CENTER_Y + arcRadius * Math.sin(rayAngle * Math.PI / 180);
-
-    // Determine sweep direction (0 = counter-clockwise, 1 = clockwise)
-    const sweepFlag = isRightSide ? 1 : 0;
-
-    // Create arc path
-    const arcPath = `M ${startX} ${startY} A ${arcRadius} ${arcRadius} 0 0 ${sweepFlag} ${endX} ${endY}`;
-
-    const pathEl = arcGroup.querySelector('path');
-    if (pathEl) {
-        pathEl.setAttribute('d', arcPath);
-    }
-
-    // Position label at midpoint of arc
-    let midAngle = (normalAngle + rayAngle) / 2;
-    // Handle wrap-around
-    if (Math.abs(normalAngle - rayAngle) > 180) {
-        if (normalAngle > rayAngle) {
-            midAngle = ((normalAngle + rayAngle + 360) / 2) % 360;
-        } else {
-            midAngle = ((normalAngle + rayAngle - 360) / 2 + 360) % 360;
-        }
-    }
-    const labelX = CENTER_X + (arcRadius + 25) * Math.cos(midAngle * Math.PI / 180);
-    const labelY = CENTER_Y + (arcRadius + 25) * Math.sin(midAngle * Math.PI / 180);
-    arcLabel.setAttribute('x', labelX);
-    arcLabel.setAttribute('y', labelY);
-
-    // Update label text
-    const textEl = arcLabel.querySelector('tspan');
-    if (textEl) {
-        textEl.textContent = incidentAngle.toFixed(1) + "°";
-    }
-}
-
-// Function to update refracted angle arc
-function updateRefractedAngleArc(angleDeg) {
-    const arcRadius = 60; // Radius of the arc
-    const arcGroup = document.getElementById('refractedAngleArc');
-    const arcLabel = document.getElementById('refractedAngleLabel');
-
-    if (!arcGroup || !arcLabel) return;
-
-    // Normalize angle - refracted angle is measured from normal (pointing down)
-    let refractedAngle = Math.abs(angleDeg);
-
-    // Calculate arc path
-    // Arc goes from normal (pointing down, 90° in SVG) to the refracted ray direction
-    const normalAngle = 90; // Normal pointing down (into medium 2) in SVG
-    const isRightSide = angleDeg >= 0;
-    const rayAngle = normalAngle + angleDeg; // Refracted ray direction
-
-    // Calculate start and end points
-    const startX = CENTER_X + arcRadius * Math.cos(normalAngle * Math.PI / 180);
-    const startY = CENTER_Y + arcRadius * Math.sin(normalAngle * Math.PI / 180);
-    const endX = CENTER_X + arcRadius * Math.cos(rayAngle * Math.PI / 180);
-    const endY = CENTER_Y + arcRadius * Math.sin(rayAngle * Math.PI / 180);
-
-    // Determine sweep direction (0 = counter-clockwise, 1 = clockwise)
-    // For refracted ray: if positive angle (right side), sweep clockwise (1)
-    // If negative angle (left side), sweep counter-clockwise (0)
-    const sweepFlag = isRightSide ? 1 : 0;
-
-    // Create arc path
-    const arcPath = `M ${startX} ${startY} A ${arcRadius} ${arcRadius} 0 0 ${sweepFlag} ${endX} ${endY}`;
-
-    const pathEl = arcGroup.querySelector('path');
-    if (pathEl) {
-        pathEl.setAttribute('d', arcPath);
-    }
-
-    // Position label at midpoint of arc
-    const midAngle = (normalAngle + rayAngle) / 2;
-    const labelX = CENTER_X + (arcRadius + 25) * Math.cos(midAngle * Math.PI / 180);
-    const labelY = CENTER_Y + (arcRadius + 25) * Math.sin(midAngle * Math.PI / 180);
-    arcLabel.setAttribute('x', labelX);
-    arcLabel.setAttribute('y', labelY);
-
-    // Update label text
-    const textEl = arcLabel.querySelector('tspan');
-    if (textEl) {
-        textEl.textContent = refractedAngle.toFixed(1) + "°";
-    }
-
-    arcGroup.style.display = "block";
-    arcLabel.style.display = "block";
 }
 
 function resetSimulation() {
