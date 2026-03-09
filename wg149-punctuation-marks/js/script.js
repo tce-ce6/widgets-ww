@@ -41,27 +41,27 @@ var WG = {
         { display: "Wow____ What a beautiful rainbow____", blanks: ["!", "!"] },
         { display: "Where is your school bag____", blanks: ["?"] },
         { display: "I like to eat apples____ oranges and bananas____", blanks: [",", "."] },
-        { display: "The teacher said____ ____Please sit down quietly____ ____", blanks: [",", "\u201c", ".", "\u201d"] },
+        { display: "The teacher said____ ____Please sit down quietly____ ____", blanks: [",", "\u201d", ".", "\u201d"] },
         { display: "That is Ramya____s bicycle____", blanks: ["'", "."] },
         { display: "Help____ I am stuck in a tree____", blanks: ["!", "!"] },
         { display: "We visited Delhi____ Mumbai and Kolkata last summer____", blanks: [",", "."] },
         { display: "Do you know where my pencil is____", blanks: ["?"] },
-        { display: "Mother asked____ ____Have you finished your homework____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
+        { display: "Mother asked____ ____Have you finished your homework____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
         { display: "The cat____s tail is very fluffy____", blanks: ["'", "."] },
         { display: "Hurray____ We won the match____", blanks: ["!", "!"] },
         { display: "My birthday is on Monday____ 15 March____", blanks: [",", "."] },
         { display: "Can you help me carry these books____", blanks: ["?"] },
         { display: "I love to play cricket____ football and badminton____", blanks: [",", "."] },
-        { display: "She asked____ ____Is this your bag____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
+        { display: "She asked____ ____Is this your bag____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
         { display: "Watch out____ There is a big puddle ahead____", blanks: ["!", "!"] },
         { display: "This is Meena____s favourite storybook____", blanks: ["'", "."] },
         { display: "What time does the school start____", blanks: ["?"] },
         { display: "The sky turned orange____ pink and purple at sunset____", blanks: [",", "."] },
-        { display: "Father asked____ ____Did you water the plants today____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
+        { display: "Father asked____ ____Did you water the plants today____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
         { display: "Look____ A butterfly is sitting on the flower____", blanks: ["!", "!"] },
         { display: "The dog____s bone is buried in the garden____", blanks: ["'", "."] },
         { display: "I need a pen____ a notebook and an eraser for school____", blanks: [",", "."] },
-        { display: "The wise old man said____ ____Always be kind to others____ ____", blanks: [",", "\u201c", ".", "\u201d"] }
+        { display: "The wise old man said____ ____Always be kind to others____ ____", blanks: [",", "\u201d", ".", "\u201d"] }
     ],
 
     /* option button id → character */
@@ -71,7 +71,7 @@ var WG = {
         "option-btn-3": "!",
         "option-btn-4": ",",
         "option-btn-5": "'",
-        "option-btn-6": "\u201c",
+        "option-btn-6": "\u201d",
         "option-btn-7": "\u201d"
     }
 };
@@ -174,7 +174,7 @@ function styleQuoteButtons() {
         var r6 = btn6.querySelector("rect");
         if (r6) r6.style.fill = "#c7eabb"; /* default green */
         /* Update the mapping so btn-6 is treated as generic quote during matching */
-        WG.optionMap["option-btn-6"] = "\u201c"; /* we match on the open quote first */
+        WG.optionMap["option-btn-6"] = "\u201d"; /* we match on the open quote first */
     }
 }
 
@@ -285,16 +285,7 @@ function onOptionClick(char) {
 function onCorrectAnswer(char) {
     stopBlink();
     WG.filledAnswers[WG.activeBlank] = char;
-
-    /* If the correct answer was an opening quote, auto-fill the matching closing quote if it exists */
-    if (char === "\u201c") {
-        var closeIdx = WG.blanks.lastIndexOf("\u201d");
-        if (closeIdx !== -1 && closeIdx > WG.activeBlank) {
-            WG.filledAnswers[closeIdx] = "\u201d";
-        }
-    }
-
-    advanceActiveBlank();
+    WG.activeBlank++;
     WG.wrongAttempts = 0;
 
     updateSignals();
@@ -307,14 +298,6 @@ function onCorrectAnswer(char) {
     } else {
         startIdleTimer();
         hideShowAnswer();
-    }
-}
-
-function advanceActiveBlank() {
-    WG.activeBlank++;
-    /* Skip any blanks that are already filled (e.g. from auto-filling quotes) */
-    while (WG.activeBlank < WG.blanks.length && WG.filledAnswers[WG.activeBlank] !== null) {
-        WG.activeBlank++;
     }
 }
 
@@ -453,11 +436,7 @@ function onClosePopup() {
    Red blinking is applied separately during wrong-answer feedback.
    ────────────────────────────────────────────────────────── */
 
-var SIGNAL_DIM = "#2a2a2a";
-var SIGNAL_YELLOW = "#efff00";
-var SIGNAL_GREEN = "#0dff00";
-var SIGNAL_ORANGE = "#ff9800";
-var SIGNAL_RED = "red";
+
 
 /*
   Signal slot → circle ID mapping (left to right):
@@ -486,13 +465,11 @@ function updateSignals() {
 
         if (blankIdx < 0 || blankIdx >= n) return;  /* circle already hidden */
 
-        /* Colour the visible slot based on blank state */
+        /* Only allow green states and unlit dim states */
         if (WG.filledAnswers[blankIdx] !== null) {
-            setSlotColor(slotId, SIGNAL_GREEN);
-        } else if (blankIdx === WG.activeBlank) {
-            setSlotColor(slotId, SIGNAL_ORANGE);
+            setSignalState(slotId, "green");
         } else {
-            setSlotColor(slotId, SIGNAL_YELLOW);
+            setSignalState(slotId, "dim");
         }
     });
 }
@@ -516,17 +493,29 @@ function updateSignalPanel() {
         if (blankIdx < 0) {
             hide(slotId);           /* not needed for this sentence */
         } else {
-            show(slotId);           /* show and reset to pending colour */
-            setSlotColor(slotId, SIGNAL_YELLOW);
+            show(slotId);           /* show and reset to dim pending colour */
+            setSignalState(slotId, "dim");
         }
     });
 }
 
-function setSlotColor(slotId, color) {
+function setSignalState(slotId, state) {
     var grp = getEl(slotId);
     if (!grp) return;
     var paths = grp.querySelectorAll("path, circle");
-    if (paths.length > 0) paths[0].style.fill = color;
+    if (paths.length < 2) return;
+
+    /* Maintain slight shadow / highlight with two shades of the same color */
+    if (state === "green") {
+        paths[0].style.fill = "#0dff00";   /* main green */
+        paths[1].style.fill = "#13e81d";   /* darker slightly shifted green for shadow */
+    } else if (state === "red") {
+        paths[0].style.fill = "#ff0000";   /* pure red */
+        paths[1].style.fill = "#d80505";   /* darker red for shadow */
+    } else { /* "dim" */
+        paths[0].style.fill = "#3a3a3a";   /* unlit dark grey */
+        paths[1].style.fill = "#222222";   /* deep unlit shadow */
+    }
 }
 
 function showRedSignalBlink() {
@@ -535,12 +524,12 @@ function showRedSignalBlink() {
     var slotId = WG.signalSlots[slotIndex];
     if (!slotId) return;
 
-    setSlotColor(slotId, SIGNAL_RED);
+    setSignalState(slotId, "red");
 
     var on = true;
     WG.blinkTimer = setInterval(function () {
         on = !on;
-        setSlotColor(slotId, on ? SIGNAL_RED : SIGNAL_DIM);
+        setSignalState(slotId, on ? "red" : "dim");
     }, 300);
 
     setTimeout(function () {
