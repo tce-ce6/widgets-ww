@@ -1152,7 +1152,7 @@ function showFeedbackOverlay(isCorrect, s) {
       .setAttribute("display", "block");
     // document.getElementById("quiz-insight-title").querySelector("tspan").textContent = `${s.label}`;
     //document.getElementById("quiz-insight-msg").querySelector("tspan").textContent = `${s.msg2 || ""}`;
-    markStationComplete(currentStationIdx);
+
     // Fix: Remove previous listeners and attach only one
     const nextBtn = document.getElementById("Group_592");
     if (nextBtn) {
@@ -1162,6 +1162,7 @@ function showFeedbackOverlay(isCorrect, s) {
       newBtn.addEventListener("click", () => {
         hidePopupInsights();
         removeFeedbackOverlay();
+        markStationComplete(currentStationIdx);
       });
     }
   } else {
@@ -1312,17 +1313,17 @@ function resetGame() {
   quizAnswered = false;
   currentStationIdx = 0;
   // 6. Show dashboard
-  const dashboard = document.getElementById("dashboard");
-  if (dashboard) dashboard.style.display = "block";
+  // const dashboard = document.getElementById("dashboard");
+  // if (dashboard) dashboard.style.display = "block";
   // 7. Hide home screen
   const homeScreen = document.getElementById("home-screen");
   if (homeScreen) {
-    homeScreen.style.display = "none";
-    homeScreen.setAttribute("display", "none");
+    homeScreen.style.display = "block";
+    homeScreen.setAttribute("display", "block");
   }
   const iText = document.getElementById("i-text");
   if (iText) {
-    iText.style.display = "none";
-    iText.setAttribute("display", "none");
+    iText.style.display = "block";
+    iText.setAttribute("display", "block");
   }
 }
