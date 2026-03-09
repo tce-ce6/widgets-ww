@@ -173,6 +173,7 @@ svg * {
 #idiom-wrapper svg {
   width: 100% !important;
   height: 100%;
+  overflow: visible !important;
 }
 
 /* swar ki pehchan style */
