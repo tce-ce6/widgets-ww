@@ -1,7 +1,6 @@
 // Widget listing page.
-// Folder discovery:  1 GitHub API call (contents endpoint).
-// Timestamps/authors: 1 fetch from meta.json (built by GitHub Actions on push).
-// No per-widget API calls — no rate-limit issues.
+// Folder discovery:   1 GitHub API call  (contents endpoint).
+// Timestamps/authors: 1 fetch from meta.json (built by GitHub Actions on every push — no rate limits).
 
 const REPO     = 'tce-ce6/widgets-ww';
 const BRANCH   = 'deploy';
@@ -35,24 +34,21 @@ function fmtDate(iso) {
   return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-// ── Meta loading ───────────────────────────────────────────────────────────────
-async function loadFolderMeta() {
+async function loadMeta() {
   try {
     const res = await fetch(META_URL);
-    if (!res.ok) return {};
-    return await res.json();
-  } catch {
-    return {};
-  }
+    return res.ok ? await res.json() : {};
+  } catch { return {}; }
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-  const listEl      = document.getElementById('widget-listing');
-  const totalEl     = document.getElementById('total');
-  const searchEl    = document.getElementById('widget-search');
-  const sortChipsEl = document.getElementById('sort-chips');
-  const userChipsEl = document.getElementById('user-chips');
+  const listEl       = document.getElementById('widget-listing');
+  const totalEl      = document.getElementById('total');
+  const searchEl     = document.getElementById('widget-search');
+  const pageUpdEl    = document.getElementById('page-updated');
+  const sortChipsEl  = document.getElementById('sort-chips');
+  const userChipsEl  = document.getElementById('user-chips');
 
   let widgets    = [];
   let activeSort = 'time';
@@ -76,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return copy;
   }
 
-  // ── Card renderer ─────────────────────────────────────────────────────────────
+  // ── Card ─────────────────────────────────────────────────────────────────────
   function renderCard(w) {
     const li = document.createElement('li');
     li.dataset.folder = w.folder;
@@ -85,9 +81,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <img src="${w.imagePath}" alt="${w.title}">
         <span class="wg-num">wg${w.num}</span>
         <p class="widget-name">${w.title}</p>
-        <span class="updated-date">
-          ${w.updatedAt ? `<span class="upd-ts">${fmtDate(w.updatedAt)}</span>` : ''}
-          ${w.author    ? `<span class="upd-author">${w.author}</span>`          : ''}
+        <span class="card-meta">
+          ${w.updatedAt ? `<span class="card-ts">${fmtDate(w.updatedAt)}</span>` : ''}
+          ${w.author    ? `<span class="card-author">${w.author}</span>`          : ''}
         </span>
       </a>`;
     return li;
@@ -98,15 +94,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const q = searchEl.value.trim().toLowerCase();
 
     let filtered = applySorted(widgets);
-
-    if (activeUser !== 'all') {
-      filtered = filtered.filter(w => w.author === activeUser);
-    }
-    if (q) {
-      filtered = filtered.filter(w =>
-        w.title.toLowerCase().includes(q) || w.num.includes(q)
-      );
-    }
+    if (activeUser !== 'all') filtered = filtered.filter(w => w.author === activeUser);
+    if (q) filtered = filtered.filter(w =>
+      w.title.toLowerCase().includes(q) || w.num.includes(q)
+    );
 
     totalEl.textContent = filtered.length;
 
@@ -114,12 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       listEl.innerHTML = '<li class="loading-item"><span class="loading-text">No widgets match your search.</span></li>';
       return;
     }
-
     listEl.innerHTML = '';
     filtered.forEach(w => listEl.appendChild(renderCard(w)));
   }
 
-  // ── Sort chip handlers ───────────────────────────────────────────────────────
+  // ── Sort chips ───────────────────────────────────────────────────────────────
   sortChipsEl.querySelectorAll('.chip').forEach(btn => {
     btn.addEventListener('click', () => {
       activeSort = btn.dataset.sort;
@@ -130,14 +120,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // ── User chip builder (runs after meta loads) ─────────────────────────────────
+  // ── User chips (built after meta loads) ───────────────────────────────────────
   function buildUserChips(meta) {
     const users = [...new Set(
       Object.values(meta).map(m => m.author).filter(Boolean)
     )].sort();
 
     userChipsEl.innerHTML = '';
-    if (users.length === 0) return;
+    if (!users.length) return;
 
     const label = document.createElement('span');
     label.className = 'chips-label';
@@ -160,7 +150,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ── 1. Discover wg* folders (1 API call) ─────────────────────────────────────
+  // ── Page-level last-updated (most recent entry in meta) ───────────────────────
+  function setPageUpdated(meta) {
+    const entries = Object.values(meta).filter(m => m.updatedAt);
+    if (!entries.length) return;
+    const latest = entries.reduce((a, b) =>
+      new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b
+    );
+    pageUpdEl.textContent = `Updated ${fmtDate(latest.updatedAt)}  ·  ${latest.author}`;
+  }
+
+  // ── 1. Fetch wg* folders (1 API call) ────────────────────────────────────────
   listEl.innerHTML =
     '<li class="loading-item"><span class="loading-text">Loading widgets…</span></li>';
 
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch(`${API_BASE}/contents/?ref=${BRANCH}`);
     if (!res.ok) throw new Error(`GitHub API ${res.status}`);
     const items = await res.json();
-    if (!Array.isArray(items)) throw new Error(items.message || 'Unexpected API response');
+    if (!Array.isArray(items)) throw new Error(items.message || 'Unexpected response');
 
     widgets = items
       .filter(i => i.type === 'dir' && /^wg\d+/.test(i.name))
@@ -185,8 +185,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   render();
   searchEl.addEventListener('input', render);
 
-  // ── 2. Load meta.json (1 fetch, no rate limit) ────────────────────────────────
-  const meta = await loadFolderMeta();
+  // ── 2. Fetch meta.json (1 fetch, no rate limit) ───────────────────────────────
+  const meta = await loadMeta();
 
   widgets.forEach(w => {
     const info = meta[w.folder];
@@ -195,6 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     w.author    = info.author;
   });
 
+  setPageUpdated(meta);
   buildUserChips(meta);
-  render(); // re-render with real timestamps + sort-by-time applied
+  render();   // re-render: real timestamps applied, sort-by-time now meaningful
 });
