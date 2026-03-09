@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
-  let activeStatus  = 'closed';
+  let activeStatus  = 'all';
   let activeCreator = 'all';
   let activeSortBy  = 'date';
   let activeSearch  = '';
