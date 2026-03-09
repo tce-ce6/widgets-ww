@@ -1,197 +1,84 @@
-// ── Widget data source ─────────────────────────────────────────────────────────
-// Each deploy script writes a widget.json into the widget's folder, then
-// rebuilds this manifest. GitHub Pages serves it as a static file.
-const DATA_URL = './data/widgets.json';
+// Auto-discovers all wg* folders from the deploy branch via GitHub API.
+// No manual registration needed — push a folder, it appears on the listing.
 
-// ── Chip definitions ───────────────────────────────────────────────────────────
-const STATUS_CHIPS = [
-  { label: 'Closed', value: 'closed' },
-  { label: 'Review', value: 'in-review' },
-  { label: 'WIP',    value: 'WIP-With-Tech' },
-  { label: 'Todo',   value: 'todo' },
-  { label: 'All',    value: 'all' },
-];
+const REPO     = 'tce-ce6/widgets-ww';
+const BRANCH   = 'deploy';
+const BASE_URL = 'https://tce-ce6.github.io/widgets-ww';
+const API_URL  = `https://api.github.com/repos/${REPO}/contents/?ref=${BRANCH}`;
 
-const SORT_CHIPS = [
-  { label: 'Date',   value: 'date' },
-  { label: 'Name',   value: 'name' },
-  { label: 'Number', value: 'number' },
-];
-
-// ── Chip builders ──────────────────────────────────────────────────────────────
-function buildChipGroup(containerEl, chips, defaultValue, onChange) {
-  containerEl.innerHTML = '';
-  chips.forEach(({ label, value }) => {
-    const btn = document.createElement('button');
-    btn.className = 'chip' + (value === defaultValue ? ' active' : '');
-    btn.dataset.value = value;
-    btn.textContent = label;
-    btn.addEventListener('click', function () {
-      containerEl.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      onChange(this.dataset.value);
-    });
-    containerEl.appendChild(btn);
-  });
+function titleCase(str) {
+  return str.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function buildStatusChips(containerEl, defaultValue, onChange) {
-  buildChipGroup(containerEl, STATUS_CHIPS, defaultValue, onChange);
+function folderToWidget(name) {
+  const num   = (name.match(/^wg(\d+)/) || [])[1] || '';
+  const raw   = name.replace(/^wg\d+-?/, '');
+  const title = raw ? titleCase(raw) : `Widget ${num}`;
+  return {
+    num,
+    title,
+    link:      `${BASE_URL}/${name}/`,
+    imagePath: `./widget-listing-b3/assets/wg-${num}.png`,
+  };
 }
 
-function buildCreatorChips(containerEl, widgetData, defaultValue, onChange) {
-  const seen = new Set();
-  widgetData.forEach(w => {
-    const prefix = (w.creators || '').split('-')[0];
-    if (prefix) seen.add(prefix);
-  });
-  const chips = [
-    { label: 'All', value: 'all' },
-    ...[...seen].sort().map(p => ({ label: p.toUpperCase(), value: p })),
-  ];
-  buildChipGroup(containerEl, chips, defaultValue, onChange);
-}
+document.addEventListener('DOMContentLoaded', async () => {
+  const listEl   = document.getElementById('widget-listing');
+  const totalEl  = document.getElementById('total');
+  const searchEl = document.getElementById('widget-search');
 
-function buildSortChips(containerEl, defaultValue, onChange) {
-  buildChipGroup(containerEl, SORT_CHIPS, defaultValue, onChange);
-}
+  listEl.innerHTML =
+    '<li class="loading-item"><span class="loading-text">Loading widgets…</span></li>';
 
-function getWgNum(widget) {
-  const m = (widget.imagePath || '').match(/wg-(\d+)/);
-  return m ? m[1] : '';
-}
-
-// ── Main ───────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async function () {
-  const sidebar       = document.getElementById('sidebar');
-  const toggleButton  = document.getElementById('toggle-btn');
-  const widgetListing = document.getElementById('widget-listing');
-  const totalCount    = document.getElementById('total');
-  const iframe        = document.querySelector('iframe');
-  const statusChipEl  = document.getElementById('status-chips');
-  const creatorChipEl = document.getElementById('creator-chips');
-  const sortChipEl    = document.getElementById('sort-chips');
-  const searchInput   = document.getElementById('widget-search');
-
-  function toggleSidebar() {
-    sidebar.classList.toggle('active');
-    toggleButton.textContent = sidebar.classList.contains('active') ? 'Hide' : 'Show';
-  }
-  toggleButton.addEventListener('click', toggleSidebar);
-
-  // ── Show loading state ──
-  widgetListing.innerHTML = '<li class="loading-item"><span class="loading-text">Loading widgets…</span></li>';
-  totalCount.textContent = '…';
-
-  // ── Fetch widget data from local manifest ──
-  let WIDGET_DATA = [];
+  // ── Fetch widget folders from GitHub API ──
+  let widgets = [];
   try {
-    const res = await fetch(DATA_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    WIDGET_DATA = data ? Object.values(data).filter(Boolean) : [];
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+    const items = await res.json();
+    if (!Array.isArray(items)) throw new Error(items.message || 'Unexpected API response');
+
+    widgets = items
+      .filter(i => i.type === 'dir' && /^wg\d+/.test(i.name))
+      .map(i => folderToWidget(i.name))
+      .sort((a, b) => parseInt(a.num) - parseInt(b.num));
   } catch (err) {
-    widgetListing.innerHTML =
-      '<li class="loading-item"><span class="loading-text">Failed to load widgets. Please refresh.</span></li>';
-    totalCount.textContent = '0';
-    console.error('DB fetch failed:', err);
+    listEl.innerHTML =
+      `<li class="loading-item"><span class="loading-text">Could not load widgets — ${err.message}</span></li>`;
+    totalEl.textContent = '0';
+    console.error(err);
     return;
   }
 
-  let activeStatus  = 'all';
-  let activeCreator = 'all';
-  let activeSortBy  = 'date';
-  let activeSearch  = '';
+  // ── Render ──
+  function render() {
+    const q        = searchEl.value.trim().toLowerCase();
+    const filtered = q
+      ? widgets.filter(w =>
+          w.title.toLowerCase().includes(q) || w.num.includes(q))
+      : widgets;
 
-  function loadWidgetList() {
-    widgetListing.innerHTML = '';
+    totalEl.textContent = filtered.length;
 
-    let widgets = [...WIDGET_DATA];
-
-    if (activeStatus !== 'all') {
-      widgets = widgets.filter(w => w.status === activeStatus);
-    }
-    if (activeCreator !== 'all') {
-      widgets = widgets.filter(w => (w.creators || '').startsWith(activeCreator));
-    }
-    if (activeSearch) {
-      const q = activeSearch.toLowerCase();
-      widgets = widgets.filter(w => {
-        const name = w.name.toLowerCase();
-        const num  = getWgNum(w);
-        const date = (w.updatedAt || '').toLowerCase();
-        return name.includes(q) || num.includes(q) || date.includes(q);
-      });
+    if (filtered.length === 0) {
+      listEl.innerHTML =
+        '<li class="loading-item"><span class="loading-text">No widgets match your search.</span></li>';
+      return;
     }
 
-    switch (activeSortBy) {
-      case 'date':
-        widgets.sort((a, b) => {
-          const da = a.updatedAt || '';
-          const db = b.updatedAt || '';
-          if (!da && !db) return 0;
-          if (!da) return 1;
-          if (!db) return -1;
-          return db.localeCompare(da);
-        });
-        break;
-      case 'name':
-        widgets.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'number':
-        widgets.sort((a, b) => (parseInt(getWgNum(a)) || 0) - (parseInt(getWgNum(b)) || 0));
-        break;
-    }
-
-    widgets.forEach(widget => {
-      const listItem = document.createElement('li');
-      listItem.dataset.widgetLink = widget.link;
-      listItem.innerHTML = `
-        <img src="${widget.imagePath}" alt="${widget.name} Thumbnail">
-        <p class="widget-name">${widget.name}</p>
-        <span class="creators">${widget.creators || ''}</span>
-        ${widget.updatedAt ? `<span class="updated-date">${widget.updatedAt}</span>` : ''}
-      `;
-      listItem.addEventListener('click', function () {
-        sidebar.classList.toggle('active');
-        iframe.src = this.dataset.widgetLink;
-        document.querySelectorAll('#widget-listing li').forEach(li => li.classList.remove('active'));
-        this.classList.add('active');
-      });
-      widgetListing.appendChild(listItem);
+    listEl.innerHTML = '';
+    filtered.forEach(w => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <a href="${w.link}">
+          <img src="${w.imagePath}" alt="${w.title}">
+          <span class="wg-num">wg${w.num}</span>
+          <p class="widget-name">${w.title}</p>
+        </a>`;
+      listEl.appendChild(li);
     });
-
-    if (widgets.length > 0) {
-      iframe.src = widgets[0].link;
-      const firstLi = document.querySelector('#widget-listing li');
-      if (firstLi) firstLi.classList.add('active');
-    } else {
-      iframe.src = 'about:blank';
-    }
-
-    totalCount.textContent = widgets.length;
   }
 
-  // ── Initialise chips, search, and load ──
-  buildStatusChips(statusChipEl, activeStatus, (value) => {
-    activeStatus = value;
-    loadWidgetList();
-  });
-
-  buildCreatorChips(creatorChipEl, WIDGET_DATA, activeCreator, (value) => {
-    activeCreator = value;
-    loadWidgetList();
-  });
-
-  buildSortChips(sortChipEl, activeSortBy, (value) => {
-    activeSortBy = value;
-    loadWidgetList();
-  });
-
-  searchInput.addEventListener('input', function () {
-    activeSearch = this.value.trim();
-    loadWidgetList();
-  });
-
-  loadWidgetList();
+  render();
+  searchEl.addEventListener('input', render);
 });
