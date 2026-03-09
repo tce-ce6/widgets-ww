@@ -246,10 +246,10 @@ class UIManager {
     });
 
     this.addPlusBtn.addEventListener("click", () =>
-      this.addChip(this.btn1Type || "plus"),
+      this.addChip(this.btn1Type || "plus", false, null, true),
     );
     this.addMinusBtn.addEventListener("click", () =>
-      this.addChip(this.btn2Type || "minus"),
+      this.addChip(this.btn2Type || "minus", false, null, false),
     );
 
     const realStartBtn = document.getElementById("start");
@@ -702,7 +702,7 @@ class UIManager {
 
   // --- Chip Logic ---
 
-  addChip(type, isProblemChip = false, manualIndex = null) {
+  addChip(type, isProblemChip = false, manualIndex = null, isTopBtn = true) {
     const template = type === "plus" ? this.plusTemplate : this.minusTemplate;
     if (!template) return;
     const chip = template.cloneNode(true);
@@ -717,11 +717,30 @@ class UIManager {
       x = this.chipStartX - col * this.chipGapX;
       y = this.chipRows.plus + row * this.chipGapY; // Use 'plus' row as base for problem grid
     } else {
-      index = type === "plus" ? this.plusIndex++ : this.minusIndex++;
-      col = index % this.maxCols;
-      const row = Math.floor(index / this.maxCols);
-      x = this.chipStartX - col * this.chipGapX;
-      y = this.chipRows[type] + row * this.chipGapY;
+      let isSameType =
+        this.state.isPlayground && this.btn1Type === this.btn2Type;
+
+      if (isSameType) {
+        if (isTopBtn) {
+          index = this.plusIndex++;
+          col = index % this.maxCols;
+          const row = Math.floor(index / this.maxCols);
+          x = this.chipStartX - col * this.chipGapX;
+          y = this.chipRows.plus + row * this.chipGapY;
+        } else {
+          index = this.minusIndex++; // repurpose minusIndex to count bottom row
+          col = index % this.maxCols;
+          const row = Math.floor(index / this.maxCols);
+          x = this.chipStartX - col * this.chipGapX;
+          y = this.chipRows.minus + row * this.chipGapY;
+        }
+      } else {
+        index = type === "plus" ? this.plusIndex++ : this.minusIndex++;
+        col = index % this.maxCols;
+        const row = Math.floor(index / this.maxCols);
+        x = this.chipStartX - col * this.chipGapX;
+        y = this.chipRows[type] + row * this.chipGapY;
+      }
     }
 
     const wrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -768,8 +787,10 @@ class UIManager {
     const minusChips = this.state.addedChips.filter((c) => c.type === "minus");
 
     plusChips.forEach((p) => {
+      // Find a matching minus chip on the same column
       const m = minusChips.find((c) => c.col === p.col);
-      if (m) {
+      // Only draw pair rectangle if there is actually a minus chip
+      if (m && p.type !== m.type) {
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute("class", "chip-pair-container");
         g.dataset.col = p.col;
@@ -912,6 +933,8 @@ class UIManager {
       (c) => c.element !== element,
     );
     this.selectedChip = null;
+    const dustbin = document.getElementById("dustbin");
+    if (dustbin) dustbin.setAttribute("display", "none");
     this.updatePairs();
     this.recenterChips();
   }
@@ -919,12 +942,18 @@ class UIManager {
   selectChip(element, type) {
     this.selectedChip = { element, type };
     element.setAttribute("filter", "drop-shadow(0 0 10px yellow)");
+    if (this.state.isPlayground) {
+      const dustbin = document.getElementById("dustbin");
+      if (dustbin) dustbin.setAttribute("display", "inline");
+    }
   }
 
   deselectChip() {
     if (this.selectedChip) {
       this.selectedChip.element.removeAttribute("filter");
       this.selectedChip = null;
+      const dustbin = document.getElementById("dustbin");
+      if (dustbin) dustbin.setAttribute("display", "none");
     }
   }
 
@@ -1096,7 +1125,7 @@ class UIManager {
     if (dustbin)
       dustbin.setAttribute(
         "display",
-        isChipMode && isPlayground ? "inline" : "none",
+        isChipMode && isPlayground && this.selectedChip ? "inline" : "none",
       );
 
     this.timelineGroup.setAttribute(
