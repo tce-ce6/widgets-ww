@@ -3,24 +3,24 @@ const letterData = {
 
     "letters": [
         {
-            "title": "retailJob",
+            "title": "vocationalCourse",
             "sections": {
                 "senders_address": [
                     {
                         "id": 1,
-                        "text": "Haseena Abubacker\nSunrise Apartments,\nSivan Chetty Gardens,\nBengaluru – 560042.",
+                        "text": "Jyoti Saraf\nJeevan Institution,\nManohar Nagar,\nRajkot – 360001.",
                         "is_correct": false,
-                        "feedback": "The sender's name should not be included in the sender's address."
+                        "feedback": "Sender’s name is not included in the sender’s address."
                     },
                     {
                         "id": 2,
-                        "text": "Sunrise Apartments,\nSivan Chetty Gardens,\nBengaluru – 560042.",
+                        "text": "Jeevan Institution,\nManohar Nagar,\nRajkot – 360001.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "Sunrise Apartments\nSivan Chetty Gardens\nBengaluru – 560042.",
+                        "text": "Jeevan Institution\nManohar Nagar\nRajkot – 360001.",
                         "is_correct": false,
                         "feedback": "Each line should end with a comma, except the last line."
                     }
@@ -28,41 +28,41 @@ const letterData = {
                 "date": [
                     {
                         "id": 1,
-                        "text": "15th April, 2026.",
+                        "text": "21 April, 2026.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "April 15th, 2026.",
+                        "text": "April 21, 2026.",
                         "is_correct": false,
                         "feedback": "The day should come before the month."
                     },
                     {
                         "id": 3,
-                        "text": "15 04, 2026.",
+                        "text": "21 04, 2026.",
                         "is_correct": false,
-                        "feedback": "The month should be written in words, not numbers."
+                        "feedback": "Month should be written in words not numbers."
                     }
                 ],
                 "receivers_address": [
                     {
                         "id": 1,
-                        "text": "The Store Manager\nLive Life Stores\nBengaluru – 560042.",
+                        "text": "The Principal\nJeevan Institution\nRajkot – 360001.",
                         "is_correct": false,
                         "feedback": "Each line should end with a comma, except the last line."
                     },
                     {
                         "id": 2,
-                        "text": "The Store Manager,\nLive Life Stores,\nBengaluru – 560042.",
+                        "text": "The Principal,\nJeevan Institution,\nRajkot – 360001.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "The Store Manager,\nLive Life Stores,\nBengaluru",
+                        "text": "The Principal,\nJeevan Institution,\nRajkot",
                         "is_correct": false,
-                        "feedback": "The PIN code must be included in the address."
+                        "feedback": "The pin code must be included in the address."
                     }
                 ],
                 "salutation": [
@@ -80,7 +80,7 @@ const letterData = {
                     },
                     {
                         "id": 3,
-                        "text": "Dear Madam Manager,",
+                        "text": "Dear Madam Principal,",
                         "is_correct": false,
                         "feedback": "Use just ‘Sir’ or ‘Madam’. Designation is not used in the salutation."
                     }
@@ -88,81 +88,81 @@ const letterData = {
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "My name is Haseena Abubacker and I am a Grade 10 student at Greenfield School. I am writing to apply for a part-time job at Live Life Stores during my upcoming summer break.",
+                        "text": "I am writing to bring to your attention the importance of vocational skills and life skills education, which I believe could benefit our students greatly.",
+                        "is_correct": false,
+                        "feedback": "This introduction doesn't clearly state the purpose (to suggest/request introducing a course). It lacks specificity about what action is being requested."
+                    },
+                    {
+                        "id": 2,
+                        "text": "I am writing this letter to suggest introducing a vocational skills course for the students of Grade 10 of our school to help students develop life skills.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 2,
-                        "text": "I am writing to apply for a part-time job during summer holidays. I am a student and I would like to work at your store.",
-                        "is_correct": false,
-                        "feedback": "This introduction lacks specific details such as the full name, school name and specific mention of the store name. It sounds vague and unprofessional."
-                    },
-                    {
                         "id": 3,
-                        "text": "I really want to work at your store because I need a job during the summer. I am a good student, and I think I would be perfect for any position you have available.",
+                        "text": "I am writing this letter because I feel that our Grade 10 students really need a vocational skills course as I think life skills are very important for them to learn.",
                         "is_correct": false,
-                        "feedback": "This introduction uses overly casual language ('I really want', 'I think'). It sounds presumptuous ('perfect for any position')."
+                        "feedback": "This introduction uses informal tone (‘I feel’, ‘I think’, ‘really need’) and repetitive first-person opinion."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have always been enthusiastic about providing excellent customer service and fostering positive shopping experiences. I am drawn to Live Life Stores due to its reputation for high-quality products.",
+                        "text": "In today's ever-evolving world, academic knowledge alone is not enough to ensure a bright and prosperous career. A vocational skills course can empower students with practical abilities such as communication skills, problem-solving, teamwork, time management, and technical expertise.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I really like shopping and I think working in a store would be fun. I am a friendly person and I get along with everyone. I am sure I would enjoy working at Live Life Stores because it is a popular store.",
+                        "text": "In today's competitive world, students need a lot of exposure. A vocational skills course would be very beneficial for their future.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses informal language and focuses on personal enjoyment rather than professional skills."
+                        "feedback": "The language used is informal and vague without specific examples of skills included in the course."
                     },
                     {
                         "id": 3,
-                        "text": "I am interested in working at a store. I think I have some skills that might be useful. I am a student who needs work experience.",
+                        "text": "In today's world, it is absolutely crucial and extremely important that we realise academic knowledge is simply not sufficient anymore.",
                         "is_correct": false,
-                        "feedback": "This paragraph is vague and lacks specific details about relevant skills or enthusiasm for the role."
+                        "feedback": "The language is overly dramatic and makes exaggerated claims without supporting evidence."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "Despite my age, I have gained valuable skills that I believe are relevant to a retail environment. I am a dedicated team player with excellent communication skills developed through school projects. Moreover, I am detail-oriented and organised, traits essential for maintaining an orderly store. My summer break starts on 1 May, providing me with ample availability.",
-                        "is_correct": true,
-                        "feedback": ""
+                        "text": "Besides, a vocational skills course would be good for students to explore their interests outside the classroom.",
+                        "is_correct": false,
+                        "feedback": "This paragraph uses repetitive and vague language and lacks sophistication."
                     },
                     {
                         "id": 2,
-                        "text": "I have some skills from school that could help me in a retail job. I work well with others and I am quite organised. These skills would probably be useful in a store.",
+                        "text": "Besides, a vocational skills course would allow students to explore their interests beyond academics, unlike the current curriculum.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses tentative language and lacks confidence and specific examples."
+                        "feedback": "This paragraph introduces unnecessary criticism and negative tone."
                     },
                     {
                         "id": 3,
-                        "text": "I am a very hard-working person and always on time. I can lift heavy boxes and work any hours you need.",
-                        "is_correct": false,
-                        "feedback": "This paragraph focuses on basic expectations rather than relevant retail skills. The tone sounds desperate."
+                        "text": "Besides, a vocational skills course would allow students to explore their interests and aptitudes beyond traditional classroom settings. Moreover, it promotes inclusivity by catering to diverse talents.",
+                        "is_correct": true,
+                        "feedback": ""
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I am available to start work immediately and I can work any time. I hope you will give me a chance to prove myself.",
-                        "is_correct": false,
-                        "feedback": "This conclusion sounds overly eager and lacks professionalism."
-                    },
-                    {
-                        "id": 2,
-                        "text": "I would be thrilled to discuss my application further in an interview. I look forward to the opportunity to contribute to the exceptional service that Live Life Stores is known for.",
+                        "text": "The introduction of a vocational skills course will greatly benefit the students. Madam, I kindly request your consideration and support in implementing this program at our school.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 3,
-                        "text": "I really need this job for the summer, so I hope you will consider me. I promise I will work very hard.",
+                        "id": 2,
+                        "text": "The introduction of a vocational skills course will greatly benefit the students, helping you to succeed in their future careers.",
                         "is_correct": false,
-                        "feedback": "This conclusion focuses on personal need and sounds pleading rather than confident."
+                        "feedback": "This shifts from third person to second person and uses redundant phrases."
+                    },
+                    {
+                        "id": 3,
+                        "text": "I am sure you will agree that a vocational skills course will greatly benefit our students.",
+                        "is_correct": false,
+                        "feedback": "This assumes agreement and sounds presumptuous."
                     }
                 ],
                 "complimentary_close": [
@@ -174,9 +174,9 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "Thank you\nKind regards",
+                        "text": "Thank you\nRegards",
                         "is_correct": false,
-                        "feedback": "A comma should follow ‘Thank you’. ‘Kind regards’ is too informal."
+                        "feedback": "A comma should follow ‘Thank you’. ‘Regards’ is too informal."
                     },
                     {
                         "id": 3,
@@ -188,19 +188,19 @@ const letterData = {
                 "senders_name": [
                     {
                         "id": 1,
-                        "text": "Haseena Abubacker,",
+                        "text": "Jyoti Saraf,",
                         "is_correct": false,
                         "feedback": "A comma is not required after the sender’s name."
                     },
                     {
                         "id": 2,
-                        "text": "Haseena Abubacker.",
+                        "text": "Jyoti Saraf.",
                         "is_correct": false,
                         "feedback": "A full stop is not required after the sender’s name."
                     },
                     {
                         "id": 3,
-                        "text": "Haseena Abubacker",
+                        "text": "Jyoti Saraf",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -208,166 +208,166 @@ const letterData = {
             }
         },
         {
-            "title": "newspaperInternship",
+            "title": "excursionTour",
             "sections": {
                 "senders_address": [
                     {
                         "id": 1,
-                        "text": "Amit Kulkarni\nGarden View Apartments,\nMG Road,\nPune – 411001.",
+                        "text": "Royal Heritage School\nDelhi – 110021.",
                         "is_correct": false,
-                        "feedback": "The sender's name should not be included in the sender's address."
+                        "feedback": "The first line of sender’s address should end with a comma."
                     },
                     {
                         "id": 2,
-                        "text": "Garden View Apartments,\nMG Road,\nPune – 411001.",
+                        "text": "Royal Heritage School,\nDelhi – 110021.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "Garden View Apartments\nMG Road\nPune – 411001.",
+                        "text": "Perin Mistry\nRoyal Heritage School,\nDelhi – 110021.",
                         "is_correct": false,
-                        "feedback": "Commas at the end of each line (except the last) are missing."
+                        "feedback": "The sender’s name should not be included in the sender’s address."
                     }
                 ],
                 "date": [
                     {
                         "id": 1,
-                        "text": "10 May, 2026.",
-                        "is_correct": true,
-                        "feedback": ""
+                        "text": "15th 01, 2026",
+                        "is_correct": false,
+                        "feedback": "The month should be written in words."
                     },
                     {
                         "id": 2,
-                        "text": "May 10, 2026.",
+                        "text": "January 15th, 2026.",
                         "is_correct": false,
                         "feedback": "The day should come before the month."
                     },
                     {
                         "id": 3,
-                        "text": "10/05/2026.",
-                        "is_correct": false,
-                        "feedback": "The date should be written in the proper format: day, month in words and year."
+                        "text": "15th January, 2026.",
+                        "is_correct": true,
+                        "feedback": ""
                     }
                 ],
                 "receivers_address": [
                     {
                         "id": 1,
-                        "text": "The Editor\nThe Pune Chronicle\nPune – 411001.",
+                        "text": "To,\nThe Principal,\nRoyal Heritage School,\nDelhi – 110021.",
                         "is_correct": false,
-                        "feedback": "Each line should end with a comma, except the last line."
+                        "feedback": "‘To’ is not required in receiver’s address."
                     },
                     {
                         "id": 2,
-                        "text": "The Editor,\nThe Pune Chronicle,\nPune – 411001.",
-                        "is_correct": true,
-                        "feedback": ""
+                        "text": "The Principal,\nRoyal Heritage School,\nDelhi",
+                        "is_correct": false,
+                        "feedback": "The PIN code is missing."
                     },
                     {
                         "id": 3,
-                        "text": "The Editor,\nThe Pune Chronicle,\nPune",
-                        "is_correct": false,
-                        "feedback": "The PIN code is missing from the address."
+                        "text": "The Principal,\nRoyal Heritage School,\nDelhi – 110021.",
+                        "is_correct": true,
+                        "feedback": ""
                     }
                 ],
                 "salutation": [
                     {
                         "id": 1,
-                        "text": "Dear Sir/Madam,",
+                        "text": "Dear Sir,",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Dear Editor,",
+                        "text": "Hello Sir,",
                         "is_correct": false,
-                        "feedback": "Use 'Dear Sir', 'Dear Madam' or 'Dear Sir/Madam'. The designation is not used in the salutation."
+                        "feedback": "‘Hello’ is too informal for a formal letter. Use ‘Dear’ instead."
                     },
                     {
                         "id": 3,
-                        "text": "Hello",
+                        "text": "Principal Sir,",
                         "is_correct": false,
-                        "feedback": "'Hello' is too informal for a formal letter. A comma should follow the salutation."
+                        "feedback": "Use ‘Dear Sir’ or ‘Dear Madam’ instead."
                     }
                 ],
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "My name is Amit Kulkarni and I am a Grade 10 student at Vidya Mandir School. I am writing to express my interest in a summer internship position as a junior reporter at The Pune Chronicle.",
+                        "text": "I am writing this letter to request an excursion tour to the magnificent city of Hyderabad for the Class 10 students of our school. Excursions offer a unique learning experience beyond the classroom environment.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I am writing to apply for an internship at your newspaper. I am a student who is interested in journalism.",
+                        "text": "I am writing this letter because I really think our Class 10 students should go on an excursion tour to Hyderabad.",
                         "is_correct": false,
-                        "feedback": "This introduction is too vague and lacks specific details such as full name, school name, grade and exact position."
+                        "feedback": "This introduction uses informal expressions and is overly opinion-based."
                     },
                     {
                         "id": 3,
-                        "text": "I really love reading newspapers and I think it would be amazing to work at The Pune Chronicle.",
+                        "text": "I am writing to discuss the possibility of organising educational trips for our students.",
                         "is_correct": false,
-                        "feedback": "This introduction uses overly casual language and sounds too enthusiastic rather than professional."
+                        "feedback": "This does not clearly state the specific request."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have a strong interest in journalism and writing. I have been an active member of our school newspaper committee for two years, writing articles on school events, social issues and student achievements. Additionally, I secured second place in an inter-school essay competition.",
+                        "text": "Hyderabad is a city steeped in history and culture. It includes sites such as the Charminar, Golconda Fort and the Salar Jung Museum, offering students first-hand cultural experience.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I like writing and reading newspapers. I sometimes write for my school and I once participated in an essay competition.",
+                        "text": "Hyderabad is an absolutely amazing city with so much history and culture!",
                         "is_correct": false,
-                        "feedback": "This paragraph is too brief, casual and lacks specific examples of achievements."
+                        "feedback": "Overly enthusiastic and informal language has been used."
                     },
                     {
                         "id": 3,
-                        "text": "I am absolutely passionate about journalism and have always dreamed of becoming a famous journalist.",
+                        "text": "Hyderabad is a very famous historical city with many monuments.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses exaggerated language and sounds boastful and presumptuous."
+                        "feedback": "The language is simplistic and lacks specific details."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "I am particularly drawn to The Pune Chronicle because of its reputation for balanced reporting. I am available from 1 June to 15 July during the summer break. This internship would provide valuable insights into professional journalism.",
-                        "is_correct": true,
-                        "feedback": ""
+                        "text": "Excursions are very useful for students as they learn many important things.",
+                        "is_correct": false,
+                        "feedback": "This paragraph uses vague language without specific examples."
                     },
                     {
                         "id": 2,
-                        "text": "I want to work at your newspaper because it is well-known. I am free during summer holidays.",
+                        "text": "I have heard that excursions are really good for students.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses casual language and lacks specific availability details."
+                        "feedback": "Personal and subjective language has been used."
                     },
                     {
                         "id": 3,
-                        "text": "I think The Pune Chronicle is okay and I need some work experience.",
-                        "is_correct": false,
-                        "feedback": "This paragraph shows lack of enthusiasm and focuses on personal needs rather than contribution."
+                        "text": "It is widely acknowledged that excursions provide students opportunities for social and personal growth. They promote teamwork, independence and problem-solving skills.",
+                        "is_correct": true,
+                        "feedback": ""
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I know I would be perfect for this internship and you won't regret hiring me.",
-                        "is_correct": false,
-                        "feedback": "This conclusion is presumptuous and assumes selection."
+                        "text": "I kindly request your consideration and approval for this excursion to Hyderabad. I believe this trip will be a valuable educational experience.",
+                        "is_correct": true,
+                        "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I really hope you will give me this internship because I need the experience.",
+                        "text": "I am sure this trip will be really enjoyable and fun for all of us.",
                         "is_correct": false,
-                        "feedback": "This conclusion sounds desperate and too casual."
+                        "feedback": "This uses overly casual tone."
                     },
                     {
                         "id": 3,
-                        "text": "I am eager to contribute my enthusiasm and dedication to The Pune Chronicle. I would welcome the opportunity to discuss this internship further in an interview. Thank you for considering my application.",
-                        "is_correct": true,
-                        "feedback": ""
+                        "text": "Please give your approval for this excursion.",
+                        "is_correct": false,
+                        "feedback": "This sounds abrupt and impolite."
                     }
                 ],
                 "complimentary_close": [
@@ -379,9 +379,9 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "Thanks and best wishes,",
+                        "text": "Thanks and Regards,",
                         "is_correct": false,
-                        "feedback": "This is too informal for a job application letter."
+                        "feedback": "Too informal for a formal letter."
                     },
                     {
                         "id": 3,
@@ -393,19 +393,19 @@ const letterData = {
                 "senders_name": [
                     {
                         "id": 1,
-                        "text": "Amit Kulkarni",
+                        "text": "Perin Mistry,",
+                        "is_correct": false,
+                        "feedback": "A comma is not required after the sender’s name."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Perin Mistry",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 2,
-                        "text": "Amit Kulkarni,",
-                        "is_correct": false,
-                        "feedback": "A comma is not required after the sender's name."
-                    },
-                    {
                         "id": 3,
-                        "text": "Amit Kulkarni.",
+                        "text": "Perin Mistry.",
                         "is_correct": false,
                         "feedback": "A full stop is not required after the sender’s name."
                     }
@@ -413,64 +413,64 @@ const letterData = {
             }
         },
         {
-            "title": "animalShelterVolunteer",
+            "title": "sportsEventSponsorship",
             "sections": {
                 "senders_address": [
                     {
                         "id": 1,
-                        "text": "Green Valley Apartments,\nRing Road,\nChennai – 600001.",
+                        "text": "Grande Housing Society,\nRawat Road,\nMumbai – 402 015.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Harini Raman\nGreen Valley Apartments,\nRing Road,\nChennai – 600001.",
+                        "text": "Grande Housing Society\nRawat Road\nMumbai – 402 015.",
                         "is_correct": false,
-                        "feedback": "The sender's name should not be included in the sender's address."
+                        "feedback": "Commas after the first two lines of the address are missing."
                     },
                     {
                         "id": 3,
-                        "text": "Green Valley Apartments\nRing Road\nChennai – 600001.",
+                        "text": "Grande Housing Society,\nRawat Road,\nMumbai 402 015.",
                         "is_correct": false,
-                        "feedback": "Each line should end with a comma, except the last line."
+                        "feedback": "The PIN code should include a hyphen."
                     }
                 ],
                 "date": [
                     {
                         "id": 1,
-                        "text": "20 June, 2026.",
+                        "text": "02 May, 2026.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "June 20, 2026.",
+                        "text": "02 May, 26.",
                         "is_correct": false,
-                        "feedback": "The day should come before the month."
+                        "feedback": "The year needs to be written in full."
                     },
                     {
                         "id": 3,
-                        "text": "20 06, 2026.",
+                        "text": "May 02, 2026.",
                         "is_correct": false,
-                        "feedback": "The month should be written in words, not numbers."
+                        "feedback": "The date format is incorrect. The day should come first."
                     }
                 ],
                 "receivers_address": [
                     {
                         "id": 1,
-                        "text": "The Manager\nHappy Paws Animal Shelter\nChennai – 600001.",
+                        "text": "The Manager\nMilind Sports Emporium\nDesai Road\nMumbai – 402 015.",
                         "is_correct": false,
-                        "feedback": "Each line should end with a comma, except the last line."
+                        "feedback": "The commas at the end of each line are missing."
                     },
                     {
                         "id": 2,
-                        "text": "The Manager,\nHappy Paws Animal Shelter,\nChennai",
+                        "text": "Milind Sports Emporium,\nDesai Road,\nMumbai – 402 015.",
                         "is_correct": false,
-                        "feedback": "The PIN code must be included in the address."
+                        "feedback": "The designation (The Manager) is missing."
                     },
                     {
                         "id": 3,
-                        "text": "The Manager,\nHappy Paws Animal Shelter,\nChennai – 600001.",
+                        "text": "The Manager,\nMilind Sports Emporium,\nDesai Road,\nMumbai – 402 015.",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -478,101 +478,101 @@ const letterData = {
                 "salutation": [
                     {
                         "id": 1,
-                        "text": "Dear Sir/Madam,",
+                        "text": "Hello Sir,",
+                        "is_correct": false,
+                        "feedback": "This is too informal."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Dear Sir,",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 2,
-                        "text": "Hello",
-                        "is_correct": false,
-                        "feedback": "'Hello' is too informal for a formal letter. A comma should follow the salutation."
-                    },
-                    {
                         "id": 3,
-                        "text": "Dear Manager Sir/Madam,",
+                        "text": "Dear Sir/Madam",
                         "is_correct": false,
-                        "feedback": "Use 'Dear Sir', 'Dear Madam' or 'Dear Sir/Madam'. The designation is not used in the salutation."
+                        "feedback": "A comma should follow the salutation."
                     }
                 ],
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "I am writing to apply for a volunteer job at your animal shelter. I am a student who likes animals.",
-                        "is_correct": false,
-                        "feedback": "This introduction lacks specific details and uses casual language."
-                    },
-                    {
-                        "id": 2,
-                        "text": "My name is Harini Raman and I am a Grade 10 student at St. Mary's School. I am writing to express my interest in applying for a volunteer position at Happy Paws Animal Shelter.",
+                        "text": "I am Rita Andrews, a resident of Grande Housing Society. I am writing to seek your sponsorship for our upcoming Annual Sports Event, scheduled for 20 December, 2023.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 3,
-                        "text": "I absolutely love animals and I think working at Happy Paws would be so much fun!",
+                        "id": 2,
+                        "text": "I am writing to request sponsorship for our sports event.",
                         "is_correct": false,
-                        "feedback": "This introduction uses overly enthusiastic and casual language."
+                        "feedback": "This introduction lacks specific details and sounds vague."
+                    },
+                    {
+                        "id": 3,
+                        "text": "I am Reva Arora, a resident of Grande Housing Society for five years.",
+                        "is_correct": false,
+                        "feedback": "This includes irrelevant and excessive information."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have always had a deep love and compassion for animals. I understand the importance of proper care, nutrition and attention that animals require.",
+                        "text": "Our sports event is a cherished tradition bringing together residents of all ages to participate in badminton, table tennis and mini marathon.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I like animals and I have a dog.",
+                        "text": "Our sports event is very popular and many residents participate.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too simplistic and vague."
+                        "feedback": "This lacks specific details and uses simplistic vocabulary."
                     },
                     {
                         "id": 3,
-                        "text": "I am crazy about animals and spend all my free time watching animal videos.",
+                        "text": "Our sports event is wonderful and everyone has so much fun.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses overly casual language and focuses on entertainment."
+                        "feedback": "Personal opinion and informal phrases have been used."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "I am eager to contribute to Happy Paws Animal Shelter's mission. I am available on weekends and during school holidays.",
+                        "text": "We need financial support for equipment and prizes.",
+                        "is_correct": false,
+                        "feedback": "This sounds demanding and lacks formal tone."
+                    },
+                    {
+                        "id": 2,
+                        "text": "Furthermore, we are seeking financial support to cover expenses such as equipment and prizes. In return, we will display your logo on banners and promotional materials.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 2,
-                        "text": "I want to help because I like animals. I can come on weekends.",
-                        "is_correct": false,
-                        "feedback": "This paragraph is too brief and lacks specific details."
-                    },
-                    {
                         "id": 3,
-                        "text": "I think working with animals would be more fun than schoolwork.",
+                        "text": "We believe you would be an ideal sponsor and will display your logo.",
                         "is_correct": false,
-                        "feedback": "This paragraph shows wrong motivation and lack of commitment."
+                        "feedback": "The structure is illogical and places benefits before explaining the need."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I really hope you will let me volunteer because I love animals so much.",
-                        "is_correct": false,
-                        "feedback": "This conclusion uses overly casual language and focuses on personal feelings."
-                    },
-                    {
-                        "id": 2,
-                        "text": "I am genuinely passionate about animal welfare and believe my dedication would make me a valuable addition to your team. Thank you for considering my application.",
+                        "text": "For any queries, please contact our society office. Thank you for considering our request. We look forward to partnering with you.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
-                        "id": 3,
-                        "text": "I know I would be perfect for this position and animals always love me.",
+                        "id": 2,
+                        "text": "Call us if you have questions. We are waiting for your reply.",
                         "is_correct": false,
-                        "feedback": "This conclusion is presumptuous and lacks appropriate humility."
+                        "feedback": "This is abrupt and lacks professional tone."
+                    },
+                    {
+                        "id": 3,
+                        "text": "We are confident that you will agree to sponsor our event.",
+                        "is_correct": false,
+                        "feedback": "This assumes approval and sounds presumptuous."
                     }
                 ],
                 "complimentary_close": [
@@ -584,9 +584,9 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "Thanks so much,\nBest wishes,",
+                        "text": "With warm regards,",
                         "is_correct": false,
-                        "feedback": "This is too informal for a formal application letter."
+                        "feedback": "Too informal for a formal letter."
                     },
                     {
                         "id": 3,
@@ -598,19 +598,19 @@ const letterData = {
                 "senders_name": [
                     {
                         "id": 1,
-                        "text": "Harini Raman",
+                        "text": "Rita Andrews",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Ms. Harini Raman",
+                        "text": "Ms. Rita Andrews",
                         "is_correct": false,
-                        "feedback": "Titles like 'Ms.' are not added to the sender's name."
+                        "feedback": "‘Ms.’ is not added to the sender’s name."
                     },
                     {
                         "id": 3,
-                        "text": "Harini Raman,",
+                        "text": "Rita Andrews,",
                         "is_correct": false,
                         "feedback": "A comma is not required after the sender’s name."
                     }
@@ -657,9 +657,9 @@ const practicePageEl = document.getElementById('practice-page');
 const practiceResultEl = document.getElementById('practice-result');
 
 const resultImageMap = {
-    retailJob: 'practice-result-retailJob',
-    newspaperInternship: 'practice-result-newspaperInternship',
-    animalShelterVolunteer: 'practice-result-newspaperInternship'
+    vocationalCourse: 'practice-result-vocationalCourse',
+    excursionTour: 'practice-result-excursionTour',
+    sportsEventSponsorship: 'practice-result-sportsEventSponsorship'
 };
 
 
@@ -782,10 +782,11 @@ function showPracticeResult() {
     document.querySelectorAll('.practice-result-img').forEach(img => {
         img.style.display = 'none';
     });
-    const topic = state.activeLetter?.title || 'retailJob';
-    const imgId = resultImageMap[topic] || resultImageMap.retailJob;
+    const topic = state.activeLetter?.title || 'vocationalCourse';
+    const imgId = resultImageMap[topic] || resultImageMap.vocationalCourse;
     const img = document.getElementById(imgId);
     if (img) img.style.display = 'block';
+
     playSuccessLottie();
 }
 
@@ -818,7 +819,7 @@ function initNavigation() {
     // }
 
     // Practice Trigger Buttons
-    ['retailJob', 'newspaperInternship', 'animalShelterVolunteer'].forEach(id => {
+    ['vocationalCourse', 'excursionTour', 'sportsEventSponsorship'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
             btn.onclick = () => {
@@ -1058,7 +1059,7 @@ function showPopupFromGElement(gElement) {
  */
 function addTextToSvg(groupElement, label) {
     // Get the bounding box of the paths to find the center
-    //const bbox = groupElement.getBBox();
+    // const bbox = groupElement.getBBox();
     const path = groupElement.querySelector('path');
     const bbox = path ? path.getBBox() : groupElement.getBBox();
 
@@ -1214,7 +1215,6 @@ function resetPracticeSession() {
             displayBox.style.display = 'none';
             hideFeedback(displayBox);
         }
-
 
         box.style.height = "200px";
     });

@@ -210,6 +210,6 @@ body.modal-open .svg-container::before {
   z-index: -1;
 }
 
-body.modal-open .svg-container {
-  /* opacity: .2; */
+body.modal-open .wg-wrapper {
+  opacity: .2;
 }

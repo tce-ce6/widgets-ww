@@ -1,0 +1,537 @@
+{
+  "folders": {
+    "wg100-fast-multiplication": {
+      "updatedAt": "2026-02-27T12:39:51+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg101-formal-letters-of-request": {
+      "updatedAt": "2026-03-07T22:02:26+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg102-law-of-conservation-mass": {
+      "updatedAt": "2026-03-05T12:00:47+05:30",
+      "author": "sushantthe"
+    },
+    "wg103-molecular-visualizer": {
+      "updatedAt": "2026-03-05T13:12:21+05:30",
+      "author": "sushantthe"
+    },
+    "wg104-addition-of-integers": {
+      "updatedAt": "2026-03-08T17:55:12+05:30",
+      "author": "sushantkanaujiya"
+    },
+    "wg105-regulation-of-blood-glucose": {
+      "updatedAt": "2026-02-27T14:51:23+05:30",
+      "author": "sushantthe"
+    },
+    "wg108-photosynthesis-factory": {
+      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg109-electrolytic-refining-of-metals": {
+      "updatedAt": "2026-03-06T12:15:00+05:30",
+      "author": "Shyam"
+    },
+    "wg111-guess-the-collective-nouns": {
+      "updatedAt": "2026-03-05T17:49:32+05:30",
+      "author": "PrasannaP"
+    },
+    "wg112-identify-criminal-dna": {
+      "updatedAt": "2026-03-04T16:19:24+05:30",
+      "author": "PrasannaP"
+    },
+    "wg113-making-of-Indias-constitution": {
+      "updatedAt": "2026-03-07T20:39:50+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg114-barter-fails-money-wins": {
+      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "author": "Shyam"
+    },
+    "wg117-picture-the-idiom": {
+      "updatedAt": "2026-02-24T15:53:22+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg118_formal-letters-job-application": {
+      "updatedAt": "2026-03-07T22:02:26+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg120-area-of-different-shapes": {
+      "updatedAt": "2026-03-04T12:33:05+05:30",
+      "author": "Santosh Vishwakarma"
+    },
+    "wg121-synthesize-new-dna-strand": {
+      "updatedAt": "2026-03-09T15:22:00+05:30",
+      "author": "PrasannaP"
+    },
+    "wg122-suffix-magic": {
+      "updatedAt": "2026-03-06T20:12:35+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg123-pick-the-opposite": {
+      "updatedAt": "2026-02-26T19:18:47+05:30",
+      "author": "PrasannaP"
+    },
+    "wg124-swar-ki-pahchan": {
+      "updatedAt": "2026-02-19T20:12:43+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg125-vyanjan-ki-pahchan": {
+      "updatedAt": "2026-02-19T20:12:43+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg126-dominos-of-rebellion": {
+      "updatedAt": "2026-03-05T12:00:47+05:30",
+      "author": "sushantthe"
+    },
+    "wg127-formal-letters-order-placement": {
+      "updatedAt": "2026-03-07T22:02:26+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg130-election-officer": {
+      "updatedAt": "2026-03-08T15:10:48+05:30",
+      "author": "sushantthe"
+    },
+    "wg131-journey-of-a-bill-to-law": {
+      "updatedAt": "2026-03-09T14:31:26+05:30",
+      "author": "sushantthe"
+    },
+    "wg134-barter-bazaar": {
+      "updatedAt": "2026-03-09T11:38:35+05:30",
+      "author": "sushantthe"
+    },
+    "wg140-change-master": {
+      "updatedAt": "2026-03-09T15:35:05+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg142-fact-or-opinion": {
+      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg145-multiplication-builder": {
+      "updatedAt": "2026-03-04T19:19:38+05:30",
+      "author": "Shyam"
+    },
+    "wg147-literary-detective-agency": {
+      "updatedAt": "2026-03-07T12:45:54+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg148-Build-the-Panchayati-Raj-Pyramid": {
+      "updatedAt": "2026-03-09T15:24:32+05:30",
+      "author": "aditya"
+    },
+    "wg149-punctuation-marks": {
+      "updatedAt": "2026-03-06T19:03:31+05:30",
+      "author": "aditya"
+    },
+    "wg150-blood-circulation": {
+      "updatedAt": "2026-03-09T15:47:23+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg151-cropmap-India": {
+      "updatedAt": "2026-03-08T23:12:46+05:30",
+      "author": "sushantkanaujiya"
+    },
+    "wg153-informal-letters": {
+      "updatedAt": "2026-03-07T22:02:26+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg154-naming-words": {
+      "updatedAt": "2026-03-09T11:25:56+05:30",
+      "author": "PrasannaP"
+    },
+    "wg17-locating-decimals-v2": {
+      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "author": "Shyam"
+    },
+    "wg18-solubility": {
+      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg24-hcf-of-numbers": {
+      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "author": "Shyam"
+    },
+    "wg26-word-discovery": {
+      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg31-world-war": {
+      "updatedAt": "2026-02-10T12:11:30+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg42-the-switching-game": {
+      "updatedAt": "2026-03-04T19:15:24+05:30",
+      "author": "Santosh"
+    },
+    "wg47-mendels-monohybrid-cross": {
+      "updatedAt": "2026-03-07T10:51:11+05:30",
+      "author": "PrasannaP"
+    },
+    "wg48-mendels-dihybrid-cross": {
+      "updatedAt": "2026-03-07T17:13:13+05:30",
+      "author": "PrasannaP"
+    },
+    "wg52-pictograph": {
+      "updatedAt": "2026-03-06T10:31:34+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg53-bargraph": {
+      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "author": "Shyam"
+    },
+    "wg56_atomic-radius-simulator": {
+      "updatedAt": "2026-03-07T21:52:51+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg61-suffix-magic": {
+      "updatedAt": "2026-03-06T20:12:35+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg67-race-to-the-magic-numbers": {
+      "updatedAt": "2026-03-04T12:33:05+05:30",
+      "author": "Santosh Vishwakarma"
+    },
+    "wg69-rounding-rally": {
+      "updatedAt": "2026-03-04T12:33:05+05:30",
+      "author": "Santosh Vishwakarma"
+    },
+    "wg70_reflection-of-light": {
+      "updatedAt": "2026-03-09T15:35:05+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg72-build-a-carbon-cycle": {
+      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "author": "Shyam"
+    },
+    "wg73-pie-charts": {
+      "updatedAt": "2026-03-04T12:33:05+05:30",
+      "author": "Santosh Vishwakarma"
+    },
+    "wg74-formal-letter-of-complaint": {
+      "updatedAt": "2026-03-09T16:42:51+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg75-reading-slopes": {
+      "updatedAt": "2026-02-24T16:51:05+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg76-chemical-reactions-simulator": {
+      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg77-chemical-formula-builder": {
+      "updatedAt": "2026-02-17T11:32:57+05:30",
+      "author": "aditya"
+    },
+    "wg78-form-idioms-based-on-picture": {
+      "updatedAt": "2026-03-05T18:44:55+05:30",
+      "author": "Santosh"
+    },
+    "wg79_rhyme-scheme": {
+      "updatedAt": "2026-03-04T12:55:22+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg80-forming-landforms": {
+      "updatedAt": "2026-02-24T16:51:05+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg81-\u0909_\u0914\u0930_\u090a_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
+      "updatedAt": "2026-02-27T18:18:07+05:30",
+      "author": "sushantthe"
+    },
+    "wg82-commonly-confused-words": {
+      "updatedAt": "2026-03-06T11:42:00+05:30",
+      "author": "PrasannaP"
+    },
+    "wg83-major-soil-types": {
+      "updatedAt": "2026-03-05T21:33:51+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg84-legislature-challenge": {
+      "updatedAt": "2026-03-08T16:21:42+05:30",
+      "author": "sushantthe"
+    },
+    "wg85-build-a-paragraph": {
+      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg86-\u0907_\u0914\u0930_\u0908_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
+      "updatedAt": "2026-02-28T13:53:37+05:30",
+      "author": "sushantthe"
+    },
+    "wg87-\u090f_\u0914\u0930_\u0910_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
+      "updatedAt": "2026-02-27T18:18:07+05:30",
+      "author": "sushantthe"
+    },
+    "wg89-the-tone-lab": {
+      "updatedAt": "2026-03-06T15:20:21+05:30",
+      "author": "Santosh"
+    },
+    "wg90-\u0906_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u0915\u0940_\u092a\u0939\u091a\u093e\u0928": {
+      "updatedAt": "2026-02-27T18:18:07+05:30",
+      "author": "sushantthe"
+    },
+    "wg91-prime-factorisation": {
+      "updatedAt": "2026-03-06T11:54:30+05:30",
+      "author": "Shyam"
+    },
+    "wg92-test-of-divisibility": {
+      "updatedAt": "2026-02-18T19:50:43+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg93-rhyming-words": {
+      "updatedAt": "2026-02-17T19:32:51+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg94-lac-operon-regulation": {
+      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg95-similar-meanings": {
+      "updatedAt": "2026-02-12T18:57:30+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg96-operation-domino": {
+      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg97-find-the-dna-lengths": {
+      "updatedAt": "2026-03-04T15:30:07+05:30",
+      "author": "PrasannaP"
+    },
+    "wg98-molecular-reaction-simulator": {
+      "updatedAt": "2026-03-07T11:54:34+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg99-applying-distributive-property": {
+      "updatedAt": "2026-02-26T19:18:47+05:30",
+      "author": "PrasannaP"
+    }
+  },
+  "commits": [
+    {
+      "date": "2026-03-09T16:42:51+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        74
+      ]
+    },
+    {
+      "date": "2026-03-09T16:26:21+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        74
+      ]
+    },
+    {
+      "date": "2026-03-09T16:19:48+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        74
+      ]
+    },
+    {
+      "date": "2026-03-09T15:47:23+05:30",
+      "author": "tce-nitinc",
+      "widgets": [
+        150
+      ]
+    },
+    {
+      "date": "2026-03-09T15:35:05+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        70,
+        140
+      ]
+    },
+    {
+      "date": "2026-03-09T15:31:58+05:30",
+      "author": "tce-nitinc",
+      "widgets": [
+        150
+      ]
+    },
+    {
+      "date": "2026-03-09T15:24:32+05:30",
+      "author": "aditya",
+      "widgets": [
+        148
+      ]
+    },
+    {
+      "date": "2026-03-09T15:22:00+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        121
+      ]
+    },
+    {
+      "date": "2026-03-09T15:13:14+05:30",
+      "author": "tce-nitinc",
+      "widgets": [
+        150
+      ]
+    },
+    {
+      "date": "2026-03-09T14:46:30+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        121
+      ]
+    },
+    {
+      "date": "2026-03-09T14:31:26+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        131
+      ]
+    },
+    {
+      "date": "2026-03-09T11:38:35+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        84,
+        131,
+        134
+      ]
+    },
+    {
+      "date": "2026-03-09T11:25:56+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-09T03:36:15+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-09T02:37:23+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-09T00:52:28+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-09T00:20:53+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-08T23:12:46+05:30",
+      "author": "sushantkanaujiya",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-08T23:12:30+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        131
+      ]
+    },
+    {
+      "date": "2026-03-08T17:55:12+05:30",
+      "author": "sushantkanaujiya",
+      "widgets": [
+        104,
+        151
+      ]
+    },
+    {
+      "date": "2026-03-08T16:21:42+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-08T16:12:09+05:30",
+      "author": "sushantkanaujiya",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-08T15:10:48+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        130
+      ]
+    },
+    {
+      "date": "2026-03-08T14:04:28+05:30",
+      "author": "sushantkanaujiya",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-08T13:43:28+05:30",
+      "author": "sushantthe",
+      "widgets": [
+        130
+      ]
+    },
+    {
+      "date": "2026-03-07T22:02:26+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        101,
+        118,
+        127,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-07T21:52:51+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        56
+      ]
+    },
+    {
+      "date": "2026-03-07T21:36:42+05:30",
+      "author": "tce-ashishg",
+      "widgets": [
+        56,
+        70,
+        74,
+        101,
+        118,
+        127,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-07T20:39:50+05:30",
+      "author": "tce-nitinc",
+      "widgets": [
+        113
+      ]
+    },
+    {
+      "date": "2026-03-07T17:13:13+05:30",
+      "author": "PrasannaP",
+      "widgets": [
+        48
+      ]
+    }
+  ]
+}

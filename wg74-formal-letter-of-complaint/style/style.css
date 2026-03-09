@@ -24,7 +24,7 @@ svg {
 
 #formal-letter-widget .container::after {
   content: "";
-  background-image: url("./assets/bg.png");
+  background-image: url("../assets/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -138,7 +138,7 @@ svg {
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #640741;
+  background: #8e220a;
   padding: 8px 40px;
   color: white;
   white-space: nowrap;
@@ -198,7 +198,6 @@ svg {
   align-items: center;
   color: #aaaaaa;
 }
-
 
 .suggestion-wrapper {
   display: none;
@@ -307,7 +306,6 @@ svg {
 .feedback-text.is-visible {
   display: block;
 }
-
 
 .svg-popup {
   background: #dff3e4;
