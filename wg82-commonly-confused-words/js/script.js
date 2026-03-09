@@ -51,7 +51,7 @@ const WORD_PAIRS = [
     { words: ["adopt", "adapt"] },
     { words: ["then", "than"] },
     { words: ["sweet", "sweat"] },
-    { words: ["breath", "breathe"], isSecond: true }, // Duplicate as requested by docs
+    { words: ["wonder", "wander"] }, // added by me as two new words // audio files are not available yet
     { words: ["decent", "descent"] },
     { words: ["through", "thorough"] }
 ];

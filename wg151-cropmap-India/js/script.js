@@ -307,6 +307,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Reset opacity on base buttons
+    ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+      const baseContainer = document.getElementById(id);
+      if (baseContainer) {
+        Array.from(baseContainer.children).forEach(childGroup => {
+          childGroup.style.opacity = "1";
+          childGroup.style.display = "block";
+        });
+      }
+    });
+
     currentState = {
       season: null,
       crop: null,
@@ -460,6 +471,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // Reset base buttons opacity/display
+      ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+        const baseContainer = document.getElementById(id);
+        if (baseContainer) {
+          Array.from(baseContainer.children).forEach(childGroup => {
+            childGroup.style.opacity = "1";
+            childGroup.style.display = "block";
+          });
+        }
+      });
+
       elements.croplabel.classList.remove("st170");
       elements.iTextHomeScreen.classList.add("st170");
       elements.itextActivity.classList.remove("st170");
@@ -496,6 +518,30 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Dim the unselected base buttons and hide the base version of the selected button
+    ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+      const baseContainer = document.getElementById(id);
+      if (baseContainer) {
+        Array.from(baseContainer.children).forEach(childGroup => {
+          let hasMatch = false;
+          childGroup.querySelectorAll("tspan").forEach(tspan => {
+            if (tspan.textContent.trim() === crop) {
+              hasMatch = true;
+            }
+          });
+
+          if (hasMatch) {
+            // Hide the base version because the bright green 'selected' version is showing
+            childGroup.style.display = "none";
+          } else {
+            // Leave the unselected bases visible, but dim them
+            childGroup.style.display = "block";
+            childGroup.style.opacity = "0.5";
+          }
+        });
+      }
+    });
+
     // Do NOT hideAll(), we want to keep the menu visible.
     // Just hide Activity Text and ensure correct state
     //elements.itextActivity.classList.add("st170");
@@ -525,18 +571,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (mapPromptTexts && mapPromptTexts.length >= 3) {
           mapPromptTexts[0].textContent = `Identify and Tap ${count} major `;
-
-          // Re-adjust exact translate coordinates to prevent overlap when text is long
-          if (texts.length >= 3) {
-            texts[0].setAttribute("transform", "translate(1120 120)"); // 'Identify...'
-            texts[1].setAttribute("transform", "translate(1260 120)"); // 'sugarcane'
-            texts[2].setAttribute("transform", "translate(1420 120)"); // 'cultivating states'
-
-            // Crop name might be long, shift right text further right based on length
-            const cropLengthFactor = crop.length * 6;
-            texts[2].setAttribute("transform", `translate(${1380 + cropLengthFactor} 120)`);
-          }
-
           mapPromptTexts[1].textContent = `${crop.toLowerCase()} `;
         }
       }

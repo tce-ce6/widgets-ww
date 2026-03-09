@@ -104,11 +104,7 @@ const STATIONS = [
     msg2: "↓ Actually: Debate",
     msg3: "Moving to next step...",
     stamp: "DEBATED 💬",
-    facts: [
-      "MPs discuss pros/cons",
-      "Share opinions",
-      "Voting comes later",
-    ],
+    facts: ["MPs discuss pros/cons", "Share opinions", "Voting comes later"],
     title: "DEBATE (The Assembly → Debate)",
   },
   {
@@ -130,10 +126,7 @@ const STATIONS = [
     msg2: "↓ Actually: Clauses",
     msg3: "Moving to next step...",
     stamp: "CLAUSES OK 📝",
-    facts: [
-      "Clause = One section",
-      "Each can be amended",
-    ],
+    facts: ["Clause = One section", "Each can be amended"],
     title: "CLAUSE-BY-CLAUSE (The Scroll → Clauses)",
   },
   {
@@ -155,11 +148,7 @@ const STATIONS = [
     msg2: "↓ Actually: Voting",
     msg3: "Moving to next step...",
     stamp: "PASSED LS 🗳️",
-    facts: [
-      "Need MORE than 50%",
-      "543 MPs total",
-      "Need 272+ YES",
-    ],
+    facts: ["Need MORE than 50%", "543 MPs total", "Need 272+ YES"],
     title: "VOTING (The Gathering → Voting)",
   },
   {
@@ -242,6 +231,17 @@ const STATIONS = [
     ],
     title: "GAZETTE PUBLICATION (The Archive → Gazette)",
   },
+];
+const STATIONS_TEXT_IDS = [
+  "The_Gateway",
+  "The_Announcement",
+  "The_Examination",
+  "The_Assembly",
+  "The_Gathering",
+  "The_Scroll",
+  "The_Chamber",
+  "The_Final_Approval",
+  "The_Archive",
 ];
 
 // ── State ─────────────────────────────────────
@@ -748,6 +748,13 @@ window.addEventListener("load", () => {
       el.addEventListener("click", () => showPopupInsights(idx));
     }
   });
+  STATIONS_TEXT_IDS.forEach((textId, idx) => {
+    const el = document.getElementById(textId);
+    if (el) {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", () => showPopupInsights(idx));
+    }
+  });
 
   // ── CLOSE POPUP: click darkened background rect inside popup-insights ──────
   const dimmerRect = document.getElementById("Rectangle_4371");
@@ -782,7 +789,7 @@ window.addEventListener("load", () => {
     const el = document.getElementById(id);
     if (el) {
       el.style.cursor = "pointer";
-      el.addEventListener("click", resetGame);
+      el.addEventListener("click", () => resetGame());
     }
   });
 });
@@ -948,10 +955,13 @@ function showPopupInsights(idx) {
       // Colour the selected box
       const boxRects = fresh.querySelectorAll("rect");
       boxRects.forEach((r) => {
-        r.style.fill = isCorrect ? "#4caf50" : "#f87171";
-        r.style.stroke = isCorrect ? "#2e7d32" : "#c0392b";
+        r.style.fill = isCorrect ? "#22c55e" : "#f87171";
+        r.style.stroke = isCorrect ? "#22c55e" : "#c0392b";
       });
       // Grey out the other two
+      fresh.querySelectorAll("text").forEach((t) => {
+        t.style.fill = "#fff";
+      });
       slotGroups.forEach((ogid, oi) => {
         if (oi === i) return;
         const og =
@@ -1064,12 +1074,14 @@ function showInsightsPanel() {
     }
 
     // ── Show/hide Ellipse_12-15 according to facts ──────────────────────────
-    ["Ellipse_12", "Ellipse_13", "Ellipse_14", "Ellipse_15"].forEach((eid, i) => {
-      const el = document.getElementById(eid);
-      if (el) {
-        el.style.display = s.facts && s.facts[i] ? "" : "none";
-      }
-    });
+    ["Ellipse_12", "Ellipse_13", "Ellipse_14", "Ellipse_15"].forEach(
+      (eid, i) => {
+        const el = document.getElementById(eid);
+        if (el) {
+          el.style.display = s.facts && s.facts[i] ? "" : "none";
+        }
+      },
+    );
 
     // ── Update title (use station label) ────────────────────────────────────
     const titleGrp = document.getElementById("insights-title");
@@ -1135,10 +1147,12 @@ function showFeedbackOverlay(isCorrect, s) {
   if (!quizPopup) return;
 
   if (isCorrect) {
-    document.getElementById("feedback-correct").setAttribute("display", "block");
+    document
+      .getElementById("feedback-correct")
+      .setAttribute("display", "block");
     // document.getElementById("quiz-insight-title").querySelector("tspan").textContent = `${s.label}`;
     //document.getElementById("quiz-insight-msg").querySelector("tspan").textContent = `${s.msg2 || ""}`;
-    markStationComplete(currentStationIdx);
+
     // Fix: Remove previous listeners and attach only one
     const nextBtn = document.getElementById("Group_592");
     if (nextBtn) {
@@ -1148,11 +1162,16 @@ function showFeedbackOverlay(isCorrect, s) {
       newBtn.addEventListener("click", () => {
         hidePopupInsights();
         removeFeedbackOverlay();
+        markStationComplete(currentStationIdx);
       });
     }
   } else {
-    document.getElementById("feedback-incorrect").setAttribute("display", "block");
-    document.getElementById("quiz-hint-text").querySelector("tspan").textContent = `${s.hint}`;
+    document
+      .getElementById("feedback-incorrect")
+      .setAttribute("display", "block");
+    document
+      .getElementById("quiz-hint-text")
+      .querySelector("tspan").textContent = `${s.hint}`;
   }
 }
 
@@ -1202,35 +1221,7 @@ function showActivitySummaryEnd() {
   // Add stamp badges on the 9 icon circles
   showSummaryStamps(panel);
 
-  // Wire START NEW JOURNEY button
-  const btnGrp = document.getElementById("Group_11581");
-  if (btnGrp) {
-    const fresh = btnGrp.cloneNode(true);
-    btnGrp.parentNode.replaceChild(fresh, btnGrp);
-    fresh.style.cursor = "pointer";
-    fresh.addEventListener("click", () => {
-      // Hide summary panel
-      panel.style.display = "none";
-      panel.setAttribute("display", "none");
-      let startNewJourneyBtn = document.getElementById("START_NEW_JOURNEY_"); // also hide btn-insights if visible
-      if (startNewJourneyBtn) {
-        let textNodes = startNewJourneyBtn.querySelectorAll("text");
-        let tspanNodes = textNodes.querySelectorAll("tspan");
-        tspanNodes.innerHTML = "START JOURNEY AGAIN";
-      }
-      // Remove stamp badges
-      panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
-      // Reset completed state and yellow borders
-      completedStations.clear();
-      STATION_PATH_IDS.forEach((id) => {
-        const seg = document.getElementById(id);
-        if (seg) {
-          seg.style.stroke = "";
-          seg.style.strokeWidth = "";
-        }
-      });
-    });
-  }
+  // START NEW JOURNEY button is statically wired in window load event.
 }
 
 /**
@@ -1318,4 +1309,21 @@ function resetGame() {
   removeFeedbackOverlay();
   // 4. Reset option boxes
   resetOptionBoxes();
+  // 5. Reset variables
+  quizAnswered = false;
+  currentStationIdx = 0;
+  // 6. Show dashboard
+  // const dashboard = document.getElementById("dashboard");
+  // if (dashboard) dashboard.style.display = "block";
+  // 7. Hide home screen
+  const homeScreen = document.getElementById("home-screen");
+  if (homeScreen) {
+    homeScreen.style.display = "block";
+    homeScreen.setAttribute("display", "block");
+  }
+  const iText = document.getElementById("i-text");
+  if (iText) {
+    iText.style.display = "block";
+    iText.setAttribute("display", "block");
+  }
 }
