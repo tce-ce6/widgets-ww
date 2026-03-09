@@ -1,0 +1,228 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "date": "Dec 9, 1946",
+      "title": "First Meeting",
+      "icon": "🏛️",
+      "context": "The Constituent Assembly meets for the first time to begin creating India's Constitution. A leader is needed for this historic meeting.",
+      "question": "Who should lead the first meeting?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Jawaharlal Nehru - Popular freedom fighter",
+          "correct": false,
+          "feedback": "Not quite. While Nehru was very popular, he wasn't chosen for the first meeting."
+        },
+        {
+          "id": "B",
+          "text": "Sachchidananda Sinha - Oldest and most experienced",
+          "correct": true,
+          "feedback": "Correct! Sinha was chosen as temporary chairman for being the eldest member."
+        },
+        {
+          "id": "C",
+          "text": "Dr. B.R. Ambedkar - Legal expert",
+          "correct": false,
+          "feedback": "Not correct. While Ambedkar had great legal expertise, he wasn't chosen to lead the first meeting."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "date": "Dec 13, 1946",
+      "title": "Objectives Resolution",
+      "icon": "📜",
+      "context": "Nehru presents the Objectives Resolution outlining the values that should guide India's Constitution: Justice, Liberty, Equality, and Fraternity.",
+      "question": "Why did these four values matter for India's Constitution?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They address India's specific challenges",
+          "correct": true,
+          "feedback": "Correct! Each value addressed a different challenge India faced. These became the Constitution's Preamble."
+        },
+        {
+          "id": "B",
+          "text": "They sound impressive and democratic",
+          "correct": false,
+          "feedback": "Not correct. Values weren't chosen just because they sound impressive."
+        },
+        {
+          "id": "C",
+          "text": "Other countries also had these values",
+          "correct": false,
+          "feedback": "Not quite. India didn't choose them simply because other countries had them."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "date": "Aug 29, 1947",
+      "title": "Drafting Committee",
+      "icon": "✍️",
+      "context": "India is free! A Drafting Committee is formed to write the Constitution.",
+      "question": "Who should be chosen as chairman of the Drafting Committee?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Jawaharlal Nehru - Popular freedom fighter",
+          "correct": false,
+          "feedback": "Not correct. While Nehru was popular, drafting needed legal expertise."
+        },
+        {
+          "id": "B",
+          "text": "Sardar Patel - Experienced administrator",
+          "correct": false,
+          "feedback": "Not quite. Patel was a great administrator but drafting required legal expertise."
+        },
+        {
+          "id": "C",
+          "text": "Dr. B.R. Ambedkar - Expert in law and equality",
+          "correct": true,
+          "feedback": "Correct! Ambedkar's legal expertise and commitment to equality made him the perfect choice."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "date": "Nov 4, 1948",
+      "title": "Parliamentary System",
+      "icon": "🌍",
+      "context": "The Assembly debates whether India should follow a Parliamentary system or Presidential system.",
+      "question": "Why did India choose the Parliamentary system?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Britain had this system, so we followed it",
+          "correct": false,
+          "feedback": "Not correct. India didn't choose it just because Britain had it."
+        },
+        {
+          "id": "B",
+          "text": "The government stays accountable to Parliament daily",
+          "correct": true,
+          "feedback": "Correct! Parliament can question ministers and remove the government."
+        },
+        {
+          "id": "C",
+          "text": "It makes the government more stable",
+          "correct": false,
+          "feedback": "Not quite. Parliamentary systems are less stable but more accountable."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "date": "Nov 1948",
+      "title": "Language Policy",
+      "icon": "🗣️",
+      "context": "India has many languages. The Assembly must decide the official language policy.",
+      "question": "What language provision should go into the Constitution?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only Hindi - One national language",
+          "correct": false,
+          "feedback": "Not correct. This would exclude non-Hindi speakers."
+        },
+        {
+          "id": "B",
+          "text": "Each state chooses its own language",
+          "correct": false,
+          "feedback": "Not quite. The Union government needed common languages."
+        },
+        {
+          "id": "C",
+          "text": "Hindi and English both as official languages",
+          "correct": true,
+          "feedback": "Correct! This balanced identity with diversity."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "date": "Nov 1948",
+      "title": "Property Rights",
+      "icon": "⚖️",
+      "context": "The Assembly debates whether property should be a fundamental right.",
+      "question": "What should the Constitution say about property rights?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Balance both - Right to property with rules for public good",
+          "correct": true,
+          "feedback": "Correct! Property was protected but could be acquired for public use with compensation."
+        },
+        {
+          "id": "B",
+          "text": "Property is absolute - No one can take it",
+          "correct": false,
+          "feedback": "Not correct. This would block public projects."
+        },
+        {
+          "id": "C",
+          "text": "No private property - Everything belongs to state",
+          "correct": false,
+          "feedback": "Not quite. This would remove individual freedom."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "date": "Nov 26, 1949",
+      "title": "Constitution Ready",
+      "icon": "📖",
+      "context": "After three years of debates, the Constitution is adopted.",
+      "question": "What makes India's Constitution special?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is very long and detailed",
+          "correct": false,
+          "feedback": "Not quite. Length shows thoroughness but not uniqueness."
+        },
+        {
+          "id": "B",
+          "text": "It balances unity with diversity",
+          "correct": true,
+          "feedback": "Correct! Strong centre with state freedom keeps India united."
+        },
+        {
+          "id": "C",
+          "text": "It copied from many countries",
+          "correct": false,
+          "feedback": "Not correct. It adapted ideas to suit India."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "date": "Jan 26, 1950",
+      "title": "India Becomes Republic",
+      "icon": "🇮🇳",
+      "context": "January 26, 1950 arrives — a historic day for India.",
+      "question": "Why is January 26, 1950 important?",
+      "options": [
+        {
+          "id": "A",
+          "text": "India got independence from British",
+          "correct": false,
+          "feedback": "Not correct. Independence was on August 15, 1947."
+        },
+        {
+          "id": "B",
+          "text": "First elections were held",
+          "correct": false,
+          "feedback": "Not quite. First elections were in 1951–52."
+        },
+        {
+          "id": "C",
+          "text": "The Constitution came into effect",
+          "correct": true,
+          "feedback": "Correct! India became a Republic on this day."
+        }
+      ]
+    }
+  ]
+}
