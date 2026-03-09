@@ -1,19 +1,14 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# _deploy-lib.sh  —  shared library for deploy-widget.sh and deploy-listing.sh
+# _deploy-lib.sh  —  shared library for deploy scripts
 # Do NOT run this file directly. It is sourced by the deploy scripts.
 # ==============================================================================
 
-# ── Required configuration — edit these in each deploy script ─────────────────
-# FIREBASE_PROJECT_ID and FIREBASE_HOSTING_SITE_ID must be set before sourcing.
-
 # ── Internal paths ─────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd)"
-MAIN_SCRIPT_JS="$SCRIPT_DIR/widget-listing-b3/script/script.js"
-FIREBASE_JSON="$SCRIPT_DIR/firebase.json"
-FIREBASERC="$SCRIPT_DIR/.firebaserc"
-DIST_DIR="$SCRIPT_DIR/dist"
-CREATOR_PROFILE_FILE="$SCRIPT_DIR/.creator_profile"
+LISTING_DIR="$SCRIPT_DIR/widget-listing-b3"
+DATA_DIR="$LISTING_DIR/data"
+MANIFEST_FILE="$DATA_DIR/widgets.json"
 
 # ── Colours ────────────────────────────────────────────────────────────────────
 if [[ -t 1 ]]; then
@@ -30,11 +25,8 @@ fail() { printf "${RED}✗$NC  %s\n" "$1" >&2; exit 1; }
 
 # ── Validate config ────────────────────────────────────────────────────────────
 lib_validate_config() {
-  if [[ "${FIREBASE_PROJECT_ID:-}" == "YOUR_PROJECT_ID" ]]; then
-    fail "FIREBASE_PROJECT_ID is not set."
-  fi
-  if [[ "${FIREBASE_HOSTING_SITE_ID:-}" == "YOUR_HOSTING_SITE_ID" ]]; then
-    fail "FIREBASE_HOSTING_SITE_ID is not set."
+  if [[ "${GITHUB_PAGES_BASE_URL:-}" == "YOUR_GITHUB_PAGES_URL" || -z "${GITHUB_PAGES_BASE_URL:-}" ]]; then
+    fail "GITHUB_PAGES_BASE_URL is not set in the deploy script."
   fi
 }
 
@@ -49,216 +41,106 @@ lib_detect_python() {
 
 # ── Check required tools ───────────────────────────────────────────────────────
 lib_check_tools() {
-  command -v firebase &>/dev/null || \
-    fail "Firebase CLI not found. Install with: npm install -g firebase-tools"
+  command -v git &>/dev/null || fail "git is not installed."
   lib_detect_python
 }
 
-# ── Firebase auth check ────────────────────────────────────────────────────────
-lib_auth_check() {
-  if [[ -z "${FIREBASE_TOKEN:-}" ]]; then
-    local accounts
-    accounts=$(firebase login:list 2>/dev/null | grep -c "@" || true)
-    if [[ "$accounts" -eq 0 ]]; then
-      step "No Firebase account found. Opening browser login..."
-      firebase login
-    else
-      ok "Firebase authenticated."
-    fi
-  fi
-}
-
-# ── Write firebase.json and .firebaserc ───────────────────────────────────────
-lib_write_firebase_configs() {
-  cat > "$FIREBASE_JSON" << EOF
-{
-  "hosting": {
-    "site": "${FIREBASE_HOSTING_SITE_ID}",
-    "public": "dist",
-    "ignore": [
-      "**/.DS_Store",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      { "source": "/", "destination": "/widget-listing-b3/index.html" }
-    ]
-  }
-}
-EOF
-  cat > "$FIREBASERC" << EOF
-{
-  "projects": {
-    "default": "${FIREBASE_PROJECT_ID}"
-  }
-}
-EOF
-  ok "firebase.json and .firebaserc written."
-}
-
-# ── Validate listing-page script.js has the DB_URL declaration ────────────────
-# This catches the common merge-conflict regression where an old branch's
-# static WIDGET_DATA array replaces the Firebase-based script.js, leaving
-# fetch(DB_URL) with no DB_URL declaration and breaking the listing page.
+# ── Validate listing-page script.js has the correct DATA_URL ──────────────────
+# Catches the merge-conflict regression where an old branch's static
+# WIDGET_DATA array or Firebase DB_URL replaces the correct script.js.
 lib_validate_script_js() {
-  if ! grep -q 'const DB_URL' "$MAIN_SCRIPT_JS" 2>/dev/null; then
-    fail "widget-listing-b3/script/script.js is missing 'const DB_URL'.
-  This usually means your branch has an old version of the file from a merge conflict.
-  Fix it by running:
+  local js_file="$LISTING_DIR/script/script.js"
+  if ! grep -q 'const DATA_URL' "$js_file" 2>/dev/null; then
+    fail "widget-listing-b3/script/script.js is missing 'const DATA_URL'.
+  Your branch has an old or Firebase-based version of the file.
+  Fix with:
     git checkout origin/deploy -- widget-listing-b3/script/script.js
   Then re-run the deploy script."
   fi
-  if grep -q 'const WIDGET_DATA' "$MAIN_SCRIPT_JS" 2>/dev/null; then
+  if grep -q 'const WIDGET_DATA\s*=' "$js_file" 2>/dev/null; then
     fail "widget-listing-b3/script/script.js still contains a static 'const WIDGET_DATA' array.
-  This version pre-dates the Firebase Realtime Database migration and must not be deployed.
-  Fix it by running:
+  Fix with:
     git checkout origin/deploy -- widget-listing-b3/script/script.js
   Then re-run the deploy script."
   fi
 }
 
-# ── Build dist/ ────────────────────────────────────────────────────────────────
-# Usage: lib_build_dist [new_widget_folder]
-#   new_widget_folder — optional; the widget being deployed in this run.
-#
-# Always includes:
-#   • widget-listing-b3/  (listing page)
-#   • every wg* folder on this hosting site, sourced from Firebase Realtime DB
-#   • the new widget folder (if provided)
-#
-# Skips all non-web files (.md, .vscode/, .sh, etc.) automatically.
-lib_build_dist() {
-  local new_widget="${1:-}"
-  local db_url="https://${FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com/widgets.json"
-  step "Building dist/ (listing page + deployed widgets)..."
+# ── Resolve git username ────────────────────────────────────────────────────────
+lib_get_git_username() {
+  GIT_USERNAME="$(git config user.name 2>/dev/null | xargs)"
+  if [[ -z "$GIT_USERNAME" ]]; then
+    GIT_USERNAME="$(git config user.email 2>/dev/null | cut -d@ -f1 | xargs)"
+  fi
+}
 
-  # PYTHONIOENCODING=utf-8 ensures non-ASCII folder names (e.g. Hindi widgets)
-  # print correctly on Windows, where Python may default to a narrower encoding.
-  PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$FIREBASE_HOSTING_SITE_ID" "$new_widget" "$db_url" \
-  << 'PYEOF'
-import sys, os, re, shutil, json
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen  # Python 2 fallback (Git Bash on old Windows)
+# ── Write a widget's widget.json ───────────────────────────────────────────────
+# Usage: lib_write_widget_json <folder> <title> <url> <creator> <status>
+lib_write_widget_json() {
+  local folder="$1" title="$2" url="$3" creator="$4" status="$5"
+  local wg_num
+  wg_num=$(echo "$folder" | grep -oE '[0-9]+' | head -1)
 
-script_dir   = sys.argv[1]
-hosting_site = sys.argv[2]
-new_widget   = sys.argv[3]
-db_url       = sys.argv[4]
+  PYTHONIOENCODING=utf-8 $PYTHON -c "
+import json
+from datetime import datetime
+entry = {
+    'name':      '${title}',
+    'link':      '${url}',
+    'imagePath': './assets/wg-${wg_num}.png',
+    'creators':  '${creator}',
+    'status':    '${status}',
+    'updatedAt': datetime.now().strftime('%Y-%m-%d %H:%M'),
+}
+with open('${SCRIPT_DIR}/${folder}/widget.json', 'w', encoding='utf-8') as f:
+    json.dump(entry, f, ensure_ascii=False, indent=2)
+    f.write('\n')
+print(json.dumps(entry, ensure_ascii=False))
+"
+}
 
-dist_dir = os.path.join(script_dir, 'dist')
+# ── Rebuild widget-listing-b3/data/widgets.json from all wg*/widget.json ──────
+lib_build_manifest() {
+  step "Rebuilding widget manifest..."
+  mkdir -p "$DATA_DIR"
 
-SKIP_DIRS  = {'.vscode', 'node_modules', '.git', 'dist'}
-SKIP_EXT   = {'.md', '.pptx', '.zip', '.rar', '.7z', '.docx', '.sh'}
-SKIP_FILES = {'firebase.json', '.firebaserc', '.creator_profile',
-              '.gitignore', '.DS_Store', 'DEPLOY.md', 'database.rules.json'}
+  PYTHONIOENCODING=utf-8 $PYTHON - "$SCRIPT_DIR" "$MANIFEST_FILE" << 'PYEOF'
+import sys, os, json
 
-def should_ignore(path, names):
-    ignored = []
-    for n in names:
-        full = os.path.join(path, n)
-        if n in SKIP_DIRS or n in SKIP_FILES:
-            ignored.append(n)
-        elif os.path.isfile(full) and os.path.splitext(n)[1].lower() in SKIP_EXT:
-            ignored.append(n)
-    return ignored
+script_dir    = sys.argv[1]
+manifest_file = sys.argv[2]
 
-def remove_readonly(func, path, _):
-    import stat
+widgets = []
+for entry in sorted(os.listdir(script_dir)):
+    if not entry.startswith('wg'):
+        continue
+    json_path = os.path.join(script_dir, entry, 'widget.json')
+    if not os.path.isfile(json_path):
+        continue
     try:
-        os.chmod(path, stat.S_IWRITE)
-        func(path)
-    except Exception:
-        pass
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        widgets.append(data)
+    except Exception as e:
+        print(f"  (warning: skipped {json_path} — {e})")
 
-def sync(src, dst):
-    if not os.path.isdir(src):
-        return False
-    if os.path.exists(dst):
-        try:
-            shutil.rmtree(dst, onexc=remove_readonly)
-        except TypeError:
-            shutil.rmtree(dst, onerror=remove_readonly)
-    shutil.copytree(src, dst, ignore=should_ignore)
-    return True
+os.makedirs(os.path.dirname(manifest_file), exist_ok=True)
+with open(manifest_file, 'w', encoding='utf-8') as f:
+    json.dump(widgets, f, ensure_ascii=False, indent=2)
+    f.write('\n')
 
-os.makedirs(dist_dir, exist_ok=True)
-
-# Listing page — always
-sync(os.path.join(script_dir, 'widget-listing-b3'),
-     os.path.join(dist_dir,   'widget-listing-b3'))
-print("  + widget-listing-b3")
-
-# New widget being deployed right now
-if new_widget:
-    sync(os.path.join(script_dir, new_widget),
-         os.path.join(dist_dir,   new_widget))
-    print(f"  + {new_widget}  <- new")
-
-# All previously deployed widgets — query the Realtime Database
-# ssl._create_unverified_context() is used here because this is a local build
-# tool reading public, read-only Firebase data. macOS Python often ships
-# without bundled root certificates, causing SSL errors on urllib.
-import ssl
-deployed = []
-try:
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    with urlopen(db_url, context=ctx) as resp:
-        data = json.loads(resp.read().decode('utf-8'))
-    if data:
-        for entry in data.values():
-            if not entry or 'link' not in entry:
-                continue
-            link = entry['link']
-            if f'{hosting_site}.web.app/' not in link:
-                continue
-            folder = link.split(f'{hosting_site}.web.app/')[1].rstrip('/')
-            if folder and folder != new_widget:
-                deployed.append(folder)
-except Exception as e:
-    print(f"  (warning: could not fetch DB — {e})")
-
-# ── Safety check: abort if any deployed widget folder is missing locally ──────
-# Firebase Hosting replaces the ENTIRE site on each deploy. If a widget folder
-# from another developer's branch is not present locally, it would be silently
-# deleted from the live site. We fail loudly here instead.
-missing = [f for f in sorted(set(deployed))
-           if not os.path.isdir(os.path.join(script_dir, f))]
-if missing:
-    print("\n  ERROR: The following deployed widget folders are missing on this branch:")
-    for f in missing:
-        print(f"    - {f}")
-    print("\n  These folders are live on the site. Deploying without them would")
-    print("  delete them for everyone. To fix, pull the latest changes first:\n")
-    print("    git pull origin <your-base-branch>\n")
-    print("  Then re-run deploy.sh.\n")
-    sys.exit(1)
-
-for folder in sorted(set(deployed)):
-    sync(os.path.join(script_dir, folder), os.path.join(dist_dir, folder))
-    print(f"  + {folder}")
-
-total = sum(len(files) for _, _, files in os.walk(dist_dir))
-print(f"\n  Total: {total} files")
+print(f"  {len(widgets)} widget(s) → widget-listing-b3/data/widgets.json")
 PYEOF
 
-  ok "dist/ ready."
+  ok "Manifest rebuilt."
 }
 
-# ── Run Firebase deploy ────────────────────────────────────────────────────────
-lib_deploy() {
-  local project="$1"
-  local token="${2:-}"
-  local deploy_args=(deploy --only hosting --project "$project")
-  [[ -n "$token" ]] && deploy_args+=(--token "$token")
-
-  if ! firebase "${deploy_args[@]}"; then
-    echo ""
-    warn "Deployment failed."
-    warn "If you saw a 401 error, your login token may be expired. Fix with:"
-    printf "      firebase login --reauth\n"
-    exit 1
-  fi
+# ── Print next-step git instructions ──────────────────────────────────────────
+lib_show_next_steps() {
+  local branch
+  branch=$(git branch --show-current 2>/dev/null || echo "<your-branch>")
+  printf "\n${BOLD}Next steps — commit and push to trigger GitHub Pages:${NC}\n\n"
+  printf "  git add .\n"
+  printf "  git commit -m \"deploy: <your message>\"\n"
+  printf "  git push origin %s\n" "$branch"
+  printf "\n  Then open a PR to merge into 'deploy' (or run ./pr.sh)\n\n"
 }

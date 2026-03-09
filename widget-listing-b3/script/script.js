@@ -1,9 +1,7 @@
-// ── Firebase Realtime Database ─────────────────────────────────────────────────
-// Widget data lives in the database, not in this file.
-// Each deploy writes directly to the DB, so all developers stay in sync
-// regardless of which branch they're on.
-const DB_URL =
-  'https://widgets-c812e-default-rtdb.firebaseio.com/widgets.json';
+// ── Widget data source ─────────────────────────────────────────────────────────
+// Each deploy script writes a widget.json into the widget's folder, then
+// rebuilds this manifest. GitHub Pages serves it as a static file.
+const DATA_URL = './data/widgets.json';
 
 // ── Chip definitions ───────────────────────────────────────────────────────────
 const STATUS_CHIPS = [
@@ -85,10 +83,10 @@ document.addEventListener('DOMContentLoaded', async function () {
   widgetListing.innerHTML = '<li class="loading-item"><span class="loading-text">Loading widgets…</span></li>';
   totalCount.textContent = '…';
 
-  // ── Fetch widget data from Firebase Realtime Database ──
+  // ── Fetch widget data from local manifest ──
   let WIDGET_DATA = [];
   try {
-    const res = await fetch(DB_URL);
+    const res = await fetch(DATA_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     WIDGET_DATA = data ? Object.values(data).filter(Boolean) : [];
