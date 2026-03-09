@@ -120,10 +120,10 @@ class UIManager {
     // Chip Layout Info
     this.plusIndex = 0;
     this.minusIndex = 0;
-    this.chipRows = { plus: 450, minus: 700 }; // Group start Y positions
+    this.chipRows = { plus: 450, minus: 670 }; // Group start Y positions
     this.maxCols = 10;
-    this.chipGapX = 110;
-    this.chipGapY = 110;
+    this.chipGapX = 120;
+    this.chipGapY = 140;
     this.chipStartX = 50;
     this.selectedChip = null;
 
@@ -131,12 +131,28 @@ class UIManager {
     // Number Line Config — exact tick center X positions from SVG rect x + width/2
     this.tickX = {
       0: 897.78,
-      1: 955.29, 2: 1024.42, 3: 1093.56, 4: 1162.69, 5: 1231.82,
-      6: 1300.96, 7: 1370.09, 8: 1439.23, 9: 1508.36, 10: 1577.49,
-      '-1': 840.27, '-2': 771.13, '-3': 702.00, '-4': 632.87, '-5': 563.73,
-      '-6': 494.60, '-7': 425.46, '-8': 356.33, '-9': 287.20, '-10': 218.06,
+      1: 955.29,
+      2: 1024.42,
+      3: 1093.56,
+      4: 1162.69,
+      5: 1231.82,
+      6: 1300.96,
+      7: 1370.09,
+      8: 1439.23,
+      9: 1508.36,
+      10: 1577.49,
+      "-1": 840.27,
+      "-2": 771.13,
+      "-3": 702.0,
+      "-4": 632.87,
+      "-5": 563.73,
+      "-6": 494.6,
+      "-7": 425.46,
+      "-8": 356.33,
+      "-9": 287.2,
+      "-10": 218.06,
     };
-    this.getTickX = (val) => this.tickX[val.toString()] ?? (897.78 + val * 69.13);
+    this.getTickX = (val) => this.tickX[val.toString()] ?? 897.78 + val * 69.13;
     this.point = document.getElementById("click-btn");
     this.startTextGroup = document.getElementById("start");
     this.arrowsGroup = document.createElementNS(
@@ -229,8 +245,12 @@ class UIManager {
       this.updateUI();
     });
 
-    this.addPlusBtn.addEventListener("click", () => this.addChip(this.btn1Type || "plus"));
-    this.addMinusBtn.addEventListener("click", () => this.addChip(this.btn2Type || "minus"));
+    this.addPlusBtn.addEventListener("click", () =>
+      this.addChip(this.btn1Type || "plus"),
+    );
+    this.addMinusBtn.addEventListener("click", () =>
+      this.addChip(this.btn2Type || "minus"),
+    );
 
     const realStartBtn = document.getElementById("start");
     if (realStartBtn) {
@@ -715,7 +735,7 @@ class UIManager {
       }
     }
 
-    wrapper.setAttribute("transform", `translate(${x}, ${y}) scale(0.6)`);
+    wrapper.setAttribute("transform", `translate(${x}, ${y}) scale(0.85)`);
     wrapper.addEventListener("click", () =>
       this.handleChipClick(wrapper, type),
     );
@@ -728,10 +748,14 @@ class UIManager {
 
   updatePairs() {
     const existing = document.querySelectorAll(".chip-pair-container");
-    existing.forEach(p => {
+    existing.forEach((p) => {
       while (p.childNodes.length > 0) {
         const child = p.childNodes[0];
-        if (child.classList && (child.classList.contains("hover-rect") || child.classList.contains("hover-close"))) {
+        if (
+          child.classList &&
+          (child.classList.contains("hover-rect") ||
+            child.classList.contains("hover-close"))
+        ) {
           p.removeChild(child);
         } else {
           this.dynamicChipsGroup.appendChild(child);
@@ -740,26 +764,32 @@ class UIManager {
       p.remove();
     });
 
-    const plusChips = this.state.addedChips.filter(c => c.type === "plus");
-    const minusChips = this.state.addedChips.filter(c => c.type === "minus");
+    const plusChips = this.state.addedChips.filter((c) => c.type === "plus");
+    const minusChips = this.state.addedChips.filter((c) => c.type === "minus");
 
-    plusChips.forEach(p => {
-      const m = minusChips.find(c => c.col === p.col);
+    plusChips.forEach((p) => {
+      const m = minusChips.find((c) => c.col === p.col);
       if (m) {
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute("class", "chip-pair-container");
         g.dataset.col = p.col;
 
         const x = this.chipStartX - p.col * this.chipGapX;
-        const rectX = x - 55;
-        const rectY = this.chipRows.plus - 55;
-        const rectHeight = this.chipRows.minus - this.chipRows.plus + 110;
+        const rectX = x - 60;
+        const rectY = this.chipRows.plus - 60;
+        const rectHeight =
+          this.chipRows.minus -
+          this.chipRows.plus +
+          (this.state.isPlayground ? 120 : 80);
 
-        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        const rect = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "rect",
+        );
         rect.setAttribute("class", "hover-rect");
         rect.setAttribute("x", rectX);
         rect.setAttribute("y", rectY);
-        rect.setAttribute("width", 110);
+        rect.setAttribute("width", 120);
         rect.setAttribute("height", rectHeight);
         rect.setAttribute("rx", "15");
         rect.setAttribute("fill", "#fff");
@@ -769,25 +799,37 @@ class UIManager {
         rect.setAttribute("stroke-dasharray", "5,5");
         g.appendChild(rect);
 
-        const closeG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const closeG = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g",
+        );
         closeG.setAttribute("class", "hover-close");
-        closeG.setAttribute("transform", `translate(${rectX + 110}, ${rectY})`);
+        closeG.setAttribute("transform", `translate(${rectX + 120}, ${rectY})`);
 
-        const closeBg = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        const closeBg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle",
+        );
         closeBg.setAttribute("cx", "0");
         closeBg.setAttribute("cy", "0");
         closeBg.setAttribute("r", "16");
         closeBg.setAttribute("fill", "#fff");
         closeG.appendChild(closeBg);
 
-        const closeCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        const closeCircle = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle",
+        );
         closeCircle.setAttribute("cx", "0");
         closeCircle.setAttribute("cy", "0");
         closeCircle.setAttribute("r", "14");
         closeCircle.setAttribute("fill", "#ef4b4b");
         closeG.appendChild(closeCircle);
 
-        const closePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const closePath = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
         closePath.setAttribute("d", "M-5,-5 L5,5 M5,-5 L-5,5");
         closePath.setAttribute("stroke", "#FFF");
         closePath.setAttribute("stroke-width", "3");
@@ -798,9 +840,13 @@ class UIManager {
         closeG.addEventListener("click", (e) => {
           e.stopPropagation();
           this.cancelChips(p.element, m.element);
-          const pIndex = this.state.addedChips.findIndex(c => c.element === p.element);
+          const pIndex = this.state.addedChips.findIndex(
+            (c) => c.element === p.element,
+          );
           if (pIndex > -1) this.state.addedChips.splice(pIndex, 1);
-          const mIndex = this.state.addedChips.findIndex(c => c.element === m.element);
+          const mIndex = this.state.addedChips.findIndex(
+            (c) => c.element === m.element,
+          );
           if (mIndex > -1) this.state.addedChips.splice(mIndex, 1);
           this.updatePairs();
           this.recenterChips();
@@ -833,14 +879,17 @@ class UIManager {
 
     // Animate smoothly
     this.dynamicChipsGroup.style.transition = "transform 0.3s ease";
-    this.dynamicChipsGroup.setAttribute("transform", `translate(${shiftX}, 0)`);
+    this.dynamicChipsGroup.setAttribute(
+      "transform",
+      `translate(${shiftX}, 50)`,
+    );
   }
 
   handleChipClick(element, type) {
     if (this.selectedChip) {
       if (this.selectedChip.element === element) {
         if (this.state.isPlayground) {
-          this.removeChip(element);
+          //    this.removeChip(element);
         } else {
           this.deselectChip();
         }
@@ -912,7 +961,7 @@ class UIManager {
         "http://www.w3.org/2000/svg",
         "text",
       );
-      zeroLabel.textContent = "0";
+      //  zeroLabel.textContent = "0";
       zeroLabel.setAttribute("x", x);
       zeroLabel.setAttribute("y", (yMin + yMax) / 2 + 50);
       zeroLabel.setAttribute("text-anchor", "middle");
@@ -997,14 +1046,8 @@ class UIManager {
       "display",
       isChipMode && isPlayground ? "inline" : "none",
     );
-    this.addPlusBtn.setAttribute(
-      "display",
-      isPlayground ? "inline" : "none",
-    );
-    this.addMinusBtn.setAttribute(
-      "display",
-      isPlayground ? "inline" : "none",
-    );
+    this.addPlusBtn.setAttribute("display", isPlayground ? "inline" : "none");
+    this.addMinusBtn.setAttribute("display", isPlayground ? "inline" : "none");
 
     // Update button visuals dynamically based on mode/problem
     this.btn1Type = "plus";
@@ -1022,9 +1065,11 @@ class UIManager {
 
       // Find the correct text element to replace
       const textElements = btnGroup.querySelectorAll("text");
-      textElements.forEach(textEl => {
+      textElements.forEach((textEl) => {
         // If this is top button, target the text near Y=538. If bottom, near 675.
-        const y = parseFloat(textEl.getAttribute("transform").match(/[\d.]+\)/)[0]);
+        const y = parseFloat(
+          textEl.getAttribute("transform").match(/[\d.]+\)/)[0],
+        );
         if ((isTopBtn && y < 600) || (!isTopBtn && y > 600)) {
           textEl.setAttribute("font-size", type === "plus" ? "90" : "85");
           const tspan = textEl.querySelector("tspan");
@@ -1032,7 +1077,10 @@ class UIManager {
           // Shift _ up by 18px since underscore sits below the text baseline
           const baseY = isTopBtn ? 528 : 658;
           const yOffset = type === "plus" ? +10 : -18;
-          textEl.setAttribute("transform", `translate(119.48 ${baseY + yOffset})`);
+          textEl.setAttribute(
+            "transform",
+            `translate(119.48 ${baseY + yOffset})`,
+          );
         }
       });
     };
@@ -1040,9 +1088,16 @@ class UIManager {
     updateBtnVisual(this.addPlusBtn, this.btn1Type, true);
     updateBtnVisual(this.addMinusBtn, this.btn2Type, false);
 
-    this.playgroundBtn.setAttribute("display", isChipMode && !isPlayground ? "inline" : "none");
+    this.playgroundBtn.setAttribute(
+      "display",
+      isChipMode && !isPlayground ? "inline" : "none",
+    );
     const dustbin = document.getElementById("dustbin");
-    if (dustbin) dustbin.setAttribute("display", isChipMode && isPlayground ? "inline" : "none");
+    if (dustbin)
+      dustbin.setAttribute(
+        "display",
+        isChipMode && isPlayground ? "inline" : "none",
+      );
 
     this.timelineGroup.setAttribute(
       "display",
