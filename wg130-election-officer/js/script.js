@@ -537,9 +537,8 @@ document.addEventListener("DOMContentLoaded", () => {
     attemptedScenarios.forEach((index) => {
       const scenario = SCENARIOS[index];
       const lock = document.getElementById(scenario.lockId);
-      if (lock) lock.style.display = "none";
-
       if (correctScenarios.has(index)) {
+        if (lock) lock.style.display = "none";
         const patch = document.getElementById(scenario.shieldPatchId);
         if (patch) patch.style.display = "none";
       }
