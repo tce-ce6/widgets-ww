@@ -5,23 +5,11 @@ const wordData = {
       "answer": ["settlement", "settler"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["ion", "en", "tion", "ness", "ity", "ance", "ive", "or", "ation", "sion"]
+        "incorrect": ["tion", "ation", "sion", "or"]
       },
       "sentences": {
-        "settlement": "The settlement was built near the river.",
-        "settler": "The settler cleared the land to build a home."
-      }
-    },
-    {
-      "word": "encourage",
-      "answer": ["encouragement", "encourager"],
-      "suffixes": {
-        "correct": ["ment", "er"],
-        "incorrect": ["ion", "en", "tion", "ness", "ity", "ance", "ive", "or", "ation", "sion"]
-      },
-      "sentences": {
-        "encouragement": "The teacher's encouragement helped the shy student speak up.",
-        "encourager": "My grandmother is my biggest encourager."
+        "settlement": "The old settlement by the river had only ten houses.",
+        "settler": "Each settler was given a small piece of land to farm."
       }
     },
     {
@@ -29,11 +17,11 @@ const wordData = {
       "answer": ["development", "developer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["ion", "en", "tion", "ness", "ity", "ance", "ive", "or", "ation", "sion"]
+        "incorrect": ["tion", "ation", "sion", "or"]
       },
       "sentences": {
-        "development": "The development of the new park took two years.",
-        "developer": "The developer built houses in our town."
+        "development": "The development of the new playground took six months.",
+        "developer": "The developer showed us the plans for the new building."
       }
     },
     {
@@ -41,11 +29,11 @@ const wordData = {
       "answer": ["entertainment", "entertainer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["ion", "en", "tion", "ness", "ity", "ance", "ive", "or", "ation", "sion"]
+        "incorrect": ["tion", "ation", "sion", "or"]
       },
       "sentences": {
-        "entertainment": "The magician provided great entertainment at the party.",
-        "entertainer": "The entertainer made everyone laugh with his jokes."
+        "entertainment": "There was plenty of entertainment at the school fair.",
+        "entertainer": "The entertainer amazed the crowd with his magic tricks."
       }
     },
     {
@@ -53,171 +41,248 @@ const wordData = {
       "answer": ["employment", "employer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["ion", "en", "tion", "ness", "ity", "ance", "ive", "or", "ation", "sion"]
+        "incorrect": ["tion", "ation", "sion", "or"]
       },
       "sentences": {
-        "employment": "Her father found employment at the factory.",
-        "employer": "The employer gave his workers a bonus."
+        "employment": "After college, she found employment at a hospital.",
+        "employer": "A good employer treats all workers fairly."
+      }
+    },
+    {
+      "word": "announce",
+      "answer": ["announcement", "announcer"],
+      "suffixes": {
+        "correct": ["ment", "er"],
+        "incorrect": ["tion", "ation", "sion", "or"]
+      },
+      "sentences": {
+        "announcement": "The principal made an important announcement during assembly.",
+        "announcer": "The announcer called out the names of the winners."
+      }
+    },
+    {
+      "word": "achieve",
+      "answer": ["achievement", "achiever"],
+      "suffixes": {
+        "correct": ["ment", "er"],
+        "incorrect": ["tion", "ation", "sion", "or"]
+      },
+      "sentences": {
+        "achievement": "Winning the science quiz was her proudest achievement.",
+        "achiever": "He is a high achiever who always gives his best effort."
+      }
+    },
+    {
+      "word": "manage",
+      "answer": ["management", "manager"],
+      "suffixes": {
+        "correct": ["ment", "er"],
+        "incorrect": ["tion", "ation", "sion", "or"]
+      },
+      "sentences": {
+        "management": "The management of the school decided to start a library club.",
+        "manager": "The store manager helped us find the right size."
       }
     }
   ],
 
   "G2": [
     {
-      "word": "create",
-      "answer": ["creativeness", "creation", "creator", "creativity"],
+      "word": "collect",
+      "answer": ["collection", "collector"],
       "suffixes": {
-        "correct": ["ive+ness", "tion", "or", "ive+ity"],
-        "incorrect": ["en", "er", "ment", "ance", "ion", "ation", "sion"]
+        "correct": ["tion", "or"],
+        "incorrect": ["ment", "ation", "sion", "er"]
       },
       "sentences": {
-        "creativeness": "The creativeness of her artwork impressed everyone.",
-        "creation": "The artist's latest creation hangs in the gallery.",
-        "creator": "The creator of the comic book signed my copy.",
-        "creativity": "Her creativity shines through in her paintings."
+        "collection": "Her stamp collection fills three large albums.",
+        "collector": "The ticket collector checked every passenger on the train."
       }
     },
     {
-      "word": "protect",
-      "answer": ["protectiveness", "protection", "protector"],
+      "word": "invent",
+      "answer": ["invention", "inventor"],
       "suffixes": {
-        "correct": ["ive+ness", "ion", "or"],
-        "incorrect": ["en", "er", "ment", "ance", "ity", "tion", "ation", "sion"]
+        "correct": ["tion", "or"],
+        "incorrect": ["ment", "ation", "sion", "er"]
       },
       "sentences": {
-        "protectiveness": "The mother bird showed protectiveness towards her chicks.",
-        "protection": "The helmet gives protection to your head.",
-        "protector": "The brave protector kept the village safe."
+        "invention": "The light bulb was one of the most important inventions in history.",
+        "inventor": "The young inventor built a robot using spare parts."
+      }
+    },
+    {
+      "word": "direct",
+      "answer": ["direction", "director"],
+      "suffixes": {
+        "correct": ["tion", "or"],
+        "incorrect": ["ment", "ation", "sion", "er"]
+      },
+      "sentences": {
+        "direction": "We walked in the wrong direction and got lost.",
+        "director": "The director of the play asked everyone to rehearse once more."
+      }
+    },
+    {
+      "word": "contribute",
+      "answer": ["contribution", "contributor"],
+      "suffixes": {
+        "correct": ["tion", "or"],
+        "incorrect": ["ment", "ation", "sion", "er"]
+      },
+      "spelling_alert": "Drop ‘e’ before adding any suffix.",
+      "sentences": {
+        "contribution": "Every student made a contribution to the charity fund.",
+        "contributor": "She was the biggest contributor to the class newspaper."
+      }
+    },
+    {
+      "word": "educate",
+      "answer": ["education", "educator"],
+      "suffixes": {
+        "correct": ["ation", "or"],
+        "incorrect": ["ment", "tion", "sion", "er"]
+      },
+      "spelling_alert": "Drop ‘e’ before adding any suffix.",
+      "sentences": {
+        "education": "A good education opens many doors in life.",
+        "educator": "The educator used games and stories to make learning fun."
+      }
+    },
+    {
+      "word": "create",
+      "answer": ["creation", "creator"],
+      "suffixes": {
+        "correct": ["ation", "or"],
+        "incorrect": ["ment", "tion", "sion", "er"]
+      },
+      "spelling_alert": "Drop ‘e’ before adding any suffix.",
+      "sentences": {
+        "creation": "The artist proudly displayed her latest creation at the exhibition.",
+        "creator": "The creator of the comic book visited our school."
+      }
+    },
+    {
+      "word": "inform",
+      "answer": ["information", "informer"],
+      "suffixes": {
+        "correct": ["ation", "er"],
+        "incorrect": ["ment", "tion", "sion", "or"]
+      },
+      "sentences": {
+        "information": "The library is a great place to find information about animals.",
+        "informer": "The informer passed a secret message to the detective."
+      }
+    },
+    {
+      "word": "explore",
+      "answer": ["exploration", "explorer"],
+      "suffixes": {
+        "correct": ["ation", "er"],
+        "incorrect": ["ment", "tion", "sion", "or"]
+      },
+      "spelling_alert": "Drop ‘e’ before adding any suffix.",
+      "sentences": {
+        "exploration": "The exploration of the cave revealed beautiful crystals inside.",
+        "explorer": "The brave explorer travelled through thick jungles to find the lost city."
       }
     }
   ],
 
   "G3": [
     {
-      "word": "excite",
-      "answer": ["excitement", "excitation"],
+      "word": "admit",
+      "answer": ["admission", "admittance"],
       "suffixes": {
-        "correct": ["ment", "ation"],
-        "incorrect": ["ity", "ness", "ive", "ative", "ion"]
+        "correct": ["sion", "ance"],
+        "incorrect": ["ment", "tion", "ation", "ence"]
       },
+      "spelling_alert": "Drop 't' before adding 'ssion'. Double the 't' before 'ance'.",
       "sentences": {
-        "excitement": "The children felt great excitement before the school trip.",
-        "excitation": "The excitation of the atoms caused them to glow."
+        "admission": "The museum charges a small fee for admission.",
+        "admittance": "The guard refused admittance to anyone without a ticket."
       }
     },
     {
-      "word": "content",
-      "answer": ["contentment", "contention"],
+      "word": "invade",
+      "answer": ["invasion", "invader"],
       "suffixes": {
-        "correct": ["ment", "ion"],
-        "incorrect": ["ity", "ness", "ive", "ative", "ation", "tion"]
+        "correct": ["sion", "er"],
+        "incorrect": ["ment", "tion", "ation", "or"]
       },
+      "spelling_alert": "Drop 'de' before adding 'sion'.",
       "sentences": {
-        "contentment": "There was contentment on her face after finishing the book.",
-        "contention": "The contention between the two teams made the match exciting."
+        "invasion": "The book described the invasion of the island by pirates.",
+        "invader": "The invader tried to capture the fort, but the soldiers fought back."
+      }
+    },
+    {
+      "word": "supervise",
+      "answer": ["supervision", "supervisor"],
+      "suffixes": {
+        "correct": ["sion", "or"],
+        "incorrect": ["ment", "tion", "ation", "er"]
+      },
+      "spelling_alert": "Drop 'se' before adding 'sion'.",
+      "sentences": {
+        "supervision": "The experiment must be done under the supervision of a teacher.",
+        "supervisor": "The supervisor checked that everyone was following the safety rules."
+      }
+    },
+    {
+      "word": "divide",
+      "answer": ["division", "divider"],
+      "suffixes": {
+        "correct": ["sion", "er"],
+        "incorrect": ["ment", "tion", "ation", "or"]
+      },
+      "spelling_alert": "Drop 'de' before adding 'sion'.",
+      "sentences": {
+        "division": "The division of the cake into equal slices took careful cutting.",
+        "divider": "She placed a divider between the two sections of her notebook."
+      }
+    },
+    {
+      "word": "succeed",
+      "answer": ["succession", "successor"],
+      "suffixes": {
+        "correct": ["sion", "or"],
+        "incorrect": ["ment", "tion", "ation", "er"]
+      },
+      "spelling_alert": "Change 'ceed' to 'cession' or 'cessor'.",
+      "sentences": {
+        "succession": "A succession of rainy days spoiled the outdoor sports week.",
+        "successor": "The retiring principal chose a worthy successor to lead the school."
       }
     }
   ],
 
   "G4": [
     {
-      "word": "manage",
-      "answer": ["management", "manager"],
+      "word": "observe",
+      "answer": ["observance", "observer", "observation"],
       "suffixes": {
-        "correct": ["ment", "er"],
-        "incorrect": ["en", "ion", "ive", "ity", "ness", "tion", "ance", "or", "ation", "sion"]
+        "correct": ["ance", "er", "ation"],
+        "incorrect": ["ence", "ment", "sion"]
       },
+      "spelling_alert": "Drop 'e' before adding any of the suffixes.",
       "sentences": {
-        "management": "The management of the company announced new plans.",
-        "manager": "The store manager helped us find what we needed."
+        "observance": "The observance of school rules keeps everyone safe.",
+        "observer": "The quiet observer noticed details that others missed.",
+        "observation": "The scientist wrote down every observation in her notebook."
       }
     },
     {
       "word": "govern",
-      "answer": ["government", "governor", "governance"],
+      "answer": ["governance", "governor", "government"],
       "suffixes": {
-        "correct": ["ment", "or", "ance"],
-        "incorrect": ["en", "ion", "ive", "ity", "ness", "tion", "er", "ation", "sion"]
+        "correct": ["ance", "or", "ment"],
+        "incorrect": ["ence", "tion", "sion"]
       },
       "sentences": {
-        "government": "The government announced new rules for schools.",
-        "governor": "The governor visited our town last week.",
-        "governance": "Good governance ensures fair treatment for all citizens."
-      }
-    }
-  ],
-
-  "G5": [
-    {
-      "word": "perform",
-      "answer": ["performance", "performer"],
-      "suffixes": {
-        "correct": ["ance", "er"],
-        "incorrect": ["en", "ion", "ive", "ment", "tion", "ness", "ation", "ity", "or", "sion"]
-      },
-      "sentences": {
-        "performance": "The dancer's performance received a standing ovation.",
-        "performer": "The talented performer sang three songs."
-      }
-    }
-  ],
-
-  "G6": [
-    {
-      "word": "clear",
-      "answer": ["clearness", "clearance"],
-      "suffixes": {
-        "correct": ["ness", "ance"],
-        "incorrect": ["ment", "ion", "ive", "tion", "or", "er", "ity", "en", "ation", "sion"]
-      },
-      "sentences": {
-        "clearness": "The clearness of the water allowed us to see the fish.",
-        "clearance": "The shop had a big clearance sale on winter clothes."
-      }
-    }
-  ],
-
-  "G7": [
-    {
-      "word": "elegant",
-      "answer": ["elegance"],
-      "suffixes": {
-        "correct": ["ance"],
-        "incorrect": ["en", "er", "or", "ion", "ive", "tion", "ity", "ness", "ment", "ation", "sion"]
-      },
-      "sentences": {
-        "elegance": "The dancer moved with elegance and grace."
-      }
-    }
-  ],
-
-  "G8": [
-    {
-      "word": "observe",
-      "answer": ["observation", "observer", "observance"],
-      "suffixes": {
-        "correct": ["ation", "er", "ance"],
-        "incorrect": ["en", "or", "ive", "tion", "ity", "ness", "ment", "sion"]
-      },
-      "sentences": {
-        "observation": "The scientist made an important observation during the experiment.",
-        "observer": "The quiet observer noticed everything happening around her.",
-        "observance": "The observance of rules keeps everyone safe."
-      }
-    }
-  ],
-
-  "G9": [
-    {
-      "word": "generous",
-      "answer": ["generousness", "generosity"],
-      "suffixes": {
-        "correct": ["ness", "ity"],
-        "incorrect": ["en", "er", "or", "ion", "ive", "ance", "ment", "tion", "ation", "sion"]
-      },
-      "sentences": {
-        "generousness": "The generousness of his donation helped many families.",
-        "generosity": "Her generosity made her popular in the neighbourhood."
+        "governance": "Good governance means making fair decisions for everyone.",
+        "governor": "The governor visited our district to open the new hospital.",
+        "government": "The government announced free textbooks for all primary schools."
       }
     }
   ]
@@ -230,12 +295,12 @@ const suffix3 = document.getElementById('suffix3');
 const suffix4 = document.getElementById('suffix4');
 const suffix5 = document.getElementById('suffix5');
 const suffix6 = document.getElementById('suffix6');
-const suffix7 = document.getElementById('suffix7');
-const suffix8 = document.getElementById('suffix8');
-const suffix9 = document.getElementById('suffix9');
-const suffix10 = document.getElementById('suffix10');
-const suffix11 = document.getElementById('suffix11');
-const suffix12 = document.getElementById('suffix12');
+// const suffix7 = document.getElementById('suffix7');
+// const suffix8 = document.getElementById('suffix8');
+// const suffix9 = document.getElementById('suffix9');
+// const suffix10 = document.getElementById('suffix10');
+// const suffix11 = document.getElementById('suffix11');
+// const suffix12 = document.getElementById('suffix12');
 const finalWord = document.getElementById('final-word');
 const lottieWord = document.getElementById('lottie-word');
 const exampleSentence = document.getElementById('exampleSentence');
@@ -623,7 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const allSuffixes = [...d.suffixes.correct, ...d.suffixes.incorrect]
       .sort(() => Math.random() - 0.5);
 
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 6; i++) {
       const el = document.getElementById(`puzzle${i}`);
       if (!el) continue;
 
