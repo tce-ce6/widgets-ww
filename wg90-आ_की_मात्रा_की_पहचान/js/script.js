@@ -8,6 +8,8 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+let animationTimeout = null;
+let starAnimationTimeout = null;
 const LottieAnimations = {
   aa: {
     CORRECT: "Correct.json",
@@ -112,6 +114,12 @@ function resetFeedbackVisuals() {
   if (lottieInstances_star) {
     lottieInstances_star.destroy();
     lottieInstances_star = null;
+  }
+
+  parentEl = document.getElementById("Character_train_01");
+  if (parentEl) {
+    parentEl.classList.remove("visible");
+    parentEl.style.display = "none";
   }
 
   lottiAnimation("none");
@@ -342,8 +350,11 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
-  parentEl.style.display = "none"; // hide until DOMLoaded
-  playAnimationAudio(bandGroup);
+  parentEl.classList.remove("visible");
+  parentEl.style.display = "block"; // allow renderer to init
+  parentEl.style.visibility = "hidden"; // but keep hidden
+  parentEl.style.opacity = "0";
+
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
@@ -352,14 +363,22 @@ function playLottieAnimation(bandGroup) {
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
     });
-
     lottieInstances.addEventListener("DOMLoaded", () => {
-      // Wait for a frame to ensure the character is ready to paint
-      requestAnimationFrame(() => {
-        parentEl.style.display = "block";
+      setTimeout(() => {
         lottieInstances.play();
-        parentEl.classList.add("visible");
-      });
+      }, 10);
+    });
+    lottieInstances.addEventListener("enterFrame", (e) => {
+      // Reveal only when we have definitely drawn a frame
+      if (e.currentTime > 0.1) {
+        if (!parentEl.classList.contains("visible")) {
+          parentEl.style.visibility = "visible";
+          parentEl.style.opacity = "1";
+          parentEl.classList.add("visible");
+          playAnimationAudio(bandGroup);
+
+        }
+      }
     });
 
     lottieInstances.addEventListener("complete", () => {
@@ -426,15 +445,16 @@ function playLottieAnimationStart(bandGroup) {
       container: containerEl,
       renderer: "svg",
       loop: false,
-      autoplay: false,
+      autoplay: true,
       path: `assets/Animation/shining stars.json`,
     });
 
-    lottieInstances_star.addEventListener("DOMLoaded", () => {
-      requestAnimationFrame(() => {
-        lottieInstances_star.play();
-        containerEl.classList.add("visible");
-      });
+    lottieInstances_star.addEventListener("enterFrame", (e) => {
+      if (e.currentTime > 0.1) {
+        if (!containerEl.classList.contains("visible")) {
+          containerEl.classList.add("visible");
+        }
+      }
     });
 
     lottieInstances_star.addEventListener("complete", () => {

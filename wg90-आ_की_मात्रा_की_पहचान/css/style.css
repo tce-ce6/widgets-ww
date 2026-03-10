@@ -638,7 +638,6 @@ input[type="number"]::-webkit-inner-spin-button {
 #star-lottie-container-2 {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease;
 }
 
 .visible {
