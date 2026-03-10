@@ -157,9 +157,9 @@
           <g id="answer-patch" style="cursor: pointer">
             <g id="Group_1226" data-name="Group 1226">
               <g id="Rectangle_18-2" data-name="Rectangle 18-2">
-                <rect x="1003" y="236" width="161" height="72" rx="16" ry="16" fill="#fff" />
-                <rect id="answer-border" x="1003.5" y="236.5" width="160" height="71" rx="15.5" ry="15.5" fill="none"
-                  stroke="#000db9" stroke-width="2" />
+                <rect x="1025" y="236" width="131" height="72" rx="16" ry="16" fill="#fff" />
+                <rect id="answer-border" x="1025.5" y="236.5" width="130" height="71" rx="15.5" ry="15.5" fill="none"
+                  stroke="#000db9" stroke-width="2" stroke-dasharray="5 5" />
               </g>
             </g>
           </g>
@@ -271,6 +271,35 @@
             </g>
           </g>
           <g id="timeline">
+            <!-- Instruction text -->
+            <!-- <text id="timeline-instruction" x="897.78" y="470" text-anchor="middle" fill="#333"
+              font-family="Roboto-Italic, Roboto" font-size="28" font-style="italic" font-weight="500">Tap the answer on
+              the number line</text> -->
+            <!-- Number labels -->
+            <g id="timeline-numbers" font-family="Roboto-Medium, Roboto" font-size="38" font-weight="500"
+              text-anchor="middle">
+              <text x="897.78" y="660" fill="#1212dd">0</text>
+              <text x="955.29" y="660" fill="#000000">1</text>
+              <text x="1024.42" y="660" fill="#000000">2</text>
+              <text x="1093.56" y="660" fill="#000000">3</text>
+              <text x="1162.69" y="660" fill="#000000">4</text>
+              <text x="1231.82" y="660" fill="#000000">5</text>
+              <text x="1300.96" y="660" fill="#000000">6</text>
+              <text x="1370.09" y="660" fill="#000000">7</text>
+              <text x="1439.23" y="660" fill="#000000">8</text>
+              <text x="1508.36" y="660" fill="#000000">9</text>
+              <text x="1577.49" y="660" fill="#000000">10</text>
+              <text x="840.27" y="660" fill="#f7420b">-1</text>
+              <text x="771.13" y="660" fill="#f7420b">-2</text>
+              <text x="702.00" y="660" fill="#f7420b">-3</text>
+              <text x="632.87" y="660" fill="#f7420b">-4</text>
+              <text x="563.73" y="660" fill="#f7420b">-5</text>
+              <text x="494.60" y="660" fill="#f7420b">-6</text>
+              <text x="425.46" y="660" fill="#f7420b">-7</text>
+              <text x="356.33" y="660" fill="#f7420b">-8</text>
+              <text x="287.20" y="660" fill="#f7420b">-9</text>
+              <text x="218.06" y="660" fill="#f7420b">-10</text>
+            </g>
             <g>
               <rect id="Rectangle_444" data-name="Rectangle 444" x="897.78" y="570.09" width="776.26" height="4.6" />
               <g id="Group_600" data-name="Group 600">
@@ -430,6 +459,7 @@
             </g>
           </g>
           <g id="keypad-group">
+            <rect id="hint-backdrop" x="-1000" y="-1000" width="4000" height="3000" fill="#000" opacity="0.6"></rect>
             <g id="nubpad-patch">
               <g id="Rectangle_484-2" data-name="Rectangle 484-2">
                 <rect x="1311.78" y="338.28" width="350" height="420" rx="15" ry="15" fill="#fffff3" />
@@ -670,27 +700,58 @@
             </g>
           </g>
 
-          <!-- Visual Hint Box Modal -->
+          <!-- Visual Hint Box Modal - Number Line -->
           <g id="hint-modal-group" display="none" isolation="isolate">
-            <rect id="hint-bg" x="360" y="150" width="1100" height="650" rx="30" ry="30" fill="#ffe0e9" stroke="#ff2c68"
-              stroke-width="8" />
+            <!-- Semi-transparent backdrop -->
+            <rect id="hint-backdrop" x="-1000" y="-1000" width="4000" height="3000" fill="#000" opacity="0.6" />
+            <!-- Modal Box Background with Shadow -->
+            <rect id="hint-bg" x="500" y="325" width="920" height="460" rx="15" ry="15" fill="#ffc3cf" stroke="#ff2c68"
+              stroke-width="8" filter="url(#chip-shadow)" />
+            <!-- Centered Text -->
             <g id="hint-content-text">
-              <text transform="translate(420 250)" fill="#1c1c1c" font-family="Roboto-Regular, Roboto" font-size="38">
+              <text transform="translate(560 395)" fill="#1c1c1c" font-family="Roboto-Medium, Roboto" font-size="28"
+                font-weight="500">
                 <tspan x="0" y="0">1. Start at the first number on the number line</tspan>
-                <tspan x="0" y="100">2. The second number tells you how many steps to move</tspan>
-                <tspan x="0" y="200">3. Move forward (right) when adding a positive integer</tspan>
-                <tspan x="0" y="260" font-size="32" fill="#555">E.g., -5 + 2 → start at -5, move 2 steps right → land on
-                  -3</tspan>
-                <tspan x="0" y="380">4. Move backward (left) when adding a negative integer</tspan>
-                <tspan x="0" y="440" font-size="32" fill="#555">E.g., -5 + (-2) → start at -5, move 2 steps left → land
-                  on -7</tspan>
+                <tspan x="0" y="60">2. The second number tells you how many steps to move</tspan>
+                <tspan x="0" y="120">3. Move forward (right) when adding a positive integer</tspan>
+                <tspan x="0" y="155" fill="#555">E.g., -5 + 2 → start at -5, move 2 steps right → land on -3</tspan>
+                <tspan x="0" y="215">4. Move backward (left) when adding a negative integer</tspan>
+                <tspan x="0" y="275" fill="#555">E.g., -5 + (-2) → start at -5, move 2 steps left → land on -7</tspan>
               </text>
             </g>
-            <g id="hint-close-btn" style="cursor: pointer">
-              <circle cx="1450" cy="150" r="40" fill="#4caf50"></circle>
-              <g transform="translate(1450 150) scale(1.0) translate(-10 -10)">
-                <path d="M0,0 L20,20" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
-                <path d="M20,0 L0,20" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+            <!-- Offset Close Button -->
+            <g id="hint-close-btn" style="cursor: pointer" filter="url(#chip-shadow)">
+              <circle cx="1405" cy="335" r="30" fill="#4caf50" stroke="#fff" stroke-width="4"></circle>
+              <g transform="translate(1393 323)">
+                <path d="M0,0 L24,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+                <path d="M24,0 L0,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+              </g>
+            </g>
+          </g>
+
+          <!-- Visual Hint Box Modal - Chip Method -->
+          <g id="hint-modal-group-chip" display="none" isolation="isolate">
+            <!-- Semi-transparent backdrop -->
+            <rect id="hint-backdrop-chip" x="-1000" y="-1000" width="4000" height="3000" fill="#000" opacity="0.6" />
+            <!-- Modal Box Background with Shadow -->
+            <rect id="hint-bg-chip" x="500" y="325" width="920" height="460" rx="15" ry="15" fill="#ffc3cf"
+              stroke="#ff2c68" stroke-width="8" filter="url(#chip-shadow)" />
+            <!-- Centered Text -->
+            <g id="hint-content-text-chip">
+              <text transform="translate(560 440)" fill="#1c1c1c" font-family="Roboto-Medium, Roboto" font-size="28"
+                font-weight="500">
+                <tspan x="0" y="0">1. Add positive chips for the first number.</tspan>
+                <tspan x="0" y="60">2. Add chips for the second number (positive or negative).</tspan>
+                <tspan x="0" y="120">3. Match up and remove "zero pairs" (one plus and one minus).</tspan>
+                <tspan x="0" y="180">4. The remaining chips are your final answer.</tspan>
+              </text>
+            </g>
+            <!-- Offset Close Button -->
+            <g id="hint-close-btn-chip" style="cursor: pointer" filter="url(#chip-shadow)">
+              <circle cx="1405" cy="335" r="30" fill="#4caf50" stroke="#fff" stroke-width="4"></circle>
+              <g transform="translate(1393 323)">
+                <path d="M0,0 L24,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
+                <path d="M24,0 L0,24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"></path>
               </g>
             </g>
           </g>

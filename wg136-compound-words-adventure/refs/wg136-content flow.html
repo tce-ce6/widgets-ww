@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Words Adventure</title>
+    <link href=https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+ 
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+ 
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+ 
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+ 
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            position: relative;
+            z-index: 1;
+        }
+ 
+        .title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+ 
+        .title h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b, #c44569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 30px rgba(255, 217, 61, 0.3);
+            letter-spacing: 1px;
+        }
+ 
+        .instruction {
+            text-align: center;
+            color: #a8d8ea;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+ 
+        .instruction span {
+            color: #ffd93d;
+        }
+ 
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+ 
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+ 
+        /* Main sun card */
+        .main-word {
+            position: relative;
+        }
+ 
+        .word-card {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(145deg, #fff9e6, #fff3cc);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 10px 40px rgba(255, 217, 61, 0.4),
+                0 0 60px rgba(255, 217, 61, 0.2),
+                inset 0 -4px 0 rgba(0,0,0,0.1);
+            border: 4px solid #ffd93d;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+ 
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+ 
+        .word-card .emoji {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+ 
+        /* Sun rays */
+        .sun-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 180px;
+            height: 180px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+ 
+        .ray {
+            position: absolute;
+            width: 4px;
+            height: 25px;
+            background: linear-gradient(to top, rgba(255, 217, 61, 0.8), transparent);
+            left: 50%;
+            top: 50%;
+            transform-origin: center bottom;
+            border-radius: 2px;
+        }
+ 
+        /* Options grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 420px;
+        }
+ 
+        .option-card {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                inset 0 -3px 0 rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+ 
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%);
+            border-radius: 17px;
+        }
+ 
+        .option-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(255, 217, 61, 0.3);
+            border-color: #ffd93d;
+        }
+ 
+        .option-card:active {
+            transform: translateY(-4px) scale(1.02);
+        }
+ 
+        .option-card .emoji {
+            font-size: 3rem;
+            transition: transform 0.3s ease;
+        }
+ 
+        .option-card:hover .emoji {
+            transform: scale(1.1);
+        }
+ 
+        .option-card.correct {
+            border-color: #00b894;
+            background: linear-gradient(145deg, #e8f8f5, #d5f4e6);
+        }
+ 
+        .option-card.wrong {
+            animation: shake 0.5s ease;
+            border-color: #ff6b6b;
+        }
+ 
+        .option-card.disabled {
+            pointer-events: none;
+            opacity: 0.4;
+            transform: scale(0.9);
+        }
+ 
+        .option-card.flying {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+        }
+ 
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+ 
+        /* Discovered words panel */
+        .discovered-panel {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            border: 2px solid rgba(255, 217, 61, 0.2);
+            min-height: 300px;
+        }
+ 
+        .discovered-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffd93d;
+            text-align: center;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+ 
+        .discovered-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+ 
+        .discovered-item {
+            background: linear-gradient(145deg, #fff, #f8f8f8);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-left: 4px solid #00b894;
+        }
+ 
+        @keyframes slideIn {
+            from { 
+                transform: translateX(30px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+ 
+        .discovered-item .emoji-pair {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 1.5rem;
+        }
+ 
+        .discovered-item .plus {
+            font-size: 0.9rem;
+            color: #b2bec3;
+            font-weight: bold;
+        }
+ 
+        .discovered-item .word {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3436;
+            flex: 1;
+        }
+ 
+        .discovered-item .result-emoji {
+            font-size: 1.8rem;
+        }
+ 
+        .empty-state {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+            padding: 40px 20px;
+        }
+ 
+        /* Progress indicator */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+ 
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+        }
+ 
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+ 
+        .dot.found {
+            background: #00b894;
+            box-shadow: 0 0 12px rgba(0, 184, 148, 0.6);
+            transform: scale(1.1);
+        }
+ 
+        .progress-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: #a8d8ea;
+        }
+ 
+        /* Celebration overlay */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 52, 96, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+ 
+        .celebration-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+ 
+        .celebration-card {
+            background: linear-gradient(145deg, #fff, #f8f8f8);
+            border-radius: 30px;
+            padding: 40px 50px;
+            text-align: center;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 100px rgba(255, 217, 61, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+ 
+        .celebration-overlay.show .celebration-card {
+            transform: scale(1);
+        }
+ 
+        .celebration-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+ 
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+ 
+        .celebration-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00b894, #00a085);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+ 
+        .celebration-text {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+ 
+        .play-again-btn {
+            padding: 15px 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #6c5ce7, #a55eea);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+ 
+        .play-again-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.5);
+        }
+ 
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 300;
+            animation: fall 3s linear forwards;
+        }
+ 
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+ 
+        /* Responsive */
+        @media (max-width: 800px) {
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .discovered-panel {
+                width: 100%;
+                max-width: 420px;
+                min-height: auto;
+            }
+            
+            .discovered-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .discovered-item {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+ 
+    <div class="container">
+        <div class="title">
+            <h1>🌟 Compound Words Adventure 🌟</h1>
+        </div>
+        <p class="instruction">Click the pictures that make a word with <span>SUN</span>!</p>
+ 
+        <div class="main-layout">
+            <div class="game-area">
+                <div class="main-word">
+                    <div class="sun-rays" id="sunRays"></div>
+                    <div class="word-card" id="mainCard">
+                        <span class="emoji">☀️</span>
+                    </div>
+                </div>
+ 
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options will be inserted by JS -->
+                </div>
+ 
+                <div class="progress-container">
+                    <div class="progress-dots" id="progressDots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">0 of 4 found</span>
+                </div>
+            </div>
+ 
+            <div class="discovered-panel">
+                <div class="discovered-title">
+                    <span>📚</span> Words Discovered
+                </div>
+                <div class="discovered-list" id="discoveredList">
+                    <div class="empty-state">Find compound words to see them here!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-card">
+            <div class="celebration-emoji">🎉</div>
+            <div class="celebration-title">Amazing Work!</div>
+            <p class="celebration-text">You found all 4 compound words!</p>
+            <button class="play-again-btn" id="playAgainBtn">Play Again 🔄</button>
+        </div>
+    </div>
+ 
+    <script>
+        // Word data
+        const options = [
+            { word: 'flower', emoji: '🌸', isCorrect: true, compound: 'sunflower', resultEmoji: '🌻' },
+            { word: 'glasses', emoji: '👓', isCorrect: true, compound: 'sunglasses', resultEmoji: '🕶️' },
+            { word: 'shine', emoji: '✨', isCorrect: true, compound: 'sunshine', resultEmoji: '🌤️' },
+            { word: 'set', emoji: '🌅', isCorrect: true, compound: 'sunset', resultEmoji: '🌇' },
+            { word: 'moon', emoji: '🌙', isCorrect: false },
+            { word: 'tree', emoji: '🌳', isCorrect: false }
+        ];
+ 
+        let foundCount = 0;
+        let discoveredWords = [];
+        let shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+ 
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.width = (Math.random() * 3 + 1) + 'px';
+                star.style.height = star.style.width;
+                starsContainer.appendChild(star);
+            }
+        }
+ 
+        // Create sun rays
+        function createSunRays() {
+            const raysContainer = document.getElementById('sunRays');
+            raysContainer.innerHTML = '';
+            for (let i = 0; i < 12; i++) {
+                const ray = document.createElement('div');
+                ray.className = 'ray';
+                ray.style.transform = `rotate(${i * 30}deg) translateY(-90px)`;
+                ray.style.animationDelay = (i * 0.1) + 's';
+                raysContainer.appendChild(ray);
+            }
+        }
+ 
+        // Create option cards (no labels!)
+        function createOptions() {
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+            
+            shuffledOptions.forEach((option, index) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.dataset.index = index;
+                card.innerHTML = `<span class="emoji">${option.emoji}</span>`;
+                card.addEventListener('click', () => handleClick(card, option));
+                grid.appendChild(card);
+            });
+        }
+ 
+        // Handle card click
+        function handleClick(card, option) {
+            if (card.classList.contains('disabled')) return;
+ 
+            if (option.isCorrect) {
+                card.classList.add('correct');
+                
+                // Get positions for animation
+                const cardRect = card.getBoundingClientRect();
+                const mainCard = document.getElementById('mainCard');
+                const mainRect = mainCard.getBoundingClientRect();
+ 
+                // Create flying clone
+                const clone = card.cloneNode(true);
+                clone.classList.add('flying');
+                clone.style.left = cardRect.left + 'px';
+                clone.style.top = cardRect.top + 'px';
+                clone.style.width = cardRect.width + 'px';
+                clone.style.height = cardRect.height + 'px';
+                document.body.appendChild(clone);
+ 
+                // Calculate animation endpoint
+                const deltaX = mainRect.left + mainRect.width / 2 - cardRect.left - cardRect.width / 2;
+                const deltaY = mainRect.top + mainRect.height / 2 - cardRect.top - cardRect.height / 2;
+ 
+                clone.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${deltaX}px, ${deltaY}px) scale(0.3)`, opacity: 0 }
+                ], {
+                    duration: 800,
+                    easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    fill: 'forwards'
+                });
+ 
+                // Hide original card
+                card.classList.add('disabled');
+ 
+                // Update score
+                foundCount++;
+                document.getElementById('progressText').textContent = `${foundCount} of 4 found`;
+                document.querySelectorAll('.dot')[foundCount - 1].classList.add('found');
+ 
+                // Add to discovered words after animation
+                setTimeout(() => {
+                    clone.remove();
+                    addDiscoveredWord(option);
+                    createConfetti();
+                    
+                    // Check if all found
+                    if (foundCount >= 4) {
+                        setTimeout(() => {
+                            document.getElementById('celebrationOverlay').classList.add('show');
+                        }, 800);
+                    }
+                }, 800);
+ 
+            } else {
+                card.classList.add('wrong');
+                setTimeout(() => card.classList.remove('wrong'), 500);
+            }
+        }
+ 
+        // Add word to discovered panel
+        function addDiscoveredWord(option) {
+            const list = document.getElementById('discoveredList');
+            
+            // Remove empty state if present
+            const emptyState = list.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+            
+            const item = document.createElement('div');
+            item.className = 'discovered-item';
+            item.innerHTML = `
+                <div class="emoji-pair">
+                    <span>☀️</span>
+                    <span class="plus">+</span>
+                    <span>${option.emoji}</span>
+                </div>
+                <span class="word">${option.compound}</span>
+                <span class="result-emoji">${option.resultEmoji}</span>
+            `;
+            list.appendChild(item);
+            
+            discoveredWords.push(option);
+        }
+ 
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ffd93d', '#ff6b6b', '#00b894', '#6c5ce7', '#fd79a8', '#00cec9'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 20);
+            }
+        }
+ 
+        // Reset game
+        function resetGame() {
+            foundCount = 0;
+            discoveredWords = [];
+            
+            document.getElementById('progressText').textContent = '0 of 4 found';
+            document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('found'));
+            
+            const list = document.getElementById('discoveredList');
+            list.innerHTML = '<div class="empty-state">Find compound words to see them here!</div>';
+            
+            document.getElementById('celebrationOverlay').classList.remove('show');
+            
+            shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+            createOptions();
+        }
+ 
+        // Play again button
+        document.getElementById('playAgainBtn').addEventListener('click', resetGame);
+ 
+        // Initialize
+        createStars();
+        createSunRays();
+        createOptions();
+    </script>
+</body>
+</html>
