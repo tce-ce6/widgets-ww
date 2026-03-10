@@ -209,12 +209,12 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    playAudio("wrong");
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    playAudio("correct");
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
   });
 }
 
