@@ -117,7 +117,7 @@
       "author": "tce-nitinc"
     },
     "wg145-multiplication-builder": {
-      "updatedAt": "2026-03-04T19:19:38+05:30",
+      "updatedAt": "2026-03-06T19:00:26+05:30",
       "author": "Shyam"
     },
     "wg147-literary-detective-agency": {
@@ -209,8 +209,8 @@
       "author": "tce-ashishg"
     },
     "wg72-build-a-carbon-cycle": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-10T12:28:28+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
       "updatedAt": "2026-03-04T12:33:05+05:30",
@@ -309,8 +309,8 @@
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-03-07T11:54:34+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-10T12:28:28+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg99-applying-distributive-property": {
       "updatedAt": "2026-02-26T19:18:47+05:30",
@@ -331,6 +331,14 @@
       "widgets": [
         119,
         136
+      ]
+    },
+    {
+      "date": "2026-03-10T12:28:28+05:30",
+      "author": "Shyamsunder Hait",
+      "widgets": [
+        72,
+        98
       ]
     },
     {
@@ -528,13 +536,6 @@
       "author": "aditya",
       "widgets": [
         148
-      ]
-    },
-    {
-      "date": "2026-03-09T15:22:00+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        121
       ]
     }
   ]
