@@ -40,7 +40,7 @@ const STATIONS = [
     clicks: 1,
     hold: false,
     instruction: "Click the glowing blue segment (The Announcement) 👇",
-    question: "What happens during the First Reading stage?",
+    question: "What happens during the first reading stage?",
     options: [
       { text: "📢 Title and purpose announced", correct: true },
       { text: "🗳️ MPs vote immediately", correct: false },
@@ -55,7 +55,6 @@ const STATIONS = [
       "First Reading = Just announcement",
       "Title and purpose read aloud",
       "No debate or voting",
-      "Then printed",
     ],
     title: "FIRST READING (The Announcement → First Reading) ",
   },
@@ -67,7 +66,7 @@ const STATIONS = [
     clicks: 1,
     hold: false,
     instruction: "Click the glowing purple segment (The Examination) 👇",
-    question: "What does the Committee do with the bill?",
+    question: "What does the committee do with the bill?",
     options: [
       { text: "🔍 Studies deeply & suggests changes", correct: true },
       { text: "📝 Just reads the title", correct: false },
@@ -93,7 +92,7 @@ const STATIONS = [
     color: "#0289ae",
     clicks: 5,
     hold: false,
-    instruction: "Click the glowing green segment 5 times (The Assembly) 👇",
+    instruction: "Click the glowing green segment 5 times (The Assembly) 👇.",
     question: "Why do MPs debate the bill?",
     options: [
       { text: "💬 To discuss if bill should pass", correct: true },
@@ -105,12 +104,7 @@ const STATIONS = [
     msg2: "↓ Actually: Debate",
     msg3: "Moving to next step...",
     stamp: "DEBATED 💬",
-    facts: [
-      "MPs discuss pros/cons",
-      "Share opinions",
-      "Decide if good",
-      "Voting comes later",
-    ],
+    facts: ["MPs discuss pros/cons", "Share opinions", "Voting comes later"],
     title: "DEBATE (The Assembly → Debate)",
   },
   {
@@ -132,12 +126,7 @@ const STATIONS = [
     msg2: "↓ Actually: Clauses",
     msg3: "Moving to next step...",
     stamp: "CLAUSES OK 📝",
-    facts: [
-      "Clause = One section",
-      "Each can change",
-      "Examine detail",
-      "Amendments made",
-    ],
+    facts: ["Clause = One section", "Each can be amended"],
     title: "CLAUSE-BY-CLAUSE (The Scroll → Clauses)",
   },
   {
@@ -159,12 +148,7 @@ const STATIONS = [
     msg2: "↓ Actually: Voting",
     msg3: "Moving to next step...",
     stamp: "PASSED LS 🗳️",
-    facts: [
-      "Need MORE than 50%",
-      "543 MPs total",
-      "Need 272+ YES",
-      "If NO wins, fails",
-    ],
+    facts: ["Need MORE than 50%", "543 MPs total", "Need 272+ YES"],
     title: "VOTING (The Gathering → Voting)",
   },
   {
@@ -188,9 +172,8 @@ const STATIONS = [
     stamp: "PASSED RS 🏛️",
     facts: [
       "MUST pass both",
-      "Same process",
-      "Both needed",
-      "One reject = fail",
+      "Same process as Lok Sabha",
+      "One house reject = Bill fail",
     ],
     title: "RAJYA Sabha (The Chamber → Rajya Sabha) ",
   },
@@ -217,7 +200,7 @@ const STATIONS = [
       "Final approval",
       "Can sign/reject",
       "Signed = LAW",
-      "No sign = NOT law",
+      "Not signed = NOT law",
     ],
     title: "PRESIDENTIAL ASSENT (The Final Approval → President)",
   },
@@ -244,10 +227,21 @@ const STATIONS = [
       "Official newspaper",
       "Published = official",
       "Gets Act number",
-      "Enforceable!",
+      "Enforceable",
     ],
     title: "GAZETTE PUBLICATION (The Archive → Gazette)",
   },
+];
+const STATIONS_TEXT_IDS = [
+  "The_Gateway",
+  "The_Announcement",
+  "The_Examination",
+  "The_Assembly",
+  "The_Scroll",
+  "The_Gathering",
+  "The_Chamber",
+  "The_Final_Approval",
+  "The_Archive",
 ];
 
 // ── State ─────────────────────────────────────
@@ -754,6 +748,13 @@ window.addEventListener("load", () => {
       el.addEventListener("click", () => showPopupInsights(idx));
     }
   });
+  STATIONS_TEXT_IDS.forEach((textId, idx) => {
+    const el = document.getElementById(textId);
+    if (el) {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", () => showPopupInsights(idx));
+    }
+  });
 
   // ── CLOSE POPUP: click darkened background rect inside popup-insights ──────
   const dimmerRect = document.getElementById("Rectangle_4371");
@@ -788,7 +789,7 @@ window.addEventListener("load", () => {
     const el = document.getElementById(id);
     if (el) {
       el.style.cursor = "pointer";
-      el.addEventListener("click", resetGame);
+      el.addEventListener("click", () => resetGame());
     }
   });
 });
@@ -954,10 +955,13 @@ function showPopupInsights(idx) {
       // Colour the selected box
       const boxRects = fresh.querySelectorAll("rect");
       boxRects.forEach((r) => {
-        r.style.fill = isCorrect ? "#4caf50" : "#f87171";
-        r.style.stroke = isCorrect ? "#2e7d32" : "#c0392b";
+        r.style.fill = isCorrect ? "#22c55e" : "#f87171";
+        r.style.stroke = isCorrect ? "#22c55e" : "#c0392b";
       });
       // Grey out the other two
+      fresh.querySelectorAll("text").forEach((t) => {
+        t.style.fill = "#fff";
+      });
       slotGroups.forEach((ogid, oi) => {
         if (oi === i) return;
         const og =
@@ -1069,6 +1073,16 @@ function showInsightsPanel() {
       });
     }
 
+    // ── Show/hide Ellipse_12-15 according to facts ──────────────────────────
+    ["Ellipse_12", "Ellipse_13", "Ellipse_14", "Ellipse_15"].forEach(
+      (eid, i) => {
+        const el = document.getElementById(eid);
+        if (el) {
+          el.style.display = s.facts && s.facts[i] ? "" : "none";
+        }
+      },
+    );
+
     // ── Update title (use station label) ────────────────────────────────────
     const titleGrp = document.getElementById("insights-title");
     if (titleGrp) {
@@ -1132,59 +1146,26 @@ function showFeedbackOverlay(isCorrect, s) {
   const quizPopup = document.getElementById("Quiz-popup");
   if (!quizPopup) return;
 
-  // const SVG_NS = "http://www.w3.org/2000/svg";
-  // const fo = document.createElementNS(SVG_NS, "foreignObject");
-  // fo.setAttribute("id", "quiz-feedback-fo");
-  // fo.setAttribute("x", "520");
-  // fo.setAttribute("y", "660");
-  // fo.setAttribute("width", "880");
-  // fo.setAttribute("height", "320");
-
-  // const body = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-  // body.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-
   if (isCorrect) {
-    // body.innerHTML = `
-    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-    //     <p style="color:#2e7d32;font-size:22px;font-weight:700;margin:0 0 10px">
-    //       ✓ Correct! You discovered:
-    //     </p>
-    //     <div style="background:#f0fdf4;border:2px solid #4caf50;border-radius:12px;
-    //                 padding:14px 20px;max-width:720px;margin:0 auto">
-    //       <p style="color:#005388;font-size:15px;font-weight:700;
-    //                 letter-spacing:1px;margin:0 0 4px">${s.label.toUpperCase()}</p>
-    //       <p style="color:#181818;font-size:19px;font-weight:700;margin:0 0 4px">
-    //         ${s.msg2 || ""}</p>
-    //       <p style="color:#555;font-size:15px;margin:0">${s.msg3 || ""}</p>
-    //     </div>
-    //   </div>`;
     document
       .getElementById("feedback-correct")
       .setAttribute("display", "block");
-    document
-      .getElementById("quiz-insight-title")
-      .querySelector("tspan").textContent = `${s.label}`;
-    document
-      .getElementById("quiz-insight-msg")
-      .querySelector("tspan").textContent = `${s.msg2 || ""}`;
-    // Mark the station segment as completed (yellow border)
-    markStationComplete(currentStationIdx);
-    document.getElementById("Group_592").addEventListener("click", () => {
-      hidePopupInsights();
-      removeFeedbackOverlay();
-    });
+    // document.getElementById("quiz-insight-title").querySelector("tspan").textContent = `${s.label}`;
+    //document.getElementById("quiz-insight-msg").querySelector("tspan").textContent = `${s.msg2 || ""}`;
+
+    // Fix: Remove previous listeners and attach only one
+    const nextBtn = document.getElementById("Group_592");
+    if (nextBtn) {
+      const newBtn = nextBtn.cloneNode(true);
+      nextBtn.parentNode.replaceChild(newBtn, nextBtn);
+      newBtn.style.cursor = "pointer";
+      newBtn.addEventListener("click", () => {
+        hidePopupInsights();
+        removeFeedbackOverlay();
+        markStationComplete(currentStationIdx);
+      });
+    }
   } else {
-    // body.innerHTML = `
-    //   <div style="font-family:Roboto,sans-serif;text-align:center;padding:8px 0">
-    //     <p style="color:#c0392b;font-size:22px;font-weight:700;margin:0 0 10px">
-    //       ✕ Try again!
-    //     </p>
-    //     <div style="background:#fef9c3;border:2px solid #fbbf24;border-radius:12px;
-    //                 padding:14px 20px;max-width:720px;margin:0 auto">
-    //       <p style="color:#92400e;font-size:16px;font-weight:700;margin:0 0 4px">Hint:</p>
-    //       <p style="color:#181818;font-size:16px;margin:0">${s.hint || ""}</p>
-    //     </div>
-    //   </div>`;
     document
       .getElementById("feedback-incorrect")
       .setAttribute("display", "block");
@@ -1192,9 +1173,6 @@ function showFeedbackOverlay(isCorrect, s) {
       .getElementById("quiz-hint-text")
       .querySelector("tspan").textContent = `${s.hint}`;
   }
-
-  // fo.appendChild(body);
-  // quizPopup.appendChild(fo);
 }
 
 // ── COMPLETION BORDER ─────────────────────────────────────────────────────────
@@ -1243,29 +1221,7 @@ function showActivitySummaryEnd() {
   // Add stamp badges on the 9 icon circles
   showSummaryStamps(panel);
 
-  // Wire START NEW JOURNEY button
-  const btnGrp = document.getElementById("Group_11581");
-  if (btnGrp) {
-    const fresh = btnGrp.cloneNode(true);
-    btnGrp.parentNode.replaceChild(fresh, btnGrp);
-    fresh.style.cursor = "pointer";
-    fresh.addEventListener("click", () => {
-      // Hide summary panel
-      panel.style.display = "none";
-      panel.setAttribute("display", "none");
-      // Remove stamp badges
-      panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
-      // Reset completed state and yellow borders
-      completedStations.clear();
-      STATION_PATH_IDS.forEach((id) => {
-        const seg = document.getElementById(id);
-        if (seg) {
-          seg.style.stroke = "";
-          seg.style.strokeWidth = "";
-        }
-      });
-    });
-  }
+  // START NEW JOURNEY button is statically wired in window load event.
 }
 
 /**
@@ -1353,4 +1309,21 @@ function resetGame() {
   removeFeedbackOverlay();
   // 4. Reset option boxes
   resetOptionBoxes();
+  // 5. Reset variables
+  quizAnswered = false;
+  currentStationIdx = 0;
+  // 6. Show dashboard
+  // const dashboard = document.getElementById("dashboard");
+  // if (dashboard) dashboard.style.display = "block";
+  // 7. Hide home screen
+  const homeScreen = document.getElementById("home-screen");
+  if (homeScreen) {
+    homeScreen.style.display = "block";
+    homeScreen.setAttribute("display", "block");
+  }
+  const iText = document.getElementById("i-text");
+  if (iText) {
+    iText.style.display = "block";
+    iText.setAttribute("display", "block");
+  }
 }
