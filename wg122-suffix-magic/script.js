@@ -311,13 +311,47 @@ let wordIndex = 0;
 
 
 const IMAGES = [
-  'Assets/tree.svg',
-  'Assets/milestone.svg',
-  'Assets/mountain.svg',
-  'Assets/stone.svg'
+  'assets/tree.svg',
+  'assets/milestone.svg',
+  'assets/mountain.svg',
+  'assets/stone.svg'
 ];
 
 //Playing Lotties
+
+function playCompleteLottie() {
+  const container = document.getElementById('completion-lottie');
+
+  if (!container) {
+    console.warn(`Container completion-lottie not found`);
+    return;
+  }
+
+  const animationPath = `./assets/Images/JSON/celebration.json`;
+
+  // Clear previous animation
+  container.innerHTML = '';
+  container.style.display = 'block';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: animationPath,
+    rendererSettings: {
+      hideOnTransparent: false,
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Ensure totalFrames is available
+  anim.addEventListener('DOMLoaded', () => {
+    anim.addEventListener('complete', () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+    });
+  });
+}
 
 function playCorrectAnswerLottie(objectName) {
 
@@ -332,7 +366,7 @@ function playCorrectAnswerLottie(objectName) {
   const variant = (wordIndex % 2 === 0) ? '01' : '02';
 
   // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
-  const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
+  const animationPath = `./assets/Images/JSON/${objectName}_${variant}.json`;
 
   // Clear previous SVG if any
   container.innerHTML = '';
@@ -479,6 +513,20 @@ function showExampleSentences(wordObj) {
   popup.setAttribute('aria-hidden', 'false');
 }
 
+function updateStarsDisplay(totalExpected, completedCount) {
+  for (let i = 1; i <= 5; i++) {
+    const star = document.getElementById(`star-${i}`);
+    if (!star) continue;
+
+    if (i <= totalExpected) {
+      star.style.display = 'block';
+      star.setAttribute('opacity', i <= completedCount ? '1' : '0.5');
+    } else {
+      star.style.display = 'none';
+    }
+  }
+}
+
 function showAllAnswers(wordObj) {
   if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
 
@@ -487,11 +535,13 @@ function showAllAnswers(wordObj) {
   const answers = wordObj.details.answer;
   const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
 
+  updateStarsDisplay(answers.length, answers.length);
+
   const assetMap = {
-    tree: './Assets/tree-1.svg',
-    milestone: './Assets/milestone-1.svg',
-    mountain: './Assets/mountain-1.svg',
-    stone: './Assets/stone-1.svg'
+    tree: './assets/tree-1.svg',
+    milestone: './assets/milestone-1.svg',
+    mountain: './assets/mountain-1.svg',
+    stone: './assets/stone-1.svg'
   };
 
   // If the object exists in our map, update the source
@@ -631,6 +681,13 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers = [];
     wordIndex = 0;
 
+    updateStarsDisplay(answers.length, 0);
+
+    const lottieContainerFO = document.getElementById('lottie-container');
+    if (lottieContainerFO) lottieContainerFO.style.display = 'none';
+    const completionLottie = document.getElementById('completion-lottie');
+    if (completionLottie) completionLottie.innerHTML = '';
+
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
@@ -735,6 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
 
     completedAnswers.push(combined);
+    updateStarsDisplay(answers.length, completedAnswers.length);
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
@@ -805,6 +863,12 @@ document.addEventListener("DOMContentLoaded", () => {
           li.style.opacity = "0.3";
           showExample.style.display = 'block';
         });
+
+        const lottieContainerFO = document.getElementById('lottie-container');
+        if (lottieContainerFO) lottieContainerFO.style.display = 'block';
+        setTimeout(() => {
+          playCompleteLottie();
+        }, 100);
       }
 
       // clear slots only if cannot extend

@@ -369,7 +369,7 @@
 .wrong-answer {
   /* border: 3px solid red; */
   /* box-shadow: 0 0 12px rgba(255, 0, 0, 0.8); */
-  filter: drop-shadow(3px 0px 8px red);
+  filter: drop-shadow(3px 0px 10px red) !important;
 }
 
 /* Shake animation */
