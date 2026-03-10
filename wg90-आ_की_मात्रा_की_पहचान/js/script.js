@@ -63,12 +63,10 @@ function textDisplay() {
 }
 
 function highlightConsonantWithUmatra(text) {
-  // Matches any consonant + ए की मात्रा (े, U+0947) or ऐ की मात्रा (ै, U+0948)
+  // Matches any consonant + आ की मात्रा (ा, U+093E)
   return text.replace(
-    /([\u0915-\u0939\u0958-\u095F][\u0947\u0948])/g,
+    /([\u0915-\u0939\u0958-\u095F]\u093E)/g,
     (match) => {
-      const charCode = match.charCodeAt(1); // Get code of the matra (2nd char)
-      const className = charCode === 0x0948 ? "ai-vowel" : "e-vowel"; // 0948 = ऐ की मात्रा, 0947 = ए की मात्रा
       return `<span>${match}</span>`;
     },
   );
@@ -167,7 +165,8 @@ function textClickEvent() {
         p.setAttribute("fill", isCorrect ? "#31DD12" : "#FF0801");
       }
     });
-
+    let tspans = document.getElementById(cloudId).querySelector("p");
+    tspans.classList.add("cloud_text_highlight");
     // Show yellow stars only on correct answer
     if (isCorrect) {
       ["Group_81", "Group_83", "Group_86"].forEach((id) => {
@@ -176,8 +175,8 @@ function textClickEvent() {
       });
     }
 
-    // Animation
-    lottiAnimation("block");
+    // Animation — do NOT call lottiAnimation("block") here;
+    // playLottieAnimation will reveal the container only after DOMLoaded
     playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
     if (isCorrect) {
       playLottieAnimationStart(cloudId);
@@ -214,12 +213,12 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    playAudio("wrong");
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    playAudio("correct");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
   });
 }
 
@@ -343,21 +342,24 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
-  parentEl.classList.remove("visible");
+  parentEl.style.display = "none"; // hide until DOMLoaded
   playAnimationAudio(bandGroup);
-
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      lottieInstances.play();
-      parentEl.classList.add("visible");
+      // Wait for a frame to ensure the character is ready to paint
+      requestAnimationFrame(() => {
+        parentEl.style.display = "block";
+        lottieInstances.play();
+        parentEl.classList.add("visible");
+      });
     });
 
     lottieInstances.addEventListener("complete", () => {
@@ -422,15 +424,17 @@ function playLottieAnimationStart(bandGroup) {
   try {
     lottieInstances_star = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/Animation/shining stars.json`,
     });
 
     lottieInstances_star.addEventListener("DOMLoaded", () => {
-      lottieInstances_star.play();
-      containerEl.classList.add("visible");
+      requestAnimationFrame(() => {
+        lottieInstances_star.play();
+        containerEl.classList.add("visible");
+      });
     });
 
     lottieInstances_star.addEventListener("complete", () => {
