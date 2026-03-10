@@ -175,8 +175,8 @@ function textClickEvent() {
       });
     }
 
-    // Animation
-    lottiAnimation("block");
+    // Animation — do NOT call lottiAnimation("block") here;
+    // playLottieAnimation will reveal the container only after DOMLoaded
     playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
     if (isCorrect) {
       playLottieAnimationStart(cloudId);
@@ -342,9 +342,8 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
-  parentEl.classList.remove("visible");
+  parentEl.style.display = "none"; // hide until DOMLoaded
   playAnimationAudio(bandGroup);
-  containerEl.style.opacity = "0";
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
@@ -355,9 +354,12 @@ function playLottieAnimation(bandGroup) {
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      containerEl.style.opacity = "1";
-      lottieInstances.play();
-      parentEl.classList.add("visible");
+      // Wait for a frame to ensure the character is ready to paint
+      requestAnimationFrame(() => {
+        parentEl.style.display = "block";
+        lottieInstances.play();
+        parentEl.classList.add("visible");
+      });
     });
 
     lottieInstances.addEventListener("complete", () => {
@@ -429,8 +431,10 @@ function playLottieAnimationStart(bandGroup) {
     });
 
     lottieInstances_star.addEventListener("DOMLoaded", () => {
-      lottieInstances_star.play();
-      containerEl.classList.add("visible");
+      requestAnimationFrame(() => {
+        lottieInstances_star.play();
+        containerEl.classList.add("visible");
+      });
     });
 
     lottieInstances_star.addEventListener("complete", () => {

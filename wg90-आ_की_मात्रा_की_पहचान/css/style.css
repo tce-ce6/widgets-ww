@@ -631,3 +631,17 @@ input[type="number"]::-webkit-inner-spin-button {
 #lottie-container canvas {
   display: block;
 }
+
+/* Lottie Visibility Classes */
+#Character_train_01,
+#star-lottie-container-1,
+#star-lottie-container-2 {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
