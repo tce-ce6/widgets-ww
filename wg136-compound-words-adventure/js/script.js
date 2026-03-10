@@ -1,488 +1,463 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const enterBtn =
-    document.getElementById("enter-btn") || document.getElementById("Enter");
-  const launchScreen =
-    document.getElementById("launch-screen") ||
-    document.getElementById("intro-screen");
+const GameState = {
+    currentFamily: null,
+    completedFamilies: new Set(),
+    elements: {},
+    families: {
+        sun: { discovered: [] },
+        rain: { discovered: [] },
+        snow: { discovered: [] },
+        fire: { discovered: [] },
+        sea: { discovered: [] },
+        sand: { discovered: [] }
+    },
+    familyData: {
+        sun: { name: 'SUN', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
+        rain: { name: 'RAIN', correctIdx: [0, 1, 2, 3], distractorIdx: [4, 5] },
+        snow: { name: 'SNOW', correctIdx: [0, 2, 3, 4], distractorIdx: [1, 5] },
+        fire: { name: 'FIRE', correctIdx: [1, 2, 3, 4], distractorIdx: [0, 5] },
+        sea: { name: 'SEA', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
+        sand: { name: 'SAND', correctIdx: [0, 2, 4, 5], distractorIdx: [1, 3] }
+    },
+    CARD_POSITIONS: [
+        { x: 516.5, y: 212.11 }, // 0
+        { x: 278.5, y: 336.11 }, // 1
+        { x: 277.5, y: 567.11 }, // 2
+        { x: 516.5, y: 694.11 }, // 3
+        { x: 755.5, y: 567.11 }, // 4
+        { x: 754.5, y: 336.11 }  // 5
+    ],
+    HOME_MAPPINGS: {
+        'Group_7999': 'sun',
+        'Group_8000': 'snow',
+        'Group_8001': 'rain',
+        'Group_8002': 'sea',
+        'Group_8003': 'fire',
+        'Group_8004': 'sand'
+    },
+    isAnimating: false
+};
 
-  if (enterBtn && launchScreen) {
-    enterBtn.style.cursor = "pointer";
-    enterBtn.addEventListener("click", () => {
-      launchScreen.style.display = "none";
-      launchScreen.classList.add("hidden-svg");
-      initWidget();
-    });
-  } else {
-    initWidget();
-  }
-});
+function initGame() {
+    injectStyles();
 
-function initWidget() {
-  const container = document.getElementById("widget-container");
-  const svg = document.querySelector("svg");
-  if (!container || !svg) return;
+    // Group assets initially when all are visible to ensure getBBox works
+    groupAssets();
 
-  // Build UI Layer
-  let uiLayer = document.getElementById("ui-layer");
-  if (!uiLayer) {
-    uiLayer = document.createElement("div");
-    uiLayer.id = "ui-layer";
-    uiLayer.style.position = "absolute";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.height = "100%";
-    uiLayer.style.pointerEvents = "none";
-    container.appendChild(uiLayer);
-  }
-
-  // --- Helpers ---
-  function getPctRect(element) {
-    if (!element) return null;
-    const svgRect = svg.getBoundingClientRect();
-    const elRect = element.getBoundingClientRect();
-    return {
-      left: ((elRect.left - svgRect.left) / svgRect.width) * 100 + "%",
-      top: ((elRect.top - svgRect.top) / svgRect.height) * 100 + "%",
-      width: (elRect.width / svgRect.width) * 100 + "%",
-      height: (elRect.height / svgRect.height) * 100 + "%",
-    };
-  }
-
-  function hideElements(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      // Use hidden-svg class or fallback
-      el.classList.add("hidden-svg");
-    });
-  }
-
-  function showElements(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      el.classList.remove("hidden-svg");
-    });
-  }
-
-  function togglePopup(popupId, show) {
-    const p = document.getElementById(popupId);
-    if (p) {
-      if (show) {
-        p.classList.remove("hidden-svg");
-        p.style.display = "block";
-      } else {
-        p.classList.add("hidden-svg");
-        p.style.display = "none";
-      }
-    }
-  }
-
-  // Hide all screens initially and map out popups
-  const allScreens = [
-    "menu-screen",
-    "act-01-sc1-base",
-    "act-01-sc1-cards",
-    "act-02-base-global",
-    "act-02-sc1",
-    "act-02-sc2",
-    "act-02-sc3",
-    "act-03-base-global",
-    "act-03-sc1",
-    "act-03-sc2",
-    "act-03-sc3",
-    "act-04-base",
-    "act-04-question",
-    "act-04-feedback-end",
-  ];
-
-  // Global variables
-  let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
-  let currentChallengeSC2 = 1; // 1 to 3
-  let currentChallengeSC3 = 1; // 1 to 3
-
-  // Hide everything first
-  const menuScreen = document.getElementById("menu-screen");
-  if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-  document
-    .querySelectorAll('[id^="act-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
-  document
-    .querySelectorAll('[id^="popup-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
-
-  // --- Menu Setup ---
-  const menuScen1 = document.getElementById("Scenario_1");
-  const menuScen2 = document.getElementById("Scenario_2");
-  const menuScen3 = document.getElementById("Scenario_3");
-
-  if (menuScen1) {
-    menuScen1.style.cursor = "pointer";
-    menuScen1.addEventListener("click", () => {
-      currentScreen = 1;
-      updateView();
-    });
-  }
-  if (menuScen2) {
-    menuScen2.style.cursor = "pointer";
-    menuScen2.addEventListener("click", () => {
-      currentScreen = 2;
-      currentChallengeSC2 = 1;
-      updateView();
-    });
-  }
-  if (menuScen3) {
-    menuScen3.style.cursor = "pointer";
-    menuScen3.addEventListener("click", () => {
-      currentScreen = 3;
-      currentChallengeSC3 = 1;
-      updateView();
-    });
-  }
-
-  // --- Navigation Setup ---
-  const btnNext = document.getElementById("Next");
-  const btnBack = document.getElementById("Back");
-  const btnHome = document.getElementById("btn-home");
-  const btnInsights = document.getElementById("btn-insights");
-  const globalSubmit = document.getElementById("Submit");
-
-  if (btnNext) {
-    btnNext.style.cursor = "pointer";
-    btnNext.addEventListener("click", goNext);
-  }
-  if (btnBack) {
-    btnBack.style.cursor = "pointer";
-    btnBack.addEventListener("click", goBack);
-  }
-  if (btnHome) {
-    btnHome.style.cursor = "pointer";
-    btnHome.addEventListener("click", () => {
-      currentScreen = 0; // go back to menu
-      updateView();
-    });
-  }
-
-  // Dynamic Insight Popups
-  if (btnInsights) {
-    btnInsights.style.cursor = "pointer";
-    btnInsights.addEventListener("click", () => {
-      let pId = `popup-act-0${currentScreen}-insights`;
-      if (currentScreen === 4 || currentScreen === 0)
-        pId = `popup-act-01-insights`; // fallback
-      togglePopup(pId, true);
-    });
-  }
-  // Click anywhere to close popups
-  document.querySelectorAll('[id^="popup-"]').forEach((p) => {
-    p.addEventListener("click", () => p.classList.add("hidden-svg"));
-  });
-
-  function goNext() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 < 3) currentChallengeSC2++;
-      else currentScreen = 3;
-    } else if (currentScreen === 3) {
-      if (currentChallengeSC3 < 3) currentChallengeSC3++;
-      else currentScreen = 4;
-    } else if (currentScreen < 4) {
-      currentScreen++;
-    }
-    updateView();
-  }
-
-  function goBack() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 > 1) currentChallengeSC2--;
-      else currentScreen = 1;
-    } else if (currentScreen === 3) {
-      if (currentChallengeSC3 > 1) currentChallengeSC3--;
-      else {
-        currentScreen = 2;
-        currentChallengeSC2 = 3;
-      }
-    } else if (currentScreen > 1) {
-      currentScreen--;
-      if (currentScreen === 3) currentChallengeSC3 = 3;
-      if (currentScreen === 2) currentChallengeSC2 = 3;
-    }
-    updateView();
-  }
-
-  function updateView() {
-    uiLayer.innerHTML = ""; // clear dynamic overlays
-
-    // Hide menu explicitly first
-    if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-    document
-      .querySelectorAll('[id^="act-"]')
-      .forEach((el) => el.classList.add("hidden-svg"));
-
-    // Handle Menu
-    if (currentScreen === 0) {
-      if (menuScreen) menuScreen.classList.remove("hidden-svg");
-    } else if (currentScreen === 1) {
-      showElements('[id^="act-01"]');
-    } else if (currentScreen === 2) {
-      showElements("#act-02-base-global");
-      showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
-      // Hide feedbacks initially
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
-      setupScreen2Challenge(currentChallengeSC2);
-    } else if (currentScreen === 3) {
-      showElements("#act-03-base-global");
-      showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
-      setupScreen3Challenge(currentChallengeSC3);
-    } else if (currentScreen === 4) {
-      showElements("#act-04-base");
-      showElements("#act-04-question");
-      showElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
-      hideElements("#act-04-feedback-end");
-      setupScreen4();
-    }
-  }
-
-  // --- Screen 2 Logic ---
-  const sc2Config = {
-    1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
-    2: { max1: 15, max2: 15, val1: 1, val2: 3 }, // Pot (1) vs Medical (3)
-    3: { max1: 15, max2: 15, val1: 3, val2: 4 }, // Fish (3) vs Plough (4)
-  };
-
-  function setupScreen2Challenge(sc) {
-    const cfg = sc2Config[sc];
-    if (!cfg) return;
-
-    // Find the dropdown bounding rects provided in the SVG
-    // They are often named like act-02-scX-dropdown-list-1, -2
-    // If exact IDs differ, we try generic text nodes matching numbers
-    let dd1 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-1"]`) ||
-      document.querySelector(`[id*="act-02-sc${sc}"] [id*="drop"] g`);
-    let dd2 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-2"]`) ||
-      document.querySelectorAll(`[id*="act-02-sc${sc}"] [id*="drop"]`)[1];
-
-    // Create selects
-    const s1 = document.createElement("select");
-    const s2 = document.createElement("select");
-    s1.className = "custom-dropdown";
-    s2.className = "custom-dropdown";
-
-    // Add options
-    for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
-    for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
-
-    // Wait a brief moment for layout inside the function scope if required, but we should be fine here.
-    if (dd1 && dd2) {
-      hideElements(`[id="${dd1.id}"]`);
-      hideElements(`[id="${dd2.id}"]`);
-
-      const r1 = getPctRect(dd1);
-      const r2 = getPctRect(dd2);
-
-      if (r1) {
-        Object.assign(s1.style, {
-          left: r1.left,
-          top: r1.top,
-          width: r1.width,
-          height: r1.height,
-        });
-        uiLayer.appendChild(s1);
-      }
-      if (r2) {
-        Object.assign(s2.style, {
-          left: r2.left,
-          top: r2.top,
-          width: r2.width,
-          height: r2.height,
-        });
-        uiLayer.appendChild(s2);
-      }
-    } else {
-      // Hardcoded fallback bounding boxes per challenge if SVG IDs are missing
-      const fbBoxes = {
-        1: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        2: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        3: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-      };
-      const b = fbBoxes[sc];
-      Object.assign(s1.style, {
-        left: b[0].l,
-        top: b[0].t,
-        width: b[0].w,
-        height: b[0].h,
-      });
-      uiLayer.appendChild(s1);
-      Object.assign(s2.style, {
-        left: b[1].l,
-        top: b[1].t,
-        width: b[1].w,
-        height: b[1].h,
-      });
-      uiLayer.appendChild(s2);
-    }
-
-    // Submit handler logic
-    const scSubmit =
-      document.querySelector(`[id="act-02-sc${sc}-btn"]`) || globalSubmit;
-    if (scSubmit) {
-      // Use clone to remove old listeners
-      const newSubmit = scSubmit.cloneNode(true);
-      scSubmit.parentNode.replaceChild(newSubmit, scSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let v1 = parseInt(s1.value);
-        let v2 = parseInt(s2.value);
-        if (v1 * cfg.val1 === v2 * cfg.val2) {
-          // Fair Trade
-          showElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          // Show continue or end
-          showElements(`[id*="act-02-sc${sc}-feedback-end"]`); // sometimes the success is feedback-end
-        } else {
-          // Unfair
-          showElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
+    // Bind home icons
+    Object.keys(GameState.HOME_MAPPINGS).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', () => {
+                openFamily(GameState.HOME_MAPPINGS[id]);
+            });
         }
-      });
-    }
-
-    // Hide standard continue/incorrect states
-    document
-      .querySelectorAll(`[id*="Continue"]`)
-      .forEach((el) => el.classList.add("hidden-svg"));
-  }
-
-  // --- Screen 3 Logic ---
-  function setupScreen3Challenge(sc) {
-    // There are 3 challenges here. Multi-step trade tracking
-    // We assume the sequence clicks are just revealing lines/cards.
-    // In SVGs usually act-03-scX-cardN-selected needs to be toggled
-    const maxCards = sc === 3 ? 4 : 3; // sc3 has 4 cards
-    let currentStep = 1;
-
-    // Hide all selections
-    for (let i = 1; i <= maxCards; i++) {
-      hideElements(`[id="act-03-sc${sc}-card${i}-selected"]`);
-    }
-
-    // Attempt to bind clicks on the base cards to advance step
-    // A simple hack is just a transparent overlay covering the whole trade chain area
-    // that advances the step on click.
-    // We will place a big invisible clickable div
-    const clickArea = document.createElement("div");
-    clickArea.style.position = "absolute";
-    clickArea.style.top = "30%";
-    clickArea.style.left = "10%";
-    clickArea.style.width = "80%";
-    clickArea.style.height = "40%";
-    clickArea.style.cursor = "pointer";
-    uiLayer.appendChild(clickArea);
-
-    clickArea.onclick = () => {
-      if (currentStep <= maxCards) {
-        showElements(`[id="act-03-sc${sc}-card${currentStep}-selected"]`);
-        currentStep++;
-        if (currentStep > maxCards) {
-          showElements(`[id="act-03-sc${sc}-feedback-end"]`);
-          clickArea.style.pointerEvents = "none"; // disable further clicks
-        }
-      }
-    };
-  }
-
-  // --- Screen 4 Logic ---
-  function setupScreen4() {
-    // 8 statements. Correct are 1, 2, 3, 4, 7 (index 0,1,2,3,6)
-    const defGroup = document.getElementById("act-04-checkbox-default");
-    const selGroup = document.getElementById("act-04-checkbox-selected");
-    if (!defGroup || !selGroup) return;
-
-    // Remove hidden-svg to work with them
-    defGroup.classList.remove("hidden-svg");
-    selGroup.classList.remove("hidden-svg");
-
-    // Convert child paths/groups into arrays
-    // We expect 8 graphical checkboxes in each group
-    const defs = Array.from(defGroup.children);
-    const sels = Array.from(selGroup.children);
-    if (defs.length < 8 || sels.length < 8) return;
-
-    const corrects = [0, 1, 2, 3, 6];
-    const isSelected = [false, false, false, false, false, false, false, false];
-
-    // Hide selections initially
-    sels.forEach((s) => s.classList.add("hidden-svg"));
-
-    // Bind click to the SVG directly via rectangles
-    // SVG text and paths have pointer events out of the box
-    defs.forEach((defEl, i) => {
-      defEl.style.cursor = "pointer";
-      // Actually we'll bind an absolute div over each checkbox using bounds
-      const rect = getPctRect(defEl);
-      if (rect) {
-        const d = document.createElement("div");
-        Object.assign(d.style, {
-          position: "absolute",
-          left: rect.left,
-          top: rect.top,
-          width: "5%", // rough wide area for ease of click
-          height: rect.height,
-          cursor: "pointer",
-          pointerEvents: "auto",
-        });
-        uiLayer.appendChild(d);
-
-        d.onclick = () => {
-          isSelected[i] = !isSelected[i];
-          if (isSelected[i]) {
-            defEl.classList.add("hidden-svg");
-            sels[i].classList.remove("hidden-svg");
-          } else {
-            defEl.classList.remove("hidden-svg");
-            sels[i].classList.add("hidden-svg");
-          }
-        };
-      }
     });
 
-    // Validating on Submit
-    const sSubmit =
-      document.querySelector('[id*="act-04-btn"]') || globalSubmit;
-    if (sSubmit) {
-      const newSubmit = sSubmit.cloneNode(true);
-      sSubmit.parentNode.replaceChild(newSubmit, sSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let allCorrect = true;
-        for (let i = 0; i < 8; i++) {
-          if (corrects.includes(i) && !isSelected[i]) allCorrect = false;
-          if (!corrects.includes(i) && isSelected[i]) allCorrect = false;
-        }
-        if (allCorrect) {
-          showElements("#act-04-feedback-end");
-          hideElements("#act-04-feedback-incorrect");
-        } else {
-          // generic incorrect visual if any
-          showElements("#act-04-feedback-incorrect");
-        }
-      });
+    // Create discovered words container
+    let activityBox = document.getElementById('activity-box');
+    if (activityBox) {
+        const wordsContainer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        wordsContainer.id = 'discovered-words-container';
+        activityBox.appendChild(wordsContainer);
     }
-  }
 
-  // Launch View
-  updateView();
+    // Hide activity box and family assets
+    document.getElementById('activity-box').style.display = 'none';
+    Object.keys(GameState.families).forEach(fam => {
+        const el = document.getElementById(fam + '_family_assets');
+        if (el) el.style.display = 'none';
+    });
 }
+
+function injectStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .interactive-card {
+           transform-origin: center;
+        }
+        .interactive-card.used {
+           opacity: 0.4;
+           pointer-events: none;
+        }
+        .interactive-card.wrong {
+           animation: shake-card 0.4s;
+        }
+        @keyframes shake-card {
+           0% { transform: translateX(0); }
+           25% { transform: translateX(-12px); }
+           50% { transform: translateX(12px); }
+           75% { transform: translateX(-12px); }
+           100% { transform: translateX(0); }
+        }
+        .words-plus {
+            font-family: "Roboto", sans-serif;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function groupAssets() {
+    const families = Object.keys(GameState.families);
+    families.forEach(fam => {
+        const group = document.getElementById(fam + '_family_assets');
+        if (!group) return;
+
+        const children = Array.from(group.children);
+
+        const optionContainers = GameState.CARD_POSITIONS.map((pos, idx) => {
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute('class', 'interactive-card');
+            g.dataset.idx = idx;
+            g.style.cursor = 'pointer';
+            return g;
+        });
+
+        const centerContainer = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+        children.forEach(child => {
+            // Some elements might have 0 dimensions if not properly rendered, but XD SVGs are path-based
+            const bbox = child.getBBox();
+            if (bbox.width === 0 && bbox.height === 0) return;
+
+            const centerX = bbox.x + bbox.width / 2;
+            const centerY = bbox.y + bbox.height / 2;
+
+            let matched = false;
+            for (let i = 0; i < GameState.CARD_POSITIONS.length; i++) {
+                const pos = GameState.CARD_POSITIONS[i];
+                if (centerX > pos.x - 20 && centerX < pos.x + 220 && centerY > pos.y - 20 && centerY < pos.y + 220) {
+                    optionContainers[i].appendChild(child);
+                    matched = true;
+                    break;
+                }
+            }
+
+            if (!matched) {
+                // Central position bounding check
+                if (centerX > 490 && centerX < 730 && centerY > 430 && centerY < 670) {
+                    centerContainer.appendChild(child);
+                }
+            }
+        });
+
+        optionContainers.forEach((container, idx) => {
+            group.appendChild(container);
+            container.addEventListener('click', () => handleOptionClick(fam, idx));
+        });
+        group.appendChild(centerContainer);
+
+        GameState.elements[fam] = {
+            group: group,
+            options: optionContainers,
+            center: centerContainer
+        };
+    });
+}
+
+function openFamily(family) {
+    if (GameState.isAnimating) return;
+
+    GameState.currentFamily = family;
+
+    // Hide home screen
+    document.getElementById('home').style.display = 'none';
+
+    // Hide all family assets, show chosen
+    Object.keys(GameState.families).forEach(fam => {
+        const el = document.getElementById(fam + '_family_assets');
+        if (el) el.style.display = (fam === family) ? 'block' : 'none';
+    });
+
+    // Show activity box
+    document.getElementById('activity-box').style.display = 'block';
+
+    // Update instruction text
+    const tspanElements = document.querySelectorAll('#Click_the_pictures_that_make_a_word_with_SUN_ text tspan');
+    if (tspanElements.length >= 2) {
+        tspanElements[1].textContent = GameState.familyData[family].name;
+    }
+
+    // Render state
+    renderDiscoveredWords(family);
+}
+
+function returnToMenu() {
+    GameState.currentFamily = null;
+    GameState.isAnimating = false;
+    document.getElementById('activity-box').style.display = 'none';
+
+    Object.keys(GameState.families).forEach(fam => {
+        const el = document.getElementById(fam + '_family_assets');
+        if (el) el.style.display = 'none';
+    });
+
+    document.getElementById('home').style.display = 'block';
+}
+
+function handleOptionClick(family, idx) {
+    if (GameState.isAnimating) return;
+
+    // Need to get the actual <g> container
+    const container = GameState.elements[family].options[idx];
+    if (!container || container.classList.contains('used')) return;
+
+    const isCorrect = GameState.familyData[family].correctIdx.includes(idx);
+
+    if (!isCorrect) {
+        GameState.isAnimating = true;
+        container.classList.add('wrong');
+        setTimeout(() => {
+            container.classList.remove('wrong');
+            GameState.isAnimating = false;
+        }, 400); // Wait for shake to finish
+    } else {
+        GameState.isAnimating = true;
+
+        // Highlight and fly to center
+        container.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        container.style.filter = 'drop-shadow(0 0 15px #f6c248)';
+
+        const pos = GameState.CARD_POSITIONS[idx];
+        const targetX = 516.5 - pos.x;
+        const targetY = 452.5 - pos.y;
+
+        container.style.transform = `translate(${targetX}px, ${targetY}px) scale(0.8)`;
+
+        setTimeout(() => {
+            // Revert container physics
+            container.style.transition = 'none';
+            container.style.transform = 'none';
+            container.style.filter = 'none';
+            container.classList.add('used');
+
+            createConfetti();
+
+            GameState.families[family].discovered.push(idx);
+            renderDiscoveredWords(family);
+
+            checkCompletion(family);
+
+        }, 650);
+    }
+}
+
+function renderDiscoveredWords(family) {
+    const wordsContainer = document.getElementById('discovered-words-container');
+    if (!wordsContainer) return;
+
+    wordsContainer.innerHTML = '';
+    const discovered = GameState.families[family].discovered;
+
+    discovered.forEach((originalIdx, posIndex) => {
+        const WordX = 1060 + (posIndex % 2) * 270;
+        const WordY = 320 + Math.floor(posIndex / 2) * 200;
+
+        const combinedGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+        // Setup center wrapper
+        const centerWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        centerWrapper.setAttribute('transform', `translate(${WordX}, ${WordY}) scale(0.4) translate(-516.5, -452.5)`);
+        const centerClone = GameState.elements[family].center.cloneNode(true);
+        centerWrapper.appendChild(centerClone);
+
+        // Setup text + sign
+        const plusSign = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        plusSign.setAttribute("x", WordX + 90);
+        plusSign.setAttribute("y", WordY + 50);
+        plusSign.setAttribute("font-size", "45");
+        plusSign.setAttribute("fill", "#fdce35");
+        plusSign.setAttribute("font-weight", "bold");
+        plusSign.setAttribute("class", "words-plus");
+        plusSign.textContent = "+";
+
+        // Setup option wrapper
+        const optionWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const pos = GameState.CARD_POSITIONS[originalIdx];
+        optionWrapper.setAttribute('transform', `translate(${WordX + 120}, ${WordY}) scale(0.4) translate(${-pos.x}, ${-pos.y})`);
+
+        // clone without 'used' styles
+        const optionClone = GameState.elements[family].options[originalIdx].cloneNode(true);
+        optionClone.classList.remove('used');
+        optionWrapper.appendChild(optionClone);
+
+        combinedGroup.appendChild(centerWrapper);
+        combinedGroup.appendChild(plusSign);
+        combinedGroup.appendChild(optionWrapper);
+        wordsContainer.appendChild(combinedGroup);
+    });
+
+    // Update progress text
+    const tspanCount = document.querySelector('#_0_of_4 tspan');
+    if (tspanCount) {
+        tspanCount.textContent = `${discovered.length} of 4`;
+    }
+
+    // Update progress circles
+    for (let i = 1; i <= 4; i++) {
+        const ellipse = document.getElementById(`Ellipse_${i}`);
+        if (ellipse) {
+            ellipse.setAttribute('fill', i <= discovered.length ? '#f6c248' : '#077077');
+        }
+    }
+}
+
+function checkCompletion(family) {
+    const discovered = GameState.families[family].discovered;
+    if (discovered.length === 4) {
+        GameState.completedFamilies.add(family);
+
+        setTimeout(() => {
+            if (GameState.completedFamilies.size === 6) {
+                showPopupMsg('🏆 Congratulations!', "You've mastered all 24 compound words!", () => {
+                    resetGame();
+                }, "PLAY AGAIN");
+            } else {
+                showPopupMsg('Amazing!', `You completed the ${GameState.familyData[family].name} family!`, () => {
+                    returnToMenu();
+                });
+            }
+        }, 800);
+    } else {
+        GameState.isAnimating = false;
+    }
+}
+
+function resetGame() {
+    Object.keys(GameState.families).forEach(fam => {
+        GameState.families[fam].discovered = [];
+        if (GameState.elements[fam]) {
+            GameState.elements[fam].options.forEach(opt => {
+                opt.classList.remove('used');
+                opt.style.transition = 'none';
+                opt.style.transform = 'none';
+                opt.style.filter = 'none';
+            });
+        }
+    });
+    GameState.completedFamilies.clear();
+    GameState.currentFamily = null;
+    GameState.isAnimating = false;
+    returnToMenu();
+}
+
+function showPopupMsg(title, msg, onComplete, btnText) {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.6)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '2000';
+
+    const card = document.createElement('div');
+    card.style.backgroundColor = '#fff';
+    card.style.padding = '40px 60px';
+    card.style.borderRadius = '20px';
+    card.style.textAlign = 'center';
+    card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+    card.style.maxWidth = '600px';
+
+    // Add emojis based on title
+    const emoji = document.createElement('div');
+    emoji.textContent = title.includes('Amazing') ? '🎉' : '🏆';
+    emoji.style.fontSize = '80px';
+    emoji.style.marginBottom = '10px';
+    card.appendChild(emoji);
+
+    const h2 = document.createElement('h2');
+    h2.textContent = title;
+    h2.style.color = '#333';
+    h2.style.fontSize = '38px';
+    h2.style.margin = '0 0 15px 0';
+    h2.style.fontFamily = '"Roboto", sans-serif';
+    card.appendChild(h2);
+
+    const p = document.createElement('p');
+    p.textContent = msg;
+    p.style.color = '#666';
+    p.style.fontSize = '26px';
+    p.style.margin = '0 0 35px 0';
+    p.style.fontFamily = '"Roboto", sans-serif';
+    card.appendChild(p);
+
+    if (btnText) {
+        const btn = document.createElement('button');
+        btn.textContent = btnText;
+        btn.style.padding = '15px 40px';
+        btn.style.fontSize = '22px';
+        btn.style.fontWeight = 'bold';
+        btn.style.backgroundColor = '#1e6bef';
+        btn.style.color = '#fff';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '30px';
+        btn.style.cursor = 'pointer';
+        btn.style.transition = 'all 0.2s';
+        btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        btn.onclick = () => {
+            overlay.remove();
+            if (onComplete) onComplete();
+        };
+        card.appendChild(btn);
+    } else {
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 0.4s';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.remove();
+                if (onComplete) onComplete();
+            }, 400);
+        }, 2200);
+    }
+
+    overlay.appendChild(card);
+    document.querySelector('.container').appendChild(overlay);
+}
+
+function createConfetti() {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
+    const container = document.querySelector('.container');
+    if (!container) return;
+
+    for (let i = 0; i < 60; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'absolute';
+        confetti.style.width = Math.random() < 0.5 ? '10px' : '14px';
+        confetti.style.height = Math.random() < 0.5 ? '10px' : '14px';
+
+        // Mix between circles and squares
+        if (Math.random() < 0.5) confetti.style.borderRadius = '50%';
+
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = '-20px';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.zIndex = '1500';
+        confetti.style.pointerEvents = 'none';
+
+        container.appendChild(confetti);
+
+        const animationDuration = Math.random() * 1.5 + 1.5;
+        const animationDelay = Math.random() * 0.5;
+
+        confetti.animate([
+            { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
+            { transform: `translate3d(${Math.random() * 200 - 100}px, 100vh, 0) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], {
+            duration: animationDuration * 1000,
+            delay: animationDelay * 1000,
+            easing: 'cubic-bezier(.37,0,.63,1)',
+            fill: 'forwards'
+        });
+
+        setTimeout(() => {
+            if (confetti.parentNode) confetti.remove();
+        }, (animationDuration + animationDelay) * 1000 + 100);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initGame);

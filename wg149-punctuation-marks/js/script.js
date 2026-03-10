@@ -1,1383 +1,794 @@
-document.addEventListener("DOMContentLoaded", () => {
+/* =========================================================
+   WG149 — Mark It Right! — Punctuation Widget
+   Plain JavaScript, function-based, single global object
+   =========================================================
+   SVG Element IDs (key):
+     #car               – car group, animated by translateX
+     #q-text            – sentence text container
+     #option-btn-1..7   – punctuation option buttons
+     #signals-box       – traffic signal housing (top right)
+     #yellow-signal     – signal slot A (leftmost)
+     #green-signal      – signal slot B
+     #red-signal        – signal slot C
+     #yellow-signal1    – signal slot D (rightmost)
+     #four-signals-panel – always-visible 4-slot housing
+     #three/two/one-signals-panel – hidden (not used)
+     #inside-popup      – insights popup (SVG group)
+     #inside-btn        – Insights button
+     #close-btn         – popup close button
+     #next-btn-panel    – Next button
+   ========================================================= */
 
-    // ─── ELEMENT REFERENCES ────────────────────────────────────────────────────
-    const svg = document.querySelector('svg');
+var WG = {
+    /* ── state ─────────────────────────────────────────────── */
+    sentences: [],
+    currentIndex: 0,
+    currentSentence: null,
+    blanks: [],
+    filledAnswers: [],
+    activeBlank: 0,
+    wrongAttempts: 0,
+    showAnswerVisible: false,
+    idleTimer: null,
+    blinkTimer: null,
 
-    // Mode panel
-    const modePanel = document.getElementById('mode-panel');             // whole panel group
-    const modePanelHl = document.getElementById('mode-panel-hl');
-    const modePanelHlRect = document.querySelector('#mode-panel-hl rect');  // Rectangle_172 – the sliding highlight
-    const teacherModeBtn = document.getElementById('Teacher_Mode');
-    const playgroundModeBtn = document.getElementById('Playground_Mode');
+    /* Signal slot IDs in order left→right */
+    signalSlots: ["yellow-signal", "green-signal", "red-signal", "yellow-signal1"],
 
-    // Sliders (inside Layer_25)
-    const scroolBtn1 = document.getElementById('scrool-btn-1');   // items-per-group
-    const scroolBtn2 = document.getElementById('scrool-btn-2');   // groups
-    const scrollNum1 = document.getElementById('scroll-number-1');
-    const scrollNum2 = document.getElementById('scroll-number-2');
-    const scroolerH1 = document.getElementById('Scrooler-heading1');
-    const scroolerH2 = document.getElementById('Scrooler-heading2');
+    /* ── all 25 sentences ──────────────────────────────────── */
+    rawSentences: [
+        { display: "My friend Rita loves to read books____", blanks: ["."] },
+        { display: "Wow____ What a beautiful rainbow____", blanks: ["!", "!"] },
+        { display: "Where is your school bag____", blanks: ["?"] },
+        { display: "I like to eat apples____ oranges and bananas____", blanks: [",", "."] },
+        { display: "The teacher said____ ____Please sit down quietly____ ____", blanks: [",", "\u201d", ".", "\u201d"] },
+        { display: "That is Ramya____s bicycle____", blanks: ["'", "."] },
+        { display: "Help____ I am stuck in a tree____", blanks: ["!", "!"] },
+        { display: "We visited Delhi____ Mumbai and Kolkata last summer____", blanks: [",", "."] },
+        { display: "Do you know where my pencil is____", blanks: ["?"] },
+        { display: "Mother asked____ ____Have you finished your homework____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
+        { display: "The cat____s tail is very fluffy____", blanks: ["'", "."] },
+        { display: "Hurray____ We won the match____", blanks: ["!", "!"] },
+        { display: "My birthday is on Monday____ 15 March____", blanks: [",", "."] },
+        { display: "Can you help me carry these books____", blanks: ["?"] },
+        { display: "I love to play cricket____ football and badminton____", blanks: [",", "."] },
+        { display: "She asked____ ____Is this your bag____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
+        { display: "Watch out____ There is a big puddle ahead____", blanks: ["!", "!"] },
+        { display: "This is Meena____s favourite storybook____", blanks: ["'", "."] },
+        { display: "What time does the school start____", blanks: ["?"] },
+        { display: "The sky turned orange____ pink and purple at sunset____", blanks: [",", "."] },
+        { display: "Father asked____ ____Did you water the plants today____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
+        { display: "Look____ A butterfly is sitting on the flower____", blanks: ["!", "!"] },
+        { display: "The dog____s bone is buried in the garden____", blanks: ["'", "."] },
+        { display: "I need a pen____ a notebook and an eraser for school____", blanks: [",", "."] },
+        { display: "The wise old man said____ ____Always be kind to others____ ____", blanks: [",", "\u201d", ".", "\u201d"] }
+    ],
 
-    // Teacher mode action buttons
-    const surpriseMeBtn = document.getElementById('btn-suprise-me');
-    const resetBtn = document.getElementById('reset-button');
-    const showAnswerBtn = document.getElementById('show-answer');
+    /* option button id → character */
+    optionMap: {
+        "option-btn-1": ".",
+        "option-btn-2": "?",
+        "option-btn-3": "!",
+        "option-btn-4": ",",
+        "option-btn-5": "'",
+        "option-btn-6": "\u201d",
+        "option-btn-7": "\u201d"
+    }
+};
 
-    // ── Teacher-mode collapsible panels (using the outer *-hl wrapper groups) ──
-    // The *-hl groups are what the user clicks (they contain the header bar + arrow)
-    const multiQPanelHl = document.getElementById('multi-Q-panel-hl');
-    const multiAnsPanelHl = document.getElementById('multi-ans-panel-hl');
-    const repeatQPanelHl = document.getElementById('repeat-q-panel-hl');
-    const repeaAnsPanelHl = document.getElementById('repea-ans-panel-hl');
-    const inwordQPanelHl = document.getElementById('inword-Q-panel-hl');
-    const inwordAnsPanelHl = document.getElementById('inword-panel-ans-hl');
+/* ──────────────────────────────────────────────────────────
+   HELPERS
+   ────────────────────────────────────────────────────────── */
 
-    // Arrow groups inside each Q-panel header (rotate 180° when answer is shown)
-    const arrowMulti = document.getElementById('Group_6162');
-    const arrowRepeat = document.getElementById('Group_6072');
-    const arrowInword = document.getElementById('Group_6161');
+function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+}
 
-    // Dynamic text nodes inside panels
-    const multiAnsText = document.getElementById('_43_12');      // "4 x 3 = 12"
-    const repeaAnsText = document.getElementById('_4_4_4_12');   // "4 + 4 + 4 = 12"
-    const inwordText1 = document.getElementById('_3_groups_of_4_is');
-    const inwordText2 = document.getElementById('_3_times_of_4_is');
-    const inwordText3 = document.getElementById('_3_fours_are');
+function getEl(id) { return document.getElementById(id); }
 
-    // Problem panel (shown only in Playground mode)
-    const problemPanel = document.getElementById('problem-panel');
-    const problemText = document.querySelector('#problem-tos tspan');
+function show(id) { var el = getEl(id); if (el) el.style.display = ""; }
+function hide(id) { var el = getEl(id); if (el) el.style.display = "none"; }
+function setVisible(id, v) { if (v) show(id); else hide(id); }
 
-    // Teacher-mode Theme dropdown (the whole box in Layer_25 area)
-    const teacherThemeDropdown = document.getElementById('Theme-drop-down');
-    const teacherDropdownArrow = document.getElementById('Group_1578');
+/* ──────────────────────────────────────────────────────────
+   EXPAND COMPOSED BLANKS  (e.g. "?\u201d" → ["?", "\u201d"])
+   ────────────────────────────────────────────────────────── */
 
-    // Picture / playground panels
-    const playgroundChooseThemeSection = document.getElementById('playground-panel-choose-theme-section');
-    const playgroundAddPictureSection = document.getElementById('playground-panel-add-picture-section');
-    const themeDropdownBox = document.getElementById('playground-panel-choose-theme-dropdown-box');
+function expandBlanks(sentence) {
+    var exp = [];
+    sentence.blanks.forEach(function (b) {
+        if (b.length > 1) {
+            for (var i = 0; i < b.length; i++) exp.push(b[i]);
+        } else {
+            exp.push(b);
+        }
+    });
+    return { display: sentence.display, blanks: exp };
+}
 
-    // ─── PLAYGROUND ADD PICTURE ELEMENTS ──────────────────────────────────────
-    const btnAddPicture = document.getElementById('btn-playground-panel-add-picture');
-    const btnAddPictureText = document.getElementById('Click_to_add_more_plate-2');
+/* ──────────────────────────────────────────────────────────
+   INITIALISE
+   ────────────────────────────────────────────────────────── */
 
-    // Dynamic Playground Groups
-    const pgGroupTemplate = document.getElementById('pg-group-template');
-    const pgGroupsContainer = document.getElementById('pg-groups-container');
+function init() {
+    WG.sentences = shuffleArray(WG.rawSentences.map(expandBlanks));
+    WG.currentIndex = 0;
 
-    // ─── BOTTOM BUTTONS (Playground) ──────────────────────────────────────────
-    const btnCheckMyAnswer = document.getElementById('btn-playground-panel-check-my-answer');
-    const newProblemBtn = document.getElementById('new-problem');
+    hide("inside-popup");
+    hide("inside-popup-text");
+    hide("close-btn");
+    hideShowAnswer();
+    hide("answer-btn");
+    hide("answer-btn-text");
+    hide("next-btn-panel");
 
-    // Feedback
-    const feedbackCorrect = document.getElementById('feedback-playground-panel-correct-ans');
-    const feedbackIncorrect = document.getElementById('feedback-playground-panel-incorrect-ans');
+    /* All signal panels are hidden by CSS; updateSignalPanel() will show the right one */
+    /* Bind option buttons */
+    Object.keys(WG.optionMap).forEach(function (id) {
+        var el = getEl(id);
+        if (el) {
+            el.style.cursor = "pointer";
+            el.addEventListener("click", function () { onOptionClick(WG.optionMap[id]); });
+        }
+    });
 
-    // How to play modal
-    const howToPlayModal = document.getElementById('how-to-play');
-    const btnGotIt = document.getElementById('btn-got-it');
-    const btnGotItText = document.getElementById('btn-got-it-text');
+    /* Differentiate the two quotation-mark buttons visually */
+    styleQuoteButtons();
 
-    // Answer modal
-    const answerModal = document.getElementById('answer-modal');
-    const btnNewProblem = document.getElementById('btn-new-problem-answer-modal');
+    /* Bind Insights button */
+    var btnInsight = getEl("inside-btn");
+    if (btnInsight) { btnInsight.style.cursor = "pointer"; btnInsight.addEventListener("click", onInsightClick); }
 
-    // i-text hint (playground)
-    const iText = document.getElementById('i-text');
+    /* Bind Close popup */
+    var closeBtn = getEl("close-btn");
+    if (closeBtn) { closeBtn.style.cursor = "pointer"; closeBtn.addEventListener("click", onClosePopup); }
 
-    // Visual layers
-    const layer25 = document.getElementById('Layer_25');   // Sliders area
-    const layer50 = document.getElementById('Layer_50');   // Animated pictures area (inside playground section)
-    const picturePanelEl = document.getElementById('picture-panel'); // Teacher-mode picture background
-    const pictureBorder = document.getElementById('picture-border'); // Placeholder for selected theme SVG preview
-    const svgImagesGroup = document.getElementById('svg-images-group'); // Theme SVG output
+    /* Bind Next button */
+    var nextBtn = getEl("next-btn-panel");
+    if (nextBtn) { nextBtn.style.cursor = "pointer"; nextBtn.addEventListener("click", onNextClick); }
 
-    // ─── SLIDER CONSTANTS (declared early – used by doSurpriseMe / doReset) ───
-    const SLIDER_START = 110;
-    const SLIDER_END = 1200;
-    const SLIDER_STEPS = 9;
-    const STEP_PX = (SLIDER_END - SLIDER_START) / SLIDER_STEPS;   // ≈ 116.11
-    const BTN1_OFFSET = SLIDER_START - 308.67;   // ≈ -198.67
-    const BTN2_OFFSET = SLIDER_START - 428.67;   // ≈ -318.67
+    loadSentence(WG.currentIndex);
+}
 
-    // ─── STATE ────────────────────────────────────────────────────────────────
-    const WORD_MAP = ['one', 'twos', 'threes', 'fours', 'fives', 'sixes', 'sevens', 'eights', 'nines', 'tens'];
+/* ──────────────────────────────────────────────────────────
+   STYLE QUOTE BUTTONS
+   Make "open-quote" (btn-6) and "close-quote" (btn-7)
+   visually distinct: blue tint vs. orange tint, and add
+   small Open / Close labels so users can tell them apart.
+   ────────────────────────────────────────────────────────── */
 
-    let state = {
-        mode: 'teacher',
-        theme: 'plates',
-        groups: 3,
-        items: 4,
-        targetGroups: 3,
-        targetItems: 4,
-        answered: false,
-        panelRepea: false,
-        panelMulti: false,
-        panelInword: false,
-        themeDropdownOpen: false,
-        teacherThemeDropdownOpen: false
+function styleQuoteButtons() {
+    /* We only need ONE quote button that fills both open/close quotes.
+       Hide button 7, and make button 6 a generic quote character. */
+    var btn7 = getEl("option-btn-7");
+    if (btn7) btn7.style.display = "none";
+
+    /* Button 6 represents the generic quote option */
+    var btn6 = getEl("option-btn-6");
+    if (btn6) {
+        var r6 = btn6.querySelector("rect");
+        if (r6) r6.style.fill = "#c7eabb"; /* default green */
+        /* Update the mapping so btn-6 is treated as generic quote during matching */
+        WG.optionMap["option-btn-6"] = "\u201d"; /* we match on the open quote first */
+    }
+}
+
+/* addQuoteLabel removed as we no longer need labels for quotes */
+
+/* ──────────────────────────────────────────────────────────
+   LOAD SENTENCE
+   ────────────────────────────────────────────────────────── */
+
+function loadSentence(index) {
+    WG.currentSentence = WG.sentences[index];
+    WG.blanks = WG.currentSentence.blanks;
+    WG.filledAnswers = WG.blanks.map(function () { return null; });
+    WG.activeBlank = 0;
+    WG.wrongAttempts = 0;
+    WG.showAnswerVisible = false;
+
+    stopBlink();
+    renderSentence();
+    resetOptionButtons();
+    hide("next-btn-panel");
+    hideShowAnswer();
+    resetCarPosition();
+    updateSignals();
+    startIdleTimer();
+}
+
+/* ──────────────────────────────────────────────────────────
+   SENTENCE RENDERING WITH HIGHLIGHTED BLANKS
+   Each segment between ____ is rendered as a plain tspan;
+   unfilled blanks are a blue underlined tspan.
+   ────────────────────────────────────────────────────────── */
+
+/* No padding so adjacent blanks touch each other visually */
+var BLANK_DISPLAY = "____";
+
+function renderSentence() {
+    var qText = getEl("q-text");
+    if (!qText) return;
+    var textEl = qText.querySelector("text");
+    if (!textEl) return;
+
+    /* Preserve whitespace so SVG space characters render properly */
+    textEl.setAttribute("xml:space", "preserve");
+
+    /* Clear all existing tspan children */
+    while (textEl.firstChild) textEl.removeChild(textEl.firstChild);
+
+    var display = WG.currentSentence.display;
+    var parts = display.split("____");
+    var blankIndex = 0;
+
+    parts.forEach(function (part, i) {
+        if (part.length > 0) {
+            var ts = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            /* For the text part, replace empty segments completely with a standard space
+               if it somehow got collapsed, but generally textContent handles it */
+            ts.textContent = part;
+            textEl.appendChild(ts);
+        }
+
+        /* After every segment except the last there is a blank */
+        if (i < parts.length - 1) {
+            var filled = WG.filledAnswers[blankIndex];
+            var isActive = (blankIndex === WG.activeBlank);
+            var ts2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+
+            if (filled !== null) {
+                /* Correctly answered — show the character in green */
+                ts2.textContent = filled;
+                ts2.style.fill = "#1a9c00";
+                ts2.style.fontWeight = "700";
+                // ts2.style.textDecoration = "underline";
+            } else if (isActive) {
+                /* Current active blank — pulsing blue class (CSS animation) */
+                ts2.textContent = BLANK_DISPLAY;
+                ts2.setAttribute("class", "active-blank");
+                ts2.style.fontWeight = "900";
+                // ts2.style.textDecoration = "underline";
+            } else {
+                /* Future blank — dimmed grey */
+                ts2.textContent = BLANK_DISPLAY;
+                ts2.style.fill = "#999";
+                ts2.style.fontWeight = "400";
+                ts2.style.textDecoration = "underline";
+            }
+
+            textEl.appendChild(ts2);
+            blankIndex++;
+        }
+    });
+}
+
+/* ──────────────────────────────────────────────────────────
+   OPTION BUTTON INTERACTION
+   ────────────────────────────────────────────────────────── */
+
+function onOptionClick(char) {
+    if (WG.activeBlank >= WG.blanks.length) return;
+    var correctAnswer = WG.blanks[WG.activeBlank];
+    if (char === correctAnswer) {
+        onCorrectAnswer(char);
+    } else {
+        onWrongAnswer();
+    }
+}
+
+function onCorrectAnswer(char) {
+    stopBlink();
+    WG.filledAnswers[WG.activeBlank] = char;
+    WG.activeBlank++;
+    WG.wrongAttempts = 0;
+
+    updateSignals();
+    renderSentence();
+    resetOptionButtons();
+    updateCarPosition();
+
+    if (WG.activeBlank >= WG.blanks.length) {
+        onAllBlanksFilled();
+    } else {
+        startIdleTimer();
+        hideShowAnswer();
+    }
+}
+
+
+function onWrongAnswer() {
+    WG.wrongAttempts++;
+    showRedSignalBlink();
+    showTryAgainMessage();
+    if (WG.wrongAttempts >= 2) showShowAnswer();
+}
+
+function onAllBlanksFilled() {
+    clearIdleTimer();
+    stopBlink();
+    show("next-btn-panel");
+    /* Drive car completely off-screen to the left */
+    driveCarOffScreen();
+    /* Keep all signals steady green */
+    updateSignals();
+}
+
+/* ──────────────────────────────────────────────────────────
+   NEXT BUTTON
+   ────────────────────────────────────────────────────────── */
+
+function onNextClick() {
+    WG.currentIndex++;
+    if (WG.currentIndex >= WG.sentences.length) {
+        WG.sentences = shuffleArray(WG.rawSentences.map(expandBlanks));
+        WG.currentIndex = 0;
+        showCongratulatoryMessage();
+        return;
+    }
+    loadSentence(WG.currentIndex);
+}
+
+/* ──────────────────────────────────────────────────────────
+   SHOW ANSWER
+   ────────────────────────────────────────────────────────── */
+
+function showShowAnswer() {
+    WG.showAnswerVisible = true;
+    /* Re-append show-answer-btn below the popup to maintain z-order */
+    var btn = getEl("show-answer-btn");
+    if (btn) {
+        btn.style.display = "";
+        /* Keep it below popup by inserting before popup */
+        var svg = getEl("Layer_37");
+        var popup = getEl("inside-popup");
+        if (svg && popup && popup.parentNode === svg) {
+            svg.insertBefore(btn, popup);
+        }
+    }
+}
+
+function hideShowAnswer() {
+    WG.showAnswerVisible = false;
+    var btn = getEl("show-answer-btn");
+    if (btn) btn.style.display = "none";
+}
+
+function onShowAnswer() {
+    var correctAnswer = WG.blanks[WG.activeBlank];
+    onCorrectAnswer(correctAnswer);
+    hideShowAnswer();
+}
+
+/* ──────────────────────────────────────────────────────────
+   INSIGHTS POPUP
+   Fix: move popup + add overlay to top of SVG stack so it
+   renders above ALL other elements including show-answer-btn
+   ────────────────────────────────────────────────────────── */
+
+function onInsightClick() {
+    clearIdleTimer();
+    var svg = getEl("Layer_37");
+    if (!svg) return;
+
+    /* Remove stale overlay if any */
+    var existingOverlay = getEl("insight-overlay");
+    if (existingOverlay) existingOverlay.parentNode.removeChild(existingOverlay);
+
+    /* Create dark semi-transparent overlay covering the full SVG canvas */
+    var overlay = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    overlay.setAttribute("id", "insight-overlay");
+    overlay.setAttribute("x", "0");
+    overlay.setAttribute("y", "0");
+    overlay.setAttribute("width", "1920");
+    overlay.setAttribute("height", "1080");
+    overlay.setAttribute("fill", "rgba(0,0,0,0.65)");
+    overlay.style.cursor = "pointer";
+    overlay.addEventListener("click", onClosePopup);
+    svg.appendChild(overlay);
+
+    /* Move inside-popup, its text, and the close button to be the last children of SVG (render on top) */
+    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+        var el = getEl(id);
+        if (el) {
+            svg.appendChild(el);
+            el.style.display = "";
+        }
+    });
+}
+
+function onClosePopup() {
+    /* Hide popup elements */
+    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+        hide(id);
+    });
+
+    /* Remove overlay */
+    var overlay = getEl("insight-overlay");
+    if (overlay) overlay.parentNode.removeChild(overlay);
+
+    startIdleTimer();
+}
+
+/* ──────────────────────────────────────────────────────────
+   TRAFFIC SIGNAL LOGIC
+   ──────────────────────────────────────────────────────────
+   SVG has 4 coloured lamp groups:
+     Slot 0 (A): #yellow-signal   (leftmost,  ~x=1527)
+     Slot 1 (B): #green-signal    (~x=1613)
+     Slot 2 (C): #red-signal      (~x=1699)
+     Slot 3 (D): #yellow-signal1  (rightmost, ~x=1785)
+
+   All 4 slots sit inside #four-signals-panel housing which
+   is ALWAYS visible (narrower panels are hidden).
+
+   Colour semantics applied by updateSignals():
+     DIM  (#2a2a2a) – blank slot (not used in this sentence)
+     YELLOW (#efff00) – pending blank (not yet answered)
+     GREEN  (#0dff00) – correctly answered blank
+     ORANGE (#ff9800) – currently active blank (waiting for tap)
+
+   Red blinking is applied separately during wrong-answer feedback.
+   ────────────────────────────────────────────────────────── */
+
+
+
+/*
+  Signal slot → circle ID mapping (left to right):
+  slot 0: #yellow-signal  (x≈1527, used in 4-blank sentences only)
+  slot 1: #green-signal   (x≈1613, used in 3+ blank sentences)
+  slot 2: #red-signal     (x≈1699, used in 2+ blank sentences)
+  slot 3: #yellow-signal1 (x≈1785, always used)
+
+  For N blanks we show only the rightmost N signal circles AND
+  the matching housing panel (one/two/three/four-signals-panel).
+*/
+
+function blankToSlot(blankIdx) {
+    var n = WG.blanks.length;
+    return (4 - Math.min(n, 4)) + blankIdx;
+}
+
+/* Update housing panel + visibility of each circle, then set colours */
+function updateSignals() {
+    updateSignalPanel();
+
+    var n = Math.min(WG.blanks.length, 4);
+
+    WG.signalSlots.forEach(function (slotId, slotIndex) {
+        var blankIdx = slotIndex - (4 - n);
+
+        if (blankIdx < 0 || blankIdx >= n) return;  /* circle already hidden */
+
+        /* Only allow green states and unlit dim states */
+        if (WG.filledAnswers[blankIdx] !== null) {
+            setSignalState(slotId, "green");
+        } else {
+            setSignalState(slotId, "dim");
+        }
+    });
+}
+
+/* Show the right housing panel and hide/show individual circles */
+function updateSignalPanel() {
+    var n = Math.min(WG.blanks.length, 4);
+
+    /* Housing panels */
+    var panelMap = {
+        1: "one-signals-panel", 2: "two-signals-panel",
+        3: "three-signals-panel", 4: "four-signals-panel"
     };
+    ["one-signals-panel", "two-signals-panel",
+        "three-signals-panel", "four-signals-panel"].forEach(function (p) { hide(p); });
+    if (panelMap[n]) show(panelMap[n]);
 
-    // ─── HELPERS ──────────────────────────────────────────────────────────────
-    function show(el) { if (el) el.style.display = 'block'; }
-    function hide(el) { if (el) el.style.display = 'none'; }
-    function isHidden(el) { return !el || el.style.display === 'none'; }
-
-    // ─── TAB ACTIVE INDICATOR ─────────────────────────────────────────────────
-    // Slides the mode-panel highlight rect (Rectangle_172) between tab positions
-    // and adjusts width: teacher = 244 (default), playground = 264 (+20px).
-    // Both values are in SVG user units (not CSS px).
-    const TAB_X = { teacher: 1325.64, playground: 1586.71 };
-    const TAB_W = { teacher: 244, playground: 284 };
-    let _tabAnimId = null;
-
-    function setTabActive(mode) {
-        if (!modePanelHlRect) return;
-
-        const targetX = TAB_X[mode] || TAB_X.teacher;
-        const targetW = TAB_W[mode] || TAB_W.teacher;
-        const startX = parseFloat(modePanelHlRect.getAttribute('x') || TAB_X.teacher);
-        const startW = parseFloat(modePanelHlRect.getAttribute('width') || TAB_W.teacher);
-
-        if (Math.abs(targetX - startX) < 0.5 && Math.abs(targetW - startW) < 0.5) return;
-
-        // Cancel any in-progress animation
-        if (_tabAnimId) { cancelAnimationFrame(_tabAnimId); _tabAnimId = null; }
-
-        const DURATION = 250;   // ms
-        const startTime = performance.now();
-
-        function step(now) {
-            const t = Math.min((now - startTime) / DURATION, 1);
-            const ease = 1 - Math.pow(1 - t, 3);   // ease-out cubic
-            modePanelHlRect.setAttribute('x', startX + (targetX - startX) * ease);
-            modePanelHlRect.setAttribute('width', startW + (targetW - startW) * ease);
-            if (t < 1) {
-                _tabAnimId = requestAnimationFrame(step);
-            } else {
-                modePanelHlRect.setAttribute('x', targetX);
-                modePanelHlRect.setAttribute('width', targetW);
-                _tabAnimId = null;
-            }
+    /* Signal circles — only show the rightmost N circles */
+    WG.signalSlots.forEach(function (slotId, slotIndex) {
+        var blankIdx = slotIndex - (4 - n);
+        if (blankIdx < 0) {
+            hide(slotId);           /* not needed for this sentence */
+        } else {
+            show(slotId);           /* show and reset to dim pending colour */
+            setSignalState(slotId, "dim");
         }
-        _tabAnimId = requestAnimationFrame(step);
+    });
+}
+
+function setSignalState(slotId, state) {
+    var grp = getEl(slotId);
+    if (!grp) return;
+    var paths = grp.querySelectorAll("path, circle");
+    if (paths.length < 2) return;
+
+    /* Maintain slight shadow / highlight with two shades of the same color */
+    if (state === "green") {
+        paths[0].style.fill = "#0dff00";   /* main green */
+        paths[1].style.fill = "#13e81d";   /* darker slightly shifted green for shadow */
+    } else if (state === "red") {
+        paths[0].style.fill = "#ff0000";   /* pure red */
+        paths[1].style.fill = "#d80505";   /* darker red for shadow */
+    } else { /* "dim" */
+        paths[0].style.fill = "#3a3a3a";   /* unlit dark grey */
+        paths[1].style.fill = "#222222";   /* deep unlit shadow */
     }
+}
 
-    // ─── MODE-PANEL VERTICAL SLIDE ───────────────────────────────────────────────
-    // Animates the whole mode-panel group up (playground, translateY = -100)
-    // or back down (teacher, translateY = 0) in SVG coordinate space.
-    const PANEL_SHIFT_Y = -100;   // SVG units — negative = upward
-    let _panelAnimId = null;
+function showRedSignalBlink() {
+    stopBlink();
+    var slotIndex = blankToSlot(WG.activeBlank);
+    var slotId = WG.signalSlots[slotIndex];
+    if (!slotId) return;
 
-    function _getPanelCurrentY() {
-        const t = modePanel ? modePanel.getAttribute('transform') : null;
-        if (!t) return 0;
-        const m = t.match(/translate\([^,)]*,\s*([^)]+)\)/);
-        return m ? parseFloat(m[1]) : 0;
+    setSignalState(slotId, "red");
+
+    var on = true;
+    WG.blinkTimer = setInterval(function () {
+        on = !on;
+        setSignalState(slotId, on ? "red" : "dim");
+    }, 300);
+
+    setTimeout(function () {
+        stopBlink();
+        updateSignals();
+    }, 2000);
+}
+
+function stopBlink() {
+    if (WG.blinkTimer) {
+        clearInterval(WG.blinkTimer);
+        WG.blinkTimer = null;
     }
+}
 
-    function animateModePanel(targetY) {
-        if (!modePanel) return;
-        const startY = _getPanelCurrentY();
-        if (Math.abs(targetY - startY) < 0.5) return;
+/* ──────────────────────────────────────────────────────────
+   CAR ANIMATION
+   The car group starts at SVG x≈1590. The SVG viewBox is
+   1920 units wide. To drive completely off left edge we need
+   to translate by more than (1590 + carWidth≈340) = ~1930
+   SVG units. We use 2000 to be safe.
+   Intermediate steps progress proportionally from 0 to -700.
+   ────────────────────────────────────────────────────────── */
 
-        if (_panelAnimId) { cancelAnimationFrame(_panelAnimId); _panelAnimId = null; }
+function updateCarPosition() {
+    var carEl = getEl("car");
+    if (!carEl) return;
 
-        const DURATION = 300;   // ms
-        const startTime = performance.now();
+    var total = WG.blanks.length;
+    var filled = WG.activeBlank;
+    /* Intermediate progress moves car 0 → -700 SVG units */
+    var progress = total > 0 ? filled / total : 0;
+    var translateX = progress * -700;
 
-        function step(now) {
-            const t = Math.min((now - startTime) / DURATION, 1);
-            const ease = 1 - Math.pow(1 - t, 3);   // ease-out cubic
-            const y = startY + (targetY - startY) * ease;
-            modePanel.setAttribute('transform', `translate(0, ${y})`);
-            if (t < 1) {
-                _panelAnimId = requestAnimationFrame(step);
-            } else {
-                modePanel.setAttribute('transform', targetY === 0 ? '' : `translate(0, ${targetY})`);
-                _panelAnimId = null;
-            }
-        }
-        _panelAnimId = requestAnimationFrame(step);
-    }
+    carEl.style.transition = "transform 0.6s ease";
+    carEl.style.transform = "translateX(" + translateX + "px)";
+}
 
-    function clickable(el, fn) {
+function driveCarOffScreen() {
+    var carEl = getEl("car");
+    if (!carEl) return;
+    /* Move the entire car width + starting position off the left edge */
+    carEl.style.transition = "transform 1.2s ease-in";
+    carEl.style.transform = "translateX(-2000px)";
+}
+
+function resetCarPosition() {
+    var carEl = getEl("car");
+    if (!carEl) return;
+    carEl.style.transition = "none";
+    carEl.style.transform = "translateX(0px)";
+}
+
+/* ──────────────────────────────────────────────────────────
+   IDLE GLOW HINT
+   ────────────────────────────────────────────────────────── */
+
+function startIdleTimer() {
+    clearIdleTimer();
+    WG.idleTimer = setTimeout(function () { glowBlanks(); }, 5000);
+}
+
+function clearIdleTimer() {
+    if (WG.idleTimer) { clearTimeout(WG.idleTimer); WG.idleTimer = null; }
+}
+
+function glowBlanks() {
+    var panel = getEl("q-panel");
+    if (!panel) return;
+    var rect = panel.querySelector("rect");
+    if (!rect) return;
+
+    var glowOn = true;
+    var pulseCount = 0;
+    var glowTimer = setInterval(function () {
+        if (pulseCount >= 8) { clearInterval(glowTimer); rect.style.filter = ""; return; }
+        glowOn = !glowOn;
+        rect.style.filter = glowOn ? "drop-shadow(0 0 18px #2196f3)" : "";
+        pulseCount++;
+    }, 500);
+}
+
+/* ──────────────────────────────────────────────────────────
+   TRY AGAIN MESSAGE
+   ────────────────────────────────────────────────────────── */
+
+function showTryAgainMessage() {
+    var svg = getEl("Layer_37");
+    if (!svg) return;
+
+    var old = getEl("try-again-msg");
+    if (old) old.parentNode.removeChild(old);
+
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("id", "try-again-msg");
+
+    var bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    bg.setAttribute("x", "660"); bg.setAttribute("y", "614");
+    bg.setAttribute("width", "600"); bg.setAttribute("height", "80");
+    bg.setAttribute("rx", "16"); bg.setAttribute("ry", "16");
+    bg.setAttribute("fill", "#ff4444"); bg.setAttribute("fill-opacity", "0.93");
+    g.appendChild(bg);
+
+    var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttribute("x", "960"); txt.setAttribute("y", "665");
+    txt.setAttribute("text-anchor", "middle");
+    txt.setAttribute("fill", "#fff");
+    txt.setAttribute("font-size", "38");
+    txt.setAttribute("font-family", "Roboto-Bold, sans-serif");
+    txt.setAttribute("font-weight", "700");
+    txt.textContent = "Try Again!";
+    g.appendChild(txt);
+
+    svg.appendChild(g);
+
+    setTimeout(function () {
+        var msg = getEl("try-again-msg");
+        if (msg) msg.parentNode.removeChild(msg);
+    }, 1800);
+}
+
+/* ──────────────────────────────────────────────────────────
+   CONGRATULATORY MESSAGE
+   ────────────────────────────────────────────────────────── */
+
+function showCongratulatoryMessage() {
+    var svg = getEl("Layer_37");
+    if (!svg) return;
+
+    var old = getEl("congrats-overlay");
+    if (old) old.parentNode.removeChild(old);
+
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("id", "congrats-overlay");
+
+    var bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    bg.setAttribute("x", "0"); bg.setAttribute("y", "0");
+    bg.setAttribute("width", "1920"); bg.setAttribute("height", "1080");
+    bg.setAttribute("fill", "rgba(0,0,0,0.55)");
+    g.appendChild(bg);
+
+    var card = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    card.setAttribute("x", "510"); card.setAttribute("y", "370");
+    card.setAttribute("width", "900"); card.setAttribute("height", "340");
+    card.setAttribute("rx", "30"); card.setAttribute("ry", "30");
+    card.setAttribute("fill", "#fff");
+    g.appendChild(card);
+
+    var title = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    title.setAttribute("x", "960"); title.setAttribute("y", "465");
+    title.setAttribute("text-anchor", "middle");
+    title.setAttribute("fill", "#2196f3");
+    title.setAttribute("font-size", "58");
+    title.setAttribute("font-family", "Roboto-Bold, sans-serif");
+    title.setAttribute("font-weight", "700");
+    title.textContent = "\uD83C\uDF89 Congratulations!";
+    g.appendChild(title);
+
+    var sub = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    sub.setAttribute("x", "960"); sub.setAttribute("y", "540");
+    sub.setAttribute("text-anchor", "middle");
+    sub.setAttribute("fill", "#555");
+    sub.setAttribute("font-size", "34");
+    sub.setAttribute("font-family", "Roboto-Regular, sans-serif");
+    sub.textContent = "You completed all sentences!";
+    g.appendChild(sub);
+
+    var btnR = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    btnR.setAttribute("x", "760"); btnR.setAttribute("y", "590");
+    btnR.setAttribute("width", "400"); btnR.setAttribute("height", "80");
+    btnR.setAttribute("rx", "20"); btnR.setAttribute("ry", "20");
+    btnR.setAttribute("fill", "#4caf50");
+    btnR.style.cursor = "pointer";
+    g.appendChild(btnR);
+
+    var btnT = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    btnT.setAttribute("x", "960"); btnT.setAttribute("y", "641");
+    btnT.setAttribute("text-anchor", "middle");
+    btnT.setAttribute("fill", "#fff");
+    btnT.setAttribute("font-size", "34");
+    btnT.setAttribute("font-family", "Roboto-Bold, sans-serif");
+    btnT.setAttribute("font-weight", "700");
+    btnT.textContent = "Tap to Begin Again";
+    btnT.style.cursor = "pointer";
+    g.appendChild(btnT);
+
+    [btnR, btnT, bg].forEach(function (el) {
+        el.addEventListener("click", function () {
+            var overlay = getEl("congrats-overlay");
+            if (overlay) overlay.parentNode.removeChild(overlay);
+            resetCarPosition();
+            loadSentence(WG.currentIndex);
+        });
+    });
+
+    svg.appendChild(g);
+}
+/* ──────────────────────────────────────────────────────────
+   RESET OPTION BUTTONS
+   ────────────────────────────────────────────────────────── */
+
+/* No quote button special fills needed now */
+function resetOptionButtons() {
+    Object.keys(WG.optionMap).forEach(function (id) {
+        var el = getEl(id);
         if (!el) return;
-        el.style.cursor = 'pointer';
-        el.style.pointerEvents = 'all';
-        el.addEventListener('click', fn);
-    }
-
-    function tspanOf(el) {
-        return el ? el.querySelector('tspan') : null;
-    }
-
-    function setText(el, text) {
-        const t = tspanOf(el);
-        if (t) t.textContent = text;
-    }
-
-    // ─── ARROW ROTATION HELPERS ───────────────────────────────────────────────
-    // Rotate an SVG arrow group 180° around its bounding-box centre.
-    // We store the state as a data attribute so we can toggle it.
-    function setArrowRotation(arrowEl, expanded) {
-        if (!arrowEl) return;
-        const deg = expanded ? 180 : 0;
-        // Get bounding box to rotate around the visual centre
-        const bbox = arrowEl.getBBox ? arrowEl.getBBox() : null;
-        if (bbox) {
-            const cx = bbox.x + bbox.width / 2;
-            const cy = bbox.y + bbox.height / 2;
-            arrowEl.setAttribute('transform', `rotate(${deg}, ${cx}, ${cy})`);
-        } else {
-            arrowEl.style.transform = `rotate(${deg}deg)`;
-            arrowEl.style.transformOrigin = 'center';
+        var bgRect = el.querySelector("rect");
+        if (bgRect) {
+            bgRect.style.fill = "#c7eabb";
         }
+    });
+}
+
+/* ──────────────────────────────────────────────────────────
+   SHOW ANSWER BUTTON (created dynamically, inserted into SVG)
+   ────────────────────────────────────────────────────────── */
+
+function createShowAnswerButton() {
+    var svg = getEl("Layer_37");
+    if (!svg || getEl("show-answer-btn")) return;
+
+    var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("id", "show-answer-btn");
+    g.style.cursor = "pointer";
+    g.style.display = "none";
+
+    var btnR = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    btnR.setAttribute("x", "700"); btnR.setAttribute("y", "956");
+    btnR.setAttribute("width", "520"); btnR.setAttribute("height", "84");
+    btnR.setAttribute("rx", "22"); btnR.setAttribute("ry", "22");
+    btnR.setAttribute("fill", "#ff9800");
+    g.appendChild(btnR);
+
+    var btnT = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    btnT.setAttribute("x", "960"); btnT.setAttribute("y", "1009");
+    btnT.setAttribute("text-anchor", "middle");
+    btnT.setAttribute("fill", "#fff");
+    btnT.setAttribute("font-size", "38");
+    btnT.setAttribute("font-family", "Roboto-Bold, sans-serif");
+    btnT.setAttribute("font-weight", "700");
+    btnT.textContent = "Show Answer";
+    g.appendChild(btnT);
+
+    g.addEventListener("click", onShowAnswer);
+
+    /* Insert before inside-popup so popup always renders on top */
+    var popup = getEl("inside-popup");
+    if (popup && popup.parentNode === svg) {
+        svg.insertBefore(g, popup);
+    } else {
+        svg.appendChild(g);
     }
+}
 
-    // ─── INIT ─────────────────────────────────────────────────────────────────
-    function init() {
-        // Make SVG fully pointer-interactive
-        if (svg) {
-            svg.style.pointerEvents = 'all';
-        }
+/* ──────────────────────────────────────────────────────────
+   BOOT
+   ────────────────────────────────────────────────────────── */
 
-        // Unwrap 'isolation' groups that block events
-        document.querySelectorAll('g[isolation="isolate"]').forEach(g => {
-            g.style.pointerEvents = 'none';
-        });
-
-        bindEvents();
-        setMode('teacher');
-    }
-
-    // ─── BIND EVENTS ──────────────────────────────────────────────────────────
-    function bindEvents() {
-        // Mode toggle buttons
-        // Teacher → switch immediately
-        clickable(teacherModeBtn, () => setMode('teacher'));
-        // Playground → show how-to-play modal FIRST; mode switch happens on Got It click
-        clickable(playgroundModeBtn, () => {
-            show(howToPlayModal);
-            show(btnGotIt);
-            show(btnGotItText);
-        });
-
-        // Teacher sliders — constants are defined at module scope:
-        //   STEP_PX   ≈ 116.11 (1045 SVG units / 9 steps)
-        //   BTN1_OFFSET ≈ -198.67  (110 - 308.67, so val=1 puts handle at x=110)
-        //   BTN2_OFFSET ≈ -318.67  (110 - 428.67)
-        setupSlider(scroolBtn2, scrollNum2, 1, 10, state.groups, STEP_PX, BTN2_OFFSET, (v) => {
-            state.groups = v;
-            refreshAll();
-        });
-        setupSlider(scroolBtn1, scrollNum1, 1, 10, state.items, STEP_PX, BTN1_OFFSET, (v) => {
-            state.items = v;
-            refreshAll();
-        });
-
-        // Teacher action buttons
-        clickable(surpriseMeBtn, doSurpriseMe);
-        clickable(resetBtn, doReset);
-        clickable(showAnswerBtn, doShowAnswer);
-
-        // ── Teacher-mode Theme dropdown (Group_562) ───────────────────────────
-        // Clicking Group_562 (the dropdown box) opens an SVG list of theme choices.
-        // Group_1578 (arrow) rotates 180° when the list is open.
-        buildTeacherDropdown();
-
-        // ── Collapse/expand teacher Q-panels ─────────────────────────────────
-        // Click on the outer *-hl group to toggle the answer panel.
-        // We stop propagation on the header's children so only the header itself
-        // fires; the answer-panel content should not trigger collapse.
-        clickable(multiQPanelHl, (e) => {
-            // only toggle when clicking the header part (not the answer panel below)
-            togglePanel(multiAnsPanelHl, 'panelMulti', arrowMulti);
-        });
-        clickable(repeatQPanelHl, () => {
-            togglePanel(repeaAnsPanelHl, 'panelRepea', arrowRepeat);
-        });
-        clickable(inwordQPanelHl, () => {
-            togglePanel(inwordAnsPanelHl, 'panelInword', arrowInword);
-        });
-
-        // Playground panel interactions – now uses a real dropdown list
-        clickable(themeDropdownBox, (e) => {
-            e.stopPropagation();
-            state.themeDropdownOpen = !state.themeDropdownOpen;
-            if (state.themeDropdownOpen) {
-                openPlaygroundDropdown();
-            } else {
-                closePlaygroundDropdown();
-            }
-        });
-        buildPlaygroundDropdown();
-        clickable(btnAddPicture, () => addGroup());
-        clickable(btnAddPictureText, () => addGroup());
-        // Dynamic sub-picture +/- handled during render Playground groups
-        clickable(btnCheckMyAnswer, doCheckAnswer);
-
-        // i-text icon → open how-to-play modal
-        clickable(iText, () => {
-            show(howToPlayModal);
-            show(btnGotIt);
-            show(btnGotItText);
-        });
-
-        // Modals
-        clickable(btnGotIt, closeHowToPlay);
-        clickable(btnGotItText, closeHowToPlay);
-        clickable(btnNewProblem, doNewProblem);
-    }
-
-    // ─── MODE SWITCH ──────────────────────────────────────────────────────────
-    function setMode(mode) {
-        state.mode = mode;
-        setTabActive(mode);   // slide the mode-panel highlight to the active tab
-
-        if (mode === 'teacher') {
-            // ── Show teacher-mode elements ─────────────────────────────────────
-            // Slide mode-panel back to its original vertical position
-            animateModePanel(0);
-
-            show(layer25);            // sliders area
-            show(picturePanelEl);     // picture-panel (teacher mode picture background)
-            if (svgImagesGroup) svgImagesGroup.style.display = '';
-            show(teacherThemeDropdown);   // Theme-drop-down
-            show(multiQPanelHl);          // multi-Q-panel-hl
-            show(repeatQPanelHl);         // repea-q-panel-hl
-            show(inwordQPanelHl);         // inword-panel (Q side)
-
-            // Default state: answer panels OPEN
-            show(multiAnsPanelHl);        // multi-ans-panel-hl
-            show(repeaAnsPanelHl);        // repea-ans-panel-hl
-            show(inwordAnsPanelHl);       // inword-panel (ans side)
-            state.panelMulti = true;
-            state.panelRepea = true;
-            state.panelInword = true;
-            setArrowRotation(arrowMulti, true);
-            setArrowRotation(arrowRepeat, true);
-            setArrowRotation(arrowInword, true);
-
-            show(surpriseMeBtn);          // btn-suprise-me
-            show(resetBtn);               // reset-button
-
-            // ── Hide playground-mode elements ──────────────────────────────────
-            hide(playgroundChooseThemeSection);
-            hide(playgroundAddPictureSection);
-            hide(btnAddPicture);
-            hide(btnAddPictureText);
-            hide(howToPlayModal);
-            hide(iText);
-            hide(feedbackCorrect);
-            hide(feedbackIncorrect);
-            hide(answerModal);
-            hide(btnCheckMyAnswer);
-            hide(showAnswerBtn);
-            hide(newProblemBtn);
-            hide(problemPanel);
-
-            // Reset to defaults
-            state.groups = 3;
-            state.items = 4;
-            refreshAll();
-
-        } else {
-            // ── Playground mode ────────────────────────────────────────────────
-
-            // Hide all teacher-mode elements
-            hide(layer25);                // Layer_25 (sliders)
-            hide(picturePanelEl);         // picture-panel (teacher-mode background)
-            if (svgImagesGroup) svgImagesGroup.style.display = 'none';
-            hide(teacherThemeDropdown);   // Theme-drop-down
-            hide(multiQPanelHl);          // multi-Q-panel-h1
-            hide(multiAnsPanelHl);        // multi-ans-panel-h1
-            hide(repeatQPanelHl);         // repea-q-panel-h1
-            hide(repeaAnsPanelHl);        // repea-ans-panel-h1
-            hide(inwordQPanelHl);         // inword-panel (Q)
-            hide(inwordAnsPanelHl);       // inword-panel (ans)
-            hide(surpriseMeBtn);          // btn-suprise-me
-            hide(resetBtn);               // reset-button
-
-            // Show playground-mode elements
-            show(problemPanel);                   // problem-panel
-            show(iText);                          // i-text
-            show(playgroundChooseThemeSection);   // playground-panel-choose-theme-section
-            show(playgroundAddPictureSection);    // playground-panel-add-picture-section
-            show(btnAddPicture);
-            show(btnAddPictureText);
-            show(btnCheckMyAnswer);               // btn-playground-panel-check-my-answer
-            show(showAnswerBtn);                  // show-answer
-            show(newProblemBtn);                  // new-problem
-
-            // Feedback & answer-modal: hidden initially; shown only when
-            // the user clicks "Check My Answer" (doCheckAnswer) or
-            // "Show Answer" (doShowAnswer).
-            hide(feedbackCorrect);    // feedback-playground-panel-correct-ans
-            hide(feedbackIncorrect);  // feedback-playground-panel-incorrect-ans
-            hide(answerModal);        // answer-modal  (btn-new-problem-answer-modal lives inside)
-
-            // How-to-play modal stays hidden on mode switch; user can open it via i-text
-            hide(howToPlayModal);
-
-            state.answered = false;
-            generateNewProblem();
-        }
-    }
-
-    // ─── PANEL TOGGLE ─────────────────────────────────────────────────────────
-    // Clicking a Q-panel-hl header hides/shows the corresponding answer panel.
-    // The arrow rotates 180° when the answer panel is visible.
-    function togglePanel(ansEl, stateKey, arrowEl) {
-        state[stateKey] = !state[stateKey];
-        if (state[stateKey]) {
-            show(ansEl);
-        } else {
-            hide(ansEl);
-        }
-        setArrowRotation(arrowEl, state[stateKey]);
-    }
-
-    // ─── MODALS ───────────────────────────────────────────────────────────────
-    function closeHowToPlay() {
-        hide(howToPlayModal);
-        hide(iText);
-        // Complete the playground mode switch (only if not already in playground)
-        if (state.mode !== 'playground') {
-            setMode('playground');
-        }
-        // Always slide the mode-panel up when closing how-to-play
-        animateModePanel(PANEL_SHIFT_Y);
-    }
-
-    // ─── PLAYGROUND ACTIONS ───────────────────────────────────────────────────
-    function addGroup() {
-        if (state.groups < 10) {
-            state.groups++;
-            refreshAll();
-        }
-    }
-
-    function addItem() {
-        if (state.items < 10) {
-            state.items++;
-            refreshAll();
-        }
-    }
-
-    function removeItem() {
-        if (state.items > 0) {
-            state.items--;
-            refreshAll();
-        }
-    }
-
-    function doCheckAnswer() {
-        state.answered = true;
-        const correct = (state.groups === state.targetGroups && state.items === state.targetItems);
-        if (correct) {
-            show(feedbackCorrect);
-            hide(feedbackIncorrect);
-        } else {
-            hide(feedbackCorrect);
-            show(feedbackIncorrect);
-        }
-        updateAnswerModal();
-    }
-
-    function doShowAnswer() {
-        updateAnswerModal();
-        show(answerModal);
-        hide(feedbackIncorrect);
-    }
-
-    function doNewProblem() {
-        hide(answerModal);
-        hide(feedbackCorrect);
-        hide(feedbackIncorrect);
-        state.answered = false;
-        generateNewProblem();
-    }
-
-    function generateNewProblem() {
-        state.targetGroups = randomInt(2, 10);
-        state.targetItems = randomInt(2, 10);
-        state.groups = 0;
-        state.items = state.targetItems;
-        refreshAll();
-    }
-
-    function updateAnswerModal() {
-        const g = state.targetGroups;
-        const i = state.targetItems;
-        const p = g * i;
-        const ansText = answerModal ? answerModal.querySelector('#show-answer-tos') : null;
-        if (ansText) {
-            const spans = ansText.querySelectorAll('tspan');
-            if (spans[0]) spans[0].textContent = `${g} × ${i} = ${p}`;
-            if (spans[1]) spans[1].textContent = `${i} × ${g} = ${p}`;
-        }
-    }
-
-    // ─── SURPRISE ME / RESET ──────────────────────────────────────────────────
-    function doSurpriseMe() {
-        state.groups = randomInt(2, 10);
-        state.items = randomInt(2, 10);
-        const themes = Object.keys(THEMES);   // ['plates', 'vas', 'palette']
-        state.theme = themes[Math.floor(Math.random() * themes.length)];
-        applyThemeLabels();
-
-        positionSlider(scroolBtn2, scrollNum2, state.groups, BTN2_OFFSET, STEP_PX);
-        positionSlider(scroolBtn1, scrollNum1, state.items, BTN1_OFFSET, STEP_PX);
-
-        refreshAll();
-    }
-
-    function doReset() {
-        state.groups = 3;
-        state.items = 4;
-        state.theme = 'plates';
-        applyThemeLabels();
-        positionSlider(scroolBtn2, scrollNum2, 3, BTN2_OFFSET, STEP_PX);
-        positionSlider(scroolBtn1, scrollNum1, 4, BTN1_OFFSET, STEP_PX);
-        refreshAll();
-    }
-
-    // ─── THEME ────────────────────────────────────────────────────────────────
-    // "birthday" / Cakes & Candles removed as requested
-    const THEMES = {
-        plates: { group: 'Plates', item: 'Cookies', addGroup: 'Add Plates', addItem: 'Add Cookies' },
-        vas: { group: 'Vases', item: 'Flowers', addGroup: 'Add Vases', addItem: 'Add Flowers' },
-        palette: { group: 'Palettes', item: 'Drops', addGroup: 'Add Palettes', addItem: 'Add Drops' }
-    };
-
-    // Maps theme key → SVG template element ID in the DOM
-    const THEME_SVG_MAP = {
-        plates: 'svg-image-plate-cookie',
-        vas: 'svg-image-flower-vase',
-        palette: 'svg-image-paint-color'
-    };
-
-    function doSwitchTheme() {
-        // Legacy – kept so nothing breaks if called from elsewhere.
-        // In playground mode we use the dropdown instead.
-        const keys = Object.keys(THEMES);
-        const idx = keys.indexOf(state.theme);
-        state.theme = keys[(idx + 1) % keys.length];
-        applyThemeLabels();
-        refreshAll();
-    }
-
-    // ─── PLAYGROUND THEME DROPDOWN ────────────────────────────────────────────
-    // Same pattern as buildTeacherDropdown() but for the playground panel.
-    // Playground dropdown box:  x=189.22, y=369.74, width=1622, height=55
-    // Picture-border preview:   x=884.1,  y=629.92, width=208.67, height=176.99
-
-    const PG_DD = {
-        X: 189.22, Y_BOX: 369.74, W: 1622, H_ROW: 55,
-        FILL_NORMAL: '#ffffff',
-        FILL_HOVER: '#dff0ff',
-        FILL_ACTIVE: '#cfeeff',
-        STROKE: '#004897',
-        FONT_SIZE: 28,
-        FONT_FAMILY: 'Roboto-Medium, SQAKWO+Roboto-Medium',
-        TEXT_OFFSET_Y: 36,
-        TEXT_OFFSET_X: 21,
-    };
-    const PG_DROPDOWN_THEMES = [
-        { key: 'plates', label: 'Plates and Cookies' },
-        { key: 'vas', label: 'Vases and Flowers' },
-        { key: 'palette', label: 'Palettes and Drops' },
-    ];
-    // Arrow inside playground dropdown box
-    const playgroundDropdownArrow = document.getElementById('Group_1578-2');
-    let _pgDropdownList = null;   // cached reference to the injected list group
-
-    function buildPlaygroundDropdown() {
-        if (!themeDropdownBox) return;
-        const svgEl = document.querySelector('svg');
-        const NS = 'http://www.w3.org/2000/svg';
-
-        const listGroup = document.createElementNS(NS, 'g');
-        listGroup.setAttribute('id', 'pg-theme-dropdown-list');
-        listGroup.style.display = 'none';
-
-        // Background border rect for the whole list
-        const bgRect = document.createElementNS(NS, 'rect');
-        bgRect.setAttribute('x', PG_DD.X);
-        bgRect.setAttribute('y', PG_DD.Y_BOX + PG_DD.H_ROW);
-        bgRect.setAttribute('width', PG_DD.W);
-        bgRect.setAttribute('height', PG_DD.H_ROW * PG_DROPDOWN_THEMES.length);
-        bgRect.setAttribute('rx', 12);
-        bgRect.setAttribute('ry', 12);
-        bgRect.setAttribute('fill', '#ffffff');
-        bgRect.setAttribute('stroke', PG_DD.STROKE);
-        bgRect.setAttribute('stroke-width', '2');
-        listGroup.appendChild(bgRect);
-
-        PG_DROPDOWN_THEMES.forEach((theme, idx) => {
-            const rowY = PG_DD.Y_BOX + PG_DD.H_ROW + idx * PG_DD.H_ROW;
-            const rowGroup = document.createElementNS(NS, 'g');
-            rowGroup.style.cursor = 'pointer';
-            rowGroup.style.pointerEvents = 'all';
-
-            const rowRect = document.createElementNS(NS, 'rect');
-            rowRect.setAttribute('x', PG_DD.X + 1);
-            rowRect.setAttribute('y', rowY + 1);
-            rowRect.setAttribute('width', PG_DD.W - 2);
-            rowRect.setAttribute('height', PG_DD.H_ROW - 2);
-            rowRect.setAttribute('fill', PG_DD.FILL_NORMAL);
-            rowRect.setAttribute('rx', idx === PG_DROPDOWN_THEMES.length - 1 ? 12 : 0);
-            rowGroup.appendChild(rowRect);
-
-            const rowText = document.createElementNS(NS, 'text');
-            rowText.setAttribute('x', PG_DD.X + PG_DD.TEXT_OFFSET_X);
-            rowText.setAttribute('y', rowY + PG_DD.TEXT_OFFSET_Y);
-            rowText.setAttribute('font-family', PG_DD.FONT_FAMILY);
-            rowText.setAttribute('font-size', PG_DD.FONT_SIZE);
-            rowText.setAttribute('font-weight', '500');
-            rowText.style.pointerEvents = 'none';
-            const tspan = document.createElementNS(NS, 'tspan');
-            tspan.textContent = theme.label;
-            rowText.appendChild(tspan);
-            rowGroup.appendChild(rowText);
-
-            rowGroup.addEventListener('mouseenter', () => {
-                rowRect.setAttribute('fill', PG_DD.FILL_HOVER);
-            });
-            rowGroup.addEventListener('mouseleave', () => {
-                rowRect.setAttribute('fill',
-                    state.theme === theme.key ? PG_DD.FILL_ACTIVE : PG_DD.FILL_NORMAL);
-            });
-            rowGroup.addEventListener('click', (e) => {
-                e.stopPropagation();
-                selectPlaygroundTheme(theme.key);
-                closePlaygroundDropdown();
-            });
-
-            listGroup.appendChild(rowGroup);
-        });
-
-        svgEl.appendChild(listGroup);
-        _pgDropdownList = listGroup;
-
-        // Close when clicking anywhere else
-        document.addEventListener('click', () => {
-            if (state.themeDropdownOpen) closePlaygroundDropdown();
-        });
-    }
-
-    function openPlaygroundDropdown() {
-        if (_pgDropdownList) _pgDropdownList.style.display = 'block';
-        state.themeDropdownOpen = true;
-        setArrowRotation(playgroundDropdownArrow, true);
-        _highlightPgThemeRow();
-    }
-
-    function closePlaygroundDropdown() {
-        if (_pgDropdownList) _pgDropdownList.style.display = 'none';
-        state.themeDropdownOpen = false;
-        setArrowRotation(playgroundDropdownArrow, false);
-    }
-
-    function _highlightPgThemeRow() {
-        if (!_pgDropdownList) return;
-        // First child is the background rect; remaining are row groups
-        const rowGroups = Array.from(_pgDropdownList.children).slice(1);
-        rowGroups.forEach((rowGroup, idx) => {
-            const rowRect = rowGroup.querySelector('rect');
-            if (!rowRect) return;
-            const key = PG_DROPDOWN_THEMES[idx] ? PG_DROPDOWN_THEMES[idx].key : null;
-            rowRect.setAttribute('fill', key === state.theme ? PG_DD.FILL_ACTIVE : PG_DD.FILL_NORMAL);
-        });
-    }
-
-    function selectPlaygroundTheme(themeKey) {
-        state.theme = themeKey;
-        applyThemeLabels();
-        refreshAll();
-        _showThemeInPictureBorder(themeKey);
-    }
-
-    // Places the selected theme SVG into picture-border.
-    // Templates live inside #svg-images-group-playground (a foreignObject),
-    // so we look them up from there, read their viewBox for dimensions,
-    // serialize to a data URI, and render via an SVG <image> element.
-    //
-    // picture-border rect: x=884.1, y=629.92, w=208.67, h=176.99
-    function _showThemeInPictureBorder(themeKey) {
-        const NS = 'http://www.w3.org/2000/svg';
-        const PB_X = 884.1, PB_Y = 629.92, PB_W = 208.67, PB_H = 176.99;
-
-        // Remove any previously injected preview
-        const oldPreview = document.getElementById('pg-theme-preview');
-        if (oldPreview) oldPreview.remove();
-
-        // ── Locate the SVG template ───────────────────────────────────────────
-        // Templates are inside:  #svg-images-group-playground > div#svg-templates > svg#<id>
-        const container = document.getElementById('svg-images-group-playground');
-        const srcId = THEME_SVG_MAP[themeKey];
-        // querySelector works across foreignObject content
-        const srcEl = container
-            ? container.querySelector('#' + srcId)
-            : document.getElementById(srcId);   // fallback
-        if (!srcEl) return;
-
-        // ── Read dimensions from the SVG's viewBox ────────────────────────────
-        // getBBox() is unreliable for foreignObject-hosted SVGs.
-        let svgW = 0, svgH = 0;
-        const vb = srcEl.getAttribute('viewBox');
-        if (vb) {
-            const parts = vb.trim().split(/[\s,]+/);
-            svgW = parseFloat(parts[2]) || 0;
-            svgH = parseFloat(parts[3]) || 0;
-        }
-        if (!svgW) svgW = parseFloat(srcEl.getAttribute('width')) || 100;
-        if (!svgH) svgH = parseFloat(srcEl.getAttribute('height')) || 100;
-
-        // ── Serialize to data URI and render via <image> ──────────────────────
-        const serializer = new XMLSerializer();
-        let svgStr = serializer.serializeToString(srcEl);
-        // Ensure xmlns is present for standalone rendering
-        if (!svgStr.includes('xmlns=')) {
-            svgStr = svgStr.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
-        }
-        const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
-
-        // ── Compute scale / position to fit inside picture-border ────────────
-        const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
-        const imgW = svgW * scale;
-        const imgH = svgH * scale;
-        const imgX = PB_X + (PB_W - imgW) / 2;
-        const imgY = PB_Y + (PB_H - imgH) / 2;
-
-        const imgEl = document.createElementNS(NS, 'image');
-        imgEl.setAttribute('id', 'pg-theme-preview');
-        imgEl.setAttribute('x', imgX);
-        imgEl.setAttribute('y', imgY);
-        imgEl.setAttribute('width', imgW);
-        imgEl.setAttribute('height', imgH);
-        imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
-        imgEl.setAttribute('href', dataUri);   // modern browsers (no xlink)
-        imgEl.style.pointerEvents = 'none';
-
-        // Append on top of main SVG so it renders above picture-border
-        const svgRoot = document.querySelector('svg');
-        svgRoot.appendChild(imgEl);
-    }
-
-    // ─── TEACHER THEME DROPDOWN (Group_562) ───────────────────────────────────
-    // Builds a real SVG dropdown list below the Group_562 box.
-    // The list lives as a sibling <g> injected into the SVG, positioned at the
-    // same x/width as the dropdown box and starting just below it.
-    //
-    // Dropdown box in SVG:  x=96, y=234.4, width=1141, height=55
-    // List starts at:       y=289.4  (= 234.4 + 55)
-    // Each row height:      55 SVG units (matches dropdown box)
-    // Arrow: Group_1578 → rotate(180) when open, rotate(0) when closed
-    //
-    // Theme label element: #Plates_Cookies tspan (inside Group_1501 inside Group_562)
-
-    const TEACHER_DROPDOWN_THEMES = [
-        { key: 'plates', label: 'Plates \u0026 Cookies' },
-        { key: 'vas', label: 'Vases \u0026 Flowers' },
-        { key: 'palette', label: 'Palettes \u0026 Drops' },
-    ];
-
-    const DD = {
-        X: 96, Y_BOX: 234.4, W: 1141, H_ROW: 55,
-        FILL_NORMAL: '#ffffff',
-        FILL_HOVER: '#dff0ff',
-        FILL_ACTIVE: '#cfeeff',
-        STROKE: '#004897',
-        FONT_SIZE: 28,
-        FONT_FAMILY: 'Roboto-Medium, SQAKWO+Roboto-Medium',
-        TEXT_OFFSET_Y: 36,   // baseline offset inside the row
-        TEXT_OFFSET_X: 21,   // same left margin as original label
-    };
-
-    function buildTeacherDropdown() {
-        const dropdownBox = document.getElementById('Group_562');
-        if (!dropdownBox) return;
-
-        // Make the dropdown box clickable
-        dropdownBox.style.cursor = 'pointer';
-        dropdownBox.style.pointerEvents = 'all';
-        dropdownBox.querySelectorAll('rect, text, g, tspan').forEach(el => {
-            el.style.pointerEvents = 'all';
-        });
-
-        // Create the list container (hidden by default)
-        const svgEl = document.querySelector('svg');
-        const NS = 'http://www.w3.org/2000/svg';
-
-        const listGroup = document.createElementNS(NS, 'g');
-        listGroup.setAttribute('id', 'theme-dropdown-list');
-        listGroup.style.display = 'none';
-
-        // Overall background / border for the whole list
-        const bgRect = document.createElementNS(NS, 'rect');
-        bgRect.setAttribute('x', DD.X);
-        bgRect.setAttribute('y', DD.Y_BOX + DD.H_ROW);
-        bgRect.setAttribute('width', DD.W);
-        bgRect.setAttribute('height', DD.H_ROW * TEACHER_DROPDOWN_THEMES.length);
-        bgRect.setAttribute('rx', 12);
-        bgRect.setAttribute('ry', 12);
-        bgRect.setAttribute('fill', '#ffffff');
-        bgRect.setAttribute('stroke', DD.STROKE);
-        bgRect.setAttribute('stroke-width', '2');
-        listGroup.appendChild(bgRect);
-
-        // One row per theme
-        TEACHER_DROPDOWN_THEMES.forEach((theme, idx) => {
-            const rowY = DD.Y_BOX + DD.H_ROW + idx * DD.H_ROW;
-            const rowGroup = document.createElementNS(NS, 'g');
-            rowGroup.style.cursor = 'pointer';
-            rowGroup.style.pointerEvents = 'all';
-
-            // Row highlight rect
-            const rowRect = document.createElementNS(NS, 'rect');
-            rowRect.setAttribute('x', DD.X + 1);
-            rowRect.setAttribute('y', rowY + 1);
-            rowRect.setAttribute('width', DD.W - 2);
-            rowRect.setAttribute('height', DD.H_ROW - 2);
-            rowRect.setAttribute('fill', DD.FILL_NORMAL);
-            rowRect.setAttribute('rx', idx === 0 ? 0 : (idx === TEACHER_DROPDOWN_THEMES.length - 1 ? 12 : 0));
-            rowGroup.appendChild(rowRect);
-
-            // Row label
-            const rowText = document.createElementNS(NS, 'text');
-            rowText.setAttribute('x', DD.X + DD.TEXT_OFFSET_X);
-            rowText.setAttribute('y', rowY + DD.TEXT_OFFSET_Y);
-            rowText.setAttribute('font-family', DD.FONT_FAMILY);
-            rowText.setAttribute('font-size', DD.FONT_SIZE);
-            rowText.setAttribute('font-weight', '500');
-            rowText.style.pointerEvents = 'none';     // clicks go to rowGroup
-            const tspan = document.createElementNS(NS, 'tspan');
-            tspan.textContent = theme.label;
-            rowText.appendChild(tspan);
-            rowGroup.appendChild(rowText);
-
-            // Hover effects
-            rowGroup.addEventListener('mouseenter', () => {
-                rowRect.setAttribute('fill', DD.FILL_HOVER);
-            });
-            rowGroup.addEventListener('mouseleave', () => {
-                rowRect.setAttribute('fill',
-                    state.theme === theme.key ? DD.FILL_ACTIVE : DD.FILL_NORMAL);
-            });
-
-            // Click → select theme
-            rowGroup.addEventListener('click', (e) => {
-                e.stopPropagation();
-                selectTeacherTheme(theme.key);
-                closeTeacherDropdownList();
-            });
-
-            listGroup.appendChild(rowGroup);
-        });
-
-        // Append at the END of the SVG so it paints on top of all other layers
-        // (SVG renders in DOM order: last child = highest z-order)
-        svgEl.appendChild(listGroup);
-
-        // ── Wire up the dropdown toggle ────────────────────────────────────────
-        dropdownBox.addEventListener('click', (e) => {
-            e.stopPropagation();
-            state.teacherThemeDropdownOpen = !state.teacherThemeDropdownOpen;
-            if (state.teacherThemeDropdownOpen) {
-                openTeacherDropdownList();
-            } else {
-                closeTeacherDropdownList();
-            }
-        });
-
-        // Close list when clicking anywhere else
-        document.addEventListener('click', () => {
-            if (state.teacherThemeDropdownOpen) {
-                closeTeacherDropdownList();
-            }
-        });
-    }
-
-    function openTeacherDropdownList() {
-        const list = document.getElementById('theme-dropdown-list');
-        if (list) list.style.display = 'block';
-        state.teacherThemeDropdownOpen = true;
-        setArrowRotation(teacherDropdownArrow, true);
-        // Highlight currently active theme row
-        highlightActiveThemeRow();
-    }
-
-    function closeTeacherDropdownList() {
-        const list = document.getElementById('theme-dropdown-list');
-        if (list) list.style.display = 'none';
-        state.teacherThemeDropdownOpen = false;
-        setArrowRotation(teacherDropdownArrow, false);
-    }
-
-    function highlightActiveThemeRow() {
-        const list = document.getElementById('theme-dropdown-list');
-        if (!list) return;
-        const rows = list.querySelectorAll('g');
-        rows.forEach((rowGroup, idx) => {
-            const rowRect = rowGroup.querySelector('rect');
-            if (!rowRect) return;
-            const themeKey = TEACHER_DROPDOWN_THEMES[idx] ? TEACHER_DROPDOWN_THEMES[idx].key : null;
-            rowRect.setAttribute('fill', themeKey === state.theme ? DD.FILL_ACTIVE : DD.FILL_NORMAL);
-        });
-    }
-
-    function selectTeacherTheme(themeKey) {
-        state.theme = themeKey;
-        applyThemeLabels();
-        refreshAll();
-    }
-
-
-
-    function applyThemeLabels() {
-        const t = THEMES[state.theme] || THEMES.birthday;
-        // Slider headings
-        const h1 = scroolerH2 ? scroolerH2.querySelector('tspan') : null;
-        const h2 = scroolerH1 ? scroolerH1.querySelector('tspan') : null;
-        if (h1) h1.textContent = `Number of ${t.group}`;
-        if (h2) h2.textContent = `Number of ${t.item}`;
-        // Add button text
-        if (btnAddPictureText) setText(btnAddPictureText, t.addGroup);
-        // Teacher dropdown label
-        if (teacherThemeDropdown) {
-            const lbl = teacherThemeDropdown.querySelector('#Plates_Cookies tspan');
-            if (lbl) lbl.textContent = `${t.group} & ${t.item}`;
-        }
-        // Playground dropdown label
-        if (themeDropdownBox) {
-            const lbl = themeDropdownBox.querySelector('tspan');
-            if (lbl) lbl.textContent = `${t.group} and ${t.item}`;
-        }
-    }
-
-    // ─── REFRESH ALL ──────────────────────────────────────────────────────────
-    function refreshAll() {
-        updateProblemText();
-        updatePanelsText();
-        renderVisuals();
-        renderSvgImages();
-    }
-
-    // ─── PROBLEM TEXT ─────────────────────────────────────────────────────────
-    function updateProblemText() {
-        const g = state.mode === 'playground' ? state.targetGroups : state.groups;
-        const i = state.mode === 'playground' ? state.targetItems : state.items;
-        const p = g * i;
-
-        if (problemText) {
-            if (state.mode === 'playground' && !state.answered) {
-                problemText.textContent = `Problem: ${g} x ${i} = ?`;
-            } else {
-                problemText.textContent = `Problem: ${g} x ${i} = ${p}`;
-            }
-        }
-    }
-
-    // ─── PANELS TEXT ──────────────────────────────────────────────────────────
-    function updatePanelsText() {
-        const g = state.groups;
-        const i = state.items;
-        const p = g * i;
-
-        // Multiplication shortcut
-        if (multiAnsText) setText(multiAnsText, `${g} x ${i} = ${p}`);
-
-        // Repeated addition
-        if (repeaAnsText) {
-            const parts = Array(g > 0 ? g : 1).fill(i).join(' + ');
-            setText(repeaAnsText, `${parts} = ${p}`);
-        }
-
-        // In words
-        const wordItem = WORD_MAP[i - 1] || `${i}s`;
-        if (inwordText1) setText(inwordText1, `"${g} groups of ${i} is ${p}"`);
-        if (inwordText2) setText(inwordText2, `"${g} times of ${i} is ${p}"`);
-        if (inwordText3) setText(inwordText3, `"${g} ${wordItem} are ${p}"`);
-    }
-
-    // ─── RENDER VISUALS: Layer_50 ─────────────────────────────────────────────
-    function renderVisuals() {
-        if (!layer50) return;
-        const groupEls = Array.from(layer50.children);
-        groupEls.forEach((groupEl, gi) => {
-            if (gi < state.groups) {
-                groupEl.style.display = 'block';
-                const itemEls = Array.from(groupEl.querySelectorAll(':scope > g'));
-                itemEls.forEach((itemEl, ii) => {
-                    itemEl.style.display = ii < state.items ? 'block' : 'none';
-                });
-            } else {
-                groupEl.style.display = 'none';
-            }
-        });
-    }
-
-    // ─── RENDER SVG IMAGES (foreignObject group) ──────────────────────────────
-    // Shows state.groups copies of the current-theme SVG.
-    // Inside each copy, shows state.items "item" elements (cookies / drops / flowers).
-    //
-    // Item identification per SVG:
-    //  plates  → <g mask="url(#maskN_711_947)"> where N=3..12  (10 cookies)
-    //  palette → direct <path fill-rule="evenodd"> children after the base <g mask>  (10 color dots)
-    //  vas     → each flower = 11 consecutive direct <path> children starting with
-    //            the green stem (#00AF64). Last 3 paths are the vase body (skip).
-
-    function _getItemsFromSvg(svgEl, themeKey) {
-        const children = Array.from(svgEl.childNodes)
-            .filter(n => n.nodeType === 1);       // element nodes only
-
-        if (themeKey === 'plates') {
-            // Cookies: <g> elements that have a mask attribute referencing mask3..mask12
-            return children.filter(el =>
-                el.tagName === 'g' &&
-                el.hasAttribute('mask') &&
-                /mask([3-9]|1[0-2])_711_947/.test(el.getAttribute('mask'))
-            );
-        }
-
-        if (themeKey === 'palette') {
-            // Color dots: direct <path fill-rule="evenodd"> children of the SVG
-            // (the one inside <g mask> is the palette body — skip it)
-            return children.filter(el =>
-                el.tagName === 'path' &&
-                el.getAttribute('fill-rule') === 'evenodd'
-            );
-        }
-
-        if (themeKey === 'vas') {
-            // Flowers: each flower = 11 consecutive paths, starting with green stem.
-            // Last 3 direct children are vase body — exclude.
-            const VASE_BODY_FILL = ['#D9ACF4', '#6C6FF3', '#B98DF8'];
-            const paths = children.filter(el =>
-                el.tagName === 'path' &&
-                !VASE_BODY_FILL.includes(el.getAttribute('fill'))
-            );
-            // Group into arrays of 11 (one per flower)
-            const flowers = [];
-            for (let i = 0; i < paths.length; i += 11) {
-                flowers.push(paths.slice(i, i + 11));
-            }
-            return flowers;   // array of arrays
-        }
-
-        return [];
-    }
-
-    function _setVasItemsVisibility(clonedSvg, itemCount, themeKey) {
-        if (themeKey !== 'vas') return;
-        const VASE_BODY_FILL = ['#D9ACF4', '#6C6FF3', '#B98DF8'];
-        const children = Array.from(clonedSvg.childNodes).filter(n => n.nodeType === 1);
-        const paths = children.filter(el =>
-            el.tagName === 'path' &&
-            !VASE_BODY_FILL.includes(el.getAttribute('fill'))
-        );
-        paths.forEach((path, idx) => {
-            const flowerIndex = Math.floor(idx / 11);   // which flower (0-based)
-            path.style.display = flowerIndex < itemCount ? '' : 'none';
-        });
-    }
-
-    function renderSvgImages() {
-        const foEl = document.getElementById('svg-images-group');
-        if (!foEl) return;
-
-        const svgId = THEME_SVG_MAP[state.theme];
-        if (!svgId) return;
-
-        const templateSvg = document.getElementById(svgId);
-        if (!templateSvg) return;
-
-        // Use (or create) a dedicated output <div> separate from the templates div
-        let container = document.getElementById('svg-images-output');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'svg-images-output';
-            foEl.appendChild(container);
-        }
-        container.innerHTML = '';
-        container.style.cssText = 'width:100%;height:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;';
-
-        for (let g = 0; g < state.groups; g++) {
-            // Clone SVG + uniquify IDs to avoid mask reference conflicts
-            let html = templateSvg.outerHTML;
-            html = html.replace(/id="([^"]+)"/g, (_, id) => `id="${id}_g${g}"`);
-            html = html.replace(/url\(#([^)]+)\)/g, (_, ref) => `url(#${ref}_g${g})`);
-            // Strip the hidden/template display if any
-            html = html.replace(/display:\s*none/g, '');
-
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = html;
-            const clonedSvg = wrapper.querySelector('svg');
-            if (!clonedSvg) continue;
-
-            // Set a uniform size that fits within the foreignObject height
-            clonedSvg.setAttribute('width', '120');
-            clonedSvg.setAttribute('height', '120');
-            clonedSvg.style.display = 'block';
-
-            if (state.theme === 'vas') {
-                _setVasItemsVisibility(clonedSvg, state.items, state.theme);
-            } else {
-                const items = _getItemsFromSvg(clonedSvg, state.theme);
-                items.forEach((item, idx) => {
-                    item.style.display = idx < state.items ? '' : 'none';
-                });
-            }
-
-            container.appendChild(clonedSvg);
-        }
-    }
-
-    // ─── PLAYGROUND GROUPS ───────────────────────────────────────────────────
-    // Dynamically generates the N playground picture groups based on state.groups.
-    function renderPlaygroundGroups() {
-        if (!pgGroupsContainer || !pgGroupTemplate) return;
-
-        // Clear existing
-        pgGroupsContainer.innerHTML = '';
-
-        // Hide if not in playground mode
-        if (state.mode !== 'playground') {
-            pgGroupsContainer.style.display = 'none';
-            return;
-        }
-        pgGroupsContainer.style.display = '';
-
-        // If 0 groups, don't render any
-        if (state.groups === 0) return;
-
-        // Calculate layout
-        // The original picture-border is 208.67 wide.
-        const GROUP_WIDTH = 220; // 208.67 + some gap
-        const TOTAL_WIDTH = GROUP_WIDTH * state.groups;
-
-        // Center the groups around the middle of the available width
-        // Rough container center x ≈ 884 + (1168/2) = 1468. Or let's center relative to x=884.
-        // The background panel is wide. Let's just start at x=884 and go right for now,
-        // or actually center them relative to the main area (x ~ 1468)
-        const CENTER_X = 1468;
-        const startX = CENTER_X - (TOTAL_WIDTH / 2);
-
-        // Get the chosen theme's template
-        const themeGroup = document.getElementById('svg-images-group-playground');
-        const themeTemplateId = THEME_SVG_MAP[state.theme];
-        const themeTemplate = themeGroup ? themeGroup.querySelector('#' + themeTemplateId) : document.getElementById(themeTemplateId);
-
-        // Get viewbox/dimensions for the item svg
-        let svgW = 100, svgH = 100;
-        if (themeTemplate) {
-            const vb = themeTemplate.getAttribute('viewBox');
-            if (vb) {
-                const parts = vb.trim().split(/[\s,]+/);
-                svgW = parseFloat(parts[2]) || 100;
-                svgH = parseFloat(parts[3]) || 100;
-            } else {
-                svgW = parseFloat(themeTemplate.getAttribute('width')) || 100;
-                svgH = parseFloat(themeTemplate.getAttribute('height')) || 100;
-            }
-        }
-
-        for (let g = 0; g < state.groups; g++) {
-            // Clone the group template (border + buttons)
-            const clone = pgGroupTemplate.cloneNode(true);
-            clone.removeAttribute('id');
-            clone.style.display = '';
-
-            // Calculate translation for this group
-            // original template assumes origin at 884.1, 629.92. 
-            // the paths inside the template were translated by -884.1, -629.92 so they are relative to 0,0
-            const tx = startX + (g * GROUP_WIDTH);
-            const ty = 629.92; // keep original vertical position
-            clone.setAttribute('transform', `translate(${tx}, ${ty})`);
-
-            // Setup buttons
-            const btnAdd = clone.querySelector('.btn-pg-add-sub');
-            const btnMinus = clone.querySelector('.btn-pg-minus-sub');
-            const btnCancel = clone.querySelector('.btn-pg-cancel');
-
-            if (btnAdd) {
-                clickable(btnAdd, () => {
-                    if (state.items < 10) { state.items++; refreshAll(); }
-                });
-            }
-            if (btnMinus) {
-                clickable(btnMinus, () => {
-                    if (state.items > 0) { state.items--; refreshAll(); }
-                });
-            }
-            if (btnCancel) {
-                clickable(btnCancel, () => {
-                    if (state.groups > 0) {
-                        state.groups--;
-                        refreshAll();
-                    }
-                });
-            }
-
-            // Inject items into the border
-            const itemsContainer = clone.querySelector('.pg-items-container');
-            if (themeTemplate && itemsContainer) {
-                // We'll create a data URI <image> and append it to pg-items-container.
-                // We must process items visibility *before* serializing to data URI.
-                const imgClone = themeTemplate.cloneNode(true);
-                imgClone.removeAttribute('id');
-
-                if (state.theme === 'vas') {
-                    _setVasItemsVisibility(imgClone, state.items, state.theme);
-                } else {
-                    const items = _getItemsFromSvg(imgClone, state.theme);
-                    items.forEach((item, idx) => {
-                        item.style.display = idx < state.items ? '' : 'none';
-                    });
-                }
-
-                const serializer = new XMLSerializer();
-                let svgStr = serializer.serializeToString(imgClone);
-                if (!svgStr.includes('xmlns=')) {
-                    svgStr = svgStr.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
-                }
-                const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
-
-                // fit inside 208.67 x 176.99
-                const PB_W = 208.67, PB_H = 176.99;
-                const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
-                const imgW = svgW * scale;
-                const imgH = svgH * scale;
-                const imgX = (PB_W - imgW) / 2;
-                const imgY = (PB_H - imgH) / 2;
-
-                const NS = 'http://www.w3.org/2000/svg';
-                const imgEl = document.createElementNS(NS, 'image');
-                imgEl.setAttribute('x', imgX);
-                imgEl.setAttribute('y', imgY);
-                imgEl.setAttribute('width', imgW);
-                imgEl.setAttribute('height', imgH);
-                imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
-                imgEl.setAttribute('href', dataUri); // modern
-                imgEl.style.pointerEvents = 'none';
-
-                itemsContainer.appendChild(imgEl);
-            }
-
-            pgGroupsContainer.appendChild(clone);
-        }
-    }
-
-    // ─── SLIDERS ──────────────────────────────────────────────────────────────
-    // Slider positions (absolute SVG x):
-    //   start (value=1) → x = 110
-    //   end   (value=10)→ x = 1155
-    //
-    // Each button's polygon apex is fixed in the path data:
-    //   scrool-btn-1 apex ≈ 308.67  → offset = 110 - 308.67 = -198.67
-    //   scrool-btn-2 apex ≈ 428.67  → offset = 110 - 428.67 = -318.67
-    //
-    // translate applied = offset + (val-1) * stepPx
-    // (Constants moved to top of file to avoid temporal dead zone.)
-
-    function svgScale() {
-        return svg ? (2016 / svg.getBoundingClientRect().width) : 1;
-    }
-
-    function getTranslateX(el) {
-        const t = el.getAttribute('transform');
-        if (t) {
-            const m = t.match(/translate\(\s*([-\d.]+)/);
-            if (m) return parseFloat(m[1]);
-        }
-        return 0;
-    }
-
-    /**
-     * Position a slider handle at the given value.
-     * @param {Element} btn      - the slider button group element
-     * @param {Element} numEl    - the number display element
-     * @param {number}  val      - current value (1-10)
-     * @param {number}  offset   - translate when val=1 (btn-specific)
-     * @param {number}  stepPx   - SVG units per step
-     */
-    function positionSlider(btn, numEl, val, offset, stepPx) {
-        if (!btn) return;
-        const x = offset + (val - 1) * stepPx;
-        btn.setAttribute('transform', `translate(${x}, 0)`);
-        if (numEl) {
-            numEl.querySelectorAll('tspan').forEach(t => t.textContent = val);
-        }
-    }
-
-    function setupSlider(btn, numEl, min, max, defaultVal, stepPx, offset, onChange) {
-        if (!btn) return;
-
-        let dragging = false;
-        let startClientX = 0;
-        let startSvgX = 0;
-        let currentVal = defaultVal;
-
-        btn.style.cursor = 'ew-resize';
-        btn.style.pointerEvents = 'all';
-
-        // Set initial position
-        positionSlider(btn, numEl, defaultVal, offset, stepPx);
-
-        const onDown = (e) => {
-            dragging = true;
-            startClientX = e.touches ? e.touches[0].clientX : e.clientX;
-            startSvgX = getTranslateX(btn);
-            e.preventDefault();
-        };
-
-        const onMove = (e) => {
-            if (!dragging) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const deltaPx = (clientX - startClientX) * svgScale();
-            let newX = startSvgX + deltaPx;
-
-            // Clamp within [offset, offset + stepPx*(max-min)]
-            const minX = offset;
-            const maxX = offset + stepPx * (max - min);
-            newX = Math.max(minX, Math.min(maxX, newX));
-
-            // Snap to nearest step
-            const relX = newX - offset;
-            const step = Math.round(relX / stepPx);
-            const snapped = offset + step * stepPx;
-            const val = min + step;
-
-            btn.setAttribute('transform', `translate(${snapped}, 0)`);
-
-            if (numEl) {
-                numEl.querySelectorAll('tspan').forEach(t => t.textContent = val);
-            }
-
-            if (val !== currentVal) {
-                currentVal = val;
-                onChange(val);
-            }
-            e.preventDefault();
-        };
-
-        const onUp = () => { dragging = false; };
-
-        btn.addEventListener('mousedown', onDown, { passive: false });
-        btn.addEventListener('touchstart', onDown, { passive: false });
-        document.addEventListener('mousemove', onMove, { passive: false });
-        document.addEventListener('touchmove', onMove, { passive: false });
-        document.addEventListener('mouseup', onUp);
-        document.addEventListener('touchend', onUp);
-    }
-
-    // ─── UTILITY ──────────────────────────────────────────────────────────────
-    function randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // ─── START ────────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function () {
+    createShowAnswerButton();
     init();
 });
