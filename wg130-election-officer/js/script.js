@@ -221,7 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "tab-legal_rallies",
     "tab-free_media",
     "banner-democracy",
-    "inside_button",
     "i_text_02",
     "dark-patch-shield",
     "lock",
@@ -257,7 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (correctPanel) correctPanel.style.cursor = "pointer";
   if (incorrectPanel) incorrectPanel.style.cursor = "pointer";
   if (closeInsightsBtn) closeInsightsBtn.style.cursor = "pointer";
-  if (insideButton) insideButton.style.cursor = "pointer";
+  if (insideButton) {
+    insideButton.style.cursor = "pointer";
+    insideButton.style.display = "none"; // Only shown when a question is active
+  }
 
   // Initialize Stars (Gray out)
   STAR_PATH_IDS.forEach((id) => {
@@ -383,6 +385,9 @@ document.addEventListener("DOMContentLoaded", () => {
     textPanel.style.display = "block";
     allowedBtn.style.display = "block";
     violationBtn.style.display = "block";
+
+    // Show Insights button only when question is active
+    if (insideButton) insideButton.style.display = "block";
 
     // Hide shield screen elements
     // shield.style.display = "none";
@@ -514,6 +519,9 @@ document.addEventListener("DOMContentLoaded", () => {
     allowedBtn.style.display = "none";
     violationBtn.style.display = "none";
     itext03.style.display = "none";
+
+    // Hide Insights button when returning to main map
+    if (insideButton) insideButton.style.display = "none";
     shield.style.display = "block";
     fairElectionCircle.style.display = "block";
     iText02.style.display = "block";
@@ -683,6 +691,9 @@ document.addEventListener("DOMContentLoaded", () => {
       textPanel.style.display = "none";
       allowedBtn.style.display = "none";
       violationBtn.style.display = "none";
+
+      // Hide Insights button on restart
+      if (insideButton) insideButton.style.display = "none";
     });
   }
 });
