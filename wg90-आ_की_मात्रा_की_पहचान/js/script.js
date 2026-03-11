@@ -8,6 +8,8 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+let animationTimeout = null;
+let starAnimationTimeout = null;
 const LottieAnimations = {
   aa: {
     CORRECT: "Correct.json",
@@ -63,12 +65,10 @@ function textDisplay() {
 }
 
 function highlightConsonantWithUmatra(text) {
-  // Matches any consonant + ए की मात्रा (े, U+0947) or ऐ की मात्रा (ै, U+0948)
+  // Matches any consonant + आ की मात्रा (ा, U+093E)
   return text.replace(
-    /([\u0915-\u0939\u0958-\u095F][\u0947\u0948])/g,
+    /([\u0915-\u0939\u0958-\u095F]\u093E)/g,
     (match) => {
-      const charCode = match.charCodeAt(1); // Get code of the matra (2nd char)
-      const className = charCode === 0x0948 ? "ai-vowel" : "e-vowel"; // 0948 = ऐ की मात्रा, 0947 = ए की मात्रा
       return `<span>${match}</span>`;
     },
   );
@@ -114,6 +114,12 @@ function resetFeedbackVisuals() {
   if (lottieInstances_star) {
     lottieInstances_star.destroy();
     lottieInstances_star = null;
+  }
+
+  parentEl = document.getElementById("Character_train_01");
+  if (parentEl) {
+    parentEl.classList.remove("visible");
+    parentEl.style.display = "none";
   }
 
   lottiAnimation("none");
@@ -167,7 +173,8 @@ function textClickEvent() {
         p.setAttribute("fill", isCorrect ? "#31DD12" : "#FF0801");
       }
     });
-
+    let tspans = document.getElementById(cloudId).querySelector("p");
+    tspans.classList.add("cloud_text_highlight");
     // Show yellow stars only on correct answer
     if (isCorrect) {
       ["Group_81", "Group_83", "Group_86"].forEach((id) => {
@@ -176,8 +183,8 @@ function textClickEvent() {
       });
     }
 
-    // Animation
-    lottiAnimation("block");
+    // Animation — do NOT call lottiAnimation("block") here;
+    // playLottieAnimation will reveal the container only after DOMLoaded
     playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
     if (isCorrect) {
       playLottieAnimationStart(cloudId);
@@ -214,12 +221,12 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    playAudio("wrong");
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    playAudio("correct");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
   });
 }
 
@@ -344,20 +351,34 @@ function playLottieAnimation(bandGroup) {
   }
   containerEl.innerHTML = "";
   parentEl.classList.remove("visible");
-  playAnimationAudio(bandGroup);
+  parentEl.style.display = "block"; // allow renderer to init
+  parentEl.style.visibility = "hidden"; // but keep hidden
+  parentEl.style.opacity = "0";
 
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
     });
-
     lottieInstances.addEventListener("DOMLoaded", () => {
-      lottieInstances.play();
-      parentEl.classList.add("visible");
+      setTimeout(() => {
+        lottieInstances.play();
+      }, 10);
+    });
+    lottieInstances.addEventListener("enterFrame", (e) => {
+      // Reveal only when we have definitely drawn a frame
+      if (e.currentTime > 0.1) {
+        if (!parentEl.classList.contains("visible")) {
+          parentEl.style.visibility = "visible";
+          parentEl.style.opacity = "1";
+          parentEl.classList.add("visible");
+          playAnimationAudio(bandGroup);
+
+        }
+      }
     });
 
     lottieInstances.addEventListener("complete", () => {
@@ -422,15 +443,18 @@ function playLottieAnimationStart(bandGroup) {
   try {
     lottieInstances_star = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
-      autoplay: false,
+      autoplay: true,
       path: `assets/Animation/shining stars.json`,
     });
 
-    lottieInstances_star.addEventListener("DOMLoaded", () => {
-      lottieInstances_star.play();
-      containerEl.classList.add("visible");
+    lottieInstances_star.addEventListener("enterFrame", (e) => {
+      if (e.currentTime > 0.1) {
+        if (!containerEl.classList.contains("visible")) {
+          containerEl.classList.add("visible");
+        }
+      }
     });
 
     lottieInstances_star.addEventListener("complete", () => {
