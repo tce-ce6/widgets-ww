@@ -1,0 +1,144 @@
+{
+  "questions": [
+    {
+      "question": "Which Balkan country is Europe's youngest nation, gaining independence in 2008?",
+      "options": [
+        "Montenegro",
+        "Kosovo",
+        "North Macedonia",
+        "Slovenia"
+      ],
+      "correctAnswer": "Kosovo",
+      "country": "Kosovo",
+      "capital": "Pristina",
+      "funFact": "Kosovo is Europe's youngest country, declaring independence in 2008!",
+      "didYouKnow": "The town of Prizren hosts one of the oldest medieval festivals in the Balkans."
+    },
+    {
+      "question": "Where was the necktie (cravat) invented?",
+      "options": [
+        "Serbia",
+        "Greece",
+        "Croatia",
+        "Slovenia"
+      ],
+      "correctAnswer": "Croatia",
+      "country": "Croatia",
+      "capital": "Zagreb",
+      "funFact": "The necktie (cravat) originated in Croatia - Croatian soldiers wore them in the 17th century!",
+      "didYouKnow": "Game of Thrones filmed many scenes in Dubrovnik, known as the Pearl of the Adriatic."
+    },
+    {
+      "question": "Which country is the world's leading producer of rose oil?",
+      "options": [
+        "Bulgaria",
+        "Greece",
+        "Serbia",
+        "Albania"
+      ],
+      "correctAnswer": "Bulgaria",
+      "country": "Bulgaria",
+      "capital": "Sofia",
+      "funFact": "Bulgaria is the world's leading producer of rose oil, used in perfumes worldwide!",
+      "didYouKnow": "Bulgarians shake their heads for yes and nod for no - opposite to most countries."
+    },
+    {
+      "question": "Which country is known as the birthplace of democracy and the Olympics?",
+      "options": [
+        "Serbia",
+        "Croatia",
+        "Bulgaria",
+        "Greece"
+      ],
+      "correctAnswer": "Greece",
+      "country": "Greece",
+      "capital": "Athens",
+      "funFact": "Ancient Greece gave us democracy, the Olympics, philosophy, and many scientific principles.",
+      "didYouKnow": "Greece has over 6000 islands, though only about 227 are inhabited."
+    },
+    {
+      "question": "Which landlocked Balkan country borders Greece, Bulgaria, Serbia, Kosovo, and Albania?",
+      "options": [
+        "Slovenia",
+        "North Macedonia",
+        "Kosovo",
+        "Bosnia & Herzegovina"
+      ],
+      "correctAnswer": "North Macedonia",
+      "country": "North Macedonia",
+      "capital": "Skopje",
+      "funFact": "Lake Ohrid is one of Europe's oldest and deepest lakes, over 3 million years old.",
+      "didYouKnow": "North Macedonia is home to Stobi, a famous Roman archaeological site."
+    },
+    {
+      "question": "Which country was part of Yugoslavia until 2006?",
+      "options": [
+        "Croatia",
+        "Bulgaria",
+        "Serbia",
+        "Slovenia"
+      ],
+      "correctAnswer": "Serbia",
+      "country": "Serbia",
+      "capital": "Belgrade",
+      "funFact": "Belgrade has been destroyed and rebuilt 44 times throughout history.",
+      "didYouKnow": "Serbia produces about 30% of the world's raspberries."
+    },
+    {
+      "question": "Which country became independent from the Ottoman Empire in 1912?",
+      "options": [
+        "Montenegro",
+        "Croatia",
+        "Albania",
+        "Slovenia"
+      ],
+      "correctAnswer": "Albania",
+      "country": "Albania",
+      "capital": "Tirana",
+      "funFact": "Albania has over 750000 bunkers built during the communist era.",
+      "didYouKnow": "The Albanian Riviera has some of Europe's most beautiful beaches."
+    },
+    {
+      "question": "Which country championed the UN's creation of World Bee Day due to its strong beekeeping tradition?",
+      "options": [
+        "Slovenia",
+        "Montenegro",
+        "Croatia",
+        "Albania"
+      ],
+      "correctAnswer": "Slovenia",
+      "country": "Slovenia",
+      "capital": "Ljubljana",
+      "funFact": "Slovenia has over 28000 winemakers for a population of only 2 million.",
+      "didYouKnow": "Postojna Cave is one of the world's largest karst cave systems."
+    },
+    {
+      "question": "Which country's name literally means 'Black Mountain'?",
+      "options": [
+        "Slovenia",
+        "Croatia",
+        "Albania",
+        "Montenegro"
+      ],
+      "correctAnswer": "Montenegro",
+      "country": "Montenegro",
+      "capital": "Podgorica",
+      "funFact": "Montenegro means Black Mountain and the country has dramatic mountain landscapes.",
+      "didYouKnow": "The Bay of Kotor is often called Europe's southernmost fjord."
+    },
+    {
+      "question": "Which Balkan country has three main ethnic groups: Bosniaks, Serbs, and Croats?",
+      "options": [
+        "Greece",
+        "Bulgaria",
+        "Bosnia and Herzegovina",
+        "Slovenia"
+      ],
+      "correctAnswer": "Bosnia and Herzegovina",
+      "country": "Bosnia and Herzegovina",
+      "capital": "Sarajevo",
+      "funFact": "The Stari Most bridge in Mostar is a UNESCO heritage site rebuilt after war destruction.",
+      "didYouKnow": "Bosnian coffee culture is a social ritual that can last for hours."
+    }
+  ]
+}
