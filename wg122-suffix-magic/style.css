@@ -290,13 +290,13 @@
 
 #completeWord {
   display: flex;
-  margin-left: 70px;
+  margin-left: 60px;
   margin-bottom: 20px;
 }
 
 #completeWord div {
   width: 300px;
-  height: 180px;
+  height: 200px;
 }
 
 #completeWord #word {
@@ -337,7 +337,7 @@
 }
 
 #completeWord #puzzleSuffix1 {
-  margin-left: -127px;
+  margin-left: -73px;
 }
 
 #completeWord #puzzleSuffix2 {
@@ -349,15 +349,15 @@
   flex-wrap: wrap;
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   justify-content: space-between;
-  row-gap: 10px;
+  row-gap: 0px;
+  max-width: 820px;
 }
 
 #list-suffix li {
-  width: 216px;
-  height: 190px;
-
+  width: 250px;
+  height: 250px;
 }
 
 #list-suffix li span {
@@ -369,7 +369,7 @@
 .wrong-answer {
   /* border: 3px solid red; */
   /* box-shadow: 0 0 12px rgba(255, 0, 0, 0.8); */
-  filter: drop-shadow(3px 0px 8px red);
+  filter: drop-shadow(3px 0px 10px red) !important;
 }
 
 /* Shake animation */

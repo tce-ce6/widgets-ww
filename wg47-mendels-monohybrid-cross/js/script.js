@@ -11,7 +11,8 @@ const WidgetState = {
     f1Placed: { left: false, right: false },
     f1PlacedCards: { left: null, right: null }, // Track dragged cards
     // Original card transforms to revert when resetting
-    originalTransforms: new Map()
+    originalTransforms: new Map(),
+    punnettVisible: false
 };
 
 // Trait Metadata for text replacement
@@ -47,6 +48,8 @@ function cacheUIElements() {
     UI.btnCrossParents = document.getElementById('btn_x5F_crossparents');
     UI.btnSelfCross = document.getElementById('btn_x5F_selfcross');
     UI.btnReset = document.getElementById('btn_x5F_reset');
+    UI.btnPunnett = document.getElementById('btn_x5F_punnett');
+    UI.tspanPunnett = document.getElementById('punnett_toggle_text');
 
     // Stages
     UI.stage1 = document.getElementById('stage1');
@@ -101,6 +104,8 @@ function resetUI() {
     showElement(UI.btnNext);
     hideElement(UI.btnCrossParents);
     hideElement(UI.btnSelfCross);
+    hideElement(UI.btnReset);
+    hideElement(UI.btnPunnett);
 
     // Restore drop zones opacity mapping
     if (UI.dropZoneP1) UI.dropZoneP1.style.opacity = '1';
@@ -158,6 +163,14 @@ function setupEventListeners() {
         UI.btnReset.addEventListener('pointerup', () => {
             resetSimulation();
             resetUI();
+        });
+    }
+
+    if (UI.btnPunnett) {
+        UI.btnPunnett.style.cursor = 'pointer';
+        UI.btnPunnett.addEventListener('pointerup', () => {
+            WidgetState.punnettVisible = !WidgetState.punnettVisible;
+            updatePunnettVisibility();
         });
     }
 }
@@ -231,6 +244,7 @@ function goToStage2() {
     // Toggle Buttons
     hideElement(UI.btnNext);
     showElement(UI.btnCrossParents);
+    showElement(UI.btnReset);
     disableButton(UI.btnCrossParents);
 
     // Show only relevant specific trait card for P Generation
@@ -304,6 +318,11 @@ function goToStage4() {
     const selectedCards = document.getElementById(`Stage4-_Card_${WidgetState.selectedTraitIndex + 1}`);
     if (selectedCards) showElement(selectedCards);
 
+    // Initial state for Punnett values
+    WidgetState.punnettVisible = false;
+    updatePunnettVisibility();
+    showElement(UI.btnPunnett);
+
     // Update Phenotypic / Genotypic Ratio explicitly for the shared Stage 4 overlay
     const stage4TOS = document.getElementById('stage4_x5F_TOS');
     if (stage4TOS) {
@@ -317,6 +336,32 @@ function goToStage4() {
     }
 }
 
+/**
+ * Toggles visibility of the genotype values within the Punnett Square
+ */
+function updatePunnettVisibility() {
+    if (!UI.tspanPunnett) return;
+
+    UI.tspanPunnett.textContent = WidgetState.punnettVisible ? 'Hide Values' : 'Show Values';
+
+    // Find current active Stage 4 card
+    const card = document.getElementById(`Stage4-_Card_${WidgetState.selectedTraitIndex + 1}`);
+    if (!card) return;
+
+    // The Punnett content is typically in a group with id starting with Group_173
+    const punnettContent = card.querySelector('g[id^="Group_173"]');
+    if (!punnettContent) return;
+
+    // Genotypes are the last 4 direct children that contain text tags.
+    const genotypeGroups = Array.from(punnettContent.children).filter(el => {
+        return el.tagName === 'g' && el.querySelector('text');
+    }).slice(-4);
+
+    genotypeGroups.forEach(v => {
+        v.style.display = WidgetState.punnettVisible ? '' : 'none';
+    });
+}
+
 function resetSimulation() {
     WidgetState.currentStage = 1;
     WidgetState.selectedTraitIndex = -1;
@@ -327,6 +372,12 @@ function resetSimulation() {
     // Revert all cards modified transforms
     WidgetState.originalTransforms.forEach((val, elem) => {
         elem.removeAttribute('transform');
+        // Clear transform list explicitly for Chrome/Safari consistency
+        if (elem.transform && elem.transform.baseVal) {
+            while (elem.transform.baseVal.length > 0) {
+                elem.transform.baseVal.removeItem(0);
+            }
+        }
         // Remove pointer events disable attached upon dropping
         elem.style.pointerEvents = 'auto';
     });
@@ -479,13 +530,13 @@ function endDrag(evt) {
     // Collision checks against drop zones
     if (WidgetState.currentStage === 2 && dragType === 'p') {
         if (side === 'left' && checkCollision(activeDrag, UI.dropZoneP1)) {
-            snapToTopLeft(activeDrag, UI.dropZoneP1);
+            snapToCenter(activeDrag, UI.dropZoneP1);
             droppedOnValidZone = true;
             WidgetState.parentPlaced.left = true;
             if (UI.dropZoneP1) UI.dropZoneP1.style.opacity = '0';
         }
         else if (side === 'right' && checkCollision(activeDrag, UI.dropZoneP2)) {
-            snapToTopLeft(activeDrag, UI.dropZoneP2);
+            snapToCenter(activeDrag, UI.dropZoneP2);
             droppedOnValidZone = true;
             WidgetState.parentPlaced.right = true;
             if (UI.dropZoneP2) UI.dropZoneP2.style.opacity = '0';
@@ -497,14 +548,14 @@ function endDrag(evt) {
         const isAlreadyInRight = WidgetState.f1PlacedCards.right === activeDrag;
 
         if (checkCollision(activeDrag, UI.dropZoneF1_1) && !WidgetState.f1Placed.left && !isAlreadyInRight) {
-            snapToTopLeft(activeDrag, UI.dropZoneF1_1);
+            snapToCenter(activeDrag, UI.dropZoneF1_1, 0.8);
             droppedOnValidZone = true;
             WidgetState.f1Placed.left = true;
             WidgetState.f1PlacedCards.left = activeDrag;
             if (UI.dropZoneF1_1) UI.dropZoneF1_1.style.opacity = '0';
         }
         else if (checkCollision(activeDrag, UI.dropZoneF1_2) && !WidgetState.f1Placed.right && !isAlreadyInLeft) {
-            snapToTopLeft(activeDrag, UI.dropZoneF1_2);
+            snapToCenter(activeDrag, UI.dropZoneF1_2, 0.8);
             droppedOnValidZone = true;
             WidgetState.f1Placed.right = true;
             WidgetState.f1PlacedCards.right = activeDrag;
@@ -547,22 +598,42 @@ function checkCollision(element, targetArea) {
     );
 }
 
-function snapToTopLeft(elem, target) {
-    // Align by comparing center bounding boxes then assigning transformation 
-    // It handles scale variations robustly.
-    const svgCTM = UI.svg.getScreenCTM();
+function snapToCenter(elem, target, scale = 1.0) {
+    // 1. Ensure the element is draggable and has the scale transform if needed
+    let scaleTransform = null;
+    for (let i = 0; i < elem.transform.baseVal.length; i++) {
+        const t = elem.transform.baseVal.getItem(i);
+        if (t.type === SVGTransform.SVG_TRANSFORM_SCALE) {
+            scaleTransform = t;
+            break;
+        }
+    }
 
+    if (!scaleTransform && scale !== 1.0) {
+        scaleTransform = UI.svg.createSVGTransform();
+        elem.transform.baseVal.appendItem(scaleTransform);
+    }
+
+    // Apply the scale first as it affects the bounding box calculation for centering
+    if (scaleTransform) {
+        scaleTransform.setScale(scale, scale);
+    }
+
+    // 2. Perform centering math using screen coordinates mapped back to SVG space
+    const svgCTM = UI.svg.getScreenCTM();
     const cBox = elem.getBoundingClientRect();
     const dBox = target.getBoundingClientRect();
 
-    // Adjust current translation to center the card on drop zone
-    const diffX = ((dBox.left + (dBox.width / 2)) - (cBox.left + (cBox.width / 2))) / svgCTM.a;
-    const diffY = ((dBox.top + (dBox.height / 2)) - (cBox.top + (cBox.height / 2))) / svgCTM.d;
+    // diff is calculated based on current (possibly scaled) bounding box
+    const diffX = ((dBox.left + dBox.width / 2) - (cBox.left + (cBox.width / 2))) / svgCTM.a;
+    const diffY = ((dBox.top + dBox.height / 2) - (cBox.top + (cBox.height / 2))) / svgCTM.d;
 
-    const currentX = elem.transform.baseVal.getItem(0).matrix.e;
-    const currentY = elem.transform.baseVal.getItem(0).matrix.f;
+    // Use translate transform (at index 0) for snapped placement
+    let translateTransform = elem.transform.baseVal.getItem(0);
+    const currentX = translateTransform.matrix.e;
+    const currentY = translateTransform.matrix.f;
 
-    elem.transform.baseVal.getItem(0).setTranslate(currentX + diffX, currentY + diffY);
+    translateTransform.setTranslate(currentX + diffX, currentY + diffY);
 }
 
 function evaluateProgress() {
