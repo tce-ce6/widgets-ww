@@ -437,6 +437,40 @@ const IMAGES = [
 
 //Playing Lotties
 
+function playCompleteLottie() {
+  const container = document.getElementById('completion-lottie');
+
+  if (!container) {
+    console.warn(`Container completion-lottie not found`);
+    return;
+  }
+
+  const animationPath = `./assets/Images/JSON/celebration.json`;
+
+  // Clear previous animation
+  container.innerHTML = '';
+  container.style.display = 'block';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: animationPath,
+    rendererSettings: {
+      hideOnTransparent: false,
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Ensure totalFrames is available
+  anim.addEventListener('DOMLoaded', () => {
+    anim.addEventListener('complete', () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+    });
+  });
+}
+
 function playCorrectAnswerLottie(objectName) {
 
   const containerId = `${objectName}-${wordIndex}`;
@@ -597,6 +631,20 @@ function showExampleSentences(wordObj) {
   popup.setAttribute('aria-hidden', 'false');
 }
 
+function updateStarsDisplay(totalExpected, completedCount) {
+  for (let i = 1; i <= 5; i++) {
+    const star = document.getElementById(`star-${i}`);
+    if (!star) continue;
+
+    if (i <= totalExpected) {
+      star.style.display = 'block';
+      star.setAttribute('opacity', i <= completedCount ? '1' : '0.5');
+    } else {
+      star.style.display = 'none';
+    }
+  }
+}
+
 function showAllAnswers(wordObj) {
   if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
 
@@ -604,6 +652,8 @@ function showAllAnswers(wordObj) {
 
   const answers = wordObj.details.answer;
   const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
+  updateStarsDisplay(answers.length, answers.length);
 
   const assetMap = {
     tree: './Assets/tree-1.svg',
@@ -749,9 +799,17 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers = [];
     wordIndex = 0;
 
+    updateStarsDisplay(answers.length, 0);
+
+    const lottieContainerFO = document.getElementById('lottie-container');
+    if (lottieContainerFO) lottieContainerFO.style.display = 'none';
+    const completionLottie = document.getElementById('completion-lottie');
+    if (completionLottie) completionLottie.innerHTML = '';
+
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
+    showAnswerBtn.disabled = false;
     // reset word slots
     wordSlots.forEach(ws => {
       if (ws) ws.textContent = "";
@@ -844,15 +902,69 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSuffixes.push(suffixText);
     handleSmoothMove(clickedItem, emptySlot);
 
-    // Find the exact matching final answer by checking the suffix index
-    // This handles English spelling rules automatically (e.g. create + tion = creation)
-    const suffixIndex = correctSuffixes.indexOf(suffixText);
-    const combined = suffixIndex !== -1 ? answers[suffixIndex] : wordSpan.textContent.trim() + selectedSuffixes.join("");
+    const rootWord = wordSpan.textContent.trim();
+    const suffixString = selectedSuffixes.join("");
+    const targetLength = rootWord.length + suffixString.length;
 
-    // must be a valid answer and not already completed
-    if (!answers.includes(combined) || completedAnswers.includes(combined)) return;
+    // Find the answer that ends with the compiled suffixString and has length matching within 2 characters.
+    let combined = answers.find(a => a.endsWith(suffixString) && Math.abs(a.length - targetLength) <= 2);
+
+    // Fallback if not found 
+    if (!combined) {
+      combined = answers.find(a => a === rootWord + suffixString);
+    }
+
+    // If we didn't find any valid answer combination
+    if (!combined || !answers.includes(combined)) {
+      // alert("Wrong word formed");
+      clickedItem.classList.add("wrong-answer", "shake");
+      setTimeout(() => {
+        clickedItem.classList.remove("wrong-answer", "shake");
+      }, 500);
+
+      // Revert the UI move
+      const emptySlot = slots.find(s => s.dataset.full === "true" && s.querySelector('span')?.textContent === suffixText);
+      if (emptySlot) {
+        emptySlot.style.display = "none";
+        emptySlot.dataset.full = "false";
+        const clone = emptySlot.querySelector(".centerTxt-wrap");
+        if (clone) clone.remove();
+      }
+      clickedItem.style.opacity = "1";
+      clickedItem.style.pointerEvents = "auto";
+      selectedSuffixes.pop();
+      return;
+    }
+
+    // If already completed this exact answer, show alert
+    if (completedAnswers.includes(combined)) {
+      //alert(`You have already formed "${combined}". Try making a new word!`);
+      const popUp = document.getElementById("wordAlertPopUp");
+      popUp.style.display = "block";
+      setTimeout(() => {
+        popUp.style.display = "none";
+      }, 2000);
+      const canExtendRemaining = answers.some(a => a.startsWith(combined) && a !== combined && !completedAnswers.includes(a));
+
+      if (!canExtendRemaining) {
+        // Revert the UI move because it cannot form any new word
+        const emptySlot = slots.find(s => s.dataset.full === "true" && s.querySelector('span')?.textContent === suffixText);
+        if (emptySlot) {
+          emptySlot.style.display = "none";
+          emptySlot.dataset.full = "false";
+          const clone = emptySlot.querySelector(".centerTxt-wrap");
+          if (clone) clone.remove();
+        }
+        clickedItem.style.opacity = "1";
+        clickedItem.style.pointerEvents = "auto";
+        selectedSuffixes.pop();
+      }
+      return;
+    }
 
     completedAnswers.push(combined);
+    updateStarsDisplay(answers.length, completedAnswers.length);
+
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
@@ -915,6 +1027,24 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           finalWord.style.display = "none";
         }, 1000);
+
+        // Check if there are still any answers left that could be formed with the CURRENT suffix that was just placed
+        const remainingAnswers = answers.filter(a => !completedAnswers.includes(a));
+        const canStillUseSuffix = remainingAnswers.some(a => {
+          // We approximate checking if the suffix is used. A more robust way could be derived if needed.
+          // E.g., if one remaining answer is "harmlessly", and suffix was "less", does remaining contain it?
+
+          // Based on your data structure, one root e.g. "harm" and correct suffixes ["ful", "ly", "less"]. 
+          // If we just clicked "less" (forming harmless), is there another answer that uses "less"? 
+          // Yes, "harmlessly" uses "less" implicitly (harm + less + ly).
+          // Alternatively we can just check if any remaining answer includes this text
+          return a.includes(suffixText);
+        });
+
+        if (canStillUseSuffix) {
+          clickedItem.style.opacity = "1";
+          clickedItem.style.pointerEvents = "auto";
+        }
       }
       // LAST answer → lock puzzle
       else {
@@ -922,21 +1052,25 @@ document.addEventListener("DOMContentLoaded", () => {
           li.style.pointerEvents = "none";
           li.style.opacity = "0.3";
           showExample.style.display = 'block';
+          showAnswerBtn.disabled = true;
         });
+
+        const lottieContainerFO = document.getElementById('lottie-container');
+        if (lottieContainerFO) lottieContainerFO.style.display = 'block';
+        setTimeout(() => {
+          playCompleteLottie();
+        }, 100);
       }
 
-      // clear slots only if cannot extend
-      if (!canExtend) {
-        setTimeout(() => {
-          slots.forEach(slot => {
-            slot.style.display = "none";
-            slot.dataset.full = "false";
-            const clone = slot.querySelector(".centerTxt-wrap");
-            if (clone) clone.remove();
-          });
-          selectedSuffixes = [];
-        }, 1000);
-      }
+      setTimeout(() => {
+        slots.forEach(slot => {
+          slot.style.display = "none";
+          slot.dataset.full = "false";
+          const clone = slot.querySelector(".centerTxt-wrap");
+          if (clone) clone.remove();
+        });
+        selectedSuffixes = [];
+      }, 1000);
 
     }, 1000);
   });

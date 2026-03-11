@@ -201,12 +201,15 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    playAudio("wrong");
+
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
+
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    playAudio("correct");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
+
   });
 }
 
@@ -352,7 +355,7 @@ function playLottieAnimation(bandGroup) {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         parentEl.style.display = "none";
-        // resetFeedbackVisuals();
+        resetFeedbackVisuals();
         // if (bandGroup === "INCORRECT") {
         //   document.getElementById("audio_button_1").style.display = "block";
         //   document.getElementById("audio_button_2").style.display = "block";
