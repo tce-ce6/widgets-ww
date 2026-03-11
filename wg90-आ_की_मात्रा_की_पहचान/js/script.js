@@ -385,19 +385,19 @@ function playLottieAnimation(bandGroup) {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         resetFeedbackVisuals();
-        if (bandGroup === "INCORRECT") {
-          document.getElementById("audio_button_1").style.display = "block";
-          document.getElementById("audio_button_2").style.display = "block";
-          audio_button_1 = false;
-          audio_button_2 = false;
-          age_badhe_button = false;
-          nextbutton();
-          hideAndShowAudioButtons("none");
-          let i_text = document.getElementById("i_text_1");
-          const tspans = i_text.querySelector("p");
-          tspans.innerHTML =
-            "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
-        }
+        // if (bandGroup === "INCORRECT") {
+        //   document.getElementById("audio_button_1").style.display = "block";
+        //   document.getElementById("audio_button_2").style.display = "block";
+        //   audio_button_1 = false;
+        //   audio_button_2 = false;
+        //   age_badhe_button = false;
+        //   nextbutton();
+        //   hideAndShowAudioButtons("none");
+        //   let i_text = document.getElementById("i_text_1");
+        //   const tspans = i_text.querySelector("p");
+        //   tspans.innerHTML =
+        //     "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+        // }
 
         if (lottieInstances) {
           lottieInstances.destroy();
