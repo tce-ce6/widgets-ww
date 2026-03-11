@@ -16,6 +16,11 @@ svg * {
   padding: 0;
   margin: 0;
   background-color: #fff !important;
+  overflow: hidden;
+}
+
+#idiom-wrapper html {
+  overflow: hidden;
 }
 
 #idiom-wrapper .container {
@@ -24,6 +29,7 @@ svg * {
   width: 100vw;
   position: relative;
   user-select: none !important;
+  overflow: hidden;
 }
 
 #idiom-wrapper ul {
