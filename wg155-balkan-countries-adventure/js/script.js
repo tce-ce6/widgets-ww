@@ -2,6 +2,7 @@
  * Global variables for the application state
  */
 const AppState = {
+    
     elements: {
         nextBtn: null,
         step1: null,
@@ -11,6 +12,19 @@ const AppState = {
         flagsWrapper: null,
         iText2: null,
         btnQuiz: null,
+        questionContainer: null,
+        questionTxt: null,
+        options: [],
+        correctAnswerPopup: null,
+        correctAnswerBody: null,
+        factBitePopup: null,
+        countryTitle: null,
+        capitalTxt: null,
+        funFactTxt: null,
+        didYouKnowTxt: null,
+        lottieWrapper: null,
+        correctLottie: null,
+        tryAgainPopup: null,
         countryMaps: {}
     },
     mapState: {
@@ -22,7 +36,10 @@ const AppState = {
         currentScale: 1
     },
     data: null,
-    currentCountryData: null
+    currentCountryData: null,
+    selectedCountry: null,
+    currentQuestionIndex: 0,
+    wrongMapAttempts: 0
 };
 
 const COUNTRY_IDS = [
@@ -30,10 +47,252 @@ const COUNTRY_IDS = [
     'bosnia-and-herzegovina', 'greece', 'montenegro', 'albania', 'slovenia'
 ];
 
+function initCountryBoxes() {
+    COUNTRY_IDS.forEach(id => {
+        const box = document.getElementById(id);
+
+        if (!box) return;
+
+        box.addEventListener('click', () => {
+
+            // store selected country
+            AppState.selectedCountry = id;
+
+            // highlight selected box (optional)
+            document.querySelectorAll('.country-box').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            box.classList.add('selected');
+        });
+    });
+}
+
+function initMapDropCheck() {
+
+    COUNTRY_IDS.forEach(id => {
+
+        const mapCountry = document.getElementById(id + '-map');
+
+        if (!mapCountry) return;
+
+        mapCountry.addEventListener('click', () => {
+
+            if (!AppState.selectedCountry) return;
+
+            // CORRECT MATCH
+if (AppState.selectedCountry === id) {
+
+    if (AppState.elements.correctAnswerPopup) {
+        AppState.elements.correctAnswerPopup.style.display = 'block';
+    }
+
+    const chooseFlagPopup = document.getElementById('choose-flag-popup');
+    if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+
+    // show lottie wrapper
+    if (AppState.elements.lottieWrapper) {
+        AppState.elements.lottieWrapper.style.display = 'block';
+    }
+
+    // play lottie animation
+    if (AppState.elements.correctLottie && typeof lottie !== 'undefined') {
+        AppState.elements.correctLottie.innerHTML = '';
+        lottie.loadAnimation({
+            container: AppState.elements.correctLottie,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: './lottie/correct.json'
+        });
+    }
+
+    // show navigation buttons
+    const btnNext = document.getElementById('btn-next');
+    const btnBack = document.getElementById('btn-back');
+
+    if (btnNext) btnNext.style.display = 'block';
+    if (btnBack) btnBack.style.display = 'block';
+
+    placeFlagOnMap(id);
+}
+            // WRONG MATCH
+            else {
+
+    AppState.wrongMapAttempts++;
+
+    if (AppState.elements.tryAgainPopup) {
+        AppState.elements.tryAgainPopup.style.display = 'block';
+
+        setTimeout(() => {
+            AppState.elements.tryAgainPopup.style.display = 'none';
+        }, 2000);
+    }
+
+    // show answer button after 2 wrong attempts
+    if (AppState.wrongMapAttempts >= 2) {
+        const btnShowAnswer = document.getElementById('btn-show-answer');
+        if (btnShowAnswer) btnShowAnswer.style.display = 'block';
+    }
+
+}
+
+        });
+
+    });
+
+}
+
+function resetStepTwo() {
+    AppState.wrongMapAttempts = 0;
+
+const showAnswerBtn = document.getElementById('btn-show-answer');
+if (showAnswerBtn) showAnswerBtn.style.display = 'none';
+    // reset selected country
+    AppState.selectedCountry = null;
+
+    // hide popups
+    const chooseFlagPopup = document.getElementById('choose-flag-popup');
+    if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+
+    if (AppState.elements.correctAnswerPopup)
+        AppState.elements.correctAnswerPopup.style.display = 'none';
+
+    if (AppState.elements.lottieWrapper)
+        AppState.elements.lottieWrapper.style.display = 'none';
+
+    // hide navigation buttons
+    const btnNext = document.getElementById('btn-next');
+    const btnBack = document.getElementById('btn-back');
+
+    if (btnNext) btnNext.style.display = 'none';
+    if (btnBack) btnBack.style.display = 'none';
+
+    // reset flags
+    COUNTRY_IDS.forEach(id => {
+        const flag = document.getElementById(id + '-flag');
+        if (flag) flag.style.display = 'none';
+    });
+
+    // enable flags wrapper again
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.remove('disabled');
+    }
+
+    // remove selected highlight
+    document.querySelectorAll('.country-box').forEach(el => {
+        el.classList.remove('selected');
+    });
+
+}
+
+function handleNextQuestion() {
+
+    const questions = AppState.data.questions;
+
+    // move to next question
+    AppState.currentQuestionIndex++;
+
+    if (AppState.currentQuestionIndex >= questions.length) {
+        AppState.currentQuestionIndex = 0;
+    }
+
+    const data = questions[AppState.currentQuestionIndex];
+    AppState.currentCountryData = data;
+
+    // reset step-2 UI
+    resetStepTwo();
+if (AppState.elements.questionContainer) {
+    AppState.elements.questionContainer.style.display = 'none';
+}
+    // hide quiz UI
+attachOptionListeners();
+
+if (AppState.elements.iText2) {
+    AppState.elements.iText2.style.display = 'none';
+}
+
+if (AppState.elements.btnQuiz) {
+    AppState.elements.btnQuiz.style.display = 'none';
+}
+
+    // update question text
+    if (AppState.elements.questionTxt) {
+        AppState.elements.questionTxt.textContent = 'Q. ' + data.question;
+    }
+
+    // update options
+    const labels = ['A', 'B', 'C', 'D'];
+
+    AppState.elements.options.forEach((li, index) => {
+
+        if (!li) return;
+
+        // remove previous state classes
+        li.classList.remove('correct', 'wrong', 'disabled');
+
+        const labelSpan = li.querySelector('.label');
+
+        if (labelSpan) {
+
+            labelSpan.textContent = labels[index];
+
+            const textNodes = [...li.childNodes].filter(
+                n => n.nodeType === Node.TEXT_NODE
+            );
+
+            if (textNodes.length > 0) {
+                textNodes[0].textContent = data.options[index];
+            } else {
+                li.appendChild(document.createTextNode(data.options[index]));
+            }
+
+        } else {
+
+            li.textContent = labels[index] + ' ' + data.options[index];
+
+        }
+
+    });
+
+    // reattach option listeners
+    attachOptionListeners();
+}
+
+function placeFlagOnMap(countryId) {
+
+    const mapContainer = document.getElementById('map-container');
+    const mapGroup = document.getElementById(countryId + '-map');
+    const flag = document.getElementById(countryId + '-flag');
+
+    if (!mapGroup || !flag || !mapContainer) return;
+
+    // Move selected map to the top (end of container)
+    mapContainer.appendChild(mapGroup);
+
+    // Make sure flag is visible
+    flag.style.display = 'block';
+
+    // Append flag inside map group
+    mapGroup.appendChild(flag);
+
+    // Center flag inside map
+    const mapBox = mapGroup.getBBox();
+    const flagBox = flag.getBBox();
+
+    const x = mapBox.x + (mapBox.width / 2) - (flagBox.width / 2);
+    const y = mapBox.y + (mapBox.height / 2) - (flagBox.height / 2);
+
+    flag.setAttribute(
+        "transform",
+        `translate(${x - flagBox.x}, ${y - flagBox.y})`
+    );
+}
 /**
  * Initialize DOM element references
  */
 function initElements() {
+    
     AppState.elements.nextBtn = document.getElementById('next-btn');
     AppState.elements.step1 = document.getElementById('step-1');
     AppState.elements.step2 = document.getElementById('step-2');
@@ -43,9 +302,31 @@ function initElements() {
     AppState.elements.flagsWrapper = document.getElementById('flags-wrapper');
     AppState.elements.iText2 = document.getElementById('i-text2');
     AppState.elements.btnQuiz = document.getElementById('btn-quiz');
+    AppState.elements.questionContainer = document.getElementById('question-container');
+    AppState.elements.questionTxt = document.getElementById('question-txt');
+    // Collect the 4 option <li> elements
+    AppState.elements.options = [
+        document.getElementById('option-1'),
+        document.getElementById('option-2'),
+        document.getElementById('option-3'),
+        document.getElementById('option-4')
+    ];
+    // Popup elements
+    AppState.elements.correctAnswerPopup = document.getElementById('correct-answer-popup');
+    AppState.elements.correctAnswerBody  = document.getElementById('correct-answer-body');
+    AppState.elements.factBitePopup      = document.getElementById('fact-bite-popup');
+    AppState.elements.countryTitle       = document.getElementById('country-title');
+    AppState.elements.capitalTxt         = document.getElementById('capital-txt');
+    AppState.elements.funFactTxt         = document.getElementById('funFact-txt');
+    AppState.elements.didYouKnowTxt      = document.getElementById('didYouKnow-txt');
+    // Lottie elements
+    AppState.elements.lottieWrapper      = document.getElementById('lottie-wrapper');
+    AppState.elements.correctLottie      = document.getElementById('correct-lottie');
+    // Wrong answer popup
+    AppState.elements.tryAgainPopup      = document.getElementById('try-again-popup');
     
     COUNTRY_IDS.forEach(id => {
-        AppState.elements.countryMaps[id] = document.getElementById(`${id}-map`);
+        AppState.elements.countryMaps[id] = document.getElementById(id);
     });
 }
 
@@ -195,15 +476,113 @@ function handleCountryClick(countryId) {
  * Attach event listeners to elements
  */
 function attachEventListeners() {
+    const btnShowAnswer = document.getElementById('btn-show-answer');
+
+if (btnShowAnswer) {
+
+    btnShowAnswer.addEventListener('click', () => {
+
+        if (!AppState.selectedCountry) return;
+
+        // place correct flag
+        placeFlagOnMap(AppState.selectedCountry);
+
+        // show correct popup
+        if (AppState.elements.correctAnswerPopup) {
+            AppState.elements.correctAnswerPopup.style.display = 'block';
+        }
+
+        // hide choose flag popup
+        const chooseFlagPopup = document.getElementById('choose-flag-popup');
+        if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+
+        btnShowAnswer.style.display = 'none';
+
+        const btnNext = document.getElementById('btn-next');
+        const btnBack = document.getElementById('btn-back');
+
+        if (btnNext) btnNext.style.display = 'block';
+        if (btnBack) btnBack.style.display = 'block';
+
+    });
+
+}
+if (AppState.elements.questionContainer) {
+
+    AppState.elements.questionContainer.addEventListener('click', (e) => {
+
+        // only hide if user clicks the container background
+        if (e.target !== AppState.elements.questionContainer) return;
+
+        // hide question container
+        AppState.elements.questionContainer.style.display = 'none';
+
+        // reset selected country
+        AppState.selectedCountry = null;
+
+        // remove highlight from country boxes
+        document.querySelectorAll('.country-box').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // enable flag selection again
+        if (AppState.elements.flagsWrapper) {
+            AppState.elements.flagsWrapper.classList.remove('disabled');
+        }
+
+    });
+
+}
+    const btnNext = document.getElementById('btn-next');
+if (btnNext) {
+    btnNext.addEventListener('click', handleNextQuestion);
+}
     if (AppState.elements.nextBtn) {
         AppState.elements.nextBtn.addEventListener('click', handleNextBtnClick);
+    }
+    
+    if (AppState.elements.btnQuiz) {
+        AppState.elements.btnQuiz.addEventListener('click', handleBtnQuizClick);
     }
     
     COUNTRY_IDS.forEach(id => {
         const element = AppState.elements.countryMaps[id];
         if (element) {
             element.style.cursor = 'pointer';
-            element.addEventListener('click', () => handleCountryClick(id));
+element.addEventListener('click', () => {
+
+    // Hide result popups from previous round
+    if (AppState.elements.correctAnswerPopup) {
+        AppState.elements.correctAnswerPopup.style.display = 'none';
+        const chooseFlagPopup = document.getElementById('choose-flag-popup');
+        chooseFlagPopup.style.display = 'none';
+    }
+
+    if (AppState.elements.factBitePopup) {
+        AppState.elements.factBitePopup.style.display = 'none';
+    }
+
+    // If quiz is already open (user finished quiz and clicks another country)
+    if (AppState.elements.questionContainer &&
+        AppState.elements.questionContainer.style.display === 'block') {
+
+        if (AppState.elements.iText2) {
+            AppState.elements.iText2.style.display = 'none';
+        }
+
+        if (AppState.elements.btnQuiz) {
+            AppState.elements.btnQuiz.style.display = 'none';
+        }
+
+        if (AppState.elements.flagsWrapper) {
+            AppState.elements.flagsWrapper.classList.remove('disabled');
+        }
+
+        return; // ❗ stop here, don't run handleCountryClick
+    }
+
+    handleCountryClick(id);
+});
         }
     });
 }
@@ -219,12 +598,204 @@ function handleNextBtnClick() {
 }
 
 /**
+ * Handle the click event for the Quiz button
+ * Hides #i-text2 and #btn-quiz, shows #question-container,
+ * and fills in the question + options from the selected country data.
+ */
+function handleBtnQuizClick() {
+    const { iText2, btnQuiz, questionContainer, questionTxt, options } = AppState.elements;
+    const data = AppState.currentCountryData;
+
+    // Hide the info text and quiz button
+    if (iText2) iText2.style.display = 'none';
+    if (btnQuiz) btnQuiz.style.display = 'none';
+
+    // Show the question container
+    if (questionContainer) questionContainer.style.display = 'block';
+
+    // Populate question text
+    if (questionTxt && data) {
+        questionTxt.textContent = 'Q. ' + data.question;
+    }
+
+    // Populate answer options (A, B, C, D)
+    if (data && data.options) {
+        const labels = ['A', 'B', 'C', 'D'];
+        options.forEach((li, index) => {
+            if (li && data.options[index] !== undefined) {
+                // Preserve the label <span> and update only the option text
+                const labelSpan = li.querySelector('.label');
+                if (labelSpan) {
+                    labelSpan.textContent = labels[index];
+                    // Set the text node after the span
+                    const textNodes = [...li.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
+                    if (textNodes.length > 0) {
+                        textNodes[0].textContent = data.options[index];
+                    } else {
+                        li.appendChild(document.createTextNode(data.options[index]));
+                    }
+                } else {
+                    li.textContent = labels[index] + ' ' + data.options[index];
+                }
+            }
+        });
+    }
+
+    // Attach click listeners to options now that they are populated
+    attachOptionListeners();
+}
+
+/**
+ * Attach click listeners to the 4 option <li> elements.
+ * Detects correct answer, adds .correct class, and shows popups.
+ */
+function attachOptionListeners() {
+    const { options, correctAnswerPopup, correctAnswerBody, factBitePopup, factBiteText } = AppState.elements;
+
+    options.forEach(li => {
+        if (!li) return;
+        // Clone to remove any previous listeners
+        const fresh = li.cloneNode(true);
+        li.parentNode.replaceChild(fresh, li);
+    });
+
+    // Re-query after clone
+    AppState.elements.options = [
+        document.getElementById('option-1'),
+        document.getElementById('option-2'),
+        document.getElementById('option-3'),
+        document.getElementById('option-4')
+    ];
+
+    AppState.elements.options.forEach(li => {
+        if (!li) return;
+        li.addEventListener('click', () => handleOptionClick(li));
+    });
+}
+
+/**
+ * Handle option click: check if correct, apply .correct/.wrong class, show/hide popups.
+ */
+function handleOptionClick(li) {
+    const data = AppState.currentCountryData;
+    if (!data) return;
+
+    // Get the chosen option text (text node after the label span)
+    const labelSpan = li.querySelector('.label');
+    let chosenText = '';
+    if (labelSpan) {
+        const textNodes = [...li.childNodes].filter(n => n.nodeType === Node.TEXT_NODE);
+        chosenText = textNodes.length > 0 ? textNodes[0].textContent.trim() : li.textContent.replace(labelSpan.textContent, '').trim();
+    } else {
+        chosenText = li.textContent.trim();
+    }
+
+    const isCorrect = chosenText === data.correctAnswer;
+    const { correctAnswerPopup, correctAnswerBody,
+            factBitePopup, countryTitle, capitalTxt, funFactTxt, didYouKnowTxt,
+            lottieWrapper, correctLottie, tryAgainPopup } = AppState.elements;
+
+    if (isCorrect) {
+        // Highlight the correct option
+        li.classList.add('correct');
+
+        // Disable all options to prevent further clicks
+        AppState.elements.options.forEach(opt => {
+            if (opt) opt.classList.add('disabled');
+        });
+
+        // Re-enable the flags wrapper
+        if (AppState.elements.flagsWrapper) {
+            AppState.elements.flagsWrapper.classList.remove('disabled');
+        }
+
+        const chooseFlagPopup = document.getElementById('choose-flag-popup');
+        if (chooseFlagPopup) {
+            chooseFlagPopup.style.display = 'block';
+        }
+
+        // Hide try-again popup if it was visible from a previous wrong attempt
+        if (tryAgainPopup) tryAgainPopup.style.display = 'none';
+
+        // Show correct-answer popup
+        // if (correctAnswerPopup) correctAnswerPopup.style.display = 'block';
+        if (correctAnswerBody)  correctAnswerBody.textContent = data.funFact || '';
+
+        // Show fact-bite popup and fill all fields
+        if (factBitePopup)  factBitePopup.style.display = 'block';
+        if (countryTitle)   countryTitle.textContent   = data.country    || '';
+        if (capitalTxt)     capitalTxt.textContent     = data.capital    || '';
+        if (funFactTxt)     funFactTxt.textContent     = data.funFact    || '';
+        if (didYouKnowTxt)  didYouKnowTxt.textContent  = data.didYouKnow || '';
+
+        // Show lottie wrapper and play correct.json animation
+        if (lottieWrapper) lottieWrapper.style.display = 'block';
+        if (correctLottie && typeof lottie !== 'undefined') {
+            correctLottie.innerHTML = ''; // clear any previous animation
+            lottie.loadAnimation({
+                container: correctLottie,
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: './lottie/correct.json'
+            });
+        }
+    } else {
+        // Wrong answer — add .wrong class and show try-again popup
+        li.classList.add('wrong');
+        if (tryAgainPopup) {
+            tryAgainPopup.style.display = 'block';
+            // Auto-hide after 2 seconds
+            setTimeout(() => {
+                tryAgainPopup.style.display = 'none';
+            }, 2000);
+        }
+    }
+}
+function initLayerWrongClicks() {
+
+    for (let i = 1; i <= 53; i++) {
+
+        const layer = document.getElementById('layer-' + i);
+
+        if (!layer) continue;
+
+        layer.addEventListener('click', () => {
+
+            if (!AppState.selectedCountry) return;
+
+            AppState.wrongMapAttempts++;
+
+            if (AppState.elements.tryAgainPopup) {
+                AppState.elements.tryAgainPopup.style.display = 'block';
+
+                setTimeout(() => {
+                    AppState.elements.tryAgainPopup.style.display = 'none';
+                }, 2000);
+            }
+
+            if (AppState.wrongMapAttempts >= 2) {
+                const btnShowAnswer = document.getElementById('btn-show-answer');
+                if (btnShowAnswer) btnShowAnswer.style.display = 'block';
+            }
+
+        });
+
+    }
+
+}
+
+/**
  * Initialize the widget
  */
 async function init() {
     await loadData();
     initElements();
     attachEventListeners();
+    initCountryBoxes();
+    initMapDropCheck();
+        initLayerWrongClicks();   // ✅ ADD THIS
+
     initMapPanAndClip();
 }
 
