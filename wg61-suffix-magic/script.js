@@ -437,6 +437,40 @@ const IMAGES = [
 
 //Playing Lotties
 
+function playCompleteLottie() {
+  const container = document.getElementById('completion-lottie');
+
+  if (!container) {
+    console.warn(`Container completion-lottie not found`);
+    return;
+  }
+
+  const animationPath = `./assets/Images/JSON/celebration.json`;
+
+  // Clear previous animation
+  container.innerHTML = '';
+  container.style.display = 'block';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: animationPath,
+    rendererSettings: {
+      hideOnTransparent: false,
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Ensure totalFrames is available
+  anim.addEventListener('DOMLoaded', () => {
+    anim.addEventListener('complete', () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+    });
+  });
+}
+
 function playCorrectAnswerLottie(objectName) {
 
   const containerId = `${objectName}-${wordIndex}`;
@@ -597,6 +631,20 @@ function showExampleSentences(wordObj) {
   popup.setAttribute('aria-hidden', 'false');
 }
 
+function updateStarsDisplay(totalExpected, completedCount) {
+  for (let i = 1; i <= 5; i++) {
+    const star = document.getElementById(`star-${i}`);
+    if (!star) continue;
+
+    if (i <= totalExpected) {
+      star.style.display = 'block';
+      star.setAttribute('opacity', i <= completedCount ? '1' : '0.5');
+    } else {
+      star.style.display = 'none';
+    }
+  }
+}
+
 function showAllAnswers(wordObj) {
   if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
 
@@ -604,6 +652,8 @@ function showAllAnswers(wordObj) {
 
   const answers = wordObj.details.answer;
   const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
+  updateStarsDisplay(answers.length, answers.length);
 
   const assetMap = {
     tree: './Assets/tree-1.svg',
@@ -749,9 +799,17 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers = [];
     wordIndex = 0;
 
+    updateStarsDisplay(answers.length, 0);
+
+    const lottieContainerFO = document.getElementById('lottie-container');
+    if (lottieContainerFO) lottieContainerFO.style.display = 'none';
+    const completionLottie = document.getElementById('completion-lottie');
+    if (completionLottie) completionLottie.innerHTML = '';
+
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
+    showAnswerBtn.disabled = false;
     // reset word slots
     wordSlots.forEach(ws => {
       if (ws) ws.textContent = "";
@@ -885,7 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
       popUp.style.display = "block";
       setTimeout(() => {
         popUp.style.display = "none";
-      }, 1000);
+      }, 2000);
       const canExtendRemaining = answers.some(a => a.startsWith(combined) && a !== combined && !completedAnswers.includes(a));
 
       if (!canExtendRemaining) {
@@ -905,6 +963,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     completedAnswers.push(combined);
+    updateStarsDisplay(answers.length, completedAnswers.length);
+
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
@@ -992,7 +1052,14 @@ document.addEventListener("DOMContentLoaded", () => {
           li.style.pointerEvents = "none";
           li.style.opacity = "0.3";
           showExample.style.display = 'block';
+          showAnswerBtn.disabled = true;
         });
+
+        const lottieContainerFO = document.getElementById('lottie-container');
+        if (lottieContainerFO) lottieContainerFO.style.display = 'block';
+        setTimeout(() => {
+          playCompleteLottie();
+        }, 100);
       }
 
       setTimeout(() => {

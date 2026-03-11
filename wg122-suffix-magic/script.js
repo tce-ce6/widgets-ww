@@ -295,12 +295,6 @@ const suffix3 = document.getElementById('suffix3');
 const suffix4 = document.getElementById('suffix4');
 const suffix5 = document.getElementById('suffix5');
 const suffix6 = document.getElementById('suffix6');
-// const suffix7 = document.getElementById('suffix7');
-// const suffix8 = document.getElementById('suffix8');
-// const suffix9 = document.getElementById('suffix9');
-// const suffix10 = document.getElementById('suffix10');
-// const suffix11 = document.getElementById('suffix11');
-// const suffix12 = document.getElementById('suffix12');
 const finalWord = document.getElementById('final-word');
 const lottieWord = document.getElementById('lottie-word');
 const exampleSentence = document.getElementById('exampleSentence');
@@ -691,6 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
+    showAnswerBtn.disabled = false;
     // reset word slots
     wordSlots.forEach(ws => {
       if (ws) ws.textContent = "";
@@ -862,6 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
           li.style.pointerEvents = "none";
           li.style.opacity = "0.3";
           showExample.style.display = 'block';
+          showAnswerBtn.disabled = true;
         });
 
         const lottieContainerFO = document.getElementById('lottie-container');
