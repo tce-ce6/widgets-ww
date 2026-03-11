@@ -170,6 +170,7 @@ const UI = {
 function show(el) {
     if (!el) return;
     el.style.display = 'block';
+    el.style.visibility = 'visible'; // Ensure visibility is restored
     el.classList.remove('st656');
 }
 function hide(el) {
@@ -277,8 +278,11 @@ function setupEvents() {
     });
 
     // S3 → S4: Auto-fill F1 (GATED: only works in stage 3)
-    _btnOn(UI.btnAutoFillF1, () => {
+    _btnOn(UI.btnAutoFillF1, (e) => {
         if (WidgetState.stage !== 3) return;
+        // Prevent double fire or automatic progression
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+
         console.log('[WG48] Auto-fill F1 clicked → reveal cells → show Stage 3 Next');
         _revealF1Cells();
         // Stay on screen, hide auto-fill, show Next
@@ -345,6 +349,13 @@ function onTraitClick(idx) {
     }
     console.log('[WG48] Traits:', WidgetState.selectedTraits);
     _updateTraitHighlights();
+
+    // Enable Next only when 2 traits are selected
+    if (WidgetState.selectedTraits.length === 2) {
+        enableBtn(UI.btnNext);
+    } else {
+        disableBtn(UI.btnNext);
+    }
 }
 
 function _updateTraitHighlights() {
@@ -397,6 +408,7 @@ function goToStage2() {
 
     hideAllStages();
     hide(UI.btnNext);  // hide global Next — no overlap with stage buttons
+    show(UI.resetGroup); // Show reset button once simulation starts
 
     show(UI.s2Base);
     const card = UI.s2Cards[WidgetState.combinationId - 1];
@@ -613,7 +625,9 @@ function onDragEnd(e) {
 
     if (acceptedDrop) {
         console.log(`[WG48] ${role} dropped into a zone`);
-        _snapToZone(el, acceptedDrop);
+        // Apply scaling for parents (S2) and F1 offspring (S4) to fit nicely in the boxes
+        const scaleVal = (isS2 || isS4) ? 0.8 : 1.0;
+        _snapToZone(el, acceptedDrop, scaleVal);
         acceptedDrop.setAttribute('data-occupied', 'true');
         el.setAttribute('data-drag-picked', 'done');
         el.style.cursor = 'default';
@@ -651,7 +665,14 @@ function _overlaps(elA, elB) {
 }
 
 /** Snap el centre to dropEl centre (screen → SVG coordinate conversion) */
-function _snapToZone(dragEl, dropEl) {
+function _snapToZone(dragEl, dropEl, scale = 1.0) {
+    if (scale !== 1.0) {
+        const currentTx = dragEl.getAttribute('transform') || '';
+        if (!currentTx.includes('scale')) {
+            dragEl.setAttribute('transform', currentTx + ` scale(${scale})`);
+        }
+    }
+
     const dBB = dragEl.getBoundingClientRect();
     const zBB = dropEl.getBoundingClientRect();
 
@@ -667,7 +688,10 @@ function _snapToZone(dragEl, dropEl) {
     const cx = m ? parseFloat(m[1]) : 0;
     const cy = m ? parseFloat(m[2]) : 0;
 
-    dragEl.setAttribute('transform', `translate(${cx + dxSVG},${cy + dySVG})`);
+    const sMatch = tx.match(/scale\([\d.-]+\)/);
+    const sStr = sMatch ? sMatch[0] : "";
+
+    dragEl.setAttribute('transform', `translate(${cx + dxSVG},${cy + dySVG}) ${sStr}`.trim());
 }
 
 /* ─────────────────────────────────────────────
@@ -699,11 +723,21 @@ function resetWidget() {
     show(UI.btnNext);
 
     // Show Reset/ResetAll; disable stage-specific action buttons
-    // Show Reset; hide Reset All by default
-    show(UI.resetGroup);
+    // Hide Reset button initially on home; show Reset All ONLY when Stage 6 is reached (not here)
+    hide(UI.resetGroup);
     hide(UI.resetAllGroup);
 
+    disableBtn(UI.btnNext); // Initially disabled until 2 traits selected
     disableBtn(UI.btnGenGametes);
     disableBtn(UI.btnGenF2Gametes);
     disableBtn(UI.btnNextS5);
+
+    // Extra safety: explicitly hide all ratio cards and their potential display overrides
+    UI.s6Ratios.forEach(el => {
+        if (el) {
+            el.style.display = 'none';
+            // el.style.visibility = 'hidden'; // REMOVED: let st656 or show() handle it to avoid override issues
+            el.classList.add('st656');
+        }
+    });
 }
