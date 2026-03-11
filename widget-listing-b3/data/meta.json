@@ -61,8 +61,8 @@
       "author": "aditya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-11T15:49:25+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-11T15:54:14+05:30",
+      "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
       "updatedAt": "2026-03-10T18:21:12+05:30",
@@ -189,11 +189,11 @@
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-03-11T14:59:05+05:30",
+      "updatedAt": "2026-03-11T16:07:28+05:30",
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
-      "updatedAt": "2026-03-11T14:59:05+05:30",
+      "updatedAt": "2026-03-11T16:07:28+05:30",
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
@@ -339,8 +339,34 @@
   },
   "commits": [
     {
+      "date": "2026-03-11T16:07:28+05:30",
+      "author": "PrasannaP",
+      "message": "chore: Update version strings in Mendels Monohybrid and Dihybrid Cross widgets.",
+      "widgets": [
+        47,
+        48
+      ]
+    },
+    {
+      "date": "2026-03-11T16:05:18+05:30",
+      "author": "PrasannaP",
+      "message": "fix: update Punnett content selector to correctly identify varying group IDs across cards.",
+      "widgets": [
+        47
+      ]
+    },
+    {
+      "date": "2026-03-11T15:54:14+05:30",
+      "author": "Shyam",
+      "message": "Version update",
+      "widgets": [
+        120
+      ]
+    },
+    {
       "date": "2026-03-11T15:49:25+05:30",
       "author": "aditya",
+      "message": "Update index.html",
       "widgets": [
         120
       ]
@@ -348,13 +374,23 @@
     {
       "date": "2026-03-11T15:47:10+05:30",
       "author": "Shyam",
+      "message": "wg120 fixes completed",
       "widgets": [
         120
       ]
     },
     {
+      "date": "2026-03-11T15:46:25+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: Update button references to their parent groups and add dynamic visibility for drop zone instruction texts.",
+      "widgets": [
+        48
+      ]
+    },
+    {
       "date": "2026-03-11T15:17:08+05:30",
       "author": "Shyam",
+      "message": "qanswer modal reposiitioning on 145",
       "widgets": [
         145
       ]
@@ -362,6 +398,7 @@
     {
       "date": "2026-03-11T15:11:51+05:30",
       "author": "aditya",
+      "message": "wg 135ui fix",
       "widgets": [
         135
       ]
@@ -369,6 +406,7 @@
     {
       "date": "2026-03-11T14:59:05+05:30",
       "author": "PrasannaP",
+      "message": "feat: Implement a Punnett square genotype visibility toggle and refactor card snapping in the monohybrid cross, alongside minor UI and event handling improvements in the dihybrid cross.",
       "widgets": [
         47,
         48
@@ -377,6 +415,7 @@
     {
       "date": "2026-03-11T12:53:40+05:30",
       "author": "tce-ashishg",
+      "message": "extra file deleted",
       "widgets": [
         61,
         122
@@ -385,6 +424,7 @@
     {
       "date": "2026-03-11T12:26:30+05:30",
       "author": "tce-ashishg",
+      "message": "logical changes related to star done",
       "widgets": [
         61,
         122
@@ -393,6 +433,7 @@
     {
       "date": "2026-03-11T11:14:21+05:30",
       "author": "tce-nitinc",
+      "message": "wg88 changes",
       "widgets": [
         155
       ]
@@ -400,6 +441,7 @@
     {
       "date": "2026-03-10T20:07:31+05:30",
       "author": "tce-ashishg",
+      "message": "design updated",
       "widgets": [
         61,
         74,
@@ -409,6 +451,7 @@
     {
       "date": "2026-03-10T18:24:17+05:30",
       "author": "Shyamsunder Hait",
+      "message": "Fixes playground svg controllers and position",
       "widgets": [
         145
       ]
@@ -416,6 +459,7 @@
     {
       "date": "2026-03-10T18:21:15+05:30",
       "author": "aditya",
+      "message": "ui fix wg128 and wg129",
       "widgets": [
         128,
         129,
@@ -425,6 +469,7 @@
     {
       "date": "2026-03-10T18:21:12+05:30",
       "author": "PrasannaP",
+      "message": "fixes wip",
       "widgets": [
         47,
         48,
@@ -437,6 +482,7 @@
     {
       "date": "2026-03-10T16:36:12+05:30",
       "author": "Shyamsunder Hait",
+      "message": "feat: introduce initial structure and content for molecular reaction simulator",
       "widgets": [
         98
       ]
@@ -444,6 +490,7 @@
     {
       "date": "2026-03-10T16:22:33+05:30",
       "author": "Shyamsunder Hait",
+      "message": "Completed widget 98",
       "widgets": [
         98
       ]
@@ -451,6 +498,7 @@
     {
       "date": "2026-03-10T15:45:57+05:30",
       "author": "tce-ashishg",
+      "message": "design updated",
       "widgets": [
         61,
         122
@@ -459,6 +507,7 @@
     {
       "date": "2026-03-10T15:21:22+05:30",
       "author": "sushantkanaujiya",
+      "message": "Update index.html",
       "widgets": [
         91
       ]
@@ -466,6 +515,7 @@
     {
       "date": "2026-03-10T13:00:58+05:30",
       "author": "tce-nitinc",
+      "message": "wg 155 changes",
       "widgets": [
         155
       ]
@@ -473,6 +523,7 @@
     {
       "date": "2026-03-10T12:35:07+05:30",
       "author": "aditya",
+      "message": "Update xd-wireframe.md",
       "widgets": [
         119
       ]
@@ -480,6 +531,7 @@
     {
       "date": "2026-03-10T12:33:27+05:30",
       "author": "aditya",
+      "message": "html ui 119",
       "widgets": [
         119,
         136
@@ -488,6 +540,7 @@
     {
       "date": "2026-03-10T12:28:28+05:30",
       "author": "Shyamsunder Hait",
+      "message": "fixed widget 72",
       "widgets": [
         72,
         98
@@ -496,6 +549,7 @@
     {
       "date": "2026-03-10T11:52:16+05:30",
       "author": "sushantkanaujiya",
+      "message": "feat: add new widgets for legislature challenge, election officer, and barter bazaar.",
       "widgets": [
         84,
         130,
@@ -505,6 +559,7 @@
     {
       "date": "2026-03-10T11:40:27+05:30",
       "author": "sushantthe",
+      "message": "feat: Implement the core game engine and station data for the \"Journey of a Bill to Law\" widget.",
       "widgets": [
         130,
         151
@@ -513,6 +568,7 @@
     {
       "date": "2026-03-09T23:33:45+05:30",
       "author": "PrasannaP",
+      "message": "feat: Implement home button, redesign discovered words display with compound word text and new layout, and update used card animation to fade out.",
       "widgets": [
         136
       ]
@@ -520,6 +576,7 @@
     {
       "date": "2026-03-09T23:01:26+05:30",
       "author": "PrasannaP",
+      "message": "feat: implement compound words adventure game logic with interactive SVG elements and game state management.",
       "widgets": [
         136
       ]
@@ -527,6 +584,7 @@
     {
       "date": "2026-03-09T21:56:15+05:30",
       "author": "PrasannaP",
+      "message": "feat: Implement the compound words adventure game content flow and design, replacing old logic files.",
       "widgets": [
         136
       ]
@@ -534,40 +592,9 @@
     {
       "date": "2026-03-09T21:13:21+05:30",
       "author": "sushantthe",
+      "message": "feat: Implement the core game engine and station data for the \"Journey of a Bill to Law\" widget.",
       "widgets": [
         131
-      ]
-    },
-    {
-      "date": "2026-03-09T20:41:01+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-09T20:34:59+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-09T20:25:03+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-09T19:48:15+05:30",
-      "author": "tce-ashishg",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
       ]
     }
   ]
