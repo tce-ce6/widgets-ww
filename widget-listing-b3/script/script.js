@@ -22,6 +22,7 @@ const USER_ALIASES = {
   'Santosh': 'san',
   'Santosh Vishwakarma': 'san',
   'Shyam': 'shm',
+  'Shyamsunder Hait': 'shm',
   'aditya': 'adi',
   'tce-ashishg': 'ash',
   'tce-nitinc': 'nit',
@@ -155,12 +156,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const items = rows.map((c, i) => {
       const label = i === 0 ? 'Last&nbsp;Updated' : 'Updated';
       const nums = c.widgets.map(n => `<a class="act-wg" href="${BASE_URL}/wg${n}-*/" title="wg${n}">wg${n}</a>`).join(' ');
+      const fullMsg = c.message || '';
+      const safeTitle = fullMsg.replace(/"/g, '&quot;');
+      const msg = fullMsg ? `<span class="act-msg" title="${safeTitle}">${fullMsg}</span>` : '';
       // For user-filtered view, omit the author name (it's the selected chip)
       const who = user === 'all' ? `<span class="act-author">${resolveAlias(c.author)}</span>` : '';
       return `
         <div class="act-row${i === 0 ? ' act-row--first' : ''}">
           <span class="act-label">${label}</span>
           <span class="act-date">${fmtDate(c.date)}</span>
+          ${msg}
           ${who}
           <span class="act-widgets">(${c.widgets.join(', ')})</span>
         </div>`;
