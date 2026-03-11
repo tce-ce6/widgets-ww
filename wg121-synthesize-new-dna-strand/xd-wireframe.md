@@ -4,3 +4,5 @@ Refining Gel Electrophoresis Widget
 
 Drag arrow to be removed from the template means it should not be there in the final output 
 id="Group 711" and id="Drag here" should be removed from the template
+Comments:
+1. make the show answer pop up on top of correct/incorrect feedbacks also
