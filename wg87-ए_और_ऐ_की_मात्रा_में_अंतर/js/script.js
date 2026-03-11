@@ -201,12 +201,15 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    playAudio("wrong");
+
+    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
+
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    playAudio("correct");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
+
   });
 }
 
@@ -352,20 +355,20 @@ function playLottieAnimation(bandGroup) {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         parentEl.style.display = "none";
-        // resetFeedbackVisuals();
-        // if (bandGroup === "INCORRECT") {
-        //   document.getElementById("audio_button_1").style.display = "block";
-        //   document.getElementById("audio_button_2").style.display = "block";
-        //   audio_button_1 = false;
-        //   audio_button_2 = false;
-        //   age_badhe_button = false;
-        //   nextbutton();
-        //   hideAndShowAudioButtons("none");
-        //   let i_text = document.getElementById("i_text_1");
-        //   const tspans = i_text.querySelector("p");
-        //   tspans.innerHTML =
-        //     "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
-        // }
+        resetFeedbackVisuals();
+        if (bandGroup === "INCORRECT") {
+          document.getElementById("audio_button_1").style.display = "block";
+          document.getElementById("audio_button_2").style.display = "block";
+          audio_button_1 = false;
+          audio_button_2 = false;
+          age_badhe_button = false;
+          nextbutton();
+          hideAndShowAudioButtons("none");
+          let i_text = document.getElementById("i_text_1");
+          const tspans = i_text.querySelector("p");
+          tspans.innerHTML =
+            "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+        }
 
         if (lottieInstances) {
           lottieInstances.destroy();

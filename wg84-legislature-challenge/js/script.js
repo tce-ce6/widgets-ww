@@ -194,7 +194,22 @@ function getRandomQuestion() {
     let totalbadges = document.getElementById("totalbadges");
     const tspan = totalbadges.querySelector("tspan") || totalbadges;
     tspan.textContent = `${correctCount}/${questionData.length}`;
-    playLottieAnimation();
+
+    console.log("End of game reached. correctCount:", correctCount);
+    let wellDoneText = document.getElementById("wellDone");
+    let wellDoneTspan = wellDoneText.querySelector("tspan") || wellDoneText;
+    console.log("wellDone element found:", wellDoneText);
+    if (correctCount === 0) {
+      console.log("Setting text to Try Again!");
+      wellDoneTspan.innerHTML = "Try Again!";
+    } else {
+      console.log("Setting text to Well Done!");
+      wellDoneTspan.innerHTML = "Well Done!";
+    }
+
+    if (correctCount > 0) {
+      playLottieAnimation();
+    }
     return null;
   }
 

@@ -1,801 +1,856 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const CROP_DATA = {
-    // Rabi Crops
-    Wheat: [
-      "Jammu and Kashmir",
-      "Himachal Pradesh",
-      "Uttarakhand",
-      "Punjab",
-      "Haryana",
-      "Rajasthan",
-      "Uttar Pradesh",
-      "Bihar",
-      "Jharkhand",
-      "West Bengal",
-      "Madhya Pradesh",
-      "Gujarat",
-      "Maharashtra",
-    ],
-    Barley: [
-      "Rajasthan",
-      "Uttar Pradesh",
-      "Madhya Pradesh",
-      "Haryana",
-      "Punjab",
-      "West Bengal",
-    ],
-    Mustard: [
-      "Rajasthan",
-      "Haryana",
-      "Madhya Pradesh",
-      "Uttar Pradesh",
-      "West Bengal",
-    ],
-    Chickpea: [
-      "Madhya Pradesh",
-      "Maharashtra",
-      "Rajasthan",
-      "Karnataka",
-      "Uttar Pradesh",
-    ],
-    Peas: [
-      "Uttar Pradesh",
-      "Madhya Pradesh",
-      "Punjab",
-      "Himachal Pradesh",
-      "Jharkhand",
-    ],
+  const GAME_CONFIG = {
+    totalQuestions: 9,
+    questions: [
+      {
+        id: 1,
+        tier: "GRAM_PANCHAYAT",
+        question:
+          "Scenario: The Gram Sabha of Khedi village elects 9 representatives. At what level do these representatives govern?",
+        options: "option-set-1",
+        correctOptionIndex: 0,
+        pyramidLevel: "pyramid-level1",
+        circleId: "Ellipse_35-3",
+        feedback:
+          "✓ Correct! This is the Gram Panchayat - the village-level elected council.",
+      },
+      {
+        id: 2,
+        tier: "GRAM_PANCHAYAT",
+        question:
+          "Scenario: It's election time in Khedi village. Who votes to elect the Gram Panchayat members?",
+        options: "option-set-2",
+        correctOptionIndex: 2,
+        pyramidLevel: "pyramid-level1",
+        circleId: "Ellipse_36-3",
+        feedback:
+          "✓ Correct! The Gram Sabha (all voters 18+) elects representatives.",
+      },
+      {
+        id: 3,
+        tier: "GRAM_PANCHAYAT",
+        question:
+          "Scenario: The 9 Gram Panchayat members are elected. Who leads the Gram Panchayat and chairs their meetings?",
+        options: "option-set-3",
+        correctOptionIndex: 1,
+        pyramidLevel: "pyramid-level1",
+        circleId: "Ellipse_37-3",
+        feedback:
+          "✓ Correct! The Sarpanch or Pradhan is the elected head of Gram Panchayat.",
+      },
 
-    // Kharif Crops
-    "Paddy (Rice)": [
-      "West Bengal",
-      "Uttar Pradesh",
-      "Punjab",
-      "Tamil Nadu",
-      "Andhra Pradesh",
-      "Bihar",
-      "Chhattisgarh",
-      "Odisha",
-      "Assam",
-    ],
-    Sugarcane: [
-      "Uttar Pradesh",
-      "Maharashtra",
-      "Karnataka",
-      "Tamil Nadu",
-      "Bihar",
-      "Gujarat",
-    ],
-    Cotton: [
-      "Gujarat",
-      "Maharashtra",
-      "Telangana",
-      "Karnataka",
-      "Haryana",
-      "Rajasthan",
-    ],
-    Jute: ["West Bengal", "Bihar", "Assam", "Odisha", "Meghalaya"],
-    Tea: ["Assam", "West Bengal", "Tamil Nadu", "Kerala"],
-    Coffee: ["Karnataka", "Kerala", "Tamil Nadu"],
-    Rubber: ["Kerala", "Tamil Nadu", "Karnataka"],
+      {
+        id: 4,
+        tier: "PANCHAYAT_SAMITI",
+        question:
+          "Scenario: Khedi is one of 20 villages in a Tehsil area. How are development projects planned when multiple villages are involved?",
+        options: "option-set-4",
+        correctOptionIndex: 1,
+        pyramidLevel: "pyramid-level2",
+        circleId: "Ellipse_35-2",
+        feedback:
+          "✓ Correct! This is the Panchayat Samiti - the block-level coordination body.",
+      },
+      {
+        id: 5,
+        tier: "PANCHAYAT_SAMITI",
+        question:
+          "Scenario: Panchayat Samiti wants to organize a health camp. For how many villages will they plan it?",
+        options: "option-set-5",
+        correctOptionIndex: 0,
+        pyramidLevel: "pyramid-level2",
+        circleId: "Ellipse_36-2",
+        feedback: "✓ Correct! Panchayat Samiti works at block level.",
+      },
+      {
+        id: 6,
+        tier: "PANCHAYAT_SAMITI",
+        question:
+          "Scenario: 15 villages all need better roads. What is Panchayat Samiti's main role with these requests?",
+        options: "option-set-6",
+        correctOptionIndex: 2,
+        pyramidLevel: "pyramid-level2",
+        circleId: "Ellipse_37-2",
+        feedback: "✓ Correct! Panchayat Samiti has a coordination function.",
+      },
 
-    // Zaid Crops
-    Watermelon: [
-      "Uttar Pradesh",
-      "Karnataka",
-      "Tamil Nadu",
-      "Andhra Pradesh",
-      "Maharashtra",
-    ],
-    Muskmelon: [
-      "Uttar Pradesh",
-      "Punjab",
-      "Haryana",
-      "Maharashtra",
-      "Andhra Pradesh",
-    ],
-    "Moong Dal": [
-      "Rajasthan",
-      "Maharashtra",
-      "Karnataka",
-      "Andhra Pradesh",
-      "Tamil Nadu",
-    ],
-    Cucumber: [
-      "Haryana",
-      "Uttar Pradesh",
-      "Karnataka",
-      "Punjab",
-      "Andhra Pradesh",
+      {
+        id: 7,
+        tier: "ZILA_PARISHAD",
+        question:
+          "Scenario: Khedi's block is one of 12 blocks in Bhopal district. What does the highest Panchayati Raj body do with plans from all these blocks?",
+        options: "option-set-7",
+        correctOptionIndex: 1,
+        pyramidLevel: "pyramid-level3",
+        circleId: "Ellipse_35",
+        feedback:
+          "✓ Correct! This is the Zila Parishad - the district-level apex body.",
+      },
+      {
+        id: 8,
+        tier: "ZILA_PARISHAD",
+        question:
+          "Scenario: The Zila Parishad receives development plans from all Panchayat Samitis in the district. What is its main role?",
+        options: "option-set-8",
+        correctOptionIndex: 1,
+        pyramidLevel: "pyramid-level3",
+        circleId: "Ellipse_36",
+        feedback:
+          "✓ Correct! Zila Parishad does district-level planning and resource allocation.",
+      },
+      {
+        id: 9,
+        tier: "WOMENS_RESERVATION",
+        question:
+          "Scenario: A Gram Panchayat has 9 seats. How many MUST be reserved for women by constitutional law?",
+        options: "option-set-9",
+        correctOptionIndex: 2,
+        pyramidLevel: "pyramid-level3",
+        circleId: "Ellipse_37",
+        feedback:
+          "✓ Correct! There is a women's reservation of one-third (33%).",
+      },
     ],
   };
 
-  const CROP_FACTS = {
-    // Rabi
-    Wheat: {
-      climate1: "Cool and moist weather during growing ", climate2: "period, warm and dry during ripening.", climate3: "Temperature: 10-25°C",
-      soil1: "Well-drained loamy soil with good ", soil2: "organic content.",
-      variety1: "• HD-2967", variety2: "• PBW-343", variety3: "• Lok-1", variety4: "• GW-322", variety5: "• Sharbati", variety6: "• Kalyan Sona",
-      fact1: "Punjab and Haryana are called the 'Breadbasket of India' because they ", fact2: "produce nearly 50% of the country's wheat."
-    },
-    Barley: {
-      climate1: "Cool and dry climate, frost resistant.", climate2: "Requires moderate rainfall.", climate3: "Temperature: 12-32°C",
-      soil1: "Sandy to moderately heavy loam soils. ", soil2: "Must be well-drained.",
-      variety1: "• RD-2786", variety2: "• BH-902", variety3: "• PL-426", variety4: "• DWRUB-52", variety5: "• K-560", variety6: "• RD-2552",
-      fact1: "Barley is one of the oldest cultivated grains and is widely ", fact2: "used for malting in the beverage industry."
-    },
-    Mustard: {
-      climate1: "Cool and dry climate during growth.", climate2: "Requires clear weather during flowering.", climate3: "Temperature: 10-25°C",
-      soil1: "Light loam to heavy loam soils ", soil2: "with good drainage.",
-      variety1: "• Pusa Bold", variety2: "• Kranti", variety3: "• Varuna", variety4: "• Rohini", variety5: "• Maya", variety6: "• Pusa Jaikisan",
-      fact1: "Mustard seeds are a rich source of oil and protein, ", fact2: "and India is a leading global producer."
-    },
-    Chickpea: {
-      climate1: "Moderate rainfall and cold winter.", climate2: "Very sensitive to excess moisture.", climate3: "Temperature: 20-25°C",
-      soil1: "Well-drained dark cotton soils ", soil2: "and sandy loam soils.",
-      variety1: "• Pusa 372", variety2: "• KAK 2", variety3: "• JG 11", variety4: "• Vijay", variety5: "• Vishal", variety6: "• Digvijay",
-      fact1: "Also known as Bengal Gram, chickpea is the most ", fact2: "important pulse crop grown in India."
-    },
-    Peas: {
-      climate1: "Cool season crop requiring moist conditions.", climate2: "Cannot tolerate frost during flowering.", climate3: "Temperature: 13-18°C",
-      soil1: "Well-drained loamy to clayey soils ", soil2: "rich in organic matter.",
-      variety1: "• Arkel", variety2: "• Bonneville", variety3: "• Pusa Pragati", variety4: "• Lincoln", variety5: "• Azad P-1", variety6: "• Matar Ageta",
-      fact1: "India is historically one of the largest producers ", fact2: "of green peas globally."
-    },
+  let dragIdCounter = 0;
 
-    // Kharif
-    "Paddy (Rice)": {
-      climate1: "Hot and humid climate.", climate2: "Requires heavy and prolonged rainfall.", climate3: "Temperature: 21-37°C",
-      soil1: "Heavy clay or clay loam, ", soil2: "capable of holding surface water.",
-      variety1: "• IR8", variety2: "• Jaya", variety3: "• Basmati", variety4: "• Swarna", variety5: "• BPT 5204", variety6: "• Sona Masuri",
-      fact1: "Rice is the staple food for more than ", fact2: "half of the Indian population."
-    },
-    Sugarcane: {
-      climate1: "Hot and humid climate with abundant rain.", climate2: "Long growing season ranging 10-15 months.", climate3: "Temperature: 21-27°C",
-      soil1: "Deep, rich loamy soil ", soil2: "with excellent drainage.",
-      variety1: "• Co 0238", variety2: "• Co 86032", variety3: "• CoJ 64", variety4: "• Co 0118", variety5: "• Co 11015", variety6: "• Co 89003",
-      fact1: "India is the second-largest producer of sugarcane ", fact2: "in the world after Brazil."
-    },
-    Cotton: {
-      climate1: "Warm and humid climate, lots of sunshine.", climate2: "Requires 210 frost-free days.", climate3: "Temperature: 21-30°C",
-      soil1: "Black cotton soil (Regur), ", soil2: "well-drained deep loams.",
-      variety1: "• Sujata", variety2: "• MCU-5", variety3: "• DCH-32", variety4: "• Bunny Bt", variety5: "• Mallika Bt", variety6: "• RCH-2",
-      fact1: "Cotton is known as 'White Gold' in Indian ", fact2: "agricultural and economic terms."
-    },
-    Jute: {
-      climate1: "Hot and humid climate.", climate2: "High rainfall exceeding 1500mm.", climate3: "Temperature: 24-35°C",
-      soil1: "New alluvial (Khadar) soil, ", soil2: "loamy plains and river basins.",
-      variety1: "• JRO 524", variety2: "• JRO 878", variety3: "• JRC 212", variety4: "• JRC 321", variety5: "• JRC 7447", variety6: "• Tarun",
-      fact1: "Known as the 'Golden Fibre', jute is primarily grown ", fact2: "in the Ganges-Brahmaputra delta region."
-    },
-    Tea: {
-      climate1: "Warm and humid climate.", climate2: "Rainfall well distributed throughout the year.", climate3: "Temperature: 20-30°C",
-      soil1: "Deep, fertile, well-drained soil, ", soil2: "rich in organic humus.",
-      variety1: "• Assam", variety2: "• Darjeeling", variety3: "• Nilgiri", variety4: "• Kangra", variety5: "• Munnar", variety6: "• Dooars",
-      fact1: "India is the second-largest producer of tea globally, ", fact2: "famous for its Darjeeling and Assam blends."
-    },
-    Coffee: {
-      climate1: "Hot and humid climate, moderate rainfall.", climate2: "Grown mostly under shade trees.", climate3: "Temperature: 15-28°C",
-      soil1: "Well-drained, rich friable loamy soil ", soil2: "containing abundant iron and organic matter.",
-      variety1: "• Arabica", variety2: "• Robusta", variety3: "• Kent", variety4: "• S.795", variety5: "• Cauvery", variety6: "• San Ramon",
-      fact1: "Indian coffee is unique as it is grown in the shade ", fact2: "rather than direct sunlight like in other countries."
-    },
-    Rubber: {
-      climate1: "Equatorial climate, hot and humid.", climate2: "Heavy rainfall of over 2000mm.", climate3: "Temperature: above 25°C",
-      soil1: "Well-drained, deeply weathered ", soil2: "lateritic soils.",
-      variety1: "• RRII 105", variety2: "• GT 1", variety3: "• PB 28/59", variety4: "• PB 217", variety5: "• RRIM 600", variety6: "• PB 235",
-      fact1: "Kerala alone accounts for the vast majority ", fact2: "of India's natural rubber production."
-    },
+  // --- State Variables ---
+  let currentQuestionIndex = 0;
+  let isAwaitingPyramidClick = false;
+  let draggedElement = null;
+  let selectedOptionIndex = null;
+  let draggedOptionIndex = -1; // Added to store index during drag
+  let offset = { x: 0, y: 0 };
+  let originalPositions = {};
+  let isLocked = false;
 
-    // Zaid
-    Watermelon: {
-      climate1: "Hot and dry climate with plenty of sunshine.", climate2: "Vulnerable to frost.", climate3: "Temperature: 25-30°C",
-      soil1: "Sandy or sandy loam soils. ", soil2: "Must be well-drained.",
-      variety1: "• Sugar Baby", variety2: "• Arka Jyoti", variety3: "• Asahi Yamato", variety4: "• Durgapura Lal", variety5: "• Pusa Bedana", variety6: "• Kiran",
-      fact1: "A watermelon comprises approximately 92% water, ", fact2: "making it ideal for the extreme Indian summer."
-    },
-    Muskmelon: {
-      climate1: "Hot and dry climate is ideal.", climate2: "Requires high temperature during ripening.", climate3: "Temperature: 25-30°C",
-      soil1: "Deep, well-drained sandy loam ", soil2: "soils are optimum.",
-      variety1: "• Hara Madhu", variety2: "• Pusa Sharbati", variety3: "• Arka Rajhans", variety4: "• Punjab Sunehri", variety5: "• Durgapura Madhu", variety6: "• Kashi Madhu",
-      fact1: "Muskmelon is highly valued for its sweet, juicy ", fact2: "flesh and cooling properties during summer."
-    },
-    "Moong Dal": {
-      climate1: "Warm climate, can tolerate heat well.", climate2: "Grown mostly as a catch crop in Zaid.", climate3: "Temperature: 25-35°C",
-      soil1: "Well-drained loamy to sandy loam soils. ", soil2: "Cannot tolerate waterlogging.",
-      variety1: "• Pusa Baisakhi", variety2: "• PS 16", variety3: "• K 851", variety4: "• Samrat", variety5: "• SML 668", variety6: "• Meha",
-      fact1: "Moong dal (Green Gram) is highly digestible and a ", fact2: "major source of plant-based protein in Indian diets."
-    },
-    Cucumber: {
-      climate1: "Warm climate, killed by frost.", climate2: "Likes abundant moisture.", climate3: "Temperature: 20-30°C",
-      soil1: "Well-drained sandy loam soil with ", soil2: "good organic matter content.",
-      variety1: "• Pusa Uday", variety2: "• Pusa Barkha", variety3: "• Japanese Long", variety4: "• Swarna Ageti", variety5: "• Kalyanpur Green", variety6: "• Pusa Sanyog",
-      fact1: "Cucumber is structurally a fruit but is treated ", fact2: "functionally and culinarily as a vegetable."
-    }
-  };
-
-  let currentState = {
-    season: null,
-    crop: null,
-    selectedStates: new Set(),
-    isAnswerRevealed: false,
-  };
-
-  // Elements
+  // --- Element Selectors ---
   const elements = {
-    homeScreen: document.getElementById("btn-home-screen"),
-    btnRabiHome: document.getElementById("Group_1591"),
-    btnKharifHome: document.getElementById("Group_1590"),
-    btnZaidHome: document.getElementById("Group_1589"),
-
-    panelRabi: document.getElementById("btn-rabi"),
-    panelKharif: document.getElementById("btn-Kharif"),
-    panelZaid: document.getElementById("btn-Zaid"),
-
-    globalButtons: document.getElementById("btn-global"),
-    cropPromptContainer: document.getElementById("crop-selection-popup"),
-    cropPromptText: document.getElementById(
-      "Wheat_selected_This_crop_is_majorly_grown_in_13_states_UTs_across_India._Can_you_find_them_all_on_the_map_",
-    ),
-    cropPromptTitle: document.getElementById("Wheat2"),
-
-    gotItBtn: document.getElementById("Group_1614"),
-    submitBtn: document.getElementById("Group_1610"),
-    showAnswerBtn: document.getElementById("Group_1611"),
-    homeBtn: document.getElementById("Group_1592"),
-
-    feedbackIncorrectPopup: document.getElementById("feedback-incorrect-state"),
-    gotItIncorrectBtn: document.getElementById("Group_16141"),
-
-    feedbackCorrectPopup: document.getElementById("feedback-end-crop"),
-    feedbackCorrectText: document.getElementById("You_Nailed_It_Congratulations_You_have_identified_all_13_major_Wheat_producing_states_"),
-    factsheetBtn: document.getElementById("Group_1616"),
-    factsheetBtnText: document.getElementById("Wheat_Factsheet"),
-
-    factsheet: document.getElementById("popup-factsheet"),
-    factsheetTitle: document.getElementById("Wheat_Factsheet1"),
-    factsheetClimate: document.getElementById("Required_Climatic_Condition:_Cool_and_moist_weather_during_growing_period_warm_and_dry_during_ripening._Temperature:_10-25_C"),
-    factsheetSoil: document.getElementById("Suitable_Soil:_Well-drained_loamy_soil_with_good_organic_content."),
-    factsheetVariety: document.getElementById("Variety_in_India_:_HD-2967_PBW-343_Lok-1_GW-322_Sharbati_Kalyan_Sona"),
-    factsheetFact: document.getElementById("Fact:_Punjab_and_Haryana_are_called_the_Breadbasket_of_India_because_they_produce_nearly_50_of_the_country_s_wheat."),
-    factsheetStates: document.getElementById("States:_Jammu_and_Kashmir_Himachal_Pradesh_Uttarakhand_Punjab_Haryana_Rajasthan_Uttar_Pradesh_Bihar_Jharkhand_West_Bengal_Madhya_Pradesh_Gujarat_Maharashtra"),
-
-    tryAnotherCropBtn: document.getElementById("Group_16161"),
-
-    mapContainer: document.getElementById("state-map-clickable"),
-    croplabel: document.getElementById("crop-label"),
-    panel01buttons: document.getElementById("panel-01-buttons"),
-    itextActivity: document.getElementById("i-text-activity"),
-    panel02map: document.getElementById("panel-02-map"),
-    itextcropmap: document.getElementById("i-text-crop-map"),
-    iTextHomeScreen: document.getElementById("i-text-home-screen"),
-  };
-
-  // Initialize visibility
-  const hideAll = () => {
-    [
-      elements.homeScreen,
-      // elements.panelRabi,
-      // elements.panelKharif,
-      // elements.panelZaid,
-      elements.globalButtons,
-      elements.cropPromptContainer,
-      elements.feedbackIncorrectPopup,
-      elements.feedbackCorrectPopup,
-      elements.factsheet,
-    ].forEach((el) => {
-      if (el) {
-        el.style.display = "none";
-        el.classList.add("st170"); // Ensure it takes the CSS property if present
-      }
-    });
-  };
-
-  const showHome = () => {
-    hideAll();
-    // if (elements.homeScreen) {
-    //   elements.homeScreen.style.display = "block";
-    //   elements.homeScreen.classList.remove("st170");
-    // }
-    resetMapHighlights();
-
-    ['btn-rabi-selected', 'btn-Kharif-selected', 'btn-Zaid-selected'].forEach(id => {
-      const selectedContainer = document.getElementById(id);
-      if (selectedContainer) {
-        selectedContainer.style.display = "none";
-        selectedContainer.classList.add("st170");
-      }
-    });
-
-    currentState = {
-      season: null,
-      crop: null,
-      selectedStates: new Set(),
-      isAnswerRevealed: false,
-    };
-  };
-
-  // Dynamic State Identification
-  const getTargetStateName = (path) => {
-    // 1. Try to get name directly from parent group ID
-    let currentElement = path.parentElement;
-    while (currentElement && currentElement.tagName === 'g') {
-      if (currentElement.id && currentElement.classList.contains('st37')) {
-        let name = currentElement.id.replace(/_/g, " ");
-        if (name && !name.includes("Group") && name.length > 2) {
-          // Special cases handling
-          if (name.includes("Jammu and Kashmir")) return "Jammu and Kashmir";
-          return name;
-        }
-      }
-      currentElement = currentElement.parentElement;
-    }
-
-    // 2. Fallback: Proximity matching with stricter distance and inside map only
-    const pRect = path.getBoundingClientRect();
-    const pCenter = {
-      x: pRect.left + pRect.width / 2,
-      y: pRect.top + pRect.height / 2,
-    };
-
-    const labels = Array.from(
-      elements.mapContainer.querySelectorAll(
-        "g[id].st37 text, text.st29, text.st51, text.st30, text.st46, text.st40",
+    introBox: document.getElementById("intro-box"),
+    startBtn: document.getElementById("intro-btn-start-building"),
+    activityPyramid: document.getElementById("activity-pyramid"),
+    questionPanel: document.getElementById("question-panel"),
+    questionTexts: {
+      group: document.getElementById(
+        "Question_1:_Scenario:_The_Gram_Sabha_of_Khedi_village_elects_9_representatives._At_what_level_do_these_representatives_govern_",
       ),
+      tspans: [], // Populated dynamically
+    },
+    optionSets: document.querySelectorAll('g[id^="option-set-"]'),
+    popups: {
+      correct: document.getElementById("popup-correct"),
+      incorrect: document.getElementById("popup-incorrect"),
+      insights: document.getElementById("Popup-insights"),
+    },
+    instructions: {
+      intro: document.getElementById(
+        "Read_the_information_below_When_ready_click_Start_Building_to_construct_the_three-tier_Panchayati_RajSystem_",
+      ),
+      question: document.getElementById(
+        "Read_the_scenario_carefully_First_tap_on_the_correct_answer_card_and_then_tap_on_the_glowing_circle_on_the_pyramid_to_build_it._",
+      ),
+      introItext: document.getElementById("intro-i-text"),
+      activityItext: document.getElementById("i-text-activity"),
+    },
+    btns: {
+      proceed: document.getElementById("Group_1685"), // Proceed
+      tryAgain: document.getElementById("Group_1683"), // Try Again
+      insights: document.getElementById("btn-insights"),
+      closeInsights: document.getElementById("Group_1481"), // Close Insights (X button)
+      playAgain: document.getElementById("Group_1688"), // Play Again
+    },
+    pyramidLevels: {
+      l1: document.getElementById("pyramid-level1"),
+      l2: document.getElementById("pyramid-level2"),
+      l3: document.getElementById("pyramid-level3"),
+      final: document.getElementById("summary-end"),
+    },
+    clickableCircles: document.getElementById("btn-clickable-circle"),
+    progressBar: document.getElementById("progrss-bar-default"),
+    progressBarHighlighted: document.getElementById("progrss-bar-highlighted"),
+    progressBarStars: [], // Will be populated with highlighted star groups
+  };
+
+  // Populate progress bar stars array
+  const highlightedBar = document.getElementById("progrss-bar-highlighted");
+  if (highlightedBar) {
+    const starGroups = highlightedBar.querySelectorAll(
+      "g[id*='Group_1757'], g[id*='Group_1781'], g[id*='Group_1784'], g[id*='Group_1785'], g[id*='Group_1786'], g[id*='Group_1787'], g[id*='Group_1795'], g[id*='Group_1796'], g[id*='Group_1797']",
     );
-
-    let closest = null;
-    let minDist = Infinity;
-
-    labels.forEach((l) => {
-      const text = l.textContent.trim();
-      if (
-        text.length < 3 ||
-        /^\d+$/.test(text) ||
-        text.includes("Season") ||
-        text.includes("Got it") ||
-        text.toLowerCase().includes("major") ||
-        text.includes("?")
-      )
-        return;
-
-      const lRect = l.getBoundingClientRect();
-      const lCenter = {
-        x: lRect.left + lRect.width / 2,
-        y: lRect.top + lRect.height / 2,
-      };
-
-      const dist = Math.sqrt(
-        Math.pow(pCenter.x - lCenter.x, 2) + Math.pow(pCenter.y - lCenter.y, 2),
-      );
-
-      // Only match if it's reasonably close (e.g. less than 150px away)
-      if (dist < minDist && dist < 150) {
-        minDist = dist;
-        closest = text;
+    starGroups.forEach((group) => {
+      if (group.id.includes("-2") || !group.id.includes("-")) {
+        elements.progressBarStars.push(group);
       }
     });
-
-    return closest;
-  };
-
-  const highlightState = (stateName, isCorrect) => {
-    const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
-    paths.forEach((p) => {
-      if (getTargetStateName(p) === stateName) {
-        p.style.fill = isCorrect ? "#44ff64" : "#F44336";
-        p.style.opacity = isCorrect ? "1" : "0.7";
-        p.classList.remove("st170"); // Ensure not hidden by class
-      }
-    });
-  };
-
-  const resetMapHighlights = () => {
-    if (!elements.mapContainer) return;
-    const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
-    paths.forEach((p) => {
-      p.style.fill = "";
-      p.style.opacity = "";
-    });
-
-    updateSubmitButtonState();
-  };
-
-  const updateSubmitButtonState = () => {
-    if (elements.submitBtn) {
-      if (currentState.selectedStates.size === 0) {
-        elements.submitBtn.style.opacity = "0.5";
-        elements.submitBtn.style.pointerEvents = "none";
-      } else {
-        elements.submitBtn.style.opacity = "1";
-        elements.submitBtn.style.pointerEvents = "auto";
-      }
-    }
-  };
-
-  const handleStateClick = (e) => {
-    const path = e.target.closest("path");
-    if (!path || !currentState.crop || currentState.isAnswerRevealed) return;
-
-    const stateName = getTargetStateName(path);
-    if (!stateName) return;
-
-    console.log("Clicked state:", stateName);
-
-    const correctStates = CROP_DATA[currentState.crop] || [];
-    if (correctStates.includes(stateName)) {
-      if (!currentState.selectedStates.has(stateName)) {
-        currentState.selectedStates.add(stateName);
-        highlightState(stateName, true);
-        updateSubmitButtonState();
-      }
-    } else {
-      highlightState(stateName, false);
-      if (elements.feedbackIncorrectPopup) {
-        elements.feedbackIncorrectPopup.style.display = "block";
-        elements.feedbackIncorrectPopup.classList.remove("st170");
-      }
-    }
-  };
-
-  const selectSeason = (season) => {
-    console.log("Selecting season:", season);
-    currentState.season = season;
-    hideAll();
-    let panel;
-    if (season === "Rabi") panel = elements.panelRabi;
-    if (season === "Kharif") panel = elements.panelKharif;
-    if (season === "Zaid") panel = elements.panelZaid;
-
-    if (panel) {
-      panel.style.display = "block";
-      panel.classList.remove("st170");
-
-      // Hide selected crop groups until a crop is picked
-      ['btn-rabi-selected', 'btn-Kharif-selected', 'btn-Zaid-selected'].forEach(id => {
-        const selectedContainer = document.getElementById(id);
-        if (selectedContainer) {
-          selectedContainer.style.display = "none";
-          selectedContainer.classList.add("st170");
-        }
-      });
-
-      elements.croplabel.classList.remove("st170");
-      elements.iTextHomeScreen.classList.add("st170");
-      elements.itextActivity.classList.remove("st170");
-      elements.panel02map.classList.remove("st170");
-      elements.itextcropmap.classList.add("st170"); // Hide until Got It is clicked
-      elements.globalButtons.classList.add("st170"); // Hide until Got It is clicked
-      elements.mapContainer.classList.remove("st170");
-      elements.panel01buttons.classList.remove("st170");
-      elements.homeBtn.classList.remove("st170"); // ensure home button is visible back to home screen
-    }
-  };
-
-  const selectCrop = (crop) => {
-    console.log("Selecting crop:", crop);
-    currentState.crop = crop;
-
-    // Show only the selected crop's proper SVG group designed by artists
-    ['btn-rabi-selected', 'btn-Kharif-selected', 'btn-Zaid-selected'].forEach(id => {
-      const selectedContainer = document.getElementById(id);
-      if (selectedContainer) {
-        selectedContainer.style.display = "block";
-        selectedContainer.classList.remove("st170"); // ensure wrapper is visible
-
-        Array.from(selectedContainer.children).forEach(childGroup => {
-          let hasMatch = false;
-          childGroup.querySelectorAll("tspan").forEach(tspan => {
-            // Trim and match crop name
-            if (tspan.textContent.trim() === crop) {
-              hasMatch = true;
-            }
-          });
-          childGroup.style.display = hasMatch ? "block" : "none";
-        });
-      }
-    });
-
-    // Do NOT hideAll(), we want to keep the menu visible.
-    // Just hide Activity Text and ensure correct state
-    //elements.itextActivity.classList.add("st170");
-
-    if (elements.cropPromptContainer) {
-      elements.cropPromptContainer.style.display = "block";
-      elements.cropPromptContainer.classList.remove("st170");
-
-      const count = CROP_DATA[crop]?.length || 0;
-      const promptTexts = elements.cropPromptText?.querySelectorAll("text tspan");
-      if (promptTexts && promptTexts.length >= 4) {
-        promptTexts[0].textContent = `${crop} selected! `;
-        promptTexts[1].textContent = `This crop is majorly grown in ${count} states/UTs `;
-      }
-
-      const titleText = elements.cropPromptTitle?.querySelector("text tspan");
-      if (titleText) {
-        titleText.textContent = crop;
-      }
-
-      const mapPromptTexts = elements.itextcropmap?.querySelectorAll("text tspan");
-      if (elements.itextcropmap) {
-        // Re-center all text elements in the prompt container manually
-        // We set the parent 'text' element to center alignment so tspans don't overlap
-        const texts = elements.itextcropmap.querySelectorAll("text");
-        texts.forEach(text => text.setAttribute("text-anchor", "middle"));
-
-        if (mapPromptTexts && mapPromptTexts.length >= 3) {
-          mapPromptTexts[0].textContent = `Identify and Tap ${count} major `;
-
-          // Re-adjust exact translate coordinates to prevent overlap when text is long
-          if (texts.length >= 3) {
-            texts[0].setAttribute("transform", "translate(1120 120)"); // 'Identify...'
-            texts[1].setAttribute("transform", "translate(1260 120)"); // 'sugarcane'
-            texts[2].setAttribute("transform", "translate(1420 120)"); // 'cultivating states'
-
-            // Crop name might be long, shift right text further right based on length
-            const cropLengthFactor = crop.length * 6;
-            texts[2].setAttribute("transform", `translate(${1380 + cropLengthFactor} 120)`);
-          }
-
-          mapPromptTexts[1].textContent = `${crop.toLowerCase()} `;
-        }
-      }
-
-      // Update success popup texts
-      if (elements.feedbackCorrectText) {
-        const successTexts = elements.feedbackCorrectText.querySelectorAll("text tspan");
-        if (successTexts && successTexts.length >= 4) {
-          successTexts[2].textContent = `identified all ${count} major ${crop} `;
-        }
-      }
-
-      if (elements.factsheetBtnText) {
-        const btnText = elements.factsheetBtnText.querySelector("text tspan");
-        if (btnText) {
-          btnText.textContent = `${crop} Factsheet`;
-        }
-      }
-
-      const centerSVGText = (tspan, xPosition) => {
-        if (!tspan) return;
-        const textNode = tspan.closest('text');
-        if (textNode) {
-          textNode.setAttribute('text-anchor', 'middle');
-          // Removing the transform and hardcoding the center X avoids the text being misaligned
-          // But we want to preserve the Y position from the transform
-          const transform = textNode.getAttribute('transform');
-          if (transform) {
-            const match = transform.match(/translate\(([-\d.]+)\s+([-\d.]+)\)/);
-            if (match) {
-              textNode.setAttribute('transform', `translate(${xPosition} ${match[2]})`);
-            }
-          }
-        }
-        tspan.setAttribute('x', '0');
-      };
-
-      // Update Factsheet Dialog
-      if (elements.factsheetTitle) {
-        const span = elements.factsheetTitle.querySelector("tspan");
-        if (span) {
-          span.textContent = `${crop} Factsheet`;
-          centerSVGText(span, 1370);
-        }
-      }
-
-      const facts = CROP_FACTS[crop];
-      if (facts) {
-        // Clear old states list and insert new ones
-        if (elements.factsheetStates) {
-          const tspans = Array.from(elements.factsheetStates.querySelectorAll("text tspan"));
-          // the first element is usually "States:" title
-          if (tspans.length > 0) {
-            tspans[0].textContent = "States:";
-            centerSVGText(tspans[0], 1106); // Center of States box
-            for (let i = 1; i < tspans.length; i++) {
-              tspans[i].textContent = CROP_DATA[crop][i - 1] || "";
-              centerSVGText(tspans[i], 1106);
-            }
-          }
-        }
-
-        // Climate
-        if (elements.factsheetClimate) {
-          const tspans = Array.from(elements.factsheetClimate.querySelectorAll("text tspan"));
-          if (tspans.length >= 4) {
-            tspans[1].textContent = facts.climate1;
-            centerSVGText(tspans[1], 1534); // Center of Climate box
-            tspans[2].textContent = facts.climate2;
-            centerSVGText(tspans[2], 1534);
-            tspans[3].textContent = facts.climate3;
-            centerSVGText(tspans[3], 1534);
-          }
-        }
-
-        // Soil
-        if (elements.factsheetSoil) {
-          const tspans = Array.from(elements.factsheetSoil.querySelectorAll("text tspan"));
-          if (tspans.length >= 3) {
-            tspans[1].textContent = facts.soil1;
-            centerSVGText(tspans[1], 1534);
-            tspans[2].textContent = facts.soil2;
-            centerSVGText(tspans[2], 1534);
-          }
-        }
-
-        // Variety
-        if (elements.factsheetVariety) {
-          const tspans = Array.from(elements.factsheetVariety.querySelectorAll("text tspan"));
-          if (tspans.length >= 7) {
-            tspans[1].textContent = facts.variety1;
-            centerSVGText(tspans[1], 1534);
-            tspans[2].textContent = facts.variety2;
-            centerSVGText(tspans[2], 1534);
-            tspans[3].textContent = facts.variety3;
-            centerSVGText(tspans[3], 1534);
-            tspans[4].textContent = facts.variety4;
-            centerSVGText(tspans[4], 1534);
-            tspans[5].textContent = facts.variety5;
-            centerSVGText(tspans[5], 1534);
-            tspans[6].textContent = facts.variety6;
-            centerSVGText(tspans[6], 1534);
-          }
-        }
-
-        // Fact
-        if (elements.factsheetFact) {
-          const tspans = Array.from(elements.factsheetFact.querySelectorAll("text tspan"));
-          if (tspans.length >= 3) {
-            tspans[1].textContent = facts.fact1;
-            centerSVGText(tspans[1], 1370); // Center of Fact box
-            tspans[2].textContent = facts.fact2;
-            centerSVGText(tspans[2], 1370);
-          }
-        }
-      }
-    }
-  };
-
-  // Event Listeners for Season Buttons (Home Screen)
-  elements.btnRabiHome?.addEventListener("click", () => selectSeason("Rabi"));
-  elements.btnKharifHome?.addEventListener("click", () =>
-    selectSeason("Kharif"),
-  );
-  elements.btnZaidHome?.addEventListener("click", () => selectSeason("Zaid"));
-
-  // Event Listeners for Crop Buttons
-  // Rabi
-  document
-    .getElementById("Wheat")
-    ?.addEventListener("click", () => selectCrop("Wheat"));
-  document
-    .getElementById("Barley")
-    ?.addEventListener("click", () => selectCrop("Barley"));
-  document
-    .getElementById("Mustard")
-    ?.addEventListener("click", () => selectCrop("Mustard"));
-  document
-    .getElementById("Chickpea")
-    ?.addEventListener("click", () => selectCrop("Chickpea"));
-  document
-    .getElementById("Peas")
-    ?.addEventListener("click", () => selectCrop("Peas"));
-
-  // Kharif
-  const riceBtn =
-    document.getElementById("Paddy_Rice_") ||
-    document.getElementById("Paddy_Rice_1");
-  riceBtn?.addEventListener("click", () => selectCrop("Paddy (Rice)"));
-  document
-    .getElementById("Sugarcane")
-    ?.addEventListener("click", () => selectCrop("Sugarcane"));
-  document
-    .getElementById("Cotton")
-    ?.addEventListener("click", () => selectCrop("Cotton"));
-  document
-    .getElementById("Jute")
-    ?.addEventListener("click", () => selectCrop("Jute"));
-  document
-    .getElementById("Tea")
-    ?.addEventListener("click", () => selectCrop("Tea"));
-  document
-    .getElementById("Coffee")
-    ?.addEventListener("click", () => selectCrop("Coffee"));
-  document
-    .getElementById("Rubber")
-    ?.addEventListener("click", () => selectCrop("Rubber"));
-
-  // Zaid
-  document
-    .getElementById("Watermelon")
-    ?.addEventListener("click", () => selectCrop("Watermelon"));
-  document
-    .getElementById("Muskmelon")
-    ?.addEventListener("click", () => selectCrop("Muskmelon"));
-  document
-    .getElementById("Moong_Dal")
-    ?.addEventListener("click", () => selectCrop("Moong Dal"));
-  document
-    .getElementById("Cucumber")
-    ?.addEventListener("click", () => selectCrop("Cucumber"));
-
-  // Popup Controls
-  elements.gotItBtn?.addEventListener("click", () => {
-    if (elements.cropPromptContainer) {
-      elements.cropPromptContainer.style.display = "none";
-      elements.cropPromptContainer.classList.add("st170");
-    }
-    if (elements.itextcropmap) {
-      elements.itextcropmap.style.display = "block";
-      elements.itextcropmap.classList.remove("st170");
-    }
-    if (elements.globalButtons) {
-      elements.globalButtons.style.display = "block";
-      elements.globalButtons.classList.remove("st170");
-    }
-    elements.submitBtn.style.opacity = "0.5";
-    elements.submitBtn.style.pointerEvents = "none";
-  });
-
-  elements.gotItIncorrectBtn?.addEventListener("click", () => {
-    if (elements.feedbackIncorrectPopup) {
-      elements.feedbackIncorrectPopup.style.display = "none";
-      elements.feedbackIncorrectPopup.classList.add("st170");
-    }
-  });
-
-  elements.factsheetBtn?.addEventListener("click", () => {
-    if (elements.feedbackCorrectPopup) {
-      elements.feedbackCorrectPopup.style.display = "none";
-      elements.feedbackCorrectPopup.classList.add("st170");
-    }
-    if (elements.factsheet) {
-      elements.factsheet.style.display = "block";
-      elements.factsheet.classList.remove("st170");
-    }
-  });
-
-  elements.tryAnotherCropBtn?.addEventListener("click", () => {
-    showHome();
-  });
-
-  // Global Buttons
-  elements.submitBtn?.addEventListener("click", () => {
-    if (currentState.selectedStates.size === 0) return;
-
-    const correctStates = CROP_DATA[currentState.crop] || [];
-    if (currentState.selectedStates.size === correctStates.length) {
-      if (elements.feedbackCorrectPopup) {
-        elements.feedbackCorrectPopup.style.display = "block";
-        elements.feedbackCorrectPopup.classList.remove("st170");
-      }
-    } else {
-      alert(
-        `Keep searching! You've found ${currentState.selectedStates.size} out of ${correctStates.length} states.`,
-      );
-    }
-  });
-
-  elements.showAnswerBtn?.addEventListener("click", () => {
-    const correctStates = CROP_DATA[currentState.crop] || [];
-    correctStates.forEach((s) => highlightState(s, true));
-    currentState.isAnswerRevealed = true;
-    setTimeout(() => {
-      if (elements.feedbackCorrectPopup) {
-        elements.feedbackCorrectPopup.style.display = "block";
-        elements.feedbackCorrectPopup.classList.remove("st170");
-      }
-    }, 2000);
-  });
-
-  elements.homeBtn?.addEventListener("click", () => {
-    showHome();
-  });
-
-  if (elements.mapContainer) {
-    elements.mapContainer.addEventListener("click", handleStateClick);
   }
 
-  // Initial call
+  // Also get the yellow stars from the highlighted bar (the ones with fill='#ffdf00')
+  if (highlightedBar) {
+    const yellowStars = highlightedBar.querySelectorAll('path[fill="#ffdf00"]');
+    elements.progressBarStars = Array.from(yellowStars).map((star) =>
+      star.closest("g"),
+    );
+  }
 
+  // --- Helper Functions ---
+
+  function getMousePosition(evt) {
+    const svg = document.querySelector("svg");
+    const CTM = svg.getScreenCTM();
+    if (evt.touches) {
+      evt = evt.touches[0];
+    }
+    return {
+      x: (evt.clientX - CTM.e) / CTM.a,
+      y: (evt.clientY - CTM.f) / CTM.d,
+    };
+  }
+
+  // Returns the circleId if the dragged element is near any drop zone for the current question
+  function getIntersectingZone(el) {
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+    // Each question has a circleId as its drop zone
+    const targetCircle = document.getElementById(qData.circleId);
+    if (!targetCircle) return null;
+
+    const elRect = el.getBoundingClientRect();
+    const targetRect = targetCircle.getBoundingClientRect();
+
+    // Check for overlap with padding
+    const padding = 20;
+    const isIntersecting = !(
+      elRect.right < targetRect.left - padding ||
+      elRect.left > targetRect.right + padding ||
+      elRect.bottom < targetRect.top - padding ||
+      elRect.top > targetRect.bottom + padding
+    );
+
+    // Highlight drop zone if intersecting
+    if (isIntersecting) {
+      targetCircle.classList.add("highlight-brick");
+    } else {
+      targetCircle.classList.remove("highlight-brick");
+    }
+
+    return isIntersecting ? qData.circleId : null;
+  }
+
+  function snapToZone(el, zoneId) {
+    const target = document.getElementById(zoneId);
+    if (!target) return;
+
+    let cx, cy;
+    // If target is a group, find the first shape child to get coordinates
+    if (target.tagName === "g") {
+      const child = target.querySelector("ellipse, circle, rect");
+      if (child) {
+        cx = parseFloat(
+          child.getAttribute("cx") || child.getAttribute("x") || 0,
+        );
+        cy = parseFloat(
+          child.getAttribute("cy") || child.getAttribute("y") || 0,
+        );
+      } else {
+        const bbox = target.getBBox();
+        cx = bbox.x + bbox.width / 2;
+        cy = bbox.y + bbox.height / 2;
+      }
+    } else {
+      cx = parseFloat(
+        target.getAttribute("cx") || target.getAttribute("x") || 0,
+      );
+      cy = parseFloat(
+        target.getAttribute("cy") || target.getAttribute("y") || 0,
+      );
+    }
+
+    if (
+      el.tagName === "ellipse" ||
+      el.tagName === "circle" ||
+      el.tagName === "Layer"
+    ) {
+      el.setAttribute("cx", cx);
+      el.setAttribute("cy", cy);
+    } else if (el.tagName === "g") {
+      // For groups, we use transform translate to center the group on cx, cy
+      const bbox = el.getBBox();
+      const tx = cx - (bbox.x + bbox.width / 2);
+      const ty = cy - (bbox.y + bbox.height / 2);
+      el.setAttribute("transform", `translate(${tx}, ${ty})`);
+    } else {
+      const bbox = el.getBBox();
+      el.setAttribute("x", cx - bbox.width / 2);
+      el.setAttribute("y", cy - bbox.height / 2);
+    }
+  }
+
+  function snapToOriginal(el) {
+    const pos = originalPositions[el.id];
+    if (pos) {
+      if (el.tagName === "ellipse" || el.tagName === "circle") {
+        el.setAttribute("cx", pos.x);
+        el.setAttribute("cy", pos.y);
+      } else if (el.tagName === "g") {
+        el.setAttribute("transform", pos.transform || "");
+      } else {
+        el.setAttribute("x", pos.x);
+        el.setAttribute("y", pos.y);
+      }
+    }
+  }
+
+  function startDrag(evt) {
+    if (isLocked) return;
+    if (
+      elements.popups.correct.style.display === "block" ||
+      elements.popups.incorrect.style.display === "block"
+    )
+      return;
+
+    const el = evt.currentTarget;
+    draggedElement = el;
+    draggedElement.classList.add("dragging");
+    document.body.classList.add("grabbing-cursor");
+
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+
+    // Find parent option set to store index BEFORE moving el in DOM
+    const parentGroup = el.closest("g[id^='option-set-']");
+    if (parentGroup) {
+      const options = Array.from(parentGroup.children).filter(
+        (c) => c.tagName === "g",
+      );
+      let optContainer = el;
+      while (optContainer && !options.includes(optContainer)) {
+        optContainer = optContainer.parentNode;
+      }
+      draggedOptionIndex = options.indexOf(optContainer);
+    } else {
+      draggedOptionIndex = -1;
+    }
+
+    const svg = document.querySelector("svg");
+    svg.appendChild(draggedElement);
+
+    const coord = getMousePosition(evt);
+
+    if (el.tagName === "g") {
+      // For groups, handle transform-based offset
+      const transform = el.getAttribute("transform") || "";
+      const match = transform.match(/translate\(([^,]+),? ?([^)]+)\)/);
+      const tx = match ? parseFloat(match[1]) : 0;
+      const ty = match ? parseFloat(match[2]) : 0;
+      offset.x = coord.x - tx;
+      offset.y = coord.y - ty;
+    } else {
+      const currentX = parseFloat(
+        el.getAttribute("cx") || el.getAttribute("x") || 0,
+      );
+      const currentY = parseFloat(
+        el.getAttribute("cy") || el.getAttribute("y") || 0,
+      );
+      offset.x = coord.x - currentX;
+      offset.y = coord.y - currentY;
+    }
+
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", endDrag);
+    document.addEventListener("touchmove", drag, { passive: false });
+    document.addEventListener("touchend", endDrag);
+
+    // const qData = GAME_CONFIG.questions[currentQuestionIndex];
+    const targetCircle = document.getElementById(qData.circleId);
+    if (targetCircle) {
+      targetCircle.setAttribute("opacity", "1");
+      targetCircle.style.stroke = "#ff6600";
+      targetCircle.style.strokeWidth = "3";
+    }
+  }
+
+  function drag(evt) {
+    if (!draggedElement) return;
+    evt.preventDefault();
+    const coord = getMousePosition(evt);
+
+    if (draggedElement.tagName === "g") {
+      draggedElement.setAttribute(
+        "transform",
+        `translate(${coord.x - offset.x}, ${coord.y - offset.y})`,
+      );
+    } else if (
+      draggedElement.tagName === "ellipse" ||
+      draggedElement.tagName === "circle" ||
+      draggedElement.tagName === "Layer"
+    ) {
+      draggedElement.setAttribute("cx", coord.x - offset.x);
+      draggedElement.setAttribute("cy", coord.y - offset.y);
+    } else {
+      draggedElement.setAttribute("x", coord.x - offset.x);
+      draggedElement.setAttribute("y", coord.y - offset.y);
+    }
+
+    // Dropzone feedback
+    const dropZoneId = getIntersectingZone(draggedElement);
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+    const targetCircle = document.getElementById(qData.circleId);
+    if (targetCircle) {
+      if (dropZoneId) {
+        targetCircle.classList.add("highlight-brick");
+      } else {
+        targetCircle.classList.remove("highlight-brick");
+      }
+    }
+  }
+
+  function endDrag(evt) {
+    if (!draggedElement) return;
+
+    const el = draggedElement;
+    el.classList.remove("dragging");
+    document.body.classList.remove("grabbing-cursor");
+
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseup", endDrag);
+    document.removeEventListener("touchmove", drag);
+    document.removeEventListener("touchend", endDrag);
+
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+    const targetCircle = document.getElementById(qData.circleId);
+    if (targetCircle) {
+      targetCircle.classList.remove("highlight-brick");
+    }
+
+    const dropZoneId = getIntersectingZone(el);
+    if (dropZoneId === qData.circleId) {
+      // Snap the icon to the center of the drop zone (circleId)
+      snapToZone(el, dropZoneId);
+
+      let isCorrect = (draggedOptionIndex === qData.correctOptionIndex);
+
+      if (isCorrect) {
+        // Correct drop
+        targetCircle.classList.remove("active-brick-circle");
+        targetCircle.classList.add("correct-brick-fill");
+
+        // Remove pin and add checkmark
+        removePin(qData.circleId);
+        addCheckmark(qData.circleId);
+
+        updateFeedbackPopup(qData);
+        if (elements.progressBarStars[currentQuestionIndex]) {
+          showElement(elements.progressBarStars[currentQuestionIndex]);
+        }
+        el.style.pointerEvents = "none"; // Lock correct card
+      } else {
+        // Wrong drop on current brick
+        setTimeout(() => snapToOriginal(el), 200);
+        showElement(elements.popups.incorrect);
+      }
+    } else {
+      // Dropped elsewhere or on wrong brick
+      snapToOriginal(el);
+    }
+
+    draggedElement = null;
+  }
+
+  function addPin(circleId) {
+    const target = document.getElementById(circleId);
+    if (!target) return;
+    const bbox = target.getBBox();
+    const pin = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    pin.setAttribute("x", bbox.x + bbox.width / 2);
+    pin.setAttribute("y", bbox.y + bbox.height / 2 + 5);
+    pin.setAttribute("text-anchor", "middle");
+    pin.setAttribute("font-size", "30");
+    pin.setAttribute("id", "pin-" + circleId);
+    pin.classList.add("checkmark-icon");
+    pin.textContent = "📍";
+    target.parentNode.appendChild(pin);
+  }
+
+  function removePin(circleId) {
+    const pin = document.getElementById("pin-" + circleId);
+    if (pin) pin.remove();
+  }
+
+  function addCheckmark(circleId) {
+    const target = document.getElementById(circleId);
+    if (!target) return;
+    const bbox = target.getBBox();
+    const check = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    check.setAttribute("x", bbox.x + bbox.width / 2);
+    check.setAttribute("y", bbox.y + bbox.height / 2 + 5);
+    check.setAttribute("text-anchor", "middle");
+    check.setAttribute("font-size", "30");
+    check.setAttribute("fill", "#fff");
+    check.classList.add("checkmark-icon");
+    check.textContent = "✓";
+    target.parentNode.appendChild(check);
+  }
+
+  function showElement(el) {
+    if (el) el.style.display = "block";
+  }
+
+  function hideElement(el) {
+    if (el) el.style.display = "none";
+  }
+
+  function hideAllPopups() {
+    Object.values(elements.popups).forEach(hideElement);
+  }
+
+  function updateFeedbackPopup(qData) {
+    const popupCorrect = elements.popups.correct;
+    const feedbackGroup = popupCorrect.querySelector('g[id^="Correct"]');
+    if (feedbackGroup) {
+      const textNode = feedbackGroup.querySelector("text");
+      if (textNode) {
+        let feedback = qData.feedback;
+        let maxCharsPerLine = 25;
+
+        let lines = [];
+        let start = 0;
+        while (start < feedback.length && lines.length < 3) {
+          let end = start + maxCharsPerLine;
+          if (end < feedback.length) {
+            let spaceIndex = feedback.lastIndexOf(" ", end);
+            if (spaceIndex > start) {
+              end = spaceIndex;
+            }
+          } else {
+            end = feedback.length;
+          }
+          lines.push(feedback.slice(start, end).trim());
+          start = end + 1;
+        }
+
+        while (textNode.firstChild) {
+          textNode.removeChild(textNode.firstChild);
+        }
+
+        const popupWidth = 100;
+        const centerX = popupWidth / 2;
+        textNode.setAttribute("text-anchor", "middle");
+        textNode.setAttribute("x", centerX);
+
+        lines.forEach((line, idx) => {
+          const tspan = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "tspan",
+          );
+          tspan.setAttribute("x", centerX);
+          tspan.setAttribute("dy", idx === 0 ? "0" : "1.2em");
+          tspan.textContent = line;
+          textNode.appendChild(tspan);
+        });
+      }
+    }
+    showElement(popupCorrect);
+  }
+
+  function updateQuestionUI() {
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+
+    // UI State Management
+    showElement(elements.activityPyramid);
+    showElement(elements.questionPanel);
+    hideElement(elements.introBox);
+
+    hideElement(elements.instructions.intro);
+    hideElement(elements.instructions.introItext);
+    showElement(elements.instructions.question);
+    showElement(elements.instructions.activityItext);
+
+    hideElement(elements.popups.correct);
+    hideElement(elements.popups.incorrect);
+
+    // Show progress bar and insights button on question screen
+    showElement(elements.progressBar);
+    showElement(elements.btns.insights);
+
+    // Show the appropriate pyramid level based on question number
+    hideElement(elements.pyramidLevels.l1);
+    hideElement(elements.pyramidLevels.l2);
+    hideElement(elements.pyramidLevels.l3);
+    hideElement(elements.pyramidLevels.final);
+
+    if (qData.id <= 3) showElement(elements.pyramidLevels.l1);
+    else if (qData.id <= 6) showElement(elements.pyramidLevels.l2);
+    else if (qData.id <= 9) showElement(elements.pyramidLevels.l3);
+
+    // Show clickable circles
+    showElement(elements.clickableCircles);
+    isAwaitingPyramidClick = false;
+
+    // Set active brick
+    const targetCircle = document.getElementById(qData.circleId);
+    if (targetCircle) {
+      targetCircle.classList.add("active-brick-circle");
+      addPin(qData.circleId);
+    }
+    if (elements.questionTexts.group) {
+      const textElements =
+        elements.questionTexts.group.querySelectorAll("text");
+
+      if (textElements.length >= 3) {
+        // Extract question number
+        const questionStr = qData.question;
+        const questionNum = qData.id;
+
+        // Get scenario part (everything after "Question X: ")
+        const scenarioIndex = questionStr.indexOf("Scenario:");
+        let scenarioText = "";
+        if (scenarioIndex !== -1) {
+          scenarioText = questionStr.substring(scenarioIndex);
+        }
+
+        // Split scenario into two lines - aim for ~50 chars per line
+        let line1 = "";
+        let line2 = "";
+        const words = scenarioText.split(" ");
+        let charCount = 0;
+
+        for (let i = 0; i < words.length; i++) {
+          const testLine = line1 ? line1 + " " + words[i] : words[i];
+          if (testLine.length <= 51) {
+            line1 = testLine;
+          } else {
+            line2 = words.slice(i).join(" ");
+            break;
+          }
+        }
+
+        // If line2 is empty, put everything in line1
+        if (!line2) {
+          line1 = scenarioText;
+        }
+
+        // Update first text element - "Question X:"
+        const firstText = textElements[0].querySelectorAll("tspan");
+        if (firstText && firstText.length >= 1) {
+          firstText[0].textContent = "Q";
+          if (firstText[1])
+            firstText[1].textContent = "uestion " + questionNum + ": ";
+        }
+
+        // Update second text element - first line of scenario
+        const secondText = textElements[1].querySelector("tspan");
+        if (secondText) {
+          secondText.textContent = line1;
+        }
+
+        // Update third text element - second line of scenario
+        const thirdText = textElements[2].querySelector("tspan");
+        if (thirdText) {
+          thirdText.textContent = line2;
+        }
+      }
+    }
+
+    // Toggle Option Sets
+    elements.optionSets.forEach((set) => {
+      if (set.id === qData.options) {
+        showElement(set);
+        set.style.opacity = "1";
+      } else {
+        hideElement(set);
+      }
+    });
+  }
+
+  // --- Main Logic ---
+
+  function initGame() {
+    if (elements.startBtn) elements.startBtn.style.cursor = "pointer";
+
+    // Initial UI State: Show Intro, Hide everything else
+    showElement(elements.introBox);
+    showElement(elements.instructions.intro);
+    showElement(elements.instructions.introItext);
+
+    hideElement(elements.instructions.question);
+    hideElement(elements.instructions.activityItext);
+
+    hideElement(elements.activityPyramid);
+    hideElement(elements.questionPanel);
+    hideElement(elements.popups.correct);
+    hideElement(elements.popups.incorrect);
+    hideElement(elements.popups.insights);
+    hideElement(elements.clickableCircles);
+    hideElement(elements.progressBar);
+    hideElement(elements.btns.insights);
+    // Hide all highlighted progress bar stars initially
+    if (elements.progressBarStars.length > 0) {
+      elements.progressBarStars.forEach((star) => hideElement(star));
+    }
+
+    // Hide all pyramid tiers and final summary
+    hideElement(elements.pyramidLevels.l1);
+    hideElement(elements.pyramidLevels.l2);
+    hideElement(elements.pyramidLevels.l3);
+    hideElement(elements.pyramidLevels.final);
+
+    // Hide all option sets
+    elements.optionSets.forEach(hideElement);
+
+    isAwaitingPyramidClick = false;
+    currentQuestionIndex = 0;
+  }
+
+  elements.startBtn.addEventListener("click", () => {
+    hideElement(elements.introBox);
+    showElement(elements.activityPyramid);
+    updateQuestionUI();
+  });
+
+  // Handle Option Clicks and Drag & Drop
+  elements.optionSets.forEach((set) => {
+    // Select only direct child groups to avoid nested triggers
+    const options = Array.from(set.children).filter((c) => c.tagName === "g");
+    options.forEach((opt, index) => {
+      opt.style.cursor = "pointer";
+
+      // Click handler (REMOVED - now using Drag and Drop)
+      /*
+      opt.onclick = (e) => {
+        ...
+      };
+      */
+
+      // Find all targetable elements for drag and drop
+      // User provided specific IDs for icons
+      const draggableSelectors = [
+        // '[id^="Ellipse_"]',
+        'ellipse[id="Ellipse_17-2"]',
+        'g[id="icon1"]',
+        'g[id="icon3"]',
+        'g[id="icon4"]',
+        'g[id="icon5"]',
+        'g[id="icon6"]',
+        'g[id="icon7"]',
+        'g[id="Layer_1-6-2"]',
+        'g[id="Layer_1-6-3"]',
+        'g[id="Layer_1-4-2"]',
+        'g[id="Layer_1-4-3"]',
+        // 'g[id="Layer_1-4-2"]',
+        // 'g[id="Layer_1-6-2"]',
+        'g[id="Layer_1"]',
+        'g[id="Layer_1-4"]',
+        'g[id="Layer_1-6"]',
+        'g[id="Layer_1-4-4"]',
+        'g[id="Layer_1-4-5"]',
+        'g[id="Layer_1-6-4"]',
+        'g[id="Layer_1-6-5"]',
+        'g[id="Layer_1-4-5"]',
+        'g[id="Layer_1-4-6"]',
+        'g[id="Layer_1-6-6"]',
+        'g[id="Layer_1-4-7"]',
+        'g[id="Layer_1-6-7"]',
+      ];
+
+      const items = opt.querySelectorAll(draggableSelectors.join(","));
+
+      items.forEach((item) => {
+        let el = item;
+        // If the item is an ellipse/circle inside a group with no ID,
+        // make the parent group draggable instead so the icon path moves too.
+        if (
+          (el.tagName === "ellipse" || el.tagName === "circle") &&
+          el.parentNode.tagName === "g" &&
+          !el.parentNode.id
+        ) {
+          el = el.parentNode;
+          if (!el.id) {
+            el.id = "drag-group-auto-" + dragIdCounter++;
+          }
+        }
+
+        el.style.cursor = "grab";
+        if (el.id && !originalPositions[el.id]) {
+          if (el.tagName === "g") {
+            const transform = el.getAttribute("transform") || "";
+            originalPositions[el.id] = { transform: transform };
+          } else {
+            originalPositions[el.id] = {
+              x: parseFloat(el.getAttribute("cx") || el.getAttribute("x") || 0),
+              y: parseFloat(el.getAttribute("cy") || el.getAttribute("y") || 0),
+            };
+          }
+        }
+        el.addEventListener("mousedown", startDrag);
+        el.addEventListener("touchstart", startDrag, { passive: false });
+      });
+    });
+  });
+
+  elements.btns.proceed.addEventListener("click", () => {
+    hideElement(elements.popups.correct);
+    // Proceed to next state (next question or end)
+    proceedToNext();
+  });
+
+  function proceedToNext() {
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+
+    // Show the corresponding tier
+    if (qData.id <= 3) showElement(elements.pyramidLevels.l1);
+    else if (qData.id <= 6) showElement(elements.pyramidLevels.l2);
+    else if (qData.id <= 9) showElement(elements.pyramidLevels.l3);
+
+    // Move to next question or end
+    currentQuestionIndex++;
+    if (currentQuestionIndex < GAME_CONFIG.totalQuestions) {
+      updateQuestionUI();
+    } else {
+      showElement(elements.pyramidLevels.final);
+      hideElement(elements.questionPanel);
+      hideElement(elements.instructions.question);
+      hideElement(elements.instructions.activityItext);
+    }
+  }
+
+  elements.btns.tryAgain.addEventListener("click", () => {
+    hideElement(elements.popups.incorrect);
+  });
+
+  // Handle Pyramid Building Click (REMOVED - now handled by proceedToNext)
+  /*
+  elements.clickableCircles.addEventListener("click", (e) => {
+    ...
+  });
+  */
+
+  // Insights
+  if (elements.btns.insights) {
+    elements.btns.insights.style.cursor = "pointer";
+    elements.btns.insights.addEventListener("click", () =>
+      showElement(elements.popups.insights),
+    );
+  }
+  if (elements.btns.closeInsights) {
+    elements.btns.closeInsights.style.cursor = "pointer";
+    elements.btns.closeInsights.addEventListener("click", () =>
+      hideElement(elements.popups.insights),
+    );
+  }
+
+  // Play Again
+  if (elements.btns.playAgain) {
+    elements.btns.playAgain.style.cursor = "pointer";
+    elements.btns.playAgain.addEventListener("click", () => {
+      currentQuestionIndex = 0;
+      initGame();
+    });
+  }
+
+  // Modal Buttons
+  if (elements.btns.proceed) elements.btns.proceed.style.cursor = "pointer";
+  if (elements.btns.tryAgain) elements.btns.tryAgain.style.cursor = "pointer";
+  if (elements.clickableCircles)
+    elements.clickableCircles.style.cursor = "pointer";
+
+  initGame();
 });

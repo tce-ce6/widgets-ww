@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         learnPanel2.style.display = "none";
         learnPanel3.style.display = "none";
         practiseScreen.style.display = "none";
-        homeBtn.style.display = "none";
+        // homeBtn.style.display = "none"; // Keep home button visible everywhere
         nextBtn.style.display = "none";
         progressBar.style.display = "none";
         incorrect.style.display = "none";
@@ -179,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function initGame() {
         hideAll();
         introScreen.style.display = "block";
+        homeBtn.style.display = "block";
     }
 
     // Update the SVG text content inside a group by replacing the first tspan text
@@ -204,9 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const path = nextBtn.querySelector("#Path_21");
         if (path) {
             if (label === "Show Passive Voice") {
-                path.setAttribute("d", "M886.53,1095.34h320c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-320c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z");
+                path.setAttribute("d", "M886.53,1150.34h320c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-320c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z");
             } else {
-                path.setAttribute("d", "M988.53,1095.34h116c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-116c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z");
+                path.setAttribute("d", "M988.53,1150.34h116c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-116c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z");
             }
         }
     }
@@ -660,7 +661,7 @@ document.addEventListener("DOMContentLoaded", () => {
         practiseScreen.style.display = "block";
         feedback.style.opacity = "1";
         IText.style.display = "block";
-        homeBtn.style.display = "block";
+        // homeBtn.style.display = "block"; // Already shown in initGame/persistent
         progressBar.style.display = "block";
         nextBtn.style.display = "none";
         correct.style.display = "none";
@@ -677,16 +678,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const q = practiseQuestions[index];
         practiseFilledSlots = Array(q.answer.length).fill(null);
 
+        // Moved Y from 40 to 10 to give more room at bottom
+        practiseScreen.setAttribute("transform", "translate(150, 10) scale(0.85)");
+
         const needsRow3 = q.answer.length > 8;
+        const helpBox = document.querySelector("#Practise_screen #Group_702");
         if (needsRow3) {
-            practiseScreen.setAttribute("transform", "translate(150, 40) scale(0.85)");
-            const helpBox = document.querySelector("#Practise_screen #Group_702");
-            if (helpBox) Object.assign(helpBox.style, { transform: "translateY(54px)" });
+            if (helpBox) helpBox.setAttribute("transform", "translate(0, 208)"); // Increatest spacing
         } else {
-            practiseScreen.removeAttribute("transform");
-            const helpBox = document.querySelector("#Practise_screen #Group_702");
-            if (helpBox) Object.assign(helpBox.style, { transform: "" });
+            if (helpBox) helpBox.setAttribute("transform", "translate(0, 100)"); // Base spacing for 2 rows
         }
+
+        // Move feedback and button groups lower (Y=150) than the game panel (Y=10)
+        [nextBtn, correct, incorrect].forEach(el => {
+            if (el) el.setAttribute("transform", "translate(150, 150) scale(0.85)");
+        });
 
 
         // Update progress bar
@@ -700,7 +706,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update the active sentence text in the SVG
         const activeSentenceText = document.querySelector("#Practise_screen #Group_2-2 text");
         if (activeSentenceText) {
+            activeSentenceText.setAttribute("text-anchor", "middle");
+            activeSentenceText.setAttribute("transform", "translate(1035 372)");
             activeSentenceText.innerHTML = `<tspan x="0" y="0">${q.active}</tspan>`;
+            adjustActiveSentenceBoxWidth("#Practise_screen #Group_2-2 text", "#Practise_screen #Group_618-2 rect");
         }
 
         // Set up option pill groups
@@ -814,6 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
 
                 box.appendChild(filledG);
+                scaleTextToFit(wordText, rw - 24); // Scaling for Practise slots
 
                 // Make the dash border solid
                 if (dashRect) dashRect.setAttribute("stroke-dasharray", "");
@@ -886,6 +896,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 1; i < tspans.length; i++) tspans[i].textContent = "";
             if (tspans[0]) tspans[0].textContent = q.sentence1;
             else s1Group.textContent = q.sentence1;
+            adjustActiveSentenceBoxWidth("#Question_2_panel_1 #Group_2 text", "#Question_2_panel_1 #Group_618 rect");
         }
 
         // 2. Update sentence 2 prefix in Panel 2
@@ -1133,6 +1144,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
 
                 dropZonesParent.appendChild(clone);
+                scaleTextToFit(wordText, dstW - 24); // Scaling for Learn slots
                 filledSlots[emptySlotIndex] = { word, clone };
                 clones.push(clone);
 
@@ -1204,4 +1216,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     initGame();
+
+    function adjustActiveSentenceBoxWidth(textSelector, rectSelector) {
+        const textEl = document.querySelector(textSelector);
+        const rects = document.querySelectorAll(rectSelector);
+        if (!textEl || rects.length === 0) return;
+
+        // Get the actual width of the text
+        const textWidth = textEl.getComputedTextLength();
+        const padding = 120; // More padding for premium look
+        const minWidth = 800; // Increased min width
+        const finalWidth = Math.max(minWidth, textWidth + padding);
+
+        // Center point is x=1035
+        const centerX = 1035;
+        const newX = centerX - finalWidth / 2;
+
+        rects.forEach(rect => {
+            rect.setAttribute("width", finalWidth);
+            rect.setAttribute("x", newX);
+        });
+    }
+
+    function scaleTextToFit(textEl, maxWidth, initialFontSize = 38) {
+        if (!textEl) return;
+        let fontSize = initialFontSize;
+        textEl.setAttribute("font-size", fontSize);
+        while (textEl.getComputedTextLength() > maxWidth && fontSize > 10) {
+            fontSize -= 1;
+            textEl.setAttribute("font-size", fontSize);
+        }
+    }
 });
