@@ -144,7 +144,6 @@ const UI = {
     btnNext: null,        // Stage 1 Next (Group_594)
     btnGenGametes: null,  // Next1 — Generate Gametes  (S2→S3)
     btnAutoFillF1: null,  // Next2 — Auto-fill F1       (S3)
-    btnAutoFillF1Group: null, // Group_5942
     btnNextS3: null,      // Group_5946 - Next in stage 3
     btnGenF2Gametes: null,// Next3 — Generate F2 Gametes (S4→S5)
     btnNextS5: null,      // Next4 — Next in stage 5       (S5→S6)
@@ -170,6 +169,7 @@ const UI = {
 function show(el) {
     if (!el) return;
     el.style.display = 'block';
+    el.style.visibility = 'visible'; // Ensure visibility is restored
     el.classList.remove('st656');
 }
 function hide(el) {
@@ -230,18 +230,19 @@ function cacheElements() {
     }
 
     UI.btnNext = document.getElementById('Group_594');
-    UI.btnGenGametes = document.getElementById('Next1');
-    UI.btnAutoFillF1 = document.getElementById('Next2');
-    UI.btnAutoFillF1Group = document.getElementById('Group_5942');
+    UI.btnGenGametes = document.getElementById('Group_5941'); // parent of Next1
+    UI.btnAutoFillF1 = document.getElementById('Group_5942'); // parent of Next2
     UI.btnNextS3 = document.getElementById('Group_5946');
-    UI.btnGenF2Gametes = document.getElementById('Next3');
-    UI.btnNextS5 = document.getElementById('Next4');
-    UI.btnAutoFillF2 = document.getElementById('Next5');
-    UI.btnResetAll = document.getElementById('Reset_All');
-    UI.btnReset = document.getElementById('Reset');
+    UI.btnGenF2Gametes = document.getElementById('Group_5943'); // parent of Next3
+    UI.btnNextS5 = document.getElementById('Group_5944'); // parent of Next4
+    UI.btnAutoFillF2 = document.getElementById('Group_5945'); // parent of Next5
 
     UI.resetGroup = document.getElementById('Group_31');
     UI.resetAllGroup = document.getElementById('Group_113');
+
+    // Button aliases for events
+    UI.btnReset = UI.resetGroup;
+    UI.btnResetAll = UI.resetAllGroup;
 
     // Drop zones
     if (UI.s2Base) UI.s2Drops = Array.from(UI.s2Base.querySelectorAll('.st235'));
@@ -277,12 +278,15 @@ function setupEvents() {
     });
 
     // S3 → S4: Auto-fill F1 (GATED: only works in stage 3)
-    _btnOn(UI.btnAutoFillF1, () => {
+    _btnOn(UI.btnAutoFillF1, (e) => {
         if (WidgetState.stage !== 3) return;
+        // Prevent double fire or automatic progression
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+
         console.log('[WG48] Auto-fill F1 clicked → reveal cells → show Stage 3 Next');
         _revealF1Cells();
         // Stay on screen, hide auto-fill, show Next
-        hide(UI.btnAutoFillF1Group);
+        hide(UI.btnAutoFillF1);
         show(UI.btnNextS3);
     });
 
@@ -345,6 +349,13 @@ function onTraitClick(idx) {
     }
     console.log('[WG48] Traits:', WidgetState.selectedTraits);
     _updateTraitHighlights();
+
+    // Enable Next only when 2 traits are selected
+    if (WidgetState.selectedTraits.length === 2) {
+        enableBtn(UI.btnNext);
+    } else {
+        disableBtn(UI.btnNext);
+    }
 }
 
 function _updateTraitHighlights() {
@@ -397,6 +408,7 @@ function goToStage2() {
 
     hideAllStages();
     hide(UI.btnNext);  // hide global Next — no overlap with stage buttons
+    show(UI.resetGroup); // Show reset button once simulation starts
 
     show(UI.s2Base);
     const card = UI.s2Cards[WidgetState.combinationId - 1];
@@ -420,7 +432,7 @@ function goToStage3() {
     // Hide filled cells — user must click Auto-fill to see them
     _hideF1Cells();
 
-    show(UI.btnAutoFillF1Group);
+    show(UI.btnAutoFillF1);
     hide(UI.btnNextS3);
 
     enableBtn(UI.btnAutoFillF1);
@@ -613,7 +625,9 @@ function onDragEnd(e) {
 
     if (acceptedDrop) {
         console.log(`[WG48] ${role} dropped into a zone`);
-        _snapToZone(el, acceptedDrop);
+        // Apply scaling for parents (S2) and F1 offspring (S4) to fit nicely in the boxes
+        const scaleVal = (isS2 || isS4) ? 0.8 : 1.0;
+        _snapToZone(el, acceptedDrop, scaleVal);
         acceptedDrop.setAttribute('data-occupied', 'true');
         el.setAttribute('data-drag-picked', 'done');
         el.style.cursor = 'default';
@@ -622,6 +636,11 @@ function onDragEnd(e) {
         if (isS2) {
             WidgetState.s2DroppedCount++;
             console.log(`[WG48] S2 dropped: ${WidgetState.s2DroppedCount}/2`);
+
+            // Hide the instruction text for this specific drop zone
+            if (acceptedDrop === UI.s2Drops[0]) hideById('Drag_Dominant_Parent_Here');
+            else if (acceptedDrop === UI.s2Drops[1]) hideById('Drag_Recessive_Parent_Here');
+
             if (WidgetState.s2DroppedCount >= 2) {
                 enableBtn(UI.btnGenGametes);
                 console.log('[WG48] Both parents dropped → Generate Gametes enabled');
@@ -629,6 +648,11 @@ function onDragEnd(e) {
         } else if (isS4) {
             WidgetState.s4DroppedCount++;
             console.log(`[WG48] S4 dropped: ${WidgetState.s4DroppedCount}/2`);
+
+            // Hide the instruction text for this specific drop zone
+            if (acceptedDrop === UI.s4Drops[0]) hideById('Drop_F1_Offspring_1_here');
+            else if (acceptedDrop === UI.s4Drops[1]) hideById('Drop_F1_Offspring_2_here');
+
             if (WidgetState.s4DroppedCount >= 2) {
                 enableBtn(UI.btnGenF2Gametes);
                 console.log('[WG48] Both F1 offspring dropped → Generate F2 Gametes enabled');
@@ -651,7 +675,14 @@ function _overlaps(elA, elB) {
 }
 
 /** Snap el centre to dropEl centre (screen → SVG coordinate conversion) */
-function _snapToZone(dragEl, dropEl) {
+function _snapToZone(dragEl, dropEl, scale = 1.0) {
+    if (scale !== 1.0) {
+        const currentTx = dragEl.getAttribute('transform') || '';
+        if (!currentTx.includes('scale')) {
+            dragEl.setAttribute('transform', currentTx + ` scale(${scale})`);
+        }
+    }
+
     const dBB = dragEl.getBoundingClientRect();
     const zBB = dropEl.getBoundingClientRect();
 
@@ -667,7 +698,10 @@ function _snapToZone(dragEl, dropEl) {
     const cx = m ? parseFloat(m[1]) : 0;
     const cy = m ? parseFloat(m[2]) : 0;
 
-    dragEl.setAttribute('transform', `translate(${cx + dxSVG},${cy + dySVG})`);
+    const sMatch = tx.match(/scale\([\d.-]+\)/);
+    const sStr = sMatch ? sMatch[0] : "";
+
+    dragEl.setAttribute('transform', `translate(${cx + dxSVG},${cy + dySVG}) ${sStr}`.trim());
 }
 
 /* ─────────────────────────────────────────────
@@ -699,11 +733,27 @@ function resetWidget() {
     show(UI.btnNext);
 
     // Show Reset/ResetAll; disable stage-specific action buttons
-    // Show Reset; hide Reset All by default
-    show(UI.resetGroup);
+    // Hide Reset button initially on home; show Reset All ONLY when Stage 6 is reached (not here)
+    hide(UI.resetGroup);
     hide(UI.resetAllGroup);
 
+    disableBtn(UI.btnNext); // Initially disabled until 2 traits selected
     disableBtn(UI.btnGenGametes);
     disableBtn(UI.btnGenF2Gametes);
     disableBtn(UI.btnNextS5);
+
+    // Restore instructions
+    showById('Drag_Dominant_Parent_Here');
+    showById('Drag_Recessive_Parent_Here');
+    showById('Drop_F1_Offspring_1_here');
+    showById('Drop_F1_Offspring_2_here');
+
+    // Extra safety: explicitly hide all ratio cards and their potential display overrides
+    UI.s6Ratios.forEach(el => {
+        if (el) {
+            el.style.display = 'none';
+            // el.style.visibility = 'hidden'; // REMOVED: let st656 or show() handle it to avoid override issues
+            el.classList.add('st656');
+        }
+    });
 }

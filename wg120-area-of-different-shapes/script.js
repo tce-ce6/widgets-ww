@@ -495,7 +495,7 @@ function updateGameTable() {
   const finalStartY =
     332 +
     (574 - (tType === "rectangle" || tType === "parallelogram" ? 190 : 380)) /
-      2;
+    2;
 
   let visualElement;
   if (targetData.type === "rect") {
@@ -585,6 +585,9 @@ function resetPieces() {
     el.setAttribute("transform", transformStr);
     rotationState[id] = pos.rot;
 
+    const rotateBtn = el.querySelector(".rotate-btn");
+    if (rotateBtn) rotateBtn.style.display = "none";
+
     // 3. Create the light-colored background ghost
     const ghost = el.cloneNode(true);
     ghost.removeAttribute("id"); // Prevent ID duplication issues
@@ -630,6 +633,15 @@ function drag(evt) {
     "transform",
     `translate(${nx}, ${ny}) rotate(${rot})`,
   );
+
+  const rotateBtn = selectedElement.querySelector(".rotate-btn");
+  if (rotateBtn) {
+    if (nx > 650) {
+      rotateBtn.style.display = "block";
+    } else {
+      rotateBtn.style.display = "none";
+    }
+  }
 
   const pieceId = selectedElement.id;
 
@@ -751,7 +763,7 @@ function checkAnswer() {
     const target = document.getElementById("target-shape").value;
     const comboKey = `${source}_to_${target}`;
 
-    showSolutionBanner(comboKey, matchedSolution.solution_id);
+    showSolutionBanner(comboKey, matchedSolution.solution_id, true);
   } else {
     showTryAgain();
   }
@@ -783,16 +795,28 @@ function showAnswer() {
   showSolutionBanner(comboKey);
 }
 
-function showSolutionBanner(key, solutionId) {
+function showSolutionBanner(key, solutionId, isSubmit = false) {
   const banner = document.getElementById("solution-banner");
+  const backgroundTint = document.getElementById("for-solution");
   const title = document.getElementById("solution-title");
   const explanation = document.getElementById("solution-explanation");
-
+  backgroundTint.style.display = "block";
   const data = solutionFeedback[key];
   if (!data) return;
 
   title.textContent = data.title;
   explanation.textContent = data.explanation;
+
+  const bannerText = document.getElementById("solution-banner-text");
+  if (isSubmit) {
+    bannerText.textContent = "Puzzle Complete";
+    bannerText.style.background = "transparent";
+    bannerText.style.color = "#4CAF50";
+  } else {
+    bannerText.textContent = "Solution";
+    bannerText.style.background = "#4CAF50";
+    bannerText.style.color = "white";
+  }
 
   const source = document.getElementById("source-shape").value;
   const target = document.getElementById("target-shape").value;
@@ -813,7 +837,8 @@ function showSolutionBanner(key, solutionId) {
 
 function closeSolutionBanner() {
   const banner = document.getElementById("solution-banner");
-
+  const backgroundTint = document.getElementById("for-solution")
+  backgroundTint.style.display = 'none'
   banner.style.opacity = 0;
 
   setTimeout(() => {
