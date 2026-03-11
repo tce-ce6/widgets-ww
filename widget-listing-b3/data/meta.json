@@ -61,8 +61,8 @@
       "author": "aditya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-11T15:49:25+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-11T15:54:14+05:30",
+      "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
       "updatedAt": "2026-03-10T18:21:12+05:30",
@@ -339,6 +339,13 @@
   },
   "commits": [
     {
+      "date": "2026-03-11T15:54:14+05:30",
+      "author": "Shyam",
+      "widgets": [
+        120
+      ]
+    },
+    {
       "date": "2026-03-11T15:49:25+05:30",
       "author": "aditya",
       "widgets": [
@@ -557,17 +564,6 @@
       "author": "PrasannaP",
       "widgets": [
         149
-      ]
-    },
-    {
-      "date": "2026-03-09T19:48:15+05:30",
-      "author": "tce-ashishg",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
       ]
     }
   ]
