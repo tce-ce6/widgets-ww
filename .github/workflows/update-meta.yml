@@ -1,0 +1,80 @@
+name: Update widget meta
+
+# Runs on every push to deploy EXCEPT when the bot itself updates meta.json,
+# which would otherwise cause an infinite trigger loop.
+on:
+  push:
+    branches: [deploy]
+    paths-ignore:
+      - 'widget-listing-b3/data/meta.json'
+
+jobs:
+  update-meta:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history needed for accurate git log per folder
+
+      - name: Generate meta.json
+        run: |
+          python3 - <<'EOF'
+          import subprocess, json, os, re
+
+          # ── Per-folder: last commit date + author ──────────────────────────────
+          folders = {}
+          for name in sorted(os.listdir('.')):
+            if not os.path.isdir(name) or not re.match(r'^wg\d+', name):
+              continue
+            r = subprocess.run(
+              ['git', 'log', '-1', '--format=%aI\t%an', '--', name],
+              capture_output=True, text=True
+            )
+            line = r.stdout.strip()
+            if '\t' in line:
+              date, author = line.split('\t', 1)
+              folders[name] = {'updatedAt': date, 'author': author}
+
+          # ── Recent commits touching wg* folders (single git call) ──────────────
+          # --format=COMMIT\t<date>\t<author> followed by --name-only file list
+          log_out = subprocess.run(
+            ['git', 'log', '--format=COMMIT\t%aI\t%an', '--name-only', '-n', '300'],
+            capture_output=True, text=True
+          ).stdout
+
+          commits = []
+          current = None
+          for line in log_out.splitlines():
+            if line.startswith('COMMIT\t'):
+              if current is not None and current['widgets']:
+                commits.append(current)
+              parts = line.split('\t', 2)
+              current = {'date': parts[1], 'author': parts[2], 'widgets': set()}
+            elif current is not None and line.strip():
+              m = re.match(r'^wg(\d+)', line)
+              if m:
+                current['widgets'].add(int(m.group(1)))
+          if current is not None and current['widgets']:
+            commits.append(current)
+
+          # Convert sets → sorted lists, keep 30 most recent widget-touching commits
+          for c in commits:
+            c['widgets'] = sorted(c['widgets'])
+          commits = commits[:30]
+
+          os.makedirs('widget-listing-b3/data', exist_ok=True)
+          with open('widget-listing-b3/data/meta.json', 'w') as f:
+            json.dump({'folders': folders, 'commits': commits}, f, indent=2)
+          print(f'Generated: {len(folders)} folders, {len(commits)} commits')
+          EOF
+
+      - name: Commit meta.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add widget-listing-b3/data/meta.json
+          git diff --staged --quiet && echo "No changes" || \
+            git commit -m "chore: update widget meta [skip ci]" && git push

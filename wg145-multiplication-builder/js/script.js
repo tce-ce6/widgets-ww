@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const howToPlayModal = document.getElementById('how-to-play');
     const btnGotIt = document.getElementById('btn-got-it');
     const btnGotItText = document.getElementById('btn-got-it-text');
-
+    const howToPlayRect = document.getElementById('for-how-to-play');
     // Answer modal
     const answerModal = document.getElementById('answer-modal');
     const btnNewProblem = document.getElementById('btn-new-problem-answer-modal');
@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Playground → show how-to-play modal FIRST; mode switch happens on Got It click
         clickable(playgroundModeBtn, () => {
             show(howToPlayModal);
+            show(howToPlayRect)
             show(btnGotIt);
             show(btnGotItText);
         });
@@ -341,6 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
             animateModePanel(0);
 
             show(layer25);            // sliders area
+            show(layer50);            // Layer_50 (static pictures)
             show(picturePanelEl);     // picture-panel (teacher mode picture background)
             if (svgImagesGroup) svgImagesGroup.style.display = '';
             show(teacherThemeDropdown);   // Theme-drop-down
@@ -377,6 +379,10 @@ document.addEventListener("DOMContentLoaded", () => {
             hide(newProblemBtn);
             hide(problemPanel);
 
+            // Hide playground groups container
+            const pgGroupsContainer = document.getElementById('pg-groups-container');
+            if (pgGroupsContainer) pgGroupsContainer.style.display = 'none';
+
             // Reset to defaults
             state.groups = 3;
             state.items = 4;
@@ -387,6 +393,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Hide all teacher-mode elements
             hide(layer25);                // Layer_25 (sliders)
+            hide(layer50);                // Layer_50 (static pictures)
             hide(picturePanelEl);         // picture-panel (teacher-mode background)
             if (svgImagesGroup) svgImagesGroup.style.display = 'none';
             hide(teacherThemeDropdown);   // Theme-drop-down
@@ -405,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
             show(playgroundChooseThemeSection);   // playground-panel-choose-theme-section
             show(playgroundAddPictureSection);    // playground-panel-add-picture-section
             show(btnAddPicture);
-            show(btnAddPictureText);
+            if (btnAddPictureText) show(btnAddPictureText);
             show(btnCheckMyAnswer);               // btn-playground-panel-check-my-answer
             show(showAnswerBtn);                  // show-answer
             show(newProblemBtn);                  // new-problem
@@ -442,6 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeHowToPlay() {
         hide(howToPlayModal);
         hide(iText);
+        hide(howToPlayRect)
         // Complete the playground mode switch (only if not already in playground)
         if (state.mode !== 'playground') {
             setMode('playground');
@@ -454,27 +462,39 @@ document.addEventListener("DOMContentLoaded", () => {
     function addGroup() {
         if (state.groups < 10) {
             state.groups++;
+            // Initialize items for the new group
+            state.playgroundItems.push(state.targetItems);
             refreshAll();
         }
     }
 
-    function addItem() {
-        if (state.items < 10) {
-            state.items++;
+    function addItemToGroup(groupIndex) {
+        if (state.playgroundItems[groupIndex] < 10) {
+            state.playgroundItems[groupIndex]++;
             refreshAll();
         }
     }
 
-    function removeItem() {
-        if (state.items > 0) {
-            state.items--;
+    function removeItemFromGroup(groupIndex) {
+        if (state.playgroundItems[groupIndex] > 0) {
+            state.playgroundItems[groupIndex]--;
+            refreshAll();
+        }
+    }
+
+    function removeGroup(groupIndex) {
+        if (state.groups > 0) {
+            state.groups--;
+            state.playgroundItems.splice(groupIndex, 1);
             refreshAll();
         }
     }
 
     function doCheckAnswer() {
         state.answered = true;
-        const correct = (state.groups === state.targetGroups && state.items === state.targetItems);
+        // Calculate total items from all groups
+        const totalItems = state.playgroundItems.reduce((sum, count) => sum + count, 0);
+        const correct = (state.groups === state.targetGroups && totalItems === (state.targetGroups * state.targetItems));
         if (correct) {
             show(feedbackCorrect);
             hide(feedbackIncorrect);
@@ -502,8 +522,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function generateNewProblem() {
         state.targetGroups = randomInt(2, 10);
         state.targetItems = randomInt(2, 10);
-        state.groups = 0;
-        state.items = state.targetItems;
+        state.groups = state.targetGroups; // Start with target number of groups
+        state.playgroundItems = Array(state.groups).fill(state.targetItems); // Each group has target items
         refreshAll();
     }
 
@@ -963,6 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePanelsText();
         renderVisuals();
         renderSvgImages();
+        renderPlaygroundGroups(); // Added to refresh playground groups
     }
 
     // ─── PROBLEM TEXT ─────────────────────────────────────────────────────────
@@ -1138,32 +1159,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── PLAYGROUND GROUPS ───────────────────────────────────────────────────
     // Dynamically generates the N playground picture groups based on state.groups.
     function renderPlaygroundGroups() {
-        if (!pgGroupsContainer || !pgGroupTemplate) return;
+        const container = document.getElementById('pg-groups-container');
+        const innerSvgTemplate = document.getElementById('pg-group-template');
+
+        if (!container || !innerSvgTemplate) return;
 
         // Clear existing
-        pgGroupsContainer.innerHTML = '';
+        container.innerHTML = '';
 
         // Hide if not in playground mode
         if (state.mode !== 'playground') {
-            pgGroupsContainer.style.display = 'none';
+            container.style.display = 'none';
             return;
         }
-        pgGroupsContainer.style.display = '';
+        container.style.display = '';
 
         // If 0 groups, don't render any
         if (state.groups === 0) return;
-
-        // Calculate layout
-        // The original picture-border is 208.67 wide.
-        const GROUP_WIDTH = 220; // 208.67 + some gap
-        const TOTAL_WIDTH = GROUP_WIDTH * state.groups;
-
-        // Center the groups around the middle of the available width
-        // Rough container center x ≈ 884 + (1168/2) = 1468. Or let's center relative to x=884.
-        // The background panel is wide. Let's just start at x=884 and go right for now,
-        // or actually center them relative to the main area (x ~ 1468)
-        const CENTER_X = 1468;
-        const startX = CENTER_X - (TOTAL_WIDTH / 2);
 
         // Get the chosen theme's template
         const themeGroup = document.getElementById('svg-images-group-playground');
@@ -1185,56 +1197,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         for (let g = 0; g < state.groups; g++) {
-            // Clone the group template (border + buttons)
-            const clone = pgGroupTemplate.cloneNode(true);
+            const clone = innerSvgTemplate.cloneNode(true);
             clone.removeAttribute('id');
             clone.style.display = '';
 
-            // Calculate translation for this group
-            // original template assumes origin at 884.1, 629.92. 
-            // the paths inside the template were translated by -884.1, -629.92 so they are relative to 0,0
-            const tx = startX + (g * GROUP_WIDTH);
-            const ty = 629.92; // keep original vertical position
-            clone.setAttribute('transform', `translate(${tx}, ${ty})`);
+            // Grid calculation for placing the element visually within the 1650x405 container
+            const itemWidth = 260;
+            const itemHeight = 220;
+            const columns = Math.floor(1650 / itemWidth);
+            const r = Math.floor(g / columns);
+            const c = g % columns;
+
+            // Use transform translate so the `<g>` positions itself appropriately
+            const xPos = c * itemWidth;
+            const yPos = r * itemHeight;
+
+            clone.setAttribute('transform', `translate(${xPos}, ${yPos})`);
 
             // Setup buttons
             const btnAdd = clone.querySelector('.btn-pg-add-sub');
             const btnMinus = clone.querySelector('.btn-pg-minus-sub');
             const btnCancel = clone.querySelector('.btn-pg-cancel');
 
-            if (btnAdd) {
-                clickable(btnAdd, () => {
-                    if (state.items < 10) { state.items++; refreshAll(); }
-                });
-            }
-            if (btnMinus) {
-                clickable(btnMinus, () => {
-                    if (state.items > 0) { state.items--; refreshAll(); }
-                });
-            }
-            if (btnCancel) {
-                clickable(btnCancel, () => {
-                    if (state.groups > 0) {
-                        state.groups--;
-                        refreshAll();
-                    }
-                });
-            }
+            if (btnAdd) clickable(btnAdd, () => addItemToGroup(g));
+            if (btnMinus) clickable(btnMinus, () => removeItemFromGroup(g));
+            if (btnCancel) clickable(btnCancel, () => removeGroup(g));
 
             // Inject items into the border
             const itemsContainer = clone.querySelector('.pg-items-container');
+            const itemsCount = state.playgroundItems[g];
+
             if (themeTemplate && itemsContainer) {
-                // We'll create a data URI <image> and append it to pg-items-container.
-                // We must process items visibility *before* serializing to data URI.
                 const imgClone = themeTemplate.cloneNode(true);
                 imgClone.removeAttribute('id');
 
                 if (state.theme === 'vas') {
-                    _setVasItemsVisibility(imgClone, state.items, state.theme);
+                    _setVasItemsVisibility(imgClone, itemsCount, state.theme);
                 } else {
                     const items = _getItemsFromSvg(imgClone, state.theme);
                     items.forEach((item, idx) => {
-                        item.style.display = idx < state.items ? '' : 'none';
+                        item.style.display = idx < itemsCount ? '' : 'none';
                     });
                 }
 
@@ -1245,11 +1247,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
 
-                // fit inside 208.67 x 176.99
+                // center inside plate bounds
                 const PB_W = 208.67, PB_H = 176.99;
                 const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
                 const imgW = svgW * scale;
                 const imgH = svgH * scale;
+
                 const imgX = (PB_W - imgW) / 2;
                 const imgY = (PB_H - imgH) / 2;
 
@@ -1260,13 +1263,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 imgEl.setAttribute('width', imgW);
                 imgEl.setAttribute('height', imgH);
                 imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
-                imgEl.setAttribute('href', dataUri); // modern
+                imgEl.setAttribute('href', dataUri);
                 imgEl.style.pointerEvents = 'none';
 
                 itemsContainer.appendChild(imgEl);
             }
 
-            pgGroupsContainer.appendChild(clone);
+            container.appendChild(clone);
         }
     }
 

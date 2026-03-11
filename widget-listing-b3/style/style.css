@@ -23,10 +23,18 @@ body {
 
 .page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
+}
+
+.page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
 }
 
 .page-header h1 {
@@ -40,11 +48,17 @@ body {
   font-weight: 400;
 }
 
+/* Page-level last-updated line */
+.page-updated {
+  font-size: 11px;
+  color: #666;
+  white-space: nowrap;
+}
+
 /* ── Search ───────────────────────────────────────────────── */
 .widget-search {
-  flex: 1;
   min-width: 200px;
-  max-width: 360px;
+  max-width: 320px;
   padding: 7px 14px;
   border-radius: 20px;
   border: 1px solid #555;
@@ -54,10 +68,128 @@ body {
   font-family: inherit;
   outline: none;
   transition: border-color 0.15s;
+  margin-top: 2px;
 }
 
 .widget-search::placeholder { color: #666; }
 .widget-search:focus         { border-color: #aaa; }
+
+/* ── Recent activity panel ────────────────────────────────── */
+.recent-activity {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.act-heading {
+  font-size: 11px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 4px;
+}
+
+.act-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  color: #888;
+  padding: 3px 0;
+  border-left: 2px solid #2e3136;
+  padding-left: 10px;
+}
+
+.act-row--first {
+  color: #bbb;
+  border-left-color: #00bcd4;
+}
+
+.act-label {
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.act-row--first .act-label {
+  color: #00bcd4;
+}
+
+.act-date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.act-author {
+  color: #00bcd4;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.act-widgets {
+  color: #666;
+  white-space: nowrap;
+}
+
+.act-row--first .act-widgets {
+  color: #999;
+}
+
+/* ── Controls (sort + user filter chips) ──────────────────── */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chips-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chips-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-right: 2px;
+  white-space: nowrap;
+}
+
+.chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: transparent;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: #888;
+  color: #fff;
+}
+
+.chip.active {
+  border-color: #00bcd4;
+  color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+}
 
 /* ── Widget grid ──────────────────────────────────────────── */
 .widget-list {
@@ -107,7 +239,7 @@ body {
   background: #2a2d32;
 }
 
-/* widget number badge */
+/* widget number badge — top left */
 .wg-num {
   position: absolute;
   top: 5px;
@@ -122,7 +254,33 @@ body {
   pointer-events: none;
 }
 
-/* widget name */
+/* per-card meta (timestamp + author) — top right */
+.card-meta {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.card-ts,
+.card-author {
+  font-size: 9px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.card-ts     { color: rgba(255, 255, 255, 0.8); }
+.card-author { color: #00bcd4; }
+
+/* widget name — bottom centre */
 .widget-name {
   position: absolute;
   bottom: 7px;
