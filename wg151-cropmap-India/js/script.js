@@ -373,6 +373,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btnKharifHome: document.getElementById("Group_1590"),
     btnZaidHome: document.getElementById("Group_1589"),
 
+    btnRabi: document.getElementById("btn-rabi"),
+    btnKharif: document.getElementById("btn-Kharif"),
+    btnZaid: document.getElementById("btn-Zaid"),
     panelRabi: document.getElementById("btn-rabi"),
     panelKharif: document.getElementById("btn-Kharif"),
     panelZaid: document.getElementById("btn-Zaid"),
@@ -387,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gotItBtn: document.getElementById("Group_1614"),
     submitBtn: document.getElementById("Group_1610"),
     showAnswerBtn: document.getElementById("Group_1611"),
-    homeBtn: document.getElementById("Group_1592"),
+    homeBtn: document.getElementById("Group_601"),
 
     feedbackIncorrectPopup: document.getElementById("feedback-incorrect-state"),
     gotItIncorrectBtn: document.getElementById("Group_16141"),
@@ -396,10 +399,11 @@ document.addEventListener("DOMContentLoaded", () => {
     feedbackCorrectText: document.getElementById(
       "You_Nailed_It_Congratulations_You_have_identified_all_13_major_Wheat_producing_states_",
     ),
-    factsheetBtn: document.getElementById("Group_1616"),
-    factsheetBtnText: document.getElementById("Wheat_Factsheet"),
+    tryAnotherCropBtn: document.getElementById("Group_16161"),
 
     factsheet: document.getElementById("popup-factsheet"),
+    factsheetBtn: document.getElementById("Group_1616"),
+    factsheetBtnText: document.getElementById("Wheat_Factsheet"),
     factsheetTitle: document.getElementById("Wheat_Factsheet1"),
     factsheetClimate: document.getElementById(
       "Required_Climatic_Condition:_Cool_and_moist_weather_during_growing_period_warm_and_dry_during_ripening._Temperature:_10-25_C",
@@ -417,8 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "States:_Jammu_and_Kashmir_Himachal_Pradesh_Uttarakhand_Punjab_Haryana_Rajasthan_Uttar_Pradesh_Bihar_Jharkhand_West_Bengal_Madhya_Pradesh_Gujarat_Maharashtra",
     ),
 
-    tryAnotherCropBtn: document.getElementById("Group_16161"),
-
     mapContainer: document.getElementById("state-map-clickable"),
     croplabel: document.getElementById("crop-label"),
     panel01buttons: document.getElementById("panel-01-buttons"),
@@ -430,52 +432,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize visibility
   const hideAll = () => {
-    [
-      elements.homeScreen,
-      // elements.panelRabi,
-      // elements.panelKharif,
-      // elements.panelZaid,
-      elements.globalButtons,
-      elements.cropPromptContainer,
-      elements.feedbackIncorrectPopup,
-      elements.feedbackCorrectPopup,
-      elements.factsheet,
-    ].forEach((el) => {
+    Object.values(elements).forEach((el) => {
       if (el) {
         el.style.display = "none";
-        el.classList.add("st170"); // Ensure it takes the CSS property if present
+        el.classList.add("st170");
       }
     });
+    // Explicitly hide highlighted crop buttons groups
+    ["btn-rabi-selected", "btn-Kharif-selected", "btn-Zaid-selected", "panel-02-map", "state-map-clickable"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = "none";
+            el.classList.add("st170");
+        }
+    });
+
+    // Remove blocker box Rectangle_63 if it exists
+    const blocker = document.getElementById("Rectangle_63");
+    if (blocker) {
+        blocker.style.display = "none";
+        blocker.classList.add("st170");
+    }
   };
+
 
   const showHome = () => {
     hideAll();
-    // if (elements.homeScreen) {
-    //   elements.homeScreen.style.display = "block";
-    //   elements.homeScreen.classList.remove("st170");
-    // }
-    resetMapHighlights();
-
-    ["btn-rabi-selected", "btn-Kharif-selected", "btn-Zaid-selected"].forEach(
-      (id) => {
-        const selectedContainer = document.getElementById(id);
-        if (selectedContainer) {
-          selectedContainer.style.display = "none";
-          selectedContainer.classList.add("st170");
-        }
-      },
-    );
-
-    // Reset opacity on base buttons
-    ["btn-rabi", "btn-Kharif", "btn-Zaid"].forEach((id) => {
-      const baseContainer = document.getElementById(id);
-      if (baseContainer) {
-        Array.from(baseContainer.children).forEach((childGroup) => {
-          childGroup.style.opacity = "1";
-          childGroup.style.display = "block";
+    
+    // Show home screen components
+    if (elements.homeScreen) {
+        elements.homeScreen.style.display = "block";
+        elements.homeScreen.classList.remove("st170");
+    }
+    
+    // Reset and show season panels (base version)
+    [elements.btnRabi, elements.btnKharif, elements.btnZaid].forEach(panel => {
+      if (panel) {
+        panel.style.display = "block";
+        panel.classList.remove("st170");
+        // Reset opacity and display of all children (crops)
+        Array.from(panel.children).forEach(child => {
+            child.style.opacity = "1";
+            child.style.display = "block";
         });
       }
     });
+
+    if (elements.iTextHomeScreen) {
+        elements.iTextHomeScreen.style.display = "block";
+        elements.iTextHomeScreen.classList.remove("st170");
+    }
+
+    // Show Home Season Buttons
+    [elements.btnRabiHome, elements.btnKharifHome, elements.btnZaidHome].forEach(btn => {
+        if (btn) {
+            btn.style.display = "block";
+            btn.classList.remove("st170");
+        }
+    });
+
+    resetMapHighlights();
+
+    // Ensure selected highlight groups are hidden
+    ["btn-rabi-selected", "btn-Kharif-selected", "btn-Zaid-selected"].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = "none";
+          el.classList.add("st170");
+        }
+      },
+    );
 
     currentState = {
       season: null,
@@ -487,13 +514,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Dynamic State Identification
   const getTargetStateName = (path) => {
-    // 1. Try to get name directly from parent group ID
+    // 1. Try to get name directly from parent group ID or data attribute
+    if (path.dataset.state) return path.dataset.state;
+
     let currentElement = path.parentElement;
     while (currentElement && currentElement.tagName === "g") {
       if (currentElement.id && currentElement.classList.contains("st37")) {
         let name = currentElement.id.replace(/_/g, " ");
         if (name && !name.includes("Group") && name.length > 2) {
-          // Special cases handling
           if (name.includes("Jammu and Kashmir")) return "Jammu and Kashmir";
           return name;
         }
@@ -502,17 +530,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 2. Fallback: Proximity matching with stricter distance and inside map only
-    const pRect = path.getBoundingClientRect();
+    // Using getBBox instead of getBoundingClientRect because getBBox works on hidden elements
+    let pRect;
+    try {
+      pRect = path.getBBox();
+    } catch (e) {
+      return null;
+    }
+
     const pCenter = {
-      x: pRect.left + pRect.width / 2,
-      y: pRect.top + pRect.height / 2,
+      x: pRect.x + pRect.width / 2,
+      y: pRect.y + pRect.height / 2,
     };
 
     const labels = Array.from(
       elements.mapContainer.querySelectorAll(
-        "g[id].st37 text, text.st29, text.st51, text.st30, text.st46, text.st40",
+        "g[id].st37 text, text.st29, text.st51, text.st30, text.st46, text.st34",
       ),
     );
+
 
     let closest = null;
     let minDist = Infinity;
@@ -529,19 +565,34 @@ document.addEventListener("DOMContentLoaded", () => {
       )
         return;
 
-      const lRect = l.getBoundingClientRect();
+      let lRect;
+      try {
+        lRect = l.getBBox();
+      } catch (e) {
+        return;
+      }
+
       const lCenter = {
-        x: lRect.left + lRect.width / 2,
-        y: lRect.top + lRect.height / 2,
+        x: lRect.x + lRect.width / 2,
+        y: lRect.y + lRect.height / 2,
       };
+
+      // 3. Stricter Hit-Test: Use Intersection first
+      const isIntersecting = 
+        pRect.x < lRect.x + lRect.width &&
+        pRect.x + pRect.width > lRect.x &&
+        pRect.y < lRect.y + lRect.height &&
+        pRect.y + pRect.height > lRect.y;
 
       const dist = Math.sqrt(
         Math.pow(pCenter.x - lCenter.x, 2) + Math.pow(pCenter.y - lCenter.y, 2),
       );
 
-      // Only match if it's reasonably close (e.g. less than 150px away)
-      if (dist < minDist && dist < 150) {
-        minDist = dist;
+      // If intersecting, prioritize this label significantly
+      const adjustedDist = isIntersecting ? dist / 5 : dist;
+
+      if (adjustedDist < minDist && adjustedDist < 120) {
+        minDist = adjustedDist;
         closest = text;
       }
     });
@@ -549,14 +600,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return closest;
   };
 
-  const highlightState = (stateName, isCorrect) => {
-    const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
+  const initMapPaths = () => {
+    if (!elements.mapContainer) return;
+    const paths = elements.mapContainer.querySelectorAll("path");
     paths.forEach((p) => {
-      if (getTargetStateName(p) === stateName) {
-        p.style.fill = isCorrect ? "#44ff64" : "#F44336";
-        p.style.opacity = isCorrect ? "1" : "0.7";
-        p.classList.remove("st170"); // Ensure not hidden by class
+      const state = getTargetStateName(p);
+      if (state) {
+        p.setAttribute("data-state", state);
       }
+    });
+  };
+
+  const highlightState = (stateName, isCorrect) => {
+    const paths = Array.from(
+      elements.mapContainer.querySelectorAll(`path[data-state="${stateName}"]`),
+    );
+    paths.forEach((p) => {
+      p.style.fill = isCorrect ? "#44ff64" : "#F44336";
+      p.style.opacity = isCorrect ? "1" : "0.7";
+      p.classList.remove("st170");
     });
   };
 
@@ -610,68 +672,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const selectSeason = (season) => {
     console.log("Selecting season:", season);
-    currentState.season = season;
+    currentState = {
+        ...currentState,
+        season: season,
+        crop: null,
+        selectedStates: new Set(),
+        isAnswerRevealed: false
+    };
     hideAll();
-    let panel;
-    if (season === "Rabi") panel = elements.panelRabi;
-    if (season === "Kharif") panel = elements.panelKharif;
-    if (season === "Zaid") panel = elements.panelZaid;
-
+    
+    let panel = elements[`panel${season}`];
     if (panel) {
       panel.style.display = "block";
       panel.classList.remove("st170");
 
+      // Dim other season buttons and highlight current
+      ["Rabi", "Kharif", "Zaid"].forEach(s => {
+          const p = elements[`panel${s}`];
+          if (p) {
+              p.style.display = "block";
+              p.classList.remove("st170");
+              const isCurrent = s === season;
+              Array.from(p.children).forEach(child => {
+                  child.style.opacity = isCurrent ? "1" : "0.5";
+              });
+          }
+      });
+
       if (elements.croplabel) {
         const labelTspan = elements.croplabel.querySelector("tspan");
         if (labelTspan) {
-          labelTspan.textContent = `${currentState.season} season`;
-          const textNode = labelTspan.closest("text");
-          if (textNode) {
-            textNode.setAttribute("text-anchor", "middle");
-            textNode.setAttribute("transform", `translate(471 134)`);
-            labelTspan.setAttribute("x", "0");
-          }
+          labelTspan.textContent = `${season} season`;
         }
+        elements.croplabel.style.display = "block";
+        elements.croplabel.classList.remove("st170");
       }
 
-      // Hide selected crop groups until a crop is picked
-      ["btn-rabi-selected", "btn-Kharif-selected", "btn-Zaid-selected"].forEach(
-        (id) => {
-          const selectedContainer = document.getElementById(id);
-          if (selectedContainer) {
-            selectedContainer.style.display = "none";
-            selectedContainer.classList.add("st170");
-          }
-        },
-      );
-
-      // Reset base buttons opacity/display
-      ["btn-rabi", "btn-Kharif", "btn-Zaid"].forEach((id) => {
-        const baseContainer = document.getElementById(id);
-        if (baseContainer) {
-          Array.from(baseContainer.children).forEach((childGroup) => {
-            childGroup.style.opacity = "1";
-            childGroup.style.display = "block";
-          });
-        }
-      });
-
-      elements.croplabel.classList.remove("st170");
-      elements.iTextHomeScreen.classList.add("st170");
-      elements.itextActivity.classList.remove("st170");
-      elements.panel02map.classList.remove("st170");
-      elements.itextcropmap.classList.add("st170"); // Hide until Got It is clicked
-      elements.globalButtons.classList.add("st170"); // Hide until Got It is clicked
-      elements.mapContainer.classList.remove("st170");
+      elements.panel01buttons.style.display = "block";
       elements.panel01buttons.classList.remove("st170");
-      elements.homeBtn.classList.remove("st170"); // ensure home button is visible back to home screen
+
+      elements.itextActivity.style.display = "block";
+      elements.itextActivity.classList.remove("st170");
+
+      // Map components
+      elements.panel02map.style.display = "block";
+      elements.panel02map.classList.remove("st170");
+      elements.mapContainer.style.display = "block";
+      elements.mapContainer.classList.remove("st170");
+
+      // Home button / global menu
+      elements.globalButtons.style.display = "block";
+      elements.globalButtons.classList.remove("st170");
+      elements.homeBtn.style.display = "block";
+      elements.homeBtn.classList.remove("st170");
     }
   };
 
   const selectCrop = (crop) => {
     console.log("Selecting crop:", crop);
-    currentState.crop = crop;
-
+    currentState = {
+        ...currentState,
+        crop: crop,
+        selectedStates: new Set(),
+        isAnswerRevealed: false
+    };
+    
+    resetMapHighlights();
+    
+    // Ensure map is visible
+    if (elements.panel02map) {
+        elements.panel02map.style.display = "block";
+        elements.panel02map.classList.remove("st170");
+    }
+    if (elements.mapContainer) {
+        elements.mapContainer.style.display = "block";
+        elements.mapContainer.classList.remove("st170");
+    }
+    
+    // Check crop-label tspan exists before setting text
     if (elements.croplabel) {
       const labelTspan = elements.croplabel.querySelector("tspan");
       if (labelTspan) {
@@ -911,57 +989,56 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event Listeners for Crop Buttons
   // Rabi
   document
-    .getElementById("Wheat")
+    .getElementById("Group_1570")
     ?.addEventListener("click", () => selectCrop("Wheat"));
   document
-    .getElementById("Barley")
+    .getElementById("Group_1571")
     ?.addEventListener("click", () => selectCrop("Barley"));
   document
-    .getElementById("Mustard")
+    .getElementById("Group_1572")
     ?.addEventListener("click", () => selectCrop("Mustard"));
   document
-    .getElementById("Chickpea")
+    .getElementById("Group_1573")
     ?.addEventListener("click", () => selectCrop("Chickpea"));
   document
-    .getElementById("Peas")
+    .getElementById("Group_1574")
     ?.addEventListener("click", () => selectCrop("Peas"));
 
   // Kharif
-  const riceBtn =
-    document.getElementById("Paddy_Rice_") ||
-    document.getElementById("Paddy_Rice_1");
-  riceBtn?.addEventListener("click", () => selectCrop("Paddy (Rice)"));
   document
-    .getElementById("Sugarcane")
+    .getElementById("Group_Kharif_0")
+    ?.addEventListener("click", () => selectCrop("Paddy (Rice)"));
+  document
+    .getElementById("Group_Kharif_1")
     ?.addEventListener("click", () => selectCrop("Sugarcane"));
   document
-    .getElementById("Cotton")
+    .getElementById("Group_Kharif_2")
     ?.addEventListener("click", () => selectCrop("Cotton"));
   document
-    .getElementById("Jute")
+    .getElementById("Group_Kharif_3")
     ?.addEventListener("click", () => selectCrop("Jute"));
   document
-    .getElementById("Tea")
+    .getElementById("Group_Kharif_4")
     ?.addEventListener("click", () => selectCrop("Tea"));
   document
-    .getElementById("Coffee")
+    .getElementById("Group_Kharif_5")
     ?.addEventListener("click", () => selectCrop("Coffee"));
   document
-    .getElementById("Rubber")
+    .getElementById("Group_Kharif_6")
     ?.addEventListener("click", () => selectCrop("Rubber"));
 
   // Zaid
   document
-    .getElementById("Watermelon")
+    .getElementById("Group_Zaid_0")
     ?.addEventListener("click", () => selectCrop("Watermelon"));
   document
-    .getElementById("Muskmelon")
+    .getElementById("Group_Zaid_1")
     ?.addEventListener("click", () => selectCrop("Muskmelon"));
   document
-    .getElementById("Moong_Dal")
+    .getElementById("Group_Zaid_2")
     ?.addEventListener("click", () => selectCrop("Moong Dal"));
   document
-    .getElementById("Cucumber")
+    .getElementById("Group_Zaid_3")
     ?.addEventListener("click", () => selectCrop("Cucumber"));
 
   // Popup Controls
@@ -1025,12 +1102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const correctStates = CROP_DATA[currentState.crop] || [];
     correctStates.forEach((s) => highlightState(s, true));
     currentState.isAnswerRevealed = true;
-    setTimeout(() => {
-      if (elements.feedbackCorrectPopup) {
-        elements.feedbackCorrectPopup.style.display = "block";
-        elements.feedbackCorrectPopup.classList.remove("st170");
-      }
-    }, 2000);
+    // Success popup removed from automatic show answer
   });
 
   elements.homeBtn?.addEventListener("click", () => {
@@ -1042,4 +1114,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Initial call
+  initMapPaths();
+  showHome();
 });
