@@ -32,6 +32,10 @@
       "updatedAt": "2026-03-06T12:15:00+05:30",
       "author": "Shyam"
     },
+    "wg110-building-electronic-configurations": {
+      "updatedAt": "2026-03-11T18:42:33+05:30",
+      "author": "aditya"
+    },
     "wg111-guess-the-collective-nouns": {
       "updatedAt": "2026-03-05T17:49:32+05:30",
       "author": "PrasannaP"
@@ -108,6 +112,10 @@
       "updatedAt": "2026-03-09T21:13:21+05:30",
       "author": "sushantthe"
     },
+    "wg133-nordic-countries-adventure": {
+      "updatedAt": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc"
+    },
     "wg134-barter-bazaar": {
       "updatedAt": "2026-03-10T11:52:16+05:30",
       "author": "sushantkanaujiya"
@@ -161,7 +169,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-11T11:14:21+05:30",
+      "updatedAt": "2026-03-11T20:26:43+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -201,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "updatedAt": "2026-03-11T18:15:19+05:30",
       "author": "Shyam"
     },
     "wg56_atomic-radius-simulator": {
@@ -338,6 +346,38 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: add new interactive Balkan Countries Adventure widget with styling, data, and logic",
+      "widgets": [
+        133
+      ]
+    },
+    {
+      "date": "2026-03-11T20:26:43+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 155 changes",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-11T18:42:33+05:30",
+      "author": "aditya",
+      "message": "wg 110",
+      "widgets": [
+        110
+      ]
+    },
+    {
+      "date": "2026-03-11T18:15:19+05:30",
+      "author": "Shyam",
+      "message": "review sheet fixes on bargraph",
+      "widgets": [
+        53
+      ]
+    },
     {
       "date": "2026-03-11T17:02:10+05:30",
       "author": "Shyam",
@@ -558,42 +598,6 @@
       "message": "html ui 119",
       "widgets": [
         119,
-        136
-      ]
-    },
-    {
-      "date": "2026-03-10T12:28:28+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed widget 72",
-      "widgets": [
-        72,
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T11:52:16+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: add new widgets for legislature challenge, election officer, and barter bazaar.",
-      "widgets": [
-        84,
-        130,
-        134
-      ]
-    },
-    {
-      "date": "2026-03-10T11:40:27+05:30",
-      "author": "sushantthe",
-      "message": "feat: Implement the core game engine and station data for the \"Journey of a Bill to Law\" widget.",
-      "widgets": [
-        130,
-        151
-      ]
-    },
-    {
-      "date": "2026-03-09T23:33:45+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Implement home button, redesign discovered words display with compound word text and new layout, and update used card animation to fade out.",
-      "widgets": [
         136
       ]
     }
