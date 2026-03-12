@@ -144,7 +144,6 @@ const UI = {
     btnNext: null,        // Stage 1 Next (Group_594)
     btnGenGametes: null,  // Next1 — Generate Gametes  (S2→S3)
     btnAutoFillF1: null,  // Next2 — Auto-fill F1       (S3)
-    btnAutoFillF1Group: null, // Group_5942
     btnNextS3: null,      // Group_5946 - Next in stage 3
     btnGenF2Gametes: null,// Next3 — Generate F2 Gametes (S4→S5)
     btnNextS5: null,      // Next4 — Next in stage 5       (S5→S6)
@@ -231,18 +230,19 @@ function cacheElements() {
     }
 
     UI.btnNext = document.getElementById('Group_594');
-    UI.btnGenGametes = document.getElementById('Next1');
-    UI.btnAutoFillF1 = document.getElementById('Next2');
-    UI.btnAutoFillF1Group = document.getElementById('Group_5942');
+    UI.btnGenGametes = document.getElementById('Group_5941'); // parent of Next1
+    UI.btnAutoFillF1 = document.getElementById('Group_5942'); // parent of Next2
     UI.btnNextS3 = document.getElementById('Group_5946');
-    UI.btnGenF2Gametes = document.getElementById('Next3');
-    UI.btnNextS5 = document.getElementById('Next4');
-    UI.btnAutoFillF2 = document.getElementById('Next5');
-    UI.btnResetAll = document.getElementById('Reset_All');
-    UI.btnReset = document.getElementById('Reset');
+    UI.btnGenF2Gametes = document.getElementById('Group_5943'); // parent of Next3
+    UI.btnNextS5 = document.getElementById('Group_5944'); // parent of Next4
+    UI.btnAutoFillF2 = document.getElementById('Group_5945'); // parent of Next5
 
     UI.resetGroup = document.getElementById('Group_31');
     UI.resetAllGroup = document.getElementById('Group_113');
+
+    // Button aliases for events
+    UI.btnReset = UI.resetGroup;
+    UI.btnResetAll = UI.resetAllGroup;
 
     // Drop zones
     if (UI.s2Base) UI.s2Drops = Array.from(UI.s2Base.querySelectorAll('.st235'));
@@ -286,7 +286,7 @@ function setupEvents() {
         console.log('[WG48] Auto-fill F1 clicked → reveal cells → show Stage 3 Next');
         _revealF1Cells();
         // Stay on screen, hide auto-fill, show Next
-        hide(UI.btnAutoFillF1Group);
+        hide(UI.btnAutoFillF1);
         show(UI.btnNextS3);
     });
 
@@ -432,7 +432,7 @@ function goToStage3() {
     // Hide filled cells — user must click Auto-fill to see them
     _hideF1Cells();
 
-    show(UI.btnAutoFillF1Group);
+    show(UI.btnAutoFillF1);
     hide(UI.btnNextS3);
 
     enableBtn(UI.btnAutoFillF1);
@@ -636,6 +636,11 @@ function onDragEnd(e) {
         if (isS2) {
             WidgetState.s2DroppedCount++;
             console.log(`[WG48] S2 dropped: ${WidgetState.s2DroppedCount}/2`);
+
+            // Hide the instruction text for this specific drop zone
+            if (acceptedDrop === UI.s2Drops[0]) hideById('Drag_Dominant_Parent_Here');
+            else if (acceptedDrop === UI.s2Drops[1]) hideById('Drag_Recessive_Parent_Here');
+
             if (WidgetState.s2DroppedCount >= 2) {
                 enableBtn(UI.btnGenGametes);
                 console.log('[WG48] Both parents dropped → Generate Gametes enabled');
@@ -643,6 +648,11 @@ function onDragEnd(e) {
         } else if (isS4) {
             WidgetState.s4DroppedCount++;
             console.log(`[WG48] S4 dropped: ${WidgetState.s4DroppedCount}/2`);
+
+            // Hide the instruction text for this specific drop zone
+            if (acceptedDrop === UI.s4Drops[0]) hideById('Drop_F1_Offspring_1_here');
+            else if (acceptedDrop === UI.s4Drops[1]) hideById('Drop_F1_Offspring_2_here');
+
             if (WidgetState.s4DroppedCount >= 2) {
                 enableBtn(UI.btnGenF2Gametes);
                 console.log('[WG48] Both F1 offspring dropped → Generate F2 Gametes enabled');
@@ -731,6 +741,12 @@ function resetWidget() {
     disableBtn(UI.btnGenGametes);
     disableBtn(UI.btnGenF2Gametes);
     disableBtn(UI.btnNextS5);
+
+    // Restore instructions
+    showById('Drag_Dominant_Parent_Here');
+    showById('Drag_Recessive_Parent_Here');
+    showById('Drop_F1_Offspring_1_here');
+    showById('Drop_F1_Offspring_2_here');
 
     // Extra safety: explicitly hide all ratio cards and their potential display overrides
     UI.s6Ratios.forEach(el => {

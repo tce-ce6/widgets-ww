@@ -58,8 +58,8 @@
       { "label": "Maths", "value": 85 },
       { "label": "English", "value": 82 },
       { "label": "Science", "value": 78 },
-      { "label": "S.St", "value": 75 }
+      { "label": "History", "value": 75 }
     ],
-    "labels": ["Hindi", "Maths", "English", "Science", "S.St"]
+    "labels": ["Hindi", "Maths", "English", "Science", "History"]
   }
 ]

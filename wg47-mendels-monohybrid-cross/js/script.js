@@ -348,11 +348,12 @@ function updatePunnettVisibility() {
     const card = document.getElementById(`Stage4-_Card_${WidgetState.selectedTraitIndex + 1}`);
     if (!card) return;
 
-    // The Punnett content is typically in a group with id starting with Group_173
-    const punnettContent = card.querySelector('g[id^="Group_173"]');
+    // The Punnett content container varies across cards (Group_173... or Group_217-219)
+    const punnettContent = card.querySelector('g[id^="Group_173"], g[id="Group_217"], g[id="Group_218"], g[id="Group_219"]');
     if (!punnettContent) return;
 
     // Genotypes are the last 4 direct children that contain text tags.
+    // We target only these 4 values to keep axials and "Punnett Square" title visible.
     const genotypeGroups = Array.from(punnettContent.children).filter(el => {
         return el.tagName === 'g' && el.querySelector('text');
     }).slice(-4);
