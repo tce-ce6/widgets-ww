@@ -10,6 +10,9 @@ let audio_button_2 = false;
 let age_badhe_button = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
+let correctPlacementSequence = [];
+let placementIndex = 0;
+let correctCloudId = null;
 const LottieAnimations = {
   aa: {
     CORRECT: "Correct.json",
@@ -45,14 +48,40 @@ selectRandomWord = () => {
   console.log("Selected Word:", selectedWord);
   textDisplay();
 };
+function initializePlacementSequence() {
+  const totalWords = Object.keys(WordAudioEnum).length;
+  const half = Math.floor(totalWords / 2);
+  correctPlacementSequence = [];
+
+  for (let i = 0; i < totalWords; i++) {
+    correctPlacementSequence.push(i < half ? "cloud_text_01" : "cloud_text_02");
+  }
+
+  // Fisher-Yates shuffle
+  for (let i = correctPlacementSequence.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [correctPlacementSequence[i], correctPlacementSequence[j]] = [
+      correctPlacementSequence[j],
+      correctPlacementSequence[i],
+    ];
+  }
+  placementIndex = 0;
+}
+
 function textDisplay() {
   let text1 = document.getElementById("cloud_text_01");
   let text2 = document.getElementById("cloud_text_02");
   const tspans = text1.querySelector("p");
   const tspan2 = text2.querySelector("p");
-  const isLeftCorrect = Math.random() < 0.5;
 
-  if (isLeftCorrect) {
+  if (placementIndex >= correctPlacementSequence.length) {
+    initializePlacementSequence();
+  }
+
+  const correctCloud = correctPlacementSequence[placementIndex];
+  placementIndex++;
+
+  if (correctCloud === "cloud_text_01") {
     tspans.innerHTML = highlightConsonantWithUmatra(selectedWord.correct);
     tspan2.innerHTML = highlightConsonantWithUmatra(selectedWord.incorrect);
     correctCloudId = "cloud_text_01"; // ← remember
@@ -321,6 +350,7 @@ function naya_shabd() {
     nextbutton();
     getRandomAnimation();
     audioPlayer.pause();
+    audioPlayer.currentTime = 0
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
@@ -358,11 +388,12 @@ function playLottieAnimation(bandGroup) {
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "svg",
+      renderer: "canvas",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
     });
+    playAnimationAudio(bandGroup);
     lottieInstances.addEventListener("DOMLoaded", () => {
       setTimeout(() => {
         lottieInstances.play();
@@ -375,7 +406,7 @@ function playLottieAnimation(bandGroup) {
           parentEl.style.visibility = "visible";
           parentEl.style.opacity = "1";
           parentEl.classList.add("visible");
-          playAnimationAudio(bandGroup);
+
 
         }
       }
@@ -509,6 +540,7 @@ getAllWordElements = () => {
       // Work with the parsed JSON data (a JavaScript object)
       console.log(data);
       WordAudioEnum = data;
+      initializePlacementSequence();
       init();
     })
     .catch((error) => {
