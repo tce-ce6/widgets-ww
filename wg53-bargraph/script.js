@@ -514,11 +514,24 @@ if (showAnswerButton && answerOverlay && closeButton) {
         answerOverlay.style.visibility = "visible";   
         answerOverlay.style.display = "block";  
         setTimeout(() => buildRealAnswerGraph(), 50);
+        
+        if (els.btnNext) {
+            els.btnNext.style.pointerEvents = "none";
+            els.btnNext.style.opacity = "0.5";
+        }
+        if (els.btnPrev) {
+            els.btnPrev.style.pointerEvents = "none";
+            els.btnPrev.style.opacity = "0.5";
+        }
     });
 
     closeButton.addEventListener("click", function() {
         answerOverlay.style.visibility = "hidden";    
         answerOverlay.style.display = "none";         
+        
+        if (typeof updateButtonState === "function") {
+            updateButtonState();
+        }
     });
 }
 
@@ -544,6 +557,7 @@ function buildRealAnswerGraph() {
     const totalUnits = 150; 
     const unitSizeH = chartH / totalUnits;
     const unitSizeW = chartW / totalUnits;
+    const fixedAnswerScale = 50;
 
     for (let i = 0; i <= totalUnits; i++) {
         const y = chartH - (i * unitSizeH);
@@ -569,7 +583,7 @@ function buildRealAnswerGraph() {
                 labelY.setAttribute("text-anchor", "end");
                 labelY.style.font = "bold 18px sans-serif";
                 labelY.style.fill = "#444";
-                labelY.textContent = stepIndex * currentScale;
+                labelY.textContent = stepIndex * fixedAnswerScale;
                 g.appendChild(labelY);
             }
         } else if (i % 5 === 0) {
@@ -617,7 +631,7 @@ function buildRealAnswerGraph() {
     // --- STEP 3: BALANCED SOLID BARS ---
     const barAreaWidth = chartW / activity.categories.length;
     activity.categories.forEach((cat, i) => {
-        const barHeight = (cat.value / (CONFIG.gridSteps * currentScale)) * chartH;
+        const barHeight = (cat.value / (CONFIG.gridSteps * fixedAnswerScale)) * chartH;
         const adjustedWidth = barAreaWidth * 0.4; 
         const offsetX = (barAreaWidth - adjustedWidth) / 2;
 

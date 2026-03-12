@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Dynamic text nodes inside panels
     const multiAnsText = document.getElementById('_43_12');      // "4 x 3 = 12"
-    const repeaAnsText = document.getElementById('_4_4_4_12');   // "4 + 4 + 4 = 12"
+    const repeaAnsText = document.getElementById('repea-ans-text');   // Parent of foreignObject/div
     const inwordText1 = document.getElementById('_3_groups_of_4_is');
     const inwordText2 = document.getElementById('_3_times_of_4_is');
     const inwordText3 = document.getElementById('_3_fours_are');
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ─── PLAYGROUND ADD PICTURE ELEMENTS ──────────────────────────────────────
     const btnAddPicture = document.getElementById('btn-playground-panel-add-picture');
-    const btnAddPictureText = document.getElementById('Click_to_add_more_plate-2');
+    const btnAddPictureText = document.getElementById('btn-playground-panel-add-picture-text');
 
     // Dynamic Playground Groups
     const pgGroupTemplate = document.getElementById('pg-group-template');
@@ -80,8 +80,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const howToPlayRect = document.getElementById('for-how-to-play');
     // Answer modal
     const answerModal = document.getElementById('answer-modal');
+    const answerModalBg = document.getElementById('for-answer-modal');
     const btnNewProblem = document.getElementById('btn-new-problem-answer-modal');
-
+    const showAnswerPictures = document.getElementById('show-answer-pictures');
+    const closeAnswerBtn = document.getElementById('close-answer-btn')
     // i-text hint (playground)
     const iText = document.getElementById('i-text');
 
@@ -213,8 +215,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function setText(el, text) {
-        const t = tspanOf(el);
-        if (t) t.textContent = text;
+        let t = tspanOf(el);
+        if (t) {
+            t.textContent = text;
+        } else if (el) {
+            // Support foreignObject div wrapping
+            const div = el.querySelector('div');
+            if (div) div.textContent = text;
+        }
     }
 
     // ─── ARROW ROTATION HELPERS ───────────────────────────────────────────────
@@ -325,10 +333,13 @@ document.addEventListener("DOMContentLoaded", () => {
             show(btnGotItText);
         });
 
+        clickable(closeAnswerBtn, closeAnswerModal);
+
         // Modals
         clickable(btnGotIt, closeHowToPlay);
         clickable(btnGotItText, closeHowToPlay);
         clickable(btnNewProblem, doNewProblem);
+        clickable(newProblemBtn, doNewProblem);
     }
 
     // ─── MODE SWITCH ──────────────────────────────────────────────────────────
@@ -350,16 +361,16 @@ document.addEventListener("DOMContentLoaded", () => {
             show(repeatQPanelHl);         // repea-q-panel-hl
             show(inwordQPanelHl);         // inword-panel (Q side)
 
-            // Default state: answer panels OPEN
-            show(multiAnsPanelHl);        // multi-ans-panel-hl
-            show(repeaAnsPanelHl);        // repea-ans-panel-hl
-            show(inwordAnsPanelHl);       // inword-panel (ans side)
-            state.panelMulti = true;
-            state.panelRepea = true;
-            state.panelInword = true;
-            setArrowRotation(arrowMulti, true);
-            setArrowRotation(arrowRepeat, true);
-            setArrowRotation(arrowInword, true);
+            // Default state: answer panels CLOSED
+            hide(multiAnsPanelHl);        // multi-ans-panel-hl
+            hide(repeaAnsPanelHl);        // repea-ans-panel-hl
+            hide(inwordAnsPanelHl);       // inword-panel (ans side)
+            state.panelMulti = false;
+            state.panelRepea = false;
+            state.panelInword = false;
+            setArrowRotation(arrowMulti, false);
+            setArrowRotation(arrowRepeat, false);
+            setArrowRotation(arrowInword, false);
 
             show(surpriseMeBtn);          // btn-suprise-me
             show(resetBtn);               // reset-button
@@ -463,7 +474,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (state.groups < 10) {
             state.groups++;
             // Initialize items for the new group
-            state.playgroundItems.push(state.targetItems);
+            state.playgroundItems.push(1); // User requested sub elements to be 1 initially
             refreshAll();
         }
     }
@@ -508,6 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function doShowAnswer() {
         updateAnswerModal();
         show(answerModal);
+        show(answerModalBg)
         hide(feedbackIncorrect);
     }
 
@@ -515,6 +527,8 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(answerModal);
         hide(feedbackCorrect);
         hide(feedbackIncorrect);
+        // Restore the static pictures container visibility
+        if (showAnswerPictures) showAnswerPictures.style.display = '';
         state.answered = false;
         generateNewProblem();
     }
@@ -522,21 +536,108 @@ document.addEventListener("DOMContentLoaded", () => {
     function generateNewProblem() {
         state.targetGroups = randomInt(2, 10);
         state.targetItems = randomInt(2, 10);
-        state.groups = state.targetGroups; // Start with target number of groups
-        state.playgroundItems = Array(state.groups).fill(state.targetItems); // Each group has target items
+        state.groups = 0; // pg-groups-container should start empty
+        state.playgroundItems = []; // No items initially
         refreshAll();
+    }
+
+    function closeAnswerModal() {
+        hide(answerModal);
+        hide(answerModalBg);
     }
 
     function updateAnswerModal() {
         const g = state.targetGroups;
         const i = state.targetItems;
         const p = g * i;
-        const ansText = answerModal ? answerModal.querySelector('#show-answer-tos') : null;
-        if (ansText) {
-            const spans = ansText.querySelectorAll('tspan');
-            if (spans[0]) spans[0].textContent = `${g} × ${i} = ${p}`;
-            if (spans[1]) spans[1].textContent = `${i} × ${g} = ${p}`;
+
+        // Hide the static hardcoded pictures; we render dynamically below
+        if (showAnswerPictures) showAnswerPictures.style.display = 'none';
+
+        const container = document.getElementById('show-answer-tos');
+        if (!container) return;
+
+        // ── Build the grid of SVGs ────────────────────────────────────────────
+        const svgId = THEME_SVG_MAP[state.theme];
+        const templateSvg = svgId ? document.getElementById(svgId) : null;
+
+        // Grid layout: fixed 5-column grid, fixed SVG size
+        // Only the number of elements changes — sizes stay constant
+        const MAX_COLS = 5;
+        const totalGroups = Math.min(g, 10); // max 10
+        
+        
+        // const cols = Math.min(totalGroups, MAX_COLS);
+        // const rows = Math.ceil(totalGroups / MAX_COLS);
+         const cols = 5
+        const rows = 2
+            // SVG size to fit nicely: container is 966px wide, 365px tall
+        // Equations take ~110px at bottom; grid gets ~220px
+        const gridH = rows === 1 ? 165 : 170;
+        const svgSize = 180;
+        // Build SVG grid html - Use flexbox for robust centering of any number of items
+        let gridHTML = `<div style="min-height:350px; width:100%; display:flex; align-items:center; justify-content:center;">`;
+        gridHTML += `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; width:100%; max-width:1100px;">`;
+
+        if (templateSvg) {
+            for (let gi = 0; gi < totalGroups; gi++) {
+                let html = templateSvg.outerHTML;
+                html = html.replace(/id="([^"]+)"/g, (_, id) => `id="${id}_am${gi}"`);
+                html = html.replace(/url\(#([^)]+)\)/g, (_, ref) => `url(#${ref}_am${gi})`);
+                html = html.replace(/display:\s*none/g, '');
+
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = html;
+                const clonedSvg = wrapper.querySelector('svg');
+                if (!clonedSvg) continue;
+
+                clonedSvg.setAttribute('width', svgSize);
+                clonedSvg.setAttribute('height', svgSize);
+                clonedSvg.style.display = 'block';
+
+                if (state.theme === 'vas') {
+                    _setVasItemsVisibility(clonedSvg, i, state.theme);
+                } else {
+                    const items = _getItemsFromSvg(clonedSvg, state.theme);
+                    items.forEach((item, idx) => {
+                        item.style.display = idx < i ? '' : 'none';
+                    });
+                }
+
+                gridHTML += `<div style="display:flex;align-items:center;justify-content:center;">${clonedSvg.outerHTML}</div>`;
+            }
+        } else {
+            // Fallback if no SVG template found
+            for (let gi = 0; gi < totalGroups; gi++) {
+                gridHTML += `<div style="width:${svgSize}px;height:${svgSize}px;background:#e0f0ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:bold;color:#4caf50;">${i}</div>`;
+            }
         }
+        gridHTML += `</div></div>`;
+
+        // ── Build equation rows ───────────────────────────────────────────────
+        const repeatedAdditionParts = Array(g).fill(i).join(' + ');
+        const fs = 30; // slightly smaller font when long equations
+
+        const equationHTML = `
+          <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;font-family:Roboto,sans-serif;">
+            <div style="font-size:${fs}px;color:#222;">
+              <strong>Repeated Addition:</strong> ${repeatedAdditionParts} = ${p}
+            </div>
+            <div style="font-size:${fs}px;color:#222;">
+              <strong>Multiplication Shortcut:</strong> ${g} × ${i} = ${p}
+            </div>
+            <div style="font-size:${fs}px;color:#4caf50;font-weight:700;">
+              OR
+            </div>
+            <div style="font-size:${fs}px;color:#222;">
+              <strong>Repeated Addition:</strong> ${Array(i).fill(g).join(' + ')} = ${p}
+            </div>
+            <div style="font-size:${fs}px;color:#222;">
+              <strong>Multiplication Shortcut:</strong> ${i} × ${g} = ${p}
+            </div>
+          </div>`;
+
+        container.innerHTML = gridHTML + equationHTML;
     }
 
     // ─── SURPRISE ME / RESET ──────────────────────────────────────────────────
@@ -716,74 +817,6 @@ document.addEventListener("DOMContentLoaded", () => {
         state.theme = themeKey;
         applyThemeLabels();
         refreshAll();
-        _showThemeInPictureBorder(themeKey);
-    }
-
-    // Places the selected theme SVG into picture-border.
-    // Templates live inside #svg-images-group-playground (a foreignObject),
-    // so we look them up from there, read their viewBox for dimensions,
-    // serialize to a data URI, and render via an SVG <image> element.
-    //
-    // picture-border rect: x=884.1, y=629.92, w=208.67, h=176.99
-    function _showThemeInPictureBorder(themeKey) {
-        const NS = 'http://www.w3.org/2000/svg';
-        const PB_X = 884.1, PB_Y = 629.92, PB_W = 208.67, PB_H = 176.99;
-
-        // Remove any previously injected preview
-        const oldPreview = document.getElementById('pg-theme-preview');
-        if (oldPreview) oldPreview.remove();
-
-        // ── Locate the SVG template ───────────────────────────────────────────
-        // Templates are inside:  #svg-images-group-playground > div#svg-templates > svg#<id>
-        const container = document.getElementById('svg-images-group-playground');
-        const srcId = THEME_SVG_MAP[themeKey];
-        // querySelector works across foreignObject content
-        const srcEl = container
-            ? container.querySelector('#' + srcId)
-            : document.getElementById(srcId);   // fallback
-        if (!srcEl) return;
-
-        // ── Read dimensions from the SVG's viewBox ────────────────────────────
-        // getBBox() is unreliable for foreignObject-hosted SVGs.
-        let svgW = 0, svgH = 0;
-        const vb = srcEl.getAttribute('viewBox');
-        if (vb) {
-            const parts = vb.trim().split(/[\s,]+/);
-            svgW = parseFloat(parts[2]) || 0;
-            svgH = parseFloat(parts[3]) || 0;
-        }
-        if (!svgW) svgW = parseFloat(srcEl.getAttribute('width')) || 100;
-        if (!svgH) svgH = parseFloat(srcEl.getAttribute('height')) || 100;
-
-        // ── Serialize to data URI and render via <image> ──────────────────────
-        const serializer = new XMLSerializer();
-        let svgStr = serializer.serializeToString(srcEl);
-        // Ensure xmlns is present for standalone rendering
-        if (!svgStr.includes('xmlns=')) {
-            svgStr = svgStr.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
-        }
-        const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
-
-        // ── Compute scale / position to fit inside picture-border ────────────
-        const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
-        const imgW = svgW * scale;
-        const imgH = svgH * scale;
-        const imgX = PB_X + (PB_W - imgW) / 2;
-        const imgY = PB_Y + (PB_H - imgH) / 2;
-
-        const imgEl = document.createElementNS(NS, 'image');
-        imgEl.setAttribute('id', 'pg-theme-preview');
-        imgEl.setAttribute('x', imgX);
-        imgEl.setAttribute('y', imgY);
-        imgEl.setAttribute('width', imgW);
-        imgEl.setAttribute('height', imgH);
-        imgEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dataUri);
-        imgEl.setAttribute('href', dataUri);   // modern browsers (no xlink)
-        imgEl.style.pointerEvents = 'none';
-
-        // Append on top of main SVG so it renders above picture-border
-        const svgRoot = document.querySelector('svg');
-        svgRoot.appendChild(imgEl);
     }
 
     // ─── TEACHER THEME DROPDOWN (Group_562) ───────────────────────────────────
@@ -961,8 +994,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Slider headings
         const h1 = scroolerH2 ? scroolerH2.querySelector('tspan') : null;
         const h2 = scroolerH1 ? scroolerH1.querySelector('tspan') : null;
-        if (h1) h1.textContent = `Number of ${t.group}`;
-        if (h2) h2.textContent = `Number of ${t.item}`;
+        if (h1) h1.textContent = `Number of ${t.item}`;
+        if (h2) h2.textContent = `Number of ${t.group}`;
         // Add button text
         if (btnAddPictureText) setText(btnAddPictureText, t.addGroup);
         // Teacher dropdown label
@@ -1183,7 +1216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const themeTemplate = themeGroup ? themeGroup.querySelector('#' + themeTemplateId) : document.getElementById(themeTemplateId);
 
         // Get viewbox/dimensions for the item svg
-        let svgW = 100, svgH = 100;
+        let svgW = 90, svgH = 90;
         if (themeTemplate) {
             const vb = themeTemplate.getAttribute('viewBox');
             if (vb) {
@@ -1202,15 +1235,15 @@ document.addEventListener("DOMContentLoaded", () => {
             clone.style.display = '';
 
             // Grid calculation for placing the element visually within the 1650x405 container
-            const itemWidth = 260;
-            const itemHeight = 220;
+            const itemWidth = 240;
+            const itemHeight = 200;
             const columns = Math.floor(1650 / itemWidth);
             const r = Math.floor(g / columns);
             const c = g % columns;
 
             // Use transform translate so the `<g>` positions itself appropriately
-            const xPos = c * itemWidth;
-            const yPos = r * itemHeight;
+            const xPos = c * itemWidth + 40;
+            const yPos = r * itemHeight + 40;
 
             clone.setAttribute('transform', `translate(${xPos}, ${yPos})`);
 
@@ -1249,9 +1282,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // center inside plate bounds
                 const PB_W = 208.67, PB_H = 176.99;
-                const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
-                const imgW = svgW * scale;
-                const imgH = svgH * scale;
+                const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.92;
+                const imgW = svgW * scale - 30;
+                const imgH = svgH * scale - 30;
 
                 const imgX = (PB_W - imgW) / 2;
                 const imgY = (PB_H - imgH) / 2;
