@@ -32,6 +32,10 @@
       "updatedAt": "2026-03-06T12:15:00+05:30",
       "author": "Shyam"
     },
+    "wg110-building-electronic-configurations": {
+      "updatedAt": "2026-03-11T18:42:33+05:30",
+      "author": "aditya"
+    },
     "wg111-guess-the-collective-nouns": {
       "updatedAt": "2026-03-05T17:49:32+05:30",
       "author": "PrasannaP"
@@ -61,7 +65,7 @@
       "author": "aditya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-11T15:54:14+05:30",
+      "updatedAt": "2026-03-11T17:02:10+05:30",
       "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
@@ -108,6 +112,10 @@
       "updatedAt": "2026-03-09T21:13:21+05:30",
       "author": "sushantthe"
     },
+    "wg133-nordic-countries-adventure": {
+      "updatedAt": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc"
+    },
     "wg134-barter-bazaar": {
       "updatedAt": "2026-03-10T11:52:16+05:30",
       "author": "sushantkanaujiya"
@@ -149,8 +157,8 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-10T11:40:27+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-11T19:58:39+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
       "updatedAt": "2026-03-09T19:48:15+05:30",
@@ -161,7 +169,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-11T11:14:21+05:30",
+      "updatedAt": "2026-03-11T20:26:43+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -201,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "updatedAt": "2026-03-11T18:15:19+05:30",
       "author": "Shyam"
     },
     "wg56_atomic-radius-simulator": {
@@ -281,7 +289,7 @@
       "author": "tce-nitinc"
     },
     "wg86-\u0907_\u0914\u0930_\u0908_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T15:45:17+05:30",
+      "updatedAt": "2026-03-11T19:58:39+05:30",
       "author": "sushantkanaujiya"
     },
     "wg87-\u090f_\u0914\u0930_\u0910_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
@@ -289,8 +297,8 @@
       "author": "sushantkanaujiya"
     },
     "wg88-\u0913_\u0914\u0930_\u0914_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T11:14:21+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-12T11:15:06+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg89-the-tone-lab": {
       "updatedAt": "2026-03-08T15:48:34+05:30",
@@ -339,8 +347,73 @@
   },
   "commits": [
     {
+      "date": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: add new interactive Balkan Countries Adventure widget with styling, data, and logic",
+      "widgets": [
+        133
+      ]
+    },
+    {
+      "date": "2026-03-11T20:26:43+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 155 changes",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-11T19:58:39+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Please provide the code changes (diff) to generate a commit message.",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-11T18:42:33+05:30",
+      "author": "aditya",
+      "message": "wg 110",
+      "widgets": [
+        110
+      ]
+    },
+    {
+      "date": "2026-03-11T18:15:19+05:30",
+      "author": "Shyam",
+      "message": "review sheet fixes on bargraph",
+      "widgets": [
+        53
+      ]
+    },
+    {
+      "date": "2026-03-11T17:02:10+05:30",
+      "author": "Shyam",
+      "message": "png path changed",
+      "widgets": [
+        120
+      ]
+    },
+    {
+      "date": "2026-03-11T16:48:56+05:30",
+      "author": "Shyam",
+      "message": "check for deploy issue",
+      "widgets": [
+        120
+      ]
+    },
+    {
+      "date": "2026-03-11T16:45:29+05:30",
+      "author": "Shyam",
+      "message": "deploy fix check",
+      "widgets": [
+        120
+      ]
+    },
+    {
       "date": "2026-03-11T16:07:28+05:30",
       "author": "PrasannaP",
+      "message": "chore: Update version strings in Mendels Monohybrid and Dihybrid Cross widgets.",
       "widgets": [
         47,
         48
@@ -349,6 +422,7 @@
     {
       "date": "2026-03-11T16:05:18+05:30",
       "author": "PrasannaP",
+      "message": "fix: update Punnett content selector to correctly identify varying group IDs across cards.",
       "widgets": [
         47
       ]
@@ -356,6 +430,7 @@
     {
       "date": "2026-03-11T15:54:14+05:30",
       "author": "Shyam",
+      "message": "Version update",
       "widgets": [
         120
       ]
@@ -363,6 +438,7 @@
     {
       "date": "2026-03-11T15:49:25+05:30",
       "author": "aditya",
+      "message": "Update index.html",
       "widgets": [
         120
       ]
@@ -370,6 +446,7 @@
     {
       "date": "2026-03-11T15:47:10+05:30",
       "author": "Shyam",
+      "message": "wg120 fixes completed",
       "widgets": [
         120
       ]
@@ -377,6 +454,7 @@
     {
       "date": "2026-03-11T15:46:25+05:30",
       "author": "PrasannaP",
+      "message": "refactor: Update button references to their parent groups and add dynamic visibility for drop zone instruction texts.",
       "widgets": [
         48
       ]
@@ -384,6 +462,7 @@
     {
       "date": "2026-03-11T15:17:08+05:30",
       "author": "Shyam",
+      "message": "qanswer modal reposiitioning on 145",
       "widgets": [
         145
       ]
@@ -391,6 +470,7 @@
     {
       "date": "2026-03-11T15:11:51+05:30",
       "author": "aditya",
+      "message": "wg 135ui fix",
       "widgets": [
         135
       ]
@@ -398,6 +478,7 @@
     {
       "date": "2026-03-11T14:59:05+05:30",
       "author": "PrasannaP",
+      "message": "feat: Implement a Punnett square genotype visibility toggle and refactor card snapping in the monohybrid cross, alongside minor UI and event handling improvements in the dihybrid cross.",
       "widgets": [
         47,
         48
@@ -406,6 +487,7 @@
     {
       "date": "2026-03-11T12:53:40+05:30",
       "author": "tce-ashishg",
+      "message": "extra file deleted",
       "widgets": [
         61,
         122
@@ -414,6 +496,7 @@
     {
       "date": "2026-03-11T12:26:30+05:30",
       "author": "tce-ashishg",
+      "message": "logical changes related to star done",
       "widgets": [
         61,
         122
@@ -422,6 +505,7 @@
     {
       "date": "2026-03-11T11:14:21+05:30",
       "author": "tce-nitinc",
+      "message": "wg88 changes",
       "widgets": [
         155
       ]
@@ -429,6 +513,7 @@
     {
       "date": "2026-03-10T20:07:31+05:30",
       "author": "tce-ashishg",
+      "message": "design updated",
       "widgets": [
         61,
         74,
@@ -438,6 +523,7 @@
     {
       "date": "2026-03-10T18:24:17+05:30",
       "author": "Shyamsunder Hait",
+      "message": "Fixes playground svg controllers and position",
       "widgets": [
         145
       ]
@@ -445,6 +531,7 @@
     {
       "date": "2026-03-10T18:21:15+05:30",
       "author": "aditya",
+      "message": "ui fix wg128 and wg129",
       "widgets": [
         128,
         129,
@@ -454,6 +541,7 @@
     {
       "date": "2026-03-10T18:21:12+05:30",
       "author": "PrasannaP",
+      "message": "fixes wip",
       "widgets": [
         47,
         48,
@@ -466,6 +554,7 @@
     {
       "date": "2026-03-10T16:36:12+05:30",
       "author": "Shyamsunder Hait",
+      "message": "feat: introduce initial structure and content for molecular reaction simulator",
       "widgets": [
         98
       ]
@@ -473,6 +562,7 @@
     {
       "date": "2026-03-10T16:22:33+05:30",
       "author": "Shyamsunder Hait",
+      "message": "Completed widget 98",
       "widgets": [
         98
       ]
@@ -480,6 +570,7 @@
     {
       "date": "2026-03-10T15:45:57+05:30",
       "author": "tce-ashishg",
+      "message": "design updated",
       "widgets": [
         61,
         122
@@ -488,6 +579,7 @@
     {
       "date": "2026-03-10T15:21:22+05:30",
       "author": "sushantkanaujiya",
+      "message": "Update index.html",
       "widgets": [
         91
       ]
@@ -495,6 +587,7 @@
     {
       "date": "2026-03-10T13:00:58+05:30",
       "author": "tce-nitinc",
+      "message": "wg 155 changes",
       "widgets": [
         155
       ]
@@ -502,69 +595,9 @@
     {
       "date": "2026-03-10T12:35:07+05:30",
       "author": "aditya",
+      "message": "Update xd-wireframe.md",
       "widgets": [
         119
-      ]
-    },
-    {
-      "date": "2026-03-10T12:33:27+05:30",
-      "author": "aditya",
-      "widgets": [
-        119,
-        136
-      ]
-    },
-    {
-      "date": "2026-03-10T12:28:28+05:30",
-      "author": "Shyamsunder Hait",
-      "widgets": [
-        72,
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T11:52:16+05:30",
-      "author": "sushantkanaujiya",
-      "widgets": [
-        84,
-        130,
-        134
-      ]
-    },
-    {
-      "date": "2026-03-10T11:40:27+05:30",
-      "author": "sushantthe",
-      "widgets": [
-        130,
-        151
-      ]
-    },
-    {
-      "date": "2026-03-09T23:33:45+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-09T23:01:26+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-09T21:56:15+05:30",
-      "author": "PrasannaP",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-09T21:13:21+05:30",
-      "author": "sushantthe",
-      "widgets": [
-        131
       ]
     }
   ]

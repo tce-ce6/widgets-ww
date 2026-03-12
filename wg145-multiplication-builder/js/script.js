@@ -329,6 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clickable(btnGotIt, closeHowToPlay);
         clickable(btnGotItText, closeHowToPlay);
         clickable(btnNewProblem, doNewProblem);
+        clickable(newProblemBtn, doNewProblem);
     }
 
     // ─── MODE SWITCH ──────────────────────────────────────────────────────────
@@ -1183,7 +1184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const themeTemplate = themeGroup ? themeGroup.querySelector('#' + themeTemplateId) : document.getElementById(themeTemplateId);
 
         // Get viewbox/dimensions for the item svg
-        let svgW = 100, svgH = 100;
+        let svgW = 90, svgH = 90;
         if (themeTemplate) {
             const vb = themeTemplate.getAttribute('viewBox');
             if (vb) {
@@ -1202,15 +1203,15 @@ document.addEventListener("DOMContentLoaded", () => {
             clone.style.display = '';
 
             // Grid calculation for placing the element visually within the 1650x405 container
-            const itemWidth = 260;
-            const itemHeight = 220;
+            const itemWidth = 240;
+            const itemHeight = 200;
             const columns = Math.floor(1650 / itemWidth);
             const r = Math.floor(g / columns);
             const c = g % columns;
 
             // Use transform translate so the `<g>` positions itself appropriately
-            const xPos = c * itemWidth;
-            const yPos = r * itemHeight;
+            const xPos = c * itemWidth + 40;
+            const yPos = r * itemHeight + 40;
 
             clone.setAttribute('transform', `translate(${xPos}, ${yPos})`);
 
@@ -1250,8 +1251,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // center inside plate bounds
                 const PB_W = 208.67, PB_H = 176.99;
                 const scale = Math.min(PB_W / svgW, PB_H / svgH) * 0.85;
-                const imgW = svgW * scale;
-                const imgH = svgH * scale;
+                const imgW = svgW * scale - 60;
+                const imgH = svgH * scale - 60;
 
                 const imgX = (PB_W - imgW) / 2;
                 const imgY = (PB_H - imgH) / 2;
