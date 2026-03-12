@@ -197,7 +197,7 @@
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-03-11T16:07:28+05:30",
+      "updatedAt": "2026-03-12T14:01:09+05:30",
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
@@ -347,11 +347,27 @@
   },
   "commits": [
     {
+      "date": "2026-03-12T14:01:09+05:30",
+      "author": "PrasannaP",
+      "message": "chore: update version ID.",
+      "widgets": [
+        47
+      ]
+    },
+    {
       "date": "2026-03-12T14:00:46+05:30",
       "author": "Shyam",
       "message": "Completed wg145",
       "widgets": [
         145
+      ]
+    },
+    {
+      "date": "2026-03-12T13:59:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add blue fill style for Punnett path and center Punnett toggle text.",
+      "widgets": [
+        47
       ]
     },
     {
@@ -581,23 +597,6 @@
       "message": "Completed widget 98",
       "widgets": [
         98
-      ]
-    },
-    {
-      "date": "2026-03-10T15:45:57+05:30",
-      "author": "tce-ashishg",
-      "message": "design updated",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-10T15:21:22+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        91
       ]
     }
   ]
