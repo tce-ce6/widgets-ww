@@ -11,13 +11,15 @@ let age_badhe_button = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
 let correctCloudId = "cloud_text_01";
+let leftCircle = ['Path_13382-3', 'Path_13382-4'];
+let rightCircle = ['Path_13382-3-2', 'Path_13382-5'];
 const LottieAnimations = {
   O: {
     CORRECT: "correct-feedback-o.json",
     INCORRECT: "incorrect-feedback.json",
   },
-  AU: {
-    CORRECT: "correct-feedback-au.json",
+  OU: {
+    CORRECT: "correct-feedback-ou.json",
     INCORRECT: "incorrect-feedback.json",
   },
 };
@@ -84,23 +86,47 @@ function resetFeedbackVisuals() {
     if (el) el.classList.remove("cloud_text_highlight");
   });
 
+  leftCircle.forEach((circle) => {
+    document.getElementById(circle).style.display = "none";
+  });
+  rightCircle.forEach((circle) => {
+    document.getElementById(circle).style.display = "none";
+  });
+
   // Hide both outline paths (left/right) for correct/incorrect
   setOutlineForSide("cloud_text_01", null);
   setOutlineForSide("cloud_text_02", null);
+
+  // Hide decorative feedback flowers/loops on both sides
+  // const fbCorrect = document.getElementById("feedback_correct");
+  // const fbIncorrect = document.getElementById("feedback_incorrect");
+  // if (fbCorrect) fbCorrect.style.display = "none";
+  // if (fbIncorrect) fbIncorrect.style.display = "none";
 
   lottiAnimation("none");
 }
 
 function setOutlineForSide(cloudId, result /* 'correct' | 'incorrect' | null */) {
   const left = cloudId === "cloud_text_01";
-  const correctPathId = left ? "Path_13382-3" : "Path_13382-3-2";
-  const incorrectPathId = left ? "Path_13382-4" : "Path_13382-5";
+  const correctPathId = left ? "left-flower" : "right-flower";
+  // const incorrectPathId = left ? "Path_13382-4" : "Path_13382-5";
 
   const correctEl = document.getElementById(correctPathId);
-  const incorrectEl = document.getElementById(incorrectPathId);
+  // const incorrectEl = document.getElementById(incorrectPathId);
 
   if (correctEl) correctEl.style.display = result === "correct" ? "block" : "none";
-  if (incorrectEl) incorrectEl.style.display = result === "incorrect" ? "block" : "none";
+  // if (incorrectEl) incorrectEl.style.display = result === "incorrect" ? "block" : "none";
+
+  // Show flowers only when answer is selected
+  const fbCorrect = document.getElementById("feedback_correct");
+  // const fbIncorrect = document.getElementById("feedback_incorrect");
+  if (result === "correct") {
+    if (fbCorrect) fbCorrect.style.display = "block";
+    // if (fbIncorrect) fbIncorrect.style.display = "none";
+  } else if (result === "incorrect") {
+    // if (fbIncorrect) fbIncorrect.style.display = "block";
+    if (fbCorrect) fbCorrect.style.display = "none";
+  }
 }
 
 function nextStep() {
@@ -135,6 +161,16 @@ function textClickEvent() {
     // Reset all first
     resetFeedbackVisuals();
 
+
+    if (cloudId === "cloud_text_01") {
+      let circle = isCorrect ? leftCircle[0] : leftCircle[1];
+      document.getElementById(circle).style.display = "block";
+    }
+
+    if (cloudId === "cloud_text_02") {
+      let circle = isCorrect ? rightCircle[0] : rightCircle[1];
+      document.getElementById(circle).style.display = "block";
+    }
     setOutlineForSide(cloudId, isCorrect ? "correct" : "incorrect");
     let tspans = document.getElementById(cloudId).querySelector("p");
     tspans.classList.add("cloud_text_highlight");

@@ -12,7 +12,7 @@
     "correct": "फौज",
     "wrongAudio": "fouj-wr.mp3",
     "correctAudio": "fouj-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "POHA": {
@@ -28,7 +28,7 @@
     "correct": "पौधा",
     "wrongAudio": "poudha-wr.mp3",
     "correctAudio": "poudha-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "GHODA": {
@@ -44,7 +44,7 @@
     "correct": "लौकी",
     "wrongAudio": "lauki-wr.mp3",
     "correctAudio": "lauki-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "KAUA": {
@@ -52,7 +52,7 @@
     "correct": "कौआ",
     "wrongAudio": "koua-wr.mp3",
     "correctAudio": "koua-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "LOHA": {
@@ -76,7 +76,7 @@
     "correct": "चौकी",
     "wrongAudio": "chouki-wr.mp3",
     "correctAudio": "chouki-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "NAUKA": {
@@ -84,7 +84,7 @@
     "correct": "नौका",
     "wrongAudio": "nauka-wr.mp3",
     "correctAudio": "nauka-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "TOTA": {
@@ -100,7 +100,7 @@
     "correct": "मौसम",
     "wrongAudio": "mousam-wr.mp3",
     "correctAudio": "mousam-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "BHOJAN": {
@@ -124,7 +124,7 @@
     "correct": "दौलत",
     "wrongAudio": "doulat-wr.mp3",
     "correctAudio": "doulat-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "TOKRA": {
@@ -140,7 +140,7 @@
     "correct": "चौपाल",
     "wrongAudio": "choupal-wr.mp3",
     "correctAudio": "choupal-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   },
   "KOYAL": {
@@ -156,7 +156,7 @@
     "correct": "गौशाला",
     "wrongAudio": "goushala-wr.mp3",
     "correctAudio": "goushala-cr.mp3",
-    "type": "AU",
+    "type": "OU",
     "margin": 0
   }
 }
