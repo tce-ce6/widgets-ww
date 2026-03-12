@@ -52,6 +52,10 @@
       "updatedAt": "2026-02-27T13:19:23+05:30",
       "author": "Shyam"
     },
+    "wg116-reactivity-series": {
+      "updatedAt": "2026-03-12T15:25:11+05:30",
+      "author": "aditya"
+    },
     "wg117-picture-the-idiom": {
       "updatedAt": "2026-02-24T15:53:22+05:30",
       "author": "tce-nitinc"
@@ -347,6 +351,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-12T15:25:11+05:30",
+      "author": "aditya",
+      "message": "wg116",
+      "widgets": [
+        116
+      ]
+    },
+    {
       "date": "2026-03-12T14:01:09+05:30",
       "author": "PrasannaP",
       "message": "chore: update version ID.",
@@ -587,14 +599,6 @@
       "date": "2026-03-10T16:36:12+05:30",
       "author": "Shyamsunder Hait",
       "message": "feat: introduce initial structure and content for molecular reaction simulator",
-      "widgets": [
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T16:22:33+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "Completed widget 98",
       "widgets": [
         98
       ]
