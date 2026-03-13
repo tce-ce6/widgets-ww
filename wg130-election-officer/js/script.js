@@ -595,13 +595,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  SCENARIOS.forEach((scenario, index) => {
-    const tab = document.getElementById(scenario.id);
-    if (tab) {
-      tab.style.cursor = "pointer";
-      tab.addEventListener("click", () => showScenario(index));
-    }
-  });
+  function attachScenarioTabListeners() {
+    SCENARIOS.forEach((scenario, index) => {
+      const tab = document.getElementById(scenario.id);
+      if (tab) {
+        tab.style.cursor = "pointer";
+        // Remove previous click listeners by cloning and replacing the node
+        const newTab = tab.cloneNode(true);
+        tab.parentNode.replaceChild(newTab, tab);
+        newTab.addEventListener("click", () => showScenario(index));
+      }
+    });
+  }
+
+  attachScenarioTabListeners();
 
   if (allowedBtn)
     allowedBtn.addEventListener("click", () => handleAnswer("ALLOWED"));
@@ -675,9 +682,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (patch) patch.style.display = "block";
       });
 
+
       // 7. Reshuffle and relayout
       shuffleArray(SCENARIOS);
       layoutTabs();
+      attachScenarioTabListeners();
 
       // 8. Restore main UI visibility
       iText02.style.display = "block";

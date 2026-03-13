@@ -444,9 +444,7 @@ svg * {
   padding-right: 2vw;
 }
 
-.hidden-svg {
-  display: none !important;
-}
+.hidden-svg {}
 
 .cursor-pointer {
   cursor: pointer;
@@ -454,5 +452,5 @@ svg * {
 
 /* Override hidden elements */
 .st767 {
-  display: inline !important;
+  display: inline;
 }
