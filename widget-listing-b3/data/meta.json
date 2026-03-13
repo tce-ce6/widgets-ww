@@ -121,8 +121,8 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-13T15:21:16+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-13T15:30:07+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
       "updatedAt": "2026-03-11T15:11:51+05:30",
@@ -281,7 +281,7 @@
       "author": "tce-nitinc"
     },
     "wg81-\u0909_\u0914\u0930_\u090a_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "updatedAt": "2026-03-13T16:15:30+05:30",
       "author": "sushantkanaujiya"
     },
     "wg82-commonly-confused-words": {
@@ -301,7 +301,7 @@
       "author": "tce-nitinc"
     },
     "wg86-\u0907_\u0914\u0930_\u0908_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "updatedAt": "2026-03-13T16:15:30+05:30",
       "author": "sushantkanaujiya"
     },
     "wg87-\u090f_\u0914\u0930_\u0910_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
@@ -317,8 +317,8 @@
       "author": "Santosh"
     },
     "wg90-\u0906_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u0915\u0940_\u092a\u0939\u091a\u093e\u0928": {
-      "updatedAt": "2026-03-13T15:19:40+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-13T16:15:30+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg91-prime-factorisation": {
       "updatedAt": "2026-03-10T15:21:22+05:30",
@@ -358,6 +358,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-13T15:29:28+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg134",
+      "widgets": [
+        134
+      ]
+    },
     {
       "date": "2026-03-13T15:19:01+05:30",
       "author": "sushantthe",
@@ -588,15 +596,6 @@
       "date": "2026-03-11T12:53:40+05:30",
       "author": "tce-ashishg",
       "message": "extra file deleted",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-11T12:26:30+05:30",
-      "author": "tce-ashishg",
-      "message": "logical changes related to star done",
       "widgets": [
         61,
         122
