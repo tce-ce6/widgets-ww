@@ -1,0 +1,1630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
+  <defs>
+    <clipPath id="clippath">
+      <rect x="1635" y="979.77" width="251" height="70" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect x="1719.43" y="994.83" width="125.32" height="39.43" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect x="1719.43" y="994.83" width="125.32" height="39.43" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect x="1651.77" y="528.26" width="34.44" height="20.82" transform="translate(616.29 1941.36) rotate(-71)" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect x="1153.71" y="131.68" width="26.65" height="16.01" transform="translate(768.27 1245.34) rotate(-76.99)" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect x="57.29" y="375.76" width="121" height="200.15" fill="none"/>
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect x="186.29" y="375.76" width="121" height="200.15" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="new-mrna-button">
+    <g id="Web_1920_2" data-name="Web 1920 2">
+      <g id="Group_11" data-name="Group 11">
+        <path id="Path_21" data-name="Path 21" d="M1100.07,972.81h330.06c23.18.11,41.88,18.99,41.76,42.17-.11,23.02-18.74,41.65-41.76,41.76h-330.06c-23.18.11-42.06-18.58-42.17-41.76-.11-23.18,18.58-42.06,41.76-42.17.14,0,.27,0,.41,0Z" fill="#0b94f0"/>
+        <g id="New_mRNA_Sequence_" data-name="New mRNA Sequence " isolation="isolate">
+          <text transform="translate(1093.85 1026.81)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">New mR</tspan><tspan x="130.77" y="0" letter-spacing="0em">N</tspan><tspan x="155.91" y="0">A Sequence</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="show-answer-button">
+    <g id="Group_1775" data-name="Group 1775">
+      <path id="Path_21-2" data-name="Path 21-2" d="M332.07,972.81h206.06c23.18.11,41.88,18.99,41.76,42.17-.11,23.02-18.74,41.65-41.76,41.76h-206.06c-23.18.11-42.06-18.58-42.17-41.76-.11-23.18,18.58-42.06,41.76-42.17.14,0,.27,0,.41,0Z" fill="#38c40d"/>
+      <g id="Show_Answer" data-name="Show Answer" isolation="isolate">
+        <text transform="translate(328.74 1027.81)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Show </tspan><tspan x="95.17" y="0" letter-spacing="0em">A</tspan><tspan x="118.07" y="0">nswer</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Layer_10" data-name="Layer 10">
+    <g id="Group_1853" data-name="Group 1853">
+      <path id="Path_21-3" data-name="Path 21-3" d="M702.57,972.81h120.07c23.18.11,41.88,18.99,41.76,42.17-.11,23.02-18.74,41.65-41.76,41.76h-120.07c-23.18.11-42.06-18.58-42.17-41.76-.11-23.18,18.58-42.06,41.76-42.17.14,0,.27,0,.41,0Z" fill="#ab0bf0"/>
+      <g id="Reset" isolation="isolate">
+        <text transform="translate(717.84 1027.81)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Reset</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="inside-button">
+    <g id="Button_Insite_" data-name="Button Insite ">
+      <g clip-path="url(#clippath)">
+        <g id="Group_591" data-name="Group 591">
+          <path id="Path_1029" data-name="Path 1029" d="M1670,979.77h181c19.33,0,35,15.67,35,35s-15.67,35-35,35h-181c-19.33,0-35-15.67-35-35s15.67-35,35-35" fill="#f7901e"/>
+          <g id="Group_590" data-name="Group 590" isolation="isolate">
+            <g id="Group_589" data-name="Group 589">
+              <g clip-path="url(#clippath-1)">
+                <g id="Group_588" data-name="Group 588">
+                  <g id="Group_587" data-name="Group 587" isolation="isolate">
+                    <g id="Group_586" data-name="Group 586">
+                      <g clip-path="url(#clippath-2)">
+                        <g id="Group_585" data-name="Group 585">
+                          <g id="Insights" isolation="isolate">
+                            <text transform="translate(1719.43 1024.77)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Insights</tspan></text>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <path id="Path_1030" data-name="Path 1030" d="M1681.09,986.83c8.94-.07,16.85,5.78,19.39,14.35,2.01,6.31.67,13.22-3.55,18.32-.22.29-.22.43.05.66.35.28.6.74.98.91s.83-.22,1.27-.3c1.55-.4,3.2.07,4.31,1.22,3.76,3.76,7.57,7.47,11.37,11.2,1.55,1.37,2.14,3.52,1.53,5.49-.54,2.03-2.22,3.56-4.29,3.89-1.81.45-3.72-.11-5.01-1.45-3.95-3.9-7.93-7.77-11.87-11.69-.99-1.1-1.3-2.66-.81-4.06.1-.41.25-.8.47-1.16.11-.14.09-.34-.05-.45,0,0-.02-.01-.03-.02-.34-.31-.63-.82-1.02-.92-.41-.11-.75.44-1.13.69-6.82,4.38-13.96,4.96-21.16,1.24-6.38-3.3-9.92-8.8-10.61-15.95-.99-10.76,6.7-20.39,17.42-21.8.91-.11,1.83-.17,2.75-.17" fill="#010101"/>
+          <path id="Path_1031" data-name="Path 1031" d="M1696.48,1006.87c.08,8.51-6.75,15.47-15.26,15.55-8.51.08-15.47-6.75-15.55-15.26-.08-8.51,6.75-15.47,15.26-15.55.15,0,.3,0,.45,0,8.36.1,15.08,6.9,15.1,15.26" fill="#f4df21"/>
+          <path id="Path_1032" data-name="Path 1032" d="M1691.19,1004.74c-.65,0-1.23-.43-1.44-1.05-1.18-3.06-3.92-5.25-7.16-5.73-1.31-.23-2.64-.2-3.94.08-.27.08-.55.11-.83.1-.65-.09-1.16-.62-1.24-1.28-.05-.69.38-1.33,1.04-1.54.67-.2,1.36-.33,2.06-.39,5.53-.62,10.79,2.52,12.86,7.68.36.73.06,1.62-.67,1.98-.21.11-.45.16-.69.15" fill="#fff"/>
+          <path id="Path_1033" data-name="Path 1033" d="M1670.2,1005.05c.81-.02,1.49.62,1.51,1.44,0,.05,0,.11,0,.16.01,1.59.4,3.16,1.11,4.58.47.95,1.12,1.8,1.93,2.49.68.44.87,1.35.43,2.03-.04.06-.08.12-.13.17-.58.65-1.58.7-2.23.12-.04-.03-.07-.06-.1-.1-2.18-1.98-3.56-4.67-3.9-7.59-.07-.6-.11-1.21-.1-1.81,0-.81.64-1.47,1.45-1.48.01,0,.02,0,.03,0" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="rna-codon-table-button">
+    <g id="Group_1862" data-name="Group 1862">
+      <rect id="Rectangle_546" data-name="Rectangle 546" x="1632" y="485" width="174" height="209" rx="20" ry="20" isolation="isolate" opacity=".2"/>
+      <g id="Group_1858" data-name="Group 1858">
+        <rect id="Rectangle_544" data-name="Rectangle 544" x="1642" y="497" width="154" height="186" rx="20" ry="20" fill="#fff"/>
+        <g id="_RNA_Codon_Table_" data-name=" RNA Codon Table " isolation="isolate">
+          <text transform="translate(1665.41 551)" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">   R</tspan><tspan x="55.45" y="0" letter-spacing="0em">N</tspan><tspan x="84.02" y="0">A </tspan></text>
+          <text transform="translate(1663.44 604)" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">Codon </tspan></text>
+          <text transform="translate(1671.35 657)" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.07em">T</tspan><tspan x="21.86" y="0">able</tspan></text>
+        </g>
+        <g id="Group_1857" data-name="Group 1857">
+          <g id="Group_1778" data-name="Group 1778">
+            <g clip-path="url(#clippath-3)">
+              <g id="Group_1780" data-name="Group 1780">
+                <path id="Path_7885" data-name="Path 7885" d="M1668.87,530.53c-.17-.13-.6-.28-.82-.4-1.68-.89-3.23-2-4.63-3.3-.35-.34-.97-.82-.86-1.36.61-1.42,1.39-4.48,2.02-5.86.14-.33.5-.49.83-.38l18.57,6.42c.22.16.31.44.24.7l-2.03,5.9c-.29.51-.72.45-1.26.51-.88.09-1.76.12-2.64.09-1.41-.03-2.82-.21-4.19-.53l-3.14,9.12.85.29s.48-.21.61-.24c1.78-.43,3.57.67,4.01,2.45.26,1.09-.04,2.25-.82,3.06-1.22,1.32-3.29,1.4-4.61.18-.2-.19-.38-.4-.53-.64-.08-.14-.27-.73-.31-.77-.12-.12-.45-.15-.6-.23l-1.07,3.1c-.1.1-.22.19-.35.25-.66.23-1.11-.35-.95-.99.32-1.27.98-2.63,1.37-3.89.12-.14.26-.25.45-.19l2.46.86c.31.29.04.65.22,1.02.89,1.82,3.99.58,3.23-1.64-.36-.95-1.43-1.43-2.38-1.07-.01,0-.02,0-.04.01-.23.12-.25.35-.6.28-.83-.22-1.64-.49-2.43-.83-.21-.12-.3-.37-.21-.59l3.63-10.53c.1-.31.37-.55.69-.6.45.07.89.16,1.33.28,2.02.37,4.08.46,6.12.24l1.53-4.44-16.91-5.82-1.52,4.42c1.77,1.77,3.86,3.18,6.16,4.18.2.16.31.41.27.67l-3.67,10.73c-.08.26-.26.44-.54.38-.78-.17-1.64-.64-2.43-.84-.24-.11-.21-.41-.28-.57-.5-.89-1.62-1.21-2.51-.71-.89.5-1.21,1.62-.71,2.51.3.53.84.89,1.45.94.35.02.7-.08.99-.28.17-.19.23-.53.59-.51l2.57.9c.11.13.14.31.08.47l-3.56,10.28c-.25.34-.73.4-1.06.15-.18-.14-.29-.35-.3-.58.41-1.32,1.44-4.25,1.89-5.56.09-.27.11-.1.05-.13.42-1.23.89-2.46,1.23-3.71-.13-.02-.46-.2-.56-.18-.02,0-.24.19-.31.23-1.6.84-3.57.22-4.4-1.37-.41-.77-.48-1.67-.22-2.51.51-1.75,2.34-2.76,4.09-2.25.63.18,1.19.55,1.62,1.06.12.15.36.6.45.65.25.13.52.21.8.24,0,0,.03.02.05,0l-.03-.04" fill="#1bdc6d" stroke="#1bdc6d" stroke-miterlimit="4" stroke-width="1"/>
+                <path id="Path_7886" data-name="Path 7886" d="M1667.35,535.17c0,.21-.06.41-.2.57l.2-.57" fill="#f8d023"/>
+                <path id="Path_7887" data-name="Path 7887" d="M1667.1,535.92c.03.15-.02.3-.14.4l.14-.4Z" fill="#f8d023"/>
+                <path id="Path_7888" data-name="Path 7888" d="M1668.79,530.99c.06.04.01.18-.06.18l.06-.18" fill="#f8d023"/>
+                <path id="Path_7889" data-name="Path 7889" d="M1663.12,547.46c.06.03.02.15-.05.13l.05-.13" fill="#f8d023"/>
+                <path id="Path_7890" data-name="Path 7890" d="M1665.84,539.57l.04.04s-.04,0-.05,0l.02-.04Z" fill="#f8d023"/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="i-text-intro">
+    <g id="Tap_RNA_Codon_Table_to_choose_the_amino_acid._" data-name="Tap RNA Codon Table to choose the amino acid. " isolation="isolate">
+      <text transform="translate(1574.03 423.81)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.08em">T</tspan><tspan x="14.33" y="0">ap </tspan></text>
+      <text transform="translate(1625.52 423.81)" fill="#ffff6c" font-family="Roboto-BoldItalic, Roboto" font-size="28" font-style="italic" font-weight="700" isolation="isolate"><tspan x="0" y="0">RNA Codon</tspan><tspan x="141.79" y="0" letter-spacing="-.03em"> </tspan><tspan x="147.88" y="0" letter-spacing="-.08em">T</tspan><tspan x="162.52" y="0">able</tspan></text>
+      <text transform="translate(1840.32 423.81)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0"> </tspan><tspan x="6.9" y="0" letter-spacing="-.01em">t</tspan><tspan x="15.67" y="0">o </tspan></text>
+      <text transform="translate(1580.06 460.81)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">choose the </tspan></text>
+      <text transform="translate(1722.61 460.81)" fill="#ffff6c" font-family="Roboto-BoldItalic, Roboto" font-size="28" font-style="italic" font-weight="700" isolation="isolate"><tspan x="0" y="0">amino acid</tspan></text>
+      <text transform="translate(1857.82 460.81)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">.</tspan></text>
+    </g>
+  </g>
+  <g id="codon-frame-hidden">
+    <g id="Group_1863" data-name="Group 1863">
+      <g id="Group_1798" data-name="Group 1798">
+        <g id="Group_1796" data-name="Group 1796">
+          <path id="Rectangle_528" data-name="Rectangle 528" d="M78,794h142c5.52,0,10,4.48,10,10v40H68v-40c0-5.52,4.48-10,10-10Z" fill="#754cf9"/>
+          <g id="Codon_frames_" data-name="Codon frames " isolation="isolate">
+            <text transform="translate(79.8 825)" fill="#fff" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="25" isolation="isolate"><tspan x="0" y="0">Codon f</tspan><tspan x="77.4" y="0" letter-spacing="-.02em">r</tspan><tspan x="84.52" y="0">ames</tspan></text>
+          </g>
+        </g>
+        <path id="Path_7897" data-name="Path 7897" d="M260.6,876.05c0,21.01-16.68,38.05-37.27,38.05H74.27c-20.58,0-37.27-17.04-37.27-38.05s16.68-38.05,37.27-38.05h149.07c20.58,0,37.27,17.04,37.27,38.05Z" fill="#fff"/>
+        <path id="Path_7896" data-name="Path 7896" d="M248.85,876.05c0,16.49-13.36,29.85-29.85,29.85s-29.85-13.36-29.85-29.85,13.36-29.85,29.85-29.85c16.49,0,29.85,13.36,29.85,29.85h0Z" fill="#a396e7"/>
+      </g>
+      <path id="Rectangle_530" data-name="Rectangle 530" d="M78,853h89c4.42,0,8,3.58,8,8v32c0,4.42-3.58,8-8,8h-89c-13.25,0-24-10.75-24-24h0c0-13.25,10.75-24,24-24Z" fill="#01c2ae"/>
+      <g id="Hidden" isolation="isolate">
+        <text transform="translate(75.01 887)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Hidden</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="codon-frame-visible">
+    <g id="Group_1863-2" data-name="Group 1863">
+      <g id="Group_1798-2" data-name="Group 1798">
+        <g id="Group_1796-2" data-name="Group 1796">
+          <path id="Rectangle_528-2" data-name="Rectangle 528" d="M78,794h142c5.52,0,10,4.48,10,10v40H68v-40c0-5.52,4.48-10,10-10Z" fill="#754cf9"/>
+          <g id="Codon_frames_-2" data-name="Codon frames " isolation="isolate">
+            <text transform="translate(79.8 825)" fill="#fff" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="25" isolation="isolate"><tspan x="0" y="0">Codon f</tspan><tspan x="77.4" y="0" letter-spacing="-.02em">r</tspan><tspan x="84.52" y="0">ames</tspan></text>
+          </g>
+        </g>
+        <path id="Path_7897-2" data-name="Path 7897" d="M260.6,876.05c0,21.01-16.68,38.05-37.27,38.05H74.27c-20.58,0-37.27-17.04-37.27-38.05s16.68-38.05,37.27-38.05h149.07c20.58,0,37.27,17.04,37.27,38.05Z" fill="#fff"/>
+      </g>
+      <path id="Path_7896-2" data-name="Path 7896" d="M108.05,875.88c0,16.49-13.36,29.85-29.85,29.85s-29.85-13.36-29.85-29.85,13.36-29.85,29.85-29.85c16.49,0,29.85,13.36,29.85,29.85h0Z" fill="#a396e7"/>
+      <path id="Rectangle_532" data-name="Rectangle 532" d="M131.2,852.83h89c13.25,0,24,10.75,24,24h0c0,13.25-10.75,24-24,24h-89c-4.42,0-8-3.58-8-8v-32c0-4.42,3.58-8,8-8Z" fill="#f19353"/>
+      <g id="Visible" isolation="isolate">
+        <text transform="translate(141.84 886.83)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="25" font-weight="500" isolation="isolate"><tspan x="0" y="0">Visible</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="mrna-bar">
+    <g id="Group_1777" data-name="Group 1777">
+      <g id="Group_1771" data-name="Group 1771">
+        <rect id="Rectangle_483" data-name="Rectangle 483" x="105" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_484" data-name="Rectangle 484" x="62" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_485" data-name="Rectangle 485" x="148" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_486" data-name="Rectangle 486" x="234" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_487" data-name="Rectangle 487" x="191" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_488" data-name="Rectangle 488" x="277" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_489" data-name="Rectangle 489" x="363" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_490" data-name="Rectangle 490" x="320" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_491" data-name="Rectangle 491" x="406" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_492" data-name="Rectangle 492" x="492" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_493" data-name="Rectangle 493" x="449" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_494" data-name="Rectangle 494" x="535" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_495" data-name="Rectangle 495" x="621" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_496" data-name="Rectangle 496" x="578" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_497" data-name="Rectangle 497" x="664" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_498" data-name="Rectangle 498" x="750" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_499" data-name="Rectangle 499" x="707" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_500" data-name="Rectangle 500" x="793" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_501" data-name="Rectangle 501" x="879" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_502" data-name="Rectangle 502" x="836" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_503" data-name="Rectangle 503" x="922" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_504" data-name="Rectangle 504" x="1008" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_505" data-name="Rectangle 505" x="965" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_506" data-name="Rectangle 506" x="1051" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_507" data-name="Rectangle 507" x="1137" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_508" data-name="Rectangle 508" x="1094" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_509" data-name="Rectangle 509" x="1180" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_510" data-name="Rectangle 510" x="1266" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_511" data-name="Rectangle 511" x="1223" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_512" data-name="Rectangle 512" x="1309" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_513" data-name="Rectangle 513" x="1395" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_514" data-name="Rectangle 514" x="1352" y="205" width="26" height="94" fill="#a396e7"/>
+        <rect id="Rectangle_515" data-name="Rectangle 515" x="1438" y="205" width="26" height="94" fill="#a396e7"/>
+      </g>
+      <rect id="Rectangle_521" data-name="Rectangle 521" x="62" y="200" width="1402" height="17"/>
+      <path id="Rectangle_522" data-name="Rectangle 522" d="M47.5,194h1431c3.04,0,5.5,2.46,5.5,5.5h0c0,3.04-2.46,5.5-5.5,5.5H47.5c-3.04,0-5.5-2.46-5.5-5.5h0c0-3.04,2.46-5.5,5.5-5.5Z" fill="#f4afff"/>
+      <path id="Rectangle_523" data-name="Rectangle 523" d="M685,114h157c11.05,0,20,8.95,20,20v65h-197v-65c0-11.05,8.95-20,20-20Z" fill="#f4afff"/>
+      <g id="mRNA_" data-name="mRNA " isolation="isolate">
+        <text transform="translate(691.64 177)" font-family="Roboto-Bold, Roboto" font-size="45" font-weight="700" isolation="isolate"><tspan x="0" y="0">mR</tspan><tspan x="67.81" y="0" letter-spacing="0em">N</tspan><tspan x="99.95" y="0">A</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(35.79 185)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">5&apos;</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(1468.79 185)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">3&apos;</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="mrna-bar-text">
+    <g id="Group_1776" data-name="Group 1776">
+      <g id="G_" data-name="G " isolation="isolate">
+        <text transform="translate(1271.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="C_" data-name="C " isolation="isolate">
+        <text transform="translate(1142.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="G_2" data-name="G 2" isolation="isolate">
+        <text transform="translate(1184.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="C_2" data-name="C 2" isolation="isolate">
+        <text transform="translate(1229.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="G" isolation="isolate">
+        <text transform="translate(1315.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="U_" data-name="U " isolation="isolate">
+        <text transform="translate(1358.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="A_" data-name="A " isolation="isolate">
+        <text transform="translate(1401.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="A_2" data-name="A 2" isolation="isolate">
+        <text transform="translate(1443.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="A" isolation="isolate">
+        <text transform="translate(1100.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="A_3" data-name="A 3" isolation="isolate">
+        <text transform="translate(67.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="U_2" data-name="U 2" isolation="isolate">
+        <text transform="translate(111.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="G_3" data-name="G 3" isolation="isolate">
+        <text transform="translate(152.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="G_4" data-name="G 4" isolation="isolate">
+        <text transform="translate(197.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="A_4" data-name="A 4" isolation="isolate">
+        <text transform="translate(497.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="U_3" data-name="U 3" isolation="isolate">
+        <text transform="translate(283.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="C_3" data-name="C 3" isolation="isolate">
+        <text transform="translate(368.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="A_5" data-name="A 5" isolation="isolate">
+        <text transform="translate(410.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="A_6" data-name="A 6" isolation="isolate">
+        <text transform="translate(455.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="G_5" data-name="G 5" isolation="isolate">
+        <text transform="translate(541.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="U_4" data-name="U 4" isolation="isolate">
+        <text transform="translate(584.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="C" isolation="isolate">
+        <text transform="translate(627.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="U_5" data-name="U 5" isolation="isolate">
+        <text transform="translate(670.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="U" isolation="isolate">
+        <text transform="translate(327.02 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="A_7" data-name="A 7" isolation="isolate">
+        <text transform="translate(238.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="A_8" data-name="A 8" isolation="isolate">
+        <text transform="translate(883.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="G_6" data-name="G 6" isolation="isolate">
+        <text transform="translate(754.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="G_7" data-name="G 7" isolation="isolate">
+        <text transform="translate(796.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="C_4" data-name="C 4" isolation="isolate">
+        <text transform="translate(841.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="G_8" data-name="G 8" isolation="isolate">
+        <text transform="translate(927.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+      <g id="C_5" data-name="C 5" isolation="isolate">
+        <text transform="translate(969.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="A_9" data-name="A 9" isolation="isolate">
+        <text transform="translate(1013.98 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="C_6" data-name="C 6" isolation="isolate">
+        <text transform="translate(1055.99 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="G_9" data-name="G 9" isolation="isolate">
+        <text transform="translate(712.69 321)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="i-text-02">
+    <g id="Tap_the_correct_amino_acids_in_the_table_to_synthesize_the_polypeptide_chain_from_the_mRNA._" data-name="Tap the correct amino acids in the table to synthesize the polypeptide chain from the mRNA. " isolation="isolate">
+      <text transform="translate(395.67 947.88)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.08em">T</tspan><tspan x="14.33" y="0">ap the correct </tspan></text>
+      <text transform="translate(587.63 947.88)" fill="#ffff6c" font-family="Roboto-BoldItalic, Roboto" font-size="28" font-style="italic" font-weight="700" isolation="isolate"><tspan x="0" y="0">amino acids </tspan></text>
+      <text transform="translate(743.84 947.88)" fill="#ffff6c" font-family="Roboto-MediumItalic, Roboto" font-size="28" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">in the table </tspan><tspan x="143.34" y="0" letter-spacing="-.01em">t</tspan><tspan x="152.1" y="0">o synthesize the polypeptide chain f</tspan><tspan x="592.8" y="0" letter-spacing="-.02em">r</tspan><tspan x="601.99" y="0">om the mRNA.</tspan></text>
+    </g>
+  </g>
+  <g id="rna-codon-table">
+    <g>
+      <g id="Group_1864" data-name="Group 1864">
+        <path id="Path_7892" data-name="Path 7892" d="M779.06,100.49h1098.97c11.24,0,20.35,8.72,20.35,19.49v779.42c0,10.76-9.11,19.49-20.35,19.49H779.06c-11.24,0-20.35-8.72-20.35-19.49V119.98c0-10.76,9.11-19.49,20.35-19.49Z" opacity=".2"/>
+        <rect id="Rectangle_444" data-name="Rectangle 444" x="769.11" y="113.88" width="1120" height="791" rx="20" ry="20" fill="#fff"/>
+        <g id="mRNA_codons_Amino_Acids_Full_Names_" data-name="mRNA codons Amino Acids Full Names " isolation="isolate">
+          <text transform="translate(1108.88 183.88)" fill="#644f89" font-family="Roboto-Regular, Roboto" font-size="22" isolation="isolate"><tspan x="0" y="0">mR</tspan><tspan x="32.85" y="0" letter-spacing="0em">N</tspan><tspan x="48.74" y="0">A codons </tspan></text>
+          <text transform="translate(1255.13 183.88)" fill="#644f89" font-family="SegoeUI, &apos;Segoe UI&apos;" font-size="22" isolation="isolate"><tspan x="0" y="0">→</tspan></text>
+          <text transform="translate(1274.11 183.88)" fill="#644f89" font-family="Roboto-Regular, Roboto" font-size="22" isolation="isolate"><tspan x="0" y="0" xml:space="preserve"> Amino Acids (</tspan><tspan x="142.57" y="0" letter-spacing="-.01em">F</tspan><tspan x="154.49" y="0">ull Names)</tspan></text>
+        </g>
+        <line id="Line_1" data-name="Line 1" x1="848.61" y1="222.38" x2="1797.61" y2="222.38" fill="none" stroke="#707070"/>
+        <g id="_1st_base_" data-name=" 1st base " isolation="isolate">
+          <text transform="translate(801.43 217.88)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">1st </tspan></text>
+          <text transform="translate(793.42 246.88)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">base</tspan></text>
+        </g>
+        <g id="_3rd_base_" data-name=" 3rd base " isolation="isolate">
+          <text transform="translate(1817.59 218.88)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">3</tspan><tspan x="12.62" y="0" letter-spacing="0em">r</tspan><tspan x="20.47" y="0">d </tspan></text>
+          <text transform="translate(1810.42 247.88)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">base</tspan></text>
+        </g>
+        <g id="_2nd_base_" data-name=" 2nd base " isolation="isolate">
+          <text transform="translate(1268.01 214.88)" font-family="Roboto-Bold, Roboto" font-size="22" font-weight="700" isolation="isolate"><tspan x="0" y="0">2nd base</tspan></text>
+        </g>
+        <g id="U_-2" data-name="U " isolation="isolate">
+          <text transform="translate(953.38 245.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="U_2-2" data-name="U 2" isolation="isolate">
+          <text transform="translate(816.38 338.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="C_-2" data-name="C " isolation="isolate">
+          <text transform="translate(816.43 497.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="C_2-2" data-name="C 2" isolation="isolate">
+          <text transform="translate(1193.43 245.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="A_-2" data-name="A " isolation="isolate">
+          <text transform="translate(816.2 656.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="A_2-2" data-name="A 2" isolation="isolate">
+          <text transform="translate(1426.2 245.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="G_-2" data-name="G " isolation="isolate">
+          <text transform="translate(816.1 815.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="G_2-2" data-name="G 2" isolation="isolate">
+          <text transform="translate(1659.1 245.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="U_3-2" data-name="U 3" isolation="isolate">
+          <text transform="translate(1806.38 277.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="C_3-2" data-name="C 3" isolation="isolate">
+          <text transform="translate(1806.43 317.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="A_3-2" data-name="A 3" isolation="isolate">
+          <text transform="translate(1806.2 354.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="G_3-2" data-name="G 3" isolation="isolate">
+          <text transform="translate(1806.1 395.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="U_4-2" data-name="U 4" isolation="isolate">
+          <text transform="translate(1806.38 433.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="C_4-2" data-name="C 4" isolation="isolate">
+          <text transform="translate(1806.43 476.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="A_4-2" data-name="A 4" isolation="isolate">
+          <text transform="translate(1806.2 515.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="G_4-2" data-name="G 4" isolation="isolate">
+          <text transform="translate(1806.1 555.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="U_5-2" data-name="U 5" isolation="isolate">
+          <text transform="translate(1806.38 597.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="C_5-2" data-name="C 5" isolation="isolate">
+          <text transform="translate(1806.43 637.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="A_5-2" data-name="A 5" isolation="isolate">
+          <text transform="translate(1806.2 677.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="G_5-2" data-name="G 5" isolation="isolate">
+          <text transform="translate(1806.1 716.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="U_6" data-name="U 6" isolation="isolate">
+          <text transform="translate(1806.38 756.88)" fill="red" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+        </g>
+        <g id="C_6-2" data-name="C 6" isolation="isolate">
+          <text transform="translate(1806.43 796.88)" fill="#0068f1" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+        </g>
+        <g id="A_6-2" data-name="A 6" isolation="isolate">
+          <text transform="translate(1806.2 836.88)" fill="#20c60d" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+        </g>
+        <g id="G_6-2" data-name="G 6" isolation="isolate">
+          <text transform="translate(1806.1 878.88)" fill="#e5a63c" font-family="Roboto-Bold, Roboto" font-size="25" font-weight="700" isolation="isolate"><tspan x="0" y="0">G</tspan></text>
+        </g>
+        <g id="Group_1856" data-name="Group 1856">
+          <g id="RNA_Codon_Table_" data-name="RNA Codon Table " isolation="isolate">
+            <text transform="translate(1184.48 151.88)" font-family="Roboto-Bold, Roboto" font-size="35" font-weight="700" isolation="isolate"><tspan x="0" y="0">R</tspan><tspan x="22.42" y="0" letter-spacing="0em">N</tspan><tspan x="47.42" y="0">A Codon</tspan><tspan x="181.37" y="0" letter-spacing="-.03em"> </tspan><tspan x="189.15" y="0" letter-spacing="-.07em">T</tspan><tspan x="208.27" y="0">able</tspan></text>
+          </g>
+          <g clip-path="url(#clippath-4)">
+            <g id="Group_1855" data-name="Group 1855">
+              <path id="Path_7905" data-name="Path 7905" d="M1166.3,133.43c-.22-.09-.44-.17-.66-.24-1.35-.55-2.63-1.28-3.79-2.16-.3-.23-.81-.55-.76-.98.35-1.14.71-3.56,1.08-4.68.08-.26.34-.42.61-.36l14.72,3.42c.18.11.27.31.24.52l-1.09,4.7c-.18.41-.52.41-.92.5-.66.14-1.34.24-2.02.29-1.08.09-2.17.07-3.25-.07l-1.68,7.27.67.16s.35-.2.45-.24c1.33-.47,2.79.22,3.27,1.56.29.82.14,1.73-.39,2.42-.82,1.11-2.38,1.35-3.49.53-.18-.13-.34-.29-.48-.46-.08-.1-.26-.54-.3-.57-.1-.08-.35-.08-.48-.13l-.57,2.48c-.07.09-.15.16-.25.22-.48.23-.88-.18-.8-.68.15-1.01.54-2.1.74-3.11.08-.12.18-.21.33-.18l1.95.46c.26.2.08.5.25.77.83,1.33,3.1.12,2.34-1.53-.35-.7-1.2-.98-1.9-.63-.01,0-.03.01-.04.02-.17.11-.16.29-.44.27-.65-.1-1.3-.25-1.93-.45-.17-.07-.26-.26-.21-.44l1.94-8.39c.05-.25.24-.45.48-.52.35.02.7.05,1.04.11,1.57.12,3.16.02,4.7-.31l.82-3.55-13.39-3.09-.82,3.53c1.49,1.21,3.2,2.13,5.04,2.71.17.11.27.29.26.49l-1.96,8.56c-.04.21-.17.36-.39.34-.61-.07-1.31-.36-1.93-.45-.19-.06-.2-.3-.26-.42-.46-.64-1.35-.79-1.99-.33-.64.46-.79,1.35-.33,1.99.27.38.72.61,1.19.6.27-.01.53-.12.74-.29.12-.16.13-.43.41-.44l2.04.48c.09.09.13.23.1.35l-1.91,8.2c-.16.28-.52.37-.8.21-.15-.09-.26-.25-.28-.42.21-1.05.77-3.39,1.01-4.43.05-.22.07-.09.02-.11.23-.98.48-1.97.65-2.96-.1,0-.36-.12-.44-.09-.01,0-.17.17-.22.2-1.15.77-2.71.46-3.47-.7-.37-.56-.51-1.25-.37-1.91.24-1.38,1.55-2.3,2.93-2.06.5.09.97.33,1.34.68.1.1.32.43.39.47.2.08.42.12.63.12,0,0,.03.01.04,0l-.03-.03" fill="#1bdc6d" stroke="#1bdc6d" stroke-miterlimit="4" stroke-width="1"/>
+              <path id="Path_7906" data-name="Path 7906" d="M1165.51,137.12c.02.16-.01.32-.11.46l.11-.46" fill="#f8d023"/>
+              <path id="Path_7907" data-name="Path 7907" d="M1165.37,137.72c.04.11,0,.23-.07.32l.07-.32Z" fill="#f8d023"/>
+              <path id="Path_7908" data-name="Path 7908" d="M1166.28,133.79s.02.14-.03.14l.03-.14" fill="#f8d023"/>
+              <path id="Path_7909" data-name="Path 7909" d="M1163.24,146.92c.05.02.03.11-.02.11l.02-.11" fill="#f8d023"/>
+              <path id="Path_7910" data-name="Path 7910" d="M1164.7,140.63l.03.03s-.03,0-.04,0v-.04Z" fill="#f8d023"/>
+            </g>
+          </g>
+        </g>
+      </g>
+      <g id="Group_1854" data-name="Group 1854">
+        <g id="Group_1675-2" data-name="Group 1675-2">
+          <rect id="Rectangle_227-76" data-name="Rectangle 227-76" x="845.11" y="290.88" width="235" height="36" rx="5" ry="5" fill="#d0d0d0"/>
+          <g id="UUC_Phenylalanine-2" data-name="UUC Phenylalanine-2" isolation="isolate">
+            <text transform="translate(858.11 314.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUC      Phenylalanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1676-2" data-name="Group 1676-2">
+          <rect id="Rectangle_227-77" data-name="Rectangle 227-77" x="845.11" y="330.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+          <g id="UUA_Leucine-2" data-name="UUA Leucine-2" isolation="isolate">
+            <text transform="translate(858.11 354.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">U</tspan><tspan x="13.09" y="0" letter-spacing="-.01em">U</tspan><tspan x="25.96" y="0" xml:space="preserve">A      Leucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1677-2" data-name="Group 1677-2">
+          <rect id="Rectangle_227-78" data-name="Rectangle 227-78" x="845.11" y="370.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+          <g id="UUG_Leucine-2" data-name="UUG Leucine-2" isolation="isolate">
+            <text transform="translate(858.11 394.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUG      Leucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1680-2" data-name="Group 1680-2">
+          <rect id="Rectangle_227-81" data-name="Rectangle 227-81" x="845.11" y="450.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+          <g id="CUC_Leucine-2" data-name="CUC Leucine-2" isolation="isolate">
+            <text transform="translate(858.11 474.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CUC      Leucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1681-2" data-name="Group 1681-2">
+          <rect id="Rectangle_227-82" data-name="Rectangle 227-82" x="845.11" y="490.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+          <g id="CUA_Leucine-2" data-name="CUA Leucine-2" isolation="isolate">
+            <text transform="translate(858.11 514.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">C</tspan><tspan x="13.06" y="0" letter-spacing="-.01em">U</tspan><tspan x="25.93" y="0" xml:space="preserve">A      Leucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1685-2" data-name="Group 1685-2">
+          <rect id="Rectangle_227-85" data-name="Rectangle 227-85" x="845.11" y="610.88" width="235" height="36" rx="5" ry="5" fill="#fdcaae"/>
+          <g id="AUC_Isoleucine-2" data-name="AUC Isoleucine-2" isolation="isolate">
+            <text transform="translate(858.11 634.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.1" y="0" xml:space="preserve">UC      Isoleucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1686-2" data-name="Group 1686-2">
+          <rect id="Rectangle_227-86" data-name="Rectangle 227-86" x="845.11" y="650.88" width="235" height="36" rx="5" ry="5" fill="#fdcaae"/>
+          <g id="AUA_Isoleucine-2" data-name="AUA Isoleucine-2" isolation="isolate">
+            <text transform="translate(858.11 674.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.1" y="0" letter-spacing="-.01em">U</tspan><tspan x="25.97" y="0" xml:space="preserve">A      Isoleucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1687-2" data-name="Group 1687-2">
+          <rect id="Rectangle_227-87" data-name="Rectangle 227-87" x="845.11" y="690.88" width="235" height="36" rx="5" ry="5" fill="#e2e27c"/>
+          <g id="AUG_Methionine_Start_2" data-name="AUG Methionine Start 2" isolation="isolate">
+            <text transform="translate(858.11 714.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.1" y="0" xml:space="preserve">UG      </tspan></text>
+            <text transform="translate(927.79 714.88)" font-family="Roboto-Medium, Roboto" font-size="18" font-weight="500" isolation="isolate"><tspan x="0" y="0">Methionine (Sta</tspan><tspan x="127.75" y="0" letter-spacing=".02em">r</tspan><tspan x="134.55" y="0">t)</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1690-2" data-name="Group 1690-2">
+          <path id="Path_7904-2" data-name="Path 7904-2" d="M850.11,770.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#aff3d2"/>
+          <g id="GUC_Valine-2" data-name="GUC Valine-2" isolation="isolate">
+            <text transform="translate(858.11 794.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUC      </tspan><tspan x="69.59" y="0" letter-spacing="-.02em">V</tspan><tspan x="82.05" y="0">aline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1691-2" data-name="Group 1691-2">
+          <rect id="Rectangle_227-90" data-name="Rectangle 227-90" x="845.11" y="810.88" width="235" height="36" rx="5" ry="5" fill="#aff3d2"/>
+          <g id="GUA_Valine-2" data-name="GUA Valine-2" isolation="isolate">
+            <text transform="translate(858.11 834.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">G</tspan><tspan x="13.62" y="0" letter-spacing="-.01em">U</tspan><tspan x="26.49" y="0" xml:space="preserve">A      </tspan><tspan x="69.58" y="0" letter-spacing="-.02em">V</tspan><tspan x="82.04" y="0">aline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1692-2" data-name="Group 1692-2">
+          <rect id="Rectangle_227-91" data-name="Rectangle 227-91" x="845.11" y="850.88" width="235" height="36" rx="5" ry="5" fill="#aff3d2"/>
+          <g id="GUG_Valine-2" data-name="GUG Valine-2" isolation="isolate">
+            <text transform="translate(858.11 874.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUG      </tspan><tspan x="70.16" y="0" letter-spacing="-.02em">V</tspan><tspan x="82.62" y="0">aline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1693-2" data-name="Group 1693-2">
+          <rect id="Rectangle_227-92" data-name="Rectangle 227-92" x="1084.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#d2d2d2"/>
+          <g id="UUU_Phenylalanine-23" data-name="UUU Phenylalanine-23" isolation="isolate">
+            <text transform="translate(1105.95 274.88)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUU      Phenylalanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1694-2" data-name="Group 1694-2">
+          <rect id="Rectangle_227-93" data-name="Rectangle 227-93" x="1084.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="UCU_Serine-2" data-name="UCU Serine-2" isolation="isolate">
+            <text transform="translate(1097.11 274.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UCU      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1695-2" data-name="Group 1695-2">
+          <rect id="Rectangle_227-94" data-name="Rectangle 227-94" x="1084.11" y="290.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="UCC_Serine-2" data-name="UCC Serine-2" isolation="isolate">
+            <text transform="translate(1097.11 314.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UCC      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1696-2" data-name="Group 1696-2">
+          <rect id="Rectangle_227-95" data-name="Rectangle 227-95" x="1084.11" y="330.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="UCA_Serine-2" data-name="UCA Serine-2" isolation="isolate">
+            <text transform="translate(1097.11 354.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UCA      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1697-2" data-name="Group 1697-2">
+          <rect id="Rectangle_227-96" data-name="Rectangle 227-96" x="1084.11" y="370.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="UCG_Serine-2" data-name="UCG Serine-2" isolation="isolate">
+            <text transform="translate(1097.11 394.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UCG      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1700-2" data-name="Group 1700-2">
+          <rect id="Rectangle_227-99" data-name="Rectangle 227-99" x="1084.11" y="450.88" width="235" height="36" rx="5" ry="5" fill="#fdde9f"/>
+          <g id="CCC_Proline-2" data-name="CCC Proline-2" isolation="isolate">
+            <text transform="translate(1097.11 474.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CCC      P</tspan><tspan x="81.76" y="0" letter-spacing="-.01em">r</tspan><tspan x="88.57" y="0">oline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1701-2" data-name="Group 1701-2">
+          <rect id="Rectangle_227-100" data-name="Rectangle 227-100" x="1084.11" y="490.88" width="235" height="36" rx="5" ry="5" fill="#fdde9f"/>
+          <g id="CCA_Proline-2" data-name="CCA Proline-2" isolation="isolate">
+            <text transform="translate(1097.11 514.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CCA      P</tspan><tspan x="81.96" y="0" letter-spacing="-.01em">r</tspan><tspan x="88.78" y="0">oline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1702-2" data-name="Group 1702-2">
+          <rect id="Rectangle_227-101" data-name="Rectangle 227-101" x="1084.11" y="530.88" width="235" height="36" rx="5" ry="5" fill="#fdde9f"/>
+          <g id="CCG_Proline-2" data-name="CCG Proline-2" isolation="isolate">
+            <text transform="translate(1097.11 554.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CCG      P</tspan><tspan x="82.32" y="0" letter-spacing="-.01em">r</tspan><tspan x="89.14" y="0">oline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1705-2" data-name="Group 1705-2">
+          <rect id="Rectangle_227-104" data-name="Rectangle 227-104" x="1084.11" y="610.88" width="235" height="36" rx="5" ry="5" fill="#aefbfd"/>
+          <g id="ACC_Threonine-2" data-name="ACC Threonine-2" isolation="isolate">
+            <text transform="translate(1097.11 634.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">CC     </tspan><tspan x="64.08" y="0" letter-spacing="-.02em"> </tspan><tspan x="68.59" y="0">Th</tspan><tspan x="91.89" y="0" letter-spacing="0em">r</tspan><tspan x="98.78" y="0">eonine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1706-2" data-name="Group 1706-2">
+          <path id="Path_7902-2" data-name="Path 7902-2" d="M1089.11,650.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#aefbfd"/>
+          <g id="ACA_Threonine_2" data-name="ACA Threonine 2" isolation="isolate">
+            <text transform="translate(1097.11 674.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">CA     </tspan><tspan x="64.29" y="0" letter-spacing="-.02em"> </tspan><tspan x="68.8" y="0">Th</tspan><tspan x="92.1" y="0" letter-spacing="0em">r</tspan><tspan x="98.98" y="0" xml:space="preserve">eonine                        </tspan></text>
+          </g>
+        </g>
+        <g id="Group_1707-2" data-name="Group 1707-2">
+          <path id="Path_7903-2" data-name="Path 7903-2" d="M1089.11,690.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#aefbfd"/>
+          <g id="ACG_Threonine-2" data-name="ACG Threonine-2" isolation="isolate">
+            <text transform="translate(1097.11 714.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">CG     </tspan><tspan x="64.65" y="0" letter-spacing="-.02em"> </tspan><tspan x="69.16" y="0">Th</tspan><tspan x="92.46" y="0" letter-spacing="0em">r</tspan><tspan x="99.35" y="0">eonine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1710-2" data-name="Group 1710-2">
+          <rect id="Rectangle_227-107" data-name="Rectangle 227-107" x="1084.11" y="770.88" width="235" height="36" rx="5" ry="5" fill="#eaeef8"/>
+          <g id="GCC_Alanine-2" data-name="GCC Alanine-2" isolation="isolate">
+            <text transform="translate(1097.11 794.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GCC      Alanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1711-2" data-name="Group 1711-2">
+          <rect id="Rectangle_227-108" data-name="Rectangle 227-108" x="1084.11" y="810.88" width="235" height="36" rx="5" ry="5" fill="#eaeef8"/>
+          <g id="GCA_Alanine-2" data-name="GCA Alanine-2" isolation="isolate">
+            <text transform="translate(1097.11 834.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GCA      Alanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1712-2" data-name="Group 1712-2">
+          <rect id="Rectangle_227-109" data-name="Rectangle 227-109" x="1084.11" y="850.88" width="235" height="36" rx="5" ry="5" fill="#eaeef8"/>
+          <g id="GCG_Alanine-2" data-name="GCG Alanine-2" isolation="isolate">
+            <text transform="translate(1097.11 874.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GCG      Alanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1713-2" data-name="Group 1713-2">
+          <rect id="Rectangle_227-110" data-name="Rectangle 227-110" x="1323.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#d2d2d2"/>
+          <g id="UUU_Phenylalanine-27" data-name="UUU Phenylalanine-27" isolation="isolate">
+            <text transform="translate(1344.95 274.88)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUU      Phenylalanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1714-2" data-name="Group 1714-2">
+          <rect id="Rectangle_227-111" data-name="Rectangle 227-111" x="1323.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#73b9ff"/>
+          <g id="UAU_Tyrosine-2" data-name="UAU Tyrosine-2" isolation="isolate">
+            <text transform="translate(1336.11 274.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.01em">U</tspan><tspan x="12.87" y="0" letter-spacing="0em">A</tspan><tspan x="25.97" y="0" xml:space="preserve">U     </tspan><tspan x="63.91" y="0" letter-spacing="-.02em"> </tspan><tspan x="68.42" y="0" letter-spacing="-.04em">T</tspan><tspan x="79.86" y="0">y</tspan><tspan x="89.66" y="0" letter-spacing="-.01em">r</tspan><tspan x="96.47" y="0">osine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1715-2" data-name="Group 1715-2">
+          <path id="Path_7901-2" data-name="Path 7901-2" d="M1328.11,290.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#73b9ff"/>
+          <g id="UAC_Tyrosine-2" data-name="UAC Tyrosine-2" isolation="isolate">
+            <text transform="translate(1336.11 314.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.01em">U</tspan><tspan x="12.87" y="0" letter-spacing="0em">A</tspan><tspan x="25.99" y="0" xml:space="preserve">C     </tspan><tspan x="63.9" y="0" letter-spacing="-.02em"> </tspan><tspan x="68.41" y="0" letter-spacing="-.04em">T</tspan><tspan x="79.85" y="0">y</tspan><tspan x="89.65" y="0" letter-spacing="-.01em">r</tspan><tspan x="96.46" y="0">osine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1716-2" data-name="Group 1716-2">
+          <rect id="Rectangle_227-112" data-name="Rectangle 227-112" x="1323.11" y="330.88" width="235" height="36" rx="5" ry="5" fill="#fe9f9f"/>
+          <g id="UAA_Stop-2" data-name="UAA Stop-2" isolation="isolate">
+            <text transform="translate(1336.11 354.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.01em">U</tspan><tspan x="12.87" y="0" xml:space="preserve">AA      </tspan></text>
+            <text transform="translate(1405.44 354.88)" fill="red" font-family="Roboto-MediumItalic, Roboto" font-size="20" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">S</tspan><tspan x="11.81" y="0" letter-spacing="-.01em">t</tspan><tspan x="18.07" y="0">op</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1717-2" data-name="Group 1717-2">
+          <rect id="Rectangle_227-113" data-name="Rectangle 227-113" x="1323.11" y="370.88" width="235" height="36" rx="5" ry="5" fill="#fe9f9f"/>
+          <g id="UAG_Stop-2" data-name="UAG Stop-2" isolation="isolate">
+            <text transform="translate(1336.11 394.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.01em">U</tspan><tspan x="12.87" y="0" letter-spacing="0em">A</tspan><tspan x="25.99" y="0" xml:space="preserve">G      </tspan></text>
+            <text transform="translate(1405.74 394.88)" fill="red" font-family="Roboto-MediumItalic, Roboto" font-size="20" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">S</tspan><tspan x="11.81" y="0" letter-spacing="-.01em">t</tspan><tspan x="18.07" y="0">op</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1720-2" data-name="Group 1720-2">
+          <rect id="Rectangle_227-116" data-name="Rectangle 227-116" x="1323.11" y="450.88" width="235" height="36" rx="5" ry="5" fill="#ee9fee"/>
+          <g id="CAC_Histidine-2" data-name="CAC Histidine-2" isolation="isolate">
+            <text transform="translate(1336.11 474.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">C</tspan><tspan x="13.06" y="0" letter-spacing="0em">A</tspan><tspan x="26.17" y="0" xml:space="preserve">C      Histidine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1721-2" data-name="Group 1721-2">
+          <rect id="Rectangle_227-117" data-name="Rectangle 227-117" x="1323.11" y="490.88" width="235" height="36" rx="5" ry="5" fill="#ee9fee"/>
+          <g id="CAA_Histidine-2" data-name="CAA Histidine-2" isolation="isolate">
+            <text transform="translate(1336.11 514.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CAA      Histidine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1722-2" data-name="Group 1722-2">
+          <rect id="Rectangle_227-118" data-name="Rectangle 227-118" x="1323.11" y="530.88" width="235" height="36" rx="5" ry="5" fill="#ee9fee"/>
+          <g id="CAG_Histidine-2" data-name="CAG Histidine-2" isolation="isolate">
+            <text transform="translate(1336.11 554.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">C</tspan><tspan x="13.06" y="0" letter-spacing="0em">A</tspan><tspan x="26.17" y="0" xml:space="preserve">G      Histidine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1725-2" data-name="Group 1725-2">
+          <rect id="Rectangle_227-121" data-name="Rectangle 227-121" x="1323.11" y="610.88" width="235" height="36" rx="5" ry="5" fill="#f8e0d3"/>
+          <g id="AAC_Asparagine-2" data-name="AAC Asparagine-2" isolation="isolate">
+            <text transform="translate(1336.11 634.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">A</tspan><tspan x="13.26" y="0" letter-spacing="0em">A</tspan><tspan x="26.38" y="0" xml:space="preserve">C      Aspa</tspan><tspan x="114.83" y="0" letter-spacing="-.02em">r</tspan><tspan x="121.55" y="0">agine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1726-2" data-name="Group 1726-2">
+          <rect id="Rectangle_227-122" data-name="Rectangle 227-122" x="1323.11" y="650.88" width="235" height="36" rx="5" ry="5" fill="#debffd"/>
+          <g id="AAA_Lysine-2" data-name="AAA Lysine-2" isolation="isolate">
+            <text transform="translate(1336.11 674.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">AAA      </tspan><tspan x="69.61" y="0" letter-spacing="-.06em">L</tspan><tspan x="79.15" y="0">ysine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1727-2" data-name="Group 1727-2">
+          <rect id="Rectangle_227-123" data-name="Rectangle 227-123" x="1323.11" y="690.88" width="235" height="36" rx="5" ry="5" fill="#debffd"/>
+          <g id="AAG_Lysine-2" data-name="AAG Lysine-2" isolation="isolate">
+            <text transform="translate(1336.11 714.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">A</tspan><tspan x="13.26" y="0" letter-spacing="0em">A</tspan><tspan x="26.38" y="0" xml:space="preserve">G      </tspan><tspan x="69.82" y="0" letter-spacing="-.06em">L</tspan><tspan x="79.37" y="0">ysine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1730-2" data-name="Group 1730-2">
+          <rect id="Rectangle_227-126" data-name="Rectangle 227-126" x="1323.11" y="770.88" width="235" height="36" rx="5" ry="5" fill="#fdafce"/>
+          <g id="GAC_Aspartate-2" data-name="GAC Aspartate-2" isolation="isolate">
+            <text transform="translate(1336.11 794.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">G</tspan><tspan x="13.62" y="0" letter-spacing="0em">A</tspan><tspan x="26.74" y="0" xml:space="preserve">C      Aspa</tspan><tspan x="115.2" y="0" letter-spacing=".02em">r</tspan><tspan x="122.75" y="0">tate</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1731-2" data-name="Group 1731-2">
+          <rect id="Rectangle_227-127" data-name="Rectangle 227-127" x="1323.11" y="810.88" width="235" height="36" rx="5" ry="5" fill="#fab48d"/>
+          <g id="GAA_Glutamate-2" data-name="GAA Glutamate-2" isolation="isolate">
+            <text transform="translate(1336.11 834.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GAA      Glutamate</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1732-2" data-name="Group 1732-2">
+          <rect id="Rectangle_227-128" data-name="Rectangle 227-128" x="1323.11" y="850.88" width="235" height="36" rx="5" ry="5" fill="#fab48d"/>
+          <g id="GAG_Glutamate-2" data-name="GAG Glutamate-2" isolation="isolate">
+            <text transform="translate(1336.11 874.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">G</tspan><tspan x="13.62" y="0" letter-spacing="0em">A</tspan><tspan x="26.74" y="0" xml:space="preserve">G      Glutamate</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1733-2" data-name="Group 1733-2">
+          <rect id="Rectangle_227-129" data-name="Rectangle 227-129" x="1562.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#d2d2d2"/>
+          <g id="UUU_Phenylalanine-31" data-name="UUU Phenylalanine-31" isolation="isolate">
+            <text transform="translate(1583.95 274.88)" font-family="Roboto-Regular, Roboto" font-size="20" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUU      Phenylalanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1734-2" data-name="Group 1734-2">
+          <rect id="Rectangle_227-130" data-name="Rectangle 227-130" x="1562.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#f5cc47"/>
+          <g id="UGU_Cysteine-2" data-name="UGU Cysteine-2" isolation="isolate">
+            <text transform="translate(1575.11 274.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UGU      Cysteine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1735-2" data-name="Group 1735-2">
+          <rect id="Rectangle_227-131" data-name="Rectangle 227-131" x="1562.11" y="290.88" width="235" height="36" rx="5" ry="5" fill="#f5cc47"/>
+          <g id="UGC_Cysteine-2" data-name="UGC Cysteine-2" isolation="isolate">
+            <text transform="translate(1575.11 314.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UGC      Cysteine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1736-2" data-name="Group 1736-2">
+          <path id="Path_7870-2" data-name="Path 7870-2" d="M1567.11,330.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#fe9f9f"/>
+          <g id="UGA_Stop-2" data-name="UGA Stop-2" isolation="isolate">
+            <text transform="translate(1575.11 354.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UGA      </tspan></text>
+            <text transform="translate(1644.95 354.88)" fill="red" font-family="Roboto-MediumItalic, Roboto" font-size="20" font-style="italic" font-weight="500" isolation="isolate"><tspan x="0" y="0">S</tspan><tspan x="11.81" y="0" letter-spacing="-.01em">t</tspan><tspan x="18.07" y="0">op</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1737-2" data-name="Group 1737-2">
+          <rect id="Rectangle_227-132" data-name="Rectangle 227-132" x="1562.11" y="370.88" width="235" height="36" rx="5" ry="5" fill="#fe9f9f"/>
+          <g id="UGC_Tryptophan-2" data-name="UGC Tryptophan-2" isolation="isolate">
+            <text transform="translate(1575.11 394.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UGC     </tspan><tspan x="64.62" y="0" letter-spacing="-.02em"> </tspan><tspan x="69.13" y="0" letter-spacing="-.03em">T</tspan><tspan x="80.62" y="0" letter-spacing="0em">r</tspan><tspan x="87.87" y="0">yp</tspan><tspan x="108.91" y="0" letter-spacing="-.01em">t</tspan><tspan x="115.33" y="0">ophan</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1740-2" data-name="Group 1740-2">
+          <path id="Path_7869-2" data-name="Path 7869-2" d="M1567.11,450.88h225c2.76,0,5,2.24,5,5v26c0,2.76-2.24,5-5,5h-225c-2.76,0-5-2.24-5-5v-26c0-2.76,2.24-5,5-5Z" fill="#9fcefd"/>
+          <g id="CGC_Arginine-2" data-name="CGC Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 474.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CGC      A</tspan><tspan x="82.82" y="0" letter-spacing="0em">r</tspan><tspan x="89.71" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1741-2" data-name="Group 1741-2">
+          <rect id="Rectangle_227-135" data-name="Rectangle 227-135" x="1562.11" y="490.88" width="235" height="36" rx="5" ry="5" fill="#9fcefd"/>
+          <g id="CGA_Arginine-2" data-name="CGA Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 514.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CGA      A</tspan><tspan x="83.03" y="0" letter-spacing="0em">r</tspan><tspan x="89.91" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1742-2" data-name="Group 1742-2">
+          <rect id="Rectangle_227-136" data-name="Rectangle 227-136" x="1562.11" y="530.88" width="235" height="36" rx="5" ry="5" fill="#9fcefd"/>
+          <g id="CGG_Arginine-2" data-name="CGG Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 554.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CGG      A</tspan><tspan x="83.39" y="0" letter-spacing="0em">r</tspan><tspan x="90.27" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1745-2" data-name="Group 1745-2">
+          <rect id="Rectangle_227-139" data-name="Rectangle 227-139" x="1562.11" y="610.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="AGC_Serine-2" data-name="AGC Serine-2" isolation="isolate">
+            <text transform="translate(1575.11 634.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">GC      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1746-2" data-name="Group 1746-2">
+          <rect id="Rectangle_227-140" data-name="Rectangle 227-140" x="1562.11" y="650.88" width="235" height="36" rx="5" ry="5" fill="#9fcefd"/>
+          <g id="AGA_Arginine-2" data-name="AGA Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 674.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">GA      A</tspan><tspan x="83.09" y="0" letter-spacing="0em">r</tspan><tspan x="89.97" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1747-2" data-name="Group 1747-2">
+          <rect id="Rectangle_227-141" data-name="Rectangle 227-141" x="1562.11" y="690.88" width="235" height="36" rx="5" ry="5" fill="#9fcefd"/>
+          <g id="AGG_Arginine-2" data-name="AGG Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 714.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">GG      A</tspan><tspan x="83.45" y="0" letter-spacing="0em">r</tspan><tspan x="90.33" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1750-2" data-name="Group 1750-2">
+          <rect id="Rectangle_227-144" data-name="Rectangle 227-144" x="1562.11" y="770.88" width="235" height="36" rx="5" ry="5" fill="#fde47f"/>
+          <g id="GGC_Glycine-2" data-name="GGC Glycine-2" isolation="isolate">
+            <text transform="translate(1575.11 794.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GGC      Gl</tspan><tspan x="88.85" y="0" letter-spacing="0em">y</tspan><tspan x="98.52" y="0">cine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1751-2" data-name="Group 1751-2">
+          <rect id="Rectangle_227-145" data-name="Rectangle 227-145" x="1562.11" y="810.88" width="235" height="36" rx="5" ry="5" fill="#fde47f"/>
+          <g id="GGA_Glycine-2" data-name="GGA Glycine-2" isolation="isolate">
+            <text transform="translate(1575.11 834.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GGA      Gl</tspan><tspan x="89.05" y="0" letter-spacing="0em">y</tspan><tspan x="98.72" y="0">cine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1752-2" data-name="Group 1752-2">
+          <rect id="Rectangle_227-146" data-name="Rectangle 227-146" x="1562.11" y="850.88" width="235" height="36" rx="5" ry="5" fill="#fde47f"/>
+          <g id="GGG_Glycine-2" data-name="GGG Glycine-2" isolation="isolate">
+            <text transform="translate(1575.11 874.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GGG      Gl</tspan><tspan x="89.41" y="0" letter-spacing="0em">y</tspan><tspan x="99.08" y="0">cine</tspan></text>
+          </g>
+        </g>
+        <rect id="Rectangle_443-2" data-name="Rectangle 443-2" x="845.11" y="530.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+        <g id="CUG_Leucine-2" data-name="CUG Leucine-2" isolation="isolate">
+          <text transform="translate(857.11 554.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CUG      Leucine</tspan></text>
+        </g>
+        <g id="Group_1674-2" data-name="Group 1674-2">
+          <rect id="Rectangle_227-75" data-name="Rectangle 227-75" x="845.11" y="250.88" width="235" height="36" rx="5" ry="5" fill="#d0d0d0"/>
+          <g id="UUU_Phenylalanine-19" data-name="UUU Phenylalanine-19" isolation="isolate">
+            <text transform="translate(858.11 274.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">UUU      Phenylalanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1744-2" data-name="Group 1744-2">
+          <rect id="Rectangle_227-138" data-name="Rectangle 227-138" x="1562.11" y="570.88" width="235" height="36" rx="5" ry="5" fill="#a7e49f"/>
+          <g id="AGU_Serine-2" data-name="AGU Serine-2" isolation="isolate">
+            <text transform="translate(1575.11 594.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">GU      Serine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1724-2" data-name="Group 1724-2">
+          <rect id="Rectangle_227-120" data-name="Rectangle 227-120" x="1323.11" y="570.88" width="235" height="36" rx="5" ry="5" fill="#f8e0d3"/>
+          <g id="AAU_Asparagine-2" data-name="AAU Asparagine-2" isolation="isolate">
+            <text transform="translate(1336.11 594.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">A</tspan><tspan x="13.26" y="0" letter-spacing="0em">A</tspan><tspan x="26.36" y="0" xml:space="preserve">U      Aspa</tspan><tspan x="114.84" y="0" letter-spacing="-.02em">r</tspan><tspan x="121.56" y="0">agine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1704-2" data-name="Group 1704-2">
+          <rect id="Rectangle_227-103" data-name="Rectangle 227-103" x="1084.11" y="570.88" width="235" height="36" rx="5" ry="5" fill="#aefbfd"/>
+          <g id="ACU_Threonine-2" data-name="ACU Threonine-2" isolation="isolate">
+            <text transform="translate(1097.11 594.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.12" y="0" xml:space="preserve">CU     </tspan><tspan x="64.11" y="0" letter-spacing="-.02em"> </tspan><tspan x="68.62" y="0">Th</tspan><tspan x="91.92" y="0" letter-spacing="0em">r</tspan><tspan x="98.81" y="0">eonine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1684-2" data-name="Group 1684-2">
+          <rect id="Rectangle_227-84" data-name="Rectangle 227-84" x="845.11" y="570.88" width="235" height="36" rx="5" ry="5" fill="#fdcaae"/>
+          <g id="AUU_Isoleucine-2" data-name="AUU Isoleucine-2" isolation="isolate">
+            <text transform="translate(858.11 594.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">A</tspan><tspan x="13.1" y="0" xml:space="preserve">UU      Isoleucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1679-2" data-name="Group 1679-2">
+          <rect id="Rectangle_227-80" data-name="Rectangle 227-80" x="845.11" y="410.88" width="235" height="36" rx="5" ry="5" fill="#d2f39f"/>
+          <g id="CUU_Leucine-2" data-name="CUU Leucine-2" isolation="isolate">
+            <text transform="translate(858.11 434.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CUU      Leucine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1699-2" data-name="Group 1699-2">
+          <rect id="Rectangle_227-98" data-name="Rectangle 227-98" x="1084.11" y="410.88" width="235" height="36" rx="5" ry="5" fill="#fdde9f"/>
+          <g id="CCU_Proline-2" data-name="CCU Proline-2" isolation="isolate">
+            <text transform="translate(1097.11 434.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CCU      P</tspan><tspan x="81.79" y="0" letter-spacing="-.01em">r</tspan><tspan x="88.6" y="0">oline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1719-2" data-name="Group 1719-2">
+          <rect id="Rectangle_227-115" data-name="Rectangle 227-115" x="1323.11" y="410.88" width="235" height="36" rx="5" ry="5" fill="#ee9fee"/>
+          <g id="CAU_Histidine-2" data-name="CAU Histidine-2" isolation="isolate">
+            <text transform="translate(1336.11 434.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">C</tspan><tspan x="13.06" y="0" letter-spacing="0em">A</tspan><tspan x="26.15" y="0" xml:space="preserve">U      Histidine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1739-2" data-name="Group 1739-2">
+          <rect id="Rectangle_227-134" data-name="Rectangle 227-134" x="1562.11" y="410.88" width="235" height="36" rx="5" ry="5" fill="#9fcefd"/>
+          <g id="CGU_Arginine-2" data-name="CGU Arginine-2" isolation="isolate">
+            <text transform="translate(1575.11 434.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">CGU      A</tspan><tspan x="82.85" y="0" letter-spacing="0em">r</tspan><tspan x="89.74" y="0">ginine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1689-2" data-name="Group 1689-2">
+          <rect id="Rectangle_227-89" data-name="Rectangle 227-89" x="845.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#aff3d2"/>
+          <g id="GUU_Valine-2" data-name="GUU Valine-2" isolation="isolate">
+            <text transform="translate(858.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUU      </tspan><tspan x="69.62" y="0" letter-spacing="-.02em">V</tspan><tspan x="82.08" y="0">aline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1709-2" data-name="Group 1709-2">
+          <rect id="Rectangle_227-106" data-name="Rectangle 227-106" x="1084.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#eaeef8"/>
+          <g id="GUC_Alanine-2" data-name="GUC Alanine-2" isolation="isolate">
+            <text transform="translate(1097.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUC      Alanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1729-2" data-name="Group 1729-2">
+          <rect id="Rectangle_227-125" data-name="Rectangle 227-125" x="1323.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#fdafce"/>
+          <g id="GAU_Aspartate-2" data-name="GAU Aspartate-2" isolation="isolate">
+            <text transform="translate(1336.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">G</tspan><tspan x="13.62" y="0" letter-spacing="0em">A</tspan><tspan x="26.72" y="0" xml:space="preserve">U      Aspa</tspan><tspan x="115.21" y="0" letter-spacing=".02em">r</tspan><tspan x="122.76" y="0">tate</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1749-2" data-name="Group 1749-2">
+          <rect id="Rectangle_227-143" data-name="Rectangle 227-143" x="1562.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#fde47f"/>
+          <g id="GGU_Glycine-2" data-name="GGU Glycine-2" isolation="isolate">
+            <text transform="translate(1575.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GGU      Gl</tspan><tspan x="88.88" y="0" letter-spacing="0em">y</tspan><tspan x="98.54" y="0">cine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1689-2-2" data-name="Group 1689-2">
+          <rect id="Rectangle_227-89-2" data-name="Rectangle 227-89" x="845.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#aff3d2"/>
+          <g id="GUU_Valine-2-2" data-name="GUU Valine-2" isolation="isolate">
+            <text transform="translate(858.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUU      </tspan><tspan x="69.62" y="0" letter-spacing="-.02em">V</tspan><tspan x="82.08" y="0">aline</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1709-2-2" data-name="Group 1709-2">
+          <rect id="Rectangle_227-106-2" data-name="Rectangle 227-106" x="1084.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#eaeef8"/>
+          <g id="GUC_Alanine-2-2" data-name="GUC Alanine-2" isolation="isolate">
+            <text transform="translate(1097.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GUC      Alanine</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1729-2-2" data-name="Group 1729-2">
+          <rect id="Rectangle_227-125-2" data-name="Rectangle 227-125" x="1323.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#fdafce"/>
+          <g id="GAU_Aspartate-2-2" data-name="GAU Aspartate-2" isolation="isolate">
+            <text transform="translate(1336.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0">G</tspan><tspan x="13.62" y="0" letter-spacing="0em">A</tspan><tspan x="26.72" y="0" xml:space="preserve">U      Aspa</tspan><tspan x="115.21" y="0" letter-spacing=".02em">r</tspan><tspan x="122.76" y="0">tate</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1749-2-2" data-name="Group 1749-2">
+          <rect id="Rectangle_227-143-2" data-name="Rectangle 227-143" x="1562.11" y="730.88" width="235" height="36" rx="5" ry="5" fill="#fde47f"/>
+          <g id="GGU_Glycine-2-2" data-name="GGU Glycine-2" isolation="isolate">
+            <text transform="translate(1575.11 754.88)" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="500" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">GGU      Gl</tspan><tspan x="88.88" y="0" letter-spacing="0em">y</tspan><tspan x="98.54" y="0">cine</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="wrong-popup">
+    <g id="Group_1817" data-name="Group 1817">
+      <g id="Rectangle_325-2" data-name="Rectangle 325-2">
+        <rect x="377.42" y="672.89" width="414" height="233" rx="12" ry="12" fill="#ffdcdc"/>
+        <rect x="378.92" y="674.39" width="411" height="230" rx="10.5" ry="10.5" fill="none" stroke="red" stroke-dasharray="10 5" stroke-width="3"/>
+      </g>
+      <g id="You_have_selected_the_wrong_amino_acid_Please_see_the_codon_in_the_strand_and_try_again._" data-name="You have selected the wrong amino acid Please see the codon in the strand and try again. " isolation="isolate">
+        <text transform="translate(437.98 725.89)" fill="red" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">Y</tspan><tspan x="17.37" y="0">ou h</tspan><tspan x="75.21" y="0" letter-spacing="0em">a</tspan><tspan x="91.16" y="0" letter-spacing="0em">v</tspan><tspan x="105.85" y="0">e selected the </tspan></text>
+        <text transform="translate(461.74 775.89)" fill="red" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">w</tspan><tspan x="22.27" y="0" letter-spacing="-.01em">r</tspan><tspan x="32.49" y="0">ong amino acid! </tspan></text>
+        <text transform="translate(425.49 825.89)" fill="red" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">Please see the codon in </tspan></text>
+        <text transform="translate(422.32 875.89)" fill="red" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">the st</tspan><tspan x="75.62" y="0" letter-spacing="-.02em">r</tspan><tspan x="85.69" y="0">and and t</tspan><tspan x="210.15" y="0" letter-spacing="0em">r</tspan><tspan x="221.02" y="0">y again.</tspan></text>
+      </g>
+      <g id="Group_1227" data-name="Group 1227">
+        <path id="Path_4162" data-name="Path 4162" d="M581.98,611.86c20.76,0,37.59,16.83,37.59,37.59s-16.83,37.59-37.59,37.59c-20.76,0-37.59-16.83-37.59-37.59h0c0-20.76,16.83-37.59,37.59-37.59" fill="#d63434"/>
+        <path id="Path_4163" data-name="Path 4163" d="M581.98,696.02c-25.71,0-46.56-20.84-46.56-46.56,0-12.35,4.91-24.2,13.64-32.93,18.18-18.18,47.66-18.18,65.85,0,18.18,18.18,18.18,47.66,0,65.85-8.71,8.76-20.57,13.67-32.92,13.64M581.98,608.91c-22.39,0-40.55,18.15-40.55,40.54,0,10.75,4.27,21.07,11.88,28.67,15.78,15.88,41.46,15.96,57.34.18s15.96-41.46.18-57.34c-.06-.06-.12-.12-.18-.18-7.59-7.63-17.91-11.91-28.67-11.88" fill="#d63434"/>
+        <path id="Path_4164" data-name="Path 4164" d="M597.15,663.01l-1.77,2.15c-.83,1.02-2.34,1.17-3.36.34-.05-.04-.1-.09-.15-.14l-9.95-9.63-9.82,9.5c-.95.92-2.46.9-3.39-.05-.05-.05-.09-.1-.13-.15l-1.77-2.16c-.99-1.2-.94-2.94.12-4.08l8.64-9.2-8.61-8.34c-.86-.83-.97-2.17-.27-3.13l3.04-4.15c.78-1.07,2.29-1.3,3.36-.51.12.09.24.19.34.3l8.49,9.06,8.61-9.18c.9-.97,2.41-1.03,3.38-.14.11.11.22.22.31.35l3.04,4.15c.7.97.59,2.3-.27,3.13l-8.73,8.46,8.75,9.34c1.05,1.14,1.11,2.89.12,4.08h.01Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+  <g id="wrong-highlight">
+    <g id="Rectangle_542" data-name="Rectangle 542">
+      <rect x="918.66" y="649.88" width="164" height="38" fill="none"/>
+      <rect x="920.16" y="651.38" width="161" height="35" fill="none" stroke="red" stroke-width="3"/>
+    </g>
+  </g>
+  <g id="correct-popup">
+    <g id="Group_1235" data-name="Group 1235">
+      <g id="Rectangle_325-2-2" data-name="Rectangle 325-2">
+        <rect x="404.84" y="716.39" width="386" height="188" rx="12" ry="12" fill="#e9ffea"/>
+        <rect x="406.34" y="717.89" width="383" height="185" rx="10.5" ry="10.5" fill="none" stroke="#009306" stroke-dasharray="10 5" stroke-width="3"/>
+      </g>
+      <g id="Well_done_You_have_selected_the_correct_amino_acid._" data-name="Well done You have selected the correct amino acid. " isolation="isolate">
+        <text transform="translate(523.91 777.39)" fill="#006b04" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.02em">W</tspan><tspan x="25.8" y="0">ell done!</tspan></text>
+        <text transform="translate(447.41 827.39)" fill="#006b04" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">Y</tspan><tspan x="17.37" y="0">ou h</tspan><tspan x="75.21" y="0" letter-spacing="0em">a</tspan><tspan x="91.16" y="0" letter-spacing="0em">v</tspan><tspan x="105.85" y="0">e selected the </tspan></text>
+        <text transform="translate(464.71 877.39)" fill="#006b04" font-family="Roboto-Medium, Roboto" font-size="30" font-weight="500" isolation="isolate"><tspan x="0" y="0">cor</tspan><tspan x="43.29" y="0" letter-spacing="0em">r</tspan><tspan x="53.61" y="0">ect amino acid.</tspan></text>
+      </g>
+      <g id="Group_1224" data-name="Group 1224">
+        <path id="Path_4159" data-name="Path 4159" d="M594.4,655.36c20.76,0,37.59,16.83,37.59,37.59s-16.83,37.59-37.59,37.59-37.59-16.82-37.59-37.58c0-20.76,16.82-37.6,37.58-37.6,0,0,0,0,0,0" fill="#4c9936"/>
+        <path id="Path_4160" data-name="Path 4160" d="M594.4,739.52c-25.71,0-46.56-20.84-46.56-46.56,0-12.35,4.91-24.2,13.64-32.93,18.18-18.18,47.66-18.18,65.85,0,18.18,18.18,18.18,47.66,0,65.85-8.71,8.76-20.57,13.67-32.92,13.64M594.41,652.41c-22.39,0-40.55,18.15-40.55,40.54,0,10.75,4.27,21.07,11.88,28.67,15.78,15.88,41.46,15.96,57.34.18,15.88-15.78,15.96-41.46.18-57.34-.06-.06-.12-.12-.18-.18-7.59-7.63-17.91-11.91-28.67-11.88" fill="#4c9936"/>
+        <path id="Path_4161" data-name="Path 4161" d="M611.79,677.45c-6.61,8.97-12.05,18.74-16.2,29.09-.58,1.52-1.96,2.58-3.57,2.78-1.09.13-2.09.31-2.95.5-1.8.39-3.65-.4-4.63-1.96-2.64-4.2-5.69-9.21-7.23-11.78-.63-1.04-.37-2.39.61-3.12.35-.26.78-.56,1.27-.87,2.27-1.44,5.27-.89,6.88,1.26l4.1,5.44c6-11.53,11.27-17.73,14.48-20.82,1.82-1.75,4.43-2.39,6.85-1.68.4.12.63.53.51.93-.02.08-.06.16-.11.23h0Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+  <g id="correct-highlight">
+    <g id="Rectangle_542-2" data-name="Rectangle 542">
+      <rect x="918.66" y="609.84" width="164" height="38" fill="none"/>
+      <rect x="920.16" y="611.34" width="161" height="35" fill="none" stroke="#009306" stroke-width="3"/>
+    </g>
+  </g>
+  <g id="peptide-bond">
+    <g id="Group_1822" data-name="Group 1822">
+      <rect id="Rectangle_527" data-name="Rectangle 527" x="118.59" y="579.71" width="130" height="46" fill="#6f49b1"/>
+      <g id="Peptide_bond_" data-name="Peptide bond " isolation="isolate">
+        <text transform="translate(158.89 596.91)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+        <text transform="translate(166.86 615.91)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+      </g>
+      <line id="Line_3" data-name="Line 3" x1="158.73" y1="625.21" x2="205.79" y2="625.21" fill="none" stroke="#000" stroke-width="10"/>
+    </g>
+  </g>
+  <g id="trna-sysmbol">
+    <g id="Group_1781" data-name="Group 1781">
+      <rect id="Rectangle_526" data-name="Rectangle 526" x="57.29" y="367.71" width="121" height="6" fill="#eea26f"/>
+      <g id="Group_1778-2" data-name="Group 1778">
+        <g clip-path="url(#clippath-5)">
+          <g id="Group_1780-2" data-name="Group 1780">
+            <path id="Path_7885-2" data-name="Path 7885" d="M101.73,431.3c-1.19-.38-3.81-.39-5.26-.63-10.9-1.74-21.52-4.89-31.61-9.38-2.6-1.19-6.92-2.68-7.3-5.86.65-8.95-.84-27.22,0-36.02.12-2.05,1.82-3.65,3.88-3.65l114.2.14c1.5.48,2.55,1.82,2.66,3.39v36.27c-.62,3.34-3.13,3.85-5.96,5.19-4.65,2.16-9.44,3.99-14.34,5.5-7.81,2.52-15.87,4.2-24.04,5.01v56.03h5.21c.19,0,2.22-2.05,2.88-2.5,15.8-10.62,35.57,6.43,27.93,24.25-4.77,11.12-19.87,15.21-29.13,7.21-.73-.63-2.84-3.5-3.15-3.65-.85-.42-2.74.03-3.74-.13v19.08c-.35.77-.85,1.45-1.47,2.03-3.17,2.52-6.76.17-7.09-3.64-.64-7.6.4-16.29.14-23.97.38-.99.96-1.86,2.14-1.89l15.17.08c2.26,1.02,1.45,3.49,3.16,5.19,8.36,8.33,23.01-4.37,14.66-15.13-3.43-4.43-11.39-5.39-15.29-1.23-1.03,1.1-.68,2.4-2.76,2.69-4.97.38-9.97.4-14.94.04-1.36-.25-2.33-1.45-2.28-2.83v-64.72c-.2-1.57,1.19-4.12,2.67-4.6,1.91-.62,5.62-.62,7.85-.98,11.8-1.75,23.29-5.2,34.1-10.24v-27.34h-103.89v27.2c12.91,6.6,27.35,9.93,41.73,11.3,1.42.48,2.47,1.69,2.76,3.16l.13,65.94c.05,1.61-.61,2.91-2.28,3.11-4.6.55-10.24-.41-14.95-.02-1.51-.13-1.95-1.87-2.64-2.61-3.99-4.31-11.8-3.27-15.4,1.14-6.53,8,1,20.08,10.89,17.26,1.48-.42,4.29-1.93,4.93-3.4.59-1.37.24-3.36,2.26-3.93l15.83.08c.83.53,1.34,1.44,1.35,2.42l-.13,63.22c-1.19,4.2-6.63,3.88-8.31.27-.24-8.03-.1-26.07-.12-34.1,0-1.68.4-.77,0-.81-.02-7.57.22-15.2-.27-22.74-.77.15-2.89-.25-3.41.06-.1.06-.94,1.5-1.26,1.84-11.46,12.41-32.18,4.39-32.73-12.58-.5-15.49,16.05-25.35,29.1-17.32.92.57,3.08,2.6,3.69,2.75.74.19,4.39.21,4.88-.2.03-.03.22.05.26-.14l-.26-.14" fill="#36f8a3"/>
+            <path id="Path_7886-2" data-name="Path 7886" d="M102.17,459.68c.45,1.13.45,2.39,0,3.52v-3.52" fill="#f8d023"/>
+            <path id="Path_7887-2" data-name="Path 7887" d="M102.17,464.28c.45.75.45,1.69,0,2.44v-2.44Z" fill="#f8d023"/>
+            <path id="Path_7888-2" data-name="Path 7888" d="M102.17,433.97c.4.09.42.97,0,1.08,0-.36.01-.72,0-1.08" fill="#f8d023"/>
+            <path id="Path_7889-2" data-name="Path 7889" d="M102.17,535.2c.4.04.4.77,0,.81v-.81" fill="#f8d023"/>
+            <path id="Path_7890-2" data-name="Path 7890" d="M102.17,486.75l.26.14c-.04.18-.23.11-.26.14v-.27Z" fill="#f8d023"/>
+          </g>
+        </g>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(82.44 558.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">3&apos;</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(139.44 543.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">5&apos;</tspan></text>
+      </g>
+      <g id="tRNA" isolation="isolate">
+        <text transform="translate(87.16 412.71)" fill="#fff" font-family="Roboto-Light, Roboto" font-size="25" font-weight="300" isolation="isolate"><tspan x="0" y="0">tRNA</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="trna-sysmbol-02">
+    <g id="Group_1781-2" data-name="Group 1781">
+      <rect id="Rectangle_526-2" data-name="Rectangle 526" x="186.29" y="367.71" width="121" height="6" fill="#eea26f"/>
+      <g id="Group_1778-3" data-name="Group 1778">
+        <g clip-path="url(#clippath-6)">
+          <g id="Group_1780-3" data-name="Group 1780">
+            <path id="Path_7885-3" data-name="Path 7885" d="M230.73,431.3c-1.19-.38-3.81-.39-5.26-.63-10.9-1.74-21.52-4.89-31.61-9.38-2.6-1.19-6.92-2.68-7.3-5.86.65-8.95-.84-27.22,0-36.02.12-2.05,1.82-3.65,3.88-3.65l114.2.14c1.5.48,2.55,1.82,2.66,3.39v36.27c-.62,3.34-3.13,3.85-5.96,5.19-4.65,2.16-9.44,3.99-14.34,5.5-7.81,2.52-15.87,4.2-24.04,5.01v56.03h5.21c.19,0,2.22-2.05,2.88-2.5,15.8-10.62,35.57,6.43,27.93,24.25-4.77,11.12-19.87,15.21-29.13,7.21-.73-.63-2.84-3.5-3.15-3.65-.85-.42-2.74.03-3.74-.13v19.08c-.35.77-.85,1.45-1.47,2.03-3.17,2.52-6.76.17-7.09-3.64-.64-7.6.4-16.29.14-23.97.38-.99.96-1.86,2.14-1.89l15.17.08c2.26,1.02,1.45,3.49,3.16,5.19,8.36,8.33,23.01-4.37,14.66-15.13-3.43-4.43-11.39-5.39-15.29-1.23-1.03,1.1-.68,2.4-2.76,2.69-4.97.38-9.97.4-14.94.04-1.36-.25-2.33-1.45-2.28-2.83v-64.72c-.2-1.57,1.19-4.12,2.67-4.6,1.91-.62,5.62-.62,7.85-.98,11.8-1.75,23.29-5.2,34.1-10.24v-27.34h-103.89v27.2c12.91,6.6,27.35,9.93,41.73,11.3,1.42.48,2.47,1.69,2.76,3.16l.13,65.94c.05,1.61-.61,2.91-2.28,3.11-4.6.55-10.24-.41-14.95-.02-1.51-.13-1.95-1.87-2.64-2.61-3.99-4.31-11.8-3.27-15.4,1.14-6.53,8,1,20.08,10.89,17.26,1.48-.42,4.29-1.93,4.93-3.4.59-1.37.24-3.36,2.26-3.93l15.83.08c.83.53,1.34,1.44,1.35,2.42l-.13,63.22c-1.19,4.2-6.63,3.88-8.31.27-.24-8.03-.1-26.07-.12-34.1,0-1.68.4-.77,0-.81-.02-7.57.22-15.2-.27-22.74-.77.15-2.89-.25-3.41.06-.1.06-.94,1.5-1.26,1.84-11.46,12.41-32.18,4.39-32.73-12.58-.5-15.49,16.05-25.35,29.1-17.32.92.57,3.08,2.6,3.69,2.75.74.19,4.39.21,4.88-.2.03-.03.22.05.26-.14l-.26-.14" fill="#36f8a3"/>
+            <path id="Path_7886-3" data-name="Path 7886" d="M231.17,459.68c.45,1.13.45,2.39,0,3.52v-3.52" fill="#f8d023"/>
+            <path id="Path_7887-3" data-name="Path 7887" d="M231.17,464.28c.45.75.45,1.69,0,2.44v-2.44Z" fill="#f8d023"/>
+            <path id="Path_7888-3" data-name="Path 7888" d="M231.17,433.97c.4.09.42.97,0,1.08,0-.36.01-.72,0-1.08" fill="#f8d023"/>
+            <path id="Path_7889-3" data-name="Path 7889" d="M231.17,535.2c.4.04.4.77,0,.81v-.81" fill="#f8d023"/>
+            <path id="Path_7890-3" data-name="Path 7890" d="M231.17,486.75l.26.14c-.04.18-.23.11-.26.14v-.27Z" fill="#f8d023"/>
+          </g>
+        </g>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(211.44 558.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">3&apos;</tspan></text>
+      </g>
+      <g isolation="isolate">
+        <text transform="translate(268.44 543.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="20" font-weight="700" isolation="isolate"><tspan x="0" y="0">5&apos;</tspan></text>
+      </g>
+      <g id="tRNA-2" data-name="tRNA" isolation="isolate">
+        <text transform="translate(216.16 412.71)" fill="#fff" font-family="Roboto-Light, Roboto" font-size="25" font-weight="300" isolation="isolate"><tspan x="0" y="0">tRNA</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="mrna-group-text">
+    <g id="Group_1818" data-name="Group 1818">
+      <g id="A_-3" data-name="A " isolation="isolate">
+        <text transform="translate(105.45 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="C_-3" data-name="C " isolation="isolate">
+        <text transform="translate(150.73 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g id="U_-3" data-name="U " isolation="isolate">
+        <text transform="translate(65.67 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="cua">
+    <g id="Group_1818-2" data-name="Group 1818">
+      <g id="A_-4" data-name="A " isolation="isolate">
+        <text transform="translate(234.45 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">U</tspan></text>
+      </g>
+      <g id="C_-4" data-name="C " isolation="isolate">
+        <text transform="translate(279.73 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">A</tspan></text>
+      </g>
+      <g id="U_-4" data-name="U " isolation="isolate">
+        <text transform="translate(194.67 362.71)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="30" font-weight="700" isolation="isolate"><tspan x="0" y="0">C</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="mrna-group-highlight">
+    <g id="Rectangle_517" data-name="Rectangle 517">
+      <rect x="57.29" y="296.71" width="121" height="35" rx="10" ry="10" fill="none"/>
+      <rect x="58.79" y="298.21" width="118" height="32" rx="8.5" ry="8.5" fill="none" stroke="#eea26f" stroke-width="3"/>
+    </g>
+  </g>
+  <g id="mrna-group-highlight-02">
+    <g id="Rectangle_517-2" data-name="Rectangle 517">
+      <rect x="186.29" y="296.71" width="121" height="35" rx="10" ry="10" fill="none"/>
+      <rect x="187.79" y="298.21" width="118" height="32" rx="8.5" ry="8.5" fill="none" stroke="#eea26f" stroke-width="3"/>
+    </g>
+  </g>
+  <g id="Methionine">
+    <g id="Group_1782" data-name="Group 1782">
+      <g id="Path_7891" data-name="Path 7891">
+        <path d="M117.79,665.21c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#e2e27c"/>
+        <path d="M117.79,580.71c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M117.79,575.71c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel" isolation="isolate">
+        <text transform="translate(95 630.48)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Met</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Alanine">
+    <g id="Group_1782-2" data-name="Group 1782">
+      <g id="Path_7891-2" data-name="Path 7891">
+        <path d="M246.79,664.98c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#eaeef8"/>
+        <path d="M246.79,580.48c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M246.79,575.48c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-2" data-name="Mel" isolation="isolate">
+        <text transform="translate(224 630.25)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ala</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Arginine">
+    <g id="Group_1782-3" data-name="Group 1782">
+      <g id="Path_7891-3" data-name="Path 7891">
+        <path d="M117.79,665.46c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#9fcefd"/>
+        <path d="M117.79,580.96c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M117.79,575.96c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-3" data-name="Mel" isolation="isolate">
+        <text transform="translate(95 630.72)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Arg</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Asparagine">
+    <g id="Group_1782-4" data-name="Group 1782">
+      <g id="Path_7891-4" data-name="Path 7891">
+        <path d="M114.5,665.21c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f8e0d3"/>
+        <path d="M114.5,580.71c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M114.5,575.71c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-4" data-name="Mel" isolation="isolate">
+        <text transform="translate(91.71 630.48)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Asn</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="_Aspartate" data-name=" Aspartate">
+    <g id="Group_1782-5" data-name="Group 1782">
+      <g id="Path_7891-5" data-name="Path 7891">
+        <path d="M116.27,666.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fdafce"/>
+        <path d="M116.27,581.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.27,576.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-5" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.49 631.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Asp</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Cysteine">
+    <g id="Group_1782-6" data-name="Group 1782">
+      <g id="Path_7891-6" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f5cc47"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-6" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Cys</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Glutamine">
+    <g id="Group_1782-7" data-name="Group 1782">
+      <g id="Path_7891-7" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#edcced"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-7" data-name="Mel" isolation="isolate">
+        <text transform="translate(96.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gln</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Glutamate">
+    <g id="Group_1782-8" data-name="Group 1782">
+      <g id="Path_7891-8" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fab48d"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-8" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Glu  </tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Glycine">
+    <g id="Group_1782-9" data-name="Group 1782">
+      <g id="Path_7891-9" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fde47f"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-9" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gly</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Histidine">
+    <g id="Group_1782-10" data-name="Group 1782">
+      <g id="Path_7891-10" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#ee9fee"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-10" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">His</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Isoleucine">
+    <g id="Group_1782-11" data-name="Group 1782">
+      <g id="Path_7891-11" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fdcaae"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-11" data-name="Mel" isolation="isolate">
+        <text transform="translate(102.29 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ile</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="_Leucine" data-name=" Leucine">
+    <g id="Group_1782-12" data-name="Group 1782">
+      <g id="Path_7891-12" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#d2f39f"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-12" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Leu</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Lysine">
+    <g id="Group_1782-13" data-name="Group 1782">
+      <g id="Path_7891-13" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#debffd"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-13" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Lys</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Phenylalanine">
+    <g id="Group_1782-14" data-name="Group 1782">
+      <g id="Path_7891-14" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#d0d0d0"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-14" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Phe</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Proline">
+    <g id="Group_1782-15" data-name="Group 1782">
+      <g id="Path_7891-15" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fdde9f"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-15" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">P</tspan><tspan x="16.63" y="0" letter-spacing="0em">r</tspan><tspan x="25.46" y="0">o</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Valine">
+    <g id="Group_1782-16" data-name="Group 1782">
+      <g id="Path_7891-16" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#aff3d2"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-16" data-name="Mel" isolation="isolate">
+        <text transform="translate(96.71 634.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.02em">V</tspan><tspan x="16.13" y="0">al</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Tyrosine">
+    <g id="Group_1782-17" data-name="Group 1782">
+      <g id="Path_7891-17" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#73b9ff"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-17" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Tyr</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Tryptophan">
+    <g id="Group_1782-18" data-name="Group 1782">
+      <g id="Path_7891-18" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#ddb1b1"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-18" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.04em">T</tspan><tspan x="14.52" y="0">rp</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Threonine">
+    <g id="Group_1782-19" data-name="Group 1782">
+      <g id="Path_7891-19" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#aefbfd"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-19" data-name="Mel" isolation="isolate">
+        <text transform="translate(93.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Thr</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Serine">
+    <g id="Group_1782-20" data-name="Group 1782">
+      <g id="Path_7891-20" data-name="Path 7891">
+        <path d="M116.5,665.35c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#a7e49f"/>
+        <path d="M116.5,580.85c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M116.5,575.85c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Mel-20" data-name="Mel" isolation="isolate">
+        <text transform="translate(97.71 630.61)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ser</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Stop">
+    <g id="Group_1815" data-name="Group 1815">
+      <g id="Path_7900" data-name="Path 7900">
+        <path d="M1412.79,664.61c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fff"/>
+        <path d="M1412.79,580.11c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79-3.77,3.77-6.72,8.15-8.79,13.03-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1412.79,575.11c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+      </g>
+      <g id="Group_1814" data-name="Group 1814">
+        <path id="Path_1027" data-name="Path 1027" d="M1396.39,603.71l32.8,32.8" fill="none" stroke="red" stroke-linecap="round" stroke-width="10"/>
+        <path id="Path_1028" data-name="Path 1028" d="M1429.19,603.71l-32.8,32.8" fill="none" stroke="red" stroke-linecap="round" stroke-width="10"/>
+      </g>
+    </g>
+  </g>
+  <g id="polypeptide-chain">
+    <g>
+      <g id="Group_1810" data-name="Group 1810">
+        <g id="Group_1803" data-name="Group 1803">
+          <rect id="Rectangle_527-2" data-name="Rectangle 527" x="1153.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_-2" data-name="Peptide bond " isolation="isolate">
+            <text transform="translate(1194.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(1202.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804" data-name="Group 1804">
+          <g id="Path_7891-21" data-name="Path 7891">
+            <path d="M1281.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#a0d0ff"/>
+            <path d="M1281.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1281.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Arg" isolation="isolate">
+            <text transform="translate(1260.64 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Arg</tspan></text>
+          </g>
+          <line id="Line_2" data-name="Line 2" x1="1197.23" y1="622.37" x2="1236.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1809" data-name="Group 1809">
+        <g id="Group_1803-2" data-name="Group 1803-2">
+          <rect id="uuid-36b5c418-64e9-4866-82e1-eab9445476a0" data-name="Rectangle 527-2" x="1024.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_2" data-name="Peptide bond 2" isolation="isolate">
+            <text transform="translate(1065.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(1073.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804-2" data-name="Group 1804-2">
+          <g id="uuid-53ba7671-94ba-4eaa-bc63-dd2db6ccaa05" data-name="Path 7891-2">
+            <path d="M1152.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#b0e0ff"/>
+            <path d="M1152.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1152.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Thr" isolation="isolate">
+            <text transform="translate(1132.62 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Thr</tspan></text>
+          </g>
+          <line id="Line_2-2" data-name="Line 2-2" x1="1068.23" y1="622.37" x2="1107.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1808" data-name="Group 1808">
+        <g id="Group_1803-3" data-name="Group 1803-3">
+          <rect id="Rectangle_527-3" data-name="Rectangle 527-3" x="896.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_3" data-name="Peptide bond 3" isolation="isolate">
+            <text transform="translate(937.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(945.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804-3" data-name="Group 1804-3">
+          <g id="uuid-aea71b02-3ea9-457d-ba5d-ce3008843004" data-name="Path 7891-3">
+            <path d="M1024.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f5c0f5"/>
+            <path d="M1024.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1024.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="His" isolation="isolate">
+            <text transform="translate(1004.66 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">His</tspan></text>
+          </g>
+          <line id="Line_2-3" data-name="Line 2-3" x1="940.23" y1="622.37" x2="979.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1807" data-name="Group 1807">
+        <g id="Group_1803-4" data-name="Group 1803-4">
+          <rect id="Rectangle_527-4" data-name="Rectangle 527-4" x="766.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_4" data-name="Peptide bond 4" isolation="isolate">
+            <text transform="translate(807.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(815.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804-4" data-name="Group 1804-4">
+          <g id="uuid-17c84c80-dbe5-4265-8d1c-64ef5f31653b" data-name="Path 7891-4">
+            <path d="M894.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#d0a0f0"/>
+            <path d="M894.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M894.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Gin" isolation="isolate">
+            <text transform="translate(874.68 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gin</tspan></text>
+          </g>
+          <line id="Line_2-4" data-name="Line 2-4" x1="810.23" y1="622.37" x2="849.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1806" data-name="Group 1806">
+        <g id="Group_1803-5" data-name="Group 1803-5">
+          <rect id="Rectangle_527-5" data-name="Rectangle 527-5" x="637.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_5" data-name="Peptide bond 5" isolation="isolate">
+            <text transform="translate(678.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(686.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804-5" data-name="Group 1804-5">
+          <g id="uuid-aaf8ed41-ff6d-401e-ac67-fefe0c371a50" data-name="Path 7891-5">
+            <path d="M765.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#ffe680"/>
+            <path d="M765.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M765.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Gly" isolation="isolate">
+            <text transform="translate(746.69 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gly</tspan></text>
+          </g>
+          <line id="Line_2-5" data-name="Line 2-5" x1="681.23" y1="622.37" x2="720.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1805" data-name="Group 1805">
+        <g id="Group_1803-6" data-name="Group 1803-6">
+          <rect id="Rectangle_527-6" data-name="Rectangle 527-6" x="508.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_6" data-name="Peptide bond 6" isolation="isolate">
+            <text transform="translate(549.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(557.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1804-6" data-name="Group 1804-6">
+          <g id="uuid-c6b59a1c-f0a0-41d2-abe4-ea64f51dea20" data-name="Path 7891-6">
+            <path d="M636.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#78e45d"/>
+            <path d="M636.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M636.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Ser" isolation="isolate">
+            <text transform="translate(616.88 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ser</tspan></text>
+          </g>
+          <line id="Line_2-6" data-name="Line 2-6" x1="552.23" y1="622.37" x2="591.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Group_1789" data-name="Group 1789">
+        <rect id="Rectangle_527-7" data-name="Rectangle 527-7" x="374.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+        <g id="Peptide_bond_7" data-name="Peptide bond 7" isolation="isolate">
+          <text transform="translate(415.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+          <text transform="translate(423.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+        </g>
+      </g>
+      <g id="Group_1790" data-name="Group 1790">
+        <g id="uuid-43f81f00-86ca-455f-b5e0-203089dff618" data-name="Path 7891-7">
+          <path d="M506.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#e27bee"/>
+          <path d="M506.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M506.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+        </g>
+        <g id="Lys" isolation="isolate">
+          <text transform="translate(486.03 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Lys</tspan></text>
+        </g>
+        <line id="Line_2-7" data-name="Line 2-7" x1="422.23" y1="622.37" x2="461.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+      </g>
+      <g id="Group_1788" data-name="Group 1788">
+        <rect id="Rectangle_527-8" data-name="Rectangle 527-8" x="247.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+        <g id="Peptide_bond_8" data-name="Peptide bond 8" isolation="isolate">
+          <text transform="translate(288.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+          <text transform="translate(296.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+        </g>
+      </g>
+      <g id="Group_1787" data-name="Group 1787">
+        <rect id="Rectangle_527-9" data-name="Rectangle 527-9" x="117.73" y="576.87" width="130" height="46" fill="#6f49b1"/>
+        <g id="Peptide_bond_9" data-name="Peptide bond 9" isolation="isolate">
+          <text transform="translate(158.04 594.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+          <text transform="translate(166.01 613.07)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+        </g>
+      </g>
+      <g id="Group_1782-21" data-name="Group 1782">
+        <g id="uuid-b9993b10-2ed6-4c84-a71f-65dd9ed16c5c" data-name="Path 7891-8">
+          <path d="M117.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#dce45d"/>
+          <path d="M117.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M117.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+        </g>
+        <g id="Met_" data-name="Met " isolation="isolate">
+          <text transform="translate(94.45 630.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Met      </tspan></text>
+        </g>
+      </g>
+      <g id="Group_1784" data-name="Group 1784">
+        <g id="uuid-0f435413-f3af-42d2-adf7-8f14690e880e" data-name="Path 7891-9">
+          <path d="M246.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f98b8b"/>
+          <path d="M246.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M246.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+        </g>
+        <g id="Asp" isolation="isolate">
+          <text transform="translate(223.36 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Asp</tspan></text>
+        </g>
+        <line id="Line_2-8" data-name="Line 2-8" x1="162.23" y1="622.37" x2="201.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+      </g>
+      <g id="Group_1786" data-name="Group 1786">
+        <g id="uuid-0148b696-c682-47f6-9168-98fba0779cc2" data-name="Path 7891-10">
+          <path d="M377.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#78e45d"/>
+          <path d="M377.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M377.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+        </g>
+        <g id="Ser-2" isolation="isolate">
+          <text transform="translate(357.88 631.87)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ser</tspan></text>
+        </g>
+        <line id="Line_2-9" data-name="Line 2-9" x1="293.23" y1="622.37" x2="332.23" y2="622.37" fill="none" stroke="#000" stroke-width="10"/>
+      </g>
+      <g id="Group_1815-2" data-name="Group 1815">
+        <g id="Path_7900-2" data-name="Path 7900">
+          <path d="M1412.73,665.37c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#fff"/>
+          <path d="M1412.73,580.87c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1412.73,575.87c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+        </g>
+        <g id="Group_1814-2" data-name="Group 1814">
+          <path id="Path_1027-2" data-name="Path 1027" d="M1396.33,604.47l32.8,32.8" fill="none" stroke="red" stroke-linecap="round" stroke-width="10"/>
+          <path id="Path_1028-2" data-name="Path 1028" d="M1429.14,604.47l-32.8,32.8" fill="none" stroke="red" stroke-linecap="round" stroke-width="10"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="polypeptide-chain-text">
+    <g id="Polypeptide_chain" data-name="Polypeptide chain" isolation="isolate">
+      <text transform="translate(563.83 729.87)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="50" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="31.91" y="0">olypeptide chain</tspan></text>
+    </g>
+  </g>
+  <g id="award-polypeptide-chain">
+    <g>
+      <g id="Group_1824" data-name="Group 1824">
+        <g id="Group_1810-2" data-name="Group 1810">
+          <g id="Group_1803-7" data-name="Group 1803">
+            <rect id="Rectangle_527-10" data-name="Rectangle 527" x="1414" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_-3" data-name="Peptide bond " isolation="isolate">
+              <text transform="translate(1454.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(1462.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-7" data-name="Group 1804">
+            <g id="Path_7891-22" data-name="Path 7891">
+              <path d="M1542,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#a0d0ff"/>
+              <path d="M1542,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79-3.77,3.77-6.72,8.15-8.79,13.03-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1542,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="Arg-2" data-name="Arg" isolation="isolate">
+              <text transform="translate(1520.9 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Arg</tspan></text>
+            </g>
+            <line id="Line_2-10" data-name="Line 2" x1="1457.5" y1="396.23" x2="1496.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1809-2" data-name="Group 1809">
+          <g id="Group_1803-2-2" data-name="Group 1803-2">
+            <rect id="uuid-b9894334-f070-481c-b562-e20ca6433481" data-name="Rectangle 527-2" x="1285" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_2-2" data-name="Peptide bond 2" isolation="isolate">
+              <text transform="translate(1325.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(1333.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-2-2" data-name="Group 1804-2">
+            <g id="uuid-c1b4cecb-3c30-47b9-9e30-454bcf589b44" data-name="Path 7891-2">
+              <path d="M1413,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#b0e0ff"/>
+              <path d="M1413,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79-3.77,3.77-6.72,8.15-8.79,13.03-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1413,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="Thr-2" data-name="Thr" isolation="isolate">
+              <text transform="translate(1392.89 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Thr</tspan></text>
+            </g>
+            <line id="Line_2-2-2" data-name="Line 2-2" x1="1328.5" y1="396.23" x2="1367.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1808-2" data-name="Group 1808">
+          <g id="Group_1803-3-2" data-name="Group 1803-3">
+            <rect id="Rectangle_527-3-2" data-name="Rectangle 527-3" x="1157" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_3-2" data-name="Peptide bond 3" isolation="isolate">
+              <text transform="translate(1197.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(1205.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-3-2" data-name="Group 1804-3">
+            <g id="uuid-8f940a81-a78d-4b6e-89c6-ac2232a3eda4" data-name="Path 7891-3">
+              <path d="M1285,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f5c0f5"/>
+              <path d="M1285,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79-3.77,3.77-6.72,8.15-8.79,13.03-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1285,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="His-2" data-name="His" isolation="isolate">
+              <text transform="translate(1264.93 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">His</tspan></text>
+            </g>
+            <line id="Line_2-3-2" data-name="Line 2-3" x1="1200.5" y1="396.23" x2="1239.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1807-2" data-name="Group 1807">
+          <g id="Group_1803-4-2" data-name="Group 1803-4">
+            <rect id="Rectangle_527-4-2" data-name="Rectangle 527-4" x="1027" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_4-2" data-name="Peptide bond 4" isolation="isolate">
+              <text transform="translate(1067.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(1075.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-4-2" data-name="Group 1804-4">
+            <g id="uuid-47e8d062-8847-4154-8a90-d27f08debecb" data-name="Path 7891-4">
+              <path d="M1155,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#d0a0f0"/>
+              <path d="M1155,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79-3.77,3.77-6.72,8.15-8.79,13.03-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1155,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="Gin-2" data-name="Gin" isolation="isolate">
+              <text transform="translate(1134.94 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gin</tspan></text>
+            </g>
+            <line id="Line_2-4-2" data-name="Line 2-4" x1="1070.5" y1="396.23" x2="1109.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1806-2" data-name="Group 1806">
+          <g id="Group_1803-5-2" data-name="Group 1803-5">
+            <rect id="Rectangle_527-5-2" data-name="Rectangle 527-5" x="898" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_5-2" data-name="Peptide bond 5" isolation="isolate">
+              <text transform="translate(938.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(946.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-5-2" data-name="Group 1804-5">
+            <g id="uuid-2535e078-aef0-49da-979c-28db7463ec2d" data-name="Path 7891-5">
+              <path d="M1026,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#ffe680"/>
+              <path d="M1026,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M1026,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="Gly-2" data-name="Gly" isolation="isolate">
+              <text transform="translate(1006.95 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Gly</tspan></text>
+            </g>
+            <line id="Line_2-5-2" data-name="Line 2-5" x1="941.5" y1="396.23" x2="980.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1805-2" data-name="Group 1805">
+          <g id="Group_1803-6-2" data-name="Group 1803-6">
+            <rect id="Rectangle_527-6-2" data-name="Rectangle 527-6" x="769" y="350.73" width="130" height="46" fill="#6f49b1"/>
+            <g id="Peptide_bond_6-2" data-name="Peptide bond 6" isolation="isolate">
+              <text transform="translate(809.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+              <text transform="translate(817.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+            </g>
+          </g>
+          <g id="Group_1804-6-2" data-name="Group 1804-6">
+            <g id="uuid-2a6c1315-2a4e-46b0-a3fe-06ca7bcc5258" data-name="Path 7891-6">
+              <path d="M897,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#78e45d"/>
+              <path d="M897,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M897,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+            </g>
+            <g id="Ser-3" data-name="Ser" isolation="isolate">
+              <text transform="translate(877.14 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ser</tspan></text>
+            </g>
+            <line id="Line_2-6-2" data-name="Line 2-6" x1="812.5" y1="396.23" x2="851.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+          </g>
+        </g>
+        <g id="Group_1789-2" data-name="Group 1789">
+          <rect id="Rectangle_527-7-2" data-name="Rectangle 527-7" x="635" y="350.73" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_7-2" data-name="Peptide bond 7" isolation="isolate">
+            <text transform="translate(675.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(683.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1790-2" data-name="Group 1790">
+          <g id="uuid-fd44163a-1415-4c71-b12b-20cbdc780d1f" data-name="Path 7891-7">
+            <path d="M767,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#e27bee"/>
+            <path d="M767,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M767,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Lys-2" data-name="Lys" isolation="isolate">
+            <text transform="translate(746.29 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Lys</tspan></text>
+          </g>
+          <line id="Line_2-7-2" data-name="Line 2-7" x1="682.5" y1="396.23" x2="721.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+        <g id="Group_1788-2" data-name="Group 1788">
+          <rect id="Rectangle_527-8-2" data-name="Rectangle 527-8" x="508" y="350.73" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_8-2" data-name="Peptide bond 8" isolation="isolate">
+            <text transform="translate(548.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(556.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1787-2" data-name="Group 1787">
+          <rect id="Rectangle_527-9-2" data-name="Rectangle 527-9" x="378" y="350.73" width="130" height="46" fill="#6f49b1"/>
+          <g id="Peptide_bond_9-2" data-name="Peptide bond 9" isolation="isolate">
+            <text transform="translate(418.31 367.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="8.74" y="0">eptide </tspan></text>
+            <text transform="translate(426.27 386.93)" fill="#fff" font-family="Roboto-Regular, Roboto" font-size="14" isolation="isolate"><tspan x="0" y="0">bond</tspan></text>
+          </g>
+        </g>
+        <g id="Group_1782-22" data-name="Group 1782">
+          <g id="uuid-0413a8ac-eefa-4d86-9df6-c9713154f647" data-name="Path 7891-8">
+            <path d="M378,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#dce45d"/>
+            <path d="M378,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M378,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Met_-2" data-name="Met " isolation="isolate">
+            <text transform="translate(354.71 404.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0" xml:space="preserve">Met      </tspan></text>
+          </g>
+        </g>
+        <g id="Group_1784-2" data-name="Group 1784">
+          <g id="uuid-81f622cd-71ba-4948-b3b6-b991fb974dee" data-name="Path 7891-9">
+            <path d="M507,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#f98b8b"/>
+            <path d="M507,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M507,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Asp-2" data-name="Asp" isolation="isolate">
+            <text transform="translate(483.63 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Asp</tspan></text>
+          </g>
+          <line id="Line_2-8-2" data-name="Line 2-8" x1="422.5" y1="396.23" x2="461.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+        <g id="Group_1786-2" data-name="Group 1786">
+          <g id="uuid-446b8b7d-b88f-42a8-aec9-470664058737" data-name="Path 7891-10">
+            <path d="M638,439.23c-5.87,0-11.57-1.15-16.93-3.42-5.18-2.19-9.83-5.33-13.83-9.32-4-4-7.13-8.65-9.32-13.83-2.27-5.36-3.42-11.06-3.42-16.93s1.15-11.57,3.42-16.93c2.19-5.18,5.33-9.83,9.32-13.83,4-4,8.65-7.13,13.83-9.32,5.36-2.27,11.06-3.42,16.93-3.42s11.57,1.15,16.93,3.42c5.18,2.19,9.83,5.33,13.83,9.32,4,4,7.13,8.65,9.32,13.83,2.27,5.36,3.42,11.06,3.42,16.93s-1.15,11.57-3.42,16.93c-2.19,5.18-5.33,9.83-9.32,13.83-4,4-8.65,7.13-13.83,9.32-5.36,2.27-11.06,3.42-16.93,3.42Z" fill="#78e45d"/>
+            <path d="M638,354.73c-5.54,0-10.91,1.08-15.96,3.22-4.88,2.06-9.27,5.02-13.03,8.79s-6.72,8.15-8.79,13.03c-2.14,5.05-3.22,10.42-3.22,15.96s1.08,10.91,3.22,15.96c2.06,4.88,5.02,9.27,8.79,13.03,3.77,3.77,8.15,6.72,13.03,8.79,5.05,2.14,10.42,3.22,15.96,3.22s10.91-1.08,15.96-3.22c4.88-2.06,9.27-5.02,13.03-8.79,3.77-3.77,6.72-8.15,8.79-13.03,2.14-5.05,3.22-10.42,3.22-15.96s-1.08-10.91-3.22-15.96c-2.06-4.88-5.02-9.27-8.79-13.03-3.77-3.77-8.15-6.72-13.03-8.79-5.05-2.14-10.42-3.22-15.96-3.22M638,349.73c25.41,0,46,20.59,46,46s-20.59,46-46,46-46-20.59-46-46,20.59-46,46-46Z"/>
+          </g>
+          <g id="Ser-2-2" data-name="Ser-2" isolation="isolate">
+            <text transform="translate(618.14 405.73)" font-family="RobotoCondensed-Regular, &apos;Roboto Condensed&apos;" font-size="30" isolation="isolate"><tspan x="0" y="0">Ser</tspan></text>
+          </g>
+          <line id="Line_2-9-2" data-name="Line 2-9" x1="553.5" y1="396.23" x2="592.5" y2="396.23" fill="none" stroke="#000" stroke-width="10"/>
+        </g>
+      </g>
+      <g id="Polypeptide_chain-2" data-name="Polypeptide chain" isolation="isolate">
+        <text transform="translate(759.1 516.73)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="50" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="0em">P</tspan><tspan x="31.91" y="0">olypeptide chain</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Congratulation-text-panel">
+    <g id="Group_1235-2" data-name="Group 1235">
+      <g id="Rectangle_325-2-3" data-name="Rectangle 325-2">
+        <rect x="570" y="550.73" width="780" height="260" rx="12" ry="12" fill="#e9ffea"/>
+        <rect x="571.5" y="552.23" width="777" height="257" rx="10.5" ry="10.5" fill="none" stroke="#009306" stroke-dasharray="10 5" stroke-width="3"/>
+      </g>
+      <g id="Congratulations_You_have_successfully_completed_the_synthesis_of_the_polypeptide_chain_" data-name="Congratulations You have successfully completed the synthesis of the polypeptide chain " isolation="isolate">
+        <text transform="translate(773.74 637.73)" fill="#006b04" font-family="Roboto-Bold, Roboto" font-size="50" font-weight="700" isolation="isolate"><tspan x="0" y="0">Cong</tspan><tspan x="117.53" y="0" letter-spacing="-.02em">r</tspan><tspan x="135.03" y="0">atulations! </tspan></text>
+        <text transform="translate(626.42 687.73)" fill="#006b04" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.03em">Y</tspan><tspan x="23.5" y="0">ou h</tspan><tspan x="100.82" y="0" letter-spacing="0em">a</tspan><tspan x="121.93" y="0" letter-spacing="0em">v</tspan><tspan x="141.93" y="0">e successfully completed the </tspan></text>
+        <text transform="translate(652.46 737.73)" fill="#006b04" font-family="Roboto-Bold, Roboto" font-size="40" font-weight="700" isolation="isolate"><tspan x="0" y="0">synthesis of the polypeptide chain</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
