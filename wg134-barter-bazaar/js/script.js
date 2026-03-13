@@ -17,12 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initWidget() {
-  // const container = document.getElementById("widget-container") || document.getElementById("idiom-wrapper");
-  // const svg = document.querySelector("svg");
-  // if (!container || !svg) return;
+  const container = document.getElementById("barter-bazaar-wrapper") || document.body;
+  const svg = document.querySelector("svg");
+  if (!container || !svg) return;
 
-  // // Global variables
-  // const uiLayer = document.getElementById("ui-layer") || createUILayer(container);
+  // Initialize UI layer
+  let uiLayer = document.getElementById("ui-layer");
+  if (!uiLayer) {
+    uiLayer = createUILayer(container);
+  }
 
   function createUILayer(parent) {
     const layer = document.createElement("div");
@@ -97,6 +100,7 @@ function initWidget() {
     "act-04-question",
     "act-04-feedback-end",
   ];
+  let ids = ["Path_27102", "Path_2992", "Path_27082"]
 
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
@@ -242,7 +246,7 @@ function initWidget() {
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
-      hideElements("#act-01-sc1-cards-selected");
+      //   hideElements("#act-01-sc1-cards-selected");
       hideElements("#act-01-sc1-cards-matched");
       hideElements('[id^="act-01-sc1-feedback"]');
       setupScreen1();
@@ -279,132 +283,116 @@ function initWidget() {
 
     let selectedTrader = null;
     let matchedTraders = new Set();
+    let tradeCount = 0;
 
-    traders.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
+    // Disable Next button initially
+    if (btnNext) {
+      btnNext.disabled = true;
+      btnNext.style.opacity = "0.5";
+      btnNext.style.cursor = "not-allowed";
+    }
+
+    traders.forEach(traderId => {
+      const el = document.getElementById(traderId);
+      if (!el) {
+        console.warn(`Trader element not found: ${traderId}`);
+        return;
+      }
 
       el.style.cursor = "pointer";
 
-      // Create a transparent overlay for easier clicking
-      // const rect = getPctRect(el);
-      // if (rect) {
-      //   const overlay = document.createElement("div");
-      //   overlay.id = `overlay-${id}`;
-      //   Object.assign(overlay.style, {
-      //     position: "absolute",
-      //     left: rect.left,
-      //     top: rect.top,
-      //     width: rect.width,
-      //     height: rect.height,
-      //     cursor: "pointer",
-      //     pointerEvents: "auto",
-      //     zIndex: "10"
-      //   });
-      //   uiLayer.appendChild(overlay);
+      el.addEventListener("click", () => {
+        // Skip if already matched
+        if (matchedTraders.has(traderId)) return;
 
-      //   overlay.onclick = () => {
-      //     if (matchedTraders.has(id)) return;
+        if (!selectedTrader) {
+          // First selection
+          selectedTrader = traderId;
+          el.classList.add("trader-selected");
+          document.getElementById(ids[0]).classList.remove("st767");
 
-      //     if (!selectedTrader) {
-      //       selectedTrader = id;
-      //       // Highlight selection (e.g., yellow)
-      //       el.style.filter = "drop-shadow(0 0 5px yellow)";
-      //     } else if (selectedTrader === id) {
-      //       // Deselect
-      //       el.style.filter = "none";
-      //       selectedTrader = null;
-      //     } else {
-      //       // Try to match
-      //       if (pairs[selectedTrader] === id) {
-      //         // Match Success
-      //         matchedTraders.add(id);
-      //         matchedTraders.add(selectedTrader);
+        } else if (selectedTrader === traderId) {
+          // Deselect same trader
+          el.classList.remove("trader-selected");
+          selectedTrader = null;
+        } else {
+          // Try to match with previously selected trader
+          const firstEl = document.getElementById(selectedTrader);
+          if (pairs[selectedTrader] === traderId) {
+            // Match success
+            matchedTraders.add(traderId);
+            matchedTraders.add(selectedTrader);
+            tradeCount++;
 
-      //         // Green highlight
-      //         const sEl = document.getElementById(selectedTrader);
-      //         if (sEl) {
-      //           sEl.style.filter = "drop-shadow(0 0 10px green)";
-      //           addTradedTag(selectedTrader);
-      //         }
-      //         el.style.filter = "drop-shadow(0 0 10px green)";
-      //         addTradedTag(id);
+            el.classList.add("trader-matched");
+            el.classList.remove("trader-selected");
+            firstEl.classList.add("trader-matched");
+            firstEl.classList.remove("trader-selected");
 
-      //         // Remove overlays to disable clicks
-      //         document.getElementById(`overlay-${id}`)?.remove();
-      //         document.getElementById(`overlay-${selectedTrader}`)?.remove();
+            updateTradeCounter(tradeCount);
+            showFeedbackPopup("Well Done! You successfully helped people trade with each other.", true);
 
-      //         selectedTrader = null;
-
-      //         // Feedback
-      //         showFeedbackPopup("Well Done! You successfully helped people trade with each other.", true);
-
-      //         if (matchedTraders.size === traders.length) {
-      //           // All matched
-      //           // User can click Next
-      //         }
-      //       } else {
-      //         // Match Fail
-      //         const sEl = document.getElementById(selectedTrader);
-      //         if (sEl) sEl.style.filter = "none";
-      //         selectedTrader = null;
-      //         showFeedbackPopup("Trade failed. Try again. Their needs don’t match.", false);
-      //       }
-      //     }
-      //   };
-      // }
+            // Check if all pairs are matched
+            if (matchedTraders.size === traders.length) {
+              // All matched - enable Next button
+              if (btnNext) {
+                btnNext.disabled = false;
+                btnNext.style.opacity = "1";
+                btnNext.style.cursor = "pointer";
+              }
+            }
+          } else {
+            // Match fail
+            showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
+            firstEl.classList.remove("trader-selected");
+          }
+          selectedTrader = null;
+        }
+      });
     });
 
-    function addTradedTag(traderId) {
-      const el = document.getElementById(traderId);
-      const rect = getPctRect(el);
-      if (rect) {
-        const tag = document.createElement("div");
-        tag.textContent = "Traded";
-        Object.assign(tag.style, {
-          position: "absolute",
-          left: rect.left,
-          top: `calc(${rect.top} + ${rect.height} - 10px)`,
-          width: rect.width,
-          textAlign: "center",
-          color: "white",
-          backgroundColor: "green",
-          fontSize: "12px",
-          fontWeight: "bold",
-          padding: "2px 0",
-          borderRadius: "4px",
-          zIndex: "20",
-          pointerEvents: "none"
-        });
-        uiLayer.appendChild(tag);
+    function updateTradeCounter(count) {
+      let counter = document.getElementById("trade-counter-sc1");
+      if (!counter) {
+        counter = document.createElement("div");
+        counter.id = "trade-counter-sc1";
+        counter.className = "trade-counter";
+        uiLayer.appendChild(counter);
       }
+      counter.textContent = `Trades Completed: ${count} / 4`;
     }
   }
 
   function showFeedbackPopup(text, isSuccess) {
-    // We can use a generic feedback popup if available, or create one
-    // Searching for generic popups in index.html
     let popup = document.getElementById("feedback-popup-sc1");
     if (!popup) {
       popup = document.createElement("div");
       popup.id = "feedback-popup-sc1";
       Object.assign(popup.style, {
-        position: "absolute",
+        position: "fixed",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        padding: "20px",
+        padding: "30px",
         backgroundColor: "white",
-        border: "3px solid " + (isSuccess ? "green" : "red"),
-        borderRadius: "10px",
-        zIndex: "1000",
+        border: `4px solid ${isSuccess ? "#00AA00" : "#FF0000"}`,
+        borderRadius: "12px",
+        zIndex: "10000",
         textAlign: "center",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-        pointerEvents: "auto"
+        boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
+        pointerEvents: "auto",
+        maxWidth: "400px",
+        fontFamily: "Arial, sans-serif"
       });
-      uiLayer.appendChild(popup);
+      document.body.appendChild(popup);
     }
-    popup.innerHTML = `<h3>${isSuccess ? "Success" : "Failed"}</h3><p>${text}</p><button id="close-fb">OK</button>`;
+    popup.innerHTML = `
+      <h3 style="margin: 0 0 10px 0; color: ${isSuccess ? "#00AA00" : "#FF0000"}; font-size: 20px;">
+        ${isSuccess ? "✓ Success" : "✗ Try Again"}
+      </h3>
+      <p style="margin: 0 0 15px 0; font-size: 14px; color: #333;">${text}</p>
+      <button id="close-fb" style="padding: 10px 20px; background: #590056; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">OK</button>
+    `;
     popup.style.display = "block";
     document.getElementById("close-fb").onclick = () => {
       popup.style.display = "none";
@@ -651,6 +639,43 @@ function initWidget() {
       }
     });
   }
+
+  // Add CSS for trader states and UI elements
+  const style = document.createElement("style");
+  style.textContent = `
+    .trader-selected {
+      filter: drop-shadow(0 0 8px #FFD700) !important;
+      opacity: 1 !important;
+    }
+
+    .trader-matched {
+      filter: drop-shadow(0 0 12px #00AA00) !important;
+      opacity: 0.85 !important;
+    }
+
+    .trade-counter {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: #333;
+      font-family: Arial, sans-serif;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    #feedback-popup-sc1 button:hover {
+      background: #7a0070 !important;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+  `;
+  document.head.appendChild(style);
 
   // Launch View
   updateView();

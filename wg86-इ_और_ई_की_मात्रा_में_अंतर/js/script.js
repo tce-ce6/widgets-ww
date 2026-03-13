@@ -15,11 +15,11 @@ let placementIndex = 0;
 const LottieAnimations = {
   badi_e: {
     CORRECT: "Correct_01.json",
-    INCORRECT: "inCorrect.json",
+    INCORRECT: "InCorrect.json",
   },
   choti_e: {
     CORRECT: "Correct_02.json",
-    INCORRECT: "inCorrect.json",
+    INCORRECT: "InCorrect.json",
   },
 };
 

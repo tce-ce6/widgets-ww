@@ -388,7 +388,7 @@ function playLottieAnimation(bandGroup) {
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
