@@ -33,7 +33,7 @@
       "author": "Shyam"
     },
     "wg110-building-electronic-configurations": {
-      "updatedAt": "2026-03-11T18:42:33+05:30",
+      "updatedAt": "2026-03-12T17:58:03+05:30",
       "author": "aditya"
     },
     "wg111-guess-the-collective-nouns": {
@@ -52,6 +52,10 @@
       "updatedAt": "2026-02-27T13:19:23+05:30",
       "author": "Shyam"
     },
+    "wg116-reactivity-series": {
+      "updatedAt": "2026-03-12T15:25:11+05:30",
+      "author": "aditya"
+    },
     "wg117-picture-the-idiom": {
       "updatedAt": "2026-02-24T15:53:22+05:30",
       "author": "tce-nitinc"
@@ -61,8 +65,8 @@
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-03-10T12:35:07+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-13T15:19:01+05:30",
+      "author": "sushantthe"
     },
     "wg120-area-of-different-shapes": {
       "updatedAt": "2026-03-11T17:02:10+05:30",
@@ -105,15 +109,23 @@
       "author": "aditya"
     },
     "wg130-election-officer": {
-      "updatedAt": "2026-03-10T11:52:19+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-12T19:50:57+05:30",
+      "author": "sushantthe"
     },
     "wg131-journey-of-a-bill-to-law": {
       "updatedAt": "2026-03-09T21:13:21+05:30",
       "author": "sushantthe"
     },
+    "wg132-plate-boundary-explorer": {
+      "updatedAt": "2026-03-13T18:03:02+05:30",
+      "author": "aditya"
+    },
+    "wg133-nordic-countries-adventure": {
+      "updatedAt": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc"
+    },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-10T11:52:16+05:30",
+      "updatedAt": "2026-03-13T15:30:07+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -124,6 +136,14 @@
       "updatedAt": "2026-03-10T18:21:12+05:30",
       "author": "PrasannaP"
     },
+    "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
+      "updatedAt": "2026-03-12T17:58:03+05:30",
+      "author": "aditya"
+    },
+    "wg138-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0935\u094d\u092f\u0902\u091c\u0928-\u0915\u0940-\u0916\u094b\u091c": {
+      "updatedAt": "2026-03-12T17:58:03+05:30",
+      "author": "aditya"
+    },
     "wg140-change-master": {
       "updatedAt": "2026-03-09T15:35:05+05:30",
       "author": "tce-ashishg"
@@ -132,9 +152,17 @@
       "updatedAt": "2026-02-23T14:51:41+05:30",
       "author": "tce-nitinc"
     },
+    "wg143-synthesize-new-polypeptide-chain": {
+      "updatedAt": "2026-03-13T18:18:01+05:30",
+      "author": "aditya"
+    },
     "wg145-multiplication-builder": {
-      "updatedAt": "2026-03-11T15:17:08+05:30",
+      "updatedAt": "2026-03-12T14:00:46+05:30",
       "author": "Shyam"
+    },
+    "wg146-guess-the-author": {
+      "updatedAt": "2026-03-13T19:08:55+05:30",
+      "author": "aditya"
     },
     "wg147-literary-detective-agency": {
       "updatedAt": "2026-03-07T12:45:54+05:30",
@@ -153,8 +181,8 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-10T11:40:27+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
       "updatedAt": "2026-03-09T19:48:15+05:30",
@@ -165,7 +193,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-11T11:14:21+05:30",
+      "updatedAt": "2026-03-11T20:26:43+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -193,7 +221,7 @@
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-03-11T16:07:28+05:30",
+      "updatedAt": "2026-03-12T14:01:09+05:30",
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
@@ -265,7 +293,7 @@
       "author": "tce-nitinc"
     },
     "wg81-\u0909_\u0914\u0930_\u090a_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T15:45:17+05:30",
+      "updatedAt": "2026-03-13T16:15:30+05:30",
       "author": "sushantkanaujiya"
     },
     "wg82-commonly-confused-words": {
@@ -285,23 +313,23 @@
       "author": "tce-nitinc"
     },
     "wg86-\u0907_\u0914\u0930_\u0908_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T15:45:17+05:30",
+      "updatedAt": "2026-03-13T16:15:30+05:30",
       "author": "sushantkanaujiya"
     },
     "wg87-\u090f_\u0914\u0930_\u0910_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T15:45:17+05:30",
+      "updatedAt": "2026-03-13T16:37:41+05:30",
       "author": "sushantkanaujiya"
     },
     "wg88-\u0913_\u0914\u0930_\u0914_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-11T11:14:21+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg89-the-tone-lab": {
       "updatedAt": "2026-03-08T15:48:34+05:30",
       "author": "Santosh"
     },
     "wg90-\u0906_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u0915\u0940_\u092a\u0939\u091a\u093e\u0928": {
-      "updatedAt": "2026-03-11T15:43:03+05:30",
+      "updatedAt": "2026-03-13T16:37:41+05:30",
       "author": "sushantkanaujiya"
     },
     "wg91-prime-factorisation": {
@@ -342,6 +370,150 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-13T19:08:55+05:30",
+      "author": "aditya",
+      "message": "wg146",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-13T18:18:01+05:30",
+      "author": "aditya",
+      "message": "wg143",
+      "widgets": [
+        143
+      ]
+    },
+    {
+      "date": "2026-03-13T18:03:02+05:30",
+      "author": "aditya",
+      "message": "wg 132 html",
+      "widgets": [
+        132
+      ]
+    },
+    {
+      "date": "2026-03-13T15:29:28+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg134",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-13T15:19:01+05:30",
+      "author": "sushantthe",
+      "message": "audio changes",
+      "widgets": [
+        119
+      ]
+    },
+    {
+      "date": "2026-03-13T13:05:59+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg134",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-13T09:46:20+05:30",
+      "author": "aditya",
+      "message": "wg134",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-12T19:50:57+05:30",
+      "author": "sushantthe",
+      "message": "Prevents duplicate scenario tab click handlers",
+      "widgets": [
+        130
+      ]
+    },
+    {
+      "date": "2026-03-12T18:36:44+05:30",
+      "author": "sushantkanaujiya",
+      "message": "feat: Add an interactive crop map for India displaying crop data and facts for various crops.",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-12T17:58:03+05:30",
+      "author": "aditya",
+      "message": "138 and 137",
+      "widgets": [
+        110
+      ]
+    },
+    {
+      "date": "2026-03-12T15:25:11+05:30",
+      "author": "aditya",
+      "message": "wg116",
+      "widgets": [
+        116
+      ]
+    },
+    {
+      "date": "2026-03-12T14:01:09+05:30",
+      "author": "PrasannaP",
+      "message": "chore: update version ID.",
+      "widgets": [
+        47
+      ]
+    },
+    {
+      "date": "2026-03-12T14:00:46+05:30",
+      "author": "Shyam",
+      "message": "Completed wg145",
+      "widgets": [
+        145
+      ]
+    },
+    {
+      "date": "2026-03-12T13:59:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add blue fill style for Punnett path and center Punnett toggle text.",
+      "widgets": [
+        47
+      ]
+    },
+    {
+      "date": "2026-03-11T20:48:11+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: add new interactive Balkan Countries Adventure widget with styling, data, and logic",
+      "widgets": [
+        133
+      ]
+    },
+    {
+      "date": "2026-03-11T20:26:43+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 155 changes",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-11T19:58:39+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Please provide the code changes (diff) to generate a commit message.",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-11T18:48:13+05:30",
+      "author": "Shyam",
+      "message": "wg145 fixed",
+      "widgets": [
+        145
+      ]
+    },
     {
       "date": "2026-03-11T18:42:33+05:30",
       "author": "aditya",
@@ -437,167 +609,6 @@
       "message": "qanswer modal reposiitioning on 145",
       "widgets": [
         145
-      ]
-    },
-    {
-      "date": "2026-03-11T15:11:51+05:30",
-      "author": "aditya",
-      "message": "wg 135ui fix",
-      "widgets": [
-        135
-      ]
-    },
-    {
-      "date": "2026-03-11T14:59:05+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Implement a Punnett square genotype visibility toggle and refactor card snapping in the monohybrid cross, alongside minor UI and event handling improvements in the dihybrid cross.",
-      "widgets": [
-        47,
-        48
-      ]
-    },
-    {
-      "date": "2026-03-11T12:53:40+05:30",
-      "author": "tce-ashishg",
-      "message": "extra file deleted",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-11T12:26:30+05:30",
-      "author": "tce-ashishg",
-      "message": "logical changes related to star done",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-11T11:14:21+05:30",
-      "author": "tce-nitinc",
-      "message": "wg88 changes",
-      "widgets": [
-        155
-      ]
-    },
-    {
-      "date": "2026-03-10T20:07:31+05:30",
-      "author": "tce-ashishg",
-      "message": "design updated",
-      "widgets": [
-        61,
-        74,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-10T18:24:17+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "Fixes playground svg controllers and position",
-      "widgets": [
-        145
-      ]
-    },
-    {
-      "date": "2026-03-10T18:21:15+05:30",
-      "author": "aditya",
-      "message": "ui fix wg128 and wg129",
-      "widgets": [
-        128,
-        129,
-        135
-      ]
-    },
-    {
-      "date": "2026-03-10T18:21:12+05:30",
-      "author": "PrasannaP",
-      "message": "fixes wip",
-      "widgets": [
-        47,
-        48,
-        97,
-        112,
-        121,
-        136
-      ]
-    },
-    {
-      "date": "2026-03-10T16:36:12+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "feat: introduce initial structure and content for molecular reaction simulator",
-      "widgets": [
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T16:22:33+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "Completed widget 98",
-      "widgets": [
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T15:45:57+05:30",
-      "author": "tce-ashishg",
-      "message": "design updated",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-10T15:21:22+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        91
-      ]
-    },
-    {
-      "date": "2026-03-10T13:00:58+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 155 changes",
-      "widgets": [
-        155
-      ]
-    },
-    {
-      "date": "2026-03-10T12:35:07+05:30",
-      "author": "aditya",
-      "message": "Update xd-wireframe.md",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-03-10T12:33:27+05:30",
-      "author": "aditya",
-      "message": "html ui 119",
-      "widgets": [
-        119,
-        136
-      ]
-    },
-    {
-      "date": "2026-03-10T12:28:28+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed widget 72",
-      "widgets": [
-        72,
-        98
-      ]
-    },
-    {
-      "date": "2026-03-10T11:52:16+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: add new widgets for legislature challenge, election officer, and barter bazaar.",
-      "widgets": [
-        84,
-        130,
-        134
       ]
     }
   ]

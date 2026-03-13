@@ -7,33 +7,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn && launchScreen) {
     enterBtn.style.cursor = "pointer";
-    enterBtn.addEventListener("click", () => {
-      launchScreen.style.display = "none";
-      launchScreen.classList.add("hidden-svg");
+    enterBtn.onclick = () => {
+      launchScreen.classList.add("st767");
       initWidget();
-    });
+    };
   } else {
     initWidget();
   }
 });
 
 function initWidget() {
-  const container = document.getElementById("widget-container");
+  const container = document.getElementById("barter-bazaar-wrapper") || document.body;
   const svg = document.querySelector("svg");
   if (!container || !svg) return;
 
-  // Build UI Layer
+  // Initialize UI layer
   let uiLayer = document.getElementById("ui-layer");
   if (!uiLayer) {
-    uiLayer = document.createElement("div");
-    uiLayer.id = "ui-layer";
-    uiLayer.style.position = "absolute";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.height = "100%";
-    uiLayer.style.pointerEvents = "none";
-    container.appendChild(uiLayer);
+    uiLayer = createUILayer(container);
+  }
+
+  function createUILayer(parent) {
+    const layer = document.createElement("div");
+    layer.id = "ui-layer";
+    Object.assign(layer.style, {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      pointerEvents: "none",
+      zIndex: "100"
+    });
+    parent.appendChild(layer);
+    return layer;
   }
 
   // --- Helpers ---
@@ -52,13 +59,13 @@ function initWidget() {
   function hideElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
       // Use hidden-svg class or fallback
-      el.classList.add("hidden-svg");
+      el.classList.add("st767");
     });
   }
 
   function showElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
-      el.classList.remove("hidden-svg");
+      el.classList.remove("st767");
     });
   }
 
@@ -77,7 +84,8 @@ function initWidget() {
 
   // Hide all screens initially and map out popups
   const allScreens = [
-    "menu-screen",
+    "btn-home",
+    "btn-insights",
     "act-01-sc1-base",
     "act-01-sc1-cards",
     "act-02-base-global",
@@ -92,6 +100,7 @@ function initWidget() {
     "act-04-question",
     "act-04-feedback-end",
   ];
+  let ids = ["Path_27102", "Path_2992", "Path_27082"]
 
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
@@ -100,7 +109,7 @@ function initWidget() {
 
   // Hide everything first
   const menuScreen = document.getElementById("menu-screen");
-  if (menuScreen) menuScreen.classList.add("hidden-svg");
+  if (menuScreen) menuScreen.classList.remove("st767");
 
   document
     .querySelectorAll('[id^="act-"]')
@@ -108,6 +117,7 @@ function initWidget() {
   document
     .querySelectorAll('[id^="popup-"]')
     .forEach((el) => el.classList.add("hidden-svg"));
+
 
   // --- Menu Setup ---
   const menuScen1 = document.getElementById("Scenario_1");
@@ -155,6 +165,7 @@ function initWidget() {
   }
   if (btnHome) {
     btnHome.style.cursor = "pointer";
+
     btnHome.addEventListener("click", () => {
       currentScreen = 0; // go back to menu
       updateView();
@@ -164,6 +175,7 @@ function initWidget() {
   // Dynamic Insight Popups
   if (btnInsights) {
     btnInsights.style.cursor = "pointer";
+
     btnInsights.addEventListener("click", () => {
       let pId = `popup-act-0${currentScreen}-insights`;
       if (currentScreen === 4 || currentScreen === 0)
@@ -177,51 +189,67 @@ function initWidget() {
   });
 
   function goNext() {
-    if (currentScreen === 2) {
+    if (currentScreen === 0) {
+      currentScreen = 1;
+    } else if (currentScreen === 1) {
+      currentScreen = 2;
+      currentChallengeSC2 = 1;
+    } else if (currentScreen === 2) {
       if (currentChallengeSC2 < 3) currentChallengeSC2++;
-      else currentScreen = 3;
+      else {
+        currentScreen = 3;
+        currentChallengeSC3 = 1;
+      }
     } else if (currentScreen === 3) {
       if (currentChallengeSC3 < 3) currentChallengeSC3++;
       else currentScreen = 4;
-    } else if (currentScreen < 4) {
-      currentScreen++;
     }
     updateView();
   }
 
   function goBack() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 > 1) currentChallengeSC2--;
-      else currentScreen = 1;
+    if (currentScreen === 4) {
+      currentScreen = 3;
+      currentChallengeSC3 = 3;
     } else if (currentScreen === 3) {
       if (currentChallengeSC3 > 1) currentChallengeSC3--;
       else {
         currentScreen = 2;
         currentChallengeSC2 = 3;
       }
-    } else if (currentScreen > 1) {
-      currentScreen--;
-      if (currentScreen === 3) currentChallengeSC3 = 3;
-      if (currentScreen === 2) currentChallengeSC2 = 3;
+    } else if (currentScreen === 2) {
+      if (currentChallengeSC2 > 1) currentChallengeSC2--;
+      else currentScreen = 1;
+    } else if (currentScreen === 1) {
+      currentScreen = 0;
     }
     updateView();
   }
 
   function updateView() {
-    uiLayer.innerHTML = ""; // clear dynamic overlays
 
-    // Hide menu explicitly first
-    if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-    document
-      .querySelectorAll('[id^="act-"]')
-      .forEach((el) => el.classList.add("hidden-svg"));
-
+    if (menuScreen) menuScreen.classList.add("st767");
+    // document
+    //   .querySelectorAll('[id^="act-"]')
+    //   .forEach((el) => el.classList.add("hidden-svg"));
+    btnHome.classList.remove("st767");
+    btnInsights.classList.remove("st767")
     // Handle Menu
     if (currentScreen === 0) {
-      if (menuScreen) menuScreen.classList.remove("hidden-svg");
+      if (menuScreen) menuScreen.classList.remove("st767");
+      allScreens.forEach((s) => {
+        let d = document.getElementById(s)
+        if (d) {
+          d.classList.add("st767")
+        }
+      })
     } else if (currentScreen === 1) {
-      showElements('[id^="act-01"]');
+      showElements("#act-01-sc1-base");
+      showElements("#act-01-sc1-cards");
+      //   hideElements("#act-01-sc1-cards-selected");
+      hideElements("#act-01-sc1-cards-matched");
+      hideElements('[id^="act-01-sc1-feedback"]');
+      setupScreen1();
     } else if (currentScreen === 2) {
       showElements("#act-02-base-global");
       showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
@@ -243,6 +271,134 @@ function initWidget() {
     }
   }
 
+  // --- Screen 1 Logic ---
+  function setupScreen1() {
+    const traders = ["Farmer", "Weaver", "Doctor", "Teacher", "Fisherman", "Plumber", "Potter", "Carpenter"];
+    const pairs = {
+      "Farmer": "Weaver", "Weaver": "Farmer",
+      "Doctor": "Teacher", "Teacher": "Doctor",
+      "Fisherman": "Plumber", "Plumber": "Fisherman",
+      "Potter": "Carpenter", "Carpenter": "Potter"
+    };
+
+    let selectedTrader = null;
+    let matchedTraders = new Set();
+    let tradeCount = 0;
+
+    // Disable Next button initially
+    if (btnNext) {
+      btnNext.disabled = true;
+      btnNext.style.opacity = "0.5";
+      btnNext.style.cursor = "not-allowed";
+    }
+
+    traders.forEach(traderId => {
+      const el = document.getElementById(traderId);
+      if (!el) {
+        console.warn(`Trader element not found: ${traderId}`);
+        return;
+      }
+
+      el.style.cursor = "pointer";
+
+      el.addEventListener("click", () => {
+        // Skip if already matched
+        if (matchedTraders.has(traderId)) return;
+
+        if (!selectedTrader) {
+          // First selection
+          selectedTrader = traderId;
+          el.classList.add("trader-selected");
+          document.getElementById(ids[0]).classList.remove("st767");
+
+        } else if (selectedTrader === traderId) {
+          // Deselect same trader
+          el.classList.remove("trader-selected");
+          selectedTrader = null;
+        } else {
+          // Try to match with previously selected trader
+          const firstEl = document.getElementById(selectedTrader);
+          if (pairs[selectedTrader] === traderId) {
+            // Match success
+            matchedTraders.add(traderId);
+            matchedTraders.add(selectedTrader);
+            tradeCount++;
+
+            el.classList.add("trader-matched");
+            el.classList.remove("trader-selected");
+            firstEl.classList.add("trader-matched");
+            firstEl.classList.remove("trader-selected");
+
+            updateTradeCounter(tradeCount);
+            showFeedbackPopup("Well Done! You successfully helped people trade with each other.", true);
+
+            // Check if all pairs are matched
+            if (matchedTraders.size === traders.length) {
+              // All matched - enable Next button
+              if (btnNext) {
+                btnNext.disabled = false;
+                btnNext.style.opacity = "1";
+                btnNext.style.cursor = "pointer";
+              }
+            }
+          } else {
+            // Match fail
+            showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
+            firstEl.classList.remove("trader-selected");
+          }
+          selectedTrader = null;
+        }
+      });
+    });
+
+    function updateTradeCounter(count) {
+      let counter = document.getElementById("trade-counter-sc1");
+      if (!counter) {
+        counter = document.createElement("div");
+        counter.id = "trade-counter-sc1";
+        counter.className = "trade-counter";
+        uiLayer.appendChild(counter);
+      }
+      counter.textContent = `Trades Completed: ${count} / 4`;
+    }
+  }
+
+  function showFeedbackPopup(text, isSuccess) {
+    let popup = document.getElementById("feedback-popup-sc1");
+    if (!popup) {
+      popup = document.createElement("div");
+      popup.id = "feedback-popup-sc1";
+      Object.assign(popup.style, {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        padding: "30px",
+        backgroundColor: "white",
+        border: `4px solid ${isSuccess ? "#00AA00" : "#FF0000"}`,
+        borderRadius: "12px",
+        zIndex: "10000",
+        textAlign: "center",
+        boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
+        pointerEvents: "auto",
+        maxWidth: "400px",
+        fontFamily: "Arial, sans-serif"
+      });
+      document.body.appendChild(popup);
+    }
+    popup.innerHTML = `
+      <h3 style="margin: 0 0 10px 0; color: ${isSuccess ? "#00AA00" : "#FF0000"}; font-size: 20px;">
+        ${isSuccess ? "✓ Success" : "✗ Try Again"}
+      </h3>
+      <p style="margin: 0 0 15px 0; font-size: 14px; color: #333;">${text}</p>
+      <button id="close-fb" style="padding: 10px 20px; background: #590056; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">OK</button>
+    `;
+    popup.style.display = "block";
+    document.getElementById("close-fb").onclick = () => {
+      popup.style.display = "none";
+    };
+  }
+
   // --- Screen 2 Logic ---
   const sc2Config = {
     1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
@@ -254,15 +410,9 @@ function initWidget() {
     const cfg = sc2Config[sc];
     if (!cfg) return;
 
-    // Find the dropdown bounding rects provided in the SVG
-    // They are often named like act-02-scX-dropdown-list-1, -2
-    // If exact IDs differ, we try generic text nodes matching numbers
-    let dd1 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-1"]`) ||
-      document.querySelector(`[id*="act-02-sc${sc}"] [id*="drop"] g`);
-    let dd2 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-2"]`) ||
-      document.querySelectorAll(`[id*="act-02-sc${sc}"] [id*="drop"]`)[1];
+    // The dropdown boxes in SVG are act-02-scX-dropdown-list-1, -2
+    let dd1 = document.getElementById(`act-02-sc${sc}-dropdown-list-1`);
+    let dd2 = document.getElementById(`act-02-sc${sc}-dropdown-list-2`);
 
     // Create selects
     const s1 = document.createElement("select");
@@ -274,13 +424,13 @@ function initWidget() {
     for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
     for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
 
-    // Wait a brief moment for layout inside the function scope if required, but we should be fine here.
     if (dd1 && dd2) {
-      hideElements(`[id="${dd1.id}"]`);
-      hideElements(`[id="${dd2.id}"]`);
-
       const r1 = getPctRect(dd1);
       const r2 = getPctRect(dd2);
+
+      // Hide the SVG placeholders
+      dd1.classList.add("hidden-svg");
+      dd2.classList.add("hidden-svg");
 
       if (r1) {
         Object.assign(s1.style, {
@@ -288,6 +438,7 @@ function initWidget() {
           top: r1.top,
           width: r1.width,
           height: r1.height,
+          pointerEvents: "auto",
         });
         uiLayer.appendChild(s1);
       }
@@ -297,6 +448,7 @@ function initWidget() {
           top: r2.top,
           width: r2.width,
           height: r2.height,
+          pointerEvents: "auto",
         });
         uiLayer.appendChild(s2);
       }
@@ -304,16 +456,16 @@ function initWidget() {
       // Hardcoded fallback bounding boxes per challenge if SVG IDs are missing
       const fbBoxes = {
         1: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
+          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
+          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
         ],
         2: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
+          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
+          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
         ],
         3: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
+          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
+          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
         ],
       };
       const b = fbBoxes[sc];
@@ -322,6 +474,7 @@ function initWidget() {
         top: b[0].t,
         width: b[0].w,
         height: b[0].h,
+        pointerEvents: "auto",
       });
       uiLayer.appendChild(s1);
       Object.assign(s2.style, {
@@ -329,159 +482,200 @@ function initWidget() {
         top: b[1].t,
         width: b[1].w,
         height: b[1].h,
+        pointerEvents: "auto",
       });
       uiLayer.appendChild(s2);
     }
 
+    // Show Answer logic
+    const showAnsBtn = document.querySelectorAll('[id^="Show_Answer"]')[sc - 1];
+    if (showAnsBtn) {
+      showAnsBtn.style.cursor = "pointer";
+      showAnsBtn.onclick = () => {
+        // Find first fair trade values
+        let f1 = 0, f2 = 0;
+        if (sc === 1) { f1 = 2; f2 = 1; }
+        else if (sc === 2) { f1 = 3; f2 = 1; }
+        else if (sc === 3) { f1 = 4; f2 = 3; }
+        s1.value = f1;
+        s2.value = f2;
+      };
+    }
+
     // Submit handler logic
     const scSubmit =
-      document.querySelector(`[id="act-02-sc${sc}-btn"]`) || globalSubmit;
+      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
     if (scSubmit) {
-      // Use clone to remove old listeners
-      const newSubmit = scSubmit.cloneNode(true);
-      scSubmit.parentNode.replaceChild(newSubmit, scSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
+      scSubmit.style.cursor = "pointer";
+      scSubmit.onclick = () => {
         let v1 = parseInt(s1.value);
         let v2 = parseInt(s2.value);
         if (v1 * cfg.val1 === v2 * cfg.val2) {
           // Fair Trade
-          showElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          // Show continue or end
-          showElements(`[id*="act-02-sc${sc}-feedback-end"]`); // sometimes the success is feedback-end
+          showElements(`#act-02-sc${sc}-feedback-correct`);
+          hideElements(`#act-02-sc${sc}-feedback-incorrect`);
+          showFeedbackPopup("It is a fair trade! The values are matching.", true);
+          showElements(`#act-02-sc${sc}-feedback-end`);
         } else {
           // Unfair
-          showElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
+          showElements(`#act-02-sc${sc}-feedback-incorrect`);
+          hideElements(`#act-02-sc${sc}-feedback-correct`);
+          showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
+          hideElements(`#act-02-sc${sc}-feedback-end`);
         }
-      });
+      };
     }
-
-    // Hide standard continue/incorrect states
-    document
-      .querySelectorAll(`[id*="Continue"]`)
-      .forEach((el) => el.classList.add("hidden-svg"));
   }
 
   // --- Screen 3 Logic ---
   function setupScreen3Challenge(sc) {
-    // There are 3 challenges here. Multi-step trade tracking
-    // We assume the sequence clicks are just revealing lines/cards.
-    // In SVGs usually act-03-scX-cardN-selected needs to be toggled
-    const maxCards = sc === 3 ? 4 : 3; // sc3 has 4 cards
-    let currentStep = 1;
+    const chainConfig = {
+      1: ["Farmer", "Fisherman", "Plumber"],
+      2: ["Teacher", "Potter", "Carpenter"],
+      3: ["Potter", "Farmer", "Weaver", "Doctor"]
+    };
+    const sequence = chainConfig[sc];
+    let currentStep = 0;
 
-    // Hide all selections
-    for (let i = 1; i <= maxCards; i++) {
-      hideElements(`[id="act-03-sc${sc}-card${i}-selected"]`);
+    // Hide all selections initially
+    for (let i = 1; i <= 4; i++) {
+      hideElements(`#act-03-sc${sc}-card${i}-selected`);
     }
 
-    // Attempt to bind clicks on the base cards to advance step
-    // A simple hack is just a transparent overlay covering the whole trade chain area
-    // that advances the step on click.
-    // We will place a big invisible clickable div
-    const clickArea = document.createElement("div");
-    clickArea.style.position = "absolute";
-    clickArea.style.top = "30%";
-    clickArea.style.left = "10%";
-    clickArea.style.width = "80%";
-    clickArea.style.height = "40%";
-    clickArea.style.cursor = "pointer";
-    uiLayer.appendChild(clickArea);
+    sequence.forEach((traderName, index) => {
+      // Find the card in act-03-scX-cards
+      // Usually named like act-03-sc1-card1, act-03-sc1-card2 etc.
+      const cardId = `act-03-sc${sc}-card${index + 1}`;
+      const card = document.getElementById(cardId);
+      if (!card) return;
 
-    clickArea.onclick = () => {
-      if (currentStep <= maxCards) {
-        showElements(`[id="act-03-sc${sc}-card${currentStep}-selected"]`);
-        currentStep++;
-        if (currentStep > maxCards) {
-          showElements(`[id="act-03-sc${sc}-feedback-end"]`);
-          clickArea.style.pointerEvents = "none"; // disable further clicks
-        }
-      }
-    };
-  }
+      card.style.cursor = "pointer";
 
-  // --- Screen 4 Logic ---
-  function setupScreen4() {
-    // 8 statements. Correct are 1, 2, 3, 4, 7 (index 0,1,2,3,6)
-    const defGroup = document.getElementById("act-04-checkbox-default");
-    const selGroup = document.getElementById("act-04-checkbox-selected");
-    if (!defGroup || !selGroup) return;
-
-    // Remove hidden-svg to work with them
-    defGroup.classList.remove("hidden-svg");
-    selGroup.classList.remove("hidden-svg");
-
-    // Convert child paths/groups into arrays
-    // We expect 8 graphical checkboxes in each group
-    const defs = Array.from(defGroup.children);
-    const sels = Array.from(selGroup.children);
-    if (defs.length < 8 || sels.length < 8) return;
-
-    const corrects = [0, 1, 2, 3, 6];
-    const isSelected = [false, false, false, false, false, false, false, false];
-
-    // Hide selections initially
-    sels.forEach((s) => s.classList.add("hidden-svg"));
-
-    // Bind click to the SVG directly via rectangles
-    // SVG text and paths have pointer events out of the box
-    defs.forEach((defEl, i) => {
-      defEl.style.cursor = "pointer";
-      // Actually we'll bind an absolute div over each checkbox using bounds
-      const rect = getPctRect(defEl);
+      // Overlay for clicking
+      const rect = getPctRect(card);
       if (rect) {
-        const d = document.createElement("div");
-        Object.assign(d.style, {
+        const overlay = document.createElement("div");
+        Object.assign(overlay.style, {
           position: "absolute",
           left: rect.left,
           top: rect.top,
-          width: "5%", // rough wide area for ease of click
+          width: rect.width,
           height: rect.height,
           cursor: "pointer",
           pointerEvents: "auto",
+          zIndex: "10"
         });
-        uiLayer.appendChild(d);
+        uiLayer.appendChild(overlay);
 
-        d.onclick = () => {
-          isSelected[i] = !isSelected[i];
-          if (isSelected[i]) {
-            defEl.classList.add("hidden-svg");
-            sels[i].classList.remove("hidden-svg");
-          } else {
-            defEl.classList.remove("hidden-svg");
-            sels[i].classList.add("hidden-svg");
+        overlay.onclick = () => {
+          if (index === currentStep) {
+            // Correct step
+            showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
+            currentStep++;
+            if (currentStep === sequence.length) {
+              const msg = sc === 3 ? "Well Done! You achieved your goal by completing a 4-step trading." : "Well Done! You achieved your goal by completing a 3-step trading.";
+              showFeedbackPopup(msg, true);
+              showElements(`#act-03-sc${sc}-feedback-end`);
+            } else {
+              showFeedbackPopup("Good job!", true);
+            }
+          } else if (index > currentStep) {
+            // Wrong step
+            showFeedbackPopup("Trade failed! Try again.", false);
           }
         };
       }
     });
-
-    // Validating on Submit
-    const sSubmit =
-      document.querySelector('[id*="act-04-btn"]') || globalSubmit;
-    if (sSubmit) {
-      const newSubmit = sSubmit.cloneNode(true);
-      sSubmit.parentNode.replaceChild(newSubmit, sSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let allCorrect = true;
-        for (let i = 0; i < 8; i++) {
-          if (corrects.includes(i) && !isSelected[i]) allCorrect = false;
-          if (!corrects.includes(i) && isSelected[i]) allCorrect = false;
-        }
-        if (allCorrect) {
-          showElements("#act-04-feedback-end");
-          hideElements("#act-04-feedback-incorrect");
-        } else {
-          // generic incorrect visual if any
-          showElements("#act-04-feedback-incorrect");
-        }
-      });
-    }
   }
+
+  // --- Screen 4 Logic ---
+  function setupScreen4() {
+    const defGroup = document.getElementById("act-04-checkbox-default");
+    const selGroup = document.getElementById("act-04-checkbox-selected");
+    if (!defGroup || !selGroup) return;
+
+    // Use absolute sorting by bounding box top
+    const defs = Array.from(defGroup.children).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+    const sels = Array.from(selGroup.children).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+    const corrects = [0, 1, 2, 3, 6];
+    let correctCount = 0;
+
+    defs.forEach((defEl, i) => {
+      const rect = getPctRect(defEl);
+      if (rect) {
+        const overlay = document.createElement("div");
+        Object.assign(overlay.style, {
+          position: "absolute",
+          left: rect.left,
+          top: rect.top,
+          width: "35%", // wide area for text
+          height: rect.height,
+          cursor: "pointer",
+          pointerEvents: "auto"
+        });
+        uiLayer.appendChild(overlay);
+
+        overlay.onclick = () => {
+          if (corrects.includes(i)) {
+            // Correct
+            showFeedbackPopup("Correct!", true);
+            sels[i].classList.remove("hidden-svg");
+            defEl.classList.add("hidden-svg");
+            overlay.style.pointerEvents = "none"; // disable further clicks
+            correctCount++;
+            if (correctCount === corrects.length) {
+              showFeedbackPopup("Well Done! You have learnt how trade used to happen without money, before its invention.", true);
+              showElements("#act-04-feedback-end");
+            }
+          } else {
+            // Wrong
+            showFeedbackPopup("Wrong!", false);
+            sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
+            defEl.classList.add("hidden-svg");
+            overlay.style.pointerEvents = "none";
+          }
+        };
+      }
+    });
+  }
+
+  // Add CSS for trader states and UI elements
+  const style = document.createElement("style");
+  style.textContent = `
+    .trader-selected {
+      filter: drop-shadow(0 0 8px #FFD700) !important;
+      opacity: 1 !important;
+    }
+
+    .trader-matched {
+      filter: drop-shadow(0 0 12px #00AA00) !important;
+      opacity: 0.85 !important;
+    }
+
+    .trade-counter {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: #333;
+      font-family: Arial, sans-serif;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    #feedback-popup-sc1 button:hover {
+      background: #7a0070 !important;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+  `;
+  document.head.appendChild(style);
 
   // Launch View
   updateView();
