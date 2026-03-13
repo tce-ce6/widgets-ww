@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. STATE & CONFIGURATION
     // ==========================================
     let currentSetIndex = 1;
+    let itemsDroppedInCurrentSet = 0;
     const TOTAL_SETS = 4;
     const ITEMS_PER_SET = 5;
 
@@ -43,7 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         questionPanel: el('Question-panel-global'),
         correctMark: el('correct-mark'),
         incorrectMark: el('incorrect-mark'),
-        btnNextSet: el('btn-next-set')
+        btnNextSet: el('btn-next-set'),
+        dragBaseGlobal: el('drag-object-base-global'),
+        iText01: document.querySelector('#i-text-01 tspan'),
+        btnCloseFeedback: el('close-feedback')
     };
 
     // ==========================================
@@ -59,10 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
         });
 
-        const hideEls = [ui.feedbackEnd, ui.popupClue, ui.btnChangeGallery, ui.questionPanel, ui.correctMark, ui.incorrectMark];
+        const hideEls = [ui.feedbackEnd, ui.popupClue, ui.btnChangeGallery, ui.questionPanel, ui.correctMark, ui.incorrectMark, ui.btnClue];
         hideEls.forEach(element => { if (element) element.style.display = 'none'; });
 
-        if (ui.btnNextSet) ui.btnNextSet.style.display = 'block';
+        if (ui.btnNextSet) {
+            ui.btnNextSet.style.display = 'block';
+            ui.btnNextSet.style.pointerEvents = 'none';
+            ui.btnNextSet.style.opacity = '0.5';
+        }
 
         showSet(currentSetIndex);
         setupDragAndDrop();
@@ -72,8 +80,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. NEXT BUTTON & UI INTERACTIONS
     // ==========================================
     if (ui.btnClue) ui.btnClue.addEventListener('click', () => ui.popupClue.style.display = 'block');
-    if (ui.btnCloseClue) ui.btnCloseClue.addEventListener('click', () => ui.popupClue.style.none);
+    if (ui.btnCloseClue) ui.btnCloseClue.addEventListener('click', () => ui.popupClue.style.display = 'none');
     
+    if (ui.btnCloseFeedback) {
+        ui.btnCloseFeedback.addEventListener('click', () => {
+            if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+        });
+    }
+
+    if (ui.btnChangeGallery) {
+        ui.btnChangeGallery.addEventListener('click', () => {
+            Object.values(museums).forEach(m => {
+                if (el(m.bg)) el(m.bg).style.display = 'none';
+                if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
+            });
+            if (ui.questionPanel) ui.questionPanel.style.display = 'none';
+            if (ui.correctMark) ui.correctMark.style.display = 'none';
+            if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
+            if (ui.btnClue) ui.btnClue.style.display = 'none';
+            if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'none';
+        });
+    }
+
     if (ui.btnNextSet) {
         ui.btnNextSet.addEventListener('click', () => {
             if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
@@ -81,11 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (currentSetIndex < TOTAL_SETS) {
                 currentSetIndex++;
+                itemsDroppedInCurrentSet = 0;
+                if (ui.btnNextSet) {
+                    ui.btnNextSet.style.pointerEvents = 'none';
+                    ui.btnNextSet.style.opacity = '0.5';
+                    if (currentSetIndex === TOTAL_SETS) {
+                        ui.btnNextSet.style.display = 'none';
+                    }
+                }
                 showSet(currentSetIndex);
-            } else {
-                ui.btnNextSet.style.display = 'none';
-                if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
-                if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'block'; 
             }
         });
     }
@@ -170,6 +202,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 activeDragEl.dataset.dropped = "true";
                 activeDragEl.style.cursor = 'default';
+                
+                itemsDroppedInCurrentSet++;
+                if (itemsDroppedInCurrentSet === ITEMS_PER_SET) {
+                    if (currentSetIndex < TOTAL_SETS) {
+                        if (ui.btnNextSet) {
+                            ui.btnNextSet.style.pointerEvents = 'auto';
+                            ui.btnNextSet.style.opacity = '1';
+                        }
+                    } else {
+                        // LAST SET COMPLETED
+                        if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
+                        if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
+                        if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
+                        if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
+                        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artifacts.";
+                        
+                        if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'block';
+                    }
+                }
             } else {
                 // Revert to original matrix
                 activeDragEl.setAttribute('transform', `matrix(${initialMatrix.a},${initialMatrix.b},${initialMatrix.c},${initialMatrix.d},${initialMatrix.e},${initialMatrix.f})`);
@@ -205,7 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. GALLERY & MUSEUM SELECTION LOGIC
     // ==========================================
     window.selectMuseumGallery = function(galleryKey) { 
-        if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'none';
+        if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
+        if (ui.btnClue) ui.btnClue.style.display = 'block';
         if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
         
         Object.values(museums).forEach(m => {
