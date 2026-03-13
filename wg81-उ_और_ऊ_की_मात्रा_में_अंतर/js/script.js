@@ -239,7 +239,7 @@ function audioListener() {
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
   });
 }
 
