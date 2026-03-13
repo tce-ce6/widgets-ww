@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let itemsDroppedInCurrentSet = 0;
     const TOTAL_SETS = 4;
     const ITEMS_PER_SET = 5;
+    let isActivityComplete = false;
 
     const dragSets = {
         1: { base: 'drag-object-base-set1', btnBox: 'drag-object-btn-set1', imgPrefix: 'drag-object-btn-set1-img-', foPrefix: 'fo-drag-object-btn-set1-img-' },
@@ -47,7 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNextSet: el('btn-next-set'),
         dragBaseGlobal: el('drag-object-base-global'),
         iText01: document.querySelector('#i-text-01 tspan'),
-        btnCloseFeedback: el('close-feedback')
+        btnCloseFeedback: el('close-feedback'),
+        museumDropWindow: el('museum-drop-window'),
+        correctDraggedObjects: el('correct-dragged-objects'),
+        hallwayGalleries: {
+            '01': el('archaeological-source-gallery'),
+            '02': el('literary-source-gallery'),
+            '03': el('artistic-source-gallery'),
+            '04': el('oral-source-gallery')
+        }
     };
 
     // ==========================================
@@ -74,6 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showSet(currentSetIndex);
         setupDragAndDrop();
+
+        Object.entries(ui.hallwayGalleries).forEach(([key, hall]) => {
+            if (hall) {
+                hall.style.cursor = 'pointer';
+                hall.addEventListener('click', () => {
+                    if (isActivityComplete) {
+                        window.selectMuseumGallery(key);
+                    }
+                });
+            }
+        });
     }
 
     // ==========================================
@@ -85,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ui.btnCloseFeedback) {
         ui.btnCloseFeedback.addEventListener('click', () => {
             if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+            isActivityComplete = true;
         });
     }
 
@@ -99,6 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
             if (ui.btnClue) ui.btnClue.style.display = 'none';
             if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'none';
+            if (ui.museumDropWindow) ui.museumDropWindow.style.display = 'block';
+            if (ui.correctDraggedObjects) ui.correctDraggedObjects.style.display = 'block';
         });
     }
 
@@ -259,6 +282,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
         if (ui.btnClue) ui.btnClue.style.display = 'block';
         if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+        if (ui.museumDropWindow) ui.museumDropWindow.style.display = 'none';
+        if (ui.correctDraggedObjects) ui.correctDraggedObjects.style.display = 'none';
         
         Object.values(museums).forEach(m => {
             if (el(m.bg)) el(m.bg).style.display = 'none';
