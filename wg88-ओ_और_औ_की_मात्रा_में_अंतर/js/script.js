@@ -10,6 +10,8 @@ let audio_button_2 = false;
 let age_badhe_button = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
+let correctPlacementSequence = [];
+let placementIndex = 0;
 let correctCloudId = "cloud_text_01";
 let leftCircle = ['Path_13382-3', 'Path_13382-4'];
 let rightCircle = ['Path_13382-3-2', 'Path_13382-5'];
@@ -45,6 +47,26 @@ function init() {
   }
   textClickEvent();
 }
+function initializePlacementSequence() {
+  const totalWords = Object.keys(WordAudioEnum).length;
+  const half = Math.floor(totalWords / 2);
+  correctPlacementSequence = [];
+
+  for (let i = 0; i < totalWords; i++) {
+    correctPlacementSequence.push(i < half ? "cloud_text_01" : "cloud_text_02");
+  }
+
+  // Fisher-Yates shuffle
+  for (let i = correctPlacementSequence.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [correctPlacementSequence[i], correctPlacementSequence[j]] = [
+      correctPlacementSequence[j],
+      correctPlacementSequence[i],
+    ];
+  }
+  placementIndex = 0;
+}
+
 
 selectRandomWord = () => {
   currentWordKey = getRandomUnusedWordKey();
@@ -57,9 +79,15 @@ function textDisplay() {
   let text2 = document.getElementById("cloud_text_02");
   const tspans = text1.querySelector("p");
   const tspan2 = text2.querySelector("p");
-  const isLeftCorrect = Math.random() < 0.5;
 
-  if (isLeftCorrect) {
+  if (placementIndex >= correctPlacementSequence.length) {
+    initializePlacementSequence();
+  }
+
+  const correctCloud = correctPlacementSequence[placementIndex];
+  placementIndex++;
+
+  if (correctCloud === "cloud_text_01") {
     tspans.innerHTML = highlightConsonantWithMatra(selectedWord.correct);
     tspan2.innerHTML = highlightConsonantWithMatra(selectedWord.incorrect);
     correctCloudId = "cloud_text_01";
@@ -429,6 +457,7 @@ getAllWordElements = () => {
       // Work with the parsed JSON data (a JavaScript object)
       console.log(data);
       WordAudioEnum = data;
+      initializePlacementSequence();
       init();
     })
     .catch((error) => {
