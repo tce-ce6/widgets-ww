@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (dragEl) {
                     dragEl.style.cursor = 'grab';
                     dragEl.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
                         if (s !== currentSetIndex || dragEl.dataset.dropped === "true") return;
                         
                         activeDragEl = dragEl;
