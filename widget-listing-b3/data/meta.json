@@ -121,8 +121,8 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-10T11:52:16+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-13T09:46:20+05:30",
+      "author": "aditya"
     },
     "wg135-museum-of-historical-sources": {
       "updatedAt": "2026-03-11T15:11:51+05:30",
@@ -359,6 +359,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-13T09:46:20+05:30",
+      "author": "aditya",
+      "message": "wg134",
+      "widgets": [
+        134
+      ]
+    },
+    {
       "date": "2026-03-12T18:36:44+05:30",
       "author": "sushantkanaujiya",
       "message": "feat: Add an interactive crop map for India displaying crop data and facts for various crops.",
@@ -594,16 +602,6 @@
       "message": "Fixes playground svg controllers and position",
       "widgets": [
         145
-      ]
-    },
-    {
-      "date": "2026-03-10T18:21:15+05:30",
-      "author": "aditya",
-      "message": "ui fix wg128 and wg129",
-      "widgets": [
-        128,
-        129,
-        135
       ]
     }
   ]
