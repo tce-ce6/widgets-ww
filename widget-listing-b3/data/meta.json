@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-14T15:29:31+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -371,6 +371,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-14T15:29:31+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reorder micropipette SVG elements after the tube base.",
+      "widgets": [
+        112
+      ]
+    },
+    {
+      "date": "2026-03-14T15:15:52+05:30",
+      "author": "PrasannaP",
+      "message": "Refactor SVG text elements and rename answer port group IDs in `index.html`, update wireframe comments for clarity, and bump the version.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-14T14:08:05+05:30",
       "author": "PrasannaP",
       "message": "feat: Add a semi-transparent overlay for the insight popup and update the widget version.",
@@ -595,23 +611,6 @@
       "message": "deploy fix check",
       "widgets": [
         120
-      ]
-    },
-    {
-      "date": "2026-03-11T16:07:28+05:30",
-      "author": "PrasannaP",
-      "message": "chore: Update version strings in Mendels Monohybrid and Dihybrid Cross widgets.",
-      "widgets": [
-        47,
-        48
-      ]
-    },
-    {
-      "date": "2026-03-11T16:05:18+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update Punnett content selector to correctly identify varying group IDs across cards.",
-      "widgets": [
-        47
       ]
     }
   ]
