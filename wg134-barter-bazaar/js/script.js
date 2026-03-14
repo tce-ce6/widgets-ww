@@ -245,6 +245,8 @@ function initWidget() {
   const btnInsights = document.getElementById("btn-insights");
   const globalSubmit = document.getElementById("Submit");
   const btnCloseInsights = document.getElementById("Insights-2")
+  const btnCloseInsights3 = document.getElementById("Insights-3")
+  const btnCloseInsights4 = document.getElementById("Insights-4")
 
   if (btnNext) {
     btnNext.style.cursor = "pointer";
@@ -282,10 +284,25 @@ function initWidget() {
       togglePopup(pId, false);
     });
   }
+  if (btnCloseInsights3) {
+    btnCloseInsights3.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-02-insights`; // fallback
+      togglePopup(pId, false);
+    });
+
+  }
+  if (btnCloseInsights4) {
+    btnCloseInsights4.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-03-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
 
   // Click anywhere to close popups
   document.querySelectorAll('[id^="popup-"]').forEach((p) => {
-    p.addEventListener("click", () => p.classList.add("hidden-svg"));
+    p.addEventListener("click", () => p.classList.add("st767"));
   });
 
   function goNext() {
@@ -354,21 +371,20 @@ function initWidget() {
           d.classList.add("st767")
         }
       })
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
-      hideElements(`[id^="act-01-sc${currentChallengeSC1}"]`);
-      hideElements(`[id^="act-01-sc${currentChallengeSC1}-feedback"]`);
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
-      hideElements(`[id^="act-04-sc${currentChallengeSC4}-feedback"]`);
-      hideElements(`[id^="act-01-sc${currentChallengeSC1}-cards-matched"]`);
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}-cards-matched"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}-cards-matched"]`);
-      hideElements(`[id^="act-04-sc${currentChallengeSC4}-cards-matched"]`);
-      hideElements(`[id^="act-01-sc${currentChallengeSC1}-cards"]`);
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}-cards"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}-cards"]`);
-      hideElements(`[id^="act-04-sc${currentChallengeSC4}-cards"]`);
+      hideElements(`[id^="act-02]`);
+      hideElements(`[id^="act-03"]`);
+      hideElements(`act-02-sc1-cards`);
+      hideElements(`act-02-sc2-cards`);
+      hideElements(`act-02-sc3-cards`);
+
+      if (document.querySelector(".custom-dropdown")) {
+        document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+      }
+      hideElements("#act-04-base");
+      hideElements("#act-04-question");
+      hideElements("#act-04-checkbox-default");
+      hideElements("#act-04-checkbox-selected");
+      hideElements("#act-04-feedback-end");
       hideElements("#btn-next-back");
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
@@ -929,16 +945,8 @@ function initWidget() {
   // --- Screen 4 Logic ---
   function setupScreen4() {
     const checkBoxIds = [
-      "Group_1687",
-      "Group_1679",
-      "Group_1680",
-      "Group_1681",
-      "Group_1682",
-      "Group_1683",
-      "Group_1684",
-      "Group_1685",
-      "Group_1686"
-    ]
+      "Group_1679", "Group_1681", "Group_1682", "Group_1683", "Group_1684", "Group_1686", "Group_1685"
+    ];
     const defGroup = document.getElementById("act-04-checkbox-default");
     const selGroup = document.getElementById("act-04-checkbox-selected");
     if (!defGroup || !selGroup) return;
@@ -973,7 +981,7 @@ function initWidget() {
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none"; // disable further clicks
             correctCount++;
-            document.getElementById(`Group_${1679 + i}`).classList.remove("st767");
+            document.getElementById(checkBoxIds[i]).classList.remove("st767");
             if (correctCount === corrects.length) {
               showFeedbackPopup("Well Done! You have learnt how trade used to happen without money, before its invention.", true);
               showElements("#act-04-feedback-end");
@@ -981,6 +989,7 @@ function initWidget() {
           } else {
             // Wrong
             showFeedbackPopup("Wrong!", false);
+            document.getElementById(checkBoxIds[i]).classList.remove("st767");
             // sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none";
