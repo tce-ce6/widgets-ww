@@ -388,6 +388,10 @@ function resetSimulation() {
         elem.style.pointerEvents = 'auto';
     });
     WidgetState.originalTransforms.clear();
+
+    // Remove ghost images
+    document.querySelectorAll('.ghost-image').forEach(el => el.remove());
+    document.querySelectorAll('[data-has-ghost]').forEach(el => delete el.dataset.hasGhost);
 }
 
 /**
@@ -455,6 +459,36 @@ function setupDragAndDrop() {
     UI.svg.addEventListener('pointerleave', endDrag);
 }
 
+function createGhost(element) {
+    if (element.dataset.hasGhost) return;
+
+    const ghost = element.cloneNode(true);
+    // Recursively remove IDs from ghost and its children
+    const removeIds = (el) => {
+        if (el.removeAttribute) el.removeAttribute('id');
+        if (el.children) {
+            Array.from(el.children).forEach(removeIds);
+        }
+    };
+    removeIds(ghost);
+
+    ghost.classList.add('ghost-image');
+    ghost.style.opacity = '0.3';
+    ghost.style.pointerEvents = 'none';
+    if (ghost.dataset) delete ghost.dataset.dragType;
+
+    // Reset transform on ghost to ensure it stays at original spot
+    if (ghost.hasAttribute('transform')) {
+        ghost.removeAttribute('transform');
+    }
+    if (ghost.transform && ghost.transform.baseVal) {
+        ghost.transform.baseVal.clear();
+    }
+
+    element.parentNode.insertBefore(ghost, element);
+    element.dataset.hasGhost = 'true';
+}
+
 function getMousePosition(evt) {
     const CTM = UI.svg.getScreenCTM();
     return {
@@ -490,6 +524,8 @@ function startDrag(evt) {
             target.dataset.side = cx < (window.innerWidth / 2) ? 'left' : 'right';
         }
     }
+
+    createGhost(target);
 
     activeDrag = target;
     activeDrag.style.cursor = 'grabbing';
