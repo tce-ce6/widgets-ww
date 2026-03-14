@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initWidget() {
+  const backNextBtn = document.getElementById("btn-next-back");
+
   const container = document.getElementById("barter-bazaar-wrapper") || document.body;
   const svg = document.querySelector("svg");
   if (!svg) return;
@@ -154,6 +156,12 @@ function initWidget() {
   const menuScen1 = document.getElementById("Scenario_1");
   const menuScen2 = document.getElementById("Scenario_2");
   const menuScen3 = document.getElementById("Scenario_3");
+  const menuScen2_1 = document.getElementById("Scenario_2-1");
+  const menuScen2_2 = document.getElementById("Scenario_2-2");
+  const menuScen2_3 = document.getElementById("Scenario_2-3");
+  const menuScen3_1 = document.getElementById("Scenario_3-1");
+  const menuScen3_2 = document.getElementById("Scenario_3-2");
+  const menuScen3_3 = document.getElementById("Scenario_3-3");
 
   if (menuScen1) {
     menuScen1.style.cursor = "pointer";
@@ -175,6 +183,57 @@ function initWidget() {
     menuScen3.addEventListener("click", () => {
       currentScreen = 3;
       currentChallengeSC3 = 1;
+      updateView();
+    });
+  }
+
+  if (menuScen2_1) {
+    menuScen2_1.style.cursor = "pointer";
+    menuScen2_1.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 1;
+      updateView();
+    });
+  }
+  if (menuScen2_2) {
+    menuScen2_2.style.cursor = "pointer";
+    menuScen2_2.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 2;
+      updateView();
+    });
+  }
+  if (menuScen2_3) {
+    menuScen2_3.style.cursor = "pointer";
+    menuScen2_3.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 3;
+      updateView();
+    });
+  }
+  if (menuScen3_1) {
+    menuScen3_1.style.cursor = "pointer";
+    menuScen3_1.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 1;
+      updateView();
+    });
+  }
+  if (menuScen3_2) {
+    menuScen3_2.style.cursor = "pointer";
+    menuScen3_2.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 2;
+      updateView();
+    });
+  }
+
+
+  if (menuScen3_3) {
+    menuScen3_3.style.cursor = "pointer";
+    menuScen3_3.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 3;
       updateView();
     });
   }
@@ -248,7 +307,12 @@ function initWidget() {
       }
     } else if (currentScreen === 3) {
       if (currentChallengeSC3 < 3) currentChallengeSC3++;
-      else currentScreen = 4;
+      else {
+        hideElements("#act-03-base-global");
+        hideElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
+        hideElements("#btn-next-back");
+        currentScreen = 4;
+      }
     }
     updateView();
   }
@@ -290,6 +354,22 @@ function initWidget() {
           d.classList.add("st767")
         }
       })
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+      hideElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
+      hideElements(`[id^="act-01-sc${currentChallengeSC1}"]`);
+      hideElements(`[id^="act-01-sc${currentChallengeSC1}-feedback"]`);
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
+      hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
+      hideElements(`[id^="act-04-sc${currentChallengeSC4}-feedback"]`);
+      hideElements(`[id^="act-01-sc${currentChallengeSC1}-cards-matched"]`);
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}-cards-matched"]`);
+      hideElements(`[id^="act-03-sc${currentChallengeSC3}-cards-matched"]`);
+      hideElements(`[id^="act-04-sc${currentChallengeSC4}-cards-matched"]`);
+      hideElements(`[id^="act-01-sc${currentChallengeSC1}-cards"]`);
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}-cards"]`);
+      hideElements(`[id^="act-03-sc${currentChallengeSC3}-cards"]`);
+      hideElements(`[id^="act-04-sc${currentChallengeSC4}-cards"]`);
+      hideElements("#btn-next-back");
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
@@ -301,18 +381,21 @@ function initWidget() {
       showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
       // Hide feedbacks initially
       hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen2Challenge(currentChallengeSC2);
     } else if (currentScreen === 3) {
       showElements("#act-03-base-global");
       showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
       hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen3Challenge(currentChallengeSC3);
     } else if (currentScreen === 4) {
       showElements("#act-04-base");
       showElements("#act-04-question");
       showElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
+      //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
+      backNextBtn.classList.add("st767");
       setupScreen4();
     }
   }
@@ -518,6 +601,9 @@ function initWidget() {
       const existing = document.getElementById(`dropdown-${targetId}`);
       if (existing) return existing;
     }
+    if (document.querySelector(".custom-dropdown")) {
+      return
+    }
     const wrapper = document.createElement("div");
     wrapper.id = targetId ? `dropdown-${targetId}` : "";
     wrapper.className = "custom-dropdown";
@@ -642,20 +728,20 @@ function initWidget() {
 
       if (r1) {
         Object.assign(s1.style, {
-          left: r1.left,
-          top: r1.top,
-          width: r1.width,
-          height: r1.height,
+          left: "41.2037%",
+          top: "19.6481%",
+          width: "5.67361%",
+          height: "46.6667%",
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s1);
       }
       if (r2) {
         Object.assign(s2.style, {
-          left: r2.left,
-          top: r2.top,
-          width: r2.width,
-          height: r2.height,
+          left: "64.0741%",
+          top: "19.6481%",
+          width: "5.67361%",
+          height: "46.6667%",
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s2);
@@ -677,22 +763,26 @@ function initWidget() {
         ],
       };
       const b = fbBoxes[sc];
+
       Object.assign(s1.style, {
-        left: b[0].l,
-        top: b[0].t,
-        width: b[0].w,
-        height: b[0].h,
+        left: "41.2037%",
+        top: "19.6481%",
+        width: "5.67361%",
+        height: "46.6667%",
         pointerEvents: "auto",
       });
       uiLayer.appendChild(s1);
+
+
       Object.assign(s2.style, {
-        left: b[1].l,
-        top: b[1].t,
-        width: b[1].w,
-        height: b[1].h,
+        left: "64.0741%",
+        top: "19.6481%",
+        width: "5.67361%",
+        height: "46.6667%",
         pointerEvents: "auto",
       });
       uiLayer.appendChild(s2);
+
     }
 
     // Show Answer logic
@@ -810,22 +900,45 @@ function initWidget() {
             currentStep++;
             if (currentStep === sequence.length) {
               const msg = sc === 3 ? "Well Done! You achieved your goal by completing a 4-step trading." : "Well Done! You achieved your goal by completing a 3-step trading.";
-              showFeedbackPopup(msg, true);
+              //showFeedbackPopup(msg, true);
               showElements(`#act-03-sc${sc}-feedback-end`);
             } else {
-              showFeedbackPopup("Good job!", true);
+              //showFeedbackPopup("Good job!", true);
             }
           } else if (index > currentStep) {
             // Wrong step
-            showFeedbackPopup("Trade failed! Try again.", false);
+            // showFeedbackPopup("Trade failed! Try again.", false);
           }
         };
       }
     });
+    const endFeedback = document.getElementById(`act-03-sc${sc}-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.addEventListener("click", () => {
+        hideElements(`#act-03-sc${sc}-feedback-end`);
+        hideElements(`#act-03-sc${sc}-goal`);
+        for (let i = 1; i <= 4; i++) {
+          hideElements(`#act-03-sc${sc}-card${i}-selected`);
+        }
+        goNext();
+      });
+    }
   }
 
   // --- Screen 4 Logic ---
   function setupScreen4() {
+    const checkBoxIds = [
+      "Group_1687",
+      "Group_1679",
+      "Group_1680",
+      "Group_1681",
+      "Group_1682",
+      "Group_1683",
+      "Group_1684",
+      "Group_1685",
+      "Group_1686"
+    ]
     const defGroup = document.getElementById("act-04-checkbox-default");
     const selGroup = document.getElementById("act-04-checkbox-selected");
     if (!defGroup || !selGroup) return;
@@ -856,10 +969,11 @@ function initWidget() {
           if (corrects.includes(i)) {
             // Correct
             showFeedbackPopup("Correct!", true);
-            sels[i].classList.remove("hidden-svg");
+            // sels[i].classList.remove("hidden-svg");
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none"; // disable further clicks
             correctCount++;
+            document.getElementById(`Group_${1679 + i}`).classList.remove("st767");
             if (correctCount === corrects.length) {
               showFeedbackPopup("Well Done! You have learnt how trade used to happen without money, before its invention.", true);
               showElements("#act-04-feedback-end");
@@ -867,7 +981,7 @@ function initWidget() {
           } else {
             // Wrong
             showFeedbackPopup("Wrong!", false);
-            sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
+            // sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none";
           }
