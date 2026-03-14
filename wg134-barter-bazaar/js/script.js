@@ -59,7 +59,7 @@ function initWidget() {
   function hideElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
       el.classList.add("st767");
-      el.style.display = "none";
+      //el.style.display = "none";
     });
   }
 
@@ -238,6 +238,11 @@ function initWidget() {
     } else if (currentScreen === 2) {
       if (currentChallengeSC2 < 3) currentChallengeSC2++;
       else {
+        hideElements("#act-02-base-global");
+        hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+        if (document.querySelector(".custom-dropdown")) {
+          document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+        }
         currentScreen = 3;
         currentChallengeSC3 = 1;
       }
@@ -275,6 +280,7 @@ function initWidget() {
     //   .forEach((el) => el.classList.add("hidden-svg"));
     btnHome.classList.remove("st767");
     btnInsights.classList.remove("st767")
+
     // Handle Menu
     if (currentScreen === 0) {
       if (menuScreen) menuScreen.classList.remove("st767");
@@ -358,7 +364,7 @@ function initWidget() {
         if (!selectedTrader) {
           // First selection
           selectedTrader = traders[index];
-          el.classList.add("trader-selected");
+          //  el.classList.add("trader-selected");
           document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
 
         } else if (selectedTrader === traders[index]) {
@@ -371,6 +377,7 @@ function initWidget() {
           const firstEl = document.getElementById(selectedTrader);
           if (pairs[selectedTrader] === traders[index]) {
             // Match success
+            document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
             matchedTraders.add(traders[index]);
             matchedTraders.add(selectedTrader);
             tradeCount++;
@@ -381,29 +388,78 @@ function initWidget() {
                 d.classList.remove("st767")
               }
             })
-            el.classList.add("trader-matched");
-            el.classList.remove("trader-selected");
-            firstEl.classList.add("trader-matched");
-            firstEl.classList.remove("trader-selected");
+            //  el.classList.add("trader-matched");
+            // el.classList.remove("trader-selected");
+            // firstEl.classList.add("trader-matched");
+            // firstEl.classList.remove("trader-selected");
 
-            updateTradeCounter(tradeCount);
-            showFeedbackPopup("Well Done! You successfully helped people trade with each other.", true);
+            // Show Success Popup
+            let corPopup = document.getElementById("act-01-sc1-feedback-correct-selection");
+            if (corPopup) {
+              corPopup.classList.remove("st767");
+              let tradeCounterText = document.getElementById("trade-counter-sc1");
+              if (tradeCounterText) tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
 
-            // Check if all pairs are matched
-            if (matchedTraders.size === traders.length) {
-              // All matched - enable Next button
-              if (btnNext) {
-                btnNext.disabled = false;
-                btnNext.style.opacity = "1";
-                btnNext.style.cursor = "pointer";
+              let continueBtn = document.getElementById("btn-continue-sc1");
+              if (continueBtn) {
+                continueBtn.onclick = () => {
+                  corPopup.classList.add("st767");
+                  selectedTrader = null;
+                  tradeCount
+                  console.log("tradeCount", tradeCount)
+                  if (tradeCount >= 4) {
+                    let completedSec = document.getElementById("act-01-sc1-feedback-end");
+                    if (completedSec) {
+                      completedSec.classList.remove("st767")
+                      completedSec.addEventListener("click", () => {
+
+                      })
+                    }
+                  }
+                  // Check if all pairs are matched after continuing
+                  if (matchedTraders.size === traders.length) {
+                    if (btnNext) {
+                      btnNext.disabled = false;
+                      btnNext.style.opacity = "1";
+                      btnNext.style.cursor = "pointer";
+                    }
+                  }
+                };
               }
             }
           } else {
-            // Match fail
-            showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
-            firstEl.classList.remove("trader-selected");
+            let incorPopup = document.getElementById("act-01-sc1-feedback-incorrect-selection");
+            if (incorPopup) {
+              const previousTrader = selectedTrader;
+              const currentIndex = index;
+              const currentEl = el;
+
+              incorPopup.classList.remove("st767");
+
+              currentEl.classList.add("trader-selected");
+              let secondSelectionBorder = document.getElementById(villageTradesSelectionIds[currentIndex]);
+              if (secondSelectionBorder) secondSelectionBorder.classList.remove("st767");
+
+              let tryBtn = document.getElementById("btn-try-another-trader");
+              if (tryBtn) {
+                tryBtn.onclick = () => {
+                  incorPopup.classList.add("st767");
+                  el.classList.remove("trader-selected");
+                  firstEl.classList.remove("trader-selected");
+                  let firstSelectionBorder = document.getElementById(villageTradesSelectionIds[traders.indexOf(previousTrader)]);
+                  if (firstSelectionBorder) firstSelectionBorder.classList.add("st767");
+
+                  currentEl.classList.remove("trader-selected");
+                  if (secondSelectionBorder) secondSelectionBorder.classList.add("st767");
+                };
+              }
+            } else {
+              showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
+              firstEl.classList.remove("trader-selected");
+              document.getElementById(villageTradesSelectionIds[traders.indexOf(selectedTrader)]).classList.add("st767");
+            }
+            selectedTrader = null;
           }
-          selectedTrader = null;
         }
       });
     });
@@ -456,6 +512,85 @@ function initWidget() {
     };
   }
 
+  // --- Custom Dropdown Builder ---
+  function createCustomDropdown(max, defaultVal, onChange, targetId) {
+    if (targetId) {
+      const existing = document.getElementById(`dropdown-${targetId}`);
+      if (existing) return existing;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.id = targetId ? `dropdown-${targetId}` : "";
+    wrapper.className = "custom-dropdown";
+    wrapper.dataset.value = String(defaultVal);
+
+    // Trigger button
+    const trigger = document.createElement("div");
+    trigger.className = "custom-dropdown-trigger";
+
+    const valueSpan = document.createElement("span");
+    valueSpan.className = "dd-value";
+    valueSpan.textContent = String(defaultVal);
+
+    const arrow = document.createElement("span");
+    arrow.className = "dd-arrow";
+    arrow.textContent = "▼";
+
+    trigger.appendChild(valueSpan);
+    trigger.appendChild(arrow);
+    wrapper.appendChild(trigger);
+
+    // Options list
+    const list = document.createElement("ul");
+    list.className = "custom-dropdown-list";
+
+    for (let i = 1; i <= max; i++) {
+      const item = document.createElement("li");
+      item.className = "custom-dropdown-item";
+      item.textContent = String(i);
+      item.dataset.val = String(i);
+
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        wrapper.dataset.value = String(i);
+        valueSpan.textContent = String(i);
+        // Update selected highlight
+        list.querySelectorAll(".custom-dropdown-item").forEach(li => li.classList.remove("selected"));
+        item.classList.add("selected");
+        wrapper.classList.remove("open");
+        if (onChange) onChange(i);
+      });
+      list.appendChild(item);
+    }
+    wrapper.appendChild(list);
+
+    // Toggle open/close on trigger click
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Close all other open dropdowns first
+      document.querySelectorAll(".custom-dropdown.open").forEach(dd => {
+        if (dd !== wrapper) dd.classList.remove("open");
+      });
+      wrapper.classList.toggle("open");
+    });
+
+    // Helper to set value programmatically (for Show Answer)
+    wrapper.setValue = function (val) {
+      wrapper.dataset.value = String(val);
+      valueSpan.textContent = String(val);
+      list.querySelectorAll(".custom-dropdown-item").forEach(li => {
+        li.classList.toggle("selected", li.dataset.val === String(val));
+      });
+      if (onChange) onChange(val);
+    };
+
+    return wrapper;
+  }
+
+  // Close any open dropdown when clicking outside
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".custom-dropdown.open").forEach(dd => dd.classList.remove("open"));
+  });
+
   // --- Screen 2 Logic ---
   const sc2Config = {
     1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
@@ -470,24 +605,40 @@ function initWidget() {
     // The dropdown boxes in SVG are act-02-scX-dropdown-list-1, -2
     let dd1 = document.getElementById(`act-02-sc${sc}-dropdown-list-1`);
     let dd2 = document.getElementById(`act-02-sc${sc}-dropdown-list-2`);
+    let dd3 = document.getElementById(`act-02-sc${sc}-dropdown`);
 
-    // Create selects
-    const s1 = document.createElement("select");
-    const s2 = document.createElement("select");
-    s1.className = "custom-dropdown";
-    s2.className = "custom-dropdown";
+    // Get the Trade button and disable it initially
+    const scSubmit =
+      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
+    if (scSubmit) {
+      scSubmit.style.opacity = "0.5";
+      scSubmit.style.pointerEvents = "none";
+      scSubmit.style.cursor = "not-allowed";
+    }
 
-    // Add options
-    for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
-    for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
+    // Check if both dropdowns have values to enable the Trade button
+    function checkEnableSubmit() {
+      const v1 = parseInt(s1.dataset.value);
+      const v2 = parseInt(s2.dataset.value);
+      if (v1 > 0 && v2 > 0 && scSubmit) {
+        scSubmit.style.opacity = "1";
+        scSubmit.style.pointerEvents = "auto";
+        scSubmit.style.cursor = "pointer";
+      }
+    }
+
+    // Create custom dropdowns with target IDs to prevent duplicates
+    const s1 = createCustomDropdown(cfg.max1, 0, checkEnableSubmit, `act-02-sc${sc}-1`);
+    const s2 = createCustomDropdown(cfg.max2, 0, checkEnableSubmit, `act-02-sc${sc}-2`);
 
     if (dd1 && dd2) {
       const r1 = getPctRect(dd1);
       const r2 = getPctRect(dd2);
 
       // Hide the SVG placeholders
-      dd1.classList.add("hidden-svg");
-      dd2.classList.add("hidden-svg");
+      dd1.classList.add("st767");
+      dd2.classList.add("st767");
+      dd3.classList.add("st767");
 
       if (r1) {
         Object.assign(s1.style, {
@@ -548,39 +699,67 @@ function initWidget() {
     const showAnsBtn = document.querySelectorAll('[id^="Show_Answer"]')[sc - 1];
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
-      showAnsBtn.onclick = () => {
+      showAnsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         // Find first fair trade values
         let f1 = 0, f2 = 0;
         if (sc === 1) { f1 = 2; f2 = 1; }
         else if (sc === 2) { f1 = 3; f2 = 1; }
         else if (sc === 3) { f1 = 4; f2 = 3; }
-        s1.value = f1;
-        s2.value = f2;
-      };
+        s1.setValue(f1);
+        s2.setValue(f2);
+      });
     }
 
     // Submit handler logic
-    const scSubmit =
-      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
     if (scSubmit) {
-      scSubmit.style.cursor = "pointer";
       scSubmit.onclick = () => {
-        let v1 = parseInt(s1.value);
-        let v2 = parseInt(s2.value);
+        let v1 = parseInt(s1.dataset.value);
+        let v2 = parseInt(s2.dataset.value);
         if (v1 * cfg.val1 === v2 * cfg.val2) {
           // Fair Trade
           showElements(`#act-02-sc${sc}-feedback-correct`);
           hideElements(`#act-02-sc${sc}-feedback-incorrect`);
-          showFeedbackPopup("It is a fair trade! The values are matching.", true);
-          showElements(`#act-02-sc${sc}-feedback-end`);
+          //  showFeedbackPopup("It is a fair trade! The values are matching.", true);
+          // showElements(`#act-02-sc${sc}-feedback-end`);
         } else {
           // Unfair
           showElements(`#act-02-sc${sc}-feedback-incorrect`);
           hideElements(`#act-02-sc${sc}-feedback-correct`);
-          showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
-          hideElements(`#act-02-sc${sc}-feedback-end`);
+          // showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
+          // hideElements(`#act-02-sc${sc}-feedback-end`);
         }
       };
+    }
+
+    // Feedback Continue button handlers
+    // "Continue" on incorrect feedback → close popup (try again)
+    const incorrectFeedback = document.getElementById(`act-02-sc${sc}-feedback-incorrect`);
+    if (incorrectFeedback) {
+      incorrectFeedback.style.cursor = "pointer";
+      incorrectFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-incorrect`);
+      });
+    }
+
+    // "Continue" on correct feedback → close popup
+    const correctFeedback = document.getElementById(`act-02-sc${sc}-feedback-correct`);
+    if (correctFeedback) {
+      correctFeedback.style.cursor = "pointer";
+      correctFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-correct`);
+        showElements(`#act-02-sc${sc}-feedback-end`);
+      });
+    }
+
+    // "Continue to Next Challenge" on feedback-end → go next
+    const endFeedback = document.getElementById(`act-02-sc${sc}-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-end`);
+        goNext();
+      });
     }
   }
 

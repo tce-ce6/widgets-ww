@@ -415,33 +415,87 @@ svg * {
 .custom-dropdown {
   pointer-events: auto;
   position: absolute;
-  background-color: transparent;
-  border: 2px solid #ea602e;
-  border-radius: 8px;
+  z-index: 200;
+}
+
+.custom-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3vw;
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  border: 2px solid #1a5fa8;
+  border-radius: 6px;
   font-family: Arial, sans-serif;
-  font-size: 1.5vw;
+  font-size: 1.4vw;
   font-weight: bold;
   color: #333;
-  padding: 0.2vw 0.5vw;
   cursor: pointer;
   outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  box-sizing: border-box;
+  padding: 0 0.4vw;
+  top: 97.4%;
+  height: 11%;
+  left: 7%;
+}
+
+.custom-dropdown-trigger .dd-arrow {
+  font-size: 1vw;
+  color: #333;
+  margin-left: 0.2vw;
+  transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dd-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown-list {
+  display: none;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 100%;
+  max-height: 20vw;
+  overflow-y: auto;
+  background: #fff;
+  border: 2px solid #1a5fa8;
+
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 300;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-dropdown.open .custom-dropdown-list {
+  display: block;
+}
+
+.custom-dropdown-item {
+  padding: 0.4vw 0.6vw;
+  font-family: Arial, sans-serif;
+  font-size: 1.3vw;
+  color: #333;
+  cursor: pointer;
   text-align: center;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-.custom-dropdown:focus {
-  border-color: #2b7a78;
-  box-shadow: 0 0 5px rgba(43, 122, 120, 0.5);
+.custom-dropdown-item:last-child {
+  border-bottom: none;
 }
 
-.custom-dropdown {
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ea602e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 0.5vw center;
-  background-size: 1.5vw;
-  padding-right: 2vw;
+.custom-dropdown-item:hover {
+  background-color: #cce0f5;
+}
+
+.custom-dropdown-item.selected {
+  background-color: #1a5fa8;
+  color: #fff;
 }
 
 .hidden-svg {}
