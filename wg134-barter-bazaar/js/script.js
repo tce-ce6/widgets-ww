@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initWidget() {
   const container = document.getElementById("barter-bazaar-wrapper") || document.body;
   const svg = document.querySelector("svg");
-  if (!container || !svg) return;
+  if (!svg) return;
 
   // Initialize UI layer
   let uiLayer = document.getElementById("ui-layer");
@@ -58,14 +58,15 @@ function initWidget() {
 
   function hideElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
-      // Use hidden-svg class or fallback
       el.classList.add("st767");
+      el.style.display = "none";
     });
   }
 
   function showElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
       el.classList.remove("st767");
+      el.style.display = "";
     });
   }
 
@@ -100,7 +101,37 @@ function initWidget() {
     "act-04-question",
     "act-04-feedback-end",
   ];
-  let ids = ["Path_27102", "Path_2992", "Path_27082"]
+  const villageTradesSelectionIds = [
+    "Path_2995-2",
+    "Path_2993",
+    "Path_2995",
+    "Path_2992",
+    "Path_2994",
+    "Path_2991",
+    "Path_2708-4",
+    "Path_2710-4"
+  ]
+
+  const villageTrades = [
+    "Group_1292",
+    "Group_1293",
+    "Group_1294",
+    "Group_1295",
+    "Group_1296",
+    "Group_1281",
+    "Group_1403",
+    "Group_1404"
+  ]
+  const sen_01_sc1_cards_matched = [
+    "Group_1295-2",
+    "Group_1404-2",
+    "Group_1281-2",
+    "Group_1403-2",
+    "Group_1293-2",
+    "Group_1296-2",
+    "Group_1294-2",
+    "Group_1292-2"
+  ]
 
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
@@ -111,12 +142,12 @@ function initWidget() {
   const menuScreen = document.getElementById("menu-screen");
   if (menuScreen) menuScreen.classList.remove("st767");
 
-  document
-    .querySelectorAll('[id^="act-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+  // document
+  //   .querySelectorAll('[id^="act-"]')
+  //   .forEach((el) => el.classList.add("st767"));
   document
     .querySelectorAll('[id^="popup-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+    .forEach((el) => el.classList.add("st767"));
 
 
   // --- Menu Setup ---
@@ -154,6 +185,7 @@ function initWidget() {
   const btnHome = document.getElementById("btn-home");
   const btnInsights = document.getElementById("btn-insights");
   const globalSubmit = document.getElementById("Submit");
+  const btnCloseInsights = document.getElementById("Insights-2")
 
   if (btnNext) {
     btnNext.style.cursor = "pointer";
@@ -183,6 +215,15 @@ function initWidget() {
       togglePopup(pId, true);
     });
   }
+  if (btnCloseInsights) {
+    btnCloseInsights.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      if (currentScreen === 4 || currentScreen === 0)
+        pId = `popup-act-01-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+
   // Click anywhere to close popups
   document.querySelectorAll('[id^="popup-"]').forEach((p) => {
     p.addEventListener("click", () => p.classList.add("hidden-svg"));
@@ -246,8 +287,7 @@ function initWidget() {
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
-      //   hideElements("#act-01-sc1-cards-selected");
-      hideElements("#act-01-sc1-cards-matched");
+      // hideElements("#act-01-sc1-cards-matched");
       hideElements('[id^="act-01-sc1-feedback"]');
       setupScreen1();
     } else if (currentScreen === 2) {
@@ -273,7 +313,7 @@ function initWidget() {
 
   // --- Screen 1 Logic ---
   function setupScreen1() {
-    const traders = ["Farmer", "Weaver", "Doctor", "Teacher", "Fisherman", "Plumber", "Potter", "Carpenter"];
+    const traders = ["Potter", "Fisherman", "Carpenter", "Weaver", "Plumber", "Teacher", "Doctor", "Farmer"];
     const pairs = {
       "Farmer": "Weaver", "Weaver": "Farmer",
       "Doctor": "Teacher", "Teacher": "Doctor",
@@ -281,6 +321,16 @@ function initWidget() {
       "Potter": "Carpenter", "Carpenter": "Potter"
     };
 
+    const scn_01_sc1_cards_matched = {
+      "Farmer_Weaver": ['Group_1295-2', 'Group_1404-2'],
+      "Weaver_Farmer": ['Group_1295-2', 'Group_1404-2'],
+      "Doctor_Teacher": ["Group_1281-2", "Group_1403-2"],
+      "Teacher_Doctor": ["Group_1281-2", "Group_1403-2"],
+      "Fisherman_Plumber": ["Group_1293-2", "Group_1296-2"],
+      "Plumber_Fisherman": ["Group_1293-2", "Group_1296-2"],
+      "Potter_Carpenter": ["Group_1294-2", "Group_1292-2"],
+      "Carpenter_Potter": ["Group_1294-2", "Group_1292-2"],
+    }
     let selectedTrader = null;
     let matchedTraders = new Set();
     let tradeCount = 0;
@@ -292,7 +342,7 @@ function initWidget() {
       btnNext.style.cursor = "not-allowed";
     }
 
-    traders.forEach(traderId => {
+    villageTrades.forEach((traderId, index) => {
       const el = document.getElementById(traderId);
       if (!el) {
         console.warn(`Trader element not found: ${traderId}`);
@@ -303,27 +353,34 @@ function initWidget() {
 
       el.addEventListener("click", () => {
         // Skip if already matched
-        if (matchedTraders.has(traderId)) return;
+        if (matchedTraders.has(traders[index])) return;
 
         if (!selectedTrader) {
           // First selection
-          selectedTrader = traderId;
+          selectedTrader = traders[index];
           el.classList.add("trader-selected");
-          document.getElementById(ids[0]).classList.remove("st767");
+          document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
 
-        } else if (selectedTrader === traderId) {
+        } else if (selectedTrader === traders[index]) {
           // Deselect same trader
           el.classList.remove("trader-selected");
           selectedTrader = null;
+          document.getElementById(villageTradesSelectionIds[index]).classList.add("st767");
         } else {
           // Try to match with previously selected trader
           const firstEl = document.getElementById(selectedTrader);
-          if (pairs[selectedTrader] === traderId) {
+          if (pairs[selectedTrader] === traders[index]) {
             // Match success
-            matchedTraders.add(traderId);
+            matchedTraders.add(traders[index]);
             matchedTraders.add(selectedTrader);
             tradeCount++;
-
+            let selectT = scn_01_sc1_cards_matched[`${traders[index]}_${selectedTrader}`]
+            selectT.forEach((s) => {
+              let d = document.getElementById(s)
+              if (d) {
+                d.classList.remove("st767")
+              }
+            })
             el.classList.add("trader-matched");
             el.classList.remove("trader-selected");
             firstEl.classList.add("trader-matched");

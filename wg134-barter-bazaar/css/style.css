@@ -452,5 +452,5 @@ svg * {
 
 /* Override hidden elements */
 .st767 {
-  display: inline;
+  display: none;
 }
