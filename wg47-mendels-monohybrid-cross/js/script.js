@@ -129,6 +129,33 @@ function resetUI() {
         showElement(extraGrp);
         extraGrp.classList.remove('st415');
     }
+
+    resetTraitSelectionStyles();
+}
+
+function resetTraitSelectionStyles() {
+    UI.traitGroups.forEach(groupEl => {
+        if (!groupEl) return;
+
+        // Reset base backdrop
+        const baseBox = groupEl.querySelector('rect[id^="box_x5F_base"]');
+        if (baseBox) {
+            baseBox.style.fill = '';
+            baseBox.style.stroke = '';
+            baseBox.style.strokeWidth = '';
+        }
+
+        // Reset inner card elements dynamically
+        const innerGroups = Array.from(groupEl.querySelectorAll('g[id^="box_x5F_"]'));
+        innerGroups.forEach(box => {
+            const rects = box.querySelectorAll('rect');
+            if (rects.length >= 2) {
+                rects[0].style.fill = '';
+                rects[1].style.stroke = '';
+                rects[1].style.strokeWidth = '';
+            }
+        });
+    });
 }
 
 function setupEventListeners() {
@@ -182,29 +209,7 @@ function selectTrait(index, element) {
         hideElement(UI.traitSelectionHighlight);
     }
 
-    // Reset styles for all trait groups
-    UI.traitGroups.forEach(groupEl => {
-        if (!groupEl) return;
-
-        // Reset base backdrop
-        const baseBox = groupEl.querySelector('rect[id^="box_x5F_base"]');
-        if (baseBox) {
-            baseBox.style.fill = '';
-            baseBox.style.stroke = '';
-            baseBox.style.strokeWidth = '';
-        }
-
-        // Reset inner card elements dynamically
-        const innerGroups = Array.from(groupEl.querySelectorAll('g[id^="box_x5F_"]'));
-        innerGroups.forEach(box => {
-            const rects = box.querySelectorAll('rect');
-            if (rects.length >= 2) {
-                rects[0].style.fill = '';
-                rects[1].style.stroke = '';
-                rects[1].style.strokeWidth = '';
-            }
-        });
-    });
+    resetTraitSelectionStyles();
 
     // Apply the active state highlight visually to the selected SVG DOM structures
     if (element) {
@@ -342,7 +347,7 @@ function goToStage4() {
 function updatePunnettVisibility() {
     if (!UI.tspanPunnett) return;
 
-    UI.tspanPunnett.textContent = WidgetState.punnettVisible ? 'Hide Values' : 'Show Values';
+    UI.tspanPunnett.textContent = WidgetState.punnettVisible ? 'Hide Genotypes' : 'Show Genotypes';
 
     // Find current active Stage 4 card
     const card = document.getElementById(`Stage4-_Card_${WidgetState.selectedTraitIndex + 1}`);
