@@ -357,7 +357,7 @@
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-14T14:08:05+05:30",
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
@@ -370,6 +370,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-14T14:08:05+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add a semi-transparent overlay for the insight popup and update the widget version.",
+      "widgets": [
+        97
+      ]
+    },
     {
       "date": "2026-03-14T13:36:44+05:30",
       "author": "PrasannaP",
@@ -604,14 +612,6 @@
       "message": "fix: update Punnett content selector to correctly identify varying group IDs across cards.",
       "widgets": [
         47
-      ]
-    },
-    {
-      "date": "2026-03-11T15:54:14+05:30",
-      "author": "Shyam",
-      "message": "Version update",
-      "widgets": [
-        120
       ]
     }
   ]
