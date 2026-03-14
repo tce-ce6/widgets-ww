@@ -101,6 +101,7 @@ class Wg97 {
         this.dom.pipette = document.getElementById('picker');
         this.dom.pipetteLiquid = document.getElementById('filler');
         this.dom.modal = document.getElementById('popup');
+        this.dom.modalOverlay = document.getElementById('popup_overlay');
         this.dom.closeModal = document.getElementById('Group_1331');
 
         this.dom.itext2 = document.getElementById('itext2');
@@ -249,6 +250,7 @@ class Wg97 {
 
         // Move popup to the end of SVG to ensure it renders on top of dynamic layers
         if (this.dom.modal && this.svgEl) {
+            if (this.dom.modalOverlay) this.svgEl.appendChild(this.dom.modalOverlay);
             this.svgEl.appendChild(this.dom.modal);
         }
     }
@@ -267,8 +269,14 @@ class Wg97 {
         if (this.dom.btnSubmitGroup) this.dom.btnSubmitGroup.addEventListener('click', () => this._onSubmitClick());
         if (this.dom.btnShowAnswer) this.dom.btnShowAnswer.addEventListener('click', () => this._onShowAnswerClick());
 
-        if (this.dom.btnInsights) this.dom.btnInsights.addEventListener('click', () => this._showEl(this.dom.modal));
-        if (this.dom.closeModal) this.dom.closeModal.addEventListener('click', () => this._hideEl(this.dom.modal));
+        if (this.dom.btnInsights) this.dom.btnInsights.addEventListener('click', () => {
+            if (this.dom.modalOverlay) this._showEl(this.dom.modalOverlay);
+            this._showEl(this.dom.modal);
+        });
+        if (this.dom.closeModal) this.dom.closeModal.addEventListener('click', () => {
+            if (this.dom.modalOverlay) this._hideEl(this.dom.modalOverlay);
+            this._hideEl(this.dom.modal);
+        });
 
         // Submit on Enter key
         this.dom.inputs.forEach(inp => {
@@ -419,8 +427,18 @@ class Wg97 {
         }
     }
 
-    _showEl(el) { if (el) el.setAttribute('display', ''); }
-    _hideEl(el) { if (el) el.setAttribute('display', 'none'); }
+    _showEl(el) { 
+        if (el) {
+            el.setAttribute('display', '');
+            if (el.style.display === 'none') el.style.display = '';
+        }
+    }
+    _hideEl(el) { 
+        if (el) {
+            el.setAttribute('display', 'none');
+            // If it had style="display: none", keep it or use setAttribute
+        }
+    }
     _setOpacity(el, val) { if (el) el.setAttribute('opacity', val); }
 
     // ─── CLICK HANDLERS ───────────────────────────────────────────────────────
