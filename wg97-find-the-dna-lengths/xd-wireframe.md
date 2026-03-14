@@ -11,4 +11,4 @@ there is a long space in insight popup should be same as xd between "marker)" an
 ![alt text](image.png) check the snap for the instruction text before start button and after all gels filled by sample tubes
 
 Comments:
-need a bg popup for insight popup
+need a semi transparent bg popup for insight popup
