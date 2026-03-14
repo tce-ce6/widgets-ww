@@ -620,6 +620,19 @@ var WG112App = {
         var ansLbl = this.el('lbl_criminal_answer');
         if (ansLbl) { ansLbl.textContent = 'Suspect ' + (setDef.criminal + 1) + ' is the criminal'; }
 
+        var ansSusName = this.el('ans_suspect_name');
+        if (ansSusName) { ansSusName.textContent = 'Suspect-' + (setDef.criminal + 1); }
+
+        // Update Answer Popup Portrait
+        var colorMapBG = { 0: '#fdce86', 1: '#05decf', 2: '#a4de05', 3: '#dc83b6' };
+        var ansBG = this.el('ans_portrait_bg');
+        if (ansBG) { ansBG.setAttribute('fill', colorMapBG[setDef.criminal]); }
+
+        for (var s = 0; s < 4; s++) {
+            var p = this.el('ans_portrait_' + s);
+            if (p) { p.style.display = (s === setDef.criminal) ? 'inline' : 'none'; }
+        }
+
         // 3. Colors for chromosomes
         var colorMap = { 0: '#ff4c00', 1: '#00d62c', 2: '#ffffb4' };
 
