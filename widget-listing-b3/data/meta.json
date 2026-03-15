@@ -93,8 +93,8 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-05T12:00:47+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
       "updatedAt": "2026-03-09T19:48:15+05:30",
@@ -208,8 +208,8 @@
       "updatedAt": "2026-02-27T13:19:23+05:30",
       "author": "Shyam"
     },
-    "wg26-word-discovery": {
-      "updatedAt": "2026-02-23T20:35:45+05:30",
+    "wg26-word-discovery-adventure": {
+      "updatedAt": "2026-03-15T13:36:28+05:30",
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
@@ -247,6 +247,10 @@
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-04T12:33:05+05:30",
       "author": "Santosh Vishwakarma"
+    },
+    "wg68-reflection-of-a-point": {
+      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
       "updatedAt": "2026-03-04T12:33:05+05:30",
@@ -353,7 +357,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "updatedAt": "2026-03-15T13:36:28+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -370,6 +374,17 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: Add new assets and core files for `wg26-word-discovery-adventure`, `wg126-dominos-of-rebellion`, and `wg96-operation-domino` widgets.",
+      "widgets": [
+        26,
+        68,
+        96,
+        126
+      ]
+    },
     {
       "date": "2026-03-14T15:50:58+05:30",
       "author": "PrasannaP",
@@ -601,14 +616,6 @@
       "date": "2026-03-11T17:02:10+05:30",
       "author": "Shyam",
       "message": "png path changed",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T16:48:56+05:30",
-      "author": "Shyam",
-      "message": "check for deploy issue",
       "widgets": [
         120
       ]
