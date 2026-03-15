@@ -262,11 +262,18 @@ function audioListener() {
 function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
-
+  setButtonsDisabled(true);
   let fileName =
     type === "wrong" ? selectedWord.wrongAudio : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
+  const onFinish = () => {
+    setButtonsDisabled(false);
+    audioPlayer.removeEventListener("ended", onFinish);
+    audioPlayer.removeEventListener("error", onFinish);
+  };
+  audioPlayer.addEventListener("ended", onFinish);
+  audioPlayer.addEventListener("error", onFinish);
   audioPlayer.play();
 }
 function playAnimationAudio(bandGroup) {
@@ -357,6 +364,37 @@ function naya_shabd() {
   });
 }
 
+
+function setButtonsDisabled(disabled) {
+  const ids = [
+    "audio_button_1",
+    "audio_button_2",
+    "audio_button_3",
+    "age_badhe_button",
+    "naya_shabd_button",
+    "gyankosh_button",
+    "arrow_audio",
+  ];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      if (disabled) {
+        el.setAttribute("data-audio-disabled", "true");
+        el.style.pointerEvents = "none";
+        el.style.opacity =
+          el.style.opacity === ""
+            ? "0.6"
+            : el.style.opacity === "1"
+              ? "0.6"
+              : el.style.opacity;
+      } else {
+        el.removeAttribute("data-audio-disabled");
+        el.style.pointerEvents = "";
+        el.style.opacity = "";
+      }
+    }
+  });
+}
 function getRandomAnimation() {
   const animals = Object.keys(LottieAnimations);
   const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
@@ -388,7 +426,7 @@ function playLottieAnimation(bandGroup) {
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,

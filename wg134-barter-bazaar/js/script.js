@@ -17,12 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initWidget() {
-  // const container = document.getElementById("widget-container") || document.getElementById("idiom-wrapper");
-  // const svg = document.querySelector("svg");
-  // if (!container || !svg) return;
+  const backNextBtn = document.getElementById("btn-next-back");
 
-  // // Global variables
-  // const uiLayer = document.getElementById("ui-layer") || createUILayer(container);
+  const container = document.getElementById("barter-bazaar-wrapper") || document.body;
+  const svg = document.querySelector("svg");
+  if (!svg) return;
+
+  // Initialize UI layer
+  let uiLayer = document.getElementById("ui-layer");
+  if (!uiLayer) {
+    uiLayer = createUILayer(container);
+  }
 
   function createUILayer(parent) {
     const layer = document.createElement("div");
@@ -55,14 +60,15 @@ function initWidget() {
 
   function hideElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
-      // Use hidden-svg class or fallback
       el.classList.add("st767");
+      //el.style.display = "none";
     });
   }
 
   function showElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
       el.classList.remove("st767");
+      el.style.display = "";
     });
   }
 
@@ -97,6 +103,37 @@ function initWidget() {
     "act-04-question",
     "act-04-feedback-end",
   ];
+  const villageTradesSelectionIds = [
+    "Path_2995-2",
+    "Path_2993",
+    "Path_2995",
+    "Path_2992",
+    "Path_2994",
+    "Path_2991",
+    "Path_2708-4",
+    "Path_2710-4"
+  ]
+
+  const villageTrades = [
+    "Group_1292",
+    "Group_1293",
+    "Group_1294",
+    "Group_1295",
+    "Group_1296",
+    "Group_1281",
+    "Group_1403",
+    "Group_1404"
+  ]
+  const sen_01_sc1_cards_matched = [
+    "Group_1295-2",
+    "Group_1404-2",
+    "Group_1281-2",
+    "Group_1403-2",
+    "Group_1293-2",
+    "Group_1296-2",
+    "Group_1294-2",
+    "Group_1292-2"
+  ]
 
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
@@ -107,18 +144,24 @@ function initWidget() {
   const menuScreen = document.getElementById("menu-screen");
   if (menuScreen) menuScreen.classList.remove("st767");
 
-  document
-    .querySelectorAll('[id^="act-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+  // document
+  //   .querySelectorAll('[id^="act-"]')
+  //   .forEach((el) => el.classList.add("st767"));
   document
     .querySelectorAll('[id^="popup-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+    .forEach((el) => el.classList.add("st767"));
 
 
   // --- Menu Setup ---
   const menuScen1 = document.getElementById("Scenario_1");
   const menuScen2 = document.getElementById("Scenario_2");
   const menuScen3 = document.getElementById("Scenario_3");
+  const menuScen2_1 = document.getElementById("Scenario_2-1");
+  const menuScen2_2 = document.getElementById("Scenario_2-2");
+  const menuScen2_3 = document.getElementById("Scenario_2-3");
+  const menuScen3_1 = document.getElementById("Scenario_3-1");
+  const menuScen3_2 = document.getElementById("Scenario_3-2");
+  const menuScen3_3 = document.getElementById("Scenario_3-3");
 
   if (menuScen1) {
     menuScen1.style.cursor = "pointer";
@@ -144,12 +187,66 @@ function initWidget() {
     });
   }
 
+  if (menuScen2_1) {
+    menuScen2_1.style.cursor = "pointer";
+    menuScen2_1.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 1;
+      updateView();
+    });
+  }
+  if (menuScen2_2) {
+    menuScen2_2.style.cursor = "pointer";
+    menuScen2_2.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 2;
+      updateView();
+    });
+  }
+  if (menuScen2_3) {
+    menuScen2_3.style.cursor = "pointer";
+    menuScen2_3.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 3;
+      updateView();
+    });
+  }
+  if (menuScen3_1) {
+    menuScen3_1.style.cursor = "pointer";
+    menuScen3_1.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 1;
+      updateView();
+    });
+  }
+  if (menuScen3_2) {
+    menuScen3_2.style.cursor = "pointer";
+    menuScen3_2.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 2;
+      updateView();
+    });
+  }
+
+
+  if (menuScen3_3) {
+    menuScen3_3.style.cursor = "pointer";
+    menuScen3_3.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 3;
+      updateView();
+    });
+  }
+
   // --- Navigation Setup ---
   const btnNext = document.getElementById("Next");
   const btnBack = document.getElementById("Back");
   const btnHome = document.getElementById("btn-home");
   const btnInsights = document.getElementById("btn-insights");
   const globalSubmit = document.getElementById("Submit");
+  const btnCloseInsights = document.getElementById("Insights-2")
+  const btnCloseInsights3 = document.getElementById("Insights-3")
+  const btnCloseInsights4 = document.getElementById("Insights-4")
 
   if (btnNext) {
     btnNext.style.cursor = "pointer";
@@ -179,9 +276,33 @@ function initWidget() {
       togglePopup(pId, true);
     });
   }
+  if (btnCloseInsights) {
+    btnCloseInsights.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      if (currentScreen === 4 || currentScreen === 0)
+        pId = `popup-act-01-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+  if (btnCloseInsights3) {
+    btnCloseInsights3.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-02-insights`; // fallback
+      togglePopup(pId, false);
+    });
+
+  }
+  if (btnCloseInsights4) {
+    btnCloseInsights4.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-03-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+
   // Click anywhere to close popups
   document.querySelectorAll('[id^="popup-"]').forEach((p) => {
-    p.addEventListener("click", () => p.classList.add("hidden-svg"));
+    p.addEventListener("click", () => p.classList.add("st767"));
   });
 
   function goNext() {
@@ -193,12 +314,22 @@ function initWidget() {
     } else if (currentScreen === 2) {
       if (currentChallengeSC2 < 3) currentChallengeSC2++;
       else {
+        hideElements("#act-02-base-global");
+        hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+        if (document.querySelector(".custom-dropdown")) {
+          document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+        }
         currentScreen = 3;
         currentChallengeSC3 = 1;
       }
     } else if (currentScreen === 3) {
       if (currentChallengeSC3 < 3) currentChallengeSC3++;
-      else currentScreen = 4;
+      else {
+        hideElements("#act-03-base-global");
+        hideElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
+        hideElements("#btn-next-back");
+        currentScreen = 4;
+      }
     }
     updateView();
   }
@@ -230,6 +361,7 @@ function initWidget() {
     //   .forEach((el) => el.classList.add("hidden-svg"));
     btnHome.classList.remove("st767");
     btnInsights.classList.remove("st767")
+
     // Handle Menu
     if (currentScreen === 0) {
       if (menuScreen) menuScreen.classList.remove("st767");
@@ -239,11 +371,25 @@ function initWidget() {
           d.classList.add("st767")
         }
       })
+      hideElements(`[id^="act-02]`);
+      hideElements(`[id^="act-03"]`);
+      hideElements(`act-02-sc1-cards`);
+      hideElements(`act-02-sc2-cards`);
+      hideElements(`act-02-sc3-cards`);
+
+      if (document.querySelector(".custom-dropdown")) {
+        document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+      }
+      hideElements("#act-04-base");
+      hideElements("#act-04-question");
+      hideElements("#act-04-checkbox-default");
+      hideElements("#act-04-checkbox-selected");
+      hideElements("#act-04-feedback-end");
+      hideElements("#btn-next-back");
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
-      hideElements("#act-01-sc1-cards-selected");
-      hideElements("#act-01-sc1-cards-matched");
+      // hideElements("#act-01-sc1-cards-matched");
       hideElements('[id^="act-01-sc1-feedback"]');
       setupScreen1();
     } else if (currentScreen === 2) {
@@ -251,25 +397,28 @@ function initWidget() {
       showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
       // Hide feedbacks initially
       hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen2Challenge(currentChallengeSC2);
     } else if (currentScreen === 3) {
       showElements("#act-03-base-global");
       showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
       hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen3Challenge(currentChallengeSC3);
     } else if (currentScreen === 4) {
       showElements("#act-04-base");
       showElements("#act-04-question");
       showElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
+      //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
+      backNextBtn.classList.add("st767");
       setupScreen4();
     }
   }
 
   // --- Screen 1 Logic ---
   function setupScreen1() {
-    const traders = ["Farmer", "Weaver", "Doctor", "Teacher", "Fisherman", "Plumber", "Potter", "Carpenter"];
+    const traders = ["Potter", "Fisherman", "Carpenter", "Weaver", "Plumber", "Teacher", "Doctor", "Farmer"];
     const pairs = {
       "Farmer": "Weaver", "Weaver": "Farmer",
       "Doctor": "Teacher", "Teacher": "Doctor",
@@ -277,139 +426,272 @@ function initWidget() {
       "Potter": "Carpenter", "Carpenter": "Potter"
     };
 
+    const scn_01_sc1_cards_matched = {
+      "Farmer_Weaver": ['Group_1295-2', 'Group_1404-2'],
+      "Weaver_Farmer": ['Group_1295-2', 'Group_1404-2'],
+      "Doctor_Teacher": ["Group_1281-2", "Group_1403-2"],
+      "Teacher_Doctor": ["Group_1281-2", "Group_1403-2"],
+      "Fisherman_Plumber": ["Group_1293-2", "Group_1296-2"],
+      "Plumber_Fisherman": ["Group_1293-2", "Group_1296-2"],
+      "Potter_Carpenter": ["Group_1294-2", "Group_1292-2"],
+      "Carpenter_Potter": ["Group_1294-2", "Group_1292-2"],
+    }
     let selectedTrader = null;
     let matchedTraders = new Set();
+    let tradeCount = 0;
 
-    traders.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
+    // Disable Next button initially
+    if (btnNext) {
+      btnNext.disabled = true;
+      btnNext.style.opacity = "0.5";
+      btnNext.style.cursor = "not-allowed";
+    }
+
+    villageTrades.forEach((traderId, index) => {
+      const el = document.getElementById(traderId);
+      if (!el) {
+        console.warn(`Trader element not found: ${traderId}`);
+        return;
+      }
 
       el.style.cursor = "pointer";
 
-      // Create a transparent overlay for easier clicking
-      // const rect = getPctRect(el);
-      // if (rect) {
-      //   const overlay = document.createElement("div");
-      //   overlay.id = `overlay-${id}`;
-      //   Object.assign(overlay.style, {
-      //     position: "absolute",
-      //     left: rect.left,
-      //     top: rect.top,
-      //     width: rect.width,
-      //     height: rect.height,
-      //     cursor: "pointer",
-      //     pointerEvents: "auto",
-      //     zIndex: "10"
-      //   });
-      //   uiLayer.appendChild(overlay);
+      el.addEventListener("click", () => {
+        // Skip if already matched
+        if (matchedTraders.has(traders[index])) return;
 
-      //   overlay.onclick = () => {
-      //     if (matchedTraders.has(id)) return;
+        if (!selectedTrader) {
+          // First selection
+          selectedTrader = traders[index];
+          //  el.classList.add("trader-selected");
+          document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
 
-      //     if (!selectedTrader) {
-      //       selectedTrader = id;
-      //       // Highlight selection (e.g., yellow)
-      //       el.style.filter = "drop-shadow(0 0 5px yellow)";
-      //     } else if (selectedTrader === id) {
-      //       // Deselect
-      //       el.style.filter = "none";
-      //       selectedTrader = null;
-      //     } else {
-      //       // Try to match
-      //       if (pairs[selectedTrader] === id) {
-      //         // Match Success
-      //         matchedTraders.add(id);
-      //         matchedTraders.add(selectedTrader);
+        } else if (selectedTrader === traders[index]) {
+          // Deselect same trader
+          el.classList.remove("trader-selected");
+          selectedTrader = null;
+          document.getElementById(villageTradesSelectionIds[index]).classList.add("st767");
+        } else {
+          // Try to match with previously selected trader
+          const firstEl = document.getElementById(selectedTrader);
+          if (pairs[selectedTrader] === traders[index]) {
+            // Match success
+            document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
+            matchedTraders.add(traders[index]);
+            matchedTraders.add(selectedTrader);
+            tradeCount++;
+            let selectT = scn_01_sc1_cards_matched[`${traders[index]}_${selectedTrader}`]
+            selectT.forEach((s) => {
+              let d = document.getElementById(s)
+              if (d) {
+                d.classList.remove("st767")
+              }
+            })
+            //  el.classList.add("trader-matched");
+            // el.classList.remove("trader-selected");
+            // firstEl.classList.add("trader-matched");
+            // firstEl.classList.remove("trader-selected");
 
-      //         // Green highlight
-      //         const sEl = document.getElementById(selectedTrader);
-      //         if (sEl) {
-      //           sEl.style.filter = "drop-shadow(0 0 10px green)";
-      //           addTradedTag(selectedTrader);
-      //         }
-      //         el.style.filter = "drop-shadow(0 0 10px green)";
-      //         addTradedTag(id);
+            // Show Success Popup
+            let corPopup = document.getElementById("act-01-sc1-feedback-correct-selection");
+            if (corPopup) {
+              corPopup.classList.remove("st767");
+              let tradeCounterText = document.getElementById("trade-counter-sc1");
+              if (tradeCounterText) tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
 
-      //         // Remove overlays to disable clicks
-      //         document.getElementById(`overlay-${id}`)?.remove();
-      //         document.getElementById(`overlay-${selectedTrader}`)?.remove();
+              let continueBtn = document.getElementById("btn-continue-sc1");
+              if (continueBtn) {
+                continueBtn.onclick = () => {
+                  corPopup.classList.add("st767");
+                  selectedTrader = null;
+                  tradeCount
+                  console.log("tradeCount", tradeCount)
+                  if (tradeCount >= 4) {
+                    let completedSec = document.getElementById("act-01-sc1-feedback-end");
+                    if (completedSec) {
+                      completedSec.classList.remove("st767")
+                      completedSec.addEventListener("click", () => {
 
-      //         selectedTrader = null;
+                      })
+                    }
+                  }
+                  // Check if all pairs are matched after continuing
+                  if (matchedTraders.size === traders.length) {
+                    if (btnNext) {
+                      btnNext.disabled = false;
+                      btnNext.style.opacity = "1";
+                      btnNext.style.cursor = "pointer";
+                    }
+                  }
+                };
+              }
+            }
+          } else {
+            let incorPopup = document.getElementById("act-01-sc1-feedback-incorrect-selection");
+            if (incorPopup) {
+              const previousTrader = selectedTrader;
+              const currentIndex = index;
+              const currentEl = el;
 
-      //         // Feedback
-      //         showFeedbackPopup("Well Done! You successfully helped people trade with each other.", true);
+              incorPopup.classList.remove("st767");
 
-      //         if (matchedTraders.size === traders.length) {
-      //           // All matched
-      //           // User can click Next
-      //         }
-      //       } else {
-      //         // Match Fail
-      //         const sEl = document.getElementById(selectedTrader);
-      //         if (sEl) sEl.style.filter = "none";
-      //         selectedTrader = null;
-      //         showFeedbackPopup("Trade failed. Try again. Their needs don’t match.", false);
-      //       }
-      //     }
-      //   };
-      // }
+              currentEl.classList.add("trader-selected");
+              let secondSelectionBorder = document.getElementById(villageTradesSelectionIds[currentIndex]);
+              if (secondSelectionBorder) secondSelectionBorder.classList.remove("st767");
+
+              let tryBtn = document.getElementById("btn-try-another-trader");
+              if (tryBtn) {
+                tryBtn.onclick = () => {
+                  incorPopup.classList.add("st767");
+                  el.classList.remove("trader-selected");
+                  firstEl.classList.remove("trader-selected");
+                  let firstSelectionBorder = document.getElementById(villageTradesSelectionIds[traders.indexOf(previousTrader)]);
+                  if (firstSelectionBorder) firstSelectionBorder.classList.add("st767");
+
+                  currentEl.classList.remove("trader-selected");
+                  if (secondSelectionBorder) secondSelectionBorder.classList.add("st767");
+                };
+              }
+            } else {
+              showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
+              firstEl.classList.remove("trader-selected");
+              document.getElementById(villageTradesSelectionIds[traders.indexOf(selectedTrader)]).classList.add("st767");
+            }
+            selectedTrader = null;
+          }
+        }
+      });
     });
 
-    function addTradedTag(traderId) {
-      const el = document.getElementById(traderId);
-      const rect = getPctRect(el);
-      if (rect) {
-        const tag = document.createElement("div");
-        tag.textContent = "Traded";
-        Object.assign(tag.style, {
-          position: "absolute",
-          left: rect.left,
-          top: `calc(${rect.top} + ${rect.height} - 10px)`,
-          width: rect.width,
-          textAlign: "center",
-          color: "white",
-          backgroundColor: "green",
-          fontSize: "12px",
-          fontWeight: "bold",
-          padding: "2px 0",
-          borderRadius: "4px",
-          zIndex: "20",
-          pointerEvents: "none"
-        });
-        uiLayer.appendChild(tag);
+    function updateTradeCounter(count) {
+      let counter = document.getElementById("trade-counter-sc1");
+      if (!counter) {
+        counter = document.createElement("div");
+        counter.id = "trade-counter-sc1";
+        counter.className = "trade-counter";
+        uiLayer.appendChild(counter);
       }
+      counter.textContent = `Trades Completed: ${count} / 4`;
     }
   }
 
   function showFeedbackPopup(text, isSuccess) {
-    // We can use a generic feedback popup if available, or create one
-    // Searching for generic popups in index.html
     let popup = document.getElementById("feedback-popup-sc1");
     if (!popup) {
       popup = document.createElement("div");
       popup.id = "feedback-popup-sc1";
       Object.assign(popup.style, {
-        position: "absolute",
+        position: "fixed",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        padding: "20px",
+        padding: "30px",
         backgroundColor: "white",
-        border: "3px solid " + (isSuccess ? "green" : "red"),
-        borderRadius: "10px",
-        zIndex: "1000",
+        border: `4px solid ${isSuccess ? "#00AA00" : "#FF0000"}`,
+        borderRadius: "12px",
+        zIndex: "10000",
         textAlign: "center",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-        pointerEvents: "auto"
+        boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
+        pointerEvents: "auto",
+        maxWidth: "400px",
+        fontFamily: "Arial, sans-serif"
       });
-      uiLayer.appendChild(popup);
+      document.body.appendChild(popup);
     }
-    popup.innerHTML = `<h3>${isSuccess ? "Success" : "Failed"}</h3><p>${text}</p><button id="close-fb">OK</button>`;
+    popup.innerHTML = `
+      <h3 style="margin: 0 0 10px 0; color: ${isSuccess ? "#00AA00" : "#FF0000"}; font-size: 20px;">
+        ${isSuccess ? "✓ Success" : "✗ Try Again"}
+      </h3>
+      <p style="margin: 0 0 15px 0; font-size: 14px; color: #333;">${text}</p>
+      <button id="close-fb" style="padding: 10px 20px; background: #590056; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">OK</button>
+    `;
     popup.style.display = "block";
     document.getElementById("close-fb").onclick = () => {
       popup.style.display = "none";
     };
   }
+
+  // --- Custom Dropdown Builder ---
+  function createCustomDropdown(max, defaultVal, onChange, targetId) {
+    if (targetId) {
+      const existing = document.getElementById(`dropdown-${targetId}`);
+      if (existing) return existing;
+    }
+    if (document.querySelector(".custom-dropdown")) {
+      return
+    }
+    const wrapper = document.createElement("div");
+    wrapper.id = targetId ? `dropdown-${targetId}` : "";
+    wrapper.className = "custom-dropdown";
+    wrapper.dataset.value = String(defaultVal);
+
+    // Trigger button
+    const trigger = document.createElement("div");
+    trigger.className = "custom-dropdown-trigger";
+
+    const valueSpan = document.createElement("span");
+    valueSpan.className = "dd-value";
+    valueSpan.textContent = String(defaultVal);
+
+    const arrow = document.createElement("span");
+    arrow.className = "dd-arrow";
+    arrow.textContent = "▼";
+
+    trigger.appendChild(valueSpan);
+    trigger.appendChild(arrow);
+    wrapper.appendChild(trigger);
+
+    // Options list
+    const list = document.createElement("ul");
+    list.className = "custom-dropdown-list";
+
+    for (let i = 1; i <= max; i++) {
+      const item = document.createElement("li");
+      item.className = "custom-dropdown-item";
+      item.textContent = String(i);
+      item.dataset.val = String(i);
+
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        wrapper.dataset.value = String(i);
+        valueSpan.textContent = String(i);
+        // Update selected highlight
+        list.querySelectorAll(".custom-dropdown-item").forEach(li => li.classList.remove("selected"));
+        item.classList.add("selected");
+        wrapper.classList.remove("open");
+        if (onChange) onChange(i);
+      });
+      list.appendChild(item);
+    }
+    wrapper.appendChild(list);
+
+    // Toggle open/close on trigger click
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Close all other open dropdowns first
+      document.querySelectorAll(".custom-dropdown.open").forEach(dd => {
+        if (dd !== wrapper) dd.classList.remove("open");
+      });
+      wrapper.classList.toggle("open");
+    });
+
+    // Helper to set value programmatically (for Show Answer)
+    wrapper.setValue = function (val) {
+      wrapper.dataset.value = String(val);
+      valueSpan.textContent = String(val);
+      list.querySelectorAll(".custom-dropdown-item").forEach(li => {
+        li.classList.toggle("selected", li.dataset.val === String(val));
+      });
+      if (onChange) onChange(val);
+    };
+
+    return wrapper;
+  }
+
+  // Close any open dropdown when clicking outside
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".custom-dropdown.open").forEach(dd => dd.classList.remove("open"));
+  });
 
   // --- Screen 2 Logic ---
   const sc2Config = {
@@ -425,41 +707,57 @@ function initWidget() {
     // The dropdown boxes in SVG are act-02-scX-dropdown-list-1, -2
     let dd1 = document.getElementById(`act-02-sc${sc}-dropdown-list-1`);
     let dd2 = document.getElementById(`act-02-sc${sc}-dropdown-list-2`);
+    let dd3 = document.getElementById(`act-02-sc${sc}-dropdown`);
 
-    // Create selects
-    const s1 = document.createElement("select");
-    const s2 = document.createElement("select");
-    s1.className = "custom-dropdown";
-    s2.className = "custom-dropdown";
+    // Get the Trade button and disable it initially
+    const scSubmit =
+      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
+    if (scSubmit) {
+      scSubmit.style.opacity = "0.5";
+      scSubmit.style.pointerEvents = "none";
+      scSubmit.style.cursor = "not-allowed";
+    }
 
-    // Add options
-    for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
-    for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
+    // Check if both dropdowns have values to enable the Trade button
+    function checkEnableSubmit() {
+      const v1 = parseInt(s1.dataset.value);
+      const v2 = parseInt(s2.dataset.value);
+      if (v1 > 0 && v2 > 0 && scSubmit) {
+        scSubmit.style.opacity = "1";
+        scSubmit.style.pointerEvents = "auto";
+        scSubmit.style.cursor = "pointer";
+      }
+    }
+
+    // Create custom dropdowns with target IDs to prevent duplicates
+    const s1 = createCustomDropdown(cfg.max1, 0, checkEnableSubmit, `act-02-sc${sc}-1`);
+    const s2 = createCustomDropdown(cfg.max2, 0, checkEnableSubmit, `act-02-sc${sc}-2`);
 
     if (dd1 && dd2) {
       const r1 = getPctRect(dd1);
       const r2 = getPctRect(dd2);
 
       // Hide the SVG placeholders
-      dd1.classList.add("hidden-svg");
-      dd2.classList.add("hidden-svg");
+      dd1.classList.add("st767");
+      dd2.classList.add("st767");
+      dd3.classList.add("st767");
 
       if (r1) {
         Object.assign(s1.style, {
-          left: r1.left,
-          top: r1.top,
-          width: r1.width,
-          height: r1.height,
+          left: "41.2037%",
+          top: "19.6481%",
+          width: "5.67361%",
+          height: "46.6667%",
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s1);
       }
       if (r2) {
         Object.assign(s2.style, {
-          left: r2.left,
-          top: r2.top,
-          width: r2.width,
-          height: r2.height,
+          left: "64.0741%",
+          top: "19.6481%",
+          width: "5.67361%",
+          height: "46.6667%",
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s2);
@@ -481,61 +779,93 @@ function initWidget() {
         ],
       };
       const b = fbBoxes[sc];
+
       Object.assign(s1.style, {
-        left: b[0].l,
-        top: b[0].t,
-        width: b[0].w,
-        height: b[0].h,
+        left: "41.2037%",
+        top: "19.6481%",
+        width: "5.67361%",
+        height: "46.6667%",
         pointerEvents: "auto",
       });
       uiLayer.appendChild(s1);
+
+
       Object.assign(s2.style, {
-        left: b[1].l,
-        top: b[1].t,
-        width: b[1].w,
-        height: b[1].h,
+        left: "64.0741%",
+        top: "19.6481%",
+        width: "5.67361%",
+        height: "46.6667%",
         pointerEvents: "auto",
       });
       uiLayer.appendChild(s2);
+
     }
 
     // Show Answer logic
     const showAnsBtn = document.querySelectorAll('[id^="Show_Answer"]')[sc - 1];
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
-      showAnsBtn.onclick = () => {
+      showAnsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         // Find first fair trade values
         let f1 = 0, f2 = 0;
         if (sc === 1) { f1 = 2; f2 = 1; }
         else if (sc === 2) { f1 = 3; f2 = 1; }
         else if (sc === 3) { f1 = 4; f2 = 3; }
-        s1.value = f1;
-        s2.value = f2;
-      };
+        s1.setValue(f1);
+        s2.setValue(f2);
+      });
     }
 
     // Submit handler logic
-    const scSubmit =
-      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
     if (scSubmit) {
-      scSubmit.style.cursor = "pointer";
       scSubmit.onclick = () => {
-        let v1 = parseInt(s1.value);
-        let v2 = parseInt(s2.value);
+        let v1 = parseInt(s1.dataset.value);
+        let v2 = parseInt(s2.dataset.value);
         if (v1 * cfg.val1 === v2 * cfg.val2) {
           // Fair Trade
           showElements(`#act-02-sc${sc}-feedback-correct`);
           hideElements(`#act-02-sc${sc}-feedback-incorrect`);
-          showFeedbackPopup("It is a fair trade! The values are matching.", true);
-          showElements(`#act-02-sc${sc}-feedback-end`);
+          //  showFeedbackPopup("It is a fair trade! The values are matching.", true);
+          // showElements(`#act-02-sc${sc}-feedback-end`);
         } else {
           // Unfair
           showElements(`#act-02-sc${sc}-feedback-incorrect`);
           hideElements(`#act-02-sc${sc}-feedback-correct`);
-          showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
-          hideElements(`#act-02-sc${sc}-feedback-end`);
+          // showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
+          // hideElements(`#act-02-sc${sc}-feedback-end`);
         }
       };
+    }
+
+    // Feedback Continue button handlers
+    // "Continue" on incorrect feedback → close popup (try again)
+    const incorrectFeedback = document.getElementById(`act-02-sc${sc}-feedback-incorrect`);
+    if (incorrectFeedback) {
+      incorrectFeedback.style.cursor = "pointer";
+      incorrectFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-incorrect`);
+      });
+    }
+
+    // "Continue" on correct feedback → close popup
+    const correctFeedback = document.getElementById(`act-02-sc${sc}-feedback-correct`);
+    if (correctFeedback) {
+      correctFeedback.style.cursor = "pointer";
+      correctFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-correct`);
+        showElements(`#act-02-sc${sc}-feedback-end`);
+      });
+    }
+
+    // "Continue to Next Challenge" on feedback-end → go next
+    const endFeedback = document.getElementById(`act-02-sc${sc}-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.addEventListener("click", () => {
+        hideElements(`#act-02-sc${sc}-feedback-end`);
+        goNext();
+      });
     }
   }
 
@@ -586,22 +916,37 @@ function initWidget() {
             currentStep++;
             if (currentStep === sequence.length) {
               const msg = sc === 3 ? "Well Done! You achieved your goal by completing a 4-step trading." : "Well Done! You achieved your goal by completing a 3-step trading.";
-              showFeedbackPopup(msg, true);
+              //showFeedbackPopup(msg, true);
               showElements(`#act-03-sc${sc}-feedback-end`);
             } else {
-              showFeedbackPopup("Good job!", true);
+              //showFeedbackPopup("Good job!", true);
             }
           } else if (index > currentStep) {
             // Wrong step
-            showFeedbackPopup("Trade failed! Try again.", false);
+            // showFeedbackPopup("Trade failed! Try again.", false);
           }
         };
       }
     });
+    const endFeedback = document.getElementById(`act-03-sc${sc}-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.addEventListener("click", () => {
+        hideElements(`#act-03-sc${sc}-feedback-end`);
+        hideElements(`#act-03-sc${sc}-goal`);
+        for (let i = 1; i <= 4; i++) {
+          hideElements(`#act-03-sc${sc}-card${i}-selected`);
+        }
+        goNext();
+      });
+    }
   }
 
   // --- Screen 4 Logic ---
   function setupScreen4() {
+    const checkBoxIds = [
+      "Group_1679", "Group_1681", "Group_1682", "Group_1683", "Group_1684", "Group_1686", "Group_1685"
+    ];
     const defGroup = document.getElementById("act-04-checkbox-default");
     const selGroup = document.getElementById("act-04-checkbox-selected");
     if (!defGroup || !selGroup) return;
@@ -632,10 +977,11 @@ function initWidget() {
           if (corrects.includes(i)) {
             // Correct
             showFeedbackPopup("Correct!", true);
-            sels[i].classList.remove("hidden-svg");
+            // sels[i].classList.remove("hidden-svg");
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none"; // disable further clicks
             correctCount++;
+            document.getElementById(checkBoxIds[i]).classList.remove("st767");
             if (correctCount === corrects.length) {
               showFeedbackPopup("Well Done! You have learnt how trade used to happen without money, before its invention.", true);
               showElements("#act-04-feedback-end");
@@ -643,7 +989,8 @@ function initWidget() {
           } else {
             // Wrong
             showFeedbackPopup("Wrong!", false);
-            sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
+            document.getElementById(checkBoxIds[i]).classList.remove("st767");
+            // sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
             defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none";
           }
@@ -651,6 +998,43 @@ function initWidget() {
       }
     });
   }
+
+  // Add CSS for trader states and UI elements
+  const style = document.createElement("style");
+  style.textContent = `
+    .trader-selected {
+      filter: drop-shadow(0 0 8px #FFD700) !important;
+      opacity: 1 !important;
+    }
+
+    .trader-matched {
+      filter: drop-shadow(0 0 12px #00AA00) !important;
+      opacity: 0.85 !important;
+    }
+
+    .trade-counter {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: #333;
+      font-family: Arial, sans-serif;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    #feedback-popup-sc1 button:hover {
+      background: #7a0070 !important;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+  `;
+  document.head.appendChild(style);
 
   // Launch View
   updateView();
