@@ -66,12 +66,13 @@ let MAX_ITEM = 15;
 let itemPrice, currencyNote;
 
 let currentIndex = -1; // Start before the first item so the first call to updateItem starts at index 0
+let changeValue = 0;
 
 const startBtn = document.getElementById("startBtn");
 const startPage = document.getElementById("startPage");
 const gameScreen = document.getElementById("gameScreen");
-const nextBtn = document.getElementById("nextItemBtn");
-const nextBtn2 = document.getElementById("nextItemBtn2");
+// const nextBtn = document.getElementById("nextItemBtn");
+// const nextBtn2 = document.getElementById("nextItemBtn2");
 
 const itemImg = document.getElementById("itemImg");
 const continueBtn = document.getElementById('continueBtn');
@@ -81,6 +82,7 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const checkButton = document.getElementById('checkButton');
 const thinkAgain = document.getElementById('thinkAgain');
+const tryAgainBtn = document.getElementById('tryAgainBtn');
 
 const changePanel = document.getElementById('change-panel');
 const popupNoThanks = document.getElementById('popup-no-thank-you');
@@ -95,89 +97,14 @@ let currencyValue = document.getElementById('currencyValue');
 const notes = document.querySelectorAll(".note");
 
 const insufficintWarning = document.getElementById('warningImg');
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // // 1. Initial load: Call cycleNextItem once to display the first item
-    cycleNextItem();
-
-    // // 2. Attach the function to the 'Next Item' button click event
-    nextBtn.addEventListener('click', cycleNextItem);
-    nextBtn2.addEventListener('click', () => {
-        cycleNextItem();
-        changeScreen.style.display = 'none';
-        gameScreen.style.transform = "translateX(555px)";
-    })
-
-    startBtn.addEventListener("click", () => {
-        startPage.style.display = "none";
-        gameScreen.style.display = "block";
-    });
-    continueBtn.addEventListener('click', () => {
-        changeScreen.style.display = 'block';
-        gameScreen.style.transform = "translateX(0px)";
-        notes.forEach(element => {
-            element.style.cursor = 'auto';
-        });
-    });
-
-    yesBtn.addEventListener('click', () => {
-        changePanel.style.display = 'block';
-        noBtn.style.opacity = 0.3;
-        noBtn.style.cursor = 'auto';
-    });
-    noBtn.addEventListener('click', () => {
-        popupNoThanks.style.display = 'block';
-        noBtn.style.opacity = 0.3;
-        noBtn.style.cursor = 'auto';
-    });
-
-    thinkAgain.addEventListener('click', () => {
-        popupNoThanks.style.display = 'none';
-        noBtn.style.opacity = 1;
-        noBtn.style.cursor = 'pointer';
-    });
-
-
-    notes.forEach(note => {
-        note.addEventListener("click", function () {
-            currencyNote = this.dataset.value;
-            console.log(currencyNote);
-
-            currencyValue.textContent = currencyNote;
-            console.log(itemPrice);
-            checkValue();
-        });
-    });
-
-});
+const correctFeedback = document.getElementById('feedback-correct');
+const incorrectFeedback = document.getElementById('feedback-incorrect')
+const showAnswerBtn = document.getElementById('showAnswerBtn');
+const howToPlayBtn = document.getElementById('howToPlayBtn');
+const howToPlayMsg = document.getElementById('howToPlayMsg');
+const howToPlatCross = document.getElementById('howToPlayCross');
 
 let totalCurrency = 0;
-
-document.querySelectorAll(".change").forEach(note => {
-    note.addEventListener("click", function (e) {
-
-        const g = e.currentTarget;
-        const value = Number(g.dataset.value);
-
-        totalCurrency += value;
-
-        document.getElementById("totalValue").textContent = totalCurrency;
-    });
-});
-
-function checkValue() {
-    if (currencyNote < itemPrice) {
-        insufficintWarning.style.display = "block";
-        setTimeout(() => {
-            insufficintWarning.style.display = "none";
-        }, 2000);
-    } else {
-        insufficintWarning.style.display = "none";
-        continueBtn.style.opacity = 1;
-        continueBtn.style.cursor = 'pointer';
-    }
-}
 
 // // --- Constants ---
 const ANIMATION_PATH_BASE = 'assets/anim/'; // Adjust this path if necessary
@@ -264,36 +191,47 @@ function hideLottieAnimation() {
     }
 }
 
-// // --- NEW MAIN LOGIC FUNCTION ---
+function resetState() {
+    payment = [];
+    isCorrect = false;
+    currencyDisplayArea.innerHTML = " ";
 
-// /**
-//  * Main handler to load and play the 'success' or 'wrong' Lottie animation
-//  * based on the answer result.
-//  * @param {boolean} isCorrect - true if the answer is correct, false otherwise.
-//  */
-function handleAnswerResult(isCorrect) {
-    // 1. Determine which animation to load
-    const animationKey = isCorrect ? "emoji-happy" : "emoji-sad";
+    totalCurrency = 0;
+    changeValue = 0;
+    currencyNote = 0;
 
-    // 2. Load the initial state (Frame 0) of the chosen animation
-    loadInitialLottie(animationKey);
+    changeScreen.style.display = 'none';
+    gameScreen.style.transform = "translateX(555px)";
+    howToPlayMsg.style.display = 'none';
+    howToPlatCross.style.display = 'none';
 
-    // // 3. Play the animation once the data is ready
-    // if (currentLottieInstance) {
-    //     currentLottieInstance.addEventListener('data_ready', () => {
-    //         playLottieAnimation();
-    //     });
-    // }
+    const totalValElem = document.getElementById("totalValue");
+    if (totalValElem) totalValElem.textContent = totalCurrency;
+
+    const moneyWrapper = document.querySelector(".money-wrapper");
+    if (moneyWrapper) moneyWrapper.innerHTML = "";
+
+    if (checkButton) checkButton.disabled = false;
+
+    if (correctFeedback) correctFeedback.style.display = 'none';
+    if (incorrectFeedback) incorrectFeedback.style.display = 'none';
+    if (insufficintWarning) insufficintWarning.style.display = 'none';
+
+    const feedbackShowAnswer = document.getElementById('feedback-show-answer');
+    if (feedbackShowAnswer) feedbackShowAnswer.style.display = 'none';
+
+    if (typeof incorrectAnswer !== 'undefined' && incorrectAnswer) incorrectAnswer.style.display = 'none';
+    if (typeof correctAnswer !== 'undefined' && correctAnswer) correctAnswer.style.display = 'none';
+    if (typeof tryAgain !== 'undefined' && tryAgain) tryAgain.style.display = 'none';
+    if (typeof hideLottieAnimation === 'function') hideLottieAnimation();
 }
+
 // /**
 //  * Updates the image source and detail displays based on the current item index.
 //  * @param {number} index - The index of the item in ITEMS_DATA to display.
 //  */
 function updateItem(index) {
     if (index >= 0 && index < ITEMS_DATA.length) {
-        payment = [];
-        isCorrect = false;
-        currencyDisplayArea.innerHTML = " ";
         const item = ITEMS_DATA[index];
 
         // 1. Construct the full path
@@ -319,9 +257,6 @@ function updateItem(index) {
     // hideLottieAnimation();
 }
 
-// /**
-//  * Cycles to the next item in the ITEMS_DATA array.
-//  */
 function cycleNextItem() {
     // 1. Increment the index
     currentIndex++;
@@ -330,13 +265,6 @@ function cycleNextItem() {
     // If currentIndex is 50, and ITEMS_DATA.length is 50, (50 % 50) = 0
     if (currentIndex >= ITEMS_DATA.length) {
         currentIndex = 0;
-        payment = [];
-        isCorrect = false;
-        currencyDisplayArea.innerHTML = " ";
-        incorrectAnswer.style.display = 'none';
-        correctAnswer.style.display = 'none';
-        tryAgain.style.display = 'none';
-        hideLottieAnimation();
     }
 
     // 3. Call the update function with the new index
@@ -347,170 +275,172 @@ function cycleNextItem() {
 cycleNextItem();
 
 // // 2. Attach the function to the 'Next Item' button click event
-nextBtn.addEventListener('click', cycleNextItem);
-// checkButton.addEventListener('click', checkPayment);
-
-
-// // --- 2. Event Handler and Logic ---
-
-// // Get the parent element containing all your currency images
-// const imageSelector = document.getElementById('imageSelector');
-// currencyDisplayArea = document.getElementById('currencyDisplayArea');
-
-// /**
-//  * Extracts the numerical value from the image ID and inserts the new piece.
-//  * @param {Event} event - The click event object.
-//  */
-// function handleImageClick(event) {
-//     const valueString = event.target.dataset.value;
-
-//     if (valueString) {
-//         const value = parseInt(valueString, 10);
-//         console.log(value);
-
-//         // // Check if the click target is one of the currency images (by checking the ID format)
-//         // if (targetId && (targetId.startsWith('note_') || targetId.startsWith('coin_'))) {
-//         //     // Extract the numerical value from the ID (e.g., 'note_500' -> '500')
-//         //     const parts = targetId.split('_');
-//         //     const valueString = parts[parts.length - 1];
-
-//         //     // Handle the special case for coin_10/coin_20 if needed, otherwise it's just the number
-//         //     const value = parseInt(valueString, 10);
-
-//         if (!isNaN(value)) {
-//             addCurrency(value);
-//             if (currencyDisplayArea.children.length >= MAX_ITEM) {
-//                 return;
-//             }
-//             // Generate the HTML for the new currency piece
-//             newPieceHTML = createCurrencyPieceHTML(value);
-
-//             // Insert the new HTML into the display area
-//             currencyDisplayArea.insertAdjacentHTML('beforeend', newPieceHTML);
-//             resetAfterCurrencyChange();
-//             correctAnswer.style.display = 'none';
-//             incorrectAnswer.style.display = 'none';
-//             tryAgain.style.display = 'none';
-//             text.style.display = 'block';
-//             checkButton.disabled = false;
-//             isCorrect = false;
-//             hideLottieAnimation();
-//         }
-//     }
-// }
-
-// // --- 3. Attach Event Listener to the Container ---
-
-// // Attach a single event listener to the parent element for better performance (Event Delegation)
-// if (imageSelector) {
-//     imageSelector.addEventListener('click', handleImageClick);
-// }
-
-// // --- Optional: Add functionality to remove pieces (for completeness) ---
-// currencyDisplayArea.addEventListener('click', function (event) {
-//     if (event.target.classList.contains('remove-btn')) {
-//         // Find the parent currency-piece div and remove it
-//         const currencyPiece = event.target.closest('.currency-piece');
-//         if (currencyPiece) {
-//             // 1. Get the data-value attribute as a string
-//             const valueString = currencyPiece.dataset.value;
-
-//             // 2. Convert the string to an integer
-//             const valueToRemove = parseInt(valueString, 10);
-//             removeCurrency(valueToRemove);
-//             resetAfterCurrencyChange();
-//             currencyPiece.remove();
-//         }
-//     }
-// });
+//nextBtn.addEventListener('click', cycleNextItem);
+checkButton.addEventListener('click', checkPayment);
+tryAgainBtn.addEventListener('click', () => {
+    incorrectFeedback.style.display = 'none';
+});
 
 // /**
 //  * Calculates the total value of the currency in the payment array.
 //  */
-// function getTotalPayment() {
-//     return payment.reduce((sum, value) => sum + value, 0);
-// }
-
-
-// /**
-//  * Adds a currency piece to the payment array.
-//  */
-// function addCurrency(value) {
-//     if (isCorrect) return;
-//     payment.push(value);
-// }
-
-// /**
-//  * Removes the FIRST occurrence of a specific currency value from the payment array.
-//  * @param {number} value - The currency value (e.g., 500, 10) to remove.
-//  */
-// function removeCurrency(value) {
-//     // 1. Find the index of the first occurrence of the value
-//     const indexToRemove = payment.indexOf(value);
-
-//     // 2. Check if the value was found (indexOf returns -1 if not found)
-//     if (indexToRemove !== -1) {
-//         // 3. Remove 1 element at the found index
-//         payment.splice(indexToRemove, 1);
-//     } else {
-//         console.warn(`Attempted to remove value ${value}, but it was not found in the payment array.`);
-//     }
-// }
+function getTotalPayment() {
+    return totalCurrency.reduce((sum, value) => sum + value, 0);
+}
 
 // /**
 //  * Handles the 'Check' button action.
 //  */
-// function checkPayment() {
-//     const currentItem = ITEMS_DATA[currentIndex];
-//     const total = getTotalPayment();
-//     const price = currentItem.price;
-//     console.log(total, price, currentItem);
-//     if (total === 0) {
-//         let message = "Please add some currency first.";
-//         console.log(message);
-//         return;
-//     }
+function checkPayment() {
+    const currentItem = ITEMS_DATA[currentIndex];
+    const total = totalCurrency;
+    const price = currentItem.price;
+    console.log(total, price, changeValue);
 
-//     if (total === price) {
-//         correctAnswer.style.display = 'block';
-//         text.style.display = 'none';
-//         checkButton.disabled = true;
-//         let message = "✅ Well done! Correct payment.";
-//         isCorrect = true;
-//         console.log(message);
-//     } else if (total > price) {
-//         incorrectAnswer.style.display = 'block';
-//         tryAgain.style.display = 'block';
-//         text.style.display = 'none';
-//         let message = `❌ Payment is too high! You need ₹${price}. You paid ₹${total}.`;
-//         isCorrect = false;
-//         console.log(message);
+    if (total === changeValue) {
+        correctFeedback.style.display = 'block';
+        checkButton.disabled = true;
+        let message = "✅ Well done! Correct payment.";
+        isCorrect = true;
+    } else if (total > price < total) {
+        incorrectFeedback.style.display = 'block';
 
-//     } else { // total < price
-//         incorrectAnswer.style.display = 'block';
-//         tryAgain.style.display = 'block';
-//         text.style.display = 'none';
-//         let message = `❌ Payment is too low! You need ₹${price}. You only paid ₹${total}.`;
-//         isCorrect = false;
-//         console.log(message);
-//     }
-//     handleAnswerResult(isCorrect);
-// }
+    } else { // total < price
+        incorrectAnswer.style.display = 'block';
+        tryAgain.style.display = 'block';
+        text.style.display = 'none';
+        let message = `❌ Payment is too low! You need ₹${price}. You only paid ₹${total}.`;
+        isCorrect = false;
+        console.log(message);
+    }
+    handleAnswerResult(isCorrect);
+}
 
 
-// function resetAfterCurrencyChange() {
-//     isCorrect = false;           // reset evaluation state
-//     correctAnswer.style.display = 'none';
-//     incorrectAnswer.style.display = 'none';
-//     tryAgain.style.display = 'none';
-//     text.style.display = 'block';
-//     checkButton.disabled = false;
-//     hideLottieAnimation();
-// }
+function showAnswer() {
+    document.getElementById('currencyPaid').textContent = currencyNote;
+    document.getElementById('currencyRecieve').textContent = itemPrice;
+    let finalValue = currencyNote - itemPrice;
+    document.getElementById('changePaid').textContent = finalValue;
+    document.getElementById('finalChange').textContent = finalValue
+}
+
+showAnswerBtn.addEventListener('click', () => {
+    document.getElementById('feedback-show-answer').style.display = 'block';
+    showAnswer();
+});
+
+document.querySelectorAll(".change").forEach(note => {
+    note.addEventListener("click", function (e) {
+
+        const g = e.currentTarget;
+        const value = Number(g.dataset.value);
+
+        totalCurrency += value;
+
+        document.getElementById("totalValue").textContent = totalCurrency;
+
+        const moneyWrapper = document.querySelector(".money-wrapper");
+        if (moneyWrapper) {
+            const li = document.createElement("li");
+
+            const valueSpan = document.createElement("span");
+            valueSpan.textContent = value;
+            li.appendChild(valueSpan);
+
+            const closeMark = document.createElement("span");
+            closeMark.className = "close-mark";
+
+            closeMark.addEventListener("click", function (event) {
+                event.stopPropagation();
+                li.remove();
+                totalCurrency -= value;
+                document.getElementById("totalValue").textContent = totalCurrency;
+            });
+
+            li.appendChild(closeMark);
+            moneyWrapper.appendChild(li);
+        }
+    });
+});
+
+function checkValue() {
+    if (currencyNote < itemPrice) {
+        insufficintWarning.style.display = "block";
+        setTimeout(() => {
+            insufficintWarning.style.display = "none";
+        }, 2000);
+    } else {
+        insufficintWarning.style.display = "none";
+        continueBtn.style.opacity = 1;
+        continueBtn.style.cursor = 'pointer';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // // 1. Initial load: Call cycleNextItem once to display the first item
+    cycleNextItem();
+
+    document.querySelectorAll('.nextItemBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            cycleNextItem();
+            resetState();
+            changeScreen.style.display = 'none';
+            gameScreen.style.transform = "translateX(555px)";
+        });
+    });
+
+    startBtn.addEventListener("click", () => {
+        startPage.style.display = "none";
+        gameScreen.style.display = "block";
+    });
+    continueBtn.addEventListener('click', () => {
+        changeScreen.style.display = 'block';
+        gameScreen.style.transform = "translateX(0px)";
+        notes.forEach(element => {
+            element.style.cursor = 'auto';
+        });
+    });
+
+    yesBtn.addEventListener('click', () => {
+        changePanel.style.display = 'block';
+        noBtn.style.opacity = 0.3;
+        noBtn.style.cursor = 'auto';
+    });
+    noBtn.addEventListener('click', () => {
+        popupNoThanks.style.display = 'block';
+        noBtn.style.opacity = 0.3;
+        noBtn.style.cursor = 'auto';
+    });
+
+    thinkAgain.addEventListener('click', () => {
+        popupNoThanks.style.display = 'none';
+        noBtn.style.opacity = 1;
+        noBtn.style.cursor = 'pointer';
+    });
 
 
+    notes.forEach(note => {
+        note.addEventListener("click", function () {
+            currencyNote = this.dataset.value;
+            console.log(currencyNote);
 
+            currencyValue.textContent = currencyNote;
+            console.log(itemPrice);
+            changeValue = currencyNote - itemPrice;
+            checkValue();
+        });
+    });
 
+    howToPlayBtn.addEventListener('click', () => {
+        howToPlayMsg.style.display = 'block';
+        howToPlatCross.style.display = 'block';
+    });
 
+    howToPlatCross.addEventListener('click', () => {
+        howToPlayMsg.style.display = 'none';
+        howToPlatCross.style.display = 'none';
+    });
 
-
+});

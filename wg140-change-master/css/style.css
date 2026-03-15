@@ -402,7 +402,6 @@ svg * {
 }
 
 .money-wrapper {
-  border: 1px solid green;
   margin: 0;
   padding: 30px 20px !important;
   display: flex;
@@ -420,6 +419,9 @@ svg * {
   border: 3px dotted #000;
   border-radius: 10px;
   position: relative;
+  height: fit-content;
+  min-width: 50px;
+  text-align: center;
 }
 
 .close-mark {
