@@ -17,16 +17,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const museums = {
         '01': { bg: '_01-museum-archaeological-bg', objContainer: '_01-museum-btn-object', prefix: '_01-museum-' },
-        '02': { bg: '_02-museum-literany-bg', objContainer: '_02-museum-btn-object', prefix: '_02-museum-' },
+        '02': { bg: '_02-museum-literary-bg', objContainer: '_02-museum-btn-object', prefix: '_02-museum-' },
         '03': { bg: '_03-museum-artistic-bg', objContainer: '_03-museum-btn-object', prefix: '_03-museum-' },
         '04': { bg: '_04-museum-oral-bg', objContainer: '_04-museum-btn-object', prefix: '_04-museum-' }
     };
 
-    const correctAnswers = {
-        '01': '_01-museum-3',
-        '02': '_02-museum-1',
-        '03': '_03-museum-5',
-        '04': '_04-museum-2'
+    // New Configuration for Multiple Questions & Clues
+   const galleryData = {
+        '01': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An artefact that was used by merchants to identify their goods in ancient trade", 
+                    clue: "Ancient traders pressed this tiny stone object into wet clay as a signature. It bears mysterious symbols and writing that no scholar has yet been able to decode.",
+                    correctId: "_01-museum-1" 
+                },
+                { 
+                    question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power", 
+                    clue: "This precious metal from India’s ‘Golden Age’ depicts the warrior-king holding his weapon with near-perfect craftsmanship",
+                    correctId: "_01-museum-2" 
+                }
+            ]
+        },
+        '02': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An ancient text that provides detailed instructions on governance and economics", 
+                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling—from collecting taxes to sending secret agents to gather information.",
+                    correctId: "_02-museum-1" 
+                },
+                { 
+                    question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador", 
+                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size—his book vanished, but later writers copied his incredible stories!",
+                    correctId: "_02-museum-2" 
+                }
+            ]
+        },
+        '03': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
+                    clue: "This Chola bronze masterpiece is famous for high level of art and metalworking skill in medieval South India",
+                    correctId: "_03-museum-1" 
+                },
+                { 
+                    question: "A prehistoric artwork showing the earliest evidence of human creativity in India", 
+                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants—it shows how prehistoric humans lived!",
+                    correctId: "_03-museum-2" 
+                }
+            ]
+        },
+        '04': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down", 
+                    clue: "These Tamil verses were performed at royal gatherings where poets competed—their amazing memories kept the poems alive across many generations!",
+                    correctId: "_04-museum-1" 
+                },
+                { 
+                    question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement", 
+                    clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—saints like Tukaram created them so common people could express their devotion",
+                    correctId: "_04-museum-2" 
+                }
+            ]
+        }
     };
 
     // ==========================================
@@ -39,6 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ui = {
         feedbackEnd: el('feedback-drag-drop-end'),
         popupClue: el('popup-clue'),
+        popupCLueText: el('clue-text-content'),
+        questionText: el('question-text'),
         btnClue: el('btn-clue'), 
         btnCloseClue: el('btn-close-popup-clue'),
         btnChangeGallery: el('btn-change-gallery'),
@@ -173,13 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         activeDragEl = dragEl;
                         
-                        // Capture initial SVG coordinates to fix drift
                         const p = svg.createSVGPoint();
                         p.x = e.clientX;
                         p.y = e.clientY;
                         startSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
                         
-                        // Consolidate current transform into a matrix
                         initialMatrix = dragEl.transform.baseVal.consolidate()?.matrix || svg.createSVGMatrix();
 
                         dragEl.style.cursor = 'grabbing';
@@ -199,9 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
 
             const dx = currentSVGPoint.x - startSVGPoint.x;
-            const dy = (currentSVGPoint.y - startSVGPoint.y) + 75; // Applied +75 offset
+            const dy = (currentSVGPoint.y - startSVGPoint.y) + 75; 
 
-            // Apply movement to the clean initial matrix (No creeping)
             const newMatrix = initialMatrix.translate(dx, dy);
             activeDragEl.setAttribute('transform', `matrix(${newMatrix.a},${newMatrix.b},${newMatrix.c},${newMatrix.d},${newMatrix.e},${newMatrix.f})`);
         });
@@ -216,12 +272,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let dropZone = el(dropZoneId);
 
             if (dropZone && isColliding(activeDragEl, dropZone)) {
-                // MOVE TO CORRECT CONTAINER
                 if (correctContainer) {
                     correctContainer.appendChild(activeDragEl);
                 }
 
-                // Snap and Scale (Correct math for global coordinates)
                 snapAndScaleToZone(activeDragEl, dropZone);
 
                 activeDragEl.dataset.dropped = "true";
@@ -235,7 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             ui.btnNextSet.style.opacity = '1';
                         }
                     } else {
-                        // LAST SET COMPLETED
                         if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
                         if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
                         if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
@@ -246,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             } else {
-                // Revert to original matrix
                 activeDragEl.setAttribute('transform', `matrix(${initialMatrix.a},${initialMatrix.b},${initialMatrix.c},${initialMatrix.d},${initialMatrix.e},${initialMatrix.f})`);
             }
 
@@ -269,7 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const scale = Math.min(zoneBox.width / dragBox.width, zoneBox.height / dragBox.height); 
         
-        // Calculate translation for centering inside global group
         const tx = (zoneBox.x + zoneBox.width / 2) - (dragBox.x + dragBox.width / 2) * scale;
         const ty = (zoneBox.y + zoneBox.height / 2) - (dragBox.y + dragBox.height / 2) * scale  + 75;
         
@@ -277,8 +328,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 6. GALLERY & MUSEUM SELECTION LOGIC
+    // 6. GALLERY, MULTI-QUESTION & MUSEUM SELECTION LOGIC
     // ==========================================
+    
+    function updateClueUI(galleryKey) {
+        const currentData = galleryData[galleryKey];
+        const activeData = currentData.questions[currentData.currentQuestionIndex];
+
+        if (ui.questionText) {
+            ui.questionText.innerHTML = activeData.question;
+        }
+
+        const clueTextEl = ui.popupCLueText;
+        if (clueTextEl) {
+            clueTextEl.innerHTML = activeData.clue;
+        }
+    }
+
     window.selectMuseumGallery = function(galleryKey) { 
         if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
         if (ui.btnClue) ui.btnClue.style.display = 'block';
@@ -297,6 +363,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el(selected.objContainer)) el(selected.objContainer).style.display = 'block';
             if (ui.questionPanel) ui.questionPanel.style.display = 'block';
 
+            galleryData[galleryKey].currentQuestionIndex = 0;
+            updateClueUI(galleryKey);
+
             setupMuseumInteraction(galleryKey);
         }
     };
@@ -314,21 +383,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleMuseumObjectClick(clickedElement, galleryKey) {
-        ui.correctMark.style.display = 'none';
-        ui.incorrectMark.style.display = 'none';
+        // First hide any active marks
+        if (ui.correctMark) ui.correctMark.style.display = 'none';
+        if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
 
-        const isCorrect = (clickedElement.id === correctAnswers[galleryKey]);
+        const currentData = galleryData[galleryKey];
+        const activeQuestion = currentData.questions[currentData.currentQuestionIndex];
+
+        const isCorrect = (clickedElement.id === activeQuestion.correctId);
         const markToShow = isCorrect ? ui.correctMark : ui.incorrectMark;
 
         if (markToShow) {
-            const targetRect = clickedElement.getBoundingClientRect();
+            // Display the mark block before getting bounding box (Firefox workaround)
             markToShow.style.display = 'block';
-            markToShow.style.position = 'fixed';
-            markToShow.style.left = `${targetRect.left + (targetRect.width / 2)}px`;
-            markToShow.style.top = `${targetRect.top}px`;
-            markToShow.style.transform = 'translate(-50%, -50%)'; 
+
+            // Get local coordinate system boundaries to calculate the transform properly 
+            const targetBBox = clickedElement.getBBox();
+            const markBBox = markToShow.getBBox();
+
+            // Find center points 
+            const targetCenterX = targetBBox.x + (targetBBox.width / 2);
+            const targetCenterY = targetBBox.y + (targetBBox.height / 2);
+            
+            const markCenterX = markBBox.x + (markBBox.width / 2);
+            const markCenterY = markBBox.y + (markBBox.height / 2);
+
+            // Calculate translation offsets to place mark perfectly in the center
+            const tx = targetCenterX - markCenterX;
+            const ty = targetCenterY - markCenterY - 80;
+
+            // Apply SVG transform
+            markToShow.setAttribute('transform', `translate(${tx}, ${ty})`);
+        }
+
+        // Handle progression or retry after selection
+        if (isCorrect) {
+            setTimeout(() => {
+                if (ui.correctMark) ui.correctMark.style.display = 'none'; 
+                
+                if (currentData.currentQuestionIndex < currentData.questions.length - 1) {
+                    currentData.currentQuestionIndex++;
+                    updateClueUI(galleryKey);
+                } else {
+                    console.log("Gallery Complete!");
+                }
+            }, 1500); 
+        } else {
+            // Also fade incorrect mark so the user can try again easily
+            setTimeout(() => {
+                if (ui.incorrectMark) ui.incorrectMark.style.display = 'none'; 
+            }, 1500);
         }
     }
+
+    window.bypassPhase1 = () => {
+        isActivityComplete = true;
+        for (let i = 1; i <= TOTAL_SETS; i++) {
+            if (el(dragSets[i].base)) el(dragSets[i].base).style.display = 'none';
+            if (el(dragSets[i].btnBox)) el(dragSets[i].btnBox).style.display = 'none';
+        }
+        if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
+        if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
+        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artifacts.";
+        if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+        console.log("Phase 1 bypassed. Galleries are now selectable.");
+    };
 
     init();
 });
