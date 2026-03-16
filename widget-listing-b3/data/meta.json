@@ -129,7 +129,7 @@
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
-      "updatedAt": "2026-03-16T16:01:55+05:30",
+      "updatedAt": "2026-03-16T16:22:26+05:30",
       "author": "Shyam"
     },
     "wg136-compound-words-adventure": {
@@ -375,6 +375,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-16T16:22:26+05:30",
+      "author": "Shyam",
+      "message": "removed unnecessary files",
+      "widgets": [
+        135
+      ]
+    },
+    {
       "date": "2026-03-16T16:01:55+05:30",
       "author": "Shyam",
       "message": "completed the file",
@@ -610,14 +618,6 @@
       "message": "feat: Add an interactive crop map for India displaying crop data and facts for various crops.",
       "widgets": [
         151
-      ]
-    },
-    {
-      "date": "2026-03-12T17:58:03+05:30",
-      "author": "aditya",
-      "message": "138 and 137",
-      "widgets": [
-        110
       ]
     }
   ]
