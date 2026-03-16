@@ -213,7 +213,6 @@ class Wg121 {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        z-index: 100;
       }
 
       /* Feedback toast */
@@ -231,7 +230,7 @@ class Wg121 {
         pointer-events: none;
         opacity: 0;
         transition: opacity 0.25s;
-        z-index: 120;
+        z-index: 10;
         text-align: center;
         max-width: 600px;
         width: max-content;
@@ -309,6 +308,8 @@ class Wg121 {
 
         const overlay = document.createElement('div');
         overlay.className = 'poc-overlay';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
 
         // ── Feedback toast ──────────────────────────────────────
         const feedback = document.createElement('div');
@@ -316,14 +317,22 @@ class Wg121 {
         feedback.id = 'poc-feedback';
         overlay.appendChild(feedback);
 
-        svgContainerEl.appendChild(overlay);
+        // Hide the SVG modals by default; they are revealed on button click.
+        const { solutionModal, insightsModal, svgContainer } = this.state.cache;
+
+        // Put the HTML overlay into an SVG foreignObject so it respects SVG layering
+        const ns = 'http://www.w3.org/2000/svg';
+        const fo = document.createElementNS(ns, 'foreignObject');
+        fo.setAttribute('width', '1920');
+        fo.setAttribute('height', '1080');
+        fo.setAttribute('pointer-events', 'none');
+        fo.appendChild(overlay);
+        svgContainer.appendChild(fo);
 
         // Store overlay references
         this.state.cache.overlay = overlay;
         this.state.cache.feedback = feedback;
 
-        // Hide the SVG modals by default; they are revealed on button click.
-        const { solutionModal, insightsModal, svgContainer } = this.state.cache;
         if (solutionModal) solutionModal.style.display = 'none';
         if (insightsModal) insightsModal.style.display = 'none';
 
@@ -918,8 +927,15 @@ class Wg121 {
     // ----------------------------------------------------------
     _openModal(modalEl) {
         if (!modalEl) return;
-        const { backdrop } = this.state.cache;
-        if (backdrop) backdrop.style.display = '';   // show dim backdrop
+        const { backdrop, svgContainer } = this.state.cache;
+
+        // Ensure the modal is at the very end of the SVG to be on top of everything (including feedback)
+        svgContainer.appendChild(modalEl);
+
+        if (backdrop) {
+            svgContainer.insertBefore(backdrop, modalEl); // backdrop behind modal
+            backdrop.style.display = '';
+        }
         modalEl.style.display = '';                  // show modal
         this.state.isLocked = true;
         this.state.activeModal = modalEl;

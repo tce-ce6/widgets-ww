@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-14T15:29:31+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -73,7 +73,7 @@
       "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-14T15:50:58+05:30",
       "author": "PrasannaP"
     },
     "wg122-suffix-magic": {
@@ -93,8 +93,8 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-05T12:00:47+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
       "updatedAt": "2026-03-09T19:48:15+05:30",
@@ -208,8 +208,8 @@
       "updatedAt": "2026-02-27T13:19:23+05:30",
       "author": "Shyam"
     },
-    "wg26-word-discovery": {
-      "updatedAt": "2026-02-23T20:35:45+05:30",
+    "wg26-word-discovery-adventure": {
+      "updatedAt": "2026-03-15T13:36:28+05:30",
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
@@ -221,11 +221,11 @@
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-03-12T14:01:09+05:30",
+      "updatedAt": "2026-03-14T13:36:44+05:30",
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
-      "updatedAt": "2026-03-11T16:07:28+05:30",
+      "updatedAt": "2026-03-14T13:36:44+05:30",
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
@@ -247,6 +247,10 @@
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-04T12:33:05+05:30",
       "author": "Santosh Vishwakarma"
+    },
+    "wg68-reflection-of-a-point": {
+      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
       "updatedAt": "2026-03-04T12:33:05+05:30",
@@ -353,11 +357,11 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-02-23T14:51:41+05:30",
+      "updatedAt": "2026-03-15T13:36:28+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-14T14:08:05+05:30",
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
@@ -370,6 +374,75 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-15T13:36:28+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: Add new assets and core files for `wg26-word-discovery-adventure`, `wg126-dominos-of-rebellion`, and `wg96-operation-domino` widgets.",
+      "widgets": [
+        26,
+        68,
+        96,
+        126
+      ]
+    },
+    {
+      "date": "2026-03-14T15:50:58+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: Embed HTML overlay in SVG foreignObject and refine modal/backdrop layering for correct display.",
+      "widgets": [
+        121
+      ]
+    },
+    {
+      "date": "2026-03-14T15:29:31+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reorder micropipette SVG elements after the tube base.",
+      "widgets": [
+        112
+      ]
+    },
+    {
+      "date": "2026-03-14T15:15:52+05:30",
+      "author": "PrasannaP",
+      "message": "Refactor SVG text elements and rename answer port group IDs in `index.html`, update wireframe comments for clarity, and bump the version.",
+      "widgets": [
+        112
+      ]
+    },
+    {
+      "date": "2026-03-14T14:08:05+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add a semi-transparent overlay for the insight popup and update the widget version.",
+      "widgets": [
+        97
+      ]
+    },
+    {
+      "date": "2026-03-14T13:36:44+05:30",
+      "author": "PrasannaP",
+      "message": "chore: Update version IDs in Mendels Monohybrid and Dihybrid Cross widgets.",
+      "widgets": [
+        47,
+        48
+      ]
+    },
+    {
+      "date": "2026-03-14T13:35:18+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement ghost images for draggable elements during drag operations and remove them on reset.",
+      "widgets": [
+        47,
+        48
+      ]
+    },
+    {
+      "date": "2026-03-14T13:27:58+05:30",
+      "author": "PrasannaP",
+      "message": "Refactor trait selection style resets, update Punnett square toggle text and button visibility, and correct initial genotype displays and cross labels.",
+      "widgets": [
+        47
+      ]
+    },
     {
       "date": "2026-03-13T19:19:52+05:30",
       "author": "tce-nitinc",
@@ -545,71 +618,6 @@
       "message": "png path changed",
       "widgets": [
         120
-      ]
-    },
-    {
-      "date": "2026-03-11T16:48:56+05:30",
-      "author": "Shyam",
-      "message": "check for deploy issue",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T16:45:29+05:30",
-      "author": "Shyam",
-      "message": "deploy fix check",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T16:07:28+05:30",
-      "author": "PrasannaP",
-      "message": "chore: Update version strings in Mendels Monohybrid and Dihybrid Cross widgets.",
-      "widgets": [
-        47,
-        48
-      ]
-    },
-    {
-      "date": "2026-03-11T16:05:18+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update Punnett content selector to correctly identify varying group IDs across cards.",
-      "widgets": [
-        47
-      ]
-    },
-    {
-      "date": "2026-03-11T15:54:14+05:30",
-      "author": "Shyam",
-      "message": "Version update",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T15:49:25+05:30",
-      "author": "aditya",
-      "message": "Update index.html",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T15:47:10+05:30",
-      "author": "Shyam",
-      "message": "wg120 fixes completed",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-11T15:46:25+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: Update button references to their parent groups and add dynamic visibility for drop zone instruction texts.",
-      "widgets": [
-        48
       ]
     }
   ]

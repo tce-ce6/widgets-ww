@@ -129,6 +129,33 @@ function resetUI() {
         showElement(extraGrp);
         extraGrp.classList.remove('st415');
     }
+
+    resetTraitSelectionStyles();
+}
+
+function resetTraitSelectionStyles() {
+    UI.traitGroups.forEach(groupEl => {
+        if (!groupEl) return;
+
+        // Reset base backdrop
+        const baseBox = groupEl.querySelector('rect[id^="box_x5F_base"]');
+        if (baseBox) {
+            baseBox.style.fill = '';
+            baseBox.style.stroke = '';
+            baseBox.style.strokeWidth = '';
+        }
+
+        // Reset inner card elements dynamically
+        const innerGroups = Array.from(groupEl.querySelectorAll('g[id^="box_x5F_"]'));
+        innerGroups.forEach(box => {
+            const rects = box.querySelectorAll('rect');
+            if (rects.length >= 2) {
+                rects[0].style.fill = '';
+                rects[1].style.stroke = '';
+                rects[1].style.strokeWidth = '';
+            }
+        });
+    });
 }
 
 function setupEventListeners() {
@@ -182,29 +209,7 @@ function selectTrait(index, element) {
         hideElement(UI.traitSelectionHighlight);
     }
 
-    // Reset styles for all trait groups
-    UI.traitGroups.forEach(groupEl => {
-        if (!groupEl) return;
-
-        // Reset base backdrop
-        const baseBox = groupEl.querySelector('rect[id^="box_x5F_base"]');
-        if (baseBox) {
-            baseBox.style.fill = '';
-            baseBox.style.stroke = '';
-            baseBox.style.strokeWidth = '';
-        }
-
-        // Reset inner card elements dynamically
-        const innerGroups = Array.from(groupEl.querySelectorAll('g[id^="box_x5F_"]'));
-        innerGroups.forEach(box => {
-            const rects = box.querySelectorAll('rect');
-            if (rects.length >= 2) {
-                rects[0].style.fill = '';
-                rects[1].style.stroke = '';
-                rects[1].style.strokeWidth = '';
-            }
-        });
-    });
+    resetTraitSelectionStyles();
 
     // Apply the active state highlight visually to the selected SVG DOM structures
     if (element) {
@@ -342,7 +347,7 @@ function goToStage4() {
 function updatePunnettVisibility() {
     if (!UI.tspanPunnett) return;
 
-    UI.tspanPunnett.textContent = WidgetState.punnettVisible ? 'Hide Values' : 'Show Values';
+    UI.tspanPunnett.textContent = WidgetState.punnettVisible ? 'Hide Genotypes' : 'Show Genotypes';
 
     // Find current active Stage 4 card
     const card = document.getElementById(`Stage4-_Card_${WidgetState.selectedTraitIndex + 1}`);
@@ -383,6 +388,10 @@ function resetSimulation() {
         elem.style.pointerEvents = 'auto';
     });
     WidgetState.originalTransforms.clear();
+
+    // Remove ghost images
+    document.querySelectorAll('.ghost-image').forEach(el => el.remove());
+    document.querySelectorAll('[data-has-ghost]').forEach(el => delete el.dataset.hasGhost);
 }
 
 /**
@@ -450,6 +459,36 @@ function setupDragAndDrop() {
     UI.svg.addEventListener('pointerleave', endDrag);
 }
 
+function createGhost(element) {
+    if (element.dataset.hasGhost) return;
+
+    const ghost = element.cloneNode(true);
+    // Recursively remove IDs from ghost and its children
+    const removeIds = (el) => {
+        if (el.removeAttribute) el.removeAttribute('id');
+        if (el.children) {
+            Array.from(el.children).forEach(removeIds);
+        }
+    };
+    removeIds(ghost);
+
+    ghost.classList.add('ghost-image');
+    ghost.style.opacity = '0.3';
+    ghost.style.pointerEvents = 'none';
+    if (ghost.dataset) delete ghost.dataset.dragType;
+
+    // Reset transform on ghost to ensure it stays at original spot
+    if (ghost.hasAttribute('transform')) {
+        ghost.removeAttribute('transform');
+    }
+    if (ghost.transform && ghost.transform.baseVal) {
+        ghost.transform.baseVal.clear();
+    }
+
+    element.parentNode.insertBefore(ghost, element);
+    element.dataset.hasGhost = 'true';
+}
+
 function getMousePosition(evt) {
     const CTM = UI.svg.getScreenCTM();
     return {
@@ -485,6 +524,8 @@ function startDrag(evt) {
             target.dataset.side = cx < (window.innerWidth / 2) ? 'left' : 'right';
         }
     }
+
+    createGhost(target);
 
     activeDrag = target;
     activeDrag.style.cursor = 'grabbing';
