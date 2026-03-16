@@ -65,7 +65,7 @@
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-03-13T15:19:01+05:30",
+      "updatedAt": "2026-03-15T18:55:51+05:30",
       "author": "sushantthe"
     },
     "wg120-area-of-different-shapes": {
@@ -125,7 +125,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-13T15:30:07+05:30",
+      "updatedAt": "2026-03-14T22:56:15+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -375,6 +375,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-15T18:55:51+05:30",
+      "author": "sushantthe",
+      "message": "feat: Introduce the new CropMap India widget and add a script for the election officer.",
+      "widgets": [
+        119
+      ]
+    },
+    {
       "date": "2026-03-15T13:36:28+05:30",
       "author": "tce-nitinc",
       "message": "feat: Add new assets and core files for `wg26-word-discovery-adventure`, `wg126-dominos-of-rebellion`, and `wg96-operation-domino` widgets.",
@@ -383,6 +391,30 @@
         68,
         96,
         126
+      ]
+    },
+    {
+      "date": "2026-03-14T22:56:15+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg134 done",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-14T21:55:17+05:30",
+      "author": "sushantkanaujiya",
+      "message": "done",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-14T18:27:39+05:30",
+      "author": "sushantkanaujiya",
+      "message": "feat: Implement the Barter Bazaar widget with its HTML structure, styling, and JavaScript.",
+      "widgets": [
+        134
       ]
     },
     {
@@ -441,6 +473,14 @@
       "message": "Refactor trait selection style resets, update Punnett square toggle text and button visibility, and correct initial genotype displays and cross labels.",
       "widgets": [
         47
+      ]
+    },
+    {
+      "date": "2026-03-14T11:28:26+05:30",
+      "author": "sushantkanaujiya",
+      "message": "feat: Implement the new 'Barter Bazaar' interactive widget including its HTML structure, styling, and JavaScript logic.",
+      "widgets": [
+        134
       ]
     },
     {
@@ -578,46 +618,6 @@
       "message": "wg 155 changes",
       "widgets": [
         155
-      ]
-    },
-    {
-      "date": "2026-03-11T19:58:39+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Please provide the code changes (diff) to generate a commit message.",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-11T18:48:13+05:30",
-      "author": "Shyam",
-      "message": "wg145 fixed",
-      "widgets": [
-        145
-      ]
-    },
-    {
-      "date": "2026-03-11T18:42:33+05:30",
-      "author": "aditya",
-      "message": "wg 110",
-      "widgets": [
-        110
-      ]
-    },
-    {
-      "date": "2026-03-11T18:15:19+05:30",
-      "author": "Shyam",
-      "message": "review sheet fixes on bargraph",
-      "widgets": [
-        53
-      ]
-    },
-    {
-      "date": "2026-03-11T17:02:10+05:30",
-      "author": "Shyam",
-      "message": "png path changed",
-      "widgets": [
-        120
       ]
     }
   ]
