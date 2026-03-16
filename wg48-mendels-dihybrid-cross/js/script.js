@@ -535,6 +535,37 @@ function goToStage6() {
     show(UI.resetAllGroup);
 }
 
+/**
+ * Creates a semi-transparent ghost image at the original position.
+ */
+function createGhost(element) {
+    if (element.dataset.hasGhost) return;
+
+    const ghost = element.cloneNode(true);
+    // Recursively remove IDs from ghost and its children
+    const removeIds = (el) => {
+        if (el.removeAttribute) el.removeAttribute('id');
+        if (el.children) {
+            Array.from(el.children).forEach(removeIds);
+        }
+    };
+    removeIds(ghost);
+
+    ghost.classList.add('ghost-image');
+    ghost.style.opacity = '0.3';
+    ghost.style.pointerEvents = 'none';
+    if (ghost.dataset) delete ghost.dataset.dragRole;
+
+    // Ensure ghost stays at the very original transform position
+    const origTx = WidgetState.originalTransforms.get(element);
+    if (origTx !== undefined) {
+        ghost.setAttribute('transform', origTx);
+    }
+
+    element.parentNode.insertBefore(ghost, element);
+    element.dataset.hasGhost = 'true';
+}
+
 /* ─────────────────────────────────────────────
    DRAG & DROP ENGINE
    ───────────────────────────────────────────── */
@@ -586,6 +617,9 @@ function onDragStart(e) {
         x: match ? parseFloat(match[1]) : 0,
         y: match ? parseFloat(match[2]) : 0
     };
+
+    createGhost(el);
+
     el.setAttribute('pointer-events', 'none');
 }
 
@@ -726,6 +760,10 @@ function resetWidget() {
     // Clear drop zone occupation flags
     UI.s2Drops.forEach(dz => dz.removeAttribute('data-occupied'));
     UI.s4Drops.forEach(dz => dz.removeAttribute('data-occupied'));
+
+    // Remove ghosts
+    document.querySelectorAll('.ghost-image').forEach(el => el.remove());
+    document.querySelectorAll('[data-has-ghost]').forEach(el => delete el.dataset.hasGhost);
 
     hideAllStages();
     _updateTraitHighlights();
