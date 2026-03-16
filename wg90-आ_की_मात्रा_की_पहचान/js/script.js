@@ -515,7 +515,7 @@ function playLottieAnimationStart(bandGroup) {
       renderer: "svg",
       loop: false,
       autoplay: true,
-      path: `assets/Animation/shining stars.json`,
+      path: `assets/Animation/star-animation.json`,
     });
 
     lottieInstances_star.addEventListener("enterFrame", (e) => {
