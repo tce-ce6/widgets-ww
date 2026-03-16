@@ -178,7 +178,11 @@
   height: 100%;
 }
 
-#play-btn {
+#play-btn,
+#Rectangle_2-2,
+#Show_Answer,
+#Submit,
+#Rectangle_2 {
   cursor: pointer;
 }
 
@@ -211,13 +215,17 @@
   fill: #02FFFF !important;
 }
 
-.shape-dropdown{
+.shape-dropdown {
   padding: 8px 18px;
-  font-size: 18px;
+  font-size: 22px;
   border-radius: 8px;
   border: 2px solid #2C6DD5;
   background-color: #EAF2FF;
   min-width: 160px;
+}
+
+.shape-dropdown option {
+  font-size: 16px;
 }
 
 .reset-btn {
