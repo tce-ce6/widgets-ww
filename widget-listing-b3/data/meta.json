@@ -129,8 +129,8 @@
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
-      "updatedAt": "2026-03-11T15:11:51+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-16T16:01:55+05:30",
+      "author": "Shyam"
     },
     "wg136-compound-words-adventure": {
       "updatedAt": "2026-03-10T18:21:12+05:30",
@@ -375,6 +375,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-16T16:01:55+05:30",
+      "author": "Shyam",
+      "message": "completed the file",
+      "widgets": [
+        135
+      ]
+    },
+    {
+      "date": "2026-03-16T15:53:13+05:30",
+      "author": "Shyam",
+      "message": "phase 3 competed",
+      "widgets": [
+        135
+      ]
+    },
+    {
       "date": "2026-03-15T18:55:51+05:30",
       "author": "sushantthe",
       "message": "feat: Introduce the new CropMap India widget and add a script for the election officer.",
@@ -501,6 +517,22 @@
       ]
     },
     {
+      "date": "2026-03-13T19:04:05+05:30",
+      "author": "Shyam",
+      "message": "Touch drag support added",
+      "widgets": [
+        135
+      ]
+    },
+    {
+      "date": "2026-03-13T18:47:18+05:30",
+      "author": "Shyam",
+      "message": "back and forth navigation of choose gallery and home page",
+      "widgets": [
+        135
+      ]
+    },
+    {
       "date": "2026-03-13T18:18:01+05:30",
       "author": "aditya",
       "message": "wg143",
@@ -509,11 +541,27 @@
       ]
     },
     {
+      "date": "2026-03-13T18:16:00+05:30",
+      "author": "Shyam",
+      "message": "modal conditions visibility and itext update on all correctly placed object",
+      "widgets": [
+        135
+      ]
+    },
+    {
       "date": "2026-03-13T18:03:02+05:30",
       "author": "aditya",
       "message": "wg 132 html",
       "widgets": [
         132
+      ]
+    },
+    {
+      "date": "2026-03-13T17:25:08+05:30",
+      "author": "Shyam",
+      "message": "id listing drop zones id identificaiton svg structure fix and drag and top for correct order condition check on correct drag impelmentd",
+      "widgets": [
+        135
       ]
     },
     {
@@ -570,54 +618,6 @@
       "message": "138 and 137",
       "widgets": [
         110
-      ]
-    },
-    {
-      "date": "2026-03-12T15:25:11+05:30",
-      "author": "aditya",
-      "message": "wg116",
-      "widgets": [
-        116
-      ]
-    },
-    {
-      "date": "2026-03-12T14:01:09+05:30",
-      "author": "PrasannaP",
-      "message": "chore: update version ID.",
-      "widgets": [
-        47
-      ]
-    },
-    {
-      "date": "2026-03-12T14:00:46+05:30",
-      "author": "Shyam",
-      "message": "Completed wg145",
-      "widgets": [
-        145
-      ]
-    },
-    {
-      "date": "2026-03-12T13:59:46+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add blue fill style for Punnett path and center Punnett toggle text.",
-      "widgets": [
-        47
-      ]
-    },
-    {
-      "date": "2026-03-11T20:48:11+05:30",
-      "author": "tce-nitinc",
-      "message": "feat: add new interactive Balkan Countries Adventure widget with styling, data, and logic",
-      "widgets": [
-        133
-      ]
-    },
-    {
-      "date": "2026-03-11T20:26:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 155 changes",
-      "widgets": [
-        155
       ]
     }
   ]
