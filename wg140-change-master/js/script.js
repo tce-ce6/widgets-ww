@@ -102,7 +102,12 @@ const incorrectFeedback = document.getElementById('feedback-incorrect')
 const showAnswerBtn = document.getElementById('showAnswerBtn');
 const howToPlayBtn = document.getElementById('howToPlayBtn');
 const howToPlayMsg = document.getElementById('howToPlayMsg');
-const howToPlatCross = document.getElementById('howToPlayCross');
+const howToPlayCross = document.getElementById('howToPlayCross');
+const rectFade = document.getElementById('rect-fade');
+const rects = document.querySelectorAll(".currency-rect");
+
+const happyLottie = document.getElementById("happyLottieDiv");
+const sadLottie = document.getElementById("sadLottieDiv");
 
 let totalCurrency = 0;
 
@@ -115,80 +120,40 @@ const LOTTIE_ANIMATION_MAP = {
     "wrong": "emoji-sad.json"
 };
 
-// // --- Global Variable ---
-// let currentLottieInstance = null; // **REQUIRED ADDITION**
-
-// // --- Utility Functions ---
-
 // /**
 //  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
 //  */
-function loadInitialLottie(word) {
-    const container = document.getElementById(LOTTIE_CONTAINER_ID);
-    if (!container) {
-        console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
-        return;
-    }
+let happyLottieInstance = null;
+let sadLottieInstance = null;
 
-    // 1. Destroy previous instance
-    if (currentLottieInstance) {
-        currentLottieInstance.destroy();
-        currentLottieInstance = null;
-    }
+function loadLottieAnimations() {
 
-    // 2. Find file path
-    const fileName = LOTTIE_ANIMATION_MAP[word];
-    if (!fileName) {
-        console.warn(`No Lottie file found for the word: ${word}`);
-        // Optionally, hide the container if no animation exists
-        container.innerHTML = '';
-        return;
-    }
-    const animationPath = ANIMATION_PATH_BASE + fileName;
-    console.log(animationPath);
-
-    // 3. Create the animation instance
-    // NOTE: Ensure the 'lottie' library is loaded globally before this code runs.
-    currentLottieInstance = lottie.loadAnimation({
-        container: container,
-        renderer: 'svg',
-        loop: false,
-        autoplay: true, // Start paused
-        path: animationPath
+    happyLottieInstance = lottie.loadAnimation({
+        container: document.getElementById("lottieWrapperHappy"),
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "assets/anim/emoji-happy.json"
     });
 
-    // // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    // // This is useful if the first frame is a static image before the animation starts.
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
-        requestAnimationFrame(() => {
-            currentLottieInstance.goToAndStop(0, true);
-        });
+    sadLottieInstance = lottie.loadAnimation({
+        container: document.getElementById("lottieWrapperSad"),
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "assets/anim/emoji-sad.json"
     });
+
 }
 
-// /**
-//  * Starts playing the Lottie animation.
-//  */
-function playLottieAnimation() {
-    if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
-        currentLottieInstance.goToAndStop(0, true);
-        currentLottieInstance.play();
-    }
+function playHappy() {
+    happyLottieInstance.goToAndStop(0, true);
+    happyLottieInstance.play();
 }
 
-// /**
-//  * Hides the animation container by destroying the instance and clearing its content.
-//  */
-function hideLottieAnimation() {
-    if (currentLottieInstance) {
-        currentLottieInstance.destroy();
-        currentLottieInstance = null;
-    }
-    const container = document.getElementById(LOTTIE_CONTAINER_ID);
-    if (container) {
-        container.innerHTML = '';
-    }
+function playSad() {
+    sadLottieInstance.goToAndStop(0, true);
+    sadLottieInstance.play();
 }
 
 function resetState() {
@@ -203,7 +168,23 @@ function resetState() {
     changeScreen.style.display = 'none';
     gameScreen.style.transform = "translateX(555px)";
     howToPlayMsg.style.display = 'none';
-    howToPlatCross.style.display = 'none';
+    howToPlayCross.style.display = 'none';
+    rectFade.style.display = 'none';
+
+    checkButton.style.cursor = 'auto';
+    checkButton.style.opacity = 0.3;
+
+    rects.forEach(r => {
+        r.setAttribute("stroke", "#3f3f3f");
+        r.setAttribute("stroke-width", "1");
+        r.style.cursor = 'pointer';
+        r.style.pointerEvents = 'auto';
+    });
+
+    notes.forEach(element => {
+        element.style.cursor = 'pointer';
+        element.style.pointerEvents = 'auto';
+    });
 
     const totalValElem = document.getElementById("totalValue");
     if (totalValElem) totalValElem.textContent = totalCurrency;
@@ -220,10 +201,10 @@ function resetState() {
     const feedbackShowAnswer = document.getElementById('feedback-show-answer');
     if (feedbackShowAnswer) feedbackShowAnswer.style.display = 'none';
 
-    if (typeof incorrectAnswer !== 'undefined' && incorrectAnswer) incorrectAnswer.style.display = 'none';
-    if (typeof correctAnswer !== 'undefined' && correctAnswer) correctAnswer.style.display = 'none';
     if (typeof tryAgain !== 'undefined' && tryAgain) tryAgain.style.display = 'none';
-    if (typeof hideLottieAnimation === 'function') hideLottieAnimation();
+
+    sadLottie.style.display = 'none';
+    happyLottie.style.display = 'none';
 }
 
 // /**
@@ -279,6 +260,7 @@ cycleNextItem();
 checkButton.addEventListener('click', checkPayment);
 tryAgainBtn.addEventListener('click', () => {
     incorrectFeedback.style.display = 'none';
+    sadLottie.style.display = 'none';
 });
 
 // /**
@@ -300,20 +282,13 @@ function checkPayment() {
     if (total === changeValue) {
         correctFeedback.style.display = 'block';
         checkButton.disabled = true;
-        let message = "✅ Well done! Correct payment.";
-        isCorrect = true;
-    } else if (total > price < total) {
+        happyLottie.style.display = 'block';
+        playHappy();
+    } else {
         incorrectFeedback.style.display = 'block';
-
-    } else { // total < price
-        incorrectAnswer.style.display = 'block';
-        tryAgain.style.display = 'block';
-        text.style.display = 'none';
-        let message = `❌ Payment is too low! You need ₹${price}. You only paid ₹${total}.`;
-        isCorrect = false;
-        console.log(message);
+        sadLottie.style.display = 'block';
+        playSad();
     }
-    handleAnswerResult(isCorrect);
 }
 
 
@@ -356,13 +331,22 @@ document.querySelectorAll(".change").forEach(note => {
                 li.remove();
                 totalCurrency -= value;
                 document.getElementById("totalValue").textContent = totalCurrency;
+
+                if (totalCurrency == 0) {
+                    checkButton.style.cursor = 'auto';
+                    checkButton.style.opacity = 0.3;
+                }
             });
 
             li.appendChild(closeMark);
             moneyWrapper.appendChild(li);
         }
+
+        checkButton.style.cursor = 'pointer';
+        checkButton.style.opacity = 1;
     });
 });
+
 
 function checkValue() {
     if (currencyNote < itemPrice) {
@@ -370,6 +354,8 @@ function checkValue() {
         setTimeout(() => {
             insufficintWarning.style.display = "none";
         }, 2000);
+        continueBtn.style.opacity = 0.3;
+        continueBtn.style.cursor = 'auto';
     } else {
         insufficintWarning.style.display = "none";
         continueBtn.style.opacity = 1;
@@ -381,6 +367,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // // 1. Initial load: Call cycleNextItem once to display the first item
     cycleNextItem();
+
+    rects.forEach(rect => {
+        rect.addEventListener("click", function () {
+
+            rects.forEach(r => {
+                r.setAttribute("stroke", "#3f3f3f");
+                r.setAttribute("stroke-width", "1");
+            });
+
+            this.setAttribute("stroke", "blue");
+            this.setAttribute("stroke-width", "4");
+
+        });
+    });
 
     document.querySelectorAll('.nextItemBtn').forEach(button => {
         button.addEventListener('click', function () {
@@ -395,12 +395,20 @@ document.addEventListener("DOMContentLoaded", () => {
         startPage.style.display = "none";
         gameScreen.style.display = "block";
     });
+
     continueBtn.addEventListener('click', () => {
         changeScreen.style.display = 'block';
         gameScreen.style.transform = "translateX(0px)";
         notes.forEach(element => {
             element.style.cursor = 'auto';
+            element.style.pointerEvents = 'none';
         });
+
+        rects.forEach(r => {
+            r.style.cursor = 'auto';
+            r.style.pointerEvents = 'none';
+        });
+
     });
 
     yesBtn.addEventListener('click', () => {
@@ -435,12 +443,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     howToPlayBtn.addEventListener('click', () => {
         howToPlayMsg.style.display = 'block';
-        howToPlatCross.style.display = 'block';
+        howToPlayCross.style.display = 'block';
+        rectFade.style.display = 'block';
     });
 
-    howToPlatCross.addEventListener('click', () => {
+    howToPlayCross.addEventListener('click', () => {
         howToPlayMsg.style.display = 'none';
-        howToPlatCross.style.display = 'none';
+        howToPlayCross.style.display = 'none';
+        rectFade.style.display = 'none';
     });
 
+    loadLottieAnimations();
 });
