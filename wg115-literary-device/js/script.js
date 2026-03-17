@@ -1,553 +1,366 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    let wwData = {};
-    let currentCards = [];
-
-    const step1 = document.getElementById("step-1");
-    const step2 = document.getElementById("step-2");
-
-    const europeBtn = document.getElementById("europe");
-    const asiaBtn = document.getElementById("asia-pacific");
-
-    const selectedBtn = document.getElementById("selected-btn");
-
-    const cards = document.querySelectorAll("#card-wrapper li");
-    const viewBtns = document.querySelectorAll("#card-wrapper li .view-btn");
-
-    const infoModal = document.getElementById("info-modal");
-    const popupIcon = document.getElementById("popup-icon");
-    const popupTitle = document.getElementById("title-popup");
-    const popupInsight = document.getElementById("insight-popup");
-
-    const closeBtn = document.querySelector("#info-modal .close-btn");
-    const body = document.body;
-    const placeholders = document.querySelectorAll("#card-placeholder li");
-    let draggedCard = null;
-    const resetBtn = document.getElementById("reset-btn");
-    const triggerBtn = document.getElementById("trigger-chain-btn");
-    const cardPlaceholder = document.getElementById("card-placeholder");
-    const errorModal = document.querySelector(".popup-wrapper.wrong").parentElement;
-    const successModal = document.getElementById("success-modal");
-    const correctLottie = document.getElementById("correct-lottie");
-    const showAnswerBtn = document.getElementById("show-answer-btn");
-    /* -------------------------
-       Load JSON Data
-    ------------------------- */
-
-    fetch("./data.json")
-        .then(res => res.json())
-        .then(data => {
-            wwData = data;
-        })
-        .catch(err => console.error("JSON load error:", err));
-
-
-    /* -------------------------
-       Title → Image Path
-    ------------------------- */
-
-    function getImagePath(title) {
-        return "./assets/" +
-            title
-                .toLowerCase()
-                .replace(/[^a-z0-9 ]/g, "")
-                .replace(/\s+/g, "-") +
-            ".svg";
-    }
-
-
-    /* -------------------------
-       Title → Icon Path
-    ------------------------- */
-
-    function getIconPath(title) {
-        return "./assets/" +
-            title
-                .toLowerCase()
-                .replace(/[^a-z0-9 ]/g, "")
-                .replace(/\s+/g, "-") +
-            "-icon.svg";
-    }
-
-
-    /* -------------------------
-       Load Cards
-    ------------------------- */
-
-    function loadCards(region) {
-
-        currentCards = wwData[region];
-
-        if (!currentCards) return;
-
-        currentCards.forEach((card, index) => {
-
-            const img = cards[index].querySelector("img");
-
-            if (img) {
-
-                img.src = getImagePath(card.title);
-                img.alt = card.title;
-
-            }
-
-            // remember original position
-            cards[index].dataset.index = index;
-            cards[index].dataset.id = card.id; // important
-        });
-
-        enableDrag();
-
-    }
-
-
-    function enableDrag() {
-
-        cards.forEach((card) => {
-
-            card.setAttribute("draggable", true);
-
-            card.addEventListener("dragstart", () => {
-
-                draggedCard = card;
-
-                setTimeout(() => {
-                    card.style.opacity = "0.5";
-                }, 0);
-
-            });
-
-            card.addEventListener("dragend", () => {
-
-                card.style.opacity = "1";
-                draggedCard = null;
-
-            });
-
-        });
-
-    }
-
-
-    function enableDrop() {
-
-        placeholders.forEach((slot) => {
-
-            slot.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                slot.classList.add("drag-over");
-            });
-
-            slot.addEventListener("dragleave", () => {
-                slot.classList.remove("drag-over");
-            });
-
-            slot.addEventListener("drop", (e) => {
-
-                e.preventDefault();
-                slot.classList.remove("drag-over");
-
-                if (!draggedCard) return;
-
-                if (slot.children.length > 0) return;
-
-                const parent = draggedCard.parentNode;
-
-                // create empty placeholder li
-                const emptyLi = document.createElement("li");
-
-                // insert empty li where card was
-                parent.insertBefore(emptyLi, draggedCard);
-
-                slot.appendChild(draggedCard);
-
-                // enable reset button
-                resetBtn.classList.remove("disabled");
-
-                showAnswerBtn.classList.add("disabled");
-                // check if all cards placed
-                checkAllPlaced();
-
-            });
-
-        });
-
-    }
-    /* -------------------------
-       Select Region
-    ------------------------- */
-
-    function selectRegion(regionName, jsonKey) {
-
-        step1.style.display = "none";
-        step2.style.display = "block";
-
-        selectedBtn.textContent = regionName;
-
-        loadCards(jsonKey);
-
-    }
-
-
-    /* -------------------------
-       View Button Click
-    ------------------------- */
-
-    viewBtns.forEach((btn, index) => {
-
-        btn.addEventListener("click", () => {
-
-            const card = currentCards[index];
-
-            if (!card) return;
-
-            popupTitle.textContent = card.title;
-            popupInsight.textContent = card.insight;
-
-            popupIcon.src = getIconPath(card.title);
-
-            infoModal.style.display = "block";
-
-            body.classList.add("modal-open"); // ADD CLASS
-
-        });
-
+import { literaryDevices } from './data.js';
+
+// State
+let currentView = 'home';
+let selectedDevice = null;
+let builderSelectedIndexes = [];
+let invalidSelection = null;
+
+// DOM Elements
+const homeView = document.getElementById('view-home');
+const builderView = document.getElementById('view-builder');
+const homeGrid = document.getElementById('home-grid');
+const detailOverlay = document.getElementById('detail-overlay');
+const resultOverlay = document.getElementById('result-overlay');
+
+// Data sorted
+const sortedDevices = [...literaryDevices].sort((a, b) => a.order - b.order);
+
+// --- Initialization ---
+function init() {
+    renderHome();
+    setupEventListeners();
+}
+
+// --- Rendering ---
+
+function renderHome() {
+    homeGrid.innerHTML = '';
+    sortedDevices.forEach(device => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <h3>${device.title}</h3>
+        `;
+        card.onclick = () => openDetail(device);
+        homeGrid.appendChild(card);
+    });
+}
+
+function openDetail(device) {
+    selectedDevice = device;
+    document.getElementById('detail-title').innerText = device.title;
+    const descEl = document.getElementById('detail-description');
+    descEl.innerText = device.description;
+    descEl.classList.toggle('active', device.id === 'transferred-epithet');
+
+    const sentenceEl = document.getElementById('detail-sentence');
+    sentenceEl.classList.toggle('active', device.id === 'oxymoron' || device.id === 'hyperbole');
+    sentenceEl.classList.toggle('alliteration-mode', device.id === 'alliteration');
+
+    // Render Mapping
+    const mappingEl = document.getElementById('detail-mapping');
+    mappingEl.innerHTML = '';
+    const svgOverlay = document.getElementById('svg-overlay');
+    svgOverlay.style.display = device.id === 'alliteration' ? 'none' : 'block';
+    
+    // Sort keys based on first appearance in sentence to prevent crossing lines
+    const mappingKeys = Object.keys(device.example.mapping).sort((a, b) => {
+        const indexA = device.example.sentence.findIndex(w => w.type === a);
+        const indexB = device.example.sentence.findIndex(w => w.type === b);
+        return indexA - indexB;
     });
 
+    mappingKeys.forEach(key => {
+        if (device.id === 'alliteration') return; // Do not show mapping-item for Alliteration
+        
+        const value = device.example.mapping[key];
+        const item = document.createElement('div');
+        item.className = 'mapping-item';
+        // item.style.color = value.background === 'yellow' ? '#856404' : value.background;
+        item.dataset.key = key;
+        // In js/script.js, line 55
+        item.innerText = `{ ${value.title} }`;
 
-    /* -------------------------
-       Close Popup
-    ------------------------- */
-
-    if (closeBtn) {
-
-        closeBtn.addEventListener("click", () => {
-
-            infoModal.style.display = "none";
-
-            body.classList.remove("modal-open"); // REMOVE CLASS
-
-        });
-
-    }
-
-
-    /* -------------------------
-       Region Click Events
-    ------------------------- */
-
-    europeBtn.addEventListener("click", () => {
-
-        selectRegion("Europe", "europe");
-
+        mappingEl.appendChild(item);
     });
 
-    asiaBtn.addEventListener("click", () => {
-
-        selectRegion("Asia-Pacific", "asia_pacific");
-
-    });
-
-
-    /* -------------------------
-       Home Button
-    ------------------------- */
-
-    const homeBtn = document.getElementById("home-btn");
-
-    if (homeBtn) {
-
-        homeBtn.addEventListener("click", () => {
-
-            step2.style.display = "none";
-            step1.style.display = "block";
-
-            infoModal.style.display = "none";
-            body.classList.remove("modal-open");
-
-        });
-
-    }
-    enableDrop();
-
-    if (resetBtn) {
-
-        resetBtn.addEventListener("click", () => {
-
-            if (resetBtn.classList.contains("disabled")) return;
-
-            const cardWrapper = document.getElementById("card-wrapper");
-
-            // 🔹 remove domino rotation
-            const fallenCards = document.querySelectorAll("#card-placeholder li > li");
-            fallenCards.forEach(card => {
-                card.classList.remove("domino-fall");
-            });
-
-            placeholders.forEach((slot) => {
-
-                const card = slot.querySelector("li");
-
-                if (card) {
-
-                    const originalIndex = card.dataset.index;
-                    const targetSlot = cardWrapper.querySelectorAll("li")[originalIndex];
-
-                    if (targetSlot) {
-                        targetSlot.replaceWith(card);
-                    }
-
-                }
-
-            });
-
-            // remove empty li created during drag
-            const emptyLis = cardWrapper.querySelectorAll("li:empty");
-            emptyLis.forEach(li => li.remove());
-
-            resetBtn.classList.add("disabled");
-            triggerBtn.classList.add("disabled");   // disable trigger chain
-            showAnswerBtn.classList.remove("disabled");
-            cardPlaceholder.classList.remove("active");
-
-        });
-
-    }
-
-    function checkAllPlaced() {
-
-        const placedCards = document.querySelectorAll("#card-placeholder li > li").length;
-
-        if (placedCards === placeholders.length) {
-            triggerBtn.classList.remove("disabled");
-        } else {
-            triggerBtn.classList.add("disabled");
+    // Render Sentence
+    sentenceEl.innerHTML = '';
+    device.example.sentence.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'sentence-word';
+        span.innerText = word.words;
+        if (word.type) {
+            span.style.backgroundColor = device.example.mapping[word.type].background;
+            span.dataset.type = word.type;
         }
+        sentenceEl.appendChild(span);
+    });
 
+    // Hide app and show detail-overlay as block
+    document.getElementById('app').classList.add('hidden');
+    detailOverlay.classList.add('step-mode');
+    detailOverlay.style.display = 'block';
+
+    // Wait for render then draw lines
+    setTimeout(() => drawLines(), 100);
+}
+
+function drawLines() {
+    const svg = document.getElementById('svg-overlay');
+    const container = document.getElementById('detail-viz-container');
+    const containerRect = container.getBoundingClientRect();
+
+    svg.innerHTML = '';
+    if (selectedDevice.id === 'alliteration') return;
+
+    svg.setAttribute('height', containerRect.height);
+    svg.setAttribute('width', containerRect.width);
+    svg.setAttribute('viewBox', `0 0 ${containerRect.width} ${containerRect.height}`);
+
+    const words = document.querySelectorAll('.sentence-word');
+    const labels = document.querySelectorAll('.mapping-item');
+
+    selectedDevice.example.sentence.forEach((word, wordIndex) => {
+        if (!word.type) return;
+
+        const wordEl = words[wordIndex];
+        const labelEl = Array.from(labels).find(l => l.dataset.key === word.type);
+
+        if (!wordEl || !labelEl) return;
+
+        const wordRect = wordEl.getBoundingClientRect();
+        const labelRect = labelEl.getBoundingClientRect();
+
+        const x1 = (labelRect.left + labelRect.width / 2) - containerRect.left;
+        const y1 = (labelRect.bottom) - containerRect.top;
+        const x2 = (wordRect.left + wordRect.width / 2) - containerRect.left;
+        const y2 = (wordRect.top) - containerRect.top;
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', '#333');
+        line.setAttribute('stroke-width', '1.5');
+        line.setAttribute('stroke-dasharray', '3,3');
+        svg.appendChild(line);
+    });
+}
+
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    return shuffled;
+}
 
-    if (triggerBtn) {
+let shuffledCombinations = [];
 
-        triggerBtn.addEventListener("click", () => {
+function launchBuilder() {
+    detailOverlay.style.display = 'none';
+    detailOverlay.classList.remove('step-mode');
+    document.getElementById('app').classList.remove('hidden');
+    currentView = 'builder';
+    homeView.classList.add('hidden');
+    builderView.classList.remove('hidden');
 
-            if (triggerBtn.classList.contains("disabled")) return;
+    document.getElementById('builder-title').innerText = selectedDevice.title;
+    const resTitle = document.getElementById('result-title');
+    if (resTitle) resTitle.innerText = selectedDevice.title;
+    builderSelectedIndexes = [];
 
-            cardPlaceholder.classList.add("active");
+    // Shuffle once per launch
+    shuffledCombinations = selectedDevice.player.combinations.map(col => shuffleArray(col));
 
-            const droppedCards = document.querySelectorAll("#card-placeholder li > li");
+    renderBuilder();
+}
 
-            let correctCount = 0;
-            let expectedNumber = 1;
+function renderBuilder() {
+    const content = document.getElementById('builder-content');
+    content.innerHTML = '';
 
-            for (let i = 0; i < droppedCards.length; i++) {
+    const combinations = selectedDevice.player.combinations;
+    const colCount = combinations.length;
 
-                const card = droppedCards[i];
-                const cardNumber = parseInt(card.dataset.id.replace(/[A-Z]+/, ""));
+    content.style.gridTemplateColumns = `repeat(${colCount}, 1fr)`;
 
-                if (cardNumber === expectedNumber) {
-                    correctCount++;
-                    expectedNumber++;
-                } else {
-                    break;
-                }
+    // Get sorted mapping keys to assign colors to columns
+    const mappingKeys = Object.keys(selectedDevice.example.mapping).sort((a, b) => {
+        const indexA = selectedDevice.example.sentence.findIndex(w => w.type === a);
+        const indexB = selectedDevice.example.sentence.findIndex(w => w.type === b);
+        return indexA - indexB;
+    });
 
+    shuffledCombinations.forEach((col, colIndex) => {
+        const colDiv = document.createElement('div');
+        colDiv.className = 'builder-col';
+
+        const isColumnDisabled = colIndex > builderSelectedIndexes.length;
+
+        col.forEach((item) => {
+            const opt = document.createElement('div');
+            const isSelected = builderSelectedIndexes[colIndex] === item.id;
+            const isInvalid = invalidSelection?.colIndex === colIndex && invalidSelection?.itemId === item.id;
+
+            opt.className = `option-card ${isColumnDisabled ? 'disabled' : ''} ${isSelected ? 'selected correct' : ''} ${isInvalid ? 'invalid' : ''}`;
+            opt.innerText = item.title;
+
+            if (isSelected) {
+                // Map column index to mapping keys (with fallback for devices with fewer keys than columns)
+                const typeKey = mappingKeys[Math.min(colIndex, mappingKeys.length - 1)];
+                const bgColor = selectedDevice.example.mapping[typeKey].background;
+                opt.style.backgroundColor = bgColor;
+                // If the background is yellow, match the dark text style from mapping-item
+                if (bgColor === 'yellow') opt.style.color = '#856404';
             }
 
-            if (correctCount !== placeholders.length) {
-
-                // animate correct prefix if exists
-                for (let i = 0; i < correctCount; i++) {
-
-                    const card = droppedCards[i];
-
-                    setTimeout(() => {
-                        card.classList.add("domino-fall");
-                    }, i * 200);
-
-                }
-
-                // show error modal after animation
-                setTimeout(() => {
-
-                    errorModal.style.display = "block";
-                    body.classList.add("modal-open");
-
-                }, correctCount * 200 + 200);
-
-                return;
-
-            }
-            for (let i = 0; i < correctCount; i++) {
-
-                const card = droppedCards[i];
-
-                setTimeout(() => {
-                    card.classList.add("domino-fall");
-                }, i * 200);
-
-            }
-
-            // ✅ if ALL cards correct show success
-            if (correctCount === placeholders.length) {
-
-                setTimeout(() => {
-
-                    successModal.style.display = "block";
-                    body.classList.add("modal-open");
-
-                    playSuccessAnimation();
-
-                }, correctCount * 200 + 300);
-
-            }
-
+            opt.onclick = () => handleSelect(colIndex, item.id);
+            colDiv.appendChild(opt);
         });
 
+        content.appendChild(colDiv);
+    });
+
+    updateConstructedSentence();
+    updateSubmitButton();
+}
+
+function handleSelect(colIndex, itemId) {
+    if (colIndex > builderSelectedIndexes.length) return;
+
+    let baseSelections;
+    if (colIndex < builderSelectedIndexes.length) {
+        baseSelections = builderSelectedIndexes.slice(0, colIndex);
+    } else {
+        baseSelections = [...builderSelectedIndexes];
     }
 
-    const errorCloseBtn = document.querySelector(".popup-wrapper.wrong .close-btn");
+    const updated = [...baseSelections];
+    updated[colIndex] = itemId;
 
-    if (errorCloseBtn) {
+    const answerString = updated.join('');
+    const isValidPrefix = selectedDevice.player.correctAnswers.some(ans => ans.answer.startsWith(answerString));
 
-        errorCloseBtn.addEventListener("click", () => {
-
-            errorModal.style.display = "none";
-            body.classList.remove("modal-open");
-
-        });
-
+    if (!isValidPrefix) {
+        builderSelectedIndexes = baseSelections;
+        invalidSelection = { colIndex, itemId };
+        renderBuilder();
+        setTimeout(() => {
+            invalidSelection = null;
+            renderBuilder();
+        }, 700);
+        return;
     }
 
-    function playSuccessAnimation() {
+    invalidSelection = null;
+    builderSelectedIndexes = updated;
+    renderBuilder();
+}
 
-        correctLottie.innerHTML = "";
+function updateConstructedSentence() {
+    const combinations = selectedDevice.player.combinations;
 
-        lottie.loadAnimation({
-            container: correctLottie,
-            renderer: "svg",
-            loop: false,
-            autoplay: true,
-            path: "lottie/correct-anim.json"
-        });
+    // Populate the individual result columns
+    for (let i = 1; i <= 3; i++) {
+        const colEl = document.getElementById(`builder-col-${i}`);
+        if (!colEl) continue;
 
+        const selectionIndex = i - 1;
+        const selectedId = builderSelectedIndexes[selectionIndex];
+        const selectedItem = combinations[selectionIndex]?.find(item => item.id === selectedId);
+
+        if (selectedItem) {
+            colEl.innerText = selectedItem.title;
+            colEl.classList.add('correct');
+
+            // Apply background color based on mapping scatter
+            const mappingKeys = Object.keys(selectedDevice.example.mapping).sort((a, b) => {
+                const indexA = selectedDevice.example.sentence.findIndex(w => w.type === a);
+                const indexB = selectedDevice.example.sentence.findIndex(w => w.type === b);
+                return indexA - indexB;
+            });
+
+            const typeKey = mappingKeys[Math.min(selectionIndex, mappingKeys.length - 1)];
+            const bgColor = selectedDevice.example.mapping[typeKey].background;
+            colEl.style.backgroundColor = bgColor;
+
+        } else {
+            colEl.innerText = '';
+            colEl.style.backgroundColor = 'transparent';
+            colEl.classList.remove('correct');
+        }
     }
 
-    const successCloseBtn = document.querySelector("#success-modal .close-btn");
-
-    if (successCloseBtn) {
-
-        successCloseBtn.addEventListener("click", () => {
-
-            successModal.style.display = "none";
-            body.classList.remove("modal-open");
-
-        });
-
+    const textEl = document.getElementById('constructed-sentence');
+    if (textEl) {
+        const sentence = builderSelectedIndexes
+            .map((sel, i) => combinations[i].find(item => item.id === sel)?.title)
+            .join(' ');
+        textEl.innerText = sentence || "Select combinations above...";
+        textEl.style.color = sentence ? '#1e293b' : '#64748b';
     }
-    let answerVisible = false;
+}
 
-    if (showAnswerBtn) {
+function updateSubmitButton() {
+    const btn = document.getElementById('btn-submit');
+    const answerString = builderSelectedIndexes.join('');
+    const combinations = selectedDevice.player.combinations;
 
-        showAnswerBtn.addEventListener("click", () => {
+    const isExactCorrect = selectedDevice.player.correctAnswers.some(ans => ans.answer === answerString);
+    const isComplete = builderSelectedIndexes.length === combinations.length;
 
-            const cardWrapper = document.getElementById("card-wrapper");
+    btn.disabled = !(isComplete && isExactCorrect);
+}
 
-            if (!answerVisible) {
+function handleSubmit() {
+    const answerString = builderSelectedIndexes.join('');
+    const result = selectedDevice.player.correctAnswers.find(ans => ans.answer === answerString);
 
-                // change icon
-                showAnswerBtn.src = "./assets/hide-answer.svg";
+    const combinations = selectedDevice.player.combinations;
+    const sentence = builderSelectedIndexes
+        .map((sel, i) => combinations[i].find(item => item.id === sel)?.title)
+        .join(' ');
 
-                // remove rotation if any
-                const fallenCards = document.querySelectorAll("#card-placeholder li > li");
-                fallenCards.forEach(card => card.classList.remove("domino-fall"));
+    document.getElementById('final-sentence').innerText = sentence;
+    document.getElementById('result-explanation').innerText = result?.explanation || result?.title || "Correct!";
+    
+    const resTitle = document.getElementById('result-title');
+    if (resTitle) resTitle.innerText = selectedDevice.title;
 
-                // clear placeholders but keep <li>
-                placeholders.forEach(slot => {
-                    slot.innerHTML = "";
-                });
+    resultOverlay.style.display = 'flex';
+}
 
-                // sort cards by numeric order (EU1..EU8 / AP1..AP8)
-                const sortedCards = [...currentCards].sort((a, b) => {
-                    const numA = parseInt(a.id.replace(/[A-Z]+/, ""));
-                    const numB = parseInt(b.id.replace(/[A-Z]+/, ""));
-                    return numA - numB;
-                });
+function goHome() {
+    currentView = 'home';
+    document.getElementById('app').classList.remove('hidden');
+    homeView.classList.remove('hidden');
+    builderView.classList.add('hidden');
+    detailOverlay.style.display = 'none';
+    detailOverlay.classList.remove('step-mode');
+    resultOverlay.style.display = 'none';
+    selectedDevice = null;
+    builderSelectedIndexes = [];
+}
 
-                // collect all cards first (prevents missing elements)
-                const allCards = Array.from(document.querySelectorAll("#card-wrapper li, #card-placeholder li > li"));
+// --- Event Listeners ---
+function setupEventListeners() {
 
-                sortedCards.forEach((cardData, index) => {
+    document.getElementById('btn-launch').onclick = launchBuilder;
 
-                    const correctCard = allCards.find(card => card.dataset.id === cardData.id);
+    document.querySelectorAll('.home-btn').forEach(btn => {
+        btn.onclick = goHome;
+    });
 
-                    if (!correctCard) return;
+    document.getElementById('btn-submit').onclick = handleSubmit;
 
-                    const parent = correctCard.parentNode;
+    document.getElementById('close-result').onclick = () => {
+        resultOverlay.style.display = 'none';
+        goHome();
+    };
 
-                    // keep empty li in card-wrapper if card comes from there
-                    if (parent && parent.id === "card-wrapper") {
+    window.onclick = (event) => {
+        if (event.target === detailOverlay) detailOverlay.style.display = 'none';
+    };
 
-                        const emptyLi = document.createElement("li");
-                        parent.insertBefore(emptyLi, correctCard);
+    window.onresize = () => {
+        if (detailOverlay.style.display !== 'none') drawLines();
+    };
+}
 
-                    }
-
-                    placeholders[index].appendChild(correctCard);
-
-                });
-
-                // activate placeholder style
-                cardPlaceholder.classList.add("active");
-
-                // enable reset if needed
-                resetBtn.classList.remove("disabled");
-
-                answerVisible = true;
-
-            } else {
-
-                // restore icon
-                showAnswerBtn.src = "./assets/show-answer.svg";
-
-                // move cards back to wrapper
-                placeholders.forEach(slot => {
-
-                    const card = slot.querySelector("li");
-
-                    if (card) {
-
-                        const originalIndex = card.dataset.index;
-                        const targetSlot = cardWrapper.querySelectorAll("li")[originalIndex];
-
-                        if (targetSlot) {
-                            targetSlot.replaceWith(card);
-                        }
-
-                    }
-
-                });
-
-                // remove empty li created during drag
-                const emptyLis = cardWrapper.querySelectorAll("li:empty");
-                emptyLis.forEach(li => li.remove());
-
-                // remove domino rotation
-                const fallenCards = document.querySelectorAll("#card-placeholder li > li");
-                fallenCards.forEach(card => card.classList.remove("domino-fall"));
-
-                // reset buttons
-                resetBtn.classList.add("disabled");
-                triggerBtn.classList.add("disabled");   // disable trigger chain
-                showAnswerBtn.classList.remove("disabled");
-                cardPlaceholder.classList.remove("active");
-
-                cardPlaceholder.classList.remove("active");
-
-                answerVisible = false;
-
-            }
-
-        });
-
-    }
-});
+// Start
+init();

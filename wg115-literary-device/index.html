@@ -15,148 +15,84 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Build a Literary Device</h2>
-        <span id="versionId" class="versionText">b3_wg115_140326</span>
+        <span id="versionId" class="versionText">b3_wg115_160326</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
-          <g id="step-1" style="display: block;">
-            <foreignObject x="356" y="84" height="126" width="1209">
-              <div class="i-text">
-                When one domino falls, it triggers the next in a relentless chain. History revealed this brutal truth.
-                Each nation's aggression knocked another into the path of war, building momentum that no force could
-                halt. What began as bitterness became a global catastrophe.
-              </div>
-            </foreignObject>
-            <foreignObject x="455" y="227" height="83" width="1011">
-              <div class="i-text">
-                Choose your battleground:
-                <br>
-                <span class="sub-itext">Tap Europe or the Asia-Pacific Front</span>
-              </div>
-            </foreignObject>
-            <foreignObject x="487" y="335" height="524" width="947">
-              <div class="innerFlexContainer">
-                <img id="europe" src="./assets/euope.svg" alt="">
-                <img id="asia-pacific" src="./assets/asia-pacific.svg" alt="">
-              </div>
-            </foreignObject>
-          </g>
 
-          <g id="step-2" style="display: none;">
-            <foreignObject class="hide-layer" x="319" y="73" height="41" width="1282">
-              <div class="i-text sub-itext">Drag each domino card and place it in the correct sequence. Tap <span
-                  class="i-textInfo"></span> to read more about the
-                event. </div>
-            </foreignObject>
-            <foreignObject class="hide-layer" x="850" y="124" height="70" width="220">
-              <div class="selected-btn" id="selected-btn">Europe</div>
-            </foreignObject>
-            <foreignObject class="hide-layer" x="100" y="212" height="358.59" width="1720.49">
-              <div>
-                <ul id="card-wrapper" class="card-wrapper">
-                  <li>
-                    <img src="./assets/invasion-of-poland.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/world-war-ii-begins.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/italian-invasion-of-abyssinia.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/policy-of-appeasement.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/german-rearmament-and-expansion.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/dissatisfaction-with-treaty-of-versailles.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/rise-of-fascism-and-nazism.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                  <li>
-                    <img src="./assets/failure-of-league-of-nations.svg" alt="">
-                    <span class="view-btn"></span>
-                  </li>
-                </ul>
-              </div>
-            </foreignObject>
-            <foreignObject class="hide-layer" x="100" y="584.7" height="358.59" width="1720.49"
-              style="overflow: visible;">
-              <div>
-                <ul id="card-placeholder" class="card-wrapper placeholder">
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                </ul>
-              </div>
-            </foreignObject>
-            <foreignObject class="hide-layer" x="100" y="977" height="65.2" width="65.2">
-              <div><img id="home-btn" class="home-btn" src="./assets/home-btn.svg" alt=""></div>
-            </foreignObject>
-            <foreignObject class="hide-layer" x="552" y="963" height="93" width="817">
-              <div>
-                <ul class="btn-wrapper">
-                  <li><img class="disabled" id="trigger-chain-btn" src="./assets/trigger-chain.svg" alt=""></li>
-                  <li><img class="disabled" id="reset-btn" src="./assets/reset.svg" alt=""></li>
-                  <li><img id="show-answer-btn" src="./assets/show-answer.svg" alt=""></li>
-                </ul>
-              </div>
-            </foreignObject>
-            <rect class="overlay" style="display: none;" x="-1000" y="-1000" width="10000" height="10000" fill="#000"
-              opacity="0.7" />
-            <foreignObject id="info-modal" x="304" y="579" height="366" width="1312"
-              style="overflow: visible;display: none;">
-              <div class="popup-wrapper">
-                <img id="popup-icon" src="./assets/dissatisfaction-with-treaty-of-versailles-icon.svg" height="163.65"
-                  width="163.65" alt="">
-                <img id="close-btn" class="close-btn" src="./assets/close-btn.svg" alt="">
-                <div>
-                  <span class="title-popup" id="title-popup">German Rearmament and Expansion</span>
-                  <span class="desc-popup" id="insight-popup">Emboldened by the League's failure, Hitler sent troops
-                    into the demilitarized
-                    Rhineland in March
-                    1936, directly violating the Treaty of Versailles. France protested but did nothing. Hitler then
-                    continued seizing territories—Austria, then Czechoslovakia—while Britain and France stood by, hoping
-                    each concession would be the last.</span>
+          <foreignObject x="0" y="0" height="1080" width="1920">
+            <div class="container-inner" id="app">
+              <!-- Home View -->
+              <div id="view-home" class="view-home">
+                <div class="device-grid" id="home-grid">
                 </div>
               </div>
-            </foreignObject>
-            <foreignObject id="error-modal" x="638" y="291" height="167" width="644"
-              style="overflow: visible; display:none">
-              <div class="popup-wrapper wrong">
-                <img id="close-btn" class="close-btn" src="./assets/close-btn.svg" alt="">
-                <div>
-                  Chain interrupted! This sequence doesn't match the historical order. Try again!
+
+              <!-- Builder View -->
+              <div id="view-builder" class="view-builder hidden">
+                <h1 id="builder-title" class="detail-title title-two"></h1>
+                <div class="builder-grid" id="builder-content">
+                  <!-- Columns will be injected here -->
+                </div>
+
+                <div class="result-box">
+                  <!-- <p id="constructed-sentence" style="text-align: center; font-size: 1.1rem; color: #64748b;">Select
+                    combinations above...</p> -->
+                  <div class="result-boxwrap" id="builder-col-1"></div>
+                  <div class="result-boxwrap" id="builder-col-2"></div>
+                  <div class="result-boxwrap" id="builder-col-3"></div>
+                </div>
+
+                <div class="footer-btns">
+                  <button class="btn btn-primary" id="btn-submit" disabled>Submit</button>
+                </div>
+                <button class="btn btn-outline home-btn" id="btn-home"></button>
+              </div>
+            </div>
+
+            <!-- Detail Modal -->
+            <div class="overlay" id="detail-overlay">
+              <div class="modal">
+                <button class="btn btn-outline home-btn" id="btn-home-detail"></button>
+                <div class="modal-content">
+                  <div class="detail-columns">
+                    <div class="detail-left">
+                      <h2 id="detail-title" class="detail-title"></h2>
+                      <p id="detail-description" class="detail-description"></p>
+                    </div>
+                    <div class="detail-right" id="detail-viz-container" style="position: relative;">
+                      <!-- Viz Labels -->
+                      <div class="mapping-labels" id="detail-mapping"></div>
+
+                      <!-- Sentence -->
+                      <div class="sentence-container" id="detail-sentence-container">
+                        <h3 id="detail-sentence" class="detail-sentence">
+                        </h3>
+                      </div>
+                      <svg id="svg-overlay"></svg>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: center; margin-top: 1rem;">
+                    <button class="btn btn-primary" id="btn-launch">Launch Builder</button>
+                  </div>
                 </div>
               </div>
-            </foreignObject>
-            <foreignObject id="success-modal" x="550" y="360" height="201" width="786"
-              style="overflow: visible; display:none">
-              <div class="popup-wrapper correct">
-                <img id="close-btn" class="close-btn" src="./assets/close-btn.svg" alt="">
-                <div id="correct-lottie" class="correct-lottie"></div>
-                <div>
-                  <img class="winning-cup" src="./assets/winning-cup.svg" alt="">
-                  <span style="display: block;">Perfect!</span>
-                  You have traced the path correctly – each event pushed the world one step closer to World War II.
+            </div>
+
+            <!-- Result Modal -->
+            <div class="overlay" id="result-overlay">
+              <div class="modal">
+                <h1 id="result-title" class="detail-title title-two"></h1>
+                <button class="btn btn-outline home-btn"></button>
+                <button class="close-btn" id="close-result"></button>
+                <div class="modal-content">
+                  <div class="result-sentence" id="final-sentence"></div>
+                  <div id="result-explanation" class="result-explanation">
+                  </div>
                 </div>
               </div>
-            </foreignObject>
-          </g>
+            </div>
+          </foreignObject>
           <defs>
             <clipPath id="clip0_5485_1879">
               <rect width="1920" height="1080" fill="white" />
@@ -169,7 +105,7 @@
   </div>
 
   <script src="./js/lottie.min.js"></script>
-  <script src="./js/script.js"></script>
+  <script type="module" src="./js/script.js"></script>
 </body>
 
 </html>
