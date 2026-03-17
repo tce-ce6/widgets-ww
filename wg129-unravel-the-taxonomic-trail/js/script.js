@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
           ],
           clues: [
             ["Multicellular organisms that consume food", "(heterotrophs) and can move."],
-            ["Possess a notochord (flexible rod-like ", "structure) at some stage of life."],
-            ["Breathe air, have hair/fur,", "and produce milk."],
-            ["Primarily eat meat", "(carnivores)."],
-            ["Characterized by their", "retractable claws."],
-            ["Small to medium-sized cats", "with narrow pupils."],
-            ["A desert-dwelling cat", "with wide ears."]
+            ["Possess a notochord (flexible rod-like", "structure) at some stage of life."],
+            ["Warm-blooded animals with hair/fur and", "mammary glands that produce milk."],
+            ["Possess carnassial teeth (modified molars and", "premolars) for shearing flesh."],
+            ["Have retractable claws housed in protective sheaths;", "short rounded skull with forward-facing eyes."],
+            ["Small cats that can purr continuously but", "cannot roar; lack fully ossified hyoid bone."],
+            ["Have dense fur between toe pads to walk on hot desert sand;", "enlarged ear pinnae for heat dissipation."]
           ],
           taxons: ["Animalia", "Chordata", "Mammalia", "Carnivora", "Felidae", "Felis", "Margarita"]
         }
@@ -326,9 +326,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const nameText = groupEl.querySelector('tspan');
       if (nameText) nameText.textContent = orgData.name;
 
+      groupEl.style.display = 'block';
       groupEl.style.opacity = '1';
       groupEl.style.filter = 'none';
       groupEl.classList.remove('eliminated');
+      groupEl.classList.remove('correct-ans-border');
+      groupEl.classList.remove('wrong-ans-border');
     });
   }
 
@@ -397,6 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!AppState.isGameActive) return;
     if (AppState.eliminatedIndices.has(index)) return;
 
+    // Level 0 (Kingdom) has no elimination target. Game logic starts at Level 1.
+    // At level 0, user must first reveal Phylum/Division by clicking the tab.
+    if (AppState.currentLevel === 0) return;
+
     // Check if the current level name has been revealed yet.
     // If not, the user should reveal the level first.
     if (!AppState.isLevelRevealed[AppState.currentLevel]) return;
@@ -404,8 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
     const orgData = kingdomData.organisms[index];
 
-    // Level 0 (Kingdom) has no elimination target. Game logic starts at Level 1 (Phylum/Division).
-    if (AppState.currentLevel > 0 && orgData.eliminateAt === AppState.currentLevel) {
+    if (orgData.eliminateAt === AppState.currentLevel) {
       handleCorrectElimination(index);
     } else {
       handleWrongElimination(index);
@@ -416,14 +422,18 @@ document.addEventListener("DOMContentLoaded", () => {
     AppState.eliminatedIndices.add(index);
     const groupEl = document.getElementById(AppState.organismGroups[index]);
     if (groupEl) {
-      groupEl.style.opacity = '0.4';
-      groupEl.style.filter = 'grayscale(1)';
-      groupEl.classList.add('eliminated');
+      groupEl.classList.add('correct-ans-border');
     }
 
     showFeedback(true, index);
 
     setTimeout(() => {
+      if (groupEl) {
+        groupEl.classList.remove('correct-ans-border');
+        groupEl.style.display = 'none';
+        groupEl.classList.add('eliminated');
+      }
+
       if (AppState.currentLevel < 6) {
         // Move to the next level phase
         AppState.currentLevel++;
@@ -432,11 +442,22 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         showFinalSummary();
       }
-    }, 1500);
+    }, 2000);
   }
 
   function handleWrongElimination(index) {
+    const groupEl = document.getElementById(AppState.organismGroups[index]);
+    if (groupEl) {
+      groupEl.classList.add('wrong-ans-border');
+    }
+
     showFeedback(false, index);
+
+    setTimeout(() => {
+      if (groupEl) {
+        groupEl.classList.remove('wrong-ans-border');
+      }
+    }, 2000);
   }
 
   function showFeedback(isCorrect, index) {
@@ -606,6 +627,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showFinalSummary() {
     AppState.isGameActive = false;
+    const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
+
+    // Populate final screen with target organism data
+    const finalImg = document.getElementById('final_organism_img');
+    const finalName = document.getElementById('final_organism_name');
+    const finalScientific = document.getElementById('final_scientific_name');
+
+    if (finalImg) finalImg.setAttribute('href', kingdomData.targetImage);
+    if (finalName) finalName.textContent = kingdomData.targetName;
+    if (finalScientific) finalScientific.textContent = kingdomData.targetScientific;
+
     const summaryImg = document.getElementById('final_screen_image');
     const summaryMsg = document.getElementById('final_message');
     if (summaryImg) summaryImg.style.display = 'block';
