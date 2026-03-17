@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ],
           clues: [
             ["Multicellular organisms that consume food", "(heterotrophs) and can move."],
-            ["Possess a notochord", "(flexible rod-like structure)."],
+            ["Possess a notochord (flexible rod-like ", "structure) at some stage of life."],
             ["Breathe air, have hair/fur,", "and produce milk."],
             ["Primarily eat meat", "(carnivores)."],
             ["Characterized by their", "retractable claws."],
@@ -275,9 +275,21 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function revealLevel(index) {
     if (!AppState.isGameActive) return;
-    if (index !== AppState.currentLevel) return;
+
+    // We can only reveal the level that is currently "in focus".
+    // If Kingdom (0) is already revealed, we allow revealing Phylum (1).
+    // Subsequent levels are revealed only after the previous level's animal is eliminated.
+    let targetRevealIndex = AppState.currentLevel;
+
+    // Special case for start: Kingdom is revealed, next reveal is Phylum (1)
+    if (AppState.currentLevel === 0 && AppState.isLevelRevealed[0]) {
+      targetRevealIndex = 1;
+    }
+
+    if (index !== targetRevealIndex) return;
 
     AppState.isLevelRevealed[index] = true;
+    AppState.currentLevel = index; // Move focus to this newly revealed level
     updateLevelsUI();
     updateInstruction();
   }
@@ -347,6 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (tspan) {
             if (isPlant && index === 1) tspan.textContent = 'Division';
             else if (index === 1) tspan.textContent = 'Phylum';
+            else if (index === 0) tspan.textContent = 'Kingdom';
           }
         }
         if (taxonGroup) {
@@ -354,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const tspans = taxonGroup.querySelectorAll('tspan');
           if (tspans.length > 0) {
             tspans[0].textContent = kingdomData.taxons[index];
-            // Clear other tspans to prevent overlap (e.g., "Animalia" vs "A" + "nimalia")
+            // Clear other tspans to prevent overlap
             for (let i = 1; i < tspans.length; i++) {
               tspans[i].textContent = '';
             }
@@ -384,10 +397,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!AppState.isGameActive) return;
     if (AppState.eliminatedIndices.has(index)) return;
 
+    // Check if the current level name has been revealed yet.
+    // If not, the user should reveal the level first.
+    if (!AppState.isLevelRevealed[AppState.currentLevel]) return;
+
     const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
     const orgData = kingdomData.organisms[index];
 
-    if (orgData.eliminateAt === AppState.currentLevel) {
+    // Level 0 (Kingdom) has no elimination target. Game logic starts at Level 1 (Phylum/Division).
+    if (AppState.currentLevel > 0 && orgData.eliminateAt === AppState.currentLevel) {
       handleCorrectElimination(index);
     } else {
       handleWrongElimination(index);
@@ -407,6 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
       if (AppState.currentLevel < 6) {
+        // Move to the next level phase
         AppState.currentLevel++;
         updateLevelsUI();
         updateInstruction();
@@ -421,14 +440,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showFeedback(isCorrect, index) {
+    // Hide any existing feedback
+    const correctEl = document.getElementById('correct_feedback');
+    const wrongEl = document.getElementById('wrong_feedback');
+    if (correctEl) correctEl.style.display = 'none';
+    if (wrongEl) wrongEl.style.display = 'none';
+
     const feedbackId = isCorrect ? 'correct_feedback' : 'wrong_feedback';
-    const otherId = isCorrect ? 'wrong_feedback' : 'correct_feedback';
-
-    const otherEl = document.getElementById(otherId);
-    if (otherEl) otherEl.style.display = 'none';
-
     const feedbackEl = document.getElementById(feedbackId);
-    if (feedbackEl) feedbackEl.style.display = 'block';
+    if (feedbackEl) {
+      feedbackEl.style.display = 'block';
+
+      // First hide all specific animal feedbacks
+      for (let i = 1; i <= 7; i++) {
+        const c = document.getElementById(`correct-${i}`);
+        const w = document.getElementById(`wrong-${i}`);
+        if (c) c.style.display = 'none';
+        if (w) w.style.display = 'none';
+      }
+
+      // Index 0 (Leftmost) maps to correct-1 / wrong-1
+      const specificId = `${isCorrect ? 'correct' : 'wrong'}-${index + 1}`;
+      const specificEl = document.getElementById(specificId);
+      if (specificEl) specificEl.style.display = 'block';
+    }
 
     setTimeout(() => {
       if (feedbackEl) feedbackEl.style.display = 'none';
@@ -444,33 +479,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const instr1 = document.getElementById('instruction_text');
     const instr2 = document.getElementById('instruction_text-2');
 
-    // Logic to match screenshot: 
-    // If Kingdom is revealed but no one to eliminate, OR if currentLevel needs reveal.
-    if (AppState.currentLevel === 0 && AppState.isLevelRevealed[0]) {
-      // Kingdom is revealed, no one to eliminate yet, so prompt to reveal Phylum
-      if (instr1) instr1.style.display = 'none';
-      if (instr2) {
-        instr2.style.display = 'block';
-        const tspans = instr2.querySelectorAll('tspan');
-        if (tspans.length > 0) {
-          tspans[0].textContent = `T`;
-          tspans[1].textContent = `ap Phylum to reveal its name `;
-          // Clear other tspans if they exist
-          for (let i = 2; i < tspans.length; i++) {
-            tspans[i].textContent = '';
-          }
-        }
-      }
-    } else if (AppState.isLevelRevealed[AppState.currentLevel]) {
+    // Case 1: Level revealed -> Prompt to eliminate animal
+    if (AppState.isLevelRevealed[AppState.currentLevel] && AppState.currentLevel > 0) {
       if (instr1) {
         instr1.style.display = 'block';
         const currentLevelName = levelNames[AppState.currentLevel];
-        const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
+        const kingdomPrefix = AppState.currentKingdom === 'animal' ? 'animal' : 'plant';
         const tspans = instr1.querySelectorAll('tspan');
-        if (tspans.length > 0) {
-          const kingdomPrefix = AppState.currentKingdom === 'animal' ? 'animal' : 'plant';
-          // "Tap the animal/plant that does NOT belong to this [Level Name]"
-          // Original tspan structure: T, ap the animal that does N, O, T, belong, t, o this Phylum
+        if (tspans.length >= 7) {
           tspans[0].textContent = 'T';
           tspans[1].textContent = `ap the ${kingdomPrefix} that does N`;
           tspans[2].textContent = 'O';
@@ -481,15 +497,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       if (instr2) instr2.style.display = 'none';
-    } else {
+    }
+    // Case 2: Level not revealed OR Level 0 revealed (special start state)
+    else {
       if (instr1) instr1.style.display = 'none';
       if (instr2) {
         instr2.style.display = 'block';
-        const nextLevelName = levelNames[AppState.currentLevel];
+
+        let nextLevelIndex = AppState.currentLevel;
+        if (AppState.currentLevel === 0 && AppState.isLevelRevealed[0]) {
+          nextLevelIndex = 1;
+        }
+
+        const levelToReveal = levelNames[nextLevelIndex];
         const tspans = instr2.querySelectorAll('tspan');
-        if (tspans.length > 0) {
+        if (tspans.length >= 2) {
           tspans[0].textContent = `T`;
-          tspans[1].textContent = `ap ${nextLevelName} to reveal its name `;
+          tspans[1].textContent = `ap ${levelToReveal} to reveal its name `;
           for (let i = 2; i < tspans.length; i++) {
             tspans[i].textContent = '';
           }
@@ -497,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
+
   function showHint(index) {
     hideAllHints();
     const hintId = `hint-${index + 1}`; // Corrected mapping: Kingdom is index 0 -> hint-7? Wait. 
