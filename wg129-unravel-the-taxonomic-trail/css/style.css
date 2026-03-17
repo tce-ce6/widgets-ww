@@ -419,3 +419,21 @@ svg * {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.correct-ans-border rect:first-child {
+  outline: 4px solid #5eff00 !important;
+  outline-offset: 5px !important;
+  border-radius: 34px !important;
+  stroke: none !important;
+}
+
+.wrong-ans-border rect:first-child {
+  outline: 4px solid #ff4444 !important;
+  outline-offset: 5px !important;
+  border-radius: 34px !important;
+  stroke: none !important;
+}
+
+
+
+

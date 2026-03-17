@@ -1,0 +1,111 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build a Literary Device</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="idiom-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Build a Literary Device</h2>
+        <span id="versionId" class="versionText">b3_wg115_160326</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+
+          <foreignObject x="0" y="0" height="1080" width="1920">
+            <div class="container-inner" id="app">
+              <!-- Home View -->
+              <div id="view-home" class="view-home">
+                <div class="device-grid" id="home-grid">
+                </div>
+              </div>
+
+              <!-- Builder View -->
+              <div id="view-builder" class="view-builder hidden">
+                <h1 id="builder-title" class="detail-title title-two"></h1>
+                <div class="builder-grid" id="builder-content">
+                  <!-- Columns will be injected here -->
+                </div>
+
+                <div class="result-box">
+                  <!-- <p id="constructed-sentence" style="text-align: center; font-size: 1.1rem; color: #64748b;">Select
+                    combinations above...</p> -->
+                  <div class="result-boxwrap" id="builder-col-1"></div>
+                  <div class="result-boxwrap" id="builder-col-2"></div>
+                  <div class="result-boxwrap" id="builder-col-3"></div>
+                </div>
+
+                <div class="footer-btns">
+                  <button class="btn btn-primary" id="btn-submit" disabled>Submit</button>
+                </div>
+                <button class="btn btn-outline home-btn" id="btn-home"></button>
+              </div>
+            </div>
+
+            <!-- Detail Modal -->
+            <div class="overlay" id="detail-overlay">
+              <div class="modal">
+                <button class="btn btn-outline home-btn" id="btn-home-detail"></button>
+                <div class="modal-content">
+                  <div class="detail-columns">
+                    <div class="detail-left">
+                      <h2 id="detail-title" class="detail-title"></h2>
+                      <p id="detail-description" class="detail-description"></p>
+                    </div>
+                    <div class="detail-right" id="detail-viz-container" style="position: relative;">
+                      <!-- Viz Labels -->
+                      <div class="mapping-labels" id="detail-mapping"></div>
+
+                      <!-- Sentence -->
+                      <div class="sentence-container" id="detail-sentence-container">
+                        <h3 id="detail-sentence" class="detail-sentence">
+                        </h3>
+                      </div>
+                      <svg id="svg-overlay"></svg>
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: center; margin-top: 1rem;">
+                    <button class="btn btn-primary" id="btn-launch">Launch Builder</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Result Modal -->
+            <div class="overlay" id="result-overlay">
+              <div class="modal">
+                <h1 id="result-title" class="detail-title title-two"></h1>
+                <button class="btn btn-outline home-btn"></button>
+                <button class="close-btn" id="close-result"></button>
+                <div class="modal-content">
+                  <div class="result-sentence" id="final-sentence"></div>
+                  <div id="result-explanation" class="result-explanation">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <defs>
+            <clipPath id="clip0_5485_1879">
+              <rect width="1920" height="1080" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script type="module" src="./js/script.js"></script>
+</body>
+
+</html>

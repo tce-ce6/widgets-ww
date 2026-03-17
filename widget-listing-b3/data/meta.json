@@ -52,6 +52,10 @@
       "updatedAt": "2026-02-27T13:19:23+05:30",
       "author": "Shyam"
     },
+    "wg115-literary-device": {
+      "updatedAt": "2026-03-17T15:20:38+05:30",
+      "author": "tce-nitinc"
+    },
     "wg116-reactivity-series": {
       "updatedAt": "2026-03-12T15:25:11+05:30",
       "author": "aditya"
@@ -65,8 +69,8 @@
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-03-15T18:55:51+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-17T16:07:56+05:30",
+      "author": "aditya"
     },
     "wg120-area-of-different-shapes": {
       "updatedAt": "2026-03-11T17:02:10+05:30",
@@ -101,12 +105,12 @@
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
-      "updatedAt": "2026-03-10T18:21:15+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-14T17:00:17+05:30",
+      "author": "Santosh"
     },
     "wg129-unravel-the-taxonomic-trail": {
-      "updatedAt": "2026-03-10T18:21:15+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-17T16:21:36+05:30",
+      "author": "Santosh"
     },
     "wg130-election-officer": {
       "updatedAt": "2026-03-12T19:50:57+05:30",
@@ -149,8 +153,8 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-02-23T14:51:41+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-17T10:33:47+05:30",
+      "author": "aditya"
     },
     "wg143-synthesize-new-polypeptide-chain": {
       "updatedAt": "2026-03-13T18:18:01+05:30",
@@ -169,7 +173,7 @@
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
-      "updatedAt": "2026-03-09T19:27:38+05:30",
+      "updatedAt": "2026-03-10T11:31:33+05:30",
       "author": "Santosh"
     },
     "wg149-punctuation-marks": {
@@ -253,8 +257,8 @@
       "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
-      "updatedAt": "2026-03-04T12:33:05+05:30",
-      "author": "Santosh Vishwakarma"
+      "updatedAt": "2026-03-17T12:55:44+05:30",
+      "author": "Santosh"
     },
     "wg70_reflection-of-light": {
       "updatedAt": "2026-03-09T15:35:05+05:30",
@@ -285,7 +289,7 @@
       "author": "aditya"
     },
     "wg78-form-idioms-based-on-picture": {
-      "updatedAt": "2026-03-05T18:44:55+05:30",
+      "updatedAt": "2026-03-17T11:10:26+05:30",
       "author": "Santosh"
     },
     "wg79_rhyme-scheme": {
@@ -296,9 +300,9 @@
       "updatedAt": "2026-02-24T16:51:05+05:30",
       "author": "tce-nitinc"
     },
-    "wg81-\u0909_\u0914\u0930_\u090a_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-13T16:15:30+05:30",
-      "author": "sushantkanaujiya"
+    "wg81-u_aur_oo_kee_maatra_mein_antar": {
+      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "author": "sushantthe"
     },
     "wg82-commonly-confused-words": {
       "updatedAt": "2026-03-06T11:42:00+05:30",
@@ -316,17 +320,17 @@
       "updatedAt": "2026-02-23T20:35:45+05:30",
       "author": "tce-nitinc"
     },
-    "wg86-\u0907_\u0914\u0930_\u0908_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-13T16:15:30+05:30",
-      "author": "sushantkanaujiya"
+    "wg86-i_aur_ee_kee_maatra_mein_antar": {
+      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "author": "sushantthe"
     },
-    "wg87-\u090f_\u0914\u0930_\u0910_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-13T16:37:41+05:30",
-      "author": "sushantkanaujiya"
+    "wg87-e_aur_ai_kee_maatra_mein_antar": {
+      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "author": "sushantthe"
     },
-    "wg88-\u0913_\u0914\u0930_\u0914_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u092e\u0947\u0902_\u0905\u0902\u0924\u0930": {
-      "updatedAt": "2026-03-12T18:36:44+05:30",
-      "author": "sushantkanaujiya"
+    "wg88-o_aur_au_kee_maatra_mein_antar": {
+      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "author": "sushantthe"
     },
     "wg89-the-tone-lab": {
       "updatedAt": "2026-03-08T15:48:34+05:30",
@@ -349,8 +353,8 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-02-23T14:51:41+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-17T16:07:56+05:30",
+      "author": "aditya"
     },
     "wg95-similar-meanings": {
       "updatedAt": "2026-02-12T18:57:30+05:30",
@@ -374,6 +378,90 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-17T16:21:36+05:30",
+      "author": "Santosh",
+      "message": "bug fixes",
+      "widgets": [
+        129
+      ]
+    },
+    {
+      "date": "2026-03-17T15:20:38+05:30",
+      "author": "tce-nitinc",
+      "message": "feat: Introduce initial CSS styling for the wg115 literary device widget.",
+      "widgets": [
+        115
+      ]
+    },
+    {
+      "date": "2026-03-17T14:40:52+05:30",
+      "author": "tce-nitinc",
+      "message": "wg115 changes",
+      "widgets": [
+        115
+      ]
+    },
+    {
+      "date": "2026-03-17T12:55:44+05:30",
+      "author": "Santosh",
+      "message": "wg-69 fixed",
+      "widgets": [
+        69
+      ]
+    },
+    {
+      "date": "2026-03-17T12:02:10+05:30",
+      "author": "sushantthe",
+      "message": "feat: Add new widgets for Hindi vowel sound differentiation for 'u/oo', 'e/ai', 'i/ee', and 'o/au'.",
+      "widgets": [
+        81,
+        86,
+        87,
+        88
+      ]
+    },
+    {
+      "date": "2026-03-17T11:10:26+05:30",
+      "author": "Santosh",
+      "message": "bug fixes for wg 78",
+      "widgets": [
+        78
+      ]
+    },
+    {
+      "date": "2026-03-17T10:43:36+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg119 and wg94 completed",
+      "widgets": [
+        94,
+        119
+      ]
+    },
+    {
+      "date": "2026-03-17T10:37:58+05:30",
+      "author": "Santosh",
+      "message": "script for wg 129",
+      "widgets": [
+        129
+      ]
+    },
+    {
+      "date": "2026-03-17T10:33:47+05:30",
+      "author": "aditya",
+      "message": "wg142",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-16T19:04:12+05:30",
+      "author": "Santosh",
+      "message": "widget 129 started",
+      "widgets": [
+        129
+      ]
+    },
     {
       "date": "2026-03-16T16:24:42+05:30",
       "author": "Shyam",
@@ -404,6 +492,14 @@
       "message": "phase 3 competed",
       "widgets": [
         135
+      ]
+    },
+    {
+      "date": "2026-03-16T13:05:58+05:30",
+      "author": "tce-nitinc",
+      "message": "wg115 changes",
+      "widgets": [
+        115
       ]
     },
     {
@@ -447,6 +543,14 @@
       "message": "feat: Implement the Barter Bazaar widget with its HTML structure, styling, and JavaScript.",
       "widgets": [
         134
+      ]
+    },
+    {
+      "date": "2026-03-14T17:00:17+05:30",
+      "author": "Santosh",
+      "message": "implemented widget 128",
+      "widgets": [
+        128
       ]
     },
     {
@@ -522,102 +626,6 @@
       "widgets": [
         133,
         155
-      ]
-    },
-    {
-      "date": "2026-03-13T19:08:55+05:30",
-      "author": "aditya",
-      "message": "wg146",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-13T19:04:05+05:30",
-      "author": "Shyam",
-      "message": "Touch drag support added",
-      "widgets": [
-        135
-      ]
-    },
-    {
-      "date": "2026-03-13T18:47:18+05:30",
-      "author": "Shyam",
-      "message": "back and forth navigation of choose gallery and home page",
-      "widgets": [
-        135
-      ]
-    },
-    {
-      "date": "2026-03-13T18:18:01+05:30",
-      "author": "aditya",
-      "message": "wg143",
-      "widgets": [
-        143
-      ]
-    },
-    {
-      "date": "2026-03-13T18:16:00+05:30",
-      "author": "Shyam",
-      "message": "modal conditions visibility and itext update on all correctly placed object",
-      "widgets": [
-        135
-      ]
-    },
-    {
-      "date": "2026-03-13T18:03:02+05:30",
-      "author": "aditya",
-      "message": "wg 132 html",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-13T17:25:08+05:30",
-      "author": "Shyam",
-      "message": "id listing drop zones id identificaiton svg structure fix and drag and top for correct order condition check on correct drag impelmentd",
-      "widgets": [
-        135
-      ]
-    },
-    {
-      "date": "2026-03-13T15:29:28+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg134",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-13T15:19:01+05:30",
-      "author": "sushantthe",
-      "message": "audio changes",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-03-13T13:05:59+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg134",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-13T09:46:20+05:30",
-      "author": "aditya",
-      "message": "wg134",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-12T19:50:57+05:30",
-      "author": "sushantthe",
-      "message": "Prevents duplicate scenario tab click handlers",
-      "widgets": [
-        130
       ]
     }
   ]
