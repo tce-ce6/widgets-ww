@@ -297,6 +297,11 @@ document.addEventListener("DOMContentLoaded", () => {
         el.setAttribute("x", pos.x);
         el.setAttribute("y", pos.y);
       }
+
+      // Return to original parent if moved
+      if (pos.parent && el.parentNode !== pos.parent) {
+        pos.parent.appendChild(el);
+      }
     }
   }
 
@@ -331,6 +336,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const svg = document.querySelector("svg");
+    // Store parent if not already stored
+    if (el.id && originalPositions[el.id] && !originalPositions[el.id].parent) {
+      originalPositions[el.id].parent = el.parentNode;
+    }
     svg.appendChild(draggedElement);
 
     const coord = getMousePosition(evt);
@@ -445,7 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // Wrong drop on current brick
         setTimeout(() => snapToOriginal(el), 200);
-        showElement(elements.popups.incorrect);
+        showElementAndFront(elements.popups.incorrect);
       }
     } else {
       // Dropped elsewhere or on wrong brick
@@ -453,21 +462,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     draggedElement = null;
-  }
-
-  function addPin(circleId) {
-    const target = document.getElementById(circleId);
-    if (!target) return;
-    const bbox = target.getBBox();
-    const pin = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    pin.setAttribute("x", bbox.x + bbox.width / 2);
-    pin.setAttribute("y", bbox.y + bbox.height / 2 + 5);
-    pin.setAttribute("text-anchor", "middle");
-    pin.setAttribute("font-size", "30");
-    pin.setAttribute("id", "pin-" + circleId);
-    pin.classList.add("checkmark-icon");
-    pin.textContent = "📍";
-    target.parentNode.appendChild(pin);
   }
 
   function removePin(circleId) {
@@ -500,6 +494,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function hideAllPopups() {
     Object.values(elements.popups).forEach(hideElement);
+  }
+
+  function bringPopupToFront(popup) {
+    if (popup && popup.parentNode) {
+      popup.parentNode.appendChild(popup);
+    }
+  }
+
+  function showElementAndFront(el) {
+    if (el) {
+      el.style.display = "block";
+      bringPopupToFront(el);
+    }
   }
 
   function updateFeedbackPopup(qData) {
@@ -548,7 +555,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
-    showElement(popupCorrect);
+    showElementAndFront(popupCorrect);
   }
 
   function updateQuestionUI() {
@@ -589,7 +596,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const targetCircle = document.getElementById(qData.circleId);
     if (targetCircle) {
       targetCircle.classList.add("active-brick-circle");
-      addPin(qData.circleId);
     }
     if (elements.questionTexts.group) {
       const textElements =
@@ -698,6 +704,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     isAwaitingPyramidClick = false;
     currentQuestionIndex = 0;
+
+    // Reset all dragged icons to original positions and parents
+    Object.keys(originalPositions).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        snapToOriginal(el);
+        el.style.pointerEvents = "auto"; // Unlock
+        el.style.display = ""; // Reset inline display if any
+        el.classList.remove("dragging");
+      }
+    });
+
+    // Also remove checkmarks and pins from all circles
+    GAME_CONFIG.questions.forEach(q => {
+      removePin(q.circleId);
+      const circle = document.getElementById(q.circleId);
+      if (circle) {
+        circle.classList.remove("active-brick-circle", "correct-brick-fill", "highlight-brick");
+        circle.setAttribute("opacity", "0.43");
+        circle.style.stroke = "";
+        circle.style.strokeWidth = "";
+      }
+      // Remove checkmark (text element)
+      const parent = circle?.parentNode;
+      if (parent) {
+        const checkmarks = Array.from(parent.querySelectorAll(".checkmark-icon")).filter(c => c.textContent === "✓");
+        checkmarks.forEach(c => c.remove());
+      }
+    });
   }
 
   elements.startBtn.addEventListener("click", () => {
@@ -731,6 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
         'g[id="icon5"]',
         'g[id="icon6"]',
         'g[id="icon7"]',
+        'g[id="icon8"]',
         'g[id="Layer_1-6-2"]',
         'g[id="Layer_1-6-3"]',
         'g[id="Layer_1-4-2"]',
@@ -749,6 +785,11 @@ document.addEventListener("DOMContentLoaded", () => {
         'g[id="Layer_1-6-6"]',
         'g[id="Layer_1-4-7"]',
         'g[id="Layer_1-6-7"]',
+        'g[id="Layer_1-4-8"]',
+        'g[id="Layer_1-6-8"]',
+        'g[id="icon9"]',
+        'g[id="Layer_1-4-9"]',
+        'g[id="Layer_1-6-9"]',
       ];
 
       const items = opt.querySelectorAll(draggableSelectors.join(","));
@@ -772,11 +813,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (el.id && !originalPositions[el.id]) {
           if (el.tagName === "g") {
             const transform = el.getAttribute("transform") || "";
-            originalPositions[el.id] = { transform: transform };
+            originalPositions[el.id] = { transform: transform, parent: el.parentNode };
           } else {
             originalPositions[el.id] = {
               x: parseFloat(el.getAttribute("cx") || el.getAttribute("x") || 0),
               y: parseFloat(el.getAttribute("cy") || el.getAttribute("y") || 0),
+              parent: el.parentNode
             };
           }
         }
@@ -805,7 +847,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentQuestionIndex < GAME_CONFIG.totalQuestions) {
       updateQuestionUI();
     } else {
-      showElement(elements.pyramidLevels.final);
+      showElementAndFront(elements.pyramidLevels.final);
       hideElement(elements.questionPanel);
       hideElement(elements.instructions.question);
       hideElement(elements.instructions.activityItext);
@@ -827,7 +869,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (elements.btns.insights) {
     elements.btns.insights.style.cursor = "pointer";
     elements.btns.insights.addEventListener("click", () =>
-      showElement(elements.popups.insights),
+      showElementAndFront(elements.popups.insights),
     );
   }
   if (elements.btns.closeInsights) {
