@@ -422,6 +422,7 @@ class WordPicker {
 
     this.images = IMAGES;
     this.imageIndex = 0;
+    this.currentIndex = 0;
   }
 
   flattenData() {
@@ -435,17 +436,14 @@ class WordPicker {
   }
 
   getNext() {
-    const available = this.allWords.filter(w => !this.history.has(`${w.group}-${w.root}`));
-
-    if (available.length === 0) {
-      this.history.clear();
-      return this.getNext();
+    if (this.currentIndex >= this.allWords.length) {
+      this.currentIndex = 0; // reset when finished
     }
 
-    const selected = available[Math.floor(Math.random() * available.length)];
-    this.history.add(`${selected.group}-${selected.root}`);
+    const selected = this.allWords[this.currentIndex];
+    this.currentIndex++;
 
-    // 🔁 rotate image (1 → 2 → 3 → 4 → 1 ...)
+    // 🔁 rotate image
     const image = this.images[this.imageIndex];
     this.imageIndex = (this.imageIndex + 1) % this.images.length;
 
@@ -647,15 +645,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   finalWord.style.display = "none";
-
-  function resetSlots() {
-    slots.forEach(slot => {
-      slot.style.display = "none";
-      slot.dataset.full = "false";
-      const clone = slot.querySelector(".centerTxt-wrap");
-      if (clone) clone.remove();
-    });
-  }
 
   function loadNextWord() {
 
