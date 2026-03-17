@@ -50,35 +50,179 @@ document.addEventListener("DOMContentLoaded", () => {
             ["Possess carnassial teeth (modified molars and", "premolars) for shearing flesh."],
             ["Have retractable claws housed in protective sheaths;", "short rounded skull with forward-facing eyes."],
             ["Small cats that can purr continuously but", "cannot roar; lack fully ossified hyoid bone."],
-            ["Have dense fur between toe pads to walk on hot desert sand;", "enlarged ear pinnae for heat dissipation."]
+            ["Have dense fur between toe pads to walk on hot", "desert sand; enlarged ear pinnae for heat dissipation."]
           ],
           taxons: ["Animalia", "Chordata", "Mammalia", "Carnivora", "Felidae", "Felis", "Margarita"]
+        },
+        set2: {
+          targetName: "Burmese python",
+          targetScientific: "Python bivittatus",
+          targetImage: "assets/images/Animal set_2/Burmese python_th1.png",
+          organisms: [
+            { name: "Indian gharial", image: "assets/images/Animal set_2/Indian gharial _th1.png", eliminateAt: 3 },
+            { name: "Jellyfish", image: "assets/images/Animal set_2/Jellyfish_th1.png", eliminateAt: 1 },
+            { name: "Green tree python", image: "assets/images/Animal set_2/Green tree python _th1.png", eliminateAt: 5 },
+            { name: "Dog", image: "assets/images/Animal set_2/dog_th1.png", eliminateAt: 2 },
+            { name: "Ball python", image: "assets/images/Animal set_2/Ball python _th1.png", eliminateAt: 6 },
+            { name: "King cobra", image: "assets/images/Animal set_2/King cobra _th1.png", eliminateAt: 4 },
+            { name: "Burmese python", image: "assets/images/Animal set_2/Burmese python_th1.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular organisms that consume food", "(heterotrophs) and can move."],
+            ["Possess a notochord (flexible rod-like", "structure) at some stage of life."],
+            ["Cold-blooded vertebrates with dry,", "scaly skin that lay eggs on land."],
+            ["Scaled reptiles with flexible skulls", "and the ability to shed skin."],
+            ["Non-venomous constrictors with heat-sensing", "pits and vestigial hind limbs."],
+            ["Large, heavy-bodied snakes that kill prey", "by squeezing (constriction)."],
+            ["Dark-coloured python with brown blotches,", "native to Southeast Asia."]
+          ],
+          taxons: ["Animalia", "Chordata", "Reptilia", "Squamata", "Pythonidae", "Python", "Bivittatus"]
+        },
+        set3: {
+          targetName: "Speckled wood pigeon",
+          targetScientific: "Columba hodgsonii",
+          targetImage: "assets/images/Animal set_3/Speckled wood pigeon_th1.png",
+          organisms: [
+            { name: "Jungle cat", image: "assets/images/Animal set_3/Jungle cat_th1.png", eliminateAt: 2 },
+            { name: "Laughing dove", image: "assets/images/Animal set_3/Laughing dove _th1.png", eliminateAt: 5 },
+            { name: "Snail", image: "assets/images/Animal set_3/Snail_th1.png", eliminateAt: 1 },
+            { name: "Wood pigeon", image: "assets/images/Animal set_3/Wood pigeon _th1.png", eliminateAt: 6 },
+            { name: "Sparrow", image: "assets/images/Animal set_3/Sparrow_th1.png", eliminateAt: 3 },
+            { name: "White winged dove", image: "assets/images/Animal set_3/White winged dove _th1.png", eliminateAt: 4 },
+            { name: "Speckled wood pigeon", image: "assets/images/Animal set_3/Speckled wood pigeon_th1.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular organisms that consume food", "(heterotrophs) and can move."],
+            ["Possess a notochord (flexible rod-like", "structure) at some stage of life."],
+            ["Warm-blooded vertebrates with feathers, beaks,", "and lay hard-shelled eggs."],
+            ["Stout-bodied birds with small heads", "that produce \"crop milk\" for young."],
+            ["Birds with soft cooing calls and a distinctive", "bobbing head movement while walking."],
+            ["Medium to large pigeons with iridescent", "neck patches and strong flight."],
+            ["Himalayan forest pigeon with maroon-brown", "plumage speckled with white spots on neck."]
+          ],
+          taxons: ["Animalia", "Chordata", "Aves", "Columbiformes", "Columbidae", "Columba", "Hodgsonii"]
+        },
+        set4: {
+          targetName: "Northern Pacific sea star",
+          targetScientific: "Asterias amurensis",
+          targetImage: "assets/images/Animal set_4/Northern Pacific sea star_th1.png",
+          organisms: [
+            { name: "Spiny sun star", image: "assets/images/Animal set_4/Spiny sun star_th1.png", eliminateAt: 4 },
+            { name: "Sea urchin", image: "assets/images/Animal set_4/Sea urchin_th1.png", eliminateAt: 2 },
+            { name: "Sunflower star", image: "assets/images/Animal set_4/Sunflower star_th1.png", eliminateAt: 5 },
+            { name: "King cobra", image: "assets/images/Animal set_4/King cobra _th1.png", eliminateAt: 1 },
+            { name: "Forbes' sea star", image: "assets/images/Animal set_4/Forbes’ sea star_th1.png", eliminateAt: 6 },
+            { name: "Cushion star", image: "assets/images/Animal set_4/Cushion star_th1.png", eliminateAt: 3 },
+            { name: "Northern Pacific sea star", image: "assets/images/Animal set_4/Northern Pacific sea star_th1.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular organisms that consume food", "(heterotrophs) and can move."],
+            ["Spiny-skinned marine animals with five-part", "radial symmetry and water vascular system."],
+            ["Have star-shaped body with arms merging into central", "disc; can evert stomach for external digestion."],
+            ["Possess straight or crossed pedicellariae (tiny", "pincer-like structures) used for defense and cleaning."],
+            ["Sea stars with four rows of tube feet and", "crossed pedicellariae on body surface."],
+            ["Typically have five arms with conical spines", "arranged in irregular longitudinal rows."],
+            ["Yellow-orange sea stars with purple markings;", "invasive species native to North Pacific."]
+          ],
+          taxons: ["Animalia", "Echinodermata", "Asteroidea", "Forcipulatida", "Asteriidae", "Asterias", "Amurensis"]
         }
       },
       plant: {
         set1: {
-          targetName: "Spirogyra",
-          targetScientific: "Spirogyra varians",
-          targetImage: "assets/images/Plant set_1/Slender spirogyra_th1.png",
+          targetName: "Elongated spirogyra",
+          targetScientific: "Spirogyra longata",
+          targetImage: "assets/images/Plant set_1/Elongated spirogyra_th.png",
           organisms: [
+            { name: "Mougeotia", image: "assets/images/Plant set_1/Mougeotia_th.png", eliminateAt: 5 },
             { name: "Moss", image: "assets/images/Plant set_1/Moss_th.png", eliminateAt: 1 },
+            { name: "Slender spirogyra", image: "assets/images/Plant set_1/Slender spirogyra_th.png", eliminateAt: 6 },
+            { name: "Chlamydomonas", image: "assets/images/Plant set_1/Chlamydomonas_th.png", eliminateAt: 3 },
             { name: "Ulva", image: "assets/images/Plant set_1/Ulva_th.png", eliminateAt: 2 },
-            { name: "Mougeotia", image: "assets/images/Plant set_1/Mougeotia_th.png", eliminateAt: 3 },
             { name: "Closterium", image: "assets/images/Plant set_1/Closterium_th.png", eliminateAt: 4 },
-            { name: "Chlamydomonas", image: "assets/images/Plant set_1/Chlamydomonas_th.png", eliminateAt: 5 },
-            { name: "Elongated spirogyra", image: "assets/images/Plant set_1/Elongated spirogyra_th.png", eliminateAt: 6 },
-            { name: "Slender spirogyra", image: "assets/images/Plant set_1/Slender spirogyra_th.png", eliminateAt: -1 }
+            { name: "Elongated spirogyra", image: "assets/images/Plant set_1/Elongated spirogyra_th.png", eliminateAt: -1 }
           ],
           clues: [
-            ["Multi-cellular and single-cellular", "organisms that photosynthesize."],
-            ["Green algae found in freshwater", "and marine habitats."],
-            ["Filamentous green algae", "with spiral chloroplasts."],
-            ["Characterized by their unique", "conjugation method."],
-            ["Zygnemataceae", "family features."],
-            ["Spiral-shaped", "chloroplast arrangement."],
-            ["Slender filaments with", "specific cell wall patterns."]
+            ["Multicellular, eukaryotic organisms that primarily", "produce their own food through photosynthesis."],
+            ["Simplest plants with undifferentiated body (thallus);", "no true roots, stems, or leaves."],
+            ["Green algae with chlorophyll a and b stored in", "cup, spiral, or ribbon-shaped chloroplasts."],
+            ["Reproduce sexually by conjugation (fusion of", "non-flagellated gametes through conjugation tube)."],
+            ["Have unbranched filamentous algae with cells", "joined end-to-end in single chains."],
+            ["Have spiral or ribbon-shaped chloroplasts", "coiled like a spring inside each cell."],
+            ["Have elongated cylindrical cells that are 2–3", "times longer than wide."]
           ],
-          taxons: ["Plantae", "Chlorophyta", "Chlorophyceae", "Zygnematales", "Zygnemataceae", "Spirogyra", "Varians"]
+          taxons: ["Plantae", "Thallophyta", "Chlorophyceae", "Zygnematales", "Zygnemataceae", "Spirogyra", "longata"]
+        },
+        set2: {
+          targetName: "Mediterranean cord moss",
+          targetScientific: "Funaria mediterranea",
+          targetImage: "assets/images/Plant set_2/Mediterranean cord moss_th.png",
+          organisms: [
+            { name: "Haircap moss", image: "assets/images/Plant set_2/Haircap moss _th.png", eliminateAt: 3 },
+            { name: "Pygmy moss", image: "assets/images/Plant set_2/Pygmy moss_th.png", eliminateAt: 5 },
+            { name: "Liverwort", image: "assets/images/Plant set_2/Liverwort_th.png", eliminateAt: 2 },
+            { name: "Splachnum moss", image: "assets/images/Plant set_2/Splachnum moss _th.png", eliminateAt: 4 },
+            { name: "Chlamydomonas", image: "assets/images/Plant set_2/Chlamydomonas_th.png", eliminateAt: 1 },
+            { name: "Common cord moss", image: "assets/images/Plant set_2/Common cord moss_th.png", eliminateAt: 6 },
+            { name: "Mediterranean cord moss", image: "assets/images/Plant set_2/Mediterranean cord moss_th.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular, eukaryotic organisms that primarily", "produce their own food through photosynthesis."],
+            ["Non-vascular plants; no true roots, stems, or leaves;", "called \"amphibians of plant kingdom.\""],
+            ["True mosses with leafy gametophyte and capsule", "with peristome teeth for spore dispersal."],
+            ["Pioneer mosses that rapidly colonise disturbed,", "burnt, or nitrogen-rich soil."],
+            ["Pear-shaped or asymmetrical capsules with", "reduced or absent peristome teeth."],
+            ["Twisted seta (stalk) that coils and uncoils with", "humidity changes to aid spore dispersal."],
+            ["Native to Mediterranean region; smaller capsules", "than common cord moss."]
+          ],
+          taxons: ["Plantae", "Bryophyta", "Bryopsida", "Funariales", "Funariaceae", "Funaria", "mediterranea"]
+        },
+        set3: {
+          targetName: "Blue pine",
+          targetScientific: "Pinus wallichiana",
+          targetImage: "assets/images/Plant set_3/Blue pine.png",
+          organisms: [
+            { name: "Deodar", image: "assets/images/Plant set_3/Deodar.png", eliminateAt: 5 },
+            { name: "Coconut", image: "assets/images/Plant set_3/Coconut_th.png", eliminateAt: 1 },
+            { name: "Scots pine", image: "assets/images/Plant set_3/Scots pine.png", eliminateAt: 6 },
+            { name: "Cypress", image: "assets/images/Plant set_3/Cypress.png", eliminateAt: 4 },
+            { name: "Cycas", image: "assets/images/Plant set_3/Cycas_th.png", eliminateAt: 2 },
+            { name: "Araucaria", image: "assets/images/Plant set_3/Araucaria_th.png", eliminateAt: 3 },
+            { name: "Blue pine", image: "assets/images/Plant set_3/Blue pine.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular, eukaryotic organisms that primarily", "produce their own food through photosynthesis."],
+            ["Have naked seeds, meaning they are not enclosed", "in an ovary or fruit."],
+            ["Have needle-like or scale-like leaves; lack", "motile sperm (pollen tube delivers sperm)."],
+            ["Have resin canals present throughout wood,", "leaves, and cones."],
+            ["Each cone scale bears exactly two-winged seeds", "on its upper surface."],
+            ["Have dimorphic shoots: long shoots with scale leaves", "and dwarf shoots bearing needle fascicles."],
+            ["Have bluish-green drooping needles per fascicle;", "banana-shaped resinous cones."]
+          ],
+          taxons: ["Plantae", "Gymnospermae", "Pinopsida", "Pinales", "Pinaceae", "Pinus", "wallichiana"]
+        },
+        set4: {
+          targetName: "Fragrant mango",
+          targetScientific: "Mangifera odorata",
+          targetImage: "assets/images/Plant set_4/Fragrant mango.png",
+          organisms: [
+            { name: "Apple (fruit)", image: "assets/images/Plant set_4/Apple (fruit).png", eliminateAt: 3 },
+            { name: "Alphonso mango (fruit)", image: "assets/images/Plant set_4/Alphonso mango (fruit).png", eliminateAt: 6 },
+            { name: "Pine (cone)", image: "assets/images/Plant set_4/Pine (cone).png", eliminateAt: 1 },
+            { name: "Cashew (fruit)", image: "assets/images/Plant set_4/Cashew (fruit).png", eliminateAt: 5 },
+            { name: "Banana (fruit)", image: "assets/images/Plant set_4/Banana (fruit).png", eliminateAt: 2 },
+            { name: "Orange (fruit)", image: "assets/images/Plant set_4/Orange (fruit).png", eliminateAt: 4 },
+            { name: "Fragrant mango", image: "assets/images/Plant set_4/Fragrant mango.png", eliminateAt: -1 }
+          ],
+          clues: [
+            ["Multicellular, eukaryotic organisms that primarily", "produce their own food through photosynthesis."],
+            ["Have seeds enclosed within fruits; possess true", "flowers with ovary."],
+            ["Have embryo with two cotyledons; reticulate leaf", "venation; tap root system."],
+            ["Have flowers with prominent nectar disc between", "stamens and ovary."],
+            ["Have resin ducts producing urushiol (causes allergic", "skin reactions); drupe fruits."],
+            ["Have fleshy drupe fruits with large single", "stony seed."],
+            ["The fruit has sweet fragrant aroma resembling", "coconut; bright orange fibrous flesh with mild flavour."]
+          ],
+          taxons: ["Plantae", "Angiospermae", "Dicotyledonae", "Sapindales", "Anacardiaceae", "Mangifera", "odorata"]
         }
       }
     }
@@ -292,6 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
     AppState.currentLevel = index; // Move focus to this newly revealed level
     updateLevelsUI();
     updateInstruction();
+    hideAllHints();
   }
 
   /**
@@ -380,7 +525,13 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         if (tab) tab.style.display = 'block';
         if (clickedTab) clickedTab.style.display = 'none';
-        if (label) label.style.display = 'block';
+        if (label) {
+          label.style.display = 'block';
+          const tspan = label.querySelector('tspan');
+          if (tspan && index === 1) {
+            tspan.textContent = isPlant ? 'Division' : 'Phylum';
+          }
+        }
         if (revealedLabel) revealedLabel.style.display = 'none';
         if (taxonGroup) taxonGroup.style.display = 'none';
         if (hintTrigger) hintTrigger.style.display = 'none';
@@ -469,6 +620,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const feedbackId = isCorrect ? 'correct_feedback' : 'wrong_feedback';
     const feedbackEl = document.getElementById(feedbackId);
+    hideAllHints();
     if (feedbackEl) {
       feedbackEl.style.display = 'block';
 
@@ -483,7 +635,18 @@ document.addEventListener("DOMContentLoaded", () => {
       // Index 0 (Leftmost) maps to correct-1 / wrong-1
       const specificId = `${isCorrect ? 'correct' : 'wrong'}-${index + 1}`;
       const specificEl = document.getElementById(specificId);
-      if (specificEl) specificEl.style.display = 'block';
+      if (specificEl) {
+        specificEl.style.display = 'block';
+
+        // Dynamically update "animal" to "plant" if current kingdom is plant
+        const noun = AppState.currentKingdom === 'plant' ? 'plant' : 'animal';
+        const tspans = specificEl.querySelectorAll('tspan');
+        tspans.forEach(tspan => {
+          if (tspan.textContent.includes('animal')) {
+            tspan.textContent = tspan.textContent.replace('animal', noun);
+          }
+        });
+      }
     }
 
     setTimeout(() => {
@@ -548,37 +711,62 @@ document.addEventListener("DOMContentLoaded", () => {
     const hintId = `hint-${index + 1}`; // Corrected mapping: Kingdom is index 0 -> hint-7? Wait. 
     // Let's re-verify matching: 
     // Kingdom (0) -> hint-7
-    // Phylum (1) -> hint-6
-    // Class (2) -> hint-5
-    // Order (3) -> hint-4
-    // Family (4) -> hint-3
-    // Genus (5) -> hint-2
-    // Species (6) -> hint-1
     const correctedHintId = `hint-${7 - index}`;
     const hintEl = document.getElementById(correctedHintId);
     if (hintEl) {
       const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
       const clueLines = kingdomData.clues[index];
-      const textGroups = hintEl.querySelectorAll('g[isolation="isolate"]');
-
-      // Each hint box has 2 text blocks or tspans across blocks
-      // Let's assume the first lines go into first tspans of available text elements
-      const allTspans = hintEl.querySelectorAll('tspan');
-      // We need to clear them and set them
-      allTspans.forEach(t => t.textContent = '');
 
       // Map first line to first text block, second line to second
       const textElements = hintEl.querySelectorAll('text');
       if (textElements.length >= 2) {
+        // Clear all tspans first
+        hintEl.querySelectorAll('tspan').forEach(t => t.textContent = '');
+
         // Line 1
         const tspans1 = textElements[0].querySelectorAll('tspan');
         if (tspans1.length > 0) tspans1[0].textContent = clueLines[0];
         // Line 2
         const tspans2 = textElements[1].querySelectorAll('tspan');
         if (tspans2.length > 0) tspans2[0].textContent = clueLines[1];
-      }
 
-      hintEl.style.display = 'block';
+        // Make it visible to measure
+        hintEl.style.display = 'block';
+
+        // Use requestAnimationFrame to ensure browser has updated the DOM for measurement
+        requestAnimationFrame(() => {
+          const b1 = textElements[0].getBBox();
+          const b2 = textElements[1].getBBox();
+          const maxTextWidth = Math.max(b1.width, b2.width);
+
+          const leftPadding = 30;
+          const rightPadding = 80; // Extra room for the close button
+          const dynamicWidth = Math.max(200, maxTextWidth + leftPadding + rightPadding);
+
+          const bgRects = hintEl.querySelectorAll('rect');
+          if (bgRects.length >= 2) {
+            bgRects[0].setAttribute('width', dynamicWidth);
+            bgRects[1].setAttribute('width', dynamicWidth - 4);
+
+            const rectX = parseFloat(bgRects[0].getAttribute('x'));
+
+            // Reposition the close button
+            const closeBtn = hintEl.querySelector('g[id^="Group_1102"]');
+            if (closeBtn) {
+              const circle = closeBtn.querySelector('circle');
+              if (circle) {
+                const circleCX = parseFloat(circle.getAttribute('cx'));
+                // Target center of circle at rect right edge - 30 margin
+                const targetCX = rectX + dynamicWidth - 30;
+                const tx = targetCX - circleCX;
+                closeBtn.setAttribute('transform', `translate(${tx}, 0)`);
+              }
+            }
+          }
+        });
+      } else {
+        hintEl.style.display = 'block';
+      }
     }
   }
 
@@ -614,15 +802,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const showAnswerEl = document.getElementById('show_answer');
     if (showAnswerEl) showAnswerEl.style.display = 'block';
+    hideAllHints();
   }
 
   function nextSet() {
+    const kingdomSets = Object.keys(AppState.data[AppState.currentKingdom]).length;
+    AppState.currentSet++;
+    if (AppState.currentSet > kingdomSets) {
+      AppState.currentSet = 1;
+    }
+    toggleTrailUI(true);
     resetGame();
   }
 
   function showInsights() {
     const insightsEl = document.getElementById('insits');
     if (insightsEl) insightsEl.style.display = 'block';
+    hideAllHints();
   }
 
   function showFinalSummary() {
@@ -642,6 +838,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const summaryMsg = document.getElementById('final_message');
     if (summaryImg) summaryImg.style.display = 'block';
     if (summaryMsg) summaryMsg.style.display = 'block';
+
+    const elementsToHide = [
+      'all_images',
+      'question_mark_hint_instruction',
+      'instruction_text',
+      'instruction_text-2'
+    ];
+    elementsToHide.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
+    hideAllHints();
   }
 
   // Start the app
