@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-17T20:12:17+05:30",
+      "updatedAt": "2026-03-17T21:03:24+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-17T21:03:24+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add descriptive names to DNA tubes and enhance the randomization verification debug output, along with a minor band position adjustment and version update.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-17T20:12:17+05:30",
       "author": "PrasannaP",
       "message": "chore: Update widget version ID in index.html.",
@@ -615,14 +623,6 @@
       "message": "Refactor SVG text elements and rename answer port group IDs in `index.html`, update wireframe comments for clarity, and bump the version.",
       "widgets": [
         112
-      ]
-    },
-    {
-      "date": "2026-03-14T14:08:05+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add a semi-transparent overlay for the insight popup and update the widget version.",
-      "widgets": [
-        97
       ]
     }
   ]
