@@ -253,6 +253,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const instructionText = document.getElementById("I_text");
     const dynamicArthText = document.getElementById("dynamic_arth_text");
     const dynamicPrayogText = document.getElementById("dynamic_prayog_text");
+    const lottieWrapper = document.getElementById("lottie-wrapper");
+
+    let starAnimation = null;
+
+    if (lottieWrapper && typeof lottie !== 'undefined') {
+        starAnimation = lottie.loadAnimation({
+            container: lottieWrapper,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'assets/Animation/stars points.json',
+            rendererSettings: {
+                clearCanvas: true,
+                preserveAspectRatio: 'xMidYMid meet',
+                transparent: true
+            }
+        });
+    }
 
     const correctAnswerPatch = document.getElementById("Correct_answer_patch");
     if (correctAnswerPatch) correctAnswerPatch.style.display = "none";
@@ -502,6 +520,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             patchAgala.style.display = "block";
             patchUttarChipaye.style.display = "none";
+            if (starAnimation) {
+                lottieWrapper.style.display = "block";
+                starAnimation.goToAndPlay(0, true);
+            }
         }
     }
 
@@ -563,6 +585,8 @@ document.addEventListener("DOMContentLoaded", () => {
         wrongBorder.style.display = "none";
 
         patchUttarDekhe.style.display = "block";
+        if (lottieWrapper) lottieWrapper.style.display = "none";
+        if (starAnimation) starAnimation.stop();
     }
 
     function resetGameUIAndStep() {
