@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-14T15:29:31+05:30",
+      "updatedAt": "2026-03-17T15:27:30+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -77,7 +77,7 @@
       "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
-      "updatedAt": "2026-03-14T15:50:58+05:30",
+      "updatedAt": "2026-03-17T14:00:42+05:30",
       "author": "PrasannaP"
     },
     "wg122-suffix-magic": {
@@ -387,6 +387,14 @@
       ]
     },
     {
+      "date": "2026-03-17T15:27:30+05:30",
+      "author": "PrasannaP",
+      "message": "Refactor: Rework sample-to-lane assignments, update associated UI labels and layout, and correct the criminal for one DNA set.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-17T15:20:38+05:30",
       "author": "tce-nitinc",
       "message": "feat: Introduce initial CSS styling for the wg115 literary device widget.",
@@ -395,11 +403,27 @@
       ]
     },
     {
+      "date": "2026-03-17T14:53:31+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Delay display of report numbers and index, add \"DNA samples in loading mixtures\" text, and implement a band randomization verification debug method.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-17T14:40:52+05:30",
       "author": "tce-nitinc",
       "message": "wg115 changes",
       "widgets": [
         115
+      ]
+    },
+    {
+      "date": "2026-03-17T14:00:42+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement dynamic DNA helix visualization in the solution modal, adjust feedback timeout and styling, and update wireframe documentation with new requirements and debug notes for both widgets.",
+      "widgets": [
+        121
       ]
     },
     {
@@ -601,31 +625,6 @@
       "widgets": [
         47,
         48
-      ]
-    },
-    {
-      "date": "2026-03-14T13:27:58+05:30",
-      "author": "PrasannaP",
-      "message": "Refactor trait selection style resets, update Punnett square toggle text and button visibility, and correct initial genotype displays and cross labels.",
-      "widgets": [
-        47
-      ]
-    },
-    {
-      "date": "2026-03-14T11:28:26+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: Implement the new 'Barter Bazaar' interactive widget including its HTML structure, styling, and JavaScript logic.",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-13T19:19:52+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg133",
-      "widgets": [
-        133,
-        155
       ]
     }
   ]
