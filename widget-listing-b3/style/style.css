@@ -126,6 +126,14 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.act-msg {
+  color: #aaa;
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .act-author {
   color: #00bcd4;
   font-weight: 600;

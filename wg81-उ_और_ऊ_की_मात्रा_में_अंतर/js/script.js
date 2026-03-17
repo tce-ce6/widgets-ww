@@ -9,6 +9,8 @@ let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
 let animationTimeout = null;
+let correctPlacementSequence = [];
+let placementIndex = 0;
 let starAnimationTimeout = null;
 const LottieAnimations = {
   LION: {
@@ -58,7 +60,25 @@ function init() {
   });
   textClickEvent();
 }
+function initializePlacementSequence() {
+  const totalWords = Object.keys(WordAudioEnum).length;
+  const half = Math.floor(totalWords / 2);
+  correctPlacementSequence = [];
 
+  for (let i = 0; i < totalWords; i++) {
+    correctPlacementSequence.push(i < half ? "cloud_text_01" : "cloud_text_02");
+  }
+
+  // Fisher-Yates shuffle
+  for (let i = correctPlacementSequence.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [correctPlacementSequence[i], correctPlacementSequence[j]] = [
+      correctPlacementSequence[j],
+      correctPlacementSequence[i],
+    ];
+  }
+  placementIndex = 0;
+}
 selectRandomWord = () => {
   currentWordKey = getRandomUnusedWordKey();
   selectedWord = WordAudioEnum[currentWordKey];
@@ -70,9 +90,14 @@ function textDisplay() {
   let text2 = document.getElementById("cloud_text_02");
   const tspans = text1.querySelector("p");
   const tspan2 = text2.querySelector("p");
-  const isLeftCorrect = Math.random() < 0.5;
+  if (placementIndex >= correctPlacementSequence.length) {
+    initializePlacementSequence();
+  }
 
-  if (isLeftCorrect) {
+  const correctCloud = correctPlacementSequence[placementIndex];
+  placementIndex++;
+
+  if (correctCloud === "cloud_text_01") {
     tspans.innerHTML = highlightConsonantWithUmatra(selectedWord.correct);
     tspan2.innerHTML = highlightConsonantWithUmatra(selectedWord.incorrect);
     correctCloudId = "cloud_text_01"; // ← remember
@@ -172,11 +197,11 @@ function textClickEvent() {
     tspans.classList.add("cloud_text_highlight");
 
     // Animation
-    lottiAnimation("block");
+    //lottiAnimation("block");
     playLottieAnimation(isCorrect ? "CORRECT" : "INCORRECT");
-    // if (isCorrect) {
-    //   playLottieAnimationStart(cloudId);
-    // }
+    if (isCorrect) {
+      playLottieAnimationStart(cloudId);
+    }
   }
 
   cloud1.addEventListener("click", () => {
@@ -214,7 +239,7 @@ function audioListener() {
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
+    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
   });
 }
 
@@ -377,7 +402,7 @@ function playLottieAnimation(bandGroup) {
   if (!animationPath) return;
 
   const type = animationPath.split("_")[0];
-
+  parentEl.style.display = "block";
   if (lottieInstances) {
     if (animationTimeout) clearTimeout(animationTimeout);
     lottieInstances.destroy();
@@ -397,27 +422,42 @@ function playLottieAnimation(bandGroup) {
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      lottieInstances.play();
-      parentEl.classList.add("visible");
+      setTimeout(() => {
+        lottieInstances.play();
+      }, 10);
+
+    });
+    lottieInstances.addEventListener("enterFrame", (e) => {
+      // Reveal only when we have definitely drawn a frame
+      if (e.currentTime > 0.1) {
+        if (!parentEl.classList.contains("visible")) {
+          parentEl.style.visibility = "visible";
+          parentEl.style.opacity = "1";
+
+          parentEl.classList.add("visible");
+
+
+        }
+      }
     });
 
     lottieInstances.addEventListener("complete", () => {
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         resetFeedbackVisuals();
-        if (bandGroup === "INCORRECT") {
-          document.getElementById("audio_button_1").style.display = "block";
-          document.getElementById("audio_button_2").style.display = "block";
-          audio_button_1 = false;
-          audio_button_2 = false;
-          age_badhe_button = false;
-          nextbutton();
-          hideAndShowAudioButtons("none");
-          let i_text = document.getElementById("i_text_1");
-          const tspans = i_text.querySelector("p");
-          tspans.innerHTML =
-            "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
-        }
+        // if (bandGroup === "INCORRECT") {
+        //   document.getElementById("audio_button_1").style.display = "block";
+        //   document.getElementById("audio_button_2").style.display = "block";
+        //   audio_button_1 = false;
+        //   audio_button_2 = false;
+        //   age_badhe_button = false;
+        //   nextbutton();
+        //   hideAndShowAudioButtons("none");
+        //   let i_text = document.getElementById("i_text_1");
+        //   const tspans = i_text.querySelector("p");
+        //   tspans.innerHTML =
+        //     "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+        // }
 
         if (lottieInstances) {
           lottieInstances.destroy();
@@ -463,7 +503,7 @@ function playLottieAnimationStart(bandGroup) {
   try {
     lottieInstances_star = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/Animation/shining stars.json`,
@@ -526,6 +566,7 @@ getAllWordElements = () => {
       // Work with the parsed JSON data (a JavaScript object)
       console.log(data);
       WordAudioEnum = data;
+      initializePlacementSequence()
       init();
     })
     .catch((error) => {

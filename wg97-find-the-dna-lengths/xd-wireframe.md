@@ -9,3 +9,6 @@ text in lane 1 will be "ladder" instead of "loder"
 all band should appear in ifinite combination and all 4 can be same or different between the range of 100bp to 2100bp   
 there is a long space in insight popup should be same as xd between "marker)" and "containing" and put a gap between each 3 points 
 ![alt text](image.png) check the snap for the instruction text before start button and after all gels filled by sample tubes
+
+Comments:
+need a semi transparent bg popup for insight popup
