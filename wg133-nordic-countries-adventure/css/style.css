@@ -338,3 +338,25 @@
 #btn-quiz {
   cursor: pointer;
 }
+
+.btn-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+
+.btn-wrapper .btn-main {
+  padding: 15px 30px;
+  background-color: #0295FC;
+  font-size: 30px;
+  color: #fff;
+  border-radius: 30px;
+  min-width: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selected.correct .blink-wrap {
+  fill: #39FF14;
+}
