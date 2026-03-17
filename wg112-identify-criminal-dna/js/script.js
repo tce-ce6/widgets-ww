@@ -36,11 +36,11 @@ var WG112App = {
      *  labelId – sample name text shown in gel lane after loading
      */
     TUBES: [
-        { id: 0, tubeId: 'tube',   baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Label_Lane_1' },
-        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Label_Lane_2' },
-        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Label_Lane_3' },
-        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Label_Lane_4' },
-        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Label_Lane_5' }
+        { id: 0, tubeId: 'tube',   baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Label_Lane_1', name: "Crime Scene" },
+        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Label_Lane_2', name: "Suspect 1" },
+        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Label_Lane_3', name: "Suspect 2" },
+        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Label_Lane_4', name: "Suspect 3" },
+        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Label_Lane_5', name: "Suspect 4" }
     ],
 
     // Lane-2 … Lane-5 sample labels (Lane-1 Crime scene label stays always on)
@@ -68,7 +68,7 @@ var WG112App = {
             chromosomes: ["6", "13", "17"],
             criminal: 1, // Suspect-2
             suspects: [
-                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 800 }],
+                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 785 }],
                 [{ c: 0, y: 440 }, { c: 1, y: 480 }, { c: 0, y: 560 }, { c: 1, y: 640 }, { c: 2, y: 720 }, { c: 2, y: 760 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 0, y: 600 }, { c: 1, y: 640 }, { c: 2, y: 720 }],
                 [{ c: 1, y: 400 }, { c: 0, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 640 }, { c: 0, y: 720 }, { c: 2, y: 760 }]
@@ -687,22 +687,39 @@ var WG112App = {
 
     /* ─── DEBUG METHODS ────────────────────────────────────────────────────── */
     /**
-     * Prints current band patterns to console for verification.
+     * Prints current state and band patterns to console for verification.
      */
     verifyRandomization: function () {
         var set = this.DNA_SETS[this.G.currentSetIdx];
-        console.log("%c Verification of DNA Randomization (Set " + this.G.currentSetIdx + ") ", "background: #222; color: #bada55; padding: 5px;");
-        console.log("Criminal Suspect: " + (set.criminal + 1));
-        console.log("Chromosome Indices: " + set.chromosomes.join(", "));
-
-        console.group("Band Patterns:");
+        console.log("%c Verification of DNA Randomization (Set " + this.G.currentSetIdx + ") ", "background: #222; color: #bada55; font-weight: bold; padding: 5px;");
+        console.log("Correct Criminal: Suspect " + (set.criminal + 1));
+        
+        console.group("Suspect Band Definitions (Shared across lanes):");
         set.suspects.forEach(function (s, i) {
             var matchStr = (i === set.criminal) ? " [MATCHES CRIME SCENE]" : "";
-            console.log("Suspect " + (i + 1) + matchStr + ":", s.map(function (b) { return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
+            console.log("Suspect " + (i + 1) + matchStr + "... " + matchStr + ":", s.map(function (b) { return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
         });
         console.groupEnd();
 
-        return "Set " + this.G.currentSetIdx + " is active. Criminal is Suspect " + (set.criminal + 1);
+        // Reveal current mapping in lanes
+        console.group("Current Lane Assignments (based on click order):");
+        var self = this;
+        this.TUBES.forEach(function(tube, idx) {
+            var lane = "Not loaded yet";
+            // Check if this tube's label is visible or transformed
+            var labelEl = self.el(tube.labelId);
+            if (labelEl && labelEl.style.display !== 'none') {
+                 // Try to find which lane it's in by looking at G.loadedTubes
+                 var loadedIdx = self.G.loadedTubes.indexOf(idx);
+                 if (loadedIdx !== -1 || idx === 0) {
+                     lane = (idx === 0) ? "Lane 1" : "Lane " + (self.G.loadedTubes.indexOf(idx) + 2);
+                 }
+            }
+            console.log(tube.name + " -> " + lane);
+        });
+        console.groupEnd();
+
+        return "Set index: " + this.G.currentSetIdx + " | Criminal: Suspect " + (set.criminal + 1);
     }
 
 };
