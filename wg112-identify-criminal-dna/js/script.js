@@ -17,6 +17,7 @@ var WG112App = {
     G: {
         phase: 0,           // 0=init  1=allLoaded  2=running  3=identify  4=answered
         loadedTubes: [],    // indices 0-4 already dispensed into gel
+        laneToTube: [0, -1, -1, -1, -1], // maps lane index (0-4) to tube index (0-4)
         currentSetIdx: 0,   // currently active set in DNA_SETS
         criminal: 3,        // 0-based index of the criminal (updated properly per set now)
         nextSuspectLane: 1, // Lane index (1 to 4) for the next clicked suspect
@@ -37,18 +38,18 @@ var WG112App = {
      */
     TUBES: [
         { id: 0, tubeId: 'tube', baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Crime_scene_sample_2' },
-        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Suspect-3_sample-2' },
+        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Suspect-1_sample' },
         { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Suspect-2_sample-2' },
-        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Suspect-4_sample-2' },
-        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Suspect-1_sample' }
+        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Suspect-3_sample-2' },
+        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Suspect-4_sample-2' }
     ],
 
     // Lane-2 … Lane-5 sample labels (Lane-1 Crime scene label stays always on)
     SUSPECT_LANE_LABELS: [
-        'Suspect-3_sample-2',  // Lane-2
-        'Suspect-2_sample-2',  // Lane-3
-        'Suspect-4_sample-2',  // Lane-4
-        'Suspect-1_sample'     // Lane-5
+        'Suspect-1_sample',
+        'Suspect-2_sample-2',
+        'Suspect-3_sample-2',
+        'Suspect-4_sample-2'
     ],
 
     // DNA band groups revealed during electrophoresis (one per lane)
@@ -86,7 +87,7 @@ var WG112App = {
         },
         {
             chromosomes: ["1", "9", "22"],
-            criminal: 3, // Suspect-4
+            criminal: 2, // Suspect-3
             suspects: [
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 520 }, { c: 1, y: 560 }, { c: 1, y: 600 }, { c: 2, y: 640 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 2, y: 640 }],
@@ -248,6 +249,7 @@ var WG112App = {
         if (lblAns) { lblAns.textContent = 'Show Answer'; }
 
         this.applyDNASet(currentSet);
+        this.verifyRandomization(); // Initial log for the new set
 
         /* ── always-visible background elements ── */
         this.show('gel_base');
@@ -441,6 +443,7 @@ var WG112App = {
                 setTimeout(function () {
                     self.hide('micropipette2');      // Change 2: gone after 1.5 s
                     G.loadedTubes.push(idx);
+                    G.laneToTube[targetSlot] = idx;
                     G.animating = false;
 
                     if (G.loadedTubes.length === self.TUBES.length) {
@@ -469,6 +472,9 @@ var WG112App = {
         G.animating = true;
         this.hide('i_text_2');
         this.setStartBtn(false);
+
+        /* Assign patterns to lanes based on which tubes were loaded there */
+        this.updateGelBands();
 
         var self = this;
         var delay = 400;   // ms stagger between lanes
@@ -640,34 +646,67 @@ var WG112App = {
         // 3. Colors for chromosomes
         var colorMap = { 0: '#ff4c00', 1: '#00d62c', 2: '#ffffb4' };
 
-        // 4. Generate bands for all 5 lanes
+        // 1. Update legend labels
+        for (var c = 0; c < 3; c++) {
+            var lbl = this.el('lbl_chrom_' + c);
+            if (lbl) { lbl.textContent = 'Chromosome ' + setDef.chromosomes[c]; }
+        }
+
+        // 2. Update criminal answer text (Suspects 1-indexed)
+        var ansLbl = this.el('lbl_criminal_answer');
+        if (ansLbl) { ansLbl.textContent = 'Suspect ' + (setDef.criminal + 1) + ' is the criminal'; }
+
+        var ansSusName = this.el('ans_suspect_name');
+        if (ansSusName) { ansSusName.textContent = 'Suspect-' + (setDef.criminal + 1); }
+
+        // Update Answer Popup Portrait
+        var colorMapBG = { 0: '#fdce86', 1: '#05decf', 2: '#a4de05', 3: '#dc83b6' };
+        var ansBG = this.el('ans_portrait_bg');
+        if (ansBG) { ansBG.setAttribute('fill', colorMapBG[setDef.criminal]); }
+
+        for (var s = 0; s < 4; s++) {
+            var p = this.el('ans_portrait_' + s);
+            if (p) { p.style.display = (s === setDef.criminal) ? 'inline' : 'none'; }
+        }
+
         // Lane 0 is Crime Scene, Lanes 1-4 are suspects
-        var crimeSceneBands = setDef.suspects[setDef.criminal];
+        // We'll store this for when Start is clicked
+        this.G.currentSet = setDef;
+        this.G.criminal = setDef.criminal;
+    },
 
-        // Ensure we only have ONE match:
-        // By design, our DNA_SETS suspects are unique. 
-        // We'll map them to the BANDS indices.
-        // We can shuffle the non-criminal suspect patterns to different lanes for variety,
-        // but current mapping is already varied across sets.
-        
-        var bandGroupsParams = [
-            { id: this.BANDS[0], bands: crimeSceneBands, x: 1091 },     // Crime Scene   (TUBES[0])
-            { id: this.BANDS[1], bands: setDef.suspects[2], x: 1245 },  // Suspect-3     (TUBES[1])
-            { id: this.BANDS[2], bands: setDef.suspects[1], x: 1397 },  // Suspect-2     (TUBES[2])
-            { id: this.BANDS[3], bands: setDef.suspects[3], x: 1551 },  // Suspect-4     (TUBES[3])
-            { id: this.BANDS[4], bands: setDef.suspects[0], x: 1701 }   // Suspect-1     (TUBES[4])
-        ];
+    /**
+     * updateGelBands – populates the SVG lanes with the correct band patterns
+     * based on which tubes were dispensed into which lanes.
+     */
+    updateGelBands: function() {
+        var setDef = this.G.currentSet;
+        if (!setDef) return;
 
-        for (var l = 0; l < bandGroupsParams.length; l++) {
-            var params = bandGroupsParams[l];
-            var gEl = this.el(params.id);
-            if (!gEl) { continue; }
-            gEl.innerHTML = ''; // Clear old standard bands
+        var colorMap = { 0: '#ff4c00', 1: '#00d62c', 2: '#ffffb4' };
 
-            for (var b = 0; b < params.bands.length; b++) {
-                var bandDef = params.bands[b];
+        for (var l = 0; l < 5; l++) {
+            var tubeIdx = this.G.laneToTube[l];
+            if (tubeIdx === -1) continue;
+
+            var pattern;
+            if (tubeIdx === 0) {
+                // Crime Scene tube – use criminal pattern
+                pattern = setDef.suspects[setDef.criminal];
+            } else {
+                // Suspect tube 1-4 (indices 1-4) -> map to suspects[0-3]
+                pattern = setDef.suspects[tubeIdx - 1];
+            }
+
+            var gEl = this.el(this.BANDS[l]);
+            if (!gEl) continue;
+            gEl.innerHTML = ''; 
+
+            var xPos = this.LANE_WELL_X[l];
+            for (var b = 0; b < pattern.length; b++) {
+                var bandDef = pattern[b];
                 var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                rect.setAttribute('x', params.x);
+                rect.setAttribute('x', xPos);
                 rect.setAttribute('y', bandDef.y);
                 rect.setAttribute('width', 78);
                 rect.setAttribute('height', 12);
@@ -682,16 +721,26 @@ var WG112App = {
      * Prints current band patterns to console for verification.
      */
     verifyRandomization: function() {
-        var set = this.DNA_SETS[this.G.currentSetIdx];
+        this.updateGelBands(); // ensure latest mapping is reflected
+        var set = this.G.currentSet;
+        if (!set) return "No set active.";
+
         console.log("%c Verification of DNA Randomization (Set " + this.G.currentSetIdx + ") ", "background: #222; color: #bada55; padding: 5px;");
-        console.log("Criminal Suspect: " + (set.criminal + 1));
-        console.log("Chromosome Indices: " + set.chromosomes.join(", "));
+        console.log("Criminal Suspect: Suspect " + (set.criminal + 1));
         
-        console.group("Band Patterns:");
+        console.group("Suspect Band Patterns (Stored in set):");
         set.suspects.forEach(function(s, i) {
             var matchStr = (i === set.criminal) ? " [MATCHES CRIME SCENE]" : "";
             console.log("Suspect " + (i + 1) + matchStr + ":", s.map(function(b){ return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
         });
+        console.groupEnd();
+
+        console.group("Lane Content (G.laneToTube):");
+        for (var l = 0; l < 5; l++) {
+            var t = this.G.laneToTube[l];
+            var desc = (t === -1) ? "Empty" : (t === 0 ? "Crime Scene" : "Suspect " + t);
+            console.log("Lane " + (l + 1) + ": " + desc);
+        }
         console.groupEnd();
         
         return "Set " + this.G.currentSetIdx + " is active. Criminal is Suspect " + (set.criminal + 1);
