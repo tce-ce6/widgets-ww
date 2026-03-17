@@ -457,7 +457,7 @@ svg * {
   filter: drop-shadow(0 0 5px #ffb300);
 }
 
-#progress-bar {
+#progress_bar {
   box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
 }
 
