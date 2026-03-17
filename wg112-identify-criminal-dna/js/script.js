@@ -251,8 +251,8 @@ var WG112App = {
 
         /* ── always-visible background elements ── */
         this.show('gel_base');
-        this.show('repport_numbers');
-        this.show('index');
+        this.hide('repport_numbers');
+        this.hide('index');
         this.show('base');
         this.show('tube_base');
         this.show('solution_tube');
@@ -480,6 +480,10 @@ var WG112App = {
             })(i, delay * (i + 1));
         }
 
+        /* Show legend and repeat numbers */
+        this.show('repport_numbers');
+        this.show('index');
+
         /* After electrophoresis finishes → transition to Slide 11 */
         setTimeout(function () {
             self.onShowSlide11();
@@ -640,6 +644,12 @@ var WG112App = {
         // Lane 0 is Crime Scene, Lanes 1-4 are suspects
         var crimeSceneBands = setDef.suspects[setDef.criminal];
 
+        // Ensure we only have ONE match:
+        // By design, our DNA_SETS suspects are unique. 
+        // We'll map them to the BANDS indices.
+        // We can shuffle the non-criminal suspect patterns to different lanes for variety,
+        // but current mapping is already varied across sets.
+        
         var bandGroupsParams = [
             { id: this.BANDS[0], bands: crimeSceneBands, x: 1091 },     // Crime Scene   (TUBES[0])
             { id: this.BANDS[1], bands: setDef.suspects[2], x: 1245 },  // Suspect-3     (TUBES[1])
@@ -665,8 +675,36 @@ var WG112App = {
                 gEl.appendChild(rect);
             }
         }
-    }
+    },
 
+    /* ─── DEBUG METHODS ────────────────────────────────────────────────────── */
+    /**
+     * Prints current band patterns to console for verification.
+     */
+    verifyRandomization: function() {
+        var set = this.DNA_SETS[this.G.currentSetIdx];
+        console.log("%c Verification of DNA Randomization (Set " + this.G.currentSetIdx + ") ", "background: #222; color: #bada55; padding: 5px;");
+        console.log("Criminal Suspect: " + (set.criminal + 1));
+        console.log("Chromosome Indices: " + set.chromosomes.join(", "));
+        
+        console.group("Band Patterns:");
+        set.suspects.forEach(function(s, i) {
+            var matchStr = (i === set.criminal) ? " [MATCHES CRIME SCENE]" : "";
+            console.log("Suspect " + (i + 1) + matchStr + ":", s.map(function(b){ return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
+        });
+        console.groupEnd();
+        
+        return "Set " + this.G.currentSetIdx + " is active. Criminal is Suspect " + (set.criminal + 1);
+    }
+    
+};
+
+// Global helper for testers
+window.verifyRandomization = function() {
+    if (window.WG112App) {
+        return window.WG112App.verifyRandomization();
+    }
+    return "WG112App not initialized.";
 };
 
 /* ─── BOOT ──────────────────────────────────────────────────────────────────── */
