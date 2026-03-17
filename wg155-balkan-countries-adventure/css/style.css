@@ -167,6 +167,196 @@
 
 /* balkan-country style  */
 
-.btn-common{
+.btn-common {
   cursor: pointer;
+}
+
+.flags-wrapper.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.question-wrapper {
+  background-color: #F3F5CB;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.question-wrapper .question-txt {
+  font-size: 26px;
+  background-color: #711D8F;
+  padding: 20px;
+  border-radius: 20px;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.option-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  gap: 10px;
+  margin: 20px 0 10px 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.option-wrapper li {
+  font-size: 25px;
+  background-color: #fff;
+  padding: 5px 16px 5px 6px;
+  width: 45%;
+  border-radius: 50px;
+  border: 1px solid #77306E;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.option-wrapper li .label {
+  border: 1px solid #77306E;
+  border-radius: 50%;
+  padding: 3px 11px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* Correct answer highlight */
+.option-wrapper li.correct {
+  background-color: #d4edda;
+  border-color: #28a745;
+  color: #155724;
+  font-weight: 600;
+}
+
+.option-wrapper li.correct .label {
+  border-color: #28a745;
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Wrong answer highlight */
+.option-wrapper li.wrong {
+  background-color: #fde8e8;
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.option-wrapper li.wrong .label {
+  border-color: #dc3545;
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Disabled state — all options locked after correct answer */
+.option-wrapper li.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Keep correct option fully visible even when disabled */
+.option-wrapper li.correct.disabled {
+  opacity: 1;
+}
+
+/* Correct Answer Popup */
+.correct-answer-popup {
+  background: linear-gradient(135deg, #1B5B79, #0d3d54);
+  border-radius: 20px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.correct-answer-popup .popup-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.correct-answer-popup .popup-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #7FFF7F;
+  text-align: center;
+}
+
+.correct-answer-popup .popup-body {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Fact Bite Popup */
+.fact-bite-popup {
+  background: linear-gradient(135deg, #711D8F, #4a1260);
+  border-radius: 20px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.fact-bite-popup .popup-label {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #FFD700;
+}
+
+.fact-bite-popup .popup-text {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.fact-bite-popup .popup-did-you-know {
+  font-size: 17px;
+  font-style: italic;
+  color: #f0c0ff;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 8px;
+}
+
+.bite-wrapper {
+  padding: 20px;
+  background-color: #E7FFCC;
+  border: 4px dotted #006F25;
+  border-radius: 20px;
+  font-size: 26px;
+}
+
+.title-popup {
+  font-weight: 700;
+}
+
+#btn-quiz {
+  cursor: pointer;
+}
+
+.btn-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+
+.btn-wrapper .btn-main {
+  padding: 15px 30px;
+  background-color: #0295FC;
+  font-size: 30px;
+  color: #fff;
+  border-radius: 30px;
+  min-width: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selected.correct .blink-wrap {
+  fill: #39FF14;
 }
