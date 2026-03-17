@@ -1,488 +1,453 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const enterBtn =
-    document.getElementById("enter-btn") || document.getElementById("Enter");
-  const launchScreen =
-    document.getElementById("launch-screen") ||
-    document.getElementById("intro-screen");
+document.addEventListener('DOMContentLoaded', () => {
+    // ==========================================
+    // 1. STATE & CONFIGURATION
+    // ==========================================
+    let currentSetIndex = 1;
+    let itemsDroppedInCurrentSet = 0;
+    const TOTAL_SETS = 4;
+    const ITEMS_PER_SET = 5;
+    let isActivityComplete = false;
 
-  if (enterBtn && launchScreen) {
-    enterBtn.style.cursor = "pointer";
-    enterBtn.addEventListener("click", () => {
-      launchScreen.style.display = "none";
-      launchScreen.classList.add("hidden-svg");
-      initWidget();
-    });
-  } else {
-    initWidget();
-  }
+    const dragSets = {
+        1: { base: 'drag-object-base-set1', btnBox: 'drag-object-btn-set1', imgPrefix: 'drag-object-btn-set1-img-', foPrefix: 'fo-drag-object-btn-set1-img-' },
+        2: { base: 'drag-object-base-set2', btnBox: 'drag-object-btn-set2', imgPrefix: 'drag-object-btn-set2-img-', foPrefix: 'fo-drag-object-btn-set2-img-' },
+        3: { base: 'drag-object-base-set3', btnBox: 'drag-object-btn-set3', imgPrefix: 'drag-object-btn-set3-img-', foPrefix: 'fo-drag-object-btn-set3-img-' },
+        4: { base: 'drag-object-base-set4', btnBox: 'drag-object-btn-set4', imgPrefix: 'drag-object-btn-set-4-img-', foPrefix: 'fo-drag-object-btn-set-4-img-' } 
+    };
+
+    const museums = {
+        '01': { bg: '_01-museum-archaeological-bg', objContainer: '_01-museum-btn-object', prefix: '_01-museum-' },
+        '02': { bg: '_02-museum-literary-bg', objContainer: '_02-museum-btn-object', prefix: '_02-museum-' },
+        '03': { bg: '_03-museum-artistic-bg', objContainer: '_03-museum-btn-object', prefix: '_03-museum-' },
+        '04': { bg: '_04-museum-oral-bg', objContainer: '_04-museum-btn-object', prefix: '_04-museum-' }
+    };
+
+    // New Configuration for Multiple Questions & Clues
+   const galleryData = {
+        '01': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An artefact that was used by merchants to identify their goods in ancient trade", 
+                    clue: "Ancient traders pressed this tiny stone object into wet clay as a signature. It bears mysterious symbols and writing that no scholar has yet been able to decode.",
+                    correctId: "_01-museum-1" 
+                },
+                { 
+                    question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power", 
+                    clue: "This precious metal from India’s ‘Golden Age’ depicts the warrior-king holding his weapon with near-perfect craftsmanship",
+                    correctId: "_01-museum-2" 
+                }
+            ]
+        },
+        '02': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An ancient text that provides detailed instructions on governance and economics", 
+                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling—from collecting taxes to sending secret agents to gather information.",
+                    correctId: "_02-museum-1" 
+                },
+                { 
+                    question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador", 
+                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size—his book vanished, but later writers copied his incredible stories!",
+                    correctId: "_02-museum-2" 
+                }
+            ]
+        },
+        '03': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
+                    clue: "This Chola bronze masterpiece is famous for high level of art and metalworking skill in medieval South India",
+                    correctId: "_03-museum-1" 
+                },
+                { 
+                    question: "A prehistoric artwork showing the earliest evidence of human creativity in India", 
+                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants—it shows how prehistoric humans lived!",
+                    correctId: "_03-museum-2" 
+                }
+            ]
+        },
+        '04': { 
+            currentQuestionIndex: 0,
+            questions: [
+                { 
+                    question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down", 
+                    clue: "These Tamil verses were performed at royal gatherings where poets competed—their amazing memories kept the poems alive across many generations!",
+                    correctId: "_04-museum-1" 
+                },
+                { 
+                    question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement", 
+                    clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—saints like Tukaram created them so common people could express their devotion",
+                    correctId: "_04-museum-2" 
+                }
+            ]
+        }
+    };
+
+    // ==========================================
+    // 2. DOM ELEMENTS
+    // ==========================================
+    const el = id => document.getElementById(id);
+    const svg = document.querySelector('svg');
+    const correctContainer = el('correct-dragged-objects');
+    
+    const ui = {
+        feedbackEnd: el('feedback-drag-drop-end'),
+        popupClue: el('popup-clue'),
+        popupCLueText: el('clue-text-content'),
+        questionText: el('question-text'),
+        btnClue: el('btn-clue'), 
+        btnCloseClue: el('btn-close-popup-clue'),
+        btnChangeGallery: el('btn-change-gallery'),
+        questionPanel: el('Question-panel-global'),
+        correctMark: el('correct-mark'),
+        incorrectMark: el('incorrect-mark'),
+        btnNextSet: el('btn-next-set'),
+        dragBaseGlobal: el('drag-object-base-global'),
+        iText01: document.querySelector('#i-text-01 tspan'),
+        btnCloseFeedback: el('close-feedback'),
+        museumDropWindow: el('museum-drop-window'),
+        correctDraggedObjects: el('correct-dragged-objects'),
+        hallwayGalleries: {
+            '01': el('archaeological-source-gallery'),
+            '02': el('literary-source-gallery'),
+            '03': el('artistic-source-gallery'),
+            '04': el('oral-source-gallery')
+        }
+    };
+
+    // ==========================================
+    // 3. INITIALIZATION
+    // ==========================================
+    function init() {
+        for (let i = 1; i <= TOTAL_SETS; i++) {
+            if (el(dragSets[i].base)) el(dragSets[i].base).style.display = 'none';
+            if (el(dragSets[i].btnBox)) el(dragSets[i].btnBox).style.display = 'none';
+        }
+        Object.values(museums).forEach(m => {
+            if (el(m.bg)) el(m.bg).style.display = 'none';
+            if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
+        });
+
+        const hideEls = [ui.feedbackEnd, ui.popupClue, ui.btnChangeGallery, ui.questionPanel, ui.correctMark, ui.incorrectMark, ui.btnClue];
+        hideEls.forEach(element => { if (element) element.style.display = 'none'; });
+
+        if (ui.btnNextSet) {
+            ui.btnNextSet.style.display = 'block';
+            ui.btnNextSet.style.pointerEvents = 'none';
+            ui.btnNextSet.style.opacity = '0.5';
+        }
+
+        showSet(currentSetIndex);
+        setupDragAndDrop();
+
+        Object.entries(ui.hallwayGalleries).forEach(([key, hall]) => {
+            if (hall) {
+                hall.style.cursor = 'pointer';
+                hall.addEventListener('click', () => {
+                    if (isActivityComplete) {
+                        window.selectMuseumGallery(key);
+                    }
+                });
+            }
+        });
+    }
+
+    // ==========================================
+    // 4. NEXT BUTTON & UI INTERACTIONS
+    // ==========================================
+    if (ui.btnClue) ui.btnClue.addEventListener('click', () => ui.popupClue.style.display = 'block');
+    if (ui.btnCloseClue) ui.btnCloseClue.addEventListener('click', () => ui.popupClue.style.display = 'none');
+    
+    if (ui.btnCloseFeedback) {
+        ui.btnCloseFeedback.addEventListener('click', () => {
+            if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+            isActivityComplete = true;
+        });
+    }
+
+    if (ui.btnChangeGallery) {
+        ui.btnChangeGallery.addEventListener('click', () => {
+            Object.values(museums).forEach(m => {
+                if (el(m.bg)) el(m.bg).style.display = 'none';
+                if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
+            });
+            if (ui.questionPanel) ui.questionPanel.style.display = 'none';
+            if (ui.correctMark) ui.correctMark.style.display = 'none';
+            if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
+            if (ui.btnClue) ui.btnClue.style.display = 'none';
+            if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'none';
+            if (ui.museumDropWindow) ui.museumDropWindow.style.display = 'block';
+            if (ui.correctDraggedObjects) ui.correctDraggedObjects.style.display = 'block';
+        });
+    }
+
+    if (ui.btnNextSet) {
+        ui.btnNextSet.addEventListener('click', () => {
+            if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
+            if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
+            
+            if (currentSetIndex < TOTAL_SETS) {
+                currentSetIndex++;
+                itemsDroppedInCurrentSet = 0;
+                if (ui.btnNextSet) {
+                    ui.btnNextSet.style.pointerEvents = 'none';
+                    ui.btnNextSet.style.opacity = '0.5';
+                    if (currentSetIndex === TOTAL_SETS) {
+                        ui.btnNextSet.style.display = 'none';
+                    }
+                }
+                showSet(currentSetIndex);
+            }
+        });
+    }
+
+    // ==========================================
+    // 5. DRAG AND DROP & SNAP LOGIC
+    // ==========================================
+    function showSet(index) {
+        if (dragSets[index]) {
+            if (el(dragSets[index].base)) el(dragSets[index].base).style.display = 'block';
+            if (el(dragSets[index].btnBox)) el(dragSets[index].btnBox).style.display = 'block';
+        }
+    }
+
+    function setupDragAndDrop() {
+        let activeDragEl = null;
+        let startSVGPoint = null;
+        let initialMatrix = null;
+
+        for (let s = 1; s <= TOTAL_SETS; s++) {
+            for (let i = 1; i <= ITEMS_PER_SET; i++) {
+                let imgId = `${dragSets[s].imgPrefix}${i}`;
+                let dragEl = el(imgId);
+                
+                if (dragEl) {
+                    dragEl.style.cursor = 'grab';
+                    dragEl.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        if (s !== currentSetIndex || dragEl.dataset.dropped === "true") return;
+                        
+                        activeDragEl = dragEl;
+                        
+                        const p = svg.createSVGPoint();
+                        p.x = e.clientX;
+                        p.y = e.clientY;
+                        startSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
+                        
+                        initialMatrix = dragEl.transform.baseVal.consolidate()?.matrix || svg.createSVGMatrix();
+
+                        dragEl.style.cursor = 'grabbing';
+                        dragEl.setPointerCapture(e.pointerId);
+                    });
+                }
+            }
+        }
+
+        document.addEventListener('pointermove', (e) => {
+            if (!activeDragEl || !startSVGPoint) return;
+            e.preventDefault();
+
+            const p = svg.createSVGPoint();
+            p.x = e.clientX;
+            p.y = e.clientY;
+            const currentSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
+
+            const dx = currentSVGPoint.x - startSVGPoint.x;
+            const dy = (currentSVGPoint.y - startSVGPoint.y) + 75; 
+
+            const newMatrix = initialMatrix.translate(dx, dy);
+            activeDragEl.setAttribute('transform', `matrix(${newMatrix.a},${newMatrix.b},${newMatrix.c},${newMatrix.d},${newMatrix.e},${newMatrix.f})`);
+        });
+
+        document.addEventListener('pointerup', (e) => {
+            if (!activeDragEl) return;
+            
+            let targetId = activeDragEl.id;
+            let setPrefix = dragSets[currentSetIndex].imgPrefix;
+            let itemNum = targetId.replace(setPrefix, '');
+            let dropZoneId = `${dragSets[currentSetIndex].foPrefix}${itemNum}-drop-zone`;
+            let dropZone = el(dropZoneId);
+
+            if (dropZone && isColliding(activeDragEl, dropZone)) {
+                if (correctContainer) {
+                    correctContainer.appendChild(activeDragEl);
+                }
+
+                snapAndScaleToZone(activeDragEl, dropZone);
+
+                activeDragEl.dataset.dropped = "true";
+                activeDragEl.style.cursor = 'default';
+                
+                itemsDroppedInCurrentSet++;
+                if (itemsDroppedInCurrentSet === ITEMS_PER_SET) {
+                    if (currentSetIndex < TOTAL_SETS) {
+                        if (ui.btnNextSet) {
+                            ui.btnNextSet.style.pointerEvents = 'auto';
+                            ui.btnNextSet.style.opacity = '1';
+                        }
+                    } else {
+                        if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
+                        if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
+                        if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
+                        if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
+                        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artifacts.";
+                        
+                        if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'block';
+                    }
+                }
+            } else {
+                activeDragEl.setAttribute('transform', `matrix(${initialMatrix.a},${initialMatrix.b},${initialMatrix.c},${initialMatrix.d},${initialMatrix.e},${initialMatrix.f})`);
+            }
+
+            activeDragEl.releasePointerCapture(e.pointerId);
+            activeDragEl.style.cursor = 'grab';
+            activeDragEl = null;
+            startSVGPoint = null;
+        });
+    }
+
+    function isColliding(dragged, target) {
+        const rect1 = dragged.getBoundingClientRect();
+        const rect2 = target.getBoundingClientRect();
+        return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
+    }
+
+    function snapAndScaleToZone(dragged, zone) {
+        const dragBox = dragged.getBBox(); 
+        const zoneBox = zone.getBBox(); 
+        
+        const scale = Math.min(zoneBox.width / dragBox.width, zoneBox.height / dragBox.height); 
+        
+        const tx = (zoneBox.x + zoneBox.width / 2) - (dragBox.x + dragBox.width / 2) * scale;
+        const ty = (zoneBox.y + zoneBox.height / 2) - (dragBox.y + dragBox.height / 2) * scale  + 75;
+        
+        dragged.setAttribute('transform', `translate(${tx}, ${ty}) scale(${scale})`);
+    }
+
+    // ==========================================
+    // 6. GALLERY, MULTI-QUESTION & MUSEUM SELECTION LOGIC
+    // ==========================================
+    
+    function updateClueUI(galleryKey) {
+        const currentData = galleryData[galleryKey];
+        const activeData = currentData.questions[currentData.currentQuestionIndex];
+
+        if (ui.questionText) {
+            ui.questionText.innerHTML = activeData.question;
+        }
+
+        const clueTextEl = ui.popupCLueText;
+        if (clueTextEl) {
+            clueTextEl.innerHTML = activeData.clue;
+        }
+    }
+
+    window.selectMuseumGallery = function(galleryKey) { 
+        if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
+        if (ui.btnClue) ui.btnClue.style.display = 'block';
+        if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+        if (ui.museumDropWindow) ui.museumDropWindow.style.display = 'none';
+        if (ui.correctDraggedObjects) ui.correctDraggedObjects.style.display = 'none';
+        
+        Object.values(museums).forEach(m => {
+            if (el(m.bg)) el(m.bg).style.display = 'none';
+            if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
+        });
+
+        const selected = museums[galleryKey];
+        if (selected) {
+            if (el(selected.bg)) el(selected.bg).style.display = 'block';
+            if (el(selected.objContainer)) el(selected.objContainer).style.display = 'block';
+            if (ui.questionPanel) ui.questionPanel.style.display = 'block';
+
+            galleryData[galleryKey].currentQuestionIndex = 0;
+            updateClueUI(galleryKey);
+
+            setupMuseumInteraction(galleryKey);
+        }
+    };
+
+    function setupMuseumInteraction(galleryKey) {
+        const prefix = museums[galleryKey].prefix;
+        for (let i = 1; i <= 5; i++) {
+            let objBtn = el(`${prefix}${i}`);
+            if (objBtn) {
+                let newBtn = objBtn.cloneNode(true);
+                objBtn.parentNode.replaceChild(newBtn, objBtn);
+                newBtn.addEventListener('click', () => handleMuseumObjectClick(newBtn, galleryKey));
+            }
+        }
+    }
+
+    function handleMuseumObjectClick(clickedElement, galleryKey) {
+        // First hide any active marks
+        if (ui.correctMark) ui.correctMark.style.display = 'none';
+        if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
+
+        const currentData = galleryData[galleryKey];
+        const activeQuestion = currentData.questions[currentData.currentQuestionIndex];
+
+        const isCorrect = (clickedElement.id === activeQuestion.correctId);
+        const markToShow = isCorrect ? ui.correctMark : ui.incorrectMark;
+
+        if (markToShow) {
+            // Display the mark block before getting bounding box (Firefox workaround)
+            markToShow.style.display = 'block';
+
+            // Get local coordinate system boundaries to calculate the transform properly 
+            const targetBBox = clickedElement.getBBox();
+            const markBBox = markToShow.getBBox();
+
+            // Find center points 
+            const targetCenterX = targetBBox.x + (targetBBox.width / 2);
+            const targetCenterY = targetBBox.y + (targetBBox.height / 2);
+            
+            const markCenterX = markBBox.x + (markBBox.width / 2);
+            const markCenterY = markBBox.y + (markBBox.height / 2);
+
+            // Calculate translation offsets to place mark perfectly in the center
+            const tx = targetCenterX - markCenterX;
+            const ty = targetCenterY - markCenterY - 80;
+
+            // Apply SVG transform
+            markToShow.setAttribute('transform', `translate(${tx}, ${ty})`);
+        }
+
+        // Handle progression or retry after selection
+        if (isCorrect) {
+            setTimeout(() => {
+                if (ui.correctMark) ui.correctMark.style.display = 'none'; 
+                
+                if (currentData.currentQuestionIndex < currentData.questions.length - 1) {
+                    currentData.currentQuestionIndex++;
+                    updateClueUI(galleryKey);
+                } else {
+                    console.log("Gallery Complete!");
+                }
+            }, 1500); 
+        } else {
+            // Also fade incorrect mark so the user can try again easily
+            setTimeout(() => {
+                if (ui.incorrectMark) ui.incorrectMark.style.display = 'none'; 
+            }, 1500);
+        }
+    }
+
+    window.bypassPhase1 = () => {
+        isActivityComplete = true;
+        for (let i = 1; i <= TOTAL_SETS; i++) {
+            if (el(dragSets[i].base)) el(dragSets[i].base).style.display = 'none';
+            if (el(dragSets[i].btnBox)) el(dragSets[i].btnBox).style.display = 'none';
+        }
+        if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
+        if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
+        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artifacts.";
+        if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
+        console.log("Phase 1 bypassed. Galleries are now selectable.");
+    };
+
+    init();
 });
-
-function initWidget() {
-  const container = document.getElementById("widget-container");
-  const svg = document.querySelector("svg");
-  if (!container || !svg) return;
-
-  // Build UI Layer
-  let uiLayer = document.getElementById("ui-layer");
-  if (!uiLayer) {
-    uiLayer = document.createElement("div");
-    uiLayer.id = "ui-layer";
-    uiLayer.style.position = "absolute";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.height = "100%";
-    uiLayer.style.pointerEvents = "none";
-    container.appendChild(uiLayer);
-  }
-
-  // --- Helpers ---
-  function getPctRect(element) {
-    if (!element) return null;
-    const svgRect = svg.getBoundingClientRect();
-    const elRect = element.getBoundingClientRect();
-    return {
-      left: ((elRect.left - svgRect.left) / svgRect.width) * 100 + "%",
-      top: ((elRect.top - svgRect.top) / svgRect.height) * 100 + "%",
-      width: (elRect.width / svgRect.width) * 100 + "%",
-      height: (elRect.height / svgRect.height) * 100 + "%",
-    };
-  }
-
-  function hideElements(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      // Use hidden-svg class or fallback
-      el.classList.add("hidden-svg");
-    });
-  }
-
-  function showElements(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      el.classList.remove("hidden-svg");
-    });
-  }
-
-  function togglePopup(popupId, show) {
-    const p = document.getElementById(popupId);
-    if (p) {
-      if (show) {
-        p.classList.remove("hidden-svg");
-        p.style.display = "block";
-      } else {
-        p.classList.add("hidden-svg");
-        p.style.display = "none";
-      }
-    }
-  }
-
-  // Hide all screens initially and map out popups
-  const allScreens = [
-    "menu-screen",
-    "act-01-sc1-base",
-    "act-01-sc1-cards",
-    "act-02-base-global",
-    "act-02-sc1",
-    "act-02-sc2",
-    "act-02-sc3",
-    "act-03-base-global",
-    "act-03-sc1",
-    "act-03-sc2",
-    "act-03-sc3",
-    "act-04-base",
-    "act-04-question",
-    "act-04-feedback-end",
-  ];
-
-  // Global variables
-  let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
-  let currentChallengeSC2 = 1; // 1 to 3
-  let currentChallengeSC3 = 1; // 1 to 3
-
-  // Hide everything first
-  const menuScreen = document.getElementById("menu-screen");
-  if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-  document
-    .querySelectorAll('[id^="act-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
-  document
-    .querySelectorAll('[id^="popup-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
-
-  // --- Menu Setup ---
-  const menuScen1 = document.getElementById("Scenario_1");
-  const menuScen2 = document.getElementById("Scenario_2");
-  const menuScen3 = document.getElementById("Scenario_3");
-
-  if (menuScen1) {
-    menuScen1.style.cursor = "pointer";
-    menuScen1.addEventListener("click", () => {
-      currentScreen = 1;
-      updateView();
-    });
-  }
-  if (menuScen2) {
-    menuScen2.style.cursor = "pointer";
-    menuScen2.addEventListener("click", () => {
-      currentScreen = 2;
-      currentChallengeSC2 = 1;
-      updateView();
-    });
-  }
-  if (menuScen3) {
-    menuScen3.style.cursor = "pointer";
-    menuScen3.addEventListener("click", () => {
-      currentScreen = 3;
-      currentChallengeSC3 = 1;
-      updateView();
-    });
-  }
-
-  // --- Navigation Setup ---
-  const btnNext = document.getElementById("Next");
-  const btnBack = document.getElementById("Back");
-  const btnHome = document.getElementById("btn-home");
-  const btnInsights = document.getElementById("btn-insights");
-  const globalSubmit = document.getElementById("Submit");
-
-  if (btnNext) {
-    btnNext.style.cursor = "pointer";
-    btnNext.addEventListener("click", goNext);
-  }
-  if (btnBack) {
-    btnBack.style.cursor = "pointer";
-    btnBack.addEventListener("click", goBack);
-  }
-  if (btnHome) {
-    btnHome.style.cursor = "pointer";
-    btnHome.addEventListener("click", () => {
-      currentScreen = 0; // go back to menu
-      updateView();
-    });
-  }
-
-  // Dynamic Insight Popups
-  if (btnInsights) {
-    btnInsights.style.cursor = "pointer";
-    btnInsights.addEventListener("click", () => {
-      let pId = `popup-act-0${currentScreen}-insights`;
-      if (currentScreen === 4 || currentScreen === 0)
-        pId = `popup-act-01-insights`; // fallback
-      togglePopup(pId, true);
-    });
-  }
-  // Click anywhere to close popups
-  document.querySelectorAll('[id^="popup-"]').forEach((p) => {
-    p.addEventListener("click", () => p.classList.add("hidden-svg"));
-  });
-
-  function goNext() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 < 3) currentChallengeSC2++;
-      else currentScreen = 3;
-    } else if (currentScreen === 3) {
-      if (currentChallengeSC3 < 3) currentChallengeSC3++;
-      else currentScreen = 4;
-    } else if (currentScreen < 4) {
-      currentScreen++;
-    }
-    updateView();
-  }
-
-  function goBack() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 > 1) currentChallengeSC2--;
-      else currentScreen = 1;
-    } else if (currentScreen === 3) {
-      if (currentChallengeSC3 > 1) currentChallengeSC3--;
-      else {
-        currentScreen = 2;
-        currentChallengeSC2 = 3;
-      }
-    } else if (currentScreen > 1) {
-      currentScreen--;
-      if (currentScreen === 3) currentChallengeSC3 = 3;
-      if (currentScreen === 2) currentChallengeSC2 = 3;
-    }
-    updateView();
-  }
-
-  function updateView() {
-    uiLayer.innerHTML = ""; // clear dynamic overlays
-
-    // Hide menu explicitly first
-    if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-    document
-      .querySelectorAll('[id^="act-"]')
-      .forEach((el) => el.classList.add("hidden-svg"));
-
-    // Handle Menu
-    if (currentScreen === 0) {
-      if (menuScreen) menuScreen.classList.remove("hidden-svg");
-    } else if (currentScreen === 1) {
-      showElements('[id^="act-01"]');
-    } else if (currentScreen === 2) {
-      showElements("#act-02-base-global");
-      showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
-      // Hide feedbacks initially
-      hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
-      setupScreen2Challenge(currentChallengeSC2);
-    } else if (currentScreen === 3) {
-      showElements("#act-03-base-global");
-      showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
-      hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
-      setupScreen3Challenge(currentChallengeSC3);
-    } else if (currentScreen === 4) {
-      showElements("#act-04-base");
-      showElements("#act-04-question");
-      showElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
-      hideElements("#act-04-feedback-end");
-      setupScreen4();
-    }
-  }
-
-  // --- Screen 2 Logic ---
-  const sc2Config = {
-    1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
-    2: { max1: 15, max2: 15, val1: 1, val2: 3 }, // Pot (1) vs Medical (3)
-    3: { max1: 15, max2: 15, val1: 3, val2: 4 }, // Fish (3) vs Plough (4)
-  };
-
-  function setupScreen2Challenge(sc) {
-    const cfg = sc2Config[sc];
-    if (!cfg) return;
-
-    // Find the dropdown bounding rects provided in the SVG
-    // They are often named like act-02-scX-dropdown-list-1, -2
-    // If exact IDs differ, we try generic text nodes matching numbers
-    let dd1 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-1"]`) ||
-      document.querySelector(`[id*="act-02-sc${sc}"] [id*="drop"] g`);
-    let dd2 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-2"]`) ||
-      document.querySelectorAll(`[id*="act-02-sc${sc}"] [id*="drop"]`)[1];
-
-    // Create selects
-    const s1 = document.createElement("select");
-    const s2 = document.createElement("select");
-    s1.className = "custom-dropdown";
-    s2.className = "custom-dropdown";
-
-    // Add options
-    for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
-    for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
-
-    // Wait a brief moment for layout inside the function scope if required, but we should be fine here.
-    if (dd1 && dd2) {
-      hideElements(`[id="${dd1.id}"]`);
-      hideElements(`[id="${dd2.id}"]`);
-
-      const r1 = getPctRect(dd1);
-      const r2 = getPctRect(dd2);
-
-      if (r1) {
-        Object.assign(s1.style, {
-          left: r1.left,
-          top: r1.top,
-          width: r1.width,
-          height: r1.height,
-        });
-        uiLayer.appendChild(s1);
-      }
-      if (r2) {
-        Object.assign(s2.style, {
-          left: r2.left,
-          top: r2.top,
-          width: r2.width,
-          height: r2.height,
-        });
-        uiLayer.appendChild(s2);
-      }
-    } else {
-      // Hardcoded fallback bounding boxes per challenge if SVG IDs are missing
-      const fbBoxes = {
-        1: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        2: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        3: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-      };
-      const b = fbBoxes[sc];
-      Object.assign(s1.style, {
-        left: b[0].l,
-        top: b[0].t,
-        width: b[0].w,
-        height: b[0].h,
-      });
-      uiLayer.appendChild(s1);
-      Object.assign(s2.style, {
-        left: b[1].l,
-        top: b[1].t,
-        width: b[1].w,
-        height: b[1].h,
-      });
-      uiLayer.appendChild(s2);
-    }
-
-    // Submit handler logic
-    const scSubmit =
-      document.querySelector(`[id="act-02-sc${sc}-btn"]`) || globalSubmit;
-    if (scSubmit) {
-      // Use clone to remove old listeners
-      const newSubmit = scSubmit.cloneNode(true);
-      scSubmit.parentNode.replaceChild(newSubmit, scSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let v1 = parseInt(s1.value);
-        let v2 = parseInt(s2.value);
-        if (v1 * cfg.val1 === v2 * cfg.val2) {
-          // Fair Trade
-          showElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          // Show continue or end
-          showElements(`[id*="act-02-sc${sc}-feedback-end"]`); // sometimes the success is feedback-end
-        } else {
-          // Unfair
-          showElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
-        }
-      });
-    }
-
-    // Hide standard continue/incorrect states
-    document
-      .querySelectorAll(`[id*="Continue"]`)
-      .forEach((el) => el.classList.add("hidden-svg"));
-  }
-
-  // --- Screen 3 Logic ---
-  function setupScreen3Challenge(sc) {
-    // There are 3 challenges here. Multi-step trade tracking
-    // We assume the sequence clicks are just revealing lines/cards.
-    // In SVGs usually act-03-scX-cardN-selected needs to be toggled
-    const maxCards = sc === 3 ? 4 : 3; // sc3 has 4 cards
-    let currentStep = 1;
-
-    // Hide all selections
-    for (let i = 1; i <= maxCards; i++) {
-      hideElements(`[id="act-03-sc${sc}-card${i}-selected"]`);
-    }
-
-    // Attempt to bind clicks on the base cards to advance step
-    // A simple hack is just a transparent overlay covering the whole trade chain area
-    // that advances the step on click.
-    // We will place a big invisible clickable div
-    const clickArea = document.createElement("div");
-    clickArea.style.position = "absolute";
-    clickArea.style.top = "30%";
-    clickArea.style.left = "10%";
-    clickArea.style.width = "80%";
-    clickArea.style.height = "40%";
-    clickArea.style.cursor = "pointer";
-    uiLayer.appendChild(clickArea);
-
-    clickArea.onclick = () => {
-      if (currentStep <= maxCards) {
-        showElements(`[id="act-03-sc${sc}-card${currentStep}-selected"]`);
-        currentStep++;
-        if (currentStep > maxCards) {
-          showElements(`[id="act-03-sc${sc}-feedback-end"]`);
-          clickArea.style.pointerEvents = "none"; // disable further clicks
-        }
-      }
-    };
-  }
-
-  // --- Screen 4 Logic ---
-  function setupScreen4() {
-    // 8 statements. Correct are 1, 2, 3, 4, 7 (index 0,1,2,3,6)
-    const defGroup = document.getElementById("act-04-checkbox-default");
-    const selGroup = document.getElementById("act-04-checkbox-selected");
-    if (!defGroup || !selGroup) return;
-
-    // Remove hidden-svg to work with them
-    defGroup.classList.remove("hidden-svg");
-    selGroup.classList.remove("hidden-svg");
-
-    // Convert child paths/groups into arrays
-    // We expect 8 graphical checkboxes in each group
-    const defs = Array.from(defGroup.children);
-    const sels = Array.from(selGroup.children);
-    if (defs.length < 8 || sels.length < 8) return;
-
-    const corrects = [0, 1, 2, 3, 6];
-    const isSelected = [false, false, false, false, false, false, false, false];
-
-    // Hide selections initially
-    sels.forEach((s) => s.classList.add("hidden-svg"));
-
-    // Bind click to the SVG directly via rectangles
-    // SVG text and paths have pointer events out of the box
-    defs.forEach((defEl, i) => {
-      defEl.style.cursor = "pointer";
-      // Actually we'll bind an absolute div over each checkbox using bounds
-      const rect = getPctRect(defEl);
-      if (rect) {
-        const d = document.createElement("div");
-        Object.assign(d.style, {
-          position: "absolute",
-          left: rect.left,
-          top: rect.top,
-          width: "5%", // rough wide area for ease of click
-          height: rect.height,
-          cursor: "pointer",
-          pointerEvents: "auto",
-        });
-        uiLayer.appendChild(d);
-
-        d.onclick = () => {
-          isSelected[i] = !isSelected[i];
-          if (isSelected[i]) {
-            defEl.classList.add("hidden-svg");
-            sels[i].classList.remove("hidden-svg");
-          } else {
-            defEl.classList.remove("hidden-svg");
-            sels[i].classList.add("hidden-svg");
-          }
-        };
-      }
-    });
-
-    // Validating on Submit
-    const sSubmit =
-      document.querySelector('[id*="act-04-btn"]') || globalSubmit;
-    if (sSubmit) {
-      const newSubmit = sSubmit.cloneNode(true);
-      sSubmit.parentNode.replaceChild(newSubmit, sSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let allCorrect = true;
-        for (let i = 0; i < 8; i++) {
-          if (corrects.includes(i) && !isSelected[i]) allCorrect = false;
-          if (!corrects.includes(i) && isSelected[i]) allCorrect = false;
-        }
-        if (allCorrect) {
-          showElements("#act-04-feedback-end");
-          hideElements("#act-04-feedback-incorrect");
-        } else {
-          // generic incorrect visual if any
-          showElements("#act-04-feedback-incorrect");
-        }
-      });
-    }
-  }
-
-  // Launch View
-  updateView();
-}
