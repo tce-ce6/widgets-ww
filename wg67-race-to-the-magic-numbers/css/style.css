@@ -500,24 +500,14 @@ svg * {
 }
 
 /* ===== GAME: Numpad Button Press ===== */
-.numpad-press {
-  filter: brightness(0.8);
-  animation: numpress 0.15s ease;
+/* ===== GAME: Numpad Button Press (Green Outline) ===== */
+.numpad-press path {
+  stroke: #00ba2c !important;
+  stroke-width: 4px !important;
+  stroke-linejoin: round;
 }
 
-@keyframes numpress {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(0.9);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
+/* @keyframes numpress { ... } is no longer used */
 
 /* ===== GAME: Step Box Shake (wrong answer) ===== */
 .steps-wrong {
