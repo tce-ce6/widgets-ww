@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const player1Box = svg.getElementById("player1");
   const player2Box = svg.getElementById("player2");
 
+  const homeDotFox = svg.getElementById("Ellipse_3");
+  const homeFoxFace = svg.getElementById("fox-face-2");
+  const homeDotBunny = svg.getElementById("Path_7015");
+  const homeBunnyFace = svg.getElementById("bunny-face1");
+
   const redWheel = svg.getElementById("red-spin-wheel");   // Tens (orange)
   const greenWheel = svg.getElementById("green-spin-wheel"); // Ones
 
@@ -54,9 +59,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const stepValGroup = document.querySelector('[data-name=" 22-3"]') || svg.getElementById("_22-3") || svg.getElementById("How_many_steps_");
   const stepEnterBox = svg.getElementById("step-enter-box");
-
   const bunnyToken = svg.getElementById("bunny-on-number");
   const foxToken = svg.getElementById("fox-on-number");
+
+  // Lottie animations
+  let bunnyCorrectAnim, foxCorrectAnim, fireworksAnim;
+
+  function initLottie() {
+    bunnyCorrectAnim = lottie.loadAnimation({
+      container: document.getElementById('bunny-correct-lottie'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: 'assets/anim/correct-confetti-anim.json'
+    });
+
+    foxCorrectAnim = lottie.loadAnimation({
+      container: document.getElementById('fox-correct-lottie'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: 'assets/anim/correct-confetti-anim.json'
+    });
+
+    fireworksAnim = lottie.loadAnimation({
+      container: document.getElementById('new-game-fireworks'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      path: 'assets/anim/fireworks.json'
+    });
+  }
+  initLottie();
 
   const feedbackBunnyTspan = feedbackBunny ? feedbackBunny.querySelectorAll("tspan") : [];
   const feedbackFoxTspan = feedbackFox ? feedbackFox.querySelectorAll("tspan") : [];
@@ -84,8 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
     addHitbox(numpadClear);
     for (let i = 0; i <= 9; i++) addHitbox(numpadGroups[i]);
 
-    positionToken(bunnyToken, 0);
-    positionToken(foxToken, 0);
+    positionToken(bunnyToken, 0, "0s");
+    positionToken(foxToken, 0, "0s");
   });
 
   function replaceGroupWithText(group, defaultStr, align, weight, color, size, offsetX = 0) {
@@ -138,41 +172,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const CELL_COORDS = {};
-  const COL_CENTRES = [115, 175, 235, 295, 355, 415, 475, 535, 595, 655]; // x centres
-  const ROW_TOP_Y = 188; // centre-y of row 10 (top)
-  const ROW_DY = 55;  // pixels per row going downwards
+  const EXACT_X = [675.5, 613.5, 551.5, 488.5, 426.5, 364.5, 302.5, 239.5, 177.5, 115.5];
+  const EXACT_Y = [706.5, 648.5, 591.5, 533.5, 476.5, 418.5, 360.5, 303.5, 246.5, 188.5];
 
   for (let n = 1; n <= 100; n++) {
-    const rowFromBottom = Math.ceil(n / 10);           // 1-indexed from bottom
-    const rowFromTop = 11 - rowFromBottom;          // row index from top (1=top)
-    const posInRow = (n - 1) % 10;                // 0-9 within row (left=0)
-    // Row 1 (1-10) goes Right to Left. So it's NOT leftToRight.
-    // Odd rows from bottom -> right-to-left. Even rows -> left-to-right.
-    const leftToRight = (rowFromBottom % 2 === 0);
-    const col = leftToRight ? posInRow : (9 - posInRow);
+    const rowFromBottom = Math.ceil(n / 10);
+    const rowIndex = rowFromBottom - 1;
+    const posInRow = (n - 1) % 10;
 
-    // Explicit calculations: X goes from Right (670) to Left (103) for cells 1-10
-    const CELL_SIZE_X = 64;     // exact horizontal spacing
-    const CELL_SIZE_Y = 63;     // exact vertical spacing
+    // Odd rows from bottom -> right-to-left.
+    const isOdd = (rowFromBottom % 2 !== 0);
+    const colIndex = isOdd ? posInRow : (9 - posInRow);
 
-    const LEFT_START = 103;    // center of cell 1 (bottom-right row end)
-    const RIGHT_START = LEFT_START + (CELL_SIZE_X * 9);
-    // 103 + (63 * 9) = 670
-
-    let absX;
-
-    if (rowFromBottom % 2 !== 0) {
-      // Odd rows (1–10, 21–30...) → Right to Left
-      absX = RIGHT_START - (posInRow * CELL_SIZE_X);
-    } else {
-      // Even rows → Left to Right
-      absX = LEFT_START + (posInRow * CELL_SIZE_X);
-    }
-
-    let absY = 716 - ((rowFromBottom - 1) * CELL_SIZE_Y);
     CELL_COORDS[n] = {
-      x: absX,
-      y: absY
+      x: EXACT_X[colIndex],
+      y: EXACT_Y[rowIndex]
     };
   }
 
@@ -230,41 +244,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.style.cursor = pointer ? "pointer" : "default";
   }
 
-  function positionToken(tokenEl, pos) {
+  function positionToken(tokenEl, pos, speedStr = "400ms") {
     if (!tokenEl) return;
+    tokenEl.style.opacity = pos === 0 ? "0" : "1";
 
     const coord = pos === 0 ? HOME_POS : CELL_COORDS[pos];
     if (!coord) return;
 
-    const bbox = tokenEl.getBBox();
+    if (!tokenEl._cachedCenter) {
+      const bbox = tokenEl.getBBox();
+      tokenEl._cachedCenter = {
+        cx: bbox.x + bbox.width / 2,
+        cy: bbox.y + bbox.height / 2
+      };
+    }
 
-    const tokenCenterX = bbox.x + bbox.width / 2;
-    const tokenCenterY = bbox.y + bbox.height / 2;
+    const tokenCenterX = tokenEl._cachedCenter.cx;
+    const tokenCenterY = tokenEl._cachedCenter.cy;
 
     const tx = coord.x - tokenCenterX;
     const ty = coord.y - tokenCenterY;
 
-    tokenEl.style.transition = "transform 0.4s ease-in-out";
+    tokenEl.style.transition = `transform ${speedStr} linear`;
     tokenEl.style.transform = `translate(${tx}px, ${ty}px)`;
   }
 
-  // Animate token movement one step at a time
   function animateMove(playerIdx, fromPos, toPos, onDone) {
     const tokenEl = playerIdx === 0 ? bunnyToken : foxToken;
     const step = toPos > fromPos ? 1 : -1;
     let current = fromPos;
 
+    if (fromPos === 0) tokenEl.style.opacity = "1";
+
+    const moveSpeed = 100;
+
     const interval = setInterval(() => {
       current += step;
-      positionToken(tokenEl, current);
+      positionToken(tokenEl, current, `${moveSpeed}ms`);
       if (current === toPos) {
         clearInterval(interval);
-        // Bounce effect
-        tokenEl.classList.add("token-bounce");
-        setTimeout(() => { tokenEl.classList.remove("token-bounce"); }, 600);
+        // Bounce effect on inner group to not override outer transform
+        const innerG = tokenEl.firstElementChild;
+        if (innerG) {
+          innerG.classList.add("token-bounce");
+          setTimeout(() => { innerG.classList.remove("token-bounce"); }, 600);
+        }
         if (onDone) onDone();
       }
-    }, 160);
+    }, moveSpeed);
   }
 
   function updateTargetDisplay(num) {
@@ -347,11 +374,21 @@ document.addEventListener("DOMContentLoaded", () => {
       hide(iTextFox);
       show(player1Box);
       hide(player2Box);
+
+      if (homeDotBunny) homeDotBunny.style.opacity = "1";
+      if (homeBunnyFace) homeBunnyFace.style.opacity = "1";
+      if (homeDotFox) homeDotFox.style.opacity = "0.4";
+      if (homeFoxFace) homeFoxFace.style.opacity = "0.4";
     } else {
       hide(iTextBunny);
       show(iTextFox);
       hide(player1Box);
       show(player2Box);
+
+      if (homeDotBunny) homeDotBunny.style.opacity = "0.4";
+      if (homeBunnyFace) homeBunnyFace.style.opacity = "0.4";
+      if (homeDotFox) homeDotFox.style.opacity = "1";
+      if (homeFoxFace) homeFoxFace.style.opacity = "1";
     }
   }
 
@@ -519,6 +556,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (state.phase !== 'steps') return;
       state.stepsInput = state.stepsInput.slice(0, -1);
       updateStepDisplay(state.stepsInput || '');
+
+      // Press flash
+      const parent = numpadClear.parentElement;
+      if (parent) {
+        parent.classList.add("numpad-press");
+        setTimeout(() => parent.classList.remove("numpad-press"), 200);
+      }
     });
   }
   if (btnMove) {
@@ -564,12 +608,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         hide(feedbackFox);
         show(feedbackBunny);
+        if (bunnyCorrectAnim) {
+          bunnyCorrectAnim.goToAndPlay(0, true);
+        }
       } else {
         if (feedbackFoxTspan.length >= 2) {
           feedbackFoxTspan[feedbackFoxTspan.length - 1].textContent = newPos + "!";
         }
         hide(feedbackBunny);
         show(feedbackFox);
+        if (foxCorrectAnim) {
+          foxCorrectAnim.goToAndPlay(0, true);
+        }
       }
 
       // Check win condition (land on 91-100)
@@ -589,6 +639,9 @@ document.addEventListener("DOMContentLoaded", () => {
     hide(feedbackFox);
     hide(popupHint);
     show(feedbackEnd);
+    if (fireworksAnim) {
+      fireworksAnim.play();
+    }
     feedbackEnd.classList.add("win-pulse");
 
     if (winTspan.length > 0) {
@@ -610,6 +663,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hide(feedbackBunny);
     hide(feedbackFox);
     hide(iTextChooseSteps);
+    if (bunnyCorrectAnim) bunnyCorrectAnim.stop();
+    if (foxCorrectAnim) foxCorrectAnim.stop();
 
     // Clear direction highlights
     fwdPanel && fwdPanel.classList.remove("dir-selected");
@@ -691,6 +746,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hide(feedbackBunny);
     hide(feedbackFox);
     hide(popupHint);
+    if (fireworksAnim) fireworksAnim.stop();
     resetGameState();
     updateTurnDisplay();
   }
@@ -724,13 +780,13 @@ document.addEventListener("DOMContentLoaded", () => {
     hide(radioDotBwd);
 
     // Reset tokens to HOME
-    positionToken(bunnyToken, 0);
-    positionToken(foxToken, 0);
+    positionToken(bunnyToken, 0, "0s");
+    positionToken(foxToken, 0, "0s");
   }
 
   initLayers();
   updateTargetDisplay(null);
   updateStepDisplay('');
-  positionToken(bunnyToken, 0);
-  positionToken(foxToken, 0);
+  positionToken(bunnyToken, 0, "0s");
+  positionToken(foxToken, 0, "0s");
 });
