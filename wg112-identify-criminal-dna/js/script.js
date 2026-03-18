@@ -18,7 +18,8 @@ var WG112App = {
         phase: 0,           // 0=init  1=allLoaded  2=running  3=identify  4=answered
         loadedTubes: [],    // indices 0-4 already dispensed into gel
         currentSetIdx: 0,   // currently active set in DNA_SETS
-        criminal: null,        // 0-based index of the criminal (dynamically randomised)
+        criminal: null,        // 0-based index (will be set from sequence)
+        criminalQueue: [],    // sequence to ensure all 4 appear without repeats until cycle ends
         nextSuspectLane: 1, // Lane index (1 to 4) for the next clicked suspect
         submitted: false,   // true once a suspect is clicked in Phase 3
         animating: false,   // animation guard – prevents double-clicks
@@ -235,9 +236,9 @@ var WG112App = {
         G.phase = 0;
         G.loadedTubes = [];
 
-        // If criminal hasn't been set yet (first load), randomize it
+        // If criminal hasn't been set yet (first load), draw from non-repeating queue
         if (G.criminal === undefined || G.criminal === null) {
-            G.criminal = Math.floor(Math.random() * 4);
+            G.criminal = this.getNextCriminal();
         }
 
         var currentSet = this.DNA_SETS[G.currentSetIdx];
@@ -630,14 +631,50 @@ var WG112App = {
             G.currentSetIdx = nextSet;
         }
 
-        // Randomly pick which suspect (0-3) is the criminal for this trial
-        // This gives 4 sets × 4 criminals = 16 equally-likely combos
-        G.criminal = Math.floor(Math.random() * 4);
+        // Pick next criminal from non-repeating queue to ensure all 4 appear once before repeating
+        G.criminal = this.getNextCriminal();
 
-        console.log("%c [New Set] ", "background: #4CAF50; color: #fff; padding: 2px 5px;",
+        console.log("%c [New Set Cycle] ", "background: #4CAF50; color: #fff; padding: 2px 5px;",
             "Band Set: " + G.currentSetIdx + ", Criminal: Suspect " + (G.criminal + 1));
 
         this.reset();
+    },
+
+    /* Helper to get next criminal from a shuffled pool of 4 suspects */
+    getNextCriminal: function () {
+        var G = this.G;
+        var last = G.criminal; // current criminal will be the "last" one once we draw new
+
+        if (!G.criminalQueue || G.criminalQueue.length === 0) {
+            // Refill with all suspects 0-3 and shuffle
+            G.criminalQueue = [0, 1, 2, 3];
+            this.shuffleArray(G.criminalQueue);
+
+            /**
+             * Avoid consecutive duplicates between cycles:
+             * If the next one to pop (the last in array) is the same as the previous criminal,
+             * swap it with another element in the new queue.
+             */
+            if (G.criminalQueue[G.criminalQueue.length - 1] === last) {
+                // Swap the last element with index 0
+                var tmp = G.criminalQueue[G.criminalQueue.length - 1];
+                G.criminalQueue[G.criminalQueue.length - 1] = G.criminalQueue[0];
+                G.criminalQueue[0] = tmp;
+            }
+
+            console.log("Criminal Queue Refilled (Cycle Restart!):", G.criminalQueue);
+        }
+        return G.criminalQueue.pop();
+    },
+
+    /* Utility to shuffle array in place */
+    shuffleArray: function (arr) {
+        for (var i = arr.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
     },
 
     /* ─── DYNAMIC DNA BAND GENERATION ────────────────────────────────────────── */
