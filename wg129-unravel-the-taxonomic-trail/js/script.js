@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ["Small cats that can purr continuously but", "cannot roar; lack fully ossified hyoid bone."],
             ["Have dense fur between toe pads to walk on hot", "desert sand; enlarged ear pinnae for heat dissipation."]
           ],
-          taxons: ["Animalia", "Chordata", "Mammalia", "Carnivora", "Felidae", "Felis", "Margarita"]
+          taxons: ["Animalia", "Chordata", "Mammalia", "Carnivora", "Felidae", "Felis", "margarita"]
         },
         set2: {
           targetName: "Burmese python",
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ["Large, heavy-bodied snakes that kill prey", "by squeezing (constriction)."],
             ["Dark-coloured python with brown blotches,", "native to Southeast Asia."]
           ],
-          taxons: ["Animalia", "Chordata", "Reptilia", "Squamata", "Pythonidae", "Python", "Bivittatus"]
+          taxons: ["Animalia", "Chordata", "Reptilia", "Squamata", "Pythonidae", "Python", "bivittatus"]
         },
         set3: {
           targetName: "Speckled wood pigeon",
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ["Medium to large pigeons with iridescent", "neck patches and strong flight."],
             ["Himalayan forest pigeon with maroon-brown", "plumage speckled with white spots on neck."]
           ],
-          taxons: ["Animalia", "Chordata", "Aves", "Columbiformes", "Columbidae", "Columba", "Hodgsonii"]
+          taxons: ["Animalia", "Chordata", "Aves", "Columbiformes", "Columbidae", "Columba", "hodgsonii"]
         },
         set4: {
           targetName: "Northern Pacific sea star",
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ["Typically have five arms with conical spines", "arranged in irregular longitudinal rows."],
             ["Yellow-orange sea stars with purple markings;", "invasive species native to North Pacific."]
           ],
-          taxons: ["Animalia", "Echinodermata", "Asteroidea", "Forcipulatida", "Asteriidae", "Asterias", "Amurensis"]
+          taxons: ["Animalia", "Echinodermata", "Asteroidea", "Forcipulatida", "Asteriidae", "Asterias", "amurensis"]
         }
       },
       plant: {
@@ -206,12 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
           targetScientific: "Mangifera odorata",
           targetImage: "assets/images/Plant set_4/Fragrant mango.png",
           organisms: [
-            { name: "Apple (fruit)", image: "assets/images/Plant set_4/Apple (fruit).png", eliminateAt: 3 },
-            { name: "Alphonso mango (fruit)", image: "assets/images/Plant set_4/Alphonso mango (fruit).png", eliminateAt: 6 },
-            { name: "Pine (cone)", image: "assets/images/Plant set_4/Pine (cone).png", eliminateAt: 1 },
-            { name: "Cashew (fruit)", image: "assets/images/Plant set_4/Cashew (fruit).png", eliminateAt: 5 },
-            { name: "Banana (fruit)", image: "assets/images/Plant set_4/Banana (fruit).png", eliminateAt: 2 },
-            { name: "Orange (fruit)", image: "assets/images/Plant set_4/Orange (fruit).png", eliminateAt: 4 },
+            { name: "Apple", image: "assets/images/Plant set_4/Apple (fruit).png", eliminateAt: 3 },
+            { name: "Alphonso mango", image: "assets/images/Plant set_4/Alphonso mango (fruit).png", eliminateAt: 6 },
+            { name: "Pine", image: "assets/images/Plant set_4/Pine (cone).png", eliminateAt: 1 },
+            { name: "Cashew", image: "assets/images/Plant set_4/Cashew (fruit).png", eliminateAt: 5 },
+            { name: "Banana", image: "assets/images/Plant set_4/Banana (fruit).png", eliminateAt: 2 },
+            { name: "Orange", image: "assets/images/Plant set_4/Orange (fruit).png", eliminateAt: 4 },
             { name: "Fragrant mango", image: "assets/images/Plant set_4/Fragrant mango.png", eliminateAt: -1 }
           ],
           clues: [
@@ -413,6 +413,13 @@ document.addEventListener("DOMContentLoaded", () => {
     AppState.eliminatedIndices.clear();
     AppState.isLevelRevealed = [true, false, false, false, false, false, false];
     AppState.isGameActive = true;
+
+    // Shuffle organisms array to randomize panel placement
+    const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
+    for (let i = kingdomData.organisms.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [kingdomData.organisms[i], kingdomData.organisms[j]] = [kingdomData.organisms[j], kingdomData.organisms[i]];
+    }
 
     // Ensure all elements are visible
     const allImages = document.getElementById('all_images');
@@ -675,6 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const instr1 = document.getElementById('instruction_text');
     const instr2 = document.getElementById('instruction_text-2');
+    const showAnsBtn = document.getElementById('Group_10');
 
     // Case 1: Level revealed -> Prompt to eliminate animal
     if (AppState.isLevelRevealed[AppState.currentLevel] && AppState.currentLevel > 0) {
@@ -682,18 +690,17 @@ document.addEventListener("DOMContentLoaded", () => {
         instr1.style.display = 'block';
         const currentLevelName = levelNames[AppState.currentLevel];
         const kingdomPrefix = AppState.currentKingdom === 'animal' ? 'animal' : 'plant';
-        const tspans = instr1.querySelectorAll('tspan');
-        if (tspans.length >= 7) {
-          tspans[0].textContent = 'T';
-          tspans[1].textContent = `ap the ${kingdomPrefix} that does N`;
-          tspans[2].textContent = 'O';
-          tspans[3].textContent = 'T';
-          tspans[4].textContent = ' belong ';
-          tspans[5].textContent = 't';
-          tspans[6].textContent = `o this ${currentLevelName}`;
+        const tspan = instr1.querySelector('tspan');
+        if (tspan) {
+          tspan.textContent = `Tap the ${kingdomPrefix} that does NOT belong to this ${currentLevelName}`;
         }
       }
       if (instr2) instr2.style.display = 'none';
+
+      if (showAnsBtn) {
+        showAnsBtn.style.opacity = '1';
+        showAnsBtn.style.pointerEvents = 'auto';
+      }
     }
     // Case 2: Level not revealed OR Level 0 revealed (special start state)
     else {
@@ -707,19 +714,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const levelToReveal = levelNames[nextLevelIndex];
-        const tspans = instr2.querySelectorAll('tspan');
-        if (tspans.length >= 2) {
-          tspans[0].textContent = `T`;
-          tspans[1].textContent = `ap ${levelToReveal} to reveal its name `;
-          for (let i = 2; i < tspans.length; i++) {
-            tspans[i].textContent = '';
-          }
+        const tspan = instr2.querySelector('tspan');
+        if (tspan) {
+          tspan.textContent = `Tap ${levelToReveal} to reveal its name`;
         }
+      }
+
+      if (showAnsBtn) {
+        showAnsBtn.style.opacity = '0.5';
+        showAnsBtn.style.pointerEvents = 'none';
       }
     }
   }
 
   function showHint(index) {
+    if (!AppState.isGameActive) return;
     hideAllHints();
     const hintId = `hint-${index + 1}`; // Corrected mapping: Kingdom is index 0 -> hint-7? Wait. 
     // Let's re-verify matching: 
@@ -837,6 +846,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function showFinalSummary() {
     AppState.isGameActive = false;
     const kingdomData = AppState.data[AppState.currentKingdom][`set${AppState.currentSet}`];
+
+    const showAnsBtn = document.getElementById('Group_10');
+    if (showAnsBtn) {
+      showAnsBtn.style.opacity = '0.5';
+      showAnsBtn.style.pointerEvents = 'none';
+    }
 
     // Populate final screen with target organism data
     const finalImg = document.getElementById('final_organism_img');

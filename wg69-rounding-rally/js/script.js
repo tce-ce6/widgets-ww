@@ -131,12 +131,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ── Slide Q-marker to correct SVG position ── */
-    function positionQMarker(number) {
+    function positionQMarker(number, moveAll = true) {
         const [minVal, maxVal] = [currentLineValues[0], currentLineValues[14]];
         const [minX, maxX] = [TIMELINE_CX[0], TIMELINE_CX[14]];
         const frac = maxVal > minVal ? Math.max(0, Math.min(1, (number - minVal) / (maxVal - minVal))) : 0.5;
         const dx = minX + frac * (maxX - minX) - Q_ORIGIN_CX;
-        ["Q-marker", "Q-line", "Q-circle", "Q-numbers", "Car", "Bike"].forEach(id => {
+        
+        const targets = moveAll 
+            ? ["Q-marker", "Q-line", "Q-circle", "Q-numbers", "Car", "Bike"]
+            : ["Car", "Bike"];
+
+        targets.forEach(id => {
             const el = $(id); if (!el) return;
             el.style.transition = "transform 0.55s cubic-bezier(.25,.46,.45,.94)";
             el.style.transform = `translateX(${dx}px)`;
@@ -179,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const c = el.querySelector("circle"); if (!c) return;
         if (type === "correct") {
             c.style.fill = "#56db00"; c.style.stroke = "#2a7a00";
-            c.style.animation = "pulse-correct 0.55s ease forwards";
             c.style.filter = "drop-shadow(0 0 12px #56db00)";
         } else {
             c.style.fill = "#ff4444"; c.style.stroke = "#bb0000";
@@ -431,9 +435,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const q = state.currentQ;
             if (clicked === q.answer) {
                 state.answered = true;
+                positionQMarker(clicked, false);
                 animateButton(btnId, "correct");
                 setTimeout(() => showCorrectPopup(q), 380);
             } else {
+                positionQMarker(clicked, false);
                 animateButton(btnId, "wrong");
                 setTimeout(() => showHintPopup(q, clicked), 320);
             }

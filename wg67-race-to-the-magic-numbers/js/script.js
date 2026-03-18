@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     injectedTargetPrompt = replaceGroupWithText(targetTxtGroup, "Target", "end", "700", "#1a1a2e", "30", -10);
     injectedTargetNum = replaceGroupWithText(targetValGroup, "?", "middle", "700", "#d0401d", "35");
     injectedStepNum = replaceGroupWithText(stepValGroup, "?", "middle", "700", "#d0401d", "35");
-    injectedInstruction = replaceGroupWithText(instructionPrompt, "Wait!", "middle", "italic", "#fff", "23", -20);
+    injectedInstruction = replaceGroupWithText(instructionPrompt, "Wait!", "middle", "italic", "#fff", "23", 0);
 
     addHitbox(btnSpin); addHitbox(btnMove); addHitbox(btnNewGame);
     addHitbox(fwdPanel); addHitbox(bwdPanel);
@@ -214,6 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hide(feedbackEnd);
     hide(popupHint);
     hide(iTextChooseSteps);
+    hide(radioDotFwd);
+    hide(radioDotBwd);
     // Default: show Bunny instruction text, hide Fox
     show(iTextBunny);
     hide(iTextFox);
@@ -283,7 +285,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateInstructionText(text) {
-    if (injectedInstruction) injectedInstruction.textContent = text;
+    if (!injectedInstruction) return;
+
+    // Check if text needs to be split into two lines
+    if (text.length > 20 && (text.includes(". ") || text.includes("? "))) {
+      let splitIdx = text.indexOf(". ");
+      if (splitIdx === -1) splitIdx = text.indexOf("? ");
+
+      if (splitIdx !== -1) {
+        const line1 = text.substring(0, splitIdx + 1);
+        const line2 = text.substring(splitIdx + 2);
+        const x = injectedInstruction.getAttribute("x");
+
+        injectedInstruction.innerHTML = ""; // Clear existing text
+
+        const tspan1 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        tspan1.setAttribute("x", x);
+        tspan1.setAttribute("dy", "-0.6em");
+        tspan1.textContent = line1;
+
+        const tspan2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        tspan2.setAttribute("x", x);
+        tspan2.setAttribute("dy", "1.2em");
+        tspan2.textContent = line2;
+
+        injectedInstruction.appendChild(tspan1);
+        injectedInstruction.appendChild(tspan2);
+        return;
+      }
+    }
+
+    injectedInstruction.innerHTML = ""; // Clear for consistency
+    injectedInstruction.textContent = text;
   }
 
   // Update text inside the wheel to show landed digit
@@ -584,6 +617,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fwdPill) fwdPill.classList.remove("dir-selected");
     if (bwdPill) bwdPill.classList.remove("dir-selected");
 
+    hide(radioDotFwd);
+    hide(radioDotBwd);
+
     // Switch player
     state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
     state.direction = null;
@@ -684,6 +720,8 @@ document.addEventListener("DOMContentLoaded", () => {
     [fwdPanel, bwdPanel, fwdPill, bwdPill].forEach(el => {
       el && el.classList.remove("dir-selected");
     });
+    hide(radioDotFwd);
+    hide(radioDotBwd);
 
     // Reset tokens to HOME
     positionToken(bunnyToken, 0);
