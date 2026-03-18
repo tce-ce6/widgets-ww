@@ -89,11 +89,11 @@
       "author": "PrasannaP"
     },
     "wg124-swar-ki-pahchan": {
-      "updatedAt": "2026-02-19T20:12:43+05:30",
+      "updatedAt": "2026-03-18T20:04:23+05:30",
       "author": "tce-nitinc"
     },
     "wg125-vyanjan-ki-pahchan": {
-      "updatedAt": "2026-02-19T20:12:43+05:30",
+      "updatedAt": "2026-03-18T20:04:23+05:30",
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
@@ -205,7 +205,7 @@
       "author": "Shyam"
     },
     "wg18-solubility": {
-      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "updatedAt": "2026-03-18T20:04:23+05:30",
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
@@ -349,7 +349,7 @@
       "author": "tce-nitinc"
     },
     "wg93-rhyming-words": {
-      "updatedAt": "2026-02-17T19:32:51+05:30",
+      "updatedAt": "2026-03-18T20:04:23+05:30",
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
@@ -378,6 +378,17 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-18T20:04:23+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 18 changes",
+      "widgets": [
+        18,
+        93,
+        124,
+        125
+      ]
+    },
     {
       "date": "2026-03-18T18:32:41+05:30",
       "author": "aditya",
@@ -612,14 +623,6 @@
       "widgets": [
         94,
         119
-      ]
-    },
-    {
-      "date": "2026-03-17T10:37:58+05:30",
-      "author": "Santosh",
-      "message": "script for wg 129",
-      "widgets": [
-        129
       ]
     }
   ]
