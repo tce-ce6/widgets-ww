@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const addShelfBtn = document.getElementById('btn-add');
   const removeShelfBtn = document.getElementById('btn-remove');
   const shelfCountDisplay = document.querySelector('#shelves-number-box text');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
 
   // Clear the initial shelf from HTML
   scrollContainer.innerHTML = '';
@@ -512,27 +513,34 @@ function resetSimulation() {
   // Reset visuals (gray styling)
   updateUsedItemVisuals();
 
-  // Reset Feedback and Solution UI
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (feedbackContainer) feedbackContainer.innerHTML = '';
+  // Hide feedback message
+  const feedbackMessage = document.getElementById('feedback-message');
+  if (feedbackMessage) feedbackMessage.style.display = 'none';
 
-  const solutionContainer = document.getElementById('solution-container');
-  if (solutionContainer) solutionContainer.style.display = 'none';
+  // Hide the black tint overlay
+  const leftBgTint = document.getElementById('left-bg-tint');
+  if (leftBgTint) leftBgTint.style.display = 'none';
 
-  const showAnswerBtn = document.getElementById('btn-show-answer');
-  if (showAnswerBtn) {
-    const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-    if (textEl) textEl.textContent = 'Show Answer';
-  }
+  const solutionModal = document.getElementById('solution-modal');
+  if (solutionModal) solutionModal.style.display = 'none';
+
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
+  if (leftBgBackgroundTint) leftBgBackgroundTint.style.display = 'none';
 
   console.log("Simulation reset.");
 }
 
 function checkAnswer() {
   if (!currentChallenge) return;
+  console.log("Checking answer...", currentChallenge);
+  const feedbackMessage = document.getElementById('feedback-message');
+  const feedbackText = document.getElementById('feedback-text');
+  const feedbackContent = document.getElementById('feedback-content');
+  const leftBgTint = document.getElementById('left-bg-tint');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
+  leftBgBackgroundTint.style.display = 'block';
 
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (!feedbackContainer) return;
+  if (!feedbackMessage || !feedbackText || !feedbackContent || !leftBgTint) return;
 
   const answer = currentChallenge.answer;
   const hcf = answer.hcf;
@@ -551,69 +559,171 @@ function checkAnswer() {
   const totalItem1 = currentChallenge.item1.total;
   const totalItem2 = currentChallenge.item2.total;
 
+  let feedbackMessageText = '';
+  let isCorrect = false;
+
   if (usedItem1 < totalItem1 || usedItem2 < totalItem2) {
-    feedbackContainer.textContent = "❌ You need to place all items!";
-    feedbackContainer.style.color = 'red';
-    return;
-  }
+    feedbackMessageText = "You need to place all items!";
+    isCorrect = false;
+  } else if (shelfCount !== hcf) {
+    feedbackMessageText = `Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
+    isCorrect = false;
+  } else {
+    // Check contents of each shelf
+    let allCorrect = true;
+    for (const shelf of shelves) {
+      if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
+        allCorrect = false;
+        break;
+      }
+    }
 
-  // Check number of shelves and distribution
-  if (shelfCount !== hcf) {
-    feedbackContainer.textContent = `❌ Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
-    feedbackContainer.style.color = 'red';
-    return;
-  }
-
-  // Check contents of each shelf
-  let allCorrect = true;
-  for (const shelf of shelves) {
-    if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
-      allCorrect = false;
-      break;
+    if (allCorrect) {
+      feedbackMessageText = currentChallenge.successMessage || `Perfect! Each ${currentChallenge.containerName.toLowerCase()} has ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = true;
+    } else {
+      feedbackMessageText = `Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = false;
     }
   }
 
-  if (allCorrect) {
-    feedbackContainer.textContent = currentChallenge.successMessage || "✅ Correct!";
-    feedbackContainer.style.color = 'green';
+  // Update feedback text
+  feedbackText.textContent = feedbackMessageText;
+
+  // Update styling based on correctness
+  if (isCorrect) {
+    feedbackContent.style.border = '4px dashed #66BB6A';
+    feedbackText.style.color = '#2E7D32';
   } else {
-    feedbackContainer.textContent = `❌ Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
-    feedbackContainer.style.color = 'red';
+    feedbackContent.style.border = '4px dashed #F44336';
+    feedbackText.style.color = '#C62828';
+  }
+
+  // Show the feedback message
+  feedbackMessage.style.display = 'block';
+
+  // Show the black tint overlay
+  leftBgTint.style.display = 'block';
+}
+
+function updateModalContent() {
+  if (!currentChallenge || !currentChallenge.solution) return;
+
+  const solution = currentChallenge.solution;
+  const steps = solution.steps;
+
+  // Extract data from steps array based on the pattern in data.json
+  // steps[0]: Introduction text
+  // steps[1]: Factors of item1
+  // steps[2]: Factors of item2
+  // steps[3]: Common factors
+  // steps[4]: HCF = X
+  // steps[5]: Answer: X containers
+  // steps[6]: Each container will have...
+
+  const modalIntroText = document.getElementById('modal-intro-text');
+  const modalFactorsItem1 = document.getElementById('modal-factors-item1');
+  const modalFactorsItem2 = document.getElementById('modal-factors-item2');
+  const modalCommonFactors = document.getElementById('modal-common-factors');
+  const modalHcf = document.getElementById('modal-hcf');
+  const modalAnswer = document.getElementById('modal-answer');
+  const modalAdditionalInfo = document.getElementById('modal-additional-info');
+
+  if (modalIntroText && steps[0]) {
+    modalIntroText.innerHTML = steps[0].replace(/Highest Common Factor \(HCF\)/g, '<strong>Highest Common Factor (HCF)</strong>');
+  }
+
+  if (modalFactorsItem1 && steps[1]) {
+    const match1 = steps[1].match(/Factors of (\d+): (.+)/);
+    if (match1) {
+      modalFactorsItem1.innerHTML = `<strong>Factors of ${match1[1]}:</strong> ${match1[2]}`;
+    }
+  }
+
+  if (modalFactorsItem2 && steps[2]) {
+    const match2 = steps[2].match(/Factors of (\d+): (.+)/);
+    if (match2) {
+      modalFactorsItem2.innerHTML = `<strong>Factors of ${match2[1]}:</strong> ${match2[2]}`;
+    }
+  }
+
+  if (modalCommonFactors && steps[3]) {
+    const match3 = steps[3].match(/Common factors: (.+)/);
+    if (match3) {
+      modalCommonFactors.innerHTML = `<strong>Common factors:</strong> ${match3[1]}`;
+    }
+  }
+
+  if (modalHcf && steps[4]) {
+    modalHcf.textContent = steps[4]; // "HCF = X"
+  }
+
+  if (modalAnswer && steps[5]) {
+    modalAnswer.textContent = steps[5]; // "Answer: X containers"
+  }
+
+  if (modalAdditionalInfo && steps[6]) {
+    // Parse the additional info and make item names bold
+    const text = steps[6];
+    const regex = /(\d+)\s+(.+?)\s+and\s+(\d+)\s+(.+)/;
+    const match = text.match(regex);
+
+    if (match) {
+      const count1 = match[1];
+      const item1Name = match[2];
+      const count2 = match[3];
+      const item2Name = match[4];
+      modalAdditionalInfo.innerHTML = `Each ${currentChallenge.containerName.toLowerCase()} will have <strong>${count1} ${item1Name}</strong> and <strong>${count2} ${item2Name}</strong>`;
+    } else {
+      modalAdditionalInfo.textContent = text;
+    }
   }
 }
 
 function showAnswer() {
   if (!currentChallenge) return;
 
-  const solutionContainer = document.getElementById('solution-container');
-  const solutionText = document.getElementById('solution-text');
-  const showAnswerBtn = document.getElementById('btn-show-answer');
+  const solutionModal = document.getElementById('solution-modal');
+  const feedbackContainer = document.getElementById('feedback-container');
 
-  if (!solutionContainer || !solutionText) return;
+  if (!solutionModal) return;
 
-  if (solutionContainer.style.display === 'none' || solutionContainer.style.display === '') {
-    // Show Solution
-    if (currentChallenge.solution && currentChallenge.solution.steps) {
-      solutionText.innerHTML = currentChallenge.solution.steps.join('<br>');
-    } else {
-      solutionText.textContent = "Solution not available.";
-    }
-    solutionContainer.style.display = 'block';
+  // Update modal content with current challenge data
+  updateModalContent();
 
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Hide Answer';
-    }
+  // Show the modal
+  solutionModal.style.display = 'block';
 
-    // Also scroll to solution
-    solutionContainer.scrollIntoView({ behavior: 'smooth' });
-  } else {
-    // Hide Solution
-    solutionContainer.style.display = 'none';
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Show Answer';
-    }
+  // Hide feedback container when showing solution
+  if (feedbackContainer) {
+    feedbackContainer.style.display = 'none';
+  }
+
+  // Add event listener to close button
+  const closeModalBtn = document.getElementById('close-modal');
+  if (closeModalBtn) {
+    closeModalBtn.onclick = function () {
+      solutionModal.style.display = 'none';
+      // Show feedback container again
+      if (feedbackContainer) {
+        feedbackContainer.style.display = 'block';
+      }
+    };
+  }
+
+  // Also allow clicking outside the modal content to close
+  const modalOverlay = solutionModal.querySelector('div');
+  if (modalOverlay) {
+    modalOverlay.onclick = function (e) {
+      // Only close if clicking the dark overlay, not the modal content
+      if (e.target === modalOverlay) {
+        solutionModal.style.display = 'none';
+        // Show feedback container again
+        if (feedbackContainer) {
+          feedbackContainer.style.display = 'block';
+        }
+      }
+    };
   }
 }
 
