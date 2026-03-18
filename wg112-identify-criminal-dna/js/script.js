@@ -36,19 +36,19 @@ var WG112App = {
      *  labelId – sample name text shown in gel lane after loading
      */
     TUBES: [
-        { id: 0, tubeId: 'tube', baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Crime_scene_sample_2' },
-        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Suspect-3_sample-2' },
-        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Suspect-2_sample-2' },
-        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Suspect-4_sample-2' },
-        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Suspect-1_sample' }
+        { id: 0, tubeId: 'tube',   baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Label_Lane_1', name: "Crime Scene" },
+        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Label_Lane_2', name: "Suspect 1" },
+        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Label_Lane_3', name: "Suspect 2" },
+        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Label_Lane_4', name: "Suspect 3" },
+        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Label_Lane_5', name: "Suspect 4" }
     ],
 
     // Lane-2 … Lane-5 sample labels (Lane-1 Crime scene label stays always on)
     SUSPECT_LANE_LABELS: [
-        'Suspect-3_sample-2',  // Lane-2
-        'Suspect-2_sample-2',  // Lane-3
-        'Suspect-4_sample-2',  // Lane-4
-        'Suspect-1_sample'     // Lane-5
+        'Label_Lane_2',  // Lane-2
+        'Label_Lane_3',  // Lane-3
+        'Label_Lane_4',  // Lane-4
+        'Label_Lane_5'   // Lane-5
     ],
 
     // DNA band groups revealed during electrophoresis (one per lane)
@@ -68,7 +68,7 @@ var WG112App = {
             chromosomes: ["6", "13", "17"],
             criminal: 1, // Suspect-2
             suspects: [
-                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 800 }],
+                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 785 }],
                 [{ c: 0, y: 440 }, { c: 1, y: 480 }, { c: 0, y: 560 }, { c: 1, y: 640 }, { c: 2, y: 720 }, { c: 2, y: 760 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 0, y: 600 }, { c: 1, y: 640 }, { c: 2, y: 720 }],
                 [{ c: 1, y: 400 }, { c: 0, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 640 }, { c: 0, y: 720 }, { c: 2, y: 760 }]
@@ -86,7 +86,7 @@ var WG112App = {
         },
         {
             chromosomes: ["1", "9", "22"],
-            criminal: 3, // Suspect-4
+            criminal: 2, // Suspect-3
             suspects: [
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 520 }, { c: 1, y: 560 }, { c: 1, y: 600 }, { c: 2, y: 640 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 2, y: 640 }],
@@ -251,8 +251,8 @@ var WG112App = {
 
         /* ── always-visible background elements ── */
         this.show('gel_base');
-        this.show('repport_numbers');
-        this.show('index');
+        this.hide('repport_numbers');
+        this.hide('index');
         this.show('base');
         this.show('tube_base');
         this.show('solution_tube');
@@ -480,6 +480,10 @@ var WG112App = {
             })(i, delay * (i + 1));
         }
 
+        /* Show legend and repeat numbers */
+        this.show('repport_numbers');
+        this.show('index');
+
         /* After electrophoresis finishes → transition to Slide 11 */
         setTimeout(function () {
             self.onShowSlide11();
@@ -640,12 +644,22 @@ var WG112App = {
         // Lane 0 is Crime Scene, Lanes 1-4 are suspects
         var crimeSceneBands = setDef.suspects[setDef.criminal];
 
+        // LOGGING REQ: log values of all five lanes and correct answer
+        console.log("%c [New DNA Set Applied] ", "background: #006199; color: #fff; padding: 2px 5px;");
+        console.log("Correct Criminal: Suspect " + (setDef.criminal + 1));
+        
+        // Ensure we only have ONE match:
+        // By design, our DNA_SETS suspects are unique. 
+        // We'll map them to the BANDS indices.
+        // We can shuffle the non-criminal suspect patterns to different lanes for variety,
+        // but current mapping is already varied across sets.
+
         var bandGroupsParams = [
-            { id: this.BANDS[0], bands: crimeSceneBands, x: 1091 },     // Crime Scene   (TUBES[0])
-            { id: this.BANDS[1], bands: setDef.suspects[2], x: 1245 },  // Suspect-3     (TUBES[1])
-            { id: this.BANDS[2], bands: setDef.suspects[1], x: 1397 },  // Suspect-2     (TUBES[2])
-            { id: this.BANDS[3], bands: setDef.suspects[3], x: 1551 },  // Suspect-4     (TUBES[3])
-            { id: this.BANDS[4], bands: setDef.suspects[0], x: 1701 }   // Suspect-1     (TUBES[4])
+            { id: this.BANDS[0], label: "Lane 1 (Crime Scene)", bands: crimeSceneBands, x: 1091 },
+            { id: this.BANDS[1], label: "Lane 2 (Suspect 1)",    bands: setDef.suspects[0], x: 1245 },
+            { id: this.BANDS[2], label: "Lane 3 (Suspect 2)",    bands: setDef.suspects[1], x: 1397 },
+            { id: this.BANDS[3], label: "Lane 4 (Suspect 3)",    bands: setDef.suspects[2], x: 1551 },
+            { id: this.BANDS[4], label: "Lane 5 (Suspect 4)",    bands: setDef.suspects[3], x: 1701 }
         ];
 
         for (var l = 0; l < bandGroupsParams.length; l++) {
@@ -653,6 +667,10 @@ var WG112App = {
             var gEl = this.el(params.id);
             if (!gEl) { continue; }
             gEl.innerHTML = ''; // Clear old standard bands
+
+            // Log lane values
+            var bandYs = params.bands.map(function (b) { return b.y; });
+            console.log(params.label + " band Y positions: " + bandYs.join(", "));
 
             for (var b = 0; b < params.bands.length; b++) {
                 var bandDef = params.bands[b];
@@ -665,8 +683,53 @@ var WG112App = {
                 gEl.appendChild(rect);
             }
         }
+    },
+
+    /* ─── DEBUG METHODS ────────────────────────────────────────────────────── */
+    /**
+     * Prints current state and band patterns to console for verification.
+     */
+    verifyRandomization: function () {
+        var set = this.DNA_SETS[this.G.currentSetIdx];
+        console.log("%c Verification of DNA Randomization (Set " + this.G.currentSetIdx + ") ", "background: #222; color: #bada55; font-weight: bold; padding: 5px;");
+        console.log("Correct Criminal: Suspect " + (set.criminal + 1));
+        
+        console.group("Suspect Band Definitions (Shared across lanes):");
+        set.suspects.forEach(function (s, i) {
+            var matchStr = (i === set.criminal) ? " [MATCHES CRIME SCENE]" : "";
+            console.log("Suspect " + (i + 1) + matchStr + "... " + matchStr + ":", s.map(function (b) { return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
+        });
+        console.groupEnd();
+
+        // Reveal current mapping in lanes
+        console.group("Current Lane Assignments (based on click order):");
+        var self = this;
+        this.TUBES.forEach(function(tube, idx) {
+            var lane = "Not loaded yet";
+            // Check if this tube's label is visible or transformed
+            var labelEl = self.el(tube.labelId);
+            if (labelEl && labelEl.style.display !== 'none') {
+                 // Try to find which lane it's in by looking at G.loadedTubes
+                 var loadedIdx = self.G.loadedTubes.indexOf(idx);
+                 if (loadedIdx !== -1 || idx === 0) {
+                     lane = (idx === 0) ? "Lane 1" : "Lane " + (self.G.loadedTubes.indexOf(idx) + 2);
+                 }
+            }
+            console.log(tube.name + " -> " + lane);
+        });
+        console.groupEnd();
+
+        return "Set index: " + this.G.currentSetIdx + " | Criminal: Suspect " + (set.criminal + 1);
     }
 
+};
+
+// Global helper for testers
+window.verifyRandomization = function () {
+    if (window.WG112App) {
+        return window.WG112App.verifyRandomization();
+    }
+    return "WG112App not initialized.";
 };
 
 /* ─── BOOT ──────────────────────────────────────────────────────────────────── */

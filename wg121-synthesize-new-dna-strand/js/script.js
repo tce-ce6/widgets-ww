@@ -97,7 +97,7 @@ class Wg121 {
              * config: widget-level settings
              */
             config: {
-                feedbackTimeout: 1800,
+                feedbackTimeout: 3800,
                 autoCloseFeedback: true,
             },
 
@@ -221,10 +221,10 @@ class Wg121 {
         left: 50%;
         transform: translateX(-50%);
         bottom: 37%;
-        padding: 14px 28px;
+        padding: 18px 36px;
         border-radius: 10px;
         font-family: Roboto, sans-serif;
-        font-size: 18px;
+        font-size: 24px;
         font-weight: 500;
         color: white;
         pointer-events: none;
@@ -834,13 +834,92 @@ class Wg121 {
             'T-3', 'G-2', 'T-2-12', 'G-13', 'A-13', 'T-13',
         ];
         const compTextIds = [
-            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'T-7', 'C-3-2',
-            'C-4', 'C-5', 'G-5', 'A-5', 'A-6', 'A-7',
+            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'C-3-2', 'G-5',
+            'A-5', 'C-4', 'A-6', 'C-5', 'T-7', 'A-7',
         ];
 
         templateSequence.forEach((base, idx) => {
             this._updateSolutionSlot(templateTextIds[idx], base);
             this._updateSolutionSlot(compTextIds[idx], pairMap[base]);
+        });
+
+        this._updateSolutionHelix();
+    }
+
+    // ----------------------------------------------------------
+    // _updateSolutionHelix()
+    // Updates the decorative vertical DNA helix in the modal
+    // to match the sequence. It toggles visibility of the
+    // pre-existing 24 segments (12 pairs) in each base group.
+    // ----------------------------------------------------------
+    _updateSolutionHelix() {
+        const { templateSequence } = this.state;
+        const pairMap = { A: 'T', T: 'A', G: 'C', C: 'G' };
+        const baseIdxMap = { A: 0, T: 1, C: 2, G: 3 };
+
+        const getSortedElements = (groupId, selectors) => {
+            const group = document.getElementById(groupId);
+            if (!group) return [];
+            
+            const els = Array.from(group.querySelectorAll(selectors));
+            
+            const getPos = (el) => {
+                const transform = el.getAttribute('transform') || '';
+                const match = transform.match(/translate\(([^, ]+)[, ]+([^)]+)\)/);
+                if (match) {
+                    return { x: parseFloat(match[1]), y: parseFloat(match[2]) };
+                }
+                const bbox = el.getBBox ? el.getBBox() : { x: 0, y: 0 };
+                return {
+                    x: parseFloat(el.getAttribute('x') || bbox.x),
+                    y: parseFloat(el.getAttribute('y') || bbox.y),
+                };
+            };
+
+            return els.sort((a, b) => {
+                const posA = getPos(a);
+                const posB = getPos(b);
+                if (Math.abs(posA.y - posB.y) > 10) return posA.y - posB.y;
+                return posA.x - posB.x;
+            });
+        };
+
+        const textBanks = [
+            getSortedElements('a-2', 'text'),
+            getSortedElements('t-2', 'text'),
+            getSortedElements('c-2', 'text'),
+            getSortedElements('g-2', 'text'),
+        ];
+        const rectBanks = [
+            getSortedElements('a_base', 'rect, path'),
+            getSortedElements('t_base', 'rect, path'),
+            getSortedElements('c_base', 'rect, path'),
+            getSortedElements('g_base', 'rect, path'),
+        ];
+
+        // Hide all 96 text elements and 96 rect elements first
+        [...textBanks, ...rectBanks].forEach((bank) => {
+            bank.forEach((el) => { el.style.display = 'none'; });
+        });
+
+        templateSequence.forEach((tBase, i) => {
+            const cBase = pairMap[tBase];
+            const tIdx = baseIdxMap[tBase];
+            const cIdx = baseIdxMap[cBase];
+
+            // In the helix: 
+            // Pos 2*i = Left side (5'->3' label at top-left, matching Complementary)
+            // Pos 2*i + 1 = Right side (3'->5' label at top-right, matching Template)
+            const leftPos = 2 * i;
+            const rightPos = 2 * i + 1;
+
+            // Show Complementary on Left
+            if (textBanks[cIdx][leftPos]) textBanks[cIdx][leftPos].style.display = '';
+            if (rectBanks[cIdx][leftPos]) rectBanks[cIdx][leftPos].style.display = '';
+
+            // Show Template on Right
+            if (textBanks[tIdx][rightPos]) textBanks[tIdx][rightPos].style.display = '';
+            if (rectBanks[tIdx][rightPos]) rectBanks[tIdx][rightPos].style.display = '';
         });
     }
 
