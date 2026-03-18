@@ -225,7 +225,7 @@
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-03-14T13:36:44+05:30",
+      "updatedAt": "2026-03-18T23:11:02+05:30",
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-18T23:11:02+05:30",
+      "author": "PrasannaP",
+      "message": "fix: Update version ID to b3_wg47_260318 and adjust group transformations in SVG elements",
+      "widgets": [
+        47
+      ]
+    },
     {
       "date": "2026-03-18T22:45:26+05:30",
       "author": "PrasannaP",
@@ -614,14 +622,6 @@
         86,
         87,
         88
-      ]
-    },
-    {
-      "date": "2026-03-17T11:10:26+05:30",
-      "author": "Santosh",
-      "message": "bug fixes for wg 78",
-      "widgets": [
-        78
       ]
     }
   ]
