@@ -249,8 +249,8 @@
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
-      "updatedAt": "2026-03-18T16:10:00+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-18T18:32:41+05:30",
+      "author": "aditya"
     },
     "wg68-reflection-of-a-point": {
       "updatedAt": "2026-03-15T13:36:28+05:30",
@@ -378,6 +378,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-18T18:32:41+05:30",
+      "author": "aditya",
+      "message": "Update index.html",
+      "widgets": [
+        67
+      ]
+    },
+    {
+      "date": "2026-03-18T18:23:17+05:30",
+      "author": "Santosh",
+      "message": "bug fixes 67",
+      "widgets": [
+        67
+      ]
+    },
     {
       "date": "2026-03-18T17:05:59+05:30",
       "author": "PrasannaP",
@@ -602,22 +618,6 @@
       "date": "2026-03-17T10:37:58+05:30",
       "author": "Santosh",
       "message": "script for wg 129",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-17T10:33:47+05:30",
-      "author": "aditya",
-      "message": "wg142",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-16T19:04:12+05:30",
-      "author": "Santosh",
-      "message": "widget 129 started",
       "widgets": [
         129
       ]
