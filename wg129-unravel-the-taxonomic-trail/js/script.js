@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     levelRevealedLabels: ['Kingdom-2', 'Phylum_2', 'Class-2', 'Order-2', 'Family_2', 'Genus_2', 'Species-2'],
     taxonGroups: ['Animalia', 'Chordata', 'Mammalia', 'Carnivora', 'Felidae', 'Felis', 'Margarita'],
     hintTriggers: ['Group_1598', 'Group_1592', 'Group_1593', 'Group_1594', 'Group_1595', 'Group_1596', 'Group_1597'],
+    pendingTimeouts: [],
 
     // Taxonomic levels names
     levels: ['Kingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species'],
@@ -404,10 +405,19 @@ document.addEventListener("DOMContentLoaded", () => {
    * Reset game state for a new set or kingdom.
    */
   function resetGame() {
+    // Clear any pending timeouts to avoid race conditions (e.g., box hiding after reset)
+    AppState.pendingTimeouts.forEach(t => clearTimeout(t));
+    AppState.pendingTimeouts = [];
+
     AppState.currentLevel = 0; // Starting at Kingdom
     AppState.eliminatedIndices.clear();
     AppState.isLevelRevealed = [true, false, false, false, false, false, false];
     AppState.isGameActive = true;
+
+    // Ensure all elements are visible
+    const allImages = document.getElementById('all_images');
+    if (allImages) allImages.style.display = 'block';
+
     renderOrganisms();
     updateLevelsUI();
     hideAllHints();
@@ -578,7 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showFeedback(true, index);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (groupEl) {
         groupEl.classList.remove('correct-ans-border');
         groupEl.style.display = 'none';
@@ -594,6 +604,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showFinalSummary();
       }
     }, 2000);
+    AppState.pendingTimeouts.push(timer);
   }
 
   function handleWrongElimination(index) {
@@ -604,11 +615,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showFeedback(false, index);
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (groupEl) {
         groupEl.classList.remove('wrong-ans-border');
       }
     }, 2000);
+    AppState.pendingTimeouts.push(timer);
   }
 
   function showFeedback(isCorrect, index) {
@@ -649,9 +661,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (feedbackEl) feedbackEl.style.display = 'none';
     }, 2000);
+    AppState.pendingTimeouts.push(timer);
   }
 
   /**
