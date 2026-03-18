@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-17T20:12:17+05:30",
+      "updatedAt": "2026-03-17T21:03:24+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -109,7 +109,7 @@
       "author": "Santosh"
     },
     "wg129-unravel-the-taxonomic-trail": {
-      "updatedAt": "2026-03-17T16:21:36+05:30",
+      "updatedAt": "2026-03-18T09:49:21+05:30",
       "author": "Santosh"
     },
     "wg130-election-officer": {
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-18T09:49:21+05:30",
+      "author": "Santosh",
+      "message": "129 modified",
+      "widgets": [
+        129
+      ]
+    },
+    {
+      "date": "2026-03-17T21:03:24+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add descriptive names to DNA tubes and enhance the randomization verification debug output, along with a minor band position adjustment and version update.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-17T20:12:17+05:30",
       "author": "PrasannaP",
       "message": "chore: Update widget version ID in index.html.",
@@ -392,6 +408,14 @@
       "message": "Refactor gel lane labels in HTML and JavaScript, and remove associated state, randomization verification, and display update logic.",
       "widgets": [
         112
+      ]
+    },
+    {
+      "date": "2026-03-17T18:51:18+05:30",
+      "author": "Santosh",
+      "message": "implemented wg-129",
+      "widgets": [
+        129
       ]
     },
     {
@@ -599,30 +623,6 @@
       "message": "refactor: Embed HTML overlay in SVG foreignObject and refine modal/backdrop layering for correct display.",
       "widgets": [
         121
-      ]
-    },
-    {
-      "date": "2026-03-14T15:29:31+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: reorder micropipette SVG elements after the tube base.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-14T15:15:52+05:30",
-      "author": "PrasannaP",
-      "message": "Refactor SVG text elements and rename answer port group IDs in `index.html`, update wireframe comments for clarity, and bump the version.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-14T14:08:05+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add a semi-transparent overlay for the insight popup and update the widget version.",
-      "widgets": [
-        97
       ]
     }
   ]
