@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA Fingerprinting Widget – Randomization & UI Logic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #006199;
+            --secondary: #003548;
+            --accent: #4CAF50;
+            --bg: #f8f9fa;
+            --text: #333;
+            --code-bg: #e9ecef;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-top: 30px;
+            font-weight: 500;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+
+        .block-code {
+            background-color: #2b2b2b;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .status-fixed { background-color: var(--accent); }
+        .status-verified { background-color: #9C27B0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th { background-color: #f2f2f2; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DNA Fingerprinting – Implementation & Testing Guide</h1>
+        
+        <p>This document details the logic implemented for the <strong>WG112</strong> widget to ensure robust UI behavior and unbiased, non-repeating randomization.</p>
+
+        <h2>1. Final Logic Implementation</h2>
+
+        <h3>1.1 <span class="status status-fixed">NEW</span> Multi-Selection Retry Logic</h3>
+        <p>The widget now allows users to continue selecting suspects after an incorrect guess, rather than locking the UI.</p>
+        <ul>
+            <li><strong>Wrong Answer:</strong> Displays temporary red feedback for 1.5 seconds, then auto-dismisses and re-enables all suspect portraits.</li>
+            <li><strong>Correct Answer:</strong> Locks selection, shows green feedback, and transitions the trial to completion.</li>
+        </ul>
+
+        <h3>1.2 <span class="status status-fixed">NEW</span> Unbiased Randomization (16 Combinations)</h3>
+        <p>To ensure a fair distribution across suspects, the hardcoded criminal logic was replaced with a dynamic queue system.</p>
+        <ul>
+            <li><strong>Combinations:</strong> 4 distinct band pattern sets (chromosomes) × 4 suspects = <strong>16 unique trials</strong>.</li>
+            <li><strong>Non-Repeating Cycle:</strong> We maintain a shuffled <code>criminalQueue</code> of all 4 suspects. Each turn draws from this queue until empty.</li>
+            <li><strong>Consecutive Prevention:</strong> If the first suspect of a new cycle matches the last suspect of the previous cycle, they are automatically swapped to ensure variety.</li>
+        </ul>
+
+        <h2>2. Technical Testing Approach</h2>
+        <p>Testers can use two global helper functions in the browser console for verification.</p>
+
+        <h3>2.1 State Verification</h3>
+        <p>Run <code>verifyRandomization()</code> in the console to inspect the current hidden state of the active trial.</p>
+        <div class="block-code">
+            // Output shows current criminal index, lane mapping, and pattern data.
+            verifyRandomization();
+        </div>
+
+        <h3>2.2 Distribution Testing</h3>
+        <p>Run <code>testDistribution(n)</code> to simulate $n$ randomizations and verify that every suspect has a 25% probability.</p>
+        <div class="block-code">
+            // Simulates 100 trials and displays a results table.
+            testDistribution(100);
+        </div>
+
+        <h2>3. Manual Testing Workflow</h2>
+        <ol>
+            <li>Load the widget and complete electrophoresis.</li>
+            <li>Intentionally select a <strong>Wrong Suspect</strong>. Verify the red box appears, then vanishes after 1.5 seconds.</li>
+            <li>Select the <strong>Correct Suspect</strong> and verify the Bravo feedback appears.</li>
+            <li>Click <strong>"New Set"</strong> and repeat 4 times. Verify that you have seen all 4 suspects exactly once as the criminal in that sequence.</li>
+        </ol>
+
+        <p style="margin-top:40px; font-size: 0.9em; color: #777; font-style: italic;">
+            Document Version: b3_wg112_260318
+        </p>
+    </div>
+</body>
+</html>
