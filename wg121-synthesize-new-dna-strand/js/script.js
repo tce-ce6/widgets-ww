@@ -220,7 +220,7 @@ class Wg121 {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 37%;
+        bottom: 34%;
         padding: 18px 36px;
         border-radius: 10px;
         font-family: Roboto, sans-serif;
@@ -232,13 +232,13 @@ class Wg121 {
         transition: opacity 0.25s;
         z-index: 10;
         text-align: center;
-        max-width: 600px;
+        max-width: 800px;
         width: max-content;
         box-shadow: 0 4px 16px rgba(0,0,0,0.25);
       }
       .poc-feedback.show  { opacity: 1; pointer-events: all; }
-      .poc-feedback.correct { background: #1a6e36; }
-      .poc-feedback.wrong   { background: #c0392b; }
+      .poc-feedback.correct { background: #036617; color: #EEFF00; }
+      .poc-feedback.wrong   { background: #F20505; color: #EEFF00; }
 
 
       /* Active slot highlight – applied to the drop-zone SVG group */
@@ -345,10 +345,12 @@ class Wg121 {
             const NS = 'http://www.w3.org/2000/svg';
             const backdrop = document.createElementNS(NS, 'rect');
             backdrop.id = 'poc-svg-backdrop';
-            backdrop.setAttribute('x', '0');
-            backdrop.setAttribute('y', '0');
-            backdrop.setAttribute('width', '1920');
-            backdrop.setAttribute('height', '1080');
+            // Use extremely large dimensions and negative offsets to ensure
+            // it covers the entire screen even if the SVG is scaled/letterboxed.
+            backdrop.setAttribute('x', '-500%');
+            backdrop.setAttribute('y', '-500%');
+            backdrop.setAttribute('width', '1000%');
+            backdrop.setAttribute('height', '1000%');
             backdrop.setAttribute('fill', '#000000');
             backdrop.setAttribute('fill-opacity', '0.65');
             backdrop.style.display = 'none';
@@ -860,9 +862,9 @@ class Wg121 {
         const getSortedElements = (groupId, selectors) => {
             const group = document.getElementById(groupId);
             if (!group) return [];
-            
+
             const els = Array.from(group.querySelectorAll(selectors));
-            
+
             const getPos = (el) => {
                 const transform = el.getAttribute('transform') || '';
                 const match = transform.match(/translate\(([^, ]+)[, ]+([^)]+)\)/);
@@ -1012,6 +1014,7 @@ class Wg121 {
         svgContainer.appendChild(modalEl);
 
         if (backdrop) {
+            svgContainer.style.overflow = 'visible'; // Allow backdrop to bleed out
             svgContainer.insertBefore(backdrop, modalEl); // backdrop behind modal
             backdrop.style.display = '';
         }
@@ -1024,8 +1027,11 @@ class Wg121 {
     _closeModal(modalEl) {
         if (!modalEl) return;
         modalEl.style.display = 'none';
-        const { backdrop } = this.state.cache;
-        if (backdrop) backdrop.style.display = 'none';
+        const { backdrop, svgContainer } = this.state.cache;
+        if (backdrop) {
+            backdrop.style.display = 'none';
+            if (svgContainer) svgContainer.style.overflow = '';
+        }
         this.state.isLocked = false;
         this.state.activeModal = null;
         this.updateUI();
