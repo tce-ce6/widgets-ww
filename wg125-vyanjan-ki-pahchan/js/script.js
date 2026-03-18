@@ -403,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "त", sound: "assets/audio/ta2.mp3" },
         { text: "र", sound: "assets/audio/ra.mp3" },
-        { text: "ऋ", sound: "assets/audio/ri.mp3" },
+        { text: "श्र", sound: "assets/audio/shra.mp3" },
         { text: "त्र", sound: "assets/audio/tra.mp3" },
       ],
     },
@@ -522,6 +522,8 @@ document.addEventListener("DOMContentLoaded", () => {
       li.innerHTML = `<span class="text-wrap">${opt.text}</span>`;
 
       li.addEventListener("click", () => {
+        playAudio(opt.sound);
+
         if (li.classList.contains("correct")) return;
 
         if (opt.text === currentQuestion.answer) {
@@ -660,22 +662,23 @@ document.addEventListener("DOMContentLoaded", () => {
     optionContainer.innerHTML = "";
   });
 
-  function playLetterSound() {
-  if (!currentQuestion) return;
-
-  // stop previous audio if playing
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
+  function playAudio(path) {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(path);
+    currentAudio.play().catch((err) => console.log("Audio play blocked:", err));
   }
 
-  // build path from question data
-  const audioPath = `assets/audio/${currentQuestion.letterSound}`;
+  function playLetterSound() {
+    if (!currentQuestion) return;
 
-  currentAudio = new Audio(audioPath);
-  currentAudio.play().catch(err => console.log("Audio play blocked:", err));
-}
-soundBtn.addEventListener("click", () => {
-  playLetterSound();
-});
+    // build path from question data
+    const audioPath = `assets/audio/${currentQuestion.letterSound}`;
+    playAudio(audioPath);
+  }
+  soundBtn.addEventListener("click", () => {
+    playLetterSound();
+  });
 });
