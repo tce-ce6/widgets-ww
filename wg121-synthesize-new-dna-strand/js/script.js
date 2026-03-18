@@ -220,7 +220,7 @@ class Wg121 {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 37%;
+        bottom: 34%;
         padding: 18px 36px;
         border-radius: 10px;
         font-family: Roboto, sans-serif;
@@ -232,13 +232,13 @@ class Wg121 {
         transition: opacity 0.25s;
         z-index: 10;
         text-align: center;
-        max-width: 600px;
+        max-width: 800px;
         width: max-content;
         box-shadow: 0 4px 16px rgba(0,0,0,0.25);
       }
       .poc-feedback.show  { opacity: 1; pointer-events: all; }
-      .poc-feedback.correct { background: #1a6e36; }
-      .poc-feedback.wrong   { background: #c0392b; }
+      .poc-feedback.correct { background: #036617; color: #EEFF00; }
+      .poc-feedback.wrong   { background: #F20505; color: #EEFF00; }
 
 
       /* Active slot highlight – applied to the drop-zone SVG group */
@@ -860,9 +860,9 @@ class Wg121 {
         const getSortedElements = (groupId, selectors) => {
             const group = document.getElementById(groupId);
             if (!group) return [];
-            
+
             const els = Array.from(group.querySelectorAll(selectors));
-            
+
             const getPos = (el) => {
                 const transform = el.getAttribute('transform') || '';
                 const match = transform.match(/translate\(([^, ]+)[, ]+([^)]+)\)/);
