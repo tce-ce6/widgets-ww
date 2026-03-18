@@ -345,10 +345,12 @@ class Wg121 {
             const NS = 'http://www.w3.org/2000/svg';
             const backdrop = document.createElementNS(NS, 'rect');
             backdrop.id = 'poc-svg-backdrop';
-            backdrop.setAttribute('x', '0');
-            backdrop.setAttribute('y', '0');
-            backdrop.setAttribute('width', '1920');
-            backdrop.setAttribute('height', '1080');
+            // Use extremely large dimensions and negative offsets to ensure
+            // it covers the entire screen even if the SVG is scaled/letterboxed.
+            backdrop.setAttribute('x', '-500%');
+            backdrop.setAttribute('y', '-500%');
+            backdrop.setAttribute('width', '1000%');
+            backdrop.setAttribute('height', '1000%');
             backdrop.setAttribute('fill', '#000000');
             backdrop.setAttribute('fill-opacity', '0.65');
             backdrop.style.display = 'none';
@@ -1012,6 +1014,7 @@ class Wg121 {
         svgContainer.appendChild(modalEl);
 
         if (backdrop) {
+            svgContainer.style.overflow = 'visible'; // Allow backdrop to bleed out
             svgContainer.insertBefore(backdrop, modalEl); // backdrop behind modal
             backdrop.style.display = '';
         }
@@ -1024,8 +1027,11 @@ class Wg121 {
     _closeModal(modalEl) {
         if (!modalEl) return;
         modalEl.style.display = 'none';
-        const { backdrop } = this.state.cache;
-        if (backdrop) backdrop.style.display = 'none';
+        const { backdrop, svgContainer } = this.state.cache;
+        if (backdrop) {
+            backdrop.style.display = 'none';
+            if (svgContainer) svgContainer.style.overflow = '';
+        }
         this.state.isLocked = false;
         this.state.activeModal = null;
         this.updateUI();
