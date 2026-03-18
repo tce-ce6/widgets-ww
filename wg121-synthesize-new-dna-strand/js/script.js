@@ -910,18 +910,30 @@ class Wg121 {
             const cIdx = baseIdxMap[cBase];
 
             // In the helix: 
-            // Pos 2*i = Left side (5'->3' label at top-left, matching Complementary)
-            // Pos 2*i + 1 = Right side (3'->5' label at top-right, matching Template)
+            // Pos 2*i = Left side (5'->3' label at top-left)
+            // Pos 2*i + 1 = Right side (3'->5' label at top-right)
+            //
+            // The DNA helix visually twists, causing the strands to switch sides
+            // in the middle section. We need to swap left/right positions for
+            // base pairs 4-7 (the middle rows where strands cross over).
             const leftPos = 2 * i;
             const rightPos = 2 * i + 1;
 
-            // Show Complementary on Left
-            if (textBanks[cIdx][leftPos]) textBanks[cIdx][leftPos].style.display = '';
-            if (rectBanks[cIdx][leftPos]) rectBanks[cIdx][leftPos].style.display = '';
+            // Determine if this position is in the middle section where strands cross
+            const isMiddleSection = (i >= 4 && i <= 7);
 
-            // Show Template on Right
-            if (textBanks[tIdx][rightPos]) textBanks[tIdx][rightPos].style.display = '';
-            if (rectBanks[tIdx][rightPos]) rectBanks[tIdx][rightPos].style.display = '';
+            // In normal sections: Complementary on Left, Template on Right
+            // In middle section (strands crossed): Template on Left, Complementary on Right
+            const leftBase = isMiddleSection ? tIdx : cIdx;
+            const rightBase = isMiddleSection ? cIdx : tIdx;
+
+            // Show left side base
+            if (textBanks[leftBase][leftPos]) textBanks[leftBase][leftPos].style.display = '';
+            if (rectBanks[leftBase][leftPos]) rectBanks[leftBase][leftPos].style.display = '';
+
+            // Show right side base
+            if (textBanks[rightBase][rightPos]) textBanks[rightBase][rightPos].style.display = '';
+            if (rectBanks[rightBase][rightPos]) rectBanks[rightBase][rightPos].style.display = '';
         });
     }
 
