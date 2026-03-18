@@ -229,7 +229,7 @@
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
-      "updatedAt": "2026-03-14T13:36:44+05:30",
+      "updatedAt": "2026-03-18T23:53:27+05:30",
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
@@ -378,6 +378,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-18T23:53:27+05:30",
+      "author": "PrasannaP",
+      "message": "fix: Enforce correct drop zones for dominant and recessive parents in Stage 2 drag-and-drop functionality",
+      "widgets": [
+        48
+      ]
+    },
+    {
+      "date": "2026-03-18T23:41:00+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: Remove \"(P)\" suffix from Parent labels in SVG elements for clarity",
+      "widgets": [
+        48
+      ]
+    },
     {
       "date": "2026-03-18T23:11:02+05:30",
       "author": "PrasannaP",
@@ -603,25 +619,6 @@
       "message": "feat: Implement dynamic DNA helix visualization in the solution modal, adjust feedback timeout and styling, and update wireframe documentation with new requirements and debug notes for both widgets.",
       "widgets": [
         121
-      ]
-    },
-    {
-      "date": "2026-03-17T12:55:44+05:30",
-      "author": "Santosh",
-      "message": "wg-69 fixed",
-      "widgets": [
-        69
-      ]
-    },
-    {
-      "date": "2026-03-17T12:02:10+05:30",
-      "author": "sushantthe",
-      "message": "feat: Add new widgets for Hindi vowel sound differentiation for 'u/oo', 'e/ai', 'i/ee', and 'o/au'.",
-      "widgets": [
-        81,
-        86,
-        87,
-        88
       ]
     }
   ]
