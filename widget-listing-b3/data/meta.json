@@ -41,7 +41,7 @@
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-03-17T21:03:24+05:30",
+      "updatedAt": "2026-03-18T15:24:00+05:30",
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
@@ -379,6 +379,30 @@
   },
   "commits": [
     {
+      "date": "2026-03-18T15:24:00+05:30",
+      "author": "PrasannaP",
+      "message": "docs: Add readme for WG112 DNA Fingerprinting widget detailing randomization, UI logic, and testing procedures.",
+      "widgets": [
+        112
+      ]
+    },
+    {
+      "date": "2026-03-18T15:10:56+05:30",
+      "author": "PrasannaP",
+      "message": "updated logic",
+      "widgets": [
+        112
+      ]
+    },
+    {
+      "date": "2026-03-18T14:55:58+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Randomize criminal selection for each DNA set and allow retries after incorrect suspect identification.",
+      "widgets": [
+        112
+      ]
+    },
+    {
       "date": "2026-03-18T09:49:21+05:30",
       "author": "Santosh",
       "message": "129 modified",
@@ -599,30 +623,6 @@
       "message": "done",
       "widgets": [
         134
-      ]
-    },
-    {
-      "date": "2026-03-14T18:27:39+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: Implement the Barter Bazaar widget with its HTML structure, styling, and JavaScript.",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-14T17:00:17+05:30",
-      "author": "Santosh",
-      "message": "implemented widget 128",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-14T15:50:58+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: Embed HTML overlay in SVG foreignObject and refine modal/backdrop layering for correct display.",
-      "widgets": [
-        121
       ]
     }
   ]
