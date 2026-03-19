@@ -231,7 +231,7 @@ svg * {
   position: relative;
 }
 
-.main-txt {
+#main-txt {
   font-size: 140px;
   position: absolute;
   bottom: 132px;
