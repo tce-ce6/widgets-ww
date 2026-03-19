@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Forward / Backward panel buttons
   // Fixed IDs: 'backward-2' is the actual ID of the forward arrow in the DOM (see console / index.html).
   // We will assign them based on what was found to be the forward arrow vs backward arrow
-  const fwdPanel = svg.getElementById("forward") || svg.getElementById("backward-2") || document.querySelector("#backward-2");
-  const bwdPanel = svg.getElementById("backward-3") || document.querySelector("#backward-3");
-  const fwdLabel = svg.getElementById("forwar-backward-panel"); // whole panel for label clicks
-
+  const fwdPanel = svg.getElementById("backward-2") || svg.getElementById("backward-2") || document.querySelector("#backward-2");
+  const bwdPanel = svg.getElementById("forward") || document.querySelector("#backward-3");
+  const fwdLabel = svg.getElementById("Forward-2"); // whole panel for label clicks
+  const bwdLabel = svg.getElementById("Backward"); // whole panel for label clicks
   const numpadGroups = {
     '1': svg.getElementById("Group_7034"),
     '2': svg.getElementById("Group_7035"),
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       path: 'assets/anim/fireworks.json'
     });
   }
-  initLottie();
+  // initLottie() is now called after DOM containers are injected in window load
 
   const feedbackBunnyTspan = feedbackBunny ? feedbackBunny.querySelectorAll("tspan") : [];
   const feedbackFoxTspan = feedbackFox ? feedbackFox.querySelectorAll("tspan") : [];
@@ -112,6 +112,30 @@ document.addEventListener("DOMContentLoaded", () => {
     injectedStepNum = replaceGroupWithText(stepValGroup, "?", "middle", "700", "#d0401d", "35");
     injectedInstruction = replaceGroupWithText(instructionPrompt, "Wait!", "middle", "italic", "#fff", "23", 0);
 
+    // Inject confetti animation containers inside the feedback groups
+    // Clears the old static tick SVG before injecting Lottie container
+    function injectLottieContainer(parentId, divId, x, y, w, h) {
+      const parent = svg.getElementById(parentId);
+      if (parent) {
+        parent.innerHTML = ''; // Remove old static checkmark paths
+        if (!document.getElementById(divId)) {
+          const fObj = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+          fObj.setAttribute("x", x); fObj.setAttribute("y", y);
+          fObj.setAttribute("width", w); fObj.setAttribute("height", h);
+          fObj.style.pointerEvents = "none";
+          const div = document.createElement("div");
+          div.id = divId;
+          div.style.cssText = "width:100%;height:100%;";
+          fObj.appendChild(div);
+          parent.appendChild(fObj);
+        }
+      }
+    }
+    // Green circle checkmark center is around (395, 884) in SVG coords
+    // 180x180 box centered: x = 395-90 = 305, y = 884-90 = 794
+    injectLottieContainer("Group_1224", "bunny-correct-lottie", "305", "810", "200", "200");
+    injectLottieContainer("Group_1224-2", "fox-correct-lottie", "305", "810", "200", "200");
+
     addHitbox(btnSpin); addHitbox(btnMove); addHitbox(btnNewGame);
     addHitbox(fwdPanel); addHitbox(bwdPanel);
     addHitbox(btnHTP); addHitbox(btnPlayHTP); addHitbox(btnIntroEnter);
@@ -120,6 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     positionToken(bunnyToken, 0, "0s");
     positionToken(foxToken, 0, "0s");
+
+    initLottie();
   });
 
   function replaceGroupWithText(group, defaultStr, align, weight, color, size, offsetX = 0) {
@@ -642,6 +668,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fireworksAnim) {
       fireworksAnim.play();
     }
+    // Highlight the New Game button with a glowing pulse
+    if (btnNewGame) {
+      btnNewGame.classList.add("btn-new-game-highlight");
+    }
     feedbackEnd.classList.add("win-pulse");
 
     if (winTspan.length > 0) {
@@ -742,6 +772,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetGame() {
     feedbackEnd && feedbackEnd.classList.remove("win-pulse");
+    if (btnNewGame) btnNewGame.classList.remove("btn-new-game-highlight");
     hide(feedbackEnd);
     hide(feedbackBunny);
     hide(feedbackFox);
