@@ -13,7 +13,7 @@
  * Fixes applied (v5):
  *  1. F1 Punnett cell text hidden until Auto-fill F1 clicked.
  *  2. All 4 F1 offspring in Stage 4 are draggable (any can fill either slot).
- *  3. Parents can be dropped into EITHER drop zone.
+ *  3. Dominant parent must be dropped in dominant zone; recessive parent in recessive zone.
  *  4. Global "Next" button hidden during stages 2-5, completely hidden in Stage 6.
  *  5. F2 Auto-fill step: SVG group button (Next5) integrated into Stage 5.
  *  6. Reset buttons: "Reset" visible in Stages 1-5, "Reset All" visible only in Stage 6.
@@ -415,7 +415,7 @@ function goToStage2() {
     show(card);
 
     disableBtn(UI.btnGenGametes);
-    _setupDraggables(card, ['s2P', 's2P'], 2);   // all 2 children draggable, same role group
+    _setupDraggables(card, ['s2P_dom', 's2P_rec'], 2);   // dominant parent first, recessive parent second
 }
 
 function goToStage3() {
@@ -572,7 +572,8 @@ function createGhost(element) {
 
 /**
  * Set up first `maxCount` direct <g> children of `container` as draggable.
- * All get the same role prefix (e.g. 's2P', 's4F1').
+ * For Stage 2 (roles starting with 's2P'), dynamically detect which child
+ * is dominant (Parent 1) vs recessive (Parent 2) based on text content.
  */
 function _setupDraggables(container, roles, maxCount) {
     if (!container) { console.warn('[WG48] _setupDraggables: null container'); return; }
@@ -581,10 +582,27 @@ function _setupDraggables(container, roles, maxCount) {
     const count = Math.min(children.length, maxCount || roles.length);
     console.log(`[WG48] _setupDraggables: ${children.length} groups, ${count} draggable`);
 
+    // For Stage 2 parents, detect dominant vs recessive based on "Parent 1" vs "Parent 2" text
+    const isS2Setup = roles.some(r => r.startsWith('s2P'));
+    
     for (let i = 0; i < count; i++) {
         const el = children[i];
         el.style.cursor = 'grab';
-        el.setAttribute('data-drag-role', roles[Math.min(i, roles.length - 1)]);
+        
+        // Determine role dynamically for S2 parents
+        let role = roles[Math.min(i, roles.length - 1)];
+        if (isS2Setup) {
+            // Check if this element contains "Parent 1" or "Parent 2" text
+            const textContent = el.textContent || '';
+            if (textContent.includes('Parent 1')) {
+                role = 's2P_dom';  // Parent 1 = dominant
+            } else if (textContent.includes('Parent 2')) {
+                role = 's2P_rec';  // Parent 2 = recessive
+            }
+            console.log(`[WG48] Child ${i} detected as ${role}`);
+        }
+        
+        el.setAttribute('data-drag-role', role);
         el.setAttribute('data-drag-picked', 'false');
         el.removeEventListener('pointerdown', onDragStart);
         el.addEventListener('pointerdown', onDragStart);
@@ -643,15 +661,30 @@ function onDragEnd(e) {
     el.style.cursor = 'grab';
 
     const role = el.getAttribute('data-drag-role');
-    const isS2 = role === 's2P';
+    const isS2Dom = role === 's2P_dom';
+    const isS2Rec = role === 's2P_rec';
+    const isS2 = isS2Dom || isS2Rec;
     const isS4 = role === 's4F1';
 
     const drops = isS2 ? UI.s2Drops : isS4 ? UI.s4Drops : [];
 
     // Find first available (empty) drop zone that overlaps with dragged element
+    // For S2 parents: enforce dominant→dominant zone, recessive→recessive zone
     let acceptedDrop = null;
     for (const dz of drops) {
         if (dz.getAttribute('data-occupied') !== 'true' && _overlaps(el, dz)) {
+            // For Stage 2, validate correct parent type for each drop zone
+            if (isS2) {
+                const isDomZone = dz === UI.s2Drops[0];
+                const isRecZone = dz === UI.s2Drops[1];
+                // Dominant parent can only go in dominant zone, recessive in recessive zone
+                if ((isS2Dom && isDomZone) || (isS2Rec && isRecZone)) {
+                    acceptedDrop = dz;
+                    break;
+                }
+                // Skip this zone if it's the wrong type for this parent
+                continue;
+            }
             acceptedDrop = dz;
             break;
         }
