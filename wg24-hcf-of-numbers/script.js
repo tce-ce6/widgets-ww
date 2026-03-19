@@ -272,7 +272,7 @@ function updateActiveTab() {
     if (tab2Path) tab2Path.setAttribute('fill', currentChallenge.id === 2 ? activeColor : inactiveColor);
     if (cover2) cover2.setAttribute('fill', currentChallenge.id === 2 ? activeColor : borderColor);
   }
-  
+
   if (tab3) {
     const tab3Path = tab3.querySelector('path');
     if (tab3Path) tab3Path.setAttribute('fill', currentChallenge.id === 3 ? activeColor : inactiveColor);
@@ -334,7 +334,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_2" d="M22.75 46C19.03 46 16 48.93 16 52.54V140.47C16 144.07 19.03 147.01 22.75 147.01H335.24C338.96 147.01 341.99 144.08 341.99 140.47V52.54C341.99 48.94 338.96 46 335.24 46H22.75ZM22.75 44H335.24C340.07 44 343.99 47.82 343.99 52.54V140.47C343.99 145.18 340.07 149.01 335.24 149.01H22.75C17.92 149.01 14 145.19 14 140.47V52.54C14 47.83 17.92 44 22.75 44Z" fill="${currentChallenge.item1.borderColor}"/>
             </g>
             <text id="item1-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="32" y="71.5195">${currentChallenge.item1.name}</tspan></text>
-            <text id="item1-count-${shelfNumber}" fill="${currentChallenge.item1.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="289.15" y="114.508">0</tspan></text>
+            <text 
+  id="item1-count-${shelfNumber}" 
+  fill="${currentChallenge.item1.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="284.15" y="114.508">0</tspan>
+</text>
             <path id="add-item1-bg" d="M166 85H44C37.3726 85 32 90.3726 32 97V123C32 129.627 37.3726 135 44 135H166C172.627 135 178 129.627 178 123V97C178 90.3726 172.627 85 166 85Z" fill="white"/>
             <g id="item1-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-3" d="M44 85H82V135H44C37.37 135 32 129.63 32 123V97C32 90.37 37.37 85 44 85Z" fill="#2196F3"/>
@@ -353,12 +362,30 @@ function createNewShelf(shelfNumber) {
             </g>
             </g>
             <g id="item1-card">
-            <text id="item1-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="95.25" y="120.621">0</tspan></text>
+           <text 
+  id="item1-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="106" y="120.621">0</tspan>
+</text>
             <g id="item2-card-bg">
             <path id="Vector_3" d="M682.25 148H369.76C365.48 148 362.01 144.62 362.01 140.46V52.5302C362.01 48.3702 365.49 44.9902 369.76 44.9902H682.25C686.53 44.9902 690 48.3702 690 52.5302V140.46C690 144.62 686.52 148 682.25 148Z" fill="${currentChallenge.item2.bgColor}"/>
             <path id="Vector_4" d="M369.75 46C366.03 46 363 48.93 363 52.54V140.47C363 144.07 366.03 147.01 369.75 147.01H682.24C685.96 147.01 688.99 144.08 688.99 140.47V52.54C688.99 48.94 685.96 46 682.24 46H369.75ZM369.75 44H682.24C687.07 44 690.99 47.82 690.99 52.54V140.47C690.99 145.18 687.07 149.01 682.24 149.01H369.75C364.92 149.01 361 145.19 361 140.47V52.54C361 47.83 364.92 44 369.75 44Z" fill="${currentChallenge.item2.borderColor}"/>
             </g>
-            <text id="item2-count-${shelfNumber}" fill="${currentChallenge.item2.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="633.15" y="114.508">0</tspan></text>
+           <text 
+  id="item2-count-${shelfNumber}" 
+  fill="${currentChallenge.item2.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="633.15" y="114.508">0</tspan>
+</text>
             <path id="item2-add-bg" d="M513 85H391C384.373 85 379 90.3726 379 97V123C379 129.627 384.373 135 391 135H513C519.627 135 525 129.627 525 123V97C525 90.3726 519.627 85 513 85Z" fill="white"/>
             <g id="item2-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-4" d="M391 85H429V135H391C384.37 135 379 129.63 379 123V97C379 90.37 384.37 85 391 85Z" fill="#2196F3"/>
@@ -375,7 +402,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_5" d="M500.77 98.27V121.69M512.49 109.99H489.07" stroke="white" stroke-width="4" stroke-linecap="round"/>
             </g>
             </g>
-            <text id="item2-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="442.25" y="120.621">0</tspan></text>
+          <text 
+  id="item2-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="452" y="120.621">0</tspan>
+</text>
             <text id="item2-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="379" y="71.5195">${currentChallenge.item2.name}</tspan></text>
             </g>
             </g>
