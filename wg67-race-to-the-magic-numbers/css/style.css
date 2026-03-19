@@ -528,3 +528,18 @@ svg * {
     filter: drop-shadow(0 0 24px gold);
   }
 }
+
+/* ===== GAME: New Game Button Highlight (on win) ===== */
+/* .btn-new-game-highlight {
+  animation: new-game-pulse 0.7s ease infinite alternate;
+} */
+
+@keyframes new-game-pulse {
+  from {
+    filter: drop-shadow(0 0 10px #ff9500) drop-shadow(0 0 20px #ff6a00);
+  }
+
+  to {
+    filter: drop-shadow(0 0 22px #ffdf00) drop-shadow(0 0 40px #ff4500);
+  }
+}
