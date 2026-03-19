@@ -161,9 +161,9 @@ async function renderItemGroup(containerId, itemData) {
   // Item 2 (bottom): x=270, y=706
   const isItem1 = containerId === 'science-book';
   const x = 160
-  const y = isItem1 ? 433 : 706;
+  const y = isItem1 ? 423 : 696;
   const width = 720;
-  const height = 180; // Approximate height based on shelf dimensions
+  const height = 200; // Approximate height based on shelf dimensions
 
   // If icon is an external SVG file, load it
   if (icon && icon.includes('.svg')) {
@@ -251,20 +251,32 @@ function updateActiveTab() {
   const tab2 = document.getElementById('tab-2');
   const tab3 = document.getElementById('tab-3');
 
+  const cover1 = document.getElementById('tab-1-cover');
+  const cover2 = document.getElementById('tab-2-cover');
+  const cover3 = document.getElementById('tab-3-cover');
+
   // Reset all tabs to inactive color
   const inactiveColor = '#2C6AC9';
   const activeColor = '#ADE4FC';
 
+  const borderColor = '#053378';
+
   if (tab1) {
     const tab1Path = tab1.querySelector('path');
     if (tab1Path) tab1Path.setAttribute('fill', currentChallenge.id === 1 ? activeColor : inactiveColor);
+    if (cover1) cover1.setAttribute('fill', currentChallenge.id === 1 ? activeColor : borderColor);
   }
 
   if (tab2) {
     const tab2Path = tab2.querySelector('path');
     if (tab2Path) tab2Path.setAttribute('fill', currentChallenge.id === 2 ? activeColor : inactiveColor);
+    if (cover2) cover2.setAttribute('fill', currentChallenge.id === 2 ? activeColor : borderColor);
+  }
+  
+  if (tab3) {
     const tab3Path = tab3.querySelector('path');
     if (tab3Path) tab3Path.setAttribute('fill', currentChallenge.id === 3 ? activeColor : inactiveColor);
+    if (cover3) cover3.setAttribute('fill', currentChallenge.id === 3 ? activeColor : borderColor);
   }
 }
 
