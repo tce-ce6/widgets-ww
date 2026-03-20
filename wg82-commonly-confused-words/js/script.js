@@ -141,8 +141,14 @@ function initDOM() {
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.cursor = 'pointer';
 
     if (GlobalObj.audioIconListen) GlobalObj.audioIconListen.style.cursor = 'pointer';
-    if (GlobalObj.audioIconOption1) GlobalObj.audioIconOption1.style.cursor = 'pointer';
-    if (GlobalObj.audioIconOption2) GlobalObj.audioIconOption2.style.cursor = 'pointer';
+    if (GlobalObj.audioIconOption1) {
+        GlobalObj.audioIconOption1.style.cursor = 'pointer';
+        GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+    }
+    if (GlobalObj.audioIconOption2) {
+        GlobalObj.audioIconOption2.style.cursor = 'pointer';
+        GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
+    }
 
     // Option rectangle backgrounds to change fills
     GlobalObj.rectOption1 = document.getElementById('Rectangle_5-3');
@@ -187,26 +193,13 @@ function bindEvents() {
             } else {
                 console.log("[TEST] Completed! Final Usage Stats:", GlobalObj.usageStats);
                 console.log("[TEST] Final Correct Total:", GlobalObj.correctCount);
-                
-                // Confetti animation completion
-                const duration = 5 * 1000;
-                const animationEnd = Date.now() + duration;
-                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-                function randomInRange(min, max) {
-                    return Math.random() * (max - min) + min;
-                }
-
-                const interval = setInterval(function() {
-                    const timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) return clearInterval(interval);
-                    const particleCount = 50 * (timeLeft / duration);
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-                }, 250);
+                showCompletionAnimation();
             }
         });
     }
+
+    // Debugging tool - expose to window
+    window.triggerEndAnimation = showCompletionAnimation;
 
     // Audio icon direct clicks
     if (GlobalObj.audioIconListen) {
@@ -342,9 +335,12 @@ function handleOptionSelect(optIndex) {
     let rectElement = (optIndex === 0) ? GlobalObj.rectOption1 : GlobalObj.rectOption2;
 
     if (selectedWord === q.correct) {
-        // Correct Action
+        // Correct Action - Disable main areas but leave icons clickable
         GlobalObj.btnOption1.style.pointerEvents = 'none';
         GlobalObj.btnOption2.style.pointerEvents = 'none';
+        
+        if (GlobalObj.audioIconOption1) GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+        if (GlobalObj.audioIconOption2) GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
 
         GlobalObj.piecesCollected++;
         GlobalObj.correctCount++;
@@ -448,4 +444,25 @@ function playShakeAnimation(element, fillRect) {
     }).onfinish = () => {
         fillRect.setAttribute('fill', originalFill);
     };
+}
+
+/**
+ * Completion animation using canvas-confetti
+ */
+function showCompletionAnimation() {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
 }
