@@ -620,8 +620,8 @@ function showTryAgainMessage() {
     var bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     // Reduced width + moved down to avoid overlapping answer buttons.
     // Text remains centered at x=960.
-    bg.setAttribute("x", "730"); bg.setAttribute("y", "640");
-    bg.setAttribute("width", "460"); bg.setAttribute("height", "72");
+    bg.setAttribute("x", "750"); bg.setAttribute("y", "640");
+    bg.setAttribute("width", "420"); bg.setAttribute("height", "60");
     bg.setAttribute("rx", "16"); bg.setAttribute("ry", "16");
     bg.setAttribute("fill", "#ff4444"); bg.setAttribute("fill-opacity", "0.93");
     g.appendChild(bg);
@@ -630,7 +630,7 @@ function showTryAgainMessage() {
     txt.setAttribute("x", "960"); txt.setAttribute("y", "681");
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("fill", "#fff");
-    txt.setAttribute("font-size", "36");
+    txt.setAttribute("font-size", "26");
     txt.setAttribute("font-family", "Roboto-Bold, sans-serif");
     txt.setAttribute("font-weight", "700");
     txt.textContent = "Try Again!";
