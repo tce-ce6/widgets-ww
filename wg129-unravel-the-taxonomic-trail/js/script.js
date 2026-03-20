@@ -821,7 +821,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (explNameEl) explNameEl.textContent = org.name;
       if (explLevelEl) {
         let text = `${currentLevelName} ${currentTaxonName}`;
-        explLevelEl.innerHTML = text.replace(/(margarita|Felis|Spirogyra|longata)/ig, '<tspan font-style="italic">$1</tspan>');
+        explLevelEl.innerHTML = text.replace(/\b(margarita|Felis|Spirogyra|longata|Pinus|wallichiana|Mangifera|odorata|Funaria|mediterranea|Python|bivittatus|Columba|hodgsonii|Asterias|amurensis)\b/ig, '<tspan font-style="italic">$1</tspan>');
       }
     }
 
