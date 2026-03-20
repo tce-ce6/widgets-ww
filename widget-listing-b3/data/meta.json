@@ -89,7 +89,7 @@
       "author": "PrasannaP"
     },
     "wg124-swar-ki-pahchan": {
-      "updatedAt": "2026-03-18T20:04:23+05:30",
+      "updatedAt": "2026-03-20T11:18:27+05:30",
       "author": "tce-nitinc"
     },
     "wg125-vyanjan-ki-pahchan": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-20T11:18:27+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed 124 fixes",
+      "widgets": [
+        124
+      ]
+    },
+    {
       "date": "2026-03-19T17:33:59+05:30",
       "author": "tce-nitinc",
       "message": "wg 76 changes",
@@ -612,14 +620,6 @@
       "message": "Refactor: Rework sample-to-lane assignments, update associated UI labels and layout, and correct the criminal for one DNA set.",
       "widgets": [
         112
-      ]
-    },
-    {
-      "date": "2026-03-17T15:20:38+05:30",
-      "author": "tce-nitinc",
-      "message": "feat: Introduce initial CSS styling for the wg115 literary device widget.",
-      "widgets": [
-        115
       ]
     }
   ]
