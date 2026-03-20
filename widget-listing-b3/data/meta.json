@@ -77,7 +77,7 @@
       "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
-      "updatedAt": "2026-03-18T22:45:26+05:30",
+      "updatedAt": "2026-03-20T14:54:34+05:30",
       "author": "PrasannaP"
     },
     "wg122-suffix-magic": {
@@ -379,6 +379,30 @@
   },
   "commits": [
     {
+      "date": "2026-03-20T14:54:34+05:30",
+      "author": "PrasannaP",
+      "message": "v",
+      "widgets": [
+        121
+      ]
+    },
+    {
+      "date": "2026-03-20T14:46:01+05:30",
+      "author": "PrasannaP",
+      "message": "fix: Corrected 3' and 5' labels in SVG and updated the version ID.",
+      "widgets": [
+        121
+      ]
+    },
+    {
+      "date": "2026-03-20T14:34:28+05:30",
+      "author": "PrasannaP",
+      "message": "add rm files",
+      "widgets": [
+        121
+      ]
+    },
+    {
       "date": "2026-03-20T14:02:02+05:30",
       "author": "PrasannaP",
       "message": "Audio Playback Fixes",
@@ -597,30 +621,6 @@
       "message": "Update index.html",
       "widgets": [
         67
-      ]
-    },
-    {
-      "date": "2026-03-18T18:23:17+05:30",
-      "author": "Santosh",
-      "message": "bug fixes 67",
-      "widgets": [
-        67
-      ]
-    },
-    {
-      "date": "2026-03-18T17:05:59+05:30",
-      "author": "PrasannaP",
-      "message": "docs: Add implementation and testing guide for the WG121 DNA Synthesis widget.",
-      "widgets": [
-        121
-      ]
-    },
-    {
-      "date": "2026-03-18T16:56:00+05:30",
-      "author": "PrasannaP",
-      "message": "chore: update version ID in index.html",
-      "widgets": [
-        121
       ]
     }
   ]
