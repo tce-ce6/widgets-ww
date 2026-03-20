@@ -23,6 +23,8 @@ const GlobalObj = {
     usageStats: {},       // Tracks how many times each word pair is used for testing
     correctCount: 0,      // Separate counter for correct responses
     isAnswered: false,    // Track if current question had an attempt to disable main button area
+    isLevelCorrect: false, // Track if current question is correctly answered
+    correctEmoji: null,   // Lottie animation object
 
     // DOM elements
     btnListen: null,
@@ -174,6 +176,22 @@ function initDOM() {
     if (jigsawContainer) {
         GlobalObj.jigsawPieces = Array.from(jigsawContainer.children);
     }
+
+    // Initialize Lottie
+    let lottieTarget = document.getElementById('lottie-container');
+    if (lottieTarget && window.lottie) {
+        GlobalObj.correctEmoji = lottie.loadAnimation({
+            container: lottieTarget,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: EMOJI_LOTTIE_DATA
+        });
+        
+        GlobalObj.correctEmoji.addEventListener('complete', () => {
+            lottieTarget.style.display = 'none';
+        });
+    }
 }
 
 /**
@@ -270,6 +288,7 @@ function playSentence(forceFromIcon = false) {
  */
 function loadQuestion() {
     GlobalObj.isAnswered = false; // Reset attempt tracker
+    GlobalObj.isLevelCorrect = false; // Reset correctness tracker
     
     if (GlobalObj.btnListen) GlobalObj.btnListen.style.opacity = '1';
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = 'none';
@@ -318,7 +337,7 @@ function loadQuestion() {
  * @param {number} optIndex - 0 for left button, 1 for right button
  */
 function handleOptionSelect(optIndex) {
-    if (GlobalObj.isPlaying || !GlobalObj.audioFinished) return;
+    if (GlobalObj.isPlaying || !GlobalObj.audioFinished || GlobalObj.isLevelCorrect) return;
 
     // Register an attempt and disable the question button area
     if (!GlobalObj.isAnswered) {
@@ -336,11 +355,19 @@ function handleOptionSelect(optIndex) {
 
     if (selectedWord === q.correct) {
         // Correct Action - Disable main areas but leave icons clickable
+        GlobalObj.isLevelCorrect = true;
         GlobalObj.btnOption1.style.pointerEvents = 'none';
         GlobalObj.btnOption2.style.pointerEvents = 'none';
         
         if (GlobalObj.audioIconOption1) GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
         if (GlobalObj.audioIconOption2) GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
+
+        // Play Lottie correctly
+        let lottieTarget = document.getElementById('lottie-container');
+        if (lottieTarget && GlobalObj.correctEmoji) {
+            lottieTarget.style.display = 'block';
+            GlobalObj.correctEmoji.goToAndPlay(0, true);
+        }
 
         GlobalObj.piecesCollected++;
         GlobalObj.correctCount++;
