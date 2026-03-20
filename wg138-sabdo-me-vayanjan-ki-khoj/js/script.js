@@ -1,463 +1,653 @@
-/**
- * WG136 Compound Words Adventure
- * Interactive SVG/HTML/JavaScript - all state and logic in single global object.
- * Interactions implemented by showing and hiding SVG elements only.
- */
-(function () {
-  'use strict';
-
-  var WG136 = window.WG136 = window.WG136 || {};
-
-  WG136.state = {
-    currentFamily: null,
-    completedFamilies: new Set(),
-    elements: {},
-    families: {
-      sun: { discovered: [] },
-      rain: { discovered: [] },
-      snow: { discovered: [] },
-      fire: { discovered: [] },
-      sea: { discovered: [] },
-      sand: { discovered: [] }
-    },
-    familyData: {
-      sun: { name: 'SUN', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
-      rain: { name: 'RAIN', correctIdx: [0, 1, 2, 3], distractorIdx: [4, 5] },
-      snow: { name: 'SNOW', correctIdx: [0, 2, 3, 4], distractorIdx: [1, 5] },
-      fire: { name: 'FIRE', correctIdx: [1, 2, 3, 4], distractorIdx: [0, 5] },
-      sea: { name: 'SEA', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
-      sand: { name: 'SAND', correctIdx: [0, 2, 4, 5], distractorIdx: [1, 3] }
-    },
-    /** Card slot IDs per family (6 options, order 0–5). Wireframe SVG structure. */
-    cardIdsByFamily: {
-      sun: ['Rectangle_46-7', 'Rectangle_742', 'Rectangle_743', 'Rectangle_744', 'Rectangle_745', 'Rectangle_746'],
-      rain: ['Rectangle_46-8', 'Rectangle_742-2', 'Rectangle_743-2', 'Rectangle_744-2', 'Rectangle_745-2', 'Rectangle_746-2'],
-      snow: ['Rectangle_46-9', 'Rectangle_742-3', 'Rectangle_743-3', 'Rectangle_744-3', 'Rectangle_745-3', 'Rectangle_746-3'],
-      fire: ['Rectangle_46-10', 'Rectangle_742-4', 'Rectangle_743-4', 'Rectangle_744-4', 'Rectangle_745-4', 'Rectangle_746-4'],
-      sea: ['Rectangle_46-11', 'Rectangle_742-5', 'Rectangle_743-5', 'Rectangle_744-5', 'Rectangle_745-5', 'Rectangle_746-5'],
-      sand: ['Rectangle_46-12', 'Rectangle_742-6', 'Rectangle_743-6', 'Rectangle_744-6', 'Rectangle_745-6', 'Rectangle_746-6']
-    },
-    /** Center (cx,cy) of each of the 6 card slots and center card (for discovered row clones). */
-    slotCenters: [
-      { x: 616.5, y: 312.11 },
-      { x: 378.5, y: 436.11 },
-      { x: 377.5, y: 667.11 },
-      { x: 616.5, y: 794.11 },
-      { x: 855.5, y: 667.11 },
-      { x: 854.5, y: 436.11 }
-    ],
-    centerCardCenter: { x: 616.5, y: 552.5 },
-    HOME_MAPPINGS: {
-      'Group_7999': 'sun',
-      'Group_8000': 'snow',
-      'Group_8001': 'rain',
-      'Group_8002': 'sea',
-      'Group_8003': 'fire',
-      'Group_8004': 'sand'
-    },
-    isAnimating: false
-  };
-
-  WG136.WORD_MAPPINGS = {
-    sun: { 0: 'sunflower', 3: 'sunglasses', 4: 'sunscreen', 5: 'sunlight' },
-    rain: { 0: 'raincoat', 1: 'rainstorm', 2: 'rainbow', 3: 'raindrop' },
-    snow: { 0: 'snowball', 2: 'snowflake', 3: 'snowsuit', 4: 'snowman' },
-    fire: { 1: 'fireman', 2: 'fireplace', 3: 'firewood', 4: 'firefly' },
-    sea: { 0: 'seafood', 3: 'seahorse', 4: 'seashell', 5: 'seaweed' },
-    sand: { 0: 'sandpaper', 2: 'sandcastle', 4: 'sandstorm', 5: 'sandbox' }
-  };
-
-  function injectStyles() {
-    var style = document.createElement('style');
-    style.textContent = [
-      '.wg136-interactive-card { transform-origin: center; cursor: pointer; }',
-      '.wg136-interactive-card.wg136-used { visibility: hidden; pointer-events: none; }',
-      '.wg136-interactive-card.wg136-wrong { animation: wg136-shake 0.4s; }',
-      '@keyframes wg136-shake {',
-      '  0% { transform: translateX(0); }',
-      '  25% { transform: translateX(-12px); }',
-      '  50% { transform: translateX(12px); }',
-      '  75% { transform: translateX(-12px); }',
-      '  100% { transform: translateX(0); }',
-      '}',
-      '.wg136-words-plus { font-family: "Roboto", sans-serif; }'
-    ].join('\n');
-    document.head.appendChild(style);
+let letterData = {
+  "क": {
+    "answers": ["कमल", "मकड़ी", "अदरक"],
+    "distractors": ["डमरू", "राजा", "अजगर"],
+    "question": "‘क’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ख": {
+    "answers": ["खत", "अखबार", "आँख"],
+    "distractors": ["ठेला", "डाकिया", "बकरी"],
+    "question": "‘ख’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ग": {
+    "answers": ["गमला", "सागर", "बाग"],
+    "distractors": ["आठ", "थरमस", "दवाई"],
+    "question": "‘ग’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "घ": {
+    "answers": ["घर", "घोड़ा", "घास"],
+    "distractors": ["गमला", "बाग", "पुरुष"],
+    "question": "‘घ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "च": {
+    "answers": ["चाय", "कचरा", "चटनी"],
+    "distractors": ["डाकिया", "किताब", "थैला"],
+    "question": "‘च’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "छ": {
+    "answers": ["छिपकली", "छाता", "छह"],
+    "distractors": ["ढोलक", "तकिया", "चिटा"],
+    "question": "‘छ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ज": {
+    "answers": ["जलेबी", "अजगर", "काजल", "राजा"],
+    "distractors": ["ढक्कन", "ठेला"],
+    "question": "‘ज’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "झ": {
+    "answers": ["झरना", "झूला", "झोपड़ी"],
+    "distractors": ["खत", "सड़क", "क्षमा"],
+    "question": "‘झ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ट": {
+    "answers": ["मटर", "पटाखा", "बटन"],
+    "distractors": ["झूला", "काजल", "सागर"],
+    "question": "‘ट’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ठ": {
+    "answers": ["ठेला", "आठ"],
+    "distractors": ["क्षमा", "गमला", "सफर", "पेड़"],
+    "question": "‘ठ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ड": {
+    "answers": ["डमरू", "डाकिया"],
+    "distractors": ["मटर", "झोपड़ी", "पुरुष", "सड़क"],
+    "question": "‘ड’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ढ": {
+    "answers": ["ढोलक", "ढक्कन"],
+    "distractors": ["बाग", "घोड़ा", "सागर", "मकड़ी"],
+    "question": "‘ढ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ण": {
+    "answers": ["हिरण", "त्रिकोण", "वीणा"],
+    "distractors": ["आँख", "गमला", "घर"],
+    "question": "‘ण’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ड़": {
+    "answers": ["ककड़ी", "लड़की", "मकड़ी"],
+    "distractors": ["सागर", "गमला", "चित्रकार"],
+    "question": "‘ड़’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ढ़": {
+    "answers": ["पढ़ाई", "कढ़ाई"],
+    "distractors": ["अखबार", "बाग", "विश्राम", "ककड़ी"],
+    "question": "‘ढ़’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "त": {
+    "answers": ["तकिया", "किताब", "चिटा"],
+    "distractors": ["मकड़ी", "अदरक", "अखबार"],
+    "question": "‘त’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "थ": {
+    "answers": ["थरमस", "थैला", "हाथी"],
+    "distractors": ["कमल", "खत", "गमला"],
+    "question": "‘थ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "द": {
+    "answers": ["दवाई", "दस", "अदरक"],
+    "distractors": ["घोड़ा", "यज्ञ", "पत्र"],
+    "question": "‘द’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ध": {
+    "answers": ["आधा", "गधा", "धनुष", "धोबी"],
+    "distractors": ["फसल", "समाचार"],
+    "question": "‘ध’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "न": {
+    "answers": ["नमक", "अनार", "बटन"],
+    "distractors": ["हाथी", "चित्रकार", "पत्र"],
+    "question": "‘न’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "प": {
+    "answers": ["पायल", "पेड़", "उपवन"],
+    "distractors": ["फसल", "सड़क", "समाचार"],
+    "question": "‘प’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "फ": {
+    "answers": ["फल", "फूल", "सफर"],
+    "distractors": ["हाथी", "दस", "श्रम"],
+    "question": "‘फ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ब": {
+    "answers": ["बकरी", "अखबार", "गुलाब"],
+    "distractors": ["सड़क", "हाथी", "फसल"],
+    "question": "‘ब’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "भ": {
+    "answers": ["नभ", "भवन", "भालू"],
+    "distractors": ["पेड़", "टोपी", "विश्राम"],
+    "question": "‘भ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "म": {
+    "answers": ["नमक", "मटर", "टमाटर", "कलम"],
+    "distractors": ["अखबार", "ताश", "त्रिशूल"],
+    "question": "‘म’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "य": {
+    "answers": ["विज्ञान", "यज्ञ"],
+    "distractors": ["भवन", "शलजम", "ऋषि", "उपवन"],
+    "question": "‘य’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "र": {
+    "answers": ["मटर", "घर", "रेलगाड़ी"],
+    "distractors": ["भवन", "पक्षी", "विज्ञान", "कलम"],
+    "question": "‘र’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ल": {
+    "answers": ["फूल", "पायल", "लकड़ी"],
+    "distractors": ["अक्षर", "टमाटर", "नाव"],
+    "question": "‘ल’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "व": {
+    "answers": ["भवन", "नाव", "वन"],
+    "distractors": ["क्षमा", "चित्रकार", "शलजम"],
+    "question": "‘व’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "श": {
+    "answers": ["शहद", "ताश", "शलजम"],
+    "distractors": ["घर", "रेलगाड़ी", "हिरण"],
+    "question": "‘श’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ष": {
+    "answers": ["पुरुष", "ऋषि"],
+    "distractors": ["भवन", "वन", "बकरी", "अखबार"],
+    "question": "‘ष’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "स": {
+    "answers": ["फसल", "सड़क", "दस", "समाचार"],
+    "distractors": ["फूल", "पायल"],
+    "question": "‘स’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ह": {
+    "answers": ["हाथी", "शहद", "हिरण"],
+    "distractors": ["पुरुष", "दस", "नाव"],
+    "question": "‘ह’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "क्ष": {
+    "answers": ["पक्षी", "अक्षर", "क्षमा"],
+    "distractors": ["गधा", "ऋषि", "धोबी"],
+    "question": "‘क्ष’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "त्र": {
+    "answers": ["पत्र", "त्रिशूल", "चित्रकार"],
+    "distractors": ["शहद", "फसल", "ऋषि"],
+    "question": "‘त्र’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "ज्ञ": {
+    "answers": ["यज्ञ", "विज्ञान"],
+    "distractors": ["पायल", "पेड़", "अखबार", "गुलाब"],
+    "question": "‘ज्ञ’ की ध्वनि वाले शब्दों को पहचानिए।"
+  },
+  "श्र": {
+    "answers": ["विश्राम", "श्रम"],
+    "distractors": ["सड़क", "हिरण", "पक्षी", "नाव"],
+    "question": "‘श्र’ की ध्वनि वाले शब्दों को पहचानिए।"
   }
+}
 
-  /** Get the 6 option card elements for a family (show/hide only, no reparenting). */
-  function getCardElements(family) {
-    var ids = WG136.state.cardIdsByFamily[family];
-    if (!ids) return [];
-    return ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
-  }
+let imgJson = {
+  "कमल": "kamal.svg",
+  "मकड़ी": "makadi.svg",
+  "अदरक": "adrak.svg",
+  "डमरू": "damaru.svg",
+  "राजा": "raja.svg",
+  "अजगर": "ajagar.svg",
 
-  function initGame() {
-    injectStyles();
+  "खत": "khat.svg",
+  "अखबार": "akhbar.svg",
+  "आँख": "aankh.svg",
+  "ठेला": "thaila.svg",
+  "डाकिया": "dakiya.svg",
+  "बकरी": "bakari.svg",
 
-    Object.keys(WG136.state.HOME_MAPPINGS).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) {
-        el.style.cursor = 'pointer';
-        el.addEventListener('click', function () {
-          WG136.openFamily(WG136.state.HOME_MAPPINGS[id]);
-        });
+  "गमला": "gamla.svg",
+  "सागर": "sagar.svg",
+  "बाग": "baug.svg",
+  "आठ": "aath.svg",
+  "थरमस": "tharmas.svg",
+  "दवाई": "dawai.svg",
+
+  "घर": "ghar.svg",
+  "घोड़ा": "ghoda.svg",
+  "घास": "ghas.svg",
+  "पुरुष": "purush.svg",
+
+  "चाय": "chai.svg",
+  "कचरा": "kachara.svg",
+  "चटनी": "chatani.svg",
+  "किताब": "kitab.svg",
+  "थैला": "thaila.svg",
+
+  "छिपकली": "chhipakali.svg",
+  "छाता": "chhata.svg",
+  "छह": "chhah.svg",
+  "ढोलक": "dholak.svg",
+  "तकिया": "takiya.svg",
+  "चिटा": "chita.svg",
+
+  "जलेबी": "jalebi.svg",
+  "काजल": "kajal.svg",
+  "ढक्कन": "dhakkan.svg",
+
+  "झरना": "zarana.svg",
+  "झूला": "zula.svg",
+  "झोपड़ी": "zopadi.svg",
+  "सड़क": "sadak.svg",
+  "क्षमा": "kshama.svg",
+
+  "मटर": "matar.svg",
+  "पटाखा": "patakha.svg",
+  "बटन": "batan.svg",
+
+  "सफर": "safar.svg",
+  "पेड़": "ped.svg",
+
+  "ढोलक": "dholak.svg",
+
+  "हिरण": "hiran.svg",
+  "त्रिकोण": "trikon.svg",
+  "वीणा": "veena.svg",
+
+  "ककड़ी": "kakadi.svg",
+  "लड़की": "ladaki.svg",
+  "चित्रकार": "painter.svg",
+
+  "पढ़ाई": "padhai.svg",
+  "कढ़ाई": "kadhai.svg",
+  "विश्राम": "vishram.svg",
+
+  "पत्र": "khat.svg",
+
+  "हाथी": "hathi.svg",
+
+  "दस": "das.svg",
+  "शहद": "shahad.svg",
+  "यज्ञ": "yagya.svg",
+
+  "आधा": "aadha.svg",
+  "गधा": "gadha.svg",
+  "धनुष": "dhanush.svg",
+  "धोबी": "dhobi.svg",
+  "फसल": "fasal.svg",
+  "समाचार": "samachar.svg",
+
+  "नमक": "namak.svg",
+  "अनार": "anar.svg",
+
+  "पायल": "payal.svg",
+  "उपवन": "upvan.svg",
+
+  "फल": "phal.svg",
+  "फूल": "phul.svg",
+  "श्रम": "shram.svg",
+
+  "गुलाब": "gulab.svg",
+
+  "नभ": "nabh.svg",
+  "भवन": "bhavan.svg",
+  "भालू": "bhalu.svg",
+
+  "टमाटर": "tamatar.svg",
+  "कलम": "kalam.svg",
+  "ताश": "taash.svg",
+  "त्रिशूल": "trishul.svg",
+
+  "विज्ञान": "vigyan.svg",
+  "शलजम": "shaljam.svg",
+
+  "रेलगाड़ी": "railgadi.svg",
+  "मगर": "magar.svg",
+  "पक्षी": "pakshi.svg",
+
+  "लकड़ी": "lakadi.svg",
+  "अक्षर": "akshar.svg",
+  "नाव": "naav.svg",
+
+  "वन": "van.svg",
+
+  "ऋषि": "rishi.svg"
+};
+
+let soundJson = {
+  "क": "00_क.mp3",
+  "ख": "01_ख.mp3",
+  "ग": "02_ग.mp3",
+  "घ": "03_घ.mp3",
+  "च": "04_च.mp3",
+  "छ": "05_छ.mp3",
+  "ज": "06_ज.mp3",
+  "झ": "07_झ.mp3",
+  "ट": "08_ट.mp3",
+  "ठ": "09_ठ.mp3",
+  "ड": "10_ड.mp3",
+  "ढ": "12_ढ.mp3",
+  "ण": "14_ण.mp3",
+  "ड़": "11_ड़.mp3",
+  "ढ़": "13_ढ़.mp3",
+  "त": "15_त.mp3",
+  "थ": "16_थ.mp3",
+  "द": "17_द.mp3",
+  "ध": "18_ध.mp3",
+  "न": "19_न.mp3",
+  "प": "20_प.mp3",
+  "फ": "21_फ.mp3",
+  "ब": "22_ब.mp3",
+  "भ": "23_भ.mp3",
+  "म": "24_म.mp3",
+  "य": "25_य.mp3",
+  "र": "26_र.mp3",
+  "ल": "27_ल.mp3",
+  "व": "28_व.mp3",
+  "श": "29_श.mp3",
+  "ष": "30_ष.mp3",
+  "स": "31_स.mp3",
+  "ह": "32_ह.mp3",
+  "क्ष": "33_क्ष.mp3",
+  "त्र": "34_त्र.mp3",
+  "ज्ञ": "35_ग्य.mp3",
+  "श्र": "36_shra.mp3"
+};
+
+let wordSoundJson = {
+  "कमल": "kamal.mp3",
+  "मकड़ी": "makadi.mp3",
+  "अदरक": "adarak.mp3",
+  "डमरू": "damaru.mp3",
+  "राजा": "raja.mp3",
+  "अजगर": "ajagar.mp3",
+
+  "खत": "khat.mp3",
+  "अखबार": "akhabar.mp3",
+  "आँख": "aankh.mp3",
+  "ठेला": "thela.mp3",
+  "डाकिया": "dakiya.mp3",
+  "बकरी": "bakri.mp3",
+
+  "गमला": "gamala.mp3",
+  "सागर": "sagar.mp3",
+  "बाग": "baug.mp3",
+  "आठ": "aath.mp3",
+  "थरमस": "tharmas.mp3",
+  "दवाई": "dawai.mp3",
+
+  "घर": "ghar.mp3",
+  "घोड़ा": "ghoda.mp3",
+  "घास": "ghas.mp3",
+  "पुरुष": "purush.mp3",
+
+  "चाय": "chai.mp3",
+  "कचरा": "kachara.mp3",
+  "चटनी": "chatani.mp3",
+  "किताब": "kitab.mp3",
+  "थैला": "thaila.mp3",
+
+  "छिपकली": "chhipakali.mp3",
+  "छाता": "chhata.mp3",
+  "छह": "chhah.mp3",
+  "ढोलक": "dholak.mp3",
+  "तकिया": "takiya.mp3",
+  "चिटा": "chita.mp3",
+
+  "जलेबी": "jalebi.mp3",
+  "काजल": "kajal.mp3",
+  "ढक्कन": "dhakkan.mp3",
+
+  "झरना": "zarana.mp3",
+  "झूला": "zula.mp3",
+  "झोपड़ी": "zopadi.mp3",
+  "सड़क": "sadak.mp3",
+  "क्षमा": "kshama.mp3",
+
+  "मटर": "matar.mp3",
+  "पटाखा": "patakha.mp3",
+  "बटन": "batan.mp3",
+
+  "सफर": "safar.mp3",
+  "पेड़": "ped.mp3",
+
+  "हिरण": "hiran.mp3",
+  "त्रिकोण": "trikon.mp3",
+  "वीणा": "veena.mp3",
+
+  "ककड़ी": "kakadi.mp3",
+  "लड़की": "ladaki.mp3",
+  "चित्रकार": "chitrakar.mp3",
+
+  "पढ़ाई": "padhai.mp3",
+  "कढ़ाई": "kadhai.mp3",
+  "विश्राम": "vishram.mp3",
+
+  "पत्र": "patra.mp3",
+  "हाथी": "hathi.mp3",
+
+  "दस": "das.mp3",
+  "शहद": "shahad.mp3",
+  "यज्ञ": "yagya.mp3",
+
+  "आधा": "adha.mp3",
+  "गधा": "gadha.mp3",
+  "धनुष": "dhanush.mp3",
+  "धोबी": "dhobi.mp3",
+  "फसल": "fasal.mp3",
+  "समाचार": "samachar.mp3",
+
+  "नमक": "namak.mp3",
+  "अनार": "anar.mp3",
+
+  "पायल": "payal.mp3",
+  "उपवन": "upavan.mp3",
+
+  "फल": "phal.mp3",
+  "फूल": "phul.mp3",
+  "श्रम": "shram.mp3",
+
+  "गुलाब": "gulab.mp3",
+
+  "नभ": "nabh.mp3",
+  "भवन": "bhawan.mp3",
+  "भालू": "bhalu.mp3",
+
+  "टमाटर": "tamatar.mp3",
+  "कलम": "kalam.mp3",
+  "ताश": "taash.mp3",
+  "त्रिशूल": "trishul.mp3",
+
+  "विज्ञान": "vigyan.mp3",
+  "शलजम": "shaljam.mp3",
+
+  "रेलगाड़ी": "railgadi.mp3",
+  "मगर": "magar.mp3",
+  "पक्षी": "pakshi.mp3",
+
+  "लकड़ी": "lakadi.mp3",
+  "अक्षर": "akshar.mp3",
+  "नाव": "naav.mp3",
+
+  "वन": "van.mp3",
+  "ऋषि": "rishi.mp3"
+};
+
+const vyanjanList = Object.keys(letterData); // ["अ","आ","इ",...]
+let currentIndex = -1;
+let currentData = null; // 🔥 store globally
+let letter = null;
+let showAnswer = false;
+let currentAudio = null;
+
+const vyanjans = document.querySelectorAll(".vyanjans");
+const homePage = document.getElementById('home');
+const gamePage = document.getElementById('gamePage');
+const homeBtn = document.getElementById('home-btn');
+const mainText = document.getElementById('main-txt');
+const agalavyanjanBtn = document.getElementById('agala-vyanjans-btn');
+const uttarDekheBtn = document.getElementById('uttar-dekhe-btn');
+const showAnswerbtn = document.getElementById("showAnswerBtn");
+const soundBtn = document.getElementById("soundBtn");
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  vyanjans.forEach(el => {
+    el.addEventListener("click", function () {
+      gamePage.style.display = 'block';
+      homePage.style.display = 'none';
+
+      letter = this.getAttribute("data-value");
+      currentIndex = vyanjanList.indexOf(letter);
+
+      const data = letterData[letter];
+      console.log(letter)
+      if (data) {
+        currentData = data; // ✅ store for later (important)
+
+        setQuestion(data.question); // ✅ call here
+        setOptions(data);           // ✅ call here
+        playSound(letter);
       }
     });
-
-    var activityHome = document.getElementById('Group_1566');
-    if (activityHome) {
-      activityHome.style.cursor = 'pointer';
-      activityHome.addEventListener('click', WG136.returnToMenu);
-    }
-
-    var activityBox = document.getElementById('activity-box');
-    if (activityBox) {
-      var wordsContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      wordsContainer.id = 'discovered-words-container';
-      activityBox.appendChild(wordsContainer);
-    }
-
-    activityBox = document.getElementById('activity-box');
-    if (activityBox) activityBox.style.display = 'none';
-
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = 'none';
-    });
-
-    bindAllCardClicks();
-  }
-
-  /** Bind click once to all 6 card slots per family (by SVG id). */
-  function bindAllCardClicks() {
-    var families = ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'];
-    families.forEach(function (family) {
-      var cards = getCardElements(family);
-      cards.forEach(function (card, idx) {
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', function () {
-          if (WG136.state.currentFamily !== family) return;
-          handleOptionClick(family, idx);
-        });
-      });
-    });
-  }
-
-  function openFamily(family) {
-    if (WG136.state.isAnimating) return;
-    WG136.state.currentFamily = family;
-
-    var home = document.getElementById('home');
-    if (home) home.style.display = 'none';
-
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = fam === family ? 'block' : 'none';
-    });
-
-    var box = document.getElementById('activity-box');
-    if (box) box.style.display = 'block';
-
-    var g = document.getElementById('Click_the_pictures_that_make_a_word_with_SUN_');
-    if (g) {
-      var texts = g.querySelectorAll('text');
-      if (texts.length >= 2 && texts[1].querySelector('tspan')) {
-        texts[1].querySelector('tspan').textContent = WG136.state.familyData[family].name;
-      }
-    }
-
-    setCardVisibility(family);
-    renderDiscoveredWords(family);
-  }
-
-  /** Show/hide card slots by family state (SVG show/hide only). */
-  function setCardVisibility(family) {
-    var discovered = WG136.state.families[family].discovered;
-    var cards = getCardElements(family);
-    cards.forEach(function (card, idx) {
-      if (!card.classList.contains('wg136-interactive-card')) card.classList.add('wg136-interactive-card');
-      card.classList.remove('wg136-wrong');
-      if (discovered.indexOf(idx) !== -1) {
-        card.classList.add('wg136-used');
-        card.style.visibility = 'hidden';
-        card.style.pointerEvents = 'none';
-      } else {
-        card.classList.remove('wg136-used');
-        card.style.visibility = 'visible';
-        card.style.pointerEvents = 'auto';
-      }
-      card.style.cursor = 'pointer';
-    });
-  }
-
-  function handleOptionClick(family, idx) {
-    if (WG136.state.isAnimating) return;
-
-    var cards = getCardElements(family);
-    var card = cards[idx];
-    if (!card || card.classList.contains('wg136-used')) return;
-
-    var isCorrect = WG136.state.familyData[family].correctIdx.indexOf(idx) !== -1;
-
-    if (!isCorrect) {
-      WG136.state.isAnimating = true;
-      card.classList.add('wg136-wrong');
-      setTimeout(function () {
-        card.classList.remove('wg136-wrong');
-        WG136.state.isAnimating = false;
-      }, 400);
-    } else {
-      WG136.state.isAnimating = true;
-      card.style.transition = 'opacity 0.6s';
-      card.style.opacity = '0';
-      card.style.pointerEvents = 'none';
-
-      setTimeout(function () {
-        card.classList.add('wg136-used');
-        card.style.visibility = 'hidden';
-        card.style.opacity = '';
-
-        WG136.createConfetti();
-        WG136.state.families[family].discovered.push(idx);
-        renderDiscoveredWords(family);
-        checkCompletion(family);
-      }, 650);
-    }
-  }
-
-  function renderDiscoveredWords(family) {
-    var wordsContainer = document.getElementById('discovered-words-container');
-    if (!wordsContainer) return;
-
-    wordsContainer.innerHTML = '';
-    var discovered = WG136.state.families[family].discovered;
-    var wordMappings = WG136.WORD_MAPPINGS[family];
-    var centerId = { sun: 'Rectangle_741', rain: 'Rectangle_741-2', snow: 'Rectangle_741-3', fire: 'Rectangle_741-4', sea: 'Rectangle_741-5', sand: 'Rectangle_741-6' }[family];
-    var centerEl = document.getElementById(centerId);
-    var cardIds = WG136.state.cardIdsByFamily[family];
-    var centerC = WG136.state.centerCardCenter;
-    var slotC = WG136.state.slotCenters;
-
-    discovered.forEach(function (originalIdx, posIndex) {
-      var wordX = 1060;
-      var wordY = 320 + posIndex * 150;
-
-      var rowGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-
-      var bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      bgRect.setAttribute('x', wordX - 10);
-      bgRect.setAttribute('y', wordY - 60);
-      bgRect.setAttribute('width', '580');
-      bgRect.setAttribute('height', '120');
-      bgRect.setAttribute('rx', '15');
-      bgRect.setAttribute('fill', '#fff');
-      bgRect.setAttribute('fill-opacity', '0.9');
-      rowGroup.appendChild(bgRect);
-
-      var familyWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (centerEl) {
-        familyWrapper.setAttribute('transform', 'translate(' + (wordX + 40) + ',' + wordY + ') scale(0.25) translate(' + (-centerC.x) + ',' + (-centerC.y) + ')');
-        var centerClone = centerEl.cloneNode(true);
-        centerClone.style.visibility = 'visible';
-        centerClone.style.opacity = '1';
-        familyWrapper.appendChild(centerClone);
-      }
-      rowGroup.appendChild(familyWrapper);
-
-      var plusSign = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      plusSign.setAttribute('x', wordX + 110);
-      plusSign.setAttribute('y', wordY + 10);
-      plusSign.setAttribute('font-size', '30');
-      plusSign.setAttribute('fill', '#077077');
-      plusSign.setAttribute('font-weight', 'bold');
-      plusSign.setAttribute('text-anchor', 'middle');
-      plusSign.setAttribute('class', 'wg136-words-plus');
-      plusSign.textContent = '+';
-      rowGroup.appendChild(plusSign);
-
-      var optEl = document.getElementById(cardIds[originalIdx]);
-      var pos = slotC[originalIdx];
-      var optionWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (optEl && pos) {
-        optionWrapper.setAttribute('transform', 'translate(' + (wordX + 180) + ',' + wordY + ') scale(0.25) translate(' + (-pos.x) + ',' + (-pos.y) + ')');
-        var optClone = optEl.cloneNode(true);
-        optClone.style.visibility = 'visible';
-        optClone.style.opacity = '1';
-        optClone.classList.remove('wg136-used', 'wg136-wrong');
-        optionWrapper.appendChild(optClone);
-      }
-      rowGroup.appendChild(optionWrapper);
-
-      var resultText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      resultText.setAttribute('x', wordX + 270);
-      resultText.setAttribute('y', wordY + 10);
-      resultText.setAttribute('font-size', '28');
-      resultText.setAttribute('fill', '#077077');
-      resultText.setAttribute('font-family', '"Roboto", sans-serif');
-      resultText.setAttribute('font-weight', '500');
-      resultText.setAttribute('class', 'wg136-words-plus');
-      resultText.textContent = wordMappings[originalIdx] || '';
-      rowGroup.appendChild(resultText);
-
-      var resultIconWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (optEl && pos) {
-        resultIconWrapper.setAttribute('transform', 'translate(' + (wordX + 500) + ',' + wordY + ') scale(0.3) translate(' + (-pos.x) + ',' + (-pos.y) + ')');
-        var iconClone = optEl.cloneNode(true);
-        iconClone.style.visibility = 'visible';
-        iconClone.style.opacity = '1';
-        iconClone.classList.remove('wg136-used', 'wg136-wrong');
-        resultIconWrapper.appendChild(iconClone);
-      }
-      rowGroup.appendChild(resultIconWrapper);
-
-      wordsContainer.appendChild(rowGroup);
-    });
-
-    var tspanCount = document.querySelector('#_0_of_4 tspan');
-    if (tspanCount) tspanCount.textContent = discovered.length + ' of 4';
-
-    for (var i = 1; i <= 4; i++) {
-      var ellipse = document.getElementById('Ellipse_' + i);
-      if (ellipse) ellipse.setAttribute('fill', i <= discovered.length ? '#f6c248' : '#077077');
-    }
-  }
-
-  function checkCompletion(family) {
-    var discovered = WG136.state.families[family].discovered;
-    if (discovered.length === 4) {
-      WG136.state.completedFamilies.add(family);
-      setTimeout(function () {
-        if (WG136.state.completedFamilies.size === 6) {
-          WG136.showPopupMsg('Congratulations!', "You've mastered all 24 compound words!", function () {
-            WG136.resetGame();
-          }, 'PLAY AGAIN');
-        } else {
-          WG136.showPopupMsg('Amazing!', 'You completed the ' + WG136.state.familyData[family].name + ' family!', function () {
-            WG136.returnToMenu();
-          });
-        }
-      }, 800);
-    } else {
-      WG136.state.isAnimating = false;
-    }
-  }
-
-  function returnToMenu() {
-    WG136.state.currentFamily = null;
-    WG136.state.isAnimating = false;
-    var box = document.getElementById('activity-box');
-    if (box) box.style.display = 'none';
-
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = 'none';
-    });
-
-    var home = document.getElementById('home');
-    if (home) home.style.display = 'block';
-  }
-
-  function resetGame() {
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      WG136.state.families[fam].discovered = [];
-      var cards = getCardElements(fam);
-      cards.forEach(function (card) {
-        card.classList.remove('wg136-used', 'wg136-wrong');
-        card.style.visibility = '';
-        card.style.opacity = '';
-        card.style.pointerEvents = '';
-      });
-    });
-    WG136.state.completedFamilies.clear();
-    WG136.state.currentFamily = null;
-    WG136.state.isAnimating = false;
-    WG136.returnToMenu();
-  }
-
-  function showPopupMsg(title, msg, onComplete, btnText) {
-    var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:2000;';
-    var card = document.createElement('div');
-    card.style.cssText = 'background:#fff;padding:40px 60px;border-radius:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);max-width:600px;';
-    var emoji = document.createElement('div');
-    emoji.textContent = title.indexOf('Amazing') !== -1 ? '\uD83C\uDF89' : '\uD83C\uDFC6';
-    emoji.style.cssText = 'font-size:80px;margin-bottom:10px;';
-    card.appendChild(emoji);
-    var h2 = document.createElement('h2');
-    h2.textContent = title;
-    h2.style.cssText = 'color:#333;font-size:38px;margin:0 0 15px 0;font-family:"Roboto",sans-serif;';
-    card.appendChild(h2);
-    var p = document.createElement('p');
-    p.textContent = msg;
-    p.style.cssText = 'color:#666;font-size:26px;margin:0 0 35px 0;font-family:"Roboto",sans-serif;';
-    card.appendChild(p);
-    if (btnText) {
-      var btn = document.createElement('button');
-      btn.textContent = btnText;
-      btn.style.cssText = 'padding:15px 40px;font-size:22px;font-weight:bold;background:#1e6bef;color:#fff;border:none;border-radius:30px;cursor:pointer;';
-      btn.onclick = function () {
-        overlay.remove();
-        if (onComplete) onComplete();
-      };
-      card.appendChild(btn);
-    } else {
-      setTimeout(function () {
-        overlay.style.transition = 'opacity 0.4s';
-        overlay.style.opacity = '0';
-        setTimeout(function () {
-          overlay.remove();
-          if (onComplete) onComplete();
-        }, 400);
-      }, 2200);
-    }
-    overlay.appendChild(card);
-    var container = document.querySelector('.container');
-    if (container) container.appendChild(overlay);
-  }
-
-  function createConfetti() {
-    var colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
-    var container = document.querySelector('.container');
-    if (!container) return;
-    for (var i = 0; i < 60; i++) {
-      var confetti = document.createElement('div');
-      confetti.style.cssText = 'position:absolute;width:' + (Math.random() < 0.5 ? 10 : 14) + 'px;height:' + (Math.random() < 0.5 ? 10 : 14) + 'px;';
-      if (Math.random() < 0.5) confetti.style.borderRadius = '50%';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.top = '-20px';
-      confetti.style.left = Math.random() * 100 + '%';
-      confetti.style.zIndex = '1500';
-      confetti.style.pointerEvents = 'none';
-      container.appendChild(confetti);
-      var duration = Math.random() * 1.5 + 1.5;
-      var delay = Math.random() * 0.5;
-      confetti.animate([
-        { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
-        { transform: 'translate3d(' + (Math.random() * 200 - 100) + 'px, 100vh, 0) rotate(' + (Math.random() * 720) + 'deg)', opacity: 0 }
-      ], {
-        duration: duration * 1000,
-        delay: delay * 1000,
-        easing: 'cubic-bezier(.37,0,.63,1)',
-        fill: 'forwards'
-      });
-      setTimeout(function (el) {
-        if (el.parentNode) el.remove();
-      }, (duration + delay) * 1000 + 100, confetti);
-    }
-  }
-
-  WG136.injectStyles = injectStyles;
-  WG136.getCardElements = getCardElements;
-  WG136.initGame = initGame;
-  WG136.openFamily = openFamily;
-  WG136.setCardVisibility = setCardVisibility;
-  WG136.returnToMenu = returnToMenu;
-  WG136.resetGame = resetGame;
-  WG136.showPopupMsg = showPopupMsg;
-  WG136.createConfetti = createConfetti;
-
-  document.addEventListener('DOMContentLoaded', function () {
-    WG136.initGame();
   });
-})();
+
+  agalavyanjanBtn.addEventListener("click", () => {
+    currentIndex++;
+
+    // loop back to start
+    if (currentIndex >= vyanjanList.length) {
+      currentIndex = 0;
+    }
+
+    const letter = vyanjanList[currentIndex];
+    loadvyanjan(letter);
+    playSound(letter);
+  });
+
+  homeBtn.addEventListener('click', () => {
+    homePage.style.display = 'block';
+    gamePage.style.display = 'none';
+    showAnswerbtn.textContent = "उत्तर देखें";
+  });
+});
+
+function loadvyanjan(selectedLetter) {
+  gamePage.style.display = 'block';
+  homePage.style.display = 'none';
+  showAnswerbtn.textContent = "उत्तर देखें";
+
+  letter = selectedLetter;
+  const data = letterData[letter];
+
+  if (data) {
+    currentData = data;
+
+    setQuestion(data.question);
+    setOptions(data);
+  }
+}
+
+function playSound(letter) {
+  const soundFile = soundJson[letter];
+
+  if (!soundFile) {
+    console.warn("No sound for:", letter);
+    return;
+  }
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
+  currentAudio = new Audio(`./assets/audio/vyanjan/${soundFile}`);
+  currentAudio.play();
+}
+
+function playWordSound(word) {
+  const soundFile = wordSoundJson[word];
+
+  if (!soundFile) return;
+
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
+  currentAudio = new Audio(`./assets/audio/vyanjan-ans/${soundFile}`);
+  currentAudio.play();
+}
+
+
+document.querySelectorAll(".option-img").forEach(el => {
+  el.addEventListener("click", function () {
+
+    const textEl = this.querySelector(".option-txt");
+    const imgEl = this.querySelector("img");
+
+    const selectedText = textEl.innerText.trim();
+
+    if (!currentData) return;
+
+    // ✅ Only if correct answer
+    if (currentData.answers.includes(selectedText)) {
+
+      const imgName = imgJson[selectedText]; // get correct image
+      if (imgName) {
+        imgEl.src = `./assets/images/${imgName}`;
+      }
+      playWordSound(selectedText);
+    } else {
+      // ❌ optional wrong case
+      imgEl.src = "./assets/images/incorrect.svg";
+    }
+  });
+});
+
+soundBtn.addEventListener("click", () => {
+  const letter = vyanjanList[currentIndex];
+  playSound(letter); // 🔥 replay current sound
+});
+
+function setQuestion(question) {
+  document.getElementById("question").textContent = question;
+  mainText.innerText = letter;
+}
+
+function setOptions(data) {
+  const optionEls = document.querySelectorAll(".option-img");
+
+  let options = [...data.answers, ...data.distractors];
+  options = options.sort(() => Math.random() - 0.5);
+  console.log(options);
+  optionEls.forEach((el, index) => {
+    el.querySelector(".option-txt").innerText = options[index];
+
+    // 🔥 reset image back to default
+    el.querySelector("img").src = "./assets/images/letter.svg";
+  });
+}
+
+
+function toggleAnswer() {
+  if (!currentData) return;
+
+  const optionEls = document.querySelectorAll(".option-img");
+
+  showAnswer = !showAnswer; // 🔥 toggle
+
+  optionEls.forEach(el => {
+    const text = el.querySelector(".option-txt").innerText.trim();
+    const imgEl = el.querySelector("img");
+
+    if (showAnswer) {
+      // ✅ SHOW ANSWERS
+      if (currentData.answers.includes(text)) {
+        imgEl.src = `./assets/images/${imgJson[text]}`; // correct image
+      }
+    } else {
+      // 🔄 HIDE ANSWERS (reset)
+      imgEl.src = "./assets/images/letter.svg";
+    }
+  });
+
+  // 🔥 Optional: change button text
+  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएं" : "उत्तर देखें";
+}
+
+uttarDekheBtn.addEventListener("click", toggleAnswer);
