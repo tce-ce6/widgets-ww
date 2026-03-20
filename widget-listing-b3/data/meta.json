@@ -25,8 +25,8 @@
       "author": "sushantthe"
     },
     "wg108-photosynthesis-factory": {
-      "updatedAt": "2026-02-23T14:51:41+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-16T18:47:05+05:30",
+      "author": "Shyam"
     },
     "wg109-electrolytic-refining-of-metals": {
       "updatedAt": "2026-03-06T12:15:00+05:30",
@@ -73,7 +73,7 @@
       "author": "aditya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-11T17:02:10+05:30",
+      "updatedAt": "2026-03-20T11:31:08+05:30",
       "author": "Shyam"
     },
     "wg121-synthesize-new-dna-strand": {
@@ -89,7 +89,7 @@
       "author": "PrasannaP"
     },
     "wg124-swar-ki-pahchan": {
-      "updatedAt": "2026-03-18T20:04:23+05:30",
+      "updatedAt": "2026-03-20T11:18:27+05:30",
       "author": "tce-nitinc"
     },
     "wg125-vyanjan-ki-pahchan": {
@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
+      "updatedAt": "2026-03-20T11:31:08+05:30",
       "author": "Shyam"
     },
     "wg26-word-discovery-adventure": {
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-08T22:08:20+05:30",
+      "updatedAt": "2026-03-19T15:11:49+05:30",
       "author": "Santosh"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -249,7 +249,7 @@
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
-      "updatedAt": "2026-03-18T21:50:34+05:30",
+      "updatedAt": "2026-03-20T10:23:02+05:30",
       "author": "Santosh"
     },
     "wg68-reflection-of-a-point": {
@@ -269,8 +269,8 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-04T12:33:05+05:30",
-      "author": "Santosh Vishwakarma"
+      "updatedAt": "2026-03-19T19:49:34+05:30",
+      "author": "Santosh"
     },
     "wg74-formal-letter-of-complaint": {
       "updatedAt": "2026-03-10T20:07:31+05:30",
@@ -379,12 +379,69 @@
   },
   "commits": [
     {
+      "date": "2026-03-20T11:31:08+05:30",
+      "author": "Shyam",
+      "message": "version updated for 24 and 120",
+      "widgets": [
+        24,
+        120
+      ]
+    },
+    {
+      "date": "2026-03-20T11:18:27+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed 124 fixes",
+      "widgets": [
+        124
+      ]
+    },
+    {
+      "date": "2026-03-20T10:23:02+05:30",
+      "author": "Santosh",
+      "message": "animation fixed",
+      "widgets": [
+        67
+      ]
+    },
+    {
+      "date": "2026-03-19T23:44:07+05:30",
+      "author": "ShyamsundarHait",
+      "message": "tulips svg and text repositioned for counter fixed",
+      "widgets": [
+        24
+      ]
+    },
+    {
+      "date": "2026-03-19T22:47:29+05:30",
+      "author": "ShyamsundarHait",
+      "message": "fixed tab change",
+      "widgets": [
+        24
+      ]
+    },
+    {
+      "date": "2026-03-19T19:49:34+05:30",
+      "author": "Santosh",
+      "message": "wg-73 modified",
+      "widgets": [
+        73
+      ]
+    },
+    {
       "date": "2026-03-19T17:33:59+05:30",
       "author": "tce-nitinc",
       "message": "wg 76 changes",
       "widgets": [
         18,
         76
+      ]
+    },
+    {
+      "date": "2026-03-19T15:11:49+05:30",
+      "author": "Santosh",
+      "message": "wg-42 bug fixes",
+      "widgets": [
+        42
       ]
     },
     {
@@ -425,6 +482,14 @@
       "message": "fix: Update version ID and adjust DNA strand display logic for middle section crossover",
       "widgets": [
         121
+      ]
+    },
+    {
+      "date": "2026-03-18T21:57:22+05:30",
+      "author": "ShyamsundarHait",
+      "message": "hcf updated file",
+      "widgets": [
+        24
       ]
     },
     {
@@ -556,70 +621,6 @@
       "message": "wg 69 modified",
       "widgets": [
         69
-      ]
-    },
-    {
-      "date": "2026-03-18T09:49:21+05:30",
-      "author": "Santosh",
-      "message": "129 modified",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-17T21:03:24+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add descriptive names to DNA tubes and enhance the randomization verification debug output, along with a minor band position adjustment and version update.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-17T20:12:17+05:30",
-      "author": "PrasannaP",
-      "message": "chore: Update widget version ID in index.html.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-17T19:59:59+05:30",
-      "author": "PrasannaP",
-      "message": "Refactor gel lane labels in HTML and JavaScript, and remove associated state, randomization verification, and display update logic.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-17T18:51:18+05:30",
-      "author": "Santosh",
-      "message": "implemented wg-129",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-17T16:21:36+05:30",
-      "author": "Santosh",
-      "message": "bug fixes",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-17T15:27:30+05:30",
-      "author": "PrasannaP",
-      "message": "Refactor: Rework sample-to-lane assignments, update associated UI labels and layout, and correct the criminal for one DNA set.",
-      "widgets": [
-        112
-      ]
-    },
-    {
-      "date": "2026-03-17T15:20:38+05:30",
-      "author": "tce-nitinc",
-      "message": "feat: Introduce initial CSS styling for the wg115 literary device widget.",
-      "widgets": [
-        115
       ]
     }
   ]

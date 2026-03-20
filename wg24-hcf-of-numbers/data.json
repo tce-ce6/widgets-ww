@@ -26,7 +26,7 @@
         "textColor": "#104948"
       },
       "containerName": "Shelf",
-      "successMessage": "✅ Correct! Each shelf has 4 Science and 3 Math books.",
+      "successMessage": "Correct! Each shelf has 4 Science and 3 Math books.",
       "solution": {
         "title": "Solution",
         "steps": [
