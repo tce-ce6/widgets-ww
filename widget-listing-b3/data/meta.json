@@ -305,7 +305,7 @@
       "author": "sushantthe"
     },
     "wg82-commonly-confused-words": {
-      "updatedAt": "2026-03-20T17:15:20+05:30",
+      "updatedAt": "2026-03-20T19:31:01+05:30",
       "author": "PrasannaP"
     },
     "wg83-major-soil-types": {
@@ -378,6 +378,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-20T19:31:01+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: Relocate lottie-container div inside SVG using foreignObject.",
+      "widgets": [
+        82
+      ]
+    },
+    {
+      "date": "2026-03-20T19:10:04+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement Lottie animations to provide visual feedback for correct answers.",
+      "widgets": [
+        82
+      ]
+    },
     {
       "date": "2026-03-20T17:15:20+05:30",
       "author": "PrasannaP",
@@ -603,22 +619,6 @@
       "message": "refactor: Remove \"(P)\" suffix from Parent labels in SVG elements for clarity",
       "widgets": [
         48
-      ]
-    },
-    {
-      "date": "2026-03-18T23:11:02+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Update version ID to b3_wg47_260318 and adjust group transformations in SVG elements",
-      "widgets": [
-        47
-      ]
-    },
-    {
-      "date": "2026-03-18T22:45:26+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Update version ID and adjust DNA strand display logic for middle section crossover",
-      "widgets": [
-        121
       ]
     }
   ]
