@@ -229,7 +229,7 @@
       "author": "PrasannaP"
     },
     "wg48-mendels-dihybrid-cross": {
-      "updatedAt": "2026-03-18T23:53:27+05:30",
+      "updatedAt": "2026-03-20T13:01:48+05:30",
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-20T13:01:48+05:30",
+      "author": "PrasannaP",
+      "message": "fix: Corrected 'RpPp' typo to 'RrPp', updated version ID, and incremented Live Server port.",
+      "widgets": [
+        48
+      ]
+    },
     {
       "date": "2026-03-20T12:46:31+05:30",
       "author": "PrasannaP",
@@ -613,14 +621,6 @@
       "message": "wg 67 modified",
       "widgets": [
         67
-      ]
-    },
-    {
-      "date": "2026-03-18T15:24:00+05:30",
-      "author": "PrasannaP",
-      "message": "docs: Add readme for WG112 DNA Fingerprinting widget detailing randomization, UI logic, and testing procedures.",
-      "widgets": [
-        112
       ]
     }
   ]
