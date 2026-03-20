@@ -20,6 +20,8 @@ const GlobalObj = {
     audioFinished: false,
     jigsawPieces: [],
     unrevealedIndices: [], // Tracks which piece indices are still hidden
+    usageStats: {},       // Tracks how many times each word pair is used for testing
+    correctCount: 0,      // Separate counter for correct responses
 
     // DOM elements
     btnListen: null,
@@ -75,28 +77,26 @@ function initQuestions() {
         let w1 = pair.words[0];
         let w2 = pair.words[1];
 
-        // Define correct audio extension (morale has wav for a, but mp3 for b)
-        let ex1 = (w1 === 'morale') ? 'wav' : 'mp3';
-        let ex2 = (w2 === 'morale') ? 'wav' : 'mp3';
-
         let wordSuffix = pair.isSecond ? '01' : '';
 
         // Question 1: where w1 is correct
+        let q1Options = Math.random() > 0.5 ? [w1, w2] : [w2, w1];
         let q1 = {
             correct: w1,
             incorrect: w2,
-            sentenceAudio: `./assets/audio/${w1}_a.${ex1}`,
-            wordAudio: `./assets/audio/${w1}_b${wordSuffix}.mp3`,
-            options: Math.random() > 0.5 ? [w1, w2] : [w2, w1]
+            sentenceAudio: `./assets/audio/${w1}_b.mp3`,
+            options: q1Options,
+            optionsAudio: q1Options.map(opt => `./assets/audio/${opt}_a${wordSuffix}.mp3`)
         };
 
         // Question 2: where w2 is correct
+        let q2Options = Math.random() > 0.5 ? [w1, w2] : [w2, w1];
         let q2 = {
             correct: w2,
             incorrect: w1,
-            sentenceAudio: `./assets/audio/${w2}_a.${ex2}`,
-            wordAudio: `./assets/audio/${w2}_b${wordSuffix}.mp3`,
-            options: Math.random() > 0.5 ? [w1, w2] : [w2, w1]
+            sentenceAudio: `./assets/audio/${w2}_b.mp3`,
+            options: q2Options,
+            optionsAudio: q2Options.map(opt => `./assets/audio/${opt}_a${wordSuffix}.mp3`)
         };
 
         firstHalf.push(q1);
@@ -172,6 +172,8 @@ function bindEvents() {
                 GlobalObj.currentLevel++;
                 loadQuestion();
             } else {
+                console.log("[TEST] Completed! Final Usage Stats:", GlobalObj.usageStats);
+                console.log("[TEST] Final Correct Total:", GlobalObj.correctCount);
                 alert("Congratulations! You've uncovered the whole picture.");
             }
         });
@@ -197,11 +199,13 @@ function bindEvents() {
  * Plays the current sentence when the listen button is pressed
  */
 function playSentence() {
-    if (GlobalObj.isPlaying) return;
-
     let q = GlobalObj.questions[GlobalObj.currentLevel];
     GlobalObj.isPlaying = true;
     GlobalObj.audioFinished = false;
+
+    // Restart audio if already playing
+    GlobalObj.sentenceAudio.pause();
+    GlobalObj.sentenceAudio.currentTime = 0;
 
     // Disable word options until sentence finishes per wireframe interaction design
     GlobalObj.btnOption1.style.opacity = '0.5';
@@ -245,6 +249,12 @@ function loadQuestion() {
 
     // Apply texts specifically mapped to each option
     let q = GlobalObj.questions[GlobalObj.currentLevel];
+
+    // Logging for testing purposes
+    const pairKey = q.options.slice().sort().join("/");
+    GlobalObj.usageStats[pairKey] = (GlobalObj.usageStats[pairKey] || 0) + 1;
+    console.log(`[TEST] Question ${GlobalObj.currentLevel + 1}: ${pairKey} (Usage: ${GlobalObj.usageStats[pairKey]})`);
+
     if (GlobalObj.btnOption1) GlobalObj.btnOption1.dataset.word = q.options[0];
     if (GlobalObj.btnOption2) GlobalObj.btnOption2.dataset.word = q.options[1];
 
@@ -260,6 +270,13 @@ function handleOptionSelect(optIndex) {
     if (GlobalObj.isPlaying || !GlobalObj.audioFinished) return;
 
     let q = GlobalObj.questions[GlobalObj.currentLevel];
+
+    // Play the word audio for whichever option was clicked
+    GlobalObj.wordAudio.pause();
+    GlobalObj.wordAudio.currentTime = 0;
+    GlobalObj.wordAudio.src = q.optionsAudio[optIndex];
+    GlobalObj.wordAudio.play();
+
     let selectedWord = (optIndex === 0) ? GlobalObj.btnOption1.dataset.word : GlobalObj.btnOption2.dataset.word;
 
     let btnElement = (optIndex === 0) ? GlobalObj.btnOption1 : GlobalObj.btnOption2;
@@ -271,13 +288,12 @@ function handleOptionSelect(optIndex) {
         GlobalObj.btnOption2.style.pointerEvents = 'none';
 
         GlobalObj.piecesCollected++;
+        GlobalObj.correctCount++;
+        console.log(`[TEST] Correct! Total Correct: ${GlobalObj.correctCount}`);
         setProgressText(GlobalObj.piecesCollected);
 
         // Indicate correctness via color change visually
         rectElement.setAttribute('fill', '#74b62b');
-
-        GlobalObj.wordAudio.src = q.wordAudio;
-        GlobalObj.wordAudio.play();
 
         // Reveal background puzzle component
         if (GlobalObj.unrevealedIndices.length > 0) {
