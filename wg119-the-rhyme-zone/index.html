@@ -17,13 +17,13 @@
       <div class="wdgetTitle">
         <h2>The Rhyme Zone</h2>
         <span id="versionId" class="versionText">b3_wg119_260310</span>
-        <div id="progress-tracker" class="st767"
-          style="position:absolute; right:120px; top:10px; color:#333; font-size:18px; display:inline-block;">Progress:
+        <div id="progress-tracker"
+          style="position:absolute; right:120px; top:10px; color:#333; font-size:18px; display:inline-block;">
           <span id="progress-count">0/10</span>
         </div>
-        <div id="points-counter" class="st767"
+        <!-- <div id="points-counter" class="st797"
           style="position:absolute; right:20px; top:40px; color:#ffb300; font-size:22px; display:inline-block;">★ <span
-            id="points-value">0</span></div>
+            id="points-value">0</span></div> -->
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
@@ -178,21 +178,7 @@
           <!-- End Animated Entry Box -->
           <!-- i-Text and Game Area (hidden at start, shown after entry) -->
 
-          <foreignObject x="0" y="170" width="1920" height="100" style="overflow: visible;" id="i_text_1">
-            <div id="rhymezone-game-area"
-              style="display:none; position:absolute; top:120px; left:0; width:100%; z-index:10;">
-              <div id="i-text" class="i-text" style="margin: 0 auto 30px auto; max-width: 700px; display:none;">Find the
-                rhyming pairs! Tap two words that rhyme with each other.</div>
-              <div id="cards-row" style="display:flex; justify-content:center; gap:60px; margin-bottom:40px;">
-                <div id="card-1" class="rhyme-card" style="display:none;"></div>
-                <div id="card-2" class="rhyme-card" style="display:none;"></div>
-              </div>
-              <div id="feedback-area" style="text-align:center; margin-bottom:20px;"></div>
-              <div id="game-controls" style="text-align:center; margin-top:20px; display:none;">
-                <button id="next-btn" class="btn" style="display:none;">Next</button>
-              </div>
-            </div>
-          </foreignObject>
+
           <g id="ref_for_bubble_position" data-name="ref for bubble position" class="st767">
             <image width="286" height="301" transform="translate(118.36 133.57) scale(1.1)"
               xlink:href="data:image/png;base64,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8lBS7i1F5dRKyq2OK2+toJy6J1U0xn1piHpmJAPoTNW07bZN5qYwOjVWZ8LqzFqZWasNrLQWMLDSCkgBYTSQis4+NamEMFJIIwGjII0UMBLCaClTDZmWtMumExERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERGNmP8PGI+fRn1AdB8AAAAASUVORK5CYII=" />
@@ -968,7 +954,7 @@
                   fill="#2a86fe" />
                 <path id="Path_25" data-name="Path 25" d="M1855.32,122.73v5.17c-3.41-.36-6.85-.36-10.26,0v-5.17h10.26Z"
                   fill="#1468d5" />
-                <circle id="Ellipse_1" data-name="Ellipse 1" cx="1850.95" cy="176.02" r="25.25" fill="#fe9f00" />
+                <circle id="Ellipse_1" data-name="Ellipse 1" cx="1850.95" cy="176.02" r="25.25" fill="#fe9f00" width="35" />
                 <path id="Path_26" data-name="Path 26"
                   d="M1852.82,152.75l2.36,21.73c.28,2.6-1.59,4.94-4.2,5.22-2.6.28-4.94-1.59-5.22-4.2-.04-.34-.04-.69,0-1.03l2.36-21.73c.08-.76.73-1.34,1.49-1.34h1.72c.77,0,1.41.57,1.49,1.34"
                   fill="#0b356c" />
@@ -997,11 +983,9 @@
             <g id="Group_6070" data-name="Group 6070">
               <path id="Path_52" data-name="Path 52" d="M719.43,442.12l489-20-8,98h-472l-9-78Z" fill="#ffef29" />
               <g id="Congratulations_" data-name="Congratulations " isolation="isolate">
-                <text transform="translate(752.4 498.12)" font-family="Cambria, Cambria" font-size="60"
-                  isolation="isolate">
-                  <tspan x="0" y="0">Cong</tspan>
-                  <tspan x="128.73" y="0" letter-spacing="-.02em">r</tspan>
-                  <tspan x="152.52" y="0">atulations!</tspan>
+                <text transform="translate(964 498.12)" font-family="Cambria, Cambria" font-size="60"
+                  isolation="isolate" text-anchor="middle">
+                  <tspan x="0" y="0">Congratulations!</tspan>
                 </text>
               </g>
               <path id="Path_54" data-name="Path 54" d="M1206,527.78h-135.57l133.3-3.97,4.4-29.4-2.13,33.37Z"
@@ -1016,11 +1000,9 @@
                 d="M877,584.03h166c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-166c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"
                 fill="#02d0a6" />
               <g id="Play_Again" data-name="Play Again" isolation="isolate">
-                <text transform="translate(876.76 645.03)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
-                  font-weight="700" isolation="isolate">
-                  <tspan x="0" y="0">Pl</tspan>
-                  <tspan x="31.82" y="0" letter-spacing="0em">a</tspan>
-                  <tspan x="50.3" y="0">y Again</tspan>
+                <text transform="translate(960 645.03)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
+                  font-weight="700" isolation="isolate" text-anchor="middle">
+                  <tspan x="0" y="0">Play Again</tspan>
                 </text>
               </g>
             </g>
@@ -1031,39 +1013,35 @@
                 d="M1602.39,939.39h116c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-116c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"
                 fill="#2196f3" />
               <g id="Next" isolation="isolate">
-                <text transform="translate(1627.45 1000.39)" fill="#fff" font-family="Roboto-Bold, Roboto"
-                  font-size="35" font-weight="700" isolation="isolate">
+                <text transform="translate(1660.39 1000.39)" fill="#fff" font-family="Roboto-Bold, Roboto"
+                  font-size="35" font-weight="700" isolation="isolate" text-anchor="middle">
                   <tspan x="0" y="0">Next</tspan>
                 </text>
               </g>
             </g>
           </g>
-          <g id="try_again_btn" data-name="try again btn">
+          <g id="try_again_btn" data-name="try again btn" style="display: none;">
             <g id="Group_57" data-name="Group 57">
               <path id="Rectangle_2-2" data-name="Rectangle 2-2"
                 d="M1069.65,940.13h136c25.68,0,46.5,20.82,46.5,46.5h0c0,25.68-20.82,46.5-46.5,46.5h-136c-25.68,0-46.5-20.82-46.5-46.5h0c0-25.68,20.82-46.5,46.5-46.5Z"
                 fill="#fca007" />
               <g id="Try_Again" data-name="Try Again" isolation="isolate">
-                <text transform="translate(1064.82 1001.13)" fill="#fff" font-family="Roboto-Bold, Roboto"
-                  font-size="35" font-weight="700" isolation="isolate">
-                  <tspan x="0" y="0" letter-spacing="-.03em">T</tspan>
-                  <tspan x="20.52" y="0" letter-spacing="0em">r</tspan>
-                  <tspan x="33.65" y="0">y Again</tspan>
+                <text transform="translate(1137.65 1001.13)" fill="#fff" font-family="Roboto-Bold, Roboto"
+                  font-size="35" font-weight="700" isolation="isolate" text-anchor="middle">
+                  <tspan x="0" y="0">Try Again</tspan>
                 </text>
               </g>
             </g>
           </g>
-          <g id="show_answer_btn" data-name="show answer btn">
+          <g id="show_answer_btn" data-name="show answer btn" style="display: none;">
             <g id="Group_56" data-name="Group 56">
               <path id="Rectangle_2" data-name="Rectangle 2"
                 d="M714.65,940.13h221c25.68,0,46.5,20.82,46.5,46.5h0c0,25.68-20.82,46.5-46.5,46.5h-221c-25.68,0-46.5-20.82-46.5-46.5h0c0-25.68,20.82-46.5,46.5-46.5Z"
                 fill="#4caf50" />
               <g id="Show_Answer" data-name="Show Answer" isolation="isolate">
-                <text transform="translate(723 1001.13)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
-                  font-weight="700" isolation="isolate">
-                  <tspan x="0" y="0">Show </tspan>
-                  <tspan x="95.31" y="0" letter-spacing="-.02em">A</tspan>
-                  <tspan x="118.26" y="0">nswer</tspan>
+                <text transform="translate(825.15 1001.13)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
+                  font-weight="700" isolation="isolate" text-anchor="middle">
+                  <tspan x="0" y="0">Show Answer</tspan>
                 </text>
               </g>
             </g>
@@ -1074,8 +1052,8 @@
                 d="M101.39,939.39h116c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-116c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"
                 fill="#ff2c68" />
               <g id="Hint" isolation="isolate">
-                <text transform="translate(133.43 1000.39)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
-                  font-weight="700" isolation="isolate">
+                <text transform="translate(159.39 1000.39)" fill="#fff" font-family="Roboto-Bold, Roboto" font-size="35"
+                  font-weight="700" isolation="isolate" text-anchor="middle">
                   <tspan x="0" y="0">Hint</tspan>
                 </text>
               </g>
@@ -1379,14 +1357,9 @@
           <g id="i-text" class="st767">
             <g id="Tap_two_words_that_rhyme_with_each_other." data-name="Tap two words that rhyme with each other."
               isolation="isolate">
-              <text transform="translate(702.28 138.13)" fill="#e0e4bb" font-family="Roboto-Italic, Roboto"
-                font-size="28" font-style="italic" isolation="isolate">
-                <tspan x="0" y="0" letter-spacing="-.06em">T</tspan>
-                <tspan x="14.66" y="0">ap two wo</tspan>
-                <tspan x="139.14" y="0" letter-spacing="0em">r</tspan>
-                <tspan x="148.08" y="0">ds that rhyme with each othe</tspan>
-                <tspan x="497.46" y="0" letter-spacing="-.06em">r</tspan>
-                <tspan x="504.98" y="0">.</tspan>
+              <text transform="translate(960 138.13)" fill="#e0e4bb" font-family="Roboto-Italic, Roboto" font-size="28"
+                font-style="italic" isolation="isolate" text-anchor="middle">
+                <tspan x="0" y="0">Tap two words that rhyme with each other.</tspan>
               </text>
             </g>
           </g>

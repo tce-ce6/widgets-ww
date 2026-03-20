@@ -593,20 +593,22 @@ svg * {
 }
 
 .anno-item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: flex-start;
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  line-height: 1.4;
+  color: #181818;
+  margin-bottom: 20px;
 }
 
 .anno-label {
-  display: inline-block;
-  padding: 2px 8px;
+  display: inline;
+  padding: 2px 4px;
   font-family: 'Roboto', sans-serif;
   font-size: 24px;
-  font-weight: 900;
-  margin-bottom: 5px;
+  font-weight: 700; /* Matching Roboto bold */
   border-radius: 4px;
+  margin-right: 5px;
 }
 
 .anno-label.word {
@@ -625,19 +627,18 @@ svg * {
 }
 
 .anno-item p {
-  display: block;
-  margin: 0 0 20px 0;
-  font-family: 'Roboto', sans-serif;
-  font-size: 22px;
-  line-height: 1.3;
-  color: #181818;
+  display: inline;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
 }
 
 /* Highlight Styles */
 .hl-word {
   background-color: #FFED00;
   color: black;
-  font-weight: 500;
   padding: 0 4px;
   border-radius: 4px;
 }
@@ -645,7 +646,6 @@ svg * {
 .hl-sentence {
   background-color: #26F806;
   color: black;
-  font-weight: 500;
   padding: 0 4px;
   border-radius: 4px;
 }
@@ -653,7 +653,6 @@ svg * {
 .hl-punct {
   background-color: #00F8FF;
   color: black;
-  font-weight: 500;
   padding: 0 4px;
   border-radius: 4px;
 }

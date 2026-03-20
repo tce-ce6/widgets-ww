@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ── Dynamic line values (updated per question) ── */
     let currentLineValues = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70];
+    let correctAnim, incorrectAnim;
 
     /* ── Question bank ── */
     const ALL_QUESTIONS = [
@@ -58,6 +59,22 @@ document.addEventListener("DOMContentLoaded", () => {
         e.style.animation = "none"; void e.offsetWidth;
         e.style.animation = anim;
     }
+    if (typeof lottie !== "undefined") {
+        correctAnim = lottie.loadAnimation({
+            container: $("correct-anim-container"),
+            renderer: "svg",
+            loop: false,
+            autoplay: false,
+            path: "./assets/animation/correct-confetti-anim.json"
+        });
+        incorrectAnim = lottie.loadAnimation({
+            container: $("incorrect-anim-container"),
+            renderer: "svg",
+            loop: false,
+            autoplay: false,
+            path: "./assets/animation/incorrect-cross-anim.json"
+        });
+    }
 
 
     /* ── Get Timeline-numbers <text> elements sorted by x ── */
@@ -85,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Font size shrinks as numbers get longer so they stay inside the circle
         const maxLen = Math.max(...values.map(v => String(v).length));
-        const fontSize = maxLen <= 2 ? 36 : maxLen === 3 ? 26 : 18;
+        // Refined font sizes for yellow circles (Diameter 96):
+        const fontSize = maxLen <= 2 ? 46 : maxLen === 3 ? 38 : 32;
 
         getTimelineTexts().forEach((el, i) => {
             if (i >= values.length) return;
@@ -106,17 +124,24 @@ document.addEventListener("DOMContentLoaded", () => {
             el.setAttribute("text-anchor", "middle");
             el.setAttribute("dominant-baseline", "middle");
             el.setAttribute("font-size", String(fontSize));
+            el.setAttribute("font-weight", "bold");
+            el.setAttribute("font-family", "Roboto-Bold, Roboto");
         });
     }
 
 
     /* ── Slide Q-marker to correct SVG position ── */
-    function positionQMarker(number) {
+    function positionQMarker(number, moveAll = true) {
         const [minVal, maxVal] = [currentLineValues[0], currentLineValues[14]];
         const [minX, maxX] = [TIMELINE_CX[0], TIMELINE_CX[14]];
         const frac = maxVal > minVal ? Math.max(0, Math.min(1, (number - minVal) / (maxVal - minVal))) : 0.5;
         const dx = minX + frac * (maxX - minX) - Q_ORIGIN_CX;
-        ["Q-marker", "Q-line", "Q-circle", "Q-numbers"].forEach(id => {
+        
+        const targets = moveAll 
+            ? ["Q-marker", "Q-line", "Q-circle", "Q-numbers", "Car", "Bike"]
+            : ["Car", "Bike"];
+
+        targets.forEach(id => {
             const el = $(id); if (!el) return;
             el.style.transition = "transform 0.55s cubic-bezier(.25,.46,.45,.94)";
             el.style.transform = `translateX(${dx}px)`;
@@ -159,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const c = el.querySelector("circle"); if (!c) return;
         if (type === "correct") {
             c.style.fill = "#56db00"; c.style.stroke = "#2a7a00";
-            c.style.animation = "pulse-correct 0.55s ease forwards";
             c.style.filter = "drop-shadow(0 0 12px #56db00)";
         } else {
             c.style.fill = "#ff4444"; c.style.stroke = "#bb0000";
@@ -170,16 +194,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ── Correct popup (incl Layer_27 — the extra floating X) ── */
-    const CORRECT_ELS = ["answer-popup", "answer-heading", "answer-text", "tap-new-number", "answer-cross-mark", "Layer_27"];
+    /* ── Correct popup functionality ── */
     function showCorrectPopup(q) {
         hideHintPopup();
-        const el = $("answer-text");
-        if (el) { const ts = el.querySelector("tspan"); if (ts) ts.textContent = `${q.answer} is the nearest multiple of ${q.roundTo} to ${q.number}.`; }
-        CORRECT_ELS.forEach(id => triggerAnim(id, "fadeInUp 0.35s ease both"));
-    }
-    function hideCorrectPopup() { CORRECT_ELS.forEach(id => setVisible(id, false)); }
+        const group = $("correct-popup-group");
+        const overlay = $("popup-overlay");
+        if (!group || !overlay) return;
 
-    /* ── Hint (wrong-answer) popup ── */
+        const el = $("answer-text");
+        if (el) {
+            const ts = el.querySelector("tspan");
+            if (ts) ts.textContent = `${q.answer} is the nearest multiple of ${q.roundTo} to ${q.number}.`;
+        }
+
+        overlay.style.display = "";
+        const btnContainer = $("timeline-btns-container");
+        if (btnContainer) btnContainer.classList.add("answered");
+        triggerAnim("correct-popup-group", "simpleZoom 0.3s ease-out both");
+        if (correctAnim) {
+            correctAnim.goToAndPlay(0, true);
+        }
+    }
+
+    function hideCorrectPopup() {
+        setVisible("correct-popup-group", false);
+        setVisible("popup-overlay", false);
+    }
+
     /* ── Hint (wrong-answer) popup ── */
     const HINT_ELS = ["hint-popup", "hint-heading", "quick-hint", "hint-text", "hint-cross-mark"];
 
@@ -191,6 +232,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showHintPopup(q, clicked) {
         hideCorrectPopup();
+        hideHelp(false); // Hide help popup without hiding overlay
+
+        const group = $("hint-popup-group");
+        const overlay = $("popup-overlay");
+        if (!group || !overlay) return;
+
+        // Reset previous vehicle clones and visibility
+        document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+        setVisible("popup-car", false);
+        setVisible("popup-bike", false);
 
         // ── heading ──
         const h = $("hint-heading");
@@ -206,12 +257,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const ht = $("hint-text");
         if (ht) {
             const lines = ht.querySelectorAll("text");
-            const setText = (el, txt) => { if (!el) return; const ts = el.querySelector("tspan"); if (ts) ts.textContent = txt; };
+            const setText = (el, txt) => {
+                if (!el) return;
+                let ts = el.querySelector("tspan");
+                if (!ts) { ts = document.createElementNS("http://www.w3.org/2000/svg", "tspan"); el.appendChild(ts); }
+                ts.textContent = txt;
+            };
             setText(lines[0], String(q.number));
             setText(lines[1], ` ${lower} = ${dLow} step${dLow !== 1 ? "s" : ""}`);
             setText(lines[2], String(q.number));
             setText(lines[3], ` ${upper} = ${dHigh} step${dHigh !== 1 ? "s" : ""}`);
-            setText(lines[4], `"Pick the number that's fewer steps away!"`);
+            if (lines[4]) setText(lines[4], `"Pick the number that's fewer steps away!"`);
         }
 
         // ── reposition arrows using ORIGINAL coords + fresh delta ──
@@ -222,15 +278,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const dHighStr = String(dHigh) + (dHigh !== 1 ? " steps" : " step");
 
         // Arrow starts right after the initial number
-        const arrowX = 623.98 + numDigits * 17 + 10; // 10px gap after text
-
-        const textAfterArrowX = arrowX + 35; // 35px for arrow width and gap
+        // ── reposition arrows ──
+        const ARROW_ORIG = {
+            "arrow": [[664.85, 534.16, 689.85, 534.16], [683.85, 541.16, 690.85, 533.16], [690.85, 534.16, 682.85, 527.16]],
+            "arrow-2": [[664.85, 594.16, 689.85, 594.16], [683.85, 601.16, 690.85, 593.16], [690.85, 594.16, 682.85, 587.16]]
+        };
+        const arrowX = 623.98 + numDigits * 17 + 10;
+        const textAfterArrowX = arrowX + 35;
         if (ht) {
             const lines = ht.querySelectorAll("text");
             if (lines[1]) lines[1].setAttribute("transform", `translate(${textAfterArrowX} 545.77)`);
             if (lines[3]) lines[3].setAttribute("transform", `translate(${textAfterArrowX} 605.77)`);
         }
-
         ["arrow", "arrow-2"].forEach(arrowId => {
             const arrowEl = document.getElementById(arrowId);
             if (!arrowEl) return;
@@ -247,34 +306,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // ── cars ──
-        setVisible("popup-car", false);
-        setVisible("popup-bike", false);
-        document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
-
         const sourceId = state.vehicle === "car" ? "popup-car" : "popup-bike";
         const source = $(sourceId);
-        const svg = document.querySelector("svg");   // top-level SVG
 
-        if (source && svg) {
+        if (source) {
             const isCar = state.vehicle === "car";
             const iconW = isCar ? 78 : 56;
             // popup right edge ≈ 1708 SVG units
             const maxRight = 1700;
             // car origin in SVG: popup-car leftmost x ≈ 866
-            const originX = isCar ? 866 : 883;
+            const originX = isCar ? 866 : 905;
 
             const lowerTextLen = (1 + lowerStr.length + 3 + dLowStr.length) * 17;
             const upperTextLen = (1 + higherStr.length + 3 + dHighStr.length) * 17;
             const carsStartX_row1 = textAfterArrowX + lowerTextLen + 10;
             const carsStartX_row2 = textAfterArrowX + upperTextLen + 10;
 
-            const svgNS = "http://www.w3.org/2000/svg";
-
             const drawRow = (count, yOffset, dotsY, rowStartX) => {
                 if (count <= 0) return;
                 const maxFit = Math.max(1, Math.floor((maxRight - rowStartX) / iconW));
-                const showCount = Math.min(count, maxFit - 1); // leave 1 slot for dots if needed
-                const actualShow = count <= maxFit ? count : showCount;
+                const actualShow = count <= maxFit ? count : Math.min(count, maxFit - 1); // leave 1 slot for dots if needed
 
                 for (let i = 0; i < actualShow; i++) {
                     const clone = source.cloneNode(true);
@@ -284,12 +335,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Remove clip-path refs so clones render correctly
                     clone.querySelectorAll("[clip-path]").forEach(el => el.removeAttribute("clip-path"));
                     clone.setAttribute("transform",
-                        `translate(${rowStartX - originX + i * iconW}, ${yOffset})`);
-                    svg.appendChild(clone);
+                        `translate(${rowStartX - originX + i * iconW}, ${isCar ? yOffset : yOffset - 60})`);
+                    group.appendChild(clone);
                 }
 
                 if (count > maxFit) {
-                    const dots = document.createElementNS(svgNS, "text");
+                    const dots = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     dots.setAttribute("x", String(rowStartX + actualShow * iconW));
                     dots.setAttribute("y", String(dotsY));
                     dots.classList.add("hint-car-clone");
@@ -297,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     dots.setAttribute("font-size", "34");
                     dots.setAttribute("font-weight", "bold");
                     dots.textContent = "...";
-                    svg.appendChild(dots);
+                    group.appendChild(dots);
                 }
             };
 
@@ -305,17 +356,16 @@ document.addEventListener("DOMContentLoaded", () => {
             drawRow(dHigh, 52, 608, carsStartX_row2);
         }
 
-        HINT_ELS.forEach(id => triggerAnim(id, "fadeInUp 0.35s ease both"));
+        overlay.style.display = "";
+        triggerAnim("hint-popup-group", "popZoom 0.4s ease both");
+        if (incorrectAnim) {
+            incorrectAnim.goToAndPlay(0, true);
+        }
     }
 
     function hideHintPopup() {
-        setVisible("hint-popup", false);
-        setVisible("hint-cross-mark", false);
-        setVisible("hint-heading", false);
-        setVisible("quick-hint", false);
-        setVisible("hint-text", false);
-        setVisible("popup-car", false);
-        setVisible("popup-bike", false);
+        setVisible("hint-popup-group", false);
+        setVisible("popup-overlay", false);
         document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
     }
     // 👇 ADD THIS HERE
@@ -343,11 +393,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function generateQuestion() {
         resetButtons(); hideCorrectPopup(); hideHintPopup();
+        const btnContainer = $("timeline-btns-container");
+        if (btnContainer) btnContainer.classList.remove("answered");
         state.currentQ = pickQuestion(); state.answered = false;
         const q = state.currentQ;
         console.log(q);
-        // Q-circle number
-        const qn = $("Q-numbers"); if (qn) { const ts = qn.querySelector("tspan"); if (ts) ts.textContent = String(q.number); }
+        // Q-circle number - bold and slightly larger if it's 2 digits
+        const qn = $("Q-numbers");
+        if (qn) {
+            const ts = qn.querySelector("tspan");
+            if (ts) ts.textContent = String(q.number);
+            const txt = qn.querySelector("text");
+            if (txt) {
+                const numLen = String(q.number).length;
+                const qSize = numLen <= 2 ? 42 : numLen === 3 ? 36 : 30;
+                txt.setAttribute("font-size", String(qSize));
+                txt.setAttribute("font-weight", "bold");
+                txt.setAttribute("font-family", "Roboto-Bold, Roboto");
+            }
+        }
         console.log(qn);
         // Instruction text
         updateIText(q.number, q.roundTo);
@@ -371,24 +435,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const q = state.currentQ;
             if (clicked === q.answer) {
                 state.answered = true;
+                positionQMarker(clicked, false);
                 animateButton(btnId, "correct");
                 setTimeout(() => showCorrectPopup(q), 380);
             } else {
+                positionQMarker(clicked, false);
                 animateButton(btnId, "wrong");
                 setTimeout(() => showHintPopup(q, clicked), 320);
             }
         });
     });
 
-    /* ── Hint popup: click anywhere on it to close ── */
-    const hintPopEl = $("hint-popup");
-    if (hintPopEl) hintPopEl.addEventListener("click", hideHintPopup);
-
-    /* ── Answer popup close buttons ── */
-    [$("answer-cross-mark"), $("Layer_27")].forEach(el => {
-        if (!el) return;
-        el.style.cursor = "pointer";
-        el.addEventListener("click", hideCorrectPopup);
+    /* ── Popup Close Handlers ── */
+    [$("hint-popup-group"), $("hint-cross-mark")].forEach(el => {
+        if (el) { el.style.cursor = "pointer"; el.addEventListener("click", hideHintPopup); }
+    });
+    [$("correct-popup-group"), $("answer-cross-mark")].forEach(el => {
+        if (el) { el.style.cursor = "pointer"; el.addEventListener("click", hideCorrectPopup); }
     });
 
     /* ── New Number button ── */
@@ -405,11 +468,23 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(newBtn.value);
     }
 
-    /* ── Help panel ── */
-    const HELP_ELS = ["help-panel", "help-text", "help-cross-btn"];
-    function showHelp(v) { HELP_ELS.forEach(id => { if (v) triggerAnim(id, "fadeInUp 0.35s ease both"); else setVisible(id, false); }); }
-    [$("help-btn"), $("help-btn-text")].forEach(el => { if (el) { el.style.cursor = "pointer"; el.addEventListener("click", () => showHelp(true)); } });
-    [$("help-cross-btn")].forEach(el => { if (el) { el.style.cursor = "pointer"; el.addEventListener("click", () => showHelp(false)); } });
+    /* ── Help panel logic ── */
+    function hideHelp() {
+        setVisible("help-popup-group", false);
+        setVisible("popup-overlay", false);
+    }
+    function showHelp() {
+        hideHintPopup();
+        hideCorrectPopup();
+        const group = $("help-popup-group");
+        const overlay = $("popup-overlay");
+        if (group && overlay) {
+            overlay.style.display = "";
+            triggerAnim("help-popup-group", "fadeInUp 0.35s ease both");
+        }
+    }
+    [$("help-btn"), $("help-btn-text")].forEach(el => { if (el) { el.style.cursor = "pointer"; el.addEventListener("click", showHelp); } });
+    [$("help-popup-group"), $("help-cross-btn")].forEach(el => { if (el) { el.style.cursor = "pointer"; el.addEventListener("click", hideHelp); } });
 
     /* ── Vehicle selector ── */
     function selectVehicle(type) {
@@ -484,11 +559,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ── Initialise ── */
     function init() {
-        CORRECT_ELS.forEach(id => setVisible(id, false));
-        HINT_ELS.forEach(id => setVisible(id, false));
-        setVisible("popup-car", false); setVisible("popup-bike", false);
-        HELP_ELS.forEach(id => setVisible(id, false));
-        setVisible("drop-down1-option", false); setVisible("drop-down2-option", false);
+        setVisible("popup-overlay", false);
+        setVisible("correct-popup-group", false);
+        setVisible("hint-popup-group", false);
+        setVisible("help-popup-group", false);
+        setVisible("popup-car", false);
+        setVisible("popup-bike", false);
+        setVisible("drop-down1-option", false);
+        setVisible("drop-down2-option", false);
         selectVehicle("car");
         generateQuestion();
     }

@@ -236,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
       li.innerHTML = `<span class="text-wrap">${opt.text}</span>`;
 
       li.addEventListener("click", () => {
+        playAudio(opt.sound);
+
         if (li.classList.contains("correct")) return;
 
         if (opt.text === currentQuestion.answer) {
@@ -327,7 +329,14 @@ document.addEventListener("DOMContentLoaded", () => {
     optionContainer.innerHTML = "";
 
     renderOptions(question.options);
-
+    // 👉 Disable newLetterBtn if it's the last letter
+    if (index === questionsData.length - 1) {
+      newLetterBtn.style.pointerEvents = "none";
+      newLetterBtn.style.opacity = "0.5";
+    } else {
+      newLetterBtn.style.pointerEvents = "auto";
+      newLetterBtn.style.opacity = "1";
+    }
   }
 
   newLetterBtn.addEventListener("click", () => {
@@ -369,26 +378,31 @@ document.addEventListener("DOMContentLoaded", () => {
     currentQuestion = null;
     currentIndex = -1;
 
+    // Reset newLetterBtn
+    newLetterBtn.style.pointerEvents = "auto";
+    newLetterBtn.style.opacity = "1";
+
     // Clear options
     const optionContainer = document.querySelector(".optFlower-list");
     optionContainer.innerHTML = "";
   });
 
-  function playLetterSound() {
-  if (!currentQuestion) return;
-
-  // stop previous audio if playing
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
+  function playAudio(path) {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(path);
+    currentAudio.play().catch((err) => console.log("Audio play blocked:", err));
   }
 
-  // build path from question data
-  const audioPath = `assets/audio/${currentQuestion.letterSound}`;
+  function playLetterSound() {
+    if (!currentQuestion) return;
 
-  currentAudio = new Audio(audioPath);
-  currentAudio.play().catch(err => console.log("Audio play blocked:", err));
-}
+    // build path from question data
+    const audioPath = `assets/audio/${currentQuestion.letterSound}`;
+    playAudio(audioPath);
+  }
 soundBtn.addEventListener("click", () => {
   playLetterSound();
 });
