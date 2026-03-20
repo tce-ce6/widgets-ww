@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const addShelfBtn = document.getElementById('btn-add');
   const removeShelfBtn = document.getElementById('btn-remove');
   const shelfCountDisplay = document.querySelector('#shelves-number-box text');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
 
   // Clear the initial shelf from HTML
   scrollContainer.innerHTML = '';
@@ -160,9 +161,9 @@ async function renderItemGroup(containerId, itemData) {
   // Item 2 (bottom): x=270, y=706
   const isItem1 = containerId === 'science-book';
   const x = 160
-  const y = isItem1 ? 433 : 706;
+  const y = isItem1 ? 423 : 696;
   const width = 720;
-  const height = 180; // Approximate height based on shelf dimensions
+  const height = 200; // Approximate height based on shelf dimensions
 
   // If icon is an external SVG file, load it
   if (icon && icon.includes('.svg')) {
@@ -250,20 +251,32 @@ function updateActiveTab() {
   const tab2 = document.getElementById('tab-2');
   const tab3 = document.getElementById('tab-3');
 
+  const cover1 = document.getElementById('tab-1-cover');
+  const cover2 = document.getElementById('tab-2-cover');
+  const cover3 = document.getElementById('tab-3-cover');
+
   // Reset all tabs to inactive color
   const inactiveColor = '#2C6AC9';
   const activeColor = '#ADE4FC';
 
+  const borderColor = '#053378';
+
   if (tab1) {
     const tab1Path = tab1.querySelector('path');
     if (tab1Path) tab1Path.setAttribute('fill', currentChallenge.id === 1 ? activeColor : inactiveColor);
+    if (cover1) cover1.setAttribute('fill', currentChallenge.id === 1 ? activeColor : borderColor);
   }
 
   if (tab2) {
     const tab2Path = tab2.querySelector('path');
     if (tab2Path) tab2Path.setAttribute('fill', currentChallenge.id === 2 ? activeColor : inactiveColor);
+    if (cover2) cover2.setAttribute('fill', currentChallenge.id === 2 ? activeColor : borderColor);
+  }
+
+  if (tab3) {
     const tab3Path = tab3.querySelector('path');
     if (tab3Path) tab3Path.setAttribute('fill', currentChallenge.id === 3 ? activeColor : inactiveColor);
+    if (cover3) cover3.setAttribute('fill', currentChallenge.id === 3 ? activeColor : borderColor);
   }
 }
 
@@ -321,7 +334,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_2" d="M22.75 46C19.03 46 16 48.93 16 52.54V140.47C16 144.07 19.03 147.01 22.75 147.01H335.24C338.96 147.01 341.99 144.08 341.99 140.47V52.54C341.99 48.94 338.96 46 335.24 46H22.75ZM22.75 44H335.24C340.07 44 343.99 47.82 343.99 52.54V140.47C343.99 145.18 340.07 149.01 335.24 149.01H22.75C17.92 149.01 14 145.19 14 140.47V52.54C14 47.83 17.92 44 22.75 44Z" fill="${currentChallenge.item1.borderColor}"/>
             </g>
             <text id="item1-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="32" y="71.5195">${currentChallenge.item1.name}</tspan></text>
-            <text id="item1-count-${shelfNumber}" fill="${currentChallenge.item1.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="289.15" y="114.508">0</tspan></text>
+            <text 
+  id="item1-count-${shelfNumber}" 
+  fill="${currentChallenge.item1.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="284.15" y="114.508">0</tspan>
+</text>
             <path id="add-item1-bg" d="M166 85H44C37.3726 85 32 90.3726 32 97V123C32 129.627 37.3726 135 44 135H166C172.627 135 178 129.627 178 123V97C178 90.3726 172.627 85 166 85Z" fill="white"/>
             <g id="item1-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-3" d="M44 85H82V135H44C37.37 135 32 129.63 32 123V97C32 90.37 37.37 85 44 85Z" fill="#2196F3"/>
@@ -340,12 +362,30 @@ function createNewShelf(shelfNumber) {
             </g>
             </g>
             <g id="item1-card">
-            <text id="item1-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="95.25" y="120.621">0</tspan></text>
+           <text 
+  id="item1-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="106" y="120.621">0</tspan>
+</text>
             <g id="item2-card-bg">
             <path id="Vector_3" d="M682.25 148H369.76C365.48 148 362.01 144.62 362.01 140.46V52.5302C362.01 48.3702 365.49 44.9902 369.76 44.9902H682.25C686.53 44.9902 690 48.3702 690 52.5302V140.46C690 144.62 686.52 148 682.25 148Z" fill="${currentChallenge.item2.bgColor}"/>
             <path id="Vector_4" d="M369.75 46C366.03 46 363 48.93 363 52.54V140.47C363 144.07 366.03 147.01 369.75 147.01H682.24C685.96 147.01 688.99 144.08 688.99 140.47V52.54C688.99 48.94 685.96 46 682.24 46H369.75ZM369.75 44H682.24C687.07 44 690.99 47.82 690.99 52.54V140.47C690.99 145.18 687.07 149.01 682.24 149.01H369.75C364.92 149.01 361 145.19 361 140.47V52.54C361 47.83 364.92 44 369.75 44Z" fill="${currentChallenge.item2.borderColor}"/>
             </g>
-            <text id="item2-count-${shelfNumber}" fill="${currentChallenge.item2.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="633.15" y="114.508">0</tspan></text>
+           <text 
+  id="item2-count-${shelfNumber}" 
+  fill="${currentChallenge.item2.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="633.15" y="114.508">0</tspan>
+</text>
             <path id="item2-add-bg" d="M513 85H391C384.373 85 379 90.3726 379 97V123C379 129.627 384.373 135 391 135H513C519.627 135 525 129.627 525 123V97C525 90.3726 519.627 85 513 85Z" fill="white"/>
             <g id="item2-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-4" d="M391 85H429V135H391C384.37 135 379 129.63 379 123V97C379 90.37 384.37 85 391 85Z" fill="#2196F3"/>
@@ -362,7 +402,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_5" d="M500.77 98.27V121.69M512.49 109.99H489.07" stroke="white" stroke-width="4" stroke-linecap="round"/>
             </g>
             </g>
-            <text id="item2-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="442.25" y="120.621">0</tspan></text>
+          <text 
+  id="item2-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="452" y="120.621">0</tspan>
+</text>
             <text id="item2-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="379" y="71.5195">${currentChallenge.item2.name}</tspan></text>
             </g>
             </g>
@@ -512,27 +561,34 @@ function resetSimulation() {
   // Reset visuals (gray styling)
   updateUsedItemVisuals();
 
-  // Reset Feedback and Solution UI
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (feedbackContainer) feedbackContainer.innerHTML = '';
+  // Hide feedback message
+  const feedbackMessage = document.getElementById('feedback-message');
+  if (feedbackMessage) feedbackMessage.style.display = 'none';
 
-  const solutionContainer = document.getElementById('solution-container');
-  if (solutionContainer) solutionContainer.style.display = 'none';
+  // Hide the black tint overlay
+  const leftBgTint = document.getElementById('left-bg-tint');
+  if (leftBgTint) leftBgTint.style.display = 'none';
 
-  const showAnswerBtn = document.getElementById('btn-show-answer');
-  if (showAnswerBtn) {
-    const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-    if (textEl) textEl.textContent = 'Show Answer';
-  }
+  const solutionModal = document.getElementById('solution-modal');
+  if (solutionModal) solutionModal.style.display = 'none';
+
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
+  if (leftBgBackgroundTint) leftBgBackgroundTint.style.display = 'none';
 
   console.log("Simulation reset.");
 }
 
 function checkAnswer() {
   if (!currentChallenge) return;
+  console.log("Checking answer...", currentChallenge);
+  const feedbackMessage = document.getElementById('feedback-message');
+  const feedbackText = document.getElementById('feedback-text');
+  const feedbackContent = document.getElementById('feedback-content');
+  const leftBgTint = document.getElementById('left-bg-tint');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
+  leftBgBackgroundTint.style.display = 'block';
 
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (!feedbackContainer) return;
+  if (!feedbackMessage || !feedbackText || !feedbackContent || !leftBgTint) return;
 
   const answer = currentChallenge.answer;
   const hcf = answer.hcf;
@@ -551,69 +607,171 @@ function checkAnswer() {
   const totalItem1 = currentChallenge.item1.total;
   const totalItem2 = currentChallenge.item2.total;
 
+  let feedbackMessageText = '';
+  let isCorrect = false;
+
   if (usedItem1 < totalItem1 || usedItem2 < totalItem2) {
-    feedbackContainer.textContent = "❌ You need to place all items!";
-    feedbackContainer.style.color = 'red';
-    return;
-  }
+    feedbackMessageText = "You need to place all items!";
+    isCorrect = false;
+  } else if (shelfCount !== hcf) {
+    feedbackMessageText = `Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
+    isCorrect = false;
+  } else {
+    // Check contents of each shelf
+    let allCorrect = true;
+    for (const shelf of shelves) {
+      if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
+        allCorrect = false;
+        break;
+      }
+    }
 
-  // Check number of shelves and distribution
-  if (shelfCount !== hcf) {
-    feedbackContainer.textContent = `❌ Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
-    feedbackContainer.style.color = 'red';
-    return;
-  }
-
-  // Check contents of each shelf
-  let allCorrect = true;
-  for (const shelf of shelves) {
-    if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
-      allCorrect = false;
-      break;
+    if (allCorrect) {
+      feedbackMessageText = currentChallenge.successMessage || `Perfect! Each ${currentChallenge.containerName.toLowerCase()} has ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = true;
+    } else {
+      feedbackMessageText = `Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = false;
     }
   }
 
-  if (allCorrect) {
-    feedbackContainer.textContent = currentChallenge.successMessage || "✅ Correct!";
-    feedbackContainer.style.color = 'green';
+  // Update feedback text
+  feedbackText.textContent = feedbackMessageText;
+
+  // Update styling based on correctness
+  if (isCorrect) {
+    feedbackContent.style.border = '4px dashed #66BB6A';
+    feedbackText.style.color = '#2E7D32';
   } else {
-    feedbackContainer.textContent = `❌ Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
-    feedbackContainer.style.color = 'red';
+    feedbackContent.style.border = '4px dashed #F44336';
+    feedbackText.style.color = '#C62828';
+  }
+
+  // Show the feedback message
+  feedbackMessage.style.display = 'block';
+
+  // Show the black tint overlay
+  leftBgTint.style.display = 'block';
+}
+
+function updateModalContent() {
+  if (!currentChallenge || !currentChallenge.solution) return;
+
+  const solution = currentChallenge.solution;
+  const steps = solution.steps;
+
+  // Extract data from steps array based on the pattern in data.json
+  // steps[0]: Introduction text
+  // steps[1]: Factors of item1
+  // steps[2]: Factors of item2
+  // steps[3]: Common factors
+  // steps[4]: HCF = X
+  // steps[5]: Answer: X containers
+  // steps[6]: Each container will have...
+
+  const modalIntroText = document.getElementById('modal-intro-text');
+  const modalFactorsItem1 = document.getElementById('modal-factors-item1');
+  const modalFactorsItem2 = document.getElementById('modal-factors-item2');
+  const modalCommonFactors = document.getElementById('modal-common-factors');
+  const modalHcf = document.getElementById('modal-hcf');
+  const modalAnswer = document.getElementById('modal-answer');
+  const modalAdditionalInfo = document.getElementById('modal-additional-info');
+
+  if (modalIntroText && steps[0]) {
+    modalIntroText.innerHTML = steps[0].replace(/Highest Common Factor \(HCF\)/g, '<strong>Highest Common Factor (HCF)</strong>');
+  }
+
+  if (modalFactorsItem1 && steps[1]) {
+    const match1 = steps[1].match(/Factors of (\d+): (.+)/);
+    if (match1) {
+      modalFactorsItem1.innerHTML = `<strong>Factors of ${match1[1]}:</strong> ${match1[2]}`;
+    }
+  }
+
+  if (modalFactorsItem2 && steps[2]) {
+    const match2 = steps[2].match(/Factors of (\d+): (.+)/);
+    if (match2) {
+      modalFactorsItem2.innerHTML = `<strong>Factors of ${match2[1]}:</strong> ${match2[2]}`;
+    }
+  }
+
+  if (modalCommonFactors && steps[3]) {
+    const match3 = steps[3].match(/Common factors: (.+)/);
+    if (match3) {
+      modalCommonFactors.innerHTML = `<strong>Common factors:</strong> ${match3[1]}`;
+    }
+  }
+
+  if (modalHcf && steps[4]) {
+    modalHcf.textContent = steps[4]; // "HCF = X"
+  }
+
+  if (modalAnswer && steps[5]) {
+    modalAnswer.textContent = steps[5]; // "Answer: X containers"
+  }
+
+  if (modalAdditionalInfo && steps[6]) {
+    // Parse the additional info and make item names bold
+    const text = steps[6];
+    const regex = /(\d+)\s+(.+?)\s+and\s+(\d+)\s+(.+)/;
+    const match = text.match(regex);
+
+    if (match) {
+      const count1 = match[1];
+      const item1Name = match[2];
+      const count2 = match[3];
+      const item2Name = match[4];
+      modalAdditionalInfo.innerHTML = `Each ${currentChallenge.containerName.toLowerCase()} will have <strong>${count1} ${item1Name}</strong> and <strong>${count2} ${item2Name}</strong>`;
+    } else {
+      modalAdditionalInfo.textContent = text;
+    }
   }
 }
 
 function showAnswer() {
   if (!currentChallenge) return;
 
-  const solutionContainer = document.getElementById('solution-container');
-  const solutionText = document.getElementById('solution-text');
-  const showAnswerBtn = document.getElementById('btn-show-answer');
+  const solutionModal = document.getElementById('solution-modal');
+  const feedbackContainer = document.getElementById('feedback-container');
 
-  if (!solutionContainer || !solutionText) return;
+  if (!solutionModal) return;
 
-  if (solutionContainer.style.display === 'none' || solutionContainer.style.display === '') {
-    // Show Solution
-    if (currentChallenge.solution && currentChallenge.solution.steps) {
-      solutionText.innerHTML = currentChallenge.solution.steps.join('<br>');
-    } else {
-      solutionText.textContent = "Solution not available.";
-    }
-    solutionContainer.style.display = 'block';
+  // Update modal content with current challenge data
+  updateModalContent();
 
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Hide Answer';
-    }
+  // Show the modal
+  solutionModal.style.display = 'block';
 
-    // Also scroll to solution
-    solutionContainer.scrollIntoView({ behavior: 'smooth' });
-  } else {
-    // Hide Solution
-    solutionContainer.style.display = 'none';
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Show Answer';
-    }
+  // Hide feedback container when showing solution
+  if (feedbackContainer) {
+    feedbackContainer.style.display = 'none';
+  }
+
+  // Add event listener to close button
+  const closeModalBtn = document.getElementById('close-modal');
+  if (closeModalBtn) {
+    closeModalBtn.onclick = function () {
+      solutionModal.style.display = 'none';
+      // Show feedback container again
+      if (feedbackContainer) {
+        feedbackContainer.style.display = 'block';
+      }
+    };
+  }
+
+  // Also allow clicking outside the modal content to close
+  const modalOverlay = solutionModal.querySelector('div');
+  if (modalOverlay) {
+    modalOverlay.onclick = function (e) {
+      // Only close if clicking the dark overlay, not the modal content
+      if (e.target === modalOverlay) {
+        solutionModal.style.display = 'none';
+        // Show feedback container again
+        if (feedbackContainer) {
+          feedbackContainer.style.display = 'block';
+        }
+      }
+    };
   }
 }
 
