@@ -329,7 +329,14 @@ document.addEventListener("DOMContentLoaded", () => {
     optionContainer.innerHTML = "";
 
     renderOptions(question.options);
-
+    // 👉 Disable newLetterBtn if it's the last letter
+    if (index === questionsData.length - 1) {
+      newLetterBtn.style.pointerEvents = "none";
+      newLetterBtn.style.opacity = "0.5";
+    } else {
+      newLetterBtn.style.pointerEvents = "auto";
+      newLetterBtn.style.opacity = "1";
+    }
   }
 
   newLetterBtn.addEventListener("click", () => {
@@ -370,6 +377,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     currentQuestion = null;
     currentIndex = -1;
+
+    // Reset newLetterBtn
+    newLetterBtn.style.pointerEvents = "auto";
+    newLetterBtn.style.opacity = "1";
 
     // Clear options
     const optionContainer = document.querySelector(".optFlower-list");
