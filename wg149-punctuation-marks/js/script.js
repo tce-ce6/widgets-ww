@@ -564,7 +564,7 @@ function driveCarOffScreen() {
     if (!carEl) return;
     /* Move the entire car width + starting position off the left edge */
     carEl.style.transition = "transform 1.2s ease-in";
-    carEl.style.transform = "translateX(-2000px)";
+    carEl.style.transform = "translateX(-3000px)";
 }
 
 function resetCarPosition() {

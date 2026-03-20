@@ -22,6 +22,7 @@ const GlobalObj = {
     unrevealedIndices: [], // Tracks which piece indices are still hidden
     usageStats: {},       // Tracks how many times each word pair is used for testing
     correctCount: 0,      // Separate counter for correct responses
+    isAnswered: false,    // Track if current question had an attempt to disable main button area
 
     // DOM elements
     btnListen: null,
@@ -30,10 +31,13 @@ const GlobalObj = {
     btnNext: null,
     textProgress: null,
     textQuestion: null,
-    rectOption1: null,
-    rectOption2: null,
     iText: null,
-    infoText: null
+    infoText: null,
+
+    // Audio child groups
+    audioIconListen: null,
+    audioIconOption1: null,
+    audioIconOption2: null
 };
 
 // Extracted exactly from the storyboard references
@@ -125,11 +129,26 @@ function initDOM() {
     GlobalObj.btnOption2 = document.getElementById('Group_1580');
     GlobalObj.btnNext = document.getElementById('Next_button');
 
+    // Sub-audio groups
+    if (GlobalObj.btnListen) GlobalObj.audioIconListen = GlobalObj.btnListen.querySelector('#Group_1565');
+    if (GlobalObj.btnOption1) GlobalObj.audioIconOption1 = GlobalObj.btnOption1.querySelector('#Group_1565-2');
+    if (GlobalObj.btnOption2) GlobalObj.audioIconOption2 = GlobalObj.btnOption2.querySelector('[data-name="Group 1565-2"]');
+
     // Default pointer styles
     if (GlobalObj.btnListen) GlobalObj.btnListen.style.cursor = 'pointer';
     if (GlobalObj.btnOption1) GlobalObj.btnOption1.style.cursor = 'pointer';
     if (GlobalObj.btnOption2) GlobalObj.btnOption2.style.cursor = 'pointer';
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.cursor = 'pointer';
+
+    if (GlobalObj.audioIconListen) GlobalObj.audioIconListen.style.cursor = 'pointer';
+    if (GlobalObj.audioIconOption1) {
+        GlobalObj.audioIconOption1.style.cursor = 'pointer';
+        GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+    }
+    if (GlobalObj.audioIconOption2) {
+        GlobalObj.audioIconOption2.style.cursor = 'pointer';
+        GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
+    }
 
     // Option rectangle backgrounds to change fills
     GlobalObj.rectOption1 = document.getElementById('Rectangle_5-3');
@@ -174,8 +193,31 @@ function bindEvents() {
             } else {
                 console.log("[TEST] Completed! Final Usage Stats:", GlobalObj.usageStats);
                 console.log("[TEST] Final Correct Total:", GlobalObj.correctCount);
-                alert("Congratulations! You've uncovered the whole picture.");
+                showCompletionAnimation();
             }
+        });
+    }
+
+    // Debugging tool - expose to window
+    window.triggerEndAnimation = showCompletionAnimation;
+
+    // Audio icon direct clicks
+    if (GlobalObj.audioIconListen) {
+        GlobalObj.audioIconListen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSentence(true);
+        });
+    }
+    if (GlobalObj.audioIconOption1) {
+        GlobalObj.audioIconOption1.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playWordAudio(0);
+        });
+    }
+    if (GlobalObj.audioIconOption2) {
+        GlobalObj.audioIconOption2.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playWordAudio(1);
         });
     }
 
@@ -198,7 +240,9 @@ function bindEvents() {
 /**
  * Plays the current sentence when the listen button is pressed
  */
-function playSentence() {
+function playSentence(forceFromIcon = false) {
+    if (GlobalObj.isAnswered && !forceFromIcon) return;
+
     let q = GlobalObj.questions[GlobalObj.currentLevel];
     GlobalObj.isPlaying = true;
     GlobalObj.audioFinished = false;
@@ -208,10 +252,14 @@ function playSentence() {
     GlobalObj.sentenceAudio.currentTime = 0;
 
     // Disable word options until sentence finishes per wireframe interaction design
-    GlobalObj.btnOption1.style.opacity = '0.5';
-    GlobalObj.btnOption2.style.opacity = '0.5';
-    GlobalObj.btnOption1.style.pointerEvents = 'none';
-    GlobalObj.btnOption2.style.pointerEvents = 'none';
+    // Only disable if we haven't attempted yet- once unlocked, they should probably stay interactive if it's a replay?
+    // User: "Before the user attempts an answer... play the sentence audio."
+    if (!GlobalObj.isAnswered) {
+        GlobalObj.btnOption1.style.opacity = '0.5';
+        GlobalObj.btnOption2.style.opacity = '0.5';
+        GlobalObj.btnOption1.style.pointerEvents = 'none';
+        GlobalObj.btnOption2.style.pointerEvents = 'none';
+    }
 
     GlobalObj.sentenceAudio.src = q.sentenceAudio;
     GlobalObj.sentenceAudio.play();
@@ -221,6 +269,9 @@ function playSentence() {
  * Updates the screen state to the current level
  */
 function loadQuestion() {
+    GlobalObj.isAnswered = false; // Reset attempt tracker
+    
+    if (GlobalObj.btnListen) GlobalObj.btnListen.style.opacity = '1';
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = 'none';
 
     GlobalObj.isPlaying = false;
@@ -269,23 +320,27 @@ function loadQuestion() {
 function handleOptionSelect(optIndex) {
     if (GlobalObj.isPlaying || !GlobalObj.audioFinished) return;
 
+    // Register an attempt and disable the question button area
+    if (!GlobalObj.isAnswered) {
+        GlobalObj.isAnswered = true;
+        if (GlobalObj.btnListen) GlobalObj.btnListen.style.opacity = '0.7';
+    }
+
+    playWordAudio(optIndex);
+
     let q = GlobalObj.questions[GlobalObj.currentLevel];
-
-    // Play the word audio for whichever option was clicked
-    GlobalObj.wordAudio.pause();
-    GlobalObj.wordAudio.currentTime = 0;
-    GlobalObj.wordAudio.src = q.optionsAudio[optIndex];
-    GlobalObj.wordAudio.play();
-
     let selectedWord = (optIndex === 0) ? GlobalObj.btnOption1.dataset.word : GlobalObj.btnOption2.dataset.word;
 
     let btnElement = (optIndex === 0) ? GlobalObj.btnOption1 : GlobalObj.btnOption2;
     let rectElement = (optIndex === 0) ? GlobalObj.rectOption1 : GlobalObj.rectOption2;
 
     if (selectedWord === q.correct) {
-        // Correct Action
+        // Correct Action - Disable main areas but leave icons clickable
         GlobalObj.btnOption1.style.pointerEvents = 'none';
         GlobalObj.btnOption2.style.pointerEvents = 'none';
+        
+        if (GlobalObj.audioIconOption1) GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+        if (GlobalObj.audioIconOption2) GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
 
         GlobalObj.piecesCollected++;
         GlobalObj.correctCount++;
@@ -309,6 +364,16 @@ function handleOptionSelect(optIndex) {
         // Wrong Action - Shake Animation
         playShakeAnimation(btnElement, rectElement);
     }
+}
+
+function playWordAudio(optIndex) {
+    let q = GlobalObj.questions[GlobalObj.currentLevel];
+    
+    // Play the word audio for whichever option was clicked
+    GlobalObj.wordAudio.pause();
+    GlobalObj.wordAudio.currentTime = 0;
+    GlobalObj.wordAudio.src = q.optionsAudio[optIndex];
+    GlobalObj.wordAudio.play();
 }
 
 /**
@@ -379,4 +444,25 @@ function playShakeAnimation(element, fillRect) {
     }).onfinish = () => {
         fillRect.setAttribute('fill', originalFill);
     };
+}
+
+/**
+ * Completion animation using canvas-confetti
+ */
+function showCompletionAnimation() {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
 }
