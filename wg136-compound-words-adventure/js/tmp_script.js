@@ -21,9 +21,9 @@ function initGame() {
     // Inject required styles for shaking / flying / hiding
     const style = document.createElement('style');
     style.textContent = `
-        .interactive-card { transform-origin: center; cursor: pointer; }
-        .interactive-card * { pointer-events: none; }
-        .interactive-card.used { pointer-events: none; }
+        .interactive-card { transform-origin: center; cursor: pointer; transition: transform 0.2s; }
+        .interactive-card:hover { transform: scale(1.05); }
+        .interactive-card.used { opacity: 0; pointer-events: none; }
         .interactive-card.wrong { animation: shake-card 0.4s; }
         @keyframes shake-card {
            0% { transform: translateX(0); }
@@ -51,7 +51,6 @@ function initGame() {
     hideElement('qitxt');
     hideElement('status_bar');
     hideElement('answer_panels');
-    hideElement('correct_end_popup');
 
     // Hide all family assets
     WidgetState.families.forEach(f => {
@@ -93,7 +92,7 @@ function openFamily(family) {
     // Hide Home Screen elements
     hideElement('home_cards');
     hideElement('home_itext');
-    hideElement('main'); // sometimes main holds everything, let's just toggle specific parts*/
+    // removed hideElement main, as it breaks entire DOM visibility
 
     unhideElement('question');
     unhideElement('qitxt');
@@ -152,8 +151,6 @@ function returnToMenu() {
         }
     });
 
-    hideElement('correct_end_popup');
-
     // Reset instruction text to default or keep it.
     unhideElement('home_cards');
     unhideElement('home_itext');
@@ -195,7 +192,7 @@ function setupFamilyInteractions(family, famAssets) {
         // Setup simple bounds-based sync for elements at this index if needed
         if (WidgetState.discovered[family].includes(index)) {
              opt.classList.add('used');
-             opt.style.opacity = '0';
+             opt.style.opacity = '0.3';
              opt.style.pointerEvents = 'none';
              fadeSiblingsAt(opt);
         } else {
@@ -239,7 +236,7 @@ function showSiblingsAt(element) {
             if (scx >= rect.left && scx <= rect.right && scy >= rect.top && scy <= rect.bottom) {
                 sibling.style.transition = 'none';
                 sibling.style.opacity = '';
-                sibling.style.pointerEvents = 'none';
+                sibling.style.pointerEvents = 'auto';
             }
         }
     });
@@ -269,7 +266,7 @@ function handleOptionClick(family, index, element) {
             element.classList.add('used');
             element.style.transition = 'none';
             element.style.filter = 'none';
-            // KEEP opacity at 0.3 so it stays securely ghosted
+            // KEEP opacity at 0 so it stays securely hidden
             
             if (!WidgetState.discovered[family].includes(index)) {
                 WidgetState.discovered[family].push(index);
@@ -298,7 +295,7 @@ function renderDiscoveredWords(family) {
     
     // According to instructions: Extract the answer panels from main SVG
     // We just find elements by ID like 'sandstorm_ans' and show them.
-    Object.keys(mapping).forEach((idxStr) => {
+    Object.keys(mapping).forEach((idxStr, posIndex) => {
         const idx = parseInt(idxStr);
         const word = mapping[idx];
         let panelId = word + '_ans'; // e.g. sandstorm_ans
@@ -312,9 +309,8 @@ function renderDiscoveredWords(family) {
         if (ansPanel) {
             if (discoveredList.includes(idx)) {
                 unhideElement(panelId);
-                const orderIndex = discoveredList.indexOf(idx);
-                // Dynamically offset from top to bottom
-                ansPanel.style.transform = `translate(0px, ${(orderIndex - Object.keys(mapping).indexOf(idxStr)) * 150}px)`;
+                // Optionally reposition if we want them stacked vertically tightly:
+                // If they are already laid out perfectly in the SVG, we don't need to move them!
                 ansPanel.classList.add('ans-panel', 'show');
             } else {
                 hideElement(panelId);
@@ -324,35 +320,15 @@ function renderDiscoveredWords(family) {
     });
 
     // Update status text, e.g., "1 of 4"
-    const statusText = document.getElementById('status_bar'); 
+    const statusText = document.getElementById('status_bar'); // Wait, need to find the specific text node
     if (statusText) {
+        // The text is probably a text node inside status_bar. Let's just find the tspan inside it.
         const tspans = statusText.querySelectorAll('tspan');
         tspans.forEach(ts => {
             if (ts.textContent.includes('of 4') || ts.textContent.match(/\\d of 4/)) {
                 ts.textContent = `${discoveredList.length} of 4`;
             }
         });
-
-        // Update green circles
-        const circles = statusText.querySelectorAll('circle, ellipse');
-        circles.forEach((c, i) => {
-            if (i < discoveredList.length) {
-                c.setAttribute('fill', '#00b894');
-            } else {
-                c.setAttribute('fill', '#077077');
-            }
-        });
-    }
-
-    if (discoveredList.length >= 4) {
-        setTimeout(() => {
-            unhideElement('correct_end_popup');
-            const playAgainBtn = document.getElementById('Play_Again') || document.getElementById('Group_8214');
-            if (playAgainBtn) {
-                playAgainBtn.style.cursor = 'pointer';
-                playAgainBtn.onclick = () => { hideElement('correct_end_popup'); returnToMenu(); };
-            }
-        }, 1200);
     }
 }
 
@@ -361,35 +337,12 @@ function updateInstructionText(family) {
     if (qitxt) {
         const tspans = qitxt.querySelectorAll('tspan');
         tspans.forEach(ts => {
-            ts.removeAttribute('x'); // Let flow handle it
-            const currentText = ts.textContent.trim().toUpperCase();
-            if (['SUN', 'SAND', 'SEA', 'RAIN', 'SNOW', 'FIRE'].includes(currentText)) {
-                ts.textContent = family.toUpperCase();
-            }
-            if (currentText === '!') {
-                ts.setAttribute('dx', '5');
-            }
+            ts.removeAttribute('x');
+            const textCheck = ts.textContent.trim().toUpperCase();
+            if (['SUN', 'SAND', 'SEA', 'RAIN', 'SNOW', 'FIRE'].includes(textCheck)) ts.textContent = family.toUpperCase();
+            if (textCheck === '!') { ts.removeAttribute('x'); ts.setAttribute('dx', '5'); }
         });
     }
-}
-
-function playChirp() {
-    try {
-        const audio = new window.Audio('assets/bird-chirping.mp3');
-        audio.play().catch(() => {
-            // Backup synth beep
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(2000, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(4000, ctx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.2, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-            osc.start(); osc.stop(ctx.currentTime + 0.1);
-        });
-    } catch(e) {}
 }
 
 function createConfetti(rect) {
@@ -401,7 +354,7 @@ function createConfetti(rect) {
         confetti.style.height = '10px';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.top = rect ? (rect.top + rect.height/2 + 'px') : '-10px';
-        confetti.style.left = rect ? (rect.left + rect.width/2 + 'px') : (Math.random() * 100 + 'vw');
+        confetti.style.left = rect ? (rect.left + rect.width/2 + 'px') : Math.random() * 100 + 'vw';
         confetti.style.zIndex = '9999';
         confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
         document.body.appendChild(confetti);
@@ -433,3 +386,20 @@ function unhideElement(id) {
 }
 
 document.addEventListener('DOMContentLoaded', initGame);
+
+function playChirp() {
+    try {
+        const audio = new window.Audio('assets/bird-chirping.mp3');
+        audio.play().catch(() => {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueCurveAtTime([2000, 4000, 2000], ctx.currentTime, 0.2);
+            gain.gain.setValueCurveAtTime([0.2, 0.01], ctx.currentTime, 0.2);
+            osc.start(); osc.stop(ctx.currentTime + 0.2);
+        });
+    } catch(e) {}
+}
