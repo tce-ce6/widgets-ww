@@ -17,3 +17,15 @@ Write the logic in a separate JavaScript file using plain JavaScript. The implem
 
 Widget-specific instruction:
 Extract the answer panels from the main SVG in index.html and use them to populate the right-hand side answer panel.
+
+prompt 2:
+After attempting the correct answer there should be a sound effect of a bird chirping and confetti animation should come out from the card and the correct answer should be added to the discovered words list, leaving a ghostly image of the correct answer, like in xd design.
+check the snap for mis align of the items
+the whole card should be clickable not only text
+check the snap the exclamotory mark should be after the word selected now its overlapping on the word for some
+The progress bar should be filled with green color after each correct as per xd design
+the center image, the main word box card should not be clickable 
+on rollover several buttons/cards are flickering, there should be no rollover effect at all as these are used in touch based IFP panels in classroom
+just modified the main svg to add a background to the answer panel(id="answer_panel_bg") in right
+just added a congratulation popup as(id="correct_end_popup") in the main svg as per xd design, implements its logic it should come after all 4 correct answer are given
+The answer panels should be positioned from top to bottom as in xd design dynamically
