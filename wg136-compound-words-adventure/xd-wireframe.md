@@ -18,3 +18,6 @@ Treat index.html as the main boilerplate file, which already contains the SVG la
 
 Write the logic in a separate JavaScript file using plain JavaScript.
 The code should be function-based, and all global variables must be stored inside a single global variable object.
+
+widget spectic intruction:
+take the answer panels from main svg inside index.html to populate the right hand side answer panel
