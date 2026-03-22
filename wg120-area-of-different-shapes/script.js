@@ -267,43 +267,35 @@ let rotationState = {};
 
 function createSnapZones() {
   allSnapSolutions = [];
-
-  const target = document.getElementById("target-shape").value;
-  const solutions = layouts[target];
-
   const targetX = window.currentDropX;
   const targetY = window.currentDropY;
 
-  solutions.forEach((sol) => {
-    const solutionZones = {
-      solution_id: sol.solution_id,
-      zones: {
-        rect: [],
-        big_tri: [],
-        small_tri: [],
-      },
-    };
+  const genericSolution = {
+    solution_id: 1,
+    zones: {
+      rect: [],
+      blue_triangle: [],
+      yellow_triangle: [],
+      orange_triangle: [],
+    },
+  };
 
-    for (const [id, pos] of Object.entries(sol.positions)) {
-      const type = id.includes("rect")
-        ? "rect"
-        : id.includes("blue")
-          ? "big_tri"
-          : "small_tri";
+  // Create a 7x5 grid covering the entire target area
+  for (let gx = -1; gx < 6; gx++) {
+    for (let gy = -1; gy < 4; gy++) {
+      const x = targetX + gx * 190;
+      const y = targetY + gy * 190;
 
-      solutionZones.zones[type].push({
-        x: targetX + pos.x,
-        y: targetY + pos.y,
-        rot: pos.rot,
-        width: 190,
-        height: 190,
+      [0, 90, 180, 270].forEach((rot) => {
+        const zone = { x, y, rot, width: 190, height: 190 };
+        genericSolution.zones.rect.push(zone);
+        genericSolution.zones.yellow_triangle.push(zone);
+        genericSolution.zones.orange_triangle.push(zone);
+        genericSolution.zones.blue_triangle.push({ x, y, rot, width: 380, height: 190 });
       });
     }
-
-    allSnapSolutions.push(solutionZones);
-  });
-
-  console.log("Snap Solutions Built:", allSnapSolutions.length);
+  }
+  allSnapSolutions.push(genericSolution);
 }
 const gameData = {
   game_metadata: {
@@ -622,12 +614,8 @@ function drag(evt) {
   const nx = svgP.x - offset.x;
   const ny = svgP.y - offset.y;
 
-  const transforms = selectedElement.transform.baseVal;
-  let rot = 0;
-
-  if (transforms.numberOfItems > 1) {
-    rot = transforms.getItem(1).angle;
-  }
+  const pieceId = selectedElement.id;
+  let rot = rotationState[pieceId] || 0;
 
   selectedElement.setAttribute(
     "transform",
@@ -643,13 +631,7 @@ function drag(evt) {
     }
   }
 
-  const pieceId = selectedElement.id;
-
-  const type = pieceId.includes("rect")
-    ? "rect"
-    : pieceId.includes("blue")
-      ? "big_tri"
-      : "small_tri";
+  const type = pieceId.includes("rect") ? "rect" : pieceId;
 
   let snapped = false;
 
@@ -661,15 +643,17 @@ function drag(evt) {
     zones.forEach((zone) => {
       if (snapped) return;
 
-      const centerX = nx + 95;
-      const centerY = ny + 95;
+      const w = pieceId.includes("blue") ? 380 : 190;
+      const h = 190;
+      const centerX = nx + w / 2;
+      const centerY = ny + h / 2;
 
       const dx = centerX - (zone.x + zone.width / 2);
       const dy = centerY - (zone.y + zone.height / 2);
 
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist < 40) {
+      if (dist < 40 && Math.abs((rotationState[pieceId] || 0) % 360 - zone.rot % 360) < 5) {
         selectedElement.setAttribute(
           "transform",
           `translate(${zone.x}, ${zone.y}) rotate(${zone.rot})`,
@@ -681,6 +665,37 @@ function drag(evt) {
 }
 function endDrag() {
   if (!selectedElement) return;
+  const pieceId = selectedElement.id;
+  const transforms = selectedElement.transform.baseVal;
+  const matrix = transforms.getItem(0).matrix;
+  const nx = matrix.e;
+  const ny = matrix.f;
+
+  const type = pieceId.includes("rect") ? "rect" : pieceId;
+  let snapped = false;
+
+  allSnapSolutions.forEach((solution) => {
+    if (snapped) return;
+    const zones = solution.zones[type];
+    zones.forEach((zone) => {
+      if (snapped) return;
+      const w = pieceId.includes("blue") ? 380 : 190;
+      const h = 190;
+      const centerX = nx + w / 2;
+      const centerY = ny + h / 2;
+      const dx = centerX - (zone.x + zone.width / 2);
+      const dy = centerY - (zone.y + zone.height / 2);
+
+      if (Math.sqrt(dx * dx + dy * dy) < 40 && Math.abs((rotationState[pieceId] || 0) % 360 - zone.rot % 360) < 5) {
+        selectedElement.setAttribute(
+          "transform",
+          `translate(${zone.x}, ${zone.y}) rotate(${zone.rot})`,
+        );
+        rotationState[pieceId] = zone.rot;
+        snapped = true;
+      }
+    });
+  });
 
   selectedElement.style.cursor = "grab";
   selectedElement = null;
@@ -722,51 +737,110 @@ function getSVGPoint(evt) {
 }
 
 function checkAnswer() {
-  let solved = false;
-  let matchedSolution = null;
-
-  allSnapSolutions.forEach((solution) => {
-    if (solved) return;
-
-    let matchCount = 0;
-
-    gameData.game_metadata.piece_ids.forEach((id) => {
-      const el = document.getElementById(id);
-      const matrix = el.transform.baseVal.getItem(0).matrix;
-
-      const x = Math.round(matrix.e);
-      const y = Math.round(matrix.f);
-
-      const type = id.includes("rect")
-        ? "rect"
-        : id.includes("blue")
-          ? "big_tri"
-          : "small_tri";
-
-      const zones = solution.zones[type];
-
-      const matched = zones.some(
-        (zone) => Math.abs(x - zone.x) < 5 && Math.abs(y - zone.y) < 5,
-      );
-
-      if (matched) matchCount++;
-    });
-
-    if (matchCount === 5) {
-      solved = true;
-      matchedSolution = solution;
-    }
+  const pieces = gameData.game_metadata.piece_ids.map((id) => {
+    const el = document.getElementById(id);
+    const matrix = el.transform.baseVal.getItem(0).matrix;
+    return {
+      id,
+      x: Math.round(matrix.e - window.currentDropX),
+      y: Math.round(matrix.f - window.currentDropY),
+      rot: (rotationState[id] || 0) % 360,
+    };
   });
+
+  const targetType = document.getElementById("target-shape").value;
+  const solved = validateGeometricFit(pieces, targetType);
 
   if (solved) {
     const source = document.getElementById("source-shape").value;
-    const target = document.getElementById("target-shape").value;
-    const comboKey = `${source}_to_${target}`;
-
-    showSolutionBanner(comboKey, matchedSolution.solution_id, true);
+    const comboKey = `${source}_to_${targetType}`;
+    
+    // Create a custom layout object from current piece positions
+    const customLayout = {};
+    pieces.forEach(p => {
+      customLayout[p.id] = { x: p.x, y: p.y, rot: p.rot };
+    });
+    
+    showSolutionBanner(comboKey, 1, true, customLayout);
   } else {
     showTryAgain();
   }
+}
+
+/**
+ * Validates if the given piece arrangement perfectly covers the target shape.
+ * Works by discretizing shapes into 190px square modules and then into 4 triangular sub-modules each.
+ */
+function validateGeometricFit(pieces, targetType) {
+    const step = 5;
+    let totalTargetUnits = 0;
+    let coveredTargetUnits = 0;
+    let overlaps = 0;
+    let strayPieces = 0;
+
+    function isPointInTarget(px, py) {
+        if (targetType === "square") {
+            return px >= 0 && px <= 380 && py >= 0 && py <= 380;
+        } else if (targetType === "rectangle") {
+            return px >= 0 && px <= 760 && py >= 0 && py <= 190;
+        } else if (targetType === "triangle") {
+            // Points: (0,380) (380,0) (760,380)
+            return py >= 0 && py <= 380 && px >= (380 - py) && px <= (380 + py);
+        } else if (targetType === "parallelogram") {
+            // Points: (190,0) (950,0) (760,190) (0,190)
+            return py >= 0 && py <= 190 && px >= (190 - py) && px <= (950 - py);
+        }
+        return false;
+    }
+
+    function isPointInPiece(px, py, piece) {
+        const r = (piece.rot + 360) % 360 * (Math.PI / 180);
+        const dx = px - piece.x;
+        const dy = py - piece.y;
+        
+        // Rotate point BACK to untransformed piece space
+        const rx = dx * Math.cos(r) + dy * Math.sin(r);
+        const ry = -dx * Math.sin(r) + dy * Math.cos(r);
+
+        if (piece.id.includes("rect")) {
+            return rx >= -1 && rx <= 191 && ry >= -1 && ry <= 191;
+        } else if (piece.id.includes("blue")) {
+            // untransformed: (0,190), (380,190), (190,0)
+            return ry >= -1 && ry <= 191 && rx >= (190 - ry - 2) && rx <= (190 + ry + 2);
+        } else if (piece.id === "yellow_triangle") {
+            // untransformed: (0,0), (0,190), (190,0)
+            return rx >= -1 && ry >= -1 && (rx + ry) <= 192;
+        } else if (piece.id === "orange_triangle") {
+            // untransformed: (0,0), (190,190), (190,0)
+            return rx >= -1 && rx <= 191 && ry >= -1 && ry <= rx + 2;
+        }
+        return false;
+    }
+
+    // Scan target area with bounding box hint
+    for (let y = 0; y <= 400; y += step) {
+        for (let x = -200; x <= 1200; x += step) {
+            const inTarget = isPointInTarget(x, y);
+            let hits = 0;
+            for (const p of pieces) {
+                if (isPointInPiece(x, y, p)) hits++;
+            }
+
+            if (inTarget) {
+                totalTargetUnits++;
+                if (hits === 1) coveredTargetUnits++;
+                else if (hits > 1) overlaps++;
+            } else {
+                if (hits > 0) strayPieces++;
+            }
+        }
+    }
+
+    const coverage = coveredTargetUnits / totalTargetUnits;
+    const overlapRatio = overlaps / totalTargetUnits;
+    const strayRatio = strayPieces / totalTargetUnits;
+
+    return coverage > 0.96 && overlapRatio < 0.05 && strayRatio < 0.08;
 }
 function showTryAgain() {
   const container = document.getElementById("try-again-container");
@@ -795,7 +869,7 @@ function showAnswer() {
   showSolutionBanner(comboKey);
 }
 
-function showSolutionBanner(key, solutionId, isSubmit = false) {
+function showSolutionBanner(key, solutionId, isSubmit = false, customLayout = null) {
   const banner = document.getElementById("solution-banner");
   const backgroundTint = document.getElementById("for-solution");
   const title = document.getElementById("solution-title");
@@ -821,7 +895,7 @@ function showSolutionBanner(key, solutionId, isSubmit = false) {
   const source = document.getElementById("source-shape").value;
   const target = document.getElementById("target-shape").value;
 
-  renderSolutionVisual(source, target, solutionId);
+  renderSolutionVisual(source, target, solutionId, customLayout);
 
   banner.style.display = "block";
   banner.style.opacity = 0;
@@ -847,22 +921,26 @@ function closeSolutionBanner() {
 
   document.querySelector(".svg-container").style.pointerEvents = "auto";
 }
-function renderSolutionVisual(source, target, solutionId) {
+function renderSolutionVisual(source, target, solutionId, customLayout = null) {
   const container = document.getElementById("solution-visual");
   container.innerHTML = "";
 
-  function createLayoutPreview(shapeType, solutionId) {
+  function createLayoutPreview(shapeType, solutionId, overridePositions = null) {
     const wrapper = document.createElement("div");
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "260");
     svg.setAttribute("height", "200");
 
-    const layoutObj =
-      layouts[shapeType].find((l) => l.solution_id === solutionId) ||
-      layouts[shapeType][0];
-
-    const layoutPositions = layoutObj.positions;
+    let layoutPositions;
+    if (overridePositions) {
+        layoutPositions = overridePositions;
+    } else {
+        const layoutObj =
+          layouts[shapeType].find((l) => l.solution_id === solutionId) ||
+          layouts[shapeType][0];
+        layoutPositions = layoutObj.positions;
+    }
 
     let maxX = 0;
     let maxY = 0;
@@ -892,5 +970,5 @@ function renderSolutionVisual(source, target, solutionId) {
   }
 
   container.appendChild(createLayoutPreview(source, solutionId));
-  container.appendChild(createLayoutPreview(target, solutionId));
+  container.appendChild(createLayoutPreview(target, solutionId, customLayout));
 }

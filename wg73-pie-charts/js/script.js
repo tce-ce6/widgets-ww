@@ -128,6 +128,34 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentGameKey = null;
     let currentPieCategories = [];
     let currentCumulativeAngle = 0;
+    const gameKeys = ['daily', 'budget', 'icecream', 'air'];
+
+    let feedbackAnims = {};
+
+    function initFeedbackAnims() {
+        const correctContainer = document.getElementById('lottie-correct');
+        const incorrectContainer = document.getElementById('lottie-incorrect');
+
+        if (correctContainer) {
+            feedbackAnims.happy = lottie.loadAnimation({
+                container: correctContainer,
+                renderer: 'svg',
+                loop: false,
+                autoplay: false,
+                path: 'assets/anim/emoji_happy-star.json'
+            });
+        }
+
+        if (incorrectContainer) {
+            feedbackAnims.sad = lottie.loadAnimation({
+                container: incorrectContainer,
+                renderer: 'svg',
+                loop: false,
+                autoplay: false,
+                path: 'assets/anim/emoji-sad.json'
+            });
+        }
+    }
 
     function showHomeScreen() {
         currentGameKey = null;
@@ -139,6 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
 
         gameElements.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "none";
+        });
+        const navElements = ["Group_1531", "Group_1643"];
+        navElements.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = "none";
         });
@@ -169,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentGameKey = gameKey;
         const config = gameConfigs[gameKey];
 
-        const titleText = document.querySelector("#Activity_Title text tspan");
+        const titleText = document.getElementById("activity-html-content");
         if (titleText) titleText.textContent = config.title;
 
         const categoryHeaderEl = document.querySelector("g[id='Department'] text tspan");
@@ -181,21 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const valueHeaderPieEl = document.querySelector("g[id='Amount_in_lakhs_2'] text tspan");
         if (valueHeaderPieEl) valueHeaderPieEl.textContent = config.valueHeader;
 
-        const questionTOS = document.getElementById("Question-TOS");
-        if (questionTOS) {
-            const textElements = questionTOS.querySelectorAll("text");
-            config.questionRows.forEach((row, i) => {
-                if (textElements[i]) {
-                    const tspans = textElements[i].querySelectorAll("tspan");
-                    if (tspans.length > 0) {
-                        tspans[0].textContent = row;
-                        for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
-                    } else {
-                        textElements[i].textContent = row;
-                    }
-                }
-            });
-            for (let i = config.questionRows.length; i < textElements.length; i++) textElements[i].textContent = "";
+        const tosContent = document.getElementById("tos-html-content");
+        if (tosContent) {
+            tosContent.textContent = config.questionRows.join(" ");
         }
 
         const tableGroups = ["Group_1539", "Group_1540", "Group_1541", "Group_1542", "Group_1543", "Group_1544"];
@@ -303,6 +324,33 @@ document.addEventListener("DOMContentLoaded", () => {
             if (el) el.style.display = "block";
         });
 
+        const nextBtn = document.getElementById("Group_1531");
+        const prevBtn = document.getElementById("Group_1643");
+        if (nextBtn) nextBtn.style.display = "block";
+        if (prevBtn) prevBtn.style.display = "block";
+
+        const gameIndex = gameKeys.indexOf(gameKey);
+        if (prevBtn) {
+            if (gameIndex === 0) {
+                prevBtn.style.opacity = "0.5";
+                prevBtn.style.pointerEvents = "none";
+            } else {
+                prevBtn.style.opacity = "1";
+                prevBtn.style.pointerEvents = "auto";
+                prevBtn.style.cursor = "pointer";
+            }
+        }
+        if (nextBtn) {
+            if (gameIndex === gameKeys.length - 1) {
+                nextBtn.style.opacity = "0.5";
+                nextBtn.style.pointerEvents = "none";
+            } else {
+                nextBtn.style.opacity = "1";
+                nextBtn.style.pointerEvents = "auto";
+                nextBtn.style.cursor = "pointer";
+            }
+        }
+
         const homeText = document.getElementById("I-Text_Home_Screen");
         if (homeText) homeText.style.display = "none";
         const defaultState = document.getElementById("Card_default_state");
@@ -366,21 +414,24 @@ document.addEventListener("DOMContentLoaded", () => {
             if (ringContainer) {
                 ringContainer.innerHTML = '';
                 // Clone the degree tick ring from the main SVG and shift it
-                // Main ring center: 1411.5, 536.59 → popup ring center: 556.11, 490.11
-                // Popup has transform="translate(411,152)", so in global terms popup center = 967.11, 642.11
-                // Shift = 556.11 - 1411.5 = -855.39, 490.11 - 536.59 = -46.48
+                // Main ring center: 1411.5, 536.59 → popup ring center: 465, 430
+                // Popup has transform="translate(1010,165)", so in global terms popup center = 1475, 595
+                // Radius r=235 vs original r=279. Scale = 235/279 = 0.8423
+                // Shift: 0.8423 * 1411.5 + Tx = 465 -> Tx = -723.89
+                // Shift: 0.8423 * 536.59 + Ty = 430 -> Ty = -21.96
+                const ringTransform = `translate(-723.89, -21.96) scale(0.8423)`;
                 const mainRing = document.getElementById('Group_1650');
                 if (mainRing) {
                     const ringClone = mainRing.cloneNode(true);
                     ringClone.removeAttribute('id');
-                    ringClone.setAttribute('transform', 'translate(-855.39, -46.48)');
+                    ringClone.setAttribute('transform', ringTransform);
                     ringContainer.appendChild(ringClone);
                 }
             }
 
             const svgNS = 'http://www.w3.org/2000/svg';
-            // Match the reference SVG exactly: cx=556.11, cy=490.11, r=279
-            const cx = 556.11, cy = 490.11, r = 279;
+            // Match the new smaller pie: cx=465, cy=430, r=235
+            const cx = 465, cy = 430, r = 235;
 
             let popCumulativeAngle = 0;
             currentPieCategories.forEach(cat => {
@@ -478,17 +529,39 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const lineGroup = document.getElementById('Group_1675');
+        const updateSubmitResetState = () => {
+            const allFilled = currentPieCategories.every(cat => cat.inputEl && cat.inputEl.value.trim() !== "");
+            const btns = ['Group_1647', 'Group_1161', 'Group_540'];
+            btns.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (allFilled) {
+                        el.style.opacity = "1";
+                        el.style.pointerEvents = "auto";
+                        el.style.cursor = "pointer";
+                    } else {
+                        el.style.opacity = "0.5";
+                        el.style.pointerEvents = "none";
+                    }
+                }
+            });
+        };
+
         const resetChart = () => {
             currentCumulativeAngle = 0;
             if (dynamicSectors) dynamicSectors.innerHTML = '';
             if (lineGroup) lineGroup.setAttribute('transform', `rotate(0, 1411.5, 536.59)`);
             currentPieCategories.forEach(cat => {
                 cat.plotted = false; cat.inputAngle = 0;
-                if (cat.inputEl) cat.inputEl.value = '';
+                if (cat.inputEl) cat.inputEl.value = '0';
                 const dot = document.getElementById(cat.dotId);
                 const path = document.getElementById(cat.pathId);
-                if (dot) dot.style.display = 'none';
-                if (path) { path.style.display = 'none'; path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`); }
+                if (dot) dot.style.display = 'block'; // Keep dot showing center
+                if (path) {
+                    path.style.display = 'block';
+                    // Reset to 0 degrees arm
+                    path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy - 31}`);
+                }
             });
             // Hide all labels on reset
             const pieLabelsReset = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
@@ -500,6 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 bgCircle.setAttribute('fill', '#ffffff');
                 dynamicSectors.appendChild(bgCircle);
             }
+            updateSubmitResetState();
         };
 
         resetChart();
@@ -536,35 +610,61 @@ document.addEventListener("DOMContentLoaded", () => {
                 textGroups.forEach(tg => tg.style.display = 'none');
                 const rect = parentGroup.querySelector('rect');
                 if (rect) {
+                    const updateRadiusArm = (angle) => {
+                        const pathEl = document.getElementById(cat.pathId);
+                        if (pathEl) {
+                            pathEl.style.display = 'block';
+                            const rad = (angle - 90) * Math.PI / 180.0;
+                            const rx = cat.cx + (31 * Math.cos(rad));
+                            const ry = cat.cy + (31 * Math.sin(rad));
+                            pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${rx},${ry}`);
+                        }
+                    };
+
                     const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
                     fo.setAttribute('x', rect.getAttribute('x')); fo.setAttribute('y', rect.getAttribute('y'));
                     fo.setAttribute('width', rect.getAttribute('width')); fo.setAttribute('height', rect.getAttribute('height'));
+                    
+                    const container = document.createElement('div');
+                    container.style.display = 'flex'; container.style.alignItems = 'center';
+                    container.style.justifyContent = 'center'; container.style.width = '100%'; container.style.height = '100%';
+
                     const input = document.createElement('input');
-                    input.type = 'number'; input.style.width = '100%'; input.style.height = '100%';
+                    input.type = 'number'; input.value = '0';
+                    input.style.width = '60px'; input.style.height = '100%';
                     input.style.border = 'none'; input.style.background = 'transparent';
                     input.style.textAlign = 'center'; input.style.fontFamily = 'Roboto';
                     input.style.fontSize = '28px'; input.style.fontWeight = '500';
                     input.style.color = '#424242'; input.style.outline = 'none';
+                    input.style.padding = '0'; input.style.margin = '0';
                     input.min = '0'; input.max = '360';
-                    fo.appendChild(input); parentGroup.appendChild(fo);
+                    
+                    const degreeSymbol = document.createElement('span');
+                    degreeSymbol.textContent = '0';
+                    degreeSymbol.style.fontSize = '14px'; degreeSymbol.style.fontWeight = '600';
+                    degreeSymbol.style.color = '#424242';
+                    degreeSymbol.style.alignSelf = 'center';
+                    degreeSymbol.style.marginBottom = '12px';
+                    degreeSymbol.style.marginLeft = '1px';
+
+                    container.appendChild(input); container.appendChild(degreeSymbol);
+                    fo.appendChild(container); parentGroup.appendChild(fo);
                     cat.inputEl = input;
+                    cat.inputAngle = 0;
+                    updateRadiusArm(0);
+
                     input.addEventListener('input', () => {
                         let val = parseFloat(input.value) || 0;
                         if (val < 0) { val = 0; input.value = 0; }
                         if (val > 360) { val = 360; input.value = 360; }
                         cat.inputAngle = val;
-                        const pathEl = document.getElementById(cat.pathId);
-                        if (pathEl && cat.inputAngle > 0) {
-                            pathEl.style.display = 'block';
-                            const angleRad = (cat.inputAngle - 90) * Math.PI / 180.0;
-                            const endX = cat.cx + (cat.r * Math.cos(angleRad)); const endY = cat.cy + (cat.r * Math.sin(angleRad));
-                            pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${endX},${endY}`);
-                        } else if (pathEl) pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy}`);
+                        updateRadiusArm(val);
                         if (!cat.plotted && lineGroup) {
                             const previewAngle = currentCumulativeAngle + cat.inputAngle;
                             lineGroup.setAttribute('transform', `rotate(${previewAngle}, 1411.5, 536.59)`);
                         }
                     });
+                    input.addEventListener('input', updateSubmitResetState);
                     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') plotSegment(); });
                 }
             }
@@ -574,7 +674,60 @@ document.addEventListener("DOMContentLoaded", () => {
                 btn.style.cursor = 'pointer';
                 const newBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(newBtn, btn);
-                newBtn.addEventListener('click', plotSegment);
+
+                let isDragging = false;
+                let hasMoved = false;
+
+                const handleMove = (e) => {
+                    if (!isDragging) return;
+                    hasMoved = true;
+                    e.preventDefault();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    
+                    const svg = newBtn.ownerSVGElement;
+                    const pt = svg.createSVGPoint();
+                    pt.x = clientX; pt.y = clientY;
+                    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+                    
+                    const dx = svgPt.x - cat.cx;
+                    const dy = svgPt.y - cat.cy;
+                    let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+                    if (angle < 0) angle += 360;
+                    
+                    angle = Math.round(angle);
+                    if (angle === 360) angle = 0;
+                    
+                    cat.inputAngle = angle;
+                    if (cat.inputEl) cat.inputEl.value = angle;
+                    
+                    const pathEl = document.getElementById(cat.pathId);
+                    if (pathEl) {
+                        pathEl.style.display = 'block';
+                        const rad = (angle - 90) * Math.PI / 180.0;
+                        const rx = cat.cx + (31 * Math.cos(rad));
+                        const ry = cat.cy + (31 * Math.sin(rad));
+                        pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${rx},${ry}`);
+                    }
+                    
+                    if (!cat.plotted && lineGroup) {
+                        const previewAngle = currentCumulativeAngle + cat.inputAngle;
+                        lineGroup.setAttribute('transform', `rotate(${previewAngle}, 1411.5, 536.59)`);
+                    }
+                    updateSubmitResetState();
+                };
+
+                newBtn.addEventListener('mousedown', (e) => { if(!cat.plotted) { isDragging = true; hasMoved = false; } });
+                window.addEventListener('mousemove', handleMove);
+                window.addEventListener('mouseup', () => { isDragging = false; });
+                
+                newBtn.addEventListener('touchstart', (e) => { if(!cat.plotted) { isDragging = true; hasMoved = false; } }, {passive: false});
+                window.addEventListener('touchmove', handleMove, {passive: false});
+                window.addEventListener('touchend', () => { isDragging = false; });
+
+                newBtn.addEventListener('click', (e) => {
+                    if (!hasMoved) plotSegment();
+                });
             }
         });
 
@@ -595,6 +748,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         completedGames[currentGameKey] = true;
                         if (correctPopup) {
                             correctPopup.style.display = 'block';
+                            if (feedbackAnims.happy) {
+                                feedbackAnims.happy.goToAndPlay(0, true);
+                            }
                             setTimeout(() => { correctPopup.style.display = 'none'; }, 3000);
                         } else {
                             createPopup('Correct! 🥳');
@@ -602,6 +758,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else {
                         if (incorrectPopup) {
                             incorrectPopup.style.display = 'block';
+                            if (feedbackAnims.sad) {
+                                feedbackAnims.sad.goToAndPlay(0, true);
+                            }
                             setTimeout(() => { incorrectPopup.style.display = 'none'; }, 3000);
                         } else {
                             createPopup('Incorrect! \u274C', false);
@@ -612,6 +771,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         }
+
+        const nextBtnAction = document.getElementById('Group_1531');
+        if (nextBtnAction) {
+            const newNext = nextBtnAction.cloneNode(true);
+            nextBtnAction.parentNode.replaceChild(newNext, nextBtnAction);
+            newNext.addEventListener('click', () => {
+                const currentIndex = gameKeys.indexOf(currentGameKey);
+                if (currentIndex < gameKeys.length - 1) {
+                    loadGame(gameKeys[currentIndex + 1]);
+                }
+            });
+        }
+
+        const prevBtnAction = document.getElementById('Group_1643');
+        if (prevBtnAction) {
+            const newPrev = prevBtnAction.cloneNode(true);
+            prevBtnAction.parentNode.replaceChild(newPrev, prevBtnAction);
+            newPrev.addEventListener('click', () => {
+                const currentIndex = gameKeys.indexOf(currentGameKey);
+                if (currentIndex > 0) {
+                    loadGame(gameKeys[currentIndex - 1]);
+                }
+            });
+        }
+
 
         const correctPopup = document.getElementById('correct-popup-container');
         if (correctPopup) {
@@ -638,4 +822,6 @@ document.addEventListener("DOMContentLoaded", () => {
             newShow.addEventListener('click', () => createPopup('', true));
         }
     }
+    showHomeScreen();
+    initFeedbackAnims();
 });

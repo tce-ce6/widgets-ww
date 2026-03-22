@@ -401,11 +401,6 @@ svg * {
   transition: all 0.4s ease-in-out;
 }
 
-/* ══════════════════════════════════════
-   Rounding Rally – Interaction & Animation
-   ══════════════════════════════════════ */
-
-/* Interactive SVG groups: pointer cursor */
 #timeline-btn1,
 #timeline-btn2,
 #timeline-btn3,
@@ -441,7 +436,6 @@ svg * {
   cursor: pointer;
 }
 
-/* Hover lift for timeline answer circles */
 #timeline-btn1:hover circle,
 #timeline-btn2:hover circle,
 #timeline-btn3:hover circle,
@@ -459,6 +453,15 @@ svg * {
 #timeline-btn15:hover circle {
   filter: drop-shadow(0 0 7px #f99f00);
   transition: filter 0.2s ease;
+}
+
+#timeline-btns-container.answered {
+  pointer-events: none;
+}
+
+#timeline-btns-container.answered * {
+  cursor: default !important;
+  filter: none !important;
 }
 
 /* Hover scale for New Number button */
@@ -489,22 +492,14 @@ svg * {
     filter: drop-shadow(0 0 0 #56db00);
   }
 
-  30% {
-    transform: scale(1.35);
-    filter: drop-shadow(0 0 14px #56db00);
-  }
-
-  60% {
-    transform: scale(0.9);
-    filter: drop-shadow(0 0 8px #56db00);
-  }
-
-  80% {
-    transform: scale(1.1);
+  50% {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 12px #56db00);
   }
 
   100% {
     transform: scale(1);
+    filter: drop-shadow(0 0 0 #56db00);
   }
 }
 
@@ -551,6 +546,36 @@ svg * {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Popup zoom in effect */
+@keyframes popZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  70% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Simple subtle zoom for correct popup */
+@keyframes simpleZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

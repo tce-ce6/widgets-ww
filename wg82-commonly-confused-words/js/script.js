@@ -20,6 +20,11 @@ const GlobalObj = {
     audioFinished: false,
     jigsawPieces: [],
     unrevealedIndices: [], // Tracks which piece indices are still hidden
+    usageStats: {},       // Tracks how many times each word pair is used for testing
+    correctCount: 0,      // Separate counter for correct responses
+    isAnswered: false,    // Track if current question had an attempt to disable main button area
+    isLevelCorrect: false, // Track if current question is correctly answered
+    correctEmoji: null,   // Lottie animation object
 
     // DOM elements
     btnListen: null,
@@ -28,10 +33,13 @@ const GlobalObj = {
     btnNext: null,
     textProgress: null,
     textQuestion: null,
-    rectOption1: null,
-    rectOption2: null,
     iText: null,
-    infoText: null
+    infoText: null,
+
+    // Audio child groups
+    audioIconListen: null,
+    audioIconOption1: null,
+    audioIconOption2: null
 };
 
 // Extracted exactly from the storyboard references
@@ -75,28 +83,26 @@ function initQuestions() {
         let w1 = pair.words[0];
         let w2 = pair.words[1];
 
-        // Define correct audio extension (morale has wav for a, but mp3 for b)
-        let ex1 = (w1 === 'morale') ? 'wav' : 'mp3';
-        let ex2 = (w2 === 'morale') ? 'wav' : 'mp3';
-
         let wordSuffix = pair.isSecond ? '01' : '';
 
         // Question 1: where w1 is correct
+        let q1Options = Math.random() > 0.5 ? [w1, w2] : [w2, w1];
         let q1 = {
             correct: w1,
             incorrect: w2,
-            sentenceAudio: `./assets/audio/${w1}_a.${ex1}`,
-            wordAudio: `./assets/audio/${w1}_b${wordSuffix}.mp3`,
-            options: Math.random() > 0.5 ? [w1, w2] : [w2, w1]
+            sentenceAudio: `./assets/audio/${w1}_b.mp3`,
+            options: q1Options,
+            optionsAudio: q1Options.map(opt => `./assets/audio/${opt}_a${wordSuffix}.mp3`)
         };
 
         // Question 2: where w2 is correct
+        let q2Options = Math.random() > 0.5 ? [w1, w2] : [w2, w1];
         let q2 = {
             correct: w2,
             incorrect: w1,
-            sentenceAudio: `./assets/audio/${w2}_a.${ex2}`,
-            wordAudio: `./assets/audio/${w2}_b${wordSuffix}.mp3`,
-            options: Math.random() > 0.5 ? [w1, w2] : [w2, w1]
+            sentenceAudio: `./assets/audio/${w2}_b.mp3`,
+            options: q2Options,
+            optionsAudio: q2Options.map(opt => `./assets/audio/${opt}_a${wordSuffix}.mp3`)
         };
 
         firstHalf.push(q1);
@@ -125,11 +131,26 @@ function initDOM() {
     GlobalObj.btnOption2 = document.getElementById('Group_1580');
     GlobalObj.btnNext = document.getElementById('Next_button');
 
+    // Sub-audio groups
+    if (GlobalObj.btnListen) GlobalObj.audioIconListen = GlobalObj.btnListen.querySelector('#Group_1565');
+    if (GlobalObj.btnOption1) GlobalObj.audioIconOption1 = GlobalObj.btnOption1.querySelector('#Group_1565-2');
+    if (GlobalObj.btnOption2) GlobalObj.audioIconOption2 = GlobalObj.btnOption2.querySelector('[data-name="Group 1565-2"]');
+
     // Default pointer styles
     if (GlobalObj.btnListen) GlobalObj.btnListen.style.cursor = 'pointer';
     if (GlobalObj.btnOption1) GlobalObj.btnOption1.style.cursor = 'pointer';
     if (GlobalObj.btnOption2) GlobalObj.btnOption2.style.cursor = 'pointer';
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.cursor = 'pointer';
+
+    if (GlobalObj.audioIconListen) GlobalObj.audioIconListen.style.cursor = 'pointer';
+    if (GlobalObj.audioIconOption1) {
+        GlobalObj.audioIconOption1.style.cursor = 'pointer';
+        GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+    }
+    if (GlobalObj.audioIconOption2) {
+        GlobalObj.audioIconOption2.style.cursor = 'pointer';
+        GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
+    }
 
     // Option rectangle backgrounds to change fills
     GlobalObj.rectOption1 = document.getElementById('Rectangle_5-3');
@@ -155,6 +176,22 @@ function initDOM() {
     if (jigsawContainer) {
         GlobalObj.jigsawPieces = Array.from(jigsawContainer.children);
     }
+
+    // Initialize Lottie
+    let lottieTarget = document.getElementById('lottie-container');
+    if (lottieTarget && window.lottie) {
+        GlobalObj.correctEmoji = lottie.loadAnimation({
+            container: lottieTarget,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: EMOJI_LOTTIE_DATA
+        });
+        
+        GlobalObj.correctEmoji.addEventListener('complete', () => {
+            lottieTarget.style.display = 'none';
+        });
+    }
 }
 
 /**
@@ -172,8 +209,33 @@ function bindEvents() {
                 GlobalObj.currentLevel++;
                 loadQuestion();
             } else {
-                alert("Congratulations! You've uncovered the whole picture.");
+                console.log("[TEST] Completed! Final Usage Stats:", GlobalObj.usageStats);
+                console.log("[TEST] Final Correct Total:", GlobalObj.correctCount);
+                showCompletionAnimation();
             }
+        });
+    }
+
+    // Debugging tool - expose to window
+    window.triggerEndAnimation = showCompletionAnimation;
+
+    // Audio icon direct clicks
+    if (GlobalObj.audioIconListen) {
+        GlobalObj.audioIconListen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playSentence(true);
+        });
+    }
+    if (GlobalObj.audioIconOption1) {
+        GlobalObj.audioIconOption1.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playWordAudio(0);
+        });
+    }
+    if (GlobalObj.audioIconOption2) {
+        GlobalObj.audioIconOption2.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playWordAudio(1);
         });
     }
 
@@ -196,18 +258,26 @@ function bindEvents() {
 /**
  * Plays the current sentence when the listen button is pressed
  */
-function playSentence() {
-    if (GlobalObj.isPlaying) return;
+function playSentence(forceFromIcon = false) {
+    if (GlobalObj.isAnswered && !forceFromIcon) return;
 
     let q = GlobalObj.questions[GlobalObj.currentLevel];
     GlobalObj.isPlaying = true;
     GlobalObj.audioFinished = false;
 
+    // Restart audio if already playing
+    GlobalObj.sentenceAudio.pause();
+    GlobalObj.sentenceAudio.currentTime = 0;
+
     // Disable word options until sentence finishes per wireframe interaction design
-    GlobalObj.btnOption1.style.opacity = '0.5';
-    GlobalObj.btnOption2.style.opacity = '0.5';
-    GlobalObj.btnOption1.style.pointerEvents = 'none';
-    GlobalObj.btnOption2.style.pointerEvents = 'none';
+    // Only disable if we haven't attempted yet- once unlocked, they should probably stay interactive if it's a replay?
+    // User: "Before the user attempts an answer... play the sentence audio."
+    if (!GlobalObj.isAnswered) {
+        GlobalObj.btnOption1.style.opacity = '0.5';
+        GlobalObj.btnOption2.style.opacity = '0.5';
+        GlobalObj.btnOption1.style.pointerEvents = 'none';
+        GlobalObj.btnOption2.style.pointerEvents = 'none';
+    }
 
     GlobalObj.sentenceAudio.src = q.sentenceAudio;
     GlobalObj.sentenceAudio.play();
@@ -217,6 +287,10 @@ function playSentence() {
  * Updates the screen state to the current level
  */
 function loadQuestion() {
+    GlobalObj.isAnswered = false; // Reset attempt tracker
+    GlobalObj.isLevelCorrect = false; // Reset correctness tracker
+    
+    if (GlobalObj.btnListen) GlobalObj.btnListen.style.opacity = '1';
     if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = 'none';
 
     GlobalObj.isPlaying = false;
@@ -245,6 +319,12 @@ function loadQuestion() {
 
     // Apply texts specifically mapped to each option
     let q = GlobalObj.questions[GlobalObj.currentLevel];
+
+    // Logging for testing purposes
+    const pairKey = q.options.slice().sort().join("/");
+    GlobalObj.usageStats[pairKey] = (GlobalObj.usageStats[pairKey] || 0) + 1;
+    console.log(`[TEST] Question ${GlobalObj.currentLevel + 1}: ${pairKey} (Usage: ${GlobalObj.usageStats[pairKey]})`);
+
     if (GlobalObj.btnOption1) GlobalObj.btnOption1.dataset.word = q.options[0];
     if (GlobalObj.btnOption2) GlobalObj.btnOption2.dataset.word = q.options[1];
 
@@ -257,7 +337,15 @@ function loadQuestion() {
  * @param {number} optIndex - 0 for left button, 1 for right button
  */
 function handleOptionSelect(optIndex) {
-    if (GlobalObj.isPlaying || !GlobalObj.audioFinished) return;
+    if (GlobalObj.isPlaying || !GlobalObj.audioFinished || GlobalObj.isLevelCorrect) return;
+
+    // Register an attempt and disable the question button area
+    if (!GlobalObj.isAnswered) {
+        GlobalObj.isAnswered = true;
+        if (GlobalObj.btnListen) GlobalObj.btnListen.style.opacity = '0.7';
+    }
+
+    playWordAudio(optIndex);
 
     let q = GlobalObj.questions[GlobalObj.currentLevel];
     let selectedWord = (optIndex === 0) ? GlobalObj.btnOption1.dataset.word : GlobalObj.btnOption2.dataset.word;
@@ -266,18 +354,28 @@ function handleOptionSelect(optIndex) {
     let rectElement = (optIndex === 0) ? GlobalObj.rectOption1 : GlobalObj.rectOption2;
 
     if (selectedWord === q.correct) {
-        // Correct Action
+        // Correct Action - Disable main areas but leave icons clickable
+        GlobalObj.isLevelCorrect = true;
         GlobalObj.btnOption1.style.pointerEvents = 'none';
         GlobalObj.btnOption2.style.pointerEvents = 'none';
+        
+        if (GlobalObj.audioIconOption1) GlobalObj.audioIconOption1.style.pointerEvents = 'auto';
+        if (GlobalObj.audioIconOption2) GlobalObj.audioIconOption2.style.pointerEvents = 'auto';
+
+        // Play Lottie correctly
+        let lottieTarget = document.getElementById('lottie-container');
+        if (lottieTarget && GlobalObj.correctEmoji) {
+            lottieTarget.style.display = 'block';
+            GlobalObj.correctEmoji.goToAndPlay(0, true);
+        }
 
         GlobalObj.piecesCollected++;
+        GlobalObj.correctCount++;
+        console.log(`[TEST] Correct! Total Correct: ${GlobalObj.correctCount}`);
         setProgressText(GlobalObj.piecesCollected);
 
         // Indicate correctness via color change visually
         rectElement.setAttribute('fill', '#74b62b');
-
-        GlobalObj.wordAudio.src = q.wordAudio;
-        GlobalObj.wordAudio.play();
 
         // Reveal background puzzle component
         if (GlobalObj.unrevealedIndices.length > 0) {
@@ -293,6 +391,16 @@ function handleOptionSelect(optIndex) {
         // Wrong Action - Shake Animation
         playShakeAnimation(btnElement, rectElement);
     }
+}
+
+function playWordAudio(optIndex) {
+    let q = GlobalObj.questions[GlobalObj.currentLevel];
+    
+    // Play the word audio for whichever option was clicked
+    GlobalObj.wordAudio.pause();
+    GlobalObj.wordAudio.currentTime = 0;
+    GlobalObj.wordAudio.src = q.optionsAudio[optIndex];
+    GlobalObj.wordAudio.play();
 }
 
 /**
@@ -363,4 +471,25 @@ function playShakeAnimation(element, fillRect) {
     }).onfinish = () => {
         fillRect.setAttribute('fill', originalFill);
     };
+}
+
+/**
+ * Completion animation using canvas-confetti
+ */
+function showCompletionAnimation() {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
 }
