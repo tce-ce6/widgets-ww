@@ -331,7 +331,11 @@ function showAnswer(state = "none") {
 //   document.getElementById("cloud_text_highlight_02").style.display = state;
 // }
 function lottiAnimation(state = "block") {
-  document.getElementById("Character_train_01").style.display = state;
+  const el = document.getElementById("Character_train_01");
+  if (state === "none") {
+    el.style.visibility = "hidden";
+  }
+  // "block" is handled by enterFrame reveal — no display toggle needed
 }
 function nextbutton(state = "block") {
   document.getElementById("age_badhe_button").style.display = state;

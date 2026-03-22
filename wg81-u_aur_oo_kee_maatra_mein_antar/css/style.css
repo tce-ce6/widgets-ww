@@ -434,6 +434,27 @@ svg * {
   transform: translateX(-50%);
 }
 
+/* Fix layout expansion from lottie svg renderer */
+#lottie_animation {
+  overflow: hidden;
+}
+
+#lottie-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+#lottie-container svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Lottie Visibility Classes */
 #Character_train_01,
 #star-lottie-container-1,
