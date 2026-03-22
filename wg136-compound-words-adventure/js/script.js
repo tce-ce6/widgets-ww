@@ -44,6 +44,27 @@ function initGame() {
     document.head.appendChild(style);
 
     console.log('initGame: Setting up initial widget state');
+
+    WidgetState.NativeOrder = {};
+    WidgetState.families.forEach(f => {
+        WidgetState.NativeOrder[f] = [];
+        const ansGroup = document.getElementById(f);
+        if (ansGroup) {
+            Array.from(ansGroup.children).forEach(child => {
+                let y = 0;
+                // find either native 'y' attributes or translates
+                const childHtml = child.innerHTML;
+                const matchTranslate = childHtml.match(/translate\([^,]+[,\s]+([-\d\.]+)/);
+                const matchY = childHtml.match(/<rect[^>]*y="([\d\.]+)"/);
+                if (matchTranslate) y = parseFloat(matchTranslate[1]);
+                else if (matchY) y = parseFloat(matchY[1]);
+                
+                WidgetState.NativeOrder[f].push({ id: child.getAttribute('id'), y: y });
+            });
+            WidgetState.NativeOrder[f].sort((a,b) => a.y - b.y);
+        }
+    });
+
     // Initial Hide of Activity UI
     hideElement('question');
     hideElement('qitxt');
@@ -191,7 +212,7 @@ function setupFamilyInteractions(family, famAssets) {
     const options = [];
     children.forEach(child => {
         // Skip background rectangles or large layout paths by ignoring things with no ID and are just empty paths
-        if (child.tagName === 'g') {
+        if (child.tagName === 'g' || child.tagName === 'rect' || child.tagName === 'path') {
             options.push(child);
         }
     });
@@ -219,6 +240,32 @@ function setupFamilyInteractions(family, famAssets) {
 
     let validOptions = options.filter(g => g !== centerCard);
     console.log(`setupFamilyInteractions: Found ${validOptions.length} valid target cards for [${family}]`);
+    
+    // Auto-map SVGs dynamically
+    if (!WidgetState.WORD_MAPPINGS) WidgetState.WORD_MAPPINGS = {};
+    if (!WidgetState.WORD_MAPPINGS[family] || Object.keys(WidgetState.WORD_MAPPINGS[family]).length < 4) {
+        WidgetState.WORD_MAPPINGS[family] = {};
+        const ansGroup = document.getElementById(family);
+        if (ansGroup) {
+            Array.from(ansGroup.children).forEach(ans => {
+                const id = ans.getAttribute('id');
+                const wordKey = id.replace('_ans', '').replace('-ans', '');
+                const paths = Array.from(ans.querySelectorAll('path')).map(p => p.getAttribute('d')).filter(d => d && d.length > 20);
+                
+                let bestIdx = -1; let maxScore = 0;
+                validOptions.forEach((opt, idx) => {
+                    const optPaths = Array.from(opt.querySelectorAll('path')).map(p => p.getAttribute('d'));
+                    let score = 0;
+                    optPaths.forEach(op => { if (paths.includes(op)) score++; });
+                    if (score > maxScore) { maxScore = score; bestIdx = idx; }
+                });
+                
+                if (bestIdx > -1) {
+                    WidgetState.WORD_MAPPINGS[family][bestIdx] = wordKey;
+                }
+            });
+        }
+    }
 
     // Geometrically robustify mappings: if an icon is unmapped but sits inside a mapped background, copy mapping
     const mappings = WidgetState.WORD_MAPPINGS[family];
@@ -373,7 +420,11 @@ function renderDiscoveredWords(family) {
                 unhideElement(panelId);
                 const orderIndex = discoveredList.indexOf(idx);
                 // Dynamically offset from top to bottom
-                ansPanel.style.transform = `translate(0px, ${(orderIndex - Object.keys(mapping).indexOf(idxStr)) * 150}px)`;
+                
+                let nativeSlot = WidgetState.NativeOrder[family].findIndex(item => item.id === panelId);
+                if (nativeSlot === -1) nativeSlot = Object.keys(mapping).indexOf(idxStr);
+                ansPanel.style.transform = `translate(0px, ${(orderIndex - nativeSlot) * 153}px)`;
+
                 ansPanel.classList.add('ans-panel', 'show');
             } else {
                 hideElement(panelId);
@@ -407,6 +458,15 @@ function renderDiscoveredWords(family) {
         console.log(`renderDiscoveredWords: Completed 4/4! Presenting ending popup.`);
         setTimeout(() => {
             unhideElement('correct_end_popup');
+
+    const endPopupBg = document.querySelector('#correct_end_popup rect');
+    if (endPopupBg) {
+        endPopupBg.setAttribute('x', '-5000');
+        endPopupBg.setAttribute('y', '-5000');
+        endPopupBg.setAttribute('width', '10000');
+        endPopupBg.setAttribute('height', '10000');
+    }
+
             const playAgainBtn = document.getElementById('Play_Again') || document.getElementById('Group_8214');
             if (playAgainBtn) {
                 playAgainBtn.style.cursor = 'pointer';
