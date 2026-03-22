@@ -22,7 +22,6 @@ function initGame() {
     const style = document.createElement('style');
     style.textContent = `
         .interactive-card { transform-origin: center; cursor: pointer; }
-        .interactive-card * { pointer-events: none; }
         .interactive-card.used { pointer-events: none; }
         .interactive-card.wrong { animation: shake-card 0.4s; }
         @keyframes shake-card {
@@ -41,11 +40,10 @@ function initGame() {
             opacity: 1;
             transform: translateY(0);
         }
-        #home_btn { cursor: pointer; transition: transform 0.2s; }
-        #home_btn:hover { transform: scale(1.05); }
     `;
     document.head.appendChild(style);
 
+    console.log('initGame: Setting up initial widget state');
     // Initial Hide of Activity UI
     hideElement('question');
     hideElement('qitxt');
@@ -82,19 +80,25 @@ function initGame() {
     // Setup Home Button
     let homeBtn = document.getElementById('home_btn');
     if (homeBtn) {
+         homeBtn.style.cursor = 'pointer';
          homeBtn.onclick = returnToMenu;
+         console.log('initGame: Home button mapped successfully');
     }
 }
 
 function openFamily(family) {
-    if (WidgetState.isAnimating) return;
+    if (WidgetState.isAnimating) {
+        console.log('openFamily: Ignored, animation in progress');
+        return;
+    }
+    console.log(`openFamily: Initiating layout transition for family [${family}]`);
     WidgetState.currentFamily = family;
 
     // Hide Home Screen elements
+
     hideElement('home_cards');
     hideElement('home_itext');
-    hideElement('main'); // sometimes main holds everything, let's just toggle specific parts*/
-
+    
     unhideElement('question');
     unhideElement('qitxt');
     unhideElement('status_bar');
@@ -126,19 +130,28 @@ function openFamily(family) {
 
     const famAssets = document.getElementById(family + '_family_assets');
     if (famAssets) {
+        console.log(`openFamily: Found assets for [${family}], unhiding and setting up interactions`);
         unhideElement(family + '_family_assets');
         setupFamilyInteractions(family, famAssets);
+    } else {
+        console.log(`openFamily: WARNING - Assets for [${family}] missing from DOM`);
     }
 
     renderDiscoveredWords(family);
     updateInstructionText(family);
+    updatePopupText(family);
 }
 
 function returnToMenu() {
-    if (WidgetState.isAnimating) return;
+    if (WidgetState.isAnimating) {
+        console.log('returnToMenu: Ignored, animation in progress');
+        return;
+    }
+    console.log('returnToMenu: Transitioning widget back to home menu overview');
     WidgetState.currentFamily = null;
 
     hideElement('question');
+
     hideElement('qitxt');
     hideElement('status_bar');
     hideElement('answer_panels');
@@ -161,11 +174,16 @@ function returnToMenu() {
 
 function setupFamilyInteractions(family, famAssets) {
     // Only setup once
-    if (WidgetState.elements[family]) return;
+    if (WidgetState.elements[family]) {
+        console.log(`setupFamilyInteractions: Interactions already mapped for [${family}]`);
+        return;
+    }
     
+    console.log(`setupFamilyInteractions: Performing initial geometric mapping for [${family}] cards`);
     WidgetState.elements[family] = { options: [] };
     
     // Options are typically 6 groups around the center.
+
     // Based on previous structure, we find the 6 option paths/groups.
     // We will find all children of famAssets that have no child groups, or a specific structure.
     const children = Array.from(famAssets.children);
@@ -178,24 +196,59 @@ function setupFamilyInteractions(family, famAssets) {
         }
     });
     
-    // We need exactly 6 options and 1 center, wait, it might be nested
-    // We'll let the user rename them or just try to bind what we can
-    // It's safer if the user renames the assets to `${family}_opt_0`, etc.
-    // If not, we bind ALL 'g' children that have a transform or match
-    
-    // Since we don't know the exact IDs, we iterate all sub-groups that represent individual cards.
-    // In our SVG layout, they are likely the top level 'g' elements inside the family asset.
-    let validOptions = options.filter(g => {
-        // Find visible bounding elements
-        return true; 
+    // Find central card logic
+    const cardRects = children.map(c => c.getBoundingClientRect());
+    let cx = 0, cy = 0;
+    cardRects.forEach(r => { cx += r.left + r.width/2; cy += r.top + r.height/2; });
+    cx /= children.length; cy /= children.length;
+
+    let centerCard = null;
+    let minD = Infinity;
+    children.forEach((c, i) => {
+        const r = cardRects[i];
+        if (r.width > window.innerWidth * 0.5) return; // skip giant backgrounds
+        const dx = (r.left + r.width/2) - cx;
+        const dy = (r.top + r.height/2) - cy;
+        const d = dx*dx + dy*dy;
+        if (d < minD) { minD = d; centerCard = c; }
     });
+    if (centerCard) {
+        console.log(`setupFamilyInteractions: Isolated center main card and disabled interactions`);
+        centerCard.style.pointerEvents = 'none';
+    }
+
+    let validOptions = options.filter(g => g !== centerCard);
+    console.log(`setupFamilyInteractions: Found ${validOptions.length} valid target cards for [${family}]`);
+
+    // Geometrically robustify mappings: if an icon is unmapped but sits inside a mapped background, copy mapping
+    const mappings = WidgetState.WORD_MAPPINGS[family];
+    if (mappings) {
+        validOptions.forEach((opt, idx) => {
+            if (!mappings[idx]) {
+                const rect = opt.getBoundingClientRect();
+                const cx = rect.left + rect.width/2;
+                const cy = rect.top + rect.height/2;
+                for (let i=0; i<validOptions.length; i++) {
+                    if (mappings[i] && i !== idx) {
+                        const pRect = validOptions[i].getBoundingClientRect();
+                        if (cx >= pRect.left && cx <= pRect.right && cy >= pRect.top && cy <= pRect.bottom) {
+                            mappings[idx] = mappings[i];
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     validOptions.forEach((opt, index) => {
         opt.classList.add('interactive-card');
+        opt.style.pointerEvents = 'all'; // ensures empty rect bounds are clickable if standard SVG spec allows or if background path catches it
+
         // Setup simple bounds-based sync for elements at this index if needed
         if (WidgetState.discovered[family].includes(index)) {
              opt.classList.add('used');
-             opt.style.opacity = '0';
+             opt.style.opacity = '0.3';
              opt.style.pointerEvents = 'none';
              fadeSiblingsAt(opt);
         } else {
@@ -249,11 +302,15 @@ function handleOptionClick(family, index, element) {
     if (WidgetState.isAnimating) return;
     
     const mappings = WidgetState.WORD_MAPPINGS[family];
-    const compoundWord = mappings[index];
+    const compoundWord = mappings ? mappings[index] : null;
+    
+    console.log(`handleOptionClick: Clicked map index [${index}] on family [${family}]. Match exists: ${!!compoundWord}`);
     
     if (compoundWord) {
         // Correct guess
+        console.log(`handleOptionClick: Correct! Triggering animations for [${compoundWord}]`);
         WidgetState.isAnimating = true;
+
         playChirp();
         
         // Disable
@@ -282,6 +339,7 @@ function handleOptionClick(family, index, element) {
         
     } else {
         // Wrong guess
+        console.log(`handleOptionClick: Incorrect choice at index [${index}]. Triggering shake.`);
         element.classList.add('wrong');
         setTimeout(() => {
             element.classList.remove('wrong');
@@ -290,6 +348,7 @@ function handleOptionClick(family, index, element) {
 }
 
 function renderDiscoveredWords(family) {
+    console.log(`renderDiscoveredWords: Refreshing panels for [${family}]`);
     // Hide all existing answer panels first
     const mapping = WidgetState.WORD_MAPPINGS[family] || {};
     
@@ -345,19 +404,26 @@ function renderDiscoveredWords(family) {
     }
 
     if (discoveredList.length >= 4) {
+        console.log(`renderDiscoveredWords: Completed 4/4! Presenting ending popup.`);
         setTimeout(() => {
             unhideElement('correct_end_popup');
             const playAgainBtn = document.getElementById('Play_Again') || document.getElementById('Group_8214');
             if (playAgainBtn) {
                 playAgainBtn.style.cursor = 'pointer';
-                playAgainBtn.onclick = () => { hideElement('correct_end_popup'); returnToMenu(); };
+                playAgainBtn.onclick = () => { 
+                    console.log('End Popup: Triggered Play Again reset');
+                    hideElement('correct_end_popup'); 
+                    returnToMenu(); 
+                };
             }
         }, 1200);
     }
 }
 
 function updateInstructionText(family) {
+    console.log(`updateInstructionText: Flowing exclamation text correctly for [${family}]`);
     const qitxt = document.getElementById('qitxt');
+
     if (qitxt) {
         const tspans = qitxt.querySelectorAll('tspan');
         tspans.forEach(ts => {
@@ -373,7 +439,20 @@ function updateInstructionText(family) {
     }
 }
 
+function updatePopupText(family) {
+    const popup = document.getElementById('correct_end_popup');
+    if (popup) {
+        const tspans = popup.querySelectorAll('tspan');
+        tspans.forEach(ts => {
+            if (ts.textContent.match(/SUN|SAND|SEA|RAIN|SNOW|FIRE/i)) {
+                ts.textContent = ts.textContent.replace(/SUN|SAND|SEA|RAIN|SNOW|FIRE/ig, family.toUpperCase());
+            }
+        });
+    }
+}
+
 function playChirp() {
+
     try {
         const audio = new window.Audio('assets/bird-chirping.mp3');
         audio.play().catch(() => {
