@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-03-23T15:02:50+05:30",
+      "updatedAt": "2026-03-23T15:05:52+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg26-word-discovery-adventure": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-23T15:05:52+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "version updated",
+      "widgets": [
+        24
+      ]
+    },
     {
       "date": "2026-03-23T15:02:50+05:30",
       "author": "Shyamsunder Hait",
@@ -608,14 +616,6 @@
       "date": "2026-03-20T14:54:34+05:30",
       "author": "PrasannaP",
       "message": "v",
-      "widgets": [
-        121
-      ]
-    },
-    {
-      "date": "2026-03-20T14:46:01+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Corrected 3' and 5' labels in SVG and updated the version ID.",
       "widgets": [
         121
       ]
