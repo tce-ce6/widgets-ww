@@ -386,7 +386,12 @@ function handleOptionSelect(optIndex) {
             setTimeout(() => { piece.style.display = 'none'; }, 600);
         }
 
-        if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = '';
+        if (GlobalObj.piecesCollected === 36) {
+            showCompletionAnimation();
+            if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = 'none';
+        } else {
+            if (GlobalObj.btnNext) GlobalObj.btnNext.style.display = '';
+        }
     } else {
         // Wrong Action - Shake Animation
         playShakeAnimation(btnElement, rectElement);
@@ -479,7 +484,7 @@ function playShakeAnimation(element, fillRect) {
 function showCompletionAnimation() {
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
 
     function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
