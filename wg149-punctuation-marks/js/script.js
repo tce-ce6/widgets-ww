@@ -140,17 +140,21 @@ function init() {
     /* Differentiate the two quotation-mark buttons visually */
     styleQuoteButtons();
 
-    /* Bind Insights button */
+    /* Bind Insights button and disable text interaction */
     var btnInsight = getEl("inside-btn");
+    var btnInsightText = getEl("inside-btn-text");
     if (btnInsight) { btnInsight.style.cursor = "pointer"; btnInsight.addEventListener("click", onInsightClick); }
+    if (btnInsightText) { btnInsightText.style.pointerEvents = "none"; }
 
     /* Bind Close popup */
     var closeBtn = getEl("close-btn");
     if (closeBtn) { closeBtn.style.cursor = "pointer"; closeBtn.addEventListener("click", onClosePopup); }
 
-    /* Bind Next button */
+    /* Bind Next button and disable text interaction */
     var nextBtn = getEl("next-btn-panel");
+    var nextBtnText = getEl("next-btn-text");
     if (nextBtn) { nextBtn.style.cursor = "pointer"; nextBtn.addEventListener("click", onNextClick); }
+    if (nextBtnText) { nextBtnText.style.pointerEvents = "none"; }
 
     loadSentence(WG.currentIndex);
 }
@@ -367,9 +371,12 @@ function onInsightClick() {
     var svg = getEl("Layer_37");
     if (!svg) return;
 
-    /* Remove stale overlay if any */
+    /* If overlay exists, toggle it off instead of opening a new one */
     var existingOverlay = getEl("insight-overlay");
-    if (existingOverlay) existingOverlay.parentNode.removeChild(existingOverlay);
+    if (existingOverlay) {
+        onClosePopup();
+        return;
+    }
 
     /* Create dark semi-transparent overlay covering the full SVG canvas */
     var overlay = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -383,10 +390,10 @@ function onInsightClick() {
     overlay.addEventListener("click", onClosePopup);
     svg.appendChild(overlay);
 
-    /* Move inside-popup, its text, and the close button to be the last children of SVG (render on top) */
-    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+    /* Move Insight button and popup elements to the top of the SVG stack */
+    ["insight-overlay", "inside-popup", "inside-popup-text", "close-btn", "inside-btn", "inside-btn-text"].forEach(function (id) {
         var el = getEl(id);
-        if (el) {
+        if (el && id !== "insight-overlay") {
             svg.appendChild(el);
             el.style.display = "";
         }
@@ -564,7 +571,7 @@ function driveCarOffScreen() {
     if (!carEl) return;
     /* Move the entire car width + starting position off the left edge */
     carEl.style.transition = "transform 1.2s ease-in";
-    carEl.style.transform = "translateX(-2000px)";
+    carEl.style.transform = "translateX(-3000px)";
 }
 
 function resetCarPosition() {
@@ -620,14 +627,14 @@ function showTryAgainMessage() {
     var bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     // Reduced width + moved down to avoid overlapping answer buttons.
     // Text remains centered at x=960.
-    bg.setAttribute("x", "750"); bg.setAttribute("y", "640");
-    bg.setAttribute("width", "420"); bg.setAttribute("height", "60");
+    bg.setAttribute("x", "835"); bg.setAttribute("y", "640");
+    bg.setAttribute("width", "200"); bg.setAttribute("height", "60");
     bg.setAttribute("rx", "16"); bg.setAttribute("ry", "16");
     bg.setAttribute("fill", "#ff4444"); bg.setAttribute("fill-opacity", "0.93");
     g.appendChild(bg);
 
     var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    txt.setAttribute("x", "960"); txt.setAttribute("y", "681");
+    txt.setAttribute("x", "935"); txt.setAttribute("y", "681");
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("fill", "#fff");
     txt.setAttribute("font-size", "26");

@@ -116,7 +116,8 @@ legislatureCountIncrement = () => {
 questionValidation = (type) => {
   if (type === "CORRECT") {
     document.getElementById("correct-box").style.display = "block";
-    document.getElementById("correct-animation").style.display = "block";
+    // document.getElementById("correct-animation").style.display = "block";
+    playLottieAnimation();
     document.getElementById("incorrect-box").style.display = "none";
     showFeedback("correct_feedback");
   } else {
@@ -229,7 +230,10 @@ function playAudio() {
 }
 
 const playLottieAnimation = () => {
+  const lottie_animation = document.getElementById("lottie_animation");
+  lottie_animation.style.display = "block";
   const containerEl = document.getElementById("lottie-container");
+  containerEl.style.display = "block";
   if (!containerEl) return;
   const anim = lottie.loadAnimation({
     container: containerEl,
@@ -237,6 +241,17 @@ const playLottieAnimation = () => {
     loop: false,
     autoplay: true,
     path: `assets/JSON/FinalAnswer_celebration.json`,
+  });
+
+  anim.addEventListener("complete", () => {
+    animationTimeout = setTimeout(() => {
+      containerEl.style.display = "none";
+      lottie_animation.style.display = "none";
+      if (anim) {
+        anim.destroy();
+        anim = null;
+      }
+    }, 1000); // ← keep final frame ~1 second
   });
 };
 getAllQuestion = () => {

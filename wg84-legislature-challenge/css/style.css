@@ -535,3 +535,9 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .close-btn:hover { color: #ff0000; }
+
+/* Hand cursor on all interactive / clickable SVG elements */
+#proceed-btn, #btn-legislature, #btn-executive, #btn-next,
+#btn-close, #btn-insights, #start_again {
+  cursor: pointer;
+}

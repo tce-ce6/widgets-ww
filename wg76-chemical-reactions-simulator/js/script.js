@@ -6,29 +6,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const reactionConfig = [
     {
-      tabId:           "combination-reaction",
+      tabId: "combination-reaction",
       reactantGroupId: "combination-reaction-reactant",
-      reactantIds:     ["h2", "o2"],          // 2 required
+      reactantIds: ["h2", "o2"],          // 2 required
     },
     {
-      tabId:           "decomposition-reaction",
+      tabId: "decomposition-reaction",
       reactantGroupId: "decomposition-reaction-reactant",
-      reactantIds:     ["CaCO3"],             // 1 required
+      reactantIds: ["CaCO3"],             // 1 required
     },
     {
-      tabId:           "displacement-reaction",
+      tabId: "displacement-reaction",
       reactantGroupId: "displacement-reaction-reactant",
-      reactantIds:     ["Zn", "CuSO4"],       // 2 required
+      reactantIds: ["Zn", "CuSO4"],       // 2 required
     },
     {
-      tabId:           "double-displacement-reaction",
+      tabId: "double-displacement-reaction",
       reactantGroupId: "double-displacement-reaction-ractant", // typo in HTML kept
-      reactantIds:     ["AgNO3", "NaCl"],     // 2 required
+      reactantIds: ["AgNO3", "NaCl"],     // 2 required
     },
     {
-      tabId:           "redox-reaction",
+      tabId: "redox-reaction",
       reactantGroupId: "redox-reaction-reactant",
-      reactantIds:     ["AgNO3", "NaCl"],     // 2 required
+      reactantIds: ["AgNO3", "NaCl"],     // 2 required
     },
   ];
 
@@ -47,11 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // _01 = reactant drop-in, _02 = reaction in progress, _03 = product formed
 
   const lottieAnimationMap = {
-    "combination-reaction":         "./lottie/combi_01.json",
-    "decomposition-reaction":       "./lottie/decom_01.json",
-    "displacement-reaction":        "./lottie/displace_01.json",
+    "combination-reaction": "./lottie/combi_01.json",
+    "decomposition-reaction": "./lottie/decom_01.json",
+    "displacement-reaction": "./lottie/displace_01.json",
     "double-displacement-reaction": "./lottie/double_displace_01.json",
-    "redox-reaction":               "./lottie/redox_01.json",
+    "redox-reaction": "./lottie/redox_01.json",
   };
 
   // Holds the currently playing Lottie animation instance
@@ -141,13 +141,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const config = reactionConfig.find((c) => c.tabId === selectedTabId);
     if (!config) return;
 
-    const clicked  = clickedReactants[config.reactantGroupId];
-    const allDone  = config.reactantIds.every((rid) => clicked.has(rid));
+    const clicked = clickedReactants[config.reactantGroupId];
+    const allDone = config.reactantIds.every((rid) => clicked.has(rid));
 
     const startBtn = document.getElementById("start-reaction-btn");
     if (startBtn) {
+      const wasDisabled = startBtn.style.opacity === "0.4" || startBtn.style.opacity === "";
       startBtn.style.opacity = allDone ? "1" : "0.4";
-      startBtn.style.cursor  = allDone ? "pointer" : "not-allowed";
+      startBtn.style.cursor = allDone ? "pointer" : "not-allowed";
+
+      // If it just became enabled, blink it 2 times
+      if (allDone && wasDisabled) {
+        startBtn.classList.remove("blink");
+        void startBtn.offsetWidth; // trigger reflow
+        startBtn.classList.add("blink");
+        setTimeout(() => {
+          startBtn.classList.remove("blink");
+        }, 1000);
+      }
     }
   }
 
@@ -161,14 +172,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const startBtn = document.getElementById("start-reaction-btn");
     if (startBtn) {
       startBtn.style.opacity = "0.4";
-      startBtn.style.cursor  = "not-allowed";
+      startBtn.style.cursor = "not-allowed";
     }
 
     // Enable the Reset button now that a reaction is selected
     const resetBtn = document.getElementById("reset-btn");
     if (resetBtn) {
       resetBtn.style.opacity = "1";
-      resetBtn.style.cursor  = "pointer";
+      resetBtn.style.cursor = "pointer";
     }
 
     // Reset clicked-reactant tracking for the newly selected group
@@ -182,14 +193,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update all tab fills and reactant group filters
     reactionConfig.forEach(({ tabId: tid, reactantGroupId }) => {
-      const tabEl      = document.getElementById(tid);
+      const tabEl = document.getElementById(tid);
       const reactantEl = document.getElementById(reactantGroupId);
 
       if (tid === tabId) {
-        if (tabEl)      setTabFill(tabEl, "#fff");
-        if (reactantEl) reactantEl.style.filter = "none";
+        if (tabEl) setTabFill(tabEl, "#fff");
+        if (reactantEl) {
+          reactantEl.style.filter = "none";
+
+          // Get required reactants for this tab
+          const config = reactionConfig.find((c) => c.tabId === tabId);
+
+          if (config) {
+            config.reactantIds.forEach((rid) => {
+              reactantEl.querySelectorAll(`#${rid}`).forEach((el) => {
+                el.classList.remove("blink");
+                void el.offsetWidth; // reflow
+                el.classList.add("blink");
+
+                setTimeout(() => {
+                  el.classList.remove("blink");
+                }, 1000);
+              });
+            });
+          }
+        }
       } else {
-        if (tabEl)      restoreTabFill(tabEl);   // #fff → #A5F700 (deselect previous tab)
+        if (tabEl) restoreTabFill(tabEl);   // #fff → #A5F700 (deselect previous tab)
         if (reactantEl) reactantEl.style.filter = "brightness(0.5)";
       }
     });
@@ -215,20 +245,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function attachReactantHandler(cssId) {
     document.querySelectorAll(`#${cssId}`).forEach((el) => {
       el.style.cursor = "pointer";
+
       el.addEventListener("click", (e) => {
         e.stopPropagation();
 
-        // Find which reactant group this element belongs to
+        // ✅ NOW el exists, safe to use
         const groupId = getReactantGroupIdFromTarget(el);
         if (!groupId) return;
 
-        // Mark this reactant as clicked
+        // ✅ Blink correct tab
+        blinkReactionTabByGroup(groupId);
+
+        // Existing logic
         clickedReactants[groupId].add(cssId);
 
-        // Highlight this reactant button with the selected stroke colour
         setReactantStroke(el, "#00d5ff");
 
-        // Only evaluate the button if this group belongs to the selected reaction
         const activeConfig = reactionConfig.find((c) => c.tabId === selectedTabId);
         if (activeConfig && activeConfig.reactantGroupId === groupId) {
           checkAndEnableStartButton();
@@ -267,10 +299,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load and autoplay the new animation using the globally available lottie object
     currentLottieAnim = lottie.loadAnimation({
       container,
-      renderer:  "svg",
-      loop:      false,
-      autoplay:  true,
-      path:      jsonPath,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: jsonPath,
     });
   }
 
@@ -282,6 +314,33 @@ document.addEventListener("DOMContentLoaded", () => {
         playReactionAnimation();
       }
     });
+  }
+
+  function blinkReactionTabByGroup(groupId) {
+    // Remove blink from all tabs first
+    reactionConfig.forEach(({ tabId }) => {
+      const tabEl = document.getElementById(tabId);
+      if (tabEl) tabEl.classList.remove("blink");
+    });
+
+    // Find matching tab
+    const config = reactionConfig.find(
+      (c) => c.reactantGroupId === groupId
+    );
+
+    if (!config) return;
+
+    const tabEl = document.getElementById(config.tabId);
+
+    if (tabEl) {
+      tabEl.classList.remove("blink");
+      void tabEl.offsetWidth; // reflow
+      tabEl.classList.add("blink");
+
+      setTimeout(() => {
+        tabEl.classList.remove("blink");
+      }, 1000);
+    }
   }
 
 
@@ -306,9 +365,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // restoreTabFill() targets the #fff fills set during selection,
     // which setTabFill() cannot find (it only matches #A5F700 fills).
     reactionConfig.forEach(({ tabId, reactantGroupId }) => {
-      const tabEl      = document.getElementById(tabId);
+      const tabEl = document.getElementById(tabId);
       const reactantEl = document.getElementById(reactantGroupId);
-      if (tabEl)      restoreTabFill(tabEl);
+      if (tabEl) restoreTabFill(tabEl);
       if (reactantEl) reactantEl.style.filter = "brightness(0.5)";
     });
 
@@ -324,14 +383,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const startBtn = document.getElementById("start-reaction-btn");
     if (startBtn) {
       startBtn.style.opacity = "0.4";
-      startBtn.style.cursor  = "not-allowed";
+      startBtn.style.cursor = "not-allowed";
     }
 
     // Dim Reset button
     const resetBtn = document.getElementById("reset-btn");
     if (resetBtn) {
       resetBtn.style.opacity = "0.4";
-      resetBtn.style.cursor  = "not-allowed";
+      resetBtn.style.cursor = "not-allowed";
     }
 
     // Destroy any running Lottie animation and clear the container

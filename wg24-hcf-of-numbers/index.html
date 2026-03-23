@@ -14,7 +14,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>HCF of Numbers</h2>
-        <span id="versionId" class="versionText">B2_wg24_2603201</span>
+        <span id="versionId" class="versionText">B2_wg24_2603232</span>
       </div>
       <!-- <div class="question" style="font-style: italic; font-size: 18px;font-weight: medium;color: white; padding-left: 60px;">
             Use the two words in a single m  eaningful sentence. Write your sentence in your notebook.
@@ -1411,6 +1411,8 @@
             </g>
             <path id="tab-remove-div" d="M668 207H116V216H668V207Z" fill="#ADE4FC" />
           </g>
+
+
           <foreignObject x="996" y="373" width="790" height="530">
             <div xmlns="http://www.w3.org/1999/xhtml" class="scroll-container"
               style="font-family: Roboto, sans-serif; font-size: 16px; font-weight: 500; color: #000000; text-align: center; line-height: 24px; height: 100%; overflow: auto;">
@@ -1419,13 +1421,17 @@
 
           </foreignObject>
 
+          <!-- Interaction Blocker (covers area below tabs) -->
+          <rect id="interaction-blocker" x="0" y="216" width="1920" height="700" fill="white" opacity="0"
+            pointer-events="auto" style="display: none;" />
+
           <!-- Foreign Object Replacement -->
           <foreignObject x="111" y="313" width="822" height="725" id="left-bg-background-tint" style="display: none;">
 
             <div xmlns="http://www.w3.org/1999/xhtml" style="
             width: 822px;
             height: 725px;
-            background-color: #00000038;
+            background-color: #000000a3;
             border-radius: 18px;
          ">
             </div>
@@ -1436,7 +1442,7 @@
 
 
           <!-- Feedback Message using foreignObject -->
-          <foreignObject id="feedback-message" x="160" y="450" width="680" height="250" style="display:none;">
+          <foreignObject id="feedback-message" x="180" y="520" width="680" height="250" style="display:none;">
             <div xmlns="http://www.w3.org/1999/xhtml"
               style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
               <div id="feedback-content"
@@ -1450,78 +1456,74 @@
           </foreignObject>
 
           <!-- Solution Modal using foreignObject -->
-          <foreignObject id="solution-modal" x="120" y="360" width="800" height="600" style="display:none;">
+          <foreignObject id="solution-modal" x="111" y="313" width="822" height="725" style="display:none;">
             <div xmlns="http://www.w3.org/1999/xhtml"
-              style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+              style="width: 822px; height: 725px; background: linear-gradient(135deg, #f5f8e8 0%, #fafbe8 100%); border-radius: 20px; border: 8px solid #66BB6A; box-shadow: 0 12px 40px rgba(0,0,0,0.4); padding: 50px; font-family: Roboto, sans-serif; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
+
+              <!-- Close Button -->
+              <div style="display: flex; justify-content: flex-end; margin: -30px -30px 0 0;">
+                <div id="close-modal"
+                  style="width: 60px; height: 60px;position: absolute;top: -20px;right: -20px; background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.2s, box-shadow 0.2s;"
+                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.4)';"
+                  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)';">
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 7L23 23M23 7L7 23" stroke="white" stroke-width="5" stroke-linecap="round" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Solution Header Badge -->
               <div
-                style="width: 760px; background: linear-gradient(135deg, #f5f8e8 0%, #fafbe8 100%); border-radius: 20px; border: 5px solid #66BB6A; box-shadow: 0 8px 30px rgba(0,0,0,0.3); padding: 30px; font-family: Roboto, sans-serif;">
+                style="margin: 0 auto 10px; width: fit-content; background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%); padding: 15px 70px; border-radius: 40px; box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);">
+                <h3 style="margin: 0; color: white; font-size: 32px; font-weight: bold;">Solution</h3>
+              </div>
 
-                <!-- Close Button -->
-                <div style="display: flex; justify-content: flex-end; margin: -20px -20px 0 0;">
-                  <div id="close-modal"
-                    style="width: 50px; height: 50px; background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.2); transition: transform 0.2s, box-shadow 0.2s;"
-                    onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 5px 14px rgba(0,0,0,0.3)';"
-                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 10px rgba(0,0,0,0.2)';">
-                    <svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M7 7L23 23M23 7L7 23" stroke="white" stroke-width="4" stroke-linecap="round" />
-                    </svg>
-                  </div>
+              <!-- Content Section -->
+              <div
+                style="padding: 10px 0; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-around;">
+
+                <!-- Main Explanation -->
+                <div style="margin-bottom: 5px;">
+                  <p id="modal-intro-text"
+                    style="margin: 0; font-size: 24px; line-height: 1.5; color: #000; text-align: center;">
+                    To find the greatest number of shelves, we need to find the <strong>Highest Common Factor
+                      (HCF)</strong> of 24 and 18.
+                  </p>
                 </div>
 
-                <!-- Solution Header Badge -->
+                <!-- Calculation Box -->
                 <div
-                  style="margin: 0 auto 20px; width: fit-content; background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%); padding: 12px 50px; border-radius: 30px; box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);">
-                  <h3 style="margin: 0; color: white; font-size: 24px; font-weight: bold;">Solution</h3>
+                  style="background: white; border: 3px solid #66BB6A; border-radius: 20px; padding: 30px; margin: 10px 0;">
+                  <p id="modal-factors-item1"
+                    style="margin: 0 0 12px; font-size: 24px; color: #000; line-height: 1.5; text-align: center;">
+                    <strong>Factors of 24:</strong> 1, 2, 3, 4, 6, 8, 12, 24
+                  </p>
+                  <p id="modal-factors-item2"
+                    style="margin: 0 0 12px; font-size: 24px; color: #000; line-height: 1.5; text-align: center;">
+                    <strong>Factors of 18:</strong> 1, 2, 3, 6, 9, 18
+                  </p>
+                  <p id="modal-common-factors"
+                    style="margin: 0 0 20px; font-size: 24px; color: #000; line-height: 1.5; text-align: center;">
+                    <strong>Common factors:</strong> 1, 2, 3, 6
+                  </p>
+                  <p id="modal-hcf"
+                    style="margin: 0; font-size: 32px; font-weight: bold; color: #000; text-align: center;">
+                    HCF = 6
+                  </p>
+                  <p id="modal-answer"
+                    style="margin: 20px 0 0; font-size: 30px; font-weight: bold; color: #66BB6A; text-align: center;">
+                    Answer: 6 shelves
+                  </p>
                 </div>
 
-                <!-- Content Section -->
-                <div style="padding: 0;">
-
-                  <!-- Main Explanation -->
-                  <div style="margin-bottom: 15px;">
-                    <p id="modal-intro-text"
-                      style="margin: 0; font-size: 18px; line-height: 1.6; color: #000; text-align: center;">
-                      To find the greatest number of shelves, we need to find the <strong>Highest Common Factor
-                        (HCF)</strong> of 24 and 18.
-                    </p>
-                  </div>
-
-                  <!-- Calculation Box -->
-                  <div
-                    style="background: white; border: 2px solid #66BB6A; border-radius: 15px; padding: 20px 25px; margin-bottom: 15px;">
-                    <p id="modal-factors-item1"
-                      style="margin: 0 0 8px; font-size: 18px; color: #000; line-height: 1.6; text-align: center;">
-                      <strong>Factors of 24:</strong> 1, 2, 3, 4, 6, 8, 12, 24
-                    </p>
-                    <p id="modal-factors-item2"
-                      style="margin: 0 0 8px; font-size: 18px; color: #000; line-height: 1.6; text-align: center;">
-                      <strong>Factors of 18:</strong> 1, 2, 3, 6, 9, 18
-                    </p>
-                    <p id="modal-common-factors"
-                      style="margin: 0 0 15px; font-size: 18px; color: #000; line-height: 1.6; text-align: center;">
-                      <strong>Common factors:</strong> 1, 2, 3, 6
-                    </p>
-                    <p id="modal-hcf"
-                      style="margin: 0; font-size: 24px; font-weight: bold; color: #000; text-align: center;">
-                      HCF = 6
-                    </p>
-                    <p id="modal-answer"
-                      style="margin: 15px 0 0; font-size: 22px; font-weight: bold; color: #66BB6A; text-align: center;">
-                      Answer: 6 shelves
-                    </p>
-                  </div>
-
-
-
-                  <!-- Additional Info -->
-                  <div style="margin-bottom: 0;">
-                    <p id="modal-additional-info"
-                      style="margin: 0; font-size: 16px; line-height: 1.5; color: #000; text-align: center;">
-                      Each shelf will have <strong>4 Science books</strong> and <strong>3 Math books</strong>
-                    </p>
-                  </div>
-
+                <!-- Additional Info -->
+                <div style="margin-top: 5px;">
+                  <p id="modal-additional-info"
+                    style="margin: 0; font-size: 22px; line-height: 1.4; color: #000; text-align: center;">
+                    Each shelf will have <strong>4 Science books</strong> and <strong>3 Math books</strong>
+                  </p>
                 </div>
+
               </div>
             </div>
           </foreignObject>

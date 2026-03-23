@@ -17,6 +17,7 @@
         <h2>Photosynthesis Factory</h2>
         <span id="versionId" class="versionText">b3_wg108_260221</span>
       </div>
+      <div id="global-overlay" class="global-overlay"></div>
       <div class="svg-container" id="svg-container">
      
 <svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -769,19 +770,6 @@
 <g id="text_sugar">
 <g id="Sugar">
 <text id="Sugar_2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="701.89" y="361.361">Sugar</tspan></text>
-</g>
-</g>
-<g id="arrow_water">
-<path id="Path_1438" d="M591.54 681.25C591.54 681.25 612.85 675.15 622.81 667.96C621.9 672.43 617.87 679.11 617.87 679.11C617.87 679.11 655.55 686.77 662.27 717.73C652.88 701.02 632.65 691.41 616.12 687.88C617.23 690.75 617.26 700.3 617.26 700.3C617.26 700.3 605.1 685.51 591.53 681.25H591.54Z" fill="#00BDCF"/>
-</g>
-<g id="text_water">
-<g id="H2O">
-<text id="H" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="680.08" y="709.361">H</tspan></text>
-<text id="2_4" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="13.42" font-weight="500" letter-spacing="0em"><tspan x="696.42" y="717.837">2</tspan></text>
-<text id="O_2" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="704.04" y="709.361">O</tspan></text>
-</g>
-<g id="Water-2">
-<text id="Water_3" fill="white" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="671.81" y="685.361">Water</tspan></text>
 </g>
 </g>
 <g id="Layer_1">
@@ -1921,6 +1909,7 @@
 </g>
 </g>
 <g id="insights-pop-up" style="display: none;">
+<rect x="0" y="0" width="1920" height="1080" fill="rgba(0,0,0,0.8)" pointer-events="all" />
 <g id="Group_1602">
 <g id="Group_1601">
 <g id="Rectangle_436-2">
@@ -1932,26 +1921,28 @@
 <text id="Light Intensity:" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="132.5" y="231.621">Light Intensity: </tspan></text>
 <text id="Photosynthesis increases with light intensity up to a limit; excessive light can" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="389.52" y="231.621">Photosynthesis increases with light intensity up to a limit; excessive light can </tspan></text>
 <text id="damage chlorophyll, causing leaf yellowing and lower photosynthesis rates. Low light makes it the" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="287.621">damage chlorophyll, causing leaf yellowing and lower photosynthesis rates. Low light makes it the </tspan></text>
-<text id="limiting factor, regardless of CO" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="343.621">limiting factor, regardless of CO</tspan></text>
-<text id="2_14" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="19.83" letter-spacing="0em"><tspan x="647.37" y="355.778">2</tspan></text>
-<text id="or water availability." fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="659.2" y="343.621"> or water availability.</tspan></text>
-<text id="Carbon Dioxide:" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="132.5" y="399.621">Carbon Dioxide: </tspan></text>
-<text id="CO_6" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="402.19" y="399.621">CO</tspan></text>
-<text id="2_15" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="19.83" letter-spacing="0em"><tspan x="450.08" y="411.778">2</tspan></text>
-<text id="is the main limiting factor, with atmospheric levels of 0.03%&#226;&#128;&#147;0.04%. Increasing" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="461.91" y="399.621"> is the main limiting factor, with atmospheric levels of 0.03%&#x2013;0.04%. Increasing </tspan></text>
+<text id="limiting_factor_regardless_of_CO2" fill="black" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em">
+<tspan x="132.5" y="343.621">limiting factor, regardless of CO</tspan><tspan dy="12.16" font-size="19.83">2</tspan><tspan dy="-12.16"> or water availability.</tspan>
+</text>
+<text id="Carbon_Dioxide_para" fill="black" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em">
+<tspan x="132.5" y="399.621" font-weight="bold">Carbon Dioxide: </tspan>
+<tspan>CO</tspan><tspan dy="12.16" font-size="19.83">2</tspan><tspan dy="-12.16"> is the main limiting factor, with atmospheric levels of 0.03%&ndash;0.04%. Increasing </tspan>
+</text>
 <text id="to 0.05% enhances photosynthesis, but higher levels may be harmful over time." fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="455.621">to 0.05% enhances photosynthesis, but higher levels may be harmful over time.</tspan></text>
-<text id="Temperature:" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="132.5" y="511.621">Temperature: </tspan></text>
-<text id="Photosynthesis is temperature-sensitive, with an optimum at 35&#194;&#176; C. A 10&#194;&#176; C increase" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="363.82" y="511.621">Photosynthesis is temperature-sensitive, with an optimum at 35&#xb0; C. A 10&#xb0; C increase </tspan></text>
-<text id="can double the rate, but beyond 40&#194;&#176; C, the process halts due to enzyme denaturation." fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="567.621">can double the rate, but beyond 40&#xb0; C, the process halts due to enzyme denaturation.</tspan></text>
-<text id="Water:" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="132.5" y="623.621">Water: </tspan></text>
-<text id="Water supports turgidity in guard cells for stomatal opening, allowing CO" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="248.57" y="623.621">Water supports turgidity in guard cells for stomatal opening, allowing CO</tspan></text>
-<text id="2_16" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="19.83" letter-spacing="0em"><tspan x="1426.35" y="635.778">2</tspan></text>
-<text id="entry. Only about" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="1438.18" y="623.621"> entry. Only about </tspan></text>
+<text id="Temperature_para" fill="black" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em">
+<tspan x="132.5" y="511.621" font-weight="bold">Temperature: </tspan>
+<tspan>Photosynthesis is temperature-sensitive, with an optimum at 35&deg;C. A 10&deg;C increase </tspan>
+</text>
+<text id="Temperature_para_2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="567.621">can double the rate, but beyond 40&deg;C, the process halts due to enzyme denaturation.</tspan></text>
+<text id="Water_para_header" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="132.5" y="623.621">Water: </tspan></text>
+<text id="Water_para_content" fill="black" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em">
+<tspan x="248.57" y="623.621">Water supports turgidity in guard cells for stomatal opening, allowing CO</tspan><tspan dy="12.16" font-size="19.83">2</tspan><tspan dy="-12.16"> entry. Only about </tspan>
+</text>
 <text id="1% of absorbed water is used in photosynthesis. Water stress leads to wilting and stomatal closure," fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="679.621">1% of absorbed water is used in photosynthesis. Water stress leads to wilting and stomatal closure, </tspan></text>
 <text id="while excess water causes waterlogging and root rot, both hindering photosynthesis." fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="735.621">while excess water causes waterlogging and root rot, both hindering photosynthesis.</tspan></text>
-<text id="For optimal food production, plants need a &#34;perfect balance.&#34; Adequate light, CO" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="847.621">For optimal food production, plants need a &#34;perfect balance.&#34; Adequate light, CO</tspan></text>
-<text id="2_17" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="19.83" letter-spacing="0em"><tspan x="1425.92" y="859.778">2</tspan></text>
-<text id="and water are" fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="1437.75" y="847.621"> and water are </tspan></text>
+<text id="Perfect_Balance_para" fill="black" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em">
+<tspan x="132.5" y="847.621">For optimal food production, plants need a "perfect balance." Adequate light, CO</tspan><tspan dy="12.16" font-size="19.83">2</tspan><tspan dy="-12.16"> and water are </tspan>
+</text>
 <text id="essential; too much heat can damage enzymes." fill="black" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="34" letter-spacing="0em"><tspan x="132.5" y="903.621">essential; too much heat can damage enzymes.</tspan></text>
 </g>
 <g id="Group_1331">
@@ -2022,6 +2013,19 @@
 </g>
 </g>
 </g>
+</g>
+</g>
+<g id="arrow_water">
+<path id="Path_1438" d="M591.54 681.25C591.54 681.25 612.85 675.15 622.81 667.96C621.9 672.43 617.87 679.11 617.87 679.11C617.87 679.11 655.55 686.77 662.27 717.73C652.88 701.02 632.65 691.41 616.12 687.88C617.23 690.75 617.26 700.3 617.26 700.3C617.26 700.3 605.1 685.51 591.53 681.25H591.54Z" fill="#00BDCF"/>
+</g>
+<g id="text_water">
+<g id="H2O">
+<text id="H" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="680.08" y="709.361">H</tspan></text>
+<text id="2_4" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="13.42" font-weight="500" letter-spacing="0em"><tspan x="696.42" y="717.837">2</tspan></text>
+<text id="O_2" fill="#7DCFFF" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="704.04" y="709.361">O</tspan></text>
+</g>
+<g id="Water-2">
+<text id="Water_3" fill="white" style="white-space: pre" xml:space="preserve" font-family="Roboto" font-size="23" font-weight="500" letter-spacing="0em"><tspan x="671.81" y="685.361">Water</tspan></text>
 </g>
 </g>
 </svg>
