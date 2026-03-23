@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-03-23T15:05:52+05:30",
+      "updatedAt": "2026-03-23T15:39:04+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg26-word-discovery-adventure": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-23T15:39:04+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "reset widget fixed",
+      "widgets": [
+        24
+      ]
+    },
     {
       "date": "2026-03-23T15:28:18+05:30",
       "author": "PrasannaP",
@@ -609,14 +617,6 @@
       "message": "v1",
       "widgets": [
         82
-      ]
-    },
-    {
-      "date": "2026-03-20T16:57:28+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Update tone lab insights content and positioning",
-      "widgets": [
-        89
       ]
     }
   ]
