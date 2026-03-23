@@ -239,3 +239,11 @@ svg * {
   transform: translateX(-50%);
   font-weight: 600;
 }
+
+.test {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  top: -65px;
+  transform: scale(1.7);
+}

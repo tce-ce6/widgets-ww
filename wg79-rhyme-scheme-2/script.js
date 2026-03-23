@@ -1,449 +1,473 @@
 const STANZAS = [
   {
     "stanza": [
-      "Slowly, silently, now the moon",
-      "Walks the night in her silver shoon;",
-      "This way, and that, she peers, and sees",
-      "Silver fruit upon silver trees;"
+      "Two roads diverged in a yellow wood,",
+      "And sorry I could not travel both",
+      "And be one traveller, long I stood",
+      "And looked down one as far as I could",
+      "To where it bent in the undergrowth;"
     ],
-    "source": "Silver, Walter de la Mare",
+    "source": "The Road Not Taken, Robert Frost",
     "rhyming_words": {
-      "a": ["moon", "shoon"],
-      "b": ["sees", "trees"]
+      "a": ["wood", "stood", "could"],
+      "b": ["both", "undergrowth"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "abaab"
   },
   {
     "stanza": [
-      "One by one the casements catch",
-      "Her beams beneath the silvery thatch;",
-      "Couched in his kennel, like a log,",
-      "With paws of silver sleeps the dog;"
+      "A pilgrim, going a lone high way",
+      "Came at evening, cold and gray",
+      "To a chasm, deep and vast and wide.",
+      "The old man crossed in the twilight dim.",
+      "The chasm held no fear for him.",
+      "But he paused when he reached the other side",
+      "And built a bridge to span the tide."
     ],
-    "source": "Silver, Walter de la Mare",
+    "source": "The Pilgrim",
     "rhyming_words": {
-      "a": ["catch", "thatch"],
-      "b": ["log", "dog"]
+      "a": ["way", "gray"],
+      "b": ["wide", "side", "tide"],
+      "c": ["dim", "him"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "aabccbb"
   },
   {
     "stanza": [
-      "The woman was old and ragged and gray,",
-      "And bent with the chill of a winter’s day;",
-      "The streets were white with a recent snow,",
-      "And the woman’s feet with age were slow."
+      "The pilgrim raised his old gray head,",
+      "“My friend in the path I’ve come,” he said,",
+      "“There followeth after me today",
+      "A fair haired youth, who must pass this way.",
+      "The chasm which held no fears for me",
+      "To the fair haired youth, may a pitfall be.",
+      "He, too, must cross in the twilight dim.",
+      "My friend, I am building this bridge for him.”"
     ],
-    "source": "Somebody’s Mother, Mary Dow Brine",
+    "source": "The Pilgrim",
     "rhyming_words": {
-      "a": ["gray", "day"],
-      "b": ["snow", "slow"]
+      "a": ["head", "said"],
+      "b": ["today", "way"],
+      "c": ["me", "be"],
+      "d": ["dim", "him"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "aabbccdd"
   },
   {
     "stanza": [
-      "Out of the night that covers me,",
-      "Black as the Pit from pole to pole",
-      "I thank whatever gods may be",
-      "For my unconquerable soul."
+      "I saw a donkey one day old.",
+      "His head was too big",
+      "for his neck to hold;",
+      "His legs were shaky",
+      "and long and loose,",
+      "They rocketed and staggered",
+      "and weren’t much use."
     ],
-    "source": "Invictus, William Ernst Henley",
+    "source": "The Donkey",
     "rhyming_words": {
-      "a": ["me", "be"],
-      "b": ["pole", "soul"]
+      "a": ["old", "hold"],
+      "b": ["big"],
+      "c": ["shaky"],
+      "d": ["loose", "use"],
+      "e": ["staggered"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "abacded"
   },
   {
     "stanza": [
-      "In the fell clutch of circumstance",
-      "I have not winced nor cried aloud.",
-      "Under the bludgeonings of chance",
-      "My head is bloody, but unbowed."
+      "He tried to gambol",
+      "and frisk a bit,",
+      "but he wasn’t quite sure",
+      "of the trick of it.",
+      "His queer little coat",
+      "was soft and grey",
+      "and curled at his neck",
+      "in a lovely way."
     ],
-    "source": "Invictus, William Ernst Henley",
+    "source": "The Donkey",
     "rhyming_words": {
-      "a": ["circumstance", "chance"],
-      "b": ["aloud", "unbowed"]
+      "a": ["gambol"],
+      "b": ["bit", "it"],
+      "c": ["sure"],
+      "d": ["coat"],
+      "e": ["grey", "way"],
+      "f": ["neck"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "abcbdefe"
   },
   {
     "stanza": [
-      "Have you ever seen a sheet on a riverbed?",
-      "Or a single hair from a hammer’s head?",
-      "Has the foot of a mountain any toes?",
-      "And is there a pair of garden hose?"
+      "Then took the other, as just as fair,",
+      "And having perhaps the better claim,",
+      "Because it was grassy and wanted wear;",
+      "Though as for that the passing there",
+      "Had worn them really about the same"
     ],
-    "source": null,
+    "source": "The Road Not Taken, Robert Frost",
     "rhyming_words": {
-      "a": ["riverbed", "head"],
-      "b": ["toes", "hose"]
+      "a": ["fair", "wear", "there"],
+      "b": ["claim", "same"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "abaab"
   },
   {
     "stanza": [
-      "A thing of beauty is a joy for ever",
-      "Its loveliness increases; it will never",
-      "Pass into nothingness; but still will keep",
-      "A bower quiet for us, and a sleep"
+      "Profoundly I pity the vet, who must learn",
+      "Such a very great deal for his pay;",
+      "My son, I advise you most strongly to earn",
+      "Your living an easier way.",
+      "Don’t attempt to attend the zoological crowd;",
+      "a far more advisable plan",
+      "Is to call yourself ‘Doctor’, and so be allowed",
+      "To treat the illnesses of man."
     ],
-    "source": "A Thing of Beauty, John Keats",
+    "source": "The Vet, Guy Boas",
     "rhyming_words": {
-      "a": ["ever", "never"],
-      "b": ["keep", "sleep"]
+      "a": ["learn", "earn"],
+      "b": ["pay", "way"],
+      "c": ["crowd", "allowed"],
+      "d": ["plan", "man"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "ababcdcd"
   },
   {
     "stanza": [
-      "Full of sweet dreams, and health and quiet breathing.",
-      "Therefore, on every morrow, are we wreathing",
-      "A flowery band to bind us to the earth,",
-      "Spite of despondence, of the inhuman dearth"
+      "Only the first half of the month has passed,",
+      "But alas, the money doesn’t last!",
+      "Great books and manuscripts are so expensive.",
+      "They are treasures rare and exclusive",
+      "But from my school, I will try to borrow",
+      "Books that will take you to a brighter tomorrow."
     ],
-    "source": "A Thing of Beauty, John Keats",
+    "source": "Abdul Becomes a Courtier, Pratibha Nath",
     "rhyming_words": {
-      "a": ["breathing", "wreathing"],
-      "b": ["earth", "dearth"]
+      "a": ["passed", "last"],
+      "b": ["expensive", "exclusive"],
+      "c": ["borrow", "tomorrow"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "aabbcc"
   },
   {
     "stanza": [
-      "I wrote some lines once on a time",
-      "In wondrous merry mood,",
-      "And thought, as usual, men would say",
-      "They were exceeding good."
+      "If I were Lord of Tartary,",
+      "Myself and me alone,",
+      "My bed should be of ivory,",
+      "Of beaten gold my throne;",
+      "And in my court should peacocks flaunt,",
+      "And in my forests tigers haunt,",
+      "And in my pools great fishes slant",
+      "Their fins athwart the sun."
     ],
-    "source": "The Height of the Ridiculous, Oliver Wendell Holmes",
+    "source": "Tartary, Walter de la Mare",
     "rhyming_words": {
-      "a": ["time"],
-      "b": ["mood", "good"],
-      "c": ["say"]
+      "a": ["Tartary", "ivory"],
+      "b": ["alone", "throne"],
+      "c": ["flaunt", "haunt"],
+      "d": ["slant"],
+      "e": ["sun"]
     },
-    "rhyme_scheme": "abcb"
+    "rhyme_scheme": "ababccde"
   },
   {
     "stanza": [
-      "They were so queer, so very queer,",
-      "I laughed as I would die;",
-      "Albeit, in the general way,",
-      "A sober man am I."
+      "’Mid pleasures and palaces though we may roam,",
+      "Be it ever so humble, there’s no place like home;",
+      "A charm from the sky seems to hallow us there,",
+      "Which, seek through the world, is ne’er met with elsewhere.",
+      "Home, home, sweet, sweet home !",
+      "There’s no place like home, oh, there’s no place like home !"
     ],
-    "source": "The Height of the Ridiculous, Oliver Wendell Holmes",
+    "source": "Home Sweet Home, John Howard Payne",
     "rhyming_words": {
-      "a": ["queer"],
-      "b": ["die", "I"],
-      "c": ["way"]
+      "a": ["roam", "home", "home", "home"],
+      "b": ["there", "elsewhere"]
     },
-    "rhyme_scheme": "abcb"
+    "rhyme_scheme": "aabbaa"
   },
   {
     "stanza": [
-      "Turn, turn thy hasty foot aside,",
-      "Nor crush that helpless worm!",
-      "The frame thy scornful looks deride",
-      "Requir’d a God to form."
+      "I gaze on the moon as I tread the drear wild,",
+      "And feel that my mother now thinks of her child,",
+      "As she looks on that moon from our own cottage door",
+      "Thro’ the woodbine, whose fragrance shall cheer me no more.",
+      "Home, home, sweet, sweet home!",
+      "There’s no place like home, oh, there’s no place like home!"
     ],
-    "source": "The Worm, Thomas Gisborne",
+    "source": "Home Sweet Home, John Howard Payne",
     "rhyming_words": {
-      "a": ["aside", "deride"],
-      "b": ["worm", "form"]
+      "a": ["wild", "child", "home", "home"],
+      "b": ["door", "more"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "aabbaa"
   },
   {
     "stanza": [
-      "The common Lord of all that move,",
-      "From whom thy being flow’d,",
-      "A portion of His boundless love",
-      "On that poor worm bestow’d."
+      "Sleep, sleep, my treasure,",
+      "The long day’s pleasure",
+      "Has tired the birds, to their nests they creep;",
+      "The garden still is",
+      "Alight with lilies,",
+      "But all the daisies are fast asleep."
     ],
-    "source": "The Worm, Thomas Gisborne",
+    "source": "Sleep, My Treasure, E. Nesbit",
     "rhyming_words": {
-      "a": ["move", "love"],
-      "b": ["flow’d", "bestow’d"]
+      "a": ["treasure", "pleasure"],
+      "b": ["creep", "asleep"],
+      "c": ["is", "lilies"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "aabccb"
   },
   {
     "stanza": [
-      "Tell me, tell me, smiling child,",
-      "What the past is like to thee?",
-      "‘An Autumn evening soft and mild",
-      "With a wind that sighs mournfully.’"
+      "I know a funny little man,",
+      "As quiet as a mouse,",
+      "Who does the mischief that is done",
+      "In everybody’s house!",
+      "There’s no one ever sees his face,",
+      "And yet we all agree",
+      "That every plate we break was cracked",
+      "By Mr Nobody."
     ],
-    "source": "Past, Present, Future, Emily Bronte",
+    "source": "Mr. Nobody",
     "rhyming_words": {
-      "a": ["child", "mild"],
-      "b": ["thee", "mournfully"]
+      "a": ["man"],
+      "b": ["mouse", "house"],
+      "c": ["done"],
+      "d": ["face"],
+      "e": ["agree", "Nobody"],
+      "f": ["cracked"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "abcbdefe"
   },
   {
     "stanza": [
-      "Tell me, what is the present hour?",
-      "‘A green and flowery spray",
-      "Where a young bird sits gathering its power",
-      "To mount and fly away.’"
+      "If I can stop one heart from breaking,",
+      "I shall not live in vain ;",
+      "If I can ease one life the aching,",
+      "Or cool one pain,",
+      "Or help one fainting robin",
+      "Unto his nest again,",
+      "I shall not live in vain."
     ],
-    "source": "Past, Present, Future, Emily Bronte",
+    "source": "If I can stop one heart from breaking, Emily Dickinson",
     "rhyming_words": {
-      "a": ["hour", "power"],
-      "b": ["spray", "away"]
+      "a": ["breaking", "aching"],
+      "b": ["vain", "pain"],
+      "c": ["robin"],
+      "d": ["again", "vain"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "ababcdd"
   },
   {
     "stanza": [
-      "And what is the future, happy one?",
-      "‘A sea beneath a cloudless sun;",
-      "A mighty, glorious, dazzling sea",
-      "Stretching into infinity."
+      "“Come, little leaves,’’",
+      "Said the wind one day,",
+      "“Come over the meadows",
+      "With me, and play;",
+      "Put on your dresses",
+      "Of red and gold;",
+      "Summer is gone,",
+      "And the days grow cold.”"
     ],
-    "source": "Past, Present, Future, Emily Bronte",
+    "source": "An Autumn Greeting, George Cooper",
     "rhyming_words": {
-      "a": ["one", "sun"],
-      "b": ["sea", "infinity"]
+      "a": ["leaves"],
+      "b": ["day", "play"],
+      "c": ["meadows"],
+      "d": ["dresses"],
+      "e": ["gold", "cold"],
+      "f": ["gone"]
     },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "abcbdefe"
   },
   {
     "stanza": [
-      "How cheerfully he seems to grin,",
-      "How neatly spreads his claws,",
-      "And welcomes little fishes in,",
-      "With gently smiling jaws!"
+      "When the humid shadows hover",
+      "Over all the starry spheres",
+      "And the melancholy darkness",
+      "Gently weeps in rainy tears,",
+      "What a bliss to press the pillow",
+      "Of a cottage-chamber bed",
+      "And lie listening to the patter",
+      "Of the soft rain overhead!"
     ],
-    "source": "A Parody, Lewis Carroll",
+    "source": "Rain on the Roof, Coates Kinney",
     "rhyming_words": {
-      "a": ["grin", "in"],
-      "b": ["claws", "jaws"]
+      "a": ["hover"],
+      "b": ["spheres", "tears"],
+      "c": ["darkness"],
+      "d": ["pillow"],
+      "e": ["bed", "overhead"],
+      "f": ["patter"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "abcbdefe"
   },
   {
     "stanza": [
-      "I come from haunts of coot and hern,",
-      "I make a sudden sally",
-      "And sparkle out among the fern,",
-      "To bicker down a valley."
+      "A slumber did my spirit seal—",
+      "I had no human fears.",
+      "She seemed a thing that could not feel",
+      "The touch of earthly years.",
+      "No motion has she now, no force—",
+      "She neither hears nor sees,",
+      "Rolled round in earth’s diurnal course",
+      "With rocks and stones and trees."
     ],
-    "source": "The Brook, Alfred Tennyson",
+    "source": "A Slumber Did My Spirit Seal, William Wordsworth",
     "rhyming_words": {
-      "a": ["hern", "fern"],
-      "b": ["sally", "valley"]
+      "a": ["seal", "feel"],
+      "b": ["fears", "years"],
+      "d": ["force", "course"],
+      "e": ["sees", "trees"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "ababdefe"
   },
   {
     "stanza": [
-      "By thirty hills I hurry down,",
-      "Or slip between the ridges,",
-      "By twenty thorpes, a little town,",
-      "An half a hundred bridges."
+      "If ever you should go by chance",
+      "To jungles in the east;",
+      "And if there should to you advance",
+      "A large and tawny beast,",
+      "If he roars at you as you’re dyin’",
+      "You’ll know it is the Asian Lion..."
     ],
-    "source": "The Brook, Alfred Tennyson",
+    "source": "How to Tell Wild Animals, Carolyn Wells",
     "rhyming_words": {
-      "a": ["down", "town"],
-      "b": ["ridges", "bridges"]
+      "a": ["chance", "advance"],
+      "b": ["east", "beast"],
+      "c": ["dyin’"],
+      "d": ["Lion"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "ababcd"
   },
   {
     "stanza": [
-      "Till last by Philip’s farm I flow",
-      "To join the brimming river,",
-      "For men may come and men may go,",
-      "But I go on forever."
+      "The true Chameleon is small,",
+      "A lizard sort of thing;",
+      "He hasn’t any ears at all,",
+      "And not a single wing.",
+      "If there is nothing on the tree,",
+      "’Tis the chameleon you see."
     ],
-    "source": "The Brook, Alfred Tennyson",
+    "source": "How to Tell Wild Animals, Carolyn Wells",
     "rhyming_words": {
-      "a": ["flow", "go"],
-      "b": ["river", "forever"]
+      "a": ["small", "all"],
+      "b": ["thing", "wing"],
+      "c": ["tree", "see"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "ababcc"
   },
   {
     "stanza": [
-      "There’s a silver house in the lovely sky,",
-      "As round as a silver crown;",
-      "It takes two weeks to build it up,",
-      "And two to pull it down."
+      "Don’t bite your nails, Amanda!",
+      "Don’t hunch your shoulders, Amanda!",
+      "Stop that slouching and sit up straight,",
+      "Amanda!",
+      "(There is a languid, emerald sea,",
+      "where the sole inhabitant is me—",
+      "a mermaid, drifting blissfully.)"
     ],
-    "source": "Silver House, John Lea",
+    "source": "Amanda, Robin Klein",
     "rhyming_words": {
-      "a": ["sky"],
-      "b": ["crown", "down"],
-      "c": ["up"]
+      "a": ["Amanda", "Amanda", "Amanda"],
+      "b": ["sea", "me", "blissfully"]
     },
-    "rhyme_scheme": "abcb"
+    "rhyme_scheme": "aaabbb"
   },
   {
     "stanza": [
-      "There’s a man who lives in the silver house,",
-      "In a lonely sort of way;",
-      "But what his name is no one knows,",
-      "Or no one likes to say."
+      "“Never shall a young man,",
+      "Thrown into despair",
+      "By those great honey-coloured",
+      "Ramparts at your ear,",
+      "Love you for yourself alone",
+      "And not your yellow hair.”"
     ],
-    "source": "Silver House, John Lea",
+    "source": "For Anne Gregory, W.B.Yeats",
     "rhyming_words": {
-      "a": ["house"],
-      "b": ["way", "say"],
-      "c": ["knows"]
+      "a": ["man"],
+      "b": ["despair", "ear", "hair"],
+      "c": ["coloured"],
+      "d": ["alone"]
     },
-    "rhyme_scheme": "abcb"
+    "rhyme_scheme": "abcbdb"
   },
   {
     "stanza": [
-      "I will arise and go now, and go to Innisfree,",
-      "And a small cabin build there, of clay and wattles made:",
-      "Nine bean-rows will I have there, a hive for the honeybee,",
-      "And live alone in the bee-loud glade."
+      "And both that morning equally lay",
+      "In leaves no step had trodden black.",
+      "Oh, I kept the first for another day!",
+      "Yet knowing how way leads on to way,",
+      "I doubted if I should ever come back."
     ],
-    "source": "The Lake Isle of Innisfree, W.B. Yeats",
+    "source": "The Road Not Taken, Robert Frost",
     "rhyming_words": {
-      "a": ["Innisfree", "honeybee"],
-      "b": ["made", "glade"]
+      "a": ["lay", "day", "way"],
+      "b": ["black", "back"]
     },
-    "rhyme_scheme": "abab"
+    "rhyme_scheme": "abaab"
   },
   {
     "stanza": [
-      "Away, away in the Northland,",
-      "Where the hours of the day are few,",
-      "And the nights are so long in winter",
-      "That they cannot sleep them through;"
+      "I shall be telling this with a sigh",
+      "Somewhere ages and ages hence:",
+      "Two roads diverged in a wood, and I—",
+      "I took the one less traveled by,",
+      "And that has made all the difference."
     ],
-    "source": "A Legend of the Northland, Phoebe Cary",
+    "source": "The Road Not Taken, Robert Frost",
     "rhyming_words": {
-      "a": ["Northland"],
-      "b": ["few", "through"],
-      "c": ["winter"]
+      "a": ["sigh", "I", "by"],
+      "b": ["hence", "difference"]
     },
-    "rhyme_scheme": "abcb"
+    "rhyme_scheme": "abaab"
   },
   {
     "stanza": [
-      "Where they harness the swift reindeer",
-      "To the sledges, when it snows;",
-      "And the children look like bear’s cubs",
-      "In their funny, furry clothes:"
-    ],
-    "source": "A Legend of the Northland, Phoebe Cary",
-    "rhyming_words": {
-      "a": ["reindeer"],
-      "b": ["snows", "clothes"],
-      "c": ["cubs"]
-    },
-    "rhyme_scheme": "abcb"
-  },
-  {
-    "stanza": [
-      "The way a crow",
-      "Shook down on me",
-      "The dust of snow",
-      "From a hemlock tree"
-    ],
-    "source": "Dust of Snow, Robert Frost",
-    "rhyming_words": {
-      "a": ["crow", "snow"],
-      "b": ["me", "tree"]
-    },
-    "rhyme_scheme": "abab"
-  },
-  {
-    "stanza": [
-      "Has given my heart",
-      "A change of mood",
-      "And saved some part",
-      "Of a day I had rued."
-    ],
-    "source": "Dust of Snow, Robert Frost",
-    "rhyming_words": {
-      "a": ["heart", "part"],
-      "b": ["mood", "rued"]
-    },
-    "rhyme_scheme": "abab"
-  },
-  {
-    "stanza": [
-      "Some say the world will end in fire",
-      "Some say in ice.",
-      "From what I’ve tasted of desire",
-      "I hold with those who favour fire."
+      "But if it had to perish twice,",
+      "I think I know enough of hate",
+      "To say that for destruction ice",
+      "Is also great",
+      "And would suffice."
     ],
     "source": "Fire and Ice, Robert Frost",
     "rhyming_words": {
-      "a": ["fire", "desire", "fire"],
-      "b": ["ice"]
+      "a": ["twice", "ice", "suffice"],
+      "b": ["hate", "great"]
     },
-    "rhyme_scheme": "abaa"
-  },
-  {
-    "stanza": [
-      "He stalks in his vivid stripes",
-      "The few steps of his cage,",
-      "On pads of velvet quiet,",
-      "In his quiet rage."
-    ],
-    "source": "A Tiger in the Zoo, Leslie Norris",
-    "rhyming_words": {
-      "a": ["stripes"],
-      "b": ["cage", "rage"],
-      "c": ["quiet"]
-    },
-    "rhyme_scheme": "abcb"
-  },
-  {
-    "stanza": [
-      "Belinda lived in a little white house,",
-      "With a little black kitten and a little grey mouse,",
-      "And a little yellow dog and a little red wagon,",
-      "And a realio, trulio, little pet dragon."
-    ],
-    "source": "The Tale of Custard the Dragon, Ogden Nash",
-    "rhyming_words": {
-      "a": ["house", "mouse"],
-      "b": ["wagon", "dragon"]
-    },
-    "rhyme_scheme": "aabb"
+    "rhyme_scheme": "ababa"
   }
 ];
 
-const wordsAudio = {
-  "Stanza_01": "./Assets/Audio/Stanza_01",
-  "Stanza_02": "./Assets/Audio/Stanza_02",
-  "Stanza_03": "./Assets/Audio/Stanza_03",
-  "Stanza_04": "./Assets/Audio/Stanza_04",
-  "Stanza_05": "./Assets/Audio/Stanza_05",
-  "Stanza_06": "./Assets/Audio/Stanza_06",
-  "Stanza_07": "./Assets/Audio/Stanza_07",
-  "Stanza_08": "./Assets/Audio/Stanza_08",
-  "Stanza_09": "./Assets/Audio/Stanza_09",
-  "Stanza_10": "./Assets/Audio/Stanza_10",
-  "Stanza_11": "./Assets/Audio/Stanza_11",
-  "Stanza_12": "./Assets/Audio/Stanza_12",
-  "Stanza_13": "./Assets/Audio/Stanza_13",
-  "Stanza_14": "./Assets/Audio/Stanza_14",
-  "Stanza_15": "./Assets/Audio/Stanza_15",
-  "Stanza_16": "./Assets/Audio/Stanza_16",
-  "Stanza_17": "./Assets/Audio/Stanza_17",
-  "Stanza_18": "./Assets/Audio/Stanza_18",
-  "Stanza_19": "./Assets/Audio/Stanza_19",
-  "Stanza_20": "./Assets/Audio/Stanza_20",
-  "Stanza_21": "./Assets/Audio/Stanza_21",
-  "Stanza_22": "./Assets/Audio/Stanza_22",
-  "Stanza_23": "./Assets/Audio/Stanza_23",
-  "Stanza_24": "./Assets/Audio/Stanza_24",
-  "Stanza_25": "./Assets/Audio/Stanza_25",
-  "Stanza_26": "./Assets/Audio/Stanza_26",
-  "Stanza_27": "./Assets/Audio/Stanza_27",
-  "Stanza_28": "./Assets/Audio/Stanza_28",
-  "Stanza_29": "./Assets/Audio/Stanza_29"
+const wordsaudio = {
+  "stanza_01": "./assets/audio/stanza-01",
+  "stanza_02": "./assets/audio/stanza-02",
+  "stanza_03": "./assets/audio/stanza-03",
+  "stanza_04": "./assets/audio/stanza-04",
+  "stanza_05": "./assets/audio/stanza-05",
+  "stanza_06": "./assets/audio/stanza-06",
+  "stanza_07": "./assets/audio/stanza-07",
+  "stanza_08": "./assets/audio/stanza-08",
+  "stanza_09": "./assets/audio/stanza-09",
+  "stanza_10": "./assets/audio/stanza-10",
+  "stanza_11": "./assets/audio/stanza-11",
+  "stanza_12": "./assets/audio/stanza-12",
+  "stanza_13": "./assets/audio/stanza-13",
+  "stanza_14": "./assets/audio/stanza-14",
+  "stanza_15": "./assets/audio/stanza-15",
+  "stanza_16": "./assets/audio/stanza-16",
+  "stanza_17": "./assets/audio/stanza-17",
+  "stanza_18": "./assets/audio/stanza-18",
+  "stanza_19": "./assets/audio/stanza-19",
+  "stanza_20": "./assets/audio/stanza-20",
+  "stanza_21": "./assets/audio/stanza-21",
+  "stanza_22": "./assets/audio/stanza-22",
+  "stanza_23": "./assets/audio/stanza-23",
+  "stanza_24": "./assets/audio/stanza-24",
+  "stanza_25": "./assets/audio/stanza-25",
+  "stanza_26": "./assets/audio/stanza-26",
+  "stanza_27": "./assets/audio/stanza-27",
+  "stanza_28": "./assets/audio/stanza-28",
+  "stanza_29": "./assets/audio/stanza-29"
 }
 
 // --- UI wiring & interaction ---
@@ -455,16 +479,18 @@ let activeRhyme = null;        // 'a' or 'b'
 let completedRhymes = new Set();
 
 let correctWordsSet = new Set();   // stores correctly answered word elements
-let stanzaAudioPlayed = false;    // prevents repeat audio
+let stanzaaudioPlayed = false;    // prevents repeat audio
 
 const soundIcon = document.getElementById('sound-icon');
 const showAnswerBtn = document.getElementById('showAnswer');
 
 const markerStyles = {
-  green: { color: '#7ef241', cursor: "url('Assets/Images/Final images/Green_Highlighter.svg') 64 64, auto" },
-  yellow: { color: '#f7f734', cursor: "url('Assets/Images/Final images/Yellow_Highlighter.svg') 64 64, auto" },
-  blue: { color: '#43ceff', cursor: "url('Assets/Images/Final images/Blue_Highlighter.svg')64 64, auto" },
-  pink: { color: '#ff43b7', cursor: "url('Assets/Images/Final images/Pink_Highlighter.svg') 64 64, auto" },
+  green: { color: '#7ef241', cursor: "url('assets/images/final-images/Green_Highlighter.svg') 64 64, auto" },
+  yellow: { color: '#ffdb14', cursor: "url('assets/images/final-images/Yellow_Highlighter.svg') 64 64, auto" },
+  blue: { color: '#43ceff', cursor: "url('assets/images/final-images/Blue_Highlighter.svg') 64 64, auto" },
+  pink: { color: '#ff43b7', cursor: "url('assets/images/final-images/Pink_Highlighter.svg') 64 64, auto" },
+  orange: { color: '#ff8800', cursor: "url('assets/images/final-images/Orange_Highlighter.svg') 64 64, auto" },
+  purple: { color: '#aa33ff', cursor: "url('assets/images/final-images/Violet_Highlighter.svg') 64 64, auto" }
 };
 
 function setMarkerEnabled(markerEl, enabled) {
@@ -479,16 +505,20 @@ function resetMarkers() {
   soundIcon.style.display = 'none';
   showAnswerBtn.disabled = true;
   setMarkerEnabled(markers.green, true);
-  ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
+  ['yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], false));
 
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 8; i++) {
     const rEl = document.getElementById(`r${i}`);
     const signEl = document.getElementById(`sign${i}`);
+    const warnEl = document.getElementById(`warn${i}`);
 
-    if (rEl) rEl.textContent = '';
+    if (rEl) {
+      rEl.textContent = '';
+      rEl.style.color = '';
+    }
     if (signEl) signEl.src = '';
+    if (warnEl) warnEl.src = '';
   }
-
 }
 
 function setActiveMarker(name, opts = {}) {
@@ -501,7 +531,7 @@ function setActiveMarker(name, opts = {}) {
   showAnswerBtn.textContent = 'Show Answer'
   // Unlock other markers only after the user explicitly clicks green
   if (name === 'green' && unlockOthers) {
-    ['yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], true));
+    ['yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], true));
   }
 }
 
@@ -555,14 +585,18 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
     a: markerStyles.green.color,
     b: markerStyles.yellow.color,
     c: markerStyles.blue.color,
-    d: markerStyles.pink.color
+    d: markerStyles.pink.color,
+    e: markerStyles.orange.color,
+    f: markerStyles.purple.color
   };
 
   const RHYME_COLORS = {
     a: '#7ef241',
-    b: '#f7f734',
+    b: '#e8b83f',
     c: '#43ceff',
-    d: '#ff43b7'
+    d: '#ff43b7',
+    e: '#ff8800',
+    f: '#aa33ff'
   };
 
   const schemaColor = rhymeColorMap[letter];
@@ -582,16 +616,23 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
     const markerLetter = Object.keys(RHYME_COLORS).find(key => RHYME_COLORS[key] === markerColor) || 'a';
     if (letterTag) {
       letterTag.textContent = markerLetter;
-      letterTag.style.fill = markerColor; // ALWAYS schema color
+      // We now modify color because letterTag is a standard HTML span.
+      // Fill is for SVG, but we support both just in case.
+      letterTag.style.color = markerColor;
+      letterTag.style.fill = markerColor;
     }
 
     if (signTag) {
       // Define the paths to your local SVG files
-      const correctPath = 'Assets/Images/right-mark.svg';
-      const wrongPath = 'Assets/Images/wrong-mark.svg';
-    
+      const correctPath = 'assets/images/right-mark.svg';
+      const wrongPath = 'assets/images/wrong-mark.svg';
+
       // Update the src based on the boolean
       signTag.src = isCorrect ? correctPath : wrongPath;
+      const warnTag = document.getElementById(`warn${idx + 1}`);
+      if (warnTag) {
+        warnTag.src = isCorrect ? '' : 'assets/images/alert-popup.svg';
+      }
     }
 
     if (isCorrect) {
@@ -600,7 +641,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
       correctWordsSet.delete(el); // important if marker changed
     }
 
-    checkAndPlayStanzaAudio();
+    checkAndPlayStanzaaudio();
   }
 }
 
@@ -647,17 +688,6 @@ function attachWordClicks(rhymingWords, scheme) {
       // Add clicked word
       record.spans.add(el);
 
-      // 🔥 ALWAYS re-evaluate using CURRENT marker color
-      // record.spans.forEach(span => {
-      //   applyHighlight(
-      //     span,
-      //     targetLetter,
-      //     activeMarker.color, // ← current marker ONLY
-      //     true,
-      //     idx
-      //   );
-      // });
-
     };
   });
 }
@@ -666,7 +696,7 @@ function hideAnswer() {
   // 1. Usuń wyróżnienia ze słów
   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
     // Zakładamy, że masz funkcję removeHighlight lub czyścisz style ręcznie
-    el.style.backgroundColor = 'transparent'; 
+    el.style.backgroundColor = 'transparent';
     el.classList.remove('highlighted'); // Jeśli używasz klas CSS
 
     // 2. Wyczyść tagi rymów (r1, r2, itd.)
@@ -676,17 +706,17 @@ function hideAnswer() {
     }
   });
 
-  stanzaAudioPlayed = false;
+  stanzaaudioPlayed = false;
   soundIcon.style.display = 'none';
-  if (stanzaAudio) {
-    stanzaAudio.pause();
-    stanzaAudio.currentTime = 0;
+  if (stanzaaudio) {
+    stanzaaudio.pause();
+    stanzaaudio.currentTime = 0;
   }
 
   // 3. Przywróć interfejs
   showAnswerBtn.textContent = 'Show Answer';
   // Ponownie włącz markery (opcjonalnie)
-  ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], true));
+  ['green', 'yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], true));
 }
 
 function showAnswer() {
@@ -699,26 +729,32 @@ function showAnswer() {
   const stanzaObj = STANZAS[currentStanzaIndex % STANZAS.length];
   if (!stanzaObj) return;
 
-  const defaultColors = { 
-    a: markerStyles.green.color, 
-    b: markerStyles.yellow.color, 
-    c: markerStyles.blue.color, 
-    d: markerStyles.pink.color 
+  const defaultColors = {
+    a: markerStyles.green.color,
+    b: markerStyles.yellow.color,
+    c: markerStyles.blue.color,
+    d: markerStyles.pink.color,
+    e: markerStyles.orange.color,
+    f: markerStyles.purple.color
   };
 
   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
     const letter = el.getAttribute('data-letter-target') || 'a';
     const color = defaultColors[letter] || markerStyles.green.color;
     const letterTag = document.getElementById(`r${idx + 1}`);
-    const signTag = document.getElementById(`sign${idx + 1}`);
+    const warnTag = document.getElementById(`warn${idx + 1}`);
 
     if (letterTag) {
       letterTag.textContent = letter;
+      letterTag.style.color = color;
       letterTag.style.fill = color;
     }
 
     if (signTag) {
-      signTag.src = " ";
+      signTag.src = "";
+    }
+    if (warnTag) {
+      warnTag.src = "";
     }
 
     applyHighlight(el, letter, color, true);
@@ -726,11 +762,11 @@ function showAnswer() {
 
   // Zmiana stanu przycisku
   document.body.style.cursor = 'default';
-  ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
-  
+  ['green', 'yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], false));
+
   soundIcon.style.display = 'block';
   showAnswerBtn.textContent = 'Hide Answer'; // Zmiana tekstu
-  playCurrentStanzaAudio();
+  playCurrentStanzaaudio();
 }
 
 // Event listener pozostaje bez zmian
@@ -740,56 +776,56 @@ if (showAnswerBtn) {
 
 function getCurrentStanzaKey() {
   const num = String(currentStanzaIndex + 1).padStart(2, '0');
-  return `Stanza_${num}`;
+  return `stanza_${num}`;
 }
 
-let stanzaAudio = null;
+let stanzaaudio = null;
 
-function playCurrentStanzaAudio() {
+function playCurrentStanzaaudio() {
   const stanzaKey = getCurrentStanzaKey();
-  const audioSrc = wordsAudio[stanzaKey];
+  const audioSrc = wordsaudio[stanzaKey];
 
   if (!audioSrc) return;
 
-  if (stanzaAudio) {
-    try { stanzaAudio.pause(); stanzaAudio.currentTime = 0; } catch (e) { }
+  if (stanzaaudio) {
+    try { stanzaaudio.pause(); stanzaaudio.currentTime = 0; } catch (e) { }
   }
 
   // Stop previous audio if playing
-  if (stanzaAudio) {
-    stanzaAudio.pause();
-    stanzaAudio.currentTime = 0;
+  if (stanzaaudio) {
+    stanzaaudio.pause();
+    stanzaaudio.currentTime = 0;
   }
 
-  stanzaAudio = new Audio(`${audioSrc}.mp3`); // add extension if needed
-  stanzaAudio.play().catch(err => {
-    console.warn("Audio play blocked:", err);
+  stanzaaudio = new Audio(`${audioSrc}.mp3`); // add extension if needed
+  stanzaaudio.play().catch(err => {
+    console.warn("audio play blocked:", err);
   });
 }
 
 function resetForNextStanza() {
   correctWordsSet.clear();
-  stanzaAudioPlayed = false;
+  stanzaaudioPlayed = false;
   showAnswerBtn.textContent = "Show Answer";
-  if (stanzaAudio) {
-    stanzaAudio.pause();
-    stanzaAudio.currentTime = 0;
+  if (stanzaaudio) {
+    stanzaaudio.pause();
+    stanzaaudio.currentTime = 0;
   }
 }
 
-function checkAndPlayStanzaAudio() {
-  if (stanzaAudioPlayed) return;
+function checkAndPlayStanzaaudio() {
+  if (stanzaaudioPlayed) return;
 
   const totalWords = document.querySelectorAll('.clickable-word').length;
 
   if (correctWordsSet.size === totalWords) {
-    stanzaAudioPlayed = true;
+    stanzaaudioPlayed = true;
     activeMarker = null;
     document.body.style.cursor = 'default';
     soundIcon.style.display = 'block';
     showAnswerBtn.disabled = true;
-    playCurrentStanzaAudio(); // your existing function
-    ['green', 'yellow', 'blue', 'pink'].forEach(k => setMarkerEnabled(markers[k], false));
+    playCurrentStanzaaudio(); // your existing function
+    ['green', 'yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], false));
   }
 }
 
@@ -797,26 +833,66 @@ function renderStanza(index) {
   const stanzaObj = STANZAS[index % STANZAS.length];
   if (!stanzaObj) return;
 
-  const [line1 = '', line2 = '', line3 = '', line4 = ''] = stanzaObj.stanza || [];
-  const author = stanzaObj.source || 'Anonymous';
+  let stanzaLength = stanzaObj.stanza.length;
   const rhymingWords = stanzaObj.rhyming_words || {};
-
-  const s1 = document.getElementById('S1');
-  const s2 = document.getElementById('S2');
-  const s3 = document.getElementById('S3');
-  const s4 = document.getElementById('S4');
   const authorEl = document.getElementById('author');
 
-  wrapLastWord(s1, line1, 0, rhymingWords);
-  wrapLastWord(s2, line2, 1, rhymingWords);
-  wrapLastWord(s3, line3, 2, rhymingWords);
-  wrapLastWord(s4, line4, 3, rhymingWords);
-  if (authorEl) authorEl.textContent = `- ${author}`;
+  if (authorEl) authorEl.textContent = `- ${stanzaObj.source || 'Anonymous'}`;
 
-  attachWordClicks(rhymingWords, stanzaObj.rhyme_scheme || '');
+  // 1. Create the DOM elements for this stanza
+  renderPoem(stanzaLength, stanzaObj.stanza);
 
-  // Reset marker state per stanza; require green click to unlock others
+  // 2. Reset marker state and clear previous markers
   resetMarkers();
+
+  // 3. Wrap last words logically
+  for (let i = 0; i < stanzaLength; i++) {
+    const sEl = document.getElementById(`S${i + 1}`);
+    if (sEl) wrapLastWord(sEl, stanzaObj.stanza[i], i, rhymingWords);
+  }
+
+  // 4. Attach click listeners
+  attachWordClicks(rhymingWords, stanzaObj.rhyme_scheme || '');
+}
+
+function renderPoem(lines, stanza) {
+  const container = document.getElementById('poem-container');
+  container.innerHTML = ''; // Clear existing lines
+
+  // 1. Determine line count: min 4, max 8, or actual length
+  let lineCount = lines;
+  if (lineCount < 4) lineCount = 4;
+  if (lineCount > 8) lineCount = 8;
+
+  // 2. Create the divs dynamically
+  for (let i = 0; i < lineCount; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'line-wrapper';
+
+    const span = document.createElement('span');
+    span.id = `S${i + 1}`;
+    span.className = 'line-text';
+    // Assign text if available, otherwise empty string
+    span.textContent = stanza[i] || "";
+
+    const rSpan = document.createElement('span');
+    rSpan.id = `r${i + 1}`;
+    rSpan.className = 'rhyme-letter';
+
+    const signImg = document.createElement('img');
+    signImg.id = `sign${i + 1}`;
+    signImg.className = 'rhyme-sign';
+
+    const warnImg = document.createElement('img');
+    warnImg.id = `warn${i + 1}`;
+    warnImg.className = 'rhyme-warn';
+
+    wrapper.appendChild(span);
+    wrapper.appendChild(rSpan);
+    wrapper.appendChild(signImg);
+    wrapper.appendChild(warnImg);
+    container.appendChild(wrapper);
+  }
 }
 
 function nextStanza() {
@@ -838,6 +914,8 @@ document.addEventListener('DOMContentLoaded', function () {
   markers.yellow = document.getElementById('yellow-marker');
   markers.blue = document.getElementById('blue-marker');
   markers.pink = document.getElementById('pink-marker');
+  markers.orange = document.getElementById('orange-marker');
+  markers.purple = document.getElementById('purple-marker');
 
   soundIcon.style.display = 'none';
 
@@ -848,6 +926,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (markers.yellow) markers.yellow.addEventListener('click', () => setActiveMarker('yellow'));
   if (markers.blue) markers.blue.addEventListener('click', () => setActiveMarker('blue'));
   if (markers.pink) markers.pink.addEventListener('click', () => setActiveMarker('pink'));
+  if (markers.orange) markers.orange.addEventListener('click', () => setActiveMarker('orange'));
+  if (markers.purple) markers.purple.addEventListener('click', () => setActiveMarker('purple'));
 
   // initial render
   renderStanza(currentStanzaIndex);
@@ -894,7 +974,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showAnswerBtn.addEventListener('click', showAnswer);
   }
 
-  if(soundIcon) {
-    soundIcon.addEventListener('click', playCurrentStanzaAudio);
+  if (soundIcon) {
+    soundIcon.addEventListener('click', playCurrentStanzaaudio);
   }
 });
