@@ -9,8 +9,8 @@
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
-      "updatedAt": "2026-03-09T19:06:03+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-22T14:45:37+05:30",
+      "author": "sushantthe"
     },
     "wg103-molecular-visualizer": {
       "updatedAt": "2026-03-05T13:12:21+05:30",
@@ -69,8 +69,8 @@
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-03-17T16:07:56+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-22T11:36:23+05:30",
+      "author": "sushantthe"
     },
     "wg120-area-of-different-shapes": {
       "updatedAt": "2026-03-20T11:31:08+05:30",
@@ -129,8 +129,8 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-14T22:56:15+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-22T14:34:59+05:30",
+      "author": "sushantthe"
     },
     "wg135-museum-of-historical-sources": {
       "updatedAt": "2026-03-16T16:24:42+05:30",
@@ -153,7 +153,7 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-03-17T10:33:47+05:30",
+      "updatedAt": "2026-03-18T11:59:39+05:30",
       "author": "aditya"
     },
     "wg143-synthesize-new-polypeptide-chain": {
@@ -301,7 +301,7 @@
       "author": "tce-nitinc"
     },
     "wg81-u_aur_oo_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "updatedAt": "2026-03-22T09:44:09+05:30",
       "author": "sushantthe"
     },
     "wg82-commonly-confused-words": {
@@ -313,32 +313,32 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-10T11:52:16+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-22T15:17:10+05:30",
+      "author": "sushantthe"
     },
     "wg85-build-a-paragraph": {
       "updatedAt": "2026-02-23T20:35:45+05:30",
       "author": "tce-nitinc"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "updatedAt": "2026-03-22T09:44:09+05:30",
       "author": "sushantthe"
     },
     "wg87-e_aur_ai_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "updatedAt": "2026-03-22T11:21:33+05:30",
       "author": "sushantthe"
     },
     "wg88-o_aur_au_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-17T12:02:10+05:30",
+      "updatedAt": "2026-03-22T11:33:46+05:30",
       "author": "sushantthe"
     },
     "wg89-the-tone-lab": {
       "updatedAt": "2026-03-20T16:57:28+05:30",
       "author": "PrasannaP"
     },
-    "wg90-\u0906_\u0915\u0940_\u092e\u093e\u0924\u094d\u0930\u093e_\u0915\u0940_\u092a\u0939\u091a\u093e\u0928": {
-      "updatedAt": "2026-03-16T15:48:03+05:30",
-      "author": "sushantkanaujiya"
+    "wg90-aa_kee_maatra_kee_pahachaan": {
+      "updatedAt": "2026-03-22T08:27:30+05:30",
+      "author": "sushantthe"
     },
     "wg91-prime-factorisation": {
       "updatedAt": "2026-03-10T15:21:22+05:30",
@@ -378,6 +378,71 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-22T15:17:10+05:30",
+      "author": "sushantthe",
+      "message": "feat: Add initial implementation of the Legislature vs. Executive challenge.",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-22T14:45:37+05:30",
+      "author": "sushantthe",
+      "message": "feat: Implement initial \"Law of Conservation of Mass\" simulation widget.",
+      "widgets": [
+        102
+      ]
+    },
+    {
+      "date": "2026-03-22T14:34:59+05:30",
+      "author": "sushantthe",
+      "message": "feat: Implement the initial Barter Bazaar widget with its core HTML structure, styling, and JavaScript functionality.",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-22T11:33:46+05:30",
+      "author": "sushantthe",
+      "message": "feat: Add new interactive word game for 'O' and 'OU' matra differentiation with audio and visual feedback.",
+      "widgets": [
+        88
+      ]
+    },
+    {
+      "date": "2026-03-22T11:21:33+05:30",
+      "author": "sushantthe",
+      "message": "feat: Introduce an interactive widget to differentiate 'e' and 'ai' vowel sounds with audio and visual feedback.",
+      "widgets": [
+        87
+      ]
+    },
+    {
+      "date": "2026-03-22T09:44:09+05:30",
+      "author": "sushantthe",
+      "message": "feat: Implement new interactive widgets for 'i/ee' and 'u/oo' matra differentiation exercises.",
+      "widgets": [
+        81,
+        86
+      ]
+    },
+    {
+      "date": "2026-03-22T08:38:12+05:30",
+      "author": "sushantthe",
+      "message": "feat: Implement the new `wg81-u_aur_oo_kee_maatra_mein_antar` widget by adding its dedicated CSS and JavaScript files.",
+      "widgets": [
+        81
+      ]
+    },
+    {
+      "date": "2026-03-22T08:27:30+05:30",
+      "author": "sushantthe",
+      "message": "feat: add initial implementation of the 'aa kee maatra kee pahachaan' interactive widget.",
+      "widgets": [
+        90
+      ]
+    },
     {
       "date": "2026-03-20T19:31:01+05:30",
       "author": "PrasannaP",
@@ -554,71 +619,6 @@
       "message": "animation fixed",
       "widgets": [
         67
-      ]
-    },
-    {
-      "date": "2026-03-19T23:44:07+05:30",
-      "author": "ShyamsundarHait",
-      "message": "tulips svg and text repositioned for counter fixed",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-19T22:47:29+05:30",
-      "author": "ShyamsundarHait",
-      "message": "fixed tab change",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-19T19:49:34+05:30",
-      "author": "Santosh",
-      "message": "wg-73 modified",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-19T17:33:59+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 76 changes",
-      "widgets": [
-        18,
-        76
-      ]
-    },
-    {
-      "date": "2026-03-19T15:11:49+05:30",
-      "author": "Santosh",
-      "message": "wg-42 bug fixes",
-      "widgets": [
-        42
-      ]
-    },
-    {
-      "date": "2026-03-19T10:27:26+05:30",
-      "author": "Santosh",
-      "message": "wg-89 bug fixes",
-      "widgets": [
-        89
-      ]
-    },
-    {
-      "date": "2026-03-18T23:53:27+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Enforce correct drop zones for dominant and recessive parents in Stage 2 drag-and-drop functionality",
-      "widgets": [
-        48
-      ]
-    },
-    {
-      "date": "2026-03-18T23:41:00+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: Remove \"(P)\" suffix from Parent labels in SVG elements for clarity",
-      "widgets": [
-        48
       ]
     }
   ]
