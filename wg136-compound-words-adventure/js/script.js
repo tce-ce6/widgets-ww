@@ -5,12 +5,12 @@ const WidgetState = {
         sun: [], rain: [], snow: [], fire: [], sea: [], sand: []
     },
     WORD_MAPPINGS: {
-        sun:  { 0: 'sunflower', 3: 'sunglasses', 4: 'sunscreen', 5: 'sunlight' },
-        rain: { 0: 'raincoat',  1: 'rainstorm',  2: 'rainbow',    3: 'raindrop' },
-        snow: { 0: 'snowball',  2: 'snowflake',  3: 'snowsuit',   4: 'snowman' },
-        fire: { 1: 'fireman',   2: 'fireplace',  3: 'firewood',   4: 'firefly' },
-        sea:  { 0: 'seafood',   3: 'seahorse',   4: 'seashell',   5: 'seaweed' },
-        sand: { 0: 'sandpaper', 2: 'sandcastle', 4: 'sandstorm',  5: 'sandbox' }
+        sun:  { 1: 'sunflower', 5: 'sunglasses', 3: 'sunscreen', 2: 'sunlight' },
+        rain: { 3: 'raincoat',  4: 'rainstorm',  0: 'rainbow',   5: 'raindrop' },
+        snow: { 0: 'snowball',  1: 'snowboard',  5: 'snowsuit',   4: 'snowman' },
+        fire: { 0: 'fireman',   2: 'fireplace',  1: 'firewood',   5: 'firefly' },
+        sea:  { 3: 'seafood',   1: 'seahorse',   0: 'seashell',   4: 'seaweed' },
+        sand: { 2: 'sandpaper', 1: 'sandcastle', 3: 'sandstorm',  0: 'sandbox' }
     },
     currentFamily: null,
     isAnimating: false,
@@ -91,10 +91,21 @@ function initGame() {
     };
     
     Object.keys(homeMappings).forEach(id => {
-        let el = document.getElementById(id);
-        if (el) {
-            el.classList.add('interactive-card');
-            el.onclick = () => openFamily(homeMappings[id]);
+        let textNode = document.getElementById(id);
+        if (textNode) {
+            // Find parent top-level <g> child of home_cards for better hitbox
+            let cardGroup = textNode;
+            while (cardGroup.parentElement && cardGroup.parentElement.id !== 'home_cards') {
+                cardGroup = cardGroup.parentElement;
+            }
+            console.log(`initGame: Attaching click to card [${id}] via group [${cardGroup.id}]`);
+            cardGroup.classList.add('interactive-card');
+            cardGroup.style.cursor = 'pointer';
+            cardGroup.style.pointerEvents = 'all'; 
+            cardGroup.onclick = (e) => {
+                e.stopPropagation();
+                openFamily(homeMappings[id]);
+            };
         }
     });
 
@@ -114,8 +125,6 @@ function openFamily(family) {
     }
     console.log(`openFamily: Initiating layout transition for family [${family}]`);
     WidgetState.currentFamily = family;
-
-    // Hide Home Screen elements
 
     hideElement('home_cards');
     hideElement('home_itext');
@@ -149,10 +158,18 @@ function openFamily(family) {
         }
     });
 
-    const famAssets = document.getElementById(family + '_family_assets');
+    let famAssets = document.getElementById(family + '_family_assets');
+    if (!famAssets && family === 'sun') {
+        // Fallback for misnamed SUN family assets
+        famAssets = document.getElementById('SUN') || document.getElementById('Group_7999');
+    }
+    
     if (famAssets) {
         console.log(`openFamily: Found assets for [${family}], unhiding and setting up interactions`);
-        unhideElement(family + '_family_assets');
+        // If it was nested in home_cards, we need to clone it or move it to question? 
+        // Actually, just unhiding the container and moving it might be too much.
+        // Let's just handle it via visibility if it already exists.
+        unhideElement(famAssets.getAttribute('id'));
         setupFamilyInteractions(family, famAssets);
     } else {
         console.log(`openFamily: WARNING - Assets for [${family}] missing from DOM`);
@@ -194,114 +211,47 @@ function returnToMenu() {
 }
 
 function setupFamilyInteractions(family, famAssets) {
-    // Only setup once
     if (WidgetState.elements[family]) {
-        console.log(`setupFamilyInteractions: Interactions already mapped for [${family}]`);
+        console.log(`setupFamilyInteractions: Interactions already active for [${family}]`);
         return;
     }
     
-    console.log(`setupFamilyInteractions: Performing initial geometric mapping for [${family}] cards`);
+    console.log(`setupFamilyInteractions: Setting up [${family}] cards`);
     WidgetState.elements[family] = { options: [] };
     
-    // Options are typically 6 groups around the center.
-
-    // Based on previous structure, we find the 6 option paths/groups.
-    // We will find all children of famAssets that have no child groups, or a specific structure.
     const children = Array.from(famAssets.children);
-    
-    const options = [];
-    children.forEach(child => {
-        // Skip background rectangles or large layout paths by ignoring things with no ID and are just empty paths
-        if (child.tagName === 'g' || child.tagName === 'rect' || child.tagName === 'path') {
-            options.push(child);
-        }
-    });
-    
-    // Find central card logic
     const cardRects = children.map(c => c.getBoundingClientRect());
-    let cx = 0, cy = 0;
-    cardRects.forEach(r => { cx += r.left + r.width/2; cy += r.top + r.height/2; });
-    cx /= children.length; cy /= children.length;
+    let avgX = 0, avgY = 0;
+    cardRects.forEach(r => { avgX += r.left + r.width/2; avgY += r.top + r.height/2; });
+    avgX /= children.length; avgY /= children.length;
 
     let centerCard = null;
     let minD = Infinity;
     children.forEach((c, i) => {
         const r = cardRects[i];
-        if (r.width > window.innerWidth * 0.5) return; // skip giant backgrounds
-        const dx = (r.left + r.width/2) - cx;
-        const dy = (r.top + r.height/2) - cy;
+        if (r.width > window.innerWidth * 0.5) return;
+        const dx = (r.left + r.width/2) - avgX;
+        const dy = (r.top + r.height/2) - avgY;
         const d = dx*dx + dy*dy;
         if (d < minD) { minD = d; centerCard = c; }
     });
-    if (centerCard) {
-        console.log(`setupFamilyInteractions: Isolated center main card and disabled interactions`);
-        centerCard.style.pointerEvents = 'none';
-    }
-
-    let validOptions = options.filter(g => g !== centerCard);
-    console.log(`setupFamilyInteractions: Found ${validOptions.length} valid target cards for [${family}]`);
     
-    // Auto-map SVGs dynamically
-    if (!WidgetState.WORD_MAPPINGS) WidgetState.WORD_MAPPINGS = {};
-    if (!WidgetState.WORD_MAPPINGS[family] || Object.keys(WidgetState.WORD_MAPPINGS[family]).length < 4) {
-        WidgetState.WORD_MAPPINGS[family] = {};
-        const ansGroup = document.getElementById(family);
-        if (ansGroup) {
-            Array.from(ansGroup.children).forEach(ans => {
-                const id = ans.getAttribute('id');
-                const wordKey = id.replace('_ans', '').replace('-ans', '');
-                const paths = Array.from(ans.querySelectorAll('path')).map(p => p.getAttribute('d')).filter(d => d && d.length > 20);
-                
-                let bestIdx = -1; let maxScore = 0;
-                validOptions.forEach((opt, idx) => {
-                    const optPaths = Array.from(opt.querySelectorAll('path')).map(p => p.getAttribute('d'));
-                    let score = 0;
-                    optPaths.forEach(op => { if (paths.includes(op)) score++; });
-                    if (score > maxScore) { maxScore = score; bestIdx = idx; }
-                });
-                
-                if (bestIdx > -1) {
-                    WidgetState.WORD_MAPPINGS[family][bestIdx] = wordKey;
-                }
-            });
-        }
-    }
+    if (centerCard) centerCard.style.pointerEvents = 'none';
 
-    // Geometrically robustify mappings: if an icon is unmapped but sits inside a mapped background, copy mapping
-    const mappings = WidgetState.WORD_MAPPINGS[family];
-    if (mappings) {
-        validOptions.forEach((opt, idx) => {
-            if (!mappings[idx]) {
-                const rect = opt.getBoundingClientRect();
-                const cx = rect.left + rect.width/2;
-                const cy = rect.top + rect.height/2;
-                for (let i=0; i<validOptions.length; i++) {
-                    if (mappings[i] && i !== idx) {
-                        const pRect = validOptions[i].getBoundingClientRect();
-                        if (cx >= pRect.left && cx <= pRect.right && cy >= pRect.top && cy <= pRect.bottom) {
-                            mappings[idx] = mappings[i];
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
+    let validOptions = children.filter(g => g !== centerCard);
+    
     validOptions.forEach((opt, index) => {
         opt.classList.add('interactive-card');
-        opt.style.pointerEvents = 'all'; // ensures empty rect bounds are clickable if standard SVG spec allows or if background path catches it
+        opt.style.pointerEvents = 'all';
+        opt.style.cursor = 'pointer';
 
-        // Setup simple bounds-based sync for elements at this index if needed
         if (WidgetState.discovered[family].includes(index)) {
-             opt.classList.add('used');
              opt.style.opacity = '0.3';
              opt.style.pointerEvents = 'none';
              fadeSiblingsAt(opt);
         } else {
-             opt.classList.remove('used');
-             opt.style.opacity = '';
-             opt.style.pointerEvents = 'auto';
+             opt.style.opacity = '1';
+             opt.style.pointerEvents = 'all';
              showSiblingsAt(opt);
         }
 
@@ -332,14 +282,14 @@ function showSiblingsAt(element) {
     if (!element || !element.parentElement) return;
     const rect = element.getBoundingClientRect();
     Array.from(element.parentElement.children).forEach(sibling => {
-        if (sibling.tagName === 'g' && sibling !== element) {
+        if ((sibling.tagName === 'g' || sibling.tagName === 'path' || sibling.tagName === 'rect') && sibling !== element) {
             const sRect = sibling.getBoundingClientRect();
             const scx = sRect.left + sRect.width / 2;
             const scy = sRect.top + sRect.height / 2;
             if (scx >= rect.left && scx <= rect.right && scy >= rect.top && scy <= rect.bottom) {
                 sibling.style.transition = 'none';
-                sibling.style.opacity = '';
-                sibling.style.pointerEvents = 'none';
+                sibling.style.opacity = '1';
+                sibling.style.pointerEvents = 'all';
             }
         }
     });
@@ -417,7 +367,11 @@ function renderDiscoveredWords(family) {
         
         if (ansPanel) {
             if (discoveredList.includes(idx)) {
-                unhideElement(panelId);
+                console.log(`renderDiscoveredWords: Showing panel [${panelId}] for [${word}]`);
+                ansPanel.style.display = 'block';
+                ansPanel.style.opacity = '1';
+                ansPanel.style.pointerEvents = 'all';
+
                 const orderIndex = discoveredList.indexOf(idx);
                 // Dynamically offset from top to bottom
                 
@@ -427,7 +381,7 @@ function renderDiscoveredWords(family) {
 
                 ansPanel.classList.add('ans-panel', 'show');
             } else {
-                hideElement(panelId);
+                ansPanel.style.display = 'none';
                 ansPanel.classList.remove('show');
             }
         }
@@ -488,12 +442,13 @@ function updateInstructionText(family) {
         const tspans = qitxt.querySelectorAll('tspan');
         tspans.forEach(ts => {
             ts.removeAttribute('x'); // Let flow handle it
-            const currentText = ts.textContent.trim().toUpperCase();
+            const currentText = ts.textContent.replace(/\n|\r/g, ' ').trim().toUpperCase();
             if (['SUN', 'SAND', 'SEA', 'RAIN', 'SNOW', 'FIRE'].includes(currentText)) {
                 ts.textContent = family.toUpperCase();
             }
             if (currentText === '!') {
-                ts.setAttribute('dx', '5');
+                ts.textContent = '!';
+                ts.setAttribute('dx', '10');
             }
         });
     }

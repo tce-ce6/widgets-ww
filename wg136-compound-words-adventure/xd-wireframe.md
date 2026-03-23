@@ -29,3 +29,18 @@ on rollover several buttons/cards are flickering, there should be no rollover ef
 just modified the main svg to add a background to the answer panel(id="answer_panel_bg") in right
 just added a congratulation popup as(id="correct_end_popup") in the main svg as per xd design, implements its logic it should come after all 4 correct answer are given
 The answer panels should be positioned from top to bottom as in xd design dynamically
+
+prompt3
+After Completing a Family:
+Once all 4 correct partners are selected:
+Display a celebration animation/message, such as:
+“Amazing! You completed the [FAMILY NAME] family!”
+“4 words done!”
+Pause popup (1–2 seconds).
+No “Play Again” option is required; automatically return to the Home screen after 2 seconds.
+Overall Completion:
+After completing all 6 families:
+Show a special completion screen.
+Display a celebration animation.
+Show the message: “🏆 Congratulations! You've mastered all 24 compound words!”
+Include a “PLAY AGAIN” button that resets all families and returns to the menu.
