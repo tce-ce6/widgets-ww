@@ -137,7 +137,7 @@
       "author": "aditya"
     },
     "wg136-compound-words-adventure": {
-      "updatedAt": "2026-03-23T17:46:08+05:30",
+      "updatedAt": "2026-03-23T19:43:17+05:30",
       "author": "PrasannaP"
     },
     "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T19:43:17+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reposition Group_8175 SVG element in the HTML structure.",
+      "widgets": [
+        136
+      ]
+    },
+    {
       "date": "2026-03-23T19:40:42+05:30",
       "author": "sushantkanaujiya",
       "message": "Update index.html",
@@ -387,11 +395,27 @@
       ]
     },
     {
+      "date": "2026-03-23T19:39:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement card disabling for attempted families, add related CSS, and apply minor UI styling improvements, including a version update.",
+      "widgets": [
+        136
+      ]
+    },
+    {
       "date": "2026-03-23T19:37:05+05:30",
       "author": "sushantkanaujiya",
       "message": "142 fixed issue",
       "widgets": [
         142
+      ]
+    },
+    {
+      "date": "2026-03-23T19:17:53+05:30",
+      "author": "PrasannaP",
+      "message": "new assets added",
+      "widgets": [
+        136
       ]
     },
     {
@@ -601,30 +625,6 @@
       "message": "feat: Add readme, hide next button on completion, and update confetti z-index for the Commonly Confused Words widget.",
       "widgets": [
         82
-      ]
-    },
-    {
-      "date": "2026-03-23T15:05:52+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "version updated",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T15:02:50+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed alignment issues and touchevent for scroll",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T14:18:45+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg86 til sound changes done",
-      "widgets": [
-        86
       ]
     }
   ]
