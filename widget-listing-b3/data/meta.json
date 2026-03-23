@@ -25,8 +25,8 @@
       "author": "sushantthe"
     },
     "wg108-photosynthesis-factory": {
-      "updatedAt": "2026-03-16T18:47:05+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-20T11:46:26+05:30",
+      "author": "Santosh"
     },
     "wg109-electrolytic-refining-of-metals": {
       "updatedAt": "2026-03-06T12:15:00+05:30",
@@ -209,8 +209,8 @@
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-03-20T11:31:08+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-23T15:05:52+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg26-word-discovery-adventure": {
       "updatedAt": "2026-03-15T13:36:28+05:30",
@@ -379,11 +379,35 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T15:05:52+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "version updated",
+      "widgets": [
+        24
+      ]
+    },
+    {
+      "date": "2026-03-23T15:02:50+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "fixed alignment issues and touchevent for scroll",
+      "widgets": [
+        24
+      ]
+    },
+    {
       "date": "2026-03-23T14:18:45+05:30",
       "author": "sushantkanaujiya",
       "message": "wg86 til sound changes done",
       "widgets": [
         86
+      ]
+    },
+    {
+      "date": "2026-03-23T13:51:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "implemented wg24 widget fixes",
+      "widgets": [
+        24
       ]
     },
     {
@@ -594,30 +618,6 @@
       "message": "v",
       "widgets": [
         121
-      ]
-    },
-    {
-      "date": "2026-03-20T14:46:01+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Corrected 3' and 5' labels in SVG and updated the version ID.",
-      "widgets": [
-        121
-      ]
-    },
-    {
-      "date": "2026-03-20T14:34:28+05:30",
-      "author": "PrasannaP",
-      "message": "add rm files",
-      "widgets": [
-        121
-      ]
-    },
-    {
-      "date": "2026-03-20T14:02:02+05:30",
-      "author": "PrasannaP",
-      "message": "Audio Playback Fixes",
-      "widgets": [
-        82
       ]
     }
   ]
