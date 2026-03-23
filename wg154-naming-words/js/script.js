@@ -233,7 +233,7 @@ function initUI() {
 
   // Second SVG (scene illustrations)
   UI.scenesSvgLayer = document.getElementById("scenes-svg-layer");
-  UI.scenesBg       = document.getElementById("scenes-bg");
+  UI.scenesBg       = document.getElementById("picture-bg");
   UI.scenesInside   = document.getElementById("scenes-inside");
   UI.scenes = [];
   for (let i = 1; i <= 15; i++) {
