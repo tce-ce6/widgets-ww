@@ -1,463 +1,603 @@
-/**
- * WG136 Compound Words Adventure
- * Interactive SVG/HTML/JavaScript - all state and logic in single global object.
- * Interactions implemented by showing and hiding SVG elements only.
- */
-(function () {
-  'use strict';
-
-  var WG136 = window.WG136 = window.WG136 || {};
-
-  WG136.state = {
+const WidgetState = {
+    families: ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'],
+    completed: {},
+    discovered: {
+        sun: [], rain: [], snow: [], fire: [], sea: [], sand: []
+    },
+    WORD_MAPPINGS: {
+        sun: { 1: 'sunflower', 5: 'sunglasses', 3: 'sunscreen', 2: 'sunlight' },
+        rain: { 3: 'raincoat', 4: 'rainstorm', 0: 'rainbow', 5: 'raindrop' },
+        snow: { 0: 'snowball', 1: 'snowboard', 5: 'snowsuit', 4: 'snowman' },
+        fire: { 0: 'fireman', 2: 'fireplace', 1: 'firewood', 5: 'firefly' },
+        sea: { 3: 'seafood', 1: 'seahorse', 0: 'seashell', 4: 'seaweed' },
+        sand: { 2: 'sandpaper', 1: 'sandcastle', 3: 'sandstorm', 0: 'sandbox' }
+    },
     currentFamily: null,
-    completedFamilies: new Set(),
-    elements: {},
-    families: {
-      sun: { discovered: [] },
-      rain: { discovered: [] },
-      snow: { discovered: [] },
-      fire: { discovered: [] },
-      sea: { discovered: [] },
-      sand: { discovered: [] }
-    },
-    familyData: {
-      sun: { name: 'SUN', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
-      rain: { name: 'RAIN', correctIdx: [0, 1, 2, 3], distractorIdx: [4, 5] },
-      snow: { name: 'SNOW', correctIdx: [0, 2, 3, 4], distractorIdx: [1, 5] },
-      fire: { name: 'FIRE', correctIdx: [1, 2, 3, 4], distractorIdx: [0, 5] },
-      sea: { name: 'SEA', correctIdx: [0, 3, 4, 5], distractorIdx: [1, 2] },
-      sand: { name: 'SAND', correctIdx: [0, 2, 4, 5], distractorIdx: [1, 3] }
-    },
-    /** Card slot IDs per family (6 options, order 0–5). Wireframe SVG structure. */
-    cardIdsByFamily: {
-      sun: ['Rectangle_46-7', 'Rectangle_742', 'Rectangle_743', 'Rectangle_744', 'Rectangle_745', 'Rectangle_746'],
-      rain: ['Rectangle_46-8', 'Rectangle_742-2', 'Rectangle_743-2', 'Rectangle_744-2', 'Rectangle_745-2', 'Rectangle_746-2'],
-      snow: ['Rectangle_46-9', 'Rectangle_742-3', 'Rectangle_743-3', 'Rectangle_744-3', 'Rectangle_745-3', 'Rectangle_746-3'],
-      fire: ['Rectangle_46-10', 'Rectangle_742-4', 'Rectangle_743-4', 'Rectangle_744-4', 'Rectangle_745-4', 'Rectangle_746-4'],
-      sea: ['Rectangle_46-11', 'Rectangle_742-5', 'Rectangle_743-5', 'Rectangle_744-5', 'Rectangle_745-5', 'Rectangle_746-5'],
-      sand: ['Rectangle_46-12', 'Rectangle_742-6', 'Rectangle_743-6', 'Rectangle_744-6', 'Rectangle_745-6', 'Rectangle_746-6']
-    },
-    /** Center (cx,cy) of each of the 6 card slots and center card (for discovered row clones). */
-    slotCenters: [
-      { x: 616.5, y: 312.11 },
-      { x: 378.5, y: 436.11 },
-      { x: 377.5, y: 667.11 },
-      { x: 616.5, y: 794.11 },
-      { x: 855.5, y: 667.11 },
-      { x: 854.5, y: 436.11 }
-    ],
-    centerCardCenter: { x: 616.5, y: 552.5 },
-    HOME_MAPPINGS: {
-      'Group_7999': 'sun',
-      'Group_8000': 'snow',
-      'Group_8001': 'rain',
-      'Group_8002': 'sea',
-      'Group_8003': 'fire',
-      'Group_8004': 'sand'
-    },
-    isAnimating: false
-  };
+    isAnimating: false,
+    elements: {}
+};
 
-  WG136.WORD_MAPPINGS = {
-    sun: { 0: 'sunflower', 3: 'sunglasses', 4: 'sunscreen', 5: 'sunlight' },
-    rain: { 0: 'raincoat', 1: 'rainstorm', 2: 'rainbow', 3: 'raindrop' },
-    snow: { 0: 'snowball', 2: 'snowflake', 3: 'snowsuit', 4: 'snowman' },
-    fire: { 1: 'fireman', 2: 'fireplace', 3: 'firewood', 4: 'firefly' },
-    sea: { 0: 'seafood', 3: 'seahorse', 4: 'seashell', 5: 'seaweed' },
-    sand: { 0: 'sandpaper', 2: 'sandcastle', 4: 'sandstorm', 5: 'sandbox' }
-  };
-
-  function injectStyles() {
-    var style = document.createElement('style');
-    style.textContent = [
-      '.wg136-interactive-card { transform-origin: center; cursor: pointer; }',
-      '.wg136-interactive-card.wg136-used { visibility: hidden; pointer-events: none; }',
-      '.wg136-interactive-card.wg136-wrong { animation: wg136-shake 0.4s; }',
-      '@keyframes wg136-shake {',
-      '  0% { transform: translateX(0); }',
-      '  25% { transform: translateX(-12px); }',
-      '  50% { transform: translateX(12px); }',
-      '  75% { transform: translateX(-12px); }',
-      '  100% { transform: translateX(0); }',
-      '}',
-      '.wg136-words-plus { font-family: "Roboto", sans-serif; }'
-    ].join('\n');
-    document.head.appendChild(style);
-  }
-
-  /** Get the 6 option card elements for a family (show/hide only, no reparenting). */
-  function getCardElements(family) {
-    var ids = WG136.state.cardIdsByFamily[family];
-    if (!ids) return [];
-    return ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
-  }
-
-  function initGame() {
-    injectStyles();
-
-    Object.keys(WG136.state.HOME_MAPPINGS).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) {
-        el.style.cursor = 'pointer';
-        el.addEventListener('click', function () {
-          WG136.openFamily(WG136.state.HOME_MAPPINGS[id]);
-        });
-      }
-    });
-
-    var activityHome = document.getElementById('Group_1566');
-    if (activityHome) {
-      activityHome.style.cursor = 'pointer';
-      activityHome.addEventListener('click', WG136.returnToMenu);
-    }
-
-    var activityBox = document.getElementById('activity-box');
-    if (activityBox) {
-      var wordsContainer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      wordsContainer.id = 'discovered-words-container';
-      activityBox.appendChild(wordsContainer);
-    }
-
-    activityBox = document.getElementById('activity-box');
-    if (activityBox) activityBox.style.display = 'none';
-
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = 'none';
-    });
-
-    bindAllCardClicks();
-  }
-
-  /** Bind click once to all 6 card slots per family (by SVG id). */
-  function bindAllCardClicks() {
-    var families = ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'];
-    families.forEach(function (family) {
-      var cards = getCardElements(family);
-      cards.forEach(function (card, idx) {
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', function () {
-          if (WG136.state.currentFamily !== family) return;
-          handleOptionClick(family, idx);
-        });
-      });
-    });
-  }
-
-  function openFamily(family) {
-    if (WG136.state.isAnimating) return;
-    WG136.state.currentFamily = family;
-
-    var home = document.getElementById('home');
-    if (home) home.style.display = 'none';
-
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = fam === family ? 'block' : 'none';
-    });
-
-    var box = document.getElementById('activity-box');
-    if (box) box.style.display = 'block';
-
-    var g = document.getElementById('Click_the_pictures_that_make_a_word_with_SUN_');
-    if (g) {
-      var texts = g.querySelectorAll('text');
-      if (texts.length >= 2 && texts[1].querySelector('tspan')) {
-        texts[1].querySelector('tspan').textContent = WG136.state.familyData[family].name;
-      }
-    }
-
-    setCardVisibility(family);
-    renderDiscoveredWords(family);
-  }
-
-  /** Show/hide card slots by family state (SVG show/hide only). */
-  function setCardVisibility(family) {
-    var discovered = WG136.state.families[family].discovered;
-    var cards = getCardElements(family);
-    cards.forEach(function (card, idx) {
-      if (!card.classList.contains('wg136-interactive-card')) card.classList.add('wg136-interactive-card');
-      card.classList.remove('wg136-wrong');
-      if (discovered.indexOf(idx) !== -1) {
-        card.classList.add('wg136-used');
-        card.style.visibility = 'hidden';
-        card.style.pointerEvents = 'none';
-      } else {
-        card.classList.remove('wg136-used');
-        card.style.visibility = 'visible';
-        card.style.pointerEvents = 'auto';
-      }
-      card.style.cursor = 'pointer';
-    });
-  }
-
-  function handleOptionClick(family, idx) {
-    if (WG136.state.isAnimating) return;
-
-    var cards = getCardElements(family);
-    var card = cards[idx];
-    if (!card || card.classList.contains('wg136-used')) return;
-
-    var isCorrect = WG136.state.familyData[family].correctIdx.indexOf(idx) !== -1;
-
-    if (!isCorrect) {
-      WG136.state.isAnimating = true;
-      card.classList.add('wg136-wrong');
-      setTimeout(function () {
-        card.classList.remove('wg136-wrong');
-        WG136.state.isAnimating = false;
-      }, 400);
-    } else {
-      WG136.state.isAnimating = true;
-      card.style.transition = 'opacity 0.6s';
-      card.style.opacity = '0';
-      card.style.pointerEvents = 'none';
-
-      setTimeout(function () {
-        card.classList.add('wg136-used');
-        card.style.visibility = 'hidden';
-        card.style.opacity = '';
-
-        WG136.createConfetti();
-        WG136.state.families[family].discovered.push(idx);
-        renderDiscoveredWords(family);
-        checkCompletion(family);
-      }, 650);
-    }
-  }
-
-  function renderDiscoveredWords(family) {
-    var wordsContainer = document.getElementById('discovered-words-container');
-    if (!wordsContainer) return;
-
-    wordsContainer.innerHTML = '';
-    var discovered = WG136.state.families[family].discovered;
-    var wordMappings = WG136.WORD_MAPPINGS[family];
-    var centerId = { sun: 'Rectangle_741', rain: 'Rectangle_741-2', snow: 'Rectangle_741-3', fire: 'Rectangle_741-4', sea: 'Rectangle_741-5', sand: 'Rectangle_741-6' }[family];
-    var centerEl = document.getElementById(centerId);
-    var cardIds = WG136.state.cardIdsByFamily[family];
-    var centerC = WG136.state.centerCardCenter;
-    var slotC = WG136.state.slotCenters;
-
-    discovered.forEach(function (originalIdx, posIndex) {
-      var wordX = 1060;
-      var wordY = 320 + posIndex * 150;
-
-      var rowGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-
-      var bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      bgRect.setAttribute('x', wordX - 10);
-      bgRect.setAttribute('y', wordY - 60);
-      bgRect.setAttribute('width', '580');
-      bgRect.setAttribute('height', '120');
-      bgRect.setAttribute('rx', '15');
-      bgRect.setAttribute('fill', '#fff');
-      bgRect.setAttribute('fill-opacity', '0.9');
-      rowGroup.appendChild(bgRect);
-
-      var familyWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (centerEl) {
-        familyWrapper.setAttribute('transform', 'translate(' + (wordX + 40) + ',' + wordY + ') scale(0.25) translate(' + (-centerC.x) + ',' + (-centerC.y) + ')');
-        var centerClone = centerEl.cloneNode(true);
-        centerClone.style.visibility = 'visible';
-        centerClone.style.opacity = '1';
-        familyWrapper.appendChild(centerClone);
-      }
-      rowGroup.appendChild(familyWrapper);
-
-      var plusSign = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      plusSign.setAttribute('x', wordX + 110);
-      plusSign.setAttribute('y', wordY + 10);
-      plusSign.setAttribute('font-size', '30');
-      plusSign.setAttribute('fill', '#077077');
-      plusSign.setAttribute('font-weight', 'bold');
-      plusSign.setAttribute('text-anchor', 'middle');
-      plusSign.setAttribute('class', 'wg136-words-plus');
-      plusSign.textContent = '+';
-      rowGroup.appendChild(plusSign);
-
-      var optEl = document.getElementById(cardIds[originalIdx]);
-      var pos = slotC[originalIdx];
-      var optionWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (optEl && pos) {
-        optionWrapper.setAttribute('transform', 'translate(' + (wordX + 180) + ',' + wordY + ') scale(0.25) translate(' + (-pos.x) + ',' + (-pos.y) + ')');
-        var optClone = optEl.cloneNode(true);
-        optClone.style.visibility = 'visible';
-        optClone.style.opacity = '1';
-        optClone.classList.remove('wg136-used', 'wg136-wrong');
-        optionWrapper.appendChild(optClone);
-      }
-      rowGroup.appendChild(optionWrapper);
-
-      var resultText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      resultText.setAttribute('x', wordX + 270);
-      resultText.setAttribute('y', wordY + 10);
-      resultText.setAttribute('font-size', '28');
-      resultText.setAttribute('fill', '#077077');
-      resultText.setAttribute('font-family', '"Roboto", sans-serif');
-      resultText.setAttribute('font-weight', '500');
-      resultText.setAttribute('class', 'wg136-words-plus');
-      resultText.textContent = wordMappings[originalIdx] || '';
-      rowGroup.appendChild(resultText);
-
-      var resultIconWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      if (optEl && pos) {
-        resultIconWrapper.setAttribute('transform', 'translate(' + (wordX + 500) + ',' + wordY + ') scale(0.3) translate(' + (-pos.x) + ',' + (-pos.y) + ')');
-        var iconClone = optEl.cloneNode(true);
-        iconClone.style.visibility = 'visible';
-        iconClone.style.opacity = '1';
-        iconClone.classList.remove('wg136-used', 'wg136-wrong');
-        resultIconWrapper.appendChild(iconClone);
-      }
-      rowGroup.appendChild(resultIconWrapper);
-
-      wordsContainer.appendChild(rowGroup);
-    });
-
-    var tspanCount = document.querySelector('#_0_of_4 tspan');
-    if (tspanCount) tspanCount.textContent = discovered.length + ' of 4';
-
-    for (var i = 1; i <= 4; i++) {
-      var ellipse = document.getElementById('Ellipse_' + i);
-      if (ellipse) ellipse.setAttribute('fill', i <= discovered.length ? '#f6c248' : '#077077');
-    }
-  }
-
-  function checkCompletion(family) {
-    var discovered = WG136.state.families[family].discovered;
-    if (discovered.length === 4) {
-      WG136.state.completedFamilies.add(family);
-      setTimeout(function () {
-        if (WG136.state.completedFamilies.size === 6) {
-          WG136.showPopupMsg('Congratulations!', "You've mastered all 24 compound words!", function () {
-            WG136.resetGame();
-          }, 'PLAY AGAIN');
-        } else {
-          WG136.showPopupMsg('Amazing!', 'You completed the ' + WG136.state.familyData[family].name + ' family!', function () {
-            WG136.returnToMenu();
-          });
+function initGame() {
+    // Inject required styles for shaking / flying / hiding
+    const style = document.createElement('style');
+    style.textContent = `
+        .interactive-card { transform-origin: center; cursor: pointer; }
+        .interactive-card.used { pointer-events: none; }
+        .interactive-card.wrong { animation: shake-card 0.4s; }
+        @keyframes shake-card {
+           0% { transform: translateX(0); }
+           25% { transform: translateX(-12px); }
+           50% { transform: translateX(12px); }
+           75% { transform: translateX(-12px); }
+           100% { transform: translateX(0); }
         }
-      }, 800);
-    } else {
-      WG136.state.isAnimating = false;
+        .ans-panel {
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .ans-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    `;
+    document.head.appendChild(style);
+
+    console.log('initGame: Setting up initial widget state');
+
+    WidgetState.NativeOrder = {};
+    WidgetState.families.forEach(f => {
+        WidgetState.NativeOrder[f] = [];
+        const ansGroup = document.getElementById(f);
+        if (ansGroup) {
+            Array.from(ansGroup.children).forEach(child => {
+                let y = 0;
+                // find either native 'y' attributes or translates
+                const childHtml = child.innerHTML;
+                const matchTranslate = childHtml.match(/translate\([^,]+[,\s]+([-\d\.]+)/);
+                const matchY = childHtml.match(/<rect[^>]*y="([\d\.]+)"/);
+                if (matchTranslate) y = parseFloat(matchTranslate[1]);
+                else if (matchY) y = parseFloat(matchY[1]);
+
+                WidgetState.NativeOrder[f].push({ id: child.getAttribute('id'), y: y });
+            });
+            WidgetState.NativeOrder[f].sort((a, b) => a.y - b.y);
+        }
+    });
+
+    // Initial Hide of Activity UI
+    hideElement('question');
+    hideElement('qitxt');
+    hideElement('status_bar');
+    hideElement('answer_panels');
+    hideElement('correct_end_popup');
+
+    // Hide all family assets
+    WidgetState.families.forEach(f => {
+        hideElement(f + '_family_assets');
+
+        // Hide individual answer components if they exist natively
+        const ansGroup = document.getElementById(f);
+        if (ansGroup && ansGroup.parentElement && ansGroup.parentElement.id === 'answer_panels') {
+            hideElement(f);
+            // also hide all children (the specific answer panels)
+            Array.from(ansGroup.children).forEach(child => hideElement(child.getAttribute('id')));
+        }
+    });
+
+    // Setup Home Cards
+    const homeMappings = {
+        'SUN': 'sun', 'RAIN_': 'rain', 'SNOW': 'snow', 'FIRE_': 'fire', 'SEA_': 'sea', 'SAND_': 'sand'
+    };
+
+    Object.keys(homeMappings).forEach(id => {
+        let textNode = document.getElementById(id);
+        if (textNode) {
+            // Find parent top-level <g> child of home_cards for better hitbox
+            let cardGroup = textNode;
+            while (cardGroup.parentElement && cardGroup.parentElement.id !== 'home_cards') {
+                cardGroup = cardGroup.parentElement;
+            }
+            console.log(`initGame: Attaching click to card [${id}] via group [${cardGroup.id}]`);
+            cardGroup.classList.add('interactive-card');
+            cardGroup.style.cursor = 'pointer';
+            cardGroup.style.pointerEvents = 'all';
+            cardGroup.onclick = (e) => {
+                e.stopPropagation();
+                openFamily(homeMappings[id]);
+            };
+        }
+    });
+
+    // Setup Home Button
+    let homeBtn = document.getElementById('home_btn');
+    if (homeBtn) {
+        homeBtn.style.cursor = 'pointer';
+        homeBtn.onclick = returnToMenu;
+        console.log('initGame: Home button mapped successfully');
     }
-  }
+}
 
-  function returnToMenu() {
-    WG136.state.currentFamily = null;
-    WG136.state.isAnimating = false;
-    var box = document.getElementById('activity-box');
-    if (box) box.style.display = 'none';
+function openFamily(family) {
+    if (WidgetState.isAnimating) {
+        console.log('openFamily: Ignored, animation in progress');
+        return;
+    }
+    console.log(`openFamily: Initiating layout transition for family [${family}]`);
+    WidgetState.currentFamily = family;
 
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      var el = document.getElementById(fam + '_family_assets');
-      if (el) el.style.display = 'none';
+    hideElement('home_cards');
+    hideElement('home_itext');
+
+    unhideElement('question');
+    unhideElement('qitxt');
+    unhideElement('status_bar');
+    unhideElement('answer_panels');
+    unhideElement('answer_panel_bg');
+    hideElement('correct_end_popup');
+
+    // Show current family answer container
+    unhideElement(family);
+
+    // Re-hide all existing children panels by default except ones we've discovered
+    const ansContainer = document.getElementById(family);
+    if (ansContainer) {
+        Array.from(ansContainer.children).forEach(child => {
+            child.style.display = 'none';
+        });
+    }
+
+    // Hide all families, then show specific
+    WidgetState.families.forEach(f => {
+        hideElement(f + '_family_assets');
+
+        // Hide answer_panel wrappers for other families so they don't leak
+        const otherAns = document.getElementById(f);
+        if (otherAns && f !== family) {
+            hideElement(f);
+        }
     });
 
-    var home = document.getElementById('home');
-    if (home) home.style.display = 'block';
-  }
+    let famAssets = document.getElementById(family + '_family_assets');
+    if (!famAssets && family === 'sun') {
+        // Fallback for misnamed SUN family assets
+        famAssets = document.getElementById('SUN') || document.getElementById('Group_7999');
+    }
 
-  function resetGame() {
-    ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'].forEach(function (fam) {
-      WG136.state.families[fam].discovered = [];
-      var cards = getCardElements(fam);
-      cards.forEach(function (card) {
-        card.classList.remove('wg136-used', 'wg136-wrong');
-        card.style.visibility = '';
-        card.style.opacity = '';
-        card.style.pointerEvents = '';
-      });
-    });
-    WG136.state.completedFamilies.clear();
-    WG136.state.currentFamily = null;
-    WG136.state.isAnimating = false;
-    WG136.returnToMenu();
-  }
-
-  function showPopupMsg(title, msg, onComplete, btnText) {
-    var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:2000;';
-    var card = document.createElement('div');
-    card.style.cssText = 'background:#fff;padding:40px 60px;border-radius:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);max-width:600px;';
-    var emoji = document.createElement('div');
-    emoji.textContent = title.indexOf('Amazing') !== -1 ? '\uD83C\uDF89' : '\uD83C\uDFC6';
-    emoji.style.cssText = 'font-size:80px;margin-bottom:10px;';
-    card.appendChild(emoji);
-    var h2 = document.createElement('h2');
-    h2.textContent = title;
-    h2.style.cssText = 'color:#333;font-size:38px;margin:0 0 15px 0;font-family:"Roboto",sans-serif;';
-    card.appendChild(h2);
-    var p = document.createElement('p');
-    p.textContent = msg;
-    p.style.cssText = 'color:#666;font-size:26px;margin:0 0 35px 0;font-family:"Roboto",sans-serif;';
-    card.appendChild(p);
-    if (btnText) {
-      var btn = document.createElement('button');
-      btn.textContent = btnText;
-      btn.style.cssText = 'padding:15px 40px;font-size:22px;font-weight:bold;background:#1e6bef;color:#fff;border:none;border-radius:30px;cursor:pointer;';
-      btn.onclick = function () {
-        overlay.remove();
-        if (onComplete) onComplete();
-      };
-      card.appendChild(btn);
+    if (famAssets) {
+        console.log(`openFamily: Found assets for [${family}], unhiding and setting up interactions`);
+        // If it was nested in home_cards, we need to clone it or move it to question? 
+        // Actually, just unhiding the container and moving it might be too much.
+        // Let's just handle it via visibility if it already exists.
+        unhideElement(famAssets.getAttribute('id'));
+        setupFamilyInteractions(family, famAssets);
     } else {
-      setTimeout(function () {
-        overlay.style.transition = 'opacity 0.4s';
-        overlay.style.opacity = '0';
-        setTimeout(function () {
-          overlay.remove();
-          if (onComplete) onComplete();
+        console.log(`openFamily: WARNING - Assets for [${family}] missing from DOM`);
+    }
+
+    renderDiscoveredWords(family);
+    updateInstructionText(family);
+    updatePopupText(family);
+}
+
+function returnToMenu() {
+    if (WidgetState.isAnimating) {
+        console.log('returnToMenu: Ignored, animation in progress');
+        return;
+    }
+    console.log('returnToMenu: Transitioning widget back to home menu overview');
+    WidgetState.currentFamily = null;
+
+    hideElement('question');
+
+    hideElement('qitxt');
+    hideElement('status_bar');
+    hideElement('answer_panels');
+
+    WidgetState.families.forEach(f => {
+        hideElement(f + '_family_assets');
+        const ansGroup = document.getElementById(f);
+        if (ansGroup) {
+            hideElement(f);
+            Array.from(ansGroup.children).forEach(child => hideElement(child.getAttribute('id')));
+        }
+    });
+
+    hideElement('correct_end_popup');
+
+    // Reset instruction text to default or keep it.
+    unhideElement('home_cards');
+    unhideElement('home_itext');
+}
+
+function setupFamilyInteractions(family, famAssets) {
+    if (WidgetState.elements[family]) {
+        console.log(`setupFamilyInteractions: Interactions already active for [${family}]`);
+        return;
+    }
+
+    console.log(`setupFamilyInteractions: Setting up [${family}] cards`);
+    WidgetState.elements[family] = { options: [] };
+
+    const children = Array.from(famAssets.children);
+    const cardRects = children.map(c => c.getBoundingClientRect());
+    let avgX = 0, avgY = 0;
+    cardRects.forEach(r => { avgX += r.left + r.width / 2; avgY += r.top + r.height / 2; });
+    avgX /= children.length; avgY /= children.length;
+
+    let centerCard = null;
+    let minD = Infinity;
+    children.forEach((c, i) => {
+        const r = cardRects[i];
+        if (r.width > window.innerWidth * 0.5) return;
+        const dx = (r.left + r.width / 2) - avgX;
+        const dy = (r.top + r.height / 2) - avgY;
+        const d = dx * dx + dy * dy;
+        if (d < minD) { minD = d; centerCard = c; }
+    });
+
+    if (centerCard) centerCard.style.pointerEvents = 'none';
+
+    let validOptions = children.filter(g => g !== centerCard);
+
+    validOptions.forEach((opt, index) => {
+        opt.classList.add('interactive-card');
+        opt.style.pointerEvents = 'all';
+        opt.style.cursor = 'pointer';
+
+        if (WidgetState.discovered[family].includes(index)) {
+            opt.style.opacity = '0.3';
+            opt.style.pointerEvents = 'none';
+            fadeSiblingsAt(opt);
+        } else {
+            opt.style.opacity = '1';
+            opt.style.pointerEvents = 'all';
+            showSiblingsAt(opt);
+        }
+
+        opt.onclick = () => handleOptionClick(family, index, opt);
+        console.log(`setupFamilyInteractions: Setup card [${index}] for family [${family}]`, opt);
+    });
+
+    WidgetState.elements[family].options = validOptions;
+}
+
+function fadeSiblingsAt(element) {
+    if (!element || !element.parentElement) return;
+    const rect = element.getBoundingClientRect();
+    Array.from(element.parentElement.children).forEach(sibling => {
+        if (sibling.tagName === 'g' && sibling !== element) {
+            const sRect = sibling.getBoundingClientRect();
+            const scx = sRect.left + sRect.width / 2;
+            const scy = sRect.top + sRect.height / 2;
+            if (scx >= rect.left && scx <= rect.right && scy >= rect.top && scy <= rect.bottom) {
+                sibling.style.transition = 'opacity 0.6s, filter 0.6s';
+                sibling.style.opacity = '0.3';
+                sibling.style.pointerEvents = 'none';
+            }
+        }
+    });
+}
+
+function showSiblingsAt(element) {
+    if (!element || !element.parentElement) return;
+    const rect = element.getBoundingClientRect();
+    Array.from(element.parentElement.children).forEach(sibling => {
+        if ((sibling.tagName === 'g' || sibling.tagName === 'path' || sibling.tagName === 'rect') && sibling !== element) {
+            const sRect = sibling.getBoundingClientRect();
+            const scx = sRect.left + sRect.width / 2;
+            const scy = sRect.top + sRect.height / 2;
+            if (scx >= rect.left && scx <= rect.right && scy >= rect.top && scy <= rect.bottom) {
+                sibling.style.transition = 'none';
+                sibling.style.opacity = '1';
+                sibling.style.pointerEvents = 'all';
+            }
+        }
+    });
+}
+
+function handleOptionClick(family, index, element) {
+    if (WidgetState.isAnimating) return;
+
+    const mappings = WidgetState.WORD_MAPPINGS[family];
+    const compoundWord = mappings ? mappings[index] : null;
+
+    console.log(`handleOptionClick: Clicked map index [${index}] on family [${family}]. Match exists: ${!!compoundWord}`);
+
+    if (compoundWord) {
+        // Correct guess
+        console.log(`handleOptionClick: Correct! Triggering animations for [${compoundWord}]`);
+        WidgetState.isAnimating = true;
+
+        playChirp();
+
+        // Disable
+        element.style.pointerEvents = 'none';
+
+        // Fade out transition
+        element.style.transition = 'opacity 0.6s, filter 0.6s';
+        element.style.filter = 'drop-shadow(0 0 15px #f6c248)';
+        element.style.opacity = '0.3';
+        fadeSiblingsAt(element);
+
+        setTimeout(() => {
+            element.classList.add('used');
+            element.style.transition = 'none';
+            element.style.filter = 'none';
+            // KEEP opacity at 0.3 so it stays securely ghosted
+
+            if (!WidgetState.discovered[family].includes(index)) {
+                WidgetState.discovered[family].push(index);
+            }
+            createConfetti(element.getBoundingClientRect());
+            renderDiscoveredWords(family);
+
+            WidgetState.isAnimating = false;
+        }, 650);
+
+    } else {
+        // Wrong guess
+        console.log(`handleOptionClick: Incorrect choice at index [${index}]. Triggering shake.`);
+        element.classList.add('wrong');
+        setTimeout(() => {
+            element.classList.remove('wrong');
         }, 400);
-      }, 2200);
     }
-    overlay.appendChild(card);
-    var container = document.querySelector('.container');
-    if (container) container.appendChild(overlay);
-  }
+}
 
-  function createConfetti() {
-    var colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'];
-    var container = document.querySelector('.container');
-    if (!container) return;
-    for (var i = 0; i < 60; i++) {
-      var confetti = document.createElement('div');
-      confetti.style.cssText = 'position:absolute;width:' + (Math.random() < 0.5 ? 10 : 14) + 'px;height:' + (Math.random() < 0.5 ? 10 : 14) + 'px;';
-      if (Math.random() < 0.5) confetti.style.borderRadius = '50%';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.top = '-20px';
-      confetti.style.left = Math.random() * 100 + '%';
-      confetti.style.zIndex = '1500';
-      confetti.style.pointerEvents = 'none';
-      container.appendChild(confetti);
-      var duration = Math.random() * 1.5 + 1.5;
-      var delay = Math.random() * 0.5;
-      confetti.animate([
-        { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
-        { transform: 'translate3d(' + (Math.random() * 200 - 100) + 'px, 100vh, 0) rotate(' + (Math.random() * 720) + 'deg)', opacity: 0 }
-      ], {
-        duration: duration * 1000,
-        delay: delay * 1000,
-        easing: 'cubic-bezier(.37,0,.63,1)',
-        fill: 'forwards'
-      });
-      setTimeout(function (el) {
-        if (el.parentNode) el.remove();
-      }, (duration + delay) * 1000 + 100, confetti);
+function renderDiscoveredWords(family) {
+    console.log(`renderDiscoveredWords: Refreshing panels for [${family}]`);
+    // Hide all existing answer panels first
+    const mapping = WidgetState.WORD_MAPPINGS[family] || {};
+
+    // Unhide the panel graphic corresponding to the discovered word
+    const discoveredList = WidgetState.discovered[family];
+
+    // According to instructions: Extract the answer panels from main SVG
+    // We just find elements by ID like 'sandstorm_ans' and show them.
+    Object.keys(mapping).forEach((idxStr) => {
+        const idx = parseInt(idxStr);
+        const word = mapping[idx];
+        let panelId = word + '_ans'; // e.g. sandstorm_ans
+
+        // Handle explicit SVG ID typos
+        if (panelId === 'seahorse_ans') panelId = 'seahorse-ans';
+        if (panelId === 'seaweed_ans') panelId = 'seawood_ans';
+
+        const ansPanel = document.getElementById(panelId);
+
+        if (ansPanel) {
+            if (discoveredList.includes(idx)) {
+                console.log(`renderDiscoveredWords: Showing panel [${panelId}] for [${word}]`);
+                ansPanel.style.display = 'block';
+                ansPanel.style.opacity = '1';
+                ansPanel.style.pointerEvents = 'all';
+
+                const orderIndex = discoveredList.indexOf(idx);
+                // Dynamically offset from top to bottom
+
+                let nativeSlot = WidgetState.NativeOrder[family].findIndex(item => item.id === panelId);
+                if (nativeSlot === -1) nativeSlot = Object.keys(mapping).indexOf(idxStr);
+                ansPanel.style.transform = `translate(0px, ${(orderIndex - nativeSlot) * 153}px)`;
+
+                ansPanel.classList.add('ans-panel', 'show');
+            } else {
+                ansPanel.style.display = 'none';
+                ansPanel.classList.remove('show');
+            }
+        }
+    });
+
+    // Update status text, e.g., "1 of 4"
+    const statusText = document.getElementById('status_bar');
+    if (statusText) {
+        const tspans = statusText.querySelectorAll('tspan');
+        tspans.forEach(ts => {
+            if (ts.textContent.includes('of 4') || ts.textContent.match(/\\d of 4/)) {
+                ts.textContent = `${discoveredList.length} of 4`;
+            }
+        });
+
+        // Update green circles
+        const circles = statusText.querySelectorAll('circle, ellipse');
+        circles.forEach((c, i) => {
+            if (i < discoveredList.length) {
+                c.setAttribute('fill', '#00b894');
+            } else {
+                c.setAttribute('fill', '#077077');
+            }
+        });
     }
-  }
 
-  WG136.injectStyles = injectStyles;
-  WG136.getCardElements = getCardElements;
-  WG136.initGame = initGame;
-  WG136.openFamily = openFamily;
-  WG136.setCardVisibility = setCardVisibility;
-  WG136.returnToMenu = returnToMenu;
-  WG136.resetGame = resetGame;
-  WG136.showPopupMsg = showPopupMsg;
-  WG136.createConfetti = createConfetti;
+    if (discoveredList.length >= 4) {
+        console.log(`renderDiscoveredWords: Completed family [${family}]!`);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    WG136.initGame();
-  });
-})();
+        // Check if all families are completed
+        const allFamilies = ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'];
+        const allCompleted = allFamilies.every(f => WidgetState.discovered[f].length >= 4);
+
+        setTimeout(() => {
+            unhideElement('correct_end_popup');
+
+            // Adjust popup background to cover the scene
+            const endPopupBg = document.querySelector('#correct_end_popup rect');
+            if (endPopupBg) {
+                endPopupBg.setAttribute('x', '-1000');
+                endPopupBg.setAttribute('y', '-1000');
+                endPopupBg.setAttribute('width', '4000');
+                endPopupBg.setAttribute('height', '4000');
+            }
+
+            const amazingGrp = document.getElementById('Amazing_');
+            const wordsDoneGrp = document.getElementById('_4_words_done_');
+            const playAgainGrp = document.getElementById('Group_8214');
+            const correctTextGroup = document.getElementById('correct_text');
+            // allCompleted = true
+            if (allCompleted) {
+                console.log('renderDiscoveredWords: All 6 families completed! Final Celebration.');
+
+                // Show congratulations message
+                if (correctTextGroup) {
+                    // Split into two lines for better fit
+                    correctTextGroup.innerHTML = `
+                        <text x="1060" y="810" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="700" fill="#f8276d" text-anchor="middle" isolation="isolate">🏆 Congratulations!</text>
+                        <text x="1060" y="870" font-family="Roboto-Bold, Roboto" font-size="28" font-weight="700" fill="#f8276d" text-anchor="middle" isolation="isolate">You've mastered all 24 compound words!</text>
+                    `;
+                }
+
+                if (amazingGrp) amazingGrp.style.display = 'block';
+                if (wordsDoneGrp) wordsDoneGrp.style.display = 'none'; // Hide "4 words done"
+
+                // Show and map Play Again
+                if (playAgainGrp) {
+                    playAgainGrp.style.display = 'block';
+                    playAgainGrp.style.cursor = 'pointer';
+                    playAgainGrp.onclick = () => {
+                        console.log('Final Reset: Reloading widget');
+                        location.reload();
+                    };
+                }
+
+                // Extra celebration
+                for (let i = 0; i < 3; i++) setTimeout(() => createConfetti(), i * 400);
+
+            } else {
+                console.log('renderDiscoveredWords: Single family complete. Triggering auto-return timer.');
+
+                if (playAgainGrp) playAgainGrp.style.display = 'none';
+                if (wordsDoneGrp) wordsDoneGrp.style.display = 'block';
+
+                // Update family-specific completion text
+                if (correctTextGroup) {
+                    const fam = family.toUpperCase();
+                    correctTextGroup.innerHTML = `
+                        <text x="1060" y="830" font-family="Roboto-Regular, Roboto" font-size="36" text-anchor="middle" isolation="isolate">You completed the ${fam} family!</text>
+                     `;
+                }
+
+                // Automatic return after 2 seconds
+                setTimeout(() => {
+                    hideElement('correct_end_popup');
+                    returnToMenu();
+                }, 2000);
+            }
+        }, 1200);
+    }
+}
+
+function updateInstructionText(family) {
+    console.log(`updateInstructionText: Flowing exclamation text correctly for [${family}]`);
+    const qitxt = document.getElementById('qitxt');
+
+    if (qitxt) {
+        const tspans = qitxt.querySelectorAll('tspan');
+        tspans.forEach(ts => {
+            ts.removeAttribute('x'); // Let flow handle it
+            const currentText = ts.textContent.replace(/\n|\r/g, ' ').trim().toUpperCase();
+            if (['SUN', 'SAND', 'SEA', 'RAIN', 'SNOW', 'FIRE'].includes(currentText)) {
+                ts.textContent = family.toUpperCase();
+            }
+            if (currentText === '!') {
+                ts.textContent = '!';
+                ts.setAttribute('dx', '10');
+            }
+        });
+    }
+}
+
+function updatePopupText(family) {
+    // Logic now handled in renderDiscoveredWords for correct_text
+}
+
+function playChirp() {
+
+    try {
+        const audio = new window.Audio('assets/bird-chirping.mp3');
+        audio.play().catch(() => {
+            // Backup synth beep
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(2000, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(4000, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+            osc.start(); osc.stop(ctx.currentTime + 0.1);
+        });
+    } catch (e) { }
+}
+
+function createConfetti(rect) {
+    const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4'];
+    for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = rect ? (rect.top + rect.height / 2 + 'px') : '-10px';
+        confetti.style.left = rect ? (rect.left + rect.width / 2 + 'px') : (Math.random() * 100 + 'vw');
+        confetti.style.zIndex = '9999';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        document.body.appendChild(confetti);
+
+        const duration = Math.random() * 2 + 1.5;
+        confetti.animate([
+            { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
+            { transform: `translate3d(${Math.random() * 200 - 100}px, 100vh, 0) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], {
+            duration: duration * 1000,
+            easing: 'cubic-bezier(.37,0,.63,1)',
+            fill: 'forwards'
+        });
+
+        setTimeout(() => confetti.remove(), duration * 1000 + 100);
+    }
+}
+
+function hideElement(id) {
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+}
+
+function unhideElement(id) {
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', initGame);
+
+/**
+ * Debug Helpers for Browser Console:
+ * Debug.completeCurrent() - Instantly complete the currently open family.
+ * Debug.completeAll()     - Instantly complete every single family to see the final screen.
+ * Debug.reset()           - Fully reload the widget.
+ */
+window.Debug = {
+    completeCurrent: () => {
+        if (!WidgetState.currentFamily) return console.warn("Debug: No family screen open! Click a card on the home screen first.");
+        const f = WidgetState.currentFamily;
+        const mappings = WidgetState.WORD_MAPPINGS[f];
+        WidgetState.discovered[f] = Object.keys(mappings).map(k => parseInt(k));
+        renderDiscoveredWords(f);
+        console.log("Debug: Current family completed.", f);
+    },
+    completeAll: () => {
+        WidgetState.families.forEach(f => {
+            const mappings = WidgetState.WORD_MAPPINGS[f];
+            WidgetState.discovered[f] = Object.keys(mappings).map(k => parseInt(k));
+        });
+        if (WidgetState.currentFamily) {
+            renderDiscoveredWords(WidgetState.currentFamily);
+        } else {
+            console.log("Debug: All completed. Opening SUN to show final popup...");
+            openFamily('sun');
+            setTimeout(() => renderDiscoveredWords('sun'), 800);
+        }
+    },
+    reset: () => location.reload()
+};
