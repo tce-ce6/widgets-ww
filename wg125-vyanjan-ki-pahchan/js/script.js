@@ -46,13 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       letter: "ङ",
-      letterSound: "nga.mp3",
+      letterSound: "daa.mp3",
       answer: "ङ",
       options: [
         { text: "ड़", sound: "assets/audio/dda.mp3" },
         { text: "इ", sound: "assets/audio/i.mp3" },
         { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/nga.mp3" },
+        { text: "ङ", sound: "assets/audio/daa.mp3" },
       ],
     },
     {
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "च", sound: "assets/audio/cha.mp3" },
         { text: "ज", sound: "assets/audio/ja.mp3" },
-        { text: "न", sound: "assets/audio/na.mp3" },
+        { text: "न", sound: "assets/audio/na2.mp3" },
         { text: "ञ", sound: "assets/audio/nya.mp3" },
       ],
     },
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answer: "ञ",
       options: [
         { text: "ज", sound: "assets/audio/ja.mp3" },
-        { text: "न", sound: "assets/audio/na.mp3" },
+        { text: "न", sound: "assets/audio/na2.mp3" },
         { text: "ञ", sound: "assets/audio/nya.mp3" },
         { text: "ज्ञ", sound: "assets/audio/gya.mp3" },
       ],
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "ड़", sound: "assets/audio/dda.mp3" },
         { text: "इ", sound: "assets/audio/i.mp3" },
         { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/nga.mp3" },
+        { text: "ङ", sound: "assets/audio/daa.mp3" },
       ],
     },
     {
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "ड़", sound: "assets/audio/dda.mp3" },
         { text: "इ", sound: "assets/audio/i.mp3" },
         { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/nga.mp3" },
+        { text: "ङ", sound: "assets/audio/daa.mp3" },
       ],
     },
     {
@@ -486,6 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function playCorrectLottie(index) {
     hideAllLotties();
+    console.log("play");
 
     const fo = lottieFOs[index];
     fo.style.display = "block";
@@ -602,6 +603,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadQuestionByIndex(index) {
     if (index < 0 || index >= questionsData.length) return;
 
+    // Add opacity and disable pointer events if it's the last letter
+    if (index === questionsData.length - 1) {
+      newLetterBtn.style.opacity = "0.4";
+      newLetterBtn.style.pointerEvents = "none";
+    } else {
+      newLetterBtn.style.opacity = "1";
+      newLetterBtn.style.pointerEvents = "auto";
+    }
+
     const question = questionsData[index];
     currentQuestion = question;
 
@@ -667,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
+    console.log("play");
     currentAudio = new Audio(path);
     currentAudio.play().catch((err) => console.log("Audio play blocked:", err));
   }

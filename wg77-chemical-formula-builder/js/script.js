@@ -50,7 +50,7 @@ const cationData = {
   Mg: { name: "Magnesium", charge: 3 },
   Al: { name: "Aluminium", charge: 3 },
   "NH₄": { name: "Ammonium", charge: 1 },
-  Na :{name:'Sodium',charge:1}
+  Na: { name: 'Sodium', charge: 1 }
 };
 
 const anionData = {
@@ -77,7 +77,7 @@ let selectedAnion = null;
 function init() {
   setupInteractions();
   modalFunctionality();
-  
+
 
 }
 function modalFunctionality() {
@@ -87,15 +87,15 @@ function modalFunctionality() {
   let button = document.getElementById("ruleBtn");
   button.addEventListener("click", function () {
     document.getElementById("ruleModal").style.display = "block";
-      document.getElementById("exampleModal").style.display = "none";
+    document.getElementById("exampleModal").style.display = "none";
 
   });
   let btnClose = document.getElementById("btn-close");
   btnClose.addEventListener("click", function () {
- document.getElementById("ruleModal").style.display = "none";
-  document.getElementById("exampleModal").style.display = "none";
-   })
- 
+    document.getElementById("ruleModal").style.display = "none";
+    document.getElementById("exampleModal").style.display = "none";
+  })
+
 }
 
 function setupInteractions() {
@@ -186,82 +186,82 @@ function showApplyCrissCrossMethod() {
         apply_criss_cross_method.style.pointerEvents = "none";
         apply_criss_cross_method.style.cursor = "null";
         apply_criss_cross_method.style.opacity = "0.5";
-          applyButton.classList.remove("blink-animation");
+        applyButton.classList.remove("blink-animation");
       }
-    
+
 
       swapCharges()
       setDisabledState();
+    }
   }
-}
 
-function swapCharges1(){
-  const group = document.getElementById('setup_cation');
-      if (group) {
-       const child = group.querySelector(
-                    `#${CSS.escape(selectedCation.symbol)}`
-                );
-                if (child) {
-                    // mark it in some way instead of appending random text
-                    child.id = `${child.id}-chosen`;
-                }
-        const tspan = group.querySelector("tspan");
-        if (tspan) {
-          tspan.textContent = periodicTable_minusChange[selectedAnion.symbol] +'-'; // Change to whatever value you want
-        }
+  function swapCharges1() {
+    const group = document.getElementById('setup_cation');
+    if (group) {
+      const child = group.querySelector(
+        `#${CSS.escape(selectedCation.symbol)}`
+      );
+      if (child) {
+        // mark it in some way instead of appending random text
+        child.id = `${child.id}-chosen`;
       }
-       const group1 = document.getElementById('setup_anion');
-      if (group1) {
-           const child1 = group1.querySelector(
-                    `#${CSS.escape(selectedAnion.symbol)}`
-                );
-                if (child1) {
-                    child1.id = `${child1.id}-chosen`;
-                }
-        const tspan1 = group1.querySelector("tspan");
-        if (tspan1) {
-          tspan1.textContent = periodicTable_plusChange[selectedCation.symbol] + '+'; // Change to whatever value you want
-        }
+      const tspan = group.querySelector("tspan");
+      if (tspan) {
+        tspan.textContent = periodicTable_minusChange[selectedAnion.symbol] + '-'; // Change to whatever value you want
       }
-    };
+    }
+    const group1 = document.getElementById('setup_anion');
+    if (group1) {
+      const child1 = group1.querySelector(
+        `#${CSS.escape(selectedAnion.symbol)}`
+      );
+      if (child1) {
+        child1.id = `${child1.id}-chosen`;
+      }
+      const tspan1 = group1.querySelector("tspan");
+      if (tspan1) {
+        tspan1.textContent = periodicTable_plusChange[selectedCation.symbol] + '+'; // Change to whatever value you want
+      }
+    }
+  };
 }
 
 function swapCharges() {
-    const update = (containerId, symbol, chargeText) => {
-        const grp = document.getElementById(containerId);
-        if (!grp) return;
+  const update = (containerId, symbol, chargeText) => {
+    const grp = document.getElementById(containerId);
+    if (!grp) return;
 
-        const child = grp.querySelector(`#${CSS.escape(symbol)}`);
-        if (child) {
-            child.id = `${child.id}-chosen`;      // mark the chosen ion
-        }
-
-        const tspan = grp.querySelector('tspan');
-        if (tspan) {
-            // clear any fixed length so the new text can expand
-            const textEl = tspan.parentNode;
-            if (textEl && textEl.hasAttribute('textLength')) {
-                textEl.removeAttribute('textLength');
-            }
-
-            // add a trailing space (or you could set dx) so the ‘+’ isn’t
-            // drawn flush against the right edge
-            tspan.textContent = chargeText + ' ';
-        }
-    };
-
-    if (selectedCation && selectedAnion) {
-        update(
-            'setup_cation',
-            selectedCation.symbol,
-            periodicTable_minusChange[selectedAnion.symbol] + '-'
-        );
-        update(
-            'setup_anion',
-            selectedAnion.symbol,
-            periodicTable_plusChange[selectedCation.symbol] + '+'
-        );
+    const child = grp.querySelector(`#${CSS.escape(symbol)}`);
+    if (child) {
+      child.id = `${child.id}-chosen`;      // mark the chosen ion
     }
+
+    const tspan = grp.querySelector('tspan');
+    if (tspan) {
+      // clear any fixed length so the new text can expand
+      const textEl = tspan.parentNode;
+      if (textEl && textEl.hasAttribute('textLength')) {
+        textEl.removeAttribute('textLength');
+      }
+
+      // add a trailing space (or you could set dx) so the ‘+’ isn’t
+      // drawn flush against the right edge
+      tspan.textContent = chargeText + ' ';
+    }
+  };
+
+  if (selectedCation && selectedAnion) {
+    update(
+      'setup_cation',
+      selectedCation.symbol,
+      periodicTable_minusChange[selectedAnion.symbol] + '-'
+    );
+    update(
+      'setup_anion',
+      selectedAnion.symbol,
+      periodicTable_plusChange[selectedCation.symbol] + '+'
+    );
+  }
 }
 
 function loadSVGIntoContainer(svgUrl, containerId, callback) {
@@ -290,7 +290,7 @@ function showCrissCrossLines() {
   if (line1) line1.style.display = "block";
   if (line2) line2.style.display = "block";
 
-    const path1 = document.getElementById("arrow-path-1");
+  const path1 = document.getElementById("arrow-path-1");
   const path2 = document.getElementById("arrow-path-2");
 
   if (path1) {
@@ -305,15 +305,15 @@ function showCrissCrossLines() {
 
 
   setTimeout(() => {
-      line1.classList.add("visible");
-      line2.classList.add("visible");
-    }, 100);
-    const inter_ = setInterval(() => {
-      path1.style.strokeDashoffset += "1000";
-      path2.style.strokeDashoffset += "1000";
-      clearInterval(inter_);
-    }, 10);
-    
+    line1.classList.add("visible");
+    line2.classList.add("visible");
+  }, 100);
+  const inter_ = setInterval(() => {
+    path1.style.strokeDashoffset += "1000";
+    path2.style.strokeDashoffset += "1000";
+    clearInterval(inter_);
+  }, 10);
+
 }
 function updateDisplay(elementId, text, type) {
   const el = document.getElementById(elementId);
@@ -335,10 +335,10 @@ function showCompoundName(elementId, text, type) {
   // const img = el.querySelector("img");
   const sr = "assets/images/Gr_" + text + ".svg";
   // img.setAttribute("src", sr);
-  loadSVGIntoContainer(sr, elementId, function(container) {
-  console.log("🚀 ~ showCompoundName ~ container:", container)
- 
-});
+  loadSVGIntoContainer(sr, elementId, function (container) {
+    console.log("🚀 ~ showCompoundName ~ container:", container)
+
+  });
 }
 
 function formatSubscripts(text) {
@@ -367,12 +367,12 @@ function calculateFormula() {
   // Update the Formula area in your SVG (id="Formula")
   const formulaEl = document.querySelector("#compound_formula_display p");
   if (formulaEl) {
-    formulaEl.innerHTML =  formatFormula1(
-    selectedCation.symbol,
-    cSub,
-    selectedAnion.symbol,
-    aSub,
-  );
+    formulaEl.innerHTML = formatFormula1(
+      selectedCation.symbol,
+      cSub,
+      selectedAnion.symbol,
+      aSub,
+    );
     const compound_explanation_box = document.getElementById(
       "compound_formula_display",
     );
@@ -484,33 +484,33 @@ function updateUI(name, exp1, exp2, formula) {
   // 3. Show Final Formula (e.g., KNO3)
 }
 function updateCrossVisual(cKey, aKey, cSub, aSub) {
-    console.log("🚀 ~ updateCrossVisual ~ cKey, aKey, cSub, aSub:", cKey, aKey, cSub, aSub)
-    const group = document.getElementById("(1K x 1NO3)"); // Target the group
-    if (!group) return;
-    const tspans = group.querySelector("tspan");
-    tspans.innerHTML = `(${cSub}${cKey} x ${aSub}${aKey})`;
-  
+  console.log("🚀 ~ updateCrossVisual ~ cKey, aKey, cSub, aSub:", cKey, aKey, cSub, aSub)
+  const group = document.getElementById("(1K x 1NO3)"); // Target the group
+  if (!group) return;
+  const tspans = group.querySelector("tspan");
+  tspans.innerHTML = `(${cSub}${cKey} x ${aSub}${aKey})`;
+
 }
 
 function setDisabledState() {
-     const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
+  const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
   const anions = ["Cl", "O", "N", "SO₄", "OH", "Br", "S", "NO₃", "CO₃"];
-        for (const id of cations) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.pointerEvents = "none";
-            el.style.cursor = "not-allowed";
-            el.style.opacity = "0.5";
-        }
-        }
-    for (const id of anions) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.pointerEvents = "none";
-            el.style.cursor = "not-allowed";
-            el.style.opacity = "0.5";
-        }
+  for (const id of cations) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.pointerEvents = "none";
+      el.style.cursor = "not-allowed";
+      el.style.opacity = "0.5";
     }
+  }
+  for (const id of anions) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.pointerEvents = "none";
+      el.style.cursor = "not-allowed";
+      el.style.opacity = "0.5";
+    }
+  }
 
 }
 document.addEventListener("DOMContentLoaded", () => {
@@ -540,10 +540,10 @@ document.addEventListener("DOMContentLoaded", () => {
 window.onload = init;
 window.addEventListener("load", () => {
   const cationEl = document.getElementById("moving-cation-charge");
-  const anionEl  = document.getElementById("moving-anion-charge");
+  const anionEl = document.getElementById("moving-anion-charge");
 
   console.log("moving-cation-charge exists?", !!cationEl);
-  console.log("moving-anion-charge exists?",  !!anionEl);
+  console.log("moving-anion-charge exists?", !!anionEl);
 
   if (!cationEl) {
     console.warn("Add this to your SVG:\n",
