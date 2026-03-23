@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function initWidget() {
   const backNextBtn = document.getElementById("btn-next-back");
 
-  const container = document.getElementById("barter-bazaar-wrapper") || document.body;
+  const container =
+    document.getElementById("barter-bazaar-wrapper") || document.body;
   const svg = document.querySelector("svg");
   if (!svg) return;
 
@@ -39,7 +40,7 @@ function initWidget() {
       width: "100%",
       height: "100%",
       pointerEvents: "none",
-      zIndex: "100"
+      zIndex: "100",
     });
     parent.appendChild(layer);
     return layer;
@@ -111,8 +112,8 @@ function initWidget() {
     "Path_2994",
     "Path_2991",
     "Path_2708-4",
-    "Path_2710-4"
-  ]
+    "Path_2710-4",
+  ];
 
   const villageTrades = [
     "Group_1292",
@@ -122,19 +123,8 @@ function initWidget() {
     "Group_1296",
     "Group_1281",
     "Group_1403",
-    "Group_1404"
-  ]
-  const sen_01_sc1_cards_matched = [
-    "Group_1295-2",
-    "Group_1404-2",
-    "Group_1281-2",
-    "Group_1403-2",
-    "Group_1293-2",
-    "Group_1296-2",
-    "Group_1294-2",
-    "Group_1292-2"
-  ]
-
+    "Group_1404",
+  ];
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
   let currentChallengeSC2 = 1; // 1 to 3
@@ -151,11 +141,14 @@ function initWidget() {
     .querySelectorAll('[id^="popup-"]')
     .forEach((el) => el.classList.add("st767"));
 
-
   // --- Menu Setup ---
   const menuScen1 = document.getElementById("Scenario_1");
-  const menuScen2 = document.getElementById("Scenario_2");
-  const menuScen3 = document.getElementById("Scenario_3");
+  const menuScen2 =
+    document.getElementById("Scenario_2") ||
+    document.getElementById("Group_1570");
+  const menuScen3 =
+    document.getElementById("Scenario_3") ||
+    document.getElementById("Group_1572");
   const menuScen2_1 = document.getElementById("Scenario_2-1");
   const menuScen2_2 = document.getElementById("Scenario_2-2");
   const menuScen2_3 = document.getElementById("Scenario_2-3");
@@ -228,7 +221,6 @@ function initWidget() {
     });
   }
 
-
   if (menuScen3_3) {
     menuScen3_3.style.cursor = "pointer";
     menuScen3_3.addEventListener("click", () => {
@@ -244,9 +236,9 @@ function initWidget() {
   const btnHome = document.getElementById("btn-home");
   const btnInsights = document.getElementById("btn-insights");
   const globalSubmit = document.getElementById("Submit");
-  const btnCloseInsights = document.getElementById("Insights-2")
-  const btnCloseInsights3 = document.getElementById("Insights-3")
-  const btnCloseInsights4 = document.getElementById("Insights-4")
+  const btnCloseInsights = document.getElementById("Insights-2");
+  const btnCloseInsights3 = document.getElementById("Insights-3");
+  const btnCloseInsights4 = document.getElementById("Insights-4");
 
   if (btnNext) {
     btnNext.style.cursor = "pointer";
@@ -290,7 +282,6 @@ function initWidget() {
       pId = `popup-act-02-insights`; // fallback
       togglePopup(pId, false);
     });
-
   }
   if (btnCloseInsights4) {
     btnCloseInsights4.addEventListener("click", () => {
@@ -312,12 +303,18 @@ function initWidget() {
       currentScreen = 2;
       currentChallengeSC2 = 1;
     } else if (currentScreen === 2) {
+      hideElements(`#act-02-sc${currentChallengeSC2}`);
+      hideElements(`#act-02-sc${currentChallengeSC2}-cards`);
       if (currentChallengeSC2 < 3) currentChallengeSC2++;
       else {
         hideElements("#act-02-base-global");
+        hideElements(`#act-02-sc${currentChallengeSC2}`);
+        hideElements(`#act-02-sc${currentChallengeSC2}-cards`);
         hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
         if (document.querySelector(".custom-dropdown")) {
-          document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+          document
+            .querySelectorAll(".custom-dropdown")
+            .forEach((dd) => dd.remove());
         }
         currentScreen = 3;
         currentChallengeSC3 = 1;
@@ -339,12 +336,20 @@ function initWidget() {
       currentScreen = 3;
       currentChallengeSC3 = 3;
     } else if (currentScreen === 3) {
+      // Always clean up screen 3 before leaving
+      hideElements("#act-03-base-global");
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-03-sc${s}"]`));
+      uiLayer.querySelectorAll(".sc3-overlay").forEach((el) => el.remove());
       if (currentChallengeSC3 > 1) currentChallengeSC3--;
       else {
         currentScreen = 2;
         currentChallengeSC2 = 3;
       }
     } else if (currentScreen === 2) {
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+      document
+        .querySelectorAll(".custom-dropdown")
+        .forEach((dd) => dd.remove());
       if (currentChallengeSC2 > 1) currentChallengeSC2--;
       else currentScreen = 1;
     } else if (currentScreen === 1) {
@@ -354,31 +359,38 @@ function initWidget() {
   }
 
   function updateView() {
-
     if (menuScreen) menuScreen.classList.add("st767");
     // document
     //   .querySelectorAll('[id^="act-"]')
     //   .forEach((el) => el.classList.add("hidden-svg"));
     btnHome.classList.remove("st767");
-    btnInsights.classList.remove("st767")
+    btnInsights.classList.remove("st767");
 
     // Handle Menu
     if (currentScreen === 0) {
       if (menuScreen) menuScreen.classList.remove("st767");
       allScreens.forEach((s) => {
-        let d = document.getElementById(s)
+        let d = document.getElementById(s);
         if (d) {
-          d.classList.add("st767")
+          d.classList.add("st767");
         }
-      })
-      hideElements(`[id^="act-02]`);
+      });
+      hideElements(`[id^="act-02"]`);
       hideElements(`[id^="act-03"]`);
-      hideElements(`act-02-sc1-cards`);
-      hideElements(`act-02-sc2-cards`);
-      hideElements(`act-02-sc3-cards`);
+      hideElements(`#act-02-sc1-cards`);
+      hideElements(`#act-02-sc2-cards`);
+      hideElements(`#act-02-sc3-cards`);
+      document.querySelectorAll("act-01-sc1-cards-matched").forEach((p) => {
+        p.classList.add("st767");
+      });
+      document.querySelectorAll("act-01-sc1-cards-selected").forEach((p) => {
+        p.classList.add("st767");
+      });
 
       if (document.querySelector(".custom-dropdown")) {
-        document.querySelectorAll(".custom-dropdown").forEach(dd => dd.remove());
+        document
+          .querySelectorAll(".custom-dropdown")
+          .forEach((dd) => dd.remove());
       }
       hideElements("#act-04-base");
       hideElements("#act-04-question");
@@ -393,6 +405,8 @@ function initWidget() {
       hideElements('[id^="act-01-sc1-feedback"]');
       setupScreen1();
     } else if (currentScreen === 2) {
+      // Clear all sc states first to prevent bleed-through
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-02-sc${s}"]`));
       showElements("#act-02-base-global");
       showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
       // Hide feedbacks initially
@@ -400,6 +414,8 @@ function initWidget() {
       backNextBtn.classList.remove("st767");
       setupScreen2Challenge(currentChallengeSC2);
     } else if (currentScreen === 3) {
+      // Clear all sc states first to prevent bleed-through of selected indicators
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-03-sc${s}"]`));
       showElements("#act-03-base-global");
       showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
       hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
@@ -418,24 +434,37 @@ function initWidget() {
 
   // --- Screen 1 Logic ---
   function setupScreen1() {
-    const traders = ["Potter", "Fisherman", "Carpenter", "Weaver", "Plumber", "Teacher", "Doctor", "Farmer"];
+    const traders = [
+      "Potter",
+      "Fisherman",
+      "Carpenter",
+      "Weaver",
+      "Plumber",
+      "Teacher",
+      "Doctor",
+      "Farmer",
+    ];
     const pairs = {
-      "Farmer": "Weaver", "Weaver": "Farmer",
-      "Doctor": "Teacher", "Teacher": "Doctor",
-      "Fisherman": "Plumber", "Plumber": "Fisherman",
-      "Potter": "Carpenter", "Carpenter": "Potter"
+      Farmer: "Weaver",
+      Weaver: "Farmer",
+      Doctor: "Teacher",
+      Teacher: "Doctor",
+      Fisherman: "Plumber",
+      Plumber: "Fisherman",
+      Potter: "Carpenter",
+      Carpenter: "Potter",
     };
 
     const scn_01_sc1_cards_matched = {
-      "Farmer_Weaver": ['Group_1295-2', 'Group_1404-2'],
-      "Weaver_Farmer": ['Group_1295-2', 'Group_1404-2'],
-      "Doctor_Teacher": ["Group_1281-2", "Group_1403-2"],
-      "Teacher_Doctor": ["Group_1281-2", "Group_1403-2"],
-      "Fisherman_Plumber": ["Group_1293-2", "Group_1296-2"],
-      "Plumber_Fisherman": ["Group_1293-2", "Group_1296-2"],
-      "Potter_Carpenter": ["Group_1294-2", "Group_1292-2"],
-      "Carpenter_Potter": ["Group_1294-2", "Group_1292-2"],
-    }
+      Farmer_Weaver: ["Group_1295-2", "Group_1404-2"],
+      Weaver_Farmer: ["Group_1295-2", "Group_1404-2"],
+      Doctor_Teacher: ["Group_1281-2", "Group_1403-2"],
+      Teacher_Doctor: ["Group_1281-2", "Group_1403-2"],
+      Fisherman_Plumber: ["Group_1293-2", "Group_1296-2"],
+      Plumber_Fisherman: ["Group_1293-2", "Group_1296-2"],
+      Potter_Carpenter: ["Group_1294-2", "Group_1292-2"],
+      Carpenter_Potter: ["Group_1294-2", "Group_1292-2"],
+    };
     let selectedTrader = null;
     let matchedTraders = new Set();
     let tradeCount = 0;
@@ -464,55 +493,69 @@ function initWidget() {
           // First selection
           selectedTrader = traders[index];
           //  el.classList.add("trader-selected");
-          document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
-
+          document
+            .getElementById(villageTradesSelectionIds[index])
+            .classList.remove("st767");
         } else if (selectedTrader === traders[index]) {
           // Deselect same trader
           el.classList.remove("trader-selected");
           selectedTrader = null;
-          document.getElementById(villageTradesSelectionIds[index]).classList.add("st767");
+          document
+            .getElementById(villageTradesSelectionIds[index])
+            .classList.add("st767");
         } else {
           // Try to match with previously selected trader
-          const firstEl = document.getElementById(selectedTrader);
+          const firstEl = document.getElementById(
+            villageTrades[traders.indexOf(selectedTrader)],
+          );
           if (pairs[selectedTrader] === traders[index]) {
             // Match success
-            document.getElementById(villageTradesSelectionIds[index]).classList.remove("st767");
+            document
+              .getElementById(villageTradesSelectionIds[index])
+              .classList.remove("st767");
             matchedTraders.add(traders[index]);
             matchedTraders.add(selectedTrader);
             tradeCount++;
-            let selectT = scn_01_sc1_cards_matched[`${traders[index]}_${selectedTrader}`]
+            let selectT =
+              scn_01_sc1_cards_matched[`${traders[index]}_${selectedTrader}`];
             selectT.forEach((s) => {
-              let d = document.getElementById(s)
+              let d = document.getElementById(s);
               if (d) {
-                d.classList.remove("st767")
+                d.classList.remove("st767");
               }
-            })
+            });
             //  el.classList.add("trader-matched");
             // el.classList.remove("trader-selected");
             // firstEl.classList.add("trader-matched");
             // firstEl.classList.remove("trader-selected");
 
             // Show Success Popup
-            let corPopup = document.getElementById("act-01-sc1-feedback-correct-selection");
+            let corPopup = document.getElementById(
+              "act-01-sc1-feedback-correct-selection",
+            );
             if (corPopup) {
               corPopup.classList.remove("st767");
-              let tradeCounterText = document.getElementById("trade-counter-sc1");
-              if (tradeCounterText) tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
+              let tradeCounterText =
+                document.getElementById("trade-counter-sc1");
+              if (tradeCounterText)
+                tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
 
               let continueBtn = document.getElementById("btn-continue-sc1");
               if (continueBtn) {
                 continueBtn.onclick = () => {
                   corPopup.classList.add("st767");
                   selectedTrader = null;
-                  tradeCount
-                  console.log("tradeCount", tradeCount)
+                  console.log("tradeCount", tradeCount);
                   if (tradeCount >= 4) {
-                    let completedSec = document.getElementById("act-01-sc1-feedback-end");
+                    let completedSec = document.getElementById(
+                      "act-01-sc1-feedback-end",
+                    );
                     if (completedSec) {
-                      completedSec.classList.remove("st767")
+                      completedSec.classList.remove("st767");
                       completedSec.addEventListener("click", () => {
-
-                      })
+                        completedSec.classList.add("st767");
+                        goNext();
+                      });
                     }
                   }
                   // Check if all pairs are matched after continuing
@@ -527,7 +570,9 @@ function initWidget() {
               }
             }
           } else {
-            let incorPopup = document.getElementById("act-01-sc1-feedback-incorrect-selection");
+            let incorPopup = document.getElementById(
+              "act-01-sc1-feedback-incorrect-selection",
+            );
             if (incorPopup) {
               const previousTrader = selectedTrader;
               const currentIndex = index;
@@ -536,8 +581,11 @@ function initWidget() {
               incorPopup.classList.remove("st767");
 
               currentEl.classList.add("trader-selected");
-              let secondSelectionBorder = document.getElementById(villageTradesSelectionIds[currentIndex]);
-              if (secondSelectionBorder) secondSelectionBorder.classList.remove("st767");
+              let secondSelectionBorder = document.getElementById(
+                villageTradesSelectionIds[currentIndex],
+              );
+              if (secondSelectionBorder)
+                secondSelectionBorder.classList.remove("st767");
 
               let tryBtn = document.getElementById("btn-try-another-trader");
               if (tryBtn) {
@@ -545,17 +593,28 @@ function initWidget() {
                   incorPopup.classList.add("st767");
                   el.classList.remove("trader-selected");
                   firstEl.classList.remove("trader-selected");
-                  let firstSelectionBorder = document.getElementById(villageTradesSelectionIds[traders.indexOf(previousTrader)]);
-                  if (firstSelectionBorder) firstSelectionBorder.classList.add("st767");
+                  let firstSelectionBorder = document.getElementById(
+                    villageTradesSelectionIds[traders.indexOf(previousTrader)],
+                  );
+                  if (firstSelectionBorder)
+                    firstSelectionBorder.classList.add("st767");
 
                   currentEl.classList.remove("trader-selected");
-                  if (secondSelectionBorder) secondSelectionBorder.classList.add("st767");
+                  if (secondSelectionBorder)
+                    secondSelectionBorder.classList.add("st767");
                 };
               }
             } else {
-              showFeedbackPopup("Trade failed. Try again. Their needs don't match.", false);
+              showFeedbackPopup(
+                "Trade failed. Try again. Their needs don't match.",
+                false,
+              );
               firstEl.classList.remove("trader-selected");
-              document.getElementById(villageTradesSelectionIds[traders.indexOf(selectedTrader)]).classList.add("st767");
+              document
+                .getElementById(
+                  villageTradesSelectionIds[traders.indexOf(selectedTrader)],
+                )
+                .classList.add("st767");
             }
             selectedTrader = null;
           }
@@ -594,7 +653,7 @@ function initWidget() {
         boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
         pointerEvents: "auto",
         maxWidth: "400px",
-        fontFamily: "Arial, sans-serif"
+        fontFamily: "Arial, sans-serif",
       });
       document.body.appendChild(popup);
     }
@@ -616,9 +675,6 @@ function initWidget() {
     if (targetId) {
       const existing = document.getElementById(`dropdown-${targetId}`);
       if (existing) return existing;
-    }
-    if (document.querySelector(".custom-dropdown")) {
-      return
     }
     const wrapper = document.createElement("div");
     wrapper.id = targetId ? `dropdown-${targetId}` : "";
@@ -656,7 +712,9 @@ function initWidget() {
         wrapper.dataset.value = String(i);
         valueSpan.textContent = String(i);
         // Update selected highlight
-        list.querySelectorAll(".custom-dropdown-item").forEach(li => li.classList.remove("selected"));
+        list
+          .querySelectorAll(".custom-dropdown-item")
+          .forEach((li) => li.classList.remove("selected"));
         item.classList.add("selected");
         wrapper.classList.remove("open");
         if (onChange) onChange(i);
@@ -669,7 +727,7 @@ function initWidget() {
     trigger.addEventListener("click", (e) => {
       e.stopPropagation();
       // Close all other open dropdowns first
-      document.querySelectorAll(".custom-dropdown.open").forEach(dd => {
+      document.querySelectorAll(".custom-dropdown.open").forEach((dd) => {
         if (dd !== wrapper) dd.classList.remove("open");
       });
       wrapper.classList.toggle("open");
@@ -679,7 +737,7 @@ function initWidget() {
     wrapper.setValue = function (val) {
       wrapper.dataset.value = String(val);
       valueSpan.textContent = String(val);
-      list.querySelectorAll(".custom-dropdown-item").forEach(li => {
+      list.querySelectorAll(".custom-dropdown-item").forEach((li) => {
         li.classList.toggle("selected", li.dataset.val === String(val));
       });
       if (onChange) onChange(val);
@@ -690,7 +748,9 @@ function initWidget() {
 
   // Close any open dropdown when clicking outside
   document.addEventListener("click", () => {
-    document.querySelectorAll(".custom-dropdown.open").forEach(dd => dd.classList.remove("open"));
+    document
+      .querySelectorAll(".custom-dropdown.open")
+      .forEach((dd) => dd.classList.remove("open"));
   });
 
   // --- Screen 2 Logic ---
@@ -701,6 +761,9 @@ function initWidget() {
   };
 
   function setupScreen2Challenge(sc) {
+    // Remove stale dropdowns from previous calls
+    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+
     const cfg = sc2Config[sc];
     if (!cfg) return;
 
@@ -730,8 +793,18 @@ function initWidget() {
     }
 
     // Create custom dropdowns with target IDs to prevent duplicates
-    const s1 = createCustomDropdown(cfg.max1, 0, checkEnableSubmit, `act-02-sc${sc}-1`);
-    const s2 = createCustomDropdown(cfg.max2, 0, checkEnableSubmit, `act-02-sc${sc}-2`);
+    const s1 = createCustomDropdown(
+      cfg.max1,
+      0,
+      checkEnableSubmit,
+      `act-02-sc${sc}-1`,
+    );
+    const s2 = createCustomDropdown(
+      cfg.max2,
+      0,
+      checkEnableSubmit,
+      `act-02-sc${sc}-2`,
+    );
 
     if (dd1 && dd2) {
       const r1 = getPctRect(dd1);
@@ -789,7 +862,6 @@ function initWidget() {
       });
       uiLayer.appendChild(s1);
 
-
       Object.assign(s2.style, {
         left: "64.0741%",
         top: "19.6481%",
@@ -798,7 +870,6 @@ function initWidget() {
         pointerEvents: "auto",
       });
       uiLayer.appendChild(s2);
-
     }
 
     // Show Answer logic
@@ -808,10 +879,18 @@ function initWidget() {
       showAnsBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         // Find first fair trade values
-        let f1 = 0, f2 = 0;
-        if (sc === 1) { f1 = 2; f2 = 1; }
-        else if (sc === 2) { f1 = 3; f2 = 1; }
-        else if (sc === 3) { f1 = 4; f2 = 3; }
+        let f1 = 0,
+          f2 = 0;
+        if (sc === 1) {
+          f1 = 2;
+          f2 = 1;
+        } else if (sc === 2) {
+          f1 = 3;
+          f2 = 1;
+        } else if (sc === 3) {
+          f1 = 4;
+          f2 = 3;
+        }
         s1.setValue(f1);
         s2.setValue(f2);
       });
@@ -824,14 +903,14 @@ function initWidget() {
         let v2 = parseInt(s2.dataset.value);
         if (v1 * cfg.val1 === v2 * cfg.val2) {
           // Fair Trade
-          showElements(`#act-02-sc${sc}-feedback-correct`);
-          hideElements(`#act-02-sc${sc}-feedback-incorrect`);
+          showElements(`#act-02-sc1-feedback-correct`);
+          hideElements(`#act-02-sc1-feedback-incorrect`);
           //  showFeedbackPopup("It is a fair trade! The values are matching.", true);
           // showElements(`#act-02-sc${sc}-feedback-end`);
         } else {
           // Unfair
-          showElements(`#act-02-sc${sc}-feedback-incorrect`);
-          hideElements(`#act-02-sc${sc}-feedback-correct`);
+          showElements(`#act-02-sc1-feedback-incorrect`);
+          hideElements(`#act-02-sc1-feedback-correct`);
           // showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
           // hideElements(`#act-02-sc${sc}-feedback-end`);
         }
@@ -840,7 +919,9 @@ function initWidget() {
 
     // Feedback Continue button handlers
     // "Continue" on incorrect feedback → close popup (try again)
-    const incorrectFeedback = document.getElementById(`act-02-sc${sc}-feedback-incorrect`);
+    const incorrectFeedback = document.getElementById(
+      `act-02-sc${sc}-feedback-incorrect`,
+    );
     if (incorrectFeedback) {
       incorrectFeedback.style.cursor = "pointer";
       incorrectFeedback.addEventListener("click", () => {
@@ -849,7 +930,9 @@ function initWidget() {
     }
 
     // "Continue" on correct feedback → close popup
-    const correctFeedback = document.getElementById(`act-02-sc${sc}-feedback-correct`);
+    const correctFeedback = document.getElementById(
+      `act-02-sc${sc}-feedback-correct`,
+    );
     if (correctFeedback) {
       correctFeedback.style.cursor = "pointer";
       correctFeedback.addEventListener("click", () => {
@@ -874,7 +957,7 @@ function initWidget() {
     const chainConfig = {
       1: ["Farmer", "Fisherman", "Plumber"],
       2: ["Teacher", "Potter", "Carpenter"],
-      3: ["Potter", "Farmer", "Weaver", "Doctor"]
+      3: ["Potter", "Farmer", "Weaver", "Doctor"],
     };
     const sequence = chainConfig[sc];
     let currentStep = 0;
@@ -905,7 +988,7 @@ function initWidget() {
           height: rect.height,
           cursor: "pointer",
           pointerEvents: "auto",
-          zIndex: "10"
+          zIndex: "10",
         });
         uiLayer.appendChild(overlay);
 
@@ -915,7 +998,10 @@ function initWidget() {
             showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
             currentStep++;
             if (currentStep === sequence.length) {
-              const msg = sc === 3 ? "Well Done! You achieved your goal by completing a 4-step trading." : "Well Done! You achieved your goal by completing a 3-step trading.";
+              const msg =
+                sc === 3
+                  ? "Well Done! You achieved your goal by completing a 4-step trading."
+                  : "Well Done! You achieved your goal by completing a 3-step trading.";
               //showFeedbackPopup(msg, true);
               showElements(`#act-03-sc${sc}-feedback-end`);
             } else {
@@ -923,7 +1009,10 @@ function initWidget() {
             }
           } else if (index > currentStep) {
             // Wrong step
-            // showFeedbackPopup("Trade failed! Try again.", false);
+            showFeedbackPopup(
+              "Wrong order! Try again from the correct trader.",
+              false,
+            );
           }
         };
       }
@@ -945,15 +1034,25 @@ function initWidget() {
   // --- Screen 4 Logic ---
   function setupScreen4() {
     const checkBoxIds = [
-      "Group_1679", "Group_1681", "Group_1682", "Group_1683", "Group_1684", "Group_1686", "Group_1685"
+      "Group_1679",
+      "Group_1681",
+      "Group_1682",
+      "Group_1683",
+      "Group_1684",
+      "Group_1686",
+      "Group_1685",
     ];
     const defGroup = document.getElementById("act-04-checkbox-default");
     const selGroup = document.getElementById("act-04-checkbox-selected");
     if (!defGroup || !selGroup) return;
 
     // Use absolute sorting by bounding box top
-    const defs = Array.from(defGroup.children).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-    const sels = Array.from(selGroup.children).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+    const defs = Array.from(defGroup.children).sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
+    const sels = Array.from(selGroup.children).sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
 
     const corrects = [0, 1, 2, 3, 6];
     let correctCount = 0;
@@ -969,7 +1068,7 @@ function initWidget() {
           width: "35%", // wide area for text
           height: rect.height,
           cursor: "pointer",
-          pointerEvents: "auto"
+          pointerEvents: "auto",
         });
         uiLayer.appendChild(overlay);
 
@@ -983,7 +1082,10 @@ function initWidget() {
             correctCount++;
             document.getElementById(checkBoxIds[i]).classList.remove("st767");
             if (correctCount === corrects.length) {
-              showFeedbackPopup("Well Done! You have learnt how trade used to happen without money, before its invention.", true);
+              showFeedbackPopup(
+                "Well Done! You have learnt how trade used to happen without money, before its invention.",
+                true,
+              );
               showElements("#act-04-feedback-end");
             }
           } else {

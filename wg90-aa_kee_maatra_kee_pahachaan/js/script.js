@@ -95,12 +95,9 @@ function textDisplay() {
 
 function highlightConsonantWithUmatra(text) {
   // Matches any consonant + आ की मात्रा (ा, U+093E)
-  return text.replace(
-    /([\u0915-\u0939\u0958-\u095F]\u093E)/g,
-    (match) => {
-      return `<span>${match}</span>`;
-    },
-  );
+  return text.replace(/([\u0915-\u0939\u0958-\u095F]\u093E)/g, (match) => {
+    return `<span>${match}</span>`;
+  });
 }
 
 function resetFeedbackVisuals() {
@@ -250,12 +247,16 @@ function audioListener() {
   const audio2 = document.getElementById("audio_button_2");
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
-    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
+    correctCloudId === "cloud_text_01"
+      ? playAudio("correct")
+      : playAudio("wrong");
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
+    correctCloudId === "cloud_text_02"
+      ? playAudio("correct")
+      : playAudio("wrong");
   });
 }
 
@@ -357,13 +358,12 @@ function naya_shabd() {
     nextbutton();
     getRandomAnimation();
     audioPlayer.pause();
-    audioPlayer.currentTime = 0
+    audioPlayer.currentTime = 0;
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
   });
 }
-
 
 function setButtonsDisabled(disabled) {
   const ids = [
@@ -421,7 +421,7 @@ function playLottieAnimation(bandGroup) {
   parentEl.classList.remove("visible");
   parentEl.style.display = "block"; // allow renderer to init
   parentEl.style.visibility = "hidden"; // but keep hidden
-  parentEl.style.opacity = "0";
+  parentEl.style.opacity = "";
 
   try {
     lottieInstances = lottie.loadAnimation({
@@ -442,10 +442,7 @@ function playLottieAnimation(bandGroup) {
       if (e.currentTime > 0.1) {
         if (!parentEl.classList.contains("visible")) {
           parentEl.style.visibility = "visible";
-          parentEl.style.opacity = "1";
           parentEl.classList.add("visible");
-
-
         }
       }
     });
