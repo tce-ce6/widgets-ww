@@ -73,7 +73,7 @@
       "author": "sushantkanaujiya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-23T17:36:07+05:30",
+      "updatedAt": "2026-03-23T18:11:23+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg121-synthesize-new-dna-strand": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T18:11:23+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "drop down issue fixed",
+      "widgets": [
+        120
+      ]
+    },
+    {
       "date": "2026-03-23T17:52:55+05:30",
       "author": "sushantkanaujiya",
       "message": "Update index.html",
@@ -616,18 +624,6 @@
       "message": "refactor: reorder SVG group in `index.html` and apply minor whitespace formatting in `script.js`.",
       "widgets": [
         136
-      ]
-    },
-    {
-      "date": "2026-03-23T11:38:30+05:30",
-      "author": "tce-nitinc",
-      "message": "wg31 changes",
-      "widgets": [
-        31,
-        76,
-        77,
-        93,
-        125
       ]
     }
   ]
