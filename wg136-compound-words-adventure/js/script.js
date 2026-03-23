@@ -5,12 +5,12 @@ const WidgetState = {
         sun: [], rain: [], snow: [], fire: [], sea: [], sand: []
     },
     WORD_MAPPINGS: {
-        sun:  { 1: 'sunflower', 5: 'sunglasses', 3: 'sunscreen', 2: 'sunlight' },
-        rain: { 3: 'raincoat',  4: 'rainstorm',  0: 'rainbow',   5: 'raindrop' },
-        snow: { 0: 'snowball',  1: 'snowboard',  5: 'snowsuit',   4: 'snowman' },
-        fire: { 0: 'fireman',   2: 'fireplace',  1: 'firewood',   5: 'firefly' },
-        sea:  { 3: 'seafood',   1: 'seahorse',   0: 'seashell',   4: 'seaweed' },
-        sand: { 2: 'sandpaper', 1: 'sandcastle', 3: 'sandstorm',  0: 'sandbox' }
+        sun: { 1: 'sunflower', 5: 'sunglasses', 3: 'sunscreen', 2: 'sunlight' },
+        rain: { 3: 'raincoat', 4: 'rainstorm', 0: 'rainbow', 5: 'raindrop' },
+        snow: { 0: 'snowball', 1: 'snowboard', 5: 'snowsuit', 4: 'snowman' },
+        fire: { 0: 'fireman', 2: 'fireplace', 1: 'firewood', 5: 'firefly' },
+        sea: { 3: 'seafood', 1: 'seahorse', 0: 'seashell', 4: 'seaweed' },
+        sand: { 2: 'sandpaper', 1: 'sandcastle', 3: 'sandstorm', 0: 'sandbox' }
     },
     currentFamily: null,
     isAnimating: false,
@@ -58,10 +58,10 @@ function initGame() {
                 const matchY = childHtml.match(/<rect[^>]*y="([\d\.]+)"/);
                 if (matchTranslate) y = parseFloat(matchTranslate[1]);
                 else if (matchY) y = parseFloat(matchY[1]);
-                
+
                 WidgetState.NativeOrder[f].push({ id: child.getAttribute('id'), y: y });
             });
-            WidgetState.NativeOrder[f].sort((a,b) => a.y - b.y);
+            WidgetState.NativeOrder[f].sort((a, b) => a.y - b.y);
         }
     });
 
@@ -75,7 +75,7 @@ function initGame() {
     // Hide all family assets
     WidgetState.families.forEach(f => {
         hideElement(f + '_family_assets');
-        
+
         // Hide individual answer components if they exist natively
         const ansGroup = document.getElementById(f);
         if (ansGroup && ansGroup.parentElement && ansGroup.parentElement.id === 'answer_panels') {
@@ -89,7 +89,7 @@ function initGame() {
     const homeMappings = {
         'SUN': 'sun', 'RAIN_': 'rain', 'SNOW': 'snow', 'FIRE_': 'fire', 'SEA_': 'sea', 'SAND_': 'sand'
     };
-    
+
     Object.keys(homeMappings).forEach(id => {
         let textNode = document.getElementById(id);
         if (textNode) {
@@ -101,7 +101,7 @@ function initGame() {
             console.log(`initGame: Attaching click to card [${id}] via group [${cardGroup.id}]`);
             cardGroup.classList.add('interactive-card');
             cardGroup.style.cursor = 'pointer';
-            cardGroup.style.pointerEvents = 'all'; 
+            cardGroup.style.pointerEvents = 'all';
             cardGroup.onclick = (e) => {
                 e.stopPropagation();
                 openFamily(homeMappings[id]);
@@ -112,9 +112,9 @@ function initGame() {
     // Setup Home Button
     let homeBtn = document.getElementById('home_btn');
     if (homeBtn) {
-         homeBtn.style.cursor = 'pointer';
-         homeBtn.onclick = returnToMenu;
-         console.log('initGame: Home button mapped successfully');
+        homeBtn.style.cursor = 'pointer';
+        homeBtn.onclick = returnToMenu;
+        console.log('initGame: Home button mapped successfully');
     }
 }
 
@@ -128,17 +128,17 @@ function openFamily(family) {
 
     hideElement('home_cards');
     hideElement('home_itext');
-    
+
     unhideElement('question');
     unhideElement('qitxt');
     unhideElement('status_bar');
     unhideElement('answer_panels');
     unhideElement('answer_panel_bg');
     hideElement('correct_end_popup');
-    
+
     // Show current family answer container
     unhideElement(family);
-    
+
     // Re-hide all existing children panels by default except ones we've discovered
     const ansContainer = document.getElementById(family);
     if (ansContainer) {
@@ -150,7 +150,7 @@ function openFamily(family) {
     // Hide all families, then show specific
     WidgetState.families.forEach(f => {
         hideElement(f + '_family_assets');
-        
+
         // Hide answer_panel wrappers for other families so they don't leak
         const otherAns = document.getElementById(f);
         if (otherAns && f !== family) {
@@ -163,7 +163,7 @@ function openFamily(family) {
         // Fallback for misnamed SUN family assets
         famAssets = document.getElementById('SUN') || document.getElementById('Group_7999');
     }
-    
+
     if (famAssets) {
         console.log(`openFamily: Found assets for [${family}], unhiding and setting up interactions`);
         // If it was nested in home_cards, we need to clone it or move it to question? 
@@ -215,14 +215,14 @@ function setupFamilyInteractions(family, famAssets) {
         console.log(`setupFamilyInteractions: Interactions already active for [${family}]`);
         return;
     }
-    
+
     console.log(`setupFamilyInteractions: Setting up [${family}] cards`);
     WidgetState.elements[family] = { options: [] };
-    
+
     const children = Array.from(famAssets.children);
     const cardRects = children.map(c => c.getBoundingClientRect());
     let avgX = 0, avgY = 0;
-    cardRects.forEach(r => { avgX += r.left + r.width/2; avgY += r.top + r.height/2; });
+    cardRects.forEach(r => { avgX += r.left + r.width / 2; avgY += r.top + r.height / 2; });
     avgX /= children.length; avgY /= children.length;
 
     let centerCard = null;
@@ -230,34 +230,35 @@ function setupFamilyInteractions(family, famAssets) {
     children.forEach((c, i) => {
         const r = cardRects[i];
         if (r.width > window.innerWidth * 0.5) return;
-        const dx = (r.left + r.width/2) - avgX;
-        const dy = (r.top + r.height/2) - avgY;
-        const d = dx*dx + dy*dy;
+        const dx = (r.left + r.width / 2) - avgX;
+        const dy = (r.top + r.height / 2) - avgY;
+        const d = dx * dx + dy * dy;
         if (d < minD) { minD = d; centerCard = c; }
     });
-    
+
     if (centerCard) centerCard.style.pointerEvents = 'none';
 
     let validOptions = children.filter(g => g !== centerCard);
-    
+
     validOptions.forEach((opt, index) => {
         opt.classList.add('interactive-card');
         opt.style.pointerEvents = 'all';
         opt.style.cursor = 'pointer';
 
         if (WidgetState.discovered[family].includes(index)) {
-             opt.style.opacity = '0.3';
-             opt.style.pointerEvents = 'none';
-             fadeSiblingsAt(opt);
+            opt.style.opacity = '0.3';
+            opt.style.pointerEvents = 'none';
+            fadeSiblingsAt(opt);
         } else {
-             opt.style.opacity = '1';
-             opt.style.pointerEvents = 'all';
-             showSiblingsAt(opt);
+            opt.style.opacity = '1';
+            opt.style.pointerEvents = 'all';
+            showSiblingsAt(opt);
         }
 
         opt.onclick = () => handleOptionClick(family, index, opt);
+        console.log(`setupFamilyInteractions: Setup card [${index}] for family [${family}]`, opt);
     });
-    
+
     WidgetState.elements[family].options = validOptions;
 }
 
@@ -297,43 +298,43 @@ function showSiblingsAt(element) {
 
 function handleOptionClick(family, index, element) {
     if (WidgetState.isAnimating) return;
-    
+
     const mappings = WidgetState.WORD_MAPPINGS[family];
     const compoundWord = mappings ? mappings[index] : null;
-    
+
     console.log(`handleOptionClick: Clicked map index [${index}] on family [${family}]. Match exists: ${!!compoundWord}`);
-    
+
     if (compoundWord) {
         // Correct guess
         console.log(`handleOptionClick: Correct! Triggering animations for [${compoundWord}]`);
         WidgetState.isAnimating = true;
 
         playChirp();
-        
+
         // Disable
         element.style.pointerEvents = 'none';
-        
+
         // Fade out transition
         element.style.transition = 'opacity 0.6s, filter 0.6s';
         element.style.filter = 'drop-shadow(0 0 15px #f6c248)';
         element.style.opacity = '0.3';
         fadeSiblingsAt(element);
-        
+
         setTimeout(() => {
             element.classList.add('used');
             element.style.transition = 'none';
             element.style.filter = 'none';
             // KEEP opacity at 0.3 so it stays securely ghosted
-            
+
             if (!WidgetState.discovered[family].includes(index)) {
                 WidgetState.discovered[family].push(index);
             }
             createConfetti(element.getBoundingClientRect());
             renderDiscoveredWords(family);
-            
+
             WidgetState.isAnimating = false;
         }, 650);
-        
+
     } else {
         // Wrong guess
         console.log(`handleOptionClick: Incorrect choice at index [${index}]. Triggering shake.`);
@@ -348,23 +349,23 @@ function renderDiscoveredWords(family) {
     console.log(`renderDiscoveredWords: Refreshing panels for [${family}]`);
     // Hide all existing answer panels first
     const mapping = WidgetState.WORD_MAPPINGS[family] || {};
-    
+
     // Unhide the panel graphic corresponding to the discovered word
     const discoveredList = WidgetState.discovered[family];
-    
+
     // According to instructions: Extract the answer panels from main SVG
     // We just find elements by ID like 'sandstorm_ans' and show them.
     Object.keys(mapping).forEach((idxStr) => {
         const idx = parseInt(idxStr);
         const word = mapping[idx];
         let panelId = word + '_ans'; // e.g. sandstorm_ans
-        
+
         // Handle explicit SVG ID typos
         if (panelId === 'seahorse_ans') panelId = 'seahorse-ans';
         if (panelId === 'seaweed_ans') panelId = 'seawood_ans';
 
         const ansPanel = document.getElementById(panelId);
-        
+
         if (ansPanel) {
             if (discoveredList.includes(idx)) {
                 console.log(`renderDiscoveredWords: Showing panel [${panelId}] for [${word}]`);
@@ -374,7 +375,7 @@ function renderDiscoveredWords(family) {
 
                 const orderIndex = discoveredList.indexOf(idx);
                 // Dynamically offset from top to bottom
-                
+
                 let nativeSlot = WidgetState.NativeOrder[family].findIndex(item => item.id === panelId);
                 if (nativeSlot === -1) nativeSlot = Object.keys(mapping).indexOf(idxStr);
                 ansPanel.style.transform = `translate(0px, ${(orderIndex - nativeSlot) * 153}px)`;
@@ -388,7 +389,7 @@ function renderDiscoveredWords(family) {
     });
 
     // Update status text, e.g., "1 of 4"
-    const statusText = document.getElementById('status_bar'); 
+    const statusText = document.getElementById('status_bar');
     if (statusText) {
         const tspans = statusText.querySelectorAll('tspan');
         tspans.forEach(ts => {
@@ -413,21 +414,21 @@ function renderDiscoveredWords(family) {
         setTimeout(() => {
             unhideElement('correct_end_popup');
 
-    const endPopupBg = document.querySelector('#correct_end_popup rect');
-    if (endPopupBg) {
-        endPopupBg.setAttribute('x', '-5000');
-        endPopupBg.setAttribute('y', '-5000');
-        endPopupBg.setAttribute('width', '10000');
-        endPopupBg.setAttribute('height', '10000');
-    }
+            const endPopupBg = document.querySelector('#correct_end_popup rect');
+            if (endPopupBg) {
+                endPopupBg.setAttribute('x', '-5000');
+                endPopupBg.setAttribute('y', '-5000');
+                endPopupBg.setAttribute('width', '10000');
+                endPopupBg.setAttribute('height', '10000');
+            }
 
             const playAgainBtn = document.getElementById('Play_Again') || document.getElementById('Group_8214');
             if (playAgainBtn) {
                 playAgainBtn.style.cursor = 'pointer';
-                playAgainBtn.onclick = () => { 
+                playAgainBtn.onclick = () => {
                     console.log('End Popup: Triggered Play Again reset');
-                    hideElement('correct_end_popup'); 
-                    returnToMenu(); 
+                    hideElement('correct_end_popup');
+                    returnToMenu();
                 };
             }
         }, 1200);
@@ -483,7 +484,7 @@ function playChirp() {
             gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
             osc.start(); osc.stop(ctx.currentTime + 0.1);
         });
-    } catch(e) {}
+    } catch (e) { }
 }
 
 function createConfetti(rect) {
@@ -494,8 +495,8 @@ function createConfetti(rect) {
         confetti.style.width = '10px';
         confetti.style.height = '10px';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.top = rect ? (rect.top + rect.height/2 + 'px') : '-10px';
-        confetti.style.left = rect ? (rect.left + rect.width/2 + 'px') : (Math.random() * 100 + 'vw');
+        confetti.style.top = rect ? (rect.top + rect.height / 2 + 'px') : '-10px';
+        confetti.style.left = rect ? (rect.left + rect.width / 2 + 'px') : (Math.random() * 100 + 'vw');
         confetti.style.zIndex = '9999';
         confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
         document.body.appendChild(confetti);
@@ -503,7 +504,7 @@ function createConfetti(rect) {
         const duration = Math.random() * 2 + 1.5;
         confetti.animate([
             { transform: 'translate3d(0,0,0) rotate(0deg)', opacity: 1 },
-            { transform: `translate3d(${Math.random()*200 - 100}px, 100vh, 0) rotate(${Math.random()*720}deg)`, opacity: 0 }
+            { transform: `translate3d(${Math.random() * 200 - 100}px, 100vh, 0) rotate(${Math.random() * 720}deg)`, opacity: 0 }
         ], {
             duration: duration * 1000,
             easing: 'cubic-bezier(.37,0,.63,1)',

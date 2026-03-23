@@ -32,15 +32,16 @@ The answer panels should be positioned from top to bottom as in xd design dynami
 
 prompt3
 After Completing a Family:
-Once all 4 correct partners are selected:
-Display a celebration animation/message, such as:
-“Amazing! You completed the [FAMILY NAME] family!”
-“4 words done!”
-Pause popup (1–2 seconds).
-No “Play Again” option is required; automatically return to the Home screen after 2 seconds.
-Overall Completion:
-After completing all 6 families:
-Show a special completion screen.
-Display a celebration animation.
-Show the message: “🏆 Congratulations! You've mastered all 24 compound words!”
-Include a “PLAY AGAIN” button that resets all families and returns to the menu.
+
+Show the completion popup for 1–2 seconds.
+
+No “Play Again” button is needed; automatically return to the Home screen after 2 seconds.
+
+After Completing All 6 Families:
+
+Display the same popup, but include a “Play Again” button that resets the game.
+
+Trigger a celebration animation.
+
+Update the message in id="correct_text" to:
+“🏆 Congratulations! You've mastered all 24 compound words!”
