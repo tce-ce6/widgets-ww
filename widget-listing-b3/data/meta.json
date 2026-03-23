@@ -129,7 +129,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-23T16:47:01+05:30",
+      "updatedAt": "2026-03-23T17:37:51+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T17:37:51+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        134
+      ]
+    },
+    {
       "date": "2026-03-23T17:36:07+05:30",
       "author": "Shyamsunder Hait",
       "message": "fixed wg120 review sheet fixes",
@@ -616,14 +624,6 @@
       "date": "2026-03-22T16:55:12+05:30",
       "author": "PrasannaP",
       "message": "feat: Implement Compound Words Adventure widget with game logic and interactive UI.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-22T15:51:44+05:30",
-      "author": "PrasannaP",
-      "message": "structure3",
       "widgets": [
         136
       ]
