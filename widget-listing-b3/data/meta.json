@@ -69,8 +69,8 @@
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-03-22T11:36:23+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-23T15:26:13+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg120-area-of-different-shapes": {
       "updatedAt": "2026-03-20T11:31:08+05:30",
@@ -129,8 +129,8 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-22T14:34:59+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-23T16:47:01+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
       "updatedAt": "2026-03-16T16:24:42+05:30",
@@ -153,8 +153,8 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-03-18T11:59:39+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-23T16:47:01+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg143-synthesize-new-polypeptide-chain": {
       "updatedAt": "2026-03-13T18:18:01+05:30",
@@ -301,8 +301,8 @@
       "author": "tce-nitinc"
     },
     "wg81-u_aur_oo_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-22T09:44:09+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-23T15:26:13+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg82-commonly-confused-words": {
       "updatedAt": "2026-03-23T15:08:38+05:30",
@@ -321,7 +321,7 @@
       "author": "tce-nitinc"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
-      "updatedAt": "2026-03-23T14:18:45+05:30",
+      "updatedAt": "2026-03-23T15:26:13+05:30",
       "author": "sushantkanaujiya"
     },
     "wg87-e_aur_ai_kee_maatra_mein_antar": {
@@ -379,6 +379,15 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T16:47:01+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        134,
+        142
+      ]
+    },
+    {
       "date": "2026-03-23T16:43:11+05:30",
       "author": "tce-nitinc",
       "message": "wg115 ca",
@@ -417,6 +426,17 @@
       "message": "style: refine widget layout notes and adjust background sizing.",
       "widgets": [
         149
+      ]
+    },
+    {
+      "date": "2026-03-23T15:26:13+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        81,
+        86,
+        119,
+        134
       ]
     },
     {
@@ -605,23 +625,6 @@
       "message": "feat: Introduce an interactive widget to differentiate 'e' and 'ai' vowel sounds with audio and visual feedback.",
       "widgets": [
         87
-      ]
-    },
-    {
-      "date": "2026-03-22T10:59:30+05:30",
-      "author": "Santosh",
-      "message": "issues solved itext",
-      "widgets": [
-        89
-      ]
-    },
-    {
-      "date": "2026-03-22T09:44:09+05:30",
-      "author": "sushantthe",
-      "message": "feat: Implement new interactive widgets for 'i/ee' and 'u/oo' matra differentiation exercises.",
-      "widgets": [
-        81,
-        86
       ]
     }
   ]
