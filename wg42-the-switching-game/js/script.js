@@ -159,7 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function hideAll() {
         introScreen.style.display = "none";
-        IText.style.display = "none";
+        if (practiseScreen) practiseScreen.style.display = "none";
+        const pb = document.getElementById("Practise_badge");
+        if (pb) pb.style.display = "none";
+        if (IText) IText.style.display = "none";
         learnPanel1.style.display = "none";
         learnPanel2.style.display = "none";
         learnPanel3.style.display = "none";
@@ -215,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function showFinalLearnScreen() {
         hideAll();
         question2Panel.style.display = "block";
+        feedback.setAttribute("transform", "translate(-70, 0)");
         feedback.style.opacity = "1";
         IText.style.display = "block";
 
@@ -274,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function showQuestion3Panel(index) {
         hideAll();
         question3Panel.style.display = "block";
-        feedback.style.opacity = "1";
         IText.style.display = "block";
 
         const q = comparisonQuestions[index];
@@ -461,7 +464,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     } else {
                         if (rectEl) rectEl.setAttribute("fill", "red");
                         incorrect.style.display = "block";
-                        setTimeout(() => { incorrect.style.display = "none"; }, 1000);
+                        // Position feedback at edge of Question 3 panel
+                        positionFeedbackMarker("question3");
+
                         const xIcon = document.createElementNS(NS, "path");
                         xIcon.setAttribute("class", "feedback-marker");
                         xIcon.setAttribute("fill", "#fff");
@@ -496,11 +501,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (correctSelected === totalCorrect && !anyIncorrect) {
                     nextBtn.style.display = "block";
                     correct.style.display = "block";
+                    incorrect.style.display = "none";
+                    positionFeedbackMarker("question3");
                     setNextBtnLabel(index === comparisonQuestions.length - 1 ? "Practice" : "Next");
-                    setTimeout(() => { correct.style.display = "none"; }, 1500);
                 } else {
                     nextBtn.style.display = "none";
                     correct.style.display = "none";
+                    // If no incorrect boxes are selected, hide the incorrect marker
+                    if (!anyIncorrect) {
+                        incorrect.style.display = "none";
+                    }
                 }
             };
         });
@@ -656,9 +666,30 @@ document.addEventListener("DOMContentLoaded", () => {
         return [...row1, ...row2, ...row3]; // 12 slots total (4 per row × 3 rows)
     }
 
+    function positionFeedbackMarker(mode) {
+        if (!correct || !incorrect) return;
+
+        // Remove initial random translation from HTML if present
+        incorrect.removeAttribute("transform");
+        correct.removeAttribute("transform");
+
+        if (mode === "practise") {
+            correct.setAttribute("transform", "translate(-100, -10)");
+            incorrect.setAttribute("transform", "translate(-220, -10)");
+        } else if (mode === "learn") {
+            correct.setAttribute("transform", "translate(-10, -10)");
+            incorrect.setAttribute("transform", "translate(-130, -10)");
+        } else if (mode === "question3") {
+            correct.setAttribute("transform", "translate(-220, -40)");
+            incorrect.setAttribute("transform", "translate(-320, -40)");
+        }
+    }
+
     function showPractisePanel(index) {
         hideAll();
-        practiseScreen.style.display = "block";
+        if (practiseScreen) practiseScreen.style.display = "block";
+        const pb = document.getElementById("Practise_badge");
+        if (pb) pb.style.display = "block";
         feedback.style.opacity = "1";
         IText.style.display = "block";
         // homeBtn.style.display = "block"; // Already shown in initGame/persistent
@@ -678,8 +709,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const q = practiseQuestions[index];
         practiseFilledSlots = Array(q.answer.length).fill(null);
 
-        // Moved Y from 40 to 10 to give more room at bottom
-        practiseScreen.setAttribute("transform", "translate(150, 10) scale(0.85)");
+        // Apply transform only to the inner panel to avoid shifting headers
+        const innerPanel = document.getElementById("Practise_inner_panel");
+        if (innerPanel) {
+            innerPanel.setAttribute("transform", "translate(155, 10) scale(0.85)");
+        }
+        if (practiseScreen) practiseScreen.removeAttribute("transform");
 
         const needsRow3 = q.answer.length > 8;
         const helpBox = document.querySelector("#Practise_screen #Group_702");
@@ -698,7 +733,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update progress bar
         const totalGameQuestions = 5 + 5 + 5;
         const progressPercent = Math.round(((10 + index) / totalGameQuestions) * 100);
-        const pbRect = document.getElementById("Rectangle_4");
+        const pbRect = document.getElementById("Rectangle_240");
         if (pbRect) {
             pbRect.setAttribute("width", `${progressPercent * 2.82}`);
         }
@@ -707,7 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const activeSentenceText = document.querySelector("#Practise_screen #Group_2-2 text");
         if (activeSentenceText) {
             activeSentenceText.setAttribute("text-anchor", "middle");
-            activeSentenceText.setAttribute("transform", "translate(1035 372)");
+            activeSentenceText.setAttribute("transform", "translate(1035 365)"); // Standard centering
             activeSentenceText.innerHTML = `<tspan x="0" y="0">${q.active}</tspan>`;
             adjustActiveSentenceBoxWidth("#Practise_screen #Group_2-2 text", "#Practise_screen #Group_618-2 rect");
         }
@@ -737,9 +772,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     const rw = parseFloat(rectEl.getAttribute("width") || 274);
                     const rh = parseFloat(rectEl.getAttribute("height") || 72);
                     textEl.setAttribute("text-anchor", "middle");
-                    textEl.setAttribute("dominant-baseline", "middle");
+                    textEl.removeAttribute("dominant-baseline");
                     textEl.setAttribute("x", rx + rw / 2);
-                    textEl.setAttribute("y", ry + rh / 2 + 2);
+                    textEl.setAttribute("y", ry + rh / 2 + 10);
                     textEl.removeAttribute("transform");
                 }
 
@@ -806,9 +841,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const wordText = document.createElementNS(svgNS, "text");
                 wordText.setAttribute("x", rx + rw / 2);
-                wordText.setAttribute("y", ry + rh / 2 + 2);
+                wordText.setAttribute("y", ry + rh / 2 + 10);
                 wordText.setAttribute("text-anchor", "middle");
-                wordText.setAttribute("dominant-baseline", "middle");
+                wordText.removeAttribute("dominant-baseline");
                 wordText.setAttribute("fill", "#fff");
                 wordText.setAttribute("font-family", "Roboto-Regular, Roboto");
                 wordText.setAttribute("font-size", "38");
@@ -844,6 +879,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isCorrect) {
                 correct.style.display = "block";
                 incorrect.style.display = "none";
+                positionFeedbackMarker("practise");
                 nextBtn.style.display = "block";
                 setNextBtnLabel(currentPractiseQuestion < practiseQuestions.length - 1 ? "Next" : "Finish");
                 nextBtn.onclick = () => {
@@ -858,8 +894,8 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 incorrect.style.display = "block";
                 correct.style.display = "none";
+                positionFeedbackMarker("practise");
                 nextBtn.style.display = "none";
-                setTimeout(() => { incorrect.style.display = "none"; }, 1500);
             }
         } else {
             correct.style.display = "none";
@@ -1000,11 +1036,30 @@ document.addEventListener("DOMContentLoaded", () => {
             if (i < q.options.length) {
                 const tspans = g.querySelectorAll("tspan");
                 for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
-                if (tspans[0]) tspans[0].textContent = q.options[i];
-                else {
+                if (tspans[0]) {
+                    tspans[0].textContent = q.options[i];
+                    tspans[0].removeAttribute("x");
+                    tspans[0].removeAttribute("y");
+                } else {
                     const t = g.querySelector("text");
                     if (t) t.textContent = q.options[i];
                 }
+
+                // Explicitly center the text inside its box
+                const textEl = g.querySelector("text");
+                const rectEl = g.querySelector('rect[fill="#0480eb"]') || g.querySelector("rect");
+                if (textEl && rectEl) {
+                    const rx = parseFloat(rectEl.getAttribute("x") || 0);
+                    const ry = parseFloat(rectEl.getAttribute("y") || 0);
+                    const rw = parseFloat(rectEl.getAttribute("width") || 199.39);
+                    const rh = parseFloat(rectEl.getAttribute("height") || 74);
+                    textEl.setAttribute("text-anchor", "middle");
+                    textEl.removeAttribute("dominant-baseline");
+                    textEl.setAttribute("x", rx + rw / 2);
+                    textEl.setAttribute("y", ry + rh / 2 + 10);
+                    textEl.removeAttribute("transform");
+                }
+
                 g.style.display = "";
                 g.classList.remove("used");
                 g.style.opacity = "1";
@@ -1158,10 +1213,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (isCorrect) {
                         correct.style.display = "block";
                         incorrect.style.display = "none";
+                        positionFeedbackMarker("learn");
                         onComplete(true);
                     } else {
                         incorrect.style.display = "block";
                         correct.style.display = "none";
+                        positionFeedbackMarker("learn");
                         onComplete(false);
                     }
                 }
@@ -1182,8 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
             iTextEl.innerHTML =
-                '<tspan x="0" y="0">Look at the sentence. Does the person who does</tspan>' +
-                '<tspan x="0" y="36">the action come FIRST? Select the correct box.</tspan>';
+                '<tspan x="0" y="0">Read the first sentence. Then tap the correct words to complete the second sentence.</tspan>';
         }
 
         currentLearnQuestion = 0;
@@ -1217,24 +1273,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initGame();
 
-    function adjustActiveSentenceBoxWidth(textSelector, rectSelector) {
+    function adjustActiveSentenceBoxWidth(textSelector, selector) {
         const textEl = document.querySelector(textSelector);
-        const rects = document.querySelectorAll(rectSelector);
-        if (!textEl || rects.length === 0) return;
+        const els = document.querySelectorAll(selector);
+        if (!textEl || els.length === 0) return;
 
         // Get the actual width of the text
         const textWidth = textEl.getComputedTextLength();
-        const padding = 120; // More padding for premium look
-        const minWidth = 800; // Increased min width
+        const padding = 100; // Balanced padding (50px each side) matches Image 2 tightly
+        const minWidth = 400; // Allow it to properly scale down for shorter sentences
         const finalWidth = Math.max(minWidth, textWidth + padding);
 
         // Center point is x=1035
         const centerX = 1035;
         const newX = centerX - finalWidth / 2;
 
-        rects.forEach(rect => {
-            rect.setAttribute("width", finalWidth);
-            rect.setAttribute("x", newX);
+        els.forEach(el => {
+            if (el.tagName.toLowerCase() === "rect") {
+                el.setAttribute("width", finalWidth);
+                el.setAttribute("x", newX);
+            } else if (el.tagName.toLowerCase() === "path") {
+                // Programmatically recreate the capsule path based on user's premium design
+                const id = el.getAttribute("id");
+                const r = 35; // Radius from user's export
+                const hLen = finalWidth - (r * 2);
+                const xStart = newX + r;
+
+                // Adjust Y based on which path it is (shadow vs main)
+                let yStart = (id === "Path_2144-2") ? 411.3 : 396.69;
+
+                // Construct capsule d-string
+                // M StartX,Y h Length c r,0 r,-r r,-r v -h ...
+                const newD = `M${xStart},${yStart}h${hLen}c19.4,0,35.12-13.11,35.12-29.29v-30.77c0-16.17-15.72-29.29-35.12-29.29h-${hLen}c-19.4,0-35.12,13.11-35.12,29.29v30.77c0,16.18,15.72,29.29,35.12,29.29Z`;
+                el.setAttribute("d", newD);
+            }
         });
     }
 

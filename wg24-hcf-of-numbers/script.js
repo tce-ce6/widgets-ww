@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const addShelfBtn = document.getElementById('btn-add');
   const removeShelfBtn = document.getElementById('btn-remove');
   const shelfCountDisplay = document.querySelector('#shelves-number-box text');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
 
   // Clear the initial shelf from HTML
   scrollContainer.innerHTML = '';
@@ -34,9 +35,17 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add shelf button click handler
   if (addShelfBtn) {
     addShelfBtn.addEventListener('click', function () {
-      shelfCount++;
-      createNewShelf(shelfCount);
-      updateShelfCountDisplay();
+      const potentialShelfCount = shelfCount + 1;
+      const currentItem1Count = shelves.length > 0 ? shelves[0].item1Count : 0;
+      const currentItem2Count = shelves.length > 0 ? shelves[0].item2Count : 0;
+
+      if (currentItem1Count * potentialShelfCount <= currentChallenge.item1.total &&
+        currentItem2Count * potentialShelfCount <= currentChallenge.item2.total) {
+        shelfCount++;
+        createNewShelf(shelfCount);
+        updateShelfCountDisplay();
+        updateButtonStates();
+      }
     });
   }
 
@@ -51,9 +60,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         shelfCount--;
         updateShelfCountDisplay();
+        updateButtonStates();
       }
     });
   }
+
+  // Update shelf count display
+  updateShelfCountDisplay();
+
+  // Initial button states
+  updateButtonStates();
+
+  console.log("%cDEBUG TIP: %cCall %cenableAllButtons()%c to force all buttons enabled.",
+    "color: orange; font-weight: bold;", "color: reset;", "color: green; font-family: monospace;", "color: reset;");
 
   function updateShelfCountDisplay() {
     if (shelfCountDisplay) {
@@ -69,6 +88,10 @@ async function loadChallengeData() {
 
     // Get current challenge based on currentChallengeId
     const challengeId = challengeData.currentChallengeId || 1;
+
+    // Randomize all challenges before picking the current one
+    randomizeChallenges();
+
     currentChallenge = challengeData.challenges.find(c => c.id === challengeId);
 
     if (!currentChallenge) {
@@ -160,9 +183,9 @@ async function renderItemGroup(containerId, itemData) {
   // Item 2 (bottom): x=270, y=706
   const isItem1 = containerId === 'science-book';
   const x = 160
-  const y = isItem1 ? 433 : 706;
+  const y = isItem1 ? 423 : 696;
   const width = 720;
-  const height = 180; // Approximate height based on shelf dimensions
+  const height = 200; // Approximate height based on shelf dimensions
 
   // If icon is an external SVG file, load it
   if (icon && icon.includes('.svg')) {
@@ -194,9 +217,9 @@ async function renderItemGroup(containerId, itemData) {
 
       if (svgElement) {
         // Ensure SVG scales correctly
-        const svgELHeight = 60;
+        const svgELHeight = 45;
         console.log(itemData, "To identify the item")
-        const svgELWidth = 55
+        const svgELWidth = 40
 
 
         svgElement.setAttribute('width', svgELWidth);
@@ -250,24 +273,39 @@ function updateActiveTab() {
   const tab2 = document.getElementById('tab-2');
   const tab3 = document.getElementById('tab-3');
 
+  const cover1 = document.getElementById('tab-1-cover');
+  const cover2 = document.getElementById('tab-2-cover');
+  const cover3 = document.getElementById('tab-3-cover');
+
   // Reset all tabs to inactive color
   const inactiveColor = '#2C6AC9';
   const activeColor = '#ADE4FC';
 
+  const borderColor = '#053378';
+
   if (tab1) {
     const tab1Path = tab1.querySelector('path');
     if (tab1Path) tab1Path.setAttribute('fill', currentChallenge.id === 1 ? activeColor : inactiveColor);
+    if (cover1) cover1.setAttribute('fill', currentChallenge.id === 1 ? activeColor : borderColor);
   }
 
   if (tab2) {
     const tab2Path = tab2.querySelector('path');
     if (tab2Path) tab2Path.setAttribute('fill', currentChallenge.id === 2 ? activeColor : inactiveColor);
+    if (cover2) cover2.setAttribute('fill', currentChallenge.id === 2 ? activeColor : borderColor);
+  }
+
+  if (tab3) {
     const tab3Path = tab3.querySelector('path');
     if (tab3Path) tab3Path.setAttribute('fill', currentChallenge.id === 3 ? activeColor : inactiveColor);
+    if (cover3) cover3.setAttribute('fill', currentChallenge.id === 3 ? activeColor : borderColor);
   }
 }
 
 async function switchChallenge(challengeId) {
+  // Hide any open modals/overlays before switching
+  resetSimulation();
+
   // Update the current challenge
   currentChallenge = challengeData.challenges.find(c => c.id === challengeId);
 
@@ -299,6 +337,9 @@ async function switchChallenge(challengeId) {
 
   // Update active tab styling
   updateActiveTab();
+
+  // Update button states after switching challenge
+  updateButtonStates();
 }
 
 function createNewShelf(shelfNumber) {
@@ -321,7 +362,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_2" d="M22.75 46C19.03 46 16 48.93 16 52.54V140.47C16 144.07 19.03 147.01 22.75 147.01H335.24C338.96 147.01 341.99 144.08 341.99 140.47V52.54C341.99 48.94 338.96 46 335.24 46H22.75ZM22.75 44H335.24C340.07 44 343.99 47.82 343.99 52.54V140.47C343.99 145.18 340.07 149.01 335.24 149.01H22.75C17.92 149.01 14 145.19 14 140.47V52.54C14 47.83 17.92 44 22.75 44Z" fill="${currentChallenge.item1.borderColor}"/>
             </g>
             <text id="item1-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="32" y="71.5195">${currentChallenge.item1.name}</tspan></text>
-            <text id="item1-count-${shelfNumber}" fill="${currentChallenge.item1.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="289.15" y="114.508">0</tspan></text>
+            <text 
+  id="item1-count-${shelfNumber}" 
+  fill="${currentChallenge.item1.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="284.15" y="114.508">0</tspan>
+</text>
             <path id="add-item1-bg" d="M166 85H44C37.3726 85 32 90.3726 32 97V123C32 129.627 37.3726 135 44 135H166C172.627 135 178 129.627 178 123V97C178 90.3726 172.627 85 166 85Z" fill="white"/>
             <g id="item1-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-3" d="M44 85H82V135H44C37.37 135 32 129.63 32 123V97C32 90.37 37.37 85 44 85Z" fill="#2196F3"/>
@@ -340,12 +390,30 @@ function createNewShelf(shelfNumber) {
             </g>
             </g>
             <g id="item1-card">
-            <text id="item1-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="95.25" y="120.621">0</tspan></text>
+           <text 
+  id="item1-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="106" y="120.621">0</tspan>
+</text>
             <g id="item2-card-bg">
             <path id="Vector_3" d="M682.25 148H369.76C365.48 148 362.01 144.62 362.01 140.46V52.5302C362.01 48.3702 365.49 44.9902 369.76 44.9902H682.25C686.53 44.9902 690 48.3702 690 52.5302V140.46C690 144.62 686.52 148 682.25 148Z" fill="${currentChallenge.item2.bgColor}"/>
             <path id="Vector_4" d="M369.75 46C366.03 46 363 48.93 363 52.54V140.47C363 144.07 366.03 147.01 369.75 147.01H682.24C685.96 147.01 688.99 144.08 688.99 140.47V52.54C688.99 48.94 685.96 46 682.24 46H369.75ZM369.75 44H682.24C687.07 44 690.99 47.82 690.99 52.54V140.47C690.99 145.18 687.07 149.01 682.24 149.01H369.75C364.92 149.01 361 145.19 361 140.47V52.54C361 47.83 364.92 44 369.75 44Z" fill="${currentChallenge.item2.borderColor}"/>
             </g>
-            <text id="item2-count-${shelfNumber}" fill="${currentChallenge.item2.textColor}" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="60" font-weight="bold" letter-spacing="0em"><tspan x="633.15" y="114.508">0</tspan></text>
+           <text 
+  id="item2-count-${shelfNumber}" 
+  fill="${currentChallenge.item2.textColor}"
+  font-family="Roboto"
+  font-size="60"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="633.15" y="114.508">0</tspan>
+</text>
             <path id="item2-add-bg" d="M513 85H391C384.373 85 379 90.3726 379 97V123C379 129.627 384.373 135 391 135H513C519.627 135 525 129.627 525 123V97C525 90.3726 519.627 85 513 85Z" fill="white"/>
             <g id="item2-remove-${shelfNumber}" style="cursor: pointer;">
             <path id="Rectangle_133-4" d="M391 85H429V135H391C384.37 135 379 129.63 379 123V97C379 90.37 384.37 85 391 85Z" fill="#2196F3"/>
@@ -362,7 +430,16 @@ function createNewShelf(shelfNumber) {
             <path id="Vector_5" d="M500.77 98.27V121.69M512.49 109.99H489.07" stroke="white" stroke-width="4" stroke-linecap="round"/>
             </g>
             </g>
-            <text id="item2-input-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="34" font-weight="bold" letter-spacing="0em"><tspan x="442.25" y="120.621">0</tspan></text>
+          <text 
+  id="item2-input-${shelfNumber}" 
+  fill="black"
+  font-family="Roboto"
+  font-size="34"
+  font-weight="bold"
+  text-anchor="middle"
+>
+  <tspan x="452" y="120.621">0</tspan>
+</text>
             <text id="item2-label-${shelfNumber}" fill="black" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="22" font-weight="500" letter-spacing="0em"><tspan x="379" y="71.5195">${currentChallenge.item2.name}</tspan></text>
             </g>
             </g>
@@ -371,11 +448,13 @@ function createNewShelf(shelfNumber) {
 
   scrollContainer.appendChild(newShelfDiv);
 
+  enableTouchScroll(scrollContainer);
+
   // Create shelf object
   const newShelf = {
     id: shelfNumber,
-    item1Count: 0,
-    item2Count: 0,
+    item1Count: shelves.length > 0 ? shelves[0].item1Count : 0,
+    item2Count: shelves.length > 0 ? shelves[0].item2Count : 0,
     elements: {
       container: newShelfDiv,
       item1Count: newShelfDiv.querySelector(`#item1-count-${shelfNumber} tspan`),
@@ -391,6 +470,7 @@ function createNewShelf(shelfNumber) {
 
   shelves.push(newShelf);
   attachShelfEventListeners(newShelf);
+  updateShelfDisplay(newShelf);
 
   return newShelf;
 }
@@ -398,29 +478,45 @@ function createNewShelf(shelfNumber) {
 function attachShelfEventListeners(shelf) {
   // Item 1 add button
   shelf.elements.item1AddBtn.addEventListener('click', function () {
-    shelf.item1Count++;
-    updateShelfDisplay(shelf);
+    const newCount = shelf.item1Count + 1;
+    if (newCount * shelves.length <= currentChallenge.item1.total) {
+      shelves.forEach(s => {
+        s.item1Count = newCount;
+        updateShelfDisplay(s);
+      });
+    }
   });
 
   // Item 1 remove button
   shelf.elements.item1RemoveBtn.addEventListener('click', function () {
     if (shelf.item1Count > 0) {
-      shelf.item1Count--;
-      updateShelfDisplay(shelf);
+      const newCount = shelf.item1Count - 1;
+      shelves.forEach(s => {
+        s.item1Count = newCount;
+        updateShelfDisplay(s);
+      });
     }
   });
 
   // Item 2 add button
   shelf.elements.item2AddBtn.addEventListener('click', function () {
-    shelf.item2Count++;
-    updateShelfDisplay(shelf);
+    const newCount = shelf.item2Count + 1;
+    if (newCount * shelves.length <= currentChallenge.item2.total) {
+      shelves.forEach(s => {
+        s.item2Count = newCount;
+        updateShelfDisplay(s);
+      });
+    }
   });
 
   // Item 2 remove button
   shelf.elements.item2RemoveBtn.addEventListener('click', function () {
     if (shelf.item2Count > 0) {
-      shelf.item2Count--;
-      updateShelfDisplay(shelf);
+      const newCount = shelf.item2Count - 1;
+      shelves.forEach(s => {
+        s.item2Count = newCount;
+        updateShelfDisplay(s);
+      });
     }
   });
 }
@@ -494,45 +590,56 @@ function updateUsedItemVisuals() {
 
   styleIcons('science-book', usedItem1);
   styleIcons('math-book', usedItem2);
+
+  // Update button states whenever items are used
+  updateButtonStates();
 }
 
 function resetSimulation() {
-  // Remove all shelves
+  // 1. Remove all shelf elements
   const scrollContainer = document.querySelector('.scroll-container');
   if (scrollContainer) scrollContainer.innerHTML = '';
 
-  // Reset data
+  // 2. Reset data
   shelves = [];
   shelfCount = 0;
 
-  // Update shelf count display
+  // 3. Reset UI display
   const shelfCountDisplay = document.querySelector('#shelves-number-box text');
   if (shelfCountDisplay) shelfCountDisplay.textContent = 0;
 
-  // Reset visuals (gray styling)
+  // 4. Reset item visuals
   updateUsedItemVisuals();
 
-  // Reset Feedback and Solution UI
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (feedbackContainer) feedbackContainer.innerHTML = '';
+  // 5. HIDE ALL OVERLAYS (Crucial Fix)
+  const elementsToHide = [
+    'feedback-message',
+    'left-bg-tint',
+    'solution-modal',
+    'left-bg-background-tint',
+    'interaction-blocker' // This is what stops the clicks
+  ];
 
-  const solutionContainer = document.getElementById('solution-container');
-  if (solutionContainer) solutionContainer.style.display = 'none';
+  elementsToHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
-  const showAnswerBtn = document.getElementById('btn-show-answer');
-  if (showAnswerBtn) {
-    const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-    if (textEl) textEl.textContent = 'Show Answer';
-  }
-
-  console.log("Simulation reset.");
+  // 6. Re-enable buttons for the new round
+  updateButtonStates();
 }
 
 function checkAnswer() {
   if (!currentChallenge) return;
+  console.log("Checking answer...", currentChallenge);
+  const feedbackMessage = document.getElementById('feedback-message');
+  const feedbackText = document.getElementById('feedback-text');
+  const feedbackContent = document.getElementById('feedback-content');
+  const leftBgTint = document.getElementById('left-bg-tint');
+  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
+  leftBgBackgroundTint.style.display = 'block';
 
-  const feedbackContainer = document.getElementById('feedback-container');
-  if (!feedbackContainer) return;
+  if (!feedbackMessage || !feedbackText || !feedbackContent || !leftBgTint) return;
 
   const answer = currentChallenge.answer;
   const hcf = answer.hcf;
@@ -551,69 +658,377 @@ function checkAnswer() {
   const totalItem1 = currentChallenge.item1.total;
   const totalItem2 = currentChallenge.item2.total;
 
+  let feedbackMessageText = '';
+  let isCorrect = false;
+
   if (usedItem1 < totalItem1 || usedItem2 < totalItem2) {
-    feedbackContainer.textContent = "❌ You need to place all items!";
-    feedbackContainer.style.color = 'red';
-    return;
-  }
+    feedbackMessageText = "You need to place all items!";
+    isCorrect = false;
+  } else if (shelfCount !== hcf) {
+    feedbackMessageText = `Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
+    isCorrect = false;
+  } else {
+    // Check contents of each shelf
+    let allCorrect = true;
+    for (const shelf of shelves) {
+      if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
+        allCorrect = false;
+        break;
+      }
+    }
 
-  // Check number of shelves and distribution
-  if (shelfCount !== hcf) {
-    feedbackContainer.textContent = `❌ Incorrect. You used ${shelfCount} containers, but the answer requires ${hcf}.`;
-    feedbackContainer.style.color = 'red';
-    return;
-  }
-
-  // Check contents of each shelf
-  let allCorrect = true;
-  for (const shelf of shelves) {
-    if (shelf.item1Count !== item1Per || shelf.item2Count !== item2Per) {
-      allCorrect = false;
-      break;
+    if (allCorrect) {
+      feedbackMessageText = currentChallenge.successMessage || `Perfect! Each ${currentChallenge.containerName.toLowerCase()} has ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = true;
+    } else {
+      feedbackMessageText = `Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
+      isCorrect = false;
     }
   }
 
-  if (allCorrect) {
-    feedbackContainer.textContent = currentChallenge.successMessage || "✅ Correct!";
-    feedbackContainer.style.color = 'green';
+  // Update feedback text
+  feedbackText.textContent = feedbackMessageText;
+
+  // Update styling based on correctness
+  if (isCorrect) {
+    feedbackContent.style.border = '4px dashed #66BB6A';
+    feedbackText.style.color = '#2E7D32';
   } else {
-    feedbackContainer.textContent = `❌ Incorrect distribution. Each container should have ${item1Per} ${currentChallenge.item1.name} and ${item2Per} ${currentChallenge.item2.name}.`;
-    feedbackContainer.style.color = 'red';
+    feedbackContent.style.border = '4px dashed #F44336';
+    feedbackText.style.color = '#C62828';
   }
+
+  // Show the feedback message
+  feedbackMessage.style.display = 'block';
+
+  // Disable Check Answer and Show Answer buttons when feedback is open
+  disableButton('btn-check-answer');
+  disableButton('btn-show-answer');
+
+  // Show the black tint overlay
+  leftBgTint.style.display = 'block';
+
+  // Show the interaction blocker
+  const interactionBlocker = document.getElementById('interaction-blocker');
+  if (interactionBlocker) interactionBlocker.style.display = 'block';
+  enableButton('btn-reset');
+}
+
+function updateModalContent() {
+  if (!currentChallenge || !currentChallenge.solution) return;
+
+  const solution = currentChallenge.solution;
+  const steps = solution.steps;
+
+  // Extract data from steps array based on the pattern in data.json
+  // steps[0]: Introduction text
+  // steps[1]: Factors of item1
+  // steps[2]: Factors of item2
+  // steps[3]: Common factors
+  // steps[4]: HCF = X
+  // steps[5]: Answer: X containers
+  // steps[6]: Each container will have...
+
+  const modalIntroText = document.getElementById('modal-intro-text');
+  const modalFactorsItem1 = document.getElementById('modal-factors-item1');
+  const modalFactorsItem2 = document.getElementById('modal-factors-item2');
+  const modalCommonFactors = document.getElementById('modal-common-factors');
+  const modalHcf = document.getElementById('modal-hcf');
+  const modalAnswer = document.getElementById('modal-answer');
+  const modalAdditionalInfo = document.getElementById('modal-additional-info');
+
+  if (modalIntroText && steps[0]) {
+    modalIntroText.innerHTML = steps[0].replace(/Highest Common Factor \(HCF\)/g, '<strong>Highest Common Factor (HCF)</strong>');
+  }
+
+  if (modalFactorsItem1 && steps[1]) {
+    const match1 = steps[1].match(/Factors of (\d+): (.+)/);
+    if (match1) {
+      modalFactorsItem1.innerHTML = `<strong>Factors of ${match1[1]}:</strong> ${match1[2]}`;
+    }
+  }
+
+  if (modalFactorsItem2 && steps[2]) {
+    const match2 = steps[2].match(/Factors of (\d+): (.+)/);
+    if (match2) {
+      modalFactorsItem2.innerHTML = `<strong>Factors of ${match2[1]}:</strong> ${match2[2]}`;
+    }
+  }
+
+  if (modalCommonFactors && steps[3]) {
+    const match3 = steps[3].match(/Common factors: (.+)/);
+    if (match3) {
+      modalCommonFactors.innerHTML = `<strong>Common factors:</strong> ${match3[1]}`;
+    }
+  }
+
+  if (modalHcf && steps[4]) {
+    modalHcf.textContent = steps[4]; // "HCF = X"
+  }
+
+  if (modalAnswer && steps[5]) {
+    modalAnswer.textContent = steps[5]; // "Answer: X containers"
+  }
+
+  if (modalAdditionalInfo && steps[6]) {
+    // Parse the additional info and make item names bold
+    const text = steps[6];
+    const regex = /(\d+)\s+(.+?)\s+and\s+(\d+)\s+(.+)/;
+    const match = text.match(regex);
+
+    if (match) {
+      const count1 = match[1];
+      const item1Name = match[2];
+      const count2 = match[3];
+      const item2Name = match[4];
+      modalAdditionalInfo.innerHTML = `Each ${currentChallenge.containerName.toLowerCase()} will have <strong>${count1} ${item1Name}</strong> and <strong>${count2} ${item2Name}</strong>`;
+    } else {
+      modalAdditionalInfo.textContent = text;
+    }
+  }
+}
+
+function enableTouchScroll(container) {
+  let isDown = false;
+  let startY;
+  let scrollTop;
+
+  container.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startY = e.touches[0].pageY;
+    scrollTop = container.scrollTop;
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+
+    const y = e.touches[0].pageY;
+    const walk = (y - startY);
+
+    container.scrollTop = scrollTop - walk;
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    isDown = false;
+  });
 }
 
 function showAnswer() {
   if (!currentChallenge) return;
 
-  const solutionContainer = document.getElementById('solution-container');
-  const solutionText = document.getElementById('solution-text');
-  const showAnswerBtn = document.getElementById('btn-show-answer');
+  const solutionModal = document.getElementById('solution-modal');
+  const feedbackContainer = document.getElementById('feedback-container');
 
-  if (!solutionContainer || !solutionText) return;
+  if (!solutionModal) return;
 
-  if (solutionContainer.style.display === 'none' || solutionContainer.style.display === '') {
-    // Show Solution
-    if (currentChallenge.solution && currentChallenge.solution.steps) {
-      solutionText.innerHTML = currentChallenge.solution.steps.join('<br>');
-    } else {
-      solutionText.textContent = "Solution not available.";
+  // Update modal content with current challenge data
+  updateModalContent();
+
+  // Show the modal
+  solutionModal.style.display = 'block';
+
+  // Disable Check Answer and Show Answer buttons when solution is open
+  disableButton('btn-check-answer');
+  disableButton('btn-show-answer');
+
+  // Hide feedback container when showing solution
+  if (feedbackContainer) {
+    feedbackContainer.style.display = 'none';
+  }
+
+  // Show the interaction blocker
+  const interactionBlocker = document.getElementById('interaction-blocker');
+  if (interactionBlocker) interactionBlocker.style.display = 'block';
+
+  // Add event listener to close button
+  const closeModalBtn = document.getElementById('close-modal');
+  if (closeModalBtn) {
+    closeModalBtn.onclick = function () {
+      solutionModal.style.display = 'none';
+      // Hide the interaction blocker
+      const interactionBlocker = document.getElementById('interaction-blocker');
+      if (interactionBlocker) interactionBlocker.style.display = 'none';
+
+      // Show feedback container again
+      if (feedbackContainer) {
+        feedbackContainer.style.display = 'block';
+      }
+
+      // Restore button states
+      updateButtonStates();
+    };
+  }
+
+  // Also allow clicking outside the modal content to close
+  const modalOverlay = solutionModal.querySelector('div');
+  if (modalOverlay) {
+    modalOverlay.onclick = function (e) {
+      // Only close if clicking the dark overlay, not the modal content
+      if (e.target === modalOverlay) {
+        solutionModal.style.display = 'none';
+        // Hide the interaction blocker
+        const interactionBlocker = document.getElementById('interaction-blocker');
+        if (interactionBlocker) interactionBlocker.style.display = 'none';
+
+        // Show feedback container again
+        if (feedbackContainer) {
+          feedbackContainer.style.display = 'block';
+        }
+
+        // Restore button states
+        updateButtonStates();
+      }
+    };
+  }
+}
+
+function getHCF(a, b) {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b) {
+    let t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+function randomizeChallenges() {
+  if (!challengeData || !challengeData.challenges) return;
+
+  const getFactors = (num) => {
+    const factors = [];
+    for (let i = 1; i <= num; i++) {
+      if (num % i === 0) factors.push(i);
     }
-    solutionContainer.style.display = 'block';
+    return factors;
+  };
 
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Hide Answer';
+  const getCommonFactors = (f1, f2) => {
+    return f1.filter(f => f2.includes(f));
+  };
+
+  challengeData.challenges.forEach(challenge => {
+    // Pick two random numbers up to 48
+    // We want a non-trivial HCF (2-10)
+    const hcf = Math.floor(Math.random() * 9) + 2;
+    const maxN = Math.floor(48 / hcf);
+
+    const safeMaxN = Math.max(1, maxN);
+
+    let n1 = Math.floor(Math.random() * safeMaxN) + 1;
+    let n2 = Math.floor(Math.random() * safeMaxN) + 1;
+
+    // ensure some variation
+    if (n1 === n2 && safeMaxN > 1) {
+      n2 = (n1 % safeMaxN) + 1;
     }
 
-    // Also scroll to solution
-    solutionContainer.scrollIntoView({ behavior: 'smooth' });
+    const total1 = hcf * n1;
+    const total2 = hcf * n2;
+
+    challenge.item1.total = total1;
+    challenge.item2.total = total2;
+
+    // Recalculate true HCF
+    const trueHcf = getHCF(total1, total2);
+    challenge.answer.hcf = trueHcf;
+    challenge.answer.item1PerContainer = total1 / trueHcf;
+    challenge.answer.item2PerContainer = total2 / trueHcf;
+
+    // Update description strings
+    if (challenge.id === 1) { // Books
+      challenge.descriptionLines = [
+        `Arrange ${total1} science books and ${total2} math books on shelves so each shelf has the same number of each type,`,
+        `with no books left over. What is the greatest number of shelves you can use?`
+      ];
+    } else if (challenge.id === 2) { // Cookies
+      challenge.descriptionLines = [
+        `Pack ${total1} Chocolate cookies and ${total2} Vanilla cookies into gift boxes so each box has the same number of each flavour,`,
+        `with no cookies leftover. What is the greatest number of gift boxes you can use?`
+      ];
+    } else if (challenge.id === 3) { // Flowers
+      challenge.descriptionLines = [
+        `Arrange ${total1} Roses and ${total2} Tulips into identical bouquets so each bouquet has the same number of each flower type,`,
+        `with no leftover flowers. What is the greatest number of bouquets you can make?`
+      ];
+    }
+    challenge.description = challenge.descriptionLines.join(' ');
+
+    // Update success message
+    challenge.successMessage = `Perfect! Each ${challenge.containerName.toLowerCase()} has ${total1 / trueHcf} ${challenge.item1.name} and ${total2 / trueHcf} ${challenge.item2.name}.`;
+
+    // Update solution steps
+    const factors1 = getFactors(total1);
+    const factors2 = getFactors(total2);
+    const commonFactors = getCommonFactors(factors1, factors2);
+
+    challenge.solution.steps = [
+      `To find the greatest number of ${challenge.containerName.toLowerCase()}s, we need to find the Highest Common Factor (HCF) of ${total1} and ${total2}.`,
+      `Factors of ${total1}: ${factors1.join(', ')}`,
+      `Factors of ${total2}: ${factors2.join(', ')}`,
+      `Common factors: ${commonFactors.join(', ')}`,
+      `HCF = ${trueHcf}`,
+      `Answer: ${trueHcf} ${challenge.containerName.toLowerCase()}s`,
+      `Each ${challenge.containerName.toLowerCase()} will have ${total1 / trueHcf} ${challenge.item1.name} and ${total2 / trueHcf} ${challenge.item2.name}`
+    ];
+
+    // Temp console log for answers
+    console.log(`%cChallenge ${challenge.id} (${challenge.title}) Answer:`, 'color: blue; font-weight: bold;');
+    console.log(`- Total ${challenge.item1.name}: ${total1}`);
+    console.log(`- Total ${challenge.item2.name}: ${total2}`);
+    console.log(`- HCF (Containers): ${trueHcf}`);
+    console.log(`- Items per Container: ${total1 / trueHcf} & ${total2 / trueHcf}`);
+  });
+}
+
+function disableButton(btnId) {
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.5';
+  }
+}
+
+function enableButton(btnId) {
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    btn.style.pointerEvents = 'auto';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+}
+
+function updateButtonStates() {
+  if (!currentChallenge) return;
+
+  const resetBtnId = 'btn-reset';
+  const checkBtnId = 'btn-check-answer';
+  const showBtnId = 'btn-show-answer';
+
+  let usedItem1 = 0;
+  let usedItem2 = 0;
+  shelves.forEach(shelf => {
+    usedItem1 += shelf.item1Count;
+    usedItem2 += shelf.item2Count;
+  });
+
+  const allItemsPlaced = usedItem1 === currentChallenge.item1.total && usedItem2 === currentChallenge.item2.total;
+
+  // Reset button enabled if shelfCount > 0
+  if (shelfCount > 0) {
+    enableButton(resetBtnId);
   } else {
-    // Hide Solution
-    solutionContainer.style.display = 'none';
-    if (showAnswerBtn) {
-      const textEl = showAnswerBtn.querySelector('tspan') || showAnswerBtn.querySelector('text');
-      if (textEl) textEl.textContent = 'Show Answer';
-    }
+    disableButton(resetBtnId);
+  }
+
+  // Check Answer and Show Answer enabled ONLY if all items are placed
+  if (allItemsPlaced && shelfCount > 0) {
+    enableButton(checkBtnId);
+    enableButton(showBtnId);
+  } else {
+    disableButton(checkBtnId);
+    disableButton(showBtnId);
   }
 }
 
@@ -621,4 +1036,12 @@ function showAnswer() {
 window.resetSimulation = resetSimulation;
 window.checkAnswer = checkAnswer;
 window.showAnswer = showAnswer;
+
+// Temporary debug function as requested
+window.enableAllButtons = function () {
+  enableButton('btn-reset');
+  enableButton('btn-check-answer');
+  enableButton('btn-show-answer');
+  console.log("Debug: All buttons enabled manually.");
+};
 

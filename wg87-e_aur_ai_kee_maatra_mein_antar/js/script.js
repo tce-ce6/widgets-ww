@@ -230,14 +230,16 @@ function audioListener() {
   audio1.addEventListener("click", () => {
     audio_button_1 = true;
 
-    correctCloudId === "cloud_text_01" ? playAudio("correct") : playAudio("wrong");
-
+    correctCloudId === "cloud_text_01"
+      ? playAudio("correct")
+      : playAudio("wrong");
   });
 
   audio2.addEventListener("click", () => {
     audio_button_2 = true;
-    correctCloudId === "cloud_text_02" ? playAudio("correct") : playAudio("wrong");
-
+    correctCloudId === "cloud_text_02"
+      ? playAudio("correct")
+      : playAudio("wrong");
   });
 }
 
@@ -287,7 +289,11 @@ function showAnswer(state = "none") {
 //   document.getElementById("cloud_text_highlight_02").style.display = state;
 // }
 function lottiAnimation(state = "block") {
-  document.getElementById("Character_train_01").style.display = state;
+  const el = document.getElementById("Character_train_01");
+  if (state === "none") {
+    el.style.visibility = "hidden";
+  }
+  // "block" is handled by enterFrame reveal — no display toggle needed
 }
 function nextbutton(state = "block") {
   document.getElementById("age_badhe_button").style.display = state;
@@ -335,8 +341,19 @@ function naya_shabd() {
     // hideAndShowText1();
     hideAndShowAudioButtons("none");
     showAnswer();
-    // showText();
-    lottiAnimation("none");
+    // Stop any running lottie animation
+    if (animationTimeout) { clearTimeout(animationTimeout); animationTimeout = null; }
+    if (lottieInstances) { lottieInstances.destroy(); lottieInstances = null; }
+    if (starAnimationTimeout) { clearTimeout(starAnimationTimeout); starAnimationTimeout = null; }
+    if (lottieInstances_star) { lottieInstances_star.destroy(); lottieInstances_star = null; }
+    const _lc = document.getElementById("lottie-container");
+    if (_lc) _lc.innerHTML = "";
+    const _pt = document.getElementById("Character_train_01");
+    if (_pt) { _pt.classList.remove("visible"); _pt.style.visibility = "hidden"; }
+    ["star-lottie-container-1", "star-lottie-container-2"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.innerHTML = ""; el.classList.remove("visible"); }
+    });
     nextbutton();
     getRandomAnimation();
     audioPlayer.pause();
@@ -399,14 +416,14 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
-  parentEl.style.display = "block";
   parentEl.classList.remove("visible");
-
+  parentEl.style.visibility = "hidden"; // keep hidden while loading
+  parentEl.style.opacity = "";
 
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
-      renderer: "canvas",
+      renderer: "svg",
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
@@ -414,8 +431,16 @@ function playLottieAnimation(bandGroup) {
 
     lottieInstances.addEventListener("DOMLoaded", () => {
       playAnimationAudio(bandGroup);
-      lottieInstances.play();
-      parentEl.classList.add("visible");
+      setTimeout(() => { lottieInstances.play(); }, 10);
+    });
+
+    lottieInstances.addEventListener("enterFrame", (e) => {
+      if (e.currentTime > 0.1) {
+        if (!parentEl.classList.contains("visible")) {
+          parentEl.style.visibility = "visible";
+          parentEl.classList.add("visible");
+        }
+      }
     });
 
     lottieInstances.addEventListener("complete", () => {
@@ -544,7 +569,7 @@ getAllWordElements = () => {
       // Work with the parsed JSON data (a JavaScript object)
       console.log(data);
       WordAudioEnum = data;
-      initializePlacementSequence()
+      initializePlacementSequence();
       init();
     })
     .catch((error) => {

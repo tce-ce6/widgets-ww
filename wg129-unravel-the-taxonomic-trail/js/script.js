@@ -819,7 +819,10 @@ document.addEventListener("DOMContentLoaded", () => {
         nameEl.querySelector('tspan').textContent = org.name;
       }
       if (explNameEl) explNameEl.textContent = org.name;
-      if (explLevelEl) explLevelEl.textContent = `${currentLevelName} ${currentTaxonName}`;
+      if (explLevelEl) {
+        let text = `${currentLevelName} ${currentTaxonName}`;
+        explLevelEl.innerHTML = text.replace(/\b(margarita|Felis|Spirogyra|longata|Pinus|wallichiana|Mangifera|odorata|Funaria|mediterranea|Python|bivittatus|Columba|hodgsonii|Asterias|amurensis)\b/ig, '<tspan font-style="italic">$1</tspan>');
+      }
     }
 
     const showAnswerEl = document.getElementById('show_answer');

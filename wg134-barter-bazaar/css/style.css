@@ -498,9 +498,17 @@ svg * {
   color: #fff;
 }
 
-.hidden-svg {}
+.hidden-svg {
+  display: none;
+}
 
 .cursor-pointer {
+  cursor: pointer;
+}
+
+/* Ensure child elements of interactive SVG groups inherit pointer cursor */
+#idiom-wrapper svg g[style*="cursor: pointer"] *,
+#idiom-wrapper svg g[style*="cursor: pointer"] {
   cursor: pointer;
 }
 

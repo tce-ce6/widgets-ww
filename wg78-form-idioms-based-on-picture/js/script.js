@@ -516,7 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (isShowingAnswer) {
             patchUttarChipaye.style.display = "block";
-            patchAgala.style.display = "none";
+            patchAgala.style.display = "block";
         } else {
             patchAgala.style.display = "block";
             patchUttarChipaye.style.display = "none";
@@ -524,6 +524,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 lottieWrapper.style.display = "block";
                 starAnimation.goToAndPlay(0, true);
             }
+        }
+        updateButtonPositions();
+    }
+
+    function updateButtonPositions() {
+        const isAgalaVisible = patchAgala && patchAgala.style.display !== "none";
+        const isUttarDekheVisible = patchUttarDekhe && patchUttarDekhe.style.display !== "none";
+        const isUttarChipayeVisible = patchUttarChipaye && patchUttarChipaye.style.display !== "none";
+
+        const leftButton = isUttarDekheVisible ? patchUttarDekhe : (isUttarChipayeVisible ? patchUttarChipaye : null);
+
+        if (leftButton && isAgalaVisible) {
+            // Both are visible: Side by side
+            if (patchUttarDekhe) patchUttarDekhe.setAttribute("transform", "translate(-160, 0)");
+            if (patchUttarChipaye) patchUttarChipaye.setAttribute("transform", "translate(-160, 0)");
+            if (patchAgala) patchAgala.setAttribute("transform", "translate(160, 0)");
+        } else {
+            // Only one is visible (or none): Center it
+            if (patchUttarDekhe) patchUttarDekhe.setAttribute("transform", "translate(0, 0)");
+            if (patchUttarChipaye) patchUttarChipaye.setAttribute("transform", "translate(0, 0)");
+            if (patchAgala) patchAgala.setAttribute("transform", "translate(0, 0)");
         }
     }
 
@@ -580,13 +601,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         patchArth.style.display = "none";
         patchPrayog.style.display = "none";
-        patchAgala.style.display = "none";
+        patchAgala.style.display = "block";
         patchUttarChipaye.style.display = "none";
         wrongBorder.style.display = "none";
 
         patchUttarDekhe.style.display = "block";
         if (lottieWrapper) lottieWrapper.style.display = "none";
         if (starAnimation) starAnimation.stop();
+        updateButtonPositions();
     }
 
     function resetGameUIAndStep() {
