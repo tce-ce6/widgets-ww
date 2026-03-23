@@ -410,26 +410,74 @@ function renderDiscoveredWords(family) {
     }
 
     if (discoveredList.length >= 4) {
-        console.log(`renderDiscoveredWords: Completed 4/4! Presenting ending popup.`);
+        console.log(`renderDiscoveredWords: Completed family [${family}]!`);
+        
+        // Check if all families are completed
+        const allFamilies = ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'];
+        const allCompleted = allFamilies.every(f => WidgetState.discovered[f].length >= 4);
+        
         setTimeout(() => {
             unhideElement('correct_end_popup');
-
+            
+            // Adjust popup background to cover the scene
             const endPopupBg = document.querySelector('#correct_end_popup rect');
             if (endPopupBg) {
-                endPopupBg.setAttribute('x', '-5000');
-                endPopupBg.setAttribute('y', '-5000');
-                endPopupBg.setAttribute('width', '10000');
-                endPopupBg.setAttribute('height', '10000');
+                endPopupBg.setAttribute('x', '-1000');
+                endPopupBg.setAttribute('y', '-1000');
+                endPopupBg.setAttribute('width', '4000');
+                endPopupBg.setAttribute('height', '4000');
             }
 
-            const playAgainBtn = document.getElementById('Play_Again') || document.getElementById('Group_8214');
-            if (playAgainBtn) {
-                playAgainBtn.style.cursor = 'pointer';
-                playAgainBtn.onclick = () => {
-                    console.log('End Popup: Triggered Play Again reset');
+            const amazingGrp = document.getElementById('Amazing_');
+            const wordsDoneGrp = document.getElementById('_4_words_done_');
+            const playAgainGrp = document.getElementById('Group_8214');
+            const correctTextGroup = document.getElementById('correct_text');
+
+            if (allCompleted) {
+                console.log('renderDiscoveredWords: All 6 families completed! Final Celebration.');
+                
+                // Show congratulations message
+                if (correctTextGroup) {
+                    // Rebuild with centralized text
+                    correctTextGroup.innerHTML = `<text transform="translate(710 830)" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="700" fill="#f8276d" isolation="isolate"><tspan x="0" y="0">🏆 Congratulations! You've mastered all 24 compound words!</tspan></text>`;
+                }
+                
+                if (amazingGrp) amazingGrp.style.display = 'block';
+                if (wordsDoneGrp) wordsDoneGrp.style.display = 'none'; // Hide "4 words done"
+                
+                // Show and map Play Again
+                if (playAgainGrp) {
+                    playAgainGrp.style.display = 'block';
+                    playAgainGrp.style.cursor = 'pointer';
+                    playAgainGrp.onclick = () => {
+                         console.log('Final Reset: Reloading widget');
+                         location.reload();
+                    };
+                }
+
+                // Extra celebration
+                for(let i=0; i<3; i++) setTimeout(() => createConfetti(), i*400);
+
+            } else {
+                console.log('renderDiscoveredWords: Single family complete. Triggering auto-return timer.');
+                
+                if (playAgainGrp) playAgainGrp.style.display = 'none';
+                if (wordsDoneGrp) wordsDoneGrp.style.display = 'block';
+                
+                // Update family-specific completion text
+                if (correctTextGroup) {
+                     const fam = family.toUpperCase();
+                     correctTextGroup.innerHTML = `
+                        <text transform="translate(770.3 828.94)" font-family="Roboto-Regular, Roboto" font-size="41.96" isolation="isolate"><tspan x="0" y="0">Y</tspan></text>
+                        <text transform="translate(794.17 828.94)" font-family="Roboto-Regular, Roboto" font-size="41.96" isolation="isolate"><tspan x="0" y="0">ou completed the ${fam} family!</tspan></text>
+                     `;
+                }
+
+                // Automatic return after 2 seconds
+                setTimeout(() => {
                     hideElement('correct_end_popup');
                     returnToMenu();
-                };
+                }, 2000);
             }
         }, 1200);
     }
@@ -456,15 +504,7 @@ function updateInstructionText(family) {
 }
 
 function updatePopupText(family) {
-    const popup = document.getElementById('correct_end_popup');
-    if (popup) {
-        const tspans = popup.querySelectorAll('tspan');
-        tspans.forEach(ts => {
-            if (ts.textContent.match(/SUN|SAND|SEA|RAIN|SNOW|FIRE/i)) {
-                ts.textContent = ts.textContent.replace(/SUN|SAND|SEA|RAIN|SNOW|FIRE/ig, family.toUpperCase());
-            }
-        });
-    }
+    // Logic now handled in renderDiscoveredWords for correct_text
 }
 
 function playChirp() {
