@@ -24,6 +24,11 @@ function initWidget() {
   const svg = document.querySelector("svg");
   if (!svg) return;
 
+  // Reorder UI popups so they render on top of SVG groups
+  document.querySelectorAll('[id^="act-01-sc1-feedback"]').forEach((popup) => {
+    if (popup.parentNode) popup.parentNode.appendChild(popup);
+  });
+
   // Initialize UI layer
   let uiLayer = document.getElementById("ui-layer");
   if (!uiLayer) {
@@ -333,6 +338,12 @@ function initWidget() {
 
   function goBack() {
     if (currentScreen === 4) {
+      hideElements("#act-04-base");
+      hideElements("#act-04-question");
+      hideElements("#act-04-checkbox-default");
+      hideElements("#act-04-feedback-end");
+      hideElements("#Group_1687 > *");
+      showElements("#Group_594-2");
       currentScreen = 3;
       currentChallengeSC3 = 3;
     } else if (currentScreen === 3) {
@@ -380,12 +391,10 @@ function initWidget() {
       hideElements(`#act-02-sc1-cards`);
       hideElements(`#act-02-sc2-cards`);
       hideElements(`#act-02-sc3-cards`);
-      document.querySelectorAll("act-01-sc1-cards-matched").forEach((p) => {
-        p.classList.add("st767");
-      });
-      document.querySelectorAll("act-01-sc1-cards-selected").forEach((p) => {
-        p.classList.add("st767");
-      });
+      hideElements("#act-01-sc1-cards-matched > *");
+      hideElements("#act-01-sc1-cards-selected > *");
+      showElements("#Group_594-2");
+      hideElements("#Group_1687 > *");
 
       if (document.querySelector(".custom-dropdown")) {
         document
@@ -395,14 +404,21 @@ function initWidget() {
       hideElements("#act-04-base");
       hideElements("#act-04-question");
       hideElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
+      // hideElements("#act-04-checkbox-selected > *");
       hideElements("#act-04-feedback-end");
       hideElements("#btn-next-back");
+      hideElements("#btn-insights");
     } else if (currentScreen === 1) {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
-      // hideElements("#act-01-sc1-cards-matched");
+      // hideElements("#act-04-checkbox-selected > *");
       hideElements('[id^="act-01-sc1-feedback"]');
+      hideElements("#act-02-base-global");
+      hideElements('[id^="act-02-sc"]');
+      const backNextBtn = document.getElementById("btn-next-back");
+      if (backNextBtn) {
+        backNextBtn.classList.add("st767");
+      }
       setupScreen1();
     } else if (currentScreen === 2) {
       // Clear all sc states first to prevent bleed-through
@@ -427,7 +443,11 @@ function initWidget() {
       showElements("#act-04-checkbox-default");
       //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
-      backNextBtn.classList.add("st767");
+      if (backNextBtn) {
+        backNextBtn.classList.remove("st767");
+      }
+      hideElements("#Group_594-2"); // Hide Next Button
+      hideElements("#btn-insights"); // Hide Insights Button
       setupScreen4();
     }
   }
@@ -1038,6 +1058,7 @@ function initWidget() {
       "Group_1681",
       "Group_1682",
       "Group_1683",
+      "Group_1680",
       "Group_1684",
       "Group_1686",
       "Group_1685",
@@ -1050,12 +1071,24 @@ function initWidget() {
     const defs = Array.from(defGroup.children).sort(
       (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
     );
-    const sels = Array.from(selGroup.children).sort(
+    // The actual selected indicators are inside Group_1687, not just selGroup directly
+    const selInnerGroup = document.getElementById("Group_1687") || selGroup;
+    const sels = Array.from(selInnerGroup.children).sort(
       (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
     );
 
     const corrects = [0, 1, 2, 3, 6];
     let correctCount = 0;
+
+    // Submit Button Logic
+    const btnSubmit = document.getElementById("Group_1177-2");
+    if (btnSubmit) {
+      btnSubmit.style.opacity = "0.5";
+      btnSubmit.style.pointerEvents = "none";
+      btnSubmit.style.cursor = "default";
+      btnSubmit.onclick = null;
+    }
+    const clickedBoxes = new Set();
 
     defs.forEach((defEl, i) => {
       const rect = getPctRect(defEl);
@@ -1073,28 +1106,31 @@ function initWidget() {
         uiLayer.appendChild(overlay);
 
         overlay.onclick = () => {
+          clickedBoxes.add(i);
+
           if (corrects.includes(i)) {
-            // Correct
-            showFeedbackPopup("Correct!", true);
-            // sels[i].classList.remove("hidden-svg");
-            defEl.classList.add("hidden-svg");
+            // Correct selected target
+            // defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none"; // disable further clicks
             correctCount++;
-            document.getElementById(checkBoxIds[i]).classList.remove("st767");
-            if (correctCount === corrects.length) {
-              showFeedbackPopup(
-                "Well Done! You have learnt how trade used to happen without money, before its invention.",
-                true,
-              );
-              showElements("#act-04-feedback-end");
-            }
+            sels[i].classList.remove("st767", "hidden-svg");
           } else {
-            // Wrong
-            showFeedbackPopup("Wrong!", false);
-            document.getElementById(checkBoxIds[i]).classList.remove("st767");
-            // sels[i].classList.remove("hidden-svg"); // this will show the cross for false statements
-            defEl.classList.add("hidden-svg");
+            // Wrong selected target
+            sels[i].classList.remove("st767", "hidden-svg");
+            // defEl.classList.add("hidden-svg");
             overlay.style.pointerEvents = "none";
+          }
+
+          // Check if all checkboxes have been clicked
+          if (clickedBoxes.size === 8) {
+            if (btnSubmit) {
+              btnSubmit.style.opacity = "1";
+              btnSubmit.style.pointerEvents = "auto";
+              btnSubmit.style.cursor = "pointer";
+              btnSubmit.onclick = () => {
+                showElements("#act-04-feedback-end");
+              };
+            }
           }
         };
       }
