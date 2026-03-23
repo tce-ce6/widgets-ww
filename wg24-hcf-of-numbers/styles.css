@@ -23,6 +23,10 @@
   position: relative
 }
 
+#solution-modal {
+  overflow: visible !important;
+}
+
 .grid {
   width: 1000px;
   height: 666.58px;
@@ -195,7 +199,7 @@
   z-index: 10;
 }
 
-#make-food-chain-widget .svg-container > svg {
+#make-food-chain-widget .svg-container>svg {
   width: 100% !important;
   height: 100%;
 }
@@ -384,73 +388,87 @@
   margin-top: 5px;
 }
 
-.active-bargraph-box{
-      margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.active-bargraph-text{
-      margin: 0;
-    background: #8ADCDD;
-    padding: 4px 10px;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 26px;
-    border-radius: 10px;
+.active-bargraph-box {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.show-answer-main{
-     width: 100%;
-    height: 100%;
-    background: #e4f7f1b5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.active-bargraph-text {
+  margin: 0;
+  background: #8ADCDD;
+  padding: 4px 10px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 26px;
+  border-radius: 10px;
 }
-.show-answer-content{
+
+.show-answer-main {
+  width: 100%;
+  height: 100%;
+  background: #e4f7f1b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.show-answer-content {
   width: 85%;
-    height: 90%;
-    position: relative;
-    background: #EAFFEB;
-    margin-top: 55px;
-    border: 6px solid #4CAF50;
-    border-radius: 12px;
-    box-shadow: 2px 2px 5px #a5a5a5b0;
+  height: 90%;
+  position: relative;
+  background: #EAFFEB;
+  margin-top: 55px;
+  border: 6px solid #4CAF50;
+  border-radius: 12px;
+  box-shadow: 2px 2px 5px #a5a5a5b0;
 }
-.show-answer-content-close{
-      width: 70px;
-    height: 70px;
-    position: absolute;
-    top: -38px;
-    right: -38px;
+
+.show-answer-content-close {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: -38px;
+  right: -38px;
 }
 
 .scroll-container {
   overflow-y: auto;
-  padding-right: 14px; /* space from content */
+  -webkit-overflow-scrolling: touch;
+  /* iOS smooth scroll */
+  touch-action: pan-y;
+  /* allow vertical scrolling */
+}
+
+.scroll-container * {
+  touch-action: manipulation;
 }
 
 /* width */
 .scroll-container::-webkit-scrollbar {
-  width: 8px;
+  width: 24px;
 }
 
-/* track */
+/* track - thin gray line */
 .scroll-container::-webkit-scrollbar-track {
-  background: #d9d9d9;
-  border-radius: 20px;
+  background-color: #d9d9d9;
+  border: 10px solid white;
+  background-clip: content-box;
+  border-radius: 12px;
 }
 
-/* thumb (green small pill) */
+/* thumb - wider green dragger */
 .scroll-container::-webkit-scrollbar-thumb {
-  background: #4CAF50;
-  border-radius: 20px;
-  min-height: 40px;          /* IMPORTANT: small thumb */
-  border: 2px solid #d9d9d9; /* creates floating pill effect */
+  background-color: #4CAF50;
+  border-radius: 8px;
+  border: 4px solid white;
+  /* creates some space around the thumb within the 24px width */
+  min-height: 80px;
+  /* taller for easier dragging */
 }
 
 /* hover */
 .scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #43a047;
+  background-color: #43a047;
 }

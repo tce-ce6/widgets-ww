@@ -1,6 +1,8 @@
 Please find below xd wireframe link  
 https://xd.adobe.com/view/b488ea3c-6b58-4a91-adf6-d3b0073ad011-e1db/
 
+Refining Punctuation Widget
+
 Prompt:
 Folder for reference and code:
 
@@ -20,3 +22,8 @@ Write the logic in a separate JavaScript file using plain JavaScript.
 The code should be function-based, and all global variables must be stored inside a single global variable object.
 
 Implement the car animation directly in SVG by updating/moving its x position. 🚗
+
+Comment3:
+insight button should be on top of the insight popup
+try again box reduce width
+put a black patch on both side to fill the gap of svg vs page when the page when the height of the page is much lesser than the width of the page

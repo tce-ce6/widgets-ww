@@ -598,12 +598,16 @@ h1 {
   justify-content: center;
 }
 
-.modal .detail-title.title-two {
-  left: -420px;
-  top: -170px;
+.overlay.step-mode .btn.btn-outline.home-btn {
+  bottom: 150px;
 }
 
-.modal .btn.btn-outline.home-btn {
+.overlay .modal .btn.btn-outline.home-btn {
   bottom: -170px;
+  left: -420px;
+}
+
+.overlay .modal .detail-title.title-two {
+  top: -170px;
   left: -420px;
 }
