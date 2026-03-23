@@ -192,14 +192,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const letter = swarList[currentIndex];
     loadSwar(letter);
     playSound(letter);
+    resetOptions();
   });
 
   homeBtn.addEventListener('click', () => {
     homePage.style.display = 'block';
     gamePage.style.display = 'none';
     showAnswerbtn.textContent = "उत्तर देखें";
+    resetOptions();
   });
 });
+
+function resetOptions() {
+  optionsImg.forEach(btn => {
+    btn.style.pointerEvents = "auto";
+  });
+
+  // reset clicked tracking (IMPORTANT)
+  clickedSet.clear();   // if using Set approach
+
+  // reset button state
+  uttarDekheBtn.style.opacity = 1;
+  uttarDekheBtn.style.pointerEvents = "auto";
+}
 
 function loadSwar(selectedLetter) {
   gamePage.style.display = 'block';
@@ -237,8 +252,10 @@ function playWordSound(word) {
   audio.play();
 }
 
+const optionsImg = document.querySelectorAll(".option-img");
+const clickedSet = new Set();
 
-document.querySelectorAll(".option-img").forEach(el => {
+optionsImg.forEach(el => {
   el.addEventListener("click", function () {
 
     const textEl = this.querySelector(".option-txt");
@@ -248,17 +265,33 @@ document.querySelectorAll(".option-img").forEach(el => {
 
     if (!currentData) return;
 
+    // ✅ mark this element as clicked
+    clickedSet.add(this);
+
     // ✅ Only if correct answer
     if (currentData.answers.includes(selectedText)) {
 
       const imgName = imgJson[selectedText]; // get correct image
       if (imgName) {
         imgEl.src = `./assets/images/${imgName}`;
+        imgEl.style.transform = "scale(1.7)";
+        imgEl.style.position = 'absolute';
+        imgEl.style.top = '-65px';
+        imgEl.style.bottom = '0px';
       }
       playWordSound(selectedText);
     } else {
       // ❌ optional wrong case
       imgEl.src = "./assets/images/incorrect.svg";
+    }
+
+    // ✅ check if all clicked
+    if (clickedSet.size === optionsImg.length) {
+      optionsImg.forEach(btn => {
+        btn.style.pointerEvents = "none";
+        uttarDekheBtn.style.opacity = 0.5;
+        uttarDekheBtn.style.pointerEvents = "none";
+      });
     }
   });
 });
@@ -283,7 +316,16 @@ function setOptions(data) {
     el.querySelector(".option-txt").innerText = options[index];
 
     // 🔥 reset image back to default
-    el.querySelector("img").src = "./assets/images/letter.svg";
+    //el.querySelector("img").src = "./assets/images/letter.svg";
+
+    const img = el.querySelector("img");
+    img.src = "./assets/images/letter.svg";
+
+    // remove applied styles
+    img.style.transform = "";
+    img.style.position = "";
+    img.style.top = "";
+    img.style.bottom = "";
   });
 }
 
@@ -303,10 +345,22 @@ function toggleAnswer() {
       // ✅ SHOW ANSWERS
       if (currentData.answers.includes(text)) {
         imgEl.src = `./assets/images/${imgJson[text]}`; // correct image
+        imgEl.style.transform = "scale(1.7)";
+        imgEl.style.position = 'absolute';
+        imgEl.style.top = '-60px';
+        imgEl.style.bottom = '0px';
       }
     } else {
       // 🔄 HIDE ANSWERS (reset)
-      imgEl.src = "./assets/images/letter.svg";
+      //imgEl.src = "./assets/images/letter.svg";
+      const img = el.querySelector("img");
+      img.src = "./assets/images/letter.svg";
+
+      // remove applied styles
+      img.style.transform = "";
+      img.style.position = "";
+      img.style.top = "";
+      img.style.bottom = "";
     }
   });
 
