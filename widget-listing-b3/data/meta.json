@@ -137,7 +137,7 @@
       "author": "Shyam"
     },
     "wg136-compound-words-adventure": {
-      "updatedAt": "2026-03-10T18:21:12+05:30",
+      "updatedAt": "2026-03-23T12:48:18+05:30",
       "author": "PrasannaP"
     },
     "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
@@ -379,6 +379,86 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T12:48:18+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Improve completion message display, add debug utilities, and document them in a new README.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T12:25:01+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Enhance end-game popup logic to differentiate between completing a single word family and all word families, providing distinct UI and actions, and remove the `updatePopupText` function.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T12:06:09+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reorder SVG group in `index.html` and apply minor whitespace formatting in `script.js`.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T11:09:26+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Update SVG assets and adjust element coordinates in HTML for layout changes.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T17:58:16+05:30",
+      "author": "PrasannaP",
+      "message": "pk1",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T17:47:58+05:30",
+      "author": "PrasannaP",
+      "message": "Replaced the entire answer_panels group",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T17:09:25+05:30",
+      "author": "PrasannaP",
+      "message": "ok1",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T16:55:12+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement Compound Words Adventure widget with game logic and interactive UI.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T15:51:44+05:30",
+      "author": "PrasannaP",
+      "message": "structure3",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-22T15:39:08+05:30",
+      "author": "PrasannaP",
+      "message": "restructure2",
+      "widgets": [
+        136
+      ]
+    },
+    {
       "date": "2026-03-22T15:17:10+05:30",
       "author": "sushantthe",
       "message": "feat: Add initial implementation of the Legislature vs. Executive challenge.",
@@ -392,6 +472,14 @@
       "message": "feat: Implement initial \"Law of Conservation of Mass\" simulation widget.",
       "widgets": [
         102
+      ]
+    },
+    {
+      "date": "2026-03-22T14:41:40+05:30",
+      "author": "PrasannaP",
+      "message": "new structure",
+      "widgets": [
+        136
       ]
     },
     {
@@ -530,95 +618,6 @@
       "message": "wg 129 fix",
       "widgets": [
         129
-      ]
-    },
-    {
-      "date": "2026-03-20T13:41:06+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: Update audio assets for \"wander\" and \"wonder\" while removing deprecated layout, image, and documentation files.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-20T13:29:00+05:30",
-      "author": "PrasannaP",
-      "message": "add rm files",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-20T13:01:48+05:30",
-      "author": "PrasannaP",
-      "message": "fix: Corrected 'RpPp' typo to 'RrPp', updated version ID, and incremented Live Server port.",
-      "widgets": [
-        48
-      ]
-    },
-    {
-      "date": "2026-03-20T12:46:31+05:30",
-      "author": "PrasannaP",
-      "message": "fix: adjust dimensions and font size for the \"Try Again\" message in the widget",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-20T12:43:20+05:30",
-      "author": "aditya",
-      "message": "wg 129 fix",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-20T12:38:20+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update quotation marks and improve sentence structure in widget content",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-20T12:36:13+05:30",
-      "author": "aditya",
-      "message": "fix wg129",
-      "widgets": [
-        129
-      ]
-    },
-    {
-      "date": "2026-03-20T12:29:28+05:30",
-      "author": "Santosh",
-      "message": "78 btn added",
-      "widgets": [
-        78
-      ]
-    },
-    {
-      "date": "2026-03-20T11:31:08+05:30",
-      "author": "Shyam",
-      "message": "version updated for 24 and 120",
-      "widgets": [
-        24,
-        120
-      ]
-    },
-    {
-      "date": "2026-03-20T11:18:27+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed 124 fixes",
-      "widgets": [
-        124
-      ]
-    },
-    {
-      "date": "2026-03-20T10:23:02+05:30",
-      "author": "Santosh",
-      "message": "animation fixed",
-      "widgets": [
-        67
       ]
     }
   ]
