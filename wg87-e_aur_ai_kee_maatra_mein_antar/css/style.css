@@ -434,6 +434,41 @@ svg * {
   transform: translateX(-50%);
 }
 
+/* Fix layout expansion from lottie svg renderer */
+#lottie_animation {
+  overflow: hidden;
+}
+
+#lottie-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+#lottie-container svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Lottie Visibility Classes */
+#Character_train_01,
+#star-lottie-container-1,
+#star-lottie-container-2 {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 
 
 /* Spinner buttons */
@@ -610,6 +645,7 @@ input[type="number"]::-webkit-inner-spin-button {
     display: flex;
     align-items: center;
     margin-left: -5px;
+  
   }
 }
 
@@ -620,4 +656,19 @@ input[type="number"]::-webkit-inner-spin-button {
   #Group_86 {
     display: block;
   }
+}
+
+/* Hand cursor on all interactive / clickable SVG elements */
+#text_cloud_01,
+#text_cloud_02,
+#cloud_text_01,
+#cloud_text_02,
+#audio_button_1,
+#audio_button_2,
+#audio_button_3,
+#age_badhe_button,
+#naya_shabd_button,
+#gyankosh_button,
+#arrow_audio {
+  cursor: pointer;
 }
