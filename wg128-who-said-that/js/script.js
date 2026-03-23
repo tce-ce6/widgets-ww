@@ -231,8 +231,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const tx = slotCX - 0.8 * bbox.cx;
       const ty = slotCY - 0.8 * bbox.cy;
+      console.log(animalKey,"To check for wolf image scenario")
+      if(animalKey === 'wolf'){
+      clone.setAttribute("transform", `translate(${tx + 110}, ${ty + 250}) scale(0.9)`);
+        
+      }else{
+        clone.setAttribute("transform", `translate(${tx}, ${ty}) scale(0.8)`);
 
-      clone.setAttribute("transform", `translate(${tx}, ${ty}) scale(0.8)`);
+      }
+
 
       slotEl.appendChild(clone);
 
@@ -362,6 +369,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const tx = 312.85 - bbox.cx;
       const ty = 488 - bbox.cy;
       animalPanelEl.setAttribute("transform", `translate(${tx}, ${ty})`);
+      if(targetAnimalKey === 'wolf'){
+      animalPanelEl.setAttribute("transform", `translate(${tx + 125}, ${ty + 330}) scale(1.2)`);
+      
+        
+      }else{
+        animalPanelEl.setAttribute("transform", `translate(${tx}, ${ty}) `);
+
+      }
+      
     }
 
     if (textInPanel) {
