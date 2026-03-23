@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const metals = [
         { id: "Copper_Cu_1", label: "Copper (Cu)", symbol: "Cu", file: "copper-ml.json" },
-        { id: "Zink_Zn_", label: "Zink (Zn)", symbol: "Zn", file: "Zink-ml.json" },
+        { id: "Zink_Zn_", label: "Zinc (Zn)", symbol: "Zn", file: "Zink-ml.json" },
         { id: "Tin_Sn_", label: "Tin (Sn)", symbol: "Sn", file: "Tin-ml.json" },
         { id: "Nickel_Ni_", label: "Nickel (Ni)", symbol: "Ni", file: "Nickel-Ml.json" },
         { id: "Silver_Ag_", label: "Silver (Ag)", symbol: "Ag", file: "Silver-Ml.json" },
