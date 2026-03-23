@@ -4,10 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compound Words Adventure</title>
-
+  <!-- prompt: Widget Verification and Refinement -->
 
   <link rel="stylesheet" href="./css/global_style.css">
   <link rel="stylesheet" href="./css/style.css">
+  <style>
+    /* Hide entire SVG container initially */
+    #svg-container {
+      opacity: 0;
+    }
+
+    /* Hide individual game and activity components */
+    #question,
+    #answer_panels,
+    #answer_panel_bg,
+    #correct_end_popup,
+    #status_bar,
+    #qitxt,
+    /* #home_btn, */
+    #sun_family_assets,
+    #rain_family_assets,
+    #snow_family_assets,
+    #fire_family_assets,
+    #sea_family_assets,
+    #sand_family_assets,
+    #sun,
+    #rain,
+    #snow,
+    #fire,
+    #sea,
+    #sand {
+      display: none;
+    }
+  </style>
 </head>
 
 <body id="idiom-wrapper">
@@ -4320,7 +4349,25 @@
                       </g>
                     </g>
                   </g>
-                  <g>
+
+                  <!-- BO board_box Rectangle_7432 -->
+                  <g data-name="board_box_7432">
+                    <g id="Rectangle_7432" data-name="Rectangle 7432">
+                      <rect x="377" y="885.86" width="200" height="200" rx="23" ry="23" fill="#fff" />
+                      <rect x="380" y="888.86" width="194" height="194" rx="20" ry="20" fill="none" stroke="#4ac7f5"
+                        stroke-width="6" />
+                    </g>
+                    <rect x="396.67" y="932.23" width="162.48" height="107.72"
+                      transform="translate(-2.75 1.34) rotate(-.16)" fill="#ca9863" />
+                    <rect x="401.57" y="938.01" width="152.68" height="96.15"
+                      transform="translate(-2.75 1.34) rotate(-.16)" fill="#212c2d" />
+                    <polygon points="559.3 1039.73 554.39 1033.95 554.12 937.8 559 932 559.3 1039.73" fill="#c08263" />
+                    <polygon points="401.44 938.23 396.52 932.45 396.82 1040.18 401.7 1034.38 401.44 938.23"
+                      fill="#c08263" />
+                  </g>
+
+                  <!-- bo wooden_box Rectangle_7462-->
+                  <g data-name="wooden_box_7462">
                     <g id="Rectangle_7462" data-name="Rectangle 7462">
                       <rect x="854" y="654.86" width="200" height="200" rx="23" ry="23" fill="#fff" />
                       <rect x="857" y="657.86" width="194" height="194" rx="20" ry="20" fill="none" stroke="#4ac7f5"
@@ -4451,20 +4498,7 @@
                       </g>
                     </g>
                   </g>
-                  <g>
-                    <g id="Rectangle_7432" data-name="Rectangle 7432">
-                      <rect x="377" y="885.86" width="200" height="200" rx="23" ry="23" fill="#fff" />
-                      <rect x="380" y="888.86" width="194" height="194" rx="20" ry="20" fill="none" stroke="#4ac7f5"
-                        stroke-width="6" />
-                    </g>
-                    <rect x="396.67" y="932.23" width="162.48" height="107.72"
-                      transform="translate(-2.75 1.34) rotate(-.16)" fill="#ca9863" />
-                    <rect x="401.57" y="938.01" width="152.68" height="96.15"
-                      transform="translate(-2.75 1.34) rotate(-.16)" fill="#212c2d" />
-                    <polygon points="559.3 1039.73 554.39 1033.95 554.12 937.8 559 932 559.3 1039.73" fill="#c08263" />
-                    <polygon points="401.44 938.23 396.52 932.45 396.82 1040.18 401.7 1034.38 401.44 938.23"
-                      fill="#c08263" />
-                  </g>
+
                   <g>
                     <g id="Rectangle_7422" data-name="Rectangle 7422">
                       <rect x="378" y="654.86" width="200" height="200" rx="23" ry="23" fill="#fff" />
@@ -36045,12 +36079,8 @@
               <g id="home_itext">
                 <text id="itext2" transform="translate(802.34 449.52)" fill="#17bff2"
                   font-family="RobotoCondensed-Italic, &apos;Roboto Condensed&apos;" font-size="28" font-style="italic"
-                  isolation="isolate">
-                  <tspan x="0" y="0">Pick a word family </tspan>
-                  <tspan x="205.38" y="0" letter-spacing="0em">t</tspan>
-                  <tspan x="213.27" y="0">o sta</tspan>
-                  <tspan x="267.22" y="0" letter-spacing=".02em">r</tspan>
-                  <tspan x="276.29" y="0">t your adventure!</tspan>
+                  isolation="isolate" letter-spacing="0.04em">
+                  <tspan x="0" y="0">Pick a word family to start your adventure!</tspan>
                 </text>
               </g>
               <g id="status_bar">
@@ -36092,7 +36122,7 @@
               <text id="qitxt" transform="translate(768.48 472.86)"
                 font-family="RobotoCondensed-Italic, &apos;Roboto Condensed&apos;" font-size="28" font-style="italic"
                 isolation="isolate">
-                <tspan x="0" y="0" fill="#17bff2">Click the pictures that make a word with </tspan>
+                <tspan x="0" y="0" fill="#17bff2">Click the pictures that make a word with</tspan>
                 <tspan x="440.14" y="0" fill="url(#Generated_Pattern)">SUN</tspan>
                 <tspan x="486.69" y="0" fill="#17bff2">!</tspan>
               </text>

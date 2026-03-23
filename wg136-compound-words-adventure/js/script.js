@@ -116,6 +116,12 @@ function initGame() {
         homeBtn.onclick = returnToMenu;
         console.log('initGame: Home button mapped successfully');
     }
+    
+    // Explicitly unhide home menu elements (robust loading)
+    unhideElement('home_cards');
+    unhideElement('home_itext');
+    document.getElementById('svg-container').style.opacity = '1';
+    console.log('initGame: Home menu ready.');
 }
 
 function openFamily(family) {
@@ -208,6 +214,7 @@ function returnToMenu() {
     // Reset instruction text to default or keep it.
     unhideElement('home_cards');
     unhideElement('home_itext');
+    document.getElementById('svg-container').style.opacity = '1';
 }
 
 function setupFamilyInteractions(family, famAssets) {
@@ -499,7 +506,7 @@ function updateInstructionText(family) {
             }
             if (currentText === '!') {
                 ts.textContent = '!';
-                ts.setAttribute('dx', '10');
+                ts.setAttribute('dx', '0');
             }
         });
     }
