@@ -448,6 +448,8 @@ function createNewShelf(shelfNumber) {
 
   scrollContainer.appendChild(newShelfDiv);
 
+  enableTouchScroll(scrollContainer);
+
   // Create shelf object
   const newShelf = {
     id: shelfNumber,
@@ -788,6 +790,31 @@ function updateModalContent() {
       modalAdditionalInfo.textContent = text;
     }
   }
+}
+
+function enableTouchScroll(container) {
+  let isDown = false;
+  let startY;
+  let scrollTop;
+
+  container.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startY = e.touches[0].pageY;
+    scrollTop = container.scrollTop;
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+
+    const y = e.touches[0].pageY;
+    const walk = (y - startY);
+
+    container.scrollTop = scrollTop - walk;
+  }, { passive: true });
+
+  container.addEventListener('touchend', () => {
+    isDown = false;
+  });
 }
 
 function showAnswer() {

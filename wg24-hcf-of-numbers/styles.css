@@ -23,6 +23,10 @@
   position: relative
 }
 
+#solution-modal {
+  overflow: visible !important;
+}
+
 .grid {
   width: 1000px;
   height: 666.58px;
@@ -431,8 +435,14 @@
 
 .scroll-container {
   overflow-y: auto;
-  padding-right: 20px;
-  /* space for the wider scrollbar */
+  -webkit-overflow-scrolling: touch;
+  /* iOS smooth scroll */
+  touch-action: pan-y;
+  /* allow vertical scrolling */
+}
+
+.scroll-container * {
+  touch-action: manipulation;
 }
 
 /* width */
