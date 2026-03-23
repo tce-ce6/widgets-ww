@@ -596,42 +596,37 @@ function updateUsedItemVisuals() {
 }
 
 function resetSimulation() {
-  // 1. Remove all shelf elements from the DOM
+  // 1. Remove all shelf elements
   const scrollContainer = document.querySelector('.scroll-container');
   if (scrollContainer) scrollContainer.innerHTML = '';
 
-  // 2. Reset the data arrays and counters
+  // 2. Reset data
   shelves = [];
   shelfCount = 0;
 
-  // 3. Reset the UI display for shelf count
+  // 3. Reset UI display
   const shelfCountDisplay = document.querySelector('#shelves-number-box text');
   if (shelfCountDisplay) shelfCountDisplay.textContent = 0;
 
-  // 4. Reset item visuals (remove the grayscale/opacity from available items)
+  // 4. Reset item visuals
   updateUsedItemVisuals();
 
-  // 5. HIDE ALL OVERLAYS AND FEEDBACK (This is the crucial part)
-  const feedbackMessage = document.getElementById('feedback-message');
-  if (feedbackMessage) feedbackMessage.style.display = 'none';
+  // 5. HIDE ALL OVERLAYS (Crucial Fix)
+  const elementsToHide = [
+    'feedback-message',
+    'left-bg-tint',
+    'solution-modal',
+    'left-bg-background-tint',
+    'interaction-blocker' // This is what stops the clicks
+  ];
 
-  const leftBgTint = document.getElementById('left-bg-tint');
-  if (leftBgTint) leftBgTint.style.display = 'none';
+  elementsToHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
 
-  const solutionModal = document.getElementById('solution-modal');
-  if (solutionModal) solutionModal.style.display = 'none';
-
-  const leftBgBackgroundTint = document.getElementById('left-bg-background-tint');
-  if (leftBgBackgroundTint) leftBgBackgroundTint.style.display = 'none';
-
-  const interactionBlocker = document.getElementById('interaction-blocker');
-  if (interactionBlocker) interactionBlocker.style.display = 'none';
-
-  // 6. RE-ENABLE BUTTONS
-  // This ensures the "Check Answer" button isn't stuck in a disabled state
+  // 6. Re-enable buttons for the new round
   updateButtonStates();
-
-  console.log("Simulation reset and UI cleared.");
 }
 
 function checkAnswer() {
@@ -716,6 +711,7 @@ function checkAnswer() {
   // Show the interaction blocker
   const interactionBlocker = document.getElementById('interaction-blocker');
   if (interactionBlocker) interactionBlocker.style.display = 'block';
+  enableButton('btn-reset');
 }
 
 function updateModalContent() {
