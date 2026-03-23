@@ -240,34 +240,62 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
       const currentQuestion = selectedYearData.questions[currentQuestionIndex];
+      const year = selectedYearData.year;
 
       // 🔍 Find the clue matching the placed country (any-order multi-country support)
-      const matchedClueDrop = currentQuestion.totalClues.find(c =>
+      const matchedIdx = currentQuestion.totalClues.findIndex(c =>
         Array.isArray(c.country)
           ? c.country.includes(droppedCountryId)
           : c.country === droppedCountryId
-      ) || currentQuestion.totalClues[currentClueIndex];
+      );
+
+      const matchedClueDrop = (matchedIdx !== -1)
+        ? currentQuestion.totalClues[matchedIdx]
+        : currentQuestion.totalClues[currentClueIndex];
+
+      const clueIdxToMark = (matchedIdx !== -1) ? matchedIdx : currentClueIndex;
 
       hintText.textContent = matchedClueDrop.feedback;
       setShowMsgState("correct");
 
-      const year = selectedYearData.year;
-      markCurrentClueSolved();
+      solvedClues[year] ??= {};
+      solvedClues[year][currentQuestionIndex] ??= new Set();
+      solvedClues[year][currentQuestionIndex].add(clueIdxToMark);
 
       renderCluesForQuestion(selectedYearData.questions[currentQuestionIndex]);
 
       if (is1918MultiDefeatedQuestion()) {
         multiSolvedCountries.add(flagCountry);
-
-        if (multiSolvedCountries.size < 4) {
-          showActionButton("Next Flag", "proceed");
-        } else {
-          showActionButton("Proceed", "proceed");
-        }
-      } else {
-        showActionButton("Proceed", "proceed");
       }
-      mustProceedBeforeNext = true;
+
+      const qFinished = is1918MultiDefeatedQuestion()
+        ? multiSolvedCountries.size === 4
+        : (solvedClues[year]?.[currentQuestionIndex]?.size === currentQuestion.totalClues.length);
+
+      if (qFinished) {
+        showActionButton("Proceed", "proceed");
+        mustProceedBeforeNext = true;
+      } else {
+        mustProceedBeforeNext = true;
+        setTimeout(() => {
+          showMsg.style.display = "none";
+          showMsg.classList.remove("correct");
+
+          if (is1918MultiDefeatedQuestion()) {
+            resetDropState();
+            renderFlagsForQuestion(currentQuestion);
+          } else {
+            const year = selectedYearData.year;
+            const solvedSet = solvedClues[year][currentQuestionIndex];
+            const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
+            if (nextIdx !== -1) currentClueIndex = nextIdx;
+
+            resetDropState();
+            renderFlagsForQuestion(currentQuestion);
+            renderCluesForQuestion(currentQuestion);
+          }
+        }, 2000);
+      }
 
     } else {
       lastDropWasCorrect = false;
@@ -670,11 +698,17 @@ window.addEventListener("DOMContentLoaded", async () => {
       const currentQuestion = selectedYearData.questions[currentQuestionIndex];
 
       // 🔍 Find the clue that matches the placed country (handles multi-country questions where any order is allowed)
-      const matchedClue = currentQuestion.totalClues.find(c =>
+      const matchedIdx = currentQuestion.totalClues.findIndex(c =>
         Array.isArray(c.country)
           ? c.country.includes(countryId)
           : c.country === countryId
-      ) || currentQuestion.totalClues[currentClueIndex];
+      );
+
+      const matchedClue = (matchedIdx !== -1)
+        ? currentQuestion.totalClues[matchedIdx]
+        : currentQuestion.totalClues[currentClueIndex];
+
+      const clueIdxToMark = (matchedIdx !== -1) ? matchedIdx : currentClueIndex;
 
       hintText.textContent = matchedClue.feedback;
       setShowMsgState("correct");
@@ -687,16 +721,37 @@ window.addEventListener("DOMContentLoaded", async () => {
       renderCluesForQuestion(currentQuestion);
       if (is1918MultiDefeatedQuestion()) {
         multiSolvedCountries.add(flagCountry);
-
-        if (multiSolvedCountries.size < 4) {
-          showActionButton("Next Flag", "proceed");
-        } else {
-          showActionButton("Proceed", "proceed");
-        }
-      } else {
-        showActionButton("Proceed", "proceed");
       }
-      mustProceedBeforeNext = true;
+
+      const qFinished = is1918MultiDefeatedQuestion()
+        ? multiSolvedCountries.size === 4
+        : (solvedClues[year]?.[currentQuestionIndex]?.size === currentQuestion.totalClues.length);
+
+      if (qFinished) {
+        showActionButton("Proceed", "proceed");
+        mustProceedBeforeNext = true;
+      } else {
+        // ✅ Auto-advance intermediate clues after delay
+        mustProceedBeforeNext = true;
+        setTimeout(() => {
+          showMsg.style.display = "none";
+          showMsg.classList.remove("correct");
+
+          if (is1918MultiDefeatedQuestion()) {
+            resetDropState();
+            renderFlagsForQuestion(currentQuestion);
+          } else {
+            const year = selectedYearData.year;
+            const solvedSet = solvedClues[year][currentQuestionIndex];
+            const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
+            if (nextIdx !== -1) currentClueIndex = nextIdx;
+
+            resetDropState();
+            renderFlagsForQuestion(currentQuestion);
+            renderCluesForQuestion(currentQuestion);
+          }
+        }, 5000);
+      }
 
     } else {
       lastDropWasCorrect = false;
