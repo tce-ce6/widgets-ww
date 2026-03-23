@@ -777,14 +777,22 @@ function setupCustomDropdown(containerId, hiddenInputId) {
 function closeAllSelect(elmnt) {
   const items = document.getElementsByClassName("select-items");
   const selected = document.getElementsByClassName("select-selected");
+  const arrNo = [];
+  
   for (let i = 0; i < selected.length; i++) {
-    if (elmnt == selected[i]) continue;
-    selected[i].classList.remove("select-arrow-active");
+    if (elmnt == selected[i]) {
+      arrNo.push(i);
+    } else {
+      selected[i].classList.remove("select-arrow-active");
+    }
   }
   for (let i = 0; i < items.length; i++) {
-    items[i].classList.add("select-hide");
+    if (arrNo.indexOf(i) === -1) {
+      items[i].classList.add("select-hide");
+    }
   }
 }
+
 
 document.addEventListener("click", () => closeAllSelect());
 
