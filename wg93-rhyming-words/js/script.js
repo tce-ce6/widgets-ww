@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         {
           text: "गलमा",
-          isCorrect: true,
+          isCorrect: false,
           sound: "../assets/audio/set-08/galma-cr.mp3",
         },
         {
@@ -923,7 +923,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tryLoad(0);
   };
 
-  const populateQuestion = () => {
+  const populateQuestion = (specificQuestion = null) => {
     // 🔒 Disable Show Answer until firstWord is clicked
     const showAnsBtn = document.getElementById("showAns-btn");
 
@@ -976,6 +976,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedCorrect = 0;
     correctSelectedElements = [];
     currentQuestion =
+      specificQuestion ||
       questionsData[Math.floor(Math.random() * questionsData.length)];
 
     const q = currentQuestion;
@@ -1104,13 +1105,6 @@ document.addEventListener("DOMContentLoaded", () => {
               showAnsBtn.style.opacity = "0.5";
             }
 
-            const resetBtn = document.getElementById("reset-btn");
-            if (resetBtn) {
-              resetBtn.classList.add("disabled");
-              resetBtn.style.pointerEvents = "none";
-              resetBtn.style.opacity = "0.5";
-            }
-
             correctSelectedElements.forEach((optEl, index) => {
               setTimeout(() => {
                 playStarAnimation(optEl);
@@ -1168,8 +1162,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 3000);
   };
+  // 🧪 Function for direct testing from console
+  window.testWord = (word) => {
+    const q = questionsData.find((item) => item.firstWord === word);
+    if (q) {
+      if (firstWordTimer) clearTimeout(firstWordTimer);
+      stopResultAnimation();
+      populateQuestion(q);
+      console.log(`Test mode: Loading word "${word}"`);
+    } else {
+      console.warn(`Test word "${word}" not found.`);
+    }
+  };
+
   playBeeIntro();
-  populateQuestion();
+
+  // 👉 Direct test for "कमला"
+  const startQuest = questionsData.find(q => q.firstWord === "कमला");
+  populateQuestion(startQuest);
   let audioUnlocked = false;
 
   const stopResultAnimation = () => {
