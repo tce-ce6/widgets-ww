@@ -377,6 +377,11 @@ function initWidget() {
     btnHome.classList.remove("st767");
     btnInsights.classList.remove("st767");
 
+    // Clear old clickable overlays so they don't bleed through backwards
+    if (uiLayer) {
+      uiLayer.innerHTML = "";
+    }
+
     // Handle Menu
     if (currentScreen === 0) {
       if (menuScreen) menuScreen.classList.remove("st767");
@@ -490,11 +495,11 @@ function initWidget() {
     let tradeCount = 0;
 
     // Disable Next button initially
-    if (btnNext) {
-      btnNext.disabled = true;
-      btnNext.style.opacity = "0.5";
-      btnNext.style.cursor = "not-allowed";
-    }
+    // if (btnNext) {
+    //   btnNext.disabled = true;
+    //   btnNext.style.opacity = "0.5";
+    //   btnNext.style.cursor = "not-allowed";
+    // }
 
     villageTrades.forEach((traderId, index) => {
       const el = document.getElementById(traderId);
@@ -793,8 +798,9 @@ function initWidget() {
     let dd3 = document.getElementById(`act-02-sc${sc}-dropdown`);
 
     // Get the Trade button and disable it initially
-    const scSubmit =
-      document.getElementById(`act-02-sc${sc}-btn`) || globalSubmit;
+    const scGroup = document.getElementById(`act-02-sc${sc}-btn`);
+    const scSubmit = scGroup ? scGroup.querySelector('[id^="Trade"]') : globalSubmit;
+    const showAnsBtn = scGroup ? scGroup.querySelector('[id^="Show_Answer"]') : null;
     if (scSubmit) {
       scSubmit.style.opacity = "0.5";
       scSubmit.style.pointerEvents = "none";
@@ -826,149 +832,142 @@ function initWidget() {
       `act-02-sc${sc}-2`,
     );
 
-    if (dd1 && dd2) {
-      const r1 = getPctRect(dd1);
-      const r2 = getPctRect(dd2);
+    // Preferred positioning: map to SVG trigger boundaries if they exist
+    if (dd3) {
+      const triggerWrappers = Array.from(dd3.children).filter(
+        (c) => c.tagName === "g" || c.tagName === "G",
+      );
+      // Sort triggers left-to-right to reliably map to s1 (left) and s2 (right)
+      triggerWrappers.sort(
+        (a, b) =>
+          a.getBoundingClientRect().left - b.getBoundingClientRect().left,
+      );
 
-      // Hide the SVG placeholders
-      dd1.classList.add("st767");
-      dd2.classList.add("st767");
-      dd3.classList.add("st767");
+      if (triggerWrappers.length >= 2) {
+        const r1 = getPctRect(triggerWrappers[0]);
+        const r2 = getPctRect(triggerWrappers[1]);
 
-      if (r1) {
         Object.assign(s1.style, {
-          left: "41.2037%",
-          top: "19.6481%",
-          width: "5.67361%",
-          height: "46.6667%",
+          left: r1.left,
+          top: r1.top,
+          width: r1.width,
+          height: r1.height,
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s1);
-      }
-      if (r2) {
+
         Object.assign(s2.style, {
-          left: "64.0741%",
-          top: "19.6481%",
-          width: "5.67361%",
-          height: "46.6667%",
+          left: r2.left,
+          top: r2.top,
+          width: r2.width,
+          height: r2.height,
           pointerEvents: "auto",
         });
         uiLayer.appendChild(s2);
+
+        // Hide placeholders
+        if (dd1) dd1.classList.add("st767");
+        if (dd2) dd2.classList.add("st767");
+        dd3.classList.add("st767");
+        // return; // Success
       }
-    } else {
-      // Hardcoded fallback bounding boxes per challenge if SVG IDs are missing
-      const fbBoxes = {
-        1: [
-          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
-          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
-        ],
-        2: [
-          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
-          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
-        ],
-        3: [
-          { l: "18%", t: "44.5%", w: "11%", h: "5.5%" },
-          { l: "64.5%", t: "44.5%", w: "11%", h: "5.5%" },
-        ],
-      };
-      const b = fbBoxes[sc];
-
-      Object.assign(s1.style, {
-        left: "41.2037%",
-        top: "19.6481%",
-        width: "5.67361%",
-        height: "46.6667%",
-        pointerEvents: "auto",
-      });
-      uiLayer.appendChild(s1);
-
-      Object.assign(s2.style, {
-        left: "64.0741%",
-        top: "19.6481%",
-        width: "5.67361%",
-        height: "46.6667%",
-        pointerEvents: "auto",
-      });
-      uiLayer.appendChild(s2);
     }
 
+    // Fallback if SVG elements are missing (previously hardcoded, now made slightly more robust)
+    const fbBoxes = {
+      1: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+      2: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+      3: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+    };
+
+    const b = fbBoxes[sc] || fbBoxes[1];
+    [s1, s2].forEach((s, i) => {
+      Object.assign(s.style, {
+        left: b[i].l,
+        top: b[i].t,
+        width: b[i].w,
+        height: b[i].h,
+        pointerEvents: "auto",
+      });
+      uiLayer.appendChild(s);
+    });
+
     // Show Answer logic
-    const showAnsBtn = document.querySelectorAll('[id^="Show_Answer"]')[sc - 1];
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
-      showAnsBtn.addEventListener("click", (e) => {
+      showAnsBtn.onclick = (e) => {
         e.stopPropagation();
         // Find first fair trade values
         let f1 = 0,
           f2 = 0;
         if (sc === 1) {
-          f1 = 2;
-          f2 = 1;
+          f1 = 2; // Rice
+          f2 = 1; // Cloth
         } else if (sc === 2) {
-          f1 = 3;
-          f2 = 1;
+          f1 = 3; // Rice
+          f2 = 1; // Jaggery
         } else if (sc === 3) {
-          f1 = 4;
-          f2 = 3;
+          f1 = 4; // Cloth
+          f2 = 3; // Jaggery
         }
         s1.setValue(f1);
         s2.setValue(f2);
-      });
+      };
     }
 
     // Submit handler logic
     if (scSubmit) {
-      scSubmit.onclick = () => {
-        let v1 = parseInt(s1.dataset.value);
-        let v2 = parseInt(s2.dataset.value);
-        if (v1 * cfg.val1 === v2 * cfg.val2) {
+      scSubmit.style.cursor = "pointer";
+      scSubmit.onclick = (e) => {
+        if (e) e.stopPropagation();
+        let v1 = parseInt(s1.dataset.value) || 0;
+        let v2 = parseInt(s2.dataset.value) || 0;
+        if (v1 * cfg.val1 === v2 * cfg.val2 && v1 > 0 && v2 > 0) {
           // Fair Trade
           showElements(`#act-02-sc1-feedback-correct`);
           hideElements(`#act-02-sc1-feedback-incorrect`);
-          //  showFeedbackPopup("It is a fair trade! The values are matching.", true);
-          // showElements(`#act-02-sc${sc}-feedback-end`);
         } else {
           // Unfair
           showElements(`#act-02-sc1-feedback-incorrect`);
           hideElements(`#act-02-sc1-feedback-correct`);
-          // showFeedbackPopup("It is an unfair trade! The values do not match. Try again!", false);
-          // hideElements(`#act-02-sc${sc}-feedback-end`);
         }
       };
     }
 
-    // Feedback Continue button handlers
-    // "Continue" on incorrect feedback → close popup (try again)
-    const incorrectFeedback = document.getElementById(
-      `act-02-sc${sc}-feedback-incorrect`,
-    );
+    // Feedback Continue button handlers (Recycled IDs sc1 used for all Activity 2 scenarios)
+    const incorrectFeedback = document.getElementById(`act-02-sc1-feedback-incorrect`);
     if (incorrectFeedback) {
       incorrectFeedback.style.cursor = "pointer";
-      incorrectFeedback.addEventListener("click", () => {
-        hideElements(`#act-02-sc${sc}-feedback-incorrect`);
-      });
+      incorrectFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-incorrect`);
+      };
     }
 
-    // "Continue" on correct feedback → close popup
-    const correctFeedback = document.getElementById(
-      `act-02-sc${sc}-feedback-correct`,
-    );
+    const correctFeedback = document.getElementById(`act-02-sc1-feedback-correct`);
     if (correctFeedback) {
       correctFeedback.style.cursor = "pointer";
-      correctFeedback.addEventListener("click", () => {
-        hideElements(`#act-02-sc${sc}-feedback-correct`);
-        showElements(`#act-02-sc${sc}-feedback-end`);
-      });
+      correctFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-correct`);
+        showElements(`#act-02-sc1-feedback-end`);
+      };
     }
 
-    // "Continue to Next Challenge" on feedback-end → go next
-    const endFeedback = document.getElementById(`act-02-sc${sc}-feedback-end`);
+    const endFeedback = document.getElementById(`act-02-sc1-feedback-end`);
     if (endFeedback) {
       endFeedback.style.cursor = "pointer";
-      endFeedback.addEventListener("click", () => {
-        hideElements(`#act-02-sc${sc}-feedback-end`);
+      endFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-end`);
         goNext();
-      });
+      };
     }
   }
 
@@ -1015,6 +1014,12 @@ function initWidget() {
         overlay.onclick = () => {
           if (index === currentStep) {
             // Correct step
+
+            // Hide previous step indicator to avoid layering/overlap issues with the trading chain text
+            if (currentStep > 0) {
+              hideElements(`#act-03-sc${sc}-card${currentStep}-selected`);
+            }
+
             showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
             currentStep++;
             if (currentStep === sequence.length) {
