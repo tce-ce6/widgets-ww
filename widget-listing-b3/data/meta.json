@@ -305,7 +305,7 @@
       "author": "sushantthe"
     },
     "wg82-commonly-confused-words": {
-      "updatedAt": "2026-03-20T19:31:01+05:30",
+      "updatedAt": "2026-03-23T15:08:38+05:30",
       "author": "PrasannaP"
     },
     "wg83-major-soil-types": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-23T15:08:38+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add readme, hide next button on completion, and update confetti z-index for the Commonly Confused Words widget.",
+      "widgets": [
+        82
+      ]
+    },
     {
       "date": "2026-03-23T15:05:52+05:30",
       "author": "Shyamsunder Hait",
@@ -610,14 +618,6 @@
       "widgets": [
         149,
         154
-      ]
-    },
-    {
-      "date": "2026-03-20T14:54:34+05:30",
-      "author": "PrasannaP",
-      "message": "v",
-      "widgets": [
-        121
       ]
     }
   ]
