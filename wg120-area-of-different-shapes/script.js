@@ -402,12 +402,10 @@ function initGame() {
     el.style.cursor = "grab";
   });
 
-  document
-    .getElementById("source-shape")
-    .addEventListener("change", updateGameTable);
-  document
-    .getElementById("target-shape")
-    .addEventListener("change", updateGameTable);
+  // Set up custom dropdowns
+  setupCustomDropdown("source-shape-container", "source-shape");
+  setupCustomDropdown("target-shape-container", "target-shape");
+
   document.querySelector(".reset-btn").addEventListener("click", resetPieces);
 
   document.getElementById("Group_1587").addEventListener("click", checkAnswer);
@@ -736,6 +734,60 @@ function getSVGPoint(evt) {
   return pt.matrixTransform(svg.getScreenCTM().inverse());
 }
 
+function setupCustomDropdown(containerId, hiddenInputId) {
+  const container = document.getElementById(containerId);
+  const selected = container.querySelector(".select-selected");
+  const optionsList = container.querySelector(".select-items");
+  const hiddenInput = document.getElementById(hiddenInputId);
+
+  selected.addEventListener("click", function (e) {
+    e.stopPropagation();
+    closeAllSelect(this);
+    optionsList.classList.toggle("select-hide");
+    this.classList.toggle("select-arrow-active");
+  });
+
+  const options = optionsList.querySelectorAll("div");
+  options.forEach(option => {
+    option.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const value = this.getAttribute("data-value");
+      const text = this.textContent;
+
+      selected.textContent = text;
+      hiddenInput.value = value;
+
+      // Update active class in options
+      options.forEach(opt => opt.classList.remove("same-as-selected"));
+      this.classList.add("same-as-selected");
+
+      optionsList.classList.add("select-hide");
+      selected.classList.remove("select-arrow-active");
+
+      // Trigger change event on hidden input
+      const event = new Event('change');
+      hiddenInput.dispatchEvent(event);
+
+      // Specifically call updateGameTable if needed (though dispatch event should handle it if listener is present)
+      updateGameTable();
+    });
+  });
+}
+
+function closeAllSelect(elmnt) {
+  const items = document.getElementsByClassName("select-items");
+  const selected = document.getElementsByClassName("select-selected");
+  for (let i = 0; i < selected.length; i++) {
+    if (elmnt == selected[i]) continue;
+    selected[i].classList.remove("select-arrow-active");
+  }
+  for (let i = 0; i < items.length; i++) {
+    items[i].classList.add("select-hide");
+  }
+}
+
+document.addEventListener("click", () => closeAllSelect());
+
 function checkAnswer() {
   const pieces = gameData.game_metadata.piece_ids.map((id) => {
     const el = document.getElementById(id);
@@ -754,13 +806,13 @@ function checkAnswer() {
   if (solved) {
     const source = document.getElementById("source-shape").value;
     const comboKey = `${source}_to_${targetType}`;
-    
+
     // Create a custom layout object from current piece positions
     const customLayout = {};
     pieces.forEach(p => {
       customLayout[p.id] = { x: p.x, y: p.y, rot: p.rot };
     });
-    
+
     showSolutionBanner(comboKey, 1, true, customLayout);
   } else {
     showTryAgain();
@@ -772,75 +824,75 @@ function checkAnswer() {
  * Works by discretizing shapes into 190px square modules and then into 4 triangular sub-modules each.
  */
 function validateGeometricFit(pieces, targetType) {
-    const step = 5;
-    let totalTargetUnits = 0;
-    let coveredTargetUnits = 0;
-    let overlaps = 0;
-    let strayPieces = 0;
+  const step = 5;
+  let totalTargetUnits = 0;
+  let coveredTargetUnits = 0;
+  let overlaps = 0;
+  let strayPieces = 0;
 
-    function isPointInTarget(px, py) {
-        if (targetType === "square") {
-            return px >= 0 && px <= 380 && py >= 0 && py <= 380;
-        } else if (targetType === "rectangle") {
-            return px >= 0 && px <= 760 && py >= 0 && py <= 190;
-        } else if (targetType === "triangle") {
-            // Points: (0,380) (380,0) (760,380)
-            return py >= 0 && py <= 380 && px >= (380 - py) && px <= (380 + py);
-        } else if (targetType === "parallelogram") {
-            // Points: (190,0) (950,0) (760,190) (0,190)
-            return py >= 0 && py <= 190 && px >= (190 - py) && px <= (950 - py);
-        }
-        return false;
+  function isPointInTarget(px, py) {
+    if (targetType === "square") {
+      return px >= 0 && px <= 380 && py >= 0 && py <= 380;
+    } else if (targetType === "rectangle") {
+      return px >= 0 && px <= 760 && py >= 0 && py <= 190;
+    } else if (targetType === "triangle") {
+      // Points: (0,380) (380,0) (760,380)
+      return py >= 0 && py <= 380 && px >= (380 - py) && px <= (380 + py);
+    } else if (targetType === "parallelogram") {
+      // Points: (190,0) (950,0) (760,190) (0,190)
+      return py >= 0 && py <= 190 && px >= (190 - py) && px <= (950 - py);
     }
+    return false;
+  }
 
-    function isPointInPiece(px, py, piece) {
-        const r = (piece.rot + 360) % 360 * (Math.PI / 180);
-        const dx = px - piece.x;
-        const dy = py - piece.y;
-        
-        // Rotate point BACK to untransformed piece space
-        const rx = dx * Math.cos(r) + dy * Math.sin(r);
-        const ry = -dx * Math.sin(r) + dy * Math.cos(r);
+  function isPointInPiece(px, py, piece) {
+    const r = (piece.rot + 360) % 360 * (Math.PI / 180);
+    const dx = px - piece.x;
+    const dy = py - piece.y;
 
-        if (piece.id.includes("rect")) {
-            return rx >= -1 && rx <= 191 && ry >= -1 && ry <= 191;
-        } else if (piece.id.includes("blue")) {
-            // untransformed: (0,190), (380,190), (190,0)
-            return ry >= -1 && ry <= 191 && rx >= (190 - ry - 2) && rx <= (190 + ry + 2);
-        } else if (piece.id === "yellow_triangle") {
-            // untransformed: (0,0), (0,190), (190,0)
-            return rx >= -1 && ry >= -1 && (rx + ry) <= 192;
-        } else if (piece.id === "orange_triangle") {
-            // untransformed: (0,0), (190,190), (190,0)
-            return rx >= -1 && rx <= 191 && ry >= -1 && ry <= rx + 2;
-        }
-        return false;
+    // Rotate point BACK to untransformed piece space
+    const rx = dx * Math.cos(r) + dy * Math.sin(r);
+    const ry = -dx * Math.sin(r) + dy * Math.cos(r);
+
+    if (piece.id.includes("rect")) {
+      return rx >= -1 && rx <= 191 && ry >= -1 && ry <= 191;
+    } else if (piece.id.includes("blue")) {
+      // untransformed: (0,190), (380,190), (190,0)
+      return ry >= -1 && ry <= 191 && rx >= (190 - ry - 2) && rx <= (190 + ry + 2);
+    } else if (piece.id === "yellow_triangle") {
+      // untransformed: (0,0), (0,190), (190,0)
+      return rx >= -1 && ry >= -1 && (rx + ry) <= 192;
+    } else if (piece.id === "orange_triangle") {
+      // untransformed: (0,0), (190,190), (190,0)
+      return rx >= -1 && rx <= 191 && ry >= -1 && ry <= rx + 2;
     }
+    return false;
+  }
 
-    // Scan target area with bounding box hint
-    for (let y = 0; y <= 400; y += step) {
-        for (let x = -200; x <= 1200; x += step) {
-            const inTarget = isPointInTarget(x, y);
-            let hits = 0;
-            for (const p of pieces) {
-                if (isPointInPiece(x, y, p)) hits++;
-            }
+  // Scan target area with bounding box hint
+  for (let y = 0; y <= 400; y += step) {
+    for (let x = -200; x <= 1200; x += step) {
+      const inTarget = isPointInTarget(x, y);
+      let hits = 0;
+      for (const p of pieces) {
+        if (isPointInPiece(x, y, p)) hits++;
+      }
 
-            if (inTarget) {
-                totalTargetUnits++;
-                if (hits === 1) coveredTargetUnits++;
-                else if (hits > 1) overlaps++;
-            } else {
-                if (hits > 0) strayPieces++;
-            }
-        }
+      if (inTarget) {
+        totalTargetUnits++;
+        if (hits === 1) coveredTargetUnits++;
+        else if (hits > 1) overlaps++;
+      } else {
+        if (hits > 0) strayPieces++;
+      }
     }
+  }
 
-    const coverage = coveredTargetUnits / totalTargetUnits;
-    const overlapRatio = overlaps / totalTargetUnits;
-    const strayRatio = strayPieces / totalTargetUnits;
+  const coverage = coveredTargetUnits / totalTargetUnits;
+  const overlapRatio = overlaps / totalTargetUnits;
+  const strayRatio = strayPieces / totalTargetUnits;
 
-    return coverage > 0.96 && overlapRatio < 0.05 && strayRatio < 0.08;
+  return coverage > 0.96 && overlapRatio < 0.05 && strayRatio < 0.08;
 }
 function showTryAgain() {
   const container = document.getElementById("try-again-container");
@@ -934,12 +986,12 @@ function renderSolutionVisual(source, target, solutionId, customLayout = null) {
 
     let layoutPositions;
     if (overridePositions) {
-        layoutPositions = overridePositions;
+      layoutPositions = overridePositions;
     } else {
-        const layoutObj =
-          layouts[shapeType].find((l) => l.solution_id === solutionId) ||
-          layouts[shapeType][0];
-        layoutPositions = layoutObj.positions;
+      const layoutObj =
+        layouts[shapeType].find((l) => l.solution_id === solutionId) ||
+        layouts[shapeType][0];
+      layoutPositions = layoutObj.positions;
     }
 
     let maxX = 0;
