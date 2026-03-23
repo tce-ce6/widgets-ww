@@ -409,7 +409,7 @@ svg * {
 }
 
 #idiom-wrapper .passage-scroll .sentence-row {
-  margin: 4px 0;
+ 
   border-radius: 4px;
   font-size: 24px;
   line-height: 1.5;
@@ -417,8 +417,10 @@ svg * {
   cursor: pointer;
   transition: background 0.2s ease;
   font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
+}
+
+#idiom-wrapper .passage-scroll .sentence-row::after {
+  content: " ";
 }
 
 #idiom-wrapper .passage-scroll .sentence-row:hover {
