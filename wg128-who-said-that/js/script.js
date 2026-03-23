@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const textInPanel = document.getElementById("text_in_panel");
   const blankCard = document.getElementById("Rectangle_369");
   const showAnswerButton = document.getElementById("show_answer_button");
+  const nextButton = document.getElementById("next_button");
 
   const animalIds = [
     "cow", "rooster", "sheep", "pig", "horse", "dog", "cat", "wolf",
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetGame() {
     const hideInitially = [
       iText, visualPanel, audioButton, activityBox,
-      homeIcon, textInPanel, ...animalIds.map(id => document.getElementById(id))
+      nextButton, textInPanel, ...animalIds.map(id => document.getElementById(id))
     ];
     hideInitially.forEach(el => { if (el) el.style.display = "none"; });
 
@@ -163,6 +164,14 @@ document.addEventListener("DOMContentLoaded", () => {
       currentAudio.pause();
       currentAudio = null;
     }
+
+    // Re-enable tray cards interactivity
+    traySlotIds.forEach(slotId => {
+      const slotEl = document.getElementById(slotId);
+      if (slotEl) {
+        slotEl.style.pointerEvents = "all";
+      }
+    });
   }
 
   function setupTray() {
@@ -280,8 +289,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (visualPanel) visualPanel.style.display = "block";
       if (audioButton) audioButton.style.display = "block";
       if (activityBox) activityBox.style.display = "block";
-      if (homeIcon) homeIcon.style.display = "block";
-      if (showAnswerButton) showAnswerButton.style.display = "block";
+      if (showAnswerButton) {
+        showAnswerButton.style.display = "block";
+        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
+        showAnswerButton.classList.remove("disabled-btn");
+        showAnswerButton.style.pointerEvents = "auto";
+      }
+      if (nextButton) {
+        nextButton.style.display = "block";
+        nextButton.setAttribute("transform", "translate(170, 0)");
+      }
 
       setupTray();
       selectedAnimalKey = null;
@@ -300,14 +317,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function revealSuccess() {
+  function revealSuccess(showConfetti = true) {
     if (!targetAnimalKey) return;
 
-    // Hide and disable Show Answer button
+    // Show both buttons and shift them side-by-side
     if (showAnswerButton) {
+      showAnswerButton.style.display = "block";
+      showAnswerButton.setAttribute("transform", "translate(-170, 0)");
       showAnswerButton.classList.add("disabled-btn");
       showAnswerButton.style.pointerEvents = "none";
     }
+    if (nextButton) {
+      nextButton.style.display = "block";
+      nextButton.setAttribute("transform", "translate(170, 0)");
+    }
+
+    // Disable all tray slots (RHS cards)
+    traySlotIds.forEach(slotId => {
+      const slotEl = document.getElementById(slotId);
+      if (slotEl) {
+        slotEl.style.pointerEvents = "none";
+      }
+    });
 
     // Clear all tray slot borders (remove red borders from incorrect attempts)
     traySlotIds.forEach(slotId => {
@@ -353,7 +384,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    if (window.lottie) {
+    // Play animal audio
+    if (currentAudio) currentAudio.pause();
+    currentAudio = new Audio(animalData[targetAnimalKey].audio);
+    currentAudio.play().catch(e => console.error("Audio play failed:", e));
+
+    if (showConfetti && window.lottie) {
       const container = document.getElementById("confetti-container");
       if (container) {
         const anim = lottie.loadAnimation({
@@ -388,14 +424,51 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!targetAnimalKey) {
         setupTray();
       }
-      revealSuccess();
+      revealSuccess(false);
     });
   }
 
-  if (homeIcon) {
-    homeIcon.style.cursor = "pointer";
-    homeIcon.addEventListener("click", () => {
-      resetGame();
+  if (nextButton) {
+    nextButton.style.cursor = "pointer";
+    nextButton.addEventListener("click", () => {
+      // Hide current animal and text
+      if (visualPanel) {
+        animalIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = "none";
+        });
+      }
+      if (textInPanel) textInPanel.style.display = "none";
+
+      // Reset buttons and positions
+      if (showAnswerButton) {
+        showAnswerButton.style.display = "block";
+        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
+        showAnswerButton.classList.remove("disabled-btn");
+        showAnswerButton.style.pointerEvents = "auto";
+      }
+      if (nextButton) {
+        nextButton.style.display = "block";
+        nextButton.setAttribute("transform", "translate(170, 0)");
+      }
+
+      // Re-enable tray cards interactivity
+      traySlotIds.forEach(slotId => {
+        const slotEl = document.getElementById(slotId);
+        if (slotEl) {
+          slotEl.style.pointerEvents = "all";
+        }
+      });
+
+      // Stop audio
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+
+      // Pick next animal
+      targetAnimalKey = null;
+      setupTray();
     });
   }
 });
