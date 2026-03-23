@@ -229,7 +229,7 @@
     hide(UI.scoreText);
     hide(UI.starBg);
     hide(UI.star);
-    hide(UI.buttonLibrary); 
+    hide(UI.buttonLibrary);
     hide(UI.nuttonLibrary);
     hide(UI.buttonNextPassage);
     hide(UI.commonBG);
@@ -237,6 +237,8 @@
     hide(UI.bookStamp);
     hide(UI.textPanel)
     hide(UI.bodyText);
+    hide(UI.textBg);
+    show(UI.labelChoosBook);
     UI.books.forEach((book, i) => {
       if (book) {
         book.style.display = "";
@@ -285,8 +287,8 @@
     const passageForeign = document.getElementById("passage-foreign");
     if (passageForeign) passageForeign.style.display = "";
     if (UI.bookThumbnailLabel) {
-        UI.bookThumbnailLabel.textContent = CONTENT[state.categoryIndex].name;
-        
+      UI.bookThumbnailLabel.textContent = CONTENT[state.categoryIndex].name;
+
     }
   }
   function showPassageScreen1() {
@@ -311,7 +313,7 @@
     hide(UI.darkPatch);
     hide(UI.completeBgPanel);
     show(UI.checkBtn);
-    
+
     UI.checkBtn.style.opacity = "0.5";
     UI.checkBtn.style.pointerEvents = "none";
     hide(UI.nuttonLibrary);
@@ -328,8 +330,8 @@
 
   function setPassageContent(passage) {
     if (UI.passageTitleEl) {
-        UI.passageTitleEl.querySelector("text").textContent = passage.title;
-        //UI.passageTitleEl.textContent = passage.title;
+      UI.passageTitleEl.querySelector("text").textContent = passage.title;
+      //UI.passageTitleEl.textContent = passage.title;
     }
     passage.sentences.forEach((s, i) => {
       const row = UI.sentenceRows[i];
@@ -495,7 +497,7 @@
       const chosen = userChoice || "fact";
       const explText = isCorrect ? (s.correctFeedback || "") : (s.incorrectFeedback || "");
       const explHtml = isCorrect
-        ? `<div class="fb-expl ok" data-expl-for="${i}">${escapeHtml(explText)}</div>`
+        ? ""
         : `<div class="fb-expl" data-expl-for="${i}"><strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(explText)}</div>`;
       return `
         <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" data-is-correct="${isCorrect ? "1" : "0"}">
@@ -609,12 +611,12 @@
       }
     });
     CATEGORY_IDS.forEach((id, index) => {
-        const book = document.getElementById(id);
-        if (book) {
-          book.style.cursor = "pointer";
-          book.addEventListener("click", () => startCategory(index));
-        }
-      });
+      const book = document.getElementById(id);
+      if (book) {
+        book.style.cursor = "pointer";
+        book.addEventListener("click", () => startCategory(index));
+      }
+    });
     if (UI.factHighlighter) {
       UI.factHighlighter.addEventListener("click", () => onHighlighterClick("fact"));
       UI.factHighlighter.style.cursor = "pointer";
@@ -662,25 +664,25 @@
       libBtn.style.cursor = "pointer";
     }
     if (UI.btnFact) {
-        UI.btnFact.addEventListener("click", () => {
-          currentTool = "fact";
-          highlightTool("fact");
-        });
-      }
-      if (UI.btnOpinion) {
-        UI.btnOpinion.addEventListener("click", () => {
-          currentTool = "opinion";
-          highlightTool("opinion");
-        });
-      }
-  
-      // Check Button
-      if (UI.btnCheck) {
-        UI.btnCheck.addEventListener("click", () => {
-          playConfetti();
-          checkAnswers();
-        });
-      }
+      UI.btnFact.addEventListener("click", () => {
+        currentTool = "fact";
+        highlightTool("fact");
+      });
+    }
+    if (UI.btnOpinion) {
+      UI.btnOpinion.addEventListener("click", () => {
+        currentTool = "opinion";
+        highlightTool("opinion");
+      });
+    }
+
+    // Check Button
+    if (UI.btnCheck) {
+      UI.btnCheck.addEventListener("click", () => {
+        playConfetti();
+        checkAnswers();
+      });
+    }
   }
 
   function playConfetti() {
@@ -744,22 +746,22 @@
   // Replace your existing createPassageContainer function with this one
   let currentSelectionMode = null; // 'fact' or 'opinion'
 
-// Update this in your bindEvents or where you click the highlighters
-function bindHighlighterEvents() {
+  // Update this in your bindEvents or where you click the highlighters
+  function bindHighlighterEvents() {
     const factHighlighter = document.getElementById('fact-highlighter-id'); // Update with your actual ID
     const opinionHighlighter = document.getElementById('opinion-highlighter-id');
 
     factHighlighter.addEventListener('click', () => {
-        currentSelectionMode = 'fact';
-        // Add visual 'active' class to highlighter if needed
+      currentSelectionMode = 'fact';
+      // Add visual 'active' class to highlighter if needed
     });
 
     opinionHighlighter.addEventListener('click', () => {
-        currentSelectionMode = 'opinion';
+      currentSelectionMode = 'opinion';
     });
-}
+  }
 
-function createPassageContainer() {
+  function createPassageContainer() {
     const textPanel = document.getElementById("text-panel");
     if (!textPanel) return;
 
@@ -777,10 +779,10 @@ function createPassageContainer() {
     const div = document.createElement("div");
     div.id = "passage-content";
     div.className = "passage-scroll";
-    
+
     // Use a fragment for performance
     const fragment = document.createDocumentFragment();
-    
+
     const title = document.createElement("h2");
     title.id = "passage-title";
     title.style.textAlign = "center";
@@ -790,33 +792,33 @@ function createPassageContainer() {
     textWrapper.className = "text-wrapper"; // Will have display: inline in CSS
 
     for (let i = 0; i < SENTENCE_COUNT; i++) {
-        const sentenceContainer = document.createElement("div");
-        sentenceContainer.className = "sentence-block";
+      const sentenceContainer = document.createElement("div");
+      sentenceContainer.className = "sentence-block";
 
-        // The clickable sentence
-        const span = document.createElement("span");
-        span.id = `sentence-${i}`;
-        span.className = "sentence-item";
-        span.onclick = () => handleSentenceClick(i);
+      // The clickable sentence
+      const span = document.createElement("span");
+      span.id = `sentence-${i}`;
+      span.className = "sentence-item";
+      span.onclick = () => handleSentenceClick(i);
 
-        // The feedback box (Accordion)
-        const feedbackDiv = document.createElement("div");
-        feedbackDiv.id = `feedback-row-${i}`;
-        feedbackDiv.className = "feedback-row";
-        
-        // Inner content for feedback
-        feedbackDiv.innerHTML = `
+      // The feedback box (Accordion)
+      const feedbackDiv = document.createElement("div");
+      feedbackDiv.id = `feedback-row-${i}`;
+      feedbackDiv.className = "feedback-row";
+
+      // Inner content for feedback
+      feedbackDiv.innerHTML = `
             <span class="feedback-type" id="feedback-type-${i}"></span>
             <span class="feedback-explanation" id="feedback-explanation-${i}"></span>
         `;
 
-        sentenceContainer.appendChild(span);
-        sentenceContainer.appendChild(feedbackDiv);
-        div.appendChild(sentenceContainer);// Space between sentences
-       // Space between sentences
+      sentenceContainer.appendChild(span);
+      sentenceContainer.appendChild(feedbackDiv);
+      div.appendChild(sentenceContainer);// Space between sentences
+      // Space between sentences
     }
 
-    
+
     foreign.appendChild(div);
     textPanel.appendChild(foreign);
 
@@ -825,27 +827,27 @@ function createPassageContainer() {
   }
 
 
-function handleSentenceClick(index) {
+  function handleSentenceClick(index) {
     if (isChecked) {
-        // Toggle explanation on tap after checking
-        const row = document.getElementById(`feedback-row-${i}`);
-        row.style.display = row.style.display === "block" ? "none" : "block";
+      // Toggle explanation on tap after checking
+      const row = document.getElementById(`feedback-row-${i}`);
+      row.style.display = row.style.display === "block" ? "none" : "block";
     } else {
-    if (!currentTool) return; // User must select a marker first
+      if (!currentTool) return; // User must select a marker first
 
-    const span = document.getElementById(`sentence-${index}`);
-    
-    // Clear old classes
-    span.classList.remove("mark-fact", "mark-opinion");
-    
-    // Apply new class
-    span.classList.add(`mark-${currentTool}`);
-    userSelections[index] = currentTool;
+      const span = document.getElementById(`sentence-${index}`);
+
+      // Clear old classes
+      span.classList.remove("mark-fact", "mark-opinion");
+
+      // Apply new class
+      span.classList.add(`mark-${currentTool}`);
+      userSelections[index] = currentTool;
     }
   }
 
 
-function startCategory(index) {
+  function startCategory(index) {
     currentCategoryIndex = index;
     currentPassageIndex = 0;
     loadPassage();
@@ -857,43 +859,43 @@ function startCategory(index) {
   function loadPassage() {
     const passage = CONTENT[currentCategoryIndex].passages[currentPassageIndex];
     UI.passageTitleEl.innerText = passage.title;
-    
+
     userSelections.fill(null); // Reset choices
-    
+
     for (let i = 0; i < SENTENCE_COUNT; i++) {
       const span = document.getElementById(`sentence-${i}`);
-      if(span){
-      span.innerText = passage.sentences[i].text;
-      span.className = "sentence-item"; // Reset highlights
+      if (span) {
+        span.innerText = passage.sentences[i].text;
+        span.className = "sentence-item"; // Reset highlights
       }
     }
   }
 
   function checkAnswers() {
-    isChecked = true; 
+    isChecked = true;
     const passage = CONTENT[currentCategoryIndex].passages[currentPassageIndex];
 
     passage.sentences.forEach((s, i) => {
-        const span = document.getElementById(`sentence-${i}`);
-        const feedbackRow = document.getElementById(`feedback-row-${i}`);
-        const typeLabel = document.getElementById(`feedback-type-${i}`);
-        const explanationLabel = document.getElementById(`feedback-explanation-${i}`);
+      const span = document.getElementById(`sentence-${i}`);
+      const feedbackRow = document.getElementById(`feedback-row-${i}`);
+      const typeLabel = document.getElementById(`feedback-type-${i}`);
+      const explanationLabel = document.getElementById(`feedback-explanation-${i}`);
 
-        const isCorrect = userSelections[i] === s.type;
+      const isCorrect = userSelections[i] === s.type;
 
-        // 1. Mark sentence border
-        span.classList.add(isCorrect ? "correct-check" : "wrong-check");
+      // 1. Mark sentence border
+      span.classList.add(isCorrect ? "correct-check" : "wrong-check");
 
-        // 2. Set feedback content
-        typeLabel.innerText = s.type === "fact" ? "This is a fact. " : "This is an opinion. ";
-        explanationLabel.innerText = isCorrect ? s.correctFeedback : s.incorrectFeedback;
+      // 2. Set feedback content
+      typeLabel.innerText = s.type === "fact" ? "This is a fact. " : "This is an opinion. ";
+      explanationLabel.innerText = isCorrect ? s.correctFeedback : s.incorrectFeedback;
 
-        // 3. Auto-show feedback for wrong answers (as per Image 1)
-        if (!isCorrect) {
-            feedbackRow.style.display = "block";
-        }
+      // 3. Auto-show feedback for wrong answers (as per Image 1)
+      if (!isCorrect) {
+        feedbackRow.style.display = "block";
+      }
     });
-}
+  }
 
   document.addEventListener("DOMContentLoaded", init);
 })();
