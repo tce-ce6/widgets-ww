@@ -146,14 +146,15 @@ svg * {
 }
 
 #idiom-wrapper .wdgetTitle h2 {
-  font-size: 23px;
-  font-weight: 600;
+  font-size: 26px;
+  font-weight: 700;
   text-align: left;
-  padding: 5px 40px;
+  padding: 8px 60px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
   background: #0295FC;
   white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 #idiom-wrapper .versionText {
@@ -173,6 +174,26 @@ svg * {
 #idiom-wrapper svg {
   width: 100% !important;
   height: 100%;
+  transform: scale(1.05) translateY(-20px); /* Fill space better and center more optimally */
+  transform-origin: center;
+}
+
+#home_itext text {
+  font-size: 44px !important;
+  fill: #fff !important;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.card-disabled {
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+  filter: grayscale(0.8);
+  cursor: default !important;
+}
+
+#idiom-wrapper .mainContainerOuter {
+  background: transparent !important;
+  overflow: hidden;
 }
 
 /* swar ki pehchan style */
