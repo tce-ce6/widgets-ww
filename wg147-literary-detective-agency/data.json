@@ -10,15 +10,15 @@
           "text": "“I have served the Ashworth family for thirty-seven years,\" Mr. Peters said, his voice steady and measured. \"On the evening of March 15th, I secured all windows and doors at precisely 9:47 PM, as is my custom. The heirloom—a gold pocket watch—was in its display case at that time. I observed nothing unusual during my rounds. The household retired at the standard hour. When I returned to the drawing room at 6:15 AM, the case was empty.\"",
           "hint": "his voice steady and measured I secured all windows and doors at precisely 9:47 PM, as is my custom. The heirloom—a gold pocket watch—was in its display case at that time. I observed nothing unusual during my rounds When I returned to the drawing room at 6:15 AM, the case was empty",
           "toneOptions": [
-            "Formal",
             "Sarcastic",
+            "Formal",
             "Anxious"
           ],
           "correctTone": "Formal",
           "moodOptions": [
-            "Serious",
             "Eerie",
-            "Mysterious"
+            "Mysterious",
+            "Serious"
           ],
           "correctMood": "Serious",
           "feedback": {
@@ -40,8 +40,8 @@
           ],
           "correctTone": "Distressed",
           "moodOptions": [
-            "Tense",
             "Nostalgic",
+            "Tense",
             "Ominous"
           ],
           "correctMood": "Tense",
@@ -58,15 +58,15 @@
           "text": "The floorboard creaked as Detective Rodriguez knelt down. There, wedged between the ancient oak planks, something glinted. Her pulse quickened. With careful fingers, she extracted the object—tarnished gold, intricate engravings barely visible beneath decades of dust. But this wasn't the missing watch. This was older. Much older. The inscription read: \"To my beloved James, 1823.\" Her breath caught. The family didn't know about this heirloom. What else had been hidden in these walls? The shadows in the corners seemed to deepen, and somewhere in the mansion, a door clicked shut.",
           "hint": "creaked something glinted. Her pulse quickened But this wasn't the missing watch Her breath caught didn't know about this heirloom. What else had been hidden in these walls? somewhere in the mansion, a door clicked shut",
           "toneOptions": [
-            "Suspenseful",
             "Nostalgic",
+            "Suspenseful",
             "Casual"
           ],
           "correctTone": "Suspenseful",
           "moodOptions": [
-            "Mysterious",
             "Wistful",
-            "Peaceful"
+            "Peaceful",
+            "Mysterious"
           ],
           "correctMood": "Mysterious",
           "feedback": {
@@ -88,14 +88,14 @@
           "text": "“It has come to my attention,\" Mrs. Kapoor began, removing her spectacles to polish them with deliberate slowness, \"that certain students find it amusing to leave anonymous notes around the school corridors. Let me be perfectly clear: this institution has maintained its dignity for over seventy years, and I do not intend to let a few misguided pranksters tarnish that legacy. The culprits will be found.\" She replaced her spectacles and surveyed the assembly hall. Not a single student moved.",
           "hint": "deliberate slowness Let me be perfectly clear: maintained its dignity for over seventy years The culprits will be found Not a single student moved",
           "toneOptions": [
-            "Authoritative",
             "Disappointed",
-            "Concerned"
+            "Concerned",
+            "Authoritative"
           ],
           "correctTone": "Authoritative",
           "moodOptions": [
-            "Intimidating",
             "Joyous",
+            "Intimidating",
             "Suspenseful"
           ],
           "correctMood": "Intimidating",
@@ -112,14 +112,14 @@
           "text": "Mr. Desai pinned the student artwork back onto the corridor board, humming softly. When asked about the midnight messages, he smiled. \"You know, when I was in school, we once painted an entire mural on the principal's wall overnight. Got into tremendous trouble, of course.\" He chuckled, straightening a watercolour landscape. \"Young people have always found ways to make themselves heard. Sometimes the message matters more than the method. But don't tell Mrs. Kapoor I said that.\" He winked and returned to his humming.",
           "hint": "humming softly he smiled chuckled Sometimes the message matters more than the method. But don't tell Mrs. Kapoor I said that.",
           "toneOptions": [
-            "Sympathetic",
             "Dismissive",
+            "Sympathetic",
             "Cautious"
           ],
           "correctTone": "Sympathetic",
           "moodOptions": [
-            "Reassuring",
             "Hopeful",
+            "Reassuring",
             "Humorous"
           ],
           "correctMood": "Reassuring",
@@ -136,9 +136,9 @@
           "text": "This time, the note appeared inside the staffroom, slipped under the door before dawn:\n\n\"We asked nicely. We wrote to the school board. We spoke up at the parent-teacher meeting. Nothing changed. The corridors still leak when it rains. The library still has textbooks from 2009. The computer lab has twelve working machines for eight hundred students. So yes, we are writing on walls now. Because apparently, that's the only language this school understands.\"",
           "hint": "We asked nicely. We wrote to the school board. We spoke up Nothing changed  textbooks from 2009 apparently, that's the only language this school understands",
           "toneOptions": [
-            "Defiant",
             "Sarcastic",
-            "Pleading"
+            "Pleading",
+            "Defiant"
           ],
           "correctTone": "Defiant",
           "moodOptions": [
@@ -166,14 +166,14 @@
           "text": "Mrs. Sharma ran her fingers along the empty shelf where the first editions once stood. \"They weren't just books,\" she said quietly, almost to herself. \"Each one carried the fingerprints of every person who had loved it before. The Tagore collection—you could still smell marigolds pressed between the pages from someone's long-ago Puja. The Kamala Das volume had a young girl's pencil notes in the margins, fierce little arguments with every stanza.\" She closed her eyes. \"You can replace a book. You cannot replace what lives inside it.\"",
           "hint": "ran her fingers along the empty shelf Each one carried the fingerprints of every person who had loved it before still smell marigolds pressed between the pages from someone's long-ago Puja a young girl's pencil notes in the margins You can replace a book. You cannot replace what lives inside it",
           "toneOptions": [
+            "Dismissive",
             "Sentimental",
-            "Passionate",
-            "Dismissive"
+            "Passionate"
           ],
           "correctTone": "Sentimental",
           "moodOptions": [
-            "Melancholic",
             "Peaceful",
+            "Melancholic",
             "Tender"
           ],
           "correctMood": "Melancholic",
@@ -190,15 +190,15 @@
           "text": "Ananya sat cross-legged on the library steps, her notebook open but untouched. \"Everyone acts like poetry is this fragile, sacred thing you can only whisper about,\" she said, pulling at a thread on her kurta. \"But the poems that matter to me? They're loud. They're messy. Kamala Das didn't whisper—she set fire to every polite expectation. And now her book is gone from this library, and everyone's talking about 'preserving heritage.'\" She laughed, short and sharp. \"Heritage isn't a locked glass case. Heritage is a girl reading those words at midnight and realising she's allowed to be angry.\"",
           "hint": "They're loud. They're messy she set fire to every polite expectation laughed, short and sharp. \"Heritage isn't a locked glass case a girl reading those words at midnight and realising she's allowed to be angry",
           "toneOptions": [
-            "Passionate",
             "Critical",
+            "Passionate",
             "Frustrated"
           ],
           "correctTone": "Passionate",
           "moodOptions": [
-            "Electrifying",
             "Tense",
-            "Rebellious"
+            "Rebellious",
+            "Electrifying"
           ],
           "correctMood": "Electrifying",
           "feedback": {
@@ -215,13 +215,13 @@
           "hint": "I didn't take them to sell. I didn't take them to destroy These words were written to be alive preserved like dead butterflies If that makes me a thief, then every library that locks its doors is a prison",
           "toneOptions": [
             "Unapologetic",
-            "Desperate",
-            "Formal"
+            "Formal",
+            "Desperate"
           ],
           "correctTone": "Unapologetic",
           "moodOptions": [
-            "Thought-provoking",
             "Inspiring",
+            "Thought-provoking",
             "Serious"
           ],
           "correctMood": "Thought-provoking",
@@ -244,15 +244,15 @@
           "text": "\"Director Meera Joshi's latest production opens tonight, and audiences should prepare themselves for—well, actually being challenged by a piece of theatre. I know, I know, in this city that's practically a scandal.\" The reviewer adjusted his tone only slightly. \"The play tackles caste, class, and the comfortable silences we've all agreed to keep. It will make half the audience furious and the other half uncomfortable, which, in my professional opinion, is exactly what good theatre should do. Buy a ticket. You'll hate it. You need to.\"",
           "hint": "audiences should prepare themselves for—well, actually being challenged by a piece of theatre. I know, I know, in this city that's practically a scandal. It will make half the audience furious and the other half uncomfortable, which, in my professional opinion, is exactly what good theatre should do You'll hate it. You need to.",
           "toneOptions": [
-            "Mocking",
             "Enthusiastic",
-            "Critical"
+            "Critical",
+            "Mocking"
           ],
           "correctTone": "Mocking",
           "moodOptions": [
-            "Provocative",
             "Uncomfortable",
-            "Humorous"
+            "Humorous",
+            "Provocative"
           ],
           "correctMood": "Provocative",
           "feedback": {
@@ -268,15 +268,15 @@
           "text": "Meera Joshi sat still for a long moment after the question. \"Am I surprised by the backlash?\" She tilted her head. \"I wrote a play about people who pretend uncomfortable truths don't exist. And now people are pretending the play shouldn't exist. So no, I'm not surprised. I'm just... tired of the symmetry.\" She picked up her chai, watched the steam curl. \"You know what's funny? The characters in my play—the ones audiences are upset about—they also think they're the reasonable ones. They also think asking questions makes them dangerous. Apparently my play works even better than I thought.\"",
           "hint": "about people who pretend uncomfortable truths don't exist. I'm just... tired of the symmetry. they also think they're the reasonable ones Apparently my play works even better than I thought.",
           "toneOptions": [
-            "Weary",
             "Witty",
+            "Weary",
             "Bitter"
           ],
           "correctTone": "Weary",
           "moodOptions": [
-            "Hurtful",
             "Humorous",
-            "Philosophical"
+            "Philosophical",
+            "Hurtful"
           ],
           "correctMood": "Hurtful",
           "feedback": {
@@ -292,15 +292,15 @@
           "text": "\"I came to hate this play. I'd read the controversy, I'd heard the councillor, and I was ready to walk out after Act One. I didn't. Here's the thing nobody warned me about: it's not the shouting scenes that get you. It's the quiet ones. There's a moment in Act Three where a father sits at a dinner table and says absolutely nothing while his family falls apart around him. That silence filled the entire theatre. I felt it in my chest. I still feel it now, writing this at 2 AM because I cannot sleep. I came to hate this play. I think it might be the most important thing I've ever seen.\"",
           "hint": "I came to hate this play it's not the shouting scenes that get you. It's the quiet ones That silence filled the entire theatre. I felt it in my chest. I still feel it now, writing this at 2 AM because I cannot sleep.",
           "toneOptions": [
-            "Awestruck",
             "Disgusted",
+            "Awestruck",
             "Threatening"
           ],
           "correctTone": "Awestruck",
           "moodOptions": [
-            "Haunting",
             "Critical",
-            "Sharp"
+            "Sharp",
+            "Haunting"
           ],
           "correctMood": "Haunting",
           "feedback": {
@@ -322,14 +322,14 @@
           "text": "We are the Class of 1999, and we stand at the edge of a new century. Our teachers have prepared us well—they've taught us to think, to question, to dream. As I look out at my classmates today, I see future doctors, engineers, artists, leaders.\n\nShe paused, folded her speech, and spoke without notes.\n\n\"That's the speech I was supposed to give. Here's what I actually want to say. Half of us don't know what we're doing next year. Some of us are being pushed into careers we don't want. Three of our classmates won't be here at graduation because their families can't afford the fees anymore. We've been taught to think and question—but only within approved boundaries. So here's my real question for the new century: When do we start being honest?\"",
           "hint": "That's the speech I was supposed to give. Here's what I actually want to say Some of us are being pushed into careers we don't want We've been taught to think and question—but only within approved boundaries When do we start being honest?",
           "toneOptions": [
-            "Candid",
             "Disillusioned",
+            "Candid",
             "Bitter"
           ],
           "correctTone": "Candid",
           "moodOptions": [
-            "Uncomfortable",
             "Tense",
+            "Uncomfortable",
             "Hopeful"
           ],
           "correctMood": "Uncomfortable",
@@ -346,15 +346,15 @@
           "text": "Dear Papa,\n\nYou'll never read this because I'll never send it, and that's sort of the whole problem, isn't it?\n\nYou came to every single cricket match but never once to the school play. You tell everyone I'm going to be an engineer—at dinner parties, at temple, to the neighbours—and I smile because your face lights up when you say it. I've gotten very good at smiling.\n\nI painted something last week. Ms. Bhatia said it made her cry. I hid it under my bed because you'd ask why I was wasting time. You'd say it gently. You always say things gently. That's what makes it so hard to fight.\n\nYour loving son, Arjun",
           "hint": "You'll never read this because I'll never send it, and that's sort of the whole problem, isn't it? I've gotten very good at smiling. I hid it under my bed because you'd ask why I was wasting time. You'd say it gently. You always say things gently. That's what makes it so hard to fight.",
           "toneOptions": [
-            "Anguished",
             "Resentful",
+            "Anguished",
             "Melancholic"
           ],
           "correctTone": "Melancholic",
           "moodOptions": [
-            "Heartbreaking",
             "Nostalgic",
-            "Tender"
+            "Tender",
+            "Heartbreaking"
           ],
           "correctMood": "Heartbreaking",
           "feedback": {
@@ -370,14 +370,14 @@
           "text": "We buried this on a Tuesday, ordinary as any other, the sky doing nothing special.\n\nTwenty-five years from now someone will read this and wonder who we were.\n\nHere is the answer: We were the ones who laughed too loudly in the corridors. Who carved initials into desks we didn't own. Who loved people we never told. Who dreamed so hard it hurt.\n\nWe didn't know we were happy. We didn't know this was the good part.\n\nIf you are reading this, it worked. We reached you across the years. Hello from the ones who were here first.",
           "hint": "We were the ones who laughed too loudly in the corridors. Who carved initials into desks we didn't own. Who loved people we never told. Who dreamed so hard it hurt. We didn't know we were happy. We didn't know this was the good part. Hello from the ones who were here first",
           "toneOptions": [
+            "Serene",
             "Sincere",
-            "Melancholic",
-            "Serene"
+            "Melancholic"
           ],
           "correctTone": "Sincere",
           "moodOptions": [
-            "Nostalgic",
             "Beautiful",
+            "Nostalgic",
             "Tranquil"
           ],
           "correctMood": "Nostalgic",
