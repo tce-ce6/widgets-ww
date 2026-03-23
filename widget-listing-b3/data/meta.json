@@ -113,8 +113,8 @@
       "author": "aditya"
     },
     "wg130-election-officer": {
-      "updatedAt": "2026-03-12T19:50:57+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-23T17:51:37+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg131-journey-of-a-bill-to-law": {
       "updatedAt": "2026-03-09T21:13:21+05:30",
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T17:51:37+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        130
+      ]
+    },
+    {
       "date": "2026-03-23T17:46:08+05:30",
       "author": "PrasannaP",
       "message": "v1",
@@ -618,14 +626,6 @@
       "date": "2026-03-23T11:09:26+05:30",
       "author": "PrasannaP",
       "message": "feat: Update SVG assets and adjust element coordinates in HTML for layout changes.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-22T17:58:16+05:30",
-      "author": "PrasannaP",
-      "message": "pk1",
       "widgets": [
         136
       ]
