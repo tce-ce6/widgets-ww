@@ -53,7 +53,7 @@
       "author": "Shyam"
     },
     "wg115-literary-device": {
-      "updatedAt": "2026-03-23T16:43:11+05:30",
+      "updatedAt": "2026-03-23T18:35:48+05:30",
       "author": "tce-nitinc"
     },
     "wg116-reactivity-series": {
@@ -169,7 +169,7 @@
       "author": "aditya"
     },
     "wg147-literary-detective-agency": {
-      "updatedAt": "2026-03-07T12:45:54+05:30",
+      "updatedAt": "2026-03-23T18:35:48+05:30",
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-23T18:35:48+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 147",
+      "widgets": [
+        115,
+        147
+      ]
+    },
     {
       "date": "2026-03-23T18:11:23+05:30",
       "author": "Shyamsunder Hait",
@@ -616,14 +625,6 @@
       "message": "wg 31 changes",
       "widgets": [
         31
-      ]
-    },
-    {
-      "date": "2026-03-23T12:06:09+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: reorder SVG group in `index.html` and apply minor whitespace formatting in `script.js`.",
-      "widgets": [
-        136
       ]
     }
   ]
