@@ -61,7 +61,7 @@
       "author": "aditya"
     },
     "wg117-picture-the-idiom": {
-      "updatedAt": "2026-02-24T15:53:22+05:30",
+      "updatedAt": "2026-03-23T18:52:36+05:30",
       "author": "tce-nitinc"
     },
     "wg118_formal-letters-job-application": {
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T18:52:36+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 117 changes",
+      "widgets": [
+        117
+      ]
+    },
+    {
+      "date": "2026-03-23T18:41:37+05:30",
+      "author": "tce-nitinc",
+      "message": "wg117 changes",
+      "widgets": [
+        117
+      ]
+    },
+    {
       "date": "2026-03-23T18:35:48+05:30",
       "author": "tce-nitinc",
       "message": "wg 147",
@@ -609,22 +625,6 @@
       "message": "feat: Improve completion message display, add debug utilities, and document them in a new README.",
       "widgets": [
         136
-      ]
-    },
-    {
-      "date": "2026-03-23T12:25:01+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Enhance end-game popup logic to differentiate between completing a single word family and all word families, providing distinct UI and actions, and remove the `updatePopupText` function.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-23T12:12:40+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 31 changes",
-      "widgets": [
-        31
       ]
     }
   ]
