@@ -8,7 +8,12 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#idiom-wrapper body {
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body#idiom-wrapper {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -17,14 +22,18 @@ svg * {
   padding: 0;
   margin: 0;
   background-color: #fff !important;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 #idiom-wrapper .container {
   border: none;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: relative;
   user-select: none !important;
+  overflow: hidden;
 }
 
 #idiom-wrapper ul {
@@ -423,8 +432,11 @@ svg * {
   align-items: center;
   justify-content: center;
   gap: 0.3vw;
-  position: relative;
+  position: absolute;
   width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   background-color: #fff;
   border: 2px solid #1a5fa8;
   border-radius: 6px;
@@ -436,9 +448,6 @@ svg * {
   outline: none;
   box-sizing: border-box;
   padding: 0 0.4vw;
-  top: 97.4%;
-  height: 11%;
-  left: 7%;
 }
 
 .custom-dropdown-trigger .dd-arrow {
@@ -455,20 +464,20 @@ svg * {
 .custom-dropdown-list {
   display: none;
   position: absolute;
-  top: 5%;
-  left: 5%;
+  bottom: 100%;
+  left: 0;
   width: 100%;
   max-height: 20vw;
   overflow-y: auto;
   background: #fff;
   border: 2px solid #1a5fa8;
-
-  border-radius: 0 0 6px 6px;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
   list-style: none;
   margin: 0;
   padding: 0;
   z-index: 300;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .custom-dropdown.open .custom-dropdown-list {
