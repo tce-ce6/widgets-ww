@@ -99,7 +99,7 @@ export const literaryDevices = [
                     },
                     {
                         "id": 2,
-                        "title": "a tidal wave"
+                        "title": "a tidal wave."
                     }
                 ]
             ],

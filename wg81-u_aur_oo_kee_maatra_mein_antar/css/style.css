@@ -647,3 +647,16 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-left: -5px;
   }
 }
+
+#audio_button_1,
+#audio_button_2,
+#audio_button_3,
+#age_badhe_button,
+#naya_shabd_button,
+#gyankosh_button,
+#cloud_text_01,
+#cloud_text_02,
+#text_cloud_01,
+#text_cloud_02 {
+  cursor: pointer;
+}

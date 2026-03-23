@@ -142,6 +142,43 @@ function resetFeedbackVisuals() {
 
   lottiAnimation("none");
 }
+
+function resetAllAnimations() {
+  if (animationTimeout) {
+    clearTimeout(animationTimeout);
+    animationTimeout = null;
+  }
+  if (lottieInstances) {
+    lottieInstances.destroy();
+    lottieInstances = null;
+    const containerEl = document.getElementById("lottie-container");
+    if (containerEl) containerEl.innerHTML = "";
+  }
+  const parentEl = document.getElementById("Character_train_01");
+  if (parentEl) {
+    parentEl.classList.remove("visible");
+    parentEl.style.display = "none";
+  }
+
+  if (starAnimationTimeout) {
+    clearTimeout(starAnimationTimeout);
+    starAnimationTimeout = null;
+  }
+  if (lottieInstances_star) {
+    lottieInstances_star.destroy();
+    lottieInstances_star = null;
+    const star1 = document.getElementById("star-lottie-container-1");
+    if (star1) {
+      star1.innerHTML = "";
+      star1.classList.remove("visible");
+    }
+    const star2 = document.getElementById("star-lottie-container-2");
+    if (star2) {
+      star2.innerHTML = "";
+      star2.classList.remove("visible");
+    }
+  }
+}
 function nextStep() {
   let nextButton = document.getElementById("age_badhe_button");
   nextButton.addEventListener("click", () => {
@@ -374,6 +411,8 @@ function naya_shabd() {
   naya_shabd_button = document.getElementById("naya_shabd_button");
   naya_shabd_button.addEventListener("click", () => {
     console.log("Naya shabd button clicked");
+    resetAllAnimations();
+    setButtonsDisabled(false);
     document.getElementById("audio_button_1").style.display = "block";
     document.getElementById("audio_button_2").style.display = "block";
     audio_button_1 = false;
