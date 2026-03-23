@@ -555,6 +555,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .blink-animation {
   animation: blink 1.5s infinite ease-in-out;
 }
+
 /* For the two arrow groups */
 /*  */
 
@@ -563,13 +564,15 @@ input[type="number"]::-webkit-inner-spin-button {
 #arrow-path-2 {
   stroke-dasharray: 1200;
   stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 0s; /* prevents jump when resetting */
+  transition: stroke-dashoffset 0s;
+  /* prevents jump when resetting */
 }
 
 /* When group gets .visible class */
 #cross_lines_1.visible #arrow-path-1,
 #cross_lines_2.visible #arrow-path-2 {
-  animation: draw-arrow 4s ease-out forwards; /* 4s = slow & clear */
+  animation: draw-arrow 4s ease-out forwards;
+  /* 4s = slow & clear */
 }
 
 /* Drawing animation */
@@ -588,18 +591,19 @@ input[type="number"]::-webkit-inner-spin-button {
 #cross_lines_1.visible polygon,
 #cross_lines_2.visible polygon {
   opacity: 1;
-  transition: opacity 0.6s ease-in 3.4s; /* appear near end of drawing */
+  transition: opacity 0.6s ease-in 3.4s;
+  /* appear near end of drawing */
 }
 
-.formula_text{
-      font-size: 80px;
-    font-weight: bold;
-    text-align: center;
-    color: #22c55e;
-    line-height: 40px;
+.formula_text {
+  font-size: 80px;
+  font-weight: bold;
+  text-align: center;
+  color: #22c55e;
+  line-height: 40px;
 }
 
 .formula_text sub {
-    font-size: 0.6em;
-    vertical-align: -0.2em;
+  font-size: 0.6em;
+  vertical-align: -0.2em;
 }
