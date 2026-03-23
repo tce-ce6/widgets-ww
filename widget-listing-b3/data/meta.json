@@ -73,8 +73,8 @@
       "author": "sushantkanaujiya"
     },
     "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-03-20T11:31:08+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-23T17:36:07+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg121-synthesize-new-dna-strand": {
       "updatedAt": "2026-03-20T14:54:34+05:30",
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T17:36:07+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "fixed wg120 review sheet fixes",
+      "widgets": [
+        120
+      ]
+    },
+    {
       "date": "2026-03-23T17:21:11+05:30",
       "author": "aditya",
       "message": "fix wolf img",
@@ -616,14 +624,6 @@
       "date": "2026-03-22T15:51:44+05:30",
       "author": "PrasannaP",
       "message": "structure3",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-22T15:39:08+05:30",
-      "author": "PrasannaP",
-      "message": "restructure2",
       "widgets": [
         136
       ]
