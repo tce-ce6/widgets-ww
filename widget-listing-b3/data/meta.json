@@ -53,7 +53,7 @@
       "author": "Shyam"
     },
     "wg115-literary-device": {
-      "updatedAt": "2026-03-17T15:20:38+05:30",
+      "updatedAt": "2026-03-23T16:43:11+05:30",
       "author": "tce-nitinc"
     },
     "wg116-reactivity-series": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-23T16:43:11+05:30",
+      "author": "tce-nitinc",
+      "message": "wg115 ca",
+      "widgets": [
+        115
+      ]
+    },
+    {
       "date": "2026-03-23T16:35:46+05:30",
       "author": "aditya",
       "message": "fix wg128",
@@ -614,14 +622,6 @@
       "widgets": [
         81,
         86
-      ]
-    },
-    {
-      "date": "2026-03-22T08:38:12+05:30",
-      "author": "sushantthe",
-      "message": "feat: Implement the new `wg81-u_aur_oo_kee_maatra_mein_antar` widget by adding its dedicated CSS and JavaScript files.",
-      "widgets": [
-        81
       ]
     }
   ]
