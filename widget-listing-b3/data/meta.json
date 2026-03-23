@@ -93,11 +93,11 @@
       "author": "tce-nitinc"
     },
     "wg125-vyanjan-ki-pahchan": {
-      "updatedAt": "2026-03-18T20:04:23+05:30",
+      "updatedAt": "2026-03-23T11:38:30+05:30",
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "updatedAt": "2026-03-23T15:45:31+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -217,7 +217,7 @@
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
-      "updatedAt": "2026-02-10T12:11:30+05:30",
+      "updatedAt": "2026-03-23T12:12:40+05:30",
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
@@ -281,12 +281,12 @@
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
-      "updatedAt": "2026-03-19T17:33:59+05:30",
+      "updatedAt": "2026-03-23T11:38:30+05:30",
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-02-17T11:32:57+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-23T11:38:30+05:30",
+      "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
       "updatedAt": "2026-03-20T12:29:28+05:30",
@@ -349,7 +349,7 @@
       "author": "tce-nitinc"
     },
     "wg93-rhyming-words": {
-      "updatedAt": "2026-03-18T20:04:23+05:30",
+      "updatedAt": "2026-03-23T11:38:30+05:30",
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
@@ -361,7 +361,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-03-15T13:36:28+05:30",
+      "updatedAt": "2026-03-23T15:45:31+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-23T15:45:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 126 changes",
+      "widgets": [
+        96,
+        126
+      ]
+    },
     {
       "date": "2026-03-23T15:39:04+05:30",
       "author": "Shyamsunder Hait",
@@ -451,11 +460,31 @@
       ]
     },
     {
+      "date": "2026-03-23T12:12:40+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 31 changes",
+      "widgets": [
+        31
+      ]
+    },
+    {
       "date": "2026-03-23T12:06:09+05:30",
       "author": "PrasannaP",
       "message": "refactor: reorder SVG group in `index.html` and apply minor whitespace formatting in `script.js`.",
       "widgets": [
         136
+      ]
+    },
+    {
+      "date": "2026-03-23T11:38:30+05:30",
+      "author": "tce-nitinc",
+      "message": "wg31 changes",
+      "widgets": [
+        31,
+        76,
+        77,
+        93,
+        125
       ]
     },
     {
@@ -591,30 +620,6 @@
       "date": "2026-03-20T19:31:01+05:30",
       "author": "PrasannaP",
       "message": "refactor: Relocate lottie-container div inside SVG using foreignObject.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-20T19:10:04+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Implement Lottie animations to provide visual feedback for correct answers.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-20T17:15:20+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: Extract completion animation to a dedicated function and ensure audio icons remain interactable.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-20T17:05:29+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
       "widgets": [
         82
       ]
