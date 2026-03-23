@@ -411,14 +411,14 @@ function renderDiscoveredWords(family) {
 
     if (discoveredList.length >= 4) {
         console.log(`renderDiscoveredWords: Completed family [${family}]!`);
-        
+
         // Check if all families are completed
         const allFamilies = ['sun', 'rain', 'snow', 'fire', 'sea', 'sand'];
         const allCompleted = allFamilies.every(f => WidgetState.discovered[f].length >= 4);
-        
+
         setTimeout(() => {
             unhideElement('correct_end_popup');
-            
+
             // Adjust popup background to cover the scene
             const endPopupBg = document.querySelector('#correct_end_popup rect');
             if (endPopupBg) {
@@ -432,44 +432,46 @@ function renderDiscoveredWords(family) {
             const wordsDoneGrp = document.getElementById('_4_words_done_');
             const playAgainGrp = document.getElementById('Group_8214');
             const correctTextGroup = document.getElementById('correct_text');
-
+            // allCompleted = true
             if (allCompleted) {
                 console.log('renderDiscoveredWords: All 6 families completed! Final Celebration.');
-                
+
                 // Show congratulations message
                 if (correctTextGroup) {
-                    // Rebuild with centralized text
-                    correctTextGroup.innerHTML = `<text transform="translate(710 830)" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="700" fill="#f8276d" isolation="isolate"><tspan x="0" y="0">🏆 Congratulations! You've mastered all 24 compound words!</tspan></text>`;
+                    // Split into two lines for better fit
+                    correctTextGroup.innerHTML = `
+                        <text x="1060" y="810" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="700" fill="#f8276d" text-anchor="middle" isolation="isolate">🏆 Congratulations!</text>
+                        <text x="1060" y="870" font-family="Roboto-Bold, Roboto" font-size="28" font-weight="700" fill="#f8276d" text-anchor="middle" isolation="isolate">You've mastered all 24 compound words!</text>
+                    `;
                 }
-                
+
                 if (amazingGrp) amazingGrp.style.display = 'block';
                 if (wordsDoneGrp) wordsDoneGrp.style.display = 'none'; // Hide "4 words done"
-                
+
                 // Show and map Play Again
                 if (playAgainGrp) {
                     playAgainGrp.style.display = 'block';
                     playAgainGrp.style.cursor = 'pointer';
                     playAgainGrp.onclick = () => {
-                         console.log('Final Reset: Reloading widget');
-                         location.reload();
+                        console.log('Final Reset: Reloading widget');
+                        location.reload();
                     };
                 }
 
                 // Extra celebration
-                for(let i=0; i<3; i++) setTimeout(() => createConfetti(), i*400);
+                for (let i = 0; i < 3; i++) setTimeout(() => createConfetti(), i * 400);
 
             } else {
                 console.log('renderDiscoveredWords: Single family complete. Triggering auto-return timer.');
-                
+
                 if (playAgainGrp) playAgainGrp.style.display = 'none';
                 if (wordsDoneGrp) wordsDoneGrp.style.display = 'block';
-                
+
                 // Update family-specific completion text
                 if (correctTextGroup) {
-                     const fam = family.toUpperCase();
-                     correctTextGroup.innerHTML = `
-                        <text transform="translate(770.3 828.94)" font-family="Roboto-Regular, Roboto" font-size="41.96" isolation="isolate"><tspan x="0" y="0">Y</tspan></text>
-                        <text transform="translate(794.17 828.94)" font-family="Roboto-Regular, Roboto" font-size="41.96" isolation="isolate"><tspan x="0" y="0">ou completed the ${fam} family!</tspan></text>
+                    const fam = family.toUpperCase();
+                    correctTextGroup.innerHTML = `
+                        <text x="1060" y="830" font-family="Roboto-Regular, Roboto" font-size="36" text-anchor="middle" isolation="isolate">You completed the ${fam} family!</text>
                      `;
                 }
 
@@ -568,3 +570,34 @@ function unhideElement(id) {
 }
 
 document.addEventListener('DOMContentLoaded', initGame);
+
+/**
+ * Debug Helpers for Browser Console:
+ * Debug.completeCurrent() - Instantly complete the currently open family.
+ * Debug.completeAll()     - Instantly complete every single family to see the final screen.
+ * Debug.reset()           - Fully reload the widget.
+ */
+window.Debug = {
+    completeCurrent: () => {
+        if (!WidgetState.currentFamily) return console.warn("Debug: No family screen open! Click a card on the home screen first.");
+        const f = WidgetState.currentFamily;
+        const mappings = WidgetState.WORD_MAPPINGS[f];
+        WidgetState.discovered[f] = Object.keys(mappings).map(k => parseInt(k));
+        renderDiscoveredWords(f);
+        console.log("Debug: Current family completed.", f);
+    },
+    completeAll: () => {
+        WidgetState.families.forEach(f => {
+            const mappings = WidgetState.WORD_MAPPINGS[f];
+            WidgetState.discovered[f] = Object.keys(mappings).map(k => parseInt(k));
+        });
+        if (WidgetState.currentFamily) {
+            renderDiscoveredWords(WidgetState.currentFamily);
+        } else {
+            console.log("Debug: All completed. Opening SUN to show final popup...");
+            openFamily('sun');
+            setTimeout(() => renderDiscoveredWords('sun'), 800);
+        }
+    },
+    reset: () => location.reload()
+};
