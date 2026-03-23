@@ -350,7 +350,6 @@ function setupEventListeners() {
 
     document.getElementById('close-result').onclick = () => {
         resultOverlay.style.display = 'none';
-        goHome();
     };
 
     window.onclick = (event) => {
