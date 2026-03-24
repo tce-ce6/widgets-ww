@@ -97,7 +97,7 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-23T15:45:31+05:30",
+      "updatedAt": "2026-03-24T11:55:11+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -361,7 +361,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-03-23T15:45:31+05:30",
+      "updatedAt": "2026-03-24T11:55:11+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T11:55:11+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 126 and 86 fixes",
+      "widgets": [
+        96,
+        126
+      ]
+    },
     {
       "date": "2026-03-24T11:41:58+05:30",
       "author": "aditya",
@@ -614,14 +623,6 @@
       "message": "fix wg128",
       "widgets": [
         128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:18:35+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        154
       ]
     }
   ]
