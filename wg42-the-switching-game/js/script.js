@@ -157,6 +157,154 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPractiseQuestion = 0;
     let practiseFilledSlots = [];
 
+    // ---- Progress Bar Helper ----
+    // Total steps: 5 learn + 5 comparison + 5 practise = 15
+    const TOTAL_STEPS = 15;
+    const PB_START_X = 1425.88;
+    const PB_MAX_WIDTH = 520.02;
+
+    function updateProgressBar(stepNumber) {
+        // stepNumber is 0-based; we show progress as (stepNumber + 1) / TOTAL_STEPS
+        const progress = Math.min((stepNumber + 1) / TOTAL_STEPS, 1);
+        const fillWidth = progress * PB_MAX_WIDTH;
+
+        // Update the orange fill rect width (clip path limits visibility naturally)
+        const pbFill = document.getElementById("Rectangle_240");
+        if (pbFill) {
+            pbFill.setAttribute("width", fillWidth.toFixed(2));
+        }
+
+        // Update the clip path rect too so the fill is visible
+        const clipRect = document.querySelector("#clippath rect");
+        if (clipRect) {
+            clipRect.setAttribute("width", fillWidth.toFixed(2));
+        }
+
+        // Update percentage text in the progress bar
+        const pct = Math.round(progress * 100);
+        const pbText = document.querySelector("#Progress_bar text tspan");
+        if (pbText) pbText.textContent = pct + "%";
+    }
+
+    // Fisher-Yates shuffle
+    function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    // ---- Play Again Popup ----
+    function showPlayAgainPopup() {
+        // Remove any existing popup
+        const existing = document.getElementById("play-again-overlay");
+        if (existing) existing.remove();
+
+        const svgEl = document.querySelector("svg");
+        const NS = "http://www.w3.org/2000/svg";
+
+        // Semi-transparent backdrop
+        const backdrop = document.createElementNS(NS, "rect");
+        backdrop.setAttribute("x", "0"); backdrop.setAttribute("y", "0");
+        backdrop.setAttribute("width", "2070.14"); backdrop.setAttribute("height", "1254.66");
+        backdrop.setAttribute("fill", "rgba(0,0,0,0.55)");
+
+        // Popup box background shadow
+        const boxShadow = document.createElementNS(NS, "rect");
+        boxShadow.setAttribute("x", "638"); boxShadow.setAttribute("y", "418");
+        boxShadow.setAttribute("width", "794"); boxShadow.setAttribute("height", "418");
+        boxShadow.setAttribute("rx", "40"); boxShadow.setAttribute("ry", "40");
+        boxShadow.setAttribute("fill", "#16006c");
+
+        // Popup box
+        const box = document.createElementNS(NS, "rect");
+        box.setAttribute("x", "630"); box.setAttribute("y", "408");
+        box.setAttribute("width", "794"); box.setAttribute("height", "418");
+        box.setAttribute("rx", "40"); box.setAttribute("ry", "40");
+        box.setAttribute("fill", "#ffffff");
+        box.setAttribute("stroke", "#16006c"); box.setAttribute("stroke-width", "6");
+
+        // Star decoration top-left
+        const star1 = document.createElementNS(NS, "text");
+        star1.setAttribute("x", "660"); star1.setAttribute("y", "470");
+        star1.setAttribute("font-size", "60"); star1.textContent = "🎉";
+
+        // Star decoration top-right
+        const star2 = document.createElementNS(NS, "text");
+        star2.setAttribute("x", "1320"); star2.setAttribute("y", "470");
+        star2.setAttribute("font-size", "60"); star2.textContent = "🎉";
+
+        // Heading text
+        const heading = document.createElementNS(NS, "text");
+        heading.setAttribute("x", "1027"); heading.setAttribute("y", "510");
+        heading.setAttribute("text-anchor", "middle");
+        heading.setAttribute("fill", "#16006c");
+        heading.setAttribute("font-family", "Roboto-Bold, Roboto");
+        heading.setAttribute("font-weight", "700");
+        heading.setAttribute("font-size", "52");
+        heading.textContent = "Great Work!";
+
+        // Sub-text
+        const subText = document.createElementNS(NS, "text");
+        subText.setAttribute("x", "1027"); subText.setAttribute("y", "590");
+        subText.setAttribute("text-anchor", "middle");
+        subText.setAttribute("fill", "#333");
+        subText.setAttribute("font-family", "Roboto-Regular, Roboto");
+        subText.setAttribute("font-size", "34");
+        const ts1 = document.createElementNS(NS, "tspan");
+        ts1.setAttribute("x", "1027"); ts1.setAttribute("dy", "0");
+        ts1.textContent = "You've completed all the questions!";
+        const ts2 = document.createElementNS(NS, "tspan");
+        ts2.setAttribute("x", "1027"); ts2.setAttribute("dy", "44");
+        ts2.textContent = "Would you like to play again?";
+        subText.appendChild(ts1); subText.appendChild(ts2);
+
+        // Play Again button background
+        const btnBg = document.createElementNS(NS, "rect");
+        btnBg.setAttribute("x", "777"); btnBg.setAttribute("y", "680");
+        btnBg.setAttribute("width", "500"); btnBg.setAttribute("height", "100");
+        btnBg.setAttribute("rx", "50"); btnBg.setAttribute("ry", "50");
+        btnBg.setAttribute("fill", "#f74d7d");
+        btnBg.style.cursor = "pointer";
+
+        // Play Again button text
+        const btnText = document.createElementNS(NS, "text");
+        btnText.setAttribute("x", "1027"); btnText.setAttribute("y", "744");
+        btnText.setAttribute("text-anchor", "middle");
+        btnText.setAttribute("dominant-baseline", "middle");
+        btnText.setAttribute("fill", "#fff");
+        btnText.setAttribute("font-family", "Roboto-Bold, Roboto");
+        btnText.setAttribute("font-weight", "700");
+        btnText.setAttribute("font-size", "40");
+        btnText.textContent = "Play Again";
+        btnText.style.cursor = "pointer";
+
+        // Group everything
+        const overlay = document.createElementNS(NS, "g");
+        overlay.setAttribute("id", "play-again-overlay");
+        overlay.appendChild(backdrop);
+        overlay.appendChild(boxShadow);
+        overlay.appendChild(box);
+        overlay.appendChild(star1);
+        overlay.appendChild(star2);
+        overlay.appendChild(heading);
+        overlay.appendChild(subText);
+        overlay.appendChild(btnBg);
+        overlay.appendChild(btnText);
+
+        // Click handler on button area
+        const clickHandler = () => {
+            overlay.remove();
+            location.reload();
+        };
+        btnBg.addEventListener("click", clickHandler);
+        btnText.addEventListener("click", clickHandler);
+
+        svgEl.appendChild(overlay);
+    }
+
     function hideAll() {
         introScreen.style.display = "none";
         if (practiseScreen) practiseScreen.style.display = "none";
@@ -220,6 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
         question2Panel.style.display = "block";
         feedback.setAttribute("transform", "translate(-70, 0)");
         feedback.style.opacity = "1";
+        feedback.style.display = "inline";
         IText.style.display = "block";
 
         const iTextEl = IText.querySelector("text");
@@ -278,7 +427,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function showQuestion3Panel(index) {
         hideAll();
         question3Panel.style.display = "block";
+        feedback.style.opacity = "0";
         IText.style.display = "block";
+        progressBar.style.display = "block";
+        // Update progress bar (Comparison = steps 5–9 of 15 total)
+        updateProgressBar(5 + index);
 
         const q = comparisonQuestions[index];
 
@@ -396,11 +549,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const tileIds = ["Group_1202", "Group_1203", "Group_1204", "Group_1205", "Group_1206", "Group_1207"];
         let correctSelected = 0;
         const totalCorrect = q.options.filter(o => o.correct).length;
+        const shuffledOptions = shuffleArray(q.options);
 
         tileIds.forEach((id, i) => {
             const tile = document.getElementById(id);
             if (!tile) return;
-            const opt = q.options[i];
+            const opt = shuffledOptions[i];
 
             // Set text
             const textElements = tile.querySelectorAll("text");
@@ -417,8 +571,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     if ((l1 + w).length < 40) l1 += w + " ";
                     else l2 += w + " ";
                 });
-                let html = `<tspan x="0" y="0">${l1.trim()}</tspan>`;
-                if (l2) html += `<tspan x="0" y="35">${l2.trim()}</tspan>`;
+                textEl.setAttribute("text-anchor", "middle");
+                let html = `<tspan x="333" y="0">${l1.trim()}</tspan>`;
+                if (l2) html += `<tspan x="333" y="35">${l2.trim()}</tspan>`;
                 textEl.innerHTML = html;
             }
 
@@ -563,7 +718,33 @@ document.addEventListener("DOMContentLoaded", () => {
             "Group_1190", "Group_1191", "Group_1192", "Group_1193", "Group_1194"
         ];
 
-        const activeIndices = [0, 2, 4, 6, 8];
+        // All 10 sentences with their correct active/passive classification
+        const sentences = [
+            { text: "The chef prepared the delicious meal.", isActive: true },
+            { text: "The delicious meal was prepared by the chef.", isActive: false },
+            { text: "The teacher explains the lesson clearly.", isActive: true },
+            { text: "The lesson is explained by the teacher clearly.", isActive: false },
+            { text: "The students will perform the play tomorrow.", isActive: true },
+            { text: "The play will be performed by the students tomorrow.", isActive: false },
+            { text: "The talented artist painted the mural.", isActive: true },
+            { text: "The mural was painted by the talented artist.", isActive: false },
+            { text: "The doctor examines the patients daily.", isActive: true },
+            { text: "The patients are examined by the doctor daily.", isActive: false },
+        ];
+
+        // Shuffle sentences and inject text into SVG groups; build activeIndices from shuffled order
+        const shuffled = shuffleArray(sentences);
+        const activeIndices = [];
+        groupIds.forEach((id, index) => {
+            const group = document.getElementById(id);
+            if (!group) return;
+            const textEl = group.querySelector("text");
+            if (textEl) {
+                textEl.innerHTML = `<tspan x="0" y="0">${shuffled[index].text}</tspan>`;
+            }
+            if (shuffled[index].isActive) activeIndices.push(index);
+        });
+
         const selectedIndices = new Set();
 
         groupIds.forEach((id, index) => {
@@ -620,18 +801,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function checkCompletion() {
             const allActiveSelected = activeIndices.every(i => selectedIndices.has(i));
-            const noPassiveSelected = Array.from(selectedIndices).every(i => !activeIndices.includes(i) ? false : true); // Dummy check logic? No.
-
-            // Correct logic: all active are in selected, and no passive are in selected
-            const passiveIndices = [1, 3, 5, 7, 9];
-            const hasAnyPassive = passiveIndices.some(i => selectedIndices.has(i));
+            const hasAnyPassive = Array.from(selectedIndices).some(i => !activeIndices.includes(i));
 
             if (allActiveSelected && !hasAnyPassive) {
                 correct.style.display = "block";
                 setNextBtnLabel("Next");
                 nextBtn.style.display = "block";
-
-                // Position green circle feedback and stars near top right of blue container
                 correct.setAttribute("transform", "translate(150, 50)");
             } else {
                 correct.style.display = "none";
@@ -639,7 +814,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (hasAnyPassive) {
                 incorrect.style.display = "block";
-                // Position red circle feedback on the right middle
                 incorrect.setAttribute("transform", "translate(40, 50)");
             } else {
                 incorrect.style.display = "none";
@@ -747,30 +921,39 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustActiveSentenceBoxWidth("#Practise_screen #Group_2-2 text", "#Practise_screen #Group_618-2 rect");
         }
 
-        // Set up option pill groups
+        // Set up option pill groups — use a shuffled copy of options so they appear randomly
+        const shuffledOptions = shuffleArray(q.options);
         const optionGroups = getPractiseOptionGroups();
         optionGroups.forEach((group, i) => {
             // Remove any injected words from previous round
             group.querySelectorAll(".practise-injected").forEach(el => el.remove());
 
-            // Update the text of each pill to the current question's option
+            // Update the text of each pill to the shuffled option
             const textEl = group.querySelector("text");
-            if (textEl && i < q.options.length) {
+            if (textEl && i < shuffledOptions.length) {
                 // Clear all tspans and set simple text
                 const tspans = textEl.querySelectorAll("tspan");
                 tspans.forEach(t => t.remove());
                 const svgNS = "http://www.w3.org/2000/svg";
                 const ts = document.createElementNS(svgNS, "tspan");
-                ts.textContent = q.options[i];
+                ts.textContent = shuffledOptions[i];
                 textEl.appendChild(ts);
 
-                // Center text inside its pill rect
-                const rectEl = group.querySelector('rect[fill="#0480eb"]') || group.querySelector("rect");
-                if (rectEl) {
-                    const rx = parseFloat(rectEl.getAttribute("x") || 0);
-                    const ry = parseFloat(rectEl.getAttribute("y") || 0);
-                    const rw = parseFloat(rectEl.getAttribute("width") || 274);
-                    const rh = parseFloat(rectEl.getAttribute("height") || 72);
+                // Center text inside its pill (rect or path background)
+                const bgEl = group.querySelector('rect[fill="#0480eb"]') ||
+                             group.querySelector('path[fill="#0480eb"]') ||
+                             group.querySelector("rect");
+                if (bgEl) {
+                    let rx, ry, rw, rh;
+                    if (bgEl.tagName.toLowerCase() === "rect") {
+                        rx = parseFloat(bgEl.getAttribute("x") || 0);
+                        ry = parseFloat(bgEl.getAttribute("y") || 0);
+                        rw = parseFloat(bgEl.getAttribute("width") || 274);
+                        rh = parseFloat(bgEl.getAttribute("height") || 72);
+                    } else {
+                        const bbox = bgEl.getBBox();
+                        rx = bbox.x; ry = bbox.y; rw = bbox.width; rh = bbox.height;
+                    }
                     textEl.setAttribute("text-anchor", "middle");
                     textEl.removeAttribute("dominant-baseline");
                     textEl.setAttribute("x", rx + rw / 2);
@@ -783,10 +966,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 group.style.pointerEvents = "auto";
                 group.style.cursor = "pointer";
 
+                // Capture shuffled word for this slot
+                const optionWord = shuffledOptions[i];
                 group.onclick = () => {
                     const emptySlotIndex = practiseFilledSlots.findIndex(s => s === null);
                     if (emptySlotIndex === -1) return;
-                    practiseFilledSlots[emptySlotIndex] = { text: q.options[i], sourceIndex: i };
+                    practiseFilledSlots[emptySlotIndex] = { text: optionWord, sourceIndex: i };
                     group.style.opacity = "0.4";
                     group.style.pointerEvents = "none";
                     renderPractiseSlots();
@@ -888,7 +1073,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         currentPractiseQuestion++;
                         showPractisePanel(currentPractiseQuestion);
                     } else {
-                        location.reload();
+                        // Show Play Again popup instead of silently reloading
+                        showPlayAgainPopup();
                     }
                 };
             } else {
@@ -922,6 +1108,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load a learn question by index into the existing SVG panels
     function loadLearnQuestion(index) {
+        // Update progress bar (Learn = steps 0–4 of 15 total)
+        updateProgressBar(index);
+
         const q = learnQuestions[index];
         const answerCount = q.answer.length;
 
@@ -1032,17 +1221,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const optionGroups = Array.from(learnPanel3.children).filter((g) =>
             g.querySelector("text"),
         );
+        const shuffledOptions = shuffleArray(q.options);
         optionGroups.forEach((g, i) => {
-            if (i < q.options.length) {
+            if (i < shuffledOptions.length) {
                 const tspans = g.querySelectorAll("tspan");
                 for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
+
                 if (tspans[0]) {
                     tspans[0].textContent = q.options[i];
                     tspans[0].removeAttribute("x");
                     tspans[0].removeAttribute("y");
                 } else {
                     const t = g.querySelector("text");
-                    if (t) t.textContent = q.options[i];
+                    if (t) t.textContent = shuffledOptions[i];
                 }
 
                 // Explicitly center the text inside its box

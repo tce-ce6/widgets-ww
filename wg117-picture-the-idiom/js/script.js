@@ -160,6 +160,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Disable button immediately
       showAnswerBtn.disabled = true;
       showAnswerBtn.classList.add("disabled");
+      
+      nextBtn.disabled = true;
+      nextBtn.classList.add("disabled");
+      nextBtn.style.pointerEvents = "none";
 
       // Play animation first
       playSuccessAnimation();
@@ -205,6 +209,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // 👉 SHOW ANSWER
       step1.style.display = "none";
       step2.style.display = "block";
+      
+      const wrapper1 = document.getElementById("wrapper-1");
+      const wrapper2 = document.getElementById("wrapper-2");
+      wrapper1.style.display = "block";
+      wrapper1.style.visibility = "visible";
+      wrapper1.style.opacity = "1";
+      wrapper2.style.display = "block";
+      wrapper2.style.visibility = "visible";
+      wrapper2.style.opacity = "1";
 
       showMeaning();
       fillCorrectIdiom(); // ⭐ NEW
@@ -274,6 +287,10 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper2.style.display = "block";
       wrapper2.style.visibility = "visible";
       wrapper2.style.opacity = "1";
+      
+      nextBtn.disabled = false;
+      nextBtn.classList.remove("disabled");
+      nextBtn.style.pointerEvents = "auto";
     }, 2000);
   }
 

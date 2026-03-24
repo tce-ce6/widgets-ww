@@ -24,6 +24,12 @@ function initWidget() {
   const svg = document.querySelector("svg");
   if (!svg) return;
 
+  // Lottie instances
+  let lottieSuccessSC1;
+  let lottieSadSC1;
+  let lottieSadSC2;
+  let lottieSuccessSC2;
+
   // Reorder UI popups so they render on top of SVG groups
   document.querySelectorAll('[id^="act-01-sc1-feedback"]').forEach((popup) => {
     if (popup.parentNode) popup.parentNode.appendChild(popup);
@@ -50,6 +56,55 @@ function initWidget() {
     parent.appendChild(layer);
     return layer;
   }
+
+  // --- Lottie Initialization ---
+  function initLottie() {
+    const lottieContainer = document.getElementById("lottie-success-sc1");
+    if (lottieContainer) {
+      lottieSuccessSC1 = lottie.loadAnimation({
+        container: lottieContainer,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji_happy-star.json",
+      });
+    }
+
+    const sadContainer = document.getElementById("lottie-sad-sc1");
+    if (sadContainer) {
+      lottieSadSC1 = lottie.loadAnimation({
+        container: sadContainer,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji-sad.json",
+      });
+    }
+
+    const sadContainerSC2 = document.getElementById("lottie-sad-sc2");
+    if (sadContainerSC2) {
+      lottieSadSC2 = lottie.loadAnimation({
+        container: sadContainerSC2,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji-sad.json",
+      });
+    }
+
+    const successContainerSC2 = document.getElementById("lottie-success-sc2");
+    if (successContainerSC2) {
+      lottieSuccessSC2 = lottie.loadAnimation({
+        container: successContainerSC2,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji_happy-star.json",
+      });
+    }
+
+  }
+  initLottie();
 
   // --- Helpers ---
   function getPctRect(element) {
@@ -253,12 +308,53 @@ function initWidget() {
     btnBack.style.cursor = "pointer";
     btnBack.addEventListener("click", goBack);
   }
+  function resetWidget() {
+    // Reset navigation state
+    currentScreen = 0;
+    currentChallengeSC2 = 1;
+    currentChallengeSC3 = 1;
+
+    // Clear dynamically injected overlays and dropdowns
+    if (uiLayer) uiLayer.innerHTML = "";
+    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+
+    // Reset SC1 visual state — hide all matched/selected indicators
+    hideElements("#act-01-sc1-cards-matched > *");
+    hideElements("#act-01-sc1-cards-selected > *");
+    // Remove trader highlight classes
+    villageTrades.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("trader-selected", "trader-matched");
+        el.style.filter = "";
+        el.style.opacity = "";
+      }
+    });
+
+    // Reset SC2 feedback state
+    hideElements('[id^="act-02-sc1-feedback"]');
+
+    // Reset SC3 selected indicators
+    for (let sc = 1; sc <= 3; sc++) {
+      for (let i = 1; i <= 4; i++) {
+        hideElements(`#act-03-sc${sc}-card${i}-selected`);
+      }
+    }
+
+    // Stop Lottie animations
+    [lottieSuccessSC1, lottieSadSC1, lottieSadSC2, lottieSuccessSC2].forEach(
+      (anim) => { if (anim) anim.stop(); }
+    );
+
+    // Return to menu
+    updateView();
+  }
+
   if (btnHome) {
     btnHome.style.cursor = "pointer";
 
     btnHome.addEventListener("click", () => {
-      currentScreen = 0; // go back to menu
-      updateView();
+      resetWidget();
     });
   }
 
@@ -371,9 +467,9 @@ function initWidget() {
 
   function updateView() {
     if (menuScreen) menuScreen.classList.add("st767");
-    // document
-    //   .querySelectorAll('[id^="act-"]')
-    //   .forEach((el) => el.classList.add("hidden-svg"));
+    document
+      .querySelectorAll('[id^="act-"]')
+      .forEach((el) => el.classList.add("st767"));
     btnHome.classList.remove("st767");
     btnInsights.classList.remove("st767");
 
@@ -417,6 +513,8 @@ function initWidget() {
       showElements("#act-01-sc1-base");
       showElements("#act-01-sc1-cards");
       // hideElements("#act-04-checkbox-selected > *");
+      showElements("#act-01-sc1-cards-matched");
+      showElements("#act-01-sc1-cards-selected");
       hideElements('[id^="act-01-sc1-feedback"]');
       hideElements("#act-02-base-global");
       hideElements('[id^="act-02-sc"]');
@@ -565,6 +663,10 @@ function initWidget() {
               if (tradeCounterText)
                 tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
 
+              if (lottieSuccessSC1) {
+                lottieSuccessSC1.play();
+              }
+
               let continueBtn = document.getElementById("btn-continue-sc1");
               if (continueBtn) {
                 continueBtn.onclick = () => {
@@ -604,6 +706,10 @@ function initWidget() {
               const currentEl = el;
 
               incorPopup.classList.remove("st767");
+
+              if (lottieSadSC1) {
+                lottieSadSC1.play();
+              }
 
               currentEl.classList.add("trader-selected");
               let secondSelectionBorder = document.getElementById(
@@ -807,6 +913,13 @@ function initWidget() {
       scSubmit.style.cursor = "not-allowed";
     }
 
+    // Re-enable Show Answer for this new scenario
+    if (showAnsBtn) {
+      showAnsBtn.style.opacity = "1";
+      showAnsBtn.style.pointerEvents = "auto";
+      showAnsBtn.style.cursor = "pointer";
+    }
+
     // Check if both dropdowns have values to enable the Trade button
     function checkEnableSubmit() {
       const v1 = parseInt(s1.dataset.value);
@@ -904,6 +1017,7 @@ function initWidget() {
     // Show Answer logic
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
+
       showAnsBtn.onclick = (e) => {
         e.stopPropagation();
         // Find first fair trade values
@@ -921,6 +1035,10 @@ function initWidget() {
         }
         s1.setValue(f1);
         s2.setValue(f2);
+        // Disable after click
+        showAnsBtn.style.opacity = "0.5";
+        showAnsBtn.style.pointerEvents = "none";
+        showAnsBtn.style.cursor = "not-allowed";
       };
     }
 
@@ -935,10 +1053,18 @@ function initWidget() {
           // Fair Trade
           showElements(`#act-02-sc1-feedback-correct`);
           hideElements(`#act-02-sc1-feedback-incorrect`);
+          if (lottieSuccessSC2) {
+            lottieSuccessSC2.stop();
+            lottieSuccessSC2.play();
+          }
         } else {
           // Unfair
           showElements(`#act-02-sc1-feedback-incorrect`);
           hideElements(`#act-02-sc1-feedback-correct`);
+          if (lottieSadSC2) {
+            lottieSadSC2.stop();
+            lottieSadSC2.play();
+          }
         }
       };
     }
@@ -995,10 +1121,11 @@ function initWidget() {
 
       card.style.cursor = "pointer";
 
-      // Overlay for clicking
-      const rect = getPctRect(card);
+      // Overlay for clicking — use parent group which includes the card background rect
+      const clickTarget = card.parentElement || card;
+      const rect = getPctRect(clickTarget);
       if (rect) {
-        const overlay = document.createElement("div");
+        let overlay = document.createElement("div");
         Object.assign(overlay.style, {
           position: "absolute",
           left: rect.left,
@@ -1010,7 +1137,10 @@ function initWidget() {
           zIndex: "10",
         });
         uiLayer.appendChild(overlay);
-
+        if (sc === 3) {
+          overlay = card
+          uiLayer.innerHTML = "";
+        }
         overlay.onclick = () => {
           if (index === currentStep) {
             // Correct step
@@ -1070,6 +1200,7 @@ function initWidget() {
     ];
     const defGroup = document.getElementById("act-04-checkbox-default");
     const selGroup = document.getElementById("act-04-checkbox-selected");
+    selGroup.classList.remove("st767")
     if (!defGroup || !selGroup) return;
 
     // Use absolute sorting by bounding box top
@@ -1133,6 +1264,7 @@ function initWidget() {
               btnSubmit.style.pointerEvents = "auto";
               btnSubmit.style.cursor = "pointer";
               btnSubmit.onclick = () => {
+                backNextBtn.classList.add("st767");
                 showElements("#act-04-feedback-end");
               };
             }

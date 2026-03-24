@@ -213,21 +213,6 @@ svg * {
   background-size: 100% 100%;
 }
 
-.card-wrapper li .view-btn {
-  height: 56.78px;
-  width: 56.78px;
-  background-image: url("../assets/info-btn.svg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  display: block;
-  position: absolute;
-  top: 160px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: pointer;
-  pointer-events: none;
-}
-
 .i-textInfo {
   background-image: url("../assets/info-btn.svg");
   height: 35px;

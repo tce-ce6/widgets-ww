@@ -306,7 +306,7 @@ function goToScreen2() {
   WidgetState.flippedCards  = { people: false, place: false, animal: false, thing: false };
   hideEverything();
   show(UI.homeBtn);
-  show(UI.practiseBtn);
+
   show(UI.activeBtnLearn);
   show(UI.iTextLearn);
   show(UI.peopleCard1); hide(UI.peopleCard2);

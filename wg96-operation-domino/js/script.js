@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedBtn = document.getElementById("selected-btn");
 
     const cards = document.querySelectorAll("#card-wrapper li");
-    const viewBtns = document.querySelectorAll("#card-wrapper li .view-btn");
 
     const infoModal = document.getElementById("info-modal");
     const popupIcon = document.getElementById("popup-icon");
@@ -23,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const placeholders = document.querySelectorAll("#card-placeholder li");
     let draggedCard = null;
+    let isDragging = false;
     const resetBtn = document.getElementById("reset-btn");
     const triggerBtn = document.getElementById("trigger-chain-btn");
     const cardPlaceholder = document.getElementById("card-placeholder");
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.setAttribute("draggable", true);
 
             card.addEventListener("dragstart", () => {
+                isDragging = true;
 
                 draggedCard = card;
 
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 card.style.opacity = "1";
                 draggedCard = null;
+                setTimeout(() => { isDragging = false; }, 50);
 
             });
 
@@ -194,12 +196,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -------------------------
-       View Button Click
+       Card Click (View Info)
     ------------------------- */
 
-    viewBtns.forEach((btn, index) => {
+    cards.forEach((cardEl, index) => {
 
-        btn.addEventListener("click", () => {
+        cardEl.addEventListener("click", () => {
+
+            if (isDragging) return;
 
             const card = currentCards[index];
 
@@ -398,7 +402,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     setTimeout(() => {
                         card.classList.add("domino-fall");
-                        playCardSound();
                     }, i * 200);
 
                 }
@@ -427,6 +430,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // ✅ if ALL cards correct show success
             if (correctCount === placeholders.length) {
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 setTimeout(() => {
 
@@ -444,6 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function playCardSound() {
+        console.log("Playing sound: card-sound.mp3");
         const audio = new Audio("./assets/card-sound.mp3");
         audio.play().catch(e => console.log("Sound error:", e));
     }
@@ -488,6 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
             autoplay: true,
             path: "lottie/correct-anim.json"
         });
+
+        playCardSound();
 
     }
 
@@ -560,6 +568,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // enable reset if needed
                 resetBtn.classList.remove("disabled");
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 answerVisible = true;
 
