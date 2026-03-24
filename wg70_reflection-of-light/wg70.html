@@ -1,50 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refraction Lab: Air & Glass</title>
+    <title>Refraction Lab: Reflection & Refraction</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        canvas { touch-action: none; }
-        .glass-gradient {
-            background: linear-gradient(to bottom, rgba(147, 197, 253, 0.1), rgba(59, 130, 246, 0.2));
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        canvas {
+            touch-action: none;
+        }
+
+        :root {
+            --panel-bg: rgba(15, 23, 42, 0.82);
+            --panel-border: rgba(148, 163, 184, 0.25);
+        }
+
+        .app-bg {
+            background:
+                radial-gradient(circle at 12% 15%, rgba(56, 189, 248, 0.18), transparent 28%),
+                radial-gradient(circle at 85% 12%, rgba(147, 51, 234, 0.16), transparent 26%),
+                linear-gradient(180deg, #0f172a 0%, #020617 100%);
+        }
+
+        .panel-glass {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            backdrop-filter: blur(8px);
+        }
+
+        .medium-chip {
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: rgba(15, 23, 42, 0.65);
+        }
+
+        .nice-select {
+            background: rgba(2, 6, 23, 0.75);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            color: #f8fafc;
+        }
+
+        .nice-select:focus {
+            outline: none;
+            border-color: rgba(34, 211, 238, 0.65);
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+<body class="app-bg text-slate-100 min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="p-6 bg-slate-800 border-b border-slate-700 shadow-md relative z-10">
-        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+    <header class="p-5 md:p-6 panel-glass shadow-md relative z-10">
+        <div class="max-w-5xl mx-auto flex flex-col gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-cyan-400">Refraction Lab</h1>
-                <p id="header-desc" class="text-slate-400 text-sm">Explore light refraction between Air and Glass.</p>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-cyan-300">Reflection & Refraction Lab</h1>
+                <p id="header-desc" class="text-slate-300/90 text-sm mt-1">Explore how light bends across different media.</p>
             </div>
-            
-            <!-- Mode Toggle -->
-            <div class="flex bg-slate-900 p-1 rounded-lg">
-                <button id="mode-dense-rare" class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors bg-cyan-600 text-white">
-                    Glass → Air (TIR)
-                </button>
-                <button id="mode-rare-dense" class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors text-slate-400 hover:text-white">
-                    Air → Glass
-                </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Top Medium</span>
+                    <select id="medium-top" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
+                        <option value="air">Air</option>
+                        <option value="water">Water</option>
+                        <option value="glass">Glass</option>
+                        <option value="diamond">Diamond</option>
+                    </select>
+                </label>
+                <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Bottom Medium</span>
+                    <select id="medium-bottom" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
+                        <option value="air">Air</option>
+                        <option value="water">Water</option>
+                        <option value="glass" selected>Glass</option>
+                        <option value="diamond">Diamond</option>
+                    </select>
+                </label>
+                <div class="flex bg-slate-950/70 p-1 rounded-lg border border-slate-700/80">
+                    <button id="mode-dense-rare"
+                        class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors bg-cyan-600 text-white">
+                        Bottom → Top
+                    </button>
+                    <button id="mode-rare-dense"
+                        class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors text-slate-400 hover:text-white">
+                        Top → Bottom
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="flex-grow p-4 md:p-8 flex flex-col items-center justify-center relative">
-        
-        <div class="max-w-4xl w-full bg-slate-800 rounded-xl shadow-2xl overflow-hidden border border-slate-700 relative">
-            
+
+        <div
+            class="max-w-5xl w-full panel-glass rounded-2xl shadow-2xl overflow-hidden relative">
+
             <!-- Physics Display Overlay -->
             <div class="absolute top-4 left-4 z-10 space-y-2 pointer-events-none">
-                <div class="bg-slate-900/80 backdrop-blur p-3 rounded-lg border border-slate-700 text-sm shadow-lg">
+                <div class="bg-slate-950/70 backdrop-blur p-3 rounded-lg border border-slate-700/80 text-sm shadow-lg">
                     <div class="flex justify-between gap-4 mb-1">
                         <span class="text-slate-400" id="n1-label">Medium 1 (Glass):</span>
                         <span class="font-mono text-cyan-400" id="n1-val">n₁ = 1.50</span>
@@ -54,30 +116,32 @@
                         <span class="font-mono text-slate-200" id="n2-val">n₂ = 1.00</span>
                     </div>
                 </div>
-                
-                <div id="critical-alert" class="hidden bg-red-500/20 backdrop-blur p-3 rounded-lg border border-red-500 text-red-200 font-bold text-center animate-pulse shadow-lg">
+
+                <div id="critical-alert"
+                    class="hidden bg-red-500/20 backdrop-blur p-3 rounded-lg border border-red-400/70 text-red-100 font-bold text-center animate-pulse shadow-lg">
                     Total Internal Reflection!
                 </div>
             </div>
 
             <!-- Canvas Container -->
-            <div class="relative w-full h-[450px] cursor-pointer group" id="canvas-container">
+            <div class="relative w-full h-[470px] cursor-pointer group" id="canvas-container">
                 <canvas id="simCanvas" class="w-full h-full block"></canvas>
             </div>
 
             <!-- Controls -->
-            <div class="p-6 bg-slate-800 border-t border-slate-700">
+            <div class="p-6 bg-slate-950/35 border-t border-slate-700/70">
                 <div class="flex flex-col md:flex-row gap-8 items-center justify-between">
-                    
+
                     <!-- Slider Control -->
                     <div class="w-full md:w-2/3 space-y-4">
                         <div class="flex justify-between items-center">
-                            <label class="font-semibold text-slate-300 flex items-center gap-2">
+                            <label class="font-semibold text-slate-200 flex items-center gap-2">
                                 <i class="fa-solid fa-rotate text-cyan-400"></i> Incidence Angle (${\theta}_{i}$)
                             </label>
-                            <span id="angle-val" class="text-xl font-mono bg-slate-900 px-3 py-1 rounded text-cyan-400 border border-slate-700 shadow-inner">30.0°</span>
+                            <span id="angle-val"
+                                class="text-xl font-mono bg-slate-900 px-3 py-1 rounded text-cyan-400 border border-slate-700 shadow-inner">30.0°</span>
                         </div>
-                        <input type="range" id="angle-slider" min="0" max="80" value="30" step="0.1" 
+                        <input type="range" id="angle-slider" min="0" max="80" value="30" step="0.1"
                             class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
                         <div class="flex justify-between text-xs text-slate-500 px-1 font-mono">
                             <span>0° (Normal)</span>
@@ -87,8 +151,9 @@
                     </div>
 
                     <!-- Info/Formula Box -->
-                    <div class="w-full md:w-1/3 bg-slate-700/30 rounded-lg p-4 border border-slate-600 shadow-inner">
-                        <div class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">Calculated Output</div>
+                    <div class="w-full md:w-1/3 bg-slate-900/45 rounded-lg p-4 border border-slate-600/70 shadow-inner">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-bold">Calculated Output
+                        </div>
                         <div class="space-y-2">
                             <div class="flex justify-between items-center border-b border-slate-600/50 pb-2">
                                 <span class="text-sm text-slate-300">Refraction Angle (${\theta}_{r}$):</span>
@@ -106,8 +171,9 @@
         </div>
 
         <!-- Explanation Footer -->
-        <div class="max-w-4xl w-full mt-6 text-center text-slate-400 text-sm" id="footer-desc">
-            <p>Drag the slider or the canvas. When the incidence angle exceeds <span class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
+        <div class="max-w-5xl w-full mt-6 text-center text-slate-300/90 text-sm" id="footer-desc">
+            <p>Drag the slider or the canvas. When the incidence angle exceeds <span
+                    class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
         </div>
 
     </main>
@@ -116,7 +182,7 @@
         const canvas = document.getElementById('simCanvas');
         const ctx = canvas.getContext('2d');
         const container = document.getElementById('canvas-container');
-        
+
         const angleSlider = document.getElementById('angle-slider');
         const angleVal = document.getElementById('angle-val');
         const refractVal = document.getElementById('refract-val');
@@ -130,19 +196,46 @@
         const n1Val = document.getElementById('n1-val');
         const n2Label = document.getElementById('n2-label');
         const n2Val = document.getElementById('n2-val');
+        const mediumTopSelect = document.getElementById('medium-top');
+        const mediumBottomSelect = document.getElementById('medium-bottom');
 
         const btnDenseRare = document.getElementById('mode-dense-rare');
         const btnRareDense = document.getElementById('mode-rare-dense');
 
-        // Physics Constants
-        const N_GLASS = 1.5;
-        const N_AIR = 1.0;
+        const MEDIA = {
+            air: {
+                label: 'Air',
+                n: 1.0,
+                fill: '#1e293b',
+                text: '#94a3b8'
+            },
+            water: {
+                label: 'Water',
+                n: 1.33,
+                fill: '#0f3b5f',
+                text: '#7dd3fc'
+            },
+            glass: {
+                label: 'Glass',
+                n: 1.5,
+                fill: '#083344',
+                text: '#22d3ee'
+            },
+            diamond: {
+                label: 'Diamond',
+                n: 2.42,
+                fill: '#3b0764',
+                text: '#c4b5fd'
+            }
+        };
 
         // State
-        let currentMode = 'dense_to_rare'; // 'dense_to_rare' (Glass->Air) or 'rare_to_dense' (Air->Glass)
-        let n1 = N_GLASS;
-        let n2 = N_AIR;
-        let criticalAngle = Math.asin(n2/n1) * (180/Math.PI); // ~41.81 degrees for Glass->Air
+        let currentMode = 'dense_to_rare'; // Bottom->Top or Top->Bottom for ray direction
+        let topMedium = 'air';
+        let bottomMedium = 'glass';
+        let n1 = MEDIA[bottomMedium].n;
+        let n2 = MEDIA[topMedium].n;
+        let criticalAngle = Math.asin(n2 / n1) * (180 / Math.PI); // ~41.81 degrees for Glass->Air
 
         let angleIncidence = 30; // Degrees
         let width, height;
@@ -159,29 +252,36 @@
         function setMode(mode) {
             currentMode = mode;
             if (mode === 'dense_to_rare') {
-                n1 = N_GLASS;
-                n2 = N_AIR;
-                criticalAngle = Math.asin(n2/n1) * (180/Math.PI);
-                
+                n1 = MEDIA[bottomMedium].n;
+                n2 = MEDIA[topMedium].n;
+                criticalAngle = (n1 > n2) ? Math.asin(n2 / n1) * (180 / Math.PI) : null;
+
                 // Update UI
                 btnDenseRare.classList.add('bg-cyan-600', 'text-white');
                 btnDenseRare.classList.remove('text-slate-400');
                 btnRareDense.classList.remove('bg-cyan-600', 'text-white');
                 btnRareDense.classList.add('text-slate-400');
 
-                n1Label.innerText = "Medium 1 (Glass):";
-                n1Val.innerText = "n₁ = 1.50";
-                n2Label.innerText = "Medium 2 (Air):";
-                n2Val.innerText = "n₂ = 1.00";
-                criticalVal.innerText = criticalAngle.toFixed(1) + "°";
-                criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
-                footerDesc.innerHTML = `<p>Drag the slider or the canvas. When the incidence angle exceeds <span class="text-white font-bold">${criticalAngle.toFixed(1)}°</span>, light cannot escape into the air.</p>`;
-                headerDesc.innerText = "Light traveling from Glass ($n_1=1.5$) to Air ($n_2=1.0$).";
+                n1Label.innerText = `Medium 1 (${MEDIA[bottomMedium].label}):`;
+                n1Val.innerText = `n₁ = ${MEDIA[bottomMedium].n.toFixed(2)}`;
+                n2Label.innerText = `Medium 2 (${MEDIA[topMedium].label}):`;
+                n2Val.innerText = `n₂ = ${MEDIA[topMedium].n.toFixed(2)}`;
+                if (criticalAngle !== null) {
+                    criticalVal.innerText = criticalAngle.toFixed(1) + "°";
+                    criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
+                    footerDesc.innerHTML = `<p>Drag the slider or the canvas. For ${MEDIA[bottomMedium].label} → ${MEDIA[topMedium].label}, total internal reflection starts beyond <span class="text-white font-bold">${criticalAngle.toFixed(1)}°</span>.</p>`;
+                } else {
+                    criticalVal.innerText = "None";
+                    criticalMarker.innerText = "";
+                    footerDesc.innerHTML = `<p>Drag the slider or the canvas. In ${MEDIA[bottomMedium].label} → ${MEDIA[topMedium].label}, no total internal reflection occurs for this direction.</p>`;
+                    criticalAlert.classList.add('hidden');
+                }
+                headerDesc.innerText = `Light traveling from ${MEDIA[bottomMedium].label} (n₁=${MEDIA[bottomMedium].n.toFixed(2)}) to ${MEDIA[topMedium].label} (n₂=${MEDIA[topMedium].n.toFixed(2)}).`;
 
             } else {
-                n1 = N_AIR;
-                n2 = N_GLASS;
-                criticalAngle = null; // No critical angle for Rare -> Dense
+                n1 = MEDIA[topMedium].n;
+                n2 = MEDIA[bottomMedium].n;
+                criticalAngle = (n1 > n2) ? Math.asin(n2 / n1) * (180 / Math.PI) : null;
 
                 // Update UI
                 btnRareDense.classList.add('bg-cyan-600', 'text-white');
@@ -189,26 +289,32 @@
                 btnDenseRare.classList.remove('bg-cyan-600', 'text-white');
                 btnDenseRare.classList.add('text-slate-400');
 
-                n1Label.innerText = "Medium 1 (Air):";
-                n1Val.innerText = "n₁ = 1.00";
-                n2Label.innerText = "Medium 2 (Glass):";
-                n2Val.innerText = "n₂ = 1.50";
-                criticalVal.innerText = "None";
-                criticalMarker.innerText = "";
-                footerDesc.innerHTML = `<p>Drag the slider or the canvas. Light always refracts into the denser medium, bending towards the normal.</p>`;
-                headerDesc.innerText = "Light traveling from Air ($n_1=1.0$) to Glass ($n_2=1.5$).";
-                criticalAlert.classList.add('hidden');
+                n1Label.innerText = `Medium 1 (${MEDIA[topMedium].label}):`;
+                n1Val.innerText = `n₁ = ${MEDIA[topMedium].n.toFixed(2)}`;
+                n2Label.innerText = `Medium 2 (${MEDIA[bottomMedium].label}):`;
+                n2Val.innerText = `n₂ = ${MEDIA[bottomMedium].n.toFixed(2)}`;
+                if (criticalAngle !== null) {
+                    criticalVal.innerText = criticalAngle.toFixed(1) + "°";
+                    criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
+                    footerDesc.innerHTML = `<p>Drag the slider or the canvas. For ${MEDIA[topMedium].label} → ${MEDIA[bottomMedium].label}, total internal reflection starts beyond <span class="text-white font-bold">${criticalAngle.toFixed(1)}°</span>.</p>`;
+                } else {
+                    criticalVal.innerText = "None";
+                    criticalMarker.innerText = "";
+                    footerDesc.innerHTML = `<p>Drag the slider or the canvas. Light refracts from ${MEDIA[topMedium].label} to ${MEDIA[bottomMedium].label} according to Snell's law.</p>`;
+                    criticalAlert.classList.add('hidden');
+                }
+                headerDesc.innerText = `Light traveling from ${MEDIA[topMedium].label} (n₁=${MEDIA[topMedium].n.toFixed(2)}) to ${MEDIA[bottomMedium].label} (n₂=${MEDIA[bottomMedium].n.toFixed(2)}).`;
             }
             draw();
         }
 
         function calculatePhysics(thetaI_deg) {
             const thetaI_rad = thetaI_deg * (Math.PI / 180);
-            
+
             // Snell's Law: n1 * sin(theta1) = n2 * sin(theta2)
             // sin(theta2) = (n1/n2) * sin(theta1)
             const sinTheta2 = (n1 / n2) * Math.sin(thetaI_rad);
-            
+
             let thetaR_deg = null;
             let isTIR = false;
 
@@ -216,7 +322,7 @@
                 isTIR = true;
             } else {
                 // Handle edge case exactly at critical angle where sin is 1
-                const val = Math.min(1, sinTheta2); 
+                const val = Math.min(1, sinTheta2);
                 thetaR_deg = Math.asin(val) * (180 / Math.PI);
             }
 
@@ -243,43 +349,43 @@
                 ctx.fillText(label, labelX, labelY);
             }
         }
-        
+
         // Procedurally draw a laser pointer (Red body, silver head)
         function drawLaserPointer(ctx, x, y, angle) {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle);
-            
+
             // Drawn to point to the RIGHT (0 rad in local coords).
             // But x,y is the TIP of the laser.
             // So we draw the body backwards (negative x).
-            
+
             const length = 60;
             const width = 20;
-            
+
             // 1. Body (Red Cylinder)
             // Gradient for 3D effect
-            const bodyGrad = ctx.createLinearGradient(0, -width/2, 0, width/2);
+            const bodyGrad = ctx.createLinearGradient(0, -width / 2, 0, width / 2);
             bodyGrad.addColorStop(0, '#7f1d1d'); // Darker top
             bodyGrad.addColorStop(0.4, '#ef4444'); // Highlight middle
             bodyGrad.addColorStop(1, '#7f1d1d'); // Darker bottom
-            
+
             ctx.fillStyle = bodyGrad;
             // Draw main body from -length to -15 (leaving space for silver head)
-            ctx.fillRect(-length, -width/2, length - 15, width);
+            ctx.fillRect(-length, -width / 2, length - 15, width);
 
             // 2. Head (Silver)
-            const headGrad = ctx.createLinearGradient(0, -width/2, 0, width/2);
+            const headGrad = ctx.createLinearGradient(0, -width / 2, 0, width / 2);
             headGrad.addColorStop(0, '#64748b');
             headGrad.addColorStop(0.4, '#e2e8f0');
             headGrad.addColorStop(1, '#64748b');
-            
+
             ctx.fillStyle = headGrad;
-            ctx.fillRect(-15, -width/2, 15, width);
-            
+            ctx.fillRect(-15, -width / 2, 15, width);
+
             // 3. Button (Gold/Yellow dot)
             ctx.beginPath();
-            ctx.arc(-length + 25, 0, 4, 0, Math.PI*2);
+            ctx.arc(-length + 25, 0, 4, 0, Math.PI * 2);
             ctx.fillStyle = '#f59e0b';
             ctx.fill();
             // Button border
@@ -290,10 +396,10 @@
             // 4. Grip Lines (Texture on red part)
             ctx.strokeStyle = 'rgba(0,0,0,0.3)';
             ctx.lineWidth = 1;
-            for(let i = -length + 5; i < -20; i+=4) {
+            for (let i = -length + 5; i < -20; i += 4) {
                 ctx.beginPath();
-                ctx.moveTo(i, -width/2);
-                ctx.lineTo(i, width/2);
+                ctx.moveTo(i, -width / 2);
+                ctx.lineTo(i, width / 2);
                 ctx.stroke();
             }
 
@@ -301,32 +407,45 @@
         }
 
         function draw() {
+            if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+                return;
+            }
+
             // Clear
             ctx.clearRect(0, 0, width, height);
 
             const midY = height / 2;
             const midX = width / 2;
 
-            // --- 1. Draw Mediums (Static: Air Top, Glass Bottom) ---
-            // Top Medium (Air)
-            ctx.fillStyle = '#1e293b'; // Air (dark)
+            // --- 1. Draw Mediums ---
+            const topData = MEDIA[topMedium];
+            const bottomData = MEDIA[bottomMedium];
+
+            // Top Medium
+            ctx.fillStyle = topData.fill;
             ctx.fillRect(0, 0, width, midY);
-            
-            ctx.fillStyle = '#94a3b8'; // Slate-400
+
+            const topGrad = ctx.createLinearGradient(0, 0, 0, midY);
+            topGrad.addColorStop(0, 'rgba(255,255,255,0.08)');
+            topGrad.addColorStop(1, 'rgba(255,255,255,0.01)');
+            ctx.fillStyle = topGrad;
+            ctx.fillRect(0, 0, width, midY);
+
+            ctx.fillStyle = topData.text;
             ctx.font = "bold 24px Inter";
             ctx.textAlign = "right";
-            ctx.fillText("AIR (n=1.0)", width - 20, 40);
+            ctx.fillText(`${topData.label.toUpperCase()} (n=${topData.n.toFixed(2)})`, width - 20, 40);
 
-            // Bottom Medium (Glass)
+            // Bottom Medium
             const gradBottom = ctx.createLinearGradient(0, midY, 0, height);
-            gradBottom.addColorStop(0, 'rgba(6, 182, 212, 0.15)');
-            gradBottom.addColorStop(1, 'rgba(6, 182, 212, 0.3)');
+            gradBottom.addColorStop(0, bottomData.fill);
+            gradBottom.addColorStop(1, 'rgba(2, 6, 23, 0.9)');
             ctx.fillStyle = gradBottom;
             ctx.fillRect(0, midY, width, height - midY);
 
-            ctx.fillStyle = '#22d3ee'; // Cyan-400
+            ctx.fillStyle = bottomData.text;
             ctx.textAlign = "right";
-            ctx.fillText("GLASS (n=1.5)", width - 20, height - 20);
+            ctx.fillText(`${bottomData.label.toUpperCase()} (n=${bottomData.n.toFixed(2)})`, width - 20, height - 20);
 
             // Border Line
             ctx.beginPath();
@@ -345,7 +464,7 @@
             ctx.lineWidth = 2;
             ctx.stroke();
             ctx.setLineDash([]);
-            
+
             // Label N
             ctx.fillStyle = '#64748b';
             ctx.textAlign = "center";
@@ -356,15 +475,15 @@
             // --- 3. Ray Logic ---
             const { thetaR_deg, isTIR } = calculatePhysics(angleIncidence);
             const thetaI_rad = angleIncidence * (Math.PI / 180);
-            
+
             // Calculate dynamic ray length to keep laser on screen
-            const padding = 80; 
+            const padding = 80;
             const vecX = Math.sin(thetaI_rad); // X magnitude (0 to 1)
             const vecY = Math.cos(thetaI_rad); // Y magnitude (0 to 1)
 
             // Constraint X: CenterX - L * vecX > padding  =>  L < (CenterX - padding) / vecX
             const maxLenX = (vecX > 0.01) ? (midX - padding) / vecX : 1000;
-            
+
             // Constraint Y depends on mode
             let maxLenY = 1000;
             if (currentMode === 'dense_to_rare') {
@@ -374,19 +493,19 @@
                 // Top edge constraint (Incident from Air)
                 maxLenY = (vecY > 0.01) ? (midY - padding) / vecY : 1000;
             }
-            
+
             // Final Ray Length: min of constraints, capped at 300
             const rayLen = Math.min(300, maxLenX, maxLenY);
-            
+
             let incidentStartX, incidentStartY;
 
             if (currentMode === 'dense_to_rare') {
                 // Incident from Bottom (Glass)
                 incidentStartX = midX - Math.sin(thetaI_rad) * rayLen;
                 incidentStartY = midY + Math.cos(thetaI_rad) * rayLen;
-                
+
                 // Incident Angle Arc (Glass -> Air)
-                drawAngleArc(ctx, midX, midY, Math.PI/2, Math.PI/2 + thetaI_rad, 60, '#ef4444', angleIncidence.toFixed(1) + "°", false);
+                drawAngleArc(ctx, midX, midY, Math.PI / 2, Math.PI / 2 + thetaI_rad, 60, '#ef4444', angleIncidence.toFixed(1) + "°", false);
             } else {
                 // Incident from Top (Air)
                 incidentStartX = midX - Math.sin(thetaI_rad) * rayLen;
@@ -429,7 +548,7 @@
                 ctx.stroke();
                 ctx.shadowBlur = 0;
 
-                criticalAlert.classList.remove('hidden');
+                if (criticalAngle !== null) criticalAlert.classList.remove('hidden');
                 refractVal.innerText = "NONE (TIR)";
                 refractVal.className = "font-mono text-red-400 font-bold";
 
@@ -445,7 +564,7 @@
                     // Reflect back into Bottom (Glass)
                     reflectEndX = midX + Math.sin(thetaI_rad) * (rayLen * 0.5);
                     reflectEndY = midY + Math.cos(thetaI_rad) * (rayLen * 0.5);
-                    
+
                     // Refraction Angle Arc (Air) - Top Right
                     drawAngleArc(ctx, midX, midY, 1.5 * Math.PI, 1.5 * Math.PI + thetaR_rad, 60, '#facc15', thetaR_deg.toFixed(1) + "°", true);
                 } else {
@@ -457,7 +576,7 @@
                     reflectEndY = midY - Math.cos(thetaI_rad) * (rayLen * 0.5);
 
                     // Refraction Angle Arc (Glass) - Bottom Right
-                    drawAngleArc(ctx, midX, midY, Math.PI/2 - thetaR_rad, Math.PI/2, 60, '#facc15', thetaR_deg.toFixed(1) + "°", false);
+                    drawAngleArc(ctx, midX, midY, Math.PI / 2 - thetaR_rad, Math.PI / 2, 60, '#facc15', thetaR_deg.toFixed(1) + "°", false);
                 }
 
                 // Draw Refracted Ray
@@ -486,7 +605,7 @@
 
             // Draw Source Dot
             ctx.beginPath();
-            ctx.arc(midX, midY, 6, 0, Math.PI*2);
+            ctx.arc(midX, midY, 6, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.fill();
         }
@@ -497,13 +616,31 @@
             angleVal.innerText = angleIncidence.toFixed(1) + "°";
             draw();
         });
-        
+
         btnDenseRare.addEventListener('click', () => setMode('dense_to_rare'));
         btnRareDense.addEventListener('click', () => setMode('rare_to_dense'));
+        mediumTopSelect.addEventListener('change', (e) => {
+            topMedium = e.target.value;
+            if (topMedium === bottomMedium) {
+                const options = Object.keys(MEDIA).filter((m) => m !== topMedium);
+                bottomMedium = options[0];
+                mediumBottomSelect.value = bottomMedium;
+            }
+            setMode(currentMode);
+        });
+        mediumBottomSelect.addEventListener('change', (e) => {
+            bottomMedium = e.target.value;
+            if (bottomMedium === topMedium) {
+                const options = Object.keys(MEDIA).filter((m) => m !== bottomMedium);
+                topMedium = options[0];
+                mediumTopSelect.value = topMedium;
+            }
+            setMode(currentMode);
+        });
 
         // Touch/Drag on Canvas to control angle
         let isDragging = false;
-        
+
         function handleDrag(x, y) {
             const rect = canvas.getBoundingClientRect();
             const mouseX = x - rect.left;
@@ -523,7 +660,7 @@
             // Calculate angle relative to Normal
             const dx = midX - mouseX;
             let dy = mouseY - midY;
-            
+
             if (currentMode === 'dense_to_rare') {
                 if (dy <= 0) return; // Should be below line
             } else {
@@ -532,10 +669,10 @@
             }
 
             let theta = Math.atan2(dx, dy) * (180 / Math.PI);
-            
+
             // Clamp to slider range
             theta = Math.max(0, Math.min(80, theta));
-            
+
             angleIncidence = theta;
             angleSlider.value = theta;
             angleVal.innerText = theta.toFixed(1) + "°";
@@ -546,18 +683,20 @@
         window.addEventListener('mouseup', () => isDragging = false);
         window.addEventListener('mousemove', (e) => { if (isDragging) handleDrag(e.clientX, e.clientY); });
 
-        canvas.addEventListener('touchstart', (e) => { isDragging = true; handleDrag(e.touches[0].clientX, e.touches[0].clientY); }, {passive: false});
-        canvas.addEventListener('touchmove', (e) => { 
+        canvas.addEventListener('touchstart', (e) => { isDragging = true; handleDrag(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+        canvas.addEventListener('touchmove', (e) => {
             if (isDragging) {
-                e.preventDefault(); 
-                handleDrag(e.touches[0].clientX, e.touches[0].clientY); 
+                e.preventDefault();
+                handleDrag(e.touches[0].clientX, e.touches[0].clientY);
             }
-        }, {passive: false});
+        }, { passive: false });
 
         // Init
         window.addEventListener('resize', resize);
         resize();
+        setMode(currentMode);
 
     </script>
 </body>
+
 </html>
