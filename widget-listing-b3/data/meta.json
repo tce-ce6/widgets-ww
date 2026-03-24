@@ -277,7 +277,7 @@
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
-      "updatedAt": "2026-02-24T16:51:05+05:30",
+      "updatedAt": "2026-03-24T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T17:31:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg75 fixes",
+      "widgets": [
+        75
+      ]
+    },
     {
       "date": "2026-03-24T17:11:47+05:30",
       "author": "tce-nitinc",
@@ -614,14 +622,6 @@
       "message": "Update index.html",
       "widgets": [
         130
-      ]
-    },
-    {
-      "date": "2026-03-23T17:46:08+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        136
       ]
     }
   ]
