@@ -286,30 +286,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetGame();
 
+  function startGame() {
+    if (pickACardSection) pickACardSection.style.display = "none";
+    if (pickCardButton) pickCardButton.style.display = "none";
+
+    if (iText) iText.style.display = "block";
+    if (visualPanel) visualPanel.style.display = "block";
+    if (audioButton) audioButton.style.display = "block";
+    if (activityBox) activityBox.style.display = "block";
+    if (showAnswerButton) {
+      showAnswerButton.style.display = "block";
+      showAnswerButton.classList.add("disabled-btn");
+      showAnswerButton.style.pointerEvents = "none";
+    }
+    if (nextButton) {
+      nextButton.style.display = "block";
+    }
+
+    setupTray();
+    selectedAnimalKey = null;
+  }
+
   if (pickCardButton) {
     pickCardButton.style.cursor = "pointer";
-    pickCardButton.addEventListener("click", () => {
-      if (pickACardSection) pickACardSection.style.display = "none";
-      if (pickCardButton) pickCardButton.style.display = "none";
+    pickCardButton.addEventListener("click", startGame);
+  }
 
-      if (iText) iText.style.display = "block";
-      if (visualPanel) visualPanel.style.display = "block";
-      if (audioButton) audioButton.style.display = "block";
-      if (activityBox) activityBox.style.display = "block";
-      if (showAnswerButton) {
-        showAnswerButton.style.display = "block";
-        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
-        showAnswerButton.classList.add("disabled-btn");
-        showAnswerButton.style.pointerEvents = "none";
-      }
-      if (nextButton) {
-        nextButton.style.display = "block";
-        nextButton.setAttribute("transform", "translate(170, 0)");
-      }
-
-      setupTray();
-      selectedAnimalKey = null;
-    });
+  if (pickACardSection) {
+    pickACardSection.style.cursor = "pointer";
+    pickACardSection.style.pointerEvents = "auto";
+    pickACardSection.addEventListener("click", startGame);
   }
 
   if (audioButton) {
@@ -342,13 +348,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show both buttons and shift them side-by-side
     if (showAnswerButton) {
       showAnswerButton.style.display = "block";
-      showAnswerButton.setAttribute("transform", "translate(-170, 0)");
       showAnswerButton.classList.add("disabled-btn");
       showAnswerButton.style.pointerEvents = "none";
     }
     if (nextButton) {
       nextButton.style.display = "block";
-      nextButton.setAttribute("transform", "translate(170, 0)");
     }
 
     // Disable all tray slots (RHS cards) and fade out incorrect ones
@@ -476,13 +480,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Reset buttons and positions
       if (showAnswerButton) {
         showAnswerButton.style.display = "block";
-        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
         showAnswerButton.classList.add("disabled-btn");
         showAnswerButton.style.pointerEvents = "none";
       }
       if (nextButton) {
         nextButton.style.display = "block";
-        nextButton.setAttribute("transform", "translate(170, 0)");
       }
 
       // Re-enable tray cards interactivity
