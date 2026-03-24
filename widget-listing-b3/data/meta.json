@@ -64,8 +64,8 @@
       "updatedAt": "2026-03-24T17:52:59+05:30",
       "author": "tce-nitinc"
     },
-    "wg118_formal-letters-job-application": {
-      "updatedAt": "2026-03-09T19:48:15+05:30",
+    "wg118-formal-letters-job-application": {
+      "updatedAt": "2026-03-18T20:14:08+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -80,8 +80,8 @@
       "updatedAt": "2026-03-20T14:54:34+05:30",
       "author": "PrasannaP"
     },
-    "wg122-suffix-magic": {
-      "updatedAt": "2026-03-11T12:53:40+05:30",
+    "wg122-suffix-magic-2": {
+      "updatedAt": "2026-03-18T20:14:08+05:30",
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
@@ -121,8 +121,8 @@
       "author": "sushantthe"
     },
     "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-03-13T18:03:02+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-20T20:02:23+05:30",
+      "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
       "updatedAt": "2026-03-13T19:19:52+05:30",
@@ -140,16 +140,16 @@
       "updatedAt": "2026-03-24T19:20:40+05:30",
       "author": "PrasannaP"
     },
-    "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
-      "updatedAt": "2026-03-12T17:58:03+05:30",
-      "author": "aditya"
+    "wg137-sabdo-me-sawar-ki-khoj": {
+      "updatedAt": "2026-03-20T16:15:43+05:30",
+      "author": "tce-ashishg"
     },
-    "wg138-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0935\u094d\u092f\u0902\u091c\u0928-\u0915\u0940-\u0916\u094b\u091c": {
-      "updatedAt": "2026-03-12T17:58:03+05:30",
-      "author": "aditya"
+    "wg138-sabdo-me-vayanjan-ki-khoj": {
+      "updatedAt": "2026-03-20T20:02:23+05:30",
+      "author": "tce-ashishg"
     },
     "wg140-change-master": {
-      "updatedAt": "2026-03-09T15:35:05+05:30",
+      "updatedAt": "2026-03-16T17:01:59+05:30",
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
@@ -241,11 +241,11 @@
       "author": "Shyam"
     },
     "wg56_atomic-radius-simulator": {
-      "updatedAt": "2026-03-07T21:52:51+05:30",
+      "updatedAt": "2026-03-19T16:53:54+05:30",
       "author": "tce-ashishg"
     },
-    "wg61-suffix-magic": {
-      "updatedAt": "2026-03-11T12:53:40+05:30",
+    "wg61-suffix-magic-1": {
+      "updatedAt": "2026-03-18T20:14:08+05:30",
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
@@ -260,9 +260,13 @@
       "updatedAt": "2026-03-18T10:33:51+05:30",
       "author": "Santosh"
     },
-    "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-24T21:03:35+05:30",
+    "wg70-reflection-of-light": {
+      "updatedAt": "2026-03-24T20:57:40+05:30",
       "author": "PrasannaP"
+    },
+    "wg70_reflection-of-light": {
+      "updatedAt": "2026-03-24T21:14:09+05:30",
+      "author": "Prasanna Patra"
     },
     "wg72-build-a-carbon-cycle": {
       "updatedAt": "2026-03-10T12:28:28+05:30",
@@ -292,8 +296,8 @@
       "updatedAt": "2026-03-20T12:29:28+05:30",
       "author": "Santosh"
     },
-    "wg79_rhyme-scheme": {
-      "updatedAt": "2026-03-04T12:55:22+05:30",
+    "wg79-rhyme-scheme-2": {
+      "updatedAt": "2026-03-18T20:14:08+05:30",
       "author": "tce-ashishg"
     },
     "wg80-forming-landforms": {
@@ -382,6 +386,14 @@
       "date": "2026-03-24T21:03:35+05:30",
       "author": "PrasannaP",
       "message": "del index from deploy",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T20:57:40+05:30",
+      "author": "PrasannaP",
+      "message": "del index",
       "widgets": [
         70
       ]
@@ -615,14 +627,6 @@
       "message": "fix: adjust text position for improved layout in adventure index",
       "widgets": [
         136
-      ]
-    },
-    {
-      "date": "2026-03-24T12:02:14+05:30",
-      "author": "tce-nitinc",
-      "message": "wg126 fixes",
-      "widgets": [
-        126
       ]
     }
   ]
