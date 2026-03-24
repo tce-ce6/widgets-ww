@@ -163,7 +163,7 @@ svg * {
 #idiom-wrapper svg {
   width: 100% !important;
   height: 100%;
-  transform: scale(1.05) translateY(-20px);
+  transform: scale(1.5) translateY(-20px);
   /* Fill space better and center more optimally */
   transform-origin: center;
 }
