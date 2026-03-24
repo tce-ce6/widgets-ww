@@ -1172,6 +1172,9 @@ function hideFeedback(anchorEl) {
 }
 
 function resetPracticeSession() {
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => { p.style.display = "none"; if (p.parentElement && p.parentElement.tagName.toLowerCase() === 'foreignobject') p.parentElement.style.display = "none"; });
+
     /* 1. Reset STATE */
     state.currentStepIndex = 0;
     state.activeLeftId = null;
