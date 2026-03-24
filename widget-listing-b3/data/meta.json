@@ -53,7 +53,7 @@
       "author": "Shyam"
     },
     "wg115-literary-device": {
-      "updatedAt": "2026-03-23T18:35:48+05:30",
+      "updatedAt": "2026-03-24T17:11:47+05:30",
       "author": "tce-nitinc"
     },
     "wg116-reactivity-series": {
@@ -61,7 +61,7 @@
       "author": "aditya"
     },
     "wg117-picture-the-idiom": {
-      "updatedAt": "2026-03-23T18:52:36+05:30",
+      "updatedAt": "2026-03-24T17:52:59+05:30",
       "author": "tce-nitinc"
     },
     "wg118_formal-letters-job-application": {
@@ -97,7 +97,7 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-23T15:45:31+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
-      "updatedAt": "2026-03-23T17:21:11+05:30",
+      "updatedAt": "2026-03-24T16:09:39+05:30",
       "author": "aditya"
     },
     "wg129-unravel-the-taxonomic-trail": {
@@ -137,7 +137,7 @@
       "author": "aditya"
     },
     "wg136-compound-words-adventure": {
-      "updatedAt": "2026-03-23T17:46:08+05:30",
+      "updatedAt": "2026-03-24T12:09:21+05:30",
       "author": "PrasannaP"
     },
     "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
@@ -153,7 +153,7 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-03-23T16:47:01+05:30",
+      "updatedAt": "2026-03-23T19:40:42+05:30",
       "author": "sushantkanaujiya"
     },
     "wg143-synthesize-new-polypeptide-chain": {
@@ -165,11 +165,11 @@
       "author": "Shyam"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-13T19:08:55+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-24T13:42:46+05:30",
+      "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
-      "updatedAt": "2026-03-23T18:35:48+05:30",
+      "updatedAt": "2026-03-24T17:52:59+05:30",
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
@@ -193,7 +193,7 @@
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
-      "updatedAt": "2026-03-23T17:32:33+05:30",
+      "updatedAt": "2026-03-23T20:58:33+05:30",
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
@@ -217,12 +217,12 @@
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
-      "updatedAt": "2026-03-23T12:12:40+05:30",
+      "updatedAt": "2026-03-24T17:11:47+05:30",
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-19T15:11:49+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-24T12:20:42+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
       "updatedAt": "2026-03-18T23:11:02+05:30",
@@ -249,8 +249,8 @@
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
-      "updatedAt": "2026-03-20T10:23:02+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-24T17:52:19+05:30",
+      "author": "aditya"
     },
     "wg68-reflection-of-a-point": {
       "updatedAt": "2026-03-15T13:36:28+05:30",
@@ -261,8 +261,8 @@
       "author": "Santosh"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-09T15:35:05+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-03-24T16:32:20+05:30",
+      "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
       "updatedAt": "2026-03-10T12:28:28+05:30",
@@ -277,7 +277,7 @@
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
-      "updatedAt": "2026-02-24T16:51:05+05:30",
+      "updatedAt": "2026-03-24T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
@@ -361,7 +361,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-03-23T15:45:31+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -378,6 +378,228 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T17:52:59+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 147 and wg 117 changes",
+      "widgets": [
+        117,
+        147
+      ]
+    },
+    {
+      "date": "2026-03-24T17:52:19+05:30",
+      "author": "aditya",
+      "message": "Update index.html",
+      "widgets": [
+        67
+      ]
+    },
+    {
+      "date": "2026-03-24T17:45:29+05:30",
+      "author": "aditya",
+      "message": "Update index.html",
+      "widgets": [
+        67
+      ]
+    },
+    {
+      "date": "2026-03-24T17:31:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg75 fixes",
+      "widgets": [
+        75
+      ]
+    },
+    {
+      "date": "2026-03-24T17:11:47+05:30",
+      "author": "tce-nitinc",
+      "message": "wg115 changes",
+      "widgets": [
+        31,
+        115
+      ]
+    },
+    {
+      "date": "2026-03-24T16:34:02+05:30",
+      "author": "aditya",
+      "message": "fix wg67",
+      "widgets": [
+        67
+      ]
+    },
+    {
+      "date": "2026-03-24T16:32:20+05:30",
+      "author": "PrasannaP",
+      "message": "fix: improve text formatting and readability in wg70.html",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T16:14:50+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: clean up whitespace and improve code readability in index.js; add prompts for widget development in prompts.md; enhance wg70.html structure and styling for better layout",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T16:09:39+05:30",
+      "author": "aditya",
+      "message": "wg 128 ui fix",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-24T16:08:42+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed issue",
+      "widgets": [
+        31,
+        96,
+        126
+      ]
+    },
+    {
+      "date": "2026-03-24T13:43:11+05:30",
+      "author": "PrasannaP",
+      "message": "wg70 added ref html",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T13:42:46+05:30",
+      "author": "PrasannaP",
+      "message": "prompt updated",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-24T12:14:20+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "42 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-24T12:09:21+05:30",
+      "author": "PrasannaP",
+      "message": "fix: adjust text position for improved layout in adventure index",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-24T12:02:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg126 fixes",
+      "widgets": [
+        126
+      ]
+    },
+    {
+      "date": "2026-03-24T11:55:11+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 126 and 86 fixes",
+      "widgets": [
+        96,
+        126
+      ]
+    },
+    {
+      "date": "2026-03-24T11:41:58+05:30",
+      "author": "aditya",
+      "message": "Update index.html",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-24T11:25:44+05:30",
+      "author": "PrasannaP",
+      "message": "146 start",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-24T11:23:06+05:30",
+      "author": "aditya",
+      "message": "ui fix wg128",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-23T20:58:33+05:30",
+      "author": "PrasannaP",
+      "message": "Update version ID and consolidate multiple tspan elements into single text strings for cleaner SVG rendering.",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-23T20:46:29+05:30",
+      "author": "PrasannaP",
+      "message": "translate(35, 40)",
+      "widgets": [
+        136,
+        154
+      ]
+    },
+    {
+      "date": "2026-03-23T19:50:50+05:30",
+      "author": "PrasannaP",
+      "message": "Remove specific title styling for `.wdgetTitle h2` and apply minor formatting adjustments to various CSS rules.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:43:17+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reposition Group_8175 SVG element in the HTML structure.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:40:42+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-23T19:39:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement card disabling for attempted families, add related CSS, and apply minor UI styling improvements, including a version update.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:37:05+05:30",
+      "author": "sushantkanaujiya",
+      "message": "142 fixed issue",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-23T19:17:53+05:30",
+      "author": "PrasannaP",
+      "message": "new assets added",
+      "widgets": [
+        136
+      ]
+    },
     {
       "date": "2026-03-23T18:52:36+05:30",
       "author": "tce-nitinc",
@@ -401,230 +623,6 @@
       "widgets": [
         115,
         147
-      ]
-    },
-    {
-      "date": "2026-03-23T18:11:23+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "drop down issue fixed",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-23T17:52:55+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        130
-      ]
-    },
-    {
-      "date": "2026-03-23T17:51:37+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        130
-      ]
-    },
-    {
-      "date": "2026-03-23T17:46:08+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-23T17:45:47+05:30",
-      "author": "PrasannaP",
-      "message": "fix1",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-23T17:37:51+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-23T17:36:07+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed wg120 review sheet fixes",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-23T17:32:33+05:30",
-      "author": "PrasannaP",
-      "message": "update prompts",
-      "widgets": [
-        82,
-        149,
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T17:21:11+05:30",
-      "author": "aditya",
-      "message": "fix wolf img",
-      "widgets": [
-        128,
-        135
-      ]
-    },
-    {
-      "date": "2026-03-23T16:53:50+05:30",
-      "author": "PrasannaP",
-      "message": "prompt name changed",
-      "widgets": [
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T16:52:46+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update book color to #249b98 and increment widget version.",
-      "widgets": [
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T16:49:34+05:30",
-      "author": "aditya",
-      "message": "Create wolf.svg",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:49:10+05:30",
-      "author": "aditya",
-      "message": "wolf img rename",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:47:01+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        134,
-        142
-      ]
-    },
-    {
-      "date": "2026-03-23T16:43:11+05:30",
-      "author": "tce-nitinc",
-      "message": "wg115 ca",
-      "widgets": [
-        115
-      ]
-    },
-    {
-      "date": "2026-03-23T16:35:46+05:30",
-      "author": "aditya",
-      "message": "fix wg128",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:18:35+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T15:45:31+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 126 changes",
-      "widgets": [
-        96,
-        126
-      ]
-    },
-    {
-      "date": "2026-03-23T15:39:04+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "reset widget fixed",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T15:28:18+05:30",
-      "author": "PrasannaP",
-      "message": "style: refine widget layout notes and adjust background sizing.",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-23T15:26:13+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        81,
-        86,
-        119,
-        134
-      ]
-    },
-    {
-      "date": "2026-03-23T15:08:38+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add readme, hide next button on completion, and update confetti z-index for the Commonly Confused Words widget.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-23T15:05:52+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "version updated",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T15:02:50+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed alignment issues and touchevent for scroll",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T14:18:45+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg86 til sound changes done",
-      "widgets": [
-        86
-      ]
-    },
-    {
-      "date": "2026-03-23T13:51:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "implemented wg24 widget fixes",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T12:48:18+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Improve completion message display, add debug utilities, and document them in a new README.",
-      "widgets": [
-        136
       ]
     }
   ]
