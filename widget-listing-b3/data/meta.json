@@ -245,8 +245,8 @@
       "author": "tce-ashishg"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-03-24T21:21:35+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-18T20:14:08+05:30",
+      "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-24T17:57:44+05:30",
@@ -627,6 +627,14 @@
       "message": "42 issues fixed",
       "widgets": [
         42
+      ]
+    },
+    {
+      "date": "2026-03-24T12:09:21+05:30",
+      "author": "PrasannaP",
+      "message": "fix: adjust text position for improved layout in adventure index",
+      "widgets": [
+        136
       ]
     }
   ]
