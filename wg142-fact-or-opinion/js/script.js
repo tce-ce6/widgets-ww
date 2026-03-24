@@ -460,6 +460,7 @@
     hide(UI.factHighlighter);
     hide(UI.opinionHighlighter);
     hide(UI.checkBtn);
+    hide(UI.buttonLibrary);
     const passageForeign = document.getElementById("passage-foreign");
     if (passageForeign) passageForeign.style.display = "none";
 
@@ -513,10 +514,11 @@
       const userChoice = state.sentenceClassifications[i];
       const isCorrect = userChoice === s.type;
       const chosen = userChoice || "fact";
-      const explText = s.correctFeedback //isCorrect ? (s.correctFeedback || "") : (s.incorrectFeedback || "");
-      const explHtml = isCorrect
-        ? ""
-        : `<div class="fb-expl" data-expl-for="${i}"><strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(explText)}</div>`;
+      const explHtml = `
+        <div class="fb-expl ${isCorrect ? "correct-expl" : "incorrect-expl"}" data-expl-for="${i}">
+          <strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
+        </div>
+      `;
       return `
         <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" data-is-correct="${isCorrect ? "1" : "0"}">
           <div class="fb-text">${escapeHtml(s.text)}</div>
@@ -728,6 +730,11 @@
   function init() {
     cacheDOM();
     if (!UI.passageContent) createPassageContainer();
+    // Move book thumbnail & stamp to end of SVG so they render above dark-patch overlay
+    if (UI.svg) {
+      if (UI.bookStamp) UI.svg.appendChild(UI.bookStamp);
+      if (UI.book01Thumbnail) UI.svg.appendChild(UI.book01Thumbnail);
+    }
     bindEvents();
     showLibrary();
   }

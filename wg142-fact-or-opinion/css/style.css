@@ -1,3 +1,19 @@
+#idiom-wrapper .feedback-scroll .fb-expl.correct-expl {
+  background: #e6ffe6;
+  border-left: 4px solid #2cb739;
+  margin-bottom: 10px;
+}
+#idiom-wrapper .feedback-scroll .fb-expl.incorrect-expl {
+  background: #ffeaea;
+  border-left: 4px solid #e23614;
+  margin-bottom: 10px;
+}
+#idiom-wrapper .feedback-scroll .fb-row.correct {
+  background: rgba(44, 183, 57, 0.25) !important;
+}
+#idiom-wrapper .feedback-scroll .fb-row.incorrect {
+  background: rgba(255, 200, 200, 0.5) !important;
+}
 *:focus,
 *:focus {
   outline: none !important;
