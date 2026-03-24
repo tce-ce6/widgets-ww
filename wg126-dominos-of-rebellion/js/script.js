@@ -426,6 +426,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // ✅ if ALL cards correct show success
             if (correctCount === placeholders.length) {
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 setTimeout(() => {
 
@@ -562,6 +564,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // enable reset if needed
                 resetBtn.classList.remove("disabled");
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 answerVisible = true;
 

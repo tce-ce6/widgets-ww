@@ -97,7 +97,7 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-24T12:02:14+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
-      "updatedAt": "2026-03-24T11:41:58+05:30",
+      "updatedAt": "2026-03-24T16:09:39+05:30",
       "author": "aditya"
     },
     "wg129-unravel-the-taxonomic-trail": {
@@ -217,12 +217,12 @@
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
-      "updatedAt": "2026-03-23T12:12:40+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-19T15:11:49+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-24T12:20:42+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
       "updatedAt": "2026-03-18T23:11:02+05:30",
@@ -361,7 +361,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-03-24T11:55:11+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -378,6 +378,32 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T16:09:39+05:30",
+      "author": "aditya",
+      "message": "wg 128 ui fix",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-24T16:08:42+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed issue",
+      "widgets": [
+        31,
+        96,
+        126
+      ]
+    },
+    {
+      "date": "2026-03-24T12:14:20+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "42 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
     {
       "date": "2026-03-24T12:09:21+05:30",
       "author": "PrasannaP",
@@ -598,30 +624,6 @@
       "message": "prompt name changed",
       "widgets": [
         154
-      ]
-    },
-    {
-      "date": "2026-03-23T16:52:46+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update book color to #249b98 and increment widget version.",
-      "widgets": [
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T16:49:34+05:30",
-      "author": "aditya",
-      "message": "Create wolf.svg",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:49:10+05:30",
-      "author": "aditya",
-      "message": "wolf img rename",
-      "widgets": [
-        128
       ]
     }
   ]
