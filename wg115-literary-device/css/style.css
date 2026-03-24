@@ -580,6 +580,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1.2;
 }
 
 .result-explanation {
@@ -598,16 +599,16 @@ h1 {
   justify-content: center;
 }
 
-.overlay.step-mode .btn.btn-outline.home-btn {
-  bottom: 150px;
+#result-overlay .btn.btn-outline.home-btn {
+  bottom: -174px;
+  left: -416px;
 }
 
-.overlay .modal .btn.btn-outline.home-btn {
-  bottom: -170px;
-  left: -420px;
+#result-overlay .detail-title.title-two {
+  top: -173px;
+  left: -410px;
 }
 
-.overlay .modal .detail-title.title-two {
-  top: -170px;
-  left: -420px;
+#detail-overlay .btn.btn-outline.home-btn {
+  bottom: 147px;
 }

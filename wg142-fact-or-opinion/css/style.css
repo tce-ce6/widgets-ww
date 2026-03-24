@@ -409,7 +409,7 @@ svg * {
 }
 
 #idiom-wrapper .passage-scroll .sentence-row {
- 
+  display: inline;
   border-radius: 4px;
   font-size: 24px;
   line-height: 1.5;
@@ -447,7 +447,7 @@ svg * {
 }
 
 #idiom-wrapper .passage-scroll .sentence-row .sentence-text {
-  display: block;
+  display: inline;
 }
 
 #idiom-wrapper .passage-scroll .feedback-detail {
@@ -492,6 +492,7 @@ svg * {
 
 #idiom-wrapper .feedback-scroll .fb-row {
   max-width: 1200px;
+  width: fit-content;
   margin: 8px auto;
   padding: 6px 10px;
   border-radius: 4px;
@@ -512,11 +513,7 @@ svg * {
   background: rgba(103, 255, 65, 0.35);
 }
 
-#idiom-wrapper .feedback-scroll .fb-row.incorrect {
-  text-decoration: underline;
-  text-decoration-color: #e23614;
-  text-underline-offset: 3px;
-}
+
 
 #idiom-wrapper .feedback-scroll .fb-icon {
   width: 22px;
@@ -541,6 +538,7 @@ svg * {
 
 #idiom-wrapper .feedback-scroll .fb-expl {
   max-width: 1200px;
+  width: fit-content;
   margin: 4px auto 10px;
   padding: 10px 12px;
   border-radius: 8px;

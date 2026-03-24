@@ -14,15 +14,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   let multiSolvedCountries = new Set(); // ONLY for 1918 Q2
   let lastSequentialYear = null;
   let lastSelectedYear = null;
-
+  let shouldRemoveFlagsOnClose = false;
   let selectedClueIndex = null; // which clue is active
   let selectedCountryId = null; // country name from clue
-
+  const replyBtn = document.getElementById("reply-btn");
   let lastDroppedFlag = null;
   let lastDroppedCountryPath = null;
   let lastPlacedFlagEl = null;
   let mustProceedBeforeNext = false;
-
+  const placedFlags = new Set();
   const mapHomeImg = document.querySelector(".mapHome-img");
   const videoWrapper = document.getElementById("video-wrapper");
   const videoEl = videoWrapper?.querySelector("video");
@@ -167,7 +167,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     lastDroppedFlag = draggedFlag;
     lastDroppedCountryPath = droppedCountryPath;
     lastPlacedFlagEl = foreignObject;
-
+    placedFlags.add(foreignObject); // ✅ ADD THIS
+    placedFlags.add(foreignObject);
     draggedFlag.style.visibility = "hidden";
 
     /* ================= VALIDATION ================= */
@@ -191,8 +192,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       setShowMsgState("clue");
 
       // Remove the wrongly placed flag
-      if (lastPlacedFlagEl) {
+      // ✅ Do NOT remove flag if last drop was correct
+      // ❌ remove ONLY temporary flag (incorrect one)
+      if (!lastDropWasCorrect && lastPlacedFlagEl) {
         lastPlacedFlagEl.remove();
+        placedFlags.delete(lastPlacedFlagEl);
         lastPlacedFlagEl = null;
       }
 
@@ -210,16 +214,15 @@ window.addEventListener("DOMContentLoaded", async () => {
       );
 
     if (isCorrect) {
-      markCountrySolved(countryId ?? droppedCountryId);
+      markCountrySolved(droppedCountryId);
 
       lastDropWasCorrect = true;
-
+      shouldRemoveFlagsOnClose = true;
       // ✅ Remember this country as permanently solved
-      const parentGroup = countryPath.closest("g");
       if (parentGroup) {
         parentGroup.querySelectorAll("path").forEach(p => solvedCountryPaths.add(p));
       } else {
-        solvedCountryPaths.add(countryPath);
+        solvedCountryPaths.add(droppedCountryPath);
       }
 
       let fillColor = "#007608"; // default Allied
@@ -261,7 +264,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       solvedClues[year] ??= {};
       solvedClues[year][currentQuestionIndex] ??= new Set();
       solvedClues[year][currentQuestionIndex].add(clueIdxToMark);
-
+      const flagKey = selectedYearData?.year === 1918 ? '1918-' + flagCountry : flagCountry;
+      usedFlags.add(flagKey);
       renderCluesForQuestion(selectedYearData.questions[currentQuestionIndex]);
 
       if (is1918MultiDefeatedQuestion()) {
@@ -275,26 +279,24 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (qFinished) {
         showActionButton("Proceed", "proceed");
         mustProceedBeforeNext = true;
+        renderFlagsForQuestion(currentQuestion);
       } else {
         mustProceedBeforeNext = true;
-        setTimeout(() => {
-          showMsg.style.display = "none";
-          showMsg.classList.remove("correct");
+        // ❌ Removed auto close of correct popup
 
-          if (is1918MultiDefeatedQuestion()) {
-            resetDropState();
-            renderFlagsForQuestion(currentQuestion);
-          } else {
-            const year = selectedYearData.year;
-            const solvedSet = solvedClues[year][currentQuestionIndex];
-            const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
-            if (nextIdx !== -1) currentClueIndex = nextIdx;
+        if (is1918MultiDefeatedQuestion()) {
+          resetDropState();
+          renderFlagsForQuestion(currentQuestion);
+        } else {
+          const year = selectedYearData.year;
+          const solvedSet = solvedClues[year][currentQuestionIndex];
+          const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
+          if (nextIdx !== -1) currentClueIndex = nextIdx;
 
-            resetDropState();
-            renderFlagsForQuestion(currentQuestion);
-            renderCluesForQuestion(currentQuestion);
-          }
-        }, 2000);
+          resetDropState();
+          renderFlagsForQuestion(currentQuestion);
+          renderCluesForQuestion(currentQuestion);
+        }
       }
 
     } else {
@@ -318,6 +320,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       setShowMsgState("incorrect");
 
       showActionButton("Try Again", "try-again");
+      actionBtn.style.display = "none";
 
     }
   });
@@ -476,19 +479,19 @@ window.addEventListener("DOMContentLoaded", async () => {
         li.appendChild(img);
 
         // ♻️ placeholder restore
-        if (usedFlags.has(countryName)) {
+        const flagKey = selectedYearData?.year === 1918 ? '1918-' + countryName : countryName;
+        if (usedFlags.has(flagKey)) {
           li.dataset.hasPlaceholder = "true";
           li.style.filter = "sepia(1)";
           li.style.opacity = "0.4";
+          img.style.filter = "sepia(1)";
+          img.style.opacity = "0.4";
         }
 
         // 👆 TAP MODE
         li.addEventListener("click", () => {
           if (mustProceedBeforeNext) {
-            hintText.textContent =
-              "Please click on the Proceed button to continue.";
-            setShowMsgState("clue");
-            return;
+            return; // 🚫 silently block interaction
           }
 
           tappedFlag = li;
@@ -584,6 +587,17 @@ window.addEventListener("DOMContentLoaded", async () => {
   closeBtn.addEventListener("click", () => {
     showMsg.style.display = "none";
     showMsg.classList.remove("clue", "incorrect", "correct");
+
+    if (shouldRemoveFlagsOnClose) {
+      worldMap.querySelectorAll(".placed-flag").forEach(flag => {
+        flag.remove();
+      });
+
+      placedFlags.clear();
+      lastPlacedFlagEl = null;
+
+      shouldRemoveFlagsOnClose = false; // ✅ reset
+    }
   });
 
   function getCountryAtPoint(svgElem, worldMap, x, y) {
@@ -607,10 +621,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     countryGroup.addEventListener("click", (e) => {
       if (mustProceedBeforeNext) {
-        hintText.textContent =
-          "Please click on the Proceed button to continue.";
-        setShowMsgState("clue");
-        return;
+        return; // 🚫 silently block interaction
       }
 
       if (!tapModeActive || !tappedFlag) return;
@@ -676,7 +687,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       markCountrySolved(countryId ?? droppedCountryId);
 
       lastDropWasCorrect = true;
-
+      shouldRemoveFlagsOnClose = true;
       let fillColor = "#007608"; // default Allied
 
       if (flagAlliance === "Central Powers") {
@@ -716,8 +727,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       const year = selectedYearData.year;
       solvedClues[year] ??= {};
       solvedClues[year][currentQuestionIndex] ??= new Set();
-      solvedClues[year][currentQuestionIndex].add(currentClueIndex);
-
+      solvedClues[year][currentQuestionIndex].add(clueIdxToMark);
+      const flagKey = selectedYearData?.year === 1918 ? '1918-' + flagCountry : flagCountry;
+      usedFlags.add(flagKey);
       renderCluesForQuestion(currentQuestion);
       if (is1918MultiDefeatedQuestion()) {
         multiSolvedCountries.add(flagCountry);
@@ -730,27 +742,25 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (qFinished) {
         showActionButton("Proceed", "proceed");
         mustProceedBeforeNext = true;
+        renderFlagsForQuestion(currentQuestion);
       } else {
         // ✅ Auto-advance intermediate clues after delay
         mustProceedBeforeNext = true;
-        setTimeout(() => {
-          showMsg.style.display = "none";
-          showMsg.classList.remove("correct");
+        // ❌ Removed auto close of correct popup
 
-          if (is1918MultiDefeatedQuestion()) {
-            resetDropState();
-            renderFlagsForQuestion(currentQuestion);
-          } else {
-            const year = selectedYearData.year;
-            const solvedSet = solvedClues[year][currentQuestionIndex];
-            const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
-            if (nextIdx !== -1) currentClueIndex = nextIdx;
+        if (is1918MultiDefeatedQuestion()) {
+          resetDropState();
+          renderFlagsForQuestion(currentQuestion);
+        } else {
+          const year = selectedYearData.year;
+          const solvedSet = solvedClues[year][currentQuestionIndex];
+          const nextIdx = currentQuestion.totalClues.findIndex((_, i) => !solvedSet.has(i));
+          if (nextIdx !== -1) currentClueIndex = nextIdx;
 
-            resetDropState();
-            renderFlagsForQuestion(currentQuestion);
-            renderCluesForQuestion(currentQuestion);
-          }
-        }, 5000);
+          resetDropState();
+          renderFlagsForQuestion(currentQuestion);
+          renderCluesForQuestion(currentQuestion);
+        }
       }
 
     } else {
@@ -773,6 +783,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       hintText.textContent = "Incorrect! Try again.";
       setShowMsgState("incorrect");
       showActionButton("Try Again", "try-again");
+      actionBtn.style.display = "none";
     }
     keepFlagPlaceholder(flagEl);
 
@@ -831,6 +842,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // ➡️ PROCEED
     if (actionBtn.classList.contains("proceed")) {
+      // ✅ ADD THIS BLOCK
+      if (shouldRemoveFlagsOnClose) {
+        worldMap.querySelectorAll(".placed-flag").forEach(flag => {
+          flag.remove();
+        });
+
+        placedFlags.clear();
+        lastPlacedFlagEl = null;
+        shouldRemoveFlagsOnClose = false;
+      }
+
       mustProceedBeforeNext = false;
 
       // 🔁 SPECIAL: 1918 defeated nations (must solve all 4)
@@ -848,7 +870,18 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      currentClueIndex++;
+      const year = selectedYearData.year;
+      const solvedSet = solvedClues[year][currentQuestionIndex] || new Set();
+
+      const nextIdx = currentQuestion.totalClues.findIndex(
+        (_, i) => !solvedSet.has(i)
+      );
+
+      if (nextIdx !== -1) {
+        currentClueIndex = nextIdx;
+      } else {
+        currentClueIndex = currentQuestion.totalClues.length; // mark finished
+      }
 
       // ▶ Next clue
       if (currentClueIndex < currentQuestion.totalClues.length) {
@@ -875,6 +908,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         } else {
           if (isYearCompleted()) {
             showStep4Overview();
+
+            // ✅ Show only when ALL years completed
+            if (replyBtn && areAllYearsCompleted()) {
+              replyBtn.style.display = "block";
+            }
           }
         }
       }
@@ -895,8 +933,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       .querySelectorAll("#flag-list li")
       .forEach((f) => f.classList.remove("tap-selected"));
 
-    if (lastPlacedFlagEl) {
+    // ✅ Do NOT remove flag if last drop was correct
+    // ❌ remove ONLY temporary flag (incorrect one)
+    if (!lastDropWasCorrect && lastPlacedFlagEl) {
       lastPlacedFlagEl.remove();
+      placedFlags.delete(lastPlacedFlagEl);
       lastPlacedFlagEl = null;
     }
 
@@ -950,8 +991,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         // 🚩 Remove placed flag overlay from the map
-        if (lastPlacedFlagEl) {
+        // ✅ Do NOT remove flag if last drop was correct
+        // ❌ remove ONLY temporary flag (incorrect one)
+        if (!lastDropWasCorrect && lastPlacedFlagEl) {
           lastPlacedFlagEl.remove();
+          placedFlags.delete(lastPlacedFlagEl);
           lastPlacedFlagEl = null;
         }
 
@@ -1042,24 +1086,38 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   function keepFlagPlaceholder(flagEl) {
-    const key = flagEl.dataset.country;
+    const key = selectedYearData?.year === 1918 ? '1918-' + flagEl.dataset.country : flagEl.dataset.country;
 
     if (usedFlags.has(key)) return;
 
     usedFlags.add(key);
     flagEl.dataset.hasPlaceholder = "true";
+
+    // ✅ Apply style to BOTH li AND img (fix for last flag case)
     flagEl.style.filter = "sepia(1)";
     flagEl.style.opacity = "0.4";
+
+    const img = flagEl.querySelector("img");
+    if (img) {
+      img.style.filter = "sepia(1)";
+      img.style.opacity = "0.4";
+    }
   }
 
   function removeFlagPlaceholder(flagEl) {
-    const key = flagEl.dataset.country;
+    const key = selectedYearData?.year === 1918 ? '1918-' + flagEl.dataset.country : flagEl.dataset.country;
 
     usedFlags.delete(key);
     delete flagEl.dataset.hasPlaceholder;
 
     flagEl.style.filter = "";
     flagEl.style.opacity = "";
+
+    const img = flagEl.querySelector("img");
+    if (img) {
+      img.style.filter = "";
+      img.style.opacity = "";
+    }
   }
 
   // 🔙 Back to map (step-3)
@@ -1152,6 +1210,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // 🔐 Track placed flag (same as drag)
     lastPlacedFlagEl = foreignObject;
+    placedFlags.add(foreignObject); // ✅ ADD THIS
   }
 
   const originalCountryFills = new Map();
@@ -1204,6 +1263,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Track for reset / try again
     lastPlacedFlagEl = foreignObject;
+    placedFlags.add(foreignObject); // ✅ ADD THIS
   }
 
   // 🎨 HELPER: Capture original fill
@@ -1482,4 +1542,40 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  if (replyBtn) {
+    replyBtn.addEventListener("click", () => {
+
+      // ✅ Remove completed class from all years
+      document.querySelectorAll(".timeline-year").forEach(el => {
+        el.classList.remove("completed");
+      });
+
+      // ✅ Reset all game state
+      resetAllProgressState();
+
+      // ✅ Hide reply button again
+      replyBtn.style.display = "none";
+
+      // ✅ Go back to timeline
+      document.getElementById("step-4").style.display = "none";
+      document.getElementById("step-1").style.display = "block";
+
+      setActiveStep(1);
+    });
+  }
+
+  function areAllYearsCompleted() {
+    if (!eventData) return false;
+
+    return eventData.worldWarI.every(yearData => {
+      const year = yearData.year;
+
+      if (!solvedClues[year]) return false;
+
+      return yearData.questions.every((q, qIndex) => {
+        const solvedSet = solvedClues[year]?.[qIndex];
+        return solvedSet && solvedSet.size === q.totalClues.length;
+      });
+    });
+  }
 });

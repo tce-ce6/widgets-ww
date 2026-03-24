@@ -20,12 +20,20 @@ body#idiom-wrapper {
   overflow: hidden;
 }
 
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
 #idiom-wrapper .container {
   border: none;
   height: 100vh;
   width: 100vw;
   position: relative;
   user-select: none !important;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -45,14 +53,11 @@ body#idiom-wrapper {
   height: calc(100% + 10px);
   width: 100%;
   position: absolute;
-  top: -5px;
-  left: 0;
+  margin: 0;
+  padding: 0;
   pointer-events: none;
-}
-
-/* #idiom-wrapper .mainContainerOuter {
   background: #60360D !important
-} */
+}
 
 #idiom-wrapper .button-controls {
   background: 0 0 !important;

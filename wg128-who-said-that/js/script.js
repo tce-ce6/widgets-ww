@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Ensure visibility of the slot itself
       slotEl.style.display = "block";
-      slotEl.classList.remove("incorrect-border", "vibrate");
+      slotEl.classList.remove("incorrect-border", "vibrate", "disabled-btn", "fade-out");
 
       // Clear existing animal icons (pig-option, cow-option, sheep-option)
       const existingIcons = ["pig-option", "cow-option", "sheep-option"];
@@ -231,11 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const tx = slotCX - 0.8 * bbox.cx;
       const ty = slotCY - 0.8 * bbox.cy;
-      console.log(animalKey,"To check for wolf image scenario")
-      if(animalKey === 'wolf'){
-      clone.setAttribute("transform", `translate(${tx + 110}, ${ty + 250}) scale(0.9)`);
-        
-      }else{
+      console.log(animalKey, "To check for wolf image scenario")
+      if (animalKey === 'wolf') {
+        clone.setAttribute("transform", `translate(${tx + 110}, ${ty + 250}) scale(0.9)`);
+
+      } else {
         clone.setAttribute("transform", `translate(${tx}, ${ty}) scale(0.8)`);
 
       }
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Make the entire slot interactive (both patch and animal)
       slotEl.style.cursor = "pointer";
-      slotEl.style.pointerEvents = "all";
+      slotEl.style.pointerEvents = "none";
 
       // Clear existing listeners by cloning and replacing
       const freshSlot = slotEl.cloneNode(true);
@@ -286,30 +286,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetGame();
 
+  function startGame() {
+    if (pickACardSection) pickACardSection.style.display = "none";
+    if (pickCardButton) pickCardButton.style.display = "none";
+
+    if (iText) iText.style.display = "block";
+    if (visualPanel) visualPanel.style.display = "block";
+    if (audioButton) audioButton.style.display = "block";
+    if (activityBox) activityBox.style.display = "block";
+    if (showAnswerButton) {
+      showAnswerButton.style.display = "block";
+      showAnswerButton.classList.add("disabled-btn");
+      showAnswerButton.style.pointerEvents = "none";
+    }
+    if (nextButton) {
+      nextButton.style.display = "block";
+    }
+
+    setupTray();
+    selectedAnimalKey = null;
+  }
+
   if (pickCardButton) {
     pickCardButton.style.cursor = "pointer";
-    pickCardButton.addEventListener("click", () => {
-      if (pickACardSection) pickACardSection.style.display = "none";
-      if (pickCardButton) pickCardButton.style.display = "none";
+    pickCardButton.addEventListener("click", startGame);
+  }
 
-      if (iText) iText.style.display = "block";
-      if (visualPanel) visualPanel.style.display = "block";
-      if (audioButton) audioButton.style.display = "block";
-      if (activityBox) activityBox.style.display = "block";
-      if (showAnswerButton) {
-        showAnswerButton.style.display = "block";
-        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
-        showAnswerButton.classList.remove("disabled-btn");
-        showAnswerButton.style.pointerEvents = "auto";
-      }
-      if (nextButton) {
-        nextButton.style.display = "block";
-        nextButton.setAttribute("transform", "translate(170, 0)");
-      }
-
-      setupTray();
-      selectedAnimalKey = null;
-    });
+  if (pickACardSection) {
+    pickACardSection.style.cursor = "pointer";
+    pickACardSection.style.pointerEvents = "auto";
+    pickACardSection.addEventListener("click", startGame);
   }
 
   if (audioButton) {
@@ -321,6 +327,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentAudio) currentAudio.pause();
       currentAudio = new Audio(animalData[targetAnimalKey].audio);
       currentAudio.play().catch(e => console.error("Audio play failed:", e));
+
+      if (showAnswerButton) {
+        showAnswerButton.classList.remove("disabled-btn");
+        showAnswerButton.style.pointerEvents = "auto";
+      }
+
+      traySlotIds.forEach(slotId => {
+        const slotEl = document.getElementById(slotId);
+        if (slotEl) {
+          slotEl.style.pointerEvents = "all";
+        }
+      });
     });
   }
 
@@ -330,20 +348,23 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show both buttons and shift them side-by-side
     if (showAnswerButton) {
       showAnswerButton.style.display = "block";
-      showAnswerButton.setAttribute("transform", "translate(-170, 0)");
       showAnswerButton.classList.add("disabled-btn");
       showAnswerButton.style.pointerEvents = "none";
     }
     if (nextButton) {
       nextButton.style.display = "block";
-      nextButton.setAttribute("transform", "translate(170, 0)");
     }
 
-    // Disable all tray slots (RHS cards)
-    traySlotIds.forEach(slotId => {
+    // Disable all tray slots (RHS cards) and fade out incorrect ones
+    traySlotIds.forEach((slotId, index) => {
       const slotEl = document.getElementById(slotId);
       if (slotEl) {
         slotEl.style.pointerEvents = "none";
+        if (trayAnimals[index] !== targetAnimalKey) {
+          slotEl.classList.add("fade-out");
+        } else {
+          slotEl.classList.remove("disabled-btn"); // Ensure correct card is fully visible
+        }
       }
     });
 
@@ -369,15 +390,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const tx = 312.85 - bbox.cx;
       const ty = 488 - bbox.cy;
       animalPanelEl.setAttribute("transform", `translate(${tx}, ${ty})`);
-      if(targetAnimalKey === 'wolf'){
-      animalPanelEl.setAttribute("transform", `translate(${tx + 125}, ${ty + 330}) scale(1.2)`);
-      
-        
-      }else{
+      if (targetAnimalKey === 'wolf') {
+        animalPanelEl.setAttribute("transform", `translate(${tx + 125}, ${ty + 330}) scale(1.2)`);
+
+
+      } else {
         animalPanelEl.setAttribute("transform", `translate(${tx}, ${ty}) `);
 
       }
-      
+
     }
 
     if (textInPanel) {
@@ -459,13 +480,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Reset buttons and positions
       if (showAnswerButton) {
         showAnswerButton.style.display = "block";
-        showAnswerButton.setAttribute("transform", "translate(-170, 0)");
-        showAnswerButton.classList.remove("disabled-btn");
-        showAnswerButton.style.pointerEvents = "auto";
+        showAnswerButton.classList.add("disabled-btn");
+        showAnswerButton.style.pointerEvents = "none";
       }
       if (nextButton) {
         nextButton.style.display = "block";
-        nextButton.setAttribute("transform", "translate(170, 0)");
       }
 
       // Re-enable tray cards interactivity

@@ -6,14 +6,14 @@ const INITIAL_ANGLE = 69;
 const INITIAL_DECIMAL = 6;
 let angleInteger = INITIAL_ANGLE;
 let angleDecimal = INITIAL_DECIMAL;
-let angleIncrement = 1; 
-let currentN2 = null; 
+let angleIncrement = 1;
+let currentN2 = null;
 const n1 = 1.0; // Air refractive index
 
 // Center point where light ray hits the interface
 const CENTER_X = 960.5;
 const CENTER_Y = 524.5;
-const TORCH_RADIUS = 200; 
+const TORCH_RADIUS = 200;
 
 const mediaData = {
     'water-btn': { n: 1.33, img: document.getElementById('water-img') },
@@ -69,7 +69,7 @@ function updateSimulation() {
         }
 
         updateIncidentAngleArc(totalAngle, torchX > CENTER_X);
-        
+
 
         // 2. Physics Logic (Snell's Law)
         let incidentAngle = totalAngle % 90;
@@ -85,7 +85,7 @@ function updateSimulation() {
                 // Refraction (Yellow ray bends into medium)
                 const theta2Rad = Math.asin(sinTheta2);
                 let theta2Deg = theta2Rad * (180 / Math.PI);
-                
+
                 // SVG coordinates: 90 is Down. Bending left or right of 90.
                 const rayAngleSVG = isRightSide ? (90 + theta2Deg) : (90 - theta2Deg);
                 const resRad = rayAngleSVG * (Math.PI / 180);
@@ -96,7 +96,7 @@ function updateSimulation() {
                 yellowLineEl.setAttribute("y2", CENTER_Y + lineLength * Math.sin(resRad));
                 yellowLineEl.setAttribute("stroke", "#FFC506");
 
-              //  updateRefractedAngleArc(theta2Deg, isRightSide);
+                //  updateRefractedAngleArc(theta2Deg, isRightSide);
                 const refractedSVGAngle = 90 + theta2Deg;
                 updateRefractedAngleArc(refractedSVGAngle);
 
@@ -300,90 +300,90 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- Create Incident Angle Arc ---
-if (!document.getElementById('incidentAngleArc')) {
+    if (!document.getElementById('incidentAngleArc')) {
 
-    const arcGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    arcGroup.setAttribute('id', 'incidentAngleArc');
+        const arcGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        arcGroup.setAttribute('id', 'incidentAngleArc');
 
-    const arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    arcPath.setAttribute('stroke', '#FF0000');
-    arcPath.setAttribute('stroke-width', '4');
-    arcPath.setAttribute('fill', 'none');
-    arcPath.setAttribute('stroke-dasharray', '6,4');
+        const arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        arcPath.setAttribute('stroke', '#FF0000');
+        arcPath.setAttribute('stroke-width', '4');
+        arcPath.setAttribute('fill', 'none');
+        arcPath.setAttribute('stroke-dasharray', '6,4');
 
-    arcGroup.appendChild(arcPath);
-    torchGroup.parentNode.appendChild(arcGroup); // important: append, not insertBefore
-}
+        arcGroup.appendChild(arcPath);
+        torchGroup.parentNode.appendChild(arcGroup); // important: append, not insertBefore
+    }
 
-// --- Create Incident Label ---
-if (!document.getElementById('incidentAngleLabel')) {
+    // --- Create Incident Label ---
+    if (!document.getElementById('incidentAngleLabel')) {
 
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('id', 'incidentAngleLabel');
-    text.setAttribute('fill', '#FF0000');
-    text.setAttribute('font-size', '24');
-    text.setAttribute('font-weight', 'bold');
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('id', 'incidentAngleLabel');
+        text.setAttribute('fill', '#FF0000');
+        text.setAttribute('font-size', '24');
+        text.setAttribute('font-weight', 'bold');
 
-    const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan.textContent = '0°';
-    text.appendChild(tspan);
+        const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan.textContent = '0°';
+        text.appendChild(tspan);
 
-    torchGroup.parentNode.appendChild(text);
-}
+        torchGroup.parentNode.appendChild(text);
+    }
 
 
-// --- Create Refracted Angle Arc ---
-if (!document.getElementById('refractedAngleArc')) {
+    // --- Create Refracted Angle Arc ---
+    if (!document.getElementById('refractedAngleArc')) {
 
-    const arcGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    arcGroup.setAttribute('id', 'refractedAngleArc');
-    arcGroup.style.display = "none";
+        const arcGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        arcGroup.setAttribute('id', 'refractedAngleArc');
+        arcGroup.style.display = "none";
 
-    const arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    arcPath.setAttribute('stroke', '#FFC506');
-    arcPath.setAttribute('stroke-width', '4');
-    arcPath.setAttribute('fill', 'none');
-    arcPath.setAttribute('stroke-dasharray', '6,4');
+        const arcPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        arcPath.setAttribute('stroke', '#FFC506');
+        arcPath.setAttribute('stroke-width', '4');
+        arcPath.setAttribute('fill', 'none');
+        arcPath.setAttribute('stroke-dasharray', '6,4');
 
-    arcGroup.appendChild(arcPath);
-    torchGroup.parentNode.appendChild(arcGroup);
-}
+        arcGroup.appendChild(arcPath);
+        torchGroup.parentNode.appendChild(arcGroup);
+    }
 
-// --- Create Refracted Label ---
-if (!document.getElementById('refractedAngleLabel')) {
+    // --- Create Refracted Label ---
+    if (!document.getElementById('refractedAngleLabel')) {
 
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('id', 'refractedAngleLabel');
-    text.setAttribute('fill', '#FFC506');
-    text.setAttribute('font-size', '24');
-    text.setAttribute('font-weight', 'bold');
-    text.style.display = "none";
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('id', 'refractedAngleLabel');
+        text.setAttribute('fill', '#FFC506');
+        text.setAttribute('font-size', '24');
+        text.setAttribute('font-weight', 'bold');
+        text.style.display = "none";
 
-    const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan.textContent = '0°';
-    text.appendChild(tspan);
+        const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan.textContent = '0°';
+        text.appendChild(tspan);
 
-    torchGroup.parentNode.appendChild(text);
-}
+        torchGroup.parentNode.appendChild(text);
+    }
 
     // --- Arrow Listeners ---
-    integerUpArrow?.addEventListener('click', () => { 
-        angleInteger = (angleInteger + 1) % 360; 
-        updateSimulation(); 
+    integerUpArrow?.addEventListener('click', () => {
+        angleInteger = (angleInteger + 1) % 360;
+        updateSimulation();
     });
-    integerDownArrow?.addEventListener('click', () => { 
-        angleInteger = (angleInteger - 1 + 360) % 360; 
-        updateSimulation(); 
+    integerDownArrow?.addEventListener('click', () => {
+        angleInteger = (angleInteger - 1 + 360) % 360;
+        updateSimulation();
     });
-    decimalUpArrow?.addEventListener('click', () => { 
-        angleDecimal++; 
+    decimalUpArrow?.addEventListener('click', () => {
+        angleDecimal++;
         if (angleDecimal > 9) { angleDecimal = 0; angleInteger++; }
-        updateSimulation(); 
+        updateSimulation();
     });
-    decimalDownArrow?.addEventListener('click', () => { 
-        angleDecimal--; 
+    decimalDownArrow?.addEventListener('click', () => {
+        angleDecimal--;
         if (angleDecimal < 0) { angleDecimal = 9; angleInteger--; }
-        updateSimulation(); 
+        updateSimulation();
     });
 
     // --- Medium Button Listeners ---

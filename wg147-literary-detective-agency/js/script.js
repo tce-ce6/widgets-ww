@@ -25,29 +25,46 @@ document.addEventListener('DOMContentLoaded', () => {
       step2.style.display = 'block';
       mainBtn.style.display = 'none';
     } else if (mainBtn.textContent.trim() === 'File Report') {
-        const toneCorrect = document.getElementById('tone-options').classList.contains('disabled-wrapper');
-        const moodCorrect = document.getElementById('mood-options').classList.contains('disabled-wrapper');
+        const toneOptions = document.getElementById('tone-options');
+        const moodOptions = document.getElementById('mood-options');
         const caseData = gameData.cases[currentCaseIndex];
         const passageData = caseData.passages[currentPassageIndex];
         const feedback = passageData.feedback || {};
 
-        if (toneCorrect && moodCorrect) {
+        // Find current selections from header text or dataset
+        const toneLabelValue = document.getElementById('tone-type').textContent;
+        const moodLabelValue = document.getElementById('mood-type').textContent;
+
+        const toneAlreadyCorrect = toneOptions.classList.contains('disabled-wrapper');
+        const moodAlreadyCorrect = moodOptions.classList.contains('disabled-wrapper');
+
+        const isToneCorrect = toneAlreadyCorrect || (toneLabelValue === passageData.correctTone);
+        const isMoodCorrect = moodAlreadyCorrect || (moodLabelValue === passageData.correctMood);
+
+        if (isToneCorrect && isMoodCorrect) {
+            // Apply locking and success styles only when BOTH are correct
+            document.getElementById('tone-type').classList.add('correct');
+            toneOptions.classList.add('disabled-wrapper');
+            toneOptions.querySelectorAll('li').forEach(li => li.classList.add('disabled'));
+
+            document.getElementById('mood-type').classList.add('correct');
+            moodOptions.classList.add('disabled-wrapper');
+            moodOptions.querySelectorAll('li').forEach(li => li.classList.add('disabled'));
+
             const currentProgress = document.getElementById(`progress-step-${currentPassageIndex + 1}`);
             if (currentProgress) currentProgress.setAttribute('opacity', '1');
-
             showPopup('correct', 'Excellent!', feedback.bothCorrect || "Excellent detective work!");
         } else {
-            let title = (!toneCorrect && !moodCorrect) ? "Incorrect tone and mood:" : (!toneCorrect ? "Incorrect tone:" : "Incorrect mood:");
+            let title = (!isToneCorrect && !isMoodCorrect) ? "Incorrect tone and mood:" : (!isToneCorrect ? "Incorrect tone:" : "Incorrect mood:");
             let msg = feedback.bothIncorrect || "Let’s review the clues together, detective.";
             
-            if (toneCorrect && !moodCorrect) {
+            if (isToneCorrect && !isMoodCorrect) {
                 title = "Incorrect mood:";
                 msg = feedback.incorrectMood || "Good catch on the tone! But let’s reexamine the mood.";
-            } else if (!toneCorrect && moodCorrect) {
+            } else if (!isToneCorrect && isMoodCorrect) {
                 title = "Incorrect tone:";
                 msg = feedback.incorrectTone || "Good catch on the mood! But let’s reexamine the tone.";
             }
-
             showPopup('wrong', title, msg);
         }
     } else if (mainBtn.textContent.trim() === 'Next Passage') {
@@ -270,31 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleOptionSelection(type, liElement, selectedOption, correctOption, parentUl) {
     if (liElement.classList.contains('disabled') || parentUl.classList.contains('disabled-wrapper')) return;
 
-    if (selectedOption === correctOption) {
-      const typeElement = document.getElementById(`${type}-type`);
-      typeElement.textContent = selectedOption;
-      typeElement.classList.add('correct');
-      
-      const allLis = parentUl.querySelectorAll('li');
-      allLis.forEach(li => li.classList.add('disabled'));
-      parentUl.classList.add('disabled-wrapper');
-      liElement.classList.add('correct');
-      liElement.classList.remove('incorrect');
-    } else {
-      liElement.classList.add('incorrect');
-
-      const caseData = gameData.cases[currentCaseIndex];
-      const passageData = caseData.passages[currentPassageIndex];
-      const feedback = passageData.feedback || {};
-
-      const isTone = type === 'tone';
-      let title = isTone ? "Incorrect tone:" : "Incorrect mood:";
-      let msg = isTone 
-        ? (feedback.incorrectTone || "Let’s reexamine the tone.") 
-        : (feedback.incorrectMood || "Let’s reexamine the mood.");
-
-      showPopup('wrong', title, msg);
-    }
+    // Update label text to indicate choice (no color/locking yet)
+    const typeElement = document.getElementById(`${type}-type`);
+    typeElement.textContent = selectedOption;
+    typeElement.classList.remove('correct');
   }
 
   function showPopup(type, title, text) {
