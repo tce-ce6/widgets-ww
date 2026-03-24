@@ -308,11 +308,53 @@ function initWidget() {
     btnBack.style.cursor = "pointer";
     btnBack.addEventListener("click", goBack);
   }
+  function resetWidget() {
+    // Reset navigation state
+    currentScreen = 0;
+    currentChallengeSC2 = 1;
+    currentChallengeSC3 = 1;
+
+    // Clear dynamically injected overlays and dropdowns
+    if (uiLayer) uiLayer.innerHTML = "";
+    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+
+    // Reset SC1 visual state — hide all matched/selected indicators
+    hideElements("#act-01-sc1-cards-matched > *");
+    hideElements("#act-01-sc1-cards-selected > *");
+    // Remove trader highlight classes
+    villageTrades.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("trader-selected", "trader-matched");
+        el.style.filter = "";
+        el.style.opacity = "";
+      }
+    });
+
+    // Reset SC2 feedback state
+    hideElements('[id^="act-02-sc1-feedback"]');
+
+    // Reset SC3 selected indicators
+    for (let sc = 1; sc <= 3; sc++) {
+      for (let i = 1; i <= 4; i++) {
+        hideElements(`#act-03-sc${sc}-card${i}-selected`);
+      }
+    }
+
+    // Stop Lottie animations
+    [lottieSuccessSC1, lottieSadSC1, lottieSadSC2, lottieSuccessSC2].forEach(
+      (anim) => { if (anim) anim.stop(); }
+    );
+
+    // Return to menu
+    updateView();
+  }
+
   if (btnHome) {
     btnHome.style.cursor = "pointer";
 
     btnHome.addEventListener("click", () => {
-      location.reload();
+      resetWidget();
     });
   }
 
