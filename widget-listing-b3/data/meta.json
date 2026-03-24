@@ -97,7 +97,7 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-24T11:55:11+05:30",
+      "updatedAt": "2026-03-24T12:02:14+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -137,7 +137,7 @@
       "author": "aditya"
     },
     "wg136-compound-words-adventure": {
-      "updatedAt": "2026-03-23T20:46:29+05:30",
+      "updatedAt": "2026-03-24T12:09:21+05:30",
       "author": "PrasannaP"
     },
     "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
@@ -165,8 +165,8 @@
       "author": "Shyam"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-13T19:08:55+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-24T11:25:44+05:30",
+      "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
       "updatedAt": "2026-03-23T18:35:48+05:30",
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-24T12:09:21+05:30",
+      "author": "PrasannaP",
+      "message": "fix: adjust text position for improved layout in adventure index",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-24T12:02:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg126 fixes",
+      "widgets": [
+        126
+      ]
+    },
+    {
       "date": "2026-03-24T11:55:11+05:30",
       "author": "tce-nitinc",
       "message": "wg 126 and 86 fixes",
@@ -393,6 +409,14 @@
       "message": "Update index.html",
       "widgets": [
         128
+      ]
+    },
+    {
+      "date": "2026-03-24T11:25:44+05:30",
+      "author": "PrasannaP",
+      "message": "146 start",
+      "widgets": [
+        146
       ]
     },
     {
@@ -596,31 +620,6 @@
       "date": "2026-03-23T16:49:10+05:30",
       "author": "aditya",
       "message": "wolf img rename",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:47:01+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        134,
-        142
-      ]
-    },
-    {
-      "date": "2026-03-23T16:43:11+05:30",
-      "author": "tce-nitinc",
-      "message": "wg115 ca",
-      "widgets": [
-        115
-      ]
-    },
-    {
-      "date": "2026-03-23T16:35:46+05:30",
-      "author": "aditya",
-      "message": "fix wg128",
       "widgets": [
         128
       ]
