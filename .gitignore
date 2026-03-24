@@ -1,5 +1,6 @@
 .creator_profile
 dist/
+refs/
 .firebase/
 *.pptx
 *.zip

@@ -18,7 +18,8 @@ var WG112App = {
         phase: 0,           // 0=init  1=allLoaded  2=running  3=identify  4=answered
         loadedTubes: [],    // indices 0-4 already dispensed into gel
         currentSetIdx: 0,   // currently active set in DNA_SETS
-        criminal: 3,        // 0-based index of the criminal (updated properly per set now)
+        criminal: null,        // 0-based index (will be set from sequence)
+        criminalQueue: [],    // sequence to ensure all 4 appear without repeats until cycle ends
         nextSuspectLane: 1, // Lane index (1 to 4) for the next clicked suspect
         submitted: false,   // true once a suspect is clicked in Phase 3
         animating: false,   // animation guard – prevents double-clicks
@@ -36,19 +37,19 @@ var WG112App = {
      *  labelId – sample name text shown in gel lane after loading
      */
     TUBES: [
-        { id: 0, tubeId: 'tube', baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Crime_scene_sample_2' },
-        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Suspect-3_sample-2' },
-        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Suspect-2_sample-2' },
-        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Suspect-4_sample-2' },
-        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Suspect-1_sample' }
+        { id: 0, tubeId: 'tube',   baseId: 'Group_1356', wellId: 'Group_1605', labelId: 'Label_Lane_1', name: "Crime Scene" },
+        { id: 1, tubeId: 'tube-2', baseId: 'Group_1357', wellId: 'Group_1607', labelId: 'Label_Lane_2', name: "Suspect 1" },
+        { id: 2, tubeId: 'tube-3', baseId: 'Group_1358', wellId: 'Group_1608', labelId: 'Label_Lane_3', name: "Suspect 2" },
+        { id: 3, tubeId: 'tube-4', baseId: 'Group_1359', wellId: 'Group_1609', labelId: 'Label_Lane_4', name: "Suspect 3" },
+        { id: 4, tubeId: 'tube-5', baseId: 'Group_1360', wellId: 'Group_1610', labelId: 'Label_Lane_5', name: "Suspect 4" }
     ],
 
     // Lane-2 … Lane-5 sample labels (Lane-1 Crime scene label stays always on)
     SUSPECT_LANE_LABELS: [
-        'Suspect-3_sample-2',  // Lane-2
-        'Suspect-2_sample-2',  // Lane-3
-        'Suspect-4_sample-2',  // Lane-4
-        'Suspect-1_sample'     // Lane-5
+        'Label_Lane_2',  // Lane-2
+        'Label_Lane_3',  // Lane-3
+        'Label_Lane_4',  // Lane-4
+        'Label_Lane_5'   // Lane-5
     ],
 
     // DNA band groups revealed during electrophoresis (one per lane)
@@ -62,13 +63,16 @@ var WG112App = {
         { groupId: 'Group_1684' }   // Suspect-4 – bottom-right
     ],
 
-    // Predefined DNA test sets corresponding to slides with varied correct suspects
+    /**
+     * 4 band-pattern sets. Each has 4 UNIQUE suspect patterns.
+     * The criminal is NOT hardcoded here — it is randomised each time
+     * a set is applied, giving 4 sets × 4 criminals = 16 equally-likely combos.
+     */
     DNA_SETS: [
         {
             chromosomes: ["6", "13", "17"],
-            criminal: 1, // Suspect-2
             suspects: [
-                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 800 }],
+                [{ c: 1, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 0, y: 760 }, { c: 2, y: 785 }],
                 [{ c: 0, y: 440 }, { c: 1, y: 480 }, { c: 0, y: 560 }, { c: 1, y: 640 }, { c: 2, y: 720 }, { c: 2, y: 760 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 0, y: 600 }, { c: 1, y: 640 }, { c: 2, y: 720 }],
                 [{ c: 1, y: 400 }, { c: 0, y: 480 }, { c: 1, y: 560 }, { c: 2, y: 640 }, { c: 0, y: 720 }, { c: 2, y: 760 }]
@@ -76,7 +80,6 @@ var WG112App = {
         },
         {
             chromosomes: ["5", "12", "20"],
-            criminal: 2, // Suspect-3
             suspects: [
                 [{ c: 2, y: 480 }, { c: 1, y: 560 }, { c: 1, y: 640 }, { c: 0, y: 680 }, { c: 0, y: 720 }, { c: 0, y: 760 }],
                 [{ c: 2, y: 440 }, { c: 2, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 0, y: 680 }, { c: 0, y: 720 }],
@@ -86,7 +89,6 @@ var WG112App = {
         },
         {
             chromosomes: ["1", "9", "22"],
-            criminal: 3, // Suspect-4
             suspects: [
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 520 }, { c: 1, y: 560 }, { c: 1, y: 600 }, { c: 2, y: 640 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 1, y: 520 }, { c: 1, y: 560 }, { c: 2, y: 600 }, { c: 2, y: 640 }],
@@ -96,7 +98,6 @@ var WG112App = {
         },
         {
             chromosomes: ["2", "7", "18"],
-            criminal: 0, // Suspect-1
             suspects: [
                 [{ c: 0, y: 440 }, { c: 0, y: 480 }, { c: 2, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 1, y: 760 }],
                 [{ c: 0, y: 440 }, { c: 0, y: 520 }, { c: 2, y: 560 }, { c: 2, y: 600 }, { c: 1, y: 680 }, { c: 1, y: 760 }],
@@ -235,8 +236,12 @@ var WG112App = {
         G.phase = 0;
         G.loadedTubes = [];
 
+        // If criminal hasn't been set yet (first load), draw from non-repeating queue
+        if (G.criminal === undefined || G.criminal === null) {
+            G.criminal = this.getNextCriminal();
+        }
+
         var currentSet = this.DNA_SETS[G.currentSetIdx];
-        G.criminal = currentSet.criminal;
 
         G.nextSuspectLane = 1;
         G.submitted = false;
@@ -251,8 +256,8 @@ var WG112App = {
 
         /* ── always-visible background elements ── */
         this.show('gel_base');
-        this.show('repport_numbers');
-        this.show('index');
+        this.hide('repport_numbers');
+        this.hide('index');
         this.show('base');
         this.show('tube_base');
         this.show('solution_tube');
@@ -480,6 +485,10 @@ var WG112App = {
             })(i, delay * (i + 1));
         }
 
+        /* Show legend and repeat numbers */
+        this.show('repport_numbers');
+        this.show('index');
+
         /* After electrophoresis finishes → transition to Slide 11 */
         setTimeout(function () {
             self.onShowSlide11();
@@ -513,38 +522,55 @@ var WG112App = {
         this.enableShowAnswerBtn();
     },
 
-    /* ─── SUSPECT CLICK – IMMEDIATE FEEDBACK (Change 3) ────────────────────── */
+    /* ─── SUSPECT CLICK – IMMEDIATE FEEDBACK ──────────────────────────────── */
     onSuspectClick: function (idx) {
         var G = this.G;
-        if (G.phase !== 3) { return; }
-        if (G.submitted) { return; }
+        if (G.phase !== 3 && G.phase !== 4) { return; }
+        if (G.submitted) { return; }  // already answered correctly
 
-        G.submitted = true;
-        G.phase = 4;
-
-        /* Lock all suspects */
-        for (var s = 0; s < this.SUSPECTS.length; s++) {
-            this.setPointer(this.SUSPECTS[s].groupId, false);
-        }
-
-        /* Change 3 – show feedback immediately on click */
+        /* Show feedback for this click */
         this.showFeedback(idx);
     },
 
-    /* ─── FEEDBACK DISPLAY (Change 5 – animated) ────────────────────────────── */
+    /* ─── FEEDBACK DISPLAY (animated) ───────────────────────────────────────── */
     showFeedback: function (idx) {
         var G = this.G;
+        var self = this;
 
         if (idx === G.criminal) {
-            /* ✅ Correct – green border box pops in, then Bravo text fades in */
+            /* ✅ Correct – lock everything, show green feedback */
+            G.submitted = true;
+            G.phase = 4;
+            for (var s = 0; s < this.SUSPECTS.length; s++) {
+                this.setPointer(this.SUSPECTS[s].groupId, false);
+            }
             this.show('Layer_5');
             this.showAnimated(this.BRAVO_BOX[idx], 'anim-correct');
             this.showAnimated(this.BRAVO_TEXT[idx], 'anim-text');
         } else {
-            /* ❌ Wrong – red border box pops in, then wrong text fades in */
+            /* ❌ Wrong – show red feedback briefly, then hide it and let user try again */
+            // Disable clicks during wrong animation
+            for (var s = 0; s < this.SUSPECTS.length; s++) {
+                this.setPointer(this.SUSPECTS[s].groupId, false);
+            }
             this.show('wrong_feedback');
             this.showAnimated(this.WRONG_BOX[idx], 'anim-wrong');
             this.showAnimated(this.WRONG_TEXT[idx], 'anim-text');
+
+            // After 1.5s, hide wrong feedback and re-enable remaining suspects
+            setTimeout(function () {
+                self.hide('wrong_feedback');
+                var wBox = self.el(self.WRONG_BOX[idx]);
+                if (wBox) { wBox.style.display = 'none'; wBox.classList.remove('anim-wrong'); }
+                var wTxt = self.el(self.WRONG_TEXT[idx]);
+                if (wTxt) { wTxt.style.display = 'none'; wTxt.classList.remove('anim-text'); }
+
+                // Re-enable all suspects except already-wrong ones
+                for (var s = 0; s < self.SUSPECTS.length; s++) {
+                    self.setPointer(self.SUSPECTS[s].groupId, true);
+                    self.setCursor(self.SUSPECTS[s].groupId, 'pointer');
+                }
+            }, 1500);
         }
     },
 
@@ -596,7 +622,7 @@ var WG112App = {
         // Avoid clicking while animating
         if (G.animating && G.phase < 4) { return; }
 
-        // Randomly pick a new set that is not the current one
+        // Randomly pick a new band-pattern set (avoid repeating same one)
         if (this.DNA_SETS.length > 1) {
             var nextSet = G.currentSetIdx;
             while (nextSet === G.currentSetIdx) {
@@ -605,11 +631,56 @@ var WG112App = {
             G.currentSetIdx = nextSet;
         }
 
+        // Pick next criminal from non-repeating queue to ensure all 4 appear once before repeating
+        G.criminal = this.getNextCriminal();
+
+        console.log("%c [New Set Cycle] ", "background: #4CAF50; color: #fff; padding: 2px 5px;",
+            "Band Set: " + G.currentSetIdx + ", Criminal: Suspect " + (G.criminal + 1));
+
         this.reset();
+    },
+
+    /* Helper to get next criminal from a shuffled pool of 4 suspects */
+    getNextCriminal: function () {
+        var G = this.G;
+        var last = G.criminal; // current criminal will be the "last" one once we draw new
+
+        if (!G.criminalQueue || G.criminalQueue.length === 0) {
+            // Refill with all suspects 0-3 and shuffle
+            G.criminalQueue = [0, 1, 2, 3];
+            this.shuffleArray(G.criminalQueue);
+
+            /**
+             * Avoid consecutive duplicates between cycles:
+             * If the next one to pop (the last in array) is the same as the previous criminal,
+             * swap it with another element in the new queue.
+             */
+            if (G.criminalQueue[G.criminalQueue.length - 1] === last) {
+                // Swap the last element with index 0
+                var tmp = G.criminalQueue[G.criminalQueue.length - 1];
+                G.criminalQueue[G.criminalQueue.length - 1] = G.criminalQueue[0];
+                G.criminalQueue[0] = tmp;
+            }
+
+            console.log("Criminal Queue Refilled (Cycle Restart!):", G.criminalQueue);
+        }
+        return G.criminalQueue.pop();
+    },
+
+    /* Utility to shuffle array in place */
+    shuffleArray: function (arr) {
+        for (var i = arr.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
     },
 
     /* ─── DYNAMIC DNA BAND GENERATION ────────────────────────────────────────── */
     applyDNASet: function (setDef) {
+        var criminal = this.G.criminal;  // dynamically chosen criminal index (0-3)
+
         // 1. Update legend labels
         for (var c = 0; c < 3; c++) {
             var lbl = this.el('lbl_chrom_' + c);
@@ -618,21 +689,39 @@ var WG112App = {
 
         // 2. Update criminal answer text (Suspects 1-indexed)
         var ansLbl = this.el('lbl_criminal_answer');
-        if (ansLbl) { ansLbl.textContent = 'Suspect ' + (setDef.criminal + 1) + ' is the criminal'; }
+        if (ansLbl) { ansLbl.textContent = 'Suspect ' + (criminal + 1) + ' is the criminal'; }
+
+        var ansSusName = this.el('ans_suspect_name');
+        if (ansSusName) { ansSusName.textContent = 'Suspect-' + (criminal + 1); }
+
+        // Update Answer Popup Portrait
+        var colorMapBG = { 0: '#fdce86', 1: '#05decf', 2: '#a4de05', 3: '#dc83b6' };
+        var ansBG = this.el('ans_portrait_bg');
+        if (ansBG) { ansBG.setAttribute('fill', colorMapBG[criminal]); }
+
+        for (var s = 0; s < 4; s++) {
+            var p = this.el('ans_portrait_' + s);
+            if (p) { p.style.display = (s === criminal) ? 'inline' : 'none'; }
+        }
 
         // 3. Colors for chromosomes
         var colorMap = { 0: '#ff4c00', 1: '#00d62c', 2: '#ffffb4' };
 
         // 4. Generate bands for all 5 lanes
-        // Lane 0 is Crime Scene, Lanes 1-4 are suspects
-        var crimeSceneBands = setDef.suspects[setDef.criminal];
+        // Crime Scene = copy of the criminal's pattern
+        // Lane 2-5 = Suspects 1-4 in order
+        var crimeSceneBands = setDef.suspects[criminal];
+
+        // LOGGING: log values of all five lanes and correct answer
+        console.log("%c [DNA Set Applied] ", "background: #006199; color: #fff; padding: 2px 5px;",
+            "Set: " + this.G.currentSetIdx + " | Criminal: Suspect " + (criminal + 1));
 
         var bandGroupsParams = [
-            { id: this.BANDS[0], bands: crimeSceneBands, x: 1091 },     // Crime Scene   (TUBES[0])
-            { id: this.BANDS[1], bands: setDef.suspects[2], x: 1245 },  // Suspect-3     (TUBES[1])
-            { id: this.BANDS[2], bands: setDef.suspects[1], x: 1397 },  // Suspect-2     (TUBES[2])
-            { id: this.BANDS[3], bands: setDef.suspects[3], x: 1551 },  // Suspect-4     (TUBES[3])
-            { id: this.BANDS[4], bands: setDef.suspects[0], x: 1701 }   // Suspect-1     (TUBES[4])
+            { id: this.BANDS[0], label: "Lane 1 (Crime Scene)",  bands: crimeSceneBands,    x: 1091 },
+            { id: this.BANDS[1], label: "Lane 2 (Suspect 1)",    bands: setDef.suspects[0], x: 1245 },
+            { id: this.BANDS[2], label: "Lane 3 (Suspect 2)",    bands: setDef.suspects[1], x: 1397 },
+            { id: this.BANDS[3], label: "Lane 4 (Suspect 3)",    bands: setDef.suspects[2], x: 1551 },
+            { id: this.BANDS[4], label: "Lane 5 (Suspect 4)",    bands: setDef.suspects[3], x: 1701 }
         ];
 
         for (var l = 0; l < bandGroupsParams.length; l++) {
@@ -640,6 +729,10 @@ var WG112App = {
             var gEl = this.el(params.id);
             if (!gEl) { continue; }
             gEl.innerHTML = ''; // Clear old standard bands
+
+            // Log lane values
+            var bandYs = params.bands.map(function (b) { return b.y; });
+            console.log(params.label + " band Y positions: " + bandYs.join(", "));
 
             for (var b = 0; b < params.bands.length; b++) {
                 var bandDef = params.bands[b];
@@ -652,8 +745,70 @@ var WG112App = {
                 gEl.appendChild(rect);
             }
         }
+    },
+
+    /* ─── DEBUG METHODS ────────────────────────────────────────────────────── */
+    /**
+     * Prints current state and band patterns to console for verification.
+     */
+    verifyRandomization: function () {
+        var set = this.DNA_SETS[this.G.currentSetIdx];
+        var criminal = this.G.criminal;
+        console.log("%c DNA Verification (Band Set " + this.G.currentSetIdx + ", Criminal: Suspect " + (criminal + 1) + ") ",
+            "background: #222; color: #bada55; font-weight: bold; padding: 5px;");
+        console.log("Combination: Set " + this.G.currentSetIdx + " × Suspect " + (criminal + 1) +
+            " = one of 16 possible combos (4 sets × 4 suspects)");
+
+        console.group("Band Patterns (Lane assignments):");
+        console.log("Lane 1 (Crime Scene): copied from Suspect " + (criminal + 1));
+        var self = this;
+        set.suspects.forEach(function (s, i) {
+            var matchStr = (i === criminal) ? " ← MATCHES Crime Scene" : "";
+            console.log("Lane " + (i + 2) + " (Suspect " + (i + 1) + ")" + matchStr + ":",
+                s.map(function (b) { return "Y:" + b.y + "(C:" + b.c + ")"; }).join(" | "));
+        });
+        console.groupEnd();
+
+        return "Band Set: " + this.G.currentSetIdx + " | Criminal: Suspect " + (criminal + 1) +
+            " | Combos possible: 16 (4×4)";
+    },
+
+    /**
+     * Run N iterations to verify distribution is uniform.
+     * Usage: WG112App.testDistribution(100)
+     */
+    testDistribution: function (n) {
+        n = n || 100;
+        var counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        for (var i = 0; i < n; i++) {
+            var criminal = Math.floor(Math.random() * 4);
+            counts[criminal + 1]++;
+        }
+        console.log("%c Distribution Test (" + n + " iterations) ",
+            "background: #9C27B0; color: #fff; font-weight: bold; padding: 5px;");
+        console.table(counts);
+        var expected = n / 4;
+        for (var k in counts) {
+            var pct = ((counts[k] / n) * 100).toFixed(1);
+            console.log("Suspect " + k + ": " + counts[k] + "/" + n + " (" + pct + "%, expected ~" + expected.toFixed(0) + ")");
+        }
+        return counts;
     }
 
+};
+
+// Global helper for testers
+window.verifyRandomization = function () {
+    if (window.WG112App) {
+        return window.WG112App.verifyRandomization();
+    }
+    return "WG112App not initialized.";
+};
+window.testDistribution = function (n) {
+    if (window.WG112App) {
+        return window.WG112App.testDistribution(n);
+    }
+    return "WG112App not initialized.";
 };
 
 /* ─── BOOT ──────────────────────────────────────────────────────────────────── */

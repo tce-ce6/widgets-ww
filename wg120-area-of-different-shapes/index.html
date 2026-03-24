@@ -16,7 +16,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Area of Different Shapes</h2>
-                <span id="versionId" class="versionText">b3_wg120_2603111</span>
+                <span id="versionId" class="versionText">b3_wg120_2603202</span>
                 <!-- Comment to check for deployment -->
             </div>
             <div class="svg-container">
@@ -107,28 +107,23 @@
                                 Target Shape:
                             </div>
                         </foreignObject>
-                        <foreignObject id="source-shape-drp-dwn" x="686" y="247" width="270" height="55">
-                            <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;">
-                                <select id="source-shape" class="shape-dropdown"
-                                    style="width: 100%; height: 100%; box-sizing: border-box; font-family: 'Roboto', sans-serif; font-size: 28px; font-weight: 500; cursor: pointer;">
-                                    <option value="square" selected>Square</option>
-                                    <option value="rectangle">Rectangle</option>
-                                    <option value="triangle">Triangle</option>
-                                    <option value="parallelogram">Parallelogram</option>
-                                </select>
+                        <foreignObject id="source-shape-drp-dwn" x="686" y="247" width="270" height="350"
+                            style="overflow: visible; pointer-events: none;">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="width: 100%; height: 100%; pointer-events: auto;">
+                                <div class="custom-select" id="source-shape-container">
+                                    <div class="select-selected" id="source-shape-selected">Square</div>
+                                    <div class="select-items select-hide" id="source-shape-options">
+                                        <div data-value="square" class="same-as-selected">Square</div>
+                                        <div data-value="rectangle">Rectangle</div>
+                                        <div data-value="triangle">Triangle</div>
+                                        <div data-value="parallelogram">Parallelogram</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="source-shape" value="square" />
                             </div>
                         </foreignObject>
-                        <foreignObject id="target-shape-drp-dwn" x="994" y="247" width="270" height="55">
-                            <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; ">
-                                <select id="target-shape" class="shape-dropdown"
-                                    style="width: 100%; height: 100%; box-sizing: border-box; font-family: 'Roboto', sans-serif; font-size: 28px; font-weight: 500; cursor: pointer;">
-                                    <option value="square">Square</option>
-                                    <option value="rectangle" selected>Rectangle</option>
-                                    <option value="triangle">Triangle</option>
-                                    <option value="parallelogram">Parallelogram</option>
-                                </select>
-                            </div>
-                        </foreignObject>
+
                         <foreignObject id="reset-btn" x="1286" y="247" width="128" height="55">
                             <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex;">
                                 <button class="reset-btn"
@@ -164,6 +159,22 @@
                                 style="font-family: 'Roboto', sans-serif; font-size: 28px; font-weight: 500; color: #000000; 
                                     width: 100%; height: 100%; display: flex; align-items: center; margin: 0; padding: 0;">
                                 Square
+                            </div>
+                        </foreignObject>
+                        <foreignObject id="target-shape-drp-dwn" x="994" y="247" width="270" height="350"
+                            style="overflow: visible; pointer-events: none;">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="width: 100%; height: 100%; pointer-events: auto;">
+                                <div class="custom-select" id="target-shape-container">
+                                    <div class="select-selected" id="target-shape-selected">Rectangle</div>
+                                    <div class="select-items select-hide" id="target-shape-options">
+                                        <div data-value="square">Square</div>
+                                        <div data-value="rectangle" class="same-as-selected">Rectangle</div>
+                                        <div data-value="triangle">Triangle</div>
+                                        <div data-value="parallelogram">Parallelogram</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="target-shape" value="rectangle" />
                             </div>
                         </foreignObject>
                         <g id="draggable-pieces-group">
@@ -228,7 +239,7 @@
 
                         <rect x="-10000" y="-10000" id="for-solution" style="display: none;" width="20000"
                             height="20000" fill="black" opacity="0.8" />
-                        <foreignObject id="solution-banner" x="710" y="329" width="1290" height="783"
+                        <foreignObject id="solution-banner" x="710" y="217" width="1290" height="783"
                             style="display:none; pointer-events:none;">
 
                             <div xmlns="http://www.w3.org/1999/xhtml" style="
@@ -321,7 +332,7 @@
 
                             </div>
                         </foreignObject>
-                        <foreignObject id="try-again-container" x="770" y="500" width="380" height="80"
+                        <foreignObject id="try-again-container" x="1080" y="850" width="380" height="80"
                             style="display:none;">
                             <div id="try-again-box" style="
                             width: 100%;

@@ -8,7 +8,12 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#idiom-wrapper body {
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body#idiom-wrapper {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -17,14 +22,18 @@ svg * {
   padding: 0;
   margin: 0;
   background-color: #fff !important;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 #idiom-wrapper .container {
   border: none;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: relative;
   user-select: none !important;
+  overflow: hidden;
 }
 
 #idiom-wrapper ul {
@@ -415,44 +424,104 @@ svg * {
 .custom-dropdown {
   pointer-events: auto;
   position: absolute;
-  background-color: transparent;
-  border: 2px solid #ea602e;
-  border-radius: 8px;
+  z-index: 200;
+}
+
+.custom-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3vw;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  border: 2px solid #1a5fa8;
+  border-radius: 6px;
   font-family: Arial, sans-serif;
-  font-size: 1.5vw;
+  font-size: 1.4vw;
   font-weight: bold;
   color: #333;
-  padding: 0.2vw 0.5vw;
   cursor: pointer;
   outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  box-sizing: border-box;
+  padding: 0 0.4vw;
+}
+
+.custom-dropdown-trigger .dd-arrow {
+  font-size: 1vw;
+  color: #333;
+  margin-left: 0.2vw;
+  transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dd-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown-list {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 20vw;
+  overflow-y: auto;
+  background: #fff;
+  border: 2px solid #1a5fa8;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 300;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-dropdown.open .custom-dropdown-list {
+  display: block;
+}
+
+.custom-dropdown-item {
+  padding: 0.4vw 0.6vw;
+  font-family: Arial, sans-serif;
+  font-size: 1.3vw;
+  color: #333;
+  cursor: pointer;
   text-align: center;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-.custom-dropdown:focus {
-  border-color: #2b7a78;
-  box-shadow: 0 0 5px rgba(43, 122, 120, 0.5);
+.custom-dropdown-item:last-child {
+  border-bottom: none;
 }
 
-.custom-dropdown {
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ea602e" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 0.5vw center;
-  background-size: 1.5vw;
-  padding-right: 2vw;
+.custom-dropdown-item:hover {
+  background-color: #cce0f5;
+}
+
+.custom-dropdown-item.selected {
+  background-color: #1a5fa8;
+  color: #fff;
 }
 
 .hidden-svg {
-  display: none !important;
+  display: none;
 }
 
 .cursor-pointer {
   cursor: pointer;
 }
 
+/* Ensure child elements of interactive SVG groups inherit pointer cursor */
+#idiom-wrapper svg g[style*="cursor: pointer"] *,
+#idiom-wrapper svg g[style*="cursor: pointer"] {
+  cursor: pointer;
+}
+
 /* Override hidden elements */
 .st767 {
-  display: inline !important;
+  display: none;
 }

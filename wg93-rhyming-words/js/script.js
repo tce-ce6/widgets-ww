@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         {
           text: "गलमा",
-          isCorrect: true,
+          isCorrect: false,
           sound: "../assets/audio/set-08/galma-cr.mp3",
         },
         {
@@ -660,6 +660,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let isShowingAnswers = false;
   let resultBeeAnim = null;
   let userSelectedMap = {}; // stores user's chosen answers
+  let selectedCorrect = 0;
+  let totalCorrect = 0;
+  let correctSelectedElements = [];
+  const optionIds = [
+    "option1",
+    "option2",
+    "option3",
+    "option4",
+    "option5",
+    "option6",
+    "option7",
+    "option8",
+    "option9",
+    "option10",
+    "option11",
+  ];
   const svgContainer = document.getElementById("svg-content");
   if (!svgContainer) return;
 
@@ -778,7 +794,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const onReady = () => {
             if (settled) return;
             settled = true;
-            audio.play().catch(() => {});
+            audio.play().catch(() => { });
             clean();
             resolve(audio);
           };
@@ -795,7 +811,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const timer = setTimeout(() => {
             if (settled) return;
             settled = true;
-            audio.play().catch(() => {});
+            audio.play().catch(() => { });
             clean();
             resolve(audio);
           }, timeout);
@@ -907,12 +923,20 @@ document.addEventListener("DOMContentLoaded", () => {
     tryLoad(0);
   };
 
-  const populateQuestion = () => {
+  const populateQuestion = (specificQuestion = null) => {
     // 🔒 Disable Show Answer until firstWord is clicked
     const showAnsBtn = document.getElementById("showAns-btn");
 
     isShowingAnswers = false;
     userSelectedMap = {};
+    optionElementsMap = {};
+
+    const resetBtn = document.getElementById("reset-btn");
+    if (resetBtn) {
+      resetBtn.classList.add("disabled");
+      resetBtn.style.pointerEvents = "none";
+      resetBtn.style.opacity = "0.5";
+    }
 
     if (showAnsBtn) {
       showAnsBtn.classList.add("disabled");
@@ -948,10 +972,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const firstShell = document.getElementById("firstWord-shell");
     if (firstShell) firstShell.classList.remove("active");
 
-    let totalCorrect = 0;
-    let selectedCorrect = 0;
-    let correctSelectedElements = [];
+    totalCorrect = 0;
+    selectedCorrect = 0;
+    correctSelectedElements = [];
     currentQuestion =
+      specificQuestion ||
       questionsData[Math.floor(Math.random() * questionsData.length)];
 
     const q = currentQuestion;
@@ -976,9 +1001,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // 👉 PLAY SOUND ON CLICK
           firstEl.onclick = () => {
-            // 🔓 Enable Show Answer now
+            // 🔓 Enable Show Answer now (only if not finished)
             const showAnsBtn = document.getElementById("showAns-btn");
-            if (showAnsBtn) {
+            if (showAnsBtn && selectedCorrect !== -999) {
               showAnsBtn.classList.remove("disabled");
               showAnsBtn.style.pointerEvents = "auto";
               showAnsBtn.style.opacity = "1";
@@ -998,13 +1023,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 "जो शब्द सुना उसके समान तुक वाले शब्दों को टैप करें।";
             }
 
-            // 🌟 Show all options now
-            optionIds.forEach((id) => {
-              const el = document.getElementById(id);
-              if (el && el.textContent.trim()) {
-                el.style.display = "block";
-              }
-            });
+            // 🌟 Show all options now (with 500ms delay)
+            setTimeout(() => {
+              optionIds.forEach((id) => {
+                const el = document.getElementById(id);
+                if (el && el.textContent.trim()) {
+                  el.style.display = "block";
+                }
+              });
+            }, 1000);
 
             // 🎯 add active class to shell
             const shell = document.getElementById("firstWord-shell");
@@ -1015,19 +1042,9 @@ document.addEventListener("DOMContentLoaded", () => {
       firstEl.style.display = "none";
     }
 
-    const optionIds = [
-      "option1",
-      "option2",
-      "option3",
-      "option4",
-      "option5",
-      "option6",
-      "option7",
-      "option8",
-      "option9",
-      "option10",
-      "option11",
-    ];
+    if (firstEl) {
+      firstEl.style.display = "none";
+    }
 
     // shuffle options
     const shuffled = q.options
@@ -1067,10 +1084,26 @@ document.addEventListener("DOMContentLoaded", () => {
           // apply visual shell
           setOptionShellClass(id, cls);
 
+          // 🔓 Enable Reset button on first selection
+          const resetBtn = document.getElementById("reset-btn");
+          if (resetBtn && selectedCorrect !== -999) {
+            resetBtn.classList.remove("disabled");
+            resetBtn.style.pointerEvents = "auto";
+            resetBtn.style.opacity = "1";
+          }
+
           // ✅ Only run result logic ONCE
           if (selectedCorrect === totalCorrect) {
             // prevent re-triggering again
             selectedCorrect = -999;
+
+            // 🔒 Disable Show Answer when all correct words collected
+            const showAnsBtn = document.getElementById("showAns-btn");
+            if (showAnsBtn) {
+              showAnsBtn.classList.add("disabled");
+              showAnsBtn.style.pointerEvents = "none";
+              showAnsBtn.style.opacity = "0.5";
+            }
 
             correctSelectedElements.forEach((optEl, index) => {
               setTimeout(() => {
@@ -1129,8 +1162,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 3000);
   };
+  // 🧪 Function for direct testing from console
+  window.testWord = (word) => {
+    const q = questionsData.find((item) => item.firstWord === word);
+    if (q) {
+      if (firstWordTimer) clearTimeout(firstWordTimer);
+      stopResultAnimation();
+      populateQuestion(q);
+      console.log(`Test mode: Loading word "${word}"`);
+    } else {
+      console.warn(`Test word "${word}" not found.`);
+    }
+  };
+
   playBeeIntro();
-  populateQuestion();
+
+  // 👉 Direct test for "कमला"
+  const startQuest = questionsData.find(q => q.firstWord === "कमला");
+  populateQuestion(startQuest);
   let audioUnlocked = false;
 
   const stopResultAnimation = () => {
@@ -1150,7 +1199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const silent = new Audio();
     silent.src = "data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAA"; // tiny silent sound
-    silent.play().catch(() => {});
+    silent.play().catch(() => { });
     audioUnlocked = true;
 
     document.removeEventListener("click", unlockAudio);
@@ -1234,8 +1283,6 @@ document.addEventListener("DOMContentLoaded", () => {
           el.style.pointerEvents = "none";
         });
 
-        const instruct = document.getElementById("itext-content");
-        if (instruct) instruct.textContent = "सही उत्तर दिखाए गए हैं।";
       }
 
       // ================================
@@ -1270,8 +1317,86 @@ document.addEventListener("DOMContentLoaded", () => {
           el.style.pointerEvents = "auto"; // allow interaction again
         });
 
-        const instruct = document.getElementById("itext-content");
-        if (instruct) instruct.textContent = "फिर से सही तुक वाले शब्द चुनें।";
+
+      }
+    });
+  }
+  const resetBtn = document.getElementById("reset-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      // 🧹 Reset trial state
+      userSelectedMap = {};
+      selectedCorrect = 0;
+      correctSelectedElements = [];
+
+      // 🧹 UI cleanup (stars and selection visuals)
+      document.querySelectorAll(".star-lottie").forEach((el) => el.remove());
+      document.querySelectorAll(".options-txt").forEach((el) => {
+        el.classList.remove("answered");
+        el.style.pointerEvents = "auto";
+        el.style.display = "none"; // 🔒 Hide options again
+      });
+
+      optionIds.forEach((id) => setOptionShellClass(id, ""));
+
+      // 🐝 Intro animation
+      playBeeIntro();
+
+      // 🧹 Hide firstWord and re-run the 3-second timer (as like default)
+      const firstEl = document.getElementById("firstWord");
+      if (firstEl) {
+        firstEl.style.display = "none";
+        const firstShell = document.getElementById("firstWord-shell");
+        if (firstShell) firstShell.classList.remove("active");
+
+        if (firstWordTimer) clearTimeout(firstWordTimer);
+        firstWordTimer = setTimeout(() => {
+          firstEl.style.display = "block";
+
+          // ⭐ add active class when word becomes visible
+          const addActiveToShell = () => {
+            const shell =
+              document.getElementById("firstWord-shell") ||
+              document.querySelector("#svg-content #firstWord-shell");
+
+            if (shell) {
+              shell.classList.add("active");
+              return true;
+            }
+            return false;
+          };
+
+          // Try immediately
+          if (!addActiveToShell()) {
+            let attempts = 0;
+            const iv = setInterval(() => {
+              attempts++;
+              if (addActiveToShell() || attempts > 20) {
+                clearInterval(iv);
+              }
+            }, 100);
+          }
+        }, 3000);
+      }
+
+      // 🔒 Reset Show Answer button to initial state
+      const showAnsBtn = document.getElementById("showAns-btn");
+      if (showAnsBtn) {
+        showAnsBtn.classList.add("disabled");
+        showAnsBtn.style.pointerEvents = "none";
+        showAnsBtn.style.opacity = "0.5";
+        showAnsBtn.setAttribute("src", "./assets/show-ans.svg");
+      }
+
+      // 🔒 Disable reset again
+      resetBtn.classList.add("disabled");
+      resetBtn.style.pointerEvents = "none";
+      resetBtn.style.opacity = "0.5";
+
+      // ✏️ Reset instruction text
+      const instruct = document.getElementById("itext-content");
+      if (instruct) {
+        instruct.textContent = "शब्द को टैप करें और ऑडियो सुनें।";
       }
     });
   }

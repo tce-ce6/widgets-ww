@@ -419,3 +419,58 @@ svg * {
 .cursor-pointer {
   cursor: pointer;
 }
+
+/* Rhyme Zone Game Styles */
+#idiom-wrapper text {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#idiom-wrapper text.selected {
+  fill: #3498db !important;
+  font-weight: bold;
+  filter: drop-shadow(0 0 5px #3498db);
+}
+
+#idiom-wrapper text.correct {
+  fill: #27ae60 !important;
+  font-weight: bold;
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+#idiom-wrapper text.incorrect {
+  fill: #e74c3c !important;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.star-icon.active {
+  color: #ffb300 !important;
+  filter: drop-shadow(0 0 5px #ffb300);
+}
+
+#progress_bar {
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+
+#try_again_pop-up {
+  z-index: 100;
+}
+
+#rhymezone-game-area {
+  pointer-events: none;
+}
+#rhymezone-game-area * {
+  pointer-events: auto;
+}
+.st767 {
+  display: none !important;  
+}

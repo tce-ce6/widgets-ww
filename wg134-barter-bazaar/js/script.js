@@ -7,33 +7,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn && launchScreen) {
     enterBtn.style.cursor = "pointer";
-    enterBtn.addEventListener("click", () => {
-      launchScreen.style.display = "none";
-      launchScreen.classList.add("hidden-svg");
+    enterBtn.onclick = () => {
+      launchScreen.classList.add("st767");
       initWidget();
-    });
+    };
   } else {
     initWidget();
   }
 });
 
 function initWidget() {
-  const container = document.getElementById("widget-container");
-  const svg = document.querySelector("svg");
-  if (!container || !svg) return;
+  const backNextBtn = document.getElementById("btn-next-back");
 
-  // Build UI Layer
+  const container =
+    document.getElementById("barter-bazaar-wrapper") || document.body;
+  const svg = document.querySelector("svg");
+  if (!svg) return;
+
+  // Reorder UI popups so they render on top of SVG groups
+  document.querySelectorAll('[id^="act-01-sc1-feedback"]').forEach((popup) => {
+    if (popup.parentNode) popup.parentNode.appendChild(popup);
+  });
+
+  // Initialize UI layer
   let uiLayer = document.getElementById("ui-layer");
   if (!uiLayer) {
-    uiLayer = document.createElement("div");
-    uiLayer.id = "ui-layer";
-    uiLayer.style.position = "absolute";
-    uiLayer.style.top = "0";
-    uiLayer.style.left = "0";
-    uiLayer.style.width = "100%";
-    uiLayer.style.height = "100%";
-    uiLayer.style.pointerEvents = "none";
-    container.appendChild(uiLayer);
+    uiLayer = createUILayer(container);
+  }
+
+  function createUILayer(parent) {
+    const layer = document.createElement("div");
+    layer.id = "ui-layer";
+    Object.assign(layer.style, {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      pointerEvents: "none",
+      zIndex: "100",
+    });
+    parent.appendChild(layer);
+    return layer;
   }
 
   // --- Helpers ---
@@ -51,14 +66,15 @@ function initWidget() {
 
   function hideElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
-      // Use hidden-svg class or fallback
-      el.classList.add("hidden-svg");
+      el.classList.add("st767");
+      //el.style.display = "none";
     });
   }
 
   function showElements(selector) {
     document.querySelectorAll(selector).forEach((el) => {
-      el.classList.remove("hidden-svg");
+      el.classList.remove("st767");
+      el.style.display = "";
     });
   }
 
@@ -77,7 +93,8 @@ function initWidget() {
 
   // Hide all screens initially and map out popups
   const allScreens = [
-    "menu-screen",
+    "btn-home",
+    "btn-insights",
     "act-01-sc1-base",
     "act-01-sc1-cards",
     "act-02-base-global",
@@ -92,7 +109,27 @@ function initWidget() {
     "act-04-question",
     "act-04-feedback-end",
   ];
+  const villageTradesSelectionIds = [
+    "Path_2995-2",
+    "Path_2993",
+    "Path_2995",
+    "Path_2992",
+    "Path_2994",
+    "Path_2991",
+    "Path_2708-4",
+    "Path_2710-4",
+  ];
 
+  const villageTrades = [
+    "Group_1292",
+    "Group_1293",
+    "Group_1294",
+    "Group_1295",
+    "Group_1296",
+    "Group_1281",
+    "Group_1403",
+    "Group_1404",
+  ];
   // Global variables
   let currentScreen = 0; // 0=Menu, 1=Intro, 2=Scen2, 3=Scen3, 4=Checklist
   let currentChallengeSC2 = 1; // 1 to 3
@@ -100,19 +137,29 @@ function initWidget() {
 
   // Hide everything first
   const menuScreen = document.getElementById("menu-screen");
-  if (menuScreen) menuScreen.classList.add("hidden-svg");
+  if (menuScreen) menuScreen.classList.remove("st767");
 
-  document
-    .querySelectorAll('[id^="act-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+  // document
+  //   .querySelectorAll('[id^="act-"]')
+  //   .forEach((el) => el.classList.add("st767"));
   document
     .querySelectorAll('[id^="popup-"]')
-    .forEach((el) => el.classList.add("hidden-svg"));
+    .forEach((el) => el.classList.add("st767"));
 
   // --- Menu Setup ---
   const menuScen1 = document.getElementById("Scenario_1");
-  const menuScen2 = document.getElementById("Scenario_2");
-  const menuScen3 = document.getElementById("Scenario_3");
+  const menuScen2 =
+    document.getElementById("Scenario_2") ||
+    document.getElementById("Group_1570");
+  const menuScen3 =
+    document.getElementById("Scenario_3") ||
+    document.getElementById("Group_1572");
+  const menuScen2_1 = document.getElementById("Scenario_2-1");
+  const menuScen2_2 = document.getElementById("Scenario_2-2");
+  const menuScen2_3 = document.getElementById("Scenario_2-3");
+  const menuScen3_1 = document.getElementById("Scenario_3-1");
+  const menuScen3_2 = document.getElementById("Scenario_3-2");
+  const menuScen3_3 = document.getElementById("Scenario_3-3");
 
   if (menuScen1) {
     menuScen1.style.cursor = "pointer";
@@ -138,12 +185,65 @@ function initWidget() {
     });
   }
 
+  if (menuScen2_1) {
+    menuScen2_1.style.cursor = "pointer";
+    menuScen2_1.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 1;
+      updateView();
+    });
+  }
+  if (menuScen2_2) {
+    menuScen2_2.style.cursor = "pointer";
+    menuScen2_2.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 2;
+      updateView();
+    });
+  }
+  if (menuScen2_3) {
+    menuScen2_3.style.cursor = "pointer";
+    menuScen2_3.addEventListener("click", () => {
+      currentScreen = 2;
+      currentChallengeSC2 = 3;
+      updateView();
+    });
+  }
+  if (menuScen3_1) {
+    menuScen3_1.style.cursor = "pointer";
+    menuScen3_1.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 1;
+      updateView();
+    });
+  }
+  if (menuScen3_2) {
+    menuScen3_2.style.cursor = "pointer";
+    menuScen3_2.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 2;
+      updateView();
+    });
+  }
+
+  if (menuScen3_3) {
+    menuScen3_3.style.cursor = "pointer";
+    menuScen3_3.addEventListener("click", () => {
+      currentScreen = 3;
+      currentChallengeSC3 = 3;
+      updateView();
+    });
+  }
+
   // --- Navigation Setup ---
   const btnNext = document.getElementById("Next");
   const btnBack = document.getElementById("Back");
   const btnHome = document.getElementById("btn-home");
   const btnInsights = document.getElementById("btn-insights");
   const globalSubmit = document.getElementById("Submit");
+  const btnCloseInsights = document.getElementById("Insights-2");
+  const btnCloseInsights3 = document.getElementById("Insights-3");
+  const btnCloseInsights4 = document.getElementById("Insights-4");
 
   if (btnNext) {
     btnNext.style.cursor = "pointer";
@@ -155,6 +255,7 @@ function initWidget() {
   }
   if (btnHome) {
     btnHome.style.cursor = "pointer";
+
     btnHome.addEventListener("click", () => {
       currentScreen = 0; // go back to menu
       updateView();
@@ -164,6 +265,7 @@ function initWidget() {
   // Dynamic Insight Popups
   if (btnInsights) {
     btnInsights.style.cursor = "pointer";
+
     btnInsights.addEventListener("click", () => {
       let pId = `popup-act-0${currentScreen}-insights`;
       if (currentScreen === 4 || currentScreen === 0)
@@ -171,77 +273,510 @@ function initWidget() {
       togglePopup(pId, true);
     });
   }
+  if (btnCloseInsights) {
+    btnCloseInsights.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      if (currentScreen === 4 || currentScreen === 0)
+        pId = `popup-act-01-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+  if (btnCloseInsights3) {
+    btnCloseInsights3.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-02-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+  if (btnCloseInsights4) {
+    btnCloseInsights4.addEventListener("click", () => {
+      let pId = `popup-act-0${currentScreen}-insights`;
+      pId = `popup-act-03-insights`; // fallback
+      togglePopup(pId, false);
+    });
+  }
+
   // Click anywhere to close popups
   document.querySelectorAll('[id^="popup-"]').forEach((p) => {
-    p.addEventListener("click", () => p.classList.add("hidden-svg"));
+    p.addEventListener("click", () => p.classList.add("st767"));
   });
 
   function goNext() {
-    if (currentScreen === 2) {
+    if (currentScreen === 0) {
+      currentScreen = 1;
+    } else if (currentScreen === 1) {
+      currentScreen = 2;
+      currentChallengeSC2 = 1;
+    } else if (currentScreen === 2) {
+      hideElements(`#act-02-sc${currentChallengeSC2}`);
+      hideElements(`#act-02-sc${currentChallengeSC2}-cards`);
       if (currentChallengeSC2 < 3) currentChallengeSC2++;
-      else currentScreen = 3;
+      else {
+        hideElements("#act-02-base-global");
+        hideElements(`#act-02-sc${currentChallengeSC2}`);
+        hideElements(`#act-02-sc${currentChallengeSC2}-cards`);
+        hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+        if (document.querySelector(".custom-dropdown")) {
+          document
+            .querySelectorAll(".custom-dropdown")
+            .forEach((dd) => dd.remove());
+        }
+        currentScreen = 3;
+        currentChallengeSC3 = 1;
+      }
     } else if (currentScreen === 3) {
       if (currentChallengeSC3 < 3) currentChallengeSC3++;
-      else currentScreen = 4;
-    } else if (currentScreen < 4) {
-      currentScreen++;
+      else {
+        hideElements("#act-03-base-global");
+        hideElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
+        hideElements("#btn-next-back");
+        currentScreen = 4;
+      }
     }
     updateView();
   }
 
   function goBack() {
-    if (currentScreen === 2) {
-      if (currentChallengeSC2 > 1) currentChallengeSC2--;
-      else currentScreen = 1;
+    if (currentScreen === 4) {
+      hideElements("#act-04-base");
+      hideElements("#act-04-question");
+      hideElements("#act-04-checkbox-default");
+      hideElements("#act-04-feedback-end");
+      hideElements("#Group_1687 > *");
+      showElements("#Group_594-2");
+      currentScreen = 3;
+      currentChallengeSC3 = 3;
     } else if (currentScreen === 3) {
+      // Always clean up screen 3 before leaving
+      hideElements("#act-03-base-global");
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-03-sc${s}"]`));
+      uiLayer.querySelectorAll(".sc3-overlay").forEach((el) => el.remove());
       if (currentChallengeSC3 > 1) currentChallengeSC3--;
       else {
         currentScreen = 2;
         currentChallengeSC2 = 3;
       }
-    } else if (currentScreen > 1) {
-      currentScreen--;
-      if (currentScreen === 3) currentChallengeSC3 = 3;
-      if (currentScreen === 2) currentChallengeSC2 = 3;
+    } else if (currentScreen === 2) {
+      hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
+      document
+        .querySelectorAll(".custom-dropdown")
+        .forEach((dd) => dd.remove());
+      if (currentChallengeSC2 > 1) currentChallengeSC2--;
+      else currentScreen = 1;
+    } else if (currentScreen === 1) {
+      currentScreen = 0;
     }
     updateView();
   }
 
   function updateView() {
-    uiLayer.innerHTML = ""; // clear dynamic overlays
+    if (menuScreen) menuScreen.classList.add("st767");
+    // document
+    //   .querySelectorAll('[id^="act-"]')
+    //   .forEach((el) => el.classList.add("hidden-svg"));
+    btnHome.classList.remove("st767");
+    btnInsights.classList.remove("st767");
 
-    // Hide menu explicitly first
-    if (menuScreen) menuScreen.classList.add("hidden-svg");
-
-    document
-      .querySelectorAll('[id^="act-"]')
-      .forEach((el) => el.classList.add("hidden-svg"));
+    // Clear old clickable overlays so they don't bleed through backwards
+    if (uiLayer) {
+      uiLayer.innerHTML = "";
+    }
 
     // Handle Menu
     if (currentScreen === 0) {
-      if (menuScreen) menuScreen.classList.remove("hidden-svg");
+      if (menuScreen) menuScreen.classList.remove("st767");
+      allScreens.forEach((s) => {
+        let d = document.getElementById(s);
+        if (d) {
+          d.classList.add("st767");
+        }
+      });
+      hideElements(`[id^="act-02"]`);
+      hideElements(`[id^="act-03"]`);
+      hideElements(`#act-02-sc1-cards`);
+      hideElements(`#act-02-sc2-cards`);
+      hideElements(`#act-02-sc3-cards`);
+      hideElements("#act-01-sc1-cards-matched > *");
+      hideElements("#act-01-sc1-cards-selected > *");
+      showElements("#Group_594-2");
+      hideElements("#Group_1687 > *");
+
+      if (document.querySelector(".custom-dropdown")) {
+        document
+          .querySelectorAll(".custom-dropdown")
+          .forEach((dd) => dd.remove());
+      }
+      hideElements("#act-04-base");
+      hideElements("#act-04-question");
+      hideElements("#act-04-checkbox-default");
+      // hideElements("#act-04-checkbox-selected > *");
+      hideElements("#act-04-feedback-end");
+      hideElements("#btn-next-back");
+      hideElements("#btn-insights");
     } else if (currentScreen === 1) {
-      showElements('[id^="act-01"]');
+      showElements("#act-01-sc1-base");
+      showElements("#act-01-sc1-cards");
+      // hideElements("#act-04-checkbox-selected > *");
+      hideElements('[id^="act-01-sc1-feedback"]');
+      hideElements("#act-02-base-global");
+      hideElements('[id^="act-02-sc"]');
+      const backNextBtn = document.getElementById("btn-next-back");
+      if (backNextBtn) {
+        backNextBtn.classList.add("st767");
+      }
+      setupScreen1();
     } else if (currentScreen === 2) {
+      // Clear all sc states first to prevent bleed-through
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-02-sc${s}"]`));
       showElements("#act-02-base-global");
       showElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
       // Hide feedbacks initially
       hideElements(`[id^="act-02-sc${currentChallengeSC2}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen2Challenge(currentChallengeSC2);
     } else if (currentScreen === 3) {
+      // Clear all sc states first to prevent bleed-through of selected indicators
+      [1, 2, 3].forEach((s) => hideElements(`[id^="act-03-sc${s}"]`));
       showElements("#act-03-base-global");
       showElements(`[id^="act-03-sc${currentChallengeSC3}"]`);
       hideElements(`[id^="act-03-sc${currentChallengeSC3}-feedback"]`);
+      backNextBtn.classList.remove("st767");
       setupScreen3Challenge(currentChallengeSC3);
     } else if (currentScreen === 4) {
       showElements("#act-04-base");
       showElements("#act-04-question");
       showElements("#act-04-checkbox-default");
-      hideElements("#act-04-checkbox-selected");
+      //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
+      if (backNextBtn) {
+        backNextBtn.classList.remove("st767");
+      }
+      hideElements("#Group_594-2"); // Hide Next Button
+      hideElements("#btn-insights"); // Hide Insights Button
       setupScreen4();
     }
   }
+
+  // --- Screen 1 Logic ---
+  function setupScreen1() {
+    const traders = [
+      "Potter",
+      "Fisherman",
+      "Carpenter",
+      "Weaver",
+      "Plumber",
+      "Teacher",
+      "Doctor",
+      "Farmer",
+    ];
+    const pairs = {
+      Farmer: "Weaver",
+      Weaver: "Farmer",
+      Doctor: "Teacher",
+      Teacher: "Doctor",
+      Fisherman: "Plumber",
+      Plumber: "Fisherman",
+      Potter: "Carpenter",
+      Carpenter: "Potter",
+    };
+
+    const scn_01_sc1_cards_matched = {
+      Farmer_Weaver: ["Group_1295-2", "Group_1404-2"],
+      Weaver_Farmer: ["Group_1295-2", "Group_1404-2"],
+      Doctor_Teacher: ["Group_1281-2", "Group_1403-2"],
+      Teacher_Doctor: ["Group_1281-2", "Group_1403-2"],
+      Fisherman_Plumber: ["Group_1293-2", "Group_1296-2"],
+      Plumber_Fisherman: ["Group_1293-2", "Group_1296-2"],
+      Potter_Carpenter: ["Group_1294-2", "Group_1292-2"],
+      Carpenter_Potter: ["Group_1294-2", "Group_1292-2"],
+    };
+    let selectedTrader = null;
+    let matchedTraders = new Set();
+    let tradeCount = 0;
+
+    // Disable Next button initially
+    // if (btnNext) {
+    //   btnNext.disabled = true;
+    //   btnNext.style.opacity = "0.5";
+    //   btnNext.style.cursor = "not-allowed";
+    // }
+
+    villageTrades.forEach((traderId, index) => {
+      const el = document.getElementById(traderId);
+      if (!el) {
+        console.warn(`Trader element not found: ${traderId}`);
+        return;
+      }
+
+      el.style.cursor = "pointer";
+
+      el.addEventListener("click", () => {
+        // Skip if already matched
+        if (matchedTraders.has(traders[index])) return;
+
+        if (!selectedTrader) {
+          // First selection
+          selectedTrader = traders[index];
+          //  el.classList.add("trader-selected");
+          document
+            .getElementById(villageTradesSelectionIds[index])
+            .classList.remove("st767");
+        } else if (selectedTrader === traders[index]) {
+          // Deselect same trader
+          el.classList.remove("trader-selected");
+          selectedTrader = null;
+          document
+            .getElementById(villageTradesSelectionIds[index])
+            .classList.add("st767");
+        } else {
+          // Try to match with previously selected trader
+          const firstEl = document.getElementById(
+            villageTrades[traders.indexOf(selectedTrader)],
+          );
+          if (pairs[selectedTrader] === traders[index]) {
+            // Match success
+            document
+              .getElementById(villageTradesSelectionIds[index])
+              .classList.remove("st767");
+            matchedTraders.add(traders[index]);
+            matchedTraders.add(selectedTrader);
+            tradeCount++;
+            let selectT =
+              scn_01_sc1_cards_matched[`${traders[index]}_${selectedTrader}`];
+            selectT.forEach((s) => {
+              let d = document.getElementById(s);
+              if (d) {
+                d.classList.remove("st767");
+              }
+            });
+            //  el.classList.add("trader-matched");
+            // el.classList.remove("trader-selected");
+            // firstEl.classList.add("trader-matched");
+            // firstEl.classList.remove("trader-selected");
+
+            // Show Success Popup
+            let corPopup = document.getElementById(
+              "act-01-sc1-feedback-correct-selection",
+            );
+            if (corPopup) {
+              corPopup.classList.remove("st767");
+              let tradeCounterText =
+                document.getElementById("trade-counter-sc1");
+              if (tradeCounterText)
+                tradeCounterText.textContent = `Trades Completed: ${tradeCount} / 4`;
+
+              let continueBtn = document.getElementById("btn-continue-sc1");
+              if (continueBtn) {
+                continueBtn.onclick = () => {
+                  corPopup.classList.add("st767");
+                  selectedTrader = null;
+                  console.log("tradeCount", tradeCount);
+                  if (tradeCount >= 4) {
+                    let completedSec = document.getElementById(
+                      "act-01-sc1-feedback-end",
+                    );
+                    if (completedSec) {
+                      completedSec.classList.remove("st767");
+                      completedSec.addEventListener("click", () => {
+                        completedSec.classList.add("st767");
+                        goNext();
+                      });
+                    }
+                  }
+                  // Check if all pairs are matched after continuing
+                  if (matchedTraders.size === traders.length) {
+                    if (btnNext) {
+                      btnNext.disabled = false;
+                      btnNext.style.opacity = "1";
+                      btnNext.style.cursor = "pointer";
+                    }
+                  }
+                };
+              }
+            }
+          } else {
+            let incorPopup = document.getElementById(
+              "act-01-sc1-feedback-incorrect-selection",
+            );
+            if (incorPopup) {
+              const previousTrader = selectedTrader;
+              const currentIndex = index;
+              const currentEl = el;
+
+              incorPopup.classList.remove("st767");
+
+              currentEl.classList.add("trader-selected");
+              let secondSelectionBorder = document.getElementById(
+                villageTradesSelectionIds[currentIndex],
+              );
+              if (secondSelectionBorder)
+                secondSelectionBorder.classList.remove("st767");
+
+              let tryBtn = document.getElementById("btn-try-another-trader");
+              if (tryBtn) {
+                tryBtn.onclick = () => {
+                  incorPopup.classList.add("st767");
+                  el.classList.remove("trader-selected");
+                  firstEl.classList.remove("trader-selected");
+                  let firstSelectionBorder = document.getElementById(
+                    villageTradesSelectionIds[traders.indexOf(previousTrader)],
+                  );
+                  if (firstSelectionBorder)
+                    firstSelectionBorder.classList.add("st767");
+
+                  currentEl.classList.remove("trader-selected");
+                  if (secondSelectionBorder)
+                    secondSelectionBorder.classList.add("st767");
+                };
+              }
+            } else {
+              showFeedbackPopup(
+                "Trade failed. Try again. Their needs don't match.",
+                false,
+              );
+              firstEl.classList.remove("trader-selected");
+              document
+                .getElementById(
+                  villageTradesSelectionIds[traders.indexOf(selectedTrader)],
+                )
+                .classList.add("st767");
+            }
+            selectedTrader = null;
+          }
+        }
+      });
+    });
+
+    function updateTradeCounter(count) {
+      let counter = document.getElementById("trade-counter-sc1");
+      if (!counter) {
+        counter = document.createElement("div");
+        counter.id = "trade-counter-sc1";
+        counter.className = "trade-counter";
+        uiLayer.appendChild(counter);
+      }
+      counter.textContent = `Trades Completed: ${count} / 4`;
+    }
+  }
+
+  function showFeedbackPopup(text, isSuccess) {
+    let popup = document.getElementById("feedback-popup-sc1");
+    if (!popup) {
+      popup = document.createElement("div");
+      popup.id = "feedback-popup-sc1";
+      Object.assign(popup.style, {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        padding: "30px",
+        backgroundColor: "white",
+        border: `4px solid ${isSuccess ? "#00AA00" : "#FF0000"}`,
+        borderRadius: "12px",
+        zIndex: "10000",
+        textAlign: "center",
+        boxShadow: "0 8px 16px rgba(0,0,0,0.3)",
+        pointerEvents: "auto",
+        maxWidth: "400px",
+        fontFamily: "Arial, sans-serif",
+      });
+      document.body.appendChild(popup);
+    }
+    popup.innerHTML = `
+      <h3 style="margin: 0 0 10px 0; color: ${isSuccess ? "#00AA00" : "#FF0000"}; font-size: 20px;">
+        ${isSuccess ? "✓ Success" : "✗ Try Again"}
+      </h3>
+      <p style="margin: 0 0 15px 0; font-size: 14px; color: #333;">${text}</p>
+      <button id="close-fb" style="padding: 10px 20px; background: #590056; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">OK</button>
+    `;
+    popup.style.display = "block";
+    document.getElementById("close-fb").onclick = () => {
+      popup.style.display = "none";
+    };
+  }
+
+  // --- Custom Dropdown Builder ---
+  function createCustomDropdown(max, defaultVal, onChange, targetId) {
+    if (targetId) {
+      const existing = document.getElementById(`dropdown-${targetId}`);
+      if (existing) return existing;
+    }
+    const wrapper = document.createElement("div");
+    wrapper.id = targetId ? `dropdown-${targetId}` : "";
+    wrapper.className = "custom-dropdown";
+    wrapper.dataset.value = String(defaultVal);
+
+    // Trigger button
+    const trigger = document.createElement("div");
+    trigger.className = "custom-dropdown-trigger";
+
+    const valueSpan = document.createElement("span");
+    valueSpan.className = "dd-value";
+    valueSpan.textContent = String(defaultVal);
+
+    const arrow = document.createElement("span");
+    arrow.className = "dd-arrow";
+    arrow.textContent = "▼";
+
+    trigger.appendChild(valueSpan);
+    trigger.appendChild(arrow);
+    wrapper.appendChild(trigger);
+
+    // Options list
+    const list = document.createElement("ul");
+    list.className = "custom-dropdown-list";
+
+    for (let i = 1; i <= max; i++) {
+      const item = document.createElement("li");
+      item.className = "custom-dropdown-item";
+      item.textContent = String(i);
+      item.dataset.val = String(i);
+
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        wrapper.dataset.value = String(i);
+        valueSpan.textContent = String(i);
+        // Update selected highlight
+        list
+          .querySelectorAll(".custom-dropdown-item")
+          .forEach((li) => li.classList.remove("selected"));
+        item.classList.add("selected");
+        wrapper.classList.remove("open");
+        if (onChange) onChange(i);
+      });
+      list.appendChild(item);
+    }
+    wrapper.appendChild(list);
+
+    // Toggle open/close on trigger click
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Close all other open dropdowns first
+      document.querySelectorAll(".custom-dropdown.open").forEach((dd) => {
+        if (dd !== wrapper) dd.classList.remove("open");
+      });
+      wrapper.classList.toggle("open");
+    });
+
+    // Helper to set value programmatically (for Show Answer)
+    wrapper.setValue = function (val) {
+      wrapper.dataset.value = String(val);
+      valueSpan.textContent = String(val);
+      list.querySelectorAll(".custom-dropdown-item").forEach((li) => {
+        li.classList.toggle("selected", li.dataset.val === String(val));
+      });
+      if (onChange) onChange(val);
+    };
+
+    return wrapper;
+  }
+
+  // Close any open dropdown when clicking outside
+  document.addEventListener("click", () => {
+    document
+      .querySelectorAll(".custom-dropdown.open")
+      .forEach((dd) => dd.classList.remove("open"));
+  });
 
   // --- Screen 2 Logic ---
   const sc2Config = {
@@ -251,237 +786,398 @@ function initWidget() {
   };
 
   function setupScreen2Challenge(sc) {
+    // Remove stale dropdowns from previous calls
+    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+
     const cfg = sc2Config[sc];
     if (!cfg) return;
 
-    // Find the dropdown bounding rects provided in the SVG
-    // They are often named like act-02-scX-dropdown-list-1, -2
-    // If exact IDs differ, we try generic text nodes matching numbers
-    let dd1 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-1"]`) ||
-      document.querySelector(`[id*="act-02-sc${sc}"] [id*="drop"] g`);
-    let dd2 =
-      document.querySelector(`[id*="act-02-sc${sc}-dropdown"][id*="list-2"]`) ||
-      document.querySelectorAll(`[id*="act-02-sc${sc}"] [id*="drop"]`)[1];
+    // The dropdown boxes in SVG are act-02-scX-dropdown-list-1, -2
+    let dd1 = document.getElementById(`act-02-sc${sc}-dropdown-list-1`);
+    let dd2 = document.getElementById(`act-02-sc${sc}-dropdown-list-2`);
+    let dd3 = document.getElementById(`act-02-sc${sc}-dropdown`);
 
-    // Create selects
-    const s1 = document.createElement("select");
-    const s2 = document.createElement("select");
-    s1.className = "custom-dropdown";
-    s2.className = "custom-dropdown";
+    // Get the Trade button and disable it initially
+    const scGroup = document.getElementById(`act-02-sc${sc}-btn`);
+    const scSubmit = scGroup ? scGroup.querySelector('[id^="Trade"]') : globalSubmit;
+    const showAnsBtn = scGroup ? scGroup.querySelector('[id^="Show_Answer"]') : null;
+    if (scSubmit) {
+      scSubmit.style.opacity = "0.5";
+      scSubmit.style.pointerEvents = "none";
+      scSubmit.style.cursor = "not-allowed";
+    }
 
-    // Add options
-    for (let i = 1; i <= cfg.max1; i++) s1.add(new Option(i, i));
-    for (let i = 1; i <= cfg.max2; i++) s2.add(new Option(i, i));
+    // Check if both dropdowns have values to enable the Trade button
+    function checkEnableSubmit() {
+      const v1 = parseInt(s1.dataset.value);
+      const v2 = parseInt(s2.dataset.value);
+      if (v1 > 0 && v2 > 0 && scSubmit) {
+        scSubmit.style.opacity = "1";
+        scSubmit.style.pointerEvents = "auto";
+        scSubmit.style.cursor = "pointer";
+      }
+    }
 
-    // Wait a brief moment for layout inside the function scope if required, but we should be fine here.
-    if (dd1 && dd2) {
-      hideElements(`[id="${dd1.id}"]`);
-      hideElements(`[id="${dd2.id}"]`);
+    // Create custom dropdowns with target IDs to prevent duplicates
+    const s1 = createCustomDropdown(
+      cfg.max1,
+      0,
+      checkEnableSubmit,
+      `act-02-sc${sc}-1`,
+    );
+    const s2 = createCustomDropdown(
+      cfg.max2,
+      0,
+      checkEnableSubmit,
+      `act-02-sc${sc}-2`,
+    );
 
-      const r1 = getPctRect(dd1);
-      const r2 = getPctRect(dd2);
+    // Preferred positioning: map to SVG trigger boundaries if they exist
+    if (dd3) {
+      const triggerWrappers = Array.from(dd3.children).filter(
+        (c) => c.tagName === "g" || c.tagName === "G",
+      );
+      // Sort triggers left-to-right to reliably map to s1 (left) and s2 (right)
+      triggerWrappers.sort(
+        (a, b) =>
+          a.getBoundingClientRect().left - b.getBoundingClientRect().left,
+      );
 
-      if (r1) {
+      if (triggerWrappers.length >= 2) {
+        const r1 = getPctRect(triggerWrappers[0]);
+        const r2 = getPctRect(triggerWrappers[1]);
+
         Object.assign(s1.style, {
           left: r1.left,
           top: r1.top,
           width: r1.width,
           height: r1.height,
+          pointerEvents: "auto",
         });
         uiLayer.appendChild(s1);
-      }
-      if (r2) {
+
         Object.assign(s2.style, {
           left: r2.left,
           top: r2.top,
           width: r2.width,
           height: r2.height,
+          pointerEvents: "auto",
         });
         uiLayer.appendChild(s2);
+
+        // Hide placeholders
+        if (dd1) dd1.classList.add("st767");
+        if (dd2) dd2.classList.add("st767");
+        dd3.classList.add("st767");
+        // return; // Success
       }
-    } else {
-      // Hardcoded fallback bounding boxes per challenge if SVG IDs are missing
-      const fbBoxes = {
-        1: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        2: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
-        3: [
-          { l: "18%", t: "44%", w: "10%", h: "5%" },
-          { l: "65%", t: "44%", w: "10%", h: "5%" },
-        ],
+    }
+
+    // Fallback if SVG elements are missing (previously hardcoded, now made slightly more robust)
+    const fbBoxes = {
+      1: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+      2: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+      3: [
+        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
+        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
+      ],
+    };
+
+    const b = fbBoxes[sc] || fbBoxes[1];
+    [s1, s2].forEach((s, i) => {
+      Object.assign(s.style, {
+        left: b[i].l,
+        top: b[i].t,
+        width: b[i].w,
+        height: b[i].h,
+        pointerEvents: "auto",
+      });
+      uiLayer.appendChild(s);
+    });
+
+    // Show Answer logic
+    if (showAnsBtn) {
+      showAnsBtn.style.cursor = "pointer";
+      showAnsBtn.onclick = (e) => {
+        e.stopPropagation();
+        // Find first fair trade values
+        let f1 = 0,
+          f2 = 0;
+        if (sc === 1) {
+          f1 = 2; // Rice
+          f2 = 1; // Cloth
+        } else if (sc === 2) {
+          f1 = 3; // Rice
+          f2 = 1; // Jaggery
+        } else if (sc === 3) {
+          f1 = 4; // Cloth
+          f2 = 3; // Jaggery
+        }
+        s1.setValue(f1);
+        s2.setValue(f2);
       };
-      const b = fbBoxes[sc];
-      Object.assign(s1.style, {
-        left: b[0].l,
-        top: b[0].t,
-        width: b[0].w,
-        height: b[0].h,
-      });
-      uiLayer.appendChild(s1);
-      Object.assign(s2.style, {
-        left: b[1].l,
-        top: b[1].t,
-        width: b[1].w,
-        height: b[1].h,
-      });
-      uiLayer.appendChild(s2);
     }
 
     // Submit handler logic
-    const scSubmit =
-      document.querySelector(`[id="act-02-sc${sc}-btn"]`) || globalSubmit;
     if (scSubmit) {
-      // Use clone to remove old listeners
-      const newSubmit = scSubmit.cloneNode(true);
-      scSubmit.parentNode.replaceChild(newSubmit, scSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let v1 = parseInt(s1.value);
-        let v2 = parseInt(s2.value);
-        if (v1 * cfg.val1 === v2 * cfg.val2) {
+      scSubmit.style.cursor = "pointer";
+      scSubmit.onclick = (e) => {
+        if (e) e.stopPropagation();
+        let v1 = parseInt(s1.dataset.value) || 0;
+        let v2 = parseInt(s2.dataset.value) || 0;
+        if (v1 * cfg.val1 === v2 * cfg.val2 && v1 > 0 && v2 > 0) {
           // Fair Trade
-          showElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          // Show continue or end
-          showElements(`[id*="act-02-sc${sc}-feedback-end"]`); // sometimes the success is feedback-end
+          showElements(`#act-02-sc1-feedback-correct`);
+          hideElements(`#act-02-sc1-feedback-incorrect`);
         } else {
           // Unfair
-          showElements(`[id*="act-02-sc${sc}-feedback-incorrect"]`);
-          hideElements(`[id*="act-02-sc${sc}-feedback-correct"]`);
+          showElements(`#act-02-sc1-feedback-incorrect`);
+          hideElements(`#act-02-sc1-feedback-correct`);
         }
-      });
+      };
     }
 
-    // Hide standard continue/incorrect states
-    document
-      .querySelectorAll(`[id*="Continue"]`)
-      .forEach((el) => el.classList.add("hidden-svg"));
+    // Feedback Continue button handlers (Recycled IDs sc1 used for all Activity 2 scenarios)
+    const incorrectFeedback = document.getElementById(`act-02-sc1-feedback-incorrect`);
+    if (incorrectFeedback) {
+      incorrectFeedback.style.cursor = "pointer";
+      incorrectFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-incorrect`);
+      };
+    }
+
+    const correctFeedback = document.getElementById(`act-02-sc1-feedback-correct`);
+    if (correctFeedback) {
+      correctFeedback.style.cursor = "pointer";
+      correctFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-correct`);
+        showElements(`#act-02-sc1-feedback-end`);
+      };
+    }
+
+    const endFeedback = document.getElementById(`act-02-sc1-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.onclick = () => {
+        hideElements(`#act-02-sc1-feedback-end`);
+        goNext();
+      };
+    }
   }
 
   // --- Screen 3 Logic ---
   function setupScreen3Challenge(sc) {
-    // There are 3 challenges here. Multi-step trade tracking
-    // We assume the sequence clicks are just revealing lines/cards.
-    // In SVGs usually act-03-scX-cardN-selected needs to be toggled
-    const maxCards = sc === 3 ? 4 : 3; // sc3 has 4 cards
-    let currentStep = 1;
+    const chainConfig = {
+      1: ["Farmer", "Fisherman", "Plumber"],
+      2: ["Teacher", "Potter", "Carpenter"],
+      3: ["Potter", "Farmer", "Weaver", "Doctor"],
+    };
+    const sequence = chainConfig[sc];
+    let currentStep = 0;
 
-    // Hide all selections
-    for (let i = 1; i <= maxCards; i++) {
-      hideElements(`[id="act-03-sc${sc}-card${i}-selected"]`);
+    // Hide all selections initially
+    for (let i = 1; i <= 4; i++) {
+      hideElements(`#act-03-sc${sc}-card${i}-selected`);
     }
 
-    // Attempt to bind clicks on the base cards to advance step
-    // A simple hack is just a transparent overlay covering the whole trade chain area
-    // that advances the step on click.
-    // We will place a big invisible clickable div
-    const clickArea = document.createElement("div");
-    clickArea.style.position = "absolute";
-    clickArea.style.top = "30%";
-    clickArea.style.left = "10%";
-    clickArea.style.width = "80%";
-    clickArea.style.height = "40%";
-    clickArea.style.cursor = "pointer";
-    uiLayer.appendChild(clickArea);
+    sequence.forEach((traderName, index) => {
+      // Find the card in act-03-scX-cards
+      // Usually named like act-03-sc1-card1, act-03-sc1-card2 etc.
+      const cardId = `act-03-sc${sc}-card${index + 1}`;
+      const card = document.getElementById(cardId);
+      if (!card) return;
 
-    clickArea.onclick = () => {
-      if (currentStep <= maxCards) {
-        showElements(`[id="act-03-sc${sc}-card${currentStep}-selected"]`);
-        currentStep++;
-        if (currentStep > maxCards) {
-          showElements(`[id="act-03-sc${sc}-feedback-end"]`);
-          clickArea.style.pointerEvents = "none"; // disable further clicks
-        }
-      }
-    };
-  }
+      card.style.cursor = "pointer";
 
-  // --- Screen 4 Logic ---
-  function setupScreen4() {
-    // 8 statements. Correct are 1, 2, 3, 4, 7 (index 0,1,2,3,6)
-    const defGroup = document.getElementById("act-04-checkbox-default");
-    const selGroup = document.getElementById("act-04-checkbox-selected");
-    if (!defGroup || !selGroup) return;
-
-    // Remove hidden-svg to work with them
-    defGroup.classList.remove("hidden-svg");
-    selGroup.classList.remove("hidden-svg");
-
-    // Convert child paths/groups into arrays
-    // We expect 8 graphical checkboxes in each group
-    const defs = Array.from(defGroup.children);
-    const sels = Array.from(selGroup.children);
-    if (defs.length < 8 || sels.length < 8) return;
-
-    const corrects = [0, 1, 2, 3, 6];
-    const isSelected = [false, false, false, false, false, false, false, false];
-
-    // Hide selections initially
-    sels.forEach((s) => s.classList.add("hidden-svg"));
-
-    // Bind click to the SVG directly via rectangles
-    // SVG text and paths have pointer events out of the box
-    defs.forEach((defEl, i) => {
-      defEl.style.cursor = "pointer";
-      // Actually we'll bind an absolute div over each checkbox using bounds
-      const rect = getPctRect(defEl);
+      // Overlay for clicking
+      const rect = getPctRect(card);
       if (rect) {
-        const d = document.createElement("div");
-        Object.assign(d.style, {
+        const overlay = document.createElement("div");
+        Object.assign(overlay.style, {
           position: "absolute",
           left: rect.left,
           top: rect.top,
-          width: "5%", // rough wide area for ease of click
+          width: rect.width,
           height: rect.height,
           cursor: "pointer",
           pointerEvents: "auto",
+          zIndex: "10",
         });
-        uiLayer.appendChild(d);
+        uiLayer.appendChild(overlay);
 
-        d.onclick = () => {
-          isSelected[i] = !isSelected[i];
-          if (isSelected[i]) {
-            defEl.classList.add("hidden-svg");
-            sels[i].classList.remove("hidden-svg");
-          } else {
-            defEl.classList.remove("hidden-svg");
-            sels[i].classList.add("hidden-svg");
+        overlay.onclick = () => {
+          if (index === currentStep) {
+            // Correct step
+
+            // Hide previous step indicator to avoid layering/overlap issues with the trading chain text
+            if (currentStep > 0) {
+              hideElements(`#act-03-sc${sc}-card${currentStep}-selected`);
+            }
+
+            showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
+            currentStep++;
+            if (currentStep === sequence.length) {
+              const msg =
+                sc === 3
+                  ? "Well Done! You achieved your goal by completing a 4-step trading."
+                  : "Well Done! You achieved your goal by completing a 3-step trading.";
+              //showFeedbackPopup(msg, true);
+              showElements(`#act-03-sc${sc}-feedback-end`);
+            } else {
+              //showFeedbackPopup("Good job!", true);
+            }
+          } else if (index > currentStep) {
+            // Wrong step
+            showFeedbackPopup(
+              "Wrong order! Try again from the correct trader.",
+              false,
+            );
           }
         };
       }
     });
-
-    // Validating on Submit
-    const sSubmit =
-      document.querySelector('[id*="act-04-btn"]') || globalSubmit;
-    if (sSubmit) {
-      const newSubmit = sSubmit.cloneNode(true);
-      sSubmit.parentNode.replaceChild(newSubmit, sSubmit);
-      newSubmit.style.cursor = "pointer";
-
-      newSubmit.addEventListener("click", () => {
-        let allCorrect = true;
-        for (let i = 0; i < 8; i++) {
-          if (corrects.includes(i) && !isSelected[i]) allCorrect = false;
-          if (!corrects.includes(i) && isSelected[i]) allCorrect = false;
+    const endFeedback = document.getElementById(`act-03-sc${sc}-feedback-end`);
+    if (endFeedback) {
+      endFeedback.style.cursor = "pointer";
+      endFeedback.addEventListener("click", () => {
+        hideElements(`#act-03-sc${sc}-feedback-end`);
+        hideElements(`#act-03-sc${sc}-goal`);
+        for (let i = 1; i <= 4; i++) {
+          hideElements(`#act-03-sc${sc}-card${i}-selected`);
         }
-        if (allCorrect) {
-          showElements("#act-04-feedback-end");
-          hideElements("#act-04-feedback-incorrect");
-        } else {
-          // generic incorrect visual if any
-          showElements("#act-04-feedback-incorrect");
-        }
+        goNext();
       });
     }
   }
+
+  // --- Screen 4 Logic ---
+  function setupScreen4() {
+    const checkBoxIds = [
+      "Group_1679",
+      "Group_1681",
+      "Group_1682",
+      "Group_1683",
+      "Group_1680",
+      "Group_1684",
+      "Group_1686",
+      "Group_1685",
+    ];
+    const defGroup = document.getElementById("act-04-checkbox-default");
+    const selGroup = document.getElementById("act-04-checkbox-selected");
+    if (!defGroup || !selGroup) return;
+
+    // Use absolute sorting by bounding box top
+    const defs = Array.from(defGroup.children).sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
+    // The actual selected indicators are inside Group_1687, not just selGroup directly
+    const selInnerGroup = document.getElementById("Group_1687") || selGroup;
+    const sels = Array.from(selInnerGroup.children).sort(
+      (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+    );
+
+    const corrects = [0, 1, 2, 3, 6];
+    let correctCount = 0;
+
+    // Submit Button Logic
+    const btnSubmit = document.getElementById("Group_1177-2");
+    if (btnSubmit) {
+      btnSubmit.style.opacity = "0.5";
+      btnSubmit.style.pointerEvents = "none";
+      btnSubmit.style.cursor = "default";
+      btnSubmit.onclick = null;
+    }
+    const clickedBoxes = new Set();
+
+    defs.forEach((defEl, i) => {
+      const rect = getPctRect(defEl);
+      if (rect) {
+        const overlay = document.createElement("div");
+        Object.assign(overlay.style, {
+          position: "absolute",
+          left: rect.left,
+          top: rect.top,
+          width: "35%", // wide area for text
+          height: rect.height,
+          cursor: "pointer",
+          pointerEvents: "auto",
+        });
+        uiLayer.appendChild(overlay);
+
+        overlay.onclick = () => {
+          clickedBoxes.add(i);
+
+          if (corrects.includes(i)) {
+            // Correct selected target
+            // defEl.classList.add("hidden-svg");
+            overlay.style.pointerEvents = "none"; // disable further clicks
+            correctCount++;
+            sels[i].classList.remove("st767", "hidden-svg");
+          } else {
+            // Wrong selected target
+            sels[i].classList.remove("st767", "hidden-svg");
+            // defEl.classList.add("hidden-svg");
+            overlay.style.pointerEvents = "none";
+          }
+
+          // Check if all checkboxes have been clicked
+          if (clickedBoxes.size === 8) {
+            if (btnSubmit) {
+              btnSubmit.style.opacity = "1";
+              btnSubmit.style.pointerEvents = "auto";
+              btnSubmit.style.cursor = "pointer";
+              btnSubmit.onclick = () => {
+                showElements("#act-04-feedback-end");
+              };
+            }
+          }
+        };
+      }
+    });
+  }
+
+  // Add CSS for trader states and UI elements
+  const style = document.createElement("style");
+  style.textContent = `
+    .trader-selected {
+      filter: drop-shadow(0 0 8px #FFD700) !important;
+      opacity: 1 !important;
+    }
+
+    .trader-matched {
+      filter: drop-shadow(0 0 12px #00AA00) !important;
+      opacity: 0.85 !important;
+    }
+
+    .trade-counter {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: #333;
+      font-family: Arial, sans-serif;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    #feedback-popup-sc1 button:hover {
+      background: #7a0070 !important;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+  `;
+  document.head.appendChild(style);
 
   // Launch View
   updateView();
