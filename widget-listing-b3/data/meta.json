@@ -37,7 +37,7 @@
       "author": "aditya"
     },
     "wg111-guess-the-collective-nouns": {
-      "updatedAt": "2026-03-05T17:49:32+05:30",
+      "updatedAt": "2026-03-24T20:10:48+05:30",
       "author": "PrasannaP"
     },
     "wg112-identify-criminal-dna": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-24T20:10:48+05:30",
+      "author": "PrasannaP",
+      "message": "chore: Update widget versions, add documentation requirements, and adjust development server port.",
+      "widgets": [
+        111
+      ]
+    },
+    {
       "date": "2026-03-24T20:08:19+05:30",
       "author": "tce-nitinc",
       "message": "fixes",
@@ -615,14 +623,6 @@
       "message": "ui fix wg128",
       "widgets": [
         128
-      ]
-    },
-    {
-      "date": "2026-03-23T20:58:33+05:30",
-      "author": "PrasannaP",
-      "message": "Update version ID and consolidate multiple tspan elements into single text strings for cleaner SVG rendering.",
-      "widgets": [
-        154
       ]
     }
   ]
