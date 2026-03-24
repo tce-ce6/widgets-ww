@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
-      "updatedAt": "2026-03-23T17:21:11+05:30",
+      "updatedAt": "2026-03-24T11:23:06+05:30",
       "author": "aditya"
     },
     "wg129-unravel-the-taxonomic-trail": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-24T11:23:06+05:30",
+      "author": "aditya",
+      "message": "ui fix wg128",
+      "widgets": [
+        128
+      ]
+    },
+    {
       "date": "2026-03-23T20:58:33+05:30",
       "author": "PrasannaP",
       "message": "Update version ID and consolidate multiple tspan elements into single text strings for cleaner SVG rendering.",
@@ -615,14 +623,6 @@
       "widgets": [
         96,
         126
-      ]
-    },
-    {
-      "date": "2026-03-23T15:39:04+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "reset widget fixed",
-      "widgets": [
-        24
       ]
     }
   ]
