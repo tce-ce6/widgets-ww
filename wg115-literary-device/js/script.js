@@ -350,6 +350,16 @@ function setupEventListeners() {
 
     document.getElementById('close-result').onclick = () => {
         resultOverlay.style.display = 'none';
+        
+        shuffledCombinations.forEach((col, i) => {
+            const selectedId = builderSelectedIndexes[i];
+            const itemIndex = col.findIndex(item => item.id === selectedId);
+            if (itemIndex > -1) {
+                col.splice(itemIndex, 1);
+            }
+        });
+        builderSelectedIndexes = [];
+        renderBuilder();
     };
 
     window.onclick = (event) => {

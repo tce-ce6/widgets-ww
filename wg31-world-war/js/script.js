@@ -264,7 +264,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       solvedClues[year] ??= {};
       solvedClues[year][currentQuestionIndex] ??= new Set();
       solvedClues[year][currentQuestionIndex].add(clueIdxToMark);
-      usedFlags.add(flagCountry);
+      const flagKey = selectedYearData?.year === 1918 ? '1918-' + flagCountry : flagCountry;
+      usedFlags.add(flagKey);
       renderCluesForQuestion(selectedYearData.questions[currentQuestionIndex]);
 
       if (is1918MultiDefeatedQuestion()) {
@@ -478,7 +479,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         li.appendChild(img);
 
         // ♻️ placeholder restore
-        if (usedFlags.has(countryName)) {
+        const flagKey = selectedYearData?.year === 1918 ? '1918-' + countryName : countryName;
+        if (usedFlags.has(flagKey)) {
           li.dataset.hasPlaceholder = "true";
           li.style.filter = "sepia(1)";
           li.style.opacity = "0.4";
@@ -726,7 +728,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       solvedClues[year] ??= {};
       solvedClues[year][currentQuestionIndex] ??= new Set();
       solvedClues[year][currentQuestionIndex].add(clueIdxToMark);
-      usedFlags.add(flagCountry);
+      const flagKey = selectedYearData?.year === 1918 ? '1918-' + flagCountry : flagCountry;
+      usedFlags.add(flagKey);
       renderCluesForQuestion(currentQuestion);
       if (is1918MultiDefeatedQuestion()) {
         multiSolvedCountries.add(flagCountry);
@@ -1083,7 +1086,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   function keepFlagPlaceholder(flagEl) {
-    const key = flagEl.dataset.country;
+    const key = selectedYearData?.year === 1918 ? '1918-' + flagEl.dataset.country : flagEl.dataset.country;
 
     if (usedFlags.has(key)) return;
 
@@ -1102,7 +1105,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   function removeFlagPlaceholder(flagEl) {
-    const key = flagEl.dataset.country;
+    const key = selectedYearData?.year === 1918 ? '1918-' + flagEl.dataset.country : flagEl.dataset.country;
 
     usedFlags.delete(key);
     delete flagEl.dataset.hasPlaceholder;
