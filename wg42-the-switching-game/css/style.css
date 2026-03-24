@@ -8,7 +8,7 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#idiom-wrapper body {
+body#idiom-wrapper {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -17,6 +17,13 @@ svg * {
   padding: 0;
   margin: 0;
   background-color: #fff !important;
+  overflow: hidden;
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
 }
 
 #idiom-wrapper .container {
@@ -25,6 +32,9 @@ svg * {
   width: 100vw;
   position: relative;
   user-select: none !important;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 #idiom-wrapper ul {
@@ -37,19 +47,17 @@ svg * {
   content: "";
   background-image: url("../assets/bg.png");
   background-color: #000;
-  background-size: 100% 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100%;
+  height: calc(100% + 10px);
   width: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
-}
-
-/* #idiom-wrapper .mainContainerOuter {
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
   background: #60360D !important
-} */
+}
 
 #idiom-wrapper .button-controls {
   background: 0 0 !important;

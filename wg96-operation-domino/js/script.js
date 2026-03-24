@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedBtn = document.getElementById("selected-btn");
 
     const cards = document.querySelectorAll("#card-wrapper li");
-    const viewBtns = document.querySelectorAll("#card-wrapper li .view-btn");
 
     const infoModal = document.getElementById("info-modal");
     const popupIcon = document.getElementById("popup-icon");
@@ -23,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const placeholders = document.querySelectorAll("#card-placeholder li");
     let draggedCard = null;
+    let isDragging = false;
     const resetBtn = document.getElementById("reset-btn");
     const triggerBtn = document.getElementById("trigger-chain-btn");
     const cardPlaceholder = document.getElementById("card-placeholder");
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.setAttribute("draggable", true);
 
             card.addEventListener("dragstart", () => {
+                isDragging = true;
 
                 draggedCard = card;
 
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 card.style.opacity = "1";
                 draggedCard = null;
+                setTimeout(() => { isDragging = false; }, 50);
 
             });
 
@@ -153,11 +155,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const parent = draggedCard.parentNode;
 
-                // create empty placeholder li
-                const emptyLi = document.createElement("li");
+                if (parent.id === "card-wrapper") {
+                    // create empty placeholder li
+                    const emptyLi = document.createElement("li");
 
-                // insert empty li where card was
-                parent.insertBefore(emptyLi, draggedCard);
+                    // insert empty li where card was
+                    parent.insertBefore(emptyLi, draggedCard);
+                }
 
                 slot.appendChild(draggedCard);
 
@@ -182,6 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
         step1.style.display = "none";
         step2.style.display = "block";
 
+        const className = jsonKey.replace(/_/g, "-");
+        selectedBtn.className = "selected-btn " + className;
         selectedBtn.textContent = regionName;
 
         loadCards(jsonKey);
@@ -190,12 +196,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* -------------------------
-       View Button Click
+       Card Click (View Info)
     ------------------------- */
 
-    viewBtns.forEach((btn, index) => {
+    cards.forEach((cardEl, index) => {
 
-        btn.addEventListener("click", () => {
+        cardEl.addEventListener("click", () => {
+
+            if (isDragging) return;
 
             const card = currentCards[index];
 
@@ -265,6 +273,37 @@ document.addEventListener("DOMContentLoaded", () => {
             infoModal.style.display = "none";
             body.classList.remove("modal-open");
 
+            selectedBtn.className = "selected-btn";
+
+            // Reset game data
+            const cardWrapper = document.getElementById("card-wrapper");
+
+            placeholders.forEach((slot) => {
+                const card = slot.querySelector("li");
+                if (card) {
+                    const originalIndex = card.dataset.index;
+                    const targetSlot = cardWrapper.querySelectorAll("li")[originalIndex];
+                    if (targetSlot) {
+                        targetSlot.replaceWith(card);
+                    }
+                }
+                slot.classList.remove("slot-correct");
+            });
+
+            // remove domino rotation
+            const fallenCards = document.querySelectorAll("#card-placeholder li > li, #card-wrapper li");
+            fallenCards.forEach(card => card.classList.remove("domino-fall"));
+
+            // remove empty li created during drag
+            const emptyLis = cardWrapper.querySelectorAll("li:empty");
+            emptyLis.forEach(li => li.remove());
+
+            resetBtn.classList.add("disabled");
+            triggerBtn.classList.add("disabled");
+            showAnswerBtn.classList.remove("disabled");
+            showAnswerBtn.src = "./assets/show-answer.svg";
+            cardPlaceholder.classList.remove("active");
+            answerVisible = false;
         });
 
     }
@@ -298,6 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                 }
+                slot.classList.remove("slot-correct");
 
             });
 
@@ -383,12 +423,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 setTimeout(() => {
                     card.classList.add("domino-fall");
+                    playCardSound();
                 }, i * 200);
 
             }
 
             // ✅ if ALL cards correct show success
             if (correctCount === placeholders.length) {
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 setTimeout(() => {
 
@@ -405,17 +448,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+    function playCardSound() {
+        console.log("Playing sound: card-sound.mp3");
+        const audio = new Audio("./assets/card-sound.mp3");
+        audio.play().catch(e => console.log("Sound error:", e));
+    }
+
     const errorCloseBtn = document.querySelector(".popup-wrapper.wrong .close-btn");
 
     if (errorCloseBtn) {
-
         errorCloseBtn.addEventListener("click", () => {
-
             errorModal.style.display = "none";
             body.classList.remove("modal-open");
 
-        });
+            const cardWrapper = document.getElementById("card-wrapper");
+            const droppedCards = document.querySelectorAll("#card-placeholder li > li");
 
+            droppedCards.forEach((card) => {
+                if (!card.classList.contains("domino-fall")) {
+                    const originalIndex = card.dataset.index;
+                    const targetSlot = cardWrapper.querySelectorAll("li")[originalIndex];
+
+                    if (targetSlot) {
+                        targetSlot.replaceWith(card);
+                    }
+                    card.parentElement.classList.remove("slot-correct");
+                } else {
+                    card.parentElement.classList.add("slot-correct");
+                }
+            });
+
+            cardPlaceholder.classList.remove("active");
+            checkAllPlaced();
+        });
     }
 
     function playSuccessAnimation() {
@@ -429,6 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
             autoplay: true,
             path: "lottie/correct-anim.json"
         });
+
+        playCardSound();
 
     }
 
@@ -501,6 +568,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // enable reset if needed
                 resetBtn.classList.remove("disabled");
+                triggerBtn.classList.add("disabled");
+                triggerBtn.classList.add("disable");
 
                 answerVisible = true;
 

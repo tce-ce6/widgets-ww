@@ -429,10 +429,10 @@ let wordIndex = 0;
 
 
 const IMAGES = [
-  'Assets/tree.svg',
-  'Assets/milestone.svg',
-  'Assets/mountain.svg',
-  'Assets/stone.svg'
+  'assets/tree.svg',
+  'assets/milestone.svg',
+  'assets/mountain.svg',
+  'assets/stone.svg'
 ];
 
 //Playing Lotties
@@ -483,8 +483,8 @@ function playCorrectAnswerLottie(objectName) {
 
   const variant = (wordIndex % 2 === 0) ? '01' : '02';
 
-  // 3. Construct the path (e.g., "./Assets/JSON/tree_01.json")
-  const animationPath = `./Assets/Images/JSON/${objectName}_${variant}.json`;
+  // 3. Construct the path (e.g., "./assets/JSON/tree_01.json")
+  const animationPath = `./assets/Images/JSON/${objectName}_${variant}.json`;
 
   // Clear previous SVG if any
   container.innerHTML = '';
@@ -656,10 +656,10 @@ function showAllAnswers(wordObj) {
   updateStarsDisplay(answers.length, answers.length);
 
   const assetMap = {
-    tree: './Assets/tree-1.svg',
-    milestone: './Assets/milestone-1.svg',
-    mountain: './Assets/mountain-1.svg',
-    stone: './Assets/stone-1.svg'
+    tree: './assets/tree-1.svg',
+    milestone: './assets/milestone-1.svg',
+    mountain: './assets/mountain-1.svg',
+    stone: './assets/stone-1.svg'
   };
 
   // If the object exists in our map, update the source

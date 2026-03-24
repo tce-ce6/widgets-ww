@@ -605,3 +605,13 @@ svg * {
   margin-top: 20px;
   display: block;
 }
+
+.replay-btn {
+  background-color: #bb682a;
+  color: #FFFAB9;
+  padding: 15px 20px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}

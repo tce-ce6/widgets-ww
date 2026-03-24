@@ -38,30 +38,30 @@ var WG = {
     /* ── all 25 sentences ──────────────────────────────────── */
     rawSentences: [
         { display: "My friend Rita loves to read books____", blanks: ["."] },
-        { display: "Wow____ What a beautiful rainbow____", blanks: ["!", "!"] },
+        { display: "What a beautiful rainbow____", blanks: ["!"] },
         { display: "Where is your school bag____", blanks: ["?"] },
         { display: "I like to eat apples____ oranges and bananas____", blanks: [",", "."] },
-        { display: "The teacher said____ ____Please sit down quietly____ ____", blanks: [",", "\u201d", ".", "\u201d"] },
+        { display: "The teacher said____ ____Please sit down quietly____ ____", blanks: [",", "\u201c", ".", "\u201d"] },
         { display: "That is Ramya____s bicycle____", blanks: ["'", "."] },
-        { display: "Help____ I am stuck in a tree____", blanks: ["!", "!"] },
+        { display: "Bravo____ What a wonderful performance____", blanks: ["!", "!"] },
         { display: "We visited Delhi____ Mumbai and Kolkata last summer____", blanks: [",", "."] },
         { display: "Do you know where my pencil is____", blanks: ["?"] },
-        { display: "Mother asked____ ____Have you finished your homework____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
+        { display: "Mother asked____ ____Have you finished your homework____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
         { display: "The cat____s tail is very fluffy____", blanks: ["'", "."] },
-        { display: "Hurray____ We won the match____", blanks: ["!", "!"] },
+        { display: "Fire____ The building is burning____", blanks: ["!", "!"] },
         { display: "My birthday is on Monday____ 15 March____", blanks: [",", "."] },
         { display: "Can you help me carry these books____", blanks: ["?"] },
         { display: "I love to play cricket____ football and badminton____", blanks: [",", "."] },
-        { display: "She asked____ ____Is this your bag____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
-        { display: "Watch out____ There is a big puddle ahead____", blanks: ["!", "!"] },
+        { display: "She asked____ ____Is this your bag____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
+        { display: "The child replied calmly, \"Yes____ I would like some milk____\"", blanks: [",", "."] },
         { display: "This is Meena____s favourite storybook____", blanks: ["'", "."] },
         { display: "What time does the school start____", blanks: ["?"] },
         { display: "The sky turned orange____ pink and purple at sunset____", blanks: [",", "."] },
-        { display: "Father asked____ ____Did you water the plants today____ ____", blanks: [",", "\u201d", "?", "\u201d"] },
-        { display: "Look____ A butterfly is sitting on the flower____", blanks: ["!", "!"] },
+        { display: "Father asked____ ____Did you water the plants today____ ____", blanks: [",", "\u201c", "?", "\u201d"] },
+        { display: "Ouch____ That really hurt____", blanks: ["!", "!"] },
         { display: "The dog____s bone is buried in the garden____", blanks: ["'", "."] },
         { display: "I need a pen____ a notebook and an eraser for school____", blanks: [",", "."] },
-        { display: "The wise old man said____ ____Always be kind to others____ ____", blanks: [",", "\u201d", ".", "\u201d"] }
+        { display: "The wise old man said____ ____Always be kind to others____ ____", blanks: [",", "\u201c", ".", "\u201d"] }
     ],
 
     /* option button id → character */
@@ -71,8 +71,8 @@ var WG = {
         "option-btn-3": "!",
         "option-btn-4": ",",
         "option-btn-5": "'",
-        "option-btn-6": "\u201d",
-        "option-btn-7": "\u201d"
+        "option-btn-6": "\u201c", // Opening double quote “
+        "option-btn-7": "\u201d"  // Closing double quote ”
     }
 };
 
@@ -140,17 +140,21 @@ function init() {
     /* Differentiate the two quotation-mark buttons visually */
     styleQuoteButtons();
 
-    /* Bind Insights button */
+    /* Bind Insights button and disable text interaction */
     var btnInsight = getEl("inside-btn");
+    var btnInsightText = getEl("inside-btn-text");
     if (btnInsight) { btnInsight.style.cursor = "pointer"; btnInsight.addEventListener("click", onInsightClick); }
+    if (btnInsightText) { btnInsightText.style.pointerEvents = "none"; }
 
     /* Bind Close popup */
     var closeBtn = getEl("close-btn");
     if (closeBtn) { closeBtn.style.cursor = "pointer"; closeBtn.addEventListener("click", onClosePopup); }
 
-    /* Bind Next button */
+    /* Bind Next button and disable text interaction */
     var nextBtn = getEl("next-btn-panel");
+    var nextBtnText = getEl("next-btn-text");
     if (nextBtn) { nextBtn.style.cursor = "pointer"; nextBtn.addEventListener("click", onNextClick); }
+    if (nextBtnText) { nextBtnText.style.pointerEvents = "none"; }
 
     loadSentence(WG.currentIndex);
 }
@@ -163,19 +167,10 @@ function init() {
    ────────────────────────────────────────────────────────── */
 
 function styleQuoteButtons() {
-    /* We only need ONE quote button that fills both open/close quotes.
-       Hide button 7, and make button 6 a generic quote character. */
+    /* Ensure both quote buttons (opening + closing) are visible.
+       Matching is handled via WG.optionMap (btn-6 → “, btn-7 → ”). */
     var btn7 = getEl("option-btn-7");
-    if (btn7) btn7.style.display = "none";
-
-    /* Button 6 represents the generic quote option */
-    var btn6 = getEl("option-btn-6");
-    if (btn6) {
-        var r6 = btn6.querySelector("rect");
-        if (r6) r6.style.fill = "#c7eabb"; /* default green */
-        /* Update the mapping so btn-6 is treated as generic quote during matching */
-        WG.optionMap["option-btn-6"] = "\u201d"; /* we match on the open quote first */
-    }
+    if (btn7) btn7.style.display = "";
 }
 
 /* addQuoteLabel removed as we no longer need labels for quotes */
@@ -376,9 +371,12 @@ function onInsightClick() {
     var svg = getEl("Layer_37");
     if (!svg) return;
 
-    /* Remove stale overlay if any */
+    /* If overlay exists, toggle it off instead of opening a new one */
     var existingOverlay = getEl("insight-overlay");
-    if (existingOverlay) existingOverlay.parentNode.removeChild(existingOverlay);
+    if (existingOverlay) {
+        onClosePopup();
+        return;
+    }
 
     /* Create dark semi-transparent overlay covering the full SVG canvas */
     var overlay = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -392,10 +390,10 @@ function onInsightClick() {
     overlay.addEventListener("click", onClosePopup);
     svg.appendChild(overlay);
 
-    /* Move inside-popup, its text, and the close button to be the last children of SVG (render on top) */
-    ["inside-popup", "inside-popup-text", "close-btn"].forEach(function (id) {
+    /* Move Insight button and popup elements to the top of the SVG stack */
+    ["insight-overlay", "inside-popup", "inside-popup-text", "close-btn", "inside-btn", "inside-btn-text"].forEach(function (id) {
         var el = getEl(id);
-        if (el) {
+        if (el && id !== "insight-overlay") {
             svg.appendChild(el);
             el.style.display = "";
         }
@@ -573,7 +571,7 @@ function driveCarOffScreen() {
     if (!carEl) return;
     /* Move the entire car width + starting position off the left edge */
     carEl.style.transition = "transform 1.2s ease-in";
-    carEl.style.transform = "translateX(-2000px)";
+    carEl.style.transform = "translateX(-3000px)";
 }
 
 function resetCarPosition() {
@@ -627,17 +625,19 @@ function showTryAgainMessage() {
     g.setAttribute("id", "try-again-msg");
 
     var bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    bg.setAttribute("x", "660"); bg.setAttribute("y", "614");
-    bg.setAttribute("width", "600"); bg.setAttribute("height", "80");
+    // Reduced width + moved down to avoid overlapping answer buttons.
+    // Text remains centered at x=960.
+    bg.setAttribute("x", "835"); bg.setAttribute("y", "640");
+    bg.setAttribute("width", "200"); bg.setAttribute("height", "60");
     bg.setAttribute("rx", "16"); bg.setAttribute("ry", "16");
     bg.setAttribute("fill", "#ff4444"); bg.setAttribute("fill-opacity", "0.93");
     g.appendChild(bg);
 
     var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    txt.setAttribute("x", "960"); txt.setAttribute("y", "665");
+    txt.setAttribute("x", "935"); txt.setAttribute("y", "681");
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("fill", "#fff");
-    txt.setAttribute("font-size", "38");
+    txt.setAttribute("font-size", "26");
     txt.setAttribute("font-family", "Roboto-Bold, sans-serif");
     txt.setAttribute("font-weight", "700");
     txt.textContent = "Try Again!";

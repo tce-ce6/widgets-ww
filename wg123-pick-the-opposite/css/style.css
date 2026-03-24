@@ -214,14 +214,15 @@ svg * {
 
 .img-wrapper {
   height: 196px;
-  width: 282.84px;
-  border: 3px solid #FFE70E;
+  width: 278.84px;
+  border: 5px solid #FFE70E;
   border-radius: 20px;
   overflow: hidden;
   background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .img-wrapper img {

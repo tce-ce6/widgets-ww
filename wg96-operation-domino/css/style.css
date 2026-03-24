@@ -213,20 +213,6 @@ svg * {
   background-size: 100% 100%;
 }
 
-.card-wrapper li .view-btn {
-  height: 56.78px;
-  width: 56.78px;
-  background-image: url("../assets/info-btn.svg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  display: block;
-  position: absolute;
-  top: 160px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: pointer;
-}
-
 .i-textInfo {
   background-image: url("../assets/info-btn.svg");
   height: 35px;
@@ -324,6 +310,15 @@ body.modal-open .overlay {
   background-color: transparent;
 }
 
+.card-wrapper.placeholder li.slot-correct {
+  background-image: none !important;
+  box-shadow: none !important;
+  background-color: transparent;
+  z-index: 1;
+}
+
+
+
 .popup-wrapper.correct {
   background-color: #FFFCA7;
   color: #00640A;
@@ -348,4 +343,17 @@ body.modal-open .overlay {
   position: absolute;
   top: -250px;
   left: 130px;
+}
+
+.card-wrapper.placeholder .domino-fall~li {
+  background-image: none !important;
+  background-color: transparent;
+}
+
+.selected-btn.europe {
+  background-color: #FFD063;
+}
+
+.selected-btn.asia-pacific {
+  background-color: #f1ff6a !important;
 }

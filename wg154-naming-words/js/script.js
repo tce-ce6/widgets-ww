@@ -233,7 +233,7 @@ function initUI() {
 
   // Second SVG (scene illustrations)
   UI.scenesSvgLayer = document.getElementById("scenes-svg-layer");
-  UI.scenesBg       = document.getElementById("scenes-bg");
+  UI.scenesBg       = document.getElementById("picture-bg");
   UI.scenesInside   = document.getElementById("scenes-inside");
   UI.scenes = [];
   for (let i = 1; i <= 15; i++) {
@@ -306,7 +306,7 @@ function goToScreen2() {
   WidgetState.flippedCards  = { people: false, place: false, animal: false, thing: false };
   hideEverything();
   show(UI.homeBtn);
-  show(UI.practiseBtn);
+
   show(UI.activeBtnLearn);
   show(UI.iTextLearn);
   show(UI.peopleCard1); hide(UI.peopleCard2);
