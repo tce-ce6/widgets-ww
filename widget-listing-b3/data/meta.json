@@ -97,7 +97,7 @@
       "author": "tce-nitinc"
     },
     "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-03-24T12:02:14+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
@@ -217,7 +217,7 @@
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
-      "updatedAt": "2026-03-23T12:12:40+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
@@ -361,7 +361,7 @@
       "author": "tce-nitinc"
     },
     "wg96-operation-domino": {
-      "updatedAt": "2026-03-24T11:55:11+05:30",
+      "updatedAt": "2026-03-24T16:08:42+05:30",
       "author": "tce-nitinc"
     },
     "wg97-find-the-dna-lengths": {
@@ -378,6 +378,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T16:08:42+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed issue",
+      "widgets": [
+        31,
+        96,
+        126
+      ]
+    },
     {
       "date": "2026-03-24T12:09:21+05:30",
       "author": "PrasannaP",
@@ -612,14 +622,6 @@
       "date": "2026-03-23T16:49:34+05:30",
       "author": "aditya",
       "message": "Create wolf.svg",
-      "widgets": [
-        128
-      ]
-    },
-    {
-      "date": "2026-03-23T16:49:10+05:30",
-      "author": "aditya",
-      "message": "wolf img rename",
       "widgets": [
         128
       ]
