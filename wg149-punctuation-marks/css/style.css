@@ -37,7 +37,7 @@ svg * {
   content: "";
   background-image: url("../assets/bg.png");
   background-color: #000;
-  background-size: 100% 100%;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   height: 100%;

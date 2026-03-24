@@ -97,7 +97,7 @@ class Wg121 {
              * config: widget-level settings
              */
             config: {
-                feedbackTimeout: 1800,
+                feedbackTimeout: 3800,
                 autoCloseFeedback: true,
             },
 
@@ -220,11 +220,11 @@ class Wg121 {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 37%;
-        padding: 14px 28px;
+        bottom: 34%;
+        padding: 18px 36px;
         border-radius: 10px;
         font-family: Roboto, sans-serif;
-        font-size: 18px;
+        font-size: 24px;
         font-weight: 500;
         color: white;
         pointer-events: none;
@@ -232,13 +232,13 @@ class Wg121 {
         transition: opacity 0.25s;
         z-index: 10;
         text-align: center;
-        max-width: 600px;
+        max-width: 800px;
         width: max-content;
         box-shadow: 0 4px 16px rgba(0,0,0,0.25);
       }
       .poc-feedback.show  { opacity: 1; pointer-events: all; }
-      .poc-feedback.correct { background: #1a6e36; }
-      .poc-feedback.wrong   { background: #c0392b; }
+      .poc-feedback.correct { background: #036617; color: #EEFF00; }
+      .poc-feedback.wrong   { background: #F20505; color: #EEFF00; }
 
 
       /* Active slot highlight – applied to the drop-zone SVG group */
@@ -345,10 +345,12 @@ class Wg121 {
             const NS = 'http://www.w3.org/2000/svg';
             const backdrop = document.createElementNS(NS, 'rect');
             backdrop.id = 'poc-svg-backdrop';
-            backdrop.setAttribute('x', '0');
-            backdrop.setAttribute('y', '0');
-            backdrop.setAttribute('width', '1920');
-            backdrop.setAttribute('height', '1080');
+            // Use extremely large dimensions and negative offsets to ensure
+            // it covers the entire screen even if the SVG is scaled/letterboxed.
+            backdrop.setAttribute('x', '-500%');
+            backdrop.setAttribute('y', '-500%');
+            backdrop.setAttribute('width', '1000%');
+            backdrop.setAttribute('height', '1000%');
             backdrop.setAttribute('fill', '#000000');
             backdrop.setAttribute('fill-opacity', '0.65');
             backdrop.style.display = 'none';
@@ -834,13 +836,104 @@ class Wg121 {
             'T-3', 'G-2', 'T-2-12', 'G-13', 'A-13', 'T-13',
         ];
         const compTextIds = [
-            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'T-7', 'C-3-2',
-            'C-4', 'C-5', 'G-5', 'A-5', 'A-6', 'A-7',
+            'A-4-2', 'T-5-2', 'G-4-2', 'T-6', 'C-3-2', 'G-5',
+            'A-5', 'C-4', 'A-6', 'C-5', 'T-7', 'A-7',
         ];
 
         templateSequence.forEach((base, idx) => {
             this._updateSolutionSlot(templateTextIds[idx], base);
             this._updateSolutionSlot(compTextIds[idx], pairMap[base]);
+        });
+
+        this._updateSolutionHelix();
+    }
+
+    // ----------------------------------------------------------
+    // _updateSolutionHelix()
+    // Updates the decorative vertical DNA helix in the modal
+    // to match the sequence. It toggles visibility of the
+    // pre-existing 24 segments (12 pairs) in each base group.
+    // ----------------------------------------------------------
+    _updateSolutionHelix() {
+        const { templateSequence } = this.state;
+        const pairMap = { A: 'T', T: 'A', G: 'C', C: 'G' };
+        const baseIdxMap = { A: 0, T: 1, C: 2, G: 3 };
+
+        const getSortedElements = (groupId, selectors) => {
+            const group = document.getElementById(groupId);
+            if (!group) return [];
+
+            const els = Array.from(group.querySelectorAll(selectors));
+
+            const getPos = (el) => {
+                const transform = el.getAttribute('transform') || '';
+                const match = transform.match(/translate\(([^, ]+)[, ]+([^)]+)\)/);
+                if (match) {
+                    return { x: parseFloat(match[1]), y: parseFloat(match[2]) };
+                }
+                const bbox = el.getBBox ? el.getBBox() : { x: 0, y: 0 };
+                return {
+                    x: parseFloat(el.getAttribute('x') || bbox.x),
+                    y: parseFloat(el.getAttribute('y') || bbox.y),
+                };
+            };
+
+            return els.sort((a, b) => {
+                const posA = getPos(a);
+                const posB = getPos(b);
+                if (Math.abs(posA.y - posB.y) > 10) return posA.y - posB.y;
+                return posA.x - posB.x;
+            });
+        };
+
+        const textBanks = [
+            getSortedElements('a-2', 'text'),
+            getSortedElements('t-2', 'text'),
+            getSortedElements('c-2', 'text'),
+            getSortedElements('g-2', 'text'),
+        ];
+        const rectBanks = [
+            getSortedElements('a_base', 'rect, path'),
+            getSortedElements('t_base', 'rect, path'),
+            getSortedElements('c_base', 'rect, path'),
+            getSortedElements('g_base', 'rect, path'),
+        ];
+
+        // Hide all 96 text elements and 96 rect elements first
+        [...textBanks, ...rectBanks].forEach((bank) => {
+            bank.forEach((el) => { el.style.display = 'none'; });
+        });
+
+        templateSequence.forEach((tBase, i) => {
+            const cBase = pairMap[tBase];
+            const tIdx = baseIdxMap[tBase];
+            const cIdx = baseIdxMap[cBase];
+
+            // In the helix: 
+            // Pos 2*i = Left side (5'->3' label at top-left)
+            // Pos 2*i + 1 = Right side (3'->5' label at top-right)
+            //
+            // The DNA helix visually twists, causing the strands to switch sides
+            // in the middle section. We need to swap left/right positions for
+            // base pairs 4-7 (the middle rows where strands cross over).
+            const leftPos = 2 * i;
+            const rightPos = 2 * i + 1;
+
+            // Determine if this position is in the middle section where strands cross
+            const isMiddleSection = (i >= 4 && i <= 7);
+
+            // In normal sections: Complementary on Left, Template on Right
+            // In middle section (strands crossed): Template on Left, Complementary on Right
+            const leftBase = isMiddleSection ? tIdx : cIdx;
+            const rightBase = isMiddleSection ? cIdx : tIdx;
+
+            // Show left side base
+            if (textBanks[leftBase][leftPos]) textBanks[leftBase][leftPos].style.display = '';
+            if (rectBanks[leftBase][leftPos]) rectBanks[leftBase][leftPos].style.display = '';
+
+            // Show right side base
+            if (textBanks[rightBase][rightPos]) textBanks[rightBase][rightPos].style.display = '';
+            if (rectBanks[rightBase][rightPos]) rectBanks[rightBase][rightPos].style.display = '';
         });
     }
 
@@ -933,6 +1026,7 @@ class Wg121 {
         svgContainer.appendChild(modalEl);
 
         if (backdrop) {
+            svgContainer.style.overflow = 'visible'; // Allow backdrop to bleed out
             svgContainer.insertBefore(backdrop, modalEl); // backdrop behind modal
             backdrop.style.display = '';
         }
@@ -945,8 +1039,11 @@ class Wg121 {
     _closeModal(modalEl) {
         if (!modalEl) return;
         modalEl.style.display = 'none';
-        const { backdrop } = this.state.cache;
-        if (backdrop) backdrop.style.display = 'none';
+        const { backdrop, svgContainer } = this.state.cache;
+        if (backdrop) {
+            backdrop.style.display = 'none';
+            if (svgContainer) svgContainer.style.overflow = '';
+        }
         this.state.isLocked = false;
         this.state.activeModal = null;
         this.updateUI();

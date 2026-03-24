@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आँखों', 'का', 'तारा'],
             distractors: ['नयन', 'में', 'सितारा', 'पर'],
             arth: "अत्यंत प्रिय व्यक्ति",
-            prayog: "राम अपने माता-पिता की आँखों का तारा है।"
+            prayog: "राम अपने माता-पिता की आँखों का तारा\u00A0है।"
         },
 
         {
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आग', 'में', 'घी', 'डालना'],
             distractors: ['गिराना', 'अग्नि', 'पर', 'से', 'तेल'],
             arth: "क्रोध को और बढ़ाना",
-            prayog: "झगड़े के बीच में बोलकर तुमने आग में घी डालने का काम किया।"
+            prayog: "झगड़े के बीच में बोलकर तुमने आग में घी डालने का काम\u00A0किया।"
         },
 
         {
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आँखों', 'में', 'धूल', 'झोंकना'],
             distractors: ['पर', 'नेत्र', 'डालना', 'मिट्टी'],
             arth: "धोखा देना",
-            prayog: "चोर पुलिस की आँखों में धूल झोंककर भाग गया।"
+            prayog: "चोर पुलिस की आँखों में धूल झोंककर भाग\u00A0गया।"
         },
 
         {
@@ -34,16 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['नौ', 'दो', 'ग्यारह', 'होना'],
             distractors: ['आठ', 'चार', 'मिलाकर', 'जोड़ना'],
             arth: "भाग जाना, गायब हो जाना",
-            prayog: "पुलिस को देखते ही सभी बदमाश नौ दो ग्यारह हो गए।"
+            prayog: "पुलिस को देखते ही सभी बदमाश नौ दो ग्यारह हो\u00A0गए।"
         },
 
         {
             image: "assets/Final Images/Eid ka chaand.svg",
-            muhawara: "ईद का चाँद",
-            correctSequence: ['ईद', 'का', 'चाँद'],
-            distractors: ['से', 'लोहार', 'सूरज', 'में'],
+            muhawara: "ईद का चाँद होना",
+            correctSequence: ['ईद', 'का', 'चाँद', 'होना'],
+            distractors: ['से', 'लोहार', 'सूरज', 'में', 'बनना'],
             arth: "बहुत दिनों बाद दिखाई देना",
-            prayog: "तुम तो ईद के चाँद हो गए हो।"
+            prayog: "तुम तो ईद के चाँद हो गए\u00A0हो।"
         },
 
         {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['छाती', 'पर', 'साँप', 'लोटना'],
             distractors: ['का', 'लेटना', 'पीठ', 'को'],
             arth: "ईर्ष्या या जलन होना",
-            prayog: "पड़ोसी की सफलता देखकर उसकी छाती पर साँप लोटने लगा।"
+            prayog: "पड़ोसी की सफलता देखकर उसकी छाती पर साँप लोटने\u00A0लगा।"
         },
 
         {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आसमान', 'सिर', 'पर', 'उठाना'],
             distractors: ['का', 'आकाश', 'में', 'मस्तक'],
             arth: "बहुत शोर मचाना",
-            prayog: "बच्चे खेलते समय आसमान सिर पर उठा रहे थे।"
+            prayog: "बच्चे खेलते समय आसमान सिर पर उठा रहे\u00A0थे।"
         },
 
         {
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['ईंट', 'का', 'जवाब', 'पत्थर', 'से', 'देना'],
             distractors: ['उत्तर', 'मिट्टी', 'पर', 'लेकर'],
             arth: "कड़ा जवाब देना",
-            prayog: "जब दुश्मन ने हमला किया तो हमने ईंट का जवाब पत्थर से दिया।"
+            prayog: "जब दुश्मन ने हमला किया तो हमने ईंट का जवाब पत्थर से\u00A0दिया।"
         },
 
         {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['मुँह', 'में', 'पानी', 'आना'],
             distractors: ['पर', 'जल', 'डालना'],
             arth: "खाने की इच्छा होना",
-            prayog: "गरम समोसे देखकर मेरे मुँह में पानी आ गया।"
+            prayog: "गरम समोसे देखकर मेरे मुँह में पानी आ\u00A0गया।"
         },
 
         {
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['अपने', 'पाँव', 'में', 'आप', 'कुल्हाड़ी', 'मारना'],
             distractors: ['तुम', 'चेहरा', 'तीर', 'लगाना'],
             arth: "स्वयं अपना नुकसान करना",
-            prayog: "नौकरी छोड़कर तुमने अपने पाँव में आप कुल्हाड़ी मार ली।"
+            prayog: "नौकरी छोड़कर तुमने अपने पाँव में आप कुल्हाड़ी मार\u00A0ली।"
         },
 
         {
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आकाश', 'के', 'तारे', 'तोड़', 'लाना'],
             distractors: ['पर', 'सितारे', 'लेकर'],
             arth: "असंभव कार्य करना",
-            prayog: "परीक्षा में प्रथम आना कोई आकाश के तारे तोड़ लाना नहीं है।"
+            prayog: "परीक्षा में प्रथम आना कोई आकाश के तारे तोड़ लाना नहीं\u00A0है।"
         },
 
         {
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['आस्तीन', 'का', 'साँप'],
             distractors: ['से', 'हाथ', 'सर्प'],
             arth: "विश्वासघाती मित्र",
-            prayog: "मोहन तो आस्तीन का साँप निकला।"
+            prayog: "मोहन तो आस्तीन का साँप\u00A0निकला।"
         },
 
         {
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['एक', 'और', 'एक', 'ग्यारह', 'होना'],
             distractors: ['से', 'दो', 'तीन', 'बनाना', 'जोड़ना'],
             arth: "एकता में शक्ति होना",
-            prayog: "दोनों भाइयों ने मिलकर व्यापार किया तो एक और एक ग्यारह हो गए।"
+            prayog: "दोनों भाइयों ने मिलकर व्यापार किया तो एक और एक ग्यारह हो\u00A0गए।"
         },
 
         {
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['एक', 'टाँग', 'पर', 'खड़ा', 'रहना'],
             distractors: ['पैर', 'दो', 'चलना'],
             arth: "प्रतीक्षा करना",
-            prayog: "मैं तुम्हारे लिए एक टाँग पर खड़ा नहीं रह सकता।"
+            prayog: "मैं तुम्हारे लिए एक टाँग पर खड़ा नहीं रह\u00A0सकता।"
         },
 
         {
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['कीचड़', 'उछालना'],
             distractors: ['कचरा', 'गिराना'],
             arth: "बदनामी करना",
-            prayog: "चुनाव के समय नेता एक-दूसरे पर कीचड़ उछालते हैं।"
+            prayog: "चुनाव के समय नेता एक-दूसरे पर कीचड़ उछालते\u00A0हैं।"
         },
 
         {
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['डूबते', 'को', 'तिनके', 'का', 'सहारा'],
             distractors: ['से', 'सहायता', 'तैरना', 'लकड़ी'],
             arth: "मुसीबत में थोड़ी सहायता भी बहुत होती है",
-            prayog: "गरीबों के लिए कुछ रुपए भी डूबते को तिनके का सहारा हैं।"
+            prayog: "गरीबों के लिए कुछ रुपए भी डूबते को तिनके का सहारा\u00A0हैं।"
         },
 
         {
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['दाँतों', 'तले', 'उँगली', 'दबाना'],
             distractors: ['नीचे', 'रखना'],
             arth: "आश्चर्यचकित होना",
-            prayog: "उसका करतब देखकर सब दाँतों तले उँगली दबाने लगे।"
+            prayog: "उसका करतब देखकर सब दाँतों तले उँगली दबाने\u00A0लगे।"
         },
 
         {
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['दो', 'नाव', 'पर', 'पैर', 'रखना'],
             distractors: ['नौका', 'एक', 'चरण'],
             arth: "दोहरी नीति अपनाना",
-            prayog: "दो नाव पर पैर रखने से तुम्हारा नुकसान होगा।"
+            prayog: "दो नाव पर पैर रखने से तुम्हारा नुकसान\u00A0होगा।"
         },
 
         {
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['पानी', 'में', 'आग', 'लगाना'],
             distractors: ['जल', 'अग्नि', 'से'],
             arth: "असंभव कार्य करना",
-            prayog: "उसने अपनी मेहनत से पानी में आग लगा दी।"
+            prayog: "उसने अपनी मेहनत से पानी में आग लगा\u00A0दी।"
         },
 
         {
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['पेट', 'में', 'चूहे', 'दौड़ना'],
             distractors: ['पीठ', 'बिल्ली'],
             arth: "बहुत भूख लगना",
-            prayog: "सुबह से कुछ नहीं खाया, पेट में चूहे दौड़ रहे हैं।"
+            prayog: "सुबह से कुछ नहीं खाया, पेट में चूहे दौड़ रहे\u00A0हैं।"
         },
 
         {
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['गागर', 'में', 'सागर', 'भरना'],
             distractors: ['कलश', 'समुद्र'],
             arth: "कम शब्दों में अधिक कहना",
-            prayog: "बिहारी ने अपने दोहों में गागर में सागर भर दिया।"
+            prayog: "बिहारी ने अपने दोहों में गागर में सागर भर\u00A0दिया।"
         },
 
         {
@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['दिन', 'में', 'तारे', 'दिखाई', 'देना'],
             distractors: ['दिवस', 'सितारे', 'देखना'],
             arth: "बहुत कष्ट होना",
-            prayog: "तेज बुखार में मुझे दिन में तारे दिखाई दे रहे थे।"
+            prayog: "तेज बुखार में मुझे दिन में तारे दिखाई दे रहे\u00A0थे।"
         },
 
         {
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['कोल्हू', 'का', 'बैल'],
             distractors: ['से', 'मशीन', 'भैंस'],
             arth: "लगातार काम करने वाला",
-            prayog: "वह दिन-रात काम करता है, बिल्कुल कोल्हू का बैल बन गया है।"
+            prayog: "वह दिन-रात काम करता है, बिल्कुल कोल्हू का बैल बन गया\u00A0है।"
         },
 
         {
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['पाँचों', 'उँगलियाँ', 'घी', 'में', 'होना'],
             distractors: ['एक', 'हाथ', 'तेल', 'डालना'],
             arth: "हर तरफ से लाभ होना",
-            prayog: "उस व्यापारी की पाँचों उँगलियाँ घी में हैं।"
+            prayog: "उस व्यापारी की पाँचों उँगलियाँ घी में\u00A0हैं।"
         },
 
         {
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             correctSequence: ['उँगली', 'पर', 'नचाना'],
             distractors: ['हाथ', 'से', 'उठाना'],
             arth: "इशारों पर चलाना",
-            prayog: "मालिक ने सभी कर्मचारियों को उँगली पर नचा रखा है।"
+            prayog: "मालिक ने सभी कर्मचारियों को उँगली पर नचा रखा\u00A0है।"
         }
 
     ];
@@ -253,6 +253,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const instructionText = document.getElementById("I_text");
     const dynamicArthText = document.getElementById("dynamic_arth_text");
     const dynamicPrayogText = document.getElementById("dynamic_prayog_text");
+    const lottieWrapper = document.getElementById("lottie-wrapper");
+
+    let starAnimation = null;
+
+    if (lottieWrapper && typeof lottie !== 'undefined') {
+        starAnimation = lottie.loadAnimation({
+            container: lottieWrapper,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'assets/Animation/stars points.json',
+            rendererSettings: {
+                clearCanvas: true,
+                preserveAspectRatio: 'xMidYMid meet',
+                transparent: true
+            }
+        });
+    }
 
     const correctAnswerPatch = document.getElementById("Correct_answer_patch");
     if (correctAnswerPatch) correctAnswerPatch.style.display = "none";
@@ -498,10 +516,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (isShowingAnswer) {
             patchUttarChipaye.style.display = "block";
-            patchAgala.style.display = "none";
+            patchAgala.style.display = "block";
         } else {
             patchAgala.style.display = "block";
             patchUttarChipaye.style.display = "none";
+            if (starAnimation) {
+                lottieWrapper.style.display = "block";
+                starAnimation.goToAndPlay(0, true);
+            }
+        }
+        updateButtonPositions();
+    }
+
+    function updateButtonPositions() {
+        const isAgalaVisible = patchAgala && patchAgala.style.display !== "none";
+        const isUttarDekheVisible = patchUttarDekhe && patchUttarDekhe.style.display !== "none";
+        const isUttarChipayeVisible = patchUttarChipaye && patchUttarChipaye.style.display !== "none";
+
+        const leftButton = isUttarDekheVisible ? patchUttarDekhe : (isUttarChipayeVisible ? patchUttarChipaye : null);
+
+        if (leftButton && isAgalaVisible) {
+            // Both are visible: Side by side
+            if (patchUttarDekhe) patchUttarDekhe.setAttribute("transform", "translate(-160, 0)");
+            if (patchUttarChipaye) patchUttarChipaye.setAttribute("transform", "translate(-160, 0)");
+            if (patchAgala) patchAgala.setAttribute("transform", "translate(160, 0)");
+        } else {
+            // Only one is visible (or none): Center it
+            if (patchUttarDekhe) patchUttarDekhe.setAttribute("transform", "translate(0, 0)");
+            if (patchUttarChipaye) patchUttarChipaye.setAttribute("transform", "translate(0, 0)");
+            if (patchAgala) patchAgala.setAttribute("transform", "translate(0, 0)");
         }
     }
 
@@ -558,11 +601,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         patchArth.style.display = "none";
         patchPrayog.style.display = "none";
-        patchAgala.style.display = "none";
+        patchAgala.style.display = "block";
         patchUttarChipaye.style.display = "none";
         wrongBorder.style.display = "none";
 
         patchUttarDekhe.style.display = "block";
+        if (lottieWrapper) lottieWrapper.style.display = "none";
+        if (starAnimation) starAnimation.stop();
+        updateButtonPositions();
     }
 
     function resetGameUIAndStep() {

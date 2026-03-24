@@ -145,16 +145,6 @@ svg * {
   z-index: 3;
 }
 
-#idiom-wrapper .wdgetTitle h2 {
-  font-size: 23px;
-  font-weight: 600;
-  text-align: left;
-  padding: 5px 40px;
-  color: #fff;
-  border-radius: 0 0px 20px 20px;
-  background: #0295FC;
-  white-space: nowrap;
-}
 
 #idiom-wrapper .versionText {
   position: absolute;
@@ -173,6 +163,27 @@ svg * {
 #idiom-wrapper svg {
   width: 100% !important;
   height: 100%;
+  transform: scale(1.5) translateY(-20px);
+  /* Fill space better and center more optimally */
+  transform-origin: center;
+}
+
+#home_itext text {
+  font-size: 44px !important;
+  fill: #fff !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.card-disabled {
+  opacity: 0.5 !important;
+  pointer-events: none !important;
+  filter: grayscale(0.8);
+  cursor: default !important;
+}
+
+#idiom-wrapper .mainContainerOuter {
+  background: transparent !important;
+  overflow: hidden;
 }
 
 /* swar ki pehchan style */
@@ -204,11 +215,12 @@ svg * {
   min-height: 50px;
 }
 
-.list-wrapper .filled{
-      border-bottom: 0;
-    min-width: auto;
-    min-height: auto;
+.list-wrapper .filled {
+  border-bottom: 0;
+  min-width: auto;
+  min-height: auto;
 }
+
 .option-conatiner {
   background-color: #C4E2B9;
   padding: 63px 52px;
@@ -226,13 +238,14 @@ svg * {
 .option-wrapper::after,
 .img-container::after,
 .img-container::before,
-.option-wrapper::before{
+.option-wrapper::before {
   content: "";
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
 }
+
 .img-container::before {
   background-image: url("../assets/images/shadow-2.svg");
   height: 76.09px;
@@ -242,6 +255,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::before {
   background-image: url("../assets/images/shadow.svg");
   height: 76.09px;
@@ -251,6 +265,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::after {
   background-image: url("../assets/images/strip.svg");
   height: 75.15px;
@@ -259,6 +274,7 @@ svg * {
   left: 50%;
   transform: translateX(-50%);
 }
+
 .img-container::after {
   background-image: url("../assets/images/strip-2.svg");
   height: 75.15px;
@@ -280,20 +296,23 @@ svg * {
   box-sizing: border-box;
   min-height: 95px;
 }
-.img-container{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    object-fit: contain;
+
+.img-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
 }
-#main-img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+
+#main-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
-.result-wrapper{
+
+.result-wrapper {
   height: 100%;
   width: 100%;
   font-size: 45px;
@@ -304,18 +323,22 @@ svg * {
   position: relative;
   border-radius: 30px;
 }
-.result-wrapper.top{
+
+.result-wrapper.top {
   background: #A5DCF7;
 }
-.result-wrapper.bottom{
+
+.result-wrapper.bottom {
   background: #CDF9CB;
 }
-.result-wrapper .result-text{
+
+.result-wrapper .result-text {
   display: block;
   width: 100%;
-      line-height: 1.2;
+  line-height: 1.2;
 }
-.sub-title{
+
+.sub-title {
   position: absolute;
   padding: 10px 20px;
   top: -30px;
@@ -324,10 +347,12 @@ svg * {
   border-radius: 10px;
   color: #fff;
 }
-.sub-title.top{
+
+.sub-title.top {
   background-color: #2EACD2;
 }
-.sub-title.bottom{
+
+.sub-title.bottom {
   background-color: #64B285;
 }
 
@@ -348,11 +373,25 @@ svg * {
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 #reset-btn.disabled {
@@ -360,16 +399,20 @@ svg * {
   cursor: not-allowed;
   transform: none !important;
 }
+
 #lottie-wrapper {
   display: none;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
+
 #wrapper-1,
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
-}/* Adding custom styles for dynamic UI elements */
+}
+
+/* Adding custom styles for dynamic UI elements */
 #ui-layer {
   position: absolute;
   top: 0;

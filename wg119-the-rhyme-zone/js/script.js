@@ -18,25 +18,60 @@ const WidgetState = {
   maxPairs: 10,
 
   allPairs: [
-    { leaf: "effortless", butterfly: "fearless" },
-    { leaf: "stumble", butterfly: "tumble" },
-    { leaf: "flying", butterfly: "sighing" },
-    { leaf: "happiness", butterfly: "laziness" },
-    { leaf: "graceful", butterfly: "peaceful" },
-    { leaf: "bright", butterfly: "light" },
-    { leaf: "rubber", butterfly: "blubber" },
-    { leaf: "tournament", butterfly: "ornament" },
-    { leaf: "cricket", butterfly: "wicket" },
-    { leaf: "thunder", butterfly: "wonder" },
+    { leaf: "bright", butterfly: "night", leafDistractors: ["built", "nest", "tap", "fair"], butterflyDistractors: ["nice", "drank", "drawer", "flour"] },
+    { leaf: "fair", butterfly: "share", leafDistractors: ["brick", "drip", "forest", "mother"], butterflyDistractors: ["grade", "motor", "foot", "orange"] },
+    { leaf: "drip", butterfly: "trip", leafDistractors: ["moment", "cry", "fully", "monkey"], butterflyDistractors: ["lion", "crib", "leg", "red"] },
+    { leaf: "leg", butterfly: "peg", leafDistractors: ["gnat", "neck", "eyes", "fly"], butterflyDistractors: ["feet", "hands", "rose", "lily"] },
+    { leaf: "fly", butterfly: "sly", leafDistractors: ["heavy", "tall", "sad", "kitten"], butterflyDistractors: ["fox", "hen", "happy", "story"] },
+    { leaf: "kitten", butterfly: "mitten", leafDistractors: ["kennel", "hungry", "humble"], butterflyDistractors: ["helpful", "statue", "dream"] },
+    { leaf: "dream", butterfly: "stream", leafDistractors: ["hollow", "stomach", "struggle", "balloon"], butterflyDistractors: ["power", "monster", "garden", "fitted"] },
+    { leaf: "balloon", butterfly: "moon", leafDistractors: ["kettle", "kicking", "hungry", "stamp"], butterflyDistractors: ["stubborn", "follow", "drive", "built"] },
+    { leaf: "stamp", butterfly: "lamp", leafDistractors: ["power", "hollow", "tall", "angry"], butterflyDistractors: ["hands", "orange", "tiger", "hen"] },
+    { leaf: "power", butterfly: "flower", leafDistractors: ["butter", "flute", "kitchen", "room"], butterflyDistractors: ["bread", "drank", "nice", "lion"] },
+    { leaf: "butter", butterfly: "mutter", leafDistractors: ["bumpy", "bright", "follow", "dress"], butterflyDistractors: ["bring", "drive", "shoulder", "red"] },
+    { leaf: "follow", butterfly: "hollow", leafDistractors: ["angry", "horse", "story", "stubborn"], butterflyDistractors: ["humble", "monkey", "fussy", "sad"] },
+    { leaf: "humble", butterfly: "mumble", leafDistractors: ["goggle", "morning", "fancy", "flour"], butterflyDistractors: ["gentle", "drum", "dress", "funny"] },
+    { leaf: "dress", butterfly: "mess", leafDistractors: ["days", "brought", "peep", "fuss"], butterflyDistractors: ["forest", "mountain", "bundle", "kicking"] },
+    { leaf: "mountain", butterfly: "stain", leafDistractors: ["butter", "trouble", "hump", "kind"], butterflyDistractors: ["peace", "yard", "home", "gentle"] },
+    { leaf: "trouble", butterfly: "bubble", leafDistractors: ["bundle", "brittle", "flowy", "face"], butterflyDistractors: ["goat", "punch", "humble", "short"] },
+    { leaf: "goat", butterfly: "moat", leafDistractors: ["sunny", "brought", "sad", "joy"], butterflyDistractors: ["rub", "lamp", "crouch", "fussy"] },
+    { leaf: "sunny", butterfly: "funny", leafDistractors: ["pitch", "celebrate", "monkey", "robber"], butterflyDistractors: ["simple", "power", "night", "glance"] },
+    { leaf: "glance", butterfly: "dance", leafDistractors: ["fort", "octopus", "rough", "tinkling"], butterflyDistractors: ["rubber", "bumpy", "gentle", "great"] },
+    { leaf: "tinkling", butterfly: "sprinkling", leafDistractors: ["parrot", "glance", "bread", "trouble"], butterflyDistractors: ["butter", "melting", "truly", "fangs"] },
+    { leaf: "parrot", butterfly: "carrot", leafDistractors: ["animal", "picture", "game", "hiding"], butterflyDistractors: ["shuffle", "great", "flip", "light"] },
+    { leaf: "flip", butterfly: "slip", leafDistractors: ["guess", "choose", "sound", "card"], butterflyDistractors: ["lamp", "gentle", "night", "tray"] },
+    { leaf: "tray", butterfly: "play", leafDistractors: ["honey", "gentle", "mat", "moat"], butterflyDistractors: ["fang", "happy", "card", "sound"] },
+    { leaf: "honey", butterfly: "money", leafDistractors: ["might", "flip", "animal", "jungle"], butterflyDistractors: ["click", "bread", "trouble", "feet"] },
+    { leaf: "might", butterfly: "fight", leafDistractors: ["hide", "celebrate", "picture", "choose"], butterflyDistractors: ["show", "flash", "thunder", "umbrella"] },
+    { leaf: "thunder", butterfly: "wonder", leafDistractors: ["stair", "happy", "tremble", "might"], butterflyDistractors: ["running", "balloon", "night", "guess"] },
+    { leaf: "running", butterfly: "cunning", leafDistractors: ["celebrate", "thrilling", "chopping", "trouble"], butterflyDistractors: ["tumble", "grass", "blubber", "crush"] },
+    { leaf: "tumble", butterfly: "stumble", leafDistractors: ["hurrying", "slotted", "animal", "safari"], butterflyDistractors: ["train", "adventure", "umbrella", "click"] },
+    { leaf: "hurrying", butterfly: "worrying", leafDistractors: ["sorrow", "crash", "jumble", "orchestra"], butterflyDistractors: ["different", "shuffle", "interact", "peace"] },
+    { leaf: "sorrow", butterfly: "tomorrow", leafDistractors: ["ready", "effortless", "football", "stadium"], butterflyDistractors: ["field", "alligator", "temperature", "bread"] },
+    { leaf: "effortless", butterfly: "fearless", leafDistractors: ["stumble", "flying", "cricket", "tournament"], butterflyDistractors: ["cricket", "tournament", "grace", "gentle"] },
   ],
 
   roundPairs: [], 
   selectedLeaf: null,
   selectedButterfly: null,
+  selectedBubble: null,
   isInputLocked: false,
 };
 
 const UI = {};
+
+const Animations = {
+  thumbs: null,
+  tryAgain: null,
+  congrats: null,
+  star: null,
+  bubbleBlue: null,
+  bubbleGreen: null,
+  leafGreen: null,
+  leafYellow: null,
+  butterflyBlue: null,
+  butterflyPink: null,
+};
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -44,6 +79,7 @@ function init() {
   cacheDOM();
   bindEvents();
   hideAllPopups();
+  loadAnimations();
 }
 
 function cacheDOM() {
@@ -232,6 +268,8 @@ function bindEvents() {
 
 function startGame() {
   hideAllPopups();
+  hideAnimation("congrats");
+  showAmbientAnimations();
   if (UI.enterBtn) UI.enterBtn.style.display = "none";
 
   if (UI.svg) {
@@ -242,6 +280,22 @@ function startGame() {
       }
     });
   }
+
+  // Initialize bubble/ref groups
+  if (UI.refForBubblePosition) {
+    UI.refForBubblePosition.style.setProperty("display", "block", "important");
+    UI.refForBubblePosition.removeAttribute("display");
+    UI.refForBubblePosition.classList.remove("st767");
+  }
+  UI.refForBubblePositionGroups.forEach(g => {
+    if (g) {
+      g.style.setProperty("display", "block", "important");
+      g.removeAttribute("display");
+      g.style.opacity = "1";
+      g.style.pointerEvents = "auto";
+      g.classList.remove("st767");
+    }
+  });
 
   UI.leafGroups.forEach(g => {
     if (g) {
@@ -314,11 +368,28 @@ function loadNextPair() {
 
 function assignBoardWords() {
   const correct = WidgetState.currentPair;
-  const others = shuffle(WidgetState.allPairs.filter(p => p.leaf !== correct.leaf)).slice(0, 4);
-  const boardPairs = shuffle([correct, ...others]);
+  
+  // Use provided distractors, pad with random words if needed
+  let leafDistractors = correct.leafDistractors ? [...correct.leafDistractors] : [];
+  let butterflyDistractors = correct.butterflyDistractors ? [...correct.butterflyDistractors] : [];
+  
+  // If we don't have enough distractors, fill from other pairs
+  while (leafDistractors.length < 4) {
+    const randomPair = WidgetState.allPairs[Math.floor(Math.random() * WidgetState.allPairs.length)];
+    if (randomPair.leaf !== correct.leaf && !leafDistractors.includes(randomPair.leaf)) {
+      leafDistractors.push(randomPair.leaf);
+    }
+  }
+  while (butterflyDistractors.length < 4) {
+    const randomPair = WidgetState.allPairs[Math.floor(Math.random() * WidgetState.allPairs.length)];
+    if (randomPair.butterfly !== correct.butterfly && !butterflyDistractors.includes(randomPair.butterfly)) {
+      butterflyDistractors.push(randomPair.butterfly);
+    }
+  }
 
-  const leafWords = shuffle(boardPairs.map(p => p.leaf));
-  const butterflyWords = shuffle(boardPairs.map(p => p.butterfly));
+  // Create word arrays: 1 correct + 4 distractors for each side
+  const leafWords = shuffle([correct.leaf, ...leafDistractors.slice(0, 4)]);
+  const butterflyWords = shuffle([correct.butterfly, ...butterflyDistractors.slice(0, 4)]);
   
   // Create an array of 10 words (5 leaves + 5 butterflies)
   const refForBubblePositionWords = [...leafWords, ...butterflyWords];
@@ -399,6 +470,7 @@ function addInteractivity(el, callback) {
 }
 
 function handleItemClick(el) {
+  console.log("handleItemClick", el);
   if (WidgetState.isInputLocked) return;
 
   const type = el.dataset.type;
@@ -446,6 +518,9 @@ function onCorrect() {
     setTimeout(() => { if (UI.thumpsUp) UI.thumpsUp.style.display = "none"; }, 1000);
   }
 
+  playAnimation("thumbs", 1500);
+  playAnimation("star", 1200);
+
   updateUI();
   setTimeout(loadNextPair, 1500);
 }
@@ -474,6 +549,8 @@ function handleTimeout() {
 
 function showTryAgainPopup(msg) {
   WidgetState.isInputLocked = true;
+  playAnimation("tryAgain", 2000);
+  
   if (UI.tryAgainPopup) {
     UI.tryAgainPopup.style.display = "block";
     const text = UI.tryAgainPopup.querySelector("text");
@@ -609,20 +686,53 @@ function updateLayoutForProgress(progressIndex) {
   const showLeaf = phase === "leaf";
   const showButterfly = phase === "butterfly";
 
+  // Show/hide bubble (ref) layout
   if (UI.refForBubblePosition) {
     UI.refForBubblePosition.style.setProperty("display", showRef ? "block" : "none", "important");
     UI.refForBubblePosition.setAttribute("display", showRef ? "block" : "none");
+    if (showRef) UI.refForBubblePosition.classList.remove("st767");
   }
+  UI.refForBubblePositionGroups.forEach(g => {
+    if (g) {
+      g.style.setProperty("display", showRef ? "block" : "none", "important");
+      if (showRef) {
+        g.style.opacity = "1";
+        g.style.pointerEvents = "auto";
+      }
+    }
+  });
 
+  // Show/hide leaf layout
   if (UI.leafGraphic) {
     UI.leafGraphic.style.setProperty("display", showLeaf ? "block" : "none", "important");
     UI.leafGraphic.setAttribute("display", showLeaf ? "block" : "none");
+    if (showLeaf) UI.leafGraphic.classList.remove("st767");
   }
+  UI.leafGroups.forEach(g => {
+    if (g) {
+      g.style.setProperty("display", showLeaf ? "block" : "none", "important");
+      if (showLeaf) {
+        g.style.opacity = "1";
+        g.style.pointerEvents = "auto";
+      }
+    }
+  });
 
+  // Show/hide butterfly layout
   if (UI.butterflyGraphic) {
     UI.butterflyGraphic.style.setProperty("display", showButterfly ? "block" : "none", "important");
     UI.butterflyGraphic.setAttribute("display", showButterfly ? "block" : "none");
+    if (showButterfly) UI.butterflyGraphic.classList.remove("st767");
   }
+  UI.butterflyGroups.forEach(g => {
+    if (g) {
+      g.style.setProperty("display", showButterfly ? "block" : "none", "important");
+      if (showButterfly) {
+        g.style.opacity = "1";
+        g.style.pointerEvents = "auto";
+      }
+    }
+  });
 }
 
 function updateUI() {
@@ -659,6 +769,9 @@ function updateUI() {
 }
 
 function showCelebration() {
+  hideAmbientAnimations();
+  playAnimation("congrats");
+
   if (UI.congratsPanel) {
     UI.congratsPanel.style.display = "block";
     const messages = ["Well done!", "Congratulations!", "Great job!", "This is awesome!"];
@@ -675,4 +788,88 @@ function shuffle(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 9. Lottie Animations                                                      */
+/* ------------------------------------------------------------------------- */
+
+function loadAnimations() {
+  const animConfig = [
+    { key: "thumbs", container: "lottie-thumbs", path: "./assets/anim/Thumbs.json", loop: false },
+    { key: "tryAgain", container: "lottie-try-again", path: "./assets/anim/try-again.json", loop: false },
+    { key: "congrats", container: "lottie-congrats", path: "./assets/anim/congratulation.json", loop: false },
+    { key: "star", container: "lottie-star", path: "./assets/anim/Star_Animation.json", loop: false },
+    { key: "bubbleBlue", container: "lottie-bubble-blue", path: "./assets/anim/bubble-blue.json", loop: false },
+    { key: "bubbleGreen", container: "lottie-bubble-green", path: "./assets/anim/bubble-green.json", loop: false },
+    { key: "leafGreen", container: "lottie-leaf-green", path: "./assets/anim/leaf-green.json", loop: false },
+    { key: "leafYellow", container: "lottie-leaf-yellow", path: "./assets/anim/leaf-yellow.json", loop: false },
+    { key: "butterflyBlue", container: "lottie-butterfly-blue", path: "./assets/anim/butterfly-blue.json", loop: false },
+    { key: "butterflyPink", container: "lottie-butterfly-pink", path: "./assets/anim/butterfly-pink.json", loop: false },
+  ];
+
+  animConfig.forEach(cfg => {
+    const container = document.getElementById(cfg.container);
+    if (container && typeof lottie !== "undefined") {
+      Animations[cfg.key] = lottie.loadAnimation({
+        container: container,
+        renderer: "svg",
+        loop: cfg.loop,
+        autoplay: false,
+        path: cfg.path,
+      });
+    }
+  });
+}
+
+function playAnimation(animKey, duration) {
+  const anim = Animations[animKey];
+  if (!anim) return;
+
+  const container = anim.wrapper;
+  if (container) {
+    container.style.display = "block";
+  }
+
+  anim.goToAndPlay(0, true);
+
+  if (duration) {
+    setTimeout(() => {
+      hideAnimation(animKey);
+    }, duration);
+  } else {
+    anim.addEventListener("complete", function onComplete() {
+      hideAnimation(animKey);
+      anim.removeEventListener("complete", onComplete);
+    });
+  }
+}
+
+function hideAnimation(animKey) {
+  const anim = Animations[animKey];
+  if (!anim) return;
+
+  anim.stop();
+  const container = anim.wrapper;
+  if (container) {
+    container.style.display = "none";
+  }
+}
+
+function showAmbientAnimations() {
+  const ambientKeys = ["bubbleBlue", "bubbleGreen", "leafGreen", "leafYellow", "butterflyBlue", "butterflyPink"];
+  ambientKeys.forEach(key => {
+    const anim = Animations[key];
+    if (anim && anim.wrapper) {
+      anim.wrapper.style.display = "block";
+      anim.play();
+    }
+  });
+}
+
+function hideAmbientAnimations() {
+  const ambientKeys = ["bubbleBlue", "bubbleGreen", "leafGreen", "leafYellow", "butterflyBlue", "butterflyPink"];
+  ambientKeys.forEach(key => {
+    hideAnimation(key);
+  });
 }
