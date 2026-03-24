@@ -249,8 +249,8 @@
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
-      "updatedAt": "2026-03-20T10:23:02+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-24T16:34:02+05:30",
+      "author": "aditya"
     },
     "wg68-reflection-of-a-point": {
       "updatedAt": "2026-03-15T13:36:28+05:30",
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T16:34:02+05:30",
+      "author": "aditya",
+      "message": "fix wg67",
+      "widgets": [
+        67
+      ]
+    },
     {
       "date": "2026-03-24T16:32:20+05:30",
       "author": "PrasannaP",
@@ -613,14 +621,6 @@
       "message": "fix1",
       "widgets": [
         136
-      ]
-    },
-    {
-      "date": "2026-03-23T17:37:51+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        134
       ]
     }
   ]
