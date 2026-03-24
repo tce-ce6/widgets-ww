@@ -61,7 +61,7 @@
       "author": "aditya"
     },
     "wg117-picture-the-idiom": {
-      "updatedAt": "2026-02-24T15:53:22+05:30",
+      "updatedAt": "2026-03-23T18:52:36+05:30",
       "author": "tce-nitinc"
     },
     "wg118_formal-letters-job-application": {
@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
-      "updatedAt": "2026-03-23T17:21:11+05:30",
+      "updatedAt": "2026-03-24T11:41:58+05:30",
       "author": "aditya"
     },
     "wg129-unravel-the-taxonomic-trail": {
@@ -137,7 +137,7 @@
       "author": "aditya"
     },
     "wg136-compound-words-adventure": {
-      "updatedAt": "2026-03-23T17:46:08+05:30",
+      "updatedAt": "2026-03-23T20:46:29+05:30",
       "author": "PrasannaP"
     },
     "wg137-\u0936\u092c\u094d\u0926\u094b\u0902-\u092e\u0947\u0902-\u0938\u094d\u0935\u0930-\u0915\u0940-\u0916\u094b\u091c": {
@@ -153,7 +153,7 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-03-23T16:47:01+05:30",
+      "updatedAt": "2026-03-23T19:40:42+05:30",
       "author": "sushantkanaujiya"
     },
     "wg143-synthesize-new-polypeptide-chain": {
@@ -193,7 +193,7 @@
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
-      "updatedAt": "2026-03-23T17:32:33+05:30",
+      "updatedAt": "2026-03-23T20:58:33+05:30",
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
@@ -379,6 +379,103 @@
   },
   "commits": [
     {
+      "date": "2026-03-24T11:41:58+05:30",
+      "author": "aditya",
+      "message": "Update index.html",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-24T11:23:06+05:30",
+      "author": "aditya",
+      "message": "ui fix wg128",
+      "widgets": [
+        128
+      ]
+    },
+    {
+      "date": "2026-03-23T20:58:33+05:30",
+      "author": "PrasannaP",
+      "message": "Update version ID and consolidate multiple tspan elements into single text strings for cleaner SVG rendering.",
+      "widgets": [
+        154
+      ]
+    },
+    {
+      "date": "2026-03-23T20:46:29+05:30",
+      "author": "PrasannaP",
+      "message": "translate(35, 40)",
+      "widgets": [
+        136,
+        154
+      ]
+    },
+    {
+      "date": "2026-03-23T19:50:50+05:30",
+      "author": "PrasannaP",
+      "message": "Remove specific title styling for `.wdgetTitle h2` and apply minor formatting adjustments to various CSS rules.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:43:17+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: reposition Group_8175 SVG element in the HTML structure.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:40:42+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-23T19:39:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement card disabling for attempted families, add related CSS, and apply minor UI styling improvements, including a version update.",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T19:37:05+05:30",
+      "author": "sushantkanaujiya",
+      "message": "142 fixed issue",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-23T19:17:53+05:30",
+      "author": "PrasannaP",
+      "message": "new assets added",
+      "widgets": [
+        136
+      ]
+    },
+    {
+      "date": "2026-03-23T18:52:36+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 117 changes",
+      "widgets": [
+        117
+      ]
+    },
+    {
+      "date": "2026-03-23T18:41:37+05:30",
+      "author": "tce-nitinc",
+      "message": "wg117 changes",
+      "widgets": [
+        117
+      ]
+    },
+    {
       "date": "2026-03-23T18:35:48+05:30",
       "author": "tce-nitinc",
       "message": "wg 147",
@@ -525,106 +622,6 @@
       "message": "v1",
       "widgets": [
         154
-      ]
-    },
-    {
-      "date": "2026-03-23T15:45:31+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 126 changes",
-      "widgets": [
-        96,
-        126
-      ]
-    },
-    {
-      "date": "2026-03-23T15:39:04+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "reset widget fixed",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T15:28:18+05:30",
-      "author": "PrasannaP",
-      "message": "style: refine widget layout notes and adjust background sizing.",
-      "widgets": [
-        149
-      ]
-    },
-    {
-      "date": "2026-03-23T15:26:13+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        81,
-        86,
-        119,
-        134
-      ]
-    },
-    {
-      "date": "2026-03-23T15:08:38+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add readme, hide next button on completion, and update confetti z-index for the Commonly Confused Words widget.",
-      "widgets": [
-        82
-      ]
-    },
-    {
-      "date": "2026-03-23T15:05:52+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "version updated",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T15:02:50+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed alignment issues and touchevent for scroll",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T14:18:45+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg86 til sound changes done",
-      "widgets": [
-        86
-      ]
-    },
-    {
-      "date": "2026-03-23T13:51:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "implemented wg24 widget fixes",
-      "widgets": [
-        24
-      ]
-    },
-    {
-      "date": "2026-03-23T12:48:18+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Improve completion message display, add debug utilities, and document them in a new README.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-23T12:25:01+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Enhance end-game popup logic to differentiate between completing a single word family and all word families, providing distinct UI and actions, and remove the `updatePopupText` function.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-23T12:12:40+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 31 changes",
-      "widgets": [
-        31
       ]
     }
   ]
