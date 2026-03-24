@@ -871,6 +871,13 @@ function initWidget() {
       scSubmit.style.cursor = "not-allowed";
     }
 
+    // Re-enable Show Answer for this new scenario
+    if (showAnsBtn) {
+      showAnsBtn.style.opacity = "1";
+      showAnsBtn.style.pointerEvents = "auto";
+      showAnsBtn.style.cursor = "pointer";
+    }
+
     // Check if both dropdowns have values to enable the Trade button
     function checkEnableSubmit() {
       const v1 = parseInt(s1.dataset.value);
@@ -968,6 +975,7 @@ function initWidget() {
     // Show Answer logic
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
+
       showAnsBtn.onclick = (e) => {
         e.stopPropagation();
         // Find first fair trade values
@@ -985,6 +993,10 @@ function initWidget() {
         }
         s1.setValue(f1);
         s2.setValue(f2);
+        // Disable after click
+        showAnsBtn.style.opacity = "0.5";
+        showAnsBtn.style.pointerEvents = "none";
+        showAnsBtn.style.cursor = "not-allowed";
       };
     }
 
@@ -1067,10 +1079,11 @@ function initWidget() {
 
       card.style.cursor = "pointer";
 
-      // Overlay for clicking
-      const rect = getPctRect(card);
+      // Overlay for clicking — use parent group which includes the card background rect
+      const clickTarget = card.parentElement || card;
+      const rect = getPctRect(clickTarget);
       if (rect) {
-        const overlay = document.createElement("div");
+        let overlay = document.createElement("div");
         Object.assign(overlay.style, {
           position: "absolute",
           left: rect.left,
@@ -1082,7 +1095,10 @@ function initWidget() {
           zIndex: "10",
         });
         uiLayer.appendChild(overlay);
-
+        if (sc === 3) {
+          overlay = card
+          uiLayer.innerHTML = "";
+        }
         overlay.onclick = () => {
           if (index === currentStep) {
             // Correct step
