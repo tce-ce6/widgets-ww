@@ -85,8 +85,8 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-02-26T19:18:47+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-24T20:08:19+05:30",
+      "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
       "updatedAt": "2026-03-20T11:18:27+05:30",
@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-06T10:31:34+05:30",
+      "updatedAt": "2026-03-24T20:08:19+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -349,7 +349,7 @@
       "author": "tce-nitinc"
     },
     "wg93-rhyming-words": {
-      "updatedAt": "2026-03-23T11:38:30+05:30",
+      "updatedAt": "2026-03-24T20:08:19+05:30",
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
@@ -378,6 +378,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T20:08:19+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        52,
+        93,
+        123
+      ]
+    },
     {
       "date": "2026-03-24T19:20:40+05:30",
       "author": "PrasannaP",
@@ -612,15 +622,6 @@
       "author": "PrasannaP",
       "message": "Update version ID and consolidate multiple tspan elements into single text strings for cleaner SVG rendering.",
       "widgets": [
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T20:46:29+05:30",
-      "author": "PrasannaP",
-      "message": "translate(35, 40)",
-      "widgets": [
-        136,
         154
       ]
     }
