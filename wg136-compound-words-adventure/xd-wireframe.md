@@ -1,3 +1,6 @@
+
+Widget Verification and Refinement
+
 Folder for reference and code: @wg136-compound-words-adventure 
 
 Develop an interactive SVG/HTML/JavaScript implementation based on the wireframe provided in the Adobe XD link below:
@@ -45,3 +48,6 @@ Trigger a celebration animation.
 
 Update the message in id="correct_text" to:
 “🏆 Congratulations! You've mastered all 24 compound words!”
+
+Rectangle_7432
+Rectangle_7462
