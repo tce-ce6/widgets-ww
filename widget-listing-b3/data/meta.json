@@ -165,7 +165,7 @@
       "author": "Shyam"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-24T11:25:44+05:30",
+      "updatedAt": "2026-03-24T13:42:46+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
@@ -261,8 +261,8 @@
       "author": "Santosh"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-09T15:35:05+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-03-24T16:32:20+05:30",
+      "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
       "updatedAt": "2026-03-10T12:28:28+05:30",
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-24T16:32:20+05:30",
+      "author": "PrasannaP",
+      "message": "fix: improve text formatting and readability in wg70.html",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T16:14:50+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: clean up whitespace and improve code readability in index.js; add prompts for widget development in prompts.md; enhance wg70.html structure and styling for better layout",
+      "widgets": [
+        70
+      ]
+    },
+    {
       "date": "2026-03-24T16:09:39+05:30",
       "author": "aditya",
       "message": "wg 128 ui fix",
@@ -394,6 +410,22 @@
         31,
         96,
         126
+      ]
+    },
+    {
+      "date": "2026-03-24T13:43:11+05:30",
+      "author": "PrasannaP",
+      "message": "wg70 added ref html",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-24T13:42:46+05:30",
+      "author": "PrasannaP",
+      "message": "prompt updated",
+      "widgets": [
+        146
       ]
     },
     {
@@ -589,41 +621,6 @@
       "message": "Update index.html",
       "widgets": [
         134
-      ]
-    },
-    {
-      "date": "2026-03-23T17:36:07+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed wg120 review sheet fixes",
-      "widgets": [
-        120
-      ]
-    },
-    {
-      "date": "2026-03-23T17:32:33+05:30",
-      "author": "PrasannaP",
-      "message": "update prompts",
-      "widgets": [
-        82,
-        149,
-        154
-      ]
-    },
-    {
-      "date": "2026-03-23T17:21:11+05:30",
-      "author": "aditya",
-      "message": "fix wolf img",
-      "widgets": [
-        128,
-        135
-      ]
-    },
-    {
-      "date": "2026-03-23T16:53:50+05:30",
-      "author": "PrasannaP",
-      "message": "prompt name changed",
-      "widgets": [
-        154
       ]
     }
   ]
