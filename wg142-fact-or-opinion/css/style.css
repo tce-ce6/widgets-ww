@@ -392,7 +392,7 @@ svg * {
   box-sizing: border-box;
   padding: 36px 70px 0 57px;
   overflow-y: auto;
-  font-family: "Roboto-Regular, Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: transparent;
 }
 
@@ -416,7 +416,7 @@ svg * {
   color: #222;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 #idiom-wrapper .passage-scroll .sentence-row::after {
@@ -477,7 +477,7 @@ svg * {
   box-sizing: border-box;
   padding: 26px 42px;
   overflow-y: auto;
-  font-family: "Roboto-Regular, Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: transparent;
 }
 
@@ -491,18 +491,15 @@ svg * {
 }
 
 #idiom-wrapper .feedback-scroll .fb-row {
-  max-width: 1200px;
-  width: fit-content;
-  margin: 8px auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 4px 0;
   padding: 6px 10px;
   border-radius: 4px;
   font-size: 20px;
-  line-height: 1.35;
+  line-height: 1.5;
   cursor: pointer;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: block;
 }
 
 #idiom-wrapper .feedback-scroll .fb-row.fact {
@@ -516,11 +513,9 @@ svg * {
 
 
 #idiom-wrapper .feedback-scroll .fb-icon {
-  width: 22px;
-  flex: 0 0 22px;
+  display: inline;
   font-weight: 700;
-  line-height: 1.2;
-  margin-top: 1px;
+  margin-left: 5px;
 }
 
 #idiom-wrapper .feedback-scroll .fb-icon.ok {
@@ -532,14 +527,14 @@ svg * {
 }
 
 #idiom-wrapper .feedback-scroll .fb-text {
-  flex: 1;
+  display: inline;
   color: #111;
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl {
-  max-width: 1200px;
-  width: fit-content;
-  margin: 4px auto 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 2px 0 8px;
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 16px;
