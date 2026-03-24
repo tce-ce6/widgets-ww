@@ -292,6 +292,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const playAgainBtnImg = step3.querySelector('img[src="./assets/play-again.svg"]');
 
   // ─────────────────────────────────────────────────────────────
+  //  AUDIO 
+  // ─────────────────────────────────────────────────────────────
+  let currentAudio = null;
+  function playAudio(src) {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(src);
+    currentAudio.play().catch(e => console.error("Audio play failed:", e));
+  }
+
+  // ─────────────────────────────────────────────────────────────
   //  UTILITY: Fisher-Yates shuffle (pure – returns new array)
   // ─────────────────────────────────────────────────────────────
   function shuffle(arr) {
@@ -351,7 +364,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Set images
     sentenceAImg.src = q.sentenceAimg;
-    sentenceBImg.src = q.sentenceBimg;
+    sentenceBImg.src = "";
+    sentenceBImg.style.display = "none";
 
     // Shuffle options and populate the <li> elements
     currentOptions = shuffle(q.options);
@@ -379,11 +393,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const q = shuffledData[currentIndex];
 
+    // Play correct sound
+    const match = q.sentenceA.match(/<span class="highlight">(.*?)<\/span>/);
+    if (match) {
+      const wordA = match[1].toLowerCase();
+      playAudio(`./assets/audio/${wordA}-${q.answer.toLowerCase()}.mp3`);
+    }
+
     // Fill blank in sentence B
     sentenceBEl.innerHTML = q.sentenceB.replace(
       /_+/,
       `<span style="color:#00c94b;font-weight:800;text-decoration:underline;">${q.answer}</span>`
     );
+
+    sentenceBImg.src = q.sentenceBimg;
+    sentenceBImg.style.display = "block";
 
     // Show feedback note
     noteTxt.textContent = q.note;
@@ -419,6 +443,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add .wrong class to the selected option
     li.classList.add("wrong");
+
+    // Play wrong sound
+    playAudio("./assets/audio/try-again.mp3");
 
     // Show "Oh no!" note
     noteTxt.textContent = "Oh no! Try again!";

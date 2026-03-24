@@ -5,11 +5,26 @@
       "title": "Activity 1: Favourite Sports",
       "description": "A survey was conducted in a Class 6 section with 66 students to find out their favourite sport. Each student could choose only one sport. The table below shows the favourite sports of students in Class 6-A. Draw a pictograph to represent this data. ",
       "categories": [
-        { "name": "Cricket", "count": 20 },
-        { "name": "Football", "count": 15 },
-        { "name": "Badminton", "count": 10 },
-        { "name": "Basketball", "count": 12 },
-        { "name": "Swimming", "count": 8 }
+        {
+          "name": "Cricket",
+          "count": 20
+        },
+        {
+          "name": "Football",
+          "count": 16
+        },
+        {
+          "name": "Badminton",
+          "count": 10
+        },
+        {
+          "name": "Basketball",
+          "count": 12
+        },
+        {
+          "name": "Swimming",
+          "count": 8
+        }
       ]
     },
     {
@@ -17,11 +32,26 @@
       "title": "Activity 2: Fruits Sold in a Week",
       "description": "Mr. Sharma runs a fruit shop near a school. He recorded the number of boxes of different fruits he sold during one week. The table shows the number of fruit boxes sold by Mr. Sharma's shop in one week. Represent this information using a pictograph.",
       "categories": [
-        { "name": "Apples", "count": 24 },
-        { "name": "Bananas", "count": 36 },
-        { "name": "Oranges", "count": 18 },
-        { "name": "Mangoes", "count": 30 },
-        { "name": "Grapes", "count": 12 }
+        {
+          "name": "Apples",
+          "count": 24
+        },
+        {
+          "name": "Bananas",
+          "count": 36
+        },
+        {
+          "name": "Oranges",
+          "count": 18
+        },
+        {
+          "name": "Mangoes",
+          "count": 30
+        },
+        {
+          "name": "Grapes",
+          "count": 12
+        }
       ]
     },
     {
@@ -29,10 +59,22 @@
       "title": "Activity 3: Vehicles in School Parking",
       "description": "The school administration counted all the vehicles in the school parking area on a typical school day. The data below shows the number of different types of vehicles parked at Greenwood School on Monday. Create a pictograph to display this data. ",
       "categories": [
-        { "name": "Cars", "count": 45 },
-        { "name": "Motorcycles", "count": 60 },
-        { "name": "Bicycles", "count": 75 },
-        { "name": "Buses", "count": 15 }
+        {
+          "name": "Cars",
+          "count": 45
+        },
+        {
+          "name": "Motorcycles",
+          "count": 60
+        },
+        {
+          "name": "Bicycles",
+          "count": 75
+        },
+        {
+          "name": "Buses",
+          "count": 15
+        }
       ]
     },
     {
@@ -40,10 +82,22 @@
       "title": "Activity 4: Books Read by Students",
       "description": "The school library maintained a record of books borrowed by Class 6 students over four months. The table shows the number of books read by Class 6 students from the school library over four months. Draw a pictograph.",
       "categories": [
-        { "name": "January", "count": 50 },
-        { "name": "February", "count": 40 },
-        { "name": "March", "count": 65 },
-        { "name": "April", "count": 55 }
+        {
+          "name": "January",
+          "count": 50
+        },
+        {
+          "name": "February",
+          "count": 40
+        },
+        {
+          "name": "March",
+          "count": 65
+        },
+        {
+          "name": "April",
+          "count": 55
+        }
       ]
     },
     {
@@ -51,11 +105,26 @@
       "title": "Activity 5: Favourite Ice Cream Flavors",
       "description": "During the school's summer fair, an ice cream vendor surveyed 100 Class 6 students about their favourite ice cream flavour. A survey was conducted among students to find their favourite ice cream flavour. The results are shown in the table. Prepare a pictograph.",
       "categories": [
-        { "name": "Chocolate", "count": 28 },
-        { "name": "Vanilla", "count": 16 },
-        { "name": "Strawberry", "count": 20 },
-        { "name": "Mango", "count": 24 },
-        { "name": "Butterscotch", "count": 12 }
+        {
+          "name": "Chocolate",
+          "count": 28
+        },
+        {
+          "name": "Vanilla",
+          "count": 16
+        },
+        {
+          "name": "Strawberry",
+          "count": 20
+        },
+        {
+          "name": "Mango",
+          "count": 24
+        },
+        {
+          "name": "Butterscotch",
+          "count": 12
+        }
       ]
     }
   ]
