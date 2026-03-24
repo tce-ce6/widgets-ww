@@ -14,7 +14,9 @@ const WidgetState = {
     },
     currentFamily: null,
     isAnimating: false,
-    elements: {}
+    elements: {},
+    homeCardGroups: {},
+    attempted: { sun: false, rain: false, snow: false, fire: false, sea: false, sand: false }
 };
 
 function initGame() {
@@ -99,6 +101,7 @@ function initGame() {
                 cardGroup = cardGroup.parentElement;
             }
             console.log(`initGame: Attaching click to card [${id}] via group [${cardGroup.id}]`);
+            WidgetState.homeCardGroups[homeMappings[id]] = cardGroup;
             cardGroup.classList.add('interactive-card');
             cardGroup.style.cursor = 'pointer';
             cardGroup.style.pointerEvents = 'all';
@@ -109,6 +112,8 @@ function initGame() {
         }
     });
 
+    updateHomeCardStates();
+
     // Setup Home Button
     let homeBtn = document.getElementById('home_btn');
     if (homeBtn) {
@@ -116,6 +121,12 @@ function initGame() {
         homeBtn.onclick = returnToMenu;
         console.log('initGame: Home button mapped successfully');
     }
+    
+    // Explicitly unhide home menu elements (robust loading)
+    unhideElement('home_cards');
+    unhideElement('home_itext');
+    document.getElementById('svg-container').style.opacity = '1';
+    console.log('initGame: Home menu ready.');
 }
 
 function openFamily(family) {
@@ -125,6 +136,7 @@ function openFamily(family) {
     }
     console.log(`openFamily: Initiating layout transition for family [${family}]`);
     WidgetState.currentFamily = family;
+    WidgetState.attempted[family] = true; // Mark as attempted
 
     hideElement('home_cards');
     hideElement('home_itext');
@@ -208,6 +220,23 @@ function returnToMenu() {
     // Reset instruction text to default or keep it.
     unhideElement('home_cards');
     unhideElement('home_itext');
+    updateHomeCardStates(); // Update card states after returning
+    document.getElementById('svg-container').style.opacity = '1';
+}
+
+function updateHomeCardStates() {
+    Object.keys(WidgetState.homeCardGroups).forEach(family => {
+        const group = WidgetState.homeCardGroups[family];
+        const isAttempted = WidgetState.attempted[family];
+        const isCompleted = WidgetState.discovered[family] && WidgetState.discovered[family].length >= 4;
+
+        if (isCompleted || isAttempted) {
+            group.classList.add('card-disabled');
+            console.log(`updateHomeCardStates: Family [${family}] marked as disabled.`);
+        } else {
+            group.classList.remove('card-disabled');
+        }
+    });
 }
 
 function setupFamilyInteractions(family, famAssets) {
@@ -499,7 +528,7 @@ function updateInstructionText(family) {
             }
             if (currentText === '!') {
                 ts.textContent = '!';
-                ts.setAttribute('dx', '10');
+                ts.setAttribute('dx', '0');
             }
         });
     }
