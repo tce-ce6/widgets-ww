@@ -61,7 +61,7 @@
       "author": "aditya"
     },
     "wg117-picture-the-idiom": {
-      "updatedAt": "2026-03-23T18:52:36+05:30",
+      "updatedAt": "2026-03-24T17:52:59+05:30",
       "author": "tce-nitinc"
     },
     "wg118_formal-letters-job-application": {
@@ -169,7 +169,7 @@
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
-      "updatedAt": "2026-03-23T18:35:48+05:30",
+      "updatedAt": "2026-03-24T17:52:59+05:30",
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-24T17:52:59+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 147 and wg 117 changes",
+      "widgets": [
+        117,
+        147
+      ]
+    },
     {
       "date": "2026-03-24T17:31:14+05:30",
       "author": "tce-nitinc",
@@ -610,14 +619,6 @@
     },
     {
       "date": "2026-03-23T17:52:55+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        130
-      ]
-    },
-    {
-      "date": "2026-03-23T17:51:37+05:30",
       "author": "sushantkanaujiya",
       "message": "Update index.html",
       "widgets": [
