@@ -243,9 +243,20 @@ window.Wg146 = {
   hideAll: function() {
     if (this.UI.meetAuthorPanel) this.UI.meetAuthorPanel.style.display = "none";
     if (this.UI.hintPanel) this.UI.hintPanel.style.display = "none";
-    if (this.UI.meetAuthorBtn) this.UI.meetAuthorBtn.style.display = "none";
-    if (this.UI.nextQuoteBtn) this.UI.nextQuoteBtn.style.display = "none";
-    if (this.UI.hintBtn) this.UI.hintBtn.style.display = "none";
+    
+    // Buttons remain visible but are disabled initially
+    if (this.UI.meetAuthorBtn) {
+        this.UI.meetAuthorBtn.style.opacity = "0.5";
+        this.UI.meetAuthorBtn.style.pointerEvents = "none";
+    }
+    if (this.UI.nextQuoteBtn) {
+        this.UI.nextQuoteBtn.style.opacity = "0.5";
+        this.UI.nextQuoteBtn.style.pointerEvents = "none";
+    }
+    if (this.UI.hintBtn) {
+        this.UI.hintBtn.style.opacity = "0.5";
+        this.UI.hintBtn.style.pointerEvents = "none";
+    }
     
     if (this.UI.imagesGroup) {
       const portraits = this.UI.imagesGroup.querySelectorAll('[id^="portrait-"]');
@@ -256,12 +267,13 @@ window.Wg146 = {
     
     this.UI.btns.forEach(btn => {
       if(!btn) return;
-      btn.style.display = "none";
+      btn.style.opacity = "0.5";
+      btn.style.pointerEvents = "none";
       const correctHlight = btn.querySelector('[id^="correct_hlight"]');
       const incorrectHlight = btn.querySelector('[id^="incorrect_hlight"]');
       if (correctHlight) correctHlight.style.display = "none";
       if (incorrectHlight) incorrectHlight.style.display = "none";
-      btn.style.cursor = "pointer";
+      btn.style.cursor = "default";
     });
     
     if(this.UI.quoteText) this.UI.quoteText.innerHTML = "";
@@ -282,13 +294,20 @@ window.Wg146 = {
       // Hide panels
       if (this.UI.meetAuthorPanel) this.UI.meetAuthorPanel.style.display = "none";
       if (this.UI.hintPanel) this.UI.hintPanel.style.display = "none";
-      if (this.UI.meetAuthorBtn) this.UI.meetAuthorBtn.style.display = "none";
-      if (this.UI.nextQuoteBtn) this.UI.nextQuoteBtn.style.display = "none";
+      
+      // Action buttons disabled state
+      if (this.UI.meetAuthorBtn) {
+          this.UI.meetAuthorBtn.style.opacity = "0.5";
+          this.UI.meetAuthorBtn.style.pointerEvents = "none";
+      }
+      if (this.UI.nextQuoteBtn) {
+          this.UI.nextQuoteBtn.style.opacity = "0.5";
+          this.UI.nextQuoteBtn.style.pointerEvents = "none";
+      }
       
       // Show required default states for a question
       if (this.UI.silhouette) this.UI.silhouette.style.display = "block";
       if (this.UI.hintBtn) {
-          this.UI.hintBtn.style.display = "block";
           this.UI.hintBtn.style.pointerEvents = "auto";
           this.UI.hintBtn.style.opacity = "1";
           this.UI.hintBtn.style.cursor = "pointer";
@@ -310,7 +329,6 @@ window.Wg146 = {
 
       this.UI.btns.forEach((btn, idx) => {
           if (!btn) return;
-          btn.style.display = "block";
           btn.style.pointerEvents = "auto";
           btn.style.opacity = "1"; // Reset styling
           btn.classList.add("option"); // Make sure option class is there for shake animation
@@ -427,8 +445,16 @@ window.Wg146 = {
           if (this.UI.hintPanel) this.UI.hintPanel.style.display = "none";
 
           // Enable 'Meet the Author' & 'Next Quote'
-          if (this.UI.meetAuthorBtn) this.UI.meetAuthorBtn.style.display = "block";
-          if (this.UI.nextQuoteBtn) this.UI.nextQuoteBtn.style.display = "block";
+          if (this.UI.meetAuthorBtn) {
+              this.UI.meetAuthorBtn.style.opacity = "1";
+              this.UI.meetAuthorBtn.style.pointerEvents = "auto";
+              this.UI.meetAuthorBtn.style.cursor = "pointer";
+          }
+          if (this.UI.nextQuoteBtn) {
+              this.UI.nextQuoteBtn.style.opacity = "1";
+              this.UI.nextQuoteBtn.style.pointerEvents = "auto";
+              this.UI.nextQuoteBtn.style.cursor = "pointer";
+          }
 
       } else {
           // Incorrect Answer
@@ -495,16 +521,17 @@ window.Wg146 = {
           this.UI.maTexts[5].innerHTML = author.country ? `<tspan x="0" y="0">: ${author.country}</tspan>` : "";
           
           // Works handling
+          let worksLineCount = 0;
           if (author.works && author.works.length > 0) {
               this.UI.maTexts[6].innerHTML = `<tspan x="0" y="0">Works</tspan>`;
               this.UI.maTexts[7].innerHTML = `<tspan x="0" y="0">:</tspan>`;
               let worksHtml = "";
               let lineY = 0;
-              // Generate all lines first to limit them precisely
               let linesArr = [];
               author.works.forEach(w => { linesArr.push(w); });
-              // The user requested: "Works and Fun Facts should each contain only two text spans."
-              linesArr.slice(0, 2).forEach(w => {
+              let worksSubset = linesArr.slice(0, 2);
+              worksLineCount = worksSubset.length;
+              worksSubset.forEach(w => {
                  worksHtml += `<tspan x="0" y="${lineY}">${w}</tspan>`;
                  lineY += 31.2;
               });
@@ -515,13 +542,26 @@ window.Wg146 = {
               this.UI.maTexts[10].innerHTML = "";
           }
 
+          // Ensure vertical continuity between Works and Fun Facts
+          let funFactsStartY = 412.72; // Default if no Works section
+          if (worksLineCount > 0) {
+              // Works header starts at 412.72, list at 442.72
+              // List ends after its lines, plus we add a single line break buffer (15px)
+              funFactsStartY = 442.72 + (worksLineCount * 31.2) + 15;
+          }
+          if (this.UI.maTexts[8]) this.UI.maTexts[8].setAttribute('transform', `translate(635.71 ${funFactsStartY})`);
+          if (this.UI.maTexts[9]) this.UI.maTexts[9].setAttribute('transform', `translate(746.21 ${funFactsStartY})`);
+          
+          let funFactsListY = funFactsStartY + 30; // standard 30px gap below local heading
+          if (this.UI.maTexts[11]) this.UI.maTexts[11].setAttribute('transform', `translate(635.71 ${funFactsListY})`);
+
           // Fun Facts handling
           let funFactsHtml = "";
           let lineY = 0;
           if (author.funFacts && author.funFacts.length > 0) {
               let fLines = [];
               author.funFacts.forEach(f => {
-                   fLines.push(...this.wrapText("• " + f, 50));
+                   fLines.push(...this.wrapText("• " + f, 45)); // wrap tighter
               });
               // Limit the fun facts text spans to EXACTLY two
               fLines.slice(0, 2).forEach((l) => {
