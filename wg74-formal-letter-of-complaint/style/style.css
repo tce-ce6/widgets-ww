@@ -219,6 +219,7 @@ svg {
   min-height: 400px;
   overflow-y: auto;
   max-height: 740px;
+  width: 680px;
 }
 
 .suggestion-answer .tap-txt {
@@ -290,7 +291,7 @@ svg {
   top: 50%;
   transform: translateY(-50%);
   min-width: 280px;
-  max-width: 380px;
+  width: 380px;
   padding: 16px 22px;
   background: #ffa8a8;
   border: 3px solid #aa0000;
@@ -301,6 +302,7 @@ svg {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 20;
   pointer-events: none;
+  
 }
 
 .feedback-text.is-visible {
