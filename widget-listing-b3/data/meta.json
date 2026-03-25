@@ -45,7 +45,7 @@
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
-      "updatedAt": "2026-03-25T12:25:14+05:30",
+      "updatedAt": "2026-03-25T15:39:46+05:30",
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-25T12:23:30+05:30",
+      "updatedAt": "2026-03-25T15:39:46+05:30",
       "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
@@ -129,7 +129,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-25T14:46:35+05:30",
+      "updatedAt": "2026-03-25T15:51:36+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -181,7 +181,7 @@
       "author": "PrasannaP"
     },
     "wg150-blood-circulation": {
-      "updatedAt": "2026-03-25T12:25:14+05:30",
+      "updatedAt": "2026-03-25T15:39:46+05:30",
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
@@ -382,6 +382,32 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T15:51:36+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-25T15:39:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg113 and wg 150 changes",
+      "widgets": [
+        113,
+        123,
+        150
+      ]
+    },
+    {
+      "date": "2026-03-25T15:35:30+05:30",
+      "author": "sushantkanaujiya",
+      "message": "134 fixed issue",
+      "widgets": [
+        134
+      ]
+    },
     {
       "date": "2026-03-25T14:59:48+05:30",
       "author": "sushantkanaujiya",
@@ -610,30 +636,6 @@
       "message": "wg128 header colour fix",
       "widgets": [
         128
-      ]
-    },
-    {
-      "date": "2026-03-24T18:09:31+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-24T18:00:01+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-24T17:57:44+05:30",
-      "author": "aditya",
-      "message": "Update index.html",
-      "widgets": [
-        67
       ]
     }
   ]
