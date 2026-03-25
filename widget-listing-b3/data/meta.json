@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
@@ -189,7 +189,7 @@
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -273,11 +273,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-25T16:33:12+05:30",
+      "updatedAt": "2026-03-25T18:11:04+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
@@ -373,7 +373,7 @@
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-03-25T13:18:54+05:30",
+      "updatedAt": "2026-03-25T16:40:01+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg99-applying-distributive-property": {
@@ -382,6 +382,52 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:24:06+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved of letter widgets",
+      "widgets": [
+        74,
+        101,
+        118
+      ]
+    },
+    {
+      "date": "2026-03-25T18:11:04+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "lable box hight increased",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-25T18:04:35+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "73 popup pulled inside",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-25T16:57:27+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved of letter widgets",
+      "widgets": [
+        74,
+        101,
+        118,
+        127,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-25T16:40:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "review sheet fixes completed",
+      "widgets": [
+        98
+      ]
+    },
     {
       "date": "2026-03-25T16:35:43+05:30",
       "author": "tce-nitinc",
@@ -590,50 +636,6 @@
       "message": "fixed wg134",
       "widgets": [
         134
-      ]
-    },
-    {
-      "date": "2026-03-24T21:27:56+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update asset paths to lowercase in script.js and style.css",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-03-24T21:21:35+05:30",
-      "author": "PrasannaP",
-      "message": "update version ID in index.html to b3_wg61_260324",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-03-24T21:18:27+05:30",
-      "author": "tce-ashishg",
-      "message": "all issue of wg74, 101, 118, 127 & 153 done",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
-      ]
-    },
-    {
-      "date": "2026-03-24T21:03:35+05:30",
-      "author": "PrasannaP",
-      "message": "del index from deploy",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-24T20:57:40+05:30",
-      "author": "PrasannaP",
-      "message": "del index",
-      "widgets": [
-        70
       ]
     }
   ]
