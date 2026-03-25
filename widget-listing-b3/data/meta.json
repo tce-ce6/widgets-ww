@@ -129,7 +129,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-25T15:35:30+05:30",
+      "updatedAt": "2026-03-25T15:51:36+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -383,6 +383,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-25T15:51:36+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        134
+      ]
+    },
+    {
       "date": "2026-03-25T15:39:46+05:30",
       "author": "tce-nitinc",
       "message": "wg113 and wg 150 changes",
@@ -628,14 +636,6 @@
       "message": "wg128 header colour fix",
       "widgets": [
         128
-      ]
-    },
-    {
-      "date": "2026-03-24T18:09:31+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        134
       ]
     }
   ]
