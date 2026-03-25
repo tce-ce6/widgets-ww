@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-25T11:05:29+05:30",
+      "updatedAt": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -257,7 +257,7 @@
       "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
-      "updatedAt": "2026-03-25T11:05:29+05:30",
+      "updatedAt": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg70-reflection-of-light": {
@@ -382,6 +382,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:33:50+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "42 and 69 issues fixed",
+      "widgets": [
+        42,
+        69
+      ]
+    },
     {
       "date": "2026-03-25T18:32:41+05:30",
       "author": "tce-nitinc",
@@ -629,14 +638,6 @@
       "widgets": [
         42,
         69
-      ]
-    },
-    {
-      "date": "2026-03-25T09:44:21+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        130
       ]
     }
   ]
