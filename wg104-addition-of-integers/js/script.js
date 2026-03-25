@@ -64,6 +64,7 @@ class UIManager {
     this.addPlusBtn = document.getElementById("add-plus-button");
     this.addMinusBtn = document.getElementById("add-minus-btn");
     this.timelineGroup = document.getElementById("timeline");
+    this.jumpsGroup = document.getElementById("timeline-jumps");
     this.chipInstruction = document.getElementById("i-text-01");
     this.dynamicChipsGroup = document.getElementById("dynamic-chips");
 
@@ -439,14 +440,35 @@ class UIManager {
 
   drawArrow(fromVal, toVal, color) {
     return new Promise((resolve) => {
+      const fromX = this.getTickX(fromVal);
       const toX = this.getTickX(toVal);
 
       // Simple delay to simulate movement timing
       setTimeout(() => {
         // Move point along
-        // The point's original position is at 1232, so we need to adjust the translate
         if (this.point) {
           this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
+        }
+
+        // Draw the arched jump path
+        if (this.jumpsGroup) {
+          const r = Math.abs(toX - fromX) / 2;
+          const sweep = toX > fromX ? 1 : 0;
+          const h = Math.min(r, 60); // Arch height capped for better visuals
+          const pathData = `M ${fromX} 572 A ${r} ${h} 0 0 ${sweep} ${toX} 572`;
+
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", pathData);
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", color);
+          path.setAttribute("stroke-width", "6");
+          path.setAttribute("stroke-linecap", "round");
+          
+          // Reference the marker defined in index.html
+          const markerId = color === "#ff2020" ? "arrowhead-red" : "arrowhead-blue";
+          path.setAttribute("marker-end", `url(#${markerId})`);
+          
+          this.jumpsGroup.appendChild(path);
         }
 
         setTimeout(() => {
@@ -460,6 +482,9 @@ class UIManager {
     // Reset point to its original position (no translation)
     if (this.point) {
       this.point.setAttribute("transform", "translate(0, 0)");
+    }
+    if (this.jumpsGroup) {
+      this.jumpsGroup.innerHTML = "";
     }
   }
 
