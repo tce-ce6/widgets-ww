@@ -866,7 +866,7 @@ function initWidget() {
 
   // --- Screen 2 Logic ---
   const sc2Config = {
-    1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
+    1: { max1: 10, max2: 10, val1: 2, val2: 1 }, // Rice (2) vs Cloth (4)
     2: { max1: 15, max2: 15, val1: 1, val2: 3 }, // Pot (1) vs Medical (3)
     3: { max1: 15, max2: 15, val1: 3, val2: 4 }, // Fish (3) vs Plough (4)
   };
@@ -1026,7 +1026,7 @@ function initWidget() {
         if (e) e.stopPropagation();
         let v1 = parseInt(s1.dataset.value) || 0;
         let v2 = parseInt(s2.dataset.value) || 0;
-        if (v1 * cfg.val1 === v2 * cfg.val2 && v1 > 0 && v2 > 0) {
+        if (v2 * cfg.val1 === v1 * cfg.val2 && v1 > 0 && v2 > 0) {
           // Fair Trade
           showElements(`#act-02-sc1-feedback-correct`);
           hideElements(`#act-02-sc1-feedback-incorrect`);
@@ -1093,7 +1093,13 @@ function initWidget() {
       // Find the card in act-03-scX-cards
       // Usually named like act-03-sc1-card1, act-03-sc1-card2 etc.
       const cardId = `act-03-sc${sc}-card${index + 1}`;
-      const card = document.getElementById(cardId);
+      let card;
+      if (sc < 3) {
+        card = document.getElementById(cardId).parentElement;
+
+      } else {
+        card = document.getElementById(cardId);
+      }
       if (!card) return;
 
       card.style.cursor = "pointer";
