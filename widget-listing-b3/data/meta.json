@@ -129,7 +129,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-25T15:51:36+05:30",
+      "updatedAt": "2026-03-25T16:29:08+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -383,6 +383,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-25T16:29:08+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update script.js",
+      "widgets": [
+        134
+      ]
+    },
+    {
       "date": "2026-03-25T16:19:17+05:30",
       "author": "PrasannaP",
       "message": "for review 146",
@@ -626,14 +634,6 @@
       "message": "Update xd-wireframe.md",
       "widgets": [
         146
-      ]
-    },
-    {
-      "date": "2026-03-24T20:10:48+05:30",
-      "author": "PrasannaP",
-      "message": "chore: Update widget versions, add documentation requirements, and adjust development server port.",
-      "widgets": [
-        111
       ]
     }
   ]
