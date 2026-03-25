@@ -237,3 +237,7 @@ body.modal-open .ledgent {
   border: 5px solid #E8ADAD;
   border-radius: 20px;
 }
+
+.modal-open .blood-flow {
+  opacity: .1;
+}
