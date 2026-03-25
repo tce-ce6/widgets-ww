@@ -1053,6 +1053,18 @@ function showPopupFromGElement(gElement) {
     if (popup) { popup.style.display = "block"; if (popup.parentElement && popup.parentElement.tagName.toLowerCase() === 'foreignobject') popup.parentElement.style.display = "block"; }
 }
 
+function hideAllSvgPopups() {
+    document.querySelectorAll(".svg-popup").forEach(p => {
+        p.style.display = "none";
+
+        // Also hide the parent foreignObject so it doesn't block clicks.
+        const fo = p.parentElement;
+        if (fo && fo.tagName && fo.tagName.toLowerCase() === 'foreignobject') {
+            fo.style.display = "none";
+        }
+    });
+}
+
 /**
  * FUNCTION: Injects text into the center of the SVG group
  */
