@@ -373,7 +373,7 @@
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-03-25T13:18:54+05:30",
+      "updatedAt": "2026-03-25T16:40:01+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg99-applying-distributive-property": {
@@ -382,6 +382,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T16:40:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "review sheet fixes completed",
+      "widgets": [
+        98
+      ]
+    },
     {
       "date": "2026-03-25T16:35:43+05:30",
       "author": "tce-nitinc",
@@ -624,14 +632,6 @@
       "date": "2026-03-24T21:03:35+05:30",
       "author": "PrasannaP",
       "message": "del index from deploy",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-24T20:57:40+05:30",
-      "author": "PrasannaP",
-      "message": "del index",
       "widgets": [
         70
       ]
