@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refraction Lab: Reflection & Refraction</title>
+    <title>Refraction, Total Internal Reflection and Critical Angle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
@@ -110,7 +110,7 @@
                 <div class="bg-slate-950/70 backdrop-blur p-3 rounded-lg border border-slate-700/80 text-sm shadow-lg">
                     <div class="flex justify-between gap-4 mb-1">
                         <span class="text-slate-400" id="n1-label">Medium 1 (Glass):</span>
-                        <span class="font-mono text-cyan-400" id="n1-val">n₁ = 1.50</span>
+                        <span class="font-mono text-cyan-400" id="n1-val">n₁ = 1.52</span>
                     </div>
                     <div class="flex justify-between gap-4">
                         <span class="text-slate-400" id="n2-label">Medium 2 (Air):</span>
@@ -137,7 +137,7 @@
                     <div class="w-full md:w-2/3 space-y-4">
                         <div class="flex justify-between items-center">
                             <label class="font-semibold text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-rotate text-cyan-400"></i> Incidence Angle
+                                <i class="text-cyan-400"></i> Incidence Angle
                             </label>
                             <span id="angle-val"
                                 class="text-xl font-mono bg-slate-900 px-3 py-1 rounded text-cyan-400 border border-slate-700 shadow-inner">30.0°</span>
@@ -145,9 +145,12 @@
                         <input type="range" id="angle-slider" min="0" max="80" value="30" step="0.1"
                             class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
                         <div class="flex justify-between text-xs text-slate-500 px-1 font-mono">
-                            <span>0° (Normal)</span>
-                            <span id="critical-marker">Critical Angle (~41.8°)</span>
-                            <span>80°</span>
+                            <!-- add slider labels here -->
+                            <!-- Explanation Footer -->
+                            <div id="footer-desc">
+                                <p>Drag the slider or the canvas. When the incidence angle exceeds <span
+                                        class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -170,11 +173,7 @@
             </div>
         </div>
 
-        <!-- Explanation Footer -->
-        <div class="max-w-5xl w-full mt-6 text-center text-slate-300/90 text-sm" id="footer-desc">
-            <p>Drag the slider or the canvas. When the incidence angle exceeds <span
-                    class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
-        </div>
+
 
     </main>
 
@@ -217,7 +216,7 @@
             },
             glass: {
                 label: 'Glass',
-                n: 1.5,
+                n: 1.52,
                 fill: '#083344',
                 text: '#22d3ee'
             },
@@ -276,7 +275,7 @@
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. In ${MEDIA[bottomMedium].label} → ${MEDIA[topMedium].label}, no total internal reflection occurs for this direction.</p>`;
                     criticalAlert.classList.add('hidden');
                 }
-                headerDesc.innerText = `Light traveling from ${MEDIA[bottomMedium].label} (n₁=${MEDIA[bottomMedium].n.toFixed(2)}) to ${MEDIA[topMedium].label} (n₂=${MEDIA[topMedium].n.toFixed(2)}).`;
+                headerDesc.innerText = `Light traveling from ${MEDIA[bottomMedium].label} (n₁ = ${MEDIA[bottomMedium].n.toFixed(2)}) to ${MEDIA[topMedium].label} (n₂=${MEDIA[topMedium].n.toFixed(2)}).`;
 
             } else {
                 n1 = MEDIA[topMedium].n;
@@ -303,7 +302,7 @@
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. Light refracts from ${MEDIA[topMedium].label} to ${MEDIA[bottomMedium].label} according to Snell's law.</p>`;
                     criticalAlert.classList.add('hidden');
                 }
-                headerDesc.innerText = `Light traveling from ${MEDIA[topMedium].label} (n₁=${MEDIA[topMedium].n.toFixed(2)}) to ${MEDIA[bottomMedium].label} (n₂=${MEDIA[bottomMedium].n.toFixed(2)}).`;
+                headerDesc.innerText = `Light traveling from ${MEDIA[topMedium].label} (n₁ = ${MEDIA[topMedium].n.toFixed(2)}) to ${MEDIA[bottomMedium].label} (n₂=${MEDIA[bottomMedium].n.toFixed(2)}).`;
             }
             draw();
         }
