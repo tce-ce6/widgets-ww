@@ -231,7 +231,12 @@ window.Wg146 = {
 
       silhouette: document.getElementById("author_silhouette"),
       imagesGroup: document.getElementById("author_images"),
-      maTexts: document.querySelectorAll("#meet_author_panel .st35 text")
+      maTexts: document.querySelectorAll("#meet_author_panel .st35 text"),
+      
+      hintPanelCloseBtn: document.getElementById("Group_5791"),
+      hintPanelBg: document.querySelector("#hint_panel .st245"),
+      meetAuthorCloseBtn: document.getElementById("Group_579"),
+      meetAuthorBg: document.querySelector("#meet_author_panel .st245")
     };
   },
 
@@ -316,10 +321,21 @@ window.Wg146 = {
           if (correctHlight) correctHlight.style.display = "none";
           if (incorrectHlight) incorrectHlight.style.display = "none";
 
-          const tspan = btn.querySelector('text.st30 tspan');
-          if (tspan) {
-              const safeText = options[idx] ? options[idx] : "";
-              tspan.textContent = safeText;
+          const textNode = btn.querySelector('text.st30');
+          if (textNode) {
+              textNode.setAttribute('text-anchor', 'middle');
+              let currentY = 676.88; 
+              const match = textNode.getAttribute('transform')?.match(/translate\([\d.]+\s+([\d.]+)\)/);
+              if (match) currentY = parseFloat(match[1]);
+              const transforms = [774.11, 1224.11, 1674.11];
+              textNode.setAttribute('transform', `translate(${transforms[idx]} ${currentY})`);
+              
+              const tspan = textNode.querySelector('tspan');
+              if (tspan) {
+                  const safeText = options[idx] ? options[idx] : "";
+                  tspan.textContent = safeText;
+                  tspan.setAttribute('x', '0');
+              }
           }
           
           btn.setAttribute("data-option", options[idx]);
@@ -349,6 +365,32 @@ window.Wg146 = {
       if(this.UI.nextQuoteBtn) {
           this.UI.nextQuoteBtn.style.cursor = 'pointer';
           this.UI.nextQuoteBtn.addEventListener('click', () => this.nextQuote());
+      }
+
+      // Close events for Hint panel
+      const closeHint = () => {
+          if (this.UI.hintPanel) this.UI.hintPanel.style.display = "none";
+          this.isHintActive = false;
+      };
+      if (this.UI.hintPanelCloseBtn) {
+          this.UI.hintPanelCloseBtn.style.cursor = 'pointer';
+          this.UI.hintPanelCloseBtn.addEventListener('click', closeHint);
+      }
+      if (this.UI.hintPanelBg) {
+          this.UI.hintPanelBg.addEventListener('click', closeHint);
+      }
+
+      // Close events for Meet Author panel
+      const closeMeetAuthor = () => {
+          if (this.UI.meetAuthorPanel) this.UI.meetAuthorPanel.style.display = "none";
+          this.isMeetAuthorActive = false;
+      };
+      if (this.UI.meetAuthorCloseBtn) {
+          this.UI.meetAuthorCloseBtn.style.cursor = 'pointer';
+          this.UI.meetAuthorCloseBtn.addEventListener('click', closeMeetAuthor);
+      }
+      if (this.UI.meetAuthorBg) {
+          this.UI.meetAuthorBg.addEventListener('click', closeMeetAuthor);
       }
   },
 
@@ -511,6 +553,17 @@ window.Wg146 = {
       let cleanedQuote = quoteStr.replace(/^‘|’$/g, '');
       const lines = this.wrapText("‘" + cleanedQuote + "’", 50); 
       this.UI.quoteText.innerHTML = "";
+      // Center align quote text
+      this.UI.quoteText.setAttribute('text-anchor', 'middle');
+      
+      // Determine vertical center Y. Original was 418.45 for a single line text.
+      // We keep 418.45 as starting point to cleanly mimic the storyboard visuals.
+      // Horizontal center aligns flawlessly at 1224.11 which matches the background envelope.
+      let currentY = 418.45;
+      const match = this.UI.quoteText.getAttribute('transform')?.match(/translate\([\d.]+\s+([\d.]+)\)/);
+      if (match) currentY = parseFloat(match[1]);
+      this.UI.quoteText.setAttribute('transform', `translate(1224.11 ${currentY})`);
+
       lines.forEach((line, index) => {
           const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
           tspan.setAttribute("x", "0"); 
@@ -541,6 +594,53 @@ window.Wg146 = {
           const j = Math.floor(Math.random() * (i + 1));
           [array[i], array[j]] = [array[j], array[i]];
       }
+  },
+
+  debugQuestions: function() {
+      console.log("--- DEBUG START: ALL QUESTIONS ---");
+      let originalIndex = this.currentIndex;
+      for (let i = 0; i < this.data.length; i++) {
+          console.log(`[DEBUG] Loading Question ${i+1}/${this.data.length}: Correct Author - ${this.data[i].correct}`);
+          this.currentIndex = i;
+          this.loadQuestion();
+      }
+      this.currentIndex = originalIndex;
+      this.loadQuestion();
+      console.log("--- DEBUG END: ALL QUESTIONS ---");
+  },
+
+  debugMeetAuthor: function(popupNumber) {
+      console.log("--- DEBUG START: MEET AUTHOR PANELS ---");
+      if (this.data.length === 0) return;
+      
+      const self = this;
+
+      if (typeof popupNumber === 'number' && popupNumber >= 1 && popupNumber <= this.data.length) {
+          let i = popupNumber - 1;
+          console.log(`[DEBUG] Displaying specific Meet Author panel ${i+1}/${self.data.length}: ${self.data[i].correct}`);
+          self.currentIndex = i;
+          self.showMeetAuthor();
+          console.log("--- DEBUG END: MEET AUTHOR PANELS ---");
+          return;
+      }
+
+      let i = 0;
+      
+      function showNextPanel() {
+          if (i >= self.data.length) {
+              console.log("--- DEBUG END: MEET AUTHOR PANELS ---");
+              if (self.UI.meetAuthorPanel) self.UI.meetAuthorPanel.style.display = "none";
+              return;
+          }
+          console.log(`[DEBUG] Displaying Meet Author panel ${i+1}/${self.data.length}: ${self.data[i].correct}`);
+          self.currentIndex = i;
+          self.showMeetAuthor();
+          i++;
+          // Wait 3 seconds to let visual validation happen sequentially
+          setTimeout(showNextPanel, 3000);
+      }
+      
+      showNextPanel();
   }
 };
 
