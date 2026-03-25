@@ -33,7 +33,7 @@
       "date": "Dec 13, 1946",
       "title": "Objectives Resolution",
       "icon": "📜",
-      "context": "Nehru presents the Objectives Resolution outlining the values that should guide India's Constitution: Justice, Liberty, Equality, and Fraternity.",
+      "context": "Nehru presents the Objectives Resolution outlining the values that should guide India's Constitution: Justice, Liberty, Equality and Fraternity.",
       "question": "Why did these four values matter for India's Constitution?",
       "options": [
         {
@@ -61,7 +61,7 @@
       "date": "Aug 29, 1947",
       "title": "Drafting Committee",
       "icon": "✍️",
-      "context": "India is free! A Drafting Committee is formed to write the Constitution.",
+      "context": "India is free. A Drafting Committee is formed to write the Constitution.",
       "question": "Who should be chosen as chairman of the Drafting Committee?",
       "options": [
         {
@@ -90,7 +90,7 @@
       "title": "Parliamentary System",
       "icon": "🌍",
       "context": "The Assembly debates whether India should follow a Parliamentary system or Presidential system.",
-      "question": "Why did India choose the Parliamentary system?",
+      "question": "Why should India choose Parliamentray system?",
       "options": [
         {
           "id": "A",

@@ -39,6 +39,45 @@ document.addEventListener("DOMContentLoaded", () => {
     const tempLabelEl         = document.querySelector("#Warm-2 tspan");        // "Warm" bold heading
     const particleSpeedLabelEl= document.querySelector("#Particle\\ Speed\\:\\-Warm tspan, [id='Particle Speed:Warm'] tspan");
 
+    // ─── Reaction Formulas for display ────────────────────────────────────────
+    const reactionFormulas = {
+        "Combination Reaction":          "2H<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan> + O<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan> &#x2192; 2H<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan>O",
+        "Decomposition Reaction":        "2H<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan>O &#x2192; 2H<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan> + O<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan>",
+        "Displacement Reaction":         "Zn + CuSO<tspan font-size=\"15\" baseline-shift=\"sub\">4</tspan> &#x2192; ZnSO<tspan font-size=\"15\" baseline-shift=\"sub\">4</tspan> + Cu",
+        "Double Displacement Reaction":  "AgNO<tspan font-size=\"15\" baseline-shift=\"sub\">3</tspan> + NaCl &#x2192; AgCl + NaNO<tspan font-size=\"15\" baseline-shift=\"sub\">3</tspan>",
+        "Redox (Oxidation-Reduction)":   "CH<tspan font-size=\"15\" baseline-shift=\"sub\">4</tspan> + 2O<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan> &#x2192; CO<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan> + 2H<tspan font-size=\"15\" baseline-shift=\"sub\">2</tspan>O"
+    };
+
+    // Function to update the reaction formula display
+    function updateReactionFormula(reactionName) {
+        const formulaGroup = document.getElementById("2H2 O2 2H2O_2");
+        if (!formulaGroup) return;
+        
+        const formula = reactionFormulas[reactionName];
+        if (!formula) return;
+        
+        // Get or create the text element
+        let textEl = formulaGroup.querySelector("text");
+        if (!textEl) {
+            textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            textEl.setAttribute("fill", "#16AED4");
+            textEl.setAttribute("font-family", "Roboto");
+            textEl.setAttribute("font-size", "25");
+            textEl.setAttribute("letter-spacing", "0em");
+            formulaGroup.appendChild(textEl);
+        }
+        
+        let tspan = textEl.querySelector("tspan");
+        if (!tspan) {
+            tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            tspan.setAttribute("x", "1535.27");
+            tspan.setAttribute("y", "202.085");
+            textEl.appendChild(tspan);
+        }
+        
+        tspan.innerHTML = formula;
+    }
+
     // ─── All molecule group IDs ───────────────────────────────────────────────
     const allMolecules = [
         "c4h12o4", "cuso4", "zn", "cu", "hci", "ch4",
@@ -133,6 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
             else reactionTitle.textContent = reactionName;
         }
 
+        updateReactionFormula(reactionName);
+
         stopSimulation();
         resetStats();
         clearAllParticles();
@@ -177,27 +218,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ─── Reaction Transformations ──────────────────────────────────────────────
-    // Map reaction type to { reactants: [...], products: [...] }
+    // Map reaction type to { reactants: [...], products: [...], stoichiometry: {...} }
+    // stoichiometry maps reactant/product ID to their coefficient in the balanced equation
     const reactionRules = {
         "Combination Reaction": {
+            // 2H2 + O2 → 2H2O
             reactants: ["h2", "o2"],
-            products: ["h2o"]
+            products: ["h2o"],
+            stoichiometry: { h2: 2, o2: 1, h2o: 2 }
         },
         "Decomposition Reaction": {
+            // 2H2O → 2H2 + O2
             reactants: ["h2o"],
-            products: ["h2", "o2"]
+            products: ["h2", "o2"],
+            stoichiometry: { h2o: 2, h2: 2, o2: 1 }
         },
         "Displacement Reaction": {
+            // Zn + CuSO4 → ZnSO4 + Cu (1:1:1:1)
             reactants: ["zn", "cuso4"],
-            products: ["cu"] // Simplified ZnSO4 visualization (just becomes Cu)
+            products: ["cu"],
+            stoichiometry: { zn: 1, cuso4: 1, cu: 1 }
         },
         "Double Displacement Reaction": {
-            reactants: ["agno3", "hci"], // Visualizing as AgNO3 + HCl -> AgCl + HNO3 (using available icons)
-            products: ["nano3"] // Using NaNO3 visually as product
+            // AgNO3 + HCl → AgCl + HNO3 (1:1:1:1)
+            reactants: ["agno3", "hci"],
+            products: ["nano3"],
+            stoichiometry: { agno3: 1, hci: 1, nano3: 1 }
         },
         "Redox (Oxidation-Reduction)": {
+            // CH4 + 2O2 → CO2 + 2H2O
             reactants: ["ch4", "o2"],
-            products: ["co2", "h2o"]
+            products: ["co2", "h2o"],
+            stoichiometry: { ch4: 1, o2: 2, co2: 1, h2o: 2 }
         }
     };
 
@@ -210,9 +262,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const rule = reactionRules[currentReaction];
         if (!rule) return;
 
-        // Spawn multiple copies of reactants to ensure collisions
+        // Spawn reactants according to their stoichiometric coefficients
+        // to ensure complete reaction with no leftovers
         rule.reactants.forEach(id => {
-            const copies = rule.reactants.length === 1 ? 6 : 4;
+            const copies = rule.stoichiometry[id] || 1;
             spawnMolecule(id, copies);
         });
     }

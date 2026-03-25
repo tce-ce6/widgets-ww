@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const problemPanel = document.getElementById('problem-panel');
     const problemText = document.querySelector('#problem-tos tspan');
 
+    // SVG images playground (shown only in Playground mode)
+    const svgImagesPlayground = document.getElementById('svg-images-playground');
+
     // Teacher-mode Theme dropdown (the whole box in Layer_25 area)
     const teacherThemeDropdown = document.getElementById('Theme-drop-down');
     const teacherDropdownArrow = document.getElementById('Group_1578');
@@ -119,6 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
         themeDropdownOpen: false,
         teacherThemeDropdownOpen: false
     };
+
+    // Feedback timeout tracker
+    let feedbackTimeoutId = null;
 
     // ─── HELPERS ──────────────────────────────────────────────────────────────
     function show(el) { if (el) el.style.display = 'block'; }
@@ -307,6 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
             togglePanel(repeaAnsPanelHl, 'panelRepea', arrowRepeat);
         });
         clickable(inwordQPanelHl, () => {
+            console.log('Toggling inword panel',inwordQPanelHl, inwordAnsPanelHl, arrowInword);
             togglePanel(inwordAnsPanelHl, 'panelInword', arrowInword);
         });
 
@@ -344,6 +351,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ─── MODE SWITCH ──────────────────────────────────────────────────────────
     function setMode(mode) {
+        // Clear any pending feedback timeout when switching modes
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+            feedbackTimeoutId = null;
+        }
+
         state.mode = mode;
         setTabActive(mode);   // slide the mode-panel highlight to the active tab
 
@@ -356,6 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
             show(layer50);            // Layer_50 (static pictures)
             show(picturePanelEl);     // picture-panel (teacher mode picture background)
             if (svgImagesGroup) svgImagesGroup.style.display = '';
+            hide(svgImagesPlayground);    // svg-images-playground (only in playground mode)
             show(teacherThemeDropdown);   // Theme-drop-down
             show(multiQPanelHl);          // multi-Q-panel-hl
             show(repeatQPanelHl);         // repea-q-panel-hl
@@ -419,6 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Show playground-mode elements
             show(problemPanel);                   // problem-panel
+            show(svgImagesPlayground);            // svg-images-playground
             show(iText);                          // i-text
             show(playgroundChooseThemeSection);   // playground-panel-choose-theme-section
             show(playgroundAddPictureSection);    // playground-panel-add-picture-section
@@ -473,8 +488,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function addGroup() {
         if (state.groups < 10) {
             state.groups++;
-            // Initialize items for the new group
-            state.playgroundItems.push(1); // User requested sub elements to be 1 initially
+            // Initialize items for the new group (empty by default)
+            state.playgroundItems.push(0);
             refreshAll();
         }
     }
@@ -501,19 +516,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function updateCheckAnswerButtonState() {
+        if (state.mode === 'playground') {
+            // Calculate total items in playground
+            const totalItems = state.playgroundItems.reduce((sum, count) => sum + count, 0);
+            // Disable button if no items have been added
+            if (btnCheckMyAnswer) {
+                btnCheckMyAnswer.style.pointerEvents = totalItems > 0 ? 'all' : 'none';
+                btnCheckMyAnswer.style.opacity = totalItems > 0 ? '1' : '0.5';
+            }
+        }
+    }
+
     function doCheckAnswer() {
-        state.answered = true;
         // Calculate total items from all groups
         const totalItems = state.playgroundItems.reduce((sum, count) => sum + count, 0);
-        const correct = (state.groups === state.targetGroups && totalItems === (state.targetGroups * state.targetItems));
+        // Support commutative property: both a×b and b×a are correct
+        const correct = (
+            (state.groups === state.targetGroups && totalItems === (state.targetGroups * state.targetItems)) ||
+            (state.groups === state.targetItems && totalItems === (state.targetItems * state.targetGroups))
+        );
         if (correct) {
-            show(feedbackCorrect);
-            hide(feedbackIncorrect);
+            state.answered = true;  // Only mark as answered if correct
+            showFeedbackWithAutoHide(feedbackCorrect, feedbackIncorrect);
+            updateProblemText();
         } else {
-            hide(feedbackCorrect);
-            show(feedbackIncorrect);
+            showFeedbackWithAutoHide(feedbackIncorrect, feedbackCorrect);
         }
+        // Update answer modal
         updateAnswerModal();
+    }
+
+    function showFeedbackWithAutoHide(showElement, hideElement) {
+        // Clear any existing timeout
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+        }
+
+        // Show the correct feedback, hide the other
+        show(showElement);
+        hide(hideElement);
+
+        // Auto-hide after 4 seconds (4000 ms)
+        feedbackTimeoutId = setTimeout(() => {
+            hide(showElement);
+            feedbackTimeoutId = null;
+        }, 4000);
     }
 
     function doShowAnswer() {
@@ -524,6 +572,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function doNewProblem() {
+        // Clear any pending feedback timeout
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+            feedbackTimeoutId = null;
+        }
         hide(answerModal);
         hide(feedbackCorrect);
         hide(feedbackIncorrect);
@@ -557,69 +610,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = document.getElementById('show-answer-tos');
         if (!container) return;
 
-        // ── Build the grid of SVGs ────────────────────────────────────────────
-        const svgId = THEME_SVG_MAP[state.theme];
-        const templateSvg = svgId ? document.getElementById(svgId) : null;
-
-        // Grid layout: fixed 5-column grid, fixed SVG size
-        // Only the number of elements changes — sizes stay constant
-        const MAX_COLS = 5;
-        const totalGroups = Math.min(g, 10); // max 10
-        
-        
-        // const cols = Math.min(totalGroups, MAX_COLS);
-        // const rows = Math.ceil(totalGroups / MAX_COLS);
-         const cols = 5
-        const rows = 2
-            // SVG size to fit nicely: container is 966px wide, 365px tall
-        // Equations take ~110px at bottom; grid gets ~220px
-        const gridH = rows === 1 ? 165 : 170;
-        const svgSize = 180;
-        // Build SVG grid html - Use flexbox for robust centering of any number of items
-        let gridHTML = `<div style="min-height:350px; width:100%; display:flex; align-items:center; justify-content:center;">`;
-        gridHTML += `<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; width:100%; max-width:1100px;">`;
-
-        if (templateSvg) {
-            for (let gi = 0; gi < totalGroups; gi++) {
-                let html = templateSvg.outerHTML;
-                html = html.replace(/id="([^"]+)"/g, (_, id) => `id="${id}_am${gi}"`);
-                html = html.replace(/url\(#([^)]+)\)/g, (_, ref) => `url(#${ref}_am${gi})`);
-                html = html.replace(/display:\s*none/g, '');
-
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = html;
-                const clonedSvg = wrapper.querySelector('svg');
-                if (!clonedSvg) continue;
-
-                clonedSvg.setAttribute('width', svgSize);
-                clonedSvg.setAttribute('height', svgSize);
-                clonedSvg.style.display = 'block';
-
-                if (state.theme === 'vas') {
-                    _setVasItemsVisibility(clonedSvg, i, state.theme);
-                } else {
-                    const items = _getItemsFromSvg(clonedSvg, state.theme);
-                    items.forEach((item, idx) => {
-                        item.style.display = idx < i ? '' : 'none';
-                    });
-                }
-
-                gridHTML += `<div style="display:flex;align-items:center;justify-content:center;">${clonedSvg.outerHTML}</div>`;
-            }
-        } else {
-            // Fallback if no SVG template found
-            for (let gi = 0; gi < totalGroups; gi++) {
-                gridHTML += `<div style="width:${svgSize}px;height:${svgSize}px;background:#e0f0ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:bold;color:#4caf50;">${i}</div>`;
-            }
-        }
-        gridHTML += `</div></div>`;
-
-        // ── Build equation rows ───────────────────────────────────────────────
+        // ── Build equation rows only (no SVGs) ─────────────────────────────────
         const repeatedAdditionParts = Array(g).fill(i).join(' + ');
         const fs = 30; // slightly smaller font when long equations
 
         const equationHTML = `
-          <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;font-family:Roboto,sans-serif;">
+          <div style="width:100%;min-height:350px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-family:Roboto,sans-serif;padding:40px 20px;">
             <div style="font-size:${fs}px;color:#222;">
               <strong>Repeated Addition:</strong> ${repeatedAdditionParts} = ${p}
             </div>
@@ -637,7 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           </div>`;
 
-        container.innerHTML = gridHTML + equationHTML;
+        container.innerHTML = equationHTML;
     }
 
     // ─── SURPRISE ME / RESET ──────────────────────────────────────────────────
@@ -667,9 +663,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── THEME ────────────────────────────────────────────────────────────────
     // "birthday" / Cakes & Candles removed as requested
     const THEMES = {
-        plates: { group: 'Plates', item: 'Cookies', addGroup: 'Add Plates', addItem: 'Add Cookies' },
-        vas: { group: 'Vases', item: 'Flowers', addGroup: 'Add Vases', addItem: 'Add Flowers' },
-        palette: { group: 'Palettes', item: 'Drops', addGroup: 'Add Palettes', addItem: 'Add Drops' }
+        plates: { group: 'Plates', item: 'Cookies', addGroup: 'Tap to Add Plates', addItem: 'Add Cookies' },
+        vas: { group: 'Vases', item: 'Flowers', addGroup: 'Tap to Add Vases', addItem: 'Add Flowers' },
+        palette: { group: 'Palettes', item: 'Drops', addGroup: 'Tap to Add Palettes', addItem: 'Add Drops' }
     };
 
     // Maps theme key → SVG template element ID in the DOM
@@ -1017,6 +1013,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderVisuals();
         renderSvgImages();
         renderPlaygroundGroups(); // Added to refresh playground groups
+        updateCheckAnswerButtonState();
     }
 
     // ─── PROBLEM TEXT ─────────────────────────────────────────────────────────
