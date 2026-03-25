@@ -181,7 +181,7 @@
       "author": "PrasannaP"
     },
     "wg150-blood-circulation": {
-      "updatedAt": "2026-03-25T15:39:46+05:30",
+      "updatedAt": "2026-03-25T16:29:30+05:30",
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
@@ -273,8 +273,8 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-19T19:49:34+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-25T16:33:12+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
       "updatedAt": "2026-03-24T21:18:27+05:30",
@@ -382,6 +382,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T16:33:12+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg73 issues fixed",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-25T16:29:30+05:30",
+      "author": "tce-nitinc",
+      "message": "wg150",
+      "widgets": [
+        150
+      ]
+    },
     {
       "date": "2026-03-25T16:29:08+05:30",
       "author": "sushantkanaujiya",
@@ -618,22 +634,6 @@
       "message": "Update index.html",
       "widgets": [
         142
-      ]
-    },
-    {
-      "date": "2026-03-24T20:56:23+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg142-fact-or-opinion",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-24T20:45:11+05:30",
-      "author": "PrasannaP",
-      "message": "Update xd-wireframe.md",
-      "widgets": [
-        146
       ]
     }
   ]
