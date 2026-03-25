@@ -62,13 +62,6 @@ function setupCounter({
             rightElectron.style.display = 'block';
 
             for (let i = 0; i < value; i++) {
-                // if (!positions[i]) {
-                //     positions[i] = {
-                //         x: i === 0 ? 0 : getRandomOffset(),
-                //         y: i === 0 ? 0 : getRandomOffset(),
-                //         z: i
-                //     };
-                // }
 
                 if (!positions[i]) {
                     positions[i] = getMoleculePosition(i);
@@ -96,6 +89,9 @@ function setupCounter({
         rightElectron.setAttribute('x', initialRE - value * 70);
 
         if (value > 0) {
+            const speed = 4 - ((value - 1) * 0.3);
+            document.documentElement.style.setProperty('--electron-speed', `${speed}s`);
+
             leftElectron.parentElement.classList.add("rotating-electron");
             rightElectron.parentElement.classList.add("rotating-electron");
         } else {

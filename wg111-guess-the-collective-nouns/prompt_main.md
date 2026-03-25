@@ -19,3 +19,6 @@ treat the index.html as main file to start as boilerplate which contains the svg
 wite a js file which is function based and all global variable to be inside a global variable object
 use plain javascript
 write explainable comments in code
+
+issues:
+Can we fit the long sentence in two lines? Now it is touching to the card border.
