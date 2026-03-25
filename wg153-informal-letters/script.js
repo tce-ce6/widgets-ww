@@ -790,8 +790,8 @@ function initializeLetterBox(boxId, dataKey, placeholder) {
         console.warn(`Missing .suggestion-answer inside #${boxId}`);
         return;
     }
-const suggestionWrapper = mainBox.querySelector('.suggestion-wrapper');
-const displayBox = suggestionWrapper || suggestionBox;
+    const suggestionWrapper = mainBox.querySelector('.suggestion-wrapper');
+    const displayBox = suggestionWrapper || suggestionBox;
     const optionsData = state.activeLetter.sections[dataKey];
     if (!Array.isArray(optionsData)) return;
 
@@ -898,7 +898,7 @@ function resetContainerScrolls() {
 function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
     document.querySelectorAll(".svg-popup")
-        .forEach(p => p.style.display = "none");
+        .forEach(p => { p.style.display = "none"; if (p.parentElement && p.parentElement.tagName.toLowerCase() === 'foreignobject') p.parentElement.style.display = "none"; });
 
     if (gElement.id !== expectedId) {
         applyRightVisualHighlight(expectedId);
@@ -983,12 +983,12 @@ function showPopupFromGElement(gElement) {
         "popup-" + gElement;
 
     document.querySelectorAll(".svg-popup")
-        .forEach(p => p.style.display = "none");
+        .forEach(p => { p.style.display = "none"; if (p.parentElement && p.parentElement.tagName.toLowerCase() === 'foreignobject') p.parentElement.style.display = "none"; });
 
     const popup = document.getElementById(popupId);
     console.log(popup);
 
-    if (popup) popup.style.display = "block";
+    if (popup) { popup.style.display = "block"; if (popup.parentElement && popup.parentElement.tagName.toLowerCase() === 'foreignobject') popup.parentElement.style.display = "block"; }
 }
 
 /**
@@ -1110,6 +1110,8 @@ function hideFeedback(anchorEl) {
 }
 
 function resetPracticeSession() {
+    document.querySelectorAll(".svg-popup")
+        .forEach(p => { p.style.display = "none"; if (p.parentElement && p.parentElement.tagName.toLowerCase() === 'foreignobject') p.parentElement.style.display = "none"; });
     /* 1. Reset STATE */
     state.currentStepIndex = 0;
     state.activeLeftId = null;
@@ -1221,7 +1223,7 @@ document.querySelectorAll(".close-btn").forEach(btn => {
         e.stopPropagation();
 
         document.querySelectorAll(".svg-popup")
-            .forEach(p => p.style.display = "none");
+            .forEach(p => { p.style.display = "none"; if (p.parentElement && p.parentElement.tagName.toLowerCase() === 'foreignobject') p.parentElement.style.display = "none"; });
     });
 
 });
