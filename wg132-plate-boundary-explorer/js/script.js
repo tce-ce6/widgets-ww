@@ -1,1329 +1,279 @@
-/* =============================================
-   WG131 – Journey of a Bill to Law
-   script.js – Full Game Engine
-   ============================================= */
 
-// ── Station data ──────────────────────────────
-const STATIONS = [
-  {
-    id: 1,
-    label: "The Gateway",
-    icon: "🏛️",
-    color: "#97a700",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing orange segment (The Gateway) 👇",
-    question: "Where can a new bill be introduced in Parliament?",
-    options: [
-      { text: "🏛️ Lok Sabha or Rajya Sabha", correct: true },
-      { text: "👤 President's office first", correct: false },
-      { text: "⚖️ Supreme Court", correct: false },
-    ],
-    hint: "Bills can start in either house!",
-    msg1: "THE GATEWAY",
-    msg2: "↓ Actually: Lok Sabha",
-    msg3: "Moving to next step...",
-    stamp: "INTRODUCED 🏛️",
-    facts: [
-      "Bills can start in either house",
-      "Lok Sabha = Lower House",
-      "Rajya Sabha = Upper House",
-      "Money Bills only in Lok Sabha",
-    ],
-    title: "BILL INTRODUCTION (The Gateway → Lok Sabha)",
+let currentPlate = null;
+let currentPlateIndex = -1; // nothing selected initially
+let isCongratsVisible = false;
+
+const homePage = document.getElementById('home');
+const gamePage = document.getElementById('game');
+const plates = document.querySelectorAll('.plates');
+
+const homeIText = document.getElementById('home-itext');
+
+const buttons = document.getElementById('buttons');
+const resetPlateBtn = document.getElementById('reset-plates');
+const nextBtn = document.getElementById('next-btn');
+const homeBtn = document.getElementById('home-btn');
+
+const btnFill = document.querySelectorAll('.btnFill');
+const pushButtons = document.querySelectorAll('.push-button');
+
+const convergetInsight = document.getElementById('insights-convergent');
+const divergentInsight = document.getElementById('insights-divergent');
+const transformInsight = document.getElementById('insights-transform');
+
+const insightsButton = document.getElementById('button-insights');
+const closeInsights = document.querySelectorAll('.close-insights');
+const congratsDiv = document.getElementById('congrats-div');
+
+const valueEls = document.querySelectorAll(".making-value");
+
+const lottieMap = {
+  convergent: {
+    container: document.getElementById('convergent-lottie'),
+    path: './assets/JSON/convergent.json',
+    instance: null
   },
-  {
-    id: 2,
-    label: "The Announcement",
-    icon: "🎤",
-    color: "#65ad00",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing blue segment (The Announcement) 👇",
-    question: "What happens during the first reading stage?",
-    options: [
-      { text: "📢 Title and purpose announced", correct: true },
-      { text: "🗳️ MPs vote immediately", correct: false },
-      { text: "✍️ Full debate happens", correct: false },
-    ],
-    hint: "Just an announcement!",
-    msg1: "THE ANNOUNCEMENT",
-    msg2: "↓ Actually: First Reading",
-    msg3: "Moving to next step...",
-    stamp: "READ 🎤",
-    facts: [
-      "First Reading = Just announcement",
-      "Title and purpose read aloud",
-      "No debate or voting",
-    ],
-    title: "FIRST READING (The Announcement → First Reading) ",
+  divergent: {
+    container: document.getElementById('divergent-lottie'),
+    path: './assets/JSON/divergent.json',
+    instance: null
   },
-  {
-    id: 3,
-    label: "The Examination",
-    icon: "📋",
-    color: "#00a585",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing purple segment (The Examination) 👇",
-    question: "What does the committee do with the bill?",
-    options: [
-      { text: "🔍 Studies deeply & suggests changes", correct: true },
-      { text: "📝 Just reads the title", correct: false },
-      { text: "🗳️ Takes final vote", correct: false },
-    ],
-    hint: "Committees examine carefully!",
-    msg1: "THE EXAMINATION",
-    msg2: "↓ Actually: Committee",
-    msg3: "Moving to next step...",
-    stamp: "REVIEWED 📋",
-    facts: [
-      "Expert group of MPs",
-      "Study in detail",
-      "Suggest changes",
-      "Send report",
-    ],
-    title: "COMMITTEE STAGE (The Examination → Committee)",
-  },
-  {
-    id: 4,
-    label: "The Assembly",
-    icon: "💬",
-    color: "#0289ae",
-    clicks: 5,
-    hold: false,
-    instruction: "Click the glowing green segment 5 times (The Assembly) 👇.",
-    question: "Why do MPs debate the bill?",
-    options: [
-      { text: "💬 To discuss if bill should pass", correct: true },
-      { text: "👋 To practice speaking", correct: false },
-      { text: "📖 To read newspapers", correct: false },
-    ],
-    hint: "Debate = pros and cons!",
-    msg1: "THE ASSEMBLY",
-    msg2: "↓ Actually: Debate",
-    msg3: "Moving to next step...",
-    stamp: "DEBATED 💬",
-    facts: ["MPs discuss pros/cons", "Share opinions", "Voting comes later"],
-    title: "DEBATE (The Assembly → Debate)",
-  },
-  {
-    id: 5,
-    label: "The Scroll",
-    icon: "📝",
-    color: "#005388",
-    clicks: 3,
-    hold: false,
-    instruction: "Click the glowing indigo segment 3 times (The Scroll) 👇",
-    question: "What happens during the clause-by-clause discussion?",
-    options: [
-      { text: "✍️ Each clause examined & amended", correct: true },
-      { text: "🚫 Nothing happens", correct: false },
-      { text: "📝 Only title read", correct: false },
-    ],
-    hint: "Word by word examination!",
-    msg1: "THE SCROLL",
-    msg2: "↓ Actually: Clauses",
-    msg3: "Moving to next step...",
-    stamp: "CLAUSES OK 📝",
-    facts: ["Clause = One section", "Each can be amended"],
-    title: "CLAUSE-BY-CLAUSE (The Scroll → Clauses)",
-  },
-  {
-    id: 6,
-    label: "The Gathering",
-    icon: "🗳️",
-    color: "#3c0091",
-    clicks: 0,
-    hold: true,
-    instruction: "HOLD the glowing red segment (The Gathering) 👇",
-    question: "How many MPs must vote YES for the bill to pass Lok Sabha?",
-    options: [
-      { text: "✅ More than 50% (273+ of 543)", correct: true },
-      { text: "👤 Just 1 MP", correct: false },
-      { text: "💯 All 543 MPs", correct: false },
-    ],
-    hint: "Need majority!",
-    msg1: "THE GATHERING",
-    msg2: "↓ Actually: Voting",
-    msg3: "Moving to next step...",
-    stamp: "PASSED LS 🗳️",
-    facts: ["Need MORE than 50%", "543 MPs total", "Need 272+ YES"],
-    title: "VOTING (The Gathering → Voting)",
-  },
-  {
-    id: 7,
-    label: "The Chamber",
-    icon: "🏛️",
-    color: "#930032",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing teal segment (The Chamber) 👇",
-    question: "Why must a bill pass through both houses of Parliament?",
-    options: [
-      { text: "🏛️ Both must approve", correct: true },
-      { text: "🚪 Just visiting", correct: false },
-      { text: "📮 To mail copies", correct: false },
-    ],
-    hint: "Two houses!",
-    msg1: "THE CHAMBER",
-    msg2: "↓ Actually: Rajya Sabha",
-    msg3: "Moving to next step...",
-    stamp: "PASSED RS 🏛️",
-    facts: [
-      "MUST pass both",
-      "Same process as Lok Sabha",
-      "One house reject = Bill fail",
-    ],
-    title: "RAJYA Sabha (The Chamber → Rajya Sabha) ",
-  },
-  {
-    id: 8,
-    label: "The Final Approval",
-    icon: "🖊️",
-    color: "#da3a3a",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing yellow segment (The Final Approval) 👇",
-    question: "What happens after the President signs the bill?",
-    options: [
-      { text: "⚖️ Becomes a LAW!", correct: true },
-      { text: "🗑️ Rejected", correct: false },
-      { text: "🔄 Back to Lok Sabha", correct: false },
-    ],
-    hint: "Final approval!",
-    msg1: "THE FINAL APPROVAL",
-    msg2: "↓ Actually: President",
-    msg3: "Moving to next step...",
-    stamp: "ASSENT 🖊️",
-    facts: [
-      "Final approval",
-      "Can sign/reject",
-      "Signed = LAW",
-      "Not signed = NOT law",
-    ],
-    title: "PRESIDENTIAL ASSENT (The Final Approval → President)",
-  },
-  {
-    id: 9,
-    label: "The Archive",
-    icon: "📰",
-    color: "#fe910e",
-    clicks: 1,
-    hold: false,
-    instruction: "Click the glowing amber segment (The Archive) 👇",
-    question: "What makes the bill officially become a law?",
-    options: [
-      { text: "📰 Gazette publication", correct: true },
-      { text: "📺 TV announcement", correct: false },
-      { text: "📱 Social media", correct: false },
-    ],
-    hint: "Official publication!",
-    msg1: "THE ARCHIVE",
-    msg2: "↓ Actually: Gazette",
-    msg3: "Moving to next step...",
-    stamp: "LAW! 📰",
-    facts: [
-      "Official newspaper",
-      "Published = official",
-      "Gets Act number",
-      "Enforceable",
-    ],
-    title: "GAZETTE PUBLICATION (The Archive → Gazette)",
-  },
-];
-const STATIONS_TEXT_IDS = [
-  "The_Gateway",
-  "The_Announcement",
-  "The_Examination",
-  "The_Assembly",
-  "The_Scroll",
-  "The_Gathering",
-  "The_Chamber",
-  "The_Final_Approval",
-  "The_Archive",
-];
-
-// ── State ─────────────────────────────────────
-let currentStation = 0; // 0-based index
-let clickCount = 0;
-let holdInterval = null;
-let holdVotes = 0;
-let collectedStamps = [];
-let quizAnswered = false;
-let gameStarted = false;
-let currentStationIdx = 0; // tracks which station the quiz popup is showing
-const completedStations = new Set(); // indices of stations answered correctly
-
-// Station segment path IDs (order matches STATIONS array)
-const STATION_PATH_IDS = [
-  "Path_2191", // 0 – The Gateway
-  "Path_2181", // 1 – The Announcement
-  "Path_2161", // 2 – The Examination
-  "Path_2151", // 3 – The Assembly
-  "Path_2141", // 4 – The Gathering
-  "Path_2131", // 5 – The Scroll
-  "Path_2121", // 6 – The Chamber
-  "Path_2111", // 7 – The Final Approval
-  "Path_2171", // 8 – The Archive
-];
-
-// ── DOM refs ──────────────────────────────────
-// const gameRoot = document.getElementById("game-root");
-// const progressDots = document.getElementById("progress-dots");
-// const wheelSvgWrap = document.getElementById("wheel-svg-wrap");
-// const stationIcon = document.getElementById("station-icon");
-// const stationName = document.getElementById("station-name");
-// const stationSub = document.getElementById("station-sub");
-// const stationBadge = document.getElementById("station-badge");
-// const instructionTxt = document.getElementById("instruction-txt");
-// const clickBtn = document.getElementById("click-btn");
-// const holdBtn = document.getElementById("hold-btn");
-// const holdFill = document.getElementById("hold-fill");
-// const voteCount = document.getElementById("vote-count");
-// const clickCounter = document.getElementById("click-counter");
-// const clickCountVal = document.getElementById("click-count-val");
-// const clickProgress = document.getElementById("click-progress");
-// const clickProgressFill = document.getElementById("click-progress-fill");
-// const stampsTray = document.getElementById("stamps-tray");
-
-// // Quiz
-// const quizOverlay = document.getElementById("quiz-overlay");
-// const quizIcon = document.getElementById("quiz-icon");
-// const quizStationName = document.getElementById("quiz-station-name");
-// const quizQuestion = document.getElementById("quiz-question");
-// const quizOptions = document.getElementById("quiz-options");
-// const quizHint = document.getElementById("quiz-hint");
-// const quizFeedback = document.getElementById("quiz-feedback");
-
-// // Stamp overlay
-// const stampOverlay = document.getElementById("stamp-overlay");
-// const stampEmoji = document.getElementById("stamp-emoji");
-// const stampTextBig = document.getElementById("stamp-text-big");
-// const stampMsg1 = document.getElementById("stamp-msg1");
-// const stampMsg2 = document.getElementById("stamp-msg2");
-// const stampMsg3 = document.getElementById("stamp-msg3");
-
-// // Insight
-// const insightOverlay = document.getElementById("insight-overlay");
-// const insightTitle = document.getElementById("insight-title");
-// const insightFacts = document.getElementById("insight-facts");
-// const insightContinue = document.getElementById("insight-continue");
-
-// // Final
-// const finalScreen = document.getElementById("final-screen");
-// const finalStampsGrid = document.getElementById("final-stamps-grid");
-
-// ── START ─────────────────────────────────────
-function startGame() {
-  // if (gameStarted) return;
-  // gameStarted = true;
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("home-screen").setAttribute("display", "block");
-  document.getElementById("i-text").setAttribute("display", "block");
-  // gameRoot.classList.add("visible");
-  // buildProgressDots();
-  // goToStation(0);
-}
-
-// ── PROGRESS DOTS ─────────────────────────────
-function buildProgressDots() {
-  progressDots.innerHTML = "";
-  STATIONS.forEach((s, i) => {
-    const dot = document.createElement("div");
-    dot.className = "progress-dot";
-    dot.id = `dot-${i}`;
-    dot.textContent = i + 1;
-    progressDots.appendChild(dot);
-  });
-}
-
-function updateDots() {
-  STATIONS.forEach((_, i) => {
-    const dot = document.getElementById(`dot-${i}`);
-    if (!dot) return;
-    dot.classList.remove("done", "active");
-    if (i < currentStation) dot.classList.add("done");
-    else if (i === currentStation) dot.classList.add("active");
-  });
-}
-
-// ── WHEEL RENDERING ───────────────────────────
-function buildWheel() {
-  const N = STATIONS.length;
-  const R = 180,
-    cx = 200,
-    cy = 200,
-    innerR = 55;
-  const segAngle = (2 * Math.PI) / N;
-  let paths = "";
-  let labels = "";
-
-  STATIONS.forEach((s, i) => {
-    const startAngle = -Math.PI / 2 + i * segAngle;
-    const endAngle = startAngle + segAngle;
-    const midAngle = (startAngle + endAngle) / 2;
-
-    // arc path
-    const x1 = cx + R * Math.cos(startAngle);
-    const y1 = cy + R * Math.sin(startAngle);
-    const x2 = cx + R * Math.cos(endAngle);
-    const y2 = cy + R * Math.sin(endAngle);
-    const ix1 = cx + innerR * Math.cos(startAngle);
-    const iy1 = cy + innerR * Math.sin(startAngle);
-    const ix2 = cx + innerR * Math.cos(endAngle);
-    const iy2 = cy + innerR * Math.sin(endAngle);
-
-    const d = [
-      `M ${ix1} ${iy1}`,
-      `L ${x1} ${y1}`,
-      `A ${R} ${R} 0 0 1 ${x2} ${y2}`,
-      `L ${ix2} ${iy2}`,
-      `A ${innerR} ${innerR} 0 0 0 ${ix1} ${iy1}`,
-      "Z",
-    ].join(" ");
-
-    // class
-    let cls = "seg-locked";
-    if (i < currentStation) cls = "seg-done";
-    else if (i === currentStation) cls = "seg-active";
-
-    const style =
-      i === currentStation
-        ? `fill:${s.color}; --seg-color:${s.color};`
-        : i < currentStation
-          ? `fill:${s.color};`
-          : `fill:${s.color};`;
-
-    paths += `<path d="${d}" class="${cls}" style="${style}"
-      data-station="${i}" id="seg-${i}"/>`;
-
-    // icon + label at mid radius
-    const labelR = (R + innerR) / 2;
-    const lx = cx + labelR * Math.cos(midAngle);
-    const ly = cy + labelR * Math.sin(midAngle);
-
-    const iconR = R * 0.78;
-    const ix = cx + iconR * Math.cos(midAngle);
-    const iy = cy + iconR * Math.sin(midAngle);
-
-    // short label (≤8 chars)
-    const shortLabel = s.label.split(" ").slice(0, 2).join(" ");
-
-    labels += `
-      <text x="${lx}" y="${ly - 6}" text-anchor="middle" dominant-baseline="middle"
-        font-size="18" fill="white" style="pointer-events:none;user-select:none;">${s.icon}</text>
-      <text x="${lx}" y="${ly + 12}" text-anchor="middle" dominant-baseline="middle"
-        font-size="10" fill="rgba(255,255,255,0.8)" font-weight="700"
-        style="pointer-events:none;user-select:none;">${shortLabel}</text>`;
-  });
-
-  // center hub
-  const hub = `<circle cx="${cx}" cy="${cy}" r="${innerR - 4}" fill="#1e1040" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-    <text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="22" fill="white" style="pointer-events:none;">⚖️</text>
-    <text x="${cx}" y="${cy + 14}" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" style="pointer-events:none;">BILL</text>`;
-
-  wheelSvgWrap.innerHTML = `
-    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-      <circle cx="200" cy="200" r="192" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
-      ${paths}
-      ${labels}
-      ${hub}
-      <polygon points="200,8 193,22 207,22" fill="white" filter="url(#glow)" style="pointer-events:none;"/>
-    </svg>`;
-
-  // Add click listener on active segment
-  const activeSeg = document.getElementById(`seg-${currentStation}`);
-  if (activeSeg) {
-    activeSeg.style.cursor = "pointer";
-    activeSeg.addEventListener("click", handleSegmentClick);
-    activeSeg.addEventListener("mousedown", handleSegmentMouseDown);
-    activeSeg.addEventListener("mouseup", handleSegmentMouseUp);
-    activeSeg.addEventListener("touchstart", handleSegmentMouseDown, {
-      passive: true,
-    });
-    activeSeg.addEventListener("touchend", handleSegmentMouseUp);
+  transform: {
+    container: document.getElementById('transform-lottie'),
+    path: './assets/JSON/transform.json',
+    instance: null
   }
-}
+};
 
-// ── GO TO STATION ─────────────────────────────
-function goToStation(idx) {
-  currentStation = idx;
-  clickCount = 0;
-  holdVotes = 0;
-  quizAnswered = false;
+const insights = {
+  "convergent-plate": document.getElementById('insights-convergent'),
+  "divergent-plate": document.getElementById('insights-divergent'),
+  "transform-plate": document.getElementById('insights-transform')
+};
 
-  const s = STATIONS[idx];
+const allInsights = Object.values(insights);
 
-  // CSS variable for color
-  document
-    .getElementById("action-panel")
-    .style.setProperty("--station-color", s.color);
-  document
-    .getElementById("game-area")
-    .style.setProperty("--station-color", s.color);
-
-  // Progress dots
-  updateDots();
-
-  // Station header
-  stationIcon.textContent = s.icon;
-  stationName.textContent = `Station ${idx + 1}`;
-  stationSub.textContent = s.label;
-  stationBadge.textContent = `Step ${idx + 1} of 9`;
-  stationBadge.style.background = s.color;
-
-  // Instruction
-  instructionTxt.textContent = s.instruction;
-  document.getElementById("instruction-box").style.borderLeftColor = s.color;
-
-  // Interaction UI
-  resetInteractionUI(s);
-
-  // Rebuild wheel
-  buildWheel();
-}
-
-function resetInteractionUI(s) {
-  // Hide all first
-  clickBtn.style.display = "none";
-  holdBtn.style.display = "none";
-  clickCounter.style.display = "none";
-  clickProgress.style.display = "none";
-  clickProgressFill.style.width = "0%";
-
-  if (s.hold) {
-    // HOLD interaction
-    holdBtn.style.display = "flex";
-    holdFill.style.height = "0%";
-    voteCount.textContent = "0";
-    holdBtn.style.setProperty("--station-color", s.color);
-    document.getElementById("hold-btn-label").textContent = "HOLD TO VOTE";
-    // Attach hold listeners to the visible holdBtn div
-    holdBtn.addEventListener("mousedown", handleSegmentMouseDown);
-    holdBtn.addEventListener("mouseup", handleSegmentMouseUp);
-    holdBtn.addEventListener("mouseleave", handleSegmentMouseUp);
-    holdBtn.addEventListener("touchstart", handleSegmentMouseDown, {
-      passive: false,
-    });
-    holdBtn.addEventListener("touchend", handleSegmentMouseUp);
-  } else {
-    // CLICK interaction
-    clickBtn.style.display = "inline-flex";
-    clickBtn.style.background = s.color;
-    clickBtn.style.boxShadow = `0 0 30px ${s.color}, 0 6px 20px rgba(0,0,0,0.4)`;
-    clickBtn.style.setProperty("--station-color", s.color);
-    clickBtn.disabled = false;
-
-    if (s.clicks > 1) {
-      clickCounter.style.display = "flex";
-      clickCountVal.textContent = `0 / ${s.clicks}`;
-      clickProgress.style.display = "block";
-      clickProgress.style.setProperty("--station-color", s.color);
-      clickBtn.textContent = `Click! (${s.clicks} times)`;
-    } else {
-      clickBtn.textContent = "Click!";
-    }
-  }
-}
-
-// ── INTERACTION HANDLERS ──────────────────────
-// clickBtn.addEventListener("click", handleSegmentClick);
-
-function handleSegmentClick() {
-  const s = STATIONS[currentStation];
-  if (s.hold || quizAnswered) return;
-
-  clickCount++;
-  const needed = s.clicks;
-
-  if (needed > 1) {
-    clickCountVal.textContent = `${clickCount} / ${needed}`;
-    const pct = (clickCount / needed) * 100;
-    clickProgressFill.style.width = `${pct}%`;
-    clickBtn.textContent =
-      clickCount >= needed ? "✓ Done!" : `Click! (${clickCount}/${needed})`;
-  }
-
-  if (clickCount >= needed) {
-    clickBtn.disabled = true;
-    showQuiz(s);
-  }
-}
-
-// HOLD mechanics
-let holdActive = false;
-const HOLD_TARGET = 273;
-const HOLD_SPEED = 12; // votes per 100ms
-
-function handleSegmentMouseDown(e) {
-  const s = STATIONS[currentStation];
-  if (!s.hold || quizAnswered || holdActive) return;
-  if (e.cancelable) e.preventDefault();
-  holdActive = true;
-  holdInterval = setInterval(() => {
-    if (!holdActive) {
-      clearInterval(holdInterval);
-      return;
-    }
-    holdVotes = Math.min(HOLD_TARGET, holdVotes + HOLD_SPEED);
-    const pct = (holdVotes / HOLD_TARGET) * 100;
-    holdFill.style.height = `${pct}%`;
-    voteCount.textContent = holdVotes;
-    if (holdVotes >= HOLD_TARGET) {
-      clearInterval(holdInterval);
-      holdActive = false;
-      quizAnswered = true; // prevent re-trigger
-      document.getElementById("hold-btn-label").textContent = "✓ PASSED!";
-      setTimeout(() => {
-        quizAnswered = false; // reset for quiz interaction
-        showQuiz(s);
-      }, 400);
-    }
-  }, 100);
-}
-
-function handleSegmentMouseUp() {
-  holdActive = false;
-  if (holdInterval) clearInterval(holdInterval);
-}
-
-// ── QUIZ ──────────────────────────────────────
-function showQuiz(s) {
-  quizAnswered = false;
-  quizIcon.textContent = s.icon;
-  quizStationName.textContent = s.label;
-  quizQuestion.textContent = s.question;
-  quizHint.textContent = `💡 Hint: ${s.hint}`;
-  quizHint.classList.remove("visible");
-  quizFeedback.classList.remove("show", "ok", "fail");
-  quizFeedback.textContent = "";
-
-  // Build options (shuffle order each time for freshness)
-  quizOptions.innerHTML = "";
-  const shuffled = [...s.options].sort(() => Math.random() - 0.5);
-  shuffled.forEach((opt) => {
-    const btn = document.createElement("button");
-    btn.className = "quiz-option";
-    btn.textContent = opt.text;
-    btn.addEventListener("click", () => handleQuizAnswer(btn, opt.correct, s));
-    quizOptions.appendChild(btn);
-  });
-
-  quizOverlay.classList.add("open");
-}
-
-function handleQuizAnswer(btn, correct, s) {
-  if (quizAnswered) return;
-  const allBtns = quizOptions.querySelectorAll(".quiz-option");
-
-  if (correct) {
-    quizAnswered = true;
-    btn.classList.add("correct");
-    allBtns.forEach((b) => {
-      if (b !== btn) b.disabled = true;
-    });
-    quizFeedback.textContent = "✓ Correct! Well done!";
-    quizFeedback.className = "show ok";
-    setTimeout(() => closeQuizAndStamp(s), 900);
-  } else {
-    btn.classList.add("wrong");
-    quizHint.classList.add("visible");
-    quizFeedback.textContent = "✗ Try again!";
-    quizFeedback.className = "show fail";
-    setTimeout(() => {
-      btn.classList.remove("wrong");
-      quizFeedback.classList.remove("show", "fail");
-      quizFeedback.textContent = "";
-    }, 900);
-  }
-}
-
-function closeQuizAndStamp(s) {
-  quizOverlay.classList.remove("open");
-  setTimeout(() => showStamp(s), 300);
-}
-
-// ── STAMP ─────────────────────────────────────
-function showStamp(s) {
-  stampEmoji.textContent = s.icon;
-  stampTextBig.textContent = s.stamp;
-  stampMsg1.textContent = s.msg1;
-  stampMsg2.textContent = s.msg2;
-  stampMsg3.textContent = s.msg3;
-  stampOverlay.classList.add("show");
-
-  setTimeout(() => {
-    stampOverlay.classList.remove("show");
-    collectStamp(s);
-    setTimeout(() => showInsight(s), 300);
-  }, 2200);
-}
-
-function collectStamp(s) {
-  collectedStamps.push(s.stamp);
-  const chip = document.createElement("div");
-  chip.className = "stamp-chip";
-  chip.textContent = s.stamp;
-  chip.style.borderColor = s.color;
-  stampsTray.appendChild(chip);
-}
-
-// ── INSIGHT ───────────────────────────────────
-function showInsight(s) {
-  insightTitle.textContent = `${s.icon} ${s.msg1}`;
-  insightFacts.innerHTML = "";
-  s.facts.forEach((f) => {
-    const div = document.createElement("div");
-    div.className = "insight-fact";
-    div.textContent = `• ${f}`;
-    insightFacts.appendChild(div);
-  });
-  insightOverlay.classList.add("show");
-}
-
-// insightContinue.addEventListener("click", () => {
-//   insightOverlay.classList.remove("show");
-//   const next = currentStation + 1;
-//   if (next >= STATIONS.length) {
-//     showFinalScreen();
-//   } else {
-//     goToStation(next);
-//   }
-// });
-
-// ── FINAL SCREEN ──────────────────────────────
-function showFinalScreen() {
-  gameRoot.classList.remove("visible");
-  finalStampsGrid.innerHTML = "";
-  collectedStamps.forEach((stamp, i) => {
-    const div = document.createElement("div");
-    div.className = "final-stamp";
-    div.style.setProperty(
-      "--rot",
-      `${(i % 2 === 0 ? -1 : 1) * (2 + (i % 3))}deg`,
-    );
-    div.style.borderColor = STATIONS[i].color;
-    div.textContent = stamp;
-    finalStampsGrid.appendChild(div);
-  });
-  finalScreen.classList.add("show");
-}
-
-// "Start New Journey" button — overlay on SVG design
-// document.getElementById("new-journey-overlay").addEventListener("click", () => {
-//   finalScreen.classList.remove("show");
-//   collectedStamps = [];
-//   currentStation = 0;
-//   clickCount = 0;
-//   holdVotes = 0;
-//   gameStarted = false;
-//   stampsTray.innerHTML = "";
-//   document.getElementById("svg-container").style.display = "";
-//   gameRoot.classList.remove("visible");
-// });
-
-// ── BIND INTRO BUTTON ─────────────────────────
-window.addEventListener("load", () => {
-  // Invisible overlay div positioned over the START JOURNEY button in the SVG image
-  const startOverlay = document.getElementById("start-btn-overlay");
-  if (startOverlay) {
-    startOverlay.addEventListener("click", startGame);
-  }
-
-  // ── STATION SEGMENT CLICK → SHOW POPUP-INSIGHTS ──────────────────────────
-  // Station path IDs in the home-screen SVG wheel (stations 1–9)
-  const stationPathIds = STATION_PATH_IDS;
-
-  stationPathIds.forEach((pathId, idx) => {
-    const el = document.getElementById(pathId);
-    if (el) {
-      el.style.cursor = "pointer";
-      el.addEventListener("click", () => showPopupInsights(idx));
-    }
-  });
-  STATIONS_TEXT_IDS.forEach((textId, idx) => {
-    const el = document.getElementById(textId);
-    if (el) {
-      el.style.cursor = "pointer";
-      el.addEventListener("click", () => showPopupInsights(idx));
-    }
-  });
-
-  // ── CLOSE POPUP: click darkened background rect inside popup-insights ──────
-  const dimmerRect = document.getElementById("Rectangle_4371");
-  if (dimmerRect) {
-    dimmerRect.style.cursor = "pointer";
-    dimmerRect.addEventListener("click", hidePopupInsights);
-  }
-
-  // ── CLOSE POPUP: click the "Insights" button inside popup-insights ─────────
-  const insightsBtnInPopup = document.getElementById("Group_7971");
-  if (insightsBtnInPopup) {
-    insightsBtnInPopup.style.cursor = "pointer";
-    insightsBtnInPopup.addEventListener("click", hideInsightsPanel);
-  }
-
-  // ── btn-insights: click → show popup-insights ────────────────────────────
-  const btnInsights = document.getElementById("btn-insights");
-  if (btnInsights) {
-    btnInsights.style.cursor = "pointer";
-    btnInsights.addEventListener("click", showInsightsPanel);
-  }
-
-  // ── CLOSE popup-insights: click its background rect ───────────────────────
-  const insightsDimmer = document.getElementById("Rectangle_4371");
-  if (insightsDimmer) {
-    insightsDimmer.style.cursor = "pointer";
-    insightsDimmer.addEventListener("click", hideInsightsPanel);
-  }
-
-  // ── START NEW JOURNEY button (Activity-summary-end) → reset game ──────────
-  ["START_NEW_JOURNEY_", "Group_11581"].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.cursor = "pointer";
-      el.addEventListener("click", () => resetGame());
-    }
+closeInsights.forEach(btn => {
+  btn.addEventListener("click", () => {
+    allInsights.forEach(el => el.style.display = 'none');
+    resetPlateBtn.style.display = 'block';
   });
 });
 
-// Helper: set <tspan> text and optionally centre it at a given SVG x
-// centerX: if provided, sets text-anchor=middle and centres the text element there
-function setQuizText(groupId, text, centerX) {
-  const grp = document.getElementById(groupId);
-  if (!grp) return;
-  const tspan = grp.querySelector("tspan");
-  if (!tspan) return;
-  tspan.textContent = text;
-
-  const textEl = tspan.closest("text") || grp.querySelector("text");
-  if (textEl) {
-    textEl.style.display = "";
-    textEl.style.visibility = "visible";
-    if (!textEl.style.fill)
-      textEl.style.fill = groupId === "The_Gateway1" ? "#fff" : "#181818";
-
-    if (centerX !== undefined) {
-      // SVG translate can use space OR comma: translate(x y) or translate(x,y)
-      const curTransform = textEl.getAttribute("transform") || "";
-      const yMatch = curTransform.match(
-        /translate\(\s*[\d.+-]+[\s,]+\s*([\d.+-]+)\s*\)/,
-      );
-      const y = yMatch ? yMatch[1].trim() : "314"; // 314 = default question y
-      textEl.setAttribute("text-anchor", "middle");
-      textEl.setAttribute("transform", `translate(${centerX} ${y})`);
-      tspan.setAttribute("x", "0");
-    }
+insightsButton.addEventListener("click", () => {
+  // hide all first
+  allInsights.forEach(el => el.style.display = 'none');
+  resetPlateBtn.style.display = 'none';
+  // show only current
+  if (currentPlate && insights[currentPlate]) {
+    insights[currentPlate].style.display = 'block';
   }
-}
+});
 
-// Station click → populate & colour Quiz-popup from STATIONS[idx], then show it
-function showPopupInsights(idx) {
-  if (idx === undefined || idx === null) idx = 0;
-  currentStationIdx = idx; // remember for popup-insights
-  const s = STATIONS[idx];
-  if (!s) return;
+function initLotties() {
+  Object.keys(lottieMap).forEach(key => {
+    const item = lottieMap[key];
 
-  // ── 1. Header label text ──────────────────────────────────────────────────
-  setQuizText("The_Gateway1", s.label);
+    if (!item.container) return;
 
-  // ── 2. Header banner colour ───────────────────────────────────────────────
-  const banner = document.getElementById("Rectangle_438");
-  if (banner) banner.style.fill = s.color;
-
-  // ── 3. Card border colour ─────────────────────────────────────────────────
-  const cardGroup = document.getElementById("Rectangle_436-2");
-  if (cardGroup) {
-    const borderRect = cardGroup.querySelectorAll("rect")[1];
-    if (borderRect) borderRect.style.stroke = s.color;
-  }
-
-  // ── 4. Icon circle colour ─────────────────────────────────────────────────
-  const iconCircle = document.getElementById("Group_1207");
-  if (iconCircle) iconCircle.style.fill = s.color;
-
-  // ── 4b. Station SVG icon – clone from Activity-summary-end row ──────────────
-  // Map: station index → inner icon group ID + its source circle cx/cy
-  const ICON_MAP = [
-    { groupId: "Group_7472", cx: 468, cy: 762 }, // 0 – The Gateway
-    { groupId: "Group_7462", cx: 591, cy: 762 }, // 1 – The Announcement
-    { groupId: "Group_7542", cx: 714, cy: 762 }, // 2 – The Examination
-    { groupId: "Group_7532", cx: 837, cy: 762 }, // 3 – The Assembly
-    { groupId: "Group_7522", cx: 960, cy: 762 }, // 4 – The Scroll
-    { groupId: "Group_7512", cx: 1083, cy: 762 }, // 5 – The Gathering
-    { groupId: "Group_7502", cx: 1206, cy: 762 }, // 6 – The Chamber
-    { groupId: "Group_7492", cx: 1329, cy: 762 }, // 7 – The Final Approval
-    { groupId: "Group_7482", cx: 1452, cy: 762 }, // 8 – The Archive
-  ];
-  const SVG_NS = "http://www.w3.org/2000/svg";
-  const TARGET_CX = 960,
-    TARGET_CY = 207;
-
-  // Hide the static hardcoded icon
-  const staticIcon = document.getElementById("Group_7292");
-  if (staticIcon) staticIcon.style.display = "none";
-
-  // Remove any previously injected clone
-  const oldClone = document.getElementById("quiz-icon-clone");
-  if (oldClone) oldClone.parentNode.removeChild(oldClone);
-
-  const iconInfo = ICON_MAP[idx];
-  if (iconInfo) {
-    const srcGroup = document.getElementById(iconInfo.groupId);
-    if (srcGroup) {
-      const dx = TARGET_CX - iconInfo.cx;
-      const dy = TARGET_CY - iconInfo.cy;
-
-      const wrapper = document.createElementNS(SVG_NS, "g");
-      wrapper.setAttribute("id", "quiz-icon-clone");
-      wrapper.setAttribute("transform", `translate(${dx},${dy})`);
-
-      const iconClone = srcGroup.cloneNode(true);
-      iconClone.removeAttribute("id");
-
-      // Force all child paths/rects to white so they show on the coloured circle
-      // iconClone
-      //   .querySelectorAll("path, rect, circle, polygon")
-      //   .forEach((el) => {
-      //     el.style.fill = "#ffffff";
-      //     el.style.stroke = "none";
-      //     el.removeAttribute("class"); // remove CSS class overrides
-      //   });
-
-      wrapper.appendChild(iconClone);
-
-      // Append into Group_1207 (parent of Ellipse_32) so it renders on top
-      if (iconCircle && iconCircle.parentNode) {
-        iconCircle.parentNode.appendChild(wrapper);
+    item.instance = lottie.loadAnimation({
+      container: item.container,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false, // ❗ important
+      path: item.path,
+      rendererSettings: {
+        hideOnTransparent: false,
+        preserveAspectRatio: 'xMidYMid meet'
       }
-    }
-  }
-
-  // ── 7. Show Quiz-popup ────────────────────────────────────────────────────
-  const quizPopup = document.getElementById("Quiz-popup");
-  if (quizPopup) {
-    quizPopup.removeAttribute("display");
-    quizPopup.style.display = "inline";
-  }
-
-  // ── 5+6. Set question & options AFTER popup is visible (centered at x=960) ─
-  setQuizText(
-    "Where_can_a_new_bill_be_introduced_in_Parliament_",
-    s.question,
-    960,
-  );
-
-  const optionGroupIds = [
-    "Lok_Sabha_or_Rajya_Sabha",
-    "President_s_office_first",
-    "Supreme_Court",
-  ];
-  const shuffled = [...s.options].sort(() => Math.random() - 0.5);
-  optionGroupIds.forEach((gid, i) => {
-    if (shuffled[i]) {
-      const clean = shuffled[i].text.replace(/^[\p{Emoji}\s]+/u, "").trim();
-      setQuizText(gid, clean || shuffled[i].text, 960); // centred in option box
-    }
-  });
-
-  // ── 7. Wire option click feedback ────────────────────────────────────────
-  // Map option slot → parent group containing the box rect + text group
-  const slotGroups = ["Group_1209", "Group_1210", "Group_1211"];
-
-  // Reset option box colours and clear previous feedback
-  resetOptionBoxes();
-  removeFeedbackOverlay();
-
-  slotGroups.forEach((gid, i) => {
-    const grp = document.getElementById(gid);
-    if (!grp) return;
-    // Remove old listener by cloning the node
-    const fresh = grp.cloneNode(true);
-    grp.parentNode.replaceChild(fresh, grp);
-    fresh.style.cursor = "pointer";
-
-    fresh.addEventListener("click", () => {
-      const isCorrect = shuffled[i] && shuffled[i].correct;
-      resetOptionBoxes();
-      // Colour the selected box
-      const boxRects = fresh.querySelectorAll("rect");
-      boxRects.forEach((r) => {
-        r.style.fill = isCorrect ? "#22c55e" : "#f87171";
-        r.style.stroke = isCorrect ? "#22c55e" : "#c0392b";
-      });
-      // Grey out the other two
-      fresh.querySelectorAll("text").forEach((t) => {
-        t.style.fill = "#fff";
-      });
-      slotGroups.forEach((ogid, oi) => {
-        if (oi === i) return;
-        const og =
-          document.getElementById(ogid) ||
-          fresh.parentNode.querySelector(`[id="${ogid}"]`);
-        if (og) {
-          og.querySelectorAll("rect").forEach((r) => {
-            r.style.fill = "#e5e7eb";
-            r.style.stroke = "#d1d5db";
-          });
-          og.querySelectorAll("text").forEach(
-            (t) => (t.style.fill = "#9ca3af"),
-          );
-        }
-      });
-      // Show inline feedback
-      showFeedbackOverlay(isCorrect, s);
     });
-  });
 
-  // ── 8. Resize banner ──────────────────────────────────────────────────────
-  requestAnimationFrame(() => resizeQuizBanner());
-
-  // ── 9. Reveal btn-insights ────────────────────────────────────────────────
-  const btnInsights = document.getElementById("btn-insights");
-  if (btnInsights) {
-    btnInsights.classList.remove("st160");
-    btnInsights.style.display = "inline";
-  }
-}
-
-/**
- * Measures the rendered width of the header label text and rebuilds the
- * Rectangle_438 path so the banner always fits, centered at SVG x=960.
- * Banner shape: rounded bottom corners (r=18), top flush against popup edge.
- */
-function resizeQuizBanner() {
-  const labelGrp = document.getElementById("The_Gateway1");
-  if (!labelGrp) return;
-  const textEl = labelGrp.querySelector("text");
-  if (!textEl) return;
-
-  // Measure rendered text width (works once element is visible)
-  let textW = 0;
-  try {
-    textW = textEl.getComputedTextLength();
-  } catch (e) {
-    // Fallback: estimate ~20px per character at font-size 32px bold
-    textW = (textEl.textContent || "").length * 20;
-  }
-
-  const PAD = 50; // horizontal padding each side
-  const CX = 960; // popup horizontal centre (SVG coords)
-  const H = 67; // banner height
-  const R = 18; // corner radius
-  const W = Math.max(220, textW + PAD * 2); // min 220 wide
-  const x0 = CX - W / 2; // left edge
-
-  // Rebuild path: top-left → right → down → rounded bottom-right →
-  //               back left → rounded bottom-left → up → close
-  const d = [
-    `M${x0},89`,
-    `h${W}`,
-    `v${H}`,
-    `c0,${R},-${R / 2},${R},-${R},${R}`,
-    `h-${W - R * 2}`,
-    `c-${R},0,-${R},-${R / 2},-${R},-${R}`,
-    `v-${H}`,
-    `Z`,
-  ].join(" ");
-
-  const banner = document.getElementById("Rectangle_438");
-  if (banner) banner.setAttribute("d", d);
-
-  // Re-centre label text inside the (possibly wider) banner
-  textEl.setAttribute("transform", `translate(${CX} 145)`);
-  textEl.setAttribute("text-anchor", "middle");
-  const tspan = textEl.querySelector("tspan");
-  if (tspan) tspan.setAttribute("x", "0");
-}
-
-// Hide Quiz-popup (and hide btn-insights again)
-function hidePopupInsights() {
-  const quizPopup = document.getElementById("Quiz-popup");
-  if (quizPopup) quizPopup.style.display = "none";
-
-  const btnInsights = document.getElementById("btn-insights");
-  if (btnInsights) {
-    btnInsights.style.display = "";
-    btnInsights.classList.add("st160");
-  }
-}
-
-// btn-insights click → populate & show popup-insights with selected station facts
-function showInsightsPanel() {
-  const panel = document.getElementById("popup-insights");
-  if (!panel) return;
-
-  const s = STATIONS[currentStationIdx];
-  if (s) {
-    // ── Update 4 facts bullet points ────────────────────────────────────────
-    const factsGrp = document.getElementById("insights-facts-list");
-    if (factsGrp) {
-      const textEls = factsGrp.querySelectorAll("text");
-      textEls.forEach((t, i) => {
-        const ts = t.querySelector("tspan");
-        if (ts) ts.textContent = s.facts && s.facts[i] ? s.facts[i] : "";
-        t.style.display = s.facts && s.facts[i] ? "" : "none";
-      });
-    }
-
-    // ── Show/hide Ellipse_12-15 according to facts ──────────────────────────
-    ["Ellipse_12", "Ellipse_13", "Ellipse_14", "Ellipse_15"].forEach(
-      (eid, i) => {
-        const el = document.getElementById(eid);
-        if (el) {
-          el.style.display = s.facts && s.facts[i] ? "" : "none";
-        }
-      },
-    );
-
-    // ── Update title (use station label) ────────────────────────────────────
-    const titleGrp = document.getElementById("insights-title");
-    if (titleGrp) {
-      // Replace just the first text element with the station label
-      const firstText = titleGrp.querySelector("text");
-      if (firstText) {
-        const ts = firstText.querySelector("tspan");
-        if (ts) ts.textContent = s.title;
-      }
-      // Hide the extra split text elements (arrow + "First Reading)")
-      const allTexts = titleGrp.querySelectorAll("text");
-      allTexts.forEach((t, i) => {
-        if (i > 0) t.style.display = "none";
-      });
-    }
-  }
-
-  panel.classList.remove("st160");
-  panel.style.display = "inline";
-}
-
-// Hide popup-insights
-function hideInsightsPanel() {
-  const panel = document.getElementById("popup-insights");
-  if (panel) {
-    panel.style.display = "";
-    panel.classList.add("st160");
-  }
-}
-
-// ── QUIZ FEEDBACK HELPERS ─────────────────────────────────────────────────────
-
-/** Reset all 3 option boxes back to the original light-blue style */
-function resetOptionBoxes() {
-  ["Group_1209", "Group_1210", "Group_1211"].forEach((gid) => {
-    const grp = document.getElementById(gid);
-    if (!grp) return;
-    grp.querySelectorAll("rect").forEach((r) => {
-      r.style.fill = "#dbeafe";
-      r.style.stroke = "#9ac9f2";
-    });
-    grp.querySelectorAll("text").forEach((t) => {
-      t.style.fill = "#181818";
+    // Keep last frame after play
+    item.instance.addEventListener('complete', () => {
+      item.instance.goToAndStop(item.instance.totalFrames - 1, true);
     });
   });
 }
 
-/** Remove the injected feedback foreignObject if it exists */
-function removeFeedbackOverlay() {
-  document.getElementById("feedback-correct").setAttribute("display", "none");
-  document.getElementById("feedback-incorrect").setAttribute("display", "none");
+function playLottie(type) {
+  const item = lottieMap[type];
+  if (!item || !item.instance) return;
+
+  attachProgressToLottie(type); // 👈 attach progress
+
+  item.instance.stop(); // reset
+  item.instance.play();
 }
 
-/**
- * Show correct / incorrect feedback inline inside Quiz-popup via SVG foreignObject.
- * @param {boolean} isCorrect
- * @param {object}  s  – current STATIONS entry
- */
-function showFeedbackOverlay(isCorrect, s) {
-  removeFeedbackOverlay();
-  const quizPopup = document.getElementById("Quiz-popup");
-  if (!quizPopup) return;
+document.addEventListener('DOMContentLoaded', function () {
 
-  if (isCorrect) {
-    document
-      .getElementById("feedback-correct")
-      .setAttribute("display", "block");
-    // document.getElementById("quiz-insight-title").querySelector("tspan").textContent = `${s.label}`;
-    //document.getElementById("quiz-insight-msg").querySelector("tspan").textContent = `${s.msg2 || ""}`;
+  initLotties();
 
-    // Fix: Remove previous listeners and attach only one
-    const nextBtn = document.getElementById("Group_592");
-    if (nextBtn) {
-      const newBtn = nextBtn.cloneNode(true);
-      nextBtn.parentNode.replaceChild(newBtn, nextBtn);
-      newBtn.style.cursor = "pointer";
-      newBtn.addEventListener("click", () => {
-        hidePopupInsights();
-        removeFeedbackOverlay();
-        markStationComplete(currentStationIdx);
-      });
-    }
-  } else {
-    document
-      .getElementById("feedback-incorrect")
-      .setAttribute("display", "block");
-    document
-      .getElementById("quiz-hint-text")
-      .querySelector("tspan").textContent = `${s.hint}`;
-  }
-}
+  plates.forEach((el, index) => {
+    el.addEventListener("click", function () {
+      currentPlate = this.dataset.value; // get data-value
+      homePage.style.display = 'none';
+      homeIText.style.display = 'none';
+      buttons.style.display = 'block';
+      resetPlateBtn.style.display = 'block';
+      insightsButton.style.display = 'block';
 
-// ── COMPLETION BORDER ─────────────────────────────────────────────────────────
-/**
- * Applies a bright yellow stroke to the wheel segment at the given station index,
- * visually marking it as completed (matching the yellow border in the design).
- */
-function markStationComplete(idx) {
-  if (completedStations.has(idx)) return; // already done
-  completedStations.add(idx);
+      // First hide all related sections (optional but recommended)
+      // document.querySelectorAll('[id]').forEach(item => {
+      //   item.style.display = 'none';
+      // });
 
-  const pathId = STATION_PATH_IDS[idx];
-  if (!pathId) return;
-  const el = document.getElementById(pathId);
-  if (!el) return;
+      currentPlateIndex = index;
+      isCongratsVisible = false;
 
-  el.style.stroke = "#f9e000"; // bright yellow
-  el.style.strokeWidth = "8";
-  el.style.strokeLinejoin = "round";
-  el.style.paintOrder = "stroke"; // stroke behind fill
-
-  // Check if all stations are now complete
-  checkAllComplete();
-}
-
-// ── ALL-STATIONS COMPLETE → show Activity-summary-end ────────────────────────
-
-function checkAllComplete() {
-  if (completedStations.size >= STATIONS.length) {
-    showActivitySummaryEnd();
-  }
-}
-
-/**
- * Reveal the Activity-summary-end panel.
- * Adds ✓ stamp badges on each of the 9 station circles and wires
- * the START NEW JOURNEY button to reset the game.
- */
-function showActivitySummaryEnd() {
-  const panel = document.getElementById("Activity-summary-end");
-  if (!panel) return;
-
-  panel.removeAttribute("display");
-  panel.style.display = "inline";
-
-  // Add stamp badges on the 9 icon circles
-  showSummaryStamps(panel);
-
-  // START NEW JOURNEY button is statically wired in window load event.
-}
-
-/**
- * Injects a green ✓ badge + station stamp text on each of the 9 summary circles.
- * @param {SVGElement} panel – the Activity-summary-end group
- */
-function showSummaryStamps(panel) {
-  const SVG_NS = "http://www.w3.org/2000/svg";
-  const circleCX = [468, 591, 714, 837, 960, 1083, 1206, 1329, 1452];
-  const cy = 762;
-  const r = 45;
-
-  // Remove any previous stamps
-  panel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
-
-  circleCX.forEach((cx, i) => {
-    const s = STATIONS[i];
-    if (!s) return;
-
-    const g = document.createElementNS(SVG_NS, "g");
-    g.setAttribute("class", "summary-stamp");
-
-    // Green checkmark badge at top-right of station circle
-    const badgeCX = cx + Math.round(r * 0.65);
-    const badgeCY = cy - Math.round(r * 0.65);
-
-    const badge = document.createElementNS(SVG_NS, "circle");
-    badge.setAttribute("cx", badgeCX);
-    badge.setAttribute("cy", badgeCY);
-    badge.setAttribute("r", "15");
-    badge.setAttribute("fill", "#2e7d32");
-    badge.setAttribute("stroke", "#ffffff");
-    badge.setAttribute("stroke-width", "2");
-    g.appendChild(badge);
-
-    const tick = document.createElementNS(SVG_NS, "text");
-    tick.setAttribute("x", badgeCX);
-    tick.setAttribute("y", badgeCY + 6);
-    tick.setAttribute("text-anchor", "middle");
-    tick.setAttribute("fill", "#ffffff");
-    tick.setAttribute("font-size", "15");
-    tick.setAttribute("font-weight", "700");
-    tick.setAttribute("font-family", "Roboto,sans-serif");
-    tick.textContent = "✓";
-    g.appendChild(tick);
-
-    // Stamp label below the circle (strip emoji, keep text)
-    const stampLabel = (s.stamp || "DONE").replace(/\p{Emoji}/gu, "").trim();
-    const label = document.createElementNS(SVG_NS, "text");
-    label.setAttribute("x", cx);
-    label.setAttribute("y", cy + r + 16);
-    label.setAttribute("text-anchor", "middle");
-    label.setAttribute("fill", "#2e7d32");
-    label.setAttribute("font-size", "11");
-    label.setAttribute("font-weight", "700");
-    label.setAttribute("font-family", "Roboto,sans-serif");
-    label.textContent = stampLabel;
-    g.appendChild(label);
-
-    panel.appendChild(g);
+      showPlate(currentPlate);
+    });
   });
-}
+});
 
-// -- RESET / START NEW JOURNEY ------------------------------------------------
-function resetGame() {
-  // 1. Hide Activity-summary-end & remove stamp badges
-  const summaryPanel = document.getElementById("Activity-summary-end");
-  if (summaryPanel) {
-    summaryPanel.querySelectorAll(".summary-stamp").forEach((e) => e.remove());
-    summaryPanel.style.display = "none";
-    summaryPanel.setAttribute("display", "none");
-  }
-  // 2. Clear completion tracking & remove yellow borders
-  completedStations.clear();
-  STATION_PATH_IDS.forEach((id) => {
-    const seg = document.getElementById(id);
-    if (seg) {
-      seg.style.stroke = "";
-      seg.style.strokeWidth = "";
-      seg.style.paintOrder = "";
-    }
+function showPlate(value) {
+  const prefix = value.replace('-plate', '');
+
+  // hide all
+  plates.forEach(p => {
+    const pPrefix = p.dataset.value.replace('-plate', '');
+    document.querySelectorAll(`[id^="${pPrefix}"]`).forEach(el => {
+      el.style.display = 'none';
+    });
   });
-  // 3. Hide Quiz-popup and feedback overlays
-  hidePopupInsights();
-  removeFeedbackOverlay();
-  // 4. Reset option boxes
-  resetOptionBoxes();
-  // 5. Reset variables
-  quizAnswered = false;
-  currentStationIdx = 0;
-  // 6. Show dashboard
-  // const dashboard = document.getElementById("dashboard");
-  // if (dashboard) dashboard.style.display = "block";
-  // 7. Hide home screen
-  const homeScreen = document.getElementById("home-screen");
-  if (homeScreen) {
-    homeScreen.style.display = "block";
-    homeScreen.setAttribute("display", "block");
+
+  // show current
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(el => {
+    el.style.display = 'block';
+  });
+
+  // reset lottie
+  Object.values(lottieMap).forEach(item => {
+    if (item.instance) item.instance.goToAndStop(0);
+  });
+
+  // reset push buttons fill and control buttons state
+  btnFill.forEach(path => {
+    path.style.fill = '#680303';
+  });
+  resetPlateBtn.style.opacity = 0.3;
+  resetPlateBtn.style.cursor = 'auto';
+  nextBtn.style.opacity = 0.3;
+  nextBtn.style.cursor = 'auto';
+};
+
+function attachProgressToLottie(type) {
+  const item = lottieMap[type];
+  if (!item || !item.instance) return;
+
+  const anim = item.instance;
+
+  anim.addEventListener("enterFrame", () => {
+    const progress = anim.currentFrame / anim.totalFrames;
+    const value = Math.floor(progress * 101);
+
+    valueEls.forEach(el => {
+      el.textContent = `${value}%`;
+    });
+  });
+};
+
+homeBtn.addEventListener("click", function () {
+  homePage.style.display = 'block';
+  homeIText.style.display = 'block';
+  buttons.style.display = 'none';
+  btnFill.forEach(path => {
+    path.style.fill = '#680303';
+  });
+  resetPlateBtn.style.opacity = 0.3;
+  resetPlateBtn.style.cursor = 'auto';
+  nextBtn.style.opacity = 0.3;
+  nextBtn.style.cursor = 'auto';
+
+  congratsDiv.style.display = 'none';
+  isCongratsVisible = false;
+  currentPlateIndex = -1;
+
+  if (currentPlate) {
+    const prefix = currentPlate.replace('-plate', '');
+
+    document.querySelectorAll(`[id^="${prefix}"]`).forEach(item => {
+      item.style.display = 'none';
+    });
   }
-  const iText = document.getElementById("i-text");
-  if (iText) {
-    iText.style.display = "block";
-    iText.setAttribute("display", "block");
+
+  currentPlate = null; // ✅ reset after use
+});
+
+pushButtons.forEach(btn => {
+  btn.addEventListener("click", function () {
+
+    // 🎯 Fill only clicked button
+    this.querySelectorAll(".btnFill").forEach(path => {
+      path.style.fill = '#d60000';
+    });
+
+    // UI updates
+    resetPlateBtn.style.opacity = 1;
+    resetPlateBtn.style.cursor = 'pointer';
+    nextBtn.style.opacity = 1;
+    nextBtn.style.cursor = 'pointer';
+
+    // 🎯 Play correct lottie based on current plate
+    if (currentPlate) {
+      const type = currentPlate.replace('-plate', '');
+      playLottie(type);
+    }
+
+  });
+});
+
+nextBtn.addEventListener("click", () => {
+
+  // STEP 1: If congrats not shown → show it
+  if (!isCongratsVisible) {
+    congratsDiv.style.display = 'block';
+    isCongratsVisible = true;
+    resetPlateBtn.style.display = 'none';
+    insightsButton.style.display = 'none';
+    return;
   }
-}
+
+  resetPlateBtn.style.display = 'block';
+  insightsButton.style.display = 'block';
+  // STEP 2: If already shown → go to next plate
+  congratsDiv.style.display = 'none';
+  isCongratsVisible = false;
+
+  currentPlateIndex++;
+  console.log(currentPlateIndex, plates.length)
+  // loop or stop at end
+  if (currentPlateIndex >= plates.length) {
+    currentPlateIndex = 0; // or return;
+  }
+
+  const nextPlate = plates[currentPlateIndex];
+  const value = nextPlate.dataset.value;
+
+  currentPlate = value;
+  showPlate(value);
+
+});
+
+resetPlateBtn.addEventListener("click", () => {
+
+  if (!currentPlate) return;
+
+  btnFill.forEach(path => {
+    path.style.fill = '#680303';
+  });
+
+  const type = currentPlate.replace('-plate', '');
+  const item = lottieMap[type];
+
+  if (!item || !item.instance) return;
+
+  item.instance.stop();          // stops animation
+  item.instance.goToAndStop(0);  // reset to first frame
+
+});

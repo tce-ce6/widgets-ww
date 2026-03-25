@@ -8,6 +8,15 @@
   const SENTENCE_COUNT = 6;
   const CATEGORY_IDS = ["book-01", "book-02", "book-03", "book-04", "book-05"];
 
+  // Thumbnail cover colours — matched to each book spine in the SVG
+  const BOOK_COLORS = [
+    { cover: "#e5005d", spine: "#c1055a", shadow: "#a00a59" }, // Book 1: Current Events & News
+    { cover: "#3c73cd", spine: "#315eaf", shadow: "#124693" }, // Book 2: Science & Discovery
+    { cover: "#46722d", spine: "#3b5e24", shadow: "#2c491a" }, // Book 3: Book Reviews & Blogs
+    { cover: "#774791", spine: "#603579", shadow: "#4d2965" }, // Book 4: History & Biography
+    { cover: "#f08e0f", spine: "#df6c09", shadow: "#b55200" }, // Book 5: Travel & Culture
+  ];
+
   const CONTENT = [
     {
       name: "Current Events & News",
@@ -15,23 +24,23 @@
         {
           title: "India Hosts the Chess Olympiad",
           sentences: [
-            { text: "The 44th Chess Olympiad was held in Mahabalipuram, Tamil Nadu, in July and August 2022.", type: "fact", correctFeedback: "The date and venue of the event are verifiable facts.", incorrectFeedback: "This is a fact. Date and venue are verifiable." },
-            { text: "The opening ceremony was the most spectacular event Indian sports has ever hosted.", type: "opinion", correctFeedback: "'Most spectacular' is a personal judgment; different people may consider other sporting events more impressive.", incorrectFeedback: "This is an opinion. 'Most spectacular' is a personal judgment." },
-            { text: "Over 180 countries participated in the tournament, making it one of the largest Chess Olympiads in history.", type: "fact", correctFeedback: "The number of participating countries is documented in FIDE's official tournament records.", incorrectFeedback: "This is a fact. The number is documented in official records." },
-            { text: "India's men's team and women's team both won bronze medals at the event.", type: "fact", correctFeedback: "Medal results are officially recorded by FIDE and widely reported in the news.", incorrectFeedback: "This is a fact. Medal results are officially recorded." },
-            { text: "Hosting the Olympiad has done more for Indian chess than any coaching programme ever could.", type: "opinion", correctFeedback: "'More than any coaching programme ever could' is a personal belief that cannot be measured or proven.", incorrectFeedback: "This is an opinion. It is a personal belief that cannot be proven." },
-            { text: "The government should host more international sporting events in smaller cities rather than only in metros.", type: "opinion", correctFeedback: "'Should' expresses a recommendation or value judgment, not a verifiable fact.", incorrectFeedback: "This is an opinion. 'Should' expresses a recommendation." }
+            { text: "The 44th Chess Olympiad was held in Mahabalipuram, Tamil Nadu, in July and August 2022.", type: "fact", correctFeedback: "The dates and location of the Chess Olympiad are officially recorded by FIDE and can be verified.", incorrectFeedback: "The dates and location of the Chess Olympiad are officially recorded by FIDE and can be verified." },
+            { text: "The opening ceremony was the most spectacular event Indian sports has ever hosted.", type: "opinion", correctFeedback: "'Most spectacular' is a personal judgment—different people may consider other sporting events more impressive.", incorrectFeedback: "'Most spectacular' is a personal judgment—different people may consider other sporting events more impressive." },
+            { text: "Over 180 countries participated in the tournament, making it one of the largest Chess Olympiads in history.", type: "fact", correctFeedback: "The number of participating countries is documented in FIDE's official tournament records.", incorrectFeedback: "The number of participating countries is documented in FIDE's official tournament records." },
+            { text: "India's men's team and women's team both won bronze medals at the event.", type: "fact", correctFeedback: "Medal results are officially recorded by FIDE and widely reported in the news.", incorrectFeedback: "Medal results are officially recorded by FIDE and widely reported in the news." },
+            { text: "Hosting the Olympiad has done more for Indian chess than any coaching programme ever could.", type: "opinion", correctFeedback: "'More than any coaching programme ever could' is a personal belief that cannot be measured or proven.", incorrectFeedback: "'More than any coaching programme ever could' is a personal belief that cannot be measured or proven." },
+            { text: "The government should host more international sporting events in smaller cities rather than only in metros.", type: "opinion", correctFeedback: "'Should' signals a personal belief about policy—others may disagree about where events should be held.", incorrectFeedback: "'Should' signals a personal belief about policy—others may disagree about where events should be held." }
           ]
         },
         {
-          title: "Local News Roundup",
+          title: "India's G20 Presidency",
           sentences: [
-            { text: "The new library opened on Monday with over 10,000 books.", type: "fact", correctFeedback: "Opening date and book count are verifiable facts.", incorrectFeedback: "This is a fact." },
-            { text: "The library is the best addition to our town in decades.", type: "opinion", correctFeedback: "'Best' is a subjective judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "Mayor Chen attended the ribbon-cutting ceremony.", type: "fact", correctFeedback: "Attendance at a public event can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "Everyone should visit the library at least once a week.", type: "opinion", correctFeedback: "'Should' expresses a recommendation.", incorrectFeedback: "This is an opinion." },
-            { text: "Funding for the library came from a state grant of $2 million.", type: "fact", correctFeedback: "Funding sources and amounts are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "The building design is more beautiful than any other in the county.", type: "opinion", correctFeedback: "'More beautiful' is a subjective judgment.", incorrectFeedback: "This is an opinion." }
+            { text: "India held the presidency of the G20 from 1 December 2022 to 30 November 2023.", type: "fact", correctFeedback: "The dates of India's G20 presidency are officially documented and can be verified through G20 records.", incorrectFeedback: "The dates of India's G20 presidency are officially documented and can be verified through G20 records." },
+            { text: "India's handling of the presidency was far more impressive than any previous host nation's efforts.", type: "opinion", correctFeedback: "'Far more impressive' is a personal judgment—different analysts and nations may evaluate the presidency differently.", incorrectFeedback: "'Far more impressive' is a personal judgment—different analysts and nations may evaluate the presidency differently." },
+            { text: "The G20 summit was held in New Delhi on 9 and 10 September 2023, attended by leaders from the world's largest economies.", type: "fact", correctFeedback: "The summit dates, location, and attendance are officially recorded in G20 documentation.", incorrectFeedback: "The summit dates, location, and attendance are officially recorded in G20 documentation." },
+            { text: "During its presidency, India pushed for the African Union's inclusion as a permanent G20 member, which was officially accepted.", type: "fact", correctFeedback: "The African Union's inclusion is a documented outcome of India's G20 presidency that can be verified.", incorrectFeedback: "The African Union's inclusion is a documented outcome of India's G20 presidency that can be verified." },
+            { text: "Over 200 G20-related meetings were held across 60 cities in India during the presidency year.", type: "fact", correctFeedback: "The number of meetings and host cities are documented in official G20 presidency records.", incorrectFeedback: "The number of meetings and host cities are documented in official G20 presidency records." },
+            { text: "The New Delhi Declaration was the most important diplomatic achievement India has made in the 21st century.", type: "opinion", correctFeedback: "'Most important diplomatic achievement' is a personal evaluation—importance in diplomacy is subjective.", incorrectFeedback: "'Most important diplomatic achievement' is a personal evaluation—importance in diplomacy is subjective." }
           ]
         }
       ]
@@ -40,25 +49,25 @@
       name: "Science & Discovery",
       passages: [
         {
-          title: "Mars Rover Mission",
+          title: "The Wonder of Water",
           sentences: [
-            { text: "The rover landed on Mars in February 2021.", type: "fact", correctFeedback: "Landing date is a verifiable fact.", incorrectFeedback: "This is a fact." },
-            { text: "Exploring Mars is the most important goal for space agencies today.", type: "opinion", correctFeedback: "'Most important' is a value judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "The rover collected 20 rock samples in its first year.", type: "fact", correctFeedback: "Sample counts can be verified from mission data.", incorrectFeedback: "This is a fact." },
-            { text: "Scientists believe the Jezero Crater once held water.", type: "opinion", correctFeedback: "'Believe' indicates a conclusion based on evidence, not a proven fact.", incorrectFeedback: "This expresses a belief." },
-            { text: "The mission cost approximately $2.7 billion.", type: "fact", correctFeedback: "Mission costs are documented and verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "Human missions to Mars would be more exciting than robotic ones.", type: "opinion", correctFeedback: "'More exciting' is subjective.", incorrectFeedback: "This is an opinion." }
+            { text: "About 71% of the Earth's surface is covered by water.", type: "fact", correctFeedback: "This is a verifiable scientific figure supported by geographical data.", incorrectFeedback: "This is a verifiable scientific figure supported by geographical data." },
+            { text: "Water moves between the Earth's surface and the atmosphere through a process called the water cycle, which includes evaporation, condensation and precipitation.", type: "fact", correctFeedback: "This is a well-documented scientific process that can be observed and measured.", incorrectFeedback: "This is a well-documented scientific process that can be observed and measured." },
+            { text: "It is easily the most important substance on the planet, far more valuable than gold or diamonds.", type: "opinion", correctFeedback: "'Easily the most important' and 'far more valuable' are personal judgments—importance and value are subjective.", incorrectFeedback: "'Easily the most important' and 'far more valuable' are personal judgments—importance and value are subjective." },
+            { text: "Scientists believe the total amount of water on Earth has stayed roughly the same for over four billion years.", type: "fact", correctFeedback: "This is a widely accepted scientific estimate supported by research and geological evidence.", incorrectFeedback: "This is a widely accepted scientific estimate supported by research and geological evidence." },
+            { text: "The idea that we drink the same water dinosaurs once drank makes this the most amazing topic in science.", type: "opinion", correctFeedback: "'Most amazing' is a personal judgment—what's amazing varies from person to person.", incorrectFeedback: "'Most amazing' is a personal judgment—what's amazing varies from person to person." },
+            { text: "Governments should make water conservation their top priority above all other environmental issues.", type: "opinion", correctFeedback: "'Should' and 'top priority above all other' express personal beliefs about policy, not verifiable claims.", incorrectFeedback: "'Should' and 'top priority above all other' express personal beliefs about policy, not verifiable claims." }
           ]
         },
         {
-          title: "Climate Data",
+          title: "Life in the Rainforest",
           sentences: [
-            { text: "Global average temperature has risen by about 1.1°C since pre-industrial times.", type: "fact", correctFeedback: "Temperature change is measured and reported by scientific bodies.", incorrectFeedback: "This is a fact." },
-            { text: "Climate change is the worst crisis humanity has ever faced.", type: "opinion", correctFeedback: "'Worst crisis' is a value judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "Carbon dioxide levels in the atmosphere exceed 400 ppm.", type: "fact", correctFeedback: "CO₂ levels are directly measured.", incorrectFeedback: "This is a fact." },
-            { text: "Governments should do more to reduce emissions.", type: "opinion", correctFeedback: "'Should' expresses a recommendation.", incorrectFeedback: "This is an opinion." },
-            { text: "The last decade was the warmest on record.", type: "fact", correctFeedback: "Temperature records are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "Renewable energy is clearly the best solution.", type: "opinion", correctFeedback: "'Best solution' is a judgment.", incorrectFeedback: "This is an opinion." }
+            { text: "Tropical rainforests are found near the equator in regions that receive over 200 centimetres of rainfall each year.", type: "fact", correctFeedback: "Rainfall levels and geographical distribution of rainforests are measurable and well-documented.", incorrectFeedback: "Rainfall levels and geographical distribution of rainforests are measurable and well-documented." },
+            { text: "They are home to more than half of all plant and animal species on Earth, despite covering only about 6% of the land surface.", type: "fact", correctFeedback: "These figures are supported by scientific research and biodiversity studies.", incorrectFeedback: "These figures are supported by scientific research and biodiversity studies." },
+            { text: "No other ecosystem on the planet is as important or as worth protecting as the rainforest.", type: "opinion", correctFeedback: "'No other ecosystem' and 'as important' express a personal value judgment—others may argue differently about ecosystem priorities.", incorrectFeedback: "'No other ecosystem' and 'as important' express a personal value judgment—others may argue differently about ecosystem priorities." },
+            { text: "Many rainforest plants are used in modern medicine, including treatments for malaria, heart disease and arthritis.", type: "fact", correctFeedback: "The medicinal use of rainforest plants is well-documented in scientific and pharmaceutical research.", incorrectFeedback: "The medicinal use of rainforest plants is well-documented in scientific and pharmaceutical research." },
+            { text: "Deforestation destroys approximately 4.7 million hectares of tropical forest every year.", type: "fact", correctFeedback: "Deforestation rates are tracked and published by organisations like the FAO and can be verified.", incorrectFeedback: "Deforestation rates are tracked and published by organisations like the FAO and can be verified." },
+            { text: "Losing the rainforests would be the biggest mistake humanity has ever made.", type: "opinion", correctFeedback: "'Biggest mistake' is a personal judgment—while deforestation is serious, ranking it against all of humanity's mistakes is subjective.", incorrectFeedback: "'Biggest mistake' is a personal judgment—while deforestation is serious, ranking it against all of humanity's mistakes is subjective." }
           ]
         }
       ]
@@ -67,25 +76,25 @@
       name: "Book Reviews & Blogs",
       passages: [
         {
-          title: "Bestseller Review",
+          title: "Review: The White Tiger by Aravind Adiga",
           sentences: [
-            { text: "The book was published in March 2023 and has 320 pages.", type: "fact", correctFeedback: "Publication date and page count are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "It is the most gripping novel of the year.", type: "opinion", correctFeedback: "'Most gripping' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "The author has written five previous novels.", type: "fact", correctFeedback: "Bibliographic information can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "Readers will find the ending deeply satisfying.", type: "opinion", correctFeedback: "Predicting reader response is an opinion.", incorrectFeedback: "This is an opinion." },
-            { text: "The book spent 12 weeks on the bestseller list.", type: "fact", correctFeedback: "Bestseller list data is verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "This is a must-read for everyone.", type: "opinion", correctFeedback: "'Must-read' is a recommendation.", incorrectFeedback: "This is an opinion." }
+            { text: "Aravind Adiga's The White Tiger is the most powerful depiction of class divide in modern Indian fiction.", type: "opinion", correctFeedback: "'Most powerful' is a personal judgment—readers and critics may rank other novels differently.", incorrectFeedback: "'Most powerful' is a personal judgment—readers and critics may rank other novels differently." },
+            { text: "Published in 2008, the novel is written as a series of letters from the main character, Balram Halwai, to the Chinese Premier.", type: "fact", correctFeedback: "The publication date and narrative structure can be confirmed by reading the text and checking publisher records.", incorrectFeedback: "The publication date and narrative structure can be confirmed by reading the text and checking publisher records." },
+            { text: "The book won the Man Booker Prize in 2008, beating several well-known authors on the shortlist.", type: "fact", correctFeedback: "The Booker Prize winner is officially recorded and can be verified through award records.", incorrectFeedback: "The Booker Prize winner is officially recorded and can be verified through award records." },
+            { text: "Since its release, it has been translated into over 40 languages worldwide.", type: "fact", correctFeedback: "Translation figures are documented by the publisher and can be verified.", incorrectFeedback: "Translation figures are documented by the publisher and can be verified." },
+            { text: "Balram is a deeply unlikeable narrator, which makes the story difficult to enjoy.", type: "opinion", correctFeedback: "'Deeply unlikeable' and 'difficult to enjoy' are personal reactions—other readers may find Balram compelling.", incorrectFeedback: "'Deeply unlikeable' and 'difficult to enjoy' are personal reactions—other readers may find Balram compelling." },
+            { text: "No reader interested in understanding modern India should miss this novel.", type: "opinion", correctFeedback: "'No reader should miss' expresses a strong personal recommendation, not a verifiable claim.", incorrectFeedback: "'No reader should miss' expresses a strong personal recommendation, not a verifiable claim." }
           ]
         },
         {
-          title: "Blog Post",
+          title: "Review: Charlotte's Web by E.B. White",
           sentences: [
-            { text: "The blog was updated three times last week.", type: "fact", correctFeedback: "Update frequency can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "The writer's style is more engaging than most.", type: "opinion", correctFeedback: "'More engaging' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "The post includes 15 links to external sources.", type: "fact", correctFeedback: "Link count is verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "Everyone should follow this blog.", type: "opinion", correctFeedback: "'Should' is a recommendation.", incorrectFeedback: "This is an opinion." },
-            { text: "Comments were disabled after 500 were received.", type: "fact", correctFeedback: "This can be verified on the site.", incorrectFeedback: "This is a fact." },
-            { text: "The topic is the most important one for our times.", type: "opinion", correctFeedback: "'Most important' is a judgment.", incorrectFeedback: "This is an opinion." }
+            { text: "Charlotte's Web by American author E. B. White was first published in 1952.", type: "fact", correctFeedback: "The author's nationality and the publication year are verifiable bibliographic details.", incorrectFeedback: "The author's nationality and the publication year are verifiable bibliographic details." },
+            { text: "It tells the story of Wilbur the pig and his friendship with a clever spider named Charlotte.", type: "fact", correctFeedback: "This summarises the plot and main characters, which can be confirmed by reading the book or a reliable synopsis.", incorrectFeedback: "This summarises the plot and main characters, which can be confirmed by reading the book or a reliable synopsis." },
+            { text: "White's writing feels warm and gentle, making even small moments surprisingly powerful.", type: "opinion", correctFeedback: "Descriptions like 'warm and gentle' and 'surprisingly powerful' are subjective reactions that may vary by reader.", incorrectFeedback: "Descriptions like 'warm and gentle' and 'surprisingly powerful' are subjective reactions that may vary by reader." },
+            { text: "The friendship at the heart of the book is so sincere that it's hard not to get emotionally attached.", type: "opinion", correctFeedback: "Phrases like 'so sincere' and 'hard not to get emotionally attached' reflect personal interpretation, not a provable claim.", incorrectFeedback: "Phrases like 'so sincere' and 'hard not to get emotionally attached' reflect personal interpretation, not a provable claim." },
+            { text: "It is one of the most comforting stories for young readers, staying meaningful long after you finish.", type: "opinion", correctFeedback: "Phrases like 'most comforting' and 'staying meaningful' are personal value judgments—not every reader might have the same experience.", incorrectFeedback: "Phrases like 'most comforting' and 'staying meaningful' are personal value judgments—not every reader might have the same experience." },
+            { text: "The book won a Newbery Honor in 1953.", type: "fact", correctFeedback: "Awards and dates are documented in official records and can be verified through reputable sources.", incorrectFeedback: "Awards and dates are documented in official records and can be verified through reputable sources." }
           ]
         }
       ]
@@ -94,25 +103,25 @@
       name: "History & Biography",
       passages: [
         {
-          title: "Historical Event",
+          title: "Ashoka: From Warrior to Peacemaker",
           sentences: [
-            { text: "The treaty was signed on 15 August 1947.", type: "fact", correctFeedback: "Dates of historical events are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "That day was the greatest day in the nation's history.", type: "opinion", correctFeedback: "'Greatest' is a value judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "Three leaders gave speeches at the ceremony.", type: "fact", correctFeedback: "Attendance and roles can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "The speeches were more inspiring than any before or since.", type: "opinion", correctFeedback: "'More inspiring' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "The document is 12 pages long and written in two languages.", type: "fact", correctFeedback: "Document length and language are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "Historians consider this the most significant treaty of the century.", type: "opinion", correctFeedback: "'Most significant' is an interpretive judgment.", incorrectFeedback: "This is an opinion." }
+            { text: "Ashoka, the grandson of Chandragupta Maurya, became the emperor of the Mauryan Empire around 268 BCE.", type: "fact", correctFeedback: "This is historically documented with approximate dating confirmed by multiple sources.", incorrectFeedback: "This is historically documented with approximate dating confirmed by multiple sources." },
+            { text: "He fought the brutal Kalinga War around 261 BCE, which resulted in the deaths of over 100,000 soldiers and civilians.", type: "fact", correctFeedback: "These figures are referenced in Ashoka's own rock edicts and supported by historical accounts.", incorrectFeedback: "These figures are referenced in Ashoka's own rock edicts and supported by historical accounts." },
+            { text: "The suffering he witnessed during the war was the most transformative moment in ancient Indian history.", type: "opinion", correctFeedback: "'Most transformative' is a personal judgment—historians may view other events as equally significant.", incorrectFeedback: "'Most transformative' is a personal judgment—historians may view other events as equally significant." },
+            { text: "After the war, Ashoka converted to Buddhism and promoted the principles of non-violence and compassion through carved rock edicts across his empire.", type: "fact", correctFeedback: "Ashoka's conversion and his rock edicts are well-documented archaeological and historical evidence.", incorrectFeedback: "Ashoka's conversion and his rock edicts are well-documented archaeological and historical evidence." },
+            { text: "His decision to give up conquest in favour of peace was the wisest choice any ruler in the ancient world ever made.", type: "opinion", correctFeedback: "'Wisest choice' is a personal evaluation—wisdom in governance is subjective and debated by historians.", incorrectFeedback: "'Wisest choice' is a personal evaluation—wisdom in governance is subjective and debated by historians." },
+            { text: "The lion capital from one of his pillars at Sarnath was adopted as the national emblem of India in 1950.", type: "fact", correctFeedback: "This is an officially documented historical fact that can be verified through government records.", incorrectFeedback: "This is an officially documented historical fact that can be verified through government records." }
           ]
         },
         {
-          title: "Biography Excerpt",
+          title: "Akbar and His Empire",
           sentences: [
-            { text: "She was born in 1920 and lived in five countries.", type: "fact", correctFeedback: "Birth year and places can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "She was the bravest person of her generation.", type: "opinion", correctFeedback: "'Bravest' is a subjective judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "Her first book was published when she was 30.", type: "fact", correctFeedback: "Publication and age are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "That book remains the best introduction to the subject.", type: "opinion", correctFeedback: "'Best' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "She received three major awards during her lifetime.", type: "fact", correctFeedback: "Awards can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "Her legacy is more important than that of any of her peers.", type: "opinion", correctFeedback: "'More important' is a judgment.", incorrectFeedback: "This is an opinion." }
+            { text: "Akbar became the Mughal emperor in 1556 at the age of just thirteen.", type: "fact", correctFeedback: "Akbar's accession date and age are well-documented in historical records.", incorrectFeedback: "Akbar's accession date and age are well-documented in historical records." },
+            { text: "He expanded the empire through military conquest and controlled most of the Indian subcontinent by the end of his reign.", type: "fact", correctFeedback: "The extent of Akbar's empire is documented in historical records and maps from the period.", incorrectFeedback: "The extent of Akbar's empire is documented in historical records and maps from the period." },
+            { text: "Akbar established the Din-i-Ilahi, a syncretic faith that drew from Islam, Hinduism, Christianity and Zoroastrianism.", type: "fact", correctFeedback: "The Din-i-Ilahi and its syncretic nature are well-documented in historical texts.", incorrectFeedback: "The Din-i-Ilahi and its syncretic nature are well-documented in historical texts." },
+            { text: "His policy of religious tolerance, known as Sulh-i-Kul, was the most brilliant political strategy of the medieval period.", type: "opinion", correctFeedback: "'Most brilliant' is a personal judgment—historians may evaluate other strategies as equally or more effective.", incorrectFeedback: "'Most brilliant' is a personal judgment—historians may evaluate other strategies as equally or more effective." },
+            { text: "He was a better ruler than any other king in Indian history because he treated all religions equally.", type: "opinion", correctFeedback: "'Better ruler than any other' is a personal evaluation—comparing rulers across centuries involves subjective criteria.", incorrectFeedback: "'Better ruler than any other' is a personal evaluation—comparing rulers across centuries involves subjective criteria." },
+            { text: "The Mughal court at Fatehpur Sikri attracted scholars, artists and musicians from across Asia and Europe.", type: "fact", correctFeedback: "The cultural significance of Fatehpur Sikri and its visitors are documented in historical accounts.", incorrectFeedback: "The cultural significance of Fatehpur Sikri and its visitors are documented in historical accounts." }
           ]
         }
       ]
@@ -121,25 +130,25 @@
       name: "Travel & Culture",
       passages: [
         {
-          title: "Travel Guide",
+          title: "Exploring Rajasthan",
           sentences: [
-            { text: "The temple was built in the 12th century and has 50 pillars.", type: "fact", correctFeedback: "Historical and architectural details are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "It is the most beautiful temple in the region.", type: "opinion", correctFeedback: "'Most beautiful' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "The site is open from 9 a.m. to 6 p.m. daily.", type: "fact", correctFeedback: "Opening hours can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "Visitors should allow at least two hours for a full tour.", type: "opinion", correctFeedback: "'Should' and 'full' involve recommendation and judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "Entry fee is 200 rupees for adults.", type: "fact", correctFeedback: "Entry fees are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "This is the most rewarding day trip you can take.", type: "opinion", correctFeedback: "'Most rewarding' is subjective.", incorrectFeedback: "This is an opinion." }
+            { text: "Rajasthan is the largest state in India by area, covering over 342,000 square kilometres.", type: "fact", correctFeedback: "This is a verifiable geographical measurement available in official records.", incorrectFeedback: "This is a verifiable geographical measurement available in official records." },
+            { text: "The state is home to several UNESCO World Heritage Sites, including the hill forts of Chittorgarh, Kumbhalgarh and Jaisalmer.", type: "fact", correctFeedback: "UNESCO World Heritage Site listings are officially documented and publicly accessible.", incorrectFeedback: "UNESCO World Heritage Site listings are officially documented and publicly accessible." },
+            { text: "Jaisalmer's golden sandstone fort is the most breathtaking sight a traveller can experience anywhere in India.", type: "opinion", correctFeedback: "'Most breathtaking' is a personal judgment—beauty and impact are subjective and vary from person to person.", incorrectFeedback: "'Most breathtaking' is a personal judgment—beauty and impact are subjective and vary from person to person." },
+            { text: "The food in Rajasthan is far tastier and more flavourful than the cuisine of any other Indian state.", type: "opinion", correctFeedback: "'Far tastier' and 'more flavourful than any other' express personal taste preferences, not verifiable claims.", incorrectFeedback: "'Far tastier' and 'more flavourful than any other' express personal taste preferences, not verifiable claims." },
+            { text: "Rajasthani cuisine includes dishes like dal baati churma, gatte ki sabzi and laal maas, many of which reflect the region's arid climate and limited water supply.", type: "fact", correctFeedback: "The dishes and their connection to the region's geography are well-documented cultural and culinary facts.", incorrectFeedback: "The dishes and their connection to the region's geography are well-documented cultural and culinary facts." },
+            { text: "Tourists should visit Rajasthan before any other destination in India because no other state offers such a rich cultural experience.", type: "opinion", correctFeedback: "'Should,' 'before any other,' and 'no other state' all express personal beliefs about travel priorities.", incorrectFeedback: "'Should,' 'before any other,' and 'no other state' all express personal beliefs about travel priorities." }
           ]
         },
         {
-          title: "Cultural Festival",
+          title: "Discovering Kerala",
           sentences: [
-            { text: "The festival runs for 10 days each spring.", type: "fact", correctFeedback: "Duration and timing are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "It is the most exciting event of the year.", type: "opinion", correctFeedback: "'Most exciting' is subjective.", incorrectFeedback: "This is an opinion." },
-            { text: "Over 100 artists performed last year.", type: "fact", correctFeedback: "Participant numbers can be verified.", incorrectFeedback: "This is a fact." },
-            { text: "The music is more authentic than at other festivals.", type: "opinion", correctFeedback: "'More authentic' is a judgment.", incorrectFeedback: "This is an opinion." },
-            { text: "The festival was first held in 1985.", type: "fact", correctFeedback: "Historical dates are verifiable.", incorrectFeedback: "This is a fact." },
-            { text: "Everyone would enjoy attending at least once.", type: "opinion", correctFeedback: "Predicting enjoyment is an opinion.", incorrectFeedback: "This is an opinion." }
+            { text: "Kerala is located on India's southwestern coast, stretching along the Malabar Coast for about 580 kilometres.", type: "fact", correctFeedback: "Kerala's location and coastal length are verifiable geographical facts.", incorrectFeedback: "Kerala's location and coastal length are verifiable geographical facts." },
+            { text: "The state's network of interconnected canals, rivers and lagoons, known as the backwaters, is one of the most unique geographical features in the country.", type: "opinion", correctFeedback: "'Most unique' is a personal judgment—uniqueness is subjective and other states may claim equally distinctive features.", incorrectFeedback: "'Most unique' is a personal judgment—uniqueness is subjective and other states may claim equally distinctive features." },
+            { text: "A houseboat ride through the backwaters is a far more relaxing experience than any luxury resort could offer.", type: "opinion", correctFeedback: "'Far more relaxing' is a personal preference—relaxation is subjective and varies from traveller to traveller.", incorrectFeedback: "'Far more relaxing' is a personal preference—relaxation is subjective and varies from traveller to traveller." },
+            { text: "Kerala was the first state in India to achieve a literacy rate of 100%, officially declared in 1991.", type: "fact", correctFeedback: "Kerala's literacy achievement is an officially documented milestone that can be verified through government records.", incorrectFeedback: "Kerala's literacy achievement is an officially documented milestone that can be verified through government records." },
+            { text: "Ayurvedic treatments in Kerala are better and more authentic than those available anywhere else in the world.", type: "opinion", correctFeedback: "'Better and more authentic' express personal beliefs about quality—authenticity and effectiveness are subjective.", incorrectFeedback: "'Better and more authentic' express personal beliefs about quality—authenticity and effectiveness are subjective." },
+            { text: "The state's cuisine, known for its use of coconut, curry leaves and fresh seafood, reflects the tropical climate and coastal geography of the region.", type: "fact", correctFeedback: "Kerala's culinary ingredients and their connection to the local geography are well-documented cultural facts.", incorrectFeedback: "Kerala's culinary ingredients and their connection to the local geography are well-documented cultural facts." }
           ]
         }
       ]
@@ -195,6 +204,7 @@
     UI.book01Thumbnail = document.getElementById("book-01-thumbnail");
     UI.bookCoverPath = document.querySelector("#book-01-thumbnail #Path_8157-2");
     UI.bookSpinePath = document.querySelector("#book-01-thumbnail #Path_8158-2");
+    UI.bookShadowPath = document.querySelector("#book-01-thumbnail #Path_8163-2");
     UI.bookThumbnailLabel = document.getElementById("book-thumbnail-label");
     UI.bookStamp = document.getElementById("book-stamp");
     UI.btnCheck = document.getElementById("button-check") || document.getElementById("Group_1719");
@@ -288,8 +298,8 @@
     if (passageForeign) passageForeign.style.display = "";
     if (UI.bookThumbnailLabel) {
       UI.bookThumbnailLabel.textContent = CONTENT[state.categoryIndex].name;
-
     }
+    updateThumbnailColor();
   }
   function showPassageScreen1() {
     state.screen = "passage";
@@ -326,6 +336,7 @@
     updatePassageLabel();
     updateHighlighterSelection();
     if (UI.passageContent) UI.passageContent.classList.remove("review-mode");
+    updateThumbnailColor();
   }
 
   function setPassageContent(passage) {
@@ -379,6 +390,13 @@
         if (tspan) tspan.textContent = String(state.passageIndex + 1);
       }
     }
+  }
+
+  function updateThumbnailColor() {
+    const colors = BOOK_COLORS[state.categoryIndex] || BOOK_COLORS[0];
+    if (UI.bookCoverPath)  UI.bookCoverPath.setAttribute("fill", colors.cover);
+    if (UI.bookSpinePath)  UI.bookSpinePath.setAttribute("fill", colors.spine);
+    if (UI.bookShadowPath) UI.bookShadowPath.setAttribute("fill", colors.shadow);
   }
 
   function updateHighlighterSelection() {
@@ -442,6 +460,7 @@
     hide(UI.factHighlighter);
     hide(UI.opinionHighlighter);
     hide(UI.checkBtn);
+    hide(UI.buttonLibrary);
     const passageForeign = document.getElementById("passage-foreign");
     if (passageForeign) passageForeign.style.display = "none";
 
@@ -495,10 +514,11 @@
       const userChoice = state.sentenceClassifications[i];
       const isCorrect = userChoice === s.type;
       const chosen = userChoice || "fact";
-      const explText = isCorrect ? (s.correctFeedback || "") : (s.incorrectFeedback || "");
-      const explHtml = isCorrect
-        ? ""
-        : `<div class="fb-expl" data-expl-for="${i}"><strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(explText)}</div>`;
+      const explHtml = `
+        <div class="fb-expl ${isCorrect ? "correct-expl" : "incorrect-expl"}" data-expl-for="${i}">
+          <strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
+        </div>
+      `;
       return `
         <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" data-is-correct="${isCorrect ? "1" : "0"}">
           <div class="fb-text">${escapeHtml(s.text)}</div>
@@ -559,6 +579,7 @@
     show(UI.textPassageComplete);
     show(UI.scoreText);
     show(UI.starBg);
+    show(UI.nuttonLibrary);
 
     const scoreTexts = UI.scoreText && UI.scoreText.querySelectorAll("text");
     if (scoreTexts && scoreTexts[1]) {
@@ -581,9 +602,9 @@
 
     if (state.passageIndex === 0) {
       show(UI.buttonNextPassage);
-      hide(UI.nuttonLibrary);
+      show(UI.nuttonLibrary);
     } else {
-      hide(UI.buttonNextPassage);
+      show(UI.buttonNextPassage);
       show(UI.nuttonLibrary);
       const completeTextEl = UI.textPassageComplete && UI.textPassageComplete.querySelector("text");
       if (completeTextEl) completeTextEl.textContent = "Activity Complete! ";
@@ -709,6 +730,11 @@
   function init() {
     cacheDOM();
     if (!UI.passageContent) createPassageContainer();
+    // Move book thumbnail & stamp to end of SVG so they render above dark-patch overlay
+    if (UI.svg) {
+      if (UI.bookStamp) UI.svg.appendChild(UI.bookStamp);
+      if (UI.book01Thumbnail) UI.svg.appendChild(UI.book01Thumbnail);
+    }
     bindEvents();
     showLibrary();
   }
