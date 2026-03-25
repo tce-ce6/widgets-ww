@@ -479,6 +479,16 @@ window.Wg146 = {
       
       // Update Texts matching exactly the HTML structure
       if (this.UI.maTexts && this.UI.maTexts.length >= 12) {
+          // Center align header texts
+          [1, 2, 3].forEach(idx => {
+              if (this.UI.maTexts[idx]) {
+                  this.UI.maTexts[idx].setAttribute("text-anchor", "middle");
+                  const match = this.UI.maTexts[idx].getAttribute('transform')?.match(/translate\([\d.]+\s+([\d.]+)\)/);
+                  let currentY = match ? parseFloat(match[1]) : (idx === 1 ? 226.72 : (idx === 2 ? 262.72 : 292.72));
+                  this.UI.maTexts[idx].setAttribute("transform", `translate(954.94 ${currentY})`);
+              }
+          });
+
           this.UI.maTexts[1].innerHTML = `<tspan x="0" y="0">${author.correct}</tspan>`;
           this.UI.maTexts[2].innerHTML = author.alias ? `<tspan x="0" y="0">${author.alias}</tspan>` : "";
           this.UI.maTexts[3].innerHTML = author.dates ? `<tspan x="0" y="0">${author.dates}</tspan>` : "";
@@ -488,50 +498,36 @@ window.Wg146 = {
           if (author.works && author.works.length > 0) {
               this.UI.maTexts[6].innerHTML = `<tspan x="0" y="0">Works</tspan>`;
               this.UI.maTexts[7].innerHTML = `<tspan x="0" y="0">:</tspan>`;
-              let worksAndWhyHtml = "";
+              let worksHtml = "";
               let lineY = 0;
-              author.works.forEach(w => {
-                 worksAndWhyHtml += `<tspan x="0" y="${lineY}">${w}</tspan>`;
+              // Generate all lines first to limit them precisely
+              let linesArr = [];
+              author.works.forEach(w => { linesArr.push(w); });
+              // The user requested: "Works and Fun Facts should each contain only two text spans."
+              linesArr.slice(0, 2).forEach(w => {
+                 worksHtml += `<tspan x="0" y="${lineY}">${w}</tspan>`;
                  lineY += 31.2;
               });
-              if (author.whyRead) {
-                  worksAndWhyHtml += `<tspan x="0" y="${lineY}">Why Read this Author?</tspan>`;
-                  lineY += 31.2;
-                  const whyReadLines = this.wrapText(author.whyRead, 60);
-                  whyReadLines.forEach(l => {
-                      worksAndWhyHtml += `<tspan x="0" y="${lineY}">${l}</tspan>`;
-                      lineY += 31.2;
-                  });
-              }
-              this.UI.maTexts[10].innerHTML = worksAndWhyHtml;
+              this.UI.maTexts[10].innerHTML = worksHtml;
           } else {
               this.UI.maTexts[6].innerHTML = "";
               this.UI.maTexts[7].innerHTML = "";
-              
-              let whyHtml = "";
-              let lineY = 0;
-              if (author.whyRead) {
-                  whyHtml += `<tspan x="0" y="${lineY}">Why Read this Author?</tspan>`;
-                  lineY += 31.2;
-                  const whyReadLines = this.wrapText(author.whyRead, 60);
-                  whyReadLines.forEach(l => {
-                      whyHtml += `<tspan x="0" y="${lineY}">${l}</tspan>`;
-                      lineY += 31.2;
-                  });
-              }
-              this.UI.maTexts[10].innerHTML = whyHtml;
+              this.UI.maTexts[10].innerHTML = "";
           }
 
           // Fun Facts handling
           let funFactsHtml = "";
           let lineY = 0;
           if (author.funFacts && author.funFacts.length > 0) {
+              let fLines = [];
               author.funFacts.forEach(f => {
-                   const fLines = this.wrapText("• " + f, 50);
-                   fLines.forEach((l, idx) => {
-                       funFactsHtml += `<tspan x="${idx === 0 ? 0 : 15}" y="${lineY}">${l}</tspan>`;
-                       lineY += 31.2;
-                   });
+                   fLines.push(...this.wrapText("• " + f, 50));
+              });
+              // Limit the fun facts text spans to EXACTLY two
+              fLines.slice(0, 2).forEach((l) => {
+                   let indent = l.startsWith("• ") ? 0 : 15;
+                   funFactsHtml += `<tspan x="${indent}" y="${lineY}">${l}</tspan>`;
+                   lineY += 31.2;
               });
           }
           this.UI.maTexts[11].innerHTML = funFactsHtml;
