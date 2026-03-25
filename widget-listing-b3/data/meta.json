@@ -273,7 +273,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-25T18:04:35+05:30",
+      "updatedAt": "2026-03-25T18:11:04+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
@@ -382,6 +382,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:11:04+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "lable box hight increased",
+      "widgets": [
+        73
+      ]
+    },
     {
       "date": "2026-03-25T18:04:35+05:30",
       "author": "Santosh Vishwakarma",
@@ -624,14 +632,6 @@
       "date": "2026-03-24T21:27:56+05:30",
       "author": "PrasannaP",
       "message": "fix: update asset paths to lowercase in script.js and style.css",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-03-24T21:21:35+05:30",
-      "author": "PrasannaP",
-      "message": "update version ID in index.html to b3_wg61_260324",
       "widgets": [
         61
       ]
