@@ -254,8 +254,10 @@ window.Wg146 = {
         this.UI.nextQuoteBtn.style.pointerEvents = "none";
     }
     if (this.UI.hintBtn) {
-        this.UI.hintBtn.style.opacity = "0.5";
-        this.UI.hintBtn.style.pointerEvents = "none";
+        this.UI.hintBtn.style.display = "block";
+        this.UI.hintBtn.style.opacity = "1";
+        this.UI.hintBtn.style.pointerEvents = "auto";
+        this.UI.hintBtn.style.cursor = "pointer";
     }
     
     if (this.UI.imagesGroup) {
@@ -437,8 +439,8 @@ window.Wg146 = {
               b.style.pointerEvents = "none";
           });
           if (this.UI.hintBtn) {
-              this.UI.hintBtn.style.pointerEvents = "none";
-              this.UI.hintBtn.style.opacity = "0.5";
+              this.UI.hintBtn.style.pointerEvents = "auto";
+              this.UI.hintBtn.style.opacity = "1";
           }
           
           // Hide hint panel if open
@@ -470,7 +472,7 @@ window.Wg146 = {
   },
 
   showHint: function() {
-      if (!this.UI.hintBtn || this.UI.hintBtn.style.pointerEvents === "none") return;
+      if (!this.UI.hintBtn) return;
       
       const author = this.data[this.currentIndex];
       this.isHintActive = !this.isHintActive;
@@ -530,10 +532,14 @@ window.Wg146 = {
               let linesArr = [];
               author.works.forEach(w => { linesArr.push(w); });
               let worksSubset = linesArr.slice(0, 2);
-              worksLineCount = worksSubset.length;
               worksSubset.forEach(w => {
-                 worksHtml += `<tspan x="0" y="${lineY}">${w}</tspan>`;
-                 lineY += 31.2;
+                 let wLines = this.wrapText(w, 45);
+                 wLines.forEach((wl, idx) => {
+                     let indent = idx === 0 ? 0 : 15;
+                     worksHtml += `<tspan x="${indent}" y="${lineY}">${wl}</tspan>`;
+                     lineY += 31.2;
+                     worksLineCount++;
+                 });
               });
               this.UI.maTexts[10].innerHTML = worksHtml;
           } else {
@@ -555,18 +561,28 @@ window.Wg146 = {
           let funFactsListY = funFactsStartY + 30; // standard 30px gap below local heading
           if (this.UI.maTexts[11]) this.UI.maTexts[11].setAttribute('transform', `translate(635.71 ${funFactsListY})`);
 
-          // Fun Facts handling
+          // Fun Facts & Why Read handling
           let funFactsHtml = "";
           let lineY = 0;
           if (author.funFacts && author.funFacts.length > 0) {
-              let fLines = [];
-              author.funFacts.forEach(f => {
-                   fLines.push(...this.wrapText("• " + f, 45)); // wrap tighter
+              const slicedFacts = author.funFacts.slice(0, 2);
+              slicedFacts.forEach(f => {
+                   let fLines = this.wrapText("• " + f, 45); 
+                   fLines.forEach((l, idx) => {
+                       let indent = idx === 0 ? 0 : 15;
+                       funFactsHtml += `<tspan x="${indent}" y="${lineY}">${l}</tspan>`;
+                       lineY += 31.2;
+                   });
               });
-              // Limit the fun facts text spans to EXACTLY two
-              fLines.slice(0, 2).forEach((l) => {
-                   let indent = l.startsWith("• ") ? 0 : 15;
-                   funFactsHtml += `<tspan x="${indent}" y="${lineY}">${l}</tspan>`;
+          }
+          
+          if (author.whyRead && author.whyRead.length > 0) {
+              if (lineY > 0) lineY += 15; // visual gap if coming after fun facts
+              funFactsHtml += `<tspan x="0" y="${lineY}" font-weight="bold">Why read this author?</tspan>`;
+              lineY += 31.2;
+              let wLines = this.wrapText(author.whyRead, 45);
+              wLines.forEach((l) => {
+                   funFactsHtml += `<tspan x="0" y="${lineY}">${l}</tspan>`;
                    lineY += 31.2;
               });
           }
