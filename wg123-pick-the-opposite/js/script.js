@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceA: 'The giraffe is <span class="highlight">tall</span>.',
       sentenceB: "The puppy is _____.",
       sentenceAimg: "./assets/options/tall.svg",
-      sentenceBimg: "./assets/options/tall-short.svg",
+      sentenceBimg: "./assets/options/tall-short-new.svg",
       options: ["short", "dirty", "soft"],
       answer: "short",
       note: "'tall' and 'short' are opposites."

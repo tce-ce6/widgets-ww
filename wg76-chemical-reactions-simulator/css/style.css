@@ -409,7 +409,7 @@ svg * {
 
   50% {
     opacity: 0.1;
-    transform: scale(.5);
+    transform: scale(1.02);
   }
 
   100% {
@@ -419,6 +419,6 @@ svg * {
 }
 
 .blink {
-  transform-origin: center;
-  animation: blink 0.5s linear 2;
+  transform-origin: center center;
+  animation: blink 0.5s linear 1;
 }
