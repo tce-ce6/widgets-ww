@@ -81,43 +81,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const isActive = !!activeAnimations[btn.id];
 
+            // Unhighlight everything first
+            actionBtns.forEach(b => {
+                const bgPath = b.querySelector("path");
+                if (bgPath) bgPath.setAttribute("fill", "#74052A");
+            });
+            if (playAllBtn) playAllBtn.style.backgroundColor = "#74052A";
+
             if (isActive && !isPlayAllActive) {
                 // Deactivate
                 activeAnimations[btn.id].destroy();
                 delete activeAnimations[btn.id];
-
-                const bgPath = btn.querySelector("path");
-                if (bgPath) bgPath.setAttribute("fill", "#74052A");
 
                 const targetContainer = document.getElementById(`container-${btn.id}`);
                 if (targetContainer) targetContainer.style.display = "none";
 
                 // Handle labels hide specifically for deactivated flow
                 updateLabels();
-
-                if (playAllBtn) playAllBtn.style.backgroundColor = "";
-
-                if (Object.keys(activeAnimations).length === 0) {
-
-
-                }
             } else {
                 // Deactivate any currently active animations to ensure only one is active at a time
                 Object.keys(activeAnimations).forEach(activeId => {
                     activeAnimations[activeId].destroy();
                     delete activeAnimations[activeId];
 
-                    const activeBtn = document.getElementById(activeId);
-                    if (activeBtn) {
-                        const activeBgPath = activeBtn.querySelector("path");
-                        if (activeBgPath) activeBgPath.setAttribute("fill", "#74052A");
-                    }
-
                     const activeContainer = document.getElementById(`container-${activeId}`);
                     if (activeContainer) activeContainer.style.display = "none";
                 });
-
-                if (playAllBtn) playAllBtn.style.backgroundColor = "";
 
                 // Activate
                 const bgPath = btn.querySelector("path");
@@ -160,11 +149,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 const isPulmonaryActive = !!activeAnimations[pId];
                 const isSystemicActive = !!activeAnimations[sId];
 
-                // If both are active, turning "play-all" off
-                if (isPulmonaryActive && isSystemicActive) {
-                } else {
-                    // Otherwise turn it on
+                // Clean up any active state first (since reset code was removed)
+                Object.keys(activeAnimations).forEach(activeId => {
+                    activeAnimations[activeId].destroy();
+                    delete activeAnimations[activeId];
 
+                    const activeContainer = document.getElementById(`container-${activeId}`);
+                    if (activeContainer) activeContainer.style.display = "none";
+                });
+                
+                // Visual cleanup
+                actionBtns.forEach(b => {
+                    const bgPath = b.querySelector("path");
+                    if (bgPath) bgPath.setAttribute("fill", "#74052A");
+                });
+                if (playAllBtn) playAllBtn.style.backgroundColor = "#74052A";
+
+                updateLabels();
+
+                // If it WAS active, we just wanted to turn it off, so we're done here.
+                // Otherwise turn it on
+                if (!(isPulmonaryActive && isSystemicActive)) {
                     [pId, sId].forEach(id => {
                         const targetContainer = document.getElementById(`container-${id}`);
                         if (targetContainer) {

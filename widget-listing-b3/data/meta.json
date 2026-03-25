@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -45,7 +45,7 @@
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
-      "updatedAt": "2026-03-25T16:13:22+05:30",
+      "updatedAt": "2026-03-25T16:35:43+05:30",
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
@@ -129,7 +129,7 @@
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
-      "updatedAt": "2026-03-25T15:51:36+05:30",
+      "updatedAt": "2026-03-25T16:29:08+05:30",
       "author": "sushantkanaujiya"
     },
     "wg135-museum-of-historical-sources": {
@@ -165,7 +165,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-25T11:55:44+05:30",
+      "updatedAt": "2026-03-25T16:19:17+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
@@ -181,7 +181,7 @@
       "author": "PrasannaP"
     },
     "wg150-blood-circulation": {
-      "updatedAt": "2026-03-25T15:39:46+05:30",
+      "updatedAt": "2026-03-25T16:29:30+05:30",
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
@@ -189,7 +189,7 @@
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -273,11 +273,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-19T19:49:34+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-25T18:04:35+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-03-24T21:18:27+05:30",
+      "updatedAt": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
@@ -373,7 +373,7 @@
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-03-25T13:18:54+05:30",
+      "updatedAt": "2026-03-25T16:40:01+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg99-applying-distributive-property": {
@@ -382,6 +382,74 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:04:35+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "73 popup pulled inside",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-25T16:57:27+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved of letter widgets",
+      "widgets": [
+        74,
+        101,
+        118,
+        127,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-25T16:40:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "review sheet fixes completed",
+      "widgets": [
+        98
+      ]
+    },
+    {
+      "date": "2026-03-25T16:35:43+05:30",
+      "author": "tce-nitinc",
+      "message": "wg113 changes",
+      "widgets": [
+        113
+      ]
+    },
+    {
+      "date": "2026-03-25T16:33:12+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg73 issues fixed",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-25T16:29:30+05:30",
+      "author": "tce-nitinc",
+      "message": "wg150",
+      "widgets": [
+        150
+      ]
+    },
+    {
+      "date": "2026-03-25T16:29:08+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update script.js",
+      "widgets": [
+        134
+      ]
+    },
+    {
+      "date": "2026-03-25T16:19:17+05:30",
+      "author": "PrasannaP",
+      "message": "for review 146",
+      "widgets": [
+        146
+      ]
+    },
     {
       "date": "2026-03-25T16:13:22+05:30",
       "author": "tce-nitinc",
@@ -418,11 +486,27 @@
       ]
     },
     {
+      "date": "2026-03-25T15:32:22+05:30",
+      "author": "PrasannaP",
+      "message": "v4",
+      "widgets": [
+        146
+      ]
+    },
+    {
       "date": "2026-03-25T14:59:48+05:30",
       "author": "sushantkanaujiya",
       "message": "wg81 found issue fixed",
       "widgets": [
         81
+      ]
+    },
+    {
+      "date": "2026-03-25T14:50:39+05:30",
+      "author": "PrasannaP",
+      "message": "v3",
+      "widgets": [
+        146
       ]
     },
     {
@@ -436,12 +520,28 @@
       ]
     },
     {
+      "date": "2026-03-25T13:32:03+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        146
+      ]
+    },
+    {
       "date": "2026-03-25T13:18:54+05:30",
       "author": "Shyamsunder Hait",
       "message": "fixed review comment for wg145",
       "widgets": [
         98,
         145
+      ]
+    },
+    {
+      "date": "2026-03-25T12:39:58+05:30",
+      "author": "PrasannaP",
+      "message": "v1 146",
+      "widgets": [
+        146
       ]
     },
     {
@@ -534,109 +634,6 @@
       "message": "update version ID in index.html to b3_wg61_260324",
       "widgets": [
         61
-      ]
-    },
-    {
-      "date": "2026-03-24T21:18:27+05:30",
-      "author": "tce-ashishg",
-      "message": "all issue of wg74, 101, 118, 127 & 153 done",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
-      ]
-    },
-    {
-      "date": "2026-03-24T21:03:35+05:30",
-      "author": "PrasannaP",
-      "message": "del index from deploy",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-24T20:57:40+05:30",
-      "author": "PrasannaP",
-      "message": "del index",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-24T20:56:58+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-24T20:56:23+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg142-fact-or-opinion",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-24T20:10:48+05:30",
-      "author": "PrasannaP",
-      "message": "chore: Update widget versions, add documentation requirements, and adjust development server port.",
-      "widgets": [
-        111
-      ]
-    },
-    {
-      "date": "2026-03-24T20:08:19+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        52,
-        93,
-        123
-      ]
-    },
-    {
-      "date": "2026-03-24T19:20:40+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add stars audio asset, update global and widget-specific CSS, and adjust `index.html` SVG structure and content.",
-      "widgets": [
-        136
-      ]
-    },
-    {
-      "date": "2026-03-24T19:12:35+05:30",
-      "author": "tce-nitinc",
-      "message": "wg92 fixes",
-      "widgets": [
-        92
-      ]
-    },
-    {
-      "date": "2026-03-24T19:01:55+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue",
-      "widgets": [
-        119,
-        142
-      ]
-    },
-    {
-      "date": "2026-03-24T18:45:07+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "animation added and different metal groups",
-      "widgets": [
-        109
-      ]
-    },
-    {
-      "date": "2026-03-24T18:40:58+05:30",
-      "author": "tce-nitinc",
-      "message": "wg150",
-      "widgets": [
-        150
       ]
     }
   ]
