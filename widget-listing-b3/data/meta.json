@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-25T18:24:06+05:30",
+      "updatedAt": "2026-03-25T18:44:51+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-03-25T16:57:27+05:30",
+      "updatedAt": "2026-03-25T18:44:51+05:30",
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
@@ -189,7 +189,7 @@
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-25T16:57:27+05:30",
+      "updatedAt": "2026-03-25T18:44:51+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -382,6 +382,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:44:51+05:30",
+      "author": "tce-ashishg",
+      "message": "folder structure updated",
+      "widgets": [
+        101,
+        127,
+        153
+      ]
+    },
     {
       "date": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma",
@@ -629,14 +639,6 @@
         113,
         123,
         150
-      ]
-    },
-    {
-      "date": "2026-03-25T11:55:44+05:30",
-      "author": "PrasannaP",
-      "message": "updated svg",
-      "widgets": [
-        146
       ]
     }
   ]
