@@ -123,6 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
         teacherThemeDropdownOpen: false
     };
 
+    // Feedback timeout tracker
+    let feedbackTimeoutId = null;
+
     // ─── HELPERS ──────────────────────────────────────────────────────────────
     function show(el) { if (el) el.style.display = 'block'; }
     function hide(el) { if (el) el.style.display = 'none'; }
@@ -348,6 +351,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ─── MODE SWITCH ──────────────────────────────────────────────────────────
     function setMode(mode) {
+        // Clear any pending feedback timeout when switching modes
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+            feedbackTimeoutId = null;
+        }
+
         state.mode = mode;
         setTabActive(mode);   // slide the mode-panel highlight to the active tab
 
@@ -520,7 +529,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function doCheckAnswer() {
-        state.answered = true;
         // Calculate total items from all groups
         const totalItems = state.playgroundItems.reduce((sum, count) => sum + count, 0);
         // Support commutative property: both a×b and b×a are correct
@@ -529,15 +537,31 @@ document.addEventListener("DOMContentLoaded", () => {
             (state.groups === state.targetItems && totalItems === (state.targetItems * state.targetGroups))
         );
         if (correct) {
-            show(feedbackCorrect);
-            hide(feedbackIncorrect);
-             updateProblemText();
+            state.answered = true;  // Only mark as answered if correct
+            showFeedbackWithAutoHide(feedbackCorrect, feedbackIncorrect);
+            updateProblemText();
         } else {
-            hide(feedbackCorrect);
-            show(feedbackIncorrect);
+            showFeedbackWithAutoHide(feedbackIncorrect, feedbackCorrect);
         }
-         // Update problem text to show the answer
+        // Update answer modal
         updateAnswerModal();
+    }
+
+    function showFeedbackWithAutoHide(showElement, hideElement) {
+        // Clear any existing timeout
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+        }
+
+        // Show the correct feedback, hide the other
+        show(showElement);
+        hide(hideElement);
+
+        // Auto-hide after 4 seconds (4000 ms)
+        feedbackTimeoutId = setTimeout(() => {
+            hide(showElement);
+            feedbackTimeoutId = null;
+        }, 4000);
     }
 
     function doShowAnswer() {
@@ -548,6 +572,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function doNewProblem() {
+        // Clear any pending feedback timeout
+        if (feedbackTimeoutId) {
+            clearTimeout(feedbackTimeoutId);
+            feedbackTimeoutId = null;
+        }
         hide(answerModal);
         hide(feedbackCorrect);
         hide(feedbackIncorrect);
