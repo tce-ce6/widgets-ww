@@ -64,6 +64,10 @@ svg * {
   z-index: 0;
 }
 
+#idiom-wrapper .container.passage-bg::after {
+  background-image: url("../assets/bg2.png");
+}
+
 /* #idiom-wrapper .mainContainerOuter {
   background: #60360D !important
 } */
