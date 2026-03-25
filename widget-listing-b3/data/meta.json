@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-24T12:20:42+05:30",
+      "updatedAt": "2026-03-25T11:05:29+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -257,8 +257,8 @@
       "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
-      "updatedAt": "2026-03-18T10:33:51+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-25T11:05:29+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg70-reflection-of-light": {
       "updatedAt": "2026-03-24T20:57:40+05:30",
@@ -382,6 +382,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T11:05:29+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "42 and 69 issues fixed",
+      "widgets": [
+        42,
+        69
+      ]
+    },
     {
       "date": "2026-03-25T09:44:21+05:30",
       "author": "sushantkanaujiya",
@@ -621,14 +630,6 @@
       "message": "refactor: clean up whitespace and improve code readability in index.js; add prompts for widget development in prompts.md; enhance wg70.html structure and styling for better layout",
       "widgets": [
         70
-      ]
-    },
-    {
-      "date": "2026-03-24T16:09:39+05:30",
-      "author": "aditya",
-      "message": "wg 128 ui fix",
-      "widgets": [
-        128
       ]
     }
   ]
