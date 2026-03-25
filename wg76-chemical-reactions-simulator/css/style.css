@@ -404,17 +404,21 @@ svg * {
 @keyframes blink {
   0% {
     opacity: 1;
+    transform: scale(1);
   }
 
   50% {
     opacity: 0.1;
+    transform: scale(1.02);
   }
 
   100% {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 .blink {
-  animation: blink 0.5s linear 2;
+  transform-origin: center center;
+  animation: blink 0.5s linear 1;
 }
