@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-25T16:57:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-25T16:57:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-25T15:39:46+05:30",
+      "updatedAt": "2026-03-25T18:32:41+05:30",
       "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
@@ -201,8 +201,8 @@
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-25T18:28:39+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg18-solubility": {
       "updatedAt": "2026-03-19T17:33:59+05:30",
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-25T11:05:29+05:30",
+      "updatedAt": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -257,7 +257,7 @@
       "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
-      "updatedAt": "2026-03-25T11:05:29+05:30",
+      "updatedAt": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg70-reflection-of-light": {
@@ -277,7 +277,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-03-25T16:57:27+05:30",
+      "updatedAt": "2026-03-25T18:24:06+05:30",
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
-      "updatedAt": "2026-03-23T11:38:30+05:30",
+      "updatedAt": "2026-03-25T18:32:23+05:30",
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
@@ -382,6 +382,50 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:33:50+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "42 and 69 issues fixed",
+      "widgets": [
+        42,
+        69
+      ]
+    },
+    {
+      "date": "2026-03-25T18:32:41+05:30",
+      "author": "tce-nitinc",
+      "message": "wg123",
+      "widgets": [
+        123
+      ]
+    },
+    {
+      "date": "2026-03-25T18:32:23+05:30",
+      "author": "tce-nitinc",
+      "message": "wg123 changes",
+      "widgets": [
+        76,
+        123
+      ]
+    },
+    {
+      "date": "2026-03-25T18:28:39+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "Review sheet fixed for wg17",
+      "widgets": [
+        17
+      ]
+    },
+    {
+      "date": "2026-03-25T18:24:06+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved of letter widgets",
+      "widgets": [
+        74,
+        101,
+        118
+      ]
+    },
     {
       "date": "2026-03-25T18:11:04+05:30",
       "author": "Santosh Vishwakarma",
@@ -593,47 +637,6 @@
       "message": "updated svg",
       "widgets": [
         146
-      ]
-    },
-    {
-      "date": "2026-03-25T11:05:29+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "42 and 69 issues fixed",
-      "widgets": [
-        42,
-        69
-      ]
-    },
-    {
-      "date": "2026-03-25T09:44:21+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        130
-      ]
-    },
-    {
-      "date": "2026-03-25T09:43:34+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        130
-      ]
-    },
-    {
-      "date": "2026-03-24T23:49:22+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed wg134",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-24T21:27:56+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update asset paths to lowercase in script.js and style.css",
-      "widgets": [
-        61
       ]
     }
   ]
