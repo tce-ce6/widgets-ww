@@ -5,8 +5,7 @@
     "wrongAudio": "ful-wr.mp3",
     "correctAudio": "ful-cr.mp3",
     "type": "Badi-U",
-    "margin":0
-
+    "margin": 0
   },
   "DUDH": {
     "incorrect": "दुध",
@@ -14,7 +13,7 @@
     "wrongAudio": "dudh-wr.mp3",
     "correctAudio": "dudh-cr.mp3",
     "type": "Badi-U",
-     "margin":0
+    "margin": 0
   },
   "PASHU": {
     "incorrect": "पशू",
@@ -30,7 +29,7 @@
     "wrongAudio": "dhup-wr.mp3",
     "correctAudio": "dhup-cr.mp3",
     "type": "Badi-U",
-     "margin":0
+    "margin": 0
   },
   "SUI": {
     "incorrect": "सूई",
@@ -38,7 +37,7 @@
     "wrongAudio": "sui-wr.mp3",
     "correctAudio": "sui-cr.mp3",
     "type": "Choti-U",
-     "margin":0
+    "margin": 0
   },
   "PURI": {
     "incorrect": "पुरी",
@@ -46,7 +45,7 @@
     "wrongAudio": "puri-wr.mp3",
     "correctAudio": "puri-cr.mp3",
     "type": "Badi-U",
-     "margin":0
+    "margin": 0
   },
   "BHALU": {
     "incorrect": "भालु",
@@ -54,7 +53,7 @@
     "wrongAudio": "bhalu-wr.mp3",
     "correctAudio": "bhalu-cr.mp3",
     "type": "Badi-U",
-     "margin": 70
+    "margin": 70
   },
   "KULI": {
     "incorrect": "कूली",
@@ -62,15 +61,15 @@
     "wrongAudio": "kuli-wr.mp3",
     "correctAudio": "kuli-cr.mp3",
     "type": "Choti-U",
-     "margin":0
+    "margin": 0
   },
   "CHAKU": {
     "incorrect": "चाकु",
-    "correct": "चाक़ू",
+    "correct": "चाकू",
     "wrongAudio": "chaku-wr.mp3",
     "correctAudio": "chaku-cr.mp3",
     "type": "Badi-U",
-     "margin": 70
+    "margin": 70
   },
   "DHANUSH": {
     "incorrect": "धनूष",
@@ -78,7 +77,7 @@
     "wrongAudio": "dhanush-wr.mp3",
     "correctAudio": "dhanush-cr.mp3",
     "type": "Choti-U",
-     "margin": 70
+    "margin": 70
   },
   "SURAJ": {
     "incorrect": "सुरज",
@@ -86,7 +85,7 @@
     "wrongAudio": "suraj-wr.mp3",
     "correctAudio": "suraj-cr.mp3",
     "type": "Badi-U",
-     "margin":0
+    "margin": 0
   },
   "MURLI": {
     "incorrect": "मूरली",
@@ -94,7 +93,7 @@
     "wrongAudio": "murali-wr.mp3",
     "correctAudio": "murali-cr.mp3",
     "type": "Choti-U",
-     "margin":0
+    "margin": 0
   },
   "GULAB": {
     "incorrect": "गूलाब",
@@ -102,7 +101,7 @@
     "wrongAudio": "gulab-wr.mp3",
     "correctAudio": "gulab-cr.mp3",
     "type": "Choti-U",
-     "margin":0
+    "margin": 0
   },
   "SUAR": {
     "incorrect": "सुअर",
@@ -110,7 +109,7 @@
     "wrongAudio": "suar-wr.mp3",
     "correctAudio": "suar-cr.mp3",
     "type": "Badi-U",
-     "margin":0
+    "margin": 0
   },
   "KACHUA": {
     "incorrect": "कछूआ",
@@ -118,7 +117,7 @@
     "wrongAudio": "kachua-wr.mp3",
     "correctAudio": "kachua-cr.mp3",
     "type": "Choti-U",
-     "margin": 70
+    "margin": 70
   },
   "JAMUN": {
     "incorrect": "जामून",
@@ -126,7 +125,7 @@
     "wrongAudio": "jamun-wr.mp3",
     "correctAudio": "jamun-cr.mp3",
     "type": "Choti-U",
-     "margin": 70
+    "margin": 70
   },
   "KAJU": {
     "incorrect": "काजु",
@@ -134,7 +133,7 @@
     "wrongAudio": "kaju-wr.mp3",
     "correctAudio": "kaju-cr.mp3",
     "type": "Badi-U",
-     "margin": 70
+    "margin": 70
   },
   "BAGULA": {
     "incorrect": "बगूला",
@@ -142,7 +141,7 @@
     "wrongAudio": "bagula-wr.mp3",
     "correctAudio": "bagula-cr.mp3",
     "type": "Choti-U",
-     "margin": 70
+    "margin": 70
   },
   "DUKAN": {
     "incorrect": "दूकान",
@@ -150,7 +149,7 @@
     "wrongAudio": "dukan-wr.mp3",
     "correctAudio": "dukan-cr.mp3",
     "type": "Choti-U",
-     "margin":0
+    "margin": 0
   },
   "KHAJUR": {
     "incorrect": "खजुर",
@@ -158,6 +157,6 @@
     "wrongAudio": "khajur-wr.mp3",
     "correctAudio": "khajur-cr.mp3",
     "type": "Badi-U",
-     "margin": 70
+    "margin": 70
   }
 }
