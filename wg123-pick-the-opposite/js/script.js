@@ -554,6 +554,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ─────────────────────────────────────────────────────────────
+  //  DEBUG METHOD
+  // ─────────────────────────────────────────────────────────────
+  window.debugNavigate = function(query) {
+    if (!query) {
+      console.log('--- List of Options ---');
+      data.forEach(item => {
+        console.log(`Number: ${item.id}, Name: ${item.answer}`);
+      });
+      console.log('To navigate, pass the number or name. Example: debugNavigate(3) or debugNavigate("sad")');
+      return;
+    }
+
+    const targetItem = data.find(item => item.id === Number(query) || item.answer.toLowerCase() === String(query).toLowerCase());
+
+    if (targetItem) {
+      if (shuffledData.length === 0) {
+        shuffledData = [...data];
+      }
+      
+      const foundIndex = shuffledData.findIndex(q => q.id === targetItem.id);
+      if (foundIndex !== -1) {
+        currentIndex = foundIndex;
+      } else {
+        shuffledData.push(targetItem);
+        currentIndex = shuffledData.length - 1;
+      }
+      
+      showScreen("step-2");
+      loadQuestion(shuffledData[currentIndex]);
+      console.log(`Navigated to Option: ${targetItem.answer} (Number: ${targetItem.id})`);
+    } else {
+      console.error("Option not found. Please provide a valid number or name.");
+      console.log('--- List of Options ---');
+      data.forEach(item => {
+        console.log(`Number: ${item.id}, Name: ${item.answer}`);
+      });
+    }
+  };
+
+  // ─────────────────────────────────────────────────────────────
   //  INIT:  show the start screen first
   // ─────────────────────────────────────────────────────────────
   showScreen("step-1");
