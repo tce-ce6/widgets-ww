@@ -31,6 +31,37 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let activeAnimations = {};
 
+    const updateLabels = () => {
+        // First hide all
+        if (pulmonaryVein) pulmonaryVein.style.display = "none";
+        if (venaCava) venaCava.style.display = "none";
+        if (pulmonaryArtery) pulmonaryArtery.style.display = "none";
+        if (dorsalAorta) dorsalAorta.style.display = "none";
+
+        // Then show based on active animations
+        Object.keys(activeAnimations).forEach(id => {
+            if (id === "venous-blood-flow") {
+                if (pulmonaryVein) pulmonaryVein.style.display = "block";
+                if (venaCava) venaCava.style.display = "block";
+            } else if (id === "arterial-blood-flow") {
+                if (pulmonaryArtery) pulmonaryArtery.style.display = "block";
+                if (dorsalAorta) dorsalAorta.style.display = "block";
+            } else if (id === "o2-blood-flow") {
+                if (pulmonaryVein) pulmonaryVein.style.display = "block";
+                if (dorsalAorta) dorsalAorta.style.display = "block";
+            } else if (id === "co2-blood-flow") {
+                if (pulmonaryArtery) pulmonaryArtery.style.display = "block";
+                if (venaCava) venaCava.style.display = "block";
+            } else if (id.includes("pulmonary-circulation")) {
+                if (pulmonaryArtery) pulmonaryArtery.style.display = "block";
+                if (pulmonaryVein) pulmonaryVein.style.display = "block";
+            } else if (id.includes("systemic-circulation")) {
+                if (dorsalAorta) dorsalAorta.style.display = "block";
+                if (venaCava) venaCava.style.display = "block";
+            }
+        });
+    };
+
     // By default, reset btn shouldn't be clickable
     if (resetBtn) {
         resetBtn.style.pointerEvents = "none";
@@ -63,13 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (targetContainer) targetContainer.style.display = "none";
 
                 // Handle labels hide specifically for deactivated flow
-                if (btn.id === "venous-blood-flow") {
-                    if (pulmonaryVein) pulmonaryVein.style.display = "none";
-                    if (venaCava) venaCava.style.display = "none";
-                } else if (btn.id === "arterial-blood-flow") {
-                    if (pulmonaryArtery) pulmonaryArtery.style.display = "none";
-                    if (dorsalAorta) dorsalAorta.style.display = "none";
-                }
+                updateLabels();
 
                 if (Object.keys(activeAnimations).length === 0) {
                     if (resetBtn) {
@@ -86,15 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const bgPath = btn.querySelector("path");
                 if (bgPath) bgPath.setAttribute("fill", "#D15F08");
 
-                // Handle labels display
-                if (btn.id === "venous-blood-flow") {
-                    if (pulmonaryVein) pulmonaryVein.style.display = "block";
-                    if (venaCava) venaCava.style.display = "block";
-                } else if (btn.id === "arterial-blood-flow") {
-                    if (pulmonaryArtery) pulmonaryArtery.style.display = "block";
-                    if (dorsalAorta) dorsalAorta.style.display = "block";
-                }
-
                 const targetContainer = document.getElementById(`container-${btn.id}`);
                 if (targetContainer) {
                     targetContainer.style.display = "block";
@@ -109,6 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         });
                     }
                 }
+
+                // Handle labels display
+                updateLabels();
 
                 if (resetBtn) {
                     resetBtn.setAttribute("opacity", "1");

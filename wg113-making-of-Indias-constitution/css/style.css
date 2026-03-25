@@ -149,7 +149,7 @@
   padding: 5px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
-  background: #0295FC;
+  background: #5F0F40;
   white-space: nowrap;
 }
 
@@ -416,6 +416,14 @@ body.modal-open .flexContainer {
 .event-wrapper li img {
   height: 412.8px;
   width: 220.05px;
+
+}
+
+.event-wrapper li img::after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-image: ;
 }
 
 .i-text {
@@ -535,4 +543,21 @@ body.modal-open .flexContainer {
   top: -180px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.event-wrapper li {
+  position: relative;
+}
+
+.event-wrapper .correct.completed::after {
+  content: "";
+  background-image: url("../assets/card-outline.svg");
+  height: 420px;
+  width: 240px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+  position: absolute;
+  top: -5px;
+  left: -11px;
 }
