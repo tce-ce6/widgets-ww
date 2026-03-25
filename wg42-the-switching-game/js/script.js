@@ -440,9 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const mainTitle = document.querySelector(".wdgetTitle h2");
         if (mainTitle) mainTitle.innerHTML = "What Changes from Active to Passive?";
-        progressBar.style.display = "block";
-        // Update progress bar (Comparison = steps 5–9 of 15 total)
-        updateProgressBar(5 + index);
 
         const q = comparisonQuestions[index];
 
@@ -915,13 +912,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // Update progress bar
-        const totalGameQuestions = 5 + 5 + 5;
-        const progressPercent = Math.round(((10 + index) / totalGameQuestions) * 100);
+        // Update progress bar — practice only, 1/5 to 5/5
+        const progressPercent = Math.round(((index + 1) / practiseQuestions.length) * 100);
         const pbRect = document.getElementById("Rectangle_240");
         if (pbRect) {
-            pbRect.setAttribute("width", `${progressPercent * 2.82}`);
+            pbRect.setAttribute("width", `${progressPercent * PB_MAX_WIDTH / 100}`);
         }
+        const pbText = document.querySelector("#Progress_bar text tspan");
+        if (pbText) pbText.textContent = progressPercent + "%";
 
         // Update the active sentence text in the SVG
         const activeSentenceText = document.querySelector("#Practise_screen #Group_2-2 text");
@@ -1119,9 +1117,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load a learn question by index into the existing SVG panels
     function loadLearnQuestion(index) {
-        // Update progress bar (Learn = steps 0–4 of 15 total)
-        updateProgressBar(index);
-
         const q = learnQuestions[index];
         const answerCount = q.answer.length;
 
@@ -1435,7 +1430,6 @@ document.addEventListener("DOMContentLoaded", () => {
         learnPanel2.style.display = "block";
         learnPanel3.style.display = "block";
         homeBtn.style.display = "block";
-        progressBar.style.display = "block";
 
         // Reset instruction text to its original 2-line state
         const iTextEl = IText.querySelector("text");
