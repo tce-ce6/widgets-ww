@@ -121,7 +121,7 @@ function initGame() {
         homeBtn.onclick = returnToMenu;
         console.log('initGame: Home button mapped successfully');
     }
-    
+
     // Explicitly unhide home menu elements (robust loading)
     unhideElement('home_cards');
     unhideElement('home_itext');
@@ -431,7 +431,7 @@ function renderDiscoveredWords(family) {
         const circles = statusText.querySelectorAll('circle, ellipse');
         circles.forEach((c, i) => {
             if (i < discoveredList.length) {
-                c.setAttribute('fill', '#00b894');
+                c.setAttribute('fill', '#2BFFDC');
             } else {
                 c.setAttribute('fill', '#077077');
             }
@@ -541,7 +541,7 @@ function updatePopupText(family) {
 function playChirp() {
 
     try {
-        const audio = new window.Audio('assets/bird-chirping.mp3');
+        const audio = new window.Audio('assets/stars.mp3');
         audio.play().catch(() => {
             // Backup synth beep
             const ctx = new (window.AudioContext || window.webkitAudioContext)();

@@ -1055,18 +1055,36 @@ function updateCardQuestion(showFull) {
         }
     }
 
-    var newText = noun + " of " + q.animal;
-
     var el = GCN.els.questionText;
     if (!el) return;
 
-    /* Write rich text directly onto the <text> element.
-       The noun is bolded, the rest is normal weight. */
-    var html = '<tspan font-weight="bold">' + noun + '</tspan><tspan font-weight="normal"> of ' + q.animal + '</tspan>';
+    /* ── Two-line wrapping ────────────────────────────────────────────
+       If the full phrase (noun + " of " + animal) is longer than 18
+       characters we render it on two centred lines:
+         line 1:  <noun>        ← bold
+         line 2:  of <animal>   ← normal weight
+       The <text> element's y is pulled up by LINE_HALF so the two-line
+       block stays visually centred in the card.
+    ─────────────────────────────────────────────────────────────────── */
+    var WRAP_THRESHOLD = 18;
+    var LINE_HEIGHT    = 70;  // px between baselines (≈ font-size × 1.4)
+    var LINE_HALF      = LINE_HEIGHT / 2;
 
-    // Fallback to textContent if innerHTML doesn't work well in old SVGs,
-    // but innerHTML is robust for adding internal tspans in modern browsers.
-    el.innerHTML = html;
+    var fullPhrase = noun + " of " + q.animal;
+    var baseY = 548;          // always the single-line centre — never the shifted value
+    var cx = el.getAttribute("x") || "948.72";
+
+    if (fullPhrase.length > WRAP_THRESHOLD) {
+        el.setAttribute("y", String(baseY - LINE_HALF));
+        el.innerHTML =
+            '<tspan x="' + cx + '" dy="0"             font-weight="bold"  >' + noun            + '</tspan>' +
+            '<tspan x="' + cx + '" dy="' + LINE_HEIGHT + '" font-weight="normal">of ' + q.animal + '</tspan>';
+    } else {
+        el.setAttribute("y", String(baseY));
+        el.innerHTML =
+            '<tspan font-weight="bold"  >' + noun + '</tspan>' +
+            '<tspan font-weight="normal"> of ' + q.animal + '</tspan>';
+    }
 }
 
 
@@ -1103,6 +1121,7 @@ function setQuestionTextPosition(belowImage) {
        AND an inline CSS style — CSS wins over presentation attributes
        in Chromium, ensuring the anchor is honoured. */
     var CARD_CENTER_X = "948.72";
+    var CARD_CENTER_Y = 548;       // single-line vertical baseline (SVG user units)
     el.setAttribute("x", CARD_CENTER_X);
     el.setAttribute("text-anchor", "middle");
     el.setAttribute("style", "text-anchor:middle");
@@ -1291,3 +1310,166 @@ function resetGame() {
 document.addEventListener("DOMContentLoaded", function () {
     init();
 });
+
+
+/* ═══════════════════════════════════════════════════════════════
+   §18  DEBUG UTILITIES  (dev-only — safe to ship, all behind GCN.debug)
+   ═══════════════════════════════════════════════════════════════
+   Usage — open DevTools console and call:
+
+     GCN.debug.testAll()          → unit-test every question's answer logic
+     GCN.debug.previewCard(3)     → render question #3 on the live card
+     GCN.debug.wrapCheck()        → list which questions trigger 2-line wrap
+     GCN.debug.listQuestions()    → dump the full questions array as a table
+   ═══════════════════════════════════════════════════════════════ */
+GCN.debug = (function () {
+
+    function getOptions(q) {
+        return q.noun.split(',').map(function (s) { return s.trim().toLowerCase(); });
+    }
+
+    /* ── testAll ──────────────────────────────────────────────────
+       Silently validates every valid answer AND a deliberate wrong
+       answer for every question. Does NOT touch the SVG or game state.
+    ─────────────────────────────────────────────────────────────── */
+    function testAll() {
+        var results = [];
+        var pass = 0, fail = 0;
+
+        GCN.questions.forEach(function (q, i) {
+            var options = getOptions(q);
+
+            /* Test every valid option */
+            options.forEach(function (opt) {
+                var accepted = options.indexOf(opt) !== -1;
+                results.push({
+                    '#':      i + 1,
+                    animal:   q.animal,
+                    noun:     q.noun,
+                    typed:    opt,
+                    expected: 'ACCEPT',
+                    result:   accepted ? '✅ PASS' : '❌ FAIL'
+                });
+                accepted ? pass++ : fail++;
+            });
+
+            /* Test a clearly wrong answer is rejected */
+            var wrong    = 'zzz';
+            var rejected = options.indexOf(wrong) === -1;
+            results.push({
+                '#':      i + 1,
+                animal:   q.animal,
+                noun:     q.noun,
+                typed:    wrong,
+                expected: 'REJECT',
+                result:   rejected ? '✅ PASS' : '❌ BUG — wrong answer accepted'
+            });
+            rejected ? pass++ : fail++;
+        });
+
+        console.group('GCN.debug.testAll() — ' + GCN.questions.length + ' questions');
+        console.table(results);
+        console.log('%c' + pass + ' checks passed  |  ' + fail + ' failed',
+            fail === 0
+                ? 'color:#2e7d32;font-weight:bold;font-size:14px'
+                : 'color:#c62828;font-weight:bold;font-size:14px');
+        console.groupEnd();
+
+        return { pass: pass, fail: fail, results: results };
+    }
+
+    /* ── previewCard ──────────────────────────────────────────────
+       Renders question n (1-based) on the live card without affecting
+       the real game state. Call repeatedly to step through all cards.
+         GCN.debug.previewCard(4)        → show answered state
+         GCN.debug.previewCard(4, true)  → show "Show Answer" state
+    ─────────────────────────────────────────────────────────────── */
+    function previewCard(n, asShowAnswer) {
+        var idx = (n || 1) - 1;
+        if (idx < 0 || idx >= GCN.questions.length) {
+            console.warn('GCN.debug.previewCard: use 1–' + GCN.questions.length);
+            return;
+        }
+
+        /* Stash real state */
+        var savedIdx      = GCN.currentIndex;
+        var savedAnswer   = GCN.typedAnswer;
+        var savedAnswered = GCN.isAnswered;
+
+        GCN.currentIndex = idx;
+        GCN.isAnswered   = false;
+
+        if (asShowAnswer) {
+            /* Empty typedAnswer → updateCardQuestion joins all options with " / " */
+            GCN.typedAnswer = '';
+        } else {
+            /* Simulate typing the first valid option */
+            GCN.typedAnswer = getOptions(GCN.questions[idx])[0];
+        }
+
+        setQuestionTextPosition(false);
+        updateCardQuestion(true);
+        showAnimalImage(idx);
+
+        /* Restore — live game state unchanged */
+        GCN.currentIndex = savedIdx;
+        GCN.typedAnswer  = savedAnswer;
+        GCN.isAnswered   = savedAnswered;
+
+        var q = GCN.questions[idx];
+        console.log('▶ previewCard(' + n + ') →',
+            '"' + q.noun + ' of ' + q.animal + '"', '| image:', q.image);
+    }
+
+    /* ── wrapCheck ────────────────────────────────────────────────
+       Lists every phrase that exceeds the 18-char wrap threshold.
+    ─────────────────────────────────────────────────────────────── */
+    function wrapCheck() {
+        var THRESHOLD = 18;
+        var rows = [];
+
+        GCN.questions.forEach(function (q, i) {
+            getOptions(q).forEach(function (opt) {
+                var phrase = opt + ' of ' + q.animal;
+                rows.push({
+                    '#':     i + 1,
+                    animal:  q.animal,
+                    noun:    opt,
+                    phrase:  phrase,
+                    length:  phrase.length,
+                    wraps:   phrase.length > THRESHOLD ? '↩ YES' : '— no'
+                });
+            });
+        });
+
+        console.group('GCN.debug.wrapCheck()  threshold = ' + THRESHOLD + ' chars');
+        console.table(rows);
+        var n = rows.filter(function (r) { return r.wraps.indexOf('YES') !== -1; }).length;
+        console.log(n + ' phrase(s) will wrap to two lines.');
+        console.groupEnd();
+
+        return rows;
+    }
+
+    /* ── listQuestions ────────────────────────────────────────────
+       Dumps the questions array in the current shuffled order.
+    ─────────────────────────────────────────────────────────────── */
+    function listQuestions() {
+        var rows = GCN.questions.map(function (q, i) {
+            return {
+                '#':      i + 1,
+                noun:     q.noun,
+                animal:   q.animal,
+                image:    q.image,
+                options:  getOptions(q).length
+            };
+        });
+        console.group('GCN.debug.listQuestions() — ' + rows.length + ' questions (shuffled order)');
+        console.table(rows);
+        console.groupEnd();
+        return rows;
+    }
+
+    return { testAll: testAll, previewCard: previewCard, wrapCheck: wrapCheck, listQuestions: listQuestions };
+
+}());

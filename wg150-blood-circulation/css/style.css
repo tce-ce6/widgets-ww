@@ -213,3 +213,7 @@ body.modal-open .svg-container::before {
 body.modal-open .wg-wrapper {
   opacity: .2;
 }
+
+body.modal-open .ledgent {
+  opacity: .2;
+}

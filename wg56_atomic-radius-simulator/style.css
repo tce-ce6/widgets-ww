@@ -185,12 +185,12 @@
 
 .rotating-electron {
   transform-origin: 962px 455.172px; /* Center of #centerPoint */
-  animation: electron-orbit 4s linear infinite;
+  animation: electron-orbit var(--electron-speed, 4s) linear infinite;
 }
 
 .rotating-electron img {
   transform-origin: center;
-  animation: electron-counter-orbit 4s linear infinite;
+  animation: electron-counter-orbit var(--electron-speed, 4s) linear infinite;
 }
 
 @keyframes electron-counter-orbit {

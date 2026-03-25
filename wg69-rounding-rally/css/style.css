@@ -549,33 +549,27 @@ svg * {
   }
 }
 
-/* Popup zoom in effect */
-@keyframes popZoom {
-  0% {
+/* Simple zoom in effect */
+@keyframes zoomIn {
+  from {
     opacity: 0;
-    transform: scale(0.6);
+    transform: scale(0.7);
   }
-
-  70% {
-    transform: scale(1.05);
-  }
-
-  100% {
+  to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* Simple subtle zoom for correct popup */
-@keyframes simpleZoom {
+/* Simple zoom out effect */
+@keyframes zoomOut {
   from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-
-  to {
     opacity: 1;
     transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.7);
   }
 }
 
@@ -585,7 +579,6 @@ svg * {
     opacity: 0;
     transform: translateY(-12px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -610,4 +603,11 @@ svg * {
 #selected-vechle,
 #vechile-panel {
   cursor: pointer;
+}
+
+/* Fix SVG scaling origin for popups */
+#hint-popup-group, 
+#correct-popup-group {
+  transform-origin: center;
+  transform-box: fill-box;
 }
