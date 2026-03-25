@@ -91,9 +91,9 @@ svg * {
 
 #swar-wrapper .btn {
   display: inline-block;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: 700;
+  padding: 15px 30px;
+  font-size: 20px;
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
   background-color: #1e6bef;
@@ -381,23 +381,46 @@ svg * {
   color: #fff;
 }
 
+.factor-txt::before {
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg width='44' height='82' viewBox='0 0 44 82' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M42.8431 0.918087C43.1341 1.20837 43.365 1.55322 43.5225 1.93288C43.6801 2.31253 43.7612 2.71954 43.7612 3.13059C43.7612 3.54163 43.6801 3.94864 43.5225 4.3283C43.365 4.70795 43.1341 5.0528 42.8431 5.34309L7.54933 40.6306L42.8431 75.9181C43.4299 76.5049 43.7595 77.3007 43.7595 78.1306C43.7595 78.9604 43.4299 79.7563 42.8431 80.3431C42.2563 80.9299 41.4604 81.2595 40.6306 81.2595C39.8007 81.2595 39.0049 80.9299 38.4181 80.3431L0.918084 42.8431C0.627064 42.5528 0.39617 42.2079 0.23863 41.8283C0.0810899 41.4486 0 41.0416 0 40.6306C0 40.2195 0.0810899 39.8125 0.23863 39.4329C0.39617 39.0532 0.627064 38.7084 0.918084 38.4181L38.4181 0.918087C38.7084 0.627066 39.0532 0.396173 39.4329 0.238633C39.8125 0.0810929 40.2195 0 40.6306 0C41.0416 0 41.4486 0.0810929 41.8283 0.238633C42.2079 0.396173 42.5528 0.627066 42.8431 0.918087Z' fill='white'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+}
+
+.factor-txt.factor-txt-2::before {
+  top: -104px;
+  left: 166px;
+  transform: rotate(113deg);
+}
+
+.factor-txt.factor-txt-1::before {
+  top: -59px;
+  left: -134px;
+  transform: rotate(31deg);
+}
+
 .factor-txt::after {
   content: "";
   height: 2px;
-  width: 270px;
+  width: 130px;
   position: absolute;
   background-color: #fff;
 }
 
 .factor-txt.factor-txt-1::after {
-  top: -50px;
-  left: -270px;
+  top: -20px;
+  left: -130px;
   transform: rotate(25deg);
 }
 
 .factor-txt.factor-txt-2::after {
-  top: -80px;
-  left: 100px;
-  transform: rotate(136deg);
-  width: 200;
+  top: -50px;
+  left: 110px;
+  transform: rotate(112deg);
+  width: 110px;
+
 }
