@@ -34,6 +34,14 @@ class StateManager {
 
   setMode(mode) {
     this.mode = mode;
+    // Enforce range constraint for Number Line mode
+    if (
+      this.mode === MODES.NUMBER_LINE &&
+      this.currentProblem &&
+      (this.currentProblem.answer < -10 || this.currentProblem.answer > 10)
+    ) {
+      this.newProblem();
+    }
   }
 
   newProblem() {
@@ -623,6 +631,12 @@ class UIManager {
 
     if (isNaN(a) || isNaN(b) || a < -10 || a > 10 || b < -10 || b > 10) {
       alert("Please enter values between -10 and 10.");
+      return;
+    }
+
+    // Number Line mode sum validation
+    if (this.state.mode === MODES.NUMBER_LINE && (a + b < -10 || a + b > 10)) {
+      alert("In Number Line mode, the sum must be between -10 and 10.");
       return;
     }
 
