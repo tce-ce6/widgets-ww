@@ -273,7 +273,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-25T16:33:12+05:30",
+      "updatedAt": "2026-03-25T18:04:35+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
@@ -382,6 +382,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T18:04:35+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "73 popup pulled inside",
+      "widgets": [
+        73
+      ]
+    },
     {
       "date": "2026-03-25T16:57:27+05:30",
       "author": "tce-ashishg",
@@ -626,18 +634,6 @@
       "message": "update version ID in index.html to b3_wg61_260324",
       "widgets": [
         61
-      ]
-    },
-    {
-      "date": "2026-03-24T21:18:27+05:30",
-      "author": "tce-ashishg",
-      "message": "all issue of wg74, 101, 118, 127 & 153 done",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
       ]
     }
   ]
