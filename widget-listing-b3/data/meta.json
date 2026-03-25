@@ -273,8 +273,8 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-19T19:49:34+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-25T16:33:12+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
       "updatedAt": "2026-03-24T21:18:27+05:30",
@@ -382,6 +382,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T16:33:12+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg73 issues fixed",
+      "widgets": [
+        73
+      ]
+    },
     {
       "date": "2026-03-25T16:29:30+05:30",
       "author": "tce-nitinc",
@@ -624,14 +632,6 @@
       "date": "2026-03-24T20:56:58+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-24T20:56:23+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg142-fact-or-opinion",
       "widgets": [
         142
       ]
