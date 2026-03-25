@@ -1,19 +1,19 @@
 #idiom-wrapper .feedback-scroll .fb-expl.correct-expl {
   background: #e6ffe6;
-  border-left: 4px solid #2cb739;
+  border-left: 1px solid #2cb739;
   margin-bottom: 10px;
 }
 #idiom-wrapper .feedback-scroll .fb-expl.incorrect-expl {
   background: #ffeaea;
-  border-left: 4px solid #e23614;
+  border-left: 1px solid #e23614;
   margin-bottom: 10px;
 }
-#idiom-wrapper .feedback-scroll .fb-row.correct {
+/* #idiom-wrapper .feedback-scroll .fb-row.correct {
   background: rgba(44, 183, 57, 0.25) !important;
 }
 #idiom-wrapper .feedback-scroll .fb-row.incorrect {
   background: rgba(255, 200, 200, 0.5) !important;
-}
+} */
 *:focus,
 *:focus {
   outline: none !important;
@@ -507,22 +507,26 @@ svg * {
 }
 
 #idiom-wrapper .feedback-scroll .fb-row {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 4px 0;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: 20px;
-  line-height: 1.5;
-  cursor: pointer;
-  display: block;
+  max-width: 1200px;
+    width: max-content;
+        margin: 4px 16px;
+    padding: 4px 4px;
+    border-radius: 4px;
+    font-size: 20px;
+    line-height: 1.35;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-weight: 500;
 }
 
-#idiom-wrapper .feedback-scroll .fb-row.fact {
+#idiom-wrapper .feedback-scroll .fb-row.fact .fb-text {
   background: rgba(15, 167, 255, 0.35);
 }
 
-#idiom-wrapper .feedback-scroll .fb-row.opinion {
+#idiom-wrapper .feedback-scroll .fb-row.opinion .fb-text {
   background: rgba(103, 255, 65, 0.35);
 }
 
@@ -548,16 +552,16 @@ svg * {
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 2px 0 8px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  line-height: 1.35;
-  background: rgba(255, 216, 216, 0.9);
-  border: 1px solid #ff8989;
-  color: #333;
+     max-width: 1200px;
+    width: 100%;
+    margin: 6px 0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.35;
+    background: rgba(255, 216, 216, 0.9);
+    border: 1px solid #ff8989;
+    color: #333;
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl strong {
