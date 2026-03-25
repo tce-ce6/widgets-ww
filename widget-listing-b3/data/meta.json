@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-25T18:32:41+05:30",
+      "updatedAt": "2026-03-25T18:49:39+05:30",
       "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
@@ -383,6 +383,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-25T18:49:39+05:30",
+      "author": "tce-nitinc",
+      "message": "wg123",
+      "widgets": [
+        123
+      ]
+    },
+    {
       "date": "2026-03-25T18:44:51+05:30",
       "author": "tce-ashishg",
       "message": "folder structure updated",
@@ -628,16 +636,6 @@
       "message": "adde versions",
       "widgets": [
         113,
-        150
-      ]
-    },
-    {
-      "date": "2026-03-25T12:23:30+05:30",
-      "author": "tce-nitinc",
-      "message": "wg113 and 1g 150",
-      "widgets": [
-        113,
-        123,
         150
       ]
     }
