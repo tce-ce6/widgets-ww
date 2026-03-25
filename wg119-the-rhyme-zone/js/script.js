@@ -789,8 +789,6 @@ function shuffle(array) {
   }
   return array;
 }
-<<<<<<< Updated upstream
-=======
 
 /* ------------------------------------------------------------------------- */
 /* 9. Lottie Animations                                                      */
@@ -875,4 +873,3 @@ function hideAmbientAnimations() {
     hideAnimation(key);
   });
 }
->>>>>>> Stashed changes

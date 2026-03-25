@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       baseY: 754,
       lockId: "Group_2050",
       shieldPatchId: "Path_8900",
-      title: "Campaign during Silent Period",
+      title: "Campaign During Silent Period",
       question:
         "A group of party workers goes door-to-door just 12 hours before the start of polling, using loud megaphones and carrying banners. Is this allowed?",
       correctAnswer: "VIOLATION",

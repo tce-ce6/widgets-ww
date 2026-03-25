@@ -35,27 +35,8 @@ function initWidget() {
     if (popup.parentNode) popup.parentNode.appendChild(popup);
   });
 
-  // Initialize UI layer
-  let uiLayer = document.getElementById("ui-layer");
-  if (!uiLayer) {
-    uiLayer = createUILayer(container);
-  }
+  // Dropdowns will be injected via foreignObject directly into the SVG hierarchy
 
-  function createUILayer(parent) {
-    const layer = document.createElement("div");
-    layer.id = "ui-layer";
-    Object.assign(layer.style, {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "100%",
-      height: "100%",
-      pointerEvents: "none",
-      zIndex: "100",
-    });
-    parent.appendChild(layer);
-    return layer;
-  }
 
   // --- Lottie Initialization ---
   function initLottie() {
@@ -314,9 +295,8 @@ function initWidget() {
     currentChallengeSC2 = 1;
     currentChallengeSC3 = 1;
 
-    // Clear dynamically injected overlays and dropdowns
-    if (uiLayer) uiLayer.innerHTML = "";
-    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+    // Clear dynamically injected dropdowns and their SVG wrappers
+    document.querySelectorAll(".bb-dropdown-fo, .custom-dropdown").forEach((el) => el.remove());
 
     // Reset SC1 visual state — hide all matched/selected indicators
     hideElements("#act-01-sc1-cards-matched > *");
@@ -412,10 +392,10 @@ function initWidget() {
         hideElements(`#act-02-sc${currentChallengeSC2}`);
         hideElements(`#act-02-sc${currentChallengeSC2}-cards`);
         hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
-        if (document.querySelector(".custom-dropdown")) {
+        if (document.querySelector(".bb-dropdown-fo, .custom-dropdown")) {
           document
-            .querySelectorAll(".custom-dropdown")
-            .forEach((dd) => dd.remove());
+            .querySelectorAll(".bb-dropdown-fo, .custom-dropdown")
+            .forEach((el) => el.remove());
         }
         currentScreen = 3;
         currentChallengeSC3 = 1;
@@ -446,7 +426,6 @@ function initWidget() {
       // Always clean up screen 3 before leaving
       hideElements("#act-03-base-global");
       [1, 2, 3].forEach((s) => hideElements(`[id^="act-03-sc${s}"]`));
-      uiLayer.querySelectorAll(".sc3-overlay").forEach((el) => el.remove());
       if (currentChallengeSC3 > 1) currentChallengeSC3--;
       else {
         currentScreen = 2;
@@ -455,8 +434,8 @@ function initWidget() {
     } else if (currentScreen === 2) {
       hideElements(`[id^="act-02-sc${currentChallengeSC2}"]`);
       document
-        .querySelectorAll(".custom-dropdown")
-        .forEach((dd) => dd.remove());
+        .querySelectorAll(".bb-dropdown-fo, .custom-dropdown")
+        .forEach((el) => el.remove());
       if (currentChallengeSC2 > 1) currentChallengeSC2--;
       else currentScreen = 1;
     } else if (currentScreen === 1) {
@@ -466,20 +445,21 @@ function initWidget() {
   }
 
   function updateView() {
-    if (menuScreen) menuScreen.classList.add("st767");
+    console.log("updateView called, currentScreen:", currentScreen);
+    if (menuScreen) {
+      console.log("menuScreen found, current classList:", menuScreen.classList.toString());
+      menuScreen.classList.add("st767");
+    }
+
     document
       .querySelectorAll('[id^="act-"]')
       .forEach((el) => el.classList.add("st767"));
     btnHome.classList.remove("st767");
     btnInsights.classList.remove("st767");
 
-    // Clear old clickable overlays so they don't bleed through backwards
-    if (uiLayer) {
-      uiLayer.innerHTML = "";
-    }
-
     // Handle Menu
     if (currentScreen === 0) {
+      console.log("Setting screen to 0 (Menu)");
       if (menuScreen) menuScreen.classList.remove("st767");
       allScreens.forEach((s) => {
         let d = document.getElementById(s);
@@ -497,10 +477,10 @@ function initWidget() {
       showElements("#Group_594-2");
       hideElements("#Group_1687 > *");
 
-      if (document.querySelector(".custom-dropdown")) {
+      if (document.querySelector(".bb-dropdown-fo, .custom-dropdown")) {
         document
-          .querySelectorAll(".custom-dropdown")
-          .forEach((dd) => dd.remove());
+          .querySelectorAll(".bb-dropdown-fo, .custom-dropdown")
+          .forEach((el) => el.remove());
       }
       hideElements("#act-04-base");
       hideElements("#act-04-question");
@@ -759,7 +739,7 @@ function initWidget() {
         counter = document.createElement("div");
         counter.id = "trade-counter-sc1";
         counter.className = "trade-counter";
-        uiLayer.appendChild(counter);
+        container.appendChild(counter);
       }
       counter.textContent = `Trades Completed: ${count} / 4`;
     }
@@ -892,16 +872,16 @@ function initWidget() {
   };
 
   function setupScreen2Challenge(sc) {
-    // Remove stale dropdowns from previous calls
-    document.querySelectorAll(".custom-dropdown").forEach((dd) => dd.remove());
+    // Remove ALL stale dropdown foreignObjects/divs from previous scenario attempts
+    document.querySelectorAll(".bb-dropdown-fo, .custom-dropdown").forEach((el) => el.remove());
 
     const cfg = sc2Config[sc];
     if (!cfg) return;
 
     // The dropdown boxes in SVG are act-02-scX-dropdown-list-1, -2
-    let dd1 = document.getElementById(`act-02-sc${sc}-dropdown-list-1`);
-    let dd2 = document.getElementById(`act-02-sc${sc}-dropdown-list-2`);
-    let dd3 = document.getElementById(`act-02-sc${sc}-dropdown`);
+    let dd1 = document.getElementById(`act-02-sc1-dropdown-list-1`);
+    let dd2 = document.getElementById(`act-02-sc1-dropdown-list-2`);
+    let dd3 = document.getElementById(`act-02-sc1-dropdown`);
 
     // Get the Trade button and disable it initially
     const scGroup = document.getElementById(`act-02-sc${sc}-btn`);
@@ -945,74 +925,71 @@ function initWidget() {
       `act-02-sc${sc}-2`,
     );
 
-    // Preferred positioning: map to SVG trigger boundaries if they exist
+    // --- SVG-based positioning using foreignObject + getBBox() ---
+    // This approach places dropdowns inside the SVG coordinate space (viewBox: 0 0 1920 1080)
+    // so they scale perfectly on all screen sizes.
+    function attachDropdownAsSVG(dropdown, triggerGroup, containerGroup) {
+      // Remove any existing foreignObject for this dropdown
+      const existingFo = svg.querySelector(`[data-dd-id="${dropdown.id}"]`);
+      if (existingFo) existingFo.remove();
+
+      const bbox = triggerGroup.getBBox();
+      const fo = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "foreignObject",
+      );
+
+      // Increase height and offset Y to prevent clipping of upward-opening lists
+      const foHeight = 600;
+      const yOffset = 450; // Room for 400px list above plus padding
+
+      fo.setAttribute("x", bbox.x);
+      fo.setAttribute("y", bbox.y - yOffset);
+      fo.setAttribute("width", bbox.width);
+      fo.setAttribute("height", foHeight);
+      fo.setAttribute("overflow", "visible");
+      fo.setAttribute("data-dd-id", dropdown.id);
+      fo.classList.add("bb-dropdown-fo");
+
+      // Style the dropdown to fill the foreignObject exactly
+      dropdown.style.position = "absolute";
+      dropdown.style.left = "0";
+      dropdown.style.top = `${yOffset}px`; // Align trigger to its original Y
+      dropdown.style.width = "100%";
+      dropdown.style.height = `${bbox.height}px`;
+      dropdown.style.pointerEvents = "auto";
+
+      fo.appendChild(dropdown);
+
+      // Insert as sibling to containerGroup (which is hidden) to inherit parent transforms
+      // but NOT be hidden itself.
+      if (containerGroup && containerGroup.parentNode) {
+        containerGroup.parentNode.insertBefore(fo, containerGroup.nextSibling);
+      } else {
+        triggerGroup.parentNode.insertBefore(fo, triggerGroup.nextSibling);
+      }
+
+      return fo;
+    }
+
     if (dd3) {
       const triggerWrappers = Array.from(dd3.children).filter(
         (c) => c.tagName === "g" || c.tagName === "G",
       );
-      // Sort triggers left-to-right to reliably map to s1 (left) and s2 (right)
       triggerWrappers.sort(
-        (a, b) =>
-          a.getBoundingClientRect().left - b.getBoundingClientRect().left,
+        (a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left,
       );
 
       if (triggerWrappers.length >= 2) {
-        const r1 = getPctRect(triggerWrappers[0]);
-        const r2 = getPctRect(triggerWrappers[1]);
+        attachDropdownAsSVG(s1, triggerWrappers[0], dd3);
+        attachDropdownAsSVG(s2, triggerWrappers[1], dd3);
 
-        Object.assign(s1.style, {
-          left: r1.left,
-          top: r1.top,
-          width: r1.width,
-          height: r1.height,
-          pointerEvents: "auto",
-        });
-        uiLayer.appendChild(s1);
-
-        Object.assign(s2.style, {
-          left: r2.left,
-          top: r2.top,
-          width: r2.width,
-          height: r2.height,
-          pointerEvents: "auto",
-        });
-        uiLayer.appendChild(s2);
-
-        // Hide placeholders
+        // Hide SVG placeholder elements
         if (dd1) dd1.classList.add("st767");
         if (dd2) dd2.classList.add("st767");
         dd3.classList.add("st767");
-        // return; // Success
       }
     }
-
-    // Fallback if SVG elements are missing (previously hardcoded, now made slightly more robust)
-    const fbBoxes = {
-      1: [
-        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
-        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
-      ],
-      2: [
-        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
-        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
-      ],
-      3: [
-        { l: "42.3%", t: "63.8%", w: "5%", h: "5.1%" },
-        { l: "64%", t: "63.8%", w: "5%", h: "5.1%" },
-      ],
-    };
-
-    const b = fbBoxes[sc] || fbBoxes[1];
-    [s1, s2].forEach((s, i) => {
-      Object.assign(s.style, {
-        left: b[i].l,
-        top: b[i].t,
-        width: b[i].w,
-        height: b[i].h,
-        pointerEvents: "auto",
-      });
-      uiLayer.appendChild(s);
-    });
 
     // Show Answer logic
     if (showAnsBtn) {
@@ -1025,16 +1002,16 @@ function initWidget() {
           f2 = 0;
         if (sc === 1) {
           f1 = 2; // Rice
-          f2 = 1; // Cloth
+          f2 = 4; // Cloth
         } else if (sc === 2) {
-          f1 = 3; // Rice
-          f2 = 1; // Jaggery
+          f1 = 1; // Pot
+          f2 = 3; // Medical
         } else if (sc === 3) {
-          f1 = 4; // Cloth
-          f2 = 3; // Jaggery
+          f1 = 3; // Fish
+          f2 = 4; // Plough
         }
-        s1.setValue(f1);
-        s2.setValue(f2);
+        s1.setValue(f2);
+        s2.setValue(f1);
         // Disable after click
         showAnsBtn.style.opacity = "0.5";
         showAnsBtn.style.pointerEvents = "none";
@@ -1120,57 +1097,35 @@ function initWidget() {
       if (!card) return;
 
       card.style.cursor = "pointer";
+      card.onclick = () => {
+        if (index === currentStep) {
+          // Correct step
 
-      // Overlay for clicking — use parent group which includes the card background rect
-      const clickTarget = card.parentElement || card;
-      const rect = getPctRect(clickTarget);
-      if (rect) {
-        let overlay = document.createElement("div");
-        Object.assign(overlay.style, {
-          position: "absolute",
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height,
-          cursor: "pointer",
-          pointerEvents: "auto",
-          zIndex: "10",
-        });
-        uiLayer.appendChild(overlay);
-        if (sc === 3) {
-          overlay = card
-          uiLayer.innerHTML = "";
-        }
-        overlay.onclick = () => {
-          if (index === currentStep) {
-            // Correct step
-
-            // Hide previous step indicator to avoid layering/overlap issues with the trading chain text
-            if (currentStep > 0) {
-              hideElements(`#act-03-sc${sc}-card${currentStep}-selected`);
-            }
-
-            showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
-            currentStep++;
-            if (currentStep === sequence.length) {
-              const msg =
-                sc === 3
-                  ? "Well Done! You achieved your goal by completing a 4-step trading."
-                  : "Well Done! You achieved your goal by completing a 3-step trading.";
-              //showFeedbackPopup(msg, true);
-              showElements(`#act-03-sc${sc}-feedback-end`);
-            } else {
-              //showFeedbackPopup("Good job!", true);
-            }
-          } else if (index > currentStep) {
-            // Wrong step
-            showFeedbackPopup(
-              "Wrong order! Try again from the correct trader.",
-              false,
-            );
+          // Hide previous step indicator to avoid layering/overlap issues with the trading chain text
+          if (currentStep > 0) {
+            hideElements(`#act-03-sc${sc}-card${currentStep}-selected`);
           }
-        };
-      }
+
+          showElements(`#act-03-sc${sc}-card${index + 1}-selected`);
+          currentStep++;
+          if (currentStep === sequence.length) {
+            const msg =
+              sc === 3
+                ? "Well Done! You achieved your goal by completing a 4-step trading."
+                : "Well Done! You achieved your goal by completing a 3-step trading.";
+            //showFeedbackPopup(msg, true);
+            showElements(`#act-03-sc${sc}-feedback-end`);
+          } else {
+            //showFeedbackPopup("Good job!", true);
+          }
+        } else if (index > currentStep) {
+          // Wrong step
+          // showFeedbackPopup(
+          //   "Wrong order! Try again from the correct trader.",
+          //   false,
+          // );
+        }
+      };
     });
     const endFeedback = document.getElementById(`act-03-sc${sc}-feedback-end`);
     if (endFeedback) {
@@ -1227,50 +1182,35 @@ function initWidget() {
     const clickedBoxes = new Set();
 
     defs.forEach((defEl, i) => {
-      const rect = getPctRect(defEl);
-      if (rect) {
-        const overlay = document.createElement("div");
-        Object.assign(overlay.style, {
-          position: "absolute",
-          left: rect.left,
-          top: rect.top,
-          width: "35%", // wide area for text
-          height: rect.height,
-          cursor: "pointer",
-          pointerEvents: "auto",
-        });
-        uiLayer.appendChild(overlay);
+      defEl.style.cursor = "pointer";
+      defEl.onclick = () => {
+        clickedBoxes.add(i);
 
-        overlay.onclick = () => {
-          clickedBoxes.add(i);
+        if (corrects.includes(i)) {
+          // Correct selected target
+          // defEl.classList.add("hidden-svg");
+          // overlay.style.pointerEvents = "none"; // disable further clicks
+          correctCount++;
+          sels[i].classList.remove("st767", "hidden-svg");
+        } else {
+          // Wrong selected target
+          sels[i].classList.remove("st767", "hidden-svg");
+          // defEl.classList.add("hidden-svg");
+        }
 
-          if (corrects.includes(i)) {
-            // Correct selected target
-            // defEl.classList.add("hidden-svg");
-            overlay.style.pointerEvents = "none"; // disable further clicks
-            correctCount++;
-            sels[i].classList.remove("st767", "hidden-svg");
-          } else {
-            // Wrong selected target
-            sels[i].classList.remove("st767", "hidden-svg");
-            // defEl.classList.add("hidden-svg");
-            overlay.style.pointerEvents = "none";
+        // Check if all checkboxes have been clicked
+        if (clickedBoxes.size === 8) {
+          if (btnSubmit) {
+            btnSubmit.style.opacity = "1";
+            btnSubmit.style.pointerEvents = "auto";
+            btnSubmit.style.cursor = "pointer";
+            btnSubmit.onclick = () => {
+              backNextBtn.classList.add("st767");
+              showElements("#act-04-feedback-end");
+            };
           }
-
-          // Check if all checkboxes have been clicked
-          if (clickedBoxes.size === 8) {
-            if (btnSubmit) {
-              btnSubmit.style.opacity = "1";
-              btnSubmit.style.pointerEvents = "auto";
-              btnSubmit.style.cursor = "pointer";
-              btnSubmit.onclick = () => {
-                backNextBtn.classList.add("st767");
-                showElements("#act-04-feedback-end");
-              };
-            }
-          }
-        };
-      }
+        }
+      };
     });
   }
 
