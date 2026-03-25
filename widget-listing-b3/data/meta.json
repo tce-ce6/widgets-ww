@@ -201,8 +201,8 @@
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
-      "updatedAt": "2026-02-27T13:19:23+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-25T18:28:39+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg18-solubility": {
       "updatedAt": "2026-03-19T17:33:59+05:30",
@@ -406,6 +406,14 @@
       "widgets": [
         76,
         123
+      ]
+    },
+    {
+      "date": "2026-03-25T18:28:39+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "Review sheet fixed for wg17",
+      "widgets": [
+        17
       ]
     },
     {
@@ -629,15 +637,6 @@
       "message": "updated svg",
       "widgets": [
         146
-      ]
-    },
-    {
-      "date": "2026-03-25T11:05:29+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "42 and 69 issues fixed",
-      "widgets": [
-        42,
-        69
       ]
     }
   ]
