@@ -526,9 +526,7 @@ function initWidget() {
       showElements("#act-04-checkbox-default");
       //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
-      if (backNextBtn) {
-        backNextBtn.classList.remove("st767");
-      }
+
       hideElements("#Group_594-2"); // Hide Next Button
       hideElements("#btn-insights"); // Hide Insights Button
       setupScreen4();
@@ -866,7 +864,7 @@ function initWidget() {
 
   // --- Screen 2 Logic ---
   const sc2Config = {
-    1: { max1: 10, max2: 10, val1: 2, val2: 4 }, // Rice (2) vs Cloth (4)
+    1: { max1: 10, max2: 10, val1: 2, val2: 1 }, // Rice (2) vs Cloth (4)
     2: { max1: 15, max2: 15, val1: 1, val2: 3 }, // Pot (1) vs Medical (3)
     3: { max1: 15, max2: 15, val1: 3, val2: 4 }, // Fish (3) vs Plough (4)
   };
@@ -994,28 +992,49 @@ function initWidget() {
     // Show Answer logic
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
-
+      let isAnswerShown = false;
+      let tspans = showAnsBtn.querySelectorAll("tspan");
+      if (tspans.length > 0) {
+        tspans[0].textContent = "Show Answer";
+      }
       showAnsBtn.onclick = (e) => {
-        e.stopPropagation();
-        // Find first fair trade values
-        let f1 = 0,
-          f2 = 0;
-        if (sc === 1) {
-          f1 = 2; // Rice
-          f2 = 4; // Cloth
-        } else if (sc === 2) {
-          f1 = 1; // Pot
-          f2 = 3; // Medical
-        } else if (sc === 3) {
-          f1 = 3; // Fish
-          f2 = 4; // Plough
+        if (e) e.stopPropagation();
+
+
+
+        if (!isAnswerShown) {
+          // Find first fair trade values
+          let f1 = 0,
+            f2 = 0;
+          if (sc === 1) {
+            f1 = 2; // Rice
+            f2 = 4; // Cloth
+          } else if (sc === 2) {
+            f1 = 3; // Pot
+            f2 = 1; // Medical
+          } else if (sc === 3) {
+            f1 = 4; // Fish
+            f2 = 3; // Plough
+          }
+          s1.setValue(f2);
+          s2.setValue(f1);
+
+          // Change text to "Hide Answer"
+          if (tspans.length > 0) {
+            tspans[0].textContent = " Hide Answer";
+          }
+          isAnswerShown = true;
+        } else {
+          // Reset correct answer from dropdown
+          s1.setValue(0);
+          s2.setValue(0);
+
+          // Change text back to "Show Answer"
+          if (tspans.length > 0) {
+            tspans[0].textContent = "Show Answer";
+          }
+          isAnswerShown = false;
         }
-        s1.setValue(f2);
-        s2.setValue(f1);
-        // Disable after click
-        showAnsBtn.style.opacity = "0.5";
-        showAnsBtn.style.pointerEvents = "none";
-        showAnsBtn.style.cursor = "not-allowed";
       };
     }
 
@@ -1026,7 +1045,7 @@ function initWidget() {
         if (e) e.stopPropagation();
         let v1 = parseInt(s1.dataset.value) || 0;
         let v2 = parseInt(s2.dataset.value) || 0;
-        if (v1 * cfg.val1 === v2 * cfg.val2 && v1 > 0 && v2 > 0) {
+        if (v2 * cfg.val1 === v1 * cfg.val2 && v1 > 0 && v2 > 0) {
           // Fair Trade
           showElements(`#act-02-sc1-feedback-correct`);
           hideElements(`#act-02-sc1-feedback-incorrect`);
@@ -1093,7 +1112,13 @@ function initWidget() {
       // Find the card in act-03-scX-cards
       // Usually named like act-03-sc1-card1, act-03-sc1-card2 etc.
       const cardId = `act-03-sc${sc}-card${index + 1}`;
-      const card = document.getElementById(cardId);
+      let card;
+      if (sc < 3) {
+        card = document.getElementById(cardId).parentElement;
+
+      } else {
+        card = document.getElementById(cardId);
+      }
       if (!card) return;
 
       card.style.cursor = "pointer";
@@ -1199,13 +1224,16 @@ function initWidget() {
         }
 
         // Check if all checkboxes have been clicked
-        if (clickedBoxes.size === 8) {
+        if (clickedBoxes.size === 1) {
           if (btnSubmit) {
             btnSubmit.style.opacity = "1";
             btnSubmit.style.pointerEvents = "auto";
             btnSubmit.style.cursor = "pointer";
             btnSubmit.onclick = () => {
-              backNextBtn.classList.add("st767");
+              sels.forEach(element => {
+                element.classList.remove("st767", "hidden-svg");
+              });
+
               showElements("#act-04-feedback-end");
             };
           }

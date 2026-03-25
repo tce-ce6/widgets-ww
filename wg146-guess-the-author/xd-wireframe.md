@@ -11,6 +11,8 @@ Maintain the exact UI as per the wireframe and implement all required interactio
 
 Treat index.html as the main boilerplate file containing the SVG layout.
 
+Hide all elements initially, and display them only after the game is initiated, as per the requirement.
+
 Create a separate JavaScript file(js/script.js) that:
 
 * Follows a function-based structure

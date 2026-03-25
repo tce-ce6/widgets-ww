@@ -27,13 +27,6 @@
     "correctAudio": "thela-cr.mp3",
     "type": "ye"
   },
-  "NAINA": {
-    "incorrect": "नेना",
-    "correct": "नैना",
-    "wrongAudio": "naina-wr.mp3",
-    "correctAudio": "naina-cr.mp3",
-    "type": "ayee"
-  },
   "THAILA": {
     "incorrect": "थेला",
     "correct": "थैला",

@@ -1461,7 +1461,7 @@
               <g isolation="isolate">
                 <g isolation="isolate">
                   <g isolation="isolate">
-                    <text transform="translate(1303.81 186.09)" font-family="Roboto-Medium, Roboto" font-size="24"
+                    <text transform="translate(1411.5 186.09)" text-anchor="middle" font-family="Roboto-Medium, Roboto" font-size="24"
                       font-weight="500" isolation="isolate">
                       <tspan x="0" y="0">Amount (₹ in lakhs)</tspan>
                     </text>
@@ -2217,30 +2217,27 @@
           </g>
 
 
-          <foreignObject id="custom-popup-fo" x="0" y="0" width="100%" height="100%" style="display: none;">
-            <div xmlns="http://www.w3.org/1999/xhtml" id="custom-popup"
-              style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5);">
-              <div id="custom-popup-content"
-                style="position: relative; padding: 20px 40px; border-radius: 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: Roboto, sans-serif; font-size: 24px; font-weight: bold;">
-                <div id="custom-popup-text" style="font-size: 32px; font-weight: bold; text-align: center;"></div>
-                <div id="custom-popup-solution-title"
-                  style="display: none; background: #4caf50; color: #fff; padding: 10px 30px; border-radius: 10px; position: absolute; top: -25px; font-size: 30px; font-weight: bold;">
-                  Solution</div>
-                <div id="custom-popup-close"
-                  style="display: none; position: absolute; top: -20px; right: -20px; background: #4caf50; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#4caf50">
-                    <circle cx="12" cy="12" r="12" fill="#4caf50" />
-                    <path stroke="#fff" stroke-width="3" stroke-linecap="round" d="M8 8l8 8M16 8l-8 8" />
-                  </svg>
-                </div>
-                <div id="custom-popup-solution-svg-container"
-                  style="display: none; width: 600px; height: 600px; margin-top: 20px;"></div>
-              </div>
-            </div>
-          </foreignObject>
         </svg>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Fullscreen Transparent Popup Overlay -->
+  <div id="custom-popup-fo" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999;">
+    <div id="custom-popup" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5);">
+      <div id="custom-popup-content" style="position: relative; padding: 20px 40px; border-radius: 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: Roboto, sans-serif; font-size: 24px; font-weight: bold; background: white;">
+        <div id="custom-popup-text" style="font-size: 32px; font-weight: bold; text-align: center;"></div>
+        <div id="custom-popup-solution-title" style="display: none; background: #4caf50; color: #fff; padding: 10px 30px; border-radius: 10px; position: absolute; top: -25px; font-size: 30px; font-weight: bold;">
+          Solution</div>
+        <div id="custom-popup-close" style="display: none; position: absolute; top: -20px; right: -20px; background: #4caf50; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#4caf50">
+            <circle cx="12" cy="12" r="12" fill="#4caf50" />
+            <path stroke="#fff" stroke-width="3" stroke-linecap="round" d="M8 8l8 8M16 8l-8 8" />
+          </svg>
+        </div>
+        <div id="custom-popup-solution-svg-container" style="display: none; width: 600px; height: 600px; margin-top: 20px;"></div>
+      </div>
     </div>
   </div>
 
