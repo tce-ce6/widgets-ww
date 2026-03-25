@@ -123,6 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const SIM_Y_MIN = 75;
     const SIM_Y_MAX = 975;
     const MOL_RADIUS = 36; // approximate radius in SVG units
+    const UI_BLOCKERS = [
+        { x1: 256, y1: 744, x2: 697, y2: 1060 }
+    ];
 
     // Particle state: array of { id, el, x, y, vx, vy }
     let particles = [];
@@ -218,38 +221,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ─── Reaction Transformations ──────────────────────────────────────────────
-    // Map reaction type to { reactants: [...], products: [...], stoichiometry: {...} }
-    // stoichiometry maps reactant/product ID to their coefficient in the balanced equation
+    // Each rule describes one balanced reaction batch for the simulator.
+    const DEFAULT_REACTION_BATCHES = 4;
     const reactionRules = {
         "Combination Reaction": {
             // 2H2 + O2 → 2H2O
-            reactants: ["h2", "o2"],
-            products: ["h2o"],
-            stoichiometry: { h2: 2, o2: 1, h2o: 2 }
+            reactantCounts: { h2: 2, o2: 1 },
+            productCounts: { h2o: 2 },
+            initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Decomposition Reaction": {
             // 2H2O → 2H2 + O2
-            reactants: ["h2o"],
-            products: ["h2", "o2"],
-            stoichiometry: { h2o: 2, h2: 2, o2: 1 }
+            reactantCounts: { h2o: 2 },
+            productCounts: { h2: 2, o2: 1 },
+            initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Displacement Reaction": {
             // Zn + CuSO4 → ZnSO4 + Cu (1:1:1:1)
-            reactants: ["zn", "cuso4"],
-            products: ["cu"],
-            stoichiometry: { zn: 1, cuso4: 1, cu: 1 }
+            reactantCounts: { zn: 1, cuso4: 1 },
+            productCounts: { cu: 1 },
+            initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Double Displacement Reaction": {
             // AgNO3 + HCl → AgCl + HNO3 (1:1:1:1)
-            reactants: ["agno3", "hci"],
-            products: ["nano3"],
-            stoichiometry: { agno3: 1, hci: 1, nano3: 1 }
+            reactantCounts: { agno3: 1, hci: 1 },
+            productCounts: { nano3: 1 },
+            initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Redox (Oxidation-Reduction)": {
             // CH4 + 2O2 → CO2 + 2H2O
-            reactants: ["ch4", "o2"],
-            products: ["co2", "h2o"],
-            stoichiometry: { ch4: 1, o2: 2, co2: 1, h2o: 2 }
+            reactantCounts: { ch4: 1, o2: 2 },
+            productCounts: { co2: 1, h2o: 2 },
+            initialBatches: DEFAULT_REACTION_BATCHES
         }
     };
 
@@ -262,11 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const rule = reactionRules[currentReaction];
         if (!rule) return;
 
-        // Spawn reactants according to their stoichiometric coefficients
-        // to ensure complete reaction with no leftovers
-        rule.reactants.forEach(id => {
-            const copies = rule.stoichiometry[id] || 1;
-            spawnMolecule(id, copies);
+        const batchCount = rule.initialBatches || DEFAULT_REACTION_BATCHES;
+
+        // Spawn complete balanced sets so every loaded reaction can finish cleanly.
+        Object.entries(rule.reactantCounts).forEach(([id, perBatchCount]) => {
+            spawnMolecule(id, perBatchCount * batchCount);
         });
     }
 
@@ -284,8 +287,11 @@ document.addEventListener("DOMContentLoaded", () => {
             clone.style.pointerEvents = "none";
             template.parentNode.appendChild(clone);
 
-            const px = x !== null ? x : SIM_X_MIN + MOL_RADIUS + Math.random() * (SIM_X_MAX - SIM_X_MIN - MOL_RADIUS * 2);
-            const py = y !== null ? y : SIM_Y_MIN + MOL_RADIUS + Math.random() * (SIM_Y_MAX - SIM_Y_MIN - MOL_RADIUS * 2);
+            const safePosition = (x !== null && y !== null)
+                ? constrainPointToSafeArea(x, y)
+                : getSafeSpawnPosition();
+            const px = safePosition.x;
+            const py = safePosition.y;
             const angle = Math.random() * Math.PI * 2;
             const speed = 2 + Math.random() * 2;
 
@@ -322,6 +328,186 @@ document.addEventListener("DOMContentLoaded", () => {
         const dx = x - origX;
         const dy = y - origY;
         el.setAttribute("transform", `translate(${dx}, ${dy})`);
+    }
+
+    function overlapsUiBlocker(x, y, radius = MOL_RADIUS) {
+        return UI_BLOCKERS.some(blocker =>
+            x > blocker.x1 - radius &&
+            x < blocker.x2 + radius &&
+            y > blocker.y1 - radius &&
+            y < blocker.y2 + radius
+        );
+    }
+
+    function constrainPointToSafeArea(x, y, radius = MOL_RADIUS) {
+        let safeX = Math.min(Math.max(x, SIM_X_MIN + radius), SIM_X_MAX - radius);
+        let safeY = Math.min(Math.max(y, SIM_Y_MIN + radius), SIM_Y_MAX - radius);
+
+        UI_BLOCKERS.forEach(blocker => {
+            const left = blocker.x1 - radius;
+            const right = blocker.x2 + radius;
+            const top = blocker.y1 - radius;
+            const bottom = blocker.y2 + radius;
+
+            if (safeX > left && safeX < right && safeY > top && safeY < bottom) {
+                const distances = [
+                    { side: "left", value: Math.abs(safeX - left) },
+                    { side: "right", value: Math.abs(right - safeX) },
+                    { side: "top", value: Math.abs(safeY - top) },
+                    { side: "bottom", value: Math.abs(bottom - safeY) }
+                ];
+                distances.sort((a, b) => a.value - b.value);
+
+                switch (distances[0].side) {
+                    case "left":
+                        safeX = left;
+                        break;
+                    case "right":
+                        safeX = right;
+                        break;
+                    case "top":
+                        safeY = top;
+                        break;
+                    default:
+                        safeY = bottom;
+                        break;
+                }
+            }
+        });
+
+        return { x: safeX, y: safeY };
+    }
+
+    function getSafeSpawnPosition() {
+        for (let attempt = 0; attempt < 100; attempt++) {
+            const x = SIM_X_MIN + MOL_RADIUS + Math.random() * (SIM_X_MAX - SIM_X_MIN - MOL_RADIUS * 2);
+            const y = SIM_Y_MIN + MOL_RADIUS + Math.random() * (SIM_Y_MAX - SIM_Y_MIN - MOL_RADIUS * 2);
+
+            if (!overlapsUiBlocker(x, y)) {
+                return { x, y };
+            }
+        }
+
+        return constrainPointToSafeArea((SIM_X_MIN + SIM_X_MAX) / 2, (SIM_Y_MIN + SIM_Y_MAX) / 2);
+    }
+
+    function resolveUiBlockerCollision(p, iter) {
+        UI_BLOCKERS.forEach(blocker => {
+            const left = blocker.x1 - MOL_RADIUS;
+            const right = blocker.x2 + MOL_RADIUS;
+            const top = blocker.y1 - MOL_RADIUS;
+            const bottom = blocker.y2 + MOL_RADIUS;
+
+            if (p.x > left && p.x < right && p.y > top && p.y < bottom) {
+                const distances = [
+                    { side: "left", value: Math.abs(p.x - left) },
+                    { side: "right", value: Math.abs(right - p.x) },
+                    { side: "top", value: Math.abs(p.y - top) },
+                    { side: "bottom", value: Math.abs(bottom - p.y) }
+                ];
+                distances.sort((a, b) => a.value - b.value);
+
+                switch (distances[0].side) {
+                    case "left":
+                        p.x = left;
+                        if (iter === 0) p.vx = -Math.abs(p.vx);
+                        break;
+                    case "right":
+                        p.x = right;
+                        if (iter === 0) p.vx = Math.abs(p.vx);
+                        break;
+                    case "top":
+                        p.y = top;
+                        if (iter === 0) p.vy = -Math.abs(p.vy);
+                        break;
+                    default:
+                        p.y = bottom;
+                        if (iter === 0) p.vy = Math.abs(p.vy);
+                        break;
+                }
+            }
+        });
+    }
+
+    function canTriggerReaction(p, q, reactionRule) {
+        const requiredCounts = reactionRule.reactantCounts || {};
+        const reactantIds = Object.keys(requiredCounts);
+
+        if (!reactantIds.includes(p.baseId) || !reactantIds.includes(q.baseId)) {
+            return false;
+        }
+
+        if (reactantIds.length === 1) {
+            return p.baseId === q.baseId && requiredCounts[p.baseId] >= 2;
+        }
+
+        return p.baseId !== q.baseId;
+    }
+
+    function collectReactionParticipants(p, q, reactionRule) {
+        if (!canTriggerReaction(p, q, reactionRule)) {
+            return null;
+        }
+
+        const requiredCounts = reactionRule.reactantCounts || {};
+        const selected = [p, q];
+        const selectedSet = new Set(selected);
+        const selectedCounts = selected.reduce((counts, particle) => {
+            counts[particle.baseId] = (counts[particle.baseId] || 0) + 1;
+            return counts;
+        }, {});
+
+        const triggerCenterX = (p.x + q.x) / 2;
+        const triggerCenterY = (p.y + q.y) / 2;
+
+        for (const [reactantId, requiredCount] of Object.entries(requiredCounts)) {
+            const missingCount = requiredCount - (selectedCounts[reactantId] || 0);
+            if (missingCount <= 0) continue;
+
+            const candidates = particles
+                .filter(particle =>
+                    !particle.isReacted &&
+                    particle.baseId === reactantId &&
+                    !selectedSet.has(particle)
+                )
+                .sort((a, b) => {
+                    const distA = ((a.x - triggerCenterX) ** 2) + ((a.y - triggerCenterY) ** 2);
+                    const distB = ((b.x - triggerCenterX) ** 2) + ((b.y - triggerCenterY) ** 2);
+                    return distA - distB;
+                });
+
+            if (candidates.length < missingCount) {
+                return null;
+            }
+
+            candidates.slice(0, missingCount).forEach(candidate => {
+                selected.push(candidate);
+                selectedSet.add(candidate);
+                selectedCounts[candidate.baseId] = (selectedCounts[candidate.baseId] || 0) + 1;
+            });
+        }
+
+        return selected;
+    }
+
+    function buildProductSpawnList(reactionRule, centerX, centerY) {
+        const productIds = [];
+
+        Object.entries(reactionRule.productCounts || {}).forEach(([productId, count]) => {
+            for (let i = 0; i < count; i++) {
+                productIds.push(productId);
+            }
+        });
+
+        const radius = productIds.length > 1 ? 18 : 0;
+        return productIds.map((id, index) => {
+            const angle = (Math.PI * 2 * index) / Math.max(productIds.length, 1);
+            return {
+                id,
+                x: centerX + Math.cos(angle) * radius,
+                y: centerY + Math.sin(angle) * radius
+            };
+        });
     }
 
     // ─── Simulation loop ─────────────────────────────────────────────────────
@@ -375,6 +561,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (p.x + MOL_RADIUS > SIM_X_MAX) { p.x = SIM_X_MAX - MOL_RADIUS; if (iter === 0) p.vx = -Math.abs(p.vx); }
                 if (p.y - MOL_RADIUS < SIM_Y_MIN) { p.y = SIM_Y_MIN + MOL_RADIUS; if (iter === 0) p.vy = Math.abs(p.vy); }
                 if (p.y + MOL_RADIUS > SIM_Y_MAX) { p.y = SIM_Y_MAX - MOL_RADIUS; if (iter === 0) p.vy = -Math.abs(p.vy); }
+                resolveUiBlockerCollision(p, iter);
 
                 for (let j = i + 1; j < particles.length; j++) {
                     let q = particles[j];
@@ -432,32 +619,22 @@ document.addEventListener("DOMContentLoaded", () => {
                                 if (reactionRule && !p.isReacted && !q.isReacted) {
                                     const reactionChance = currentTemp === "Hot" ? 0.3 : (currentTemp === "Warm" ? 0.15 : (currentTemp === "Cold" ? 0.05 : 0.01));
                                     if (Math.random() < reactionChance) {
-                                        let reacts = false;
-                                        if (reactionRule.reactants.length === 2) {
-                                            if ((p.baseId === reactionRule.reactants[0] && q.baseId === reactionRule.reactants[1]) ||
-                                                (p.baseId === reactionRule.reactants[1] && q.baseId === reactionRule.reactants[0])) {
-                                                reacts = true;
-                                            }
-                                        } else if (reactionRule.reactants.length === 1) {
-                                            if (p.baseId === reactionRule.reactants[0] && q.baseId === reactionRule.reactants[0]) {
-                                                reacts = true;
-                                            }
-                                        }
+                                        const participants = collectReactionParticipants(p, q, reactionRule);
 
-                                        if (reacts) {
-                                            p.isReacted = true;
-                                            q.isReacted = true;
-                                            toRemove.add(p);
-                                            toRemove.add(q);
-                                            
+                                        if (participants) {
+                                            participants.forEach(particle => {
+                                                particle.isReacted = true;
+                                                toRemove.add(particle);
+                                            });
+
                                             successCount++;
-                                            
-                                            const mx = (p.x + q.x) / 2;
-                                            const my = (p.y + q.y) / 2;
-                                            reactionRule.products.forEach((prodId, idx) => {
-                                                // offset products slightly if multiple to prevent immediate overlapping
-                                                const offset = idx === 0 ? 10 : -10;
-                                                toSpawn.push({ id: prodId, x: mx + offset, y: my + offset });
+
+                                            const mx = participants.reduce((sum, particle) => sum + particle.x, 0) / participants.length;
+                                            const my = participants.reduce((sum, particle) => sum + particle.y, 0) / participants.length;
+                                            const productsToSpawn = buildProductSpawnList(reactionRule, mx, my);
+
+                                            productsToSpawn.forEach(product => {
+                                                toSpawn.push(product);
                                                 productCount++;
                                             });
 
@@ -683,7 +860,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 el.addEventListener("mouseenter", () => {
                    const bg = el.querySelector("path[fill]");
-                   if (bg) bg.setAttribute("fill", "#FCDCB9"); // Highlight color
+                   if (bg) bg.setAttribute("fill", "#DCEBFF"); // Light blue rollover color
                 });
                 el.addEventListener("mouseleave", () => {
                    const bg = el.querySelector("path[fill]");
