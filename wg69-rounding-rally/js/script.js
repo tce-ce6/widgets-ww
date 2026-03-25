@@ -194,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ── Correct popup (incl Layer_27 — the extra floating X) ── */
-    /* ── Correct popup functionality ── */
     function showCorrectPopup(q) {
         hideHintPopup();
         const group = $("correct-popup-group");
@@ -210,15 +209,24 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.style.display = "";
         const btnContainer = $("timeline-btns-container");
         if (btnContainer) btnContainer.classList.add("answered");
-        triggerAnim("correct-popup-group", "simpleZoom 0.3s ease-out both");
+        triggerAnim("correct-popup-group", "zoomIn 0.3s ease-out both");
         if (correctAnim) {
             correctAnim.goToAndPlay(0, true);
         }
     }
 
     function hideCorrectPopup() {
-        setVisible("correct-popup-group", false);
-        setVisible("popup-overlay", false);
+        const group = $("correct-popup-group");
+        if (group && group.style.display !== "none") {
+            triggerAnim("correct-popup-group", "zoomOut 0.2s ease-in both");
+            setTimeout(() => {
+                setVisible("correct-popup-group", false);
+                setVisible("popup-overlay", false);
+            }, 200);
+        } else {
+            setVisible("correct-popup-group", false);
+            setVisible("popup-overlay", false);
+        }
     }
 
     /* ── Hint (wrong-answer) popup ── */
@@ -357,16 +365,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         overlay.style.display = "";
-        triggerAnim("hint-popup-group", "popZoom 0.4s ease both");
+        triggerAnim("hint-popup-group", "zoomIn 0.3s ease-out both");
         if (incorrectAnim) {
             incorrectAnim.goToAndPlay(0, true);
         }
     }
 
     function hideHintPopup() {
-        setVisible("hint-popup-group", false);
-        setVisible("popup-overlay", false);
-        document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+        const group = $("hint-popup-group");
+        if (group && group.style.display !== "none") {
+            triggerAnim("hint-popup-group", "zoomOut 0.2s ease-in both");
+            setTimeout(() => {
+                setVisible("hint-popup-group", false);
+                setVisible("popup-overlay", false);
+                document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+            }, 200);
+        } else {
+            setVisible("hint-popup-group", false);
+            setVisible("popup-overlay", false);
+            document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+        }
     }
     // 👇 ADD THIS HERE
     const hintCross = $("hint-cross-mark");

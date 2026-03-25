@@ -308,6 +308,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideAll() {
         introScreen.style.display = "none";
         if (practiseScreen) practiseScreen.style.display = "none";
+        
+        // Reset the main header title to default
+        const mainTitle = document.querySelector(".wdgetTitle h2");
+        if (mainTitle) mainTitle.innerHTML = "The Switching Game";
+
         const pb = document.getElementById("Practise_badge");
         if (pb) pb.style.display = "none";
         if (IText) IText.style.display = "none";
@@ -387,6 +392,9 @@ document.addEventListener("DOMContentLoaded", () => {
         comparePanel.style.display = "block";
         feedback.style.opacity = "0";
 
+        const mainTitle = document.querySelector(".wdgetTitle h2");
+        if (mainTitle) mainTitle.innerHTML = "What Changes from Active to Passive?";
+
         // Passive sentences
         const passiveIds = ["Group_1186-2", "Group_1188-2", "Group_1190-2", "Group_1192-2", "Group_1194-2"];
         passiveIds.forEach(id => {
@@ -429,6 +437,9 @@ document.addEventListener("DOMContentLoaded", () => {
         question3Panel.style.display = "block";
         feedback.style.opacity = "0";
         IText.style.display = "block";
+
+        const mainTitle = document.querySelector(".wdgetTitle h2");
+        if (mainTitle) mainTitle.innerHTML = "What Changes from Active to Passive?";
         progressBar.style.display = "block";
         // Update progress bar (Comparison = steps 5–9 of 15 total)
         updateProgressBar(5 + index);
@@ -1228,7 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 for (let j = 1; j < tspans.length; j++) tspans[j].textContent = "";
 
                 if (tspans[0]) {
-                    tspans[0].textContent = q.options[i];
+                    tspans[0].textContent = shuffledOptions[i];
                     tspans[0].removeAttribute("x");
                     tspans[0].removeAttribute("y");
                 } else {
