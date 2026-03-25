@@ -994,28 +994,46 @@ function initWidget() {
     // Show Answer logic
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
+      let isAnswerShown = false;
 
       showAnsBtn.onclick = (e) => {
-        e.stopPropagation();
-        // Find first fair trade values
-        let f1 = 0,
-          f2 = 0;
-        if (sc === 1) {
-          f1 = 2; // Rice
-          f2 = 4; // Cloth
-        } else if (sc === 2) {
-          f1 = 1; // Pot
-          f2 = 3; // Medical
-        } else if (sc === 3) {
-          f1 = 3; // Fish
-          f2 = 4; // Plough
+        if (e) e.stopPropagation();
+
+        const tspans = showAnsBtn.querySelectorAll("tspan");
+
+        if (!isAnswerShown) {
+          // Find first fair trade values
+          let f1 = 0,
+            f2 = 0;
+          if (sc === 1) {
+            f1 = 2; // Rice
+            f2 = 4; // Cloth
+          } else if (sc === 2) {
+            f1 = 1; // Pot
+            f2 = 3; // Medical
+          } else if (sc === 3) {
+            f1 = 3; // Fish
+            f2 = 4; // Plough
+          }
+          s1.setValue(f2);
+          s2.setValue(f1);
+
+          // Change text to "Hide Answer"
+          if (tspans.length > 0) {
+            tspans[0].textContent = " Hide Answer";
+          }
+          isAnswerShown = true;
+        } else {
+          // Reset correct answer from dropdown
+          s1.setValue(0);
+          s2.setValue(0);
+
+          // Change text back to "Show Answer"
+          if (tspans.length > 0) {
+            tspans[0].textContent = "Show Answer";
+          }
+          isAnswerShown = false;
         }
-        s1.setValue(f2);
-        s2.setValue(f1);
-        // Disable after click
-        showAnsBtn.style.opacity = "0.5";
-        showAnsBtn.style.pointerEvents = "none";
-        showAnsBtn.style.cursor = "not-allowed";
       };
     }
 
