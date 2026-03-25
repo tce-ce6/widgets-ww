@@ -526,9 +526,7 @@ function initWidget() {
       showElements("#act-04-checkbox-default");
       //  hideElements("#act-04-checkbox-selected");
       hideElements("#act-04-feedback-end");
-      if (backNextBtn) {
-        backNextBtn.classList.remove("st767");
-      }
+
       hideElements("#Group_594-2"); // Hide Next Button
       hideElements("#btn-insights"); // Hide Insights Button
       setupScreen4();
@@ -995,11 +993,14 @@ function initWidget() {
     if (showAnsBtn) {
       showAnsBtn.style.cursor = "pointer";
       let isAnswerShown = false;
-
+      let tspans = showAnsBtn.querySelectorAll("tspan");
+      if (tspans.length > 0) {
+        tspans[0].textContent = "Show Answer";
+      }
       showAnsBtn.onclick = (e) => {
         if (e) e.stopPropagation();
 
-        const tspans = showAnsBtn.querySelectorAll("tspan");
+
 
         if (!isAnswerShown) {
           // Find first fair trade values
@@ -1009,11 +1010,11 @@ function initWidget() {
             f1 = 2; // Rice
             f2 = 4; // Cloth
           } else if (sc === 2) {
-            f1 = 1; // Pot
-            f2 = 3; // Medical
+            f1 = 3; // Pot
+            f2 = 1; // Medical
           } else if (sc === 3) {
-            f1 = 3; // Fish
-            f2 = 4; // Plough
+            f1 = 4; // Fish
+            f2 = 3; // Plough
           }
           s1.setValue(f2);
           s2.setValue(f1);
@@ -1223,13 +1224,16 @@ function initWidget() {
         }
 
         // Check if all checkboxes have been clicked
-        if (clickedBoxes.size === 8) {
+        if (clickedBoxes.size === 1) {
           if (btnSubmit) {
             btnSubmit.style.opacity = "1";
             btnSubmit.style.pointerEvents = "auto";
             btnSubmit.style.cursor = "pointer";
             btnSubmit.onclick = () => {
-              backNextBtn.classList.add("st767");
+              sels.forEach(element => {
+                element.classList.remove("st767", "hidden-svg");
+              });
+
               showElements("#act-04-feedback-end");
             };
           }
