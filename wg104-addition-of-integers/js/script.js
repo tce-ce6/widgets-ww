@@ -64,6 +64,7 @@ class UIManager {
     this.addPlusBtn = document.getElementById("add-plus-button");
     this.addMinusBtn = document.getElementById("add-minus-btn");
     this.timelineGroup = document.getElementById("timeline");
+    this.jumpsGroup = document.getElementById("timeline-jumps");
     this.chipInstruction = document.getElementById("i-text-01");
     this.dynamicChipsGroup = document.getElementById("dynamic-chips");
 
@@ -240,6 +241,8 @@ class UIManager {
     });
 
     this.newProblemBtn.addEventListener("click", () => {
+      this.showAnswerBtn.style.cursor = 'pointer'
+      this.showAnswerBtn.style.opacity = '1'
       this.state.isPlayground = false;
       this.state.newProblem();
       this.clearChips();
@@ -277,6 +280,8 @@ class UIManager {
         if (this.state.isEnteringCustomProblem) {
           this.finalizeCustomProblem();
         } else {
+          this.showAnswerBtn.style.opacity = '1'
+          this.showAnswerBtn.style.cursor = 'pointer'
           this.checkAnswer();
         }
       });
@@ -435,14 +440,31 @@ class UIManager {
 
   drawArrow(fromVal, toVal, color) {
     return new Promise((resolve) => {
+      const fromX = this.getTickX(fromVal);
       const toX = this.getTickX(toVal);
 
       // Simple delay to simulate movement timing
       setTimeout(() => {
         // Move point along
-        // The point's original position is at 1232, so we need to adjust the translate
         if (this.point) {
           this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
+        }
+
+        // Draw the arched jump path
+        if (this.jumpsGroup) {
+          const r = Math.abs(toX - fromX) / 2;
+          const sweep = toX > fromX ? 1 : 0;
+          const h = Math.min(r, 60); // Arch height capped for better visuals
+          const pathData = `M ${fromX} 572 A ${r} ${h} 0 0 ${sweep} ${toX} 572`;
+
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", pathData);
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", color);
+          path.setAttribute("stroke-width", "6");
+          path.setAttribute("stroke-linecap", "round");
+          
+          this.jumpsGroup.appendChild(path);
         }
 
         setTimeout(() => {
@@ -456,6 +478,9 @@ class UIManager {
     // Reset point to its original position (no translation)
     if (this.point) {
       this.point.setAttribute("transform", "translate(0, 0)");
+    }
+    if (this.jumpsGroup) {
+      this.jumpsGroup.innerHTML = "";
     }
   }
 
@@ -481,7 +506,8 @@ class UIManager {
   showAnswer() {
     this.state.userAnswer = this.state.currentProblem.answer.toString();
     this.answerBox.textContent = this.state.userAnswer;
-
+    this.showAnswerBtn.style.cursor = 'none'
+    this.showAnswerBtn.style.opacity = '0.5'
     if (this.state.mode === MODES.CHIP) {
       this.autoAddProblemChips();
     } else {
@@ -602,9 +628,11 @@ class UIManager {
 
     this.state.currentProblem = { a, b, answer: a + b };
     this.state.isEnteringCustomProblem = false;
-    this.state.isPlayground = false;
+    // this.state.isPlayground = false;
     this.clearChips();
-    this.autoAddProblemChips();
+    if (!this.state.isPlayground) {
+      this.autoAddProblemChips();
+    }
     this.hideKeypad();
     this.updateUI();
   }
@@ -1053,7 +1081,7 @@ class UIManager {
     this.btn1Type = "plus";
     this.btn2Type = "minus";
 
-    if (isChipMode && this.state.currentProblem) {
+    if (isChipMode && !isPlayground && this.state.currentProblem) {
       this.btn1Type = this.state.currentProblem.a >= 0 ? "plus" : "minus";
       this.btn2Type = this.state.currentProblem.b >= 0 ? "plus" : "minus";
     }
@@ -1149,8 +1177,8 @@ class UIManager {
 
     if (!isPlayground) {
       if (!this.state.currentProblem) this.state.newProblem();
-      this.updateQuestionText();
     }
+    this.updateQuestionText();
 
     this.answerBox.textContent = this.state.userAnswer;
 
