@@ -121,7 +121,7 @@ function render() {
     const isInput = simulationState === -1;
     document.getElementById('btn-show').style.display = isInput ? 'none' : 'inline-block';
     // Submit only shows when an arrow is being used
-    document.getElementById('btn-submit').style.display = ((simulationState === 2 && !hasNonZeroHundredths) || simulationState === 4) ? 'inline-block' : 'none';
+    document.getElementById('btn-submit').style.display = (simulationState === 4) ? 'inline-block' : 'none';
     document.getElementById('btn-try').style.display = simulationState === 5 ? 'inline-block' : 'none';
 
     if (isInput) renderInputScreen(svg);
@@ -165,7 +165,7 @@ function renderSimulationScreen(svg) {
         line2.min = line1.correct;
         line2.max = line1.correct + 1;
         line2.correct = Math.floor((decimalValue * 10) % 10);
-        line2.type = 'interval';
+        line2.type = (!hasNonZeroHundredths && simulationState >= 4) ? 'arrow' : 'interval';
         renderNumberLine(svg, line2, 1);
     }
 
@@ -183,18 +183,19 @@ function renderSimulationScreen(svg) {
         renderNumberLine(svg, line3, 2);
     }
 
-    // Line 2 becomes arrow when no hundredths exist
-    if (simulationState >= 2 && !hasNonZeroHundredths) {
-        line2.type = 'arrow';
-        if (!line2.arrowX) line2.arrowX = START_X + (line2.correct * SEGMENT_WIDTH);
-        renderArrow(svg, line2, simulationState === 2);
-    }
-
     // Magnifier Logic
     if (showSearchIcon1) {
         renderMagnifier(svg, line1.correct, Y_LINE1, () => {
-            simulationState = 2; showSearchIcon1 = false;
-            feedbackMessage = `Zoomed in. Now find the correct interval for the tenths.`;
+            showSearchIcon1 = false;
+            if (hasNonZeroHundredths) {
+                simulationState = 2;
+                feedbackMessage = `Zoomed in. Now find the correct interval for the tenths.`;
+            } else {
+                simulationState = 4;
+                if (!line2.arrowX) line2.arrowX = START_X;
+                line2.selected = 0;
+                feedbackMessage = `Zoomed in. Drag the arrow to the exact location.`;
+            }
             render();
         });
     }
@@ -247,10 +248,11 @@ function renderNumberLine(svg, lineObj, depth) {
             fo.appendChild(div);
         }
     } else if (lineObj.type === 'arrow') {
-        // Arrow Logic - only render when it's the final stage
-        if ((depth === 1 && simulationState === 2) || (depth === 2 && simulationState === 4)) {
+        const showTenthsArrow = depth === 1 && !hasNonZeroHundredths && simulationState >= 4;
+        const showHundredthsArrow = depth === 2 && hasNonZeroHundredths && simulationState >= 4;
+        if (showTenthsArrow || showHundredthsArrow) {
             const isDraggable = true;
-            renderArrow(svg, lineObj, isDraggable);
+            renderArrow(svg, lineObj, simulationState !== 5 && isDraggable);
         }
     }
 }
@@ -324,17 +326,18 @@ function handleSubmit() {
         finalMessage = "Check your work";
         activeLine.arrowX = START_X + (activeLine.correct * SEGMENT_WIDTH); // Snap to correct
     }
+    feedbackMessage = "";
     render();
 }
 
 function handleShowAnswer() {
     if (simulationState === 0) handleIntervalSelection(line1, line1.correct, 0);
-    else if (simulationState === 1 || simulationState === 2) {
-        if (hasNonZeroHundredths) {
-            if (simulationState === 2) handleIntervalSelection(line2, line2.correct, 1);
-            else { line2.selected = line2.correct; showSearchIcon2 = true; render(); }
-        }
-        else { line2.selected = line2.correct; line2.arrowX = START_X + (line2.correct * SEGMENT_WIDTH); handleSubmit(); }
+    else if (!hasNonZeroHundredths) {
+        line2.selected = line2.correct;
+        line2.arrowX = START_X + (line2.correct * SEGMENT_WIDTH);
+        handleSubmit();
+    } else if (simulationState === 2) {
+        handleIntervalSelection(line2, line2.correct, 1);
     } else {
         line3.selected = line3.correct; line3.arrowX = START_X + (line3.correct * SEGMENT_WIDTH); handleSubmit();
     }
@@ -364,8 +367,11 @@ function drawZoomLines(svg, idx, yT, yB) {
 }
 
 function renderFeedback(svg) {
-    if (finalMessage) createFO(svg, 0, Y_FINAL_MSG - 30, SVG_WIDTH, 60, `<div class="fo-text final-text" style="text-align:center; font-size:35px; font-weight:bold;">${finalMessage}</div>`);
-    createFO(svg, 0, Y_FEEDBACK - 20, SVG_WIDTH, 40, `<div class="fo-text feedback-text" style="text-align:center; font-size:24px;">${feedbackMessage}</div>`);
+    if (finalMessage) {
+        createFO(svg, 0, Y_FINAL_MSG - 30, SVG_WIDTH, 60, `<div class="fo-text final-text" style="text-align:center; font-size:35px; font-weight:bold;">${finalMessage}</div>`);
+        return;
+    }
+    createFO(svg, 0, Y_FEEDBACK - 20, SVG_WIDTH, 40, `<div class="fo-text feedback-text" style="text-align:center; font-size:30px;">${feedbackMessage}</div>`);
 }
 
 function renderLottieIcon(svg, x, y, type, onClick) {
