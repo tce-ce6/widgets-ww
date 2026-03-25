@@ -240,6 +240,8 @@ class UIManager {
     });
 
     this.newProblemBtn.addEventListener("click", () => {
+      this.showAnswerBtn.style.cursor = 'pointer'
+      this.showAnswerBtn.style.opacity = '1'
       this.state.isPlayground = false;
       this.state.newProblem();
       this.clearChips();
@@ -277,6 +279,8 @@ class UIManager {
         if (this.state.isEnteringCustomProblem) {
           this.finalizeCustomProblem();
         } else {
+          this.showAnswerBtn.style.opacity = '1'
+          this.showAnswerBtn.style.cursor = 'pointer'
           this.checkAnswer();
         }
       });
@@ -481,7 +485,8 @@ class UIManager {
   showAnswer() {
     this.state.userAnswer = this.state.currentProblem.answer.toString();
     this.answerBox.textContent = this.state.userAnswer;
-
+    this.showAnswerBtn.style.cursor = 'none'
+    this.showAnswerBtn.style.opacity = '0.5'
     if (this.state.mode === MODES.CHIP) {
       this.autoAddProblemChips();
     } else {
@@ -602,9 +607,11 @@ class UIManager {
 
     this.state.currentProblem = { a, b, answer: a + b };
     this.state.isEnteringCustomProblem = false;
-    this.state.isPlayground = false;
+    // this.state.isPlayground = false;
     this.clearChips();
-    this.autoAddProblemChips();
+    if (!this.state.isPlayground) {
+      this.autoAddProblemChips();
+    }
     this.hideKeypad();
     this.updateUI();
   }
@@ -1053,7 +1060,7 @@ class UIManager {
     this.btn1Type = "plus";
     this.btn2Type = "minus";
 
-    if (isChipMode && this.state.currentProblem) {
+    if (isChipMode && !isPlayground && this.state.currentProblem) {
       this.btn1Type = this.state.currentProblem.a >= 0 ? "plus" : "minus";
       this.btn2Type = this.state.currentProblem.b >= 0 ? "plus" : "minus";
     }
@@ -1149,8 +1156,8 @@ class UIManager {
 
     if (!isPlayground) {
       if (!this.state.currentProblem) this.state.newProblem();
-      this.updateQuestionText();
     }
+    this.updateQuestionText();
 
     this.answerBox.textContent = this.state.userAnswer;
 
