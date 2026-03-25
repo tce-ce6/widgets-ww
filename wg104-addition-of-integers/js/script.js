@@ -464,10 +464,6 @@ class UIManager {
           path.setAttribute("stroke-width", "6");
           path.setAttribute("stroke-linecap", "round");
           
-          // Reference the marker defined in index.html
-          const markerId = color === "#ff2020" ? "arrowhead-red" : "arrowhead-blue";
-          path.setAttribute("marker-end", `url(#${markerId})`);
-          
           this.jumpsGroup.appendChild(path);
         }
 
