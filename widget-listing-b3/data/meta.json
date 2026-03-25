@@ -45,7 +45,7 @@
       "author": "PrasannaP"
     },
     "wg113-making-of-Indias-constitution": {
-      "updatedAt": "2026-03-07T20:39:50+05:30",
+      "updatedAt": "2026-03-25T12:23:30+05:30",
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-24T20:08:19+05:30",
+      "updatedAt": "2026-03-25T12:23:30+05:30",
       "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
@@ -181,7 +181,7 @@
       "author": "PrasannaP"
     },
     "wg150-blood-circulation": {
-      "updatedAt": "2026-03-24T18:40:58+05:30",
+      "updatedAt": "2026-03-25T12:23:30+05:30",
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
@@ -382,6 +382,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-25T12:23:30+05:30",
+      "author": "tce-nitinc",
+      "message": "wg113 and 1g 150",
+      "widgets": [
+        113,
+        123,
+        150
+      ]
+    },
     {
       "date": "2026-03-25T11:55:44+05:30",
       "author": "PrasannaP",
@@ -622,14 +632,6 @@
       "message": "fix wg67",
       "widgets": [
         67
-      ]
-    },
-    {
-      "date": "2026-03-24T16:32:20+05:30",
-      "author": "PrasannaP",
-      "message": "fix: improve text formatting and readability in wg70.html",
-      "widgets": [
-        70
       ]
     }
   ]
