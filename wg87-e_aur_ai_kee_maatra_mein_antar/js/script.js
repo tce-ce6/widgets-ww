@@ -7,6 +7,9 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+let lottieInstances_star = null;
+let animationTimeout = null;
+let starAnimationTimeout = null;
 let correctPlacementSequence = [];
 let placementIndex = 0;
 const LottieAnimations = {
@@ -100,7 +103,7 @@ function highlightConsonantWithUmatra(text) {
     (match) => {
       const charCode = match.charCodeAt(1); // Get code of the matra (2nd char)
       const className = charCode === 0x0948 ? "ai-vowel" : "e-vowel"; // 0948 = ऐ की मात्रा, 0947 = ए की मात्रा
-      return `<span>${match}</span>`;
+      return `<span class="${className}">${match}</span>`;
     },
   );
 }
@@ -263,10 +266,14 @@ function playAudio(type) {
 }
 function playAnimationAudio(bandGroup) {
   let name = "";
-  name = LottieAnimations[selectedWord.type][bandGroup].replace("json", "mp3");
+  const audioMap = {
+    CORRECT: selectedWord.type === "ayee" ? "feedback-correct-ayee.mp3" : "feedback-correct-ye.mp3",
+    INCORRECT: "feedback-incorrect.mp3"
+  };
+  name = audioMap[bandGroup];
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
-  audioPlayer.src = `assets/JSON/${name}`;
+  audioPlayer.src = `assets/audio/final_audio/${name}`;
   audioPlayer.play();
 }
 
@@ -290,10 +297,14 @@ function showAnswer(state = "none") {
 // }
 function lottiAnimation(state = "block") {
   const el = document.getElementById("Character_train_01");
+  if (!el) return;
   if (state === "none") {
     el.style.visibility = "hidden";
+    el.style.display = "none";
+  } else {
+    el.style.display = ""; // Restore to default (visible)
+    // "block" visibility is usually handled by enterFrame reveal in playLottieAnimation
   }
-  // "block" is handled by enterFrame reveal — no display toggle needed
 }
 function nextbutton(state = "block") {
   document.getElementById("age_badhe_button").style.display = state;
@@ -416,6 +427,7 @@ function playLottieAnimation(bandGroup) {
     lottieInstances = null;
   }
   containerEl.innerHTML = "";
+  parentEl.style.display = ""; // Ensure it's not hidden by display: none
   parentEl.classList.remove("visible");
   parentEl.style.visibility = "hidden"; // keep hidden while loading
   parentEl.style.opacity = "";
@@ -431,7 +443,16 @@ function playLottieAnimation(bandGroup) {
 
     lottieInstances.addEventListener("DOMLoaded", () => {
       playAnimationAudio(bandGroup);
-      setTimeout(() => { lottieInstances.play(); }, 10);
+      setTimeout(() => {
+        lottieInstances.play();
+        // Fallback: make visible if enterFrame is delayed or skipped
+        setTimeout(() => {
+          if (!parentEl.classList.contains("visible")) {
+            parentEl.style.visibility = "visible";
+            parentEl.classList.add("visible");
+          }
+        }, 150);
+      }, 10);
     });
 
     lottieInstances.addEventListener("enterFrame", (e) => {
