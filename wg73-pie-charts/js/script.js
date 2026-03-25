@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameKeys = ['daily', 'budget', 'icecream', 'air'];
 
     let feedbackAnims = {};
+    let pieChartAbortController = null;
 
     function initFeedbackAnims() {
         const correctContainer = document.getElementById('lottie-correct');
@@ -479,12 +480,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 popCumulativeAngle = endA;
             });
 
+            // Disable Submit, Show Answer, Reset while popup is open
+            const overlayBtns = ['Group_1647', 'Group_1161', 'Group_540'];
+            overlayBtns.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.style.opacity = '0.5'; el.style.pointerEvents = 'none'; }
+            });
+
             // Wire close button
             const closeBtn = document.getElementById('answer-popup-close-btn');
             if (closeBtn) {
                 const newClose = closeBtn.cloneNode(true);
                 closeBtn.parentNode.replaceChild(newClose, closeBtn);
-                newClose.addEventListener('click', () => { answerPopup.style.display = 'none'; });
+                newClose.addEventListener('click', () => {
+                    answerPopup.style.display = 'none';
+                    // Re-enable buttons, restoring disabled state based on fill status
+                    const allFilled = currentPieCategories.every(cat => cat.inputEl && cat.inputEl.value.trim() !== "");
+                    overlayBtns.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.style.opacity = allFilled ? '1' : '0.5';
+                            el.style.pointerEvents = allFilled ? 'auto' : 'none';
+                            if (allFilled) el.style.cursor = 'pointer';
+                        }
+                    });
+                });
             }
 
             answerPopup.style.display = 'block';
@@ -520,12 +540,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function initPieChartLogic() {
+        if (pieChartAbortController) {
+            pieChartAbortController.abort();
+        }
+        pieChartAbortController = new AbortController();
+        const signal = pieChartAbortController.signal;
+
         const selector = document.getElementById('Pie-Chart_Angle_selector');
         let dynamicSectors = document.getElementById('dynamic-sectors');
         if (!dynamicSectors && selector) {
             dynamicSectors = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             dynamicSectors.id = 'dynamic-sectors';
             selector.parentNode.insertBefore(dynamicSectors, selector);
+        }
+
+        let previewSector = document.getElementById('preview-sector-path');
+        if (!previewSector && dynamicSectors) {
+            previewSector = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            previewSector.id = 'preview-sector-path';
+            previewSector.setAttribute('stroke', '#fff');
+            previewSector.setAttribute('stroke-width', '2');
+            previewSector.style.display = 'none';
+            dynamicSectors.appendChild(previewSector);
         }
 
         const lineGroup = document.getElementById('Group_1675');
@@ -547,32 +583,64 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         };
 
-        const resetChart = () => {
-            currentCumulativeAngle = 0;
-            if (dynamicSectors) dynamicSectors.innerHTML = '';
-            if (lineGroup) lineGroup.setAttribute('transform', `rotate(0, 1411.5, 536.59)`);
-            currentPieCategories.forEach(cat => {
-                cat.plotted = false; cat.inputAngle = 0;
-                if (cat.inputEl) cat.inputEl.value = '0';
-                const dot = document.getElementById(cat.dotId);
-                const path = document.getElementById(cat.pathId);
-                if (dot) dot.style.display = 'block'; // Keep dot showing center
-                if (path) {
-                    path.style.display = 'block';
-                    // Reset to 0 degrees arm
-                    path.setAttribute('d', `M${cat.cx},${cat.cy} L${cat.cx},${cat.cy - 31}`);
-                }
-            });
-            // Hide all labels on reset
-            const pieLabelsReset = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
-            pieLabelsReset.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-            // Draw white background circle
+        const getBaseAngle = (catIdx) => {
+            let sum = 0;
+            for (let i = 0; i < catIdx; i++) {
+                sum += (currentPieCategories[i].inputAngle || 0);
+            }
+            return sum;
+        };
+
+        const redrawLivePie = () => {
             if (dynamicSectors) {
+                dynamicSectors.innerHTML = '';
                 const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 bgCircle.setAttribute('cx', '1411.5'); bgCircle.setAttribute('cy', '536.59'); bgCircle.setAttribute('r', '279');
                 bgCircle.setAttribute('fill', '#ffffff');
                 dynamicSectors.appendChild(bgCircle);
             }
+            
+            let currentStart = 0;
+            currentPieCategories.forEach((c) => {
+                let val = c.inputAngle || 0;
+                if (val > 0 && dynamicSectors) {
+                    const sectorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    sectorPath.setAttribute('d', describeArc(1411.5, 536.59, 279, currentStart, currentStart + val));
+                    sectorPath.setAttribute('fill', c.color); 
+                    sectorPath.setAttribute('stroke', '#fff'); 
+                    sectorPath.setAttribute('stroke-width', '2');
+                    dynamicSectors.appendChild(sectorPath);
+                }
+                
+                const pathEl = document.getElementById(c.pathId);
+                if (pathEl) {
+                    pathEl.style.display = 'block';
+                    const absoluteAngle = currentStart + val;
+                    const rad = (absoluteAngle - 90) * Math.PI / 180.0;
+                    const rx = c.cx + (31 * Math.cos(rad));
+                    const ry = c.cy + (31 * Math.sin(rad));
+                    pathEl.setAttribute('d', `M${c.cx},${c.cy} L${rx},${ry}`);
+                }
+                currentStart += val;
+                
+                const dot = document.getElementById(c.dotId);
+                if (dot) dot.style.display = 'block';
+            });
+
+            if (lineGroup) {
+                lineGroup.setAttribute('transform', `rotate(${currentStart}, 1411.5, 536.59)`);
+            }
+        };
+
+        const resetChart = () => {
+            currentCumulativeAngle = 0;
+            currentPieCategories.forEach(cat => {
+                cat.plotted = false; cat.inputAngle = 0;
+                if (cat.inputEl) cat.inputEl.value = '0';
+            });
+            const pieLabelsReset = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
+            pieLabelsReset.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+            redrawLivePie();
             updateSubmitResetState();
         };
 
@@ -583,24 +651,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (cat.plotted) return;
                 const inputVal = cat.inputAngle || 0;
                 if (inputVal <= 0) { createPopup('Please enter an angle first!', false); return; }
-                const startA = currentCumulativeAngle;
-                const endA = currentCumulativeAngle + inputVal;
-                if (dynamicSectors) {
-                    const sectorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    sectorPath.setAttribute('d', describeArc(1411.5, 536.59, 279, startA, endA));
-                    sectorPath.setAttribute('fill', cat.color); sectorPath.setAttribute('stroke', '#fff'); sectorPath.setAttribute('stroke-width', '2');
-                    dynamicSectors.appendChild(sectorPath);
-                }
-                currentCumulativeAngle = endA; cat.plotted = true;
-                if (lineGroup) lineGroup.setAttribute('transform', `rotate(${currentCumulativeAngle}, 1411.5, 536.59)`);
-                const dot = document.getElementById(cat.dotId); if (dot) dot.style.display = 'block';
-                // Show label for this segment
+                
+                cat.plotted = true;
+                
                 const labelIds = ["Group_1669", "Group_1670", "Group_1671", "Group_1672", "Group_1673", "Group_1674"];
                 const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
                 if (catIdx !== -1 && labelIds[catIdx]) {
                     const lbl = document.getElementById(labelIds[catIdx]);
                     if (lbl) lbl.style.display = 'block';
                 }
+
+                const unplottedCats = currentPieCategories.filter(c => !c.plotted);
+                if (unplottedCats.length === 1) {
+                    const lastCat = unplottedCats[0];
+                    let sum = 0;
+                    currentPieCategories.forEach(c => { if (c.id !== lastCat.id) sum += (c.inputAngle || 0); });
+                    const remainingAngle = 360 - sum;
+                    if (remainingAngle > 0) {
+                        lastCat.inputAngle = remainingAngle;
+                        if (lastCat.inputEl) lastCat.inputEl.value = remainingAngle;
+                        lastCat.plotted = true;
+                        
+                        const lastIdx = currentPieCategories.findIndex(c => c.id === lastCat.id);
+                        if (lastIdx !== -1 && labelIds[lastIdx]) {
+                            const lbl = document.getElementById(labelIds[lastIdx]);
+                            if (lbl) lbl.style.display = 'block';
+                        }
+                    }
+                }
+                
+                redrawLivePie();
+                updateSubmitResetState();
             };
 
             const parentGroup = document.getElementById(cat.rectGroupId);
@@ -610,17 +691,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 textGroups.forEach(tg => tg.style.display = 'none');
                 const rect = parentGroup.querySelector('rect');
                 if (rect) {
-                    const updateRadiusArm = (angle) => {
-                        const pathEl = document.getElementById(cat.pathId);
-                        if (pathEl) {
-                            pathEl.style.display = 'block';
-                            const rad = (angle - 90) * Math.PI / 180.0;
-                            const rx = cat.cx + (31 * Math.cos(rad));
-                            const ry = cat.cy + (31 * Math.sin(rad));
-                            pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${rx},${ry}`);
-                        }
-                    };
-
                     const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
                     fo.setAttribute('x', rect.getAttribute('x')); fo.setAttribute('y', rect.getAttribute('y'));
                     fo.setAttribute('width', rect.getAttribute('width')); fo.setAttribute('height', rect.getAttribute('height'));
@@ -651,18 +721,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     fo.appendChild(container); parentGroup.appendChild(fo);
                     cat.inputEl = input;
                     cat.inputAngle = 0;
-                    updateRadiusArm(0);
 
                     input.addEventListener('input', () => {
-                        let val = parseFloat(input.value) || 0;
+                        let val = Math.round(parseFloat(input.value) || 0);
                         if (val < 0) { val = 0; input.value = 0; }
-                        if (val > 360) { val = 360; input.value = 360; }
+                        
+                        const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
+                        let otherSum = 0;
+                        currentPieCategories.forEach((c, idx) => { if (idx !== catIdx) otherSum += (c.inputAngle || 0); });
+                        let maxAllowed = 360 - otherSum;
+                        
+                        if (val > maxAllowed) { val = maxAllowed; input.value = maxAllowed; }
+                        
                         cat.inputAngle = val;
-                        updateRadiusArm(val);
-                        if (!cat.plotted && lineGroup) {
-                            const previewAngle = currentCumulativeAngle + cat.inputAngle;
-                            lineGroup.setAttribute('transform', `rotate(${previewAngle}, 1411.5, 536.59)`);
-                        }
+                        redrawLivePie();
+                        updateSubmitResetState();
                     });
                     input.addEventListener('input', updateSubmitResetState);
                     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') plotSegment(); });
@@ -692,38 +765,57 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     const dx = svgPt.x - cat.cx;
                     const dy = svgPt.y - cat.cy;
-                    let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-                    if (angle < 0) angle += 360;
+                    let ptAngle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+                    if (ptAngle < 0) ptAngle += 360;
+                    ptAngle = Math.round(ptAngle);
+                    if (ptAngle === 360) ptAngle = 0;
                     
-                    angle = Math.round(angle);
-                    if (angle === 360) angle = 0;
+                    const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
+                    const baseAngle = getBaseAngle(catIdx);
                     
-                    cat.inputAngle = angle;
-                    if (cat.inputEl) cat.inputEl.value = angle;
-                    
-                    const pathEl = document.getElementById(cat.pathId);
-                    if (pathEl) {
-                        pathEl.style.display = 'block';
-                        const rad = (angle - 90) * Math.PI / 180.0;
-                        const rx = cat.cx + (31 * Math.cos(rad));
-                        const ry = cat.cy + (31 * Math.sin(rad));
-                        pathEl.setAttribute('d', `M${cat.cx},${cat.cy} L${rx},${ry}`);
+                    let absoluteAngle = ptAngle;
+                    if (absoluteAngle < baseAngle && absoluteAngle < 90 && baseAngle > 270) {
+                         absoluteAngle += 360;
                     }
                     
-                    if (!cat.plotted && lineGroup) {
-                        const previewAngle = currentCumulativeAngle + cat.inputAngle;
-                        lineGroup.setAttribute('transform', `rotate(${previewAngle}, 1411.5, 536.59)`);
-                    }
+                    let relAngle = absoluteAngle - baseAngle;
+                    if (relAngle < 0) relAngle = 0; 
+                    
+                    let otherSum = 0;
+                    currentPieCategories.forEach((c, idx) => { if (idx !== catIdx) otherSum += (c.inputAngle || 0); });
+                    let maxAllowed = 360 - otherSum;
+                    if (relAngle > maxAllowed) relAngle = maxAllowed;
+                    
+                    cat.inputAngle = Math.round(relAngle);
+                    if (cat.inputEl) cat.inputEl.value = cat.inputAngle;
+                    
+                    redrawLivePie();
                     updateSubmitResetState();
                 };
 
-                newBtn.addEventListener('mousedown', (e) => { if(!cat.plotted) { isDragging = true; hasMoved = false; } });
-                window.addEventListener('mousemove', handleMove);
-                window.addEventListener('mouseup', () => { isDragging = false; });
+                newBtn.addEventListener('mousedown', (e) => { 
+                    if(!cat.plotted) { 
+                        isDragging = true; 
+                        hasMoved = false; 
+                    } 
+                });
+                window.addEventListener('mousemove', handleMove, { signal });
+                window.addEventListener('mouseup', () => { 
+                    if (isDragging && hasMoved) plotSegment();
+                    isDragging = false; 
+                }, { signal });
                 
-                newBtn.addEventListener('touchstart', (e) => { if(!cat.plotted) { isDragging = true; hasMoved = false; } }, {passive: false});
-                window.addEventListener('touchmove', handleMove, {passive: false});
-                window.addEventListener('touchend', () => { isDragging = false; });
+                newBtn.addEventListener('touchstart', (e) => { 
+                    if(!cat.plotted) { 
+                        isDragging = true; 
+                        hasMoved = false; 
+                    } 
+                }, {passive: false});
+                window.addEventListener('touchmove', handleMove, { passive: false, signal });
+                window.addEventListener('touchend', () => { 
+                    if (isDragging && hasMoved) plotSegment();
+                    isDragging = false; 
+                }, { signal });
 
                 newBtn.addEventListener('click', (e) => {
                     if (!hasMoved) plotSegment();
@@ -799,11 +891,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const correctPopup = document.getElementById('correct-popup-container');
         if (correctPopup) {
-            correctPopup.addEventListener('click', () => correctPopup.style.display = 'none');
+            correctPopup.onclick = () => correctPopup.style.display = 'none';
         }
         const incorrectPopup = document.getElementById('incorrect-popup-container');
         if (incorrectPopup) {
-            incorrectPopup.addEventListener('click', () => incorrectPopup.style.display = 'none');
+            incorrectPopup.onclick = () => incorrectPopup.style.display = 'none';
         }
 
         const resetBtn = document.getElementById('Group_540');
