@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Shuffle the draggables with animation
                 shuffleDraggables(true);
                 
-                setupAnimations();
+                // setupAnimations();
             });
 
             hitbox.addEventListener("mouseenter", () => hitbox.style.fill = "rgba(0,0,0,0.05)");
