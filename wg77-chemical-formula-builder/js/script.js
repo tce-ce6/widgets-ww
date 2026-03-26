@@ -81,21 +81,30 @@ function init() {
 
 }
 function modalFunctionality() {
-
   document.getElementById("ruleModal").style.display = "none";
   document.getElementById("exampleModal").style.display = "none";
+  let backdrop = document.getElementById("modal-backdrop");
+  if (backdrop) backdrop.style.display = "none";
+
   let button = document.getElementById("ruleBtn");
-  button.addEventListener("click", function () {
-    document.getElementById("ruleModal").style.display = "block";
-    document.getElementById("exampleModal").style.display = "none";
+  if (button) {
+    button.addEventListener("click", function () {
+      document.getElementById("ruleModal").style.display = "block";
+      document.getElementById("exampleModal").style.display = "none";
+      let backdropEl = document.getElementById("modal-backdrop");
+      if (backdropEl) backdropEl.style.display = "block";
+    });
+  }
 
-  });
   let btnClose = document.getElementById("btn-close");
-  btnClose.addEventListener("click", function () {
-    document.getElementById("ruleModal").style.display = "none";
-    document.getElementById("exampleModal").style.display = "none";
-  })
-
+  if (btnClose) {
+    btnClose.addEventListener("click", function () {
+      document.getElementById("ruleModal").style.display = "none";
+      document.getElementById("exampleModal").style.display = "none";
+      let backdropEl = document.getElementById("modal-backdrop");
+      if (backdropEl) backdropEl.style.display = "none";
+    });
+  }
 }
 
 function setupInteractions() {
@@ -282,7 +291,7 @@ function loadSVGIntoContainer(svgUrl, containerId, callback) {
 function showCrissCrossLines() {
   const line1 = document.getElementById("cross_lines_1");
   const line2 = document.getElementById("cross_lines_2");
-  
+
   if (line1) {
     line1.style.display = "block";
     line1.classList.remove("visible");
@@ -307,7 +316,7 @@ function showCrissCrossLines() {
   setTimeout(() => {
     const explanation_box = document.getElementById("compound_explanation_box");
     if (explanation_box) explanation_box.style.display = "block";
-  }, 1600);
+  }, 2500);
 
   setTimeout(() => {
     const chargePlus = document.getElementById("1+");
@@ -520,23 +529,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("ruleModal");
   const closeBtn = document.querySelector(".close-btn");
   const ruleButton = document.getElementById("rules"); // Your SVG Rule button
+  const backdrop = document.getElementById("modal-backdrop");
 
-  if (ruleButton) {
+  if (ruleButton && modal) {
     ruleButton.style.cursor = "pointer";
     ruleButton.onclick = () => {
       modal.style.display = "block";
+      if (backdrop) backdrop.style.display = "block";
     };
   }
 
   // Close button logic
-  closeBtn.onclick = () => {
-    modal.style.display = "none";
-  };
+  if (closeBtn && modal) {
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+      if (backdrop) backdrop.style.display = "none";
+    };
+  }
 
   // Click outside to close
   window.onclick = (event) => {
     if (event.target == modal) {
-      modal.style.display = "none";
+      if (modal) modal.style.display = "none";
+      if (backdrop) backdrop.style.display = "none";
     }
   };
 });
