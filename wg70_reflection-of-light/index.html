@@ -4,14 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refraction Lab: Reflection & Refraction</title>
+    <title>Refraction, Total Internal Reflection and Critical Angle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        @font-face {
+            font-family: 'Roboto';
+            src: url('./assets/font/Roboto-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            src: url('./assets/font/Roboto-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            src: url('./assets/font/Roboto-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            src: url('./assets/font/Roboto-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            src: url('./assets/font/Roboto-ExtraBold.ttf') format('truetype');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
         }
 
         canvas {
@@ -52,19 +90,43 @@
             border-color: rgba(34, 211, 238, 0.65);
             box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
         }
+
+        /* Single-screen standard: avoid scrollbars */
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Let the widget card and canvas flex to viewport */
+        .widget-card {
+            height: 100%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #canvas-container {
+            flex: 1 1 auto;
+            min-height: 260px;
+        }
+
+        @media (max-height: 760px) {
+            #canvas-container {
+                min-height: 220px;
+            }
+        }
     </style>
 </head>
 
-<body class="app-bg text-slate-100 min-h-screen flex flex-col">
+<body class="app-bg text-slate-100 h-screen overflow-hidden flex flex-col">
 
     <!-- Header -->
-    <header class="p-5 md:p-6 panel-glass shadow-md relative z-10">
+    <header class="p-4 md:p-5 panel-glass shadow-md relative z-10 flex-none">
         <div class="max-w-5xl mx-auto flex flex-col gap-4">
             <div>
                 <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-cyan-300">Reflection & Refraction Lab
                 </h1>
-                <p id="header-desc" class="text-slate-300/90 text-sm mt-1">Explore how light bends across different
-                    media.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
@@ -101,16 +163,16 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow p-4 md:p-8 flex flex-col items-center justify-center relative">
+    <main class="flex-1 min-h-0 p-3 md:p-5 flex flex-col items-center justify-center relative overflow-hidden">
 
-        <div class="max-w-5xl w-full panel-glass rounded-2xl shadow-2xl overflow-hidden relative">
+        <div class="max-w-5xl w-full panel-glass rounded-2xl shadow-2xl overflow-hidden relative widget-card">
 
             <!-- Physics Display Overlay -->
             <div class="absolute top-4 left-4 z-10 space-y-2 pointer-events-none">
                 <div class="bg-slate-950/70 backdrop-blur p-3 rounded-lg border border-slate-700/80 text-sm shadow-lg">
                     <div class="flex justify-between gap-4 mb-1">
                         <span class="text-slate-400" id="n1-label">Medium 1 (Glass):</span>
-                        <span class="font-mono text-cyan-400" id="n1-val">n₁ = 1.50</span>
+                        <span class="font-mono text-cyan-400" id="n1-val">n₁ = 1.52</span>
                     </div>
                     <div class="flex justify-between gap-4">
                         <span class="text-slate-400" id="n2-label">Medium 2 (Air):</span>
@@ -125,29 +187,34 @@
             </div>
 
             <!-- Canvas Container -->
-            <div class="relative w-full h-[470px] cursor-pointer group" id="canvas-container">
+            <div class="relative w-full cursor-pointer group" id="canvas-container">
                 <canvas id="simCanvas" class="w-full h-full block"></canvas>
             </div>
 
             <!-- Controls -->
-            <div class="p-6 bg-slate-950/35 border-t border-slate-700/70">
+            <div class="p-4 md:p-5 bg-slate-950/35 border-t border-slate-700/70 flex-none">
                 <div class="flex flex-col md:flex-row gap-8 items-center justify-between">
 
                     <!-- Slider Control -->
                     <div class="w-full md:w-2/3 space-y-4">
                         <div class="flex justify-between items-center">
                             <label class="font-semibold text-slate-200 flex items-center gap-2">
-                                <i class="fa-solid fa-rotate text-cyan-400"></i> Incidence Angle
+                                <i class="text-cyan-400"></i> Incidence Angle
                             </label>
                             <span id="angle-val"
                                 class="text-xl font-mono bg-slate-900 px-3 py-1 rounded text-cyan-400 border border-slate-700 shadow-inner">30.0°</span>
                         </div>
-                        <input type="range" id="angle-slider" min="0" max="80" value="30" step="0.1"
+                        <input type="range" id="angle-slider" min="0" max="90" value="30" step="0.1"
                             class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
                         <div class="flex justify-between text-xs text-slate-500 px-1 font-mono">
-                            <span>0° (Normal)</span>
-                            <span id="critical-marker">Critical Angle (~41.8°)</span>
-                            <span>80°</span>
+                            <span>0°</span>
+                            <span id="critical-marker">Critical Angle</span>
+                            <span>90°</span>
+                        </div>
+
+                        <div id="footer-desc" class="text-slate-300/90 text-sm leading-snug pt-1">
+                            <p>Drag the slider or the canvas. When the incidence angle exceeds <span
+                                    class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
                         </div>
                     </div>
 
@@ -170,11 +237,7 @@
             </div>
         </div>
 
-        <!-- Explanation Footer -->
-        <div class="max-w-5xl w-full mt-6 text-center text-slate-300/90 text-sm" id="footer-desc">
-            <p>Drag the slider or the canvas. When the incidence angle exceeds <span
-                    class="text-white font-bold">41.8°</span>, light cannot escape into the air.</p>
-        </div>
+
 
     </main>
 
@@ -190,7 +253,7 @@
         const criticalVal = document.getElementById('critical-val');
         const criticalMarker = document.getElementById('critical-marker');
         const footerDesc = document.getElementById('footer-desc');
-        const headerDesc = document.getElementById('header-desc');
+        // const headerDesc = document.getElementById('header-desc');
 
         const n1Label = document.getElementById('n1-label');
         const n1Val = document.getElementById('n1-val');
@@ -207,27 +270,52 @@
                 label: 'Air',
                 n: 1.0,
                 fill: '#1e293b',
-                text: '#94a3b8'
+                text: '#94a3b8',
+                patternSrc: './assets/BG.png'
             },
             water: {
                 label: 'Water',
                 n: 1.33,
                 fill: '#0f3b5f',
-                text: '#7dd3fc'
+                text: '#7dd3fc',
+                patternSrc: './assets/water.svg'
             },
             glass: {
                 label: 'Glass',
-                n: 1.5,
+                n: 1.52,
                 fill: '#083344',
-                text: '#22d3ee'
+                text: '#22d3ee',
+                patternSrc: './assets/glass.svg'
             },
             diamond: {
                 label: 'Diamond',
                 n: 2.42,
                 fill: '#3b0764',
-                text: '#c4b5fd'
+                text: '#c4b5fd',
+                patternSrc: './assets/diamond.svg'
             }
         };
+
+        const materialImgs = {};
+        const materialPatterns = {};
+
+        function loadMaterialPatterns() {
+            Object.keys(MEDIA).forEach((key) => {
+                const src = MEDIA[key].patternSrc;
+                if (!src) return;
+                const img = new Image();
+                img.onload = () => {
+                    materialImgs[key] = img;
+                    try {
+                        materialPatterns[key] = ctx.createPattern(img, 'repeat');
+                    } catch (_) {
+                        materialPatterns[key] = null;
+                    }
+                    draw();
+                };
+                img.src = src;
+            });
+        }
 
         // State
         let currentMode = 'dense_to_rare'; // Bottom->Top or Top->Bottom for ray direction
@@ -268,15 +356,15 @@
                 n2Val.innerText = `n₂ = ${MEDIA[topMedium].n.toFixed(2)}`;
                 if (criticalAngle !== null) {
                     criticalVal.innerText = criticalAngle.toFixed(1) + "°";
-                    criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
+                    if (criticalMarker) criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. For ${MEDIA[bottomMedium].label} → ${MEDIA[topMedium].label}, total internal reflection starts beyond <span class="text-white font-bold">${criticalAngle.toFixed(1)}°</span>.</p>`;
                 } else {
                     criticalVal.innerText = "None";
-                    criticalMarker.innerText = "";
+                    if (criticalMarker) criticalMarker.innerText = "";
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. In ${MEDIA[bottomMedium].label} → ${MEDIA[topMedium].label}, no total internal reflection occurs for this direction.</p>`;
                     criticalAlert.classList.add('hidden');
                 }
-                headerDesc.innerText = `Light traveling from ${MEDIA[bottomMedium].label} (n₁=${MEDIA[bottomMedium].n.toFixed(2)}) to ${MEDIA[topMedium].label} (n₂=${MEDIA[topMedium].n.toFixed(2)}).`;
+                // headerDesc.innerText = `Light traveling from ${MEDIA[bottomMedium].label} (n₁ = ${MEDIA[bottomMedium].n.toFixed(2)}) to ${MEDIA[topMedium].label} (n₂=${MEDIA[topMedium].n.toFixed(2)}).`;
 
             } else {
                 n1 = MEDIA[topMedium].n;
@@ -295,15 +383,15 @@
                 n2Val.innerText = `n₂ = ${MEDIA[bottomMedium].n.toFixed(2)}`;
                 if (criticalAngle !== null) {
                     criticalVal.innerText = criticalAngle.toFixed(1) + "°";
-                    criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
+                    if (criticalMarker) criticalMarker.innerText = "Critical Angle (~" + criticalAngle.toFixed(1) + "°)";
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. For ${MEDIA[topMedium].label} → ${MEDIA[bottomMedium].label}, total internal reflection starts beyond <span class="text-white font-bold">${criticalAngle.toFixed(1)}°</span>.</p>`;
                 } else {
                     criticalVal.innerText = "None";
-                    criticalMarker.innerText = "";
+                    if (criticalMarker) criticalMarker.innerText = "";
                     footerDesc.innerHTML = `<p>Drag the slider or the canvas. Light refracts from ${MEDIA[topMedium].label} to ${MEDIA[bottomMedium].label} according to Snell's law.</p>`;
                     criticalAlert.classList.add('hidden');
                 }
-                headerDesc.innerText = `Light traveling from ${MEDIA[topMedium].label} (n₁=${MEDIA[topMedium].n.toFixed(2)}) to ${MEDIA[bottomMedium].label} (n₂=${MEDIA[bottomMedium].n.toFixed(2)}).`;
+                // headerDesc.innerText = `Light traveling from ${MEDIA[topMedium].label} (n₁ = ${MEDIA[topMedium].n.toFixed(2)}) to ${MEDIA[bottomMedium].label} (n₂=${MEDIA[bottomMedium].n.toFixed(2)}).`;
             }
             draw();
         }
@@ -343,7 +431,7 @@
                 const labelX = centerX + Math.cos(midAngle) * labelRadius;
                 const labelY = centerY + Math.sin(midAngle) * labelRadius;
                 ctx.fillStyle = color;
-                ctx.font = "bold 12px Inter";
+                ctx.font = "700 12px Roboto";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
                 ctx.fillText(label, labelX, labelY);
@@ -432,7 +520,7 @@
             ctx.fillRect(0, 0, width, midY);
 
             ctx.fillStyle = topData.text;
-            ctx.font = "bold 24px Inter";
+            ctx.font = "800 22px Roboto";
             ctx.textAlign = "right";
             ctx.fillText(`${topData.label.toUpperCase()} (n = ${topData.n.toFixed(2)})`, width - 20, 40);
 
@@ -446,6 +534,29 @@
             ctx.fillStyle = bottomData.text;
             ctx.textAlign = "right";
             ctx.fillText(`${bottomData.label.toUpperCase()} (n = ${bottomData.n.toFixed(2)})`, width - 20, height - 20);
+
+            // Material pattern overlays (purely visual; subtle)
+            const overlayPattern = (mediumKey, x, y, w, h, alpha) => {
+                const img = materialImgs[mediumKey];
+                if (!img) return;
+                let pat = materialPatterns[mediumKey];
+                if (!pat) {
+                    try {
+                        pat = ctx.createPattern(img, 'repeat');
+                        materialPatterns[mediumKey] = pat;
+                    } catch (_) {
+                        return;
+                    }
+                }
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = pat;
+                ctx.fillRect(x, y, w, h);
+                ctx.restore();
+            };
+
+            overlayPattern(topMedium, 0, 0, width, midY, 0.08);
+            overlayPattern(bottomMedium, 0, midY, width, height - midY, 0.07);
 
             // Border Line
             ctx.beginPath();
@@ -468,7 +579,7 @@
             // Label N
             ctx.fillStyle = '#64748b';
             ctx.textAlign = "center";
-            ctx.font = "bold 14px Inter";
+            ctx.font = "700 14px Roboto";
             ctx.fillText("N", midX, 30);
 
 
@@ -621,20 +732,10 @@
         btnRareDense.addEventListener('click', () => setMode('rare_to_dense'));
         mediumTopSelect.addEventListener('change', (e) => {
             topMedium = e.target.value;
-            if (topMedium === bottomMedium) {
-                const options = Object.keys(MEDIA).filter((m) => m !== topMedium);
-                bottomMedium = options[0];
-                mediumBottomSelect.value = bottomMedium;
-            }
             setMode(currentMode);
         });
         mediumBottomSelect.addEventListener('change', (e) => {
             bottomMedium = e.target.value;
-            if (bottomMedium === topMedium) {
-                const options = Object.keys(MEDIA).filter((m) => m !== bottomMedium);
-                topMedium = options[0];
-                mediumTopSelect.value = topMedium;
-            }
             setMode(currentMode);
         });
 
@@ -671,7 +772,7 @@
             let theta = Math.atan2(dx, dy) * (180 / Math.PI);
 
             // Clamp to slider range
-            theta = Math.max(0, Math.min(80, theta));
+            theta = Math.max(0, Math.min(90, theta));
 
             angleIncidence = theta;
             angleSlider.value = theta;
@@ -695,6 +796,7 @@
         window.addEventListener('resize', resize);
         resize();
         setMode(currentMode);
+        loadMaterialPatterns();
 
     </script>
 </body>

@@ -735,6 +735,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
     initGameListeners();
     initProceedButton();
+    hideAllSvgPopups();
 });
 
 function initProceedButton() {
@@ -959,8 +960,7 @@ function resetContainerScrolls() {
  */
 function handleBlankSelection(gElement) {
     const expectedId = state.sequence[state.currentStepIndex];
-    document.querySelectorAll(".svg-popup")
-        .forEach(p => p.style.display = "none");
+    hideAllSvgPopups();
 
     if (gElement.id !== expectedId) {
         applyRightVisualHighlight(expectedId);
@@ -1045,13 +1045,32 @@ function showPopupFromGElement(gElement) {
     const popupId =
         "popup-" + gElement;
 
-    document.querySelectorAll(".svg-popup")
-        .forEach(p => p.style.display = "none");
+    hideAllSvgPopups();
 
     const popup = document.getElementById(popupId);
     console.log(popup);
 
-    if (popup) popup.style.display = "block";
+    if (popup) {
+        popup.style.display = "block";
+
+        // Ensure the parent <foreignObject> also shows, not just the inner <div>.
+        const fo = popup.parentElement;
+        if (fo && fo.tagName && fo.tagName.toLowerCase() === 'foreignobject') {
+            fo.style.display = 'block';
+        }
+    }
+}
+
+function hideAllSvgPopups() {
+    document.querySelectorAll(".svg-popup").forEach(p => {
+        p.style.display = "none";
+
+        // Also hide the parent foreignObject so it doesn't block clicks.
+        const fo = p.parentElement;
+        if (fo && fo.tagName && fo.tagName.toLowerCase() === 'foreignobject') {
+            fo.style.display = "none";
+        }
+    });
 }
 
 /**
@@ -1285,8 +1304,7 @@ document.querySelectorAll(".close-btn").forEach(btn => {
 
         e.stopPropagation();
 
-        document.querySelectorAll(".svg-popup")
-            .forEach(p => p.style.display = "none");
+        hideAllSvgPopups();
     });
 
 });

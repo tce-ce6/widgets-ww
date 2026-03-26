@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Multiplication Builder</h2>
-        <span id="versionId" class="versionText">b3_wg145_260221</span>
+        <span id="versionId" class="versionText">b3_wg145_2603252</span>
       </div>
       <div class="svg-container" id="svg-container">
         <?xml version="1.0" encoding="UTF-8"?>
@@ -179,7 +179,7 @@
               </g>
             </g>
           </g>
-
+          <g id="multi-panel" transform="translate(0, -35)">
           <g id="multi-ans-panel-hl">
             <g id="Group_6172" data-name="Group 6172">
               <path id="Rectangle_452" data-name="Rectangle 452"
@@ -215,6 +215,8 @@
               </g>
             </g>
           </g>
+          </g>
+          <g id="repeat-panel" transform="translate(0, -40)">
           <g id="repea-ans-panel-hl">
             <g id="Group_6173" data-name="Group 6173">
               <path id="Rectangle_449" data-name="Rectangle 449"
@@ -248,7 +250,8 @@
               </g>
             </g>
           </g>
-          <g id="inword-panel" transform="translate(0, 70)">
+          </g>
+          <g id="inword-panel" transform="translate(0, 30)">
             <g id="inword-panel-ans-hl">
               <path id="Rectangle_454" data-name="Rectangle 454"
                 d="M1272.17,706.9h645v256c0,8.28-6.72,15-15,15h-615c-8.28,0-15-6.72-15-15h0v-256h0Z" fill="#cfeeff" />
@@ -479,7 +482,7 @@
             </g>
             <g id="problem-tos">
               <g id="Problem:_4_x" data-name="Problem: 4 x" isolation="isolate">
-                <text transform="translate(226.72 243.68)" fill="#181818" font-family="Roboto-Bold, XONWGD+Roboto-Bold"
+                <text transform="translate(200.72 243.68)" fill="#181818" font-family="Roboto-Bold, XONWGD+Roboto-Bold"
                   font-size="40" font-weight="700" isolation="isolate">
                   <tspan x="0" y="0">Problem: 4 x 3 = ?</tspan>
                 </text>
@@ -534,7 +537,7 @@
               <g id="Click_to_add_more_plate-2" data-name="Add Plates" isolation="isolate">
                 <text transform="translate(902.67 551.9)" fill="#f3feff" font-family="Roboto-Bold, XONWGD+Roboto-Bold"
                   font-size="40" font-weight="700" isolation="isolate">
-                  <tspan x="0" y="0">Add Plates</tspan>
+                  <tspan x="0" y="0">Tap to Add Plates</tspan>
                 </text>
               </g>
             </g>
@@ -2716,21 +2719,17 @@
   <rect x="-10000" y="-10000" id="for-answer-modal" style="display: none;" width="20000" height="20000"
             fill="black" opacity="0.8" />
           <g id="answer-modal" style="display: none;">
-            <g id="show-answer-pop-up">
+          <g id="show-answer-pop-up">
               <g id="Group_6242" data-name="Group 6242">
                 <g id="Group_6216" data-name="Group 6216">
                   <g id="Rectangle_436-2-2" data-name="Rectangle 436-2">
-                    <rect x="170" y="240" width="1650" height="800" rx="16" ry="16" fill="#eaffeb" />
-                    <rect x="170" y="243" width="1650" height="800" rx="13" ry="13" fill="none" stroke="#4caf50"
-                      stroke-width="6" />
+                    <rect x="450" y="240" width="1100" height="600" rx="16" ry="16" fill="#eaffeb"></rect>
+                    <rect x="450" y="243" width="1100" height="600" rx="13" ry="13" fill="none" stroke="#4caf50" stroke-width="6"></rect>
                   </g>
                   <g id="Group_1206-2" data-name="Group 1206">
-                    <path id="Rectangle_438-2" data-name="Rectangle 438"
-                      d="M865.67,240h268v67c0,9.94-8.06,18-18,18h-232c-9.94,0-18-8.06-18-18v-67h0Z" fill="#4caf50" />
-                    <g id="Answer-2" data-name="Answer" isolation="isolate">
-                      <text transform="translate(939.27 300.4)" fill="#fff"
-                        font-family="Roboto-Bold, XONWGD+Roboto-Bold" font-size="36" font-weight="700"
-                        isolation="isolate">
+                    <path id="Rectangle_438-2" data-name="Rectangle 438" d="M865.67,240h268v67c0,9.94-8.06,18-18,18h-232c-9.94,0-18-8.06-18-18v-67h0Z" fill="#4caf50"></path>
+                    <g id="Answer-2" data-name="Answer" isolation="isolate" style="pointer-events: none;">
+                      <text transform="translate(939.27 300.4)" fill="#fff" font-family="Roboto-Bold, XONWGD+Roboto-Bold" font-size="36" font-weight="700" isolation="isolate">
                         <tspan x="0" y="0">Answer</tspan>
                       </text>
                     </g>
@@ -2738,7 +2737,7 @@
                 </g>
               </g>
             </g>
-           <g id="close-answer-btn" style="cursor:pointer">
+           <g id="close-answer-btn" transform="translate(-260)" style="cursor:pointer">
   <circle cx="1810" cy="250" r="45" fill="#4caf50" stroke="#4caf50" stroke-width="4"></circle>
 
   <path d="M1795 235 L1825 265" stroke="#fff" stroke-width="6" stroke-linecap="round"></path>

@@ -24,7 +24,7 @@ svg {
 
 #formal-letter-widget .container::after {
   content: "";
-  background-image: url("./assets/bg.png");
+  background-image: url("./assets/images/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -220,6 +220,7 @@ svg {
   min-height: 400px;
   overflow-y: auto;
   max-height: 740px;
+  width: 680px;
 }
 
 .suggestion-answer .tap-txt {
@@ -291,7 +292,7 @@ svg {
   top: 50%;
   transform: translateY(-50%);
   min-width: 280px;
-  max-width: 380px;
+  width: 380px;
   padding: 16px 22px;
   background: #ffa8a8;
   border: 3px solid #aa0000;
