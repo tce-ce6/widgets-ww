@@ -745,7 +745,12 @@
     hide(UI.feedbackText);
     hide(UI.darkPatch);
     hide(UI.completeBgPanel);
+    hide(UI.textBg);
+    hide(UI.textPassageComplete)
     show(UI.checkBtn);
+    hide(UI.scoreText);
+    hide(UI.starBg);
+    hide(UI.star);
     UI.checkBtn.style.opacity = "0.5";
     UI.checkBtn.style.pointerEvents = "none";
     // hide(UI.buttonLibrary);
@@ -891,7 +896,7 @@
   }
 
   function onBookClick(index) {
-    if (state.screen !== "library") return;
+    //   if (state.screen !== "library") return;
     state.categoryIndex = index;
     state.passageIndex = 0;
     hide(UI.labelChoosBook);
@@ -1006,12 +1011,12 @@
         const isCorrect = userChoice === s.type;
         const chosen = userChoice || "fact";
         const explHtml = `
-        <div class="fb-expl ${isCorrect ? "correct-expl" : "incorrect-expl"}" data-expl-for="${i}">
-          <strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
+        <div class="fb-expl ${isCorrect ? "ok" : "no"}" id="fb-expl-${i}" style="display: ${isCorrect ? "none" : "block"};">
+          <strong>${s.type === "fact" ? "This is a fact. " : "This is an opinion. "}</strong>${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
         </div>
       `;
         return `
-        <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" data-is-correct="${isCorrect ? "1" : "0"}">
+        <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" onclick="toggleFeedbackExpl(${i})">
           <div class="fb-text">${escapeHtml(s.text)}</div>
           <div class="fb-icon ${isCorrect ? "ok" : "no"}">${isCorrect ? "✓" : "✗"}</div>
         </div>
@@ -1022,6 +1027,13 @@
 
     fb.innerHTML = `<div class="fb-title">${escapeHtml(passage.title)}</div>${rowsHtml}`;
   }
+
+  window.toggleFeedbackExpl = function (index) {
+    const el = document.getElementById(`fb-expl-${index}`);
+    if (el) {
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+  };
 
   function escapeHtml(str) {
     return String(str)
@@ -1042,6 +1054,7 @@
     setPassageContent(state.passageData);
     updateSentenceCount();
     updatePassageLabel();
+    updateHighlighterSelection()
     show(UI.factHighlighter);
     show(UI.opinionHighlighter);
     show(UI.checkBtn);
@@ -1096,14 +1109,58 @@
     }
 
     if (state.passageIndex === 0) {
+      let b = document.getElementById("Group_1752-3");
+      b.style.display = "block";
+      let b1 = document.getElementById("Group_1754-3");
+      b1.style.display = "block";
       show(UI.buttonNextPassage);
+      const nextText = UI.buttonNextPassage.querySelector("text");
+      if (nextText) {
+        nextText.innerHTML = '<tspan x="0" y="0">Next Passage</tspan>';
+        nextText.setAttribute("transform", "translate(1275 914)");
+      }
       show(UI.nuttonLibrary);
-    } else {
-      show(UI.buttonNextPassage);
-      show(UI.nuttonLibrary);
+      const libText = UI.nuttonLibrary.querySelector("text");
+      if (libText) {
+        libText.innerHTML = '<tspan x="0" y="0">Library</tspan>';
+        libText.setAttribute("transform", "translate(547.78 918.13)");
+      }
       const completeTextEl =
         UI.textPassageComplete && UI.textPassageComplete.querySelector("text");
-      if (completeTextEl) completeTextEl.textContent = "Activity Complete! ";
+      if (completeTextEl) {
+        const t = completeTextEl.querySelector("tspan");
+        if (t) t.textContent = "Passage Complete! ";
+      }
+    } else {
+      let b = document.getElementById("Group_1752-3");
+      b.style.display = "none";
+      let b1 = document.getElementById("Group_1754-3");
+      b1.style.display = "none";
+      show(UI.buttonNextPassage);
+      const nextText = UI.buttonNextPassage.querySelector("text");
+      if (nextText) {
+        nextText.innerHTML = '<tspan x="0" y="0">Try Again</tspan>';
+        nextText.setAttribute("transform", "translate(1310 914)");
+      }
+
+      show(UI.nuttonLibrary);
+      const libText = UI.nuttonLibrary.querySelector("text");
+      if (libText) {
+        // Widen the background path for the longer text
+        const path = UI.nuttonLibrary.querySelector("#Path_21-4-2");
+        if (path) {
+          path.setAttribute("d", "M400,857.63h350c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-350c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z");
+        }
+        libText.innerHTML = '<tspan x="0" y="2">Try Another Category</tspan>';
+        libText.setAttribute("transform", "translate(400 918)");
+      }
+
+      const completeTextEl =
+        UI.textPassageComplete && UI.textPassageComplete.querySelector("text");
+      if (completeTextEl) {
+        const t = completeTextEl.querySelector("tspan");
+        if (t) t.textContent = "Activity Complete! ";
+      }
     }
   }
 
@@ -1170,17 +1227,31 @@
       }
     });
 
+    const libBtn2 = document.getElementById("nutton-library");
+    if (libBtn2) {
+      libBtn2.addEventListener("click", () => {
+        if (state.passageIndex === 1 && state.submitted) {
+          showLibrary();
+        } else {
+          showLibrary();
+        }
+      });
+      libBtn2.style.cursor = "pointer";
+    }
+
     const nextBtn = document.getElementById("button-next_passage");
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
-        onNextPassage();
+        if (state.passageIndex === 1 && state.submitted) {
+          // Try Again logic
+          state.passageIndex = 0;
+          state.submitted = false;
+          onBookClick(state.categoryIndex);
+        } else {
+          onNextPassage();
+        }
       });
       nextBtn.style.cursor = "pointer";
-    }
-    const libBtn2 = document.getElementById("nutton-library");
-    if (libBtn2) {
-      libBtn2.addEventListener("click", () => showLibrary());
-      libBtn2.style.cursor = "pointer";
     }
 
     const libBtn =

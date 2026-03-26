@@ -406,21 +406,21 @@ class UIManager {
 
     this.clearNumberLine();
     const { a, b } = this.state.currentProblem;
-    
+
     // Position point at 'a' as "Start" point
     this.updateNumberLinePosition(a);
-    
+
     // Give the user a moment to see the start position
     await new Promise(resolve => setTimeout(resolve, 800));
 
     // Move from 'a' to 'a + b' via unit jumps
     const colorB = "#ff2020"; // Match image (red jumps)
     const direction = b >= 0 ? 1 : -1;
-    
+
     for (let i = 0; i < Math.abs(b); i++) {
-        const from = a + i * direction;
-        const to = a + (i + 1) * direction;
-        await this.drawArrow(from, to, colorB);
+      const from = a + i * direction;
+      const to = a + (i + 1) * direction;
+      await this.drawArrow(from, to, colorB);
     }
 
     this.state.isAnimating = false;
@@ -468,11 +468,11 @@ class UIManager {
         const distance = Math.abs(toX - fromX);
         const r = distance / 2;
         const sweep = toX > fromX ? 1 : 0;
-        
+
         // For unit jumps (typical distance ~69), use a standard arch height
         // that matches the reference image's small curved look (~40-50 px).
         const h = distance < 100 ? 55 : Math.min(r, 80);
-        
+
         const pathData = `M ${fromX} 572 A ${r} ${h} 0 0 ${sweep} ${toX} 572`;
 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -481,14 +481,14 @@ class UIManager {
         path.setAttribute("stroke", color);
         path.setAttribute("stroke-width", "6");
         path.setAttribute("stroke-linecap", "round");
-        
+
         this.jumpsGroup.appendChild(path);
       }
 
       // Faster sequence for unit jumps
       setTimeout(() => {
         resolve();
-      }, 350); 
+      }, 350);
     });
   }
 
@@ -657,6 +657,10 @@ class UIManager {
     if (!this.state.isPlayground) {
       this.autoAddProblemChips();
     }
+    this.state.userAnswer = "";
+    this.answerBox.textContent = this.state.userAnswer;
+    this.showAnswerBtn.style.opacity = '1'
+    this.showAnswerBtn.style.cursor = 'pointer'
     this.hideKeypad();
     this.updateUI();
   }
