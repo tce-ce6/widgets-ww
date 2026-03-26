@@ -423,13 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setNextBtnLabel("Show Passive Voice");
         nextBtn.style.display = "block";
 
-        IText.style.display = "block";
-        const iTextEl = IText.querySelector("text");
-        if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
-                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
-        }
+        IText.style.display = "none";
     }
 
     function showQuestion3Panel(index) {
@@ -579,9 +573,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     if ((l1 + w).length < 40) l1 += w + " ";
                     else l2 += w + " ";
                 });
-                textEl.setAttribute("text-anchor", "middle");
-                let html = `<tspan x="333" y="0">${l1.trim()}</tspan>`;
-                if (l2) html += `<tspan x="333" y="35">${l2.trim()}</tspan>`;
+                textEl.setAttribute("text-anchor", "start");
+                let html = `<tspan x="0" y="0">${l1.trim()}</tspan>`;
+                if (l2) html += `<tspan x="0" y="35">${l2.trim()}</tspan>`;
                 textEl.innerHTML = html;
             }
 
@@ -710,13 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const compareBtn = document.getElementById("Group_1200");
         if (compareBtn) compareBtn.style.display = "block";
 
-        IText.style.display = "block";
-        const iTextEl = IText.querySelector("text");
-        if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
-                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
-        }
+        IText.style.display = "none";
     }
 
     function setupFinalSelectionInteraction() {
@@ -912,8 +900,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // Update progress bar — practice only, 1/5 to 5/5
-        const progressPercent = Math.round(((index + 1) / practiseQuestions.length) * 100);
+        // Update progress bar — practice only, reflect completed questions (not current)
+        const progressPercent = Math.round((index / practiseQuestions.length) * 100);
         const pbRect = document.getElementById("Rectangle_240");
         if (pbRect) {
             pbRect.setAttribute("width", `${progressPercent * PB_MAX_WIDTH / 100}`);
@@ -1071,6 +1059,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const isCorrect = practiseFilledSlots.slice(0, q2.answer.length)
                 .every((s, idx) => s !== null && s.text === q2.answer[idx]);
             if (isCorrect) {
+                // Advance progress bar on correct answer
+                const donePercent = Math.round(((currentPractiseQuestion + 1) / practiseQuestions.length) * 100);
+                const pbRectC = document.getElementById("Rectangle_240");
+                if (pbRectC) pbRectC.setAttribute("width", `${donePercent * PB_MAX_WIDTH / 100}`);
+                const pbTextC = document.querySelector("#Progress_bar text tspan");
+                if (pbTextC) pbTextC.textContent = donePercent + "%";
                 correct.style.display = "block";
                 incorrect.style.display = "none";
                 positionFeedbackMarker("practise");
