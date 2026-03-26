@@ -7,56 +7,55 @@
     <title>Refraction, Total Internal Reflection and Critical Angle</title>
     <!-- Tailwind CDN removed for offline support -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script> -->
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/global_style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body class="app-bg text-slate-100 h-screen overflow-hidden flex flex-col">
-
-    <!-- Header -->
-    <header class="p-4 md:p-5 panel-glass shadow-md relative z-10 flex-none">
-        <div class="max-w-5xl mx-auto flex flex-col gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-cyan-300">Reflection & Refraction Lab
-                </h1>
+<body id="idiom-wrapper">
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Reflection &amp; Refraction Lab</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
-                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Top Medium</span>
-                    <select id="medium-top" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
-                        <option value="air">Air</option>
-                        <option value="water">Water</option>
-                        <option value="glass">Glass</option>
-                        <option value="diamond">Diamond</option>
-                    </select>
-                </label>
-                <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
-                    <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Bottom Medium</span>
-                    <select id="medium-bottom" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
-                        <option value="air">Air</option>
-                        <option value="water">Water</option>
-                        <option value="glass" selected>Glass</option>
-                        <option value="diamond">Diamond</option>
-                    </select>
-                </label>
-                <div class="flex bg-slate-950/70 p-1 rounded-lg border border-slate-700/80">
-                    <button id="mode-dense-rare"
-                        class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors bg-cyan-600 text-white">
-                        Bottom → Top
-                    </button>
-                    <button id="mode-rare-dense"
-                        class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors text-slate-400 hover:text-white">
-                        Top → Bottom
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
+            <!-- Main Content -->
+            <main class="wg70-root flex-1 min-h-0 p-3 md:p-5 flex flex-col items-center justify-center relative overflow-hidden">
 
-    <!-- Main Content -->
-    <main class="flex-1 min-h-0 p-3 md:p-5 flex flex-col items-center justify-center relative overflow-hidden">
+                <!-- Controls bar (keeps existing UI; header/bg come from wdgetTitle + container bg) -->
+                <section class="max-w-5xl w-full panel-glass shadow-md relative z-10 flex-none p-4 md:p-5 m-b-16">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                        <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Top Medium</span>
+                            <select id="medium-top" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
+                                <option value="air">Air</option>
+                                <option value="water">Water</option>
+                                <option value="glass">Glass</option>
+                                <option value="diamond">Diamond</option>
+                            </select>
+                        </label>
+                        <label class="medium-chip rounded-lg p-3 flex flex-col gap-2">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Bottom Medium</span>
+                            <select id="medium-bottom" class="nice-select rounded-md px-3 py-2 text-sm font-semibold">
+                                <option value="air">Air</option>
+                                <option value="water">Water</option>
+                                <option value="glass" selected>Glass</option>
+                                <option value="diamond">Diamond</option>
+                            </select>
+                        </label>
+                        <div class="flex bg-slate-950/70 p-1 rounded-lg border border-slate-700/80">
+                            <button id="mode-dense-rare"
+                                class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors bg-cyan-600 text-white">
+                                Bottom → Top
+                            </button>
+                            <button id="mode-rare-dense"
+                                class="flex-1 px-4 py-2 rounded-md text-sm font-semibold transition-colors text-slate-400 hover:text-white">
+                                Top → Bottom
+                            </button>
+                        </div>
+                    </div>
+                </section>
 
-        <div class="max-w-5xl w-full panel-glass rounded-2xl shadow-2xl overflow-hidden relative widget-card">
+                <div class="max-w-5xl w-full panel-glass rounded-2xl shadow-2xl overflow-hidden relative widget-card">
 
             <!-- Physics Display Overlay -->
             <div class="absolute top-4 left-4 z-10 space-y-2 pointer-events-none">
@@ -126,11 +125,10 @@
 
                 </div>
             </div>
+                </div>
+            </main>
         </div>
-
-
-
-    </main>
+    </div>
 
     <script src="./js/script.js"></script>
 </body>
