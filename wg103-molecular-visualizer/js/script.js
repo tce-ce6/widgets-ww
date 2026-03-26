@@ -95,6 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const insightBtn = document.getElementById("insight_btn");
   const insightPanel = document.getElementById("insight_panel");
   const closeInsightBtn = document.getElementById("Group_579");
+  const scr01feedback_panel = document.getElementById("scr01-feedback_panel");
+  const scr02elements = document.getElementById("scr02-elements");
 
   // Groups for Screen management
   const scr01Panels = [
@@ -155,6 +157,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }, duration);
     }
+  }
+
+  let wrong_prediction = document.getElementById("wrong_prediction");
+  if (wrong_prediction) {
+    wrong_prediction.style.display = "block";
+    return;
+  }
+
+  // Centered wrong-prediction overlay
+  const wrongOverlay = document.createElement("div");
+  wrongOverlay.id = "wrong_prediction";
+  wrongOverlay.style.cssText = [
+    "position:absolute",
+    "top:50%",
+    "left:40%",
+    "transform:translate(-50%,-50%)",
+    "background:rgba(200,40,40,0.92)",
+    "color:#fff",
+    "padding:28px 48px",
+    "border-radius:16px",
+    "text-align:center",
+    "pointer-events:none",
+    "z-index:9999",
+    "display:none",
+    "font-family:Roboto,sans-serif",
+  ].join(";");
+  wrongOverlay.innerHTML =
+    '<div style="font-size:28px;font-weight:700;margin-bottom:8px">Wrong Prediction!</div>' +
+    '<div style="font-size:22px">Try Again</div>';
+  document.getElementById("svg-container").style.position = "relative";
+  document.getElementById("svg-container").appendChild(wrongOverlay);
+  let wrongOverlayTimer = null;
+
+  function showWrongPredictionOverlay() {
+    if (wrongOverlayTimer) clearTimeout(wrongOverlayTimer);
+    wrongOverlay.style.display = "block";
+    scr02elements.style.display = "none";
   }
 
   function updateUI() {
@@ -390,6 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScreen = 2;
       calculateResults();
       updateUI();
+      const data = substances[currentSubstance];
+      const totalH = moleculeCount * data.ratioH;
+      const totalO = moleculeCount * data.ratioO;
+      if (predH !== totalH || predO !== totalO) showWrongPredictionOverlay();
     });
   }
 
@@ -401,6 +444,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScreen = 1;
       if (insightPanel) insightPanel.style.display = "none";
       updateUI();
+      let wrong_prediction = document.getElementById("wrong_prediction");
+      if (wrong_prediction) {
+        wrong_prediction.style.display = "none";
+      }
     });
   }
 
