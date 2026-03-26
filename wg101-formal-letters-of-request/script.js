@@ -114,13 +114,13 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "In today's competitive world, students need a lot of exposure. A vocational skills course would be very beneficial for their future.",
+                        "text": "In today's competitive world, students need a lot of exposure. A vocational skills course would be very beneficial for their future and help them become better individuals who can face various challenges in life.",
                         "is_correct": false,
                         "feedback": "The language used is informal and vague without specific examples of skills included in the course."
                     },
                     {
                         "id": 3,
-                        "text": "In today's world, it is absolutely crucial and extremely important that we realise academic knowledge is simply not sufficient anymore.",
+                        "text": "In today's world, it is absolutely crucial and extremely important that we realise academic knowledge is simply not sufficient anymore. Without a vocational skills course, our students will definitely struggle terribly in their careers and may fail to achieve success in life.",
                         "is_correct": false,
                         "feedback": "The language is overly dramatic and makes exaggerated claims without supporting evidence."
                     }
@@ -128,19 +128,19 @@ const letterData = {
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "Besides, a vocational skills course would be good for students to explore their interests outside the classroom.",
+                        "text": "Besides, a vocational skills course would be good for students to explore their interests outside the classroom. A vocational skills course would also be good because it helps different students with different talents. This course would benefit all students in many ways.",
                         "is_correct": false,
                         "feedback": "This paragraph uses repetitive and vague language and lacks sophistication."
                     },
                     {
                         "id": 2,
-                        "text": "Besides, a vocational skills course would allow students to explore their interests beyond academics, unlike the current curriculum.",
+                        "text": "Besides, a vocational skills course would allow students to explore their interests beyond academics, unlike the current curriculum which only focuses on theory. Many other schools have already started such courses and are doing much better than us. Moreover, students often complain about the lack of practical learning opportunities in our school.",
                         "is_correct": false,
                         "feedback": "This paragraph introduces unnecessary criticism and negative tone."
                     },
                     {
                         "id": 3,
-                        "text": "Besides, a vocational skills course would allow students to explore their interests and aptitudes beyond traditional classroom settings. Moreover, it promotes inclusivity by catering to diverse talents.",
+                        "text": "Besides, a vocational skills course would allow students to explore their interests and aptitudes beyond traditional classroom settings. Moreover, a vocational skills course promotes inclusivity by catering to the diverse interests and talents of the student body. ",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -148,19 +148,19 @@ const letterData = {
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "The introduction of a vocational skills course will greatly benefit the students. Madam, I kindly request your consideration and support in implementing this program at our school.",
+                        "text": "The introduction of a vocational skills course will greatly benefit the students, allowing us to thrive in our personal and professional lives. Madam, I kindly request your consideration and support in implementing the vocational skills program at our school.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "The introduction of a vocational skills course will greatly benefit the students, helping you to succeed in their future careers.",
+                        "text": "The introduction of a vocational skills course will greatly benefit the students, helping you to succeed in their future careers. Madam, I humbly request that you kindly consider my suggestion and hopefully approve this vocational skills program soon.",
                         "is_correct": false,
                         "feedback": "This shifts from third person to second person and uses redundant phrases."
                     },
                     {
                         "id": 3,
-                        "text": "I am sure you will agree that a vocational skills course will greatly benefit our students.",
+                        "text": "I am sure you will agree that a vocational skills course will greatly benefit our students in their personal and professional lives. I look forward to seeing this program implemented at our school very soon. Thank you for your time. ",
                         "is_correct": false,
                         "feedback": "This assumes agreement and sounds presumptuous."
                     }
