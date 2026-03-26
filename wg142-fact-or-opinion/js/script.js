@@ -901,7 +901,7 @@
     state.passageIndex = 0;
     hide(UI.labelChoosBook);
     show(UI.bodyText);
-    //   document.querySelector("#idiom-wrapper .container").classList.add("passage-bg");
+    document.querySelector("#idiom-wrapper .container").classList.add("passage-bg");
     showPassageScreen();
   }
 
@@ -1011,12 +1011,12 @@
         const isCorrect = userChoice === s.type;
         const chosen = userChoice || "fact";
         const explHtml = `
-        <div class="fb-expl ${isCorrect ? "correct-expl" : "incorrect-expl"}" data-expl-for="${i}">
-          <strong>${s.type === "fact" ? "This is a fact." : "This is an opinion."}</strong> ${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
+        <div class="fb-expl ${isCorrect ? "ok" : "no"}" id="fb-expl-${i}" style="display: ${isCorrect ? "none" : "block"};">
+          <strong>${s.type === "fact" ? "This is a fact. " : "This is an opinion. "}</strong>${escapeHtml(isCorrect ? s.correctFeedback : s.incorrectFeedback)}
         </div>
       `;
         return `
-        <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" data-is-correct="${isCorrect ? "1" : "0"}">
+        <div class="fb-row ${chosen} ${isCorrect ? "correct" : "incorrect"}" data-sentence-index="${i}" onclick="toggleFeedbackExpl(${i})">
           <div class="fb-text">${escapeHtml(s.text)}</div>
           <div class="fb-icon ${isCorrect ? "ok" : "no"}">${isCorrect ? "✓" : "✗"}</div>
         </div>
@@ -1027,6 +1027,13 @@
 
     fb.innerHTML = `<div class="fb-title">${escapeHtml(passage.title)}</div>${rowsHtml}`;
   }
+
+  window.toggleFeedbackExpl = function (index) {
+    const el = document.getElementById(`fb-expl-${index}`);
+    if (el) {
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+  };
 
   function escapeHtml(str) {
     return String(str)

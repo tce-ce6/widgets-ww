@@ -588,30 +588,30 @@ svg * {
   color: #111;
 }
 
+#idiom-wrapper .feedback-scroll .fb-row:hover {
+  background: rgba(0,0,0,0.05);
+}
+
 #idiom-wrapper .feedback-scroll .fb-expl {
   max-width: 1200px;
   width: 100%;
-  margin: 6px 0;
+  margin: 6px 16px 12px;
   padding: 10px 16px;
   border-radius: 8px;
-  font-size: 16px;
-  line-height: 1.35;
-  background: rgba(255, 216, 216, 0.9);
-  border: 1px solid #ff8989;
+  font-size: 18px;
+  line-height: 1.45;
+  background: #ffeaea;
+  border: 1px solid #e23614;
   color: #333;
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl strong {
-  color: #d00000;
+  color: #d00000 !important;
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl.ok {
-  background: rgba(205, 249, 203, 0.9);
-  border: 1px solid #64b285;
-}
-
-#idiom-wrapper .feedback-scroll .fb-expl.ok strong {
-  color: #1e7f3c;
+  background: #e6ffe6;
+  border: 1px solid #2cb739;
 }
 
 /* Dynamic category label on small book thumbnail */
