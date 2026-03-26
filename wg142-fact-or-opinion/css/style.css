@@ -3,11 +3,13 @@
   border-left: 1px solid #2cb739;
   margin-bottom: 10px;
 }
+
 #idiom-wrapper .feedback-scroll .fb-expl.incorrect-expl {
   background: #ffeaea;
   border-left: 1px solid #e23614;
   margin-bottom: 10px;
 }
+
 /* #idiom-wrapper .feedback-scroll .fb-row.correct {
   background: rgba(44, 183, 57, 0.25) !important;
 }
@@ -226,11 +228,12 @@ svg * {
   min-height: 50px;
 }
 
-.list-wrapper .filled{
-      border-bottom: 0;
-    min-width: auto;
-    min-height: auto;
+.list-wrapper .filled {
+  border-bottom: 0;
+  min-width: auto;
+  min-height: auto;
 }
+
 .option-conatiner {
   background-color: #C4E2B9;
   padding: 63px 52px;
@@ -248,13 +251,14 @@ svg * {
 .option-wrapper::after,
 .img-container::after,
 .img-container::before,
-.option-wrapper::before{
+.option-wrapper::before {
   content: "";
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
 }
+
 .img-container::before {
   background-image: url("../assets/images/shadow-2.svg");
   height: 76.09px;
@@ -264,6 +268,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::before {
   background-image: url("../assets/images/shadow.svg");
   height: 76.09px;
@@ -273,6 +278,7 @@ svg * {
   transform: translateX(-50%);
   z-index: -1;
 }
+
 .option-wrapper::after {
   background-image: url("../assets/images/strip.svg");
   height: 75.15px;
@@ -281,6 +287,7 @@ svg * {
   left: 50%;
   transform: translateX(-50%);
 }
+
 .img-container::after {
   background-image: url("../assets/images/strip-2.svg");
   height: 75.15px;
@@ -302,20 +309,23 @@ svg * {
   box-sizing: border-box;
   min-height: 95px;
 }
-.img-container{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    object-fit: contain;
+
+.img-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
 }
-#main-img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+
+#main-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
-.result-wrapper{
+
+.result-wrapper {
   height: 100%;
   width: 100%;
   font-size: 45px;
@@ -326,18 +336,22 @@ svg * {
   position: relative;
   border-radius: 30px;
 }
-.result-wrapper.top{
+
+.result-wrapper.top {
   background: #A5DCF7;
 }
-.result-wrapper.bottom{
+
+.result-wrapper.bottom {
   background: #CDF9CB;
 }
-.result-wrapper .result-text{
+
+.result-wrapper .result-text {
   display: block;
   width: 100%;
-      line-height: 1.2;
+  line-height: 1.2;
 }
-.sub-title{
+
+.sub-title {
   position: absolute;
   padding: 10px 20px;
   top: -30px;
@@ -346,10 +360,12 @@ svg * {
   border-radius: 10px;
   color: #fff;
 }
-.sub-title.top{
+
+.sub-title.top {
   background-color: #2EACD2;
 }
-.sub-title.bottom{
+
+.sub-title.bottom {
   background-color: #64B285;
 }
 
@@ -370,11 +386,25 @@ svg * {
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 #reset-btn.disabled {
@@ -382,6 +412,7 @@ svg * {
   cursor: not-allowed;
   transform: none !important;
 }
+
 #lottie-wrapper {
   display: none;
   position: absolute;
@@ -391,10 +422,12 @@ svg * {
   pointer-events: none;
   z-index: 999;
 }
+
 #lottie-confetti {
   width: 100%;
   height: 100%;
 }
+
 #wrapper-1,
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
@@ -410,7 +443,7 @@ svg * {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 36px 70px 0 57px;
+  padding: 36px 00px 0 70px;
   overflow-y: auto;
   font-family: 'Roboto', sans-serif;
   background: transparent;
@@ -431,12 +464,12 @@ svg * {
 #idiom-wrapper .passage-scroll .sentence-row {
   display: inline;
   border-radius: 4px;
-  font-size: 24px;
+  font-size: 28px;
   line-height: 1.5;
   color: #222;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 #idiom-wrapper .passage-scroll .sentence-row::after {
@@ -512,18 +545,18 @@ svg * {
 
 #idiom-wrapper .feedback-scroll .fb-row {
   max-width: 1200px;
-    width: max-content;
-        margin: 4px 16px;
-    padding: 4px 4px;
-    border-radius: 4px;
-    font-size: 20px;
-    line-height: 1.35;
-    cursor: pointer;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    font-weight: 500;
+  width: max-content;
+  margin: 4px 16px;
+  padding: 4px 4px;
+  border-radius: 4px;
+  font-size: 20px;
+  line-height: 1.35;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-weight: 500;
 }
 
 #idiom-wrapper .feedback-scroll .fb-row.fact .fb-text {
@@ -556,16 +589,16 @@ svg * {
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl {
-     max-width: 1200px;
-    width: 100%;
-    margin: 6px 0;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 16px;
-    line-height: 1.35;
-    background: rgba(255, 216, 216, 0.9);
-    border: 1px solid #ff8989;
-    color: #333;
+  max-width: 1200px;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.35;
+  background: rgba(255, 216, 216, 0.9);
+  border: 1px solid #ff8989;
+  color: #333;
 }
 
 #idiom-wrapper .feedback-scroll .fb-expl strong {
