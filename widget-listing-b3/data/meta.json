@@ -313,7 +313,7 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-26T13:41:33+05:30",
+      "updatedAt": "2026-03-26T14:56:09+05:30",
       "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T14:56:09+05:30",
+      "author": "tce-nitinc",
+      "message": "wg84 changes",
+      "widgets": [
+        84
+      ]
+    },
     {
       "date": "2026-03-26T13:41:33+05:30",
       "author": "tce-nitinc",
@@ -615,14 +623,6 @@
         74,
         101,
         118
-      ]
-    },
-    {
-      "date": "2026-03-25T18:11:04+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "lable box hight increased",
-      "widgets": [
-        73
       ]
     }
   ]
