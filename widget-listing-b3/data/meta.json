@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T11:27:40+05:30",
+      "updatedAt": "2026-03-26T13:23:38+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T13:23:38+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg21 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
     {
       "date": "2026-03-26T12:38:10+05:30",
       "author": "tce-nitinc",
@@ -615,14 +623,6 @@
       "message": "73 popup pulled inside",
       "widgets": [
         73
-      ]
-    },
-    {
-      "date": "2026-03-25T17:47:18+05:30",
-      "author": "PrasannaP",
-      "message": "Update wg70.html title and improve content clarity; adjust refractive index for glass and enhance footer explanation.",
-      "widgets": [
-        70
       ]
     }
   ]
