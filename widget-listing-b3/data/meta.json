@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -197,7 +197,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-13T19:19:52+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -378,6 +378,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T17:31:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77,
+        133,
+        155
+      ]
+    },
     {
       "date": "2026-03-26T17:20:01+05:30",
       "author": "PrasannaP",
@@ -607,14 +617,6 @@
       "date": "2026-03-25T20:06:19+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:05:58+05:30",
-      "author": "sushantthe",
-      "message": "wg142 done",
       "widgets": [
         142
       ]
