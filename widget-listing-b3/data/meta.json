@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-25T18:24:06+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -141,11 +141,11 @@
       "author": "PrasannaP"
     },
     "wg137-sabdo-me-sawar-ki-khoj": {
-      "updatedAt": "2026-03-23T20:20:35+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-03-23T20:20:35+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg140-change-master": {
@@ -189,7 +189,7 @@
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -245,8 +245,8 @@
       "author": "tce-ashishg"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-03-24T21:27:56+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-26T19:00:46+05:30",
+      "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-24T17:57:44+05:30",
@@ -273,7 +273,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-03-25T18:24:06+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
@@ -378,6 +378,20 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T19:00:46+05:30",
+      "author": "tce-ashishg",
+      "message": "wg137 & wg138 comments closed",
+      "widgets": [
+        61,
+        74,
+        101,
+        118,
+        137,
+        138,
+        153
+      ]
+    },
     {
       "date": "2026-03-26T18:45:59+05:30",
       "author": "PrasannaP",
@@ -609,14 +623,6 @@
       "date": "2026-03-25T20:21:15+05:30",
       "author": "sushantkanaujiya",
       "message": "Update index.html",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:18:14+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
       "widgets": [
         104
       ]
