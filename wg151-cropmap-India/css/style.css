@@ -392,6 +392,9 @@ svg * {
 /* Ensure intended interactive items are always clickable and have pointer cursor */
 #Group_1591, #Group_1590, #Group_1589,
 #Group_1570, #Group_1571, #Group_1572, #Group_1573, #Group_1574,
+#Wheat, #Barley, #Mustard, #Chickpea, #Peas,
+#Paddy_Rice_, #Sugarcane, #Cotton, #Jute, #Tea, #Coffee, #Rubber,
+#Moong_Dal, #Muskmelon, #Cucumber, #Watermelon,
 [id^="Group_Kharif_"], [id^="Group_Zaid_"],
 #Group_1614, #Group_16141, #Group_1616, #Group_16161,
 #Group_1592, #Submit, #Show_Answer, #btn-global, #i-button-home-screen,
