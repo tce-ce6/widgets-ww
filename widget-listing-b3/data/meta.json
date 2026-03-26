@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T19:17:05+05:30",
+      "updatedAt": "2026-03-26T19:39:14+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -313,7 +313,7 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-26T14:56:09+05:30",
+      "updatedAt": "2026-03-26T19:39:14+05:30",
       "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T19:39:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 77 and wg 84",
+      "widgets": [
+        77,
+        84
+      ]
+    },
     {
       "date": "2026-03-26T19:34:03+05:30",
       "author": "PrasannaP",
@@ -618,14 +627,6 @@
       "message": "wg84 changes",
       "widgets": [
         84
-      ]
-    },
-    {
-      "date": "2026-03-26T14:31:17+05:30",
-      "author": "PrasannaP",
-      "message": "refactor: rename wg70.html to index.html.",
-      "widgets": [
-        70
       ]
     }
   ]
