@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -13,7 +13,7 @@
       "author": "sushantthe"
     },
     "wg103-molecular-visualizer": {
-      "updatedAt": "2026-03-05T13:12:21+05:30",
+      "updatedAt": "2026-03-26T19:03:35+05:30",
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-25T18:24:06+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -141,11 +141,11 @@
       "author": "PrasannaP"
     },
     "wg137-sabdo-me-sawar-ki-khoj": {
-      "updatedAt": "2026-03-23T20:20:35+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-03-23T20:20:35+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg140-change-master": {
@@ -173,8 +173,8 @@
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
-      "updatedAt": "2026-03-10T11:31:33+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg149-punctuation-marks": {
       "updatedAt": "2026-03-23T17:32:33+05:30",
@@ -185,11 +185,11 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "updatedAt": "2026-03-26T17:41:54+05:30",
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -197,7 +197,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-13T19:19:52+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T16:29:59+05:30",
+      "updatedAt": "2026-03-26T17:20:01+05:30",
       "author": "PrasannaP"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -245,8 +245,8 @@
       "author": "tce-ashishg"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-03-24T21:27:56+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-26T19:00:46+05:30",
+      "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-24T17:57:44+05:30",
@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-26T14:31:17+05:30",
+      "updatedAt": "2026-03-26T18:45:59+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -273,7 +273,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-03-25T18:24:06+05:30",
+      "updatedAt": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg"
     },
     "wg75-reading-slopes": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T19:17:05+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -379,11 +379,124 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T19:17:05+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T19:05:22+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T19:03:35+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        103
+      ]
+    },
+    {
+      "date": "2026-03-26T19:02:28+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue wg103",
+      "widgets": [
+        103
+      ]
+    },
+    {
+      "date": "2026-03-26T19:00:46+05:30",
+      "author": "tce-ashishg",
+      "message": "wg137 & wg138 comments closed",
+      "widgets": [
+        61,
+        74,
+        101,
+        118,
+        137,
+        138,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-26T18:45:59+05:30",
+      "author": "PrasannaP",
+      "message": "for nitin for layout",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-26T18:27:51+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue",
+      "widgets": [
+        103
+      ]
+    },
+    {
+      "date": "2026-03-26T18:26:17+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement the 'Reflection of Light' simulation widget including its HTML structure, styling, and interactive JavaScript logic.",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-26T17:41:54+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-26T17:31:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77,
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-26T17:20:01+05:30",
+      "author": "PrasannaP",
+      "message": "feat: externalized styles and scripts.",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "148 issues are fixed",
+      "widgets": [
+        148
+      ]
+    },
+    {
       "date": "2026-03-26T16:29:59+05:30",
       "author": "PrasannaP",
       "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
       "widgets": [
         42
+      ]
+    },
+    {
+      "date": "2026-03-26T16:05:30+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        103,
+        151
       ]
     },
     {
@@ -513,110 +626,6 @@
       "message": "wg42 issues fixed",
       "widgets": [
         42
-      ]
-    },
-    {
-      "date": "2026-03-26T11:26:59+05:30",
-      "author": "tce-nitinc",
-      "message": "wg76 fixes",
-      "widgets": [
-        76
-      ]
-    },
-    {
-      "date": "2026-03-26T10:29:33+05:30",
-      "author": "tce-nitinc",
-      "message": "wg147",
-      "widgets": [
-        147
-      ]
-    },
-    {
-      "date": "2026-03-26T10:26:23+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-26T10:22:51+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-26T10:17:07+05:30",
-      "author": "tce-nitinc",
-      "message": "wg123",
-      "widgets": [
-        123
-      ]
-    },
-    {
-      "date": "2026-03-25T21:52:52+05:30",
-      "author": "sushantthe",
-      "message": "wg94 animation",
-      "widgets": [
-        94
-      ]
-    },
-    {
-      "date": "2026-03-25T20:21:15+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:18:14+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:11:06+05:30",
-      "author": "PrasannaP",
-      "message": "debug and fix",
-      "widgets": [
-        123
-      ]
-    },
-    {
-      "date": "2026-03-25T20:06:19+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:05:58+05:30",
-      "author": "sushantthe",
-      "message": "wg142 done",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:03:54+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:02:20+05:30",
-      "author": "PrasannaP",
-      "message": "readme",
-      "widgets": [
-        146
       ]
     }
   ]

@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideAll() {
         introScreen.style.display = "none";
         if (practiseScreen) practiseScreen.style.display = "none";
-        
+
         // Reset the main header title to default
         const mainTitle = document.querySelector(".wdgetTitle h2");
         if (mainTitle) mainTitle.innerHTML = "The Switching Game";
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function showFinalLearnScreen() {
         hideAll();
         question2Panel.style.display = "block";
-        feedback.setAttribute("transform", "translate(-70, 0)");
+        feedback.setAttribute("transform", "translate(-300, -50)");
         feedback.style.opacity = "1";
         feedback.style.display = "inline";
         IText.style.display = "block";
@@ -567,12 +567,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (textEl) {
                 const fullText = (opt ? opt.text : "");
                 textEl.setAttribute("text-anchor", "start");
-                
+
                 // Clear experimental CSS properties
                 textEl.style.whiteSpace = "";
                 textEl.removeAttribute("width");
                 textEl.style.inlineSize = "";
-                
+
                 let html = `<tspan x="0" y="0">${fullText}</tspan>`;
                 textEl.innerHTML = html;
 
@@ -940,8 +940,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Center text inside its pill (rect or path background)
                 const bgEl = group.querySelector('rect[fill="#0480eb"]') ||
-                             group.querySelector('path[fill="#0480eb"]') ||
-                             group.querySelector("rect");
+                    group.querySelector('path[fill="#0480eb"]') ||
+                    group.querySelector("rect");
                 if (bgEl) {
                     let rx, ry, rw, rh;
                     if (bgEl.tagName.toLowerCase() === "rect") {
@@ -1517,26 +1517,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!textEl) return;
         const tspanRef = textEl.querySelector("tspan");
         if (!tspanRef) return;
-        
+
         const textStr = textEl.textContent || "";
         const words = textStr.trim().split(/\s+/);
         if (words.length === 0 || words[0] === "") return;
-        
+
         const x = tspanRef.getAttribute("x") || "0";
         const y = tspanRef.getAttribute("y") || "0";
-        
+
         textEl.innerHTML = "";
         let line = [];
         let currentTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
         currentTspan.setAttribute("x", x);
         currentTspan.setAttribute("y", y);
         textEl.appendChild(currentTspan);
-        
+
         for (let i = 0; i < words.length; i++) {
             const word = words[i];
             const testLine = line.length ? line.join(" ") + " " + word : word;
             currentTspan.textContent = testLine;
-            
+
             // Check width limit. Break line if exceeded
             if (currentTspan.getComputedTextLength() > maxWidth && line.length > 0) {
                 currentTspan.textContent = line.join(" ");
@@ -1553,7 +1553,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Debug method to navigate directly to comparisonQuestions section
-    window.debugComparison = function(index = 0) {
+    window.debugComparison = function (index = 0) {
         if (typeof index !== "number" || index < 0 || index >= comparisonQuestions.length) {
             console.warn(`Invalid index. Showing available comparison questions:`);
             console.table(comparisonQuestions.map((q, idx) => {
@@ -1567,5 +1567,53 @@ document.addEventListener("DOMContentLoaded", () => {
         currentComparisonQuestion = index;
         showQuestion3Panel(currentComparisonQuestion);
         console.log(`Navigated to comparison question: [${index}]`);
+    };
+
+    // Debug method to complete the 'Learn' phase and evaluate 'Great_work_' placement
+    window.debugLearnCompletion = function () {
+        console.log("Navigating to the final screen of the Learn section...");
+        currentLearnQuestion = learnQuestions.length - 1;
+
+        // Automatically displays the final screen which brings 'id="Great_work_"' into inline render
+        showFinalLearnScreen();
+
+        // Simulate interaction completions to surface the correct markers
+        setTimeout(() => {
+            const activeSentences = [
+                "The chef prepared the delicious meal.",
+                "The teacher explains the lesson clearly.",
+                "The students will perform the play tomorrow.",
+                "The talented artist painted the mural.",
+                "The doctor examines the patients daily."
+            ];
+
+            const groupIds = [
+                "Group_1185", "Group_1186", "Group_1187", "Group_1188", "Group_1189",
+                "Group_1190", "Group_1191", "Group_1192", "Group_1193", "Group_1194"
+            ];
+
+            groupIds.forEach(id => {
+                const group = document.getElementById(id);
+                if (!group) return;
+
+                const textEl = group.querySelector("text");
+                if (textEl) {
+                    let textContent = textEl.textContent.trim();
+                    const tspans = textEl.querySelectorAll("tspan");
+                    if (tspans.length > 0) {
+                        textContent = Array.from(tspans).map(t => t.textContent).join("").trim();
+                    }
+
+                    if (activeSentences.some(active => textContent.includes(active))) {
+                        // Prevent re-triggering if already auto-toggled
+                        const rectBox = group.querySelector('rect[width="41"]');
+                        if (rectBox && rectBox.getAttribute("fill") !== "#5ca0fa") {
+                            group.click();
+                        }
+                    }
+                }
+            });
+            console.log("Learn auto-completed! The 'Great work!' feedback (id='Great_work_') placement should now be visible.");
+        }, 150);
     };
 });
