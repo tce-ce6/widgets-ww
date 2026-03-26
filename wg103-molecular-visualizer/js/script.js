@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
- 
+
   // State
   let moleculeCount = 1;
   let currentSubstance = "Water";
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "scr01-feedback_panel",
     "scr01-predict_panel",
     "scr01-sample_panel",
-    "scr01-no_of_molecules_panel",
+
     "i-text",
     "break_apart_btn",
     "substance_dropdown_area",
@@ -171,14 +171,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Prediction Panel is always visible but changed in Screen 2
     if (predictPanel) predictPanel.style.display = "block";
-
+    breakApartBtn.style.opacity = "0.5";
+    breakApartBtn.style.cursor = "none";
     if (currentScreen === 1) {
+
       if (predictPanelTitle)
         predictPanelTitle.textContent = "Predict Before Breaking";
       if (lockPredictionBtn) lockPredictionBtn.style.display = "block";
       // User prediction symbols
       if (predHDisplay) predHDisplay.textContent = predH === 0 ? "?" : predH;
       if (predODisplay) predODisplay.textContent = predO === 0 ? "?" : predO;
+      if (predO > 0 && predH > 0) {
+        breakApartBtn.style.opacity = "1";
+        breakApartBtn.style.cursor = "cursor";
+      }
     } else {
       // Screen 2: Reveal the truth
       if (predictPanelTitle)
@@ -243,9 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sampleMolCount = document.getElementById("sample_mol_count");
     if (sampleMolCount) {
-      sampleMolCount.querySelector("tspan").textContent = `${moleculeCount} ${
-        moleculeCount === 1 ? "Molecule" : "Molecules"
-      }`;
+      sampleMolCount.querySelector("tspan").textContent = `${moleculeCount} ${moleculeCount === 1 ? "Molecule" : "Molecules"
+        }`;
     }
 
     // Atom sample display (SVG logic for 1 molecule)
@@ -375,7 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (breakApartBtn) {
-    breakApartBtn.style.cursor = "pointer";
+    breakApartBtn.style.opacity = "0.5";
+    breakApartBtn.style.cursor = "none";
     breakApartBtn.addEventListener("click", () => {
       // Validation: predict at least one atom
       if (predH === 0 && predO === 0) {
