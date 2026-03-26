@@ -221,8 +221,8 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T13:23:38+05:30",
-      "author": "Santosh Vishwakarma"
+      "updatedAt": "2026-03-26T16:29:59+05:30",
+      "author": "PrasannaP"
     },
     "wg47-mendels-monohybrid-cross": {
       "updatedAt": "2026-03-18T23:11:02+05:30",
@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-25T19:53:11+05:30",
+      "updatedAt": "2026-03-26T14:31:17+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T16:29:59+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
+      "widgets": [
+        42
+      ]
+    },
+    {
       "date": "2026-03-26T15:51:41+05:30",
       "author": "Santosh Vishwakarma",
       "message": "wg73 issues fixed",
@@ -449,6 +457,14 @@
       "message": "wg84 changes",
       "widgets": [
         84
+      ]
+    },
+    {
+      "date": "2026-03-26T14:31:17+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: rename wg70.html to index.html.",
+      "widgets": [
+        70
       ]
     },
     {
@@ -601,23 +617,6 @@
       "message": "readme",
       "widgets": [
         146
-      ]
-    },
-    {
-      "date": "2026-03-25T19:53:11+05:30",
-      "author": "PrasannaP",
-      "message": "v5",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-25T19:51:56+05:30",
-      "author": "tce-nitinc",
-      "message": "WG123",
-      "widgets": [
-        76,
-        123
       ]
     }
   ]
