@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-13T19:19:52+05:30",
+      "updatedAt": "2026-03-26T15:45:49+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -173,8 +173,8 @@
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
-      "updatedAt": "2026-03-10T11:31:33+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg149-punctuation-marks": {
       "updatedAt": "2026-03-23T17:32:33+05:30",
@@ -221,8 +221,8 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T13:23:38+05:30",
-      "author": "Santosh Vishwakarma"
+      "updatedAt": "2026-03-26T17:20:01+05:30",
+      "author": "PrasannaP"
     },
     "wg47-mendels-monohybrid-cross": {
       "updatedAt": "2026-03-18T23:11:02+05:30",
@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-25T19:53:11+05:30",
+      "updatedAt": "2026-03-26T14:31:17+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -269,7 +269,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-03-25T18:11:04+05:30",
+      "updatedAt": "2026-03-26T15:51:41+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg74-formal-letter-of-complaint": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T12:38:10+05:30",
+      "updatedAt": "2026-03-26T15:45:49+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -379,6 +379,47 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T17:20:01+05:30",
+      "author": "PrasannaP",
+      "message": "feat: externalized styles and scripts.",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "148 issues are fixed",
+      "widgets": [
+        148
+      ]
+    },
+    {
+      "date": "2026-03-26T16:29:59+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T15:51:41+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg73 issues fixed",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-03-26T15:45:49+05:30",
+      "author": "tce-nitinc",
+      "message": "wg113",
+      "widgets": [
+        77,
+        133
+      ]
+    },
+    {
       "date": "2026-03-26T15:44:38+05:30",
       "author": "sushantkanaujiya",
       "message": "Update script.js",
@@ -432,6 +473,14 @@
       "message": "wg84 changes",
       "widgets": [
         84
+      ]
+    },
+    {
+      "date": "2026-03-26T14:31:17+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: rename wg70.html to index.html.",
+      "widgets": [
+        70
       ]
     },
     {
@@ -568,55 +617,6 @@
       "message": "wg142 done",
       "widgets": [
         142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:03:54+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:02:20+05:30",
-      "author": "PrasannaP",
-      "message": "readme",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T19:53:11+05:30",
-      "author": "PrasannaP",
-      "message": "v5",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-25T19:51:56+05:30",
-      "author": "tce-nitinc",
-      "message": "WG123",
-      "widgets": [
-        76,
-        123
-      ]
-    },
-    {
-      "date": "2026-03-25T19:40:17+05:30",
-      "author": "sushantkanaujiya",
-      "message": "time line wg104",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T19:26:37+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg104 fixed",
-      "widgets": [
-        104
       ]
     }
   ]
