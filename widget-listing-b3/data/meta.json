@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-26T14:31:17+05:30",
+      "updatedAt": "2026-03-26T18:45:59+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -378,6 +378,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T18:45:59+05:30",
+      "author": "PrasannaP",
+      "message": "for nitin for layout",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-26T18:26:17+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement the 'Reflection of Light' simulation widget including its HTML structure, styling, and interactive JavaScript logic.",
+      "widgets": [
+        70
+      ]
+    },
     {
       "date": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc",
@@ -603,22 +619,6 @@
       "message": "Update script.js",
       "widgets": [
         104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:11:06+05:30",
-      "author": "PrasannaP",
-      "message": "debug and fix",
-      "widgets": [
-        123
-      ]
-    },
-    {
-      "date": "2026-03-25T20:06:19+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        142
       ]
     }
   ]
