@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   // State
   let moleculeCount = 1;
   let currentSubstance = "Water";
@@ -174,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
     breakApartBtn.style.opacity = "0.5";
     breakApartBtn.style.cursor = "none";
     if (currentScreen === 1) {
-
       if (predictPanelTitle)
         predictPanelTitle.textContent = "Predict Before Breaking";
       if (lockPredictionBtn) lockPredictionBtn.style.display = "block";
@@ -183,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (predODisplay) predODisplay.textContent = predO === 0 ? "?" : predO;
       if (predO > 0 && predH > 0) {
         breakApartBtn.style.opacity = "1";
-        breakApartBtn.style.cursor = "cursor";
+        breakApartBtn.style.cursor = "pointer";
       }
     } else {
       // Screen 2: Reveal the truth
@@ -249,8 +247,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sampleMolCount = document.getElementById("sample_mol_count");
     if (sampleMolCount) {
-      sampleMolCount.querySelector("tspan").textContent = `${moleculeCount} ${moleculeCount === 1 ? "Molecule" : "Molecules"
-        }`;
+      sampleMolCount.querySelector("tspan").textContent = `${moleculeCount} ${
+        moleculeCount === 1 ? "Molecule" : "Molecules"
+      }`;
     }
 
     // Atom sample display (SVG logic for 1 molecule)
