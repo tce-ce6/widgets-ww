@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 1,
         tier: "GRAM_PANCHAYAT",
         question:
-          "Scenario: The Gram Sabha of Khedi village elects 9 representatives. At what level do these representatives govern?",
+          "Scenario: The Gram Sabha of Khedi village elects nine representatives. At what level do these representatives govern?",
         options: "option-set-1",
         correctOptionIndex: 0,
         pyramidLevel: "pyramid-level1",
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 3,
         tier: "GRAM_PANCHAYAT",
         question:
-          "Scenario: The 9 Gram Panchayat members are elected. Who leads the Gram Panchayat and chairs their meetings?",
+          "Scenario: The nine Gram Panchayat members are elected. Who leads the Gram Panchayat and chairs their meetings?",
         options: "option-set-3",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level1",
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 4,
         tier: "PANCHAYAT_SAMITI",
         question:
-          "Scenario: Khedi is one of 20 villages in a Tehsil area. How are development projects planned when multiple villages are involved?",
+          "Scenario: Khedi is one of twenty villages in a Tehsil area. How are development projects planned when multiple villages are involved?",
         options: "option-set-4",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level2",
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 6,
         tier: "PANCHAYAT_SAMITI",
         question:
-          "Scenario: 15 villages all need better roads. What is Panchayat Samiti's main role with these requests?",
+          "Scenario: Fifteen villages all need better roads. What is Panchayat Samiti's main role with these requests?",
         options: "option-set-6",
         correctOptionIndex: 2,
         pyramidLevel: "pyramid-level2",
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 7,
         tier: "ZILA_PARISHAD",
         question:
-          "Scenario: Khedi's block is one of 12 blocks in Bhopal district. What does the highest Panchayati Raj body do with plans from all these blocks?",
+          "Scenario: Khedi's block is one of twelve blocks in Bhopal district. What does the highest Panchayati Raj body do with plans from all these blocks?",
         options: "option-set-7",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level3",
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 9,
         tier: "WOMENS_RESERVATION",
         question:
-          "Scenario: A Gram Panchayat has 9 seats. How many MUST be reserved for women by constitutional law?",
+          "Scenario: A Gram Panchayat has nine seats. How many MUST be reserved for women by constitutional law?",
         options: "option-set-9",
         correctOptionIndex: 2,
         pyramidLevel: "pyramid-level3",
@@ -131,40 +131,40 @@ document.addEventListener("DOMContentLoaded", () => {
     'g[id^="Layer_1-6"]',
     'g[id^="Layer_1-4"]',
     'ellipse[id^="Ellipse_17-2"]',
-    'g[id="Layer_1"]', 
+    'g[id="Layer_1"]',
   ];
 
   // helper to find the full icon element/group within a card
   function getIconFromCard(cardEl) {
     if (!cardEl) return null;
-    
+
     // Find all potential icons
     const potentialIcons = Array.from(cardEl.querySelectorAll(draggableSelectors.join(",")));
-    
+
     // Filter out icons that are likely just shadows (low opacity)
     let el = potentialIcons.find(icon => {
-        const opacity = icon.getAttribute("opacity");
-        return !opacity || parseFloat(opacity) > 0.3;
+      const opacity = icon.getAttribute("opacity");
+      return !opacity || parseFloat(opacity) > 0.3;
     });
 
     if (!el) {
-       // Fallback to anything matching if no high-opacity found
-       el = potentialIcons[0] || cardEl.querySelector('ellipse[id*="Ellipse_17-2"], circle[id*="Ellipse_18"]');
+      // Fallback to anything matching if no high-opacity found
+      el = potentialIcons[0] || cardEl.querySelector('ellipse[id*="Ellipse_17-2"], circle[id*="Ellipse_18"]');
     }
-    
+
     if (el) {
-        // If the item is an ellipse/circle inside a group with no ID,
-        // make the parent group the icon so everything moves together.
-        if (
-          (el.tagName === "ellipse" || el.tagName === "circle") &&
-          el.parentNode.tagName === "g" &&
-          (!el.parentNode.id || el.parentNode.id.startsWith("drag-group-auto"))
-        ) {
-          el = el.parentNode;
-          if (!el.id) {
-            el.id = "drag-group-auto-" + dragIdCounter++;
-          }
+      // If the item is an ellipse/circle inside a group with no ID,
+      // make the parent group the icon so everything moves together.
+      if (
+        (el.tagName === "ellipse" || el.tagName === "circle") &&
+        el.parentNode.tagName === "g" &&
+        (!el.parentNode.id || el.parentNode.id.startsWith("drag-group-auto"))
+      ) {
+        el = el.parentNode;
+        if (!el.id) {
+          el.id = "drag-group-auto-" + dragIdCounter++;
         }
+      }
     }
     return el;
   }
@@ -234,6 +234,51 @@ document.addEventListener("DOMContentLoaded", () => {
       star.closest("g"),
     );
   }
+
+  // --- Lottie Emoji Animations ---
+  let lottieCorrectAnim = null;
+  let lottieIncorrectAnim = null;
+
+  (function () {
+    function makeLottieEmojiSlot(id, x, y, w, h) {
+      const fo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+      fo.setAttribute("x", x);
+      fo.setAttribute("y", y);
+      fo.setAttribute("width", w);
+      fo.setAttribute("height", h);
+      const div = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+      div.id = id;
+      div.style.cssText = "width:100%;height:100%;";
+      fo.appendChild(div);
+      return fo;
+    }
+
+    const happyGroup = document.getElementById("Group_1492-3");
+    if (happyGroup && happyGroup.parentNode) {
+      const fo = makeLottieEmojiSlot("lottie-correct-container", 1275, 450, 140, 140);
+      happyGroup.parentNode.replaceChild(fo, happyGroup);
+      lottieCorrectAnim = lottie.loadAnimation({
+        container: document.getElementById("lottie-correct-container"),
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji_happy-star.json"
+      });
+    }
+
+    const sadGroup = document.getElementById("Group_1303");
+    if (sadGroup && sadGroup.parentNode) {
+      const fo = makeLottieEmojiSlot("lottie-incorrect-container", 1274, 358, 140, 140);
+      sadGroup.parentNode.replaceChild(fo, sadGroup);
+      lottieIncorrectAnim = lottie.loadAnimation({
+        container: document.getElementById("lottie-incorrect-container"),
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: "./assets/anim/emoji-sad.json"
+      });
+    }
+  })();
 
   // --- Helper Functions ---
 
@@ -416,9 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const targetCircle = document.getElementById(qData.circleId);
     if (targetCircle) {
-      targetCircle.setAttribute("opacity", "1");
-      targetCircle.style.stroke = "#ff6600";
-      targetCircle.style.strokeWidth = "3";
+      // styles handled by CSS class 'active-brick-circle'
     }
   }
 
@@ -516,6 +559,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearSelection();
       }, 200);
       showElementAndFront(elements.popups.incorrect);
+      if (lottieIncorrectAnim) { lottieIncorrectAnim.goToAndPlay(0, true); }
     }
   }
 
@@ -565,11 +609,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const textNode = feedbackGroup.querySelector("text");
       if (textNode) {
         let feedback = qData.feedback;
-        let maxCharsPerLine = 25;
+        let maxCharsPerLine = 35; // Increased from 25 to fit more text on one line
 
         let lines = [];
         let start = 0;
-        while (start < feedback.length && lines.length < 3) {
+        while (start < feedback.length && lines.length < 5) { // Increased from 3 to 5
           let end = start + maxCharsPerLine;
           if (end < feedback.length) {
             let spaceIndex = feedback.lastIndexOf(" ", end);
@@ -605,6 +649,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     showElementAndFront(popupCorrect);
+    if (lottieCorrectAnim) { lottieCorrectAnim.goToAndPlay(0, true); }
+    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
   }
 
   function updateQuestionUI() {
@@ -643,16 +689,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clear active brick class from ALL possible circles
     Array.from(elements.clickableCircles.children).forEach(el => {
-       if (el.tagName === "g") {
-         el.classList.remove("active-brick-circle", "highlight-brick");
-       }
+      if (el.tagName === "g") {
+        el.classList.remove("active-brick-circle", "highlight-brick");
+      }
     });
 
     // Set active brick
     const targetCircle = document.getElementById(qData.circleId);
     if (targetCircle) {
       targetCircle.classList.add("active-brick-circle");
-      targetCircle.style.opacity = "1";
     }
 
     if (elements.questionTexts.group) {
@@ -664,34 +709,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Clear all text nodes first
         textElements.forEach(te => {
-            while (te.firstChild) te.removeChild(te.firstChild);
+          while (te.firstChild) te.removeChild(te.firstChild);
         });
 
         // Split text into lines intelligently
         const words = scenarioText.split(" ");
         let lines = ["", "", ""];
         let currentLine = 0;
-        const maxChars = [55, 60, 60]; 
+        const maxChars = [66, 70, 70];
 
         for (let word of words) {
-            if (currentLine < 2 && (lines[currentLine] + word).length > maxChars[currentLine]) {
-                currentLine++;
-            }
-            lines[currentLine] += word + " ";
+          if (currentLine < 2 && (lines[currentLine] + word).length > maxChars[currentLine]) {
+            currentLine++;
+          }
+          lines[currentLine] += word + " ";
         }
 
         // Line 1: Bold "Scenario:" and rest normal
         if (lines[0].trim().startsWith("Scenario:")) {
-            const boldTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-            boldTspan.textContent = "Scenario: ";
-            boldTspan.setAttribute("font-weight", "700");
-            textElements[0].appendChild(boldTspan);
-            
-            const normalTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-            normalTspan.textContent = lines[0].replace("Scenario:", "").trim();
-            textElements[0].appendChild(normalTspan);
+          const boldTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          boldTspan.textContent = "Scenario: ";
+          boldTspan.setAttribute("font-weight", "700");
+          textElements[0].appendChild(boldTspan);
+
+          const normalTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          normalTspan.textContent = lines[0].replace("Scenario:", "").trim();
+          textElements[0].appendChild(normalTspan);
         } else {
-            textElements[0].textContent = lines[0].trim();
+          textElements[0].textContent = lines[0].trim();
         }
 
         // Lines 2 and 3
@@ -729,6 +774,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hideElement(elements.popups.correct);
     hideElement(elements.popups.incorrect);
     hideElement(elements.popups.insights);
+    if (lottieCorrectAnim) { lottieCorrectAnim.stop(); }
+    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
     hideElement(elements.clickableCircles);
     hideElement(elements.progressBar);
     hideElement(elements.btns.insights);
@@ -760,19 +807,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-      // Also remove pins from all circles
-      GAME_CONFIG.questions.forEach(q => {
-        removePin(q.circleId);
-        const circle = document.getElementById(q.circleId);
-        if (circle) {
-          circle.classList.remove("active-brick-circle", "correct-brick-fill", "highlight-brick");
-          circle.setAttribute("opacity", "0.43");
-          circle.style.stroke = "";
-          circle.style.strokeWidth = "";
-          circle.style.opacity = "";
-        }
-      });
-    }
+    // Also remove pins from all circles
+    GAME_CONFIG.questions.forEach(q => {
+      removePin(q.circleId);
+      const circle = document.getElementById(q.circleId);
+      if (circle) {
+        circle.classList.remove("active-brick-circle", "correct-brick-fill", "highlight-brick");
+        circle.setAttribute("opacity", "0.43");
+        circle.style.stroke = "";
+        circle.style.strokeWidth = "";
+        circle.style.opacity = "";
+      }
+    });
+  }
 
   elements.startBtn.addEventListener("click", () => {
     hideElement(elements.introBox);
@@ -802,23 +849,9 @@ document.addEventListener("DOMContentLoaded", () => {
         isAwaitingPyramidClick = true;
       };
 
-      const items = opt.querySelectorAll(draggableSelectors.join(","));
+      const el = getIconFromCard(opt);
 
-      items.forEach((item) => {
-        let el = item;
-        // If the item is an ellipse/circle inside a group with no ID,
-        // make the parent group draggable instead so the icon path moves too.
-        if (
-          (el.tagName === "ellipse" || el.tagName === "circle") &&
-          el.parentNode.tagName === "g" &&
-          (!el.parentNode.id || el.parentNode.id.startsWith("drag-group-auto"))
-        ) {
-          el = el.parentNode;
-          if (!el.id) {
-            el.id = "drag-group-auto-" + dragIdCounter++;
-          }
-        }
-
+      if (el) {
         el.style.cursor = "grab";
         if (el.id && !originalPositions[el.id]) {
           if (el.tagName === "g") {
@@ -828,18 +861,19 @@ document.addEventListener("DOMContentLoaded", () => {
             originalPositions[el.id] = {
               x: parseFloat(el.getAttribute("cx") || el.getAttribute("x") || 0),
               y: parseFloat(el.getAttribute("cy") || el.getAttribute("y") || 0),
-              parent: el.parentNode
+              parent: el.parentNode,
             };
           }
         }
         el.addEventListener("mousedown", startDrag);
         el.addEventListener("touchstart", startDrag, { passive: false });
-      });
+      }
     });
   });
 
   elements.btns.proceed.addEventListener("click", () => {
     hideElement(elements.popups.correct);
+    if (lottieCorrectAnim) { lottieCorrectAnim.stop(); }
     proceedToNext();
   });
 
@@ -857,6 +891,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elements.btns.tryAgain.addEventListener("click", () => {
     hideElement(elements.popups.incorrect);
+    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
   });
 
   // Handle Pyramid Building Click for Tap-Tap flow
@@ -870,33 +905,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!circleGroup.id.includes("Ellipse_")) return;
 
     const qData = GAME_CONFIG.questions[currentQuestionIndex];
-    
+
     // Check if the clicked circle matches the active target
     if (circleGroup.id === qData.circleId) {
-        // Find the icon using established helper
-        let icon = getIconFromCard(selectedOptionElement);
+      // Find the icon using established helper
+      let icon = getIconFromCard(selectedOptionElement);
 
-        if (icon) {
-            // Ensure original position is stored
-            if (!originalPositions[icon.id]) {
-                if (icon.tagName === "g") {
-                    originalPositions[icon.id] = { transform: icon.getAttribute("transform") || "", parent: icon.parentNode };
-                } else {
-                    originalPositions[icon.id] = {
-                        x: parseFloat(icon.getAttribute("cx") || icon.getAttribute("x") || 0),
-                        y: parseFloat(icon.getAttribute("cy") || icon.getAttribute("y") || 0),
-                        parent: icon.parentNode
-                    };
-                }
-            }
-            // Move icon to circle container
-            elements.clickableCircles.appendChild(icon);
-            handleOptionMatch(qData, icon, selectedOptionIndex, circleGroup.id);
+      if (icon) {
+        // Ensure original position is stored
+        if (!originalPositions[icon.id]) {
+          if (icon.tagName === "g") {
+            originalPositions[icon.id] = { transform: icon.getAttribute("transform") || "", parent: icon.parentNode };
+          } else {
+            originalPositions[icon.id] = {
+              x: parseFloat(icon.getAttribute("cx") || icon.getAttribute("x") || 0),
+              y: parseFloat(icon.getAttribute("cy") || icon.getAttribute("y") || 0),
+              parent: icon.parentNode
+            };
+          }
         }
+        // Move icon to circle container
+        elements.clickableCircles.appendChild(icon);
+        handleOptionMatch(qData, icon, selectedOptionIndex, circleGroup.id);
+      }
     } else {
-        // Tapped wrong circle
-        showElementAndFront(elements.popups.incorrect);
-        clearSelection();
+      // Tapped wrong circle
+      showElementAndFront(elements.popups.incorrect);
+      if (lottieIncorrectAnim) { lottieIncorrectAnim.goToAndPlay(0, true); }
+      clearSelection();
     }
   });
 
