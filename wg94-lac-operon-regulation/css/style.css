@@ -397,12 +397,39 @@ svg * {
   transform: none !important;
 }
 
+/* Fix layout expansion from lottie svg renderer */
+#lottie_animation { overflow: hidden; display: none; }
+#lottie-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+#lottie-container svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 #lottie-wrapper {
   display: none;
   width: 100%;
   height: 100%;
   pointer-events: none;
 }
+
+#lottie_animation {
+  position: absolute;
+  top: 170px;
+  left: 300px;
+  width: 1560px;
+  height: 720px;
+  pointer-events: none;   /* so clicks go through to SVG buttons */
+  z-index: 10;
+  overflow: hidden;
+}
+
 
 #wrapper-1,
 #wrapper-2 {

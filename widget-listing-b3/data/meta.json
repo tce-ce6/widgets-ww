@@ -17,8 +17,8 @@
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
-      "updatedAt": "2026-03-09T19:47:36+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-26T10:26:23+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
       "updatedAt": "2026-02-27T14:51:23+05:30",
@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-25T19:51:56+05:30",
+      "updatedAt": "2026-03-26T10:17:07+05:30",
       "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
@@ -153,7 +153,7 @@
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-03-24T20:56:58+05:30",
+      "updatedAt": "2026-03-25T20:06:19+05:30",
       "author": "sushantthe"
     },
     "wg143-synthesize-new-polypeptide-chain": {
@@ -165,11 +165,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-25T16:19:17+05:30",
+      "updatedAt": "2026-03-25T20:02:20+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
-      "updatedAt": "2026-03-24T17:52:59+05:30",
+      "updatedAt": "2026-03-26T10:29:33+05:30",
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-25T18:33:50+05:30",
+      "updatedAt": "2026-03-26T13:23:38+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -260,13 +260,9 @@
       "updatedAt": "2026-03-25T18:33:50+05:30",
       "author": "Santosh Vishwakarma"
     },
-    "wg70-reflection-of-light": {
-      "updatedAt": "2026-03-24T20:57:40+05:30",
-      "author": "PrasannaP"
-    },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-24T21:14:09+05:30",
-      "author": "Prasanna Patra"
+      "updatedAt": "2026-03-25T19:53:11+05:30",
+      "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
       "updatedAt": "2026-03-10T12:28:28+05:30",
@@ -285,11 +281,11 @@
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
-      "updatedAt": "2026-03-25T19:51:56+05:30",
+      "updatedAt": "2026-03-26T11:26:59+05:30",
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-23T11:38:30+05:30",
+      "updatedAt": "2026-03-26T12:38:10+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -317,8 +313,8 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-22T15:17:10+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-26T13:41:33+05:30",
+      "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
       "updatedAt": "2026-02-23T20:35:45+05:30",
@@ -357,8 +353,8 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-17T16:07:56+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-25T21:52:52+05:30",
+      "author": "sushantthe"
     },
     "wg95-similar-meanings": {
       "updatedAt": "2026-02-12T18:57:30+05:30",
@@ -383,12 +379,180 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T13:41:33+05:30",
+      "author": "tce-nitinc",
+      "message": "wg84",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-26T13:23:38+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg21 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T12:38:10+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T12:02:47+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T11:27:40+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg42 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T11:26:59+05:30",
+      "author": "tce-nitinc",
+      "message": "wg76 fixes",
+      "widgets": [
+        76
+      ]
+    },
+    {
+      "date": "2026-03-26T10:29:33+05:30",
+      "author": "tce-nitinc",
+      "message": "wg147",
+      "widgets": [
+        147
+      ]
+    },
+    {
+      "date": "2026-03-26T10:26:23+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-26T10:22:51+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-26T10:17:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg123",
+      "widgets": [
+        123
+      ]
+    },
+    {
+      "date": "2026-03-25T21:52:52+05:30",
+      "author": "sushantthe",
+      "message": "wg94 animation",
+      "widgets": [
+        94
+      ]
+    },
+    {
+      "date": "2026-03-25T20:21:15+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-25T20:18:14+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update script.js",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-25T20:11:06+05:30",
+      "author": "PrasannaP",
+      "message": "debug and fix",
+      "widgets": [
+        123
+      ]
+    },
+    {
+      "date": "2026-03-25T20:06:19+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-25T20:05:58+05:30",
+      "author": "sushantthe",
+      "message": "wg142 done",
+      "widgets": [
+        142
+      ]
+    },
+    {
+      "date": "2026-03-25T20:03:54+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-25T20:02:20+05:30",
+      "author": "PrasannaP",
+      "message": "readme",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-25T19:53:11+05:30",
+      "author": "PrasannaP",
+      "message": "v5",
+      "widgets": [
+        70
+      ]
+    },
+    {
       "date": "2026-03-25T19:51:56+05:30",
       "author": "tce-nitinc",
       "message": "WG123",
       "widgets": [
         76,
         123
+      ]
+    },
+    {
+      "date": "2026-03-25T19:40:17+05:30",
+      "author": "sushantkanaujiya",
+      "message": "time line wg104",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-25T19:26:37+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg104 fixed",
+      "widgets": [
+        104
       ]
     },
     {
@@ -459,184 +623,6 @@
       "message": "lable box hight increased",
       "widgets": [
         73
-      ]
-    },
-    {
-      "date": "2026-03-25T18:04:35+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "73 popup pulled inside",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T16:57:27+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved of letter widgets",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
-      ]
-    },
-    {
-      "date": "2026-03-25T16:40:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "review sheet fixes completed",
-      "widgets": [
-        98
-      ]
-    },
-    {
-      "date": "2026-03-25T16:35:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg113 changes",
-      "widgets": [
-        113
-      ]
-    },
-    {
-      "date": "2026-03-25T16:33:12+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg73 issues fixed",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T16:29:30+05:30",
-      "author": "tce-nitinc",
-      "message": "wg150",
-      "widgets": [
-        150
-      ]
-    },
-    {
-      "date": "2026-03-25T16:29:08+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-25T16:19:17+05:30",
-      "author": "PrasannaP",
-      "message": "for review 146",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T16:13:22+05:30",
-      "author": "tce-nitinc",
-      "message": "added 92 and 113",
-      "widgets": [
-        92,
-        113
-      ]
-    },
-    {
-      "date": "2026-03-25T15:51:36+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-25T15:39:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg113 and wg 150 changes",
-      "widgets": [
-        113,
-        123,
-        150
-      ]
-    },
-    {
-      "date": "2026-03-25T15:35:30+05:30",
-      "author": "sushantkanaujiya",
-      "message": "134 fixed issue",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-25T15:32:22+05:30",
-      "author": "PrasannaP",
-      "message": "v4",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T14:59:48+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg81 found issue fixed",
-      "widgets": [
-        81
-      ]
-    },
-    {
-      "date": "2026-03-25T14:50:39+05:30",
-      "author": "PrasannaP",
-      "message": "v3",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T14:46:35+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        87,
-        88,
-        134
-      ]
-    },
-    {
-      "date": "2026-03-25T13:32:03+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T13:18:54+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "fixed review comment for wg145",
-      "widgets": [
-        98,
-        145
-      ]
-    },
-    {
-      "date": "2026-03-25T12:39:58+05:30",
-      "author": "PrasannaP",
-      "message": "v1 146",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-25T12:39:16+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "repositioned the show answer modal",
-      "widgets": [
-        145
-      ]
-    },
-    {
-      "date": "2026-03-25T12:32:51+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "wg145 review sheet fixes",
-      "widgets": [
-        145
       ]
     }
   ]
