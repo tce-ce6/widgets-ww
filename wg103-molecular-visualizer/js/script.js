@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
- 
   // State
   let moleculeCount = 1;
   let currentSubstance = "Water";
@@ -96,13 +95,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const insightBtn = document.getElementById("insight_btn");
   const insightPanel = document.getElementById("insight_panel");
   const closeInsightBtn = document.getElementById("Group_579");
+  const scr01feedback_panel = document.getElementById("scr01-feedback_panel");
+  const scr02elements = document.getElementById("scr02-elements");
 
   // Groups for Screen management
   const scr01Panels = [
     "scr01-feedback_panel",
     "scr01-predict_panel",
     "scr01-sample_panel",
-    "scr01-no_of_molecules_panel",
+
     "i-text",
     "break_apart_btn",
     "substance_dropdown_area",
@@ -158,6 +159,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  let wrong_prediction = document.getElementById("wrong_prediction");
+  if (wrong_prediction) {
+    wrong_prediction.style.display = "block";
+    return;
+  }
+
+  // Centered wrong-prediction overlay
+  const wrongOverlay = document.createElement("div");
+  wrongOverlay.id = "wrong_prediction";
+  wrongOverlay.style.cssText = [
+    "position:absolute",
+    "top:50%",
+    "left:40%",
+    "transform:translate(-50%,-50%)",
+    "background:rgba(200,40,40,0.92)",
+    "color:#fff",
+    "padding:28px 48px",
+    "border-radius:16px",
+    "text-align:center",
+    "pointer-events:none",
+    "z-index:9999",
+    "display:none",
+    "font-family:Roboto,sans-serif",
+  ].join(";");
+  wrongOverlay.innerHTML =
+    '<div style="font-size:28px;font-weight:700;margin-bottom:8px">Wrong Prediction!</div>' +
+    '<div style="font-size:22px">Try Again</div>';
+  document.getElementById("svg-container").style.position = "relative";
+  document.getElementById("svg-container").appendChild(wrongOverlay);
+  let wrongOverlayTimer = null;
+
+  function showWrongPredictionOverlay() {
+    if (wrongOverlayTimer) clearTimeout(wrongOverlayTimer);
+    wrongOverlay.style.display = "block";
+    scr02elements.style.display = "none";
+  }
+
   function updateUI() {
     const data = substances[currentSubstance];
 
@@ -171,7 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Prediction Panel is always visible but changed in Screen 2
     if (predictPanel) predictPanel.style.display = "block";
-
+    breakApartBtn.style.opacity = "0.5";
+    breakApartBtn.style.cursor = "none";
     if (currentScreen === 1) {
       if (predictPanelTitle)
         predictPanelTitle.textContent = "Predict Before Breaking";
@@ -179,6 +218,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // User prediction symbols
       if (predHDisplay) predHDisplay.textContent = predH === 0 ? "?" : predH;
       if (predODisplay) predODisplay.textContent = predO === 0 ? "?" : predO;
+      if (predO > 0 && predH > 0) {
+        breakApartBtn.style.opacity = "1";
+        breakApartBtn.style.cursor = "pointer";
+      }
     } else {
       // Screen 2: Reveal the truth
       if (predictPanelTitle)
@@ -375,7 +418,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (breakApartBtn) {
-    breakApartBtn.style.cursor = "pointer";
+    breakApartBtn.style.opacity = "0.5";
+    breakApartBtn.style.cursor = "none";
     breakApartBtn.addEventListener("click", () => {
       // Validation: predict at least one atom
       if (predH === 0 && predO === 0) {
@@ -385,6 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScreen = 2;
       calculateResults();
       updateUI();
+      const data = substances[currentSubstance];
+      const totalH = moleculeCount * data.ratioH;
+      const totalO = moleculeCount * data.ratioO;
+      if (predH !== totalH || predO !== totalO) showWrongPredictionOverlay();
     });
   }
 
@@ -396,6 +444,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentScreen = 1;
       if (insightPanel) insightPanel.style.display = "none";
       updateUI();
+      let wrong_prediction = document.getElementById("wrong_prediction");
+      if (wrong_prediction) {
+        wrong_prediction.style.display = "none";
+      }
     });
   }
 

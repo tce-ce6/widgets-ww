@@ -21,7 +21,7 @@ let letterData = {
   },
   "उ": {
     "answers": ["उपहार", "उनचास"],
-    "distractors": ["ऊनी", "ऊसर"],
+    "distractors": ["ऊन", "ऊसर"],
     "question": "‘उ’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
   "ऊ": {
@@ -159,6 +159,8 @@ const uttarDekheBtn = document.getElementById('uttar-dekhe-btn');
 const showAnswerbtn = document.getElementById("showAnswerBtn");
 const soundBtn = document.getElementById("soundBtn");
 
+let activeLottieMap = new Map(); // store per option
+
 document.addEventListener('DOMContentLoaded', function () {
 
   swars.forEach(el => {
@@ -170,6 +172,10 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = swarList.indexOf(letter);
 
       const data = letterData[letter];
+      if(letter == "अं"){
+        agalaSwarBtn.style.opacity = 0.3;
+        agalaSwarBtn.style.pointerEvents = 'none';
+      }
 
       if (data) {
         currentData = data; // ✅ store for later (important)
@@ -182,23 +188,31 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   agalaSwarBtn.addEventListener("click", () => {
-    currentIndex++;
 
-    // loop back to start
-    if (currentIndex >= swarList.length) {
-      currentIndex = 0;
+    // if already at last index → do nothing
+    if (currentIndex >= swarList.length - 1) {
+      return;
     }
+
+    currentIndex++;
 
     const letter = swarList[currentIndex];
     loadSwar(letter);
     playSound(letter);
     resetOptions();
+
+    // if reached last → disable button
+    if (currentIndex === swarList.length - 1) {
+      agalaSwarBtn.style.opacity = 0.3;
+      agalaSwarBtn.style.pointerEvents = 'none'; // disable click
+    }
   });
 
   homeBtn.addEventListener('click', () => {
     homePage.style.display = 'block';
     gamePage.style.display = 'none';
     showAnswerbtn.textContent = "उत्तर देखें";
+    showAnswer = false;
     resetOptions();
   });
 });
@@ -211,15 +225,28 @@ function resetOptions() {
   // reset clicked tracking (IMPORTANT)
   clickedSet.clear();   // if using Set approach
 
+  // clear any running lottie animations from previous question
+  optionsImg.forEach(btn => {
+    if (activeLottieMap.has(btn)) {
+      activeLottieMap.get(btn).destroy();
+      activeLottieMap.delete(btn);
+    }
+    const lottieContainer = btn.querySelector(".lottie-container");
+    if (lottieContainer) lottieContainer.innerHTML = "";
+  });
+
   // reset button state
   uttarDekheBtn.style.opacity = 1;
   uttarDekheBtn.style.pointerEvents = "auto";
+  agalaSwarBtn.style.opacity = 1;
+  agalaSwarBtn.style.pointerEvents = 'auto';
 }
 
 function loadSwar(selectedLetter) {
   gamePage.style.display = 'block';
   homePage.style.display = 'none';
   showAnswerbtn.textContent = "उत्तर देखें";
+  showAnswer = false;
 
   letter = selectedLetter;
   const data = letterData[letter];
@@ -252,12 +279,44 @@ function playWordSound(word) {
   audio.play();
 }
 
+function playLottie(container, parentEl) {
+  if (!container) {
+    console.warn("playLottie: .lottie-container not found for option", parentEl);
+    return;
+  }
+  if (typeof lottie === "undefined" || !lottie.loadAnimation) {
+    console.error("playLottie: lottie library not loaded (lottie.min.js missing?)");
+    return;
+  }
+
+  // 🧹 destroy previous lottie in THIS option only
+  let hadPrev = false;
+  if (activeLottieMap.has(parentEl)) {
+    hadPrev = true;
+    activeLottieMap.get(parentEl).destroy();
+    activeLottieMap.delete(parentEl);
+  }
+  // Avoid clearing container on first load to reduce visible flicker
+  if (hadPrev) container.innerHTML = "";
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: "svg",
+    loop: false,
+    autoplay: true,
+    path: "./assets/animation/confetti.json"
+  });
+
+  activeLottieMap.set(parentEl, anim);
+}
+
 const optionsImg = document.querySelectorAll(".option-img");
 const clickedSet = new Set();
 
 optionsImg.forEach(el => {
   el.addEventListener("click", function () {
 
+    const lottieContainer = this.querySelector(".lottie-container");
     const textEl = this.querySelector(".option-txt");
     const imgEl = this.querySelector("img");
 
@@ -265,24 +324,35 @@ optionsImg.forEach(el => {
 
     if (!currentData) return;
 
-    // ✅ mark this element as clicked
+    // Prevent re-triggering (reduces flicker on repeated clicks)
+    // If the option was clicked before but Lottie was cleared (e.g. after showAnswer toggle),
+    // allow re-clicking so animation can play again.
+    if (clickedSet.has(this) && activeLottieMap.has(this)) return;
     clickedSet.add(this);
 
+    const isCorrect = currentData.answers.includes(selectedText);
+
     // ✅ Only if correct answer
-    if (currentData.answers.includes(selectedText)) {
+    if (isCorrect) {
 
       const imgName = imgJson[selectedText]; // get correct image
       if (imgName) {
         imgEl.src = `./assets/images/${imgName}`;
-        imgEl.style.transform = "scale(1.7)";
-        imgEl.style.position = 'absolute';
-        imgEl.style.top = '-65px';
-        imgEl.style.bottom = '0px';
       }
+
+      // Play animation only on correct answer
+      playLottie(lottieContainer, this);
       playWordSound(selectedText);
     } else {
       // ❌ optional wrong case
       imgEl.src = "./assets/images/incorrect.svg";
+
+      // Clear animation on wrong answer
+      if (activeLottieMap.has(this)) {
+        activeLottieMap.get(this).destroy();
+        activeLottieMap.delete(this);
+      }
+      if (lottieContainer) lottieContainer.innerHTML = "";
     }
 
     // ✅ check if all clicked
@@ -321,11 +391,6 @@ function setOptions(data) {
     const img = el.querySelector("img");
     img.src = "./assets/images/letter.svg";
 
-    // remove applied styles
-    img.style.transform = "";
-    img.style.position = "";
-    img.style.top = "";
-    img.style.bottom = "";
   });
 }
 
@@ -334,38 +399,59 @@ function toggleAnswer() {
   if (!currentData) return;
 
   const optionEls = document.querySelectorAll(".option-img");
-
   showAnswer = !showAnswer; // 🔥 toggle
+
+  const optionsAllClicked = clickedSet.size === optionsImg.length;
 
   optionEls.forEach(el => {
     const text = el.querySelector(".option-txt").innerText.trim();
     const imgEl = el.querySelector("img");
+    const optTxt = el.querySelector(".option-txt");
+    const lottieContainer = el.querySelector(".lottie-container");
 
+    // Enable/disable click target (the handler is on .option-img)
+    el.style.pointerEvents = showAnswer ? "none" : (optionsAllClicked ? "none" : "auto");
+
+    // When answers are shown, also disable interactions on children.
+    imgEl.style.pointerEvents = showAnswer ? "none" : "auto";
+    optTxt.style.pointerEvents = showAnswer ? "none" : "auto";
+    optTxt.style.cursor = showAnswer ? "none" : "pointer";
     if (showAnswer) {
       // ✅ SHOW ANSWERS
       if (currentData.answers.includes(text)) {
         imgEl.src = `./assets/images/${imgJson[text]}`; // correct image
-        imgEl.style.transform = "scale(1.7)";
-        imgEl.style.position = 'absolute';
-        imgEl.style.top = '-60px';
-        imgEl.style.bottom = '0px';
       }
+      else{
+        imgEl.src = './assets/images/incorrect.svg';
+      }
+
+      // Hide lottie completely during "show answer"
+      if (lottieContainer) lottieContainer.style.display = "none";
+      if (activeLottieMap.has(el)) {
+        activeLottieMap.get(el).destroy();
+        activeLottieMap.delete(el);
+      }
+      if (lottieContainer) lottieContainer.innerHTML = "";
     } else {
       // 🔄 HIDE ANSWERS (reset)
-      //imgEl.src = "./assets/images/letter.svg";
-      const img = el.querySelector("img");
-      img.src = "./assets/images/letter.svg";
+      imgEl.src = "./assets/images/letter.svg";
 
-      // remove applied styles
-      img.style.transform = "";
-      img.style.position = "";
-      img.style.top = "";
-      img.style.bottom = "";
+      // Restore styling to the initial state
+      imgEl.style.transform = "";
+      imgEl.style.position = "";
+      imgEl.style.top = "";
+      imgEl.style.bottom = "";
+      imgEl.style.transition = "";
+      imgEl.style.zIndex = "";
+      imgEl.style.backfaceVisibility = "";
+      imgEl.style.transformOrigin = "";
+
+      if (lottieContainer) lottieContainer.style.display = "";
+      
     }
   });
-
   // 🔥 Optional: change button text
-  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएं" : "उत्तर देखें";
+  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएँ" : "उत्तर देखें";
 }
 
 uttarDekheBtn.addEventListener("click", toggleAnswer);
