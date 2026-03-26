@@ -409,3 +409,44 @@ ellipse[id*="Ellipse_17-2"] {
 ellipse[id*="Ellipse_17-2"]:hover {
   cursor: grab !important;
 }
+
+.selected-option rect:last-child {
+  stroke: #ff901e !important;
+  stroke-width: 6 !important;
+  filter: drop-shadow(0 0 5px rgba(255, 144, 30, 0.7));
+}
+
+.selected-option {
+  cursor: default !important;
+}
+
+/* Pyramid Circle States */
+.active-brick-circle {
+  opacity: 1 !important;
+}
+
+.active-brick-circle ellipse:last-child,
+.active-brick-circle circle:last-child {
+  stroke: #ff901e !important;
+  stroke-width: 5 !important;
+  stroke-dasharray: none !important;
+  filter: drop-shadow(0 0 5px rgba(255, 144, 30, 0.8));
+}
+
+.correct-brick-fill ellipse:first-child,
+.correct-brick-fill circle:first-child {
+  fill: #4db58e !important; /* Success Green */
+  opacity: 1 !important;
+}
+
+.correct-brick-fill ellipse:last-child,
+.correct-brick-fill circle:last-child {
+  stroke: #2e8b57 !important;
+  stroke-width: 2 !important;
+  stroke-dasharray: none !important;
+}
+
+.highlight-brick {
+  filter: brightness(1.2) saturate(1.2);
+}
+

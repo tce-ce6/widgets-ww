@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -173,8 +173,8 @@
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
-      "updatedAt": "2026-03-10T11:31:33+05:30",
-      "author": "Santosh"
+      "updatedAt": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma"
     },
     "wg149-punctuation-marks": {
       "updatedAt": "2026-03-23T17:32:33+05:30",
@@ -197,7 +197,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-13T19:19:52+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T16:29:59+05:30",
+      "updatedAt": "2026-03-26T17:20:01+05:30",
       "author": "PrasannaP"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T15:45:49+05:30",
+      "updatedAt": "2026-03-26T17:31:14+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -378,6 +378,32 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T17:31:14+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77,
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-26T17:20:01+05:30",
+      "author": "PrasannaP",
+      "message": "feat: externalized styles and scripts.",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T17:05:36+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "148 issues are fixed",
+      "widgets": [
+        148
+      ]
+    },
     {
       "date": "2026-03-26T16:29:59+05:30",
       "author": "PrasannaP",
@@ -593,30 +619,6 @@
       "message": "Update index.html",
       "widgets": [
         142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:05:58+05:30",
-      "author": "sushantthe",
-      "message": "wg142 done",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:03:54+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-25T20:02:20+05:30",
-      "author": "PrasannaP",
-      "message": "readme",
-      "widgets": [
-        146
       ]
     }
   ]
