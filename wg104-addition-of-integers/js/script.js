@@ -661,6 +661,7 @@ class UIManager {
     this.answerBox.textContent = this.state.userAnswer;
     this.showAnswerBtn.style.opacity = '1'
     this.showAnswerBtn.style.cursor = 'pointer'
+    this.clearNumberLine();
     this.hideKeypad();
     this.updateUI();
   }
