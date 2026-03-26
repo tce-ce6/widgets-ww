@@ -8,3 +8,9 @@ You may reuse elements from the main SVG in @wg70_reflection-of-light/index.html
 Additionally, introduce new mediums such as glass, water, and diamond, along with their respective functionality.
 
 Do not modify the core logic or calculations at this stage—focus only on improving layout, visuals, and integrating the new mediums.
+
+Prompt2:
+
+Change all fonts with Roboto family.
+Avoid scroll bar to fit the overall activity in single screen as per our standard.
+If possible, we can add some material pattern (Glass, air, diamond, water) to make it more interesting.

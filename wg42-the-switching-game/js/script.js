@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const learnPanel1 = document.getElementById("Question_2_panel_1");
     const learnPanel2 = document.getElementById("Question_2_panel_2"); // Target boxes
     const learnPanel3 = document.getElementById("Question_2_panel_3"); // Options
-    const practiseScreen = document.getElementById("Practise_screen");
+    const practiseScreen = document.getElementById("Practice_screen");
 
     const question2Panel = document.getElementById("Question_2_panel");
     const comparePanel = document.getElementById("Compare_active_passive");
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     let currentComparisonQuestion = 0;
-    let currentPractiseQuestion = 0;
+    let currentPracticeQuestion = 0;
     let practiseFilledSlots = [];
 
     // ---- Progress Bar Helper ----
@@ -308,12 +308,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideAll() {
         introScreen.style.display = "none";
         if (practiseScreen) practiseScreen.style.display = "none";
-        
+
         // Reset the main header title to default
         const mainTitle = document.querySelector(".wdgetTitle h2");
         if (mainTitle) mainTitle.innerHTML = "The Switching Game";
 
-        const pb = document.getElementById("Practise_badge");
+        const pb = document.getElementById("Practice_badge");
         if (pb) pb.style.display = "none";
         if (IText) IText.style.display = "none";
         learnPanel1.style.display = "none";
@@ -371,16 +371,15 @@ document.addEventListener("DOMContentLoaded", () => {
     function showFinalLearnScreen() {
         hideAll();
         question2Panel.style.display = "block";
-        feedback.setAttribute("transform", "translate(-70, 0)");
+        feedback.setAttribute("transform", "translate(-300, -50)");
         feedback.style.opacity = "1";
         feedback.style.display = "inline";
         IText.style.display = "block";
 
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
-                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
+            iTextEl.innerHTML = '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences where the person or thing doing the action comes FIRST.</tspan>';
+            autoWrapSVGText(iTextEl, 1200, 32);
         }
 
         setupFinalSelectionInteraction();
@@ -423,13 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setNextBtnLabel("Show Passive Voice");
         nextBtn.style.display = "block";
 
-        IText.style.display = "block";
-        const iTextEl = IText.querySelector("text");
-        if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
-                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
-        }
+        IText.style.display = "none";
     }
 
     function showQuestion3Panel(index) {
@@ -446,9 +439,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update instruction
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Look at the sentence pair below. Select ALL the changes that</tspan>' +
-                '<tspan x="0" y="32">happen when we transform from active to passive voice.</tspan>';
+            iTextEl.innerHTML = '<tspan x="0" y="0">Look at the sentence pair below. Select ALL the changes that happen when we transform from active to passive voice.</tspan>';
+            autoWrapSVGText(iTextEl, 1200, 32);
         }
 
         // Update Sentences via foreignObject div
@@ -573,16 +565,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const textEl = textElements[0];
             if (textEl) {
-                const words = (opt ? opt.text : "").split(" ");
-                let l1 = "", l2 = "";
-                words.forEach(w => {
-                    if ((l1 + w).length < 40) l1 += w + " ";
-                    else l2 += w + " ";
-                });
-                textEl.setAttribute("text-anchor", "middle");
-                let html = `<tspan x="333" y="0">${l1.trim()}</tspan>`;
-                if (l2) html += `<tspan x="333" y="35">${l2.trim()}</tspan>`;
+                const fullText = (opt ? opt.text : "");
+                textEl.setAttribute("text-anchor", "start");
+
+                // Clear experimental CSS properties
+                textEl.style.whiteSpace = "";
+                textEl.removeAttribute("width");
+                textEl.style.inlineSize = "";
+
+                let html = `<tspan x="0" y="0">${fullText}</tspan>`;
                 textEl.innerHTML = html;
+
+                // Procedurally break the line mathematically to prevent arbitrary browser SVG overflow
+                autoWrapSVGText(textEl, 620, 35);
             }
 
             const rectEl = tile.querySelector("rect");
@@ -710,13 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const compareBtn = document.getElementById("Group_1200");
         if (compareBtn) compareBtn.style.display = "block";
 
-        IText.style.display = "block";
-        const iTextEl = IText.querySelector("text");
-        if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
-                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
-        }
+        IText.style.display = "none";
     }
 
     function setupFinalSelectionInteraction() {
@@ -829,12 +818,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function getPractiseOptionGroups() {
-        return Array.from(document.querySelectorAll("#Practise_screen #Group_702 > g"))
+    function getPracticeOptionGroups() {
+        return Array.from(document.querySelectorAll("#Practice_screen #Group_702 > g"))
             .filter(g => g.querySelector("text"));
     }
 
-    function getPractiseSlotGroups() {
+    function getPracticeSlotGroups() {
         // Sort a set of slot groups left-to-right by their first rect's x position
         function sortByX(groups) {
             return groups.slice().sort((a, b) => {
@@ -842,9 +831,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return parseFloat(rA ? rA.getAttribute("x") : 0) - parseFloat(rB ? rB.getAttribute("x") : 0);
             });
         }
-        const row1 = sortByX(Array.from(document.querySelectorAll("#Practise_screen #Group_1226 > g")));
-        const row2 = sortByX(Array.from(document.querySelectorAll("#Practise_screen #Group_700 > g")));
-        const row3 = sortByX(Array.from(document.querySelectorAll("#Practise_screen #Group_703 > g")));
+        const row1 = sortByX(Array.from(document.querySelectorAll("#Practice_screen #Group_1226 > g")));
+        const row2 = sortByX(Array.from(document.querySelectorAll("#Practice_screen #Group_700 > g")));
+        const row3 = sortByX(Array.from(document.querySelectorAll("#Practice_screen #Group_703 > g")));
         return [...row1, ...row2, ...row3]; // 12 slots total (4 per row × 3 rows)
     }
 
@@ -867,10 +856,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function showPractisePanel(index) {
+    function showPracticePanel(index) {
         hideAll();
         if (practiseScreen) practiseScreen.style.display = "block";
-        const pb = document.getElementById("Practise_badge");
+        const pb = document.getElementById("Practice_badge");
         if (pb) pb.style.display = "block";
         feedback.style.opacity = "1";
         IText.style.display = "block";
@@ -886,20 +875,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
             iTextEl.innerHTML = '<tspan x="0" y="0">Convert the active voice sentence to passive voice by selecting words from the help box.</tspan>';
+            autoWrapSVGText(iTextEl, 1200, 32);
         }
 
         const q = practiseQuestions[index];
         practiseFilledSlots = Array(q.answer.length).fill(null);
 
         // Apply transform only to the inner panel to avoid shifting headers
-        const innerPanel = document.getElementById("Practise_inner_panel");
+        const innerPanel = document.getElementById("Practice_inner_panel");
         if (innerPanel) {
             innerPanel.setAttribute("transform", "translate(155, 10) scale(0.85)");
         }
         if (practiseScreen) practiseScreen.removeAttribute("transform");
 
         const needsRow3 = q.answer.length > 8;
-        const helpBox = document.querySelector("#Practise_screen #Group_702");
+        const helpBox = document.querySelector("#Practice_screen #Group_702");
         if (needsRow3) {
             if (helpBox) helpBox.setAttribute("transform", "translate(0, 208)"); // Increatest spacing
         } else {
@@ -912,8 +902,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        // Update progress bar — practice only, 1/5 to 5/5
-        const progressPercent = Math.round(((index + 1) / practiseQuestions.length) * 100);
+        // Update progress bar — practice only, reflect completed questions (not current)
+        const progressPercent = Math.round((index / practiseQuestions.length) * 100);
         const pbRect = document.getElementById("Rectangle_240");
         if (pbRect) {
             pbRect.setAttribute("width", `${progressPercent * PB_MAX_WIDTH / 100}`);
@@ -922,17 +912,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (pbText) pbText.textContent = progressPercent + "%";
 
         // Update the active sentence text in the SVG
-        const activeSentenceText = document.querySelector("#Practise_screen #Group_2-2 text");
+        const activeSentenceText = document.querySelector("#Practice_screen #Group_2-2 text");
         if (activeSentenceText) {
             activeSentenceText.setAttribute("text-anchor", "middle");
             activeSentenceText.setAttribute("transform", "translate(1035 365)"); // Standard centering
             activeSentenceText.innerHTML = `<tspan x="0" y="0">${q.active}</tspan>`;
-            adjustActiveSentenceBoxWidth("#Practise_screen #Group_2-2 text", "#Practise_screen #Group_618-2 rect");
+            adjustActiveSentenceBoxWidth("#Practice_screen #Group_2-2 text", "#Practice_screen #Group_618-2 rect");
         }
 
         // Set up option pill groups — use a shuffled copy of options so they appear randomly
         const shuffledOptions = shuffleArray(q.options);
-        const optionGroups = getPractiseOptionGroups();
+        const optionGroups = getPracticeOptionGroups();
         optionGroups.forEach((group, i) => {
             // Remove any injected words from previous round
             group.querySelectorAll(".practise-injected").forEach(el => el.remove());
@@ -950,8 +940,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Center text inside its pill (rect or path background)
                 const bgEl = group.querySelector('rect[fill="#0480eb"]') ||
-                             group.querySelector('path[fill="#0480eb"]') ||
-                             group.querySelector("rect");
+                    group.querySelector('path[fill="#0480eb"]') ||
+                    group.querySelector("rect");
                 if (bgEl) {
                     let rx, ry, rw, rh;
                     if (bgEl.tagName.toLowerCase() === "rect") {
@@ -983,7 +973,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     practiseFilledSlots[emptySlotIndex] = { text: optionWord, sourceIndex: i };
                     group.style.opacity = "0.4";
                     group.style.pointerEvents = "none";
-                    renderPractiseSlots();
+                    renderPracticeSlots();
                 };
             } else {
                 group.style.display = "none";
@@ -991,12 +981,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Clear slot injections and render empty slots
-        renderPractiseSlots();
+        renderPracticeSlots();
     }
 
-    function renderPractiseSlots() {
-        const q = practiseQuestions[currentPractiseQuestion];
-        const slotGroups = getPractiseSlotGroups();
+    function renderPracticeSlots() {
+        const q = practiseQuestions[currentPracticeQuestion];
+        const slotGroups = getPracticeSlotGroups();
         const svgNS = "http://www.w3.org/2000/svg";
 
         slotGroups.forEach((box, i) => {
@@ -1048,11 +1038,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 filledG.onclick = (e) => {
                     e.stopPropagation();
-                    returnPractiseSlot(i);
+                    returnPracticeSlot(i);
                 };
 
                 box.appendChild(filledG);
-                scaleTextToFit(wordText, rw - 24); // Scaling for Practise slots
+                scaleTextToFit(wordText, rw - 24); // Scaling for Practice slots
 
                 // Make the dash border solid
                 if (dashRect) dashRect.setAttribute("stroke-dasharray", "");
@@ -1066,21 +1056,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Validation: check if all slots filled
         const filledCount = practiseFilledSlots.filter(s => s !== null).length;
-        const q2 = practiseQuestions[currentPractiseQuestion];
+        const q2 = practiseQuestions[currentPracticeQuestion];
         if (filledCount === q2.answer.length) {
             const isCorrect = practiseFilledSlots.slice(0, q2.answer.length)
                 .every((s, idx) => s !== null && s.text === q2.answer[idx]);
             if (isCorrect) {
+                // Advance progress bar on correct answer
+                const donePercent = Math.round(((currentPracticeQuestion + 1) / practiseQuestions.length) * 100);
+                const pbRectC = document.getElementById("Rectangle_240");
+                if (pbRectC) pbRectC.setAttribute("width", `${donePercent * PB_MAX_WIDTH / 100}`);
+                const pbTextC = document.querySelector("#Progress_bar text tspan");
+                if (pbTextC) pbTextC.textContent = donePercent + "%";
                 correct.style.display = "block";
                 incorrect.style.display = "none";
                 positionFeedbackMarker("practise");
                 nextBtn.style.display = "block";
-                setNextBtnLabel(currentPractiseQuestion < practiseQuestions.length - 1 ? "Next" : "Finish");
+                setNextBtnLabel(currentPracticeQuestion < practiseQuestions.length - 1 ? "Next" : "Finish");
                 nextBtn.onclick = () => {
                     correct.style.display = "none";
-                    if (currentPractiseQuestion < practiseQuestions.length - 1) {
-                        currentPractiseQuestion++;
-                        showPractisePanel(currentPractiseQuestion);
+                    if (currentPracticeQuestion < practiseQuestions.length - 1) {
+                        currentPracticeQuestion++;
+                        showPracticePanel(currentPracticeQuestion);
                     } else {
                         // Show Play Again popup instead of silently reloading
                         showPlayAgainPopup();
@@ -1099,10 +1095,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function returnPractiseSlot(i) {
+    function returnPracticeSlot(i) {
         if (!practiseFilledSlots[i]) return;
         const sourceIndex = practiseFilledSlots[i].sourceIndex;
-        const optionGroups = getPractiseOptionGroups();
+        const optionGroups = getPracticeOptionGroups();
         if (optionGroups[sourceIndex]) {
             optionGroups[sourceIndex].style.opacity = "1";
             optionGroups[sourceIndex].style.pointerEvents = "auto";
@@ -1112,7 +1108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         correct.style.display = "none";
         incorrect.style.display = "none";
         nextBtn.style.display = "none";
-        renderPractiseSlots();
+        renderPracticeSlots();
     }
 
     // Load a learn question by index into the existing SVG panels
@@ -1434,8 +1430,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Reset instruction text to its original 2-line state
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML =
-                '<tspan x="0" y="0">Read the first sentence. Then tap the correct words to complete the second sentence.</tspan>';
+            iTextEl.innerHTML = '<tspan x="0" y="0">Read the first sentence. Then tap the correct words to complete the second sentence.</tspan>';
+            autoWrapSVGText(iTextEl, 1200, 32);
         }
 
         currentLearnQuestion = 0;
@@ -1459,8 +1455,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     practiseBtn.addEventListener("click", () => {
-        currentPractiseQuestion = 0;
-        showPractisePanel(currentPractiseQuestion);
+        currentPracticeQuestion = 0;
+        showPracticePanel(currentPracticeQuestion);
     });
 
     homeBtn.addEventListener("click", () => {
@@ -1515,4 +1511,109 @@ document.addEventListener("DOMContentLoaded", () => {
             textEl.setAttribute("font-size", fontSize);
         }
     }
+
+    // Helper to auto-wrap SVG text natively
+    function autoWrapSVGText(textEl, maxWidth, lineHeight = 32) {
+        if (!textEl) return;
+        const tspanRef = textEl.querySelector("tspan");
+        if (!tspanRef) return;
+
+        const textStr = textEl.textContent || "";
+        const words = textStr.trim().split(/\s+/);
+        if (words.length === 0 || words[0] === "") return;
+
+        const x = tspanRef.getAttribute("x") || "0";
+        const y = tspanRef.getAttribute("y") || "0";
+
+        textEl.innerHTML = "";
+        let line = [];
+        let currentTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        currentTspan.setAttribute("x", x);
+        currentTspan.setAttribute("y", y);
+        textEl.appendChild(currentTspan);
+
+        for (let i = 0; i < words.length; i++) {
+            const word = words[i];
+            const testLine = line.length ? line.join(" ") + " " + word : word;
+            currentTspan.textContent = testLine;
+
+            // Check width limit. Break line if exceeded
+            if (currentTspan.getComputedTextLength() > maxWidth && line.length > 0) {
+                currentTspan.textContent = line.join(" ");
+                line = [word];
+                currentTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                currentTspan.setAttribute("x", x);
+                currentTspan.setAttribute("dy", lineHeight);
+                currentTspan.textContent = word;
+                textEl.appendChild(currentTspan);
+            } else {
+                line.push(word);
+            }
+        }
+    }
+
+    // Debug method to navigate directly to comparisonQuestions section
+    window.debugComparison = function (index = 0) {
+        if (typeof index !== "number" || index < 0 || index >= comparisonQuestions.length) {
+            console.warn(`Invalid index. Showing available comparison questions:`);
+            console.table(comparisonQuestions.map((q, idx) => {
+                // Strip HTML tags for cleaner console output
+                const activeText = q.activeHTML ? q.activeHTML.replace(/<[^>]*>?/gm, '') : "";
+                return { "Index": idx, "Active Sentence": activeText };
+            }));
+            return;
+        }
+
+        currentComparisonQuestion = index;
+        showQuestion3Panel(currentComparisonQuestion);
+        console.log(`Navigated to comparison question: [${index}]`);
+    };
+
+    // Debug method to complete the 'Learn' phase and evaluate 'Great_work_' placement
+    window.debugLearnCompletion = function () {
+        console.log("Navigating to the final screen of the Learn section...");
+        currentLearnQuestion = learnQuestions.length - 1;
+
+        // Automatically displays the final screen which brings 'id="Great_work_"' into inline render
+        showFinalLearnScreen();
+
+        // Simulate interaction completions to surface the correct markers
+        setTimeout(() => {
+            const activeSentences = [
+                "The chef prepared the delicious meal.",
+                "The teacher explains the lesson clearly.",
+                "The students will perform the play tomorrow.",
+                "The talented artist painted the mural.",
+                "The doctor examines the patients daily."
+            ];
+
+            const groupIds = [
+                "Group_1185", "Group_1186", "Group_1187", "Group_1188", "Group_1189",
+                "Group_1190", "Group_1191", "Group_1192", "Group_1193", "Group_1194"
+            ];
+
+            groupIds.forEach(id => {
+                const group = document.getElementById(id);
+                if (!group) return;
+
+                const textEl = group.querySelector("text");
+                if (textEl) {
+                    let textContent = textEl.textContent.trim();
+                    const tspans = textEl.querySelectorAll("tspan");
+                    if (tspans.length > 0) {
+                        textContent = Array.from(tspans).map(t => t.textContent).join("").trim();
+                    }
+
+                    if (activeSentences.some(active => textContent.includes(active))) {
+                        // Prevent re-triggering if already auto-toggled
+                        const rectBox = group.querySelector('rect[width="41"]');
+                        if (rectBox && rectBox.getAttribute("fill") !== "#5ca0fa") {
+                            group.click();
+                        }
+                    }
+                }
+            });
+            console.log("Learn auto-completed! The 'Great work!' feedback (id='Great_work_') placement should now be visible.");
+        }, 150);
+    };
 });

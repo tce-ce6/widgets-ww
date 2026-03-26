@@ -8,27 +8,32 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       tabId: "combination-reaction",
       reactantGroupId: "combination-reaction-reactant",
-      reactantIds: ["h2", "o2"],          // 2 required
+      reactantIds: ["h2", "o2"],
+      reactionComplete: "A reaction in which two or more substances combine to form a single product (H₂ + O₂ → H₂O — shows molecules joining with animation)."          // 2 required
     },
     {
       tabId: "decomposition-reaction",
       reactantGroupId: "decomposition-reaction-reactant",
       reactantIds: ["CaCO3"],             // 1 required
+      reactionComplete: "A reaction in which a single compound breaks down into two or more simpler substances, usually on heating (CaCO₃ → CaO + CO₂ — heat effect shown)."
     },
     {
       tabId: "displacement-reaction",
       reactantGroupId: "displacement-reaction-reactant",
       reactantIds: ["Zn", "CuSO4"],       // 2 required
+      reactionComplete: "A reaction in which a more reactive element displaces a less reactive element from its compound (Zn + CuSO₄ → ZnSO₄ + Cu — solution color changes)."
     },
     {
       tabId: "double-displacement-reaction",
       reactantGroupId: "double-displacement-reaction-ractant", // typo in HTML kept
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
+      reactionComplete: "A chemical reaction where two ionic compounds swap their positive (cations) and negative (anions) ions to form two entirely new compounds, often resulting in a solid precipitate, gas, or water. (AgNO₃ + NaCl → AgCl + NaNO₂↓ — solid precipitate forms)."
     },
     {
       tabId: "redox-reaction",
       reactantGroupId: "redox-reaction-reactant",
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
+      reactionComplete: "A chemical reaction involving the transfer of electrons between species, where one substance loses electrons (is oxidized) and another gains electrons (is reduced) simultaneously, causing changes in their oxidation states (2Mg + O₂ → 2MgO — magnesium oxidised, oxygen reduced)."
     },
   ];
 
@@ -56,6 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Holds the currently playing Lottie animation instance
   let currentLottieAnim = null;
+
+  // Tracks if the reaction has been started
+  let isReactionPlaying = false;
 
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -166,7 +174,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ─── Reaction tab click handlers ─────────────────────────────────────────────
 
   function activateReaction(tabId) {
+    if (isReactionPlaying) return;
+
     selectedTabId = tabId;
+
+    const answerTab = document.getElementById("answer-tab");
+    if (answerTab) {
+      answerTab.style.display = "none";
+    }
 
     // Reset the start button since the reaction changed
     const startBtn = document.getElementById("start-reaction-btn");
@@ -207,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (config) {
             config.reactantIds.forEach((rid) => {
               reactantEl.querySelectorAll(`#${rid}`).forEach((el) => {
+                el.style.cursor = "pointer";
                 el.classList.remove("blink");
                 void el.offsetWidth; // reflow
                 el.classList.add("blink");
@@ -220,7 +236,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } else {
         if (tabEl) restoreTabFill(tabEl);   // #fff → #A5F700 (deselect previous tab)
-        if (reactantEl) reactantEl.style.filter = "brightness(0.5)";
+        if (reactantEl) {
+          reactantEl.style.filter = "brightness(0.5)";
+          const inactiveConfig = reactionConfig.find((c) => c.tabId === tid);
+          if (inactiveConfig) {
+            inactiveConfig.reactantIds.forEach((rid) => {
+              reactantEl.querySelectorAll(`#${rid}`).forEach(el => el.style.cursor = "not-allowed");
+            });
+          }
+        }
       }
     });
   }
@@ -230,6 +254,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabEl) {
       tabEl.style.cursor = "pointer";
       tabEl.addEventListener("click", () => activateReaction(tabId));
+    }
+
+    const formulaEl = document.getElementById(`${tabId}-formula`);
+    if (formulaEl) {
+      formulaEl.style.cursor = "pointer";
+      formulaEl.addEventListener("click", () => activateReaction(tabId));
     }
   });
 
@@ -244,24 +274,27 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function attachReactantHandler(cssId) {
     document.querySelectorAll(`#${cssId}`).forEach((el) => {
-      el.style.cursor = "pointer";
+      el.style.cursor = "not-allowed";
 
       el.addEventListener("click", (e) => {
+        if (isReactionPlaying) return;
         e.stopPropagation();
 
         // ✅ NOW el exists, safe to use
         const groupId = getReactantGroupIdFromTarget(el);
         if (!groupId) return;
 
-        // ✅ Blink correct tab
-        blinkReactionTabByGroup(groupId);
+        // Ignore clicks if the reactant does not belong to the currently selected reaction tab
+        const activeConfig = reactionConfig.find((c) => c.tabId === selectedTabId);
+        if (!activeConfig || activeConfig.reactantGroupId !== groupId) {
+          return;
+        }
 
         // Existing logic
         clickedReactants[groupId].add(cssId);
 
         setReactantStroke(el, "#00d5ff");
 
-        const activeConfig = reactionConfig.find((c) => c.tabId === selectedTabId);
         if (activeConfig && activeConfig.reactantGroupId === groupId) {
           checkAndEnableStartButton();
         }
@@ -311,37 +344,46 @@ document.addEventListener("DOMContentLoaded", () => {
     startBtn.addEventListener("click", () => {
       // Only fire when the button is fully active (opacity = 1)
       if (startBtn.style.opacity === "1") {
+        isReactionPlaying = true;
+        
+        // Apply "not-allowed" cursor to all tabs and formulas
+        reactionConfig.forEach(({ tabId, reactantGroupId }) => {
+          const tabEl = document.getElementById(tabId);
+          if (tabEl) tabEl.style.cursor = "not-allowed";
+          const formulaEl = document.getElementById(`${tabId}-formula`);
+          if (formulaEl) formulaEl.style.cursor = "not-allowed";
+
+          // Ensure all active reactants also reflect "not-allowed"
+          const reactantEl = document.getElementById(reactantGroupId);
+          if (reactantEl) {
+            const config = reactionConfig.find((c) => c.tabId === tabId);
+            if (config) {
+              config.reactantIds.forEach((rid) => {
+                reactantEl.querySelectorAll(`#${rid}`).forEach(rEl => rEl.style.cursor = "not-allowed");
+              });
+            }
+          }
+        });
+
         playReactionAnimation();
+
+        const answerTab = document.getElementById("answer-tab");
+        if (answerTab) {
+          answerTab.style.display = "block";
+        }
+
+        const answerTabText = document.getElementById("answer-tab-text");
+        if (answerTabText && selectedTabId) {
+          const config = reactionConfig.find((c) => c.tabId === selectedTabId);
+          if (config && config.reactionComplete) {
+            answerTabText.textContent = config.reactionComplete;
+          }
+        }
       }
     });
   }
 
-  function blinkReactionTabByGroup(groupId) {
-    // Remove blink from all tabs first
-    reactionConfig.forEach(({ tabId }) => {
-      const tabEl = document.getElementById(tabId);
-      if (tabEl) tabEl.classList.remove("blink");
-    });
 
-    // Find matching tab
-    const config = reactionConfig.find(
-      (c) => c.reactantGroupId === groupId
-    );
-
-    if (!config) return;
-
-    const tabEl = document.getElementById(config.tabId);
-
-    if (tabEl) {
-      tabEl.classList.remove("blink");
-      void tabEl.offsetWidth; // reflow
-      tabEl.classList.add("blink");
-
-      setTimeout(() => {
-        tabEl.classList.remove("blink");
-      }, 1000);
-    }
-  }
 
 
   // ─── Reset button ─────────────────────────────────────────────────────────────
@@ -358,8 +400,15 @@ document.addEventListener("DOMContentLoaded", () => {
    * - Destroys any playing Lottie animation
    */
   function resetAll() {
+    isReactionPlaying = false;
+    
     // Clear selection
     selectedTabId = null;
+
+    const answerTab = document.getElementById("answer-tab");
+    if (answerTab) {
+      answerTab.style.display = "none";
+    }
 
     // Restore all tab fills → green (#A5F700)
     // restoreTabFill() targets the #fff fills set during selection,
@@ -368,7 +417,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const tabEl = document.getElementById(tabId);
       const reactantEl = document.getElementById(reactantGroupId);
       if (tabEl) restoreTabFill(tabEl);
-      if (reactantEl) reactantEl.style.filter = "brightness(0.5)";
+      if (reactantEl) {
+        reactantEl.style.filter = "brightness(0.5)";
+        const config = reactionConfig.find((c) => c.tabId === tabId);
+        if (config) {
+          config.reactantIds.forEach((rid) => {
+            reactantEl.querySelectorAll(`#${rid}`).forEach(el => el.style.cursor = "not-allowed");
+          });
+        }
+      }
+      if (tabEl) tabEl.style.cursor = "pointer";
+      const formulaEl = document.getElementById(`${tabId}-formula`);
+      if (formulaEl) formulaEl.style.cursor = "pointer";
     });
 
     // Reset all reactant stroke colours
