@@ -257,7 +257,7 @@
       "author": "tce-nitinc"
     },
     "wg69-rounding-rally": {
-      "updatedAt": "2026-03-25T18:33:50+05:30",
+      "updatedAt": "2026-03-26T15:24:39+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T15:24:39+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg69 issues fixed",
+      "widgets": [
+        69
+      ]
+    },
     {
       "date": "2026-03-26T14:56:09+05:30",
       "author": "tce-nitinc",
@@ -613,16 +621,6 @@
       "message": "Review sheet fixed for wg17",
       "widgets": [
         17
-      ]
-    },
-    {
-      "date": "2026-03-25T18:24:06+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved of letter widgets",
-      "widgets": [
-        74,
-        101,
-        118
       ]
     }
   ]
