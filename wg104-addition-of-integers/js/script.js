@@ -405,16 +405,23 @@ class UIManager {
     this.state.isAnimating = true;
 
     this.clearNumberLine();
-    this.updateNumberLinePosition(); // Ensure point is at 'a' before starting
     const { a, b } = this.state.currentProblem;
+    
+    // Position point at 'a' as "Start" point
+    this.updateNumberLinePosition(a);
+    
+    // Give the user a moment to see the start position
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-    // Step 1: Move from 0 to 'a'
-    const colorA = a >= 0 ? "#1212dd" : "#ff2020"; // Blue for +, Red for -
-    await this.drawArrow(0, a, colorA);
-
-    // Step 2: Move from 'a' to 'a + b'
-    const colorB = b >= 0 ? "#1212dd" : "#ff2020"; // Right for +, Left for -
-    await this.drawArrow(a, a + b, colorB);
+    // Move from 'a' to 'a + b' via unit jumps
+    const colorB = "#ff2020"; // Match image (red jumps)
+    const direction = b >= 0 ? 1 : -1;
+    
+    for (let i = 0; i < Math.abs(b); i++) {
+        const from = a + i * direction;
+        const to = a + (i + 1) * direction;
+        await this.drawArrow(from, to, colorB);
+    }
 
     this.state.isAnimating = false;
   }
@@ -451,34 +458,37 @@ class UIManager {
       const fromX = this.getTickX(fromVal);
       const toX = this.getTickX(toVal);
 
-      // Simple delay to simulate movement timing
+      // Move point along smoothly
+      if (this.point) {
+        this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
+      }
+
+      // Draw the arched jump path
+      if (this.jumpsGroup) {
+        const distance = Math.abs(toX - fromX);
+        const r = distance / 2;
+        const sweep = toX > fromX ? 1 : 0;
+        
+        // For unit jumps (typical distance ~69), use a standard arch height
+        // that matches the reference image's small curved look (~40-50 px).
+        const h = distance < 100 ? 55 : Math.min(r, 80);
+        
+        const pathData = `M ${fromX} 572 A ${r} ${h} 0 0 ${sweep} ${toX} 572`;
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathData);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", color);
+        path.setAttribute("stroke-width", "6");
+        path.setAttribute("stroke-linecap", "round");
+        
+        this.jumpsGroup.appendChild(path);
+      }
+
+      // Faster sequence for unit jumps
       setTimeout(() => {
-        // Move point along
-        if (this.point) {
-          this.point.setAttribute("transform", `translate(${toX - 1232}, 0)`);
-        }
-
-        // Draw the arched jump path
-        if (this.jumpsGroup) {
-          const r = Math.abs(toX - fromX) / 2;
-          const sweep = toX > fromX ? 1 : 0;
-          const h = Math.min(r, 60); // Arch height capped for better visuals
-          const pathData = `M ${fromX} 572 A ${r} ${h} 0 0 ${sweep} ${toX} 572`;
-
-          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          path.setAttribute("d", pathData);
-          path.setAttribute("fill", "none");
-          path.setAttribute("stroke", color);
-          path.setAttribute("stroke-width", "6");
-          path.setAttribute("stroke-linecap", "round");
-          
-          this.jumpsGroup.appendChild(path);
-        }
-
-        setTimeout(() => {
-          resolve();
-        }, 1000); // Wait for "movement" to complete
-      }, 500); // Initial delay before movement
+        resolve();
+      }, 350); 
     });
   }
 
