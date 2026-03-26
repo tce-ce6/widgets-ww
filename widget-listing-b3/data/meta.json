@@ -17,7 +17,7 @@
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
-      "updatedAt": "2026-03-26T10:22:51+05:30",
+      "updatedAt": "2026-03-26T10:26:23+05:30",
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
@@ -379,6 +379,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T10:26:23+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        104
+      ]
+    },
+    {
       "date": "2026-03-26T10:22:51+05:30",
       "author": "sushantkanaujiya",
       "message": "fixed issue",
@@ -619,14 +627,6 @@
       "message": "wg113 changes",
       "widgets": [
         113
-      ]
-    },
-    {
-      "date": "2026-03-25T16:33:12+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg73 issues fixed",
-      "widgets": [
-        73
       ]
     }
   ]
