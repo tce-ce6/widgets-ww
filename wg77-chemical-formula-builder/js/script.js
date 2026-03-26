@@ -458,7 +458,81 @@ function isPolyatomic(sym) {
 function resetForm() {
   selectedCation = null;
   selectedAnion = null;
-  location.reload(); // Simplest way to reset the SVG state
+
+  // Clear loaded SVG containers
+  const setupCation = document.getElementById("setup_cation");
+  const setupAnion = document.getElementById("setup_anion");
+  if (setupCation) setupCation.innerHTML = '';
+  if (setupAnion) setupAnion.innerHTML = '';
+
+  // Hide/Show elements as per initial state
+  const elementsToHide = [
+    "1+", "1-", "compound_formula_display", "compound_explanation_box",
+    "compound_formula_display1", "cross_lines_1", "cross_lines_2"
+  ];
+  elementsToHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+
+  const chargeLabel = document.getElementById("Charge");
+  if (chargeLabel) chargeLabel.style.display = "block";
+
+  // Reset button states
+  const applyBtn = document.getElementById("apply_criss_cross_method");
+  if (applyBtn) {
+    applyBtn.style.pointerEvents = "none";
+    applyBtn.style.cursor = "default";
+    applyBtn.style.opacity = "0.5";
+    applyBtn.classList.remove("blink-animation");
+  }
+
+  const tryAnother = document.getElementById("try_another_compound");
+  if (tryAnother) {
+    tryAnother.style.pointerEvents = "none";
+    tryAnother.style.cursor = "default";
+    tryAnother.style.opacity = "0.5";
+  }
+
+  // Re-enable ion selection
+  const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
+  const anions = ["Cl", "O", "N", "SO₄", "OH", "Br", "S", "NO₃", "CO₃"];
+  [...cations, ...anions].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.pointerEvents = "auto";
+      el.style.cursor = "pointer";
+      el.style.opacity = "1";
+    }
+  });
+
+  // Clear formula and result text
+  const formulaEl = document.querySelector("#compound_formula_display p");
+  if (formulaEl) formulaEl.innerHTML = "";
+
+  const nameEl = document.getElementById("compound_name");
+  if (nameEl) {
+    const tspan = nameEl.querySelector("tspan") || nameEl;
+    tspan.textContent = "Compound name: ";
+  }
+
+  const resultEl = document.getElementById("result_formula_display");
+  if (resultEl) {
+    const tspan = resultEl.querySelector("tspan") || resultEl;
+    tspan.textContent = "";
+  }
+
+  const finalFormulaText = document.getElementById("final_formula_text");
+  if (finalFormulaText) {
+    const tspan = finalFormulaText.querySelector("tspan") || finalFormulaText;
+    tspan.textContent = "Result: ";
+  }
+
+  const crossGroup = document.getElementById("(1K x 1NO3)");
+  if (crossGroup) {
+    const tspan = crossGroup.querySelector("tspan");
+    if (tspan) tspan.textContent = "";
+  }
 }
 function generateExplanation(cKey, aKey) {
   const c = cationData[cKey];
