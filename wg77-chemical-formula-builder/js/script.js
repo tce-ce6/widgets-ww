@@ -316,6 +316,8 @@ function showCrissCrossLines() {
   setTimeout(() => {
     const explanation_box = document.getElementById("compound_explanation_box");
     if (explanation_box) explanation_box.style.display = "block";
+    if (line1) line1.style.display = "none";
+    if (line2) line2.style.display = "none";
   }, 2500);
 
   setTimeout(() => {
