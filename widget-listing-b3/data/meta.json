@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T17:31:14+05:30",
+      "updatedAt": "2026-03-26T19:05:22+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T19:05:22+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
     {
       "date": "2026-03-26T19:03:35+05:30",
       "author": "sushantthe",
@@ -618,14 +626,6 @@
       "message": "wg76 fixes",
       "widgets": [
         76
-      ]
-    },
-    {
-      "date": "2026-03-26T10:29:33+05:30",
-      "author": "tce-nitinc",
-      "message": "wg147",
-      "widgets": [
-        147
       ]
     }
   ]
