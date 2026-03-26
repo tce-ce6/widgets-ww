@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T16:29:59+05:30",
+      "updatedAt": "2026-03-26T17:20:01+05:30",
       "author": "PrasannaP"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T17:20:01+05:30",
+      "author": "PrasannaP",
+      "message": "feat: externalized styles and scripts.",
+      "widgets": [
+        42
+      ]
+    },
     {
       "date": "2026-03-26T17:05:36+05:30",
       "author": "Santosh Vishwakarma",
@@ -609,14 +617,6 @@
       "message": "wg142 done",
       "widgets": [
         142
-      ]
-    },
-    {
-      "date": "2026-03-25T20:03:54+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
       ]
     }
   ]
