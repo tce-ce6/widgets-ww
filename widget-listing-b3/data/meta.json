@@ -17,7 +17,7 @@
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
-      "updatedAt": "2026-03-26T10:22:51+05:30",
+      "updatedAt": "2026-03-26T10:26:23+05:30",
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
@@ -169,7 +169,7 @@
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
-      "updatedAt": "2026-03-24T17:52:59+05:30",
+      "updatedAt": "2026-03-26T10:29:33+05:30",
       "author": "tce-nitinc"
     },
     "wg148-Build-the-Panchayati-Raj-Pyramid": {
@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-25T18:33:50+05:30",
+      "updatedAt": "2026-03-26T13:23:38+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -281,11 +281,11 @@
       "author": "tce-nitinc"
     },
     "wg76-chemical-reactions-simulator": {
-      "updatedAt": "2026-03-25T19:51:56+05:30",
+      "updatedAt": "2026-03-26T11:26:59+05:30",
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-23T11:38:30+05:30",
+      "updatedAt": "2026-03-26T12:38:10+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -313,8 +313,8 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-22T15:17:10+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-26T14:56:09+05:30",
+      "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
       "updatedAt": "2026-02-23T20:35:45+05:30",
@@ -378,6 +378,78 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T14:56:09+05:30",
+      "author": "tce-nitinc",
+      "message": "wg84 changes",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-26T13:41:33+05:30",
+      "author": "tce-nitinc",
+      "message": "wg84",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-26T13:23:38+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg21 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T12:38:10+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T12:02:47+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
+    {
+      "date": "2026-03-26T11:27:40+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg42 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T11:26:59+05:30",
+      "author": "tce-nitinc",
+      "message": "wg76 fixes",
+      "widgets": [
+        76
+      ]
+    },
+    {
+      "date": "2026-03-26T10:29:33+05:30",
+      "author": "tce-nitinc",
+      "message": "wg147",
+      "widgets": [
+        147
+      ]
+    },
+    {
+      "date": "2026-03-26T10:26:23+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        104
+      ]
+    },
     {
       "date": "2026-03-26T10:22:51+05:30",
       "author": "sushantkanaujiya",
@@ -551,82 +623,6 @@
         74,
         101,
         118
-      ]
-    },
-    {
-      "date": "2026-03-25T18:11:04+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "lable box hight increased",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T18:04:35+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "73 popup pulled inside",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T17:47:18+05:30",
-      "author": "PrasannaP",
-      "message": "Update wg70.html title and improve content clarity; adjust refractive index for glass and enhance footer explanation.",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-25T16:57:27+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved of letter widgets",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
-      ]
-    },
-    {
-      "date": "2026-03-25T16:50:20+05:30",
-      "author": "aditya",
-      "message": "wg 142 ui fix",
-      "widgets": [
-        142
-      ]
-    },
-    {
-      "date": "2026-03-25T16:40:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "review sheet fixes completed",
-      "widgets": [
-        98
-      ]
-    },
-    {
-      "date": "2026-03-25T16:38:32+05:30",
-      "author": "PrasannaP",
-      "message": "del 70 old",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-25T16:35:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg113 changes",
-      "widgets": [
-        113
-      ]
-    },
-    {
-      "date": "2026-03-25T16:33:12+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg73 issues fixed",
-      "widgets": [
-        73
       ]
     }
   ]
