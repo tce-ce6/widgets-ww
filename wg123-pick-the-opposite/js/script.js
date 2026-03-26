@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/small.svg",
       options: ["small", "fast", "happy"],
       answer: "small",
-      note: "'big' and 'small' are opposites."
+      note: "'Big' and 'small' are opposites."
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/Winter-cold.svg",
       options: ["cold", "short", "dry"],
       answer: "cold",
-      note: "'hot' and 'cold' are opposites."
+      note: "'Hot' and 'cold' are opposites."
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/sad.svg",
       options: ["sad", "small", "slow"],
       answer: "sad",
-      note: "'happy' and 'sad' are opposites."
+      note: "'Happy' and 'sad' are opposites."
     },
     {
       id: 4,
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/slow.svg",
       options: ["slow", "soft", "wet"],
       answer: "slow",
-      note: "'fast' and 'slow' are opposites."
+      note: "'Fast' and 'slow' are opposites."
     },
     {
       id: 5,
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/white-teddy-new.svg",
       options: ["new", "small", "happy"],
       answer: "new",
-      note: "'old' and 'new' are opposites."
+      note: "'Old' and 'new' are opposites."
     },
     {
       id: 6,
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/night.svg",
       options: ["night", "cold", "quiet"],
       answer: "night",
-      note: "'day' and 'night' are opposites."
+      note: "'Day' and 'night' are opposites."
     },
     {
       id: 7,
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/dirty.svg",
       options: ["dirty", "old", "shiny"],
       answer: "dirty",
-      note: "'clean' and 'dirty' are opposites."
+      note: "'Clean' and 'dirty' are opposites."
     },
     {
       id: 8,
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/down.svg",
       options: ["down", "above", "outside"],
       answer: "down",
-      note: "'up' and 'down' are opposites."
+      note: "'Up' and 'down' are opposites."
     },
     {
       id: 9,
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/tall-short-new.svg",
       options: ["short", "dirty", "soft"],
       answer: "short",
-      note: "'tall' and 'short' are opposites."
+      note: "'Tall' and 'short' are opposites."
     },
     {
       id: 10,
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/dry.svg",
       options: ["dry", "clean", "light"],
       answer: "dry",
-      note: "'wet' and 'dry' are opposites."
+      note: "'Wet' and 'dry' are opposites."
     },
     {
       id: 11,
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/empty.svg",
       options: ["empty", "old", "small"],
       answer: "empty",
-      note: "'full' and 'empty' are opposites."
+      note: "'Full' and 'empty' are opposites."
     },
     {
       id: 12,
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/light.svg",
       options: ["light", "soft", "big"],
       answer: "light",
-      note: "'heavy' and 'light' are opposites."
+      note: "'Heavy' and 'light' are opposites."
     },
     {
       id: 13,
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/quiet.svg",
       options: ["quiet", "clean", "empty"],
       answer: "quiet",
-      note: "'loud' and 'quiet' are opposites."
+      note: "'Loud' and 'quiet' are opposites."
     },
     {
       id: 14,
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/soft.svg",
       options: ["soft", "light", "clean"],
       answer: "soft",
-      note: "'hard' and 'soft' are opposites."
+      note: "'Hard' and 'soft' are opposites."
     },
     {
       id: 15,
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/closed.svg",
       options: ["closed", "full", "heavy"],
       answer: "closed",
-      note: "'open' and 'closed' are opposites."
+      note: "'Open' and 'closed' are opposites."
     },
     {
       id: 16,
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/long-short.svg",
       options: ["short", "thin", "light"],
       answer: "short",
-      note: "'long' and 'short' are opposites."
+      note: "'Long' and 'short' are opposites."
     },
     {
       id: 17,
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/thin.svg",
       options: ["thin", "light", "short"],
       answer: "thin",
-      note: "'thick' and 'thin' are opposites."
+      note: "'Thick' and 'thin' are opposites."
     },
     {
       id: 18,
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/far.svg",
       options: ["far", "tall", "old"],
       answer: "far",
-      note: "'near' and 'far' are opposites."
+      note: "'Near' and 'far' are opposites."
     },
     {
       id: 19,
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/late.svg",
       options: ["late", "cold", "happy"],
       answer: "late",
-      note: "'early' and 'late' are opposites."
+      note: "'Early' and 'late' are opposites."
     },
     {
       id: 20,
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/outside.svg",
       options: ["outside", "near", "behind"],
       answer: "outside",
-      note: "'inside' and 'outside' are opposites."
+      note: "'Inside' and 'outside' are opposites."
     },
     {
       id: 21,
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/back.svg",
       options: ["back", "middle", "side"],
       answer: "back",
-      note: "'front' and 'back' are opposites."
+      note: "'Front' and 'back' are opposites."
     },
     {
       id: 22,
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/bad.svg",
       options: ["bad", "sad", "dirty"],
       answer: "bad",
-      note: "'good' and 'bad' are opposites."
+      note: "'Good' and 'bad' are opposites."
     },
     {
       id: 23,
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/weak.svg",
       options: ["weak", "long", "tall"],
       answer: "weak",
-      note: "'strong' and 'weak' are opposites."
+      note: "'Strong' and 'weak' are opposites."
     },
     {
       id: 24,
@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/bottom.svg",
       options: ["bottom", "side", "back"],
       answer: "bottom",
-      note: "'top' and 'bottom' are opposites."
+      note: "'Top' and 'bottom' are opposites."
     },
     {
       id: 25,
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sentenceBimg: "./assets/options/easy-hard.svg",
       options: ["hard", "heavy", "big"],
       answer: "hard",
-      note: "'easy' and 'hard' are opposites."
+      note: "'Easy' and 'hard' are opposites."
     }
   ];
 
@@ -556,7 +556,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ─────────────────────────────────────────────────────────────
   //  DEBUG METHOD
   // ─────────────────────────────────────────────────────────────
-  window.debugNavigate = function(query) {
+  window.debugNavigate = function (query) {
     if (!query) {
       console.log('--- List of Options ---');
       data.forEach(item => {
@@ -572,7 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (shuffledData.length === 0) {
         shuffledData = [...data];
       }
-      
+
       const foundIndex = shuffledData.findIndex(q => q.id === targetItem.id);
       if (foundIndex !== -1) {
         currentIndex = foundIndex;
@@ -580,7 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
         shuffledData.push(targetItem);
         currentIndex = shuffledData.length - 1;
       }
-      
+
       showScreen("step-2");
       loadQuestion(shuffledData[currentIndex]);
       console.log(`Navigated to Option: ${targetItem.answer} (Number: ${targetItem.id})`);
