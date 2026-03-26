@@ -410,7 +410,7 @@ ellipse[id*="Ellipse_17-2"]:hover {
   cursor: grab !important;
 }
 
-.selected-option rect:last-child {
+.selected-option g[id*="Rectangle"] rect:last-child {
   stroke: #ff901e !important;
   stroke-width: 6 !important;
   filter: drop-shadow(0 0 5px rgba(255, 144, 30, 0.7));
@@ -420,9 +420,17 @@ ellipse[id*="Ellipse_17-2"]:hover {
   cursor: default !important;
 }
 
+@keyframes blink-active {
+  0% { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255, 144, 30, 0.5)); transform: scale(1); }
+  50% { opacity: 1; filter: drop-shadow(0 0 15px rgba(255, 144, 30, 0.9)); transform: scale(1.05); }
+  100% { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255, 144, 30, 0.5)); transform: scale(1); }
+}
+
 /* Pyramid Circle States */
 .active-brick-circle {
-  opacity: 1 !important;
+  animation: blink-active 1.5s infinite ease-in-out;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .active-brick-circle ellipse:last-child,
