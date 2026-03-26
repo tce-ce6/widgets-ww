@@ -221,7 +221,7 @@
       "author": "tce-nitinc"
     },
     "wg42-the-switching-game": {
-      "updatedAt": "2026-03-26T11:27:40+05:30",
+      "updatedAt": "2026-03-26T13:23:38+05:30",
       "author": "Santosh Vishwakarma"
     },
     "wg47-mendels-monohybrid-cross": {
@@ -285,7 +285,7 @@
       "author": "tce-nitinc"
     },
     "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-03-26T12:02:47+05:30",
+      "updatedAt": "2026-03-26T12:38:10+05:30",
       "author": "tce-nitinc"
     },
     "wg78-form-idioms-based-on-picture": {
@@ -313,8 +313,8 @@
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
-      "updatedAt": "2026-03-22T15:17:10+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-26T13:41:33+05:30",
+      "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
       "updatedAt": "2026-02-23T20:35:45+05:30",
@@ -378,6 +378,30 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T13:41:33+05:30",
+      "author": "tce-nitinc",
+      "message": "wg84",
+      "widgets": [
+        84
+      ]
+    },
+    {
+      "date": "2026-03-26T13:23:38+05:30",
+      "author": "Santosh Vishwakarma",
+      "message": "wg21 issues fixed",
+      "widgets": [
+        42
+      ]
+    },
+    {
+      "date": "2026-03-26T12:38:10+05:30",
+      "author": "tce-nitinc",
+      "message": "wg77 changes",
+      "widgets": [
+        77
+      ]
+    },
     {
       "date": "2026-03-26T12:02:47+05:30",
       "author": "tce-nitinc",
@@ -599,34 +623,6 @@
       "message": "lable box hight increased",
       "widgets": [
         73
-      ]
-    },
-    {
-      "date": "2026-03-25T18:04:35+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "73 popup pulled inside",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T17:47:18+05:30",
-      "author": "PrasannaP",
-      "message": "Update wg70.html title and improve content clarity; adjust refractive index for glass and enhance footer explanation.",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-25T16:57:27+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved of letter widgets",
-      "widgets": [
-        74,
-        101,
-        118,
-        127,
-        153
       ]
     }
   ]
