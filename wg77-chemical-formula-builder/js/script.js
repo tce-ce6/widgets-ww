@@ -319,11 +319,8 @@ function showCrissCrossLines() {
   }, 2500);
 
   setTimeout(() => {
-    const chargePlus = document.getElementById("1+");
-    const chargeMinus = document.getElementById("1-");
+    document.querySelectorAll(".id-one, .id-two").forEach(el => el.style.display = "none");
     const chargeLabel = document.getElementById("Charge");
-    if (chargePlus) chargePlus.style.display = "none";
-    if (chargeMinus) chargeMinus.style.display = "none";
     if (chargeLabel) chargeLabel.style.display = "none";
   }, 2000);
 }
