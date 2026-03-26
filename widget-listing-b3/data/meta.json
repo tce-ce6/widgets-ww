@@ -17,7 +17,7 @@
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
-      "updatedAt": "2026-03-25T20:21:15+05:30",
+      "updatedAt": "2026-03-26T10:26:23+05:30",
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
@@ -85,8 +85,8 @@
       "author": "tce-ashishg"
     },
     "wg123-pick-the-opposite": {
-      "updatedAt": "2026-03-25T20:11:06+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-26T10:17:07+05:30",
+      "author": "tce-nitinc"
     },
     "wg124-swar-ki-pahchan": {
       "updatedAt": "2026-03-20T11:18:27+05:30",
@@ -353,8 +353,8 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-17T16:07:56+05:30",
-      "author": "aditya"
+      "updatedAt": "2026-03-25T21:52:52+05:30",
+      "author": "sushantthe"
     },
     "wg95-similar-meanings": {
       "updatedAt": "2026-02-12T18:57:30+05:30",
@@ -378,6 +378,38 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-26T10:26:23+05:30",
+      "author": "sushantkanaujiya",
+      "message": "Update index.html",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-26T10:22:51+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-03-26T10:17:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg123",
+      "widgets": [
+        123
+      ]
+    },
+    {
+      "date": "2026-03-25T21:52:52+05:30",
+      "author": "sushantthe",
+      "message": "wg94 animation",
+      "widgets": [
+        94
+      ]
+    },
     {
       "date": "2026-03-25T20:21:15+05:30",
       "author": "sushantkanaujiya",
@@ -595,38 +627,6 @@
       "message": "wg113 changes",
       "widgets": [
         113
-      ]
-    },
-    {
-      "date": "2026-03-25T16:33:12+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg73 issues fixed",
-      "widgets": [
-        73
-      ]
-    },
-    {
-      "date": "2026-03-25T16:29:30+05:30",
-      "author": "tce-nitinc",
-      "message": "wg150",
-      "widgets": [
-        150
-      ]
-    },
-    {
-      "date": "2026-03-25T16:29:08+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update script.js",
-      "widgets": [
-        134
-      ]
-    },
-    {
-      "date": "2026-03-25T16:19:17+05:30",
-      "author": "PrasannaP",
-      "message": "for review 146",
-      "widgets": [
-        146
       ]
     }
   ]
