@@ -13,7 +13,7 @@
       "author": "sushantthe"
     },
     "wg103-molecular-visualizer": {
-      "updatedAt": "2026-03-05T13:12:21+05:30",
+      "updatedAt": "2026-03-26T19:03:35+05:30",
       "author": "sushantthe"
     },
     "wg104-addition-of-integers": {
@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-12T18:36:44+05:30",
+      "updatedAt": "2026-03-26T17:41:54+05:30",
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-26T19:03:35+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        103
+      ]
+    },
+    {
+      "date": "2026-03-26T19:02:28+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue wg103",
+      "widgets": [
+        103
+      ]
+    },
+    {
       "date": "2026-03-26T19:00:46+05:30",
       "author": "tce-ashishg",
       "message": "wg137 & wg138 comments closed",
@@ -401,11 +417,27 @@
       ]
     },
     {
+      "date": "2026-03-26T18:27:51+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue",
+      "widgets": [
+        103
+      ]
+    },
+    {
       "date": "2026-03-26T18:26:17+05:30",
       "author": "PrasannaP",
       "message": "feat: Implement the 'Reflection of Light' simulation widget including its HTML structure, styling, and interactive JavaScript logic.",
       "widgets": [
         70
+      ]
+    },
+    {
+      "date": "2026-03-26T17:41:54+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed",
+      "widgets": [
+        151
       ]
     },
     {
@@ -440,6 +472,15 @@
       "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
       "widgets": [
         42
+      ]
+    },
+    {
+      "date": "2026-03-26T16:05:30+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed issue",
+      "widgets": [
+        103,
+        151
       ]
     },
     {
@@ -585,46 +626,6 @@
       "message": "wg147",
       "widgets": [
         147
-      ]
-    },
-    {
-      "date": "2026-03-26T10:26:23+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-26T10:22:51+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-03-26T10:17:07+05:30",
-      "author": "tce-nitinc",
-      "message": "wg123",
-      "widgets": [
-        123
-      ]
-    },
-    {
-      "date": "2026-03-25T21:52:52+05:30",
-      "author": "sushantthe",
-      "message": "wg94 animation",
-      "widgets": [
-        94
-      ]
-    },
-    {
-      "date": "2026-03-25T20:21:15+05:30",
-      "author": "sushantkanaujiya",
-      "message": "Update index.html",
-      "widgets": [
-        104
       ]
     }
   ]
