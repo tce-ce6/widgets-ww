@@ -1013,6 +1013,9 @@
               </text>
             </g>
           </g>
+          <!-- Invisible full-area hit targets for vehicle buttons -->
+          <rect id="car-hitarea" x="1547.77" y="926.88" width="152" height="124.91" fill="transparent" style="cursor:pointer" />
+          <rect id="bike-hitarea" x="1699.77" y="926.88" width="151.51" height="124.91" fill="transparent" style="cursor:pointer" />
           </g> <!-- End of main isolation group -->
           <!-- POPUP LAYERING SECTION -->
           <g id="popup-overlay" style="display:none; pointer-events: auto;">
@@ -1148,6 +1151,16 @@
                 </g>
               </g>
             </g>
+          </g>
+
+          <g id="i-text">
+            <foreignObject x="380" y="130" width="1500" height="80">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Roboto, sans-serif; font-size: 36px; color: #701b01; text-align: center; line-height: 1.2;">
+                Tap the correct checkpoint on the number line to round
+                <strong id="q-stem-num" style="color: #ff3c00; text-decoration: underline;">32</strong>
+                to the nearest <span id="q-stem-label">tens</span>.
+              </div>
+            </foreignObject>
           </g>
 
           <!-- Help Button at the very end to be on top of everything -->
