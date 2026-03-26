@@ -10,3 +10,4 @@ refs/
 *.tar.gz
 *.tar.bz2
 *.docx
+.vscode/
