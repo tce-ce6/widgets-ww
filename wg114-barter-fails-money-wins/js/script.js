@@ -118,12 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
             c01: $("limitation02-sc01-correct-01"),
             c02: $("limitation02-sc01-correct-02"),
             end: $("limitation02-sc01-end-feedback"),
+            wrong: $("limitation02-sc01-incorrect"),
         },
         lim2s2: {
             base: $("limitation02-sc02-base-screen"),
             c01: $("limitation02-sc02-correct-01"),
             c02: $("limitation02-sc02-correct-02"),
             end: $("limitation02-sc02-end-feedback"),
+            wrong: $("limitation02-sc02-incorrect"),
         },
 
         lim3s1: {
@@ -148,8 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
             S.intro, S.menu,
             S.lim1s1.base, S.lim1s1.cards, S.lim1s1.wrong, S.lim1s1.right, S.lim1s1.end,
             S.lim1s2.base, S.lim1s2.cards, S.lim1s2.wrong, S.lim1s2.right, S.lim1s2.end,
-            S.lim2s1.base, S.lim2s1.cards, S.lim2s1.c01, S.lim2s1.c02, S.lim2s1.end,
-            S.lim2s2.base, S.lim2s2.c01, S.lim2s2.c02, S.lim2s2.end,
+            S.lim2s1.base, S.lim2s1.cards, S.lim2s1.c01, S.lim2s1.c02, S.lim2s1.end, S.lim2s1.wrong,
+            S.lim2s2.base, S.lim2s2.c01, S.lim2s2.c02, S.lim2s2.end, S.lim2s2.wrong,
             S.lim3s1.base, S.lim3s1.end,
             S.conclusion, S.solution, S.insights, S.back_button, S.home_buttom
         ].forEach(hide);
@@ -530,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //  LIMITATION 2 — No Coincidence of Wants (pair matching)
     // ═══════════════════════════════════════════════════════════
 
-    function makePairManager(pairs, sc) {
+    function makePairManager(pairs, sc, config = {}) {
         let selectedId = null;
         let selectedEl = null;
         const matched = new Set();
@@ -541,19 +543,58 @@ document.addEventListener("DOMContentLoaded", () => {
         pairs.forEach(([a, b]) => { pairMap[a] = b; pairMap[b] = a; });
         const totalPairs = pairs.length;
 
+        const updatePrompt = (text, isSelecting) => {
+            if (!config.promptId) return;
+            const promptEl = $(config.promptId);
+            if (!promptEl) return;
+
+            const tspan = $(config.textId) || promptEl.querySelector("tspan");
+            if (tspan) tspan.textContent = text;
+
+            // Hide the 'intro' part of the header during selection to make the prompt prominent
+            const texts = promptEl.querySelectorAll("text");
+            if (texts.length >= 2) {
+                texts[0].style.display = isSelecting ? "none" : "";
+            }
+        };
+
+        const defaultPrompt = config.defaultPrompt || "Help village traders attempt a trade by tapping on two traders.";
+
+        function injectTradedLabel(el) {
+            if (!el) return;
+            const bbox = el.getBBox();
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", bbox.x + bbox.width / 2);
+            text.setAttribute("y", bbox.y + bbox.height / 2);
+            text.setAttribute("fill", "#ff0000");
+            text.setAttribute("font-family", "Roboto-Bold, Roboto");
+            text.setAttribute("font-size", "45");
+            text.setAttribute("font-weight", "700");
+            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("dominant-baseline", "middle");
+            text.setAttribute("pointer-events", "none");
+            text.setAttribute("isolation", "isolate");
+            text.textContent = "TRADED";
+            text.setAttribute("transform", `rotate(-15, ${bbox.x + bbox.width / 2}, ${bbox.y + bbox.height / 2})`);
+            el.parentElement.appendChild(text);
+        }
+
         return function attemptTrade(clickedId, clickedEl) {
             if (matched.has(clickedId)) return;
 
             if (!selectedId) {
                 selectedId = clickedId;
                 selectedEl = clickedEl;
-                clickedEl.style.outline = "4px solid #ffcc00";
-                clickedEl.style.filter = "drop-shadow(0px 0px 12px gold)";
+                // clickedEl.style.outline = "6px solid #ffcc00";
+                // clickedEl.style.filter = "drop-shadow(0px 0px 15px gold)";
+                // updatePrompt(`Selected: ${clickedId} - Now pick someone to trade with!`, true);
+                if (config.onSelect) config.onSelect(clickedId);
             } else {
                 if (selectedId === clickedId) {
                     selectedEl.style.outline = "";
                     selectedEl.style.filter = "";
                     selectedId = null; selectedEl = null;
+                    //   updatePrompt(defaultPrompt, false);
                     return;
                 }
 
@@ -562,39 +603,89 @@ document.addEventListener("DOMContentLoaded", () => {
                     correctCount++;
                     matched.add(selectedId);
                     matched.add(clickedId);
-                    [selectedEl, clickedEl].forEach(el => {
-                        el.style.outline = "4px solid #4caf50";
-                        el.style.filter = "drop-shadow(0px 0px 12px #4caf50)";
-                    });
-                    playLottie("emoji_happy-star");
-                    if (correctCount === 1 && sc.c01) { hide(sc.c02); show(sc.c01); }
-                    if (correctCount === 2 && sc.c02) { hide(sc.c01); show(sc.c02); }
-                    if (correctCount >= totalPairs) {
-                        setTimeout(() => { stopLottie(); hide(sc.c01); hide(sc.c02); show(sc.end); }, 1200);
+
+                    const el1 = selectedEl, el2 = clickedEl;
+                    // [el1, el2].forEach(el => {
+                    //     el.style.outline = "6px solid #4caf50";
+                    //     el.style.filter = "drop-shadow(0px 0px 15px #4caf50)";
+                    //     setTimeout(() => {
+                    //         el.style.opacity = "0.4";
+                    //         el.style.transition = "opacity 0.5s ease";
+                    //         injectTradedLabel(el);
+                    //     }, 800);
+                    // });
+
+                    // playLottie("emoji_happy-star");
+                    //    updatePrompt(defaultPrompt, false);
+                    if (config.onSelect) config.onSelect(clickedId);
+                    if ((selectedId === "Weaver" || selectedId === "Baker") && sc.c01) {
+                        show(sc.c02);
+                        let Trades_Completed = document.getElementById("Trades_Completed:_2_4")
+                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
+                    }
+                    if ((selectedId === "Farmer" || selectedId === "Blacksmith") && sc.c02) {
+                        show(sc.c01);
+                        let Trades_Completed = document.getElementById("Trades_Completed:_1_4")
+                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
+                    }
+
+                    if (correctCount >= 2) {
+                        setTimeout(() => {
+                            stopLottie();
+                            // if (sc.end) show(sc.end);
+                        }, 2500);
                     }
                 } else {
                     wrongCount++;
-                    [selectedEl, clickedEl].forEach(el => {
-                        el.style.outline = "4px solid red";
-                        el.style.filter = "drop-shadow(0px 0px 12px red)";
-                    });
-                    playLottie("emoji-sad");
+                    const el1 = selectedEl, el2 = clickedEl;
+                    // [el1, el2].forEach(el => {
+                    //     el.style.outline = "6px solid red";
+                    //     el.style.filter = "drop-shadow(0px 0px 15px red)";
+                    // });
+                    // playLottie("emoji-sad");
                     setTimeout(() => {
-                        if (selectedEl) { selectedEl.style.outline = ""; selectedEl.style.filter = ""; }
-                        clickedEl.style.outline = "";
-                        clickedEl.style.filter = "";
-                    }, 1500);
-                    if (wrongCount >= 6) setTimeout(() => show(sc.end), 2000);
+                        if (el1) { el1.style.outline = ""; el1.style.filter = ""; }
+                        if (el2) { el2.style.outline = ""; el2.style.filter = ""; }
+                        // updatePrompt(defaultPrompt, false);
+                    }, 1200);
                 }
                 selectedId = null; selectedEl = null;
+                lim2s1_correctCount = correctCount;
+                if (config.onSelect) config.onSelect(null);
             }
         };
     }
+    let lim2s1_correctCount = 0;
 
     // ── Lim2 Scenario 1 ─────────────────────────────────────────
     const lim2s1AllNames = ["Potter", "Farmer", "Fisherman", "Weaver", "Baker", "Gardener", "Blacksmith", "Hunter"];
     const lim2s1Pairs = [["Farmer", "Blacksmith"], ["Weaver", "Baker"]];
-    const lim2s1Trade = makePairManager(lim2s1Pairs, S.lim2s1);
+    const out1 = $("limitation02-sc01-correct-01-outline");
+    const out2 = $("limitation02-sc01-correct-02-outline");
+    if (out1) hide(out1);
+    if (out2) hide(out2);
+    const lim2s1Trade = makePairManager(lim2s1Pairs, S.lim2s1, {
+        promptId: "You_are_a_village_trade_coordinator._Help_village_traders_attempt_a_trade_by_tapping_on_two_traders.",
+        textId: "lim2s1-prompt",
+        defaultPrompt: "Help village traders attempt a trade by tapping on two traders.",
+        onSelect: (id) => {
+
+
+            if (id === "Farmer" || id === "Blacksmith") {
+                if (out1) {
+                    show(out1);
+                    let outline = document.getElementById(id.toLowerCase() + "_outline");
+                    if (outline) show(outline);
+                }
+            } else if (id === "Weaver" || id === "Baker") {
+                if (out2) {
+                    show(out2);
+                    let outline = document.getElementById(id.toLowerCase() + "_outline");
+                    if (outline) show(outline);
+                }
+            }
+        }
+    });
 
     makeCardsClickable(S.lim2s1.cards);
 
@@ -606,7 +697,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    onClick("Continue-2", () => { stopLottie(); goTo(S.lim2s2); });
+    onClick("Continue-2", () => { hide(S.lim2s1.c01); if (lim2s1_correctCount === 2) { if (S.lim2s1.end) show(S.lim2s1.end); } });
+    onClick("Continue-3", () => { hide(S.lim2s1.c02); if (lim2s1_correctCount === 2) { if (S.lim2s1.end) show(S.lim2s1.end); } });
+    onClick("Continue-4", () => { stopLottie(); goTo(S.lim2s2); });
 
     // ── Lim2 Scenario 2 ─────────────────────────────────────────
     const lim2s2AllNames = ["Carpenter", "Orchardist", "Shepherd", "Tailor", "Baker-3", "Miner", "Rancher", "Milkman"];
