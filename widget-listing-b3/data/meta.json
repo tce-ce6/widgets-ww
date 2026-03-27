@@ -141,11 +141,11 @@
       "author": "PrasannaP"
     },
     "wg137-sabdo-me-sawar-ki-khoj": {
-      "updatedAt": "2026-03-27T11:10:21+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-03-27T12:46:33+05:30",
+      "author": "PrasannaP"
     },
     "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-03-26T20:16:03+05:30",
+      "updatedAt": "2026-03-27T12:47:27+05:30",
       "author": "PrasannaP"
     },
     "wg140-change-master": {
@@ -378,6 +378,23 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T12:47:27+05:30",
+      "author": "PrasannaP",
+      "message": "rename2",
+      "widgets": [
+        138
+      ]
+    },
+    {
+      "date": "2026-03-27T12:46:33+05:30",
+      "author": "PrasannaP",
+      "message": "assets rename1",
+      "widgets": [
+        137,
+        138
+      ]
+    },
     {
       "date": "2026-03-27T12:14:52+05:30",
       "author": "ShyamsundarHait",
@@ -615,22 +632,6 @@
         77,
         133,
         155
-      ]
-    },
-    {
-      "date": "2026-03-26T17:20:01+05:30",
-      "author": "PrasannaP",
-      "message": "feat: externalized styles and scripts.",
-      "widgets": [
-        42
-      ]
-    },
-    {
-      "date": "2026-03-26T17:05:36+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "148 issues are fixed",
-      "widgets": [
-        148
       ]
     }
   ]
