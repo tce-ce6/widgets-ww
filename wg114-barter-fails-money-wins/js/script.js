@@ -460,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Continue sc1 → sc2
-    onClick("Continue", () => { stopLottie(); clearCardHighlight(); goTo(S.lim1s2); show(S.back_button); show(S.home_buttom); });
+    onClick("Continue", () => { stopLottie(); clearCardHighlight(); goTo(S.lim1s2); show(S.back_button); show(S.home_button); });
 
     // ── SCENARIO 2: Maria (Has 3 Clay Pots, Wants Tools) ────────
     const lim1s2AllNames = ["Cheenu", "Raj", "Yuvi", "Paul", "Fathima", "Fatima", "Ivan", "Ivan-2", "Priya-2", "Jaya", "Ranjit"];
@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 setIncorrectMsg(wrongPopup, `clay pots. I want ${want}!"`);
                 positionPopup(topCard, wrongPopup, "Group_1281-3"); // Base is Cheenu
                 show(wrongPopup);
-                playLottie("emoji-sad", wrongPopup);
+                // playLottie("emoji-sad", wrongPopup);
             }
         });
     }
@@ -537,47 +537,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let selectedEl = null;
         const matched = new Set();
         let correctCount = 0;
-        let wrongCount = 0;
 
         const pairMap = {};
         pairs.forEach(([a, b]) => { pairMap[a] = b; pairMap[b] = a; });
         const totalPairs = pairs.length;
-
-        const updatePrompt = (text, isSelecting) => {
-            if (!config.promptId) return;
-            const promptEl = $(config.promptId);
-            if (!promptEl) return;
-
-            const tspan = $(config.textId) || promptEl.querySelector("tspan");
-            if (tspan) tspan.textContent = text;
-
-            // Hide the 'intro' part of the header during selection to make the prompt prominent
-            const texts = promptEl.querySelectorAll("text");
-            if (texts.length >= 2) {
-                texts[0].style.display = isSelecting ? "none" : "";
-            }
-        };
-
-        const defaultPrompt = config.defaultPrompt || "Help village traders attempt a trade by tapping on two traders.";
-
-        function injectTradedLabel(el) {
-            if (!el) return;
-            const bbox = el.getBBox();
-            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", bbox.x + bbox.width / 2);
-            text.setAttribute("y", bbox.y + bbox.height / 2);
-            text.setAttribute("fill", "#ff0000");
-            text.setAttribute("font-family", "Roboto-Bold, Roboto");
-            text.setAttribute("font-size", "45");
-            text.setAttribute("font-weight", "700");
-            text.setAttribute("text-anchor", "middle");
-            text.setAttribute("dominant-baseline", "middle");
-            text.setAttribute("pointer-events", "none");
-            text.setAttribute("isolation", "isolate");
-            text.textContent = "TRADED";
-            text.setAttribute("transform", `rotate(-15, ${bbox.x + bbox.width / 2}, ${bbox.y + bbox.height / 2})`);
-            el.parentElement.appendChild(text);
-        }
 
         return function attemptTrade(clickedId, clickedEl) {
             if (matched.has(clickedId)) return;
@@ -585,16 +548,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!selectedId) {
                 selectedId = clickedId;
                 selectedEl = clickedEl;
-                // clickedEl.style.outline = "6px solid #ffcc00";
-                // clickedEl.style.filter = "drop-shadow(0px 0px 15px gold)";
-                // updatePrompt(`Selected: ${clickedId} - Now pick someone to trade with!`, true);
                 if (config.onSelect) config.onSelect(clickedId);
             } else {
                 if (selectedId === clickedId) {
-                    selectedEl.style.outline = "";
-                    selectedEl.style.filter = "";
                     selectedId = null; selectedEl = null;
-                    //   updatePrompt(defaultPrompt, false);
+                    if (config.onSelect) config.onSelect(null);
                     return;
                 }
 
@@ -604,71 +562,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     matched.add(selectedId);
                     matched.add(clickedId);
 
-                    const el1 = selectedEl, el2 = clickedEl;
-                    // [el1, el2].forEach(el => {
-                    //     el.style.outline = "6px solid #4caf50";
-                    //     el.style.filter = "drop-shadow(0px 0px 15px #4caf50)";
-                    //     setTimeout(() => {
-                    //         el.style.opacity = "0.4";
-                    //         el.style.transition = "opacity 0.5s ease";
-                    //         injectTradedLabel(el);
-                    //     }, 800);
-                    // });
-
-                    // playLottie("emoji_happy-star");
-                    //    updatePrompt(defaultPrompt, false);
                     if (config.onSelect) config.onSelect(clickedId);
-                    if ((selectedId === "Weaver" || selectedId === "Baker") && sc.c01) {
-                        show(sc.c02);
-                        let Trades_Completed = document.getElementById("Trades_Completed:_2_4")
-                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
-                    }
-                    if ((selectedId === "Farmer" || selectedId === "Blacksmith") && sc.c02) {
-                        show(sc.c01);
-                        let Trades_Completed = document.getElementById("Trades_Completed:_1_4")
-                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
-                    }
+                    if (config.onCorrect) config.onCorrect(correctCount, selectedId, clickedId);
 
-                    if ((selectedId === "Carpenter" || selectedId === "Orchardist") && sc.c01) {
-                        show(sc.c02);
-                        let Trades_Completed = document.getElementById("Trades_Completed:_0_4-sc2-base")
-                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
-                    }
-                    if ((selectedId === "Shepherd" || selectedId === "Tailor") && sc.c02) {
-                        show(sc.c01);
-                        let Trades_Completed = document.getElementById("Trades_Completed:_1_4-sc2-base")
-                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
-                    }
-
-                    if (correctCount >= 2) {
+                    if (correctCount >= totalPairs) {
                         setTimeout(() => {
                             stopLottie();
-                            // if (sc.end) show(sc.end);
                         }, 2500);
                     }
                 } else {
-                    wrongCount++;
                     const el1 = selectedEl, el2 = clickedEl;
-                    // [el1, el2].forEach(el => {
-                    //     el.style.outline = "6px solid red";
-                    //     el.style.filter = "drop-shadow(0px 0px 15px red)";
-                    // });
-                    // playLottie("emoji-sad");
                     setTimeout(() => {
                         if (el1) { el1.style.outline = ""; el1.style.filter = ""; }
                         if (el2) { el2.style.outline = ""; el2.style.filter = ""; }
-                        // updatePrompt(defaultPrompt, false);
                     }, 1200);
                 }
                 selectedId = null; selectedEl = null;
-                lim2s1_correctCount = correctCount;
                 if (config.onSelect) config.onSelect(null);
             }
         };
     }
-    let lim2s1_correctCount = 0;
 
     // ── Lim2 Scenario 1 ─────────────────────────────────────────
+    let lim2s1_correctCount = 0;
     const lim2s1AllNames = ["Potter", "Farmer", "Fisherman", "Weaver", "Baker", "Gardener", "Blacksmith", "Hunter"];
     const lim2s1Pairs = [["Farmer", "Blacksmith"], ["Weaver", "Baker"]];
     const out1 = $("limitation02-sc01-correct-01-outline");
@@ -680,7 +596,16 @@ document.addEventListener("DOMContentLoaded", () => {
         textId: "lim2s1-prompt",
         defaultPrompt: "Help village traders attempt a trade by tapping on two traders.",
         onSelect: (id) => {
-
+            if (!id) { // If selection is cleared
+                if (out1) hide(out1);
+                if (out2) hide(out2);
+                // Also hide individual outlines if they were shown
+                lim2s1AllNames.forEach(name => {
+                    let outline = document.getElementById(name.toLowerCase() + "_outline");
+                    if (outline) hide(outline);
+                });
+                return;
+            }
 
             if (id === "Farmer" || id === "Blacksmith") {
                 if (out1) {
@@ -693,6 +618,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     show(out2);
                     let outline = document.getElementById(id.toLowerCase() + "_outline");
                     if (outline) show(outline);
+                }
+            }
+        },
+        onCorrect: (count, sld, cld) => {
+            lim2s1_correctCount = count;
+            if ((sld === "Farmer" || sld === "Blacksmith" || cld === "Farmer" || cld === "Blacksmith")) {
+                show(S.lim2s1.c01);
+                let badge = document.getElementById("Trades_Completed:_1_4");
+                if (badge) {
+                    const tspan = badge.querySelector("tspan");
+                    if (tspan) tspan.textContent = `Trades Completed: ${count} / 4`;
+                }
+            } else if ((sld === "Weaver" || sld === "Baker" || cld === "Weaver" || cld === "Baker")) {
+                show(S.lim2s1.c02);
+                let badge = document.getElementById("Trades_Completed:_2_4");
+                if (badge) {
+                    const tspan = badge.querySelector("tspan");
+                    if (tspan) tspan.textContent = `Trades Completed: ${count} / 4`;
                 }
             }
         }
@@ -724,31 +667,45 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sc2Out2) hide(sc2Out2);
 
     const lim2s2Trade = makePairManager(lim2s2Pairs, S.lim2s2, {
-        promptId: "You_are_a_village_trade_coordinator._Help_village_traders_attempt_a_trade_by_tapping_on_two_traders.-2",
-        textId: "lim2s2-prompt",
-        defaultPrompt: "Help village traders attempt a trade by tapping on two traders.",
         onSelect: (id) => {
-            // [sc2Out1, sc2Out2].forEach(g => { if (g) hide(g); });
-            // $("carpenter_outline") && hide($("carpenter_outline"));
-            // $("orchardist_outline") && hide($("orchardist_outline"));
-            // $("shepherd_outline") && hide($("shepherd_outline"));
-            // $("tailor_outline") && hide($("tailor_outline"));
-
-
-
-            if (!id) return;
-
+            if (!id) {
+                if (sc2Out1) hide(sc2Out1);
+                if (sc2Out2) hide(sc2Out2);
+                lim2s2AllNames.forEach(name => {
+                    let nm = name.split("-")[0].toLowerCase();
+                    let outline = document.getElementById(nm + "_outline");
+                    if (outline) hide(outline);
+                });
+                return;
+            }
             if (id === "Carpenter" || id === "Orchardist") {
                 if (sc2Out1) {
                     show(sc2Out1);
-                    let outline = document.getElementById(id.toLowerCase() + "_outline");
-                    if (outline) show(outline);
+                    let sub = document.getElementById(id.toLowerCase() + "_outline");
+                    if (sub) show(sub);
                 }
             } else if (id === "Shepherd" || id === "Tailor") {
                 if (sc2Out2) {
                     show(sc2Out2);
-                    let outline = document.getElementById(id.toLowerCase() + "_outline");
-                    if (outline) show(outline);
+                    let sub = document.getElementById(id.toLowerCase() + "_outline");
+                    if (sub) show(sub);
+                }
+            }
+        },
+        onCorrect: (count, sld, cld) => {
+            if (sld === "Carpenter" || sld === "Orchardist" || cld === "Carpenter" || cld === "Orchardist") {
+                show(S.lim2s2.c01);
+                const badge = document.getElementById("Trades_Completed:_1_4-2");
+                if (badge) {
+                    const textEl = badge.querySelector("text");
+                    if (textEl) textEl.textContent = `Trades Completed: ${count} / 4`;
+                }
+            } else if (sld === "Shepherd" || sld === "Tailor" || cld === "Shepherd" || cld === "Tailor") {
+                show(S.lim2s2.c02);
+                const badge = document.getElementById("Trades_Completed:_1_4-3");
+                if (badge) {
+                    const textEl = badge.querySelector("text");
+                    if (textEl) textEl.textContent = `Trades Completed: ${count} / 4`;
                 }
             }
         }
@@ -790,14 +747,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const ids = ["Trades_Completed:_0_4-sc2-base", "Trades_Completed:_1_4-2", "Trades_Completed:_1_4-3"];
         ids.forEach(id => {
             const el = $(id);
-            if (el) {
+            if (!el) return;
+            // Target the text element directly — replaces all child tspans at once
+            const textEl = el.querySelector("text");
+            if (textEl) {
+                textEl.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
+            } else {
                 const tspan = el.querySelector("tspan");
                 if (tspan) tspan.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
             }
         });
     }
 
-    onClick("Continue_to_Next_Challenge_-2", () => { stopLottie(); hideAll(); show(S.lim3s1); });
+    onClick("Continue_to_Next_Challenge_-2", () => { stopLottie(); goTo(S.lim3s1); show(S.home_buttom); show(S.back_button) });
 
     // ═══════════════════════════════════════════════════════════
     //  LIMITATION 3 — Exchange Rate Problem
@@ -870,7 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Continue sc1 → sc2
-    onClick("Continue-6", () => { stopLottie(); resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); });
+    onClick("Continue-7", () => { stopLottie(); resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); });
 
     // ── Scenario 2: 8 Chickens → goal: 50 Breads (will fail) ──
     let lim3s2 = { cows: 0, chickens: 8, breads: 0, apples: 0 };
@@ -933,7 +895,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (btn) { stopLottie(); hideAll(); show(S.conclusion); }
         });
     }
-    onClick("Continue-8", () => { stopLottie(); hideAll(); show(S.conclusion); });
+    // onClick("Continue-8", () => { stopLottie(); hideAll(); show(S.conclusion); });
 
     // lim3 sc1 → conclusion path (if only one limitation)
     // Continue-9 or similar may exist; rely on lim3s1.end listener
