@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-27T17:50:34+05:30",
+      "updatedAt": "2026-03-27T19:44:17+05:30",
       "author": "sushantthe"
     },
     "wg153-informal-letters": {
@@ -379,6 +379,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-27T19:44:17+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-27T19:43:49+05:30",
+      "author": "sushantthe",
+      "message": "Update script.js",
+      "widgets": [
+        151
+      ]
+    },
+    {
       "date": "2026-03-27T19:42:00+05:30",
       "author": "PrasannaP",
       "message": "fix height",
@@ -392,6 +408,22 @@
       "message": "fix1 css",
       "widgets": [
         140
+      ]
+    },
+    {
+      "date": "2026-03-27T19:37:29+05:30",
+      "author": "sushantthe",
+      "message": "Update script.js",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-27T19:25:30+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue",
+      "widgets": [
+        151
       ]
     },
     {
@@ -591,40 +623,6 @@
       "message": "fixed prime factorisation",
       "widgets": [
         91
-      ]
-    },
-    {
-      "date": "2026-03-27T13:08:54+05:30",
-      "author": "PrasannaP",
-      "message": "v3",
-      "widgets": [
-        137,
-        138
-      ]
-    },
-    {
-      "date": "2026-03-27T13:01:30+05:30",
-      "author": "PrasannaP",
-      "message": "v27",
-      "widgets": [
-        137,
-        138
-      ]
-    },
-    {
-      "date": "2026-03-27T12:55:36+05:30",
-      "author": "sushantthe",
-      "message": "Update script.js",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-27T12:51:11+05:30",
-      "author": "PrasannaP",
-      "message": "v3 asset change",
-      "widgets": [
-        137
       ]
     }
   ]
