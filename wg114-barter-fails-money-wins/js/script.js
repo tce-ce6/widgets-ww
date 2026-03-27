@@ -629,6 +629,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
                     }
 
+                    if ((selectedId === "Carpenter" || selectedId === "Orchardist") && sc.c01) {
+                        show(sc.c02);
+                        let Trades_Completed = document.getElementById("Trades_Completed:_0_4-sc2-base")
+                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
+                    }
+                    if ((selectedId === "Shepherd" || selectedId === "Tailor") && sc.c02) {
+                        show(sc.c01);
+                        let Trades_Completed = document.getElementById("Trades_Completed:_1_4-sc2-base")
+                        Trades_Completed.querySelector("tspan").textContent = `Trades Completed: ${correctCount}/4`
+                    }
+
                     if (correctCount >= 2) {
                         setTimeout(() => {
                             stopLottie();
@@ -702,10 +713,46 @@ document.addEventListener("DOMContentLoaded", () => {
     onClick("Continue-4", () => { stopLottie(); goTo(S.lim2s2); });
 
     // ── Lim2 Scenario 2 ─────────────────────────────────────────
+    let lim2s2_correctCount = 0;
     const lim2s2AllNames = ["Carpenter", "Orchardist", "Shepherd", "Tailor", "Baker-3", "Miner", "Rancher", "Milkman"];
     const lim2s2Pairs = [["Carpenter", "Orchardist"], ["Shepherd", "Tailor"]];
     const lim2s2NormMap = { "Baker-3": "Baker" };
-    const lim2s2Trade = makePairManager(lim2s2Pairs, S.lim2s2);
+
+    const sc2Out1 = $("limitation02-sc02-correct-01-outline");
+    const sc2Out2 = $("limitation02-sc02-correct-02-outline");
+    if (sc2Out1) hide(sc2Out1);
+    if (sc2Out2) hide(sc2Out2);
+
+    const lim2s2Trade = makePairManager(lim2s2Pairs, S.lim2s2, {
+        promptId: "You_are_a_village_trade_coordinator._Help_village_traders_attempt_a_trade_by_tapping_on_two_traders.-2",
+        textId: "lim2s2-prompt",
+        defaultPrompt: "Help village traders attempt a trade by tapping on two traders.",
+        onSelect: (id) => {
+            // [sc2Out1, sc2Out2].forEach(g => { if (g) hide(g); });
+            // $("carpenter_outline") && hide($("carpenter_outline"));
+            // $("orchardist_outline") && hide($("orchardist_outline"));
+            // $("shepherd_outline") && hide($("shepherd_outline"));
+            // $("tailor_outline") && hide($("tailor_outline"));
+
+
+
+            if (!id) return;
+
+            if (id === "Carpenter" || id === "Orchardist") {
+                if (sc2Out1) {
+                    show(sc2Out1);
+                    let outline = document.getElementById(id.toLowerCase() + "_outline");
+                    if (outline) show(outline);
+                }
+            } else if (id === "Shepherd" || id === "Tailor") {
+                if (sc2Out2) {
+                    show(sc2Out2);
+                    let outline = document.getElementById(id.toLowerCase() + "_outline");
+                    if (outline) show(outline);
+                }
+            }
+        }
+    });
 
     const lim2s2Root = S.lim2s2.base;
     if (lim2s2Root) {
@@ -713,12 +760,44 @@ document.addEventListener("DOMContentLoaded", () => {
         lim2s2Root.addEventListener("click", (e) => {
             const found = findCardAndTrader(e, lim2s2Root, lim2s2AllNames);
             if (!found) return;
-            const normId = lim2s2NormMap[found.traderId] || found.traderId;
-            lim2s2Trade(normId, found.topCard);
+            // The logic should use the literal'traderId' for selection but can normalize if needed.
+            // However, makePairManager uses literal IDs for pairs.
+            lim2s2Trade(found.traderId, found.topCard);
+
+            // Update badge on every click if correctCount changed
+            const badge = $("Trades_Completed:_0_4-sc2-base");
+            if (badge) {
+                const text = badge.querySelector("tspan");
+                if (text) text.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
+            }
         });
     }
 
-    onClick("Continue-7", () => { stopLottie(); resetLim3s1(); goTo(S.lim3s1); });
+    onClick("Continue-5", () => {
+        hide(S.lim2s2.c01);
+        lim2s2_correctCount++;
+        updateSc2Badge();
+        if (lim2s2_correctCount === 2) { if (S.lim2s2.end) show(S.lim2s2.end); }
+    });
+    onClick("Continue-6", () => {
+        hide(S.lim2s2.c02);
+        lim2s2_correctCount++;
+        updateSc2Badge();
+        if (lim2s2_correctCount === 2) { if (S.lim2s2.end) show(S.lim2s2.end); }
+    });
+
+    function updateSc2Badge() {
+        const ids = ["Trades_Completed:_0_4-sc2-base", "Trades_Completed:_1_4-2", "Trades_Completed:_1_4-3"];
+        ids.forEach(id => {
+            const el = $(id);
+            if (el) {
+                const tspan = el.querySelector("tspan");
+                if (tspan) tspan.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
+            }
+        });
+    }
+
+    onClick("Continue_to_Next_Challenge_-2", () => { stopLottie(); hideAll(); show(S.lim3s1); });
 
     // ═══════════════════════════════════════════════════════════
     //  LIMITATION 3 — Exchange Rate Problem
