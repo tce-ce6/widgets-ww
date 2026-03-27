@@ -273,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     panel02map: document.getElementById("panel-02-map"),
     itextcropmap: document.getElementById("i-text-crop-map"),
     iTextHomeScreen: document.getElementById("i-text-home-screen"),
+    Got_it_1 : document.getElementById("Got_it_1"),
   };
 
   // Initialize visibility
@@ -345,6 +346,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reset opacity on base buttons
     ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
       const baseContainer = document.getElementById(id);
+     
+      baseContainer.classList.add("st170"); // hide the entire base button group
       if (baseContainer) {
         Array.from(baseContainer.children).forEach(childGroup => {
           childGroup.style.opacity = "0";
@@ -514,8 +517,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       highlightState(stateName, false);
       if (elements.feedbackIncorrectPopup) {
+        const tspans = Array.from(elements.feedbackIncorrectPopup.querySelectorAll("text tspan"));
+        tspans[1].textContent = `This is not a  ${currentState.crop}`;
         elements.feedbackIncorrectPopup.style.display = "block";
         elements.feedbackIncorrectPopup.classList.remove("st170");
+        
+        
       }
     }
   };
@@ -525,9 +532,9 @@ document.addEventListener("DOMContentLoaded", () => {
     currentState.season = season;
     hideAll();
     let panel;
-    if (season === "Rabi") panel = elements.panelRabi;
-    if (season === "Kharif") panel = elements.panelKharif;
-    if (season === "Zaid") panel = elements.panelZaid;
+    if (season === "Rabi"){ panel = elements.panelRabi;}
+    if (season === "Kharif"){ panel = elements.panelKharif;}
+    if (season === "Zaid") {panel = elements.panelZaid;}
 
     if (panel) {
       panel.style.display = "block";
@@ -542,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+        
       // Reset base buttons opacity/display
       ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
         const baseContainer = document.getElementById(id);
@@ -849,6 +857,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elements.feedbackIncorrectPopup) {
       elements.feedbackIncorrectPopup.style.display = "none";
       elements.feedbackIncorrectPopup.classList.add("st170");
+    }
+    // Clear any red (incorrect) highlights from the map
+    if (elements.mapContainer) {
+      elements.mapContainer.querySelectorAll("path").forEach((p) => {
+        if (p.style.fill === "rgb(244, 67, 54)" || p.style.fill === "#F44336") {
+          p.style.fill = "";
+          p.style.opacity = "";
+        }
+      });
     }
   });
 
