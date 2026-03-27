@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const fullInputImg = document.getElementById("full-inputimg");
   const halfInputImg = document.getElementById("half-inputimg");
   const countList = document.getElementById("count-list");
+  const backdrop = document.getElementById("backdrop");
+  const solutionWrapper = document.getElementById("soulution-wrapper");
+  const correctModal = document.getElementById("correct-modal");
   // ICON SELECTION
   iconItems.forEach((item) => {
     item.addEventListener("click", function () {
@@ -122,9 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Next Activity Button
   nextBtn.addEventListener("click", function () {
-    const backdrop = document.getElementById("backdrop");
-    const solutionWrapper = document.getElementById("soulution-wrapper");
-    const correctModal = document.getElementById("correct-modal");
     if (backdrop) backdrop.style.display = "none";
     if (solutionWrapper) solutionWrapper.style.display = "none";
     if (correctModal) correctModal.style.display = "none";
@@ -359,8 +359,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (allCorrect && listItems.length > 0) {
-        const backdrop = document.getElementById("backdrop");
-        const correctModal = document.getElementById("correct-modal");
         if (backdrop) backdrop.style.display = "block";
         if (correctModal) correctModal.style.display = "block";
 
@@ -380,13 +378,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const globalResetBtn = document.getElementById("global-reset");
   if (globalResetBtn) {
     globalResetBtn.addEventListener("click", () => {
-      const correctModal = document.getElementById("correct-modal");
       if (correctModal) correctModal.style.display = "none";
 
-      const backdrop = document.getElementById("backdrop");
       if (backdrop) backdrop.style.display = "none";
 
-      const solutionWrapper = document.getElementById("soulution-wrapper");
       if (solutionWrapper) solutionWrapper.style.display = "none";
 
       // Reset selected icon
@@ -484,8 +479,6 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   const showAnswerBtn = document.getElementById("show-answer");
-  const backdrop = document.getElementById("backdrop");
-  const solutionWrapper = document.getElementById("soulution-wrapper");
   const closeSolutionWrapper = document.getElementById("close-solution-wrapper");
   const countListSolution = document.getElementById("count-list-solution");
   const fullInputImgSolution = document.getElementById("full-inputimg-solution");
@@ -497,6 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showAnswerBtn.addEventListener("click", () => {
       backdrop.style.display = "block";
       solutionWrapper.style.display = "block";
+      if (correctModal) correctModal.style.display = "none";
 
       const activity = pictographData[currentActivity];
       if (!activity) return;
