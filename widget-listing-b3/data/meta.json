@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-26T18:45:59+05:30",
+      "updatedAt": "2026-03-27T17:17:19+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -378,6 +378,30 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T17:17:19+05:30",
+      "author": "PrasannaP",
+      "message": "feat: replace angle display with input field and enhance angle handling logic",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T17:12:31+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T16:55:24+05:30",
+      "author": "PrasannaP",
+      "message": "fix: enhance total internal reflection logic in draw function",
+      "widgets": [
+        70
+      ]
+    },
     {
       "date": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg",
@@ -608,32 +632,6 @@
       "message": "wg151 fixed",
       "widgets": [
         151
-      ]
-    },
-    {
-      "date": "2026-03-26T20:16:03+05:30",
-      "author": "PrasannaP",
-      "message": "fix align",
-      "widgets": [
-        137,
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:54:51+05:30",
-      "author": "PrasannaP",
-      "message": "change y to 420",
-      "widgets": [
-        148
-      ]
-    },
-    {
-      "date": "2026-03-26T19:39:14+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 77 and wg 84",
-      "widgets": [
-        77,
-        84
       ]
     }
   ]
