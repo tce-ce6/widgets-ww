@@ -435,8 +435,12 @@ function draw() {
   drawLaserPointer(ctx, incidentStartX, incidentStartY, laserAngle);
 
   if (isTIR) {
+    // Total internal reflection: reflected ray stays in the incident medium.
+    // Reflection flips the component normal to the boundary (y), keeping x the same.
     const endX = midX + Math.sin(thetaI_rad) * rayLen;
-    const endY = midY + Math.cos(thetaI_rad) * rayLen;
+    const endY = currentMode === 'dense_to_rare'
+      ? (midY + Math.cos(thetaI_rad) * rayLen) // incident from bottom -> reflect back into bottom
+      : (midY - Math.cos(thetaI_rad) * rayLen); // incident from top -> reflect back into top
     ctx.beginPath();
     ctx.moveTo(midX, midY);
     ctx.lineTo(endX, endY);
