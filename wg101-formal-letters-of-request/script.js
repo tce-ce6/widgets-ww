@@ -116,13 +116,13 @@ const letterData = {
                         "id": 2,
                         "text": "In today's competitive world, students need a lot of exposure. A vocational skills course would be very beneficial for their future and help them become better individuals who can face various challenges in life.",
                         "is_correct": false,
-                        "feedback": "The language used is informal and vague without specific examples of skills included in the course."
+                        "feedback": "The language used is informal ('a lot of exposure'). Vague and general statements have been used ('very beneficial', 'better individuals', 'various challenges') without any specific examples of skills that would be taught. Doesn't clearly explain what the course would include."
                     },
                     {
                         "id": 3,
                         "text": "In today's world, it is absolutely crucial and extremely important that we realise academic knowledge is simply not sufficient anymore. Without a vocational skills course, our students will definitely struggle terribly in their careers and may fail to achieve success in life.",
                         "is_correct": false,
-                        "feedback": "The language is overly dramatic and makes exaggerated claims without supporting evidence."
+                        "feedback": "The language used is overly dramatic  ('absolutely crucial', 'extremely important', 'struggle terribly', 'definitely', 'simply not sufficient') and makes exaggerated claims without supporting evidence."
                     }
                 ],
                 "body_paragraph_2": [
@@ -130,13 +130,13 @@ const letterData = {
                         "id": 1,
                         "text": "Besides, a vocational skills course would be good for students to explore their interests outside the classroom. A vocational skills course would also be good because it helps different students with different talents. This course would benefit all students in many ways.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses repetitive and vague language and lacks sophistication."
+                        "feedback": "The paragraph demonstrates repetitive use of 'a vocational skills course' and 'would be good', which lacks variety in sentence structure. It uses vague language ('in many ways', 'different students') and doesn't employ sophisticated transitional words. The writing sounds simplistic and poorly constructed."
                     },
                     {
                         "id": 2,
                         "text": "Besides, a vocational skills course would allow students to explore their interests beyond academics, unlike the current curriculum which only focuses on theory. Many other schools have already started such courses and are doing much better than us. Moreover, students often complain about the lack of practical learning opportunities in our school.",
                         "is_correct": false,
-                        "feedback": "This paragraph introduces unnecessary criticism and negative tone."
+                        "feedback": "This paragraph introduces unnecessary criticism of current curriculum, makes unfounded comparisons with other schools, includes negative tone (‘only focuses on theory’, ‘doing much better than us’), brings in student complaints which sounds like gossip rather than professional reasoning."
                     },
                     {
                         "id": 3,
@@ -156,13 +156,13 @@ const letterData = {
                         "id": 2,
                         "text": "The introduction of a vocational skills course will greatly benefit the students, helping you to succeed in their future careers. Madam, I humbly request that you kindly consider my suggestion and hopefully approve this vocational skills program soon.",
                         "is_correct": false,
-                        "feedback": "This shifts from third person to second person and uses redundant phrases."
+                        "feedback": "This conclusion shifts from third person ‘the students’ to second person ‘you’. It uses redundant phrases (‘humbly request that you kindly’). The phrase 'hopefully approve' sounds uncertain and less professional. ‘hopefully approve’ sounds uncertain and less professional."
                     },
                     {
                         "id": 3,
                         "text": "I am sure you will agree that a vocational skills course will greatly benefit our students in their personal and professional lives. I look forward to seeing this program implemented at our school very soon. Thank you for your time. ",
                         "is_correct": false,
-                        "feedback": "This assumes agreement and sounds presumptuous."
+                        "feedback": "This conclusion assumes agreement by stating 'I am sure you will agree', which sounds presumptuous. The phrase 'very soon' sounds impatient and demanding."
                     }
                 ],
                 "complimentary_close": [
@@ -301,13 +301,13 @@ const letterData = {
                         "id": 2,
                         "text": "I am writing this letter because I really think our Class 10 students should go on an excursion tour to Hyderabad as I feel it is a great city. I believe excursions are very important and give students good learning experiences outside the classroom.",
                         "is_correct": false,
-                        "feedback": "This introduction uses informal expressions and is overly opinion-based."
+                        "feedback": "This introduction uses informal expressions (‘I really think’, ‘I feel’, ‘great city’). It is overly personal and opinion-based rather than professional."
                     },
                     {
                         "id": 3,
                         "text": "I am writing to discuss the possibility of organising educational trips for our students, s, as I believe such activities are valuable. Excursions can provide meaningful experiences that contribute to overall development.",
                         "is_correct": false,
-                        "feedback": "This does not clearly state the specific request."
+                        "feedback": "This doesn't clearly state the specific request. It sounds tentative rather than purposeful."
                     }
                 ],
                 "body_paragraph_1": [
@@ -321,13 +321,13 @@ const letterData = {
                         "id": 2,
                         "text": "Hyderabad is an absolutely amazing city with so much history and culture! Students will be thrilled to visit incredible places like the Charminar, the awesome Golconda Fort and the Salar Jung Museum which has really interesting collections. This trip will be so exciting and students will definitely have a wonderful time learning about our country's heritage.",
                         "is_correct": false,
-                        "feedback": "Overly enthusiastic and informal language has been used."
+                        "feedback": "Overly enthusiastic and informal language (‘absolutely amazing’, ‘so much’, ‘thrilled’, ‘awesome’, ‘really interesting’, ‘so exciting’, ‘definitely’) has been used. It uses an exclamation mark which is inappropriate in formal letters."
                     },
                     {
                         "id": 3,
                         "text": "Hyderabad is a very famous historical city with many important monuments and museums. Students will learn many things there. It will be good for them.",
                         "is_correct": false,
-                        "feedback": "The language is simplistic and lacks specific details."
+                        "feedback": "The language is simplistic and lacks any specific details or examples. There is no mention of actual sites or their significance."
                     }
                 ],
                 "body_paragraph_2": [
@@ -335,13 +335,13 @@ const letterData = {
                         "id": 1,
                         "text": "Excursions are very useful for students as they learn many important things. Students can develop various skills and become better people through such trips. Educational tours are always beneficial for overall development.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses vague language without specific examples."
+                        "feedback": "This paragraph uses extremely vague language ('very useful', 'many important things', 'various skills', 'better people', 'overall development')."
                     },
                     {
                         "id": 2,
                         "text": "I have heard that excursions are really good for students because they get to meet new people and have fun experiences together. I think students will enjoy working in teams and solving problems during the trip. Such tours definitely help students grow as individuals.",
                         "is_correct": false,
-                        "feedback": "Personal and subjective language has been used."
+                        "feedback": "Personal and subjective language has been used: ‘I have heard’, ‘I think’, ‘really good’, ‘definitely’. The paragraph also contains informal expressions (‘have fun’, ‘get to meet’)."
                     },
                     {
                         "id": 3,
@@ -361,13 +361,13 @@ const letterData = {
                         "id": 2,
                         "text": "I kindly request your approval for this excursion to Hyderabad. I am sure that this trip will be really enjoyable and fun for all of us. We are all very excited about visiting Hyderabad and having a great time together as a class.",
                         "is_correct": false,
-                        "feedback": "This uses overly casual tone."
+                        "feedback": "This conclusion uses an overly casual tone ('really enjoyable', 'fun', 'great time'). It focuses primarily on entertainment and excitement rather than educational benefits."
                     },
                     {
                         "id": 3,
                         "text": "Please give your approval for this excursion to Hyderabad",
                         "is_correct": false,
-                        "feedback": "This sounds abrupt and impolite."
+                        "feedback": "This is too abrupt and almost sounds impolite."
                     }
                 ],
                 "complimentary_close": [
@@ -506,13 +506,13 @@ const letterData = {
                         "id": 2,
                         "text": "I am writing to request sponsorship for our sports event. We are organising an Annual Sports Event in our housing society soon.",
                         "is_correct": false,
-                        "feedback": "This introduction lacks specific details and sounds vague."
+                        "feedback": "This introduction lacks specific details such as the writer's name and address of the society, doesn't mention the specific date of the event, sounds vague and unprofessional."
                     },
                     {
                         "id": 3,
                         "text": "I am Reva Arora, a resident of Grande Housing Society for the past five years and an active member of the society committee. I am writing to seek your sponsorship for our upcoming Annual Sports Event, which is scheduled to be held on 20 December, 2023. This will be our tenth annual event and we have been planning it for several months now.",
                         "is_correct": false,
-                        "feedback": "This includes irrelevant and excessive information."
+                        "feedback": "This introduction includes details that are irrelevant to the request, adds excessive information (resident for past five years, tenth annual event, months of planning)."
                     }
                 ],
                 "body_paragraph_1": [
@@ -526,13 +526,13 @@ const letterData = {
                         "id": 2,
                         "text": "Our sports event is very popular in our housing society. Many residents take part in various sports activities. This event is good for building community spirit and everyone enjoys participating in it.",
                         "is_correct": false,
-                        "feedback": "This lacks specific details and uses simplistic vocabulary."
+                        "feedback": "This paragraph does not mention specific sports or activities, lacks detail about what makes the event special, uses simplistic vocabulary."
                     },
                     {
                         "id": 3,
                         "text": "Our sports event is a cherished tradition in our housing society which I personally think is wonderful. Residents of all ages participate in sports like badminton, table tennis and mini marathon, and everyone has so much fun. This event not only fosters community spirit but also gives people a chance to show off their sports skills, which is really exciting to watch.",
                         "is_correct": false,
-                        "feedback": "Personal opinion and informal phrases have been used."
+                        "feedback": "An unnecessary personal opinion ('I personally think is wonderful') has been expressed in this paragraph. The phrases 'so much fun', 'show off', and 'really exciting to watch' are too informal for a sponsorship request."
                     }
                 ],
                 "body_paragraph_2": [
@@ -540,7 +540,7 @@ const letterData = {
                         "id": 1,
                         "text": "We need financial support for sports equipment, prizes and decorations for our event. Milind Sports Emporium should sponsor us because you are a local business. If you sponsor our event, we will put your logo on banners and mention your name during announcements.",
                         "is_correct": false,
-                        "feedback": "This sounds demanding and lacks formal tone."
+                        "feedback": "This sounds demanding rather than making a polite request. (‘We need’, ‘should sponsor us’, ‘If you sponsor’), lacks appropriate formal tone and courtesy. Also, this paragraph does not acknowledge the potential sponsor's qualities."
                     },
                     {
                         "id": 2,
@@ -552,7 +552,7 @@ const letterData = {
                         "id": 3,
                         "text": "We believe that Milind Sports Emporium, with its strong presence in our community would be an ideal sponsor for our event. In return for your generous sponsorship, we will display your business logo on all event banners and promotional material. Furthermore, to ensure the success of this event, we are seeking financial support to cover necessary expenses.",
                         "is_correct": false,
-                        "feedback": "The structure is illogical and places benefits before explaining the need."
+                        "feedback": "The paragraph structure is illogical. It discusses what the sponsor will receive before explaining what is actually needed. The request for financial support is placed at the end instead of establishing the need first."
                     }
                 ],
                 "conclusion": [
@@ -566,7 +566,7 @@ const letterData = {
                         "id": 2,
                         "text": "If you have any questions, call 984000080. We hope you will sponsor our event. We are waiting for your reply.",
                         "is_correct": false,
-                        "feedback": "This is abrupt and lacks professional tone."
+                        "feedback": "This is too abrupt and brief, lacks the courteous and professional tone."
                     },
                     {
                         "id": 3,
