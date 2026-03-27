@@ -469,6 +469,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Safe helper for getBBox when elements might be hidden
+    function safeBBox(el, fallback = { x: 0, y: 0, width: 0, height: 0 }) {
+        try {
+            return el.getBBox();
+        } catch (e) {
+            return fallback;
+        }
+    }
+
     // Animation for Layer_4 - Animate each element inside individually
     // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
  // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
@@ -566,23 +575,50 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // --- 2. Animate Layer 5 (Solution Ions -> Drifting Right) ---
-            // Kept exactly as you requested
+            // Now: each solution ion travels to the anode, disappears, then reappears at the start.
             if (Layer5) {
                 const anions = Array.from(Layer5.children);
-                const maxTranslateAnion = 60; // Distance to drift right toward anode
-                const driftDuration = 4000;   // Slower, smooth drift
+                const targetBBox = (anodeRect && safeBBox(anodeRect)) || { x: 900, y: 320, width: 80, height: 400 };
+                const cycleDuration = 3200;
+                const movePhase = 2200;
+                const disappearPhase = 500;
+                const resetPhase = 500;
                 
                 anions.forEach((child, index) => {
-                    const startTime = Date.now() + (index * 600); 
+                    const startTime = Date.now() + (index * 450); 
+
+                    child.style.transform = "translate(0px, 0px)";
+                    child.style.opacity = "1";
+                    const startBBox = safeBBox(child);
+
+                    const randomYOffset = (Math.random() * targetBBox.height * 0.6) + (targetBBox.height * 0.2);
+                    const targetX = targetBBox.x; // Move towards anode (left edge of anode rectangle)
+                    const targetY = targetBBox.y + randomYOffset;
+
+                    const startX = startBBox.x + (startBBox.width / 2);
+                    const startY = startBBox.y + (startBBox.height / 2);
+
+                    const dx = targetX - startX;
+                    const dy = targetY - startY;
                     
                     function animateAnion() {
                         if (!electrolysisStarted) return;
                         
-                        const elapsed = (Date.now() - startTime);
-                        const progress = (Math.sin(elapsed / driftDuration * Math.PI * 2) + 1) / 2;
-                        
-                        child.style.transform = `translateX(${maxTranslateAnion * progress}px)`;
-                        child.style.opacity = "1";
+                        const elapsed = (Date.now() - startTime) % cycleDuration;
+
+                        if (elapsed < movePhase) {
+                            const progress = elapsed / movePhase;
+                            child.style.transform = `translate(${dx * progress}px, ${dy * progress}px)`;
+                            child.style.opacity = "1";
+                        } else if (elapsed < movePhase + disappearPhase) {
+                            const progress = (elapsed - movePhase) / disappearPhase;
+                            child.style.transform = `translate(${dx}px, ${dy}px)`;
+                            child.style.opacity = Math.max(0, 1 - progress);
+                        } else {
+                            const progress = (elapsed - movePhase - disappearPhase) / resetPhase;
+                            child.style.transform = `translate(0px, 0px)`;
+                            child.style.opacity = Math.min(1, progress);
+                        }
                         
                         ionAnimationIds.push(requestAnimationFrame(animateAnion));
                     }
@@ -623,18 +659,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setBtnEnabled(startBtn, false);
         setVisibility(offSwitch, false);
         setVisibility(onSwitch, true);
-        currentFlowAnim.play();
-        
-        // Ensure metalAnim loops continuously for all ions to move
-        metalAnim.setLoop(true);
-        metalAnim.play();
-        
-        // Set up continuous loop for metalAnim - replay when animation completes
-        metalAnim.addEventListener("complete", () => {
-            if (electrolysisStarted) {
-                metalAnim.goToAndPlay(0);
-            }
-        });
         
         // Animate Layer_4 oscillation
         animateIons(true);
