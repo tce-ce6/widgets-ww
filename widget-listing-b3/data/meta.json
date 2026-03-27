@@ -165,7 +165,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-26T19:21:12+05:30",
+      "updatedAt": "2026-03-27T14:36:46+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T14:36:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement smooth fade-in and fade-out transitions for the SVG container and author portraits.",
+      "widgets": [
+        146
+      ]
+    },
     {
       "date": "2026-03-27T14:15:06+05:30",
       "author": "tce-nitinc",
@@ -620,14 +628,6 @@
       "message": "wg148 fixed",
       "widgets": [
         148
-      ]
-    },
-    {
-      "date": "2026-03-26T19:21:12+05:30",
-      "author": "PrasannaP",
-      "message": "fix1",
-      "widgets": [
-        146
       ]
     }
   ]
