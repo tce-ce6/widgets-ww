@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-27T17:17:19+05:30",
+      "updatedAt": "2026-03-27T20:43:40+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -379,11 +379,35 @@
   },
   "commits": [
     {
+      "date": "2026-03-27T20:43:40+05:30",
+      "author": "PrasannaP",
+      "message": "Refraction, Total Internal Reflection and Critical Angle",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T20:41:46+05:30",
+      "author": "PrasannaP",
+      "message": "fixed 70 css",
+      "widgets": [
+        70
+      ]
+    },
+    {
       "date": "2026-03-27T20:29:23+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
       "widgets": [
         151
+      ]
+    },
+    {
+      "date": "2026-03-27T20:28:54+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        70
       ]
     },
     {
@@ -598,32 +622,6 @@
       "message": "feat: Implement smooth fade-in and fade-out transitions for the SVG container and author portraits.",
       "widgets": [
         146
-      ]
-    },
-    {
-      "date": "2026-03-27T14:24:04+05:30",
-      "author": "sushantthe",
-      "message": "Update script.js",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-27T14:15:06+05:30",
-      "author": "tce-nitinc",
-      "message": "wg155 and wg133 fixes",
-      "widgets": [
-        133,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-27T13:44:39+05:30",
-      "author": "PrasannaP",
-      "message": "260327_2",
-      "widgets": [
-        137,
-        138
       ]
     }
   ]
