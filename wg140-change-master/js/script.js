@@ -131,7 +131,7 @@ function loadLottieAnimations() {
         renderer: "svg",
         loop: true,
         autoplay: false,
-        path: "assets/anim/emoji-happy.json"
+        path: ANIMATION_PATH_BASE + LOTTIE_ANIMATION_MAP["success"]
     });
 
     sadLottieInstance = lottie.loadAnimation({
@@ -139,7 +139,7 @@ function loadLottieAnimations() {
         renderer: "svg",
         loop: true,
         autoplay: false,
-        path: "assets/anim/emoji-sad.json"
+        path: ANIMATION_PATH_BASE + LOTTIE_ANIMATION_MAP["wrong"]
     });
 
 }
@@ -263,12 +263,7 @@ tryAgainBtn.addEventListener('click', () => {
     sadLottie.style.display = 'none';
 });
 
-// /**
-//  * Calculates the total value of the currency in the payment array.
-//  */
-function getTotalPayment() {
-    return totalCurrency.reduce((sum, value) => sum + value, 0);
-}
+
 
 // /**
 //  * Handles the 'Check' button action.
