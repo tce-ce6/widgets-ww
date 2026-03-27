@@ -378,31 +378,14 @@ document.addEventListener("DOMContentLoaded", () => {
     "Himachal Pradesh", "Lakshadweep Is.", "Andaman and Nicobar Is.",
   ]);
 
-  // Build cache using elementFromPoint at pointer-circle and label-text SVG positions.
-  // Must be called when the map is visible so screen coordinates are valid.
+  // Build cache using isPointInFill — pure SVG geometry, no screen coordinates needed.
+  // A connector circle sits physically inside its state's territory, so
+  // path.isPointInFill(circlePoint) is true only for that state's path(s).
   const buildPathStateCache = () => {
     if (pathStateCacheBuilt || !elements.mapContainer) return;
 
     const svgEl = document.querySelector("svg");
     if (!svgEl) return;
-    const ctm = svgEl.getScreenCTM();
-    if (!ctm) return;
-
-    const svgToScreen = (x, y) => {
-      const pt = svgEl.createSVGPoint();
-      pt.x = x; pt.y = y;
-      return pt.matrixTransform(ctm);
-    };
-
-    const tryCache = (svgX, svgY, stateName) => {
-      const sc = svgToScreen(svgX, svgY);
-      const el = document.elementFromPoint(sc.x, sc.y);
-      if (el && el.tagName === "path" && elements.mapContainer.contains(el)) {
-        if (!pathStateCache.has(el)) pathStateCache.set(el, stateName);
-        return true;
-      }
-      return false;
-    };
 
     // Collect state label SVG positions from their text transform attributes
     const statePositions = [];
@@ -417,23 +400,52 @@ document.addEventListener("DOMContentLoaded", () => {
       if (m) statePositions.push({ name, x: parseFloat(m[1]), y: parseFloat(m[2]) });
     });
 
-    // Method 1 (most accurate): pointer circles inside connector groups point at
-    // the actual state territory — use elementFromPoint at those SVG positions
-    document.querySelectorAll('g[id^="Group_"] > circle').forEach((circle) => {
+    // Build sample points: connector circles first (most accurate),
+    // then label text positions as fallback for states without connector lines.
+    const samplePoints = [];
+
+    // Connector groups have both a <line> and a <circle>;
+    // the circle endpoint is physically inside the state's territory.
+    document.querySelectorAll('g[id^="Group_"]').forEach((g) => {
+      if (!g.querySelector("line") || !g.querySelector("circle")) return;
+      const circle = g.querySelector("circle");
       const cx = parseFloat(circle.getAttribute("cx"));
       const cy = parseFloat(circle.getAttribute("cy"));
-      // Find nearest state label position to this circle (SVG coordinate space)
+      // Find nearest state label to this circle (SVG coordinate space)
       let nearest = null, minDist = Infinity;
       statePositions.forEach((sp) => {
         const d = Math.hypot(cx - sp.x, cy - sp.y);
         if (d < minDist) { minDist = d; nearest = sp; }
       });
-      if (nearest) tryCache(cx, cy, nearest.name);
+      if (nearest) {
+        const pt = svgEl.createSVGPoint();
+        pt.x = cx; pt.y = cy;
+        samplePoints.push({ pt, name: nearest.name });
+      }
     });
 
-    // Method 2: also sample at each label's own text position
-    // (works for large states whose label sits inside their territory)
-    statePositions.forEach((sp) => tryCache(sp.x, sp.y, sp.name));
+    // Add label text positions as additional sample points
+    statePositions.forEach((sp) => {
+      const pt = svgEl.createSVGPoint();
+      pt.x = sp.x; pt.y = sp.y;
+      samplePoints.push({ pt, name: sp.name });
+    });
+
+    // For each map path, test which sample points fall geometrically inside it.
+    // isPointInFill works in SVG coordinate space — no screen/viewport dependency.
+    const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
+    paths.forEach((p) => {
+      if (pathStateCache.has(p)) return;
+      for (const { pt, name } of samplePoints) {
+        try {
+          if (p.isPointInFill(pt)) {
+            pathStateCache.set(p, name);
+            break;
+          }
+        } catch (e) { /* skip malformed paths */ }
+      }
+    });
+    console.log("🚀 ~ buildPathStateCache ~ paths:", paths)
 
     pathStateCacheBuilt = true;
   };
