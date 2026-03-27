@@ -37,7 +37,7 @@ const ITEMS_DATA = [
     { "name": "Milk Packet", "price": 73, "path": "milk.svg" },
     { "name": "Papaya", "price": 30, "path": "papaya.svg" },
     { "name": "Icecream", "price": 37, "path": "icecream.svg" },
-    { "name": "Pair of shoe", "price": 675, "path": "shoes.svg" },
+    // { "name": "Pair of shoe", "price": 675, "path": "shoes.svg" },
     // { "name": "T shirt", "price": 898, "path": "t_shirt.svg" },
     // { "name": "Sleepers", "price": 850, "path": "sleeper.svg" },
     { "name": "Hand gloves", "price": 25, "path": "hand_gloves.svg" },
