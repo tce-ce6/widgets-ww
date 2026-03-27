@@ -341,8 +341,8 @@
       "author": "sushantthe"
     },
     "wg91-prime-factorisation": {
-      "updatedAt": "2026-03-10T15:21:22+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-27T13:09:52+05:30",
+      "author": "ShyamsundarHait"
     },
     "wg92-test-of-divisibility": {
       "updatedAt": "2026-03-25T16:13:22+05:30",
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T13:09:52+05:30",
+      "author": "ShyamsundarHait",
+      "message": "fixed prime factorisation",
+      "widgets": [
+        91
+      ]
+    },
     {
       "date": "2026-03-27T13:08:54+05:30",
       "author": "PrasannaP",
@@ -618,20 +626,6 @@
       "message": "fixed issue wg103",
       "widgets": [
         103
-      ]
-    },
-    {
-      "date": "2026-03-26T19:00:46+05:30",
-      "author": "tce-ashishg",
-      "message": "wg137 & wg138 comments closed",
-      "widgets": [
-        61,
-        74,
-        101,
-        118,
-        137,
-        138,
-        153
       ]
     }
   ]
