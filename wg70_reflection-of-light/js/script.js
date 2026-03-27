@@ -166,6 +166,15 @@ let criticalAngle = Math.asin(n2 / n1) * (180 / Math.PI); // ~41.81 degrees for 
 let angleIncidence = 30; // Degrees
 let width, height;
 
+function setAngle(theta) {
+  const clamped = Math.max(0, Math.min(90, theta));
+  const q = Math.round(clamped * 10) / 10;
+  angleIncidence = q;
+  angleSlider.value = String(q);
+  if (angleVal) angleVal.value = q.toFixed(1);
+  draw();
+}
+
 function resize() {
   const rect = container.getBoundingClientRect();
   canvas.width = rect.width;
@@ -512,10 +521,24 @@ function draw() {
 
 // Listeners
 angleSlider.addEventListener('input', (e) => {
-  angleIncidence = parseFloat(e.target.value);
-  angleVal.innerText = angleIncidence.toFixed(1) + "°";
-  draw();
+  setAngle(parseFloat(e.target.value));
 });
+
+if (angleVal) {
+  angleVal.addEventListener('input', (e) => {
+    const v = parseFloat(e.target.value);
+    if (!Number.isFinite(v)) return;
+    setAngle(v);
+  });
+  angleVal.addEventListener('change', (e) => {
+    const v = parseFloat(e.target.value);
+    if (!Number.isFinite(v)) {
+      angleVal.value = angleIncidence.toFixed(1);
+      return;
+    }
+    setAngle(v);
+  });
+}
 
 btnDenseRare.addEventListener('click', () => setMode('dense_to_rare'));
 btnRareDense.addEventListener('click', () => setMode('rare_to_dense'));
@@ -561,12 +584,7 @@ function handleDrag(x, y) {
   let theta = Math.atan2(dx, dy) * (180 / Math.PI);
 
   // Clamp to slider range
-  theta = Math.max(0, Math.min(90, theta));
-
-  angleIncidence = theta;
-  angleSlider.value = theta;
-  angleVal.innerText = theta.toFixed(1) + "°";
-  draw();
+  setAngle(theta);
 }
 
 canvas.addEventListener('mousedown', (e) => { isDragging = true; handleDrag(e.clientX, e.clientY); });
@@ -585,4 +603,5 @@ canvas.addEventListener('touchmove', (e) => {
 window.addEventListener('resize', resize);
 resize();
 setMode(currentMode);
+setAngle(angleIncidence);
 
