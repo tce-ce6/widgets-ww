@@ -1040,9 +1040,23 @@ const CROP_DATA = {
   });
 
   elements.tryAnotherCropBtn?.addEventListener("click", () => {
-    showHome();
+    if (elements.factsheet) {
+      elements.factsheet.style.display = "none";
+      elements.factsheet.classList.add("st170");
+    }
+    resetMapHighlights();
+    resetCropSelection();
   });
-
+    resetCropSelection = () => {
+    // Hide all selected crop groups
+    ['btn-rabi-selected', 'btn-Kharif-selected', 'btn-Zaid-selected'].forEach(id => {
+      const selectedContainer = document.getElementById(id);
+      if (selectedContainer) {
+        selectedContainer.style.display = "none";
+        selectedContainer.classList.add("st170");
+      }
+    });
+  };
   // Global Buttons
   elements.submitBtn?.addEventListener("click", () => {
     if (currentState.selectedStates.size === 0) return;
