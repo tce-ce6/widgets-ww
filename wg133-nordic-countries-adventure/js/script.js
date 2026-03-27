@@ -40,6 +40,8 @@
         selectedCountry: null,
         currentQuestionIndex: 0,
         wrongMapAttempts: 0,
+        quizAttempted: false,
+        score: 0,
         mapLocked: false,
         mapEnabled: false
     };
@@ -147,6 +149,12 @@
             });
         }
 
+        // Award 1 mark for correct flag-country match ON FIRST ATTEMPT
+        if (AppState.wrongMapAttempts === 0) {
+            AppState.score++;
+            updateMarksUI();
+        }
+
         // show navigation buttons
         const btnNext = document.getElementById('btn-next');
         if (btnNext) btnNext.style.display = 'block';
@@ -239,6 +247,7 @@ if (AppState.selectedCountry !== correctCountry) {
         }
 
         AppState.wrongMapAttempts = 0;
+        AppState.quizAttempted = false;
         AppState.mapLocked = false;
         AppState.mapEnabled = false;
         const showAnswerBtn = document.getElementById('btn-show-answer');
@@ -888,6 +897,13 @@ placeFlagOnMap(correctCountry);
                 lottieWrapper, correctLottie, tryAgainPopup } = AppState.elements;
 
         if (isCorrect) {
+            // Award 1 mark for correct answer ON FIRST ATTEMPT
+            if (!AppState.quizAttempted) {
+                AppState.score++;
+                updateMarksUI();
+            }
+            AppState.quizAttempted = true;
+
                 AppState.mapEnabled = true; // ✅ enable map interaction
 
             // Highlight the correct option
@@ -935,6 +951,9 @@ placeFlagOnMap(correctCountry);
                 });
             }
         } else {
+            // Mark quiz as attempted on first wrong answer
+            AppState.quizAttempted = true;
+
             // Wrong answer — add .wrong class and show try-again popup
             li.classList.add('wrong');
             if (tryAgainPopup) {
@@ -1012,17 +1031,30 @@ layer.addEventListener('click', () => {
 
 }
 
+    function updateMarksUI() {
+        const marksEl = document.getElementById('marks');
+        if (marksEl) {
+            marksEl.textContent = AppState.score;
+        }
+    }
+
     /**
      * Initialize the widget
      */
     async function init() {
         await loadData();
         initElements();
+
+        // Update total marks display
+        const totalEl = document.getElementById('total');
+        if (totalEl && AppState.data && AppState.data.questions) {
+            totalEl.textContent = AppState.data.questions.length * 2;
+        }
+
         attachEventListeners();
         initCountryBoxes();
         initMapDropCheck();
-            initLayerWrongClicks();   // ✅ ADD THIS
-
+        initLayerWrongClicks();
         initMapPanAndClip();
     }
 

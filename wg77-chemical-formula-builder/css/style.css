@@ -559,44 +559,29 @@ input[type="number"]::-webkit-inner-spin-button {
 /* For the two arrow groups */
 /*  */
 
-/* Reset and base state */
-#arrow-path-1,
-#arrow-path-2 {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  transition: stroke-dashoffset 0s;
-  /* prevents jump when resetting */
+/* Bottom to top fill animation for criss-cross lines */
+#cross_lines_1,
+#cross_lines_2 {
+  clip-path: inset(100% 0 0 0);
 }
 
-/* When group gets .visible class */
-#cross_lines_1.visible #arrow-path-1,
-#cross_lines_2.visible #arrow-path-2 {
-  animation: draw-arrow 4s ease-out forwards;
-  /* 4s = slow & clear */
+#cross_lines_1.visible,
+#cross_lines_2.visible {
+  animation: fillBottomToTop 1.5s ease-out forwards;
 }
 
-/* Drawing animation */
-@keyframes draw-arrow {
-  to {
-    stroke-dashoffset: 0;
+@keyframes fillBottomToTop {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
   }
 }
 
-/* Optional: arrowheads appear at the end */
-#cross_lines_1 polygon,
-#cross_lines_2 polygon {
-  opacity: 0;
-}
-
-#cross_lines_1.visible polygon,
-#cross_lines_2.visible polygon {
-  opacity: 1;
-  transition: opacity 0.6s ease-in 3.4s;
-  /* appear near end of drawing */
-}
-
 .formula_text {
-  font-size: 80px;
+  font-size: 70px;
   font-weight: bold;
   text-align: center;
   color: #22c55e;

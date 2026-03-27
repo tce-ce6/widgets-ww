@@ -415,6 +415,36 @@ svg * {
   }
 }
 
+@keyframes bgchange {
+  0% {
+    opacity: 1;
+    fill: #fff;
+  }
+
+  50% {
+    opacity: 0.1;
+    fill: red;
+  }
+
+  100% {
+    opacity: 1;
+    fill: #fff;
+  }
+}
+
 .blink {
-  animation: blink 0.5s linear 2;
+  transform-origin: center center;
+  animation: blink 0.5s linear 1;
+}
+
+.blink rect {
+  transform-origin: center center;
+  animation: bgchange 0.5s linear 1;
+}
+
+.answer-text {
+  font-size: 23px;
+  line-height: 1.2;
+  color: #000;
+  font-weight: 500;
 }
