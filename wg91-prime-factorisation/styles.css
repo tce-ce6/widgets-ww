@@ -30,7 +30,7 @@
 
 #make-food-chain-widget .container::after {
   content: "";
-  background-image: url("./assets/BG.png");
+  background-image: url("./assets/bg.png");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -213,8 +213,15 @@
 
 /* Blink animation for New Game button */
 @keyframes blinkButton {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 #btn-new-game.blink {
@@ -223,11 +230,14 @@
 
 /* Plane highlight pulse animation */
 @keyframes planePulse {
-  0%, 100% { 
+
+  0%,
+  100% {
     filter: drop-shadow(0 0 5px #00DDFF);
     transform: scale(1);
   }
-  50% { 
+
+  50% {
     filter: drop-shadow(0 0 10px #00DDFF);
     transform: scale(1.005);
   }
