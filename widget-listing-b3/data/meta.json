@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-24T20:08:19+05:30",
+      "updatedAt": "2026-03-27T15:30:07+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T15:30:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg52 changes",
+      "widgets": [
+        52
+      ]
+    },
     {
       "date": "2026-03-27T15:08:48+05:30",
       "author": "PrasannaP",
@@ -620,14 +628,6 @@
       "message": "rename1",
       "widgets": [
         138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:30:39+05:30",
-      "author": "PrasannaP",
-      "message": "filename",
-      "widgets": [
-        137
       ]
     }
   ]
