@@ -438,7 +438,8 @@ svg * {
   top: -17px;
   right: -15px;
 }
-.objectWrapper{
+
+.objectWrapper {
   height: 300px;
   width: 500px;
   display: flex;

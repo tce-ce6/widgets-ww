@@ -7,7 +7,7 @@ const ITEMS_DATA = [
     { "name": "Fountain Pen", "price": 125, "path": "fountain_pen.svg" },
     { "name": "Eraser", "price": 9, "path": "eraser.svg" },
     { "name": "Sharpener", "price": 14, "path": "sharpener.svg" },
-    { "name": "Notebook (Single)", "price": 90, "path": "notebook_(single).svg" },
+    { "name": "Notebook (Single)", "price": 90, "path": "notebook_single.svg" },
     { "name": "Notebook (Pack of 5)", "price": 450, "path": "notebook_set.svg" },
     { "name": "Geometry Box", "price": 185, "path": "geometry_box.svg" },
     { "name": "Ruler (12 inch)", "price": 19, "path": "ruler.svg" },
