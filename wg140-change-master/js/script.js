@@ -341,7 +341,7 @@ document.querySelectorAll(".change").forEach(note => {
             li.appendChild(closeMark);
             moneyWrapper.appendChild(li);
         }
-
+        highlightNote();
         checkButton.style.cursor = 'pointer';
         checkButton.style.opacity = 1;
     });
@@ -349,6 +349,7 @@ document.querySelectorAll(".change").forEach(note => {
 
 
 function checkValue() {
+    console.log(currencyNote, itemPrice);
     if (currencyNote < itemPrice) {
         insufficintWarning.style.display = "block";
         setTimeout(() => {
@@ -363,24 +364,27 @@ function checkValue() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    // // 1. Initial load: Call cycleNextItem once to display the first item
-    cycleNextItem();
-
+function highlightNote(){
     rects.forEach(rect => {
         rect.addEventListener("click", function () {
-
+    
             rects.forEach(r => {
                 r.setAttribute("stroke", "#3f3f3f");
                 r.setAttribute("stroke-width", "1");
             });
-
+    
             this.setAttribute("stroke", "blue");
             this.setAttribute("stroke-width", "4");
-
+    
         });
     });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // // 1. Initial load: Call cycleNextItem once to display the first item
+    cycleNextItem();
 
     document.querySelectorAll('.nextItemBtn').forEach(button => {
         button.addEventListener('click', function () {
@@ -452,6 +456,6 @@ document.addEventListener("DOMContentLoaded", () => {
         howToPlayCross.style.display = 'none';
         rectFade.style.display = 'none';
     });
-
+    highlightNote();
     loadLottieAnimations();
 });

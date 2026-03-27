@@ -116,7 +116,7 @@ const letterData = {
                         "id": 2,
                         "text": "I really like shopping and I think working in a store would be fun. I am a friendly person and I get along with everyone. I am sure I would enjoy working at Live Life Stores because it is a popular store.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses informal language and focuses on personal enjoyment rather than professional skills."
+                        "feedback": "This paragraph uses informal language and focuses on personal enjoyment rather than professional skills. The reasoning is superficial and doesn't demonstrate understanding of customer service."
                     },
                     {
                         "id": 3,
