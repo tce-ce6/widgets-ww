@@ -209,8 +209,8 @@
       "author": "tce-nitinc"
     },
     "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-03-23T15:39:04+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-03-27T12:14:52+05:30",
+      "author": "ShyamsundarHait"
     },
     "wg26-word-discovery-adventure": {
       "updatedAt": "2026-03-15T13:36:28+05:30",
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T12:14:52+05:30",
+      "author": "ShyamsundarHait",
+      "message": "fixed sow answer btn disabling conditions",
+      "widgets": [
+        24
+      ]
+    },
     {
       "date": "2026-03-27T12:02:08+05:30",
       "author": "ShyamsundarHait",
@@ -623,14 +631,6 @@
       "message": "148 issues are fixed",
       "widgets": [
         148
-      ]
-    },
-    {
-      "date": "2026-03-26T16:29:59+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
-      "widgets": [
-        42
       ]
     }
   ]
