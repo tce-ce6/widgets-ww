@@ -370,3 +370,8 @@ svg * {
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
 }
+
+.progressGroup {
+  transform-box: fill-box;
+  transform-origin: left center;
+}
