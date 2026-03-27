@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
             questions: [
                 { 
                     question: "An ancient text that provides detailed instructions on governance and economics", 
-                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling—from collecting taxes to sending secret agents to gather information.",
-                    correctId: "_02-museum-1" 
+                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling — from collecting taxes to sending secret agents to gather information.",
+                    correctId: "_02-museum-5" 
                 },
                 { 
                     question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador", 
-                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size—his book vanished, but later writers copied his incredible stories!",
-                    correctId: "_02-museum-2" 
+                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size his book vanished, but later writers copied his incredible stories!",
+                    correctId: "_02-museum-1" 
                 }
             ]
         },
@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 { 
                     question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
                     clue: "This Chola bronze masterpiece is famous for high level of art and metalworking skill in medieval South India",
-                    correctId: "_03-museum-1" 
+                    correctId: "_03-museum-4" 
                 },
                 { 
                     question: "A prehistoric artwork showing the earliest evidence of human creativity in India", 
-                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants—it shows how prehistoric humans lived!",
-                    correctId: "_03-museum-2" 
+                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants. — It shows how prehistoric humans lived!",
+                    correctId: "_03-museum-1" 
                 }
             ]
         },
