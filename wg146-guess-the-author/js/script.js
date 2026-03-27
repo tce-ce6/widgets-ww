@@ -206,7 +206,10 @@ window.Wg146 = {
         // Initiate the game layout shortly after start
         setTimeout(() => {
             this.startGame();
-        }, 100);
+            // Fade widget smoothly back into view without flickering
+            const svgContainer = document.querySelector(".svg-container");
+            if (svgContainer) svgContainer.style.opacity = "1";
+        }, 150);
     },
 
     cacheDOMElements: function () {
@@ -297,7 +300,11 @@ window.Wg146 = {
 
         if (this.UI.imagesGroup) {
             const portraits = this.UI.imagesGroup.querySelectorAll('[id^="portrait-"]');
-            portraits.forEach(p => p.style.display = "none");
+            portraits.forEach(p => {
+                p.style.display = "none";
+                p.style.opacity = "0";
+                p.style.transition = "none";
+            });
         }
 
         this.UI.overallHighlights.forEach(h => { if (h) h.style.display = "none"; });
@@ -471,7 +478,13 @@ window.Wg146 = {
             // Reveal silhouette
             if (this.UI.silhouette) this.UI.silhouette.style.display = "none";
             const portrait = document.getElementById(author.portraitId);
-            if (portrait) portrait.style.display = "block";
+            if (portrait) {
+                portrait.style.display = "block";
+                portrait.style.opacity = "0";
+                void portrait.getBoundingClientRect(); // Trigger layout reflow gracefully
+                portrait.style.transition = "opacity 0.8s ease-in-out";
+                portrait.style.opacity = "1";
+            }
 
             // Trigger confetti locally
             const lw = document.getElementById("lottie-wrapper");
