@@ -234,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ─── Reaction Transformations ──────────────────────────────────────────────
     // Each rule describes one balanced reaction batch for the simulator.
+    // Start with four balanced sets (was original default).
     const DEFAULT_REACTION_BATCHES = 4;
     const reactionRules = {
         "Combination Reaction": {
@@ -648,32 +649,30 @@ document.addEventListener("DOMContentLoaded", () => {
                                 // Reaction logic
                                 let reactionRule = reactionRules[currentReaction];
                                 if (reactionRule && !p.isReacted && !q.isReacted) {
-                                    const reactionChance = currentTemp === "Hot" ? 0.3 : (currentTemp === "Warm" ? 0.15 : (currentTemp === "Cold" ? 0.05 : 0.01));
-                                    if (Math.random() < reactionChance) {
-                                        const participants = collectReactionParticipants(p, q, reactionRule);
+                                    // Always attempt a reaction on a qualifying collision.
+                                    const participants = collectReactionParticipants(p, q, reactionRule);
 
-                                        if (participants) {
-                                            participants.forEach(particle => {
-                                                particle.isReacted = true;
-                                                toRemove.add(particle);
-                                            });
+                                    if (participants) {
+                                        participants.forEach(particle => {
+                                            particle.isReacted = true;
+                                            toRemove.add(particle);
+                                        });
 
-                                            successCount++;
+                                        successCount++;
 
-                                            const mx = participants.reduce((sum, particle) => sum + particle.x, 0) / participants.length;
-                                            const my = participants.reduce((sum, particle) => sum + particle.y, 0) / participants.length;
-                                            const productsToSpawn = buildProductSpawnList(reactionRule, mx, my);
+                                        const mx = participants.reduce((sum, particle) => sum + particle.x, 0) / participants.length;
+                                        const my = participants.reduce((sum, particle) => sum + particle.y, 0) / participants.length;
+                                        const productsToSpawn = buildProductSpawnList(reactionRule, mx, my);
 
-                                            productsToSpawn.forEach(product => {
-                                                toSpawn.push(product);
-                                                productCount++;
-                                            });
+                                        productsToSpawn.forEach(product => {
+                                            toSpawn.push(product);
+                                            productCount++;
+                                        });
 
-                                            updateLiveText(liveSuccessful, successCount.toString());
-                                            updateLiveText(liveProducts, productCount.toString());
-                                            const rate = ((successCount / collisionCount) * 100).toFixed(1) + "%";
-                                            updateLiveText(liveSuccessRate, rate);
-                                        }
+                                        updateLiveText(liveSuccessful, successCount.toString());
+                                        updateLiveText(liveProducts, productCount.toString());
+                                        const rate = ((successCount / collisionCount) * 100).toFixed(1) + "%";
+                                        updateLiveText(liveSuccessRate, rate);
                                     }
                                 }
                             }
