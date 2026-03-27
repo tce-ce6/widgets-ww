@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
     onClick("Continue", () => { stopLottie(); clearCardHighlight(); goTo(S.lim1s2); show(S.back_button); show(S.home_buttom); });
 
     // ── SCENARIO 2: Maria (Has 3 Clay Pots, Wants Tools) ────────
-    const lim1s2AllNames = ["Cheenu", "Raj", "Yuvi", "Paul", "Fathima", "Fatima", "Ivan", "Ivan-2"];
+    const lim1s2AllNames = ["Cheenu", "Raj", "Yuvi", "Paul", "Fathima", "Fatima", "Ivan", "Ivan-2", "Priya-2", "Jaya", "Ranjit"];
     const lim1s2Correct = new Set(["Ivan", "Ivan-2"]);
     const lim1s2Wants = {
         "Cheenu": "bread",
@@ -488,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 hide(S.lim1s2.wrong);
                 positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
                 show(S.lim1s2.right);
-                playLottie("emoji_happy-star", S.lim1s2.right);
+                //  playLottie("emoji_happy-star", S.lim1s2.right);
             } else {
                 const want = lim1s2Wants[traderId] || "that";
                 // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
