@@ -341,7 +341,7 @@
       "author": "sushantthe"
     },
     "wg91-prime-factorisation": {
-      "updatedAt": "2026-03-27T13:09:52+05:30",
+      "updatedAt": "2026-03-27T13:24:03+05:30",
       "author": "ShyamsundarHait"
     },
     "wg92-test-of-divisibility": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T13:24:03+05:30",
+      "author": "ShyamsundarHait",
+      "message": "bg fix",
+      "widgets": [
+        91
+      ]
+    },
     {
       "date": "2026-03-27T13:09:52+05:30",
       "author": "ShyamsundarHait",
@@ -616,14 +624,6 @@
       "date": "2026-03-26T19:03:35+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
-      "widgets": [
-        103
-      ]
-    },
-    {
-      "date": "2026-03-26T19:02:28+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg103",
       "widgets": [
         103
       ]
