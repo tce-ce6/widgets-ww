@@ -1,114 +1,182 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const CROP_DATA = {
-    // Rabi Crops
-    Wheat: [
-      "Jammu and Kashmir",
-      "Himachal Pradesh",
-      "Uttarakhand",
-      "Punjab",
-      "Haryana",
-      "Rajasthan",
-      "Uttar Pradesh",
-      "Bihar",
-      "Jharkhand",
-      "West Bengal",
-      "Madhya Pradesh",
-      "Gujarat",
-      "Maharashtra",
-    ],
-    Barley: [
-      "Rajasthan",
-      "Uttar Pradesh",
-      "Madhya Pradesh",
-      "Haryana",
-      "Punjab",
-      "West Bengal",
-    ],
-    Mustard: [
-      "Rajasthan",
-      "Haryana",
-      "Madhya Pradesh",
-      "Uttar Pradesh",
-      "West Bengal",
-    ],
-    Chickpea: [
-      "Madhya Pradesh",
-      "Maharashtra",
-      "Rajasthan",
-      "Karnataka",
-      "Uttar Pradesh",
-    ],
-    Peas: [
-      "Uttar Pradesh",
-      "Madhya Pradesh",
-      "Punjab",
-      "Himachal Pradesh",
-      "Jharkhand",
-    ],
+const CROP_DATA = {
+  // Rabi Season Crops
+  Mustard: [
+    "Rajasthan",
+    "Haryana",
+    "Gujarat",
+    "Madhya Pradesh",
+    "Uttar Pradesh",
+    "West Bengal",
+    "Assam"
+  ],
+  Wheat: [
+    "Jammu and Kashmir",
+    "Himachal Pradesh",
+    "Uttarakhand",
+    "Punjab",
+    "Haryana",
+    "Rajasthan",
+    "Uttar Pradesh",
+    "Bihar",
+    "Jharkhand",
+    "West Bengal",
+    "Madhya Pradesh",
+    "Gujarat",
+    "Maharashtra"
+  ],
+  Barley: [
+    "Uttar Pradesh",
+    "Rajasthan",
+    "Madhya Pradesh",
+    "Bihar",
+    "Punjab",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir"
+  ],
+  Chickpea: [
+    "Maharashtra",
+    "Madhya Pradesh",
+    "Rajasthan",
+    "Uttar Pradesh",
+    "Karnataka",
+    "Gujarat"
+  ],
+  Peas: [
+    "Madhya Pradesh",
+    "Uttar Pradesh",
+    "Punjab",
+    "Jharkhand",
+    "Himachal Pradesh",
+    "West Bengal",
+    "Chhattisgarh",
+    "Haryana",
+    "Bihar",
+    "Uttarakhand"
+  ],
 
-    // Kharif Crops
-    "Paddy (Rice)": [
-      "West Bengal",
-      "Uttar Pradesh",
-      "Punjab",
-      "Tamil Nadu",
-      "Andhra Pradesh",
-      "Bihar",
-      "Chhattisgarh",
-      "Odisha",
-      "Assam",
-    ],
-    Sugarcane: [
-      "Uttar Pradesh",
-      "Maharashtra",
-      "Karnataka",
-      "Tamil Nadu",
-      "Bihar",
-      "Gujarat",
-    ],
-    Cotton: [
-      "Gujarat",
-      "Maharashtra",
-      "Telangana",
-      "Karnataka",
-      "Haryana",
-      "Rajasthan",
-    ],
-    Jute: ["West Bengal", "Bihar", "Assam", "Odisha", "Meghalaya"],
-    Tea: ["Assam", "West Bengal", "Tamil Nadu", "Kerala"],
-    Coffee: ["Karnataka", "Kerala", "Tamil Nadu"],
-    Rubber: ["Kerala", "Tamil Nadu", "Karnataka"],
+  // Kharif Season Crops
+  "Paddy (Rice)": [
+    "Assam",
+    "Odisha",
+    "Andhra Pradesh",
+    "Telangana",
+    "Tamil Nadu",
+    "Gujarat",
+    "Maharashtra",
+    "Karnataka",
+    "Goa",
+    "Kerala",
+    "Chhattisgarh",
+    "Madhya Pradesh",
+    "Punjab",
+    "Haryana"
+  ],
+  Sugarcane: [
+    "Punjab",
+    "Haryana",
+    "Uttarakhand",
+    "Uttar Pradesh",
+    "Bihar",
+    "Maharashtra",
+    "Karnataka",
+    "Tamil Nadu",
+    "Telangana",
+    "Andhra Pradesh"
+  ],
+  Cotton: [
+    "Gujarat",
+    "Maharashtra",
+    "Telangana",
+    "Rajasthan",
+    "Madhya Pradesh",
+    "Andhra Pradesh",
+    "Karnataka",
+    "Tamil Nadu",
+    "Haryana",
+    "Punjab"
+  ],
+  Jute: [
+    "West Bengal",
+    "Bihar",
+    "Assam",
+    "Meghalaya",
+    "Odisha",
+    "Andhra Pradesh"
+  ],
+  Tea: [
+    "West Bengal",
+    "Assam",
+    "Tamil Nadu",
+    "Kerala",
+    "Sikkim",
+    "Tripura",
+    "Arunachal Pradesh"
+  ],
+  Coffee: [
+    "Karnataka",
+    "Kerala",
+    "Tamil Nadu",
+    "Andhra Pradesh",
+    "Odisha"
+  ],
+  Rubber: [
+    "Kerala",
+    "Tamil Nadu",
+    "Karnataka",
+    "Goa",
+    "Andhra Pradesh",
+    "Odisha",
+    "Sikkim",
+    "Assam",
+    "Arunachal Pradesh",
+    "Nagaland",
+    "Manipur",
+    "Mizoram",
+    "Tripura",
+    "Meghalaya",
+    "West Bengal",
+    "Maharashtra",
+    "The Andaman and Nicobar Islands"
+  ],
 
-    // Zaid Crops
-    Watermelon: [
-      "Uttar Pradesh",
-      "Karnataka",
-      "Tamil Nadu",
-      "Andhra Pradesh",
-      "Maharashtra",
-    ],
-    Muskmelon: [
-      "Uttar Pradesh",
-      "Punjab",
-      "Haryana",
-      "Maharashtra",
-      "Andhra Pradesh",
-    ],
-    "Moong Dal": [
-      "Rajasthan",
-      "Maharashtra",
-      "Karnataka",
-      "Andhra Pradesh",
-      "Tamil Nadu",
-    ],
-    Cucumber: [
-      "Haryana",
-      "Uttar Pradesh",
-      "Karnataka",
-      "Punjab",
-      "Andhra Pradesh",
-    ],
-  };
+  // Zaid Season Crops
+  Watermelon: [
+    "Uttar Pradesh",
+    "Andhra Pradesh",
+    "Karnataka",
+    "West Bengal",
+    "Tamil Nadu",
+    "Odisha"
+  ],
+  Muskmelon: [
+    "Uttar Pradesh",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Andhra Pradesh",
+    "Maharashtra"
+  ],
+  "Moong Dal": [
+    "Rajasthan",
+    "Maharashtra",
+    "Andhra Pradesh",
+    "Karnataka",
+    "Odisha",
+    "Tamil Nadu"
+  ],
+  Cucumber: [
+    "Uttar Pradesh",
+    "Haryana",
+    "Madhya Pradesh",
+    "Karnataka",
+    "Andhra Pradesh",
+    "Tamil Nadu",
+    "West Bengal",
+    "Punjab"
+  ]
+};
 
   const CROP_FACTS = {
     // Rabi
@@ -273,6 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
     panel02map: document.getElementById("panel-02-map"),
     itextcropmap: document.getElementById("i-text-crop-map"),
     iTextHomeScreen: document.getElementById("i-text-home-screen"),
+    Got_it_1 : document.getElementById("Got_it_1"),
   };
 
   // Initialize visibility
@@ -345,6 +414,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reset opacity on base buttons
     ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
       const baseContainer = document.getElementById(id);
+     
+      baseContainer.classList.add("st170"); // hide the entire base button group
       if (baseContainer) {
         Array.from(baseContainer.children).forEach(childGroup => {
           childGroup.style.opacity = "0";
@@ -375,34 +446,16 @@ document.addEventListener("DOMContentLoaded", () => {
     "Himachal Pradesh", "Lakshadweep Is.", "Andaman and Nicobar Is.",
   ]);
 
-  // Build cache using elementFromPoint at pointer-circle and label-text SVG positions.
-  // Must be called when the map is visible so screen coordinates are valid.
-  const buildPathStateCache = () => {
-    if (pathStateCacheBuilt || !elements.mapContainer) return;
+  // Collect all reference points from DOM attributes — no visibility needed.
+  // Connector circles (line+circle groups) are placed by the designer inside
+  // the state's actual territory. Label text positions serve as fallback.
+  let _refPoints = null;
+  const getRefPoints = () => {
+    if (_refPoints) return _refPoints;
+    _refPoints = [];
 
-    const svgEl = document.querySelector("svg");
-    if (!svgEl) return;
-    const ctm = svgEl.getScreenCTM();
-    if (!ctm) return;
-
-    const svgToScreen = (x, y) => {
-      const pt = svgEl.createSVGPoint();
-      pt.x = x; pt.y = y;
-      return pt.matrixTransform(ctm);
-    };
-
-    const tryCache = (svgX, svgY, stateName) => {
-      const sc = svgToScreen(svgX, svgY);
-      const el = document.elementFromPoint(sc.x, sc.y);
-      if (el && el.tagName === "path" && elements.mapContainer.contains(el)) {
-        if (!pathStateCache.has(el)) pathStateCache.set(el, stateName);
-        return true;
-      }
-      return false;
-    };
-
-    // Collect state label SVG positions from their text transform attributes
-    const statePositions = [];
+    // Label text positions: name → {x, y}
+    const labelMap = new Map();
     document.querySelectorAll("g[id].st37").forEach((g) => {
       const name = g.id.replace(/_/g, " ");
       if (!VALID_STATE_NAMES.has(name)) return;
@@ -411,50 +464,147 @@ document.addEventListener("DOMContentLoaded", () => {
       const m = (text.getAttribute("transform") || "").match(
         /translate\(([^,\s)]+)[,\s]+([^)]+)\)/
       );
-      if (m) statePositions.push({ name, x: parseFloat(m[1]), y: parseFloat(m[2]) });
+      if (!m) return;
+      const x = parseFloat(m[1]), y = parseFloat(m[2]);
+      labelMap.set(name, { x, y });
+      _refPoints.push({ name, x, y, isConnector: false });
     });
 
-    // Method 1 (most accurate): pointer circles inside connector groups point at
-    // the actual state territory — use elementFromPoint at those SVG positions
-    document.querySelectorAll('g[id^="Group_"] > circle').forEach((circle) => {
+    // Connector circles — assign to nearest state label by default,
+    // then use the line's far endpoint (label-side) as a tiebreaker when
+    // the circle-based nearest label is a large state whose label sits directly
+    // inside its territory (no connector needed), like Ladakh.
+    document.querySelectorAll('g[id^="Group_"]').forEach((g) => {
+      if (!g.querySelector("line") || !g.querySelector("circle")) return;
+      const circle = g.querySelector("circle");
+      const line = g.querySelector("line");
       const cx = parseFloat(circle.getAttribute("cx"));
       const cy = parseFloat(circle.getAttribute("cy"));
-      // Find nearest state label position to this circle (SVG coordinate space)
+
+      // Primary: nearest label to circle endpoint
       let nearest = null, minDist = Infinity;
-      statePositions.forEach((sp) => {
-        const d = Math.hypot(cx - sp.x, cy - sp.y);
-        if (d < minDist) { minDist = d; nearest = sp; }
+      labelMap.forEach(({ x, y }, name) => {
+        const d = Math.hypot(cx - x, cy - y);
+        if (d < minDist) { minDist = d; nearest = name; }
       });
-      if (nearest) tryCache(cx, cy, nearest.name);
+
+      // Tiebreaker: use the line's far endpoint (label-side) when the primary
+      // nearest label belongs to a state with no connector line (large states
+      // like Ladakh whose labels are directly inside their territory).
+      // For those states the connector actually belongs to the adjacent smaller
+      // state whose label is farther away but whose territory contains the circle.
+      if (nearest && line) {
+        const lx1 = parseFloat(line.getAttribute("x1"));
+        const ly1 = parseFloat(line.getAttribute("y1"));
+        const lx2 = parseFloat(line.getAttribute("x2"));
+        const ly2 = parseFloat(line.getAttribute("y2"));
+        // The far endpoint is whichever line end is farthest from the circle
+        const d1 = Math.hypot(cx - lx1, cy - ly1);
+        const d2 = Math.hypot(cx - lx2, cy - ly2);
+        const farX = d1 > d2 ? lx1 : lx2;
+        const farY = d1 > d2 ? ly1 : ly2;
+
+        // Find nearest label to the far (label-side) endpoint
+        let nearestFar = null, minDistFar = Infinity;
+        labelMap.forEach(({ x, y }, name) => {
+          const d = Math.hypot(farX - x, farY - y);
+          if (d < minDistFar) { minDistFar = d; nearestFar = name; }
+        });
+
+        // If circle-nearest and far-nearest disagree AND the circle-nearest
+        // state also appears as a label-type refPoint (meaning it sits directly
+        // on its state — no connector needed), trust the far-endpoint result.
+        if (nearestFar && nearestFar !== nearest) {
+          const circleNearestHasOwnLabel = _refPoints.some(
+            r => !r.isConnector && r.name === nearest
+          );
+          const circleNearestAlreadyHasConnector = _refPoints.some(
+            r => r.isConnector && r.name === nearest
+          );
+          // Only override when:
+          // 1. The circle-nearest state has its own label (sits inside its territory)
+          // 2. It has no prior connector (it doesn't need a pointer line)
+          // 3. The far-endpoint nearest label is CLOSER to the far endpoint than
+          //    the circle-nearest label is to the circle — meaning the far endpoint
+          //    is genuinely nearer to the state it labels (e.g. J&K label is close
+          //    to the J&K connector line's label-side end).
+          const distFarNearestToCircle = Math.hypot(cx - (labelMap.get(nearestFar)?.x ?? Infinity), cy - (labelMap.get(nearestFar)?.y ?? Infinity));
+          if (
+            circleNearestHasOwnLabel &&
+            !circleNearestAlreadyHasConnector &&
+            minDistFar < minDist &&         // far-endpoint is closer to its label than circle is to its label
+            distFarNearestToCircle > minDist // the far-endpoint's label is farther from the circle (confirms circle is in "wrong" territory)
+          ) {
+            nearest = nearestFar;
+          }
+        }
+      }
+
+      if (nearest) _refPoints.push({ name: nearest, x: cx, y: cy, isConnector: true });
     });
 
-    // Method 2: also sample at each label's own text position
-    // (works for large states whose label sits inside their territory)
-    statePositions.forEach((sp) => tryCache(sp.x, sp.y, sp.name));
-
-    pathStateCacheBuilt = true;
+    return _refPoints;
   };
 
-  // Return state name for a clicked path: cache → proximity fallback
-  const getTargetStateName = (path) => {
-    if (pathStateCache.has(path)) return pathStateCache.get(path);
+  // Convert a screen click to SVG coordinates, then find the nearest
+  // reference point. Click is guaranteed inside the clicked state, so the
+  // nearest connector/label should identify that state correctly.
+  const getStateFromClick = (clientX, clientY) => {
+    const svgEl = document.querySelector("svg");
+    if (!svgEl) return null;
+    const ctm = svgEl.getScreenCTM();
+    if (!ctm) return null;
 
-    // Proximity fallback (only used for uncached paths when map is visible)
-    const pRect = path.getBoundingClientRect();
-    if (pRect.width === 0 && pRect.height === 0) return null;
-    const px = pRect.left + pRect.width / 2;
-    const py = pRect.top + pRect.height / 2;
+    const pt = svgEl.createSVGPoint();
+    pt.x = clientX; pt.y = clientY;
+    const svgPt = pt.matrixTransform(ctm.inverse());
 
-    let closest = null, minDist = Infinity;
-    document.querySelectorAll("g[id].st37 text").forEach((t) => {
-      const name = t.closest("g[id]").id.replace(/_/g, " ");
-      if (!VALID_STATE_NAMES.has(name)) return;
-      const r = t.getBoundingClientRect();
-      if (r.width === 0 && r.height === 0) return;
-      const d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2));
-      if (d < minDist) { minDist = d; closest = name; }
+    const refs = getRefPoints();
+    // Use connectors where available; labels only for states without connectors
+    const connectorStates = new Set(refs.filter(r => r.isConnector).map(r => r.name));
+    const candidates = refs.filter(r => r.isConnector || !connectorStates.has(r.name));
+
+    let nearest = null, minDist = Infinity;
+    candidates.forEach((ref) => {
+      const d = Math.hypot(svgPt.x - ref.x, svgPt.y - ref.y);
+      if (d < minDist) { minDist = d; nearest = ref; }
     });
-    return closest;
+    return nearest ? nearest.name : null;
+  };
+
+  // For Show Answer: build cache mapping one path per state using isPointInFill
+  // with the smallest-bbox-area constraint to avoid large background fills.
+  const buildPathStateCache = () => {
+    if (pathStateCacheBuilt || !elements.mapContainer) return;
+    const svgEl = document.querySelector("svg");
+    if (!svgEl) return;
+
+    const refs = getRefPoints();
+    const connectorStates = new Set(refs.filter(r => r.isConnector).map(r => r.name));
+    const sampleRefs = refs.filter(r => r.isConnector || !connectorStates.has(r.name));
+    const cachedStates = new Set();
+    const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
+
+    sampleRefs.forEach((ref) => {
+      if (cachedStates.has(ref.name)) return;
+      const pt = svgEl.createSVGPoint();
+      pt.x = ref.x; pt.y = ref.y;
+
+      let smallestArea = Infinity, bestPath = null;
+      paths.forEach((p) => {
+        if (pathStateCache.has(p)) return;
+        try {
+          if (p.isPointInFill(pt)) {
+            const bbox = p.getBBox();
+            const area = bbox.width * bbox.height;
+            if (area > 0 && area < smallestArea) { smallestArea = area; bestPath = p; }
+          }
+        } catch (_) {}
+      });
+      if (bestPath) { pathStateCache.set(bestPath, ref.name); cachedStates.add(ref.name); }
+    });
+
+    pathStateCacheBuilt = true;
   };
 
   const highlightState = (stateName, isCorrect) => {
@@ -493,14 +643,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const handleStateClick = (e) => {
-    buildPathStateCache(); // build once now that the map is visible
     const path = e.target.closest("path");
     if (!path || !currentState.crop || currentState.isAnswerRevealed) return;
 
-    const stateName = getTargetStateName(path);
+    // Identify state from the click coordinates in SVG space.
+    // Using the click point (guaranteed inside the clicked state) → nearest
+    // connector circle or label gives correct state without proximity issues.
+    let stateName =""
+    if(VALID_STATE_NAMES.has(e.target.id)){ 
+      stateName = e.target.id;
+    } else {
+       stateName = getStateFromClick(e.clientX, e.clientY);
+    }
+    
     if (!stateName) return;
-    // Ensure this path is cached for future highlightState calls
-    if (!pathStateCache.has(path)) pathStateCache.set(path, stateName);
 
     console.log("Clicked state:", stateName);
 
@@ -508,12 +664,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (correctStates.includes(stateName)) {
       if (!currentState.selectedStates.has(stateName)) {
         currentState.selectedStates.add(stateName);
-        highlightState(stateName, true);
+        // Highlight ONLY the exact path the user clicked — no cache lookup
+        // over all paths, which was the source of multi-state highlighting.
+        path.style.fill = "#44ff64";
+        path.style.opacity = "1";
+        path.classList.remove("st170");
         updateSubmitButtonState();
       }
     } else {
-      highlightState(stateName, false);
+      // Highlight only this path red; popup tells user it's wrong
+      path.style.fill = "#F44336";
+      path.style.opacity = "0.7";
+      path.classList.remove("st170");
       if (elements.feedbackIncorrectPopup) {
+        const tspans = Array.from(elements.feedbackIncorrectPopup.querySelectorAll("text tspan"));
+        tspans[1].textContent = `This is not a  ${currentState.crop}`;
         elements.feedbackIncorrectPopup.style.display = "block";
         elements.feedbackIncorrectPopup.classList.remove("st170");
       }
@@ -525,9 +690,9 @@ document.addEventListener("DOMContentLoaded", () => {
     currentState.season = season;
     hideAll();
     let panel;
-    if (season === "Rabi") panel = elements.panelRabi;
-    if (season === "Kharif") panel = elements.panelKharif;
-    if (season === "Zaid") panel = elements.panelZaid;
+    if (season === "Rabi"){ panel = elements.panelRabi;}
+    if (season === "Kharif"){ panel = elements.panelKharif;}
+    if (season === "Zaid") {panel = elements.panelZaid;}
 
     if (panel) {
       panel.style.display = "block";
@@ -542,6 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+        
       // Reset base buttons opacity/display
       ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
         const baseContainer = document.getElementById(id);
@@ -765,6 +931,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Event Listeners for Season Buttons (Home Screen)
+  resetMapHighlights(); 
   elements.btnRabiHome?.addEventListener("click", () => selectSeason("Rabi"));
   elements.btnKharifHome?.addEventListener("click", () =>
     selectSeason("Kharif"),
@@ -849,6 +1016,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elements.feedbackIncorrectPopup) {
       elements.feedbackIncorrectPopup.style.display = "none";
       elements.feedbackIncorrectPopup.classList.add("st170");
+    }
+    // Clear any red (incorrect) highlights from the map
+    if (elements.mapContainer) {
+      elements.mapContainer.querySelectorAll("path").forEach((p) => {
+        if (p.style.fill === "rgb(244, 67, 54)" || p.style.fill === "#F44336") {
+          p.style.fill = "";
+          p.style.opacity = "";
+        }
+      });
     }
   });
 
