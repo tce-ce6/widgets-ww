@@ -232,7 +232,9 @@ function setMode(mode) {
 }
 
 function calculatePhysics(thetaI_deg) {
-  const thetaI_rad = thetaI_deg * (Math.PI / 180);
+  // Quantize to slider precision so boundary behavior matches UI display (0.1°)
+  const thetaI_deg_q = Math.round(thetaI_deg * 10) / 10;
+  const thetaI_rad = thetaI_deg_q * (Math.PI / 180);
 
   // Snell's Law: n1 * sin(theta1) = n2 * sin(theta2)
   // sin(theta2) = (n1/n2) * sin(theta1)
@@ -241,11 +243,19 @@ function calculatePhysics(thetaI_deg) {
   let thetaR_deg = null;
   let isTIR = false;
 
-  if (sinTheta2 > 1.0000001) { // Floating point tolerance
-    isTIR = true;
-  } else {
-    // Handle edge case exactly at critical angle where sin is 1
-    const val = Math.min(1, sinTheta2);
+  // Total internal reflection happens ONLY when light goes from denser to rarer medium
+  // and the incidence angle is strictly greater than the critical angle.
+  // We compare using the same 0.1° precision shown in the UI to avoid "TIR at exactly critical angle".
+  if (n1 > n2 && criticalAngle !== null) {
+    const thetaC_deg_q = Number(criticalAngle.toFixed(1));
+    const EPS_DEG = 1e-6;
+    isTIR = thetaI_deg_q > (thetaC_deg_q + EPS_DEG);
+  }
+
+  if (!isTIR) {
+    // At or below critical angle (or when n1 <= n2), refraction exists.
+    // Clamp for floating point safety right at critical angle.
+    const val = Math.min(1, Math.max(-1, sinTheta2));
     thetaR_deg = Math.asin(val) * (180 / Math.PI);
   }
 
