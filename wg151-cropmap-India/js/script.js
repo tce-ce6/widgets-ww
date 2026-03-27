@@ -221,6 +221,10 @@ document.addEventListener("DOMContentLoaded", () => {
     isAnswerRevealed: false,
   };
 
+  // Cache: path DOM element → state name (built lazily on first click when map is visible)
+  const pathStateCache = new WeakMap();
+  let pathStateCacheBuilt = false;
+
   // Elements
   const elements = {
     homeScreen: document.getElementById("btn-home-screen"),
@@ -278,19 +282,21 @@ document.addEventListener("DOMContentLoaded", () => {
       // elements.panelRabi,
       // elements.panelKharif,
       // elements.panelZaid,
-      elements.globalButtons,
+      //elements.globalButtons,
+      elements.homeBtn,
+      elements.submitBtn,
+      elements.showAnswerBtn,
       elements.cropPromptContainer,
       elements.feedbackIncorrectPopup,
       elements.feedbackCorrectPopup,
       elements.factsheet,
     ].forEach((el) => {
       if (el) {
-        el.style.display = "none";
+        // el.style.display = "none";
         el.classList.add("st170"); // Ensure it takes the CSS property if present
       }
     });
   };
-
   const showHome = () => {
     hideAll();
 
@@ -360,77 +366,105 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Dynamic State Identification
-  const getTargetStateName = (path) => {
-    // 1. Try to get name directly from parent group ID
-    let currentElement = path.parentElement;
-    while (currentElement && currentElement.tagName === 'g') {
-      if (currentElement.id && currentElement.classList.contains('st37')) {
-        let name = currentElement.id.replace(/_/g, " ");
-        if (name && !name.includes("Group") && name.length > 2) {
-          // Special cases handling
-          if (name.includes("Jammu and Kashmir")) return "Jammu and Kashmir";
-          return name;
-        }
-      }
-      currentElement = currentElement.parentElement;
-    }
+  // All valid Indian state/UT names that can appear on the map
+  const VALID_STATE_NAMES = new Set([
+    ...Object.values(CROP_DATA).flat(),
+    "Jammu and Kashmir", "Ladakh", "Goa", "Sikkim", "Arunachal Pradesh",
+    "Meghalaya", "Nagaland", "Tripura", "Manipur", "Mizoram",
+    "Uttarakhand", "Chhattisgarh", "Jharkhand", "Telangana",
+    "Himachal Pradesh", "Lakshadweep Is.", "Andaman and Nicobar Is.",
+  ]);
 
-    // 2. Fallback: Proximity matching with stricter distance and inside map only
-    const pRect = path.getBoundingClientRect();
-    const pCenter = {
-      x: pRect.left + pRect.width / 2,
-      y: pRect.top + pRect.height / 2,
+  // Build cache using elementFromPoint at pointer-circle and label-text SVG positions.
+  // Must be called when the map is visible so screen coordinates are valid.
+  const buildPathStateCache = () => {
+    if (pathStateCacheBuilt || !elements.mapContainer) return;
+
+    const svgEl = document.querySelector("svg");
+    if (!svgEl) return;
+    const ctm = svgEl.getScreenCTM();
+    if (!ctm) return;
+
+    const svgToScreen = (x, y) => {
+      const pt = svgEl.createSVGPoint();
+      pt.x = x; pt.y = y;
+      return pt.matrixTransform(ctm);
     };
 
-    const labels = Array.from(
-      elements.mapContainer.querySelectorAll(
-        "g[id].st37 text, text.st29, text.st51, text.st30, text.st46, text.st40",
-      ),
-    );
-
-    let closest = null;
-    let minDist = Infinity;
-
-    labels.forEach((l) => {
-      const text = l.textContent.trim();
-      if (
-        text.length < 3 ||
-        /^\d+$/.test(text) ||
-        text.includes("Season") ||
-        text.includes("Got it") ||
-        text.toLowerCase().includes("major") ||
-        text.includes("?")
-      )
-        return;
-
-      const lRect = l.getBoundingClientRect();
-      const lCenter = {
-        x: lRect.left + lRect.width / 2,
-        y: lRect.top + lRect.height / 2,
-      };
-
-      const dist = Math.sqrt(
-        Math.pow(pCenter.x - lCenter.x, 2) + Math.pow(pCenter.y - lCenter.y, 2),
-      );
-
-      // Only match if it's reasonably close (e.g. less than 150px away)
-      if (dist < minDist && dist < 150) {
-        minDist = dist;
-        closest = text;
+    const tryCache = (svgX, svgY, stateName) => {
+      const sc = svgToScreen(svgX, svgY);
+      const el = document.elementFromPoint(sc.x, sc.y);
+      if (el && el.tagName === "path" && elements.mapContainer.contains(el)) {
+        if (!pathStateCache.has(el)) pathStateCache.set(el, stateName);
+        return true;
       }
+      return false;
+    };
+
+    // Collect state label SVG positions from their text transform attributes
+    const statePositions = [];
+    document.querySelectorAll("g[id].st37").forEach((g) => {
+      const name = g.id.replace(/_/g, " ");
+      if (!VALID_STATE_NAMES.has(name)) return;
+      const text = g.querySelector("text");
+      if (!text) return;
+      const m = (text.getAttribute("transform") || "").match(
+        /translate\(([^,\s)]+)[,\s]+([^)]+)\)/
+      );
+      if (m) statePositions.push({ name, x: parseFloat(m[1]), y: parseFloat(m[2]) });
     });
 
+    // Method 1 (most accurate): pointer circles inside connector groups point at
+    // the actual state territory — use elementFromPoint at those SVG positions
+    document.querySelectorAll('g[id^="Group_"] > circle').forEach((circle) => {
+      const cx = parseFloat(circle.getAttribute("cx"));
+      const cy = parseFloat(circle.getAttribute("cy"));
+      // Find nearest state label position to this circle (SVG coordinate space)
+      let nearest = null, minDist = Infinity;
+      statePositions.forEach((sp) => {
+        const d = Math.hypot(cx - sp.x, cy - sp.y);
+        if (d < minDist) { minDist = d; nearest = sp; }
+      });
+      if (nearest) tryCache(cx, cy, nearest.name);
+    });
+
+    // Method 2: also sample at each label's own text position
+    // (works for large states whose label sits inside their territory)
+    statePositions.forEach((sp) => tryCache(sp.x, sp.y, sp.name));
+
+    pathStateCacheBuilt = true;
+  };
+
+  // Return state name for a clicked path: cache → proximity fallback
+  const getTargetStateName = (path) => {
+    if (pathStateCache.has(path)) return pathStateCache.get(path);
+
+    // Proximity fallback (only used for uncached paths when map is visible)
+    const pRect = path.getBoundingClientRect();
+    if (pRect.width === 0 && pRect.height === 0) return null;
+    const px = pRect.left + pRect.width / 2;
+    const py = pRect.top + pRect.height / 2;
+
+    let closest = null, minDist = Infinity;
+    document.querySelectorAll("g[id].st37 text").forEach((t) => {
+      const name = t.closest("g[id]").id.replace(/_/g, " ");
+      if (!VALID_STATE_NAMES.has(name)) return;
+      const r = t.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) return;
+      const d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2));
+      if (d < minDist) { minDist = d; closest = name; }
+    });
     return closest;
   };
 
   const highlightState = (stateName, isCorrect) => {
     const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
     paths.forEach((p) => {
-      if (getTargetStateName(p) === stateName) {
+      // Only highlight paths that are definitively mapped to this state via cache
+      if (pathStateCache.get(p) === stateName) {
         p.style.fill = isCorrect ? "#44ff64" : "#F44336";
         p.style.opacity = isCorrect ? "1" : "0.7";
-        p.classList.remove("st170"); // Ensure not hidden by class
+        p.classList.remove("st170");
       }
     });
   };
@@ -459,11 +493,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const handleStateClick = (e) => {
+    buildPathStateCache(); // build once now that the map is visible
     const path = e.target.closest("path");
     if (!path || !currentState.crop || currentState.isAnswerRevealed) return;
 
     const stateName = getTargetStateName(path);
     if (!stateName) return;
+    // Ensure this path is cached for future highlightState calls
+    if (!pathStateCache.has(path)) pathStateCache.set(path, stateName);
 
     console.log("Clicked state:", stateName);
 
@@ -523,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
       elements.itextActivity.classList.remove("st170");
       elements.panel02map.classList.remove("st170");
       elements.itextcropmap.classList.add("st170"); // Hide until Got It is clicked
-      elements.globalButtons.classList.add("st170"); // Hide until Got It is clicked
+      // elements.globalButtons.classList.add("st170"); // Hide until Got It is clicked
       elements.mapContainer.classList.remove("st170");
       elements.panel01buttons.classList.remove("st170");
       elements.homeBtn.classList.remove("st170"); // ensure home button is visible back to home screen
@@ -581,7 +618,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Do NOT hideAll(), we want to keep the menu visible.
     // Just hide Activity Text and ensure correct state
     //elements.itextActivity.classList.add("st170");
-
+    elements.showAnswerBtn.classList.remove("st170");
+    elements.submitBtn.classList.remove("st170");
     if (elements.cropPromptContainer) {
       elements.cropPromptContainer.style.display = "block";
       elements.cropPromptContainer.classList.remove("st170");
@@ -799,10 +837,10 @@ document.addEventListener("DOMContentLoaded", () => {
       elements.itextcropmap.style.display = "block";
       elements.itextcropmap.classList.remove("st170");
     }
-    if (elements.globalButtons) {
-      elements.globalButtons.style.display = "block";
-      elements.globalButtons.classList.remove("st170");
-    }
+    // if (elements.globalButtons) {
+    //   elements.globalButtons.style.display = "block";
+    //   elements.globalButtons.classList.remove("st170");
+    // }
     elements.submitBtn.style.opacity = "0.5";
     elements.submitBtn.style.pointerEvents = "none";
   });
@@ -847,15 +885,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   elements.showAnswerBtn?.addEventListener("click", () => {
+    buildPathStateCache(); // ensure cache is built if user hasn't clicked map yet
     const correctStates = CROP_DATA[currentState.crop] || [];
     correctStates.forEach((s) => highlightState(s, true));
     currentState.isAnswerRevealed = true;
-    setTimeout(() => {
-      if (elements.feedbackCorrectPopup) {
-        elements.feedbackCorrectPopup.style.display = "block";
-        elements.feedbackCorrectPopup.classList.remove("st170");
-      }
-    }, 2000);
+    // setTimeout(() => {
+    //   if (elements.feedbackCorrectPopup) {
+    //     elements.feedbackCorrectPopup.style.display = "block";
+    //     elements.feedbackCorrectPopup.classList.remove("st170");
+    //   }
+    // }, 2000);
   });
 
   elements.homeBtn?.addEventListener("click", () => {
@@ -866,6 +905,5 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.mapContainer.addEventListener("click", handleStateClick);
   }
 
-  // Initial call
 
 });

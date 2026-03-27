@@ -124,7 +124,7 @@ let wordSoundJson = {
   "औषधि": "aushadhi.mp3",
 
   "ईल": "eel.mp3",
-  "एक": "Ek.mp3",
+  "एक": "ek.mp3",
   "एकतारा": "ektara.mp3",
 
   "इडली": "idli.mp3",

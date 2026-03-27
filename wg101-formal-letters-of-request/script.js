@@ -299,13 +299,13 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "I am writing this letter because I really think our Class 10 students should go on an excursion tour to Hyderabad.",
+                        "text": "I am writing this letter because I really think our Class 10 students should go on an excursion tour to Hyderabad as I feel it is a great city. I believe excursions are very important and give students good learning experiences outside the classroom.",
                         "is_correct": false,
                         "feedback": "This introduction uses informal expressions and is overly opinion-based."
                     },
                     {
                         "id": 3,
-                        "text": "I am writing to discuss the possibility of organising educational trips for our students.",
+                        "text": "I am writing to discuss the possibility of organising educational trips for our students, s, as I believe such activities are valuable. Excursions can provide meaningful experiences that contribute to overall development.",
                         "is_correct": false,
                         "feedback": "This does not clearly state the specific request."
                     }
@@ -313,19 +313,19 @@ const letterData = {
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "Hyderabad is a city steeped in history and culture. It includes sites such as the Charminar, Golconda Fort and the Salar Jung Museum, offering students first-hand cultural experience.",
+                        "text": "Hyderabad is a city steeped in history and culture. It has numerous sites including the Charminar, Golconda Fort and the Salar Jung Museum, which houses an extensive collection of art and artefacts from various civilizations. Visiting these places will not only enhance our knowledge of history but also provide a first-hand experience of the rich cultural diversity of our country.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Hyderabad is an absolutely amazing city with so much history and culture!",
+                        "text": "Hyderabad is an absolutely amazing city with so much history and culture! Students will be thrilled to visit incredible places like the Charminar, the awesome Golconda Fort and the Salar Jung Museum which has really interesting collections. This trip will be so exciting and students will definitely have a wonderful time learning about our country's heritage.",
                         "is_correct": false,
                         "feedback": "Overly enthusiastic and informal language has been used."
                     },
                     {
                         "id": 3,
-                        "text": "Hyderabad is a very famous historical city with many monuments.",
+                        "text": "Hyderabad is a very famous historical city with many important monuments and museums. Students will learn many things there. It will be good for them.",
                         "is_correct": false,
                         "feedback": "The language is simplistic and lacks specific details."
                     }
@@ -333,19 +333,19 @@ const letterData = {
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "Excursions are very useful for students as they learn many important things.",
+                        "text": "Excursions are very useful for students as they learn many important things. Students can develop various skills and become better people through such trips. Educational tours are always beneficial for overall development.",
                         "is_correct": false,
                         "feedback": "This paragraph uses vague language without specific examples."
                     },
                     {
                         "id": 2,
-                        "text": "I have heard that excursions are really good for students.",
+                        "text": "I have heard that excursions are really good for students because they get to meet new people and have fun experiences together. I think students will enjoy working in teams and solving problems during the trip. Such tours definitely help students grow as individuals.",
                         "is_correct": false,
                         "feedback": "Personal and subjective language has been used."
                     },
                     {
                         "id": 3,
-                        "text": "It is widely acknowledged that excursions provide students opportunities for social and personal growth. They promote teamwork, independence and problem-solving skills.",
+                        "text": "It is widely acknowledged that excursions provide students with an opportunity to interact with people from different backgrounds and share diverse experiences that fosters social and personal growth. They promote teamwork, independence and problem-solving skills.",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -353,19 +353,19 @@ const letterData = {
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I kindly request your consideration and approval for this excursion to Hyderabad. I believe this trip will be a valuable educational experience.",
+                        "text": "I kindly request your consideration and approval for this excursion to Hyderabad. I believe that this trip will not only be a valuable educational experience but also an opportunity for us to bond as a class and create lasting memories.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I am sure this trip will be really enjoyable and fun for all of us.",
+                        "text": "I kindly request your approval for this excursion to Hyderabad. I am sure that this trip will be really enjoyable and fun for all of us. We are all very excited about visiting Hyderabad and having a great time together as a class.",
                         "is_correct": false,
                         "feedback": "This uses overly casual tone."
                     },
                     {
                         "id": 3,
-                        "text": "Please give your approval for this excursion.",
+                        "text": "Please give your approval for this excursion to Hyderabad",
                         "is_correct": false,
                         "feedback": "This sounds abrupt and impolite."
                     }
@@ -498,19 +498,19 @@ const letterData = {
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "I am Rita Andrews, a resident of Grande Housing Society. I am writing to seek your sponsorship for our upcoming Annual Sports Event, scheduled for 20 December, 2023.",
+                        "text": "I am Rita Andrews, a resident of Grande Housing Society. I am writing to seek your sponsorship for our upcoming Annual Sports Event, which is scheduled to be held on 20 December, 2023.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I am writing to request sponsorship for our sports event.",
+                        "text": "I am writing to request sponsorship for our sports event. We are organising an Annual Sports Event in our housing society soon.",
                         "is_correct": false,
                         "feedback": "This introduction lacks specific details and sounds vague."
                     },
                     {
                         "id": 3,
-                        "text": "I am Reva Arora, a resident of Grande Housing Society for five years.",
+                        "text": "I am Reva Arora, a resident of Grande Housing Society for the past five years and an active member of the society committee. I am writing to seek your sponsorship for our upcoming Annual Sports Event, which is scheduled to be held on 20 December, 2023. This will be our tenth annual event and we have been planning it for several months now.",
                         "is_correct": false,
                         "feedback": "This includes irrelevant and excessive information."
                     }
@@ -518,19 +518,19 @@ const letterData = {
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "Our sports event is a cherished tradition bringing together residents of all ages to participate in badminton, table tennis and mini marathon.",
+                        "text": "Our sports event is a cherished tradition in our housing society, bringing together residents of all ages to participate in and enjoy all sports, including badminton, table tennis and mini marathon. This event not only fosters a spirit of community and healthy competition but also provides a platform for residents to showcase their athletic talents.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Our sports event is very popular and many residents participate.",
+                        "text": "Our sports event is very popular in our housing society. Many residents take part in various sports activities. This event is good for building community spirit and everyone enjoys participating in it.",
                         "is_correct": false,
                         "feedback": "This lacks specific details and uses simplistic vocabulary."
                     },
                     {
                         "id": 3,
-                        "text": "Our sports event is wonderful and everyone has so much fun.",
+                        "text": "Our sports event is a cherished tradition in our housing society which I personally think is wonderful. Residents of all ages participate in sports like badminton, table tennis and mini marathon, and everyone has so much fun. This event not only fosters community spirit but also gives people a chance to show off their sports skills, which is really exciting to watch.",
                         "is_correct": false,
                         "feedback": "Personal opinion and informal phrases have been used."
                     }
@@ -538,19 +538,19 @@ const letterData = {
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "We need financial support for equipment and prizes.",
+                        "text": "We need financial support for sports equipment, prizes and decorations for our event. Milind Sports Emporium should sponsor us because you are a local business. If you sponsor our event, we will put your logo on banners and mention your name during announcements.",
                         "is_correct": false,
                         "feedback": "This sounds demanding and lacks formal tone."
                     },
                     {
                         "id": 2,
-                        "text": "Furthermore, we are seeking financial support to cover expenses such as equipment and prizes. In return, we will display your logo on banners and promotional materials.",
+                        "text": "Furthermore, to ensure the success of this event, we are seeking financial support to cover necessary expenses such as sports equipment, prizes for winners, and decorations. We believe that Milind Sports Emporium, with its strong presence in our community and commitment to support local initiatives would be an ideal sponsor for our event. In return for your generous sponsorship, we will display your business logo on all event banners and promotional material, as well as a special mention of your support in announcements during the event.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "We believe you would be an ideal sponsor and will display your logo.",
+                        "text": "We believe that Milind Sports Emporium, with its strong presence in our community would be an ideal sponsor for our event. In return for your generous sponsorship, we will display your business logo on all event banners and promotional material. Furthermore, to ensure the success of this event, we are seeking financial support to cover necessary expenses.",
                         "is_correct": false,
                         "feedback": "The structure is illogical and places benefits before explaining the need."
                     }
@@ -558,21 +558,21 @@ const letterData = {
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "For any queries, please contact our society office. Thank you for considering our request. We look forward to partnering with you.",
+                        "text": "For any queries or additional information, please feel free to contact our society office on 9xxxxxxxxx. Thank you for considering our request. We look forward to partnering with you and making our sports event a memorable and successful one.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Call us if you have questions. We are waiting for your reply.",
+                        "text": "If you have any questions, call 984000080. We hope you will sponsor our event. We are waiting for your reply.",
                         "is_correct": false,
                         "feedback": "This is abrupt and lacks professional tone."
                     },
                     {
                         "id": 3,
-                        "text": "We are confident that you will agree to sponsor our event.",
+                        "text": "For any queries or additional information, please feel free to contact our society office on 9xxxxxxxxx. We are confident that you will agree to sponsor our event. We have already started preparing the promotional banners with your logo and look forward to a successful partnership.",
                         "is_correct": false,
-                        "feedback": "This assumes approval and sounds presumptuous."
+                        "feedback": "This assumes approval will be granted. (‘We are confident that you will agree’, ‘already started preparing’). The tone sounds presumptuous."
                     }
                 ],
                 "complimentary_close": [

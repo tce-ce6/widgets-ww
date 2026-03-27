@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
         conclusion: $("conclusion-base-screen"),
         solution: $("solution-popup"),
         insights: $("insights-popup"),
+        back_button: $("Group_594-2"),
+        home_buttom: $("Group_1566")
     };
 
     // ─────────────────────────────────────────────
@@ -149,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
             S.lim2s1.base, S.lim2s1.cards, S.lim2s1.c01, S.lim2s1.c02, S.lim2s1.end,
             S.lim2s2.base, S.lim2s2.c01, S.lim2s2.c02, S.lim2s2.end,
             S.lim3s1.base, S.lim3s1.end,
-            S.conclusion, S.solution, S.insights,
+            S.conclusion, S.solution, S.insights, S.back_button, S.home_buttom
         ].forEach(hide);
     }
 
@@ -327,12 +329,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     // Menu scenario buttons
-    onClick("Group_1501", () => { clearCardHighlight(); goTo(S.lim1s1); });
-    onClick("Group_1502", () => { clearCardHighlight(); goTo(S.lim1s2); });
-    onClick("Group_1501-2", () => goTo(S.lim2s1));
-    onClick("Group_1502-2", () => goTo(S.lim2s2));
-    onClick("Group_1501-3", () => { resetLim3s1(); goTo(S.lim3s1); });
-    onClick("Group_1502-3", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); });
+    onClick("Group_1501", () => { clearCardHighlight(); goTo(S.lim1s1); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1502", () => { clearCardHighlight(); goTo(S.lim1s2); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1501-2", () => { clearCardHighlight(); goTo(S.lim2s1); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1502-2", () => { clearCardHighlight(); goTo(S.lim2s2); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1501-3", () => { resetLim3s1(); goTo(S.lim3s1); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1502-3", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); show(S.home_buttom); show(S.back_button) });
 
     // Global back / home — also stop lottie
     onClick("Back", () => { stopLottie(); clearCardHighlight(); hideAll(); show(S.menu); });
@@ -405,8 +407,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isButton || hasButtonInside) return;
 
             // Otherwise, it's the speech bubble! Translate it.
-            child.style.transform = `translate(${dx}px, ${dy}px)`;
-            child.style.transformOrigin = "center";
+            // child.style.transform = `translate(${dx}px, ${dy}px)`;
+            // child.style.transformOrigin = "center";
         });
     }
 
@@ -424,7 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 hide(S.lim1s1.wrong);
                 positionPopup(topCard, S.lim1s1.right, "Group_1281"); // Base is Maya
                 show(S.lim1s1.right);
-                playLottie("emoji_happy-star", S.lim1s1.right);
+                //  playLottie("emoji_happy-star", S.lim1s1.right);
             } else {
                 const want = lim1s1Wants[traderId] || "that";
                 setIncorrectMsg(S.lim1s1.wrong, `fish. I want ${want}!"`);
@@ -456,10 +458,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Continue sc1 → sc2
-    onClick("Continue", () => { stopLottie(); clearCardHighlight(); goTo(S.lim1s2); });
+    onClick("Continue", () => { stopLottie(); clearCardHighlight(); goTo(S.lim1s2); show(S.back_button); show(S.home_buttom); });
 
     // ── SCENARIO 2: Maria (Has 3 Clay Pots, Wants Tools) ────────
-    const lim1s2AllNames = ["Cheenu", "Raj", "Yuvi", "Paul", "Fathima", "Fatima", "Ivan", "Ivan-2"];
+    const lim1s2AllNames = ["Cheenu", "Raj", "Yuvi", "Paul", "Fathima", "Fatima", "Ivan", "Ivan-2", "Priya-2", "Jaya", "Ranjit"];
     const lim1s2Correct = new Set(["Ivan", "Ivan-2"]);
     const lim1s2Wants = {
         "Cheenu": "bread",
@@ -486,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 hide(S.lim1s2.wrong);
                 positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
                 show(S.lim1s2.right);
-                playLottie("emoji_happy-star", S.lim1s2.right);
+                //  playLottie("emoji_happy-star", S.lim1s2.right);
             } else {
                 const want = lim1s2Wants[traderId] || "that";
                 // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
