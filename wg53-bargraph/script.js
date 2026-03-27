@@ -535,6 +535,15 @@ if (showAnswerButton && answerOverlay && closeButton) {
     });
 }
 
+// Map per-activity scale for the "Show Answer" modal.
+// Activity 1 -> 50, Activity 2 -> 20, Activity 3 -> 10; fallback to 50 for any others.
+function getAnswerScaleForActivity(index) {
+    if (index === 0) return 50;
+    if (index === 1) return 20;
+    if (index === 2) return 10;
+    return 50;
+}
+
 function buildRealAnswerGraph() {
     const svg = document.getElementById("real-answer-svg");
     const activity = activities[currentActivityIndex];
@@ -557,7 +566,7 @@ function buildRealAnswerGraph() {
     const totalUnits = 150; 
     const unitSizeH = chartH / totalUnits;
     const unitSizeW = chartW / totalUnits;
-    const fixedAnswerScale = 50;
+    const fixedAnswerScale = getAnswerScaleForActivity(currentActivityIndex);
 
     for (let i = 0; i <= totalUnits; i++) {
         const y = chartH - (i * unitSizeH);
