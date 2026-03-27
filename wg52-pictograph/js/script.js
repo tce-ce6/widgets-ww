@@ -220,6 +220,9 @@ function loadActivity(index) {
     img.src = `./assets/${selectedIcon}.svg`;
     img.classList.add("full-icon");
 
+    const handler = document.getElementById("main-handler");
+    if (handler) handler.classList.add("disabled-handler");
+
     wrapper.appendChild(img);
 
     currentValue += sliderValue;
@@ -235,6 +238,9 @@ function loadActivity(index) {
 
     if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
     if (currentCountEl) currentCountEl.classList.remove("wrong");
+
+    const handler = document.getElementById("main-handler");
+    if (handler) handler.classList.add("disabled-handler");
 
     icons[icons.length - 1].remove();
 
@@ -259,6 +265,9 @@ function loadActivity(index) {
       img.src = `./assets/${selectedIcon}.svg`;
     };
 
+    const handler = document.getElementById("main-handler");
+    if (handler) handler.classList.add("disabled-handler");
+
     wrapper.appendChild(img);
 
     currentValue += sliderValue / 2;
@@ -274,6 +283,9 @@ function loadActivity(index) {
 
     if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
     if (currentCountEl) currentCountEl.classList.remove("wrong");
+
+    const handler = document.getElementById("main-handler");
+    if (handler) handler.classList.add("disabled-handler");
 
     icons[icons.length - 1].remove();
 
@@ -426,6 +438,15 @@ function moveHandlerTo(marker) {
 
   updateCounterButtons(); // ⭐ add this
 
+  const iconWrapper = document.querySelector(".icon-wrapper");
+  if (iconWrapper) {
+    if (sliderValue > 0) {
+      iconWrapper.classList.add("disabled-icons");
+    } else {
+      iconWrapper.classList.remove("disabled-icons");
+    }
+  }
+
 }
   // Initialize at value-1
   moveHandlerTo(markers[0]);
@@ -504,12 +525,16 @@ function moveHandlerTo(marker) {
         };
       }
 
-      if (fullCountSolution) fullCountSolution.textContent = sliderValue;
-      if (halfCountSolution) halfCountSolution.textContent = (sliderValue / 2).toFixed(1);
+      // Define fixed keys for solutions
+      const activitySolutionKeys = [4, 4, 10, 10, 4];
+      const solutionKey = activitySolutionKeys[currentActivity] || sliderValue;
+
+      if (fullCountSolution) fullCountSolution.textContent = solutionKey;
+      if (halfCountSolution) halfCountSolution.textContent = (solutionKey / 2).toFixed(1);
 
       activity.categories.forEach(category => {
-        const fullIconCount = Math.floor(category.count / sliderValue);
-        const remainder = category.count % sliderValue;
+        const fullIconCount = Math.floor(category.count / solutionKey);
+        const remainder = category.count % solutionKey;
         const needsHalf = remainder > 0;
         
         let imagesHtml = '';

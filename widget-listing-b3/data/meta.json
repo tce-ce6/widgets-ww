@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -49,7 +49,7 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-27T10:56:55+05:30",
+      "updatedAt": "2026-03-27T16:10:55+05:30",
       "author": "sushantkanaujiya"
     },
     "wg115-literary-device": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-26T17:31:14+05:30",
+      "updatedAt": "2026-03-27T14:15:06+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -141,15 +141,15 @@
       "author": "PrasannaP"
     },
     "wg137-sabdo-me-sawar-ki-khoj": {
-      "updatedAt": "2026-03-27T13:08:54+05:30",
+      "updatedAt": "2026-03-27T13:44:39+05:30",
       "author": "PrasannaP"
     },
     "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-03-27T13:08:54+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-27T15:51:51+05:30",
+      "author": "tce-ashishg"
     },
     "wg140-change-master": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
@@ -165,7 +165,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-26T19:21:12+05:30",
+      "updatedAt": "2026-03-27T15:08:48+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
@@ -185,11 +185,11 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-26T23:17:06+05:30",
+      "updatedAt": "2026-03-27T17:43:36+05:30",
       "author": "sushantthe"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-26T19:00:46+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -197,7 +197,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-26T17:31:14+05:30",
+      "updatedAt": "2026-03-27T14:15:06+05:30",
       "author": "tce-nitinc"
     },
     "wg17-locating-decimals-v2": {
@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-24T20:08:19+05:30",
+      "updatedAt": "2026-03-27T15:30:07+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -261,7 +261,7 @@
       "author": "Santosh Vishwakarma"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-03-26T18:45:59+05:30",
+      "updatedAt": "2026-03-27T17:17:19+05:30",
       "author": "PrasannaP"
     },
     "wg72-build-a-carbon-cycle": {
@@ -341,8 +341,8 @@
       "author": "sushantthe"
     },
     "wg91-prime-factorisation": {
-      "updatedAt": "2026-03-27T13:09:52+05:30",
-      "author": "ShyamsundarHait"
+      "updatedAt": "2026-03-27T15:03:07+05:30",
+      "author": "PrasannaP"
     },
     "wg92-test-of-divisibility": {
       "updatedAt": "2026-03-25T16:13:22+05:30",
@@ -379,6 +379,132 @@
   },
   "commits": [
     {
+      "date": "2026-03-27T17:43:36+05:30",
+      "author": "sushantthe",
+      "message": "wg151 fixed",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-27T17:17:19+05:30",
+      "author": "PrasannaP",
+      "message": "feat: replace angle display with input field and enhance angle handling logic",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T17:12:31+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T16:55:24+05:30",
+      "author": "PrasannaP",
+      "message": "fix: enhance total internal reflection logic in draw function",
+      "widgets": [
+        70
+      ]
+    },
+    {
+      "date": "2026-03-27T16:10:55+05:30",
+      "author": "sushantkanaujiya",
+      "message": "wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-27T15:45:08+05:30",
+      "author": "tce-ashishg",
+      "message": "letter widgets error resolved",
+      "widgets": [
+        101,
+        118,
+        127,
+        140,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-27T15:30:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg52 changes",
+      "widgets": [
+        52
+      ]
+    },
+    {
+      "date": "2026-03-27T15:08:48+05:30",
+      "author": "PrasannaP",
+      "message": "b3_wg146_260327_1",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-27T15:03:07+05:30",
+      "author": "PrasannaP",
+      "message": "bg case fixed",
+      "widgets": [
+        91
+      ]
+    },
+    {
+      "date": "2026-03-27T14:36:46+05:30",
+      "author": "PrasannaP",
+      "message": "feat: Implement smooth fade-in and fade-out transitions for the SVG container and author portraits.",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-27T14:24:04+05:30",
+      "author": "sushantthe",
+      "message": "Update script.js",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-27T14:15:06+05:30",
+      "author": "tce-nitinc",
+      "message": "wg155 and wg133 fixes",
+      "widgets": [
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-27T13:44:39+05:30",
+      "author": "PrasannaP",
+      "message": "260327_2",
+      "widgets": [
+        137,
+        138
+      ]
+    },
+    {
+      "date": "2026-03-27T13:25:48+05:30",
+      "author": "PrasannaP",
+      "message": "aath.svg",
+      "widgets": [
+        138
+      ]
+    },
+    {
+      "date": "2026-03-27T13:24:03+05:30",
+      "author": "ShyamsundarHait",
+      "message": "bg fix",
+      "widgets": [
+        91
+      ]
+    },
+    {
       "date": "2026-03-27T13:09:52+05:30",
       "author": "ShyamsundarHait",
       "message": "fixed prime factorisation",
@@ -402,6 +528,14 @@
       "widgets": [
         137,
         138
+      ]
+    },
+    {
+      "date": "2026-03-27T12:55:36+05:30",
+      "author": "sushantthe",
+      "message": "Update script.js",
+      "widgets": [
+        151
       ]
     },
     {
@@ -454,6 +588,16 @@
       ]
     },
     {
+      "date": "2026-03-27T12:05:59+05:30",
+      "author": "tce-ashishg",
+      "message": "image added",
+      "widgets": [
+        101,
+        118,
+        138
+      ]
+    },
+    {
       "date": "2026-03-27T12:02:08+05:30",
       "author": "ShyamsundarHait",
       "message": "fixed wg98 and wg53 bargraph show answer scale change on show answer per activity",
@@ -488,144 +632,6 @@
       "message": "moelculer reaction animation and collision detection implemented and created in html",
       "widgets": [
         98
-      ]
-    },
-    {
-      "date": "2026-03-27T10:42:10+05:30",
-      "author": "ShyamsundarHait",
-      "message": "version updated",
-      "widgets": [
-        109
-      ]
-    },
-    {
-      "date": "2026-03-27T10:41:28+05:30",
-      "author": "ShyamsundarHait",
-      "message": "implemented animation on cathode anode",
-      "widgets": [
-        109
-      ]
-    },
-    {
-      "date": "2026-03-26T23:19:59+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg114",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-26T23:17:06+05:30",
-      "author": "sushantthe",
-      "message": "wg151 fixed",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-26T20:16:03+05:30",
-      "author": "PrasannaP",
-      "message": "fix align",
-      "widgets": [
-        137,
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:54:51+05:30",
-      "author": "PrasannaP",
-      "message": "change y to 420",
-      "widgets": [
-        148
-      ]
-    },
-    {
-      "date": "2026-03-26T19:39:14+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 77 and wg 84",
-      "widgets": [
-        77,
-        84
-      ]
-    },
-    {
-      "date": "2026-03-26T19:34:03+05:30",
-      "author": "PrasannaP",
-      "message": "rename2",
-      "widgets": [
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:31:47+05:30",
-      "author": "PrasannaP",
-      "message": "rename1",
-      "widgets": [
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:30:39+05:30",
-      "author": "PrasannaP",
-      "message": "filename",
-      "widgets": [
-        137
-      ]
-    },
-    {
-      "date": "2026-03-26T19:24:15+05:30",
-      "author": "PrasannaP",
-      "message": "audio rename",
-      "widgets": [
-        137
-      ]
-    },
-    {
-      "date": "2026-03-26T19:23:47+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg148 fixed",
-      "widgets": [
-        148
-      ]
-    },
-    {
-      "date": "2026-03-26T19:21:12+05:30",
-      "author": "PrasannaP",
-      "message": "fix1",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-26T19:17:05+05:30",
-      "author": "tce-nitinc",
-      "message": "wg77changes",
-      "widgets": [
-        77
-      ]
-    },
-    {
-      "date": "2026-03-26T19:05:22+05:30",
-      "author": "tce-nitinc",
-      "message": "wg77 changes",
-      "widgets": [
-        77
-      ]
-    },
-    {
-      "date": "2026-03-26T19:03:35+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        103
-      ]
-    },
-    {
-      "date": "2026-03-26T19:02:28+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg103",
-      "widgets": [
-        103
       ]
     }
   ]

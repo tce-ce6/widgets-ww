@@ -91,8 +91,9 @@
                             <label class="font-semibold text-slate-200 flex items-center gap-2">
                                 <i class="text-cyan-400"></i> Incidence Angle
                             </label>
-                            <span id="angle-val"
-                                class="text-xl font-mono bg-slate-900 px-3 py-1 rounded text-cyan-400 border border-slate-700 shadow-inner">30.0°</span>
+                            <input id="angle-val" type="number" min="0" max="90" step="0.1" value="30.0"
+                                class="nice-select rounded-md px-3 py-2 text-sm font-semibold"
+                                style="width: 110px;" />
                         </div>
                         <input type="range" id="angle-slider" min="0" max="90" value="30" step="0.1"
                             class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
