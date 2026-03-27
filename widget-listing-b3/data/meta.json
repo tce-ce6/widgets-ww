@@ -237,8 +237,8 @@
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
-      "updatedAt": "2026-03-11T18:15:19+05:30",
-      "author": "Shyam"
+      "updatedAt": "2026-03-27T12:02:08+05:30",
+      "author": "ShyamsundarHait"
     },
     "wg56_atomic-radius-simulator": {
       "updatedAt": "2026-03-19T16:53:54+05:30",
@@ -369,7 +369,7 @@
       "author": "PrasannaP"
     },
     "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-03-27T10:54:50+05:30",
+      "updatedAt": "2026-03-27T12:02:08+05:30",
       "author": "ShyamsundarHait"
     },
     "wg99-applying-distributive-property": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T12:02:08+05:30",
+      "author": "ShyamsundarHait",
+      "message": "fixed wg98 and wg53 bargraph show answer scale change on show answer per activity",
+      "widgets": [
+        53,
+        98
+      ]
+    },
     {
       "date": "2026-03-27T11:10:05+05:30",
       "author": "tce-ashishg",
@@ -622,15 +631,6 @@
       "message": "feat: Add 'Reflection of Light' widget, externalizing its styles and scripts, and update Live Server port.",
       "widgets": [
         42
-      ]
-    },
-    {
-      "date": "2026-03-26T16:05:30+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed issue",
-      "widgets": [
-        103,
-        151
       ]
     }
   ]
