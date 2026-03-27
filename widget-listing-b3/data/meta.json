@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-27T18:02:08+05:30",
+      "updatedAt": "2026-03-27T20:06:46+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -309,7 +309,7 @@
       "author": "PrasannaP"
     },
     "wg83-major-soil-types": {
-      "updatedAt": "2026-03-05T21:33:51+05:30",
+      "updatedAt": "2026-03-27T20:06:46+05:30",
       "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
@@ -378,6 +378,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T20:06:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg83 and wg52 changes",
+      "widgets": [
+        52,
+        83
+      ]
+    },
     {
       "date": "2026-03-27T19:44:17+05:30",
       "author": "sushantthe",
@@ -613,14 +622,6 @@
       "date": "2026-03-27T13:24:03+05:30",
       "author": "ShyamsundarHait",
       "message": "bg fix",
-      "widgets": [
-        91
-      ]
-    },
-    {
-      "date": "2026-03-27T13:09:52+05:30",
-      "author": "ShyamsundarHait",
-      "message": "fixed prime factorisation",
       "widgets": [
         91
       ]
