@@ -311,6 +311,8 @@ class UIManager {
         e.stopPropagation();
         this.state.isAnswerBoxFocused = true;
         this.state.isEnteringCustomProblem = false;
+        if (this.keypadDisplayText) this.keypadDisplayText.textContent = "";
+        this.showKeypad(true);
         this.updateUI();
       });
     }
