@@ -786,6 +786,8 @@ const CROP_DATA = {
     //elements.itextActivity.classList.add("st170");
     elements.showAnswerBtn.classList.remove("st170");
     elements.submitBtn.classList.remove("st170");
+     elements.showAnswerBtn.style.display = "block";
+    elements.submitBtn.style.display = "block";
     if (elements.cropPromptContainer) {
       elements.cropPromptContainer.style.display = "block";
       elements.cropPromptContainer.classList.remove("st170");
@@ -1040,23 +1042,35 @@ const CROP_DATA = {
   });
 
   elements.tryAnotherCropBtn?.addEventListener("click", () => {
-    if (elements.factsheet) {
-      elements.factsheet.style.display = "none";
-      elements.factsheet.classList.add("st170");
-    }
+    // Hide factsheet and all popups
+    [elements.factsheet, elements.feedbackCorrectPopup, elements.feedbackIncorrectPopup,
+     elements.cropPromptContainer, elements.submitBtn, elements.showAnswerBtn].forEach(el => {
+      if (el) { el.style.display = "none"; el.classList.add("st170"); }
+    });
+
+    // Reset map
     resetMapHighlights();
-    resetCropSelection();
-  });
-    resetCropSelection = () => {
-    // Hide all selected crop groups
+
+    // Reset state
+    currentState.crop = null;
+    currentState.selectedStates = new Set();
+    currentState.isAnswerRevealed = false;
+
+    // Restore all crop buttons: hide selected variants, restore base buttons to full opacity
     ['btn-rabi-selected', 'btn-Kharif-selected', 'btn-Zaid-selected'].forEach(id => {
-      const selectedContainer = document.getElementById(id);
-      if (selectedContainer) {
-        selectedContainer.style.display = "none";
-        selectedContainer.classList.add("st170");
+      const el = document.getElementById(id);
+      if (el) { el.style.display = "none"; el.classList.add("st170"); }
+    });
+    ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        Array.from(el.children).forEach(child => {
+          child.style.display = "block";
+          child.style.opacity = "1";
+        });
       }
     });
-  };
+  });
   // Global Buttons
   elements.submitBtn?.addEventListener("click", () => {
     if (currentState.selectedStates.size === 0) return;
