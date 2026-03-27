@@ -166,6 +166,15 @@ let criticalAngle = Math.asin(n2 / n1) * (180 / Math.PI); // ~41.81 degrees for 
 let angleIncidence = 30; // Degrees
 let width, height;
 
+function setAngle(theta) {
+  const clamped = Math.max(0, Math.min(90, theta));
+  const q = Math.round(clamped * 10) / 10;
+  angleIncidence = q;
+  angleSlider.value = String(q);
+  if (angleVal) angleVal.value = q.toFixed(1);
+  draw();
+}
+
 function resize() {
   const rect = container.getBoundingClientRect();
   canvas.width = rect.width;
@@ -232,7 +241,9 @@ function setMode(mode) {
 }
 
 function calculatePhysics(thetaI_deg) {
-  const thetaI_rad = thetaI_deg * (Math.PI / 180);
+  // Quantize to slider precision so boundary behavior matches UI display (0.1°)
+  const thetaI_deg_q = Math.round(thetaI_deg * 10) / 10;
+  const thetaI_rad = thetaI_deg_q * (Math.PI / 180);
 
   // Snell's Law: n1 * sin(theta1) = n2 * sin(theta2)
   // sin(theta2) = (n1/n2) * sin(theta1)
@@ -241,11 +252,19 @@ function calculatePhysics(thetaI_deg) {
   let thetaR_deg = null;
   let isTIR = false;
 
-  if (sinTheta2 > 1.0000001) { // Floating point tolerance
-    isTIR = true;
-  } else {
-    // Handle edge case exactly at critical angle where sin is 1
-    const val = Math.min(1, sinTheta2);
+  // Total internal reflection happens ONLY when light goes from denser to rarer medium
+  // and the incidence angle is strictly greater than the critical angle.
+  // We compare using the same 0.1° precision shown in the UI to avoid "TIR at exactly critical angle".
+  if (n1 > n2 && criticalAngle !== null) {
+    const thetaC_deg_q = Number(criticalAngle.toFixed(1));
+    const EPS_DEG = 1e-6;
+    isTIR = thetaI_deg_q > (thetaC_deg_q + EPS_DEG);
+  }
+
+  if (!isTIR) {
+    // At or below critical angle (or when n1 <= n2), refraction exists.
+    // Clamp for floating point safety right at critical angle.
+    const val = Math.min(1, Math.max(-1, sinTheta2));
     thetaR_deg = Math.asin(val) * (180 / Math.PI);
   }
 
@@ -435,8 +454,12 @@ function draw() {
   drawLaserPointer(ctx, incidentStartX, incidentStartY, laserAngle);
 
   if (isTIR) {
+    // Total internal reflection: reflected ray stays in the incident medium.
+    // Reflection flips the component normal to the boundary (y), keeping x the same.
     const endX = midX + Math.sin(thetaI_rad) * rayLen;
-    const endY = midY + Math.cos(thetaI_rad) * rayLen;
+    const endY = currentMode === 'dense_to_rare'
+      ? (midY + Math.cos(thetaI_rad) * rayLen) // incident from bottom -> reflect back into bottom
+      : (midY - Math.cos(thetaI_rad) * rayLen); // incident from top -> reflect back into top
     ctx.beginPath();
     ctx.moveTo(midX, midY);
     ctx.lineTo(endX, endY);
@@ -498,10 +521,24 @@ function draw() {
 
 // Listeners
 angleSlider.addEventListener('input', (e) => {
-  angleIncidence = parseFloat(e.target.value);
-  angleVal.innerText = angleIncidence.toFixed(1) + "°";
-  draw();
+  setAngle(parseFloat(e.target.value));
 });
+
+if (angleVal) {
+  angleVal.addEventListener('input', (e) => {
+    const v = parseFloat(e.target.value);
+    if (!Number.isFinite(v)) return;
+    setAngle(v);
+  });
+  angleVal.addEventListener('change', (e) => {
+    const v = parseFloat(e.target.value);
+    if (!Number.isFinite(v)) {
+      angleVal.value = angleIncidence.toFixed(1);
+      return;
+    }
+    setAngle(v);
+  });
+}
 
 btnDenseRare.addEventListener('click', () => setMode('dense_to_rare'));
 btnRareDense.addEventListener('click', () => setMode('rare_to_dense'));
@@ -547,12 +584,7 @@ function handleDrag(x, y) {
   let theta = Math.atan2(dx, dy) * (180 / Math.PI);
 
   // Clamp to slider range
-  theta = Math.max(0, Math.min(90, theta));
-
-  angleIncidence = theta;
-  angleSlider.value = theta;
-  angleVal.innerText = theta.toFixed(1) + "°";
-  draw();
+  setAngle(theta);
 }
 
 canvas.addEventListener('mousedown', (e) => { isDragging = true; handleDrag(e.clientX, e.clientY); });
@@ -571,4 +603,5 @@ canvas.addEventListener('touchmove', (e) => {
 window.addEventListener('resize', resize);
 resize();
 setMode(currentMode);
+setAngle(angleIncidence);
 
