@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-27T15:30:07+05:30",
+      "updatedAt": "2026-03-27T18:02:08+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T18:02:08+05:30",
+      "author": "tce-nitinc",
+      "message": "wg52",
+      "widgets": [
+        52
+      ]
+    },
     {
       "date": "2026-03-27T17:43:36+05:30",
       "author": "sushantthe",
@@ -624,14 +632,6 @@
       "widgets": [
         114,
         119
-      ]
-    },
-    {
-      "date": "2026-03-27T10:54:50+05:30",
-      "author": "ShyamsundarHait",
-      "message": "moelculer reaction animation and collision detection implemented and created in html",
-      "widgets": [
-        98
       ]
     }
   ]
