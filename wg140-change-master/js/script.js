@@ -22,7 +22,7 @@ const ITEMS_DATA = [
     { "name": "Stapler", "price": 287, "path": "stapler.svg" },
     { "name": "Paper Punch", "price": 256, "path": "paper_punch.svg" },
     { "name": "Whiteboard Marker", "price": 48, "path": "whiteboard_marker.svg" },
-    { "name": "Whiteboard", "price": 976, "path": "whiteboard.svg" },
+    // { "name": "Whiteboard", "price": 976, "path": "whiteboard.svg" },
     { "name": "Teddy Bear", "price": 403, "path": "teddy_bear.svg" },
     { "name": "Action Figure", "price": 249, "path": "action_figure.svg" },
     { "name": "Toy Car", "price": 107, "path": "toy_car.svg" },
@@ -31,21 +31,21 @@ const ITEMS_DATA = [
     { "name": "Yo-Yo", "price": 34, "path": "yo_yo.svg" },
     { "name": "Puzzle Set", "price": 207, "path": "puzzle_set.svg" },
     { "name": "Board Game", "price": 489, "path": "board_game.svg" },
-    { "name": "Remote Control Car", "price": 975, "path": "remote_control_car.svg" },
+    // { "name": "Remote Control Car", "price": 975, "path": "remote_control_car.svg" },
     { "name": "Bag of Apples (1 kg)", "price": 250, "path": "bag_of_apples.svg" },
     { "name": "1 kg Rice", "price": 80, "path": "rice.svg" },
     { "name": "Milk Packet", "price": 73, "path": "milk.svg" },
     { "name": "Papaya", "price": 30, "path": "papaya.svg" },
     { "name": "Icecream", "price": 37, "path": "icecream.svg" },
     { "name": "Pair of shoe", "price": 675, "path": "shoes.svg" },
-    { "name": "T shirt", "price": 898, "path": "t_shirt.svg" },
-    { "name": "Sleepers", "price": 850, "path": "sleeper.svg" },
+    // { "name": "T shirt", "price": 898, "path": "t_shirt.svg" },
+    // { "name": "Sleepers", "price": 850, "path": "sleeper.svg" },
     { "name": "Hand gloves", "price": 25, "path": "hand_gloves.svg" },
-    { "name": "Dumbbells", "price": 649, "path": "dumbbell.svg" },
-    { "name": "Birthday Cake", "price": 755, "path": "cake.svg" },
+    // { "name": "Dumbbells", "price": 649, "path": "dumbbell.svg" },
+    // { "name": "Birthday Cake", "price": 755, "path": "cake.svg" },
     { "name": "Water bottle", "price": 350, "path": "water_bottle.svg" },
-    { "name": "Sipper bottle", "price": 749, "path": "sipper_bottle.svg" },
-    { "name": "School bag", "price": 995, "path": "school_bag.svg" },
+    // { "name": "Sipper bottle", "price": 749, "path": "sipper_bottle.svg" },
+    // { "name": "School bag", "price": 995, "path": "school_bag.svg" },
     { "name": "Scissors", "price": 49, "path": "scissors.svg" },
     { "name": "Bucket", "price": 76, "path": "bucket.svg" },
     { "name": "Skipping rope", "price": 99, "path": "skipping_rope.svg" },
@@ -71,8 +71,6 @@ let changeValue = 0;
 const startBtn = document.getElementById("startBtn");
 const startPage = document.getElementById("startPage");
 const gameScreen = document.getElementById("gameScreen");
-// const nextBtn = document.getElementById("nextItemBtn");
-// const nextBtn2 = document.getElementById("nextItemBtn2");
 
 const itemImg = document.getElementById("itemImg");
 const continueBtn = document.getElementById('continueBtn');
@@ -165,6 +163,7 @@ function resetState() {
     changeValue = 0;
     currencyNote = 0;
 
+    changePanel.style.display = 'none';
     changeScreen.style.display = 'none';
     gameScreen.style.transform = "translateX(555px)";
     howToPlayMsg.style.display = 'none';
@@ -180,6 +179,7 @@ function resetState() {
         r.style.cursor = 'pointer';
         r.style.pointerEvents = 'auto';
     });
+    highlightNote();
 
     notes.forEach(element => {
         element.style.cursor = 'pointer';
@@ -341,7 +341,6 @@ document.querySelectorAll(".change").forEach(note => {
             li.appendChild(closeMark);
             moneyWrapper.appendChild(li);
         }
-        highlightNote();
         checkButton.style.cursor = 'pointer';
         checkButton.style.opacity = 1;
     });
@@ -364,20 +363,20 @@ function checkValue() {
     }
 }
 
-function highlightNote(){
-    rects.forEach(rect => {
-        rect.addEventListener("click", function () {
-    
-            rects.forEach(r => {
-                r.setAttribute("stroke", "#3f3f3f");
-                r.setAttribute("stroke-width", "1");
-            });
-    
-            this.setAttribute("stroke", "blue");
-            this.setAttribute("stroke-width", "4");
-    
-        });
+function highlightNote(selectedValue = null) {
+    rects.forEach(r => {
+        r.setAttribute("stroke", "#3f3f3f");
+        r.setAttribute("stroke-width", "1");
     });
+
+    if (selectedValue === null || typeof selectedValue === "undefined") return;
+
+    const selectedNote = document.querySelector(`.note[data-value="${selectedValue}"]`);
+    const selectedRect = selectedNote ? selectedNote.querySelector(".currency-rect") : null;
+    if (selectedRect) {
+        selectedRect.setAttribute("stroke", "blue");
+        selectedRect.setAttribute("stroke-width", "4");
+    }
 }
 
 
@@ -403,6 +402,8 @@ document.addEventListener("DOMContentLoaded", () => {
     continueBtn.addEventListener('click', () => {
         changeScreen.style.display = 'block';
         gameScreen.style.transform = "translateX(0px)";
+        noBtn.style.opacity = 1;
+        noBtn.style.cursor = 'pointer';
         notes.forEach(element => {
             element.style.cursor = 'auto';
             element.style.pointerEvents = 'none';
@@ -437,6 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
         note.addEventListener("click", function () {
             currencyNote = this.dataset.value;
             console.log(currencyNote);
+            highlightNote(currencyNote);
 
             currencyValue.textContent = currencyNote;
             console.log(itemPrice);

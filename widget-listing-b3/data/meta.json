@@ -5,7 +5,7 @@
       "author": "tce-nitinc"
     },
     "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg102-law-of-conservation-mass": {
@@ -65,7 +65,7 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg119-the-rhyme-zone": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-03-25T18:44:51+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg128-who-said-that": {
@@ -145,11 +145,11 @@
       "author": "PrasannaP"
     },
     "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-03-27T13:44:39+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-27T15:51:51+05:30",
+      "author": "tce-ashishg"
     },
     "wg140-change-master": {
-      "updatedAt": "2026-03-27T11:10:05+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg142-fact-or-opinion": {
@@ -165,7 +165,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg146-guess-the-author": {
-      "updatedAt": "2026-03-27T14:36:46+05:30",
+      "updatedAt": "2026-03-27T15:08:48+05:30",
       "author": "PrasannaP"
     },
     "wg147-literary-detective-agency": {
@@ -189,7 +189,7 @@
       "author": "sushantthe"
     },
     "wg153-informal-letters": {
-      "updatedAt": "2026-03-26T19:00:46+05:30",
+      "updatedAt": "2026-03-27T15:45:08+05:30",
       "author": "tce-ashishg"
     },
     "wg154-naming-words": {
@@ -233,7 +233,7 @@
       "author": "PrasannaP"
     },
     "wg52-pictograph": {
-      "updatedAt": "2026-03-24T20:08:19+05:30",
+      "updatedAt": "2026-03-27T15:30:07+05:30",
       "author": "tce-nitinc"
     },
     "wg53-bargraph": {
@@ -341,8 +341,8 @@
       "author": "sushantthe"
     },
     "wg91-prime-factorisation": {
-      "updatedAt": "2026-03-27T13:24:03+05:30",
-      "author": "ShyamsundarHait"
+      "updatedAt": "2026-03-27T15:03:07+05:30",
+      "author": "PrasannaP"
     },
     "wg92-test-of-divisibility": {
       "updatedAt": "2026-03-25T16:13:22+05:30",
@@ -378,6 +378,42 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-27T15:45:08+05:30",
+      "author": "tce-ashishg",
+      "message": "letter widgets error resolved",
+      "widgets": [
+        101,
+        118,
+        127,
+        140,
+        153
+      ]
+    },
+    {
+      "date": "2026-03-27T15:30:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg52 changes",
+      "widgets": [
+        52
+      ]
+    },
+    {
+      "date": "2026-03-27T15:08:48+05:30",
+      "author": "PrasannaP",
+      "message": "b3_wg146_260327_1",
+      "widgets": [
+        146
+      ]
+    },
+    {
+      "date": "2026-03-27T15:03:07+05:30",
+      "author": "PrasannaP",
+      "message": "bg case fixed",
+      "widgets": [
+        91
+      ]
+    },
     {
       "date": "2026-03-27T14:36:46+05:30",
       "author": "PrasannaP",
@@ -496,6 +532,16 @@
       ]
     },
     {
+      "date": "2026-03-27T12:05:59+05:30",
+      "author": "tce-ashishg",
+      "message": "image added",
+      "widgets": [
+        101,
+        118,
+        138
+      ]
+    },
+    {
       "date": "2026-03-27T12:02:08+05:30",
       "author": "ShyamsundarHait",
       "message": "fixed wg98 and wg53 bargraph show answer scale change on show answer per activity",
@@ -588,46 +634,6 @@
       "widgets": [
         77,
         84
-      ]
-    },
-    {
-      "date": "2026-03-26T19:34:03+05:30",
-      "author": "PrasannaP",
-      "message": "rename2",
-      "widgets": [
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:31:47+05:30",
-      "author": "PrasannaP",
-      "message": "rename1",
-      "widgets": [
-        138
-      ]
-    },
-    {
-      "date": "2026-03-26T19:30:39+05:30",
-      "author": "PrasannaP",
-      "message": "filename",
-      "widgets": [
-        137
-      ]
-    },
-    {
-      "date": "2026-03-26T19:24:15+05:30",
-      "author": "PrasannaP",
-      "message": "audio rename",
-      "widgets": [
-        137
-      ]
-    },
-    {
-      "date": "2026-03-26T19:23:47+05:30",
-      "author": "Santosh Vishwakarma",
-      "message": "wg148 fixed",
-      "widgets": [
-        148
       ]
     }
   ]
