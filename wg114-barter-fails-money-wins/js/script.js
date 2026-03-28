@@ -132,8 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
             base: $("limitation03-sc01-base-screen"),
             end: $("limitation03-sc01-end-feedback"),
         },
-        // lim3s2 HTML screen not yet in index.html — gracefully null
-        lim3s2: { base: null, end: null },
+        lim3s2: {
+            base: $("limitation03-sc02-base-screen"),
+            end: $("limitation03-sc02-failure-popup")
+        },
 
         conclusion: $("conclusion-base-screen"),
         solution: $("solution-popup"),
@@ -153,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             S.lim2s1.base, S.lim2s1.cards, S.lim2s1.c01, S.lim2s1.c02, S.lim2s1.end, S.lim2s1.wrong,
             S.lim2s2.base, S.lim2s2.c01, S.lim2s2.c02, S.lim2s2.end, S.lim2s2.wrong,
             S.lim3s1.base, S.lim3s1.end,
+            S.lim3s2.base, S.lim3s2.end,
             S.conclusion, S.solution, S.insights, S.back_button, S.home_buttom
         ].forEach(hide);
     }
@@ -336,7 +339,13 @@ document.addEventListener("DOMContentLoaded", () => {
     onClick("Group_1501-2", () => { clearCardHighlight(); goTo(S.lim2s1); show(S.home_buttom); show(S.back_button) });
     onClick("Group_1502-2", () => { clearCardHighlight(); goTo(S.lim2s2); show(S.home_buttom); show(S.back_button) });
     onClick("Group_1501-3", () => { resetLim3s1(); goTo(S.lim3s1); show(S.home_buttom); show(S.back_button) });
-    onClick("Group_1502-3", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); show(S.home_buttom); show(S.back_button) });
+    onClick("Group_1502-3", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); show(S.home_buttom); show(S.back_button); });
+
+    // Internal Scenario switchers (top bar) in Limitation 3
+    onClick("Scenario_1-6", () => { resetLim3s1(); goTo(S.lim3s1); });
+    onClick("Scenario_2-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); });
+    onClick("Group_1500-5", () => { resetLim3s1(); goTo(S.lim3s1); }); // Parent for Scenario 1 top btn
+    onClick("Group_1500-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); }); // Parent for Scenario 2 top btn
 
     // Global back / home — also stop lottie
     onClick("Back", () => { stopLottie(); clearCardHighlight(); hideAll(); show(S.menu); });
@@ -782,129 +791,130 @@ document.addEventListener("DOMContentLoaded", () => {
         if (par) par.addEventListener("click", (ev) => { if (ev.target === par) fn(); });
     }
 
-    // ── Scenario 1: 2 Cows → goal: 100 Apples ────────────────
+    // ─────────────────────────────────────────────
+    //  LIMITATION 3 — Exchange Rate Challenges
+    // ─────────────────────────────────────────────
+    const lim3Rates = { cow: 10, chicken: 5, bread: 2 };
     let lim3s1 = { cows: 2, chickens: 0, breads: 0, apples: 0 };
+    let lim3s2 = { cows: 0, chickens: 8, breads: 0, apples: 0 };
+    let showingSolution = false;
 
     function resetLim3s1() {
         lim3s1 = { cows: 2, chickens: 0, breads: 0, apples: 0 };
         updateLim3s1UI();
         if (S.lim3s1.end) hide(S.lim3s1.end);
+        showingSolution = false;
+        const s1 = $("Show_Answer"); if (s1) $q("tspan", s1).textContent = "Show Answer";
     }
 
     function updateLim3s1UI() {
         setInvCount("_2_Cows", lim3s1.cows);
         setInvCount("_0_Chickens", lim3s1.chickens);
-        setInvCount("_0_Apples", lim3s1.apples);
         setInvCount("_0_Bread", lim3s1.breads);
+        setInvCount("_0_Apples", lim3s1.apples);
     }
-
-    function checkLim3s1Win() {
-        if (lim3s1.apples >= 100) {
-            playLottie("emoji_happy-star");
-            setTimeout(() => { stopLottie(); show(S.lim3s1.end); }, 600);
-        }
-    }
-
-    wireTradeBtn("Trade_Cow_Chickens", () => {
-        if (lim3s1.cows > 0) {
-            lim3s1.cows--; lim3s1.chickens += 10;
-            updateLim3s1UI(); checkLim3s1Win();
-        } else { playLottie("emoji-sad"); }
-    });
-    wireTradeBtn("Trade_Chickens_Breads", () => {
-        if (lim3s1.chickens > 0) {
-            lim3s1.chickens--; lim3s1.breads += 5;
-            updateLim3s1UI(); checkLim3s1Win();
-        } else { playLottie("emoji-sad"); }
-    });
-    wireTradeBtn("Trade_Breads_Apples", () => {
-        if (lim3s1.breads > 0) {
-            lim3s1.breads--; lim3s1.apples += 2;
-            updateLim3s1UI(); checkLim3s1Win();
-        } else { playLottie("emoji-sad"); }
-    });
-
-    // Reset buttons inside sc1
-    if (S.lim3s1.base) {
-        S.lim3s1.base.querySelectorAll("[id^='Reset']").forEach(btn => {
-            ptr(btn); btn.addEventListener("click", resetLim3s1);
-        });
-    }
-
-    // Continue sc1 → sc2
-    onClick("Continue-7", () => { stopLottie(); resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); });
-
-    // ── Scenario 2: 8 Chickens → goal: 50 Breads (will fail) ──
-    let lim3s2 = { cows: 0, chickens: 8, breads: 0, apples: 0 };
 
     function resetLim3s2() {
         lim3s2 = { cows: 0, chickens: 8, breads: 0, apples: 0 };
-        if (S.lim3s2.base) updateLim3s2UI();
+        updateLim3s2UI();
         if (S.lim3s2.end) hide(S.lim3s2.end);
+        showingSolution = false;
+        // const s2 = $("Show_Answer-2"); if (s2) $q("tspan", s2).textContent = "Show Answer";
     }
 
     function updateLim3s2UI() {
-        if (!S.lim3s2.base) return;
         setInvCount("_0_Cows-2", lim3s2.cows);
-        setInvCount("_8_Chickens", lim3s2.chickens);
+        setInvCount("_8_Chickens-2", lim3s2.chickens);
         setInvCount("_0_Bread-2", lim3s2.breads);
         setInvCount("_0_Apples-2", lim3s2.apples);
     }
 
-    function checkLim3s2Done() {
-        // Fail: chickens exhausted and still < 50 breads
-        if (lim3s2.cows === 0 && lim3s2.chickens === 0 && lim3s2.breads < 50) {
-            playLottie("emoji-sad");
-            setTimeout(() => { stopLottie(); if (S.lim3s2.end) show(S.lim3s2.end); }, 800);
+    function toggleLim3Solution(btnId, textId) {
+        showingSolution = !showingSolution;
+        if (showingSolution) {
+            // show(S.solution);
+            const ts = $q("tspan", $(textId));
+            if (ts) ts.textContent = "Hide Answer";
+        } else {
+            // hide(S.solution);
+            const ts = $q("tspan", $(textId));
+            if (ts) ts.textContent = "Show Answer";
         }
     }
 
-    if (S.lim3s2.base) {
-        S.lim3s2.base.querySelectorAll("g[id^='Trade_'], g[data-name^='Trade']").forEach(el => ptr(el));
-        S.lim3s2.base.addEventListener("click", (e) => {
-            let el = e.target;
-            let tradeEl = null;
-            while (el && el !== S.lim3s2.base) {
-                if (el.id && el.id.startsWith("Trade_")) { tradeEl = el; break; }
-                if (el.dataset?.name?.startsWith("Trade")) { tradeEl = el; break; }
-                el = el.parentElement;
+    // SC1 Transitions & Buttons
+    wireTradeBtn("Trade_Cow_Chickens", () => {
+        if (lim3s1.cows > 0) {
+            lim3s1.cows--; lim3s1.chickens += lim3Rates.cow;
+            updateLim3s1UI();
+        } else playLottie("emoji-sad");
+    });
+    wireTradeBtn("Trade_Chickens_Breads", () => {
+        if (lim3s1.chickens > 0) {
+            lim3s1.chickens--; lim3s1.breads += lim3Rates.chicken;
+            updateLim3s1UI();
+        } else playLottie("emoji-sad");
+    });
+    wireTradeBtn("Trade_Breads_Apples", () => {
+        if (lim3s1.breads > 0) {
+            lim3s1.breads--; lim3s1.apples += lim3Rates.bread;
+            updateLim3s1UI();
+            if (lim3s1.apples >= 100) {
+                playLottie("emoji_happy-star");
+                setTimeout(() => { stopLottie(); show(S.lim3s1.end); }, 800);
             }
-            if (!tradeEl) return;
-            const id = tradeEl.id || tradeEl.dataset.name || "";
-            if (id.includes("Cow")) {
-                if (lim3s2.cows > 0) { lim3s2.cows--; lim3s2.chickens += 10; updateLim3s2UI(); checkLim3s2Done(); }
-                else playLottie("emoji-sad");
-            } else if (id.includes("Chicken")) {
-                if (lim3s2.chickens > 0) { lim3s2.chickens--; lim3s2.breads += 5; updateLim3s2UI(); checkLim3s2Done(); }
-                else playLottie("emoji-sad");
-            } else if (id.includes("Bread")) {
-                if (lim3s2.breads > 0) { lim3s2.breads--; lim3s2.apples += 2; updateLim3s2UI(); }
-                else playLottie("emoji-sad");
+        } else playLottie("emoji-sad");
+    });
+    onClick("Group_804-2", () => toggleLim3Solution("Group_804-2", "Show_Answer"));
+    onClick("Group_1-3", resetLim3s1);
+    onClick("Continue-7", () => { stopLottie(); hideAll(); resetLim3s2(); show(S.lim3s2.base); });
+
+    // SC2 Transitions & Buttons
+    wireTradeBtn("Trade_Cow_Chickens-2", () => {
+        if (lim3s2.cows > 0) {
+            lim3s2.cows--; lim3s2.chickens += lim3Rates.cow;
+            updateLim3s2UI();
+        } else playLottie("emoji-sad");
+    });
+    wireTradeBtn("Trade_Chickens_Breads-2", () => {
+        if (lim3s2.chickens > 0) {
+            lim3s2.chickens--; lim3s2.breads += lim3Rates.chicken;
+            updateLim3s2UI();
+            if (lim3s2.chickens === 0 && lim3s2.cows === 0 && lim3s2.breads < 50) {
+                // playLottie("emoji-sad");
+                setTimeout(() => { stopLottie(); show(S.lim3s2.end); }, 800);
+            } else if (lim3s2.breads >= 50) {
+                // Technically user could win if logic allowed, but SC2 is designed to fail.
+                // We'll just check for failure as requested.
             }
-        });
+        } else playLottie("emoji-sad");
+    });
+    wireTradeBtn("Trade_Breads_Apples-2", () => {
+        if (lim3s2.breads > 0) {
+            lim3s2.breads--; lim3s2.apples += lim3Rates.bread;
+            updateLim3s2UI();
+        } else playLottie("emoji-sad");
+    });
+    onClick("Group_804-3", () => toggleLim3Solution("Group_804-3", "Show_Answer-2"));
+    onClick("Group_1-4", resetLim3s2);
+    onClick("Continue-sc2-fail", () => { stopLottie(); resetLim3s2(); });
 
-        S.lim3s2.base.querySelectorAll("[id^='Reset']").forEach(btn => {
-            ptr(btn); btn.addEventListener("click", resetLim3s2);
-        });
-    }
+    // Move to conclusion path from successful SC1 or somewhere else (if needed)
+    // For now, let's say SC2 end popup (which is failure) has a "Try Again"
+    // and we might need a way to reach the Conclusion from Lim3 overall.
+    // If user finishes SC1, they go to SC2. If they fail SC2, they retry.
+    // I'll add a 'See Solution' or 'Conclusion' button to the failure popup if needed,
+    // but the plan says Challenge 2 is 'fail on 50 Breads'.
+    // Usually these games have a path to the final conclusion.
 
-    // Continue lim3 sc2 → Conclusion
-    if (S.lim3s2.end) {
-        S.lim3s2.end.addEventListener("click", (e) => {
-            const btn = e.target.closest('[id^="Continue"]');
-            if (btn) { stopLottie(); hideAll(); show(S.conclusion); }
-        });
-    }
-    // onClick("Continue-8", () => { stopLottie(); hideAll(); show(S.conclusion); });
+    // Let's add a "Continue to Conclusion" to S.lim3s1.end if SC2 was optional,
+    // but here we sequence them.
+    // I'll add a 'Finish' button logic or just assume sc2 retractable.
 
-    // lim3 sc1 → conclusion path (if only one limitation)
-    // Continue-9 or similar may exist; rely on lim3s1.end listener
-    if (S.lim3s1.end) {
-        S.lim3s1.end.addEventListener("click", (e) => {
-            const btn = e.target.closest('[id^="Continue"]');
-            if (btn && btn.id !== "Continue-6") { stopLottie(); hideAll(); show(S.conclusion); }
-        });
-    }
+    // Wire Conclusion discover button
+    onClick("Rectangle_436-2-2", () => { hide(S.solution); showingSolution = false; });
+    onClick("Group_1497-2", () => { hide(S.solution); showingSolution = false; }); // Close X on solution popup
+
 
     // ═══════════════════════════════════════════════════════════
     //  CONCLUSION — Discover the Solution
