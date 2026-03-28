@@ -1163,6 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //   show(S.lim3s2.end);
         // }, 800);
         show(S.lim3s2.end);
+        playLottie("emoji-sad");
       } else if (lim3s2.breads >= 50) {
         // Technically user could win if logic allowed, but SC2 is designed to fail.
         // We'll just check for failure as requested.
@@ -1182,7 +1183,12 @@ document.addEventListener("DOMContentLoaded", () => {
   onClick("Group_1-4", resetLim3s2);
   onClick("Continue-sc2-fail", () => {
     stopLottie();
+    // resetLim3s2();
+    hideAll();
     resetLim3s2();
+    show(S.conclusion);
+    show(S.home_buttom);
+    show(S.back_button);
   });
 
   // Move to conclusion path from successful SC1 or somewhere else (if needed)
@@ -1211,7 +1217,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //  CONCLUSION — Discover the Solution
   // ═══════════════════════════════════════════════════════════
   onClick("Click_here_to_discover_the_solution.", () => show(S.solution));
-
+  onClick("Group_804-5", () => show(S.solution));
   function wireClose(popup) {
     if (!popup) return;
     const closeBtn =
