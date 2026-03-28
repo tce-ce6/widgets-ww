@@ -160,7 +160,35 @@ document.addEventListener("DOMContentLoaded", () => {
     insights: $("insights-popup"),
     back_button: $("Group_594-2"),
     home_buttom: $("Group_1566"),
+    next_button: $("btn-next"),
   };
+
+  // Navigation history for Back button
+  // Each entry is a scenario object {base, cards?} or null (= menu)
+  const navHistory = [];
+
+  // Ordered sequence for Next navigation
+  // null = menu; 'conclusion' = conclusion element
+  const NAV_SEQ = [
+    null, S.lim1s1, S.lim1s2, S.lim2s1, S.lim2s2,
+    S.lim3s1, S.lim3s2, "conclusion",
+  ];
+
+  function getCurrentScreen() {
+    const scs = [S.lim1s1, S.lim1s2, S.lim2s1, S.lim2s2, S.lim3s1, S.lim3s2];
+    for (const sc of scs) {
+      if (sc && sc.base && sc.base.style.display !== "none") return sc;
+    }
+    if (S.conclusion && S.conclusion.style.display !== "none") return "conclusion";
+    return null; // menu
+  }
+
+  function updateNavButtons() {
+    const cur = getCurrentScreen();
+    const idx = NAV_SEQ.indexOf(cur);
+    const hasNext = idx >= 0 && idx < NAV_SEQ.length - 1;
+    if (S.next_button) hasNext ? show(S.next_button) : hide(S.next_button);
+  }
 
   // ─────────────────────────────────────────────
   //  HIDE ALL SCREENS
@@ -199,6 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
       S.insights,
       S.back_button,
       S.home_buttom,
+      S.next_button,
     ].forEach(hide);
   }
 
@@ -399,71 +428,106 @@ document.addEventListener("DOMContentLoaded", () => {
   // Menu scenario buttons
   onClick("Group_1501", () => {
     clearCardHighlight();
+    navHistory.push(null);
     goTo(S.lim1s1);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502", () => {
     clearCardHighlight();
+    navHistory.push(null);
     goTo(S.lim1s2);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-2", () => {
     clearCardHighlight();
+    navHistory.push(null);
     goTo(S.lim2s1);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-2", () => {
     clearCardHighlight();
+    navHistory.push(null);
     goTo(S.lim2s2);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-3", () => {
+    navHistory.push(null);
     resetLim3s1();
     goTo(S.lim3s1);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-3", () => {
+    navHistory.push(null);
     resetLim3s2();
     if (S.lim3s2.base) goTo(S.lim3s2);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // Internal Scenario switchers (top bar) in Limitation 3
-  onClick("Scenario_1-6", () => {
-    resetLim3s1();
-    goTo(S.lim3s1);
-  });
-  onClick("Scenario_2-6", () => {
-    resetLim3s2();
-    if (S.lim3s2.base) goTo(S.lim3s2);
-  });
-  onClick("Group_1500-5", () => {
-    resetLim3s1();
-    goTo(S.lim3s1);
-  }); // Parent for Scenario 1 top btn
-  onClick("Group_1500-6", () => {
-    resetLim3s2();
-    if (S.lim3s2.base) goTo(S.lim3s2);
-  }); // Parent for Scenario 2 top btn
+  onClick("Scenario_1-6", () => { resetLim3s1(); goTo(S.lim3s1); updateNavButtons(); });
+  onClick("Scenario_2-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); updateNavButtons(); });
+  onClick("Group_1500-5", () => { resetLim3s1(); goTo(S.lim3s1); updateNavButtons(); });
+  onClick("Group_1500-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); updateNavButtons(); });
 
-  // Global back / home — also stop lottie
+  // Restore a history entry (null = menu, sc object = scenario)
+  function restorePrev(prev) {
+    hideAll();
+    if (!prev) {
+      show(S.menu);
+    } else if (prev.base) {
+      show(prev.base);
+      if (prev.cards) show(prev.cards);
+      show(S.home_buttom);
+      show(S.back_button);
+      updateNavButtons();
+    } else {
+      // plain element (e.g. S.conclusion)
+      show(prev);
+      show(S.home_buttom);
+      show(S.back_button);
+      updateNavButtons();
+    }
+  }
+
+  // Global back — go to previous scenario
   onClick("Back", () => {
     stopLottie();
     clearCardHighlight();
-    hideAll();
-    show(S.menu);
+    restorePrev(navHistory.length > 0 ? navHistory.pop() : null);
   });
+
+  // Home — always go to menu, clear history
   onClick("Group_1566", () => {
+    navHistory.length = 0;
     stopLottie();
     clearCardHighlight();
     hideAll();
     show(S.menu);
+  });
+
+  // Next — advance to the next scenario in sequence
+  onClick("btn-next", () => {
+    const cur = getCurrentScreen();
+    const idx = NAV_SEQ.indexOf(cur);
+    if (idx < 0 || idx >= NAV_SEQ.length - 1) return;
+    const next = NAV_SEQ[idx + 1];
+    navHistory.push(cur);
+    stopLottie();
+    clearCardHighlight();
+    hideAll();
+    if (next === "conclusion") {
+      show(S.conclusion);
+    } else if (next && next.base) {
+      if (next === S.lim3s1) resetLim3s1();
+      if (next === S.lim3s2) resetLim3s2();
+      show(next.base);
+      if (next.cards) show(next.cards);
+    } else {
+      show(S.menu);
+    }
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
@@ -601,9 +665,9 @@ document.addEventListener("DOMContentLoaded", () => {
   onClick("Continue", () => {
     stopLottie();
     clearCardHighlight();
+    navHistory.push(S.lim1s1);
     goTo(S.lim1s2);
-    show(S.back_button);
-    show(S.home_button);
+    show(S.back_button); show(S.home_buttom); updateNavButtons();
   });
 
   // ── SCENARIO 2: Maria (Has 3 Clay Pots, Wants Tools) ────────
@@ -689,7 +753,9 @@ document.addEventListener("DOMContentLoaded", () => {
   onClick("Continue_to_Next_Challenge_", () => {
     stopLottie();
     clearCardHighlight();
+    navHistory.push(S.lim1s2);
     goTo(S.lim2s1);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
@@ -869,7 +935,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   onClick("Continue-4", () => {
     stopLottie();
+    navHistory.push(S.lim2s1);
     goTo(S.lim2s2);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // ── Lim2 Scenario 2 ─────────────────────────────────────────
@@ -1010,9 +1078,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onClick("Continue_to_Next_Challenge_-2", () => {
     stopLottie();
+    navHistory.push(S.lim2s2);
+    resetLim3s1();
     goTo(S.lim3s1);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
@@ -1074,12 +1143,36 @@ document.addEventListener("DOMContentLoaded", () => {
     setTradeEnabled("Group_1488", lim3s1.breads > 0);
   }
 
+  // Inline SC1 emoji SVG into SC2 once (replaces <use> refs that fail when SC1 is hidden)
+  let _sc2EmojisDone = false;
+  function _inlineSC2Emojis() {
+    if (_sc2EmojisDone) return;
+    _sc2EmojisDone = true;
+    const sc2 = $("limitation03-sc02-base-screen");
+    if (!sc2) return;
+    const ids = [
+      "Group_1462", "Group_1466", "Group_1469", "Group_1472",         // inventory
+      "Group_1462-3", "Group_1475", "Group_1475-2",                   // exchange rates
+      "Group_1480", "Group_1480-2", "Group_1483",
+    ];
+    ids.forEach(id => {
+      const src = $(id);
+      if (!src) return;
+      const useEl = sc2.querySelector('use[href="#' + id + '"]');
+      if (!useEl) return;
+      const clone = src.cloneNode(true);
+      clone.removeAttribute("id");
+      clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      useEl.parentNode.replaceChild(clone, useEl);
+    });
+  }
+
   function resetLim3s2() {
+    _inlineSC2Emojis();
     lim3s2 = { cows: 0, chickens: 8, breads: 0, apples: 0 };
     updateLim3s2UI();
     if (S.lim3s2.end) hide(S.lim3s2.end);
     showingSolution = false;
-    // const s2 = $("Show_Answer-2"); if (s2) $q("tspan", s2).textContent = "Show Answer";
   }
 
   function updateLim3s2UI() {
@@ -1138,9 +1231,11 @@ document.addEventListener("DOMContentLoaded", () => {
   onClick("Group_1-3", resetLim3s1);
   onClick("Continue-7", () => {
     stopLottie();
+    navHistory.push(S.lim3s1);
     hideAll();
     resetLim3s2();
     show(S.lim3s2.base);
+    show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // SC2 Transitions & Buttons
@@ -1183,12 +1278,12 @@ document.addEventListener("DOMContentLoaded", () => {
   onClick("Group_1-4", resetLim3s2);
   onClick("Continue-sc2-fail", () => {
     stopLottie();
-    // resetLim3s2();
+    navHistory.push(S.lim3s2);
     hideAll();
     resetLim3s2();
     show(S.conclusion);
-    show(S.home_buttom);
-    show(S.back_button);
+    show(S.home_buttom); show(S.back_button);
+    hide(S.next_button); // conclusion is the last screen
   });
 
   // Move to conclusion path from successful SC1 or somewhere else (if needed)
