@@ -210,29 +210,67 @@ document.addEventListener("DOMContentLoaded", () => {
         if (DOM.calcPanel) DOM.calcPanel.style.display = "block";
         DOM.calcTexts.forEach(t => t.textContent = "");
 
+        const fmt = (n) => Number.isInteger(n) ? n.toString() : Number(n.toFixed(2)).toString();
+        const measureCanvas = document.createElement("canvas");
+        const ctx = measureCanvas.getContext("2d");
+        ctx.font = "bold 28px Roboto, sans-serif";
+        const textWidth = (str) => ctx.measureText(str).width;
+
         let steps = [];
-        let tempNum = originalTarget;
+        let remaining = originalTarget;
         let factorsSoFar = [];
 
         for (let i = 0; i < primeFactors.length; i++) {
             factorsSoFar.push(primeFactors[i]);
-            tempNum = tempNum / primeFactors[i];
+            remaining = remaining / primeFactors[i];
 
-            let stepStr = "";
-            let remainingText = tempNum > 1 ? ` x ${tempNum}` : "";
-
-            if (i === 0) {
-                stepStr = `${originalTarget} = ${factorsSoFar.join(' x ')}${remainingText}`;
-            } else {
-                stepStr = `= ${factorsSoFar.join(' x ')}${remainingText}`;
+            // Clamp floating noise (e.g., 1.0000000002 -> 1)
+            if (Math.abs(remaining - Math.round(remaining)) < 1e-6) {
+                remaining = Math.round(remaining);
             }
+
+            const prefix = i === 0 ? `${fmt(originalTarget)} = ` : "= ";
+            const tail = remaining > 1 ? ` x ${fmt(remaining)}` : "";
+            const stepStr = `${prefix}${factorsSoFar.map(fmt).join(' x ')}${tail}`;
             steps.push(stepStr);
         }
 
-        let displaySteps = steps.slice(-3);
+        // Add a final, clean prime-product line (e.g., "= 2 x 2 x 3 x 2")
+        if (primeFactors.length > 0) {
+            steps.push(`= ${primeFactors.map(fmt).join(' x ')}`);
+        }
+
+        let displaySteps = steps;
+        if (steps.length > 3) {
+            displaySteps = [steps[0], ...steps.slice(-2)];
+        }
+        // Align all "=" signs under the first "="
+        let eqColumnX = null;
+        const baseX = DOM.calcTexts[0] ? parseFloat(DOM.calcTexts[0].getAttribute("x") || "0") : 0;
+
+        if (displaySteps[0]) {
+            const eqIdx = displaySteps[0].indexOf("=");
+            if (eqIdx !== -1) {
+                const prefix = displaySteps[0].slice(0, eqIdx);
+                eqColumnX = baseX + textWidth(prefix);
+            }
+        }
+
         displaySteps.forEach((stepStr, index) => {
-            if (DOM.calcTexts[index]) {
-                DOM.calcTexts[index].textContent = stepStr;
+            const tspan = DOM.calcTexts[index];
+            if (!tspan) return;
+
+            tspan.textContent = stepStr;
+
+            if (eqColumnX !== null) {
+                const eqIdx = stepStr.indexOf("=");
+                if (eqIdx !== -1) {
+                    const prefix = stepStr.slice(0, eqIdx);
+                    const targetX = eqColumnX - textWidth(prefix);
+                    tspan.setAttribute("x", targetX);
+                } else {
+                    tspan.setAttribute("x", baseX);
+                }
             }
         });
     }
@@ -327,15 +365,15 @@ document.addEventListener("DOMContentLoaded", () => {
             blastY = activePos.y - 80;
         } else {
             // Calculate cannon mouth position based on current rotation
-            const cannonLength = 292; // Approximate length of the cannon
+            const cannonLength = 320; // distance from pivot to muzzle center
             const angleInRadians = (currentCannonAngle - 90) * (Math.PI / 180);
 
-            // Calculate mouth position from pivot point
             const mouthOffsetX = Math.cos(angleInRadians) * cannonLength;
             const mouthOffsetY = Math.sin(angleInRadians) * cannonLength;
 
-            blastX = cannonPivotX + mouthOffsetX - 150;
-            blastY = cannonPivotY + mouthOffsetY - 150;
+            const blastOffset = 200; // half of explosion object's 400px size
+            blastX = cannonPivotX + mouthOffsetX - blastOffset;
+            blastY = cannonPivotY + mouthOffsetY - blastOffset;
         }
 
         if (DOM.explosionObject) {
