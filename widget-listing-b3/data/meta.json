@@ -49,8 +49,8 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-27T16:10:55+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-28T18:39:55+05:30",
+      "author": "sushantthe"
     },
     "wg115-literary-device": {
       "updatedAt": "2026-03-24T17:11:47+05:30",
@@ -379,6 +379,70 @@
   },
   "commits": [
     {
+      "date": "2026-03-28T18:39:55+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-28T18:19:43+05:30",
+      "author": "sushantthe",
+      "message": "wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-28T11:34:20+05:30",
+      "author": "sushantthe",
+      "message": "fixed issue wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-28T10:19:34+05:30",
+      "author": "sushantthe",
+      "message": "wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-28T09:12:41+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-28T08:46:08+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-27T23:54:30+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed 114",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-27T20:47:15+05:30",
+      "author": "sushantkanaujiya",
+      "message": "fixed wg114",
+      "widgets": [
+        114
+      ]
+    },
+    {
       "date": "2026-03-27T20:43:40+05:30",
       "author": "PrasannaP",
       "message": "Refraction, Total Internal Reflection and Critical Angle",
@@ -554,74 +618,6 @@
       "message": "feat: replace angle display with input field and enhance angle handling logic",
       "widgets": [
         70
-      ]
-    },
-    {
-      "date": "2026-03-27T17:12:31+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-27T16:55:24+05:30",
-      "author": "PrasannaP",
-      "message": "fix: enhance total internal reflection logic in draw function",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-27T16:10:55+05:30",
-      "author": "sushantkanaujiya",
-      "message": "wg114",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-27T15:45:08+05:30",
-      "author": "tce-ashishg",
-      "message": "letter widgets error resolved",
-      "widgets": [
-        101,
-        118,
-        127,
-        140,
-        153
-      ]
-    },
-    {
-      "date": "2026-03-27T15:30:07+05:30",
-      "author": "tce-nitinc",
-      "message": "wg52 changes",
-      "widgets": [
-        52
-      ]
-    },
-    {
-      "date": "2026-03-27T15:08:48+05:30",
-      "author": "PrasannaP",
-      "message": "b3_wg146_260327_1",
-      "widgets": [
-        146
-      ]
-    },
-    {
-      "date": "2026-03-27T15:03:07+05:30",
-      "author": "PrasannaP",
-      "message": "bg case fixed",
-      "widgets": [
-        91
-      ]
-    },
-    {
-      "date": "2026-03-27T14:36:46+05:30",
-      "author": "PrasannaP",
-      "message": "feat: Implement smooth fade-in and fade-out transitions for the SVG container and author portraits.",
-      "widgets": [
-        146
       ]
     }
   ]
