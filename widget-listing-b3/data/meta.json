@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-27T20:29:23+05:30",
+      "updatedAt": "2026-03-29T14:54:02+05:30",
       "author": "sushantthe"
     },
     "wg153-informal-letters": {
@@ -378,6 +378,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-29T14:54:02+05:30",
+      "author": "sushantthe",
+      "message": "Enhance text handling in crop factsheets",
+      "widgets": [
+        151
+      ]
+    },
     {
       "date": "2026-03-28T18:39:55+05:30",
       "author": "sushantthe",
@@ -610,14 +618,6 @@
       "message": "wg151 fixed",
       "widgets": [
         151
-      ]
-    },
-    {
-      "date": "2026-03-27T17:17:19+05:30",
-      "author": "PrasannaP",
-      "message": "feat: replace angle display with input field and enhance angle handling logic",
-      "widgets": [
-        70
       ]
     }
   ]
