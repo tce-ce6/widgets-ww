@@ -470,6 +470,9 @@ document.addEventListener("DOMContentLoaded", () => {
     factsheetVariety: document.getElementById("Variety_in_India_:_HD-2967_PBW-343_Lok-1_GW-322_Sharbati_Kalyan_Sona"),
     factsheetFact: document.getElementById("Fact:_Punjab_and_Haryana_are_called_the_Breadbasket_of_India_because_they_produce_nearly_50_of_the_country_s_wheat."),
     factsheetStates: document.getElementById("States:_Jammu_and_Kashmir_Himachal_Pradesh_Uttarakhand_Punjab_Haryana_Rajasthan_Uttar_Pradesh_Bihar_Jharkhand_West_Bengal_Madhya_Pradesh_Gujarat_Maharashtra"),
+    factsheetClimateDiv: document.getElementById("factsheet-climate-text"),
+    factsheetSoilDiv: document.getElementById("factsheet-soil-text"),
+    factsheetFactDiv: document.getElementById("factsheet-fact-text"),
 
     tryAnotherCropBtn: document.getElementById("Group_16161"),
 
@@ -1095,27 +1098,16 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Climate — each line in its own fixed-y <text> element; use textLength
-        // compression so long lines stay inside the box without overlapping neighbours.
-        // Climate box width=503, usable ≈ 479.
-        if (elements.factsheetClimate) {
-          const tspans = Array.from(elements.factsheetClimate.querySelectorAll("text tspan"));
-          // tspans[0] = title, tspans[1-3] = content lines
-          if (tspans.length >= 4) {
-            fitTextInBox(tspans[1], facts.climate1, 1534, 479);
-            fitTextInBox(tspans[2], facts.climate2, 1534, 479);
-            fitTextInBox(tspans[3], facts.climate3, 1534, 479);
-          }
+        // Climate — Use foreignObject div for automatic wrapping
+        if (elements.factsheetClimateDiv) {
+          const content = [facts.climate1, facts.climate2, facts.climate3].filter(Boolean).join(" ");
+          elements.factsheetClimateDiv.textContent = content;
         }
 
-        // Soil — same box size as Climate (width=503, usable ≈ 479).
-        if (elements.factsheetSoil) {
-          const tspans = Array.from(elements.factsheetSoil.querySelectorAll("text tspan"));
-          // tspans[0] = title, tspans[1-2] = content lines
-          if (tspans.length >= 3) {
-            fitTextInBox(tspans[1], facts.soil1, 1534, 479);
-            fitTextInBox(tspans[2], facts.soil2, 1534, 479);
-          }
+        // Soil — Use foreignObject div
+        if (elements.factsheetSoilDiv) {
+          const content = [facts.soil1, facts.soil2].filter(Boolean).join(" ");
+          elements.factsheetSoilDiv.textContent = content;
         }
 
         // Variety — short items, just center; clear unused slots
@@ -1130,18 +1122,10 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        // Fact — fact box width=838, usable ≈ 810.
-        // fact1 is short → compress only if needed.
-        // fact2 may be long → word-wrap within the last <text> element (safe, no
-        // following fixed-y element to overlap). Extra dy lines stay inside the box.
-        if (elements.factsheetFact) {
-          const texts = Array.from(elements.factsheetFact.querySelectorAll("text"));
-          // texts[0] = "Fact:" title, texts[1] = fact1, texts[2] = fact2
-          if (texts.length >= 3) {
-            const fact1Tspan = texts[1].querySelector('tspan');
-            fitTextInBox(fact1Tspan, facts.fact1, 1370, 810, 70);
-            wrapLastTextEl(texts[2], facts.fact2, 1370, 68);
-          }
+        // Fact — Use foreignObject div
+        if (elements.factsheetFactDiv) {
+          const content = [facts.fact1, facts.fact2].filter(Boolean).join(" ");
+          elements.factsheetFactDiv.textContent = content;
         }
       }
     }
