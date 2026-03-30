@@ -579,7 +579,9 @@ function wrapLastWord(lineEl, text, lineIndex, rhymingWords) {
 }
 
 function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
-  if (!el || !activeMarker) return;
+  if (!el) return;
+  // If it's a user interaction (idx is a number), require activeMarker
+  if (typeof idx === "number" && !activeMarker) return;
 
   const rhymeColorMap = {
     a: markerStyles.green.color,
@@ -613,7 +615,18 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
   if (typeof idx === "number") {
     const letterTag = document.getElementById(`r${idx + 1}`);
     const signTag = document.getElementById(`sign${idx + 1}`);
-    const markerLetter = Object.keys(RHYME_COLORS).find(key => RHYME_COLORS[key] === markerColor) || 'a';
+    
+    // Map marker names logically to their corresponding letters
+    const markerNameToLetter = {
+      green: 'a',
+      yellow: 'b',
+      blue: 'c',
+      pink: 'd',
+      orange: 'e',
+      purple: 'f'
+    };
+    const markerLetter = activeMarker ? (markerNameToLetter[activeMarker.name] || 'a') : 'a';
+    
     if (letterTag) {
       letterTag.textContent = markerLetter;
       // We now modify color because letterTag is a standard HTML span.
@@ -693,35 +706,45 @@ function attachWordClicks(rhymingWords, scheme) {
 }
 
 function hideAnswer() {
-  // 1. Usuń wyróżnienia ze słów
   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
-    // Zakładamy, że masz funkcję removeHighlight lub czyścisz style ręcznie
     el.style.backgroundColor = 'transparent';
-    el.classList.remove('highlighted'); // Jeśli używasz klas CSS
+    el.style.color = "";
+    el.style.padding = "";
+    el.style.fontWeight = "";
+    el.classList.remove('highlighted'); 
 
-    // 2. Wyczyść tagi rymów (r1, r2, itd.)
     const letterTag = document.getElementById(`r${idx + 1}`);
     if (letterTag) {
       letterTag.textContent = '';
+      letterTag.style.color = '';
+      letterTag.style.fill = '';
     }
+    const signTag = document.getElementById(`sign${idx + 1}`);
+    if (signTag) signTag.src = '';
+    
+    const warnTag = document.getElementById(`warn${idx + 1}`);
+    if (warnTag) warnTag.src = '';
   });
-
+  
+  correctWordsSet.clear();
   stanzaaudioPlayed = false;
   soundIcon.style.display = 'none';
   if (stanzaaudio) {
-    stanzaaudio.pause();
-    stanzaaudio.currentTime = 0;
+    try { stanzaaudio.pause(); stanzaaudio.currentTime = 0; } catch(e){}
   }
 
-  // 3. Przywróć interfejs
   showAnswerBtn.textContent = 'Show Answer';
-  // Ponownie włącz markery (opcjonalnie)
   ['green', 'yellow', 'blue', 'pink', 'orange', 'purple'].forEach(k => setMarkerEnabled(markers[k], true));
+  setMarkerEnabled(markers.green, true);
+  activeMarker = null;
+  document.body.style.cursor = 'default';
+  
+  const warningDiv = document.getElementById('warning');
+  if (warningDiv) warningDiv.style.display = 'none';
 }
 
 function showAnswer() {
-  // SPRAWDZENIE: Jeśli odpowiedzi są już pokazane, ukryj je i zakończ
-  if (showAnswerBtn.textContent === 'Hide Answer') {
+  if (showAnswerBtn.textContent.trim() === 'Hide Answer') {
     hideAnswer();
     return;
   }
@@ -750,8 +773,10 @@ function showAnswer() {
       letterTag.style.fill = color;
     }
 
+    const signTag = document.getElementById(`sign${idx + 1}`);
     if (signTag) {
-      signTag.src = "";
+      const correctPath = 'assets/images/right-mark.svg';
+      signTag.src = correctPath;
     }
     if (warnTag) {
       warnTag.src = "";
@@ -769,10 +794,7 @@ function showAnswer() {
   playCurrentStanzaaudio();
 }
 
-// Event listener pozostaje bez zmian
-if (showAnswerBtn) {
-  showAnswerBtn.addEventListener('click', showAnswer);
-}
+// We remove the duplicate addEventListener here, since bindShowAnswer handles it.
 
 function getCurrentStanzaKey() {
   const num = String(currentStanzaIndex + 1).padStart(2, '0');
@@ -970,9 +992,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  if (showAnswerBtn) {
-    showAnswerBtn.addEventListener('click', showAnswer);
-  }
+  // We leave the single bindShowAnswer above. Removed the duplicate here.
 
   if (soundIcon) {
     soundIcon.addEventListener('click', playCurrentStanzaaudio);

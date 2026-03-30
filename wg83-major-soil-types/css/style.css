@@ -307,13 +307,16 @@ svg * {
 
 .preview-btn {
   position: absolute;
-  bottom: -30px;
-  right: 50%;
+  bottom: -29px;
+  right: 43.5%;
   transform: translateX(50%);
   width: 280px;
   height: auto;
   cursor: pointer;
+  display: none;
 }
+
+
 
 .option-list {
   display: flex;

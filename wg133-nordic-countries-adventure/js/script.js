@@ -1160,24 +1160,43 @@ function initLayerWrongClicks() {
 }
 
 function initDistractors() {
-    const notCountry = document.getElementById('not-country');
-    let hideTimer = null;
-
     ['distractor-1', 'distractor-2', 'distractor-3', 'distractor-4'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
 
+        el.style.cursor = 'pointer';
         el.addEventListener('click', () => {
-            if (!notCountry) return;
+            // Hide result popups from previous round
+            if (AppState.elements.correctAnswerPopup) {
+                AppState.elements.correctAnswerPopup.style.display = 'none';
+                const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+            }
 
-            // Clear any existing hide timer so rapid clicks restart the 2s window
-            if (hideTimer) clearTimeout(hideTimer);
+            if (AppState.elements.factBitePopup) {
+                AppState.elements.factBitePopup.style.display = 'none';
+            }
 
-            notCountry.style.display = 'block';
-            hideTimer = setTimeout(() => {
-                notCountry.style.display = 'none';
-                hideTimer = null;
-            }, 2000);
+            // If quiz is already open (user finished quiz and clicks another country)
+            if (AppState.elements.questionContainer &&
+                AppState.elements.questionContainer.style.display === 'block') {
+
+                if (AppState.elements.iText2) {
+                    AppState.elements.iText2.style.display = 'none';
+                }
+
+                if (AppState.elements.btnQuiz) {
+                    AppState.elements.btnQuiz.style.display = 'none';
+                }
+
+                if (AppState.elements.flagsWrapper) {
+                    AppState.elements.flagsWrapper.classList.remove('disabled');
+                }
+
+                return;
+            }
+
+            handleCountryClick(id);
         });
     });
 }

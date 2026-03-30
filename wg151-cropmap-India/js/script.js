@@ -574,6 +574,8 @@ const CROP_DATA = {
 
       elements.homeBtn.classList.add("st170");
     }
+    const tspan = elements.showAnswerBtn?.querySelector("tspan");
+    if (tspan) tspan.textContent = "Show Answer";
   };
 
   // All valid Indian state/UT names that can appear on the map
@@ -736,7 +738,11 @@ const CROP_DATA = {
           if (p.isPointInFill(pt)) {
             const bbox = p.getBBox();
             const area = bbox.width * bbox.height;
+<<<<<<< HEAD
+            if (area > 0 && area < smallestArea && !p.id.includes("Kerala") && !p.id.includes("Meghalaya")) { smallestArea = area; bestPath = p; }
+=======
             if (area > 0 && area < smallestArea) { smallestArea = area; bestPath = p; }
+>>>>>>> parent of 7764bd53 (Merge pull request #414 from tce-ce6/deploy-sushant)
           }
         } catch (_) {}
       });

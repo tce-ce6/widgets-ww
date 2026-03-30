@@ -82,11 +82,11 @@ function showStep2() {
   const resetBtn = document.getElementById("reset-btn");
   if (resetBtn) resetBtn.style.display = "none";
 
-  const previewBtn = document.querySelector(".preview-btn");
-  if (previewBtn) previewBtn.style.display = "none";
 
   // 2. Hide summary, show soil-typeSection
   document.getElementById("summary-sec").style.display = "none";
+  const previewBtn = document.querySelector(".preview-btn");
+  if (previewBtn) previewBtn.style.display = "none";
 
   // 3. Hide error note
   const errorNote = document.getElementById("error-note");
@@ -351,17 +351,15 @@ function showSummary() {
 
   document.getElementById("summary-sec").style.display = "block";
 
+  const previewBtn = document.querySelector(".preview-btn");
+  if (previewBtn) previewBtn.style.display = "block";
+
   // Show soil map when summary is displayed
   const soilMap = document.getElementById("soil-map");
   if (soilMap) {
     soilMap.style.display = "block";
   }
 
-  // Show preview button when summary is displayed
-  const previewBtn = document.querySelector(".preview-btn");
-  if (previewBtn) {
-    previewBtn.style.display = "block";
-  }
 
   document.querySelector(".summary-header").innerText =
     selectedSoil.name;
@@ -396,7 +394,7 @@ function loadCropQuestion() {
   selectedSoil.cropQuestion.options.forEach(option => {
 
     const li = document.createElement("li");
-console.log("option.image", option.image);
+    console.log("option.image", option.image);
 
     li.innerHTML = `
         <img src="${option.image}">
@@ -592,7 +590,7 @@ document.querySelector(".reset-btn").addEventListener("click", () => {
 // NEXT BUTTON HANDLER - Navigate between stages
 const nextButtons = document.querySelectorAll(".backNext-btn span");
 if (nextButtons.length > 1) {
-  nextButtons[1].addEventListener("click", function() {
+  nextButtons[1].addEventListener("click", function () {
     // Only allow if not disabled
     if (this.classList.contains("disabled")) {
       return;
@@ -601,7 +599,12 @@ if (nextButtons.length > 1) {
     const soilMap = document.getElementById("soil-map");
     const optionListWrapper = document.getElementById("option-list-wrapper");
     const resetBtn = document.getElementById("reset-btn");
-    const previewBtn = document.querySelector(".preview-btn");
+
+    const errorNote = document.getElementById("error-note");
+
+    if (errorNote) {
+      errorNote.style.display = "none";
+    }
 
     // Stage 1: Map to Texture Question
     if (!optionListWrapper || optionListWrapper.style.display === "none") {
@@ -611,9 +614,6 @@ if (nextButtons.length > 1) {
       }
       if (resetBtn) {
         resetBtn.style.display = "block";
-      }
-      if (previewBtn) {
-        previewBtn.style.display = "none";
       }
 
       // Reset next button state
@@ -815,6 +815,9 @@ if (homeBtn) {
     document.body.classList.remove("step-2");
     document.body.classList.add("step-1");
 
+    const previewBtn = document.querySelector(".preview-btn");
+    if (previewBtn) previewBtn.style.display = "none";
+
     const soilItems = document.querySelectorAll(".soil-list li");
     mapLocationCorrect = false;
     soilItems.forEach(li => {
@@ -830,16 +833,19 @@ if (homeBtn) {
 
 const previewBtn = document.querySelector(".preview-btn");
 const previewPopup = document.querySelector(".preview-popup");
+const previewBackdrop = document.getElementById("modal-backdrop")
 const closePreview = document.getElementById("close-previewPopup");
 
 if (previewBtn) {
   previewBtn.addEventListener("click", () => {
     previewPopup.style.display = "block";
+    previewBackdrop.style.display = "block";
   });
 }
 
 if (closePreview) {
   closePreview.addEventListener("click", () => {
     previewPopup.style.display = "none";
+    previewBackdrop.style.display = "none";
   });
 }
