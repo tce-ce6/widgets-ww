@@ -431,6 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
 
   }
 
@@ -469,6 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
     matched.clear();
+      correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-2", () => {
@@ -482,6 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-3", () => {
@@ -812,11 +815,12 @@ document.addEventListener("DOMContentLoaded", () => {
   //  LIMITATION 2 — No Coincidence of Wants (pair matching)
   // ═══════════════════════════════════════════════════════════
   matched = new Set();
+  correctCount = 0;
   function makePairManager(pairs, sc, config = {}) {
     let selectedId = null;
     let selectedEl = null;
     
-    let correctCount = 0;
+    correctCount = 0;
 
     const pairMap = {};
     pairs.forEach(([a, b]) => {
@@ -849,7 +853,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (config.onSelect) config.onSelect(clickedId);
           if (config.onCorrect)
             config.onCorrect(correctCount, selectedId, clickedId);
-
+          selectedId = null;
+          selectedEl = null;
           if (correctCount >= totalPairs) {
             setTimeout(() => {
               stopLottie();
@@ -858,6 +863,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           const el1 = selectedEl,
             el2 = clickedEl;
+          // selectedId = null;
+          selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
           if (config.onWrong) config.onWrong();
           setTimeout(() => {
             if (el1) {
@@ -870,9 +878,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }, 1200);
         }
-        selectedId = null;
-        selectedEl = null;
-        if (config.onSelect) config.onSelect(null);
       }
     };
   }
@@ -1023,6 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
