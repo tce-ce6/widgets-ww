@@ -20,6 +20,25 @@
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920.01 1080">
   <defs>
+    <mask id="paraImageRadiusMask" maskUnits="userSpaceOnUse">
+    <!-- White = visible -->
+    <rect 
+      x="1425" 
+      y="334" 
+      width="420" 
+      height="420" 
+      rx="20" 
+      ry="20" 
+      fill="white"/>
+  </mask>
+    <filter id="boxShadow">
+      <feDropShadow 
+        dx="3" 
+        dy="3" 
+        stdDeviation="3" 
+        flood-color="black" 
+        flood-opacity="0.3"/>
+    </filter>
     <clipPath id="clippath">
       <rect x="1458.01" y="367" width="355" height="355" fill="none"/>
     </clipPath>
@@ -181,6 +200,7 @@
         <line id="Line_14" data-name="Line 14" x1="679.01" y1="500.5" x2="1387.67" y2="500.5" fill="none" stroke="#000"/>
       </g>
     </g>
+    
   </g>
   <g id="para-image-default">
     <g id="Group_834" data-name="Group 834">
@@ -210,7 +230,7 @@
       </g>
     </g>
   </g>
-  <g id="para-image">
+  <g id="para-image" mask="url(#paraImageRadiusMask)">
     <g clip-path="url(#clippath-1)">
       <g id="Mask_Group_1" data-name="Mask Group 1">
         <g id="tajmahal">
@@ -948,7 +968,7 @@
     <rect id="Rectangle_244" data-name="Rectangle 244" x="1094.01" y="674" width="277" height="35" fill="#0df"/>
     <rect id="Rectangle_245" data-name="Rectangle 245" x="688.01" y="716" width="574" height="35" fill="#0df"/>
   </g>
-  <g id="para-sentence-box">
+  <g id="para-sentence-box" filter="url(#boxShadow)">
     <g id="Group_806" data-name="Group 806">
       <g id="Group_805" data-name="Group 805">
         <rect id="Rectangle_91-6" data-name="Rectangle 91-6" x="84.01" y="186" width="499" height="129" rx="6" ry="6" fill="#aad97d"/>
@@ -1102,9 +1122,11 @@
     </g>
     <g id="Group_814" data-name="Group 814">
       <path id="Rectangle_2" data-name="Rectangle 2" d="M1378.01,936h225c19.33,0,35,15.67,35,35h0c0,19.33-15.67,35-35,35h-225c-19.33,0-35-15.67-35-35h0c0-19.33,15.67-35,35-35Z" fill="#4caf50"/>
-      <g id="Show_Answer" data-name="Show Answer" isolation="isolate">
-        <text transform="translate(1384.35 985.25)" fill="#fff" font-family="Roboto-Medium, Roboto" font-size="35" font-weight="500" isolation="isolate"><tspan x="0" y="0">Show </tspan><tspan x="95.21" y="0" letter-spacing="-.02em">A</tspan><tspan x="117.68" y="0">nswer</tspan></text>
-      </g>
+      <foreignObject id="answer-btn-text" x="1344" y="935" width="285" height="75" style="cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 35px; font-weight: 500; color: #fff;">
+          
+        </div>
+      </foreignObject>
     </g>
     <g id="Group_829" data-name="Group 829">
       <path id="Rectangle_2-2" data-name="Rectangle 2-2" d="M1692.01,936h123c19.33,0,35,15.67,35,35h0c0,19.33-15.67,35-35,35h-123c-19.33,0-35-15.67-35-35h0c0-19.33,15.67-35,35-35Z" fill="#ff2c68"/>
@@ -1115,9 +1137,14 @@
   </g>
   <g id="i-text">
     <g id="Tap_the_sentences_in_the_correct_order_to_create_a_meaningful_paragraph." data-name="Tap the sentences in the correct order to create a meaningful paragraph." isolation="isolate">
-      <text transform="translate(520.13 136)" fill="maroon" font-family="Roboto-Italic, Roboto" font-size="28" font-style="italic" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.06em">T</tspan><tspan x="14.79" y="0">ap the sentences in the correct order </tspan><tspan x="468.43" y="0" letter-spacing="0em">t</tspan><tspan x="477.16" y="0">o create a meaningful pa</tspan><tspan x="779.23" y="0" letter-spacing="-.02em">r</tspan><tspan x="788.01" y="0">ag</tspan><tspan x="818.3" y="0" letter-spacing="-.02em">r</tspan><tspan x="827.08" y="0">aph.</tspan></text>
+      <text transform="translate(520.13 136)" fill="maroon" font-family="Roboto-Italic, Roboto" font-size="28" font-style="italic" isolation="isolate"><tspan x="0" y="0" letter-spacing="-.06em">T</tspan><tspan x="14.79" y="0">ap the sentences in the correct order </tspan><tspan x="468.43" y="0" letter-spacing="0em"></tspan><tspan x="477.16" y="0">to create a meaningful paragraph.</tspan><tspan x="779.23" y="0" letter-spacing="-.02em"></tspan><tspan x="788.01" y="0"></tspan><tspan x="818.3" y="0" letter-spacing="-.02em"></tspan><tspan x="827.08" y="0"></tspan></text>
     </g>
   </g>
+  <foreignObject x="563" y="230.5" width="84.4" height="59.9" id="arrow-img" style="display:none">
+      <div>
+        <img src="./assets/arrow-img.svg" alt="">
+      </div>
+  </foreignObject>
 </svg>
       </div>
 
