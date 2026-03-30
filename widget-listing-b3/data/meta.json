@@ -185,8 +185,8 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-30T17:01:04+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-30T17:35:17+05:30",
+      "author": "tce-nitinc"
     },
     "wg153-informal-letters": {
       "updatedAt": "2026-03-30T16:34:16+05:30",
@@ -357,7 +357,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-30T13:25:06+05:30",
+      "updatedAt": "2026-03-30T17:35:17+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -382,6 +382,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-30T17:35:17+05:30",
+      "author": "tce-nitinc",
+      "message": "added 94 and 151 changes",
+      "widgets": [
+        94,
+        151
+      ]
+    },
     {
       "date": "2026-03-30T17:01:04+05:30",
       "author": "sushantkanaujiya",
@@ -674,14 +683,6 @@
       "date": "2026-03-29T14:56:43+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-29T14:54:02+05:30",
-      "author": "sushantthe",
-      "message": "Enhance text handling in crop factsheets",
       "widgets": [
         151
       ]
