@@ -602,6 +602,11 @@ if (nextButtons.length > 1) {
     const optionListWrapper = document.getElementById("option-list-wrapper");
     const resetBtn = document.getElementById("reset-btn");
     const previewBtn = document.querySelector(".preview-btn");
+    const errorNote = document.getElementById("error-note");
+
+    if (errorNote) {
+      errorNote.style.display = "none";
+    }
 
     // Stage 1: Map to Texture Question
     if (!optionListWrapper || optionListWrapper.style.display === "none") {
