@@ -420,3 +420,84 @@ svg * {
 .cursor-pointer {
   cursor: pointer;
 }
+
+/* Audio button styles with green glow */
+[id^="btn-audio-"].is-audio-playing {
+  filter: drop-shadow(0 0 12px #00ff00) drop-shadow(0 0 6px #33dd33);
+  animation: audioGlow 0.6s ease-in-out infinite;
+}
+
+@keyframes audioGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #00dd00) drop-shadow(0 0 4px #22ff22);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px #00ff00) drop-shadow(0 0 8px #44ff44);
+  }
+}
+
+/* Animation container for feedback marks */
+#animation-container-correct,
+#animation-container-incorrect {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  display: none;
+  z-index: 1000;
+}
+
+#animation-container-correct.show,
+#animation-container-incorrect.show {
+  display: block;
+}
+
+/* Gallery completion badge */
+.gallery-complete-badge {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #4c9936, #6ab952);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 28px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: badgePulse 0.6s ease-in-out;
+}
+
+/* SVG checkmark badge animation */
+.gallery-complete-checkmark.badge-animate {
+  animation: checkmarkBadgePulse 0.6s ease-in-out;
+}
+
+@keyframes badgePulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkmarkBadgePulse {
+  0% {
+    transform: scale(0.5) translate(0, 0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+}
