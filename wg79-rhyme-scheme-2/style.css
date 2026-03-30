@@ -241,12 +241,12 @@ svg * {
 }
 
 .rhyme-warn {
-  width: 250px;
+  width: 270px;
   height: 100px;
   margin-left: 10px;
   object-fit: contain;
   position: absolute;
-  right: -245px;
+  right: -215px;
 }
 
 .rhyme-sign[src=""],
@@ -260,8 +260,8 @@ svg * {
   display: none;
   color: red;
   font-weight: bold;
-  width: 260px;
-  height: 200px;
+  width: 450px;
+  height: 250px;
   /* add other styling here */
 }
 
@@ -273,7 +273,7 @@ svg * {
   align-items: center;
   font-size: 38px;
   line-height: 1.2;
-
+  padding-right: 50px;
 }
 
 .clickable-word {
