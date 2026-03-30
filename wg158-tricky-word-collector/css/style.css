@@ -837,7 +837,7 @@ body#balkan-country {
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: "Georgia", "Times New Roman", serif;
+    font-family: "Roboto", "Times New Roman", serif;
     min-height: 100vh;
     overflow-x: hidden;
   }
