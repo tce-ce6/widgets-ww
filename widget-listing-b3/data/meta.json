@@ -49,8 +49,8 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-30T16:59:55+05:30",
+      "author": "sushantthe"
     },
     "wg115-literary-device": {
       "updatedAt": "2026-03-24T17:11:47+05:30",
@@ -185,8 +185,8 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-30T17:01:04+05:30",
+      "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
       "updatedAt": "2026-03-30T16:34:16+05:30",
@@ -383,6 +383,22 @@
   },
   "commits": [
     {
+      "date": "2026-03-30T17:01:04+05:30",
+      "author": "sushantkanaujiya",
+      "message": "feat: initialize CropMap India project with base HTML, CSS, and script structure",
+      "widgets": [
+        151
+      ]
+    },
+    {
+      "date": "2026-03-30T16:59:55+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        114
+      ]
+    },
+    {
       "date": "2026-03-30T16:50:24+05:30",
       "author": "tce-ashishg",
       "message": "file name updated",
@@ -435,11 +451,27 @@
       ]
     },
     {
+      "date": "2026-03-30T16:22:43+05:30",
+      "author": "sushantthe",
+      "message": "Adjust SVG rectangle position and enhance outline visibility handling in script.js",
+      "widgets": [
+        114
+      ]
+    },
+    {
       "date": "2026-03-30T15:11:13+05:30",
       "author": "tce-ashishg",
       "message": "wg79 error resolved",
       "widgets": [
         79
+      ]
+    },
+    {
+      "date": "2026-03-30T15:02:51+05:30",
+      "author": "sushantthe",
+      "message": "Refactor SVG elements and improve Lottie animation handling in index.html and script.js",
+      "widgets": [
+        114
       ]
     },
     {
@@ -652,38 +684,6 @@
       "message": "Enhance text handling in crop factsheets",
       "widgets": [
         151
-      ]
-    },
-    {
-      "date": "2026-03-28T18:39:55+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-28T18:19:43+05:30",
-      "author": "sushantthe",
-      "message": "wg114",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-28T11:34:20+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue wg114",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-28T10:19:34+05:30",
-      "author": "sushantthe",
-      "message": "wg114",
-      "widgets": [
-        114
       ]
     }
   ]
