@@ -51,21 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function playLottie(name, targetEl) {
     stopLottie();
 
-    // Find the emoji face group inside the targetEl (group with many paths = face)
+    // Find the emoji face group inside the targetEl.
+    // Emoji groups contain a path with id starting "Path_2862" (star-eyes happy)
+    // or "Path_2186" (sad). Walk up 3 levels to reach the outer Group_1492/Group_1303.
     if (targetEl) {
-      const allGroups = targetEl.querySelectorAll("g");
-      for (const g of allGroups) {
-        // The emoji group has 5+ path children directly
-        const paths = g.querySelectorAll(":scope > path");
-        if (paths.length >= 5) {
-          _staticEmojiEl = g;
-          break;
-        }
-      }
-      // Also try clip-path groups (emoji is often wrapped in a clipPath group)
-      if (!_staticEmojiEl) {
-        const clipG = targetEl.querySelector("g[clip-path]");
-        if (clipG) _staticEmojiEl = clipG;
+      const innerPath = targetEl.querySelector(
+        "[id^='Path_2862'],[id^='Path_2186']"
+      );
+      if (innerPath) {
+        // path → Group_1491/1302 → clip-path group → Group_1492/1303
+        const outerG =
+          innerPath.parentElement?.parentElement?.parentElement;
+        _staticEmojiEl = outerG || innerPath.parentElement;
       }
 
       if (_staticEmojiEl) {
@@ -513,6 +510,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     if (next === "conclusion") {
       show(S.conclusion);
+      show(S.home_buttom);
+      return;
     } else if (next && next.base) {
       if (next === S.lim3s1) resetLim3s1();
       if (next === S.lim3s2) resetLim3s2();
@@ -550,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Priya: "wood",
     "Priya-2": "wood",
     Shambu: "wheat",
+    
   };
 
   makeCardsClickable(S.lim1s1.cards);
@@ -689,7 +689,12 @@ document.addEventListener("DOMContentLoaded", () => {
     Paul: "tools",
     Fathima: "apples",
     Fatima: "apples",
+    Priya: "wood",
+    "Priya-2": "wood",
+    Jaya: "tools",
+    Ranjit: "bread",
   };
+
 
   makeCardsClickable(S.lim1s2.cards);
 
@@ -1005,7 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Orchardist"
       ) {
         show(S.lim2s2.c01);
-           playLottie("emoji_happy-star", S.lim2s2.c02);
+           playLottie("emoji_happy-star", S.lim2s2.c01);
         const badge = document.getElementById("Trades_Completed:_1_4-2");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1141,6 +1146,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLim3s1UI();
     if (S.lim3s1.end) hide(S.lim3s1.end);
     showingSolution = false;
+
     const s1 = $("Show_Answer");
     if (s1) $q("tspan", s1).textContent = "Show Answer";
   }
@@ -1202,11 +1208,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return;
     const ts = $q("tspan", el) || $q("text", el) || el;
     const isShowing = ts.textContent.trim() === "Show Answer";
-    if (isShowing) {
+    if (!isShowing) {
       resetLim3s1();
     } else {
       lim3s1 = { cows: 0, chickens: 10, breads: 0, apples: 100 };
       updateLim3s1UI();
+    }
+    ts.textContent = isShowing ? "Hide Answer" : "Show Answer";
+  }
+    function toggleLim3Solution2(btnId, textId) {
+    const el = $(textId);
+    if (!el) return;
+    const ts = $q("tspan", el) || $q("text", el) || el;
+    const isShowing = ts.textContent.trim() === "Show Answer";
+    if (!isShowing) {
+      resetLim3s2();
+    } else {
+      lim3s2 = { cows: 0, chickens: 0, breads: 40, apples: 0 };
+      updateLim3s2UI();
     }
     ts.textContent = isShowing ? "Hide Answer" : "Show Answer";
   }
@@ -1232,8 +1251,8 @@ document.addEventListener("DOMContentLoaded", () => {
       lim3s1.apples += lim3Rates.bread;
       updateLim3s1UI();
       if (lim3s1.apples >= 100) {
-        // playLottie("emoji_happy-star");
         show(S.lim3s1.end);
+        playLottie("emoji_happy-star",S.lim3s1.end);
       }
     } //else playLottie("emoji-sad");
   });
@@ -1285,7 +1304,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else playLottie("emoji-sad");
   });
   onClick("Group_804-3", () =>
-    toggleLim3Solution("Group_804-3", "Show_Answer-2"),
+    toggleLim3Solution2("Group_804-3", "Show_Answer-2"),
   );
   onClick("Group_1-4", resetLim3s2);
   onClick("Continue-sc2-fail", () => {
@@ -1294,7 +1313,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     resetLim3s2();
     show(S.conclusion);
-    show(S.home_buttom); show(S.back_button);
+    show(S.home_buttom); 
+    hide(S.back_button);
     hide(S.next_button); // conclusion is the last screen
   });
 
