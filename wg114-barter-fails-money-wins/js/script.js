@@ -858,6 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           const el1 = selectedEl,
             el2 = clickedEl;
+          if (config.onWrong) config.onWrong();
           setTimeout(() => {
             if (el1) {
               el1.style.outline = "";
@@ -961,6 +962,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s1.wrong) {
+        show(S.lim2s1.wrong);
+        playLottie("emoji-sad", S.lim2s1.wrong);
+      }
+    },
   });
 
   makeCardsClickable(S.lim2s1.cards);
@@ -970,6 +977,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const found = findCardAndTrader(e, S.lim2s1.cards, lim2s1AllNames);
       if (!found) return;
       lim2s1Trade(found.traderId, found.topCard);
+    });
+  }
+
+  // Wire "Try another trader" button inside lim2s1 wrong popup (querySelector avoids duplicate-ID issue)
+  if (S.lim2s1.wrong) {
+    const tryBtn = S.lim2s1.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s1.wrong); });
     });
   }
 
@@ -1085,7 +1104,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s2.wrong) {
+        show(S.lim2s2.wrong);
+        playLottie("emoji-sad", S.lim2s2.wrong);
+      }
+    },
   });
+
+  // Wire "Try another trader" button inside lim2s2 wrong popup
+  if (S.lim2s2.wrong) {
+    const tryBtn = S.lim2s2.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s2.wrong); });
+    });
+  }
 
   const lim2s2Root = S.lim2s2.base;
   if (lim2s2Root) {
