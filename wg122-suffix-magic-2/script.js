@@ -530,16 +530,19 @@ function showAllAnswers(wordObj) {
   updateStarsDisplay(answers.length, answers.length);
 
   const assetMap = {
-    tree: './assets/tree-1.svg',
-    milestone: './assets/milestone-1.svg',
-    mountain: './assets/mountain-1.svg',
-    stone: './assets/stone-1.svg'
+    tree: `./assets/tree-${answers.length + 1}.svg`,
+    milestone: `./assets/milestone-${answers.length + 1}.svg`,
+    mountain: `./assets/mountain-${answers.length + 1}.svg`,
+    stone: `./assets/stone-${answers.length + 1}.svg`
   };
 
   // If the object exists in our map, update the source
   if (assetMap[objectName]) {
     imgEl.src = assetMap[objectName];
+  } else {
+    imgEl.src = `./assets/${objectName}-${answers.length}.svg`;
   }
+
   // 1. Reset standard word slots (word1, word2, etc)
   const wordSlots = [
     document.getElementById('word1'),
@@ -599,6 +602,8 @@ function showAllAnswers(wordObj) {
 
   // 4. Disable suffix interaction since answers are revealed
   document.querySelectorAll("#list-suffix li").forEach(li => {
+    li.dataset.savedPointerEvents = li.style.pointerEvents || 'auto';
+    li.dataset.savedOpacity = li.style.opacity || '1';
     li.style.pointerEvents = "none";
     li.style.opacity = "0.3";
   });
@@ -606,6 +611,101 @@ function showAllAnswers(wordObj) {
   // Show the example button as the round is effectively over
   if (typeof showExample !== 'undefined') {
     showExample.style.display = 'block';
+  }
+}
+
+function hideAllAnswers(wordObj, completedAnswers) {
+  if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
+
+  const imgEl = document.getElementById('objects-img');
+  const answers = wordObj.details.answer;
+  const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
+
+  updateStarsDisplay(answers.length, completedAnswers.length);
+  imgEl.src = wordObj.image;
+
+  // 1. Reset standard word slots
+  const wordSlots = [
+    document.getElementById('word1'),
+    document.getElementById('word2'),
+    document.getElementById('word3'),
+    document.getElementById('word4'),
+    document.getElementById('word5')
+  ];
+
+  wordSlots.forEach(slot => {
+    if (!slot) return;
+    slot.textContent = "";
+    slot.style.display = "none";
+  });
+
+  // 2. Mapping for the visual group containers
+  const mapping = {
+    tree: { container: 'treeWords', prefix: 'treeWord' },
+    milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
+    mountain: { container: 'mountainWords', prefix: 'mountainWord' },
+    stone: { container: 'stoneObjects', prefix: 'stoneWord' }
+  };
+
+  const map = mapping[objectName];
+
+  if (map) {
+    const groupEl = document.getElementById(map.container);
+    if (groupEl) groupEl.style.display = 'none';
+  }
+
+  // 3. Clear all slots
+  if (map) {
+    for (let i = 1; i <= 5; i++) {
+      const slotId = `${map.prefix}${i}`;
+      const fo = document.getElementById(slotId);
+      if (fo) {
+        fo.style.display = 'none';
+        const span = fo.querySelector('span');
+        if (span) span.textContent = '';
+      }
+    }
+  }
+
+  for (let i = 0; i < answers.length; i++) {
+    const lottieContainer = document.getElementById(`${objectName}-${i}`);
+    if (lottieContainer) lottieContainer.style.display = 'none';
+  }
+
+  // 4. Re-fill based on completedAnswers
+  completedAnswers.forEach((answer, index) => {
+    const cleanAnswer = answer.trim();
+
+    if (wordSlots[index]) {
+      wordSlots[index].textContent = cleanAnswer;
+      wordSlots[index].style.display = "block";
+    }
+
+    if (map) {
+      const groupEl = document.getElementById(map.container);
+      if (groupEl) groupEl.style.display = 'block';
+
+      const slotId = `${map.prefix}${index + 1}`;
+      const fo = document.getElementById(slotId);
+      if (fo) {
+        fo.style.display = 'block';
+        const span = fo.querySelector('span');
+        if (span) span.textContent = cleanAnswer;
+      }
+
+      const lottieContainer = document.getElementById(`${objectName}-${index}`);
+      if (lottieContainer) lottieContainer.style.display = 'block';
+    }
+  });
+
+  // 5. Re-enable suffix interaction
+  document.querySelectorAll("#list-suffix li").forEach(li => {
+    li.style.pointerEvents = li.dataset.savedPointerEvents || "auto";
+    li.style.opacity = li.dataset.savedOpacity || "1";
+  });
+
+  if (typeof showExample !== 'undefined' && completedAnswers.length < answers.length) {
+    showExample.style.display = 'none';
   }
 }
 
@@ -640,7 +740,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
-      showAllAnswers(wordObj); // current wordObj
+      if (showAnswerBtn.textContent.trim() === 'Show Answer') {
+        showAnswerBtn.textContent = 'Hide Answer';
+        showAllAnswers(wordObj);
+      } else {
+        showAnswerBtn.textContent = 'Show Answer';
+        hideAllAnswers(wordObj, completedAnswers);
+      }
     });
   }
 
@@ -674,7 +780,10 @@ document.addEventListener("DOMContentLoaded", () => {
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
-    showAnswerBtn.disabled = false;
+    if (showAnswerBtn) {
+      showAnswerBtn.textContent = 'Show Answer';
+      showAnswerBtn.disabled = false;
+    }
     // reset word slots
     wordSlots.forEach(ws => {
       if (ws) ws.textContent = "";

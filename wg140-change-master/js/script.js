@@ -11,7 +11,7 @@ const ITEMS_DATA = [
     { "name": "Notebook (Pack of 5)", "price": 450, "path": "notebook_set.svg" },
     { "name": "Geometry Box", "price": 185, "path": "geometry_box.svg" },
     { "name": "Ruler (12 inch)", "price": 19, "path": "ruler.svg" },
-    { "name": "Sketch Pen Set (12)", "price": 100, "path": "sketch_pen_set.svg" },
+    { "name": "Sketch Pen Set (12)", "price": 120, "path": "sketch_pen_set.svg" },
     { "name": "Crayons (Box of 16)", "price": 90, "path": "crayons.svg" },
     { "name": "Highlighter", "price": 32, "path": "highlighter.svg" },
     { "name": "Glue Stick", "price": 25, "path": "glue_stick.svg" },
