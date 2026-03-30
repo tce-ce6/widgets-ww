@@ -280,7 +280,7 @@ const letterData = {
                         "id": 2,
                         "text": "Hello Madam,",
                         "is_correct": false,
-                        "feedback": "Hello’ is too informal for a formal letter. Use ‘Dear’ instead."
+                        "feedback": "'Hello' is too informal for a formal letter. Use ‘Dear’ instead."
                     },
                     {
                         "id": 3,
