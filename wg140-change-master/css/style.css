@@ -438,9 +438,10 @@ svg * {
   top: -17px;
   right: -15px;
 }
-.objectWrapper{
-  height: 100%;
-  width: 100%;
+
+.objectWrapper {
+  height: 450px;
+  width: 500px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -448,7 +449,7 @@ svg * {
 
 #itemImg {
   height: auto;
-    width: 642px;
-    object-fit: contain;
-    max-height: 100%;
+  width: 642px;
+  object-fit: contain;
+  max-height: 100%;
 }
