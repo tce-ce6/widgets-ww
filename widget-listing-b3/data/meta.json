@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg151-cropmap-India": {
-      "updatedAt": "2026-03-30T13:29:59+05:30",
+      "updatedAt": "2026-03-30T14:32:10+05:30",
       "author": "sushantkanaujiya"
     },
     "wg153-informal-letters": {
@@ -382,6 +382,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-30T14:32:10+05:30",
+      "author": "sushantkanaujiya",
+      "message": "feat: implement crop data and facts repository for Indian agriculture visualization",
+      "widgets": [
+        151
+      ]
+    },
     {
       "date": "2026-03-30T14:06:59+05:30",
       "author": "PrasannaP",
@@ -646,14 +654,6 @@
       "date": "2026-03-27T20:43:40+05:30",
       "author": "PrasannaP",
       "message": "Refraction, Total Internal Reflection and Critical Angle",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-03-27T20:41:46+05:30",
-      "author": "PrasannaP",
-      "message": "fixed 70 css",
       "widgets": [
         70
       ]
