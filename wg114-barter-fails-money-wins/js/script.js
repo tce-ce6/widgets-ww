@@ -226,6 +226,19 @@ document.addEventListener("DOMContentLoaded", () => {
       S.home_buttom,
       S.next_button,
     ].forEach(hide);
+
+      //  lim2s1AllNames.forEach((name) => {
+      //     let outline = document.getElementById(
+      //       name.toLowerCase() + "_outline",
+      //     );
+      //     if (outline) hide(outline);
+      //   });
+      //      lim2s2AllNames.forEach((name) => {
+      //     let outline = document.getElementById(
+      //       name.toLowerCase() + "_outline",
+      //     );
+      //     if (outline) hide(outline);
+      //   });
   }
 
   hideAll();
@@ -405,6 +418,20 @@ document.addEventListener("DOMContentLoaded", () => {
       highlightCard(_lastClickedCard, false);
       _lastClickedCard = null;
     }
+  lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+          lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
+
   }
 
   // ─────────────────────────────────────────────
@@ -435,12 +462,26 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s1);
+     lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+    matched.clear();
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-2", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s2);
+     lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-3", () => {
@@ -758,17 +799,23 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(S.lim1s2);
     goTo(S.lim2s1);
+     lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
   //  LIMITATION 2 — No Coincidence of Wants (pair matching)
   // ═══════════════════════════════════════════════════════════
-
+  matched = new Set();
   function makePairManager(pairs, sc, config = {}) {
     let selectedId = null;
     let selectedEl = null;
-    const matched = new Set();
+    
     let correctCount = 0;
 
     const pairMap = {};
@@ -858,15 +905,15 @@ document.addEventListener("DOMContentLoaded", () => {
     onSelect: (id) => {
       if (!id) {
         // If selection is cleared
-        if (out1) hide(out1);
-        if (out2) hide(out2);
+        // if (out1) hide(out1);
+        // if (out2) hide(out2);
         // Also hide individual outlines if they were shown
-        lim2s1AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
+        // lim2s1AllNames.forEach((name) => {
+        //   let outline = document.getElementById(
+        //     name.toLowerCase() + "_outline",
+        //   );
+        //   if (outline) hide(outline);
+        // });
         return;
       }
 
@@ -950,6 +997,13 @@ document.addEventListener("DOMContentLoaded", () => {
     stopLottie();
     navHistory.push(S.lim2s1);
     goTo(S.lim2s2);
+     lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
@@ -979,13 +1033,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const lim2s2Trade = makePairManager(lim2s2Pairs, S.lim2s2, {
     onSelect: (id) => {
       if (!id) {
-        if (sc2Out1) hide(sc2Out1);
-        if (sc2Out2) hide(sc2Out2);
-        lim2s2AllNames.forEach((name) => {
-          let nm = name.split("-")[0].toLowerCase();
-          let outline = document.getElementById(nm + "_outline");
-          if (outline) hide(outline);
-        });
+        // if (sc2Out1) hide(sc2Out1);
+        // if (sc2Out2) hide(sc2Out2);
+        // lim2s2AllNames.forEach((name) => {
+        //   let nm = name.split("-")[0].toLowerCase();
+        //   let outline = document.getElementById(nm + "_outline");
+        //   if (outline) hide(outline);
+        // });
         return;
       }
       if (id === "Carpenter" || id === "Orchardist") {
@@ -1156,9 +1210,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setInvCount("_0_Chickens", lim3s1.chickens);
     setInvCount("_0_Bread", lim3s1.breads);
     setInvCount("_0_Apples", lim3s1.apples);
-    setTradeEnabled("Group_1485", lim3s1.cows > 0);
-    setTradeEnabled("Group_1487", lim3s1.chickens > 0);
-    setTradeEnabled("Group_1488", lim3s1.breads > 0);
+    setTradeEnabled("Group_1485", true);
+    setTradeEnabled("Group_1487", true);
+    setTradeEnabled("Group_1488", true);
   }
 
   // Inline SC1 emoji SVG into SC2 once (replaces <use> refs that fail when SC1 is hidden)
@@ -1198,9 +1252,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setInvCount("_8_Chickens-2", lim3s2.chickens);
     setInvCount("_0_Bread-2", lim3s2.breads);
     setInvCount("_0_Apples-2", lim3s2.apples);
-    setTradeEnabled("Trade_Cow_Chickens-2", lim3s2.cows > 0);
-    setTradeEnabled("Trade_Chickens_Breads-2", lim3s2.chickens > 0);
-    setTradeEnabled("Trade_Breads_Apples-2", lim3s2.breads > 0);
+    setTradeEnabled("Trade_Cow_Chickens-2", true);
+    setTradeEnabled("Trade_Chickens_Breads-2", true);
+    setTradeEnabled("Trade_Breads_Apples-2", true);
   }
 
   function toggleLim3Solution(btnId, textId) {
@@ -1275,7 +1329,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lim3s2.cows--;
       lim3s2.chickens += lim3Rates.cow;
       updateLim3s2UI();
-    } else playLottie("emoji-sad");
+    } // else playLottie("emoji-sad");
   });
   wireTradeBtn("Trade_Chickens_Breads-2", () => {
     if (lim3s2.chickens > 0) {
@@ -1294,7 +1348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Technically user could win if logic allowed, but SC2 is designed to fail.
         // We'll just check for failure as requested.
       }
-    } else playLottie("emoji-sad");
+    } // else playLottie("emoji-sad");
   });
   wireTradeBtn("Trade_Breads_Apples-2", () => {
     if (lim3s2.breads > 0) {
