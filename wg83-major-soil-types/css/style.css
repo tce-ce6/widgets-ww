@@ -307,12 +307,17 @@ svg * {
 
 .preview-btn {
   position: absolute;
-  bottom: -30px;
-  right: 50%;
+  bottom: -29px;
+  right: 43.5%;
   transform: translateX(50%);
   width: 280px;
   height: auto;
   cursor: pointer;
+  display: none;
+}
+
+#reading-slope.step-2 .preview-btn {
+  display: block;
 }
 
 .option-list {

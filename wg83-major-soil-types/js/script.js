@@ -82,8 +82,6 @@ function showStep2() {
   const resetBtn = document.getElementById("reset-btn");
   if (resetBtn) resetBtn.style.display = "none";
 
-  const previewBtn = document.querySelector(".preview-btn");
-  if (previewBtn) previewBtn.style.display = "none";
 
   // 2. Hide summary, show soil-typeSection
   document.getElementById("summary-sec").style.display = "none";
@@ -357,11 +355,6 @@ function showSummary() {
     soilMap.style.display = "block";
   }
 
-  // Show preview button when summary is displayed
-  const previewBtn = document.querySelector(".preview-btn");
-  if (previewBtn) {
-    previewBtn.style.display = "block";
-  }
 
   document.querySelector(".summary-header").innerText =
     selectedSoil.name;
@@ -396,7 +389,7 @@ function loadCropQuestion() {
   selectedSoil.cropQuestion.options.forEach(option => {
 
     const li = document.createElement("li");
-console.log("option.image", option.image);
+    console.log("option.image", option.image);
 
     li.innerHTML = `
         <img src="${option.image}">
@@ -592,7 +585,7 @@ document.querySelector(".reset-btn").addEventListener("click", () => {
 // NEXT BUTTON HANDLER - Navigate between stages
 const nextButtons = document.querySelectorAll(".backNext-btn span");
 if (nextButtons.length > 1) {
-  nextButtons[1].addEventListener("click", function() {
+  nextButtons[1].addEventListener("click", function () {
     // Only allow if not disabled
     if (this.classList.contains("disabled")) {
       return;
@@ -616,9 +609,6 @@ if (nextButtons.length > 1) {
       }
       if (resetBtn) {
         resetBtn.style.display = "block";
-      }
-      if (previewBtn) {
-        previewBtn.style.display = "none";
       }
 
       // Reset next button state
@@ -835,16 +825,19 @@ if (homeBtn) {
 
 const previewBtn = document.querySelector(".preview-btn");
 const previewPopup = document.querySelector(".preview-popup");
+const previewBackdrop = document.getElementById("modal-backdrop")
 const closePreview = document.getElementById("close-previewPopup");
 
 if (previewBtn) {
   previewBtn.addEventListener("click", () => {
     previewPopup.style.display = "block";
+    previewBackdrop.style.display = "block";
   });
 }
 
 if (closePreview) {
   closePreview.addEventListener("click", () => {
     previewPopup.style.display = "none";
+    previewBackdrop.style.display = "none";
   });
 }
