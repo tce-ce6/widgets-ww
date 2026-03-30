@@ -74,73 +74,73 @@ const letterData = {
                     },
                     {
                         "id": 2,
-                        "text": "Hi! How are you both doing? I'm doing well here at school and everything is good. I wanted to tell you about something I've been thinking about a lot lately regarding what I want to do after I finish school here.",
+                        "text": "Hi! How are you both doing? I'm doing well here at school and everything is good.",
                         "is_correct": false,
-                        "feedback": "This introduction is too casual with 'Hi!' and lacks the warmth appropriate for discussing an important decision. The phrase 'everything is good' is vague."
+                        "feedback": "This introduction is too casual and vague."
                     },
                     {
                         "id": 3,
-                        "text": "I am writing to apprise you of my future career aspirations and vocational objectives. I trust this correspondence finds you in satisfactory health and elevated spirits.",
+                        "text": "I am writing to apprise you of my future career aspirations and vocational objectives.",
                         "is_correct": false,
-                        "feedback": "This sounds too formal for an informal letter to parents. The tone should be warmer and more conversational."
+                        "feedback": "This sounds too formal for an informal letter to parents."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have been thinking about what to do after school and I've decided on environmental science. I like nature and going outdoors, so I think this would be a good career for me. It seems interesting and I believe I would enjoy studying it.",
+                        "text": "I have been thinking about environmental science because I like nature.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too casual and vague. Phrases like 'I like nature' and 'going outdoors' don't demonstrate mature career thinking. It lacks specific reasons or deep understanding of the field."
+                        "feedback": "This paragraph is too casual and vague."
                     },
                     {
                         "id": 2,
-                        "text": "After much thought, I've decided to pursue a career in environmental science and conservation. This stems from my deep love for the environment and desire to make a positive impact on our planet, especially given the pressing environmental issues our world faces today.",
+                        "text": "After much thought, I have decided to pursue a career in environmental science and conservation. This choice stems from my deep love for the environment and my desire to address pressing environmental issues.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "Climate change, deforestation and habitat destruction are having harmful effects on our ecosystem, and I want to be part of the solution. I believe that I can contribute to the preservation of our planet for future generations.",
+                        "text": "Climate change and deforestation are serious issues.",
                         "is_correct": false,
-                        "feedback": "This discusses why the career is important but doesn't state what career has been chosen. The specific career decision should be mentioned before explaining the reasons for choosing it."
+                        "feedback": "This discusses importance but does not clearly state the chosen career first."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "Climate change, deforestation and habitat destruction are harming our ecosystems, and I want to be part of the solution. I believe I can contribute to preserving our planet for future generations. Though challenges may arise, I'm determined to work hard and make a difference.",
+                        "text": "Climate change, deforestation and habitat destruction are harmful, and I want to be part of the solution. I understand the challenges but am determined to work hard.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "There are lots of environmental problems like pollution and stuff. Climate change is really bad and I want to help fix these issues. I think it would be cool to work on saving the environment and making things better for everyone.",
+                        "text": "There are lots of environmental problems and stuff.",
                         "is_correct": false,
-                        "feedback": "Phrases like 'lots of', 'and stuff', 'really bad', 'it would be cool' is inappropriate for discussing serious career goals. It lacks depth and specific understanding of environmental issues."
+                        "feedback": "This is too casual and lacks depth."
                     },
                     {
                         "id": 3,
-                        "text": "I hope this letter finds you both in good health. I wanted to share something important with you regarding my future plans after completing my education here at the boarding school.",
+                        "text": "I hope this letter finds you well.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the introduction, not the body paragraph. Additionally, it is too formal for a letter to parents. The body should discuss career reasons, not repeat introductory greetings."
+                        "feedback": "This content belongs in the introduction."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I request that you provide your feedback regarding this career decision. I anticipate your approval and support for pursuing this educational path. Please communicate your thoughts on this matter in due course. I remain grateful for your continued guidance throughout my academic endeavours.",
+                        "text": "I request your feedback regarding this career decision.",
                         "is_correct": false,
-                        "feedback": "This conclusion is too formal and transactional. Phrases like 'in due course' and 'I remain grateful' sound like business correspondence rather than a warm letter to parents seeking guidance and expressing love."
+                        "feedback": "This sounds too formal and transactional."
                     },
                     {
                         "id": 2,
-                        "text": "Your advice and support mean the world to me. I hope you will consider my choice and help me achieve my goals. Thank you for always being there for me. Your unwavering support has been my greatest strength, and I know that with your guidance, I can excel in this field too.",
+                        "text": "Your advice and support mean the world to me.",
                         "is_correct": false,
-                        "feedback": "This conclusion is missing the specific field name (environmental science). It's too vague about what the writer wants to achieve and doesn't clearly restate the request for support in pursuing environmental science."
+                        "feedback": "This does not clearly restate the field of environmental science."
                     },
                     {
                         "id": 3,
-                        "text": "Your advice and support mean the world to me. I hope you'll consider my choice and help me achieve my goals in environmental science. Thank you for always nurturing my dreams. Your unwavering support has been my greatest strength, and with your guidance, I know I can excel in this field too.",
+                        "text": "Your advice and support mean the world to me. I hope you will support my decision to pursue environmental science. With your guidance, I am confident I can excel in this field.",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -253,81 +253,81 @@ const letterData = {
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "I hope you are doing well and finding joy in each day. As I sit down to write this letter, I am flooded with gratitude for the wonderful time I spent with you during my summer break.",
+                        "text": "I hope you are doing well and finding joy in each day. As I sit down to write this letter, I am filled with gratitude for the wonderful time I spent with you during my summer break.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "My days with you were filled with quiet joy. From the sweet smell of your baking drifting through the house to the reassurance of your gentle hugs, every instant felt special. I will always cherish our early walks in the garden, where you shared your love for each plant and taught me how to care for them with patience and pride.",
+                        "text": "My days with you were filled with quiet joy and sweet memories.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the body paragraph, not the introduction. The introduction should greet the recipient and state the purpose of writing, not jump directly into describing specific memories."
+                        "feedback": "This content belongs in the body paragraph, not the introduction."
                     },
                     {
                         "id": 3,
-                        "text": "Hey! How are you? I'm back home now and school is starting soon. I just wanted to write and tell you that I had a really nice time at your place during the holidays. It was fun spending time with you.",
+                        "text": "Hey! How are you? I'm back home now and school is starting soon.",
                         "is_correct": false,
-                        "feedback": "This introduction is too casual with 'Hey!' and 'It was fun'. The phrase 'really nice time' is vague and doesn't convey the emotional depth appropriate for writing to a beloved grandmother."
+                        "feedback": "This introduction is too casual and lacks emotional warmth."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "My time with you was nothing short of magical. From the aroma of your delicious homemade cookies to the warmth of your embrace, every moment felt like a treasure. The memories of our morning walks in the garden will forever be etched in my heart.",
+                        "text": "My time with you was magical. From the aroma of your homemade cookies to our peaceful morning walks in the garden, every moment was precious.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I trust this correspondence finds you in satisfactory health and good spirits. I am writing to express my appreciation for your hospitality during my recent visit to your residence throughout the duration of my summer vacation period.",
+                        "text": "I trust this correspondence finds you in satisfactory health.",
                         "is_correct": false,
-                        "feedback": "This is far too formal for a letter to one's grandmother and belongs in the introduction, not the body. Words like 'correspondence', 'satisfactory health' and 'duration of my summer vacation period' sound cold. The body should describe specific memories, not repeat greetings."
+                        "feedback": "This is far too formal and belongs in the introduction."
                     },
                     {
                         "id": 3,
-                        "text": "I had a good time at your house this summer. Your food was tasty and we did lots of things together every day. I liked the walks we took in the garden where you showed me the plants and told me their names.",
+                        "text": "I had a good time at your house this summer.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too simple and brief. It lacks the vivid sensory details and emotional warmth that would make the memories come alive. Phrases like 'good time' and 'lots of things' are vague."
+                        "feedback": "This is too simple and lacks vivid emotional detail."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "You told me lots of stories about your life which were pretty interesting. I learnt some good things from you. Your advice was helpful and I'll try to remember what you told me when I need it.",
+                        "text": "You told me lots of stories which were pretty interesting.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too casual and vague. Phrases like 'pretty interesting', 'some good things' and 'I'll try to remember' don't convey genuine impact or specific lessons learnt from the grandmother."
+                        "feedback": "This paragraph is too casual and vague."
                     },
                     {
                         "id": 2,
-                        "text": "What made this summer truly special were the life lessons you imparted. Your stories of resilience during challenging times and your unwavering optimism have left a profound impact on me. Your wisdom has taught me the importance of perseverance, kindness and the value of family bonds.",
+                        "text": "What made this summer truly special were the life lessons you imparted. Your stories of resilience and optimism left a profound impact on me.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "I hope you are doing well. Thank you for having me at your house this summer. I will visit again during the next holidays if possible. Please take care of yourself and stay healthy. I look forward to seeing you soon.",
+                        "text": "I hope you are doing well and will visit again soon.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the conclusion, not the body paragraph. The body should discuss life lessons learnt, not closing remarks. These are concluding thoughts that should come at the end of the letter."
+                        "feedback": "This content belongs in the conclusion, not the body paragraph."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "Okay, so that's about my visit. It was nice. I'll probably come again next holidays if I get time. Take care of yourself and eat properly. Say hi to everyone for me. Bye for now, talk to you later.",
+                        "text": "Okay, so that's about my visit. It was nice.",
                         "is_correct": false,
-                        "feedback": "This conclusion is far too casual and abrupt. Phrases like 'Okay, so', 'It was nice', 'if I get time' and 'Bye for now' don't express genuine love, gratitude or emotional connection with the grandmother."
+                        "feedback": "This conclusion is too casual and abrupt."
                     },
                     {
                         "id": 2,
-                        "text": "I want you to know how much you mean to me. You're not just my grandmother but my role model and constant inspiration. Your love and guidance have shaped who I am today. As I return to my studies, I carry these cherished memories and cannot wait for our next meeting.",
+                        "text": "You are not just my grandmother but my role model and constant inspiration. I cherish the lessons and memories from this summer and eagerly await our next meeting.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "What made this summer truly special were the life lessons you shared with me. Your stories taught me about resilience and perseverance. I have learnt so much from you about kindness and the importance of staying positive during difficult times.",
+                        "text": "Your stories taught me resilience and perseverance.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the body paragraph, not the conclusion. The conclusion should express overall feelings and future hopes, not introduce new details about life lessons. These thoughts should have appeared earlier in the letter."
+                        "feedback": "This content belongs in the body paragraph, not the conclusion."
                     }
                 ],
                 "sign_off": [
@@ -438,39 +438,39 @@ const letterData = {
                 "introduction": [
                     {
                         "id": 1,
-                        "text": "I hope this letter finds you in great spirits. I've been meaning to write to you about the incredible family vacation we had in Shimla last month. The experience was so amazing that I simply had to share it with you!",
+                        "text": "I hope this letter finds you in great spirits. I have been meaning to tell you about the incredible family vacation we had in Shimla last month.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I am writing to inform you about a recent excursion undertaken by my family to the hill station of Shimla. I trust you will find the details and particulars of our journey to be of some interest to you as my friend.",
+                        "text": "I am writing to inform you about a recent excursion undertaken by my family.",
                         "is_correct": false,
-                        "feedback": "This is far too formal for a letter to a friend. Phrases like 'inform you about', 'excursion undertaken' and 'particulars of our journey' sound like a travel report rather than an enthusiastic letter."
+                        "feedback": "This is far too formal for a letter to a friend."
                     },
                     {
                         "id": 3,
-                        "text": "The moment we reached Shimla, I was captivated by its old-world charm. The rolling hills stretched endlessly, dotted with tall deodar trees that swayed gently in the cool breeze. The crisp air carried a hint of pine, making every breath feel pure and invigorating. We spent our days exploring the bustling Mall Road, sipping hot tea at cosy cafés, and watching the sunset paint the sky in shades of gold and pink.",
+                        "text": "The moment we reached Shimla, I was captivated by its charm.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the body paragraph, not the introduction. The introduction should greet the friend and mention the trip, not jump directly into detailed descriptions of the scenery."
+                        "feedback": "This content belongs in the body paragraph, not the introduction."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "Shimla was nice. The mountains were big and pretty, and there was snow on them which looked cool. We went for walks and saw different things. The weather was good and we had a nice time there overall.",
+                        "text": "Shimla was nice and the mountains were big and pretty.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too brief and uses vague, simple language. Words like 'nice', 'big', 'pretty', 'cool' and 'different things' don't create vivid imagery or convey genuine excitement about the experience."
+                        "feedback": "This is too brief and uses vague language."
                     },
                     {
                         "id": 2,
-                        "text": "We also enjoyed several adventurous activities. Trekking through the dense forests was thrilling, while paragliding with my dad was absolutely exhilarating! Rock climbing and zip-lining added even more excitement to our days. In the evenings, we would gather around a bonfire.",
+                        "text": "We enjoyed trekking and paragliding during our stay.",
                         "is_correct": false,
-                        "feedback": "This describes activities, not scenery. The first body paragraph should focus on describing the breathtaking scenery of Shimla, while adventurous activities should be discussed in the second body paragraph."
+                        "feedback": "This describes activities, not scenery. Scenery should be described first."
                     },
                     {
                         "id": 3,
-                        "text": "The moment we arrived in Shimla, I was mesmerised by the breathtaking scenery. Snow-capped mountains surrounded us, and the fresh mountain air was incredibly refreshing. We took numerous walks along picturesque trails that led us to hidden waterfalls and stunning viewpoints. Each morning, we woke up to the sight of the sun rising over the mountains, painting the sky in shades of orange and pink.",
+                        "text": "The moment we arrived in Shimla, I was mesmerised by the snow-capped mountains and fresh air. Each morning we admired the sunrise painting the sky in vibrant colours.",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -478,41 +478,41 @@ const letterData = {
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "We also indulged in several adventurous activities. Trekking through the dense forests was thrilling, and my dad and I tried paragliding, which was absolutely exhilarating! We also went for rock climbing and zip-lining. In the evenings, we would gather around a bonfire, sharing stories under the starry night sky. The local cuisine was delightful too!",
+                        "text": "We enjoyed trekking, paragliding, rock climbing and bonfire evenings under the starry sky. The local cuisine was delightful too.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "We did some activities like trekking and stuff. It was fun. We also tried paragliding which was okay. At night we sat around a fire and talked. The food was alright, nothing special but we ate it anyway.",
+                        "text": "We did some activities and stuff. It was okay.",
                         "is_correct": false,
-                        "feedback": "This paragraph lacks enthusiasm and detail. Phrases like 'and stuff', 'was okay', 'alright, nothing special' and 'we ate it anyway' don't convey excitement or make the experience sound memorable or worth sharing."
+                        "feedback": "This lacks enthusiasm and vivid detail."
                     },
                     {
                         "id": 3,
-                        "text": "We participated in various adventurous activities during our stay. We did trekking, paragliding, rock climbing and zip-lining. We also spent time in the evenings doing different activities. We tried the local food which included several traditional dishes of the region.",
+                        "text": "We participated in various adventurous activities.",
                         "is_correct": false,
-                        "feedback": "This paragraph reads like a checklist rather than an engaging account. It lacks vivid descriptions, personal emotions and specific sensory details that would make the experiences come alive for the friend. The writing is flat and fails to convey excitement."
+                        "feedback": "This reads like a checklist and lacks vivid descriptions."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "Prateek, this trip made me realise how much I miss spending time with you. I wish you had been there to share these wonderful moments. How about we plan a vacation together during the next summer break? It would be amazing to explore a new place with you and create more unforgettable memories. Let me know what you think!",
+                        "text": "I wish you had been there with us. How about we plan a trip together next summer? Let me know what you think!",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "Anyway, that's about my trip. It was good. Maybe we can go somewhere together sometime if you're free. Just let me know. Okay, I should go now. Catch you later. Bye!",
+                        "text": "Anyway, that's about my trip. It was good.",
                         "is_correct": false,
-                        "feedback": "This conclusion is too casual and abrupt. Phrases like 'Anyway', 'if you're free', 'Just let me know', 'I should go now' and 'Catch you later' don't express genuine desire to travel together or emotional connection."
+                        "feedback": "This is too casual and abrupt."
                     },
                     {
                         "id": 3,
-                        "text": "The scenery in Shimla was absolutely beautiful and breathtaking. The mountains, the fresh air and the stunning views made it a perfect vacation spot. We enjoyed every moment of our stay there and made wonderful family memories together.",
+                        "text": "The scenery in Shimla was beautiful and we enjoyed it.",
                         "is_correct": false,
-                        "feedback": "This content belongs in the body paragraph, not the conclusion. The conclusion should express the desire to travel with the friend in the future, not continue describing the scenery and family experience."
+                        "feedback": "This belongs in the body paragraph, not the conclusion."
                     }
                 ],
                 "sign_off": [

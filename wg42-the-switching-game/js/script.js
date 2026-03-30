@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideAll() {
         introScreen.style.display = "none";
         if (practiseScreen) practiseScreen.style.display = "none";
-
+        
         // Reset the main header title to default
         const mainTitle = document.querySelector(".wdgetTitle h2");
         if (mainTitle) mainTitle.innerHTML = "The Switching Game";
@@ -371,15 +371,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function showFinalLearnScreen() {
         hideAll();
         question2Panel.style.display = "block";
-        feedback.setAttribute("transform", "translate(-300, -50)");
+        feedback.setAttribute("transform", "translate(-70, 0)");
         feedback.style.opacity = "1";
         feedback.style.display = "inline";
         IText.style.display = "block";
 
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML = '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences where the person or thing doing the action comes FIRST.</tspan>';
-            autoWrapSVGText(iTextEl, 1200, 32);
+            iTextEl.innerHTML =
+                '<tspan x="0" y="0">Now, look at all the sentences again. Select the sentences</tspan>' +
+                '<tspan x="0" y="32">where the person or thing doing the action comes FIRST.</tspan>';
         }
 
         setupFinalSelectionInteraction();
@@ -439,8 +440,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update instruction
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML = '<tspan x="0" y="0">Look at the sentence pair below. Select ALL the changes that happen when we transform from active to passive voice.</tspan>';
-            autoWrapSVGText(iTextEl, 1200, 32);
+            iTextEl.innerHTML =
+                '<tspan x="0" y="0">Look at the sentence pair below. Select ALL the changes that</tspan>' +
+                '<tspan x="0" y="32">happen when we transform from active to passive voice.</tspan>';
         }
 
         // Update Sentences via foreignObject div
@@ -566,18 +568,36 @@ document.addEventListener("DOMContentLoaded", () => {
             const textEl = textElements[0];
             if (textEl) {
                 const fullText = (opt ? opt.text : "");
+                const words = fullText.split(" ");
+                let l1 = fullText, l2 = "";
+
+                if (fullText.length > 46) {
+                    if (fullText.length > 60) {
+                        // Long texts: greedy fill line 1 up to 46 chars
+                        l1 = ""; l2 = "";
+                        words.forEach(w => {
+                            if ((l1 + (l1 ? " " : "") + w).length <= 46) l1 += (l1 ? " " : "") + w;
+                            else l2 += (l2 ? " " : "") + w;
+                        });
+                    } else {
+                        // Medium texts (47–60 chars): balanced midpoint split to avoid short orphans
+                        const mid = Math.floor(fullText.length / 2);
+                        let pos = 0, bestIdx = 1, bestDist = Infinity;
+                        for (let j = 0; j < words.length - 1; j++) {
+                            pos += words[j].length + 1;
+                            const dist = Math.abs(pos - mid);
+                            if (dist < bestDist) { bestDist = dist; bestIdx = j + 1; }
+                        }
+                        l1 = words.slice(0, bestIdx).join(" ");
+                        l2 = words.slice(bestIdx).join(" ");
+                    }
+                    if (!l1) { l1 = fullText; l2 = ""; }
+                }
+
                 textEl.setAttribute("text-anchor", "start");
-
-                // Clear experimental CSS properties
-                textEl.style.whiteSpace = "";
-                textEl.removeAttribute("width");
-                textEl.style.inlineSize = "";
-
-                let html = `<tspan x="0" y="0">${fullText}</tspan>`;
+                let html = `<tspan x="0" y="0">${l1}</tspan>`;
+                if (l2) html += `<tspan x="0" y="35">${l2}</tspan>`;
                 textEl.innerHTML = html;
-
-                // Procedurally break the line mathematically to prevent arbitrary browser SVG overflow
-                autoWrapSVGText(textEl, 620, 35);
             }
 
             const rectEl = tile.querySelector("rect");
@@ -875,7 +895,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
             iTextEl.innerHTML = '<tspan x="0" y="0">Convert the active voice sentence to passive voice by selecting words from the help box.</tspan>';
-            autoWrapSVGText(iTextEl, 1200, 32);
         }
 
         const q = practiseQuestions[index];
@@ -940,8 +959,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Center text inside its pill (rect or path background)
                 const bgEl = group.querySelector('rect[fill="#0480eb"]') ||
-                    group.querySelector('path[fill="#0480eb"]') ||
-                    group.querySelector("rect");
+                             group.querySelector('path[fill="#0480eb"]') ||
+                             group.querySelector("rect");
                 if (bgEl) {
                     let rx, ry, rw, rh;
                     if (bgEl.tagName.toLowerCase() === "rect") {
@@ -1430,8 +1449,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Reset instruction text to its original 2-line state
         const iTextEl = IText.querySelector("text");
         if (iTextEl) {
-            iTextEl.innerHTML = '<tspan x="0" y="0">Read the first sentence. Then tap the correct words to complete the second sentence.</tspan>';
-            autoWrapSVGText(iTextEl, 1200, 32);
+            iTextEl.innerHTML =
+                '<tspan x="0" y="0">Read the first sentence. Then tap the correct words to complete the second sentence.</tspan>';
         }
 
         currentLearnQuestion = 0;
@@ -1511,109 +1530,4 @@ document.addEventListener("DOMContentLoaded", () => {
             textEl.setAttribute("font-size", fontSize);
         }
     }
-
-    // Helper to auto-wrap SVG text natively
-    function autoWrapSVGText(textEl, maxWidth, lineHeight = 32) {
-        if (!textEl) return;
-        const tspanRef = textEl.querySelector("tspan");
-        if (!tspanRef) return;
-
-        const textStr = textEl.textContent || "";
-        const words = textStr.trim().split(/\s+/);
-        if (words.length === 0 || words[0] === "") return;
-
-        const x = tspanRef.getAttribute("x") || "0";
-        const y = tspanRef.getAttribute("y") || "0";
-
-        textEl.innerHTML = "";
-        let line = [];
-        let currentTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        currentTspan.setAttribute("x", x);
-        currentTspan.setAttribute("y", y);
-        textEl.appendChild(currentTspan);
-
-        for (let i = 0; i < words.length; i++) {
-            const word = words[i];
-            const testLine = line.length ? line.join(" ") + " " + word : word;
-            currentTspan.textContent = testLine;
-
-            // Check width limit. Break line if exceeded
-            if (currentTspan.getComputedTextLength() > maxWidth && line.length > 0) {
-                currentTspan.textContent = line.join(" ");
-                line = [word];
-                currentTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-                currentTspan.setAttribute("x", x);
-                currentTspan.setAttribute("dy", lineHeight);
-                currentTspan.textContent = word;
-                textEl.appendChild(currentTspan);
-            } else {
-                line.push(word);
-            }
-        }
-    }
-
-    // Debug method to navigate directly to comparisonQuestions section
-    window.debugComparison = function (index = 0) {
-        if (typeof index !== "number" || index < 0 || index >= comparisonQuestions.length) {
-            console.warn(`Invalid index. Showing available comparison questions:`);
-            console.table(comparisonQuestions.map((q, idx) => {
-                // Strip HTML tags for cleaner console output
-                const activeText = q.activeHTML ? q.activeHTML.replace(/<[^>]*>?/gm, '') : "";
-                return { "Index": idx, "Active Sentence": activeText };
-            }));
-            return;
-        }
-
-        currentComparisonQuestion = index;
-        showQuestion3Panel(currentComparisonQuestion);
-        console.log(`Navigated to comparison question: [${index}]`);
-    };
-
-    // Debug method to complete the 'Learn' phase and evaluate 'Great_work_' placement
-    window.debugLearnCompletion = function () {
-        console.log("Navigating to the final screen of the Learn section...");
-        currentLearnQuestion = learnQuestions.length - 1;
-
-        // Automatically displays the final screen which brings 'id="Great_work_"' into inline render
-        showFinalLearnScreen();
-
-        // Simulate interaction completions to surface the correct markers
-        setTimeout(() => {
-            const activeSentences = [
-                "The chef prepared the delicious meal.",
-                "The teacher explains the lesson clearly.",
-                "The students will perform the play tomorrow.",
-                "The talented artist painted the mural.",
-                "The doctor examines the patients daily."
-            ];
-
-            const groupIds = [
-                "Group_1185", "Group_1186", "Group_1187", "Group_1188", "Group_1189",
-                "Group_1190", "Group_1191", "Group_1192", "Group_1193", "Group_1194"
-            ];
-
-            groupIds.forEach(id => {
-                const group = document.getElementById(id);
-                if (!group) return;
-
-                const textEl = group.querySelector("text");
-                if (textEl) {
-                    let textContent = textEl.textContent.trim();
-                    const tspans = textEl.querySelectorAll("tspan");
-                    if (tspans.length > 0) {
-                        textContent = Array.from(tspans).map(t => t.textContent).join("").trim();
-                    }
-
-                    if (activeSentences.some(active => textContent.includes(active))) {
-                        // Prevent re-triggering if already auto-toggled
-                        const rectBox = group.querySelector('rect[width="41"]');
-                        if (rectBox && rectBox.getAttribute("fill") !== "#5ca0fa") {
-                            group.click();
-                        }
-                    }
-                }
-            });
-            console.log("Learn auto-completed! The 'Great work!' feedback (id='Great_work_') placement should now be visible.");
-        }, 150);
-    };
 });

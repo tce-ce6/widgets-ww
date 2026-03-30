@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 1,
         tier: "GRAM_PANCHAYAT",
         question:
-          "Scenario: The Gram Sabha of Khedi village elects nine representatives. At what level do these representatives govern?",
+          "Scenario: The Gram Sabha of Khedi village elects 9 representatives. At what level do these representatives govern?",
         options: "option-set-1",
         correctOptionIndex: 0,
         pyramidLevel: "pyramid-level1",
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 3,
         tier: "GRAM_PANCHAYAT",
         question:
-          "Scenario: The nine Gram Panchayat members are elected. Who leads the Gram Panchayat and chairs their meetings?",
+          "Scenario: The 9 Gram Panchayat members are elected. Who leads the Gram Panchayat and chairs their meetings?",
         options: "option-set-3",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level1",
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 4,
         tier: "PANCHAYAT_SAMITI",
         question:
-          "Scenario: Khedi is one of twenty villages in a Tehsil area. How are development projects planned when multiple villages are involved?",
+          "Scenario: Khedi is one of 20 villages in a Tehsil area. How are development projects planned when multiple villages are involved?",
         options: "option-set-4",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level2",
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 6,
         tier: "PANCHAYAT_SAMITI",
         question:
-          "Scenario: Fifteen villages all need better roads. What is Panchayat Samiti's main role with these requests?",
+          "Scenario: 15 villages all need better roads. What is Panchayat Samiti's main role with these requests?",
         options: "option-set-6",
         correctOptionIndex: 2,
         pyramidLevel: "pyramid-level2",
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 7,
         tier: "ZILA_PARISHAD",
         question:
-          "Scenario: Khedi's block is one of twelve blocks in Bhopal district. What does the highest Panchayati Raj body do with plans from all these blocks?",
+          "Scenario: Khedi's block is one of 12 blocks in Bhopal district. What does the highest Panchayati Raj body do with plans from all these blocks?",
         options: "option-set-7",
         correctOptionIndex: 1,
         pyramidLevel: "pyramid-level3",
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: 9,
         tier: "WOMENS_RESERVATION",
         question:
-          "Scenario: A Gram Panchayat has nine seats. How many MUST be reserved for women by constitutional law?",
+          "Scenario: A Gram Panchayat has 9 seats. How many MUST be reserved for women by constitutional law?",
         options: "option-set-9",
         correctOptionIndex: 2,
         pyramidLevel: "pyramid-level3",
@@ -120,54 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let isAwaitingPyramidClick = false;
   let draggedElement = null;
   let selectedOptionIndex = null;
-  let selectedOptionElement = null;
   let draggedOptionIndex = -1; // Added to store index during drag
   let offset = { x: 0, y: 0 };
   let originalPositions = {};
   let isLocked = false;
-
-  const draggableSelectors = [
-    'g[id^="icon"]',
-    'g[id^="Layer_1-6"]',
-    'g[id^="Layer_1-4"]',
-    'ellipse[id^="Ellipse_17-2"]',
-    'g[id="Layer_1"]',
-  ];
-
-  // helper to find the full icon element/group within a card
-  function getIconFromCard(cardEl) {
-    if (!cardEl) return null;
-
-    // Find all potential icons
-    const potentialIcons = Array.from(cardEl.querySelectorAll(draggableSelectors.join(",")));
-
-    // Filter out icons that are likely just shadows (low opacity)
-    let el = potentialIcons.find(icon => {
-      const opacity = icon.getAttribute("opacity");
-      return !opacity || parseFloat(opacity) > 0.3;
-    });
-
-    if (!el) {
-      // Fallback to anything matching if no high-opacity found
-      el = potentialIcons[0] || cardEl.querySelector('ellipse[id*="Ellipse_17-2"], circle[id*="Ellipse_18"]');
-    }
-
-    if (el) {
-      // If the item is an ellipse/circle inside a group with no ID,
-      // make the parent group the icon so everything moves together.
-      if (
-        (el.tagName === "ellipse" || el.tagName === "circle") &&
-        el.parentNode.tagName === "g" &&
-        (!el.parentNode.id || el.parentNode.id.startsWith("drag-group-auto"))
-      ) {
-        el = el.parentNode;
-        if (!el.id) {
-          el.id = "drag-group-auto-" + dragIdCounter++;
-        }
-      }
-    }
-    return el;
-  }
 
   // --- Element Selectors ---
   const elements = {
@@ -176,7 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
     activityPyramid: document.getElementById("activity-pyramid"),
     questionPanel: document.getElementById("question-panel"),
     questionTexts: {
-      group: document.getElementById("Question_Container"),
+      group: document.getElementById(
+        "Question_1:_Scenario:_The_Gram_Sabha_of_Khedi_village_elects_9_representatives._At_what_level_do_these_representatives_govern_",
+      ),
       tspans: [], // Populated dynamically
     },
     optionSets: document.querySelectorAll('g[id^="option-set-"]'),
@@ -234,51 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
       star.closest("g"),
     );
   }
-
-  // --- Lottie Emoji Animations ---
-  let lottieCorrectAnim = null;
-  let lottieIncorrectAnim = null;
-
-  (function () {
-    function makeLottieEmojiSlot(id, x, y, w, h) {
-      const fo = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
-      fo.setAttribute("x", x);
-      fo.setAttribute("y", y);
-      fo.setAttribute("width", w);
-      fo.setAttribute("height", h);
-      const div = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-      div.id = id;
-      div.style.cssText = "width:100%;height:100%;";
-      fo.appendChild(div);
-      return fo;
-    }
-
-    const happyGroup = document.getElementById("Group_1492-3");
-    if (happyGroup && happyGroup.parentNode) {
-      const fo = makeLottieEmojiSlot("lottie-correct-container", 1275, 450, 140, 140);
-      happyGroup.parentNode.replaceChild(fo, happyGroup);
-      lottieCorrectAnim = lottie.loadAnimation({
-        container: document.getElementById("lottie-correct-container"),
-        renderer: "svg",
-        loop: true,
-        autoplay: false,
-        path: "./assets/anim/emoji_happy-star.json"
-      });
-    }
-
-    const sadGroup = document.getElementById("Group_1303");
-    if (sadGroup && sadGroup.parentNode) {
-      const fo = makeLottieEmojiSlot("lottie-incorrect-container", 1274, 358, 140, 140);
-      sadGroup.parentNode.replaceChild(fo, sadGroup);
-      lottieIncorrectAnim = lottie.loadAnimation({
-        container: document.getElementById("lottie-incorrect-container"),
-        renderer: "svg",
-        loop: true,
-        autoplay: false,
-        path: "./assets/anim/emoji-sad.json"
-      });
-    }
-  })();
 
   // --- Helper Functions ---
 
@@ -359,11 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       el.setAttribute("cx", cx);
       el.setAttribute("cy", cy);
-      el.setAttribute("transform", ""); // Clear transforms
     } else if (el.tagName === "g") {
       // For groups, we use transform translate to center the group on cx, cy
-      // Ensure we have a clean slate for bbox calculation
-      el.setAttribute("transform", "");
       const bbox = el.getBBox();
       const tx = cx - (bbox.x + bbox.width / 2);
       const ty = cy - (bbox.y + bbox.height / 2);
@@ -381,7 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (el.tagName === "ellipse" || el.tagName === "circle") {
         el.setAttribute("cx", pos.x);
         el.setAttribute("cy", pos.y);
-        el.setAttribute("transform", "");
       } else if (el.tagName === "g") {
         el.setAttribute("transform", pos.transform || "");
       } else {
@@ -459,9 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("touchmove", drag, { passive: false });
     document.addEventListener("touchend", endDrag);
 
+    // const qData = GAME_CONFIG.questions[currentQuestionIndex];
     const targetCircle = document.getElementById(qData.circleId);
     if (targetCircle) {
-      // styles handled by CSS class 'active-brick-circle'
+      targetCircle.setAttribute("opacity", "1");
+      targetCircle.style.stroke = "#ff6600";
+      targetCircle.style.strokeWidth = "3";
     }
   }
 
@@ -520,7 +432,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dropZoneId = getIntersectingZone(el);
     if (dropZoneId === qData.circleId) {
-      handleOptionMatch(qData, el, draggedOptionIndex, dropZoneId);
+      // Snap the icon to the center of the drop zone (circleId)
+      snapToZone(el, dropZoneId);
+
+      let isCorrect = (draggedOptionIndex === qData.correctOptionIndex);
+
+      if (isCorrect) {
+        // Correct drop
+        targetCircle.classList.remove("active-brick-circle");
+        targetCircle.classList.add("correct-brick-fill");
+
+        // Remove pin and add checkmark
+        removePin(qData.circleId);
+        addCheckmark(qData.circleId);
+
+        updateFeedbackPopup(qData);
+        if (elements.progressBarStars[currentQuestionIndex]) {
+          showElement(elements.progressBarStars[currentQuestionIndex]);
+        }
+        el.style.pointerEvents = "none"; // Lock correct card
+      } else {
+        // Wrong drop on current brick
+        setTimeout(() => snapToOriginal(el), 200);
+        showElementAndFront(elements.popups.incorrect);
+      }
     } else {
       // Dropped elsewhere or on wrong brick
       snapToOriginal(el);
@@ -529,52 +464,24 @@ document.addEventListener("DOMContentLoaded", () => {
     draggedElement = null;
   }
 
-  function handleOptionMatch(qData, el, optionIndex, zoneId) {
-    if (optionIndex === qData.correctOptionIndex) {
-      // Correct Match
-      const targetCircle = document.getElementById(zoneId);
-      if (targetCircle) {
-        targetCircle.classList.remove("active-brick-circle");
-        targetCircle.classList.add("correct-brick-fill");
-        targetCircle.setAttribute("opacity", "1");
-      }
-
-      // Snap the element to the zone
-      snapToZone(el, zoneId);
-
-      // Remove pin
-      removePin(zoneId);
-
-      updateFeedbackPopup(qData);
-      if (elements.progressBarStars[currentQuestionIndex]) {
-        showElement(elements.progressBarStars[currentQuestionIndex]);
-      }
-      el.style.pointerEvents = "none"; // Lock correct card
-      isAwaitingPyramidClick = false;
-      clearSelection();
-    } else {
-      // Wrong Match
-      setTimeout(() => {
-        snapToOriginal(el);
-        clearSelection();
-      }, 200);
-      showElementAndFront(elements.popups.incorrect);
-      if (lottieIncorrectAnim) { lottieIncorrectAnim.goToAndPlay(0, true); }
-    }
-  }
-
-  function clearSelection() {
-    selectedOptionIndex = null;
-    if (selectedOptionElement) {
-      selectedOptionElement.classList.remove("selected-option");
-      selectedOptionElement = null;
-    }
-    isAwaitingPyramidClick = false;
-  }
-
   function removePin(circleId) {
     const pin = document.getElementById("pin-" + circleId);
     if (pin) pin.remove();
+  }
+
+  function addCheckmark(circleId) {
+    const target = document.getElementById(circleId);
+    if (!target) return;
+    const bbox = target.getBBox();
+    const check = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    check.setAttribute("x", bbox.x + bbox.width / 2);
+    check.setAttribute("y", bbox.y + bbox.height / 2 + 5);
+    check.setAttribute("text-anchor", "middle");
+    check.setAttribute("font-size", "30");
+    check.setAttribute("fill", "#fff");
+    check.classList.add("checkmark-icon");
+    check.textContent = "✓";
+    target.parentNode.appendChild(check);
   }
 
   function showElement(el) {
@@ -609,11 +516,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const textNode = feedbackGroup.querySelector("text");
       if (textNode) {
         let feedback = qData.feedback;
-        let maxCharsPerLine = 35; // Increased from 25 to fit more text on one line
+        let maxCharsPerLine = 25;
 
         let lines = [];
         let start = 0;
-        while (start < feedback.length && lines.length < 5) { // Increased from 3 to 5
+        while (start < feedback.length && lines.length < 3) {
           let end = start + maxCharsPerLine;
           if (end < feedback.length) {
             let spaceIndex = feedback.lastIndexOf(" ", end);
@@ -649,13 +556,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     showElementAndFront(popupCorrect);
-    if (lottieCorrectAnim) { lottieCorrectAnim.goToAndPlay(0, true); }
-    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
   }
 
   function updateQuestionUI() {
     const qData = GAME_CONFIG.questions[currentQuestionIndex];
-    clearSelection();
 
     // UI State Management
     showElement(elements.activityPyramid);
@@ -686,62 +590,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show clickable circles
     showElement(elements.clickableCircles);
-
-    // Clear active brick class from ALL possible circles
-    Array.from(elements.clickableCircles.children).forEach(el => {
-      if (el.tagName === "g") {
-        el.classList.remove("active-brick-circle", "highlight-brick");
-      }
-    });
+    isAwaitingPyramidClick = false;
 
     // Set active brick
     const targetCircle = document.getElementById(qData.circleId);
     if (targetCircle) {
       targetCircle.classList.add("active-brick-circle");
     }
-
     if (elements.questionTexts.group) {
       const textElements =
         elements.questionTexts.group.querySelectorAll("text");
 
       if (textElements.length >= 3) {
-        const scenarioText = qData.question; // e.g. "Scenario: The Gram Sabha..."
+        // Extract question number
+        const questionStr = qData.question;
+        const questionNum = qData.id;
 
-        // Clear all text nodes first
-        textElements.forEach(te => {
-          while (te.firstChild) te.removeChild(te.firstChild);
-        });
+        // Get scenario part (everything after "Question X: ")
+        const scenarioIndex = questionStr.indexOf("Scenario:");
+        let scenarioText = "";
+        if (scenarioIndex !== -1) {
+          scenarioText = questionStr.substring(scenarioIndex);
+        }
 
-        // Split text into lines intelligently
+        // Split scenario into two lines - aim for ~50 chars per line
+        let line1 = "";
+        let line2 = "";
         const words = scenarioText.split(" ");
-        let lines = ["", "", ""];
-        let currentLine = 0;
-        const maxChars = [66, 70, 70];
+        let charCount = 0;
 
-        for (let word of words) {
-          if (currentLine < 2 && (lines[currentLine] + word).length > maxChars[currentLine]) {
-            currentLine++;
+        for (let i = 0; i < words.length; i++) {
+          const testLine = line1 ? line1 + " " + words[i] : words[i];
+          if (testLine.length <= 51) {
+            line1 = testLine;
+          } else {
+            line2 = words.slice(i).join(" ");
+            break;
           }
-          lines[currentLine] += word + " ";
         }
 
-        // Line 1: Bold "Scenario:" and rest normal
-        if (lines[0].trim().startsWith("Scenario:")) {
-          const boldTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-          boldTspan.textContent = "Scenario: ";
-          boldTspan.setAttribute("font-weight", "700");
-          textElements[0].appendChild(boldTspan);
-
-          const normalTspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-          normalTspan.textContent = lines[0].replace("Scenario:", "").trim();
-          textElements[0].appendChild(normalTspan);
-        } else {
-          textElements[0].textContent = lines[0].trim();
+        // If line2 is empty, put everything in line1
+        if (!line2) {
+          line1 = scenarioText;
         }
 
-        // Lines 2 and 3
-        textElements[1].textContent = lines[1].trim();
-        textElements[2].textContent = lines[2].trim();
+        // Update first text element - "Question X:"
+        const firstText = textElements[0].querySelectorAll("tspan");
+        if (firstText && firstText.length >= 1) {
+          firstText[0].textContent = "Q";
+          if (firstText[1])
+            firstText[1].textContent = "uestion " + questionNum + ": ";
+        }
+
+        // Update second text element - first line of scenario
+        const secondText = textElements[1].querySelector("tspan");
+        if (secondText) {
+          secondText.textContent = line1;
+        }
+
+        // Update third text element - second line of scenario
+        const thirdText = textElements[2].querySelector("tspan");
+        if (thirdText) {
+          thirdText.textContent = line2;
+        }
       }
     }
 
@@ -774,8 +685,6 @@ document.addEventListener("DOMContentLoaded", () => {
     hideElement(elements.popups.correct);
     hideElement(elements.popups.incorrect);
     hideElement(elements.popups.insights);
-    if (lottieCorrectAnim) { lottieCorrectAnim.stop(); }
-    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
     hideElement(elements.clickableCircles);
     hideElement(elements.progressBar);
     hideElement(elements.btns.insights);
@@ -793,7 +702,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hide all option sets
     elements.optionSets.forEach(hideElement);
 
-    clearSelection();
+    isAwaitingPyramidClick = false;
     currentQuestionIndex = 0;
 
     // Reset all dragged icons to original positions and parents
@@ -807,7 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Also remove pins from all circles
+    // Also remove checkmarks and pins from all circles
     GAME_CONFIG.questions.forEach(q => {
       removePin(q.circleId);
       const circle = document.getElementById(q.circleId);
@@ -816,7 +725,12 @@ document.addEventListener("DOMContentLoaded", () => {
         circle.setAttribute("opacity", "0.43");
         circle.style.stroke = "";
         circle.style.strokeWidth = "";
-        circle.style.opacity = "";
+      }
+      // Remove checkmark (text element)
+      const parent = circle?.parentNode;
+      if (parent) {
+        const checkmarks = Array.from(parent.querySelectorAll(".checkmark-icon")).filter(c => c.textContent === "✓");
+        checkmarks.forEach(c => c.remove());
       }
     });
   }
@@ -834,24 +748,67 @@ document.addEventListener("DOMContentLoaded", () => {
     options.forEach((opt, index) => {
       opt.style.cursor = "pointer";
 
-      // Click handler for Tap-Tap flow
+      // Click handler (REMOVED - now using Drag and Drop)
+      /*
       opt.onclick = (e) => {
-        if (isLocked) return;
-        if (currentQuestionIndex >= GAME_CONFIG.totalQuestions) return;
-
-        // Clear previous selection
-        options.forEach(o => o.classList.remove("selected-option"));
-
-        // Select this option
-        selectedOptionIndex = index;
-        selectedOptionElement = opt;
-        opt.classList.add("selected-option");
-        isAwaitingPyramidClick = true;
+        ...
       };
+      */
 
-      const el = getIconFromCard(opt);
+      // Find all targetable elements for drag and drop
+      // User provided specific IDs for icons
+      const draggableSelectors = [
+        // '[id^="Ellipse_"]',
+        'ellipse[id="Ellipse_17-2"]',
+        'g[id="icon1"]',
+        'g[id="icon3"]',
+        'g[id="icon4"]',
+        'g[id="icon5"]',
+        'g[id="icon6"]',
+        'g[id="icon7"]',
+        'g[id="icon8"]',
+        'g[id="Layer_1-6-2"]',
+        'g[id="Layer_1-6-3"]',
+        'g[id="Layer_1-4-2"]',
+        'g[id="Layer_1-4-3"]',
+        // 'g[id="Layer_1-4-2"]',
+        // 'g[id="Layer_1-6-2"]',
+        'g[id="Layer_1"]',
+        'g[id="Layer_1-4"]',
+        'g[id="Layer_1-6"]',
+        'g[id="Layer_1-4-4"]',
+        'g[id="Layer_1-4-5"]',
+        'g[id="Layer_1-6-4"]',
+        'g[id="Layer_1-6-5"]',
+        'g[id="Layer_1-4-5"]',
+        'g[id="Layer_1-4-6"]',
+        'g[id="Layer_1-6-6"]',
+        'g[id="Layer_1-4-7"]',
+        'g[id="Layer_1-6-7"]',
+        'g[id="Layer_1-4-8"]',
+        'g[id="Layer_1-6-8"]',
+        'g[id="icon9"]',
+        'g[id="Layer_1-4-9"]',
+        'g[id="Layer_1-6-9"]',
+      ];
 
-      if (el) {
+      const items = opt.querySelectorAll(draggableSelectors.join(","));
+
+      items.forEach((item) => {
+        let el = item;
+        // If the item is an ellipse/circle inside a group with no ID,
+        // make the parent group draggable instead so the icon path moves too.
+        if (
+          (el.tagName === "ellipse" || el.tagName === "circle") &&
+          el.parentNode.tagName === "g" &&
+          !el.parentNode.id
+        ) {
+          el = el.parentNode;
+          if (!el.id) {
+            el.id = "drag-group-auto-" + dragIdCounter++;
+          }
+        }
+
         el.style.cursor = "grab";
         if (el.id && !originalPositions[el.id]) {
           if (el.tagName === "g") {
@@ -861,23 +818,31 @@ document.addEventListener("DOMContentLoaded", () => {
             originalPositions[el.id] = {
               x: parseFloat(el.getAttribute("cx") || el.getAttribute("x") || 0),
               y: parseFloat(el.getAttribute("cy") || el.getAttribute("y") || 0),
-              parent: el.parentNode,
+              parent: el.parentNode
             };
           }
         }
         el.addEventListener("mousedown", startDrag);
         el.addEventListener("touchstart", startDrag, { passive: false });
-      }
+      });
     });
   });
 
   elements.btns.proceed.addEventListener("click", () => {
     hideElement(elements.popups.correct);
-    if (lottieCorrectAnim) { lottieCorrectAnim.stop(); }
+    // Proceed to next state (next question or end)
     proceedToNext();
   });
 
   function proceedToNext() {
+    const qData = GAME_CONFIG.questions[currentQuestionIndex];
+
+    // Show the corresponding tier
+    if (qData.id <= 3) showElement(elements.pyramidLevels.l1);
+    else if (qData.id <= 6) showElement(elements.pyramidLevels.l2);
+    else if (qData.id <= 9) showElement(elements.pyramidLevels.l3);
+
+    // Move to next question or end
     currentQuestionIndex++;
     if (currentQuestionIndex < GAME_CONFIG.totalQuestions) {
       updateQuestionUI();
@@ -891,50 +856,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elements.btns.tryAgain.addEventListener("click", () => {
     hideElement(elements.popups.incorrect);
-    if (lottieIncorrectAnim) { lottieIncorrectAnim.stop(); }
   });
 
-  // Handle Pyramid Building Click for Tap-Tap flow
+  // Handle Pyramid Building Click (REMOVED - now handled by proceedToNext)
+  /*
   elements.clickableCircles.addEventListener("click", (e) => {
-    if (isLocked) return;
-    if (selectedOptionIndex === null) return;
-
-    // Find if a circle was clicked
-    let circleGroup = e.target.closest('g');
-    if (!circleGroup || !circleGroup.id) return;
-    if (!circleGroup.id.includes("Ellipse_")) return;
-
-    const qData = GAME_CONFIG.questions[currentQuestionIndex];
-
-    // Check if the clicked circle matches the active target
-    if (circleGroup.id === qData.circleId) {
-      // Find the icon using established helper
-      let icon = getIconFromCard(selectedOptionElement);
-
-      if (icon) {
-        // Ensure original position is stored
-        if (!originalPositions[icon.id]) {
-          if (icon.tagName === "g") {
-            originalPositions[icon.id] = { transform: icon.getAttribute("transform") || "", parent: icon.parentNode };
-          } else {
-            originalPositions[icon.id] = {
-              x: parseFloat(icon.getAttribute("cx") || icon.getAttribute("x") || 0),
-              y: parseFloat(icon.getAttribute("cy") || icon.getAttribute("y") || 0),
-              parent: icon.parentNode
-            };
-          }
-        }
-        // Move icon to circle container
-        elements.clickableCircles.appendChild(icon);
-        handleOptionMatch(qData, icon, selectedOptionIndex, circleGroup.id);
-      }
-    } else {
-      // Tapped wrong circle
-      showElementAndFront(elements.popups.incorrect);
-      if (lottieIncorrectAnim) { lottieIncorrectAnim.goToAndPlay(0, true); }
-      clearSelection();
-    }
+    ...
   });
+  */
 
   // Insights
   if (elements.btns.insights) {
@@ -954,6 +883,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (elements.btns.playAgain) {
     elements.btns.playAgain.style.cursor = "pointer";
     elements.btns.playAgain.addEventListener("click", () => {
+      currentQuestionIndex = 0;
       initGame();
     });
   }

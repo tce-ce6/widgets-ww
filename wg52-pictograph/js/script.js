@@ -13,9 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const fullInputImg = document.getElementById("full-inputimg");
   const halfInputImg = document.getElementById("half-inputimg");
   const countList = document.getElementById("count-list");
-  const backdrop = document.getElementById("backdrop");
-  const solutionWrapper = document.getElementById("soulution-wrapper");
-  const correctModal = document.getElementById("correct-modal");
   // ICON SELECTION
   iconItems.forEach((item) => {
     item.addEventListener("click", function () {
@@ -32,14 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 🔥 update half icon
       halfInputImg.src = `./assets/${selectedIcon}-half.svg`;
-      halfInputImg.onerror = function () {
-        if (selectedIcon) {
-          halfInputImg.src = `./assets/${selectedIcon}.svg`;
-        } else {
-          halfInputImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-        }
-      };
-
+        halfInputImg.onerror = function () {
+  halfInputImg.src = `./assets/${selectedIcon}.svg`;
+};
+      
       const handler = document.getElementById("main-handler");
       if (handler) {
         handler.classList.remove("disabled-handler");
@@ -59,43 +52,39 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error loading JSON:", error));
 
   function updateKeyValues() {
-    if (!selectedIcon) {
-      if (fullCountEl) fullCountEl.textContent = 0;
-      if (halfCountEl) halfCountEl.textContent = 0;
-      return;
-    }
+    if (!selectedIcon) return; // only update if icon selected
 
     fullCountEl.textContent = sliderValue;
     halfCountEl.textContent = (sliderValue / 2).toFixed(1);
   }
-  function loadActivity(index) {
+function loadActivity(index) {
 
-    const activity = pictographData[index];
-    if (!activity) return;
+  const activity = pictographData[index];
+  if (!activity) return;
 
-    titleEl.textContent = activity.title;
-    descEl.textContent = activity.description;
+  titleEl.textContent = activity.title;
+  descEl.textContent = activity.description;
 
-    tableBody.innerHTML = "";
-    countList.innerHTML = "";
+  tableBody.innerHTML = "";
+  countList.innerHTML = "";
 
-    activity.categories.forEach(category => {
+  activity.categories.forEach(category => {
 
-      // table row
-      const row = document.createElement("tr");
+    // table row
+    const row = document.createElement("tr");
 
-      row.innerHTML = `
+    row.innerHTML = `
       <td>${category.name}</td>
       <td>${category.count}</td>
     `;
 
-      tableBody.appendChild(row);
+    tableBody.appendChild(row);
 
 
-      // pictograph row
-      const li = document.createElement("li");
+    // pictograph row
+    const li = document.createElement("li");
 
-      li.innerHTML = `
+    li.innerHTML = `
       <div class="left-sec">
         <span class="category-name">${category.name}:</span>
         <div class="images-wrapper"></div>
@@ -115,16 +104,24 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `;
 
-      countList.appendChild(li);
+    countList.appendChild(li);
 
-      setupRowControls(li);
+    setupRowControls(li);
 
-    });
+  });
 
-  }
+}
 
   // Next Activity Button
   nextBtn.addEventListener("click", function () {
+    const resetSettingButton = document.getElementById("reset-setting");
+    if (resetSettingButton) {
+      resetSettingButton.click();
+    }
+
+    const backdrop = document.getElementById("backdrop");
+    const solutionWrapper = document.getElementById("soulution-wrapper");
+    const correctModal = document.getElementById("correct-modal");
     if (backdrop) backdrop.style.display = "none";
     if (solutionWrapper) solutionWrapper.style.display = "none";
     if (correctModal) correctModal.style.display = "none";
@@ -194,241 +191,242 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setupRowControls(li) {
 
-    const wrapper = li.querySelector(".images-wrapper");
-    const currentCountEl = li.querySelector(".current-count");
+  const wrapper = li.querySelector(".images-wrapper");
+  const currentCountEl = li.querySelector(".current-count");
 
-    const btnFullPlus = li.querySelector(".btnFull-plus");
-    const btnFullMinus = li.querySelector(".btnFull-minus");
-    const btnHalfPlus = li.querySelector(".btnHalf-plus");
-    const btnHalfMinus = li.querySelector(".btnHalf-minus");
+  const btnFullPlus = li.querySelector(".btnFull-plus");
+  const btnFullMinus = li.querySelector(".btnFull-minus");
+  const btnHalfPlus = li.querySelector(".btnHalf-plus");
+  const btnHalfMinus = li.querySelector(".btnHalf-minus");
 
-    let currentValue = 0;
-    const feedbackEl = li.querySelector(".feedback");
+  let currentValue = 0;
+  const feedbackEl = li.querySelector(".feedback");
 
-    if (feedbackEl) {
-      feedbackEl.addEventListener("click", () => {
-        const globalResetBtn = document.getElementById("global-reset");
-        if (globalResetBtn) globalResetBtn.click();
-      });
-    }
+  if (feedbackEl) {
+    feedbackEl.addEventListener("click", () => {
+      const globalResetBtn = document.getElementById("global-reset");
+      if (globalResetBtn) globalResetBtn.click();
+    });
+  }
 
-    btnFullPlus.addEventListener("click", () => {
+  btnFullPlus.addEventListener("click", () => {
 
-      if (!selectedIcon || sliderValue === 0) return;
+    if (!selectedIcon || sliderValue === 0) return;
 
-      if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
-      if (currentCountEl) currentCountEl.classList.remove("wrong");
+    if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
+    if (currentCountEl) currentCountEl.classList.remove("wrong");
 
-      const img = document.createElement("img");
+    const img = document.createElement("img");
+    img.src = `./assets/${selectedIcon}.svg`;
+    img.classList.add("full-icon");
+
+    wrapper.appendChild(img);
+
+    currentValue += sliderValue;
+    currentCountEl.textContent = currentValue;
+
+  });
+
+
+  btnFullMinus.addEventListener("click", () => {
+
+    const icons = wrapper.querySelectorAll(".full-icon");
+    if (icons.length === 0) return;
+
+    if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
+    if (currentCountEl) currentCountEl.classList.remove("wrong");
+
+    icons[icons.length - 1].remove();
+
+    currentValue -= sliderValue;
+    currentCountEl.textContent = currentValue;
+
+  });
+
+
+  btnHalfPlus.addEventListener("click", () => {
+
+    if (!selectedIcon || sliderValue === 0) return;
+
+    if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
+    if (currentCountEl) currentCountEl.classList.remove("wrong");
+
+    const img = document.createElement("img");
+    img.src = `./assets/${selectedIcon}-half.svg`;
+    img.classList.add("half-icon");
+
+    img.onerror = function () {
       img.src = `./assets/${selectedIcon}.svg`;
-      img.classList.add("full-icon");
+    };
 
-      const handler = document.getElementById("main-handler");
-      if (handler) handler.classList.add("disabled-handler");
+    wrapper.appendChild(img);
 
-      wrapper.appendChild(img);
+    currentValue += sliderValue / 2;
+    currentCountEl.textContent = currentValue;
 
-      currentValue += sliderValue;
-      currentCountEl.textContent = currentValue;
+  });
 
+
+  btnHalfMinus.addEventListener("click", () => {
+
+    const icons = wrapper.querySelectorAll(".half-icon");
+    if (icons.length === 0) return;
+
+    if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
+    if (currentCountEl) currentCountEl.classList.remove("wrong");
+
+    icons[icons.length - 1].remove();
+
+    currentValue -= sliderValue / 2;
+    currentCountEl.textContent = currentValue;
+
+  });
+
+}
+function updateCounterButtons() {
+
+  const allButtons = document.querySelectorAll(".counter-btns");
+  const checkAnsBtn = document.getElementById("check-ans");
+  const globalResetBtn = document.getElementById("global-reset");
+  const showAnswerBtn = document.getElementById("show-answer");
+
+  if (sliderValue > 0 && selectedIcon) {
+
+    allButtons.forEach(btn => {
+      btn.classList.remove("disabled");
     });
+    
+    if (checkAnsBtn) checkAnsBtn.removeAttribute("disabled");
+    if (globalResetBtn) globalResetBtn.removeAttribute("disabled");
+    if (showAnswerBtn) showAnswerBtn.removeAttribute("disabled");
 
+  } else {
 
-    btnFullMinus.addEventListener("click", () => {
+    allButtons.forEach(btn => {
+      btn.classList.add("disabled");
+    });
+    
+    if (checkAnsBtn) checkAnsBtn.setAttribute("disabled", "true");
+    if (globalResetBtn) globalResetBtn.setAttribute("disabled", "true");
+    if (showAnswerBtn) showAnswerBtn.setAttribute("disabled", "true");
 
-      const icons = wrapper.querySelectorAll(".full-icon");
-      if (icons.length === 0) return;
+  }
 
-      if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
+}
+
+const resetSettingBtn = document.getElementById("reset-setting");
+if (resetSettingBtn) {
+  resetSettingBtn.addEventListener("click", () => {
+    selectedIcon = null;
+    const handler = document.getElementById("main-handler");
+    if (handler) {
+      handler.classList.add("disabled-handler");
+    }
+    iconItems.forEach((li) => li.classList.remove("active"));
+    
+    // clear input preview images
+    if (fullInputImg) fullInputImg.removeAttribute("src");
+    if (halfInputImg) halfInputImg.removeAttribute("src");
+
+    moveHandlerTo(markers[0]);
+
+    updateKeyValues();
+    updateCounterButtons();
+  });
+}
+
+const checkAnsBtn = document.getElementById("check-ans");
+if (checkAnsBtn) {
+  checkAnsBtn.addEventListener("click", () => {
+    const listItems = document.querySelectorAll("#count-list li");
+    let allCorrect = true;
+    
+    listItems.forEach(li => {
+      const currentCountEl = li.querySelector(".current-count");
+      const currentCount = parseFloat(currentCountEl.textContent);
+      const totalCount = parseFloat(li.querySelector(".total-count").textContent);
+      const feedbackEl = li.querySelector(".feedback");
+      
       if (currentCountEl) currentCountEl.classList.remove("wrong");
 
-      const handler = document.getElementById("main-handler");
-      if (handler) handler.classList.add("disabled-handler");
-
-      icons[icons.length - 1].remove();
-
-      currentValue -= sliderValue;
-      currentCountEl.textContent = currentValue;
-
+      if (feedbackEl) {
+        feedbackEl.classList.remove("correct", "wrong");
+        if (currentCount === totalCount) {
+          feedbackEl.classList.add("correct");
+        } else {
+          feedbackEl.classList.add("wrong");
+          if (currentCountEl) currentCountEl.classList.add("wrong");
+          allCorrect = false;
+        }
+      }
     });
 
+    if (allCorrect && listItems.length > 0) {
+      const backdrop = document.getElementById("backdrop");
+      const correctModal = document.getElementById("correct-modal");
+      if (backdrop) backdrop.style.display = "block";
+      if (correctModal) correctModal.style.display = "block";
 
-    btnHalfPlus.addEventListener("click", () => {
-
-      if (!selectedIcon || sliderValue === 0) return;
-
-      if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
-      if (currentCountEl) currentCountEl.classList.remove("wrong");
-
-      const img = document.createElement("img");
-      img.src = `./assets/${selectedIcon}-half.svg`;
-      img.classList.add("half-icon");
-
-      img.onerror = function () {
-        if (selectedIcon) {
-          img.src = `./assets/${selectedIcon}.svg`;
+      // Allow clicking the modal or backdrop (if modal is open) to dismiss it optionally
+      const dismissModal = () => {
+        if (correctModal) correctModal.style.display = "none";
+        if (backdrop && document.getElementById("soulution-wrapper") && document.getElementById("soulution-wrapper").style.display !== "block") {
+           backdrop.style.display = "none";
         }
       };
 
-      const handler = document.getElementById("main-handler");
-      if (handler) handler.classList.add("disabled-handler");
+      if (correctModal) correctModal.onclick = dismissModal;
+    }
+  });
+}
 
-      wrapper.appendChild(img);
+const globalResetBtn = document.getElementById("global-reset");
+if (globalResetBtn) {
+  globalResetBtn.addEventListener("click", () => {
+    // Re-initialize lists basically, setting values back to 0. 
+    // We can just rely on `loadActivity(currentActivity)` 
+    // and resetting the active settings.
+    const resetSettingButton = document.getElementById("reset-setting");
+    if (resetSettingButton) {
+      resetSettingButton.click(); 
+    }
+    
+    const correctModal = document.getElementById("correct-modal");
+    if (correctModal) correctModal.style.display = "none";
+    
+    const backdrop = document.getElementById("backdrop");
+    if (backdrop) backdrop.style.display = "none";
+    
+    // Using loadActivity effectively resets all DOM states inside `#count-list` back to initialized 0 count state
+    loadActivity(currentActivity);
+  });
+}
 
-      currentValue += sliderValue / 2;
-      currentCountEl.textContent = currentValue;
 
-    });
+function moveHandlerTo(marker) {
 
+  const offsetX = marker.x - handlerCenterX;
 
-    btnHalfMinus.addEventListener("click", () => {
+  handler.setAttribute("transform", `translate(${offsetX}, 0)`);
 
-      const icons = wrapper.querySelectorAll(".half-icon");
-      if (icons.length === 0) return;
+  sliderValue = marker.value;
 
-      if (feedbackEl) feedbackEl.classList.remove("correct", "wrong");
-      if (currentCountEl) currentCountEl.classList.remove("wrong");
+  console.log("Slider Value:", sliderValue);
 
-      const handler = document.getElementById("main-handler");
-      if (handler) handler.classList.add("disabled-handler");
-
-      icons[icons.length - 1].remove();
-
-      currentValue -= sliderValue / 2;
-      currentCountEl.textContent = currentValue;
-
-    });
-
-  }
-  function updateCounterButtons() {
-
-    const allButtons = document.querySelectorAll(".counter-btns");
-    const checkAnsBtn = document.getElementById("check-ans");
-    const globalResetBtn = document.getElementById("global-reset");
-    const showAnswerBtn = document.getElementById("show-answer");
-
-    if (sliderValue > 0 && selectedIcon) {
-
-      allButtons.forEach(btn => {
-        btn.classList.remove("disabled");
-      });
-
-      if (checkAnsBtn) checkAnsBtn.removeAttribute("disabled");
-      if (globalResetBtn) globalResetBtn.removeAttribute("disabled");
-      if (showAnswerBtn) showAnswerBtn.removeAttribute("disabled");
-
+  const resetSettingBtn = document.getElementById("reset-setting");
+  if (resetSettingBtn) {
+    if (sliderValue > 0) {
+      resetSettingBtn.classList.remove("disabled");
     } else {
-
-      allButtons.forEach(btn => {
-        btn.classList.add("disabled");
-      });
-
-      if (checkAnsBtn) checkAnsBtn.setAttribute("disabled", "true");
-      if (globalResetBtn) globalResetBtn.setAttribute("disabled", "true");
-      if (showAnswerBtn) showAnswerBtn.setAttribute("disabled", "true");
-
+      resetSettingBtn.classList.add("disabled");
     }
-
   }
 
+  updateKeyValues();
 
-  const checkAnsBtn = document.getElementById("check-ans");
-  if (checkAnsBtn) {
-    checkAnsBtn.addEventListener("click", () => {
-      const listItems = document.querySelectorAll("#count-list li");
-      let allCorrect = true;
+  updateCounterButtons(); // ⭐ add this
 
-      listItems.forEach(li => {
-        const currentCountEl = li.querySelector(".current-count");
-        const currentCount = parseFloat(currentCountEl.textContent);
-        const totalCount = parseFloat(li.querySelector(".total-count").textContent);
-        const feedbackEl = li.querySelector(".feedback");
-
-        if (currentCountEl) currentCountEl.classList.remove("wrong");
-
-        if (feedbackEl) {
-          feedbackEl.classList.remove("correct", "wrong");
-          if (currentCount === totalCount) {
-            feedbackEl.classList.add("correct");
-          } else {
-            feedbackEl.classList.add("wrong");
-            if (currentCountEl) currentCountEl.classList.add("wrong");
-            allCorrect = false;
-          }
-        }
-      });
-
-      if (allCorrect && listItems.length > 0) {
-        if (backdrop) backdrop.style.display = "block";
-        if (correctModal) correctModal.style.display = "block";
-
-        // Allow clicking the modal or backdrop (if modal is open) to dismiss it optionally
-        const dismissModal = () => {
-          if (correctModal) correctModal.style.display = "none";
-          if (backdrop && document.getElementById("soulution-wrapper") && document.getElementById("soulution-wrapper").style.display !== "block") {
-            backdrop.style.display = "none";
-          }
-        };
-
-        if (correctModal) correctModal.onclick = dismissModal;
-      }
-    });
-  }
-
-  const globalResetBtn = document.getElementById("global-reset");
-  if (globalResetBtn) {
-    globalResetBtn.addEventListener("click", () => {
-      if (correctModal) correctModal.style.display = "none";
-
-      if (backdrop) backdrop.style.display = "none";
-
-      if (solutionWrapper) solutionWrapper.style.display = "none";
-
-      // Reset selected icon
-      selectedIcon = null;
-      iconItems.forEach((li) => li.classList.remove("active"));
-      const blankImg = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-      if (fullInputImg) fullInputImg.src = blankImg;
-      if (halfInputImg) halfInputImg.src = blankImg;
-
-      const iconWrapper = document.querySelector(".icon-wrapper");
-      if (iconWrapper) iconWrapper.classList.remove("disabled-icons");
-
-      // Reset Slider to value 0
-      moveHandlerTo(markers[0]);
-      const handlerEl = document.getElementById("main-handler");
-      if (handlerEl) handlerEl.classList.add("disabled-handler");
-
-      // Reset Pictograph Data
-      loadActivity(currentActivity);
-    });
-  }
-
-
-  function moveHandlerTo(marker) {
-
-    const offsetX = marker.x - handlerCenterX;
-
-    handler.setAttribute("transform", `translate(${offsetX}, 0)`);
-
-    sliderValue = marker.value;
-
-    console.log("Slider Value:", sliderValue);
-
-    updateKeyValues();
-
-    updateCounterButtons(); // ⭐ add this
-
-    const iconWrapper = document.querySelector(".icon-wrapper");
-    if (iconWrapper) {
-      if (sliderValue > 0) {
-        iconWrapper.classList.add("disabled-icons");
-      } else {
-        iconWrapper.classList.remove("disabled-icons");
-      }
-    }
-
-  }
+}
   // Initialize at value-1
   moveHandlerTo(markers[0]);
 
@@ -479,6 +477,8 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   const showAnswerBtn = document.getElementById("show-answer");
+  const backdrop = document.getElementById("backdrop");
+  const solutionWrapper = document.getElementById("soulution-wrapper");
   const closeSolutionWrapper = document.getElementById("close-solution-wrapper");
   const countListSolution = document.getElementById("count-list-solution");
   const fullInputImgSolution = document.getElementById("full-inputimg-solution");
@@ -490,35 +490,28 @@ document.addEventListener("DOMContentLoaded", function () {
     showAnswerBtn.addEventListener("click", () => {
       backdrop.style.display = "block";
       solutionWrapper.style.display = "block";
-      if (correctModal) correctModal.style.display = "none";
-
+      
       const activity = pictographData[currentActivity];
       if (!activity) return;
 
       countListSolution.innerHTML = "";
-
+      
       if (selectedIcon) {
         fullInputImgSolution.src = `./assets/${selectedIcon}.svg`;
         halfInputImgSolution.src = `./assets/${selectedIcon}-half.svg`;
         halfInputImgSolution.onerror = function () {
-          if (selectedIcon) {
-            halfInputImgSolution.src = `./assets/${selectedIcon}.svg`;
-          }
+          halfInputImgSolution.src = `./assets/${selectedIcon}.svg`;
         };
       }
 
-      // Define fixed keys for solutions
-      const activitySolutionKeys = [4, 4, 10, 10, 4];
-      const solutionKey = activitySolutionKeys[currentActivity] || sliderValue;
-
-      if (fullCountSolution) fullCountSolution.textContent = solutionKey;
-      if (halfCountSolution) halfCountSolution.textContent = (solutionKey / 2).toFixed(1);
+      if (fullCountSolution) fullCountSolution.textContent = sliderValue;
+      if (halfCountSolution) halfCountSolution.textContent = (sliderValue / 2).toFixed(1);
 
       activity.categories.forEach(category => {
-        const fullIconCount = Math.floor(category.count / solutionKey);
-        const remainder = category.count % solutionKey;
+        const fullIconCount = Math.floor(category.count / sliderValue);
+        const remainder = category.count % sliderValue;
         const needsHalf = remainder > 0;
-
+        
         let imagesHtml = '';
         for (let i = 0; i < fullIconCount; i++) {
           imagesHtml += `<img src="./assets/${selectedIcon}.svg" class="full-icon" alt="">`;
