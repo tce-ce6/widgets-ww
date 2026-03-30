@@ -297,7 +297,7 @@
       "author": "Santosh"
     },
     "wg79-rhyme-scheme-2": {
-      "updatedAt": "2026-03-30T12:19:19+05:30",
+      "updatedAt": "2026-03-30T15:11:13+05:30",
       "author": "tce-ashishg"
     },
     "wg80-forming-landforms": {
@@ -313,8 +313,8 @@
       "author": "PrasannaP"
     },
     "wg83-major-soil-types": {
-      "updatedAt": "2026-03-30T13:34:00+05:30",
-      "author": "sushantkanaujiya"
+      "updatedAt": "2026-03-30T15:08:31+05:30",
+      "author": "tce-nitinc"
     },
     "wg84-legislature-challenge": {
       "updatedAt": "2026-03-30T11:46:47+05:30",
@@ -383,11 +383,27 @@
   },
   "commits": [
     {
+      "date": "2026-03-30T15:11:13+05:30",
+      "author": "tce-ashishg",
+      "message": "wg79 error resolved",
+      "widgets": [
+        79
+      ]
+    },
+    {
       "date": "2026-03-30T14:32:10+05:30",
       "author": "sushantkanaujiya",
       "message": "feat: implement crop data and facts repository for Indian agriculture visualization",
       "widgets": [
         151
+      ]
+    },
+    {
+      "date": "2026-03-30T14:31:49+05:30",
+      "author": "tce-nitinc",
+      "message": "wg83 changes",
+      "widgets": [
+        83
       ]
     },
     {
@@ -640,22 +656,6 @@
       "message": "fixed 114",
       "widgets": [
         114
-      ]
-    },
-    {
-      "date": "2026-03-27T20:47:15+05:30",
-      "author": "sushantkanaujiya",
-      "message": "fixed wg114",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-27T20:43:40+05:30",
-      "author": "PrasannaP",
-      "message": "Refraction, Total Internal Reflection and Critical Angle",
-      "widgets": [
-        70
       ]
     }
   ]
