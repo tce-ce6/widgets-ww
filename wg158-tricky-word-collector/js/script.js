@@ -357,7 +357,7 @@ function renderForest() {
           <button onclick="catchWord()" style="padding:16px 36px;font-size:18px;font-weight:bold;background:linear-gradient(180deg,#daa520 0%,#b8860b 100%);border:2px solid #ffd700;border-radius:24px;color:#1a1a2e;cursor:pointer;animation:pulse 1.5s ease-in-out infinite;">
             ${texts.catchWord}
           </button>` : ''}
-        <button onclick="loadNewWord()" style="padding:16px 36px;font-size:18px;background:linear-gradient(180deg,#4a3728 0%,#2d1f1a 100%);border:2px solid #8b4513;border-radius:24px;color:#deb887;cursor:pointer;">
+        <button onclick="loadNewWord()" class="btn-wg151" style="font-size:18px;background:linear-gradient(180deg,#4a3728 0%,#2d1f1a 100%);border:2px solid #8b4513;color:#deb887;">
           ${creature.emoji} ${texts.nextCreature}
         </button>`;
     }
@@ -389,7 +389,7 @@ function renderForest() {
       </div>
 
       <!-- Change Path button fixed bottom-right -->
-      <button onclick="goToLevelSelect()" style="position:fixed;bottom:20px;right:20px;z-index:100;padding:8px 16px;font-size:13px;background:transparent;border:2px solid #666;border-radius:15px;color:#888;cursor:pointer;">
+      <button onclick="goToLevelSelect()" class="btn-wg151" style="position:fixed;bottom:20px;right:20px;z-index:100;font-size:13px;padding:8px 18px;background:transparent;border:2px solid #666;color:#888;">
         ${texts.changePath}
       </button>
 
