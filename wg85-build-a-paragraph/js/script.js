@@ -228,13 +228,13 @@ const paragraphData = [
       "It also reminds us that new beginnings are always beautiful.",
       "Spring is my favourite season when nature comes alive with colours.",
       "Finally, spring fills our hearts with happiness.",
-      "During this time, flowers bloom in gardens and trees grow fresh green leaves"
+      "During this time, flowers bloom in gardens and trees grow fresh green leaves."
     ],
     correctOrder: [4, 6, 1, 2, 5, 3],
     annotations: [
-      { text: "A sentence that introduces the topic with enthusiasm", type: "Annotation 1", words: ["Spring is my favourite season when nature comes alive with colours."] },
+      { text: "A sentence that introduces the topic with enthusiasm", type: "Annotation 1", words: ["Spring is my favourite season when nature comes alive with colours"] },
       { text: "Words that add details and signal the ending", type: "Annotation 2", words: ["During", "Also", "Moreover", "Finally"] },
-      { text: "A concluding sentence that shares the deeper meaning of spring", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful."] }
+      { text: "A concluding sentence that shares the deeper meaning of spring", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful"] }
     ],
     linkingWords: ["During", "Also", "Moreover", "Finally"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence celebrates what makes spring special. Whenever you write a paragraph, try providing a suitable title."
@@ -252,9 +252,9 @@ const paragraphData = [
     ],
     correctOrder: [4, 1, 2, 5, 3],
     annotations: [
-      { text: "An opening sentence that presents fruits as nature's gifts", type: "Annotation 1", words: ["Fruits are nature's gifts that keep us healthy and strong."] },
+      { text: "An opening sentence that presents fruits as nature's gifts", type: "Annotation 1", words: ["Fruits are nature's gifts that keep us healthy and strong"] },
       { text: "Linking words that give examples and draw a conclusion", type: "Annotation 2", words: ["For example", "Besides", "Therefore"] },
-      { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["Therefore, we must eat fresh fruits daily to stay fit."] }
+      { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["Therefore, we must eat fresh fruits daily to stay fit"] }
     ],
     linkingWords: ["For example", "Besides", "Therefore"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us why fruits are good for our health. Whenever you write a paragraph, try providing a suitable title."
@@ -272,9 +272,9 @@ const paragraphData = [
     ],
     correctOrder: [2, 4, 1, 5, 3],
     annotations: [
-      { text: "An opening sentence that defines decimals", type: "Annotation 1", words: ["Decimals are a special way of writing numbers that are not whole."] },
+      { text: "An opening sentence that defines decimals", type: "Annotation 1", words: ["Decimals are a special way of writing numbers that are not whole"] },
       { text: "Phrases that build flow in the paragraph", type: "Annotation 2", words: ["For instance", "especially"] },
-      { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3", words: ["And so, learning decimals makes our daily tasks simpler and more precise."] }
+      { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3", words: ["And so, learning decimals makes our daily tasks simpler and more precise"] }
     ],
     linkingWords: ["For instance", "especially"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence helps us understand what decimals are and why they matter. Whenever you write a paragraph, try providing a suitable title."
@@ -292,9 +292,9 @@ const paragraphData = [
     ],
     correctOrder: [4, 1, 5, 2, 3],
     annotations: [
-      { text: "An opening sentence that introduces the festival", type: "Annotation 1", words: ["Holi is a joyful festival that marks the arrival of spring in India."] },
+      { text: "An opening sentence that introduces the festival", type: "Annotation 1", words: ["Holi is a joyful festival that marks the arrival of spring in India"] },
       { text: "Words that build flow", type: "Annotation 2", words: ["During this celebration", "Indeed"] },
-      { text: "A concluding sentence that captures the spirit of the festival", type: "Annotation 3", words: ["Indeed, Holi teaches us to celebrate life together with happiness."] }
+      { text: "A concluding sentence that captures the spirit of the festival", type: "Annotation 3", words: ["Indeed, Holi teaches us to celebrate life together with happiness"] }
     ],
     linkingWords: ["During this celebration", "Indeed"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes how people celebrate the colourful festival of Holi. Whenever you write a paragraph, try providing a suitable title."
@@ -433,11 +433,9 @@ function clearExistingContent() {
     titleGroup.style.display = 'none';
   }
 
-  // Hide static text groups to prevent overlap
-  const staticText1 = document.getElementById('The_Taj_Mahal_located_in_Agra_is_one_of_the_Seven_Wonders_of_the_World_and_a_symbol_of_eternal_love.');
-  if (staticText1) staticText1.style.display = 'none';
-  const staticText2 = document.getElementById('The_Taj_Mahal_located_in_Agra_is_one_of_the_Seven_Wonders_of_the_World_and_a_symbol_of_eternal_love._Built_by_Emperor_Shah_Jahan_in_memory_of_his_beloved_wife_Mumtaz_Mahal_this_stunning_white_marble_monument_took_22_years_to_complete._Besides_its_beauti');
-  if (staticText2) staticText2.style.display = 'none';
+  // AGGRESSIVE: Hide all static topic groups from original SVG to prevent overlap
+  const staticGroups = document.querySelectorAll('g[id^="The_"], g[id*="Taj_Mahal"], g[id*="Himalaya"], g[id*="Sun"], g[id*="Chocolate"], g[id*="Holi"], g[id*="Bee"], g[id*="Animal"], g[id*="School"], g[id*="Market"], g[id*="Sharing"], g[id*="Spring"], g[id*="Gifts"], g[id*="Decimal"]');
+  staticGroups.forEach(g => g.style.display = 'none');
 }
 
 // Update topic title
@@ -528,7 +526,7 @@ function createSentenceBoxes(topic) {
     div.style.fontFamily = 'Roboto-Medium, Roboto';
     div.style.fontWeight = '500';
     div.style.color = '#181818';
-    div.style.lineHeight = '1.3';
+    div.style.lineHeight = '1.5';
     div.style.display = 'flex';
     div.style.alignItems = 'center';
     div.style.height = '90%';
@@ -565,7 +563,7 @@ function createParagraphSlots(topic) {
   div.style.fontSize = '28px';
   div.style.fontFamily = 'Roboto-Italic, Roboto';
   div.style.fontStyle = 'italic';
-  div.style.lineHeight = '1.6';
+  div.style.lineHeight = '1.5';
   div.style.color = '#999';
   div.style.padding = '30px';
   div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
@@ -666,10 +664,10 @@ function buildParagraphProgressively() {
   div.style.fontSize = '26px';
   div.style.fontFamily = 'Roboto-Medium, Roboto';
   div.style.fontWeight = '500';
-  div.style.lineHeight = '1.6';
+  div.style.lineHeight = '1.5';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
+  div.style.paddingTop = '50px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -689,13 +687,14 @@ function buildParagraphProgressively() {
       sentenceBox.innerHTML = '';
     }
 
-    // Auto-trigger completion screen after completion (instant)
+    // Auto-trigger completion screen and return early — do NOT render the plain paragraph below
     showCompletionScreen();
+    return; // <-- CRITICAL: prevents the plain foreignObject from overwriting the highlighted completion view
   }
 
 
   foreignObject.appendChild(div);
-  container.appendChild(foreignObject);
+  container.replaceChildren(foreignObject);
 }
 
 
@@ -713,7 +712,7 @@ function showCompletionScreen() {
     if (textEl) {
       textEl.innerHTML = `<tspan x="0" y="0" text-anchor="middle">${topic.topic}</tspan>`;
       // Re-center title in the middle panel
-      textEl.setAttribute('transform', 'translate(1033.5 110)');
+      textEl.setAttribute('transform', 'translate(1033.5 225)');
     }
   }
 
@@ -857,26 +856,42 @@ function showTopicImage(imageName) {
 
 // Show annotated paragraph
 function showAnnotatedParagraph(topic) {
+  console.log('[WG85] showAnnotatedParagraph called for topic:', topic.topic);
+
   // Clear and show para-toc for highlighted paragraph (middle panel)
   const paraContainer = document.getElementById('para-toc');
+  console.log('[WG85] para-toc container found:', !!paraContainer);
   if (paraContainer) {
     paraContainer.innerHTML = '';
     showHighlightedParagraph(topic, paraContainer);
+  } else {
+    console.error('[WG85] ERROR: #para-toc not found in DOM!');
   }
 
   // Show annotations on the left (using para-toc-highlights)
   const annotationContainer = document.getElementById('para-toc-highlights');
+  console.log('[WG85] para-toc-highlights container found:', !!annotationContainer);
   if (annotationContainer) {
     annotationContainer.style.display = 'block';
     showAnnotations(topic, annotationContainer);
+  } else {
+    console.error('[WG85] ERROR: #para-toc-highlights not found in DOM!');
   }
 }
 
 // Show highlighted paragraph in middle panel
 function showHighlightedParagraph(topic, container) {
+  console.log('[WG85] showHighlightedParagraph called');
+
   // Build complete paragraph with highlights
   const orderedSentences = topic.correctOrder.map(index => topic.sentences[index - 1]);
   const paragraphText = orderedSentences.join(' ');
+  console.log('[WG85] Ordered sentences:', orderedSentences);
+  console.log('[WG85] Full paragraph text:', paragraphText);
+
+  // Get highlighted HTML
+  const highlightedHTML = getHighlightedParagraphHTML(topic, paragraphText);
+  console.log('[WG85] Highlighted HTML (first 300 chars):', highlightedHTML.substring(0, 300));
 
   // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
@@ -893,7 +908,7 @@ function showHighlightedParagraph(topic, container) {
   div.style.color = '#181818';
   div.style.borderRadius = '18px';
   div.style.padding = '40px';
-  div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
+  div.style.paddingTop = '50px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -908,46 +923,58 @@ function showHighlightedParagraph(topic, container) {
   para.style.fontWeight = '500';
   para.style.lineHeight = '1.5';
   para.style.marginTop = '20px';
-  para.innerHTML = getHighlightedParagraphHTML(topic, paragraphText);
+  para.innerHTML = highlightedHTML;
   div.appendChild(para);
 
   foreignObject.appendChild(div);
-  container.appendChild(foreignObject);
+  container.replaceChildren(foreignObject);
+  console.log('[WG85] foreignObject injected into para-toc. Children count:', container.children.length);
 }
 
 
 // Get highlighted paragraph HTML with color coding
 function getHighlightedParagraphHTML(topic, paragraphText) {
+  console.log('[WG85] getHighlightedParagraphHTML called');
+  console.log('[WG85] Annotations:', JSON.stringify(topic.annotations));
+
   const colors = ['#FFFF00', '#FF00FF', '#00FFFF'];
   let html = paragraphText;
 
-  // Process annotations in order: Annotation 1 (Yellow), Annotation 3 (Cyan), then Annotation 2 (Pink) last for layering
+  // Process annotations in order: Yellow (0), Cyan (2), Pink (1) for proper layering
   const annOrder = [0, 2, 1];
 
   annOrder.forEach(annIndex => {
     const ann = topic.annotations[annIndex];
-    if (!ann || !ann.words) return;
+    if (!ann || !ann.words) {
+      console.warn('[WG85] No annotation or words for index:', annIndex);
+      return;
+    }
 
     const phrases = Array.isArray(ann.words) ? ann.words : [ann.words];
     const color = colors[annIndex];
+    console.log(`[WG85] Processing annotation[${annIndex}] color=${color}, phrases:`, phrases);
 
     phrases.forEach(phrase => {
       if (!phrase) return;
-      // Use regex with word boundaries for specific words, or literal for full sentences
-      // If it's a short word (likely a linking word), use word boundaries
-      const isShort = phrase.split(' ').length <= 3;
-      const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const cleanPhrase = phrase.trim();
+      const isShort = cleanPhrase.split(' ').length <= 3;
+      const escapedPhrase = cleanPhrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
       let regex;
       if (isShort) {
-        regex = new RegExp(`\\b(${escapedPhrase})\\b`, 'gi');
+        regex = new RegExp(`\\b(${escapedPhrase})[.,!?]?\\b`, 'gi');
       } else {
-        // For full sentences, handle potential trailing punctuation or slight mismatches
-        // IMPORTANT: Must include capturing group ($1) for replacement to work correctly
         regex = new RegExp(`(${escapedPhrase})`, 'gi');
       }
 
+      const before = html.length;
       html = html.replace(regex, `<span style="background: ${color}; padding: 0px 4px; border-radius: 4px;">$1</span>`);
+      const after = html.length;
+      if (after > before) {
+        console.log(`[WG85]  ✓ Highlighted "${cleanPhrase}" with ${color}`);
+      } else {
+        console.warn(`[WG85]  ✗ NO MATCH for "${cleanPhrase}" in paragraph text. Check spelling/punctuation.`);
+      }
     });
   });
 
