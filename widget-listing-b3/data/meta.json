@@ -49,7 +49,7 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-30T19:01:02+05:30",
+      "updatedAt": "2026-03-30T19:34:56+05:30",
       "author": "sushantthe"
     },
     "wg115-literary-device": {
@@ -383,6 +383,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-30T19:34:56+05:30",
+      "author": "sushantthe",
+      "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
+      "widgets": [
+        114
+      ]
+    },
+    {
       "date": "2026-03-30T19:28:14+05:30",
       "author": "tce-ashishg",
       "message": "wg79 click issue resolved",
@@ -646,14 +654,6 @@
       "widgets": [
         85,
         155
-      ]
-    },
-    {
-      "date": "2026-03-30T13:00:26+05:30",
-      "author": "PrasannaP",
-      "message": "todo fix next font",
-      "widgets": [
-        140
       ]
     }
   ]
