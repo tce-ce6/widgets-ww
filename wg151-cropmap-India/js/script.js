@@ -1,425 +1,425 @@
 document.addEventListener("DOMContentLoaded", () => {
-const CROP_DATA = {
-  // Rabi Season Crops
-  Mustard: [
-    "Rajasthan",
-    "Haryana",
-    "Gujarat",
-    "Madhya Pradesh",
-    "Uttar Pradesh",
-    "West Bengal",
-    "Assam"
-  ],
-  Wheat: [
-    "Jammu and Kashmir",
-    "Himachal Pradesh",
-    "Uttarakhand",
-    "Punjab",
-    "Haryana",
-    "Rajasthan",
-    "Uttar Pradesh",
-    "Bihar",
-    "Jharkhand",
-    "West Bengal",
-    "Madhya Pradesh",
-    "Gujarat",
-    "Maharashtra"
-  ],
-  Barley: [
-    "Uttar Pradesh",
-    "Rajasthan",
-    "Madhya Pradesh",
-    "Bihar",
-    "Punjab",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir"
-  ],
-  Chickpea: [
-    "Maharashtra",
-    "Madhya Pradesh",
-    "Rajasthan",
-    "Uttar Pradesh",
-    "Karnataka",
-    "Gujarat"
-  ],
-  Peas: [
-    "Madhya Pradesh",
-    "Uttar Pradesh",
-    "Punjab",
-    "Jharkhand",
-    "Himachal Pradesh",
-    "West Bengal",
-    "Chhattisgarh",
-    "Haryana",
-    "Bihar",
-    "Uttarakhand"
-  ],
+  const CROP_DATA = {
+    // Rabi Season Crops
+    Mustard: [
+      "Rajasthan",
+      "Haryana",
+      "Gujarat",
+      "Madhya Pradesh",
+      "Uttar Pradesh",
+      "West Bengal",
+      "Assam"
+    ],
+    Wheat: [
+      "Jammu and Kashmir",
+      "Himachal Pradesh",
+      "Uttarakhand",
+      "Punjab",
+      "Haryana",
+      "Rajasthan",
+      "Uttar Pradesh",
+      "Bihar",
+      "Jharkhand",
+      "West Bengal",
+      "Madhya Pradesh",
+      "Gujarat",
+      "Maharashtra"
+    ],
+    Barley: [
+      "Uttar Pradesh",
+      "Rajasthan",
+      "Madhya Pradesh",
+      "Bihar",
+      "Punjab",
+      "Haryana",
+      "Himachal Pradesh",
+      "Jammu and Kashmir"
+    ],
+    Chickpea: [
+      "Maharashtra",
+      "Madhya Pradesh",
+      "Rajasthan",
+      "Uttar Pradesh",
+      "Karnataka",
+      "Gujarat"
+    ],
+    Peas: [
+      "Madhya Pradesh",
+      "Uttar Pradesh",
+      "Punjab",
+      "Jharkhand",
+      "Himachal Pradesh",
+      "West Bengal",
+      "Chhattisgarh",
+      "Haryana",
+      "Bihar",
+      "Uttarakhand"
+    ],
 
-  // Kharif Season Crops
-  "Paddy (Rice)": [
-    "Assam",
-    "Odisha",
-    "Andhra Pradesh",
-    "Telangana",
-    "Tamil Nadu",
-    "Gujarat",
-    "Maharashtra",
-    "Karnataka",
-    "Goa",
-    "Kerala",
-    "Chhattisgarh",
-    "Madhya Pradesh",
-    "Punjab",
-    "Haryana"
-  ],
-  Sugarcane: [
-    "Punjab",
-    "Haryana",
-    "Uttarakhand",
-    "Uttar Pradesh",
-    "Bihar",
-    "Maharashtra",
-    "Karnataka",
-    "Tamil Nadu",
-    "Telangana",
-    "Andhra Pradesh"
-  ],
-  Cotton: [
-    "Gujarat",
-    "Maharashtra",
-    "Telangana",
-    "Rajasthan",
-    "Madhya Pradesh",
-    "Andhra Pradesh",
-    "Karnataka",
-    "Tamil Nadu",
-    "Haryana",
-    "Punjab"
-  ],
-  Jute: [
-    "West Bengal",
-    "Bihar",
-    "Assam",
-    "Meghalaya",
-    "Odisha",
-    "Andhra Pradesh"
-  ],
-  Tea: [
-    "West Bengal",
-    "Assam",
-    "Tamil Nadu",
-    "Kerala",
-    "Sikkim",
-    "Tripura",
-    "Arunachal Pradesh"
-  ],
-  Coffee: [
-    "Karnataka",
-    "Kerala",
-    "Tamil Nadu",
-    "Andhra Pradesh",
-    "Odisha"
-  ],
-  Rubber: [
-    "Kerala",
-    "Tamil Nadu",
-    "Karnataka",
-    "Goa",
-    "Andhra Pradesh",
-    "Odisha",
-    "Sikkim",
-    "Assam",
-    "Arunachal Pradesh",
-    "Nagaland",
-    "Manipur",
-    "Mizoram",
-    "Tripura",
-    "Meghalaya",
-    "West Bengal",
-    "Maharashtra",
-    "The Andaman and Nicobar Islands"
-  ],
+    // Kharif Season Crops
+    "Paddy (Rice)": [
+      "Assam",
+      "Odisha",
+      "Andhra Pradesh",
+      "Telangana",
+      "Tamil Nadu",
+      "Gujarat",
+      "Maharashtra",
+      "Karnataka",
+      "Goa",
+      "Kerala",
+      "Chhattisgarh",
+      "Madhya Pradesh",
+      "Punjab",
+      "Haryana"
+    ],
+    Sugarcane: [
+      "Punjab",
+      "Haryana",
+      "Uttarakhand",
+      "Uttar Pradesh",
+      "Bihar",
+      "Maharashtra",
+      "Karnataka",
+      "Tamil Nadu",
+      "Telangana",
+      "Andhra Pradesh"
+    ],
+    Cotton: [
+      "Gujarat",
+      "Maharashtra",
+      "Telangana",
+      "Rajasthan",
+      "Madhya Pradesh",
+      "Andhra Pradesh",
+      "Karnataka",
+      "Tamil Nadu",
+      "Haryana",
+      "Punjab"
+    ],
+    Jute: [
+      "West Bengal",
+      "Bihar",
+      "Assam",
+      "Meghalaya",
+      "Odisha",
+      "Andhra Pradesh"
+    ],
+    Tea: [
+      "West Bengal",
+      "Assam",
+      "Tamil Nadu",
+      "Kerala",
+      "Sikkim",
+      "Tripura",
+      "Arunachal Pradesh"
+    ],
+    Coffee: [
+      "Karnataka",
+      "Kerala",
+      "Tamil Nadu",
+      "Andhra Pradesh",
+      "Odisha"
+    ],
+    Rubber: [
+      "Kerala",
+      "Tamil Nadu",
+      "Karnataka",
+      "Goa",
+      "Andhra Pradesh",
+      "Odisha",
+      "Sikkim",
+      "Assam",
+      "Arunachal Pradesh",
+      "Nagaland",
+      "Manipur",
+      "Mizoram",
+      "Tripura",
+      "Meghalaya",
+      "West Bengal",
+      "Maharashtra",
+      "The Andaman and Nicobar Islands"
+    ],
 
-  // Zaid Season Crops
-  Watermelon: [
-    "Uttar Pradesh",
-    "Andhra Pradesh",
-    "Karnataka",
-    "West Bengal",
-    "Tamil Nadu",
-    "Odisha"
-  ],
-  Muskmelon: [
-    "Uttar Pradesh",
-    "Punjab",
-    "Rajasthan",
-    "Tamil Nadu",
-    "Andhra Pradesh",
-    "Maharashtra"
-  ],
-  "Moong Dal": [
-    "Rajasthan",
-    "Maharashtra",
-    "Andhra Pradesh",
-    "Karnataka",
-    "Odisha",
-    "Tamil Nadu"
-  ],
-  Cucumber: [
-    "Uttar Pradesh",
-    "Haryana",
-    "Madhya Pradesh",
-    "Karnataka",
-    "Andhra Pradesh",
-    "Tamil Nadu",
-    "West Bengal",
-    "Punjab"
-  ]
-};
+    // Zaid Season Crops
+    Watermelon: [
+      "Uttar Pradesh",
+      "Andhra Pradesh",
+      "Karnataka",
+      "West Bengal",
+      "Tamil Nadu",
+      "Odisha"
+    ],
+    Muskmelon: [
+      "Uttar Pradesh",
+      "Punjab",
+      "Rajasthan",
+      "Tamil Nadu",
+      "Andhra Pradesh",
+      "Maharashtra"
+    ],
+    "Moong Dal": [
+      "Rajasthan",
+      "Maharashtra",
+      "Andhra Pradesh",
+      "Karnataka",
+      "Odisha",
+      "Tamil Nadu"
+    ],
+    Cucumber: [
+      "Uttar Pradesh",
+      "Haryana",
+      "Madhya Pradesh",
+      "Karnataka",
+      "Andhra Pradesh",
+      "Tamil Nadu",
+      "West Bengal",
+      "Punjab"
+    ]
+  };
 
   const CROP_FACTS = {
-  // Rabi Season
-  Mustard: {
-    climate1: "Cool and dry climate.",
-    climate2: "Temperature: 10-25°C.",
-    climate3: "Sensitive to frost during flowering.",
-    soil1: "Light loamy soil with good drainage.",
-    variety1: "• Pusa Bold",
-    variety2: "• Varuna",
-    variety3: "• Kranti",
-    variety4: "• RH-30",
-    variety5: "• Pusa Mahak",
-    variety6: "• Bio-902",
-    fact1: "Sarson da Saag is a traditional, nutrient-dense Punjabi dish made from fresh mustard greens (sarson) and other leafy greens,",
-    fact2: "typically enjoyed in the winter season."
-  },
-  Wheat: {
-    climate1: "Cool and moist weather during growing period,",
-    climate2: "warm and dry during ripening.",
-    climate3: "Temperature: 10-25°C",
-    soil1: "Well-drained loamy soil with good organic content.",
-    variety1: "• HD-2967",
-    variety2: "• PBW-343",
-    variety3: "• Lok-1",
-    variety4: "• GW-322",
-    variety5: "• Sharbati",
-    variety6: "• Kalyan Sona",
-    fact1: "Punjab and Haryana are called the 'Breadbasket of India' because they",
-    fact2: "produce nearly 50% of the country's wheat."
-  },
-  Barley: {
-    climate1: "Cool dry climate.",
-    climate2: "Can tolerate frost better than wheat.",
-    climate3: "Temperature: 12-25°C",
-    soil1: "Well-drained sandy loam to loamy soil.",
-    soil2: "Can tolerate saline and alkaline conditions.",
-    variety1: "• Jyoti",
-    variety2: "• Ratna",
-    variety3: "• Vijaya",
-    variety4: "• Dolma",
-    variety5: "• BH-393",
-    variety6: "• RD-2503",
-    fact1: "Barley was one of the first grains cultivated in the Indus Valley Civilization",
-    fact2: "around 3000 BCE."
-  },
-  Chickpea: {
-    climate1: "Cool dry climate with 20-25°C during growth.",
-    climate2: "Rainfall: 60-90 cm annually",
-    climate3: "",
-    soil1: "Well-drained sandy loam to clay loam.",
-    soil2: "Cannot tolerate waterlogging",
-    variety1: "• Pusa-256",
-    variety2: "• JG-11",
-    variety3: "• Vijay",
-    variety4: "• JAKI-9218",
-    variety5: "• KAK-2",
-    variety6: "• Vishal",
-    fact1: "Chickpeas are the main ingredient in beloved dishes like chole bhatura, hummus, and falafel.",
-    fact2: "Chickpea flour (besan) is used to make popular Indian snacks like pakoras, dhokla, and sev."
-  },
-  Peas: {
-    climate1: "Cool and humid climate.",
-    climate2: "Temperature: 10-18°C.",
-    climate3: "Cannot tolerate frost during flowering.",
-    soil1: "Well-drained loamy soil rich in organic matter.",
-    variety1: "• Arkel",
-    variety2: "• Bonneville",
-    variety3: "• Azad Pea-1",
-    variety4: "• Pusa Pragati",
-    variety5: "• Lincoln",
-    variety6: "• Jawahar Matar",
-    fact1: "Matar paneer and aloo matar are among India's most popular vegetarian dishes,",
-    fact2: "making green peas a staple in North Indian cuisine. Peas were one of the first vegetables to be canned and frozen commercially."
-  },
+    // Rabi Season
+    Mustard: {
+      climate1: "Cool and dry climate.",
+      climate2: "Temperature: 10-25°C.",
+      climate3: "Sensitive to frost during flowering.",
+      soil1: "Light loamy soil with good drainage.",
+      variety1: "• Pusa Bold",
+      variety2: "• Varuna",
+      variety3: "• Kranti",
+      variety4: "• RH-30",
+      variety5: "• Pusa Mahak",
+      variety6: "• Bio-902",
+      fact1: "Sarson da Saag is a traditional, nutrient-dense Punjabi dish made from fresh mustard greens (sarson) and other leafy greens,",
+      fact2: "typically enjoyed in the winter season."
+    },
+    Wheat: {
+      climate1: "Cool and moist weather during growing period,",
+      climate2: "warm and dry during ripening.",
+      climate3: "Temperature: 10-25°C",
+      soil1: "Well-drained loamy soil with good organic content.",
+      variety1: "• HD-2967",
+      variety2: "• PBW-343",
+      variety3: "• Lok-1",
+      variety4: "• GW-322",
+      variety5: "• Sharbati",
+      variety6: "• Kalyan Sona",
+      fact1: "Punjab and Haryana are called the 'Breadbasket of India' because they",
+      fact2: "produce nearly 50% of the country's wheat."
+    },
+    Barley: {
+      climate1: "Cool dry climate.",
+      climate2: "Can tolerate frost better than wheat.",
+      climate3: "Temperature: 12-25°C",
+      soil1: "Well-drained sandy loam to loamy soil.",
+      soil2: "Can tolerate saline and alkaline conditions.",
+      variety1: "• Jyoti",
+      variety2: "• Ratna",
+      variety3: "• Vijaya",
+      variety4: "• Dolma",
+      variety5: "• BH-393",
+      variety6: "• RD-2503",
+      fact1: "Barley was one of the first grains cultivated in the Indus Valley Civilization",
+      fact2: "around 3000 BCE."
+    },
+    Chickpea: {
+      climate1: "Cool dry climate with 20-25°C during growth.",
+      climate2: "Rainfall: 60-90 cm annually",
+      climate3: "",
+      soil1: "Well-drained sandy loam to clay loam.",
+      soil2: "Cannot tolerate waterlogging",
+      variety1: "• Pusa-256",
+      variety2: "• JG-11",
+      variety3: "• Vijay",
+      variety4: "• JAKI-9218",
+      variety5: "• KAK-2",
+      variety6: "• Vishal",
+      fact1: "Chickpeas are the main ingredient in beloved dishes like chole bhatura, hummus, and falafel.",
+      fact2: "Chickpea flour (besan) is used to make popular Indian snacks like pakoras, dhokla, and sev."
+    },
+    Peas: {
+      climate1: "Cool and humid climate.",
+      climate2: "Temperature: 10-18°C.",
+      climate3: "Cannot tolerate frost during flowering.",
+      soil1: "Well-drained loamy soil rich in organic matter.",
+      variety1: "• Arkel",
+      variety2: "• Bonneville",
+      variety3: "• Azad Pea-1",
+      variety4: "• Pusa Pragati",
+      variety5: "• Lincoln",
+      variety6: "• Jawahar Matar",
+      fact1: "Matar paneer and aloo matar are among India's most popular vegetarian dishes,",
+      fact2: "making green peas a staple in North Indian cuisine. Peas were one of the first vegetables to be canned and frozen commercially."
+    },
 
-  // Kharif Season
-  "Paddy (Rice)": {
-    climate1: "Hot and humid climate.",
-    climate2: "Temperature: 20-35°C.",
-    climate3: "Requires high rainfall (150-200 cm) or irrigation.",
-    soil1: "Clay or clay loam soil that can retain water.",
-    soil2: "Slightly acidic soil preferred.",
-    variety1: "• Basmati",
-    variety2: "• Sona Masuri",
-    variety3: "• Ponni",
-    variety4: "• IR-64",
-    variety5: "• Swarna",
-    variety6: "• Pusa-1121",
-    variety7: "• Gobindobhog",   // extra if needed, or adjust UI
-    fact1: "India has over 6,000 varieties of rice!",
-    fact2: "West Bengal's Gobindobhog rice was traditionally offered to Lord Krishna at temples."
-  },
-  Sugarcane: {
-    climate1: "Hot and humid climate.",
-    climate2: "Temperature: 25-35°C.",
-    climate3: "Usually flowers in 10-15 months.",
-    soil1: "Deep rich loamy soil.",
-    soil2: "Well-drained but moisture retentive.",
-    variety1: "• Co-86032",
-    variety2: "• CoC-671",
-    variety3: "• Co-0238",
-    variety4: "• CoS-767",
-    variety5: "• Co-91010",
-    variety6: "• CoJ-64",
-    fact1: "Gur (jaggery) made from sugarcane has been used in India for over 3,000 years.",
-    fact2: "India is the second-largest sugar producer after Brazil."
-  },
-  Cotton: {
-    climate1: "Warm climate with temperature 21-30°C.",
-    climate2: "Requires 50-100 cm rainfall.",
-    climate3: "Clear sunny days during boll formation.",
-    soil1: "Black cotton soil (regur) is ideal.",
-    soil2: "Deep, well-drained soil.",
-    variety1: "• Suvin",
-    variety2: "• MCU-5",
-    variety3: "• Shankar-6",
-    variety4: "• Bunny",
-    variety5: "• DCH-32",
-    variety6: "• Bt Cotton",
-    fact1: "India is the largest producer of cotton in the world!",
-    fact2: "Gujarat alone contributes to about 35% of India's cotton production."
-  },
-  Jute: {
-    climate1: "Hot and humid climate with temperature 24-37°C.",
-    climate2: "Requires high rainfall of 150-200 cm or adequate irrigation.",
-    climate3: "High humidity (70-90%) during growth is essential.",
-    soil1: "Alluvial or loamy soil enriched with annual floods.",
-    soil2: "Well-drained sandy loam near river banks.",
-    variety1: "• JRO-524 (Navin)",
-    variety2: "• JRO-8432 (Shakti)",
-    variety3: "• JRO-128 (Naveen)",
-    variety4: "• S-19",
-    variety5: "• JRC-212",
-    variety6: "• JRC-321 (Sonali)",
-    variety7: "• Padma",
-    fact1: "Jute is called the \"Golden Fibre\" because of its shiny golden colour and high cash value.",
-    fact2: "Hooghly river belt is known as the \"Jute Belt of India.\""
-  },
-  Tea: {
-    climate1: "Warm and humid climate with temperature 20-30°C.",
-    climate2: "Requires heavy and well-distributed rainfall of 150-300 cm annually.",
-    climate3: "High humidity and frequent showers are ideal.",
-    soil1: "The soil must be very fertile.",
-    soil2: "Sandy loams rich in nitrogen and iron are best suited for tea bushes.",
-    variety1: "• Assam Tea",
-    variety2: "• Darjeeling Tea",
-    variety3: "• Nilgiri Tea",
-    variety4: "• Kangra Tea",
-    variety5: "• Munnar Tea",
-    fact1: "Assam tea is the world's largest single tea-growing region.",
-    fact2: "Darjeeling tea is often called the \"Champagne of Teas\" with a protected Geographical Indication (GI) tag."
-  },
-  Coffee: {
-    climate1: "Warm and moist climate with temperature 15-28°C.",
-    climate2: "Requires moderate rainfall of 150-200 cm, well-distributed throughout the year.",
-    climate3: "Cannot tolerate frost or extreme heat.",
-    soil1: "Rich, well-drained forest loamy soil with high organic matter.",
-    soil2: "Volcanic laterite soil of Western Ghats is ideal.",
-    variety1: "• Arabica",
-    variety2: "• Robusta",
-    variety3: "• Chandragiri",
-    variety4: "• Peaberry",
-    fact1: "Baba Budan Hills in Karnataka are where coffee cultivation in India began!",
-    fact2: "Legend says a 17th-century Sufi saint named Baba Budan smuggled seven coffee beans from Yemen in his beard and planted them in these hills."
-  },
-  Rubber: {
-    climate1: "Hot and humid climate with temperature 20-35°C.",
-    climate2: "Requires heavy and well-distributed rainfall of 200-300 cm annually.",
-    climate3: "High humidity (80% or above) throughout the year is essential.",
-    soil1: "Deep, well-drained laterite soil rich in iron and aluminium.",
-    soil2: "Red laterite and alluvial soils of coastal plains work well.",
-    variety1: "• RRII 105",
-    variety2: "• RRII 414",
-    variety3: "• RRII 430",
-    variety4: "• RRII 208",
-    variety5: "• Tjir 1",
-    variety6: "• GT 1",
-    variety7: "• PB 235",
-    variety8: "• PB 260",
-    fact1: "Kerala is called the \"Land of Rubber\".",
-    fact2: "It takes about 7 years for a rubber tree to mature before it can be tapped for latex, and a single tree can produce latex for up to 30 years!"
-  },
+    // Kharif Season
+    "Paddy (Rice)": {
+      climate1: "Hot and humid climate.",
+      climate2: "Temperature: 20-35°C.",
+      climate3: "Requires high rainfall (150-200 cm) or irrigation.",
+      soil1: "Clay or clay loam soil that can retain water.",
+      soil2: "Slightly acidic soil preferred.",
+      variety1: "• Basmati",
+      variety2: "• Sona Masuri",
+      variety3: "• Ponni",
+      variety4: "• IR-64",
+      variety5: "• Swarna",
+      variety6: "• Pusa-1121",
+      variety7: "• Gobindobhog",   // extra if needed, or adjust UI
+      fact1: "India has over 6,000 varieties of rice!",
+      fact2: "West Bengal's Gobindobhog rice was traditionally offered to Lord Krishna at temples."
+    },
+    Sugarcane: {
+      climate1: "Hot and humid climate.",
+      climate2: "Temperature: 25-35°C.",
+      climate3: "Usually flowers in 10-15 months.",
+      soil1: "Deep rich loamy soil.",
+      soil2: "Well-drained but moisture retentive.",
+      variety1: "• Co-86032",
+      variety2: "• CoC-671",
+      variety3: "• Co-0238",
+      variety4: "• CoS-767",
+      variety5: "• Co-91010",
+      variety6: "• CoJ-64",
+      fact1: "Gur (jaggery) made from sugarcane has been used in India for over 3,000 years.",
+      fact2: "India is the second-largest sugar producer after Brazil."
+    },
+    Cotton: {
+      climate1: "Warm climate with temperature 21-30°C.",
+      climate2: "Requires 50-100 cm rainfall.",
+      climate3: "Clear sunny days during boll formation.",
+      soil1: "Black cotton soil (regur) is ideal.",
+      soil2: "Deep, well-drained soil.",
+      variety1: "• Suvin",
+      variety2: "• MCU-5",
+      variety3: "• Shankar-6",
+      variety4: "• Bunny",
+      variety5: "• DCH-32",
+      variety6: "• Bt Cotton",
+      fact1: "India is the largest producer of cotton in the world!",
+      fact2: "Gujarat alone contributes to about 35% of India's cotton production."
+    },
+    Jute: {
+      climate1: "Hot and humid climate with temperature 24-37°C.",
+      climate2: "Requires high rainfall of 150-200 cm or adequate irrigation.",
+      climate3: "High humidity (70-90%) during growth is essential.",
+      soil1: "Alluvial or loamy soil enriched with annual floods.",
+      soil2: "Well-drained sandy loam near river banks.",
+      variety1: "• JRO-524 (Navin)",
+      variety2: "• JRO-8432 (Shakti)",
+      variety3: "• JRO-128 (Naveen)",
+      variety4: "• S-19",
+      variety5: "• JRC-212",
+      variety6: "• JRC-321 (Sonali)",
+      variety7: "• Padma",
+      fact1: "Jute is called the \"Golden Fibre\" because of its shiny golden colour and high cash value.",
+      fact2: "Hooghly river belt is known as the \"Jute Belt of India.\""
+    },
+    Tea: {
+      climate1: "Warm and humid climate with temperature 20-30°C.",
+      climate2: "Requires heavy and well-distributed rainfall of 150-300 cm annually.",
+      climate3: "High humidity and frequent showers are ideal.",
+      soil1: "The soil must be very fertile.",
+      soil2: "Sandy loams rich in nitrogen and iron are best suited for tea bushes.",
+      variety1: "• Assam Tea",
+      variety2: "• Darjeeling Tea",
+      variety3: "• Nilgiri Tea",
+      variety4: "• Kangra Tea",
+      variety5: "• Munnar Tea",
+      fact1: "Assam tea is the world's largest single tea-growing region.",
+      fact2: "Darjeeling tea is often called the \"Champagne of Teas\" with a protected Geographical Indication (GI) tag."
+    },
+    Coffee: {
+      climate1: "Warm and moist climate with temperature 15-28°C.",
+      climate2: "Requires moderate rainfall of 150-200 cm, well-distributed throughout the year.",
+      climate3: "Cannot tolerate frost or extreme heat.",
+      soil1: "Rich, well-drained forest loamy soil with high organic matter.",
+      soil2: "Volcanic laterite soil of Western Ghats is ideal.",
+      variety1: "• Arabica",
+      variety2: "• Robusta",
+      variety3: "• Chandragiri",
+      variety4: "• Peaberry",
+      fact1: "Baba Budan Hills in Karnataka are where coffee cultivation in India began!",
+      fact2: "Legend says a 17th-century Sufi saint named Baba Budan smuggled seven coffee beans from Yemen in his beard and planted them in these hills."
+    },
+    Rubber: {
+      climate1: "Hot and humid climate with temperature 20-35°C.",
+      climate2: "Requires heavy and well-distributed rainfall of 200-300 cm annually.",
+      climate3: "High humidity (80% or above) throughout the year is essential.",
+      soil1: "Deep, well-drained laterite soil rich in iron and aluminium.",
+      soil2: "Red laterite and alluvial soils of coastal plains work well.",
+      variety1: "• RRII 105",
+      variety2: "• RRII 414",
+      variety3: "• RRII 430",
+      variety4: "• RRII 208",
+      variety5: "• Tjir 1",
+      variety6: "• GT 1",
+      variety7: "• PB 235",
+      variety8: "• PB 260",
+      fact1: "Kerala is called the \"Land of Rubber\".",
+      fact2: "It takes about 7 years for a rubber tree to mature before it can be tapped for latex, and a single tree can produce latex for up to 30 years!"
+    },
 
-  // Zaid Season
-  Watermelon: {
-    climate1: "Hot and dry climate.",
-    climate2: "Temperature: 25-35°C.",
-    climate3: "Long sunny days required.",
-    soil1: "Sandy loam soil with good drainage.",
-    variety1: "• Sugar Baby",
-    variety2: "• Asahi Yamato",
-    variety3: "• Durgapura Meetha",
-    variety4: "• Arka Jyoti",
-    variety5: "• Arka Manik",
-    variety6: "• Pusa Bedana",
-    fact1: "Watermelon is 92% water!",
-    fact2: "The riverbed cultivation of watermelon along Yamuna and Ganga is a unique practice in North India."
-  },
-  Muskmelon: {
-    climate1: "Hot and dry climate.",
-    climate2: "Temperature: 24-30°C.",
-    climate3: "Low humidity preferred.",
-    soil1: "Well-drained sandy loam soil.",
-    variety1: "• Pusa Sharbati",
-    variety2: "• Hara Madhu",
-    variety3: "• Punjab Sunehri",
-    variety4: "• Arka Rajhans",
-    variety5: "• Arka Jeet",
-    variety6: "• Durgapura Madhu",
-    fact1: "Muskmelons get their name from their musky aroma!",
-    fact2: "Lucknow is famous for its aromatic \"Mitha\" muskmelons."
-  },
-  "Moong Dal": {
-    climate1: "Warm climate with temperature 25-35°C.",
-    climate2: "Can tolerate drought.",
-    climate3: "Short duration crop (60-75 days).",
-    soil1: "Well-drained loamy to sandy loam soil.",
-    soil2: "Cannot tolerate waterlogging.",
-    variety1: "• Pusa Vishal",
-    variety2: "• SML-668",
-    variety3: "• IPM-02-3",
-    variety4: "• Pusa Ratna",
-    variety5: "• Samrat",
-    variety6: "• Virat",
-    fact1: "Moong dal sprouts can increase their vitamin C content by 600%.",
-    fact2: "It's known as the \"Queen of Pulses\" due to its easy digestibility."
-  },
-  Cucumber: {
-    climate1: "Warm and humid climate.",
-    climate2: "Temperature: 20-30°C.",
-    climate3: "Frost sensitive.",
-    soil1: "Rich loamy soil with good organic content.",
-    variety1: "• Pusa Sanyog",
-    variety2: "• Poona Khira",
-    variety3: "• Japanese Long Green",
-    variety4: "• Pusa Uday",
-    variety5: "• Swarna Ageti",
-    variety6: "• Swarna Poorna",
-    fact1: "Cucumbers are 96% water - even more than watermelons!",
-    fact2: "They've been cultivated in India for over 3,000 years."
-  }
-};
+    // Zaid Season
+    Watermelon: {
+      climate1: "Hot and dry climate.",
+      climate2: "Temperature: 25-35°C.",
+      climate3: "Long sunny days required.",
+      soil1: "Sandy loam soil with good drainage.",
+      variety1: "• Sugar Baby",
+      variety2: "• Asahi Yamato",
+      variety3: "• Durgapura Meetha",
+      variety4: "• Arka Jyoti",
+      variety5: "• Arka Manik",
+      variety6: "• Pusa Bedana",
+      fact1: "Watermelon is 92% water!",
+      fact2: "The riverbed cultivation of watermelon along Yamuna and Ganga is a unique practice in North India."
+    },
+    Muskmelon: {
+      climate1: "Hot and dry climate.",
+      climate2: "Temperature: 24-30°C.",
+      climate3: "Low humidity preferred.",
+      soil1: "Well-drained sandy loam soil.",
+      variety1: "• Pusa Sharbati",
+      variety2: "• Hara Madhu",
+      variety3: "• Punjab Sunehri",
+      variety4: "• Arka Rajhans",
+      variety5: "• Arka Jeet",
+      variety6: "• Durgapura Madhu",
+      fact1: "Muskmelons get their name from their musky aroma!",
+      fact2: "Lucknow is famous for its aromatic \"Mitha\" muskmelons."
+    },
+    "Moong Dal": {
+      climate1: "Warm climate with temperature 25-35°C.",
+      climate2: "Can tolerate drought.",
+      climate3: "Short duration crop (60-75 days).",
+      soil1: "Well-drained loamy to sandy loam soil.",
+      soil2: "Cannot tolerate waterlogging.",
+      variety1: "• Pusa Vishal",
+      variety2: "• SML-668",
+      variety3: "• IPM-02-3",
+      variety4: "• Pusa Ratna",
+      variety5: "• Samrat",
+      variety6: "• Virat",
+      fact1: "Moong dal sprouts can increase their vitamin C content by 600%.",
+      fact2: "It's known as the \"Queen of Pulses\" due to its easy digestibility."
+    },
+    Cucumber: {
+      climate1: "Warm and humid climate.",
+      climate2: "Temperature: 20-30°C.",
+      climate3: "Frost sensitive.",
+      soil1: "Rich loamy soil with good organic content.",
+      variety1: "• Pusa Sanyog",
+      variety2: "• Poona Khira",
+      variety3: "• Japanese Long Green",
+      variety4: "• Pusa Uday",
+      variety5: "• Swarna Ageti",
+      variety6: "• Swarna Poorna",
+      fact1: "Cucumbers are 96% water - even more than watermelons!",
+      fact2: "They've been cultivated in India for over 3,000 years."
+    }
+  };
 
   let currentState = {
     season: null,
@@ -480,7 +480,7 @@ const CROP_DATA = {
     panel02map: document.getElementById("panel-02-map"),
     itextcropmap: document.getElementById("i-text-crop-map"),
     iTextHomeScreen: document.getElementById("i-text-home-screen"),
-    Got_it_1 : document.getElementById("Got_it_1"),
+    Got_it_1: document.getElementById("Got_it_1"),
   };
 
   // Initialize visibility
@@ -553,7 +553,7 @@ const CROP_DATA = {
     // Reset opacity on base buttons
     ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
       const baseContainer = document.getElementById(id);
-     
+
       baseContainer.classList.add("st170"); // hide the entire base button group
       if (baseContainer) {
         Array.from(baseContainer.children).forEach(childGroup => {
@@ -736,9 +736,9 @@ const CROP_DATA = {
           if (p.isPointInFill(pt)) {
             const bbox = p.getBBox();
             const area = bbox.width * bbox.height;
-            if (area > 0 && area < smallestArea) { smallestArea = area; bestPath = p; }
+            if (area > 0 && area < smallestArea && !p.id.includes("Kerala")) { smallestArea = area; bestPath = p; }
           }
-        } catch (_) {}
+        } catch (_) { }
       });
       if (bestPath) { pathStateCache.set(bestPath, ref.name); cachedStates.add(ref.name); }
     });
@@ -750,12 +750,12 @@ const CROP_DATA = {
     const paths = Array.from(elements.mapContainer.querySelectorAll("path"));
     paths.forEach((p) => {
       // Only highlight paths that are definitively mapped to this state via cache
-      if (pathStateCache.get(p) === stateName) {
+      if (pathStateCache.get(p) === stateName && p.id !== stateName) {
         p.style.fill = isCorrect ? "#44ff64" : "#F44336";
         p.style.opacity = isCorrect ? "1" : "0.7";
         p.classList.remove("st170");
       }
-       if (p.id=== stateName) {
+      if (p.id === stateName) {
         p.style.fill = isCorrect ? "#44ff64" : "#F44336";
         p.style.opacity = isCorrect ? "1" : "0.7";
         p.classList.remove("st170");
@@ -794,13 +794,13 @@ const CROP_DATA = {
     // Identify state from the click coordinates in SVG space.
     // Using the click point (guaranteed inside the clicked state) → nearest
     // connector circle or label gives correct state without proximity issues.
-    let stateName =""
-    if(VALID_STATE_NAMES.has(e.target.id)){ 
+    let stateName = ""
+    if (VALID_STATE_NAMES.has(e.target.id)) {
       stateName = e.target.id;
     } else {
-       stateName = getStateFromClick(e.clientX, e.clientY);
+      stateName = getStateFromClick(e.clientX, e.clientY);
     }
-    
+
     if (!stateName) return;
 
     console.log("Clicked state:", stateName);
@@ -835,9 +835,9 @@ const CROP_DATA = {
     currentState.season = season;
     hideAll();
     let panel;
-    if (season === "Rabi"){ panel = elements.panelRabi;}
-    if (season === "Kharif"){ panel = elements.panelKharif;}
-    if (season === "Zaid") {panel = elements.panelZaid;}
+    if (season === "Rabi") { panel = elements.panelRabi; }
+    if (season === "Kharif") { panel = elements.panelKharif; }
+    if (season === "Zaid") { panel = elements.panelZaid; }
 
     if (panel) {
       panel.style.display = "block";
@@ -852,7 +852,7 @@ const CROP_DATA = {
         }
       });
 
-        
+
       // Reset base buttons opacity/display
       ['btn-rabi', 'btn-Kharif', 'btn-Zaid'].forEach(id => {
         const baseContainer = document.getElementById(id);
@@ -931,7 +931,7 @@ const CROP_DATA = {
     //elements.itextActivity.classList.add("st170");
     elements.showAnswerBtn.classList.remove("st170");
     elements.submitBtn.classList.remove("st170");
-     elements.showAnswerBtn.style.display = "block";
+    elements.showAnswerBtn.style.display = "block";
     elements.submitBtn.style.display = "block";
     if (elements.cropPromptContainer) {
       elements.cropPromptContainer.style.display = "block";
@@ -963,17 +963,38 @@ const CROP_DATA = {
       }
 
       // Update success popup texts
+      // Popup box width=535, usable≈490. Compress the crop line if too long.
       if (elements.feedbackCorrectText) {
         const successTexts = elements.feedbackCorrectText.querySelectorAll("text tspan");
         if (successTexts && successTexts.length >= 4) {
-          successTexts[2].textContent = `identified all ${count} major ${crop} `;
+          const cropLine = `identified all ${count} major ${crop} `;
+          successTexts[2].textContent = cropLine;
+          successTexts[2].setAttribute('x', '0');
+          if (cropLine.trim().length > 30) {
+            successTexts[2].setAttribute('textLength', 470);
+            successTexts[2].setAttribute('lengthAdjust', 'spacingAndGlyphs');
+          } else {
+            successTexts[2].removeAttribute('textLength');
+            successTexts[2].removeAttribute('lengthAdjust');
+          }
         }
       }
 
+      // Factsheet button text — button pill width=233, usable≈210.
+      // Compress for long crop names (e.g. "Paddy (Rice) Factsheet").
       if (elements.factsheetBtnText) {
         const btnText = elements.factsheetBtnText.querySelector("text tspan");
         if (btnText) {
-          btnText.textContent = `${crop} Factsheet`;
+          const label = `${crop} Factsheet`;
+          btnText.textContent = label;
+          btnText.setAttribute('x', '0');
+          if (label.length > 16) {
+            btnText.setAttribute('textLength', 210);
+            btnText.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+          } else {
+            btnText.removeAttribute('textLength');
+            btnText.removeAttribute('lengthAdjust');
+          }
         }
       }
 
@@ -982,17 +1003,71 @@ const CROP_DATA = {
         const textNode = tspan.closest('text');
         if (textNode) {
           textNode.setAttribute('text-anchor', 'middle');
-          // Removing the transform and hardcoding the center X avoids the text being misaligned
-          // But we want to preserve the Y position from the transform
           const transform = textNode.getAttribute('transform');
           if (transform) {
-            const match = transform.match(/translate\(([-\d.]+)\s+([-\d.]+)\)/);
+            const match = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
             if (match) {
               textNode.setAttribute('transform', `translate(${xPosition} ${match[2]})`);
             }
           }
         }
         tspan.setAttribute('x', '0');
+      };
+
+      // Set text on a tspan, centering its parent <text> at xCenter.
+      // If content exceeds charThreshold, compress horizontally using textLength
+      // so it stays within the box without overflowing.
+      const fitTextInBox = (tspan, content, xCenter, boxUsableWidth, charThreshold = 40) => {
+        if (!tspan) return;
+        tspan.textContent = content || '';
+        const textEl = tspan.closest('text');
+        if (textEl) {
+          textEl.setAttribute('text-anchor', 'middle');
+          const transform = textEl.getAttribute('transform');
+          if (transform) {
+            const m = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
+            if (m) textEl.setAttribute('transform', `translate(${xCenter} ${m[2]})`);
+          }
+        }
+        tspan.setAttribute('x', '0');
+        if (content && content.length > charThreshold) {
+          tspan.setAttribute('textLength', boxUsableWidth);
+          tspan.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+        } else {
+          tspan.removeAttribute('textLength');
+          tspan.removeAttribute('lengthAdjust');
+        }
+      };
+
+      // Word-wrap content into the LAST <text> element of a group by replacing
+      // its tspans. Safe only when no other <text> element follows at a fixed y.
+      const wrapLastTextEl = (textEl, content, xCenter, maxChars = 65, lineHeight = 32) => {
+        if (!textEl) return;
+        Array.from(textEl.querySelectorAll('tspan')).forEach(t => t.remove());
+        if (!content) return;
+        const words = content.split(' ');
+        const lines = [];
+        let line = '';
+        words.forEach(w => {
+          const candidate = line ? `${line} ${w}` : w;
+          if (candidate.length <= maxChars) { line = candidate; }
+          else { if (line) lines.push(line); line = w; }
+        });
+        if (line) lines.push(line);
+        const ns = 'http://www.w3.org/2000/svg';
+        lines.forEach((l, i) => {
+          const t = document.createElementNS(ns, 'tspan');
+          t.setAttribute('x', '0');
+          if (i > 0) t.setAttribute('dy', String(lineHeight));
+          t.textContent = l;
+          textEl.appendChild(t);
+        });
+        textEl.setAttribute('text-anchor', 'middle');
+        const transform = textEl.getAttribute('transform');
+        if (transform) {
+          const m = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
+          if (m) textEl.setAttribute('transform', `translate(${xCenter} ${m[2]})`);
+        }
       };
 
       // Update Factsheet Dialog
@@ -1020,57 +1095,52 @@ const CROP_DATA = {
           }
         }
 
-        // Climate
+        // Climate — each line in its own fixed-y <text> element; use textLength
+        // compression so long lines stay inside the box without overlapping neighbours.
+        // Climate box width=503, usable ≈ 479.
         if (elements.factsheetClimate) {
           const tspans = Array.from(elements.factsheetClimate.querySelectorAll("text tspan"));
+          // tspans[0] = title, tspans[1-3] = content lines
           if (tspans.length >= 4) {
-            tspans[1].textContent = facts.climate1;
-            centerSVGText(tspans[1], 1534); // Center of Climate box
-            tspans[2].textContent = facts.climate2;
-            centerSVGText(tspans[2], 1534);
-            tspans[3].textContent = facts.climate3;
-            centerSVGText(tspans[3], 1534);
+            fitTextInBox(tspans[1], facts.climate1, 1534, 479);
+            fitTextInBox(tspans[2], facts.climate2, 1534, 479);
+            fitTextInBox(tspans[3], facts.climate3, 1534, 479);
           }
         }
 
-        // Soil
+        // Soil — same box size as Climate (width=503, usable ≈ 479).
         if (elements.factsheetSoil) {
           const tspans = Array.from(elements.factsheetSoil.querySelectorAll("text tspan"));
+          // tspans[0] = title, tspans[1-2] = content lines
           if (tspans.length >= 3) {
-            tspans[1].textContent = facts.soil1;
-            centerSVGText(tspans[1], 1534);
-            tspans[2].textContent = facts.soil2;
-            centerSVGText(tspans[2], 1534);
+            fitTextInBox(tspans[1], facts.soil1, 1534, 479);
+            fitTextInBox(tspans[2], facts.soil2, 1534, 479);
           }
         }
 
-        // Variety
+        // Variety — short items, just center; clear unused slots
         if (elements.factsheetVariety) {
           const tspans = Array.from(elements.factsheetVariety.querySelectorAll("text tspan"));
-          if (tspans.length >= 7) {
-            tspans[1].textContent = facts.variety1;
-            centerSVGText(tspans[1], 1534);
-            tspans[2].textContent = facts.variety2;
-            centerSVGText(tspans[2], 1534);
-            tspans[3].textContent = facts.variety3;
-            centerSVGText(tspans[3], 1534);
-            tspans[4].textContent = facts.variety4;
-            centerSVGText(tspans[4], 1534);
-            tspans[5].textContent = facts.variety5;
-            centerSVGText(tspans[5], 1534);
-            tspans[6].textContent = facts.variety6;
-            centerSVGText(tspans[6], 1534);
-          }
+          const varieties = ['variety1', 'variety2', 'variety3', 'variety4', 'variety5', 'variety6'];
+          varieties.forEach((key, i) => {
+            if (tspans[i + 1] !== undefined) {
+              tspans[i + 1].textContent = facts[key] || "";
+              centerSVGText(tspans[i + 1], 1534);
+            }
+          });
         }
 
-        // Fact
+        // Fact — fact box width=838, usable ≈ 810.
+        // fact1 is short → compress only if needed.
+        // fact2 may be long → word-wrap within the last <text> element (safe, no
+        // following fixed-y element to overlap). Extra dy lines stay inside the box.
         if (elements.factsheetFact) {
-          const tspans = Array.from(elements.factsheetFact.querySelectorAll("text tspan"));
-          if (tspans.length >= 3) {
-            tspans[1].textContent = facts.fact1;
-            centerSVGText(tspans[1], 1370); // Center of Fact box
-            tspans[2].textContent = facts.fact2;
-            centerSVGText(tspans[2], 1370);
+          const texts = Array.from(elements.factsheetFact.querySelectorAll("text"));
+          // texts[0] = "Fact:" title, texts[1] = fact1, texts[2] = fact2
+          if (texts.length >= 3) {
+            const fact1Tspan = texts[1].querySelector('tspan');
+            fitTextInBox(fact1Tspan, facts.fact1, 1370, 810, 70);
+            wrapLastTextEl(texts[2], facts.fact2, 1370, 68);
           }
         }
       }
@@ -1078,7 +1148,7 @@ const CROP_DATA = {
   };
 
   // Event Listeners for Season Buttons (Home Screen)
-  resetMapHighlights(); 
+  resetMapHighlights();
   elements.btnRabiHome?.addEventListener("click", () => selectSeason("Rabi"));
   elements.btnKharifHome?.addEventListener("click", () =>
     selectSeason("Kharif"),
@@ -1189,7 +1259,7 @@ const CROP_DATA = {
   elements.tryAnotherCropBtn?.addEventListener("click", () => {
     // Hide factsheet and all popups
     [elements.factsheet, elements.feedbackCorrectPopup, elements.feedbackIncorrectPopup,
-     elements.cropPromptContainer, elements.submitBtn, elements.showAnswerBtn].forEach(el => {
+    elements.cropPromptContainer, elements.submitBtn, elements.showAnswerBtn].forEach(el => {
       if (el) { el.style.display = "none"; el.classList.add("st170"); }
     });
 
