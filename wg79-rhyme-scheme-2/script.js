@@ -194,8 +194,9 @@ const STANZAS = [
     ],
     "source": "Home Sweet Home, John Howard Payne",
     "rhyming_words": {
-      "a": ["wild", "child", "home", "home"],
-      "b": ["door", "more"]
+      "a": ["wild", "child"],
+      "b": ["door", "more"],
+      "c": ["home", "home"]
     },
     "rhyme_scheme": "aabbaa"
   },
@@ -241,7 +242,7 @@ const STANZAS = [
   {
     "stanza": [
       "If I can stop one heart from breaking,",
-      "I shall not live in vain ;",
+      "I shall not live in vain;",
       "If I can ease one life the aching,",
       "Or cool one pain,",
       "Or help one fainting robin",
@@ -316,10 +317,10 @@ const STANZAS = [
     "rhyming_words": {
       "a": ["seal", "feel"],
       "b": ["fears", "years"],
-      "d": ["force", "course"],
-      "e": ["sees", "trees"]
+      "c": ["force", "course"],
+      "d": ["sees", "trees"]
     },
-    "rhyme_scheme": "ababdefe"
+    "rhyme_scheme": "ababcdcd"
   },
   {
     "stanza": [
@@ -360,8 +361,7 @@ const STANZAS = [
     "stanza": [
       "Don’t bite your nails, Amanda!",
       "Don’t hunch your shoulders, Amanda!",
-      "Stop that slouching and sit up straight,",
-      "Amanda!",
+      "Stop that slouching and sit up straight, Amanda!",
       "(There is a languid, emerald sea,",
       "where the sole inhabitant is me—",
       "a mermaid, drifting blissfully.)"
@@ -551,31 +551,66 @@ function wrapLastWord(lineEl, text, lineIndex, rhymingWords) {
   lineEl.innerHTML = ''; // Clear existing
 
   const words = text.trim().split(/\s+/);
-  const last = words.pop();
+  const lastToken = words.pop();
   const before = words.join(' ');
 
-  // Add the plain text before the last word
+  // Capture prefix (like "honey-"), actual word, and suffix (like "," or ";")
+  const match = lastToken.match(/^(.*?)([a-zA-Z'’]+)([^a-zA-Z'’]*)$/);
+
+  let prefix = "";
+  let clickableWord = lastToken;
+  let suffix = "";
+
+  if (match) {
+    prefix = match[1];
+    clickableWord = match[2];
+    suffix = match[3];
+  }
+
+  // Determine the text before the clickable word
+  let textBefore = "";
   if (before) {
-    //  lineEl.appendChild(document.createTextNode(before + ' '));
-    lineEl.appendChild(document.createTextNode(before));
+    textBefore = prefix ? before + ' ' + prefix : before;
+  } else {
+    textBefore = prefix;
+  }
+
+  if (textBefore) {
+    lineEl.appendChild(document.createTextNode(textBefore));
   }
 
   // Create the "Box" word (Standard HTML span)
   const clickable = document.createElement('span');
-  clickable.textContent = last;
+  clickable.textContent = clickableWord;
   clickable.classList.add('clickable-word');
+
+  // Increase the clickable hit area for shorter words
+  if (clickableWord.length < 4) {
+    clickable.style.padding = '0px 15px';
+    clickable.style.display = 'inline-block';
+  }
+
+  // If there is a prefix attached to the word, remove the visual gap
+  if (prefix) {
+    clickable.style.marginLeft = '0px';
+  }
 
   // Set data attributes
   clickable.setAttribute('data-line', lineIndex);
-  clickable.setAttribute('data-word', last);
+  clickable.setAttribute('data-word', clickableWord);
 
   // Find the target rhyme letter (a, b, etc.)
-  const letter = findLetterForWord(last, rhymingWords);
+  const letter = findLetterForWord(clickableWord, rhymingWords);
   if (letter) {
     clickable.setAttribute('data-letter-target', letter);
   }
 
   lineEl.appendChild(clickable);
+
+  // Add any trailing punctuation after the word
+  if (suffix) {
+    lineEl.appendChild(document.createTextNode(suffix));
+  }
 }
 
 function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
@@ -607,7 +642,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
   /* WORD STYLE */
   el.style.backgroundColor = isCorrect ? schemaColor : markerColor;
   el.style.color = "black";
-  el.style.padding = "0px 8px";
+  el.style.padding = el.textContent.trim().length < 4 ? "0px 15px" : "0px 8px";
   el.style.fontWeight = "bold";
   el.style.display = "inline-block";
 
@@ -709,7 +744,7 @@ function hideAnswer() {
   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
     el.style.backgroundColor = 'transparent';
     el.style.color = "";
-    el.style.padding = "";
+    el.style.padding = el.textContent.trim().length < 4 ? "0px 15px" : "";
     el.style.fontWeight = "";
     el.classList.remove('highlighted');
 
