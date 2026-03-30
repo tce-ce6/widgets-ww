@@ -856,44 +856,25 @@ function showTopicImage(imageName) {
 
 // Show annotated paragraph
 function showAnnotatedParagraph(topic) {
-  console.log('[WG85] showAnnotatedParagraph called for topic:', topic.topic);
-
-  // Clear and show para-toc for highlighted paragraph (middle panel)
   const paraContainer = document.getElementById('para-toc');
-  console.log('[WG85] para-toc container found:', !!paraContainer);
   if (paraContainer) {
     paraContainer.innerHTML = '';
     showHighlightedParagraph(topic, paraContainer);
-  } else {
-    console.error('[WG85] ERROR: #para-toc not found in DOM!');
   }
 
-  // Show annotations on the left (using para-toc-highlights)
   const annotationContainer = document.getElementById('para-toc-highlights');
-  console.log('[WG85] para-toc-highlights container found:', !!annotationContainer);
   if (annotationContainer) {
     annotationContainer.style.display = 'block';
     showAnnotations(topic, annotationContainer);
-  } else {
-    console.error('[WG85] ERROR: #para-toc-highlights not found in DOM!');
   }
 }
 
 // Show highlighted paragraph in middle panel
 function showHighlightedParagraph(topic, container) {
-  console.log('[WG85] showHighlightedParagraph called');
-
-  // Build complete paragraph with highlights
   const orderedSentences = topic.correctOrder.map(index => topic.sentences[index - 1]);
   const paragraphText = orderedSentences.join(' ');
-  console.log('[WG85] Ordered sentences:', orderedSentences);
-  console.log('[WG85] Full paragraph text:', paragraphText);
-
-  // Get highlighted HTML
   const highlightedHTML = getHighlightedParagraphHTML(topic, paragraphText);
-  console.log('[WG85] Highlighted HTML (first 300 chars):', highlightedHTML.substring(0, 300));
 
-  // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
   foreignObject.setAttribute('y', 185);
@@ -902,12 +883,11 @@ function showHighlightedParagraph(topic, container) {
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
-  div.style.fontFamily = 'Roboto-Bold, Roboto';
-  div.style.fontWeight = '700';
+  div.style.fontFamily = 'Roboto-Medium, Roboto';
+  div.style.fontWeight = '500';
   div.style.lineHeight = '1.5';
   div.style.color = '#181818';
-  div.style.borderRadius = '18px';
-  div.style.padding = '40px';
+  div.style.padding = '30px';
   div.style.paddingTop = '50px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
@@ -917,12 +897,11 @@ function showHighlightedParagraph(topic, container) {
   div.style.alignItems = 'center';
 
   // Add paragraph with highlights
-  const para = document.createElement('p');
+  const para = document.createElement('div');
   para.style.fontSize = '26px';
   para.style.fontFamily = 'Roboto-Medium, Roboto';
   para.style.fontWeight = '500';
   para.style.lineHeight = '1.5';
-  para.style.marginTop = '20px';
   para.innerHTML = highlightedHTML;
   div.appendChild(para);
 
@@ -934,25 +913,18 @@ function showHighlightedParagraph(topic, container) {
 
 // Get highlighted paragraph HTML with color coding
 function getHighlightedParagraphHTML(topic, paragraphText) {
-  console.log('[WG85] getHighlightedParagraphHTML called');
-  console.log('[WG85] Annotations:', JSON.stringify(topic.annotations));
-
   const colors = ['#FFFF00', '#FF00FF', '#00FFFF'];
   let html = paragraphText;
 
-  // Process annotations in order: Yellow (0), Cyan (2), Pink (1) for proper layering
+  // Process annotations: Yellow (0), Cyan (2), Pink (1) — layering order
   const annOrder = [0, 2, 1];
 
   annOrder.forEach(annIndex => {
     const ann = topic.annotations[annIndex];
-    if (!ann || !ann.words) {
-      console.warn('[WG85] No annotation or words for index:', annIndex);
-      return;
-    }
+    if (!ann || !ann.words) return;
 
     const phrases = Array.isArray(ann.words) ? ann.words : [ann.words];
     const color = colors[annIndex];
-    console.log(`[WG85] Processing annotation[${annIndex}] color=${color}, phrases:`, phrases);
 
     phrases.forEach(phrase => {
       if (!phrase) return;
@@ -967,14 +939,7 @@ function getHighlightedParagraphHTML(topic, paragraphText) {
         regex = new RegExp(`(${escapedPhrase})`, 'gi');
       }
 
-      const before = html.length;
       html = html.replace(regex, `<span style="background: ${color}; padding: 0px 4px; border-radius: 4px;">$1</span>`);
-      const after = html.length;
-      if (after > before) {
-        console.log(`[WG85]  ✓ Highlighted "${cleanPhrase}" with ${color}`);
-      } else {
-        console.warn(`[WG85]  ✗ NO MATCH for "${cleanPhrase}" in paragraph text. Check spelling/punctuation.`);
-      }
     });
   });
 
