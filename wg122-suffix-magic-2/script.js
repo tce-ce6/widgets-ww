@@ -759,6 +759,15 @@ document.addEventListener("DOMContentLoaded", () => {
     wordObj = picker.getNext();
     const d = wordObj.details;
 
+    const alertPopup = document.getElementById('alert-popup');
+    const alertTextBody = document.getElementById('alert-text-body');
+    if (d.spelling_alert && alertPopup && alertTextBody) {
+      alertTextBody.textContent = d.spelling_alert;
+      alertPopup.style.display = 'block';
+    } else if (alertPopup) {
+      alertPopup.style.display = 'none';
+    }
+
     // currentWordObj = wordObj;
 
     const imgEl = document.getElementById('objects-img');
@@ -990,6 +999,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // document.getElementById('examplePopup');
     exampleSentence.style.display = 'none';
   });
+
+  const closeAlertBtn = document.getElementById('close-alert-btn');
+  if (closeAlertBtn) {
+    closeAlertBtn.addEventListener('click', () => {
+      const popup = document.getElementById('alert-popup');
+      if (popup) popup.style.display = 'none';
+    });
+  }
 
 
   if (nextBtn) nextBtn.addEventListener("click", loadNextWord);
