@@ -56,7 +56,7 @@ const ITEMS_DATA = [
 const CURRENCY_VALUES = [500, 200, 100, 50, 20, 10, 5, 2, 1];
 const NOTE_VALUES = [500, 200, 100, 50];
 const COIN_VALUES = [5, 2, 1];
-const SVG_BASE_PATH = "assets/items/";
+const SVG_BASE_PATH = "assets/items2/";
 
 // // --- Global State Variables ---
 let payment = []; // Array of currency values (e.g., [500, 50, 5])
