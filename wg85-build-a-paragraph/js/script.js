@@ -15,29 +15,31 @@ const paragraphData = [
     ],
     correctOrder: [2, 5, 3, 4, 1], // 1-indexed
     annotations: [
-      { text: "Interesting opening sentence that makes readers curious", type: "Annotation 1" },
-      { text: "Linking words that connect ideas", type: "Annotation 2" },
-      { text: "Concluding sentence", type: "Annotation 3" }
+      { text: "Interesting opening sentence that makes readers curious", type: "Annotation 1", words: ["A honeybee's day starts early in the morning."] },
+      { text: "Linking words that connect ideas", type: "Annotation 2", words: ["After", "There", "later"] },
+      { text: "Concluding sentence", type: "Annotation 3", words: ["This hard work helps plants grow and gives us delicious honey."] }
     ],
-    summary: "All sentences on a single idea."
+    linkingWords: ["After", "There", "later"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, the paragraph describes a honeybee's day. Whenever you write a paragraph, try providing it a suitable title."
   },
   {
     id: 2,
     topic: "The Story of Chocolate",
     image: "chocolate.svg",
     sentences: [
-      "Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it everyone's favourite treat!",
+      "Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!",
       "Chocolate comes from cocoa beans that grow on trees in hot countries.",
-      "Ancient people in Mexico discovered cocoa and made a bitter drink from it.",
+      "Ancient people in Central America discovered cocoa and made a bitter drink from it.",
       "Later, sugar and milk were added to make it sweet."
     ],
     correctOrder: [2, 3, 4, 1],
     annotations: [
-      { text: "Clear opening sentence that introduces the main topic", type: "Annotation 1" },
-      { text: "Linking words showcasing the sequence of events", type: "Annotation 2" },
-      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3" }
+      { text: "Clear opening sentence that introduces the main topic", type: "Annotation 1", words: ["Chocolate comes from cocoa beans that grow on trees in hot countries."] },
+      { text: "Linking words showcasing the sequence of events", type: "Annotation 2", words: ["Later", "Today"] },
+      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!"] }
     ],
-    summary: "All sentences focus on a single idea: the evolution of chocolate."
+    linkingWords: ["Later", "Today"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, all sentences focus on a single idea: the evolution of chocolate. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 3,
@@ -52,30 +54,32 @@ const paragraphData = [
     ],
     correctOrder: [4, 3, 1, 5, 2],
     annotations: [
-      { text: "An introductory sentence that describes the Sun", type: "Annotation 1" },
-      { text: "Using words highlight the Sun's extraordinary qualities and importance", type: "Annotation 2" },
-      { text: "The concluding line celebrates the Sun's magnificence", type: "Annotation 3" }
+      { text: "An introductory sentence that describes the Sun", type: "Annotation 1", words: ["The Sun is a giant ball of hot, glowing gas that gives us light and heat."] },
+      { text: "Using words highlight the Sun's extraordinary qualities and importance", type: "Annotation 2", words: ["Without", "Surprisingly", "Every second"] },
+      { text: "The concluding line celebrates the Sun's magnificence", type: "Annotation 3", words: ["Indeed, our Sun is truly a magnificent star."] }
     ],
-    summary: "The paragraph systematically presents the Sun's nature, significance, size, and energy."
+    linkingWords: ["Without", "Surprisingly", "Every second"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us what makes the Sun so special. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 4,
     topic: "The Mighty Himalayas",
     image: "himalaya.svg",
     sentences: [
-      "Important rivers like the Ganga and Brahmaputra begin from Himalayan glaciers.",
+      "Important rivers like the Ganga and Brahmaputra also begin from Himalayan glaciers.",
       "The Himalayan mountain range stretches across northern India like a protective wall.",
-      "Tourists visit hill stations like Shimla and Darjeeling during summer.",
+      "Every summer, tourists visit hill stations like Shimla and Darjeeling.",
       "The Himalayas are truly India's precious natural treasure.",
-      "These peaks include Mount Everest, the world's tallest mountain."
+      "Among these peaks is Mount Everest, the world's tallest mountain."
     ],
     correctOrder: [2, 5, 1, 3, 4],
     annotations: [
-      { text: "An opening sentence that helps readers visualise the Himalayas", type: "Annotation 1" },
-      { text: "These words provide important facts about the Himalayas", type: "Annotation 2" },
-      { text: "A concluding sentence that summarises the importance of the Himalayas", type: "Annotation 3" }
+      { text: "An opening sentence that helps readers visualise the Himalayas", type: "Annotation 1", words: ["The Himalayan mountain range stretches across northern India like a protective wall."] },
+      { text: "Words and phrases that build flow", type: "Annotation 2", words: ["Among", "also", "Every summer"] },
+      { text: "A concluding sentence that summarises the importance of the Himalayas", type: "Annotation 3", words: ["The Himalayas are truly India's precious natural treasure."] }
     ],
-    summary: "Every sentence tells us about the Himalayan mountains."
+    linkingWords: ["Among", "also", "Every summer"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence shares something important about the Himalayan mountains. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 5,
@@ -89,11 +93,12 @@ const paragraphData = [
     ],
     correctOrder: [2, 3, 4, 1],
     annotations: [
-      { text: "An opening sentence that introduces the main character and setting", type: "Annotation 1" },
-      { text: "Words that connect the ideas and show the sequence of events in the story", type: "Annotation 2" },
-      { text: "A concluding sentence that ends the story with humour", type: "Annotation 3" }
+      { text: "An opening sentence that introduces the main character and setting", type: "Annotation 1", words: ["A clever monkey named Chintu once sneaked into a vegetable market in Jaipur."] },
+      { text: "Words that connect the ideas and show the sequence of events in the story", type: "Annotation 2", words: ["When", "As a result", "Jaipur"] },
+      { text: "A concluding sentence that ends the story with humour", type: "Annotation 3", words: ["As a result, the shopkeeper slipped and landed in a basket of tomatoes, turning as red as the vegetables themselves!"] }
     ],
-    summary: "The paragraph presents a light-hearted tale."
+    linkingWords: ["When", "As a result", "Jaipur"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence follows Chintu's funny adventure in the market. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 6,
@@ -108,11 +113,12 @@ const paragraphData = [
     ],
     correctOrder: [3, 5, 1, 2, 4],
     annotations: [
-      { text: "An engaging introduction that makes the topic personal and relatable", type: "Annotation 1" },
-      { text: "Link words that words indicate sequence of events for the day and feeling", type: "Annotation 2" },
-      { text: "A concluding line that reflects on the overall experience", type: "Annotation 3" }
+      { text: "An engaging introduction that makes the topic personal and relatable", type: "Annotation 1", words: ["I still remember my first day at school vividly."] },
+      { text: "Linking words that indicate sequence of events and change in feelings", type: "Annotation 2", words: ["When", "After", "However", "By day's end"] },
+      { text: "A concluding line that reflects on the overall experience", type: "Annotation 3", words: ["By day's end, I had made three friends and realised school would be wonderful."] }
     ],
-    summary: "The paragraph presents a complete narrative of the first day at school beginning to end."
+    linkingWords: ["When", "After", "However", "By day's end"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence takes us through the feelings and events of the first day at school. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 7,
@@ -127,11 +133,12 @@ const paragraphData = [
     ],
     correctOrder: [3, 4, 5, 2, 1],
     annotations: [
-      { text: "The opening line that introduces the main topic and explains his role", type: "Annotation 1" },
-      { text: "Expressions that show the postman's daily routine and dedication", type: "Annotation 2" },
-      { text: "A strong concluding sentence", type: "Annotation 3" }
+      { text: "An opening sentence that introduces the postman and his role", type: "Annotation 1", words: ["The postman is an important person who delivers letters and parcels to our homes."] },
+      { text: "Expressions that emphasize the postman's dedication", type: "Annotation 2", words: ["Every day", "Rain or shine"] },
+      { text: "A concluding sentence that expresses respect for the postman's service", type: "Annotation 3", words: ["The postman truly deserves our respect and gratitude."] }
     ],
-    summary: "The paragraph presents accurately the postman's importance."
+    linkingWords: ["Every day", "Rain or shine"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us about the postman and his dedicated work. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 8,
@@ -146,11 +153,12 @@ const paragraphData = [
     ],
     correctOrder: [4, 3, 1, 5, 2],
     annotations: [
-      { text: "An Introductory sentence that highlight the importance of the Taj Mahal", type: "Annotation 1" },
-      { text: "Use of words that connect historical and descriptive details of the monument", type: "Annotation 2" },
-      { text: "A concluding statement that reveals its everlasting virtue", type: "Annotation 3" }
+      { text: "An Introductory sentence that highlight the importance of the Taj Mahal", type: "Annotation 1", words: ["The Taj Mahal in Agra is one of the Seven Wonders of the World and a symbol of eternal love."] },
+      { text: "Words that add historical and descriptive detail", type: "Annotation 2", words: ["white marble monument", "intricate carvings", "precious stone inlays"] },
+      { text: "A concluding statement that reveals its everlasting virtue", type: "Annotation 3", words: ["Truly, the Taj Mahal is a timeless monument to love."] }
     ],
-    summary: "All the sentences describe the Taj Mahal as a global and magnificent beauty."
+    linkingWords: ["white marble monument", "intricate carvings", "precious stone inlays"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes the Taj Mahal's history and grandeur. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 9,
@@ -160,15 +168,16 @@ const paragraphData = [
       "This happens because salt water becomes denser than the egg, pushing it upwards.",
       "In normal tap water, a fresh egg sinks to the bottom because it's denser than water.",
       "Similarly, swimming in the ocean is easier than in a pool due to the salty water.",
-      "However, when you add salt and stir, the egg begins to float."
+      "However, when you add salt and stir, the egg begins to float!"
     ],
     correctOrder: [2, 4, 1, 3],
     annotations: [
-      { text: "A sentence that introduces the main topic and explains what happens in normal water", type: "Annotation 1" },
-      { text: "Linking word and phrase guiding us through the cause-and-effect relationship", type: "Annotation 2" },
-      { text: "A concluding sentence that connects the experiment to a real-life example", type: "Annotation 3" }
+      { text: "An opening sentence that tells us what happens in normal water", type: "Annotation 1", words: ["In normal tap water, a fresh egg sinks to the bottom because it's denser than water."] },
+      { text: "Words that show cause, effect, and comparison", type: "Annotation 2", words: ["However", "This happens because", "Similarly"] },
+      { text: "A concluding sentence that connects the experiment to real life", type: "Annotation 3", words: ["Similarly, swimming in the ocean is easier than in a pool due to the salty water."] }
     ],
-    summary: "This paragraph explains how salt water makes objects float easily."
+    linkingWords: ["However", "This happens because", "Similarly"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence explains why an egg floats in salt water. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 10,
@@ -177,23 +186,24 @@ const paragraphData = [
     sentences: [
       "Eucalyptus leaves provide very little energy, so koalas conserve strength by resting most of the time.",
       "Surely, koalas have mastered the art of relaxation!",
-      "Koalas hold the record for sleeping the longest, snoozing up to 22 hours daily!",
+      "Koalas hold the record for sleeping the longest, snoozing up to 20 hours daily!",
       "During their brief waking hours, they eat, groom, and climb to different branches."
     ],
     correctOrder: [3, 1, 4, 2],
     annotations: [
-      { text: "The opening sentence that introduces koalas' amazing sleeping habit", type: "Annotation 1" },
-      { text: "Expressions that explain why koalas sleep", type: "Annotation 2" },
-      { text: "This concluding sentence summarises koalas' relaxed lifestyle with humour", type: "Annotation 3" }
+      { text: "The opening sentence that introduces koalas' amazing sleeping habit", type: "Annotation 1", words: ["Koalas hold the record for sleeping the longest, snoozing up to 20 hours daily!"] },
+      { text: "Words that show cause and add detail", type: "Annotation 2", words: ["so", "During"] },
+      { text: "A concluding sentence that summarises koalas' relaxed lifestyle with humour", type: "Annotation 3", words: ["Surely, koalas have mastered the art of relaxation!"] }
     ],
-    summary: "This paragraph explains why koalas sleep for very long hours"
+    linkingWords: ["so", "During"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence is about why koalas sleep so much. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 11,
     topic: "The Joy of Sharing",
     image: "joy-sharing.svg",
     sentences: [
-      "Even sharing our time by helping with homework shows we care",
+      "Even sharing our time by helping with homework shows we care.",
       "Sharing is a wonderful habit that makes everyone happy.",
       "At school, sharing lunch or stationery with friends strengthens our friendship.",
       "Remember, happiness multiplies when shared, making it a true blessing.",
@@ -201,34 +211,37 @@ const paragraphData = [
     ],
     correctOrder: [2, 3, 5, 1, 4],
     annotations: [
-      { text: "An opening sentence that establishes sharing as a valuable quality", type: "Annotation 1" },
-      { text: "Use of words that connect various real-life contexts", type: "Annotation 2" },
-      { text: "A sentence that shares thoughtful conclusion", type: "Annotation 3" }
+      { text: "An opening sentence that establishes sharing as a valuable quality", type: "Annotation 1", words: ["Sharing is a wonderful habit that makes everyone happy."] },
+      { text: "Phrases that introduce different examples of sharing", type: "Annotation 2", words: ["At school", "When", "Even"] },
+      { text: "A thoughtful conclusion", type: "Annotation 3", words: ["Remember, happiness multiplies when shared, making it a true blessing."] }
     ],
-    summary: "This paragraph explains how sharing makes everyone happy"
+    linkingWords: ["At school", "When", "Even"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence shows us how sharing makes life better. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 12,
     topic: "The Beautiful Spring Season",
     image: "spring-season.svg",
     sentences: [
-      "Also, the weather becomes pleasant, neither too hot nor too cold. Moreover, colourful butterflies and busy bees fly from flower to flower.",
+      "Also, the weather becomes pleasant, neither too hot nor too cold.",
+      "Moreover, colourful butterflies and busy bees fly from flower to flower.",
       "It also reminds us that new beginnings are always beautiful.",
       "Spring is my favourite season when nature comes alive with colours.",
       "Finally, spring fills our hearts with happiness.",
       "During this time, flowers bloom in gardens and trees grow fresh green leaves"
     ],
-    correctOrder: [3, 5, 1, 4, 2],
+    correctOrder: [4, 6, 1, 2, 5, 3],
     annotations: [
-      { text: "A sentence that introduces the topic with enthusiasm", type: "Annotation 1" },
-      { text: "Words that shows spring's emotional effect", type: "Annotation 2" },
-      { text: "A concluding sentence that shares the deeper meaning of spring beautifully", type: "Annotation 3" }
+      { text: "A sentence that introduces the topic with enthusiasm", type: "Annotation 1", words: ["Spring is my favourite season when nature comes alive with colours."] },
+      { text: "Words that add details and signal the ending", type: "Annotation 2", words: ["During", "Also", "Moreover", "Finally"] },
+      { text: "A concluding sentence that shares the deeper meaning of spring", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful."] }
     ],
-    summary: "The paragraph celebrates spring's beauty."
+    linkingWords: ["During", "Also", "Moreover", "Finally"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence celebrates what makes spring special. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 13,
-    topic: "Fruits Keep Us Healthy",
+    topic: "Nature's Healthy Gifts",
     image: "fruits.svg",
     sentences: [
       "They are full of vitamins, minerals, and fibre our body needs.",
@@ -239,18 +252,19 @@ const paragraphData = [
     ],
     correctOrder: [4, 1, 2, 5, 3],
     annotations: [
-      { text: "An opening sentence that presents fruits as valuable natural resource", type: "Annotation 1" },
-      { text: "Words that mention benefits of eating fruits", type: "Annotation 2" },
-      { text: "A concluding sentence that emphasises on the benefit of eating fruits", type: "Annotation 3" }
+      { text: "An opening sentence that presents fruits as nature's gifts", type: "Annotation 1", words: ["Fruits are nature's gifts that keep us healthy and strong."] },
+      { text: "Linking words that give examples and draw a conclusion", type: "Annotation 2", words: ["For example", "Besides", "Therefore"] },
+      { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["Therefore, we must eat fresh fruits daily to stay fit."] }
     ],
-    summary: "This paragraph explains why eating fruits daily keeps us healthy."
+    linkingWords: ["For example", "Besides", "Therefore"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us why fruits are good for our health. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 14,
-    topic: "Understanding Decimals",
+    topic: "The World of Decimals",
     image: "decimals.svg",
     sentences: [
-      "The decimal point separates the whole number from the fractional part",
+      "The decimal point separates the whole number from the fractional part.",
       "Decimals are a special way of writing numbers that are not whole.",
       "And so, learning decimals makes our daily tasks simpler and more precise.",
       "For instance, when we buy 1.5 kilograms of apples or measure height as 4.2 feet, we use decimals.",
@@ -258,30 +272,32 @@ const paragraphData = [
     ],
     correctOrder: [2, 4, 1, 5, 3],
     annotations: [
-      { text: "A sentence that defines decimals", type: "Annotation 1" },
-      { text: "Linking words/phrases that gives real-life decimal examples", type: "Annotation 2" },
-      { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3" }
+      { text: "An opening sentence that defines decimals", type: "Annotation 1", words: ["Decimals are a special way of writing numbers that are not whole."] },
+      { text: "Phrases that build flow in the paragraph", type: "Annotation 2", words: ["For instance", "especially"] },
+      { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3", words: ["And so, learning decimals makes our daily tasks simpler and more precise."] }
     ],
-    summary: "This paragraph explains what decimals are and why they're useful."
+    linkingWords: ["For instance", "especially"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence helps us understand what decimals are and why they matter. Whenever you write a paragraph, try providing a suitable title."
   },
   {
     id: 15,
     topic: "The Festival of Colours",
     image: "festival-colours.svg",
     sentences: [
-      "During this celebration, people wear old white clothes and play with bright coloured powders called gulal.",
-      "Families prepare special sweets like gujiya and thandai to share with neighbours",
+      "During this celebration, people wear old clothes and play with bright coloured powders called gulal.",
+      "Families prepare special treats like gujiya and thandai to share with neighbours.",
       "Indeed, Holi teaches us to celebrate life together with happiness.",
       "Holi is a joyful festival that marks the arrival of spring in India.",
       "Children and adults throw colours at each other, laughing and singing festive songs."
     ],
     correctOrder: [4, 1, 5, 2, 3],
     annotations: [
-      { text: "An opening sentence that introduces Holi as a joyous occasion", type: "Annotation 1" },
-      { text: "Key words that give an insight into the festival", type: "Annotation 2" },
-      { text: "A concluding sentence that presents spirit of the festival", type: "Annotation 3" }
+      { text: "An opening sentence that introduces the festival", type: "Annotation 1", words: ["Holi is a joyful festival that marks the arrival of spring in India."] },
+      { text: "Words that build flow", type: "Annotation 2", words: ["During this celebration", "Indeed"] },
+      { text: "A concluding sentence that captures the spirit of the festival", type: "Annotation 3", words: ["Indeed, Holi teaches us to celebrate life together with happiness."] }
     ],
-    summary: "This paragraph describes how people celebrate the colourful festival of Holi."
+    linkingWords: ["During this celebration", "Indeed"],
+    summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes how people celebrate the colourful festival of Holi. Whenever you write a paragraph, try providing a suitable title."
   }
 ];
 
@@ -298,10 +314,13 @@ const sentenceColors = ['#FFE066', '#FFB3D9', '#A8D5FF', '#B3F5BC', '#FFB366', '
 // Initialize widget
 document.addEventListener("DOMContentLoaded", () => {
   initAudio();
+  // Shuffle all paragraphs initially (in-place)
+  shuffleArray(paragraphData);
   loadTopic(currentTopicIndex);
   setupEventListeners();
   updateTopicNavigationButtons();
 });
+
 
 // Initialize audio context for sounds
 function initAudio() {
@@ -413,6 +432,12 @@ function clearExistingContent() {
   if (titleGroup) {
     titleGroup.style.display = 'none';
   }
+
+  // Hide static text groups to prevent overlap
+  const staticText1 = document.getElementById('The_Taj_Mahal_located_in_Agra_is_one_of_the_Seven_Wonders_of_the_World_and_a_symbol_of_eternal_love.');
+  if (staticText1) staticText1.style.display = 'none';
+  const staticText2 = document.getElementById('The_Taj_Mahal_located_in_Agra_is_one_of_the_Seven_Wonders_of_the_World_and_a_symbol_of_eternal_love._Built_by_Emperor_Shah_Jahan_in_memory_of_his_beloved_wife_Mumtaz_Mahal_this_stunning_white_marble_monument_took_22_years_to_complete._Besides_its_beauti');
+  if (staticText2) staticText2.style.display = 'none';
 }
 
 // Update topic title
@@ -542,8 +567,8 @@ function createParagraphSlots(topic) {
   div.style.fontStyle = 'italic';
   div.style.lineHeight = '1.6';
   div.style.color = '#999';
-  div.style.padding = '40px 30px';
-  // div.style.background = '#FFFCD8';
+  div.style.padding = '30px';
+  div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
   div.style.border = '3px dashed #fff';
   div.style.borderRadius = '18px';
   div.style.height = '100%';
@@ -595,13 +620,11 @@ function handleSentenceClick(sentenceIndex, element) {
 
 // Mark sentence as correct
 function markSentenceCorrect(element) {
-  const rect = element.querySelector('rect');
-  rect.setAttribute('fill', '#90EE90');
-  rect.setAttribute('stroke', '#4CAF50');
-  rect.setAttribute('stroke-width', 5);
-  element.style.opacity = '0.6';
+  element.classList.add('blurred');
+  element.classList.add('correct');
   element.style.pointerEvents = 'none';
 }
+
 
 // Show wrong feedback
 function showWrongFeedback(element) {
@@ -635,9 +658,9 @@ function buildParagraphProgressively() {
   // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 265);  // Start below title
+  foreignObject.setAttribute('y', 185);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 640);  // Adjusted height
+  foreignObject.setAttribute('height', 720);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
@@ -646,37 +669,53 @@ function buildParagraphProgressively() {
   div.style.lineHeight = '1.6';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  // div.style.background = '#FFFCD8';
-  div.style.border = '3px dashed #fff';
-  div.style.borderRadius = '18px';
+  div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
-  div.textContent = paragraphText;
+  div.style.display = 'flex';
+  div.style.flexDirection = 'column';
+  div.style.alignItems = 'center';
 
-  // If paragraph is complete, make it clickable to show highlights and show title
+  const textDiv = document.createElement('div');
+  textDiv.textContent = paragraphText;
+  div.appendChild(textDiv);
+
+  // If paragraph is complete, show title and clear left panel
   if (userOrder.length === topic.sentences.length) {
-    div.style.cursor = 'pointer';
-    div.addEventListener('click', () => {
-      showCompletionScreen();
-    });
-
-    // Show title when paragraph is complete
-    const titleGroup = document.getElementById('para-title');
-    if (titleGroup) {
-      titleGroup.style.display = 'block';
+    // Clear left panel sentences after completion
+    const sentenceBox = document.getElementById('para-sentence-box');
+    if (sentenceBox) {
+      sentenceBox.innerHTML = '';
     }
+
+    // Auto-trigger completion screen after completion (instant)
+    showCompletionScreen();
   }
+
 
   foreignObject.appendChild(div);
   container.appendChild(foreignObject);
 }
+
 
 // Show completion screen
 function showCompletionScreen() {
   isComplete = true;
 
   const topic = paragraphData[currentTopicIndex];
+
+  // Show title when paragraph is complete and update its text
+  const titleGroup = document.getElementById('para-title');
+  if (titleGroup) {
+    titleGroup.style.display = 'block';
+    const textEl = titleGroup.querySelector('text');
+    if (textEl) {
+      textEl.innerHTML = `<tspan x="0" y="0" text-anchor="middle">${topic.topic}</tspan>`;
+      // Re-center title in the middle panel
+      textEl.setAttribute('transform', 'translate(1033.5 110)');
+    }
+  }
 
   // Hide sentence boxes and instruction
   const sentenceBoxContainer = document.getElementById('para-sentence-box');
@@ -722,7 +761,7 @@ function hideCompletionScreen() {
   if (answerBtn) {
     answerBtn.style.opacity = '1';
     answerBtn.style.pointerEvents = 'auto';
-    
+
     // Also reset pointer-events on inner div
     const answerBtnDiv = answerBtn.querySelector('div');
     if (answerBtnDiv) {
@@ -776,7 +815,7 @@ function showTopicImage(imageName) {
   if (answerBtn) {
     answerBtn.style.opacity = '0.4';
     answerBtn.style.pointerEvents = 'none';
-    
+
     // Also add pointer-events none to inner div
     const answerBtnDiv = answerBtn.querySelector('div');
     if (answerBtnDiv) {
@@ -852,61 +891,71 @@ function showHighlightedParagraph(topic, container) {
   div.style.fontWeight = '700';
   div.style.lineHeight = '1.5';
   div.style.color = '#181818';
-  //div.style.padding = '40px 30px';
-  //div.style.background = '#FFFCD8';
   div.style.borderRadius = '18px';
   div.style.padding = '40px';
+  div.style.paddingTop = '80px'; // Move text down to avoid overlap with header
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
-  div.style.marginTop = '80px';
+  div.style.display = 'flex';
+  div.style.flexDirection = 'column';
+  div.style.alignItems = 'center';
 
-  // Add paragraph with highlights (no duplicate title)
+  // Add paragraph with highlights
   const para = document.createElement('p');
   para.style.fontSize = '26px';
   para.style.fontFamily = 'Roboto-Medium, Roboto';
   para.style.fontWeight = '500';
   para.style.lineHeight = '1.5';
-  para.innerHTML = getHighlightedParagraphHTML(paragraphText);
+  para.style.marginTop = '20px';
+  para.innerHTML = getHighlightedParagraphHTML(topic, paragraphText);
   div.appendChild(para);
 
   foreignObject.appendChild(div);
   container.appendChild(foreignObject);
 }
 
-// Get highlighted paragraph HTML with color coding
-function getHighlightedParagraphHTML(paragraphText) {
-  // Color map for annotations
-  const colors = ['#FFE066', '#FF9EE5', '#8AD8FF'];
 
-  // Simple highlighting based on sentence positions
+// Get highlighted paragraph HTML with color coding
+function getHighlightedParagraphHTML(topic, paragraphText) {
+  const colors = ['#FFFF00', '#FF00FF', '#00FFFF'];
   let html = paragraphText;
 
-  // Highlight key phrases based on annotations
-  // Opening sentence
-  const sentences = paragraphText.split('. ');
-  if (sentences.length > 0) {
-    const firstSentence = sentences[0] + '.';
-    html = html.replace(firstSentence, `<span style="background: ${colors[0]}; padding: 2px 4px;">${firstSentence}</span>`);
-  }
+  // Process annotations in order: Annotation 1 (Yellow), Annotation 3 (Cyan), then Annotation 2 (Pink) last for layering
+  const annOrder = [0, 2, 1];
 
-  // Middle sentences (linking words)
-  const linkingWords = ['However', 'After', 'When', 'There', 'Besides', 'Later', 'Also', 'During', 'Similarly', 'For example', 'Therefore', 'Moreover', 'Finally', 'Indeed', 'Every second', 'Surprisingly', 'Eucalyptus', 'Ancient', 'Built by', 'Every year', 'In normal', 'Koalas hold'];
-  linkingWords.forEach(word => {
-    const regex = new RegExp(`(${word}[^.]*\\.)`, 'g');
-    html = html.replace(regex, `<span style="background: ${colors[1]}; padding: 2px 4px;">$1</span>`);
+  annOrder.forEach(annIndex => {
+    const ann = topic.annotations[annIndex];
+    if (!ann || !ann.words) return;
+
+    const phrases = Array.isArray(ann.words) ? ann.words : [ann.words];
+    const color = colors[annIndex];
+
+    phrases.forEach(phrase => {
+      if (!phrase) return;
+      // Use regex with word boundaries for specific words, or literal for full sentences
+      // If it's a short word (likely a linking word), use word boundaries
+      const isShort = phrase.split(' ').length <= 3;
+      const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      let regex;
+      if (isShort) {
+        regex = new RegExp(`\\b(${escapedPhrase})\\b`, 'gi');
+      } else {
+        // For full sentences, handle potential trailing punctuation or slight mismatches
+        // IMPORTANT: Must include capturing group ($1) for replacement to work correctly
+        regex = new RegExp(`(${escapedPhrase})`, 'gi');
+      }
+
+      html = html.replace(regex, `<span style="background: ${color}; padding: 0px 4px; border-radius: 4px;">$1</span>`);
+    });
   });
-
-  // Concluding sentence (last sentence)
-  if (sentences.length > 1) {
-    const lastSentence = sentences[sentences.length - 1];
-    if (lastSentence && !html.includes(`<span style="background: ${colors[2]}`)) {
-      html = html.replace(lastSentence, `<span style="background: ${colors[2]}; padding: 2px 4px;">${lastSentence}</span>`);
-    }
-  }
 
   return html;
 }
+
+
+
 
 // Show annotations in left panel
 function showAnnotations(topic, container) {
@@ -939,10 +988,12 @@ function showAnnotations(topic, container) {
   summaryBox.style.padding = '20px';
   summaryBox.style.borderRadius = '10px';
   summaryBox.style.marginBottom = '20px';
-  summaryBox.style.fontSize = '26px';
-  summaryBox.style.fontWeight = '400';
-  summaryBox.style.border = '2px solid #EDE7A8';
-  summaryBox.innerHTML = `<strong>Summary:</strong><br/>${topic.summary}`;
+  summaryBox.style.padding = '30px';
+  summaryBox.style.marginTop = '20px';
+  summaryBox.style.borderTop = '1px solid #ddd';
+  summaryBox.innerHTML = `
+    <div style="font-size: 22px; color: #333; line-height: 1.4;">${topic.summary}</div>
+  `;
   div.appendChild(summaryBox);
 
   // Add annotations with color boxes
@@ -964,9 +1015,12 @@ function showAnnotations(topic, container) {
 
     // Annotation text
     const textBox = document.createElement('div');
-    textBox.style.fontSize = '26px';
+    textBox.style.flex = '1';
+    textBox.style.color = '#181818';
+    textBox.style.fontSize = '24px';
+    textBox.style.fontFamily = 'Roboto-Regular, Roboto';
     textBox.style.fontWeight = '400';
-    textBox.innerHTML = `<strong>${ann.type}:</strong><br/>${ann.text}`;
+    textBox.innerHTML = `${ann.text}`;
 
     annBox.appendChild(colorBox);
     annBox.appendChild(textBox);
@@ -1035,7 +1089,7 @@ function setupEventListeners() {
   if (answerBtnText) {
     answerBtnText.style.cursor = 'pointer';
     answerBtnText.addEventListener('click', handleShowAnswer);
-    
+
     // Add click listener to inner div as well
     const answerBtnDiv = answerBtnText.querySelector('div');
     if (answerBtnDiv) {
@@ -1179,28 +1233,26 @@ function handleShowAnswer() {
 
   const textDiv = buttonText.querySelector('div');
   const currentText = textDiv ? textDiv.textContent.trim() : '';
-  
+
   const topic = paragraphData[currentTopicIndex];
 
   if (currentText === 'Show Answer') {
-    // Show Answer - auto-fill remaining sentences
+    // If paragraph is already built or building, complete it
     while (userOrder.length < topic.sentences.length) {
       const position = userOrder.length;
       const correctIndex = topic.correctOrder[position] - 1;
-
       userOrder.push(correctIndex);
 
-      // Find and mark the sentence box
       const sentenceBox = document.querySelector(`.sentence-box[data-sentence-index="${correctIndex}"]`);
       if (sentenceBox) {
         markSentenceCorrect(sentenceBox);
       }
     }
 
-    // Show complete paragraph after Show Answer
+    // Show completion screen which handles highlighted text and annotations
     setTimeout(() => {
-      buildParagraphProgressively();
-    }, 500);
+      showCompletionScreen();
+    }, 300);
 
     isAnswerShown = true;
     updateAnswerButtonText('Hide Answer');
@@ -1211,6 +1263,7 @@ function handleShowAnswer() {
     loadTopic(currentTopicIndex);
   }
 }
+
 
 // Update Show Answer button text
 function updateAnswerButtonText(text) {
@@ -1252,14 +1305,13 @@ function handleReset() {
   loadTopic(currentTopicIndex);
 }
 
-// Utility: Shuffle array
+// Utility: Shuffle array in-place
 function shuffleArray(array) {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  return shuffled;
+  return array;
 }
 
 // Add shake animation to CSS dynamically
