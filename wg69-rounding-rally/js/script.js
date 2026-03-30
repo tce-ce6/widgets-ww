@@ -148,24 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* ── Update instruction text (fix overlap by repositioning 3rd text) ── */
+    /* ── Update question stem text ── */
     function updateIText(num, roundTo) {
-        const el = $("i-text"); if (!el) return;
-        const texts = el.querySelectorAll("text");
-        if (texts.length < 3) return;
-        const numStr = String(num);
         const roundLabel = { 5: "fives", 10: "tens", 50: "fifties", 100: "hundreds", 1000: "thousands" }[roundTo] || String(roundTo);
-        // Text[1] = bold number
-        const t1 = texts[1].querySelector("tspan") || texts[1];
-        t1.textContent = numStr;
-        // Text[2] x-position: starts after number. ~23px per digit at font-size:40
-        const newX = 1189.25 + numStr.length * 23 + 6;
-        texts[2].setAttribute("transform", `translate(${newX} 173.67)`);
-        texts[2].textContent = "";
-        const ts = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        ts.setAttribute("x", "0"); ts.setAttribute("y", "0");
-        ts.textContent = ` to nearest ${roundLabel}.`;
-        texts[2].appendChild(ts);
+        const numEl = document.getElementById("q-stem-num");
+        const labelEl = document.getElementById("q-stem-label");
+        if (numEl) numEl.textContent = String(num);
+        if (labelEl) labelEl.textContent = roundLabel;
     }
 
     /* ── Reset all button colours ── */
@@ -253,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ── heading ──
         const h = $("hint-heading");
-        if (h) { const ts = h.querySelectorAll("tspan"); if (ts.length >= 5) ts[4].textContent = `ou clicked ${clicked}.`; }
+        if (h) { const ts = h.querySelectorAll("text"); if (ts.length >= 5) ts[4].textContent = `ou clicked ${clicked}.`; }
 
         // ── compute distances ──
         const lower = Math.floor(q.number / q.roundTo) * q.roundTo;
@@ -374,13 +363,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function hideHintPopup() {
         const group = $("hint-popup-group");
         if (group && group.style.display !== "none") {
+            // Hint popup was visible = wrong answer path → restore vehicle to question position
             triggerAnim("hint-popup-group", "zoomOut 0.2s ease-in both");
             setTimeout(() => {
                 setVisible("hint-popup-group", false);
                 setVisible("popup-overlay", false);
                 document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
+                if (state.currentQ) positionQMarker(state.currentQ.number, false);
             }, 200);
         } else {
+            // Hint popup was already hidden (e.g. correct answer path) → just clean up, don't reposition
             setVisible("hint-popup-group", false);
             setVisible("popup-overlay", false);
             document.querySelectorAll(".hint-car-clone").forEach(el => el.remove());
@@ -513,12 +505,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const rect = $("selected-vechle");
         if (rect) { rect.style.transform = type === "car" ? "translateX(0)" : "translateX(131px)"; rect.style.transition = "transform 0.3s ease"; }
     }
-    ["car-btn", "car-text"].forEach(id => {
+    ["car-btn", "car-text", "car-hitarea"].forEach(id => {
         const el = $(id); if (!el) return;
         el.style.cursor = "pointer";
         el.addEventListener("click", () => selectVehicle("car"));
     });
-    ["bike-btn", "bike-text"].forEach(id => {
+    ["bike-btn", "bike-text", "bike-hitarea"].forEach(id => {
         const el = $(id); if (!el) return;
         el.style.cursor = "pointer";
         el.addEventListener("click", () => selectVehicle("bike"));

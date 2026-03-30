@@ -81,15 +81,24 @@ document.addEventListener("DOMContentLoaded", () => {
     // ─── All molecule group IDs ───────────────────────────────────────────────
     const allMolecules = [
         "c4h12o4", "cuso4", "zn", "cu", "hci", "ch4",
-        "naoh", "co2", "h2o", "o2", "agno3", "nano3", "h2"
+        "naoh", "co2", "h2o", "o2", "agno3", "nano3", "h2",
+        "nacl", "agcl", "znso4"
     ];
+
+    // HTML molecule templates live inside the <foreignObject id="chemical-elements-fo">
+    const moleculeLayer = document.getElementById("chemical-elements");
+    const moleculeTemplates = {};
+    allMolecules.forEach(id => {
+        const tpl = moleculeLayer ? moleculeLayer.querySelector(`[data-molecule='${id}']`) : null;
+        if (tpl) moleculeTemplates[id] = tpl;
+    });
 
     // ─── Reaction → molecule mapping ─────────────────────────────────────────
     const reactionMoleculesMap = {
         "Combination Reaction":          ["h2", "o2", "h2o"],
         "Decomposition Reaction":        ["h2o", "h2", "o2"],
-        "Displacement Reaction":         ["zn", "cuso4", "cu"],
-        "Double Displacement Reaction":  ["agno3", "nano3", "hci"],
+        "Displacement Reaction":         ["zn", "cuso4", "znso4", "cu"],
+        "Double Displacement Reaction":  ["agno3", "nacl", "agcl", "nano3"],
         "Redox (Oxidation-Reduction)":   ["ch4", "o2", "co2", "h2o"]
     };
 
@@ -145,9 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function hideAllMolecules() {
+        Object.values(moleculeTemplates).forEach(tpl => {
+            tpl.style.display = "none";
+        });
         allMolecules.forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.style.display = "none";
+            if (el && !(id in moleculeTemplates)) el.style.display = "none";
         });
     }
 
@@ -222,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ─── Reaction Transformations ──────────────────────────────────────────────
     // Each rule describes one balanced reaction batch for the simulator.
+    // Start with four balanced sets (was original default).
     const DEFAULT_REACTION_BATCHES = 4;
     const reactionRules = {
         "Combination Reaction": {
@@ -239,13 +252,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "Displacement Reaction": {
             // Zn + CuSO4 → ZnSO4 + Cu (1:1:1:1)
             reactantCounts: { zn: 1, cuso4: 1 },
-            productCounts: { cu: 1 },
+            productCounts: { cu: 1, znso4: 1 },
             initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Double Displacement Reaction": {
-            // AgNO3 + HCl → AgCl + HNO3 (1:1:1:1)
-            reactantCounts: { agno3: 1, hci: 1 },
-            productCounts: { nano3: 1 },
+            // AgNO3 + NaCl → AgCl + NaNO3 (1:1:1:1)
+            reactantCounts: { agno3: 1, nacl: 1 },
+            productCounts: { agcl: 1, nano3: 1 },
             initialBatches: DEFAULT_REACTION_BATCHES
         },
         "Redox (Oxidation-Reduction)": {
@@ -274,18 +287,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function spawnMolecule(id, count, x = null, y = null) {
-        const template = document.getElementById(id);
+        const template = moleculeTemplates[id] || document.getElementById(id);
         if (!template) return;
+
+        const parentLayer = moleculeLayer || template.parentNode;
 
         for (let i = 0; i < count; i++) {
             const clone = template.cloneNode(true);
             const uid = Math.random().toString(36).substring(2, 9);
             clone.id = `${id}_clone_${uid}`;
             clone.classList.add("sim-clone"); // Tag for secure cleanup
-            clone.style.display = "block";
-            // Ensure clone DOES NOT block pointer events (it's just visual)
+            clone.classList.remove("template");
             clone.style.pointerEvents = "none";
-            template.parentNode.appendChild(clone);
+            if (clone instanceof SVGElement) {
+                clone.style.display = "block";
+            } else {
+                clone.style.display = "flex";
+                clone.style.position = "absolute";
+            }
+            parentLayer.appendChild(clone);
 
             const safePosition = (x !== null && y !== null)
                 ? constrainPointToSafeArea(x, y)
@@ -317,17 +337,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const yCenters = {
             "c4h12o4": 1007, "cuso4": 908, "zn": 817, "cu": 718,
             "hci": 627, "ch4": 528, "naoh": 381, "co2": 282,
-            "h2o": 183, "o2": 147, "agno3": 755, "nano3": 457, "h2": 655
+            "h2o": 183, "o2": 147, "agno3": 755, "nano3": 457, "h2": 655,
+            "nacl": 605, "agcl": 585, "znso4": 835
         };
         return yCenters[id] || 500;
     }
 
     function setMoleculePosition(el, x, y, baseId) {
-        const origX = 403;
-        const origY = getOrigY(baseId);
-        const dx = x - origX;
-        const dy = y - origY;
-        el.setAttribute("transform", `translate(${dx}, ${dy})`);
+        if (!el) return;
+        const translateX = x - MOL_RADIUS;
+        const translateY = y - MOL_RADIUS;
+
+        // SVG backups still use the legacy translate relative to template origin
+        if (el instanceof SVGGraphicsElement) {
+            const origX = 403;
+            const origY = getOrigY(baseId);
+            const dx = x - origX;
+            const dy = y - origY;
+            el.setAttribute("transform", `translate(${dx}, ${dy})`);
+            return;
+        }
+
+        // HTML ions inside the foreignObject
+        el.style.transform = `translate(${translateX}px, ${translateY}px)`;
     }
 
     function overlapsUiBlocker(x, y, radius = MOL_RADIUS) {
@@ -617,32 +649,30 @@ document.addEventListener("DOMContentLoaded", () => {
                                 // Reaction logic
                                 let reactionRule = reactionRules[currentReaction];
                                 if (reactionRule && !p.isReacted && !q.isReacted) {
-                                    const reactionChance = currentTemp === "Hot" ? 0.3 : (currentTemp === "Warm" ? 0.15 : (currentTemp === "Cold" ? 0.05 : 0.01));
-                                    if (Math.random() < reactionChance) {
-                                        const participants = collectReactionParticipants(p, q, reactionRule);
+                                    // Always attempt a reaction on a qualifying collision.
+                                    const participants = collectReactionParticipants(p, q, reactionRule);
 
-                                        if (participants) {
-                                            participants.forEach(particle => {
-                                                particle.isReacted = true;
-                                                toRemove.add(particle);
-                                            });
+                                    if (participants) {
+                                        participants.forEach(particle => {
+                                            particle.isReacted = true;
+                                            toRemove.add(particle);
+                                        });
 
-                                            successCount++;
+                                        successCount++;
 
-                                            const mx = participants.reduce((sum, particle) => sum + particle.x, 0) / participants.length;
-                                            const my = participants.reduce((sum, particle) => sum + particle.y, 0) / participants.length;
-                                            const productsToSpawn = buildProductSpawnList(reactionRule, mx, my);
+                                        const mx = participants.reduce((sum, particle) => sum + particle.x, 0) / participants.length;
+                                        const my = participants.reduce((sum, particle) => sum + particle.y, 0) / participants.length;
+                                        const productsToSpawn = buildProductSpawnList(reactionRule, mx, my);
 
-                                            productsToSpawn.forEach(product => {
-                                                toSpawn.push(product);
-                                                productCount++;
-                                            });
+                                        productsToSpawn.forEach(product => {
+                                            toSpawn.push(product);
+                                            productCount++;
+                                        });
 
-                                            updateLiveText(liveSuccessful, successCount.toString());
-                                            updateLiveText(liveProducts, productCount.toString());
-                                            const rate = ((successCount / collisionCount) * 100).toFixed(1) + "%";
-                                            updateLiveText(liveSuccessRate, rate);
-                                        }
+                                        updateLiveText(liveSuccessful, successCount.toString());
+                                        updateLiveText(liveProducts, productCount.toString());
+                                        const rate = ((successCount / collisionCount) * 100).toFixed(1) + "%";
+                                        updateLiveText(liveSuccessRate, rate);
                                     }
                                 }
                             }

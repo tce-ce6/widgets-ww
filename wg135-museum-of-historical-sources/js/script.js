@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 { 
                     question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power", 
-                    clue: "This precious metal from India’s ‘Golden Age’ depicts the warrior-king holding his weapon with near-perfect craftsmanship",
+                    clue: "A goddess sits at its centre because this king believed his power came straight from the divine",
                     correctId: "_01-museum-2" 
                 }
             ]
@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
             questions: [
                 { 
                     question: "An ancient text that provides detailed instructions on governance and economics", 
-                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling—from collecting taxes to sending secret agents to gather information.",
-                    correctId: "_02-museum-1" 
+                    clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling — from collecting taxes to sending secret agents to gather information.",
+                    correctId: "_02-museum-5" 
                 },
                 { 
                     question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador", 
-                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size—his book vanished, but later writers copied his incredible stories!",
-                    correctId: "_02-museum-2" 
+                    clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size his book vanished, but later writers copied his incredible stories!",
+                    correctId: "_02-museum-1" 
                 }
             ]
         },
@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 { 
                     question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
                     clue: "This Chola bronze masterpiece is famous for high level of art and metalworking skill in medieval South India",
-                    correctId: "_03-museum-1" 
+                    correctId: "_03-museum-4" 
                 },
                 { 
                     question: "A prehistoric artwork showing the earliest evidence of human creativity in India", 
-                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants—it shows how prehistoric humans lived!",
-                    correctId: "_03-museum-2" 
+                    clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants. — It shows how prehistoric humans lived!",
+                    correctId: "_03-museum-1" 
                 }
             ]
         },
@@ -74,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             questions: [
                 { 
                     question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down", 
-                    clue: "These Tamil verses were performed at royal gatherings where poets competed—their amazing memories kept the poems alive across many generations!",
+                    clue: "These Tamil verses were performed at royal gatherings where poets competed— their amazing memories kept the poems alive across many generations!",
                     correctId: "_04-museum-1" 
                 },
                 { 
                     question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement", 
-                    clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—saints like Tukaram created them so common people could express their devotion",
+                    clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—Saints like Tukaram created them so common people could express their devotion",
                     correctId: "_04-museum-2" 
                 }
             ]
@@ -119,6 +119,70 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ==========================================
+    // 2b. AUDIO BUTTONS
+    // ==========================================
+    const audioConfig = {
+        'btn-audio-abhang': './assets/abhang.mp3',
+        'btn-audio-kabir-dohe': './assets/kabir-dohe.mp3',
+        'btn-audio-sangam-poetry': './assets/sangam-poetry.mp3',
+        'btn-audio-folk-song-rajput': './assets/folk-song-by-rajput.mp3',
+        'btn-audio-folk-halahal-kumar': './assets/folk-halahal-kumar.mp3',
+    };
+    const audioPlayers = {};
+    let activeAudioId = null;
+
+    function setupAudioButtons() {
+        Object.entries(audioConfig).forEach(([btnId, src]) => {
+            const btn = el(btnId);
+            if (!btn) return;
+
+            btn.style.cursor = 'pointer';
+            audioPlayers[btnId] = new Audio(src);
+
+            btn.addEventListener('click', () => handleAudioToggle(btnId));
+        });
+    }
+
+    function handleAudioToggle(btnId) {
+        const btn = el(btnId);
+        const player = audioPlayers[btnId];
+        if (!btn || !player) return;
+
+        // If another audio is playing, stop and reset it first
+        if (activeAudioId && activeAudioId !== btnId) {
+            pauseAndReset(activeAudioId);
+        }
+
+        // Toggle current button
+        if (player.paused || activeAudioId !== btnId) {
+            player.currentTime = 0; // always start from beginning
+            player.play();
+            btn.classList.add('is-audio-playing');
+            activeAudioId = btnId;
+        } else {
+            player.pause();
+            player.currentTime = 0; // reset so next play starts fresh
+            btn.classList.remove('is-audio-playing');
+            activeAudioId = null;
+        }
+
+        player.onended = () => {
+            btn.classList.remove('is-audio-playing');
+            if (activeAudioId === btnId) activeAudioId = null;
+        };
+    }
+
+    function pauseAndReset(audioId) {
+        const player = audioPlayers[audioId];
+        const btn = el(audioId);
+        if (player) {
+            player.pause();
+            player.currentTime = 0;
+        }
+        if (btn) btn.classList.remove('is-audio-playing');
+    }
+
+    // ==========================================
     // 3. INITIALIZATION
     // ==========================================
     function init() {
@@ -153,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
+
+        setupAudioButtons();
     }
 
     // ==========================================
@@ -219,6 +285,39 @@ document.addEventListener('DOMContentLoaded', () => {
         let startSVGPoint = null;
         let initialMatrix = null;
 
+        const galleryIds = [
+            'literary-source-gallery',
+            'artistic-source-gallery',
+            'archaeological-source-gallery',
+            'oral-source-gallery'
+        ];
+
+        const galleryFromRect = (rect) => {
+            const cx = (rect.left + rect.right) / 2;
+            const cy = (rect.top + rect.bottom) / 2;
+            for (const gid of galleryIds) {
+                const gEl = el(gid);
+                if (!gEl) continue;
+                const gRect = gEl.getBoundingClientRect();
+                if (cx >= gRect.left && cx <= gRect.right && cy >= gRect.top && cy <= gRect.bottom) {
+                    return gid;
+                }
+            }
+            return null;
+        };
+
+        const findCollidingGallery = (dragged) => {
+            const dragRect = dragged.getBoundingClientRect();
+            for (const gid of galleryIds) {
+                const gEl = el(gid);
+                if (!gEl) continue;
+                const gRect = gEl.getBoundingClientRect();
+                const hit = !(dragRect.right < gRect.left || dragRect.left > gRect.right || dragRect.bottom < gRect.top || dragRect.top > gRect.bottom);
+                if (hit) return gEl;
+            }
+            return null;
+        };
+
         for (let s = 1; s <= TOTAL_SETS; s++) {
             for (let i = 1; i <= ITEMS_PER_SET; i++) {
                 let imgId = `${dragSets[s].imgPrefix}${i}`;
@@ -271,7 +370,14 @@ document.addEventListener('DOMContentLoaded', () => {
             let dropZoneId = `${dragSets[currentSetIndex].foPrefix}${itemNum}-drop-zone`;
             let dropZone = el(dropZoneId);
 
-            if (dropZone && isColliding(activeDragEl, dropZone)) {
+            const galleryHit = findCollidingGallery(activeDragEl);
+            const hitTarget = galleryHit || dropZone;
+
+            const dropZoneGalleryId = dropZone ? galleryFromRect(dropZone.getBoundingClientRect()) : null;
+            const dragGalleryId = activeDragEl ? galleryHit?.id || galleryFromRect(activeDragEl.getBoundingClientRect()) : null;
+            const galleryMatch = dragGalleryId && dropZoneGalleryId && dragGalleryId === dropZoneGalleryId;
+
+            if (dropZone && hitTarget && galleryMatch && isColliding(activeDragEl, hitTarget)) {
                 if (correctContainer) {
                     correctContainer.appendChild(activeDragEl);
                 }
@@ -344,6 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clueTextEl.innerHTML = activeData.clue;
         }
     }
+    
 
     window.selectMuseumGallery = function(galleryKey) { 
         if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
