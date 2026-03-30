@@ -431,6 +431,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
 
   }
 
@@ -469,6 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
     matched.clear();
+      correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-2", () => {
@@ -482,6 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-3", () => {
@@ -812,11 +815,12 @@ document.addEventListener("DOMContentLoaded", () => {
   //  LIMITATION 2 — No Coincidence of Wants (pair matching)
   // ═══════════════════════════════════════════════════════════
   matched = new Set();
+  correctCount = 0;
   function makePairManager(pairs, sc, config = {}) {
     let selectedId = null;
     let selectedEl = null;
     
-    let correctCount = 0;
+    correctCount = 0;
 
     const pairMap = {};
     pairs.forEach(([a, b]) => {
@@ -849,7 +853,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (config.onSelect) config.onSelect(clickedId);
           if (config.onCorrect)
             config.onCorrect(correctCount, selectedId, clickedId);
-
+          selectedId = null;
+          selectedEl = null;
           if (correctCount >= totalPairs) {
             setTimeout(() => {
               stopLottie();
@@ -858,6 +863,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           const el1 = selectedEl,
             el2 = clickedEl;
+          // selectedId = null;
+          selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
           setTimeout(() => {
             if (el1) {
               el1.style.outline = "";
@@ -869,9 +878,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }, 1200);
         }
-        selectedId = null;
-        selectedEl = null;
-        if (config.onSelect) config.onSelect(null);
       }
     };
   }
@@ -961,6 +967,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s1.wrong) {
+        show(S.lim2s1.wrong);
+        playLottie("emoji-sad", S.lim2s1.wrong);
+      }
+    },
   });
 
   makeCardsClickable(S.lim2s1.cards);
@@ -970,6 +982,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const found = findCardAndTrader(e, S.lim2s1.cards, lim2s1AllNames);
       if (!found) return;
       lim2s1Trade(found.traderId, found.topCard);
+    });
+  }
+
+  // Wire "Try another trader" button inside lim2s1 wrong popup (querySelector avoids duplicate-ID issue)
+  if (S.lim2s1.wrong) {
+    const tryBtn = S.lim2s1.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s1.wrong); });
     });
   }
 
@@ -1004,6 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (outline) hide(outline);
         });
          matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
@@ -1085,7 +1110,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s2.wrong) {
+        show(S.lim2s2.wrong);
+        playLottie("emoji-sad", S.lim2s2.wrong);
+      }
+    },
   });
+
+  // Wire "Try another trader" button inside lim2s2 wrong popup
+  if (S.lim2s2.wrong) {
+    const tryBtn = S.lim2s2.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s2.wrong); });
+    });
+  }
 
   const lim2s2Root = S.lim2s2.base;
   if (lim2s2Root) {
