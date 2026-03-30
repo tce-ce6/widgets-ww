@@ -162,6 +162,24 @@ function showPlate(value) {
   nextBtn.style.cursor = 'auto';
 };
 
+// function attachProgressToLottie(type) {
+//   const item = lottieMap[type];
+//   if (!item || !item.instance) return;
+
+//   const anim = item.instance;
+
+//   anim.addEventListener("enterFrame", () => {
+//     const progress = anim.currentFrame / anim.totalFrames;
+//     const value = Math.floor(progress * 101);
+
+//     valueEls.forEach(el => {
+//       el.textContent = `${value}%`;
+//     });
+//   });
+// };
+
+const progressGroups = document.querySelectorAll(".progressGroup");
+
 function attachProgressToLottie(type) {
   const item = lottieMap[type];
   if (!item || !item.instance) return;
@@ -172,11 +190,17 @@ function attachProgressToLottie(type) {
     const progress = anim.currentFrame / anim.totalFrames;
     const value = Math.floor(progress * 101);
 
+    // update text
     valueEls.forEach(el => {
       el.textContent = `${value}%`;
     });
+
+    // ✅ update all bars
+    progressGroups.forEach(group => {
+      group.style.transform = `scaleX(${progress})`;
+    });
   });
-};
+}
 
 homeBtn.addEventListener("click", function () {
   homePage.style.display = 'block';
