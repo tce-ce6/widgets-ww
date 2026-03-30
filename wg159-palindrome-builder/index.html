@@ -1,0 +1,70 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tricky Word Collector</title>
+    <!-- prompt: Refining Tricky Word Collector Widget -->
+
+    <link rel="stylesheet" href="./css/global_style.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="idiom-wrapper">
+    <div class="container">
+        <div class="mainContainerOuter">
+            <div class="wdgetTitle">
+                <h2>Tricky Word Collector</h2>
+                <span id="versionId" class="versionText">b3_wg158_260330</span>
+            </div>
+            <div class="svg-container" id="svg-container">
+                <div class="deco deco-1"></div>
+                <div class="deco deco-2"></div>
+                <div class="deco deco-3"></div>
+                <div class="deco deco-4"></div>
+
+                <canvas id="confetti"></canvas>
+                <div class="toast" id="toast"></div>
+                <div class="streak-fire" id="streakFire"></div>
+
+                <div class="app">
+                    <div class="header">
+                        <h1><span class="gear">⚙</span> Palindrome Builder</h1>
+                        <div class="subtitle">Fill in the missing letters to build palindromes!</div>
+                    </div>
+
+                    <div class="levels" id="levels"></div>
+
+                    <div class="score-bar">
+                        <div class="score-item">✅ <span class="num correct" id="scoreCorrect">0</span></div>
+                        <div class="score-item">🔥 <span class="num streak" id="scoreStreak">0</span> streak</div>
+                        <div class="score-item">💡 <span class="num" id="hintsLeft">3</span> hints</div>
+                    </div>
+
+                    <div class="clue-patch" id="clueArea"></div>
+
+                    <div class="puzzle-card" id="puzzleCard">
+                        <div class="slots-row" id="slotsRow"></div>
+                    </div>
+
+                    <div class="keyboard" id="keyboard"></div>
+
+                    <div class="bottom-controls">
+                        <button class="btn btn-hint" id="hintBtn" onclick="useHint()">💡 Hint</button>
+                        <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>Check ✓</button>
+                        <button class="btn btn-skip" onclick="skipWord()">Skip →</button>
+                        <button class="btn btn-next" id="nextBtn" onclick="nextWord()">Next →</button>
+                    </div>
+
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
