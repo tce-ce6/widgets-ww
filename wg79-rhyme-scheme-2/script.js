@@ -579,7 +579,9 @@ function wrapLastWord(lineEl, text, lineIndex, rhymingWords) {
 }
 
 function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
-  if (!el || !activeMarker) return;
+  if (!el) return;
+  // If it's a user interaction (idx is a number), require activeMarker
+  if (typeof idx === "number" && !activeMarker) return;
 
   const rhymeColorMap = {
     a: markerStyles.green.color,
@@ -623,7 +625,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
       orange: 'e',
       purple: 'f'
     };
-    const markerLetter = markerNameToLetter[activeMarker.name] || 'a';
+    const markerLetter = activeMarker ? (markerNameToLetter[activeMarker.name] || 'a') : 'a';
     
     if (letterTag) {
       letterTag.textContent = markerLetter;
