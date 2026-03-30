@@ -252,21 +252,6 @@
   border: 4px solid #008D00;
 }
 
-.icon-wrapper.disabled-icons {
-  pointer-events: none;
-}
-
-.icon-wrapper.disabled-icons li {
-  opacity: 0.5;
-}
-
-.icon-wrapper.disabled-icons li.active {
-  border-color: #008D00;
-  opacity: 1;
-}
-
-
-
 .desc-wrap {
   margin: 20px 0;
 }

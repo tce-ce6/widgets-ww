@@ -26,7 +26,7 @@ let letterData = {
   },
   "छ": {
     "answers": ["छिपकली", "छाता", "छह"],
-    "distractors": ["ढोलक", "तकिया", "चीता"],
+    "distractors": ["ढोलक", "तकिया", "चिटा"],
     "question": "‘छ’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
   "ज": {
@@ -75,7 +75,7 @@ let letterData = {
     "question": "‘ढ़’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
   "त": {
-    "answers": ["तकिया", "किताब", "चीता"],
+    "answers": ["तकिया", "किताब", "चिटा"],
     "distractors": ["मकड़ी", "अदरक", "अखबार"],
     "question": "‘त’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
@@ -125,7 +125,7 @@ let letterData = {
     "question": "‘म’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
   "य": {
-    "answers": ["पायल", "यज्ञ"],
+    "answers": ["विज्ञान", "यज्ञ"],
     "distractors": ["भवन", "शलजम", "ऋषि", "उपवन"],
     "question": "‘य’ की ध्वनि वाले शब्दों को पहचानिए।"
   },
@@ -197,7 +197,7 @@ let imgJson = {
   "खत": "khat.svg",
   "अखबार": "akhbar.svg",
   "आँख": "aankh.svg",
-  "ठेला": "thela.svg",
+  "ठेला": "thaila.svg",
   "डाकिया": "dakiya.svg",
   "बकरी": "bakari.svg",
 
@@ -224,7 +224,7 @@ let imgJson = {
   "छह": "chhah.svg",
   "ढोलक": "dholak.svg",
   "तकिया": "takiya.svg",
-  "चीता": "chita.svg",
+  "चिटा": "chita.svg",
 
   "जलेबी": "jalebi.svg",
   "काजल": "kajal.svg",
@@ -387,7 +387,7 @@ let wordSoundJson = {
   "छह": "chhah.mp3",
   "ढोलक": "dholak.mp3",
   "तकिया": "takiya.mp3",
-  "चीता": "chita.mp3",
+  "चिटा": "chita.mp3",
 
   "जलेबी": "jalebi.mp3",
   "काजल": "kajal.mp3",
@@ -484,7 +484,7 @@ const agalavyanjanBtn = document.getElementById('agala-vyanjans-btn');
 const uttarDekheBtn = document.getElementById('uttar-dekhe-btn');
 const showAnswerbtn = document.getElementById("showAnswerBtn");
 const soundBtn = document.getElementById("soundBtn");
-let activeLottieMap = new Map(); 
+
 document.addEventListener('DOMContentLoaded', function () {
 
   vyanjans.forEach(el => {
@@ -496,11 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = vyanjanList.indexOf(letter);
 
       const data = letterData[letter];
-      console.log(vyanjans);
-      if(letter == "श्र"){
-        agalavyanjanBtn.style.opacity = 0.3;
-        agalavyanjanBtn.style.pointerEvents = 'none';
-      }
+      console.log(letter)
       if (data) {
         currentData = data; // ✅ store for later (important)
 
@@ -512,9 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   agalavyanjanBtn.addEventListener("click", () => {
-    if (currentIndex >= vyanjanList.length - 1) {
-      return;
-    }
     currentIndex++;
 
     // loop back to start
@@ -526,18 +519,12 @@ document.addEventListener('DOMContentLoaded', function () {
     loadvyanjan(letter);
     playSound(letter);
     resetOptions();
- // if reached last → disable button
- if (currentIndex === vyanjanList.length - 1) {
-  agalavyanjanBtn.style.opacity = 0.3;
-  agalavyanjanBtn.style.pointerEvents = 'none'; // disable click
-}
   });
 
   homeBtn.addEventListener('click', () => {
     homePage.style.display = 'block';
     gamePage.style.display = 'none';
     showAnswerbtn.textContent = "उत्तर देखें";
-    showAnswer = false;
     resetOptions();
   });
 });
@@ -545,33 +532,21 @@ document.addEventListener('DOMContentLoaded', function () {
 function resetOptions() {
   optionsImg.forEach(btn => {
     btn.style.pointerEvents = "auto";
-    btn.style.cursor = 'pointer';
   });
 
   // reset clicked tracking (IMPORTANT)
   clickedSet.clear();   // if using Set approach
- // clear any running lottie animations from previous question
- optionsImg.forEach(btn => {
-  if (activeLottieMap.has(btn)) {
-    activeLottieMap.get(btn).destroy();
-    activeLottieMap.delete(btn);
-  }
-  const lottieContainer = btn.querySelector(".lottie-container");
-  if (lottieContainer) lottieContainer.innerHTML = "";
-});
 
   // reset button state
   uttarDekheBtn.style.opacity = 1;
   uttarDekheBtn.style.pointerEvents = "auto";
-  agalavyanjanBtn.style.opacity = 1;
-  agalavyanjanBtn.style.pointerEvents = 'auto';
 }
 
 function loadvyanjan(selectedLetter) {
   gamePage.style.display = 'block';
   homePage.style.display = 'none';
   showAnswerbtn.textContent = "उत्तर देखें";
-  showAnswer = false;
+
   letter = selectedLetter;
   const data = letterData[letter];
 
@@ -613,44 +588,12 @@ function playWordSound(word) {
   currentAudio.play();
 }
 
-function playLottie(container, parentEl) {
-  if (!container) {
-    console.warn("playLottie: .lottie-container not found for option", parentEl);
-    return;
-  }
-  if (typeof lottie === "undefined" || !lottie.loadAnimation) {
-    console.error("playLottie: lottie library not loaded (lottie.min.js missing?)");
-    return;
-  }
-
-  // 🧹 destroy previous lottie in THIS option only
-  let hadPrev = false;
-  if (activeLottieMap.has(parentEl)) {
-    hadPrev = true;
-    activeLottieMap.get(parentEl).destroy();
-    activeLottieMap.delete(parentEl);
-  }
-  // Avoid clearing container on first load to reduce visible flicker
-  if (hadPrev) container.innerHTML = "";
-
-  const anim = lottie.loadAnimation({
-    container: container,
-    renderer: "svg",
-    loop: false,
-    autoplay: true,
-    path: "./assets/animation/confetti.json"
-  });
-
-  activeLottieMap.set(parentEl, anim);
-}
-
 const optionsImg = document.querySelectorAll(".option-img");
 const clickedSet = new Set();
 
 optionsImg.forEach(el => {
   el.addEventListener("click", function () {
 
-    const lottieContainer = this.querySelector(".lottie-container");
     const textEl = this.querySelector(".option-txt");
     const imgEl = this.querySelector("img");
 
@@ -659,39 +602,23 @@ optionsImg.forEach(el => {
     if (!currentData) return;
 
     // ✅ mark this element as clicked
-        // Prevent re-triggering (reduces flicker on repeated clicks)
-    // If the option was clicked before but Lottie was cleared (e.g. after showAnswer toggle),
-    // allow re-clicking so animation can play again.
-    if (clickedSet.has(this) && activeLottieMap.has(this)) return;
     clickedSet.add(this);
 
-    const isCorrect = currentData.answers.includes(selectedText);
-
     // ✅ Only if correct answer
-    if (isCorrect) {
+    if (currentData.answers.includes(selectedText)) {
 
       const imgName = imgJson[selectedText]; // get correct image
       if (imgName) {
         imgEl.src = `./assets/images/${imgName}`;
-        // imgEl.style.transform = "scale(1.55)";
-        // imgEl.style.position = 'absolute';
-        // imgEl.style.top = '-60px';
-        // imgEl.style.bottom = '0px';
+        imgEl.style.transform = "scale(1.55)";
+        imgEl.style.position = 'absolute';
+        imgEl.style.top = '-60px';
+        imgEl.style.bottom = '0px';
       }
-      
-      
-      
       playWordSound(selectedText);
-      playLottie(lottieContainer, this);
     } else {
       // ❌ optional wrong case
       imgEl.src = "./assets/images/incorrect.svg";
-    // Clear animation on wrong answer
-    if (activeLottieMap.has(this)) {
-      activeLottieMap.get(this).destroy();
-      activeLottieMap.delete(this);
-    }
-    if (lottieContainer) lottieContainer.innerHTML = "";
     }
 
     // ✅ check if all clicked
@@ -732,10 +659,10 @@ function setOptions(data) {
     img.src = "./assets/images/letter.svg";
 
     // remove applied styles
-    // img.style.transform = "";
-    // img.style.position = "";
-    // img.style.top = "";
-    // img.style.bottom = "";
+    img.style.transform = "";
+    img.style.position = "";
+    img.style.top = "";
+    img.style.bottom = "";
   });
 }
 
@@ -746,67 +673,37 @@ function toggleAnswer() {
   const optionEls = document.querySelectorAll(".option-img");
 
   showAnswer = !showAnswer; // 🔥 toggle
-  const optionsAllClicked = clickedSet.size === optionsImg.length;
+
   optionEls.forEach(el => {
     const text = el.querySelector(".option-txt").innerText.trim();
     const imgEl = el.querySelector("img");
-    const optTxt = el.querySelector(".option-txt");
-    const lottieContainer = el.querySelector(".lottie-container");
 
-    // Enable/disable click target (the handler is on .option-img)
-    el.style.pointerEvents = showAnswer ? "none" : (optionsAllClicked ? "none" : "auto");
-
-    // When answers are shown, also disable interactions on children.
-    imgEl.style.pointerEvents = showAnswer ? "none" : "auto";
-    optTxt.style.pointerEvents = showAnswer ? "none" : "auto";
-    optTxt.style.cursor = showAnswer ? "none" : "pointer";
     if (showAnswer) {
       // ✅ SHOW ANSWERS
       if (currentData.answers.includes(text)) {
         imgEl.src = `./assets/images/${imgJson[text]}`; // correct image
+        imgEl.style.transform = "scale(1.55)";
+        imgEl.style.position = 'absolute';
+        imgEl.style.top = '-60px';
+        imgEl.style.bottom = '0px';
       }
-      else{
-        imgEl.src = './assets/images/incorrect.svg';
-      }
-
-      // Hide lottie completely during "show answer"
-      if (lottieContainer) lottieContainer.style.display = "none";
-      if (activeLottieMap.has(el)) {
-        activeLottieMap.get(el).destroy();
-        activeLottieMap.delete(el);
-      }
-      if (lottieContainer) lottieContainer.innerHTML = "";
-        } else {
+    } else {
       // 🔄 HIDE ANSWERS (reset)
-       imgEl.src = "./assets/images/letter.svg";
+      // imgEl.src = "./assets/images/letter.svg";
 
-      // const img = el.querySelector("img");
-      // img.src = "./assets/images/letter.svg";
+      const img = el.querySelector("img");
+      img.src = "./assets/images/letter.svg";
 
-      // // remove applied styles
-      // img.style.transform = "";
-      // img.style.position = "";
-      // img.style.top = "";
-      // img.style.bottom = "";
-
-       // Restore styling to the initial state
-       imgEl.style.transform = "";
-       imgEl.style.position = "";
-       imgEl.style.top = "";
-       imgEl.style.bottom = "";
-       imgEl.style.transition = "";
-       imgEl.style.zIndex = "";
-       imgEl.style.backfaceVisibility = "";
-       imgEl.style.transformOrigin = "";
- 
-       if (lottieContainer) lottieContainer.style.display = "";
-       
+      // remove applied styles
+      img.style.transform = "";
+      img.style.position = "";
+      img.style.top = "";
+      img.style.bottom = "";
     }
-    
   });
 
   // 🔥 Optional: change button text
-  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएँ" : "उत्तर देखें";
+  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएं" : "उत्तर देखें";
 }
 
 uttarDekheBtn.addEventListener("click", toggleAnswer);

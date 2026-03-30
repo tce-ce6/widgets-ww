@@ -1006,9 +1006,6 @@ function updateButtonStates() {
   const checkBtnId = 'btn-check-answer';
   const showBtnId = 'btn-show-answer';
 
-   const feedbackMessage = document.getElementById('feedback-message');
-   const feedbackOpen = feedbackMessage && feedbackMessage.style.display === 'block';
-
   let usedItem1 = 0;
   let usedItem2 = 0;
   shelves.forEach(shelf => {
@@ -1025,17 +1022,13 @@ function updateButtonStates() {
     disableButton(resetBtnId);
   }
 
-  // Check Answer enabled only when ready; Show Answer stays enabled unless feedback is open.
+  // Check Answer and Show Answer enabled ONLY if all items are placed
   if (allItemsPlaced && shelfCount > 0) {
     enableButton(checkBtnId);
+    enableButton(showBtnId);
   } else {
     disableButton(checkBtnId);
-  }
-
-  if (feedbackOpen) {
     disableButton(showBtnId);
-  } else {
-    enableButton(showBtnId);
   }
 }
 
