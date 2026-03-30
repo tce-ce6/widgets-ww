@@ -445,7 +445,7 @@ function playCompleteLottie() {
     return;
   }
 
-  const animationPath = `./assets/Images/JSON/celebration.json`;
+  const animationPath = `./assets/images/JSON/celebration.json`;
 
   // Clear previous animation
   container.innerHTML = '';
@@ -484,7 +484,7 @@ function playCorrectAnswerLottie(objectName) {
   const variant = (wordIndex % 2 === 0) ? '01' : '02';
 
   // 3. Construct the path (e.g., "./assets/JSON/tree_01.json")
-  const animationPath = `./assets/Images/JSON/${objectName}_${variant}.json`;
+  const animationPath = `./assets/images/JSON/${objectName}_${variant}.json`;
 
   // Clear previous SVG if any
   container.innerHTML = '';
@@ -917,8 +917,8 @@ document.addEventListener("DOMContentLoaded", () => {
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
     if (showAnswerBtn) {
-        showAnswerBtn.textContent = 'Show Answer';
-        showAnswerBtn.disabled = false;
+      showAnswerBtn.textContent = 'Show Answer';
+      showAnswerBtn.disabled = false;
     }
     // reset word slots
     wordSlots.forEach(ws => {
