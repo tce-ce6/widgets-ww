@@ -485,12 +485,12 @@ const soundIcon = document.getElementById('sound-icon');
 const showAnswerBtn = document.getElementById('showAnswer');
 
 const markerStyles = {
-  green: { color: '#7ef241', cursor: "url('assets/images/final-images/Green_Highlighter.svg') 64 64, auto" },
-  yellow: { color: '#ffdb14', cursor: "url('assets/images/final-images/Yellow_Highlighter.svg') 64 64, auto" },
-  blue: { color: '#43ceff', cursor: "url('assets/images/final-images/Blue_Highlighter.svg') 64 64, auto" },
-  pink: { color: '#ff43b7', cursor: "url('assets/images/final-images/Pink_Highlighter.svg') 64 64, auto" },
-  orange: { color: '#ff8800', cursor: "url('assets/images/final-images/Orange_Highlighter.svg') 64 64, auto" },
-  purple: { color: '#aa33ff', cursor: "url('assets/images/final-images/Violet_Highlighter.svg') 64 64, auto" }
+  green: { color: '#7ef241', cursor: "url('assets/images/final-images/green_highlighter.svg') 64 64, auto" },
+  yellow: { color: '#ffdb14', cursor: "url('assets/images/final-images/yellow_highlighter.svg') 64 64, auto" },
+  blue: { color: '#43ceff', cursor: "url('assets/images/final-images/blue_highlighter.svg') 64 64, auto" },
+  pink: { color: '#ff43b7', cursor: "url('assets/images/final-images/pink_highlighter.svg') 64 64, auto" },
+  orange: { color: '#ff8800', cursor: "url('assets/images/final-images/orange_highlighter.svg') 64 64, auto" },
+  purple: { color: '#aa33ff', cursor: "url('assets/images/final-images/violet_highlighter.svg') 64 64, auto" }
 };
 
 function setMarkerEnabled(markerEl, enabled) {
@@ -615,7 +615,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
   if (typeof idx === "number") {
     const letterTag = document.getElementById(`r${idx + 1}`);
     const signTag = document.getElementById(`sign${idx + 1}`);
-    
+
     // Map marker names logically to their corresponding letters
     const markerNameToLetter = {
       green: 'a',
@@ -626,7 +626,7 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
       purple: 'f'
     };
     const markerLetter = activeMarker ? (markerNameToLetter[activeMarker.name] || 'a') : 'a';
-    
+
     if (letterTag) {
       letterTag.textContent = markerLetter;
       // We now modify color because letterTag is a standard HTML span.
@@ -711,7 +711,7 @@ function hideAnswer() {
     el.style.color = "";
     el.style.padding = "";
     el.style.fontWeight = "";
-    el.classList.remove('highlighted'); 
+    el.classList.remove('highlighted');
 
     const letterTag = document.getElementById(`r${idx + 1}`);
     if (letterTag) {
@@ -721,16 +721,16 @@ function hideAnswer() {
     }
     const signTag = document.getElementById(`sign${idx + 1}`);
     if (signTag) signTag.src = '';
-    
+
     const warnTag = document.getElementById(`warn${idx + 1}`);
     if (warnTag) warnTag.src = '';
   });
-  
+
   correctWordsSet.clear();
   stanzaaudioPlayed = false;
   soundIcon.style.display = 'none';
   if (stanzaaudio) {
-    try { stanzaaudio.pause(); stanzaaudio.currentTime = 0; } catch(e){}
+    try { stanzaaudio.pause(); stanzaaudio.currentTime = 0; } catch (e) { }
   }
 
   showAnswerBtn.textContent = 'Show Answer';
@@ -738,7 +738,7 @@ function hideAnswer() {
   setMarkerEnabled(markers.green, true);
   activeMarker = null;
   document.body.style.cursor = 'default';
-  
+
   const warningDiv = document.getElementById('warning');
   if (warningDiv) warningDiv.style.display = 'none';
 }
