@@ -116,19 +116,19 @@ const letterData = {
                         "id": 2,
                         "text": "I really like shopping and I think working in a store would be fun. I am a friendly person and I get along with everyone. I am sure I would enjoy working at Live Life Stores because it is a popular store.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses informal language and focuses on personal enjoyment rather than professional skills. The reasoning is superficial and doesn't demonstrate understanding of customer service."
+                        "feedback": "This paragraph uses informal language and focuses on personal enjoyment rather than professional skills."
                     },
                     {
                         "id": 3,
                         "text": "I am interested in working at a store. I think I have some skills that might be useful. I am a student who needs work experience.",
                         "is_correct": false,
-                        "feedback": "This paragraph is extremely vague and lacks specific details. It doesn't mention customer service skills, any qualities or enthusiasm for the role."
+                        "feedback": "This paragraph is vague and lacks specific details about relevant skills or enthusiasm for the role."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "Despite my age, I bring strong communication, teamwork, and organisational skills developed through school projects. I'm detail-oriented and committed to maintaining an appealing store environment. With my summer break starting 1 May, I'll have ample availability during store hours.",
+                        "text": "Despite my age, I have gained valuable skills that I believe are relevant to a retail environment. I am a dedicated team player with excellent communication skills developed through school projects. Moreover, I am detail-oriented and organised, traits essential for maintaining an orderly store. My summer break starts on 1 May, providing me with ample availability.",
                         "is_correct": true,
                         "feedback": ""
                     },
@@ -136,21 +136,21 @@ const letterData = {
                         "id": 2,
                         "text": "I have some skills from school that could help me in a retail job. I work well with others and I am quite organised. These skills would probably be useful in a store.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses tentative language ('some skills', 'could help', 'probably be useful'). It lacks confidence and specific examples. The statements do not convincingly demonstrate suitability for the role."
+                        "feedback": "This paragraph uses tentative language and lacks confidence and specific examples."
                     },
                     {
                         "id": 3,
-                        "text": "I am a very hard-working person and I am always on time. I have never missed a day of school. I can lift heavy boxes and I am not afraid of hard work. I can work any hours you need me to work.",
+                        "text": "I am a very hard-working person and always on time. I can lift heavy boxes and work any hours you need.",
                         "is_correct": false,
-                        "feedback": "This paragraph focuses on basic expectations rather than relevant skills. It emphasises physical capabilities ('lift heavy boxes') over customer service skills. The tone sounds desperate rather than professional."
+                        "feedback": "This paragraph focuses on basic expectations rather than relevant retail skills. The tone sounds desperate."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I am available to start work immediately and I can work any time. I hope you will give me a chance to prove myself. Please let me know as soon as possible if I get the job.",
+                        "text": "I am available to start work immediately and I can work any time. I hope you will give me a chance to prove myself.",
                         "is_correct": false,
-                        "feedback": "This conclusion sounds overly eager and lacks professionalism. Asking for immediate notification about getting the job is presumptuous."
+                        "feedback": "This conclusion sounds overly eager and lacks professionalism."
                     },
                     {
                         "id": 2,
@@ -160,9 +160,9 @@ const letterData = {
                     },
                     {
                         "id": 3,
-                        "text": "I really need this job for the summer, so I hope you will consider me. I promise I will work very hard if you hire me. Thank you for reading my letter.",
+                        "text": "I really need this job for the summer, so I hope you will consider me. I promise I will work very hard.",
                         "is_correct": false,
-                        "feedback": "This conclusion focuses on the applicant's need rather than what they can offer. The phrase 'I promise I will work very hard' sounds unprofessional. The tone is pleading rather than confident."
+                        "feedback": "This conclusion focuses on personal need and sounds pleading rather than confident."
                     }
                 ],
                 "complimentary_close": [
@@ -301,71 +301,71 @@ const letterData = {
                         "id": 2,
                         "text": "I am writing to apply for an internship at your newspaper. I am a student who is interested in journalism.",
                         "is_correct": false,
-                        "feedback": "This introduction is too vague. It lacks specific details such as the applicant's full name, school name, grade and the exact position being applied for."
+                        "feedback": "This introduction is too vague and lacks specific details such as full name, school name, grade and exact position."
                     },
                     {
                         "id": 3,
-                        "text": "I really love reading newspapers and I think it would be amazing to work at The Pune Chronicle. I am a Grade 10 student and I would love to get some experience in journalism during my summer holidays.",
+                        "text": "I really love reading newspapers and I think it would be amazing to work at The Pune Chronicle.",
                         "is_correct": false,
-                        "feedback": "This introduction uses overly casual language ('really love', 'amazing', 'would love'). The tone is too enthusiastic rather than professional."
+                        "feedback": "This introduction uses overly casual language and sounds too enthusiastic rather than professional."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have a strong interest in journalism and writing. I have been an active member of our school newspaper committee for two years, where I have written articles on various topics including school events, social issues and student achievements. Additionally, I participated in an inter-school essay writing competition last year and secured second place.",
+                        "text": "I have a strong interest in journalism and writing. I have been an active member of our school newspaper committee for two years, writing articles on school events, social issues and student achievements. Additionally, I secured second place in an inter-school essay competition.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I like writing and reading newspapers. I sometimes write for my school and I once participated in an essay competition. I think journalism is interesting.",
+                        "text": "I like writing and reading newspapers. I sometimes write for my school and I once participated in an essay competition.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too brief and lacks specific details. The language is casual ('I like', 'I think'). It doesn't provide concrete examples of experience or achievements."
+                        "feedback": "This paragraph is too brief, casual and lacks specific examples of achievements."
                     },
                     {
                         "id": 3,
-                        "text": "I am absolutely passionate about journalism and I have always dreamed of becoming a famous journalist. I write really well and everyone at school says my articles are the best. I am sure I would be an excellent addition to your team.",
+                        "text": "I am absolutely passionate about journalism and have always dreamed of becoming a famous journalist.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses exaggerated language ('absolutely passionate', 'always dreamed', 'famous journalist'). It sounds boastful ('everyone says my articles are the best') and presumptuous ('I am sure I would be an excellent addition')."
+                        "feedback": "This paragraph uses exaggerated language and sounds boastful and presumptuous."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "I am particularly drawn to The Pune Chronicle because of its reputation for balanced reporting and community-focused journalism. Through this internship, I hope to gain practical experience in news gathering, interviewing and editorial work. I am available throughout the summer break from 1 June to 15 July. This internship would provide valuable insights into professional journalism and help me develop skills that align with my career goal of becoming a journalist.",
+                        "text": "I am particularly drawn to The Pune Chronicle because of its reputation for balanced reporting. I am available from 1 June to 15 July during the summer break. This internship would provide valuable insights into professional journalism.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I want to work at your newspaper because it is well-known. I am free during summer holidays and I want to learn about journalism. This internship would be good for my future career. I have always enjoyed reading newspapers and watching news on television. I think reporting would be an interesting job and I would like to try it out during my summer break to see if I like it.",
+                        "text": "I want to work at your newspaper because it is well-known. I am free during summer holidays.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses casual language ('I want', 'would be good', 'I would like to try it out'). It lacks specific details about availability dates and what the applicant hopes to learn. The tone is uncertain about commitment ('to see if I like it')."
+                        "feedback": "This paragraph uses casual language and lacks specific availability details."
                     },
                     {
                         "id": 3,
-                        "text": "I think The Pune Chronicle is okay and I need some work experience for my summer break. I am available whenever you need me. An internship would look good on my resume and help me decide if I want to be a journalist or not. I don't have much experience yet but I am willing to learn. I believe working at a newspaper would be better than sitting at home during holidays.",
+                        "text": "I think The Pune Chronicle is okay and I need some work experience.",
                         "is_correct": false,
-                        "feedback": "This paragraph demonstrates lack of enthusiasm ('is okay'). It focuses on the applicant's needs ('I need', 'would look good on my resume') rather than what they can contribute. The tone is uncertain about career goals."
+                        "feedback": "This paragraph shows lack of enthusiasm and focuses on personal needs rather than contribution."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I know I would be perfect for this internship and I am sure you won't regret hiring me. I am available to start immediately. Looking forward to working with you soon.",
+                        "text": "I know I would be perfect for this internship and you won't regret hiring me.",
                         "is_correct": false,
-                        "feedback": "This conclusion is presumptuous ('I know I would be perfect', 'won't regret hiring me'). It assumes the internship has been granted ('working with you soon')."
+                        "feedback": "This conclusion is presumptuous and assumes selection."
                     },
                     {
                         "id": 2,
-                        "text": "I really hope you will give me this internship because I need the experience. Please let me know soon if I am selected. Thanks for reading my letter.",
+                        "text": "I really hope you will give me this internship because I need the experience.",
                         "is_correct": false,
-                        "feedback": "This conclusion sounds desperate ('I really hope', 'I need the experience'). The tone is too casual ('Thanks for reading')."
+                        "feedback": "This conclusion sounds desperate and too casual."
                     },
                     {
                         "id": 3,
-                        "text": "I am eager to contribute my enthusiasm and dedication to The Pune Chronicle. I would welcome the opportunity to discuss this internship further in an interview. Thank you for considering my application. I look forward to your positive response.",
+                        "text": "I am eager to contribute my enthusiasm and dedication to The Pune Chronicle. I would welcome the opportunity to discuss this internship further in an interview. Thank you for considering my application.",
                         "is_correct": true,
                         "feedback": ""
                     }
@@ -500,7 +500,7 @@ const letterData = {
                         "id": 1,
                         "text": "I am writing to apply for a volunteer job at your animal shelter. I am a student who likes animals.",
                         "is_correct": false,
-                        "feedback": "This introduction lacks specific details such as the applicant's full name, school name and grade. It uses casual language ('likes animals') rather than demonstrating genuine interest."
+                        "feedback": "This introduction lacks specific details and uses casual language."
                     },
                     {
                         "id": 2,
@@ -510,69 +510,69 @@ const letterData = {
                     },
                     {
                         "id": 3,
-                        "text": "I absolutely love animals and I think working at Happy Paws would be so much fun! I am in Grade 10 and I would really love to volunteer at your shelter.",
+                        "text": "I absolutely love animals and I think working at Happy Paws would be so much fun!",
                         "is_correct": false,
-                        "feedback": "This introduction uses overly enthusiastic and casual language ('absolutely love', 'so much fun', 'would really love'). The tone is too informal for a formal application."
+                        "feedback": "This introduction uses overly enthusiastic and casual language."
                     }
                 ],
                 "body_paragraph_1": [
                     {
                         "id": 1,
-                        "text": "I have always had a deep love and compassion for animals. I have a pet dog at home and I understand the importance of proper care, nutrition and attention that animals require. I have gained knowledge about animal behaviour through reading and online courses. I believe that every animal deserves love, care and a safe environment.",
+                        "text": "I have always had a deep love and compassion for animals. I understand the importance of proper care, nutrition and attention that animals require.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": "I like animals and I have a dog. I think animals need care and food. I want to help at your shelter. Animals are nice to have around and they make people happy. I enjoy spending time with my pet and I think I would enjoy working with other animals too. I believe animals are important and someone should take care of them.",
+                        "text": "I like animals and I have a dog.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too simplistic and vague. It lacks depth and specific examples. The language is too casual ('I like', 'I think', 'nice to have around') and doesn't demonstrate genuine understanding of animal welfare."
+                        "feedback": "This paragraph is too simplistic and vague."
                     },
                     {
                         "id": 3,
-                        "text": "I am crazy about animals and I spend all my free time watching animal videos. I have two dogs and three cats at home. Animals are just so cute and adorable! I think it would be amazing to work with animals all day. My friends always say I should work with animals because I love them so much. I really enjoy playing with my pets and taking pictures of them for social media.",
+                        "text": "I am crazy about animals and spend all my free time watching animal videos.",
                         "is_correct": false,
-                        "feedback": "This paragraph uses overly casual language ('crazy about', 'just so cute', 'amazing'). It focuses on entertainment ('watching animal videos', 'taking pictures for social media') rather than serious commitment to animal welfare."
+                        "feedback": "This paragraph uses overly casual language and focuses on entertainment."
                     }
                 ],
                 "body_paragraph_2": [
                     {
                         "id": 1,
-                        "text": "I am eager to contribute to Happy Paws Animal Shelter's mission of providing care and finding homes for animals in need. My patience, empathy and dedication would enable me to assist with daily tasks such as feeding, cleaning, socialising with animals and helping with adoption events. I am available on weekends and during school holidays throughout the year.",
+                        "text": "I am eager to contribute to Happy Paws Animal Shelter's mission. I am available on weekends and during school holidays.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 2,
-                        "text": " I want to help at your shelter because I like animals. I can come on weekends. I would be good at taking care of animals.",
+                        "text": "I want to help because I like animals. I can come on weekends.",
                         "is_correct": false,
-                        "feedback": "This paragraph is too brief and lacks specific details about what the applicant can contribute. The language is casual and doesn't mention specific qualities or availability details."
+                        "feedback": "This paragraph is too brief and lacks specific details."
                     },
                     {
                         "id": 3,
-                        "text": "I think working with animals would be more fun than my regular schoolwork. I am free most weekends when I don't have other plans. I am sure I would enjoy volunteering at Happy Paws and it would give me something interesting to do.",
+                        "text": "I think working with animals would be more fun than schoolwork.",
                         "is_correct": false,
-                        "feedback": "This paragraph demonstrates wrong motivation (escape from schoolwork, looking for entertainment). It shows lack of commitment ('when I don't have other plans'). The focus is on personal enjoyment rather than helping animals."
+                        "feedback": "This paragraph shows wrong motivation and lack of commitment."
                     }
                 ],
                 "conclusion": [
                     {
                         "id": 1,
-                        "text": "I really hope you will let me volunteer because I love animals so much. Please tell me soon if I can join. Thanks for reading my letter. I promise I will be a good volunteer and I won't let you down. I have always wanted to work with animals and this would be a great opportunity for me. I am really excited about the possibility of volunteering at your shelter.",
+                        "text": "I really hope you will let me volunteer because I love animals so much.",
                         "is_correct": false,
-                        "feedback": "This conclusion uses overly casual language ('I really hope', 'love animals so much', 'Thanks for reading', 'I promise I won't let you down'). It focuses on personal feelings and excitement rather than professional commitment."
+                        "feedback": "This conclusion uses overly casual language and focuses on personal feelings."
                     },
                     {
                         "id": 2,
-                        "text": "I am genuinely passionate about animal welfare and I believe my dedication would make me a valuable addition to your team. I would be grateful for the opportunity to discuss this position further. Thank you for considering my application. I look forward to contributing to the wonderful work being done at Happy Paws Animal Shelter.",
+                        "text": "I am genuinely passionate about animal welfare and believe my dedication would make me a valuable addition to your team. Thank you for considering my application.",
                         "is_correct": true,
                         "feedback": ""
                     },
                     {
                         "id": 3,
-                        "text": "I know I would be perfect for this position and animals always love me. I am sure you need volunteers like me. I can start this weekend if you want. Everyone says I have a special connection with animals. I believe Happy Paws would be lucky to have me as a volunteer. I look forward to hearing from you very soon about when I can begin working with the animals at your shelter.",
+                        "text": "I know I would be perfect for this position and animals always love me.",
                         "is_correct": false,
-                        "feedback": "This conclusion is presumptuous ('I would be perfect', 'animals always love me', 'you need volunteers like me', 'would be lucky to have me'). It assumes approval has been granted ('when I can begin'). The tone lacks appropriate humility for an application."
+                        "feedback": "This conclusion is presumptuous and lacks appropriate humility."
                     }
                 ],
                 "complimentary_close": [

@@ -89,7 +89,6 @@
                     ]
                 },
                 "summary": {
-                    "detail": "Mountain soil is characterised by varying fertility, acidity, and organic matter content depending on altitude and vegetation cover.",
                     "texture": "Rocky and stony; the soil layer is often thin.",
                     "importantCrops": [
                         "Tea",
@@ -97,7 +96,7 @@
                         "Barley",
                         "Apples"
                     ],
-                    "distribution": "The Himalayan region (Jammu & Kashmir, Ladakh, Himachal Pradesh, Uttarakhand, Sikkim, Arunachal Pradesh), the north-eastern hills, and small patches along the Western Ghats, Satpura, and Vindhya ranges."
+                    "distribution": "Himalayan region, north-eastern hills, Western Ghats."
                 }
             },
             {
@@ -187,7 +186,6 @@
                     ]
                 },
                 "summary": {
-                    "detail": "Alluvial soil is young and not fully developed. This soil is divided into khadar (new alluvial) and bhangar (old alluvial). ",
                     "texture": "Smooth and fine texture.",
                     "importantCrops": [
                         "Rice",
@@ -195,7 +193,7 @@
                         "Sugarcane",
                         "Maize"
                     ],
-                    "distribution": "The Great Indian Plains, deltas of River Mahanadi, River Godavari, River Krishna and River Cauvery, and in patches across coastal peninsular India. "
+                    "distribution": "Great Indian Plains and river deltas."
                 }
             },
             {
@@ -284,7 +282,6 @@
                     ]
                 },
                 "summary": {
-                    "detail": "Black soil is known for its ability to retain moisture and nutrients. It is also called regur soil. ",
                     "texture": "Sticky and clayey; cracks when dry.",
                     "importantCrops": [
                         "Cotton",
@@ -292,7 +289,7 @@
                         "Soybean",
                         "Groundnut"
                     ],
-                    "distribution": "Deccan Plateau region (Maharashtra, Madhya Pradesh, Gujarat, parts of Karnataka) and parts of Tamil Nadu."
+                    "distribution": "Deccan Plateau region (Maharashtra, Madhya Pradesh, Gujarat, Karnataka) and parts of Tamil Nadu."
                 }
             },
             {
@@ -379,7 +376,6 @@
                     ]
                 },
                 "summary": {
-                    "detail": "Laterite soil is often hard when dry. It is red or orange in colour with a high proportion of iron and aluminium oxide.",
                     "texture": "Rough, porous and crumbly.",
                     "importantCrops": [
                         "Coffee",
@@ -387,7 +383,7 @@
                         "Rubber",
                         "Cashew"
                     ],
-                    "distribution": " Found in patches in the Western Ghats, Eastern Ghats and parts of north-eastern India."
+                    "distribution": "Western Ghats, Eastern Ghats and parts of north-eastern India."
                 }
             },
             {
@@ -461,20 +457,19 @@
                         },
                         {
                             "id": "c5",
-                            "name": "Apples",
-                            "image": "./assets/crops/apple.png",
+                            "name": "Bajra",
+                            "image": "./assets/crops/bajra.png",
                             "isCorrect": false
                         },
                         {
                             "id": "c6",
-                            "name": "Dates",
-                            "image": "./assets/crops/dates.png",
+                            "name": "Jowar",
+                            "image": "./assets/crops/jowar.png",
                             "isCorrect": false
                         }
                     ]
                 },
                 "summary": {
-                    "detail": "Red soil is often red or yellow in colour depending on the iron oxide content. It is less fertile compared to other soils. ",
                     "texture": "Coarse and gritty.",
                     "importantCrops": [
                         "Cotton",
@@ -569,7 +564,6 @@
                     ]
                 },
                 "summary": {
-                    "detail": "Desert soil is low in organic matter content. It is often salty and alkaline due to high evaporation rate of water. ",
                     "texture": "Loose and sandy.",
                     "importantCrops": [
                         "Bajra",
@@ -577,7 +571,7 @@
                         "Dates",
                         "Barley"
                     ],
-                    "distribution": " Thar Desert (Rajasthan, Gujarat) and parts of Haryana."
+                    "distribution": "Thar Desert (Rajasthan, Gujarat) and parts of Haryana."
                 }
             }
         ]

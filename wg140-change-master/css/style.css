@@ -405,12 +405,11 @@ svg * {
   margin: 0;
   padding: 30px 20px !important;
   display: flex;
-  /* gap: 2px 25px; */
+  gap: 25px;
   overflow-y: auto;
   flex-wrap: wrap;
   height: 100%;
-  /* row-gap: 0px; */
-  align-content: start;
+  row-gap: 33px;
 }
 
 .money-wrapper li {
@@ -423,8 +422,6 @@ svg * {
   height: fit-content;
   min-width: 50px;
   text-align: center;
-  margin-bottom: 20px;
-  margin-right: 20px;
 }
 
 .close-mark {
@@ -437,12 +434,4 @@ svg * {
   position: absolute;
   top: -17px;
   right: -15px;
-}
-
-.objectWrapper {
-  height: 450px;
-  width: 500px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
 }

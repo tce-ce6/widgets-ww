@@ -6,10 +6,7 @@ let selectedCrop = null;
 let currentQuestionType = "texture"; // "texture" or "crop"
 let textureAnswerCorrect = false;
 let cropAnswerCorrect = false;
-let mapLocationCorrect = false;
 
-
-document.body.classList.add("step-1");
 
 // LOAD JSON
 fetch("./data.json")
@@ -61,8 +58,6 @@ function showStep2() {
 
   step1.style.display = "none";
   step2.style.display = "block";
-  document.body.classList.remove("step-1");
-  document.body.classList.add("step-2");
 
   // ── FULL UI RESET FOR FRESH FLOW ──
 
@@ -105,14 +100,10 @@ function showStep2() {
   currentQuestionType = "texture";
   textureAnswerCorrect = false;
   cropAnswerCorrect = false;
-  mapLocationCorrect = false;
   isAnswerShown = false;
   if (showAnsBtn) { showAnsBtn.innerText = "Show Answer"; }
-  const noteTxt = document.querySelector(".note-txt");
-  if (noteTxt) noteTxt.innerText = "Tap its location on the map.";
 
   updateSoilDetails();
-  document.getElementById("selected-question").innerText = "Where do you find this soil type in India?";
   loadTextureQuestion();
 
 }
@@ -211,8 +202,6 @@ function initMapClick() {
 // HANDLE MAP CLICK
 function handleMapClick(element) {
 
-  if (mapLocationCorrect) return;
-
   const soilMap = document.getElementById("soil-map");
   const allGroups = soilMap.querySelectorAll("[id$='-soil-map']");
 
@@ -234,7 +223,6 @@ function handleMapClick(element) {
 
     console.log("Correct selection!");
     element.classList.add("correct");
-    mapLocationCorrect = true;
 
     if (errorNote) {
       errorNote.style.display = "block";
@@ -273,9 +261,7 @@ function handleTextureAnswer(element) {
 
   const allOptions = document.querySelectorAll("#option-list li");
 
-  allOptions.forEach(opt => {
-    opt.classList.remove("active");
-  });
+  allOptions.forEach(opt => opt.classList.remove("active"));
 
   element.classList.add("active");
 
@@ -307,16 +293,8 @@ function handleTextureAnswer(element) {
       nextButton.classList.remove("disabled");
     }
 
-    // Hide incorrect options
-    allOptions.forEach(li => {
-      if (li.dataset.correct !== "true") {
-        li.style.display = "none";
-      }
-    });
-
   } else {
 
-    element.classList.add("wrong");
     // Play incorrect lottie animation
     if (lottieContainer) {
       lottieContainer.innerHTML = "";
@@ -366,20 +344,11 @@ function showSummary() {
   document.querySelector(".summary-header").innerText =
     selectedSoil.name;
 
-  document.querySelector(".detail-txt").innerText =
-    selectedSoil.summary.detail;
-
-  document.querySelectorAll(".summary-sec p")[2].innerText =
-    "Soil Type - " + selectedSoil.name;
-
   document.getElementById("textureTxt").innerText =
     selectedSoil.summary.texture;
 
   document.getElementById("importantCropsTxt").innerText =
-    selectedSoil.summary.importantCrops.join(", ") + ".";
-
-  document.getElementById("distributionTxt").innerText =
-    selectedSoil.summary.distribution;
+    selectedSoil.summary.importantCrops.join(", ");
 
 }
 
@@ -428,13 +397,6 @@ function handleCropAnswer(element) {
 
   element.classList.toggle("active");
 
-  if (!element.classList.contains("active")) {
-    element.classList.remove("wrong");
-    const lottieContainer = element.querySelector(".lottie-container");
-    if (lottieContainer) lottieContainer.innerHTML = "";
-    return;
-  }
-
   selectedCrop = element.dataset.correct;
 
   const lottieContainer = element.querySelector(".lottie-container");
@@ -463,18 +425,10 @@ function handleCropAnswer(element) {
       if (nextButton) {
         nextButton.classList.remove("disabled");
       }
-
-      // Hide incorrect options
-      allOptions.forEach(li => {
-        if (li.dataset.correct !== "true") {
-          li.style.display = "none";
-        }
-      });
     }
 
   } else {
 
-    element.classList.add("wrong");
     // Play incorrect lottie animation
     if (lottieContainer) {
       lottieContainer.innerHTML = "";
@@ -547,18 +501,12 @@ document.querySelectorAll(".backNext-btn span")[0].addEventListener("click", () 
     if (showAnsBtn) showAnsBtn.innerText = "Show Answer";
     if (errorNote) { errorNote.style.display = "none"; errorNote.classList.remove("correct", "wrong"); }
 
-    const noteTxt = document.querySelector(".note-txt");
-    if (noteTxt) noteTxt.innerText = "Tap its location on the map.";
-    document.getElementById("selected-question").innerText = "Where do you find this soil type in India?";
-
   }
   // Stage: Map → Step 1
   else {
 
     document.getElementById("step-2").style.display = "none";
     document.getElementById("step-1").style.display = "block";
-    document.body.classList.remove("step-2");
-    document.body.classList.add("step-1");
 
   }
 
@@ -625,8 +573,6 @@ if (nextButtons.length > 1) {
 
       // Update question to texture question
       document.getElementById("selected-question").innerText = selectedSoil.textureQuestion.question;
-      const noteTxt = document.querySelector(".note-txt");
-      if (noteTxt) noteTxt.innerText = "Tap the correct picture.";
 
     }
     // Stage 2: Texture Question to Crop Question
@@ -636,8 +582,6 @@ if (nextButtons.length > 1) {
 
       // Update question to crop question
       document.getElementById("selected-question").innerText = selectedSoil.cropQuestion.question;
-      const noteTxt = document.querySelector(".note-txt");
-      if (noteTxt) noteTxt.innerText = "Tap the correct picture.";
 
       // Reset show answer button
       isAnswerShown = false;
@@ -691,7 +635,6 @@ if (showAnsBtn) {
           lottieContainer.innerHTML = "";
 
           if (li.dataset.correct === "true") {
-            li.classList.add("active");
             lottie.loadAnimation({
               container: lottieContainer,
               renderer: "svg",
@@ -700,7 +643,6 @@ if (showAnsBtn) {
               path: "./lottie/correctLottie.json"
             });
           } else {
-            li.classList.add("wrong");
             lottie.loadAnimation({
               container: lottieContainer,
               renderer: "svg",
@@ -708,13 +650,6 @@ if (showAnsBtn) {
               autoplay: true,
               path: "./lottie/incorrectLottie.json"
             });
-          }
-        });
-
-        // Hide incorrect options
-        allOptions.forEach(li => {
-          if (li.dataset.correct !== "true") {
-            li.style.display = "none";
           }
         });
 
@@ -739,7 +674,6 @@ if (showAnsBtn) {
 
         if (correctMapElement) {
           correctMapElement.classList.add("correct");
-          mapLocationCorrect = true;
 
           const nextButton = document.querySelectorAll(".backNext-btn span")[1];
           if (nextButton) {
@@ -768,8 +702,6 @@ if (showAnsBtn) {
         // Clear all lottie containers in the option list
         const allOptions = document.querySelectorAll("#option-list li");
         allOptions.forEach(li => {
-          li.style.display = "flex";
-          li.classList.remove("active", "wrong");
           const lottieContainer = li.querySelector(".lottie-container");
           if (lottieContainer) {
             lottieContainer.innerHTML = "";
@@ -783,7 +715,6 @@ if (showAnsBtn) {
 
         if (correctMapElement) {
           correctMapElement.classList.remove("correct");
-          mapLocationCorrect = false;
 
           const errorNote = document.getElementById("error-note");
           if (errorNote) {
@@ -801,10 +732,10 @@ if (showAnsBtn) {
 }
 
 
-// HOME BUTTON (inside summary-sec)
-const homeBtn = document.getElementById("home-btn");
-if (homeBtn) {
-  homeBtn.addEventListener("click", () => {
+// NEXT STEP BUTTON (inside summary-sec)
+const nextStepBtn = document.getElementById("next-step");
+if (nextStepBtn) {
+  nextStepBtn.addEventListener("click", () => {
 
     const step1 = document.getElementById("step-1");
     const step2 = document.getElementById("step-2");
@@ -812,11 +743,9 @@ if (homeBtn) {
     // Hide step-2, show step-1
     step2.style.display = "none";
     step1.style.display = "block";
-    document.body.classList.remove("step-2");
-    document.body.classList.add("step-1");
 
+    // Add .completed class to the matching soil-list li
     const soilItems = document.querySelectorAll(".soil-list li");
-    mapLocationCorrect = false;
     soilItems.forEach(li => {
       const soilKey = li.dataset.soil; // e.g. "red-soil"
       if (selectedSoil && selectedSoil.tabImage.includes(soilKey)) {
@@ -828,18 +757,60 @@ if (homeBtn) {
 }
 
 
+
 const previewBtn = document.querySelector(".preview-btn");
 const previewPopup = document.querySelector(".preview-popup");
 const closePreview = document.getElementById("close-previewPopup");
 
-if (previewBtn) {
-  previewBtn.addEventListener("click", () => {
-    previewPopup.style.display = "block";
-  });
-}
 
-if (closePreview) {
-  closePreview.addEventListener("click", () => {
-    previewPopup.style.display = "none";
+previewBtn.addEventListener("click", () => {
+
+  previewPopup.style.display = "block";
+
+});
+
+
+closePreview.addEventListener("click", () => {
+
+  previewPopup.style.display = "none";
+
+});
+
+// BACK-STEP BUTTON (inside summary-sec → back to crop question)
+const backStepBtn = document.getElementById("back-step");
+if (backStepBtn) {
+  backStepBtn.addEventListener("click", () => {
+
+    // Hide summary, show soil-typeSection
+    document.getElementById("summary-sec").style.display = "none";
+    document.getElementById("soil-typeSection").style.display = "block";
+
+    // Hide map, show option list
+    const soilMap = document.getElementById("soil-map");
+    if (soilMap) soilMap.style.display = "none";
+
+    const optionListWrapper = document.getElementById("option-list-wrapper");
+    if (optionListWrapper) optionListWrapper.style.display = "block";
+
+    const resetBtn = document.getElementById("reset-btn");
+    if (resetBtn) resetBtn.style.display = "block";
+
+    const previewBtn = document.querySelector(".preview-btn");
+    if (previewBtn) previewBtn.style.display = "none";
+
+    // Restore crop question
+    currentQuestionType = "crop";
+    loadCropQuestion();
+
+    document.getElementById("selected-question").innerText =
+      selectedSoil.cropQuestion.question;
+
+    // Next button should be enabled since crop was already answered
+    const nextButton = document.querySelectorAll(".backNext-btn span")[1];
+    if (nextButton) nextButton.classList.remove("disabled");
+
+    isAnswerShown = false;
+    if (showAnsBtn) showAnsBtn.innerText = "Show Answer";
+
   });
 }

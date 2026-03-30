@@ -963,38 +963,17 @@ const CROP_DATA = {
       }
 
       // Update success popup texts
-      // Popup box width=535, usable≈490. Compress the crop line if too long.
       if (elements.feedbackCorrectText) {
         const successTexts = elements.feedbackCorrectText.querySelectorAll("text tspan");
         if (successTexts && successTexts.length >= 4) {
-          const cropLine = `identified all ${count} major ${crop} `;
-          successTexts[2].textContent = cropLine;
-          successTexts[2].setAttribute('x', '0');
-          if (cropLine.trim().length > 30) {
-            successTexts[2].setAttribute('textLength', 470);
-            successTexts[2].setAttribute('lengthAdjust', 'spacingAndGlyphs');
-          } else {
-            successTexts[2].removeAttribute('textLength');
-            successTexts[2].removeAttribute('lengthAdjust');
-          }
+          successTexts[2].textContent = `identified all ${count} major ${crop} `;
         }
       }
 
-      // Factsheet button text — button pill width=233, usable≈210.
-      // Compress for long crop names (e.g. "Paddy (Rice) Factsheet").
       if (elements.factsheetBtnText) {
         const btnText = elements.factsheetBtnText.querySelector("text tspan");
         if (btnText) {
-          const label = `${crop} Factsheet`;
-          btnText.textContent = label;
-          btnText.setAttribute('x', '0');
-          if (label.length > 16) {
-            btnText.setAttribute('textLength', 210);
-            btnText.setAttribute('lengthAdjust', 'spacingAndGlyphs');
-          } else {
-            btnText.removeAttribute('textLength');
-            btnText.removeAttribute('lengthAdjust');
-          }
+          btnText.textContent = `${crop} Factsheet`;
         }
       }
 
@@ -1003,71 +982,17 @@ const CROP_DATA = {
         const textNode = tspan.closest('text');
         if (textNode) {
           textNode.setAttribute('text-anchor', 'middle');
+          // Removing the transform and hardcoding the center X avoids the text being misaligned
+          // But we want to preserve the Y position from the transform
           const transform = textNode.getAttribute('transform');
           if (transform) {
-            const match = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
+            const match = transform.match(/translate\(([-\d.]+)\s+([-\d.]+)\)/);
             if (match) {
               textNode.setAttribute('transform', `translate(${xPosition} ${match[2]})`);
             }
           }
         }
         tspan.setAttribute('x', '0');
-      };
-
-      // Set text on a tspan, centering its parent <text> at xCenter.
-      // If content exceeds charThreshold, compress horizontally using textLength
-      // so it stays within the box without overflowing.
-      const fitTextInBox = (tspan, content, xCenter, boxUsableWidth, charThreshold = 40) => {
-        if (!tspan) return;
-        tspan.textContent = content || '';
-        const textEl = tspan.closest('text');
-        if (textEl) {
-          textEl.setAttribute('text-anchor', 'middle');
-          const transform = textEl.getAttribute('transform');
-          if (transform) {
-            const m = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
-            if (m) textEl.setAttribute('transform', `translate(${xCenter} ${m[2]})`);
-          }
-        }
-        tspan.setAttribute('x', '0');
-        if (content && content.length > charThreshold) {
-          tspan.setAttribute('textLength', boxUsableWidth);
-          tspan.setAttribute('lengthAdjust', 'spacingAndGlyphs');
-        } else {
-          tspan.removeAttribute('textLength');
-          tspan.removeAttribute('lengthAdjust');
-        }
-      };
-
-      // Word-wrap content into the LAST <text> element of a group by replacing
-      // its tspans. Safe only when no other <text> element follows at a fixed y.
-      const wrapLastTextEl = (textEl, content, xCenter, maxChars = 65, lineHeight = 32) => {
-        if (!textEl) return;
-        Array.from(textEl.querySelectorAll('tspan')).forEach(t => t.remove());
-        if (!content) return;
-        const words = content.split(' ');
-        const lines = [];
-        let line = '';
-        words.forEach(w => {
-          const candidate = line ? `${line} ${w}` : w;
-          if (candidate.length <= maxChars) { line = candidate; }
-          else { if (line) lines.push(line); line = w; }
-        });
-        if (line) lines.push(line);
-        const ns = 'http://www.w3.org/2000/svg';
-        lines.forEach((l, i) => {
-          const t = document.createElementNS(ns, 'tspan');
-          t.setAttribute('x', '0');
-          if (i > 0) t.setAttribute('dy', String(lineHeight));
-          t.textContent = l;
-          textEl.appendChild(t);
-        });
-        textEl.setAttribute('text-anchor', 'middle');
-        const transform = textEl.getAttribute('transform');
-        if (transform) {
-          const m = transform.match(/translate\(([-\d.]+)[,\s]+([-\d.]+)\)/);
-          if (m) textEl.setAttribute('transform', `translate(${xCenter} ${m[2]})`);
-        }
       };
 
       // Update Factsheet Dialog
@@ -1095,52 +1020,57 @@ const CROP_DATA = {
           }
         }
 
-        // Climate — each line in its own fixed-y <text> element; use textLength
-        // compression so long lines stay inside the box without overlapping neighbours.
-        // Climate box width=503, usable ≈ 479.
+        // Climate
         if (elements.factsheetClimate) {
           const tspans = Array.from(elements.factsheetClimate.querySelectorAll("text tspan"));
-          // tspans[0] = title, tspans[1-3] = content lines
           if (tspans.length >= 4) {
-            fitTextInBox(tspans[1], facts.climate1, 1534, 479);
-            fitTextInBox(tspans[2], facts.climate2, 1534, 479);
-            fitTextInBox(tspans[3], facts.climate3, 1534, 479);
+            tspans[1].textContent = facts.climate1;
+            centerSVGText(tspans[1], 1534); // Center of Climate box
+            tspans[2].textContent = facts.climate2;
+            centerSVGText(tspans[2], 1534);
+            tspans[3].textContent = facts.climate3;
+            centerSVGText(tspans[3], 1534);
           }
         }
 
-        // Soil — same box size as Climate (width=503, usable ≈ 479).
+        // Soil
         if (elements.factsheetSoil) {
           const tspans = Array.from(elements.factsheetSoil.querySelectorAll("text tspan"));
-          // tspans[0] = title, tspans[1-2] = content lines
           if (tspans.length >= 3) {
-            fitTextInBox(tspans[1], facts.soil1, 1534, 479);
-            fitTextInBox(tspans[2], facts.soil2, 1534, 479);
+            tspans[1].textContent = facts.soil1;
+            centerSVGText(tspans[1], 1534);
+            tspans[2].textContent = facts.soil2;
+            centerSVGText(tspans[2], 1534);
           }
         }
 
-        // Variety — short items, just center; clear unused slots
+        // Variety
         if (elements.factsheetVariety) {
           const tspans = Array.from(elements.factsheetVariety.querySelectorAll("text tspan"));
-          const varieties = ['variety1','variety2','variety3','variety4','variety5','variety6'];
-          varieties.forEach((key, i) => {
-            if (tspans[i + 1] !== undefined) {
-              tspans[i + 1].textContent = facts[key] || "";
-              centerSVGText(tspans[i + 1], 1534);
-            }
-          });
+          if (tspans.length >= 7) {
+            tspans[1].textContent = facts.variety1;
+            centerSVGText(tspans[1], 1534);
+            tspans[2].textContent = facts.variety2;
+            centerSVGText(tspans[2], 1534);
+            tspans[3].textContent = facts.variety3;
+            centerSVGText(tspans[3], 1534);
+            tspans[4].textContent = facts.variety4;
+            centerSVGText(tspans[4], 1534);
+            tspans[5].textContent = facts.variety5;
+            centerSVGText(tspans[5], 1534);
+            tspans[6].textContent = facts.variety6;
+            centerSVGText(tspans[6], 1534);
+          }
         }
 
-        // Fact — fact box width=838, usable ≈ 810.
-        // fact1 is short → compress only if needed.
-        // fact2 may be long → word-wrap within the last <text> element (safe, no
-        // following fixed-y element to overlap). Extra dy lines stay inside the box.
+        // Fact
         if (elements.factsheetFact) {
-          const texts = Array.from(elements.factsheetFact.querySelectorAll("text"));
-          // texts[0] = "Fact:" title, texts[1] = fact1, texts[2] = fact2
-          if (texts.length >= 3) {
-            const fact1Tspan = texts[1].querySelector('tspan');
-            fitTextInBox(fact1Tspan, facts.fact1, 1370, 810, 70);
-            wrapLastTextEl(texts[2], facts.fact2, 1370, 68);
+          const tspans = Array.from(elements.factsheetFact.querySelectorAll("text tspan"));
+          if (tspans.length >= 3) {
+            tspans[1].textContent = facts.fact1;
+            centerSVGText(tspans[1], 1370); // Center of Fact box
+            tspans[2].textContent = facts.fact2;
+            centerSVGText(tspans[2], 1370);
           }
         }
       }

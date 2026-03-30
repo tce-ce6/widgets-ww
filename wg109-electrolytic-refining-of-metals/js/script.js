@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const onSwitch = document.getElementById("on_switch");
     const onSwitchAns = document.getElementById("Group_6091");
     const countText = document.querySelector("#_0_7 tspan");
-    const Layer5 = document.getElementById("Layer_5"); // ADD THIS LINE
+
     // Modal Background Tints
     const showAnswerTint = document.getElementById("for-show-answer");
     const insightsTint = document.getElementById("for-insights-answer");
@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     metalAnim.destroy();
                 }
                 if (metalAnimAns) metalAnimAns.destroy();
-                animateIons(false);
+                animateLayer4(false);
                 
                 // Reset button states
                 setBtnEnabled(startBtn, false);
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Shuffle the draggables with animation
                 shuffleDraggables(true);
                 
-                // setupAnimations();
+                setupAnimations();
             });
 
             hitbox.addEventListener("mouseenter", () => hitbox.style.fill = "rgba(0,0,0,0.05)");
@@ -469,186 +469,74 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Safe helper for getBBox when elements might be hidden
-    function safeBBox(el, fallback = { x: 0, y: 0, width: 0, height: 0 }) {
-        try {
-            return el.getBBox();
-        } catch (e) {
-            return fallback;
-        }
-    }
-
     // Animation for Layer_4 - Animate each element inside individually
-    // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
- // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
-    let ionAnimationIds = [];
-    
-    function animateIons(play) {
-        if (play) {
+    let layer4AnimationIds = [];
+    function animateLayer4(play) {
+        if (play && Layer4) {
             // Stop any existing animations
-            ionAnimationIds.forEach(id => cancelAnimationFrame(id));
-            ionAnimationIds = [];
+            layer4AnimationIds.forEach(id => cancelAnimationFrame(id));
+            layer4AnimationIds = [];
             
-            // --- 1. Animate Layer 4 (Metal Ions -> Moving to Active Cathode & Depositing) ---
-            if (Layer4) {
-                const cations = Array.from(Layer4.children);
+            const children = Array.from(Layer4.children);
+            const maxTranslate = 50; // pixels to move left
+            const cycleDuration = 3000; // 3 seconds for one complete cycle
+            const movePhase = 1000; // 1 second to move left
+            const disappearPhase = 500; // 0.5 second to disappear
+            const resetPhase = 500; // 0.5 second to reset and reappear
+            const delayBetweenChildren = 100; // 100ms delay between each child animation
+            
+            // Store original transforms for each child
+            const originalTransforms = [];
+            children.forEach(child => {
+                originalTransforms.push(child.getAttribute("transform") || "");
+            });
+            
+            children.forEach((child, childIndex) => {
+                const startTime = Date.now() + (childIndex * delayBetweenChildren);
                 
-                // Find which metal bar is currently active to use as target
-                // IDs match the barId from your metals array context
-                const metalBarIds = ["copper", "zink", "tin", "silver", "gold"]; 
-                let activeBar = document.getElementById("Group_611"); // Fallback: default Cathode group
-                
-                for (let barId of metalBarIds) {
-                    let bar = document.getElementById(barId);
-                    // Check if the element exists and is visible
-                    if (bar && window.getComputedStyle(bar).display !== "none") {
-                        activeBar = bar;
-                        break;
+                function animate() {
+                    if (!electrolysisStarted) return; // Stop if electrolysis ended
+                    
+                    const elapsed = (Date.now() - startTime) % cycleDuration;
+                    
+                    // Phase 1: Move left (0 - movePhase)
+                    if (elapsed < movePhase) {
+                        const progress = elapsed / movePhase;
+                        const translateX = -maxTranslate * progress;
+                        child.style.transform = `translateX(${translateX}px)`;
+                        child.style.opacity = "1";
                     }
+                    // Phase 2: Disappear (movePhase - movePhase + disappearPhase)
+                    else if (elapsed < movePhase + disappearPhase) {
+                        const progress = (elapsed - movePhase) / disappearPhase;
+                        child.style.opacity = Math.max(0, 1 - progress);
+                    }
+                    // Phase 3: Reset position and reappear (movePhase + disappearPhase - movePhase + disappearPhase + resetPhase)
+                    else {
+                        const progress = (elapsed - movePhase - disappearPhase) / resetPhase;
+                        child.style.transform = `translateX(0)`;
+                        child.style.opacity = Math.min(1, progress);
+                    }
+                    
+                    const animId = requestAnimationFrame(animate);
+                    layer4AnimationIds.push(animId);
                 }
                 
-                // Get target bounding box in SVG user space
-                let targetBBox;
-                try {
-                    targetBBox = activeBar.getBBox();
-                } catch(e) {
-                    // Fallback in case the SVG is hidden during initialization
-                    targetBBox = { x: 800, y: 500, width: 50, height: 400 }; 
-                }
-
-                const cycleDuration = 3500;    // Total time for one ion's journey
-                const movePhase = 2500;        // Time spent moving to cathode
-                const disappearPhase = 500;    // Time spent fading out (depositing)
-                const resetPhase = 500;        // Invisible reset and fade back in
-                
-                cations.forEach((child, index) => {
-                    const startTime = Date.now() + (index * 600); // Stagger animations
-                    
-                    // Ensure transform is clear before measuring start position
-                    child.style.transform = "translate(0px, 0px)";
-                    let startBBox;
-                    try {
-                        startBBox = child.getBBox();
-                    } catch(e) {
-                        startBBox = { x: 1300, y: 600, width: 40, height: 40 }; 
-                    }
-                    
-                    // We want them to deposit along the right edge of the cathode
-                    // Add a little randomness to Y so they don't all hit the exact same pixel
-                    const randomYOffset = (Math.random() * targetBBox.height * 0.6) + (targetBBox.height * 0.2); 
-                    const targetX = targetBBox.x + targetBBox.width;
-                    const targetY = targetBBox.y + randomYOffset;
-                    
-                    const startX = startBBox.x + (startBBox.width / 2);
-                    const startY = startBBox.y + (startBBox.height / 2);
-                    
-                    // Distance to travel
-                    const dx = targetX - startX;
-                    const dy = targetY - startY;
-                    
-                    function animateCation() {
-                        if (!electrolysisStarted) return; // Obey global state
-                        const elapsed = (Date.now() - startTime) % cycleDuration;
-                        
-                        if (elapsed < movePhase) {
-                            // Moving continuously towards the cathode
-                            const progress = elapsed / movePhase;
-                            child.style.transform = `translate(${dx * progress}px, ${dy * progress}px)`;
-                            child.style.opacity = "1";
-                        } else if (elapsed < movePhase + disappearPhase) {
-                            // Reached the cathode -> fading out (depositing)
-                            const progress = (elapsed - movePhase) / disappearPhase;
-                            child.style.transform = `translate(${dx}px, ${dy}px)`;
-                            child.style.opacity = Math.max(0, 1 - progress);
-                        } else {
-                            // Instantly snap back to start (invisible) and fade back in
-                            const progress = (elapsed - movePhase - disappearPhase) / resetPhase;
-                            child.style.transform = `translate(0px, 0px)`;
-                            child.style.opacity = Math.min(1, progress); // Fades in creating a "new" ion
-                        }
-                        
-                        ionAnimationIds.push(requestAnimationFrame(animateCation));
-                    }
-                    child.style.transition = "none";
-                    animateCation();
-                });
-            }
-
-            // --- 2. Animate Layer 5 (Solution Ions -> Drifting Right) ---
-            // Now: each solution ion travels to the anode, disappears, then reappears at the start.
-            if (Layer5) {
-                const anions = Array.from(Layer5.children);
-                const targetBBox = (anodeRect && safeBBox(anodeRect)) || { x: 900, y: 320, width: 80, height: 400 };
-                const cycleDuration = 3200;
-                const movePhase = 2200;
-                const disappearPhase = 500;
-                const resetPhase = 500;
-                
-                anions.forEach((child, index) => {
-                    const startTime = Date.now() + (index * 450); 
-
-                    child.style.transform = "translate(0px, 0px)";
-                    child.style.opacity = "1";
-                    const startBBox = safeBBox(child);
-
-                    const randomYOffset = (Math.random() * targetBBox.height * 0.6) + (targetBBox.height * 0.2);
-                    const targetX = targetBBox.x; // Move towards anode (left edge of anode rectangle)
-                    const targetY = targetBBox.y + randomYOffset;
-
-                    const startX = startBBox.x + (startBBox.width / 2);
-                    const startY = startBBox.y + (startBBox.height / 2);
-
-                    const dx = targetX - startX;
-                    const dy = targetY - startY;
-                    
-                    function animateAnion() {
-                        if (!electrolysisStarted) return;
-                        
-                        const elapsed = (Date.now() - startTime) % cycleDuration;
-
-                        if (elapsed < movePhase) {
-                            const progress = elapsed / movePhase;
-                            child.style.transform = `translate(${dx * progress}px, ${dy * progress}px)`;
-                            child.style.opacity = "1";
-                        } else if (elapsed < movePhase + disappearPhase) {
-                            const progress = (elapsed - movePhase) / disappearPhase;
-                            child.style.transform = `translate(${dx}px, ${dy}px)`;
-                            child.style.opacity = Math.max(0, 1 - progress);
-                        } else {
-                            const progress = (elapsed - movePhase - disappearPhase) / resetPhase;
-                            child.style.transform = `translate(0px, 0px)`;
-                            child.style.opacity = Math.min(1, progress);
-                        }
-                        
-                        ionAnimationIds.push(requestAnimationFrame(animateAnion));
-                    }
-                    child.style.transition = "none";
-                    animateAnion();
-                });
-            }
-
-        } else {
+                // Ensure initial styles
+                child.style.transition = "none";
+                animate();
+            });
+        } else if (Layer4) {
             // Stop all animations
-            ionAnimationIds.forEach(id => cancelAnimationFrame(id));
-            ionAnimationIds = [];
+            layer4AnimationIds.forEach(id => cancelAnimationFrame(id));
+            layer4AnimationIds = [];
             
-            // Reset Layer 4
-            if (Layer4) {
-                Array.from(Layer4.children).forEach(child => {
-                    child.style.transform = `translate(0px, 0px)`;
-                    child.style.opacity = "1";
-                    child.style.transition = "none";
-                });
-            }
-            
-            // Reset Layer 5
-            if (Layer5) {
-                Array.from(Layer5.children).forEach(child => {
-                    child.style.transform = `translateX(0)`;
-                    child.style.opacity = "1";
-                    child.style.transition = "none";
-                });
-            }
+            // Reset all children
+            Array.from(Layer4.children).forEach(child => {
+                child.style.transform = `translateX(0)`;
+                child.style.opacity = "1";
+                child.style.transition = "none";
+            });
         }
     }
 
@@ -659,9 +547,21 @@ document.addEventListener("DOMContentLoaded", () => {
         setBtnEnabled(startBtn, false);
         setVisibility(offSwitch, false);
         setVisibility(onSwitch, true);
+        currentFlowAnim.play();
+        
+        // Ensure metalAnim loops continuously for all ions to move
+        metalAnim.setLoop(true);
+        metalAnim.play();
+        
+        // Set up continuous loop for metalAnim - replay when animation completes
+        metalAnim.addEventListener("complete", () => {
+            if (electrolysisStarted) {
+                metalAnim.goToAndPlay(0);
+            }
+        });
         
         // Animate Layer_4 oscillation
-        animateIons(true);
+        animateLayer4(true);
         
         transformElectrodes(true);
         selectMetalDropdown.style.pointerEvents = "none";
@@ -681,7 +581,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentFlowAnim.stop();
         metalAnim.stop();
-        animateIons(false);
+        animateLayer4(false);
         transformElectrodes(false);
         selectMetalDropdown.style.pointerEvents = "auto";
 

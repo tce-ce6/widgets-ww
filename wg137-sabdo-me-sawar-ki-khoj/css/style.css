@@ -31,9 +31,6 @@ svg * {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  position: absolute;
-  top: -110px;
-
 }
 
 #idiom-wrapper .container::after {
@@ -200,33 +197,28 @@ svg * {
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
-  row-gap: 0px;
+  row-gap: 150px;
 }
 
 .card-wrapper li {
-  height: 361px;
+  height: 231px;
   width: 337px;
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
 }
 
 .card-wrapper li img {
-  height: 361px;
-  width: 331px;
-  transform-origin: center;
-  will-change: transform;
+
+  height: 231px;
+  width: 337px
 }
 
 .option-txt {
   position: absolute;
-  bottom: 60px;
+  bottom: 35px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 40px;
   font-weight: 600;
-  z-index: 2;
 }
 
 .sount-icon {
@@ -247,11 +239,4 @@ svg * {
   left: 56%;
   transform: translateX(-50%);
   font-weight: 600;
-}
-.lottie-container{
-  position: absolute;
-  top: -130px;
-  z-index: 10;          /* keep above option image on correct click */
-  pointer-events: none; /* don't block option clicks */
-  left: 0;              /* stable horizontal placement for absolute positioning */
 }
