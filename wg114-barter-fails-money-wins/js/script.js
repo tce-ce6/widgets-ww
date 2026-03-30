@@ -860,11 +860,28 @@ document.addEventListener("DOMContentLoaded", () => {
               stopLottie();
             }, 2500);
           }
-        } else {
+        } else if( pairMap[selectedId] && pairMap[selectedId] !== clickedId) {
           const el1 = selectedEl,
             el2 = clickedEl;
-          // selectedId = null;
-          selectedEl = null;
+            //selectedId = null;
+            selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
+          setTimeout(() => {
+            if (el1) {
+              el1.style.outline = "";
+              el1.style.filter = "";
+            }
+            if (el2) {
+              el2.style.outline = "";
+              el2.style.filter = "";
+            }
+          }, 1200);
+        } else {
+             const el1 = selectedEl,
+            el2 = clickedEl;
+            selectedId = null;
+            selectedEl = null;
           if (config.onSelect) config.onSelect(null);
           if (config.onWrong) config.onWrong();
           setTimeout(() => {
