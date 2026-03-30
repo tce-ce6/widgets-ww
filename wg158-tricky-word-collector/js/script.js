@@ -382,14 +382,16 @@ function renderForest() {
       ${flies}
 
       <!-- Header -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:10;">
+      <div style="display:flex;align-items:center;margin-bottom:15px;position:relative;z-index:10;">
         <h1 style="font-size:clamp(18px,3vw,24px);color:#ffd700;text-shadow:0 0 15px rgba(255,215,0,0.5);margin:0;">
           🌲 ${texts.title}
         </h1>
-        <button onclick="goToLevelSelect()" style="padding:8px 16px;font-size:13px;background:transparent;border:2px solid #666;border-radius:15px;color:#888;cursor:pointer;">
-          ${texts.changePath}
-        </button>
       </div>
+
+      <!-- Change Path button fixed bottom-right -->
+      <button onclick="goToLevelSelect()" style="position:fixed;bottom:20px;right:20px;z-index:100;padding:8px 16px;font-size:13px;background:transparent;border:2px solid #666;border-radius:15px;color:#888;cursor:pointer;">
+        ${texts.changePath}
+      </button>
 
       <!-- Main Area -->
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;z-index:10;">
