@@ -257,8 +257,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     container.querySelectorAll("*").forEach((el) => {
       el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
     });
     container.style.cursor = "pointer";
+    container.style.pointerEvents = "all";
   }
 
   /*
@@ -290,25 +292,19 @@ document.addEventListener("DOMContentLoaded", () => {
       el = el.parentElement;
     }
 
-    // Step 2: if we didn't find a named ancestor, scan ALL named elements
-    // to find which one's card bounding rect contains the click point
+    // Step 2: if we didn't find a named ancestor, walk up from e.target
+    // to find the direct child of container, then search inside it for a trader name
     if (!clickedTrader) {
-      const clickX = e.clientX,
-        clickY = e.clientY;
-      for (const name of allNames) {
-        const namedEl = container.querySelector("#" + CSS.escape(name));
-        if (!namedEl) continue;
-        // Walk up to find the card group for this named element
-        const cardG = getCardGroup(namedEl, container);
-        if (!cardG) continue;
-        const r = cardG.getBoundingClientRect();
-        if (
-          clickX >= r.left &&
-          clickX <= r.right &&
-          clickY >= r.top &&
-          clickY <= r.bottom
-        ) {
-          return { traderId: name, topCard: cardG };
+      let cardGroup = e.target;
+      while (cardGroup && cardGroup.parentElement !== container) {
+        cardGroup = cardGroup.parentElement;
+      }
+      if (cardGroup && cardGroup !== container) {
+        for (const name of allNames) {
+          const namedEl = cardGroup.querySelector("#" + CSS.escape(name));
+          if (namedEl) {
+            return { traderId: name, topCard: cardGroup };
+          }
         }
       }
       return null;
@@ -629,7 +625,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s1.wrong);
         positionPopup(topCard, S.lim1s1.right, "Group_1281"); // Base is Maya
         show(S.lim1s1.right);
-        //  playLottie("emoji_happy-star", S.lim1s1.right);
+       // playLottie("emoji_happy-star", S.lim1s1.right);
       } else {
         const want = lim1s1Wants[traderId] || "that";
         setIncorrectMsg(S.lim1s1.wrong, `fish. I want ${want}!"`);
@@ -657,6 +653,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearCardHighlight();
         hide(S.lim1s1.right);
         show(S.lim1s1.end);
+        playLottie("emoji-sad", S.lim1s1.end);
       });
     }
   });
@@ -711,7 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s2.wrong);
         positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
         show(S.lim1s2.right);
-        //  playLottie("emoji_happy-star", S.lim1s2.right);
+       // playLottie("emoji_happy-star", S.lim1s2.right);
       } else {
         const want = lim1s2Wants[traderId] || "that";
         // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
@@ -719,7 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setIncorrectMsg(wrongPopup, `clay pots. I want ${want}!"`);
         positionPopup(topCard, wrongPopup, "Group_1281-3"); // Base is Cheenu
         show(wrongPopup);
-        // playLottie("emoji-sad", wrongPopup);
+        playLottie("emoji-sad", wrongPopup);
       }
     });
   }
@@ -746,6 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearCardHighlight();
       hide(S.lim1s2.right);
       show(S.lim1s2.end);
+      playLottie("emoji-sad", S.lim1s2.end);
     }),
   );
 
@@ -890,6 +888,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Blacksmith"
       ) {
         show(S.lim2s1.c01);
+        playLottie("emoji_happy-star", S.lim2s1.c01);
         let badge = document.getElementById("Trades_Completed:_1_4");
         if (badge) {
           const tspan = badge.querySelector("tspan");
@@ -902,6 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Baker"
       ) {
         show(S.lim2s1.c02);
+        playLottie("emoji_happy-star", S.lim2s1.c02);
         let badge = document.getElementById("Trades_Completed:_2_4");
         if (badge) {
           const tspan = badge.querySelector("tspan");
@@ -923,14 +923,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onClick("Continue-2", () => {
     hide(S.lim2s1.c01);
+        stopLottie();
     if (lim2s1_correctCount === 2) {
-      if (S.lim2s1.end) show(S.lim2s1.end);
+      if (S.lim2s1.end) {
+        show(S.lim2s1.end)
+        playLottie("emoji-sad", S.lim2s1.end)
+      };
     }
   });
   onClick("Continue-3", () => {
     hide(S.lim2s1.c02);
+        stopLottie();
     if (lim2s1_correctCount === 2) {
-      if (S.lim2s1.end) show(S.lim2s1.end);
+      if (S.lim2s1.end) {
+        show(S.lim2s1.end)
+        playLottie("emoji-sad", S.lim2s1.end)
+        };
     }
   });
   onClick("Continue-4", () => {
@@ -997,6 +1005,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Orchardist"
       ) {
         show(S.lim2s2.c01);
+           playLottie("emoji_happy-star", S.lim2s2.c02);
         const badge = document.getElementById("Trades_Completed:_1_4-2");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1009,6 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Tailor"
       ) {
         show(S.lim2s2.c02);
+           playLottie("emoji_happy-star", S.lim2s2.c02);
         const badge = document.getElementById("Trades_Completed:_1_4-3");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1040,18 +1050,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onClick("Continue-5", () => {
     hide(S.lim2s2.c01);
+        stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) show(S.lim2s2.end);
+      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};;
     }
   });
   onClick("Continue-6", () => {
     hide(S.lim2s2.c02);
+        stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) show(S.lim2s2.end);
+      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};
     }
   });
 
