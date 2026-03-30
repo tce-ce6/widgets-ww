@@ -197,7 +197,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-27T14:15:06+05:30",
+      "updatedAt": "2026-03-30T13:09:17+05:30",
       "author": "tce-nitinc"
     },
     "wg156-sound-machine": {
@@ -321,7 +321,7 @@
       "author": "tce-nitinc"
     },
     "wg85-build-a-paragraph": {
-      "updatedAt": "2026-02-23T20:35:45+05:30",
+      "updatedAt": "2026-03-30T13:25:32+05:30",
       "author": "tce-nitinc"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
@@ -357,7 +357,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-30T12:52:55+05:30",
+      "updatedAt": "2026-03-30T13:25:06+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -383,11 +383,36 @@
   },
   "commits": [
     {
+      "date": "2026-03-30T13:25:32+05:30",
+      "author": "tce-nitinc",
+      "message": "added wg 85",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-30T13:25:06+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 94 changes",
+      "widgets": [
+        94
+      ]
+    },
+    {
       "date": "2026-03-30T13:19:33+05:30",
       "author": "tce-ashishg",
       "message": "images updated",
       "widgets": [
         140
+      ]
+    },
+    {
+      "date": "2026-03-30T13:09:17+05:30",
+      "author": "tce-nitinc",
+      "message": "wg85",
+      "widgets": [
+        85,
+        155
       ]
     },
     {
@@ -604,30 +629,6 @@
       "message": "fix1 css",
       "widgets": [
         140
-      ]
-    },
-    {
-      "date": "2026-03-27T19:37:29+05:30",
-      "author": "sushantthe",
-      "message": "Update script.js",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-27T19:25:30+05:30",
-      "author": "sushantthe",
-      "message": "fixed issue",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-27T18:59:50+05:30",
-      "author": "tce-ashishg",
-      "message": "wg140",
-      "widgets": [
-        132
       ]
     }
   ]
