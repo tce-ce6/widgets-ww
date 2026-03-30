@@ -370,3 +370,12 @@ svg * {
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
 }
+.sentence-box div{
+  padding: 20px !important;
+  font-size: 26px !important;
+  line-height: 1.2 !important;
+  height: 100% !important;
+}
+#para-image image{
+  border-radius: 20px !important;
+}
