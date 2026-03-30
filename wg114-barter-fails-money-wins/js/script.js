@@ -51,21 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function playLottie(name, targetEl) {
     stopLottie();
 
-    // Find the emoji face group inside the targetEl (group with many paths = face)
+    // Find the emoji face group inside the targetEl.
+    // Emoji groups contain a path with id starting "Path_2862" (star-eyes happy)
+    // or "Path_2186" (sad). Walk up 3 levels to reach the outer Group_1492/Group_1303.
     if (targetEl) {
-      const allGroups = targetEl.querySelectorAll("g");
-      for (const g of allGroups) {
-        // The emoji group has 5+ path children directly
-        const paths = g.querySelectorAll(":scope > path");
-        if (paths.length >= 5) {
-          _staticEmojiEl = g;
-          break;
-        }
-      }
-      // Also try clip-path groups (emoji is often wrapped in a clipPath group)
-      if (!_staticEmojiEl) {
-        const clipG = targetEl.querySelector("g[clip-path]");
-        if (clipG) _staticEmojiEl = clipG;
+      const innerPath = targetEl.querySelector(
+        "[id^='Path_2862'],[id^='Path_2186']"
+      );
+      if (innerPath) {
+        // path → Group_1491/1302 → clip-path group → Group_1492/1303
+        const outerG =
+          innerPath.parentElement?.parentElement?.parentElement;
+        _staticEmojiEl = outerG || innerPath.parentElement;
       }
 
       if (_staticEmojiEl) {
@@ -229,6 +226,19 @@ document.addEventListener("DOMContentLoaded", () => {
       S.home_buttom,
       S.next_button,
     ].forEach(hide);
+
+      //  lim2s1AllNames.forEach((name) => {
+      //     let outline = document.getElementById(
+      //       name.toLowerCase() + "_outline",
+      //     );
+      //     if (outline) hide(outline);
+      //   });
+      //      lim2s2AllNames.forEach((name) => {
+      //     let outline = document.getElementById(
+      //       name.toLowerCase() + "_outline",
+      //     );
+      //     if (outline) hide(outline);
+      //   });
   }
 
   hideAll();
@@ -257,8 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     container.querySelectorAll("*").forEach((el) => {
       el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
     });
     container.style.cursor = "pointer";
+    container.style.pointerEvents = "all";
   }
 
   /*
@@ -290,25 +302,19 @@ document.addEventListener("DOMContentLoaded", () => {
       el = el.parentElement;
     }
 
-    // Step 2: if we didn't find a named ancestor, scan ALL named elements
-    // to find which one's card bounding rect contains the click point
+    // Step 2: if we didn't find a named ancestor, walk up from e.target
+    // to find the direct child of container, then search inside it for a trader name
     if (!clickedTrader) {
-      const clickX = e.clientX,
-        clickY = e.clientY;
-      for (const name of allNames) {
-        const namedEl = container.querySelector("#" + CSS.escape(name));
-        if (!namedEl) continue;
-        // Walk up to find the card group for this named element
-        const cardG = getCardGroup(namedEl, container);
-        if (!cardG) continue;
-        const r = cardG.getBoundingClientRect();
-        if (
-          clickX >= r.left &&
-          clickX <= r.right &&
-          clickY >= r.top &&
-          clickY <= r.bottom
-        ) {
-          return { traderId: name, topCard: cardG };
+      let cardGroup = e.target;
+      while (cardGroup && cardGroup.parentElement !== container) {
+        cardGroup = cardGroup.parentElement;
+      }
+      if (cardGroup && cardGroup !== container) {
+        for (const name of allNames) {
+          const namedEl = cardGroup.querySelector("#" + CSS.escape(name));
+          if (namedEl) {
+            return { traderId: name, topCard: cardGroup };
+          }
         }
       }
       return null;
@@ -412,6 +418,21 @@ document.addEventListener("DOMContentLoaded", () => {
       highlightCard(_lastClickedCard, false);
       _lastClickedCard = null;
     }
+  lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+          lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
+           correctCount = 0;
+
   }
 
   // ─────────────────────────────────────────────
@@ -442,12 +463,28 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s1);
+     lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+    matched.clear();
+      correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1502-2", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s2);
+     lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
   onClick("Group_1501-3", () => {
@@ -517,6 +554,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     if (next === "conclusion") {
       show(S.conclusion);
+      show(S.home_buttom);
+      return;
     } else if (next && next.base) {
       if (next === S.lim3s1) resetLim3s1();
       if (next === S.lim3s2) resetLim3s2();
@@ -554,6 +593,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Priya: "wood",
     "Priya-2": "wood",
     Shambu: "wheat",
+    
   };
 
   makeCardsClickable(S.lim1s1.cards);
@@ -629,7 +669,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s1.wrong);
         positionPopup(topCard, S.lim1s1.right, "Group_1281"); // Base is Maya
         show(S.lim1s1.right);
-        //  playLottie("emoji_happy-star", S.lim1s1.right);
+       // playLottie("emoji_happy-star", S.lim1s1.right);
       } else {
         const want = lim1s1Wants[traderId] || "that";
         setIncorrectMsg(S.lim1s1.wrong, `fish. I want ${want}!"`);
@@ -657,6 +697,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearCardHighlight();
         hide(S.lim1s1.right);
         show(S.lim1s1.end);
+        playLottie("emoji-sad", S.lim1s1.end);
       });
     }
   });
@@ -692,7 +733,12 @@ document.addEventListener("DOMContentLoaded", () => {
     Paul: "tools",
     Fathima: "apples",
     Fatima: "apples",
+    Priya: "wood",
+    "Priya-2": "wood",
+    Jaya: "tools",
+    Ranjit: "bread",
   };
+
 
   makeCardsClickable(S.lim1s2.cards);
 
@@ -711,7 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s2.wrong);
         positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
         show(S.lim1s2.right);
-        //  playLottie("emoji_happy-star", S.lim1s2.right);
+       // playLottie("emoji_happy-star", S.lim1s2.right);
       } else {
         const want = lim1s2Wants[traderId] || "that";
         // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
@@ -719,7 +765,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setIncorrectMsg(wrongPopup, `clay pots. I want ${want}!"`);
         positionPopup(topCard, wrongPopup, "Group_1281-3"); // Base is Cheenu
         show(wrongPopup);
-        // playLottie("emoji-sad", wrongPopup);
+        playLottie("emoji-sad", wrongPopup);
       }
     });
   }
@@ -746,6 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearCardHighlight();
       hide(S.lim1s2.right);
       show(S.lim1s2.end);
+      playLottie("emoji-sad", S.lim1s2.end);
     }),
   );
 
@@ -755,18 +802,25 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(S.lim1s2);
     goTo(S.lim2s1);
+     lim2s1AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
   //  LIMITATION 2 — No Coincidence of Wants (pair matching)
   // ═══════════════════════════════════════════════════════════
-
+  matched = new Set();
+  correctCount = 0;
   function makePairManager(pairs, sc, config = {}) {
     let selectedId = null;
     let selectedEl = null;
-    const matched = new Set();
-    let correctCount = 0;
+    
+    correctCount = 0;
 
     const pairMap = {};
     pairs.forEach(([a, b]) => {
@@ -799,15 +853,37 @@ document.addEventListener("DOMContentLoaded", () => {
           if (config.onSelect) config.onSelect(clickedId);
           if (config.onCorrect)
             config.onCorrect(correctCount, selectedId, clickedId);
-
+          selectedId = null;
+          selectedEl = null;
           if (correctCount >= totalPairs) {
             setTimeout(() => {
               stopLottie();
             }, 2500);
           }
-        } else {
+        } else if( pairMap[selectedId] && pairMap[selectedId] !== clickedId) {
           const el1 = selectedEl,
             el2 = clickedEl;
+            //selectedId = null;
+            selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
+          setTimeout(() => {
+            if (el1) {
+              el1.style.outline = "";
+              el1.style.filter = "";
+            }
+            if (el2) {
+              el2.style.outline = "";
+              el2.style.filter = "";
+            }
+          }, 1200);
+        } else {
+             const el1 = selectedEl,
+            el2 = clickedEl;
+            selectedId = null;
+            selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
           setTimeout(() => {
             if (el1) {
               el1.style.outline = "";
@@ -819,9 +895,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }, 1200);
         }
-        selectedId = null;
-        selectedEl = null;
-        if (config.onSelect) config.onSelect(null);
       }
     };
   }
@@ -855,15 +928,15 @@ document.addEventListener("DOMContentLoaded", () => {
     onSelect: (id) => {
       if (!id) {
         // If selection is cleared
-        if (out1) hide(out1);
-        if (out2) hide(out2);
+        // if (out1) hide(out1);
+        // if (out2) hide(out2);
         // Also hide individual outlines if they were shown
-        lim2s1AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
+        // lim2s1AllNames.forEach((name) => {
+        //   let outline = document.getElementById(
+        //     name.toLowerCase() + "_outline",
+        //   );
+        //   if (outline) hide(outline);
+        // });
         return;
       }
 
@@ -890,6 +963,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Blacksmith"
       ) {
         show(S.lim2s1.c01);
+        playLottie("emoji_happy-star", S.lim2s1.c01);
         let badge = document.getElementById("Trades_Completed:_1_4");
         if (badge) {
           const tspan = badge.querySelector("tspan");
@@ -902,11 +976,18 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Baker"
       ) {
         show(S.lim2s1.c02);
+        playLottie("emoji_happy-star", S.lim2s1.c02);
         let badge = document.getElementById("Trades_Completed:_2_4");
         if (badge) {
           const tspan = badge.querySelector("tspan");
           if (tspan) tspan.textContent = `Trades Completed: ${count} / 4`;
         }
+      }
+    },
+    onWrong: () => {
+      if (S.lim2s1.wrong) {
+        show(S.lim2s1.wrong);
+        playLottie("emoji-sad", S.lim2s1.wrong);
       }
     },
   });
@@ -921,22 +1002,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Wire "Try another trader" button inside lim2s1 wrong popup (querySelector avoids duplicate-ID issue)
+  if (S.lim2s1.wrong) {
+    const tryBtn = S.lim2s1.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s1.wrong); });
+    });
+  }
+
   onClick("Continue-2", () => {
     hide(S.lim2s1.c01);
+        stopLottie();
     if (lim2s1_correctCount === 2) {
-      if (S.lim2s1.end) show(S.lim2s1.end);
+      if (S.lim2s1.end) {
+        show(S.lim2s1.end)
+        playLottie("emoji-sad", S.lim2s1.end)
+      };
     }
   });
   onClick("Continue-3", () => {
     hide(S.lim2s1.c02);
+        stopLottie();
     if (lim2s1_correctCount === 2) {
-      if (S.lim2s1.end) show(S.lim2s1.end);
+      if (S.lim2s1.end) {
+        show(S.lim2s1.end)
+        playLottie("emoji-sad", S.lim2s1.end)
+        };
     }
   });
   onClick("Continue-4", () => {
     stopLottie();
     navHistory.push(S.lim2s1);
     goTo(S.lim2s2);
+     lim2s2AllNames.forEach((name) => {
+          let outline = document.getElementById(
+            name.toLowerCase() + "_outline",
+          );
+          if (outline) hide(outline);
+        });
+         matched.clear();
+           correctCount = 0;
     show(S.home_buttom); show(S.back_button); updateNavButtons();
   });
 
@@ -966,13 +1075,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const lim2s2Trade = makePairManager(lim2s2Pairs, S.lim2s2, {
     onSelect: (id) => {
       if (!id) {
-        if (sc2Out1) hide(sc2Out1);
-        if (sc2Out2) hide(sc2Out2);
-        lim2s2AllNames.forEach((name) => {
-          let nm = name.split("-")[0].toLowerCase();
-          let outline = document.getElementById(nm + "_outline");
-          if (outline) hide(outline);
-        });
+        // if (sc2Out1) hide(sc2Out1);
+        // if (sc2Out2) hide(sc2Out2);
+        // lim2s2AllNames.forEach((name) => {
+        //   let nm = name.split("-")[0].toLowerCase();
+        //   let outline = document.getElementById(nm + "_outline");
+        //   if (outline) hide(outline);
+        // });
         return;
       }
       if (id === "Carpenter" || id === "Orchardist") {
@@ -997,6 +1106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Orchardist"
       ) {
         show(S.lim2s2.c01);
+           playLottie("emoji_happy-star", S.lim2s2.c01);
         const badge = document.getElementById("Trades_Completed:_1_4-2");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1009,6 +1119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Tailor"
       ) {
         show(S.lim2s2.c02);
+           playLottie("emoji_happy-star", S.lim2s2.c02);
         const badge = document.getElementById("Trades_Completed:_1_4-3");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1016,7 +1127,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s2.wrong) {
+        show(S.lim2s2.wrong);
+        playLottie("emoji-sad", S.lim2s2.wrong);
+      }
+    },
   });
+
+  // Wire "Try another trader" button inside lim2s2 wrong popup
+  if (S.lim2s2.wrong) {
+    const tryBtn = S.lim2s2.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach(el => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => { stopLottie(); hide(S.lim2s2.wrong); });
+    });
+  }
 
   const lim2s2Root = S.lim2s2.base;
   if (lim2s2Root) {
@@ -1040,18 +1169,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onClick("Continue-5", () => {
     hide(S.lim2s2.c01);
+        stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) show(S.lim2s2.end);
+      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};;
     }
   });
   onClick("Continue-6", () => {
     hide(S.lim2s2.c02);
+        stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) show(S.lim2s2.end);
+      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};
     }
   });
 
@@ -1129,6 +1260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLim3s1UI();
     if (S.lim3s1.end) hide(S.lim3s1.end);
     showingSolution = false;
+
     const s1 = $("Show_Answer");
     if (s1) $q("tspan", s1).textContent = "Show Answer";
   }
@@ -1138,9 +1270,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setInvCount("_0_Chickens", lim3s1.chickens);
     setInvCount("_0_Bread", lim3s1.breads);
     setInvCount("_0_Apples", lim3s1.apples);
-    setTradeEnabled("Group_1485", lim3s1.cows > 0);
-    setTradeEnabled("Group_1487", lim3s1.chickens > 0);
-    setTradeEnabled("Group_1488", lim3s1.breads > 0);
+    setTradeEnabled("Group_1485", true);
+    setTradeEnabled("Group_1487", true);
+    setTradeEnabled("Group_1488", true);
   }
 
   // Inline SC1 emoji SVG into SC2 once (replaces <use> refs that fail when SC1 is hidden)
@@ -1180,9 +1312,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setInvCount("_8_Chickens-2", lim3s2.chickens);
     setInvCount("_0_Bread-2", lim3s2.breads);
     setInvCount("_0_Apples-2", lim3s2.apples);
-    setTradeEnabled("Trade_Cow_Chickens-2", lim3s2.cows > 0);
-    setTradeEnabled("Trade_Chickens_Breads-2", lim3s2.chickens > 0);
-    setTradeEnabled("Trade_Breads_Apples-2", lim3s2.breads > 0);
+    setTradeEnabled("Trade_Cow_Chickens-2", true);
+    setTradeEnabled("Trade_Chickens_Breads-2", true);
+    setTradeEnabled("Trade_Breads_Apples-2", true);
   }
 
   function toggleLim3Solution(btnId, textId) {
@@ -1190,11 +1322,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return;
     const ts = $q("tspan", el) || $q("text", el) || el;
     const isShowing = ts.textContent.trim() === "Show Answer";
-    if (isShowing) {
+    if (!isShowing) {
       resetLim3s1();
     } else {
       lim3s1 = { cows: 0, chickens: 10, breads: 0, apples: 100 };
       updateLim3s1UI();
+    }
+    ts.textContent = isShowing ? "Hide Answer" : "Show Answer";
+  }
+    function toggleLim3Solution2(btnId, textId) {
+    const el = $(textId);
+    if (!el) return;
+    const ts = $q("tspan", el) || $q("text", el) || el;
+    const isShowing = ts.textContent.trim() === "Show Answer";
+    if (!isShowing) {
+      resetLim3s2();
+    } else {
+      lim3s2 = { cows: 0, chickens: 0, breads: 40, apples: 0 };
+      updateLim3s2UI();
     }
     ts.textContent = isShowing ? "Hide Answer" : "Show Answer";
   }
@@ -1220,8 +1365,8 @@ document.addEventListener("DOMContentLoaded", () => {
       lim3s1.apples += lim3Rates.bread;
       updateLim3s1UI();
       if (lim3s1.apples >= 100) {
-        // playLottie("emoji_happy-star");
         show(S.lim3s1.end);
+        playLottie("emoji_happy-star",S.lim3s1.end);
       }
     } //else playLottie("emoji-sad");
   });
@@ -1244,7 +1389,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lim3s2.cows--;
       lim3s2.chickens += lim3Rates.cow;
       updateLim3s2UI();
-    } else playLottie("emoji-sad");
+    } // else playLottie("emoji-sad");
   });
   wireTradeBtn("Trade_Chickens_Breads-2", () => {
     if (lim3s2.chickens > 0) {
@@ -1263,7 +1408,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Technically user could win if logic allowed, but SC2 is designed to fail.
         // We'll just check for failure as requested.
       }
-    } else playLottie("emoji-sad");
+    } // else playLottie("emoji-sad");
   });
   wireTradeBtn("Trade_Breads_Apples-2", () => {
     if (lim3s2.breads > 0) {
@@ -1273,7 +1418,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else playLottie("emoji-sad");
   });
   onClick("Group_804-3", () =>
-    toggleLim3Solution("Group_804-3", "Show_Answer-2"),
+    toggleLim3Solution2("Group_804-3", "Show_Answer-2"),
   );
   onClick("Group_1-4", resetLim3s2);
   onClick("Continue-sc2-fail", () => {
@@ -1282,7 +1427,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     resetLim3s2();
     show(S.conclusion);
-    show(S.home_buttom); show(S.back_button);
+    show(S.home_buttom); 
+    hide(S.back_button);
     hide(S.next_button); // conclusion is the last screen
   });
 
