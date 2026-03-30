@@ -69,10 +69,6 @@ function initCountryBoxes() {
 
             box.classList.add('selected');
 
-            // ✅ SHOW RESET BUTTON
-            const btnReset = document.getElementById('btn-reset');
-            if (btnReset) btnReset.style.display = 'block';
-
         });
     });
 }
@@ -367,32 +363,41 @@ function resetStepTwo() {
 }
 
 function handleNextQuestion() {
-    // ✅ hide reset button when next question starts
-    const btnReset = document.getElementById('btn-reset');
-    if (btnReset) btnReset.style.display = 'none';
-
-    // ✅ ALWAYS clear flag states when Next is clicked
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
-    // ✅ ALWAYS clear flag states when Next is clicked
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
     const questions = AppState.data.questions;
 
-    // move to next question
+    // move to next question index
     AppState.currentQuestionIndex++;
 
-    if (AppState.currentQuestionIndex >= questions.length) {
-        AppState.currentQuestionIndex = 0;
+    // Check if we finished all questions
+    if (AppState.data && AppState.data.questions && AppState.currentQuestionIndex >= questions.length) {
+        // Hide UI elements but preserve the map
+        if (AppState.elements.questionContainer) AppState.elements.questionContainer.style.display = 'none';
+        if (AppState.elements.factBitePopup) AppState.elements.factBitePopup.style.display = 'none';
+        if (AppState.elements.iText2) AppState.elements.iText2.style.display = 'none';
+        if (AppState.elements.btnQuiz) AppState.elements.btnQuiz.style.display = 'none';
+        if (AppState.elements.lottieWrapper) AppState.elements.lottieWrapper.style.display = 'none';
+        
+        // Disable flags wrapper
+        if (AppState.elements.flagsWrapper) AppState.elements.flagsWrapper.classList.add('disabled');
+
+        // Show only the final reset button
+        const btnResetFull = document.getElementById('btn-reset');
+        if (btnResetFull) btnResetFull.style.display = 'block';
+
+        // Hide Next button
+        const btnNextFull = document.getElementById('btn-next');
+        if (btnNextFull) btnNextFull.style.display = 'none';
+        
+        return;
     }
+
+    // ✅ ALWAYS clear flag states when Next is clicked
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('selected', 'correct');
+        }
+    });
 
     const data = questions[AppState.currentQuestionIndex];
     AppState.currentCountryData = data;
@@ -668,10 +673,11 @@ async function loadData() {
 function handleCountryClick(countryId) {
     if (!AppState.data || !AppState.data.questions) return;
 
-    // Pick a random question instead of the selected flag's country question
+    // Use currentQuestionIndex instead of random to prevent repeated questions
     const questions = AppState.data.questions;
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    AppState.currentCountryData = questions[randomIndex];
+    // Safety check for index out of bounds
+    const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
+    AppState.currentCountryData = questions[safeIndex];
 
     if (AppState.elements.flagsWrapper) {
         AppState.elements.flagsWrapper.classList.add('disabled');
@@ -691,11 +697,15 @@ function attachEventListeners() {
     const btnReset = document.getElementById('btn-reset');
 
     if (btnReset) {
-
         btnReset.addEventListener('click', () => {
 
             // reset all step-2 data
             resetStepTwo();
+
+            // Reset game progress
+            AppState.currentQuestionIndex = 0;
+            AppState.score = 0;
+            updateMarksUI();
 
             // restore map zoom/pan to default
             AppState.mapState.currentX = 0;

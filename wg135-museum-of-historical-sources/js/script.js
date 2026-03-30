@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOTAL_SETS = 4;
     const ITEMS_PER_SET = 5;
     let isActivityComplete = false;
+    
+    // Track which galleries have been completed
+    const completedGalleries = new Set();
+    let correctAnimationInstance = null;
+    let incorrectAnimationInstance = null;
 
     const dragSets = {
         1: { base: 'drag-object-base-set1', btnBox: 'drag-object-btn-set1', imgPrefix: 'drag-object-btn-set1-img-', foPrefix: 'fo-drag-object-btn-set1-img-' },
@@ -26,21 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
    const galleryData = {
         '01': { 
             currentQuestionIndex: 0,
+            completed: false,
             questions: [
                 { 
                     question: "An artefact that was used by merchants to identify their goods in ancient trade", 
                     clue: "Ancient traders pressed this tiny stone object into wet clay as a signature. It bears mysterious symbols and writing that no scholar has yet been able to decode.",
-                    correctId: "_01-museum-1" 
+                    correctId: "_01-museum-5"
                 },
                 { 
                     question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power", 
-                    clue: "A goddess sits at its centre because this king believed his power came straight from the divine",
+                    clue: "A goddess sits at its centre because this king believed his power came straight from the divine.",
                     correctId: "_01-museum-2" 
                 }
             ]
         },
         '02': { 
             currentQuestionIndex: 0,
+            completed: false,
             questions: [
                 { 
                     question: "An ancient text that provides detailed instructions on governance and economics", 
@@ -56,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         '03': { 
             currentQuestionIndex: 0,
+            completed: false,
             questions: [
                 { 
                     question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
@@ -71,16 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         '04': { 
             currentQuestionIndex: 0,
+            completed: false,
             questions: [
                 { 
                     question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down", 
                     clue: "These Tamil verses were performed at royal gatherings where poets competed— their amazing memories kept the poems alive across many generations!",
-                    correctId: "_04-museum-1" 
+                    correctId: "_04-museum-5" 
                 },
                 { 
                     question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement", 
                     clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—Saints like Tukaram created them so common people could express their devotion",
-                    correctId: "_04-museum-2" 
+                    correctId: "_04-museum-4" 
                 }
             ]
         }
@@ -183,6 +192,134 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // 2c. ANIMATION SETUP FOR FEEDBACK
+    // ==========================================
+    function initializeLottieAnimations() {
+        // Create containers for animations if they don't exist
+        if (!el('animation-container-correct')) {
+            const correctContainer = document.createElement('div');
+            correctContainer.id = 'animation-container-correct';
+            svg.parentElement.appendChild(correctContainer);
+        }
+        if (!el('animation-container-incorrect')) {
+            const incorrectContainer = document.createElement('div');
+            incorrectContainer.id = 'animation-container-incorrect';
+            svg.parentElement.appendChild(incorrectContainer);
+        }
+    }
+
+    function playCorrectAnimation(x, y) {
+        if (!window.lottie) return;
+        
+        const container = el('animation-container-correct');
+        if (!container) return;
+        
+        // Clear previous animation
+        if (correctAnimationInstance) {
+            correctAnimationInstance.destroy();
+        }
+        
+        // Position the container
+        container.style.left = (x - 100) + 'px';
+        container.style.top = (y - 100) + 'px';
+        container.innerHTML = '';
+        container.classList.add('show');
+        
+        // Load and play animation
+        correctAnimationInstance = lottie.loadAnimation({
+            container: container,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: './assets/animation/correct-confetti-anim.json'
+        });
+        
+        correctAnimationInstance.onComplete = () => {
+            container.classList.remove('show');
+        };
+    }
+
+    function playIncorrectAnimation(x, y) {
+        if (!window.lottie) return;
+        
+        const container = el('animation-container-incorrect');
+        if (!container) return;
+        
+        // Clear previous animation
+        if (incorrectAnimationInstance) {
+            incorrectAnimationInstance.destroy();
+        }
+        
+        // Position the container
+        container.style.left = (x - 100) + 'px';
+        container.style.top = (y - 100) + 'px';
+        container.innerHTML = '';
+        container.classList.add('show');
+        
+        // Load and play animation
+        incorrectAnimationInstance = lottie.loadAnimation({
+            container: container,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: './assets/animation/incorrect-cross-anim.json'
+        });
+        
+        incorrectAnimationInstance.onComplete = () => {
+            container.classList.remove('show');
+        };
+    }
+
+    function displayGalleryCompleteBadge(galleryElement) {
+        // Create SVG badge group if not exists
+        if (galleryElement.querySelector('.gallery-complete-checkmark')) {
+            return; // Badge already exists
+        }
+
+        // Get the bounding box of the gallery to position the badge correctly
+        let bbox = null;
+        try {
+            bbox = galleryElement.getBBox();
+        } catch (e) {
+            // Fallback if getBBox is not available or fails
+            console.log("Could not get gallery bounding box, using defaults");
+        }
+
+        // Calculate badge position (top-left corner with some padding)
+        const badgeRadius = 35;
+        const cx = bbox ? bbox.x + 25 : 120;  // 25px inset from left
+        const cy = bbox ? bbox.y + 30 : 90;  // 30px from top
+
+        // Create an SVG group for the badge
+        const badgeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        badgeGroup.setAttribute('class', 'gallery-complete-checkmark');
+
+        // Background circle - green color
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', badgeRadius);
+        circle.setAttribute('fill', 'url(#checkmarkGradient)');
+        circle.setAttribute('filter', 'url(#checkmarkShadow)');
+        badgeGroup.appendChild(circle);
+
+        // Checkmark path - white color
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M${cx - 15} ${cy} L${cx - 5} ${cy + 10} L${cx + 15} ${cy - 10}`);
+        path.setAttribute('stroke', 'white');
+        path.setAttribute('stroke-width', '4');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        badgeGroup.appendChild(path);
+
+        // Add animation class
+        badgeGroup.setAttribute('class', 'gallery-complete-checkmark badge-animate');
+
+        galleryElement.appendChild(badgeGroup);
+    }
+
+    // ==========================================
     // 3. INITIALIZATION
     // ==========================================
     function init() {
@@ -206,10 +343,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showSet(currentSetIndex);
         setupDragAndDrop();
+        
+        // Initialize animations
+        initializeLottieAnimations();
 
         Object.entries(ui.hallwayGalleries).forEach(([key, hall]) => {
             if (hall) {
                 hall.style.cursor = 'pointer';
+                // Display badge if already completed
+                if (completedGalleries.has(key)) {
+                    displayGalleryCompleteBadge(hall);
+                }
                 hall.addEventListener('click', () => {
                     if (isActivityComplete) {
                         window.selectMuseumGallery(key);
@@ -399,7 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
                         if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
                         if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
-                        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artifacts.";
+                        if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artefacts.";
                         
                         if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'block';
                     }
@@ -470,7 +614,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el(selected.objContainer)) el(selected.objContainer).style.display = 'block';
             if (ui.questionPanel) ui.questionPanel.style.display = 'block';
 
-            galleryData[galleryKey].currentQuestionIndex = 0;
+            // If user is revisiting, reset to first question if they've completed it
+            if (galleryData[galleryKey].completed) {
+                // User can revisit and answer again - reset to first question
+                galleryData[galleryKey].currentQuestionIndex = 0;
+            } else {
+                // First time - start from beginning
+                galleryData[galleryKey].currentQuestionIndex = 0;
+            }
+            
             updateClueUI(galleryKey);
 
             setupMuseumInteraction(galleryKey);
@@ -490,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleMuseumObjectClick(clickedElement, galleryKey) {
-        // First hide any active marks
+        // First hide any static marks
         if (ui.correctMark) ui.correctMark.style.display = 'none';
         if (ui.incorrectMark) ui.incorrectMark.style.display = 'none';
 
@@ -498,47 +650,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeQuestion = currentData.questions[currentData.currentQuestionIndex];
 
         const isCorrect = (clickedElement.id === activeQuestion.correctId);
-        const markToShow = isCorrect ? ui.correctMark : ui.incorrectMark;
-
-        if (markToShow) {
-            // Display the mark block before getting bounding box (Firefox workaround)
-            markToShow.style.display = 'block';
-
-            // Get local coordinate system boundaries to calculate the transform properly 
-            const targetBBox = clickedElement.getBBox();
-            const markBBox = markToShow.getBBox();
-
-            // Find center points 
-            const targetCenterX = targetBBox.x + (targetBBox.width / 2);
-            const targetCenterY = targetBBox.y + (targetBBox.height / 2);
-            
-            const markCenterX = markBBox.x + (markBBox.width / 2);
-            const markCenterY = markBBox.y + (markBBox.height / 2);
-
-            // Calculate translation offsets to place mark perfectly in the center
-            const tx = targetCenterX - markCenterX;
-            const ty = targetCenterY - markCenterY - 80;
-
-            // Apply SVG transform
-            markToShow.setAttribute('transform', `translate(${tx}, ${ty})`);
+        
+        // Get click position for animation
+        const rect = clickedElement.getBoundingClientRect();
+        const animX = rect.left + rect.width / 2;
+        const animY = rect.top + rect.height / 2;
+        
+        // Play animation
+        if (isCorrect) {
+            playCorrectAnimation(animX, animY);
+        } else {
+            playIncorrectAnimation(animX, animY);
         }
 
         // Handle progression or retry after selection
         if (isCorrect) {
             setTimeout(() => {
-                if (ui.correctMark) ui.correctMark.style.display = 'none'; 
-                
                 if (currentData.currentQuestionIndex < currentData.questions.length - 1) {
                     currentData.currentQuestionIndex++;
                     updateClueUI(galleryKey);
                 } else {
-                    console.log("Gallery Complete!");
+                    // Gallery complete!
+                    currentData.completed = true;
+                    completedGalleries.add(galleryKey);
+                    
+                    // Display badge on the gallery
+                    const galleryEl = ui.hallwayGalleries[galleryKey];
+                    if (galleryEl) {
+                        displayGalleryCompleteBadge(galleryEl);
+                    }
+                    
+                    console.log("Gallery Complete! User can revisit.");
                 }
             }, 1500); 
         } else {
-            // Also fade incorrect mark so the user can try again easily
+            // Invalid answer - user can try again
             setTimeout(() => {
-                if (ui.incorrectMark) ui.incorrectMark.style.display = 'none'; 
+                // Do nothing, let them try again
             }, 1500);
         }
     }

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="978" height="450" viewBox="0 0 978 450">
+  <defs>
+    <filter id="Rectangle_30" x="0" y="0" width="978" height="444" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_592" data-name="Group 592" transform="translate(-767 -432)">
+    <g transform="matrix(1, 0, 0, 1, 767, 432)" filter="url(#Rectangle_30)">
+      <rect id="Rectangle_30-2" data-name="Rectangle 30" width="960" height="426" rx="16" transform="translate(9 6)" fill="#fff"/>
+    </g>
+    <text id="Working_mechanism_of_lac_operon:_In_Absence_of_Inducer_lactose_:_The_repressor_protein_blocks_the_operator_region_preventing_transcription_of_structural_genes_z_y_and_a_._Hence_no_enzymes_are_produced._In_Presence_of_Inducer_lactose_:_Lactose_binds_" data-name="Working mechanism of lac operon:
+
+In Absence of Inducer (lactose):
+The repressor protein blocks the operator region, preventing transcription of structural genes (z, y and a). Hence no enzymes are produced.
+In Presence of Inducer (lactose):
+Lactose binds " transform="translate(803 464)" font-size="28" font-family="Roboto-Black, Roboto" font-weight="800"><tspan x="0" y="29">Working mechanism of lac operon:</tspan><tspan x="0" y="66"></tspan><tspan fill="#f7901e"><tspan x="0" y="103">In Absence of Inducer (lactose):</tspan></tspan><tspan font-family="Roboto-Regular, Roboto" font-weight="400"><tspan x="0" y="138">The repressor protein blocks the operator region, preventing transcription </tspan><tspan x="0" y="172">of structural genes (z, y and a). Hence no enzymes are produced.</tspan></tspan><tspan x="0" y="208"></tspan><tspan fill="#f7901e"><tspan x="0" y="245">In Presence of Inducer (lactose):</tspan></tspan><tspan font-family="Roboto-Regular, Roboto" font-weight="400"><tspan x="0" y="280">Lactose binds to the repressor, inactivating it. The makes the operator </tspan><tspan x="0" y="314">free, allowing transcription and production of β-galactosidase, permease </tspan><tspan x="0" y="348">and transacetylase. </tspan><tspan x="0" y="382"></tspan></tspan></text>
+  </g>
+</svg>
