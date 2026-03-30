@@ -577,6 +577,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       elements.homeBtn.classList.add("st170");
     }
+    const tspan = elements.showAnswerBtn?.querySelector("tspan");
+    if (tspan) tspan.textContent = "Show Answer";
   };
 
   // All valid Indian state/UT names that can appear on the map
@@ -739,7 +741,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (p.isPointInFill(pt)) {
             const bbox = p.getBBox();
             const area = bbox.width * bbox.height;
-            if (area > 0 && area < smallestArea && !p.id.includes("Kerala")) { smallestArea = area; bestPath = p; }
+            if (area > 0 && area < smallestArea && !p.id.includes("Kerala") && !p.id.includes("Meghalaya")) { smallestArea = area; bestPath = p; }
           }
         } catch (_) { }
       });
