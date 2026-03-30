@@ -120,7 +120,7 @@ window.Wg146 = {
             country: "Russia",
             works: ["War and Peace", "Anna Karenina"],
             funFacts: ["Inspired Mahatma Gandhi", "Served in the Crimean war", "Wrote some of the greatest works of Russian Literature"],
-            whyRead: "",
+            whyRead: "His thoughtful reflections on life are definitely worth a read.",
             portraitId: "portrait-leo-tolstoy"
         },
         {
@@ -159,7 +159,7 @@ window.Wg146 = {
             country: "USA",
             works: ["The Gift of the Magi", "The Last Leaf"],
             funFacts: ["Started writing stories while in jail!", "Real name was William Porter", "Famous for surprise endings"],
-            whyRead: "His short stories have the best surprise endings that make you go 'Wow!'",
+            whyRead: "His short stories have the best surprise endings that make you go 'Wow!'.",
             portraitId: "portrait-o-henry"
         },
         {
