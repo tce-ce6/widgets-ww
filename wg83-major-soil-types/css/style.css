@@ -316,9 +316,7 @@ svg * {
   display: none;
 }
 
-#reading-slope.step-2 .preview-btn {
-  display: block;
-}
+
 
 .option-list {
   display: flex;

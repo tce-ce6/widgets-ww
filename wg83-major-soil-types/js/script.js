@@ -85,6 +85,8 @@ function showStep2() {
 
   // 2. Hide summary, show soil-typeSection
   document.getElementById("summary-sec").style.display = "none";
+  const previewBtn = document.querySelector(".preview-btn");
+  if (previewBtn) previewBtn.style.display = "none";
 
   // 3. Hide error note
   const errorNote = document.getElementById("error-note");
@@ -349,6 +351,9 @@ function showSummary() {
 
   document.getElementById("summary-sec").style.display = "block";
 
+  const previewBtn = document.querySelector(".preview-btn");
+  if (previewBtn) previewBtn.style.display = "block";
+
   // Show soil map when summary is displayed
   const soilMap = document.getElementById("soil-map");
   if (soilMap) {
@@ -594,7 +599,7 @@ if (nextButtons.length > 1) {
     const soilMap = document.getElementById("soil-map");
     const optionListWrapper = document.getElementById("option-list-wrapper");
     const resetBtn = document.getElementById("reset-btn");
-    const previewBtn = document.querySelector(".preview-btn");
+
     const errorNote = document.getElementById("error-note");
 
     if (errorNote) {
@@ -809,6 +814,9 @@ if (homeBtn) {
     step1.style.display = "block";
     document.body.classList.remove("step-2");
     document.body.classList.add("step-1");
+
+    const previewBtn = document.querySelector(".preview-btn");
+    if (previewBtn) previewBtn.style.display = "none";
 
     const soilItems = document.querySelectorAll(".soil-list li");
     mapLocationCorrect = false;
