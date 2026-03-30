@@ -599,17 +599,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 bgCircle.setAttribute('fill', '#ffffff');
                 dynamicSectors.appendChild(bgCircle);
             }
+
+            // Original rect-centers for label groups (Group_1669 … Group_1674)
+            const labelIds = ["Group_1669","Group_1670","Group_1671","Group_1672","Group_1673","Group_1674"];
+            const origCenters = [[1537.5,453.09],[1445.5,673.09],[1260.5,603.09],[1216.5,489.09],[1258.5,393.09],[1352.5,325.09]];
+            const pieCx = 1411.5, pieCy = 536.59, pieR = 279;
             
             let currentStart = 0;
-            currentPieCategories.forEach((c) => {
+            currentPieCategories.forEach((c, catIdx) => {
                 let val = c.inputAngle || 0;
                 if (val > 0 && dynamicSectors) {
                     const sectorPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    sectorPath.setAttribute('d', describeArc(1411.5, 536.59, 279, currentStart, currentStart + val));
+                    sectorPath.setAttribute('d', describeArc(pieCx, pieCy, pieR, currentStart, currentStart + val));
                     sectorPath.setAttribute('fill', c.color); 
                     sectorPath.setAttribute('stroke', '#fff'); 
                     sectorPath.setAttribute('stroke-width', '2');
                     dynamicSectors.appendChild(sectorPath);
+
+                    // Reposition label to centroid of this sector
+                    if (catIdx < labelIds.length && c.plotted) {
+                        const midAngle = currentStart + val / 2;
+                        const midRad = (midAngle - 90) * Math.PI / 180.0;
+                        const labelR = pieR * (val < 45 ? 0.45 : 0.62);
+                        const lx = pieCx + labelR * Math.cos(midRad);
+                        const ly = pieCy + labelR * Math.sin(midRad);
+                        const lbl = document.getElementById(labelIds[catIdx]);
+                        if (lbl) {
+                            const [origX, origY] = origCenters[catIdx];
+                            lbl.setAttribute('transform', `translate(${lx - origX},${ly - origY})`);
+                        }
+                    }
                 }
                 
                 const pathEl = document.getElementById(c.pathId);
