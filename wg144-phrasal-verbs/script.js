@@ -1586,9 +1586,9 @@ var PRACTICE_SENTENCES = [
     head: "check",
     verb: "check off",
     sentence:
-      "As we finished packing each item for the picnic, we ________ it on the list.",
-    options: ["checked up on", "checked out", "checked off"],
-    correct: "checked off",
+      "As we finished packing each item for the picnic, we ________ on the list.",
+    options: ["checked up", "checked it out", "checked it off"],
+    correct: "checked it off",
   },
 ];
 
