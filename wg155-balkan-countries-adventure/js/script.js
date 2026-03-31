@@ -44,13 +44,78 @@ const AppState = {
     quizAttempted: false,
     score: 0,
     mapLocked: false,
-    mapEnabled: false
+    mapEnabled: false,
+    flagsLocked: false
 };
 
 const COUNTRY_IDS = [
     'bulgaria', 'serbia', 'croatia', 'north-macedonia', 'kosovo',
     'bosnia-and-herzegovina', 'greece', 'montenegro', 'albania', 'slovenia'
 ];
+
+const DEBUG_FLAGS = (() => {
+    try {
+        return typeof window !== 'undefined' &&
+            new URLSearchParams(window.location.search).has('debugFlags');
+    } catch {
+        return false;
+    }
+})();
+
+function debugFlagsLog(message, extra = {}) {
+    if (!DEBUG_FLAGS) return;
+    try {
+        const el = AppState?.elements?.flagsWrapper || document.getElementById('flags-wrapper');
+        const computed = el ? window.getComputedStyle(el) : null;
+        console.log('[flags]', message, {
+            flagsLocked: AppState?.flagsLocked,
+            mapLocked: AppState?.mapLocked,
+            mapEnabled: AppState?.mapEnabled,
+            wrapperClass: el?.getAttribute?.('class'),
+            stylePointerEvents: el?.style?.pointerEvents,
+            styleOpacity: el?.style?.opacity,
+            computedPointerEvents: computed?.pointerEvents,
+            computedOpacity: computed?.opacity,
+            ...extra
+        });
+    } catch (e) {
+        console.log('[flags]', message, extra, e);
+    }
+}
+
+function setFlagsEnabled(enabled) {
+    const el = AppState.elements.flagsWrapper;
+    if (!el) return;
+
+    if (enabled) {
+        el.classList.remove('disabled');
+        // Ensure SVG reflects class changes reliably.
+        el.setAttribute('class', 'flags-wrapper');
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+        debugFlagsLog('setFlagsEnabled(true)');
+        return;
+    }
+
+    el.classList.add('disabled');
+    // Ensure SVG reflects class changes reliably.
+    el.setAttribute('class', 'flags-wrapper disabled');
+    el.style.pointerEvents = 'none';
+    el.style.opacity = '0.55';
+    debugFlagsLog('setFlagsEnabled(false)');
+}
+
+function lockFlags() {
+    AppState.flagsLocked = true;
+    setFlagsEnabled(false);
+    debugFlagsLog('lockFlags()');
+}
+
+function unlockFlags() {
+    AppState.flagsLocked = false;
+    setFlagsEnabled(true);
+    debugFlagsLog('unlockFlags()');
+}
 
 function initCountryBoxes() {
     COUNTRY_IDS.forEach(id => {
@@ -59,6 +124,11 @@ function initCountryBoxes() {
         if (!box) return;
 
         box.addEventListener('click', () => {
+            if (AppState.flagsLocked) return;
+
+            // Lock flags immediately after a flag is selected.
+            // They are re-enabled after map feedback is shown.
+            if (!AppState.mapLocked) lockFlags();
 
             // store selected country
             AppState.selectedCountry = id;
@@ -98,6 +168,7 @@ function initMapDropCheck() {
             if (AppState.selectedCountry !== scenarioTarget) {
                 if (wrongFlagPopup) {
                     wrongFlagPopup.style.display = 'block';
+                    unlockFlags();
                     setTimeout(() => { wrongFlagPopup.style.display = 'none'; }, 2000);
                 }
                 AppState.wrongMapAttempts++;
@@ -106,6 +177,7 @@ function initMapDropCheck() {
             else if (id !== AppState.selectedCountry) {
                 if (tryAgainPopup) {
                     tryAgainPopup.style.display = 'block';
+                    unlockFlags();
                     setTimeout(() => { tryAgainPopup.style.display = 'none'; }, 2000);
                 }
                 AppState.wrongMapAttempts++;
@@ -115,6 +187,7 @@ function initMapDropCheck() {
                 const { correctAnswerPopup, lottieWrapper, correctLottie } = AppState.elements;
                 if (correctAnswerPopup) {
                     correctAnswerPopup.style.display = 'block';
+                    unlockFlags();
                     setTimeout(() => { correctAnswerPopup.style.display = 'none'; }, 2000);
                 }
                 if (lottieWrapper) lottieWrapper.style.display = 'block';
@@ -179,6 +252,7 @@ function resetStepTwo() {
     AppState.quizAttempted = false;
     AppState.mapLocked = false;
     AppState.mapEnabled = false;
+    AppState.flagsLocked = false;
     AppState.selectedCountry = null;
     AppState.currentCountryData = null;
 
@@ -242,9 +316,7 @@ function resetStepTwo() {
 
     // 6. Enable flags-wrapper for the next turn
     if (AppState.elements.flagsWrapper) {
-        AppState.elements.flagsWrapper.classList.remove('disabled');
-        AppState.elements.flagsWrapper.style.opacity = '1';
-        AppState.elements.flagsWrapper.style.pointerEvents = 'auto';
+        unlockFlags();
     }
 
     // 7. Reset quiz elements (text and options)
@@ -288,7 +360,7 @@ function handleNextQuestion() {
         if (AppState.elements.lottieWrapper) AppState.elements.lottieWrapper.style.display = 'none';
         
         // Disable flags wrapper
-        if (AppState.elements.flagsWrapper) AppState.elements.flagsWrapper.classList.add('disabled');
+        lockFlags();
 
         // Hide all flags from map
         COUNTRY_IDS.forEach(id => {
@@ -435,6 +507,18 @@ function initElements() {
     AppState.elements.map = document.getElementById('map');
 
     AppState.elements.flagsWrapper = document.getElementById('flags-wrapper');
+    if (AppState.elements.flagsWrapper) {
+        const blockIfLocked = (e) => {
+            if (!AppState.flagsLocked) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+        };
+        // Capture-phase block ensures no child listeners fire while locked.
+        AppState.elements.flagsWrapper.addEventListener('click', blockIfLocked, true);
+        AppState.elements.flagsWrapper.addEventListener('pointerdown', blockIfLocked, true);
+        AppState.elements.flagsWrapper.addEventListener('touchstart', blockIfLocked, true);
+    }
     AppState.elements.iText2 = document.getElementById('i-text2');
     AppState.elements.btnQuiz = document.getElementById('btn-quiz');
     AppState.elements.questionContainer = document.getElementById('question-container');
@@ -633,10 +717,8 @@ function handleCountryClick(countryId) {
             AppState.elements.btnQuiz.style.display = 'block';
         }
         
-        // Disable flags after selection
-        if (AppState.elements.flagsWrapper) {
-            AppState.elements.flagsWrapper.classList.add('disabled');
-        }
+        // Disable flags after selection (quiz hasn't started yet)
+        lockFlags();
     }
 }
 
@@ -766,7 +848,7 @@ function attachEventListeners() {
 
             // Re-enable flags wrapper so a new selection can be made
             if (AppState.elements.flagsWrapper) {
-                AppState.elements.flagsWrapper.classList.remove('disabled');
+                unlockFlags();
             }
         });
 
@@ -788,6 +870,8 @@ function attachEventListeners() {
         if (element) {
             element.style.cursor = 'pointer';
             element.addEventListener('click', () => {
+                if (AppState.flagsLocked) return;
+                if (!AppState.mapLocked) lockFlags();
 
                 // Hide result popups from previous round
                 if (AppState.elements.correctAnswerPopup) {
@@ -813,7 +897,7 @@ function attachEventListeners() {
                     }
 
                     if (AppState.elements.flagsWrapper) {
-                        AppState.elements.flagsWrapper.classList.remove('disabled');
+                        unlockFlags();
                     }
 
                     return; // ❗ stop here, don't run handleCountryClick
@@ -852,10 +936,8 @@ function handleBtnQuizClick() {
     // Show the question container
     if (questionContainer) questionContainer.style.display = 'block';
 
-    // Disable flags wrapper once quiz starts
-    if (AppState.elements.flagsWrapper) {
-        AppState.elements.flagsWrapper.classList.add('disabled');
-    }
+    // Note: do not lock flags on Quiz click.
+    // Flags are locked when a flag is selected for the map phase.
 
     // Populate question text
     if (questionTxt && data) {
@@ -956,10 +1038,8 @@ function handleOptionClick(li) {
             if (opt) opt.classList.add('disabled');
         });
 
-        // Re-enable the flags wrapper so a new selection can be made
-        if (AppState.elements.flagsWrapper) {
-            AppState.elements.flagsWrapper.classList.remove('disabled');
-        }
+        // Quiz is done; allow user to choose ONE flag for the map.
+        unlockFlags();
 
         const chooseFlagPopup = document.getElementById('choose-flag-popup');
         const tickMark = document.getElementById('tick-mark');
@@ -1036,9 +1116,7 @@ function handleOptionClick(li) {
                     });
                     // Re-enable flags wrapper and enable map so user can proceed
                     AppState.mapEnabled = true;
-                    if (AppState.elements.flagsWrapper) {
-                        AppState.elements.flagsWrapper.classList.remove('disabled');
-                    }
+                    unlockFlags();
                     // Now show fact-bite popup with country data
                     if (factBitePopup) {
                         if (countryTitle) countryTitle.textContent = data.country || '';
@@ -1068,6 +1146,7 @@ function handleOptionClick(li) {
             // 1st wrong attempt: show try-again popup
             if (tryAgainPopup) {
                 tryAgainPopup.style.display = 'block';
+                unlockFlags();
                 setTimeout(() => {
                     tryAgainPopup.style.display = 'none';
                 }, 2000);
@@ -1096,6 +1175,7 @@ function initLayerWrongClicks() {
             if (AppState.selectedCountry !== scenarioTarget) {
                 if (wrongFlagPopup) {
                     wrongFlagPopup.style.display = 'block';
+                    unlockFlags();
                     setTimeout(() => { wrongFlagPopup.style.display = 'none'; }, 2000);
                 }
                 AppState.wrongMapAttempts++;
@@ -1105,6 +1185,7 @@ function initLayerWrongClicks() {
                 const tryAgainPopup = AppState.elements.tryAgainPopup;
                 if (tryAgainPopup) {
                     tryAgainPopup.style.display = 'block';
+                    unlockFlags();
                     setTimeout(() => { tryAgainPopup.style.display = 'none'; }, 2000);
                 }
                 AppState.wrongMapAttempts++;
@@ -1178,8 +1259,8 @@ function initDistractors() {
                     AppState.elements.btnQuiz.style.display = 'none';
                 }
 
-                if (AppState.elements.flagsWrapper) {
-                    AppState.elements.flagsWrapper.classList.remove('disabled');
+                    if (AppState.elements.flagsWrapper) {
+                    unlockFlags();
                 }
 
                 return;
