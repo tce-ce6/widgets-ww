@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T14:03:09+05:30",
+      "updatedAt": "2026-03-31T16:04:03+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
@@ -399,6 +399,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T16:04:03+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement vowel twins educational widget with interactive learning screens and word-building activities",
+      "widgets": [
+        157
+      ]
+    },
+    {
       "date": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc",
       "message": "wg155 wg 133 changes",
@@ -407,6 +415,14 @@
         133,
         155,
         156
+      ]
+    },
+    {
+      "date": "2026-03-31T15:44:17+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement vowel team learning widget with interactive word practice and CSS styling",
+      "widgets": [
+        157
       ]
     },
     {
@@ -629,23 +645,6 @@
       "message": "Update index.html",
       "widgets": [
         114
-      ]
-    },
-    {
-      "date": "2026-03-31T10:21:19+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement Lottie animation overlay and screen navigation logic for interactive widget",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-31T01:26:13+05:30",
-      "author": "ShyamsundarHait",
-      "message": "new files implemented",
-      "widgets": [
-        144,
-        157
       ]
     }
   ]
