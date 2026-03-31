@@ -337,7 +337,7 @@
       "author": "PrasannaP"
     },
     "wg85-build-a-paragraph": {
-      "updatedAt": "2026-03-31T16:53:39+05:30",
+      "updatedAt": "2026-03-31T17:17:32+05:30",
       "author": "PrasannaP"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
@@ -398,6 +398,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T17:17:32+05:30",
+      "author": "PrasannaP",
+      "message": "fix: update paragraph annotations and improve sentence clarity in script.js",
+      "widgets": [
+        85
+      ]
+    },
     {
       "date": "2026-03-31T17:08:05+05:30",
       "author": "tce-nitinc",
@@ -635,14 +643,6 @@
       "date": "2026-03-31T12:29:31+05:30",
       "author": "PrasannaP",
       "message": "v3",
-      "widgets": [
-        159
-      ]
-    },
-    {
-      "date": "2026-03-31T12:25:03+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
       "widgets": [
         159
       ]
