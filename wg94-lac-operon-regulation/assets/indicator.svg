@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="395" height="501" viewBox="0 0 395 501">
+  <defs>
+    <filter id="Rectangle_229" x="0" y="0" width="395" height="501" filterUnits="userSpaceOnUse">
+      <feOffset dx="-10" dy="10" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.251"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_598" data-name="Group 598" transform="translate(-1053 -355)">
+    <g transform="matrix(1, 0, 0, 1, 1053, 355)" filter="url(#Rectangle_229)">
+      <rect id="Rectangle_229-2" data-name="Rectangle 229" width="365" height="471" rx="23" transform="translate(25 5)" fill="#fff"/>
+    </g>
+    <g id="Group_597" data-name="Group 597" transform="translate(1109 400.69)">
+      <path id="Path_1042" data-name="Path 1042" d="M290.78,88.649a144.5,144.5,0,0,0-32.425-46.133,151.354,151.354,0,0,0-48.1-31.1,157.73,157.73,0,0,0-117.831,0,151.32,151.32,0,0,0-48.1,31.1A144.5,144.5,0,0,0,11.9,88.649a140.1,140.1,0,0,0,0,113.014A144.469,144.469,0,0,0,44.325,247.8a151.354,151.354,0,0,0,48.1,31.1,157.761,157.761,0,0,0,117.828,0,151.32,151.32,0,0,0,48.1-31.1,144.5,144.5,0,0,0,32.425-46.133,140.118,140.118,0,0,0,0-113.014ZM72.183,69.234A115.637,115.637,0,0,1,215.354,57.041L59.471,206.552a103.611,103.611,0,0,1-20.077-61.4C39.393,116.477,51.037,89.512,72.183,69.234ZM230.5,221.079A115.632,115.632,0,0,1,87.329,233.272L243.209,83.758a103.613,103.613,0,0,1,20.077,61.4c0,28.679-11.644,55.644-32.789,75.923Z" transform="translate(0 0)" fill="#dd2638"/>
+    </g>
+    <text id="No_Enzyme_Production" data-name="No Enzyme
+Production" transform="translate(1261 741)" font-size="35" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="-88.551" y="0">No Enzyme</tspan><tspan x="-86.312" y="42">Production</tspan></text>
+  </g>
+</svg>
