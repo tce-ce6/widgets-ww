@@ -155,24 +155,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const row = document.getElementById('slotsRow');
     row.innerHTML = '';
 
-    word.split('').forEach((ch, i) => {
-      if (ch === ' ') {
+    const words = word.split(' ');
+    let globalIndex = 0;
+
+    words.forEach((w, wi) => {
+      // Space-gap separator between words
+      if (wi > 0) {
         const gap = document.createElement('div');
         gap.className = 'letter-slot space-gap';
         row.appendChild(gap);
-        return;
+        globalIndex++; // account for the space char in the full string
       }
-      const slot = document.createElement('div');
-      const blankEntry = blanks.find(b => b.index === i);
-      if (blankEntry) {
-        slot.className = 'letter-slot blank';
-        slot.dataset.blankIdx = blanks.indexOf(blankEntry);
-        slot.onclick = () => selectBlank(blanks.indexOf(blankEntry));
-      } else {
-        slot.className = 'letter-slot given';
-        slot.textContent = ch;
-      }
-      row.appendChild(slot);
+
+      const group = document.createElement('div');
+      group.className = 'word-group';
+
+      w.split('').forEach((ch, li) => {
+        const i = globalIndex + li;
+        const slot = document.createElement('div');
+        const blankEntry = blanks.find(b => b.index === i);
+        if (blankEntry) {
+          slot.className = 'letter-slot blank';
+          slot.dataset.blankIdx = blanks.indexOf(blankEntry);
+          slot.onclick = () => selectBlank(blanks.indexOf(blankEntry));
+        } else {
+          slot.className = 'letter-slot given';
+          slot.textContent = ch;
+        }
+        group.appendChild(slot);
+      });
+
+      row.appendChild(group);
+      globalIndex += w.length;
     });
   }
 

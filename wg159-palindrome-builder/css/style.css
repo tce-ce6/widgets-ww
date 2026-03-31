@@ -290,6 +290,13 @@ body::before {
   padding: 0 8px;
 }
 
+.word-group {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: center;
+}
+
 .letter-slot {
   width: 52px;
   height: 60px;
