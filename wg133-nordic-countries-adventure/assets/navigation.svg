@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="225.57" height="91.081" viewBox="0 0 225.57 91.081" overflow="visible">
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="91.081" viewBox="0 0 300 91.081">
   <g id="Layer_30" data-name="Layer 30" transform="translate(0 10.237)">
     <g id="Layer_127" data-name="Layer 127" transform="translate(86.571)">
       <g id="Layer_32" data-name="Layer 32">
-        <text id="EUROPE" transform="translate(0 29)" fill="#0f171a" font-size="38" font-family="MyriadPro-Bold, Myriad Pro" font-weight="700"><tspan x="0" y="0">EUROPE</tspan></text>
+        <text id="EUROPE" transform="translate(0 29)" fill="#0f171a" font-size="38" font-family="MyriadPro-Bold, Myriad Pro, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">EUROPE</tspan></text>
       </g>
     </g>
     <g id="Layer_126" data-name="Layer 126" transform="translate(87.933 38.816)">
       <g id="Layer_31" data-name="Layer 31">
-        <text id="POLITICAL" transform="translate(0 14)" fill="#0f171a" font-size="19" font-family="MyriadPro-Bold, Myriad Pro" font-weight="700"><tspan x="0" y="0">POLITICAL</tspan></text>
+        <text id="POLITICAL" transform="translate(0 14)" fill="#0f171a" font-size="19" font-family="MyriadPro-Bold, Myriad Pro, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">POLITICAL</tspan></text>
       </g>
     </g>
     <g id="Layer_125" data-name="Layer 125" transform="translate(0 44.097)">
@@ -20,7 +20,7 @@
     </g>
     <g id="Layer_124" data-name="Layer 124" transform="translate(0.169 0.763)">
       <g id="Layer_24" data-name="Layer 24">
-        <text id="N" transform="translate(0 34)" font-size="45" font-family="MyriadPro-Bold, Myriad Pro" font-weight="700"><tspan x="0" y="0">N</tspan></text>
+        <text id="N" transform="translate(0 34)" font-size="45" font-family="MyriadPro-Bold, Myriad Pro, Arial, sans-serif" font-weight="700"><tspan x="0" y="0">N</tspan></text>
       </g>
     </g>
   </g>
