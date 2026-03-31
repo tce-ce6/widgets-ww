@@ -177,7 +177,7 @@ svg * {
 .btn-wrap::before {
   font-size: 40px;
   position: absolute;
-  top: 20px;
+  top: 50px;
   left: 50%;
   transform: translateX(-50%);
   font-weight: 600;
@@ -292,6 +292,6 @@ svg * {
   color: #cdaf9b;
   font-size: 36px;
   margin-top: 30px;
-  margin-left: 30px;
+  margin-left: 400px;
   display: block;
 }

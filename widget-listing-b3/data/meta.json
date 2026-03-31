@@ -49,7 +49,7 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-30T19:01:02+05:30",
+      "updatedAt": "2026-03-31T11:43:46+05:30",
       "author": "sushantthe"
     },
     "wg115-literary-device": {
@@ -121,12 +121,12 @@
       "author": "sushantthe"
     },
     "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-03-27T18:59:50+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-03-30T21:55:23+05:30",
+      "author": "PrasannaP"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-30T19:19:46+05:30",
+      "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
       "updatedAt": "2026-03-25T16:29:08+05:30",
@@ -197,12 +197,20 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP"
+      "updatedAt": "2026-03-30T19:19:46+05:30",
+      "author": "tce-nitinc"
     },
     "wg156-sound-machine": {
       "updatedAt": "2026-03-30T10:29:56+05:30",
       "author": "tce-nitinc"
+    },
+    "wg158-tricky-word-collector": {
+      "updatedAt": "2026-03-30T21:37:03+05:30",
+      "author": "sushantthe"
+    },
+    "wg159-palindrome-builder": {
+      "updatedAt": "2026-03-30T21:37:03+05:30",
+      "author": "sushantthe"
     },
     "wg17-locating-decimals-v2": {
       "updatedAt": "2026-03-25T18:28:39+05:30",
@@ -297,7 +305,7 @@
       "author": "Santosh"
     },
     "wg79-rhyme-scheme-2": {
-      "updatedAt": "2026-03-30T16:56:21+05:30",
+      "updatedAt": "2026-03-30T19:28:14+05:30",
       "author": "tce-ashishg"
     },
     "wg80-forming-landforms": {
@@ -321,8 +329,8 @@
       "author": "PrasannaP"
     },
     "wg85-build-a-paragraph": {
-      "updatedAt": "2026-03-30T13:25:32+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-03-30T21:21:00+05:30",
+      "author": "PrasannaP"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
       "updatedAt": "2026-03-23T15:26:13+05:30",
@@ -357,7 +365,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-30T18:48:24+05:30",
+      "updatedAt": "2026-03-30T19:19:46+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -382,6 +390,179 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T11:43:46+05:30",
+      "author": "sushantthe",
+      "message": "feat: add base stylesheet for widget layout and component styling",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-31T11:26:01+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize project structure with index.html and script.js for Barter Fails, Money Wins widget",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-31T10:25:26+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-31T10:21:19+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement Lottie animation overlay and screen navigation logic for interactive widget",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-30T21:55:23+05:30",
+      "author": "PrasannaP",
+      "message": "132 v1",
+      "widgets": [
+        132
+      ]
+    },
+    {
+      "date": "2026-03-30T21:54:59+05:30",
+      "author": "PrasannaP",
+      "message": "text change",
+      "widgets": [
+        132
+      ]
+    },
+    {
+      "date": "2026-03-30T21:37:03+05:30",
+      "author": "sushantthe",
+      "message": "feat: update font family to Roboto for improved typography consistency across widgets",
+      "widgets": [
+        158,
+        159
+      ]
+    },
+    {
+      "date": "2026-03-30T21:36:18+05:30",
+      "author": "PrasannaP",
+      "message": "</tspan>",
+      "widgets": [
+        132
+      ]
+    },
+    {
+      "date": "2026-03-30T21:21:53+05:30",
+      "author": "sushantthe",
+      "message": "fix: adjust padding for button styling in the Palindrome Builder widget",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-30T21:21:00+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        85,
+        132
+      ]
+    },
+    {
+      "date": "2026-03-30T21:19:28+05:30",
+      "author": "sushantthe",
+      "message": "feat: update title and widget name to Palindrome Builder; adjust CSS for layout consistency",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-30T21:08:06+05:30",
+      "author": "sushantthe",
+      "message": "feat: add btn-wg151 class for consistent button styling and update Change Path button",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-30T20:54:32+05:30",
+      "author": "sushantthe",
+      "message": "feat: reposition Change Path button to fixed bottom-right for improved accessibility",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-30T20:51:59+05:30",
+      "author": "sushantthe",
+      "message": "Add Palindrome Builder widget with styling, HTML structure, and JavaScript functionality",
+      "widgets": [
+        158,
+        159
+      ]
+    },
+    {
+      "date": "2026-03-30T20:17:12+05:30",
+      "author": "PrasannaP",
+      "message": "review1",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-30T19:49:27+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-30T19:34:56+05:30",
+      "author": "sushantthe",
+      "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-30T19:28:14+05:30",
+      "author": "tce-ashishg",
+      "message": "wg79 click issue resolved",
+      "widgets": [
+        79
+      ]
+    },
+    {
+      "date": "2026-03-30T19:19:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 94 fixes",
+      "widgets": [
+        94,
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-30T19:16:09+05:30",
+      "author": "tce-ashishg",
+      "message": "wg79 click issue resolved",
+      "widgets": [
+        79
+      ]
+    },
+    {
+      "date": "2026-03-30T19:05:14+05:30",
+      "author": "PrasannaP",
+      "message": "fix1",
+      "widgets": [
+        85
+      ]
+    },
     {
       "date": "2026-03-30T19:01:02+05:30",
       "author": "sushantthe",
@@ -455,205 +636,6 @@
         61,
         79,
         122
-      ]
-    },
-    {
-      "date": "2026-03-30T16:50:24+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-03-30T16:38:11+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        61,
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP",
-      "message": "rever 414 sushant PR",
-      "widgets": [
-        24,
-        42,
-        52,
-        53,
-        61,
-        69,
-        70,
-        73,
-        74,
-        77,
-        83,
-        84,
-        91,
-        98,
-        101,
-        109,
-        114,
-        118,
-        127,
-        133,
-        135,
-        137,
-        138,
-        146,
-        148,
-        151,
-        153,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-30T16:22:43+05:30",
-      "author": "sushantthe",
-      "message": "Adjust SVG rectangle position and enhance outline visibility handling in script.js",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-30T15:11:13+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 error resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T15:02:51+05:30",
-      "author": "sushantthe",
-      "message": "Refactor SVG elements and improve Lottie animation handling in index.html and script.js",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-30T14:32:10+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: implement crop data and facts repository for Indian agriculture visualization",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-30T14:31:49+05:30",
-      "author": "tce-nitinc",
-      "message": "wg83 changes",
-      "widgets": [
-        83
-      ]
-    },
-    {
-      "date": "2026-03-30T14:06:59+05:30",
-      "author": "PrasannaP",
-      "message": "b3_wg140_260330_5",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T14:06:40+05:30",
-      "author": "PrasannaP",
-      "message": "images changed",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T13:56:17+05:30",
-      "author": "PrasannaP",
-      "message": "v4 140",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T13:52:10+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T13:29:59+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: initialize CropMap India widget with base HTML, CSS, and script structure",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-30T13:25:32+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg 85",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-30T13:25:06+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 94 changes",
-      "widgets": [
-        94
-      ]
-    },
-    {
-      "date": "2026-03-30T13:19:33+05:30",
-      "author": "tce-ashishg",
-      "message": "images updated",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T13:09:17+05:30",
-      "author": "tce-nitinc",
-      "message": "wg85",
-      "widgets": [
-        85,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-30T13:00:26+05:30",
-      "author": "PrasannaP",
-      "message": "todo fix next font",
-      "widgets": [
-        140
-      ]
-    },
-    {
-      "date": "2026-03-30T12:52:55+05:30",
-      "author": "tce-nitinc",
-      "message": "wg83",
-      "widgets": [
-        83,
-        94,
-        133
-      ]
-    },
-    {
-      "date": "2026-03-30T12:44:02+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: initialize CropMap India widget with base HTML structure and script file",
-      "widgets": [
-        151
-      ]
-    },
-    {
-      "date": "2026-03-30T12:42:09+05:30",
-      "author": "PrasannaP",
-      "message": "content fix",
-      "widgets": [
-        146
       ]
     }
   ]

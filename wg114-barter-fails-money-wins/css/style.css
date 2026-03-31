@@ -8,6 +8,43 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Pre-hide all screens to prevent flash on refresh; JS shows the correct ones */
+#intro-panel,
+#btn-menu,
+#limitation01-sc01-base-screen,
+#limitation01-sc01-cards,
+#limitation01-sc01-incorrect,
+#limitation01-sc01-correct,
+#limitation01-sc01-end-feedback,
+#limitation01-sc02-base-screen,
+#limitation01-sc02-cards,
+#limitation01-sc02-incorrect,
+#limitation01-sc02-correct,
+#limitation01-sc02-end-feedback,
+#limitation02-sc01-base-screen,
+#limitation02-sc01-cards,
+#limitation02-sc01-correct-01,
+#limitation02-sc01-correct-02,
+#limitation02-sc01-end-feedback,
+#limitation02-sc01-incorrect,
+#limitation02-sc02-base-screen,
+#limitation02-sc02-correct-01,
+#limitation02-sc02-correct-02,
+#limitation02-sc02-end-feedback,
+#limitation02-sc02-incorrect,
+#limitation03-sc01-base-screen,
+#limitation03-sc01-end-feedback,
+#limitation03-sc02-base-screen,
+#limitation03-sc02-failure-popup,
+#conclusion-base-screen,
+#solution-popup,
+#insights-popup,
+#Group_594-2,
+#Group_1566,
+#btn-next {
+  display: none;
+}
+
 #idiom-wrapper body {
   box-sizing: border-box;
   outline: none;
