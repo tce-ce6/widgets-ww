@@ -161,7 +161,7 @@
       "author": "aditya"
     },
     "wg144-phrasal-verbs": {
-      "updatedAt": "2026-03-31T15:23:01+05:30",
+      "updatedAt": "2026-03-31T18:33:45+05:30",
       "author": "sushantthe"
     },
     "wg145-multiplication-builder": {
@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T16:04:03+05:30",
+      "updatedAt": "2026-03-31T16:50:51+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
@@ -399,11 +399,27 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T18:33:45+05:30",
+      "author": "sushantthe",
+      "message": "feat: add phrasal verbs data and spiral hole UI script",
+      "widgets": [
+        144
+      ]
+    },
+    {
       "date": "2026-03-31T18:30:37+05:30",
       "author": "tce-ashishg",
       "message": "wg132 issue resolved",
       "widgets": [
         132
+      ]
+    },
+    {
+      "date": "2026-03-31T18:30:15+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement UI styles and logic for phrasal verbs learning and practice widget",
+      "widgets": [
+        144
       ]
     },
     {
@@ -421,6 +437,14 @@
       "message": "156 fixes",
       "widgets": [
         156
+      ]
+    },
+    {
+      "date": "2026-03-31T18:10:51+05:30",
+      "author": "sushantthe",
+      "message": "feat: add phrasal verbs data and spiral hole UI component",
+      "widgets": [
+        144
       ]
     },
     {
@@ -474,6 +498,14 @@
       ]
     },
     {
+      "date": "2026-03-31T17:11:20+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement core logic and state management for phrasal verb learning and practice app",
+      "widgets": [
+        144
+      ]
+    },
+    {
       "date": "2026-03-31T17:08:05+05:30",
       "author": "tce-nitinc",
       "message": "wg156 fixes",
@@ -488,6 +520,15 @@
       "message": "fix: prevent race conditions and double-clicks in handleShowAnswer using debounce and event handling",
       "widgets": [
         85
+      ]
+    },
+    {
+      "date": "2026-03-31T16:50:51+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement phrasal verbs widget with interactive flashcards and practice modes",
+      "widgets": [
+        144,
+        157
       ]
     },
     {
@@ -606,46 +647,6 @@
       "widgets": [
         133,
         155
-      ]
-    },
-    {
-      "date": "2026-03-31T14:32:42+05:30",
-      "author": "PrasannaP",
-      "message": "v4",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-31T14:03:09+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:37:01+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:35:41+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel teams data structure and audio playback logic for wg157-vowel-twins",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:35:02+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
-      "widgets": [
-        157
       ]
     }
   ]
