@@ -59,12 +59,16 @@ function setFlagsEnabled(enabled) {
 
     if (enabled) {
         el.classList.remove('disabled');
+        // Ensure SVG reflects class changes reliably.
+        el.setAttribute('class', 'flags-wrapper');
         el.style.pointerEvents = 'auto';
         el.style.opacity = '1';
         return;
     }
 
     el.classList.add('disabled');
+    // Ensure SVG reflects class changes reliably.
+    el.setAttribute('class', 'flags-wrapper disabled');
     el.style.pointerEvents = 'none';
     el.style.opacity = '0.55';
 }
@@ -88,9 +92,9 @@ function initCountryBoxes() {
         box.addEventListener('click', () => {
             if (AppState.flagsLocked) return;
 
-            // Only lock flags during the "choose flag -> tap map" phase.
-            // (Pre-quiz selection should remain changeable.)
-            if (AppState.mapEnabled && !AppState.mapLocked) lockFlags();
+            // Lock flags immediately after a flag is selected.
+            // They are re-enabled after map feedback is shown.
+            if (!AppState.mapLocked) lockFlags();
 
             // store selected country
             AppState.selectedCountry = id;
@@ -833,7 +837,7 @@ function attachEventListeners() {
             element.style.cursor = 'pointer';
             element.addEventListener('click', () => {
                 if (AppState.flagsLocked) return;
-                if (AppState.mapEnabled && !AppState.mapLocked) lockFlags();
+                if (!AppState.mapLocked) lockFlags();
 
                 // Hide result popups from previous round
                 if (AppState.elements.correctAnswerPopup) {
@@ -898,8 +902,8 @@ function handleBtnQuizClick() {
     // Show the question container
     if (questionContainer) questionContainer.style.display = 'block';
 
-    // Disable flags wrapper once quiz starts
-    lockFlags();
+    // Note: do not lock flags on Quiz click.
+    // Flags are locked when a flag is selected for the map phase.
 
     // Populate question text
     if (questionTxt && data) {
