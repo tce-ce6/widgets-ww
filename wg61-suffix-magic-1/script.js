@@ -802,11 +802,6 @@ function hideAllAnswers(wordObj, completedAnswers) {
   completedAnswers.forEach((answer, index) => {
     const cleanAnswer = answer.trim();
 
-    if (wordSlots[index]) {
-      wordSlots[index].textContent = cleanAnswer;
-      wordSlots[index].style.display = "block";
-    }
-
     if (map) {
       const groupEl = document.getElementById(map.container);
       if (groupEl) groupEl.style.display = 'block';
@@ -852,18 +847,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // const finalWord = document.getElementById("final-Word");
 
-  let correctSuffixes = [];
-  let answers = [];
-  let selectedSuffixes = [];
-  let completedAnswers = [];
-
-  const wordSlots = [
-    document.getElementById('word1'),
-    document.getElementById('word2'),
-    document.getElementById('word3'),
-    document.getElementById('word4'),
-    document.getElementById('word5')
-  ];
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
@@ -895,6 +878,11 @@ document.addEventListener("DOMContentLoaded", () => {
     wordObj = picker.getNext();
     const d = wordObj.details;
 
+    const alertPopup = document.getElementById('alert-popup');
+    if (alertPopup) {
+      alertPopup.style.display = 'none';
+    }
+
     // currentWordObj = wordObj;
 
     const imgEl = document.getElementById('objects-img');
@@ -920,9 +908,14 @@ document.addEventListener("DOMContentLoaded", () => {
       showAnswerBtn.textContent = 'Show Answer';
       showAnswerBtn.disabled = false;
     }
-    // reset word slots
-    wordSlots.forEach(ws => {
-      if (ws) ws.textContent = "";
+    // reset word slots across all groups
+    groupContainers.forEach(gc => {
+      const container = document.getElementById(gc);
+      if (container) {
+        container.querySelectorAll('span').forEach(span => {
+          span.textContent = "";
+        });
+      }
     });
 
     // reset slots
@@ -1075,49 +1068,49 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers.push(combined);
     updateStarsDisplay(answers.length, completedAnswers.length);
 
-
-    /* ---- ASSIGN TO word1, word2, ... ---- */
-    if (wordSlots[wordIndex]) {
-      wordSlots[wordIndex].textContent = combined;
-
-      // Map object name to group container id and prefix used by foreignObjects
-      const mapping = {
-        tree: { container: 'treeWords', prefix: 'treeWord' },
-        milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
-        mountain: { container: 'mountainWords', prefix: 'mountainWord' },
-        stone: { container: 'stoneObjects', prefix: 'stoneWord' }
-      };
-
-      const map = mapping[object];
-      if (map) {
-        // show group container
-        const groupEl = document.getElementById(map.container);
-        if (groupEl) groupEl.style.display = 'block';
-
-        // show & populate the specific foreignObject slot (e.g., treeWord2)
-        const slotId = `${map.prefix}${wordIndex + 1}`;
-        const fo = document.getElementById(slotId);
-        if (fo) {
-          setTimeout(() => {
-            fo.style.display = 'block';
-            const span = fo.querySelector('span');
-            if (span) span.textContent = combined;
-          }, 1500)
-
-        }
+    const d = wordObj.details;
+    if (d.spelling_alert && d.spelling_alert.toLowerCase().includes(combined.toLowerCase())) {
+      const alertPopup = document.getElementById('alert-popup');
+      const alertTextBody = document.getElementById('alert-text-body');
+      if (alertPopup && alertTextBody) {
+        alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
+        alertPopup.style.display = 'block';
       }
+    }
 
-      // ensure the lottie container for this leaf is visible and play animation
-      const lottieContainer = document.getElementById(`${object}-${wordIndex}`);
-      if (lottieContainer) lottieContainer.style.display = 'block';
 
-      // populate any element with id wordN (tspan or span) as a fallback
-      const genericWordEl = document.getElementById(`word${wordIndex + 1}`);
-      if (genericWordEl) genericWordEl.textContent = combined;
+    /* ---- ASSIGN TO CORRECT VISUAL SLOT ---- */
+    const mapping = {
+      tree: { container: 'treeWords', prefix: 'treeWord' },
+      milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
+      mountain: { container: 'mountainWords', prefix: 'mountainWord' },
+      stone: { container: 'stoneObjects', prefix: 'stoneWord' }
+    };
 
-      playCorrectAnswerLottie(object);
-      wordIndex++;
-      showExample.style.display = 'block';
+    const map = mapping[object];
+    if (map) {
+      // show group container
+      const groupEl = document.getElementById(map.container);
+      if (groupEl) groupEl.style.display = 'block';
+
+      // show & populate the specific foreignObject slot (e.g., treeWord2)
+      const slotId = `${map.prefix}${wordIndex + 1}`;
+      const fo = document.getElementById(slotId);
+      if (fo) {
+        setTimeout(() => {
+          fo.style.display = 'block';
+          const span = fo.querySelector('span');
+          if (span) span.textContent = combined;
+        }, 1500);
+
+        // ensure the lottie container for this leaf is visible and play animation
+        const lottieContainer = document.getElementById(`${object}-${wordIndex}`);
+        if (lottieContainer) lottieContainer.style.display = 'block';
+
+        playCorrectAnswerLottie(object);
+        wordIndex++;
+        showExample.style.display = 'block';
+      }
     }
 
     const remainingSuffixes = correctSuffixes.filter(
@@ -1195,6 +1188,13 @@ document.addEventListener("DOMContentLoaded", () => {
     exampleSentence.style.display = 'none';
   });
 
+  const closeAlertBtn = document.getElementById('close-alert-btn');
+  if (closeAlertBtn) {
+    closeAlertBtn.addEventListener('click', () => {
+      const popup = document.getElementById('alert-popup');
+      if (popup) popup.style.display = 'none';
+    });
+  }
 
   if (nextBtn) nextBtn.addEventListener("click", loadNextWord);
 
