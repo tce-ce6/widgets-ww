@@ -1135,8 +1135,21 @@ function updateTopicNavigationButtons() {
   // Don't show next button during normal play - only in completion screen
 }
 
+let showAnswerTimeout = null;
+let isTogglingAnswer = false;
+
 // Handle Show Answer
-function handleShowAnswer() {
+function handleShowAnswer(e) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  // Prevent double-clicks or event bubbling from triggering multiple times
+  if (isTogglingAnswer) return;
+  isTogglingAnswer = true;
+  setTimeout(() => { isTogglingAnswer = false; }, 400);
+
   const buttonText = document.getElementById('answer-btn-text');
   if (!buttonText) return;
 
@@ -1159,7 +1172,8 @@ function handleShowAnswer() {
     }
 
     // Show completion screen which handles highlighted text and annotations
-    setTimeout(() => {
+    clearTimeout(showAnswerTimeout);
+    showAnswerTimeout = setTimeout(() => {
       showCompletionScreen();
     }, 300);
 
@@ -1167,6 +1181,7 @@ function handleShowAnswer() {
     updateAnswerButtonText('Hide Answer');
   } else if (currentText === 'Hide Answer') {
     // Hide Answer - reset to initial state
+    clearTimeout(showAnswerTimeout);
     isAnswerShown = false;
     updateAnswerButtonText('Show Answer');
     loadTopic(currentTopicIndex);
