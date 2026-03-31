@@ -726,6 +726,871 @@ var PHRASAL_VERBS = [
     fib: "Please ___ each item on the list as you pack your school bag.",
   },
 ];
+var PRACTICE_SENTENCES = [
+  {
+    id: 1,
+    head: "get",
+    verb: "get along",
+    sentence:
+      "Priya and Sahil didn't ________ at first, but they became good friends after working on the science project together.",
+    options: ["get through", "get along", "get over"],
+    correct: "get along",
+  },
+  {
+    id: 2,
+    head: "get",
+    verb: "get over",
+    sentence:
+      "It took Grandpa a few weeks to ________ his bad cough this winter.",
+    options: ["get over", "get into", "get along"],
+    correct: "get over",
+  },
+  {
+    id: 3,
+    head: "get",
+    verb: "get into",
+    sentence:
+      "After watching the nature documentary, my younger brother really ________ birdwatching.",
+    options: ["got along", "got off", "got into"],
+    correct: "got into",
+  },
+  {
+    id: 4,
+    head: "get",
+    verb: "get through",
+    sentence:
+      "The comprehension passage was very long, but Arun managed to ________ it before the bell rang.",
+    options: ["get over", "get through", "get into"],
+    correct: "get through",
+  },
+  {
+    id: 5,
+    head: "get",
+    verb: "get off",
+    sentence:
+      "The conductor reminded all passengers to ________ at the last stop near the temple.",
+    options: ["get off", "get along", "get through"],
+    correct: "get off",
+  },
+  {
+    id: 6,
+    head: "go",
+    verb: "go on",
+    sentence:
+      "Even though the lights flickered, the actors ________ with the play without stopping.",
+    options: ["went through", "went out", "went on"],
+    correct: "went on",
+  },
+  {
+    id: 7,
+    head: "go",
+    verb: "go off",
+    sentence:
+      "The fire alarm ________ during the lunch break and everyone rushed out of the building.",
+    options: ["went off", "went on", "went through"],
+    correct: "went off",
+  },
+  {
+    id: 8,
+    head: "go",
+    verb: "go through",
+    sentence:
+      "Amma asked me to ________ my bag and check if I had packed my tiffin box.",
+    options: ["go on", "go through", "go ahead"],
+    correct: "go through",
+  },
+  {
+    id: 9,
+    head: "go",
+    verb: "go ahead",
+    sentence:
+      "The principal gave us permission to ________ with the tree-planting drive on Saturday.",
+    options: ["go ahead", "go off", "go out"],
+    correct: "go ahead",
+  },
+  {
+    id: 10,
+    head: "go",
+    verb: "go out",
+    sentence:
+      "During the power cut, the candles ________ one by one because of the breeze from the window.",
+    options: ["went on", "went through", "went out"],
+    correct: "went out",
+  },
+  {
+    id: 11,
+    head: "come",
+    verb: "come up",
+    sentence:
+      "During the morning assembly, the topic of water conservation ________ in the principal's speech.",
+    options: ["came along", "came across", "came up"],
+    correct: "came up",
+  },
+  {
+    id: 12,
+    head: "come",
+    verb: "come across",
+    sentence:
+      "While tidying the bookshelf, I ________ an old photo album from my parents' college days.",
+    options: ["came across", "came up", "came over"],
+    correct: "came across",
+  },
+  {
+    id: 13,
+    head: "come",
+    verb: "come along",
+    sentence:
+      "Neha asked if I wanted to ________ to the book fair at Pragati Maidan.",
+    options: ["come over", "come along", "come up"],
+    correct: "come along",
+  },
+  {
+    id: 14,
+    head: "come",
+    verb: "come over",
+    sentence:
+      "My cousins are ________ this Sunday for a family lunch at our place.",
+    options: ["coming along", "coming up", "coming over"],
+    correct: "coming over",
+  },
+  {
+    id: 15,
+    head: "come",
+    verb: "come down with",
+    sentence:
+      "Three students in our class ________ chickenpox last month and had to stay home.",
+    options: ["came down with", "came across", "came along"],
+    correct: "came down with",
+  },
+  {
+    id: 16,
+    head: "take",
+    verb: "take off",
+    sentence: "Please ________ your cap before entering the prayer hall.",
+    options: ["take after", "take off", "take over"],
+    correct: "take off",
+  },
+  {
+    id: 17,
+    head: "take",
+    verb: "take off",
+    sentence:
+      "The helicopter ________ from the field behind the hospital during the rescue operation.",
+    options: ["took in", "took up", "took off"],
+    correct: "took off",
+  },
+  {
+    id: 18,
+    head: "take",
+    verb: "take up",
+    sentence:
+      "During the summer camp, many children ________ pottery for the first time.",
+    options: ["took up", "took off", "took after"],
+    correct: "took up",
+  },
+  {
+    id: 19,
+    head: "take",
+    verb: "take over",
+    sentence:
+      "When the class monitor was absent, Deepika was asked to ________ her duties for the day.",
+    options: ["take after", "take in", "take over"],
+    correct: "take over",
+  },
+  {
+    id: 20,
+    head: "take",
+    verb: "take after",
+    sentence:
+      "People often say I ________ my mother because we both have the same smile.",
+    options: ["take over", "take after", "take off"],
+    correct: "take after",
+  },
+  {
+    id: 21,
+    head: "take",
+    verb: "take in",
+    sentence:
+      "The museum had so many exhibits that it was hard to ________ everything in one visit.",
+    options: ["take in", "take up", "take after"],
+    correct: "take in",
+  },
+  {
+    id: 22,
+    head: "put",
+    verb: "put on",
+    sentence:
+      "The weather has turned chilly — don't forget to ________ a warm jacket before stepping out.",
+    options: ["put away", "put down", "put on"],
+    correct: "put on",
+  },
+  {
+    id: 23,
+    head: "put",
+    verb: "put off",
+    sentence:
+      "The annual quiz competition has been ________ until next Friday because the hall is being repaired.",
+    options: ["put off", "put away", "put down"],
+    correct: "put off",
+  },
+  {
+    id: 24,
+    head: "put",
+    verb: "put away",
+    sentence:
+      "After using the art supplies, the teacher reminded everyone to ________ everything neatly.",
+    options: ["put off", "put away", "put up with"],
+    correct: "put away",
+  },
+  {
+    id: 25,
+    head: "put",
+    verb: "put up with",
+    sentence:
+      "Living near a busy road means we have to ________ the noise of traffic every morning.",
+    options: ["put off", "put up with", "put away"],
+    correct: "put up with",
+  },
+  {
+    id: 26,
+    head: "put",
+    verb: "put down",
+    sentence:
+      "A true team player would never ________ a teammate's effort, even after a loss.",
+    options: ["put on", "put off", "put down"],
+    correct: "put down",
+  },
+  {
+    id: 27,
+    head: "turn",
+    verb: "turn up",
+    sentence:
+      "We had almost given up waiting when Arjun finally ________ with his cricket bat.",
+    options: ["turned around", "turned into", "turned up"],
+    correct: "turned up",
+  },
+  {
+    id: 28,
+    head: "turn",
+    verb: "turn up",
+    sentence:
+      "Could you ________ the radio a little? I can't hear the commentary from the kitchen.",
+    options: ["turn up", "turn down", "turn around"],
+    correct: "turn up",
+  },
+  {
+    id: 29,
+    head: "turn",
+    verb: "turn down",
+    sentence:
+      "Meera had to ________ the party invitation because her exams were starting the next day.",
+    options: ["turn into", "turn down", "turn up"],
+    correct: "turn down",
+  },
+  {
+    id: 30,
+    head: "turn",
+    verb: "turn into",
+    sentence:
+      "The small caterpillar we kept in a jar slowly ________ a beautiful butterfly.",
+    options: ["turned up", "turned around", "turned into"],
+    correct: "turned into",
+  },
+  {
+    id: 31,
+    head: "turn",
+    verb: "turn around",
+    sentence:
+      "The kabaddi team was trailing badly, but they ________ the game in the last five minutes.",
+    options: ["turned around", "turned into", "turned down"],
+    correct: "turned around",
+  },
+  {
+    id: 32,
+    head: "give",
+    verb: "give up",
+    sentence:
+      "The puzzle was tricky, but Sana refused to ________ and finally solved it after many attempts.",
+    options: ["give away", "give up", "give out"],
+    correct: "give up",
+  },
+  {
+    id: 33,
+    head: "give",
+    verb: "give in",
+    sentence:
+      "After we promised to be careful, our teacher finally ________ and allowed us to use the sports equipment.",
+    options: ["gave up", "gave out", "gave in"],
+    correct: "gave in",
+  },
+  {
+    id: 34,
+    head: "give",
+    verb: "give away",
+    sentence:
+      "Our school organised a drive where students could ________ books they no longer needed.",
+    options: ["give away", "give up", "give in"],
+    correct: "give away",
+  },
+  {
+    id: 35,
+    head: "give",
+    verb: "give out",
+    sentence:
+      "The class monitor ________ the corrected test papers to each student one by one.",
+    options: ["gave in", "gave out", "gave away"],
+    correct: "gave out",
+  },
+  {
+    id: 36,
+    head: "look",
+    verb: "look up",
+    sentence: "Armaan __________ the capitals of countries in the atlas.",
+    options: ["looked up", "looked into", "looked after"],
+    correct: "looked up",
+  },
+  {
+    id: 37,
+    head: "look",
+    verb: "look after",
+    sentence:
+      "When Mother had to travel for work, our neighbour Aunty kindly ________ us for two days.",
+    options: ["looked into", "looked over", "looked after"],
+    correct: "looked after",
+  },
+  {
+    id: 38,
+    head: "look",
+    verb: "look out",
+    sentence: "________! There's a big puddle right in front of you.",
+    options: ["Look over", "Look out", "Look into"],
+    correct: "Look out",
+  },
+  {
+    id: 39,
+    head: "look",
+    verb: "look forward to",
+    sentence: "All the students are ________ the annual sports day next week.",
+    options: ["looking after", "looking into", "looking forward to"],
+    correct: "looking forward to",
+  },
+  {
+    id: 40,
+    head: "look",
+    verb: "look into",
+    sentence:
+      "The class teacher promised to ________ why the library books had gone missing.",
+    options: ["look into", "look up", "look over"],
+    correct: "look into",
+  },
+  {
+    id: 41,
+    head: "look",
+    verb: "look over",
+    sentence:
+      "Before submitting the project file, ask a friend to ________ it for any mistakes.",
+    options: ["look after", "look over", "look into"],
+    correct: "look over",
+  },
+  {
+    id: 42,
+    head: "make",
+    verb: "make up",
+    sentence:
+      "After arguing over whose turn it was to bat, the two boys quickly ________.",
+    options: ["made off", "made do", "made up"],
+    correct: "made up",
+  },
+  {
+    id: 43,
+    head: "make",
+    verb: "make up for",
+    sentence:
+      "Vikram practised extra hard all week to ________ the session he had missed.",
+    options: ["make up for", "make up", "make do with"],
+    correct: "make up for",
+  },
+  {
+    id: 44,
+    head: "make",
+    verb: "make do with",
+    sentence:
+      "The art room had run out of paintbrushes, so we had to ________ sponges instead.",
+    options: ["make up", "make do with", "make off with"],
+    correct: "make do with",
+  },
+  {
+    id: 45,
+    head: "make",
+    verb: "make off with",
+    sentence:
+      "A cheeky crow ________ a piece of roti from the kitchen windowsill!",
+    options: ["made up for", "made do with", "made off with"],
+    correct: "made off with",
+  },
+  {
+    id: 46,
+    head: "run",
+    verb: "run out of",
+    sentence:
+      "We ________ glue sticks halfway through the craft activity and had to share.",
+    options: ["ran out of", "ran into", "ran through"],
+    correct: "ran out of",
+  },
+  {
+    id: 47,
+    head: "run",
+    verb: "run into",
+    sentence:
+      "At the railway station, I ________ my old neighbour who had moved to Pune last year.",
+    options: ["ran through", "ran into", "ran out of"],
+    correct: "ran into",
+  },
+  {
+    id: 48,
+    head: "run",
+    verb: "run over",
+    sentence:
+      "The teacher asked us to ________ the key dates once more before the history test.",
+    options: ["run into", "run out of", "run over"],
+    correct: "run over",
+  },
+  {
+    id: 49,
+    head: "run",
+    verb: "run through",
+    sentence: "Let's ________ the skit one last time before the judges arrive.",
+    options: ["run through", "run over", "run into"],
+    correct: "run through",
+  },
+  {
+    id: 50,
+    head: "pick",
+    verb: "pick up",
+    sentence: "Baba usually ________ from the bus stop when it rains heavily.",
+    options: ["picks us on", "picks us at", "picks us up"],
+    correct: "picks us up",
+  },
+  {
+    id: 51,
+    head: "pick",
+    verb: "pick on",
+    sentence:
+      "The teacher spoke to the class about why it's wrong to ________ someone who is shy or quiet.",
+    options: ["pick up", "pick on", "pick out"],
+    correct: "pick on",
+  },
+  {
+    id: 52,
+    head: "pick",
+    verb: "pick out",
+    sentence:
+      "At the stationery shop, it took me ages to ________ the perfect notebook for my journal.",
+    options: ["pick out", "pick at", "pick up"],
+    correct: "pick out",
+  },
+  {
+    id: 53,
+    head: "pick",
+    verb: "pick at",
+    sentence:
+      "Jordyn just ________ his lunch today — I think he might not be feeling well.",
+    options: ["picked up", "picked out", "picked at"],
+    correct: "picked at",
+  },
+  {
+    id: 54,
+    head: "pick",
+    verb: "pick up",
+    sentence:
+      "My grandmother ________ a few English phrases just by watching television serials.",
+    options: ["picked at", "picked up", "picked on"],
+    correct: "picked up",
+  },
+  {
+    id: 55,
+    head: "bring",
+    verb: "bring up",
+    sentence:
+      "During the student council meeting, Aisha ________ the need for more dustbins in the corridors.",
+    options: ["brought up", "brought out", "brought back"],
+    correct: "brought up",
+  },
+  {
+    id: 56,
+    head: "bring",
+    verb: "bring up",
+    sentence: "My siblings and I were ________ in a village near Madurai.",
+    options: ["brought in", "brought about", "brought up"],
+    correct: "brought up",
+  },
+  {
+    id: 57,
+    head: "bring",
+    verb: "bring about",
+    sentence:
+      "The new reading programme has ________ a noticeable change in students' vocabulary.",
+    options: ["brought back", "brought about", "brought up"],
+    correct: "brought about",
+  },
+  {
+    id: 58,
+    head: "bring",
+    verb: "bring back",
+    sentence:
+      "The sound of temple bells always ________ memories of summer holidays at my grandparents' house.",
+    options: ["brings back", "brings in", "brings out"],
+    correct: "brings back",
+  },
+  {
+    id: 59,
+    head: "bring",
+    verb: "bring in",
+    sentence:
+      "For the first time, our school has ________ a buddy system where older students help the younger ones settle in.",
+    options: ["brought out", "brought back", "brought in"],
+    correct: "brought in",
+  },
+  {
+    id: 60,
+    head: "bring",
+    verb: "bring out",
+    sentence:
+      "Working on the group mural ________ everyone's artistic side, even those who said they couldn't draw.",
+    options: ["brought up", "brought out", "brought about"],
+    correct: "brought out",
+  },
+  {
+    id: 61,
+    head: "break",
+    verb: "break down",
+    sentence:
+      "The water purifier ________ just before the guests arrived, and we had to boil water quickly.",
+    options: ["broke down", "broke into", "broke out"],
+    correct: "broke down",
+  },
+  {
+    id: 62,
+    head: "break",
+    verb: "break down",
+    sentence:
+      "When the team won the championship after years of trying, the coach ________ and started crying.",
+    options: ["broke out", "broke up", "broke down"],
+    correct: "broke down",
+  },
+  {
+    id: 63,
+    head: "break",
+    verb: "break up",
+    sentence:
+      "The crowd near the school gate slowly ________ once the results were announced.",
+    options: ["broke into", "broke up", "broke down"],
+    correct: "broke up",
+  },
+  {
+    id: 64,
+    head: "break",
+    verb: "break in",
+    sentence:
+      "My new canvas shoes felt stiff at first, but they were much better once I ________ .",
+    options: ["broke them down", "broke them out", "broke them in"],
+    correct: "broke them in",
+  },
+  {
+    id: 65,
+    head: "break",
+    verb: "break into",
+    sentence:
+      "When the magician pulled a rabbit out of the hat, the audience ________ loud applause.",
+    options: ["broke into", "broke up", "broke in"],
+    correct: "broke into",
+  },
+  {
+    id: 66,
+    head: "break",
+    verb: "break out",
+    sentence:
+      "A loud argument ________ between two teams during the quiz competition, and the teacher had to step in.",
+    options: ["broke in", "broke down", "broke out"],
+    correct: "broke out",
+  },
+  {
+    id: 67,
+    head: "hold",
+    verb: "hold on",
+    sentence:
+      "________ — I just need to tie my shoelaces before we start the race.",
+    options: ["Hold back", "Hold up", "Hold on"],
+    correct: "Hold on",
+  },
+  {
+    id: 68,
+    head: "hold",
+    verb: "hold up",
+    sentence:
+      "A fallen tree on the road ________ our school bus for nearly half an hour.",
+    options: ["held up", "held on", "held off"],
+    correct: "held up",
+  },
+  {
+    id: 69,
+    head: "hold",
+    verb: "hold back",
+    sentence:
+      "Even though she was disappointed about not getting the lead role, Kavya managed to ________ her tears.",
+    options: ["hold on", "hold back", "hold off"],
+    correct: "hold back",
+  },
+  {
+    id: 70,
+    head: "hold",
+    verb: "hold off",
+    sentence:
+      "Let's ________ the kite-flying until the wind picks up — there's no point wasting time now.",
+    options: ["hold back", "hold up", "hold off"],
+    correct: "hold off",
+  },
+  {
+    id: 71,
+    head: "keep",
+    verb: "keep up",
+    sentence:
+      "The hiking trail was steep, and some of us found it hard to ________ with the group leader.",
+    options: ["keep up", "keep on", "keep off"],
+    correct: "keep up",
+  },
+  {
+    id: 72,
+    head: "keep",
+    verb: "keep on",
+    sentence:
+      "Even after stumbling twice, the little girl ________ running until she reached the finish line.",
+    options: ["kept out", "kept on", "kept up with"],
+    correct: "kept on",
+  },
+  {
+    id: 73,
+    head: "keep",
+    verb: "keep out",
+    sentence: "Mother stored the sweets in a tin box to ________ the ants.",
+    options: ["keep off", "keep away from", "keep out"],
+    correct: "keep out",
+  },
+  {
+    id: 74,
+    head: "keep",
+    verb: "keep away from",
+    sentence:
+      "The sign near the pond warned children to ________ the deep end.",
+    options: ["keep away from", "keep out", "keep up with"],
+    correct: "keep away from",
+  },
+  {
+    id: 75,
+    head: "keep",
+    verb: "keep up with",
+    sentence:
+      "Revising a little every day helps you ________ the lessons easily.",
+    options: ["keep on", "keep up with", "keep up"],
+    correct: "keep up with",
+  },
+  {
+    id: 76,
+    head: "keep",
+    verb: "keep off",
+    sentence:
+      "After the heavy rain, the gardener asked us to ________ the freshly planted flower beds.",
+    options: ["keep up", "keep out", "keep off"],
+    correct: "keep off",
+  },
+  {
+    id: 77,
+    head: "set",
+    verb: "set up",
+    sentence:
+      "The students helped ________ the science exhibition in the school hall the evening before.",
+    options: ["set up", "set off", "set back"],
+    correct: "set up",
+  },
+  {
+    id: 78,
+    head: "set",
+    verb: "set off",
+    sentence:
+      "We ________ at dawn so that we could reach the hill station before the afternoon heat.",
+    options: ["set back", "set off", "set in"],
+    correct: "set off",
+  },
+  {
+    id: 79,
+    head: "set",
+    verb: "set out",
+    sentence:
+      "Nandini ________ to read fifty books this year, and she's already halfway there.",
+    options: ["set back", "set up", "set out"],
+    correct: "set out",
+  },
+  {
+    id: 80,
+    head: "set",
+    verb: "set back",
+    sentence:
+      "The unexpected power cut ________ our rehearsal by almost an hour.",
+    options: ["set back", "set in", "set off"],
+    correct: "set back",
+  },
+  {
+    id: 81,
+    head: "set",
+    verb: "set in",
+    sentence: "Dark clouds gathered after lunch, and soon the rain ________.",
+    options: ["set off", "set in", "set up"],
+    correct: "set in",
+  },
+  {
+    id: 82,
+    head: "carry",
+    verb: "carry on",
+    sentence:
+      "Even after the bell rang, the students were so interested that they asked to ________ with the discussion.",
+    options: ["carry out", "carry away", "carry on"],
+    correct: "carry on",
+  },
+  {
+    id: 83,
+    head: "carry",
+    verb: "carry out",
+    sentence:
+      "The nature club ________ a survey of all the trees on the school campus.",
+    options: ["carried out", "carried on", "carried away"],
+    correct: "carried out",
+  },
+  {
+    id: 84,
+    head: "carry",
+    verb: "carry away",
+    sentence:
+      "Rohan got so ________ by the festival music that he started dancing in the corridor.",
+    options: ["carried on", "carried away", "carried out"],
+    correct: "carried away",
+  },
+  {
+    id: 85,
+    head: "throw",
+    verb: "throw up",
+    sentence:
+      "The boat rocked so much during the ride that two children felt sick and nearly ________.",
+    options: ["threw out", "threw off", "threw up"],
+    correct: "threw up",
+  },
+  {
+    id: 86,
+    head: "throw",
+    verb: "throw out",
+    sentence:
+      "The referee ________ a player from the match for repeated rough tackles.",
+    options: ["threw out", "threw together", "threw up"],
+    correct: "threw out",
+  },
+  {
+    id: 87,
+    head: "throw",
+    verb: "throw off",
+    sentence:
+      "The riddle was worded in such a tricky way that it ________ almost everyone in the class.",
+    options: ["threw together", "threw off", "threw out"],
+    correct: "threw off",
+  },
+  {
+    id: 88,
+    head: "throw",
+    verb: "throw together",
+    sentence:
+      "With only rice and some vegetables left, Amma ________ a delicious pulao in no time.",
+    options: ["threw off", "threw out", "threw together"],
+    correct: "threw together",
+  },
+  {
+    id: 89,
+    head: "cut",
+    verb: "cut down on",
+    sentence:
+      "Our teacher suggested we ________ the amount of paper we waste by using both sides.",
+    options: ["cut down on", "cut in", "cut off"],
+    correct: "cut down on",
+  },
+  {
+    id: 90,
+    head: "cut",
+    verb: "cut off",
+    sentence:
+      "The telephone line got ________ during the thunderstorm and we couldn't call anyone.",
+    options: ["cut back on", "cut off", "cut out"],
+    correct: "cut off",
+  },
+  {
+    id: 91,
+    head: "cut",
+    verb: "cut out",
+    sentence:
+      "The librarian asked the noisy group to ________ the whispering immediately.",
+    options: ["cut off", "cut back on", "cut out"],
+    correct: "cut out",
+  },
+  {
+    id: 92,
+    head: "cut",
+    verb: "cut back on",
+    sentence:
+      "To save up for the school trip, our family decided to ________ eating at restaurants.",
+    options: ["cut back on", "cut off", "cut in"],
+    correct: "cut back on",
+  },
+  {
+    id: 93,
+    head: "cut",
+    verb: "cut in",
+    sentence:
+      "Ankit kept trying to ________ while the teacher was giving instructions.",
+    options: ["cut off", "cut in", "cut out"],
+    correct: "cut in",
+  },
+  {
+    id: 94,
+    head: "check",
+    verb: "check in",
+    sentence: "The receptionist asked us to ________ at the front desk.",
+    options: ["check off", "check out", "check in"],
+    correct: "check in",
+  },
+  {
+    id: 95,
+    head: "check",
+    verb: "check out",
+    sentence:
+      "________ this beautiful rangoli that the junior students made for the festival!",
+    options: ["Check out", "Check in", "Check off"],
+    correct: "Check out",
+  },
+  {
+    id: 96,
+    head: "check",
+    verb: "check up on",
+    sentence:
+      "My aunt calls every weekend to ________ how we are doing after the move to the new city.",
+    options: ["check off", "check up on", "check in"],
+    correct: "check up on",
+  },
+  {
+    id: 97,
+    head: "check",
+    verb: "check off",
+    sentence:
+      "As we finished packing each item for the picnic, we ________ it on the list.",
+    options: ["checked up on", "checked out", "checked off"],
+    correct: "checked off",
+  },
+];
 
 var HEAD_VERBS = [];
 (function () {
@@ -799,6 +1664,7 @@ var state = {
   practiceDeck: [],
   practiceIndex: 0,
   practiceChosen: null,
+  practiceWrong1: null,
   practiceOptions: [],
   practiceCorrectIdx: null,
   scoreCorrect: 0,
@@ -844,6 +1710,7 @@ function setupPracticeQ() {
   });
   state.practiceCorrectIdx = state.practiceOptions.indexOf(cur.verb);
   state.practiceChosen = null;
+  state.practiceWrong1 = null;
 }
 function goHome() {
   state.screen = "home";
@@ -866,7 +1733,7 @@ function closeMenu() {
   render();
 }
 
-function advanceReveal1() {
+function advanceReveal() {
   if (state.revealStage < 2) {
     state.revealStage++;
     var s2 = document.querySelector(".section-example");
@@ -886,7 +1753,7 @@ function advanceReveal1() {
   }
 }
 
-function advanceReveal() {
+function advanceReveal1() {
   if (state.revealStage >= 2) return;
 
   state.revealStage++;
@@ -922,24 +1789,33 @@ function learnNext() {
 }
 function choosePractice(i) {
   if (state.practiceChosen !== null) return;
-  state.practiceChosen = i;
   var ok = i === state.practiceCorrectIdx;
   if (ok) {
+    state.practiceChosen = i;
     state.scoreCorrect++;
     setTimeout(launchConfetti, 100);
+    render();
   } else {
-    state.scoreIncorrect++;
-    setTimeout(function () {
-      var card = document.querySelector(".practice-sentence");
-      if (card) {
-        card.classList.add("shake");
-        setTimeout(function () {
-          card.classList.remove("shake");
-        }, 500);
-      }
-    }, 50);
+    if (state.practiceWrong1 === null) {
+      // First wrong attempt — give another chance
+      state.practiceWrong1 = i;
+      state.scoreIncorrect++;
+      setTimeout(function () {
+        var card = document.querySelector(".practice-sentence");
+        if (card) {
+          card.classList.add("shake");
+          setTimeout(function () {
+            card.classList.remove("shake");
+          }, 500);
+        }
+      }, 50);
+      render();
+    } else {
+      // Second wrong attempt — lock and reveal correct answer
+      state.practiceChosen = i;
+      render();
+    }
   }
-  render();
 }
 function practiceNext() {
   if (state.practiceIndex < state.practiceDeck.length - 1) {
@@ -1072,25 +1948,25 @@ function renderLearn() {
     '<hr class="reveal-divider divider-1' +
     d1Vis +
     '" />' +
-    // Section 3: Meaning (moved here - now comes before Example)
-    '<div class="reveal-section section-meaning' +
-    meVis +
+    // Section 2: Example
+    '<div class="reveal-section section-example' +
+    exVis +
     '">' +
-    '<div class="meaning-label">Meaning</div>' +
-    '<div class="meaning-text">' +
-    item.meaning +
+    '<div class="flashcard-example">' +
+    item.example +
     "</div>" +
     "</div>" +
     // Divider 2
     '<hr class="reveal-divider divider-2' +
     d2Vis +
     '" />' +
-    // Section 2: Example (now comes after Meaning)
-    '<div class="reveal-section section-example' +
-    exVis +
+    // Section 3: Meaning
+    '<div class="reveal-section section-meaning' +
+    meVis +
     '">' +
-    '<div class="flashcard-example">' +
-    item.example +
+    '<div class="meaning-label">Meaning</div>' +
+    '<div class="meaning-text">' +
+    item.meaning +
     "</div>" +
     "</div>" +
     "</div>" +

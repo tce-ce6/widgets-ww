@@ -286,8 +286,8 @@
   .section-example { order: 3; }
   .divider-2       { order: 4; }
   .section-meaning { order: 5; }
-  .section-example.visible { max-height: 350px; padding: 0 36px 24px; }
-  .section-meaning.visible  { max-height: 350px; padding: 0 36px 36px; }
+   .section-example.visible {max-height: 350px;padding: 16px 36px 16px;}
+  .section-meaning.visible  {max-height: 350px;padding: 32px 36px 36px;}
 
   .reveal-divider {
     height: 0;
