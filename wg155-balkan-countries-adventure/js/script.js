@@ -326,7 +326,10 @@ function resetStepTwo() {
     // reset flags
     COUNTRY_IDS.forEach(id => {
         const flag = document.getElementById(id + '-flag');
-        if (flag) flag.style.display = 'none';
+        if (flag) {
+            flag.style.display = 'none';
+            flag.setAttribute('transform', 'translate(0, 0)');
+        }
     });
 
     // enable flags wrapper again
@@ -722,9 +725,10 @@ function handleCountryClick(countryId) {
     const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
     AppState.currentCountryData = questions[safeIndex];
 
-    if (AppState.elements.flagsWrapper) {
-        AppState.elements.flagsWrapper.classList.add('disabled');
-    }
+    /* Remove redundant disable from here to allow changing minds before quiz starts */
+    // if (AppState.elements.flagsWrapper) {
+    //     AppState.elements.flagsWrapper.classList.add('disabled');
+    // }
     // Only show quiz buttons if the map phase for this question hasn't started
     const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
 
@@ -938,6 +942,11 @@ function handleBtnQuizClick() {
 
     // Show the question container
     if (questionContainer) questionContainer.style.display = 'block';
+
+    // Disable flags wrapper once quiz starts
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.add('disabled');
+    }
 
     // Populate question text
     if (questionTxt && data) {
