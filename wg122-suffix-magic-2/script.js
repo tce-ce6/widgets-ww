@@ -740,6 +740,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
+      const alertPopupImg = document.getElementById('alert-popup-img');
+      if (alertPopupImg) {
+        alertPopupImg.style.display = 'none';
+      }
       if (showAnswerBtn.textContent.trim() === 'Show Answer') {
         showAnswerBtn.textContent = 'Hide Answer';
         showAllAnswers(wordObj);
@@ -759,14 +763,14 @@ document.addEventListener("DOMContentLoaded", () => {
     wordObj = picker.getNext();
     const d = wordObj.details;
 
-    // const alertPopup = document.getElementById('alert-popup');
-    // const alertTextBody = document.getElementById('alert-text-body');
-    // if (d.spelling_alert && alertPopup && alertTextBody) {
-    //   alertTextBody.textContent = d.spelling_alert;
-    //   alertPopup.style.display = 'block';
-    // } else if (alertPopup) {
-    //   alertPopup.style.display = 'none';
-    // }
+    const alertPopup = document.getElementById('alert-popup');
+    if (alertPopup) {
+      alertPopup.style.display = 'none';
+    }
+    const alertPopupImg = document.getElementById('alert-popup-img');
+    if (alertPopupImg) {
+      alertPopupImg.style.display = 'none';
+    }
 
     // currentWordObj = wordObj;
 
@@ -863,7 +867,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", e => {
     const clickedItem = e.target.closest("#list-suffix li");
     if (!clickedItem) return;
+
     if (clickedItem.style.opacity === "0.3") return;
+
+    const alertPopupImg = document.getElementById('alert-popup-img');
+    if (alertPopupImg) {
+      alertPopupImg.style.display = 'none';
+    }
     const object = wordObj.image.match(/\/([^/]+)\./)[1];
 
     const suffixText = clickedItem.querySelector("span")?.textContent.trim();
@@ -975,11 +985,20 @@ document.addEventListener("DOMContentLoaded", () => {
           // Display alert popup when completionLottie plays
           const d = wordObj && wordObj.details;
           if (d && d.spelling_alert) {
-            const alertPopup = document.getElementById('alert-popup');
-            const alertTextBody = document.getElementById('alert-text-body');
-            if (alertPopup && alertTextBody) {
-              alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
-              alertPopup.style.display = 'block';
+            let imgName = null;
+            if (d.spelling_alert.includes("'e'") || d.spelling_alert.includes("‘e’")) imgName = 'e';
+            else if (d.spelling_alert.includes("'t'")) imgName = 't';
+            else if (d.spelling_alert.includes("'de'")) imgName = 'de';
+            else if (d.spelling_alert.includes("'se'")) imgName = 'se';
+            else if (d.spelling_alert.includes("'ceed'")) imgName = 'ceed';
+
+            if (imgName) {
+              const alertPopupImg = document.getElementById('alert-popup-img');
+              const alertImg = document.getElementById('alert-img');
+              if (alertPopupImg && alertImg) {
+                alertImg.setAttribute("src", `assets/${imgName}.svg`);
+                alertPopupImg.style.display = 'block';
+              }
             }
           }
         }, 100);
