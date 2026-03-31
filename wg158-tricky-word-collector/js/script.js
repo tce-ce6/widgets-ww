@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { word: 'to', sentence: 'I go to school.', hint: 'Sounds like "too" but spelled different!' },
       { word: 'I', sentence: 'I am happy.', hint: 'Always a capital letter!' },
       { word: 'is', sentence: 'She is my friend.', hint: 'The "s" makes a "z" sound!' },
-      { word: 'of', sentence: 'A cup of water.', hint: 'The "f" sounds like "v"!' },
+      { word: 'of', sentence: 'The glass of milk is hot.', hint: 'The "f" sounds like "v"!' },
       { word: 'was', sentence: 'He was here.', hint: "Doesn't rhyme with \"has\"!" },
       { word: 'you', sentence: 'I like you.', hint: 'The "ou" is tricky!' },
       { word: 'are', sentence: 'We are friends.', hint: 'Sounds like the letter "R"!' },
@@ -48,25 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
       { word: 'gone', sentence: 'She has gone home.', hint: 'Same "o" trick!' },
       { word: 'want', sentence: 'I want some water.', hint: 'The "a" sounds like "o"!' },
       { word: 'many', sentence: 'I have many toys.', hint: 'The "a" sounds like "e"!' },
-      { word: 'any', sentence: 'Do you have any?', hint: 'Same trick as "many"!' },
+      { word: 'any', sentence: 'Do you have any pets?', hint: 'Same trick as "many"!' },
       { word: 'where', sentence: 'Where are you?', hint: 'The "wh" makes a "w" sound!' },
       { word: 'work', sentence: 'I work hard.', hint: 'The "or" sounds like "er"!' },
     ],
     level4: [
       { word: 'friend', sentence: 'You are my friend.', hint: '"i" before "e" but sounds like "end"!' },
-      { word: 'once', sentence: 'Once upon a time.', hint: 'Starts with a "w" sound!' },
+      { word: 'once', sentence: 'I clap my hands once.', hint: 'Starts with a "w" sound!' },
       { word: 'only', sentence: 'I have only one.', hint: 'The "o" sounds like "oh"!' },
-      { word: 'because', sentence: "I smile because I'm happy.", hint: 'Big word, tricky spelling!' },
+      { word: 'because', sentence: "I smile because I am happy.", hint: 'Big word, tricky spelling!' },
       { word: 'through', sentence: 'Walk through the door.', hint: 'So many silent letters!' },
       { word: 'thought', sentence: 'I thought about it.', hint: 'The "ough" says "aw"!' },
       { word: 'enough', sentence: 'That is enough.', hint: 'The "ough" says "uff"!' },
       { word: 'people', sentence: 'Many people came.', hint: 'The "eo" is very tricky!' },
-      { word: 'again', sentence: 'Try again.', hint: 'The "ai" sounds like "e"!' },
+      { word: 'again', sentence: 'He jumped again.', hint: 'The "ai" sounds like "e"!' },
       { word: 'water', sentence: 'Drink some water.', hint: 'The "a" sounds like "aw"!' },
       { word: 'laugh', sentence: 'You make me laugh.', hint: 'The "gh" says "f"!' },
-      { word: 'eye', sentence: 'Close your eye.', hint: 'Sounds like the letter "I"!' },
+      { word: 'eye', sentence: 'Close your left eye.', hint: 'Sounds like the letter "I"!' },
       { word: 'busy', sentence: 'I am very busy.', hint: 'The "u" sounds like "i"!' },
-      { word: 'beautiful', sentence: 'What a beautiful day.', hint: 'So many letters for one word!' },
+      { word: 'beautiful', sentence: 'It is a beautiful day.', hint: 'So many letters for one word!' },
       { word: 'answer', sentence: 'I know the answer.', hint: 'The "w" is silent!' },
     ],
   };
@@ -304,14 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const sentenceBlock = state.showSentence
         ? `<div style="background:rgba(139,69,19,0.3);border:2px solid #8b4513;border-radius:16px;padding:14px 24px;text-align:center;animation:fadeIn 0.3s ease-out;width:100%;max-width:420px;display:flex;align-items:center;gap:12px;justify-content:center;">
           <div style="flex:1;">
-            <div style="font-size:20px;color:#ffd700;font-style:italic;">${displayWord.sentence}</div>
+            <div style="font-size:26px;color:#ffd700;font-style:italic;">${displayWord.sentence}</div>
           </div>
           <button onclick="event.stopPropagation();speak('${safeSentence}')" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;background: linear-gradient(180deg, #fff43b, #FF5722);border: 2px solid #ffae3b;color: #FFEB3B;font-size: 28px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Hear sentence">🔊</button>
          </div>`
         : '';
 
       const caughtBadge = isAlreadyCaught
-        ? `<div style="position:absolute;top:8px;right:8px;background:linear-gradient(135deg,#32CD32,#228B22);padding:5px 12px;border-radius:14px;color:white;font-size:12px;font-weight:bold;">${texts.caught}</div>`
+        ? `<div style="position:absolute;top: 120px;right: 30px;background:linear-gradient(135deg,#32CD32,#228B22);padding:5px 12px;border-radius:14px;color:white;font-size: 16px;font-weight:bold;">${texts.caught}</div>`
         : '';
 
       const catchingAnim = state.isCatching
@@ -357,10 +357,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Normal new-word flow
         actionBtns = `
         ${!isAlreadyCaught && !state.isCatching ? `
-          <button onclick="catchWord()" style="padding:16px 36px;font-size:18px;font-weight:bold;background:linear-gradient(180deg,#daa520 0%,#b8860b 100%);border:2px solid #ffd700;border-radius:24px;color:#1a1a2e;cursor:pointer;animation:pulse 1.5s ease-in-out infinite;">
+          <button onclick="catchWord()" style="padding:16px 36px;font-size:18px;font-weight:bold;background:linear-gradient(180deg,#daa520 0%,#b8860b 100%);border:2px solid #ffd700;border-radius:24px;color: #000000;cursor:pointer;animation:pulse 1.5s ease-in-out infinite;">
             ${texts.catchWord}
           </button>` : ''}
-        <button onclick="loadNewWord()" class="btn-wg151" style="font-size:18px;background:linear-gradient(180deg,#4a3728 0%,#2d1f1a 100%);border:2px solid #8b4513;color:#deb887;">
+        <button onclick="loadNewWord()" class="btn-wg151" style="font-size:18px;background: linear-gradient(180deg, #e07316 0%, #a3560b 100%);border: 2px solid #c0c627;color: #161514;">
           ${creature.emoji} ${texts.nextCreature}
         </button>`;
       }
