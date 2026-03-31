@@ -43,8 +43,8 @@ body { font-family: "Comic Sans MS", "Chalkboard", "Chalkboard SE", cursive, san
 .home-footer button:hover { transform:scale(1.05); }
 
 /* ─── JOURNEY PATH ─── */
-.journey-path { position:relative; z-index:10; }
-.journey-wrap { position:relative; z-index:10; display:flex; flex-direction:column; align-items:center; margin-bottom:18px; background:rgba(255,255,255,0.55); backdrop-filter:blur(6px); border-radius:20px; padding:14px 18px 10px; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+.journey-path { position:relative; z-index:10;     margin-top: 15px; }
+.journey-wrap { position:relative; z-index:10; display:flex; flex-direction:column; align-items:center; margin-bottom:18px; background:rgba(255,255,255,0.55); backdrop-filter:blur(6px); border-radius:20px; padding:14px 18px 10px; box-shadow:0 4px 20px rgba(0,0,0,0.06); border:2px solid rgba(255,255,255,0.9); }
 .journey-bar { display:flex; align-items:center; }
 .journey-node { display:flex; flex-direction:column; align-items:center; position:relative; z-index:2; }
 .journey-node .dot { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:bold; transition:all 0.3s; }
