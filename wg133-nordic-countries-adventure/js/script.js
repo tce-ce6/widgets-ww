@@ -323,6 +323,7 @@ function resetStepTwo() {
     });
 
     // 5. Reset map highlights and flags
+    const flagParent = document.getElementById('en_geo_7_wg155_layout 1');
     COUNTRY_IDS.forEach(id => {
         const el = document.getElementById(id);
         if(el) el.classList.remove('selected', 'active', 'correct');
@@ -336,6 +337,10 @@ function resetStepTwo() {
         if (flag) {
             flag.style.display = 'none';
             flag.setAttribute('transform', 'translate(0, 0)');
+            // Move flag back to its original parent if it was moved to a map group
+            if (flagParent && flag.parentNode !== flagParent) {
+                flagParent.appendChild(flag);
+            }
         }
     });
 
@@ -747,15 +752,22 @@ function handleGameReset() {
         shuffleArray(AppState.data.questions);
     }
 
-    // 5. Hide end-game buttons
+    // 5. Hide end-game buttons and return to home screen
+    if (AppState.elements.step1) AppState.elements.step1.style.display = 'block';
+    if (AppState.elements.step2) AppState.elements.step2.style.display = 'none';
+
     const btnReset = document.getElementById('btn-reset');
     if (btnReset) btnReset.style.display = 'none';
 
     const btnReplay = document.getElementById('btn-replay');
     if (btnReplay) btnReplay.style.display = 'none';
-    
+
     const btnNext = document.getElementById('btn-next');
     if (btnNext) btnNext.style.display = 'none';
+
+    // 6. Reset markings in case they were modified
+    const marksContainer = document.querySelector('.marks-container');
+    if (marksContainer) marksContainer.style.display = 'block';
 }
 
 /**

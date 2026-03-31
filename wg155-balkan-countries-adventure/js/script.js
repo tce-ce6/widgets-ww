@@ -85,85 +85,43 @@ function initMapDropCheck() {
         if (!mapCountry) return;
 
         mapCountry.addEventListener('click', () => {
-            if (!AppState.mapEnabled) return; // ❌ block until quiz correct
+            if (!AppState.mapEnabled || AppState.mapLocked || !AppState.selectedCountry) return;
 
-            if (AppState.mapLocked) return;
-
-            if (!AppState.selectedCountry) return;
-
-            const correctCountry = AppState.currentCountryData
+            const scenarioTarget = AppState.currentCountryData
                 ? AppState.currentCountryData.country.toLowerCase().replace(/\s/g, '-')
                 : null;
 
-            // ❗ USER SELECTED WRONG FLAG
-            if (AppState.selectedCountry !== correctCountry) {
+            const wrongFlagPopup = document.getElementById('wrong-flag-selected');
+            const tryAgainPopup = AppState.elements.tryAgainPopup;
 
-                AppState.wrongMapAttempts++;
-
-                const wrongFlagPopup = document.getElementById('wrong-flag-selected');
-
+            // 1. CHECK IF USER HAS THE CORRECT FLAG SELECTED FOR THIS SCENARIO
+            if (AppState.selectedCountry !== scenarioTarget) {
                 if (wrongFlagPopup) {
                     wrongFlagPopup.style.display = 'block';
-
-                    setTimeout(() => {
-                        wrongFlagPopup.style.display = 'none';
-                    }, 2000);
+                    setTimeout(() => { wrongFlagPopup.style.display = 'none'; }, 2000);
                 }
-
-                if (AppState.wrongMapAttempts >= 2) {
-                    // Hide other wrong popups
-                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
-                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
-
-                    const missedItPopup = document.getElementById('missed-it-popup');
-                    if (missedItPopup) {
-                        missedItPopup.style.display = 'block';
-                        setTimeout(() => {
-                            missedItPopup.style.display = 'none';
-                            // Auto-place correct flag
-                            COUNTRY_IDS.forEach(cId => {
-        const el = document.getElementById(cId);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
-                            const correctFlagEl = document.getElementById(correctCountry);
-                            if (correctFlagEl) correctFlagEl.classList.add('correct');
-                            AppState.selectedCountry = correctCountry;
-                            placeFlagOnMap(correctCountry);
-                            const chooseFlagPopup = document.getElementById('choose-flag-popup');
-                            if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-                            const btnNext = document.getElementById('btn-next');
-                            if (btnNext) btnNext.style.display = 'block';
-                        }, 3000);
-                    }
-                }
-
-                return; // 🚫 stop flag placement
+                AppState.wrongMapAttempts++;
             }
-
-            // CORRECT MATCH
-            if (AppState.selectedCountry === id) {
-
-                if (AppState.elements.correctAnswerPopup) {
-                    AppState.elements.correctAnswerPopup.style.display = 'block';
-
-                    setTimeout(() => {
-                        AppState.elements.correctAnswerPopup.style.display = 'none';
-                    }, 2000);
+            // 2. CHECK IF USER CLICKED THE CORRECT MAP PART FOR THEIR SELECTED FLAG
+            else if (id !== AppState.selectedCountry) {
+                if (tryAgainPopup) {
+                    tryAgainPopup.style.display = 'block';
+                    setTimeout(() => { tryAgainPopup.style.display = 'none'; }, 2000);
                 }
-
-                const chooseFlagPopup = document.getElementById('choose-flag-popup');
-                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-
-                // show lottie wrapper
-                if (AppState.elements.lottieWrapper) {
-                    AppState.elements.lottieWrapper.style.display = 'block';
+                AppState.wrongMapAttempts++;
+            }
+            // 3. CORRECT MATCH
+            else {
+                const { correctAnswerPopup, lottieWrapper, correctLottie } = AppState.elements;
+                if (correctAnswerPopup) {
+                    correctAnswerPopup.style.display = 'block';
+                    setTimeout(() => { correctAnswerPopup.style.display = 'none'; }, 2000);
                 }
-
-                // play lottie animation
-                if (AppState.elements.correctLottie && typeof lottie !== 'undefined') {
-                    AppState.elements.correctLottie.innerHTML = '';
+                if (lottieWrapper) lottieWrapper.style.display = 'block';
+                if (correctLottie && typeof lottie !== 'undefined') {
+                    correctLottie.innerHTML = '';
                     lottie.loadAnimation({
-                        container: AppState.elements.correctLottie,
+                        container: correctLottie,
                         renderer: 'svg',
                         loop: false,
                         autoplay: true,
@@ -171,110 +129,47 @@ function initMapDropCheck() {
                     });
                 }
 
-                // Award 1 mark for correct flag-country match ON FIRST ATTEMPT
                 if (AppState.wrongMapAttempts === 0) {
                     AppState.score++;
                     updateMarksUI();
                 }
 
-                // show navigation buttons
                 const btnNext = document.getElementById('btn-next');
                 if (btnNext) btnNext.style.display = 'block';
+                const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
 
                 placeFlagOnMap(id);
+                return; // Success
             }
-            // WRONG MATCH
-            else {
 
-                const correctCountry = AppState.currentCountryData
-                    ? AppState.currentCountryData.country.toLowerCase().replace(/\s/g, '-')
-                    : null;
-
-                // ❗ WRONG FLAG SELECTED
-                if (AppState.selectedCountry !== correctCountry) {
-
-                    AppState.wrongMapAttempts++;
-
-                    const wrongFlagPopup = document.getElementById('wrong-flag-selected');
-
-                    if (wrongFlagPopup) {
-                        wrongFlagPopup.style.display = 'block';
-
-                        setTimeout(() => {
-                            wrongFlagPopup.style.display = 'none';
-                        }, 2000);
-                    }
-
-                    if (AppState.wrongMapAttempts >= 2) {
-                        const missedItPopup = document.getElementById('missed-it-popup');
-                        if (missedItPopup) {
-                            missedItPopup.style.display = 'block';
-                            setTimeout(() => {
-                                missedItPopup.style.display = 'none';
-                                // Auto-place correct flag
-                                COUNTRY_IDS.forEach(cId => {
-        const el = document.getElementById(cId);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
-                                const correctFlagEl = document.getElementById(correctCountry);
-                                if (correctFlagEl) correctFlagEl.classList.add('correct');
-                                AppState.selectedCountry = correctCountry;
-                                placeFlagOnMap(correctCountry);
-                                const chooseFlagPopup = document.getElementById('choose-flag-popup');
-                                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-                                const btnNext = document.getElementById('btn-next');
-                                if (btnNext) btnNext.style.display = 'block';
-                            }, 3000);
-                        }
-                    }
-
-                    return;
-                }
-
-                // NORMAL WRONG MAP CLICK
-                AppState.wrongMapAttempts++;
-
-                if (AppState.elements.tryAgainPopup) {
-                    AppState.elements.tryAgainPopup.style.display = 'block';
-
+            // AUTO-ADVANCE ON 2ND FAILURE
+            if (AppState.wrongMapAttempts >= 2) {
+                AppState.mapLocked = true;
+                const missedItPopup = document.getElementById('missed-it-popup');
+                if (missedItPopup) {
+                    missedItPopup.style.display = 'block';
                     setTimeout(() => {
-                        AppState.elements.tryAgainPopup.style.display = 'none';
+                        missedItPopup.style.display = 'none';
+                        // Auto-place correct flag
+                        COUNTRY_IDS.forEach(cId => {
+                            const el = document.getElementById(cId);
+                            if (el) el.classList.remove('selected', 'active', 'correct');
+                        });
+                        const correctFlagEl = document.getElementById(scenarioTarget);
+                        if (correctFlagEl) correctFlagEl.classList.add('correct');
+                        AppState.selectedCountry = scenarioTarget;
+                        placeFlagOnMap(scenarioTarget);
+                        
+                        const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                        if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+                        const btnNext = document.getElementById('btn-next');
+                        if (btnNext) btnNext.style.display = 'block';
                     }, 2000);
                 }
-
-                if (AppState.wrongMapAttempts >= 2) {
-                    // Hide other wrong popups
-                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
-                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
-
-                    const missedItPopup = document.getElementById('missed-it-popup');
-                    if (missedItPopup) {
-                        missedItPopup.style.display = 'block';
-                        setTimeout(() => {
-                            missedItPopup.style.display = 'none';
-                            // Auto-place correct flag
-                            COUNTRY_IDS.forEach(cId => {
-        const el = document.getElementById(cId);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
-                            const correctFlagEl = document.getElementById(correctCountry);
-                            if (correctFlagEl) correctFlagEl.classList.add('correct');
-                            AppState.selectedCountry = correctCountry;
-                            placeFlagOnMap(correctCountry);
-                            const chooseFlagPopup = document.getElementById('choose-flag-popup');
-                            if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-                            const btnNext = document.getElementById('btn-next');
-                            if (btnNext) btnNext.style.display = 'block';
-                        }, 3000);
-                    }
-                }
-
             }
-
         });
-
     });
-
 }
 
 function resetStepTwo() {
@@ -324,6 +219,7 @@ function resetStepTwo() {
     });
 
     // 5. Reset map highlights and flags
+    const flagParent = document.getElementById('en_geo_7_wg155_layout 1');
     COUNTRY_IDS.forEach(id => {
         const el = document.getElementById(id);
         if(el) el.classList.remove('selected', 'active', 'correct');
@@ -337,6 +233,10 @@ function resetStepTwo() {
         if (flag) {
             flag.style.display = 'none';
             flag.setAttribute('transform', 'translate(0, 0)');
+            // Move flag back to its original parent if it was moved to a map group
+            if (flagParent && flag.parentNode !== flagParent) {
+                flagParent.appendChild(flag);
+            }
         }
     });
 
@@ -708,16 +608,20 @@ function handleCountryClick(countryId) {
     // store selected country
     AppState.selectedCountry = countryId;
 
-    // Use currentQuestionIndex instead of random to prevent repeated questions
+    // Find the specific question data for this country ID
     const questions = AppState.data.questions;
-    // Safety check for index out of bounds
-    const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
-    AppState.currentCountryData = questions[safeIndex];
+    const targetQuestion = questions.find(q =>
+        q.country.toLowerCase().replace(/\s/g, '-') === countryId
+    );
 
-    /* Remove redundant disable from here to allow changing minds before quiz starts */
-    if (AppState.elements.flagsWrapper) {
-        AppState.elements.flagsWrapper.classList.add('disabled');
+    if (targetQuestion) {
+        AppState.currentCountryData = targetQuestion;
+    } else {
+        // Fallback to current index if no match
+        const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
+        AppState.currentCountryData = questions[safeIndex];
     }
+
     // Only show quiz buttons if the map phase for this question hasn't started
     const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
 
@@ -727,6 +631,11 @@ function handleCountryClick(countryId) {
         }
         if (AppState.elements.btnQuiz) {
             AppState.elements.btnQuiz.style.display = 'block';
+        }
+        
+        // Disable flags after selection
+        if (AppState.elements.flagsWrapper) {
+            AppState.elements.flagsWrapper.classList.add('disabled');
         }
     }
 }
@@ -753,7 +662,10 @@ function handleGameReset() {
         shuffleArray(AppState.data.questions);
     }
 
-    // 5. Hide end-game buttons
+    // 5. Hide end-game buttons and return to home screen
+    if (AppState.elements.step1) AppState.elements.step1.style.display = 'block';
+    if (AppState.elements.step2) AppState.elements.step2.style.display = 'none';
+
     const btnReset = document.getElementById('btn-reset');
     if (btnReset) btnReset.style.display = 'none';
 
@@ -762,6 +674,10 @@ function handleGameReset() {
     
     const btnNext = document.getElementById('btn-next');
     if (btnNext) btnNext.style.display = 'none';
+
+    // 6. Reset markings in case they were modified
+    const marksContainer = document.querySelector('.marks-container');
+    if (marksContainer) marksContainer.style.display = 'block';
 }
 
 /**
@@ -844,15 +760,14 @@ function attachEventListeners() {
 
             // remove highlight from country boxes
             COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('selected', 'active', 'correct');
+            });
 
-            // enable flag selection again
+            // Re-enable flags wrapper so a new selection can be made
             if (AppState.elements.flagsWrapper) {
                 AppState.elements.flagsWrapper.classList.remove('disabled');
             }
-
         });
 
     }
@@ -1041,7 +956,7 @@ function handleOptionClick(li) {
             if (opt) opt.classList.add('disabled');
         });
 
-        // Re-enable the flags wrapper
+        // Re-enable the flags wrapper so a new selection can be made
         if (AppState.elements.flagsWrapper) {
             AppState.elements.flagsWrapper.classList.remove('disabled');
         }
@@ -1169,80 +1084,35 @@ function initLayerWrongClicks() {
         if (!layer) continue;
 
         layer.addEventListener('click', () => {
-            if (!AppState.mapEnabled) return;
+            if (!AppState.mapEnabled || AppState.mapLocked || !AppState.selectedCountry) return;
 
-
-            if (AppState.mapLocked) return;
-
-            if (!AppState.selectedCountry) return;
-
-            const correctCountry = AppState.currentCountryData
+            const scenarioTarget = AppState.currentCountryData
                 ? AppState.currentCountryData.country.toLowerCase().replace(/\s/g, '-')
                 : null;
 
-            // ❗ WRONG FLAG SELECTED
-            if (AppState.selectedCountry !== correctCountry) {
+            const wrongFlagPopup = document.getElementById('wrong-flag-selected');
 
-                // count wrong attempts
-                AppState.wrongMapAttempts++;
-
-                const wrongFlagPopup = document.getElementById('wrong-flag-selected');
-
+            // 1. CHECK IF USER HAS THE CORRECT FLAG SELECTED FOR THIS SCENARIO
+            if (AppState.selectedCountry !== scenarioTarget) {
                 if (wrongFlagPopup) {
                     wrongFlagPopup.style.display = 'block';
-
-                    setTimeout(() => {
-                        wrongFlagPopup.style.display = 'none';
-                    }, 2000);
+                    setTimeout(() => { wrongFlagPopup.style.display = 'none'; }, 2000);
                 }
-
-                if (AppState.wrongMapAttempts >= 2) {
-                    // Hide other wrong popups
-                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
-                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
-
-                    const missedItPopup = document.getElementById('missed-it-popup');
-                    if (missedItPopup) {
-                        missedItPopup.style.display = 'block';
-                        setTimeout(() => {
-                            missedItPopup.style.display = 'none';
-                            // Auto-place correct flag
-                            COUNTRY_IDS.forEach(cId => {
-        const el = document.getElementById(cId);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
-                            const correctFlagEl = document.getElementById(correctCountry);
-                            if (correctFlagEl) correctFlagEl.classList.add('correct');
-                            AppState.selectedCountry = correctCountry;
-                            placeFlagOnMap(correctCountry);
-                            const chooseFlagPopup = document.getElementById('choose-flag-popup');
-                            if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-                            const btnNext = document.getElementById('btn-next');
-                            if (btnNext) btnNext.style.display = 'block';
-                        }, 3000);
-                    }
+                AppState.wrongMapAttempts++;
+            }
+            // 2. USER CLICKED A DISTRACTOR LAYER (Wrong map part for their selected flag)
+            else {
+                const tryAgainPopup = AppState.elements.tryAgainPopup;
+                if (tryAgainPopup) {
+                    tryAgainPopup.style.display = 'block';
+                    setTimeout(() => { tryAgainPopup.style.display = 'none'; }, 2000);
                 }
-
-                return;
+                AppState.wrongMapAttempts++;
             }
 
-            // NORMAL WRONG MAP CLICK (when correct flag is selected)
-            AppState.wrongMapAttempts++;
-
-            if (AppState.elements.tryAgainPopup) {
-                AppState.elements.tryAgainPopup.style.display = 'block';
-
-                setTimeout(() => {
-                    AppState.elements.tryAgainPopup.style.display = 'none';
-                }, 2000);
-            }
-
+            // AUTO-ADVANCE ON 2ND FAILURE
             if (AppState.wrongMapAttempts >= 2) {
-                // Hide other wrong popups
-                const wrongFlagPopup = document.getElementById('wrong-flag-selected');
-                if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
-                if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
-
+                AppState.mapLocked = true;
                 const missedItPopup = document.getElementById('missed-it-popup');
                 if (missedItPopup) {
                     missedItPopup.style.display = 'block';
@@ -1250,21 +1120,21 @@ function initLayerWrongClicks() {
                         missedItPopup.style.display = 'none';
                         // Auto-place correct flag
                         COUNTRY_IDS.forEach(cId => {
-        const el = document.getElementById(cId);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
-                        const correctFlagEl = document.getElementById(correctCountry);
+                            const el = document.getElementById(cId);
+                            if (el) el.classList.remove('selected', 'active', 'correct');
+                        });
+                        const correctFlagEl = document.getElementById(scenarioTarget);
                         if (correctFlagEl) correctFlagEl.classList.add('correct');
-                        AppState.selectedCountry = correctCountry;
-                        placeFlagOnMap(correctCountry);
+                        AppState.selectedCountry = scenarioTarget;
+                        placeFlagOnMap(scenarioTarget);
+                        
                         const chooseFlagPopup = document.getElementById('choose-flag-popup');
                         if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
                         const btnNext = document.getElementById('btn-next');
                         if (btnNext) btnNext.style.display = 'block';
-                    }, 3000);
+                    }, 2000);
                 }
             }
-
         });
 
     }

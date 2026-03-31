@@ -121,11 +121,11 @@
       "author": "sushantthe"
     },
     "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-03-31T18:03:26+05:30",
+      "updatedAt": "2026-03-31T18:30:37+05:30",
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-31T18:19:55+05:30",
+      "updatedAt": "2026-03-31T19:12:30+05:30",
       "author": "PrasannaP"
     },
     "wg134-barter-bazaar": {
@@ -161,7 +161,7 @@
       "author": "aditya"
     },
     "wg144-phrasal-verbs": {
-      "updatedAt": "2026-03-31T15:23:01+05:30",
+      "updatedAt": "2026-03-31T18:33:45+05:30",
       "author": "sushantthe"
     },
     "wg145-multiplication-builder": {
@@ -201,15 +201,15 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-31T18:19:55+05:30",
+      "updatedAt": "2026-03-31T20:03:37+05:30",
       "author": "PrasannaP"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-31T17:08:05+05:30",
+      "updatedAt": "2026-03-31T18:18:53+05:30",
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T16:04:03+05:30",
+      "updatedAt": "2026-03-31T19:46:08+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
@@ -399,12 +399,101 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T20:03:37+05:30",
+      "author": "PrasannaP",
+      "message": "feat: disable flag selection after user choice and re-enable on reset",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T19:51:18+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T19:46:08+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:43:15+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure and word lists for vowel twins widget",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:36:45+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:12:30+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T18:33:45+05:30",
+      "author": "sushantthe",
+      "message": "feat: add phrasal verbs data and spiral hole UI script",
+      "widgets": [
+        144
+      ]
+    },
+    {
+      "date": "2026-03-31T18:30:37+05:30",
+      "author": "tce-ashishg",
+      "message": "wg132 issue resolved",
+      "widgets": [
+        132
+      ]
+    },
+    {
+      "date": "2026-03-31T18:30:15+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement UI styles and logic for phrasal verbs learning and practice widget",
+      "widgets": [
+        144
+      ]
+    },
+    {
       "date": "2026-03-31T18:19:55+05:30",
       "author": "PrasannaP",
       "message": "feat: update debugNavigate to support multiple runs and increment version tags 133 155",
       "widgets": [
         133,
         155
+      ]
+    },
+    {
+      "date": "2026-03-31T18:18:53+05:30",
+      "author": "tce-nitinc",
+      "message": "156 fixes",
+      "widgets": [
+        156
+      ]
+    },
+    {
+      "date": "2026-03-31T18:10:51+05:30",
+      "author": "sushantthe",
+      "message": "feat: add phrasal verbs data and spiral hole UI component",
+      "widgets": [
+        144
       ]
     },
     {
@@ -458,6 +547,14 @@
       ]
     },
     {
+      "date": "2026-03-31T17:11:20+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement core logic and state management for phrasal verb learning and practice app",
+      "widgets": [
+        144
+      ]
+    },
+    {
       "date": "2026-03-31T17:08:05+05:30",
       "author": "tce-nitinc",
       "message": "wg156 fixes",
@@ -472,6 +569,15 @@
       "message": "fix: prevent race conditions and double-clicks in handleShowAnswer using debounce and event handling",
       "widgets": [
         85
+      ]
+    },
+    {
+      "date": "2026-03-31T16:50:51+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement phrasal verbs widget with interactive flashcards and practice modes",
+      "widgets": [
+        144,
+        157
       ]
     },
     {
@@ -541,111 +647,6 @@
       "message": "feat: add notebook-themed CSS styles for phrasal verb flashcards",
       "widgets": [
         144
-      ]
-    },
-    {
-      "date": "2026-03-31T15:20:14+05:30",
-      "author": "PrasannaP",
-      "message": "b3_wg158_260331_2",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-31T15:17:00+05:30",
-      "author": "sushantthe",
-      "message": "refactor: migrate phrasal verbs widget to modern structure by replacing legacy files with new implementation",
-      "widgets": [
-        144
-      ]
-    },
-    {
-      "date": "2026-03-31T14:56:07+05:30",
-      "author": "PrasannaP",
-      "message": "133 155 fixed svg",
-      "widgets": [
-        133
-      ]
-    },
-    {
-      "date": "2026-03-31T14:50:46+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update navigation SVG width and add fallback font stack to text elements",
-      "widgets": [
-        155
-      ]
-    },
-    {
-      "date": "2026-03-31T14:44:08+05:30",
-      "author": "PrasannaP",
-      "message": "85 change array1",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-31T14:33:12+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 133 wg 155 changes",
-      "widgets": [
-        133,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-31T14:32:42+05:30",
-      "author": "PrasannaP",
-      "message": "v4",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-31T14:03:09+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:37:01+05:30",
-      "author": "sushantthe",
-      "message": "Update index.html",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:35:41+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel teams data structure and audio playback logic for wg157-vowel-twins",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:35:02+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:33:07+05:30",
-      "author": "PrasannaP",
-      "message": "v3",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-31T13:32:50+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
-      "widgets": [
-        158
       ]
     }
   ]
