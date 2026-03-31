@@ -49,7 +49,7 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-31T10:21:19+05:30",
+      "updatedAt": "2026-03-31T10:25:26+05:30",
       "author": "sushantthe"
     },
     "wg115-literary-device": {
@@ -391,6 +391,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T10:25:26+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        114
+      ]
+    },
+    {
       "date": "2026-03-31T10:21:19+05:30",
       "author": "sushantthe",
       "message": "feat: implement Lottie animation overlay and screen navigation logic for interactive widget",
@@ -629,41 +637,6 @@
       "widgets": [
         61,
         79
-      ]
-    },
-    {
-      "date": "2026-03-30T16:34:16+05:30",
-      "author": "PrasannaP",
-      "message": "rever 414 sushant PR",
-      "widgets": [
-        24,
-        42,
-        52,
-        53,
-        61,
-        69,
-        70,
-        73,
-        74,
-        77,
-        83,
-        84,
-        91,
-        98,
-        101,
-        109,
-        114,
-        118,
-        127,
-        133,
-        135,
-        137,
-        138,
-        146,
-        148,
-        151,
-        153,
-        155
       ]
     }
   ]
