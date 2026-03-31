@@ -540,9 +540,9 @@ function createParagraphSlots(topic) {
   // Create foreignObject for instruction message
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '28px';
@@ -641,18 +641,18 @@ function buildParagraphProgressively() {
   // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
   div.style.fontFamily = 'Roboto-Medium, Roboto';
   div.style.fontWeight = '500';
-  div.style.lineHeight = '1.5';
+  div.style.lineHeight = '40px';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '50px';
+  div.style.paddingTop = '0px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -740,25 +740,6 @@ function hideCompletionScreen() {
     arrowImg.style.display = 'none';
   }
 
-  // Remove opacity from answer button when image is hidden
-  const answerBtn = document.getElementById('answer-btn-text');
-  if (answerBtn) {
-    answerBtn.style.opacity = '1';
-    answerBtn.style.pointerEvents = 'auto';
-
-    // Also reset pointer-events on inner div
-    const answerBtnDiv = answerBtn.querySelector('div');
-    if (answerBtnDiv) {
-      answerBtnDiv.style.pointerEvents = 'auto';
-    }
-  }
-
-  // Reset pointer-events on the button group
-  const buttonGroup = document.getElementById('Group_814');
-  if (buttonGroup) {
-    buttonGroup.style.pointerEvents = 'auto';
-  }
-
   // Add opacity to next button when image is hidden
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
@@ -792,32 +773,6 @@ function showTopicImage(imageName) {
   const arrowImg = document.getElementById('arrow-img');
   if (arrowImg) {
     arrowImg.style.display = 'block';
-  }
-
-  // Add opacity to answer button when image is shown
-  const answerBtn = document.getElementById('answer-btn-text');
-  if (answerBtn) {
-    answerBtn.style.opacity = '0.4';
-    answerBtn.style.pointerEvents = 'none';
-
-    // Also add pointer-events none to inner div
-    const answerBtnDiv = answerBtn.querySelector('div');
-    if (answerBtnDiv) {
-      answerBtnDiv.style.pointerEvents = 'none';
-    }
-  }
-
-  // Add pointer-events none to the button group itself
-  const buttonGroup = document.getElementById('Group_814');
-  if (buttonGroup) {
-    buttonGroup.style.pointerEvents = 'none';
-  }
-
-  // Remove opacity from back button when image is shown
-  const backBtn = document.getElementById('Group_594');
-  if (backBtn) {
-    backBtn.style.opacity = '1';
-    backBtn.style.pointerEvents = 'auto';
   }
 
   // Remove opacity from next button when image is shown
@@ -862,18 +817,18 @@ function showHighlightedParagraph(topic, container) {
 
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
   div.style.fontFamily = 'Roboto-Medium, Roboto';
   div.style.fontWeight = '500';
-  div.style.lineHeight = '1.5';
+  div.style.lineHeight = '40px';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '50px';
+  div.style.paddingTop = '0px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -886,13 +841,12 @@ function showHighlightedParagraph(topic, container) {
   para.style.fontSize = '26px';
   para.style.fontFamily = 'Roboto-Medium, Roboto';
   para.style.fontWeight = '500';
-  para.style.lineHeight = '1.5';
+  para.style.lineHeight = '40px';
   para.innerHTML = highlightedHTML;
   div.appendChild(para);
 
   foreignObject.appendChild(div);
   container.replaceChildren(foreignObject);
-  console.log('[WG85] foreignObject injected into para-toc. Children count:', container.children.length);
 }
 
 
@@ -1010,39 +964,22 @@ function showAnnotations(topic, container) {
 
 // Show navigation button
 function showNavigationButton() {
-  const isLastTopic = currentTopicIndex === paragraphData.length - 1;
-  const btnText = isLastTopic ? 'FINISH' : 'Next';
-
-  // Use Group_594-2 as the Next button (it's positioned on the right)
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.cursor = 'pointer';
     nextBtn.style.opacity = '1';
     nextBtn.style.pointerEvents = 'auto';
-
-    // Update text if needed
-    const textElement = nextBtn.querySelector('text');
-    if (textElement) {
-      textElement.textContent = btnText;
-    }
   }
 }
 
-// Handle navigation click
+// Handle navigation click — cycles infinitely through all topics
 function handleNavigationClick(e) {
   e.stopPropagation();
 
-  const isLastTopic = currentTopicIndex === paragraphData.length - 1;
+  // Always loop: go to next topic, wrap back to 0 after the last one
+  currentTopicIndex = (currentTopicIndex + 1) % paragraphData.length;
 
-  if (isLastTopic) {
-    // Show completion message
-    alert('Congratulations! You have completed all paragraph building exercises!');
-    currentTopicIndex = 0;
-  } else {
-    currentTopicIndex++;
-  }
-
-  // Reset next button opacity before loading next topic
+  // Reset next button opacity before loading
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.opacity = '0.4';
@@ -1082,12 +1019,7 @@ function setupEventListeners() {
     resetBtn.addEventListener('click', handleReset);
   }
 
-  // Back button (Group_594)
-  const backBtn = document.getElementById('Group_594');
-  if (backBtn) {
-    backBtn.style.cursor = 'pointer';
-    backBtn.addEventListener('click', handleBackClick);
-  }
+  // Back button is removed — no registration needed
 
   // Next button (Group_594-2) - initially with opacity 0.4
   const nextTopicBtn = document.getElementById('Group_594-2');
@@ -1203,8 +1135,21 @@ function updateTopicNavigationButtons() {
   // Don't show next button during normal play - only in completion screen
 }
 
+let showAnswerTimeout = null;
+let isTogglingAnswer = false;
+
 // Handle Show Answer
-function handleShowAnswer() {
+function handleShowAnswer(e) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  // Prevent double-clicks or event bubbling from triggering multiple times
+  if (isTogglingAnswer) return;
+  isTogglingAnswer = true;
+  setTimeout(() => { isTogglingAnswer = false; }, 400);
+
   const buttonText = document.getElementById('answer-btn-text');
   if (!buttonText) return;
 
@@ -1227,7 +1172,8 @@ function handleShowAnswer() {
     }
 
     // Show completion screen which handles highlighted text and annotations
-    setTimeout(() => {
+    clearTimeout(showAnswerTimeout);
+    showAnswerTimeout = setTimeout(() => {
       showCompletionScreen();
     }, 300);
 
@@ -1235,6 +1181,7 @@ function handleShowAnswer() {
     updateAnswerButtonText('Hide Answer');
   } else if (currentText === 'Hide Answer') {
     // Hide Answer - reset to initial state
+    clearTimeout(showAnswerTimeout);
     isAnswerShown = false;
     updateAnswerButtonText('Show Answer');
     loadTopic(currentTopicIndex);
@@ -1302,3 +1249,132 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEBUG AUTO-PLAY
+// Usage (browser console):  debugAutoPlay()          — default 800 ms/step
+//                           debugAutoPlay(400)       — faster
+//                           debugAutoPlay(1500, 3)   — slow, start at topic 4
+// ─────────────────────────────────────────────────────────────────────────────
+window.debugAutoPlay = async function (delayMs = 800, startTopicIndex = 0) {
+  console.group('%c[WG85 Debug] Auto-Play started', 'color:#00bcd4;font-weight:bold;font-size:14px');
+  console.log(`Topics: ${paragraphData.length} | Delay: ${delayMs}ms | Starting at index ${startTopicIndex}`);
+
+  const results = [];
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  for (let topicIdx = startTopicIndex; topicIdx < paragraphData.length; topicIdx++) {
+    const topic = paragraphData[topicIdx];
+    console.groupCollapsed(`%c→ Topic ${topicIdx + 1}/${paragraphData.length}: "${topic.topic}"`,
+      'color:#ff9800;font-weight:bold');
+
+    // ── 1. Reset & load topic ──────────────────────────────────────────────
+    currentTopicIndex = topicIdx;
+    userOrder = [];
+    isComplete = false;
+    loadTopic(topicIdx);
+    await sleep(delayMs);
+
+    // ── 2. Submit each correct sentence in order ───────────────────────────
+    for (let step = 0; step < topic.correctOrder.length; step++) {
+      const sentenceIdx = topic.correctOrder[step] - 1; // convert to 0-based
+
+      // Find the matching sentence-box element
+      const allBoxes = document.querySelectorAll('.sentence-box');
+      let targetEl = null;
+      allBoxes.forEach(el => {
+        if (parseInt(el.getAttribute('data-sentence-index')) === sentenceIdx) {
+          targetEl = el;
+        }
+      });
+
+      if (targetEl) {
+        console.log(`  Step ${step + 1}: clicking sentence[${sentenceIdx}] = "${topic.sentences[sentenceIdx].substring(0, 50)}..."`);
+        handleSentenceClick(sentenceIdx, targetEl);
+      } else {
+        // Sentence box already gone (blurred/removed) — push directly
+        console.warn(`  Step ${step + 1}: element not found for sentence[${sentenceIdx}], pushing directly.`);
+        userOrder.push(sentenceIdx);
+        if (step < topic.correctOrder.length - 1) {
+          buildParagraphProgressively();
+        } else {
+          showCompletionScreen();
+        }
+      }
+
+      await sleep(delayMs);
+    }
+
+    await sleep(delayMs);
+
+    // ── 3. Verify completion ───────────────────────────────────────────────
+    const paraContainer = document.getElementById('para-toc');
+    const hasHighlightSpans = paraContainer
+      ? paraContainer.querySelectorAll('span[style*="background"]').length > 0
+      : false;
+
+    const highlightCount = paraContainer
+      ? paraContainer.querySelectorAll('span[style*="background"]').length
+      : 0;
+
+    const titleGroup = document.getElementById('para-title');
+    const titleVisible = titleGroup ? titleGroup.style.display !== 'none' : false;
+
+    const imageEl = document.getElementById('para-image');
+    const imageVisible = imageEl ? imageEl.style.display !== 'none' : false;
+
+    const annotationContainer = document.getElementById('para-toc-highlights');
+    const annotationsVisible = annotationContainer
+      ? annotationContainer.style.display !== 'none'
+      : false;
+
+    const pass = hasHighlightSpans && titleVisible && imageVisible && annotationsVisible;
+
+    results.push({
+      index: topicIdx,
+      topic: topic.topic,
+      pass,
+      hasHighlightSpans,
+      highlightCount,
+      titleVisible,
+      imageVisible,
+      annotationsVisible,
+    });
+
+    console.log(`  Highlights: ${hasHighlightSpans ? '✅' : '❌'} (${highlightCount} spans)`);
+    console.log(`  Title visible: ${titleVisible ? '✅' : '❌'}`);
+    console.log(`  Image visible: ${imageVisible ? '✅' : '❌'}`);
+    console.log(`  Annotations visible: ${annotationsVisible ? '✅' : '❌'}`);
+    console.log(`  Overall: ${ pass ? '✅ PASS' : '❌ FAIL'}`);
+    console.groupEnd();
+
+    await sleep(delayMs * 1.5);
+
+    // ── 4. Navigate to next topic (if not last) ────────────────────────────
+    if (topicIdx < paragraphData.length - 1) {
+      handleNextTopicClick({ stopPropagation: () => {} });
+      await sleep(delayMs);
+    }
+  }
+
+  // ── 5. Summary table ─────────────────────────────────────────────────────────
+  const passed = results.filter(r => r.pass).length;
+  const failed = results.filter(r => !r.pass).length;
+
+  console.group('%c[WG85 Debug] ══ RESULTS SUMMARY ══', 'color:#00bcd4;font-weight:bold;font-size:14px');
+  console.table(results.map(r => ({
+    '#': r.index + 1,
+    Topic: r.topic,
+    Highlights: r.hasHighlightSpans ? `✅ (${r.highlightCount})` : '❌',
+    Title: r.titleVisible ? '✅' : '❌',
+    Image: r.imageVisible ? '✅' : '❌',
+    Annotations: r.annotationsVisible ? '✅' : '❌',
+    Result: r.pass ? '✅ PASS' : '❌ FAIL',
+  })));
+  console.log(`%cTotal: ${passed} PASSED / ${failed} FAILED out of ${results.length} topics`,
+    `color:${failed === 0 ? '#4caf50' : '#f44336'};font-weight:bold;font-size:13px`);
+  console.groupEnd();
+  console.groupEnd();
+
+  return results;
+};
