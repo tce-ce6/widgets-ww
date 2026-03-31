@@ -485,9 +485,16 @@ function placeFlagOnMap(countryId) {
         y += offset.y;
     }
 
+    // When the map is zoomed, getBBox() values are in scaled user units,
+    // but the translate we apply is in the map group's local units.
+    // Compensate by dividing by the current scale to keep placement aligned.
+    const scale = AppState.mapState?.currentScale || 1;
+    const dx = (x - flagBox.x) / scale;
+    const dy = (y - flagBox.y) / scale;
+
     flag.setAttribute(
         "transform",
-        `translate(${x - flagBox.x}, ${y - flagBox.y})`
+        `translate(${dx}, ${dy})`
     );
 
     AppState.mapLocked = true;
@@ -1370,4 +1377,74 @@ window.debugNavigate = async function(runs = 1) {
         }
     }
     console.log("%c[DEBUG] Final State:", "color: yellow", { ...AppState });
+};
+
+// Debug helper: jump straight to Kosovo placement.
+// Usage from console:
+//   debugKosovoPlacement()
+//   debugKosovoPlacement({ zoom: 2.5, place: true })
+window.debugKosovoPlacement = async function(options = {}) {
+    const { zoom = 1, place = true } = options || {};
+
+    // Ensure data + elements exist
+    if (!AppState.data) {
+        await loadData();
+    }
+    if (!AppState.elements || !AppState.elements.step1) {
+        initElements();
+    }
+
+    // Go to step-2 screen
+    if (AppState.elements.step1) AppState.elements.step1.style.display = 'none';
+    if (AppState.elements.step2) AppState.elements.step2.style.display = 'block';
+
+    // Reset round state
+    resetStepTwo();
+    AppState.mapEnabled = true;
+    AppState.mapLocked = false;
+    unlockFlags();
+
+    // Select Kosovo as the chosen flag
+    AppState.selectedCountry = 'kosovo';
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('selected', 'active', 'correct');
+    });
+    const kosovoBox = document.getElementById('kosovo');
+    if (kosovoBox) kosovoBox.classList.add('selected');
+
+    // Set current question to whatever is current index (shuffled),
+    // or fall back to a Kosovo question if one exists.
+    const qs = AppState.data?.questions || [];
+    const idx = Math.min(AppState.currentQuestionIndex || 0, Math.max(qs.length - 1, 0));
+    AppState.currentCountryData = qs[idx] || AppState.currentCountryData;
+
+    const kosovoQ = qs.find(q => (q.country || '').toLowerCase().replace(/\s/g, '-') === 'kosovo');
+    if (kosovoQ) AppState.currentCountryData = kosovoQ;
+
+    // Apply zoom (if any)
+    if (AppState.elements.map) {
+        AppState.mapState.currentScale = zoom;
+        AppState.elements.map.setAttribute(
+            'transform',
+            `translate(${AppState.mapState.currentX}, ${AppState.mapState.currentY}) scale(${AppState.mapState.currentScale})`
+        );
+    }
+
+    if (place) {
+        const mapGroup = document.getElementById('kosovo-map');
+        const flag = document.getElementById('kosovo-flag');
+        console.log('[debugKosovoPlacement] before', {
+            scale: AppState.mapState.currentScale,
+            mapBBox: mapGroup ? mapGroup.getBBox() : null,
+            flagBBox: flag ? flag.getBBox() : null
+        });
+
+        placeFlagOnMap('kosovo');
+
+        console.log('[debugKosovoPlacement] after', {
+            flagTransform: flag?.getAttribute?.('transform'),
+            wrapperTransform: mapGroup?.getAttribute?.('transform')
+        });
+    }
 };
