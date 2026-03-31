@@ -241,28 +241,23 @@
   .landing-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
   .landing-btn {
     font-family: 'Patrick Hand', cursive;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1.2rem;
     padding: 14px 40px;
     border: none;
+    border-radius: 25px;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.25s;
-    box-shadow: 3px 3px 6px var(--shadow);
+    transition: opacity 0.2s, transform 0.2s;
   }
   .btn-learn {
-    background: var(--sticky-green);
-    color: var(--pen-green);
-    transform: rotate(-1.5deg);
-    border-bottom: 3px solid #A5D6A7;
+    background: #2ECC71;
   }
-  .btn-learn:hover { transform: rotate(0deg) scale(1.06); box-shadow: 4px 4px 10px var(--shadow); }
+  .btn-learn:hover { opacity: 0.88; transform: scale(1.04); }
   .btn-practice {
-    background: var(--sticky-pink);
-    color: var(--pen-red);
-    transform: rotate(1.5deg);
-    border-bottom: 3px solid #F48FB1;
+    background: #E91E8C;
   }
-  .btn-practice:hover { transform: rotate(0deg) scale(1.06); box-shadow: 4px 4px 10px var(--shadow); }
+  .btn-practice:hover { opacity: 0.88; transform: scale(1.04); }
 
   /* ── LEARN: PAPER REVEAL CARD ── */
   .learn-view, .practice-view { }
@@ -402,18 +397,18 @@
   }
   .nav-btn {
     font-family: 'Patrick Hand', cursive;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1rem;
     padding: 9px 22px;
-    border: 2px dashed var(--paper-lines);
-    background: var(--card-bg);
-    color: var(--text);
+    border: none;
+    border-radius: 25px;
+    background: #2196F3;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 1px 1px 3px var(--shadow);
+    transition: opacity 0.2s, transform 0.2s;
   }
-  .nav-btn:hover:not(:disabled) { border-color: var(--pen-blue); color: var(--pen-blue); background: var(--sticky-blue); transform: translateY(-1px); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn:hover:not(:disabled) { opacity: 0.88; transform: scale(1.04); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
   .card-counter {
     font-size: 0.95rem;
     color: var(--text-muted);
@@ -518,16 +513,17 @@
   .feedback-text.incorrect { color: var(--incorrect); }
   .next-btn {
     font-family: 'Patrick Hand', cursive;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1rem;
     padding: 9px 26px;
     border: none;
+    border-radius: 25px;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 2px 2px 5px var(--shadow);
+    transition: opacity 0.2s, transform 0.2s;
   }
-  .next-btn.practice-next { background: var(--sticky-pink); color: var(--pen-red); border-bottom: 2px solid #F48FB1; }
-  .next-btn.practice-next:hover { transform: translateY(-1px); box-shadow: 3px 3px 8px var(--shadow); }
+  .next-btn.practice-next { background: #E91E8C; }
+  .next-btn.practice-next:hover { opacity: 0.88; transform: scale(1.04); }
 
   .score-bar {
     display: flex;
