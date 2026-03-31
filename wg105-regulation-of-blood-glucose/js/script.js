@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const insightBtn = document.getElementById('button-insite');
   const insightOverlay = document.getElementById('insights-overlay');
   const insightClose = document.getElementById('insights-close');
+  const subNote = document.getElementById('sub-note');
 
   // Values based on cy positions in SVG (viewBox 1920x1080)
   const CY_HIGH = 359;
@@ -132,6 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
       currentLevel = nextLevel;
       playLottie(`glucose-${nextLevel}-level`);
 
+      if (subNote) {
+        const levelText = nextLevel.charAt(0).toUpperCase() + nextLevel.slice(1);
+        subNote.textContent = `${levelText} glucose level in blood`;
+      }
+
       if (flowLottie) {
         let segment = null;
         // High = 0s (0), Normal = 15s (450), Low = 30s (900)
@@ -221,6 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
       initFlowAnimation();
       playLottie('glucose-normal-level');
       pendingFlowSegment = null;
+
+      if (subNote) {
+        subNote.textContent = "Normal glucose level in blood";
+      }
 
       // Show instruction text
       if (iText) {
