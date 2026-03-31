@@ -867,6 +867,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
+      const alertPopupImg = document.getElementById('alert-popup-img');
+      if (alertPopupImg) {
+        alertPopupImg.style.display = 'none';
+      }
       if (showAnswerBtn.textContent.trim() === 'Show Answer') {
         showAnswerBtn.textContent = 'Hide Answer';
         showAllAnswers(wordObj);
@@ -898,6 +902,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const alertPopup = document.getElementById('alert-popup');
     if (alertPopup) {
       alertPopup.style.display = 'none';
+    }
+    const alertPopupImg = document.getElementById('alert-popup-img');
+    if (alertPopupImg) {
+      alertPopupImg.style.display = 'none';
     }
 
     // currentWordObj = wordObj;
@@ -995,7 +1003,13 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", e => {
     const clickedItem = e.target.closest("#list-suffix li");
     if (!clickedItem) return;
+
     if (clickedItem.style.opacity === "0.3") return;
+
+    const alertPopupImg = document.getElementById('alert-popup-img');
+    if (alertPopupImg) {
+      alertPopupImg.style.display = 'none';
+    }
     const object = wordObj.image.match(/\/([^/]+)\./)[1];
 
     const suffixText = clickedItem.querySelector("span")?.textContent.trim();
@@ -1080,12 +1094,36 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers.push(combined);
     updateStarsDisplay(answers.length, completedAnswers.length);
 
+    // const d = wordObj.details;
+    // if (d.spelling_alert && d.spelling_alert.toLowerCase().includes(combined.toLowerCase())) {
+    //   const alertPopup = document.getElementById('alert-popup');
+    //   const alertTextBody = document.getElementById('alert-text-body');
+    //   if (alertPopup && alertTextBody) {
+    //     alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
+    //     alertPopup.style.display = 'block';
+    //   }
+    // }
+
     const d = wordObj.details;
+
     if (d.spelling_alert && d.spelling_alert.toLowerCase().includes(combined.toLowerCase())) {
-      const alertPopup = document.getElementById('alert-popup');
-      const alertTextBody = document.getElementById('alert-text-body');
-      if (alertPopup && alertTextBody) {
-        alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
+
+      const alertPopup = document.getElementById('alert-popup-img'); // foreignObject
+      const alertImg = document.getElementById('alert-img');
+
+      if (alertPopup && alertImg) {
+
+        // ✅ extract uppercase words
+        const matches = d.spelling_alert.match(/\b[A-Z]{2,}\b/g);
+
+        if (matches && matches.length > 0) {
+          const word = matches[0].toLowerCase(); // LOVABLE → lovable
+          console.log(word)
+          // ✅ update image
+          alertImg.setAttribute("src", `assets/${word}.svg`);
+        }
+
+        // ✅ show foreignObject
         alertPopup.style.display = 'block';
       }
     }
@@ -1188,6 +1226,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       setTimeout(() => {
+        // const alertPopupImg = document.getElementById('alert-popup-img');
+        // if (alertPopupImg) {
+        //   alertPopupImg.style.display = 'none';
+        // }
         slots.forEach(slot => {
           slot.style.display = "none";
           slot.dataset.full = "false";
