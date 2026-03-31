@@ -895,6 +895,11 @@ document.addEventListener("DOMContentLoaded", () => {
     wordObj = picker.getNext();
     const d = wordObj.details;
 
+    const alertPopup = document.getElementById('alert-popup');
+    if (alertPopup) {
+      alertPopup.style.display = 'none';
+    }
+
     // currentWordObj = wordObj;
 
     const imgEl = document.getElementById('objects-img');
@@ -1075,6 +1080,16 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers.push(combined);
     updateStarsDisplay(answers.length, completedAnswers.length);
 
+    const d = wordObj.details;
+    if (d.spelling_alert && d.spelling_alert.toLowerCase().includes(combined.toLowerCase())) {
+      const alertPopup = document.getElementById('alert-popup');
+      const alertTextBody = document.getElementById('alert-text-body');
+      if (alertPopup && alertTextBody) {
+        alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
+        alertPopup.style.display = 'block';
+      }
+    }
+
 
     /* ---- ASSIGN TO word1, word2, ... ---- */
     if (wordSlots[wordIndex]) {
@@ -1195,6 +1210,13 @@ document.addEventListener("DOMContentLoaded", () => {
     exampleSentence.style.display = 'none';
   });
 
+  const closeAlertBtn = document.getElementById('close-alert-btn');
+  if (closeAlertBtn) {
+    closeAlertBtn.addEventListener('click', () => {
+      const popup = document.getElementById('alert-popup');
+      if (popup) popup.style.display = 'none';
+    });
+  }
 
   if (nextBtn) nextBtn.addEventListener("click", loadNextWord);
 

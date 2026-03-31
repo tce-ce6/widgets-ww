@@ -1,0 +1,70 @@
+{
+  "wg61": {
+    "name": "Suffix Magic 1 (wg61)",
+    "totalWords": 29,
+    "totalAnswers": 96,
+    "reachableAnswers": 96,
+    "unreachableAnswers": [],
+    "alertCoverage": 5,
+    "untriggeredAlerts": []
+  },
+  "wg122": {
+    "name": "Suffix Magic 2 (wg122)",
+    "totalWords": 22,
+    "totalAnswers": 46,
+    "reachableAnswers": 44,
+    "unreachableAnswers": [
+      {
+        "root": "educate",
+        "answer": "education"
+      },
+      {
+        "root": "create",
+        "answer": "creation"
+      }
+    ],
+    "alertCoverage": 0,
+    "untriggeredAlerts": [
+      {
+        "root": "contribute",
+        "alert": "Drop ‘e’ before adding any suffix."
+      },
+      {
+        "root": "educate",
+        "alert": "Drop ‘e’ before adding any suffix."
+      },
+      {
+        "root": "create",
+        "alert": "Drop ‘e’ before adding any suffix."
+      },
+      {
+        "root": "explore",
+        "alert": "Drop ‘e’ before adding any suffix."
+      },
+      {
+        "root": "admit",
+        "alert": "Drop 't' before adding 'ssion'. Double the 't' before 'ance'."
+      },
+      {
+        "root": "invade",
+        "alert": "Drop 'de' before adding 'sion'."
+      },
+      {
+        "root": "supervise",
+        "alert": "Drop 'se' before adding 'sion'."
+      },
+      {
+        "root": "divide",
+        "alert": "Drop 'de' before adding 'sion'."
+      },
+      {
+        "root": "succeed",
+        "alert": "Change 'ceed' to 'cession' or 'cessor'."
+      },
+      {
+        "root": "observe",
+        "alert": "Drop 'e' before adding any of the suffixes."
+      }
+    ]
+  }
+}
