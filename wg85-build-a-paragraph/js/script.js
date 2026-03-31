@@ -1011,7 +1011,10 @@ function showAnnotations(topic, container) {
 // Show navigation button
 function showNavigationButton() {
   const isLastTopic = currentTopicIndex === paragraphData.length - 1;
-  const btnText = isLastTopic ? 'FINISH' : 'Next';
+  // const btnText = isLastTopic ? 'Finish' : 'Next';
+  /** check the text of the button by a debug method */
+  const btnText = 'Next';
+  console.log('[WG85] btnText:', btnText);
 
   // Use Group_594-2 as the Next button (it's positioned on the right)
   const nextBtn = document.getElementById('Group_594-2');
@@ -1036,7 +1039,7 @@ function handleNavigationClick(e) {
 
   if (isLastTopic) {
     // Show completion message
-    alert('Congratulations! You have completed all paragraph building exercises!');
+    // alert('Congratulations! You have completed all paragraph building exercises!');
     currentTopicIndex = 0;
   } else {
     currentTopicIndex++;
@@ -1302,3 +1305,132 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DEBUG AUTO-PLAY
+// Usage (browser console):  debugAutoPlay()          — default 800 ms/step
+//                           debugAutoPlay(400)       — faster
+//                           debugAutoPlay(1500, 3)   — slow, start at topic 4
+// ─────────────────────────────────────────────────────────────────────────────
+window.debugAutoPlay = async function (delayMs = 800, startTopicIndex = 0) {
+  console.group('%c[WG85 Debug] Auto-Play started', 'color:#00bcd4;font-weight:bold;font-size:14px');
+  console.log(`Topics: ${paragraphData.length} | Delay: ${delayMs}ms | Starting at index ${startTopicIndex}`);
+
+  const results = [];
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  for (let topicIdx = startTopicIndex; topicIdx < paragraphData.length; topicIdx++) {
+    const topic = paragraphData[topicIdx];
+    console.groupCollapsed(`%c→ Topic ${topicIdx + 1}/${paragraphData.length}: "${topic.topic}"`,
+      'color:#ff9800;font-weight:bold');
+
+    // ── 1. Reset & load topic ──────────────────────────────────────────────
+    currentTopicIndex = topicIdx;
+    userOrder = [];
+    isComplete = false;
+    loadTopic(topicIdx);
+    await sleep(delayMs);
+
+    // ── 2. Submit each correct sentence in order ───────────────────────────
+    for (let step = 0; step < topic.correctOrder.length; step++) {
+      const sentenceIdx = topic.correctOrder[step] - 1; // convert to 0-based
+
+      // Find the matching sentence-box element
+      const allBoxes = document.querySelectorAll('.sentence-box');
+      let targetEl = null;
+      allBoxes.forEach(el => {
+        if (parseInt(el.getAttribute('data-sentence-index')) === sentenceIdx) {
+          targetEl = el;
+        }
+      });
+
+      if (targetEl) {
+        console.log(`  Step ${step + 1}: clicking sentence[${sentenceIdx}] = "${topic.sentences[sentenceIdx].substring(0, 50)}..."`);
+        handleSentenceClick(sentenceIdx, targetEl);
+      } else {
+        // Sentence box already gone (blurred/removed) — push directly
+        console.warn(`  Step ${step + 1}: element not found for sentence[${sentenceIdx}], pushing directly.`);
+        userOrder.push(sentenceIdx);
+        if (step < topic.correctOrder.length - 1) {
+          buildParagraphProgressively();
+        } else {
+          showCompletionScreen();
+        }
+      }
+
+      await sleep(delayMs);
+    }
+
+    await sleep(delayMs);
+
+    // ── 3. Verify completion ───────────────────────────────────────────────
+    const paraContainer = document.getElementById('para-toc');
+    const hasHighlightSpans = paraContainer
+      ? paraContainer.querySelectorAll('span[style*="background"]').length > 0
+      : false;
+
+    const highlightCount = paraContainer
+      ? paraContainer.querySelectorAll('span[style*="background"]').length
+      : 0;
+
+    const titleGroup = document.getElementById('para-title');
+    const titleVisible = titleGroup ? titleGroup.style.display !== 'none' : false;
+
+    const imageEl = document.getElementById('para-image');
+    const imageVisible = imageEl ? imageEl.style.display !== 'none' : false;
+
+    const annotationContainer = document.getElementById('para-toc-highlights');
+    const annotationsVisible = annotationContainer
+      ? annotationContainer.style.display !== 'none'
+      : false;
+
+    const pass = hasHighlightSpans && titleVisible && imageVisible && annotationsVisible;
+
+    results.push({
+      index: topicIdx,
+      topic: topic.topic,
+      pass,
+      hasHighlightSpans,
+      highlightCount,
+      titleVisible,
+      imageVisible,
+      annotationsVisible,
+    });
+
+    console.log(`  Highlights: ${hasHighlightSpans ? '✅' : '❌'} (${highlightCount} spans)`);
+    console.log(`  Title visible: ${titleVisible ? '✅' : '❌'}`);
+    console.log(`  Image visible: ${imageVisible ? '✅' : '❌'}`);
+    console.log(`  Annotations visible: ${annotationsVisible ? '✅' : '❌'}`);
+    console.log(`  Overall: ${ pass ? '✅ PASS' : '❌ FAIL'}`);
+    console.groupEnd();
+
+    await sleep(delayMs * 1.5);
+
+    // ── 4. Navigate to next topic (if not last) ────────────────────────────
+    if (topicIdx < paragraphData.length - 1) {
+      handleNextTopicClick({ stopPropagation: () => {} });
+      await sleep(delayMs);
+    }
+  }
+
+  // ── 5. Summary table ─────────────────────────────────────────────────────────
+  const passed = results.filter(r => r.pass).length;
+  const failed = results.filter(r => !r.pass).length;
+
+  console.group('%c[WG85 Debug] ══ RESULTS SUMMARY ══', 'color:#00bcd4;font-weight:bold;font-size:14px');
+  console.table(results.map(r => ({
+    '#': r.index + 1,
+    Topic: r.topic,
+    Highlights: r.hasHighlightSpans ? `✅ (${r.highlightCount})` : '❌',
+    Title: r.titleVisible ? '✅' : '❌',
+    Image: r.imageVisible ? '✅' : '❌',
+    Annotations: r.annotationsVisible ? '✅' : '❌',
+    Result: r.pass ? '✅ PASS' : '❌ FAIL',
+  })));
+  console.log(`%cTotal: ${passed} PASSED / ${failed} FAILED out of ${results.length} topics`,
+    `color:${failed === 0 ? '#4caf50' : '#f44336'};font-weight:bold;font-size:13px`);
+  console.groupEnd();
+  console.groupEnd();
+
+  return results;
+};
