@@ -125,7 +125,7 @@
       "author": "PrasannaP"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-31T13:06:00+05:30",
+      "updatedAt": "2026-03-31T13:13:04+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -209,8 +209,8 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T01:26:13+05:30",
-      "author": "ShyamsundarHait"
+      "updatedAt": "2026-03-31T14:03:09+05:30",
+      "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
       "updatedAt": "2026-03-30T21:37:03+05:30",
@@ -398,6 +398,46 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T14:03:09+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:37:01+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:35:41+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure and audio playback logic for wg157-vowel-twins",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:35:02+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:13:04+05:30",
+      "author": "tce-nitinc",
+      "message": "aaded version",
+      "widgets": [
+        133
+      ]
+    },
     {
       "date": "2026-03-31T13:06:00+05:30",
       "author": "tce-nitinc",
@@ -603,48 +643,6 @@
       "date": "2026-03-30T19:49:27+05:30",
       "author": "PrasannaP",
       "message": "v2",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-30T19:34:56+05:30",
-      "author": "sushantthe",
-      "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-30T19:28:14+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T19:19:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 94 fixes",
-      "widgets": [
-        94,
-        133,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-30T19:16:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T19:05:14+05:30",
-      "author": "PrasannaP",
-      "message": "fix1",
       "widgets": [
         85
       ]
