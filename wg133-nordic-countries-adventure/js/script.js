@@ -718,11 +718,16 @@ function handleCountryClick(countryId) {
     if (AppState.elements.flagsWrapper) {
         AppState.elements.flagsWrapper.classList.add('disabled');
     }
-    if (AppState.elements.iText2) {
-        AppState.elements.iText2.style.display = 'block';
-    }
-    if (AppState.elements.btnQuiz) {
-        AppState.elements.btnQuiz.style.display = 'block';
+    // Only show quiz buttons if the map phase for this question hasn't started
+    const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
+    
+    if (!AppState.mapEnabled && !AppState.mapLocked && !isQuizShown) {
+        if (AppState.elements.iText2) {
+            AppState.elements.iText2.style.display = 'block';
+        }
+        if (AppState.elements.btnQuiz) {
+            AppState.elements.btnQuiz.style.display = 'block';
+        }
     }
 }
 
