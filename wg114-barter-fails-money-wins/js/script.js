@@ -56,12 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // or "Path_2186" (sad). Walk up 3 levels to reach the outer Group_1492/Group_1303.
     if (targetEl) {
       const innerPath = targetEl.querySelector(
-        "[id^='Path_2862'],[id^='Path_2186']"
+        "[id^='Path_2862'],[id^='Path_2186']",
       );
       if (innerPath) {
         // path → Group_1491/1302 → clip-path group → Group_1492/1303
-        const outerG =
-          innerPath.parentElement?.parentElement?.parentElement;
+        const outerG = innerPath.parentElement?.parentElement?.parentElement;
         _staticEmojiEl = outerG || innerPath.parentElement;
       }
 
@@ -167,8 +166,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ordered sequence for Next navigation
   // null = menu; 'conclusion' = conclusion element
   const NAV_SEQ = [
-    null, S.lim1s1, S.lim1s2, S.lim2s1, S.lim2s2,
-    S.lim3s1, S.lim3s2, "conclusion",
+    null,
+    S.lim1s1,
+    S.lim1s2,
+    S.lim2s1,
+    S.lim2s2,
+    S.lim3s1,
+    S.lim3s2,
+    "conclusion",
   ];
 
   function getCurrentScreen() {
@@ -176,7 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const sc of scs) {
       if (sc && sc.base && sc.base.style.display !== "none") return sc;
     }
-    if (S.conclusion && S.conclusion.style.display !== "none") return "conclusion";
+    if (S.conclusion && S.conclusion.style.display !== "none")
+      return "conclusion";
     return null; // menu
   }
 
@@ -227,18 +233,18 @@ document.addEventListener("DOMContentLoaded", () => {
       S.next_button,
     ].forEach(hide);
 
-      //  lim2s1AllNames.forEach((name) => {
-      //     let outline = document.getElementById(
-      //       name.toLowerCase() + "_outline",
-      //     );
-      //     if (outline) hide(outline);
-      //   });
-      //      lim2s2AllNames.forEach((name) => {
-      //     let outline = document.getElementById(
-      //       name.toLowerCase() + "_outline",
-      //     );
-      //     if (outline) hide(outline);
-      //   });
+    //  lim2s1AllNames.forEach((name) => {
+    //     let outline = document.getElementById(
+    //       name.toLowerCase() + "_outline",
+    //     );
+    //     if (outline) hide(outline);
+    //   });
+    //      lim2s2AllNames.forEach((name) => {
+    //     let outline = document.getElementById(
+    //       name.toLowerCase() + "_outline",
+    //     );
+    //     if (outline) hide(outline);
+    //   });
   }
 
   hideAll();
@@ -418,20 +424,17 @@ document.addEventListener("DOMContentLoaded", () => {
       highlightCard(_lastClickedCard, false);
       _lastClickedCard = null;
     }
-  lim2s1AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
-          lim2s2AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
-         matched.clear();
-
+    lim2s1AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    lim2s2AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    matched.clear();
+    correctCount = 0;
+    lim2s2_correctCount = 0;
   }
 
   // ─────────────────────────────────────────────
@@ -450,58 +453,85 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim1s1);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
   onClick("Group_1502", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim1s2);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
   onClick("Group_1501-2", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s1);
-     lim2s1AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
+    lim2s1AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
     matched.clear();
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    correctCount = 0;
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
   onClick("Group_1502-2", () => {
     clearCardHighlight();
     navHistory.push(null);
     goTo(S.lim2s2);
-     lim2s2AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
-         matched.clear();
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    lim2s2AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    matched.clear();
+    correctCount = 0;
+    lim2s2_correctCount = 0;
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
   onClick("Group_1501-3", () => {
     navHistory.push(null);
     resetLim3s1();
     goTo(S.lim3s1);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
   onClick("Group_1502-3", () => {
     navHistory.push(null);
     resetLim3s2();
     if (S.lim3s2.base) goTo(S.lim3s2);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // Internal Scenario switchers (top bar) in Limitation 3
-  onClick("Scenario_1-6", () => { resetLim3s1(); goTo(S.lim3s1); updateNavButtons(); });
-  onClick("Scenario_2-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); updateNavButtons(); });
-  onClick("Group_1500-5", () => { resetLim3s1(); goTo(S.lim3s1); updateNavButtons(); });
-  onClick("Group_1500-6", () => { resetLim3s2(); if (S.lim3s2.base) goTo(S.lim3s2); updateNavButtons(); });
+  onClick("Scenario_1-6", () => {
+    resetLim3s1();
+    goTo(S.lim3s1);
+    updateNavButtons();
+  });
+  onClick("Scenario_2-6", () => {
+    resetLim3s2();
+    if (S.lim3s2.base) goTo(S.lim3s2);
+    updateNavButtons();
+  });
+  onClick("Group_1500-5", () => {
+    resetLim3s1();
+    goTo(S.lim3s1);
+    updateNavButtons();
+  });
+  onClick("Group_1500-6", () => {
+    resetLim3s2();
+    if (S.lim3s2.base) goTo(S.lim3s2);
+    updateNavButtons();
+  });
 
   // Restore a history entry (null = menu, sc object = scenario)
   function restorePrev(prev) {
@@ -590,7 +620,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Priya: "wood",
     "Priya-2": "wood",
     Shambu: "wheat",
-    
   };
 
   makeCardsClickable(S.lim1s1.cards);
@@ -666,7 +695,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s1.wrong);
         positionPopup(topCard, S.lim1s1.right, "Group_1281"); // Base is Maya
         show(S.lim1s1.right);
-       // playLottie("emoji_happy-star", S.lim1s1.right);
+        // playLottie("emoji_happy-star", S.lim1s1.right);
       } else {
         const want = lim1s1Wants[traderId] || "that";
         setIncorrectMsg(S.lim1s1.wrong, `fish. I want ${want}!"`);
@@ -705,7 +734,9 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(S.lim1s1);
     goTo(S.lim1s2);
-    show(S.back_button); show(S.home_buttom); updateNavButtons();
+    show(S.back_button);
+    show(S.home_buttom);
+    updateNavButtons();
   });
 
   // ── SCENARIO 2: Maria (Has 3 Clay Pots, Wants Tools) ────────
@@ -736,7 +767,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Ranjit: "bread",
   };
 
-
   makeCardsClickable(S.lim1s2.cards);
 
   if (S.lim1s2.cards) {
@@ -754,7 +784,7 @@ document.addEventListener("DOMContentLoaded", () => {
         hide(S.lim1s2.wrong);
         positionPopup(topCard, S.lim1s2.right, "Group_1281-3"); // Base is Cheenu
         show(S.lim1s2.right);
-       // playLottie("emoji_happy-star", S.lim1s2.right);
+        // playLottie("emoji_happy-star", S.lim1s2.right);
       } else {
         const want = lim1s2Wants[traderId] || "that";
         // lim1s2.wrong doesn't exist in HTML, use lim1s1.wrong as fallback
@@ -799,24 +829,25 @@ document.addEventListener("DOMContentLoaded", () => {
     clearCardHighlight();
     navHistory.push(S.lim1s2);
     goTo(S.lim2s1);
-     lim2s1AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    lim2s1AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
   //  LIMITATION 2 — No Coincidence of Wants (pair matching)
   // ═══════════════════════════════════════════════════════════
   matched = new Set();
+  correctCount = 0;
   function makePairManager(pairs, sc, config = {}) {
     let selectedId = null;
     let selectedEl = null;
-    
-    let correctCount = 0;
+
+    correctCount = 0;
 
     const pairMap = {};
     pairs.forEach(([a, b]) => {
@@ -849,15 +880,37 @@ document.addEventListener("DOMContentLoaded", () => {
           if (config.onSelect) config.onSelect(clickedId);
           if (config.onCorrect)
             config.onCorrect(correctCount, selectedId, clickedId);
-
+          selectedId = null;
+          selectedEl = null;
           if (correctCount >= totalPairs) {
             setTimeout(() => {
               stopLottie();
             }, 2500);
           }
+        } else if (pairMap[selectedId] && pairMap[selectedId] !== clickedId) {
+          const el1 = selectedEl,
+            el2 = clickedEl;
+          //selectedId = null;
+          selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
+          setTimeout(() => {
+            if (el1) {
+              el1.style.outline = "";
+              el1.style.filter = "";
+            }
+            if (el2) {
+              el2.style.outline = "";
+              el2.style.filter = "";
+            }
+          }, 1200);
         } else {
           const el1 = selectedEl,
             el2 = clickedEl;
+          selectedId = null;
+          selectedEl = null;
+          if (config.onSelect) config.onSelect(null);
+          if (config.onWrong) config.onWrong();
           setTimeout(() => {
             if (el1) {
               el1.style.outline = "";
@@ -869,9 +922,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }, 1200);
         }
-        selectedId = null;
-        selectedEl = null;
-        if (config.onSelect) config.onSelect(null);
       }
     };
   }
@@ -961,6 +1011,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s1.wrong) {
+        show(S.lim2s1.wrong);
+        playLottie("emoji-sad", S.lim2s1.wrong);
+      }
+    },
   });
 
   makeCardsClickable(S.lim2s1.cards);
@@ -973,38 +1029,59 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Wire "Try another trader" button inside lim2s1 wrong popup (querySelector avoids duplicate-ID issue)
+  if (S.lim2s1.wrong) {
+    const tryBtn = S.lim2s1.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach((el) => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => {
+        stopLottie();
+        hide(S.lim2s1.wrong);
+      });
+    });
+  }
+
   onClick("Continue-2", () => {
     hide(S.lim2s1.c01);
-        stopLottie();
+    stopLottie();
     if (lim2s1_correctCount === 2) {
       if (S.lim2s1.end) {
-        show(S.lim2s1.end)
-        playLottie("emoji-sad", S.lim2s1.end)
-      };
+        show(S.lim2s1.end);
+        playLottie("emoji-sad", S.lim2s1.end);
+      }
     }
   });
   onClick("Continue-3", () => {
     hide(S.lim2s1.c02);
-        stopLottie();
+    stopLottie();
     if (lim2s1_correctCount === 2) {
       if (S.lim2s1.end) {
-        show(S.lim2s1.end)
-        playLottie("emoji-sad", S.lim2s1.end)
-        };
+        show(S.lim2s1.end);
+        playLottie("emoji-sad", S.lim2s1.end);
+      }
     }
   });
   onClick("Continue-4", () => {
     stopLottie();
     navHistory.push(S.lim2s1);
     goTo(S.lim2s2);
-     lim2s2AllNames.forEach((name) => {
-          let outline = document.getElementById(
-            name.toLowerCase() + "_outline",
-          );
-          if (outline) hide(outline);
-        });
-         matched.clear();
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    lim2s2AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    lim2s1AllNames.forEach((name) => {
+      let outline = document.getElementById(name.toLowerCase() + "_outline");
+      if (outline) hide(outline);
+    });
+    matched.clear();
+    correctCount = 0;
+    lim2s2_correctCount = 0;
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // ── Lim2 Scenario 2 ─────────────────────────────────────────
@@ -1064,7 +1141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Orchardist"
       ) {
         show(S.lim2s2.c01);
-           playLottie("emoji_happy-star", S.lim2s2.c01);
+        playLottie("emoji_happy-star", S.lim2s2.c01);
         const badge = document.getElementById("Trades_Completed:_1_4-2");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1077,7 +1154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cld === "Tailor"
       ) {
         show(S.lim2s2.c02);
-           playLottie("emoji_happy-star", S.lim2s2.c02);
+        playLottie("emoji_happy-star", S.lim2s2.c02);
         const badge = document.getElementById("Trades_Completed:_1_4-3");
         if (badge) {
           const textEl = badge.querySelector("text");
@@ -1085,7 +1162,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     },
+    onWrong: () => {
+      if (S.lim2s2.wrong) {
+        show(S.lim2s2.wrong);
+        playLottie("emoji-sad", S.lim2s2.wrong);
+      }
+    },
   });
+
+  // Wire "Try another trader" button inside lim2s2 wrong popup
+  if (S.lim2s2.wrong) {
+    const tryBtn = S.lim2s2.wrong.querySelector("[id^='Try_another_trader']");
+    const tryBtnArea = tryBtn?.parentElement;
+    [tryBtn, tryBtnArea].forEach((el) => {
+      if (!el) return;
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "all";
+      el.addEventListener("click", () => {
+        stopLottie();
+        hide(S.lim2s2.wrong);
+      });
+    });
+  }
 
   const lim2s2Root = S.lim2s2.base;
   if (lim2s2Root) {
@@ -1098,31 +1196,37 @@ document.addEventListener("DOMContentLoaded", () => {
       lim2s2Trade(found.traderId, found.topCard);
 
       // Update badge on every click if correctCount changed
-      const badge = $("Trades_Completed:_0_4-sc2-base");
-      if (badge) {
-        const text = badge.querySelector("tspan");
-        if (text)
-          text.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
-      }
+      // const badge = $("Trades_Completed:_0_4-sc2-base");
+      // if (badge) {
+      //   const text = badge.querySelector("tspan");
+      //   if (text)
+      //     text.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
+      // }
     });
   }
 
   onClick("Continue-5", () => {
     hide(S.lim2s2.c01);
-        stopLottie();
+    stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};;
+      if (S.lim2s2.end) {
+        show(S.lim2s2.end);
+        playLottie("emoji-sad", S.lim2s2.end);
+      }
     }
   });
   onClick("Continue-6", () => {
     hide(S.lim2s2.c02);
-        stopLottie();
+    stopLottie();
     lim2s2_correctCount++;
     updateSc2Badge();
     if (lim2s2_correctCount === 2) {
-      if (S.lim2s2.end) {show(S.lim2s2.end);  playLottie("emoji-sad", S.lim2s2.end)};
+      if (S.lim2s2.end) {
+        show(S.lim2s2.end);
+        playLottie("emoji-sad", S.lim2s2.end);
+      }
     }
   });
 
@@ -1152,7 +1256,9 @@ document.addEventListener("DOMContentLoaded", () => {
     navHistory.push(S.lim2s2);
     resetLim3s1();
     goTo(S.lim3s1);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // ═══════════════════════════════════════════════════════════
@@ -1223,18 +1329,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const sc2 = $("limitation03-sc02-base-screen");
     if (!sc2) return;
     const ids = [
-      "Group_1462", "Group_1466", "Group_1469", "Group_1472",         // inventory
-      "Group_1462-3", "Group_1475", "Group_1475-2",                   // exchange rates
-      "Group_1480", "Group_1480-2", "Group_1483",
+      "Group_1462",
+      "Group_1466",
+      "Group_1469",
+      "Group_1472", // inventory
+      "Group_1462-3",
+      "Group_1475",
+      "Group_1475-2", // exchange rates
+      "Group_1480",
+      "Group_1480-2",
+      "Group_1483",
     ];
-    ids.forEach(id => {
+    ids.forEach((id) => {
       const src = $(id);
       if (!src) return;
       const useEl = sc2.querySelector('use[href="#' + id + '"]');
       if (!useEl) return;
       const clone = src.cloneNode(true);
       clone.removeAttribute("id");
-      clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+      clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
       useEl.parentNode.replaceChild(clone, useEl);
     });
   }
@@ -1270,7 +1383,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     ts.textContent = isShowing ? "Hide Answer" : "Show Answer";
   }
-    function toggleLim3Solution2(btnId, textId) {
+  function toggleLim3Solution2(btnId, textId) {
     const el = $(textId);
     if (!el) return;
     const ts = $q("tspan", el) || $q("text", el) || el;
@@ -1306,7 +1419,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLim3s1UI();
       if (lim3s1.apples >= 100) {
         show(S.lim3s1.end);
-        playLottie("emoji_happy-star",S.lim3s1.end);
+        playLottie("emoji_happy-star", S.lim3s1.end);
       }
     } //else playLottie("emoji-sad");
   });
@@ -1320,7 +1433,9 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     resetLim3s2();
     show(S.lim3s2.base);
-    show(S.home_buttom); show(S.back_button); updateNavButtons();
+    show(S.home_buttom);
+    show(S.back_button);
+    updateNavButtons();
   });
 
   // SC2 Transitions & Buttons
@@ -1367,7 +1482,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideAll();
     resetLim3s2();
     show(S.conclusion);
-    show(S.home_buttom); 
+    show(S.home_buttom);
     hide(S.back_button);
     hide(S.next_button); // conclusion is the last screen
   });
