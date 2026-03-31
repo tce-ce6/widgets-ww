@@ -1123,8 +1123,11 @@ document.addEventListener("DOMContentLoaded", () => {
           alertImg.setAttribute("src", `assets/${word}.svg`);
         }
 
-        // ✅ show foreignObject
+        // ✅ show foreignObject and elements
         alertPopup.style.display = 'block';
+        alertImg.style.display = 'block';
+        const closeBtn = document.getElementById('close-alert');
+        if (closeBtn) closeBtn.style.display = 'block';
       }
     }
 
@@ -1257,6 +1260,17 @@ document.addEventListener("DOMContentLoaded", () => {
     closeAlertBtn.addEventListener('click', () => {
       const popup = document.getElementById('alert-popup');
       if (popup) popup.style.display = 'none';
+    });
+  }
+
+  const closeAlert = document.getElementById('close-alert');
+  if (closeAlert) {
+    closeAlert.addEventListener('click', () => {
+      const alertImg = document.getElementById('alert-img');
+      if (alertImg) alertImg.style.display = 'none';
+      closeAlert.style.display = 'none';
+      const alertPopupImg = document.getElementById('alert-popup-img');
+      if (alertPopupImg) alertPopupImg.style.display = 'none';
     });
   }
 
