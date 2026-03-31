@@ -39,7 +39,7 @@ body {
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: var(--bg);
+  background: #7badcd;
   color: var(--text);
   position: relative;
 }
@@ -252,9 +252,10 @@ body::before {
 .clue-patch::before {
   content: '💡 CLUE';
   position: absolute;
-  top: -13px;
-  left: 50%;
-  transform: translate(-500%, -10%);
+  top: -20px;
+  /* left: 10px; */
+  left: 10px;
+  /* transform: translateX(-500%); */
   background: var(--yellow);
   color: var(--text);
   font-family: 'Roboto', sans-serif;
