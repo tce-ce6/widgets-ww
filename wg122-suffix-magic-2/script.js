@@ -1075,6 +1075,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+
+  const closeAlert = document.getElementById('close-alert');
+  if (closeAlert) {
+    closeAlert.addEventListener('click', () => {
+      const alertImg = document.getElementById('alert-img');
+      if (alertImg) alertImg.style.display = 'none';
+      closeAlert.style.display = 'none';
+      const alertPopupImg = document.getElementById('alert-popup-img');
+      if (alertPopupImg) alertPopupImg.style.display = 'none';
+      hideBackdrop();
+    });
+  }
+
+
+
   if (nextBtn) nextBtn.addEventListener("click", loadNextWord);
 
   loadNextWord();
