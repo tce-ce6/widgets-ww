@@ -234,8 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
   soundMap["ea"]["ea"] = "assets/ea-sound/ea.mp3";
   soundMap["ee"]["ee"] = "assets/ee-sound/ee.mp3";
   soundMap["oa"]["oa"] = "assets/oa-sound/oa.mp3";
-  soundMap["oo"]["oo"] = "assets/long-oo-sound/oo.mp3";
-  soundMap["oo_short"]["oo_short"] = "assets/short-oo-sound/oo.mp3";
+  soundMap["oo"]["oo"] = "assets/long-oo-sound/long-oo.mp3";
+  soundMap["oo_short"]["oo_short"] = "assets/short-oo-sound/short-oo.mp3";
   soundMap["ue"]["ue"] = "assets/ue-sound/ue.mp3";
 
   let audioPlayer = null;
