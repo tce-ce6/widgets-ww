@@ -121,7 +121,7 @@
       "author": "sushantthe"
     },
     "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-03-31T18:03:26+05:30",
+      "updatedAt": "2026-03-31T18:30:37+05:30",
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
@@ -399,6 +399,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T18:30:37+05:30",
+      "author": "tce-ashishg",
+      "message": "wg132 issue resolved",
+      "widgets": [
+        132
+      ]
+    },
+    {
       "date": "2026-03-31T18:19:55+05:30",
       "author": "PrasannaP",
       "message": "feat: update debugNavigate to support multiple runs and increment version tags 133 155",
@@ -638,14 +646,6 @@
       "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
       "widgets": [
         157
-      ]
-    },
-    {
-      "date": "2026-03-31T13:33:07+05:30",
-      "author": "PrasannaP",
-      "message": "v3",
-      "widgets": [
-        158
       ]
     }
   ]
