@@ -544,10 +544,33 @@ document.addEventListener("DOMContentLoaded", () => {
     renderBubbles('bubbles-meet');
     renderJourney('journey-meet', 'meet');
     
+    const letters = tm.split('');
+    const l1 = letters[0];
+    const l2 = letters[1] || '';
     let html = '';
     if (wi === 0) {
-      html = `<p style="font-size:14px;color:#666;margin-bottom:10px">Ready to meet the vowel pair?</p>
-              <button onclick="window.vowelTwinsApp.nextWordMeet()" class="btn-main" style="margin-top:25px;background:linear-gradient(135deg,${c.border} 0%,${c.glow} 100%);box-shadow:0 6px 20px ${c.glow}50">START →</button>`;
+      html = `
+        <div style="display:flex;gap:24px;justify-content:center;align-items:flex-end;margin-bottom:18px">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:95px;height:95px;border-radius:50%;background:radial-gradient(circle at 30% 30%,white,${c.bg});border:4px solid ${c.border};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px ${c.glow}50;animation:float 3s ease-in-out infinite;font-size:44px;font-weight:bold;color:#333;position:relative">
+              ${l1}<span style="position:absolute;top:-8px;right:-6px;font-size:18px">👋</span>
+            </div>
+            <span style="font-size:13px;color:#999;margin-top:8px">talks!</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 30% 30%,white,${c.bg}88);border:4px solid ${c.border}66;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px ${c.glow}30;animation:float 3s ease-in-out infinite 0.6s;font-size:38px;font-weight:bold;color:#aaa;position:relative">
+              ${l2}<span style="position:absolute;top:-10px;right:-4px;font-size:16px">💤</span>
+            </div>
+            <span style="font-size:13px;color:#999;margin-top:8px">sleeps</span>
+          </div>
+        </div>
+        <div style="background:white;border-radius:20px;padding:22px 30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);max-width:320px;width:100%;margin-bottom:4px">
+          <p style="font-size:20px;font-weight:bold;color:#333;margin-bottom:10px">Meet <span style="color:${c.border}">${l1}</span>${l2 ? ` and <span style="color:${c.border}">${l2}</span>` : ''}!</p>
+          <p style="font-size:16px;color:#555;margin-bottom:14px">Together they say <strong style="color:${c.border};font-size:20px">${vowelTeams[tm].soundDisplay}</strong></p>
+          <button onclick="window.vowelTwinsApp.speak('${tm}', '${tm}')" style="border:2px solid ${c.border};background:white;color:${c.border};padding:8px 22px;border-radius:20px;font-size:14px;cursor:pointer;font-family:inherit;margin-bottom:14px;transition:background 0.2s">🔊 Hear "${tm}"</button>
+          <p style="font-size:13px;color:#999;font-style:italic;margin:0">⚡ ${vowelTeams[tm].rule}</p>
+        </div>
+        <button onclick="window.vowelTwinsApp.nextWordMeet()" class="btn-main" style="margin-top:20px;background:linear-gradient(135deg,${c.border} 0%,${c.glow} 100%);box-shadow:0 6px 20px ${c.glow}50">NEXT →</button>`;
     } else if (wi >= 1 && wi <= 3) {
       const w = words[wi - 1];
       html = `<p style="font-size:14px;color:#666;margin-bottom:10px">Word ${wi} of 3</p>
@@ -631,8 +654,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sr) {
       body = `<div onclick="window.vowelTwinsApp.speak('${q.word}', '${tm}')" style="width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,${c.bg} 0%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 40px ${c.glow}50;border:5px solid white;cursor:pointer;margin-bottom:25px;animation:pulse 2s ease-in-out infinite"><span style="font-size:50px">🔊</span><span style="font-size:12px;color:#333;margin-top:5px">tap to hear</span></div>`;
       renderButtons('spot-buttons', [
-        { id: 'btn-yes-spot', label: 'YES ✓', onclick: "window.vowelTwinsApp.checkSpot(true)", color: '#90EE90', borderColor: '#32CD32' },
-        { id: 'btn-no-spot', label: 'NO ✗', onclick: "window.vowelTwinsApp.checkSpot(false)", color: '#FFB6C1', borderColor: '#FF6B6B' }
+        { id: 'btn-yes-spot', label: 'YES ✓', onclick: "window.vowelTwinsApp.checkSpot(true)", color: '#2ECC71', borderColor: '#27AE60' },
+        { id: 'btn-no-spot', label: 'NO ✗', onclick: "window.vowelTwinsApp.checkSpot(false)", color: '#E74C3C', borderColor: '#C0392B' }
       ]);
     } else {
       const wd = q.hasTeam ? hl(q.word, tm, '42px') : `<span style="font-size:42px;font-weight:bold;color:#333">${q.word}</span>`;
