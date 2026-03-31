@@ -864,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const parts = cw.hint.split("__");
     const sr = state.showResult;
     const bc = sr === "correct" ? "#32CD32" : c.glow;
-    const bv = sr === "correct" ? tm : state.buildAnswer;
+    const bv = sr === "correct" ? disp(tm) : state.buildAnswer ? disp(state.buildAnswer) : "";
     const brc =
       sr === "correct" ? "#32CD32" : sr === "wrong" ? "#FF6B6B" : "transparent";
 
