@@ -299,6 +299,20 @@ const finalWord = document.getElementById('final-word');
 const lottieWord = document.getElementById('lottie-word');
 const exampleSentence = document.getElementById('exampleSentence');
 const showExample = document.getElementById('showExampleBtn');
+const modalBackdrop = document.getElementById('modal-backdrop');
+
+function showBackdrop() {
+  if (modalBackdrop) {
+    modalBackdrop.style.display = 'block';
+    modalBackdrop.style.cursor = 'pointer';
+  }
+}
+
+function hideBackdrop() {
+  if (modalBackdrop) {
+    modalBackdrop.style.display = 'none';
+  }
+}
 
 let wordObj = null;
 let wordIndex = 0;
@@ -743,6 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const alertPopupImg = document.getElementById('alert-popup-img');
       if (alertPopupImg) {
         alertPopupImg.style.display = 'none';
+        hideBackdrop();
       }
       if (showAnswerBtn.textContent.trim() === 'Show Answer') {
         showAnswerBtn.textContent = 'Hide Answer';
@@ -751,6 +766,20 @@ document.addEventListener("DOMContentLoaded", () => {
         showAnswerBtn.textContent = 'Show Answer';
         hideAllAnswers(wordObj, completedAnswers);
       }
+    });
+  }
+
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', () => {
+      const alertPopupImg = document.getElementById('alert-popup-img');
+      const lottieContainerFO = document.getElementById('lottie-container');
+      const exampleSentence = document.getElementById('exampleSentence');
+
+      if (alertPopupImg) alertPopupImg.style.display = 'none';
+      if (lottieContainerFO) lottieContainerFO.style.display = 'none';
+      if (exampleSentence) exampleSentence.style.display = 'none';
+
+      hideBackdrop();
     });
   }
 
@@ -793,6 +822,7 @@ document.addEventListener("DOMContentLoaded", () => {
     finalWord.style.display = "none";
     exampleSentence.style.display = 'none';
     showExample.style.display = 'none';
+    hideBackdrop();
     if (showAnswerBtn) {
       showAnswerBtn.textContent = 'Show Answer';
       showAnswerBtn.disabled = false;
@@ -978,7 +1008,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const lottieContainerFO = document.getElementById('lottie-container');
-        if (lottieContainerFO) lottieContainerFO.style.display = 'block';
+        if (lottieContainerFO) {
+          lottieContainerFO.style.display = 'block';
+          // showBackdrop();
+        }
         setTimeout(() => {
           playCompleteLottie();
 
@@ -998,6 +1031,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (alertPopupImg && alertImg) {
                 alertImg.setAttribute("src", `assets/${imgName}.svg`);
                 alertPopupImg.style.display = 'block';
+                showBackdrop();
               }
             }
           }
@@ -1023,11 +1057,13 @@ document.addEventListener("DOMContentLoaded", () => {
   showExample.addEventListener('click', () => {
     showExampleSentences(wordObj);
     exampleSentence.style.display = 'block';
+    showBackdrop();
   });
 
   document.getElementById('closeExampleBtn').addEventListener('click', () => {
     // document.getElementById('examplePopup');
     exampleSentence.style.display = 'none';
+    hideBackdrop();
   });
 
   const closeAlertBtn = document.getElementById('close-alert-btn');
