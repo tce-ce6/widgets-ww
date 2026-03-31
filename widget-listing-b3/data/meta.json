@@ -209,8 +209,8 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T01:26:13+05:30",
-      "author": "ShyamsundarHait"
+      "updatedAt": "2026-03-31T13:37:01+05:30",
+      "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
       "updatedAt": "2026-03-30T21:37:03+05:30",
@@ -398,6 +398,30 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T13:37:01+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:35:41+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure and audio playback logic for wg157-vowel-twins",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T13:35:02+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
+      "widgets": [
+        157
+      ]
+    },
     {
       "date": "2026-03-31T13:13:04+05:30",
       "author": "tce-nitinc",
@@ -621,32 +645,6 @@
       "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
       "widgets": [
         114
-      ]
-    },
-    {
-      "date": "2026-03-30T19:28:14+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T19:19:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 94 fixes",
-      "widgets": [
-        94,
-        133,
-        155
-      ]
-    },
-    {
-      "date": "2026-03-30T19:16:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
       ]
     }
   ]
