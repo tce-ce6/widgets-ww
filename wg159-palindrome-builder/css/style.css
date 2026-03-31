@@ -142,7 +142,7 @@ body::before {
 .header .subtitle {
   font-size: 1rem;
   color: var(--text-mid);
-  font-weight: 600;
+  /* font-weight: 600; */
   margin-top: 2px;
 }
 
@@ -194,34 +194,7 @@ body::before {
   border-color: var(--orange-deep);
 }
 
-/* SCORE BAR */
-.score-bar {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--text-mid);
-}
 
-.score-bar .score-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.score-bar .num {
-  font-family: 'Lilita One', sans-serif;
-  font-size: 1.3rem;
-}
-
-.score-bar .num.correct {
-  color: var(--green-deep);
-}
-
-.score-bar .num.streak {
-  color: var(--orange);
-}
 
 /* PUZZLE CARD */
 .puzzle-card {
@@ -242,7 +215,7 @@ body::before {
 }
 
 .puzzle-card::before {
-  content: '';
+  /* content: ''; */
   position: absolute;
   top: 0;
   left: 0;
@@ -292,11 +265,11 @@ body::before {
 }
 
 .clue-text {
-  font-size: 1.15rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: var(--text-mid);
   line-height: 1.4;
-  margin-top: 4px;
+  margin-top: 0px;
 }
 
 .word-count {
@@ -587,6 +560,7 @@ body::before {
   gap: 7px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   padding: 4px 0;
 }
 
@@ -598,6 +572,10 @@ body::before {
   background: transparent;
   transition: all 0.3s;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
 }
 
 .dot.current {
@@ -607,8 +585,22 @@ body::before {
 }
 
 .dot.solved {
-  background: var(--green);
-  border-color: var(--green-deep);
+  width: 28px;
+  height: 28px;
+  background: #2eb357;
+  border: 2.5px solid #50b563;
+  font-size: 1.1rem;
+  transform: scale(1);
+  color: white;
+}
+
+.dot.solved-perfect {
+  width: 28px;
+  height: 28px;
+  background: #FFFDE7;
+  border: 2.5px solid var(--yellow-deep);
+  font-size: 1.1rem;
+  transform: scale(1);
 }
 
 .dot.skipped {
