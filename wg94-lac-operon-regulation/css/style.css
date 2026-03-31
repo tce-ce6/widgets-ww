@@ -120,3 +120,12 @@ input[type="checkbox"]:checked {
 #insight-btn {
   cursor: pointer;
 }
+
+.i-text {
+  font-size: 35px;
+  font-family: Roboto;
+  font-weight: 500;
+  font-style: italic;
+  color: #C90E0E;
+  text-align: center;
+}
