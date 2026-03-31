@@ -759,14 +759,14 @@ document.addEventListener("DOMContentLoaded", () => {
     wordObj = picker.getNext();
     const d = wordObj.details;
 
-    const alertPopup = document.getElementById('alert-popup');
-    const alertTextBody = document.getElementById('alert-text-body');
-    if (d.spelling_alert && alertPopup && alertTextBody) {
-      alertTextBody.textContent = d.spelling_alert;
-      alertPopup.style.display = 'block';
-    } else if (alertPopup) {
-      alertPopup.style.display = 'none';
-    }
+    // const alertPopup = document.getElementById('alert-popup');
+    // const alertTextBody = document.getElementById('alert-text-body');
+    // if (d.spelling_alert && alertPopup && alertTextBody) {
+    //   alertTextBody.textContent = d.spelling_alert;
+    //   alertPopup.style.display = 'block';
+    // } else if (alertPopup) {
+    //   alertPopup.style.display = 'none';
+    // }
 
     // currentWordObj = wordObj;
 
@@ -971,6 +971,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (lottieContainerFO) lottieContainerFO.style.display = 'block';
         setTimeout(() => {
           playCompleteLottie();
+
+          // Display alert popup when completionLottie plays
+          const d = wordObj && wordObj.details;
+          if (d && d.spelling_alert) {
+            const alertPopup = document.getElementById('alert-popup');
+            const alertTextBody = document.getElementById('alert-text-body');
+            if (alertPopup && alertTextBody) {
+              alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
+              alertPopup.style.display = 'block';
+            }
+          }
         }, 100);
       }
 
