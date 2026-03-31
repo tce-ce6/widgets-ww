@@ -325,7 +325,10 @@ function resetStepTwo() {
     // reset flags
     COUNTRY_IDS.forEach(id => {
         const flag = document.getElementById(id + '-flag');
-        if (flag) flag.style.display = 'none';
+        if (flag) {
+            flag.style.display = 'none';
+            flag.setAttribute('transform', 'translate(0, 0)');
+        }
     });
 
     // enable flags wrapper again
@@ -377,6 +380,19 @@ function handleNextQuestion() {
     // move to next question index
     AppState.currentQuestionIndex++;
 
+    // ✅ ALWAYS clear flag states when Next is clicked
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('selected', 'correct');
+            // reset transform for the NEXT round
+            const flag = document.getElementById(id + '-flag');
+            if (flag) {
+                flag.setAttribute('transform', 'translate(0, 0)');
+            }
+        }
+    });
+
     // Check if we finished all questions
     if (AppState.data && AppState.data.questions && AppState.currentQuestionIndex >= questions.length) {
         // Hide UI elements but preserve the map
@@ -408,14 +424,6 @@ function handleNextQuestion() {
         
         return;
     }
-
-    // ✅ ALWAYS clear flag states when Next is clicked
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
 
     const data = questions[AppState.currentQuestionIndex];
     AppState.currentCountryData = data;
@@ -715,14 +723,20 @@ function handleCountryClick(countryId) {
     const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
     AppState.currentCountryData = questions[safeIndex];
 
+    /* Remove redundant disable from here to allow changing minds before quiz starts */
     if (AppState.elements.flagsWrapper) {
         AppState.elements.flagsWrapper.classList.add('disabled');
     }
-    if (AppState.elements.iText2) {
-        AppState.elements.iText2.style.display = 'block';
-    }
-    if (AppState.elements.btnQuiz) {
-        AppState.elements.btnQuiz.style.display = 'block';
+    // Only show quiz buttons if the map phase for this question hasn't started
+    const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
+    
+    if (!AppState.mapEnabled && !AppState.mapLocked && !isQuizShown) {
+        if (AppState.elements.iText2) {
+            AppState.elements.iText2.style.display = 'block';
+        }
+        if (AppState.elements.btnQuiz) {
+            AppState.elements.btnQuiz.style.display = 'block';
+        }
     }
 }
 
@@ -926,6 +940,11 @@ function handleBtnQuizClick() {
 
     // Show the question container
     if (questionContainer) questionContainer.style.display = 'block';
+
+    // Disable flags wrapper once quiz starts
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.add('disabled');
+    }
 
     // Populate question text
     if (questionTxt && data) {

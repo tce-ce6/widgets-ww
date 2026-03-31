@@ -19,7 +19,6 @@ const paragraphData = [
       { text: "Linking words that connect ideas", type: "Annotation 2", words: ["After", "There", "later"] },
       { text: "Concluding sentence", type: "Annotation 3", words: ["This hard work helps plants grow and gives us delicious honey."] }
     ],
-    linkingWords: ["After", "There", "later"],
     summary: "A paragraph is a group of sentences on a single idea. Here, the paragraph describes a honeybee's day. Whenever you write a paragraph, try providing it a suitable title."
   },
   {
@@ -38,7 +37,6 @@ const paragraphData = [
       { text: "Linking words showcasing the sequence of events", type: "Annotation 2", words: ["Later", "Today"] },
       { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!"] }
     ],
-    linkingWords: ["Later", "Today"],
     summary: "A paragraph is a group of sentences on a single idea. Here, all sentences focus on a single idea: the evolution of chocolate. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -58,7 +56,6 @@ const paragraphData = [
       { text: "Using words highlight the Sun's extraordinary qualities and importance", type: "Annotation 2", words: ["Without", "Surprisingly", "Every second"] },
       { text: "The concluding line celebrates the Sun's magnificence", type: "Annotation 3", words: ["Indeed, our Sun is truly a magnificent star."] }
     ],
-    linkingWords: ["Without", "Surprisingly", "Every second"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us what makes the Sun so special. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -78,7 +75,6 @@ const paragraphData = [
       { text: "Words and phrases that build flow", type: "Annotation 2", words: ["Among", "also", "Every summer"] },
       { text: "A concluding sentence that summarises the importance of the Himalayas", type: "Annotation 3", words: ["The Himalayas are truly India's precious natural treasure."] }
     ],
-    linkingWords: ["Among", "also", "Every summer"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence shares something important about the Himalayan mountains. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -97,7 +93,6 @@ const paragraphData = [
       { text: "Words that connect the ideas and show the sequence of events in the story", type: "Annotation 2", words: ["When", "As a result", "Jaipur"] },
       { text: "A concluding sentence that ends the story with humour", type: "Annotation 3", words: ["As a result, the shopkeeper slipped and landed in a basket of tomatoes, turning as red as the vegetables themselves!"] }
     ],
-    linkingWords: ["When", "As a result", "Jaipur"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence follows Chintu's funny adventure in the market. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -117,7 +112,6 @@ const paragraphData = [
       { text: "Linking words that indicate sequence of events and change in feelings", type: "Annotation 2", words: ["When", "After", "However", "By day's end"] },
       { text: "A concluding line that reflects on the overall experience", type: "Annotation 3", words: ["By day's end, I had made three friends and realised school would be wonderful."] }
     ],
-    linkingWords: ["When", "After", "However", "By day's end"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence takes us through the feelings and events of the first day at school. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -137,7 +131,6 @@ const paragraphData = [
       { text: "Expressions that emphasize the postman's dedication", type: "Annotation 2", words: ["Every day", "Rain or shine"] },
       { text: "A concluding sentence that expresses respect for the postman's service", type: "Annotation 3", words: ["The postman truly deserves our respect and gratitude."] }
     ],
-    linkingWords: ["Every day", "Rain or shine"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us about the postman and his dedicated work. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -157,7 +150,6 @@ const paragraphData = [
       { text: "Words that add historical and descriptive detail", type: "Annotation 2", words: ["white marble monument", "intricate carvings", "precious stone inlays"] },
       { text: "A concluding statement that reveals its everlasting virtue", type: "Annotation 3", words: ["Truly, the Taj Mahal is a timeless monument to love."] }
     ],
-    linkingWords: ["white marble monument", "intricate carvings", "precious stone inlays"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes the Taj Mahal's history and grandeur. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -176,7 +168,6 @@ const paragraphData = [
       { text: "Words that show cause, effect, and comparison", type: "Annotation 2", words: ["However", "This happens because", "Similarly"] },
       { text: "A concluding sentence that connects the experiment to real life", type: "Annotation 3", words: ["Similarly, swimming in the ocean is easier than in a pool due to the salty water."] }
     ],
-    linkingWords: ["However", "This happens because", "Similarly"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence explains why an egg floats in salt water. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -195,7 +186,6 @@ const paragraphData = [
       { text: "Words that show cause and add detail", type: "Annotation 2", words: ["so", "During"] },
       { text: "A concluding sentence that summarises koalas' relaxed lifestyle with humour", type: "Annotation 3", words: ["Surely, koalas have mastered the art of relaxation!"] }
     ],
-    linkingWords: ["so", "During"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence is about why koalas sleep so much. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -215,7 +205,6 @@ const paragraphData = [
       { text: "Phrases that introduce different examples of sharing", type: "Annotation 2", words: ["At school", "When", "Even"] },
       { text: "A thoughtful conclusion", type: "Annotation 3", words: ["Remember, happiness multiplies when shared, making it a true blessing."] }
     ],
-    linkingWords: ["At school", "When", "Even"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence shows us how sharing makes life better. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -236,7 +225,6 @@ const paragraphData = [
       { text: "Words that add details and signal the ending", type: "Annotation 2", words: ["During", "Also", "Moreover", "Finally"] },
       { text: "A concluding sentence that shares the deeper meaning of spring", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful"] }
     ],
-    linkingWords: ["During", "Also", "Moreover", "Finally"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence celebrates what makes spring special. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -256,7 +244,6 @@ const paragraphData = [
       { text: "Linking words that give examples and draw a conclusion", type: "Annotation 2", words: ["For example", "Besides", "Therefore"] },
       { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["Therefore, we must eat fresh fruits daily to stay fit"] }
     ],
-    linkingWords: ["For example", "Besides", "Therefore"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us why fruits are good for our health. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -276,7 +263,6 @@ const paragraphData = [
       { text: "Phrases that build flow in the paragraph", type: "Annotation 2", words: ["For instance", "especially"] },
       { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3", words: ["And so, learning decimals makes our daily tasks simpler and more precise"] }
     ],
-    linkingWords: ["For instance", "especially"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence helps us understand what decimals are and why they matter. Whenever you write a paragraph, try providing a suitable title."
   },
   {
@@ -296,7 +282,6 @@ const paragraphData = [
       { text: "Words that build flow", type: "Annotation 2", words: ["During this celebration", "Indeed"] },
       { text: "A concluding sentence that captures the spirit of the festival", type: "Annotation 3", words: ["Indeed, Holi teaches us to celebrate life together with happiness"] }
     ],
-    linkingWords: ["During this celebration", "Indeed"],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes how people celebrate the colourful festival of Holi. Whenever you write a paragraph, try providing a suitable title."
   }
 ];
