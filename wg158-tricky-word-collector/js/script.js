@@ -298,16 +298,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const safeSentence = (displayWord.sentence).replace(/'/g, "\\'");
 
       const tapPrompt = !state.showSentence
-        ? `<div style="font-size:14px;color:#a0522d;margin-top:6px;animation:fadeInOut 2s ease-in-out infinite;">👆 Tap the word to see it in a sentence</div>`
+        ? `<div style="font-size:16px;color:#44ace3;margin-top:6px;animation:fadeInOut 2s ease-in-out infinite;">👆 Tap the word to see it in a sentence</div>`
         : '';
 
       const sentenceBlock = state.showSentence
         ? `<div style="background:rgba(139,69,19,0.3);border:2px solid #8b4513;border-radius:16px;padding:14px 24px;text-align:center;animation:fadeIn 0.3s ease-out;width:100%;max-width:420px;display:flex;align-items:center;gap:12px;justify-content:center;">
           <div style="flex:1;">
-            <div style="font-size:11px;color:#a0522d;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">In a sentence</div>
-            <div style="font-size:20px;color:#ffd700;font-style:italic;">"${displayWord.sentence}"</div>
+            <div style="font-size:20px;color:#ffd700;font-style:italic;">${displayWord.sentence}</div>
           </div>
-          <button onclick="event.stopPropagation();speak('${safeSentence}')" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,#a0522d,#8b4513);border:2px solid #daa520;color:#ffd700;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Hear sentence">🔊</button>
+          <button onclick="event.stopPropagation();speak('${safeSentence}')" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;background: linear-gradient(180deg, #fff43b, #FF5722);border: 2px solid #ffae3b;color: #FFEB3B;font-size: 28px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Hear sentence">🔊</button>
          </div>`
         : '';
 
@@ -325,12 +324,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
         <div onclick="${!state.showSentence ? 'revealSentence()' : ''}" style="cursor:pointer;display:flex;align-items:center;gap:12px;">
-          <div style="font-size:clamp(48px,10vw,72px);font-weight:bold;color:#1a1a2e;text-shadow:0 2px 4px rgba(0,0,0,0.15);animation:revealWord 0.5s ease-out;
+          <div style="
+            font-size:clamp(48px,10vw,72px);
+            font-weight:bold;
+            color:#1a1a2e;
+            text-shadow:0 2px 4px rgba(0,0,0,0.15);
+            animation:revealWord 0.5s ease-out;
             background:radial-gradient(ellipse at center,rgba(255,215,0,0.95) 0%,rgba(255,165,0,0.8) 50%,transparent 75%);
-            padding:16px 40px;border-radius:24px;">
+            padding: 66px 80px;
+            border-radius:24px;
+            ">
             ${displayWord.word}
           </div>
-          <button onclick="event.stopPropagation();speak('${safeWord}')" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,#228B22,#006400);border:2px solid #32CD32;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Hear word">🔊</button>
+          <button onclick="event.stopPropagation();speak('${safeWord}')" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;background: linear-gradient(180deg, #fff43b, #FF5722);border: 2px solid #ffae3b;color: #FFEB3B;font-size: 28px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Hear word">🔊</button>
         </div>
         ${tapPrompt}
       </div>
@@ -381,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- Change Path button fixed bottom-right -->
       <button onclick="goToLevelSelect()" class="btn-wg151" style="position:fixed;bottom:120px;z-index:100;background:transparent;border:none;padding:0;cursor:pointer;opacity:0.85;transition:opacity 0.2s,transform 0.2s;" onmouseover="this.style.opacity='1';this.style.transform='scale(1.1)'" onmouseout="this.style.opacity='0.85';this.style.transform='scale(1)'">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44" height="44" viewBox="0 0 65.2 65.2">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 65.2 65.2">
           <defs><clipPath id="clip-path-home"><rect width="41.456" height="42.837" fill="none"/></clipPath></defs>
           <g transform="translate(924.109 -66.725)">
             <path d="M414.057,241.264H356.465a3.8,3.8,0,0,1-3.8-3.8V179.868a3.8,3.8,0,0,1,3.8-3.8h57.591a3.8,3.8,0,0,1,3.8,3.8v57.591a3.8,3.8,0,0,1-3.8,3.8" transform="translate(-1276.77 -109.339)" fill="#ffc28c"/>
@@ -398,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- Main Area -->
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;z-index:10;">
-        <div style="width:100%;max-width:500px;min-height:300px;background:radial-gradient(ellipse at center,rgba(255,215,0,0.08) 0%,transparent 70%);border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;padding:20px;">
+        <div style="width:100%;max-width: 600px;min-height: 500px;background:radial-gradient(ellipse at center,rgba(255,215,0,0.08) 0%,transparent 70%);border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap: 30px;position:relative;padding:20px;">
           ${orbArea}
         </div>
 
