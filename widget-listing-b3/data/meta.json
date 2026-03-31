@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-31T21:48:22+05:30",
+      "updatedAt": "2026-03-31T22:36:38+05:30",
       "author": "PrasannaP"
     },
     "wg134-barter-bazaar": {
@@ -201,7 +201,7 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-31T21:48:22+05:30",
+      "updatedAt": "2026-03-31T22:36:38+05:30",
       "author": "PrasannaP"
     },
     "wg156-sound-machine": {
@@ -398,6 +398,24 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T22:36:38+05:30",
+      "author": "PrasannaP",
+      "message": "Restore current question data after UI reset in Nordic and Balkan countries adventure quizzes",
+      "widgets": [
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T22:25:11+05:30",
+      "author": "PrasannaP",
+      "message": "Update version identifiers and refactor question initialization logic in Nordic and Balkan countries adventure quizzes",
+      "widgets": [
+        133,
+        155
+      ]
+    },
     {
       "date": "2026-03-31T22:11:16+05:30",
       "author": "tce-nitinc",
@@ -630,23 +648,6 @@
       "message": "feat: implement core logic and state management for phrasal verb learning and practice app",
       "widgets": [
         144
-      ]
-    },
-    {
-      "date": "2026-03-31T17:08:05+05:30",
-      "author": "tce-nitinc",
-      "message": "wg156 fixes",
-      "widgets": [
-        94,
-        156
-      ]
-    },
-    {
-      "date": "2026-03-31T16:53:39+05:30",
-      "author": "PrasannaP",
-      "message": "fix: prevent race conditions and double-clicks in handleShowAnswer using debounce and event handling",
-      "widgets": [
-        85
       ]
     }
   ]
