@@ -178,8 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderClue(item) {
     const area = document.getElementById('clueArea');
-    // let html = `<div class="clue-text">${item.clue}</div>`;
-    let html = `<div class="clue-text">An informal word for an eccentric or strange person</div>`;
+    let html = `<div class="clue-text">${item.clue}</div>`;
+    // let html = `<div class="clue-text">An informal word for an eccentric or strange person</div>`;
     /* if (item.word.includes(' ')) {
       const wordCount = item.word.split(' ').length;
       html += `<div class="word-count">${wordCount} words · ${item.word.replace(/\s/g, '').length} letters</div>`;

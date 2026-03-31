@@ -121,7 +121,7 @@ body::before {
 }
 
 .header h1 {
-  font-family: 'Lilita One', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 2.6rem;
   color: var(--orange-deep);
   letter-spacing: 0.5px;
@@ -257,7 +257,7 @@ body::before {
   transform: translate(-500%, -10%);
   background: var(--yellow);
   color: var(--text);
-  font-family: 'Lilita One', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 0.75rem;
   letter-spacing: 1px;
   padding: 3px 14px;
@@ -297,7 +297,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Lilita One', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 1.7rem;
   text-transform: uppercase;
   transition: all 0.25s ease;
@@ -422,7 +422,7 @@ body::before {
   border-radius: 10px;
   border: 2px solid #E0D6CF;
   background: var(--card);
-  font-family: 'Lilita One', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 1.2rem;
   color: var(--text);
   cursor: pointer;
@@ -614,7 +614,7 @@ body::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
-  font-family: 'Lilita One', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 2.4rem;
   padding: 20px 44px;
   border-radius: 20px;
