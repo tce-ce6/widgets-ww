@@ -39,7 +39,7 @@ var PHRASAL_VERBS = [
     verb: "get through",
     meaning: "finish something difficult",
     example:
-      "I managed to get through the entire plate of karela because Amma was watching.",
+      "I need to get through this pile of homework before Wednesday.",
     fib: "I managed to ___ the entire plate of karela because Amma was watching.",
   },
   {
@@ -1674,8 +1674,8 @@ var state = {
 function getFiltered() {
   return state.filter
     ? PHRASAL_VERBS.filter(function (p) {
-        return p.head === state.filter;
-      })
+      return p.head === state.filter;
+    })
     : PHRASAL_VERBS.slice();
 }
 function startLearn() {
@@ -1997,16 +1997,16 @@ function renderPractice() {
   var fp = state.filter
     ? '<span class="filter-pill">' + state.filter + "</span>"
     : "";
-  var answered   = state.practiceChosen !== null;
+  var answered = state.practiceChosen !== null;
   var firstWrong = !answered && state.practiceWrong1 !== null;
-  var isCorrect  = answered && state.practiceChosen === state.practiceCorrectIdx;
+  var isCorrect = answered && state.practiceChosen === state.practiceCorrectIdx;
 
   // Build sentence with blank using item.sentence (blanks are ___+)
   var blankRe = /_{3,}/;
   var sentHTML;
   if (answered) {
     var fillClass = isCorrect ? "blank correct-fill" : "blank incorrect-fill";
-    var fillText  = state.practiceOptions[state.practiceChosen];
+    var fillText = state.practiceOptions[state.practiceChosen];
     sentHTML = item.sentence.replace(blankRe, '<span class="' + fillClass + '">' + fillText + "</span>");
   } else if (firstWrong) {
     var fillText0 = state.practiceOptions[state.practiceWrong1];
@@ -2019,9 +2019,9 @@ function renderPractice() {
   state.practiceOptions.forEach(function (opt, i) {
     var cls = "choice-btn";
     if (answered) {
-      if (i === state.practiceChosen && isCorrect)       cls += " chosen correct";
+      if (i === state.practiceChosen && isCorrect) cls += " chosen correct";
       else if (i === state.practiceChosen && !isCorrect) cls += " chosen incorrect";
-      if (i === state.practiceCorrectIdx && !isCorrect)  cls += " reveal-correct";
+      if (i === state.practiceCorrectIdx && !isCorrect) cls += " reveal-correct";
       if (i !== state.practiceChosen && i !== state.practiceCorrectIdx) cls += " disabled";
     } else if (firstWrong) {
       if (i === state.practiceWrong1) cls += " chosen incorrect disabled";
