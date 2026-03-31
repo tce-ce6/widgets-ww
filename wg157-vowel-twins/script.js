@@ -654,8 +654,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sr) {
       body = `<div onclick="window.vowelTwinsApp.speak('${q.word}', '${tm}')" style="width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,${c.bg} 0%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 40px ${c.glow}50;border:5px solid white;cursor:pointer;margin-bottom:25px;animation:pulse 2s ease-in-out infinite"><span style="font-size:50px">🔊</span><span style="font-size:12px;color:#333;margin-top:5px">tap to hear</span></div>`;
       renderButtons('spot-buttons', [
-        { id: 'btn-yes-spot', label: 'YES ✓', onclick: "window.vowelTwinsApp.checkSpot(true)", color: '#90EE90', borderColor: '#32CD32' },
-        { id: 'btn-no-spot', label: 'NO ✗', onclick: "window.vowelTwinsApp.checkSpot(false)", color: '#FFB6C1', borderColor: '#FF6B6B' }
+        { id: 'btn-yes-spot', label: 'YES ✓', onclick: "window.vowelTwinsApp.checkSpot(true)", color: '#2ECC71', borderColor: '#27AE60' },
+        { id: 'btn-no-spot', label: 'NO ✗', onclick: "window.vowelTwinsApp.checkSpot(false)", color: '#E74C3C', borderColor: '#C0392B' }
       ]);
     } else {
       const wd = q.hasTeam ? hl(q.word, tm, '42px') : `<span style="font-size:42px;font-weight:bold;color:#333">${q.word}</span>`;
