@@ -316,7 +316,7 @@ function closeMenu() {
   render();
 }
 
-function advanceReveal() {
+function advanceReveal1() {
   if (state.revealStage < 2) {
     state.revealStage++;
     var s2 = document.querySelector(".section-example");
@@ -333,6 +333,25 @@ function advanceReveal() {
       if (d2) d2.classList.add("visible");
       if (prompt) prompt.textContent = "";
     }
+  }
+}
+
+function advanceReveal() {
+  if (state.revealStage >= 2) return;
+
+  state.revealStage++;
+  const prompt = document.getElementById("tap-prompt");
+
+  if (state.revealStage === 1) {
+    // Show Meaning
+    document.querySelector(".section-meaning")?.classList.add("visible");
+    document.querySelector(".divider-1")?.classList.add("visible");
+    if (prompt) prompt.textContent = "Tap again to see the example";
+  } else if (state.revealStage === 2) {
+    // Show Example
+    document.querySelector(".section-example")?.classList.add("visible");
+    document.querySelector(".divider-2")?.classList.add("visible");
+    if (prompt) prompt.textContent = "";
   }
 }
 function learnPrev() {
@@ -414,7 +433,8 @@ function render() {
 
   // Show/hide fixed home button
   var homeBtn = document.getElementById("homeBtn");
-  if (homeBtn) homeBtn.style.display = state.screen === "home" ? "none" : "flex";
+  if (homeBtn)
+    homeBtn.style.display = state.screen === "home" ? "none" : "flex";
 
   // Side menu
   var oc = state.menuOpen ? "open" : "";
@@ -502,25 +522,25 @@ function renderLearn() {
     '<hr class="reveal-divider divider-1' +
     d1Vis +
     '" />' +
-    // Section 2: Example
-    '<div class="reveal-section section-example' +
-    exVis +
-    '">' +
-    '<div class="flashcard-example">' +
-    item.example +
-    "</div>" +
-    "</div>" +
-    // Divider 2
-    '<hr class="reveal-divider divider-2' +
-    d2Vis +
-    '" />' +
-    // Section 3: Meaning
+    // Section 3: Meaning (moved here - now comes before Example)
     '<div class="reveal-section section-meaning' +
     meVis +
     '">' +
     '<div class="meaning-label">Meaning</div>' +
     '<div class="meaning-text">' +
     item.meaning +
+    "</div>" +
+    "</div>" +
+    // Divider 2
+    '<hr class="reveal-divider divider-2' +
+    d2Vis +
+    '" />' +
+    // Section 2: Example (now comes after Meaning)
+    '<div class="reveal-section section-example' +
+    exVis +
+    '">' +
+    '<div class="flashcard-example">' +
+    item.example +
     "</div>" +
     "</div>" +
     "</div>" +
