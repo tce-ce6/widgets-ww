@@ -160,6 +160,9 @@ function showPlate(value) {
   resetPlateBtn.style.cursor = 'auto';
   nextBtn.style.opacity = 0.3;
   nextBtn.style.cursor = 'auto';
+
+  // reset progress bar
+  resetProgress();
 };
 
 // function attachProgressToLottie(type) {
@@ -179,6 +182,13 @@ function showPlate(value) {
 // };
 
 const progressGroups = document.querySelectorAll(".progressGroup");
+const progressRects  = document.querySelectorAll(".progressRect");
+const PROGRESS_MAX_W = 483; // 468px track + 2×7.5 rounded caps
+
+function resetProgress() {
+  progressRects.forEach(r => r.setAttribute('width', '0'));
+  valueEls.forEach(el => { el.textContent = '0%'; });
+}
 
 function attachProgressToLottie(type) {
   const item = lottieMap[type];
@@ -190,14 +200,12 @@ function attachProgressToLottie(type) {
     const progress = anim.currentFrame / anim.totalFrames;
     const value = Math.floor(progress * 101);
 
-    // update text
-    valueEls.forEach(el => {
-      el.textContent = `${value}%`;
-    });
+    // update % text
+    valueEls.forEach(el => { el.textContent = `${value}%`; });
 
-    // ✅ update all bars
-    progressGroups.forEach(group => {
-      group.style.transform = `scaleX(${progress})`;
+    // update bar width (grows left → right)
+    progressRects.forEach(r => {
+      r.setAttribute('width', progress * PROGRESS_MAX_W);
     });
   });
 }
@@ -260,6 +268,7 @@ nextBtn.addEventListener("click", () => {
     isCongratsVisible = true;
     resetPlateBtn.style.display = 'none';
     insightsButton.style.display = 'none';
+    resetProgress(); // reset bar on Next
     return;
   }
 
@@ -299,5 +308,8 @@ resetPlateBtn.addEventListener("click", () => {
 
   item.instance.stop();          // stops animation
   item.instance.goToAndStop(0);  // reset to first frame
+
+  // reset progress bar
+  resetProgress();
 
 });
