@@ -383,10 +383,11 @@ function handleNextQuestion() {
     }
 
     const data = questions[AppState.currentQuestionIndex];
-    AppState.currentCountryData = data;
 
     // reset step-2 UI
     resetStepTwo();
+    // restore the current question after reset clears state
+    AppState.currentCountryData = data;
     if (AppState.elements.questionContainer) {
         AppState.elements.questionContainer.style.display = 'none';
     }
