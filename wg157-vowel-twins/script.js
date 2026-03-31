@@ -858,7 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateBuild() {
-    const tm = state.currentTeam == "oo_short" ? "oo" : state.currentTeam;
+    const tm = state.currentTeam;
     const c = teamColors[tm];
     const cw = vowelTeams[tm].words[state.currentWordIndex];
     const parts = cw.hint.split("__");
