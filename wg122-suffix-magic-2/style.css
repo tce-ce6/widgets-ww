@@ -471,6 +471,8 @@
   font-size: 30px;
   list-style: none;
   margin-bottom: 20px;
+  white-space: normal;
+  line-height: 1.2;
 }
 
 .modal-open::after {
