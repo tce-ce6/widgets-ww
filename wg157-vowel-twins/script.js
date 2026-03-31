@@ -1,5 +1,163 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ===== DATA =====
+  // const vowelTeams = {
+  //   ai: {
+  //     sound: "long A",
+  //     soundDisplay: "ā",
+  //     rule: "ai usually comes in the middle of words",
+  //     partner: "ay",
+  //     words: [
+  //       { word: "rain", hint: "r__n", clue: "Falls from clouds" },
+  //       { word: "train", hint: "tr__n", clue: "Runs on tracks" },
+  //       { word: "paint", hint: "p__nt", clue: "Use with a brush" },
+  //       { word: "tail", hint: "t__l", clue: "Dogs wag this" },
+  //       { word: "mail", hint: "m__l", clue: "Letters you receive" },
+  //       { word: "snail", hint: "sn__l", clue: "Slow with a shell" },
+  //       { word: "wait", hint: "w__t", clue: "Stay and be patient" },
+  //       { word: "brain", hint: "br__n", clue: "You think with this" },
+  //       { word: "chain", hint: "ch__n", clue: "Metal links" },
+  //       { word: "plain", hint: "pl__n", clue: "Simple, not fancy" },
+  //     ],
+  //     distractors: ["ran", "ten", "pin", "cat", "bed"],
+  //   },
+  //   ay: {
+  //     sound: "long A",
+  //     soundDisplay: "ā",
+  //     rule: "ay usually comes at the end of words",
+  //     partner: "ai",
+  //     words: [
+  //       { word: "play", hint: "pl__", clue: "Have fun" },
+  //       { word: "day", hint: "d__", clue: "24 hours" },
+  //       { word: "say", hint: "s__", clue: "Speak words" },
+  //       { word: "way", hint: "w__", clue: "A path or method" },
+  //       { word: "stay", hint: "st__", clue: "Remain here" },
+  //       { word: "pay", hint: "p__", clue: "Give money" },
+  //       { word: "may", hint: "m__", clue: "Perhaps" },
+  //       { word: "hay", hint: "h__", clue: "Horses eat this" },
+  //       { word: "tray", hint: "tr__", clue: "Carry plates on this" },
+  //       { word: "gray", hint: "gr__", clue: "Color between black and white" },
+  //     ],
+  //     distractors: ["pal", "sad", "map", "bag", "ran"],
+  //   },
+  //   ea: {
+  //     sound: "long E",
+  //     soundDisplay: "ē",
+  //     rule: "ea makes the long E sound",
+  //     partner: "ee",
+  //     words: [
+  //       { word: "eat", hint: "__t", clue: "Chew and swallow food" },
+  //       { word: "leaf", hint: "l__f", clue: "Grows on trees" },
+  //       { word: "seat", hint: "s__t", clue: "A place to sit" },
+  //       { word: "dream", hint: "dr__m", clue: "You have this when sleeping" },
+  //       { word: "clean", hint: "cl__n", clue: "Not dirty" },
+  //       { word: "peach", hint: "p__ch", clue: "A soft sweet fruit" },
+  //       { word: "cheap", hint: "ch__p", clue: "Does not cost much" },
+  //       { word: "steam", hint: "st__m", clue: "Hot water makes this" },
+  //       { word: "feast", hint: "f__st", clue: "A big meal" },
+  //       { word: "least", hint: "l__st", clue: "The smallest amount" },
+  //     ],
+  //     distractors: ["bed", "pet", "red", "leg", "hen"],
+  //   },
+  //   ee: {
+  //     sound: "long E",
+  //     soundDisplay: "ē",
+  //     rule: "ee makes the long E sound",
+  //     partner: "ea",
+  //     words: [
+  //       { word: "bee", hint: "b__", clue: "Makes honey" },
+  //       { word: "tree", hint: "tr__", clue: "Has leaves and branches" },
+  //       { word: "free", hint: "fr__", clue: "No cost" },
+  //       { word: "green", hint: "gr__n", clue: "Color of grass" },
+  //       { word: "sleep", hint: "sl__p", clue: "Rest at night" },
+  //       { word: "keep", hint: "k__p", clue: "Hold onto" },
+  //       { word: "deep", hint: "d__p", clue: "Far down" },
+  //       { word: "creep", hint: "cr__p", clue: "Move slowly and quietly" },
+  //       { word: "cheek", hint: "ch__k", clue: "Part of your face" },
+  //       { word: "speed", hint: "sp__d", clue: "How fast you go" },
+  //     ],
+  //     distractors: ["set", "wet", "pen", "yes", "egg"],
+  //   },
+  //   oa: {
+  //     buildAlt: "oo",
+  //     sound: "long O",
+  //     soundDisplay: "ō",
+  //     rule: "oa usually comes in the middle of words",
+  //     partner: null,
+  //     words: [
+  //       { word: "boat", hint: "b__t", clue: "Floats on water" },
+  //       { word: "coat", hint: "c__t", clue: "Wear when cold" },
+  //       { word: "goat", hint: "g__t", clue: 'Says "maa"' },
+  //       { word: "road", hint: "r__d", clue: "Cars drive on this" },
+  //       { word: "toad", hint: "t__d", clue: "Like a frog" },
+  //       { word: "soap", hint: "s__p", clue: "Wash with this" },
+  //       { word: "load", hint: "l__d", clue: "Heavy things to carry" },
+  //       { word: "float", hint: "fl__t", clue: "Stay on top of water" },
+  //       { word: "toast", hint: "t__st", clue: "Crispy bread" },
+  //       { word: "coach", hint: "c__ch", clue: "Trains a team" },
+  //     ],
+  //     distractors: ["got", "hot", "dog", "top", "box"],
+  //   },
+  //   oo: {
+  //     display: "oo",
+  //     buildAlt: "oa",
+  //     sound: "long OO",
+  //     soundDisplay: "ōō",
+  //     rule: 'oo makes the long "oo" sound like in moon',
+  //     partner: null,
+  //     words: [
+  //       { word: "moon", hint: "m__n", clue: "Shines at night" },
+  //       { word: "soon", hint: "s__n", clue: "In a short time" },
+  //       { word: "food", hint: "f__d", clue: "What you eat" },
+  //       { word: "cool", hint: "c__l", clue: "A bit cold" },
+  //       { word: "pool", hint: "p__l", clue: "Swim in this" },
+  //       { word: "school", hint: "sch__l", clue: "Where you learn" },
+  //       { word: "room", hint: "r__m", clue: "Part of a house" },
+  //       { word: "broom", hint: "br__m", clue: "Sweep the floor" },
+  //       { word: "spoon", hint: "sp__n", clue: "Eat soup with this" },
+  //       { word: "tooth", hint: "t__th", clue: "In your mouth" },
+  //     ],
+  //     distractors: ["book", "good", "foot", "wood", "cook"],
+  //   },
+  //   oo_short: {
+  //     display: "oo",
+  //     buildAlt: "oa",
+  //     sound: "short OO",
+  //     soundDisplay: "ʊ",
+  //     rule: "oo can also make a short sound like in book",
+  //     partner: null,
+  //     words: [
+  //       { word: "book", hint: "b__k", clue: "You read this" },
+  //       { word: "cook", hint: "c__k", clue: "Make food" },
+  //       { word: "good", hint: "g__d", clue: "Not bad" },
+  //       { word: "foot", hint: "f__t", clue: "At the end of your leg" },
+  //       { word: "wood", hint: "w__d", clue: "Trees are made of this" },
+  //       { word: "look", hint: "l__k", clue: "Use your eyes" },
+  //       { word: "took", hint: "t__k", clue: "Past tense of take" },
+  //       { word: "hook", hint: "h__k", clue: "Hang things on this" },
+  //       { word: "stood", hint: "st__d", clue: "Past tense of stand" },
+  //       { word: "wool", hint: "w__l", clue: "Sheep give us this" },
+  //     ],
+  //     distractors: ["moon", "food", "pool", "cool", "soon"],
+  //   },
+  //   ue: {
+  //     buildAlt: "ea",
+  //     sound: "long U",
+  //     soundDisplay: "ū",
+  //     rule: "ue usually comes at the end of words",
+  //     partner: null,
+  //     words: [
+  //       { word: "blue", hint: "bl__", clue: "Color of the sky" },
+  //       { word: "true", hint: "tr__", clue: "Not false" },
+  //       { word: "glue", hint: "gl__", clue: "Stick things together" },
+  //       { word: "clue", hint: "cl__", clue: "Helps solve a mystery" },
+  //       { word: "due", hint: "d__", clue: "Expected or owed" },
+  //       { word: "cue", hint: "c__", clue: "A signal to start" },
+  //       { word: "sue", hint: "s__", clue: "Take to court" },
+  //       { word: "flue", hint: "fl__", clue: "Chimney pipe" },
+  //     ],
+  //     distractors: ["cup", "bus", "fun", "run", "sun"],
+  //   },
+  // };
   const vowelTeams = {
     ai: {
       sound: "long A",
@@ -19,7 +177,15 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "plain", hint: "pl__n", clue: "Simple, not fancy" },
       ],
       distractors: ["ran", "ten", "pin", "cat", "bed"],
+      // Phase-specific lists (for easy use in different sections)
+      meet: ["rain", "train", "paint"],
+      build: ["rain", "train", "paint", "tail", "mail"],
+      spotTeam: ["rain", "train", "paint", "tail"],
+      spotDistractors: ["ran", "ten", "pin"],
+      compareSelf: ["rain", "train", "paint"],
+      comparePartner: ["play", "day", "say"],
     },
+
     ay: {
       sound: "long A",
       soundDisplay: "ā",
@@ -38,7 +204,14 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "gray", hint: "gr__", clue: "Color between black and white" },
       ],
       distractors: ["pal", "sad", "map", "bag", "ran"],
+      meet: ["play", "day", "say"],
+      build: ["play", "day", "say", "way", "stay"],
+      spotTeam: ["play", "day", "say", "way"],
+      spotDistractors: ["pal", "sad", "map"],
+      compareSelf: ["play", "day", "say"],
+      comparePartner: ["rain", "train", "paint"],
     },
+
     ea: {
       sound: "long E",
       soundDisplay: "ē",
@@ -57,7 +230,14 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "least", hint: "l__st", clue: "The smallest amount" },
       ],
       distractors: ["bed", "pet", "red", "leg", "hen"],
+      meet: ["eat", "leaf", "seat"],
+      build: ["eat", "leaf", "seat", "dream", "clean"],
+      spotTeam: ["eat", "leaf", "seat", "dream"],
+      spotDistractors: ["bed", "pet", "red"],
+      compareSelf: ["eat", "leaf", "seat"],
+      comparePartner: ["bee", "tree", "free"],
     },
+
     ee: {
       sound: "long E",
       soundDisplay: "ē",
@@ -76,7 +256,14 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "speed", hint: "sp__d", clue: "How fast you go" },
       ],
       distractors: ["set", "wet", "pen", "yes", "egg"],
+      meet: ["bee", "tree", "free"],
+      build: ["bee", "tree", "free", "green", "sleep"],
+      spotTeam: ["bee", "tree", "free", "green"],
+      spotDistractors: ["set", "wet", "pen"],
+      compareSelf: ["bee", "tree", "free"],
+      comparePartner: ["eat", "leaf", "seat"],
     },
+
     oa: {
       buildAlt: "oo",
       sound: "long O",
@@ -96,7 +283,13 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "coach", hint: "c__ch", clue: "Trains a team" },
       ],
       distractors: ["got", "hot", "dog", "top", "box"],
+      meet: ["boat", "coat", "goat"],
+      build: ["boat", "coat", "goat", "road", "toad"],
+      spotTeam: ["boat", "coat", "goat", "road"],
+      spotDistractors: ["got", "hot", "dog"],
+      // No compare for oa
     },
+
     oo: {
       display: "oo",
       buildAlt: "oa",
@@ -117,7 +310,13 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "tooth", hint: "t__th", clue: "In your mouth" },
       ],
       distractors: ["book", "good", "foot", "wood", "cook"],
+      meet: ["moon", "soon", "food"],
+      build: ["moon", "soon", "food", "cool", "pool"],
+      spotTeam: ["moon", "soon", "food", "cool"],
+      spotDistractors: ["book", "good", "foot"],
+      // No compare for long oo
     },
+
     oo_short: {
       display: "oo",
       buildAlt: "oa",
@@ -138,7 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "wool", hint: "w__l", clue: "Sheep give us this" },
       ],
       distractors: ["moon", "food", "pool", "cool", "soon"],
+      meet: ["book", "cook", "good"],
+      build: ["book", "cook", "good", "foot", "wood"],
+      spotTeam: ["book", "cook", "good", "foot"],
+      spotDistractors: ["moon", "food", "pool"],
+      // No compare for short oo
     },
+
     ue: {
       buildAlt: "ea",
       sound: "long U",
@@ -156,6 +361,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "flue", hint: "fl__", clue: "Chimney pipe" },
       ],
       distractors: ["cup", "bus", "fun", "run", "sun"],
+      meet: ["blue", "true", "glue"],
+      build: ["blue", "true", "glue", "clue", "due"],
+      spotTeam: ["blue", "true", "glue", "clue"],
+      spotDistractors: ["cup", "bus", "fun"],
+      // No compare for ue
     },
   };
 
@@ -600,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let html = "";
     if (wi === 0) {
       html = `
-        <div style="display:flex;gap:24px;justify-content:center;align-items:flex-end;margin-bottom:18px">
+        <div style="display:flex;gap:24px;justify-content:center;align-items:flex-end;margin-bottom:18px;margin-top: 28px">
           <div style="display:flex;flex-direction:column;align-items:center">
             <div style="width:95px;height:95px;border-radius:50%;background:radial-gradient(circle at 30% 30%,white,${c.bg});border:4px solid ${c.border};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px ${c.glow}50;animation:float 3s ease-in-out infinite;font-size:44px;font-weight:bold;color:#333;position:relative">
               ${l1}<span style="position:absolute;top:-8px;right:-6px;font-size:18px">👋</span>
@@ -623,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <button onclick="window.vowelTwinsApp.nextWordMeet()" class="btn-main" style="margin-top:20px;">NEXT →</button>`;
     } else if (wi >= 1 && wi <= 3) {
       const w = words[wi - 1];
-      html = `<p style="font-size:14px;color:#666;margin-bottom:10px">Word ${wi} of 3</p>
+      html = `<p style="font-size:14px;color:#666;margin-bottom:10px;margin-top: 12px;">Word ${wi} of 3</p>
               <div onclick="window.vowelTwinsApp.speak('${w.word}', '${tm}')" style="width:min(75vw,260px);height:min(75vw,260px);border-radius:50%;background:radial-gradient(circle at 30% 30%,white 0%,${c.bg} 50%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 15px 50px ${c.glow}50;border:6px solid ${c.border};cursor:pointer;animation:float 3s ease-in-out infinite">${hl(w.word, tm, "clamp(36px,12vw,52px)")}<span style="font-size:18px;color:#666;margin-top:18px">🔊 tap to hear</span></div>
               <p style="margin-top:15px;font-size:14px;color:#666;background:white;padding:10px 20px;border-radius:15px">💡 ${w.clue}</p>
               <button onclick="window.vowelTwinsApp.nextMeetWord()" class="btn-main" style="margin-top:20px;">${wi < 3 ? "NEXT →" : "BUILD →"}</button>`;
@@ -648,7 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateBuild() {
-    const tm = state.currentTeam;
+    const tm = state.currentTeam == "oo_short" ? "oo" : state.currentTeam;
     const c = teamColors[tm];
     const cw = vowelTeams[tm].words[state.currentWordIndex];
     const parts = cw.hint.split("__");
@@ -677,7 +887,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let oh = "";
     if (!sr) {
-      oh = `<p style="font-size:13px;color:#888;margin-bottom:10px">Which vowel team completes this word?</p>
+      oh = `<p style="font-size:24px;color:#888;margin-bottom:10px">Which vowel team completes this word?</p>
             <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">${opts
               .map((t) => {
                 const tc = teamColors[t];
@@ -708,7 +918,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ]);
     }
 
-    content.innerHTML = `<p style="font-size:15px;color:#666;margin-bottom:5px">Complete the word:</p>
+    content.innerHTML = `<p style="font-size: 24px;color:#666;margin-bottom: 20px;margin-top: 20px;">Complete the word:</p>
                         <div style="background:white;padding:25px 40px;border-radius:25px;box-shadow:0 8px 30px ${c.glow}30;margin-bottom:15px;border:4px solid ${brc}"><span style="font-size:42px;font-weight:bold;color:#333;letter-spacing:3px">${hh}</span></div>
                         <p style="font-size:14px;color:#666;margin-bottom:20px;background:rgba(255,255,255,0.8);padding:8px 16px;border-radius:15px">Hint: ${cw.clue}</p>${oh}`;
   }
