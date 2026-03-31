@@ -29,7 +29,7 @@
 
                 <div class="app">
                     <div class="header">
-                        <h1><span class="gear">⚙</span> Palindrome Builder</h1>
+                        <!-- <h1><span class="gear">⚙</span> Palindrome Builder</h1> -->
                         <div class="subtitle">Fill in the missing letters to build palindromes!</div>
                     </div>
 
@@ -38,7 +38,7 @@
                     <div class="score-bar">
                         <div class="score-item">✅ <span class="num correct" id="scoreCorrect">0</span></div>
                         <div class="score-item">🔥 <span class="num streak" id="scoreStreak">0</span> streak</div>
-                        <div class="score-item">💡 <span class="num" id="hintsLeft">3</span> hints</div>
+                        <!-- <div class="score-item">💡 <span class="num" id="hintsLeft">3</span> hints</div> -->
                     </div>
 
                     <div class="clue-patch" id="clueArea"></div>
@@ -50,7 +50,8 @@
                     <div class="keyboard" id="keyboard"></div>
 
                     <div class="bottom-controls">
-                        <button class="btn btn-hint" id="hintBtn" onclick="useHint()">💡 Hint</button>
+                        <button class="btn btn-hint" id="hintBtn" onclick="useHint()">
+                            Hint<span class="hint-num">(<span id="hintsLeft">3</span>)</span></button>
                         <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()" disabled>Check ✓</button>
                         <button class="btn btn-skip" onclick="skipWord()">Skip →</button>
                         <button class="btn btn-next" id="nextBtn" onclick="nextWord()">Next →</button>
