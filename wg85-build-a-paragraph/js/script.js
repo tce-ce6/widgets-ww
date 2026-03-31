@@ -540,9 +540,9 @@ function createParagraphSlots(topic) {
   // Create foreignObject for instruction message
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 230);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 670);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '28px';
@@ -641,18 +641,18 @@ function buildParagraphProgressively() {
   // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 230);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 670);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
   div.style.fontFamily = 'Roboto-Medium, Roboto';
   div.style.fontWeight = '500';
-  div.style.lineHeight = '1.5';
+  div.style.lineHeight = '40px';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '10px';
+  div.style.paddingTop = '0px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -740,25 +740,6 @@ function hideCompletionScreen() {
     arrowImg.style.display = 'none';
   }
 
-  // Remove opacity from answer button when image is hidden
-  const answerBtn = document.getElementById('answer-btn-text');
-  if (answerBtn) {
-    answerBtn.style.opacity = '1';
-    answerBtn.style.pointerEvents = 'auto';
-
-    // Also reset pointer-events on inner div
-    const answerBtnDiv = answerBtn.querySelector('div');
-    if (answerBtnDiv) {
-      answerBtnDiv.style.pointerEvents = 'auto';
-    }
-  }
-
-  // Reset pointer-events on the button group
-  const buttonGroup = document.getElementById('Group_814');
-  if (buttonGroup) {
-    buttonGroup.style.pointerEvents = 'auto';
-  }
-
   // Add opacity to next button when image is hidden
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
@@ -792,25 +773,6 @@ function showTopicImage(imageName) {
   const arrowImg = document.getElementById('arrow-img');
   if (arrowImg) {
     arrowImg.style.display = 'block';
-  }
-
-  // Add opacity to answer button when image is shown
-  const answerBtn = document.getElementById('answer-btn-text');
-  if (answerBtn) {
-    answerBtn.style.opacity = '0.4';
-    answerBtn.style.pointerEvents = 'none';
-
-    // Also add pointer-events none to inner div
-    const answerBtnDiv = answerBtn.querySelector('div');
-    if (answerBtnDiv) {
-      answerBtnDiv.style.pointerEvents = 'none';
-    }
-  }
-
-  // Add pointer-events none to the button group itself
-  const buttonGroup = document.getElementById('Group_814');
-  if (buttonGroup) {
-    buttonGroup.style.pointerEvents = 'none';
   }
 
   // Remove opacity from next button when image is shown
@@ -855,18 +817,18 @@ function showHighlightedParagraph(topic, container) {
 
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 230);
+  foreignObject.setAttribute('y', 260);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 670);
+  foreignObject.setAttribute('height', 640);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
   div.style.fontFamily = 'Roboto-Medium, Roboto';
   div.style.fontWeight = '500';
-  div.style.lineHeight = '1.5';
+  div.style.lineHeight = '40px';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '10px';
+  div.style.paddingTop = '0px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -879,7 +841,7 @@ function showHighlightedParagraph(topic, container) {
   para.style.fontSize = '26px';
   para.style.fontFamily = 'Roboto-Medium, Roboto';
   para.style.fontWeight = '500';
-  para.style.lineHeight = '1.5';
+  para.style.lineHeight = '40px';
   para.innerHTML = highlightedHTML;
   div.appendChild(para);
 
