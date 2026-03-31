@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastState = '';
   let animationTimeout;
+  let inducerAbsentTriggered = false;
   const animations = {};
   const animationFiles = {
     start: './assets/start.json',
@@ -61,10 +62,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   startBtn.addEventListener('click', () => {
     if (animationTimeout) clearTimeout(animationTimeout);
-    lastState = '';
+    
+    if (inducerAbsentTriggered) {
+      const rectObject = document.getElementById('rect-object');
+      if (rectObject) rectObject.style.display = 'block';
+      return; // Do not play start.json animation again
+    }
 
+    lastState = '';
+ 
+    // Dim the start button and disable it immediately for the first load
+    if (startBtn) {
+      startBtn.style.opacity = '.4';
+      startBtn.style.pointerEvents = 'none';
+    }
+
+    // Play start.json animation
     playAnim('start', true);
 
+    // After 5 seconds, remove opacity on control-bar
     animationTimeout = setTimeout(() => {
       const controlBar = document.getElementById('control-bar');
       if (controlBar) {
@@ -93,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
       enableResetBtn();
       if (inducerPresent.checked) {
         if (inducerAbsent) inducerAbsent.checked = false;
+        
+        inducerAbsentTriggered = false;
+        const rectObject = document.getElementById('rect-object');
+        if (rectObject) rectObject.style.display = 'none';
+
         if (lastState === 'absent') {
           playAnim('absent-present');
         } else {
@@ -108,12 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
       enableResetBtn();
       if (inducerAbsent.checked) {
         if (inducerPresent) inducerPresent.checked = false;
-        if (lastState === 'present') {
-          playAnim('present-absent');
-        } else {
-          playAnim('absent');
-        }
+        
+        const targetAnimKey = lastState === 'present' ? 'present-absent' : 'absent';
+        playAnim(targetAnimKey);
         lastState = 'absent';
+
+        // Enable start button immediately and set the trigger flag
+        if (startBtn) {
+          startBtn.style.opacity = '1';
+          startBtn.style.pointerEvents = 'auto';
+        }
+        inducerAbsentTriggered = true;
       }
     });
   }
@@ -141,6 +167,16 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener('click', () => {
       if (animationTimeout) clearTimeout(animationTimeout);
       lastState = '';
+
+      // Restore the start button
+      if (startBtn) {
+        startBtn.style.opacity = '1';
+        startBtn.style.pointerEvents = 'auto';
+      }
+
+      inducerAbsentTriggered = false;
+      const rectObject = document.getElementById('rect-object');
+      if (rectObject) rectObject.style.display = 'none';
 
       playAnim('start', false);
 
