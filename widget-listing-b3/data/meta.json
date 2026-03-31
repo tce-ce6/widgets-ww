@@ -161,8 +161,8 @@
       "author": "aditya"
     },
     "wg144-phrasal-verbs": {
-      "updatedAt": "2026-03-31T18:33:45+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-31T22:55:43+05:30",
+      "author": "PrasannaP"
     },
     "wg145-multiplication-builder": {
       "updatedAt": "2026-03-25T13:18:54+05:30",
@@ -398,6 +398,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T22:55:43+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: update example sentence and standardize whitespace formatting in script.js",
+      "widgets": [
+        144
+      ]
+    },
     {
       "date": "2026-03-31T22:36:38+05:30",
       "author": "PrasannaP",
@@ -640,14 +648,6 @@
       "message": "fix: update paragraph annotations and improve sentence clarity in script.js",
       "widgets": [
         85
-      ]
-    },
-    {
-      "date": "2026-03-31T17:11:20+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement core logic and state management for phrasal verb learning and practice app",
-      "widgets": [
-        144
       ]
     }
   ]
