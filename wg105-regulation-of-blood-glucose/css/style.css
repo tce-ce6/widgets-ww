@@ -499,6 +499,12 @@ svg text {
 .blood-to-liver { animation: fromBloodToLiver 2s forwards ease-in; }
 
 /* ── Insights Popup ── */
+#glucose-container,
+#vessel-animation {
+  width: 100%;
+  height: 100%;
+}
+
 .insights-overlay {
   position: fixed;
   inset: 0;
