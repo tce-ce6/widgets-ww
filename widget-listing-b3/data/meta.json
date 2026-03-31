@@ -81,8 +81,8 @@
       "author": "PrasannaP"
     },
     "wg122-suffix-magic-2": {
-      "updatedAt": "2026-04-01T00:35:36+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-04-01T01:06:04+05:30",
+      "author": "PrasannaP"
     },
     "wg123-pick-the-opposite": {
       "updatedAt": "2026-03-26T10:17:07+05:30",
@@ -265,8 +265,8 @@
       "author": "tce-ashishg"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-04-01T00:35:36+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-04-01T01:15:20+05:30",
+      "author": "PrasannaP"
     },
     "wg67-race-to-the-magic-numbers": {
       "updatedAt": "2026-03-24T17:57:44+05:30",
@@ -399,11 +399,43 @@
   },
   "commits": [
     {
+      "date": "2026-04-01T01:15:20+05:30",
+      "author": "PrasannaP",
+      "message": "chore: bump version number to b3_wg61_260331_02 in index.html",
+      "widgets": [
+        61
+      ]
+    },
+    {
+      "date": "2026-04-01T01:15:11+05:30",
+      "author": "PrasannaP",
+      "message": "feat: implement modal backdrop for popups and update asset text alignment",
+      "widgets": [
+        61
+      ]
+    },
+    {
+      "date": "2026-04-01T00:43:43+05:30",
+      "author": "PrasannaP",
+      "message": "feat: add modal backdrop functionality and update widget version to 03",
+      "widgets": [
+        122
+      ]
+    },
+    {
       "date": "2026-04-01T00:35:36+05:30",
       "author": "tce-ashishg",
       "message": "wg61 issue resolved",
       "widgets": [
         61,
+        122
+      ]
+    },
+    {
+      "date": "2026-04-01T00:19:34+05:30",
+      "author": "PrasannaP",
+      "message": "s",
+      "widgets": [
         122
       ]
     },
@@ -615,39 +647,6 @@
       "message": "v2",
       "widgets": [
         155
-      ]
-    },
-    {
-      "date": "2026-03-31T19:46:08+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T19:43:15+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel teams data structure and word lists for vowel twins widget",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T19:36:45+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T19:14:31+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 156 wg94 changes",
-      "widgets": [
-        94,
-        156
       ]
     }
   ]
