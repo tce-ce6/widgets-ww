@@ -404,17 +404,17 @@ function render() {
     var ml = state.screen === "learn" ? "Learn" : "Practise";
     html +=
       '<div class="top-bar">' +
-      '<button class="home-btn" onclick="goHome()" title="Home">' +
-      iconHome +
-      "</button>" +
       '<span class="top-bar-title">' +
       ml +
       "</span>" +
-      '<div class="top-bar-spacer"></div>' +
       "</div>";
     if (state.screen === "learn") html += renderLearn();
     else html += renderPractice();
   }
+
+  // Show/hide fixed home button
+  var homeBtn = document.getElementById("homeBtn");
+  if (homeBtn) homeBtn.style.display = state.screen === "home" ? "none" : "flex";
 
   // Side menu
   var oc = state.menuOpen ? "open" : "";
