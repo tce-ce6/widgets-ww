@@ -62,6 +62,7 @@ function initCountryBoxes() {
 
             // store selected country
             AppState.selectedCountry = id;
+            handleCountryClick(id);
 
             // highlight selected box
             document.querySelectorAll('.country-box').forEach(el => {
@@ -109,6 +110,10 @@ function initMapDropCheck() {
                 }
 
                 if (AppState.wrongMapAttempts >= 2) {
+                    // Hide other wrong popups
+                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
+                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
+
                     const missedItPopup = document.getElementById('missed-it-popup');
                     if (missedItPopup) {
                         missedItPopup.style.display = 'block';
@@ -231,6 +236,10 @@ function initMapDropCheck() {
                 }
 
                 if (AppState.wrongMapAttempts >= 2) {
+                    // Hide other wrong popups
+                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
+                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
+
                     const missedItPopup = document.getElementById('missed-it-popup');
                     if (missedItPopup) {
                         missedItPopup.style.display = 'block';
@@ -259,108 +268,84 @@ function initMapDropCheck() {
 }
 
 function resetStepTwo() {
-    // ✅ remove selected and correct from all country flags
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
-
-    // remove selected highlight
-    document.querySelectorAll('.country-box').forEach(el => {
-        el.classList.remove('selected', 'active', 'correct');
-    });
-
+    // 1. Reset all state flags & counters
     AppState.wrongMapAttempts = 0;
     AppState.wrongQuizAttempts = 0;
     AppState.quizAttempted = false;
     AppState.mapLocked = false;
     AppState.mapEnabled = false;
+    AppState.selectedCountry = null;
+    AppState.currentCountryData = null;
 
-    // hide quiz UI
+    // 2. Hide all dynamic info and quiz UI
     if (AppState.elements.questionContainer) {
         AppState.elements.questionContainer.style.display = 'none';
     }
-
+    if (AppState.elements.btnQuiz) {
+        AppState.elements.btnQuiz.style.display = 'none';
+    }
+    if (AppState.elements.iText2) {
+        AppState.elements.iText2.style.display = 'none';
+    }
     if (AppState.elements.factBitePopup) {
         AppState.elements.factBitePopup.style.display = 'none';
     }
 
-    if (AppState.elements.iText2) {
-        AppState.elements.iText2.style.display = 'none';
-    }
+    // 3. Restore initial instruction text
+    const iText1 = document.getElementById('i-text1');
+    if (iText1) iText1.style.display = 'block';
 
-    if (AppState.elements.btnQuiz) {
-        AppState.elements.btnQuiz.style.display = 'none';
-    }
-    const showAnswerBtn = document.getElementById('btn-show-answer');
-    if (showAnswerBtn) showAnswerBtn.style.display = 'none';
-    // reset selected country
-    AppState.selectedCountry = null;
-
-    // hide popups
-    const chooseFlagPopup = document.getElementById('choose-flag-popup');
-    if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
-
-    if (AppState.elements.correctAnswerPopup)
+    // 4. Hide all game popups
+    if (AppState.elements.correctAnswerPopup) {
         AppState.elements.correctAnswerPopup.style.display = 'none';
-
-    if (AppState.elements.lottieWrapper)
+    }
+    if (AppState.elements.tryAgainPopup) {
+        AppState.elements.tryAgainPopup.style.display = 'none';
+    }
+    if (AppState.elements.lottieWrapper) {
         AppState.elements.lottieWrapper.style.display = 'none';
-
-    // hide navigation buttons
-    const btnNext = document.getElementById('btn-next');
-
-    if (btnNext) btnNext.style.display = 'none';
-
-    // reset flags
-    COUNTRY_IDS.forEach(id => {
-        const flag = document.getElementById(id + '-flag');
-        if (flag) flag.style.display = 'none';
+    }
+    
+    // Auxiliary popups
+    const auxiliaryPopups = ['missed-it-popup', 'choose-flag-popup', 'not-country', 'btn-show-answer', 'btn-next'];
+    auxiliaryPopups.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
     });
 
-    // enable flags wrapper again
-    if (AppState.elements.flagsWrapper) {
-        AppState.elements.flagsWrapper.classList.remove('disabled');
-    }
-
-    // remove selected highlight
+    // 5. Reset map highlights and flags
     document.querySelectorAll('.country-box').forEach(el => {
         el.classList.remove('selected', 'active', 'correct');
     });
-    // reset quiz data
-    AppState.currentCountryData = null;
 
-    // reset question text
+    COUNTRY_IDS.forEach(id => {
+        const countryMapEl = document.getElementById(id);
+        if (countryMapEl) countryMapEl.classList.remove('selected', 'correct');
+
+        const flag = document.getElementById(id + '-flag');
+        if (flag) {
+            flag.style.display = 'none';
+            flag.setAttribute('transform', 'translate(0, 0)');
+        }
+    });
+
+    // 6. Enable flags-wrapper for the next turn
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.remove('disabled');
+        AppState.elements.flagsWrapper.style.opacity = '1';
+        AppState.elements.flagsWrapper.style.pointerEvents = 'auto';
+    }
+
+    // 7. Reset quiz elements (text and options)
     if (AppState.elements.questionTxt) {
         AppState.elements.questionTxt.textContent = '';
     }
-
-    // reset option states
-    AppState.elements.options.forEach(li => {
-
-        if (!li) return;
-
-        li.classList.remove('correct', 'wrong', 'disabled');
-
-        const labelSpan = li.querySelector('.label');
-
-        if (labelSpan) {
-
-            // remove option text but keep label
-            const textNodes = [...li.childNodes].filter(
-                n => n.nodeType === Node.TEXT_NODE
-            );
-
-            textNodes.forEach(n => n.textContent = '');
-
-        } else {
-            li.textContent = '';
-        }
-
-    });
-
+    if (AppState.elements.options) {
+        AppState.elements.options.forEach(li => {
+            if (!li) return;
+            li.classList.remove('correct', 'wrong', 'disabled');
+        });
+    }
 }
 
 function handleNextQuestion() {
@@ -368,6 +353,19 @@ function handleNextQuestion() {
 
     // move to next question index
     AppState.currentQuestionIndex++;
+
+    // ✅ ALWAYS clear flag states when Next is clicked
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('selected', 'correct');
+            // reset transform for the NEXT round
+            const flag = document.getElementById(id + '-flag');
+            if (flag) {
+                flag.setAttribute('transform', 'translate(0, 0)');
+            }
+        }
+    });
 
     // Check if we finished all questions
     if (AppState.data && AppState.data.questions && AppState.currentQuestionIndex >= questions.length) {
@@ -381,9 +379,18 @@ function handleNextQuestion() {
         // Disable flags wrapper
         if (AppState.elements.flagsWrapper) AppState.elements.flagsWrapper.classList.add('disabled');
 
-        // Show only the final reset button
+        // Hide all flags from map
+        COUNTRY_IDS.forEach(id => {
+            const flag = document.getElementById(id + '-flag');
+            if (flag) flag.style.display = 'none';
+        });
+
+        // Show ONLY the replay button
         const btnResetFull = document.getElementById('btn-reset');
-        if (btnResetFull) btnResetFull.style.display = 'block';
+        if (btnResetFull) btnResetFull.style.display = 'none';
+
+        const btnReplay = document.getElementById('btn-replay');
+        if (btnReplay) btnReplay.style.display = 'block';
 
         // Hide Next button
         const btnNextFull = document.getElementById('btn-next');
@@ -391,14 +398,6 @@ function handleNextQuestion() {
         
         return;
     }
-
-    // ✅ ALWAYS clear flag states when Next is clicked
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
 
     const data = questions[AppState.currentQuestionIndex];
     AppState.currentCountryData = data;
@@ -669,8 +668,23 @@ async function loadData() {
         const response = await fetch('data.json');
         if (!response.ok) throw new Error('Failed to load data.json');
         AppState.data = await response.json();
+        
+        // Shuffle questions for random order
+        if (AppState.data && AppState.data.questions) {
+            shuffleArray(AppState.data.questions);
+        }
     } catch (error) {
         console.error('Error loading data:', error);
+    }
+}
+
+/**
+ * Shuffles an array in place using Fisher-Yates algorithm
+ */
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
 
@@ -680,21 +694,63 @@ async function loadData() {
 function handleCountryClick(countryId) {
     if (!AppState.data || !AppState.data.questions) return;
 
+    // store selected country
+    AppState.selectedCountry = countryId;
+
     // Use currentQuestionIndex instead of random to prevent repeated questions
     const questions = AppState.data.questions;
     // Safety check for index out of bounds
     const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
     AppState.currentCountryData = questions[safeIndex];
 
+    /* Remove redundant disable from here to allow changing minds before quiz starts */
     if (AppState.elements.flagsWrapper) {
         AppState.elements.flagsWrapper.classList.add('disabled');
     }
-    if (AppState.elements.iText2) {
-        AppState.elements.iText2.style.display = 'block';
+    // Only show quiz buttons if the map phase for this question hasn't started
+    const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
+
+    if (!AppState.mapEnabled && !AppState.mapLocked && !isQuizShown) {
+        if (AppState.elements.iText2) {
+            AppState.elements.iText2.style.display = 'block';
+        }
+        if (AppState.elements.btnQuiz) {
+            AppState.elements.btnQuiz.style.display = 'block';
+        }
     }
-    if (AppState.elements.btnQuiz) {
-        AppState.elements.btnQuiz.style.display = 'block';
+}
+
+function handleGameReset() {
+    // 1. Reset all step-2 data and UI elements
+    resetStepTwo();
+
+    // 2. Reset score and global progress
+    AppState.currentQuestionIndex = 0;
+    AppState.score = 0;
+    updateMarksUI();
+
+    // 3. Reset map zoom/pan to initial view
+    AppState.mapState.currentX = 0;
+    AppState.mapState.currentY = 0;
+    AppState.mapState.currentScale = 1;
+    if (AppState.elements.map) {
+        AppState.elements.map.setAttribute('transform', 'translate(0, 0) scale(1)');
     }
+
+    // 4. Shuffle questions for a fresh game experience
+    if (AppState.data && AppState.data.questions) {
+        shuffleArray(AppState.data.questions);
+    }
+
+    // 5. Hide end-game buttons
+    const btnReset = document.getElementById('btn-reset');
+    if (btnReset) btnReset.style.display = 'none';
+
+    const btnReplay = document.getElementById('btn-replay');
+    if (btnReplay) btnReplay.style.display = 'none';
+    
+    const btnNext = document.getElementById('btn-next');
+    if (btnNext) btnNext.style.display = 'none';
 }
 
 /**
@@ -702,32 +758,13 @@ function handleCountryClick(countryId) {
  */
 function attachEventListeners() {
     const btnReset = document.getElementById('btn-reset');
-
     if (btnReset) {
+        btnReset.addEventListener('click', handleGameReset);
+    }
 
-        btnReset.addEventListener('click', () => {
-
-            // reset all step-2 data
-            resetStepTwo();
-
-            // Reset game progress
-            AppState.currentQuestionIndex = 0;
-            AppState.score = 0;
-            updateMarksUI();
-
-            // restore map zoom/pan to default
-            AppState.mapState.currentX = 0;
-            AppState.mapState.currentY = 0;
-            AppState.mapState.currentScale = 1;
-            if (AppState.elements.map) {
-                AppState.elements.map.setAttribute('transform', 'translate(0, 0) scale(1)');
-            }
-
-            // hide reset button again
-            btnReset.style.display = 'none';
-
-        });
-
+    const btnReplay = document.getElementById('btn-replay');
+    if (btnReplay) {
+        btnReplay.addEventListener('click', handleGameReset);
     }
     const btnShowAnswer = document.getElementById('btn-show-answer');
 
@@ -854,7 +891,8 @@ function attachEventListeners() {
                     return; // ❗ stop here, don't run handleCountryClick
                 }
 
-                handleCountryClick(id);
+                AppState.selectedCountry = id;
+            handleCountryClick(id);
             });
         }
     });
@@ -885,6 +923,11 @@ function handleBtnQuizClick() {
 
     // Show the question container
     if (questionContainer) questionContainer.style.display = 'block';
+
+    // Disable flags wrapper once quiz starts
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.add('disabled');
+    }
 
     // Populate question text
     if (questionTxt && data) {
@@ -991,8 +1034,17 @@ function handleOptionClick(li) {
         }
 
         const chooseFlagPopup = document.getElementById('choose-flag-popup');
+        const tickMark = document.getElementById('tick-mark');
         if (chooseFlagPopup) {
             chooseFlagPopup.style.display = 'block';
+            if (tickMark) tickMark.style.display = 'block';
+            
+            // Set text for correct answer
+            const tspan = chooseFlagPopup.querySelector('tspan');
+            if (tspan) {
+                tspan.textContent = 'Correct. Choose the flag';
+                tspan.setAttribute('x', '1102.48');
+            }
         }
 
         // Hide try-again popup if it was visible from a previous wrong attempt
@@ -1066,6 +1118,21 @@ function handleOptionClick(li) {
                         if (funFactTxt) funFactTxt.textContent = data.funFact || '';
                         if (didYouKnowTxt) didYouKnowTxt.textContent = data.didYouKnow || '';
                         factBitePopup.style.display = 'block';
+
+                        // Also display choose-flag-popup but hide tick-mark
+                        const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                        const tickMark = document.getElementById('tick-mark');
+                        if (chooseFlagPopup) {
+                            chooseFlagPopup.style.display = 'block';
+                            
+                            // Set text and position for wrong answer case
+                            const tspan = chooseFlagPopup.querySelector('tspan');
+                            if (tspan) {
+                                tspan.textContent = 'Choose the flag';
+                                tspan.setAttribute('x', '1152.48');
+                            }
+                        }
+                        if (tickMark) tickMark.style.display = 'none';
                     }
                 }, 3000);
             }
@@ -1117,6 +1184,10 @@ function initLayerWrongClicks() {
                 }
 
                 if (AppState.wrongMapAttempts >= 2) {
+                    // Hide other wrong popups
+                    if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
+                    if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
+
                     const missedItPopup = document.getElementById('missed-it-popup');
                     if (missedItPopup) {
                         missedItPopup.style.display = 'block';
@@ -1151,6 +1222,11 @@ function initLayerWrongClicks() {
             }
 
             if (AppState.wrongMapAttempts >= 2) {
+                // Hide other wrong popups
+                const wrongFlagPopup = document.getElementById('wrong-flag-selected');
+                if (wrongFlagPopup) wrongFlagPopup.style.display = 'none';
+                if (AppState.elements.tryAgainPopup) AppState.elements.tryAgainPopup.style.display = 'none';
+
                 const missedItPopup = document.getElementById('missed-it-popup');
                 if (missedItPopup) {
                     missedItPopup.style.display = 'block';
@@ -1183,6 +1259,48 @@ function updateMarksUI() {
     }
 }
 
+function initDistractors() {
+    ['distractor-1', 'distractor-2', 'distractor-3', 'distractor-4'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+            // Hide result popups from previous round
+            if (AppState.elements.correctAnswerPopup) {
+                AppState.elements.correctAnswerPopup.style.display = 'none';
+                const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+            }
+
+            if (AppState.elements.factBitePopup) {
+                AppState.elements.factBitePopup.style.display = 'none';
+            }
+
+            // If quiz is already open (user finished quiz and clicks another country)
+            if (AppState.elements.questionContainer &&
+                AppState.elements.questionContainer.style.display === 'block') {
+
+                if (AppState.elements.iText2) {
+                    AppState.elements.iText2.style.display = 'none';
+                }
+
+                if (AppState.elements.btnQuiz) {
+                    AppState.elements.btnQuiz.style.display = 'none';
+                }
+
+                if (AppState.elements.flagsWrapper) {
+                    AppState.elements.flagsWrapper.classList.remove('disabled');
+                }
+
+                return;
+            }
+            AppState.selectedCountry = id;
+            handleCountryClick(id);
+        });
+    });
+}
+
 /**
  * Initialize the widget
  */
@@ -1201,6 +1319,7 @@ async function init() {
     initMapDropCheck();
     initLayerWrongClicks();
     initMapPanAndClip();
+    initDistractors();
 }
 
 // Run initialization when DOM is fully loaded

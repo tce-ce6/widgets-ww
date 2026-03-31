@@ -21,8 +21,8 @@
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
-      "updatedAt": "2026-02-27T14:51:23+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-31T12:22:02+05:30",
+      "author": "tce-nitinc"
     },
     "wg108-photosynthesis-factory": {
       "updatedAt": "2026-03-20T11:46:26+05:30",
@@ -49,7 +49,7 @@
       "author": "tce-nitinc"
     },
     "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-03-31T10:25:26+05:30",
+      "updatedAt": "2026-03-31T11:43:46+05:30",
       "author": "sushantthe"
     },
     "wg115-literary-device": {
@@ -125,7 +125,7 @@
       "author": "PrasannaP"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-30T19:19:46+05:30",
+      "updatedAt": "2026-03-31T15:57:10+05:30",
       "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
@@ -159,6 +159,10 @@
     "wg143-synthesize-new-polypeptide-chain": {
       "updatedAt": "2026-03-13T18:18:01+05:30",
       "author": "aditya"
+    },
+    "wg144-phrasal-verbs": {
+      "updatedAt": "2026-03-31T15:23:01+05:30",
+      "author": "sushantthe"
     },
     "wg145-multiplication-builder": {
       "updatedAt": "2026-03-25T13:18:54+05:30",
@@ -197,20 +201,24 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-30T19:19:46+05:30",
+      "updatedAt": "2026-03-31T15:57:10+05:30",
       "author": "tce-nitinc"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-30T10:29:56+05:30",
+      "updatedAt": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc"
     },
-    "wg158-tricky-word-collector": {
-      "updatedAt": "2026-03-30T21:37:03+05:30",
+    "wg157-vowel-twins": {
+      "updatedAt": "2026-03-31T16:04:03+05:30",
       "author": "sushantthe"
     },
+    "wg158-tricky-word-collector": {
+      "updatedAt": "2026-03-31T15:20:14+05:30",
+      "author": "PrasannaP"
+    },
     "wg159-palindrome-builder": {
-      "updatedAt": "2026-03-30T21:37:03+05:30",
-      "author": "sushantthe"
+      "updatedAt": "2026-03-31T12:38:33+05:30",
+      "author": "PrasannaP"
     },
     "wg17-locating-decimals-v2": {
       "updatedAt": "2026-03-25T18:28:39+05:30",
@@ -329,7 +337,7 @@
       "author": "PrasannaP"
     },
     "wg85-build-a-paragraph": {
-      "updatedAt": "2026-03-30T21:21:00+05:30",
+      "updatedAt": "2026-03-31T14:44:08+05:30",
       "author": "PrasannaP"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
@@ -365,7 +373,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-30T19:19:46+05:30",
+      "updatedAt": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -391,252 +399,252 @@
   },
   "commits": [
     {
-      "date": "2026-03-31T10:25:26+05:30",
+      "date": "2026-03-31T16:04:03+05:30",
       "author": "sushantthe",
-      "message": "Update index.html",
+      "message": "feat: implement vowel twins educational widget with interactive learning screens and word-building activities",
       "widgets": [
-        114
+        157
       ]
     },
     {
-      "date": "2026-03-31T10:21:19+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement Lottie animation overlay and screen navigation logic for interactive widget",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-30T21:55:23+05:30",
-      "author": "PrasannaP",
-      "message": "132 v1",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:54:59+05:30",
-      "author": "PrasannaP",
-      "message": "text change",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:37:03+05:30",
-      "author": "sushantthe",
-      "message": "feat: update font family to Roboto for improved typography consistency across widgets",
-      "widgets": [
-        158,
-        159
-      ]
-    },
-    {
-      "date": "2026-03-30T21:36:18+05:30",
-      "author": "PrasannaP",
-      "message": "</tspan>",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:21:53+05:30",
-      "author": "sushantthe",
-      "message": "fix: adjust padding for button styling in the Palindrome Builder widget",
-      "widgets": [
-        159
-      ]
-    },
-    {
-      "date": "2026-03-30T21:21:00+05:30",
-      "author": "PrasannaP",
-      "message": "v1",
-      "widgets": [
-        85,
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:19:28+05:30",
-      "author": "sushantthe",
-      "message": "feat: update title and widget name to Palindrome Builder; adjust CSS for layout consistency",
-      "widgets": [
-        159
-      ]
-    },
-    {
-      "date": "2026-03-30T21:08:06+05:30",
-      "author": "sushantthe",
-      "message": "feat: add btn-wg151 class for consistent button styling and update Change Path button",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-30T20:54:32+05:30",
-      "author": "sushantthe",
-      "message": "feat: reposition Change Path button to fixed bottom-right for improved accessibility",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-30T20:51:59+05:30",
-      "author": "sushantthe",
-      "message": "Add Palindrome Builder widget with styling, HTML structure, and JavaScript functionality",
-      "widgets": [
-        158,
-        159
-      ]
-    },
-    {
-      "date": "2026-03-30T20:17:12+05:30",
-      "author": "PrasannaP",
-      "message": "review1",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-30T19:49:27+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-30T19:34:56+05:30",
-      "author": "sushantthe",
-      "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-30T19:28:14+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T19:19:46+05:30",
+      "date": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc",
-      "message": "wg 94 fixes",
+      "message": "wg155 wg 133 changes",
       "widgets": [
         94,
+        133,
+        155,
+        156
+      ]
+    },
+    {
+      "date": "2026-03-31T15:44:17+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement vowel team learning widget with interactive word practice and CSS styling",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T15:23:01+05:30",
+      "author": "sushantthe",
+      "message": "feat: add notebook-themed CSS styles for phrasal verb flashcards",
+      "widgets": [
+        144
+      ]
+    },
+    {
+      "date": "2026-03-31T15:20:14+05:30",
+      "author": "PrasannaP",
+      "message": "b3_wg158_260331_2",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-31T15:17:00+05:30",
+      "author": "sushantthe",
+      "message": "refactor: migrate phrasal verbs widget to modern structure by replacing legacy files with new implementation",
+      "widgets": [
+        144
+      ]
+    },
+    {
+      "date": "2026-03-31T14:56:07+05:30",
+      "author": "PrasannaP",
+      "message": "133 155 fixed svg",
+      "widgets": [
+        133
+      ]
+    },
+    {
+      "date": "2026-03-31T14:50:46+05:30",
+      "author": "PrasannaP",
+      "message": "fix: update navigation SVG width and add fallback font stack to text elements",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T14:44:08+05:30",
+      "author": "PrasannaP",
+      "message": "85 change array1",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-31T14:33:12+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 133 wg 155 changes",
+      "widgets": [
         133,
         155
       ]
     },
     {
-      "date": "2026-03-30T19:16:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wg79 click issue resolved",
-      "widgets": [
-        79
-      ]
-    },
-    {
-      "date": "2026-03-30T19:05:14+05:30",
+      "date": "2026-03-31T14:32:42+05:30",
       "author": "PrasannaP",
-      "message": "fix1",
+      "message": "v4",
       "widgets": [
-        85
+        158
       ]
     },
     {
-      "date": "2026-03-30T19:01:02+05:30",
+      "date": "2026-03-31T14:03:09+05:30",
       "author": "sushantthe",
-      "message": "feat: reset correctCount in multiple locations for consistent state management",
+      "message": "Update index.html",
       "widgets": [
-        114
+        157
       ]
     },
     {
-      "date": "2026-03-30T18:48:24+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 94 changes",
-      "widgets": [
-        94
-      ]
-    },
-    {
-      "date": "2026-03-30T18:43:18+05:30",
+      "date": "2026-03-31T13:37:01+05:30",
       "author": "sushantthe",
-      "message": "feat: update trader interaction feedback and add \"Try another trader\" functionality",
+      "message": "Update index.html",
       "widgets": [
-        114
+        157
       ]
     },
     {
-      "date": "2026-03-30T18:09:36+05:30",
-      "author": "Shyam",
-      "message": "review fixes done animation added sound playing indicator and correct answer fo reach scenario added",
+      "date": "2026-03-31T13:35:41+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure and audio playback logic for wg157-vowel-twins",
       "widgets": [
-        135
+        157
       ]
     },
     {
-      "date": "2026-03-30T17:57:15+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: add initial index.html structure for CropMap India widget",
+      "date": "2026-03-31T13:35:02+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel-twins widget with core data structures and audio playback logic",
       "widgets": [
-        151
+        157
       ]
     },
     {
-      "date": "2026-03-30T17:35:17+05:30",
+      "date": "2026-03-31T13:33:07+05:30",
+      "author": "PrasannaP",
+      "message": "v3",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-31T13:32:50+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-31T13:17:55+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-31T13:13:04+05:30",
       "author": "tce-nitinc",
-      "message": "added 94 and 151 changes",
+      "message": "aaded version",
+      "widgets": [
+        133
+      ]
+    },
+    {
+      "date": "2026-03-31T13:06:00+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 133 fixes",
+      "widgets": [
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T12:38:33+05:30",
+      "author": "PrasannaP",
+      "message": "v1 159 review",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-31T12:34:02+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 133 and wg 155 fixes",
+      "widgets": [
+        133,
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T12:29:31+05:30",
+      "author": "PrasannaP",
+      "message": "v3",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-31T12:25:03+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-31T12:22:02+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 133 and wg155 changes",
       "widgets": [
         94,
-        151
+        105,
+        133,
+        155
       ]
     },
     {
-      "date": "2026-03-30T17:01:04+05:30",
-      "author": "sushantkanaujiya",
-      "message": "feat: initialize CropMap India project with base HTML, CSS, and script structure",
+      "date": "2026-03-31T12:19:58+05:30",
+      "author": "PrasannaP",
+      "message": "159 v2",
       "widgets": [
-        151
+        159
       ]
     },
     {
-      "date": "2026-03-30T16:59:55+05:30",
+      "date": "2026-03-31T11:43:46+05:30",
+      "author": "sushantthe",
+      "message": "feat: add base stylesheet for widget layout and component styling",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-31T11:26:01+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize project structure with index.html and script.js for Barter Fails, Money Wins widget",
+      "widgets": [
+        114
+      ]
+    },
+    {
+      "date": "2026-03-31T11:22:39+05:30",
+      "author": "PrasannaP",
+      "message": "v1 159",
+      "widgets": [
+        159
+      ]
+    },
+    {
+      "date": "2026-03-31T10:25:26+05:30",
       "author": "sushantthe",
       "message": "Update index.html",
       "widgets": [
         114
-      ]
-    },
-    {
-      "date": "2026-03-30T16:56:21+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        61,
-        79,
-        122
-      ]
-    },
-    {
-      "date": "2026-03-30T16:50:24+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-03-30T16:38:11+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        61,
-        79
       ]
     }
   ]
