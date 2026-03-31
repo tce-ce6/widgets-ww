@@ -540,9 +540,9 @@ function createParagraphSlots(topic) {
   // Create foreignObject for instruction message
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 230);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 670);
 
   const div = document.createElement('div');
   div.style.fontSize = '28px';
@@ -641,9 +641,9 @@ function buildParagraphProgressively() {
   // Create foreignObject for paragraph
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 230);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 670);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
@@ -652,7 +652,7 @@ function buildParagraphProgressively() {
   div.style.lineHeight = '1.5';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '50px';
+  div.style.paddingTop = '10px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -813,13 +813,6 @@ function showTopicImage(imageName) {
     buttonGroup.style.pointerEvents = 'none';
   }
 
-  // Remove opacity from back button when image is shown
-  const backBtn = document.getElementById('Group_594');
-  if (backBtn) {
-    backBtn.style.opacity = '1';
-    backBtn.style.pointerEvents = 'auto';
-  }
-
   // Remove opacity from next button when image is shown
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
@@ -862,9 +855,9 @@ function showHighlightedParagraph(topic, container) {
 
   const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
   foreignObject.setAttribute('x', 661);
-  foreignObject.setAttribute('y', 185);
+  foreignObject.setAttribute('y', 230);
   foreignObject.setAttribute('width', 745);
-  foreignObject.setAttribute('height', 720);
+  foreignObject.setAttribute('height', 670);
 
   const div = document.createElement('div');
   div.style.fontSize = '26px';
@@ -873,7 +866,7 @@ function showHighlightedParagraph(topic, container) {
   div.style.lineHeight = '1.5';
   div.style.color = '#181818';
   div.style.padding = '30px';
-  div.style.paddingTop = '50px';
+  div.style.paddingTop = '10px';
   div.style.height = '100%';
   div.style.boxSizing = 'border-box';
   div.style.overflow = 'auto';
@@ -892,7 +885,6 @@ function showHighlightedParagraph(topic, container) {
 
   foreignObject.appendChild(div);
   container.replaceChildren(foreignObject);
-  console.log('[WG85] foreignObject injected into para-toc. Children count:', container.children.length);
 }
 
 
@@ -1010,42 +1002,22 @@ function showAnnotations(topic, container) {
 
 // Show navigation button
 function showNavigationButton() {
-  const isLastTopic = currentTopicIndex === paragraphData.length - 1;
-  // const btnText = isLastTopic ? 'Finish' : 'Next';
-  /** check the text of the button by a debug method */
-  const btnText = 'Next';
-  console.log('[WG85] btnText:', btnText);
-
-  // Use Group_594-2 as the Next button (it's positioned on the right)
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.cursor = 'pointer';
     nextBtn.style.opacity = '1';
     nextBtn.style.pointerEvents = 'auto';
-
-    // Update text if needed
-    const textElement = nextBtn.querySelector('text');
-    if (textElement) {
-      textElement.textContent = btnText;
-    }
   }
 }
 
-// Handle navigation click
+// Handle navigation click — cycles infinitely through all topics
 function handleNavigationClick(e) {
   e.stopPropagation();
 
-  const isLastTopic = currentTopicIndex === paragraphData.length - 1;
+  // Always loop: go to next topic, wrap back to 0 after the last one
+  currentTopicIndex = (currentTopicIndex + 1) % paragraphData.length;
 
-  if (isLastTopic) {
-    // Show completion message
-    // alert('Congratulations! You have completed all paragraph building exercises!');
-    currentTopicIndex = 0;
-  } else {
-    currentTopicIndex++;
-  }
-
-  // Reset next button opacity before loading next topic
+  // Reset next button opacity before loading
   const nextBtn = document.getElementById('Group_594-2');
   if (nextBtn) {
     nextBtn.style.opacity = '0.4';
@@ -1085,12 +1057,7 @@ function setupEventListeners() {
     resetBtn.addEventListener('click', handleReset);
   }
 
-  // Back button (Group_594)
-  const backBtn = document.getElementById('Group_594');
-  if (backBtn) {
-    backBtn.style.cursor = 'pointer';
-    backBtn.addEventListener('click', handleBackClick);
-  }
+  // Back button is removed — no registration needed
 
   // Next button (Group_594-2) - initially with opacity 0.4
   const nextTopicBtn = document.getElementById('Group_594-2');
