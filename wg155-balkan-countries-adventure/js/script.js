@@ -485,9 +485,16 @@ function placeFlagOnMap(countryId) {
         y += offset.y;
     }
 
+    // When the map is zoomed, getBBox() values are in scaled user units,
+    // but the translate we apply is in the map group's local units.
+    // Compensate by dividing by the current scale to keep placement aligned.
+    const scale = AppState.mapState?.currentScale || 1;
+    const dx = (x - flagBox.x) / scale;
+    const dy = (y - flagBox.y) / scale;
+
     flag.setAttribute(
         "transform",
-        `translate(${x - flagBox.x}, ${y - flagBox.y})`
+        `translate(${dx}, ${dy})`
     );
 
     AppState.mapLocked = true;
