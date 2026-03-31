@@ -205,7 +205,7 @@
       "author": "tce-nitinc"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-31T15:56:45+05:30",
+      "updatedAt": "2026-03-31T17:08:05+05:30",
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
@@ -373,7 +373,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-31T15:56:45+05:30",
+      "updatedAt": "2026-03-31T17:08:05+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -398,6 +398,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T17:08:05+05:30",
+      "author": "tce-nitinc",
+      "message": "wg156 fixes",
+      "widgets": [
+        94,
+        156
+      ]
+    },
     {
       "date": "2026-03-31T16:53:39+05:30",
       "author": "PrasannaP",
@@ -636,17 +645,6 @@
       "message": "v2",
       "widgets": [
         159
-      ]
-    },
-    {
-      "date": "2026-03-31T12:22:02+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 133 and wg155 changes",
-      "widgets": [
-        94,
-        105,
-        133,
-        155
       ]
     }
   ]
