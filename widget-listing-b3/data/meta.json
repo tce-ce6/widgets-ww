@@ -21,7 +21,7 @@
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
-      "updatedAt": "2026-03-31T12:22:02+05:30",
+      "updatedAt": "2026-03-31T21:13:53+05:30",
       "author": "tce-nitinc"
     },
     "wg108-photosynthesis-factory": {
@@ -125,7 +125,7 @@
       "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-31T18:19:55+05:30",
+      "updatedAt": "2026-03-31T19:12:30+05:30",
       "author": "PrasannaP"
     },
     "wg134-barter-bazaar": {
@@ -201,11 +201,11 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-31T18:19:55+05:30",
+      "updatedAt": "2026-03-31T20:03:37+05:30",
       "author": "PrasannaP"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-31T18:18:53+05:30",
+      "updatedAt": "2026-03-31T19:14:31+05:30",
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
@@ -373,7 +373,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-31T17:57:21+05:30",
+      "updatedAt": "2026-03-31T20:42:38+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -399,6 +399,47 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T21:13:53+05:30",
+      "author": "tce-nitinc",
+      "message": "wg133 changes",
+      "widgets": [
+        105
+      ]
+    },
+    {
+      "date": "2026-03-31T20:42:38+05:30",
+      "author": "tce-nitinc",
+      "message": "wg94",
+      "widgets": [
+        94
+      ]
+    },
+    {
+      "date": "2026-03-31T20:39:36+05:30",
+      "author": "tce-nitinc",
+      "message": "wg105 fixes",
+      "widgets": [
+        94,
+        105
+      ]
+    },
+    {
+      "date": "2026-03-31T20:03:37+05:30",
+      "author": "PrasannaP",
+      "message": "feat: disable flag selection after user choice and re-enable on reset",
+      "widgets": [
+        155
+      ]
+    },
+    {
+      "date": "2026-03-31T19:51:18+05:30",
+      "author": "PrasannaP",
+      "message": "v2",
+      "widgets": [
+        155
+      ]
+    },
+    {
       "date": "2026-03-31T19:46:08+05:30",
       "author": "sushantthe",
       "message": "feat: initialize vowel teams data structure with phase-specific word lists",
@@ -420,6 +461,24 @@
       "message": "feat: initialize vowel teams data structure with phase-specific word lists",
       "widgets": [
         157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:14:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 156 wg94 changes",
+      "widgets": [
+        94,
+        156
+      ]
+    },
+    {
+      "date": "2026-03-31T19:12:30+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        133,
+        155
       ]
     },
     {
@@ -587,65 +646,6 @@
       "message": "feat: add debug auto-play utility and update versioning for build-a-paragraph widget",
       "widgets": [
         85
-      ]
-    },
-    {
-      "date": "2026-03-31T16:04:03+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement vowel twins educational widget with interactive learning screens and word-building activities",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T15:56:45+05:30",
-      "author": "tce-nitinc",
-      "message": "wg155 wg 133 changes",
-      "widgets": [
-        94,
-        133,
-        155,
-        156
-      ]
-    },
-    {
-      "date": "2026-03-31T15:44:17+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement vowel team learning widget with interactive word practice and CSS styling",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T15:23:01+05:30",
-      "author": "sushantthe",
-      "message": "feat: add notebook-themed CSS styles for phrasal verb flashcards",
-      "widgets": [
-        144
-      ]
-    },
-    {
-      "date": "2026-03-31T15:20:14+05:30",
-      "author": "PrasannaP",
-      "message": "b3_wg158_260331_2",
-      "widgets": [
-        158
-      ]
-    },
-    {
-      "date": "2026-03-31T15:17:00+05:30",
-      "author": "sushantthe",
-      "message": "refactor: migrate phrasal verbs widget to modern structure by replacing legacy files with new implementation",
-      "widgets": [
-        144
-      ]
-    },
-    {
-      "date": "2026-03-31T14:56:07+05:30",
-      "author": "PrasannaP",
-      "message": "133 155 fixed svg",
-      "widgets": [
-        133
       ]
     }
   ]
