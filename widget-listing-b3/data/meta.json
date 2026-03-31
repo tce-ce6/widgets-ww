@@ -81,7 +81,7 @@
       "author": "PrasannaP"
     },
     "wg122-suffix-magic-2": {
-      "updatedAt": "2026-04-01T01:06:04+05:30",
+      "updatedAt": "2026-04-01T01:22:02+05:30",
       "author": "PrasannaP"
     },
     "wg123-pick-the-opposite": {
@@ -399,6 +399,14 @@
   },
   "commits": [
     {
+      "date": "2026-04-01T01:22:02+05:30",
+      "author": "PrasannaP",
+      "message": "feat: add close button to alert popup and implement dismiss functionality",
+      "widgets": [
+        122
+      ]
+    },
+    {
       "date": "2026-04-01T01:15:20+05:30",
       "author": "PrasannaP",
       "message": "chore: bump version number to b3_wg61_260331_02 in index.html",
@@ -637,14 +645,6 @@
       "date": "2026-03-31T20:03:37+05:30",
       "author": "PrasannaP",
       "message": "feat: disable flag selection after user choice and re-enable on reset",
-      "widgets": [
-        155
-      ]
-    },
-    {
-      "date": "2026-03-31T19:51:18+05:30",
-      "author": "PrasannaP",
-      "message": "v2",
       "widgets": [
         155
       ]
