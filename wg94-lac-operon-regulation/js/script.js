@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function playAnim(key, autoplay = true) {
+    console.log(`[Animation Log] playAnim called for: "${key}" (autoplay: ${autoplay}) at ${new Date().toLocaleTimeString()}`);
     Object.values(animations).forEach(anim => {
       anim.containerDiv.style.display = 'none';
       anim.stop();
@@ -71,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isWaitingForSecondHalf) {
       const anim = animations[resumableAnimKey];
       if (anim) {
+        console.log(`[Animation Log] Resuming: "${resumableAnimKey}" at ${new Date().toLocaleTimeString()}`);
         anim.containerDiv.style.display = 'block';
         setTimeout(() => {
           anim.play();
@@ -145,8 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
               a.stop();
             });
             anim.containerDiv.style.display = 'block';
+            console.log(`[Animation Log] Starting: "absent-present" at ${new Date().toLocaleTimeString()}`);
             anim.goToAndPlay(0, true);
             setTimeout(() => {
+              console.log(`[Animation Log] Pausing: "absent-present" at 3s mark at ${new Date().toLocaleTimeString()}`);
               anim.pause();
               pausedFrame = anim.currentFrame;
             }, 3000);
@@ -170,9 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
               a.stop();
             });
             anim.containerDiv.style.display = 'block';
+            console.log(`[Animation Log] Starting: "present" at ${new Date().toLocaleTimeString()}`);
             anim.goToAndPlay(0, true);
 
             setTimeout(() => {
+              console.log(`[Animation Log] Pausing: "present" at 1s mark at ${new Date().toLocaleTimeString()}`);
               anim.pause();
               pausedFrame = anim.currentFrame;
             }, 1000);
