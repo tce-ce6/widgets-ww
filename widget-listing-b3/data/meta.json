@@ -125,8 +125,8 @@
       "author": "PrasannaP"
     },
     "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-03-31T14:58:09+05:30",
-      "author": "Prasanna Patra"
+      "updatedAt": "2026-03-31T15:57:10+05:30",
+      "author": "tce-nitinc"
     },
     "wg134-barter-bazaar": {
       "updatedAt": "2026-03-25T16:29:08+05:30",
@@ -161,8 +161,8 @@
       "author": "aditya"
     },
     "wg144-phrasal-verbs": {
-      "updatedAt": "2026-03-31T01:26:13+05:30",
-      "author": "ShyamsundarHait"
+      "updatedAt": "2026-03-31T15:23:01+05:30",
+      "author": "sushantthe"
     },
     "wg145-multiplication-builder": {
       "updatedAt": "2026-03-25T13:18:54+05:30",
@@ -201,19 +201,19 @@
       "author": "PrasannaP"
     },
     "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-03-31T14:58:09+05:30",
-      "author": "Prasanna Patra"
+      "updatedAt": "2026-03-31T15:57:10+05:30",
+      "author": "tce-nitinc"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-30T10:29:56+05:30",
+      "updatedAt": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T14:03:09+05:30",
+      "updatedAt": "2026-03-31T16:04:03+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
-      "updatedAt": "2026-03-31T14:32:42+05:30",
+      "updatedAt": "2026-03-31T15:20:14+05:30",
       "author": "PrasannaP"
     },
     "wg159-palindrome-builder": {
@@ -373,7 +373,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-31T12:22:02+05:30",
+      "updatedAt": "2026-03-31T15:56:45+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -398,6 +398,57 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T16:04:03+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement vowel twins educational widget with interactive learning screens and word-building activities",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T15:56:45+05:30",
+      "author": "tce-nitinc",
+      "message": "wg155 wg 133 changes",
+      "widgets": [
+        94,
+        133,
+        155,
+        156
+      ]
+    },
+    {
+      "date": "2026-03-31T15:44:17+05:30",
+      "author": "sushantthe",
+      "message": "feat: implement vowel team learning widget with interactive word practice and CSS styling",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T15:23:01+05:30",
+      "author": "sushantthe",
+      "message": "feat: add notebook-themed CSS styles for phrasal verb flashcards",
+      "widgets": [
+        144
+      ]
+    },
+    {
+      "date": "2026-03-31T15:20:14+05:30",
+      "author": "PrasannaP",
+      "message": "b3_wg158_260331_2",
+      "widgets": [
+        158
+      ]
+    },
+    {
+      "date": "2026-03-31T15:17:00+05:30",
+      "author": "sushantthe",
+      "message": "refactor: migrate phrasal verbs widget to modern structure by replacing legacy files with new implementation",
+      "widgets": [
+        144
+      ]
+    },
     {
       "date": "2026-03-31T14:56:07+05:30",
       "author": "PrasannaP",
@@ -594,56 +645,6 @@
       "message": "Update index.html",
       "widgets": [
         114
-      ]
-    },
-    {
-      "date": "2026-03-31T10:21:19+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement Lottie animation overlay and screen navigation logic for interactive widget",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-31T01:26:13+05:30",
-      "author": "ShyamsundarHait",
-      "message": "new files implemented",
-      "widgets": [
-        144,
-        157
-      ]
-    },
-    {
-      "date": "2026-03-30T21:55:23+05:30",
-      "author": "PrasannaP",
-      "message": "132 v1",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:54:59+05:30",
-      "author": "PrasannaP",
-      "message": "text change",
-      "widgets": [
-        132
-      ]
-    },
-    {
-      "date": "2026-03-30T21:37:03+05:30",
-      "author": "sushantthe",
-      "message": "feat: update font family to Roboto for improved typography consistency across widgets",
-      "widgets": [
-        158,
-        159
-      ]
-    },
-    {
-      "date": "2026-03-30T21:36:18+05:30",
-      "author": "PrasannaP",
-      "message": "</tspan>",
-      "widgets": [
-        132
       ]
     }
   ]

@@ -1,64 +1,38 @@
 // ─── Data ───────────────────────────────────────────────────────────────────
 
-const AUDIO_BASE_URL = '/audio/phonemes/';
-const phonemeAudioFiles = {
-    'b': `${AUDIO_BASE_URL}b.mp3`, 'c': `${AUDIO_BASE_URL}c.mp3`, 'd': `${AUDIO_BASE_URL}d.mp3`,
-    'f': `${AUDIO_BASE_URL}f.mp3`, 'g': `${AUDIO_BASE_URL}g.mp3`, 'h': `${AUDIO_BASE_URL}h.mp3`,
-    'j': `${AUDIO_BASE_URL}j.mp3`, 'k': `${AUDIO_BASE_URL}k.mp3`, 'l': `${AUDIO_BASE_URL}l.mp3`,
-    'm': `${AUDIO_BASE_URL}m.mp3`, 'n': `${AUDIO_BASE_URL}n.mp3`, 'p': `${AUDIO_BASE_URL}p.mp3`,
-    'r': `${AUDIO_BASE_URL}r.mp3`, 's': `${AUDIO_BASE_URL}s.mp3`, 't': `${AUDIO_BASE_URL}t.mp3`,
-    'v': `${AUDIO_BASE_URL}v.mp3`, 'w': `${AUDIO_BASE_URL}w.mp3`, 'x': `${AUDIO_BASE_URL}x.mp3`,
-    'y': `${AUDIO_BASE_URL}y.mp3`, 'z': `${AUDIO_BASE_URL}z.mp3`,
-    'a': `${AUDIO_BASE_URL}a.mp3`, 'e': `${AUDIO_BASE_URL}e.mp3`, 'i': `${AUDIO_BASE_URL}i.mp3`,
-    'o': `${AUDIO_BASE_URL}o.mp3`, 'u': `${AUDIO_BASE_URL}u.mp3`,
-    'ee': `${AUDIO_BASE_URL}ee.mp3`, 'oo': `${AUDIO_BASE_URL}oo.mp3`, 'ow': `${AUDIO_BASE_URL}ow.mp3`,
-    'sh': `${AUDIO_BASE_URL}sh.mp3`, 'ch': `${AUDIO_BASE_URL}ch.mp3`, 'th': `${AUDIO_BASE_URL}th.mp3`,
-    'ng': `${AUDIO_BASE_URL}ng.mp3`, 'nk': `${AUDIO_BASE_URL}nk.mp3`, 'ck': `${AUDIO_BASE_URL}ck.mp3`,
-    'll': `${AUDIO_BASE_URL}ll.mp3`, 'ss': `${AUDIO_BASE_URL}ss.mp3`,
-    'bl': `${AUDIO_BASE_URL}bl.mp3`, 'br': `${AUDIO_BASE_URL}br.mp3`, 'cl': `${AUDIO_BASE_URL}cl.mp3`,
-    'cr': `${AUDIO_BASE_URL}cr.mp3`, 'dr': `${AUDIO_BASE_URL}dr.mp3`, 'fl': `${AUDIO_BASE_URL}fl.mp3`,
-    'fr': `${AUDIO_BASE_URL}fr.mp3`, 'gl': `${AUDIO_BASE_URL}gl.mp3`, 'gr': `${AUDIO_BASE_URL}gr.mp3`,
-    'pl': `${AUDIO_BASE_URL}pl.mp3`, 'pr': `${AUDIO_BASE_URL}pr.mp3`, 'sc': `${AUDIO_BASE_URL}sc.mp3`,
-    'sk': `${AUDIO_BASE_URL}sk.mp3`, 'sl': `${AUDIO_BASE_URL}sl.mp3`, 'sm': `${AUDIO_BASE_URL}sm.mp3`,
-    'sn': `${AUDIO_BASE_URL}sn.mp3`, 'sp': `${AUDIO_BASE_URL}sp.mp3`, 'st': `${AUDIO_BASE_URL}st.mp3`,
-    'sw': `${AUDIO_BASE_URL}sw.mp3`, 'tr': `${AUDIO_BASE_URL}tr.mp3`, 'tw': `${AUDIO_BASE_URL}tw.mp3`,
-    'scr': `${AUDIO_BASE_URL}scr.mp3`, 'spl': `${AUDIO_BASE_URL}spl.mp3`, 'str': `${AUDIO_BASE_URL}str.mp3`,
-    'mp': `${AUDIO_BASE_URL}mp.mp3`, 'nd': `${AUDIO_BASE_URL}nd.mp3`, 'nt': `${AUDIO_BASE_URL}nt.mp3`,
-    'lt': `${AUDIO_BASE_URL}lt.mp3`, 'ft': `${AUDIO_BASE_URL}ft.mp3`, 'lk': `${AUDIO_BASE_URL}lk.mp3`,
-    'lp': `${AUDIO_BASE_URL}lp.mp3`, 'lf': `${AUDIO_BASE_URL}lf.mp3`, 'pt': `${AUDIO_BASE_URL}pt.mp3`,
-};
+// ─── Data ───────────────────────────────────────────────────────────────────
 
 const wordBanks = {
     cvc: [
-        { word: 'cat', sounds: ['c', 'a', 't'], visual: '🐱' }, { word: 'dog', sounds: ['d', 'o', 'g'], visual: '🐕' },
-        { word: 'sun', sounds: ['s', 'u', 'n'], visual: '☀️' }, { word: 'pen', sounds: ['p', 'e', 'n'], visual: '🖊️' },
-        { word: 'bus', sounds: ['b', 'u', 's'], visual: '🚌' }, { word: 'mat', sounds: ['m', 'a', 't'], visual: '🧹' },
-        { word: 'hen', sounds: ['h', 'e', 'n'], visual: '🐔' }, { word: 'pot', sounds: ['p', 'o', 't'], visual: '🍯' },
-        { word: 'cup', sounds: ['c', 'u', 'p'], visual: '☕' }, { word: 'rat', sounds: ['r', 'a', 't'], visual: '🐀' },
-        { word: 'fan', sounds: ['f', 'a', 'n'], visual: '🪭' }, { word: 'bat', sounds: ['b', 'a', 't'], visual: '🦇' },
-        { word: 'man', sounds: ['m', 'a', 'n'], visual: '👨' }, { word: 'van', sounds: ['v', 'a', 'n'], visual: '🚐' },
-        { word: 'pin', sounds: ['p', 'i', 'n'], visual: '📌' }, { word: 'bun', sounds: ['b', 'u', 'n'], visual: '🍔' },
-        { word: 'run', sounds: ['r', 'u', 'n'], visual: '🏃' }, { word: 'mud', sounds: ['m', 'u', 'd'], visual: '🟤' },
-        { word: 'hut', sounds: ['h', 'u', 't'], visual: '🛖' }, { word: 'red', sounds: ['r', 'e', 'd'], visual: '🔴' },
-        { word: 'bed', sounds: ['b', 'e', 'd'], visual: '🛏️' }, { word: 'leg', sounds: ['l', 'e', 'g'], visual: '🦵' },
-        { word: 'web', sounds: ['w', 'e', 'b'], visual: '🕸️' }, { word: 'wet', sounds: ['w', 'e', 't'], visual: '💧' },
-        { word: 'jet', sounds: ['j', 'e', 't'], visual: '✈️' }, { word: 'net', sounds: ['n', 'e', 't'], visual: '🥅' },
-        { word: 'box', sounds: ['b', 'o', 'x'], visual: '📦' }, { word: 'fox', sounds: ['f', 'o', 'x'], visual: '🦊' },
-        { word: 'six', sounds: ['s', 'i', 'x'], visual: '6️⃣' }, { word: 'zip', sounds: ['z', 'i', 'p'], visual: '🤐' },
-        { word: 'lip', sounds: ['l', 'i', 'p'], visual: '👄' }, { word: 'tap', sounds: ['t', 'a', 'p'], visual: '🚰' },
-        { word: 'cap', sounds: ['c', 'a', 'p'], visual: '🧢' }, { word: 'map', sounds: ['m', 'a', 'p'], visual: '🗺️' },
-        { word: 'log', sounds: ['l', 'o', 'g'], visual: '🪵' }, { word: 'jog', sounds: ['j', 'o', 'g'], visual: '🏃' },
-        { word: 'fog', sounds: ['f', 'o', 'g'], visual: '🌫️' }, { word: 'rug', sounds: ['r', 'u', 'g'], visual: '🧶' },
-        { word: 'mug', sounds: ['m', 'u', 'g'], visual: '☕' }, { word: 'bug', sounds: ['b', 'u', 'g'], visual: '🐛' },
-        { word: 'jug', sounds: ['j', 'u', 'g'], visual: '🫗' }, { word: 'dad', sounds: ['d', 'a', 'd'], visual: '👨' },
-        { word: 'sad', sounds: ['s', 'a', 'd'], visual: '😢' }, { word: 'bag', sounds: ['b', 'a', 'g'], visual: '👜' },
-        { word: 'tag', sounds: ['t', 'a', 'g'], visual: '🏷️' }, { word: 'egg', sounds: ['e', 'g', 'g'], visual: '🥚' },
-        { word: 'pig', sounds: ['p', 'i', 'g'], visual: '🐷' }, { word: 'big', sounds: ['b', 'i', 'g'], visual: '🐘' },
-        { word: 'dig', sounds: ['d', 'i', 'g'], visual: '⛏️' }, { word: 'jam', sounds: ['j', 'a', 'm'], visual: '🍯' },
-        { word: 'yam', sounds: ['y', 'a', 'm'], visual: '🍠' }, { word: 'jar', sounds: ['j', 'a', 'r'], visual: '🫙' },
-        { word: 'car', sounds: ['c', 'a', 'r'], visual: '🚗' }, { word: 'cot', sounds: ['c', 'o', 't'], visual: '🛏️' },
-        { word: 'dot', sounds: ['d', 'o', 't'], visual: '⚫' }, { word: 'hot', sounds: ['h', 'o', 't'], visual: '🔥' },
-        { word: 'top', sounds: ['t', 'o', 'p'], visual: '🔝' }, { word: 'hop', sounds: ['h', 'o', 'p'], visual: '🐰' },
+        { word: 'cat', sounds: ['c', 'a', 't'], visual: '🐱' },
+        { word: 'sun', sounds: ['s', 'u', 'n'], visual: '☀️' },
+        { word: 'bus', sounds: ['b', 'u', 's'], visual: '🚌' },
+        { word: 'hen', sounds: ['h', 'e', 'n'], visual: '🐔' },
+        { word: 'cup', sounds: ['c', 'u', 'p'], visual: '☕' },
+        { word: 'fan', sounds: ['f', 'a', 'n'], visual: '🪭' },
+        { word: 'man', sounds: ['m', 'a', 'n'], visual: '👨' },
+        { word: 'pin', sounds: ['p', 'i', 'n'], visual: '📌' },
+        { word: 'run', sounds: ['r', 'u', 'n'], visual: '🏃' },
+        { word: 'hut', sounds: ['h', 'u', 't'], visual: '🛖' },
+        { word: 'bed', sounds: ['b', 'e', 'd'], visual: '🛏️' },
+        { word: 'web', sounds: ['w', 'e', 'b'], visual: '🕸️' },
+        { word: 'jet', sounds: ['j', 'e', 't'], visual: '✈️' },
+        { word: 'box', sounds: ['b', 'o', 'x'], visual: '📦' },
+        { word: 'six', sounds: ['s', 'i', 'x'], visual: '6️⃣' },
+        { word: 'lip', sounds: ['l', 'i', 'p'], visual: '👄' },
+        { word: 'cap', sounds: ['c', 'a', 'p'], visual: '🧢' },
+        { word: 'log', sounds: ['l', 'o', 'g'], visual: '🪵' },
+        { word: 'fog', sounds: ['f', 'o', 'g'], visual: '🌫️' },
+        { word: 'mug', sounds: ['m', 'u', 'g'], visual: '☕' },
+        { word: 'jug', sounds: ['j', 'u', 'g'], visual: '🫗' },
+        { word: 'sad', sounds: ['s', 'a', 'd'], visual: '😢' },
+        { word: 'tag', sounds: ['t', 'a', 'g'], visual: '🏷️' },
+        { word: 'pig', sounds: ['p', 'i', 'g'], visual: '🐷' },
+        { word: 'dig', sounds: ['d', 'i', 'g'], visual: '⛏️' },
+        { word: 'yam', sounds: ['y', 'a', 'm'], visual: '🍠' },
+        { word: 'car', sounds: ['c', 'a', 'r'], visual: '🚗' },
+        { word: 'dot', sounds: ['d', 'o', 't'], visual: '⚫' },
+        { word: 'top', sounds: ['t', 'o', 'p'], visual: '🔝' },
         { word: 'mop', sounds: ['m', 'o', 'p'], visual: '🧹' },
     ],
     cvcc: [
@@ -161,25 +135,45 @@ let audioRef = null;
 let toastTimer = null;
 
 // ─── Audio ───────────────────────────────────────────────────────────────────
+function getSoundPath(sound) {
+    if (!currentMode) return null;
+    const modeFolder = currentMode.toLowerCase().startsWith('blend')
+        ? currentMode.toLowerCase()
+        : 'blend' + currentMode.toLowerCase();
+    return `./assets/sound/${modeFolder}/${sound.toLowerCase()}.mp3`;
+}
+
 function playPhonemeAudio(sound) {
-    const url = phonemeAudioFiles[sound.toLowerCase()];
-    if (!url) { showToast(`Missing: ${sound}`); return; }
+    const url = getSoundPath(sound);
+    if (!url) return;
     if (audioRef) { audioRef.pause(); audioRef.currentTime = 0; }
     const audio = new Audio(url);
     audioRef = audio;
-    audio.onerror = () => showToast(`Not found: ${sound}`);
+    audio.onerror = () => {
+        // Fallback to synthesis only if needed or show error
+        console.warn(`Phoneme sound not found: ${url}`);
+    };
     audio.play().catch(() => { });
 }
 
 function playWordAudio(word) {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(word);
-    u.lang = 'en-IN'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const v = voices.find(x => x.lang === 'en-IN' || x.lang.startsWith('en-IN'));
-    if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
+    const url = getSoundPath(word);
+    if (!url) return;
+    if (audioRef) { audioRef.pause(); audioRef.currentTime = 0; }
+    const audio = new Audio(url);
+    audioRef = audio;
+    audio.onerror = () => {
+        // Fallback to speech synthesis for words if file is missing
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(word);
+        u.lang = 'en-IN'; u.rate = 0.85;
+        const voices = window.speechSynthesis.getVoices();
+        const v = voices.find(x => x.lang === 'en-IN' || x.lang.startsWith('en-IN'));
+        if (v) u.voice = v;
+        window.speechSynthesis.speak(u);
+    };
+    audio.play().catch(() => { });
 }
 
 function showToast(msg) {
@@ -214,7 +208,7 @@ function dropSound(index) {
     if (!currentWord || index !== currentSoundIdx || isDropping) return;
     isDropping = true;
     const sound = currentWord.sounds[index];
-    playPhonemeAudio(sound);
+    // Audio is now handled by the global tile click listener
     // Visually mark tile dropped immediately after short delay
     setTimeout(() => {
         droppedSounds.push(sound);
@@ -306,6 +300,8 @@ function render() {
             tile.style.color = '#000';
         }
 
+        // Add sound playing on any sound-tile click
+        tile.addEventListener('click', () => playPhonemeAudio(sound));
         tilesContainer.appendChild(tile);
     });
 
@@ -370,7 +366,10 @@ function render() {
         outContent.style.display = 'block';
         outContent.style.animation = 'popIn 0.5s ease-out';
         document.getElementById('output-emoji').textContent = currentWord.visual;
-        document.getElementById('output-word').textContent = currentWord.word;
+        const outWord = document.getElementById('output-word');
+        outWord.textContent = currentWord.word;
+        outWord.style.cursor = 'pointer';
+        outWord.onclick = () => playWordAudio(currentWord.word);
     } else {
         outDisplay.classList.remove('revealed');
         outContent.style.display = 'none';
