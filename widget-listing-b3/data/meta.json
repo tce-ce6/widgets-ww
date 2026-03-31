@@ -337,7 +337,7 @@
       "author": "PrasannaP"
     },
     "wg85-build-a-paragraph": {
-      "updatedAt": "2026-03-31T14:44:08+05:30",
+      "updatedAt": "2026-03-31T16:53:39+05:30",
       "author": "PrasannaP"
     },
     "wg86-i_aur_ee_kee_maatra_mein_antar": {
@@ -399,6 +399,14 @@
   },
   "commits": [
     {
+      "date": "2026-03-31T16:53:39+05:30",
+      "author": "PrasannaP",
+      "message": "fix: prevent race conditions and double-clicks in handleShowAnswer using debounce and event handling",
+      "widgets": [
+        85
+      ]
+    },
+    {
       "date": "2026-03-31T16:43:51+05:30",
       "author": "tce-ashishg",
       "message": "wg132 issue resolved",
@@ -406,6 +414,30 @@
         61,
         122,
         132
+      ]
+    },
+    {
+      "date": "2026-03-31T16:42:22+05:30",
+      "author": "PrasannaP",
+      "message": "refactor: adjust foreignObject positioning and update paragraph text styling while removing redundant answer button state logic",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-31T16:29:32+05:30",
+      "author": "PrasannaP",
+      "message": "v1",
+      "widgets": [
+        85
+      ]
+    },
+    {
+      "date": "2026-03-31T16:09:19+05:30",
+      "author": "PrasannaP",
+      "message": "feat: add debug auto-play utility and update versioning for build-a-paragraph widget",
+      "widgets": [
+        85
       ]
     },
     {
@@ -615,38 +647,6 @@
         105,
         133,
         155
-      ]
-    },
-    {
-      "date": "2026-03-31T12:19:58+05:30",
-      "author": "PrasannaP",
-      "message": "159 v2",
-      "widgets": [
-        159
-      ]
-    },
-    {
-      "date": "2026-03-31T11:43:46+05:30",
-      "author": "sushantthe",
-      "message": "feat: add base stylesheet for widget layout and component styling",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-31T11:26:01+05:30",
-      "author": "sushantthe",
-      "message": "feat: initialize project structure with index.html and script.js for Barter Fails, Money Wins widget",
-      "widgets": [
-        114
-      ]
-    },
-    {
-      "date": "2026-03-31T11:22:39+05:30",
-      "author": "PrasannaP",
-      "message": "v1 159",
-      "widgets": [
-        159
       ]
     }
   ]
