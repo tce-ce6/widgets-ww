@@ -1196,12 +1196,12 @@ document.addEventListener("DOMContentLoaded", () => {
       lim2s2Trade(found.traderId, found.topCard);
 
       // Update badge on every click if correctCount changed
-      const badge = $("Trades_Completed:_0_4-sc2-base");
-      if (badge) {
-        const text = badge.querySelector("tspan");
-        if (text)
-          text.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
-      }
+      // const badge = $("Trades_Completed:_0_4-sc2-base");
+      // if (badge) {
+      //   const text = badge.querySelector("tspan");
+      //   if (text)
+      //     text.textContent = `Trades Completed: ${lim2s2_correctCount} / 4`;
+      // }
     });
   }
 
