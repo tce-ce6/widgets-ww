@@ -1688,9 +1688,13 @@ function startLearn() {
 }
 function startPractice() {
   state.screen = "practice";
-  state.practiceDeck = shuffle(getFiltered());
+  var src = state.filter
+    ? PRACTICE_SENTENCES.filter(function (p) { return p.head === state.filter; })
+    : PRACTICE_SENTENCES.slice();
+  state.practiceDeck = shuffle(src);
   state.practiceIndex = 0;
   state.practiceChosen = null;
+  state.practiceWrong1 = null;
   state.scoreCorrect = 0;
   state.scoreIncorrect = 0;
   state.menuOpen = false;
@@ -1700,15 +1704,9 @@ function startPractice() {
 function setupPracticeQ() {
   var cur = state.practiceDeck[state.practiceIndex];
   if (!cur) return;
-  var same = PHRASAL_VERBS.filter(function (p) {
-    return p.head === cur.head && p.verb !== cur.verb;
-  });
-  var dist = shuffle(same).slice(0, 2);
-  var opts = shuffle([cur].concat(dist));
-  state.practiceOptions = opts.map(function (o) {
-    return o.verb;
-  });
-  state.practiceCorrectIdx = state.practiceOptions.indexOf(cur.verb);
+  var opts = shuffle(cur.options.slice());
+  state.practiceOptions = opts;
+  state.practiceCorrectIdx = opts.indexOf(cur.correct);
   state.practiceChosen = null;
   state.practiceWrong1 = null;
 }
@@ -1999,42 +1997,36 @@ function renderPractice() {
   var fp = state.filter
     ? '<span class="filter-pill">' + state.filter + "</span>"
     : "";
-  var answered = state.practiceChosen !== null;
-  var isCorrect = answered && state.practiceChosen === state.practiceCorrectIdx;
+  var answered   = state.practiceChosen !== null;
+  var firstWrong = !answered && state.practiceWrong1 !== null;
+  var isCorrect  = answered && state.practiceChosen === state.practiceCorrectIdx;
 
-  // Build sentence with blank using the fib field
+  // Build sentence with blank using item.sentence (blanks are ___+)
+  var blankRe = /_{3,}/;
   var sentHTML;
   if (answered) {
     var fillClass = isCorrect ? "blank correct-fill" : "blank incorrect-fill";
-    var fillText = state.practiceOptions[state.practiceChosen];
-    sentHTML = item.fib.replace(
-      "___",
-      '<span class="' + fillClass + '">' + fillText + "</span>",
-    );
+    var fillText  = state.practiceOptions[state.practiceChosen];
+    sentHTML = item.sentence.replace(blankRe, '<span class="' + fillClass + '">' + fillText + "</span>");
+  } else if (firstWrong) {
+    var fillText0 = state.practiceOptions[state.practiceWrong1];
+    sentHTML = item.sentence.replace(blankRe, '<span class="blank incorrect-fill">' + fillText0 + "</span>");
   } else {
-    sentHTML = item.fib.replace("___", '<span class="blank"></span>');
+    sentHTML = item.sentence.replace(blankRe, '<span class="blank"></span>');
   }
 
   var choicesHTML = "";
   state.practiceOptions.forEach(function (opt, i) {
     var cls = "choice-btn";
     if (answered) {
-      if (i === state.practiceChosen && isCorrect) cls += " chosen correct";
-      else if (i === state.practiceChosen && !isCorrect)
-        cls += " chosen incorrect";
-      if (i === state.practiceCorrectIdx && !isCorrect)
-        cls += " reveal-correct";
-      if (i !== state.practiceChosen && i !== state.practiceCorrectIdx)
-        cls += " disabled";
+      if (i === state.practiceChosen && isCorrect)       cls += " chosen correct";
+      else if (i === state.practiceChosen && !isCorrect) cls += " chosen incorrect";
+      if (i === state.practiceCorrectIdx && !isCorrect)  cls += " reveal-correct";
+      if (i !== state.practiceChosen && i !== state.practiceCorrectIdx) cls += " disabled";
+    } else if (firstWrong) {
+      if (i === state.practiceWrong1) cls += " chosen incorrect disabled";
     }
-    choicesHTML +=
-      '<button class="' +
-      cls +
-      '" onclick="choosePractice(' +
-      i +
-      ')">' +
-      opt +
-      "</button>";
+    choicesHTML += '<button class="' + cls + '" onclick="choosePractice(' + i + ')">' + opt + "</button>";
   });
 
   var feedbackHTML = "";
@@ -2043,18 +2035,15 @@ function renderPractice() {
     var fbT = isCorrect ? "\u2713 Correct!" : "\u2717 Not quite!";
     var btnL = idx < deck.length - 1 ? "Next \u2192" : "Finish";
     var btnA = idx < deck.length - 1 ? "practiceNext()" : "goHome()";
-    feedbackHTML +=
+    feedbackHTML =
       '<div class="feedback-row">' +
-      '<span class="feedback-text ' +
-      fbC +
-      '">' +
-      fbT +
-      "</span>" +
-      '<button class="next-btn practice-next" onclick="' +
-      btnA +
-      '">' +
-      btnL +
-      "</button>" +
+      '<span class="feedback-text ' + fbC + '">' + fbT + "</span>" +
+      '<button class="next-btn practice-next" onclick="' + btnA + '">' + btnL + "</button>" +
+      "</div>";
+  } else if (firstWrong) {
+    feedbackHTML =
+      '<div class="feedback-row">' +
+      '<span class="feedback-text incorrect">\u2717 Try again!</span>' +
       "</div>";
   }
 
