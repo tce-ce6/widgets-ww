@@ -34,7 +34,7 @@ const paragraphData = [
     annotations: [
       { text: "Clear opening sentence that introduces the main topic", type: "Annotation 1", words: ["Chocolate comes from cocoa beans that grow on trees in hot countries."] },
       { text: "Linking words showing the sequence of events", type: "Annotation 2", words: ["Later", "Today"] },
-      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!"] }
+      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["chocolate is enjoyed worldwide in candies, cakes and ice cream, making it a favourite treat!"] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, all sentences focus on a single idea: the evolution of chocolate. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -105,7 +105,7 @@ const paragraphData = [
       "By day's end, I had made three friends and realised school would be wonderful.",
       "When I entered the gate holding my mother's hand, my heart beat fast with nervousness."
     ],
-    correctOrder: [3, 5, 1, 2, 4],
+    correctOrder: [3, 5, 2, 1, 4],
     annotations: [
       { text: "An engaging introduction that makes the topic personal and relatable", type: "Annotation 1", words: ["I still remember my first day at school vividly."] },
       { text: "Linking words that indicate sequence of events and change in feelings", type: "Annotation 2", words: ["When", "After", "However", "By day's end"] },
@@ -195,14 +195,14 @@ const paragraphData = [
       "Even sharing our time by helping with homework shows we care.",
       "Sharing is a wonderful habit that makes everyone happy.",
       "At school, sharing lunch or stationery with friends strengthens our friendship.",
-      "Remember, happiness multiplies when shared, making it a true blessing.",
+      "Truly, sharing in any form makes the world a kinder place.",
       "When we share toys, books, or clothes with someone in need, it brings them comfort."
     ],
     correctOrder: [2, 3, 5, 1, 4],
     annotations: [
       { text: "An opening sentence that establishes sharing as a valuable quality", type: "Annotation 1", words: ["Sharing is a wonderful habit that makes everyone happy."] },
       { text: "Phrases that introduce different examples of sharing", type: "Annotation 2", words: ["At school", "When", "Even"] },
-      { text: "A thoughtful conclusion", type: "Annotation 3", words: ["Remember, happiness multiplies when shared, making it a true blessing."] }
+      { text: "A thoughtful conclusion", type: "Annotation 3", words: ["Truly, sharing in any form makes the world a kinder place."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence shows us how sharing makes life better. Whenever you write a paragraph, try providing a suitable title."
   },
