@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       glow: "#CD853F",
       light: "#FFF8DC",
     },
-    ue: { bg: "#E0FFFF", border: "#7FFFD4", glow: "#00CED1", light: "#F0FFFF" },
+    ue: { bg: "#d4d1ff", border: "#6683f2", glow: "#859cff", light: "#F0FFFF" },
   };
 
   // ===== STATE =====
@@ -227,6 +227,16 @@ document.addEventListener("DOMContentLoaded", () => {
         soundFolders[teamKey] + word.word.toLowerCase() + ".mp3";
     });
   });
+
+  // Team-name pronunciation sounds
+  soundMap["ai"]["ai"] = "assets/ai-sound/ai.mp3";
+  soundMap["ay"]["ay"] = "assets/ay-sound/ay.mp3";
+  soundMap["ea"]["ea"] = "assets/ea-sound/ea.mp3";
+  soundMap["ee"]["ee"] = "assets/ee-sound/ee.mp3";
+  soundMap["oa"]["oa"] = "assets/oa-sound/oa.mp3";
+  soundMap["oo"]["oo"] = "assets/long-oo-sound/oo.mp3";
+  soundMap["oo_short"]["oo_short"] = "assets/short-oo-sound/oo.mp3";
+  soundMap["ue"]["ue"] = "assets/ue-sound/ue.mp3";
 
   let audioPlayer = null;
 
@@ -614,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (wi >= 1 && wi <= 3) {
       const w = words[wi - 1];
       html = `<p style="font-size:14px;color:#666;margin-bottom:10px">Word ${wi} of 3</p>
-              <div onclick="window.vowelTwinsApp.speak('${w.word}', '${tm}')" style="width:min(75vw,260px);height:min(75vw,260px);border-radius:50%;background:radial-gradient(circle at 30% 30%,white 0%,${c.bg} 50%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 15px 50px ${c.glow}50;border:6px solid ${c.border};cursor:pointer;animation:float 3s ease-in-out infinite">${hl(w.word, tm, "clamp(36px,12vw,52px)")}<span style="font-size:12px;color:#666;margin-top:10px">🔊 tap to hear</span></div>
+              <div onclick="window.vowelTwinsApp.speak('${w.word}', '${tm}')" style="width:min(75vw,260px);height:min(75vw,260px);border-radius:50%;background:radial-gradient(circle at 30% 30%,white 0%,${c.bg} 50%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 15px 50px ${c.glow}50;border:6px solid ${c.border};cursor:pointer;animation:float 3s ease-in-out infinite">${hl(w.word, tm, "clamp(36px,12vw,52px)")}<span style="font-size:18px;color:#666;margin-top:18px">🔊 tap to hear</span></div>
               <p style="margin-top:15px;font-size:14px;color:#666;background:white;padding:10px 20px;border-radius:15px">💡 ${w.clue}</p>
               <button onclick="window.vowelTwinsApp.nextMeetWord()" class="btn-main" style="margin-top:20px;">${wi < 3 ? "NEXT →" : "BUILD →"}</button>`;
     }
