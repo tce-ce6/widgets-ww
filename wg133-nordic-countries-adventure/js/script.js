@@ -64,9 +64,10 @@ function initCountryBoxes() {
             handleCountryClick(id);
 
             // highlight selected box
-            document.querySelectorAll('.country-box').forEach(el => {
-                el.classList.remove('selected', 'active', 'correct');
-            });
+            COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
 
             box.classList.add('selected');
 
@@ -119,7 +120,10 @@ function initMapDropCheck() {
                         setTimeout(() => {
                             missedItPopup.style.display = 'none';
                             // Auto-place correct flag
-                            document.querySelectorAll('.country-box').forEach(el => el.classList.remove('selected', 'active', 'correct'));
+                            COUNTRY_IDS.forEach(cId => {
+        const el = document.getElementById(cId);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
                             const correctFlagEl = document.getElementById(correctCountry);
                             if (correctFlagEl) correctFlagEl.classList.add('correct');
                             AppState.selectedCountry = correctCountry;
@@ -207,7 +211,10 @@ function initMapDropCheck() {
                             setTimeout(() => {
                                 missedItPopup.style.display = 'none';
                                 // Auto-place correct flag
-                                document.querySelectorAll('.country-box').forEach(el => el.classList.remove('selected', 'active', 'correct'));
+                                COUNTRY_IDS.forEach(cId => {
+        const el = document.getElementById(cId);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
                                 const correctFlagEl = document.getElementById(correctCountry);
                                 if (correctFlagEl) correctFlagEl.classList.add('correct');
                                 AppState.selectedCountry = correctCountry;
@@ -245,7 +252,10 @@ function initMapDropCheck() {
                         setTimeout(() => {
                             missedItPopup.style.display = 'none';
                             // Auto-place correct flag
-                            document.querySelectorAll('.country-box').forEach(el => el.classList.remove('selected', 'active', 'correct'));
+                            COUNTRY_IDS.forEach(cId => {
+        const el = document.getElementById(cId);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
                             const correctFlagEl = document.getElementById(correctCountry);
                             if (correctFlagEl) correctFlagEl.classList.add('correct');
                             AppState.selectedCountry = correctCountry;
@@ -313,8 +323,9 @@ function resetStepTwo() {
     });
 
     // 5. Reset map highlights and flags
-    document.querySelectorAll('.country-box').forEach(el => {
-        el.classList.remove('selected', 'active', 'correct');
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('selected', 'active', 'correct');
     });
 
     COUNTRY_IDS.forEach(id => {
@@ -780,9 +791,10 @@ function attachEventListeners() {
 
                 if (correctFlag) {
 
-                    document.querySelectorAll('.country-box').forEach(el => {
-                        el.classList.remove('selected', 'active', 'correct');
-                    });
+                    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
 
                     correctFlag.classList.add('correct');
 
@@ -826,9 +838,10 @@ function attachEventListeners() {
             AppState.selectedCountry = null;
 
             // remove highlight from country boxes
-            document.querySelectorAll('.country-box').forEach(el => {
-                el.classList.remove('selected', 'active', 'correct');
-            });
+            COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
 
             // enable flag selection again
             if (AppState.elements.flagsWrapper) {
@@ -1189,7 +1202,10 @@ function initLayerWrongClicks() {
                         setTimeout(() => {
                             missedItPopup.style.display = 'none';
                             // Auto-place correct flag
-                            document.querySelectorAll('.country-box').forEach(el => el.classList.remove('selected', 'active', 'correct'));
+                            COUNTRY_IDS.forEach(cId => {
+        const el = document.getElementById(cId);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
                             const correctFlagEl = document.getElementById(correctCountry);
                             if (correctFlagEl) correctFlagEl.classList.add('correct');
                             AppState.selectedCountry = correctCountry;
@@ -1228,7 +1244,10 @@ function initLayerWrongClicks() {
                     setTimeout(() => {
                         missedItPopup.style.display = 'none';
                         // Auto-place correct flag
-                        document.querySelectorAll('.country-box').forEach(el => el.classList.remove('selected', 'active', 'correct'));
+                        COUNTRY_IDS.forEach(cId => {
+        const el = document.getElementById(cId);
+        if(el) el.classList.remove('selected', 'active', 'correct');
+    });
                         const correctFlagEl = document.getElementById(correctCountry);
                         if (correctFlagEl) correctFlagEl.classList.add('correct');
                         AppState.selectedCountry = correctCountry;
@@ -1319,3 +1338,105 @@ async function init() {
 
 // Run initialization when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', init);
+
+// Debug mode
+window.debugNavigate = async function(runs = 1) {
+    console.log("%c==============================", "color: green; font-weight: bold;");
+    console.log("%c[DEBUG] Starting Auto Navigation Method", "color: green; font-weight: bold;");
+    console.log("%c==============================", "color: green; font-weight: bold;");
+    
+    function simulateClick(el, label) {
+        if (!el) {
+            console.warn(`[DEBUG] Target ${label} missing.`);
+            return false;
+        }
+        console.log(`%c[DEBUG] ➔ Clicking ${label}`, 'color: cyan');
+        el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        return true;
+    }
+
+    for (let currentRun = 1; currentRun <= runs; currentRun++) {
+        console.log(`\n%c[DEBUG] --- Starting Run ${currentRun}/${runs} ---`, "color: magenta; font-weight: bold;");
+        
+        let introNextBtn = document.getElementById('next-btn');
+        if (introNextBtn && introNextBtn.style.display !== 'none') {
+            simulateClick(introNextBtn, "Intro Next Button");
+            await new Promise(r => setTimeout(r, 600));
+        }
+
+        if (AppState.currentQuestionIndex >= AppState.data.questions.length) {
+            console.log("[DEBUG] Game already finished -> Clicking Replay");
+            const btnReplay = document.getElementById('btn-replay');
+            if (btnReplay && btnReplay.style.display !== 'none') {
+                simulateClick(btnReplay, "Replay Button");
+            } else {
+                console.log("[DEBUG] Cannot find replay button, aborting.");
+                return;
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+
+        while (AppState.currentQuestionIndex < AppState.data.questions.length) {
+            let qIndex = AppState.currentQuestionIndex;
+            let qs = AppState.data.questions[qIndex];
+            let countryId = qs.country.toLowerCase().replace(/\s/g, '-');
+            
+            console.log(`%c[DEBUG] --- Scenario ${qIndex + 1}/${AppState.data.questions.length} | Target: ${qs.country} ---`, "color: #ff9900; font-weight: bold;");
+            
+            // 1. Click Flag Box
+            let box = document.getElementById(countryId);
+            if (!simulateClick(box, `Flag Box (${countryId})`)) break;
+            await new Promise(r => setTimeout(r, 200));
+            
+            // 2. Click Quiz
+            let btnQuiz = document.getElementById('btn-quiz');
+            if (!simulateClick(btnQuiz, 'btn-quiz')) break;
+            await new Promise(r => setTimeout(r, 200));
+            
+            // 3. Option
+            let optionFound = false;
+            AppState.elements.options.forEach((li, i) => {
+                if(!li) return;
+                const labelSpan = li.querySelector('.label');
+                let text = labelSpan ? [...li.childNodes].filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim() : li.textContent.trim();
+                if(!text) text = li.textContent.replace(labelSpan?.textContent || '', '').trim();
+                
+                if (text === qs.correctAnswer) {
+                    simulateClick(li, `Option (${text})`);
+                    optionFound = true;
+                }
+            });
+            if (!optionFound) {
+                console.warn("[DEBUG] Could not find correct option!");
+                break; 
+            }
+            await new Promise(r => setTimeout(r, 600)); // wait for lottie
+            
+            // 4. Click Map
+            let mapCountry = document.getElementById(countryId + '-map');
+            if (!simulateClick(mapCountry, `Map (${countryId}-map)`)) break;
+            await new Promise(r => setTimeout(r, 600));
+            
+            // 5. Click Next 
+            let btnNext = document.getElementById('btn-next');
+            if (btnNext && btnNext.style.display !== 'none') {
+                simulateClick(btnNext, 'btn-next');
+            } else if (AppState.currentQuestionIndex >= AppState.data.questions.length - 1) {
+                console.log("%c[DEBUG] Navigation Complete! Final Scenario Reached.", "color: green; font-weight: bold;");
+                AppState.currentQuestionIndex++; // advance to trigger endgame manually if Next didn't do it
+            } else {
+                console.warn("[DEBUG] btn-next missing. Stuck?");
+                break;
+            }
+            await new Promise(r => setTimeout(r, 200));
+        }
+        
+        console.log(`%c[DEBUG] Run ${currentRun} State:`, "color: yellow", { score: AppState.score, index: AppState.currentQuestionIndex });
+        
+        // Short pause between runs
+        if (currentRun < runs) {
+             await new Promise(r => setTimeout(r, 1000));
+        }
+    }
+    console.log("%c[DEBUG] Final State:", "color: yellow", { ...AppState });
+};
