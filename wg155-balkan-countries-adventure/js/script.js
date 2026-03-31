@@ -632,6 +632,11 @@ function handleCountryClick(countryId) {
         if (AppState.elements.btnQuiz) {
             AppState.elements.btnQuiz.style.display = 'block';
         }
+        
+        // Disable flags after selection
+        if (AppState.elements.flagsWrapper) {
+            AppState.elements.flagsWrapper.classList.add('disabled');
+        }
     }
 }
 
@@ -755,15 +760,14 @@ function attachEventListeners() {
 
             // remove highlight from country boxes
             COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.classList.remove('selected', 'active', 'correct');
-    });
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('selected', 'active', 'correct');
+            });
 
-            // enable flag selection again
+            // Re-enable flags wrapper so a new selection can be made
             if (AppState.elements.flagsWrapper) {
                 AppState.elements.flagsWrapper.classList.remove('disabled');
             }
-
         });
 
     }
@@ -952,7 +956,7 @@ function handleOptionClick(li) {
             if (opt) opt.classList.add('disabled');
         });
 
-        // Re-enable the flags wrapper
+        // Re-enable the flags wrapper so a new selection can be made
         if (AppState.elements.flagsWrapper) {
             AppState.elements.flagsWrapper.classList.remove('disabled');
         }
