@@ -21,7 +21,7 @@
       "author": "sushantkanaujiya"
     },
     "wg105-regulation-of-blood-glucose": {
-      "updatedAt": "2026-03-31T12:22:02+05:30",
+      "updatedAt": "2026-03-31T20:39:36+05:30",
       "author": "tce-nitinc"
     },
     "wg108-photosynthesis-factory": {
@@ -205,7 +205,7 @@
       "author": "PrasannaP"
     },
     "wg156-sound-machine": {
-      "updatedAt": "2026-03-31T18:18:53+05:30",
+      "updatedAt": "2026-03-31T19:14:31+05:30",
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
@@ -373,7 +373,7 @@
       "author": "tce-nitinc"
     },
     "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-03-31T17:57:21+05:30",
+      "updatedAt": "2026-03-31T20:42:38+05:30",
       "author": "tce-nitinc"
     },
     "wg95-similar-meanings": {
@@ -398,6 +398,23 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T20:42:38+05:30",
+      "author": "tce-nitinc",
+      "message": "wg94",
+      "widgets": [
+        94
+      ]
+    },
+    {
+      "date": "2026-03-31T20:39:36+05:30",
+      "author": "tce-nitinc",
+      "message": "wg105 fixes",
+      "widgets": [
+        94,
+        105
+      ]
+    },
     {
       "date": "2026-03-31T20:03:37+05:30",
       "author": "PrasannaP",
@@ -436,6 +453,15 @@
       "message": "feat: initialize vowel teams data structure with phase-specific word lists",
       "widgets": [
         157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:14:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 156 wg94 changes",
+      "widgets": [
+        94,
+        156
       ]
     },
     {
@@ -620,33 +646,6 @@
       "message": "feat: implement vowel twins educational widget with interactive learning screens and word-building activities",
       "widgets": [
         157
-      ]
-    },
-    {
-      "date": "2026-03-31T15:56:45+05:30",
-      "author": "tce-nitinc",
-      "message": "wg155 wg 133 changes",
-      "widgets": [
-        94,
-        133,
-        155,
-        156
-      ]
-    },
-    {
-      "date": "2026-03-31T15:44:17+05:30",
-      "author": "sushantthe",
-      "message": "feat: implement vowel team learning widget with interactive word practice and CSS styling",
-      "widgets": [
-        157
-      ]
-    },
-    {
-      "date": "2026-03-31T15:23:01+05:30",
-      "author": "sushantthe",
-      "message": "feat: add notebook-themed CSS styles for phrasal verb flashcards",
-      "widgets": [
-        144
       ]
     }
   ]
