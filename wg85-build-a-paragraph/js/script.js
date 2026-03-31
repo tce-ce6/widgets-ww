@@ -1,5 +1,4 @@
 // Build a Paragraph Widget - Interactive Implementation
-
 // Data for all 15 paragraph topics
 const paragraphData = [
   {
@@ -16,7 +15,7 @@ const paragraphData = [
     correctOrder: [2, 5, 3, 4, 1], // 1-indexed
     annotations: [
       { text: "Interesting opening sentence that makes readers curious", type: "Annotation 1", words: ["A honeybee's day starts early in the morning."] },
-      { text: "Linking words that connect ideas", type: "Annotation 2", words: ["After", "There", "later"] },
+      { text: "Linking words that connect ideas", type: "Annotation 2", words: ["After", "There"] },
       { text: "Concluding sentence", type: "Annotation 3", words: ["This hard work helps plants grow and gives us delicious honey."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, the paragraph describes a honeybee's day. Whenever you write a paragraph, try providing it a suitable title."
@@ -26,7 +25,7 @@ const paragraphData = [
     topic: "The Story of Chocolate",
     image: "chocolate.svg",
     sentences: [
-      "Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!",
+      "Today, chocolate is enjoyed worldwide in candies, cakes and ice cream, making it a favourite treat!",
       "Chocolate comes from cocoa beans that grow on trees in hot countries.",
       "Ancient people in Central America discovered cocoa and made a bitter drink from it.",
       "Later, sugar and milk were added to make it sweet."
@@ -34,8 +33,8 @@ const paragraphData = [
     correctOrder: [2, 3, 4, 1],
     annotations: [
       { text: "Clear opening sentence that introduces the main topic", type: "Annotation 1", words: ["Chocolate comes from cocoa beans that grow on trees in hot countries."] },
-      { text: "Linking words showcasing the sequence of events", type: "Annotation 2", words: ["Later", "Today"] },
-      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["Today, chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!"] }
+      { text: "Linking words showing the sequence of events", type: "Annotation 2", words: ["Later", "Today"] },
+      { text: "A concluding sentence that summarises the present-day importance of chocolate", type: "Annotation 3", words: ["chocolate is enjoyed worldwide in candies, cakes, and ice cream, making it a favourite treat!"] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, all sentences focus on a single idea: the evolution of chocolate. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -44,17 +43,17 @@ const paragraphData = [
     topic: "Our Magnificent Sun",
     image: "sun.svg",
     sentences: [
-      "Surprisingly, the Sun is so big that one million Earths could fit inside it!",
-      "Indeed, our Sun is truly a magnificent star.",
-      "Without the Sun, there would be no life on Earth.",
+      "Truly, the Sun is the most important star in our sky.",
+      "This energy travels through space and makes life on Earth possible.",
+      "Because of its huge size, the Sun produces an incredible amount of energy every second.",
       "The Sun is a giant ball of hot, glowing gas that gives us light and heat.",
-      "Every second, the Sun produces enough energy to power our planet for years."
+      "It is so enormous that about one million Earths could fit inside it!"
     ],
-    correctOrder: [4, 3, 1, 5, 2],
+    correctOrder: [4, 5, 3, 2, 1],
     annotations: [
       { text: "An introductory sentence that describes the Sun", type: "Annotation 1", words: ["The Sun is a giant ball of hot, glowing gas that gives us light and heat."] },
-      { text: "Using words highlight the Sun's extraordinary qualities and importance", type: "Annotation 2", words: ["Without", "Surprisingly", "Every second"] },
-      { text: "The concluding line celebrates the Sun's magnificence", type: "Annotation 3", words: ["Indeed, our Sun is truly a magnificent star."] }
+      { text: "Words that connect each idea to the one before it", type: "Annotation 2", words: ["Because of its huge size", " This energy"] },
+      { text: " A concluding sentence that sums up why the Sun is so special", type: "Annotation 3", words: ["Truly, the Sun is the most important star in our sky."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us what makes the Sun so special. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -90,8 +89,8 @@ const paragraphData = [
     correctOrder: [2, 3, 4, 1],
     annotations: [
       { text: "An opening sentence that introduces the main character and setting", type: "Annotation 1", words: ["A clever monkey named Chintu once sneaked into a vegetable market in Jaipur."] },
-      { text: "Words that connect the ideas and show the sequence of events in the story", type: "Annotation 2", words: ["When", "As a result", "Jaipur"] },
-      { text: "A concluding sentence that ends the story with humour", type: "Annotation 3", words: ["As a result, the shopkeeper slipped and landed in a basket of tomatoes, turning as red as the vegetables themselves!"] }
+      { text: "Words that connect the ideas and show the sequence of events in the story", type: "Annotation 2", words: ["When", "As a result"] },
+      { text: "A concluding sentence that ends the story with humour", type: "Annotation 3", words: ["the shopkeeper slipped and landed in a basket of tomatoes, turning as red as the vegetables themselves!"] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence follows Chintu's funny adventure in the market. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -110,7 +109,7 @@ const paragraphData = [
     annotations: [
       { text: "An engaging introduction that makes the topic personal and relatable", type: "Annotation 1", words: ["I still remember my first day at school vividly."] },
       { text: "Linking words that indicate sequence of events and change in feelings", type: "Annotation 2", words: ["When", "After", "However", "By day's end"] },
-      { text: "A concluding line that reflects on the overall experience", type: "Annotation 3", words: ["By day's end, I had made three friends and realised school would be wonderful."] }
+      { text: "A concluding line that reflects on the overall experience", type: "Annotation 3", words: ["I had made three friends and realised school would be wonderful."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence takes us through the feelings and events of the first day at school. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -159,14 +158,14 @@ const paragraphData = [
     sentences: [
       "This happens because salt water becomes denser than the egg, pushing it upwards.",
       "In normal tap water, a fresh egg sinks to the bottom because it's denser than water.",
-      "Similarly, swimming in the ocean is easier than in a pool due to the salty water.",
+      "Similarly, floating in the ocean is easier than in a pool due to the salty water.",
       "However, when you add salt and stir, the egg begins to float!"
     ],
     correctOrder: [2, 4, 1, 3],
     annotations: [
       { text: "An opening sentence that tells us what happens in normal water", type: "Annotation 1", words: ["In normal tap water, a fresh egg sinks to the bottom because it's denser than water."] },
       { text: "Words that show cause, effect, and comparison", type: "Annotation 2", words: ["However", "This happens because", "Similarly"] },
-      { text: "A concluding sentence that connects the experiment to real life", type: "Annotation 3", words: ["Similarly, swimming in the ocean is easier than in a pool due to the salty water."] }
+      { text: "A concluding sentence that connects the experiment to real life", type: "Annotation 3", words: ["floating in the ocean is easier than in a pool due to the salty water."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence explains why an egg floats in salt water. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -212,18 +211,17 @@ const paragraphData = [
     topic: "The Beautiful Spring Season",
     image: "spring-season.svg",
     sentences: [
-      "Also, the weather becomes pleasant, neither too hot nor too cold.",
-      "Moreover, colourful butterflies and busy bees fly from flower to flower.",
+      "Besides all this beauty, the weather becomes pleasant, neither too hot nor too cold.",
       "It also reminds us that new beginnings are always beautiful.",
+      "These flowers attract colourful butterflies and busy bees.",
       "Spring is my favourite season when nature comes alive with colours.",
-      "Finally, spring fills our hearts with happiness.",
       "During this time, flowers bloom in gardens and trees grow fresh green leaves."
     ],
-    correctOrder: [4, 6, 1, 2, 5, 3],
+    correctOrder: [4, 5, 3, 1, 2,],
     annotations: [
       { text: "A sentence that introduces the topic with enthusiasm", type: "Annotation 1", words: ["Spring is my favourite season when nature comes alive with colours"] },
-      { text: "Words that add details and signal the ending", type: "Annotation 2", words: ["During", "Also", "Moreover", "Finally"] },
-      { text: "A concluding sentence that shares the deeper meaning of spring", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful"] }
+      { text: "Linking words that give a flow to the paragraph", type: "Annotation 2", words: ["During this time", "These flowers", "Besides all this beauty"] },
+      { text: "A concluding sentence that shares a thoughtful message", type: "Annotation 3", words: ["It also reminds us that new beginnings are always beautiful."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence celebrates what makes spring special. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -232,7 +230,7 @@ const paragraphData = [
     topic: "Nature's Healthy Gifts",
     image: "fruits.svg",
     sentences: [
-      "They are full of vitamins, minerals, and fibre our body needs.",
+      "They are full of vitamins, minerals and fibre our body needs.",
       "For example, mangoes provide Vitamin A, oranges give Vitamin C, and bananas offer instant energy.",
       "Therefore, we must eat fresh fruits daily to stay fit.",
       "Fruits are nature's gifts that keep us healthy and strong.",
@@ -242,7 +240,7 @@ const paragraphData = [
     annotations: [
       { text: "An opening sentence that presents fruits as nature's gifts", type: "Annotation 1", words: ["Fruits are nature's gifts that keep us healthy and strong"] },
       { text: "Linking words that give examples and draw a conclusion", type: "Annotation 2", words: ["For example", "Besides", "Therefore"] },
-      { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["Therefore, we must eat fresh fruits daily to stay fit"] }
+      { text: "A concluding sentence that emphasises the benefit of eating fruits", type: "Annotation 3", words: ["we must eat fresh fruits daily to stay fit"] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence tells us why fruits are good for our health. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -251,17 +249,17 @@ const paragraphData = [
     topic: "The World of Decimals",
     image: "decimals.svg",
     sentences: [
-      "The decimal point separates the whole number from the fractional part.",
+      "They use a decimal point to separate the whole number from the fractional part.",
       "Decimals are a special way of writing numbers that are not whole.",
-      "And so, learning decimals makes our daily tasks simpler and more precise.",
-      "For instance, when we buy 1.5 kilograms of apples or measure height as 4.2 feet, we use decimals.",
-      "Decimals make calculations easier than fractions, especially with money."
+      "Such everyday uses show that decimals make calculations simpler than fractions.",
+      "And so, learning decimals helps us with daily tasks like shopping and measuring.",
+      "For instance, in 1.5 kilograms of apples, 1 is the whole number and .5 is the fraction."
     ],
-    correctOrder: [2, 4, 1, 5, 3],
+    correctOrder: [2, 1, 5, 3, 4],
     annotations: [
       { text: "An opening sentence that defines decimals", type: "Annotation 1", words: ["Decimals are a special way of writing numbers that are not whole"] },
-      { text: "Phrases that build flow in the paragraph", type: "Annotation 2", words: ["For instance", "especially"] },
-      { text: "A concluding sentence highlighting importance of decimals", type: "Annotation 3", words: ["And so, learning decimals makes our daily tasks simpler and more precise"] }
+      { text: "Words that connect each explanation to the one before it", type: "Annotation 2", words: ["For instance", "Such everyday uses", "And so"] },
+      { text: "A concluding sentence that tells us why learning decimals is useful", type: "Annotation 3", words: ["And so, learning decimals helps us with daily tasks like shopping and measuring."] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence helps us understand what decimals are and why they matter. Whenever you write a paragraph, try providing a suitable title."
   },
@@ -270,17 +268,17 @@ const paragraphData = [
     topic: "The Festival of Colours",
     image: "festival-colours.svg",
     sentences: [
-      "During this celebration, people wear old clothes and play with bright coloured powders called gulal.",
-      "Families prepare special treats like gujiya and thandai to share with neighbours.",
-      "Indeed, Holi teaches us to celebrate life together with happiness.",
+      "These treats are also shared with neighbours, spreading joy and togetherness.",
+      "After hours of fun with colours, families gather to enjoy festive treats like gujiya and thandai.",
       "Holi is a joyful festival that marks the arrival of spring in India.",
-      "Children and adults throw colours at each other, laughing and singing festive songs."
+      "No wonder Holi is one of the most loved festivals in India!",
+      "On this special day, people wear old clothes and play with bright coloured powders called gulal."
     ],
-    correctOrder: [4, 1, 5, 2, 3],
+    correctOrder: [3, 5, 2, 1, 4],
     annotations: [
       { text: "An opening sentence that introduces the festival", type: "Annotation 1", words: ["Holi is a joyful festival that marks the arrival of spring in India"] },
-      { text: "Words that build flow", type: "Annotation 2", words: ["During this celebration", "Indeed"] },
-      { text: "A concluding sentence that captures the spirit of the festival", type: "Annotation 3", words: ["Indeed, Holi teaches us to celebrate life together with happiness"] }
+      { text: "Words that build flow", type: "Annotation 2", words: ["On this special day", "After hours of fun with colours", "These treats"] },
+      { text: "A concluding sentence that tells us why Holi is special", type: "Annotation 3", words: ["No wonder Holi is one of the most loved festivals in India!"] }
     ],
     summary: "A paragraph is a group of sentences on a single idea. Here, every sentence describes how people celebrate the colourful festival of Holi. Whenever you write a paragraph, try providing a suitable title."
   }
@@ -1345,14 +1343,14 @@ window.debugAutoPlay = async function (delayMs = 800, startTopicIndex = 0) {
     console.log(`  Title visible: ${titleVisible ? '✅' : '❌'}`);
     console.log(`  Image visible: ${imageVisible ? '✅' : '❌'}`);
     console.log(`  Annotations visible: ${annotationsVisible ? '✅' : '❌'}`);
-    console.log(`  Overall: ${ pass ? '✅ PASS' : '❌ FAIL'}`);
+    console.log(`  Overall: ${pass ? '✅ PASS' : '❌ FAIL'}`);
     console.groupEnd();
 
     await sleep(delayMs * 1.5);
 
     // ── 4. Navigate to next topic (if not last) ────────────────────────────
     if (topicIdx < paragraphData.length - 1) {
-      handleNextTopicClick({ stopPropagation: () => {} });
+      handleNextTopicClick({ stopPropagation: () => { } });
       await sleep(delayMs);
     }
   }
