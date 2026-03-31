@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const HANDLER_BASE_Y = 507.04;
 
   const startBtn = document.getElementById('start-btn');
-  const resetBtn = document.getElementById('reset-btn');
 
   let isDragging = false;
   let dragStartY = 0;
@@ -55,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
       container: document.getElementById('vessel-animation'),
       renderer: 'svg',
       loop: true,
-      autoplay: false,
-      path: './lottie/Vessal.json'
+      autoplay: true,
+      path: './lottie/vessal.json'
     });
   }
 
@@ -77,19 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
     flowLottie.addEventListener('DOMLoaded', () => {
       flowLottie.goToAndStop(450, true);
     });
+
+    // Handle end of animation
+    flowLottie.addEventListener('complete', () => {
+      if (currentLevel === 'high' || currentLevel === 'low') {
+        // Return to normal
+        setSliderState(true);
+        moveHandlerTo(CY_NORMAL, true);
+      }
+    });
   }
 
   function setBtnState(active) {
     if (startBtn) {
       startBtn.style.opacity = active ? '1' : '0.4';
       startBtn.style.pointerEvents = active ? 'auto' : 'none';
-    }
-  }
-
-  function setResetBtnState(active) {
-    if (resetBtn) {
-      resetBtn.style.opacity = active ? '1' : '0.4';
-      resetBtn.style.pointerEvents = active ? 'auto' : 'none';
     }
   }
 
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
       container: document.getElementById('glucose-container'),
       renderer: 'svg',
       loop: true,
-      autoplay: false, // Do not autoplay as requested
+      autoplay: true,
       path: `./lottie/${name}.json`
     });
   }
@@ -151,21 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
         pendingFlowSegment = segment;
       }
 
-      // Stop and reset vessel if it was playing
-      if (vesselLottie) {
-        vesselLottie.stop();
-      }
-
-      // Ready to start!
-      setBtnState(true);
-
-      // Disable slider and enable reset as requested
-      setSliderState(false);
-      setResetBtnState(true);
-
-      // Hide instruction text
-      if (iText) {
-        iText.style.display = 'none';
+      // Conditional interactive states based on level
+      if (nextLevel === 'normal') {
+        setSliderState(true);
+        setBtnState(false);
+        if (iText) iText.style.display = 'block';
+      } else {
+        setBtnState(true);
+        setSliderState(false);
+        if (iText) iText.style.display = 'none';
       }
     }
   }
@@ -208,36 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Reset Button Logic
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      // Re-enable slider
-      setSliderState(true);
-      // Disable reset
-      setResetBtnState(false);
-      // Disable start button
-      setBtnState(false);
-
-      // Reset state and position
-      currentLevel = 'normal';
-      moveHandlerTo(CY_NORMAL, true);
-
-      // Re-initialize animations to starting state
-      initVesselAnimation();
-      initFlowAnimation();
-      playLottie('glucose-normal-level');
-      pendingFlowSegment = null;
-
-      if (subNote) {
-        subNote.textContent = "Normal glucose level in blood";
-      }
-
-      // Show instruction text
-      if (iText) {
-        iText.style.display = 'block';
-      }
-    });
-  }
 
   function handleStart(e) {
     isDragging = true;
@@ -332,6 +297,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initVesselAnimation();
   initFlowAnimation();
   playLottie('glucose-normal-level');
-  setResetBtnState(false);
   setSliderState(true);
 });
