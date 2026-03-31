@@ -474,12 +474,8 @@ function handleNextQuestion() {
             if (flag) flag.style.display = 'none';
         });
 
-        // Show ONLY the replay button
-        const btnResetFull = document.getElementById('btn-reset');
-        if (btnResetFull) btnResetFull.style.display = 'none';
-
-        const btnReplay = document.getElementById('btn-replay');
-        if (btnReplay) btnReplay.style.display = 'block';
+        // End state: no replay button
+        // Reset button removed
 
         // Hide Next button
         const btnNextFull = document.getElementById('btn-next');
@@ -833,11 +829,9 @@ function handleGameReset() {
     if (AppState.elements.step1) AppState.elements.step1.style.display = 'block';
     if (AppState.elements.step2) AppState.elements.step2.style.display = 'none';
 
-    const btnReset = document.getElementById('btn-reset');
-    if (btnReset) btnReset.style.display = 'none';
+    // Reset button removed
 
-    const btnReplay = document.getElementById('btn-replay');
-    if (btnReplay) btnReplay.style.display = 'none';
+    // Replay button removed
 
     const btnNext = document.getElementById('btn-next');
     if (btnNext) btnNext.style.display = 'none';
@@ -851,15 +845,9 @@ function handleGameReset() {
  * Attach event listeners to elements
  */
 function attachEventListeners() {
-    const btnReset = document.getElementById('btn-reset');
-    if (btnReset) {
-        btnReset.addEventListener('click', handleGameReset);
-    }
+    // Reset button removed
 
-    const btnReplay = document.getElementById('btn-replay');
-    if (btnReplay) {
-        btnReplay.addEventListener('click', handleGameReset);
-    }
+    // Replay button removed
 
     const btnShowAnswer = document.getElementById('btn-show-answer');
 
@@ -1466,13 +1454,8 @@ window.debugNavigate = async function(runs = 1) {
 
         if (AppState.currentQuestionIndex >= AppState.data.questions.length) {
             console.log("[DEBUG] Game already finished -> Clicking Replay");
-            const btnReplay = document.getElementById('btn-replay');
-            if (btnReplay && btnReplay.style.display !== 'none') {
-                simulateClick(btnReplay, "Replay Button");
-            } else {
-                console.log("[DEBUG] Cannot find replay button, aborting.");
-                return;
-            }
+            console.log("[DEBUG] Game already finished -> Replay button removed; aborting.");
+            return;
             await new Promise(r => setTimeout(r, 1000));
         }
 
