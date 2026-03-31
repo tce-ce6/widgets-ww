@@ -27,6 +27,16 @@ const congratsDiv = document.getElementById('congrats-div');
 
 const valueEls = document.querySelectorAll(".making-value");
 
+// Center the % values
+valueEls.forEach(el => {
+  const parentText = el.closest('text') || el.parentElement;
+  if (parentText && parentText.tagName === 'text') {
+    parentText.setAttribute('text-anchor', 'middle');
+    parentText.setAttribute('transform', 'translate(1408.5 695)');
+    el.setAttribute('x', '0');
+  }
+});
+
 const lottieMap = {
   convergent: {
     container: document.getElementById('convergent-lottie'),
@@ -91,18 +101,37 @@ function initLotties() {
     // Keep last frame after play
     item.instance.addEventListener('complete', () => {
       item.instance.goToAndStop(item.instance.totalFrames - 1, true);
+
+      // Blur and disable button on complete
+      pushButtons.forEach(btn => {
+        btn.style.filter = "blur(3px)";
+        btn.style.pointerEvents = "none";
+        // Reset fill so it doesn't stay red
+        btn.querySelectorAll(".btnFill").forEach(path => {
+          path.style.fill = '#680303';
+        });
+      });
     });
+
+    attachProgressToLottie(key);
   });
 }
 
-function playLottie(type) {
+function toggleLottie(type) {
   const item = lottieMap[type];
   if (!item || !item.instance) return;
 
-  attachProgressToLottie(type); // 👈 attach progress
+  const anim = item.instance;
 
-  item.instance.stop(); // reset
-  item.instance.play();
+  if (anim.currentFrame >= anim.totalFrames - 1 && anim.totalFrames > 0) {
+    // If it reached the end, start over
+    anim.goToAndStop(0, true);
+    anim.play();
+  } else if (anim.isPaused) {
+    anim.play();
+  } else {
+    anim.pause();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -182,12 +211,18 @@ function showPlate(value) {
 // };
 
 const progressGroups = document.querySelectorAll(".progressGroup");
-const progressRects  = document.querySelectorAll(".progressRect");
+const progressRects = document.querySelectorAll(".progressRect");
 const PROGRESS_MAX_W = 483; // 468px track + 2×7.5 rounded caps
 
 function resetProgress() {
   progressRects.forEach(r => r.setAttribute('width', '0'));
   valueEls.forEach(el => { el.textContent = '0%'; });
+
+  // Reactivate push button
+  pushButtons.forEach(btn => {
+    btn.style.filter = "none";
+    btn.style.pointerEvents = "auto";
+  });
 }
 
 function attachProgressToLottie(type) {
@@ -251,38 +286,34 @@ pushButtons.forEach(btn => {
     nextBtn.style.opacity = 1;
     nextBtn.style.cursor = 'pointer';
 
-    // 🎯 Play correct lottie based on current plate
+    // 🎯 Play/Pause correct lottie based on current plate
     if (currentPlate) {
       const type = currentPlate.replace('-plate', '');
-      playLottie(type);
+      toggleLottie(type);
+
+      // Toggle button color based on paused state
+      const item = lottieMap[type];
+      const anim = item ? item.instance : null;
+      this.querySelectorAll(".btnFill").forEach(path => {
+        path.style.fill = (anim && !anim.isPaused && anim.currentFrame < anim.totalFrames - 1) ? '#d60000' : '#680303';
+      });
     }
 
   });
 });
 
 nextBtn.addEventListener("click", () => {
-
-  // STEP 1: If congrats not shown → show it
-  if (!isCongratsVisible) {
-    congratsDiv.style.display = 'block';
-    isCongratsVisible = true;
-    resetPlateBtn.style.display = 'none';
-    insightsButton.style.display = 'none';
-    resetProgress(); // reset bar on Next
-    return;
-  }
-
   resetPlateBtn.style.display = 'block';
   insightsButton.style.display = 'block';
-  // STEP 2: If already shown → go to next plate
+
   congratsDiv.style.display = 'none';
   isCongratsVisible = false;
 
   currentPlateIndex++;
   console.log(currentPlateIndex, plates.length)
-  // loop or stop at end
+  // loop back to first plate if at the end
   if (currentPlateIndex >= plates.length) {
-    currentPlateIndex = 0; // or return;
+    currentPlateIndex = 0;
   }
 
   const nextPlate = plates[currentPlateIndex];
@@ -290,7 +321,6 @@ nextBtn.addEventListener("click", () => {
 
   currentPlate = value;
   showPlate(value);
-
 });
 
 resetPlateBtn.addEventListener("click", () => {
