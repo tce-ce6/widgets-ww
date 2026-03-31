@@ -300,8 +300,12 @@ function render() {
             tile.style.color = '#000';
         }
 
-        // Add sound playing on any sound-tile click
-        tile.addEventListener('click', () => playPhonemeAudio(sound));
+        // Add sound playing on any sound-tile click (except if dropped)
+        tile.addEventListener('click', () => {
+            if (!tile.classList.contains('is-dropped')) {
+                playPhonemeAudio(sound);
+            }
+        });
         tilesContainer.appendChild(tile);
     });
 
