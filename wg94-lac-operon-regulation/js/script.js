@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastState = '';
   let animationTimeout;
   let inducerAbsentTriggered = false;
+  let isWaitingForSecondHalf = false;
   const animations = {};
   const animationFiles = {
     start: './assets/start.json',
@@ -63,6 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
   startBtn.addEventListener('click', () => {
     if (animationTimeout) clearTimeout(animationTimeout);
     
+    if (isWaitingForSecondHalf) {
+      const anim = animations['present'];
+      if (anim) {
+        setTimeout(() => {
+          anim.playSegments([anim.frameRate, anim.totalFrames], true);
+        }, 1000);
+      }
+      isWaitingForSecondHalf = false;
+      if (startBtn) {
+        startBtn.style.opacity = '.4';
+        startBtn.style.pointerEvents = 'none';
+      }
+      return;
+    }
+
     if (inducerAbsentTriggered) {
       const rectObject = document.getElementById('rect-object');
       if (rectObject) rectObject.style.display = 'block';
@@ -117,7 +133,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lastState === 'absent') {
           playAnim('absent-present');
         } else {
-          playAnim('present');
+          const anim = animations['present'];
+          if (anim) {
+            Object.values(animations).forEach(a => {
+              a.containerDiv.style.display = 'none';
+              a.stop();
+            });
+            anim.containerDiv.style.display = 'block';
+            anim.playSegments([0, anim.frameRate], true);
+
+            if (startBtn) {
+              startBtn.style.opacity = '1';
+              startBtn.style.pointerEvents = 'auto';
+            }
+            isWaitingForSecondHalf = true;
+          }
         }
         lastState = 'present';
       }
@@ -175,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       inducerAbsentTriggered = false;
+      isWaitingForSecondHalf = false;
       const rectObject = document.getElementById('rect-object');
       if (rectObject) rectObject.style.display = 'none';
 
