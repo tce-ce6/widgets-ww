@@ -381,6 +381,19 @@ function handleNextQuestion() {
     // move to next question index
     AppState.currentQuestionIndex++;
 
+    // ✅ ALWAYS clear flag states when Next is clicked
+    COUNTRY_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('selected', 'correct');
+            // reset transform for the NEXT round
+            const flag = document.getElementById(id + '-flag');
+            if (flag) {
+                flag.setAttribute('transform', 'translate(0, 0)');
+            }
+        }
+    });
+
     // Check if we finished all questions
     if (AppState.data && AppState.data.questions && AppState.currentQuestionIndex >= questions.length) {
         // Hide UI elements but preserve the map
@@ -412,14 +425,6 @@ function handleNextQuestion() {
         
         return;
     }
-
-    // ✅ ALWAYS clear flag states when Next is clicked
-    COUNTRY_IDS.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.remove('selected', 'correct');
-        }
-    });
 
     const data = questions[AppState.currentQuestionIndex];
     AppState.currentCountryData = data;
@@ -726,9 +731,9 @@ function handleCountryClick(countryId) {
     AppState.currentCountryData = questions[safeIndex];
 
     /* Remove redundant disable from here to allow changing minds before quiz starts */
-    // if (AppState.elements.flagsWrapper) {
-    //     AppState.elements.flagsWrapper.classList.add('disabled');
-    // }
+    if (AppState.elements.flagsWrapper) {
+        AppState.elements.flagsWrapper.classList.add('disabled');
+    }
     // Only show quiz buttons if the map phase for this question hasn't started
     const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
 
@@ -1278,6 +1283,48 @@ function updateMarksUI() {
     }
 }
 
+function initDistractors() {
+    ['distractor-1', 'distractor-2', 'distractor-3', 'distractor-4'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+            // Hide result popups from previous round
+            if (AppState.elements.correctAnswerPopup) {
+                AppState.elements.correctAnswerPopup.style.display = 'none';
+                const chooseFlagPopup = document.getElementById('choose-flag-popup');
+                if (chooseFlagPopup) chooseFlagPopup.style.display = 'none';
+            }
+
+            if (AppState.elements.factBitePopup) {
+                AppState.elements.factBitePopup.style.display = 'none';
+            }
+
+            // If quiz is already open (user finished quiz and clicks another country)
+            if (AppState.elements.questionContainer &&
+                AppState.elements.questionContainer.style.display === 'block') {
+
+                if (AppState.elements.iText2) {
+                    AppState.elements.iText2.style.display = 'none';
+                }
+
+                if (AppState.elements.btnQuiz) {
+                    AppState.elements.btnQuiz.style.display = 'none';
+                }
+
+                if (AppState.elements.flagsWrapper) {
+                    AppState.elements.flagsWrapper.classList.remove('disabled');
+                }
+
+                return;
+            }
+            AppState.selectedCountry = id;
+            handleCountryClick(id);
+        });
+    });
+}
+
 /**
  * Initialize the widget
  */
@@ -1296,6 +1343,7 @@ async function init() {
     initMapDropCheck();
     initLayerWrongClicks();
     initMapPanAndClip();
+    initDistractors();
 }
 
 // Run initialization when DOM is fully loaded
