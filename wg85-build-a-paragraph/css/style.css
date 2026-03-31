@@ -379,3 +379,22 @@ svg * {
 #para-image image{
   border-radius: 20px !important;
 }
+
+.sentence-box.blurred foreignObject {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.sentence-box.correct rect {
+  fill: #D3D3D3 !important;
+  stroke: #A9A9A9 !important;
+}
+
+#para-toc-highlights div {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+#para-toc-highlights div::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
