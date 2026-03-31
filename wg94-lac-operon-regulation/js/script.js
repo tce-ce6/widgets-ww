@@ -2,11 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const startBtn = document.getElementById('start-btn');
   const resetBtn = document.getElementById('reset-btn');
   const lottieContainer = document.getElementById('lottie-animation');
+  const iText = document.getElementById('i-text');
 
   let lastState = '';
   let animationTimeout;
   let inducerAbsentTriggered = false;
+  let isWaitingForSecondHalf = false;
+  let resumableAnimKey = '';
+
   const animations = {};
+  let pausedFrame = 0; // declare at top
   const animationFiles = {
     start: './assets/start.json',
     present: './assets/present.json',
@@ -62,7 +67,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   startBtn.addEventListener('click', () => {
     if (animationTimeout) clearTimeout(animationTimeout);
-    
+
+    if (isWaitingForSecondHalf) {
+      const anim = animations[resumableAnimKey];
+      if (anim) {
+        anim.containerDiv.style.display = 'block';
+        setTimeout(() => {
+          anim.play();
+        }, 1000);
+      }
+      isWaitingForSecondHalf = false;
+      if (startBtn) {
+        startBtn.style.opacity = '.4';
+        startBtn.style.pointerEvents = 'none';
+        if (iText) iText.style.display = 'none';
+      }
+      return;
+    }
+
     if (inducerAbsentTriggered) {
       const rectObject = document.getElementById('rect-object');
       if (rectObject) rectObject.style.display = 'block';
@@ -70,11 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     lastState = '';
- 
+
     // Dim the start button and disable it immediately for the first load
     if (startBtn) {
       startBtn.style.opacity = '.4';
       startBtn.style.pointerEvents = 'none';
+      if (iText) iText.style.display = 'none';
     }
 
     // Play start.json animation
@@ -109,15 +132,62 @@ document.addEventListener('DOMContentLoaded', () => {
       enableResetBtn();
       if (inducerPresent.checked) {
         if (inducerAbsent) inducerAbsent.checked = false;
-        
+
         inducerAbsentTriggered = false;
         const rectObject = document.getElementById('rect-object');
         if (rectObject) rectObject.style.display = 'none';
 
         if (lastState === 'absent') {
-          playAnim('absent-present');
+          const anim = animations['absent-present'];
+          if (anim) {
+            Object.values(animations).forEach(a => {
+              a.containerDiv.style.display = 'none';
+              a.stop();
+            });
+            anim.containerDiv.style.display = 'block';
+            anim.goToAndPlay(0, true);
+            setTimeout(() => {
+              anim.pause();
+              pausedFrame = anim.currentFrame;
+            }, 3000);
+
+            if (startBtn) {
+              startBtn.style.opacity = '1';
+              startBtn.style.pointerEvents = 'auto';
+              if (iText) {
+                iText.innerText = "Tap Start to initiate z, y, a genes' expression";
+                iText.style.display = 'block';
+              }
+            }
+            resumableAnimKey = 'absent-present';
+            isWaitingForSecondHalf = true;
+          }
         } else {
-          playAnim('present');
+          const anim = animations['present'];
+          if (anim) {
+            Object.values(animations).forEach(a => {
+              a.containerDiv.style.display = 'none';
+              a.stop();
+            });
+            anim.containerDiv.style.display = 'block';
+            anim.goToAndPlay(0, true);
+
+            setTimeout(() => {
+              anim.pause();
+              pausedFrame = anim.currentFrame;
+            }, 1000);
+
+            if (startBtn) {
+              startBtn.style.opacity = '1';
+              startBtn.style.pointerEvents = 'auto';
+              if (iText) {
+                iText.innerText = "Tap Start to initiate z, y, a genes' expression";
+                iText.style.display = 'block';
+              }
+            }
+            resumableAnimKey = 'present';
+            isWaitingForSecondHalf = true;
+          }
         }
         lastState = 'present';
       }
@@ -129,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
       enableResetBtn();
       if (inducerAbsent.checked) {
         if (inducerPresent) inducerPresent.checked = false;
-        
+
         const targetAnimKey = lastState === 'present' ? 'present-absent' : 'absent';
         playAnim(targetAnimKey);
         lastState = 'absent';
@@ -138,6 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (startBtn) {
           startBtn.style.opacity = '1';
           startBtn.style.pointerEvents = 'auto';
+          if (iText) {
+            iText.innerText = "Tap Start to initiate z, y, a genes' expression";
+            iText.style.display = 'block';
+          }
         }
         inducerAbsentTriggered = true;
       }
@@ -172,9 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (startBtn) {
         startBtn.style.opacity = '1';
         startBtn.style.pointerEvents = 'auto';
+        if (iText) {
+          iText.innerText = "Tap Start to initiate i gene's expression";
+          iText.style.display = 'block';
+        }
       }
 
       inducerAbsentTriggered = false;
+      isWaitingForSecondHalf = false;
       const rectObject = document.getElementById('rect-object');
       if (rectObject) rectObject.style.display = 'none';
 
