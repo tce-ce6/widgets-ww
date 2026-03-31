@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T13:37:01+05:30",
+      "updatedAt": "2026-03-31T14:03:09+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
@@ -398,6 +398,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T14:03:09+05:30",
+      "author": "sushantthe",
+      "message": "Update index.html",
+      "widgets": [
+        157
+      ]
+    },
     {
       "date": "2026-03-31T13:37:01+05:30",
       "author": "sushantthe",
@@ -637,14 +645,6 @@
       "message": "v2",
       "widgets": [
         85
-      ]
-    },
-    {
-      "date": "2026-03-30T19:34:56+05:30",
-      "author": "sushantthe",
-      "message": "feat: enhance selection logic to handle incorrect pair selections and reset styles",
-      "widgets": [
-        114
       ]
     }
   ]
