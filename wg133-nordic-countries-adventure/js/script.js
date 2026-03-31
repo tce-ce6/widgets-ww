@@ -52,6 +52,36 @@ const COUNTRY_IDS = [
     'norway', 'sweden', 'finland', 'denmark', 'iceland'
 ];
 
+const DEBUG_FLAGS = (() => {
+    try {
+        return typeof window !== 'undefined' &&
+            new URLSearchParams(window.location.search).has('debugFlags');
+    } catch {
+        return false;
+    }
+})();
+
+function debugFlagsLog(message, extra = {}) {
+    if (!DEBUG_FLAGS) return;
+    try {
+        const el = AppState?.elements?.flagsWrapper || document.getElementById('flags-wrapper');
+        const computed = el ? window.getComputedStyle(el) : null;
+        console.log('[flags]', message, {
+            flagsLocked: AppState?.flagsLocked,
+            mapLocked: AppState?.mapLocked,
+            mapEnabled: AppState?.mapEnabled,
+            wrapperClass: el?.getAttribute?.('class'),
+            stylePointerEvents: el?.style?.pointerEvents,
+            styleOpacity: el?.style?.opacity,
+            computedPointerEvents: computed?.pointerEvents,
+            computedOpacity: computed?.opacity,
+            ...extra
+        });
+    } catch (e) {
+        console.log('[flags]', message, extra, e);
+    }
+}
+
 function setFlagsEnabled(enabled) {
     const el = AppState.elements.flagsWrapper;
     if (!el) return;
@@ -62,19 +92,7 @@ function setFlagsEnabled(enabled) {
         el.setAttribute('class', 'flags-wrapper');
         el.style.pointerEvents = 'auto';
         el.style.opacity = '1';
-        // SVG <g> can be finicky across browsers; set presentation attributes too.
-        el.setAttribute('pointer-events', 'auto');
-        el.setAttribute('opacity', '1');
-
-        // Also restore per-flag styles (some SVGs ignore group opacity/pointer-events).
-        COUNTRY_IDS.forEach(id => {
-            const flagEl = document.getElementById(id);
-            if (!flagEl) return;
-            flagEl.style.pointerEvents = 'auto';
-            flagEl.style.opacity = '1';
-            flagEl.setAttribute('pointer-events', 'auto');
-            flagEl.setAttribute('opacity', '1');
-        });
+        debugFlagsLog('setFlagsEnabled(true)');
         return;
     }
 
@@ -83,28 +101,19 @@ function setFlagsEnabled(enabled) {
     el.setAttribute('class', 'flags-wrapper disabled');
     el.style.pointerEvents = 'none';
     el.style.opacity = '0.55';
-    el.setAttribute('pointer-events', 'none');
-    el.setAttribute('opacity', '0.55');
-
-    // Also enforce per-flag styles (some SVGs ignore group opacity/pointer-events).
-    COUNTRY_IDS.forEach(id => {
-        const flagEl = document.getElementById(id);
-        if (!flagEl) return;
-        flagEl.style.pointerEvents = 'none';
-        flagEl.style.opacity = '0.55';
-        flagEl.setAttribute('pointer-events', 'none');
-        flagEl.setAttribute('opacity', '0.55');
-    });
+    debugFlagsLog('setFlagsEnabled(false)');
 }
 
 function lockFlags() {
     AppState.flagsLocked = true;
     setFlagsEnabled(false);
+    debugFlagsLog('lockFlags()');
 }
 
 function unlockFlags() {
     AppState.flagsLocked = false;
     setFlagsEnabled(true);
+    debugFlagsLog('unlockFlags()');
 }
 
 function initCountryBoxes() {
@@ -1357,6 +1366,12 @@ function initDistractors() {
 
         el.style.cursor = 'pointer';
         el.addEventListener('click', () => {
+            if (AppState.flagsLocked) return;
+
+            // Lock flags immediately after a flag is selected.
+            // They are re-enabled after map feedback is shown.
+            if (!AppState.mapLocked) lockFlags();
+
             // Hide result popups from previous round
             if (AppState.elements.correctAnswerPopup) {
                 AppState.elements.correctAnswerPopup.style.display = 'none';
