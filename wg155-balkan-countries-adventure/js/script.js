@@ -383,10 +383,11 @@ function handleNextQuestion() {
     }
 
     const data = questions[AppState.currentQuestionIndex];
-    AppState.currentCountryData = data;
 
     // reset step-2 UI
     resetStepTwo();
+    // restore the current question after reset clears state
+    AppState.currentCountryData = data;
     if (AppState.elements.questionContainer) {
         AppState.elements.questionContainer.style.display = 'none';
     }
@@ -691,20 +692,6 @@ function handleCountryClick(countryId) {
 
     // store selected country
     AppState.selectedCountry = countryId;
-
-    // Find the specific question data for this country ID
-    const questions = AppState.data.questions;
-    const targetQuestion = questions.find(q =>
-        q.country.toLowerCase().replace(/\s/g, '-') === countryId
-    );
-
-    if (targetQuestion) {
-        AppState.currentCountryData = targetQuestion;
-    } else {
-        // Fallback to current index if no match
-        const safeIndex = Math.min(AppState.currentQuestionIndex, questions.length - 1);
-        AppState.currentCountryData = questions[safeIndex];
-    }
 
     // Only show quiz buttons if the map phase for this question hasn't started
     const isQuizShown = AppState.elements.questionContainer && AppState.elements.questionContainer.style.display === 'block';
@@ -1277,6 +1264,12 @@ function initDistractors() {
 async function init() {
     await loadData();
     initElements();
+
+    // Initialize the first question from the shuffled list.
+    if (AppState.data && AppState.data.questions && AppState.data.questions.length > 0) {
+        AppState.currentQuestionIndex = 0;
+        AppState.currentCountryData = AppState.data.questions[0];
+    }
 
     // Update total marks display
     const totalEl = document.getElementById('total');
