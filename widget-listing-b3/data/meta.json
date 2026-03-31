@@ -209,7 +209,7 @@
       "author": "tce-nitinc"
     },
     "wg157-vowel-twins": {
-      "updatedAt": "2026-03-31T16:50:51+05:30",
+      "updatedAt": "2026-03-31T19:46:08+05:30",
       "author": "sushantthe"
     },
     "wg158-tricky-word-collector": {
@@ -398,6 +398,30 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-03-31T19:46:08+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:43:15+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure and word lists for vowel twins widget",
+      "widgets": [
+        157
+      ]
+    },
+    {
+      "date": "2026-03-31T19:36:45+05:30",
+      "author": "sushantthe",
+      "message": "feat: initialize vowel teams data structure with phase-specific word lists",
+      "widgets": [
+        157
+      ]
+    },
     {
       "date": "2026-03-31T18:33:45+05:30",
       "author": "sushantthe",
@@ -622,31 +646,6 @@
       "message": "133 155 fixed svg",
       "widgets": [
         133
-      ]
-    },
-    {
-      "date": "2026-03-31T14:50:46+05:30",
-      "author": "PrasannaP",
-      "message": "fix: update navigation SVG width and add fallback font stack to text elements",
-      "widgets": [
-        155
-      ]
-    },
-    {
-      "date": "2026-03-31T14:44:08+05:30",
-      "author": "PrasannaP",
-      "message": "85 change array1",
-      "widgets": [
-        85
-      ]
-    },
-    {
-      "date": "2026-03-31T14:33:12+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 133 wg 155 changes",
-      "widgets": [
-        133,
-        155
       ]
     }
   ]
