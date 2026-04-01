@@ -5,7 +5,7 @@ const wordData = {
       "answer": ["settlement", "settler"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "settlement": "The old settlement by the river had only ten houses.",
@@ -17,7 +17,7 @@ const wordData = {
       "answer": ["development", "developer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "development": "The development of the new playground took six months.",
@@ -29,7 +29,7 @@ const wordData = {
       "answer": ["entertainment", "entertainer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "entertainment": "There was plenty of entertainment at the school fair.",
@@ -37,23 +37,11 @@ const wordData = {
       }
     },
     {
-      "word": "employ",
-      "answer": ["employment", "employer"],
-      "suffixes": {
-        "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
-      },
-      "sentences": {
-        "employment": "After college, she found employment at a hospital.",
-        "employer": "A good employer treats all workers fairly."
-      }
-    },
-    {
       "word": "announce",
       "answer": ["announcement", "announcer"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "announcement": "The principal made an important announcement during assembly.",
@@ -65,7 +53,7 @@ const wordData = {
       "answer": ["achievement", "achiever"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "achievement": "Winning the science quiz was her proudest achievement.",
@@ -77,22 +65,33 @@ const wordData = {
       "answer": ["management", "manager"],
       "suffixes": {
         "correct": ["ment", "er"],
-        "incorrect": ["tion", "ation", "sion", "or"]
+        "incorrect": ["ion", "tion", "mance", "or"]
       },
       "sentences": {
         "management": "The management of the school decided to start a library club.",
         "manager": "The store manager helped us find the right size."
       }
+    },
+    {
+      "word": "employ",
+      "answer": ["employment", "employer"],
+      "suffixes": {
+        "correct": ["ment", "er"],
+        "incorrect": ["ion", "tion", "mance", "or"]
+      },
+      "sentences": {
+        "employment": "After college, she found employment at a hospital.",
+        "employer": "A good employer treats all workers fairly."
+      }
     }
   ],
-
   "G2": [
     {
       "word": "collect",
       "answer": ["collection", "collector"],
       "suffixes": {
-        "correct": ["tion", "or"],
-        "incorrect": ["ment", "ation", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "sentences": {
         "collection": "Her stamp collection fills three large albums.",
@@ -103,8 +102,8 @@ const wordData = {
       "word": "invent",
       "answer": ["invention", "inventor"],
       "suffixes": {
-        "correct": ["tion", "or"],
-        "incorrect": ["ment", "ation", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "sentences": {
         "invention": "The light bulb was one of the most important inventions in history.",
@@ -115,8 +114,8 @@ const wordData = {
       "word": "direct",
       "answer": ["direction", "director"],
       "suffixes": {
-        "correct": ["tion", "or"],
-        "incorrect": ["ment", "ation", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "sentences": {
         "direction": "We walked in the wrong direction and got lost.",
@@ -127,8 +126,8 @@ const wordData = {
       "word": "contribute",
       "answer": ["contribution", "contributor"],
       "suffixes": {
-        "correct": ["tion", "or"],
-        "incorrect": ["ment", "ation", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "spelling_alert": "Drop ‘e’ before adding any suffix.",
       "sentences": {
@@ -140,8 +139,8 @@ const wordData = {
       "word": "educate",
       "answer": ["education", "educator"],
       "suffixes": {
-        "correct": ["ation", "or"],
-        "incorrect": ["ment", "tion", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "spelling_alert": "Drop ‘e’ before adding any suffix.",
       "sentences": {
@@ -153,21 +152,23 @@ const wordData = {
       "word": "create",
       "answer": ["creation", "creator"],
       "suffixes": {
-        "correct": ["ation", "or"],
-        "incorrect": ["ment", "tion", "sion", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "sion", "ment", "er"]
       },
       "spelling_alert": "Drop ‘e’ before adding any suffix.",
       "sentences": {
         "creation": "The artist proudly displayed her latest creation at the exhibition.",
         "creator": "The creator of the comic book visited our school."
       }
-    },
+    }
+  ],
+  "G3": [
     {
       "word": "inform",
       "answer": ["information", "informer"],
       "suffixes": {
         "correct": ["ation", "er"],
-        "incorrect": ["ment", "tion", "sion", "or"]
+        "incorrect": ["ion", "tion", "sion", "or"]
       },
       "sentences": {
         "information": "The library is a great place to find information about animals.",
@@ -179,7 +180,7 @@ const wordData = {
       "answer": ["exploration", "explorer"],
       "suffixes": {
         "correct": ["ation", "er"],
-        "incorrect": ["ment", "tion", "sion", "or"]
+        "incorrect": ["ion", "tion", "sion", "or"]
       },
       "spelling_alert": "Drop ‘e’ before adding any suffix.",
       "sentences": {
@@ -188,27 +189,28 @@ const wordData = {
       }
     }
   ],
-
-  "G3": [
+  "G4": [
     {
       "word": "admit",
       "answer": ["admission", "admittance"],
       "suffixes": {
         "correct": ["sion", "ance"],
-        "incorrect": ["ment", "tion", "ation", "ence"]
+        "incorrect": ["ion", "tion", "ment", "er"]
       },
       "spelling_alert": "Drop 't' before adding 'ssion'. Double the 't' before 'ance'.",
       "sentences": {
         "admission": "The museum charges a small fee for admission.",
         "admittance": "The guard refused admittance to anyone without a ticket."
       }
-    },
+    }
+  ],
+  "G5": [
     {
       "word": "invade",
       "answer": ["invasion", "invader"],
       "suffixes": {
         "correct": ["sion", "er"],
-        "incorrect": ["ment", "tion", "ation", "or"]
+        "incorrect": ["ion", "tion", "ment", "or"]
       },
       "spelling_alert": "Drop 'de' before adding 'sion'.",
       "sentences": {
@@ -217,11 +219,26 @@ const wordData = {
       }
     },
     {
+      "word": "divide",
+      "answer": ["division", "divider"],
+      "suffixes": {
+        "correct": ["sion", "er"],
+        "incorrect": ["ion", "tion", "ment", "or"]
+      },
+      "spelling_alert": "Drop 'de' before adding 'sion'.",
+      "sentences": {
+        "division": "The division of the cake into equal slices took careful cutting.",
+        "divider": "She placed a divider between the two sections of her notebook."
+      }
+    }
+  ],
+  "G6": [
+    {
       "word": "supervise",
       "answer": ["supervision", "supervisor"],
       "suffixes": {
-        "correct": ["sion", "or"],
-        "incorrect": ["ment", "tion", "ation", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "tion", "ment", "er"]
       },
       "spelling_alert": "Drop 'se' before adding 'sion'.",
       "sentences": {
@@ -230,24 +247,35 @@ const wordData = {
       }
     },
     {
-      "word": "divide",
-      "answer": ["division", "divider"],
+      "word": "profess",
+      "answer": ["profession", "professor"],
       "suffixes": {
-        "correct": ["sion", "er"],
-        "incorrect": ["ment", "tion", "ation", "or"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "tion", "ment", "er"]
       },
-      "spelling_alert": "Drop 'de' before adding 'sion'.",
       "sentences": {
-        "division": "The division of the cake into equal slices took careful cutting.",
-        "divider": "She placed a divider between the two sections of her notebook."
+        "profession": "She chose teaching as her profession.",
+        "professor": "The professor gave a lecture on ancient history."
+      }
+    },
+    {
+      "word": "process",
+      "answer": ["procession", "processor"],
+      "suffixes": {
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "tion", "ment", "er"]
+      },
+      "sentences": {
+        "procession": "A long procession followed the band through the streets.",
+        "processor": "The computer has a very fast processor."
       }
     },
     {
       "word": "succeed",
       "answer": ["succession", "successor"],
       "suffixes": {
-        "correct": ["sion", "or"],
-        "incorrect": ["ment", "tion", "ation", "er"]
+        "correct": ["ion", "or"],
+        "incorrect": ["ition", "tion", "ment", "er"]
       },
       "spelling_alert": "Change 'ceed' to 'cession' or 'cessor'.",
       "sentences": {
@@ -256,14 +284,13 @@ const wordData = {
       }
     }
   ],
-
-  "G4": [
+  "G7": [
     {
       "word": "observe",
       "answer": ["observance", "observer", "observation"],
       "suffixes": {
         "correct": ["ance", "er", "ation"],
-        "incorrect": ["ence", "ment", "sion"]
+        "incorrect": ["ment", "sion", "or"]
       },
       "spelling_alert": "Drop 'e' before adding any of the suffixes.",
       "sentences": {
@@ -271,22 +298,86 @@ const wordData = {
         "observer": "The quiet observer noticed details that others missed.",
         "observation": "The scientist wrote down every observation in her notebook."
       }
-    },
+    }
+  ],
+  "G8": [
     {
       "word": "govern",
       "answer": ["governance", "governor", "government"],
       "suffixes": {
         "correct": ["ance", "or", "ment"],
-        "incorrect": ["ence", "tion", "sion"]
+        "incorrect": ["tion", "sion", "er"]
       },
       "sentences": {
         "governance": "Good governance means making fair decisions for everyone.",
         "governor": "The governor visited our district to open the new hospital.",
         "government": "The government announced free textbooks for all primary schools."
       }
+    },
+    {
+      "word": "perform",
+      "answer": ["performance", "performer"],
+      "suffixes": {
+        "correct": ["ance", "er"],
+        "incorrect": ["ion", "tion", "sion", "or"]
+      },
+      "sentences": {
+        "performance": "The students gave a wonderful performance of the play.",
+        "performer": "The street performer played the violin beautifully."
+      }
+    },
+    {
+      "word": "insure",
+      "answer": ["insurance", "insurer"],
+      "suffixes": {
+        "correct": ["ance", "er"],
+        "incorrect": ["ion", "tion", "sion", "or"]
+      },
+      "sentences": {
+        "insurance": "It is important to have health insurance in case of illness.",
+        "insurer": "The insurer promised to cover the cost of the repairs."
+      }
+    },
+    {
+      "word": "inherit",
+      "answer": ["inheritance", "inheritor"],
+      "suffixes": {
+        "correct": ["ance", "or"],
+        "incorrect": ["ion", "tion", "sion", "er"]
+      },
+      "sentences": {
+        "inheritance": "The family fought over their grandfather's inheritance.",
+        "inheritor": "He was the sole inheritor of the large estate."
+      }
+    }
+  ],
+  "G9": [
+    {
+      "word": "tolerate",
+      "answer": ["tolerance", "toleration"],
+      "suffixes": {
+        "correct": ["ance", "ation"],
+        "incorrect": ["ion", "tion", "sion", "er"]
+      },
+      "sentences": {
+        "tolerance": "Tolerance of different opinions is vital in a community.",
+        "toleration": "The policy of toleration allowed for peaceful coexistence."
+      }
+    },
+    {
+      "word": "dominate",
+      "answer": ["dominance", "domination"],
+      "suffixes": {
+        "correct": ["ance", "ation"],
+        "incorrect": ["ion", "tion", "sion", "er"]
+      },
+      "sentences": {
+        "dominance": "The team's dominance in the tournament was clear to everyone.",
+        "domination": "The army sought total domination of the region."
+      }
     }
   ]
-};
+}
 
 const wordSpan = document.getElementById('word-span');
 const suffix1 = document.getElementById('suffix1');
@@ -754,11 +845,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
-      const alertPopupImg = document.getElementById('alert-popup-img');
-      if (alertPopupImg) {
-        alertPopupImg.style.display = 'none';
-        hideBackdrop();
-      }
+      // const alertPopupImg = document.getElementById('alert-popup-img');
+      // if (alertPopupImg) {
+      //   alertPopupImg.style.display = 'none';
+      //   hideBackdrop();
+      // }
       if (showAnswerBtn.textContent.trim() === 'Show Answer') {
         showAnswerBtn.textContent = 'Hide Answer';
         showAllAnswers(wordObj);
@@ -1016,25 +1107,25 @@ document.addEventListener("DOMContentLoaded", () => {
           playCompleteLottie();
 
           // Display alert popup when completionLottie plays
-          const d = wordObj && wordObj.details;
-          if (d && d.spelling_alert) {
-            let imgName = null;
-            if (d.spelling_alert.includes("'e'") || d.spelling_alert.includes("‘e’")) imgName = 'e';
-            else if (d.spelling_alert.includes("'t'")) imgName = 't';
-            else if (d.spelling_alert.includes("'de'")) imgName = 'de';
-            else if (d.spelling_alert.includes("'se'")) imgName = 'se';
-            else if (d.spelling_alert.includes("'ceed'")) imgName = 'ceed';
+          // const d = wordObj && wordObj.details;
+          // if (d && d.spelling_alert) {
+          //   let imgName = null;
+          //   if (d.spelling_alert.includes("'e'") || d.spelling_alert.includes("‘e’")) imgName = 'e';
+          //   else if (d.spelling_alert.includes("'t'")) imgName = 't';
+          //   else if (d.spelling_alert.includes("'de'")) imgName = 'de';
+          //   else if (d.spelling_alert.includes("'se'")) imgName = 'se';
+          //   else if (d.spelling_alert.includes("'ceed'")) imgName = 'ceed';
 
-            if (imgName) {
-              const alertPopupImg = document.getElementById('alert-popup-img');
-              const alertImg = document.getElementById('alert-img');
-              if (alertPopupImg && alertImg) {
-                alertImg.setAttribute("src", `assets/${imgName}.svg`);
-                alertPopupImg.style.display = 'block';
-                showBackdrop();
-              }
-            }
-          }
+          //   if (imgName) {
+          //     const alertPopupImg = document.getElementById('alert-popup-img');
+          //     const alertImg = document.getElementById('alert-img');
+          //     if (alertPopupImg && alertImg) {
+          //       alertImg.setAttribute("src", `assets/${imgName}.svg`);
+          //       alertPopupImg.style.display = 'block';
+          //       showBackdrop();
+          //     }
+          //   }
+          // }
         }, 100);
       }
 
@@ -1066,27 +1157,27 @@ document.addEventListener("DOMContentLoaded", () => {
     hideBackdrop();
   });
 
-  const closeAlertBtn = document.getElementById('close-alert-btn');
-  if (closeAlertBtn) {
-    closeAlertBtn.addEventListener('click', () => {
-      const popup = document.getElementById('alert-popup');
-      if (popup) popup.style.display = 'none';
-    });
-  }
+  // const closeAlertBtn = document.getElementById('close-alert-btn');
+  // if (closeAlertBtn) {
+  //   closeAlertBtn.addEventListener('click', () => {
+  //     const popup = document.getElementById('alert-popup');
+  //     if (popup) popup.style.display = 'none';
+  //   });
+  // }
 
 
 
-  const closeAlert = document.getElementById('close-alert');
-  if (closeAlert) {
-    closeAlert.addEventListener('click', () => {
-      const alertImg = document.getElementById('alert-img');
-      if (alertImg) alertImg.style.display = 'none';
-      closeAlert.style.display = 'none';
-      const alertPopupImg = document.getElementById('alert-popup-img');
-      if (alertPopupImg) alertPopupImg.style.display = 'none';
-      hideBackdrop();
-    });
-  }
+  // const closeAlert = document.getElementById('close-alert');
+  // if (closeAlert) {
+  //   closeAlert.addEventListener('click', () => {
+  //     const alertImg = document.getElementById('alert-img');
+  //     if (alertImg) alertImg.style.display = 'none';
+  //     closeAlert.style.display = 'none';
+  //     const alertPopupImg = document.getElementById('alert-popup-img');
+  //     if (alertPopupImg) alertPopupImg.style.display = 'none';
+  //     hideBackdrop();
+  //   });
+  // }
 
 
 
