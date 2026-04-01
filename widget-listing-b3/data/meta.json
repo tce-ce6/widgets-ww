@@ -265,7 +265,7 @@
       "author": "tce-ashishg"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-04-01T11:34:08+05:30",
+      "updatedAt": "2026-04-01T14:06:57+05:30",
       "author": "tce-ashishg"
     },
     "wg67-race-to-the-magic-numbers": {
@@ -398,6 +398,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-01T14:06:57+05:30",
+      "author": "tce-ashishg",
+      "message": "wg61 issue resolved",
+      "widgets": [
+        61
+      ]
+    },
     {
       "date": "2026-04-01T11:34:08+05:30",
       "author": "tce-ashishg",
@@ -638,15 +646,6 @@
       "message": "wg94",
       "widgets": [
         94
-      ]
-    },
-    {
-      "date": "2026-03-31T20:39:36+05:30",
-      "author": "tce-nitinc",
-      "message": "wg105 fixes",
-      "widgets": [
-        94,
-        105
       ]
     }
   ]
