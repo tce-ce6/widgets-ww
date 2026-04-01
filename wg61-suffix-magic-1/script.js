@@ -1066,12 +1066,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const suffixString = selectedSuffixes.join("");
     const targetLength = rootWord.length + suffixString.length;
 
-    // Find the answer that ends with the compiled suffixString and has length matching within 2 characters.
-    let combined = answers.find(a => a.endsWith(suffixString) && Math.abs(a.length - targetLength) <= 2);
+    // Try exact match first
+    let combined = answers.find(a => a === rootWord + suffixString);
 
-    // Fallback if not found 
+    // Fallback if not found (for words with spelling changes e.g. usable, spotty )
     if (!combined) {
-      combined = answers.find(a => a === rootWord + suffixString);
+      combined = answers.find(a => a.endsWith(suffixString) && Math.abs(a.length - targetLength) <= 2);
     }
 
     // If we didn't find any valid answer combination
@@ -1124,16 +1124,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     completedAnswers.push(combined);
     updateStarsDisplay(answers.length, completedAnswers.length);
-
-    // const d = wordObj.details;
-    // if (d.spelling_alert && d.spelling_alert.toLowerCase().includes(combined.toLowerCase())) {
-    //   const alertPopup = document.getElementById('alert-popup');
-    //   const alertTextBody = document.getElementById('alert-text-body');
-    //   if (alertPopup && alertTextBody) {
-    //     alertTextBody.innerHTML = d.spelling_alert.replace(/\b([A-Z]{2,})\b/g, '<span style="font-weight: bold; color: red;">$1</span>');
-    //     alertPopup.style.display = 'block';
-    //   }
-    // }
 
     const d = wordObj.details;
 
