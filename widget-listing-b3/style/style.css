@@ -19,6 +19,7 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 24px 20px;
+  overflow: hidden;
 }
 
 .page-header {
@@ -53,6 +54,7 @@ body {
   font-size: 11px;
   color: #666;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 /* ── Search ───────────────────────────────────────────────── */
@@ -71,8 +73,13 @@ body {
   margin-top: 2px;
 }
 
-.widget-search::placeholder { color: #666; }
-.widget-search:focus         { border-color: #aaa; }
+.widget-search::placeholder {
+  color: #666;
+}
+
+.widget-search:focus {
+  border-color: #aaa;
+}
 
 /* ── Recent activity panel ────────────────────────────────── */
 .recent-activity {
@@ -80,6 +87,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  max-width: 70%;
+  overflow: hidden;
 }
 
 .act-heading {
@@ -235,14 +244,14 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, transparent 50%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, transparent 50%);
   pointer-events: none;
 }
 
 .widget-list li img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   background: #2a2d32;
 }
@@ -285,8 +294,13 @@ body {
   white-space: nowrap;
 }
 
-.card-ts     { color: rgba(255, 255, 255, 0.8); }
-.card-author { color: #00bcd4; }
+.card-ts {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card-author {
+  color: #00bcd4;
+}
 
 /* widget name — bottom centre */
 .widget-name {
