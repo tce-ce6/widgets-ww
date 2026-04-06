@@ -6,6 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/style.css" />
 </head>
+
+<div id="solution-modal" class="solution-modal">
+  <div class="solution-box">
+
+    <div id="solution-header" class="solution-header">
+  Solution
+  </div>
+  <span class="popup-close">✕</span>
+
+
+    <div class="solution-content">
+
+      <p id="solution-title"></p>
+
+  
+
+      <p id="solution-steps"></p>
+
+      <p id="solution-result"></p>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="submit-modal" class="solution-modal">
+  <div class="solution-box">
+
+<div class="solution-header">
+  Result
+</div>
+
+<span class="popup-close">✕</span>
+
+    <div class="solution-content">
+
+      <h3 id="submit-title"></h3>
+
+      <p id="solution-title"></p>
+
+      <div id="submit-steps"></div>
+
+      <br>
+
+      <div id="submit-result"></div>
+
+    </div>
+
+  </div>
+</div>
+
+
 <body>
 
   <!-- PAGE HEADER (OUTSIDE WIDGET) -->
@@ -28,28 +80,63 @@
 
       <!-- LEFT PANEL -->
       <div class="left">
-        <p class="desc">
-          Explore how changing rows (a) or seats per row (b) changes total seats.
-        </p>
+        <h3 id="boxheader" class="dimensions-header">Choose your theater dimensions:</h3>
+  
+   <div class="dimensions-row">
 
-    <div class="inline-fields">
-        <div class="field">
-            <label>Rows (a)</label>
-            <input id="rows" type="number" value="23" min="1" max="24"/>
-        </div>
+  <!-- A BOX -->
+   
+  <div id="a-boxbg" class="dimension-box a-box">
+    <div class="dimension-title">Number of rows (a):</div>
 
-        <div class="field">
-            <label>Seats per Row (b)</label>
-            <input id="seats" type="number" value="24" min="1" max="24"/>
-        </div>
-</div>
+    <div class="dimension-controls">
+      <div class="spinner">
+      <button class="step-btn" id="aMinus">−</button>
+      <span id="aDisplay" class="step-value">15</span>
+      <button class="step-btn" id="aPlus">+</button>
+      </div>
+      <span class="dimension-big" id="aBig">15</span>
+    </div>
+  </div>
+
+  <!-- B BOX -->
+  <div id="b-boxbg" class="dimension-box b-box">
+    <div class="dimension-title">Seats per row (b):</div>
+
+    <div class="dimension-controls">
+      <div class="spinner">
+      <button class="step-btn" id="bMinus">−</button>
+      <span id="bDisplay" class="step-value">2</span>
+      <button class="step-btn" id="bPlus">+</button>
+      </div>
+      <span class="dimension-big" id="bBig">2</span>
+    </div>
+  </div>
+  </div>
 
         <h3>Choose Scenario</h3>
-        <button class="scenario-btn" data-scenario="ADD_ROW_ADD_SEAT">Add 1 row, add 1 Seat per row</button>
-        <button class="scenario-btn" data-scenario="ADD_ROW_REMOVE_SEAT">Add 1 row, remove 1 Seat per row</button>
-        <button class="scenario-btn" data-scenario="REMOVE_ROW_ADD_SEAT">Remove 1 Row, add 1 Seat per row</button>
-        <button class="scenario-btn" data-scenario="ADD_SEAT">Same Rows, add 1 Seat per row</button>
-        <button class="scenario-btn" data-scenario="REMOVE_SEAT">Same Rows, remove 1 Seat per row</button>
+
+   <div class="scenario-grid">
+    <button class="scenario-btn" data-scenario="ADD_ROW_ADD_SEAT">
+      Add 1 row, add 1 Seat per row
+    </button>
+
+    <button class="scenario-btn" data-scenario="ADD_ROW_REMOVE_SEAT">
+      Add 1 row, remove 1 Seat per row
+    </button>
+
+    <button class="scenario-btn" data-scenario="REMOVE_ROW_ADD_SEAT">
+      Remove 1 Row, add 1 Seat per row
+    </button>
+
+    <button class="scenario-btn" data-scenario="ADD_SEAT">
+      Same Rows, add 1 Seat per row
+    </button>
+
+    <button class="scenario-btn" data-scenario="REMOVE_SEAT">
+      Same Rows, remove 1 Seat per row
+    </button>
+  </div>
 
         <h3>Predict the Change</h3>
 
@@ -65,7 +152,7 @@
 
         <div id="feedback" class="feedback" hidden></div>
 
-        <div id="hint-box" class="hint" hidden>
+        <div id="hint-box" class="hint-box" hidden>
           <strong>Hint:</strong> (a + 1)(b + 1) = ab + a + b + 1
         </div>
 
@@ -86,21 +173,31 @@
         <span class="plus">+</span>
         <span class="term">1</span>
         </div>
+
+        <!-- FOOTER BUTTONS -->
+    <div class="footer">
+      <button id="btn-hint" class="btn hint">Hint</button>
+      <button id="btn-submit" class="btn submit">Submit</button>
+      <button id="btn-answer" class="btn answer-btn">Show Answer</button>
+      <button id="btn-reset" class="btn reset">Reset</button>
+    </div>
       </div>
 
       <!-- RIGHT PANEL -->
        <div class="right">
   <!-- Selected Option Header -->
-  <div class="right-header">
-    <span class="right-label">Selected Option:</span>
+  <div id="selected-option-header" class="right-header">
+    <span id="option-label" class="right-label">Current Theater Layout:</span>
     <span id="selected-option-text" class="right-value">
-      Select an option to see changes
+      Current Theater Layout
     </span>
   </div>
 
   <!-- Seat Canvas -->
   <div class="right-canvas">
+
     <svg id="theatre-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+      <g id="screen-layer"></g>
       <g id="seat-layer"></g>
     </svg>
   </div>
@@ -122,13 +219,7 @@
   </div>
 </div>
 
-    <!-- FOOTER BUTTONS -->
-    <div class="footer">
-      <button id="btn-hint" class="btn hint">Hint</button>
-      <button id="btn-submit" class="btn submit">Submit</button>
-      <button id="btn-answer" class="btn answer-btn">Show Answer</button>
-      <button id="btn-reset" class="btn reset">Reset</button>
-    </div>
+    
   </div>
 
   <script src="./js/app.js"></script>

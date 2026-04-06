@@ -51,33 +51,35 @@
 
         
 
-   <h3 class="dimensions-header">Choose your dimensions:</h3>
+   <h3 id="boxheader" class="dimensions-header">Choose your dimensions:</h3>
   
    <div class="dimensions-row">
 
   <!-- A BOX -->
    
-  <div class="dimension-box a-box">
+  <div id="a-boxbg" class="dimension-box a-box">
     <div class="dimension-title">Trees in each row (a):</div>
 
     <div class="dimension-controls">
+      <div class="spinner">
       <button class="step-btn" id="aMinus">−</button>
       <span id="aDisplay" class="step-value">15</span>
       <button class="step-btn" id="aPlus">+</button>
-
+      </div>
       <span class="dimension-big" id="aBig">15</span>
     </div>
   </div>
 
   <!-- B BOX -->
-  <div class="dimension-box b-box">
+  <div id="b-boxbg" class="dimension-box b-box">
     <div class="dimension-title">Trees to add or remove (b):</div>
 
     <div class="dimension-controls">
+      <div class="spinner">
       <button class="step-btn" id="bMinus">−</button>
       <span id="bDisplay" class="step-value">2</span>
       <button class="step-btn" id="bPlus">+</button>
-
+      </div>
       <span class="dimension-big" id="bBig">2</span>
     </div>
   </div>
@@ -134,9 +136,15 @@
           <div class="legend-item"><span class="legend-dot added"></span> Added trees</div>
           <div class="legend-item"><span class="legend-dot removed"></span> Removed trees</div>
         </div>
+        
+        <div class="garden-patch">
+
+        <div id="selectedOptionTitle" class="selected-option-title"></div>
+
         <div class="grid-wrapper">
         <div id="gardenGrid" class="garden-grid"></div></div>
         <div id="gridLabel" class="grid-label"></div>
+      </div>
       </div>
     </div>
  </div></div>

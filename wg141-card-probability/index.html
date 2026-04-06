@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Card Probability Widget</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<h1 class="title">Card Probability</h1>
+<p class="subtitle">Explore probability with customizable card counts!</p>
+
+<div class="layout">
+
+<!-- Set Cards -->
+<div class="set-cards">
+
+<h3>Set Card Counts</h3>
+
+<div class="controls">
+
+<div class="control spade">
+
+<label class="control-title">Spade Cards:</label>
+
+<div class="control-row">
+
+<div class="counter">
+<button class="counter-btn minus" onclick="changeCards('spade',-1)">−</button>
+<input class="counter-input" id="spadeInput" value="10" oninput="manualInput()">
+<button class="counter-btn plus" onclick="changeCards('spade',1)">+</button>
+</div>
+
+<div class="big-icon">♠ <span id="spadeCount">10</span></div>
+
+</div>
+</div>
+
+<div class="control heart">
+
+<label class="control-title">Heart Cards:</label>
+
+<div class="control-row">
+
+<div class="counter">
+<button class="counter-btn minus" onclick="changeCards('heart',-1)">−</button>
+<input class="counter-input" id="heartInput" value="15" oninput="manualInput()">
+<button class="counter-btn plus" onclick="changeCards('heart',1)">+</button>
+</div>
+
+<div class="big-icon red">♥ <span id="heartCount">15</span></div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Question -->
+<div class="question-panel">
+
+<h3>Question:</h3>
+<p id="questionText"></p>
+
+</div>
+
+<!-- Theoretical -->
+<div class="panel theoretical">
+
+<h3>Theoretical Probability</h3>
+
+<p class="cards-title">Cards in Box:</p>
+
+<div class="cards-area">
+
+<div id="cardsBox"></div>
+
+<p id="cardSummary" class="card-summary"></p>
+
+<!-- Probability Popup -->
+<div id="probabilityPopup" class="panel-popup">
+
+<div id="probabilities" class="probabilities">
+
+<div class="prob-box">
+<div class="icon">♠</div>
+<div class="percent" id="spadeProb">0%</div>
+<div>Spade Probability</div>
+<div id="spadeFrac"></div>
+</div>
+
+<div class="prob-box">
+<div class="icon red">♥</div>
+<div class="percent red" id="heartProb">0%</div>
+<div>Heart Probability</div>
+<div id="heartFrac"></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="answer-section">
+
+<div class="answer-row">
+
+<div class="answer-question">
+What is the probability of drawing a spade?
+</div>
+
+<input 
+type="number"
+class="answer-display"
+id="answerInput"
+placeholder="---"
+/>
+
+<span class="percent-symbol">%</span>
+
+</div>
+<div class="answer-buttons">
+<button class="show-answer-btn" id="showAnswerBtn" onclick="showAnswer()" disabled>
+Show Answer
+</button>
+<button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Submit</button>
+</div>
+<div id="answerFeedback" class="answer-feedback"></div>
+
+</div>
+
+</div>
+
+
+
+
+<!-- Experimental -->
+<div class="panel experimental">
+
+<h3>Experimental Probability</h3>
+
+<div class="draw-area">
+
+<div id="drawCard" class="draw-card"></div>
+
+<p id="drawText">Draw a card to begin</p>
+
+</div>
+
+<div class="buttons">
+
+<button class="btn draw1" onclick="drawCards(1)">Draw 1 Card</button>
+
+<button class="btn draw10" onclick="drawCards(10)">Draw 10 Cards</button>
+
+<button class="btn draw100" onclick="drawCards(100)">Draw 100 Cards</button>
+
+<button class="btn reset" onclick="resetExperiment()">Reset</button>
+
+</div>
+
+<div class="stats">
+<div id="resultPopup" class="result-popup">
+✓ Results are close to expected probability!
+</div>
+
+<h3 class="stats-title">Your Statistics</h3>
+
+<div class="stats-grid">
+
+<div class="stat">
+<div class="stat-icon">♠ <span id="spadeDrawn">0</span></div>
+<div class="stat-label">Spades Drawn</div>
+<div class="stat-percent blue" id="spadeActual">0.0%</div>
+
+</div>
+
+<div class="stat">
+<div class="stat-icon red">♥ <span id="heartDrawn">0</span></div>
+<div class="stat-label">Hearts Drawn</div>
+<div class="stat-percent red" id="heartActual">0.0%</div>
+</div>
+
+<div class="stat">
+<div class="stat-icon"><span id="totalDraws">0</span></div>
+<div class="stat-label">Total Draws</div>
+<div class="stat-message">Keep drawing!</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div> <!-- END layout -->
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

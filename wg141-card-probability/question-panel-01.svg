@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1920 1080">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fffca7;
+      }
+
+      .st1 {
+        fill: #eb3000;
+      }
+
+      .st1, .st2, .st3, .st4, .st5 {
+        isolation: isolate;
+      }
+
+      .st1, .st2, .st4, .st5 {
+        font-size: 28px;
+      }
+
+      .st1, .st2, .st5 {
+        font-family: Roboto-Bold, Roboto;
+        font-weight: 700;
+      }
+
+      .st4 {
+        font-family: Roboto-Medium, Roboto;
+        font-weight: 500;
+      }
+
+      .st6 {
+        fill: #fa7115;
+      }
+
+      .st5 {
+        fill: #18008f;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_137-4" class="st0" x="498.5" y="445.03" width="924" height="189" rx="6" ry="6"/>
+  <g id="If_there_are_10_spade_cards_and_15_heart_cards_in_a_box_and_one_card_is_drawn_at_random_what_is_the_probability_that_the_card_is_a_spade_" class="st3">
+    <text class="st4" transform="translate(546.5 552.03)"><tspan x="0" y="0">If there are </tspan></text>
+    <text class="st5" transform="translate(690.01 552.03)"><tspan x="0" y="0">10 spade cards</tspan></text>
+    <text class="st4" transform="translate(882.17 552.03)"><tspan x="0" y="0" xml:space="preserve"> and </tspan></text>
+    <text class="st1" transform="translate(942.64 552.03)"><tspan x="0" y="0">15 heart cards</tspan></text>
+    <text class="st4" transform="translate(1124.89 552.03)"><tspan x="0" y="0" xml:space="preserve"> in a box, and one </tspan></text>
+    <text class="st4" transform="translate(546.5 589.03)"><tspan x="0" y="0">card is drawn at random, what is the probability that the card is a</tspan></text>
+  </g>
+  <path id="Rectangle_138-2" class="st6" d="M504.5,445.03h19v189h-19c-3.31,0-6-2.69-6-6v-177c0-3.31,2.69-6,6-6Z"/>
+  <g id="Question:" class="st3">
+    <text class="st2" transform="translate(546.5 484.03)"><tspan x="0" y="0">Question:</tspan></text>
+  </g>
+</svg>
