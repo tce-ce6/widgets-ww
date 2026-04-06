@@ -147,8 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
         containerId: "centerPoint",
         leftElectron: "leftElectron",
         rightElectron: "rightElectron",
-        activeImgSrc: "./Assets/proton-molecule.svg",
-        defaultImgSrc: "./Assets/center-point.svg"
+        activeImgSrc: "./assets/proton-molecule.svg",
+        defaultImgSrc: "./assets/center-point.svg"
     });
 
     document.getElementById("resetBtn").addEventListener("click", () => {
