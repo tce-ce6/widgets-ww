@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===== HELPER FUNCTIONS =====
   const disp = (t) => vowelTeams[t]?.display || t;
   const soundLabel = (t) =>
-    `the <strong style="color:${teamColors[t].glow};font-size:20px">${vowelTeams[t].sound}</strong> sound`;
+    `the <strong style="color:${teamColors[t].glow};font-size:25px">${vowelTeams[t].sound}</strong> sound`;
 
   // Audio file mappings
   const soundFolders = {
@@ -631,7 +631,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el && state.currentTeam) {
       el.innerHTML = jp(state.currentTeam, phase, null);
       const c = teamColors[state.currentTeam];
-      el.parentElement.style.background = `linear-gradient(180deg,${c.light} 0%,#F0E6FF 50%,${c.bg}50 100%)`;
+      document.getElementById("svg-container").style.background = `linear-gradient(180deg,${c.light} 0%,#F0E6FF 50%,${c.bg}50 100%)`;
     }
   }
 
@@ -787,7 +787,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((t) => {
         const c = teamColors[t];
         const d = state.completedTeams.includes(t);
-        return `<button class="island-btn" onclick="window.vowelTwinsApp.startTeam('${t}')" style="background:linear-gradient(180deg,${c.bg} 0%,${c.border} 100%);border:${d ? "4px solid #FFD700" : "4px solid " + c.border};box-shadow:${d ? "0 0 20px rgba(255,215,0,0.5)" : "0 6px 20px " + c.glow + "40"}">${d ? '<span style="position:absolute;top:-8px;right:-8px;font-size:20px">⭐</span>' : ""}<span style="font-size:28px;font-weight:bold;color:#333">${disp(t)}</span><span style="font-size:11px;color:#555;margin-top:4px">${vowelTeams[t].sound}</span><span style="font-size:20px;margin-top:5px">${vowelTeams[t].soundDisplay}</span></button>`;
+        return `<button class="island-btn" onclick="window.vowelTwinsApp.startTeam('${t}')" style="background:linear-gradient(180deg,${c.bg} 0%,${c.border} 100%);border:${d ? "4px solid #FFD700" : "4px solid " + c.border};box-shadow:${d ? "0 0 20px rgba(255,215,0,0.5)" : "0 6px 20px " + c.glow + "40"}">${d ? '<span style="position:absolute;top:-8px;right:-8px;font-size:20px">⭐</span>' : ""}<span style="font-size:55px;font-weight:bold;color:#333">${disp(t)}</span><span style="font-size:21px;color:#555;margin-top:4px">${vowelTeams[t].sound}</span><span style="font-size:40px;margin-top:5px">${vowelTeams[t].soundDisplay}</span></button>`;
       })
       .join("");
 
@@ -815,28 +815,28 @@ document.addEventListener("DOMContentLoaded", () => {
             <div style="width:95px;height:95px;border-radius:50%;background:radial-gradient(circle at 30% 30%,white,${c.bg});border:4px solid ${c.border};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px ${c.glow}50;animation:float 3s ease-in-out infinite;font-size:44px;font-weight:bold;color:#333;position:relative">
               ${l1}<span style="position:absolute;top:-8px;right:-6px;font-size:18px">👋</span>
             </div>
-            <span style="font-size:13px;color:#999;margin-top:8px">talks!</span>
+            <span style="font-size:25px;color:#999;margin-top:8px">talks!</span>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center">
             <div style="width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 30% 30%,white,${c.bg}88);border:4px solid ${c.border}66;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px ${c.glow}30;animation:float 3s ease-in-out infinite 0.6s;font-size:38px;font-weight:bold;color:#aaa;position:relative">
               ${l2}<span style="position:absolute;top:-10px;right:-4px;font-size:16px">💤</span>
             </div>
-            <span style="font-size:13px;color:#999;margin-top:8px">sleeps</span>
+            <span style="font-size:25px;color:#999;margin-top:8px">sleeps</span>
           </div>
         </div>
-        <div style="background:white;border-radius:20px;padding:22px 30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);max-width:320px;width:100%;margin-bottom:4px">
-          <p style="font-size:20px;font-weight:bold;color:#333;margin-bottom:10px">Meet <span style="color:${c.border}">${l1}</span>${l2 ? ` and <span style="color:${c.border}">${l2}</span>` : ""}!</p>
-          <p style="font-size:16px;color:#555;margin-bottom:14px">Together they say <strong style="color:${c.border};font-size:20px">${vowelTeams[tm].soundDisplay}</strong></p>
-          <button onclick="window.vowelTwinsApp.speak('${tm}', '${tm}')" style="background:#2196F3;color:#fff;border:none;padding:8px 22px;border-radius:25px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700;margin-bottom:14px;">🔊 Hear "${tm}"</button>
-          <p style="font-size:13px;color:#999;font-style:italic;margin:0">⚡ ${vowelTeams[tm].rule}</p>
+        <div style="background:white;border-radius:20px;padding:22px 30px;box-shadow:0 4px 20px rgba(0,0,0,0.08);max-width:530px;width:100%;margin-bottom:4px">
+          <p style="font-size:35px;font-weight:bold;color:#333;margin-bottom:10px">Meet <span style="color:${c.border}">${l1}</span>${l2 ? ` and <span style="color:${c.border}">${l2}</span>` : ""}!</p>
+          <p style="font-size:28px;color:#555;margin-bottom:14px">Together they say <strong style="color:${c.border};font-size:30px">${vowelTeams[tm].soundDisplay}</strong></p>
+          <button onclick="window.vowelTwinsApp.speak('${tm}', '${tm}')" style="background:#2196F3;color:#fff;border:none;padding:8px 22px;border-radius:25px;font-size:30px;cursor:pointer;font-family:inherit;font-weight:700;margin-bottom:14px;">🔊 Hear "${tm}"</button>
+          <p style="font-size:25px;color:#999;font-style:italic;margin:0">⚡ ${vowelTeams[tm].rule}</p>
         </div>
-        <button onclick="window.vowelTwinsApp.nextWordMeet()" class="btn-main" style="margin-top:20px;">NEXT →</button>`;
+        <button onclick="window.vowelTwinsApp.nextWordMeet()" class="btn-main" style="margin-top:20px;">NEXT</button>`;
     } else if (wi >= 1 && wi <= 3) {
       const w = words[wi - 1];
-      html = `<p style="font-size:14px;color:#666;margin-bottom:10px;margin-top: 12px;">Word ${wi} of 3</p>
-              <div onclick="window.vowelTwinsApp.speak('${w.word}', '${tm}')" style="width:min(75vw,260px);height:min(75vw,260px);border-radius:50%;background:radial-gradient(circle at 30% 30%,white 0%,${c.bg} 50%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 15px 50px ${c.glow}50;border:6px solid ${c.border};cursor:pointer;animation:float 3s ease-in-out infinite">${hl(w.word, tm, "clamp(36px,12vw,52px)")}<span style="font-size:18px;color:#666;margin-top:18px">🔊 tap to hear</span></div>
-              <p style="margin-top:15px;font-size:14px;color:#666;background:white;padding:10px 20px;border-radius:15px">💡 ${w.clue}</p>
-              <button onclick="window.vowelTwinsApp.nextMeetWord()" class="btn-main" style="margin-top:20px;">${wi < 3 ? "NEXT →" : "BUILD →"}</button>`;
+      html = `<p style="font-size:22px;color:#666;margin-bottom:10px;margin-top: 12px;">Word ${wi} of 3</p>
+              <div onclick="window.vowelTwinsApp.speak('${w.word}', '${tm}')" style="width:min(75vw,260px);height:min(75vw,260px);border-radius:50%;background:radial-gradient(circle at 30% 30%,white 0%,${c.bg} 50%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 15px 50px ${c.glow}50;border:6px solid ${c.border};cursor:pointer;animation:float 3s ease-in-out infinite">${hl(w.word, tm, "clamp(36px,12vw,52px)")}<span style="font-size:24px;color:#666;margin-top:38px">🔊 tap to hear</span></div>
+              <p style="margin-top:15px;font-size:24px;color:#666;background:white;padding:10px 20px;border-radius:15px">💡 ${w.clue}</p>
+              <button onclick="window.vowelTwinsApp.nextMeetWord()" class="btn-main" style="margin-top:20px;">${wi < 3 ? "NEXT" : "BUILD"}</button>`;
     }
     content.innerHTML = html;
   }
@@ -889,12 +889,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sr) {
       oh = `<p style="font-size:24px;color:#888;margin-bottom:10px">Which vowel team completes this word?</p>
             <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">${opts
-              .map((t) => {
-                const tc = teamColors[t];
-                const sel = state.buildAnswer === t;
-                return `<button class="team-btn" onclick="window.vowelTwinsApp.selectBuild('${t}')" style="width:80px;height:80px;font-size:24px;background:${sel ? tc.glow : `radial-gradient(circle at 30% 30%,white,${tc.bg})`};border:4px solid ${tc.border};color:${sel ? "white" : "#333"};box-shadow:${sel ? `0 0 25px ${tc.glow}` : `0 4px 15px ${tc.glow}30`};transform:${sel ? "scale(1.1)" : "scale(1)"}">${disp(t)}</button>`;
-              })
-              .join("")}</div>`;
+          .map((t) => {
+            const tc = teamColors[t];
+            const sel = state.buildAnswer === t;
+            return `<button class="team-btn" onclick="window.vowelTwinsApp.selectBuild('${t}')" style="width:100px;height:100px;font-size:44px;background:${sel ? tc.glow : `radial-gradient(circle at 30% 30%,white,${tc.bg})`};border:4px solid ${tc.border};color:${sel ? "white" : "#333"};box-shadow:${sel ? `0 0 25px ${tc.glow}` : `0 4px 15px ${tc.glow}30`};transform:${sel ? "scale(1.1)" : "scale(1)"}">${disp(t)}</button>`;
+          })
+          .join("")}</div>`;
       renderButtons("build-buttons", [
         {
           id: "btn-check-build",
@@ -906,11 +906,11 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       ]);
     } else {
-      oh = `<div style="text-align:center"><p class="result-text" style="color:${sr === "correct" ? "#32CD32" : "#FF6B6B"}">${sr === "correct" ? "✓ Correct!" : "✗ Not quite!"}</p>${sr === "correct" ? `<p style="font-size:28px;font-weight:bold;color:#333;margin-bottom:15px">${hl(cw.word, tm, "28px")}</p>` : ""}</div>`;
+      oh = `<div style="text-align:center"><p class="result-text" style="color:${sr === "correct" ? "#32CD32" : "#FF6B6B"}">${sr === "correct" ? "✓ Correct!" : "✗ Not quite!"}</p>${sr === "correct" ? `<p style="font-size:40px;font-weight:bold;color:#333;margin-bottom:15px; margin-top:40px;">${hl(cw.word, tm, "40px")}</p>` : ""}</div>`;
       renderButtons("build-buttons", [
         {
           id: "btn-next-build",
-          label: state.currentWordIndex < 4 ? "NEXT →" : "SPOT →",
+          label: state.currentWordIndex < 4 ? "NEXT" : "SPOT",
           onclick: "window.vowelTwinsApp.nextQuestion()",
           color: "#4CAF50",
           borderColor: "#4CAF50",
@@ -920,7 +920,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     content.innerHTML = `<p style="font-size: 24px;color:#666;margin-bottom: 20px;margin-top: 20px;">Complete the word:</p>
                         <div style="background:white;padding:25px 40px;border-radius:25px;box-shadow:0 8px 30px ${c.glow}30;margin-bottom:15px;border:4px solid ${brc}"><span style="font-size:42px;font-weight:bold;color:#333;letter-spacing:3px">${hh}</span></div>
-                        <p style="font-size:14px;color:#666;margin-bottom:20px;background:rgba(255,255,255,0.8);padding:8px 16px;border-radius:15px">Hint: ${cw.clue}</p>${oh}`;
+                        <p style="font-size:21px;color:#666;margin-bottom:20px;background:rgba(255,255,255,0.8);padding:8px 16px;border-radius:15px">Hint: ${cw.clue}</p>${oh}`;
   }
 
   function updateSpot() {
@@ -936,7 +936,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let body = "";
     if (!sr) {
-      body = `<div onclick="window.vowelTwinsApp.speak('${q.word}', '${tm}')" style="width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,${c.bg} 0%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 40px ${c.glow}50;border:5px solid white;cursor:pointer;margin-bottom:25px;animation:pulse 2s ease-in-out infinite"><span style="font-size:50px">🔊</span><span style="font-size:12px;color:#333;margin-top:5px">tap to hear</span></div>`;
+      body = `<div onclick="window.vowelTwinsApp.speak('${q.word}', '${tm}')" style="width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,${c.bg} 0%,${c.border} 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 40px ${c.glow}50;border:5px solid white;cursor:pointer;margin-bottom:25px;animation:pulse 2s ease-in-out infinite"><span style="font-size:50px">🔊</span><span style="font-size:20px;color:#333;margin-top:5px">tap to hear</span></div>`;
       renderButtons("spot-buttons", [
         {
           id: "btn-yes-spot",
@@ -959,15 +959,15 @@ document.addEventListener("DOMContentLoaded", () => {
         : `<span style="font-size:42px;font-weight:bold;color:#333">${q.word}</span>`;
       const il = state.currentWordIndex >= state.spotWords.length - 1;
       body = `<div onclick="window.vowelTwinsApp.speak('${q.word}', '${tm}')" style="background:white;padding:25px 40px;border-radius:25px;box-shadow:0 8px 30px ${c.glow}30;margin-bottom:20px;cursor:pointer;border:4px solid ${sr === "correct" ? "#32CD32" : "#FF6B6B"}">${wd}</div>
-              <div style="text-align:center"><p class="result-text" style="color:${sr === "correct" ? "#32CD32" : "#FF6B6B"}">${sr === "correct" ? "✓ Correct!" + (q.hasTeam ? " 🎯" : "") : "✗ Not quite!"}</p><p style="font-size:14px;color:#666;margin-bottom:15px">${q.hasTeam ? `"${q.word}" has the ${vowelTeams[tm].sound} sound!` : `"${q.word}" does NOT have the ${vowelTeams[tm].sound} sound`}</p></div>`;
+              <div style="text-align:center"><p class="result-text" style="color:${sr === "correct" ? "#32CD32" : "#FF6B6B"}">${sr === "correct" ? "✓ Correct!" + (q.hasTeam ? " 🎯" : "") : "✗ Not quite!"}</p><p style="font-size:21px;color:#666;margin-bottom:15px">${q.hasTeam ? `"${q.word}" has the ${vowelTeams[tm].sound} sound!` : `"${q.word}" does NOT have the ${vowelTeams[tm].sound} sound`}</p></div>`;
       renderButtons("spot-buttons", [
         {
           id: "btn-next-spot",
           label: il
             ? vowelTeams[tm].partner
-              ? "COMPARE →"
+              ? "COMPARE"
               : "⭐ Finish"
-            : "NEXT →",
+            : "NEXT",
           onclick: "window.vowelTwinsApp.nextQuestion()",
           color: "#4CAF50",
           borderColor: "#4CAF50",
@@ -975,7 +975,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ]);
     }
 
-    content.innerHTML = `<p style="font-size:15px;color:#666;margin-bottom:15px;text-align:center">Does this word have ${soundLabel(tm)}?</p>${body}`;
+    content.innerHTML = `<p style="font-size:25px;color:#666;margin-bottom:15px;text-align:center;margin-top: 10px;">Does this word have ${soundLabel(tm)}?</p>${body}`;
   }
 
   function updateCompare() {
@@ -1012,7 +1012,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderButtons("compare-buttons", [
         {
           id: "btn-next-compare",
-          label: il ? "⭐ Finish" : "NEXT →",
+          label: il ? "⭐ Finish" : "NEXT",
           onclick: "window.vowelTwinsApp.nextQuestion()",
           color: "#4CAF50",
           borderColor: "#4CAF50",
@@ -1038,11 +1038,11 @@ document.addEventListener("DOMContentLoaded", () => {
     c_screen.style.background = `linear-gradient(180deg,${c.light} 0%,#FFF9C4 50%,${c.bg}50 100%)`;
 
     content.innerHTML = `<div style="font-size:80px;margin-bottom:20px">🎉</div>
-                        <h2 style="font-size:28px;color:${c.glow};margin-bottom:10px">Team Complete!</h2>
+                        <h2 style="font-size:28px;color:${c.glow};margin-bottom:10px; margin-top:10px">Team Complete!</h2>
                         <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,${c.bg} 0%,${c.border} 100%);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:bold;color:#333;box-shadow:0 0 30px ${c.glow}60;border:5px solid #FFD700;margin:20px auto">${disp(tm)}</div>
-                        <p style="font-size:18px;color:#666;margin-bottom:15px">You earned a star! ⭐</p>
-                        <div style="background:white;padding:15px 30px;border-radius:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,0.1)"><p style="font-size:16px;color:#333;margin:0">Score: <strong style="color:${c.glow}">${state.score.correct}</strong> / ${state.score.total}</p></div>
-                        <button onclick="window.vowelTwinsApp.goHome()" class="btn-main" style="background:linear-gradient(135deg,#9370DB 0%,#7B68EE 100%);box-shadow:0 6px 20px rgba(147,112,219,0.4)">CONTINUE →</button>`;
+                        <p style="font-size:25px;color:#666;margin-bottom:15px">You earned a star! ⭐</p>
+                        <div style="background:white;padding:15px 30px;border-radius:20px;margin-bottom:25px;box-shadow:0 4px 15px rgba(0,0,0,0.1)"><p style="font-size:26px;color:#333;margin:0">Score: <strong style="color:${c.glow}">${state.score.correct}</strong> / ${state.score.total}</p></div>
+                        <button onclick="window.vowelTwinsApp.goHome()" class="btn-main" style="background:linear-gradient(135deg,#9370DB 0%,#7B68EE 100%);box-shadow:0 6px 20px rgba(147,112,219,0.4)">CONTINUE</button>`;
   }
 
   function render() {
@@ -1058,8 +1058,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (state.phase === "home") {
       document.getElementById("screen-home").style.display = "flex";
-      document.getElementById("screen-home").style.background =
-        "linear-gradient(180deg,#E8F4FF 0%,#F0E6FF 50%,#FFE6F0 100%)";
+
       renderHome();
     } else if (state.phase === "meet") {
       document.getElementById("screen-meet").style.display = "flex";
