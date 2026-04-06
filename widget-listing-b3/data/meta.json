@@ -24,10 +24,6 @@
       "updatedAt": "2026-04-06T16:52:15+05:30",
       "author": "tce-nitinc"
     },
-    "wg108-photosynthesis-factory": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
     "wg109-electrolytic-refining-of-metals": {
       "updatedAt": "2026-04-06T16:52:15+05:30",
       "author": "tce-nitinc"
@@ -65,10 +61,6 @@
       "author": "tce-nitinc"
     },
     "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg119-the-rhyme-zone": {
       "updatedAt": "2026-04-06T16:52:15+05:30",
       "author": "tce-nitinc"
     },
@@ -157,10 +149,6 @@
       "author": "tce-nitinc"
     },
     "wg142-fact-or-opinion": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg143-synthesize-new-polypeptide-chain": {
       "updatedAt": "2026-04-06T16:52:15+05:30",
       "author": "tce-nitinc"
     },
@@ -406,6 +394,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-06T17:37:20+05:30",
+      "author": "tce-nitinc",
+      "message": "added listing page thumbnail",
+      "widgets": [
+        108,
+        119,
+        143
+      ]
+    },
     {
       "date": "2026-04-06T16:52:15+05:30",
       "author": "tce-nitinc",
@@ -745,15 +743,6 @@
       "message": "wg133 changes",
       "widgets": [
         105
-      ]
-    },
-    {
-      "date": "2026-03-31T21:10:27+05:30",
-      "author": "PrasannaP",
-      "message": "Updated both widgets so the class + opacity change happens on flag click every time, including after clicking \u201cNext\u201d.",
-      "widgets": [
-        133,
-        155
       ]
     }
   ]
