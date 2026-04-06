@@ -1,4 +1,5 @@
 lottie.setQuality("high");
+let correctLabel = "";
 
 const canvas = document.getElementById("grid");
 const ctx = canvas.getContext("2d");
@@ -270,6 +271,8 @@ ctx.setLineDash([]);
 
 function generate(){
 
+correctLabel = "";
+
 correctPoint = null;
 
 A = randomPoint();
@@ -313,7 +316,7 @@ drawDashedLine(A,userPoint);
 }
 
 if(correctPoint){
-drawPoint(correctPoint,"green",`${reflectionLabel()}(${correctPoint.x}, ${correctPoint.y})`);
+drawPoint(correctPoint,"green",`${correctLabel}(${correctPoint.x}, ${correctPoint.y})`);
 }
 
 }
@@ -330,6 +333,8 @@ if(stage===2) return {x:-A.x,y:-A.y};
 }
 
 function nextStage(){
+
+
 
 stage++;
 
@@ -419,6 +424,7 @@ document.getElementById("feedbackWrong").style.display="none";
 document.getElementById("correctText").textContent =
 `${reflectionLabel()}(${ans.x}, ${ans.y}) is correct!`;
 
+correctLabel = reflectionLabel();
 correctPoint = ans;
 draw();
 

@@ -284,6 +284,7 @@ function updateScenario() {
   }
 
   renderGrid(newRows, newCols, a);
+  updateSelectedOptionTitle();
 }
 
 function updateScenarioHeader() {
@@ -333,6 +334,22 @@ aPlus.onclick = () => { if (a < 14) { a++; syncValues(); }};
 bMinus.onclick = () => { if (b > 1) { b--; syncValues(); }};
 bPlus.onclick = () => { if (b < 6) { b++; syncValues(); }};
 
+aPlus.onclick = () => {
+  if (a < 14) {
+    a++;
+    syncValues();
+    updateSelectedOptionTitle();
+  }
+}
+
+bPlus.onclick = () => {
+  if (b < 6) {
+    b++;
+    syncValues();
+    updateSelectedOptionTitle();
+  }
+}
+
 /* ---------------- POPUPS ---------------- */
 
 hintBtn.onclick = () => {
@@ -372,7 +389,7 @@ submitBtn.onclick = () => {
     (!isIncrease && direction === "decrease" && userAnswer === Math.abs(changeValue));
 
   if (isCorrect) {
-    resultTitle.innerText = title;
+    resultTitle.innerText = title || "Correct!";
     resultFormula.innerHTML = formulaText;
     resultCalc.innerHTML = calcText;
   } else {
@@ -565,3 +582,32 @@ function getModeLabel(m) {
 
 updateTabLabels();
 syncValues();
+
+function updateSelectedOptionTitle() {
+
+  const title = document.getElementById("selectedOptionTitle");
+  if (!title) return;
+
+  const treeWord = pluralize("tree", b);
+  const rowWord = pluralize("row", b);
+
+  let text = "";
+
+  if (mode === "addadd") {
+    text = `Add ${b} ${treeWord} and ${b} ${rowWord}`;
+  }
+
+  if (mode === "subsub") {
+    text = `Remove ${b} ${treeWord} and ${b} ${rowWord}`;
+  }
+
+  if (mode === "addsub") {
+    text = `Add ${b} ${treeWord} and remove ${b} ${rowWord}`;
+  }
+
+  if (mode === "subadd") {
+    text = `Remove ${b} ${treeWord} and add ${b} ${rowWord}`;
+  }
+
+  title.innerText = `Selected Option: ${text}`;
+}

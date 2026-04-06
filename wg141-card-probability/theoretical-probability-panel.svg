@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-size: 26px;
+      }
+
+      .st0, .st1, .st2, .st3 {
+        isolation: isolate;
+      }
+
+      .st0, .st2 {
+        font-family: Roboto-Bold, Roboto;
+        font-weight: 700;
+      }
+
+      .st4 {
+        clip-path: url(#clippath-21);
+      }
+
+      .st5 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st6 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st7 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st8 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st9 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st10 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st11 {
+        stroke: #000;
+      }
+
+      .st11, .st12, .st13 {
+        fill: none;
+      }
+
+      .st11, .st13 {
+        stroke-width: 2px;
+      }
+
+      .st14 {
+        clip-path: url(#clippath-22);
+      }
+
+      .st15 {
+        clip-path: url(#clippath-23);
+      }
+
+      .st16 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st17 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st18 {
+        fill: #fff;
+      }
+
+      .st1 {
+        font-family: Roboto-Medium, Roboto;
+        font-weight: 500;
+      }
+
+      .st1, .st2 {
+        font-size: 22px;
+      }
+
+      .st19 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st20 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st21 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st22 {
+        clip-path: url(#clippath-20);
+      }
+
+      .st23 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st24 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st25 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st26 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st27 {
+        clip-path: url(#clippath-19);
+      }
+
+      .st28 {
+        fill: #fffdc0;
+      }
+
+      .st29 {
+        fill: #eb3000;
+      }
+
+      .st30 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st31 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st32 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st13 {
+        stroke: #eb3000;
+      }
+
+      .st33 {
+        fill: #fffb92;
+      }
+
+      .st34 {
+        clip-path: url(#clippath-24);
+      }
+
+      .st35 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st12" x="752.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st12" x="828.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st12" x="904.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st12" x="981.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st12" x="1057.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect class="st12" x="1133.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="st12" x="1210.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-7">
+      <rect class="st12" x="1286.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-8">
+      <rect class="st12" x="675.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-9">
+      <rect class="st12" x="599.5" y="489.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-10">
+      <rect class="st12" x="600.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-11">
+      <rect class="st12" x="676.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-12">
+      <rect class="st12" x="753.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-13">
+      <rect class="st12" x="829.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-14">
+      <rect class="st12" x="905.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-15">
+      <rect class="st12" x="982.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-16">
+      <rect class="st12" x="1058.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-17">
+      <rect class="st12" x="1134.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-18">
+      <rect class="st12" x="1211.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-19">
+      <rect class="st12" x="1287.5" y="383.03" width="34.48" height="45.04"/>
+    </clipPath>
+    <clipPath id="clippath-20">
+      <rect class="st12" x="752.5" y="588.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-21">
+      <rect class="st12" x="828.5" y="588.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-22">
+      <rect class="st12" x="904.5" y="588.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-23">
+      <rect class="st12" x="675.5" y="588.03" width="35.28" height="32.18"/>
+    </clipPath>
+    <clipPath id="clippath-24">
+      <rect class="st12" x="599.5" y="588.03" width="35.28" height="32.18"/>
+    </clipPath>
+  </defs>
+  <g>
+    <rect id="Rectangle_444-2" class="st28" x="559.5" y="276.03" width="802" height="527" rx="6" ry="6"/>
+    <g id="Cards_in_Box:" class="st3">
+      <text class="st2" transform="translate(895.16 349.03)"><tspan x="0" y="0">Cards in Box:</tspan></text>
+    </g>
+    <g id="Group_1202">
+      <path id="Rectangle_237-3" class="st33" d="M793.5,276.03h334v20c0,11.05-8.95,20-20,20h-294c-11.05,0-20-8.95-20-20v-20h0Z"/>
+      <g id="Theoretical_Probability" class="st3">
+        <text class="st0" transform="translate(827.42 306.03)"><tspan x="0" y="0">Theoretical Probability</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1186">
+    <g id="Rectangle_446-17">
+      <rect class="st18" x="737.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="738.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183">
+      <g class="st35">
+        <g id="Group_1158">
+          <path id="Path_1455" class="st29" d="M770.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1230">
+    <g id="Rectangle_446-18">
+      <rect class="st18" x="813.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="814.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-2">
+      <g class="st20">
+        <g id="Group_1158-2">
+          <path id="Path_1455-2" class="st29" d="M846.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1231">
+    <g id="Rectangle_446-19">
+      <rect class="st18" x="889.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="890.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-3">
+      <g class="st31">
+        <g id="Group_1158-3">
+          <path id="Path_1455-3" class="st29" d="M922.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1232">
+    <g id="Rectangle_446-20">
+      <rect class="st18" x="966.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="967.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-4">
+      <g class="st24">
+        <g id="Group_1158-4">
+          <path id="Path_1455-4" class="st29" d="M999.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1233">
+    <g id="Rectangle_446-21">
+      <rect class="st18" x="1042.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="1043.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-5">
+      <g class="st10">
+        <g id="Group_1158-5">
+          <path id="Path_1455-5" class="st29" d="M1075.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1234">
+    <g id="Rectangle_446-22">
+      <rect class="st18" x="1118.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="1119.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-6">
+      <g class="st21">
+        <g id="Group_1158-6">
+          <path id="Path_1455-6" class="st29" d="M1151.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1235">
+    <g id="Rectangle_446-23">
+      <rect class="st18" x="1195.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="1196.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-7">
+      <g class="st5">
+        <g id="Group_1158-7">
+          <path id="Path_1455-7" class="st29" d="M1228.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1236">
+    <g id="Rectangle_446-24">
+      <rect class="st18" x="1271.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="1272.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-8">
+      <g class="st6">
+        <g id="Group_1158-8">
+          <path id="Path_1455-8" class="st29" d="M1304.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1187">
+    <g id="Rectangle_446-25">
+      <rect class="st18" x="660.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="661.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-9">
+      <g class="st23">
+        <g id="Group_1158-9">
+          <path id="Path_1455-9" class="st29" d="M693.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1188">
+    <g id="Rectangle_446-26">
+      <rect class="st18" x="584.5" y="465.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="585.5" y="466.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-10">
+      <g class="st16">
+        <g id="Group_1158-10">
+          <path id="Path_1455-10" class="st29" d="M617.14,494.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1189">
+    <g id="Rectangle_445-11">
+      <rect class="st18" x="584.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="585.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181">
+      <g class="st17">
+        <g id="Group_1160">
+          <path id="Path_1456" d="M634.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1190">
+    <g id="Rectangle_445-12">
+      <rect class="st18" x="660.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="661.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-2">
+      <g class="st19">
+        <g id="Group_1160-2">
+          <path id="Path_1456-2" d="M710.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1191">
+    <g id="Rectangle_445-13">
+      <rect class="st18" x="737.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="738.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-3">
+      <g class="st25">
+        <g id="Group_1160-3">
+          <path id="Path_1456-3" d="M787.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1192">
+    <g id="Rectangle_445-14">
+      <rect class="st18" x="813.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="814.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-4">
+      <g class="st32">
+        <g id="Group_1160-4">
+          <path id="Path_1456-4" d="M863.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1193">
+    <g id="Rectangle_445-15">
+      <rect class="st18" x="889.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="890.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-5">
+      <g class="st26">
+        <g id="Group_1160-5">
+          <path id="Path_1456-5" d="M939.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1194">
+    <g id="Rectangle_445-16">
+      <rect class="st18" x="966.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="967.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-6">
+      <g class="st8">
+        <g id="Group_1160-6">
+          <path id="Path_1456-6" d="M1016.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1195">
+    <g id="Rectangle_445-17">
+      <rect class="st18" x="1042.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="1043.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-7">
+      <g class="st30">
+        <g id="Group_1160-7">
+          <path id="Path_1456-7" d="M1092.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1227">
+    <g id="Rectangle_445-18">
+      <rect class="st18" x="1118.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="1119.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-8">
+      <g class="st7">
+        <g id="Group_1160-8">
+          <path id="Path_1456-8" d="M1168.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1228">
+    <g id="Rectangle_445-19">
+      <rect class="st18" x="1195.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="1196.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-9">
+      <g class="st9">
+        <g id="Group_1160-9">
+          <path id="Path_1456-9" d="M1245.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1229">
+    <g id="Rectangle_445-20">
+      <rect class="st18" x="1271.5" y="366.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st11" x="1272.5" y="367.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1181-10">
+      <g class="st27">
+        <g id="Group_1160-10">
+          <path id="Path_1456-10" d="M1321.98,407.43c0-9.94-12.84-15.02-17.18-24.27l-.06-.13-.07.13c-4.34,9.25-17.17,14.33-17.17,24.27,0,8.32,11,11.53,16.36,4.57.04,1.23-.08,2.46-.37,3.65-1.29,4.27-5.91,10.49-8.16,12.42,3.11-2.67,15.72-2.67,18.83,0-3.54-3.54-6.32-7.77-8.16-12.42-.3-1.23-.5-2.48-.58-3.75,5.23,7.55,16.56,4.01,16.56-4.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1186-2">
+    <g id="Rectangle_446-27">
+      <rect class="st18" x="737.5" y="564.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="738.5" y="565.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-11">
+      <g class="st22">
+        <g id="Group_1158-11">
+          <path id="Path_1455-11" class="st29" d="M770.14,593.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1230-2">
+    <g id="Rectangle_446-28">
+      <rect class="st18" x="813.5" y="564.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="814.5" y="565.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-12">
+      <g class="st4">
+        <g id="Group_1158-12">
+          <path id="Path_1455-12" class="st29" d="M846.14,593.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1231-2">
+    <g id="Rectangle_446-29">
+      <rect class="st18" x="889.5" y="564.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="890.5" y="565.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-13">
+      <g class="st14">
+        <g id="Group_1158-13">
+          <path id="Path_1455-13" class="st29" d="M922.14,593.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1187-2">
+    <g id="Rectangle_446-30">
+      <rect class="st18" x="660.5" y="564.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="661.5" y="565.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-14">
+      <g class="st15">
+        <g id="Group_1158-14">
+          <path id="Path_1455-14" class="st29" d="M693.14,593.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="Group_1188-2">
+    <g id="Rectangle_446-31">
+      <rect class="st18" x="584.5" y="564.03" width="66" height="80" rx="6" ry="6"/>
+      <rect class="st13" x="585.5" y="565.03" width="64" height="78" rx="5" ry="5"/>
+    </g>
+    <g id="Group_1183-15">
+      <g class="st34">
+        <g id="Group_1158-15">
+          <path id="Path_1455-15" class="st29" d="M617.14,593.38c-4.97-9.15-17.64-5.61-17.64,3.47,0,10.17,13.13,13.76,17.57,23.23l.07.13.07-.13c4.43-9.47,17.57-13.06,17.57-23.23,0-9.08-12.67-12.62-17.64-3.47"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="_10_Spades_15_Hearts_25_Total_Cards" class="st3">
+    <text class="st1" transform="translate(766.78 696.03)"><tspan x="0" y="0">10 Spades + 15 Hearts = 25 Total Cards</tspan></text>
+  </g>
+</svg>

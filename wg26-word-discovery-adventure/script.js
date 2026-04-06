@@ -3,6 +3,9 @@ let earnedStars = 0;
 let currentUserAnswer = [];
 let practiceCompleted = false;
 let answerVisible = false;
+let answersVisible = false;
+let sentenceAttempted = false;
+let hintIndex = 0;
 
 const categories = [
 
@@ -14,49 +17,42 @@ const categories = [
     {
       word: "EXCITED",
       correct: ["We","were","excited","about","the","school","trip","."],
-      jumbled: ["about","the","school","trip","excited","We","were","."]
+      jumbled: ["about","the","school","trip","excited","we","were","."]
     },
-
     {
       word: "NERVOUS",
       correct: ["I", "felt", "nervous", "before", "my", "first", "performance","."],
       jumbled: ["felt", "my", "first", "performance", "before", "nervous", "I","."]
     },
-
     {
       word: "PROUD",
-      correct: ["She", "was", "proud", "after", "winning", "the", "art", "competition","."],
-      jumbled: ["the", "art", "after", "winning", "competition", "proud", "She", "was","."]
+      correct: ["She", "was", "proud", "after", "winning", "the", "competition","."],
+      jumbled: ["the", "after", "winning", "competition", "proud", "she", "was","."]
     },
-
     {
       word: "LONELY",
-      correct: ["The", "new", "student", "felt", "lonely", "without", "any", "friends","."],
-      jumbled: ["without", "any", "friends", "felt", "The", "new", "student", "lonely","."]
+      correct: ["The", "new", "student", "felt", "lonely", "without", "friends","."],
+      jumbled: ["without", "friends", "felt", "the", "new", "student", "lonely","."]
     },
-
     {
       word: "JEALOUS",
-      correct: ["Rohan", "felt", "jealous", "of", "his", "friend's", "new", "bicycle","."],
-      jumbled: ["bicycle", "new", "felt", "of", "Rohan", "friend's", "jealous", "his","."]
+      correct: ["Rohan", "felt", "jealous", "of", "his", "friend's", "bicycle","."],
+      jumbled: ["bicycle", "felt", "of", "Rohan", "friend's", "jealous", "his","."]
     },
-
     {
       word: "CALM",
-      correct: ["Taking", "a", "deep", "breath", "makes", "me", "feel", "calm","."],
-      jumbled: ["a", "calm", "me", "deep", "feel", "makes", "breath", "Taking","."]
+      correct: ["Taking", "a", "deep", "breath", "makes", "me", "calm","."],
+      jumbled: ["a", "calm", "me", "deep", "makes", "breath", "taking","."]
     },
-
     {
       word: "ANGRY",
-      correct: ["Amit", "got", "angry", "when", "his", "brother", "broke", "his", "toy","."],
-      jumbled: ["toy", "his", "broke", "brother", "angry", "his", "got", "when", "Amit","."]
+      correct: ["Amit", "got", "angry", "when", "his", "toy", "broke","."],
+      jumbled: ["toy", "his", "broke", "angry", "got", "when", "Amit","."]
     },
-
     {
       word: "UPSET",
       correct: ["Losing", "her", "favourite", "book", "made", "Arya", "upset","."],
-      jumbled: ["upset", "Arya", "made", "book", "favourite", "her", "Losing","."]
+      jumbled: ["upset", "Arya", "made", "book", "favourite", "her", "losing","."]
     }
     ],
 
@@ -75,53 +71,51 @@ const categories = [
 
   },
 
-  {
+    {
   name: "Festivals",
   mode: "sentence",
   label: "hang-label-festivals-describewords.svg",
-
   words: [
-
     {
-  word: "HOLY",
-  jumbled: ["village","whole","the","united","festival","holy","the","."],
-  correct: ["The","holy","festival","united","the","whole","village","."]
-},
-{
-  word: "COLOURFUL",
-  jumbled: ["rangoli","looked","the","colourful","so","pretty","."],
-  correct: ["The","colourful","rangoli","looked","so","pretty","."]
-},
-{
-  word: "FESTIVE",
-  jumbled: ["mood","in","a","festive","was","everybody","."],
-  correct: ["Everybody","was","in","a","festive","mood","."]
-},
-{
-  word: "GRAND",
-  jumbled: ["city","our","through","passed","procession","grand","the","."],
-  correct: ["The","grand","procession","passed","through","our","city","."]
-},
-{
-  word: "FRAGRANT",
-  jumbled: ["home","our","decorate","to","garlands","flower","fragrant","used","we","."],
-  correct: ["We","used","fragrant","flower","garlands","to","decorate","our","home","."]
-},
-{
-  word: "SPECIAL",
-  jumbled: ["festival","the","at","meal","special","a","shared","family","our","."],
-  correct: ["Our","family","shared","a","special","meal","at","the","festival","."]
-},
-{
-  word: "LOUD",
-  jumbled: ["sister","little","my","scared","firecrackers","loud","the","."],
-  correct: ["The","loud","firecrackers","scared","my","little","sister","."]
-},
-{
-  word: "FANCY",
-  jumbled: ["Diwali","for","dress","fancy","her","wore","Diya","."],
-  correct: ["Diya","wore","her","fancy","dress","for","Diwali","."]
-}
+      word: "HOLY",
+      jumbled: ["village","whole","the","united","festival","holy","the","."],
+      correct: ["The","holy","festival","united","the","whole","village","."]
+    },
+    {
+      word: "COLOURFUL",
+      jumbled: ["rangoli","looked","the","colourful","so","pretty","."],
+      correct: ["The","colourful","rangoli","looked","so","pretty","."]
+    },
+    {
+      word: "FESTIVE",
+      jumbled: ["mood","in","a","festive","was","everybody","."],
+      correct: ["Everybody","was","in","a","festive","mood","."]
+    },
+    {
+      word: "GRAND",
+      jumbled: ["city","our","through","passed","procession","grand","the","."],
+      correct: ["The","grand","procession","passed","through","our","city","."]
+    },
+    {
+      word: "FRAGRANT",
+      correct: ["We", "used", "fragrant", "flower", "garlands", "for", "decoration","."],
+      jumbled: ["decoration", "flower", "fragrant", "used", "garlands", "for", "We","."]
+    },
+    {
+      word: "SPECIAL",
+      correct: ["Our", "family", "shared", "a", "special", "festival", "meal","."],
+      jumbled: ["festival", "a", "shared", "family", "Our", "special", "meal","."]
+    },
+    {
+      word: "LOUD",
+      jumbled: ["sister","little","my","scared","firecrackers","loud","the","."],
+      correct: ["The","loud","firecrackers","scared","my","little","sister","."]
+    },
+    {
+      word: "FANCY",
+      jumbled: ["Diwali","for","dress","fancy","her","wore","Diya","."],
+      correct: ["Diya","wore","her","fancy","dress","for","Diwali","."]
+    }
 
   ],
 
@@ -142,51 +136,42 @@ grid: [
   name: "Festivals",
   mode: "sentence",
   label: "hang-label-festival-actionwords.svg",
-
   words: [
-
     {
       word: "CELEBRATE",
-      correct: ["We", "celebrate", "our", "festival", "with", "songs", "and", "dance","."],
-      jumbled: ["songs", "we", "and", "dance", "our", "festival", "celebrate", "with","."]
+      correct: ["We", "celebrate", "festivals", "with", "songs", "and", "dance","."],
+      jumbled: ["songs", "and", "dance", "festivals", "celebrate", "we", "with","."]
     },
-
     {
       word: "LIGHT",
       correct: ["Children", "light", "colourful", "lamps","."],
       jumbled: ["children", "colourful", "light", "lamps","."]
     },
-
     {
       word: "PREPARE",
       correct: ["Our", "mother", "prepares", "sweets", "for", "the", "festival","."],
       jumbled: ["mother", "festival", "our", "the", "for", "prepares", "sweets","."]
     },
-
     {
       word: "GREET",
       correct: ["We", "greet", "our", "friends", "with", "warm", "wishes","."],
       jumbled: ["friends", "we", "greet", "our", "warm", "wishes", "with","."]
     },
-
     {
       word: "DECORATE",
       correct: ["They", "decorate", "the", "house", "with", "flowers","."],
       jumbled: ["decorate", "the", "house", "with", "flowers", "they","."]
     },
-
     {
       word: "FEAST",
       correct: ["Families", "feast", "on", "delicious", "food","."],
       jumbled: ["families", "delicious", "on", "food", "feast","."]
     },
-
     {
       word: "GATHER",
-      correct: ["Relatives", "gather", "at", "home", "to", "celebrate", "the", "festival","."],
-      jumbled: ["relatives", "gather", "celebrate", "at", "to", "home", "festival", "the","."]
+      correct: ["Relatives", "gather", "at", "home", "to", "celebrate", "festivals","."],
+      jumbled: ["relatives", "gather", "celebrate", "at", "to", "home", "festivals","."]
     },
-
     {
       word: "ADORN",
       correct: ["People", "adorn", "their", "homes", "with", "lights","."],
@@ -262,7 +247,7 @@ grid: [
     }
     ],
     grid: [
-["F","O","R","E","S","T","D","E","W","W"],
+["F","O","R","E","S","T","W","D","E","W"],
 ["E","J","K","G","F","T","U","I","C","E"],
 ["S","M","E","A","D","O","W","E","E","C"],
 ["P","V","W","W","D","E","H","W","H","L"],
@@ -282,49 +267,42 @@ grid: [
       {
       word: "CARING",
       correct: ["My", "grandmother", "is", "a", "very", "caring", "person","."],
-      jumbled: ["person", "caring", "very", "a", "is", "grandmother", "My","."]
+      jumbled: ["person", "caring", "very", "a", "is", "grandmother", "my","."]
     },
-
     {
       word: "LOVING",
       correct: ["Our", "loving", "parents", "always", "support", "us","."],
-      jumbled: ["support", "always", "us", "Our", "loving", "parents","."]
+      jumbled: ["support", "always", "us", "our", "loving", "parents","."]
     },
-
     {
       word: "HELPFUL",
       correct: ["Our", "neighbour", "is", "always", "helpful", "with", "chores","."],
-      jumbled: ["neighbour", "Our", "with", "always", "is", "chores", "helpful","."]
+      jumbled: ["neighbour", "our", "with", "always", "is", "chores", "helpful","."]
     },
-
     {
       word: "PATIENT",
       correct: ["My", "teacher", "is", "very", "patient", "with", "students","."],
-      jumbled: ["students", "My", "very", "teacher", "is", "patient", "with","."]
+      jumbled: ["students", "my", "very", "teacher", "is", "patient", "with","."]
     },
-
     {
       word: "STRICT",
       correct: ["Our", "coach", "is", "strict", "about", "training","."],
-      jumbled: ["about", "strict", "Our", "training", "coach", "is","."]
+      jumbled: ["about", "strict", "our", "training", "coach", "is","."]
     },
-
     {
       word: "GENTLE",
       correct: ["The", "doctor", "was", "gentle", "with", "the", "baby","."],
-      jumbled: ["baby", "the", "with", "gentle", "was", "doctor", "The","."]
+      jumbled: ["baby", "the", "with", "gentle", "was", "doctor", "the","."]
     },
-
     {
       word: "BRAVE",
-      correct: ["The", "brave", "girl", "is", "not", "afraid", "of", "the", "dark","."],
-      jumbled: ["dark", "the", "is", "not", "The", "brave", "girl", "afraid", "of","."]
+      correct: ["The", "brave", "girl", "faced", "the", "robber", "alone","."],
+      jumbled: ["robber", "the", "faced", "alone", "brave", "girl", "the","."]
     },
-
     {
       word: "WISE",
       correct: ["My", "wise", "grandmother", "always", "gives", "good", "advice","."],
-      jumbled: ["advice", "always", "grandmother", "My", "wise", "gives", "good","."]
+      jumbled: ["advice", "always", "grandmother", "my", "wise", "gives", "good","."]
     }
     ],
     grid: [
@@ -549,46 +527,39 @@ grid: [
     words: [
       {
       word: "SUNNY",
-      correct: ["We", "enjoyed", "a", "picnic", "in", "the", "sunny", "park","."],
-      jumbled: ["sunny", "the", "in", "park", "enjoyed", "We", "a", "picnic","."]
+      correct: ["We", "enjoyed", "a", "picnic", "in", "sunny", "weather","."],
+      jumbled: ["sunny", "in", "weather", "enjoyed", "we", "a", "picnic","."]
     },
-
     {
       word: "RAINY",
       correct: ["It", "was", "a", "rainy", "day", "yesterday","."],
-      jumbled: ["rainy", "was", "a", "It", "day", "yesterday","."]
+      jumbled: ["rainy", "was", "a", "it", "day", "yesterday","."]
     },
-
     {
       word: "CLOUDY",
       correct: ["The", "cloudy", "sky", "blocked", "the", "sun","."],
-      jumbled: ["sun", "the", "blocked", "sky", "The", "cloudy","."]
+      jumbled: ["sun", "the", "blocked", "sky", "the", "cloudy","."]
     },
-
     {
       word: "WINDY",
       correct: ["The", "windy", "day", "made", "the", "leaves", "fly","."],
-      jumbled: ["leaves", "fly", "the", "windy", "day", "made", "The","."]
+      jumbled: ["leaves", "fly", "the", "windy", "day", "made", "the","."]
     },
-
     {
       word: "STORMY",
-      correct: ["We", "stayed", "indoors", "because", "of", "the", "stormy", "weather","."],
-      jumbled: ["stormy", "indoors", "of", "the", "because", "We", "stayed", "weather","."]
+      correct: ["We", "stayed", "indoors", "during", "the", "stormy", "weather","."],
+      jumbled: ["stormy", "indoors", "the", "during", "we", "stayed", "weather","."]
     },
-
     {
       word: "FOGGY",
       correct: ["The", "foggy", "morning", "made", "driving", "difficult","."],
-      jumbled: ["driving", "difficult", "The", "morning", "made", "foggy","."]
+      jumbled: ["driving", "difficult", "the", "morning", "made", "foggy","."]
     },
-
     {
       word: "HOT",
       correct: ["We", "felt", "very", "hot", "in", "the", "sun","."],
-      jumbled: ["sun", "felt", "in", "very", "the", "hot", "We","."]
+      jumbled: ["sun", "felt", "in", "very", "the", "hot", "we","."]
     },
-
     {
       word: "HUMID",
       correct: ["The", "humid", "air", "made", "us", "sweat","."],
@@ -725,6 +696,9 @@ window.addEventListener("load", scaleStage);
 
 
 function resetApp() {
+
+  answersVisible = false;
+  showAllBtn.textContent = "Show Answers";
   
    const starBar = document.getElementById("gridStarBar");
    if (starBar) starBar.innerHTML = "";
@@ -784,6 +758,11 @@ div.innerHTML = `
 });
 
 function startCategory(cat) {
+
+  hintIndex = 0;
+
+  answersVisible = false;
+  showAllBtn.textContent = "Show Answers";
 
   currentCategory = cat;
 
@@ -942,28 +921,42 @@ function renderGridStars() {
   }
 }
 
+function clearAllTemporarySelections() {
+
+  document.querySelectorAll(".cell.selected")
+    .forEach(c => c.classList.remove("selected"));
+
+  selectedLetters = [];
+}
+
 function selectLetter(cell) {
 
-  if (cell.classList.contains("confirmed")) return;
-
-  // 🔁 If already selected → undo selection
-  if (cell.classList.contains("selected")) {
-
-    cell.classList.remove("selected");
-
-    selectedLetters = selectedLetters.filter(
-      c => c !== cell
-    );
-
-    return;
+  // 🚨 If starting fresh
+  if (selectedLetters.length === 0) {
+    clearAllTemporarySelections();
   }
 
-  // 🔥 Remove hint styling if user clicks it
+  // 🔁 TOGGLE behavior
+  if (cell.classList.contains("selected")) {
+
+    // ❌ DESELECT
+    cell.classList.remove("selected");
+
+    selectedLetters = selectedLetters.filter(c => c !== cell);
+
+    return; // stop here
+  }
+
+  // 🔥 Remove hint styling if clicked
   if (cell.classList.contains("hint-cell")) {
     cell.classList.remove("hint-cell");
   }
 
-  cell.classList.add("selected");
+  // ✅ Add selection (but don't override confirmed styling)
+  if (!cell.classList.contains("confirmed")) {
+    cell.classList.add("selected");
+  }
+
   selectedLetters.push(cell);
 
   checkWordMatch();
@@ -972,36 +965,34 @@ function selectLetter(cell) {
 
 function checkWordMatch() {
 
+  if (selectedLetters.length < 2) return;
+
   const selected = selectedLetters.map(cell => ({
     row: parseInt(cell.dataset.row),
     col: parseInt(cell.dataset.col)
   }));
 
-  if (selected.length === 0) return;
-
-  // Try to match only words of same length
-  const possibleWords = currentCategory.words.filter(wordObj =>
-    !foundWords.includes(wordObj.word) &&
-    wordObj.path &&
-    wordObj.path.length === selected.length
-  );
-
   let matchedWord = null;
 
-  for (let wordObj of possibleWords) {
+  for (let wordObj of currentCategory.words) {
 
-    const sortFn = (a, b) =>
-      a.row === b.row ? a.col - b.col : a.row - b.row;
+    if (foundWords.includes(wordObj.word)) continue;
+    if (!wordObj.path) continue;
 
-    const sortedSelected = [...selected].sort(sortFn);
-    const sortedPath = wordObj.path
-      .map(p => ({ row: p[0], col: p[1] }))
-      .sort(sortFn);
+    const path = wordObj.path.map(p => ({
+      row: p[0],
+      col: p[1]
+    }));
 
-    const isMatch = sortedSelected.every((cell, i) =>
-      cell.row === sortedPath[i].row &&
-      cell.col === sortedPath[i].col
-    );
+    // ❌ If extra letters selected → skip
+    if (selected.length > path.length) continue;
+
+    // ✅ EXACT SET MATCH (order-independent, no extras)
+    const isMatch =
+      selected.length === path.length &&
+      selected.every(s =>
+        path.some(p => p.row === s.row && p.col === s.col)
+      );
 
     if (isMatch) {
       matchedWord = wordObj;
@@ -1009,6 +1000,7 @@ function checkWordMatch() {
     }
   }
 
+  // ✅ SUCCESS
   if (matchedWord) {
 
     selectedLetters.forEach(cell => {
@@ -1019,9 +1011,12 @@ function checkWordMatch() {
     addFoundWord(matchedWord.word);
     selectedLetters = [];
 
+    // 🔥 handle overlapping words
+    checkAutoCompletedWords();
+
   } else {
 
-    // If selection is longer than longest word → wrong
+    // ❌ Wrong selection cleanup (only if too long)
     const longest = Math.max(
       ...currentCategory.words.map(w => w.word.length)
     );
@@ -1029,16 +1024,16 @@ function checkWordMatch() {
     if (selected.length > longest) {
 
       selectedLetters.forEach(cell => {
-        cell.classList.remove("selected");
         cell.classList.add("wrong");
       });
 
       setTimeout(() => {
         selectedLetters.forEach(cell => {
           cell.classList.remove("wrong");
+          cell.classList.remove("selected");
         });
         selectedLetters = [];
-      }, 800);
+      }, 600);
     }
   }
 }
@@ -1083,9 +1078,25 @@ li.onclick = () => playAudio(word);
   }
 }
 
+
+
 function playAudio(word) {
-  const audio = new Audio(`audio/${capitalize(word)}.wav`);
-  audio.play();
+  const path = `audio/${capitalize(word)}.mp3`;
+  console.log("Trying:", path);
+
+  const audio = new Audio(path);
+
+  audio.onerror = () => {
+    console.error("❌ Not found:", path);
+  };
+
+  audio.oncanplay = () => {
+    console.log("✅ Can play:", path);
+  };
+
+  audio.play().catch(e => {
+    console.error("⚠️ Play blocked:", e);
+  });
 }
 
 function capitalize(word) {
@@ -1102,57 +1113,84 @@ hintBtn.onclick = () => {
 
   if (remainingWords.length === 0) return;
 
-  const wordToHint = remainingWords[0];
+  // 🔁 Reset if index exceeds remaining words
+  if (hintIndex >= remainingWords.length) {
+    hintIndex = 0;
+  }
 
-  if (!wordToHint.path || wordToHint.path.length === 0) return;
-
-  const [row, col] = wordToHint.path[0];
-
-  const cell = [...letterGrid.children].find(
-    c => c.dataset.row == row && c.dataset.col == col
-  );
-
-  if (!cell) return;
-
+  // 🧹 Clear old hints
   document.querySelectorAll(".hint-cell")
     .forEach(c => c.classList.remove("hint-cell"));
 
-  if (!cell.classList.contains("confirmed")) {
-    cell.classList.add("hint-cell");
+  const wordObj = remainingWords[hintIndex];
+
+  if (!wordObj.path) return;
+
+  // 👉 Pick FIRST unconfirmed letter in that word
+  let hintCell = null;
+
+  for (let [row, col] of wordObj.path) {
+
+    const cell = [...letterGrid.children].find(
+      c => c.dataset.row == row && c.dataset.col == col
+    );
+
+    if (cell && !cell.classList.contains("confirmed")) {
+      hintCell = cell;
+      break;
+    }
   }
+
+  if (hintCell) {
+    hintCell.classList.add("hint-cell");
+  }
+
+  // 👉 Move to next word for next click
+  hintIndex++;
 };
 
 showAllBtn.onclick = () => {
 
   if (!currentCategory) return;
 
-  currentCategory.words.forEach(wordObj => {
+  if (!answersVisible) {
 
-    if (!wordObj.path) return;
+    // SHOW ANSWERS
+    currentCategory.words.forEach(wordObj => {
 
-    wordObj.path.forEach(([r, c]) => {
+      if (!wordObj.path) return;
 
-      const cell = [...letterGrid.children].find(
-        cell => cell.dataset.row == r && cell.dataset.col == c
-      );
+      wordObj.path.forEach(([r,c]) => {
 
-      if (cell) {
-      cell.classList.remove("selected");
-      cell.classList.remove("hint-cell");   // remove blue hint
-      cell.classList.add("confirmed");
-    }
+        const cell = [...letterGrid.children].find(
+          cell => cell.dataset.row == r && cell.dataset.col == c
+        );
+
+        if (cell && !cell.classList.contains("confirmed")) {
+          cell.classList.add("hint-cell");   // highlight only
+        }
+
+      });
+
     });
 
-    if (!foundWords.includes(wordObj.word)) {
-      addFoundWord(wordObj.word);
-    }
-  });
+    showAllBtn.textContent = "Hide Answers";
+    answersVisible = true;
+    hintBtn.disabled = true;
 
-  hintBtn.classList.add("hidden");
-  showAllBtn.classList.add("hidden");
-  practiceBtn.classList.remove("hidden");
+  } else {
+
+    // HIDE ANSWERS
+    document.querySelectorAll(".hint-cell")
+      .forEach(cell => cell.classList.remove("hint-cell"));
+
+    showAllBtn.textContent = "Show Answers";
+    answersVisible = false;
+    hintBtn.disabled = false;
+
+  }
+
 };
-
 practiceBtn.onclick = () => {
   showScreen("practiceScreen");
   startPractice();
@@ -1160,6 +1198,8 @@ practiceBtn.onclick = () => {
 
 
 function startPractice() {
+
+  sentenceAttempted = false;
 
   answerVisible = false;
   showAnswerBtn.textContent = "Show Answer";
@@ -1331,14 +1371,17 @@ function evaluateImageChoice(selectedWrapper, isCorrect) {
   showAnswerBtn.disabled = true;
 
   const wordObj = currentCategory.words[practiceIndex];
-  wordObj._revealed = true;   // ⭐ ADD THIS LINE
+  wordObj._revealed = true;
+  sentenceAttempted = true;
 
   if (isCorrect) {
 
     selectedWrapper.appendChild(createBadge(true));
+
     earnedStars++;
     renderStars();
 
+    //fireConfetti();              // ✅ FIX 1
     celebrateCorrectAnswer();
 
   } else {
@@ -1353,25 +1396,12 @@ function evaluateImageChoice(selectedWrapper, isCorrect) {
 
   }
 
-  updateNextButtonState();  // ⭐ ADD THIS
+  // ✅ FIX 2 (buttons enable)
+  nextBtn.disabled = false;
+  backBtn.disabled = practiceIndex === 0;
+  showAnswerBtn.disabled = true;
 
-  const isLast = practiceIndex === currentCategory.words.length - 1;
-
-  if (isLast) {
-
-    if (earnedStars === currentCategory.words.length) {
-      celebrate();
-    }
-
-    nextBtn.disabled = true;
-
-  } else {
-
-    nextBtn.disabled = false;
-
-
-  }
-
+  updateNextButtonState();
 }
 
 function evaluateOption(isCorrect, selectedImg, otherImg, forceShow = false) {
@@ -1466,10 +1496,7 @@ function loadSentenceMode(wordObj) {
 
   const line = document.createElement("div");
   line.className = "slot-line";
-
-  /* width based on word length */
-  const wordLength = wordObj.correct[i].length;
-  line.style.width = (wordLength * 14 + 16) + "px";
+  //line.style.width = "80px";   // same width for all blanks
 
   slot.appendChild(line);
   slotContainer.appendChild(slot);
@@ -1483,7 +1510,7 @@ slots.appendChild(slotContainer);
   words.forEach(word => {
 
   const btn = document.createElement("span");
-  btn.textContent = word.toLowerCase();
+  btn.textContent = word;
   btn.className = "word-chip";
 
     btn.onclick = () => {
@@ -1537,7 +1564,13 @@ slots.appendChild(slotContainer);
 
     const placed = document.createElement("span");
     placed.className = "placed-word";
-    placed.textContent = word;
+
+    // ✅ Capitalize ONLY first word
+    if (currentUserAnswer.length === 1) {
+      placed.textContent = word.charAt(0).toUpperCase() + word.slice(1);
+    } else {
+      placed.textContent = word;
+    }
 
     slot.appendChild(placed);
 
@@ -1656,10 +1689,15 @@ showAnswerBtn.onclick = () => {
 
       sentenceBar.innerHTML = `
         <div class="final-sentence correct">
-          ${wordObj.correct.join(" ")}
+          ${formatSentence(wordObj.correct)}
           <span class="result-icon">✔</span>
         </div>
       `;
+
+      // ⭐ fade and disable chips
+      document.querySelectorAll(".word-chip").forEach(chip=>{
+        chip.classList.add("faded");
+      });
 
     }
 
@@ -1674,6 +1712,11 @@ showAnswerBtn.onclick = () => {
 
     // HIDE ANSWER
     loadPracticeWord();
+
+    // ⭐ enable chips again
+    document.querySelectorAll(".word-chip").forEach(chip=>{
+      chip.classList.remove("faded");
+    });
 
     showAnswerBtn.textContent = "Show Answer";
     answerVisible = false;
@@ -1714,7 +1757,7 @@ function handleSentenceShowAnswer(isReveal = false) {
 
     sentenceBar.innerHTML = `
     <span class="final-sentence correct">
-      ${correct.join(" ")}
+      ${formatSentence(correct)}
       <span class="result-icon">✔</span>
     </span>
   `;
@@ -1754,27 +1797,32 @@ sentenceBar.innerHTML = `
 </div>
 `;
 
-  if (userWasCorrect && !wordObj._starAwarded) {
-    earnedStars++;
-    renderStars();
-    wordObj._starAwarded = true;
+// enable navigation after attempt
+nextBtn.disabled = false;
+backBtn.disabled = practiceIndex === 0;
 
-    fireConfetti();
-    celebrateCorrectAnswer();
+// sentence attempt finished → enable navigation
+wordObj._revealed = true;
+sentenceAttempted = true;
 
-    // ⭐ If this was the last correct answer → celebrate
-    if (earnedStars === currentCategory.words.length) {
+updateNextButtonState();
+
+if (userWasCorrect && !wordObj._starAwarded) {
+
+  earnedStars++;
+  renderStars();
+  wordObj._starAwarded = true;
+
+  //fireConfetti();
+  celebrateCorrectAnswer();
+
+  if (earnedStars === currentCategory.words.length) {
     celebrate();
     return;
   }
 
   showAnswerBtn.disabled = true;
-
-  }
-
-  wordObj._revealed = true;
-
-  updateNextButtonState();
+}
 
   document.querySelectorAll(".word-chip")
     .forEach(w => w.style.pointerEvents = "none");
@@ -1820,6 +1868,8 @@ function renderStars() {
   }
 }
 
+
+
 function updateNextButtonState() {
 
   if (practiceCompleted) {
@@ -1830,24 +1880,19 @@ function updateNextButtonState() {
   }
 
   const isLast = practiceIndex === currentCategory.words.length - 1;
+
+  nextBtn.textContent = isLast ? "Finish" : "Next";
+
   const wordObj = currentCategory.words[practiceIndex];
 
-  if (isLast) {
-
-    nextBtn.textContent = "Finish";
-
-    // Disable until answer revealed or evaluated
-    nextBtn.disabled = !wordObj._revealed;
-
+  // ✅ KEY FIX: use _revealed instead of sentenceAttempted
+  if (wordObj._revealed) {
+    nextBtn.disabled = false;
+    backBtn.disabled = practiceIndex === 0;
   } else {
-
-    nextBtn.textContent = "Next";
-
-    // Same rule for middle questions
-    nextBtn.disabled = !wordObj._revealed;
-
+    nextBtn.disabled = true;
+    backBtn.disabled = true;
   }
-
 }
 
 function showScreen(screenId) {
@@ -1910,9 +1955,7 @@ function playSuccessSound() {
 
 function celebrateCorrectAnswer() {
 
-  playSuccessSound();
-
-  const container = document.getElementById("lottieCorrect");
+    const container = document.getElementById("lottieCorrect");
 
   container.innerHTML = ""; // reset animation
 
@@ -1938,4 +1981,55 @@ if(msg) msg.classList.remove("hidden");
 
 }
 
+}
+
+function isStraightLine(selection) {
+  if (selection.length < 2) return true;
+
+  const dr = selection[1].row - selection[0].row;
+  const dc = selection[1].col - selection[0].col;
+
+  for (let i = 1; i < selection.length; i++) {
+    const currDr = selection[i].row - selection[i - 1].row;
+    const currDc = selection[i].col - selection[i - 1].col;
+
+    if (currDr !== dr || currDc !== dc) return false;
+  }
+
+  return true;
+}
+
+function autoDetectCompletedWords() {
+  currentCategory.words.forEach(wordObj => {
+    if (foundWords.includes(wordObj.word)) return;
+
+
+
+    if (isCovered) {
+      addFoundWord(wordObj.word);
+    }
+  });
+}
+
+function checkAutoCompletedWords() {
+
+  currentCategory.words.forEach(wordObj => {
+
+    if (foundWords.includes(wordObj.word)) return;
+    if (!wordObj.path) return;
+
+    const isFullyGreen = wordObj.path.every(([r, c]) => {
+
+      const cell = [...letterGrid.children].find(
+        el => el.dataset.row == r && el.dataset.col == c
+      );
+
+      return cell.classList.contains("confirmed");
+    });
+
+    if (isFullyGreen) {
+      addFoundWord(wordObj.word);
+    }
+
+  });
 }

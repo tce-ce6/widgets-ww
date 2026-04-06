@@ -1,0 +1,1427 @@
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:url("assets/bg.png") center/cover no-repeat;
+color:white;
+
+overflow:hidden;
+}
+
+#app{
+width:100%;
+min-height:100vh;
+height: auto;
+text-align:center;
+position:relative;
+overflow:visible;
+
+}
+
+section{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+min-height:100%;
+}
+
+header{
+background:#e86a00;
+font-size: 20px;
+width: 340px;
+margin:0px auto 15px auto;
+font-weight: 500;
+text-align: center;
+padding: 10px 10px;
+color: #fff;
+border-radius: 0 0px 20px 20px;
+white-space: nowrap;
+line-height: 1.2;
+}
+
+header h1{
+margin:0;
+font-size:22px;
+}
+
+
+.characters{
+position:relative;
+display:flex;
+justify-content:center;
+margin-top:120px;
+}
+
+.cards-image{
+width:900px;
+height:auto;
+margin:0;
+}
+
+.card img{
+width:700px;
+margin-bottom:10px;
+}
+
+
+#intro{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+gap:20px;
+padding-top:80px;
+position: absolute;
+}
+
+#intro button{
+position:absolute;
+bottom:200px;
+left:50%;
+transform:translateX(-50%);
+z-index:100;
+}
+
+.instructions{
+ font-size: 16px;
+ color: #FDEB4B;
+ font-style: italic;   
+}
+
+
+
+.home-card{
+width:320px;
+height:320px;
+
+/* keep the sprite proportional */
+background-size:contain;
+
+position:relative;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+transition:transform .2s ease;
+}
+
+.home-card:hover{
+transform:scale(1.05);
+}
+
+.home-card.pierre{
+background-position:0 0;
+}
+
+.home-card.maurice{
+background-position:-320px 0;
+}
+
+.home-card.henri{
+background-position:-640px 0;
+}
+
+.cards-image{
+width:900px;   /* adjust size here */
+height:auto;
+}
+
+.card img{
+width:180px;
+height:auto;
+}
+
+/*
+.card{
+
+width:180px;
+height:240px;
+
+background:url("assets/card-frame.png") center/contain no-repeat;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-end;
+
+padding-bottom:25px;
+
+position:relative;
+}*/
+
+.character-card{
+width:30px;
+height:auto;
+display: block;
+}
+
+.card{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+}
+
+.character-img{
+
+position:absolute;
+top:35px;
+
+width:50px;
+}
+
+
+
+.card h4{
+font-size:18px;
+margin:6px 0 0 0;
+}
+
+.card .role{
+color:#ffd600;
+font-size:16px;
+margin-bottom:10px;
+}
+
+.home-card:hover{
+transform:scale(1.05);
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.avatar{
+position:absolute;
+top:80px;
+left:50%;
+transform:translateX(-50%);
+width:105px;
+}
+
+.name{
+position:absolute;
+bottom:98px;
+width:100%;
+text-align:center;
+
+font-size:24px;
+font-weight:bold;
+color:white;
+}
+
+.role{
+position:absolute;
+bottom:70px;
+width:100%;
+text-align:center;
+
+font-size:18px;
+color:#ffd600;
+}
+
+.speaker1{
+position:fixed;
+bottom:268px;
+margin-left: -132px;
+transform:translateX(-50%);
+width:66px;
+cursor:pointer;
+}
+
+.speaker2{
+position:fixed;
+bottom:268px;
+margin-left: -450px;
+transform:translateX(-50%);
+width:66px;
+cursor:pointer;
+}
+
+.speaker3{
+position:fixed;
+bottom:268px;
+margin-left: -768px;
+
+transform:translateX(-50%);
+width:66px;
+cursor:pointer;
+}
+
+.speaker1,
+.speaker2,
+.speaker3{
+position:absolute;
+bottom:20px;
+}
+
+.character img{
+width:120px;
+}
+
+button{
+background:#EBA500;
+border:none;
+padding:15px 25px;
+font-weight: 400;
+font-size:24px;
+border-radius:300px;
+cursor:pointer;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:30px;
+padding:30px;
+}
+
+.location{
+background:#9c0000;
+padding:10px;
+border-radius:0px;
+cursor:pointer;
+max-height: 120px;
+}
+
+.location img{
+width:70px;
+}
+
+.cards{
+display:flex;
+justify-content:center;
+align-items:flex-start;
+gap:80px;
+margin-top:30px;
+}
+
+.character-block{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+position:relative;
+}
+
+.hidden{
+display:none !important;
+}
+
+#revealMessage{
+margin-top:20px;
+font-size:18px;
+}
+
+#insight{
+margin-top:30px;
+background:#0b0b0b;
+padding:20px;
+border:2px dashed cyan;
+}
+
+.playing{
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
+}
+
+.cards-image{
+pointer-events:none;
+}
+
+.location{
+background:#8f0000;
+border:3px solid #ffb300;
+border-radius:16px;
+padding:25px;
+text-align:center;
+position:relative;
+}
+
+.location-icon{
+width:70px;
+margin-bottom:10px;
+}
+
+.location h3{
+margin:8px 0 4px;
+font-size:16px;
+}
+
+.subtitle{
+color:#ffd600;
+font-size:14px;
+margin-bottom:15px;
+}
+
+.lock{
+background:#4b1d00;
+color:#ffd600;
+padding:6px 12px;
+border-radius:8px;
+font-size:16px;
+font-style: italic;
+display:inline-block;
+font-weight: 500;
+}
+
+.lock-icon{
+font-style:normal;
+margin-right:6px;
+}
+
+#locations h2{
+margin-top:80px;
+}
+
+
+.scene-container{
+position:relative;
+width:100%;
+display:flex;
+justify-content:center;
+margin-top:30px;
+}
+
+.scene-svg{
+width:1100px;
+max-width:95%;
+height:auto;
+margin-top:30px;
+}
+
+
+
+.locations-panel{
+width:900px;
+max-width:95%;
+
+margin:130px auto;
+
+background:#46205a;
+border:3px solid #ffb300;
+border-radius:10px;
+
+padding:20px;
+
+position:relative;
+overflow:visible;
+}
+
+.locations-overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:20;
+}
+
+.panel-svg{
+position:relative;
+z-index:1;
+pointer-events:none;
+}
+
+.panel-instruction{
+position:absolute;
+top:120px; 
+left:50%;
+transform:translateX(-50%);
+
+color:#ffe55c;
+font-size:18px;
+font-style:italic;
+text-align:center;
+width:80%;
+z-index: 5;
+}
+
+.panel-instruction-top{
+
+position:absolute;
+top:60px;          /* sits below "Behind the Doors" */
+
+left:50%;
+transform:translateX(-50%);
+
+color:#FDEB4B;
+font-size:18px;
+font-style:italic;
+
+text-align:center;
+width:80%;
+}
+
+
+
+.panel-title{
+position:absolute;
+
+top:-100px;
+left:50%;
+transform:translateX(-50%);
+
+background:#f3b200;
+color:#000;
+
+padding:8px 15px;
+
+border-radius:12px;
+
+font-size:18px;
+font-weight:600;
+
+box-shadow:0 4px 0 rgba(0,0,0,0.25);
+}
+
+#explore h2{
+margin-top:80px;
+}
+
+.question-header{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+background:#2d0202;
+
+border-radius:16px;
+
+padding:20px 30px;
+margin-top: 30px;
+margin-bottom:40px;
+
+}
+
+.question-location{
+
+display:flex;
+align-items:center;
+gap:15px;
+
+background:#900000;
+
+padding:15px 20px;
+
+border-radius:12px;
+
+border:3px solid #ffb300;
+
+}
+
+.location-text h3{
+margin:0;
+font-size:22px;
+}
+
+.location-text p{
+margin:0;
+color:#ffd600;
+font-size:16px;
+}
+
+.question-text{
+
+flex:1;
+
+text-align:center;
+
+font-size:26px;
+
+font-weight:600;
+
+}
+
+.question-characters{
+
+display:flex;
+align-items:center;
+gap:15px;
+
+}
+
+.question-characters img{
+
+height:80px;
+
+}
+
+.reveal-btn{
+
+background:#5a1400;
+
+color:#ffb300;
+
+border:3px solid #3a0a00;
+
+padding:8px 20px;
+
+border-radius:12px;
+
+font-size:16px;
+
+font-style:italic;
+
+cursor:pointer;
+
+box-shadow:0 4px 0 #2a0600;
+
+}
+
+.reveal-btn:hover{
+
+transform:translateY(2px);
+
+box-shadow:0 2px 0 #2a0600;
+
+}
+
+#explore{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:0px;
+}
+
+.back-btn{
+background:#fa8b03;
+color:#000;
+
+padding:10px 20px;
+font-size:18px;
+
+border:none;
+border-radius:50px;
+cursor:pointer;
+
+font-weight:700;
+
+box-shadow:0 6px 0 rgba(0,0,0,0.25);
+position: absolute;
+bottom: -50px;
+left: 50%;
+transform:translateX(-50%);
+}
+
+section{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+min-height:100%;
+}
+
+section:not(.hidden){
+z-index:10;
+}
+
+
+.reveal-btn{
+transition:opacity .3s ease;
+}
+
+
+/* CHARACTER ZONES */
+
+.character-zone{
+position:absolute;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+
+/* Adjust these slightly if needed */
+
+.character-zone.pierre{
+left:40%;
+top:59%;
+}
+
+.character-zone.henri{
+left:57%;
+top:59%;
+transform:translateX(-50%);
+}
+
+.character-zone.maurice{
+left:67%;
+top:59%;
+}
+
+
+.result{
+margin-top:-37px;
+width:150px;
+padding:2px;
+color: #000000;
+
+background:#f2dfdb;
+
+border-radius:10px;
+font-size: 12px;
+text-align:center;
+
+box-shadow:0 6px 10px rgba(0,0,0,0.25);
+
+}
+
+.result.pierre{
+border:3px dashed #e24a4a;
+transform:translateX(-30px);
+}
+
+.result.henri{
+border:3px dashed #d7b94c;
+background:#f6f0d8;
+transform:translateX(15px);
+
+}
+
+.result.maurice{
+border:3px dashed #6fbf73;
+background:#e6f4e6;
+transform:translateX(-15px);
+}
+
+.outcome{
+margin-top:8px;
+font-style:italic;
+}
+
+.restriction{
+margin-top:12px;
+background:#111;
+color:white;
+padding:8px;
+border-radius:6px;
+}
+
+
+/* generic hit area */
+
+.location-hit{
+position:absolute;
+cursor:pointer;
+pointer-events:auto;
+}
+
+/* FIRST ROW */
+
+.location-hit.royal{
+left:15%;
+top:45%;
+width:12%;
+height:7%;
+}
+
+.location-hit.law{
+left:34%;
+top:45%;
+width:12%;
+height:7%;
+}
+
+.location-hit.education{
+left:54%;
+top:45%;
+width:12%;
+height:7%;
+}
+
+.location-hit.council{
+left:73%;
+top:45%;
+width:12%;
+height:7%;
+}
+
+/* SECOND ROW */
+
+.location-hit.gathering{
+left:15%;
+top:76%;
+width:12%;
+height:7%;
+}
+
+.location-hit.church{
+left:34%;
+top:76%;
+width:12%;
+height:7%;
+}
+
+.location-hit.press{
+left:54%;
+top:76%;
+width:12%;
+height:7%;
+}
+
+.location-hit.market{
+left:73%;
+top:76%;
+width:12%;
+height:7%;
+}
+
+/*.location-hit{
+background:rgba(189, 244, 230, 0.2);
+}*/
+
+.activity-panel{
+position:relative;
+width:1100px;
+max-width:95%;
+margin:30px auto 10px auto;
+}
+
+.panel-bg{
+width:100%;
+display:block;
+}
+
+/* overlay container */
+.panel-overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+overflow: visible;
+
+}
+
+.panel-content{
+position:relative;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+height:600px;   /* FIXED height */
+padding-top:110px;
+}
+
+.question-area{
+display:flex;
+justify-content:center;
+align-items:center;
+width:100%;
+overflow:hidden;
+}
+
+/* question strip placement */
+.question-svg{
+position:relative;
+top:-150px;
+left:46%;
+transform:translateX(-50%);
+width:1200px;
+max-width:none;
+pointer-events:none;
+}
+
+.question-area img{
+width:100%;
+display:block;
+}
+
+.character-row{
+display:flex;
+justify-content:center;
+gap:110px;
+}
+
+.character-card{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+
+.character-card img{
+height:140px;
+}
+
+
+.question-strip{
+position:relative;
+width:1200px;
+/*display:flex;
+justify-content:center;*/
+margin:0 auto;
+}
+
+/* characters container */
+.strip-actors{
+position:absolute;
+top:30px;
+right:150px;
+
+display:flex;
+align-items:flex-end;
+gap:10px;
+
+/*width:420px;   /* 🔥 FIXED WIDTH */
+width:auto;   
+justify-content:flex-end;
+transform: translateX(100px);  /* shift LEFT */
+
+}
+
+.strip-char{
+height:80px;
+flex-shrink:0;
+transition:opacity 0.4s ease;
+margin-right:8px;
+}
+
+/* STATES */
+
+.char-hidden{
+opacity:0;
+}
+
+.char-half{
+opacity:0.5;
+}
+
+.char-full{
+opacity:0.9;
+}
+
+.char-dim{
+opacity:0.2;
+}
+
+.char-visible{
+opacity:0.9;
+}
+
+.strip-char.fade-out{
+opacity:0;
+transform:translateY(10px);
+transition:all 0.6s ease;
+}
+
+/* door */
+
+.strip-door{
+width:65px;     /* control size with width */
+height:100px;          /* fixed height box */
+height:auto;
+margin-left:2px;
+display:block;
+flex-shrink:0;   /* prevents layout shift */
+transition:transform .3s ease;
+position: relative;
+z-index:3;   /* higher than door-entry */
+}
+
+.door-closed-icon{
+    position:absolute;
+    bottom:35px;      /* adjust based on door */
+    left:47%;
+    transform:translateX(-50%);
+
+    width:50px;       /* scale as needed */
+    opacity:0;
+
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+}
+
+.strip-door[src*="door-03"]{
+width:55px;
+}
+
+.strip-door[src*="door-04"]{
+width:55px;
+}
+
+.feedback-container{
+display:flex;
+justify-content:center;
+gap:60px;
+
+margin-top:40px;
+}
+
+.feedback-card{
+width:240px;
+}
+
+.reveal-hotspots{
+position:absolute;
+top:410px;
+left:60%;
+transform:translateX(-50%);
+width:700px;
+height:80px;
+z-index:200;
+pointer-events:auto;
+
+}
+
+.reveal-btn-area{
+position:absolute;
+width:170px;
+height:60px;
+cursor:pointer;
+z-index:210;
+/*background:rgba(255,0,0,0.25); /* debug only */
+
+}
+
+/* positions */
+
+.reveal-btn-area.pierre{
+left:50px;
+}
+
+.reveal-btn-area.henri{
+left:265px;
+}
+
+.reveal-btn-area.maurice{
+left:490px;
+}
+
+
+
+/*.feedback-row{
+position:absolute;
+
+top:407px;     
+left:60%;
+transform:translateX(-50%);
+
+display:flex;
+justify-content:center;
+gap:130px;
+width: 800px;
+
+}*/
+
+.feedback-row{
+display:grid;
+position: absolute;
+top: 370px;
+left: 69%;
+transform:translateX(-50%);
+
+grid-template-columns:repeat(3, 200px);
+width:700px;           /* same width as card row */
+margin:40px auto 0 auto;
+align-items:start;
+
+gap: 12px;
+}
+
+.feedback-slot{
+width:100px;
+display:flex;
+justify-content:center;
+}
+
+.feedback-card{
+width:170px;
+}
+
+.feedback-pierre{
+width: 100px;
+
+}
+
+/* smooth transitions */
+.strip-char,
+.henri-inside-door{
+transition:opacity .4s ease, transform .4s ease;
+}
+
+.henri-inside-door{
+position:absolute;
+right:40px;
+top:50%;
+transform:translateY(-50%) scale(0.9);
+
+height:90px;
+
+opacity:0;
+transition:all 0.4s ease;
+
+z-index:2;
+}
+
+/* Henri enters door */
+.henri-enter .henri-strip{
+opacity:0;
+transform:translateX(20px);
+}
+
+.henri-enter .henri-inside-door{
+opacity:1;
+transform:scale(0.4);
+}
+
+/* Maurice fades (restricted) */
+.maurice-fade .maurice-strip{
+opacity:0.3;
+filter:grayscale(40%);
+}
+
+.pierre-strip{
+  transform: translateX(-10px);
+}
+
+.henri-strip{
+  transform: translateX(0px);
+}
+
+.maurice-strip{
+  transform: translateX(10px);
+}
+
+
+/* optional: Pierre deny effect */
+.pierre-fade .pierre-strip{
+opacity:0.3;
+}
+
+.insight-box{
+position:absolute;
+
+/* POSITION — left side like your reference */
+left:8.7%;
+top:45%;
+
+width:240px;
+max-width:80%;
+
+background:#000;
+color:#fff;
+
+padding:10px 4px 10px 4px;
+border-radius:10px;
+
+/* dotted cyan border */
+border:2px dashed #00e5ff;
+
+/* glow effect */
+box-shadow:0 0 12px rgba(0,229,255,0.4);
+
+text-align:center;
+
+/* animation */
+opacity:0;
+transform:translateY(0%);
+transition:all 0.4s ease;
+
+z-index:999;
+}
+
+.insight-box h3{
+margin-top:0;
+margin-bottom:10px;
+font-size:20px;
+font-weight:700;
+}
+
+.insight-box p{
+margin:0;
+font-size:16px;
+line-height:1.5;
+color:#ffe55c; /* yellow text like your design */
+}
+
+.insight-box.show{
+opacity:1;
+transform:translateY(0);
+}
+
+
+.door-entry.show{
+opacity:1;
+transform:translate(-50%, -50%) scale(1);
+}
+
+
+.door-wrapper{
+width:180px;
+height:210px;
+display:flex;
+align-items:center;
+justify-content:center;
+align-items:flex-end; 
+position: relative;
+margin-left:-70px;   /* small pull-in if needed */
+  
+}
+
+#doorLottie{
+width:100%;
+height:100%;
+display:block;
+
+}
+
+#doorLottie svg{
+    position:absolute;
+    bottom:-45px;   /* ✅ THIS FIXES ALIGNMENT */
+    left:0;
+}
+
+.location-status-layer{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:30;
+}
+
+/* reuse SAME coordinates as location-hit */
+
+.status{
+position:absolute;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+}
+
+/* example */
+.status.royal{
+left:90%;
+top:28%;
+width:17%;
+height:22%;
+}
+
+.status.law{
+left:30%;
+top:28%;
+width:17%;
+height:22%;
+}
+
+/*complete for all 8*/
+
+.status::after{
+content:"";
+display:none;
+}
+
+/* tick */
+.status.explored::before{
+content:"✔";
+position:absolute;
+top:-10px;
+right:-10px;
+
+background:#4CAF50;
+color:#fff;
+
+width:26px;
+height:26px;
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:16px;
+}
+
+/* explored state overlay */
+/*.location-hit.explored{
+/*background:rgba(0,0,0,0.4);   
+}*/
+
+/* 👇 THIS HIDES "Tap to open" area */
+.location-hit.explored .hide-btn{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:35%;   /* adjust based on SVG button height */
+z-index:20;
+}
+
+/* TICK ICON */
+.location-hit.explored::before{
+content:"✔";
+
+position:absolute;
+top:-156px;
+right:60px;
+
+background:#4CAF50;
+color:#fff;
+
+width:26px;
+height:26px;
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:16px;
+font-weight:bold;
+
+z-index:30;
+}
+
+/* EXPLORED BUTTON */
+.location-hit.explored::after{
+content:"Explored";
+
+position:absolute;
+
+/* ✅ PERFECT CENTER ALIGN */
+left:50%;
+transform:translateX(-50%);
+
+/* ✅ CONSISTENT POSITION BELOW CARD */
+top:10%;
+
+/* ✅ SIZE & STYLE */
+padding:12px 32px;
+font-size:20px;
+
+background:#e10600;
+color:#ffe55c;
+
+border-radius:12px;
+font-style:italic;
+font-weight:600;
+
+z-index:50;
+}
+
+
+#summaryBtn{
+position:fixed;
+bottom:26px;
+left:50%;
+transform:translateX(-50%);
+
+/* ✅ SIZE */
+padding:10px 24px;
+font-size:18px;
+
+/* ✅ COLOR (more premium) */
+background:#ff9800;   /* softer orange */
+color:#000;
+
+/* ✅ STYLE */
+border:none;
+border-radius:30px;
+font-weight:600;
+
+cursor:pointer;
+z-index:100;
+}
+
+
+.summary-panel{
+margin-top: 35px;    
+}
+
+.summary-hotspots{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:50;
+}
+
+/* 🎯 align exactly where button is in SVG */
+.startover-btn-area{
+position:absolute;
+
+/* adjust these based on your SVG */
+bottom:4%;
+left:50%;
+transform:translateX(-50%);
+
+width:180px;
+height:60px;
+
+cursor:pointer;
+
+/* DEBUG (remove later) */
+/*background:rgba(255,0,0,0.3); */
+}
+
+/* 🔊 Active audio button */
+.speaker-active{
+outline:4px solid #00ff88;
+border-radius:50%;
+animation: pulseGlow 1s infinite;
+}
+
+@keyframes pulseGlow{
+0%{ box-shadow:0 0 5px #00ff88; }
+50%{ box-shadow:0 0 20px #00ff88; }
+100%{ box-shadow:0 0 5px #00ff88; }
+}
+
+.characters{
+position:relative;
+width:900px;
+margin-top: 5px;
+}
+
+/* Each hotspot sits exactly on card */
+.click-area{
+position:absolute;
+width:70px;
+height:70px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+
+
+.click-area.pierre{
+left:63px;
+top:250px;
+}
+
+.click-area.maurice{
+left:380px;
+top:250px;
+}
+
+.click-area.henri{
+left:698px;
+top:250px;
+}
+
+.speaker-pierre,
+.speaker-maurice,
+.speaker-henri{
+width:55px;
+transform:translateX(35px);  /* pushes icon to right edge */
+}
