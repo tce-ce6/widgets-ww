@@ -644,6 +644,8 @@ svg * {
   color: #f1f5f9;
   position: relative;
   z-index: 2;
+  padding: 3.25rem;
+  box-sizing: border-box;
 }
 
 canvas {
