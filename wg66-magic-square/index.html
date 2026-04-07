@@ -1,0 +1,175 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Square</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="tambola-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Magic Square</h2>
+        <span id="versionId" class="versionText">b2_wg66_211225</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g id="Web 1920 â 1 1" clip-path="url(#clip0_5016_123)">
+            <g id="Clip path group">
+              <mask id="mask0_5016_123" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1920"
+                height="1080">
+                <g id="clip-Web_1920_1">
+                  <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="white" />
+                </g>
+              </mask>
+              <g mask="url(#mask0_5016_123)">
+                <g id="Web 1920 â 1">
+                  <foreignObject x="450" y="100" width="1920" height="1080" style="overflow: visible;">
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                      <span style="color: #fff; font-size: 30px;">Can you make every row, column, and diagonal add up to the same number?</span>
+                    </div>
+                  </foreignObject>
+                  <foreignObject x="61" y="108" width="1798" height="929" style="overflow: visible;">
+                    <div class="main-wrapper" xmlns="http://www.w3.org/1999/xhtml">
+                      <div class="square-container">
+                        <div class="card">
+                          <div class="header-wrapper">
+                            <div class="magic-info">
+                              Make every row, column, and diagonal add up to
+                              <span id="magic-sum">36</span>.
+                            </div>
+                            <div class="options-title">Select your magic sum:</div>
+                            <div class="options">
+                              <label class="option-chip">
+                                <input type="radio" name="rangeMode" value="fixed15" checked>
+                                <span class="inp-border"></span>
+                                <span>15</span>
+
+                              </label>
+                              <label class="option-chip">
+                                <input type="radio" name="rangeMode" value="range16to50">
+                                <span class="inp-border"></span>
+                                <span>16–50</span>
+
+                              </label>
+                              <label class="option-chip">
+                                <input type="radio" name="rangeMode" value="range51to100">
+                                <span class="inp-border"></span>
+                                <span>51–100</span>
+
+                              </label>
+                            </div>
+                          </div>
+                          <div class="grid-wrapper">
+                            <div class="grid" id="grid">
+                              <div>
+                                <input type="number" id="c00" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c01" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c02" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c10" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c11" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c12" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c20" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c21" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                              <div>
+                                <input type="number" id="c22" min="0" step="1">
+                                <span class="increment"></span>
+                                <span class="decrement"></span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="message" id="message" style="display: none;">
+                            <span id="lottie-msg"></span>
+                            <span id="message-text"></span>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </foreignObject>
+
+                </g>
+              </g>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+      <div class="flexContainer button-controls" id="btn-wrapper">
+        <div class="flexItem flexItemFirst">
+          <button class="btn" id="checkBtn" disabled style="background-color:#4caf50; color:white;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Check It
+          </button>
+          <button class="btn" id="newBtn" style="background-color:#1e6bef; color:white; min-width: 155px;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            New Game
+          </button>
+          <button class="btn" id="showBtn" disabled style="background-color:#FF2C68; color:white; min-width: 155px;" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #4caf50';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Show Answer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
