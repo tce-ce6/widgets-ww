@@ -107,27 +107,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
             card.setAttribute("draggable", true);
 
+            // ✅ DESKTOP DRAG (UNCHANGED)
             card.addEventListener("dragstart", () => {
                 isDragging = true;
-
                 draggedCard = card;
 
                 setTimeout(() => {
                     card.style.opacity = "0.5";
                 }, 0);
-
             });
 
             card.addEventListener("dragend", () => {
-
                 card.style.opacity = "1";
                 draggedCard = null;
                 setTimeout(() => { isDragging = false; }, 50);
+            });
 
+            // ✅ MOBILE TOUCH SUPPORT (ADDED)
+            card.addEventListener("touchstart", () => {
+                isDragging = true;
+                draggedCard = card;
+                card.style.opacity = "0.5";
+            });
+
+            card.addEventListener("touchend", (e) => {
+
+                card.style.opacity = "1";
+                setTimeout(() => { isDragging = false; }, 50);
+
+                const touch = e.changedTouches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                if (!target) return;
+
+                const slot = target.closest("#card-placeholder li");
+
+                if (!slot) return;
+                if (slot.children.length > 0) return;
+
+                const parent = draggedCard.parentNode;
+
+                if (parent.id === "card-wrapper") {
+                    const emptyLi = document.createElement("li");
+                    parent.insertBefore(emptyLi, draggedCard);
+                }
+
+                slot.appendChild(draggedCard);
+
+                resetBtn.classList.remove("disabled");
+                showAnswerBtn.classList.add("disabled");
+
+                checkAllPlaced();
+
+                draggedCard = null;
             });
 
         });
-
     }
 
 
