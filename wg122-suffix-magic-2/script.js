@@ -408,6 +408,13 @@ function hideBackdrop() {
 let wordObj = null;
 let wordIndex = 0;
 
+const OBJECT_MAPPING = {
+  tree: { container: 'treeWords', prefix: 'treeWord' },
+  milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
+  mountain: { container: 'mountainWords', prefix: 'mountainWord' },
+  stone: { container: 'stoneObjects', prefix: 'stoneWord' }
+};
+
 
 const IMAGES = [
   'assets/tree.svg',
@@ -628,7 +635,6 @@ function showAllAnswers(wordObj) {
   if (!wordObj || !wordObj.details || !Array.isArray(wordObj.details.answer)) return;
 
   const imgEl = document.getElementById('objects-img');
-
   const answers = wordObj.details.answer;
   const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
 
@@ -641,55 +647,39 @@ function showAllAnswers(wordObj) {
     stone: `./assets/stone-${answers.length + 1}.svg`
   };
 
-  // If the object exists in our map, update the source
   if (assetMap[objectName]) {
     imgEl.src = assetMap[objectName];
   } else {
     imgEl.src = `./assets/${objectName}-${answers.length}.svg`;
   }
 
-  // 1. Reset standard word slots (word1, word2, etc)
-  const wordSlots = [
-    document.getElementById('word1'),
-    document.getElementById('word2'),
-    document.getElementById('word3'),
-    document.getElementById('word4'),
-    document.getElementById('word5')
-  ];
+  // Use OBJECT_MAPPING for DRY
+  const map = OBJECT_MAPPING[objectName];
 
-  wordSlots.forEach(slot => {
-    if (!slot) return;
-    slot.textContent = "";
-    slot.style.display = "none";
+  // 1. Reset all visual group containers and slots first
+  Object.values(OBJECT_MAPPING).forEach(m => {
+    const el = document.getElementById(m.container);
+    if (el) el.style.display = 'none';
+    for (let i = 1; i <= 5; i++) {
+      const fo = document.getElementById(`${m.prefix}${i}`);
+      if (fo) {
+        fo.style.display = 'none';
+        const span = fo.querySelector('span');
+        if (span) span.textContent = '';
+      }
+    }
   });
 
-  // 2. Mapping for the visual group containers
-  const mapping = {
-    tree: { container: 'treeWords', prefix: 'treeWord' },
-    milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
-    mountain: { container: 'mountainWords', prefix: 'mountainWord' },
-    stone: { container: 'stoneObjects', prefix: 'stoneWord' }
-  };
-
-  const map = mapping[objectName];
-
-  // Show the main group container (e.g., the tree SVG group)
+  // 2. Show the current main group container
   if (map) {
     const groupEl = document.getElementById(map.container);
     if (groupEl) groupEl.style.display = 'block';
   }
 
-  // 3. Fill slots and visual elements based on answers
+  // 3. Fill current object's slots
   answers.forEach((answer, index) => {
     const cleanAnswer = answer.trim();
 
-    // Update standard list slots
-    if (wordSlots[index]) {
-      wordSlots[index].textContent = cleanAnswer;
-      wordSlots[index].style.display = "block";
-    }
-
-    // Update visual group slots (foreignObjects)
     if (map) {
       const slotId = `${map.prefix}${index + 1}`;
       const fo = document.getElementById(slotId);
@@ -699,13 +689,12 @@ function showAllAnswers(wordObj) {
         if (span) span.textContent = cleanAnswer;
       }
 
-      // Show associated lottie/leaf containers if they exist
       const lottieContainer = document.getElementById(`${objectName}-${index}`);
-      if (lottieContainer) lottieContainer.style.display = 'block';
+      if (lottieContainer) lottieContainer.style.display = 'none';
     }
   });
 
-  // 4. Disable suffix interaction since answers are revealed
+  // 4. Disable suffix interaction
   document.querySelectorAll("#list-suffix li").forEach(li => {
     li.dataset.savedPointerEvents = li.style.pointerEvents || 'auto';
     li.dataset.savedOpacity = li.style.opacity || '1';
@@ -713,7 +702,6 @@ function showAllAnswers(wordObj) {
     li.style.opacity = "0.3";
   });
 
-  // Show the example button as the round is effectively over
   if (typeof showExample !== 'undefined') {
     showExample.style.display = 'block';
   }
@@ -729,62 +717,30 @@ function hideAllAnswers(wordObj, completedAnswers) {
   updateStarsDisplay(answers.length, completedAnswers.length);
   imgEl.src = wordObj.image;
 
-  // 1. Reset standard word slots
-  const wordSlots = [
-    document.getElementById('word1'),
-    document.getElementById('word2'),
-    document.getElementById('word3'),
-    document.getElementById('word4'),
-    document.getElementById('word5')
-  ];
+  const map = OBJECT_MAPPING[objectName];
 
-  wordSlots.forEach(slot => {
-    if (!slot) return;
-    slot.textContent = "";
-    slot.style.display = "none";
-  });
-
-  // 2. Mapping for the visual group containers
-  const mapping = {
-    tree: { container: 'treeWords', prefix: 'treeWord' },
-    milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
-    mountain: { container: 'mountainWords', prefix: 'mountainWord' },
-    stone: { container: 'stoneObjects', prefix: 'stoneWord' }
-  };
-
-  const map = mapping[objectName];
-
-  if (map) {
-    const groupEl = document.getElementById(map.container);
-    if (groupEl) groupEl.style.display = 'none';
-  }
-
-  // 3. Clear all slots
-  if (map) {
+  // 1. Reset everything first
+  Object.values(OBJECT_MAPPING).forEach(m => {
+    const el = document.getElementById(m.container);
+    if (el) el.style.display = 'none';
     for (let i = 1; i <= 5; i++) {
-      const slotId = `${map.prefix}${i}`;
-      const fo = document.getElementById(slotId);
+      const fo = document.getElementById(`${m.prefix}${i}`);
       if (fo) {
         fo.style.display = 'none';
         const span = fo.querySelector('span');
         if (span) span.textContent = '';
       }
     }
-  }
+  });
 
   for (let i = 0; i < answers.length; i++) {
     const lottieContainer = document.getElementById(`${objectName}-${i}`);
     if (lottieContainer) lottieContainer.style.display = 'none';
   }
 
-  // 4. Re-fill based on completedAnswers
+  // 2. Re-fill based on completedAnswers
   completedAnswers.forEach((answer, index) => {
     const cleanAnswer = answer.trim();
-
-    if (wordSlots[index]) {
-      wordSlots[index].textContent = cleanAnswer;
-      wordSlots[index].style.display = "block";
-    }
 
     if (map) {
       const groupEl = document.getElementById(map.container);
@@ -803,7 +759,7 @@ function hideAllAnswers(wordObj, completedAnswers) {
     }
   });
 
-  // 5. Re-enable suffix interaction
+  // 3. Re-enable suffix interaction
   document.querySelectorAll("#list-suffix li").forEach(li => {
     li.style.pointerEvents = li.dataset.savedPointerEvents || "auto";
     li.style.opacity = li.dataset.savedOpacity || "1";
@@ -811,6 +767,7 @@ function hideAllAnswers(wordObj, completedAnswers) {
 
   if (typeof showExample !== 'undefined' && completedAnswers.length < answers.length) {
     showExample.style.display = 'none';
+    exampleSentence.style.display = 'none';
   }
 }
 
@@ -835,13 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedSuffixes = [];
   let completedAnswers = [];
 
-  const wordSlots = [
-    document.getElementById('word1'),
-    document.getElementById('word2'),
-    document.getElementById('word3'),
-    document.getElementById('word4'),
-    document.getElementById('word5')
-  ];
+
 
   if (showAnswerBtn) {
     showAnswerBtn.addEventListener('click', () => {
@@ -850,6 +801,7 @@ document.addEventListener("DOMContentLoaded", () => {
       //   alertPopupImg.style.display = 'none';
       //   hideBackdrop();
       // }
+      hideBackdrop();
       if (showAnswerBtn.textContent.trim() === 'Show Answer') {
         showAnswerBtn.textContent = 'Hide Answer';
         showAllAnswers(wordObj);
@@ -919,9 +871,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showAnswerBtn.disabled = false;
     }
     // reset word slots
-    wordSlots.forEach(ws => {
-      if (ws) ws.textContent = "";
-    });
+    for (let i = 1; i <= 5; i++) {
+      document.querySelectorAll(`#word${i}`).forEach(ws => {
+        if (ws) {
+          ws.textContent = "";
+        }
+      });
+    }
 
     // reset slots
     slots.forEach(slot => {
@@ -941,25 +897,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const objectName = wordObj.image.match(/\/([^/]+)\./)[1];
 
     wordSpan.textContent = wordObj.root;
-    // hide/reset all group word containers (tree, milestone, mountain, stone)
-    const groupPrefixes = ['treeWord', 'milestoneWord', 'mountainWord', 'stoneWord'];
-    const groupContainers = ['treeWords', 'milestoneWords', 'mountainWords', 'stoneObjects'];
-    groupContainers.forEach(gc => {
-      const el = document.getElementById(gc);
+
+    // 1. Reset all visual group containers and slots
+    Object.values(OBJECT_MAPPING).forEach(m => {
+      const el = document.getElementById(m.container);
       if (el) el.style.display = 'none';
-    });
-    // hide and clear individual foreignObject slots
-    for (let i = 1; i <= 4; i++) {
-      groupPrefixes.forEach(prefix => {
-        const fo = document.getElementById(`${prefix}${i}`);
+      for (let i = 1; i <= 5; i++) {
+        const fo = document.getElementById(`${m.prefix}${i}`);
         if (fo) {
           fo.style.display = 'none';
           const span = fo.querySelector('span');
           if (span) span.textContent = '';
         }
-      });
-    }
-    //  `${objectName}Word`.textContent = wordObj.root;
+      }
+    });
 
     const slot = document.getElementById(`${objectName}Word`);
     const wordDiv = document.getElementById(`${objectName}Main`);
@@ -1027,49 +978,37 @@ document.addEventListener("DOMContentLoaded", () => {
     completedAnswers.push(combined);
     updateStarsDisplay(answers.length, completedAnswers.length);
 
-    /* ---- ASSIGN TO word1, word2, ... ---- */
-    if (wordSlots[wordIndex]) {
-      wordSlots[wordIndex].textContent = combined;
+    /* ---- ASSIGN TO word slots ---- */
+    const map = OBJECT_MAPPING[object];
+    if (map) {
+      // show group container
+      const groupEl = document.getElementById(map.container);
+      if (groupEl) groupEl.style.display = 'block';
 
-      // Map object name to group container id and prefix used by foreignObjects
-      const mapping = {
-        tree: { container: 'treeWords', prefix: 'treeWord' },
-        milestone: { container: 'milestoneWords', prefix: 'milestoneWord' },
-        mountain: { container: 'mountainWords', prefix: 'mountainWord' },
-        stone: { container: 'stoneObjects', prefix: 'stoneWord' }
-      };
-
-      const map = mapping[object];
-      if (map) {
-        // show group container
-        const groupEl = document.getElementById(map.container);
-        if (groupEl) groupEl.style.display = 'block';
-
-        // show & populate the specific foreignObject slot (e.g., treeWord2)
-        const slotId = `${map.prefix}${wordIndex + 1}`;
-        const fo = document.getElementById(slotId);
-        if (fo) {
-          setTimeout(() => {
-            fo.style.display = 'block';
-            const span = fo.querySelector('span');
-            if (span) span.textContent = combined;
-          }, 1500)
-
-        }
+      // show & populate the specific foreignObject slot (e.g., treeWord2)
+      const slotId = `${map.prefix}${wordIndex + 1}`;
+      const fo = document.getElementById(slotId);
+      if (fo) {
+        setTimeout(() => {
+          fo.style.display = 'block';
+          const span = fo.querySelector('span');
+          if (span) span.textContent = combined;
+        }, 1500)
       }
-
-      // ensure the lottie container for this leaf is visible and play animation
-      const lottieContainer = document.getElementById(`${object}-${wordIndex}`);
-      if (lottieContainer) lottieContainer.style.display = 'block';
-
-      // populate any element with id wordN (tspan or span) as a fallback
-      const genericWordEl = document.getElementById(`word${wordIndex + 1}`);
-      if (genericWordEl) genericWordEl.textContent = combined;
-
-      playCorrectAnswerLottie(object);
-      wordIndex++;
-      showExample.style.display = 'block';
     }
+
+    // populate any element with id wordN (tspan or span)
+    document.querySelectorAll(`#word${wordIndex + 1}`).forEach(ws => {
+      if (ws) ws.textContent = combined;
+    });
+
+    // ensure the lottie container for this leaf is visible and play animation
+    const lottieContainer = document.getElementById(`${object}-${wordIndex}`);
+    if (lottieContainer) lottieContainer.style.display = 'block';
+
+    playCorrectAnswerLottie(object);
+    wordIndex++;
+    // showExample.style.display = 'block';
 
     const remainingSuffixes = correctSuffixes.filter(
       s => !selectedSuffixes.includes(s)
