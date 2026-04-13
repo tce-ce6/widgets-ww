@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Word Discovery Adventure</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+</head>
+
+
+<body>
+
+<script src="./lottie.js"></script>
+
+<div id="viewport">
+<div id="stage">
+<div id="app">
+
+<div id="lottieCorrect"></div>
+
+<!-- HOME BUTTON -->
+<div id="homeBtn" class="home-btn">
+<img src="Assets/images/home-btn.svg" alt="Home">
+</div>
+
+
+<!-- ================= HEADER ================= -->
+<div class="header">
+<h1>Word Discovery Adventure</h1>
+<div id="categoryBadge" class="category-badge hidden"></div>
+</div>
+
+
+
+<!-- ================= CATEGORY SCREEN ================= -->
+<div id="categoryScreen" class="screen active">
+
+<div id="itext" class="itext">
+Tap a category to start your journey!
+</div>
+
+<div id="categoryGrid" class="category-grid"></div>
+
+</div>
+
+
+
+<!-- ================= GRID SCREEN ================= -->
+<div id="gridScreen" class="screen">
+
+<div id="gridLabel" class="grid-label"></div>
+
+<div id="gridStarBar" class="grid-star-bar"></div>
+
+<div class="grid-instruction">
+Find 8 hidden words. Tap the letters in the correct order.
+</div>
+
+
+<div class="grid-container">
+
+<div id="letterGrid" class="letter-grid"></div>
+
+<div class="side-panel">
+
+<div class="progress" id="progressText"></div>
+
+<ul id="foundWords"></ul>
+
+</div>
+
+</div>
+
+
+<div class="controls">
+
+<button id="hintBtn">Give Me A Hint</button>
+
+<button id="showAllBtn">Show Answers</button>
+
+<button id="practiceBtn" class="hidden">Practice</button>
+
+</div>
+
+</div>
+
+
+
+
+<!-- ================= PRACTICE SCREEN ================= -->
+<div id="practiceScreen" class="screen">
+
+<div id="practiceLabel" class="practice-label"></div>
+
+<img
+src="Assets/images/practice-badge.svg"
+class="practice-badge"
+alt="Practice"
+>
+
+<div class="star-bar" id="starBar"></div>
+
+<div id="practiceInstruction" class="practice-instruction"></div>
+
+
+
+<div class="practice-wrapper">
+
+<!-- LEFT WORD LIST -->
+<div class="practice-wordlist">
+
+<div id="wordList"></div>
+
+</div>
+
+
+
+<!-- RIGHT PRACTICE AREA -->
+<div class="practice-main">
+
+<!-- SENTENCE PRACTICE -->
+<div class="practice-card-sentence">
+
+<h2 id="sentenceWord" class="practice-title"></h2>
+
+<div id="sentenceSlots" class="answer-slots"></div>
+
+<div id="sentenceBank" class="word-bank"></div>
+
+</div>
+
+
+
+<!-- IMAGE PRACTICE -->
+<div class="practice-card-image">
+
+<h2 id="imageWord" class="practice-title"></h2>
+
+<div id="imageOptions" class="image-options"></div>
+
+</div>
+
+
+
+<!-- PRACTICE BUTTONS -->
+<div class="practice-buttons">
+
+<button id="backBtn" class="btn-grey">
+Back
+</button>
+
+<button id="showAnswerBtn" class="btn-green">
+Show Answer
+</button>
+
+<button id="nextBtn" class="btn-blue">
+Next
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
