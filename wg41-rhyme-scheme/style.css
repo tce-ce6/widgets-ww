@@ -23,7 +23,7 @@ svg * {
 
 #rhyme-widget .container::after {
   content: "";
-  background-image: url("Assets/Images/Final images/BG.png");
+  background-image: url("assets/images/final-images/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -172,7 +172,7 @@ svg * {
 .btn-wrap::before{
   font-size: 40px;
   position: absolute;
-  top: -4px;
+  top: 2px;
   left: 50%;
   transform: translateX(-50%);
   font-weight: 600;
@@ -219,6 +219,8 @@ svg * {
   /* border-radius: 4px; */
 }
 
-.svg-container #b tspan,.svg-container #b_2 tspan{
-  fill: #e8b83f !important;
+/* Don't force-fill r3/r4; JS sets fill based on selected marker */
+.svg-container #b tspan,
+.svg-container #b_2 tspan{
+  fill: inherit;
 }

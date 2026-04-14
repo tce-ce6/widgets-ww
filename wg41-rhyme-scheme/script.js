@@ -415,35 +415,41 @@ const STANZAS = [
 ];
 
 const wordsAudio = {
-  "Stanza_01": "./Assets/Audio/Stanza_01",
-  "Stanza_02": "./Assets/Audio/Stanza_02",
-  "Stanza_03": "./Assets/Audio/Stanza_03",
-  "Stanza_04": "./Assets/Audio/Stanza_04",
-  "Stanza_05": "./Assets/Audio/Stanza_05",
-  "Stanza_06": "./Assets/Audio/Stanza_06",
-  "Stanza_07": "./Assets/Audio/Stanza_07",
-  "Stanza_08": "./Assets/Audio/Stanza_08",
-  "Stanza_09": "./Assets/Audio/Stanza_09",
-  "Stanza_10": "./Assets/Audio/Stanza_10",
-  "Stanza_11": "./Assets/Audio/Stanza_11",
-  "Stanza_12": "./Assets/Audio/Stanza_12",
-  "Stanza_13": "./Assets/Audio/Stanza_13",
-  "Stanza_14": "./Assets/Audio/Stanza_14",
-  "Stanza_15": "./Assets/Audio/Stanza_15",
-  "Stanza_16": "./Assets/Audio/Stanza_16",
-  "Stanza_17": "./Assets/Audio/Stanza_17",
-  "Stanza_18": "./Assets/Audio/Stanza_18",
-  "Stanza_19": "./Assets/Audio/Stanza_19",
-  "Stanza_20": "./Assets/Audio/Stanza_20",
-  "Stanza_21": "./Assets/Audio/Stanza_21",
-  "Stanza_22": "./Assets/Audio/Stanza_22",
-  "Stanza_23": "./Assets/Audio/Stanza_23",
-  "Stanza_24": "./Assets/Audio/Stanza_24",
-  "Stanza_25": "./Assets/Audio/Stanza_25",
-  "Stanza_26": "./Assets/Audio/Stanza_26",
-  "Stanza_27": "./Assets/Audio/Stanza_27",
-  "Stanza_28": "./Assets/Audio/Stanza_28",
-  "Stanza_29": "./Assets/Audio/Stanza_29"
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_01": "./assets/audio/Stanza_01",
+  "Stanza_02": "./assets/audio/Stanza_02",
+  "Stanza_03": "./assets/audio/Stanza_03",
+  "Stanza_04": "./assets/audio/Stanza_04",
+  "Stanza_05": "./assets/audio/Stanza_05",
+  "Stanza_06": "./assets/audio/Stanza_06",
+  "Stanza_07": "./assets/audio/Stanza_07",
+  "Stanza_08": "./assets/audio/Stanza_08",
+  "Stanza_09": "./assets/audio/Stanza_09",
+  "Stanza_10": "./assets/audio/Stanza_10",
+  "Stanza_11": "./assets/audio/Stanza_11",
+  "Stanza_12": "./assets/audio/Stanza_12",
+  "Stanza_13": "./assets/audio/Stanza_13",
+  "Stanza_14": "./assets/audio/Stanza_14",
+  "Stanza_15": "./assets/audio/Stanza_15",
+  "Stanza_16": "./assets/audio/Stanza_16",
+  "Stanza_17": "./assets/audio/Stanza_17",
+  "Stanza_18": "./assets/audio/Stanza_18",
+  "Stanza_19": "./assets/audio/Stanza_19",
+  "Stanza_20": "./assets/audio/Stanza_20",
+  "Stanza_21": "./assets/audio/Stanza_21",
+  "Stanza_22": "./assets/audio/Stanza_22",
+  "Stanza_23": "./assets/audio/Stanza_23",
+  "Stanza_24": "./assets/audio/Stanza_24",
+  "Stanza_25": "./assets/audio/Stanza_25",
+  "Stanza_26": "./assets/audio/Stanza_26",
+  "Stanza_27": "./assets/audio/Stanza_27",
+  "Stanza_28": "./assets/audio/Stanza_28",
+  "Stanza_29": "./assets/audio/Stanza_29"
 }
 
 // --- UI wiring & interaction ---
@@ -455,16 +461,16 @@ let activeRhyme = null;        // 'a' or 'b'
 let completedRhymes = new Set();
 
 let correctWordsSet = new Set();   // stores correctly answered word elements
-let stanzaAudioPlayed = false;    // prevents repeat audio
+let stanzaAudioPlayed = false;    // prevents repeat Audio
 
 const soundIcon = document.getElementById('sound-icon');
 const showAnswerBtn = document.getElementById('showAnswer');
 
 const markerStyles = {
-  green: { color: '#7ef241', cursor: "url('Assets/Images/Final images/Green_Highlighter.svg') 64 64, auto" },
-  yellow: { color: '#f7f734', cursor: "url('Assets/Images/Final images/Yellow_Highlighter.svg') 64 64, auto" },
-  blue: { color: '#43ceff', cursor: "url('Assets/Images/Final images/Blue_Highlighter.svg')64 64, auto" },
-  pink: { color: '#ff43b7', cursor: "url('Assets/Images/Final images/Pink_Highlighter.svg') 64 64, auto" },
+  green: { color: '#7ef241', cursor: "url('assets/images/final-images/green_highlighter.svg') 64 64, auto" },
+  yellow: { color: '#f7f734', cursor: "url('assets/images/final-images/yellow_highlighter.svg') 64 64, auto" },
+  blue: { color: '#43ceff', cursor: "url('assets/images/final-images/blue_highlighter.svg')64 64, auto" },
+  pink: { color: '#ff43b7', cursor: "url('assets/images/final-images/pink_highlighter.svg') 64 64, auto" },
 };
 
 function setMarkerEnabled(markerEl, enabled) {
@@ -579,19 +585,33 @@ function applyHighlight(el, letter, markerColor, isCorrectIgnored, idx) {
   if (typeof idx === "number") {
     const letterTag = document.getElementById(`r${idx + 1}`);
     const signTag = document.getElementById(`sign${idx + 1}`);
-    const markerLetter = Object.keys(RHYME_COLORS).find(key => RHYME_COLORS[key] === markerColor) || 'a';
+    const warnTag = document.getElementById(`warn${idx + 1}`);
+
+    // Same as `s.js`: derive displayed letter from selected marker
+    const markerNameToLetter = {
+      green: 'a',
+      yellow: 'b',
+      blue: 'c',
+      pink: 'd'
+    };
+    const markerLetter = activeMarker ? (markerNameToLetter[activeMarker.name] || 'a') : 'a';
     if (letterTag) {
       letterTag.textContent = markerLetter;
-      letterTag.style.fill = markerColor; // ALWAYS schema color
+      // Match `s.js`: keep the letter colored by selected marker.
+      letterTag.style.color = markerColor;
+      letterTag.style.fill = markerColor;
     }
 
     if (signTag) {
       // Define the paths to your local SVG files
-      const correctPath = 'Assets/Images/right-mark.svg';
-      const wrongPath = 'Assets/Images/wrong-mark.svg';
+      const correctPath = 'assets/images/right-mark.svg';
+      const wrongPath = 'assets/images/wrong-mark.svg';
     
       // Update the src based on the boolean
       signTag.src = isCorrect ? correctPath : wrongPath;
+    }
+    if (warnTag) {
+      warnTag.src = isCorrect ? "" : "assets/images/alert-popup.svg";
     }
 
     if (isCorrect) {
@@ -665,15 +685,26 @@ function attachWordClicks(rhymingWords, scheme) {
 function hideAnswer() {
   // 1. Usuń wyróżnienia ze słów
   document.querySelectorAll('.clickable-word').forEach((el, idx) => {
-    // Zakładamy, że masz funkcję removeHighlight lub czyścisz style ręcznie
-    el.style.backgroundColor = 'transparent'; 
-    el.classList.remove('highlighted'); // Jeśli używasz klas CSS
+    // Reset word styling (match `s.js`)
+    el.style.backgroundColor = 'transparent';
+    el.style.color = "";
+    el.style.padding = "";
+    el.style.fontWeight = "";
+    el.style.display = "";
+    el.classList.remove('highlighted');
 
     // 2. Wyczyść tagi rymów (r1, r2, itd.)
     const letterTag = document.getElementById(`r${idx + 1}`);
     if (letterTag) {
       letterTag.textContent = '';
+      letterTag.style.color = '';
+      letterTag.style.fill = '';
+      letterTag.removeAttribute('fill');
     }
+    const signTag = document.getElementById(`sign${idx + 1}`);
+    if (signTag) signTag.src = '';
+    const warnTag = document.getElementById(`warn${idx + 1}`);
+    if (warnTag) warnTag.src = '';
   });
 
   stanzaAudioPlayed = false;
@@ -711,6 +742,7 @@ function showAnswer() {
     const color = defaultColors[letter] || markerStyles.green.color;
     const letterTag = document.getElementById(`r${idx + 1}`);
     const signTag = document.getElementById(`sign${idx + 1}`);
+    const warnTag = document.getElementById(`warn${idx + 1}`);
 
     if (letterTag) {
       letterTag.textContent = letter;
@@ -718,7 +750,11 @@ function showAnswer() {
     }
 
     if (signTag) {
-      signTag.src = " ";
+      // Match `s.js`: show the right mark on showAnswer
+      signTag.src = "assets/images/right-mark.svg";
+    }
+    if (warnTag) {
+      warnTag.src = "";
     }
 
     applyHighlight(el, letter, color, true);
@@ -747,21 +783,21 @@ let stanzaAudio = null;
 
 function playCurrentStanzaAudio() {
   const stanzaKey = getCurrentStanzaKey();
-  const audioSrc = wordsAudio[stanzaKey];
+  const AudioSrc = wordsAudio[stanzaKey];
 
-  if (!audioSrc) return;
+  if (!AudioSrc) return;
 
   if (stanzaAudio) {
     try { stanzaAudio.pause(); stanzaAudio.currentTime = 0; } catch (e) { }
   }
 
-  // Stop previous audio if playing
+  // Stop previous Audio if playing
   if (stanzaAudio) {
     stanzaAudio.pause();
     stanzaAudio.currentTime = 0;
   }
 
-  stanzaAudio = new Audio(`${audioSrc}.mp3`); // add extension if needed
+  stanzaAudio = new Audio(`${AudioSrc}.mp3`); // add extension if needed
   stanzaAudio.play().catch(err => {
     console.warn("Audio play blocked:", err);
   });
@@ -882,6 +918,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       document.querySelectorAll('[id^="sign"]').forEach(el => {
+        el.src = "";
+      });
+      document.querySelectorAll('[id^="warn"]').forEach(el => {
         el.src = "";
       });
 
