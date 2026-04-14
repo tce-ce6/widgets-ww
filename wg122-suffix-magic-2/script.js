@@ -531,10 +531,18 @@ class WordPicker {
     this.data = data;
     this.history = new Set();
     this.allWords = this.flattenData();
+    this.shuffle(this.allWords);
 
     this.images = IMAGES;
     this.imageIndex = 0;
     this.currentIndex = 0;
+  }
+
+  shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   }
 
   flattenData() {
@@ -550,6 +558,7 @@ class WordPicker {
   getNext() {
     if (this.currentIndex >= this.allWords.length) {
       this.currentIndex = 0; // reset when finished
+      this.shuffle(this.allWords);
     }
 
     const selected = this.allWords[this.currentIndex];
