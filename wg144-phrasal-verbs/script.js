@@ -1656,6 +1656,7 @@ function launchConfetti() {
 var state = {
   screen: "home",
   filter: null,
+  filterDeck: [],
   menuOpen: false,
   learnDeck: [],
   learnIndex: 0,
@@ -1671,6 +1672,18 @@ var state = {
   scoreIncorrect: 0,
 };
 
+function getNextFilter() {
+  if (state.filterDeck.length === 0) {
+    state.filterDeck = shuffle(HEAD_VERBS);
+  }
+  // If the first item in our deck is the current filter, move it to the end to avoid repetition
+  if (state.filterDeck.length > 1 && state.filterDeck[0] === state.filter) {
+    var f = state.filterDeck.shift();
+    state.filterDeck.push(f);
+  }
+  return state.filterDeck.shift();
+}
+
 function getFiltered() {
   return state.filter
     ? PHRASAL_VERBS.filter(function (p) {
@@ -1679,6 +1692,9 @@ function getFiltered() {
     : PHRASAL_VERBS.slice();
 }
 function startLearn() {
+  if (state.screen === "home") {
+    state.filter = getNextFilter();
+  }
   state.screen = "learn";
   state.learnDeck = shuffle(getFiltered());
   state.learnIndex = 0;
@@ -1687,6 +1703,9 @@ function startLearn() {
   render();
 }
 function startPractice() {
+  if (state.screen === "home") {
+    state.filter = getNextFilter();
+  }
   state.screen = "practice";
   var src = state.filter
     ? PRACTICE_SENTENCES.filter(function (p) { return p.head === state.filter; })
