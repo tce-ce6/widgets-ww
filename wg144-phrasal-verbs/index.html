@@ -14,7 +14,7 @@
         <div class="mainContainerOuter">
             <div class="wdgetTitle">
                 <h2>Phrasal Verbs</h2>
-                <span id="versionId" class="versionText">b3_wg144_260417_01</span>
+                <span id="versionId" class="versionText">b3_wg144_260417_03</span>
             </div>
             <div class="svg-container">
                 <svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,13 +54,13 @@
                                 <div class="side-menu ">
                                     <h3>Phrasal Verbs</h3>
                                     <div class="menu-sub">Choose a verb to filter</div>
-                                    <div class="menu-item menu-item-all " onclick="setFilter(null)">All verbs <span
-                                            class="count">23</span></div>
-                                    <div class="menu-item " onclick="setFilter('break')">break <span
+                                    <div id="menu-item-all" class="menu-item menu-item-all active" onclick="setFilter(null)">All verbs <span
+                                            class="count"></span></div>
+                                    <div id="menu-item-break" class="menu-item " onclick="setFilter('break')">break <span
                                             class="count">4</span></div>
-                                    <div class="menu-item " onclick="setFilter('give')">give <span
+                                    <div id="menu-item-give" class="menu-item " onclick="setFilter('give')">give <span
                                             class="count">3</span></div>
-                                    <div class="menu-item active" onclick="setFilter('look')">look <span
+                                    <div id="menu-item-look" class="menu-item " onclick="setFilter('look')">look <span
                                             class="count">4</span></div>
                                     <div class="menu-item " onclick="setFilter('put')">put <span class="count">4</span>
                                     </div>

@@ -1694,7 +1694,7 @@ function getFiltered() {
 }
 function startLearn() {
   if (state.screen === "home") {
-    state.filter = getNextFilter();
+    state.filter = null;
     state.filterIsManual = false;
   }
   state.screen = "learn";
@@ -1706,7 +1706,7 @@ function startLearn() {
 }
 function startPractice() {
   if (state.screen === "home") {
-    state.filter = getNextFilter();
+    state.filter = null;
     state.filterIsManual = false;
   }
   state.screen = "practice";
@@ -1887,14 +1887,14 @@ function render() {
   var oc = state.menuOpen ? "open" : "";
   var items =
     '<div class="menu-item menu-item-all ' +
-    (state.filter === null ? "active" : "") +
+    (state.filter === null || !state.filterIsManual ? "active" : "") +
     '" onclick="setFilter(null)">All verbs <span class="count">' +
     PHRASAL_VERBS.length +
     "</span></div>";
   HEAD_VERBS.forEach(function (h) {
     items +=
       '<div class="menu-item ' +
-      (state.filter === h ? "active" : "") +
+      (state.filter === h && state.filterIsManual ? "active" : "") +
       '" onclick="setFilter(\'' +
       h +
       "')\">" +
