@@ -1,11 +1,13 @@
-
-*:focus, 
+*:focus,
 *:focus {
-    outline: none !important; /* Removes the standard browser focus ring */
+  outline: none !important;
+  /* Removes the standard browser focus ring */
 }
+
 svg * {
   -webkit-tap-highlight-color: transparent;
 }
+
 #make-food-chain-widget body {
   box-sizing: border-box;
   outline: none;
@@ -37,13 +39,16 @@ svg * {
   top: 0;
   left: 0;
 }
-#modal-background{
+
+#modal-background {
   display: none;
 }
-.modal-open  {
+
+.modal-open {
   background-color: #000000e7;
 }
-.modal-open #modal-background{
+
+.modal-open #modal-background {
   display: block;
 }
 
@@ -144,13 +149,15 @@ svg * {
   top: 0;
   z-index: 1
 }
+
 #flying-animal-clone {
-    /* The transition property is key for smooth animation */
-    /* It applies to transform (for movement) and width/height (for scaling) */
-    transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
-    /* Ensure it's on the very top of other SVG elements */
-    z-index: 100; 
+  /* The transition property is key for smooth animation */
+  /* It applies to transform (for movement) and width/height (for scaling) */
+  transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
+  /* Ensure it's on the very top of other SVG elements */
+  z-index: 100;
 }
+
 #make-food-chain-widget .wdgetTitle h2 {
   font-size: 23px;
   font-weight: 600;
@@ -171,46 +178,47 @@ svg * {
   color: rgb(0 0 0 / 20%);
 }
 
-#make-food-chain-widget .svg-container{
+#make-food-chain-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 10;
 }
-#make-food-chain-widget svg{
-    width: 100% !important;
-    height: 100%;
+
+#make-food-chain-widget svg {
+  width: 100% !important;
+  height: 100%;
 }
 
-#play-btn{
+#play-btn {
   cursor: pointer;
 }
 
 #make-food-chain-widget #bulb-1.active .bulb-bg,
 #make-food-chain-widget #bulb-2.active .bulb-bg,
-#make-food-chain-widget #bulb-3.active .bulb-bg{
+#make-food-chain-widget #bulb-3.active .bulb-bg {
   fill: #FCEE21;
 }
 
-#make-food-chain-widget .bulb-rays{
+#make-food-chain-widget .bulb-rays {
   display: none;
   transition: all 0.3s ease-in-out;
 }
 
 #make-food-chain-widget #bulb-1.active .bulb-rays,
 #make-food-chain-widget #bulb-2.active .bulb-rays,
-#make-food-chain-widget #bulb-3.active .bulb-rays{
+#make-food-chain-widget #bulb-3.active .bulb-rays {
   display: block !important;
 }
 
 #position-1,
 #position-2,
-#position-3{
+#position-3 {
   cursor: pointer;
 }
 
 #position-1.active #Vector_2,
 #position-2.active #Vector_4,
-#position-3.active #Vector_6{
+#position-3.active #Vector_6 {
   fill: #02FFFF !important;
 }
 
@@ -219,8 +227,8 @@ svg * {
 
 .switch-wrapper-box .switch-wrapper {
   display: inline-block;
-      width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .switch-wrapper-box .switch-wrapper input {
@@ -228,9 +236,9 @@ svg * {
 }
 
 .switch-wrapper-box .switch {
-      width: 100%;
-    height: 100%;
-    background: #A44A4A;
+  width: 100%;
+  height: 100%;
+  background: #A44A4A;
   border-radius: 60px;
   position: relative;
   display: inline-flex;
@@ -242,7 +250,7 @@ svg * {
 }
 
 /* ON background */
-.switch-wrapper-box input:checked + .switch {
+.switch-wrapper-box input:checked+.switch {
   background: #0b8f63;
 }
 
@@ -265,34 +273,34 @@ svg * {
   opacity: 1;
 }
 
-.switch-wrapper-box input:checked + .switch .text.on {
+.switch-wrapper-box input:checked+.switch .text.on {
   opacity: 1;
 }
 
-.switch-wrapper-box input:checked + .switch .text.off {
+.switch-wrapper-box input:checked+.switch .text.off {
   opacity: 0;
 }
 
 /* Knob */
 .switch-wrapper-box .knob {
-    width: 55px;
-    height: 55px;
-    background: #fff;
-    border-radius: 50%;
-    position: absolute;
-    left: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: bold;
-    color: #555;
-    transition: left 0.3s;
-    box-shadow: 3.9px 1px 0 #3A3A3A;
+  width: 55px;
+  height: 55px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: #555;
+  transition: left 0.3s;
+  box-shadow: 3.9px 1px 0 #3A3A3A;
 }
 
 /* Move knob */
-.switch-wrapper-box input:checked + .switch .knob {
+.switch-wrapper-box input:checked+.switch .knob {
   left: 67px;
 }
 
@@ -306,10 +314,38 @@ svg * {
   display: block;
 }
 
-.switch-wrapper-box input:checked + .switch .num-on {
+.switch-wrapper-box input:checked+.switch .num-on {
   display: block;
 }
 
-.switch-wrapper-box input:checked + .switch .num-off {
+.switch-wrapper-box input:checked+.switch .num-off {
   display: none;
+}
+
+.custom-btn-output {
+  width: 318px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #a44a4a;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  border-radius: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease;
+}
+
+/* .custom-btn-output:hover {
+  background: #a44a4a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+} */
+
+.custom-btn-output:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

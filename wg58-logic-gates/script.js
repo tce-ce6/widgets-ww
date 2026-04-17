@@ -103,14 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gateButtons.forEach(btn => {
         if (!btn) return;
         btn.addEventListener("click", () => {
-            // Get current value of Input A from whichever group is currently visible before switching
-            showBtn.style.display = "block";
-            hideBtn.style.display = "none";
-
-            hideTruthTable();
-
-
-
             const currentIs_Not = (activeBtnId === "btn_not_gate");
             const currentSourceGroup = currentIs_Not ? notWiring : otherWiring;
             const sourceToggles = currentSourceGroup.querySelectorAll('input[type="checkbox"]');
@@ -127,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (activeBtnId === "btn_not_gate") {
                 if (notWiring) {
                     notWiring.style.display = "block";
-                    // Sync Input A to the NOT gate checkbox
                     const notToggle = notWiring.querySelector('input[type="checkbox"]');
                     if (notToggle) notToggle.checked = currentValA;
                 }
@@ -136,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (notWiring) notWiring.style.display = "none";
                 if (otherWiring) {
                     otherWiring.style.display = "block";
-                    // Sync Input A back from the NOT gate checkbox
                     const otherToggles = otherWiring.querySelectorAll('input[type="checkbox"]');
                     if (otherToggles[0]) otherToggles[0].checked = currentValA;
                 }
@@ -144,6 +134,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             updateTruthTableUI(activeBtnId);
             updateLogic();
+
+            // NEW: Automatically show truth table but hide output column
+            showTruthTable(false); // false means hide output column initially
         });
     });
 
@@ -167,19 +160,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentGroup) return;
 
         const toggles = currentGroup.querySelectorAll('input[type="checkbox"]');
-        
-        // Input A mapping
         const valA = (toggles[0] && toggles[0].checked) ? 1 : 0;
-        
-        // Input B mapping (only relevant for non-NOT gates)
         const valB = (toggles[1] && toggles[1].checked) ? 1 : 0;
-
         const suffix = isNotActive ? "_not" : "_other";
         
-        // Update Indicator A for NOT or OTHER
         syncDisplay(currentGroup, `input_indicator_on_a${suffix}`, `input_indicator_off_a${suffix}`, valA);
-        
-        // Update Indicator B only if it's NOT a NOT gate
         if (!isNotActive) {
             syncDisplay(currentGroup, `input_indicator_on_b${suffix}`, `input_indicator_off_b${suffix}`, valB);
         }
@@ -187,54 +172,59 @@ document.addEventListener("DOMContentLoaded", () => {
         let result = 0;
         if (activeBtnId) {
             if (isNotActive) {
-                // NOT gate only cares about valA
                 result = gateData[activeBtnId].table[valA];
             } else {
-                // Other gates care about valA and valB
                 result = gateData[activeBtnId].table[`${valA}${valB}`];
             }
         }
-
         syncDisplay(currentGroup, `out_put_on${suffix}`, `out_put_off${suffix}`, result);
     }
-if (showBtn) {
-    showBtn.addEventListener("click", showTruthTable);
-}
 
-if (hideBtn) {
-    hideBtn.addEventListener("click", hideTruthTable);
-}
-function showTruthTable() {
-    if (!activeBtnId) return;
-
-    const isNotGate = activeBtnId === "btn_not_gate";
-
-    // Show correct truth table
-    if (isNotGate) {
-        if (tableNot) tableNot.style.display = "block";
-        if (tableOther) tableOther.style.display = "none";
-    } else {
-        if (tableOther) tableOther.style.display = "block";
-        if (tableNot) tableNot.style.display = "none";
+    if (showBtn) {
+        showBtn.addEventListener("click", () => toggleOutputColumn(true));
     }
 
-    // Toggle buttons
-    showBtn.style.display = "none";
-    hideBtn.style.display = "block";
-}
+    if (hideBtn) {
+        hideBtn.addEventListener("click", () => toggleOutputColumn(false));
+    }
 
-function hideTruthTable() {
-    // Hide both tables
-    if (tableOther) tableOther.style.display = "none";
-    if (tableNot) tableNot.style.display = "none";
+    function showTruthTable(isOutputVisible = true) {
+        if (!activeBtnId) return;
 
-    // Toggle buttons
-    showBtn.style.display = "block";
-    hideBtn.style.display = "none";
-}
+        const isNotGate = activeBtnId === "btn_not_gate";
+        if (isNotGate) {
+            if (tableNot) tableNot.style.display = "block";
+            if (tableOther) tableOther.style.display = "none";
+        } else {
+            if (tableOther) tableOther.style.display = "block";
+            if (tableNot) tableNot.style.display = "none";
+        }
 
+        toggleOutputColumn(isOutputVisible);
+    }
 
+    function toggleOutputColumn(isVisible) {
+        const outputValueIds = ["OUTPUT_R1C3", "OUTPUT_R2C3", "OUTPUT_R3C3", "OUTPUT_R4C3", "_13", "_0-21"];
 
+        const displayStyle = isVisible ? "block" : "none";
+        
+        // Update only the value text elements
+        outputValueIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = displayStyle;
+        });
+
+        // Toggle buttons
+        if (showBtn) showBtn.style.display = isVisible ? "none" : "block";
+        if (hideBtn) hideBtn.style.display = isVisible ? "block" : "none";
+    }
+
+    function hideTruthTable() {
+        if (tableOther) tableOther.style.display = "none";
+        if (tableNot) tableNot.style.display = "none";
+        if (showBtn) showBtn.style.display = "none";
+        if (hideBtn) hideBtn.style.display = "none";
+    }
 
     function syncDisplay(group, onId, offId, value) {
         const onEl = group.querySelector(`#${onId}`);
