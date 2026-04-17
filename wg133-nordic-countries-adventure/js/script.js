@@ -25,6 +25,7 @@ const AppState = {
         lottieWrapper: null,
         correctLottie: null,
         tryAgainPopup: null,
+        btnReset: null,
         countryMaps: {}
     },
     mapState: {
@@ -475,7 +476,9 @@ function handleNextQuestion() {
         });
 
         // End state: no replay button
-        // Reset button removed
+        // Reset button shown
+        const btnReset = document.getElementById('btn-reset');
+        if (btnReset) btnReset.style.display = 'block';
 
         // Hide Next button
         const btnNextFull = document.getElementById('btn-next');
@@ -640,6 +643,8 @@ function initElements() {
     AppState.elements.correctLottie = document.getElementById('correct-lottie');
     // Wrong answer popup
     AppState.elements.tryAgainPopup = document.getElementById('try-again-popup');
+
+    AppState.elements.btnReset = document.getElementById('btn-reset');
 
     COUNTRY_IDS.forEach(id => {
         AppState.elements.countryMaps[id] = document.getElementById(id);
@@ -823,13 +828,15 @@ function handleGameReset() {
     // 4. Shuffle questions for a fresh game experience
     if (AppState.data && AppState.data.questions) {
         shuffleArray(AppState.data.questions);
+        AppState.currentCountryData = AppState.data.questions[0];
     }
 
     // 5. Hide end-game buttons and return to home screen
     if (AppState.elements.step1) AppState.elements.step1.style.display = 'block';
     if (AppState.elements.step2) AppState.elements.step2.style.display = 'none';
 
-    // Reset button removed
+    // Hide reset button
+    if (AppState.elements.btnReset) AppState.elements.btnReset.style.display = 'none';
 
     // Replay button removed
 
@@ -845,7 +852,11 @@ function handleGameReset() {
  * Attach event listeners to elements
  */
 function attachEventListeners() {
-    // Reset button removed
+    if (AppState.elements.btnReset) {
+        AppState.elements.btnReset.addEventListener('click', () => {
+            handleGameReset();
+        });
+    }
 
     // Replay button removed
 
