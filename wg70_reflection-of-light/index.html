@@ -22,10 +22,12 @@
 
                 <!-- Controls bar (keeps existing UI; header/bg come from wdgetTitle + container bg) -->
                 <section
-                    class="top-controls-card max-w-5xl w-full mx-auto panel-glass rounded-2xl shadow-md relative z-10 flex-none p-3 md:p-4 m-b-8">
+                    class="top-controls-card max-w-5xl w-full mx-auto panel-glass rounded-2xl shadow-md relative z-10 flex-none p-3 md:p-4 m-b-8"
+                    style="padding: 10px 20px;">
                     <div class="top-controls-grid grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                        <label class="medium-chip rounded-lg p-2 flex flex-col gap-2">
-                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Top
+                        <label class="medium-chip rounded-lg p-2 flex gap-2" style="align-items: center;">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold"
+                                style="white-space: nowrap;">Top
                                 Medium</span>
                             <select id="medium-top" class="nice-select rounded-md px-3 py-1 text-sm font-semibold">
                                 <option value="air">Air</option>
@@ -34,8 +36,9 @@
                                 <option value="diamond">Diamond</option>
                             </select>
                         </label>
-                        <label class="medium-chip rounded-lg p-2 flex flex-col gap-2">
-                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Bottom
+                        <label class="medium-chip rounded-lg p-2 flex gap-2" style="align-items: center;">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold"
+                                style="white-space: nowrap;">Bottom
                                 Medium</span>
                             <select id="medium-bottom" class="nice-select rounded-md px-3 py-1 text-sm font-semibold">
                                 <option value="air">Air</option>
@@ -85,7 +88,8 @@
                     </div>
 
                     <!-- Controls -->
-                    <div class="p-4 md:p-5 bg-slate-950/35 border-t border-slate-700/70 flex-none">
+                    <div class="p-4 md:p-5 bg-slate-950/35 border-t border-slate-700/70 flex-none"
+                        style="    padding: 10px 20px;">
                         <div class="flex flex-col md:flex-row gap-8 items-center justify-between">
 
                             <!-- Slider Control -->
@@ -100,13 +104,15 @@
                                 </div>
                                 <input type="range" id="angle-slider" min="0" max="90" value="30" step="0.1"
                                     class="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500 hover:accent-cyan-400 transition-all">
-                                <div class="flex justify-between text-xs text-slate-500 px-1 font-mono">
+                                <div class="flex justify-between text-xs text-slate-500 px-1 font-mono"
+                                    style="margin-top: 0;">
                                     <span>0°</span>
                                     <span id="critical-marker">Critical Angle</span>
                                     <span>90°</span>
                                 </div>
 
-                                <div id="footer-desc" class="text-slate-300/90 text-sm leading-snug pt-1">
+                                <div id="footer-desc" class="text-slate-300/90 text-sm leading-snug pt-1"
+                                    style="margin-top: 5px;">
                                     <p>Drag the slider or the canvas. When the incidence angle exceeds <span
                                             class="text-white font-bold">41.8°</span>, light cannot escape into the air.
                                     </p>
