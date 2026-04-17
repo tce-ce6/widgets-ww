@@ -1656,6 +1656,7 @@ function launchConfetti() {
 var state = {
   screen: "home",
   filter: null,
+  filterIsManual: false,
   filterDeck: [],
   menuOpen: false,
   learnDeck: [],
@@ -1694,6 +1695,7 @@ function getFiltered() {
 function startLearn() {
   if (state.screen === "home") {
     state.filter = getNextFilter();
+    state.filterIsManual = false;
   }
   state.screen = "learn";
   state.learnDeck = shuffle(getFiltered());
@@ -1705,6 +1707,7 @@ function startLearn() {
 function startPractice() {
   if (state.screen === "home") {
     state.filter = getNextFilter();
+    state.filterIsManual = false;
   }
   state.screen = "practice";
   var src = state.filter
@@ -1736,6 +1739,7 @@ function goHome() {
 }
 function setFilter(h) {
   state.filter = h;
+  state.filterIsManual = h !== null;
   state.menuOpen = false;
   if (state.screen === "learn") startLearn();
   else if (state.screen === "practice") startPractice();
@@ -1930,9 +1934,10 @@ function renderLearn() {
     return '<div style="text-align:center;padding:40px 0;color:var(--text-muted);">No phrasal verbs found for this filter.</div>';
   var idx = state.learnIndex;
   var item = deck[idx];
-  var fp = state.filter
-    ? '<span class="filter-pill">' + state.filter + "</span>"
-    : "";
+  var fp =
+    state.filter && state.filterIsManual
+      ? '<span class="filter-pill">' + state.filter + "</span>"
+      : "";
   var sc = state.slideDir === "right" ? "slide-right" : "slide-left";
   var st = state.revealStage;
 
@@ -2013,9 +2018,10 @@ function renderPractice() {
     return '<div style="text-align:center;padding:40px 0;color:var(--text-muted);">No phrasal verbs found for this filter.</div>';
   var idx = state.practiceIndex;
   var item = deck[idx];
-  var fp = state.filter
-    ? '<span class="filter-pill">' + state.filter + "</span>"
-    : "";
+  var fp =
+    state.filter && state.filterIsManual
+      ? '<span class="filter-pill">' + state.filter + "</span>"
+      : "";
   var answered = state.practiceChosen !== null;
   var firstWrong = !answered && state.practiceWrong1 !== null;
   var isCorrect = answered && state.practiceChosen === state.practiceCorrectIdx;

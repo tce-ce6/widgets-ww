@@ -448,9 +448,6 @@ const OBJECT_MAPPING = {
   stone: { container: 'stoneObjects', prefix: 'stoneWord' }
 };
 
-
-
-
 const IMAGES = [
   'assets/tree.svg',
   'assets/milestone.svg',
