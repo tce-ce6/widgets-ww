@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg144-phrasal-verbs": {
-      "updatedAt": "2026-04-15T18:14:10+05:30",
+      "updatedAt": "2026-04-17T18:27:50+05:30",
       "author": "tce-ashishg"
     },
     "wg145-multiplication-builder": {
@@ -261,7 +261,7 @@
       "author": "tce-nitinc"
     },
     "wg61-suffix-magic-1": {
-      "updatedAt": "2026-04-13T19:45:48+05:30",
+      "updatedAt": "2026-04-17T18:27:50+05:30",
       "author": "tce-ashishg"
     },
     "wg66-magic-square": {
@@ -402,6 +402,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-17T18:27:50+05:30",
+      "author": "tce-ashishg",
+      "message": "issue in wg144 resolved",
+      "widgets": [
+        61,
+        144
+      ]
+    },
     {
       "date": "2026-04-17T16:39:21+05:30",
       "author": "tce-nitinc",
@@ -744,14 +753,6 @@
       "message": "wg133-nordic-countries-adventure: update version number",
       "widgets": [
         133
-      ]
-    },
-    {
-      "date": "2026-03-31T23:46:41+05:30",
-      "author": "PrasannaP",
-      "message": "chore: update version identifier to b3_wg155_260331_6 and add debug helper for Kosovo placement in script.js",
-      "widgets": [
-        155
       ]
     }
   ]
