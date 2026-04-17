@@ -113,8 +113,8 @@
       "author": "tce-nitinc"
     },
     "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-04-16T19:46:33+05:30",
+      "author": "tce-ashishg"
     },
     "wg133-nordic-countries-adventure": {
       "updatedAt": "2026-04-06T16:52:15+05:30",
@@ -402,6 +402,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-16T19:46:33+05:30",
+      "author": "tce-ashishg",
+      "message": "wg132 issue resolved",
+      "widgets": [
+        132
+      ]
+    },
     {
       "date": "2026-04-15T18:14:10+05:30",
       "author": "tce-ashishg",
@@ -741,14 +749,6 @@
       "date": "2026-03-31T23:40:13+05:30",
       "author": "tce-nitinc",
       "message": "wg122 remane changes 2",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-03-31T23:39:08+05:30",
-      "author": "tce-nitinc",
-      "message": "wg122 rename fixes",
       "widgets": [
         122
       ]
