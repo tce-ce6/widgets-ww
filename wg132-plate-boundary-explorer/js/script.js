@@ -92,7 +92,7 @@ function attachProgressToLottie(type) {
   anim.addEventListener("enterFrame", () => {
     const progress = anim.currentFrame / anim.totalFrames;
     const value = Math.floor(progress * 100);
-    valueEls.forEach(el => { el.textContent = `${value}%`; });
+    valueEls.forEach(el => { el.textContent = `${value + 1}%`; });
     progressRects.forEach(r => { r.setAttribute('width', progress * PROGRESS_MAX_W); });
   });
 }
