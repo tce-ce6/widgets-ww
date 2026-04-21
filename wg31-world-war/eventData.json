@@ -151,7 +151,7 @@
         {
             "id": 3,
             "year": 1916,
-            "description": "The walls stand scarred but unbroken in 1916-just like the armies locked in endless combat. Who will break first?",
+            "description": "The walls stand scarred but unbroken in 1916 just like the armies locked in endless combat. Who will break first?",
             "itext": "",
             "questions": [
                 {
@@ -212,7 +212,7 @@
                             "id": 1,
                             "alliance": "Allied Powers",
                             "country": "United-States-of-America",
-                            "clue": "This country is home to the Statue of Liberty, gifted Disney and jazz music to the world, and has the first nation to put a man on the Moon.",
+                            "clue": "This country is home to the Statue of Liberty, gifted Disney and jazz music to the world, and was the first nation to put a man on the moon.",
                             "feedback": "Yes! The USA joined due to German submarine attacks (including the Lusitania), the Zimmermann Telegram revealing German-Mexico plans, and economic ties with the Allies."
                         },
                         {
