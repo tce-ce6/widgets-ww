@@ -272,6 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
             for (const r of inlineRanges) {
                 if (r.start >= segEnd) break;
                 if (r.end <= segStart) continue;
+                if (r.start < cur) continue; // Skip overlapping/nested ranges to prevent repetition
+
                 const rStart = Math.max(r.start, segStart);
                 const rEnd = Math.min(r.end, segEnd);
                 if (rStart > cur) out += escapeHtml(text.slice(cur, rStart));
