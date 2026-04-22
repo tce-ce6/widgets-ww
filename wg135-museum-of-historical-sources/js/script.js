@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const TOTAL_SETS = 4;
     const ITEMS_PER_SET = 5;
     let isActivityComplete = false;
-    
+
     // Track which galleries have been completed
     const completedGalleries = new Set();
     let correctAnimationInstance = null;
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         1: { base: 'drag-object-base-set1', btnBox: 'drag-object-btn-set1', imgPrefix: 'drag-object-btn-set1-img-', foPrefix: 'fo-drag-object-btn-set1-img-' },
         2: { base: 'drag-object-base-set2', btnBox: 'drag-object-btn-set2', imgPrefix: 'drag-object-btn-set2-img-', foPrefix: 'fo-drag-object-btn-set2-img-' },
         3: { base: 'drag-object-base-set3', btnBox: 'drag-object-btn-set3', imgPrefix: 'drag-object-btn-set3-img-', foPrefix: 'fo-drag-object-btn-set3-img-' },
-        4: { base: 'drag-object-base-set4', btnBox: 'drag-object-btn-set4', imgPrefix: 'drag-object-btn-set-4-img-', foPrefix: 'fo-drag-object-btn-set-4-img-' } 
+        4: { base: 'drag-object-base-set4', btnBox: 'drag-object-btn-set4', imgPrefix: 'drag-object-btn-set-4-img-', foPrefix: 'fo-drag-object-btn-set-4-img-' }
     };
 
     const museums = {
@@ -28,68 +28,68 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // New Configuration for Multiple Questions & Clues
-   const galleryData = {
-        '01': { 
+    const galleryData = {
+        '01': {
             currentQuestionIndex: 0,
             completed: false,
             questions: [
-                { 
-                    question: "An artefact that was used by merchants to identify their goods in ancient trade", 
+                {
+                    question: "An artefact that was used by merchants to identify their goods in ancient trade",
                     clue: "Ancient traders pressed this tiny stone object into wet clay as a signature. It bears mysterious symbols and writing that no scholar has yet been able to decode.",
                     correctId: "_01-museum-5"
                 },
-                { 
-                    question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power", 
+                {
+                    question: "An artefact from the Gupta period that shows how rulers used precious metal to display their power",
                     clue: "A goddess sits at its centre because this king believed his power came straight from the divine.",
-                    correctId: "_01-museum-2" 
+                    correctId: "_01-museum-2"
                 }
             ]
         },
-        '02': { 
+        '02': {
             currentQuestionIndex: 0,
             completed: false,
             questions: [
-                { 
-                    question: "An ancient text that provides detailed instructions on governance and economics", 
+                {
+                    question: "An ancient text that provides detailed instructions on governance and economics",
                     clue: "Written by the clever minister Kautilya, this guide taught kings the tricks of ruling — from collecting taxes to sending secret agents to gather information.",
-                    correctId: "_02-museum-5" 
+                    correctId: "_02-museum-5"
                 },
-                { 
-                    question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador", 
+                {
+                    question: "An account that describes the grandeur of an ancient Indian capital through the eyes of a Greek ambassador",
                     clue: "A Greek traveller visited Pataliputra during Chandragupta Maurya's reign and couldn't believe the city's riches and size his book vanished, but later writers copied his incredible stories!",
-                    correctId: "_02-museum-1" 
+                    correctId: "_02-museum-1"
                 }
             ]
         },
-        '03': { 
+        '03': {
             currentQuestionIndex: 0,
             completed: false,
             questions: [
-                { 
-                    question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.", 
+                {
+                    question: "A bronze masterpiece from South India shows a deity performing the cosmic dance within a ring of flame.",
                     clue: "This Chola bronze masterpiece is famous for high level of art and metalworking skill in medieval South India",
-                    correctId: "_03-museum-4" 
+                    correctId: "_03-museum-4"
                 },
-                { 
-                    question: "A prehistoric artwork showing the earliest evidence of human creativity in India", 
+                {
+                    question: "A prehistoric artwork showing the earliest evidence of human creativity in India",
                     clue: "Ancient cave dwellers painted hunting scenes on rock shelter walls using colors made from natural minerals and plants. — It shows how prehistoric humans lived!",
-                    correctId: "_03-museum-1" 
+                    correctId: "_03-museum-1"
                 }
             ]
         },
-        '04': { 
+        '04': {
             currentQuestionIndex: 0,
             completed: false,
             questions: [
-                { 
-                    question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down", 
+                {
+                    question: "An ancient poetry tradition was composed by court poets and was transmitted orally for two millennia before being written down",
                     clue: "These Tamil verses were performed at royal gatherings where poets competed— their amazing memories kept the poems alive across many generations!",
-                    correctId: "_04-museum-5" 
+                    correctId: "_04-museum-5"
                 },
-                { 
-                    question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement", 
+                {
+                    question: "A devotional poetry form that uses simple, rhythmic Marathi verses and became the voice of Maharashtra's Bhakti movement",
                     clue: "Pilgrims sing these spiritual songs on their long journey to Pandharpur temple—Saints like Tukaram created them so common people could express their devotion",
-                    correctId: "_04-museum-4" 
+                    correctId: "_04-museum-4"
                 }
             ]
         }
@@ -101,13 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = id => document.getElementById(id);
     const svg = document.querySelector('svg');
     const correctContainer = el('correct-dragged-objects');
-    
+
     const ui = {
         feedbackEnd: el('feedback-drag-drop-end'),
         popupClue: el('popup-clue'),
         popupCLueText: el('clue-text-content'),
         questionText: el('question-text'),
-        btnClue: el('btn-clue'), 
+        btnClue: el('btn-clue'),
         btnCloseClue: el('btn-close-popup-clue'),
         btnChangeGallery: el('btn-change-gallery'),
         questionPanel: el('Question-panel-global'),
@@ -210,21 +210,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playCorrectAnimation(x, y) {
         if (!window.lottie) return;
-        
+
         const container = el('animation-container-correct');
         if (!container) return;
-        
+
         // Clear previous animation
         if (correctAnimationInstance) {
             correctAnimationInstance.destroy();
         }
-        
+
         // Position the container
         container.style.left = (x - 100) + 'px';
         container.style.top = (y - 100) + 'px';
         container.innerHTML = '';
         container.classList.add('show');
-        
+
         // Load and play animation
         correctAnimationInstance = lottie.loadAnimation({
             container: container,
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             autoplay: true,
             path: './assets/animation/correct-confetti-anim.json'
         });
-        
+
         correctAnimationInstance.onComplete = () => {
             container.classList.remove('show');
         };
@@ -241,21 +241,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playIncorrectAnimation(x, y) {
         if (!window.lottie) return;
-        
+
         const container = el('animation-container-incorrect');
         if (!container) return;
-        
+
         // Clear previous animation
         if (incorrectAnimationInstance) {
             incorrectAnimationInstance.destroy();
         }
-        
+
         // Position the container
         container.style.left = (x - 100) + 'px';
         container.style.top = (y - 100) + 'px';
         container.innerHTML = '';
         container.classList.add('show');
-        
+
         // Load and play animation
         incorrectAnimationInstance = lottie.loadAnimation({
             container: container,
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             autoplay: true,
             path: './assets/animation/incorrect-cross-anim.json'
         });
-        
+
         incorrectAnimationInstance.onComplete = () => {
             container.classList.remove('show');
         };
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showSet(currentSetIndex);
         setupDragAndDrop();
-        
+
         // Initialize animations
         initializeLottieAnimations();
 
@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     if (ui.btnClue) ui.btnClue.addEventListener('click', () => ui.popupClue.style.display = 'block');
     if (ui.btnCloseClue) ui.btnCloseClue.addEventListener('click', () => ui.popupClue.style.display = 'none');
-    
+
     if (ui.btnCloseFeedback) {
         ui.btnCloseFeedback.addEventListener('click', () => {
             if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.btnNextSet.addEventListener('click', () => {
             if (el(dragSets[currentSetIndex].base)) el(dragSets[currentSetIndex].base).style.display = 'none';
             if (el(dragSets[currentSetIndex].btnBox)) el(dragSets[currentSetIndex].btnBox).style.display = 'none';
-            
+
             if (currentSetIndex < TOTAL_SETS) {
                 currentSetIndex++;
                 itemsDroppedInCurrentSet = 0;
@@ -466,20 +466,20 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 1; i <= ITEMS_PER_SET; i++) {
                 let imgId = `${dragSets[s].imgPrefix}${i}`;
                 let dragEl = el(imgId);
-                
+
                 if (dragEl) {
                     dragEl.style.cursor = 'grab';
                     dragEl.addEventListener('pointerdown', (e) => {
                         e.preventDefault();
                         if (s !== currentSetIndex || dragEl.dataset.dropped === "true") return;
-                        
+
                         activeDragEl = dragEl;
-                        
+
                         const p = svg.createSVGPoint();
                         p.x = e.clientX;
                         p.y = e.clientY;
                         startSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
-                        
+
                         initialMatrix = dragEl.transform.baseVal.consolidate()?.matrix || svg.createSVGMatrix();
 
                         dragEl.style.cursor = 'grabbing';
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentSVGPoint = p.matrixTransform(svg.getScreenCTM().inverse());
 
             const dx = currentSVGPoint.x - startSVGPoint.x;
-            const dy = (currentSVGPoint.y - startSVGPoint.y) + 75; 
+            const dy = (currentSVGPoint.y - startSVGPoint.y) + 75;
 
             const newMatrix = initialMatrix.translate(dx, dy);
             activeDragEl.setAttribute('transform', `matrix(${newMatrix.a},${newMatrix.b},${newMatrix.c},${newMatrix.d},${newMatrix.e},${newMatrix.f})`);
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('pointerup', (e) => {
             if (!activeDragEl) return;
-            
+
             let targetId = activeDragEl.id;
             let setPrefix = dragSets[currentSetIndex].imgPrefix;
             let itemNum = targetId.replace(setPrefix, '');
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 activeDragEl.dataset.dropped = "true";
                 activeDragEl.style.cursor = 'default';
-                
+
                 itemsDroppedInCurrentSet++;
                 if (itemsDroppedInCurrentSet === ITEMS_PER_SET) {
                     if (currentSetIndex < TOTAL_SETS) {
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (ui.dragBaseGlobal) ui.dragBaseGlobal.style.display = 'none';
                         if (ui.btnNextSet) ui.btnNextSet.style.display = 'none';
                         if (ui.iText01) ui.iText01.textContent = "Click the gallery to explore the artefacts.";
-                        
+
                         if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'block';
                     }
                 }
@@ -566,21 +566,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function snapAndScaleToZone(dragged, zone) {
-        const dragBox = dragged.getBBox(); 
-        const zoneBox = zone.getBBox(); 
-        
-        const scale = Math.min(zoneBox.width / dragBox.width, zoneBox.height / dragBox.height); 
-        
+        const dragBox = dragged.getBBox();
+        const zoneBox = zone.getBBox();
+
+        const scale = Math.min(zoneBox.width / dragBox.width, zoneBox.height / dragBox.height);
+
         const tx = (zoneBox.x + zoneBox.width / 2) - (dragBox.x + dragBox.width / 2) * scale;
-        const ty = (zoneBox.y + zoneBox.height / 2) - (dragBox.y + dragBox.height / 2) * scale  + 75;
-        
+        const ty = (zoneBox.y + zoneBox.height / 2) - (dragBox.y + dragBox.height / 2) * scale + 75;
+
         dragged.setAttribute('transform', `translate(${tx}, ${ty}) scale(${scale})`);
     }
 
     // ==========================================
     // 6. GALLERY, MULTI-QUESTION & MUSEUM SELECTION LOGIC
     // ==========================================
-    
+
     function updateClueUI(galleryKey) {
         const currentData = galleryData[galleryKey];
         const activeData = currentData.questions[currentData.currentQuestionIndex];
@@ -594,15 +594,15 @@ document.addEventListener('DOMContentLoaded', () => {
             clueTextEl.innerHTML = activeData.clue;
         }
     }
-    
 
-    window.selectMuseumGallery = function(galleryKey) { 
+
+    window.selectMuseumGallery = function (galleryKey) {
         if (ui.btnChangeGallery) ui.btnChangeGallery.style.display = 'block';
         if (ui.btnClue) ui.btnClue.style.display = 'block';
         if (ui.feedbackEnd) ui.feedbackEnd.style.display = 'none';
         if (ui.museumDropWindow) ui.museumDropWindow.style.display = 'none';
         if (ui.correctDraggedObjects) ui.correctDraggedObjects.style.display = 'none';
-        
+
         Object.values(museums).forEach(m => {
             if (el(m.bg)) el(m.bg).style.display = 'none';
             if (el(m.objContainer)) el(m.objContainer).style.display = 'none';
@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // First time - start from beginning
                 galleryData[galleryKey].currentQuestionIndex = 0;
             }
-            
+
             updateClueUI(galleryKey);
 
             setupMuseumInteraction(galleryKey);
@@ -650,12 +650,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeQuestion = currentData.questions[currentData.currentQuestionIndex];
 
         const isCorrect = (clickedElement.id === activeQuestion.correctId);
-        
+
         // Get click position for animation
         const rect = clickedElement.getBoundingClientRect();
         const animX = rect.left + rect.width / 2;
         const animY = rect.top + rect.height / 2;
-        
+
         // Play animation
         if (isCorrect) {
             playCorrectAnimation(animX, animY);
@@ -673,18 +673,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Gallery complete!
                     currentData.completed = true;
                     completedGalleries.add(galleryKey);
-                    
+
                     // Display badge on the gallery
                     const galleryEl = ui.hallwayGalleries[galleryKey];
                     if (galleryEl) {
                         displayGalleryCompleteBadge(galleryEl);
                     }
-                    
+
                     console.log("Gallery Complete! User can revisit.");
                 }
-            }, 1500); 
+            }, 1500);
         } else {
-            // Invalid answer - user can try again
+            // Invalid answer - usRectangle_1339-2er can try again
             setTimeout(() => {
                 // Do nothing, let them try again
             }, 1500);
