@@ -28,50 +28,9 @@ const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const solutionBtn = document.getElementById("solution-btn");
 
-hareTab.addEventListener("click", () => {
-  loadTab(3);
-
-  hareBox.style.display = "block";
-  raceTrackBox.style.display = "none";
-  trafficLightBox.style.display = "none";
-
-  hareTabLine.style.fill = "#FFF5B6";
-  raceTrackTabLine.style.fill = "#FFDE8C";
-  trafficLightTabLine.style.fill = "#FFDE8C";
-  hareTabRect.style.fill = "#FFF5B6";
-  raceTrackTabRect.style.fill = "#FFDE8C";
-  trafficLightTabRect.style.fill = "#FFDE8C";
-});
-
-raceTrackTab.addEventListener("click", () => {
-  loadTab(2);
-
-  hareBox.style.display = "none";
-  raceTrackBox.style.display = "block";
-  trafficLightBox.style.display = "none";
-
-  hareTabLine.style.fill = "#FFDE8C";
-  raceTrackTabLine.style.fill = "#FFF5B6";
-  trafficLightTabLine.style.fill = "#FFDE8C";
-  hareTabRect.style.fill = "#FFDE8C";
-  raceTrackTabRect.style.fill = "#FFF5B6";
-  trafficLightTabRect.style.fill = "#FFDE8C";
-});
-
-trafficLightTab.addEventListener("click", () => {
-  loadTab(1);
-
-  hareBox.style.display = "none";
-  raceTrackBox.style.display = "none";
-  trafficLightBox.style.display = "block";
-
-  hareTabLine.style.fill = "#FFDE8C";
-  raceTrackTabLine.style.fill = "#FFDE8C";
-  trafficLightTabLine.style.fill = "#FFF5B6";
-  hareTabRect.style.fill = "#FFDE8C";
-  raceTrackTabRect.style.fill = "#FFDE8C";
-  trafficLightTabRect.style.fill = "#FFF5B6";
-});
+hareTab.addEventListener("click", () => loadTab(3));
+raceTrackTab.addEventListener("click", () => loadTab(2));
+trafficLightTab.addEventListener("click", () => loadTab(1));
 
 function loadTab(tabNumber) {
   currentTab = tabNumber;
@@ -80,7 +39,159 @@ function loadTab(tabNumber) {
   else if (tabNumber === 2) startText.textContent = "Start Race";
   else if (tabNumber === 3) startText.textContent = "Start Hopping";
 
+  // Toggle Visibility
+  hareBox.style.display = (tabNumber === 3) ? "block" : "none";
+  raceTrackBox.style.display = (tabNumber === 2) ? "block" : "none";
+  trafficLightBox.style.display = (tabNumber === 1) ? "block" : "none";
+
+  // Update Tab Colors
+  const activeColor = "#FFF5B6";
+  const inactiveColor = "#FFDE8C";
+  hareTabLine.style.fill = (tabNumber === 3) ? activeColor : inactiveColor;
+  raceTrackTabLine.style.fill = (tabNumber === 2) ? activeColor : inactiveColor;
+  trafficLightTabLine.style.fill = (tabNumber === 1) ? activeColor : inactiveColor;
+  hareTabRect.style.fill = (tabNumber === 3) ? activeColor : inactiveColor;
+  raceTrackTabRect.style.fill = (tabNumber === 2) ? activeColor : inactiveColor;
+  trafficLightTabRect.style.fill = (tabNumber === 1) ? activeColor : inactiveColor;
+
+  stopAnimations();
   resetWidget();
+}
+
+function startRaceAnimation() {
+  const lcm = getLCM(runnerLap1, runnerLap2);
+  const blueMan = document.getElementById("blue-man");
+  const brownMan = document.getElementById("brown-man");
+  const startX = 1052.59 - 70; // 0-marker minus offset for man center
+  const trackWidth = 676; // Total width of 0-20 scale
+
+  let currentTime = 0; // in seconds
+  let frame = 0;
+  const fps = 20; // Update 20 times per second for smooth motion
+
+  stopAnimations();
+
+  window.raceInterval = setInterval(() => {
+    frame++;
+    currentTime = frame / fps;
+
+    // Runner 1
+    const p1 = (currentTime % runnerLap1) / runnerLap1;
+    blueMan.setAttribute('x', startX + (p1 * trackWidth));
+    document.getElementById("rt-lap-1").textContent = Math.floor(currentTime / runnerLap1);
+    document.getElementById("rt-time-1").textContent = Math.floor(currentTime);
+
+    // Runner 2
+    const p2 = (currentTime % runnerLap2) / runnerLap2;
+    brownMan.setAttribute('x', startX + (p2 * trackWidth));
+    document.getElementById("rt-lap-2").textContent = Math.floor(currentTime / runnerLap2);
+    document.getElementById("rt-time-2").textContent = Math.floor(currentTime);
+
+    if (currentTime >= lcm) {
+      clearInterval(window.raceInterval);
+      
+      // Finalize positions at start
+      blueMan.setAttribute('x', startX);
+      brownMan.setAttribute('x', startX);
+      document.getElementById("rt-lap-1").textContent = lcm / runnerLap1;
+      document.getElementById("rt-lap-2").textContent = lcm / runnerLap2;
+
+      // Show meeting results
+      document.getElementById("meet-res-1").textContent = lcm;
+      document.getElementById("meet-elapsed").textContent = lcm;
+      document.getElementById("meet-first").textContent = lcm;
+      document.getElementById("meeting-time").style.display = "block";
+    }
+  }, 1000 / fps);
+}
+
+function stopAnimations() {
+  if (window.hoppingInterval) clearInterval(window.hoppingInterval);
+  if (window.raceInterval) clearInterval(window.raceInterval);
+}
+
+function getGCD(a, b) {
+  return b === 0 ? a : getGCD(b, a % b);
+}
+
+function getLCM(a, b) {
+  if (a === 0 || b === 0) return 0;
+  return Math.abs(a * b) / getGCD(a, b);
+}
+
+function startHoppingAnimation() {
+  const lcm = getLCM(whiteJump, brownJump);
+  const whiteHare = document.getElementById("white-hare");
+  const brownHare = document.getElementById("brown-hare");
+  const unitPx = 34; // Approximate pixels per foot on the scale
+  const startX = 980;
+
+  let currentWhiteJump = 0;
+  let currentBrownJump = 0;
+  const maxWhiteJumps = lcm / whiteJump;
+  const maxBrownJumps = lcm / brownJump;
+
+  stopAnimations();
+  clearFootprints();
+
+  const drawJumpArc = (startX, endX, y) => {
+    const radius = Math.abs(endX - startX) / 2;
+    const pathData = `M ${startX} ${y} A ${radius} ${radius} 0 0 1 ${endX} ${y}`;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute('d', pathData);
+    path.setAttribute('stroke', 'black');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('stroke-dasharray', '5,5');
+    path.setAttribute('fill', 'none');
+    path.classList.add('footprint-mark');
+    mainSvg.appendChild(path);
+  };
+
+  window.hoppingInterval = setInterval(() => {
+    let moved = false;
+
+    if (currentWhiteJump < maxWhiteJumps) {
+      const oldX = startX + (currentWhiteJump * whiteJump * unitPx) + 70;
+      currentWhiteJump++;
+      const targetX = startX + (currentWhiteJump * whiteJump * unitPx);
+      whiteHare.setAttribute('x', targetX);
+      drawJumpArc(oldX, targetX + 70, 471.5);
+      
+      document.getElementById("h-pos-1").textContent = currentWhiteJump * whiteJump;
+      document.getElementById("h-jump-1").textContent = currentWhiteJump;
+      moved = true;
+    }
+
+    if (currentBrownJump < maxBrownJumps) {
+      const oldX = startX + (currentBrownJump * brownJump * unitPx) + 70;
+      currentBrownJump++;
+      const targetX = startX + (currentBrownJump * brownJump * unitPx);
+      brownHare.setAttribute('x', targetX);
+      drawJumpArc(oldX, targetX + 70, 737.5);
+
+      document.getElementById("h-pos-2").textContent = currentBrownJump * brownJump;
+      document.getElementById("h-jump-2").textContent = currentBrownJump;
+      moved = true;
+    }
+
+    if (!moved) {
+      clearInterval(window.hoppingInterval);
+      
+      // Update result text
+      document.getElementById("res-lcm-1").textContent = lcm;
+      document.getElementById("res-jump-a").textContent = whiteJump;
+      document.getElementById("res-jump-b").textContent = brownJump;
+      document.getElementById("res-count-a").textContent = maxWhiteJumps;
+      document.getElementById("res-count-b").textContent = maxBrownJumps;
+
+      document.getElementById("footprint-box").style.display = "block";
+    }
+  }, 1000);
+}
+
+function clearFootprints() {
+  const marks = document.querySelectorAll('.footprint-mark');
+  marks.forEach(m => m.remove());
 }
 
 function resetWidget() {
@@ -116,6 +227,33 @@ function resetWidget() {
   setVal("0 feet/jump", 0, " feet/jump");
   setVal("0 feet/jump_2", 0, " feet/jump");
 
+  const whiteHare = document.getElementById("white-hare");
+  const brownHare = document.getElementById("brown-hare");
+  if (whiteHare) whiteHare.setAttribute('x', '980');
+  if (brownHare) brownHare.setAttribute('x', '980');
+
+  const blueMan = document.getElementById("blue-man");
+  const brownMan = document.getElementById("brown-man");
+  const manStartX = 1052.59 - 70;
+  if (blueMan) blueMan.setAttribute('x', manStartX);
+  if (brownMan) brownMan.setAttribute('x', manStartX);
+
+  document.getElementById("rt-lap-1").textContent = "0";
+  document.getElementById("rt-time-1").textContent = "0";
+  document.getElementById("rt-lap-2").textContent = "0";
+  document.getElementById("rt-time-2").textContent = "0";
+
+  if (document.getElementById("h-pos-1")) {
+    document.getElementById("h-pos-1").textContent = "0";
+    document.getElementById("h-jump-1").textContent = "0";
+    document.getElementById("h-pos-2").textContent = "0";
+    document.getElementById("h-jump-2").textContent = "0";
+  }
+
+  clearFootprints();
+  document.getElementById("footprint-box").style.display = "none";
+  document.getElementById("meeting-time").style.display = "none";
+
   startBtn.style.opacity = "0.3";
   startBtn.style.pointerEvents = "none";
   resetBtn.style.opacity = "0.3";
@@ -126,6 +264,7 @@ function resetWidget() {
 
 function checkButtons() {
   let a, b;
+  console.log(currentTab);
   if (currentTab === 1) { a = trafficCycleA; b = trafficCycleB; }
   else if (currentTab === 2) { a = runnerLap1; b = runnerLap2; }
   else if (currentTab === 3) { a = whiteJump; b = brownJump; }
@@ -150,6 +289,9 @@ function checkButtons() {
 startBtn.addEventListener('click', () => {
   solutionBtn.style.opacity = "1";
   solutionBtn.style.pointerEvents = "auto";
+
+  if (currentTab === 3) startHoppingAnimation();
+  else if (currentTab === 2) startRaceAnimation();
 });
 
 resetBtn.addEventListener('click', () => {
@@ -222,7 +364,7 @@ function initSlider(sliderId, snaps, valueId, initialX, multiplier, unit, update
 }
 
 window.addEventListener("load", () => {
-  loadTab(1);
+  loadTab(3);
 
   // Snaps for Traffic Light Tab (Tab 1)
   const trafficSnaps = [200, 306, 413, 519, 625, 732, 838];
