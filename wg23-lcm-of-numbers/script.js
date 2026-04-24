@@ -282,6 +282,8 @@ function clearFootprints() {
 }
 
 function resetWidget() {
+  stopAnimations();
+  
   trafficCycleA = 0; trafficCycleB = 0;
   runnerLap1 = 0; runnerLap2 = 0;
   whiteJump = 0; brownJump = 0;
@@ -304,15 +306,14 @@ function resetWidget() {
 
   const setVal = (id, val, unit) => {
     const el = document.getElementById(id);
-    if (el) el.querySelector('tspan').textContent = `${val}${unit}`;
+    if (!el) return;
+    const target = (el.tagName === 'tspan' || el.tagName === 'text') ? el : el.querySelector('tspan');
+    if (target) target.textContent = `${val}${unit}`;
+    else el.textContent = `${val}${unit}`;
   }
 
-  setVal("0 seconds", 0, " seconds");
-  setVal("0 seconds_2", 0, " seconds");
-  if (document.getElementById("res-t-cycle-1")) {
-    document.getElementById("res-t-cycle-1").textContent = "0 seconds";
-    document.getElementById("res-t-cycle-2").textContent = "0 seconds";
-  }
+  setVal("res-t-cycle-1", 0, " seconds");
+  setVal("res-t-cycle-2", 0, " seconds");
   setVal("0 seconds/lap", 0, " seconds/lap");
   setVal("0 seconds/lap_2", 0, " seconds/lap");
   setVal("0 feet/jump", 0, " feet/jump");
@@ -406,7 +407,7 @@ function initSlider(sliderId, snaps, valueId, initialX, multiplier, unit, update
   if (!slider) return;
   const valueElement = document.getElementById(valueId);
   if (!valueElement) return;
-  const valueText = valueElement.querySelector('tspan');
+  const valueText = (valueElement.tagName === 'tspan' || valueElement.tagName === 'text') ? valueElement : valueElement.querySelector('tspan');
   let isDragging = false;
 
   slider.style.cursor = "pointer";
@@ -474,7 +475,7 @@ function updateSolutionModal() {
     intro1 = "To find when both lights turn green";
     intro2 = "simultaneously, we need to find the ";
     introUnit = "of their cycle times.";
-    seqLabel = "Light A turns green at: "; 
+    seqLabel = "Light A turns green at: ";
     compUnit = " cycles";
     answerText = "Answer: Both lights turn green together after ";
   } else if (currentTab === 2) {
@@ -483,7 +484,7 @@ function updateSolutionModal() {
     intro1 = "To find when both runners meet at the";
     intro2 = "start, we need to find the ";
     introUnit = "of their lap times.";
-    seqLabel = "Runner 1 at starting point at: "; 
+    seqLabel = "Runner 1 at starting point at: ";
     compUnit = " laps";
     answerText = "Answer: Both meet at the start after ";
   } else {
@@ -492,7 +493,7 @@ function updateSolutionModal() {
     intro1 = "To find where both hares' footprints";
     intro2 = "match, we need to find the ";
     introUnit = "of their jump lengths.";
-    seqLabel = "White Hare footprints at: "; 
+    seqLabel = "White Hare footprints at: ";
     compUnit = " jumps";
     answerText = "Answer: Footprints first match at ";
   }
@@ -502,29 +503,42 @@ function updateSolutionModal() {
     let s = [0];
     for (let i = 1; i <= Math.min(5, lcm / v); i++) s.push(i * v);
     let label = (currentTab === 1) ? `Light ${name} turns green at: ` :
-                (currentTab === 2) ? `Runner ${name} at starting point at: ` :
-                `${name} Hare footprints at: `;
+      (currentTab === 2) ? `Runner ${name} at starting point at: ` :
+        `${name} Hare footprints at: `;
     return label + s.join(", ") + (lcm / v > 5 ? "..." : "");
   };
 
-  document.getElementById("sol-intro-line1").textContent = intro1;
-  document.getElementById("sol-intro-line2").textContent = intro2;
-  document.getElementById("sol-intro-unit").textContent = introUnit;
-  
-  document.getElementById("sol-val-1").querySelector('tspan').textContent = label1 + val1 + unit;
-  document.getElementById("sol-val-2").querySelector('tspan').textContent = label2 + val2 + unit;
-  
-  document.getElementById("sol-seq-1").querySelector('tspan').textContent = getSeq(val1, currentTab === 3 ? "White" : (currentTab === 1 ? "A" : "1"));
-  document.getElementById("sol-seq-2").querySelector('tspan').textContent = getSeq(val2, currentTab === 3 ? "Brown" : (currentTab === 1 ? "B" : "2"));
-  
-  document.getElementById("sol-lcm").querySelector('tspan').textContent = `LCM = ${lcm}${unit}`;
-  document.getElementById("sol-answer").querySelector('tspan').textContent = answerText + lcm + unit;
-  
+  const setT = (id, text) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+  };
+
+  setT("sol-intro-line1", intro1);
+  setT("sol-intro-line2", intro2);
+  setT("sol-intro-unit", introUnit);
+
+  const val1El = document.getElementById("sol-val-1");
+  if (val1El) (val1El.querySelector('tspan') || val1El).textContent = label1 + val1 + unit;
+  const val2El = document.getElementById("sol-val-2");
+  if (val2El) (val2El.querySelector('tspan') || val2El).textContent = label2 + val2 + unit;
+
+  const seq1El = document.getElementById("sol-seq-1");
+  if (seq1El) (seq1El.querySelector('tspan') || seq1El).textContent = getSeq(val1, currentTab === 3 ? "White" : (currentTab === 1 ? "A" : "1"));
+  const seq2El = document.getElementById("sol-seq-2");
+  if (seq2El) (seq2El.querySelector('tspan') || seq2El).textContent = getSeq(val2, currentTab === 3 ? "Brown" : (currentTab === 1 ? "B" : "2"));
+
+  const lcmEl = document.getElementById("sol-lcm");
+  if (lcmEl) (lcmEl.querySelector('tspan') || lcmEl).textContent = `LCM = ${lcm}${unit}`;
+  const ansEl = document.getElementById("sol-answer");
+  if (ansEl) (ansEl.querySelector('tspan') || ansEl).textContent = answerText + lcm + unit;
+
   const name1 = currentTab === 1 ? "Light A" : (currentTab === 2 ? "Runner 1" : "White Hare");
   const name2 = currentTab === 1 ? "Light B" : (currentTab === 2 ? "Runner 2" : "Brown Hare");
-  
-  document.getElementById("sol-conclusion").querySelector('tspan').textContent = 
-    `${name1} completed ${lcm/val1}${compUnit} • ${name2} completed ${lcm/val2}${compUnit}`;
+
+  const concEl = document.getElementById("sol-conclusion");
+  if (concEl) (concEl.querySelector('tspan') || concEl).textContent =
+    `${name1} completed ${lcm / val1}${compUnit} • ${name2} completed ${lcm / val2}${compUnit}`;
 }
 
 window.addEventListener("load", () => {
@@ -532,15 +546,11 @@ window.addEventListener("load", () => {
 
   // Snaps for Traffic Light Tab (Tab 1)
   const trafficSnaps = [200, 306, 413, 519, 625, 732, 838];
-  initSlider("traffic-slider-a", trafficSnaps, "0 seconds", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-a", trafficSnaps, "res-t-cycle-1", 203, 2, " seconds", (val) => {
     trafficCycleA = val;
-    const res = document.getElementById("res-t-cycle-1");
-    if (res) res.textContent = `${val} seconds`;
   });
-  initSlider("traffic-slider-b", trafficSnaps, "0 seconds_2", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-b", trafficSnaps, "res-t-cycle-2", 203, 2, " seconds", (val) => {
     trafficCycleB = val;
-    const res = document.getElementById("res-t-cycle-2");
-    if (res) res.textContent = `${val} seconds`;
   });
 
   // Snaps for Runner Tab (Tab 2)
