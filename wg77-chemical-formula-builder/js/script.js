@@ -344,7 +344,7 @@ function showCompoundName(elementId, text, type) {
   // const el = document.getElementById(elementId);
   // if (!el) return;
   // const img = el.querySelector("img");
-  const sr = "assets/images/Gr_" + text + ".svg";
+  const sr = "assets/images/gr_" + text.toLowerCase() + ".svg";
   // img.setAttribute("src", sr);
   loadSVGIntoContainer(sr, elementId, function (container) {
     console.log("🚀 ~ showCompoundName ~ container:", container)
