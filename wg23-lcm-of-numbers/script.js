@@ -79,17 +79,17 @@ function startRaceAnimation() {
     const p1 = (currentTime % runnerLap1) / runnerLap1;
     blueMan.setAttribute('x', startX + (p1 * trackWidth));
     document.getElementById("rt-lap-1").textContent = Math.floor(currentTime / runnerLap1);
-    document.getElementById("rt-time-1").textContent = Math.floor(currentTime);
+    document.getElementById("rt-time-1").textContent = `${Math.floor(currentTime)}s`;
 
     // Runner 2
     const p2 = (currentTime % runnerLap2) / runnerLap2;
     brownMan.setAttribute('x', startX + (p2 * trackWidth));
     document.getElementById("rt-lap-2").textContent = Math.floor(currentTime / runnerLap2);
-    document.getElementById("rt-time-2").textContent = Math.floor(currentTime);
+    document.getElementById("rt-time-2").textContent = `${Math.floor(currentTime)}s`;
 
     if (currentTime >= lcm) {
       clearInterval(window.raceInterval);
-      
+
       // Finalize positions at start
       blueMan.setAttribute('x', startX);
       brownMan.setAttribute('x', startX);
@@ -105,9 +105,96 @@ function startRaceAnimation() {
   }, 1000 / fps);
 }
 
+function startTrafficAnimation() {
+  const lcm = getLCM(trafficCycleA, trafficCycleB);
+  const brightGreen = "#2ff411";
+  const darkGreen = "#004010";
+  const brightRed = "#FF2424";
+  const darkRed = "#401010";
+
+  let currentTime = 0;
+  stopAnimations();
+  clearTrafficTimes();
+
+  const updateLightsAndBlocks = () => {
+    if (currentTime > lcm) {
+      clearInterval(window.trafficInterval);
+      updateTrafficLight("traffic-A-green", "traffic-A-red", true);
+      updateTrafficLight("traffic-B-green", "traffic-B-red", true);
+      return;
+    }
+
+    // Update Traffic A
+    const phaseA = currentTime % trafficCycleA;
+    const isGreenA = phaseA < (trafficCycleA / 2);
+    updateTrafficLight("traffic-A-green", "traffic-A-red", isGreenA);
+    if (phaseA === 0) addTrafficTime("traffic-A-time", currentTime);
+
+    // Update Traffic B
+    const phaseB = currentTime % trafficCycleB;
+    const isGreenB = phaseB < (trafficCycleB / 2);
+    updateTrafficLight("traffic-B-green", "traffic-B-red", isGreenB);
+    if (phaseB === 0) addTrafficTime("traffic-B-light-time", currentTime);
+
+    currentTime++;
+  };
+
+  // Immediate first call
+  updateLightsAndBlocks();
+  window.trafficInterval = setInterval(updateLightsAndBlocks, 1000);
+
+  function updateTrafficLight(gId, rId, showGreen) {
+    const gPath = document.getElementById(gId).querySelector('path');
+    const rPath = document.getElementById(rId).querySelector('path');
+    gPath.setAttribute('fill', showGreen ? brightGreen : darkGreen);
+    rPath.setAttribute('fill', showGreen ? darkRed : brightRed);
+  }
+
+  function addTrafficTime(containerId, time) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const template = container.firstElementChild;
+    if (!template) return;
+
+    template.style.display = "none";
+
+    const clone = template.cloneNode(true);
+    const blocksCount = container.querySelectorAll('.traffic-time-block').length;
+    const offset = blocksCount * 45; // Reduced margin to fit 7 per row
+
+    clone.classList.add('traffic-time-block');
+    clone.style.display = "block";
+    clone.setAttribute('transform', `translate(${offset}, 0)`);
+
+    const tspan = clone.querySelector('tspan');
+    if (tspan) tspan.textContent = time + "s";
+
+    container.appendChild(clone);
+  }
+}
+
+function clearTrafficTimes() {
+  document.querySelectorAll('.traffic-time-block').forEach(el => el.remove());
+}
+
+function resetTrafficLights() {
+  const darkGreen = "#004010";
+  const darkRed = "#401010";
+  const lightIds = ["traffic-A-green", "traffic-A-red", "traffic-B-green", "traffic-B-red"];
+  lightIds.forEach(id => {
+    const group = document.getElementById(id);
+    if (!group) return;
+    const path = group.querySelector('path');
+    if (!path) return;
+    if (id.includes('green')) path.setAttribute('fill', darkGreen);
+    else path.setAttribute('fill', darkRed);
+  });
+}
+
 function stopAnimations() {
   if (window.hoppingInterval) clearInterval(window.hoppingInterval);
   if (window.raceInterval) clearInterval(window.raceInterval);
+  if (window.trafficInterval) clearInterval(window.trafficInterval);
 }
 
 function getGCD(a, b) {
@@ -156,7 +243,7 @@ function startHoppingAnimation() {
       const targetX = startX + (currentWhiteJump * whiteJump * unitPx);
       whiteHare.setAttribute('x', targetX);
       drawJumpArc(oldX, targetX + 70, 471.5);
-      
+
       document.getElementById("h-pos-1").textContent = currentWhiteJump * whiteJump;
       document.getElementById("h-jump-1").textContent = currentWhiteJump;
       moved = true;
@@ -176,7 +263,7 @@ function startHoppingAnimation() {
 
     if (!moved) {
       clearInterval(window.hoppingInterval);
-      
+
       // Update result text
       document.getElementById("res-lcm-1").textContent = lcm;
       document.getElementById("res-jump-a").textContent = whiteJump;
@@ -195,6 +282,8 @@ function clearFootprints() {
 }
 
 function resetWidget() {
+  stopAnimations();
+  
   trafficCycleA = 0; trafficCycleB = 0;
   runnerLap1 = 0; runnerLap2 = 0;
   whiteJump = 0; brownJump = 0;
@@ -217,11 +306,14 @@ function resetWidget() {
 
   const setVal = (id, val, unit) => {
     const el = document.getElementById(id);
-    if (el) el.querySelector('tspan').textContent = `${val}${unit}`;
+    if (!el) return;
+    const target = (el.tagName === 'tspan' || el.tagName === 'text') ? el : el.querySelector('tspan');
+    if (target) target.textContent = `${val}${unit}`;
+    else el.textContent = `${val}${unit}`;
   }
 
-  setVal("0 seconds", 0, " seconds");
-  setVal("0 seconds_2", 0, " seconds");
+  setVal("res-t-cycle-1", 0, " seconds");
+  setVal("res-t-cycle-2", 0, " seconds");
   setVal("0 seconds/lap", 0, " seconds/lap");
   setVal("0 seconds/lap_2", 0, " seconds/lap");
   setVal("0 feet/jump", 0, " feet/jump");
@@ -251,6 +343,8 @@ function resetWidget() {
   }
 
   clearFootprints();
+  resetTrafficLights();
+  clearTrafficTimes();
   document.getElementById("footprint-box").style.display = "none";
   document.getElementById("meeting-time").style.display = "none";
 
@@ -292,6 +386,7 @@ startBtn.addEventListener('click', () => {
 
   if (currentTab === 3) startHoppingAnimation();
   else if (currentTab === 2) startRaceAnimation();
+  else if (currentTab === 1) startTrafficAnimation();
 });
 
 resetBtn.addEventListener('click', () => {
@@ -312,7 +407,7 @@ function initSlider(sliderId, snaps, valueId, initialX, multiplier, unit, update
   if (!slider) return;
   const valueElement = document.getElementById(valueId);
   if (!valueElement) return;
-  const valueText = valueElement.querySelector('tspan');
+  const valueText = (valueElement.tagName === 'tspan' || valueElement.tagName === 'text') ? valueElement : valueElement.querySelector('tspan');
   let isDragging = false;
 
   slider.style.cursor = "pointer";
@@ -363,15 +458,98 @@ function initSlider(sliderId, snaps, valueId, initialX, multiplier, unit, update
   window.addEventListener('touchend', endDrag);
 }
 
+solutionBtn.addEventListener('click', () => {
+  updateSolutionModal();
+  document.getElementById("solution-modal").style.display = "block";
+});
+
+document.getElementById("close-solution-btn").addEventListener('click', () => {
+  document.getElementById("solution-modal").style.display = "none";
+});
+
+function updateSolutionModal() {
+  let val1, val2, unit, label1, label2, intro1, intro2, introUnit, answerText, seqLabel, compUnit;
+  if (currentTab === 1) {
+    val1 = trafficCycleA; val2 = trafficCycleB;
+    unit = " seconds"; label1 = "Traffic Light A Cycle: "; label2 = "Traffic Light B Cycle: ";
+    intro1 = "To find when both lights turn green";
+    intro2 = "simultaneously, we need to find the ";
+    introUnit = "of their cycle times.";
+    seqLabel = "Light A turns green at: ";
+    compUnit = " cycles";
+    answerText = "Answer: Both lights turn green together after ";
+  } else if (currentTab === 2) {
+    val1 = runnerLap1; val2 = runnerLap2;
+    unit = " seconds"; label1 = "Runner 1 Lap Time: "; label2 = "Runner 2 Lap Time: ";
+    intro1 = "To find when both runners meet at the";
+    intro2 = "start, we need to find the ";
+    introUnit = "of their lap times.";
+    seqLabel = "Runner 1 at starting point at: ";
+    compUnit = " laps";
+    answerText = "Answer: Both meet at the start after ";
+  } else {
+    val1 = whiteJump; val2 = brownJump;
+    unit = " feet"; label1 = "White Hare Jump: "; label2 = "Brown Hare Jump: ";
+    intro1 = "To find where both hares' footprints";
+    intro2 = "match, we need to find the ";
+    introUnit = "of their jump lengths.";
+    seqLabel = "White Hare footprints at: ";
+    compUnit = " jumps";
+    answerText = "Answer: Footprints first match at ";
+  }
+
+  const lcm = getLCM(val1, val2);
+  const getSeq = (v, name) => {
+    let s = [0];
+    for (let i = 1; i <= Math.min(5, lcm / v); i++) s.push(i * v);
+    let label = (currentTab === 1) ? `Light ${name} turns green at: ` :
+      (currentTab === 2) ? `Runner ${name} at starting point at: ` :
+        `${name} Hare footprints at: `;
+    return label + s.join(", ") + (lcm / v > 5 ? "..." : "");
+  };
+
+  const setT = (id, text) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+  };
+
+  setT("sol-intro-line1", intro1);
+  setT("sol-intro-line2", intro2);
+  setT("sol-intro-unit", introUnit);
+
+  const val1El = document.getElementById("sol-val-1");
+  if (val1El) (val1El.querySelector('tspan') || val1El).textContent = label1 + val1 + unit;
+  const val2El = document.getElementById("sol-val-2");
+  if (val2El) (val2El.querySelector('tspan') || val2El).textContent = label2 + val2 + unit;
+
+  const seq1El = document.getElementById("sol-seq-1");
+  if (seq1El) (seq1El.querySelector('tspan') || seq1El).textContent = getSeq(val1, currentTab === 3 ? "White" : (currentTab === 1 ? "A" : "1"));
+  const seq2El = document.getElementById("sol-seq-2");
+  if (seq2El) (seq2El.querySelector('tspan') || seq2El).textContent = getSeq(val2, currentTab === 3 ? "Brown" : (currentTab === 1 ? "B" : "2"));
+
+  const lcmEl = document.getElementById("sol-lcm");
+  if (lcmEl) (lcmEl.querySelector('tspan') || lcmEl).textContent = `LCM = ${lcm}${unit}`;
+  const ansEl = document.getElementById("sol-answer");
+  if (ansEl) (ansEl.querySelector('tspan') || ansEl).textContent = answerText + lcm + unit;
+
+  const name1 = currentTab === 1 ? "Light A" : (currentTab === 2 ? "Runner 1" : "White Hare");
+  const name2 = currentTab === 1 ? "Light B" : (currentTab === 2 ? "Runner 2" : "Brown Hare");
+
+  const concEl = document.getElementById("sol-conclusion");
+  if (concEl) (concEl.querySelector('tspan') || concEl).textContent =
+    `${name1} completed ${lcm / val1}${compUnit} • ${name2} completed ${lcm / val2}${compUnit}`;
+}
+
 window.addEventListener("load", () => {
   loadTab(3);
 
   // Snaps for Traffic Light Tab (Tab 1)
   const trafficSnaps = [200, 306, 413, 519, 625, 732, 838];
-  initSlider("traffic-slider-a", trafficSnaps, "0 seconds", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-a", trafficSnaps, "res-t-cycle-1", 203, 2, " seconds", (val) => {
     trafficCycleA = val;
   });
-  initSlider("traffic-slider-b", trafficSnaps, "0 seconds_2", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-b", trafficSnaps, "res-t-cycle-2", 203, 2, " seconds", (val) => {
     trafficCycleB = val;
   });
 
