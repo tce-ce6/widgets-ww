@@ -225,7 +225,7 @@
       "author": "tce-nitinc"
     },
     "wg23-lcm-of-numbers": {
-      "updatedAt": "2026-04-25T13:01:13+05:30",
+      "updatedAt": "2026-04-25T16:49:58+05:30",
       "author": "tce-ashishg"
     },
     "wg24-hcf-of-numbers": {
@@ -406,6 +406,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-25T16:49:58+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved and UI fixed",
+      "widgets": [
+        23
+      ]
+    },
     {
       "date": "2026-04-25T13:01:13+05:30",
       "author": "tce-ashishg",
@@ -643,15 +651,6 @@
       "message": "fixed wg 70 padding issue",
       "widgets": [
         70
-      ]
-    },
-    {
-      "date": "2026-04-07T10:39:54+05:30",
-      "author": "tce-nitinc",
-      "message": "added 2 missing b2 widgets",
-      "widgets": [
-        66,
-        71
       ]
     }
   ]
