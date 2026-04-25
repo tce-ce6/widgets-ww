@@ -121,6 +121,14 @@ function startTrafficAnimation() {
       clearInterval(window.trafficInterval);
       updateTrafficLight("traffic-A-green", "traffic-A-red", true);
       updateTrafficLight("traffic-B-green", "traffic-B-red", true);
+
+      // Populate and show light-blink-box
+      document.getElementById("res-lcm-light").textContent = lcm;
+      document.getElementById("res-cycle-a-val").textContent = trafficCycleA;
+      document.getElementById("res-cycle-b-val").textContent = trafficCycleB;
+      document.getElementById("res-light-count-a").textContent = lcm / trafficCycleA;
+      document.getElementById("res-light-count-b").textContent = lcm / trafficCycleB;
+      document.getElementById("light-blink-box").style.display = "block";
       return;
     }
 
@@ -283,7 +291,7 @@ function clearFootprints() {
 
 function resetWidget() {
   stopAnimations();
-  
+
   trafficCycleA = 0; trafficCycleB = 0;
   runnerLap1 = 0; runnerLap2 = 0;
   whiteJump = 0; brownJump = 0;
@@ -312,12 +320,16 @@ function resetWidget() {
     else el.textContent = `${val}${unit}`;
   }
 
-  setVal("res-t-cycle-1", 0, " seconds");
-  setVal("res-t-cycle-2", 0, " seconds");
-  setVal("0 seconds/lap", 0, " seconds/lap");
-  setVal("0 seconds/lap_2", 0, " seconds/lap");
-  setVal("0 feet/jump", 0, " feet/jump");
-  setVal("0 feet/jump_2", 0, " feet/jump");
+  setVal("green-time-a", 0, " seconds");
+  setVal("green-time-b", 0, " seconds");
+  const d1 = document.getElementById("green-desc-a");
+  if (d1) d1.textContent = "Green for 0s, then Red for 0s";
+  const d2 = document.getElementById("green-desc-b");
+  if (d2) d2.textContent = "Green for 0s, then Red for 0s";
+  setVal("runner-time-a", 0, " seconds/lap");
+  setVal("runner-time-b", 0, " seconds/lap");
+  setVal("hare-jump-a", 0, " feet/jump");
+  setVal("hare-jump-b", 0, " feet/jump");
 
   const whiteHare = document.getElementById("white-hare");
   const brownHare = document.getElementById("brown-hare");
@@ -347,6 +359,8 @@ function resetWidget() {
   clearTrafficTimes();
   document.getElementById("footprint-box").style.display = "none";
   document.getElementById("meeting-time").style.display = "none";
+  document.getElementById("light-blink-box").style.display = "none";
+  document.getElementById("solution-modal").style.display = "none";
 
   startBtn.style.opacity = "0.3";
   startBtn.style.pointerEvents = "none";
@@ -473,8 +487,8 @@ function updateSolutionModal() {
     val1 = trafficCycleA; val2 = trafficCycleB;
     unit = " seconds"; label1 = "Traffic Light A Cycle: "; label2 = "Traffic Light B Cycle: ";
     intro1 = "To find when both lights turn green";
-    intro2 = "simultaneously, we need to find the ";
-    introUnit = "of their cycle times.";
+    intro2 = "simultaneously, we need to find the";
+    introUnit = "Least Common Multiple (LCM) of their cycle times.";
     seqLabel = "Light A turns green at: ";
     compUnit = " cycles";
     answerText = "Answer: Both lights turn green together after ";
@@ -482,8 +496,8 @@ function updateSolutionModal() {
     val1 = runnerLap1; val2 = runnerLap2;
     unit = " seconds"; label1 = "Runner 1 Lap Time: "; label2 = "Runner 2 Lap Time: ";
     intro1 = "To find when both runners meet at the";
-    intro2 = "start, we need to find the ";
-    introUnit = "of their lap times.";
+    intro2 = "starting line, we need to find the";
+    introUnit = "Least Common Multiple (LCM) of their lap times.";
     seqLabel = "Runner 1 at starting point at: ";
     compUnit = " laps";
     answerText = "Answer: Both meet at the start after ";
@@ -491,8 +505,8 @@ function updateSolutionModal() {
     val1 = whiteJump; val2 = brownJump;
     unit = " feet"; label1 = "White Hare Jump: "; label2 = "Brown Hare Jump: ";
     intro1 = "To find where both hares' footprints";
-    intro2 = "match, we need to find the ";
-    introUnit = "of their jump lengths.";
+    intro2 = "match, we need to find the";
+    introUnit = "Least Common Multiple (LCM) of their jump lengths.";
     seqLabel = "White Hare footprints at: ";
     compUnit = " jumps";
     answerText = "Answer: Footprints first match at ";
@@ -517,28 +531,18 @@ function updateSolutionModal() {
   setT("sol-intro-line1", intro1);
   setT("sol-intro-line2", intro2);
   setT("sol-intro-unit", introUnit);
-
-  const val1El = document.getElementById("sol-val-1");
-  if (val1El) (val1El.querySelector('tspan') || val1El).textContent = label1 + val1 + unit;
-  const val2El = document.getElementById("sol-val-2");
-  if (val2El) (val2El.querySelector('tspan') || val2El).textContent = label2 + val2 + unit;
-
-  const seq1El = document.getElementById("sol-seq-1");
-  if (seq1El) (seq1El.querySelector('tspan') || seq1El).textContent = getSeq(val1, currentTab === 3 ? "White" : (currentTab === 1 ? "A" : "1"));
-  const seq2El = document.getElementById("sol-seq-2");
-  if (seq2El) (seq2El.querySelector('tspan') || seq2El).textContent = getSeq(val2, currentTab === 3 ? "Brown" : (currentTab === 1 ? "B" : "2"));
-
-  const lcmEl = document.getElementById("sol-lcm");
-  if (lcmEl) (lcmEl.querySelector('tspan') || lcmEl).textContent = `LCM = ${lcm}${unit}`;
-  const ansEl = document.getElementById("sol-answer");
-  if (ansEl) (ansEl.querySelector('tspan') || ansEl).textContent = answerText + lcm + unit;
+  setT("sol-val-1", label1 + val1 + unit);
+  setT("sol-val-2", label2 + val2 + unit);
+  setT("sol-seq-1", getSeq(val1, currentTab === 3 ? "White" : (currentTab === 1 ? "A" : "1")));
+  setT("sol-seq-2", getSeq(val2, currentTab === 3 ? "Brown" : (currentTab === 1 ? "B" : "2")));
+  setT("sol-lcm", `LCM = ${lcm}${unit}`);
+  setT("sol-ans-label", answerText);
+  setT("sol-ans-unit", unit);
+  setT("sol-ans-val", lcm);
 
   const name1 = currentTab === 1 ? "Light A" : (currentTab === 2 ? "Runner 1" : "White Hare");
   const name2 = currentTab === 1 ? "Light B" : (currentTab === 2 ? "Runner 2" : "Brown Hare");
-
-  const concEl = document.getElementById("sol-conclusion");
-  if (concEl) (concEl.querySelector('tspan') || concEl).textContent =
-    `${name1} completed ${lcm / val1}${compUnit} • ${name2} completed ${lcm / val2}${compUnit}`;
+  setT("sol-conclusion", `${name1} completed ${lcm / val1}${compUnit} • ${name2} completed ${lcm / val2}${compUnit}`);
 }
 
 window.addEventListener("load", () => {
@@ -546,28 +550,32 @@ window.addEventListener("load", () => {
 
   // Snaps for Traffic Light Tab (Tab 1)
   const trafficSnaps = [200, 306, 413, 519, 625, 732, 838];
-  initSlider("traffic-slider-a", trafficSnaps, "res-t-cycle-1", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-a", trafficSnaps, "green-time-a", 203, 2, " seconds", (val) => {
     trafficCycleA = val;
+    const desc = document.getElementById("green-desc-a");
+    if (desc) desc.textContent = `Green for ${val / 2}s, then Red for ${val / 2}s`;
   });
-  initSlider("traffic-slider-b", trafficSnaps, "res-t-cycle-2", 203, 2, " seconds", (val) => {
+  initSlider("traffic-slider-b", trafficSnaps, "green-time-b", 203, 2, " seconds", (val) => {
     trafficCycleB = val;
+    const desc = document.getElementById("green-desc-b");
+    if (desc) desc.textContent = `Green for ${val / 2}s, then Red for ${val / 2}s`;
   });
 
   // Snaps for Runner Tab (Tab 2)
   const runnerSnaps = [201, 307, 414, 520, 626, 733, 839];
-  initSlider("runner-1-slider", runnerSnaps, "0 seconds/lap", 204, 2, " seconds/lap", (val) => {
+  initSlider("runner-1-slider", runnerSnaps, "runner-time-a", 204, 2, " seconds/lap", (val) => {
     runnerLap1 = val;
   });
-  initSlider("runner-2-slider", runnerSnaps, "0 seconds/lap_2", 204, 2, " seconds/lap", (val) => {
+  initSlider("runner-2-slider", runnerSnaps, "runner-time-b", 204, 2, " seconds/lap", (val) => {
     runnerLap2 = val;
   });
 
   // Snaps for Hare Tab (Tab 3)
   const hareSnaps = [202, 308, 415, 521, 627, 734, 840];
-  initSlider("white-hare-slider", hareSnaps, "0 feet/jump", 205, 1, " feet/jump", (val) => {
+  initSlider("white-hare-slider", hareSnaps, "hare-jump-a", 205, 1, " feet/jump", (val) => {
     whiteJump = val;
   });
-  initSlider("brown-hare-slider", hareSnaps, "0 feet/jump_2", 205, 1, " feet/jump", (val) => {
+  initSlider("brown-hare-slider", hareSnaps, "hare-jump-b", 205, 1, " feet/jump", (val) => {
     brownJump = val;
   });
 });
