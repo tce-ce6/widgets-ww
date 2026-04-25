@@ -225,7 +225,7 @@
       "author": "tce-nitinc"
     },
     "wg23-lcm-of-numbers": {
-      "updatedAt": "2026-04-25T12:59:22+05:30",
+      "updatedAt": "2026-04-25T13:01:13+05:30",
       "author": "tce-ashishg"
     },
     "wg24-hcf-of-numbers": {
@@ -406,6 +406,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-04-25T13:01:13+05:30",
+      "author": "tce-ashishg",
+      "message": "error resolved and UI fixed",
+      "widgets": [
+        23
+      ]
+    },
     {
       "date": "2026-04-25T12:59:22+05:30",
       "author": "tce-ashishg",
@@ -644,14 +652,6 @@
       "widgets": [
         66,
         71
-      ]
-    },
-    {
-      "date": "2026-04-06T20:17:31+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes wg56 image issue",
-      "widgets": [
-        56
       ]
     }
   ]
