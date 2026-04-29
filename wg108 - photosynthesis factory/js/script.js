@@ -79,9 +79,9 @@ function updatePlantByLight() {
         // - optimal: loop 0..200
         // - excessive: play 0..200 then stop
         const startFrame = 0;
-        const endFrame = band === 'low' ? 100 : 200;
+        const endFrame = band === 'low' ? 20 : 60;
 
-        if (band === 'optimal') {
+        if (!isDaytime() || band === 'optimal') {
             plantPlayer.loop = false;
             plantPlayer.goToAndStop(0, true);
             return;
@@ -142,8 +142,8 @@ function initSlider(config) {
         return clamp(best, 0, 1);
     };
 
-    const setPosition = (x, { commit } = { commit: false }) => {
-        if (sliderRegistry[stateKey]?.isDisabled) return;
+    const setPosition = (x, { commit = false, force = false } = {}) => {
+        if (!force && sliderRegistry[stateKey]?.isDisabled) return;
 
         if (x < minX) x = minX;
         if (x > maxX) x = maxX;
@@ -160,6 +160,13 @@ function initSlider(config) {
             }
         }
     };
+
+    const setValue = (val, { commit = false, force = false } = {}) => {
+        const x = minX + val * (maxX - minX);
+        setPosition(x, { commit, force });
+    };
+
+    sliderRegistry[stateKey].setValue = setValue;
 
     const snapToNearest = () => {
         if (sliderRegistry[stateKey]?.isDisabled) return;
@@ -317,10 +324,26 @@ function isExcessiveLight() {
 
 function updateDaySpecificVisuals() {
     const skyTemperature = document.getElementById('sky-tempreture');
-    if (!skyTemperature) return;
+    if (skyTemperature) {
+        const shouldShowSkyTemperature = isDaytime() && (isExcessiveLight() || isHighTemperature());
+        skyTemperature.style.display = shouldShowSkyTemperature ? 'block' : 'none';
+    }
 
-    const shouldShowSkyTemperature = isDaytime() && (isExcessiveLight() || isHighTemperature());
-    skyTemperature.style.display = shouldShowSkyTemperature ? 'block' : 'none';
+    if (!isDaytime()) {
+        stomataClosed.style.display = 'none';
+        stomataOpen.style.display = 'none';
+        stomataPartiallyClosed.style.display = 'block';
+    } else {
+        if (state.light < 0.33) {
+            stomataClosed.style.display = 'block';
+            stomataOpen.style.display = 'none';
+            stomataPartiallyClosed.style.display = 'none';
+        } else {
+            stomataClosed.style.display = 'none';
+            stomataOpen.style.display = 'block';
+            stomataPartiallyClosed.style.display = 'none';
+        }
+    }
 }
 
 function updateFactoryControls() {
@@ -340,6 +363,7 @@ function resetAnimationState() {
     stopAndResetLottie('day-photosynthesis-lottie', false);
     stopAndResetLottie('night-photosynthesis-lottie', false);
     stopAndResetLottie('watering-lottie', false);
+    stopAndResetLottie('water-excess-lottie', false);
     stopAndResetLottie('day-stomata-lottie', false);
     stopAndResetLottie('night-stomata-lottie', false);
 }
@@ -350,6 +374,7 @@ function initialiseAnimationState() {
     createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
     createOrGetLottie('night-photosynthesis-lottie', './assets/JSON/night-photosynthesis.json');
     createOrGetLottie('watering-lottie', './assets/JSON/water-moderate.json');
+    createOrGetLottie('water-excess-lottie', './assets/JSON/water-excess.json');
     createOrGetLottie('day-stomata-lottie', './assets/JSON/day-stomata-photosynthesis.json');
     createOrGetLottie('night-stomata-lottie', './assets/JSON/night-stomata-photosynthesis.json');
 
@@ -378,19 +403,35 @@ async function runCurrentAnimationSequence(token) {
         return;
     }
 
-    if (!isOptimalLight()) return;
-
     const promises = [];
 
-    const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json');
-    setContainerVisible('sun-rays-lottie', true);
-    promises.push(waitForAnimationToComplete(lightPlayer, token));
+    // --- Light Evaluation ---
+    if (isOptimalLight()) {
+        const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json');
+        setContainerVisible('sun-rays-lottie', true);
+        promises.push(waitForAnimationToComplete(lightPlayer, token));
+    } else if (state.light < 0.33) {
+        const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json', { loop: true });
+        setContainerVisible('sun-rays-lottie', true);
+        lightPlayer.goToAndStop(1, true);
+    }
 
-    if (isModerateWater()) {
+    // --- Water Evaluation ---
+    if (state.water >= 0.66) {
+        const waterExcessPlayer = createOrGetLottie('water-excess-lottie', './assets/JSON/water-excess.json');
+        setContainerVisible('water-excess-lottie', true);
+        promises.push(waitForAnimationToComplete(waterExcessPlayer, token));
+    } else if (isModerateWater()) {
         const waterPlayer = createOrGetLottie('watering-lottie', './assets/JSON/water-moderate.json');
         setContainerVisible('watering-lottie', true);
         promises.push(waitForAnimationToComplete(waterPlayer, token));
+    }
 
+    // --- Photosynthesis Evaluation ---
+    // Decoupled logic allows us to add or remove conditions easily
+    const isPhotosynthesisPossible = isOptimalLight() && isModerateWater();
+
+    if (isPhotosynthesisPossible) {
         const dayPlayer = createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
         const dayStomataPlayer = createOrGetLottie('day-stomata-lottie', './assets/JSON/day-stomata-photosynthesis.json');
 
@@ -429,15 +470,27 @@ function initDayToNightSlider() {
             if (val > 0.5) {
                 nightBg.style.display = 'block';
                 nightContent.style.display = 'block';
-                stomataClosed.style.display = 'none';
-                stomataOpen.style.display = 'none';
-                stomataPartiallyClosed.style.display = 'block';
+
+                const wasReady = animationsReady;
+                animationsReady = false;
+                ['light', 'co2', 'temp', 'water'].forEach(key => {
+                    if (sliderRegistry[key] && sliderRegistry[key].setValue) {
+                        sliderRegistry[key].setValue(0.5, { commit: true, force: true });
+                    }
+                });
+                animationsReady = wasReady;
+                if (animationsReady) {
+                    evaluateAnimationConditions();
+                }
+
+                const plantPlayer = lottiePlayers['plant-lottie'];
+                if (plantPlayer) {
+                    plantPlayer.stop();
+                    plantPlayer.goToAndStop(0, true);
+                }
             } else {
                 nightBg.style.display = 'none';
                 nightContent.style.display = 'none';
-                stomataClosed.style.display = 'none';
-                stomataOpen.style.display = 'block';
-                stomataPartiallyClosed.style.display = 'none';
             }
         }
     });
