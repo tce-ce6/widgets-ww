@@ -12,8 +12,8 @@ let animationSequenceToken = 0;
 let animationsReady = false;
 
 const stomataOpen = document.getElementById('stomata-open');
-    const stomataClosed = document.getElementById('stomata-closed');
-    const stomataPartiallyClosed = document.getElementById('stomata-partially-closed');
+const stomataClosed = document.getElementById('stomata-closed');
+const stomataPartiallyClosed = document.getElementById('stomata-partially-closed');
 
 document.addEventListener('DOMContentLoaded', function () {
     const insightBtn = document.getElementById('insight-btn');
@@ -44,7 +44,7 @@ function getMousePos(e, svg) {
 }
 
 function playTreeLottie() {
-    return createOrGetLottie('plant-lottie', './assets/JSON/plant.json', { loop: true });
+    return createOrGetLottie('plant-lottie', './assets/JSON/plant.json', { loop: false });
 }
 
 function getLightBand() {
@@ -83,17 +83,7 @@ function updatePlantByLight() {
 
         if (band === 'optimal') {
             plantPlayer.loop = false;
-            plantPlayer.setSegment(startFrame, endFrame);
-
-            const loopSegment = () => {
-                if (getLightBand() !== 'optimal') return;
-                plantPlayer.goToAndPlay(startFrame, false);
-            };
-
-            plantPlayer.__segmentLoopHandler = loopSegment;
-            plantPlayer.addEventListener('complete', loopSegment);
-
-            plantPlayer.goToAndPlay(startFrame, false);
+            plantPlayer.goToAndStop(0, true);
             return;
         }
 
@@ -252,7 +242,7 @@ function createOrGetLottie(containerId, animationPath, options = {}) {
     const player = lottie.loadAnimation({
         container,
         renderer: 'svg',
-        loop: options.loop ?? false,
+        loop: true,
         autoplay: false,
         path: animationPath,
         rendererSettings: {
@@ -371,8 +361,8 @@ function initialiseAnimationState() {
 }
 
 async function runNightAnimationSequence(token) {
-    const nightPhotosynthesisPlayer = createOrGetLottie('night-photosynthesis-lottie', './assets/JSON/night-photosynthesis.json');
-    const nightStomataPlayer = createOrGetLottie('night-stomata-lottie', './assets/JSON/night-stomata-photosynthesis.json');
+    const nightPhotosynthesisPlayer = createOrGetLottie('night-photosynthesis-lottie', './assets/JSON/night-photosynthesis.json', { loop: true });
+    const nightStomataPlayer = createOrGetLottie('night-stomata-lottie', './assets/JSON/night-stomata-photosynthesis.json', { loop: true });
 
     setContainerVisible('night-photosynthesis-lottie', true);
     setContainerVisible('night-stomata-lottie', true);
@@ -390,29 +380,28 @@ async function runCurrentAnimationSequence(token) {
 
     if (!isOptimalLight()) return;
 
+    const promises = [];
+
     const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json');
     setContainerVisible('sun-rays-lottie', true);
-    await waitForAnimationToComplete(lightPlayer, token);
-    if (token !== animationSequenceToken) return;
+    promises.push(waitForAnimationToComplete(lightPlayer, token));
 
-    if (!isModerateWater()) return;
+    if (isModerateWater()) {
+        const waterPlayer = createOrGetLottie('watering-lottie', './assets/JSON/water-moderate.json');
+        setContainerVisible('watering-lottie', true);
+        promises.push(waitForAnimationToComplete(waterPlayer, token));
 
-    const waterPlayer = createOrGetLottie('watering-lottie', './assets/JSON/water-moderate.json');
-    setContainerVisible('watering-lottie', true);
-    await waitForAnimationToComplete(waterPlayer, token);
-    if (token !== animationSequenceToken) return;
+        const dayPlayer = createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
+        const dayStomataPlayer = createOrGetLottie('day-stomata-lottie', './assets/JSON/day-stomata-photosynthesis.json');
 
-    if (!isDaytime()) return;
+        setContainerVisible('day-photosynthesis-lottie', true);
+        setContainerVisible('day-stomata-lottie', true);
 
-    const dayPlayer = createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
-    const dayStomataPlayer = createOrGetLottie('day-stomata-lottie', './assets/JSON/day-stomata-photosynthesis.json');
+        promises.push(waitForAnimationToComplete(dayPlayer, token));
+        promises.push(waitForAnimationToComplete(dayStomataPlayer, token));
+    }
 
-    setContainerVisible('day-photosynthesis-lottie', true);
-    setContainerVisible('day-stomata-lottie', true);
-    await Promise.all([
-        waitForAnimationToComplete(dayPlayer, token),
-        waitForAnimationToComplete(dayStomataPlayer, token)
-    ]);
+    await Promise.all(promises);
 }
 
 function evaluateAnimationConditions() {
