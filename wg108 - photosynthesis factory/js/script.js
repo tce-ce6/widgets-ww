@@ -2,7 +2,7 @@ const state = {
     dayNight: 0,
     light: 0.5,
     co2: 0.5,
-    temp: 0.5,
+    temp: 0.66,
     water: 0.5
 };
 
@@ -14,6 +14,19 @@ let animationsReady = false;
 const stomataOpen = document.getElementById('stomata-open');
 const stomataClosed = document.getElementById('stomata-closed');
 const stomataPartiallyClosed = document.getElementById('stomata-partially-closed');
+
+const perfectScore = document.getElementById("perfect-score");
+const goodRate = document.getElementById("good-rate");
+const systemFrozen = document.getElementById("system-frozen");
+const starvetion = document.getElementById("starvetion");
+const systemError = document.getElementById("system-error");
+const criticalFailure = document.getElementById("critical-failure");
+const warning = document.getElementById("warning");
+const warning1 = document.getElementById("warning-1");
+const stabilised = document.getElementById("stabilised");
+const slowLane = document.getElementById("slow-lane");
+const rateLimited = document.getElementById("rate-limited");
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const insightBtn = document.getElementById('insight-btn');
@@ -334,7 +347,7 @@ function updateDaySpecificVisuals() {
         stomataOpen.style.display = 'none';
         stomataPartiallyClosed.style.display = 'block';
     } else {
-        if (state.light < 0.33) {
+        if (state.light < 0.33 || state.water < 0.33) {
             stomataClosed.style.display = 'block';
             stomataOpen.style.display = 'none';
             stomataPartiallyClosed.style.display = 'none';
@@ -378,11 +391,8 @@ function initialiseAnimationState() {
     createOrGetLottie('day-stomata-lottie', './assets/JSON/day-stomata-photosynthesis.json');
     createOrGetLottie('night-stomata-lottie', './assets/JSON/night-stomata-photosynthesis.json');
 
-    resetAnimationState();
-    updateFactoryControls();
-    updateDaySpecificVisuals();
-    updatePlantByLight();
     animationsReady = true;
+    evaluateAnimationConditions();
 }
 
 async function runNightAnimationSequence(token) {
@@ -406,14 +416,16 @@ async function runCurrentAnimationSequence(token) {
     const promises = [];
 
     // --- Light Evaluation ---
-    if (isOptimalLight()) {
-        const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json');
-        setContainerVisible('sun-rays-lottie', true);
-        promises.push(waitForAnimationToComplete(lightPlayer, token));
-    } else if (state.light < 0.33) {
-        const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json', { loop: true });
-        setContainerVisible('sun-rays-lottie', true);
-        lightPlayer.goToAndStop(1, true);
+    if (state.temp >= 0.25) {
+        if (isOptimalLight()) {
+            const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json');
+            setContainerVisible('sun-rays-lottie', true);
+            promises.push(waitForAnimationToComplete(lightPlayer, token));
+        } else if (state.light < 0.33) {
+            const lightPlayer = createOrGetLottie('sun-rays-lottie', './assets/JSON/light.json', { loop: true });
+            setContainerVisible('sun-rays-lottie', true);
+            lightPlayer.goToAndStop(1, true);
+        }
     }
 
     // --- Water Evaluation ---
@@ -429,7 +441,7 @@ async function runCurrentAnimationSequence(token) {
 
     // --- Photosynthesis Evaluation ---
     // Decoupled logic allows us to add or remove conditions easily
-    const isPhotosynthesisPossible = isOptimalLight() && isModerateWater();
+    const isPhotosynthesisPossible = isOptimalLight() && isModerateWater() && state.co2 >= 0.33 && state.temp >= 0.25;
 
     if (isPhotosynthesisPossible) {
         const dayPlayer = createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
@@ -445,9 +457,32 @@ async function runCurrentAnimationSequence(token) {
     await Promise.all(promises);
 }
 
+function updateStatusPanel() {
+    const panels = [perfectScore, goodRate, systemFrozen, starvetion, systemError, criticalFailure, warning, warning1, stabilised, slowLane, rateLimited];
+    panels.forEach(panel => {
+        if (panel) panel.style.display = 'none';
+    });
+
+    const isDay = state.dayNight <= 0.5;
+    const isOptLight = state.light >= 0.33 && state.light < 0.66;
+    const isOptCO2 = state.co2 >= 0.33 && state.co2 < 0.66;
+    const isOptTemp = state.temp >= 0.5 && state.temp < 0.75;
+    const isOptWater = state.water >= 0.33 && state.water < 0.66;
+    const isNoWater = state.water < 0.33;
+
+    if (!isDay) return;
+
+    if (isNoWater) {
+        if (criticalFailure) criticalFailure.style.display = 'block';
+    } else if (isOptLight && isOptCO2 && isOptTemp && isOptWater) {
+        if (perfectScore) perfectScore.style.display = 'block';
+    }
+}
+
 function evaluateAnimationConditions() {
     updateFactoryControls();
     updateDaySpecificVisuals();
+    updateStatusPanel();
     resetAnimationState();
     updatePlantByLight();
     const token = animationSequenceToken;
@@ -475,7 +510,8 @@ function initDayToNightSlider() {
                 animationsReady = false;
                 ['light', 'co2', 'temp', 'water'].forEach(key => {
                     if (sliderRegistry[key] && sliderRegistry[key].setValue) {
-                        sliderRegistry[key].setValue(0.5, { commit: true, force: true });
+                        const defaultVal = key === 'temp' ? 0.66 : 0.5;
+                        sliderRegistry[key].setValue(defaultVal, { commit: true, force: true });
                     }
                 });
                 animationsReady = wasReady;
