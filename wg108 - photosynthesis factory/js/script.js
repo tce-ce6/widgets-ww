@@ -351,6 +351,10 @@ function updateDaySpecificVisuals() {
             stomataClosed.style.display = 'block';
             stomataOpen.style.display = 'none';
             stomataPartiallyClosed.style.display = 'none';
+        } else if (state.temp < 0.25) {
+            stomataClosed.style.display = 'none';
+            stomataOpen.style.display = 'none';
+            stomataPartiallyClosed.style.display = 'block';
         } else {
             stomataClosed.style.display = 'none';
             stomataOpen.style.display = 'block';
@@ -441,7 +445,7 @@ async function runCurrentAnimationSequence(token) {
 
     // --- Photosynthesis Evaluation ---
     // Decoupled logic allows us to add or remove conditions easily
-    const isPhotosynthesisPossible = isOptimalLight() && isModerateWater() && state.co2 >= 0.33 && state.temp >= 0.25;
+    const isPhotosynthesisPossible = isOptimalLight() && isModerateWater() && state.co2 >= 0.33 && state.temp >= 0.25 && state.temp < 0.75;
 
     if (isPhotosynthesisPossible) {
         const dayPlayer = createOrGetLottie('day-photosynthesis-lottie', './assets/JSON/day-photosynthesis.json');
@@ -463,20 +467,77 @@ function updateStatusPanel() {
         if (panel) panel.style.display = 'none';
     });
 
-    const isDay = state.dayNight <= 0.5;
-    const isOptLight = state.light >= 0.33 && state.light < 0.66;
-    const isOptCO2 = state.co2 >= 0.33 && state.co2 < 0.66;
-    const isOptTemp = state.temp >= 0.5 && state.temp < 0.75;
-    const isOptWater = state.water >= 0.33 && state.water < 0.66;
-    const isNoWater = state.water < 0.33;
+    if (!isDaytime()) return;
 
-    if (!isDay) return;
+    const lightLow = state.light < 0.33;
+    const lightOpt = state.light >= 0.33 && state.light < 0.66;
+    const lightExc = state.light >= 0.66;
 
-    if (isNoWater) {
-        if (criticalFailure) criticalFailure.style.display = 'block';
-    } else if (isOptLight && isOptCO2 && isOptTemp && isOptWater) {
-        if (perfectScore) perfectScore.style.display = 'block';
+    const co2Zero = state.co2 < 0.33;
+    const co2Opt = state.co2 >= 0.33 && state.co2 < 0.66;
+    const co2High = state.co2 >= 0.66;
+
+    const tempFrozen = state.temp < 0.25;
+    const temp25 = state.temp >= 0.25 && state.temp < 0.5;
+    const temp35 = state.temp >= 0.5 && state.temp < 0.75;
+
+    const waterZero = state.water < 0.33;
+    const waterMod = state.water >= 0.33 && state.water < 0.66;
+    const waterExc = state.water >= 0.66;
+
+    // 1. STOP CONDITIONS & SUB-OPTIMAL CO2 INTERSECTION
+    if (tempFrozen) {
+        if (systemFrozen) systemFrozen.style.display = 'block';
+        return;
     }
+    if (lightOpt && co2Zero) {
+        // "If Light == Optimal AND CO2 < 0.05% -> STABILIZED"
+        if (stabilised) stabilised.style.display = 'block';
+        return;
+    }
+    if (co2Zero) {
+        if (starvetion) starvetion.style.display = 'block';
+        return;
+    }
+    if (waterZero) {
+        if (criticalFailure) criticalFailure.style.display = 'block';
+        return;
+    }
+
+    // 2. SUB-OPTIMAL CONDITIONS (continued)
+    if (lightLow) {
+        if (rateLimited) rateLimited.style.display = 'block';
+        return;
+    }
+    if (temp25) {
+        if (slowLane) slowLane.style.display = 'block';
+        return;
+    }
+
+    // 3. DAMAGING CONDITIONS
+    if (lightExc) {
+        if (warning) warning.style.display = 'block';
+        return;
+    }
+    if (co2High) {
+        if (warning1) warning1.style.display = 'block';
+        return;
+    }
+
+    // 4. OPTIMAL (WINNER CONDITION)
+    if (lightOpt && co2Opt && temp35 && waterMod) {
+        if (perfectScore) perfectScore.style.display = 'block';
+        return;
+    }
+
+    // 5. ALTERNATE HIGH CONDITION
+    if (lightOpt && co2Opt && temp35 && waterExc) {
+        if (goodRate) goodRate.style.display = 'block';
+        return;
+    }
+
+    // 6. DEFAULT (Otherwise -> Moderate photosynthesis)
+    // No specific panel needed, everything stays hidden.
 }
 
 function evaluateAnimationConditions() {
