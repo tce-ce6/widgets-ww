@@ -400,3 +400,7 @@ svg * {
 #wrapper-2 {
   transition: all 0.4s ease-in-out;
 }
+
+.group-highlight {
+  display: none;
+}
