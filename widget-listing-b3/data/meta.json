@@ -157,7 +157,7 @@
       "author": "tce-nitinc"
     },
     "wg143-synthesize-new-polypeptide-chain": {
-      "updatedAt": "2026-05-04T19:11:38+05:30",
+      "updatedAt": "2026-05-05T19:26:51+05:30",
       "author": "tce-ashishg"
     },
     "wg144-phrasal-verbs": {
@@ -415,6 +415,14 @@
   },
   "commits": [
     {
+      "date": "2026-05-05T19:26:51+05:30",
+      "author": "tce-ashishg",
+      "message": "wg143 half logic done",
+      "widgets": [
+        143
+      ]
+    },
+    {
       "date": "2026-05-04T19:13:00+05:30",
       "author": "tce-ashishg",
       "message": "wg108 folder name updated",
@@ -647,15 +655,6 @@
       "message": "wg132 issue resolved",
       "widgets": [
         132
-      ]
-    },
-    {
-      "date": "2026-04-15T18:14:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg144 & wg150 issue resolved",
-      "widgets": [
-        144,
-        150
       ]
     }
   ]
