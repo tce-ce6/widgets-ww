@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1825" height="881" viewBox="0 0 1825 881">
+  <defs>
+    <filter id="Rectangle_436" x="0" y="0" width="1825" height="877" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_1869" data-name="Group 1869" transform="translate(6 -69)">
+    <g id="Group_1799" data-name="Group 1799" transform="translate(-57 -73)">
+      <g transform="matrix(1, 0, 0, 1, 51, 142)" filter="url(#Rectangle_436)">
+        <g id="Rectangle_436-2" data-name="Rectangle 436" transform="translate(6 6)" fill="#fff" stroke="#e2a500" stroke-width="6">
+          <rect width="1807" height="859" rx="16" stroke="none"/>
+          <rect x="3" y="3" width="1801" height="853" rx="13" fill="none"/>
+        </g>
+      </g>
+      <text id="The_genetic_code_is_the_set_of_rules_that_translates_nucleotide_sequences_in_mRNA_into_amino_acid_sequences_in_proteins._Information_in_mRNA_is_read_in_groups_of_three_nucleotides_called_codons._Each_codon_specifies_one_particular_amino_acid_to_be_added_" data-name="The genetic code is the set of rules that translates nucleotide sequences in mRNA into amino acid sequences in proteins.
+
+Information in mRNA is read in groups of three nucleotides called codons.
+
+Each codon specifies one particular amino acid to be added " transform="translate(216 232)" font-size="32" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="0" y="30">The </tspan><tspan y="30" font-family="Roboto-Bold, Roboto" font-weight="700">genetic code</tspan><tspan y="30" xml:space="preserve"> is the set of rules that translates nucleotide sequences in mRNA into amino acid </tspan><tspan x="0" y="68">sequences in proteins.</tspan><tspan x="0" y="106"></tspan><tspan x="0" y="144">Information in mRNA is read in groups of </tspan><tspan y="144" font-family="Roboto-Bold, Roboto" font-weight="700">three nucleotides</tspan><tspan y="144" xml:space="preserve"> called codons.</tspan><tspan x="0" y="182"></tspan><tspan x="0" y="220">Each codon specifies one </tspan><tspan y="220" font-family="Roboto-Bold, Roboto" font-weight="700">particular amino acid</tspan><tspan y="220" xml:space="preserve"> to be added to the growing </tspan><tspan y="220" font-family="Roboto-Bold, Roboto" font-weight="700">polypeptide chain.</tspan><tspan x="0" y="258"></tspan><tspan x="0" y="296">The polypeptide chain is formed through </tspan><tspan y="296" font-family="Roboto-Bold, Roboto" font-weight="700">peptide bonds,</tspan><tspan y="296" xml:space="preserve"> which are created when the amino acid carried by </tspan><tspan x="0" y="334">one </tspan><tspan y="334" font-family="Roboto-Bold, Roboto" font-weight="700">tRNA</tspan><tspan y="334" xml:space="preserve"> is transferred to the amino acid on the next </tspan><tspan y="334" font-family="Roboto-Bold, Roboto" font-weight="700">tRNA</tspan><tspan y="334">.</tspan><tspan x="0" y="372"></tspan><tspan x="0" y="410">The sequence of codons in mRNA determines the sequence of amino acids, which determines protein </tspan><tspan x="0" y="448">structure and function.</tspan><tspan x="0" y="486"></tspan><tspan x="0" y="524">There are </tspan><tspan y="524" font-family="Roboto-Bold, Roboto" font-weight="700">64 possible codons</tspan><tspan y="524" xml:space="preserve"> but only </tspan><tspan y="524" font-family="Roboto-Bold, Roboto" font-weight="700">20 amino acids</tspan><tspan y="524">, making the code </tspan><tspan y="524" font-family="Roboto-Bold, Roboto" font-weight="700">degenerate</tspan><tspan y="524" xml:space="preserve"> (multiple codons can </tspan><tspan x="0" y="562">code for the same amino acid). </tspan><tspan x="0" y="600"></tspan><tspan x="0" y="638">Special codons include </tspan><tspan y="638" font-family="Roboto-Bold, Roboto" font-weight="700">AUG</tspan><tspan y="638" xml:space="preserve"> (start codon, codes for Methionine) and three </tspan><tspan y="638" font-family="Roboto-Bold, Roboto" font-weight="700">stop codons (UAA, UAG, UGA)</tspan><tspan y="638"> </tspan><tspan x="0" y="676">that signal termination.</tspan><tspan x="0" y="714"></tspan></text>
+      <g id="Group_1870" data-name="Group 1870" transform="translate(0 50)">
+        <circle id="Ellipse_200" data-name="Ellipse 200" cx="7" cy="7" r="7" transform="translate(169 196)" fill="#7f84ff"/>
+        <circle id="Ellipse_201" data-name="Ellipse 201" cx="7" cy="7" r="7" transform="translate(169 311)" fill="#7f84ff"/>
+        <circle id="Ellipse_202" data-name="Ellipse 202" cx="7" cy="7" r="7" transform="translate(169 386)" fill="#7f84ff"/>
+        <circle id="Ellipse_203" data-name="Ellipse 203" cx="7" cy="7" r="7" transform="translate(169 460)" fill="#7f84ff"/>
+        <circle id="Ellipse_204" data-name="Ellipse 204" cx="7" cy="7" r="7" transform="translate(169 576)" fill="#7f84ff"/>
+        <circle id="Ellipse_205" data-name="Ellipse 205" cx="7" cy="7" r="7" transform="translate(169 691)" fill="#7f84ff"/>
+        <circle id="Ellipse_206" data-name="Ellipse 206" cx="7" cy="7" r="7" transform="translate(169 803)" fill="#7f84ff"/>
+      </g>
+    </g>
+  </g>
+</svg>

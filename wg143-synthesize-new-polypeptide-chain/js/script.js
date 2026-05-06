@@ -92,6 +92,22 @@ RNADATA = {
 
 let codon = "";
 
+// ─── mRNA sequence state ───────────────────────────────────────────────────
+let mRNAData = [];        // 33-slot array [{id, letter}] generated each round
+let augSlotIndex = -1;    // 0-based slot index where AUG starts
+let currentStep = 0;      // 0 = waiting for AUG; 1 = 2nd codon; etc.
+let sequenceStarted = false;
+let activeTRNAs = [];     // Array to track cloned tRNA symbols
+let activeAminoAcids = []; // Array to track cloned amino acids
+let activePeptideBonds = []; // Array to track cloned peptide bonds
+let previousTx = 0;       // Track x-position of the last amino acid for the peptide bond
+
+
+const STOP_CODONS = ["UAA", "UAG", "UGA"];
+const COMPLEMENT = { A: "U", U: "A", G: "C", C: "G" };
+// Frame positions in the SVG: frame 0 = x 57, each frame 129px apart
+const FRAME_STEP_PX = 129;
+
 function setupClick() {
     const codonTable = document.getElementById("rna-codon-table");
     if (!codonTable) return;
@@ -106,23 +122,226 @@ function setupClick() {
         // Container groups (e.g. the one CUG_Leucine-2 sits in) have many more children.
         // Attaching to a container fires on every click inside it → duplicate logs.
         if (parentG.children.length === 2) {
-            // Row-level parent: make the entire row (rect + text) clickable
             parentG.style.cursor = "pointer";
             parentG.addEventListener("click", function () {
                 codon = el.id.substring(0, 3);
-                console.log("mRNA Codon selected:", codon);
+                handleCodonSelection(codon);
             });
         } else {
-            // Orphaned element (e.g. CUG_Leucine-2 with no row wrapper):
-            // attach directly to the text group so only clicking the label fires
+            // Orphaned element (no row wrapper)
             el.style.cursor = "pointer";
             el.addEventListener("click", function () {
                 codon = el.id.substring(0, 3);
-                console.log("mRNA Codon selected:", codon);
+                handleCodonSelection(codon);
             });
         }
     });
 }
+
+// ─── Sequence helper functions ────────────────────────────────────────────
+
+/** Return the letter at a given slot index (wraps circularly). */
+function slotLetter(index) {
+    return mRNAData.length ? mRNAData[index % 33].letter : "";
+}
+
+/** Build the 3-letter codon string starting at a slot index. */
+function getCodonAtSlot(startSlot) {
+    return slotLetter(startSlot) + slotLetter(startSlot + 1) + slotLetter(startSlot + 2);
+}
+
+/** Find the slot index (0-32) where AUG first appears. Returns -1 if not found. */
+function findAUGSlot(data) {
+    // Only check frame boundaries (multiples of 3) to prevent finding accidental
+    // cross-codon AUG formations.
+    for (let i = 0; i < data.length; i += 3) {
+        if (
+            data[i].letter === "A" &&
+            data[(i + 1) % 33].letter === "U" &&
+            data[(i + 2) % 33].letter === "G"
+        ) return i;
+    }
+    return -1;
+}
+
+/** Update the 3 tRNA anticodon letter elements inside #trna-sysmbol.
+ *  Layout (left→right): mrna-3 (x≈65) | mrna-1 (x≈105) | mrna-2 (x≈150)
+ *  matching mRNA slots:    codon[0]         codon[1]          codon[2]       */
+function setAnticodonText(element, mrnaCodon) {
+    const codonData = RNADATA.genetic_code.find(c => c.mRNA === mrnaCodon);
+    // Use RNADATA if available, fallback to manual complement if missing
+    const trnaString = codonData && codonData.tRNA ? codonData.tRNA :
+        (COMPLEMENT[mrnaCodon[0]] + COMPLEMENT[mrnaCodon[1]] + COMPLEMENT[mrnaCodon[2]]);
+
+    if (trnaString) {
+        const leftSpan = element.querySelector("#mrna-3 tspan") || element.querySelector("#trna-3 tspan");
+        const middleSpan = element.querySelector("#mrna-1 tspan") || element.querySelector("#trna-1 tspan");
+        const rightSpan = element.querySelector("#mrna-2 tspan") || element.querySelector("#trna-2 tspan");
+
+        if (leftSpan) leftSpan.textContent = trnaString[0];
+        if (middleSpan) middleSpan.textContent = trnaString[1];
+        if (rightSpan) rightSpan.textContent = trnaString[2];
+    }
+}
+
+/** Show a feedback popup for `duration` ms then hide it. */
+function flashPopup(id, duration) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = "block";
+    setTimeout(function () { el.style.display = "none"; }, duration);
+}
+
+/**
+ * Called every time the user clicks a codon row in the RNA Codon Table.
+ * – Before AUG is found : only "AUG" is accepted.
+ * – After AUG            : accepts codons in order along the mRNA strand.
+ * – STOP codon reached   : handles sequence completion.
+ */
+function handleCodonSelection(selectedCodon) {
+    if (augSlotIndex === -1) return;   // mRNA not yet generated
+
+    const codonTable = document.getElementById("rna-codon-table");
+    const tableCross = document.getElementById("table-cross-img");
+
+    // Determine what we expect at this step
+    const expectedSlot = (augSlotIndex + currentStep * 3) % 33;
+    const expectedCodon = getCodonAtSlot(expectedSlot);
+
+    if (selectedCodon !== expectedCodon) {
+        // ── Wrong selection ──
+        flashPopup("wrong-popup", 1500);
+        return;
+    }
+
+    // ── Correct selection ──
+    if (!sequenceStarted) sequenceStarted = true;
+
+    // Check if it's a stop codon (tRNA is null)
+    const codonData = RNADATA.genetic_code.find(c => c.mRNA === selectedCodon);
+    const isStopCodon = STOP_CODONS.includes(selectedCodon) || (codonData && codonData.tRNA === null);
+
+    const frameIndex = Math.floor((expectedSlot % 33) / 3);
+    const tx = frameIndex * FRAME_STEP_PX;
+    const template = document.getElementById("trna-sysmbol");
+
+    if (!isStopCodon) {
+        // Clone the template tRNA
+        if (template) {
+            const clone = template.cloneNode(true);
+            clone.removeAttribute("id");
+
+            // Set text based on RNADATA
+            setAnticodonText(clone, selectedCodon);
+
+            // Remove inner IDs to prevent duplicates
+            clone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+            clone.style.display = "block";
+            // Set transition for the tilt animation later
+            clone.style.transition = "transform 0.8s ease, opacity 0.8s ease";
+            clone.style.transformOrigin = `${tx + 120}px 450px`;
+
+            // Apply initial position
+            clone.setAttribute("transform", `translate(${tx}, 0)`);
+            clone.style.transform = `translate(${tx}px, 0px)`;
+
+            const codonTableEl = document.getElementById("rna-codon-table");
+            if (codonTableEl) {
+                template.parentNode.insertBefore(clone, codonTableEl);
+            } else {
+                template.parentNode.appendChild(clone);
+            }
+            activeTRNAs.push({ element: clone, tx: tx });
+        }
+    }
+
+    // ─── AMINO ACID CLONING ───
+    if (codonData && codonData.amino_acid && template) {
+        let aaName = codonData.amino_acid;
+
+        const aaTemplate = document.getElementById(aaName);
+        if (aaTemplate) {
+            const aaClone = aaTemplate.cloneNode(true);
+            aaClone.removeAttribute("id");
+            aaClone.style.display = "block";
+            aaClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+            // Position the amino acid
+            aaClone.setAttribute("transform", `translate(${tx}, 0)`);
+            aaClone.style.transform = `translate(${tx}px, 0px)`;
+
+            const codonTableEl = document.getElementById("rna-codon-table");
+            if (codonTableEl) {
+                template.parentNode.insertBefore(aaClone, codonTableEl);
+            } else {
+                template.parentNode.appendChild(aaClone);
+            }
+            activeAminoAcids.push(aaClone);
+
+            // ─── PEPTIDE BOND ───
+            if (activeAminoAcids.length > 1) {
+                const pbTemplate = document.getElementById("peptide-bond");
+                if (pbTemplate) {
+                    const pbClone = pbTemplate.cloneNode(true);
+                    pbClone.removeAttribute("id");
+                    pbClone.style.display = "block";
+                    pbClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+                    // Position bond starting from the previous amino acid's position
+                    pbClone.setAttribute("transform", `translate(${previousTx}, 0)`);
+                    pbClone.style.transform = `translate(${previousTx}px, 0px)`;
+
+                    // Insert the peptide bond BEFORE the first amino acid so it renders behind all amino acids
+                    template.parentNode.insertBefore(pbClone, activeAminoAcids[0]);
+                    activePeptideBonds.push(pbClone);
+                }
+            }
+            previousTx = tx;
+        }
+    }
+
+    // If a 3rd tRNA attaches, detach and tilt the 1st one
+    if (activeTRNAs.length > 2) {
+        const oldest = activeTRNAs.shift();
+        // Detach by tilting and moving up/left, fading out
+        oldest.element.style.transform = `translate(${oldest.tx - 60}px, -120px) rotate(-35deg)`;
+        oldest.element.style.opacity = "0";
+
+        setTimeout(() => {
+            if (oldest.element.parentNode) {
+                oldest.element.parentNode.removeChild(oldest.element);
+            }
+        }, 800);
+    }
+
+    // Close the codon table
+    if (codonTable) codonTable.style.display = "none";
+    if (tableCross) tableCross.style.display = "none";
+
+    // Show correct popup
+    flashPopup("correct-popup", 1500);
+
+    // Advance to next codon
+    currentStep++;
+
+    // If we just processed a stop codon, clear out remaining tRNAs
+    if (isStopCodon) {
+        activeTRNAs.forEach(trna => {
+            trna.element.style.transform = `translate(${trna.tx - 60}px, -120px) rotate(-35deg)`;
+            trna.element.style.opacity = "0";
+            setTimeout(() => {
+                if (trna.element.parentNode) {
+                    trna.element.parentNode.removeChild(trna.element);
+                }
+            }, 800);
+        });
+        activeTRNAs = [];
+    }
+}
+
+
+
 
 function generateCircularMRNALetters() {
     const totalSlots = 33;
@@ -169,8 +388,8 @@ function generateCircularMRNALetters() {
     selectedCodons[stopIndex] =
         stopCodons[Math.floor(Math.random() * stopCodons.length)];
 
-    // random start
-    let pointer = Math.floor(Math.random() * totalSlots);
+    // random start — must be a multiple of groupSize so all codons land on frame boundaries
+    let pointer = Math.floor(Math.random() * totalGroups) * groupSize;
 
     // assign letters
     selectedCodons.forEach(codon => {
@@ -206,6 +425,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const codonVisibleBtn = document.getElementById("codon-frame-visible");
     const groupHighligh = document.querySelectorAll(".group-highlight");
 
+    const insightImg = document.getElementById("insight-img");
+    const crossImg = document.getElementById("cross-img");
+    const insightBtn = document.getElementById("insight-button");
+
+    const tableCrossBtn = document.getElementById("table-cross-img");
+
+    tableCrossBtn.addEventListener("click", function () {
+        codonTable.style.display = "none";
+        tableCrossBtn.style.display = "none";
+    });
+
+    insightBtn.addEventListener("click", function () {
+        insightImg.style.display = "block";
+        crossImg.style.display = "block";
+    });
+
+    crossImg.addEventListener("click", function () {
+        insightImg.style.display = "none";
+        crossImg.style.display = "none";
+    });
+
     codonHiddenBtn.addEventListener("click", function () {
         codonHiddenBtn.style.display = "none";
         codonVisibleBtn.style.display = "block";
@@ -225,8 +465,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleCodonTable() {
         if (codonTable.style.display === "none") {
             codonTable.style.display = "block";
+            tableCrossBtn.style.display = 'block';
         } else {
             codonTable.style.display = "none";
+            tableCrossBtn.style.display = 'none';
         }
     }
     // Event listener for the codon table button
@@ -236,4 +478,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const data = generateCircularMRNALetters();
     updateSVGLetters(data);
+
+    // Store sequence data and locate the AUG start codon
+    mRNAData = data;
+    augSlotIndex = findAUGSlot(data);
+    currentStep = 0;
+    sequenceStarted = false;
+    console.log("AUG starts at slot index:", augSlotIndex, "/ frame:", Math.floor(augSlotIndex / 3));
 });
