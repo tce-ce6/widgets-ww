@@ -476,13 +476,118 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setupClick();
 
-    const data = generateCircularMRNALetters();
-    updateSVGLetters(data);
+    function clearActiveElements() {
+        activeTRNAs.forEach(trna => {
+            if (trna.element.parentNode) trna.element.parentNode.removeChild(trna.element);
+        });
+        activeAminoAcids.forEach(aa => {
+            if (aa.parentNode) aa.parentNode.removeChild(aa);
+        });
+        activePeptideBonds.forEach(pb => {
+            if (pb.parentNode) pb.parentNode.removeChild(pb);
+        });
+        activeTRNAs = [];
+        activeAminoAcids = [];
+        activePeptideBonds = [];
+    }
 
-    // Store sequence data and locate the AUG start codon
-    mRNAData = data;
-    augSlotIndex = findAUGSlot(data);
-    currentStep = 0;
-    sequenceStarted = false;
-    console.log("AUG starts at slot index:", augSlotIndex, "/ frame:", Math.floor(augSlotIndex / 3));
+    function resetWidget() {
+        clearActiveElements();
+        currentStep = 0;
+        previousTx = 0;
+        sequenceStarted = false;
+
+        const data = generateCircularMRNALetters();
+        updateSVGLetters(data);
+        mRNAData = data;
+        augSlotIndex = findAUGSlot(data);
+
+        if (codonTable) codonTable.style.display = "none";
+        if (tableCrossBtn) tableCrossBtn.style.display = "none";
+
+        codonHiddenBtn.style.display = "block";
+        codonVisibleBtn.style.display = "none";
+        groupHighligh.forEach(function (item) {
+            item.style.display = "none";
+        });
+
+        // Hide popups
+        const wrongPopup = document.getElementById("wrong-popup");
+        if (wrongPopup) wrongPopup.style.display = "none";
+        const correctPopup = document.getElementById("correct-popup");
+        if (correctPopup) correctPopup.style.display = "none";
+    }
+
+    function showAnswer() {
+        clearActiveElements();
+        currentStep = 0;
+        previousTx = 0;
+
+        let isStopCodon = false;
+        const template = document.getElementById("trna-sysmbol");
+        const codonTableEl = document.getElementById("rna-codon-table");
+
+        while (!isStopCodon) {
+            const expectedSlot = (augSlotIndex + currentStep * 3) % 33;
+            const expectedCodon = getCodonAtSlot(expectedSlot);
+            const codonData = RNADATA.genetic_code.find(c => c.mRNA === expectedCodon);
+            isStopCodon = STOP_CODONS.includes(expectedCodon) || (codonData && codonData.tRNA === null);
+
+            const frameIndex = Math.floor((expectedSlot % 33) / 3);
+            const tx = frameIndex * FRAME_STEP_PX;
+
+            if (codonData && codonData.amino_acid && template) {
+                let aaName = codonData.amino_acid;
+                const aaTemplate = document.getElementById(aaName);
+
+                if (aaTemplate) {
+                    const aaClone = aaTemplate.cloneNode(true);
+                    aaClone.removeAttribute("id");
+                    aaClone.style.display = "block";
+                    aaClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+                    aaClone.setAttribute("transform", `translate(${tx}, 0)`);
+                    aaClone.style.transform = `translate(${tx}px, 0px)`;
+
+                    if (codonTableEl) {
+                        template.parentNode.insertBefore(aaClone, codonTableEl);
+                    } else {
+                        template.parentNode.appendChild(aaClone);
+                    }
+                    activeAminoAcids.push(aaClone);
+
+                    if (activeAminoAcids.length > 1) {
+                        const pbTemplate = document.getElementById("peptide-bond");
+                        if (pbTemplate) {
+                            const pbClone = pbTemplate.cloneNode(true);
+                            pbClone.removeAttribute("id");
+                            pbClone.style.display = "block";
+                            pbClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+                            pbClone.setAttribute("transform", `translate(${previousTx}, 0)`);
+                            pbClone.style.transform = `translate(${previousTx}px, 0px)`;
+
+                            template.parentNode.insertBefore(pbClone, activeAminoAcids[0]);
+                            activePeptideBonds.push(pbClone);
+                        }
+                    }
+                    previousTx = tx;
+                }
+            }
+            currentStep++;
+        }
+        sequenceStarted = true;
+    }
+
+    const resetBtn = document.getElementById("reset-btn");
+    if (resetBtn) resetBtn.addEventListener("click", resetWidget);
+
+    const showAnswerBtn = document.getElementById("show-answer-btn");
+    if (showAnswerBtn) showAnswerBtn.addEventListener("click", showAnswer);
+
+    const newMRNABtn = document.getElementById("new-mrna-btn");
+    if (newMRNABtn) newMRNABtn.addEventListener("click", resetWidget);
+
+    // Initial setup
+    resetWidget();
 });
