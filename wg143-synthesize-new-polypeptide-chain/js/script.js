@@ -99,6 +99,7 @@ let currentStep = 0;      // 0 = waiting for AUG; 1 = 2nd codon; etc.
 let sequenceStarted = false;
 let activeTRNAs = [];     // Array to track cloned tRNA symbols
 let activeAminoAcids = []; // Array to track cloned amino acids
+let pendingPeptideBondTxs = []; // Bond positions waiting for tRNA detachment
 let activePeptideBonds = []; // Array to track cloned peptide bonds
 let previousTx = 0;       // Track x-position of the last amino acid for the peptide bond
 
@@ -279,30 +280,37 @@ function handleCodonSelection(selectedCodon) {
             }
             activeAminoAcids.push(aaClone);
 
-            // ─── PEPTIDE BOND ───
-            if (activeAminoAcids.length > 1) {
-                const pbTemplate = document.getElementById("peptide-bond");
-                if (pbTemplate) {
-                    const pbClone = pbTemplate.cloneNode(true);
-                    pbClone.removeAttribute("id");
-                    pbClone.style.display = "block";
-                    pbClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
-
-                    // Position bond starting from the previous amino acid's position
-                    pbClone.setAttribute("transform", `translate(${previousTx}, 0)`);
-                    pbClone.style.transform = `translate(${previousTx}px, 0px)`;
-
-                    // Insert the peptide bond BEFORE the first amino acid so it renders behind all amino acids
-                    template.parentNode.insertBefore(pbClone, activeAminoAcids[0]);
-                    activePeptideBonds.push(pbClone);
-                }
+            if (!isStopCodon && activeAminoAcids.length > 1) {
+                pendingPeptideBondTxs.push(previousTx);
             }
-            previousTx = tx;
+            if (!isStopCodon) {
+                previousTx = tx;
+            }
         }
     }
 
-    // If a 3rd tRNA attaches, detach and tilt the 1st one
+    // If a 3rd tRNA attaches, attach the next peptide bond and detach the 1st tRNA
     if (activeTRNAs.length > 2) {
+        if (pendingPeptideBondTxs.length > 0) {
+            const bondTx = pendingPeptideBondTxs.shift();
+            const pbTemplate = document.getElementById("peptide-bond");
+            if (pbTemplate) {
+                const pbClone = pbTemplate.cloneNode(true);
+                pbClone.removeAttribute("id");
+                pbClone.style.display = "block";
+                pbClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+                pbClone.setAttribute("transform", `translate(${bondTx}, 0)`);
+                pbClone.style.transform = `translate(${bondTx}px, 0px)`;
+
+                const firstAA = activeAminoAcids[0];
+                if (firstAA && firstAA.parentNode) {
+                    firstAA.parentNode.insertBefore(pbClone, firstAA);
+                }
+                activePeptideBonds.push(pbClone);
+            }
+        }
+
         const oldest = activeTRNAs.shift();
         // Detach by tilting and moving up/left, fading out
         oldest.element.style.transform = `translate(${oldest.tx - 60}px, -120px) rotate(-35deg)`;
@@ -325,8 +333,28 @@ function handleCodonSelection(selectedCodon) {
     // Advance to next codon
     currentStep++;
 
-    // If we just processed a stop codon, clear out remaining tRNAs
+    // If we just processed a stop codon, attach any remaining peptide bonds and clear out remaining tRNAs
     if (isStopCodon) {
+        while (pendingPeptideBondTxs.length > 0) {
+            const bondTx = pendingPeptideBondTxs.shift();
+            const pbTemplate = document.getElementById("peptide-bond");
+            if (!pbTemplate) break;
+
+            const pbClone = pbTemplate.cloneNode(true);
+            pbClone.removeAttribute("id");
+            pbClone.style.display = "block";
+            pbClone.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+            pbClone.setAttribute("transform", `translate(${bondTx}, 0)`);
+            pbClone.style.transform = `translate(${bondTx}px, 0px)`;
+
+            const firstAA = activeAminoAcids[0];
+            if (firstAA && firstAA.parentNode) {
+                firstAA.parentNode.insertBefore(pbClone, firstAA);
+            }
+            activePeptideBonds.push(pbClone);
+        }
+
         activeTRNAs.forEach(trna => {
             trna.element.style.transform = `translate(${trna.tx - 60}px, -120px) rotate(-35deg)`;
             trna.element.style.opacity = "0";
@@ -375,21 +403,18 @@ function generateCircularMRNALetters() {
         );
     }
 
-    // ensure AUG
-    const augIndex = Math.floor(Math.random() * totalGroups);
+    // ensure AUG at codon positions 1 through 9 (0-based index 0–8)
+    const augIndex = Math.floor(Math.random() * 9);
     selectedCodons[augIndex] = "AUG";
 
-    // ensure STOP
-    let stopIndex;
-    do {
-        stopIndex = Math.floor(Math.random() * totalGroups);
-    } while (stopIndex === augIndex);
-
+    // ensure STOP to the right of AUG with at least one codon gap
+    const stopMinIndex = augIndex + 2;
+    const stopIndex = Math.floor(Math.random() * (totalGroups - stopMinIndex)) + stopMinIndex;
     selectedCodons[stopIndex] =
         stopCodons[Math.floor(Math.random() * stopCodons.length)];
 
-    // random start — must be a multiple of groupSize so all codons land on frame boundaries
-    let pointer = Math.floor(Math.random() * totalGroups) * groupSize;
+    // fixed start so codon positions 1..11 remain stable in the circular display
+    let pointer = 0;
 
     // assign letters
     selectedCodons.forEach(codon => {
@@ -446,12 +471,17 @@ document.addEventListener('DOMContentLoaded', function () {
         crossImg.style.display = "none";
     });
 
+    function showGroupHighlightsFromAUG() {
+        const augFrame = augSlotIndex >= 0 ? Math.floor((augSlotIndex % 33) / 3) : -1;
+        groupHighligh.forEach(function (item, index) {
+            item.style.display = augFrame >= 0 && index >= augFrame ? "block" : "none";
+        });
+    }
+
     codonHiddenBtn.addEventListener("click", function () {
         codonHiddenBtn.style.display = "none";
         codonVisibleBtn.style.display = "block";
-        groupHighligh.forEach(function (item) {
-            item.style.display = "block";
-        });
+        showGroupHighlightsFromAUG();
     });
 
     codonVisibleBtn.addEventListener("click", function () {
@@ -556,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     activeAminoAcids.push(aaClone);
 
-                    if (activeAminoAcids.length > 1) {
+                    if (!isStopCodon && activeAminoAcids.length > 1) {
                         const pbTemplate = document.getElementById("peptide-bond");
                         if (pbTemplate) {
                             const pbClone = pbTemplate.cloneNode(true);
@@ -571,7 +601,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             activePeptideBonds.push(pbClone);
                         }
                     }
-                    previousTx = tx;
+                    if (!isStopCodon) {
+                        previousTx = tx;
+                    }
                 }
             }
             currentStep++;
