@@ -278,6 +278,19 @@ svg * {
   width: 200px;
 }
 
+#svg-container #distractor-1 > g > text,
+#svg-container #distractor-2 > g > text {
+  cursor: pointer;
+}
+
+#svg-container .lottie-container {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
 .option-list li.wrong {
   border-color: #E31919;
 }

@@ -25,7 +25,7 @@ RHYMEDATA = {
   ],
   "group_3": [
     { "answer": ["parrot", "carrot"], "distractor_1": ["parrot", "animal", "picture", "game", "hiding"], "distractor_2": ["carrot", "shuffle", "great", "flip", "light"] },
-    { "answer": ["flip", "slip"], "distractor_1": ["flip", "guess", "choose", "sound", "card"], "distractor_2": ["slip", "lamp", "gentle", "night", "tray"] },
+    // { "answer": ["flip", "slip"], "distractor_1": ["flip", "guess", "choose", "sound", "card"], "distractor_2": ["slip", "lamp", "gentle", "night", "tray"] },
     { "answer": ["tray", "play"], "distractor_1": ["tray", "honey", "gentle", "mat", "moat"], "distractor_2": ["play", "fang", "happy", "card", "sound"] },
     { "answer": ["honey", "money"], "distractor_1": ["honey", "might", "flip", "animal", "jungle"], "distractor_2": ["money", "click", "bread", "trouble", "feet"] },
     { "answer": ["might", "fight"], "distractor_1": ["might", "hide", "celebrate", "picture", "choose"], "distractor_2": ["fight", "show", "flash", "thunder", "umbrella"] },
@@ -39,6 +39,10 @@ RHYMEDATA = {
 };
 
 const animMap = new Map();
+
+function getRhymeCardFromEventTarget(el) {
+  return el.closest('#distractor-1 > g') || el.closest('#distractor-2 > g');
+}
 
 function playLottie(card) {
   const section = card.dataset.section;
@@ -127,7 +131,15 @@ function playLoadedLottie(card) {
   const anim = animMap.get(container);
   if (anim) {
     container.style.display = 'block';
+    setCardWordVisible(card, false);
+    const onComplete = () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+      setCardWordVisible(card, false);
+    };
+    anim.addEventListener('complete', onComplete, { once: true });
     anim.play();
+  } else {
+    setCardWordVisible(card, false);
   }
 }
 
@@ -224,10 +236,7 @@ function assignDistractorData(item) {
 }
 
 function addSelectionOverlay(card) {
-  const existing = card.querySelector('.selection-overlay');
-  if (existing) {
-    return;
-  }
+  removeSelectionOverlay(card);
   const text = card.querySelector('text');
   if (!text) {
     return;
@@ -235,27 +244,41 @@ function addSelectionOverlay(card) {
   const bbox = text.getBBox();
   const paddingX = 16;
   const paddingY = 10;
-  const overlay = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const wrap = document.createElementNS(svgNS, 'g');
+  wrap.setAttribute('class', 'selection-overlay-group');
+  const textTransform = text.getAttribute('transform');
+  if (textTransform) {
+    wrap.setAttribute('transform', textTransform);
+  }
+  const overlay = document.createElementNS(svgNS, 'rect');
   overlay.setAttribute('class', 'selection-overlay');
-  overlay.setAttribute('x', bbox.x - paddingX);
-  overlay.setAttribute('y', bbox.y - paddingY);
-  overlay.setAttribute('width', bbox.width + paddingX * 2);
-  overlay.setAttribute('height', bbox.height + paddingY * 2);
+  overlay.setAttribute('x', String(bbox.x - paddingX));
+  overlay.setAttribute('y', String(bbox.y - paddingY));
+  overlay.setAttribute('width', String(bbox.width + paddingX * 2));
+  overlay.setAttribute('height', String(bbox.height + paddingY * 2));
   overlay.setAttribute('rx', '16');
   overlay.setAttribute('fill', '#ffffff');
   overlay.setAttribute('opacity', '0.95');
-  card.insertBefore(overlay, card.firstChild);
+  wrap.appendChild(overlay);
+  card.insertBefore(wrap, text);
 }
 
 function removeSelectionOverlay(card) {
-  const overlay = card.querySelector('.selection-overlay');
-  if (overlay) {
-    overlay.remove();
+  card.querySelectorAll('.selection-overlay-group').forEach((el) => el.remove());
+  card.querySelectorAll('rect.selection-overlay').forEach((el) => el.remove());
+}
+
+function setCardWordVisible(card, visible) {
+  const textEl = card.querySelector('text');
+  if (textEl) {
+    textEl.style.opacity = visible ? '' : '0';
   }
 }
 
 function resetCardStyle(card) {
   card.style.display = 'block';
+  setCardWordVisible(card, true);
   const textSpan = card.querySelector('text tspan');
   if (textSpan) {
     textSpan.style.fill = '#ffffff';
@@ -269,6 +292,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const nextButton = document.getElementById('next-btn');
   const newZoneButton = document.getElementById('new-zone');
   const tryAgainButton = document.getElementById('try-again');
+  const progressClipRect = document.getElementById('wg119-progress-fill-clip-rect');
+  const progressPctText = document.querySelector('#progress-bar text.st24 tspan');
+
+  const PROGRESS_BAR_FULL_WIDTH = 315;
+  const PROGRESS_BAR_CLIP_X = 1548.15;
+  const STAR_COUNT = 10;
 
   const groupKeys = Object.keys(RHYMEDATA);
   let availableGroups = createIndexPool(groupKeys.length);
@@ -277,6 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentItem = null;
   let selectedCards = { d1: null, d2: null };
   let nextEnabled = false;
+  let groupCorrectCount = 0;
 
   const sectionMap = {
     'distractor-1': 'd1',
@@ -285,9 +315,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const allCards = Array.from(document.querySelectorAll('#distractor-1 > g, #distractor-2 > g'));
 
+  function updateGroupProgressUI() {
+    const total = currentGroupItems.length || 1;
+    const count = Math.min(groupCorrectCount, total);
+    const pct = Math.round((count / total) * 100);
+    if (progressClipRect) {
+      progressClipRect.setAttribute('x', String(PROGRESS_BAR_CLIP_X));
+      progressClipRect.setAttribute(
+        'width',
+        String((PROGRESS_BAR_FULL_WIDTH * count) / total)
+      );
+    }
+    const whiteCircleKnob = document.getElementById('white-circle');
+    if (whiteCircleKnob) {
+      const dx = (PROGRESS_BAR_FULL_WIDTH * count) / total;
+      if (dx <= 0) {
+        whiteCircleKnob.removeAttribute('transform');
+      } else {
+        whiteCircleKnob.setAttribute('transform', `translate(${dx}, 0)`);
+      }
+    }
+    if (progressPctText) {
+      progressPctText.textContent = `${String(pct).padStart(2, '0')}%`;
+    }
+    for (let i = 1; i <= STAR_COUNT; i++) {
+      const star = document.getElementById(`start-${i}`);
+      if (star) {
+        star.style.opacity = i <= count ? '1' : '0.3';
+      }
+    }
+  }
+
+  function updateNewZoneVisibility() {
+    if (!newZoneButton) {
+      return;
+    }
+    const showNewZone = nextEnabled && availableItems.length === 0;
+    newZoneButton.style.display = showNewZone ? 'block' : 'none';
+  }
+
   function updateNextState() {
-    nextButton.style.opacity = nextEnabled ? '1' : '0.5';
-    nextButton.style.pointerEvents = nextEnabled ? 'auto' : 'none';
+    const canClickNext = nextEnabled && availableItems.length > 0;
+    nextButton.style.opacity = canClickNext ? '1' : '0.5';
+    nextButton.style.pointerEvents = canClickNext ? 'auto' : 'none';
+    updateNewZoneVisibility();
   }
 
   function hideTryAgain() {
@@ -331,7 +402,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function handleCardClick(event) {
-    const card = event.currentTarget;
+    //const card = event.currentTarget;
+    const card = getRhymeCardFromEventTarget(event.currentTarget);
+    if (!card) {
+      return;
+    }
+
     const section = card.dataset.section;
     if (!section || !currentItem) {
       return;
@@ -359,7 +435,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (isCorrectD1 && isCorrectD2) {
         nextEnabled = true;
         hideTryAgain();
-        // Play all remaining lotties when correct
+        groupCorrectCount += 1;
+        updateGroupProgressUI();
+        // Play lottie on distractor cards; word labels are hidden (SVG text paints above the bubble)
         allCards.forEach(card => {
           if (card !== selectedCards.d1 && card !== selectedCards.d2) {
             playLoadedLottie(card);
@@ -383,8 +461,12 @@ document.addEventListener('DOMContentLoaded', function () {
     allCards.forEach(card => {
       const sectionId = card.parentNode.id;
       card.dataset.section = sectionMap[sectionId] || '';
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', handleCardClick);
+      // card.style.cursor = 'pointer';
+      // card.addEventListener('click', handleCardClick);
+      const wordText = card.querySelector('text');
+      if (wordText) {
+        wordText.addEventListener('click', handleCardClick);
+      }
     });
   }
 
@@ -395,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (availableItems.length === 0) {
-      availableItems = createIndexPool(currentGroupItems.length);
+      return;
     }
 
     const itemIndex = availableItems.pop();
@@ -412,6 +494,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const groupIndex = availableGroups.pop();
     currentGroupItems = RHYMEDATA[groupKeys[groupIndex]];
     availableItems = createIndexPool(currentGroupItems.length);
+    groupCorrectCount = 0;
+    updateGroupProgressUI();
+    if (newZoneButton) {
+      newZoneButton.style.display = 'none';
+    }
     chooseNextItem();
   }
 
@@ -422,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   nextButton.addEventListener('click', function () {
-    if (!nextEnabled) {
+    if (!nextEnabled || availableItems.length === 0) {
       return;
     }
     chooseNextItem();
@@ -441,6 +528,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   bindCardClicks();
+  updateGroupProgressUI();
   updateNextState();
   hideTryAgain();
 });
