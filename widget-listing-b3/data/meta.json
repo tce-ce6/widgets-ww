@@ -69,7 +69,7 @@
       "author": "tce-nitinc"
     },
     "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-05-12T19:19:54+05:30",
+      "updatedAt": "2026-05-13T19:14:39+05:30",
       "author": "tce-ashishg"
     },
     "wg120-area-of-different-shapes": {
@@ -419,6 +419,22 @@
   },
   "commits": [
     {
+      "date": "2026-05-13T19:14:39+05:30",
+      "author": "tce-ashishg",
+      "message": "completed with functionality audio missing",
+      "widgets": [
+        119
+      ]
+    },
+    {
+      "date": "2026-05-13T17:00:08+05:30",
+      "author": "tce-ashishg",
+      "message": "lottie loading done",
+      "widgets": [
+        119
+      ]
+    },
+    {
       "date": "2026-05-12T19:19:54+05:30",
       "author": "tce-ashishg",
       "message": "logical function added",
@@ -641,22 +657,6 @@
       "message": "wg23 started",
       "widgets": [
         23
-      ]
-    },
-    {
-      "date": "2026-04-18T10:13:46+05:30",
-      "author": "tce-ashishg",
-      "message": "title updated",
-      "widgets": [
-        150
-      ]
-    },
-    {
-      "date": "2026-04-17T19:36:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wg144 issue resolved",
-      "widgets": [
-        144
       ]
     }
   ]
