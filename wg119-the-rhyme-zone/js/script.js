@@ -290,6 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const startGameButton = document.getElementById('startGameBtn');
   const mainPage = document.getElementById('mainPage');
   const nextButton = document.getElementById('next-btn');
+  const showAnswerBtn = document.getElementById('show-answer-btn');
   const newZoneButton = document.getElementById('new-zone');
   const tryAgainButton = document.getElementById('try-again');
   const progressClipRect = document.getElementById('wg119-progress-fill-clip-rect');
@@ -443,6 +444,9 @@ document.addEventListener('DOMContentLoaded', function () {
             playLoadedLottie(card);
           }
         });
+        setTimeout(() => {
+          correctFeedbackPage();
+        }, 2000);
       } else {
         nextEnabled = false;
         showTryAgain();
@@ -455,6 +459,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     updateNextState();
+  }
+
+  function correctFeedbackPage(){
+   showAnswerBtn.style.display = 'none';
+    nextButton.style.transform = 'translate(-710px, -200x)';
   }
 
   function bindCardClicks() {
