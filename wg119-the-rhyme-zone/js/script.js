@@ -39,6 +39,7 @@ RHYMEDATA = {
 };
 
 const animMap = new Map();
+let selectedCardClones = [];
 
 function getRhymeCardFromEventTarget(el) {
   return el.closest('#distractor-1 > g') || el.closest('#distractor-2 > g');
@@ -131,6 +132,7 @@ function playLoadedLottie(card) {
   const anim = animMap.get(container);
   if (anim) {
     container.style.display = 'block';
+    container.style.visibility = 'visible';
     setCardWordVisible(card, false);
     const onComplete = () => {
       anim.goToAndStop(anim.totalFrames - 1, true);
@@ -162,6 +164,39 @@ function playTryAgainLottie() {
     loop: false,
     autoplay: true,
     path: './assets/anim/try-again.json',
+    rendererSettings: {
+      hideOnTransparent: false,
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Ensure totalFrames is available
+  anim.addEventListener('DOMLoaded', () => {
+    anim.addEventListener('complete', () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+    });
+  });
+}
+
+function playCongratulationLottie(animationPath = './assets/anim/thumbs.json') {
+  // Find a container to play congratulation lottie, perhaps the first distractor-1 card's container
+  const container = document.querySelector('.congratulations-lottie');
+
+  if (!container) {
+    console.warn(`Congratulation container not found`);
+    return;
+  }
+
+  // Clear previous animation
+  container.innerHTML = '';
+  container.style.display = 'block';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: true,
+    autoplay: true,
+    path: animationPath,
     rendererSettings: {
       hideOnTransparent: false,
       preserveAspectRatio: 'xMidYMid meet'
@@ -213,6 +248,7 @@ function assignDistractorData(item) {
 
   d1Cards.forEach((card, index) => {
     const word = shuffledD1[index] || '';
+    console.log(correctLeft, correctRight);
     card.dataset.word = word;
     card.dataset.correct = word.toLowerCase() === correctLeft ? 'true' : 'false';
     const span = card.querySelector('text tspan');
@@ -278,12 +314,89 @@ function setCardWordVisible(card, visible) {
 
 function resetCardStyle(card) {
   card.style.display = 'block';
+  card.removeAttribute('transform');
   setCardWordVisible(card, true);
   const textSpan = card.querySelector('text tspan');
   if (textSpan) {
     textSpan.style.fill = '#ffffff';
   }
   removeSelectionOverlay(card);
+}
+
+function getSvgRoot() {
+  return document.querySelector('svg');
+}
+
+function clearSelectedCardClones() {
+  selectedCardClones.forEach(clone => clone.remove());
+  selectedCardClones = [];
+}
+
+function createCenteredSelectedClones(selectedCards, isLastQuestion = false) {
+  const svg = getSvgRoot();
+  if (!svg || !selectedCards.d1 || !selectedCards.d2) {
+    return;
+  }
+
+  clearSelectedCardClones();
+  const leftClone = selectedCards.d1.cloneNode(true);
+  const rightClone = selectedCards.d2.cloneNode(true);
+
+  svg.appendChild(leftClone);
+  svg.appendChild(rightClone);
+  selectedCardClones = [leftClone, rightClone];
+
+  selectedCards.d1.style.display = 'none';
+  selectedCards.d2.style.display = 'none';
+  centerSelectedCards({ d1: leftClone, d2: rightClone });
+
+  if (isLastQuestion) {
+    playCongratulationLottie('./assets/anim/congratulation.json');
+  } else {
+    playCongratulationLottie();
+  }
+}
+
+function centerSelectedCards(selectedCards) {
+  const svg = getSvgRoot();
+  if (!svg || !selectedCards.d1 || !selectedCards.d2) {
+    return;
+  }
+
+  const svgBox = svg.getBBox();
+  const centerX = svgBox.x + svgBox.width / 2;
+  const centerY = svgBox.y + svgBox.height / 2;
+
+  const leftCard = selectedCards.d1;
+  const rightCard = selectedCards.d2;
+  const leftBox = leftCard.getBBox();
+  const rightBox = rightCard.getBBox();
+  const gap = 80;
+
+  const totalWidth = leftBox.width + rightBox.width + gap;
+  const targetLeftX = centerX - totalWidth / 2;
+  const targetRightX = centerX + totalWidth / 2 - rightBox.width;
+  const targetY = centerY - Math.max(leftBox.height, rightBox.height) / 2;
+
+  leftCard.setAttribute('transform', `translate(${targetLeftX - leftBox.x} ${targetY - leftBox.y})`);
+  rightCard.setAttribute('transform', `translate(${targetRightX - rightBox.x} ${targetY - rightBox.y})`);
+  document.getElementById('next-btn').style.display = 'block';
+  document.getElementById('congratulation-div').style.display = 'block';
+  playCongratulationLottie();
+}
+
+function centerNextButton(button) {
+  const svg = getSvgRoot();
+  if (!svg || !button) {
+    return;
+  }
+
+  const svgBox = svg.getBBox();
+  const buttonBox = button.getBBox();
+  const dx = svgBox.x + svgBox.width / 2 - (buttonBox.x + buttonBox.width / 2);
+  const dy = -200;
+  button.removeAttribute('transform');
+  button.style.transform = `translate(${dx}px, ${dy}px)`;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -379,11 +492,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function resetSelectionState() {
+    clearSelectedCardClones();
+    if (selectedCards.d1) {
+      selectedCards.d1.style.display = 'block';
+    }
+    if (selectedCards.d2) {
+      selectedCards.d2.style.display = 'block';
+    }
     selectedCards = { d1: null, d2: null };
     nextEnabled = false;
     updateNextState();
     hideTryAgain();
     resetAllCards();
+    // reset next button position
+    nextButton.style.transform = 'translateX(-650px)';
   }
 
   function markCardCorrect(card) {
@@ -446,6 +568,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         setTimeout(() => {
           correctFeedbackPage();
+          console.log('Available items before creating clones:', availableItems.length);
+          createCenteredSelectedClones(selectedCards, availableItems.length === 0);
         }, 2000);
       } else {
         nextEnabled = false;
@@ -462,8 +586,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function correctFeedbackPage(){
-   showAnswerBtn.style.display = 'none';
-    nextButton.style.transform = 'translate(-710px, -200x)';
+    showAnswerBtn.style.display = 'none';
+    centerNextButton(nextButton);
   }
 
   function bindCardClicks() {
@@ -522,11 +646,15 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
     chooseNextItem();
+    showAnswerBtn.style.display = 'inline-block';
+    document.getElementById('congratulation-div').style.display = 'none';
   });
 
   newZoneButton.addEventListener('click', function () {
     mainPage.style.display = 'none';
     startGameButton.style.display = 'block';
+    showAnswerBtn.style.display = 'block';
+    document.getElementById('congratulation-div').style.display = 'none';
     chooseNewGroup();
   });
 
