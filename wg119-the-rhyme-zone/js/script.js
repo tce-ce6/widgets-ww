@@ -350,6 +350,16 @@ function createCenteredSelectedClones(selectedCards, isLastQuestion = false) {
   selectedCards.d2.style.display = 'none';
   centerSelectedCards({ d1: leftClone, d2: rightClone });
 
+  const congratsPanel = document.getElementById('congratulations-panel');
+  if (congratsPanel) {
+    congratsPanel.style.display = isLastQuestion ? 'block' : 'none';
+  }
+
+  const congratsDiv = document.getElementById('congratulation-div');
+  if (congratsDiv) {
+    congratsDiv.style.display = isLastQuestion ? 'block' : 'none';
+  }
+
   if (isLastQuestion) {
     playCongratulationLottie('./assets/anim/congratulation.json');
   } else {
@@ -381,8 +391,6 @@ function centerSelectedCards(selectedCards) {
   leftCard.setAttribute('transform', `translate(${targetLeftX - leftBox.x} ${targetY - leftBox.y})`);
   rightCard.setAttribute('transform', `translate(${targetRightX - rightBox.x} ${targetY - rightBox.y})`);
   document.getElementById('next-btn').style.display = 'block';
-  document.getElementById('congratulation-div').style.display = 'block';
-  playCongratulationLottie();
 }
 
 function centerNextButton(button) {
@@ -404,6 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const mainPage = document.getElementById('mainPage');
   const nextButton = document.getElementById('next-btn');
   const showAnswerBtn = document.getElementById('show-answer-btn');
+  const showAnswerPage = document.getElementById('showAnswerPage');
   const newZoneButton = document.getElementById('new-zone');
   const tryAgainButton = document.getElementById('try-again');
   const progressClipRect = document.getElementById('wg119-progress-fill-clip-rect');
@@ -506,6 +515,23 @@ document.addEventListener('DOMContentLoaded', function () {
     resetAllCards();
     // reset next button position
     nextButton.style.transform = 'translateX(-650px)';
+    // reset answer visibility
+    isAnswerVisible = false;
+    mainPage.style.display = 'block';
+    showAnswerBtn.style.display = 'inline-block';
+    showAnswerPage.style.display = 'none';
+    const showAnswerText = showAnswerBtn.querySelector('tspan');
+    if (showAnswerText) {
+      showAnswerText.textContent = 'Show Answer';
+    }
+    const congratsPanel = document.getElementById('congratulations-panel');
+    if (congratsPanel) {
+      congratsPanel.style.display = 'none';
+    }
+    const congratsDiv = document.getElementById('congratulation-div');
+    if (congratsDiv) {
+      congratsDiv.style.display = 'none';
+    }
   }
 
   function markCardCorrect(card) {
@@ -637,6 +663,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   startGameButton.addEventListener('click', function () {
     mainPage.style.display = 'block';
+    showAnswerBtn.style.display = 'inline-block';
     startGameButton.style.display = 'none';
     chooseNewGroup();
   });
@@ -651,11 +678,61 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   newZoneButton.addEventListener('click', function () {
+    resetSelectionState();
     mainPage.style.display = 'none';
     startGameButton.style.display = 'block';
-    showAnswerBtn.style.display = 'block';
+    showAnswerBtn.style.display = 'none';
+    showAnswerPage.style.display = 'none';
+    isAnswerVisible = false;
+    const showAnswerText = showAnswerBtn.querySelector('tspan');
+    if (showAnswerText) {
+      showAnswerText.textContent = 'Show Answer';
+    }
     document.getElementById('congratulation-div').style.display = 'none';
-    chooseNewGroup();
+    newZoneButton.style.display = 'none';
+  });
+
+  let isAnswerVisible = false;
+
+  showAnswerBtn.addEventListener('click', function () {
+    if (!currentItem || !currentItem.answer) {
+      return;
+    }
+    
+    if (!isAnswerVisible) {
+      // Show answer
+      const answer1 = document.getElementById('answer1');
+      const answer2 = document.getElementById('answer2');
+      
+      if (answer1 && answer1.querySelector('tspan')) {
+        answer1.querySelector('tspan').textContent = currentItem.answer[0];
+      }
+      
+      if (answer2 && answer2.querySelector('tspan')) {
+        answer2.querySelector('tspan').textContent = currentItem.answer[1];
+      }
+      
+      mainPage.style.display = 'none';
+      showAnswerPage.style.display = 'block';
+      isAnswerVisible = true;
+      
+      // Change button text to Hide Answer
+      const showAnswerText = showAnswerBtn.querySelector('tspan');
+      if (showAnswerText) {
+        showAnswerText.textContent = 'Hide Answer';
+      }
+    } else {
+      // Hide answer
+      mainPage.style.display = 'block';
+      showAnswerPage.style.display = 'none';
+      isAnswerVisible = false;
+      
+      // Change button text back to Show Answer
+      const showAnswerText = showAnswerBtn.querySelector('tspan');
+      if (showAnswerText) {
+        showAnswerText.textContent = 'Show Answer';
+      }
+    }
   });
 
   if (tryAgainButton) {
