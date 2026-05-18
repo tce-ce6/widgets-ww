@@ -237,7 +237,7 @@
       "author": "tce-nitinc"
     },
     "wg23-lcm-of-numbers": {
-      "updatedAt": "2026-04-25T16:49:58+05:30",
+      "updatedAt": "2026-05-18T16:14:59+05:30",
       "author": "tce-ashishg"
     },
     "wg24-hcf-of-numbers": {
@@ -418,6 +418,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-05-18T16:14:59+05:30",
+      "author": "tce-ashishg",
+      "message": "wg23 error resolved",
+      "widgets": [
+        23
+      ]
+    },
     {
       "date": "2026-05-15T17:07:34+05:30",
       "author": "tce-ashishg",
@@ -648,15 +656,6 @@
       "message": "error resolved in wg89 & wg31",
       "widgets": [
         135
-      ]
-    },
-    {
-      "date": "2026-04-22T10:55:06+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved in wg89 & wg31",
-      "widgets": [
-        31,
-        89
       ]
     }
   ]
