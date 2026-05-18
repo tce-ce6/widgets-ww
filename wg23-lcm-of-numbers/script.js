@@ -97,9 +97,11 @@ function startRaceAnimation() {
       document.getElementById("rt-lap-2").textContent = lcm / runnerLap2;
 
       // Show meeting results
-      document.getElementById("meet-res-1").textContent = lcm;
-      document.getElementById("meet-elapsed").textContent = lcm;
-      document.getElementById("meet-first").textContent = lcm;
+      const count1 = lcm / runnerLap1;
+      const count2 = lcm / runnerLap2;
+      document.getElementById("meet-line-1").textContent = `Both meet at the start after ${lcm} seconds`;
+      document.getElementById("meet-line-2").textContent = `LCM of ${runnerLap1} and ${runnerLap2} is ${lcm}.`;
+      document.getElementById("meet-line-3").textContent = `Runner 1 completed ${count1} laps. Runner 2 completed ${count2} laps`;
       document.getElementById("meeting-time").style.display = "block";
     }
   }, 1000 / fps);
@@ -298,7 +300,7 @@ function resetWidget() {
 
   const tSnaps = [200, 306, 413, 519, 625, 732, 838];
   const rSnaps = [201, 307, 414, 520, 626, 733, 839];
-  const hSnaps = [202, 308, 415, 521, 627, 734, 840];
+  const hSnaps = [202, 308, 415, 521, 627, 734];
 
   const setPos = (id, x, initialX) => {
     const el = document.getElementById(id);
@@ -448,10 +450,18 @@ function initSlider(sliderId, snaps, valueId, initialX, multiplier, unit, update
       }
     }
 
+    const maxIndex = snaps.length - 1;
+    nearestIndex = Math.min(nearestIndex, maxIndex);
     const snapX = snaps[nearestIndex];
     slider.setAttribute('transform', `translate(${snapX - initialX}, 0)`);
 
-    const value = nearestIndex * multiplier;
+    let value = nearestIndex * multiplier;
+    const maxValue = maxIndex * multiplier;
+    value = Math.min(value, maxValue);
+    if ((sliderId === 'white-hare-slider' || sliderId === 'brown-hare-slider') && value > 5) {
+      value = 5;
+    }
+
     if (valueText) {
       valueText.textContent = `${value}${unit}`;
     }
@@ -571,7 +581,7 @@ window.addEventListener("load", () => {
   });
 
   // Snaps for Hare Tab (Tab 3)
-  const hareSnaps = [202, 308, 415, 521, 627, 734, 840];
+  const hareSnaps = [202, 308, 415, 521, 627, 734];
   initSlider("white-hare-slider", hareSnaps, "hare-jump-a", 205, 1, " feet/jump", (val) => {
     whiteJump = val;
   });
