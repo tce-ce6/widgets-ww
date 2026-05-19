@@ -433,13 +433,20 @@ function setupDragAndDrop() {
     const stage2Cards = document.querySelectorAll('[id^="Stage2-_Card_"]');
     const stage3Cards = document.querySelectorAll('[id^="Stage3-_Card_"]');
 
+    // Disable native touch gestures on the SVG so we can control drag manually
+    if (UI.svg) {
+        UI.svg.style.touchAction = 'none';
+    }
+
     // Any direct <g> child of these stages is considered a draggable card
     stage2Cards.forEach(container => {
         Array.from(container.children).forEach(child => {
             if (child.tagName === 'g') {
                 child.dataset.dragType = 'p';
                 child.style.cursor = 'grab';
+                child.style.touchAction = 'none';
                 child.addEventListener('pointerdown', startDrag);
+                child.addEventListener('touchstart', startDrag, { passive: false });
             }
         });
     });
@@ -449,7 +456,9 @@ function setupDragAndDrop() {
             if (child.tagName === 'g') {
                 child.dataset.dragType = 'f1';
                 child.style.cursor = 'grab';
+                child.style.touchAction = 'none';
                 child.addEventListener('pointerdown', startDrag);
+                child.addEventListener('touchstart', startDrag, { passive: false });
             }
         });
     });
@@ -457,6 +466,9 @@ function setupDragAndDrop() {
     UI.svg.addEventListener('pointermove', performDrag);
     UI.svg.addEventListener('pointerup', endDrag);
     UI.svg.addEventListener('pointerleave', endDrag);
+    UI.svg.addEventListener('touchmove', performDrag, { passive: false });
+    UI.svg.addEventListener('touchend', endDrag);
+    UI.svg.addEventListener('touchcancel', endDrag);
 }
 
 function createGhost(element) {
@@ -489,15 +501,30 @@ function createGhost(element) {
     element.dataset.hasGhost = 'true';
 }
 
+function getEventPoint(evt) {
+    if (evt.touches && evt.touches.length) {
+        return {
+            clientX: evt.touches[0].clientX,
+            clientY: evt.touches[0].clientY
+        };
+    }
+    return {
+        clientX: evt.clientX,
+        clientY: evt.clientY
+    };
+}
+
 function getMousePosition(evt) {
+    const point = getEventPoint(evt);
     const CTM = UI.svg.getScreenCTM();
     return {
-        x: (evt.clientX - CTM.e) / CTM.a,
-        y: (evt.clientY - CTM.f) / CTM.d
+        x: (point.clientX - CTM.e) / CTM.a,
+        y: (point.clientY - CTM.f) / CTM.d
     };
 }
 
 function startDrag(evt) {
+    evt.preventDefault();
     // Ensure we are dragging the valid card group container
     let target = evt.target;
     while (target && typeof target.hasAttribute === 'function' && !target.hasAttribute('data-drag-type')) {

@@ -324,6 +324,11 @@ function setupEvents() {
         UI.svg.addEventListener('pointermove', onDragMove);
         UI.svg.addEventListener('pointerup', onDragEnd);
         UI.svg.addEventListener('pointerleave', onDragEnd);
+        // Prevent native touch gestures and add touch handlers for interactive panels
+        UI.svg.style.touchAction = 'none';
+        UI.svg.addEventListener('touchmove', onDragMove, { passive: false });
+        UI.svg.addEventListener('touchend', onDragEnd);
+        UI.svg.addEventListener('touchcancel', onDragEnd);
     }
 }
 
@@ -588,6 +593,7 @@ function _setupDraggables(container, roles, maxCount) {
     for (let i = 0; i < count; i++) {
         const el = children[i];
         el.style.cursor = 'grab';
+        el.style.touchAction = 'none';
         
         // Determine role dynamically for S2 parents
         let role = roles[Math.min(i, roles.length - 1)];
@@ -606,6 +612,9 @@ function _setupDraggables(container, roles, maxCount) {
         el.setAttribute('data-drag-picked', 'false');
         el.removeEventListener('pointerdown', onDragStart);
         el.addEventListener('pointerdown', onDragStart);
+        // Touch fallback for interactive panels
+        el.removeEventListener('touchstart', onDragStart);
+        el.addEventListener('touchstart', onDragStart, { passive: false });
         if (!WidgetState.originalTransforms.has(el)) {
             WidgetState.originalTransforms.set(el, el.getAttribute('transform') || '');
         }
@@ -624,8 +633,15 @@ function onDragStart(e) {
     el.style.cursor = 'grabbing';
     el.parentNode.appendChild(el);
 
+    // Normalize pointer/touch coordinates
+    const _getEventPoint = (ev) => {
+        if (ev.touches && ev.touches.length) return { clientX: ev.touches[0].clientX, clientY: ev.touches[0].clientY };
+        if (ev.changedTouches && ev.changedTouches.length) return { clientX: ev.changedTouches[0].clientX, clientY: ev.changedTouches[0].clientY };
+        return { clientX: ev.clientX, clientY: ev.clientY };
+    };
+    const evtPoint = _getEventPoint(e);
     const pt = UI.svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
+    pt.x = evtPoint.clientX; pt.y = evtPoint.clientY;
     const svgPt = pt.matrixTransform(el.parentNode.getCTM().inverse());
     WidgetState.dragStartSVG = { x: svgPt.x, y: svgPt.y };
 
@@ -644,8 +660,15 @@ function onDragStart(e) {
 function onDragMove(e) {
     const el = WidgetState.activeDrag;
     if (!el) return;
+    if (e.cancelable) e.preventDefault();
+    const _getEventPoint = (ev) => {
+        if (ev.touches && ev.touches.length) return { clientX: ev.touches[0].clientX, clientY: ev.touches[0].clientY };
+        if (ev.changedTouches && ev.changedTouches.length) return { clientX: ev.changedTouches[0].clientX, clientY: ev.changedTouches[0].clientY };
+        return { clientX: ev.clientX, clientY: ev.clientY };
+    };
+    const evtPoint = _getEventPoint(e);
     const pt = UI.svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
+    pt.x = evtPoint.clientX; pt.y = evtPoint.clientY;
     const svgPt = pt.matrixTransform(el.parentNode.getCTM().inverse());
     const dx = svgPt.x - WidgetState.dragStartSVG.x;
     const dy = svgPt.y - WidgetState.dragStartSVG.y;
