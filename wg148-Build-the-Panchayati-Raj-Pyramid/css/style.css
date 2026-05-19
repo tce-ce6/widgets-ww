@@ -146,7 +146,7 @@ svg * {
 }
 
 #idiom-wrapper .wdgetTitle h2 {
-  font-size: 23px;
+  font-size: 28px;
   font-weight: 600;
   text-align: left;
   padding: 5px 40px;
@@ -457,4 +457,4 @@ ellipse[id*="Ellipse_17-2"]:hover {
 .highlight-brick {
   filter: brightness(1.2) saturate(1.2);
 }
-
+
