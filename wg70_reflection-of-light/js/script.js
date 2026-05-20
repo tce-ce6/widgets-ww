@@ -20,7 +20,10 @@ const mediumBottomSelect = document.getElementById('medium-bottom');
 
 const btnDenseRare = document.getElementById('mode-dense-rare');
 const btnRareDense = document.getElementById('mode-rare-dense');
-
+n1Label.style.fontSize = '18px';
+n1Val.style.fontSize = '18px';
+n2Label.style.fontSize = '18px';
+n2Val.style.fontSize = '18px';
 const MEDIA = {
   air: {
     label: 'Air',
