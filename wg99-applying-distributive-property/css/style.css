@@ -37,13 +37,13 @@ body {
   display: inline-block;
   background: linear-gradient(135deg, #00a8ff, #2563eb);
   color: white;
-  padding: 8px 28px;
+  padding: 5px 30px;
 
   /* 👇 Flat top, rounded bottom */
   border-radius: 0 0 20px 20px;
 
   font-weight: 700;
-  font-size: 22px;
+  font-size: 28px;
 
   /* 👇 Make it touch the ceiling */
   margin-top: 0;
