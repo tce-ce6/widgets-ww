@@ -45,6 +45,7 @@ body {
   box-sizing: border-box;
   padding-bottom: 20px;
   padding-left: 30px;
+  align-items: center;
   }
 
 /* PANELS */
@@ -58,8 +59,8 @@ body {
 .left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  /* justify-content: space-between; */
+  /* height: 100%; */
   overflow: hidden; /* 🔥 removes scroll */
 }
 
@@ -100,11 +101,11 @@ body {
 }
 
 .symbol {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,11 +127,11 @@ body {
 
 #reactivity-list {
   overflow-y: auto;
-  max-height: calc(100% - 60px);
+  /* max-height: calc(100% - 60px); */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 1;
+  /* flex: 1; */
 
 }
 
@@ -239,11 +240,10 @@ body {
 .btn {
   padding: 10px 20px;
   left: 20%;  
-  
-  border-radius: 24px;
+  border-radius: 28px;
   border: none;
   margin: 5px;
-  font-size: 22px;
+  font-size: 28px;
   color: #FFFFFF;
   cursor: pointer;
 }
@@ -376,7 +376,7 @@ body {
     0 0 20px rgba(168,85,247,0.2),
     inset 0 0 20px rgba(168,85,247,0.08);
     width: 100%;
-  height: 290px;        /* 🔥 fixed height */
+  height: 320px;        /* 🔥 fixed height */
   display: flex;
   flex-direction: column;
 }
@@ -425,7 +425,7 @@ body {
 
   border: 1px solid rgba(19, 80, 203, 0.6);
   background: rgba(19, 80, 203, 0.08);
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -649,7 +649,7 @@ body {
   gap: 10px;
   padding: 4px 6px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 16px;
   transition: all 0.25s ease;
 }
 
@@ -713,6 +713,7 @@ background: var(--series-color);
   padding: 14px;
   border: 1px solid rgba(59,130,246,0.4);
   padding-bottom: 5px;
+  height: fit-content;
 }
 
 /* POPUP BASE */

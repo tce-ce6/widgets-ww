@@ -482,6 +482,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
  // Animation for Layer_4 (Metal Ions) and Layer_5 (Solution Ions)
     let ionAnimationIds = [];
+
+    function getLoopElapsed(startTime, cycleDuration) {
+        const rawElapsed = Date.now() - startTime;
+        if (rawElapsed < 0) return 0;
+        return rawElapsed % cycleDuration;
+    }
     
     function animateIons(play) {
         if (play) {
@@ -494,8 +500,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const cations = Array.from(Layer4.children);
                 
                 // Find which metal bar is currently active to use as target
-                // IDs match the barId from your metals array context
-                const metalBarIds = ["copper", "zink", "tin", "silver", "gold"]; 
+                // IDs match the barId from the metals array, including the existing "nikel" SVG id.
+                const metalBarIds = metals.map(metal => metal.barId); 
                 let activeBar = document.getElementById("Group_611"); // Fallback: default Cathode group
                 
                 for (let barId of metalBarIds) {
@@ -548,7 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     function animateCation() {
                         if (!electrolysisStarted) return; // Obey global state
-                        const elapsed = (Date.now() - startTime) % cycleDuration;
+                        const elapsed = getLoopElapsed(startTime, cycleDuration);
                         
                         if (elapsed < movePhase) {
                             // Moving continuously towards the cathode
@@ -604,7 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     function animateAnion() {
                         if (!electrolysisStarted) return;
                         
-                        const elapsed = (Date.now() - startTime) % cycleDuration;
+                        const elapsed = getLoopElapsed(startTime, cycleDuration);
 
                         if (elapsed < movePhase) {
                             const progress = elapsed / movePhase;
