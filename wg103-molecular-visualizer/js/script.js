@@ -97,6 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeInsightBtn = document.getElementById("Group_579");
   const scr01feedback_panel = document.getElementById("scr01-feedback_panel");
   const scr02elements = document.getElementById("scr02-elements");
+  const svgContainer = document.getElementById("svg-container");
+  const mainSvg = svgContainer ? svgContainer.querySelector("svg") : null;
 
   // Groups for Screen management
   const scr01Panels = [
@@ -161,39 +163,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let wrong_prediction = document.getElementById("wrong_prediction");
   if (wrong_prediction) {
-    wrong_prediction.style.display = "block";
+    wrong_prediction.style.display = "flex";
+    if (mainSvg) mainSvg.style.pointerEvents = "none";
     return;
   }
 
-  // Centered wrong-prediction overlay
+  // Full-screen wrong-prediction overlay blocks clicks behind the popup.
   const wrongOverlay = document.createElement("div");
   wrongOverlay.id = "wrong_prediction";
   wrongOverlay.style.cssText = [
-    "position:absolute",
-    "top:50%",
-    "left:40%",
-    "transform:translate(-50%,-50%)",
-    "background:rgba(200,40,40,0.92)",
+    "position:fixed",
+    "inset:0",
+    "background:rgba(0,0,0,0.25)",
     "color:#fff",
-    "padding:28px 48px",
-    "border-radius:16px",
+    "align-items:center",
+    "justify-content:center",
     "text-align:center",
-    "pointer-events:none",
+    "pointer-events:auto",
     "z-index:9999",
     "display:none",
     "font-family:Roboto,sans-serif",
   ].join(";");
   wrongOverlay.innerHTML =
+    '<div style="background:rgba(200,40,40,0.92);padding:28px 48px;border-radius:16px;">' +
     '<div style="font-size:28px;font-weight:700;margin-bottom:8px">Wrong Prediction!</div>' +
-    '<div style="font-size:22px">Try Again</div>';
-  document.getElementById("svg-container").style.position = "relative";
-  document.getElementById("svg-container").appendChild(wrongOverlay);
+    '<div id="try-again-btn" style="font-size:22px ;font-size: 22px;background-color: rgb(255, 182, 58);display: inline-block;padding: 10px 20px;border-radius: 10px;cursor: pointer;">Try Again</div>' +
+    "</div>";
+  svgContainer.style.position = "relative";
+  svgContainer.appendChild(wrongOverlay);
   let wrongOverlayTimer = null;
+
+  function isWrongPredictionVisible() {
+    return wrongOverlay.style.display !== "none";
+  }
 
   function showWrongPredictionOverlay() {
     if (wrongOverlayTimer) clearTimeout(wrongOverlayTimer);
-    wrongOverlay.style.display = "block";
+    wrongOverlay.style.display = "flex";
+    if (mainSvg) mainSvg.style.pointerEvents = "none";
     scr02elements.style.display = "none";
+  }
+
+  function resetPredictionOnly() {
+    predH = 0;
+    predO = 0;
+    isPredictionLocked = false;
+    currentScreen = 1;
+    if (insightPanel) insightPanel.style.display = "none";
+    wrongOverlay.style.display = "none";
+    if (mainSvg) mainSvg.style.pointerEvents = "";
+    updateUI();
+  }
+
+  const tryAgainBtn = document.getElementById("try-again-btn");
+  wrongOverlay.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+  if (tryAgainBtn) {
+    tryAgainBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      resetPredictionOnly();
+    });
   }
 
   function updateUI() {
@@ -309,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (molPlusBtn) {
     molPlusBtn.style.cursor = "pointer";
     molPlusBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (moleculeCount < 15) {
         moleculeCount++;
         updateUI();
@@ -319,6 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (molMinusBtn) {
     molMinusBtn.style.cursor = "pointer";
     molMinusBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (moleculeCount > 1) {
         moleculeCount--;
         updateUI();
@@ -330,6 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
   sourceBtnElements.btns.forEach((btn, i) => {
     if (btn) {
       btn.addEventListener("click", () => {
+        if (isWrongPredictionVisible()) return;
         currentSource = substances[currentSubstance].sources[i];
         updateUI();
       });
@@ -340,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (substanceDropdownBtn) {
     substanceDropdownBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+      if (isWrongPredictionVisible()) return;
       const isVisible = substanceDropdownList.style.display === "block";
       substanceDropdownList.style.display = isVisible ? "none" : "block";
     });
@@ -351,12 +385,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (substanceOptionWater) {
     substanceOptionWater.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       setSubstance("Water");
     });
   }
 
   if (substanceOptionAmmonia) {
     substanceOptionAmmonia.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       setSubstance("Ammonia");
     });
   }
@@ -379,6 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (predHUp) {
     predHUp.style.cursor = "pointer";
     predHUp.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (isPredictionLocked) return;
       predH++;
       updateUI();
@@ -387,6 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (predHDown) {
     predHDown.style.cursor = "pointer";
     predHDown.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (isPredictionLocked) return;
       if (predH > 0) predH--;
       updateUI();
@@ -395,6 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (predOUp) {
     predOUp.style.cursor = "pointer";
     predOUp.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (isPredictionLocked) return;
       predO++;
       updateUI();
@@ -403,6 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (predODown) {
     predODown.style.cursor = "pointer";
     predODown.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (isPredictionLocked) return;
       if (predO > 0) predO--;
       updateUI();
@@ -412,6 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (lockPredictionBtn) {
     lockPredictionBtn.style.cursor = "pointer";
     lockPredictionBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       isPredictionLocked = !isPredictionLocked;
       updateUI();
     });
@@ -421,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
     breakApartBtn.style.opacity = "0.5";
     breakApartBtn.style.cursor = "none";
     breakApartBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       // Validation: predict at least one atom
       if (predH === 0 && predO === 0) {
         showFeedback("Predict Before Breaking!", "");
@@ -439,6 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resetBtn) {
     resetBtn.style.cursor = "pointer";
     resetBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       moleculeCount = 1;
       setSubstance("Water");
       currentScreen = 1;
@@ -448,12 +491,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (wrong_prediction) {
         wrong_prediction.style.display = "none";
       }
+      if (mainSvg) mainSvg.style.pointerEvents = "";
     });
   }
 
   if (insightBtn) {
     insightBtn.style.cursor = "pointer";
     insightBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (insightPanel) insightPanel.style.display = "block";
     });
   }
@@ -461,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeInsightBtn) {
     closeInsightBtn.style.cursor = "pointer";
     closeInsightBtn.addEventListener("click", () => {
+      if (isWrongPredictionVisible()) return;
       if (insightPanel) insightPanel.style.display = "none";
     });
   }

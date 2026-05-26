@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const CONFIG = {
     baselineY: 880.5,
-    minY: 194.5,
     snapPx: 41.5,
     barWidth: 60,
     handlePadding: 40,
@@ -42,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gridSteps: 15,
     gridStepPx: 41.66
   };
+  CONFIG.minY = CONFIG.baselineY - CONFIG.gridSteps * CONFIG.gridStepPx;
 
   // Helper to hide feedback
   function hideFeedback() {

@@ -125,9 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Next Activity Button
   nextBtn.addEventListener("click", function () {
-    if (backdrop) backdrop.style.display = "none";
-    if (solutionWrapper) solutionWrapper.style.display = "none";
-    if (correctModal) correctModal.style.display = "none";
+    const globalResetBtn = document.getElementById("global-reset");
+    if (globalResetBtn) {
+      globalResetBtn.click();
+    }
 
     currentActivity++;
 

@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bottomControls = {
       'Button_Insite_': true,
-      'Group_1566': true,
+      'home-btn': isVisible,
       'Group_10': isVisible, // Show Answer
       'Group_11': isVisible  // New Set
     };
@@ -365,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Home button
-    const homeBtn = document.getElementById('Group_1566');
+    const homeBtn = document.getElementById('home-btn');
     if (homeBtn) {
       homeBtn.classList.add('cursor-pointer');
       homeBtn.addEventListener('click', () => showView('home'));

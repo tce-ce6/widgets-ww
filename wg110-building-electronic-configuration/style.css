@@ -168,9 +168,8 @@ width: 100%;
 
 /* BOX */
 .element-box {
-  width: 44px;       /* ↓ from ~70px */
-  height: 44px;
-
+  width: 50px;       /* ↓ from ~70px */
+  height: 50px;
   background: #1e3a8a;
   border-radius: 8px;  /* slightly tighter */
 
@@ -204,7 +203,7 @@ width: 100%;
   margin-top: 10px;
 }
 .symbol {
-  font-size: 17px;   /* ↓ from 18px */
+  font-size: 25px;   /* ↓ from 18px */
   font-weight: bold;
   color: #bfdbfe;
 }
@@ -442,15 +441,15 @@ width: 100%;
 
 .header{
 font-size: 28px;
-font-weight: 700;
-text-align: center;
-padding: 5px 5px;
-margin-left: 400px;
-color: #fff;
-border-radius: 0 0px 20px 20px;
-background: #05A6D6;
-white-space: nowrap;
-width: 470px;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 20px;
+    margin: 0 auto;
+    color: #fff;
+    border-radius: 0 0px 20px 20px;
+    background: #05A6D6;
+    white-space: nowrap;
+    width: fit-content;
 }
 
 .aufbau-card {
@@ -458,7 +457,7 @@ width: 470px;
   border-radius: 16px;
   padding: 12px;
   width: 170px;
-  height: 370px;
+  height: 380px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -474,7 +473,7 @@ width: 470px;
 }
 
 .aufbau-sub {
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   margin-bottom: 8px;
 }
@@ -513,7 +512,7 @@ width: 470px;
 .r { background:#fb7185; }
 
 .aufbau-note {
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 8px;
   text-align: center;
 }
@@ -580,9 +579,9 @@ width: 470px;
 .reset-btn {
   background: #ff2d5e;
   border-radius: 40px;
-  padding: 12px 0;
+  padding: 16px 0;
   width: 120px;
-  font-size: 20px;
+  font-size: 24px;
   right: 220px;
   bottom: 30px;
   font-weight: bold;
