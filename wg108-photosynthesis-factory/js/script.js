@@ -26,6 +26,11 @@ const warning1 = document.getElementById("warning-1");
 const stabilised = document.getElementById("stabilised");
 const slowLane = document.getElementById("slow-lane");
 const rateLimited = document.getElementById("rate-limited");
+const photosynthesisRateLine = document.getElementById("Path_1278");
+const defaultRateLinePath = photosynthesisRateLine?.getAttribute("d") || "";
+const zeroRateLinePath = "M1226.93,907.33h639.32";
+const co2ArrowImg = document.querySelector("#co2-arrow img");
+const o2ArrowImg = document.querySelector("#o2-arrow img");
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -262,7 +267,7 @@ function createOrGetLottie(containerId, animationPath, options = {}) {
     const player = lottie.loadAnimation({
         container,
         renderer: 'svg',
-        loop: true,
+        loop: options.loop ?? true,
         autoplay: false,
         path: animationPath,
         rendererSettings: {
@@ -310,6 +315,7 @@ function waitForAnimationToComplete(player, token) {
             resolve();
         };
 
+        player.loop = false;
         player.addEventListener('complete', onComplete);
         player.goToAndPlay(0, true);
     });
@@ -372,6 +378,23 @@ function updateFactoryControls() {
     setSliderDisabled('water', disableFactorySliders);
 }
 
+function updateGasArrowImages() {
+    const nightMode = !isDaytime();
+
+    if (co2ArrowImg) {
+        co2ArrowImg.src = nightMode ? "assets/images/co2-out.svg" : "assets/images/co2-in.svg";
+    }
+    if (o2ArrowImg) {
+        o2ArrowImg.src = nightMode ? "assets/images/o2-in.svg" : "assets/images/o2-out.svg";
+    }
+}
+
+function updateRateGraph() {
+    if (!photosynthesisRateLine) return;
+
+    photosynthesisRateLine.setAttribute("d", isDaytime() ? defaultRateLinePath : zeroRateLinePath);
+}
+
 function resetAnimationState() {
     animationSequenceToken += 1;
 
@@ -405,10 +428,12 @@ async function runNightAnimationSequence(token) {
 
     setContainerVisible('night-photosynthesis-lottie', true);
     setContainerVisible('night-stomata-lottie', true);
-    await Promise.all([
-        waitForAnimationToComplete(nightPhotosynthesisPlayer, token),
-        waitForAnimationToComplete(nightStomataPlayer, token)
-    ]);
+
+    [nightPhotosynthesisPlayer, nightStomataPlayer].forEach((player) => {
+        if (!player || token !== animationSequenceToken) return;
+        player.loop = true;
+        player.goToAndPlay(0, true);
+    });
 }
 
 async function runCurrentAnimationSequence(token) {
@@ -543,6 +568,8 @@ function updateStatusPanel() {
 function evaluateAnimationConditions() {
     updateFactoryControls();
     updateDaySpecificVisuals();
+    updateGasArrowImages();
+    updateRateGraph();
     updateStatusPanel();
     resetAnimationState();
     updatePlantByLight();
