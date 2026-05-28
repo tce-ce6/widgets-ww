@@ -463,3 +463,67 @@ svg * {
   height: 600px;
   margin-top: 20px;
 }
+
+#idiom-wrapper .angle-numpad {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: none;
+  grid-template-columns: repeat(3, 64px);
+  gap: 10px;
+  padding: 14px;
+  padding-top: 42px;
+  background: #ffffff;
+  border: 4px solid #005e44;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+#idiom-wrapper .angle-numpad-handle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  color:#005e44;
+  display: grid;
+  grid-template-columns: repeat(2, 5px);
+  grid-template-rows: repeat(2, 5px);
+  place-content: center;
+  gap: 4px;
+  cursor: move;
+  padding: 0;
+}
+
+#idiom-wrapper .angle-numpad-handle span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: grey;
+  pointer-events: none;
+      transform: translate(-20px, -20px);
+}
+
+#idiom-wrapper .angle-numpad button {
+  width: 64px;
+  height: 54px;
+  border: 2px solid #005e44;
+  border-radius: 6px;
+  background: #f4f6cf;
+  color: #222;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#idiom-wrapper .angle-numpad button:active {
+  transform: translateY(1px);
+}
+
+#idiom-wrapper .angle-numpad .wide {
+  grid-column: span 2;
+  width: 138px;
+}

@@ -132,6 +132,92 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let feedbackAnims = {};
     let pieChartAbortController = null;
+    let activeAngleCategory = null;
+
+    function getOrCreateNumpad() {
+        let numpad = document.getElementById('angle-numpad');
+        if (numpad) return numpad;
+
+        numpad = document.createElement('div');
+        numpad.id = 'angle-numpad';
+        numpad.className = 'angle-numpad';
+        numpad.innerHTML = `
+            <button type="button" class="angle-numpad-handle" style="cursor: move;border:none;background: none;" aria-label="Drag number pad">
+                <span></span><span></span><span></span><span></span>
+            </button>
+            <button type="button" data-key="1">1</button>
+            <button type="button" data-key="2">2</button>
+            <button type="button" data-key="3">3</button>
+            <button type="button" data-key="4">4</button>
+            <button type="button" data-key="5">5</button>
+            <button type="button" data-key="6">6</button>
+            <button type="button" data-key="7">7</button>
+            <button type="button" data-key="8">8</button>
+            <button type="button" data-key="9">9</button>
+            <button type="button" data-key="clear">C</button>
+            <button type="button" data-key="0">0</button>
+            <button type="button" data-key="back">Del</button>
+            <button type="button" class="wide" data-key="done">Done</button>
+        `;
+        document.body.appendChild(numpad);
+        makeNumpadDraggable(numpad);
+        return numpad;
+    }
+
+    function setNumpadVisible(show) {
+        const numpad = getOrCreateNumpad();
+        numpad.style.display = show ? 'grid' : 'none';
+    }
+
+    function closeNumpad() {
+        activeAngleCategory = null;
+        setNumpadVisible(false);
+    }
+
+    function makeNumpadDraggable(numpad) {
+        const handle = numpad.querySelector('.angle-numpad-handle');
+        if (!handle) return;
+
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        let isDragging = false;
+
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+        const startDrag = (event) => {
+            const point = event.touches ? event.touches[0] : event;
+            const rect = numpad.getBoundingClientRect();
+            isDragging = true;
+            dragOffsetX = point.clientX - rect.left;
+            dragOffsetY = point.clientY - rect.top;
+            numpad.style.transform = 'none';
+            event.preventDefault();
+        };
+
+        const moveDrag = (event) => {
+            if (!isDragging) return;
+            const point = event.touches ? event.touches[0] : event;
+            const maxLeft = window.innerWidth - numpad.offsetWidth;
+            const maxTop = window.innerHeight - numpad.offsetHeight;
+            const nextLeft = clamp(point.clientX - dragOffsetX, 0, maxLeft);
+            const nextTop = clamp(point.clientY - dragOffsetY, 0, maxTop);
+            numpad.style.left = `${nextLeft}px`;
+            numpad.style.top = `${nextTop}px`;
+            numpad.style.right = 'auto';
+            event.preventDefault();
+        };
+
+        const endDrag = () => {
+            isDragging = false;
+        };
+
+        handle.addEventListener('mousedown', startDrag);
+        handle.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('mousemove', moveDrag);
+        window.addEventListener('touchmove', moveDrag, { passive: false });
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('touchend', endDrag);
+    }
 
     function initFeedbackAnims() {
         const correctContainer = document.getElementById('lottie-correct');
@@ -164,13 +250,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const gameElements = [
             "Base_panel", "Data_table", "Pie-Chart_Angle_UI", "Pie-Chart_Angle_selector",
             "Angle_selection_UI", "Pie_Chart-Lables", "I-Text-Arrow", "BTNs-Global",
-            "Question-TOS", "Activity_Title", "custom-popup-fo", "dynamic-sectors", "answer_popup"
+            "Question-TOS", "Activity_Title", "custom-popup-fo", "dynamic-sectors", "answer_popup", "answer-popup-backdrop"
         ];
 
         gameElements.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = "none";
         });
+        activeAngleCategory = null;
+        setNumpadVisible(false);
         const navElements = ["Group_1531", "Group_1643"];
         navElements.forEach(id => {
             const el = document.getElementById(id);
@@ -407,6 +495,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isSolution) {
             const answerPopup = document.getElementById('answer_popup');
             if (!answerPopup) return;
+            const answerBackdrop = document.getElementById('answer-popup-backdrop');
+            closeNumpad();
 
             const sectorsContainer = document.getElementById('answer-popup-sectors');
             if (sectorsContainer) sectorsContainer.innerHTML = '';
@@ -494,6 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 closeBtn.parentNode.replaceChild(newClose, closeBtn);
                 newClose.addEventListener('click', () => {
                     answerPopup.style.display = 'none';
+                    if (answerBackdrop) answerBackdrop.style.display = 'none';
                     // Re-enable buttons, restoring disabled state based on fill status
                     const allFilled = currentPieCategories.every(cat => cat.inputEl && cat.inputEl.value.trim() !== "");
                     overlayBtns.forEach(id => {
@@ -507,6 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
+            if (answerBackdrop) answerBackdrop.style.display = 'block';
             answerPopup.style.display = 'block';
 
             // Update the amount label dynamically
@@ -544,8 +636,6 @@ document.addEventListener("DOMContentLoaded", () => {
             pieChartAbortController.abort();
         }
         pieChartAbortController = new AbortController();
-        const signal = pieChartAbortController.signal;
-
         const selector = document.getElementById('Pie-Chart_Angle_selector');
         let dynamicSectors = document.getElementById('dynamic-sectors');
         if (!dynamicSectors && selector) {
@@ -583,13 +673,49 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         };
 
-        const getBaseAngle = (catIdx) => {
-            let sum = 0;
-            for (let i = 0; i < catIdx; i++) {
-                sum += (currentPieCategories[i].inputAngle || 0);
-            }
-            return sum;
+        const applyAngleInput = (cat, rawValue) => {
+            let val = Math.round(parseFloat(rawValue) || 0);
+            if (val < 0) val = 0;
+
+            const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
+            let otherSum = 0;
+            currentPieCategories.forEach((c, idx) => { if (idx !== catIdx) otherSum += (c.inputAngle || 0); });
+            const maxAllowed = Math.max(0, 360 - otherSum);
+
+            if (val > maxAllowed) val = maxAllowed;
+            cat.inputAngle = val;
+            if (cat.inputEl) cat.inputEl.value = String(val);
+            redrawLivePie();
+            updateSubmitResetState();
         };
+
+        const writeActiveAngleDigit = (key) => {
+            if (!activeAngleCategory || activeAngleCategory.plotted) return;
+            const input = activeAngleCategory.inputEl;
+            if (!input) return;
+
+            if (key === 'done') {
+                setNumpadVisible(false);
+                input.blur();
+                return;
+            }
+
+            let nextValue = input.value === '0' ? '' : input.value;
+            if (/^\d$/.test(key)) {
+                nextValue = `${nextValue}${key}`.slice(0, 3);
+            } else if (key === 'back') {
+                nextValue = nextValue.slice(0, -1);
+            } else if (key === 'clear') {
+                nextValue = '';
+            }
+
+            applyAngleInput(activeAngleCategory, nextValue || '0');
+        };
+
+        const numpad = getOrCreateNumpad();
+        numpad.querySelectorAll('button[data-key]').forEach(button => {
+            button.onclick = () => writeActiveAngleDigit(button.dataset.key);
+        });
 
         const redrawLivePie = () => {
             if (dynamicSectors) {
@@ -653,6 +779,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const resetChart = () => {
             currentCumulativeAngle = 0;
+            closeNumpad();
             currentPieCategories.forEach(cat => {
                 cat.plotted = false; cat.inputAngle = 0;
                 if (cat.inputEl) cat.inputEl.value = '0';
@@ -701,6 +828,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 redrawLivePie();
                 updateSubmitResetState();
+                if (activeAngleCategory === cat) {
+                    closeNumpad();
+                }
             };
 
             const parentGroup = document.getElementById(cat.rectGroupId);
@@ -719,17 +849,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     container.style.justifyContent = 'center'; container.style.width = '100%'; container.style.height = '100%';
 
                     const input = document.createElement('input');
-                    input.type = 'number'; input.value = '0';
+                    input.type = 'text'; input.value = '0';
+                    input.readOnly = true;
+                    input.inputMode = 'none';
                     input.style.width = '60px'; input.style.height = '100%';
                     input.style.border = 'none'; input.style.background = 'transparent';
                     input.style.textAlign = 'center'; input.style.fontFamily = 'Roboto';
                     input.style.fontSize = '28px'; input.style.fontWeight = '500';
                     input.style.color = '#424242'; input.style.outline = 'none';
                     input.style.padding = '0'; input.style.margin = '0';
-                    input.min = '0'; input.max = '360';
+                    input.style.cursor = 'pointer';
                     
                     const degreeSymbol = document.createElement('span');
-                    degreeSymbol.textContent = '0';
+                    degreeSymbol.textContent = '\u00B0';
                     degreeSymbol.style.fontSize = '14px'; degreeSymbol.style.fontWeight = '600';
                     degreeSymbol.style.color = '#424242';
                     degreeSymbol.style.alignSelf = 'center';
@@ -741,23 +873,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     cat.inputEl = input;
                     cat.inputAngle = 0;
 
-                    input.addEventListener('input', () => {
-                        let val = Math.round(parseFloat(input.value) || 0);
-                        if (val < 0) { val = 0; input.value = 0; }
-                        
-                        const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
-                        let otherSum = 0;
-                        currentPieCategories.forEach((c, idx) => { if (idx !== catIdx) otherSum += (c.inputAngle || 0); });
-                        let maxAllowed = 360 - otherSum;
-                        
-                        if (val > maxAllowed) { val = maxAllowed; input.value = maxAllowed; }
-                        
-                        cat.inputAngle = val;
-                        redrawLivePie();
-                        updateSubmitResetState();
+                    const activateInput = () => {
+                        if (cat.plotted) return;
+                        activeAngleCategory = cat;
+                        setNumpadVisible(true);
+                    };
+
+                    input.addEventListener('focus', activateInput);
+                    input.addEventListener('click', activateInput);
+                    container.addEventListener('click', activateInput);
+                    input.addEventListener('keydown', (e) => {
+                        e.preventDefault();
+                        if (e.key === 'Enter') plotSegment();
                     });
-                    input.addEventListener('input', updateSubmitResetState);
-                    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') plotSegment(); });
                 }
             }
 
@@ -767,77 +895,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(newBtn, btn);
 
-                let isDragging = false;
-                let hasMoved = false;
-
-                const handleMove = (e) => {
-                    if (!isDragging) return;
-                    hasMoved = true;
-                    e.preventDefault();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    
-                    const svg = newBtn.ownerSVGElement;
-                    const pt = svg.createSVGPoint();
-                    pt.x = clientX; pt.y = clientY;
-                    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
-                    
-                    const dx = svgPt.x - cat.cx;
-                    const dy = svgPt.y - cat.cy;
-                    let ptAngle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-                    if (ptAngle < 0) ptAngle += 360;
-                    ptAngle = Math.round(ptAngle);
-                    if (ptAngle === 360) ptAngle = 0;
-                    
-                    const catIdx = currentPieCategories.findIndex(c => c.id === cat.id);
-                    const baseAngle = getBaseAngle(catIdx);
-                    
-                    let absoluteAngle = ptAngle;
-                    if (absoluteAngle < baseAngle && absoluteAngle < 90 && baseAngle > 270) {
-                         absoluteAngle += 360;
-                    }
-                    
-                    let relAngle = absoluteAngle - baseAngle;
-                    if (relAngle < 0) relAngle = 0; 
-                    
-                    let otherSum = 0;
-                    currentPieCategories.forEach((c, idx) => { if (idx !== catIdx) otherSum += (c.inputAngle || 0); });
-                    let maxAllowed = 360 - otherSum;
-                    if (relAngle > maxAllowed) relAngle = maxAllowed;
-                    
-                    cat.inputAngle = Math.round(relAngle);
-                    if (cat.inputEl) cat.inputEl.value = cat.inputAngle;
-                    
-                    redrawLivePie();
-                    updateSubmitResetState();
-                };
-
-                newBtn.addEventListener('mousedown', (e) => { 
-                    if(!cat.plotted) { 
-                        isDragging = true; 
-                        hasMoved = false; 
-                    } 
-                });
-                window.addEventListener('mousemove', handleMove, { signal });
-                window.addEventListener('mouseup', () => { 
-                    if (isDragging && hasMoved) plotSegment();
-                    isDragging = false; 
-                }, { signal });
-                
-                newBtn.addEventListener('touchstart', (e) => { 
-                    if(!cat.plotted) { 
-                        isDragging = true; 
-                        hasMoved = false; 
-                    } 
-                }, {passive: false});
-                window.addEventListener('touchmove', handleMove, { passive: false, signal });
-                window.addEventListener('touchend', () => { 
-                    if (isDragging && hasMoved) plotSegment();
-                    isDragging = false; 
-                }, { signal });
-
                 newBtn.addEventListener('click', (e) => {
-                    if (!hasMoved) plotSegment();
+                    e.preventDefault();
+                    closeNumpad();
+                    plotSegment();
                 });
             }
         });
@@ -848,6 +909,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const newSubmit = submitBtn.cloneNode(true);
             submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
             newSubmit.addEventListener('click', () => {
+                closeNumpad();
                 const allPlotted = currentPieCategories.every(cat => cat.plotted);
                 const allCorrect = currentPieCategories.every(cat => cat.inputAngle === cat.expectedAngle);
 
@@ -888,6 +950,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const newNext = nextBtnAction.cloneNode(true);
             nextBtnAction.parentNode.replaceChild(newNext, nextBtnAction);
             newNext.addEventListener('click', () => {
+                closeNumpad();
                 const currentIndex = gameKeys.indexOf(currentGameKey);
                 if (currentIndex < gameKeys.length - 1) {
                     loadGame(gameKeys[currentIndex + 1]);
@@ -900,6 +963,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const newPrev = prevBtnAction.cloneNode(true);
             prevBtnAction.parentNode.replaceChild(newPrev, prevBtnAction);
             newPrev.addEventListener('click', () => {
+                closeNumpad();
                 const currentIndex = gameKeys.indexOf(currentGameKey);
                 if (currentIndex > 0) {
                     loadGame(gameKeys[currentIndex - 1]);
@@ -922,7 +986,10 @@ document.addEventListener("DOMContentLoaded", () => {
             resetBtn.style.cursor = 'pointer';
             const newReset = resetBtn.cloneNode(true);
             resetBtn.parentNode.replaceChild(newReset, resetBtn);
-            newReset.addEventListener('click', resetChart);
+            newReset.addEventListener('click', () => {
+                closeNumpad();
+                resetChart();
+            });
         }
 
         const showAnswerBtn = document.getElementById('Group_1161');
@@ -930,7 +997,10 @@ document.addEventListener("DOMContentLoaded", () => {
             showAnswerBtn.style.cursor = 'pointer';
             const newShow = showAnswerBtn.cloneNode(true);
             showAnswerBtn.parentNode.replaceChild(newShow, showAnswerBtn);
-            newShow.addEventListener('click', () => createPopup('', true));
+            newShow.addEventListener('click', () => {
+                closeNumpad();
+                createPopup('', true);
+            });
         }
     }
     showHomeScreen();
