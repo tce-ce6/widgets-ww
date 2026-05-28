@@ -309,7 +309,7 @@
       "author": "tce-ashishg"
     },
     "wg73-pie-charts": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
+      "updatedAt": "2026-05-28T14:53:34+05:30",
       "author": "tce-ashishg"
     },
     "wg74-formal-letter-of-complaint": {
@@ -418,6 +418,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-05-28T14:53:34+05:30",
+      "author": "tce-ashishg",
+      "message": "changes done",
+      "widgets": [
+        73
+      ]
+    },
     {
       "date": "2026-05-26T12:56:00+05:30",
       "author": "tce-ashishg",
@@ -755,14 +763,6 @@
       "date": "2026-04-25T12:41:09+05:30",
       "author": "tce-ashishg",
       "message": "error resolved and UI fixed",
-      "widgets": [
-        23
-      ]
-    },
-    {
-      "date": "2026-04-25T00:12:37+05:30",
-      "author": "tce-ashishg",
-      "message": "wg23 completed",
       "widgets": [
         23
       ]
