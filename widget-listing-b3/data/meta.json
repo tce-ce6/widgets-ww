@@ -133,7 +133,7 @@
       "author": "tce-ashishg"
     },
     "wg135-museum-of-historical-sources": {
-      "updatedAt": "2026-05-29T15:58:22+05:30",
+      "updatedAt": "2026-05-29T17:36:06+05:30",
       "author": "tce-ashishg"
     },
     "wg136-compound-words-adventure": {
@@ -418,6 +418,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-05-29T17:36:06+05:30",
+      "author": "tce-ashishg",
+      "message": "batch2 and batch3 widgets added",
+      "widgets": [
+        135
+      ]
+    },
     {
       "date": "2026-05-29T15:58:22+05:30",
       "author": "tce-ashishg",
@@ -755,14 +763,6 @@
     },
     {
       "date": "2026-04-25T16:49:58+05:30",
-      "author": "tce-ashishg",
-      "message": "error resolved and UI fixed",
-      "widgets": [
-        23
-      ]
-    },
-    {
-      "date": "2026-04-25T13:01:13+05:30",
       "author": "tce-ashishg",
       "message": "error resolved and UI fixed",
       "widgets": [
