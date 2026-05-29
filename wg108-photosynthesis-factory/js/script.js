@@ -29,6 +29,7 @@ const rateLimited = document.getElementById("rate-limited");
 const photosynthesisRateLine = document.getElementById("Path_1278");
 const defaultRateLinePath = photosynthesisRateLine?.getAttribute("d") || "";
 const zeroRateLinePath = "M1226.93,907.33h639.32";
+const middleRateLinePath = "M1226.93,822.33h158.67v16h120.37v-16h360.28";
 const co2ArrowImg = document.querySelector("#co2-arrow img");
 const o2ArrowImg = document.querySelector("#o2-arrow img");
 
@@ -392,7 +393,47 @@ function updateGasArrowImages() {
 function updateRateGraph() {
     if (!photosynthesisRateLine) return;
 
-    photosynthesisRateLine.setAttribute("d", isDaytime() ? defaultRateLinePath : zeroRateLinePath);
+    if (!isDaytime()) {
+        photosynthesisRateLine.setAttribute("d", zeroRateLinePath);
+        return;
+    }
+
+    // Graph falls to zero for:
+    // - CO2: 0.00% (state.co2 < 0.33)
+    // - Temp: 0° C, 50° C (state.temp < 0.25 || state.temp >= 0.75)
+    // - Water: No Water (state.water < 0.33)
+    const isZero = (state.co2 < 0.33) || (state.temp < 0.25 || state.temp >= 0.75) || (state.water < 0.33);
+
+    if (isZero) {
+        photosynthesisRateLine.setAttribute("d", zeroRateLinePath);
+        return;
+    }
+
+    // Graph is in the middle for:
+    // - Light: Low, Excessive (state.light < 0.33 || state.light >= 0.66)
+    const isMiddle = (state.light < 0.33 || state.light >= 0.66);
+
+    if (isMiddle) {
+        photosynthesisRateLine.setAttribute("d", middleRateLinePath);
+        return;
+    }
+
+    // Graph is at the peak at the top for:
+    // - Light: Optimal (0.33 <= state.light < 0.66)
+    // - CO2: 0.05%, 0.10% (state.co2 >= 0.33)
+    // - Temp: 25° C, 35° C (0.25 <= state.temp < 0.75)
+    // - Water: Moderate, Excessive (state.water >= 0.33)
+    const isPeak = (state.light >= 0.33 && state.light < 0.66) &&
+                   (state.co2 >= 0.33) &&
+                   (state.temp >= 0.25 && state.temp < 0.75) &&
+                   (state.water >= 0.33);
+
+    if (isPeak) {
+        photosynthesisRateLine.setAttribute("d", defaultRateLinePath);
+        return;
+    }
+
+    photosynthesisRateLine.setAttribute("d", defaultRateLinePath);
 }
 
 function resetAnimationState() {
