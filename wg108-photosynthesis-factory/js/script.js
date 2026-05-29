@@ -26,6 +26,12 @@ const warning1 = document.getElementById("warning-1");
 const stabilised = document.getElementById("stabilised");
 const slowLane = document.getElementById("slow-lane");
 const rateLimited = document.getElementById("rate-limited");
+const photosynthesisRateLine = document.getElementById("Path_1278");
+const defaultRateLinePath = photosynthesisRateLine?.getAttribute("d") || "";
+const zeroRateLinePath = "M1226.93,907.33h639.32";
+const middleRateLinePath = "M1226.93,822.33h158.67v16h120.37v-16h360.28";
+const co2ArrowImg = document.querySelector("#co2-arrow img");
+const o2ArrowImg = document.querySelector("#o2-arrow img");
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -262,7 +268,7 @@ function createOrGetLottie(containerId, animationPath, options = {}) {
     const player = lottie.loadAnimation({
         container,
         renderer: 'svg',
-        loop: true,
+        loop: options.loop ?? true,
         autoplay: false,
         path: animationPath,
         rendererSettings: {
@@ -310,6 +316,7 @@ function waitForAnimationToComplete(player, token) {
             resolve();
         };
 
+        player.loop = false;
         player.addEventListener('complete', onComplete);
         player.goToAndPlay(0, true);
     });
@@ -372,6 +379,63 @@ function updateFactoryControls() {
     setSliderDisabled('water', disableFactorySliders);
 }
 
+function updateGasArrowImages() {
+    const nightMode = !isDaytime();
+
+    if (co2ArrowImg) {
+        co2ArrowImg.src = nightMode ? "assets/images/co2-out.svg" : "assets/images/co2-in.svg";
+    }
+    if (o2ArrowImg) {
+        o2ArrowImg.src = nightMode ? "assets/images/o2-in.svg" : "assets/images/o2-out.svg";
+    }
+}
+
+function updateRateGraph() {
+    if (!photosynthesisRateLine) return;
+
+    if (!isDaytime()) {
+        photosynthesisRateLine.setAttribute("d", zeroRateLinePath);
+        return;
+    }
+
+    // Graph falls to zero for:
+    // - CO2: 0.00% (state.co2 < 0.33)
+    // - Temp: 0° C, 50° C (state.temp < 0.25 || state.temp >= 0.75)
+    // - Water: No Water (state.water < 0.33)
+    const isZero = (state.co2 < 0.33) || (state.temp < 0.25 || state.temp >= 0.75) || (state.water < 0.33);
+
+    if (isZero) {
+        photosynthesisRateLine.setAttribute("d", zeroRateLinePath);
+        return;
+    }
+
+    // Graph is in the middle for:
+    // - Light: Low, Excessive (state.light < 0.33 || state.light >= 0.66)
+    const isMiddle = (state.light < 0.33 || state.light >= 0.66);
+
+    if (isMiddle) {
+        photosynthesisRateLine.setAttribute("d", middleRateLinePath);
+        return;
+    }
+
+    // Graph is at the peak at the top for:
+    // - Light: Optimal (0.33 <= state.light < 0.66)
+    // - CO2: 0.05%, 0.10% (state.co2 >= 0.33)
+    // - Temp: 25° C, 35° C (0.25 <= state.temp < 0.75)
+    // - Water: Moderate, Excessive (state.water >= 0.33)
+    const isPeak = (state.light >= 0.33 && state.light < 0.66) &&
+                   (state.co2 >= 0.33) &&
+                   (state.temp >= 0.25 && state.temp < 0.75) &&
+                   (state.water >= 0.33);
+
+    if (isPeak) {
+        photosynthesisRateLine.setAttribute("d", defaultRateLinePath);
+        return;
+    }
+
+    photosynthesisRateLine.setAttribute("d", defaultRateLinePath);
+}
+
 function resetAnimationState() {
     animationSequenceToken += 1;
 
@@ -405,10 +469,12 @@ async function runNightAnimationSequence(token) {
 
     setContainerVisible('night-photosynthesis-lottie', true);
     setContainerVisible('night-stomata-lottie', true);
-    await Promise.all([
-        waitForAnimationToComplete(nightPhotosynthesisPlayer, token),
-        waitForAnimationToComplete(nightStomataPlayer, token)
-    ]);
+
+    [nightPhotosynthesisPlayer, nightStomataPlayer].forEach((player) => {
+        if (!player || token !== animationSequenceToken) return;
+        player.loop = true;
+        player.goToAndPlay(0, true);
+    });
 }
 
 async function runCurrentAnimationSequence(token) {
@@ -543,6 +609,8 @@ function updateStatusPanel() {
 function evaluateAnimationConditions() {
     updateFactoryControls();
     updateDaySpecificVisuals();
+    updateGasArrowImages();
+    updateRateGraph();
     updateStatusPanel();
     resetAnimationState();
     updatePlantByLight();

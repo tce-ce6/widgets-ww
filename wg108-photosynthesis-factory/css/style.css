@@ -383,6 +383,17 @@ svg * {
   }
 }
 
+#Path_1278 {
+  stroke-dasharray: 36 18;
+  animation: photosynthesis-rate-flow 1.1s linear infinite;
+}
+
+@keyframes photosynthesis-rate-flow {
+  to {
+    stroke-dashoffset: -54;
+  }
+}
+
 #reset-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
