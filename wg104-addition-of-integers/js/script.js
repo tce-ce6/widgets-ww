@@ -30,6 +30,8 @@ class StateManager {
     this.activeInput = "a";
     this.isAnswerBoxFocused = false;
     this.customProblemString = "";
+    this.isAnswerShown = false;
+    this.isSolved = false;
   }
 
   setMode(mode) {
@@ -49,6 +51,8 @@ class StateManager {
       this.mode === MODES.NUMBER_LINE,
     );
     this.userAnswer = "";
+    this.isAnswerShown = false;
+    this.isSolved = false;
     this.addedChips = [];
     return this.currentProblem;
   }
@@ -88,8 +92,12 @@ class UIManager {
     this.newProblemBtn = document.getElementById("new-problem-btn");
     this.submitBtn = document.getElementById("submit-btn");
     this.showAnswerBtn = document.getElementById("show-answer-btn");
+    this.showAnswerText = document.querySelector("#Show_Answer_Text text");
     this.hintBtn = document.getElementById("hint-btn");
     this.playgroundBtn = document.getElementById("playground-mode-btn");
+    this.playgroundText = document.querySelector(
+      "#Playground_Mode_Text tspan",
+    );
     this.customProblemBtn = document.getElementById("custom-problem-btn");
     this.startBtn =
       document.getElementById("start") || document.getElementById("click-btn");
@@ -213,62 +221,70 @@ class UIManager {
 
   attachEventListeners() {
     this.chipMethodBtn.addEventListener("click", () => {
-      this.state.isPlayground = false;
-      this.state.setMode(MODES.CHIP);
-      this.updateUI();
+      if (this.state.isSolved) return;
+      this.resetForMode(MODES.CHIP);
     });
 
     this.chipMethodText.addEventListener("click", () => {
-      this.state.isPlayground = false;
-      this.state.setMode(MODES.CHIP);
-      this.updateUI();
+      if (this.state.isSolved) return;
+      this.resetForMode(MODES.CHIP);
     });
 
     this.numberLineBtn.addEventListener("click", () => {
-      this.state.isPlayground = false;
-      this.state.setMode(MODES.NUMBER_LINE);
-      this.updateUI();
+      if (this.state.isSolved) return;
+      this.resetForMode(MODES.NUMBER_LINE);
     });
 
     this.numberLineText.addEventListener("click", () => {
-      this.state.isPlayground = false;
-      this.state.setMode(MODES.NUMBER_LINE);
-      this.updateUI();
+      if (this.state.isSolved) return;
+      this.resetForMode(MODES.NUMBER_LINE);
     });
 
     this.playgroundBtn.addEventListener("click", () => {
       this.state.isPlayground = !this.state.isPlayground; // Toggle mode
       this.state.setMode(MODES.CHIP);
       this.state.userAnswer = "";
+      this.state.isAnswerShown = false;
+      this.state.isSolved = false;
       this.clearChips();
+      if (!this.state.isPlayground) {
+        this.autoAddProblemChips();
+      }
       this.updateUI();
     });
 
     this.customProblemBtn.addEventListener("click", () => {
+      if (this.state.isSolved) return;
       this.showCustomProblemEntry();
     });
 
     this.newProblemBtn.addEventListener("click", () => {
       this.showAnswerBtn.style.cursor = 'pointer'
       this.showAnswerBtn.style.opacity = '1'
-      this.state.isPlayground = false;
       this.state.newProblem();
       this.clearChips();
-      this.autoAddProblemChips();
+      if (!this.state.isPlayground) {
+        this.autoAddProblemChips();
+      }
       this.clearNumberLine();
       this.updateUI();
     });
 
-    this.addPlusBtn.addEventListener("click", () =>
-      this.addChip(this.btn1Type || "plus", false, null, true),
-    );
-    this.addMinusBtn.addEventListener("click", () =>
-      this.addChip(this.btn2Type || "minus", false, null, false),
-    );
+    this.addPlusBtn.addEventListener("click", () => {
+      if (this.state.isSolved) return;
+      this.addChip(this.btn1Type || "plus", false, null, true);
+    });
+    this.addMinusBtn.addEventListener("click", () => {
+      if (this.state.isSolved) return;
+      this.addChip(this.btn2Type || "minus", false, null, false);
+    });
 
     const realStartBtn = document.getElementById("start");
     if (realStartBtn) {
-      realStartBtn.addEventListener("click", () => this.animateNumberLine());
+      realStartBtn.addEventListener("click", () => {
+        if (this.state.isSolved) return;
+        this.animateNumberLine();
+      });
     }
 
     // Keypad listeners
@@ -288,9 +304,9 @@ class UIManager {
         if (this.state.isEnteringCustomProblem) {
           this.finalizeCustomProblem();
         } else {
-          this.showAnswerBtn.style.opacity = '1'
-          this.showAnswerBtn.style.cursor = 'pointer'
-          this.checkAnswer();
+          this.state.isAnswerBoxFocused = false;
+          this.hideKeypad();
+          this.updateUI();
         }
       });
     }
@@ -308,6 +324,7 @@ class UIManager {
 
     if (this.answerPatch) {
       this.answerPatch.addEventListener("click", (e) => {
+        if (this.state.isSolved) return;
         e.stopPropagation();
         this.state.isAnswerBoxFocused = true;
         this.state.isEnteringCustomProblem = false;
@@ -320,6 +337,7 @@ class UIManager {
     // Global keyboard listener
     window.addEventListener("keydown", (e) => {
       if (this.state.isAnswerBoxFocused) {
+        if (this.state.isSolved) return;
         if ((e.key >= "0" && e.key <= "9") || e.key === "-") {
           this.handleKeypress(e.key);
         } else if (e.key === "Backspace") {
@@ -341,8 +359,14 @@ class UIManager {
       }
     });
 
-    this.showAnswerBtn.addEventListener("click", () => this.showAnswer());
-    this.hintBtn.addEventListener("click", () => this.showHint());
+    this.showAnswerBtn.addEventListener("click", () => {
+      if (this.state.isSolved) return;
+      this.showAnswer();
+    });
+    this.hintBtn.addEventListener("click", () => {
+      if (this.state.isSolved) return;
+      this.showHint();
+    });
 
     // Bind hint close button(s)
     const hintCloseBtn = document.getElementById("hint-close-btn");
@@ -389,10 +413,12 @@ class UIManager {
         el.addEventListener("click", () => {
           if (
             this.state.mode === MODES.NUMBER_LINE &&
-            !this.state.isAnimating
+            !this.state.isAnimating &&
+            !this.state.isSolved
           ) {
             const val = tickMapping[id];
             this.state.userAnswer = val.toString();
+            this.state.isAnswerShown = false;
             this.updateUI();
           }
         });
@@ -524,15 +550,39 @@ class UIManager {
   }
 
   showAnswer() {
+    if (this.state.isSolved) return;
+    if (this.state.isAnswerShown) {
+      this.hideAnswer();
+      return;
+    }
+
+    this.state.isAnswerShown = true;
     this.state.userAnswer = this.state.currentProblem.answer.toString();
     this.answerBox.textContent = this.state.userAnswer;
-    this.showAnswerBtn.style.cursor = 'none'
-    this.showAnswerBtn.style.opacity = '0.5'
     if (this.state.mode === MODES.CHIP) {
       this.autoAddProblemChips();
     } else {
       this.animateNumberLine();
     }
+    this.updateShowAnswerButton();
+    this.updateControlStates();
+  }
+
+  hideAnswer() {
+    this.state.isAnswerShown = false;
+    this.state.userAnswer = "";
+    this.answerBox.textContent = "";
+    if (this.state.mode === MODES.CHIP) {
+      this.clearChips();
+      if (!this.state.isPlayground) {
+        this.autoAddProblemChips();
+      }
+    } else {
+      this.clearNumberLine();
+      this.updateNumberLinePosition();
+    }
+    this.updateShowAnswerButton();
+    this.updateControlStates();
   }
 
   autoAddProblemChips() {
@@ -554,11 +604,16 @@ class UIManager {
   }
 
   checkAnswer() {
+    if (!this.canSubmitAnswer()) return;
+
     const isCorrect =
       parseInt(this.state.userAnswer) === this.state.currentProblem.answer;
     const tspan = this.chipInstruction.querySelector("tspan:last-child");
 
     if (isCorrect) {
+      this.state.isSolved = true;
+      this.state.isAnswerBoxFocused = false;
+      this.hideKeypad();
       // if (tspan)
       //   tspan.textContent =
       //     "Correct! The sum is the final count of chips or the final position.";
@@ -575,6 +630,10 @@ class UIManager {
     }
     // this.chipInstruction.setAttribute("display", "inline");
     this.playFeedbackAnimation(isCorrect);
+    this.updateUI();
+    if (isCorrect && this.state.mode === MODES.NUMBER_LINE) {
+      this.animateNumberLine();
+    }
 
     setTimeout(() => {
       if (this.answerBorder)
@@ -610,6 +669,25 @@ class UIManager {
   }
 
   // --- UI Methods ---
+
+  resetForMode(mode) {
+    this.state.isPlayground = false;
+    this.state.setMode(mode);
+    this.state.newProblem();
+    this.state.isEnteringCustomProblem = false;
+    this.state.isAnswerBoxFocused = false;
+    this.state.customProblemString = "";
+    if (this.keypadDisplayText) this.keypadDisplayText.textContent = "";
+
+    this.hideKeypad();
+    this.hideHint();
+    this.clearChips();
+    if (mode === MODES.CHIP) {
+      this.autoAddProblemChips();
+    }
+    this.clearNumberLine();
+    this.updateUI();
+  }
 
   showKeypad(isAnswerBox = false) {
     if (this.keypadGroup) this.keypadGroup.setAttribute("display", "inline");
@@ -654,6 +732,8 @@ class UIManager {
 
     this.state.currentProblem = { a, b, answer: a + b };
     this.state.isEnteringCustomProblem = false;
+    this.state.isAnswerShown = false;
+    this.state.isSolved = false;
     // this.state.isPlayground = false;
     this.clearChips();
     if (!this.state.isPlayground) {
@@ -699,6 +779,8 @@ class UIManager {
   }
 
   handleAnswerInput(key) {
+    this.state.isAnswerShown = false;
+    this.state.isSolved = false;
     if (key === "backspace") {
       this.state.userAnswer = this.state.userAnswer.slice(0, -1);
     } else {
@@ -709,6 +791,8 @@ class UIManager {
       }
     }
     this.answerBox.textContent = this.state.userAnswer;
+    this.updateShowAnswerButton();
+    this.updateControlStates();
   }
 
   updateQuestionText() {
@@ -725,9 +809,36 @@ class UIManager {
 
   // --- Chip Logic ---
 
+  getProblemChipCount(type) {
+    if (!this.state.currentProblem) return 0;
+    const { a, b } = this.state.currentProblem;
+    return [a, b].reduce((count, value) => {
+      const isMatch = type === "plus" ? value > 0 : value < 0;
+      return isMatch ? count + Math.abs(value) : count;
+    }, 0);
+  }
+
+  getPlaygroundChipLimit(type) {
+    return this.getProblemChipCount(type) + 2;
+  }
+
+  getAddedChipCount(type) {
+    return this.state.addedChips.filter((chip) => chip.type === type).length;
+  }
+
+  canAddPlaygroundChip(type) {
+    if (!this.state.isPlayground) return true;
+    return this.getAddedChipCount(type) < this.getPlaygroundChipLimit(type);
+  }
+
   addChip(type, isProblemChip = false, manualIndex = null, isTopBtn = true) {
     const template = type === "plus" ? this.plusTemplate : this.minusTemplate;
     if (!template) return;
+    if (!isProblemChip && !this.canAddPlaygroundChip(type)) {
+      this.updateControlStates();
+      return;
+    }
+
     const chip = template.cloneNode(true);
     chip.setAttribute("display", "inline");
     chip.style.cursor = "pointer";
@@ -786,6 +897,7 @@ class UIManager {
     this.state.addedChips.push({ type, element: wrapper, col });
     this.updatePairs();
     this.recenterChips();
+    this.updateControlStates();
   }
 
   updatePairs() {
@@ -894,6 +1006,7 @@ class UIManager {
           if (mIndex > -1) this.state.addedChips.splice(mIndex, 1);
           this.updatePairs();
           this.recenterChips();
+          this.updateControlStates();
         });
 
         g.appendChild(closeG);
@@ -960,6 +1073,7 @@ class UIManager {
     if (dustbin) dustbin.setAttribute("display", "none");
     this.updatePairs();
     this.recenterChips();
+    this.updateControlStates();
   }
 
   selectChip(element, type) {
@@ -1047,6 +1161,7 @@ class UIManager {
       );
       this.updatePairs();
       this.recenterChips();
+      this.updateControlStates();
     }, 500);
   }
 
@@ -1083,6 +1198,7 @@ class UIManager {
     this.state.addedChips = [];
     this.updatePairs();
     this.recenterChips();
+    this.updateControlStates();
   }
 
   updateUI() {
@@ -1147,10 +1263,18 @@ class UIManager {
     updateBtnVisual(this.addPlusBtn, this.btn1Type, true);
     updateBtnVisual(this.addMinusBtn, this.btn2Type, false);
 
-    this.playgroundBtn.setAttribute(
-      "display",
-      isChipMode && !isPlayground ? "inline" : "none",
-    );
+    this.playgroundBtn.setAttribute("display", isChipMode ? "inline" : "none");
+    if (this.playgroundText) {
+      this.playgroundText.textContent = isPlayground
+        ? "Playground Mode Off"
+        : "Playground Mode On";
+      const text = this.playgroundText.closest("text");
+      if (text) {
+        text.setAttribute("transform", "translate(961.75 850)");
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", isPlayground ? "28" : "28");
+      }
+    }
     const dustbin = document.getElementById("dustbin");
     if (dustbin)
       dustbin.setAttribute(
@@ -1212,6 +1336,8 @@ class UIManager {
     this.updateQuestionText();
 
     this.answerBox.textContent = this.state.userAnswer;
+    this.updateShowAnswerButton();
+    this.updateControlStates();
 
     if (this.answerBorder) {
       if (this.state.isAnswerBoxFocused) {
@@ -1236,6 +1362,77 @@ class UIManager {
       if (chipPath) chipPath.setAttribute("fill", "#9da2c1");
       if (numLinePath) numLinePath.setAttribute("fill", "#faa82c");
     }
+  }
+
+  canSubmitAnswer() {
+    const answer = this.state.userAnswer.trim();
+    return (
+      !this.state.isSolved &&
+      !this.state.isAnswerShown &&
+      answer !== "" &&
+      answer !== "-"
+    );
+  }
+
+  setControlDisabled(el, disabled) {
+    if (!el) return;
+    el.style.pointerEvents = disabled ? "none" : "auto";
+    el.style.opacity = disabled ? "0.5" : "1";
+    el.style.cursor = disabled ? "default" : "pointer";
+  }
+
+  updateControlStates() {
+    const isSolved = this.state.isSolved;
+
+    this.setControlDisabled(this.submitBtn, !this.canSubmitAnswer());
+    [
+      this.chipMethodBtn,
+      this.chipMethodText,
+      this.numberLineBtn,
+      this.numberLineText,
+      this.customProblemBtn,
+      this.showAnswerBtn,
+      this.hintBtn,
+      this.answerPatch,
+      this.startBtn,
+    ].forEach((control) => this.setControlDisabled(control, isSolved));
+
+    this.setControlDisabled(
+      this.addPlusBtn,
+      isSolved || !this.canAddPlaygroundChip(this.btn1Type || "plus"),
+    );
+    this.setControlDisabled(
+      this.addMinusBtn,
+      isSolved || !this.canAddPlaygroundChip(this.btn2Type || "minus"),
+    );
+
+    this.setControlDisabled(this.newProblemBtn, false);
+    this.setControlDisabled(this.playgroundBtn, false);
+
+    if (isSolved) {
+      this.hideKeypad();
+    }
+  }
+
+  updateShowAnswerButton() {
+    if (this.showAnswerBtn) {
+      this.showAnswerBtn.style.cursor = "pointer";
+      this.showAnswerBtn.style.opacity = "1";
+    }
+    if (!this.showAnswerText) return;
+
+    const label = this.state.isAnswerShown ? "Hide Answer" : "Show Answer";
+    this.showAnswerText.textContent = "";
+    const tspan = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "tspan",
+    );
+    tspan.setAttribute("x", "0");
+    tspan.setAttribute("y", "0");
+    tspan.textContent = label;
+    this.showAnswerText.appendChild(tspan);
+    this.showAnswerText.setAttribute("transform", "translate(960 990)");
+    this.showAnswerText.setAttribute("text-anchor", "middle");
   }
 }
 
