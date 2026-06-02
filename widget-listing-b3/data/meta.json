@@ -17,7 +17,7 @@
       "author": "tce-ashishg"
     },
     "wg104-addition-of-integers": {
-      "updatedAt": "2026-06-01T16:15:51+05:30",
+      "updatedAt": "2026-06-02T11:31:55+05:30",
       "author": "tce-ashishg"
     },
     "wg105-regulation-of-blood-glucose": {
@@ -419,6 +419,14 @@
   },
   "commits": [
     {
+      "date": "2026-06-02T11:31:55+05:30",
+      "author": "tce-ashishg",
+      "message": "numpad of wg104 corrected",
+      "widgets": [
+        104
+      ]
+    },
+    {
       "date": "2026-06-01T16:15:51+05:30",
       "author": "tce-ashishg",
       "message": "wg104 issue resolved",
@@ -755,14 +763,6 @@
     },
     {
       "date": "2026-04-29T11:16:18+05:30",
-      "author": "tce-ashishg",
-      "message": "lottie loading are done",
-      "widgets": [
-        108
-      ]
-    },
-    {
-      "date": "2026-04-28T18:53:02+05:30",
       "author": "tce-ashishg",
       "message": "lottie loading are done",
       "widgets": [
