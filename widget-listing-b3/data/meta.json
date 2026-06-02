@@ -133,7 +133,7 @@
       "author": "tce-ashishg"
     },
     "wg135-museum-of-historical-sources": {
-      "updatedAt": "2026-05-29T17:36:06+05:30",
+      "updatedAt": "2026-06-02T13:13:39+05:30",
       "author": "tce-ashishg"
     },
     "wg136-compound-words-adventure": {
@@ -418,6 +418,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-06-02T13:13:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg135 alignment issue resolved",
+      "widgets": [
+        135
+      ]
+    },
     {
       "date": "2026-06-02T11:31:55+05:30",
       "author": "tce-ashishg",
@@ -757,14 +765,6 @@
       "date": "2026-04-29T19:28:42+05:30",
       "author": "tce-ashishg",
       "message": "lottie added",
-      "widgets": [
-        108
-      ]
-    },
-    {
-      "date": "2026-04-29T11:16:18+05:30",
-      "author": "tce-ashishg",
-      "message": "lottie loading are done",
       "widgets": [
         108
       ]
