@@ -142,6 +142,7 @@ class UIManager {
       "+": document.getElementById("nubpad-plus"),
       "-": document.getElementById("nubpad-minus"),
       backspace: document.getElementById("nubpad-backspace"),
+      clear: document.getElementById("nubpad-clear"),
     };
 
     // Chip Layout Info
@@ -204,7 +205,7 @@ class UIManager {
     const parent = document.getElementById("answer-patch");
     if (!parent) return null;
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("transform", "translate(1083.5 285)");
+    text.setAttribute("transform", "translate(1090.5 285)");
     text.setAttribute("fill", "#000db9");
     text.setAttribute("font-family", "Roboto-Bold, Roboto");
     text.setAttribute("font-size", "45");
@@ -217,6 +218,23 @@ class UIManager {
     text.appendChild(tspan);
     parent.appendChild(text);
     return tspan;
+  }
+
+  adjustAnswerFontSize() {
+    if (!this.answerBox) return;
+    const textLength = this.state.userAnswer.length;
+    const textElement = this.answerBox.parentElement;
+    if (!textElement) return;
+
+    if (textLength > 4) {
+      const newFontSize = Math.max(18, Math.floor(190 / textLength));
+      textElement.setAttribute("font-size", newFontSize.toString());
+      const newY = 272 + Math.floor(newFontSize * 0.3);
+      textElement.setAttribute("transform", `translate(1090.5 ${newY})`);
+    } else {
+      textElement.setAttribute("font-size", "45");
+      textElement.setAttribute("transform", "translate(1090.5 285)");
+    }
   }
 
   attachEventListeners() {
@@ -268,6 +286,7 @@ class UIManager {
       }
       this.clearNumberLine();
       this.updateUI();
+      this.hideAnswer();
     });
 
     this.addPlusBtn.addEventListener("click", () => {
@@ -342,6 +361,8 @@ class UIManager {
           this.handleKeypress(e.key);
         } else if (e.key === "Backspace") {
           this.handleKeypress("backspace");
+        } else if (e.key.toLowerCase() === "c" || e.key === "Delete") {
+          this.handleKeypress("clear");
         } else if (e.key === "Enter") {
           this.checkAnswer();
         } else if (e.key === "Escape") {
@@ -559,6 +580,7 @@ class UIManager {
     this.state.isAnswerShown = true;
     this.state.userAnswer = this.state.currentProblem.answer.toString();
     this.answerBox.textContent = this.state.userAnswer;
+    this.adjustAnswerFontSize();
     if (this.state.mode === MODES.CHIP) {
       this.autoAddProblemChips();
     } else {
@@ -572,6 +594,7 @@ class UIManager {
     this.state.isAnswerShown = false;
     this.state.userAnswer = "";
     this.answerBox.textContent = "";
+    this.adjustAnswerFontSize();
     if (this.state.mode === MODES.CHIP) {
       this.clearChips();
       if (!this.state.isPlayground) {
@@ -741,6 +764,7 @@ class UIManager {
     }
     this.state.userAnswer = "";
     this.answerBox.textContent = this.state.userAnswer;
+    this.adjustAnswerFontSize();
     this.showAnswerBtn.style.opacity = '1'
     this.showAnswerBtn.style.cursor = 'pointer'
     this.clearNumberLine();
@@ -762,6 +786,8 @@ class UIManager {
         0,
         -1,
       );
+    } else if (key === "clear") {
+      this.state.customProblemString = "";
     } else {
       // Map nubpad keys to characters
       let char = "";
@@ -783,6 +809,8 @@ class UIManager {
     this.state.isSolved = false;
     if (key === "backspace") {
       this.state.userAnswer = this.state.userAnswer.slice(0, -1);
+    } else if (key === "clear") {
+      this.state.userAnswer = "";
     } else {
       if ((key === "+" || key === "-") && this.state.userAnswer === "") {
         this.state.userAnswer = key === "-" ? "-" : "";
@@ -791,6 +819,7 @@ class UIManager {
       }
     }
     this.answerBox.textContent = this.state.userAnswer;
+    this.adjustAnswerFontSize();
     this.updateShowAnswerButton();
     this.updateControlStates();
   }
@@ -1336,6 +1365,7 @@ class UIManager {
     this.updateQuestionText();
 
     this.answerBox.textContent = this.state.userAnswer;
+    this.adjustAnswerFontSize();
     this.updateShowAnswerButton();
     this.updateControlStates();
 
