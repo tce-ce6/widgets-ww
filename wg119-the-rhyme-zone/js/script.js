@@ -251,7 +251,7 @@ function assignDistractorData(item) {
     console.log(correctLeft, correctRight);
     card.dataset.word = word;
     card.dataset.correct = word.toLowerCase() === correctLeft ? 'true' : 'false';
-    const span = card.querySelector('text tspan');
+    const span = card.querySelector('.lottie-text span');
     if (span) {
       span.textContent = word;
     }
@@ -261,7 +261,7 @@ function assignDistractorData(item) {
     const word = shuffledD2[index] || '';
     card.dataset.word = word;
     card.dataset.correct = word.toLowerCase() === correctRight ? 'true' : 'false';
-    const span = card.querySelector('text tspan');
+    const span = card.querySelector('.lottie-text span');
     if (span) {
       span.textContent = word;
     }
@@ -272,41 +272,21 @@ function assignDistractorData(item) {
 }
 
 function addSelectionOverlay(card) {
-  removeSelectionOverlay(card);
-  const text = card.querySelector('text');
-  if (!text) {
-    return;
+  const span = card.querySelector('.lottie-text span');
+  if (span) {
+    span.classList.add('selected');
   }
-  const bbox = text.getBBox();
-  const paddingX = 16;
-  const paddingY = 10;
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const wrap = document.createElementNS(svgNS, 'g');
-  wrap.setAttribute('class', 'selection-overlay-group');
-  const textTransform = text.getAttribute('transform');
-  if (textTransform) {
-    wrap.setAttribute('transform', textTransform);
-  }
-  const overlay = document.createElementNS(svgNS, 'rect');
-  overlay.setAttribute('class', 'selection-overlay');
-  overlay.setAttribute('x', String(bbox.x - paddingX));
-  overlay.setAttribute('y', String(bbox.y - paddingY));
-  overlay.setAttribute('width', String(bbox.width + paddingX * 2));
-  overlay.setAttribute('height', String(bbox.height + paddingY * 2));
-  overlay.setAttribute('rx', '16');
-  overlay.setAttribute('fill', '#ffffff');
-  overlay.setAttribute('opacity', '0.95');
-  wrap.appendChild(overlay);
-  card.insertBefore(wrap, text);
 }
 
 function removeSelectionOverlay(card) {
-  card.querySelectorAll('.selection-overlay-group').forEach((el) => el.remove());
-  card.querySelectorAll('rect.selection-overlay').forEach((el) => el.remove());
+  const span = card.querySelector('.lottie-text span');
+  if (span) {
+    span.classList.remove('selected');
+  }
 }
 
 function setCardWordVisible(card, visible) {
-  const textEl = card.querySelector('text');
+  const textEl = card.querySelector('.object-text');
   if (textEl) {
     textEl.style.opacity = visible ? '' : '0';
   }
@@ -316,9 +296,9 @@ function resetCardStyle(card) {
   card.style.display = 'block';
   card.removeAttribute('transform');
   setCardWordVisible(card, true);
-  const textSpan = card.querySelector('text tspan');
+  const textSpan = card.querySelector('.lottie-text span');
   if (textSpan) {
-    textSpan.style.fill = '#ffffff';
+    textSpan.style.color = '#ffffff';
   }
   removeSelectionOverlay(card);
 }
@@ -535,17 +515,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function markCardCorrect(card) {
-    const textSpan = card.querySelector('text tspan');
+    const textSpan = card.querySelector('.lottie-text span');
     if (textSpan) {
-      textSpan.style.fill = '#2e8b57';
+      textSpan.style.color = '#2e8b57';
     }
     addSelectionOverlay(card);
   }
 
   function markCardIncorrect(card) {
-    const textSpan = card.querySelector('text tspan');
+    const textSpan = card.querySelector('.lottie-text span');
     if (textSpan) {
-      textSpan.style.fill = '#ff3b30';
+      textSpan.style.color = '#ff3b30';
     }
     addSelectionOverlay(card);
   }
@@ -620,9 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
     allCards.forEach(card => {
       const sectionId = card.parentNode.id;
       card.dataset.section = sectionMap[sectionId] || '';
-      // card.style.cursor = 'pointer';
-      // card.addEventListener('click', handleCardClick);
-      const wordText = card.querySelector('text');
+      const wordText = card.querySelector('.object-text');
       if (wordText) {
         wordText.addEventListener('click', handleCardClick);
       }
