@@ -161,7 +161,7 @@
       "author": "tce-ashishg"
     },
     "wg143-synthesize-new-polypeptide-chain": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
+      "updatedAt": "2026-06-08T17:35:16+05:30",
       "author": "tce-ashishg"
     },
     "wg144-phrasal-verbs": {
@@ -418,6 +418,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-06-08T17:35:16+05:30",
+      "author": "tce-ashishg",
+      "message": "wg143 rna issues related to answer and table resolved",
+      "widgets": [
+        143
+      ]
+    },
     {
       "date": "2026-06-04T12:45:31+05:30",
       "author": "tce-ashishg",
@@ -758,14 +766,6 @@
       "date": "2026-05-04T15:17:46+05:30",
       "author": "tce-ashishg",
       "message": "all condition added",
-      "widgets": [
-        108
-      ]
-    },
-    {
-      "date": "2026-05-03T14:49:13+05:30",
-      "author": "tce-ashishg",
-      "message": "changes done",
       "widgets": [
         108
       ]
