@@ -449,12 +449,74 @@ document.addEventListener('DOMContentLoaded', function () {
     const codonHiddenBtn = document.getElementById("codon-frame-hidden");
     const codonVisibleBtn = document.getElementById("codon-frame-visible");
     const groupHighligh = document.querySelectorAll(".group-highlight");
+    let answerVisible = false;
+    let savedActivityState = null;
 
     const insightImg = document.getElementById("insight-img");
     const crossImg = document.getElementById("cross-img");
     const insightBtn = document.getElementById("insight-button");
 
     const tableCrossBtn = document.getElementById("table-cross-img");
+    const codonTableDragHandle = document.getElementById("rna-codon-table-drag-handle");
+
+    function setupCodonTableDrag() {
+        if (!codonTable || !codonTableDragHandle) return;
+
+        const svg = codonTable.ownerSVGElement;
+        let isDragging = false;
+        let dragStart = null;
+        let startTranslate = { x: 0, y: 0 };
+        let tableTranslate = { x: 0, y: 0 };
+
+        function getEventPoint(event) {
+            return event.touches ? event.touches[0] : event;
+        }
+
+        function clientPointToSvgPoint(event) {
+            const point = svg.createSVGPoint();
+            const eventPoint = getEventPoint(event);
+            point.x = eventPoint.clientX;
+            point.y = eventPoint.clientY;
+            return point.matrixTransform(svg.getScreenCTM().inverse());
+        }
+
+        function moveCodonTable() {
+            const transform = `translate(${tableTranslate.x}, ${tableTranslate.y})`;
+            codonTable.setAttribute("transform", transform);
+            if (tableCrossBtn) tableCrossBtn.setAttribute("transform", transform);
+        }
+
+        function startDrag(event) {
+            isDragging = true;
+            dragStart = clientPointToSvgPoint(event);
+            startTranslate = { x: tableTranslate.x, y: tableTranslate.y };
+            codonTableDragHandle.style.cursor = "grabbing";
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        function moveDrag(event) {
+            if (!isDragging) return;
+
+            const currentPoint = clientPointToSvgPoint(event);
+            tableTranslate.x = startTranslate.x + currentPoint.x - dragStart.x;
+            tableTranslate.y = startTranslate.y + currentPoint.y - dragStart.y;
+            moveCodonTable();
+            event.preventDefault();
+        }
+
+        function endDrag() {
+            isDragging = false;
+            codonTableDragHandle.style.cursor = "grab";
+        }
+
+        codonTableDragHandle.addEventListener("mousedown", startDrag);
+        codonTableDragHandle.addEventListener("touchstart", startDrag, { passive: false });
+        window.addEventListener("mousemove", moveDrag);
+        window.addEventListener("touchmove", moveDrag, { passive: false });
+        window.addEventListener("mouseup", endDrag);
+        window.addEventListener("touchend", endDrag);
+    }
 
     tableCrossBtn.addEventListener("click", function () {
         codonTable.style.display = "none";
@@ -473,8 +535,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showGroupHighlightsFromAUG() {
         const augFrame = augSlotIndex >= 0 ? Math.floor((augSlotIndex % 33) / 3) : -1;
+        const highlightedFrames = new Set();
+
+        if (augFrame >= 0) {
+            for (let step = 0; step < groupHighligh.length; step++) {
+                const slot = (augSlotIndex + step * 3) % 33;
+                const codon = getCodonAtSlot(slot);
+                highlightedFrames.add(Math.floor((slot % 33) / 3));
+
+                if (STOP_CODONS.includes(codon)) break;
+            }
+        }
+
         groupHighligh.forEach(function (item, index) {
-            item.style.display = augFrame >= 0 && index >= augFrame ? "block" : "none";
+            item.style.display = highlightedFrames.has(index) ? "block" : "none";
         });
     }
 
@@ -503,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Event listener for the codon table button
     codonTableBtn.addEventListener("click", toggleCodonTable);
+    setupCodonTableDrag();
 
     setupClick();
 
@@ -519,13 +594,109 @@ document.addEventListener('DOMContentLoaded', function () {
         activeTRNAs = [];
         activeAminoAcids = [];
         activePeptideBonds = [];
+        pendingPeptideBondTxs = [];
+    }
+
+    function getActivityElements(state) {
+        return state.activeTRNAs.map(trna => trna.element)
+            .concat(state.activeAminoAcids, state.activePeptideBonds);
+    }
+
+    function saveAndHideActivityState() {
+        savedActivityState = {
+            activeTRNAs: activeTRNAs.slice(),
+            activeAminoAcids: activeAminoAcids.slice(),
+            activePeptideBonds: activePeptideBonds.slice(),
+            pendingPeptideBondTxs: pendingPeptideBondTxs.slice(),
+            currentStep: currentStep,
+            previousTx: previousTx,
+            sequenceStarted: sequenceStarted,
+            displayStyles: []
+        };
+
+        getActivityElements(savedActivityState).forEach(element => {
+            savedActivityState.displayStyles.push({
+                element: element,
+                display: element.style.display
+            });
+            element.style.display = "none";
+        });
+
+        activeTRNAs = [];
+        activeAminoAcids = [];
+        activePeptideBonds = [];
+        pendingPeptideBondTxs = [];
+    }
+
+    function restoreSavedActivityState() {
+        if (!savedActivityState) return;
+
+        savedActivityState.displayStyles.forEach(item => {
+            item.element.style.display = item.display;
+        });
+
+        activeTRNAs = savedActivityState.activeTRNAs;
+        activeAminoAcids = savedActivityState.activeAminoAcids;
+        activePeptideBonds = savedActivityState.activePeptideBonds;
+        pendingPeptideBondTxs = savedActivityState.pendingPeptideBondTxs;
+        currentStep = savedActivityState.currentStep;
+        previousTx = savedActivityState.previousTx;
+        sequenceStarted = savedActivityState.sequenceStarted;
+        savedActivityState = null;
+    }
+
+    function clearSavedActivityState() {
+        if (!savedActivityState) return;
+
+        getActivityElements(savedActivityState).forEach(element => {
+            if (element.parentNode) element.parentNode.removeChild(element);
+        });
+        savedActivityState = null;
+    }
+
+    function setShowAnswerButtonLabel(text) {
+        const label = document.querySelector("#Show_Answer tspan");
+        if (label) label.textContent = text;
     }
 
     function resetWidget() {
         clearActiveElements();
+        clearSavedActivityState();
         currentStep = 0;
         previousTx = 0;
         sequenceStarted = false;
+        answerVisible = false;
+        setShowAnswerButtonLabel("Show Answer");
+
+        // const data = generateCircularMRNALetters();
+        // updateSVGLetters(data);
+        // mRNAData = data;
+        // augSlotIndex = findAUGSlot(data);
+
+        if (codonTable) codonTable.style.display = "none";
+        if (tableCrossBtn) tableCrossBtn.style.display = "none";
+
+        codonHiddenBtn.style.display = "block";
+        codonVisibleBtn.style.display = "none";
+        groupHighligh.forEach(function (item) {
+            item.style.display = "none";
+        });
+
+        // Hide popups
+        const wrongPopup = document.getElementById("wrong-popup");
+        if (wrongPopup) wrongPopup.style.display = "none";
+        const correctPopup = document.getElementById("correct-popup");
+        if (correctPopup) correctPopup.style.display = "none";
+    }
+
+    function newMRN() {
+        clearActiveElements();
+        clearSavedActivityState();
+        currentStep = 0;
+        previousTx = 0;
+        sequenceStarted = false;
+        answerVisible = false;
+        setShowAnswerButtonLabel("Show Answer");
 
         const data = generateCircularMRNALetters();
         updateSVGLetters(data);
@@ -549,19 +720,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showAnswer() {
-        clearActiveElements();
+        if (answerVisible) {
+            clearActiveElements();
+            restoreSavedActivityState();
+            answerVisible = false;
+            setShowAnswerButtonLabel("Show Answer");
+            return;
+        }
+
+        saveAndHideActivityState();
         currentStep = 0;
         previousTx = 0;
 
-        let isStopCodon = false;
         const template = document.getElementById("trna-sysmbol");
         const codonTableEl = document.getElementById("rna-codon-table");
 
-        while (!isStopCodon) {
+        while (currentStep < 11) {
             const expectedSlot = (augSlotIndex + currentStep * 3) % 33;
             const expectedCodon = getCodonAtSlot(expectedSlot);
             const codonData = RNADATA.genetic_code.find(c => c.mRNA === expectedCodon);
-            isStopCodon = STOP_CODONS.includes(expectedCodon) || (codonData && codonData.tRNA === null);
+            const isStopCodon = STOP_CODONS.includes(expectedCodon) || (codonData && codonData.tRNA === null);
+
+            if (isStopCodon) break;
 
             const frameIndex = Math.floor((expectedSlot % 33) / 3);
             const tx = frameIndex * FRAME_STEP_PX;
@@ -586,7 +766,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     activeAminoAcids.push(aaClone);
 
-                    if (!isStopCodon && activeAminoAcids.length > 1) {
+                    if (activeAminoAcids.length > 1) {
                         const pbTemplate = document.getElementById("peptide-bond");
                         if (pbTemplate) {
                             const pbClone = pbTemplate.cloneNode(true);
@@ -601,14 +781,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             activePeptideBonds.push(pbClone);
                         }
                     }
-                    if (!isStopCodon) {
-                        previousTx = tx;
-                    }
+                    previousTx = tx;
                 }
             }
             currentStep++;
         }
         sequenceStarted = true;
+        answerVisible = true;
+        setShowAnswerButtonLabel("Hide Answer");
     }
 
     const resetBtn = document.getElementById("reset-btn");
@@ -618,8 +798,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (showAnswerBtn) showAnswerBtn.addEventListener("click", showAnswer);
 
     const newMRNABtn = document.getElementById("new-mrna-btn");
-    if (newMRNABtn) newMRNABtn.addEventListener("click", resetWidget);
+    if (newMRNABtn) newMRNABtn.addEventListener("click", newMRN);
 
     // Initial setup
-    resetWidget();
+   // resetWidget();
+    newMRN();
 });
