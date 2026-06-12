@@ -161,7 +161,7 @@
       "author": "tce-ashishg"
     },
     "wg143-synthesize-new-polypeptide-chain": {
-      "updatedAt": "2026-06-08T17:35:16+05:30",
+      "updatedAt": "2026-06-12T18:03:18+05:30",
       "author": "tce-ashishg"
     },
     "wg144-phrasal-verbs": {
@@ -297,7 +297,7 @@
       "author": "tce-ashishg"
     },
     "wg70_reflection-of-light": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
+      "updatedAt": "2026-06-12T18:03:18+05:30",
       "author": "tce-ashishg"
     },
     "wg71-build-water-cycle": {
@@ -418,6 +418,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-06-12T18:03:18+05:30",
+      "author": "tce-ashishg",
+      "message": "wg143 issue resolved",
+      "widgets": [
+        70,
+        143
+      ]
+    },
     {
       "date": "2026-06-08T17:35:16+05:30",
       "author": "tce-ashishg",
@@ -760,14 +769,6 @@
       "message": "wg143 structure done",
       "widgets": [
         143
-      ]
-    },
-    {
-      "date": "2026-05-04T15:17:46+05:30",
-      "author": "tce-ashishg",
-      "message": "all condition added",
-      "widgets": [
-        108
       ]
     }
   ]
