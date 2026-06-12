@@ -102,6 +102,7 @@ let activeAminoAcids = []; // Array to track cloned amino acids
 let pendingPeptideBondTxs = []; // Bond positions waiting for tRNA detachment
 let activePeptideBonds = []; // Array to track cloned peptide bonds
 let previousTx = 0;       // Track x-position of the last amino acid for the peptide bond
+let onSequenceComplete = null;
 
 
 const STOP_CODONS = ["UAA", "UAG", "UGA"];
@@ -365,10 +366,45 @@ function handleCodonSelection(selectedCodon) {
             }, 800);
         });
         activeTRNAs = [];
+        if (typeof onSequenceComplete === "function") {
+            onSequenceComplete();
+        }
     }
 }
 
+function playConfettiLottie() {
+  const container = document.getElementById('lottie-confetti');
 
+  if (!container) {
+    console.warn(`Container lottie-confetti not found`);
+    return;
+  }
+
+  const animationPath = `./assets/animation/confetti.json`;
+
+  // Clear previous animation
+  container.innerHTML = '';
+  container.style.display = 'block';
+
+  const anim = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: false,
+    autoplay: true,
+    path: animationPath,
+    rendererSettings: {
+      hideOnTransparent: false,
+      preserveAspectRatio: 'xMidYMid meet'
+    }
+  });
+
+  // Ensure totalFrames is available
+  anim.addEventListener('DOMLoaded', () => {
+    anim.addEventListener('complete', () => {
+      anim.goToAndStop(anim.totalFrames - 1, true);
+    });
+  });
+}
 
 
 function generateCircularMRNALetters() {
@@ -445,12 +481,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const codonTableBtn = document.getElementById("rna-codon-table-button");
     const codonTable = document.getElementById("rna-codon-table");
+    const newMRNABtn = document.getElementById("new-mrna-btn");
 
     const codonHiddenBtn = document.getElementById("codon-frame-hidden");
     const codonVisibleBtn = document.getElementById("codon-frame-visible");
     const groupHighligh = document.querySelectorAll(".group-highlight");
     let answerVisible = false;
     let savedActivityState = null;
+    let completionMode = false;
 
     const insightImg = document.getElementById("insight-img");
     const crossImg = document.getElementById("cross-img");
@@ -659,7 +697,113 @@ document.addEventListener('DOMContentLoaded', function () {
         if (label) label.textContent = text;
     }
 
+    const completionHiddenSelectors = [
+        "#show-answer-btn",
+        "#reset-btn",
+        "#rna-codon-table-button",
+        "#codon-frame-hidden",
+        "#codon-frame-visible",
+        "#rna-codon-table",
+        "#table-cross-img",
+        "#insight-button",
+        "#insight-img",
+        "#cross-img",
+        "#wrong-popup",
+        "#correct-popup",
+        "#mrna-bar",
+        "#mrna-bar-text",
+        "#i-text-02",
+        "#i-text-intro",
+        ".group-highlight"
+    ];
+    const completionHiddenElements = Array.from(
+        document.querySelectorAll(completionHiddenSelectors.join(","))
+    );
+    const initialCompletionDisplay = new Map(
+        completionHiddenElements.map(element => [element, element.style.display])
+    );
+
+    function getTranslateX(element) {
+        const transform = element.getAttribute("transform") || "";
+        const match = transform.match(/translate\(\s*(-?\d+(?:\.\d+)?)/);
+        return match ? Number(match[1]) : 0;
+    }
+
+    function centerCompletionAnswer() {
+        const answerElements = activeAminoAcids.concat(activePeptideBonds);
+        if (!answerElements.length) return;
+
+        let minX = Infinity;
+        let maxX = -Infinity;
+        let minY = Infinity;
+
+        answerElements.forEach(element => {
+            const box = element.getBBox();
+            const tx = getTranslateX(element);
+            minX = Math.min(minX, box.x + tx);
+            maxX = Math.max(maxX, box.x + box.width + tx);
+            minY = Math.min(minY, box.y);
+        });
+
+        const svg = answerElements[0].ownerSVGElement;
+        if (!svg || !Number.isFinite(minX) || !Number.isFinite(maxX)) return;
+
+        const viewBox = svg.viewBox.baseVal;
+        const centerOffset = (viewBox.x + viewBox.width / 2) - ((minX + maxX) / 2);
+        const verticalOffset = 390 - minY;
+
+        answerElements.forEach(element => {
+            const tx = getTranslateX(element) + centerOffset;
+            const transform = `translate(${tx}, ${verticalOffset})`;
+            element.setAttribute("transform", transform);
+            element.style.transform = `translate(${tx}px, ${verticalOffset}px)`;
+        });
+    }
+
+    function setCompletionControlsVisible(isComplete) {
+        completionHiddenElements.forEach(element => {
+            element.style.display = isComplete ? "none" : initialCompletionDisplay.get(element);
+        });
+
+        const congratsImg = document.getElementById("congratulation-img");
+        if (congratsImg) congratsImg.style.display = isComplete ? "block" : "none";
+
+        const congratsConfetti = document.getElementById("congratulation-confetti");
+        if (congratsConfetti) congratsConfetti.style.display = isComplete ? "block" : "none";
+
+        if (!newMRNABtn) return;
+        newMRNABtn.style.display = "block";
+
+        if (isComplete) {
+            const svg = newMRNABtn.ownerSVGElement;
+            if (svg) {
+                const viewBox = svg.viewBox.baseVal;
+                const box = newMRNABtn.getBBox();
+                const centerOffset = (viewBox.x + viewBox.width / 2) - (box.x + box.width / 2);
+                newMRNABtn.setAttribute("transform", `translate(${centerOffset}, 0)`);
+            }
+        } else {
+            newMRNABtn.removeAttribute("transform");
+        }
+    }
+
+    function enterCompletionMode() {
+        if (!answerVisible) showAnswer();
+        centerCompletionAnswer();
+        completionMode = true;
+        setShowAnswerButtonLabel("Show Answer");
+        setCompletionControlsVisible(true);
+        playConfettiLottie();
+    }
+
+    function exitCompletionMode() {
+        if (!completionMode) return;
+        completionMode = false;
+        setCompletionControlsVisible(false);
+    }
+
     function resetWidget() {
+        exitCompletionMode();
         clearActiveElements();
         clearSavedActivityState();
         currentStep = 0;
@@ -690,6 +834,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function newMRN() {
+        exitCompletionMode();
         clearActiveElements();
         clearSavedActivityState();
         currentStep = 0;
@@ -720,6 +865,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showAnswer() {
+        if (completionMode) return;
+
         if (answerVisible) {
             clearActiveElements();
             restoreSavedActivityState();
@@ -797,8 +944,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const showAnswerBtn = document.getElementById("show-answer-btn");
     if (showAnswerBtn) showAnswerBtn.addEventListener("click", showAnswer);
 
-    const newMRNABtn = document.getElementById("new-mrna-btn");
     if (newMRNABtn) newMRNABtn.addEventListener("click", newMRN);
+
+    onSequenceComplete = enterCompletionMode;
 
     // Initial setup
    // resetWidget();
