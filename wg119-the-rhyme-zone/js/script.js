@@ -41,6 +41,11 @@ RHYMEDATA = {
 const animMap = new Map();
 let selectedCardClones = [];
 
+function playSound(soundName) {
+  const audio = new Audio(`./assets/audio/${soundName}.mp3`);
+  audio.play().catch(err => console.log(`Failed to play audio: ${soundName}`, err));
+}
+
 function getRhymeCardFromEventTarget(el) {
   return el.closest('#distractor-1 > g') || el.closest('#distractor-2 > g');
 }
@@ -153,6 +158,8 @@ function playTryAgainLottie() {
     console.warn(`Try-again container not found`);
     return;
   }
+
+  playSound('try-again');
 
   // Clear previous animation
   container.innerHTML = '';
@@ -567,15 +574,25 @@ document.addEventListener('DOMContentLoaded', function () {
         groupCorrectCount += 1;
         updateGroupProgressUI();
         // Play lottie on distractor cards; word labels are hidden (SVG text paints above the bubble)
+        let popSoundPlayed = false;
         allCards.forEach(card => {
           if (card !== selectedCards.d1 && card !== selectedCards.d2) {
             playLoadedLottie(card);
+            if (!popSoundPlayed) {
+              setTimeout(() => {
+              playSound('pop-bubble');
+              }, 1000);
+              popSoundPlayed = true;
+            }
           }
         });
         setTimeout(() => {
           correctFeedbackPage();
           console.log('Available items before creating clones:', availableItems.length);
           createCenteredSelectedClones(selectedCards, availableItems.length === 0);
+          if (currentItem && currentItem.answer) {
+            playSound(`${currentItem.answer[0]}-${currentItem.answer[1]}`);
+          }
         }, 2000);
       } else {
         nextEnabled = false;
@@ -693,6 +710,10 @@ document.addEventListener('DOMContentLoaded', function () {
       mainPage.style.display = 'none';
       showAnswerPage.style.display = 'block';
       isAnswerVisible = true;
+
+      if (currentItem && currentItem.answer) {
+        playSound(`${currentItem.answer[0]}-${currentItem.answer[1]}`);
+      }
       
       // Change button text to Hide Answer
       const showAnswerText = showAnswerBtn.querySelector('tspan');
