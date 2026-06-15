@@ -347,6 +347,11 @@ function createCenteredSelectedClones(selectedCards, isLastQuestion = false) {
     congratsDiv.style.display = isLastQuestion ? 'block' : 'none';
   }
 
+  const iText = document.getElementById('i-text');
+  if (iText) {
+    iText.style.display = isLastQuestion ? 'none' : 'block';
+  }
+
   if (isLastQuestion) {
     playCongratulationLottie('./assets/anim/congratulation.json');
   } else {
@@ -395,6 +400,7 @@ function centerNextButton(button) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  const iText = document.getElementById('i-text'); 
   const startGameButton = document.getElementById('startGameBtn');
   const mainPage = document.getElementById('mainPage');
   const nextButton = document.getElementById('next-btn');
@@ -504,6 +510,7 @@ document.addEventListener('DOMContentLoaded', function () {
     nextButton.style.transform = 'translateX(-650px)';
     // reset answer visibility
     isAnswerVisible = false;
+    iText.style.display = 'block';
     mainPage.style.display = 'block';
     showAnswerBtn.style.display = 'inline-block';
     showAnswerPage.style.display = 'none';
