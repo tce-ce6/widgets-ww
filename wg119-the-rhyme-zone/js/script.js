@@ -326,16 +326,26 @@ function createCenteredSelectedClones(selectedCards, isLastQuestion = false) {
   }
 
   clearSelectedCardClones();
-  const leftClone = selectedCards.d1.cloneNode(true);
-  const rightClone = selectedCards.d2.cloneNode(true);
 
-  svg.appendChild(leftClone);
-  svg.appendChild(rightClone);
-  selectedCardClones = [leftClone, rightClone];
+  if (isLastQuestion) {
+    selectedCards.d1.style.display = 'none';
+    selectedCards.d2.style.display = 'none';
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) {
+      nextBtn.style.display = 'none';
+    }
+  } else {
+    const leftClone = selectedCards.d1.cloneNode(true);
+    const rightClone = selectedCards.d2.cloneNode(true);
 
-  selectedCards.d1.style.display = 'none';
-  selectedCards.d2.style.display = 'none';
-  centerSelectedCards({ d1: leftClone, d2: rightClone });
+    svg.appendChild(leftClone);
+    svg.appendChild(rightClone);
+    selectedCardClones = [leftClone, rightClone];
+
+    selectedCards.d1.style.display = 'none';
+    selectedCards.d2.style.display = 'none';
+    centerSelectedCards({ d1: leftClone, d2: rightClone });
+  }
 
   const congratsPanel = document.getElementById('congratulations-panel');
   if (congratsPanel) {
@@ -508,6 +518,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetAllCards();
     // reset next button position
     nextButton.style.transform = 'translateX(-650px)';
+    nextButton.style.display = 'none';
     // reset answer visibility
     isAnswerVisible = false;
     iText.style.display = 'block';
@@ -576,6 +587,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const isCorrectD1 = selectedCards.d1.dataset.correct === 'true';
       const isCorrectD2 = selectedCards.d2.dataset.correct === 'true';
       if (isCorrectD1 && isCorrectD2) {
+        showAnswerBtn.style.display = 'none';
         nextEnabled = true;
         hideTryAgain();
         groupCorrectCount += 1;
@@ -594,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
         setTimeout(() => {
-          correctFeedbackPage();
+          correctFeedbackPage(availableItems.length === 0);
           console.log('Available items before creating clones:', availableItems.length);
           createCenteredSelectedClones(selectedCards, availableItems.length === 0);
           if (currentItem && currentItem.answer) {
@@ -615,9 +627,13 @@ document.addEventListener('DOMContentLoaded', function () {
     updateNextState();
   }
 
-  function correctFeedbackPage(){
+  function correctFeedbackPage(isLast = false){
     showAnswerBtn.style.display = 'none';
-    centerNextButton(nextButton);
+    if (!isLast) {
+      centerNextButton(nextButton);
+    } else {
+      nextButton.style.display = 'none';
+    }
   }
 
   function bindCardClicks() {
