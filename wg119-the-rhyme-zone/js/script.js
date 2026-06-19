@@ -29,7 +29,7 @@ RHYMEDATA = {
     { "answer": ["tray", "play"], "distractor_1": ["tray", "honey", "gentle", "mat", "moat"], "distractor_2": ["play", "fang", "happy", "card", "sound"] },
     { "answer": ["honey", "money"], "distractor_1": ["honey", "might", "flip", "animal", "jungle"], "distractor_2": ["money", "click", "bread", "trouble", "feet"] },
     { "answer": ["might", "fight"], "distractor_1": ["might", "hide", "celebrate", "picture", "choose"], "distractor_2": ["fight", "show", "flash", "thunder", "umbrella"] },
-    { "answer": ["thunder", "wonder"], "distractor_1": ["thunder", "stair", "happy", "tremble", "might"], "distractor_2": ["wonder", "running", "balloon", "night", "guess"] },
+    { "answer": ["thunder", "wonder"], "distractor_1": ["thunder", "stair", "happy", "tremble", "might"], "distractor_2": ["wonder", "running", "balloon", "rain", "guess"] },
     { "answer": ["running", "cunning"], "distractor_1": ["running", "celebrate", "thrilling", "chopping", "trouble"], "distractor_2": ["cunning", "tumble", "grass", "blubber", "crush"] },
     { "answer": ["tumble", "stumble"], "distractor_1": ["tumble", "hurrying", "slotted", "animal", "safari"], "distractor_2": ["stumble", "train", "adventure", "umbrella", "click"] },
     { "answer": ["hurrying", "worrying"], "distractor_1": ["hurrying", "sorrow", "crash", "jumble", "orchestra"], "distractor_2": ["worrying", "different", "shuffle", "interact", "peace"] },
