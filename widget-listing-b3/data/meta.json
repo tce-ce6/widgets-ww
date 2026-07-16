@@ -1,425 +1,115 @@
 {
-  "folders": {
-    "wg100-fast-multiplication": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg101-formal-letters-of-request": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg102-law-of-conservation-mass": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg103-molecular-visualizer": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg104-addition-of-integers": {
-      "updatedAt": "2026-06-02T11:31:55+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg105-regulation-of-blood-glucose": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg108-photosynthesis-factory": {
-      "updatedAt": "2026-05-29T15:58:22+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg109-electrolytic-refining-of-metals": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg110-building-electronic-configuration": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg111-guess-the-collective-nouns": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg112-identify-criminal-dna": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg113-making-of-Indias-constitution": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg114-barter-fails-money-wins": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg115-literary-device": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg116-reactivity-series-simulator": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg117-picture-the-idiom": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg118-formal-letters-job-application": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg119-the-rhyme-zone": {
-      "updatedAt": "2026-06-19T18:48:38+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg120-area-of-different-shapes": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg121-synthesize-new-dna-strand": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg122-suffix-magic-2": {
-      "updatedAt": "2026-04-14T14:54:54+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg123-pick-the-opposite": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg124-swar-ki-pahchan": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg125-vyanjan-ki-pahchan": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg126-dominos-of-rebellion": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg127-formal-letters-order-placement": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg128-who-said-that": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg129-unravel-the-taxonomic-trail": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg130-election-officer": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg131-journey-of-a-bill-to-law": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg132-plate-boundary-explorer": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg133-nordic-countries-adventure": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg134-barter-bazaar": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg135-museum-of-historical-sources": {
-      "updatedAt": "2026-06-02T13:13:39+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg136-compound-words-adventure": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg137-sabdo-me-sawar-ki-khoj": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg138-sabdo-me-vayanjan-ki-khoj": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg140-change-master": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg141-card-probability": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg142-fact-or-opinion": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg143-synthesize-new-polypeptide-chain": {
-      "updatedAt": "2026-06-15T16:20:08+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg144-phrasal-verbs": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg145-multiplication-builder": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg146-guess-the-author": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg147-literary-detective-agency": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg148-Build-the-Panchayati-Raj-Pyramid": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg149-punctuation-marks": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg150-blood-circulation": {
-      "updatedAt": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg151-cropmap-India": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg152-from-dawn-to-revolution": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg153-informal-letters": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg154-naming-words": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg155-balkan-countries-adventure": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg156-sound-machine": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg157-vowel-twins": {
-      "updatedAt": "2026-04-06T20:09:35+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg158-tricky-word-collector": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg159-palindrome-builder": {
-      "updatedAt": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg17-locating-decimals-v2": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg18-solubility": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg23-lcm-of-numbers": {
-      "updatedAt": "2026-06-04T12:45:31+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg24-hcf-of-numbers": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg26-word-discovery-adventure": {
-      "updatedAt": "2026-04-13T11:14:08+05:30",
-      "author": "tce-nitinc"
-    },
-    "wg31-world-war": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg42-the-switching-game": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg47-mendels-monohybrid-cross": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg48-mendels-dihybrid-cross": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg52-pictograph": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg53-bargraph": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg56_atomic-radius-simulator": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg61-suffix-magic-1": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg66-magic-square": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg67-race-to-the-magic-numbers": {
-      "updatedAt": "2026-05-25T16:20:29+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg68-reflection-of-a-point": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg69-rounding-rally": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg70_reflection-of-light": {
-      "updatedAt": "2026-06-12T18:03:18+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg71-build-water-cycle": {
-      "updatedAt": "2026-05-20T19:02:10+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg72-build-a-carbon-cycle": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg73-pie-charts": {
-      "updatedAt": "2026-05-28T14:53:34+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg74-formal-letter-of-complaint": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg75-reading-slopes": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg76-chemical-reactions-simulator": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg77-chemical-formula-builder": {
-      "updatedAt": "2026-06-26T12:47:37+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg78-form-idioms-based-on-picture": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg79-rhyme-scheme-2": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg80-forming-landforms": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg81-u_aur_oo_kee_maatra_mein_antar": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg82-commonly-confused-words": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg83-major-soil-types": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg84-legislature-challenge": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg85-build-a-paragraph": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg86-i_aur_ee_kee_maatra_mein_antar": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg87-e_aur_ai_kee_maatra_mein_antar": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg88-o_aur_au_kee_maatra_mein_antar": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg89-the-tone-lab": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg90-aa_kee_maatra_kee_pahachaan": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg91-prime-factorisation": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg92-test-of-divisibility": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg93-rhyming-words": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg94-lac-operon-regulation": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg95-similar-meanings": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg96-operation-domino": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg97-find-the-dna-lengths": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg98-molecular-reaction-simulator": {
-      "updatedAt": "2026-05-19T18:53:17+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg99-applying-distributive-property": {
-      "updatedAt": "2026-05-21T19:37:50+05:30",
-      "author": "tce-ashishg"
-    }
-  },
+  "folders": {},
   "commits": [
     {
-      "date": "2026-06-26T12:47:37+05:30",
+      "date": "2026-07-16T16:05:11+05:30",
+      "author": "tce-ashishg",
+      "message": "empty the folder",
+      "widgets": [
+        17,
+        18,
+        24,
+        26,
+        31,
+        42,
+        47,
+        48,
+        52,
+        53,
+        56,
+        61,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        140,
+        141,
+        142,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159
+      ]
+    },
+    {
+      "date": "2026-04-17T18:27:50+05:30",
       "author": "tce-ashishg",
       "message": "file name updated",
       "widgets": [
@@ -760,14 +450,6 @@
       "date": "2026-05-13T17:00:08+05:30",
       "author": "tce-ashishg",
       "message": "lottie loading done",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-05-12T19:19:54+05:30",
-      "author": "tce-ashishg",
-      "message": "logical function added",
       "widgets": [
         119
       ]
