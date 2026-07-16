@@ -111,167 +111,215 @@
     {
       "date": "2026-04-17T18:27:50+05:30",
       "author": "tce-ashishg",
-      "message": "issue in wg144 resolved",
+      "message": "file name updated",
       "widgets": [
-        61,
-        144
+        77
       ]
     },
     {
-      "date": "2026-04-17T16:39:21+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed revised canges",
-      "widgets": [
-        133,
-        155
-      ]
-    },
-    {
-      "date": "2026-04-17T14:28:51+05:30",
+      "date": "2026-06-26T12:45:22+05:30",
       "author": "tce-ashishg",
-      "message": "wg94 issue resolved",
+      "message": "file name updated",
       "widgets": [
-        94
+        77
       ]
     },
     {
-      "date": "2026-04-16T19:46:33+05:30",
+      "date": "2026-06-19T18:48:38+05:30",
       "author": "tce-ashishg",
-      "message": "wg132 issue resolved",
+      "message": "minnor issue related to text resolved",
       "widgets": [
-        132
+        119
       ]
     },
     {
-      "date": "2026-04-15T18:14:10+05:30",
+      "date": "2026-06-18T16:01:22+05:30",
       "author": "tce-ashishg",
-      "message": "wg144 & wg150 issue resolved",
+      "message": "wg119 issue related to final panel done",
       "widgets": [
-        144,
-        150
+        119
       ]
     },
     {
-      "date": "2026-04-14T14:54:54+05:30",
+      "date": "2026-06-15T18:06:47+05:30",
       "author": "tce-ashishg",
-      "message": "images issue resolved",
+      "message": "wg119 congratulation panel error resolved",
       "widgets": [
-        122
+        119
       ]
     },
     {
-      "date": "2026-04-13T19:45:48+05:30",
+      "date": "2026-06-15T16:20:08+05:30",
       "author": "tce-ashishg",
-      "message": "images issue resolved",
+      "message": "minor changes to UI",
       "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-04-13T11:14:08+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg26",
-      "widgets": [
-        26
-      ]
-    },
-    {
-      "date": "2026-04-13T11:12:41+05:30",
-      "author": "tce-nitinc",
-      "message": "remove wg26",
-      "widgets": [
-        26
-      ]
-    },
-    {
-      "date": "2026-04-10T18:41:35+05:30",
-      "author": "tce-ashishg",
-      "message": "hide answer issue resolved",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-04-09T18:53:07+05:30",
-      "author": "tce-ashishg",
-      "message": "hide answer issue resolved",
-      "widgets": [
-        61,
-        122
-      ]
-    },
-    {
-      "date": "2026-04-08T11:34:01+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved drag issue in mobile devices",
-      "widgets": [
-        96,
-        126
-      ]
-    },
-    {
-      "date": "2026-04-07T11:07:02+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed wg 70 padding issue",
-      "widgets": [
-        70
-      ]
-    },
-    {
-      "date": "2026-04-07T10:39:54+05:30",
-      "author": "tce-nitinc",
-      "message": "added 2 missing b2 widgets",
-      "widgets": [
-        66,
-        71
-      ]
-    },
-    {
-      "date": "2026-04-06T20:17:31+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes wg56 image issue",
-      "widgets": [
-        56
-      ]
-    },
-    {
-      "date": "2026-04-06T20:09:35+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed html of wg157 and wg144",
-      "widgets": [
-        56,
-        144,
-        157
-      ]
-    },
-    {
-      "date": "2026-04-06T17:47:27+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg56 file name",
-      "widgets": [
-        56
-      ]
-    },
-    {
-      "date": "2026-04-06T17:37:20+05:30",
-      "author": "tce-nitinc",
-      "message": "added listing page thumbnail",
-      "widgets": [
-        108,
         119,
         143
       ]
     },
     {
-      "date": "2026-04-06T16:52:15+05:30",
-      "author": "tce-nitinc",
-      "message": "added thumbnials and removed unneccesory files",
+      "date": "2026-06-12T19:19:51+05:30",
+      "author": "tce-ashishg",
+      "message": "wg119 audio added",
+      "widgets": [
+        119
+      ]
+    },
+    {
+      "date": "2026-06-12T18:03:18+05:30",
+      "author": "tce-ashishg",
+      "message": "wg143 issue resolved",
+      "widgets": [
+        70,
+        143
+      ]
+    },
+    {
+      "date": "2026-06-08T17:35:16+05:30",
+      "author": "tce-ashishg",
+      "message": "wg143 rna issues related to answer and table resolved",
+      "widgets": [
+        143
+      ]
+    },
+    {
+      "date": "2026-06-04T12:45:31+05:30",
+      "author": "tce-ashishg",
+      "message": "wg119 onclick issue resolved",
+      "widgets": [
+        23,
+        119
+      ]
+    },
+    {
+      "date": "2026-06-02T13:13:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg135 alignment issue resolved",
+      "widgets": [
+        135
+      ]
+    },
+    {
+      "date": "2026-06-02T11:31:55+05:30",
+      "author": "tce-ashishg",
+      "message": "numpad of wg104 corrected",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-06-01T16:15:51+05:30",
+      "author": "tce-ashishg",
+      "message": "wg104 issue resolved",
+      "widgets": [
+        104
+      ]
+    },
+    {
+      "date": "2026-05-29T18:45:42+05:30",
+      "author": "tce-ashishg",
+      "message": "wg119 error related to commit issue resolved",
+      "widgets": [
+        119
+      ]
+    },
+    {
+      "date": "2026-05-29T17:36:06+05:30",
+      "author": "tce-ashishg",
+      "message": "batch2 and batch3 widgets added",
+      "widgets": [
+        135
+      ]
+    },
+    {
+      "date": "2026-05-29T15:58:22+05:30",
+      "author": "tce-ashishg",
+      "message": "changes to wg135 svg done",
+      "widgets": [
+        108,
+        119,
+        135
+      ]
+    },
+    {
+      "date": "2026-05-28T18:58:52+05:30",
+      "author": "tce-ashishg",
+      "message": "wg108 arrow flip error resolved",
+      "widgets": [
+        108
+      ]
+    },
+    {
+      "date": "2026-05-28T14:53:34+05:30",
+      "author": "tce-ashishg",
+      "message": "changes done",
+      "widgets": [
+        73
+      ]
+    },
+    {
+      "date": "2026-05-26T12:56:00+05:30",
+      "author": "tce-ashishg",
+      "message": "changes done",
+      "widgets": [
+        120,
+        121,
+        129,
+        140,
+        141,
+        145,
+        150
+      ]
+    },
+    {
+      "date": "2026-05-25T16:20:29+05:30",
+      "author": "tce-ashishg",
+      "message": "all issues to changed widgets are done",
+      "widgets": [
+        67,
+        103,
+        109,
+        110,
+        112,
+        116
+      ]
+    },
+    {
+      "date": "2026-05-21T19:37:50+05:30",
+      "author": "tce-ashishg",
+      "message": "changes on remaing widgets done",
+      "widgets": [
+        17,
+        72,
+        76,
+        77,
+        91,
+        99,
+        102
+      ]
+    },
+    {
+      "date": "2026-05-20T19:02:10+05:30",
+      "author": "tce-ashishg",
+      "message": "issue in all changed widget resolved",
+      "widgets": [
+        52,
+        53,
+        66,
+        70,
+        71,
+        73
+      ]
+    },
+    {
+      "date": "2026-05-19T18:53:17+05:30",
+      "author": "tce-ashishg",
+      "message": "header size corrected of all widgets",
       "widgets": [
         17,
         18,
+        23,
         24,
-        26,
         31,
         42,
         47,
@@ -280,10 +328,12 @@
         53,
         56,
         61,
+        66,
         67,
         68,
         69,
         70,
+        71,
         72,
         73,
         74,
@@ -311,33 +361,26 @@
         96,
         97,
         98,
-        99,
-        100,
         101,
         102,
         103,
-        104,
         105,
         108,
         109,
-        110,
         111,
         112,
         113,
         114,
         115,
-        116,
         117,
         118,
         119,
         120,
         121,
-        122,
         123,
         124,
         125,
         126,
-        127,
         128,
         129,
         130,
@@ -346,11 +389,9 @@
         133,
         134,
         135,
-        136,
         137,
         138,
         140,
-        141,
         142,
         143,
         144,
@@ -360,97 +401,57 @@
         148,
         149,
         150,
-        151,
-        152,
-        153,
         154,
         155,
-        156,
-        157,
-        158,
-        159
+        158
       ]
     },
     {
-      "date": "2026-04-01T17:28:10+05:30",
+      "date": "2026-05-18T16:14:59+05:30",
       "author": "tce-ashishg",
-      "message": "wg122 issues resolved and json updated",
+      "message": "wg23 error resolved",
       "widgets": [
-        61,
-        122
+        23
       ]
     },
     {
-      "date": "2026-04-01T14:06:57+05:30",
+      "date": "2026-05-15T17:07:34+05:30",
       "author": "tce-ashishg",
-      "message": "wg61 issue resolved",
+      "message": "showANswer error resolved",
       "widgets": [
-        61
+        119
       ]
     },
     {
-      "date": "2026-04-01T11:34:08+05:30",
+      "date": "2026-05-14T19:21:22+05:30",
       "author": "tce-ashishg",
-      "message": "wg61 issue resolved",
+      "message": "final page done",
       "widgets": [
-        61
+        119
       ]
     },
     {
-      "date": "2026-04-01T01:22:02+05:30",
-      "author": "PrasannaP",
-      "message": "feat: add close button to alert popup and implement dismiss functionality",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-04-01T01:15:20+05:30",
-      "author": "PrasannaP",
-      "message": "chore: bump version number to b3_wg61_260331_02 in index.html",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-04-01T01:15:11+05:30",
-      "author": "PrasannaP",
-      "message": "feat: implement modal backdrop for popups and update asset text alignment",
-      "widgets": [
-        61
-      ]
-    },
-    {
-      "date": "2026-04-01T00:43:43+05:30",
-      "author": "PrasannaP",
-      "message": "feat: add modal backdrop functionality and update widget version to 03",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-04-01T00:35:36+05:30",
+      "date": "2026-05-14T12:55:52+05:30",
       "author": "tce-ashishg",
-      "message": "wg61 issue resolved",
+      "message": "correct answer page added",
       "widgets": [
-        61,
-        122
+        119
       ]
     },
     {
-      "date": "2026-04-01T00:19:34+05:30",
-      "author": "PrasannaP",
-      "message": "s",
-      "widgets": [
-        122
-      ]
-    },
-    {
-      "date": "2026-03-31T23:59:11+05:30",
+      "date": "2026-05-13T19:14:39+05:30",
       "author": "tce-ashishg",
-      "message": "wg61 issue resolved",
+      "message": "completed with functionality audio missing",
       "widgets": [
-        61
+        119
+      ]
+    },
+    {
+      "date": "2026-05-13T17:00:08+05:30",
+      "author": "tce-ashishg",
+      "message": "lottie loading done",
+      "widgets": [
+        119
       ]
     }
   ]
