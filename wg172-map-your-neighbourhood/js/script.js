@@ -31,7 +31,7 @@ SCENARIOS = {
         {
           "place": "School",
           "direction": "South",
-          "dialogue": "When I set out for school, I walk south from my house. My school is south of home. Can you help me find it?"
+          "dialogue": "When I set out for school, I walk south from my house. My school is south of my home. Can you help me find it?"
         },
         {
           "place": "Hospital",
