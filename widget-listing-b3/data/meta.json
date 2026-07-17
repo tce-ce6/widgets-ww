@@ -1,11 +1,19 @@
 {
   "folders": {
     "wg172-map-your-neighbourhood": {
-      "updatedAt": "2026-07-16T16:18:06+05:30",
+      "updatedAt": "2026-07-17T12:58:01+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-17T12:58:01+05:30",
+      "author": "tce-ashishg",
+      "message": "issue related to texts are resolved",
+      "widgets": [
+        172
+      ]
+    },
     {
       "date": "2026-07-16T16:18:06+05:30",
       "author": "tce-ashishg",
@@ -550,14 +558,6 @@
       "date": "2026-05-14T19:21:22+05:30",
       "author": "tce-ashishg",
       "message": "final page done",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-05-14T12:55:52+05:30",
-      "author": "tce-ashishg",
-      "message": "correct answer page added",
       "widgets": [
         119
       ]
