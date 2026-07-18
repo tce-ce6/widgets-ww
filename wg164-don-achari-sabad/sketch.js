@@ -594,8 +594,8 @@ function resetSentence() {
     stopCurrentAudio();
     setNextButtonDisabled(true);
     document.getElementById("starLottie-wrapper").style.display="none";
-    instructionText.textContent = "इमेज स्क्रैच करें और देखें इसके पीछे क्या छुपा है।";
-    showAnswerBtn.textContent = "उत्तर देखें";
+    instructionText.textContent = "चित्र खरवडून त्यामागे काय लपलेले आहे ते पाहा.";
+    showAnswerBtn.textContent = "उत्तर पहा";
     isAnswerShown = false;
     container.classList.remove('no-touch');
     letterButton.forEach((item) => {
@@ -628,7 +628,7 @@ function showAnswer() {
         // First click → Show the answer
         dashLine.style.display = 'none';
         wordBox.style.display = 'block';
-        showAnswerBtn.textContent = "उत्तर छुपाएँ";
+        showAnswerBtn.textContent = "उत्तर लपवा";
         completeWord.textContent = currentWord.word;
         completeWord.style.display = 'block';
 
@@ -659,7 +659,7 @@ function showAnswer() {
     dashLine.style.display = 'block';
     wordBox.style.display = 'none';
     completeWord.style.display = 'none';
-    showAnswerBtn.textContent = "उत्तर देखें";
+    showAnswerBtn.textContent = "उत्तर पहा";
     lettersDiv.style.display = 'block';
     showAnswerBtn.disabled = false;
 
