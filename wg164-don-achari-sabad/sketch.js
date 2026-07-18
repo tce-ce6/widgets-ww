@@ -70,11 +70,36 @@ const LOTTIE_ANIMATION_MAP = {
     "नभ": "sky.json",
     "ढग": "cloud.json"
 };
+
+const WORD_AUDIO_MAP = {
+    "घर": "house.mp3",
+    "नथ": "nath.mp3",
+    "नळ": "tap.mp3",
+    "फळ": "fruits.mp3",
+    "छत": "roof.mp3",
+    "वन": "forest.mp3",
+    "तट": "beach.mp3",
+    "रथ": "rath.mp3",
+    "मग": "mug.mp3",
+    "कर": "hand.mp3",
+    "धन": "money.mp3",
+    "कप": "cup.mp3",
+    "बस": "bus.mp3",
+    "नऊ": "नऊ.mp3",
+    "रस": "juice.mp3",
+    "जग": "jug.mp3",
+    "खत": "fertilizer.mp3",
+    "एक": "one.mp3",
+    "तन": "body.mp3",
+    "नभ": "sky.mp3",
+    "ढग": "cloud.mp3"
+};
 let currentLottieInstance = null;
 let starLottieInstance = null;
 let isAnswerShown = false;
+let currentAudio = null;
 
-const ANIMATION_PATH_BASE = 'Assets/JSON/'; // Adjust this path if necessary
+const ANIMATION_PATH_BASE = 'assets/JSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
 let container = document.getElementById('lottie-wrapper');
 const showAnswerBtn = document.getElementById('show-example-btn');
@@ -88,7 +113,18 @@ let lottieObject = document.getElementById('lottie-object');
 let soundIcon = document.getElementById('volume-icon');
 let instructionText = document.getElementById('instruction-text');
 let lottieStar = document.getElementById('lottie-star');
-let letterButton = document.querySelectorAll('.letter-button');/**
+let letterButton = document.querySelectorAll('.letter-button');
+
+function setNextButtonDisabled(disabled) {
+    const nextButton = document.getElementById('next-btn');
+    if (!nextButton) return;
+
+    nextButton.disabled = disabled;
+    nextButton.style.pointerEvents = disabled ? 'none' : 'auto';
+    nextButton.style.opacity = disabled ? '0.6' : '1';
+}
+
+/**
 
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
  */
@@ -144,9 +180,10 @@ function loadInitialLottie(word) {
  */
 function playLottieAnimation() {
     if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
+        setNextButtonDisabled(true);
         currentLottieInstance.goToAndStop(0, true);
         currentLottieInstance.play();
+        const animationDuration = 2000;
         setTimeout(() => {
             instructionText.textContent = "ऑडिओ ऐका आणि योग्य अक्षरे निवडून शब्द तयार करा.";
             soundIcon.style.display = 'block';
@@ -154,7 +191,8 @@ function playLottieAnimation() {
             lottieObject.setAttribute('x', 300);
             container.classList.add('no-touch');
             showAnswerBtn.disabled = false;
-        }, 2000)
+            setNextButtonDisabled(false);
+        }, animationDuration)
     }
 }
 
@@ -240,14 +278,57 @@ function getLetterAudioPath(letter) {
 }
 
 /**
+ * Stops any currently playing audio.
+ */
+function stopCurrentAudio() {
+    if (currentAudio) {
+        try {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        } catch (err) {
+            console.log("Audio stop failed:", err);
+        }
+        currentAudio = null;
+    }
+}
+
+/**
+ * Plays an audio file and stops any previous playback first.
+ */
+function playAudio(audioPath, options = {}) {
+    stopCurrentAudio();
+
+    const audio = new Audio(audioPath);
+    if (options.playbackRate !== undefined) {
+        audio.playbackRate = options.playbackRate;
+    }
+    if (options.volume !== undefined) {
+        audio.volume = options.volume;
+    }
+
+    currentAudio = audio;
+
+    audio.play().catch(err => {
+        console.log("Audio play failed:", err);
+        if (currentAudio === audio) {
+            currentAudio = null;
+        }
+    });
+
+    audio.addEventListener('ended', () => {
+        if (currentAudio === audio) {
+            currentAudio = null;
+        }
+    }, { once: true });
+}
+
+/**
  * Plays audio for a letter
  */
 function playLetterSound(letter) {
     const audioPath = getLetterAudioPath(letter);
-    console.log(letter);
     if (audioPath) {
-        const audio = new Audio(audioPath);
-        audio.play().catch(err => console.log("Audio play failed:", err));
+        playAudio(audioPath);
     }
 }
 
@@ -257,12 +338,11 @@ function playLetterSound(letter) {
 function playWordSound() {
     if (currentWord && currentWord.word) {
         const wordName = currentWord.word;
-        // Assuming your word sounds are in Assets/Audio/Word sound/word.mp3
-        const audioPath = `assets/audio/word-sound/${wordName}.mp3`;
-        const audio = new Audio(audioPath);
-        audio.playbackRate = 0.75;
-        audio.volume = 1.0;
-        audio.play().catch(err => console.log("Word audio play failed:", err));
+        const audioFile = WORD_AUDIO_MAP[wordName];
+        const audioPath = audioFile
+            ? `assets/audio/word-sound/${audioFile}`
+            : `assets/audio/word-sound/${wordName}.mp3`;
+        playAudio(audioPath, { playbackRate: 0.75, volume: 1.0 });
     }
 }
 
@@ -511,6 +591,8 @@ function shakeAnswerSlots() {
  * Resets the game with a new word
  */
 function resetSentence() {
+    stopCurrentAudio();
+    setNextButtonDisabled(true);
     document.getElementById("starLottie-wrapper").style.display="none";
     instructionText.textContent = "इमेज स्क्रैच करें और देखें इसके पीछे क्या छुपा है।";
     showAnswerBtn.textContent = "उत्तर देखें";
@@ -529,6 +611,7 @@ function resetSentence() {
     lottieStar.style.display="none";
     lottieObject.setAttribute('x', 650);
     loadWord(selectNextWord());
+    setNextButtonDisabled(false);
 }
 
 /**
@@ -536,6 +619,8 @@ function resetSentence() {
  */
 function showAnswer() {
     if (!currentWord) return;
+
+    stopCurrentAudio();
 
     // ---------------------- TOGGLE ON ----------------------
     if (!isAnswerShown) {
