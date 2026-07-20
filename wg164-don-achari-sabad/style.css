@@ -20,7 +20,7 @@
 
 #shabd-widget .container::after {
   content: "";
-  background-image: url("assets/images/bg.png");
+  background-image: url("assets/images/bg.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -134,9 +134,9 @@
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #15dcf2;
+  background: #FC97F2;
   padding: 8px 40px;
-  color: #0e3d85;
+  color: #960C7C;
   border-radius: 0 0px 20px 20px;
   white-space: nowrap;
 }
