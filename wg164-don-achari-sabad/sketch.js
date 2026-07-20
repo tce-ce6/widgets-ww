@@ -32,17 +32,17 @@ let answerSlotElements = [];
 
 // Audio mapping for letters
 const letterAudioMap = {
-    "ग": "02_ga.wav", "म": "24_ma.wav", "ण": "14_nan.wav", "न": "19_na.wav",
-    "भ": "23_bha.wav", "स": "31_s.wav", "त": "15_ta.wav", "ट": "08_ta.wav",
-    "र": "26_ra.wav", "श": "29_sha.wav", "ह": "32_ha.wav", "द": "17_da.wav",
-    "ध": "18_dah.wav", "ड": "10_dha.wav", "ड़": "11_adha.wav", "क": "00_ka.wav",
-    "ख": "01_kha.wav", "ल": "27_la.wav", "ब": "22_ba.wav", "व": "28_wa.wav",
-    "फ": "21_pha.wav", "प": "20_pa.wav", "य": "25_ya.wav", "च": "04_ch.wav",
-    "ज": "06_ja.wav", "झ": "07_jha.wav", "इ": "02_e.wav", "ष": "30_sa.wav",
-    "क्ष": "33_chha.wav", "त्र": "34_tra.wav", "ज्ञ": "35_gya.wav", "छ": "05_cha.wav",
-    "ल": "27_la.wav", "र": "26_ra.wav", "ह": "32_ha.wav", "घ": "03_gha.wav",
-    "ठ": "09_tha.wav", "ढ": "12_ddha.wav", "ढ़": "13_addha.wav", "थ": "16_tha.wav",
-    "ए": "07_ae.wav", "ळ": "36_la.wav"
+    "ग": "02_ga.mp3", "म": "24_ma.mp3", "ण": "14_nan.mp3", "न": "19_na.mp3",
+    "भ": "23_bha.mp3", "स": "31_s.mp3", "त": "15_ta.mp3", "ट": "08_t.mp3",
+    "र": "26_ra.mp3", "श": "29_sha.mp3", "ह": "32_ha.mp3", "द": "17_da.mp3",
+    "ध": "18_dah.mp3", "ड": "10_dha.mp3", "ड़": "11_adha.mp3", "क": "00_ka.mp3",
+    "ख": "01_kha.mp3", "ल": "27_la.mp3", "ब": "22_ba.mp3", "व": "28_wa.mp3",
+    "फ": "21_pha.mp3", "प": "20_pa.mp3", "य": "25_ya.mp3", "च": "04_ch.mp3",
+    "ज": "06_ja.mp3", "झ": "07_jha.mp3", "इ": "02_e.mp3", "ष": "30_sa.mp3",
+    "क्ष": "33_chha.mp3", "त्र": "34_tra.mp3", "ज्ञ": "35_gya.mp3", "छ": "05_cha.mp3",
+    "र": "26_ra.mp3", "ह": "32_ha.mp3", "घ": "03_gha.mp3",
+    "ठ": "09_tha.mp3", "ढ": "12_ddha.mp3", "ढ़": "13_addha.mp3", "थ": "16_tha.mp3",
+    "ए": "07_ae.mp3", "ळ": "36_la.mp3"
      // Assuming fallback/lowercase
 };
 
