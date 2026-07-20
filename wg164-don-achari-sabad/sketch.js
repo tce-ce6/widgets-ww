@@ -39,8 +39,8 @@ const letterAudioMap = {
     "ख": "01_kha.mp3", "ल": "27_la.mp3", "ब": "22_ba.mp3", "व": "28_wa.mp3",
     "फ": "21_pha.mp3", "प": "20_pa.mp3", "य": "25_ya.mp3", "च": "04_ch.mp3",
     "ज": "06_ja.mp3", "झ": "07_jha.mp3", "इ": "02_e.mp3", "ष": "30_sa.mp3",
-    "क्ष": "33_chha.mp3", "त्र": "34_tra.mp3", "ज्ञ": "35_gya.mp3", "छ": "05_cha.mp3",
-    "र": "26_ra.mp3", "ह": "32_ha.mp3", "घ": "03_gha.mp3",
+    "क्ष": "33_chha.mp3", "त्र": "34_tra.mp3", "ज्ञ": "35_gya.mp3", "छ": "05_cha.mp3", "उ": "08_oo.mp3", "ए": "07_ae.mp3", "आ": "01_aa.mp3", "ई": "03_ee.mp3", "ओ": "09_oh.mp3",
+    "र": "26_ra.mp3", "ह": "32_ha.mp3", "घ": "03_gha.mp3", "ऊ": "08_ooh.mp3", "आ": "01_aa.mp3", "ई": "03_ee.mp3", "ओ": "09_oh.mp3",
     "ठ": "09_tha.mp3", "ढ": "12_ddha.mp3", "ढ़": "13_addha.mp3", "थ": "16_tha.mp3",
     "ए": "07_ae.mp3", "ळ": "36_la.mp3"
      // Assuming fallback/lowercase
