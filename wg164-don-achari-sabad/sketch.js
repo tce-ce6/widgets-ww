@@ -85,7 +85,7 @@ const WORD_AUDIO_MAP = {
     "धन": "money.mp3",
     "कप": "cup.mp3",
     "बस": "bus.mp3",
-    "नऊ": "नऊ.mp3",
+    "नऊ": "nine.mp3",
     "रस": "juice.mp3",
     "जग": "jug.mp3",
     "खत": "fertilizer.mp3",
@@ -434,7 +434,7 @@ function showFinalImage() {
         lottieStar.style.display="block";
         playStarLottieAnimation();
         container.classList.add('no-touch');
-    }, 1000);
+    }, 1500);
 }
 
 
