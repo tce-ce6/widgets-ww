@@ -182,6 +182,10 @@ svg * {
   text-align: center;
 }
 
+#map-wrapper #dialogue-text strong {
+  font-weight: 800;
+}
+
 /* map ki pehchan style */
 
 .flower-list {

@@ -244,6 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
     stopFeedbackLottie('success');
     stopFeedbackLottie('incorrect');
   };
+
+  const boldDirections = (text) => {
+    return text.replace(/\b(south|east|north|west)\b/gi, (match) => `<strong>${match}</strong>`);
+  };
+
+  const showDialogue = (text) => {
+    if (!dialogueText) return;
+    dialogueText.innerHTML = boldDirections(text);
+  };
+
   const showFeedback = (correct) => {
     hideFeedback();
     if (correct && successFeedbackText) {
@@ -267,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
       element.style.opacity = '1';
       element.style.pointerEvents = 'auto';
     });
-    if (dialogueText) dialogueText.textContent = step.dialogue;
+    showDialogue(step.dialogue);
   };
 
   const resetGame = (resetSetIndex = true) => {
@@ -293,6 +303,19 @@ document.addEventListener('DOMContentLoaded', () => {
     image.setAttribute('width', size);
     image.setAttribute('height', size);
     image.style.pointerEvents = 'none';
+  };
+
+  const getDropDirectionForPoint = (point) => {
+    return Object.entries(destinationElements).find(([, element]) => {
+      const box = element.getBBox();
+      const centerX = box.x + box.width / 2;
+      const centerY = box.y + box.height / 2;
+      const dx = point.x - centerX;
+      const dy = point.y - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const maxDistance = Math.min(box.width, box.height) * 0.25;
+      return distance <= maxDistance;
+    })?.[0];
   };
 
   const continueAfterCorrect = () => {
@@ -343,10 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const drag = activeDrag;
     activeDrag = null;
     const point = svgPoint(event);
-    const droppedDirection = Object.entries(destinationElements).find(([, element]) => {
-      const box = element.getBBox();
-      return point.x >= box.x && point.x <= box.x + box.width && point.y >= box.y && point.y <= box.y + box.height;
-    })?.[0];
+    const droppedDirection = getDropDirectionForPoint(point);
     const correct = droppedDirection === currentStep().direction;
 
     if (!correct) {
