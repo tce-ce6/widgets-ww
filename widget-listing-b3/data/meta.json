@@ -1,11 +1,11 @@
 {
   "folders": {
     "wg164-don-achari-sabad": {
-      "updatedAt": "2026-07-20T19:14:03+05:30",
+      "updatedAt": "2026-07-21T17:44:19+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
-      "updatedAt": "2026-07-17T12:58:01+05:30",
+      "updatedAt": "2026-07-21T17:44:19+05:30",
       "author": "tce-ashishg"
     },
     "wg179-decentralisation-explorer": {
@@ -14,6 +14,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-07-21T17:44:19+05:30",
+      "author": "tce-ashishg",
+      "message": "wg164 & wg172 minor issues related to alignment done",
+      "widgets": [
+        164,
+        172
+      ]
+    },
     {
       "date": "2026-07-20T19:14:03+05:30",
       "author": "tce-ashishg",
@@ -452,20 +461,6 @@
       "message": "changes done",
       "widgets": [
         73
-      ]
-    },
-    {
-      "date": "2026-05-26T12:56:00+05:30",
-      "author": "tce-ashishg",
-      "message": "changes done",
-      "widgets": [
-        120,
-        121,
-        129,
-        140,
-        141,
-        145,
-        150
       ]
     }
   ]
