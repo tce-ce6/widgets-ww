@@ -29,6 +29,7 @@ let currentWord = null;
 let answerSlots = ["", ""]; // Three answer slots
 let letterButtons = [];
 let answerSlotElements = [];
+let remainingWordIndices = [];
 
 // Audio mapping for letters
 const letterAudioMap = {
@@ -249,20 +250,24 @@ function hideLottieAnimation() {
 
 
 /**
- * Selects words one by one sequentially, wrapping back to the start 
- * when the end of the list is reached.
- * @returns {object} The next word object.
+ * Selects a random word that has not been shown yet.
+ * Once all words have been used, the pool resets and the cycle begins again.
+ * @returns {object|null} The next word object.
  */
 function selectNextWord() {
-    // 1. Check if we've reached the end of the array
-    if (currentWordIndex >= words.length - 1 || currentWordIndex === null) {
-        currentWordIndex = 0; // Reset to the first word
-    } else {
-        currentWordIndex++; // Move to the next word
+    if (!words.length) {
+        return null;
     }
 
-    // 2. Select the current word
-    currentWord = words[currentWordIndex];
+    if (remainingWordIndices.length === 0) {
+        remainingWordIndices = words.map((_, index) => index);
+    }
+
+    const randomIndex = Math.floor(Math.random() * remainingWordIndices.length);
+    const selectedIndex = remainingWordIndices.splice(randomIndex, 1)[0];
+
+    currentWordIndex = selectedIndex;
+    currentWord = words[selectedIndex];
     return currentWord;
 }
 
