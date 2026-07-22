@@ -8,12 +8,24 @@
       "updatedAt": "2026-07-21T17:44:19+05:30",
       "author": "tce-ashishg"
     },
+    "wg174-opposite-word-gujrati": {
+      "updatedAt": "2026-07-22T18:56:59+05:30",
+      "author": "tce-ashishg"
+    },
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-21T19:03:25+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-22T18:56:59+05:30",
+      "author": "tce-ashishg",
+      "message": "wg174 started and completed",
+      "widgets": [
+        174
+      ]
+    },
     {
       "date": "2026-07-21T19:03:25+05:30",
       "author": "tce-ashishg",
@@ -454,14 +466,6 @@
         108,
         119,
         135
-      ]
-    },
-    {
-      "date": "2026-05-28T18:58:52+05:30",
-      "author": "tce-ashishg",
-      "message": "wg108 arrow flip error resolved",
-      "widgets": [
-        108
       ]
     }
   ]
