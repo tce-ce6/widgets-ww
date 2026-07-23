@@ -104,6 +104,8 @@ const lottieWrappers = [
 
 let lottieInstances = [null, null, null];
 let isAnswerVisible = false;
+let spinButton = null;
+let isSpinDisabled = false;
 
 /* ================= HELPERS ================= */
 
@@ -197,6 +199,7 @@ function showCorrectAnswer() {
   optionTextEls.forEach((textEl, i) => {
     if (textEl.dataset.correct === "true") {
       playLottie(i, true);
+      playCorrectAnswerAudio(textEl.dataset.audio);
     }
   });
 }
@@ -223,7 +226,7 @@ function moveSelectedSliceText(index) {
     .selectAll(".slice-text")
     .transition()
     .duration(300)
-    .style("font-size", (_, i) => (i === index ? "60px" : "50px"))
+    .style("font-size", (_, i) => (i === index ? "45px" : "40px"))
     .attr("transform", function (_, i) {
       const base = d3.select(this).attr("data-base-transform");
       return i === index ? `${base} translate(-35,10)` : base;
@@ -233,6 +236,13 @@ function moveSelectedSliceText(index) {
 /* ================= SPIN FUNCTION ================= */
 
 function spin() {
+  if (isSpinDisabled) return;
+
+  isSpinDisabled = true;
+  if (spinButton) {
+    spinButton.style("pointer-events", "none").style("opacity", 1);
+  }
+
   clearImgBoxResults();
   answerConfirmed = false;
 
@@ -328,7 +338,6 @@ function spin() {
         wheelSoundEl.style.display = "block";
       }, 500);
 
-      container.on("click", spin);
     });
 }
 
@@ -397,20 +406,18 @@ function initWheel() {
     .style("pointer-events", "none")
     .text((_, i) => data[i].word);
 
-  /* ================= SPIN CLICK ================= */
-
-  container.on("click", spin);
-
   /* ================= IMAGES ================= */
 
-  container
+  spinButton = container
     .append("image")
+    .attr("id", "spin-button")
     .attr("xlink:href", "./assets/spin-bg.svg")
     .attr("x", -50)
     .attr("y", -50)
     .attr("width", 133.5)
     .attr("height", 103.89)
-    .style("cursor", "pointer");
+    .style("cursor", "pointer")
+    .on("click", spin);
 
   container
     .insert("image", ":first-child")
@@ -418,8 +425,7 @@ function initWheel() {
     .attr("x", -372)
     .attr("y", -370)
     .attr("width", 747.79)
-    .attr("height", 747.79)
-    .style("cursor", "pointer");
+    .attr("height", 747.79);
 }
 
 /* ================= RESET WHEEL ================= */
@@ -443,6 +449,8 @@ function resetWheel() {
   showAnsBtn.textContent = "જવાબ જુઓ";
   showAnsBtn.setAttribute("disabled", "true");
   newWordBtn.removeAttribute("disabled");
+  selectedWordEl.textContent = "";
+  isSpinDisabled = false;
 
   // Reset lotties
   resetLotties();
@@ -468,6 +476,10 @@ function resetWheel() {
 
   // Recreate the wheel with new data
   initWheel();
+
+  if (spinButton) {
+    spinButton.style("pointer-events", "auto").style("opacity", 1);
+  }
 }
 
 /* ================= EVENT LISTENERS ================= */
@@ -559,7 +571,7 @@ function playCorrectAnswerAudio(audioName) {
   optionAudio.play().catch(() => {});
 }
 
-function markImgBoxResult(targetEl, isCorrect) {
+function markImgBoxResult(targetEl, isCorrect, confirmAnswer = true) {
   // 🚫 If answer not confirmed yet and user clicked wrong → do nothing
   if (!isCorrect && !answerConfirmed) {
     return;
@@ -576,9 +588,11 @@ function markImgBoxResult(targetEl, isCorrect) {
   });
 
   if (isCorrect) {
-    // ✅ Confirm answer only once
-    answerConfirmed = true;
-    showAnsBtn.setAttribute("disabled", "true");
+    if (confirmAnswer) {
+      // ✅ Confirm answer only once
+      answerConfirmed = true;
+      showAnsBtn.setAttribute("disabled", "true");
+    }
 
     // ✅ Mark correct one
     clickedBox.classList.add("correct");
@@ -593,11 +607,9 @@ function markImgBoxResult(targetEl, isCorrect) {
 }
 
 function revealAnswerByShowAns() {
-  if (answerConfirmed) return;
-
   optionImgEls.forEach((img) => {
     if (img.dataset.correct === "true") {
-      markImgBoxResult(img, true);
+      markImgBoxResult(img, true, false);
     }
   });
 }
