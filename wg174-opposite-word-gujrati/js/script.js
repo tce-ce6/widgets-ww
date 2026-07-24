@@ -21,8 +21,7 @@ const newWordBtn = document.getElementById("new-word");
 let wordAudio = null;
 let optionAudio = null;
 
-let remainingWords = [];
-let usedWords = [];
+let usedWordKeys = new Set();
 
 const spinAudio = new Audio("./assets/audio/spin-sound.mp3");
 spinAudio.loop = true; // play continuously while spinning
@@ -74,9 +73,25 @@ const ALL_DATA = [
   { word: "હાર", realWord: "30_loss", opposite: "જીત", oppositeWord: "30_win" },
 ];
 
-remainingWords = d3.shuffle(ALL_DATA.slice());
-let data = remainingWords.splice(0, 6);
-usedWords = data.slice();
+function getNextWordSet() {
+  const availableWords = ALL_DATA.filter(
+    (item) => !usedWordKeys.has(item.realWord)
+  );
+
+  const pool = availableWords.length > 0 ? availableWords : ALL_DATA.slice();
+  const shuffledPool = d3.shuffle(pool.slice());
+
+  if (availableWords.length === 0) {
+    usedWordKeys.clear();
+  }
+
+  const nextSet = shuffledPool.slice(0, 6);
+  nextSet.forEach((item) => usedWordKeys.add(item.realWord));
+
+  return nextSet;
+}
+
+let data = getNextWordSet();
 
 const optionTextEls = [
   document.getElementById("option-1"),
@@ -180,6 +195,15 @@ function resetLotties() {
   });
 }
 
+function setSpinButtonState(enabled) {
+  if (!spinButton) return;
+
+  spinButton
+    .style("pointer-events", enabled ? "auto" : "none")
+    .style("cursor", enabled ? "pointer" : "default")
+    .style("opacity", 1);
+}
+
 function playLottie(index, isCorrect) {
   resetLotties();
 
@@ -238,10 +262,14 @@ function moveSelectedSliceText(index) {
 function spin() {
   if (isSpinDisabled) return;
 
-  isSpinDisabled = true;
-  if (spinButton) {
-    spinButton.style("pointer-events", "none").style("opacity", 1);
+  if (oldpick.length === data.length) {
+    oldpick = [];
+    data = getNextWordSet();
+    rebuildWheelWithCurrentData();
   }
+
+  isSpinDisabled = true;
+  setSpinButtonState(false);
 
   clearImgBoxResults();
   answerConfirmed = false;
@@ -278,8 +306,9 @@ function spin() {
   // Fixed rotation amount - always 5 full rotations (1800 degrees) plus random position
   const fullRotations = 1800; // 5 complete rotations
   if (oldpick.length === data.length) {
-    // all words used → reset
     oldpick = [];
+    resetWheel();
+    return;
   }
 
   let randomSegment;
@@ -430,7 +459,7 @@ function initWheel() {
 
 /* ================= RESET WHEEL ================= */
 
-function resetWheel() {
+function rebuildWheelWithCurrentData() {
   spinAudio.pause();
   spinAudio.currentTime = 0;
 
@@ -463,23 +492,15 @@ function resetWheel() {
   rotation = 0;
   oldrotation = 0;
 
-  // Get new random data
-  // If not enough words left, recycle (after all are used)
-  if (remainingWords.length < 6) {
-    remainingWords = d3.shuffle(ALL_DATA.slice());
-    usedWords = [];
-  }
-
-  // Get next 6 unique words
-  data = remainingWords.splice(0, 6);
-  usedWords = usedWords.concat(data);
-
-  // Recreate the wheel with new data
+  // Recreate the wheel with current data
   initWheel();
 
-  if (spinButton) {
-    spinButton.style("pointer-events", "auto").style("opacity", 1);
-  }
+  setSpinButtonState(true);
+}
+
+function resetWheel() {
+  data = getNextWordSet();
+  rebuildWheelWithCurrentData();
 }
 
 /* ================= EVENT LISTENERS ================= */
@@ -592,6 +613,8 @@ function markImgBoxResult(targetEl, isCorrect, confirmAnswer = true) {
       // ✅ Confirm answer only once
       answerConfirmed = true;
       showAnsBtn.setAttribute("disabled", "true");
+      isSpinDisabled = false;
+      setSpinButtonState(true);
     }
 
     // ✅ Mark correct one

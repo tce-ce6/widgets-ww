@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionsData = [
     {
       firstWord: "વન",
-      firstWordSound: "../assets/audio/set-01/van-cr.mp3",
+      firstWordSound: "../assets/audio/set-01/van.mp3",
       options: [
         {
           text: "ધન",
@@ -44,17 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
           isCorrect: false,
           sound: "../assets/audio/set-01/dis-nam.mp3",
         },
-        {
-          text: "નામ",
-          isCorrect: false,
-          sound: "../assets/audio/set-01/dis-naam.mp3",
-        },
       ],
     },
 
     {
       firstWord: "નામ",
-      firstWordSound: "../assets/audio/set-02/naam-cr.mp3",
+      firstWordSound: "../assets/audio/set-02/naam.mp3",
       options: [
         {
           text: "કામ",
@@ -105,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       firstWord: "મોર",
-      firstWordSound: "../assets/audio/set-03/mor-cr.mp3",
+      firstWordSound: "../assets/audio/set-03/mor.mp3",
       options: [
         { text: "દોર", isCorrect: true, sound: "../assets/audio/set-03/rh-dor.mp3" },
         { text: "શોર", isCorrect: true, sound: "../assets/audio/set-03/rh-shor.mp3" },
@@ -120,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "રમવું",
-      firstWordSound: "../assets/audio/set-04/ramvu-cr.mp3",
+      firstWordSound: "../assets/audio/set-04/ramvu.mp3",
       options: [
         { text: "જમવું", isCorrect: true, sound: "../assets/audio/set-04/rh-jamvu.mp3" },
         { text: "કુદવું", isCorrect: true, sound: "../assets/audio/set-04/rh-kudvu.mp3" },
@@ -135,10 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "દીકરી",
-      firstWordSound: "../assets/audio/set-05/dikri-cr.mp3",
+      firstWordSound: "../assets/audio/set-05/dikri.mp3",
       options: [
         { text: "ચાકરી", isCorrect: true, sound: "../assets/audio/set-05/rh-chakri.mp3" },
-        { text: "ચકરી", isCorrect: true, sound: "../assets/audio/set-05/rh-chkari.mp3" },
+        { text: "ચકરી", isCorrect: true, sound: "../assets/audio/set-05/rh-chkri.mp3" },
         { text: "બકરી", isCorrect: true, sound: "../assets/audio/set-05/rh-bakri.mp3" },
         { text: "શકરી", isCorrect: true, sound: "../assets/audio/set-05/rh-shakri.mp3" },
         { text: "કાલ", isCorrect: false, sound: "../assets/audio/set-05/dis-kal.mp3" },
@@ -150,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "લોટો",
-      firstWordSound: "../assets/audio/set-06/loto-cr.mp3",
+      firstWordSound: "../assets/audio/set-06/loto.mp3",
       options: [
         { text: "મોટો", isCorrect: true, sound: "../assets/audio/set-06/rh-moto.mp3" },
         { text: "ખોટો", isCorrect: true, sound: "../assets/audio/set-06/rh-khoto.mp3" },
@@ -164,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "રાણી",
-      firstWordSound: "../assets/audio/set-07/rani-cr.mp3",
+      firstWordSound: "../assets/audio/set-07/rani.mp3",
       options: [
         { text: "પાણી", isCorrect: true, sound: "../assets/audio/set-07/rh-pani.mp3" },
         { text: "વાણી", isCorrect: true, sound: "../assets/audio/set-07/rh-vani.mp3" },
@@ -178,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "પંગત",
-      firstWordSound: "../assets/audio/set-08/pangat-cr.mp3",
+      firstWordSound: "../assets/audio/set-08/pangat.mp3",
       options: [
         { text: "સંગત", isCorrect: true, sound: "../assets/audio/set-08/rh-sangat.mp3" },
         { text: "રંગત", isCorrect: true, sound: "../assets/audio/set-08/rh-rangat.mp3" },
@@ -192,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     {
       firstWord: "ગાડી",
-      firstWordSound: "../assets/audio/set-09/gadi-cr.mp3",
+      firstWordSound: "../assets/audio/set-09/gadi.mp3",
       options: [
         { text: "વાડી", isCorrect: true, sound: "../assets/audio/set-09/rh-vadi.mp3" },
         { text: "સાડી", isCorrect: true, sound: "../assets/audio/set-09/rh-sadi.mp3" },
