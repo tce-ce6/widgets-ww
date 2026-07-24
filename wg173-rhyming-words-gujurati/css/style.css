@@ -171,22 +171,28 @@ svg * {
 
 /* Rhyme style  */
 
-#rhyme-wrapper .btn-container{
+#rhyme-wrapper .btn-container {
   display: flex;
   gap: 20px;
 }
-#rhyme-wrapper .btn-container img{
+
+#rhyme-wrapper .btn-container img {
   cursor: pointer;
 }
-.i-text-content{
+
+.i-text-content {
   background-color: rgba(0, 0, 0, .5);
   font-size: 27px;
   color: #fff;
   text-align: center;
-  padding: 15px 10px;
+  padding: 15px 30px;
   border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto;
+  white-space: nowrap;
 }
-.options-txt{
+
+.options-txt {
   font-size: 68px;
   color: #000;
   font-weight: 600;
@@ -199,22 +205,28 @@ svg * {
   cursor: pointer;
   height: 100%;
 }
-#firstWord-shell.active .shell-active{
+
+#firstWord-shell.active .shell-active {
   fill: #9CE80A;
 }
-.shell-bg.correct .shell-active{
+
+.shell-bg.correct .shell-active {
   fill: #9CE80A;
 }
-.shell-bg.incorrect .shell-active{
+
+.shell-bg.incorrect .shell-active {
   fill: #B9B9B8;
 }
-.shell-bg.incorrect .shell-border{
-  fill:#FF0000;
+
+.shell-bg.incorrect .shell-border {
+  fill: #FF0000;
 }
-.shell-bg.incorrect path{
+
+.shell-bg.incorrect path {
   fill: #D4D4CE;
 
 }
+
 .options-txt {
   position: relative;
 }
@@ -228,8 +240,10 @@ svg * {
   pointer-events: none;
   z-index: 5;
 }
+
 #showAns-btn.disabled {
   opacity: 0.4;
-  pointer-events: none;   /* prevents clicking */
+  pointer-events: none;
+  /* prevents clicking */
   cursor: default;
 }
