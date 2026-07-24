@@ -9,7 +9,7 @@
       "author": "tce-ashishg"
     },
     "wg173-rhyming-words-gujurati": {
-      "updatedAt": "2026-07-24T17:27:13+05:30",
+      "updatedAt": "2026-07-24T17:40:31+05:30",
       "author": "tce-ashishg"
     },
     "wg174-opposite-word-gujrati": {
@@ -22,6 +22,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-07-24T17:40:31+05:30",
+      "author": "tce-ashishg",
+      "message": "wg173 & wg174 issue resolved",
+      "widgets": [
+        173
+      ]
+    },
     {
       "date": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg",
@@ -460,14 +468,6 @@
       "date": "2026-06-02T11:31:55+05:30",
       "author": "tce-ashishg",
       "message": "numpad of wg104 corrected",
-      "widgets": [
-        104
-      ]
-    },
-    {
-      "date": "2026-06-01T16:15:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg104 issue resolved",
       "widgets": [
         104
       ]
