@@ -9,11 +9,11 @@
       "author": "tce-ashishg"
     },
     "wg173-rhyming-words-gujurati": {
-      "updatedAt": "2026-07-23T17:37:03+05:30",
+      "updatedAt": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg"
     },
     "wg174-opposite-word-gujrati": {
-      "updatedAt": "2026-07-23T17:37:03+05:30",
+      "updatedAt": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg"
     },
     "wg179-decentralisation-explorer": {
@@ -22,6 +22,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-07-24T17:27:13+05:30",
+      "author": "tce-ashishg",
+      "message": "wg173 & wg174 issue resolved",
+      "widgets": [
+        173,
+        174
+      ]
+    },
     {
       "date": "2026-07-23T17:37:03+05:30",
       "author": "tce-ashishg",
@@ -461,14 +470,6 @@
       "message": "wg104 issue resolved",
       "widgets": [
         104
-      ]
-    },
-    {
-      "date": "2026-05-29T18:45:42+05:30",
-      "author": "tce-ashishg",
-      "message": "wg119 error related to commit issue resolved",
-      "widgets": [
-        119
       ]
     }
   ]
