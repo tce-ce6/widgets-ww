@@ -351,3 +351,607 @@
       }
     ]
   }
+
+var PROBLEM_ICON_MAP = {
+  "Stray Dogs": "stray-dogs.svg",
+  "Playground": "playground.svg",
+  "Water Tank": "watertank.svg",
+  "Market Waste": "market-waste.svg",
+  "Building Without Permission": "building-without-permission.svg",
+  "Streetlights": "streetlights.svg",
+  "Shopkeeper Extortion": "shopkeeper-extortion.svg",
+  "River Pollution": "river-pollution.svg",
+  "Electricity Supply": "electricity.svg",
+  "Teacher Vacancy": "teacher-vacancy.svg",
+  "Crop Compensation": "crop-compensation.svg",
+  "Hospital Medicines": "hospital-medicines.svg",
+  "Flooding": "flooding.svg",
+  "Armed People at Border": "armed-people.svg",
+  "Currency Notes": "currency-notes.svg",
+  "Train Cancelled": "train-cancelled.svg",
+  "Postal Rates": "postal-rates.svg",
+  "Immigration Delays": "immigration.svg"
+};
+
+var ALL_PROBLEMS = getAllProblems();
+var REMAINING_PROBLEMS = [];
+var ROUNDS = [];
+var currentRound = 0;
+var selectedLetter = null;
+var assignedLetters = {};
+var deliveryEnabled = false;
+
+var ROUND_BUTTON_IDS = ['round-1-btn', 'round-2-btn'];
+var LETTER_IDS = ['letter-1', 'letter-2', 'letter-3'];
+var LETTER_BORDER_IDS = ['letter-1-border', 'letter-2-border', 'letter-3-border'];
+
+var BOX_MAP = {
+  local: 'local-box',
+  state: 'state-box',
+  central: 'central-box'
+};
+
+var BOX_LIST_PARENT = 'letter-posted-box';
+
+var BOX_ORDER = ['local', 'state', 'central'];
+
+var BOX_POSTBOX_SELECTOR = '#post-box > foreignObject';
+var BOX_LISTBOX_SELECTOR = '#letter-posted-box > foreignObject';
+
+document.addEventListener('DOMContentLoaded', initWg179);
+
+function initWg179() {
+  var startButton = document.getElementById('start-btn');
+  if (startButton) {
+    startButton.addEventListener('click', startGame);
+  }
+
+  ROUND_BUTTON_IDS.forEach(function(id, index) {
+    var btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', function() {
+        loadRound(index);
+      });
+    }
+  });
+
+  LETTER_IDS.forEach(function(id, index) {
+    var letter = document.getElementById(id);
+    if (letter) {
+      letter.addEventListener('click', function() {
+        selectLetter(index);
+      });
+    }
+  });
+
+  BOX_ORDER.forEach(function(tier) {
+    var box = document.querySelector('#post-box > foreignObject#' + tier + '-box');
+    if (box) {
+      box.addEventListener('click', function() {
+        selectBox(tier);
+      });
+    }
+  });
+
+  var deliverButton = document.getElementById('deliever-btn');
+  if (deliverButton) {
+    deliverButton.addEventListener('click', function() {
+      if (deliveryEnabled) {
+        handleDelivery();
+      }
+    });
+    setDeliveryEnabled(false);
+  }
+
+  var retryButton = document.getElementById('return-btn');
+  if (retryButton) {
+    retryButton.addEventListener('click', function() {
+      handleRetryOrRestart();
+    });
+  }
+
+  var tryMoreButton = document.getElementById('try-more-btn');
+  if (tryMoreButton) {
+    tryMoreButton.addEventListener('click', function() {
+      handleTryMore();
+    });
+  }
+}
+
+function startGame() {
+  REMAINING_PROBLEMS = shuffle(ALL_PROBLEMS.slice());
+  ROUNDS = buildRounds(2);
+  currentRound = 0;
+  assignedLetters = {};
+  selectedLetter = null;
+
+  setDisplay('intro-screen', 'none');
+  setDisplay('btn-global', 'block');
+  setDisplay('round-btn', 'block');
+  setDisplay('letters', 'block');
+  setDisplay('i-text', 'block');
+  setDisplay('letter-posted-box', 'block');
+  setDisplay('feedback-popup', 'none');
+  setDisplay('summary-popup', 'none');
+  setDisplay('i-text-feedback', 'none');
+
+  showPostedBoxes();
+  setDeliveryEnabled(false);
+  loadRound(0);
+}
+
+function setDisplay(id, value) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = value;
+  }
+}
+
+function showPostedBoxes() {
+  BOX_ORDER.forEach(function(tier) {
+    var box = document.querySelector('#letter-posted-box > foreignObject#' + tier + '-box');
+    if (box) {
+      box.style.display = 'block';
+      var items = box.querySelectorAll('.list-item');
+      items.forEach(function(item) {
+        item.style.display = 'none';
+        item.dataset.assigned = 'false';
+      });
+    }
+  });
+}
+
+function loadRound(index) {
+  if (!ROUNDS[index]) {
+    return;
+  }
+  currentRound = index;
+  selectedLetter = null;
+  assignedLetters = {};
+  clearPostedLists();
+  clearLetterBorders();
+  highlightRoundButton(index);
+  setDeliveryEnabled(false);
+
+  var currentProblems = ROUNDS[index];
+  for (var i = 0; i < LETTER_IDS.length; i++) {
+    var question = document.getElementById('question-text-' + (i + 1));
+    var icon = document.getElementById('icons-' + (i + 1));
+    var letter = document.getElementById(LETTER_IDS[i]);
+    if (question) {
+      question.textContent = currentProblems[i] ? currentProblems[i].problem : '';
+    }
+    if (icon) {
+      icon.src = currentProblems[i] ? './assets/icons/' + getProblemIconFile(currentProblems[i]) : './assets/icons/letter.svg';
+    }
+    if (letter) {
+      letter.dataset.problemIndex = i;
+      letter.dataset.assigned = 'false';
+    }
+  }
+}
+
+function buildRounds(count) {
+  var rounds = [];
+  var pool = REMAINING_PROBLEMS.slice();
+  for (var r = 0; r < count; r++) {
+    var round = chooseRoundProblems(pool);
+    if (round.length < 3) {
+      round = getRandomProblems(3);
+    }
+    rounds.push(round);
+    pool = pool.filter(function(problem) {
+      return round.indexOf(problem) === -1;
+    });
+  }
+  return rounds;
+}
+
+function chooseRoundProblems(pool) {
+  var groups = {
+    local: [],
+    state: [],
+    central: []
+  };
+  pool.forEach(function(problem) {
+    var tier = problem.correctAnswer;
+    if (groups[tier]) {
+      groups[tier].push(problem);
+    }
+  });
+
+  var distribution = getDistribution(groups);
+  var round = [];
+
+  BOX_ORDER.forEach(function(tier, index) {
+    for (var i = 0; i < distribution[index]; i++) {
+      if (groups[tier].length) {
+        var item = groups[tier].splice(Math.floor(Math.random() * groups[tier].length), 1)[0];
+        round.push(item);
+      }
+    }
+  });
+
+  if (round.length < 3) {
+    var extras = pool.slice();
+    shuffle(extras);
+    for (var j = 0; round.length < 3 && j < extras.length; j++) {
+      if (round.indexOf(extras[j]) === -1) {
+        round.push(extras[j]);
+      }
+    }
+  }
+
+  return shuffle(round);
+}
+
+function getDistribution(groups) {
+  var distributions = [
+    [3, 0, 0],
+    [0, 3, 0],
+    [0, 0, 3],
+    [2, 1, 0],
+    [2, 0, 1],
+    [1, 2, 0],
+    [0, 2, 1],
+    [1, 0, 2],
+    [0, 1, 2],
+    [1, 1, 1]
+  ];
+  var valid = distributions.filter(function(dist) {
+    return dist[0] <= groups.local.length && dist[1] <= groups.state.length && dist[2] <= groups.central.length;
+  });
+  if (!valid.length) {
+    return [1, 1, 1];
+  }
+  return valid[Math.floor(Math.random() * valid.length)];
+}
+
+function clearLetterBorders() {
+  LETTER_BORDER_IDS.forEach(function(id) {
+    var border = document.getElementById(id);
+    if (border) {
+      border.style.display = 'none';
+    }
+  });
+}
+
+function updateLetterBorders() {
+  LETTER_BORDER_IDS.forEach(function(id, index) {
+    var border = document.getElementById(id);
+    if (!border) {
+      return;
+    }
+    if (assignedLetters[index] || selectedLetter === index) {
+      border.style.display = 'block';
+    } else {
+      border.style.display = 'none';
+    }
+  });
+}
+
+function setDeliveryEnabled(enabled) {
+  deliveryEnabled = enabled;
+  var deliverButton = document.getElementById('deliever-btn');
+  if (deliverButton) {
+    if (enabled) {
+      deliverButton.classList.add('active');
+      deliverButton.style.pointerEvents = 'auto';
+      deliverButton.style.opacity = '1';
+    } else {
+      deliverButton.classList.remove('active');
+      deliverButton.style.pointerEvents = 'none';
+      deliverButton.style.opacity = '0.5';
+    }
+  }
+}
+
+function updateDeliveryButton() {
+  var assignedCount = Object.keys(assignedLetters).length;
+  setDeliveryEnabled(assignedCount === LETTER_IDS.length);
+}
+
+function handleDelivery() {
+  var roundProblems = ROUNDS[currentRound] || [];
+  var results = [];
+  var allCorrect = true;
+
+  for (var i = 0; i < LETTER_IDS.length; i++) {
+    var problem = roundProblems[i];
+    var assignedTier = assignedLetters[i];
+    var isCorrect = false;
+    var government = { status: 'returned', text: '' };
+
+    if (problem && assignedTier) {
+      isCorrect = assignedTier === problem.correctAnswer;
+      government = problem.governments[assignedTier] || government;
+    } else {
+      allCorrect = false;
+    }
+
+    if (!isCorrect) {
+      allCorrect = false;
+    }
+
+    results.push({
+      problem: problem,
+      assignedTier: assignedTier,
+      isCorrect: isCorrect,
+      government: government
+    });
+  }
+
+  renderFeedbackPopup(results, allCorrect);
+  setDisplay('feedback-popup', 'block');
+  setDisplay('summary-popup', 'none');
+}
+
+function handleRetryOrRestart() {
+  var roundProblems = ROUNDS[currentRound] || [];
+  var wrongIndexes = [];
+
+  for (var i = 0; i < LETTER_IDS.length; i++) {
+    var assignedTier = assignedLetters[i];
+    var problem = roundProblems[i];
+    if (problem && assignedTier && assignedTier !== problem.correctAnswer) {
+      wrongIndexes.push(i);
+    }
+  }
+
+  if (wrongIndexes.length === 0 && currentRound === 1) {
+    startGame();
+    return;
+  }
+
+  wrongIndexes.forEach(function(index) {
+    delete assignedLetters[index];
+    var letter = document.getElementById(LETTER_IDS[index]);
+    if (letter) {
+      letter.dataset.assigned = 'false';
+    }
+  });
+
+  selectedLetter = null;
+  clearPostedLists();
+  renderAssignedLetters();
+  updateLetterBorders();
+  updateDeliveryButton();
+  setDisplay('feedback-popup', 'none');
+  setDisplay('i-text-feedback', 'block');
+}
+
+function handleTryMore() {
+  var roundProblems = ROUNDS[currentRound] || [];
+  var allCorrect = true;
+
+  for (var i = 0; i < LETTER_IDS.length; i++) {
+    var assignedTier = assignedLetters[i];
+    var problem = roundProblems[i];
+    if (!problem || assignedTier !== problem.correctAnswer) {
+      allCorrect = false;
+      break;
+    }
+  }
+
+  if (!allCorrect) {
+    return;
+  }
+
+  if (currentRound === 0) {
+    loadRound(1);
+    setDisplay('feedback-popup', 'none');
+    setDisplay('i-text-feedback', 'none');
+  } else {
+    setDisplay('feedback-popup', 'none');
+    setDisplay('summary-popup', 'block');
+  }
+}
+
+function renderFeedbackPopup(results, allCorrect) {
+  if (typeof allCorrect !== 'boolean') {
+    allCorrect = true;
+  }
+
+  for (var i = 0; i < LETTER_IDS.length; i++) {
+    var wrapper = document.getElementById('feedback-' + (i + 1));
+    var problemSpan = document.getElementById('problem-' + (i + 1));
+    if (!wrapper || !problemSpan) {
+      continue;
+    }
+
+    var result = results[i] || { problem: null, assignedTier: null, isCorrect: false, government: { text: '' } };
+    var centerLine = wrapper.querySelector('.center-line');
+    var description = wrapper.querySelector('.feedback-box span:last-child');
+    var statusPill = wrapper.querySelector('.status-pill');
+    var icon = wrapper.querySelector('.correct-icon');
+
+    wrapper.className = 'feedback-box-wrapper ' + (result.isCorrect ? 'resolved' : 'returned');
+    problemSpan.innerHTML = result.problem ? '<strong>RE:</strong> ' + result.problem.problem : 'No letter selected.';
+    if (centerLine) {
+      centerLine.innerHTML = result.assignedTier ? 'You post this to: <strong>' + getGovernmentLabel(result.assignedTier) + '</strong>' : 'No postbox selected.';
+    }
+    if (description) {
+      description.textContent = result.government.text || 'No response available.';
+    }
+    if (statusPill) {
+      statusPill.textContent = result.isCorrect ? 'Resolved' : 'Returned';
+    }
+    if (icon) {
+      icon.src = result.isCorrect ? './assets/icons/correct-icon.svg' : './assets/icons/wrong-icon.svg';
+    }
+
+    if (!result.isCorrect) {
+      allCorrect = false;
+    }
+  }
+
+  var retryButton = document.getElementById('return-btn');
+  var tryMoreButton = document.getElementById('try-more-btn');
+  if (allCorrect) {
+    if (currentRound === 1) {
+      if (retryButton) {
+        retryButton.style.display = 'inline-block';
+        retryButton.textContent = 'Restart';
+      }
+      if (tryMoreButton) {
+        tryMoreButton.style.display = 'inline-block';
+        tryMoreButton.textContent = 'Summary';
+      }
+    } else {
+      if (retryButton) {
+        retryButton.style.display = 'none';
+      }
+      if (tryMoreButton) {
+        tryMoreButton.style.display = 'inline-block';
+        tryMoreButton.textContent = 'Continue';
+      }
+    }
+  } else {
+    if (retryButton) {
+      retryButton.style.display = 'inline-block';
+      retryButton.textContent = 'Post the returned letters again';
+    }
+    if (tryMoreButton) {
+      tryMoreButton.style.display = 'none';
+    }
+  }
+}
+
+function renderAssignedLetters() {
+  var roundProblems = ROUNDS[currentRound] || [];
+  Object.keys(assignedLetters).forEach(function(key) {
+    var index = parseInt(key, 10);
+    var tier = assignedLetters[index];
+    var problem = roundProblems[index];
+    if (tier && problem) {
+      addProblemToBoxList(tier, problem);
+    }
+  });
+}
+
+function getGovernmentLabel(tier) {
+  if (tier === 'local') {
+    return 'Local Government';
+  }
+  if (tier === 'state') {
+    return 'State Government';
+  }
+  if (tier === 'central') {
+    return 'Central Government';
+  }
+  return 'Government';
+}
+
+function selectLetter(index) {
+  if (assignedLetters[index]) {
+    return;
+  }
+  selectedLetter = index;
+  updateLetterBorders();
+}
+
+function selectBox(tier) {
+  if (selectedLetter === null) {
+    return;
+  }
+  var roundProblems = ROUNDS[currentRound] || [];
+  var problem = roundProblems[selectedLetter];
+  if (!problem) {
+    return;
+  }
+  assignedLetters[selectedLetter] = tier;
+  var letter = document.getElementById(LETTER_IDS[selectedLetter]);
+  if (letter) {
+    letter.dataset.assigned = 'true';
+  }
+  addProblemToBoxList(tier, problem);
+  selectedLetter = null;
+  updateLetterBorders();
+  updateDeliveryButton();
+}
+
+function addProblemToBoxList(tier, problem) {
+  var box = document.querySelector('#letter-posted-box > foreignObject#' + tier + '-box');
+  if (!box) {
+    return;
+  }
+  box.style.display = 'block';
+  var items = box.querySelectorAll('.list-item');
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    if (item.dataset.assigned !== 'true') {
+      var icon = item.querySelector('.box-icons');
+      if (icon) {
+        icon.src = './assets/icons/' + getProblemIconFile(problem);
+      }
+      item.style.display = 'flex';
+      item.dataset.assigned = 'true';
+      break;
+    }
+  }
+}
+
+function clearPostedLists() {
+  BOX_ORDER.forEach(function(tier) {
+    var box = document.querySelector('#letter-posted-box > foreignObject#' + tier + '-box');
+    if (box) {
+      var items = box.querySelectorAll('.list-item');
+      items.forEach(function(item) {
+        item.style.display = 'none';
+        item.dataset.assigned = 'false';
+      });
+    }
+  });
+}
+
+function highlightRoundButton(index) {
+  ROUND_BUTTON_IDS.forEach(function(id, idx) {
+    var btn = document.getElementById(id);
+    if (btn) {
+      if (idx === index) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+  });
+}
+
+function getRandomProblems(count) {
+  var copy = ALL_PROBLEMS.slice();
+  shuffle(copy);
+  return copy.slice(0, count);
+}
+
+function getAllProblems() {
+  var list = [];
+  for (var tier in PROBLEMS) {
+    if (Array.isArray(PROBLEMS[tier])) {
+      for (var i = 0; i < PROBLEMS[tier].length; i++) {
+        list.push(PROBLEMS[tier][i]);
+      }
+    }
+  }
+  return list;
+}
+
+function getProblemIconFile(problem) {
+  if (!problem || !problem.name) {
+    return 'letter.svg';
+  }
+  return PROBLEM_ICON_MAP[problem.name] || getProblemIconFromName(problem.name);
+}
+
+function getProblemIconFromName(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') + '.svg';
+}
+
+function shuffle(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
