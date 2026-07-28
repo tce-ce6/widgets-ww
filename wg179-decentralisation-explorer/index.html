@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Who Solves This Problem? - Decentralisation Explorer</h2>
-        <span id="versionId" class="versionText">b4_wg179_260727_01</span>
+        <span id="versionId" class="versionText">b4_wg179_260728_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
@@ -1803,7 +1803,7 @@
                 </text>
               </g>
             </g>
-            <g id="round-2-btn" class="st205" style="cursor: pointer">
+            <g id="round-2-btn" class="st205" style="cursor: pointer; opacity: 0.5;">
               <rect id="Rectangle_172-2" class="st361" x="975" y="143" width="145" height="60" rx="16" ry="16" />
               <g id="Round_2" class="st24">
                 <text class="st32" transform="translate(995.84 183)">
@@ -2021,13 +2021,13 @@
             </g>
           </g>
           <g id="summary-popup" class="st282" style="display: none;">
-            <foreignObject id="summary" x="90" y="80" width="17450" height="940">
-              <div id="svg-content">
+            <foreignObject id="summary" x="90" y="80" width="1740" height="940" style="overflow: visible;">
+              <div id="svg-content" class="summary-content">
                 <img src="./assets/images/summary.svg" alt="">
+                <div id="summary-tryMore-btn" class="feedback-btn-wrapper" style="transform: translate(-99px, -10px);">
+                    <button class="common-btn blue">Try More</button>
+                  </div>
               </div>
-              <div class="feedback-btn-wrapper">
-                  <button id="summary-restart-btn" class="common-btn orange">Restart</button>
-                </div>
             </foreignObject>
           </g>
         </svg>

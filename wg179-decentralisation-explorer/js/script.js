@@ -140,7 +140,7 @@
       {
         "name": "River Pollution",
         "problem": "River flowing through the area heavily polluted. Dead fish floating on the surface.",
-          
+        "correctAnswer": "state",
         "governments": {
           "local": {
             "status": "returned",
@@ -375,6 +375,7 @@ var PROBLEM_ICON_MAP = {
 
 var ALL_PROBLEMS = getAllProblems();
 var REMAINING_PROBLEMS = [];
+var USED_PROBLEM_KEYS = {};
 var ROUNDS = [];
 var currentRound = 0;
 var selectedLetter = null;
@@ -405,15 +406,6 @@ function initWg179() {
   if (startButton) {
     startButton.addEventListener('click', startGame);
   }
-
-  ROUND_BUTTON_IDS.forEach(function(id, index) {
-    var btn = document.getElementById(id);
-    if (btn) {
-      btn.addEventListener('click', function() {
-        loadRound(index);
-      });
-    }
-  });
 
   LETTER_IDS.forEach(function(id, index) {
     var letter = document.getElementById(id);
@@ -456,11 +448,17 @@ function initWg179() {
       handleTryMore();
     });
   }
+
+  var summaryTryMoreButton = document.querySelector('#summary-tryMore-btn .common-btn');
+  if (summaryTryMoreButton) {
+    summaryTryMoreButton.addEventListener('click', handleSummaryButton);
+  }
 }
 
 function startGame() {
-  REMAINING_PROBLEMS = shuffle(ALL_PROBLEMS.slice());
+  REMAINING_PROBLEMS = getAvailableProblemsPool();
   ROUNDS = buildRounds(2);
+  markProblemsAsUsed(ROUNDS);
   currentRound = 0;
   assignedLetters = {};
   selectedLetter = null;
@@ -478,6 +476,24 @@ function startGame() {
   showPostedBoxes();
   setDeliveryEnabled(false);
   loadRound(0);
+}
+
+function showIntroScreen() {
+  currentRound = 0;
+  assignedLetters = {};
+  selectedLetter = null;
+  USED_PROBLEM_KEYS = {};
+  clearPostedLists();
+  clearLetterBorders();
+  setDisplay('intro-screen', 'block');
+  setDisplay('btn-global', 'none');
+  setDisplay('round-btn', 'none');
+  setDisplay('letters', 'none');
+  setDisplay('i-text', 'none');
+  setDisplay('letter-posted-box', 'none');
+  setDisplay('feedback-popup', 'none');
+  setDisplay('summary-popup', 'none');
+  setDisplay('i-text-feedback', 'none');
 }
 
 function setDisplay(id, value) {
@@ -512,6 +528,8 @@ function loadRound(index) {
   clearLetterBorders();
   highlightRoundButton(index);
   setDeliveryEnabled(false);
+  setDisplay('i-text', 'block');
+  setDisplay('i-text-feedback', 'none');
 
   var currentProblems = ROUNDS[index];
   for (var i = 0; i < LETTER_IDS.length; i++) {
@@ -684,6 +702,8 @@ function handleDelivery() {
   renderFeedbackPopup(results, allCorrect);
   setDisplay('feedback-popup', 'block');
   setDisplay('summary-popup', 'none');
+  setDisplay('round-btn', 'none');
+  setDisplay('i-text', 'none');
 }
 
 function handleRetryOrRestart() {
@@ -717,7 +737,9 @@ function handleRetryOrRestart() {
   updateLetterBorders();
   updateDeliveryButton();
   setDisplay('feedback-popup', 'none');
-  setDisplay('i-text-feedback', 'block');
+  setDisplay('i-text-feedback', 'none');
+  setDisplay('i-text', 'block');
+  setDisplay('round-btn', 'block');
 }
 
 function handleTryMore() {
@@ -741,9 +763,20 @@ function handleTryMore() {
     loadRound(1);
     setDisplay('feedback-popup', 'none');
     setDisplay('i-text-feedback', 'none');
+    setDisplay('round-btn', 'block');
   } else {
     setDisplay('feedback-popup', 'none');
     setDisplay('summary-popup', 'block');
+    setDisplay('round-btn', 'none');
+    updateSummaryButtonLabel();
+  }
+}
+
+function handleSummaryButton() {
+  if (hasUnusedProblems()) {
+    startGame();
+  } else {
+    showIntroScreen();
   }
 }
 
@@ -787,6 +820,9 @@ function renderFeedbackPopup(results, allCorrect) {
 
   var retryButton = document.getElementById('return-btn');
   var tryMoreButton = document.getElementById('try-more-btn');
+  var showFeedbackHint = !allCorrect;
+  setDisplay('i-text-feedback', showFeedbackHint ? 'block' : 'none');
+  setDisplay('i-text', showFeedbackHint ? 'none' : 'block');
   if (allCorrect) {
     if (currentRound === 1) {
       if (retryButton) {
@@ -907,13 +943,81 @@ function clearPostedLists() {
 function highlightRoundButton(index) {
   ROUND_BUTTON_IDS.forEach(function(id, idx) {
     var btn = document.getElementById(id);
-    if (btn) {
-      if (idx === index) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+    if (!btn) {
+      return;
     }
+
+    // Round labels are progress indicators, not navigation controls.
+    btn.style.pointerEvents = 'none';
+    btn.style.cursor = 'default';
+    btn.setAttribute('aria-disabled', 'true');
+
+    if (idx === index) {
+      btn.classList.add('active');
+      btn.classList.remove('round-btn-disabled');
+      btn.style.opacity = '1';
+    } else {
+      btn.classList.remove('active');
+      btn.classList.add('round-btn-disabled');
+      btn.style.opacity = '0.45';
+    }
+  });
+}
+
+function getAvailableProblemsPool() {
+  var pool = [];
+  ALL_PROBLEMS.forEach(function(problem) {
+    if (problem && problem.name && !USED_PROBLEM_KEYS[problem.name]) {
+      pool.push(problem);
+    }
+  });
+
+  if (!pool.length) {
+    USED_PROBLEM_KEYS = {};
+    pool = ALL_PROBLEMS.slice();
+  }
+
+  return shuffle(pool);
+}
+
+function hasUnusedProblems() {
+  for (var i = 0; i < ALL_PROBLEMS.length; i++) {
+    var problem = ALL_PROBLEMS[i];
+    if (problem && problem.name && !USED_PROBLEM_KEYS[problem.name]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function updateSummaryButtonLabel() {
+  var summaryButton = document.querySelector('#summary-tryMore-btn .common-btn');
+  if (!summaryButton) {
+    return;
+  }
+  const hasUnused = hasUnusedProblems();
+
+  summaryButton.textContent = hasUnused ? 'Try More' : 'Restart';
+
+  if (hasUnused) {
+    summaryButton.classList.remove('orange');
+    summaryButton.classList.add('blue');
+  } else {
+    summaryButton.classList.remove('blue');
+    summaryButton.classList.add('orange');
+  }
+}
+
+function markProblemsAsUsed(rounds) {
+  rounds.forEach(function(round) {
+    if (!Array.isArray(round)) {
+      return;
+    }
+    round.forEach(function(problem) {
+      if (problem && problem.name) {
+        USED_PROBLEM_KEYS[problem.name] = true;
+      }
+    });
   });
 }
 

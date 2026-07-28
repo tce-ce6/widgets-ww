@@ -515,6 +515,10 @@ position: absolute;
   left: 50%;
   transform: translateX(-50%);  
 }
+#map-wrapper .round-btn-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
 .common-btn{
   padding: 30px 50px;
   border-radius: 50px;
