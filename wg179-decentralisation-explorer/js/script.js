@@ -455,6 +455,16 @@ function initWg179() {
   }
 }
 
+function setPostBoxesInteractive(enabled) {
+  BOX_ORDER.forEach(function(tier) {
+    var box = document.querySelector('#post-box > foreignObject#' + tier + '-box');
+    if (box) {
+      box.style.cursor = enabled ? 'pointer' : 'none';
+      box.style.pointerEvents = enabled ? 'auto' : 'none';
+    }
+  });
+}
+
 function startGame() {
   REMAINING_PROBLEMS = getAvailableProblemsPool();
   ROUNDS = buildRounds(2);
@@ -473,6 +483,7 @@ function startGame() {
   setDisplay('summary-popup', 'none');
   setDisplay('i-text-feedback', 'none');
 
+  setPostBoxesInteractive(true);
   showPostedBoxes();
   setDeliveryEnabled(false);
   loadRound(0);
@@ -485,6 +496,7 @@ function showIntroScreen() {
   USED_PROBLEM_KEYS = {};
   clearPostedLists();
   clearLetterBorders();
+  setPostBoxesInteractive(false);
   setDisplay('intro-screen', 'block');
   setDisplay('btn-global', 'none');
   setDisplay('round-btn', 'none');
