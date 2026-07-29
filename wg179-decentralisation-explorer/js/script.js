@@ -702,6 +702,7 @@ function handleDelivery() {
   renderFeedbackPopup(results, allCorrect);
   setDisplay('feedback-popup', 'block');
   setDisplay('summary-popup', 'none');
+  setDisplay('btn-global', 'none');
   setDisplay('round-btn', 'none');
   setDisplay('i-text', 'none');
 }
@@ -739,6 +740,7 @@ function handleRetryOrRestart() {
   setDisplay('feedback-popup', 'none');
   setDisplay('i-text-feedback', 'none');
   setDisplay('i-text', 'block');
+  setDisplay('btn-global', 'block');
   setDisplay('round-btn', 'block');
 }
 
@@ -763,10 +765,12 @@ function handleTryMore() {
     loadRound(1);
     setDisplay('feedback-popup', 'none');
     setDisplay('i-text-feedback', 'none');
+    setDisplay('btn-global', 'block');
     setDisplay('round-btn', 'block');
   } else {
     setDisplay('feedback-popup', 'none');
     setDisplay('summary-popup', 'block');
+    setDisplay('btn-global', 'none');
     setDisplay('round-btn', 'none');
     updateSummaryButtonLabel();
   }
