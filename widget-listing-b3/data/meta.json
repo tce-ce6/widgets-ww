@@ -25,11 +25,19 @@
       "author": "tce-ashishg"
     },
     "wg179-decentralisation-explorer": {
-      "updatedAt": "2026-07-28T19:15:16+05:30",
+      "updatedAt": "2026-07-29T12:06:05+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-29T12:06:05+05:30",
+      "author": "tce-ashishg",
+      "message": "wg179 issue resolved",
+      "widgets": [
+        179
+      ]
+    },
     {
       "date": "2026-07-28T19:15:16+05:30",
       "author": "tce-ashishg",
@@ -468,15 +476,6 @@
       "message": "wg119 congratulation panel error resolved",
       "widgets": [
         119
-      ]
-    },
-    {
-      "date": "2026-06-15T16:20:08+05:30",
-      "author": "tce-ashishg",
-      "message": "minor changes to UI",
-      "widgets": [
-        119,
-        143
       ]
     }
   ]
