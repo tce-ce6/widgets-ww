@@ -1,0 +1,102 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gears</title>
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="map-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Gears</h2>
+        <span id="versionId" class="versionText">b4_wg160_260729_01</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <foreignObject width="1920" height="1080">
+          <div class="app">
+
+            <main class="stage">
+              <svg class="canvas" id="svg" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet"
+                aria-label="Gear canvas">
+                <defs>
+                  <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
+                    <path d="M26 0H0V26" fill="none" stroke="var(--paper-line)" stroke-width="1" />
+                  </pattern>
+                  <pattern id="grid5" width="130" height="130" patternUnits="userSpaceOnUse">
+                    <rect width="130" height="130" fill="url(#grid)" />
+                    <path d="M130 0H0V130" fill="none" stroke="var(--paper-line-strong)" stroke-width="1.2" />
+                  </pattern>
+                </defs>
+                <rect x="0" y="0" width="900" height="620" fill="url(#grid5)" />
+                <g id="layer"></g>
+              </svg>
+              <div class="empty-hint" id="emptyHint"><span>Add a gear to begin — the first one drives the train.</span>
+              </div>
+              <div class="status" id="status"><span class="dot"></span><span id="statusText">No gears yet.</span></div>
+            </main>
+
+            <aside>
+              <div class="group">
+                <div class="lbl">Build</div>
+                <div class="row">
+                  <button class="btn primary" id="addBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round">
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
+                    Add gear
+                  </button>
+                </div>
+                <div class="row">
+                  <button class="btn ghost-danger" id="clearBtn">Clear canvas</button>
+                </div>
+              </div>
+
+              <div class="group">
+                <div class="lbl">Run</div>
+                <button class="btn run" id="runBtn" disabled>
+                  <svg viewBox="0 0 24 24" fill="currentColor" id="runIcon">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  <span id="runLabel">Run</span>
+                </button>
+                <div class="toggle" id="speedToggle">
+                  <div class="t-lbl">Speed<small>Show each gear's speed</small></div>
+                  <div class="switch"></div>
+                </div>
+              </div>
+
+              <div class="group">
+                <div class="lbl">Selected gear</div>
+                <div class="inspector" id="inspector">
+                  <div class="insp-empty">Click a gear on the canvas to change its teeth or remove it.</div>
+                </div>
+              </div>
+
+              <div class="help">
+                <b>How it works</b><br>
+                Drag a gear so its rim touches another — they snap and mesh, spinning opposite ways. Drop a gear onto
+                another's centre to stack them on one axle (a compound gear), spinning together.
+                <div class="leg"><i class="mesh"></i> meshed — opposite directions</div>
+                <div class="leg"><i class="comp"></i> compound — same axle, same speed</div>
+              </div>
+            </aside>
+          </div>
+          </foreignObject>
+        </svg>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
