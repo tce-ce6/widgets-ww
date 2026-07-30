@@ -236,7 +236,6 @@ svg * {
   cursor: pointer;
   transition: transform .2s ease, background-color .3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, .15);
-  border: 5px solid green;
   height: 205px;
   width: 342px;
 }
@@ -251,19 +250,18 @@ svg * {
 
 .card-txt.disabled {
   pointer-events: none;
-  opacity: .6;
 }
 
 .feedback-lottie {
   position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 60px;
-  height: 60px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
+    top: -42px;
+    right: -44px;
+    width: 80px;
+    height: 80px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
 }
 
 .feedback-lottie.active {
