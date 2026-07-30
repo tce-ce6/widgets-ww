@@ -29,19 +29,29 @@
               </mask>
               <g mask="url(#mask0_5016_123)">
                 <g id="Web 1920 â€“ 1">
-                  <foreignObject x="533" y="101" width="854.07" height="80.33" style="overflow: visible;">
+                  <foreignObject class="content-wrapper" x="503" y="101" width="854.07" height="80.33" style="overflow: visible;">
                     <img src="./assets/title-bg.svg" alt="">
                     <p id="phrase" class="phrase-text"></p>
                     <p id="itext" class="itext">वाक्यांश सुनें, फिर नीचे कार्ड खोलें</p>
                   </foreignObject>
-                  <foreignObject x="504" y="97" width="90" height="90">
+                  <foreignObject class="content-wrapper" x="484" y="97" width="90" height="90">
                     <img src="./assets/sound-btn.svg" alt="वाक्यांश सुनें" id="sound-btn" onclick="playPhraseAudio()" style="cursor:pointer;">
                   </foreignObject>
 
-                  <foreignObject x="223" y="322" width="1436.8" height="560.66">
+                  <foreignObject class="content-wrapper" x="1500" y="40" width="380" height="100" style="overflow: visible;">
+                    <div class="progress-wrap">
+                      <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                        <div class="progress-knob" id="progressKnob"></div>
+                      </div>
+                    </div>
+                    <div class="progress-label" id="progressLabel">1 of 30</div>
+                  </foreignObject>
+
+                  <foreignObject class="content-wrapper" x="223" y="322" width="1436.8" height="560.66">
                     <div id="card-lottie"></div>
                   </foreignObject>
-                  <foreignObject x="223" y="322" width="1436.8" height="560.66" id="card-container">
+                  <foreignObject class="content-wrapper" x="223" y="322" width="1436.8" height="560.66" id="card-container">
                     <div class="card-txt-wrapper">
                       <div class="card-txt" id="option-1">
                         <span class="card-txt-word"></span>
@@ -69,6 +79,23 @@
                       </div>
                     </div>
                   </foreignObject>
+
+                  <foreignObject x="714.01" y="190" width="526" height="811.35" id="resul-wrapper" style="display:none;">
+                    <div>
+                      <img class="trophy-img" src="./assets/award.png" alt="">
+                      <div class="all-correct hidden" id="all-correct">
+                        <p class="game-complete">खेल पूरा हुआ !</p>
+                        <p class="game-over-btn mb-20">100% उत्कृष्ट! सभी सही!</p>
+                        <button class="game-over-btn play-again" onclick="restartGame()">फिर से खेलें</button>
+                      </div>
+
+                      <div class="all-not-corret hidden" id="all-not-corret">
+                        <p class="game-complete">खेल पूरा हुआ !</p>
+                        <p class="text-wrapper mb-20"><span id="result-numbers">40%</span> से कमः निराश मत हो, फिर से कोशिश करो!</p>
+                        <button class="game-over-btn play-again" onclick="restartGame()">फिर से खेलें</button>
+                      </div>
+                    </div>
+                  </foreignObject>
                 </g>
               </g>
             </g>
@@ -87,7 +114,7 @@
             this.style.outline = '3px solid #4caf50';
             this.style.outlineOffset = '3px';
             " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
-            अन्य विकल्प
+            फिर से प्रयास करें
           </button>
 
           <button class="btn btn-primary" id="next-btn" style="background-color:#1e6bef; color:white;"
