@@ -63,6 +63,7 @@
 
                         <div class="bubble-zone" id="bubbleZone">
                           <div id="lottieContainer" class="lottie-container"></div>
+                          <div id="bubbleLottieContainer" class="lottie-container"></div>
                           <div class="result-overlay result-correct" id="correctOverlay">
                             <div class="img-reveal placeholder" id="correctImg">
                               <img id="role-image" src="./assets/image/badhai.svg" alt="">
@@ -84,27 +85,8 @@
                       </div>
 
                       <div id="endScreen" class="hidden game-end">
-                        <div class="end-stars">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-                          </svg>
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-                          </svg>
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-                          </svg>
-                        </div>
                         <div class="end-title">खेल पूरा हुआ!</div>
-                        <div class="end-score" id="endScore"></div>
                         <button class="btn-replay" onclick="restartGame()">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
-                          </svg>
                           फिर से खेलें
                         </button>
                       </div>
@@ -122,7 +104,6 @@
       
     </div>
   </div>
-  <script src="./js/spin.js"></script>
 
   <script src="./js/lottie.min.js"></script>
   <script src="./js/script.js"></script>
