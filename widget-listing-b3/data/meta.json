@@ -1,5 +1,9 @@
 {
   "folders": {
+    "wg162-shabda-bhandar": {
+      "updatedAt": "2026-07-28T18:36:07+05:30",
+      "author": "tce-nitinc"
+    },
     "wg164-don-akshari-shabad": {
       "updatedAt": "2026-07-21T19:03:25+05:30",
       "author": "tce-ashishg"
@@ -13,19 +17,44 @@
       "author": "tce-ashishg"
     },
     "wg173-rhyming-words-gujurati": {
-      "updatedAt": "2026-07-24T17:43:27+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-07-28T18:36:07+05:30",
+      "author": "tce-nitinc"
     },
     "wg174-opposite-word-gujrati": {
       "updatedAt": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg"
     },
     "wg179-decentralisation-explorer": {
-      "updatedAt": "2026-07-28T14:38:00+05:30",
+      "updatedAt": "2026-07-29T12:06:05+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-29T12:06:05+05:30",
+      "author": "tce-ashishg",
+      "message": "wg179 issue resolved",
+      "widgets": [
+        179
+      ]
+    },
+    {
+      "date": "2026-07-28T19:15:16+05:30",
+      "author": "tce-ashishg",
+      "message": "wg179 error resolved",
+      "widgets": [
+        179
+      ]
+    },
+    {
+      "date": "2026-07-28T18:36:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg162 changes",
+      "widgets": [
+        162,
+        173
+      ]
+    },
     {
       "date": "2026-07-28T17:32:09+05:30",
       "author": "tce-ashishg",
@@ -447,32 +476,6 @@
       "message": "wg119 congratulation panel error resolved",
       "widgets": [
         119
-      ]
-    },
-    {
-      "date": "2026-06-15T16:20:08+05:30",
-      "author": "tce-ashishg",
-      "message": "minor changes to UI",
-      "widgets": [
-        119,
-        143
-      ]
-    },
-    {
-      "date": "2026-06-12T19:19:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg119 audio added",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-06-12T18:03:18+05:30",
-      "author": "tce-ashishg",
-      "message": "wg143 issue resolved",
-      "widgets": [
-        70,
-        143
       ]
     }
   ]
