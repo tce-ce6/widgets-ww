@@ -1,7 +1,15 @@
 {
   "folders": {
+    "wg160-gears": {
+      "updatedAt": "2026-07-29T19:38:06+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg161-where-does-my-food-go": {
+      "updatedAt": "2026-07-29T19:38:06+05:30",
+      "author": "tce-ashishg"
+    },
     "wg162-shabda-bhandar": {
-      "updatedAt": "2026-07-28T18:36:07+05:30",
+      "updatedAt": "2026-07-30T14:42:44+05:30",
       "author": "tce-nitinc"
     },
     "wg164-don-akshari-shabad": {
@@ -24,12 +32,59 @@
       "updatedAt": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg"
     },
+    "wg176-vakyansh-se-shabda-tak": {
+      "updatedAt": "2026-07-30T14:47:49+05:30",
+      "author": "tce-nitinc"
+    },
     "wg179-decentralisation-explorer": {
-      "updatedAt": "2026-07-29T12:06:05+05:30",
+      "updatedAt": "2026-07-30T12:35:29+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-30T14:42:44+05:30",
+      "author": "tce-nitinc",
+      "message": "added 162 changes",
+      "widgets": [
+        162,
+        176
+      ]
+    },
+    {
+      "date": "2026-07-30T13:03:02+05:30",
+      "author": "tce-nitinc",
+      "message": "added 176",
+      "widgets": [
+        162,
+        176
+      ]
+    },
+    {
+      "date": "2026-07-30T12:35:29+05:30",
+      "author": "tce-ashishg",
+      "message": "wg179 issue resolved",
+      "widgets": [
+        179
+      ]
+    },
+    {
+      "date": "2026-07-30T12:28:40+05:30",
+      "author": "tce-nitinc",
+      "message": "added wg162",
+      "widgets": [
+        162
+      ]
+    },
+    {
+      "date": "2026-07-29T19:38:06+05:30",
+      "author": "tce-ashishg",
+      "message": "wg161 started",
+      "widgets": [
+        160,
+        161
+      ]
+    },
     {
       "date": "2026-07-29T12:06:05+05:30",
       "author": "tce-ashishg",
@@ -436,46 +491,6 @@
         157,
         158,
         159
-      ]
-    },
-    {
-      "date": "2026-06-26T12:47:37+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        77
-      ]
-    },
-    {
-      "date": "2026-06-26T12:45:22+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        77
-      ]
-    },
-    {
-      "date": "2026-06-19T18:48:38+05:30",
-      "author": "tce-ashishg",
-      "message": "minnor issue related to text resolved",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-06-18T16:01:22+05:30",
-      "author": "tce-ashishg",
-      "message": "wg119 issue related to final panel done",
-      "widgets": [
-        119
-      ]
-    },
-    {
-      "date": "2026-06-15T18:06:47+05:30",
-      "author": "tce-ashishg",
-      "message": "wg119 congratulation panel error resolved",
-      "widgets": [
-        119
       ]
     }
   ]

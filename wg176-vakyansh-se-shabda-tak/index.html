@@ -1,0 +1,111 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>एक शब्द बताओ</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="shabda-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>वाक्यांश से शब्द तक</h2>
+        <span id="versionId" class="versionText">b4_wg176_260730</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g id="Web 1920 â 1 1" clip-path="url(#clip0_5016_123)">
+            <g id="Clip path group">
+              <mask id="mask0_5016_123" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1920"
+                height="1080">
+                <g id="clip-Web_1920_1">
+                  <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="white" />
+                </g>
+              </mask>
+              <g mask="url(#mask0_5016_123)">
+                <g id="Web 1920 â€“ 1">
+                  <foreignObject x="533" y="101" width="854.07" height="80.33" style="overflow: visible;">
+                    <img src="./assets/title-bg.svg" alt="">
+                    <p id="phrase" class="phrase-text"></p>
+                    <p id="itext" class="itext">वाक्यांश सुनें, फिर नीचे कार्ड खोलें</p>
+                  </foreignObject>
+                  <foreignObject x="504" y="97" width="90" height="90">
+                    <img src="./assets/sound-btn.svg" alt="वाक्यांश सुनें" id="sound-btn" onclick="playPhraseAudio()" style="cursor:pointer;">
+                  </foreignObject>
+
+                  <foreignObject x="223" y="322" width="1436.8" height="560.66">
+                    <div id="card-lottie"></div>
+                  </foreignObject>
+                  <foreignObject x="223" y="322" width="1436.8" height="560.66" id="card-container">
+                    <div class="card-txt-wrapper">
+                      <div class="card-txt" id="option-1">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-2">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-3">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-4">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-5">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-6">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                    </div>
+                  </foreignObject>
+                </g>
+              </g>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <button class="btn" id="show-example-btn" style="background-color:#4caf50; color:white;" disabled
+            onclick="retryOptions()" onfocus="
+            document.querySelectorAll('.btn').forEach(b=> {
+            b.style.outline = 'none';
+            b.style.outlineOffset = '0';
+            });
+            this.style.outline = '3px solid #4caf50';
+            this.style.outlineOffset = '3px';
+            " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            अन्य विकल्प
+          </button>
+
+          <button class="btn btn-primary" id="next-btn" style="background-color:#1e6bef; color:white;"
+            onclick="resetSentence()" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #1e6bef';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">अगला वाक्यांश</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

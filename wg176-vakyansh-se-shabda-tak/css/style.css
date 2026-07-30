@@ -1,0 +1,269 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#shabda-wrapper body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#shabda-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#shabda-wrapper .container::after {
+  content: "";
+  background-image: url("./../assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.role-img {
+  width: 100%;
+  height: auto;
+}
+
+#shabda-wrapper .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#shabda-wrapper .d-flex {
+  display: flex
+}
+
+#shabda-wrapper .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#shabda-wrapper .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#shabda-wrapper .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #shabda-wrapper .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+.bubble.wrong::before {
+  content: "";
+  background: #ff002682 !important;
+  border: 11px solid #ff0000 !important;
+  color: #C62828 !important;
+  height: 242px;
+  width: 252px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+#shabda-wrapper .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+
+#shabda-wrapper .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabda-wrapper .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#shabda-wrapper .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabda-wrapper .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#shabda-wrapper .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#shabda-wrapper .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #006BAD;
+  white-space: nowrap;
+}
+
+#shabda-wrapper .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
+}
+
+#shabda-wrapper .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#shabda-wrapper svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+/* shabda style  */
+
+.phrase-text {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  font-size: 40px;
+  padding-left: 80px;
+  color: #000;
+}
+
+.itext {
+  position: absolute;
+  top: 125px;
+  width: 1390px;
+  font-size: 35px;
+  color: #fff;
+  left: -270px;
+  text-align: center;
+}
+
+#card-lottie {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.card-txt-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 43px 65px;
+  padding: 53px 145px 55px 125px;
+  flex-wrap: wrap;
+
+}
+
+.card-txt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform .2s ease, background-color .3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .15);
+  height: 205px;
+  width: 342px;
+}
+
+.card-txt.correct {
+  border: 5px solid  #2e7d32;
+}
+
+.card-txt.wrong {
+  border: 5px solid red;
+}
+
+.card-txt.disabled {
+  pointer-events: none;
+}
+
+.feedback-lottie {
+  position: absolute;
+    top: -42px;
+    right: -44px;
+    width: 80px;
+    height: 80px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.feedback-lottie.active {
+  display: flex;
+}
