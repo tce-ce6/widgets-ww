@@ -215,3 +215,144 @@ img.step-image {
   display:block;
   margin: 20px auto 0 auto;
 }
+
+#organFlow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.organ-blank {
+  position: absolute;
+  width: 361px;
+  height: 100px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  border: 2px dashed transparent;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#mouth-blank {
+  left: 151.7px;
+  top: 113px;
+}
+
+#osephagus-blank {
+  left: 171.7px;
+  top: 229px;
+}
+
+#stomach-blank {
+  left: 151.7px;
+  top: 345px;
+}
+
+#small-intestine-blank {
+  left: 171.7px;
+  top: 461px;
+}
+
+#large-intestine-blank {
+  left: 151.7px;
+  top: 577px;
+}
+
+#rectum-blank {
+  left: 171.7px;
+  top: 693px;
+}
+
+/* Organ chart container hover/selected states */
+.organ-container {
+  height: 202px;
+  width: 253px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 3px solid #e2e8f0;
+  border-radius: 16px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.organ-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(9, 158, 237, 0.15);
+  border-color: #099eed;
+  background-color: #f0f9ff;
+}
+
+.organ-container.selected {
+  border-color: #099eed;
+  background-color: #e0f2fe;
+  box-shadow: 0 0 0 4px rgba(9, 158, 237, 0.3);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.organ-container.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Correct state */
+.organ-blank.correct {
+  border: 3px solid #10b981 !important;
+  background-color: rgba(240, 253, 244, 0.95);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  pointer-events: none;
+}
+
+/* Filled layout */
+.filled-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.filled-content img {
+  height: 75px;
+  width: 85px;
+  object-fit: contain;
+}
+
+.filled-content .organ-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  flex-grow: 1;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+
+.filled-content .checkmark {
+  font-size: 26px;
+  color: #10b981;
+  font-weight: bold;
+}
+
+/* Wrong state and shake animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.organ-blank.shake {
+  animation: shake 0.4s ease-in-out;
+  border: 3px solid #ef4444 !important;
+  background-color: rgba(254, 242, 242, 0.95);
+}

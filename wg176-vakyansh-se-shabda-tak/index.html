@@ -31,22 +31,42 @@
                 <g id="Web 1920 â€“ 1">
                   <foreignObject x="533" y="101" width="854.07" height="80.33" style="overflow: visible;">
                     <img src="./assets/title-bg.svg" alt="">
-                    <p id="phrase" class="phrase-text">dakjsdsab kjbasd</p>
+                    <p id="phrase" class="phrase-text"></p>
                     <p id="itext" class="itext">वाक्यांश सुनें, फिर नीचे कार्ड खोलें</p>
                   </foreignObject>
                   <foreignObject x="504" y="97" width="90" height="90">
-                    <img src="./assets/sound-btn.svg" alt="">
+                    <img src="./assets/sound-btn.svg" alt="वाक्यांश सुनें" id="sound-btn" onclick="playPhraseAudio()" style="cursor:pointer;">
                   </foreignObject>
 
-                  <foreignObject x="300" y="300" width="500" height="500">
+                  <foreignObject x="223" y="322" width="1436.8" height="560.66">
                     <div id="card-lottie"></div>
                   </foreignObject>
-                  <foreignObject x="300" y="300" width="500" height="500">
+                  <foreignObject x="223" y="322" width="1436.8" height="560.66" id="card-container">
                     <div class="card-txt-wrapper">
-                      <div class="card-txt" id="option-1"></div>
-                      <div class="card-txt" id="option-2"></div>
-                      <div class="card-txt" id="option-3"></div>
-                      <div class="card-txt" id="option-4"></div>
+                      <div class="card-txt" id="option-1">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-2">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-3">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-4">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-5">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
+                      <div class="card-txt" id="option-6">
+                        <span class="card-txt-word"></span>
+                        <div class="feedback-lottie"></div>
+                      </div>
                     </div>
                   </foreignObject>
                 </g>
@@ -58,7 +78,8 @@
       </div>
       <div class="flexContainer button-controls">
         <div class="flexItem flexItemFirst">
-          <button class="btn" id="show-example-btn" style="background-color:#4caf50; color:white;" " onfocus="
+          <button class="btn" id="show-example-btn" style="background-color:#4caf50; color:white;" disabled
+            onclick="retryOptions()" onfocus="
             document.querySelectorAll('.btn').forEach(b=> {
             b.style.outline = 'none';
             b.style.outlineOffset = '0';
