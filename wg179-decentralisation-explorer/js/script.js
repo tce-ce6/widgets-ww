@@ -481,7 +481,8 @@ function startGame() {
   setDisplay('letter-posted-box', 'block');
   setDisplay('feedback-popup', 'none');
   setDisplay('summary-popup', 'none');
-  setDisplay('i-text-feedback', 'none');
+  setDisplay('i-text-feedback-correct', 'none');
+  setDisplay('i-text-feedback-incorrect', 'none');
 
   setPostBoxesInteractive(true);
   showPostedBoxes();
@@ -505,7 +506,8 @@ function showIntroScreen() {
   setDisplay('letter-posted-box', 'none');
   setDisplay('feedback-popup', 'none');
   setDisplay('summary-popup', 'none');
-  setDisplay('i-text-feedback', 'none');
+  setDisplay('i-text-feedback-correct', 'none');
+  setDisplay('i-text-feedback-incorrect', 'none');
 }
 
 function setDisplay(id, value) {
@@ -541,7 +543,8 @@ function loadRound(index) {
   highlightRoundButton(index);
   setDeliveryEnabled(false);
   setDisplay('i-text', 'block');
-  setDisplay('i-text-feedback', 'none');
+  setDisplay('i-text-feedback-correct', 'none');
+  setDisplay('i-text-feedback-incorrect', 'none');
 
   var currentProblems = ROUNDS[index];
   for (var i = 0; i < LETTER_IDS.length; i++) {
@@ -750,7 +753,8 @@ function handleRetryOrRestart() {
   updateLetterBorders();
   updateDeliveryButton();
   setDisplay('feedback-popup', 'none');
-  setDisplay('i-text-feedback', 'none');
+  setDisplay('i-text-feedback-correct', 'none');
+  setDisplay('i-text-feedback-incorrect', 'none');
   setDisplay('i-text', 'block');
   setDisplay('btn-global', 'block');
   setDisplay('round-btn', 'block');
@@ -776,9 +780,12 @@ function handleTryMore() {
   if (currentRound === 0) {
     loadRound(1);
     setDisplay('feedback-popup', 'none');
-    setDisplay('i-text-feedback', 'none');
+    setDisplay('i-text-feedback-correct', 'none');
+    setDisplay('i-text-feedback-incorrect', 'none');
     setDisplay('btn-global', 'block');
     setDisplay('round-btn', 'block');
+  } else if (hasUnusedProblems()) {
+    startGame();
   } else {
     setDisplay('feedback-popup', 'none');
     setDisplay('summary-popup', 'block');
@@ -836,18 +843,19 @@ function renderFeedbackPopup(results, allCorrect) {
 
   var retryButton = document.getElementById('return-btn');
   var tryMoreButton = document.getElementById('try-more-btn');
-  var showFeedbackHint = !allCorrect;
-  setDisplay('i-text-feedback', showFeedbackHint ? 'block' : 'none');
-  setDisplay('i-text', showFeedbackHint ? 'none' : 'block');
+  setDisplay('i-text-feedback-correct', allCorrect ? 'block' : 'none');
+  setDisplay('i-text-feedback-incorrect', allCorrect ? 'none' : 'block');
+  setDisplay('i-text', 'none');
   if (allCorrect) {
     if (currentRound === 1) {
+      var hasMoreProblemSets = hasUnusedProblems();
       if (retryButton) {
         retryButton.style.display = 'inline-block';
         retryButton.textContent = 'Restart';
       }
       if (tryMoreButton) {
         tryMoreButton.style.display = 'inline-block';
-        tryMoreButton.textContent = 'Summary';
+        tryMoreButton.textContent = hasMoreProblemSets ? 'Try More' : 'Summary';
       }
     } else {
       if (retryButton) {
