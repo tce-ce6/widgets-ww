@@ -427,6 +427,11 @@ svg * {
   display: none;
 }
 
+.bubble.bubble-locked {
+  pointer-events: none;
+  cursor: default;
+}
+
 .bubble-word {
   font-size: 45px;
   text-align: center;
