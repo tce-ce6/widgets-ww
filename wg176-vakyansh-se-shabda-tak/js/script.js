@@ -33,8 +33,6 @@ const BUBBLE_POSITIONS = [
 ];
 const TANK_LOTTIE_PATH = './lottie/tank.json';
 const BUBBLE_LOTTIE_PATH = './lottie/bubbles.json';
-const FISH_LOTTIE_PATH = './lottie/fish.json';
-const CONFETTI_LOTTIE_PATH = './lottie/conffitee.json';
 
 let currentIndex = 0;
 let score = 0;
@@ -43,7 +41,6 @@ let shuffledData = [];
 let tankLottieAnimation = null;
 let bubbleLottieAnimation = null;
 let bubbleAnimationDone = false;
-let confettiLottieAnimation = null;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -280,22 +277,6 @@ function showCorrect(q) {
   const overlay = document.getElementById('correctOverlay');
   overlay.style.display = 'flex';
 
-  if (confettiLottieAnimation) {
-    confettiLottieAnimation.destroy();
-    confettiLottieAnimation = null;
-  }
-
-  const confettiContainer = document.getElementById('correct-confeti');
-  confettiContainer.innerHTML = '';
-
-  confettiLottieAnimation = lottie.loadAnimation({
-    container: confettiContainer,
-    renderer: 'svg',
-    loop: false,
-    autoplay: true,
-    path: CONFETTI_LOTTIE_PATH
-  });
-
   document.getElementById('bubbleLottieContainer').classList.add('lottie-hidden');
 
   document.querySelectorAll('.bubble').forEach(function(b) {
@@ -352,11 +333,6 @@ function hideOverlays() {
   document.getElementById('correctOverlay').style.display = 'none';
   document.getElementById('wrongOverlay').style.display = 'none';
   document.getElementById('bubbleLottieContainer').classList.remove('lottie-hidden');
-
-  if (confettiLottieAnimation) {
-    confettiLottieAnimation.destroy();
-    confettiLottieAnimation = null;
-  }
 }
 
 function playPhraseAudio() {
@@ -402,14 +378,6 @@ function endGame() {
     const backdrop = document.getElementById('backdrop');
     if (backdrop) backdrop.style.display = 'block';
 }
-
-lottie.loadAnimation({
-    container: document.getElementById('fish-animation'),
-    renderer: 'svg',
-    loop: true,
-    autoplay: true,
-    path: FISH_LOTTIE_PATH
-});
 
 window.debugEndGame = function () {
     // If the game hasn't started, start it first
